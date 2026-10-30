@@ -1,3 +1,92 @@
+## [2.87.1] - 2026-10-30
+
+### Fixed
+
+- Pay California CAPI at the SSI/SSP payment standard (with no offset since June 2019) using one standard per living arrangement, compute each eligible person's benefit on their own income, count the SSI/SSP of a spouse who receives it, apply spouse-to-spouse deeming, and stop the state supplement's dependent amount for a disabled or blind child who fails SSI's noncitizen or resource test.
+
+
+## [2.87.0] - 2026-10-30
+
+### Added
+
+- Count FFEL debt in the student loan plans' spousal proration and in each borrower's own Income-Based Repayment and Pay As You Earn standard payment cap, and use the latest return's adjusted gross income. Add the standard payment on parent PLUS loans, with the 10- to 30-year term for consolidated parent PLUS loans, and hold federal student loan balances at their dataset value in later years instead of uprating them.
+
+
+## [2.86.0] - 2026-10-30
+
+### Added
+
+- Add Vermont Seasonal Fuel Assistance (LIHEAP regular heating) for the 2025-26 and 2026-27 heating seasons.
+
+
+## [2.85.0] - 2026-10-30
+
+### Added
+
+- Add Wisconsin Home Energy Assistance Program regular heating benefit.
+
+
+## [2.84.0] - 2026-10-30
+
+### Added
+
+- Add Nevada LIHEAP Energy Assistance Program Fixed Annual Credit.
+
+
+## [2.83.2] - 2026-10-30
+
+### Fixed
+
+- South Carolina TANF now counts Social Security, unemployment compensation, pensions, retirement account withdrawals and interest at their gross amounts; adds child support, alimony, veterans benefits, workers' compensation, disability insurance, survivor and railroad retirement benefits, cash contributions, guaranteed income and trust income; counts capital gains, rent, partnership, trust and other net income only when positive, so a loss no longer offsets other income; drops discharged debt; treats farm income as earned; excludes the first $400 a year of a benefit group's interest and dividends; and leaves SSI recipients, their income and their resources out of the benefit group, as the TANF Policy Manual requires.
+
+
+## [2.83.1] - 2026-10-30
+
+### Fixed
+
+- Make state income taxes independent of which spouse is labelled head: dependents' income on Arkansas, Delaware, Iowa, Mississippi and Montana separate-column returns goes to the spouse with the greater income (an exact tie splits it); Mississippi splits a tax-unit health savings account or self-employed deduction with no per-person amounts equally between the spouses; Delaware chooses the dependent credit split and dependent care credit column together with EITC routing by greater remaining tax under 30 Del. C. 1117(b) to minimise tax; Montana's joint itemized deductions count both spouses' mortgage and investment interest; and an incapacitated or disabled head now qualifies as the other spouse's qualifying individual for Minnesota's dependent care credit, Montana's dependent care deduction and Oregon's working family household and dependent care credit, a surviving-spouse claimant for Missouri's property tax credit, and a totally disabled spouse for Oklahoma's property tax credit. Delaware credit-choice scoring uses the stored calculation precision to preserve this invariance at high incomes. Delaware separate-column credit calculations use pre-ordering CDCC and EITC amounts, with limits applied to the separate columns rather than the joint-return tax.
+
+
+## [2.83.0] - 2026-10-30
+
+### Added
+
+- Add an eligibility-year PIA-ratio lever for reported Social Security benefits, supplied claim-age inputs, and named population inference and coverage diagnostics.
+
+### Fixed
+
+- Flag assumed retirement claiming-age sensitivities as proxies even when the birth date is exact.
+
+
+## [2.82.0] - 2026-10-30
+
+### Added
+
+- Add Tennessee LIHEAP regular energy assistance.
+
+
+## [2.81.0] - 2026-10-30
+
+### Added
+
+- Add Minnesota Energy Assistance Program Primary Heat benefit.
+
+
+## [2.80.0] - 2026-10-30
+
+### Added
+
+- Add New Mexico LIHEAP regular heating assistance.
+
+
+## [2.79.7] - 2026-10-29
+
+### Fixed
+
+- Correct Rhode Island pregnancy Medicaid and CHIP routing for people with third-party health coverage, and preserve full postpartum Medicaid based on qualifying pregnancy eligibility through the last day of the month in which the 12-month postpartum period ends, including after income changes or another pregnancy. Fixes #10390.
+- Limit Arkansas's Medicaid aged, blind and disabled pathway (ARSeniors) to people aged 65 or older, except that noncitizens who fail the immigration test and meet SSI's income and resource tests, aged or not, keep it for emergency Medicaid, and apply Maine's savings exclusion and $100 couple income disregard.
+
+
 ## [2.79.6] - 2026-10-29
 
 ### Fixed

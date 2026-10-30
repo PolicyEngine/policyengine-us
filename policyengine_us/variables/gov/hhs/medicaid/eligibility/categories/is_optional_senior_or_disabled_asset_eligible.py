@@ -28,6 +28,14 @@ class is_optional_senior_or_disabled_asset_eligible(Variable):
             period
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled
 
+        # Maine excludes savings up to a set amount (22 M.R.S. § 3174-AA(2)).
+        # Its savings include bank accounts, stocks and bonds, which make up
+        # all of the SSI countable resources modeled here.
+        me = parameters(period).gov.states.me.dhhs.medicaid.savings_exclusion
+        me_exclusion = where(is_couple, me.couple, me.individual)
+        savings_exclusion = where(state == "ME", me_exclusion, 0)
+        assets = max_(assets - savings_exclusion, 0)
+
         #  Asset limit
         state_limit = where(
             is_couple,

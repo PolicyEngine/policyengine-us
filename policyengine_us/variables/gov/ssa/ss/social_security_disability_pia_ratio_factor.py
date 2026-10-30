@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.social_security.population import reported_pia_ratio_output
 
 
 class social_security_disability_pia_ratio_factor(Variable):
@@ -8,8 +9,12 @@ class social_security_disability_pia_ratio_factor(Variable):
     unit = "/1"
     label = "Social Security disability PIA ratio factor"
     documentation = (
-        "Neutral extension point for a subsequent reported-benefit PIA reform."
+        "Eligibility-year reformed-to-baseline PIA ratio for the reported source. "
+        "Calculated sources bypass this factor. Unsupported or unmodeled records "
+        "remain at one and expose separate diagnostic indicators."
     )
 
     def formula(person, period, parameters):
-        return 1
+        return reported_pia_ratio_output(
+            person, period, parameters, "disability", "factor"
+        )

@@ -883,6 +883,85 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify the legal basis for the amended-return remedy and treatment of exactly $3,000.
+- id: us-ca:capi-payment-standard-offset
+  program: capi
+  years:
+    from: 2019
+    type: calendar
+  question: From June 1, 2019, do CAPI payment standards equal the SSI/SSP standards, or remain $10 (individual),
+    $20 (CAPI couple) or $10 (couple with one SSI/SSP member) below them as the regulations state?
+  sources:
+  - kind: statute
+    citation: Cal. WIC §18941
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=18941
+  - kind: regulation
+    citation: CDSS MPP §49-050.11-.13 (Manual Letter EAS-03-09, effective 10/16/03)
+    url: https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf#page=44
+  - kind: guidance
+    citation: CDSS ACIN I-59-25, Attachment A
+    url: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACINs/2025/I-59_25.pdf#page=5
+  readings:
+    statute: CAPI benefits equal SSI/SSP benefits, retroactive to June 1, 2019.
+    other: CAPI standards are $10 below the SSI/SSP individual standard, $20 below the couple standard for a CAPI
+      couple and $10 below the couple standard when the other spouse receives SSI/SSP.
+  example: In January 2026, an aged CAPI recipient living independently with cooking facilities and no income receives
+    $1,233.94 a month under the statute, which PE-US follows, and $1,223.94 under the regulation.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ca/cdss/capi/payment_standard_offset/couple.yaml
+    - policyengine_us/parameters/gov/states/ca/cdss/capi/payment_standard_offset/mixed_couple.yaml
+    - policyengine_us/parameters/gov/states/ca/cdss/capi/payment_standard_offset/single.yaml
+    - policyengine_us/variables/gov/states/ca/cdss/capi/ca_capi_payment_standard.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10379
+  state: ruled
+  note: 'Ruled 2026-10-27 for the statute by the project lead for the Medicaid fixes; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10379#issuecomment-6451310006. WIC 18941 (2019) makes CAPI
+    benefits "equivalent to the benefits provided under the SSI/SSP program" from June 1, 2019, so it governs over
+    MPP 49-050.11-.13 (2003); CDSS notices ACIN I-23-19 and I-59-25 agree. PE-US follows the statute: the three
+    offsets are $0 from 2019-06-01 and keep the regulation amounts before then (payment_standard_offset/*.yaml, read
+    by ca_capi_payment_standard.py).'
+- id: us-ca:capi-spousal-deeming-method
+  program: capi
+  years:
+    from: 1999
+    type: calendar
+  question: When income is deemed from an ineligible spouse, does CAPI take the lesser federal and lesser state amounts
+    separately, as SSA computes SSI/SSP, or the smaller of the two totals on form SOC 452?
+  sources:
+  - kind: statute
+    citation: Cal. WIC §18940(b)
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=18940
+  - kind: statute
+    citation: Cal. WIC §18941
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=18941
+  - kind: regulation
+    citation: CDSS MPP §49-035.71
+    url: https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf#page=30
+  - kind: manual
+    citation: SSA POMS SI 01320.430 D
+    url: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501320430
+  - kind: form
+    citation: CDSS SOC 452 (4/99), CAPI Income Eligibility - Adult, line C
+    url: https://www.cdss.ca.gov/cdssweb/entres/forms/English/SOC452.pdf
+  readings:
+    statute: Federal deeming rules govern CAPI and CAPI benefits equal SSI/SSP benefits, which SSA computes by taking
+      the lesser federal amount and the lesser state supplement separately (POMS SI 01320.430 D).
+    other: SOC 452 pays the smaller of the couple standard less the couple's countable income and the individual standard
+      less the recipient's own countable income.
+  example: In January 2026, a CAPI recipient with no income whose ineligible spouse earns $1,200 a month receives $1,173.44
+    under the statute and the POMS method, which PE-US follows, and $1,233.94 under SOC 452.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ca/cdss/capi/ca_capi_person.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10379
+  state: unreviewed
+  note: 'PE-US follows the statute: ca_capi_person.py takes the lesser of the federal parts and the lesser of the
+    state parts (POMS SI 01320.430 D). MPP 49-035.71 points to both 20 CFR 416.1160 et seq. and SOC 452. Verify
+    whether CDSS still uses the 1999 form''s line C rule and the years affected.'
 - id: us-ca:care-fera-housing-subsidies
   program: care-fera
   years:
@@ -1292,6 +1371,53 @@ candidates:
   state: unreviewed
   note: 'The rule requires statutory timing rather than the model''s 2025-11-01 proxy; verify commencement and authorized
     transitions before changing it. Code not yet on main: is_snap_sua_hr1_in_effect, snap_utility_allowance_type.'
+- id: us-ca:ssp-blind-couple-food-allowance
+  program: ssi-ssp
+  years:
+    from: 2025
+    type: calendar
+  question: Does a California couple paid the one-blind couple rate get the no-cooking food allowance for its aged
+    or disabled member?
+  sources:
+  - kind: statute
+    citation: Cal. WIC §12200(b), (e)
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200
+  - kind: manual
+    citation: SSA POMS SI 01415.058 B.1, code C note
+    url: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058
+  - kind: guidance
+    citation: CDSS ACIN I-59-25, Attachment A
+    url: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACINs/2025/I-59_25.pdf#page=5
+  readings:
+    statute: The allowance goes only to an aged or disabled individual (12200(c)) or a couple both aged or disabled
+      (12200(d)), so a couple under the one-blind rate (12200(b)) gets none.
+    other: POMS adds the individual restaurant meals allowance for the aged or disabled member of a couple with one
+      blind member whose living arrangement lacks cooking facilities.
+  example: In January 2026, a couple of an aged person and a blind person aged 50 without cooking facilities has a
+    $2,238.44 standard under the statute, which PE-US follows for CAPI, and $2,367.31 under POMS.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/ca/cdss/capi/_ca_capi_ssi_ssp_standard.py
+    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/payment_standard/ca_state_supplement_food_allowance.py
+    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/payment_standard/ca_state_supplement_payment_standard.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10379
+    - https://github.com/PolicyEngine/policyengine-us/pull/10546
+  state: ruled
+  ruling:
+    by: PolicyEngine
+    date: '2026-10-29'
+    record: https://github.com/PolicyEngine/policyengine-us/pull/10379#issuecomment-6509402355
+  note: 'Ruled 2026-10-29 for the statute by the project lead for the Medicaid fixes; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10379#issuecomment-6509402355. WIC 12200(e) gives the
+    no-cooking allowance only under (c) and (d), so a couple paid the one-blind rate under (b) gets none, in CAPI and
+    in the state supplement. CAPI follows the statute: _ca_capi_ssi_ssp_standard.py adds no food allowance to the
+    one-blind couple rate, and a couple both aged or disabled takes the aged or disabled rate with the couple
+    allowance when that is higher. Until PolicyEngine/policyengine-us#10546 merges, the state supplement follows
+    POMS: ca_state_supplement_food_allowance.py adds the individual allowance for the aged or disabled member, so in
+    January 2026 the same couple has a $2,367.31 standard as citizens and $2,238.44 as CAPI recipients. That PR
+    makes the state supplement follow the statute and sets pe_us.follows to statute.'
 - id: us-ca:ssp-nmohc-couple-standard
   program: ssi-ssp
   years:
@@ -1327,8 +1453,10 @@ candidates:
     follows: statute
     code:
     - policyengine_us/parameters/gov/states/ca/cdss/state_supplement/payment_standard/allowance/out_of_home_care.yaml
+    - policyengine_us/variables/gov/states/ca/cdss/capi/_ca_capi_ssi_ssp_standard.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9709
+    - https://github.com/PolicyEngine/policyengine-us/pull/10379
   state: unreviewed
   note: 'PE-US follows the statute: the 2026 allowance is $1,153.31, from a $3,252.14 couple standard, twice the
     $1,626.07 individual rate (allowance/out_of_home_care.yaml), and the file''s comment lists the sources on each
@@ -4215,6 +4343,35 @@ candidates:
   state: unreviewed
   note: PE-US follows the manual and surrounding report editions; obtain contemporaneous BEM 556 for October 2022-September
     2023.
+- id: us-mn:liheap-plan-income-checklist
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do foster care payments, minors' earnings and insurance wage replacement count for Minnesota EAP as the
+    manual provides or as the FY2026 plan checklist marks them?
+  sources:
+  - kind: manual
+    citation: Minnesota EAP Policy Manual FFY26, Chapter 3, Income Inclusions and Exclusions, PDF pages 91-92 and 99
+    url: https://mn.gov/commerce-stat/pdfs/ffy26-eap-policy-manual.pdf#page=91
+  - kind: plan
+    citation: Minnesota FY2026 LIHEAP State Plan, section 1.9, PDF pages 6-7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MN_Plan_2026.pdf#page=6
+  readings:
+    statute: No statute is supplied; the manual excludes foster care payments, counts minors' earnings unless they are
+      K-12 students aged 19 or under, and counts workers' compensation and wage-replacement disability pay.
+    other: The plan checks funds for the care of a foster child and leaves earned income of a child under 18 and
+      insurance payments made directly to the insured unchecked.
+  example: $6,000 of wages of a 17-year-old not in school counts $6,000 under the manual and $0 under the plan.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10433
+  state: ruled
+  note: 'Ruled 2026-10-06: follow the manual over the plan. Code not yet on main: mn_eap_countable_income,
+    gov.states.mn.commerce.eap.income.sources.'
 - id: us-mn:small-claim-of-right-repayment-deduction
   program: income-tax
   years:
@@ -5394,6 +5551,70 @@ candidates:
   state: ruled
   note: Monthly periods resolve parameters at the first of the month, so the 60-month threshold first applies in
     October 2026. TheAxiomFoundation/rulespec-us#1956 lists the same choice as an open point.
+- id: us-nm:liheap-plan-income-checklist
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does New Mexico LIHEAP count gross Social Security including the Medicare premium, exclude lump sums, count
+    cash contributions and count earnings only of members over age 18, as the regulation provides, or follow the state
+    plan's income checklist?
+  sources:
+  - kind: regulation
+    citation: 8.150.520.12 B and 8.150.520.13 NMAC
+    url: https://www.srca.nm.gov/parts/title08/08.150.0520.html
+  - kind: plan
+    citation: FY2026 and FY2027 LIHEAP State Plans, section 1.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/NM_Plan_2026.pdf#page=6
+  readings:
+    statute: No statute supplied; the regulation counts gross OASDI including the Medicare premium and contributions
+      from family or friends, excludes lump sums, and counts earnings of members over the age of 18.
+    other: The checklist marks Social Security excluding the Medicare deduction and one-time lump sums, and leaves cash
+      gifts and earned income of a child under 18 unchecked.
+  example: A one-person FFY2026 household with $2,000 a month of OASDI and a $202.90 Part B premium counts $2,000 under
+    the rule and $1,797.10 under the checklist.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10431
+  state: ruled
+  note: 'Statute governs (2026-10-19 rule): PE-US follows the regulation for all four items. Code not yet on main:
+    nm_liheap_countable_income, gov.states.nm.hca.liheap.income.sources.unearned, gov.states.nm.hca.liheap.income.earned_income_age.'
+- id: us-nm:liheap-three-income-points
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does New Mexico LIHEAP give three income points for income up to 100% of the poverty guideline, as the
+    regulation provides, or up to 110%, as the agency's point and income guides apply?
+  sources:
+  - kind: regulation
+    citation: 8.150.620.9 B NMAC
+    url: https://www.srca.nm.gov/parts/title08/08.150.0620.html
+  - kind: guidance
+    citation: HCA LIHEAP FFY2026 Point and Income Guide
+    url: https://www.hca.nm.gov/wp-content/uploads/Heating-and-Cooling-Point-and-Income-Guide-2026.pdf
+  - kind: guidance
+    citation: HCA LIHEAP FFY2027 Point and Income Guidelines
+    url: https://www.hca.nm.gov/wp-content/uploads/NM-LIHEAP-FFY-2027-Point-and-Income-Guidelines.pdf
+  readings:
+    statute: No statute supplied; the regulation gives three points for income from zero to 100% of the poverty guideline
+      and two points from 100% to 150%.
+    other: The FFY2025-FFY2027 guides and the FFY2026 ISD 017 card give three points at or below 110% of the poverty guideline.
+  example: In FFY2026, a one-person household with monthly income of $1,400 (107% of the guideline) scores two income
+    points under the regulation and three under the guides.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10431
+  state: ruled
+  note: 'Statute governs (2026-10-19 rule): PE-US follows the regulation. The guides and the FFY2026 ISD 017 card apply
+    110%, and 8.150.620.10 C lets the secretary adjust point values, not the cutoff. Code not yet on main: nm_liheap,
+    gov.states.nm.hca.liheap.payment.income_points.low_income_fpg_rate.'
 - id: us-nm:medical-care-credit-mixed-age-spouses
   program: income-tax
   years:
@@ -5516,6 +5737,69 @@ candidates:
     nm_additional_2021_income_rebate.py, nm_supplemental_2021_income_rebate.py, nm_deduction_for_certain_dependents_eligible.py,
     nm_cdcc_eligible.py, nm_medical_expense_credit.py). Ruled in October 2026 to follow the per-spouse gap-fill;
     verify which listed credits and rebates share that treatment.'
+- id: us-nv:liheap-cap-band-125-percent-column
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: state-fiscal
+  question: Do Nevada's SFY2026 benefit cap bands end at 125% of the poverty guideline, or at Appendix A's printed
+    125% column, which differs from that rate for household sizes 4-8?
+  sources:
+  - kind: manual
+    citation: Nevada SFY2026 Energy Assistance Program Manual, Appendix A, FY 2026 income guidelines table, 125% Poverty
+      column
+    url: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=110
+  - kind: manual
+    citation: Nevada SFY2026 Energy Assistance Program Manual, Appendix A, FY 2026 benefit cap tables, >100-125% and
+      >125-150% bands
+    url: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=111
+  readings:
+    statute: No statute or regulation is supplied (NRS 702.260 sets no band); the cap tables key the bands to 75%, 100%,
+      125% and 150% of poverty, and 125% of the $37,650 size-5 guideline is $47,062.50.
+    other: The income table prints $53,937.50 as the size-5 125% figure and $40,062.50 for size 4; the SFY2027 table
+      matches the rate.
+  example: A size-5 household with Fixed Annual Credit income of $50,000 is in the >125-150% band by the rate (cap
+    $1,411) and in the >100-125% band by the printed $53,937.50 (cap $1,568).
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10432
+  state: unreviewed
+  note: 'PE-US keys the bands to the rates, which reproduce every SFY2027 row; confirm the SFY2026 column with the
+    state. Code not yet on main: gov.states.nv.dwss.liheap.payment.cap.income_band, nv_liheap.'
+- id: us-nv:liheap-minimum-fixed-annual-credit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: state-fiscal
+  question: Is Nevada's SFY2026 minimum Fixed Annual Credit $240, as manual Sections 504 A, 505 and 702 III print, or
+    $360, as Section 803 V and the state plan set?
+  sources:
+  - kind: manual
+    citation: Nevada SFY2026 Energy Assistance Program Manual, Sections 504 A, 505 D, F and G, 702 III and 803 V, PDF
+      pages 34, 36-37, 43 and 60-61
+    url: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=34
+  - kind: plan
+    citation: Nevada FY2026 LIHEAP State Plan, Sections 2.5-2.6
+    url: https://liheapch.acf.gov/docs/2026/state-plans/NV_Plan_2026.pdf#page=9
+  readings:
+    statute: No statute or regulation is supplied (NRS 702.260 sets no minimum); Sections 504 A, 505 D, F and G and
+      702 III print a $240 minimum payment.
+    other: Section 803 V pays $360 when the computed credit is less than $360, including a negative figure, and plan
+      2.5 pays $360 for a credit of zero to $359; the SFY2027 manual prints $360 throughout.
+  example: A household with a negative computed Fixed Annual Credit receives $360 under Section 803 V and $240 under
+    Section 702 III.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10432
+  state: unreviewed
+  note: 'PE-US pays the $360 minimum in SFY2026, matching Section 803 V, both plans and the SFY2027 manual. Code not
+    yet on main: gov.states.nv.dwss.liheap.payment.minimum, nv_liheap.'
 - id: us-ny:college-tuition-credit-claimed-spouse
   program: income-tax
   years:
@@ -7175,6 +7459,48 @@ candidates:
   note: 'PE-US follows the manual: workers_compensation counts, as does disability_benefits, which stands in for
     TDI and TCI, and the list''s comment records the plan''s unchecked insurance item (income/sources/unearned.yaml,
     ri_liheap_income.py). Verify whether the unchecked insurance category covers these payments.'
+- id: us-ri:medicaid-postpartum-end-month
+  program: medicaid
+  years:
+    from: 2022
+    type: calendar
+  question: For Rhode Island's section 1115 Budget Populations 6a and 6b, when a pregnancy ends on the first day of
+    a month, does the 12-month postpartum period begin that day and end Medicaid in the 11th following month, or does
+    coverage run to the end of the 12th following month?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1396a(e)(16), which subparagraph (A) applies to state plans and waivers
+    url: https://www.law.cornell.edu/uscode/text/42/1396a#e_16
+  - kind: plan
+    citation: Rhode Island Medicaid State Plan Amendment RI-22-0024, section B, page 7
+    url: https://www.medicaid.gov/medicaid/spa/downloads/RI-22-0024.pdf#page=7
+  - kind: policy
+    citation: CMS section 1115 amendment approval of the Rhode Island Comprehensive Demonstration (March 21, 2024; 2019
+      to 2024), expenditure authorities, Budget Populations 6a and 6b, file page 11
+    url: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/ri-comphnsve-dmnstrtn-aprvl.pdf#page=11
+  - kind: policy
+    citation: CMS section 1115 approval of the Rhode Island Comprehensive Demonstration (November 28, 2025), expenditure
+      authorities 1(b)-(c), Budget Populations 6a and 6b
+    url: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/ri-comp-demo-appvl-11282025.pdf#page=15
+  readings:
+    statute: The 12-month period begins on the last day of pregnancy and coverage runs through the last day of the
+      month in which that period ends; RI-22-0024 repeats this wording.
+    other: The 1115 expenditure authorities for Budget Populations 6a and 6b extend coverage to the end of the 12th
+      month following the end of the pregnancy.
+  example: For a Budget Population 6b enrollee whose pregnancy ends on January 1, 2023, coverage runs through December
+    2023 under the statute and through January 2024 under the 1115 wording; any other end day gives the same last month
+    under both.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ri/eohhs/medicaid/ri_medicaid_postpartum_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10391
+  state: unreviewed
+  note: The conflict is limited to the 1115 Budget Populations 6a and 6b, whose March 2024 and November 2025 approvals
+    use the same wording. The RI-22-0024 state plan groups, RIte Start and FCEP have no conflicting text, and CHIP
+    (RI-22-0025 CS27) ends the period "on the last day of the 12th month consistent with paragraphs (5) and (16) of
+    section 1902(e)". R.I. Gen. Laws 42-12.3-3(g) does not say when the 12-month period begins.
 - id: us-ri:ssp-category-d-without-federal-ssi
   program: ssi-state-supplement
   years:
@@ -7590,6 +7916,104 @@ candidates:
   state: unreviewed
   note: sd_ssp_care_joint_entry is true only in the month both spouses entered care; later months use the $2,000
     limit and each spouse's own income. integration.yaml Cases 5, 7 and 8 pin it.
+- id: us-tn:liheap-fy2026-printed-income-ceilings
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Are Tennessee's FY2026 LIHEAP income ceilings 60% of state median income, as the plan and manual state, or
+    the amounts printed in the benefit matrix and workshop deck where they differ?
+  sources:
+  - kind: plan
+    citation: Tennessee FY2026 LIHEAP State Plan, Section 2.1, page 8
+    url: https://liheapch.acf.gov/docs/2026/state-plans/TN_Plan_2026.pdf#page=8
+  - kind: manual
+    citation: Tennessee LIHEAP 2026 Policy Manual, Section 2.10, page 24
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-2026-Policy-Manual-for-Tennessee.pdf#page=24
+  - kind: guidance
+    citation: Tennessee LIHEAP 2026 Benefit Matrix, income end column
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/2026-LIHEAP-Eligible-Income-Household-Size-Benefits.pdf
+  - kind: guidance
+    citation: Tennessee LIHEAP 26 Workshop, Benefit Matrix Adjustments 2026, page 30
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-26-Workshop-Powerpoint-09.16.25.pdf#page=30
+  readings:
+    statute: No statute is supplied; the plan and manual set the limit at 60% of state median income, $85,064 for a
+      household of eight and $81,366 for a household of six.
+    other: The benefit matrix prints $85,064.50 for a household of eight, and the workshop deck prints $81,336 for a
+      household of six.
+  example: In FY2026, a household of eight with income of $85,064.50 and energy bills of $4,000 receives $300 under the
+    printed matrix ceiling (group D, burden 0.0470, column 1) and $0 under the 60% state median income limit.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10430
+  state: unreviewed
+  note: 'PE-US applies 60% of state median income, which reproduces every other printed FY2026 ceiling for sizes 1-12.
+    Code not yet on main: tn_liheap_income_limit, gov.states.tn.thda.liheap.eligibility.smi_rate.'
+- id: us-tn:liheap-fy2027-large-household-limits
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Are Tennessee's FY2027 LIHEAP income limits for households of 13 to 16 members 150% of the poverty guideline,
+    as the draft plan and manual state, or the lower ceilings printed in the LI-12 matrix?
+  sources:
+  - kind: plan
+    citation: Tennessee FY2027 LIHEAP State Plan (draft), Section 2.1, page 9
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/DETAILED-MODEL-PLAN-LIHEAP_10_01_2026.pdf#page=9
+  - kind: manual
+    citation: Tennessee LIHEAP 2027 Policy Manual (draft), Section 2.10, page 27
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/DRAFT-LIHEAP-2027-Policy-Manual-7-11-2026.pdf#page=27
+  - kind: guidance
+    citation: Tennessee FY2027 LIHEAP Benefit Matrix (LI-12), page 4
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/2027-LIHEAP-LI-12-Eligible-Income-Benefit-Matrix.pdf#page=4
+  readings:
+    statute: No statute is supplied; the draft plan (sizes 9-15) and draft manual (sizes 9-16) set the limit at 150% of
+      the poverty guideline, $126,180 to $151,740 for sizes 13-16.
+    other: The LI-12 matrix prints ceilings of $125,910 to $150,660 for sizes 13-16.
+  example: In FY2027, a household of 13 with income of $126,000 and energy bills of $4,200 receives $540 under the 150%
+    rule (group D, burden 0.0333, column 1) and $0 under the printed $125,910 ceiling.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10430
+  state: unreviewed
+  note: 'PE-US applies the stated 150% rule to every size from 9. Code not yet on main: tn_liheap_income_limit,
+    gov.states.tn.thda.liheap.eligibility.fpg_rate.'
+- id: us-tn:liheap-retirement-account-withdrawals
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does Tennessee LIHEAP count IRA and 401(k) withdrawals as income, as the plan's checked "Retirement / pension
+    benefits" box suggests, or exclude them, as the manual's income list does by naming none?
+  sources:
+  - kind: manual
+    citation: Tennessee LIHEAP 2026 Policy Manual, Section 2.13, pages 27-28
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-2026-Policy-Manual-for-Tennessee.pdf#page=27
+  - kind: plan
+    citation: Tennessee FY2026 LIHEAP State Plan, Section 1.9, page 6
+    url: https://liheapch.acf.gov/docs/2026/state-plans/TN_Plan_2026.pdf#page=6
+  readings:
+    statute: No statute is supplied; the manual counts pensions, annuities and regular insurance payments, names no
+      retirement-account withdrawals and excludes withdrawals from a bank account.
+    other: Plan 1.9 checks "Retirement / pension benefits" as countable income.
+  example: In FY2026, a single retiree aged 70 with Social Security of $12,000, a Part B premium of $2,434.80, IRA
+    withdrawals of $20,000 and an electric bill of $1,680 receives $710 with the withdrawals excluded (income $9,565.20,
+    group A, column 7) and $250 with them counted (income $29,565.20, group D, column 2).
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10430
+  state: ruled
+  note: 'Ruled 2026-10-23: exclude IRA/401(k) withdrawals as the manual does. Code not yet on main:
+    tn_liheap_countable_income, gov.states.tn.thda.liheap.income.sources.unearned.'
 - id: us-tx:family-planning-unearned-income-exclusions
   program: family-planning-program
   years:
@@ -8015,6 +8439,102 @@ candidates:
   note: Transmittal 71 (July 1, 2021) removed Appendix 3, so the agency schedule applied only in state fiscal year
     2021 (July 2020 to June 2021). The 7/20 Chapter 900, Appendix II, Example 6 (a TANF-UP household of four in Group II) uses the $499 TANF
     standard. Before July 2020 and from July 2021 the manual has one schedule for all units.
+- id: us-vt:liheap-income-maximum-large-households
+  program: liheap
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Does the Seasonal Fuel Assistance income limit for households of 10 or more stop at the LIHEAP maximum
+    the statute adds, below the 185% amounts the procedure table prints?
+  sources:
+  - kind: statute
+    citation: 33 V.S.A. § 2604(a)
+    url: https://legislature.vermont.gov/statutes/section/33/026/02604
+  - kind: regulation
+    citation: Vermont Seasonal Fuel Assistance Rule 2913(b)
+    url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=38
+  - kind: manual
+    citation: DCF Procedure P-2913, Income Guidelines, effective March 1, 2025 to February 28, 2026
+    url: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2913.pdf
+  readings:
+    statute: Gross income may exceed neither 185% of the poverty guideline nor the LIHEAP maximum (the greater of 150%
+      of the guideline and 60% of state median income), so the FFY2026 size-10 limit is $113,748 a year.
+    other: P-2913 prints the 185% amounts for sizes 10-15 (size 10 $10,044 a month, $120,528 a year) without the LIHEAP
+      maximum.
+  example: A 10-person household with $115,000 of gross income in 2026 is ineligible under the statute and eligible under
+    the printed table.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10436
+  state: ruled
+  note: 'Rule 2913(b) repeats both statutory tests. No document shows whether DCF applies the LIHEAP maximum to large
+    households. Code not yet on main: vt_liheap_income_limit.'
+- id: us-vt:liheap-income-maximum-rounding
+  program: liheap
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Does the Seasonal Fuel Assistance income maximum stop at exactly 185% of the poverty guideline where
+    the procedure table's rounded monthly amounts are higher?
+  sources:
+  - kind: statute
+    citation: 33 V.S.A. § 2604(a)
+    url: https://legislature.vermont.gov/statutes/section/33/026/02604
+  - kind: regulation
+    citation: Vermont Seasonal Fuel Assistance Rules 2913(b)-(c) and 2914(a)(3)
+    url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=38
+  - kind: manual
+    citation: DCF Procedure P-2913, Income Guidelines, effective March 1, 2025 to February 28, 2026
+    url: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2913.pdf
+  readings:
+    statute: Gross income may not exceed exactly 185% of the poverty guideline, so the FFY2026 two-person limit is
+      $39,127.50 a year ($3,260.625 a month).
+    other: P-2913 prints 185% of the monthly guideline rounded half up to the dollar, above 185% of the guideline for
+      some sizes (two people $3,262 a month, $39,144 a year).
+  example: A two-person household with $3,261 a month ($39,132 a year) of gross income in 2026 is eligible under the
+    printed table and ineligible under the statute.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10436
+  state: ruled
+  note: 'The statute sets a ceiling, so the printed amount applies where it rounds below 185% (one person $2,412 a
+    month against $2,412.71). Code not yet on main: vt_liheap_income_limit.'
+- id: us-vt:liheap-plan-income-items
+  program: liheap
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Do Seasonal Fuel Assistance strike benefits count and does income stop at 185% of the poverty guideline,
+    as the statute and rules require, although the FY2026 plan leaves strike pay unchecked and reports 60% of state
+    median income for all sizes?
+  sources:
+  - kind: statute
+    citation: 33 V.S.A. § 2604(a)
+    url: https://legislature.vermont.gov/statutes/section/33/026/02604
+  - kind: regulation
+    citation: Vermont Seasonal Fuel Assistance Rules 2911.2(b)(10) and 2913(b)
+    url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=28
+  - kind: plan
+    citation: Vermont FY2026 LIHEAP State Plan, items 1.9 and 2.1
+    url: https://liheapch.acf.gov/docs/2026/state-plans/VT_Plan_2026.pdf#page=6
+  readings:
+    statute: Gross income follows the 3SquaresVT rules, which count strike benefits (7 CFR 273.9(b)(2)(ii); rule
+      2911.2(b)(10)), and may not exceed 185% of the poverty guideline (rule 2913(b)).
+    other: Plan 1.9 leaves Strike Pay unchecked and plan 2.1 sets 60% of state median income for all household sizes.
+  example: One person in 2026 with $24,000 of wages and $6,000 of strike benefits has $30,000 of gross income, above
+    the $28,944 limit, and is ineligible under the statute and rules; the $24,000 of wages alone is within the plan's
+    $41,075 limit (60% of state median income), so the person is eligible under the plan.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10436
+  state: ruled
+  note: 'Statute governs (2026-10-19 rule). Code not yet on main: vt_liheap_income, vt_liheap_income_limit.'
 - id: us-vt:low-income-cdcc-threshold-equality
   program: income-tax
   years:
@@ -8380,6 +8900,142 @@ candidates:
   state: ruled
   note: An October 2026 ruling followed the worksheet; the statute-first rule requires including the repayment deduction
     if the statutory reading is confirmed.
+- id: us-wi:liheap-categorical-benefit-income
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is a categorically eligible Wisconsin WHEAP household above 60% of state median income paid as if its income
+    equaled the limit, as the manual and plan state, or on its actual income, as the HE+ calculator computes?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. 16.27(6)
+    url: https://docs.legis.wisconsin.gov/statutes/statutes/16/i/27
+  - kind: manual
+    citation: Wisconsin PY26 WHEAP Manual, section 2.3.1 item 1
+    url: https://web.archive.org/web/20260428215048/https://energyandhousing.wi.gov/Documents/WHEAP/WheapManual_PY26.pdf#page=26
+  - kind: plan
+    citation: Wisconsin FY2026 LIHEAP State Plan, section 1.6
+    url: https://liheapch.acf.gov/docs/2026/state-plans/WI_Plan_2026.pdf#page=5
+  - kind: calculator
+    citation: Wisconsin HE+ Benefit Calculator FFY2026, Computation!C13, C39 and C40
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/WI_BenefitMatrix_2026.xlsx
+  readings:
+    statute: Section 16.27(6) pays heating assistance under a benefit schedule established by the department based on
+      household income, family size and energy costs; manual 2.3.1 item 1 and plan 1.6 pay a categorically eligible
+      household over 60% SMI as if its income were 60% SMI.
+    other: Calculator cell C40 keeps the amount that C39 computes from the household's actual income.
+  example: An eight-person household with $104,000 of income, a $1,150 gas bill and four bedrooms receives $306 at the
+    $101,965 limit and $291 at its actual income.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10434
+  state: ruled
+  note: 'Ruled 2026-10-21 by the user: follow manual 2.3.1 item 1 and plan 1.6. Code not yet on main: wi_wheap.'
+- id: us-wi:liheap-general-relief-and-lump-sums
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Wisconsin WHEAP count General Relief and ignore most non-recurring lump sums, as the manual lists, or
+    follow the plan's income checklist, which leaves General Assistance unchecked and checks one-time lump sums?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. 16.27(5)(b) and (6)
+    url: https://docs.legis.wisconsin.gov/statutes/statutes/16/i/27
+  - kind: manual
+    citation: Wisconsin PY26 WHEAP Manual, Table 3.4 General Relief and Table 3.6 Lump Sum Payments, Non-recurring, PDF
+      pages 55 and 61
+    url: https://web.archive.org/web/20260428215048/https://energyandhousing.wi.gov/Documents/WHEAP/WheapManual_PY26.pdf#page=55
+  - kind: plan
+    citation: Wisconsin FY2026 LIHEAP State Plan, section 1.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/WI_Plan_2026.pdf#page=6
+  readings:
+    statute: Section 16.27 does not define countable income; manual Table 3.4 counts General Relief, including Refugee
+      Cash Assistance, and Table 3.6 ignores most non-recurring lump sums such as tax refunds and rebates.
+    other: Plan 1.9 leaves General Assistance benefits unchecked and checks one-time lump-sum payments such as rebates,
+      credits, lottery winnings and refund deposits.
+  example: A single adult with $1,200 of General Relief and no other income has countable income of $1,200 under the
+    manual and $0 under the plan.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10434
+  state: ruled
+  note: 'Ruled 2026-10-06: follow the manual over the plan. No rebate, credit or refund deposit is counted. Code not
+    yet on main: gov.states.wi.doa.wheap.income.sources.unearned.'
+- id: us-wi:liheap-maximum-benefit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is the Wisconsin WHEAP FFY2026 maximum regular heating benefit $2,580 as the agency-posted plan states, $2,147
+    as the ACF-posted plan prints, or $2,575 as the HE+ calculator sets?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. 16.27(6)
+    url: https://docs.legis.wisconsin.gov/statutes/statutes/16/i/27
+  - kind: plan
+    citation: Wisconsin LIHEAP State Plan FFY2026, agency-posted edition, section 2.6
+    url: https://web.archive.org/web/20260316195114/https://energyandhousing.wi.gov/Documents/WHEAP/LiheapPlan_FFY2026.pdf#page=7
+  - kind: plan
+    citation: Wisconsin FY2026 LIHEAP State Plan as posted by ACF, section 2.6
+    url: https://liheapch.acf.gov/docs/2026/state-plans/WI_Plan_2026.pdf#page=12
+  - kind: calculator
+    citation: Wisconsin HE+ Benefit Calculator FFY2026, Computation!C17
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/WI_BenefitMatrix_2026.xlsx
+  readings:
+    statute: Section 16.27(6) leaves the benefit schedule to the department and sets no maximum; the agency-posted plan
+      item 2.6 sets $2,580.
+    other: The ACF-posted plan item 2.6 prints $2,147 and calculator cell C17 sets $2,575.
+  example: A single-family fuel oil home of five rooms with a poverty ratio of 0.60 and costs above the $3,122 cap receives
+    $2,192 under the $2,580 or $2,575 maximum and $2,147 under the ACF-posted figure.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10434
+  state: ruled
+  note: 'Ruled 2026-10-21 by the user: $2,580. Code not yet on main: gov.states.wi.doa.wheap.payment.maximum.'
+- id: us-wi:liheap-proxy-cost-bounds
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is the Wisconsin WHEAP heating cost capped at twice a heat proxy equal to 75% of the table's average cost, as
+    the manual describes, or at twice the table amount with a floor of 0.75 times it, as the HE+ calculator computes?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. 16.27(6)
+    url: https://docs.legis.wisconsin.gov/statutes/statutes/16/i/27
+  - kind: manual
+    citation: Wisconsin PY26 WHEAP Manual, section 2.3.1 item 3
+    url: https://web.archive.org/web/20260428215048/https://energyandhousing.wi.gov/Documents/WHEAP/WheapManual_PY26.pdf#page=27
+  - kind: calculator
+    citation: Wisconsin HE+ Benefit Calculator FFY2026, Computation!C29, C30 and C31
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/WI_BenefitMatrix_2026.xlsx
+  readings:
+    statute: Section 16.27(6) bases the benefit schedule on energy costs and leaves the cost bounds to the department;
+      manual 2.3.1 item 3 sets the heat proxy at 75% of the average cost and caps costs at two times the proxy, or 1.5
+      times the table amount.
+    other: Calculator cell C30 caps costs at 2 times and C31 floors them at 0.75 times the table amount.
+  example: A propane mobile home with two bedrooms and a $2,400 bill has a $861 table amount; the calculator caps its cost
+    at $1,722 and the manual reading at $1,291.50.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10434
+  state: ruled
+  note: 'Ruled 2026-10-21 by the user: calculator bounds. Code not yet on main: wi_wheap_heating_cost,
+    gov.states.wi.doa.wheap.payment.proxy.cap_rate.'
 - id: us-wi:medicaid-parent-student-option-full-time
   program: medicaid
   years:

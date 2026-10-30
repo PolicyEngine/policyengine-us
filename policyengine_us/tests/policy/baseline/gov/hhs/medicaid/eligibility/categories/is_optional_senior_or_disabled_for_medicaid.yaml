@@ -173,3 +173,220 @@
     medicaid_category: NONE
     is_medicaid_eligible: false
     is_emergency_medicaid_eligible: false
+
+# Arkansas's group (ARSeniors) covers only aged people (MS 23110). 2026:
+# Social Security of $900 a month leaves countable income of $10,560 a year
+# after the $20 a month disregard, under 80% of the poverty guideline
+# ($12,768).
+- name: Case 10, disabled Arkansan under 65 is not covered, since ARSeniors covers only aged people.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    meets_ssi_disability_criteria: true
+    social_security_disability: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+
+- name: Case 11, aged Arkansan with the same income is covered.
+  period: 2026
+  input:
+    age: 70
+    state_code: AR
+    social_security_retirement: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_optional_senior_or_disabled_for_medicaid: true
+
+# Emergency Medicaid waives only the receipt of SSI (42 U.S.C.
+# 1396b(v)(2)(B)), so a blind or disabled noncitizen who fails the
+# immigration test keeps the group in Arkansas when they meet SSI's
+# income and resource tests. With no income and no resources, this person
+# meets both: $0 countable income is below the $994 SSI rate, and $0 is
+# within the $2,000 resource limit.
+- name: Case 12, disabled undocumented Arkansan under 65 keeps the group for emergency Medicaid.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    immigration_status: UNDOCUMENTED
+    meets_ssi_disability_criteria: true
+  output:
+    is_medicaid_immigration_status_eligible: false
+    is_optional_senior_or_disabled_for_medicaid: true
+
+- name: Case 13, disabled permanent resident under 65 who passes the immigration test is not covered.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 10
+    meets_ssi_disability_criteria: true
+    social_security_disability: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_medicaid_immigration_status_eligible: true
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+
+# $5,000 in a bank account is under Arkansas's pathway asset limit but over
+# SSI's $2,000 resource limit, so this noncitizen fails the SSI group's
+# resource test and, being under 65, does not qualify for ARSeniors either.
+- name: Case 14, disabled undocumented Arkansan under 65 over the SSI resource limit is not covered.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    immigration_status: UNDOCUMENTED
+    meets_ssi_disability_criteria: true
+    bank_account_assets: 5_000
+  output:
+    is_medicaid_immigration_status_eligible: false
+    is_optional_senior_or_disabled_asset_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+
+# SSI's income test is countable income "not more than" the benefit rate
+# (42 U.S.C. 1382(a)(1)(A)). A permanent resident 2 years after entry is in
+# the five-year bar, so fails the Medicaid immigration test, but SSI counts
+# their income. Social Security disability of $1,014 a month leaves
+# (1,014 - 20) x 12 = $11,928 countable, equal to the 2026 SSI rate of
+# $994 x 12.
+- name: Case 15, disabled Arkansan in the five-year bar with countable income equal to the SSI rate keeps the group.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    meets_ssi_disability_criteria: true
+    social_security_disability: 12_168
+  output:
+    is_medicaid_immigration_status_eligible: false
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: true
+
+# $1,015 a month leaves (1,015 - 20) x 12 = $11,940 countable, over the SSI
+# rate, though still under Arkansas's 80% of the poverty guideline ($12,768).
+- name: Case 16, the same person with countable income $1 a month over the SSI rate is not covered.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    meets_ssi_disability_criteria: true
+    social_security_disability: 12_180
+  output:
+    is_medicaid_immigration_status_eligible: false
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+
+- name: Case 17, blind Arkansan under 65 who is not disabled is not covered, since ARSeniors covers only aged people.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    is_blind: true
+    social_security_disability: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+
+- name: Case 18, Arkansas couple with an aged spouse and a disabled spouse under 65 covers only the aged spouse.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 6_000
+        takes_up_ssi_if_eligible: false
+      person2:
+        age: 50
+        meets_ssi_disability_criteria: true
+        social_security_disability: 6_000
+        takes_up_ssi_if_eligible: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+    is_optional_senior_or_disabled_for_medicaid: [true, false]
+
+# Each spouse has Social Security disability of $735 a month. SSI's couple
+# budget: (1,470 - 20) x 12 = 17,400, or 8,700 each, so 725 a month each,
+# at or below half the 2026 couple rate (1,491 / 2 = 745.50). The pathway's
+# own couple limit, 80% of the 2026 guideline for two (0.8 x 21,640 =
+# 17,312), is lower than the SSI couple rate, so the SSI income test
+# replaces it for people kept only through the SSI group.
+- name: Case 19, disabled Arkansas couple in the five-year bar under the SSI couple rate but over 80% of the poverty guideline keeps the group.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        meets_ssi_disability_criteria: true
+        social_security_disability: 8_820
+        takes_up_ssi_if_eligible: false
+      person2:
+        age: 50
+        is_tax_unit_spouse: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        meets_ssi_disability_criteria: true
+        social_security_disability: 8_820
+        takes_up_ssi_if_eligible: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_medicaid_immigration_status_eligible: [false, false]
+    is_optional_senior_or_disabled_income_eligible: [false, false]
+    is_optional_senior_or_disabled_for_medicaid: [true, true]
+
+# The Case 19 income for a couple aged 70 with Social Security retirement.
+# Aged noncitizens who fail the immigration test also reach the SSI group
+# for emergency Medicaid, so the SSI couple test applies to them too.
+- name: Case 20, aged Arkansas couple in the five-year bar under the SSI couple rate but over 80% of the poverty guideline keeps the group.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        social_security_retirement: 8_820
+        takes_up_ssi_if_eligible: false
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        social_security_retirement: 8_820
+        takes_up_ssi_if_eligible: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_medicaid_immigration_status_eligible: [false, false]
+    is_optional_senior_or_disabled_income_eligible: [false, false]
+    is_optional_senior_or_disabled_for_medicaid: [true, true]
