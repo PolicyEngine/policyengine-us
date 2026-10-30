@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
+from policyengine_us.variables.gov.states.ca.tax.income.deductions.standard.ca_standard_deduction import (
+    ca_dependent_standard_deduction_limit,
+)
 
 
 def create_ca_ab2591() -> Reform:
@@ -52,7 +55,14 @@ def create_ca_ab2591() -> Reform:
             # statutory standard deduction.
             elected_deduction = max_(fpl_deduction, baseline_deduction)
 
-            return where(p_ab2591.in_effect, elected_deduction, baseline_deduction)
+            deduction = where(p_ab2591.in_effect, elected_deduction, baseline_deduction)
+            # Assumes the bill leaves 17073.5(c)(2) in place, so the IRC
+            # 63(c)(5) limit for a filer who can be claimed as a dependent
+            # applies to whichever deduction is taken (and to the baseline
+            # amount in years the election is not in effect).
+            return ca_dependent_standard_deduction_limit(
+                tax_unit, period, parameters, deduction
+            )
 
     class reform(Reform):
         def apply(self):

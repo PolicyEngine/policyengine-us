@@ -21,7 +21,17 @@ def create_az_dependent_credit() -> Reform:
                 period
             ).gov.states.az.tax.income.credits.dependent_credit
             p = parameters(period).gov.contrib.states.az.dependent_credit
-            dependent = person("is_tax_unit_dependent", period)
+            # As in the baseline, a return on which the filer (or, if joint,
+            # either spouse) can be claimed has no dependents (A.R.S.
+            # 43-1001(3), IRC 152(b)(1)).
+            # The would-be claimant's filing exception (not required to file and
+            # filing only for a refund, Publication 501) restores the dependents.
+            filer_is_dependent = tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
+            dependent = person("is_tax_unit_dependent", period) & ~tax_unit.project(
+                filer_is_dependent
+            )
             age = person("age", period)
             if p.age_limit.in_effect:
                 eligible = dependent & (age < p.age_limit.threshold)

@@ -161,3 +161,277 @@
         state_code: CA
   output:
     ca_eitc_eligible: true
+
+# RTC 17052 keeps the IRC 32(c)(1)(A)(ii)(III) rule that a filer without a
+# qualifying child must not be another taxpayer's dependent (FTB 3514, Step 4,
+# question f). FTB 3514 skips that question on a joint return, since a married
+# filer can be claimed only when the joint return seeks just a refund of
+# withholding; as for the federal credit, a joint return on which either
+# spouse can be claimed gets no credit without a qualifying child. A filer
+# with a qualifying child is not barred.
+
+- name: 2025 single filer who can be claimed as a dependent without a qualifying child is ineligible
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 25
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    ca_eitc_eligible: false
+    ca_eitc: 0
+
+- name: 2025 single filer who cannot be claimed without a qualifying child is eligible
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 25
+        employment_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    # $1,000 x 7.65% x 0.85.
+    ca_eitc_eligible: true
+    ca_eitc: 65.025
+
+- name: 2025 joint return with one claimable spouse without a qualifying child is ineligible (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 25
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 25
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    ca_eitc_eligible: false
+    ca_eitc: 0
+
+- name: 2025 joint return with one claimable spouse without a qualifying child is ineligible (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 25
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 25
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: CA
+  output:
+    ca_eitc_eligible: false
+    ca_eitc: 0
+
+- name: 2025 joint return with both spouses claimable without a qualifying child is ineligible
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 25
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 25
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    ca_eitc_eligible: false
+    ca_eitc: 0
+
+- name: 2025 joint return with neither spouse claimable without a qualifying child is eligible
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 25
+        employment_income: 500
+      person_b:
+        age: 25
+        employment_income: 500
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    # $1,000 x 7.65% x 0.85.
+    ca_eitc_eligible: true
+    ca_eitc: 65.025
+
+- name: 2025 single filer who can be claimed as a dependent but has a qualifying child stays eligible
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 20
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [filer, child]
+        state_code: CA
+  output:
+    ca_eitc_eligible: true
+
+- name: 2025 joint return with one claimable spouse with a qualifying child stays eligible (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CA
+  output:
+    ca_eitc_eligible: true
+
+- name: 2025 joint return with one claimable spouse with a qualifying child stays eligible (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: CA
+  output:
+    ca_eitc_eligible: true
+
+- name: 2025 joint return with both spouses claimable with a qualifying child stays eligible
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CA
+  output:
+    ca_eitc_eligible: true
+
+- name: 2025 joint return with neither spouse claimable with a qualifying child is eligible
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 500
+      person_b:
+        age: 22
+        employment_income: 500
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CA
+  output:
+    ca_eitc_eligible: true

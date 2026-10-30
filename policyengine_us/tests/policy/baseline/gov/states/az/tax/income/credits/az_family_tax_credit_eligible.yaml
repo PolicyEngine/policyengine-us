@@ -85,3 +85,125 @@
     tax_unit_dependents: 2
   output:
     az_family_tax_credit_eligible: false
+
+# A.R.S. 43-1073(A) sets the income limit by the number of dependents, in the
+# IRC 152 sense (A.R.S. 43-1001(3)). A joint return on which either spouse
+# can be claimed has no dependents (IRC 152(b)(1)), so it uses the $20,000
+# limit for "not more than one dependent" rather than $23,600 for two.
+# Income is Arizona AGI plus the exemptions subtracted under 43-1023.
+
+- name: 2025 joint return with one claimable spouse uses the no-dependent family credit income limit (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+      child_2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1, child_2]
+        filing_status: JOINT
+        az_agi: 22_500
+        az_exemptions: 0
+    households:
+      household:
+        members: [person_a, person_b, child_1, child_2]
+        state_code: AZ
+  output:
+    # $22,500 > $20,000.
+    az_family_tax_credit_eligible: false
+
+- name: 2025 joint return with one claimable spouse uses the no-dependent family credit income limit (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+      child_2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child_1, child_2]
+        filing_status: JOINT
+        az_agi: 22_500
+        az_exemptions: 0
+    households:
+      household:
+        members: [person_b, person_a, child_1, child_2]
+        state_code: AZ
+  output:
+    # $22,500 > $20,000.
+    az_family_tax_credit_eligible: false
+
+- name: 2025 joint return with both spouses claimable uses the no-dependent family credit income limit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        claimed_as_dependent_on_another_return: true
+      child_1:
+        age: 5
+      child_2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1, child_2]
+        filing_status: JOINT
+        az_agi: 22_500
+        az_exemptions: 0
+    households:
+      household:
+        members: [person_a, person_b, child_1, child_2]
+        state_code: AZ
+  output:
+    # $22,500 > $20,000.
+    az_family_tax_credit_eligible: false
+
+- name: 2025 joint return with neither spouse claimable uses the two-dependent family credit income limit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+      person_b:
+        age: 22
+      child_1:
+        age: 5
+      child_2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1, child_2]
+        filing_status: JOINT
+        az_agi: 22_500
+        az_exemptions: 0
+    households:
+      household:
+        members: [person_a, person_b, child_1, child_2]
+        state_code: AZ
+  output:
+    # $22,500 <= $23,600.
+    az_family_tax_credit_eligible: true
