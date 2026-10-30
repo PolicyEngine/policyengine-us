@@ -1,3 +1,10 @@
+## [2.80.0] - 2026-10-30
+
+### Added
+
+- Add New Mexico LIHEAP regular heating assistance.
+
+
 ## [2.79.7] - 2026-10-29
 
 ### Fixed
