@@ -1,0 +1,692 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html">
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2025.12.19 -->
+        <title>Population Social Security PIA ratio - PolicyEngine US documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">PolicyEngine US documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <span class="sidebar-brand-text">PolicyEngine US documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Government programs</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/fcc/index.html">FCC</a><input aria-label="Toggle navigation of FCC" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/fcc/lifeline.html">Lifeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/fcc/acp.html">Affordable Connectivity Program</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/hhs/index.html">HHS</a><input aria-label="Toggle navigation of HHS" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/hhs/tanf.html">Temporary Assistance for Needy Families (TANF)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/hud/index.html">HUD</a><input aria-label="Toggle navigation of HUD" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/hud/housing-assistance.html">Housing assistance</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/irs/tax.html">IRS</a><input aria-label="Toggle navigation of IRS" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/irs/credits/eitc.html">Earned Income Tax Credit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/irs/credits/cdcc.html">Child and Dependent Care Credit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/irs/credits/clean-vehicle.html">Clean vehicle credit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/irs/capital-gains.html">Capital Gains Tax</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/ssa/index.html">SSA</a><input aria-label="Toggle navigation of SSA" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/ssa/ssi.html">SSI</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/states/index.html">States</a><input aria-label="Toggle navigation of States" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/ca/index.html">California</a><input aria-label="Toggle navigation of California" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ca/calepa/carb/cvrp.html">California Clean Vehicle Rebate Project (CVRP)</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/ma/index.html">Massachusetts</a><input aria-label="Toggle navigation of Massachusetts" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ma/tax-benefit.html">Massachusetts tax and benefit system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ma/tax/income/index.html">Massachusetts income tax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ma/tax/income/credits/senior-circuit-breaker.html">Massachusetts Senior Circuit Breaker Credit</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/md/index.html">Maryland</a><input aria-label="Toggle navigation of Maryland" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/index.html">Maryland state income tax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/credits/cdcc.html">Maryland Child and Dependent Care Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/credits/ctc.html">Maryland Child Tax Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/credits/eitc.html">Maryland Earned Income Tax Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/credits/poverty-line-credit.html">Maryland Poverty Line Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/deductions/standard-deduction.html">Maryland Standard Deduction</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/ny/index.html">New York</a><input aria-label="Toggle navigation of New York" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/cdcc.html">NY Child and Dependent Care Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/ctc.html">Empire State Child Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/eitc.html">New York EITC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/tax.html">New York state income tax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/tax-benefit.html">New York State income tax</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/states/pa/tax.html">Pennsylvania</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/states/ut/ut_income_tax.html">Utah State income tax</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/wa/index.html">Washington</a><input aria-label="Toggle navigation of Washington" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/wa/tax/income/credits/working-families-tax-credit.html">Washington Working Families Tax Credit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/usda/index.html">USDA</a><input aria-label="Toggle navigation of USDA" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/usda/snap.html">SNAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/usda/school-meals.html">School meals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/usda/wic.html">WIC</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Validation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../validation/taxsim.html">Validation against TAXSIM</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="microsimulation.html">Microsimulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameter-discovery.html">Finding parameters</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="social-security-calculator.html">Supplied-record Social Security calculator</a><input aria-label="Toggle navigation of Supplied-record Social Security calculator" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="social-security/RULINGS.html">Restricted-survivor modeling ruling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="speed.html">Speed</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../examples/income-sources.html">Income sources</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/usage/social-security-pia-ratio.md" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="population-social-security-pia-ratio">
+<h1>Population Social Security PIA ratio<a class="headerlink" href="#population-social-security-pia-ratio" title="Link to this heading">¶</a></h1>
+<p>The reported-benefit route implements design v3 C1–C3, with A1’s factor
+composition, A5.2’s record/proxy distinctions, P2’s annual cross-section
+convention, and amendments M2, M4, M8 and M9. It approximates a formula reform
+for benefits already in payment. It does not reconstruct a worker’s earnings
+history or establish benefit entitlement.</p>
+<p>For each annual Person component <code class="docutils literal notranslate"><span class="pre">X</span></code> (<code class="docutils literal notranslate"><span class="pre">retirement</span></code>, <code class="docutils literal notranslate"><span class="pre">disability</span></code>,
+<code class="docutils literal notranslate"><span class="pre">survivors</span></code>, <code class="docutils literal notranslate"><span class="pre">dependents</span></code>), the population lever applies</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>z = reported_X / (12 * a * s * baseline_COLA(E, t))
+factor_X = new_PIA(inferred_AIME, E; t) / baseline_PIA(inferred_AIME, E)
+</pre></div>
+</div>
+<p>The public formula multiplies the reported base by this factor, the joint COLA
+factor, the across-the-board factor and the payable factor. Calculated source
+routes compute their PIA and COLAs directly and bypass these population
+factors. An initial public-name input is migrated to its <code class="docutils literal notranslate"><span class="pre">_reported</span></code> twin,
+including public-name dataset columns in the scoring year; a later explicit
+public write is a final override. See the benefit-lever ingress documentation.</p>
+<p>The forward PIA calculations and inverse use the same service as the
+<a class="reference internal" href="social-security-calculator.html"><span class="std std-doc">supplied-record calculator</span></a>.
+<code class="docutils literal notranslate"><span class="pre">bend_points_at</span></code> selects the original eligibility-year bend points;
+<code class="docutils literal notranslate"><span class="pre">formula_path_at</span></code> supplies the combined reform and its <code class="docutils literal notranslate"><span class="pre">recompute_mode</span></code>.
+C does not add a second retroactive-recomputation switch. The inverse always
+uses the fixed unreformed formula and the unreformed reported amount.</p>
+<section id="supplied-claim-age-and-explicit-scenarios">
+<h2>Supplied claim age and explicit scenarios<a class="headerlink" href="#supplied-claim-age-and-explicit-scenarios" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">social_security_retirement_claim_age_months</span></code> is a pure annual Person input:
+age in whole months at first entitlement, so 62 years 3 months is 747.
+It has no formula, uprating, or positive-amount selection rule. A projected H5
+may store this column like any other input, with a value for each scoring year.</p>
+<p><code class="docutils literal notranslate"><span class="pre">gov.contrib.ssa.benefit_levers.pia_ratio.claiming_scenario</span></code> explicitly selects:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Claiming adjustment source</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">supplied_claim_age</span></code> (default)</p></td>
+<td><p>The supplied age in whole months.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">entitlement_dates</span></code></p></td>
+<td><p>Component entitlement year/month and supplied birth date.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">age_62</span></code></p></td>
+<td><p>Sensitivity assuming age 62.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">age_65</span></code></p></td>
+<td><p>Sensitivity assuming age 65.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fra</span></code></p></td>
+<td><p>Sensitivity assuming cohort full retirement age.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">age_70</span></code></p></td>
+<td><p>Sensitivity assuming age 70.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Core represents these named selector parameters as singleton lists. For example,
+set <code class="docutils literal notranslate"><span class="pre">claiming_scenario</span></code> to <code class="docutils literal notranslate"><span class="pre">[age_65]</span></code> and <code class="docutils literal notranslate"><span class="pre">disability_eligibility_proxy</span></code>
+to <code class="docutils literal notranslate"><span class="pre">[current_year]</span></code> in a parameter reform; the adapter reads the one selected
+name. Bare scalar strings are unsupported by Core’s parameter schema.</p>
+<p>All scenarios preserve cohort FRA, early months and delayed-credit rates.
+Under <code class="docutils literal notranslate"><span class="pre">supplied_claim_age</span></code>, a missing value, a value before 62, or a value
+after 70 leaves the affected factor at one and raises
+<code class="docutils literal notranslate"><span class="pre">_pia_ratio_missing_claim_age</span></code>. There is no silent change to another scenario.
+The <code class="docutils literal notranslate"><span class="pre">entitlement_dates</span></code> scenario uses the entitlement year/month and birth
+year/month. Supply <code class="docutils literal notranslate"><span class="pre">social_security_birth_month</span></code>; the optional
+<code class="docutils literal notranslate"><span class="pre">social_security_birth_day</span></code> refines SSA age attainment. With a known birth
+month and no day, day 2 is the explicit within-month convention and
+<code class="docutils literal notranslate"><span class="pre">_pia_ratio_proxy</span></code> is true. Zero birth month means unavailable. A complete
+<code class="docutils literal notranslate"><span class="pre">ss_calculator_birth_date</span></code> supplies the exact date instead; exact dates
+preserve attainment on the day before a birthday, including January 1 births.</p>
+<p>Where only a birth year is available for an age-month scenario, the cohort
+calculation uses the documented non-January-1 approximation and raises
+<code class="docutils literal notranslate"><span class="pre">_pia_ratio_proxy</span></code>. Exact birth information and an explicitly supplied
+<code class="docutils literal notranslate"><span class="pre">birth_year</span></code> take precedence over a year derived from current age. When birth
+information is unavailable but a worker eligibility year is supplied, E minus
+62 can supply the approximate birth cohort for FRA and credit rates; this does
+not change the supplied eligibility year. Supplied month/day without an
+observed birth year or complete birth date still raises the proxy flag.
+A claiming scenario is substantive:
+in C2, replacing the
+correct age-62 adjustment of 0.70 with 1 infers AIME <span class="math notranslate nohighlight">\(2,978 instead of \)</span>5,000
+and changes the annual gain from <span class="math notranslate nohighlight">\(1,165.248 to \)</span>1,664.64 before rounding, an
+overstatement of about 43%.</p>
+</section>
+<section id="eligibility-years-and-auxiliary-identification">
+<h2>Eligibility years and auxiliary identification<a class="headerlink" href="#eligibility-years-and-auxiliary-identification" title="Link to this heading">¶</a></h2>
+<p>Supplied <code class="docutils literal notranslate"><span class="pre">social_security_X_worker_eligibility_year</span></code>,
+<code class="docutils literal notranslate"><span class="pre">social_security_X_worker_id</span></code> links and the underlying worker’s
+<code class="docutils literal notranslate"><span class="pre">social_security_worker_computation_year</span></code> precede proxies. A supplied
+entitlement/onset year supplies the component’s applicable basis where
+appropriate. A link must identify an existing Person and a supplied computation
+basis; conflicting record years are unsupported.</p>
+<p>For own retirement, a supplied worker eligibility year takes precedence. Without
+one, exact birth information or an explicitly supplied <code class="docutils literal notranslate"><span class="pre">birth_year</span></code> identifies
+the age-62 eligibility year before the current-age proxy; known entitlement
+dates and a supplied observed claim age can also identify that year. If none of these
+supplies a basis, each scoring year’s proxy is <code class="docutils literal notranslate"><span class="pre">E</span> <span class="pre">=</span> <span class="pre">t</span> <span class="pre">-</span> <span class="pre">age_t</span> <span class="pre">+</span> <span class="pre">62</span></code>. Rebuild
+it independently for every annual cross-section. A row whose age stays 70 and
+has no supplied basis has E=2018 in 2026 and E=2027 in 2035;
+the model does not carry an inferred cohort or claiming history between those
+rows. Integer age also leaves birthday/within-year ambiguity, so compare adjacent
+eligibility years when scoring sensitivities.</p>
+<p>Disability uses <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">1</span></code> and a supplied onset, entitlement or worker computation
+year when available. Missing onset is explicitly controlled by
+<code class="docutils literal notranslate"><span class="pre">gov.contrib.ssa.benefit_levers.pia_ratio.disability_eligibility_proxy</span></code>:
+<code class="docutils literal notranslate"><span class="pre">pre_reform</span></code> is the upper-exposure assumption, using a supported benchmark
+before the active reform; <code class="docutils literal notranslate"><span class="pre">current_year</span></code> assumes newly entitled in the scoring
+year. Both are labelled proxies, not observed onset histories.</p>
+<p>For survivors and dependents, a recipient age cannot identify the underlying
+worker’s PIA. A supplied worker link/year alone does not establish the share.
+The identified auxiliary route also requires:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">social_security_X_worker_benefit_ratio</span></code>: the composite <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">s</span></code>, including
+every applicable claiming adjustment and recipient share/reduction.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">social_security_X_worker_ratio_identified</span></code>: an explicit assertion that this
+is one identified worker PIA, with no unaccounted dual entitlement, binding
+family cap or earnings-test withholding.</p></li>
+</ul>
+<p>For reported retirement, a record that also has positive reported survivor,
+dependent or disability amounts remains unmodeled for this lever. The mixed
+recipient amounts do not identify whether retirement is one full worker PIA,
+dual entitlement or a partial-year conversion.</p>
+<p>The inversion divides by that composite ratio once. Without a supported
+worker basis and identified ratio, the amount keeps factor one and raises
+<code class="docutils literal notranslate"><span class="pre">_pia_ratio_unmodeled</span></code>. No recipient-age worker proxy is enabled by default.
+For this composite route, the named claiming-adjustment output is one as a
+decomposition convention: the entire supplied <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">s</span></code> is assigned to the
+worker-benefit ratio. This does not establish that the underlying worker
+claimed at FRA or identify <code class="docutils literal notranslate"><span class="pre">a</span></code> separately.
+The restricted supplied-ratio survivor household calculator retains its own
+more detailed record-basis and nonbinding-limit assertions.</p>
+<p>When S.770 is active, reported survivors additionally require the same
+recipient-side <code class="docutils literal notranslate"><span class="pre">ss_calculator_*</span></code> computation-basis fields as the household
+route: worker birth year and death year, basis provenance, prior-disability
+declaration, ordinary non-WINDEX assertion, and the applicable exact dates or
+year-only/same-year assertions. An authoritative computation year is required
+for prior disability. The basis must agree with the supplied worker eligibility
+or computation year. Missing identification leaves factor one and raises
+<code class="docutils literal notranslate"><span class="pre">_pia_ratio_unmodeled</span></code>; contradictory supplied information is rejected.
+For a pre-2026 death before age 62 with no prior disability eligibility, the
+existing S.770 interpretation switch controls only the 18% first-bend-point
+increase. The 95% first factor applies with either switch value.</p>
+<p>Supported benchmark years start in 1983. A positive record with an earlier
+benchmark keeps factor one and raises <code class="docutils literal notranslate"><span class="pre">_pia_ratio_pre_1983</span></code>. The initial PIA
+rounding rule before 1983 is outside this inverse’s scope. COLAs accumulate
+from eligibility, including pre-claim COLAs, using the unreformed statutory
+ledger; they do not use benefit-income uprating or reformed COLAs.</p>
+</section>
+<section id="named-annual-outputs">
+<h2>Named annual outputs<a class="headerlink" href="#named-annual-outputs" title="Link to this heading">¶</a></h2>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">X</span></code> below with any of the four component names. Monetary outputs are
+monthly dollars at the eligibility-year valuation basis, even though the
+reported source benefit is annual.</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Person variable suffix after <code class="docutils literal notranslate"><span class="pre">social_security_X</span></code></p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_inferred_aime</span></code></p></td>
+<td><p>Baseline inverse of the observed amount; the lower-endpoint convention for an exact dime-rounded eligibility PIA.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_inferred_aime_lower_bound</span></code></p></td>
+<td><p>Inclusive conditional AIME interval bound.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_inferred_aime_upper_bound</span></code></p></td>
+<td><p>Exclusive conditional AIME interval bound.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_pia_ratio_eligibility_year</span></code></p></td>
+<td><p>Underlying worker eligibility/computation year E.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_pia_ratio_claiming_adjustment</span></code></p></td>
+<td><p>Imputed worker claiming adjustment a; zero means unavailable on a positive retirement record, while one is the auxiliary composite-ratio decomposition convention.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_pia_ratio_own_record_retired_worker</span></code></p></td>
+<td><p>Own-record retired-worker indicator.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_pia_ratio_missing_claim_age</span></code></p></td>
+<td><p>Required claiming information is unusable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_pia_ratio_pre_1983</span></code></p></td>
+<td><p>Benchmark predates supported initial-PIA rounding.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_pia_ratio_unmodeled</span></code></p></td>
+<td><p>This amount lacks a supported identified inversion.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_pia_ratio_proxy</span></code></p></td>
+<td><p>An eligibility, birth or claiming approximation was used, including every resolved <code class="docutils literal notranslate"><span class="pre">age_62</span></code>, <code class="docutils literal notranslate"><span class="pre">age_65</span></code>, <code class="docutils literal notranslate"><span class="pre">fra</span></code> or <code class="docutils literal notranslate"><span class="pre">age_70</span></code> sensitivity even with an exact birth date.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_pia_ratio_measurement_uncertainty</span></code></p></td>
+<td><p>Annual reported measurement is not an exact eligibility PIA.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Zero monetary outputs on records without an inference are placeholders.
+Inspect the flags before interpreting them as zero earnings. The own-record
+indicator describes the modeling classification; it is not evidence of insured
+status or an administrative validation of benefit type. It is independent of
+whether claiming data are missing or the benchmark predates 1983. For an AIME
+distribution or percentile calculation, also exclude <code class="docutils literal notranslate"><span class="pre">_pia_ratio_unmodeled</span></code>,
+<code class="docutils literal notranslate"><span class="pre">_pia_ratio_missing_claim_age</span></code> and <code class="docutils literal notranslate"><span class="pre">_pia_ratio_pre_1983</span></code> records and inspect
+the proxy and measurement-uncertainty flags.
+For identified-only distributions, also exclude <code class="docutils literal notranslate"><span class="pre">_pia_ratio_proxy</span></code> records;
+report their sensitivity results separately. The named AIME outputs include
+supported proxy inferences, so this filter must be applied by the consumer.</p>
+<p>On a positive retirement record, claiming adjustment zero is an unavailable
+diagnostic sentinel until the selected scenario yields a usable adjustment.
+Missing claiming data and unsupported pre-1983 records can therefore report
+zero while keeping the benefit factor at one. Do not interpret this sentinel
+as an actuarial factor, a complete benefit cut, or a default FRA assumption;
+filter the associated flags. Disability keeps adjustment one, auxiliary
+composite ratios use one by decomposition convention, and a zero-benefit
+record keeps the neutral adjustment one.</p>
+<p>For exact dime-rounded baseline eligibility PIA z, the interval is
+<code class="docutils literal notranslate"><span class="pre">[inverse(z),</span> <span class="pre">inverse(z</span> <span class="pre">+</span> <span class="pre">0.10))</span></code>; the point estimate is its lower endpoint.
+C2’s $2,156.80 baseline PIA therefore gives
+<code class="docutils literal notranslate"><span class="pre">[5000,</span> <span class="pre">5000.3125)</span></code>. When the source is a rounded paid benefit or a survey
+annual amount, that narrow interval is conditional on the assumed measurement
+basis. It does not quantify all survey error.
+<code class="docutils literal notranslate"><span class="pre">gov.contrib.ssa.benefit_levers.pia_ratio.annual_rounding_bound</span></code> optionally
+supplies a nonnegative symmetric annual-dollar bound for
+<code class="docutils literal notranslate"><span class="pre">[max(0,</span> <span class="pre">b</span> <span class="pre">-</span> <span class="pre">bound),</span> <span class="pre">b</span> <span class="pre">+</span> <span class="pre">bound)</span></code>, propagated backward through the baseline
+divisor, with one dime of initial PIA truncation added at the upper endpoint.
+The point estimate continues to invert the observed amount; it does not move
+to the lower endpoint of this wider measurement interval. The default zero
+adds no annual measurement-resolution assumption; it does not certify exact
+data.</p>
+<p>Core stores monetary input arrays as float32. Before exact arithmetic, the
+adapter uses each stored scalar’s shortest float32 decimal representation.
+This avoids expanding binary representation noise into an additional PIA
+dime; it does not round every annual source to cents or recover precision
+already lost when the input was stored.</p>
+<p>Named AIME point estimates and interval bounds are stored at Core’s float32
+resolution. The adapter rounds them toward positive infinity so an ordinary
+cast cannot move a lower endpoint below the baseline inverse. Represented
+values can differ from the mathematical endpoint by up to one float32 step;
+use the shared pure service for exact interval membership or boundary
+calculations. It keeps rational endpoints internally, and the shared
+<code class="docutils literal notranslate"><span class="pre">PIAInverse</span></code> exposes exact Fraction bounds as well as high-precision decimals.</p>
+<p>A zero benefit produces factor one and zero monetary outputs without division.
+Negative reported amounts and nonpositive divisors are unsupported and rejected.
+Factors cannot be negative. With every PIA reform off, factors are exactly one.</p>
+</section>
+<section id="weighted-counts-and-scoring-limits">
+<h2>Weighted counts and scoring limits<a class="headerlink" href="#weighted-counts-and-scoring-limits" title="Link to this heading">¶</a></h2>
+<p>For any Person indicator <code class="docutils literal notranslate"><span class="pre">flag</span></code>, the authoritative weighted count is</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>sum(flag_i * person_weight_i)
+</pre></div>
+</div>
+<p>The associated unmodeled annual amount is
+<code class="docutils literal notranslate"><span class="pre">sum(flag_i</span> <span class="pre">*</span> <span class="pre">social_security_X_reported_i</span> <span class="pre">*</span> <span class="pre">person_weight_i)</span></code>.
+Apply weights once. Report identified results, proxy sensitivities and unmodeled
+amounts separately.</p>
+<p>Household variables <code class="docutils literal notranslate"><span class="pre">social_security_X_pia_ratio_FLAG_count</span></code> are also available
+for <code class="docutils literal notranslate"><span class="pre">FLAG</span></code> equal to <code class="docutils literal notranslate"><span class="pre">missing_claim_age</span></code>, <code class="docutils literal notranslate"><span class="pre">pre_1983</span></code>, <code class="docutils literal notranslate"><span class="pre">unmodeled</span></code>, <code class="docutils literal notranslate"><span class="pre">proxy</span></code>
+or <code class="docutils literal notranslate"><span class="pre">measurement_uncertainty</span></code>. They sum the corresponding Person indicators
+within a household. A normal weighted household aggregation gives the weighted
+count when members use the household weight. If an artifact supplies distinct
+Person weights within a household, use the Person-indicator formula above.</p>
+<p>This approximation assumes the reported annual amount represents a full-year
+benefit at the stated valuation basis; partial-year entitlement, survey error,
+dual entitlement, withheld checks and binding caps can defeat unique inversion.
+No package-specific parameter values or administrative percentile estimates are
+encoded here. M8 allows progressive price-indexing thresholds from a supplied
+bend-point fraction or dollar path; C’s named outputs remain available for
+population diagnostics and drift checks.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./usage"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Population Social Security PIA ratio</a><ul>
+<li><a class="reference internal" href="#supplied-claim-age-and-explicit-scenarios">Supplied claim age and explicit scenarios</a></li>
+<li><a class="reference internal" href="#eligibility-years-and-auxiliary-identification">Eligibility years and auxiliary identification</a></li>
+<li><a class="reference internal" href="#named-annual-outputs">Named annual outputs</a></li>
+<li><a class="reference internal" href="#weighted-counts-and-scoring-limits">Weighted counts and scoring limits</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>
