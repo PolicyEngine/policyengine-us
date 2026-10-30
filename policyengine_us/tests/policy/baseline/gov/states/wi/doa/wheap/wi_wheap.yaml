@@ -1,0 +1,331 @@
+# Wisconsin WHEAP regular heating benefit (FFY2026 HE+ Benefit Calculator,
+# Computation C5-C43; PY2026 WHEAP Manual 2.3.1; FFY2026 agency plan 2.6).
+# Poverty ratio = income / 2025 poverty guideline for the eligible-member size
+# (15,650 + 5,500 per added person), held between 0.60 and 2.15; a
+# categorically eligible household above its limit uses the limit as income.
+# Raw = (2.66667 - ratio) / 2.94269 x benefit heating cost, truncated to whole
+# dollars, capped at 2,580 and paid only when at least 30.
+
+- name: Case 1, Milwaukee family heating a single-family home with natural gas.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 36
+        employment_income: 39_520
+      person2:
+        age: 34
+      person3:
+        age: 8
+      person4:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        wi_wheap_dwelling_type: SINGLE_FAMILY
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WI
+        bedrooms: 3
+  output:
+    # Nursing assistant at 19 an hour x 2,080 hours = 39,520; size 4 limit
+    # 73,888. Guideline 15,650 + 3 x 5,500 = 32,150; ratio 1.22924.
+    # The gas bill reaches heating_expense through the natural gas input.
+    # Proxy 354 + 60 x 3 = 534, bounds 400.50 to 1,068, cost 1,000.
+    # (2.66667 - 1.22924) / 2.94269 x 1,000 = 488.48 -> 488.
+    wi_wheap_household_size: 4
+    wi_wheap_countable_income: 39_520
+    wi_wheap_income_limit: 73_888
+    wi_wheap_categorically_eligible: false
+    wi_wheap_eligible: true
+    wi_wheap_heating_cost: 1_000
+    wi_wheap: 488
+
+- name: Case 2, poverty ratio below 0.60 is raised to 0.60 and the raw amount is truncated.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+      person2:
+        age: 9
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        heating_expense: 800
+        wi_wheap_dwelling_type: TWO_TO_FOUR_UNITS
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+        bedrooms: 2
+  output:
+    # Ratio 12,000 / 26,650 = 0.45 -> 0.60. Proxy 297 + 65 x 2 = 427, cost 800
+    # inside 320.25 to 854. (2.66667 - 0.6) / 2.94269 x 800 = 561.85;
+    # TRUNC gives 561, not 562.
+    wi_wheap: 561
+
+- name: Case 3, poverty ratio above 2.15 is held at 2.15.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 36_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        heating_expense: 900
+        wi_wheap_dwelling_type: APARTMENT
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        bedrooms: 1
+  output:
+    # 36,000 <= size 1 limit 38,421; ratio 36,000 / 15,650 = 2.30 -> 2.15.
+    # Electric cost 900 x 0.4 = 360, inside 149.25 to 398 (proxy 88 + 111).
+    # (2.66667 - 2.15) / 2.94269 x 360 = 63.21 -> 63.
+    wi_wheap: 63
+
+- name: Case 4, categorically eligible household above its limit is paid as if income equaled the limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 44
+        employment_income: 64_000
+      person2:
+        age: 42
+        employment_income: 40_000
+      person3:
+        age: 15
+      person4:
+        age: 13
+      person5:
+        age: 11
+      person6:
+        age: 9
+      person7:
+        age: 6
+      person8:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_150
+        wi_wheap_dwelling_type: SINGLE_FAMILY
+        snap: 1_200
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: WI
+        bedrooms: 4
+  output:
+    # Manual 2.3.1 item 1: benefit income = size 8 limit 101,965, not 104,000.
+    # Guideline 15,650 + 7 x 5,500 = 54,150; ratio 1.88301.
+    # Proxy 354 + 60 x 4 = 594, cost 1,150 inside 445.50 to 1,188.
+    # (2.66667 - 1.88301) / 2.94269 x 1,150 = 306.25 -> 306
+    # (actual income would give 291).
+    wi_wheap_countable_income: 104_000
+    wi_wheap_income_limit: 101_965
+    wi_wheap_categorically_eligible: true
+    wi_wheap_eligible: true
+    wi_wheap_heating_cost: 1_150
+    wi_wheap: 306
+
+- name: Case 5, poverty guideline uses the eligible-member size while all income counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 33
+        immigration_status: UNDOCUMENTED
+        employment_income: 30_000
+      person2:
+        age: 31
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+      person3:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        heating_expense: 700
+        wi_wheap_dwelling_type: TWO_TO_FOUR_UNITS
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+        bedrooms: 2
+  output:
+    # Manual 4.4.26.2: size 2; income 30,000 counts. Guideline 21,150;
+    # ratio 1.41844. Cost 700 inside 320.25 to 854.
+    # (2.66667 - 1.41844) / 2.94269 x 700 = 296.93 -> 296
+    # (size 3 would give 366).
+    wi_wheap_household_size: 2
+    wi_wheap: 296
+
+- name: Case 6, benefit of exactly 30 dollars is paid.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 24
+        employment_income: 31_500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 0
+        heat_expense_included_in_rent: true
+        wi_wheap_dwelling_type: APARTMENT
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        bedrooms: 0
+  output:
+    # Studio with heat in rent: 0 bedrooms count as 1 room (Manual 4.4.17),
+    # cost 0.75 x (116 + 68) = 138. Ratio 31,500 / 15,650 = 2.01278.
+    # (2.66667 - 2.01278) / 2.94269 x 138 = 30.66 -> 30, which meets the
+    # 30 minimum.
+    wi_wheap: 30
+
+- name: Case 7, raw amount of 29.77 dollars is truncated below the minimum and pays nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 24
+        employment_income: 31_800
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 0
+        heat_expense_included_in_rent: true
+        wi_wheap_dwelling_type: APARTMENT
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        bedrooms: 0
+  output:
+    # Ratio 31,800 / 15,650 = 2.03195; (2.66667 - 2.03195) / 2.94269 x 138 =
+    # 29.77 -> 29 < 30, so 0 (Manual 2.3.1: no payment below 30). Rounding
+    # would have given 30.
+    wi_wheap_eligible: true
+    wi_wheap: 0
+
+- name: Case 8, noncitizen with Temporary Protected Status who receives Social Security is counted and paid.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 63
+        immigration_status: TPS
+        social_security_retirement: 14_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 900
+        wi_wheap_dwelling_type: SINGLE_FAMILY
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        bedrooms: 2
+  output:
+    # Manual 3.2.2.4: a non-citizen receiving monthly Social Security is an
+    # eligible non-citizen, so size 1 (status alone would give size 0 and no
+    # case head). Early retirement benefit of 1,200 a month = 14,400; no
+    # Medicare Part B premium before 65. Size 1 limit 38,421.
+    # Ratio 14,400 / 15,650 = 0.92013. Proxy 354 + 60 x 2 = 474, bounds
+    # 355.50 to 948, cost 900.
+    # (2.66667 - 0.92013) / 2.94269 x 900 = 534.17 -> 534.
+    wi_wheap_household_size: 1
+    wi_wheap_countable_income: 14_400
+    wi_wheap_income_limit: 38_421
+    wi_wheap_eligible: true
+    wi_wheap_heating_cost: 900
+    wi_wheap: 534
+
+- name: Case 9, Social Security of a spouse with Temporary Protected Status raises the size and limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        immigration_status: CITIZEN
+        employment_income: 30_000
+      person2:
+        age: 63
+        immigration_status: TPS
+        social_security_retirement: 14_400
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        heating_expense: 900
+        wi_wheap_dwelling_type: SINGLE_FAMILY
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+        bedrooms: 2
+  output:
+    # Retail cashier at 15 an hour x 2,000 hours = 30,000. Size 2
+    # (Manual 3.2.2.4), limit 50,243; income 30,000 + 14,400 = 44,400 is
+    # eligible (size 1 would give limit 38,421 and no benefit).
+    # Ratio 44,400 / 21,150 = 2.09929, inside 0.60 to 2.15; cost 900.
+    # (2.66667 - 2.09929) / 2.94269 x 900 = 173.53 -> 173.
+    wi_wheap_household_size: 2
+    wi_wheap_countable_income: 44_400
+    wi_wheap_income_limit: 50_243
+    wi_wheap_eligible: true
+    wi_wheap: 173

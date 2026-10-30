@@ -1,0 +1,41 @@
+description: Minnesota uses this average annual energy cost for steam heat by housing type under the Energy Assistance Program.
+# No heating_type value selects this row.
+APARTMENT:
+  2025-10-01: 2_061
+  2026-10-01: 1_952
+DUPLEX:
+  2025-10-01: 2_490
+  2026-10-01: 2_359
+TRIPLEX:
+  2025-10-01: 2_375
+  2026-10-01: 2_250
+FOURPLEX:
+  2025-10-01: 2_261
+  2026-10-01: 2_142
+TOWNHOUSE:
+  2025-10-01: 2_061
+  2026-10-01: 1_952
+HOUSE:
+  2025-10-01: 2_862
+  2026-10-01: 2_711
+MOBILE_HOME:
+  2025-10-01: 2_862
+  2026-10-01: 2_711
+OTHER:
+  2025-10-01: 1_660
+  2026-10-01: 1_572
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - mn_eap_housing_type
+  label: Minnesota EAP steam backup matrix energy cost
+  reference:
+    - title: Minnesota EAP Policy Manual FFY26 Appendix 4A Primary Heat Benefit Calculator, Backup Matrix Values!A18:C25
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/MN_BenefitMatrix_2026.xlsx
+    - title: Minnesota EAP Policy Manual FFY27 Appendix 4A Primary Heat Benefit Calculator, Backup Matrix Values!A18:C25
+      href: https://mn.gov/commerce-stat/xls/phb-calculator.xlsx
+    - title: "Minnesota EAP Policy Manual FFY26, Chapter 4, Backup Matrix and Knowing Which Method to Use #page 125-126"
+      href: https://mn.gov/commerce-stat/pdfs/ffy26-eap-policy-manual.pdf#page=125
+    - title: "Minnesota EAP Policy Manual FFY27, Chapter 4, Backup Matrix and Knowing Which Method to Use #page 127-128"
+      href: https://mn.gov/commerce-stat/pdfs/ffy27-eap-policy-manual.pdf#page=127

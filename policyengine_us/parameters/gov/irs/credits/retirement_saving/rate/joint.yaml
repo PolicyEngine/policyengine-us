@@ -22,8 +22,10 @@ metadata:
       href: https://www.irs.gov/pub/irs-drop/n-25-67.pdf#page=3
 
 brackets:
+  # The first row of the Form 8880 line 9 table has no lower bound ("---"), so
+  # a negative adjusted gross income takes the highest rate.
   - threshold:
-      2018-01-01: 0
+      2018-01-01: -.inf
     amount:
       2018-01-01: 0.5
   - threshold:

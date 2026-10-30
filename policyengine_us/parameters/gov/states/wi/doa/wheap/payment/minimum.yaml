@@ -1,0 +1,14 @@
+description: Wisconsin pays no regular heating benefit below this amount under the Home Energy Assistance Program.
+values:
+  2025-10-01: 30
+metadata:
+  unit: currency-USD
+  period: year
+  label: Wisconsin WHEAP minimum benefit
+  reference:
+    - title: Wisconsin PY26 WHEAP Manual, section 2.3.1
+      href: https://web.archive.org/web/20260428215048/https://energyandhousing.wi.gov/Documents/WHEAP/WheapManual_PY26.pdf#page=26
+    - title: Wisconsin HE+ Benefit Calculator FFY2026, Computation!C18 and C42
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/WI_BenefitMatrix_2026.xlsx
+    - title: Wisconsin LIHEAP State Plan FFY2026, section 2.6
+      href: https://liheapch.acf.gov/docs/2026/state-plans/WI_Plan_2026.pdf#page=12

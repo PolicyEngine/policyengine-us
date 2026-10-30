@@ -1,0 +1,141 @@
+description: Vermont sets this standard annual heating cost by dwelling type, primary heating fuel and number of bedrooms under the Low Income Home Energy Assistance Program.
+# P-2916 prints these cells for the 2025-26 heating season, and the AHS
+# 2026-2027 Benefits Matrix prints the same cells for the 2026-27 season.
+# The wood_and_coal row is the "Firewood, Wood Pellets and Coal" row; the
+# formula maps both WOOD and COAL heating types to it, and SOLAR to the
+# electricity row. The 4 column is the "4+ Bedrooms" column. Earlier years are
+# unverified backfill.
+
+SINGLE_FAMILY_OR_MOBILE_HOME:
+  natural_gas:
+    1:
+      2025-07-01: 1_228
+    2:
+      2025-07-01: 1_454
+    3:
+      2025-07-01: 1_679
+    4:
+      2025-07-01: 1_904
+  propane:
+    1:
+      2025-07-01: 2_141
+    2:
+      2025-07-01: 2_760
+    3:
+      2025-07-01: 3_379
+    4:
+      2025-07-01: 3_998
+  oil:
+    1:
+      2025-07-01: 2_408
+    2:
+      2025-07-01: 3_123
+    3:
+      2025-07-01: 3_837
+    4:
+      2025-07-01: 4_552
+  kerosene:
+    1:
+      2025-07-01: 2_300
+    2:
+      2025-07-01: 2_897
+    3:
+      2025-07-01: 3_494
+    4:
+      2025-07-01: 4_091
+  electricity:
+    1:
+      2025-07-01: 1_692
+    2:
+      2025-07-01: 1_785
+    3:
+      2025-07-01: 1_877
+    4:
+      2025-07-01: 1_970
+  wood_and_coal:
+    1:
+      2025-07-01: 1_550
+    2:
+      2025-07-01: 1_604
+    3:
+      2025-07-01: 1_658
+    4:
+      2025-07-01: 1_711
+MULTI_FAMILY:
+  natural_gas:
+    1:
+      2025-07-01: 923
+    2:
+      2025-07-01: 1_148
+    3:
+      2025-07-01: 1_373
+    4:
+      2025-07-01: 1_599
+  propane:
+    1:
+      2025-07-01: 1_109
+    2:
+      2025-07-01: 1_728
+    3:
+      2025-07-01: 2_347
+    4:
+      2025-07-01: 2_966
+  oil:
+    1:
+      2025-07-01: 2_124
+    2:
+      2025-07-01: 2_839
+    3:
+      2025-07-01: 3_553
+    4:
+      2025-07-01: 4_268
+  kerosene:
+    1:
+      2025-07-01: 1_610
+    2:
+      2025-07-01: 2_223
+    3:
+      2025-07-01: 2_831
+    4:
+      2025-07-01: 3_435
+  electricity:
+    1:
+      2025-07-01: 967
+    2:
+      2025-07-01: 1_060
+    3:
+      2025-07-01: 1_152
+    4:
+      2025-07-01: 1_244
+  wood_and_coal:
+    1:
+      2025-07-01: 1_085
+    2:
+      2025-07-01: 1_231
+    3:
+      2025-07-01: 1_343
+    4:
+      2025-07-01: 1_437
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Vermont LIHEAP standard heating cost
+  breakdown:
+    - vt_liheap_dwelling_type
+    - [natural_gas, propane, oil, kerosene, electricity, wood_and_coal]
+    - range(1, 5)
+  breakdown_labels:
+    - Dwelling type
+    - Primary heating fuel
+    - Bedrooms
+  propagate_metadata_to_children: true
+  reference:
+    - title: Vermont DCF Procedure P-2916, Standard Heating Cost Tables for the 2025-26 Heating Season
+      href: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2916.pdf#page=1
+    - title: "Vermont AHS 2026-2027 Benefits Matrix, Standard Heating Cost Tables for the 2026-27 Heating Season #page 2-3"
+      href: https://humanservices.vermont.gov/sites/ahsnew/files/documents/2026-2027%20Benefits%20Matrx.pdf#page=2
+    - title: "Vermont Seasonal Fuel Assistance Rules 2914(a)(6) and 2916 #page 39,43"
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=39
+    - title: 33 V.S.A. § 2604(b)
+      href: https://legislature.vermont.gov/statutes/section/33/026/02604

@@ -22,6 +22,7 @@
 
 - name: An earnings-limited derived SE deduction leaves unused premiums on Schedule A.
   period: 2025
+  absolute_error_margin: 0.01
   input:
     is_self_employed: true
     health_insurance_premiums: 6_000
@@ -29,9 +30,12 @@
     other_medical_expenses: 500
     adjusted_gross_income: 30_000
   output:
-    self_employed_health_insurance_ald: 1_000
-    itemized_medical_expenses: 5_500
-    medical_expense_deduction: 3_250
+    # Form 7206 line 13: 1,000 - 1,000 x 0.9235 x 0.153 / 2 = 929.35225.
+    self_employed_health_insurance_ald: 929.35225
+    # 6,000 - 929.35225 + 500.
+    itemized_medical_expenses: 5_570.64775
+    # 5,570.64775 - 7.5% of 30,000.
+    medical_expense_deduction: 3_320.64775
 
 - name: Fully deducted premiums leave only non-premium medical expenses.
   period: 2025
@@ -87,6 +91,7 @@
 
 - name: Each filing unit excludes its own SE deduction independently of pretax premiums.
   period: 2025
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -116,9 +121,11 @@
         members: [person3]
         adjusted_gross_income: 30_000
   output:
-    self_employed_health_insurance_ald: [1_000, 1_000, 0]
-    itemized_medical_expenses: [5_500, 5_500, 6_500]
-    medical_expense_deduction: [3_250, 3_250, 4_250]
+    # Form 7206 line 13: 1,000 - 1,000 x 0.9235 x 0.153 / 2 = 929.35225.
+    self_employed_health_insurance_ald: [929.35225, 929.35225, 0]
+    # 6,000 - 929.35225 + 500; the pretax premiums are not on Schedule A.
+    itemized_medical_expenses: [5_570.64775, 5_570.64775, 6_500]
+    medical_expense_deduction: [3_320.64775, 3_320.64775, 4_250]
 
 - name: A filer SE deduction cannot consume premiums attributed to a dependent.
   period: 2025

@@ -23,8 +23,7 @@ class ca_amt_exemption(Variable):
         # Line 4
         reduced_amti = max_(amti - lower_exemption_threshold, 0)
         # Line 5
-        p_irs = parameters(period).gov.irs.income.amt.exemption
-        reduced_amti_rate = reduced_amti * p_irs.phase_out.rate
+        reduced_amti_rate = reduced_amti * p.phase_out_rate
         # Line 6
         adult_exemption = max_(exemption_max_amount - reduced_amti_rate, 0)
         # Eligible children receive an increased exemption amount.
@@ -34,6 +33,7 @@ class ca_amt_exemption(Variable):
         is_head = person("is_tax_unit_head", period)
         head_is_eligible_child = tax_unit.any(eligible_child & is_head)
         # Line 7
+        p_irs = parameters(period).gov.irs.income.amt.exemption
         exemption_amount_child = p_irs.child.amount
         # Line 8
         earned_income = tax_unit("head_earned", period)

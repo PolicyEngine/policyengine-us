@@ -1,0 +1,23 @@
+description: Tennessee counts these sources as earned income of adult members who are not tax-unit dependents under the Low Income Home Energy Assistance Program.
+# Wages, commissions, salaries and tips before deductions, and net receipts
+# from a person's own business or an owned or rented farm after business or
+# farm expenses. The existing net business inputs get no further deduction,
+# and each source is floored at zero, so a loss in one source cannot offset
+# another.
+values:
+  2025-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+
+metadata:
+  unit: list
+  period: year
+  label: Tennessee LIHEAP earned income sources
+  reference:
+    - title: Tennessee LIHEAP 2026 Policy Manual, Section 2.13
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-2026-Policy-Manual-for-Tennessee.pdf#page=27
+    - title: "Tennessee FY2026 LIHEAP State Plan, Sections 1.8-1.9 #page 5-7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/TN_Plan_2026.pdf#page=5
