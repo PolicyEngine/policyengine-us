@@ -117,13 +117,13 @@
     ca_state_supplement_blind_amount: 0
     ca_state_supplement_aged_blind_disabled_amount: 0
     ca_state_supplement: 0
-    # Disabled individual standard 1,233.94 + no-cooking food allowance
-    # 128.87 (living arrangements default to no food preparation) =
-    # 1,362.81 per month with no offset. Earnings of 83.33 per month fall
-    # within the $20 + $65 exclusions, so countable income is 0 (until PR
-    # 10240, SSI also zeroes this income for people who fail its noncitizen
-    # test). 1,362.81 x 12 = 16,353.72.
-    ca_capi: 16_353.72
+    # Disabled individual standard 1,233.94 per month with no offset. Living
+    # arrangements allow food preparation by default, so no no-cooking food
+    # allowance applies. Earnings of 83.33 per month fall within the
+    # $20 + $65 exclusions, so countable income is 0 (until PR 10240, SSI
+    # also zeroes this income for people who fail its noncitizen test).
+    # 1,233.94 x 12 = 14,807.28.
+    ca_capi: 14_807.28
 
 - name: Case 6, mixed couple, only the noncitizen spouse receives CAPI.
   period: 2026
