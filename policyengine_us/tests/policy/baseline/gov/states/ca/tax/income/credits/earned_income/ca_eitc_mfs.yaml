@@ -1,0 +1,325 @@
+- name: Childless MFS cannot receive California or federal EITC in 2023
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 8_639
+    tax_units:
+      unit:
+        members: [parent]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [parent]
+        state_code: CA
+  output:
+    ca_eitc: 0
+    eitc: 0
+    ca_yctc: 0
+
+- name: Childless MFS cannot receive California or federal EITC in 2025
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 8_639
+    tax_units:
+      unit:
+        members: [parent]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [parent]
+        state_code: CA
+  output:
+    ca_eitc: 0
+    eitc: 0
+    ca_yctc: 0
+
+- name: MFS parent without separation cannot receive CalEITC or YCTC in 2023
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 8_639
+        is_separated: false
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      unit:
+        members: [parent, child]
+        filing_status: SEPARATE
+        cohabitating_spouses: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_eitc: 0
+    ca_yctc: 0
+    eitc: 0
+
+- name: MFS parent without separation cannot receive CalEITC or YCTC in 2025
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 8_639
+        is_separated: false
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      unit:
+        members: [parent, child]
+        filing_status: SEPARATE
+        cohabitating_spouses: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_eitc: 0
+    ca_yctc: 0
+    eitc: 0
+
+- name: MFS parent living apart for the last six months qualifies in 2023
+  period: 2023
+  absolute_error_margin: 0.02
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 8_639
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      unit:
+        members: [parent, child]
+        filing_status: SEPARATE
+        eitc_spouses_lived_apart_last_six_months: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    eitc_marital_eligible: true
+    eitc_eligible: true
+    ca_eitc_eligible: true
+    eitc: 2_937.26
+    ca_eitc: 1_304.835
+    ca_yctc: 1_117
+
+- name: MFS parent with legal separation and separate year-end households qualifies in 2025
+  period: 2025
+  absolute_error_margin: 0.02
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 8_639
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      unit:
+        members: [parent, child]
+        filing_status: SEPARATE
+        eitc_legal_separation_and_apart_at_year_end: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    eitc_marital_eligible: true
+    eitc_eligible: true
+    ca_eitc_eligible: true
+    eitc: 2_937.26
+    ca_eitc: 1_548.173
+    ca_yctc: 1_189
+
+- name: Childless MFS remains ineligible even with both separation facts
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 8_639
+    tax_units:
+      unit:
+        members: [parent]
+        filing_status: SEPARATE
+        eitc_spouses_lived_apart_last_six_months: true
+        eitc_legal_separation_and_apart_at_year_end: true
+    households:
+      household:
+        members: [parent]
+        state_code: CA
+  output:
+    eitc_marital_eligible: false
+    ca_eitc: 0
+    ca_yctc: 0
+    eitc: 0
+
+- name: A child who did not live with the MFS filer for more than half the year cannot enable the exception
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 8_639
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        eitc_child_lived_with_taxpayer_more_than_half_year: false
+    tax_units:
+      unit:
+        members: [parent, child]
+        filing_status: SEPARATE
+        eitc_spouses_lived_apart_last_six_months: true
+        eitc_legal_separation_and_apart_at_year_end: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    eitc_marital_eligible: false
+    ca_eitc: 0
+    ca_yctc: 0
+    eitc: 0
+
+- name: A qualifying child without a valid SSN still satisfies the MFS exception
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 8_639
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+    tax_units:
+      unit:
+        members: [parent, child]
+        filing_status: SEPARATE
+        eitc_spouses_lived_apart_last_six_months: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    is_eitc_qualifying_child: [false, true]
+    eitc_child_count: 0
+    eitc_marital_eligible: true
+    eitc_eligible: true
+    ca_eitc_eligible: true
+    ca_yctc: 1_189
+
+- name: CalEITC retains its own age rules for an eligible separated parent
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 20
+        employment_income: 8_639
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+    tax_units:
+      unit:
+        members: [parent, child]
+        filing_status: SEPARATE
+        eitc_legal_separation_and_apart_at_year_end: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    eitc_child_count: 0
+    eitc_marital_eligible: true
+    eitc_eligible: false
+    ca_eitc_eligible: true
+    ca_yctc: 1_189
+
+- name: CalEITC does not import the federal filer's SSN restriction
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 8_639
+        ssn_card_type: NONE
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      unit:
+        members: [parent, child]
+        filing_status: SEPARATE
+        eitc_legal_separation_and_apart_at_year_end: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    eitc_marital_eligible: true
+    eitc_eligible: false
+    ca_eitc_eligible: true
+    ca_yctc: 1_189
+
+- name: Zero earnings do not bypass the YCTC marital eligibility requirement
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 0
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      unit:
+        members: [parent, child]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    eitc_marital_eligible: false
+    ca_eitc_eligible: false
+    ca_eitc: 0
+    ca_yctc: 0
+
+- name: Zero earnings preserve YCTC for an MFS parent satisfying the separation exception
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 0
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      unit:
+        members: [parent, child]
+        filing_status: SEPARATE
+        eitc_spouses_lived_apart_last_six_months: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    eitc_marital_eligible: true
+    ca_eitc_eligible: true
+    ca_eitc: 0
+    ca_yctc: 1_189

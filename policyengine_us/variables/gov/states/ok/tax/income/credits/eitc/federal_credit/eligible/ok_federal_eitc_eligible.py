@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.state_eitc_helpers import eitc_filing_status_eligible
 
 
 class ok_federal_eitc_eligible(Variable):
@@ -31,12 +32,11 @@ class ok_federal_eitc_eligible(Variable):
         )
         # Check demographic (age) eligibility
         demographic_eligible = tax_unit("ok_federal_eitc_demographic_eligible", period)
-        # Define eligibility before considering separate filer limitation
-        eligible = demographic_eligible & investment_income_eligible
-        # This parameter is true if separate filers are eligible
-        if eitc.eligibility.separate_filer:
-            return eligible
-        # If separate filers are not eligible, check if the filer is separate
-        filing_status = tax_unit("filing_status", period)
-        separate = filing_status == filing_status.possible_values.SEPARATE
-        return eligible & ~separate
+        # The frozen 2020 law predates the separated-spouse exception.
+        marital_eligible = eitc_filing_status_eligible(
+            tax_unit,
+            period,
+            parameters,
+            separate_filer_eligible=eitc.eligibility.separate_filer,
+        )
+        return demographic_eligible & investment_income_eligible & marital_eligible
