@@ -524,15 +524,17 @@
         members: [person1, person2, person3]
         state_code: FL
   output:
-    fl_tca_countable_earned_income: 410
-    # Combined earnings 300 + 200 = 500. Income after the $90 disregard = $410
-    # >= payment standard $303, so the $200 and 1/2 disregard is denied; only
-    # the $90 is deducted: countable earned = $410.
-    fl_tca_countable_income: 410
+    fl_tca_countable_earned_income: 320
+    # Combined earnings 300 + 200 = 500. fl_tca_200_and_half_disregard_eligible
+    # tests the unit: income after the $90 disregard (500 - 90 = 410, or
+    # 500 - 2 x 90 = 320) is >= payment standard $303, so the $200 and 1/2
+    # disregard is denied. Only the $90 is deducted, from each earner's
+    # earnings (2420.0304): (300 - 90) + (200 - 90) = 320.
+    fl_tca_countable_income: 320
     fl_tca_gross_income_eligible: true
     # Gross: $500 < $3,981 -> Pass
     fl_tca_net_income_eligible: false
-    # 410 > 303 -> Fail
+    # 320 > 303 -> Fail
     fl_tca_eligible: false
     fl_tca_payment_standard: 303
     fl_tca: 0

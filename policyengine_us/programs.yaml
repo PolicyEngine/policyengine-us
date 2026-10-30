@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, MS, NC, ND, NE, NH, NJ, NY, OH, OK, OR, SD, RI, TX, UT, VA, WA, WY
+    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, MS, NC, ND, NE, NH, NJ, NM, NY, OH, OK, OR, SD, RI, TX, UT, VA, WA, WY
     state_implementations:
       - state: AL
         status: partial
@@ -997,6 +997,14 @@ programs:
         parameter_prefix: gov.states.al.adeca.liheap
         verified_years: "2026"
         notes: FY2026 regular heating with the HUD allowance deduction and the funded IIJA supplement. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: AK
+        status: partial
+        name: Alaska HAP
+        full_name: Alaska Heating Assistance Program
+        variable: ak_hap
+        parameter_prefix: gov.states.ak.dpa.hap
+        verified_years: "2027"
+        notes: FY2027 regular heating under the federal LIHEAP component (not the state-funded AAHP), with shared-dwelling and utility-allowance reductions applied to heating points as 7 AAC 44.080 directs. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: AR
         status: partial
         name: Arkansas LIHEAP
@@ -1164,6 +1172,14 @@ programs:
         parameter_prefix: gov.states.nj.dca.liheap
         verified_years: "2026-2027"
         notes: FY2026-FY2027 regular heating only, covering eligibility, countable income and the benefit grid, including the one renters cell that changes in FY2027; the program is not modeled before FY2022. Crisis, cooling and equipment assistance are out of scope.
+      - state: NM
+        status: partial
+        name: New Mexico LIHEAP
+        full_name: New Mexico Low Income Home Energy Assistance Program
+        variable: nm_liheap
+        parameter_prefix: gov.states.nm.hca.liheap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 annual benefit from the point system on the household's heating fuel or electric bill, with three income points up to 100% of the poverty guideline. Crisis assistance and weatherization are out of scope.
       - state: NY
         status: partial
         name: New York HEAP
@@ -1304,9 +1320,18 @@ programs:
         variable: hi_oss
         parameter_prefix: gov.states.hi.dhs.oss
       - state: IA
-        status: in_progress
-        name: Iowa SSP
-        full_name: Iowa State Supplemental Payment
+        status: partial
+        name: Iowa SSA
+        full_name: Iowa State Supplementary Assistance
+        variable: ia_ssa
+        parameter_prefix: gov.states.ia.hhs.ssa
+        verified_years: "2026"
+        notes: >-
+          Models 2026 blind, dependent-person, family-life home, residential
+          care, in-home health-related care and SMME supplements; special
+          categories need certification inputs, so microsimulation pays only
+          the blind supplement. Mandatory minimum-income-level and
+          conditional-benefit payments are not modeled.
       - state: ID
         status: complete
         name: Idaho AABD
