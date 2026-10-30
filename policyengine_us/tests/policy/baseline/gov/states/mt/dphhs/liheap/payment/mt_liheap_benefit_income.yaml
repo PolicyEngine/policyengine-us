@@ -1,0 +1,199 @@
+# LIHEAP Manual 2025-2026 and 2026-2027 section 3.11 and Appendix A 9.5-9.6,
+# 9.8: an SSI/TANF categorical household's benefit income is the standard SSI
+# amount for each recipient (couple rate for a married pair both on SSI) plus
+# the TANF payment standard, ignoring actual income. FFY2026 uses the 2025 SSI
+# rates ($967 / $1,450), FFY2027 the 2026 rates ($994 / $1,491). A SNAP
+# categorical household uses its countable income.
+# FFY2026 single SSI recipient: $967 x 12 = $11,604.
+- name: Case 1, a single SSI recipient uses the FFY2026 individual SSI standard.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 70
+    immigration_status: CITIZEN
+    ssi: 11_604
+    snap: 0
+    tanf: 0
+  output:
+    mt_liheap_benefit_income: 11_604
+
+# Appendix A 9.5 and 9.8: married couple both receiving SSI uses the couple
+# rate. FFY2026: $1,450 x 12 = $17,400.
+- name: Case 2, a married couple both on SSI uses the couple standard.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        ssi: 8_700
+      person2:
+        age: 68
+        immigration_status: CITIZEN
+        ssi: 8_700
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: SSI_TANF
+    mt_liheap_benefit_income: 17_400
+
+# Appendix A 9.8: "Two unmarried people living together-both get SSI" use the
+# individual standard each. FFY2026: 2 x $967 x 12 = $23,208.
+- name: Case 3, two unmarried SSI recipients each use the individual standard.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        immigration_status: CITIZEN
+        ssi: 11_604
+      person2:
+        age: 64
+        immigration_status: CITIZEN
+        is_disabled: true
+        ssi: 11_604
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: SSI_TANF
+    mt_liheap_benefit_income: 23_208
+
+# Appendix A 9.6 and 9.8: "Mother and child in home and both receive TANF" uses
+# the two-person payment standard $575 = 35% x 2023 guideline for two
+# ($14,580 + $5,140 = $19,720) / 12 = $575.17, printed as $575. $575 x 12 =
+# $6,900.
+- name: Case 4, a TANF mother and child use the two-person TANF payment standard.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 6_900
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: SSI_TANF
+    mt_liheap_benefit_income: 6_900
+
+# Appendix A 9.8 (2026-2027): "Mother and child in home and both receive TANF,
+# Mother's boyfriend in home receives SSI" uses $575 (mom and child) + $994
+# (boyfriend). ($575 + $994) x 12 = $18,828.
+- name: Case 5, TANF and SSI standards add in a mixed household in FFY2027.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 45
+        immigration_status: CITIZEN
+        is_disabled: true
+        ssi: 11_928
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0
+        tanf: 6_900
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: SSI_TANF
+    mt_liheap_benefit_income: 18_828
+
+# Appendix A 9.8 SNAP examples: a SNAP categorical household uses its gross
+# income, here countable income without the premium deduction: $24,000.
+- name: Case 6, a SNAP categorical household uses countable income without the premium deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 29
+        immigration_status: CITIZEN
+        employment_income: 24_000
+        health_insurance_premiums_without_medicare_part_b: 1_200
+        ssi: 0
+      person2:
+        age: 6
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 3_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: SNAP
+    mt_liheap_benefit_income: 24_000
