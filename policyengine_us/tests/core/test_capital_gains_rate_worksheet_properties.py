@@ -7,7 +7,11 @@ taxpayer's return: https://www.irs.gov/pub/irs-prior/i1040sd--2025.pdf.
 Port the specialty dependent cohorts from PR #9977's investment-interest
 properties without its Form 4952 calculations. YAML covers policy examples
 and regular tax; Hypothesis covers arbitrary vectorized populations, changes
-to dependents' inputs, and redistribution between the head and spouse.
+to dependents' inputs, and redistribution between the head and spouse. A
+differential checks that entering long_term_capital_loss_carryover as its two
+leaves, the person's own carryover and one from a terminated estate or trust
+(Schedule K-1 (Form 1041), box 11, code D), gives the same worksheet lines as
+entering their sum, as older callers and datasets do.
 
 Each example constructs a small Core system containing the production
 worksheet classes and their inputs, without reconstructing the full US
@@ -38,6 +42,9 @@ from policyengine_us.variables.household.demographic.tax_unit.is_tax_unit_depend
 from policyengine_us.variables.household.income.person.capital_gains.collectibles_gain_or_loss import (
     collectibles_gain_or_loss,
 )
+from policyengine_us.variables.household.income.person.capital_gains.estate_or_trust_long_term_capital_loss_carryover import (
+    estate_or_trust_long_term_capital_loss_carryover,
+)
 from policyengine_us.variables.household.income.person.capital_gains.long_term_capital_gains_on_collectibles import (
     long_term_capital_gains_on_collectibles,
 )
@@ -46,6 +53,9 @@ from policyengine_us.variables.household.income.person.capital_gains.long_term_c
 )
 from policyengine_us.variables.household.income.person.capital_gains.long_term_capital_loss_carryover import (
     long_term_capital_loss_carryover,
+)
+from policyengine_us.variables.household.income.person.capital_gains.own_long_term_capital_loss_carryover import (
+    own_long_term_capital_loss_carryover,
 )
 from policyengine_us.variables.household.income.person.capital_gains.section_1202_gain import (
     section_1202_gain,
@@ -70,6 +80,11 @@ INPUT_CLASSES = (
     long_term_capital_gains_on_small_business_stock,
 )
 INPUTS = tuple(variable.__name__ for variable in INPUT_CLASSES)
+# long_term_capital_loss_carryover adds these; an entered sum is used instead.
+CARRYOVER_LEAVES = (
+    own_long_term_capital_loss_carryover,
+    estate_or_trust_long_term_capital_loss_carryover,
+)
 OUTPUTS = (
     "rate_gains_less_losses",
     "capital_gains_28_percent_rate_gain",
@@ -83,6 +98,7 @@ def _simulate(units, *, reverse_members=False):
     system = TaxBenefitSystem(entities=[Person, TaxUnit])
     system.add_variables(
         *INPUT_CLASSES,
+        *CARRYOVER_LEAVES,
         is_tax_unit_dependent,
         unrecaptured_section_1250_gain,
         unrecaptured_section_1250_gain_before_losses,
@@ -124,6 +140,10 @@ def _simulate(units, *, reverse_members=False):
             for name in OUTPUTS
             if name != "rate_gains_less_losses"
         },
+        # Per person, in the order the units list them.
+        "long_term_capital_loss_carryover": simulation.calculate(
+            "long_term_capital_loss_carryover", PERIOD
+        ),
     }
 
 
@@ -262,3 +282,34 @@ def test_vectorized_worksheets_depend_only_on_non_dependents(units):
         np.testing.assert_array_equal(
             results[name][size : 2 * size], expected, err_msg=name
         )
+
+
+@settings(max_examples=60, deadline=None)
+@given(units=UNITS, data=st.data())
+def test_carryover_leaves_give_the_same_worksheets_as_their_sum(units, data):
+    """Differential: each person's long-term carryover entered as its sum, or
+    split at random between the person's own carryover and one from a
+    terminated estate or trust, gives the same carryover and the same worksheet
+    lines. Dependents' carryovers are split too; the worksheets leave them out
+    either way. The two cohorts run in separate simulations: a sum entered for
+    anyone in a simulation is an input for everyone in it."""
+    as_leaves = deepcopy(units)
+    totals = []
+    for unit in as_leaves:
+        people = [unit["head"], *unit["dependents"]]
+        if unit["spouse"] is not None:
+            people.insert(1, unit["spouse"])
+        for person in people:
+            total = person.pop("long_term_capital_loss_carryover")
+            own = data.draw(st.integers(min_value=0, max_value=total))
+            person["own_long_term_capital_loss_carryover"] = own
+            person["estate_or_trust_long_term_capital_loss_carryover"] = total - own
+            totals.append(total)
+
+    summed, leaves = _simulate(units), _simulate(as_leaves)
+    for results in (summed, leaves):
+        np.testing.assert_array_equal(
+            results["long_term_capital_loss_carryover"], totals
+        )
+    for name in OUTPUTS:
+        np.testing.assert_array_equal(leaves[name], summed[name], err_msg=name)

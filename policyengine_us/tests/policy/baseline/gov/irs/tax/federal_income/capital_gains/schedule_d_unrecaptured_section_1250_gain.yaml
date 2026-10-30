@@ -83,6 +83,19 @@
     # Line 15 = (6,000), line 16 = (1,000), line 17 = 7,000, line 18 = 13,000.
     schedule_d_unrecaptured_section_1250_gain: 13_000
 
+- name: An estate or trust carryover and a short-term loss together
+  period: 2025
+  input:
+    long_term_capital_gains: 49_000
+    unrecaptured_section_1250_gain_before_losses: 20_000
+    short_term_capital_gains: -6_000
+    # Schedule K-1 (Form 1041), box 11, code D, which line 16 takes with
+    # Schedule D line 14.
+    estate_or_trust_long_term_capital_loss_carryover: 1_000
+  output:
+    # Line 15 = (6,000), line 16 = (1,000), line 17 = 7,000, line 18 = 13,000.
+    schedule_d_unrecaptured_section_1250_gain: 13_000
+
 - name: A collectibles loss reduces it
   period: 2025
   input:

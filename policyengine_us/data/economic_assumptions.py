@@ -30,6 +30,10 @@ MICRODATA_UPRATING_OVERRIDES = {
     "foreign_tax_credit": DEFAULT_MICRODATA_UPRATING,
     "interest_deduction": DEFAULT_MICRODATA_UPRATING,
     "long_term_capital_gains": "calibration.gov.irs.soi.long_term_capital_gains",
+    # long_term_capital_loss_carryover and short_term_capital_loss_carryover
+    # add their own and estate-or-trust leaves. A dataset that carries either
+    # sum keeps the series its leaves follow.
+    "long_term_capital_loss_carryover": "calibration.gov.irs.soi.long_term_capital_gains",
     "misc_deduction": DEFAULT_MICRODATA_UPRATING,
     "partnership_income": "calibration.gov.irs.soi.partnership_s_corp_income",
     "partnership_s_corp_income": "calibration.gov.irs.soi.partnership_s_corp_income",
@@ -41,6 +45,7 @@ MICRODATA_UPRATING_OVERRIDES = {
     "self_employment_income": "calibration.gov.irs.soi.self_employment_income",
     "self_employed_health_insurance_ald": DEFAULT_MICRODATA_UPRATING,
     "self_employed_pension_contribution_ald": DEFAULT_MICRODATA_UPRATING,
+    "short_term_capital_loss_carryover": "calibration.gov.irs.soi.short_term_capital_gains",
     "social_security": "calibration.gov.irs.soi.social_security",
     # Dataset extension precedes constructor migration to the reported twins.
     # Resolve these national totals through the existing per-capita uprater.
