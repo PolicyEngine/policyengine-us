@@ -129,8 +129,9 @@
     oh_ccap_income_eligible: false
 
 # 5180:6-1-02(B)(1) makes income eligibility purely FPL-based, and
-# 5180:2-16-03(H)(3)(j) counts OWF cash assistance as unearned income, so
-# TANF enrollment confers no categorical income eligibility.
+# 5180:2-16-03(H)(3)(j), now 5180:6-1-03(H)(3)(j), counts OWF cash assistance
+# as unearned income, so TANF enrollment confers no categorical income
+# eligibility.
 - name: Case 6, TANF enrollment does not bypass the income test.
   period: 2026-01
   input:

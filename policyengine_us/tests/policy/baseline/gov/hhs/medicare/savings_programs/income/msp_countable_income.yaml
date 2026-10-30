@@ -113,3 +113,317 @@
     # (12,000 - 2,400 + 24,000 - 3,600) / 12 = 2,500 monthly.
     # Apply the couple's exclusions once: (2,500 - 20 - 65) / 2 = 1,207.50.
     msp_countable_income: [1_207.50, 1_207.50]
+
+- name: Case 6, Illinois exempts the first 25 dollars of income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    social_security_retirement: 12_000
+    state_code: IL
+  output:
+    # 12,000 / 12 - 25 = 975.
+    msp_countable_income: 975
+
+- name: Case 7, Mississippi raises the general income exclusion to 50 dollars.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    social_security_retirement: 12_000
+    state_code: MS
+  output:
+    # 12,000 / 12 - 50 = 950.
+    msp_countable_income: 950
+
+- name: Case 8, Illinois gives each Medicare spouse with income a 25 dollar exemption.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        social_security_retirement: 13_200
+      person2:
+        age: 70
+        social_security_retirement: 8_880
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # PM 15-04-03-a: both spouses apply and both have income, so two exemptions.
+    # (13,200 + 8,880) / 12 - 2 x 25 = 1,790.
+    msp_countable_income: [1_790, 1_790]
+
+- name: Case 9, Illinois allows one exemption when only one Medicare spouse has income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        social_security_retirement: 13_200
+      person2:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # PM 15-04-03-a: one exemption if only one person has income.
+    # 13,200 / 12 - 25 = 1,075.
+    msp_countable_income: [1_075, 1_075]
+
+- name: Case 10, Mississippi applies one 50 dollar exclusion to a couple's combined income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        social_security_retirement: 12_000
+      person2:
+        age: 70
+        social_security_retirement: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # 23 Miss. Admin. Code Part 104, Rule 4.2(C)(2): one general exclusion per couple.
+    # (12,000 + 9,600) / 12 - 50 = 1,750.
+    msp_countable_income: [1_750, 1_750]
+
+- name: Case 11, Illinois allows no exemption for a spouse whose only income is a self-employment loss.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        social_security_retirement: 18_000
+      person2:
+        age: 70
+        self_employment_income_before_lsr: -6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # PM 15-04-03-a: only person1 has income other than SSI, so one $25.
+    # The loss neither earns an exemption nor offsets unearned income:
+    # 18,000 / 12 - 25 = 1,475.
+    msp_countable_income: [1_475, 1_475]
+
+- name: Case 12, Illinois allows no exemption for a spouse whose only income is a contribution.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        social_security_retirement: 15_600
+      person2:
+        age: 70
+        alimony_income: 6_480
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # PM 15-04-03-a: a contribution (alimony) earns no exemption, so one $25.
+    # (15,600 + 6,480) / 12 - 25 = 1,815, above the 1,803.33 QMB couple limit.
+    msp_countable_income: [1_815, 1_815]
+    is_qmb_eligible: [false, false]
+
+- name: Case 13, Illinois single person whose only income is a contribution keeps the SSI 20 dollar floor.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    alimony_income: 12_000
+    state_code: IL
+  output:
+    # 89 Ill. Adm. Code 120.335(a)(1): no $25 on contributions.
+    # 42 U.S.C. 1396a(r)(2) keeps the SSI $20: 12,000 / 12 - 20 = 980.
+    msp_countable_income: 980
+
+- name: Case 14, Illinois exemption on Social Security is unchanged when the person also has alimony.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    social_security_retirement: 6_000
+    alimony_income: 6_000
+    state_code: IL
+  output:
+    # 500 + 500 = 1,000; Social Security alone exceeds $25: 1,000 - 25 = 975.
+    msp_countable_income: 975
+
+- name: Case 15, Illinois applies one 25 dollar exemption when income is deemed from an ineligible spouse.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 7_200
+      person2:
+        age: 50
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # PM 15-04-03-a: one applicant, so one $25. Deemed: unearned 600 - 25 = 575;
+    # earned (2,500 - 65) / 2 = 1,217.50; 575 + 1,217.50 = 1,792.50.
+    # The spouse without Medicare: (2,500 - 25 - 65) / 2 = 1,205.
+    msp_countable_income: [1_792.5, 1_205]
+
+- name: Case 16, Illinois caps a spouse's 25 dollar exemption at that spouse's income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        social_security_retirement: 13_200
+      person2:
+        age: 70
+        interest_income: 120
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # PM 15-04-03-a: "If total income is less than $25, exempt the actual amount."
+    # (13,200 + 120) / 12 = 1,110; exemptions 25 + 10 = 35; 1,110 - 35 = 1,075.
+    msp_countable_income: [1_075, 1_075]
+
+- name: Case 17, Mississippi's 50 dollar exclusion starts in July 1999.
+  period: 1999
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    social_security_retirement: 6_000
+    state_code: MS
+  output:
+    # 500 - 20 = 480 in June; 500 - 50 = 450 from July.
+    msp_countable_income:
+      1999-06: 480
+      1999-07: 450
+
+- name: Case 18, Illinois couple whose exemptions total less than 20 dollars keeps the SSI 20 dollar floor.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        alimony_income: 12_000
+      person2:
+        age: 70
+        interest_income: 120
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # PM 15-04-03-a: alimony earns no exemption; the $10 of interest earns $10.
+    # 42 U.S.C. 1396a(r)(2) keeps the SSI $20 for the couple:
+    # (12,000 + 120) / 12 = 1,010; 1,010 - 20 = 990.
+    msp_countable_income: [990, 990]
+
+- name: Case 19, Mississippi applies its 50 dollar exclusion to alimony.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    alimony_income: 12_000
+    state_code: MS
+  output:
+    # Rule 4.2(C)(5) withholds the exclusion only from income based on need:
+    # 12,000 / 12 - 50 = 950.
+    msp_countable_income: 950

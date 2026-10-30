@@ -1,0 +1,118 @@
+description: The state deducts health insurance premiums that the person pays from countable income under the optional Medicaid pathway for seniors or people with disabilities, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid senior or disabled pathway deducts health insurance premiums
+  breakdown:
+  - state_code
+  reference:
+    - title: Cal. Code Regs. Tit. 22, § 50555.2 (a), (c) Health Insurance Premiums
+      href: https://www.law.cornell.edu/regulations/california/22-CCR-50555.2
+    - title: California DHCS All County Welfare Directors Letter 00-57, MC 176 Aged and Disabled FPL Financial Eligibility Form, line 17
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/c00-57.pdf#page=3
+    - title: "California DHCS All County Welfare Directors Letter 20-24, Aged and Disabled Federal Poverty Level program #page 2-3"
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/20-24.pdf#page=2
+
+AK:
+  2015-01-01: false
+AL:
+  2015-01-01: false
+AR:
+  2015-01-01: false
+AZ:
+  2015-01-01: false
+CA:
+  # The ABD FPL program deducted premiums from its start in 2001.
+  2015-01-01: true
+CO:
+  2015-01-01: false
+CT:
+  2015-01-01: false
+DC:
+  2015-01-01: false
+DE:
+  2015-01-01: false
+FL:
+  2015-01-01: false
+GA:
+  2015-01-01: false
+HI:
+  2015-01-01: false
+IA:
+  2015-01-01: false
+ID:
+  2015-01-01: false
+IL:
+  2015-01-01: false
+IN:
+  2015-01-01: false
+KS:
+  2015-01-01: false
+KY:
+  2015-01-01: false
+LA:
+  2015-01-01: false
+MA:
+  2015-01-01: false
+MD:
+  2015-01-01: false
+ME:
+  2015-01-01: false
+MI:
+  2015-01-01: false
+MN:
+  2015-01-01: false
+MO:
+  2015-01-01: false
+MS:
+  2015-01-01: false
+MT:
+  2015-01-01: false
+NC:
+  2015-01-01: false
+ND:
+  2015-01-01: false
+NE:
+  2015-01-01: false
+NH:
+  2015-01-01: false
+NJ:
+  2015-01-01: false
+NM:
+  2015-01-01: false
+NV:
+  2015-01-01: false
+NY:
+  2015-01-01: false
+OH:
+  2015-01-01: false
+OK:
+  2015-01-01: false
+OR:
+  2015-01-01: false
+PA:
+  2015-01-01: false
+RI:
+  2015-01-01: false
+SC:
+  2015-01-01: false
+SD:
+  2015-01-01: false
+TN:
+  2015-01-01: false
+TX:
+  2015-01-01: false
+UT:
+  2015-01-01: false
+VA:
+  2015-01-01: false
+VT:
+  2015-01-01: false
+WA:
+  2015-01-01: false
+WI:
+  2015-01-01: false
+WV:
+  2015-01-01: false
+WY:
+  2015-01-01: false
