@@ -1,0 +1,27 @@
+description: Maine counts these sources as earned income under the Low Income Home Energy Assistance Program.
+# Rule 3(C)(1)(a)-(b): wages, salaries, commissions, tips and bonuses before
+# taxes or deductions, and self-employment income. The model has only net
+# business income, so each source is floored at zero and a loss in one source
+# cannot offset another. Contract income counts when reported as wages or
+# self-employment income. Earnings of a full-time high school student who is
+# not the primary applicant are excluded in me_heap_income.
+values:
+  2024-07-03:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    # Partnership and S corporation income is self-employment income (item b).
+    - partnership_s_corp_income
+
+metadata:
+  unit: list
+  period: year
+  label: Maine HEAP earned income sources
+  reference:
+    - title: 99-346 CMR ch. 24, section 3(C)(1) (2025 edition, SOS filing 2025-135)
+      href: https://www.maine.gov/sos/sites/maine.gov.sos/files/inline-files/346c024.docx
+    - title: "99-346 CMR ch. 24, section 3(C)(1) (effective June 29, 2026) #page 11-13"
+      href: https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=11
+    - title: "Maine FY2026 LIHEAP State Plan, Section 1.9 #page 6-7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/ME_Plan_2026.pdf#page=6

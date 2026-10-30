@@ -4199,6 +4199,68 @@ candidates:
     invariant test's statutory oracle (test_me_childless_eitc_age_gate.py). Captures of the worksheet and the
     instructions page are in source_conflicts/sources/us-me/. Worksheets for 2020 to 2023 are unchecked, so the
     conflict may start earlier.
+- id: us-me:liheap-size-ten-income-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is Maine's FFY2026 HEAP income limit for ten people the greater of 150% of the poverty guideline and 60%
+    of state median income ($102,008) or 150% of the poverty guideline ($97,725)?
+  sources:
+  - kind: regulation
+    citation: 99-346 CMR ch. 24, section 4(A), poverty-level table (2025 edition, effective July 1, 2025; archived
+      July 22, 2025)
+    url: https://web.archive.org/web/20250722045413/https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=15
+  - kind: plan
+    citation: Maine FY2026 LIHEAP State Plan, Section 2.1
+    url: https://liheapch.acf.gov/docs/2026/state-plans/ME_Plan_2026.pdf#page=9
+  readings:
+    statute: The 70% band runs above 150% of the poverty guideline up to the greater of 150% of the guideline and
+      60% of state median income, $102,008 for ten people; MaineHousing's 2025-26 income chart prints the same figure.
+    other: Section 2.1 sets the ten-person threshold at 150% of the HHS poverty guidelines, $97,725.
+  example: A ten-person household with $100,000 of income is income eligible under the regulation and over the limit
+    under the plan.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/me/msha/heap/eligibility/me_heap_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10437
+  state: ruled
+  note: PE-US follows the regulation and the chart under the 2026-10-19 statute-governs rule.
+- id: us-me:liheap-tanf-and-disability-income
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does Maine HEAP count TANF and long-term disability payments as income from all sources under the rule,
+    although the FY2026 plan leaves TANF and insurance payments made directly to the insured unchecked?
+  sources:
+  - kind: regulation
+    citation: 99-346 CMR ch. 24, sections 1(EE) and 3(C)(1) (2025 edition and June 29, 2026 replacement), PDF pages
+      3 and 12-13
+    url: https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=12
+  - kind: plan
+    citation: Maine FY2026 LIHEAP State Plan, Section 1.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/ME_Plan_2026.pdf#page=6
+  readings:
+    statute: Household Income is the total income from all sources before taxes and deductions unless excluded; no
+      exclusion names TANF or recurring insurance payments (only one-time insurance payments, exclusion h), and item
+      (n) of the June 29, 2026 replacement lists long-term disability payments.
+    other: Section 1.9 leaves TANF benefits and insurance payments made directly to the insured unchecked.
+  example: In FFY2026 a parent of two young children with $2,400 of child support and $10,740 of TANF, heating a Penobscot
+    County stick-built home with oil, counts $13,140 and receives $704; excluding TANF counts $2,400 and pays $748.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/me/msha/heap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/me/msha/heap/me_heap_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10437
+  state: ruled
+  note: PE-US counts both under the 2026-10-19 statute-governs rule.
 - id: us-me:property-tax-credit-unknown-utilities
   program: income-tax
   years:
