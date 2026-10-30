@@ -1,3 +1,10 @@
+## [2.82.0] - 2026-10-30
+
+### Added
+
+- Add Tennessee LIHEAP regular energy assistance.
+
+
 ## [2.81.0] - 2026-10-30
 
 ### Added
