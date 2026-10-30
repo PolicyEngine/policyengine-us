@@ -1,3 +1,10 @@
+## [2.85.0] - 2026-10-30
+
+### Added
+
+- Add Wisconsin Home Energy Assistance Program regular heating benefit.
+
+
 ## [2.84.0] - 2026-10-30
 
 ### Added
