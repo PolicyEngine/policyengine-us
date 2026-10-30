@@ -1,0 +1,87 @@
+# 2025 Form 8962 instructions, line 4 and Tables 1-1 through 1-3:
+# use the 2024 guideline for the current tax family's size and geography.
+# https://www.irs.gov/pub/irs-prior/i8962--2025.pdf#page=8
+# Worksheet 2 truncates the income percentage to a whole percentage point.
+- name: Case 1, Alaska uses its own prior-year guideline.
+  period: 2025
+  absolute_error_margin: 0.0001
+  input:
+    state_code: AK
+    aca_magi: 30_000
+    tax_unit_size: 1
+  output:
+    aca_magi_fraction: 1.59  # 30,000 / 18,810, truncated.
+
+- name: Case 2, Hawaii uses its own prior-year guideline.
+  period: 2025
+  absolute_error_margin: 0.0001
+  input:
+    state_code: HI
+    aca_magi: 30_000
+    tax_unit_size: 1
+  output:
+    aca_magi_fraction: 1.73  # 30,000 / 17,310, truncated.
+
+- name: Case 3, contiguous states retain the prior-year guideline.
+  period: 2025
+  absolute_error_margin: 0.0001
+  input:
+    state_code: CA
+    aca_magi: 30_000
+    tax_unit_size: 1
+  output:
+    aca_magi_fraction: 1.99  # 30,000 / 15,060, truncated.
+
+- name: Case 4, lag the guideline year without lagging current family size.
+  period: 2025
+  absolute_error_margin: 0.0001
+  input:
+    state_code: AK
+    aca_magi: 30_000
+    tax_unit_size:
+      2024: 1
+      2025: 2
+  output:
+    aca_magi_fraction: 1.17  # Current two-person family, 2024 Alaska FPL 25,540.
+
+- name: Case 5, prior-year residence does not replace current residence.
+  period: 2025
+  absolute_error_margin: 0.0001
+  input:
+    state_code:
+      2024: CA
+      2025: AK
+    aca_magi: 30_000
+    tax_unit_size: 1
+  output:
+    aca_magi_fraction: 1.59
+
+- name: Case 6, a current contiguous-state resident does not inherit prior-year Alaska residence.
+  period: 2025
+  absolute_error_margin: 0.0001
+  input:
+    state_code:
+      2024: AK
+      2025: CA
+    aca_magi: 30_000
+    tax_unit_size: 1
+  output:
+    aca_magi_fraction: 1.99
+
+- name: Case 7, negative MAGI remains floored at zero.
+  period: 2025
+  input:
+    state_code: HI
+    aca_magi: -1_000
+    tax_unit_size: 1
+  output:
+    aca_magi_fraction: 0
+
+- name: Case 8, zero MAGI remains zero.
+  period: 2025
+  input:
+    state_code: AK
+    aca_magi: 0
+    tax_unit_size: 1
+  output:
+    aca_magi_fraction: 0
