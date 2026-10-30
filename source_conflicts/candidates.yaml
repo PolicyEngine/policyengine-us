@@ -7705,6 +7705,104 @@ candidates:
   state: unreviewed
   note: sd_ssp_care_joint_entry is true only in the month both spouses entered care; later months use the $2,000
     limit and each spouse's own income. integration.yaml Cases 5, 7 and 8 pin it.
+- id: us-tn:liheap-fy2026-printed-income-ceilings
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Are Tennessee's FY2026 LIHEAP income ceilings 60% of state median income, as the plan and manual state, or
+    the amounts printed in the benefit matrix and workshop deck where they differ?
+  sources:
+  - kind: plan
+    citation: Tennessee FY2026 LIHEAP State Plan, Section 2.1, page 8
+    url: https://liheapch.acf.gov/docs/2026/state-plans/TN_Plan_2026.pdf#page=8
+  - kind: manual
+    citation: Tennessee LIHEAP 2026 Policy Manual, Section 2.10, page 24
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-2026-Policy-Manual-for-Tennessee.pdf#page=24
+  - kind: guidance
+    citation: Tennessee LIHEAP 2026 Benefit Matrix, income end column
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/2026-LIHEAP-Eligible-Income-Household-Size-Benefits.pdf
+  - kind: guidance
+    citation: Tennessee LIHEAP 26 Workshop, Benefit Matrix Adjustments 2026, page 30
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-26-Workshop-Powerpoint-09.16.25.pdf#page=30
+  readings:
+    statute: No statute is supplied; the plan and manual set the limit at 60% of state median income, $85,064 for a
+      household of eight and $81,366 for a household of six.
+    other: The benefit matrix prints $85,064.50 for a household of eight, and the workshop deck prints $81,336 for a
+      household of six.
+  example: In FY2026, a household of eight with income of $85,064.50 and energy bills of $4,000 receives $300 under the
+    printed matrix ceiling (group D, burden 0.0470, column 1) and $0 under the 60% state median income limit.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10430
+  state: unreviewed
+  note: 'PE-US applies 60% of state median income, which reproduces every other printed FY2026 ceiling for sizes 1-12.
+    Code not yet on main: tn_liheap_income_limit, gov.states.tn.thda.liheap.eligibility.smi_rate.'
+- id: us-tn:liheap-fy2027-large-household-limits
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Are Tennessee's FY2027 LIHEAP income limits for households of 13 to 16 members 150% of the poverty guideline,
+    as the draft plan and manual state, or the lower ceilings printed in the LI-12 matrix?
+  sources:
+  - kind: plan
+    citation: Tennessee FY2027 LIHEAP State Plan (draft), Section 2.1, page 9
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/DETAILED-MODEL-PLAN-LIHEAP_10_01_2026.pdf#page=9
+  - kind: manual
+    citation: Tennessee LIHEAP 2027 Policy Manual (draft), Section 2.10, page 27
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/DRAFT-LIHEAP-2027-Policy-Manual-7-11-2026.pdf#page=27
+  - kind: guidance
+    citation: Tennessee FY2027 LIHEAP Benefit Matrix (LI-12), page 4
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/2027-LIHEAP-LI-12-Eligible-Income-Benefit-Matrix.pdf#page=4
+  readings:
+    statute: No statute is supplied; the draft plan (sizes 9-15) and draft manual (sizes 9-16) set the limit at 150% of
+      the poverty guideline, $126,180 to $151,740 for sizes 13-16.
+    other: The LI-12 matrix prints ceilings of $125,910 to $150,660 for sizes 13-16.
+  example: In FY2027, a household of 13 with income of $126,000 and energy bills of $4,200 receives $540 under the 150%
+    rule (group D, burden 0.0333, column 1) and $0 under the printed $125,910 ceiling.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10430
+  state: unreviewed
+  note: 'PE-US applies the stated 150% rule to every size from 9. Code not yet on main: tn_liheap_income_limit,
+    gov.states.tn.thda.liheap.eligibility.fpg_rate.'
+- id: us-tn:liheap-retirement-account-withdrawals
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does Tennessee LIHEAP count IRA and 401(k) withdrawals as income, as the plan's checked "Retirement / pension
+    benefits" box suggests, or exclude them, as the manual's income list does by naming none?
+  sources:
+  - kind: manual
+    citation: Tennessee LIHEAP 2026 Policy Manual, Section 2.13, pages 27-28
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-2026-Policy-Manual-for-Tennessee.pdf#page=27
+  - kind: plan
+    citation: Tennessee FY2026 LIHEAP State Plan, Section 1.9, page 6
+    url: https://liheapch.acf.gov/docs/2026/state-plans/TN_Plan_2026.pdf#page=6
+  readings:
+    statute: No statute is supplied; the manual counts pensions, annuities and regular insurance payments, names no
+      retirement-account withdrawals and excludes withdrawals from a bank account.
+    other: Plan 1.9 checks "Retirement / pension benefits" as countable income.
+  example: In FY2026, a single retiree aged 70 with Social Security of $12,000, a Part B premium of $2,434.80, IRA
+    withdrawals of $20,000 and an electric bill of $1,680 receives $710 with the withdrawals excluded (income $9,565.20,
+    group A, column 7) and $250 with them counted (income $29,565.20, group D, column 2).
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10430
+  state: ruled
+  note: 'Ruled 2026-10-23: exclude IRA/401(k) withdrawals as the manual does. Code not yet on main:
+    tn_liheap_countable_income, gov.states.tn.thda.liheap.income.sources.unearned.'
 - id: us-tx:family-planning-unearned-income-exclusions
   program: family-planning-program
   years:
