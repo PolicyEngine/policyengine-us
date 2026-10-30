@@ -1,0 +1,1 @@
+Compute Alabama's miscellaneous itemized deduction from unreimbursed employee and other section 212 expenses above 2% of Alabama AGI, which Alabama kept after the federal suspension, instead of from the federal deduction.
