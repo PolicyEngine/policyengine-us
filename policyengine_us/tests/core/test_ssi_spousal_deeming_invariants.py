@@ -25,11 +25,13 @@ simulations for the generated income and state-supplement properties:
   Each comparison uses two independent three-person simulations sharing the
   same read-only system as the grids.
 - Declared spouses who live in separate households in Colorado, Missouri,
-  Oregon, South Dakota and Virginia, comparing their supplements before and
+  Oregon, South Dakota, Virginia and Iowa, comparing their supplements before and
   after an unrelated adult joins either household. The marriage, separate
   tax/family/SPM budgets, and all benefit inputs stay the same. Six explicit
   examples and two generated examples use two small independent simulations
-  apiece per state, sharing the same read-only system.
+  apiece per state, sharing the same read-only system. Generated examples
+  enter the states' care budgets; independent budget checks also detect a
+  lost spouse when both simulations make the same error.
 
 YAML covers worked cases. Python is needed to check the for-all properties
 over every ordered edge of the grids and to compare with an oracle that does
@@ -339,6 +341,7 @@ SUPPLEMENT_PROGRAMS = {
     "FL": ("fl_oss",),
     "GA": ("ga_ssp",),
     "HI": ("hi_oss",),
+    "IA": ("ia_ssa",),
     "ID": ("id_aabd",),
     "IL": ("il_aabd",),
     "IN": ("in_ssp",),
@@ -413,6 +416,7 @@ SUPPLEMENT_CARE_INPUTS = {
     "DE": {"de_ssp_living_arrangement": "CERTIFIED_RESIDENTIAL_CARE_HOME"},
     "FL": {"fl_oss_program_track": "REDESIGN", "fl_oss_community_care_type": "ALF"},
     "HI": {"hi_oss_care_facility_type": "COMMUNITY_CARE"},
+    "IA": {"ia_ssa_category": "FAMILY_LIFE_HOME"},
     "ID": {"id_aabd_living_arrangement": "ROOM_AND_BOARD"},
     "IN": {
         "ssi_lives_in_medical_treatment_facility": True,
@@ -473,9 +477,30 @@ SUPPLEMENT_CARE_INPUTS = {
 SUPPLEMENT_CASES = [(state, YEAR, "standard") for state in SUPPLEMENT_PROGRAMS] + [
     ("CA", YEAR, "ssi_ssp"),
     ("CO", YEAR, "and_cs"),
+    ("IA", YEAR, "ia_dependent"),
     ("WA", 2022, "disabled"),
 ]
 SUPPLEMENT_SCENARIO_INPUTS = {
+    "ia_rcf": {
+        "ia_ssa_category": "RESIDENTIAL_CARE",
+        "ia_ssa_care_initial_partial_month": True,
+        "ia_ssa_rcf_received_ssi_before_entry": True,
+    },
+    "ia_in_home": {
+        "ia_ssa_category": "IN_HOME_CARE",
+        "ia_ssa_ihhrc_monthly_cost": 400,
+    },
+    "ia_smme": {
+        "ia_ssa_category": "SMME",
+        "ia_ssa_smme_coverage_eligible": True,
+        # Exercise the SMME payment rather than only its zero-income denial.
+        "pension_income": (26_400, 26_400, 36_000),
+        "ssi_countable_resources": (1_000, 1_000, 0),
+    },
+    "ia_dependent": {
+        "ia_ssa_category": "DEPENDENT_PERSON",
+        "ia_ssa_dependent_countable_income": 0,
+    },
     "ssi_ssp": {
         "immigration_status_str": "CITIZEN",
         "ssi_qualifying_quarters_earnings": 40,
@@ -544,7 +569,14 @@ def _supplement_situation(
         set_inputs(
             SUPPLEMENT_CARE_INPUTS.get(state, {}), names if third_care else names[:2]
         )
-    set_inputs(SUPPLEMENT_SCENARIO_INPUTS.get(scenario, {}), names)
+    if state == "IA":
+        if care:
+            set_inputs(
+                SUPPLEMENT_SCENARIO_INPUTS.get(scenario, {}),
+                names if third_care else names[:2],
+            )
+    else:
+        set_inputs(SUPPLEMENT_SCENARIO_INPUTS.get(scenario, {}), names)
     if explicit:
         situation["marital_units"] = {
             "couple": {"members": list(names[:2])},
@@ -607,6 +639,7 @@ def _supplement_amounts(
     resources=(0, 0, 0),
     care=True,
     third_care=True,
+    iowa_scenario="standard",
 )
 @example(
     pensions=(0, 497, 994),
@@ -614,6 +647,7 @@ def _supplement_amounts(
     resources=(0, 0, 2_001),
     care=True,
     third_care=False,
+    iowa_scenario="ia_rcf",
 )
 @example(
     pensions=(20, 65, 1_491),
@@ -621,6 +655,7 @@ def _supplement_amounts(
     resources=(2_000, 0, 3_001),
     care=True,
     third_care=True,
+    iowa_scenario="ia_in_home",
 )
 @example(
     pensions=(994, 1_491, 20),
@@ -628,6 +663,7 @@ def _supplement_amounts(
     resources=(3_000, 0, 0),
     care=False,
     third_care=False,
+    iowa_scenario="standard",
 )
 @example(
     pensions=(0, 0, 0),
@@ -635,6 +671,7 @@ def _supplement_amounts(
     resources=(7_000, 1_000, 5_000),
     care=True,
     third_care=True,
+    iowa_scenario="ia_smme",
 )
 @given(
     pensions=st.tuples(*(st.integers(0, 1_600) for _ in range(3))),
@@ -642,9 +679,10 @@ def _supplement_amounts(
     resources=st.tuples(*(st.integers(0, 8_000) for _ in range(3))),
     care=st.booleans(),
     third_care=st.booleans(),
+    iowa_scenario=st.sampled_from(("standard", "ia_rcf", "ia_in_home", "ia_smme")),
 )
 def test_state_supplements_do_not_depend_on_omitted_marital_units(
-    state, year, scenario, pensions, ages, resources, care, third_care
+    state, year, scenario, pensions, ages, resources, care, third_care, iowa_scenario
 ):
     """A third adult never becomes a spouse through the default group.
 
@@ -653,6 +691,8 @@ def test_state_supplements_do_not_depend_on_omitted_marital_units(
     ineligible spouses, a third adult in a different care category, income
     exclusions/deeming edges, and the individual/couple resource limits.
     """
+    if state == "IA" and scenario == "standard":
+        scenario = iowa_scenario
     default = _supplement_amounts(
         state, pensions, ages, resources, care, third_care, False, year, scenario
     )
@@ -675,7 +715,8 @@ def test_state_supplements_do_not_depend_on_omitted_marital_units(
 # us-or:ssp-community-care-spouses-separate-facilities.
 # SD: ARSD 67:46:04:10(6), 67:46:05:30 (joint care-entry month).
 # VA: AG Manual Chapter B section 6 (first moment of the initial month).
-SEPARATED_SUPPLEMENT_STATES = ("CO", "MO", "OR", "SD", "VA")
+# IA: 6-B Spouses Living Separately p.60 (prior-SSI RCF entry month).
+SEPARATED_SUPPLEMENT_STATES = ("CO", "MO", "OR", "SD", "VA", "IA")
 SEPARATED_PERIOD = "2026-07"
 
 
@@ -692,7 +733,15 @@ def _separated_supplement_situation(
     add_third,
 ):
     situation = _supplement_situation(
-        system, state, pensions, ages, resources, care, third_care, True
+        system,
+        state,
+        pensions,
+        ages,
+        resources,
+        care,
+        third_care,
+        True,
+        scenario="ia_rcf" if state == "IA" else "standard",
     )
     names = ("claimant", "spouse", "third_adult")
     if not add_third:
@@ -750,7 +799,75 @@ def _separated_supplement_situation(
                 person["or_ssp_inaccessible_income"] = {
                     SEPARATED_PERIOD: (194, 94, 0)[index]
                 }
+            elif state == "IA":
+                person["ia_ssa_care_initial_partial_month"] = {
+                    SEPARATED_PERIOD: joint_entry
+                }
     return situation
+
+
+def _assert_separated_care_budget(simulation, state, pensions, amounts):
+    """An independent spouse-budget check in the existing simulations.
+
+    Removing the spouse in both representations would satisfy the unrelated
+    adult comparison. These generated ranges make the legally shared budget
+    observable: low resources, eligible ages and unequal pensions; Oregon
+    instead keeps modeled SSI positive for both community-care residents.
+    No extra simulation or parameter-tree construction is needed.
+    """
+    if state == "MO":
+        # RSMo 208.010.1 retains the couple resource test during medical
+        # separation. The claimant is above the individual limit, while the
+        # combined resources remain below the couple limit.
+        assert np.all(
+            simulation.calculate("mo_ssp_resource_eligible", SEPARATED_PERIOD)[:2]
+        )
+    elif state == "OR":
+        # OAR 461-155-0630(3): two SSI community-care spouses qualify even in
+        # separate facilities. Their own income after the documented
+        # inaccessible amounts is below the individual standard, so neither
+        # spouse has an excess to subtract from the other's payment.
+        own = np.asarray(pensions[:2])
+        federal = np.maximum(INDIVIDUAL_FBR - np.maximum(own - GENERAL_EXCLUSION, 0), 0)
+        assert np.all(federal > 0)
+        expected = INDIVIDUAL_FBR - (own + federal - np.array([194, 94]))
+        np.testing.assert_allclose(amounts["or_ssp"], expected, atol=0.01)
+    elif state == "SD":
+        # ARSD 67:46:04:10(6), 67:46:06:03: both initial-month residents
+        # contribute half their combined income. These pensions eliminate
+        # SSI and stay below the entered $2,000 approved foster-care cost.
+        expected = 2_000 - sum(pensions[:2]) / 2
+        np.testing.assert_allclose(amounts["sd_ssp"], expected, atol=0.01)
+    elif state == "VA":
+        # AG Manual Chapter B section 6: initial-month spouses share the
+        # combined income after one $20 exclusion. Neither receives SSI in
+        # these ranges, so the AG's own countable-income budget applies.
+        expected = (sum(pensions[:2]) - GENERAL_EXCLUSION) / 2
+        np.testing.assert_allclose(
+            simulation.calculate("va_ag_countable_income", SEPARATED_PERIOD)[:2],
+            expected,
+            atol=0.01,
+        )
+    elif state == "IA":
+        # 6-B p.60 retains the prior-SSI couple's RCF entry-month budget.
+        # Care does not apply the general exclusion; with current SSI zero,
+        # each resident counts half the combined pension income.
+        assert np.all(
+            simulation.calculate("ia_ssa_rcf_couple_budget", SEPARATED_PERIOD)[:2]
+        )
+        np.testing.assert_allclose(
+            simulation.calculate("ia_ssa_care_countable_income", SEPARATED_PERIOD)[:2],
+            sum(pensions[:2]) / 2,
+            atol=0.01,
+        )
+    else:
+        # 9 CCR 2503-5 3.533(A)(2)(c): Colorado divides a married client's
+        # $20 unearned-income disregard even when the spouses live apart.
+        np.testing.assert_allclose(
+            simulation.calculate("co_oap_own_countable_income", SEPARATED_PERIOD)[:2],
+            np.asarray(pensions[:2]) - GENERAL_EXCLUSION / 2,
+            atol=0.01,
+        )
 
 
 @pytest.mark.parametrize("state", SEPARATED_SUPPLEMENT_STATES)
@@ -768,6 +885,7 @@ def _separated_supplement_situation(
     joint_entry=True,
     third_care=False,
     third_household=0,
+    check_care_budget=False,
 )
 @example(
     pensions=(20, 65, 0),
@@ -777,6 +895,7 @@ def _separated_supplement_situation(
     joint_entry=False,
     third_care=True,
     third_household=1,
+    check_care_budget=False,
 )
 @example(
     pensions=(1_200, 1_200, 3_000),
@@ -786,6 +905,7 @@ def _separated_supplement_situation(
     joint_entry=True,
     third_care=False,
     third_household=0,
+    check_care_budget=False,
 )
 @example(
     pensions=(1_800, 1_200, 20),
@@ -795,6 +915,7 @@ def _separated_supplement_situation(
     joint_entry=True,
     third_care=True,
     third_household=1,
+    check_care_budget=False,
 )
 @example(
     pensions=(0, 0, 994),
@@ -804,6 +925,7 @@ def _separated_supplement_situation(
     joint_entry=True,
     third_care=True,
     third_household=0,
+    check_care_budget=False,
 )
 @example(
     pensions=(994, 1_491, 20),
@@ -813,26 +935,51 @@ def _separated_supplement_situation(
     joint_entry=False,
     third_care=False,
     third_household=1,
+    check_care_budget=False,
 )
 @given(
-    pensions=st.tuples(*(st.integers(0, 3_000) for _ in range(3))),
-    ages=st.tuples(*(st.sampled_from((64, 65, 90)) for _ in range(3))),
-    resources=st.tuples(*(st.integers(0, 16_000) for _ in range(3))),
-    care=st.booleans(),
-    joint_entry=st.booleans(),
+    pensions=st.tuples(
+        st.integers(1_100, 1_400), st.integers(1_600, 1_800), st.integers(0, 3_000)
+    ),
+    ages=st.tuples(
+        st.sampled_from((65, 90)),
+        st.sampled_from((65, 90)),
+        st.sampled_from((64, 65, 90)),
+    ),
+    resources=st.tuples(
+        st.integers(0, 1_000), st.integers(0, 1_000), st.integers(0, 16_000)
+    ),
+    care=st.just(True),
+    joint_entry=st.just(True),
     third_care=st.booleans(),
     third_household=st.integers(0, 1),
+    check_care_budget=st.just(True),
 )
 def test_separated_spouses_supplements_ignore_unrelated_household_adult(
-    state, pensions, ages, resources, care, joint_entry, third_care, third_household
+    state,
+    pensions,
+    ages,
+    resources,
+    care,
+    joint_entry,
+    third_care,
+    third_household,
+    check_care_budget,
 ):
     """A third adult cannot change either separately housed spouse's grant.
 
-    YAML checks the states' independent legal computations. This comparison
+    YAML checks worked legal computations. The generated cases always enter
+    a care or joint-entry budget and check it independently, so losing the
+    spouse identically in both simulations is also detected. This comparison
     needs the simulation API to add a person while preserving the explicit
     marriage across two households and the spouses' independent other units.
     Both simulations share only the read-only system; caches stay separate.
     """
+    if check_care_budget:
+        if state == "OR":
+            pensions = (pensions[0] - 1_000, pensions[1] - 1_000, pensions[2])
+        elif state == "MO":
+            resources = (resources[0] + 6_500, resources[1], resources[2])
     system = Simulation.default_tax_benefit_system_instance
     amounts = []
     for add_third in (False, True):
@@ -861,6 +1008,8 @@ def test_separated_spouses_supplements_ignore_unrelated_household_adult(
                 for name in SUPPLEMENT_PROGRAMS[state]
             }
         )
+        if check_care_budget:
+            _assert_separated_care_budget(simulation, state, pensions, amounts[-1])
     for name in SUPPLEMENT_PROGRAMS[state]:
         np.testing.assert_allclose(
             amounts[0][name], amounts[1][name], atol=0.01, err_msg=f"{state}: {name}"
