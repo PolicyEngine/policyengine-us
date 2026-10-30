@@ -1,3 +1,10 @@
+## [2.81.0] - 2026-10-30
+
+### Added
+
+- Add Minnesota Energy Assistance Program Primary Heat benefit.
+
+
 ## [2.80.0] - 2026-10-30
 
 ### Added
