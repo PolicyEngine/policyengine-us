@@ -59,9 +59,9 @@ IRC_2020_RECOMPUTED_VARIABLES = ("dependent_care_assistance_exclusion",)
 
 def _get_pinned_tbs(base_tbs, pin_name, pin_fn):
     parameters = base_tbs.parameters
-    # Core clears a tree's at-instant cache whenever a parameter under it is
-    # edited, so this key outlives the pin's source values only if no one has
-    # edited them in place. String instants key the cache, so it cannot clash.
+    # Editing a parameter clears the at-instant cache of every node above it,
+    # so this key survives in the root's cache only while no one has edited the
+    # tree in place. That cache has instant strings as keys, so it cannot clash.
     unedited = f"pinned_tbs.{pin_name}"
     entry = _PINNED_TBS_CACHE.get(pin_name)
     if (
