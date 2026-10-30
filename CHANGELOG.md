@@ -1,3 +1,10 @@
+## [2.84.0] - 2026-10-30
+
+### Added
+
+- Add Nevada LIHEAP Energy Assistance Program Fixed Annual Credit.
+
+
 ## [2.83.2] - 2026-10-30
 
 ### Fixed
