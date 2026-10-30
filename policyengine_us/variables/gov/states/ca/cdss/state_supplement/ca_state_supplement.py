@@ -17,6 +17,8 @@ class ca_state_supplement(Variable):
     reference = (
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200",
         "https://www.law.cornell.edu/cfr/text/20/416.1160",
+        "https://www.law.cornell.edu/cfr/text/20/416.1161",
+        "https://www.law.cornell.edu/cfr/text/20/416.2025",
         "https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf#page=25",
     )
 
@@ -46,13 +48,16 @@ class ca_state_supplement(Variable):
         # NOTE: SSI couple status ignores SSI's noncitizen test, so the
         # model's SSI is still the couple computation (issue 10481).
         head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
-        spouse_fails_test = (
-            person.marital_unit.sum(~meets_ssi_immigration_test & head_or_spouse) > 0
+        # The exclusion needs a spouse who can receive CAPI, so key on CAPI
+        # eligibility rather than on SSI's noncitizen test alone (issue 10482).
+        capi_eligible = person("ca_capi_eligible_person", period.this_year)
+        spouse_capi_eligible = (
+            person.marital_unit.sum(capi_eligible & head_or_spouse) > 0
         )
         in_mixed_couple = (
             person("ssi_couple_computation_applies", period)
             & meets_ssi_immigration_test
-            & spouse_fails_test
+            & spouse_capi_eligible
         )
         earned = max_(
             person("ssi_earned_income", period.this_year)

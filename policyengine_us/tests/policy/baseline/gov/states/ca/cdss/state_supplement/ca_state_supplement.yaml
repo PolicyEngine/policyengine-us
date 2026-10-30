@@ -621,3 +621,38 @@
     ca_state_supplement: 118.83
     # CAPI: 2,098.83 - 1,980 - 118.83 = 0.
     ca_capi_person: [0, 0]
+
+- name: Case 16, 2026 citizen married to an aged spouse who fails SSI's noncitizen test and cannot receive CAPI, so the spouse's income is not excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+        social_security: 3_840 # 320 a month
+      person2:
+        age: 70
+        immigration_status: UNDOCUMENTED
+        pension_income: 8_400 # 700 a month
+        # WIC 18938 bars undocumented people from CAPI (#10482).
+        ca_capi_eligible_person: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The spouse receives no CAPI, so 20 CFR 416.1161(a)(2)-(3) does not
+    # apply and the spouse's 700 a month, above the 1,491 - 994 = 497
+    # threshold, is deemed (20 CFR 416.1163). The model's joint SSI gives each
+    # spouse (320 + 700 - 20) / 2 = 500: SSI 745.50 - 500 = 245.50 and a
+    # supplement of 1,233.94 - 245.50 - 500 = 488.44, 733.94 in all.
+    # NOTE: SSA pays min(994 - 300, 1,491 - 1,000) = 491 of SSI and 239.94 of
+    # supplement, 730.94 in all; the gap is the joint SSI (#10481).
+    ssi: [245.50, 0]
+    ca_state_supplement: 488.44
+    ca_capi_person: [0, 0]
