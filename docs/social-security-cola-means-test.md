@@ -18,9 +18,10 @@ all beneficiaries beginning with the December 2028 COLA. Its single,
 head-of-household and separate filers share a line; joint filers have twice
 that line. It also specifies chained CPI-U before benefit receipt. Its example
 lines are $85,000 and $170,000 in 2018 dollars, indexed by CPI-U. The preset
-below implements these mechanics. OACT's displayed December 2028 dollar
-estimates use its projections; this model calculates indexed lines from its
-own pinned CPI-U path.
+below implements these mechanics. Its 2029 income lines are $117,800 single
+and $235,700 joint. OACT's displayed December 2028 lines of $117,300 and
+$234,600 use a different CPI projection; this model uses the authored CPI-U
+path described below.
 
 The default enabled scenario differs from A9 in two parameterized ways: it
 retains the statutory COLA below the line and restricts the policy to people
@@ -50,7 +51,7 @@ reforms must supply the numbers.
 | `income_sensitivity` | `0` = `prior_year` | Alternatively, `1` = `never_withheld` or `2` = `always_withheld`. |
 | `thresholds.base_year` | `2026` | Dollar year of the supplied lines. |
 | `thresholds.single`, `thresholds.joint` | `0`, `0` | Neutral placeholders; evaluated `prior_year` income decisions require positive scenario lines. |
-| `thresholds.index_lag` | `1` | Years before the payment year for the December CPI-U observation. |
+| `thresholds.index_lag` | `1` | Years before the payment year for the December 1 CPI-U lookup. |
 | `thresholds.rounding` | `100` | Dollar increment, rounded half up. |
 | `filing_groups.SINGLE` | `0` = `single` | Select the single line; `1` selects joint. |
 | `filing_groups.HEAD_OF_HOUSEHOLD` | `0` = `single` | Select the single line; `1` selects joint. |
@@ -61,13 +62,21 @@ reforms must supply the numbers.
 `means_test.enabled` activates both the income decision and the selected index
 without requiring another switch. The enclosing `cola.withholding_enabled`
 remains the A5 switch for externally resolved withholding decisions when the
-means test is disabled. With either channel enabled, explicit component
-withholding values and `ss_calculator_withhold_cola` are deliberate decision
-overrides. The automatic timing, cohort and receipt restrictions apply to
-calculated decisions; supplied decisions retain normal override precedence.
-When the automatic policy is inactive, manual component inputs retain their
-legacy carry-forward behavior. Calculator-specific decisions apply only in
-their explicitly supplied year.
+means test is disabled. With the means test enabled, use the separate annual
+Person inputs `social_security_X_cola_override` and
+`ss_calculator_cola_override`: `-1` means automatic (the default), `0` means
+paid, and `1` means withheld. Each person's default remains automatic when
+another person supplies an override. The automatic timing, cohort and receipt
+restrictions apply to automatic decisions; an explicit override supplies the
+final decision for that person and year. The tri-state overrides expire after
+their supplied year; later years return to automatic decisions.
+
+With the means test disabled, the reported route retains A5's boolean
+`social_security_X_cola_withheld` inputs and their legacy carry-forward
+behavior. The calculator reads only `ss_calculator_withhold_cola`, in its
+explicitly supplied year. Component boolean inputs do not reach the
+calculator. These legacy boolean channels do not override an enabled means
+test; use the separate tri-state inputs for that purpose.
 
 Positive single and joint lines are required when a `prior_year` income
 decision is evaluated. The `never_withheld` and `always_withheld` sensitivities
@@ -161,13 +170,23 @@ line(g, y) = round_half_up_to_R(
 withheld(y) = prior_year_MAGI > line(g, y)
 ```
 
-The CPI-U series is `gov.bls.cpi.cpi_u`. The default observes the December
-before the check year, including December 2028 for January 2029 checks.
-Parameter snapshots are held until the next authored observation, including
-in projections. The December snapshot, one-year payment lag and nearest-$100
-half-up rounding are documented modeling conventions: A9 specifies CPI-U
-indexing without prescribing these details. Pin both the index path and
-these settings for a score.
+The code reads `gov.bls.cpi.cpi_u` at December 1 of year `y - L`, and at
+December 1 of the base year. Under the parameter lookup's ordinary semantics,
+this returns a BLS December figure where one exists, otherwise the latest
+authored value. The series currently contains BLS monthly observations
+through June 2026, so `cpi_u("2026-12-01")` returns June 2026's `332.568`.
+For later years it uses CBO's February-keyed projection: for example,
+`cpi_u("2028-12-01")` returns `348.3`, authored at `2028-02-01`.
+These reads do not construct a separate December projection series.
+
+The default one-year lag uses the December 1, 2028 lookup for January 2029
+checks. The A9 preset's $85,000/$170,000 base lines, December 2018 value
+`251.233`, and projected value `348.3` give $117,800/$235,700 after nearest-$100
+half-up rounding. OACT's displayed $117,300/$234,600 lines use a different
+CPI projection. The December 1 lookup, one-year payment lag and rounding are
+documented modeling conventions: A9 specifies CPI-U indexing without
+prescribing these details. Pin both the authored index path and these
+settings for a score.
 
 The chained option uses Q3 averages of July, August and September levels from
 `gov.bls.cpi.c_cpi_u`. As with the statutory CPI-W schedule, positive growth
@@ -194,9 +213,12 @@ floored at zero. Withholding overrides the entire resulting increase.
 
 ## One joint COLA adjustment
 
-Each annual Person variable `social_security_X_cola_withheld`, for `X` equal
-to `retirement`, `disability`, `survivors` or `dependents`, has a formula that
-resolves its tax unit's decision. Explicit values override that formula.
+Each annual Person variable `social_security_X_cola_means_test_withheld`, for
+`X` equal to `retirement`, `disability`, `survivors` or `dependents`, resolves
+its tax unit's automatic decision and that person's separate
+`social_security_X_cola_override` input. The legacy
+`social_security_X_cola_withheld` boolean remains A5's input channel when the
+means test is disabled.
 For a reported benefit, the population adjustment accumulates one ratio for
 each exposed event:
 
@@ -218,8 +240,10 @@ multiplied withholding factor would give the wrong result.
 
 The household calculator applies the same per-year decisions inside its COLA
 schedule. It rounds the resulting PIA under the applicable event rule and
-applies claiming and payment calculations once. Its explicit annual
-`ss_calculator_withhold_cola` value takes precedence over the shared decision.
+applies claiming and payment calculations once. With the means test enabled,
+the annual `ss_calculator_cola_override` takes precedence over the component
+override, followed by the automatic decision. With the means test disabled,
+it retains A5's exact-year `ss_calculator_withhold_cola` channel.
 
 For a public retirement component, select `social_security_retirement_source`
 as `supplied_aime` or `supplied_pia`, and supply the matching
@@ -245,10 +269,12 @@ adjustments, high-water years and combined CPI-E changes and withholding.
 Multi-year graph checks establish that the prior-year income read has no
 cycle. Calculated-source cases check that the COLA policy is applied once.
 
-Property checks require disabled-policy equality to the stacked base,
-nonincreasing benefits when a year is withheld, monotone withholding as income
-rises at a fixed line, and equality of the joint factor to the product of its
-per-year ratios. Differential checks cover reported situations, downstream
-outputs and household calculator examples with this means test disabled.
+Compatibility checks pin literal results from main for disabled-policy
+reported and calculator routes, including A5 inputs. Other checks require
+nonincreasing benefits when a year is withheld and monotone withholding as
+income rises at a fixed line. Multi-person cases preserve each person's
+automatic decision when someone else supplies an override. Differential
+checks cover reported situations, downstream outputs and household
+calculator examples with this means test disabled.
 Population impact requires a separately pinned scoring run; these mechanics
 do not substitute OACT's solvency estimates for a PE-US result.

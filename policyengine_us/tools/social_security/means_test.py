@@ -297,6 +297,16 @@ def cohort_mask(settings, eligibility_year):
     return np.asarray(eligibility_year) >= settings.first_eligible_year
 
 
+def cola_override(person, name, period):
+    """Read an exact-year tri-state input without carrying past overrides."""
+    if not has_input_for_period(person.simulation, name, period):
+        return np.full(len(person.ids), -1, dtype=int)
+    override = person(name, period)
+    if np.any(~np.isin(override, (-1, 0, 1))):
+        raise ValueError("COLA override must be -1 (auto), 0 (paid), or 1 (withheld)")
+    return override
+
+
 def component_withholding(
     person,
     period,
@@ -311,29 +321,20 @@ def component_withholding(
 
     The reported-factor caller supplies its score-year eligibility proxy for
     every historical event. It does not re-age a static row within one score.
-    Explicit per-event withholding inputs retain A5's override channel.
+    E3 overrides are separate tri-state inputs, so an omitted person remains
+    automatic even when another person's decision is supplied. The legacy
+    boolean input remains A5's channel when E3 is disabled.
     """
     period = to_period(period)
     year = period.start.year
     p = policy_settings(parameters, year)
-    if use_explicit and has_input_for_period(
-        person.simulation, f"social_security_{component}_cola_withheld", period
-    ):
+    if not p.enabled:
         return person(f"social_security_{component}_cola_withheld", period)
-    if not policy_active(p, year):
-        # Before E3, this was a pure annual input. Preserve Core's carry-over
-        # of supplied manual decisions when the automatic policy is inactive.
-        # Formula caches must never become manual decision sources.
-        name = f"social_security_{component}_cola_withheld"
-        earlier = [
-            when
-            for when in person.simulation._get_set_input_periods(name)
-            if when.start < period.start
-            and has_input_for_period(person.simulation, name, when)
-        ]
-        if earlier:
-            return person(name, max(earlier, key=lambda when: when.start))
-        return np.zeros(len(person.ids), dtype=bool)
+    override = cola_override(
+        person, f"social_security_{component}_cola_override", period
+    )
+    if not policy_active(p, year) or np.all(override != -1):
+        return override == 1
     eligibility_year = (
         component_eligibility_year(person, period, component)
         if eligibility_year is None
@@ -349,13 +350,15 @@ def component_withholding(
         if receipt_month is None
         else np.asarray(receipt_month)
     )
-    eligible = cohort_mask(p, eligibility_year) & ~before_receipt(
-        year, receipt_year, receipt_month
+    eligible = (
+        cohort_mask(p, eligibility_year)
+        & ~before_receipt(year, receipt_year, receipt_month)
+        & (override == -1)
     )
     if not np.any(eligible):
-        return eligible
-    return eligible & person.tax_unit(
-        "social_security_cola_means_test_withheld", period
+        return override == 1
+    return (override == 1) | (
+        eligible & person.tax_unit("social_security_cola_means_test_withheld", period)
     )
 
 

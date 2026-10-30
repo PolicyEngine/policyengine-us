@@ -37,7 +37,7 @@
         social_security_cola_means_test_magi:
           2026: 100001
   output:
-    social_security_retirement_cola_withheld: [false, true, false]
+    social_security_retirement_cola_means_test_withheld: [false, true, false]
     # January 2027 statutory rate is 3.6%. The CPI-E addition appears only
     # in the two paid numerators; the withheld numerator is exactly one.
     social_security_retirement:

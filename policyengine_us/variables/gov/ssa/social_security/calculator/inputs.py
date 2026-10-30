@@ -373,4 +373,15 @@ class ss_calculator_withhold_cola(Variable):
     definition_period = YEAR
     default_value = False
     label = "Social Security calculator withhold cola"
-    documentation = "Already-resolved COLA withholding decision for this check year, for example from an E3 policy."
+    documentation = (
+        "Legacy A5 withholding decision for this exact check year when E3 is disabled."
+    )
+
+
+class ss_calculator_cola_override(Variable):
+    value_type = int
+    entity = Person
+    definition_period = YEAR
+    default_value = -1
+    label = "Social Security calculator COLA means-test override"
+    documentation = "Exact check-year E3 decision: -1 automatic (default), 0 paid, 1 withheld. Takes precedence over the component override for this person."

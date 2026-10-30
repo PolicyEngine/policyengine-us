@@ -249,7 +249,9 @@ def test_each_index_scope_combination_and_first_eligible_boundary(index, scope):
     )
     for component in COMPONENTS:
         np.testing.assert_array_equal(
-            simulation.calculate(f"social_security_{component}_cola_withheld", 2027),
+            simulation.calculate(
+                f"social_security_{component}_cola_means_test_withheld", 2027
+            ),
             expected_withholding,
         )
         np.testing.assert_allclose(
@@ -275,7 +277,9 @@ def test_equality_is_paid_and_each_filing_status_has_an_explicit_group(
         system=means_test_system,
     )
     np.testing.assert_array_equal(
-        simulation.calculate("social_security_retirement_cola_withheld", 2027),
+        simulation.calculate(
+            "social_security_retirement_cola_means_test_withheld", 2027
+        ),
         [True, True, True, False, False, False],
     )
 
@@ -287,7 +291,9 @@ def test_surviving_spouse_mapping_is_a_parameter():
         ),
         _reform(**{"filing_groups.SURVIVING_SPOUSE": "single"}),
     )
-    assert simulation.calculate("social_security_retirement_cola_withheld", 2027)[0]
+    assert simulation.calculate(
+        "social_security_retirement_cola_means_test_withheld", 2027
+    )[0]
 
 
 def test_static_cohort_proxy_is_reconstructed_within_each_score_year(means_test_system):
@@ -328,7 +334,9 @@ def test_only_prior_tax_year_income_and_filing_status_make_the_decision(
         ),
         system=means_test_system,
     )
-    assert simulation.calculate("social_security_retirement_cola_withheld", 2027)[0]
+    assert simulation.calculate(
+        "social_security_retirement_cola_means_test_withheld", 2027
+    )[0]
 
 
 def test_magi_excludes_social_security_and_retains_irmaa_addbacks():
@@ -389,9 +397,9 @@ def test_supplied_income_history_overrides_the_extended_record_proxy(
         )
         decisions.append(
             bool(
-                simulation.calculate("social_security_retirement_cola_withheld", 2027)[
-                    0
-                ]
+                simulation.calculate(
+                    "social_security_retirement_cola_means_test_withheld", 2027
+                )[0]
             )
         )
     assert decisions == [False, True]
@@ -407,7 +415,11 @@ def test_static_cross_section_proxy_sensitivities(sensitivity, income, expected)
         _reform(income_sensitivity=sensitivity),
     )
     assert (
-        bool(simulation.calculate("social_security_retirement_cola_withheld", 2027)[0])
+        bool(
+            simulation.calculate(
+                "social_security_retirement_cola_means_test_withheld", 2027
+            )[0]
+        )
         is expected
     )
 
@@ -415,12 +427,14 @@ def test_static_cross_section_proxy_sensitivities(sensitivity, income, expected)
 def test_explicit_withholding_input_remains_a_final_decision(means_test_system):
     simulation = _simulation(
         _situation(
-            {"worker": _record(social_security_retirement_cola_withheld={2027: True})},
+            {"worker": _record(social_security_retirement_cola_override={2027: 1})},
             {"worker": 0},
         ),
         system=means_test_system,
     )
-    assert simulation.calculate("social_security_retirement_cola_withheld", 2027)[0]
+    assert simulation.calculate(
+        "social_security_retirement_cola_means_test_withheld", 2027
+    )[0]
     assert simulation.calculate("social_security_retirement", 2027)[0] < 12_000
 
 
@@ -430,7 +444,9 @@ def test_disabled_means_test_preserves_manual_input_carry_over():
             {"worker": _record(social_security_retirement_cola_withheld={2026: True})}
         )
     )
-    assert simulation.calculate("social_security_retirement_cola_withheld", 2027)[0]
+    assert simulation.calculate(
+        "social_security_retirement_cola_means_test_withheld", 2027
+    )[0]
 
 
 def test_zero_cola_and_downward_adjustment_floor():
@@ -492,8 +508,12 @@ def test_pre_receipt_index_is_separate_and_has_no_income_withholding(
         (1 + chained[year]) / (1 + baseline[year]) if use_chained_before_receipt else 1
         for year in (2027, 2028, 2029)
     ) / (1 + baseline[2030])
-    assert not simulation.calculate("social_security_retirement_cola_withheld", 2029)[0]
-    assert simulation.calculate("social_security_retirement_cola_withheld", 2030)[0]
+    assert not simulation.calculate(
+        "social_security_retirement_cola_means_test_withheld", 2029
+    )[0]
+    assert simulation.calculate(
+        "social_security_retirement_cola_means_test_withheld", 2030
+    )[0]
     assert simulation.calculate("social_security_retirement_joint_cola_factor", 2030)[
         0
     ] == pytest.approx(expected)
@@ -516,6 +536,111 @@ def _calculator_record(name):
         ss_calculator_earnings_test_no_trigger=True,
     )
     return record
+
+
+@pytest.mark.parametrize("calculator", [False, True])
+def test_partial_paid_override_preserves_other_persons_automatic_decision(
+    means_test_system, calculator
+):
+    # Core stores a complete array for each supplied variable/year. The -1
+    # default must keep A automatic when only B supplies a paid decision.
+    records = {
+        name: _calculator_record(name) if calculator else _record()
+        for name in ("A", "B")
+    }
+    override = (
+        "ss_calculator_cola_override"
+        if calculator
+        else "social_security_retirement_cola_override"
+    )
+    records["B"][override] = {2027: 0}
+    simulation = _simulation(
+        _situation(records, {"A": 1_000_000, "B": 1_000_000}),
+        system=means_test_system,
+    )
+    variable, period, expected = (
+        ("ss_calculated_payment", "2027-01", [1000, 1036])
+        if calculator
+        else ("social_security_retirement", 2027, [11583.01, 12000])
+    )
+    np.testing.assert_allclose(
+        simulation.calculate(variable, period), expected, rtol=0, atol=0.01
+    )
+
+
+def test_calculator_override_precedence_and_exact_year_expiry(means_test_system):
+    # Exercise Core's separate input arrays: component decisions reach the
+    # calculator, and its own non-auto input takes precedence for that person.
+    records = {name: _calculator_record(name) for name in ("A", "B", "C")}
+    records["A"]["social_security_retirement_cola_override"] = {2027: 0}
+    records["B"].update(
+        social_security_retirement_cola_override={2027: 1},
+        ss_calculator_cola_override={2027: 0},
+    )
+    records["C"].update(
+        social_security_retirement_cola_override={2027: 0},
+        ss_calculator_cola_override={2027: 1},
+    )
+    simulation = _simulation(
+        _situation(
+            records,
+            {name: {2026: 1_000_000, 2027: 1_000_000} for name in records},
+        ),
+        system=means_test_system,
+    )
+    np.testing.assert_array_equal(
+        simulation.calculate("ss_calculated_payment", "2027-01"),
+        [1036, 1036, 1000],
+    )
+    # All overrides expire after 2027. High prior-year income withholds the
+    # next COLA for all three; paid 2027 COLAs remain in A and B's check levels.
+    np.testing.assert_array_equal(
+        simulation.calculate("ss_calculated_payment", "2028-01"),
+        [1036, 1036, 1000],
+    )
+
+
+def test_disabled_means_test_calculator_ignores_component_withholding():
+    # Literal checks captured from main 37dd5099ed7fad694419fb652eb3ba7bd14122ba.
+    # A5's calculator channel is exact-year ss_calculator_withhold_cola only.
+    record = _calculator_record("worker")
+    record["ss_calculator_supplied_pia"] = 1000.1
+    record["social_security_retirement_cola_withheld"] = {2027: True}
+    simulation = _simulation(
+        _situation({"worker": record}),
+        reform={
+            "gov.contrib.ssa.benefit_levers.cola.withholding_enabled": {
+                "2020-01-01": True
+            }
+        },
+    )
+    for year, expected in zip(range(2027, 2031), (1036, 1062, 1086, 1111)):
+        assert (
+            simulation.calculate("ss_calculated_payment", f"{year}-01")[0] == expected
+        )
+
+
+def test_disabled_means_test_calculator_manual_decision_is_exact_year():
+    records = {name: _calculator_record(name) for name in ("A", "B")}
+    for record in records.values():
+        record["ss_calculator_supplied_pia"] = 1000.1
+    records["B"]["ss_calculator_withhold_cola"] = {2027: True}
+    # New E3 inputs have no effect when E3 is off.
+    records["A"]["ss_calculator_cola_override"] = {2027: 1}
+    simulation = _simulation(
+        _situation(records),
+        reform={
+            "gov.contrib.ssa.benefit_levers.cola.withholding_enabled": {
+                "2020-01-01": True
+            }
+        },
+    )
+    np.testing.assert_array_equal(
+        simulation.calculate("ss_calculated_payment", "2027-01"), [1036, 1000]
+    )
+    np.testing.assert_array_equal(
+        simulation.calculate("ss_calculated_payment", "2028-01"), [1062, 1025]
+    )
 
 
 @pytest.mark.parametrize("other_payment_factors", [False, True])
@@ -587,11 +712,15 @@ def test_midyear_first_check_retains_the_pre_receipt_index():
     # First receipt is July2028. January2028's COLA therefore uses the
     # pre-receipt index regardless of income; January2029 is income-tested.
     np.testing.assert_array_equal(
-        simulation.calculate("social_security_retirement_cola_withheld", 2028),
+        simulation.calculate(
+            "social_security_retirement_cola_means_test_withheld", 2028
+        ),
         [False, False],
     )
     np.testing.assert_array_equal(
-        simulation.calculate("social_security_retirement_cola_withheld", 2029),
+        simulation.calculate(
+            "social_security_retirement_cola_means_test_withheld", 2029
+        ),
         [True, True],
     )
     parameters = simulation.tax_benefit_system.parameters
@@ -639,11 +768,15 @@ def test_named_withholding_uses_selected_calculator_cohort_and_receipt(
     simulation = _simulation(situation, system=means_test_system)
     baseline = _simulation(situation, system=disabled_means_test_system)
     np.testing.assert_array_equal(
-        simulation.calculate("social_security_retirement_cola_withheld", 2028),
+        simulation.calculate(
+            "social_security_retirement_cola_means_test_withheld", 2028
+        ),
         [False, False],
     )
     np.testing.assert_array_equal(
-        simulation.calculate("social_security_retirement_cola_withheld", 2029),
+        simulation.calculate(
+            "social_security_retirement_cola_means_test_withheld", 2029
+        ),
         [False, True],
     )
     np.testing.assert_array_equal(
@@ -657,6 +790,16 @@ def test_named_withholding_uses_selected_calculator_cohort_and_receipt(
 
 
 def test_a9_preset_reproduces_captured_description():
+    # Literal line boundaries pin the model's projection path independently
+    # of indexed_threshold's implementation. Equality is paid in both groups.
+    names = (
+        "below",
+        "above",
+        "single_equal",
+        "single_above",
+        "joint_equal",
+        "joint_above",
+    )
     simulation = _simulation(
         _situation(
             {
@@ -665,9 +808,22 @@ def test_a9_preset_reproduces_captured_description():
                     age={2028: 70, 2029: 70},
                     social_security_retirement_first_cola_year=2029,
                 )
-                for name in ("below", "above")
+                for name in names
             },
-            {"below": {2027: 0, 2028: 0}, "above": {2027: 1_000_000, 2028: 1_000_000}},
+            {
+                "below": {2027: 0, 2028: 0},
+                "above": {2027: 1_000_000, 2028: 1_000_000},
+                "single_equal": {2028: 117_800},
+                "single_above": {2028: 117_801},
+                "joint_equal": {2028: 235_700},
+                "joint_above": {2028: 235_701},
+            },
+            {
+                "single_equal": {2028: "SINGLE"},
+                "single_above": {2028: "SINGLE"},
+                "joint_equal": {2028: "JOINT"},
+                "joint_above": {2028: "JOINT"},
+            },
         ),
         a9,
     )
@@ -682,15 +838,22 @@ def test_a9_preset_reproduces_captured_description():
     assert means_test.thresholds.base_year == 2018
     assert means_test.thresholds.single == 85_000
     assert means_test.thresholds.joint == 170_000
-    np.testing.assert_array_equal(
-        simulation.calculate("social_security_retirement_cola_withheld", 2028),
-        [False, False],
-    )
-    np.testing.assert_array_equal(
-        simulation.calculate("social_security_retirement_cola_withheld", 2029),
-        [False, True],
-    )
     parameters = simulation.tax_benefit_system.parameters
+    index = parameters.gov.bls.cpi.cpi_u
+    assert index("2026-12-01") == 332.568  # Latest BLS value: June 2026.
+    assert index("2028-12-01") == 348.3  # CBO value authored February 2028.
+    np.testing.assert_array_equal(
+        simulation.calculate(
+            "social_security_retirement_cola_means_test_withheld", 2028
+        ),
+        [False] * len(names),
+    )
+    np.testing.assert_array_equal(
+        simulation.calculate(
+            "social_security_retirement_cola_means_test_withheld", 2029
+        ),
+        [False, True, False, True, False, True],
+    )
     baseline = next(
         event["rate"]
         for event in cola_events(parameters, 2029)
@@ -699,7 +862,7 @@ def test_a9_preset_reproduces_captured_description():
     chained = chained_cola_rates(parameters, 2029)[2029]
     np.testing.assert_allclose(
         simulation.calculate("social_security_retirement_joint_cola_factor", 2029),
-        [(1 + chained) / (1 + baseline), 1 / (1 + baseline)],
+        [(1 + chained) / (1 + baseline), 1 / (1 + baseline)] * 3,
     )
 
 
@@ -714,7 +877,9 @@ def test_disabled_later_policy_retains_an_earlier_withheld_event():
         for event in cola_events(simulation.tax_benefit_system.parameters, 2027)
         if event["payment_year"] == 2027
     )
-    assert not simulation.calculate("social_security_retirement_cola_withheld", 2028)[0]
+    assert not simulation.calculate(
+        "social_security_retirement_cola_means_test_withheld", 2028
+    )[0]
     assert simulation.calculate("social_security_retirement_joint_cola_factor", 2028)[
         0
     ] == pytest.approx(1 / (1 + baseline))
@@ -795,7 +960,9 @@ def test_property_withholding_is_monotone_in_income(means_test_system, lower, in
         ),
         system=means_test_system,
     )
-    decisions = simulation.calculate("social_security_retirement_cola_withheld", 2027)
+    decisions = simulation.calculate(
+        "social_security_retirement_cola_means_test_withheld", 2027
+    )
     assert int(decisions[0]) <= int(decisions[1])
 
 
@@ -811,49 +978,75 @@ def test_property_a_withheld_year_never_raises_the_benefit(rate, delta):
     assert withheld <= paid
 
 
-@settings(max_examples=60, deadline=None)
-@given(
-    values=st.lists(
-        st.tuples(st.integers(0, 100), st.integers(-100, 100), st.booleans()),
-        min_size=1,
-        max_size=8,
-    )
+@pytest.mark.parametrize(
+    "reported,prior_income,expected_components,expected_total",
+    [
+        (0, 0, [0, 0, 0, 0], 0),
+        (12_000, 1_000_000, [12_000, 12_000, 12_000, 12_000], 48_000),
+        (100_000, 100_000, [100_000, 100_000, 100_000, 100_000], 400_000),
+    ],
 )
-def test_property_joint_factor_equals_product_of_per_year_ratios(values):
-    events = [_event(2027 + i, c / 1000) for i, (c, _, _) in enumerate(values)]
-    deltas = {2027 + i: d / 10000 for i, (_, d, _) in enumerate(values)}
-    withheld = {2027 + i: w for i, (_, _, w) in enumerate(values)}
-    expected = prod(
-        (1 if w else 1 + max(0, c / 1000 + d / 10000)) / (1 + c / 1000)
-        for c, d, w in values
-    )
-    actual = joint_cola_factor(events, (2027, 1), 2034, deltas, withheld)
-    assert actual == pytest.approx(expected)
-
-
-@settings(max_examples=8, deadline=None)
-@given(
-    reported=st.integers(0, 100_000),
-    prior_income=st.integers(0, 1_000_000),
-)
-def test_property_means_test_off_preserves_stacked_base_outputs(
-    disabled_means_test_system, reported, prior_income
+def test_means_test_off_matches_main_stacked_base_outputs(
+    disabled_means_test_system,
+    reported,
+    prior_income,
+    expected_components,
+    expected_total,
 ):
+    # Literal outputs from main 37dd5099ed7fad694419fb652eb3ba7bd14122ba.
+    # Both public ingress modes must match main, even if both change together.
     record = _record()
     for component in COMPONENTS:
         record[f"social_security_{component}"] = {2027: reported}
         record.pop(f"social_security_{component}_reported")
     situation = _situation({"worker": record}, {"worker": prior_income})
-    baseline = _simulation(situation)
-    disabled = _simulation(situation, system=disabled_means_test_system)
-    for variable in (
-        *(f"social_security_{component}" for component in COMPONENTS),
-        "social_security",
-        *(f"social_security_{component}_joint_cola_factor" for component in COMPONENTS),
-    ):
+    for system in (None, disabled_means_test_system):
+        simulation = _simulation(situation, system=system)
+        for component, expected in zip(COMPONENTS, expected_components):
+            np.testing.assert_array_equal(
+                simulation.calculate(f"social_security_{component}", 2027),
+                [expected],
+            )
+            np.testing.assert_array_equal(
+                simulation.calculate(
+                    f"social_security_{component}_joint_cola_factor", 2027
+                ),
+                [1],
+            )
         np.testing.assert_array_equal(
-            disabled.calculate(variable, 2027), baseline.calculate(variable, 2027)
+            simulation.calculate("social_security", 2027), [expected_total]
         )
+
+
+def test_a5_only_joint_factor_ignores_calculator_population_dates():
+    """Core must not validate irrelevant population dates on calculator rows."""
+    calculated = _calculator_record("calculated")
+    calculated.update(
+        social_security_retirement_entitlement_year=2026,
+        social_security_retirement_entitlement_month=13,
+    )
+    simulation = _simulation(
+        _situation(
+            {
+                "reported": _record(
+                    social_security_retirement_cola_withheld={2027: True}
+                ),
+                "calculated": calculated,
+            }
+        ),
+        {
+            "gov.contrib.ssa.benefit_levers.cola.start_year": {"2020-01-01": 2027},
+            "gov.contrib.ssa.benefit_levers.cola.withholding_enabled": {
+                "2020-01-01": True
+            },
+        },
+    )
+    # The calculator's own dates are complete and valid. Its unused population
+    # month must not enter the A5 reported-route dependency graph when E3 is off.
+    np.testing.assert_allclose(
+        simulation.calculate("social_security_retirement_joint_cola_factor", 2027),
+        [0.9652509652509652, 1],
+    )
 
 
 def _assert_cached_outputs_equal(reference, actual):
@@ -873,6 +1066,19 @@ def _assert_cached_outputs_equal(reference, actual):
 def test_means_test_off_preserves_downstream_dependency_closure(
     disabled_means_test_system, calculated
 ):
+    # Main 37dd5099ed7fad694419fb652eb3ba7bd14122ba supplies these literals.
+    # Main cannot select the calculator as its public source, so the calculated
+    # case checks its direct calculator channel against main below and retains
+    # public downstream equality as supplemental disabled-policy coverage.
+    main_reported = {
+        "social_security": 24_000,
+        "taxable_social_security": 11_300,
+        "adjusted_gross_income": 41_300,
+        "income_tax": 2_715,
+        "net_investment_income_tax": 0,
+        "medicare_part_b_premium": 0,
+        "household_net_income": 49_442.6015625,
+    }
     record = _calculator_record("worker") if calculated else _record()
     if not calculated:
         # Differential ingress uses legacy public inputs, as M9 requires.
@@ -899,13 +1105,23 @@ def test_means_test_off_preserves_downstream_dependency_closure(
         np.testing.assert_array_equal(
             disabled.calculate(name, 2027), baseline.calculate(name, 2027), err_msg=name
         )
+        if not calculated:
+            for simulation in (baseline, disabled):
+                np.testing.assert_array_equal(
+                    simulation.calculate(name, 2027),
+                    [main_reported[name]],
+                    err_msg=f"main: {name}",
+                )
     if calculated:
-        for name, period in (
-            ("ss_calculated_payment", "2027-01"),
-            ("ss_calculated_annual_entitlement", 2027),
-            ("ss_calculated_retirement", 2027),
+        for name, period, expected in (
+            ("ss_calculated_payment", "2027-01", 1_036),
+            ("ss_calculated_annual_entitlement", 2027, 12_457),
+            ("ss_calculated_retirement", 2027, 12_432),
         ):
-            np.testing.assert_array_equal(
-                disabled.calculate(name, period), baseline.calculate(name, period)
-            )
+            for simulation in (baseline, disabled):
+                np.testing.assert_array_equal(
+                    simulation.calculate(name, period),
+                    [expected],
+                    err_msg=f"main: {name}",
+                )
     _assert_cached_outputs_equal(baseline, disabled)

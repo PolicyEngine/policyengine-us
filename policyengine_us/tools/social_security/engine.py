@@ -17,7 +17,7 @@ from .household import (
 )
 from .parameters import bend_points_at, formula_path_at
 from .pia import FormulaPath
-from .means_test import component_withholding, indexed_cola_rate
+from .means_test import cola_override, component_withholding, indexed_cola_rate
 
 
 def calculator_output(person, period, parameters, output):
@@ -222,25 +222,31 @@ def calculator_output(person, period, parameters, output):
             withholding_enabled = (
                 policy.withholding_enabled or policy.means_test.enabled
             )
-            if withholding_enabled and has_input_for_period(
+            if policy.means_test.enabled:
+                override = cola_override(
+                    person, "ss_calculator_cola_override", str(payment_year)
+                )[index]
+                withheld = (
+                    bool(override)
+                    if override != -1
+                    else bool(
+                        component_withholding(
+                            person,
+                            payment_year,
+                            parameters,
+                            component,
+                            eligibility_year=eligibility,
+                            receipt_year=receipt,
+                            receipt_month=receipt_month,
+                        )[index]
+                    )
+                )
+            elif withholding_enabled and has_input_for_period(
                 person.simulation,
                 "ss_calculator_withhold_cola",
                 str(payment_year),
             ):
                 withheld = bool(value("withhold_cola", str(payment_year)))
-            elif withholding_enabled:
-                withheld = bool(
-                    component_withholding(
-                        person,
-                        payment_year,
-                        parameters,
-                        component,
-                        eligibility_year=eligibility,
-                        receipt_year=receipt,
-                        receipt_month=receipt_month,
-                        use_explicit=True,
-                    )[index]
-                )
             else:
                 withheld = False
             index_rate = indexed_cola_rate(

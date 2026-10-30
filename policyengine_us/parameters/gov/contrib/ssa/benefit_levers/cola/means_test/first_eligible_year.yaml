@@ -1,7 +1,10 @@
-description: First eligibility cohort reached when the Social Security COLA means-test scope is first_eligible_cohorts. This contributed reform is disabled by default.
+description: First eligibility cohort reached when the Social Security COLA means-test scope is first_eligible_cohorts. The 2026 boundary is a configurable scenario choice; the OACT A9 preset applies to all beneficiaries. This contributed reform is disabled by default.
 values:
   0000-01-01: 2026
 metadata:
   unit: year
   label: Social Security COLA means-test first eligibility cohort
   economy: false
+  reference:
+    - title: OACT provision A9, 2026 Trustees Report basis
+      href: https://www.ssa.gov/OACT/solvency/provisions/cola.html
