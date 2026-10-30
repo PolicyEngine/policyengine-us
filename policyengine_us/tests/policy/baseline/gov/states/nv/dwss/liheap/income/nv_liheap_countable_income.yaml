@@ -1,0 +1,285 @@
+# Eligibility income is the household's countable annual gross income (EAP Manual 700-706,
+# 802 II): gross earned income, Social Security and SSI with only the Medicare premiums
+# deducted (703 B.I, 706), retirement-fund withdrawals, capital gains on property other
+# than the home, gambling winnings, child support paid to a member and other unearned
+# income. TANF and the earnings of children under 18 who attend school are FAC-only
+# income, disregarded for eligibility (702 I note, 705, 707 N). An ineligible
+# non-citizen's income counts in full (700 note, 502 A.I). Wages are at the Nevada
+# minimum wage of 12.00 an hour (24,960 full time; 18,720 at 30 hours a week; 6,240 at
+# 10 hours a week). Gas of 600 is 50 a month and electricity of 1,320 is 110 a month.
+
+- name: Case 1, a 17-year-old student's wages are excluded while an 18-year-old's wages count even in high school.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 24_960
+      person2:
+        age: 17
+        is_in_k12_school: true
+        employment_income: 6_240
+      person3:
+        age: 18
+        is_in_k12_school: true
+        employment_income: 6_240
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # 24,960 + 6,240 (age 18 is not under 18); the 17-year-old student's 6,240 is excluded
+    nv_liheap_countable_income: 31_200
+
+- name: Case 2, a 17-year-old who is not in school has wages counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_960
+      person2:
+        age: 17
+        is_in_k12_school: false
+        # 20 hours a week at 12.00.
+        employment_income: 12_480
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # 24,960 + 12,480
+    nv_liheap_countable_income: 37_440
+
+- name: Case 3, Social Security counts net of the Medicare Part B premium and floors at zero for each person.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        ssi: 0
+        # Retirement benefit of 1,800 a month.
+        social_security: 21_600
+        # 2026 standard Part B premium of 202.90 a month.
+        medicare_part_b_premium: 2_434.80
+      person2:
+        age: 66
+        ssi: 0
+        # Small spousal benefit of 150 a month.
+        social_security: 1_800
+        medicare_part_b_premium: 2_434.80
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # (21,600 - 2,434.80) + max(1,800 - 2,434.80, 0) = 19,165.20 + 0
+    nv_liheap_countable_income: 19_165.20
+
+- name: Case 4, SSI is counted while a child-only TANF grant is excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        # 2026 federal SSI benefit rate of 994 a month.
+        ssi: 11_928
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # Nevada TANF one-person payment allowance of 254 a month for the child.
+        tanf: 3_048
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # 994 x 12 = 11,928; TANF is FAC-only income (705)
+    nv_liheap_countable_income: 11_928
+
+- name: Case 5, capital gains, gambling winnings, child support and retirement withdrawals are counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_720
+        # Child support of 400 a month paid to the parent.
+        child_support_received: 4_800
+        # Gain on the sale of a rental lot, not the home.
+        long_term_capital_gains: 2_000
+        gambling_winnings: 1_200
+        # Early withdrawal from an IRA.
+        taxable_ira_distributions: 3_000
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # 18,720 + 4,800 + 2,000 + 1,200 + 3,000
+    nv_liheap_countable_income: 29_720
+
+- name: Case 6, a self-employment loss does not offset wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_720
+        # Net loss from a side business.
+        self_employment_income: -3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    # 18,720 + max(-3,000, 0)
+    nv_liheap_countable_income: 18_720
+
+- name: Case 7, an undocumented member's wages count in full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_720
+      person2:
+        age: 42
+        immigration_status: UNDOCUMENTED
+        employment_income: 24_960
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # 18,720 + 24,960 (the member is excluded from size only)
+    nv_liheap_countable_income: 43_680
+
+- name: Case 8, every listed earned and unearned source is counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        self_employment_income: 100
+        sstb_self_employment_income: 200
+        farm_operations_income: 300
+        partnership_s_corp_income: 400
+        military_basic_pay: 500
+      person2:
+        age: 47
+        pension_income: 600
+        # Survivor Benefit Plan annuity, counted through military_retirement_income.
+        military_retirement_pay_survivors: 700
+        railroad_benefits: 800
+        survivor_benefits: 900
+        disability_benefits: 1_000
+        # Reported benefits, counted through total_unemployment_compensation.
+        unemployment_compensation: 1_100
+        workers_compensation: 1_200
+        veterans_benefits: 1_300
+        general_assistance: 1_400
+        strike_benefits: 1_500
+        alimony_income: 1_600
+        interest_income: 1_700
+        ordinary_dividend_income: 1_800
+        estate_income: 1_900
+        financial_assistance: 2_000
+        rental_income: 2_100
+        farm_rent_income: 2_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # Earned 100 + 200 + 300 + 400 + 500 = 1,500
+    # Unearned 600 + 700 + ... + 2,200 = 17 x 1,400 = 23,800
+    # Each amount is distinct, so dropping any source lowers the total. Neither member
+    # is aged, blind or disabled, so SSI and Nevada OSS are 0; no Social Security is entered.
+    # 1,500 + 23,800
+    nv_liheap_countable_income: 25_300
+
+- name: Case 9, a rental loss does not offset wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_720
+        # Net loss of 200 a month on a rented-out unit.
+        rental_income: -2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    # 18,720 + max(-2,400, 0); without the per-source floor, 18,720 - 2,400 = 16,320
+    nv_liheap_countable_income: 18_720
