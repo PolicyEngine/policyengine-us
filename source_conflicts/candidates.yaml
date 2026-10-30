@@ -4197,12 +4197,55 @@ candidates:
     business equity test.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/eligibility/resources/business_equity_limit.yaml
+    - policyengine_us/variables/gov/states/mt/dphhs/liheap/eligibility/mt_liheap_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10435
   state: ruled
-  note: 'Ruled 2026-10-21 by the user under the 2026-10-19 statute-first rule: the rule''s $25,000. Code not yet on
-    main: mt_liheap_eligible, gov.states.mt.dphhs.liheap.eligibility.resources.business_equity_limit.'
+  note: 'Ruled 2026-10-21 by the user under the 2026-10-19 statute-first rule: the rule''s $25,000.'
+- id: us-mt:liheap-categorical-premium-deduction
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Do out-of-pocket health insurance premiums reduce the income that sets a SNAP-categorical Montana LIHEAP
+    household's benefit multiplier, as ARM 37.70.407(1)(bb) provides with no categorical exception, or not, as manual
+    section 3.15 provides?
+  sources:
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.407(1)(bb), effective May 27, 2023 and unchanged on May 23, 2026
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/36b451e63d1ed5ab982f4c43f746503d7b5d88dc720f10b0fc9b151576d6e788#page=3
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.601(1)(a), effective May 23, 2026
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/b2add645c2eceddb643df5cdaf684339b968b43fc63b88f21ea882dfeb930366#page=1
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2025-2026, section 3.15, PDF page 40
+    url: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=40
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2026-2027, section 3.15, PDF page 40
+    url: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=40
+  readings:
+    statute: Section 407(1)(bb) provides that proof of out-of-pocket health insurance premiums paid by a member "will
+      reduce the income", with no categorical exception; 601(1)(a) varies the benefit by "household income level"
+      without defining income for categorically eligible households.
+    other: Manual section 3.15 provides that "Out-of-pocket insurance premiums are not deducted when an applicant is
+      determined categorically eligible."
+  example: In FFY2026, a SNAP-categorical Yellowstone County railroad retiree with a $16,000 annuity and a $2,434.80
+    Medicare Part B premium, in a two-bedroom single-family house heated with natural gas, receives $533 under the
+    manual, which PE-US follows ($16,000 is 102% of the $15,650 guideline, multiplier 0.69, $772 x 0.69 = $532.68),
+    and $602 with the premiums deducted ($13,565.20 is 87%, multiplier 0.78, $772 x 0.78 = $602.16).
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/mt/dphhs/liheap/income/mt_liheap_countable_income.py
+    - policyengine_us/variables/gov/states/mt/dphhs/liheap/payment/mt_liheap_benefit_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10435
+  state: ruled
+  note: 'Ruled 2026-10-21 by the user: categorical households'' benefit income follows manual sections 3.11 and 3.15,
+    so SNAP-categorical households use countable income without the premium deduction.'
 - id: us-mt:liheap-gift-threshold
   program: liheap
   years:
@@ -4234,12 +4277,13 @@ candidates:
     the manual; in FFY2027, $600 a month adds nothing under the amended rule and $7,200 under the manual.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/income/gift_minimum.yaml
+    - policyengine_us/variables/gov/states/mt/dphhs/liheap/income/mt_liheap_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10435
   state: ruled
-  note: 'Ruled under the 2026-10-19 statute-first rule: follow the administrative rule in force. Code not yet on main:
-    mt_liheap_countable_income, gov.states.mt.dphhs.liheap.income.gift_minimum.'
+  note: 'Ruled under the 2026-10-19 statute-first rule: follow the administrative rule in force.'
 - id: us-mt:liheap-income-limit-size-nine
   program: liheap
   years:
@@ -4271,12 +4315,13 @@ candidates:
     2025 guideline ($89,475).
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/eligibility/smi_rate.yaml
+    - policyengine_us/variables/gov/states/mt/dphhs/liheap/eligibility/mt_liheap_income_limit.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10435
   state: ruled
-  note: 'Ruled 2026-10-21 by the user: published income tables. Code not yet on main: mt_liheap_income_limit,
-    gov.states.mt.dphhs.liheap.eligibility.smi_rate.'
+  note: 'Ruled 2026-10-21 by the user: published income tables.'
 - id: us-mt:liheap-incorporated-table-editions
   program: liheap
   years:
@@ -4315,12 +4360,32 @@ candidates:
       for the 2026-2027 season.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/eligibility/resources/limit.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/base_benefit/coal.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/base_benefit/electricity.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/base_benefit/fuel_oil.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/base_benefit/natural_gas.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/base_benefit/propane.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/base_benefit/wood.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_1_3.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_10.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_11.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_12.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_4.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_5.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_6.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_7.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_8.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_9.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/non_traditional_benefit.yaml
+    - policyengine_us/variables/gov/states/mt/dphhs/liheap/eligibility/mt_liheap_income_limit.py
+    - policyengine_us/variables/gov/states/mt/dphhs/liheap/mt_liheap.py
+    - policyengine_us/variables/gov/states/mt/dphhs/liheap/payment/mt_liheap_multiplier.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10435
   state: ruled
-  note: 'Ruled 2026-10-21 by the user: published income tables for FFY2026-FFY2027. Code not yet on main: mt_liheap_income_limit,
-    mt_liheap_multiplier, mt_liheap, gov.states.mt.dphhs.liheap.eligibility.resources.limit, gov.states.mt.dphhs.liheap.payment.'
+  note: 'Ruled 2026-10-21 by the user: published income tables for FFY2026-FFY2027.'
 - id: us-mt:liheap-minor-member-income
   program: liheap
   years:
@@ -4352,12 +4417,13 @@ candidates:
     without them.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/income/student_minimum_age.yaml
+    - policyengine_us/variables/gov/states/mt/dphhs/liheap/income/mt_liheap_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10435
   state: ruled
-  note: 'Ruled under the 2026-10-19 statute-first rule: count every member''s nonexcluded income. Code not yet on
-    main: mt_liheap_countable_income, gov.states.mt.dphhs.liheap.income.student_minimum_age.'
+  note: 'Ruled under the 2026-10-19 statute-first rule: count every member''s nonexcluded income.'
 - id: us-mt:medical-floor-agi-base
   program: income-tax
   years:

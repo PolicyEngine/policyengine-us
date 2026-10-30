@@ -490,3 +490,44 @@
     mt_liheap_income_limit: 44_095
     mt_liheap_multiplier: 0.6
     mt_liheap: 463
+
+# Manual 8.1 Fuel Types allows heating assistance only for propane, wood,
+# coal, fuel oil, natural gas and electricity, and excludes solar; the
+# matrices have no column for other fuels. Manual 3.36 pays non-traditional
+# dwellings a flat $150 for any allowable fuel, and ARM 37.70.601(3) pays
+# subsidized heat-in-rent households the greater of 5% of the regular benefit
+# and $25. FFY2026, Yellowstone County (District 7): each adult works full
+# time at Montana's 2026 minimum wage, $10.85 x 2,080 = $22,568 <= the
+# $33,719 size-1 limit. With SNAP, SSI and TANF at $0 neither household is
+# categorical, so both are eligible.
+#   (a) A yurt heated by its own solar panels, a non-traditional dwelling.
+#   Solar reads the pre-subsidy electric bill, $107.91 x 12 = $1,294.92 (EIA
+#   2024 Montana residential average). It gets $0; without the fuel-column
+#   gate it would get the flat $150.
+#   (b) A HUD-assisted apartment with heat in rent, in a building heated with
+#   another fuel. $22,568 / $15,650 = 144.2% -> 144%, 126-150% band -> 0.60;
+#   the fuel has no matrix column, so the regular benefit is
+#   floor($0 x 0.60 + 0.5) = $0. It gets $0; without the gate the modified
+#   benefit would be max(5% x $0, $25) = $25.
+- name: Case 15, solar and other fuels pay nothing in a non-traditional dwelling or as subsidized heat in rent.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MT, MT]
+    county: [YELLOWSTONE_COUNTY_MT, YELLOWSTONE_COUNTY_MT]
+    age: [45, 45]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [22_568, 22_568]
+    bedrooms: [1, 1]
+    mt_liheap_dwelling_type: [NON_TRADITIONAL, MULTI_FAMILY]
+    heating_type: [SOLAR, OTHER]
+    pre_subsidy_electricity_expense: [1_294.92, 0]
+    other_heating_fuel_expense: [0, 0]
+    heat_expense_included_in_rent: [false, true]
+    receives_housing_assistance: [false, true]
+    ssi: [0, 0]
+    snap: [0, 0]
+    tanf: [0, 0]
+  output:
+    mt_liheap_eligible: [true, true]
+    mt_liheap: [0, 0]
