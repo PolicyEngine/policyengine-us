@@ -162,7 +162,7 @@ def assert_properties(households):
 
 
 # ---------------------------------------------------------------------------
-# A deterministic grid (runs without Hypothesis).
+# A deterministic grid (this module requires Hypothesis).
 # ---------------------------------------------------------------------------
 
 GRID_AMOUNTS = [-12_000, -5_000, -2_500, 0, 1_000, 4_000]
