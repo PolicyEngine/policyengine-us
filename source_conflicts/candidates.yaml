@@ -4490,6 +4490,201 @@ candidates:
   state: ruled
   note: 'Ruled in October 2026 to follow worksheets; the later statute-first rule requires a model change if this
     credit is outside the statutory exception. Code not yet on main: mo_federal_income_tax_deduction.'
+- id: us-mo:liheap-110-percent-poverty-floor
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Can Missouri's printed 60% SMI limit exclude a large household whose income is below the federal 110%
+    poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624
+  - kind: plan
+    citation: Missouri FFY2026 LIHEAP State Plan, section 2.1, 60% SMI for all household sizes
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MO_Plan_2026.pdf#page=8
+  - kind: guidance
+    citation: Missouri FFY26 Appendix K, Income Ranges and Benefit Amounts, 60% SMI monthly limits for sizes 1-20
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/MO_BenefitMatrix_2026.docx
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The printed Missouri limits fall below that floor starting at household size 16 in FFY2026 and FFY2027.
+  example: In FFY2026, a 16-person household with $107,000 of countable income exceeds the $106,164 state limit
+    but is below the $107,965 floor and receives the $326 natural-gas Energy Assistance payment.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mo/dss/liheap/eligibility/mo_liheap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10438
+  state: ruled
+  note: 'Ruled 2026-10-19: the statute governs. The implementation applies the federal floor
+    gov.hhs.liheap.fpg_floor with the poverty guidelines lagged one year.'
+- id: us-mo:liheap-interest-dividends-and-contributions
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does Missouri count interest and dividends and leave out cash gifts, as the plan's income checklist
+    indicates, or exclude interest and dividends and count contributions, as the manual does?
+  sources:
+  - kind: plan
+    citation: Missouri FFY2026 LIHEAP State Plan, section 1.9 (Interest, dividends, or royalties checked; Cash gifts
+      unchecked)
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MO_Plan_2026.pdf#page=6
+  - kind: manual
+    citation: Missouri LIHEAP Policy and Procedure Manual (October 2025), Unearned Income (contributions, pages
+      32-33) and Income Exclusions (Interest-Dividend Income, page 38)
+    url: https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=32
+  readings:
+    statute: No statute or regulation is supplied; the manual excludes interest and dividend income and counts
+      monetary assistance from family and friends as contributions.
+    other: The plan checklist counts interest, dividends and royalties and does not count cash gifts.
+  example: In FFY2026, a single adult with $40,000 of wages ($32,000 after the 20% deduction) and $2,500 of
+    dividends counts $32,000 under the manual and is eligible below the $34,080 limit, but counts $34,500 under
+    the plan and is not.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/mo/dss/liheap/income/unearned_sources.yaml
+    - policyengine_us/variables/gov/states/mo/dss/liheap/income/mo_liheap_countable_income_person.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10438
+  state: ruled
+  note: 'Ruled 2026-10-06: follow the manual over the plan.'
+- id: us-mo:liheap-qualified-noncitizen-members
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does Missouri count only citizens and legal permanent residents as household members, as the rule says,
+    or every qualified noncitizen, such as refugees, asylees, parolees and COFA citizens, as the manual accepts?
+  sources:
+  - kind: statute
+    citation: 8 U.S.C. 1611(a), 1612(b) and 1641(b)
+    url: https://www.law.cornell.edu/uscode/text/8/1612
+  - kind: regulation
+    citation: 13 CSR 40-19.020(6)(A) and (8)(A)
+    url: https://web.archive.org/web/20250603190025/https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-19.pdf#page=3
+  - kind: manual
+    citation: Missouri LIHEAP Policy and Procedure Manual (October 2025), Citizenship and Legal Permanent Residence,
+      pages 43-44
+    url: https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=43
+  readings:
+    statute: Qualified aliens (8 U.S.C. 1641(b)) may receive federal public benefits, and 8 U.S.C. 1612(b) lets a
+      state limit them only in TANF, the social services block grant and Medicaid; the manual (page 44) accepts
+      refugee, parolee and asylee I-94 annotations and includes COFA citizens among qualified noncitizens.
+    other: The rule and manual page 43 require a citizen of the United States or a legal permanent resident.
+  example: In FFY2026, a lawful permanent resident, a refugee and their citizen child count three members (a
+    $4,588 monthly limit); under the citizen-or-LPR text the refugee is left out and the household counts two
+    ($3,714).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mo/dss/liheap/mo_liheap_household_size.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10438
+  state: unreviewed
+  note: 'The model counts every citizen or qualified noncitizen (is_citizen_or_legal_immigrant). The statute
+    reading is an inference: 8 U.S.C. 1612(b) lets a state limit qualified aliens only in TANF, the social services
+    block grant and Medicaid, and LIHEAP is not among them. Under the citizen-or-LPR text, household-size Case 2
+    would count two members, not three.'
+- id: us-mo:liheap-renter-rent-share
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does a Missouri renter whose heat is included in the rent receive 8% of annual rent capped at the
+    Energy Assistance amount (the rule), 16% capped at that amount (manual and plans), or the lesser of 8% or $100
+    (RSMo 660.115.2)?
+  sources:
+  - kind: statute
+    citation: RSMo 660.115.1 and 660.115.2
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=660.115
+  - kind: regulation
+    citation: 13 CSR 40-19.020(13)
+    url: https://web.archive.org/web/20250603190025/https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-19.pdf#page=4
+  - kind: manual
+    citation: Missouri LIHEAP Policy and Procedure Manual (October 2025), Renter Household Payment
+    url: https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=63
+  - kind: plan
+    citation: Missouri FFY2026 LIHEAP State Plan, section 2.3
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MO_Plan_2026.pdf#page=8
+  readings:
+    statute: The rule pays no more than 8% of annual rent, not to exceed the maximum Energy Assistance payment;
+      RSMo 660.115.2 limits Utilicare renter payments to the lesser of 8% of annual rent or $100.
+    other: The manual and the FFY2024-FFY2027 plans pay 16% of annual rent, up to the Energy Assistance amount for
+      the household's size, income and energy source.
+  example: In FFY2026, a renter household paying $500 a month ($6,000 a year) with propane heat in the rent
+    receives $480 (8%) under the rule, $495 (16% is $960, capped at propane) under the manual and $100 under the
+    Utilicare limit.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/mo/dss/liheap/rent_share.yaml
+    - policyengine_us/variables/gov/states/mo/dss/liheap/mo_liheap.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10438
+  state: ruled
+  note: 'Ruled 2026-10-21: apply the rule''s 8% of annual rent, capped at the amount for the household''s fuel (the
+    manual''s reading of the maximum Energy Assistance payment). RSMo 660.115.2 is read as limited to payments
+    from the Utilicare stabilization fund (660.115.1); Energy Assistance is paid from federal LIHEAP funds.'
+- id: us-mo:liheap-rule-income-ranges-and-payments
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does Missouri Energy Assistance use the income ranges up to 135% of the poverty level and the tiered
+    payments in 13 CSR 40-19.020(14), or the 60% SMI limit and flat fuel amounts in the FFY2026-FFY2027 agency
+    documents?
+  sources:
+  - kind: statute
+    citation: RSMo 660.100.2
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=660.100
+  - kind: regulation
+    citation: 13 CSR 40-19.020(6)(D) and (14), Payment Levels for Missouri (amended effective May 30, 2017)
+    url: https://web.archive.org/web/20250603190025/https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-19.pdf#page=4
+  - kind: plan
+    citation: Missouri FFY2026 LIHEAP State Plan, sections 2.1, 2.5 and 2.6
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MO_Plan_2026.pdf#page=8
+  - kind: guidance
+    citation: Missouri FFY26 Appendix K, Income Ranges and Benefit Amounts
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/MO_BenefitMatrix_2026.docx
+  - kind: manual
+    citation: Missouri LIHEAP Policy and Procedure Manual (October 2025), Appendix K
+    url: https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=129
+  - kind: form
+    citation: Missouri LIHEAP application MO 886-4576 (8-2026), Program Description
+    url: https://dssmanuals.mo.gov/wp-content/uploads/2022/02/liheap-application.pdf#page=1
+  readings:
+    statute: RSMo 660.100.2 bounds income at 150% of the poverty level or 60% of state median income and requires
+      eligibility under the federal program; the rule sets monthly income ranges A-F from 0 to 135% of the poverty
+      level, with natural gas paying $296 in range A down to $203 in range F, and (14) determines payments using
+      metrics established by the division.
+    other: The plan, Appendix K, manual and application set 60% SMI for every size and one amount per fuel, such as
+      $326 for natural gas, paid for the fuel the household selects, including its electric account.
+  example: In FFY2026, a family of four with $39,936 of countable income ($3,328 a month, 124% of the 2025 guideline)
+    that heats with natural gas receives $221 in the rule's range E and $326 under the agency documents.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/mo/dss/liheap/amount.yaml
+    - policyengine_us/parameters/gov/states/mo/dss/liheap/eligibility/smi_rate.yaml
+    - policyengine_us/variables/gov/states/mo/dss/liheap/eligibility/mo_liheap_eligible.py
+    - policyengine_us/variables/gov/states/mo/dss/liheap/eligibility/mo_liheap_income_limit.py
+    - policyengine_us/variables/gov/states/mo/dss/liheap/mo_liheap.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10438
+  state: ruled
+  note: 'Ruled 2026-10-22: apply the operating 60% SMI limits and flat amounts; (14) sets payments using metrics
+    established by the division. The agency documents also pay the fuel the household selects, including its
+    electric account, where the rule''s table is headed Primary Fuel.'
 - id: us-mo:medicaid-published-dollar-limit-rounding
   program: medicaid
   years:

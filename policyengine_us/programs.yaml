@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, MN, MS, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
+    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, MN, MO, MS, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
     state_implementations:
       - state: AL
         status: partial
@@ -1140,6 +1140,14 @@ programs:
         parameter_prefix: gov.states.mn.commerce.eap
         verified_years: "2026-2027"
         notes: FFY2026-FFY2027 Primary Heat, Minnesota's single regular benefit, based on total household energy costs including electricity. Crisis, Energy Related Repair and weatherization are out of scope.
+      - state: MO
+        status: partial
+        name: Missouri LIHEAP
+        full_name: Missouri Low Income Home Energy Assistance Program
+        variable: mo_liheap
+        parameter_prefix: gov.states.mo.dss.liheap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular Energy Assistance only, including the heat-in-rent payment. Crisis (ECIP), cooling and weatherization assistance are out of scope.
       - state: MS
         status: partial
         name: Mississippi LIHEAP
