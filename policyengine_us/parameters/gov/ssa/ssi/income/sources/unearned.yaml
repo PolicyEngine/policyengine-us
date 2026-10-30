@@ -4,6 +4,10 @@ values:
     # (a) Annuities, pensions, and other periodic payments.
     - pension_income
     - social_security
+    # NOTE: Household net income, SNAP, HUD annual income and other program
+    # income lists count social_security and ssi but not railroad_benefits, so
+    # an SSI recipient's railroad annuity drops out of them.
+    # https://github.com/PolicyEngine/policyengine-us/issues/10551
     - railroad_benefits
     - disability_benefits
     - veterans_benefits
