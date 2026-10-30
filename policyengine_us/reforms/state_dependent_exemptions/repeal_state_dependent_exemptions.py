@@ -164,7 +164,10 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.states.ri.tax.income.exemption
 
-            exemptions_count = tax_unit("head_spouse_count", period)
+            # Repeal removes dependents, preserving the baseline filer count.
+            exemptions_count = tax_unit(
+                "head_spouse_count_not_dependent_elsewhere", period
+            )
 
             exemption_amount = exemptions_count * p.amount
 
@@ -232,10 +235,26 @@ def create_repeal_state_dependent_exemptions() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.states.wv.tax.income.exemptions
-            tax_unit_size = tax_unit("head_spouse_count", period)
-            return where(
-                tax_unit_size == 0, p.base_personal, p.personal * tax_unit_size
+            own_exemptions = tax_unit(
+                "head_spouse_count_not_dependent_elsewhere", period
             )
+            # Repeal preserves each childless claimable filer's statutory $500.
+            # Leave dependent-present allocation unchanged pending resolution.
+            person = tax_unit.members
+            claimable_filers = tax_unit.sum(
+                person("is_tax_unit_head_or_spouse", period)
+                & person("claimable_as_dependent_on_another_return", period)
+            )
+            filer_allowances = (
+                p.personal * own_exemptions + p.base_personal * claimable_filers
+            )
+            childless_claimable = (tax_unit("tax_unit_dependents", period) == 0) & (
+                claimable_filers > 0
+            )
+            ordinary_amount = where(
+                own_exemptions == 0, p.base_personal, p.personal * own_exemptions
+            )
+            return where(childless_claimable, filer_allowances, ordinary_amount)
 
     class ca_exemptions(Variable):
         value_type = float
@@ -390,7 +409,6 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             )
             return exempt_status.base[filing_status] + personal_exemptions_added
 
-    # Using head and spouse count instead of exemptions count
     class wi_base_exemption(Variable):
         value_type = float
         entity = TaxUnit
@@ -409,7 +427,11 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         def formula(tax_unit, period, parameters):
             # compute base exemption amount
             p = parameters(period).gov.states.wi.tax.income
-            return tax_unit("head_spouse_count", period) * p.exemption.base
+            # Repeal removes dependents, preserving the baseline filer count.
+            own_exemptions = tax_unit(
+                "head_spouse_count_not_dependent_elsewhere", period
+            )
+            return own_exemptions * p.exemption.base
 
     class de_personal_credit(Variable):
         value_type = float

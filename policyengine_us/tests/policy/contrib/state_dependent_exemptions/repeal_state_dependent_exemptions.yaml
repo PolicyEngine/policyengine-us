@@ -494,3 +494,330 @@
   output:
     # Baseline keeps the dependent add: 7,600 + 1 x 1,000 + 6,800 = 15,400.
     ma_income_tax_exemption_threshold: 15_400
+
+- name: WV dependent exemption repeal - claimed filer with a child keeps the zero-exemption amount
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      parent:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child], filing_status: SINGLE}}
+    households: {household: {members: [parent, child], state_name: WV}}
+  output: {wv_personal_exemption: 500}
+
+- name: WV dependent exemption repeal - claimed childless filer keeps the zero-exemption amount
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      parent:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units: {tax_unit: {members: [parent], filing_status: SINGLE}}
+    households: {household: {members: [parent], state_name: WV}}
+  output: {wv_personal_exemption: 500}
+
+- name: WV dependent exemption repeal - unclaimed but claimable childless filer keeps the zero-exemption amount
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      parent:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units: {tax_unit: {members: [parent], filing_status: SINGLE}}
+    households: {household: {members: [parent], state_name: WV}}
+  output: {wv_personal_exemption: 500}
+
+- name: WI repeal - single filer claimed - baseline
+  period: 2025
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: false
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_name: WI}}
+  output:
+    exemptions_count: 0
+    wi_base_exemption: 0
+
+- name: WI repeal - single filer claimed - reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_name: WI}}
+  output:
+    exemptions_count: 0
+    wi_base_exemption: 0
+
+- name: WI repeal - both joint filers claimed - baseline
+  period: 2025
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: false
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      spouse:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units: {tax_unit: {members: [head, spouse], filing_status: JOINT}}
+    households: {household: {members: [head, spouse], state_name: WI}}
+  output:
+    exemptions_count: 0
+    wi_base_exemption: 0
+
+- name: WI repeal - both joint filers claimed - reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      spouse:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units: {tax_unit: {members: [head, spouse], filing_status: JOINT}}
+    households: {household: {members: [head, spouse], state_name: WI}}
+  output:
+    exemptions_count: 0
+    wi_base_exemption: 0
+
+- name: RI repeal - single filer claimed - baseline
+  period: 2025
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: false
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_name: RI}}
+  output:
+    exemptions_count: 0
+    ri_exemptions: 0
+
+- name: RI repeal - single filer claimed - reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_name: RI}}
+  output:
+    exemptions_count: 0
+    ri_exemptions: 0
+
+- name: WI repeal - single filer unclaimed but claimable - baseline
+  period: 2025
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: false
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_name: WI}}
+  output:
+    exemptions_count: 0
+    wi_base_exemption: 0
+
+- name: WI repeal - single filer unclaimed but claimable - reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_name: WI}}
+  output:
+    exemptions_count: 0
+    wi_base_exemption: 0
+
+- name: RI repeal - single filer unclaimed but claimable - baseline
+  period: 2025
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: false
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_name: RI}}
+  output:
+    exemptions_count: 0
+    ri_exemptions: 0
+
+- name: RI repeal - single filer unclaimed but claimable - reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_name: RI}}
+  output:
+    exemptions_count: 0
+    ri_exemptions: 0
+
+- name: WV statutory individual allowance - single claimable filer
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      filer:
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members:
+        - filer
+        filing_status: SINGLE
+        wv_agi: 30000
+        wv_low_income_earned_income_exclusion: 0
+    households:
+      household:
+        members:
+        - filer
+        state_code: WV
+  output:
+    wv_personal_exemption: 500
+    wv_taxable_income: 29500
+
+- name: WV statutory individual allowance - claimable head and nonclaimable spouse
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: true
+      spouse:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        - spouse
+        filing_status: JOINT
+        wv_agi: 30000
+        wv_low_income_earned_income_exclusion: 0
+    households:
+      household:
+        members:
+        - head
+        - spouse
+        state_code: WV
+  output:
+    wv_personal_exemption: 2500
+    wv_taxable_income: 27500
+
+- name: WV statutory individual allowance - two claimable spouses
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: true
+      spouse:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        - spouse
+        filing_status: JOINT
+        wv_agi: 30000
+        wv_low_income_earned_income_exclusion: 0
+    households:
+      household:
+        members:
+        - head
+        - spouse
+        state_code: WV
+  output:
+    wv_personal_exemption: 1000
+    wv_taxable_income: 29000
+
+- name: WV statutory individual allowance - nonclaimable head and claimable spouse
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      spouse:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        - spouse
+        filing_status: JOINT
+        wv_agi: 30000
+        wv_low_income_earned_income_exclusion: 0
+    households:
+      household:
+        members:
+        - head
+        - spouse
+        state_code: WV
+  output:
+    wv_personal_exemption: 2500
+    wv_taxable_income: 27500
