@@ -45,8 +45,14 @@ class ma_connector_care(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ma.hic.connector_care
         n_members = add(tax_unit, period, ["ma_connector_care_member_eligible"])
-        magi_fraction = tax_unit("aca_magi_fraction", period)
-        per_person_monthly = p.enrollee_premium.calc(magi_fraction)
+        # 956 CMR 12.04(3)(b) assigns Plan Types by exact income bands that
+        # include their upper edge: "at or below 150%" is 2A, "over 150% and
+        # not over 200%" is 2B, and so on. Look up the exact ratio, not the
+        # truncated aca_magi_fraction (which put 150.00%-150.99% in 2A), with
+        # each bracket closed on the right.
+        magi = max_(tax_unit("aca_magi", period), 0)
+        exact_magi_frac = magi / tax_unit("tax_unit_fpg", period.last_year)
+        per_person_monthly = p.enrollee_premium.calc(exact_magi_frac, right=True)
         enrollee_contribution = MONTHS_IN_YEAR * per_person_monthly * n_members
         # SLCSP is a MONTH variable summed to the year to proxy the benchmark
         # ConnectorCare plan; the full APTC is netted per 956 CMR 12.04(3)(c).
