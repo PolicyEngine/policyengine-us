@@ -8656,6 +8656,142 @@ candidates:
   state: ruled
   note: An October 2026 ruling followed the worksheet; the statute-first rule requires including the repayment deduction
     if the statutory reading is confirmed.
+- id: us-wi:liheap-categorical-benefit-income
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is a categorically eligible Wisconsin WHEAP household above 60% of state median income paid as if its income
+    equaled the limit, as the manual and plan state, or on its actual income, as the HE+ calculator computes?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. 16.27(6)
+    url: https://docs.legis.wisconsin.gov/statutes/statutes/16/i/27
+  - kind: manual
+    citation: Wisconsin PY26 WHEAP Manual, section 2.3.1 item 1
+    url: https://web.archive.org/web/20260428215048/https://energyandhousing.wi.gov/Documents/WHEAP/WheapManual_PY26.pdf#page=26
+  - kind: plan
+    citation: Wisconsin FY2026 LIHEAP State Plan, section 1.6
+    url: https://liheapch.acf.gov/docs/2026/state-plans/WI_Plan_2026.pdf#page=5
+  - kind: calculator
+    citation: Wisconsin HE+ Benefit Calculator FFY2026, Computation!C13, C39 and C40
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/WI_BenefitMatrix_2026.xlsx
+  readings:
+    statute: Section 16.27(6) pays heating assistance under a benefit schedule established by the department based on
+      household income, family size and energy costs; manual 2.3.1 item 1 and plan 1.6 pay a categorically eligible
+      household over 60% SMI as if its income were 60% SMI.
+    other: Calculator cell C40 keeps the amount that C39 computes from the household's actual income.
+  example: An eight-person household with $104,000 of income, a $1,150 gas bill and four bedrooms receives $306 at the
+    $101,965 limit and $291 at its actual income.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10434
+  state: ruled
+  note: 'Ruled 2026-10-21 by the user: follow manual 2.3.1 item 1 and plan 1.6. Code not yet on main: wi_wheap.'
+- id: us-wi:liheap-general-relief-and-lump-sums
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Wisconsin WHEAP count General Relief and ignore most non-recurring lump sums, as the manual lists, or
+    follow the plan's income checklist, which leaves General Assistance unchecked and checks one-time lump sums?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. 16.27(5)(b) and (6)
+    url: https://docs.legis.wisconsin.gov/statutes/statutes/16/i/27
+  - kind: manual
+    citation: Wisconsin PY26 WHEAP Manual, Table 3.4 General Relief and Table 3.6 Lump Sum Payments, Non-recurring, PDF
+      pages 55 and 61
+    url: https://web.archive.org/web/20260428215048/https://energyandhousing.wi.gov/Documents/WHEAP/WheapManual_PY26.pdf#page=55
+  - kind: plan
+    citation: Wisconsin FY2026 LIHEAP State Plan, section 1.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/WI_Plan_2026.pdf#page=6
+  readings:
+    statute: Section 16.27 does not define countable income; manual Table 3.4 counts General Relief, including Refugee
+      Cash Assistance, and Table 3.6 ignores most non-recurring lump sums such as tax refunds and rebates.
+    other: Plan 1.9 leaves General Assistance benefits unchecked and checks one-time lump-sum payments such as rebates,
+      credits, lottery winnings and refund deposits.
+  example: A single adult with $1,200 of General Relief and no other income has countable income of $1,200 under the
+    manual and $0 under the plan.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10434
+  state: ruled
+  note: 'Ruled 2026-10-06: follow the manual over the plan. No rebate, credit or refund deposit is counted. Code not
+    yet on main: gov.states.wi.doa.wheap.income.sources.unearned.'
+- id: us-wi:liheap-maximum-benefit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is the Wisconsin WHEAP FFY2026 maximum regular heating benefit $2,580 as the agency-posted plan states, $2,147
+    as the ACF-posted plan prints, or $2,575 as the HE+ calculator sets?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. 16.27(6)
+    url: https://docs.legis.wisconsin.gov/statutes/statutes/16/i/27
+  - kind: plan
+    citation: Wisconsin LIHEAP State Plan FFY2026, agency-posted edition, section 2.6
+    url: https://web.archive.org/web/20260316195114/https://energyandhousing.wi.gov/Documents/WHEAP/LiheapPlan_FFY2026.pdf#page=7
+  - kind: plan
+    citation: Wisconsin FY2026 LIHEAP State Plan as posted by ACF, section 2.6
+    url: https://liheapch.acf.gov/docs/2026/state-plans/WI_Plan_2026.pdf#page=12
+  - kind: calculator
+    citation: Wisconsin HE+ Benefit Calculator FFY2026, Computation!C17
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/WI_BenefitMatrix_2026.xlsx
+  readings:
+    statute: Section 16.27(6) leaves the benefit schedule to the department and sets no maximum; the agency-posted plan
+      item 2.6 sets $2,580.
+    other: The ACF-posted plan item 2.6 prints $2,147 and calculator cell C17 sets $2,575.
+  example: A single-family fuel oil home of five rooms with a poverty ratio of 0.60 and costs above the $3,122 cap receives
+    $2,192 under the $2,580 or $2,575 maximum and $2,147 under the ACF-posted figure.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10434
+  state: ruled
+  note: 'Ruled 2026-10-21 by the user: $2,580. Code not yet on main: gov.states.wi.doa.wheap.payment.maximum.'
+- id: us-wi:liheap-proxy-cost-bounds
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is the Wisconsin WHEAP heating cost capped at twice a heat proxy equal to 75% of the table's average cost, as
+    the manual describes, or at twice the table amount with a floor of 0.75 times it, as the HE+ calculator computes?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. 16.27(6)
+    url: https://docs.legis.wisconsin.gov/statutes/statutes/16/i/27
+  - kind: manual
+    citation: Wisconsin PY26 WHEAP Manual, section 2.3.1 item 3
+    url: https://web.archive.org/web/20260428215048/https://energyandhousing.wi.gov/Documents/WHEAP/WheapManual_PY26.pdf#page=27
+  - kind: calculator
+    citation: Wisconsin HE+ Benefit Calculator FFY2026, Computation!C29, C30 and C31
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/WI_BenefitMatrix_2026.xlsx
+  readings:
+    statute: Section 16.27(6) bases the benefit schedule on energy costs and leaves the cost bounds to the department;
+      manual 2.3.1 item 3 sets the heat proxy at 75% of the average cost and caps costs at two times the proxy, or 1.5
+      times the table amount.
+    other: Calculator cell C30 caps costs at 2 times and C31 floors them at 0.75 times the table amount.
+  example: A propane mobile home with two bedrooms and a $2,400 bill has a $861 table amount; the calculator caps its cost
+    at $1,722 and the manual reading at $1,291.50.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10434
+  state: ruled
+  note: 'Ruled 2026-10-21 by the user: calculator bounds. Code not yet on main: wi_wheap_heating_cost,
+    gov.states.wi.doa.wheap.payment.proxy.cap_rate.'
 - id: us-wi:medicaid-parent-student-option-full-time
   program: medicaid
   years:
