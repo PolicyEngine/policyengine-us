@@ -1,3 +1,14 @@
+## [2.88.0] - 2026-10-30
+
+### Added
+
+- Add Pennsylvania LIHEAP regular heating eligibility, county and fuel payment schedules, and the FY2025 and FY2026 vulnerable-household supplements.
+- Add Louisiana LIHEAP regular heating assistance.
+- Add Maine HEAP Fuel Assistance (LIHEAP regular heating) for the 2025-26 and 2026-27 heating seasons, including the June 29, 2026 points matrix.
+- Add Missouri LIHEAP Energy Assistance for regular heating (FY2026-FY2027).
+- Add the Montana LIHEAP regular heating benefit.
+
+
 ## [2.87.1] - 2026-10-30
 
 ### Fixed
