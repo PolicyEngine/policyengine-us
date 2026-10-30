@@ -883,6 +883,85 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify the legal basis for the amended-return remedy and treatment of exactly $3,000.
+- id: us-ca:capi-payment-standard-offset
+  program: capi
+  years:
+    from: 2019
+    type: calendar
+  question: From June 1, 2019, do CAPI payment standards equal the SSI/SSP standards, or remain $10 (individual),
+    $20 (CAPI couple) or $10 (couple with one SSI/SSP member) below them as the regulations state?
+  sources:
+  - kind: statute
+    citation: Cal. WIC §18941
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=18941
+  - kind: regulation
+    citation: CDSS MPP §49-050.11-.13 (Manual Letter EAS-03-09, effective 10/16/03)
+    url: https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf#page=44
+  - kind: guidance
+    citation: CDSS ACIN I-59-25, Attachment A
+    url: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACINs/2025/I-59_25.pdf#page=5
+  readings:
+    statute: CAPI benefits equal SSI/SSP benefits, retroactive to June 1, 2019.
+    other: CAPI standards are $10 below the SSI/SSP individual standard, $20 below the couple standard for a CAPI
+      couple and $10 below the couple standard when the other spouse receives SSI/SSP.
+  example: In January 2026, an aged CAPI recipient living independently with cooking facilities and no income receives
+    $1,233.94 a month under the statute, which PE-US follows, and $1,223.94 under the regulation.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ca/cdss/capi/payment_standard_offset/couple.yaml
+    - policyengine_us/parameters/gov/states/ca/cdss/capi/payment_standard_offset/mixed_couple.yaml
+    - policyengine_us/parameters/gov/states/ca/cdss/capi/payment_standard_offset/single.yaml
+    - policyengine_us/variables/gov/states/ca/cdss/capi/ca_capi_payment_standard.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10379
+  state: ruled
+  note: 'Ruled 2026-10-27 for the statute by the project lead for the Medicaid fixes; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10379#issuecomment-6451310006. WIC 18941 (2019) makes CAPI
+    benefits "equivalent to the benefits provided under the SSI/SSP program" from June 1, 2019, so it governs over
+    MPP 49-050.11-.13 (2003); CDSS notices ACIN I-23-19 and I-59-25 agree. PE-US follows the statute: the three
+    offsets are $0 from 2019-06-01 and keep the regulation amounts before then (payment_standard_offset/*.yaml, read
+    by ca_capi_payment_standard.py).'
+- id: us-ca:capi-spousal-deeming-method
+  program: capi
+  years:
+    from: 1999
+    type: calendar
+  question: When income is deemed from an ineligible spouse, does CAPI take the lesser federal and lesser state amounts
+    separately, as SSA computes SSI/SSP, or the smaller of the two totals on form SOC 452?
+  sources:
+  - kind: statute
+    citation: Cal. WIC §18940(b)
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=18940
+  - kind: statute
+    citation: Cal. WIC §18941
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=18941
+  - kind: regulation
+    citation: CDSS MPP §49-035.71
+    url: https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf#page=30
+  - kind: manual
+    citation: SSA POMS SI 01320.430 D
+    url: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501320430
+  - kind: form
+    citation: CDSS SOC 452 (4/99), CAPI Income Eligibility - Adult, line C
+    url: https://www.cdss.ca.gov/cdssweb/entres/forms/English/SOC452.pdf
+  readings:
+    statute: Federal deeming rules govern CAPI and CAPI benefits equal SSI/SSP benefits, which SSA computes by taking
+      the lesser federal amount and the lesser state supplement separately (POMS SI 01320.430 D).
+    other: SOC 452 pays the smaller of the couple standard less the couple's countable income and the individual standard
+      less the recipient's own countable income.
+  example: In January 2026, a CAPI recipient with no income whose ineligible spouse earns $1,200 a month receives $1,173.44
+    under the statute and the POMS method, which PE-US follows, and $1,233.94 under SOC 452.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ca/cdss/capi/ca_capi_person.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10379
+  state: unreviewed
+  note: 'PE-US follows the statute: ca_capi_person.py takes the lesser of the federal parts and the lesser of the
+    state parts (POMS SI 01320.430 D). MPP 49-035.71 points to both 20 CFR 416.1160 et seq. and SOC 452. Verify
+    whether CDSS still uses the 1999 form''s line C rule and the years affected.'
 - id: us-ca:care-fera-housing-subsidies
   program: care-fera
   years:
@@ -1292,6 +1371,53 @@ candidates:
   state: unreviewed
   note: 'The rule requires statutory timing rather than the model''s 2025-11-01 proxy; verify commencement and authorized
     transitions before changing it. Code not yet on main: is_snap_sua_hr1_in_effect, snap_utility_allowance_type.'
+- id: us-ca:ssp-blind-couple-food-allowance
+  program: ssi-ssp
+  years:
+    from: 2025
+    type: calendar
+  question: Does a California couple paid the one-blind couple rate get the no-cooking food allowance for its aged
+    or disabled member?
+  sources:
+  - kind: statute
+    citation: Cal. WIC §12200(b), (e)
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200
+  - kind: manual
+    citation: SSA POMS SI 01415.058 B.1, code C note
+    url: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058
+  - kind: guidance
+    citation: CDSS ACIN I-59-25, Attachment A
+    url: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACINs/2025/I-59_25.pdf#page=5
+  readings:
+    statute: The allowance goes only to an aged or disabled individual (12200(c)) or a couple both aged or disabled
+      (12200(d)), so a couple under the one-blind rate (12200(b)) gets none.
+    other: POMS adds the individual restaurant meals allowance for the aged or disabled member of a couple with one
+      blind member whose living arrangement lacks cooking facilities.
+  example: In January 2026, a couple of an aged person and a blind person aged 50 without cooking facilities has a
+    $2,238.44 standard under the statute, which PE-US follows for CAPI, and $2,367.31 under POMS.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/ca/cdss/capi/_ca_capi_ssi_ssp_standard.py
+    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/payment_standard/ca_state_supplement_food_allowance.py
+    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/payment_standard/ca_state_supplement_payment_standard.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10379
+    - https://github.com/PolicyEngine/policyengine-us/pull/10546
+  state: ruled
+  ruling:
+    by: PolicyEngine
+    date: '2026-10-29'
+    record: https://github.com/PolicyEngine/policyengine-us/pull/10379#issuecomment-6509402355
+  note: 'Ruled 2026-10-29 for the statute by the project lead for the Medicaid fixes; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10379#issuecomment-6509402355. WIC 12200(e) gives the
+    no-cooking allowance only under (c) and (d), so a couple paid the one-blind rate under (b) gets none, in CAPI and
+    in the state supplement. CAPI follows the statute: _ca_capi_ssi_ssp_standard.py adds no food allowance to the
+    one-blind couple rate, and a couple both aged or disabled takes the aged or disabled rate with the couple
+    allowance when that is higher. Until PolicyEngine/policyengine-us#10546 merges, the state supplement follows
+    POMS: ca_state_supplement_food_allowance.py adds the individual allowance for the aged or disabled member, so in
+    January 2026 the same couple has a $2,367.31 standard as citizens and $2,238.44 as CAPI recipients. That PR
+    makes the state supplement follow the statute and sets pe_us.follows to statute.'
 - id: us-ca:ssp-nmohc-couple-standard
   program: ssi-ssp
   years:
@@ -1327,8 +1453,10 @@ candidates:
     follows: statute
     code:
     - policyengine_us/parameters/gov/states/ca/cdss/state_supplement/payment_standard/allowance/out_of_home_care.yaml
+    - policyengine_us/variables/gov/states/ca/cdss/capi/_ca_capi_ssi_ssp_standard.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9709
+    - https://github.com/PolicyEngine/policyengine-us/pull/10379
   state: unreviewed
   note: 'PE-US follows the statute: the 2026 allowance is $1,153.31, from a $3,252.14 couple standard, twice the
     $1,626.07 individual rate (allowance/out_of_home_care.yaml), and the file''s comment lists the sources on each
