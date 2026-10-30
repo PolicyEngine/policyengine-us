@@ -229,6 +229,7 @@
     md_premium_assistance: 0
 
 - name: Case 9, program not in effect in 2025 -> 0.
+  # 250% of the 2024 one-person guideline ($15,060), the prior year for 2025.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -239,7 +240,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi: 39_125
+        aca_magi: 37_650
         aca_magi_fraction: 2.50
         aca_required_contribution_percentage: 0.0844
         slcsp: 6_000
@@ -252,6 +253,7 @@
     md_premium_assistance: 0
 
 - name: Case 10, program sunset in 2028 -> 0.
+  # The prior-year guideline is pinned so the supplied 2.50 matches aca_magi.
   period: 2028
   absolute_error_margin: 0.01
   input:
@@ -263,6 +265,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 39_125
+        tax_unit_fpg:
+          2027: 15_650
         aca_magi_fraction: 2.50
         aca_required_contribution_percentage: 0.0844
         slcsp: 6_000
@@ -306,7 +310,7 @@
   # COMAR .04B: max(0, (6_000 - 3_500) - md_pct * 0) = 2_500. (This case
   # expected 0 under the older (federal - md) * income reading; on main it
   # passed only because the unit, with no gross income, computed as a
-  # non-filer.)
+  # non-filer.) Zero MAGI derives a 0% FPL fraction, so md_pct is 0.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -318,7 +322,6 @@
       tax_unit:
         members: [person1]
         aca_magi: 0
-        aca_magi_fraction: 1.50
         aca_required_contribution_percentage: 0.0419
         slcsp: 6_000
         aca_ptc: 3_500
@@ -408,9 +411,10 @@
   output:
     md_premium_assistance: 0
 
-- name: Case 16, single age 40 at 225% FPL -> 1061.50 (interpolated 200-250% band).
+- name: Case 16, single age 40 at 225% FPL -> 1052.77 (interpolated 200-250% band).
   # md target 2.25 FPL = 0.02 + 0.5*(0.0622-0.02) = 0.0411. COMAR .04B:
-  # max(0, (6_000 - 3_500) - 0.0411 * 35_000) = 2_500 - 1_438.50 = 1_061.50.
+  # 225% of the 2025 one-person guideline ($15,650) is 35_212.50.
+  # max(0, (6_000 - 3_500) - 0.0411 * 35_212.50) = 2_500 - 1_447.23 = 1_052.77.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -421,7 +425,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi: 35_000
+        aca_magi: 35_212.50
         aca_magi_fraction: 2.25
         aca_required_contribution_percentage: 0.0752
         slcsp: 6_000
@@ -432,13 +436,14 @@
         members: [person1]
         state_code: MD
   output:
-    md_premium_assistance: 1_061.50
+    md_premium_assistance: 1_052.77
 
-- name: Case 17, multi-member mixed APTC eligibility -> 929.39 (non-enrollee YA excluded).
+- name: Case 17, multi-member mixed APTC eligibility -> 1256.31 (non-enrollee YA excluded).
   # age-40 enrollee + age-30 NON-enrollee at 300% FPL. Unit is eligible (one enrollee),
   # and the age-30 non-enrollee does not trigger the young adult reduction, so
-  # md target = 7.98%. COMAR .04B:
-  # max(0, (9_000 - 4_324) - 0.0798 * 46_950) = 4_676 - 3_746.61 = 929.39.
+  # md target = 7.98%. 300% of the 2025 two-person guideline ($21,150) is 63_450;
+  # self-consistent APTC = 9_000 - 0.0996 * 63_450 = 2_680.38. COMAR .04B:
+  # max(0, (9_000 - 2_680.38) - 0.0798 * 63_450) = 6_319.62 - 5_063.31 = 1_256.31.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -452,18 +457,18 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        aca_magi: 46_950
+        aca_magi: 63_450
         aca_magi_fraction: 3.00
         aca_required_contribution_percentage: 0.0996
         slcsp: 9_000
-        aca_ptc: 4_324
+        aca_ptc: 2_680.38
         tax_unit_is_filer: true
     households:
       household:
         members: [person1, person2]
         state_code: MD
   output:
-    md_premium_assistance: 929.39
+    md_premium_assistance: 1_256.31
 
 - name: Case 18, interior interpolation in the 300-400% band with a DERIVED target %.
   # aca_magi_fraction 3.50 -> md_pct interpolates initial[4]=0.0798 (at 3.0) to
@@ -497,10 +502,11 @@
   output:
     md_premium_assistance: 742.20  # self-consistent APTC: equals the old reading
 
-- name: Case 19, second in-effect year (2027) mirrors the 2026 250% FPL case -> 66.43.
+- name: Case 19, second in-effect year (2027) mirrors the 2026 250% FPL case -> 18.22.
   # Same forced-input shape as Case 3 but at period 2027, proving the program is
   # still in effect in its second plan year (distinct from the 2028 sunset).
-  # COMAR .04B: max(0, (6_000 - 3_500) - 0.0622 * 39_125) = 2_500 - 2_433.575 = 66.425.
+  # 250% of the 2026 one-person guideline ($15,960), the prior year for 2027, is
+  # 39_900. COMAR .04B: max(0, (6_000 - 3_500) - 0.0622 * 39_900) = 2_500 - 2_481.78 = 18.22.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -511,7 +517,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi: 39_125
+        aca_magi: 39_900
         aca_magi_fraction: 2.50
         aca_required_contribution_percentage: 0.0844
         slcsp: 6_000
@@ -522,7 +528,7 @@
         members: [person1]
         state_code: MD
   output:
-    md_premium_assistance: 66.425
+    md_premium_assistance: 18.22
 
 - name: Case 20, negative aca_magi -> income floored before multiplying (no sign-flip).
   # The formula floors income at 0 (max_(aca_magi, 0)), so a negative aca_magi
@@ -556,10 +562,11 @@
 - name: Case 21, young-adult floor drives target % to 0 -> subsidy is the full post-APTC premium.
   # Age 25 (2.5pp reduction) at 175% FPL where base target = 0.01 (interpolated
   # 0%@1.5 -> 2%@2.0, position 0.5). 0.01 - 0.025 < 0 -> md_pct floors at 0.
+  # 175% of the 2025 one-person guideline ($15,650) is 27_387.50.
   # SYNTHETIC federal % 0.05 (not the true schedule); self-consistent APTC =
-  # slcsp 6_000 - 0.05 * 27_000 = 6_000 - 1_350 = 4_650. With md_pct 0 the MD
-  # contribution is 0, so the subsidy is the full post-APTC premium balance:
-  # max(0, (6_000 - 4_650) - 0 * 27_000) = 1_350. Filer inputs supplied.
+  # slcsp 6_000 - 0.05 * 27_387.50 = 6_000 - 1_369.375 = 4_630.625. With md_pct 0
+  # the MD contribution is 0, so the subsidy is the full post-APTC premium balance:
+  # max(0, (6_000 - 4_630.625) - 0 * 27_387.50) = 1_369.375. Filer inputs supplied.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -567,21 +574,21 @@
       person1:
         age: 25
         is_aca_ptc_eligible: true
-        employment_income: 27_000
+        employment_income: 27_387.50
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi: 27_000
+        aca_magi: 27_387.50
         aca_magi_fraction: 1.75
         aca_required_contribution_percentage: 0.05
         slcsp: 6_000
-        aca_ptc: 4_650
+        aca_ptc: 4_630.625
     households:
       household:
         members: [person1]
         state_code: MD
   output:
-    md_premium_assistance: 1_350  # md_pct floored to 0 -> full post-APTC premium
+    md_premium_assistance: 1_369.375  # md_pct floored to 0 -> full post-APTC premium
 
 # ---- C1 formula-correction boundary cases (post-COMAR .04B re-derivation) ----
 
