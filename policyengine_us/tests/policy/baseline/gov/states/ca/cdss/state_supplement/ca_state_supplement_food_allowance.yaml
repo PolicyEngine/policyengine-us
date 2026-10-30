@@ -178,3 +178,82 @@
     # allowance adds 1,362.81 - 1,318.32 = 44.49 to the blind amount.
     ca_state_supplement_food_allowance: 44.49
     ca_state_supplement_payment_standard: 1_362.81
+
+- name: 2026 aged couple with both spouses blind without cooking facilities gets the aged couple amount with the food allowance
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_blind: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        is_blind: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # The aged couple amount with the (e) allowance, 2,098.83 + 257.74 =
+    # 2,356.57, is above the two-blind rate of 2,324.35 (WIC 12200(a), (d),
+    # (e)). The allowance adds 2,356.57 - 2,324.35 = 32.22.
+    ca_state_supplement_food_allowance: 32.22
+    ca_state_supplement_payment_standard: 2_356.57
+
+- name: 2026 couple of a disabled person and a blind person under 65 without cooking facilities gets no food allowance
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+        is_blind: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # As for an aged person: the one-blind couple rate under WIC 12200(b),
+    # 2,238.44, is above 1,233.94 + 128.87 = 1,362.81, and (e) adds nothing.
+    ca_state_supplement_food_allowance: 0
+    ca_state_supplement_payment_standard: 2_238.44
+
+- name: 2025 single aged and blind person without cooking facilities gets the aged amount with the food allowance
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_blind: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # 1,206.94 + 128.87 = 1,335.81 is above the 2025 blind amount of 1,291.32,
+    # so the allowance adds 1,335.81 - 1,291.32 = 44.49.
+    ca_state_supplement_food_allowance: 44.49
+    ca_state_supplement_payment_standard: 1_335.81

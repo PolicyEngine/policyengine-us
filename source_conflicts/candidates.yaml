@@ -1394,9 +1394,9 @@ candidates:
     other: POMS adds the individual restaurant meals allowance for the aged or disabled member of a couple with one
       blind member whose living arrangement lacks cooking facilities.
   example: In January 2026, a couple of an aged person and a blind person aged 50 without cooking facilities has a
-    $2,238.44 standard under the statute, which PE-US follows for CAPI, and $2,367.31 under POMS.
+    $2,238.44 standard under the statute, which PE-US follows, and $2,367.31 under POMS.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/ca/cdss/capi/_ca_capi_ssi_ssp_standard.py
     - policyengine_us/variables/gov/states/ca/cdss/state_supplement/payment_standard/ca_state_supplement_food_allowance.py
@@ -1412,12 +1412,10 @@ candidates:
   note: 'Ruled 2026-10-29 for the statute by the project lead for the Medicaid fixes; the ruling record is
     https://github.com/PolicyEngine/policyengine-us/pull/10379#issuecomment-6509402355. WIC 12200(e) gives the
     no-cooking allowance only under (c) and (d), so a couple paid the one-blind rate under (b) gets none, in CAPI and
-    in the state supplement. CAPI follows the statute: _ca_capi_ssi_ssp_standard.py adds no food allowance to the
-    one-blind couple rate, and a couple both aged or disabled takes the aged or disabled rate with the couple
-    allowance when that is higher. Until PolicyEngine/policyengine-us#10546 merges, the state supplement follows
-    POMS: ca_state_supplement_food_allowance.py adds the individual allowance for the aged or disabled member, so in
-    January 2026 the same couple has a $2,367.31 standard as citizens and $2,238.44 as CAPI recipients. That PR
-    makes the state supplement follow the statute and sets pe_us.follows to statute.'
+    in the state supplement. CAPI (_ca_capi_ssi_ssp_standard.py) and the state supplement
+    (ca_state_supplement_food_allowance.py) both follow the statute: neither adds a food allowance to the one-blind
+    couple rate, and a couple both aged or disabled takes the aged or disabled rate with the couple allowance when
+    that is higher.'
 - id: us-ca:ssp-nmohc-couple-standard
   program: ssi-ssp
   years:

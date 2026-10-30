@@ -4,7 +4,13 @@ from policyengine_us.model_api import *
 class ca_state_supplement_food_allowance(Variable):
     value_type = float
     entity = SPMUnit
-    label = "California SSI state supplement food allowance"
+    label = "California SSI state supplement food allowance above the blind amount"
+    documentation = (
+        "The part of the no-cooking (restaurant meals) allowance that lifts the "
+        "aged or disabled amount above the blind amount, since California pays "
+        "the higher of the two. It is the full allowance unless the unit's blind "
+        "amount is higher than its aged or disabled amount."
+    )
     unit = USD
     definition_period = MONTH
     defined_for = "ca_state_supplement_food_allowance_eligible"
@@ -36,8 +42,8 @@ class ca_state_supplement_food_allowance(Variable):
         aged_disabled_amount = spm_unit(
             "ca_state_supplement_aged_disabled_amount", period
         )
-        blind_amount = spm_unit("ca_state_supplement_blind_amount", period)
-        return max_(
-            aged_disabled_amount + allowance - max_(blind_amount, aged_disabled_amount),
-            0,
+        # The higher of the blind and the aged or disabled amounts.
+        aged_blind_disabled_amount = spm_unit(
+            "ca_state_supplement_aged_blind_disabled_amount", period
         )
+        return max_(aged_disabled_amount + allowance - aged_blind_disabled_amount, 0)
