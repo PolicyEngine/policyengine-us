@@ -4,18 +4,20 @@
 # - 2025 edition (period 2026), benefit matrix pages 1-2: no base points;
 #   stick-built/modular 9, mobile/manufactured 8, condo/duplex and apartment 6;
 #   Aroostook 7, Penobscot 5, Cumberland 3, Kennebec 2; electricity 14, LP gas 10,
-#   kerosene 8, oil 7, coal 5, natural gas 5, wood 4; subsidized household
-#   responsible for heating -9; priority "60+, Disabled or child 6 and under" 5
-#   "or" child 7-17 3:
+#   kerosene 8, oil 7, bio-fuel including bio-bricks 6, coal 5, wood pellets 5,
+#   corn 5, natural gas 5, wood 4; subsidized household responsible for heating -9;
+#   priority "60+, Disabled or child 6 and under" 5 "or" child 7-17 3:
 #   https://liheapch.acf.gov/docs/2026/benefits-matricies/ME_BenefitMatrix_2026.pdf#page=1
 # - 2026 edition (period 2027), rule pages 16-17: base 8; stick-built/modular 3,
 #   mobile 2, condo/duplex and apartment 1; Aroostook 6, Penobscot 3, Cumberland 1,
-#   Kennebec 1; electric 8, LP gas 5, kerosene 5, oil 4, coal 4, natural gas 3, wood
-#   3; at risk (60+, child 6 and under, disabled) 5, "Points for the first in the
-#   house"; heating subsidized -3:
+#   Kennebec 1; electric 8, LP gas 5, kerosene 5, oil 4, coal 4, wood pellet 4,
+#   natural gas 3, wood 3, biobrick 3, and no corn row; at risk (60+, child 6 and
+#   under, disabled) 5, "Points for the first in the house"; heating subsidized -3:
 #   https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=16
 # Modeling assumptions: SOLAR uses the electricity row (a grid-tied home with electric
-# heat) and WOOD the cordwood row. Unless stated,
+# heat) and WOOD the cordwood row. Pellets, corn, bio-fuel and biobricks have no
+# heating_type value, so OTHER stands for them and takes the lowest of their rows:
+# 5 in 2026 (wood pellets and corn) and 3 in 2027 (biobrick). Unless stated,
 # households are unsubsidized, heat is not in the rent, and the income multiplier
 # is set to 1 so the points equal the matrix total. Cases 10 and 11 also assert the
 # benefit, so they pay an oil bill: EIA's U.S. average winter heating-oil
@@ -53,28 +55,30 @@
 - name: Case 3, fuel points in 2026.
   period: 2026
   input:
-    state_code: [ME, ME, ME, ME, ME, ME, ME, ME]
-    age: [40, 40, 40, 40, 40, 40, 40, 40]
-    county: [KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME]
-    heating_type: [ELECTRICITY, SOLAR, PROPANE, KEROSENE, FUEL_OIL, COAL, NATURAL_GAS, WOOD]
-    me_heap_income_multiplier: [1, 1, 1, 1, 1, 1, 1, 1]
+    state_code: [ME, ME, ME, ME, ME, ME, ME, ME, ME]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40]
+    county: [KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME]
+    heating_type: [ELECTRICITY, SOLAR, PROPANE, KEROSENE, FUEL_OIL, COAL, NATURAL_GAS, WOOD, OTHER]
+    me_heap_income_multiplier: [1, 1, 1, 1, 1, 1, 1, 1, 1]
   output:
     # Stick-built 9 + Kennebec 2 = 11, plus electricity 14, solar 14 (electricity
-    # row), LP gas 10, kerosene 8, oil 7, coal 5, natural gas 5, wood 4.
-    me_heap_points: [25, 25, 21, 19, 18, 16, 16, 15]
+    # row), LP gas 10, kerosene 8, oil 7, coal 5, natural gas 5, wood 4, OTHER 5
+    # (wood pellets and corn, the lowest of its rows): 11 + 5 = 16.
+    me_heap_points: [25, 25, 21, 19, 18, 16, 16, 15, 16]
 
 - name: Case 4, fuel points in 2027.
   period: 2027
   input:
-    state_code: [ME, ME, ME, ME, ME, ME, ME, ME]
-    age: [40, 40, 40, 40, 40, 40, 40, 40]
-    county: [KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME]
-    heating_type: [ELECTRICITY, SOLAR, PROPANE, KEROSENE, FUEL_OIL, COAL, NATURAL_GAS, WOOD]
-    me_heap_income_multiplier: [1, 1, 1, 1, 1, 1, 1, 1]
+    state_code: [ME, ME, ME, ME, ME, ME, ME, ME, ME]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40]
+    county: [KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME]
+    heating_type: [ELECTRICITY, SOLAR, PROPANE, KEROSENE, FUEL_OIL, COAL, NATURAL_GAS, WOOD, OTHER]
+    me_heap_income_multiplier: [1, 1, 1, 1, 1, 1, 1, 1, 1]
   output:
     # Base 8 + stick-built 3 + Kennebec 1 = 12, plus electric 8, solar 8, LP gas 5,
-    # kerosene 5, oil 4, coal 4, natural gas 3, wood 3.
-    me_heap_points: [20, 20, 17, 17, 16, 16, 15, 15]
+    # kerosene 5, oil 4, coal 4, natural gas 3, wood 3, OTHER 3 (biobrick, the
+    # lowest of its rows): 8 + 3 + 1 + 3 = 15.
+    me_heap_points: [20, 20, 17, 17, 16, 16, 15, 15, 15]
 
 - name: Case 5, threshold edge at age 60, and a disabled adult, for priority points in 2026.
   period: 2026

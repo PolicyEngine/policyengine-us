@@ -3527,12 +3527,12 @@ candidates:
     under the plan.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/me/msha/heap/eligibility/me_heap_income_limit.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10437
   state: ruled
-  note: 'PE-US follows the regulation and the chart under the 2026-10-19 statute-governs rule. Code not yet on main:
-    me_heap_income_limit.'
+  note: PE-US follows the regulation and the chart under the 2026-10-19 statute-governs rule.
 - id: us-me:liheap-tanf-and-disability-income
   program: liheap
   years:
@@ -3558,11 +3558,13 @@ candidates:
     County stick-built home with oil, counts $13,140 and receives $704; excluding TANF counts $2,400 and pays $748.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/me/msha/heap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/me/msha/heap/me_heap_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10437
   state: ruled
-  note: 'PE-US counts both under the 2026-10-19 statute-governs rule. Code not yet on main: me_heap_income, gov.states.me.msha.heap.income.sources.unearned.'
+  note: PE-US counts both under the 2026-10-19 statute-governs rule.
 - id: us-me:property-tax-credit-unknown-utilities
   program: income-tax
   years:

@@ -32,10 +32,9 @@ class me_heap_eligible(Variable):
         # SOLAR with an electricity bill stands for a grid-tied home with
         # electric heat; an off-grid solar-only home has no heating bill.
         # OTHER (pellets, corn, bio-fuel, biobricks) is eligible with an
-        # energy cost and scores no fuel points. UNSPECIFIED is ineligible
-        # because heating_type is a required input, except for subsidized
-        # tenants with heat in rent, who receive the nominal benefit without a
-        # known fuel.
+        # energy cost. UNSPECIFIED is ineligible because heating_type is a
+        # required input, except for subsidized tenants with heat in rent, who
+        # receive the nominal benefit without a known fuel.
         fuel = spm_unit("heating_type", period)
         fuels = fuel.possible_values
         known_fuel = (fuel != fuels.UNSPECIFIED) | (heat_in_rent & subsidized)

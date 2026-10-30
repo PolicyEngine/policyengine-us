@@ -201,7 +201,7 @@
     # 6 x 22 = 132.
     me_heap: 21
 
-- name: Case 6, a homeowner heating with a fuel outside the matrix, wood pellets, scores no fuel points.
+- name: Case 6, a homeowner heating with wood pellets reported as OTHER scores the lowest pellet and corn row.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -234,7 +234,51 @@
     me_heap_eligible: true
     # 30,472 / 15,650 = 194.71% -> 195%: above 150%, 0.70.
     me_heap_income_multiplier: 0.7
-    # Stick-built 9 + Kennebec 2 + OTHER 0 = 11. 11 x 0.7 = 7.7, rounded up to 8.
-    me_heap_points: 8
-    # 8 x 22 = 176.
-    me_heap: 176
+    # Stick-built 9 + Kennebec 2 + OTHER 5 (the 2025 edition's wood pellet and
+    # corn rows, the lowest of the fuels OTHER stands for) = 16.
+    # 16 x 0.7 = 11.2, rounded up to 12.
+    me_heap_points: 12
+    # 12 x 22 = 264.
+    me_heap: 264
+
+- name: Case 7, a voucher tenant paying a wood pellet bill for an apartment keeps a positive benefit after the subsidized deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        # 14.65 x 15 hours x 52 weeks = 11,427.
+        employment_income: 11_427
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        snap: 0
+        tanf: 0
+        me_heap_dwelling_type: CONDO_DUPLEX_OR_APARTMENT
+        heating_type: OTHER
+        # Maine Department of Energy Resources survey of January 5, 2026: wood
+        # pellets 357 for a one-ton purchase.
+        other_heating_fuel_expense: 357
+        heat_expense_included_in_rent: false
+        # Housing Choice Voucher.
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [head]
+        state_code: ME
+        county: KENNEBEC_COUNTY_ME
+        is_in_public_housing: false
+  output:
+    # 11,427 <= 36,836, and the pellet bill is a direct energy cost.
+    me_heap_eligible: true
+    # 11,427 / 15,650 = 73.02% -> 73%: 51%-75% band, 1.10.
+    me_heap_income_multiplier: 1.1
+    # Apartment 6 + Kennebec 2 + OTHER 5 + subsidized household responsible for
+    # heating -9 = 4. 4 x 1.1 = 4.4, rounded up to 5. With no fuel points for
+    # OTHER, 6 + 2 + 0 - 9 = -1 would give -1 point and -22.
+    me_heap_points: 5
+    # Heat is outside the rent, so the points apply, not the nominal 21:
+    # 5 x 22 = 110.
+    me_heap: 110
