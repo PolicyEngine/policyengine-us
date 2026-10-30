@@ -164,8 +164,9 @@
     # Each pays a 100 a month electric bill (1,200) and 18,000 <= 34,080.
     # Kerosene: max(153, electric 318) = 318. Wood: max(219, 318) = 318.
     # Natural gas: max(326, 318) = 326. Other fuel: max(0, 318) = 318.
-    # A home with no heating (NONE) or an unspecified fuel has no heating
-    # cost, so the electric bill alone does not make it eligible.
+    # A home with no heating (NONE) has no heating cost. An unspecified fuel
+    # is not paid (heating_type is a required input; issue 9754), so the
+    # electric bill alone does not make either household eligible.
     mo_liheap_eligible: [true, true, true, true, false, false]
     mo_liheap: [318, 318, 326, 318, 0, 0]
 
@@ -243,8 +244,8 @@
   output:
     # Eligible through unsubsidized rent that includes heat (22,000 <= 34,080).
     # Own fuel 0 (heat in the rent); renter share min(9,000 x 0.08 = 720,
-    # unspecified fuel 0) = 0. An unspecified fuel does not heat the home, so
-    # the 100 a month electric bill (1,200) adds no electric amount:
-    # max(0, 0, 0) = 0.
+    # unspecified fuel 0) = 0. An unspecified fuel is not paid (heating_type
+    # is a required input; issue 9754), so the 100 a month electric bill
+    # (1,200) adds no electric amount: max(0, 0, 0) = 0.
     mo_liheap_eligible: true
     mo_liheap: 0

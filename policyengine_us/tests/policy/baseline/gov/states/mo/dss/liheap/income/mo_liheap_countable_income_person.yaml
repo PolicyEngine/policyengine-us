@@ -360,3 +360,80 @@
     # the year) = 17,880. At 60 the member is not on Medicare, so no Part B
     # premium is deducted. Dropping any source changes a member's total.
     mo_liheap_countable_income_person: [9_000, 17_880]
+
+- name: Case 14, the Medicare Part B premium is not deducted for a member without Social Security or railroad benefits.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        # A retired public employee whose job was not covered by Social
+        # Security pays the 2026 Part B premium of 202.90 x 12 directly.
+        taxable_pension_income: 36_500
+        medicare_part_b_premium: 2_434.80
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # The pension of 36,500 counts. With no Social Security or railroad
+    # benefits, the 2,434.80 premium is not deducted: 36,500. SSI is 0
+    # (36,500 / 12 - 20 = 3,021.67 a month > 994), and no state supplement.
+    # Medical deduction for an applicant 65 or older: 100 x 12 = 1,200.
+    # 36,500 - 1,200 = 35,300 > the size 1 limit of 2,840 x 12 = 34,080 and
+    # the 110% poverty floor of 1.1 x 15,650 = 17,215 -> ineligible.
+    # Deducting the premium would give 36,500 - 2,434.80 = 34,065.20 and
+    # 34,065.20 - 1,200 = 32,865.20 <= 34,080, eligible for natural gas 326.
+    # The railroad retiree of mo_liheap_countable_income Case 6 has the
+    # premium deducted.
+    mo_liheap_countable_income_person: [36_500]
+    mo_liheap_medical_deduction: 1_200
+    mo_liheap_countable_income: 35_300
+    mo_liheap_income_limit: 34_080
+    mo_liheap_eligible: false
+    mo_liheap: 0
+
+- name: Case 15, a member's countable income is floored at zero when the Medicare Part B premium exceeds that member's income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 52_000
+      person2:
+        # A parent who takes up neither SSI nor the Medicare Savings Program
+        # and pays the full premium. As an input dependent, the parent does
+        # not become the tax-unit head (which would add a 1,200 medical
+        # deduction); with SSI taken up, the model would pay about
+        # (994 - 130) x 12 = 10,368, more than the premium.
+        age: 66
+        is_tax_unit_dependent: true
+        social_security_retirement: 1_800
+        medicare_part_b_premium: 2_434.80
+        takes_up_ssi_if_eligible: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Person 1: $25.00 an hour x 2,080 hours = 52,000 x (1 - 0.2) = 41,600.
+    # Person 2: Social Security of 150 a month (1,800) less the 2026 Part B
+    # premium of 202.90 x 12 = 2,434.80, floored: max(-634.80, 0) = 0.
+    # No medical deduction: the head is 40 and the parent is a dependent.
+    # No child under 18, so no TANF: 41,600 + 0 = 41,600.
+    # Without the floor, person 2 would count -634.80 and the household
+    # 41,600 - 634.80 = 40,965.20.
+    mo_liheap_countable_income_person: [41_600, 0]
+    mo_liheap_medical_deduction: 0
+    mo_liheap_countable_income: 41_600
