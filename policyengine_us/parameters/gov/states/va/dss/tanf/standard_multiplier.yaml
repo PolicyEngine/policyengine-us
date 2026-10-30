@@ -24,6 +24,10 @@ metadata:
 # The 10% July 2023 increase (SB800 341#1s, Senate floor-approved) was NOT
 # enacted in the final 2023 budget (HB6001, 2023 Special Session I), so the
 # multiplier stops at 1.155.
+# The standards of assistance and the maximum payment are stored as printed in
+# Section 304, Appendix 2 from July 2020, so they use this multiplier only
+# before July 2020. The need standard and the TANF-UP standards use it in
+# every period.
 values:
   # Pre-2016 base (before any increases since 2016)
   1996-01-01: 0.7691
