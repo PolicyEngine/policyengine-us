@@ -1,1 +1,0 @@
-Default living_arrangements_allow_for_food_preparation to true, so California pays the SSI/SSP restaurant meals allowance only when the input says the living arrangement prevents meal preparation at home (WIC 12200(e)), not to every aged or disabled recipient.
