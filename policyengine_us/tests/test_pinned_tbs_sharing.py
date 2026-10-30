@@ -481,13 +481,13 @@ def test_a_pin_follows_a_variable_reform_applied_after_it_was_built():
 
 
 @pytest.mark.parametrize(
-    "trace, reform",
-    [(False, None), (True, None), (False, {})],
+    "options",
+    [{}, {"trace": True}, {"tax_benefit_system": system, "reform": {}}],
     ids=["ordinary", "traced", "private system"],
 )
-def test_nothing_outlives_a_finished_simulation(trace, reform):
-    """A system of its own has variables that lead back to its simulation."""
-    simulation = Simulation(situation=household(), trace=trace, reform=reform)
+def test_nothing_outlives_a_finished_simulation(options):
+    """A clone's variables lead back to the simulation that owns the clone."""
+    simulation = Simulation(situation=household(), **options)
     simulation.calculate("ny_ctc", YEAR)
     finished = weakref.ref(simulation)
     policy = weakref.ref(simulation.tax_benefit_system)
