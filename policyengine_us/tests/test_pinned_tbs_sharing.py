@@ -21,6 +21,7 @@ model, so they keep to the fewest simulations that show each behaviour.
 import collections
 import gc
 import weakref
+from copy import copy
 
 import pytest
 from hypothesis import given, settings
@@ -273,9 +274,9 @@ def test_a_pin_borrows_every_dated_value(monkeypatch, source):
 
 def test_each_pin_is_cached_for_the_last_system_that_asked():
     """A change no check sees, in place on a variable, ends with the entry."""
-    first, second = [
-        Simulation(situation=household()).tax_benefit_system for _ in range(2)
-    ]
+    first = Simulation(situation=household()).tax_benefit_system
+    # The same tree and variables, so only its identity tells it from ``first``.
+    second = copy(first)
     pin = pinned_tbs.get_pre_tcja_ctc_tbs(first)
     assert pinned_tbs.get_pre_tcja_ctc_tbs(first) is pin
 
@@ -421,15 +422,16 @@ def test_a_reform_of_the_source_leaves_a_built_pin_alone():
         return pinned.parameters.get_child(BOTTOM_RATE)(f"{YEAR}-01-01")
 
     def lower_rate(parameters):
-        parameters.get_child(BOTTOM_RATE).update(
-            period=f"year:{YEAR}:1", value=LOWER_BOTTOM_RATE
-        )
+        parameter = parameters.get_child(BOTTOM_RATE)
+        parameter.update(period=f"year:{YEAR}:1", value=LOWER_BOTTOM_RATE)
+        parameter.metadata["reformed"] = True
         return parameters
 
     before = rate(pin)
     policy.modify_parameters(lower_rate)
 
     assert rate(pin) == before != LOWER_BOTTOM_RATE
+    assert "reformed" not in pin.parameters.get_child(BOTTOM_RATE).metadata
     assert rate(pinned_tbs.get_pre_tcja_ctc_tbs(policy)) == LOWER_BOTTOM_RATE
 
 
@@ -478,9 +480,14 @@ def test_a_pin_follows_a_variable_reform_applied_after_it_was_built():
     assert after.variables["ctc_limiting_tax_liability"].is_neutralized
 
 
-@pytest.mark.parametrize("trace", [False, True])
-def test_nothing_outlives_a_finished_simulation(trace):
-    simulation = Simulation(situation=household(), trace=trace)
+@pytest.mark.parametrize(
+    "trace, reform",
+    [(False, None), (True, None), (False, {})],
+    ids=["ordinary", "traced", "private system"],
+)
+def test_nothing_outlives_a_finished_simulation(trace, reform):
+    """A system of its own has variables that lead back to its simulation."""
+    simulation = Simulation(situation=household(), trace=trace, reform=reform)
     simulation.calculate("ny_ctc", YEAR)
     finished = weakref.ref(simulation)
     policy = weakref.ref(simulation.tax_benefit_system)

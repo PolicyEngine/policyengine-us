@@ -696,14 +696,15 @@ def clone_spm_system(system, *, copy_receipts=True, parameters=None):
 
 
 def copy_parameter_nodes(node, parent=None):
-    """Copy a parameter tree, sharing only the dated entries in its histories.
+    """Copy a parameter tree, sharing only its dated entries and metadata.
 
     Each node, history and at-instant cache in the copy is its own, as in a
-    clone, so the copy reads every value fresh and later edits on either side
-    stay on that side. Core never edits a ``ParameterAtInstant`` once built, so
-    sharing those is safe, and they and their metadata are nearly all of what
-    a clone rebuilds: this takes a twentieth of the time and an eighth of the
-    memory.
+    clone, so the copy builds every view from its histories, and an update, an
+    added child or an added entry on either tree stays on that tree. Core sets
+    an entry's value only when it builds the entry, and writes metadata only
+    while it constructs a system, so neither needs a copy of its own. They are
+    nearly all of what a clone rebuilds: this takes about a twenty-fifth of the
+    time and an eighth of the memory.
     """
     copied = object.__new__(type(node))
     copied.__dict__.update(node.__dict__)
@@ -730,7 +731,8 @@ def pin_spm_policy(system):
     ``Parameter.update``, which never touches an entry it replaces. This is a
     clone in every other respect, except that the two trees hold the same
     entries and metadata and so both count as shared: a reform of either system
-    takes a full clone before it writes.
+    takes a full clone before it writes. A write that skips the reform methods
+    reaches the other tree, as it reaches every reader of any shared tree.
     """
     tree = mark_tree_shared(system.parameters)
     return clone_spm_system(
