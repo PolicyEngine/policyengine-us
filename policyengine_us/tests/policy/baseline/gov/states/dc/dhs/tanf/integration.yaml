@@ -72,11 +72,12 @@
         state_code: DC
   output:
     dc_tanf_childcare_deduction: 0
-    dc_tanf_earned_income_after_disregard_person: [693, 0]
-    dc_tanf_countable_income: 693
+    # (4_020 / 12 - 160) * (1 - 2/3) * 12 = 175 / 3 * 12 = 700
+    dc_tanf_earned_income_after_disregard_person: [700, 0]
+    dc_tanf_countable_income: 700
     dc_tanf_standard_payment: 521 * 9 + 545 * 3  # 6324
     dc_tanf_eligible: true
-    dc_tanf: 5_631  # (521*9 + 545*3) - 693 = 6324 - 693 = 5631
+    dc_tanf: 5_624  # (521*9 + 545*3) - 700 = 6324 - 700 = 5624
 
 - name: Case 4, applicant income ineligible for the program.
   period: 2023
@@ -108,3 +109,84 @@
     dc_tanf_standard_payment: 545 * 9 + 560 * 3  # 6585, because monthly payment values update in October 1
     dc_tanf_eligible: false
     dc_tanf: 0
+
+- name: Case 5, enrolled parent of two with $12,000 of earnings in 2025, FY2026 payment level from October.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 12_000
+        weekly_hours_worked: 40
+      child1:
+        age: 5
+      child2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: DC
+  output:
+    # Monthly countable earnings: (1_000 - 160) * (1 - 2/3) = 280.
+    dc_tanf_countable_income: 280 * 12
+    # FY2025 level $781 for January-September, FY2026 level $803 for October-December.
+    dc_tanf: (781 - 280) * 9 + (803 - 280) * 3  # 4_509 + 1_569 = 6_078
+
+- name: Case 6, enrolled parent of two with no income in 2026 gets the FY2026 payment level.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked: 40
+      child1:
+        age: 5
+      child2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: DC
+  output:
+    dc_tanf: 803 * 12  # 9_636
+
+- name: Case 7, a GAC child's child support is not disregarded twice.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 12_000
+        weekly_hours_worked: 40
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      gac_child:
+        age: 8
+        is_tax_unit_dependent: true
+        is_related_to_head_or_spouse: false
+        child_support_received: 4_800
+    spm_units:
+      spm_unit:
+        members: [parent, child, gac_child]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [parent, child, gac_child]
+        state_code: DC
+  output:
+    dc_tanf_assistance_unit_size: 2
+    # The GAC child's $400 a month of child support is not a TANF member's, so it is not disregarded.
+    dc_tanf_countable_unearned_income: 400 * 12
+    dc_gac_countable_income: 400 * 12
+    # (1_000 - 160) * (1 - 2/3) = 280 a month; the GAC child's income is then removed.
+    dc_tanf_countable_income: 280 * 12
+    dc_tanf: (629 - 280) * 12  # 4_188

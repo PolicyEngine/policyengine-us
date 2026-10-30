@@ -1,0 +1,27 @@
+description: Virginia awards these benefit points by climate zone under the Energy Assistance Program.
+CENTRAL_MOUNTAIN:
+  2003-01-01: 20
+SOUTHWESTERN_MOUNTAIN:
+  2003-01-01: 18
+NORTHERN:
+  2003-01-01: 16
+WESTERN_PIEDMONT:
+  2003-01-01: 13
+EASTERN_PIEDMONT:
+  2003-01-01: 12
+TIDEWATER:
+  2003-01-01: 8
+
+metadata:
+  unit: /1
+  period: year
+  breakdown:
+    - va_eap_climate_zone
+  label: Virginia EAP climate zone points
+  reference:
+    - title: LIHEAP Clearinghouse Virginia FY2026 benefit matrix, Appendix B (05/21, Transmittal 21-1), climate zones
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/VA_BenefitMatrix_2026.pdf#page=6
+    - title: Virginia Energy Assistance Manual, Volume IX, Chapter D, Appendix B (01/03, Transmittal 03-1), climate zones
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=65
+    - title: 22VAC40-680-30 Benefits (six NOAA climate zones)
+      href: https://law.lis.virginia.gov/admincode/title22/agency40/chapter680/section30/

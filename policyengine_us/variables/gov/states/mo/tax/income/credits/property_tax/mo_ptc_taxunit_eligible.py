@@ -30,16 +30,16 @@ class mo_ptc_taxunit_eligible(Variable):
         )
         # The surviving-spouse pathway applies to the claimant only: the
         # claimant must be 60 or older and have received surviving spouse
-        # Social Security benefits themselves. The model treats the tax
-        # unit head as the filer/claimant, so the same-person test runs on
-        # the head; the other three pathways are claimant-or-spouse.
+        # Social Security benefits themselves. RSMo 135.010(1) defines the
+        # claimant as "a person or persons", and a married couple claims
+        # jointly, so either spouse who meets both tests can be the
+        # claimant, whichever is listed first. Age and benefits are tested
+        # on the same person.
         person = tax_unit.members
-        head_survivor_benefits = tax_unit.sum(
-            person("social_security_survivors", period)
-            * person("is_tax_unit_head", period)
-        )
-        aged_survivor = (age_head >= p.aged_survivor_min_age) & (
-            head_survivor_benefits > 0
+        aged_survivor = tax_unit.any(
+            person("is_tax_unit_head_or_spouse", period)
+            & (person("age", period) >= p.aged_survivor_min_age)
+            & (person("social_security_survivors", period) > 0)
         )
         categorical = elderly | disabled | military_disabled | aged_survivor
         # RSMo 135.025 bases the credit on property taxes accrued and rent

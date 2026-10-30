@@ -1,0 +1,215 @@
+# Eligibility needs at least one eligible member, income at or below the
+# limit (Appendix 4A Calculator!G2 is ineligible only when the income
+# percentile exceeds 1), a known heating type, and vulnerability to energy
+# costs: a household that pays an energy vendor, heat included in unsubsidized
+# rent, or subsidized heat-in-rent with an electric bill (FFY26 EAP Policy
+# Manual, Chapter 3 vulnerability rules and Chapter 4 "Knowing Which Method to
+# Use").
+
+# FFY26 size 1 limit $3,119 x 12 = $37,428. Wages of $37,428 are at the limit
+# (eligible); $37,429 is one dollar above (ineligible).
+- name: Case 1, income at the limit is eligible and one dollar above is not.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 37_428
+      person2:
+        age: 45
+        employment_income: 37_429
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 800
+        pre_subsidy_electricity_expense: 700
+        tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 800
+        pre_subsidy_electricity_expense: 700
+        tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: MN
+      household2:
+        members: [person2]
+        state_code: MN
+  output:
+    mn_eap_eligible: [true, false]
+
+# Same income ($20,000, under the $37,428 limit) and bills; only the heating
+# type differs. UNSPECIFIED and NONE are ineligible; natural gas is eligible.
+- name: Case 2, unspecified and no heating types are ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 20_000
+      person2:
+        age: 38
+        employment_income: 20_000
+      person3:
+        age: 38
+        employment_income: 20_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        gas_expense: 900
+        pre_subsidy_electricity_expense: 800
+        tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NONE
+        pre_subsidy_electricity_expense: 900
+        tanf: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        pre_subsidy_electricity_expense: 800
+        tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: MN
+      household2:
+        members: [person2]
+        state_code: MN
+      household3:
+        members: [person3]
+        state_code: MN
+  output:
+    mn_eap_eligible: [false, false, true]
+
+# Subsidized housing with heat in rent: a household paying no electric bill is
+# not vulnerable (ineligible); one paying $650 a year for electricity is
+# eligible.
+- name: Case 3, subsidized heat-in-rent needs an electric bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        social_security_retirement: 14_400
+        medicare_part_b_premium: 2_434.8
+        ssi: 0
+      person2:
+        age: 72
+        social_security_retirement: 14_400
+        medicare_part_b_premium: 2_434.8
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 650
+        tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: MN
+      household2:
+        members: [person2]
+        state_code: MN
+  output:
+    mn_eap_eligible: [false, true]
+
+# A household paying its own energy with $0 energy cost is ineligible; an
+# unsubsidized renter with heat included in rent is eligible with no bills of
+# its own (the backup matrix supplies the cost).
+- name: Case 4, an own-paying household with no energy cost is ineligible and unsubsidized heat-in-rent is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 22_000
+      person2:
+        age: 30
+        employment_income: 22_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        mn_eap_housing_type: APARTMENT
+        tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: MN
+      household2:
+        members: [person2]
+        state_code: MN
+  output:
+    mn_eap_eligible: [false, true]
+
+# No member is a citizen or eligible non-citizen, so the household size is 0
+# and the household is ineligible despite low income and energy bills.
+- name: Case 5, a household with no eligible members is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 33
+        immigration_status: UNDOCUMENTED
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        pre_subsidy_electricity_expense: 800
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_eap_household_size: 0
+    mn_eap_eligible: false
+
+# Public housing with heat included in rent and no electric bill: wages of
+# $18,000 are under the $37,428 size 1 limit and natural gas is reported, but
+# the rent is subsidized, so heat in rent does not make the household
+# vulnerable and its energy cost is the $0 electric bill: ineligible. Read as
+# unsubsidized, the same household would be eligible on the backup matrix.
+- name: Case 6, public housing with heat in rent and no electric bill is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+        is_in_public_housing: true
+  output:
+    mn_eap_energy_cost: 0
+    mn_eap_eligible: false
