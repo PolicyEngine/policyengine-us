@@ -1738,7 +1738,7 @@ programs:
     variable: repayment_assistance_plan_payment
     parameter_prefix: gov.ed.student_loans.repayment_assistance_plan
     verified_start_year: 2026
-    notes: Monthly payment from July 2026 (base payment, dependent reduction, $10 minimum, spousal proration, final-payment cap) from balance inputs; interest subsidy, principal match and forgiveness not modeled; not subtracted from household net income
+    notes: Monthly payment from July 2026 (base payment on the latest return's AGI, dependent reduction, $10 minimum, spousal proration over Direct and FFEL debt, final-payment cap) from balance inputs; tax-dependent borrowers treated as ineligible; interest subsidy, principal match and forgiveness not modeled; not subtracted from household net income
 
   - id: income_based_repayment
     name: Income-Based Repayment
@@ -1750,7 +1750,7 @@ programs:
     variable: income_based_repayment_payment
     parameter_prefix: gov.ed.student_loans.income_based_repayment
     verified_start_year: 2026
-    notes: Monthly payment (15% or 10% for new borrowers of income above 150% of the poverty guideline, spousal proration, 10-year standard payment cap on the current balance, small payment adjustment); zero for borrowers with a Direct Loan made on or after July 1, 2026; interest and forgiveness not modeled; not subtracted from household net income
+    notes: Monthly payment (15% or 10% for new borrowers of income above 150% of the poverty guideline on the latest return's AGI, spousal and FFEL proration, cap at the borrower's own 10-year standard payment on their current Direct and FFEL balances, small payment adjustment); zero for borrowers with a Direct Loan made on or after July 1, 2026; tax-dependent borrowers treated as ineligible; interest and forgiveness not modeled; not subtracted from household net income
 
   - id: save_plan
     name: SAVE plan (counterfactual)
@@ -1762,7 +1762,7 @@ programs:
     variable: save_plan_payment
     parameter_prefix: gov.ed.student_loans.save_plan
     verified_start_year: 2026
-    notes: Counterfactual monthly payment under 34 CFR 685.209(f)(1) (5% undergraduate and 10% graduate rates on income above 225% of the poverty guideline, spousal proration, small payment adjustment); computed for any period without implying the plan is available; interest and forgiveness not modeled; not subtracted from household net income
+    notes: Counterfactual monthly payment under 34 CFR 685.209(f)(1) (5% undergraduate and 10% graduate rates on income above 225% of the poverty guideline on the latest return's AGI, spousal and FFEL proration, small payment adjustment); computed for any period without implying the plan is available; tax-dependent borrowers treated as ineligible; interest and forgiveness not modeled; not subtracted from household net income
 
   - id: pay_as_you_earn
     name: Pay As You Earn
@@ -1774,7 +1774,7 @@ programs:
     variable: pay_as_you_earn_payment
     parameter_prefix: gov.ed.student_loans.pay_as_you_earn
     verified_start_year: 2026
-    notes: Monthly payment (10% of income above 150% of the poverty guideline, spousal proration, 10-year standard payment cap on the current balance, small payment adjustment); zero for borrowers with a Direct Loan made on or after July 1, 2026; enrollment limits (new borrower, repaying under PAYE on July 1, 2024) and the June 30, 2028 end not modeled; interest and forgiveness not modeled; not subtracted from household net income
+    notes: Monthly payment (10% of income above 150% of the poverty guideline on the latest return's AGI, spousal and FFEL proration, cap at the borrower's own 10-year standard payment on their current Direct and FFEL balances, small payment adjustment); tax-dependent borrowers treated as ineligible; zero for borrowers with a Direct Loan made on or after July 1, 2026; enrollment limits (new borrower, repaying under PAYE on July 1, 2024) and the June 30, 2028 end not modeled; interest and forgiveness not modeled; not subtracted from household net income
 
   - id: income_contingent_repayment
     name: Income-Contingent Repayment
@@ -1786,7 +1786,7 @@ programs:
     variable: income_contingent_repayment_payment
     parameter_prefix: gov.ed.student_loans.income_contingent_repayment
     verified_start_year: 2026
-    notes: Monthly payment (lesser of the 12-year fixed payment on the current balance times the income percentage factor from the 2025 and 2026 Federal Register notices, and 20% of income above the poverty guideline; $5 minimum); zero for borrowers with a Direct Loan made on or after July 1, 2026; joint repayment by married borrowers, enrollment limits and the June 30, 2028 end not modeled; interest and forgiveness not modeled; not subtracted from household net income
+    notes: Monthly payment (lesser of the 12-year fixed payment on the current balance times the income percentage factor from the 2025 and 2026 Federal Register notices, and 20% of income above the poverty guideline, both on the latest return's AGI; $5 minimum); tax-dependent borrowers treated as ineligible; zero for borrowers with a Direct Loan made on or after July 1, 2026; joint repayment by married borrowers, enrollment limits and the June 30, 2028 end not modeled; interest and forgiveness not modeled; not subtracted from household net income
 
   - id: tiered_standard_repayment
     name: Tiered standard repayment plan
