@@ -575,12 +575,13 @@
   output:
     pa_liheap_income: 300
 
-# Section 601.84(10) excludes the Medicare premium only from Social Security.
-# Social Security of 50 a month (600 a year) is below the 2,434.80 standard
-# premium, pinned as for an enrollee without Medicare Savings Program help:
-# max(600 - 2,434.80, 0) = 0. The remaining premium reduces neither the 600 of
-# railroad retirement nor the 10,000 pension: 0 + 600 + 10,000 = 10,600.
-- name: Case 19, a Medicare premium larger than Social Security reduces no other income.
+# Section 601.84(10) excludes only Medicare premiums deducted from Social
+# Security. An enrollee with railroad retirement benefits has the premium
+# deducted from them instead (42 CFR 408.42), so the 2,434.80 standard premium,
+# pinned as for an enrollee without Medicare Savings Program help, excludes
+# nothing: 600 Social Security + 600 railroad retirement + 10,000 pension =
+# 11,200.
+- name: Case 19, a railroad annuitant's Medicare premium is not deducted from Social Security.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -607,7 +608,7 @@
         members: [person1]
         state_code: PA
   output:
-    pa_liheap_income: 10_600
+    pa_liheap_income: 11_200
 
 # FY2026 final plan page 51, section 601.82(4)(v), counts unemployment
 # compensation. With no reported amount, total_unemployment_compensation uses

@@ -18,6 +18,7 @@ class pa_liheap_income(Variable):
         "https://liheapch.acf.gov/docs/2025/state-plans/PA_Plan_2025.pdf#page=6",
         "https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/055/chapter601/s601.82.html",
         "https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/055/chapter601/s601.84.html",
+        "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-B/part-408/subpart-C",
     )
 
     def formula(spm_unit, period, parameters):
@@ -34,15 +35,22 @@ class pa_liheap_income(Variable):
             other = other + max_(person(source, period), 0)
         # Section 601.84(10) of the plan (FY2026 page 52, FY2027 page 50) and of
         # 55 Pa. Code excludes Medicare premiums deducted from Social Security
-        # benefit payments, so the premium is netted from Social Security only,
-        # floored at zero, and reduces no other income. Railroad retirement
-        # counts in full as a pension. medicare_part_b_premium is zero for a
-        # person who is not enrolled and excludes the share a Medicare Savings
-        # Program pays, which is not withheld from the check. No Part D premium
+        # benefit payments. SSA deducts the premium from Social Security only
+        # for an enrollee without railroad retirement benefits, and withholds
+        # the whole benefit when it is smaller than the premium (42 CFR
+        # 408.43), so the exclusion is the premium capped at the benefit. The
+        # Railroad Retirement Board deducts it from railroad benefits instead
+        # (42 CFR 408.42), and railroad retirement counts in full as a pension.
+        # medicare_part_b_premium is zero for a person who is not enrolled and
+        # excludes the share a Medicare Savings Program pays. No Part D premium
         # is modeled.
         premium = person("medicare_part_b_premium", period)
         social_security = person("social_security", period)
-        net_social_security = max_(social_security - premium, 0)
+        has_railroad_benefits = person("railroad_benefits", period) > 0
+        premium_deducted = where(
+            has_railroad_benefits, 0, min_(premium, social_security)
+        )
+        net_social_security = max_(social_security - premium_deducted, 0)
         # Section 601.82(4)(i) counts public assistance grants received. The
         # annual tanf aggregate includes pa_tanf and applies take-up; pa_tanf
         # alone is the grant a nonrecipient could get.
