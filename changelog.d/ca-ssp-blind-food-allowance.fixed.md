@@ -1,1 +1,0 @@
-Stop the California state supplement from adding the no-cooking food allowance to the blind rates: a couple of an aged or disabled person and a blind person who is neither aged nor disabled gets the one-blind couple rate alone, and the allowance counts only where the aged or disabled amount with it is higher (WIC 12200(e)).
