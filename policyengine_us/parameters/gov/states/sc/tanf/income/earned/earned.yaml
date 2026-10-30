@@ -4,10 +4,11 @@ values:
     - employment_income_before_lsr
     - self_employment_income_before_lsr
     - sstb_self_employment_income_before_lsr
+    - farm_operations_income # Farm income is self-employment income
 metadata:
   unit: list
-  period: month 
-  label: South Carolina TANF earned income 
+  period: month
+  label: South Carolina TANF earned income
   reference:
-    - title: SC DSS TANF Policy Manual Section 7.1
-      href: https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=101
+    - title: "SC DSS TANF Policy Manual (Volume 67), Sections 7.1 and 7.7 #page 102,112"
+      href: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=102
