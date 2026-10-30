@@ -1,0 +1,16 @@
+description: Tennessee rounds the energy burden ratio to this many decimal places before selecting the benefit matrix column under the Low Income Home Energy Assistance Program.
+# The manual's examples divide the energy expense by countable income
+# ($89.24 / $1,015.45 = 0.0878822197, or 8.79%), and the matrix prints its
+# energy burden columns to four decimals (0.0000-0.0509, 0.0510-0.0671).
+values:
+  2025-10-01: 4
+
+metadata:
+  unit: int
+  period: year
+  label: Tennessee LIHEAP energy burden rounding decimals
+  reference:
+    - title: "Tennessee LIHEAP 2026 Policy Manual, Section 2.17 #page 31-32"
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-2026-Policy-Manual-for-Tennessee.pdf#page=31
+    - title: Tennessee LIHEAP 2026 Benefit Matrix, energy burden columns
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/2026-LIHEAP-Eligible-Income-Household-Size-Benefits.pdf

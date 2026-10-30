@@ -1,0 +1,14 @@
+description: Wisconsin deducts these expenses from countable income under the Home Energy Assistance Program.
+# Only court-ordered child support paid is deductible; the input does not
+# distinguish voluntary payments. The Medicare premium deduction applies only
+# to Social Security and Railroad Retirement benefits, in the income formula.
+values:
+  2025-10-01:
+    - child_support_expense
+metadata:
+  unit: list
+  period: year
+  label: Wisconsin WHEAP income deductions
+  reference:
+    - title: "Wisconsin PY26 WHEAP Manual, sections 3.3.2 item 5 and 3.3.3 and Table 3.5 #page 48-50,58"
+      href: https://web.archive.org/web/20260428215048/https://energyandhousing.wi.gov/Documents/WHEAP/WheapManual_PY26.pdf#page=48
