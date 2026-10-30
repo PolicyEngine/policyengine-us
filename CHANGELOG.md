@@ -1,3 +1,14 @@
+## [2.83.0] - 2026-10-30
+
+### Added
+
+- Add an eligibility-year PIA-ratio lever for reported Social Security benefits, supplied claim-age inputs, and named population inference and coverage diagnostics.
+
+### Fixed
+
+- Flag assumed retirement claiming-age sensitivities as proxies even when the birth date is exact.
+
+
 ## [2.82.0] - 2026-10-30
 
 ### Added
