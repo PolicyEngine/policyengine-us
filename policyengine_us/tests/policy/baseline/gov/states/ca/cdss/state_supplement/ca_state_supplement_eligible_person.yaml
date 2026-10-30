@@ -41,3 +41,54 @@
     state_code: CA
   output:
     ca_state_supplement_eligible_person: false
+
+- name: Disabled dependent child below the age limit
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 33
+        meets_ssi_resource_test: true
+        is_ssi_aged_blind_disabled: false
+        immigration_status: CITIZEN
+      person2:
+        age: 17
+        meets_ssi_resource_test: true
+        is_ssi_aged_blind_disabled: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    is_tax_unit_dependent: [false, true]
+    ca_state_supplement_eligible_person: [false, true]
+
+- name: Disabled dependent at the age limit
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        meets_ssi_resource_test: true
+        is_ssi_aged_blind_disabled: false
+        immigration_status: CITIZEN
+      person2:
+        age: 18
+        # Input so the age-ordered fallback does not make them the spouse.
+        is_tax_unit_dependent: true
+        meets_ssi_resource_test: true
+        is_ssi_aged_blind_disabled: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_state_supplement_eligible_person: [false, false]
