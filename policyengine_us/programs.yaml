@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, MD, MS, NC, ND, NE, NH, NJ, NY, OH, OK, OR, SD, RI, TX, UT, VA, WA, WY
+    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, MD, MS, NC, ND, NE, NH, NJ, NM, NY, OH, OK, OR, SD, RI, TX, UT, VA, WA, WY
     state_implementations:
       - state: AL
         status: partial
@@ -1164,6 +1164,14 @@ programs:
         parameter_prefix: gov.states.nj.dca.liheap
         verified_years: "2026-2027"
         notes: FY2026-FY2027 regular heating only, covering eligibility, countable income and the benefit grid, including the one renters cell that changes in FY2027; the program is not modeled before FY2022. Crisis, cooling and equipment assistance are out of scope.
+      - state: NM
+        status: partial
+        name: New Mexico LIHEAP
+        full_name: New Mexico Low Income Home Energy Assistance Program
+        variable: nm_liheap
+        parameter_prefix: gov.states.nm.hca.liheap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 annual benefit from the point system on the household's heating fuel or electric bill, with three income points up to 100% of the poverty guideline. Crisis assistance and weatherization are out of scope.
       - state: NY
         status: partial
         name: New York HEAP
