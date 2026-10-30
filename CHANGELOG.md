@@ -1,3 +1,21 @@
+## [2.88.1] - 2026-10-30
+
+### Fixed
+
+- Default living_arrangements_allow_for_food_preparation to true, so California pays the SSI/SSP restaurant meals allowance only when the input says the living arrangement prevents meal preparation at home (WIC 12200(e)), not to every aged or disabled recipient.
+
+
+## [2.88.0] - 2026-10-30
+
+### Added
+
+- Add Pennsylvania LIHEAP regular heating eligibility, county and fuel payment schedules, and the FY2025 and FY2026 vulnerable-household supplements.
+- Add Louisiana LIHEAP regular heating assistance.
+- Add Maine HEAP Fuel Assistance (LIHEAP regular heating) for the 2025-26 and 2026-27 heating seasons, including the June 29, 2026 points matrix.
+- Add Missouri LIHEAP Energy Assistance for regular heating (FY2026-FY2027).
+- Add the Montana LIHEAP regular heating benefit.
+
+
 ## [2.87.1] - 2026-10-30
 
 ### Fixed

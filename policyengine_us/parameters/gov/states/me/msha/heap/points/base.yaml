@@ -1,0 +1,18 @@
+description: Maine assigns this number of base points to every eligible household under the Low Income Home Energy Assistance Program.
+# The 2024 and 2025 editions have no base points; the June 29, 2026
+# replacement adds 8.
+values:
+  2024-07-03: 0
+  2026-06-29: 8
+
+metadata:
+  unit: /1
+  period: year
+  label: Maine HEAP base points
+  reference:
+    - title: Maine FY2026 Benefit Matrix, 99-346 CMR ch. 24, section 4(A) (2025 edition)
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/ME_BenefitMatrix_2026.pdf#page=1
+    - title: 99-346 CMR ch. 24, section 4(A) (2025 edition, SOS filing 2025-135)
+      href: https://www.maine.gov/sos/sites/maine.gov.sos/files/inline-files/346c024.docx
+    - title: 99-346 CMR ch. 24, section 4(A) (effective June 29, 2026)
+      href: https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=16

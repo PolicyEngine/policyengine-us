@@ -1,0 +1,130 @@
+# Missouri LIHEAP Energy Assistance end to end, from household inputs to the
+# payment. FFY2026 is model year 2026 and FFY2027 is model year 2027.
+
+- name: Case 1, FFY2026 working family of four heating with natural gas.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income_before_lsr: 31_200
+        bank_account_assets: 1_200
+      person2:
+        age: 36
+        employment_income_before_lsr: 18_720
+      person3:
+        age: 9
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MO
+  output:
+    # Full time at $15.00: 31,200 x 0.8 = 24,960.
+    # 24 hours a week at $15.00: 18,720 x 0.8 = 14,976.
+    # Missouri TANF: (31,200 + 18,720) / 12 = 4,160 a month, above the gross
+    # limit of 990 x 1.85 = 1,831.50 for four, so TANF is 0.
+    # Total 39,936; no medical deduction.
+    # Size 4 limit: 5,461 x 12 = 65,532. Assets 1,200 <= 3,000.
+    # Natural gas pays 326.
+    mo_liheap_household_size: 4
+    mo_liheap_countable_income_person: [24_960, 14_976, 0, 0]
+    mo_tanf: 0
+    mo_liheap_medical_deduction: 0
+    mo_liheap_countable_income: 39_936
+    mo_liheap_income_limit: 65_532
+    has_heating_expense: true
+    mo_liheap_eligible: true
+    mo_liheap: 326
+
+- name: Case 2, FFY2026 retired couple heating with tank propane.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        social_security_retirement: 25_200
+        taxable_pension_income: 4_800
+        medicare_part_b_premium: 2_434.80
+        bank_account_assets: 2_500
+      person2:
+        age: 69
+        social_security_retirement: 13_200
+        medicare_part_b_premium: 2_434.80
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # 2026 Part B premium 202.90 x 12 = 2,434.80 each.
+    # Person 1: 2,100 a month = 25,200 - 2,434.80 + pension 4,800 = 27,565.20.
+    # Person 2: 1,100 a month = 13,200 - 2,434.80 = 10,765.20.
+    # Total 38,330.40 - one medical deduction 1,200 = 37,130.40.
+    # Size 2 limit: 3,714 x 12 = 44,568. Assets 2,500 <= 3,000.
+    # Tank propane pays 495.
+    mo_liheap_household_size: 2
+    mo_liheap_countable_income_person: [27_565.20, 10_765.20]
+    mo_liheap_medical_deduction: 1_200
+    mo_liheap_countable_income: 37_130.40
+    mo_liheap_income_limit: 44_568
+    mo_liheap_eligible: true
+    mo_liheap: 495
+
+- name: Case 3, FFY2027 mixed-status renter family with heat included in the rent.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income_before_lsr: 31_200
+        pre_subsidy_rent: 10_200
+      person2:
+        age: 29
+        immigration_status: UNDOCUMENTED
+        employment_income_before_lsr: 26_000
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # The undocumented parent is left out of the household size (3 - 1 = 2),
+    # but the 2025 manual counts that parent's income.
+    # Citizen parent: 31,200 x 0.8 = 24,960.
+    # Undocumented parent: $12.50 an hour x 2,080 hours = 26,000 x 0.8
+    # = 20,800. Total 45,760; no medical deduction or child support paid.
+    # Missouri TANF: 31,200 / 12 = 2,600 a month from the citizen parent alone
+    # is above the gross limit even for three (846 x 1.85 = 1,565.10), so TANF
+    # is 0.
+    # Size 2 limit (FFY2027): 3,847 x 12 = 46,164; 45,760 <= 46,164.
+    # No own fuel bill, but heat is in unsubsidized rent.
+    # Rent 850 a month = 10,200 x 0.08 = 816, capped at natural gas 326.
+    mo_liheap_household_size: 2
+    mo_liheap_countable_income_person: [24_960, 20_800, 0]
+    mo_liheap_countable_income: 45_760
+    mo_liheap_income_limit: 46_164
+    has_heating_expense: false
+    mo_liheap_eligible: true
+    mo_liheap: 326

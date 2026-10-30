@@ -1,0 +1,21 @@
+description: Montana uses this threshold as the Supplemental Security Income minor child age under the Low Income Home Energy Assistance Program.
+# Members whose income Supplemental Security Income considers are
+# categorically eligible (ARM 37.70.401(23), numbered (24) from May 23, 2026).
+# A parent's income is considered only for a child below this age.
+values:
+  2025-10-01: 18
+metadata:
+  unit: year
+  period: year
+  label: Montana LIHEAP SSI minor child age
+  reference:
+    - title: 20 CFR 416.1160(d), definition of ineligible parent
+      href: https://www.law.cornell.edu/cfr/text/20/416.1160
+    - title: Admin. R. Mont. 37.70.401(4), effective May 27, 2023 to May 22, 2026
+      href: https://rules.mt.gov/policy-library-documents/application/pdf/325b36e5abb6a3bfa036c3802fc997ed50711b5407868ec8f4b61eabc538e3ed#page=1
+    - title: Admin. R. Mont. 37.70.401(4), effective May 23, 2026
+      href: https://rules.mt.gov/policy-library-documents/application/pdf/fa158b2cdbf766e585e1fbf5811523e0dff4e760111590ae75d0456ee81551ad#page=1
+    - title: Montana LIHEAP Policy Manual 2025-2026, section 3.11 Conditions of Categorical Eligibility
+      href: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=27
+    - title: Montana LIHEAP Policy Manual 2026-2027, section 3.11 Conditions of Categorical Eligibility
+      href: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=29

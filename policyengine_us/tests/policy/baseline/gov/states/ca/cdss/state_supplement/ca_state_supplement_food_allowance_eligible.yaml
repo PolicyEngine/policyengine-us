@@ -24,3 +24,133 @@
     state_code: CA
   output:
     ca_state_supplement_food_allowance_eligible: false
+
+- name: Food preparation not reported, so the living arrangement allows it by default
+  period: 2024
+  input:
+    ca_state_supplement_aged_disabled_count: 1
+    state_code: CA
+  output:
+    living_arrangements_allow_for_food_preparation: true
+    ca_state_supplement_food_allowance_eligible: false
+
+# Restaurant meals allowance (WIC 12200(e); SSA POMS SI SF01415.140). The
+# allowance is paid only when the living arrangement prevents meal preparation
+# at home, so a household without living_arrangements_allow_for_food_preparation
+# set gets the regular independent-living standard. January 2025 amounts, per
+# SSA POMS SI 01415.057 (California codes A and C): federal SSI $967
+# (individual) and $1,450 (couple); independent living $1,206.94 and $2,057.83;
+# without cooking facilities $1,335.81 and $2,315.57.
+- name: 2025 aged individual, food preparation not reported, gets the independent-living standard
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ssi: 967
+    ca_state_supplement_food_allowance_eligible: false
+    ca_state_supplement_food_allowance: 0
+    ca_state_supplement_payment_standard: 1_206.94
+    ca_state_supplement: 239.94 # 1,206.94 - 967
+
+- name: 2025 aged individual whose living arrangement prevents food preparation gets the restaurant meals allowance
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    ssi: 967
+    ca_state_supplement_food_allowance_eligible: true
+    ca_state_supplement_food_allowance: 128.87 # 1,335.81 - 1,206.94
+    ca_state_supplement_payment_standard: 1_335.81 # 1,206.94 + 128.87
+    ca_state_supplement: 368.81 # 1,335.81 - 967
+
+- name: 2025 aged couple, food preparation not reported, gets the independent-living standard
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 83
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+      person2:
+        age: 78
+        is_tax_unit_spouse: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ssi: [725, 725] # 1,450 / 2
+    ca_state_supplement_food_allowance_eligible: false
+    ca_state_supplement_food_allowance: 0
+    ca_state_supplement_payment_standard: 2_057.83
+    ca_state_supplement: 607.83 # 2,057.83 - 1,450
+
+- name: 2025 aged couple whose living arrangement prevents food preparation gets the restaurant meals allowance
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 83
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+      person2:
+        age: 78
+        is_tax_unit_spouse: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    ssi: [725, 725] # 1,450 / 2
+    ca_state_supplement_food_allowance_eligible: true
+    ca_state_supplement_food_allowance: 257.74 # 2,315.57 - 2,057.83
+    ca_state_supplement_payment_standard: 2_315.57 # 2,057.83 + 257.74
+    ca_state_supplement: 865.57 # 2,315.57 - 1,450

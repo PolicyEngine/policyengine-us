@@ -1,0 +1,15 @@
+description: Montana uses federal Supplemental Security Income payment standards from this many years before the modeled benefit year to compute the income of households categorically eligible through Supplemental Security Income or Temporary Assistance for Needy Families under the Low Income Home Energy Assistance Program.
+# Model year 2026 (2025-2026 heating season) uses the 2025 standards ($967
+# individual, $1,450 couple); model year 2027 uses the 2026 standards ($994,
+# $1,491).
+values:
+  2025-10-01: 1
+metadata:
+  unit: year
+  period: year
+  label: Montana LIHEAP categorical SSI standard year lag
+  reference:
+    - title: Montana LIHEAP Policy Manual 2025-2026, section 9.5 Categorically Eligible Standard SSI Amounts
+      href: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=125
+    - title: Montana LIHEAP Policy Manual 2026-2027, section 9.5 Categorically Eligible Standard SSI Amounts
+      href: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=127

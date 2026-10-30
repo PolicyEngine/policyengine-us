@@ -1,0 +1,55 @@
+description: Missouri counts these unearned income sources under the Low Income Home Energy Assistance Program.
+# Each source is floored at zero, so a rental loss does not offset other
+# income. Social Security is added, and the SMI (Medicare Part B) premium of
+# a member receiving Social Security or Railroad Retirement benefits is
+# deducted, in mo_liheap_countable_income_person; TANF (the take-up-gated
+# tanf) is added at the household level in mo_liheap_countable_income.
+# Short- and long-term disability payments count only for members 18 or
+# older (adult_unearned_sources).
+# Interest and dividends are excluded (October 2025 manual, page 38), as are
+# capital gains, which page 38 treats as lump sums; page 32 lists the Form 1040
+# capital gains line among self-employment documents. Foster care payments,
+# royalties, roomer and boarder payments, armed forces allotments and
+# installment income have no inputs.
+# Retirement-account (IRA, Keogh or 401(k)) withdrawals are not counted: the
+# income lists name pensions but not account withdrawals, and IRA and Keogh
+# balances count as resources (manual page 40; 13 CSR 40-19.020(2)(N)), so
+# the model treats a withdrawal as a change in resources, not income.
+values:
+  2023-10-01:
+    - total_unemployment_compensation
+    # Union funds or strike benefits.
+    - strike_benefits
+    - ssi
+    # Supplemental Aid to the Blind, Blind Pension and Supplemental State
+    # Payments.
+    - mo_ssp
+    - pension_income
+    - military_retirement_income
+    - railroad_benefits
+    # Rent received from land or buildings, including farm rent and
+    # Conservation Reserve Program payments.
+    - rental_income
+    - farm_rent_income
+    - alimony_income
+    - child_support_received
+    - veterans_benefits
+    - workers_compensation
+    # Contributions: money received from friends, family or organizations.
+    - financial_assistance
+
+metadata:
+  unit: list
+  period: year
+  label: Missouri LIHEAP unearned income sources
+  reference:
+    - title: "Missouri LIHEAP FFY2026 State Plan, Section 1.9 #page 5-7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/MO_Plan_2026.pdf#page=5
+    - title: Missouri LIHEAP application MO 886-4576 (8-2026), Part 7 Other Income
+      href: https://dssmanuals.mo.gov/wp-content/uploads/2022/02/liheap-application.pdf#page=5
+    - title: "Missouri LIHEAP Policy and Procedure Manual (October 2025), Unearned Income, Income Exclusions and Resources #page 32-34,38,40"
+      href: https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=32
+    - title: 13 CSR 40-19.020(2)(N), Low-Income Home Energy Assistance Program
+      href: https://web.archive.org/web/20250603190025/https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-19.pdf#page=2
+    - title: "Missouri DSS draft FFY2027 LIHEAP State Plan (report status Saved with Errors), Section 1.9 #page 5-7"
+      href: https://dss.mo.gov/sites/mydss/files/media/pdf/2026/08/liheap-active-ffy2027.pdf#page=5
