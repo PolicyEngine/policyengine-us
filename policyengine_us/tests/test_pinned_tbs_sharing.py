@@ -153,6 +153,9 @@ def test_pin_matches_its_source_after_any_sequence_of_changes(operations):
     edits = {id(tree): 0 for tree in trees}
     built_from = None
     builds = 0
+    # Readers of one tree can hold identical variables, as these do, and each
+    # still needs a pinned system of its own for its receipts.
+    reader_of_pin = {}
 
     def counted_pin(pinned):
         nonlocal builds
@@ -185,6 +188,7 @@ def test_pin_matches_its_source_after_any_sequence_of_changes(operations):
             assert pinned.parameters.b("2000-01-01") == 2 * source.a("2000-01-01")
             assert source.b("2000-01-01") == b_before
             assert pinned.variables == reader.variables
+            assert reader_of_pin.setdefault(pinned, reader) is reader
             assert pinned is pinned_tbs._get_pinned_tbs(reader, "small", counted_pin)
 
 
