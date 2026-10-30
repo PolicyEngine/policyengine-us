@@ -31,10 +31,9 @@ class ca_adjusted_earnings(Variable):
         # employee compensation". California does not exclude payroll HSA
         # contributions (Schedule CA (540) line 1h, column C), so its wages
         # (ca_taxable_wages, W-2 box 16) exceed federal taxable wages by them.
-        taxable_wages = max_(
-            person("ca_taxable_wages", period),
-            person("irs_employment_income", period),
-        )
+        # ca_taxable_wages subtracts a subset of the federal pre-tax list, so
+        # it is never below irs_employment_income.
+        taxable_wages = person("ca_taxable_wages", period)
         # FTB 3506 line 4 counts wages together with net earnings from
         # self-employment, so a business loss offsets the California wages
         # before the zero floor, as adjusted_earnings does for federal wages.

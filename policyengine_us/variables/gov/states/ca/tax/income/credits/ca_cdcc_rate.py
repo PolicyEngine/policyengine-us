@@ -10,15 +10,18 @@ class ca_cdcc_rate(Variable):
     reference = (
         "https://www.ftb.ca.gov/about-ftb/data-reports-plans/Summary-of-Federal-Income-Tax-Changes/index.html#PL-117-2-9631",
         "https://www.ftb.ca.gov/forms/2025/2025-3506-instructions.html",  # Line 7
+        "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052.6",  # (a)(1)
     )
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
         year = period.start.year
         if year != 2021:
-            # Outside 2021, FTB 3506 line 7 uses the federal decimal table
-            # (2025 instructions, line 7). The FTB has not published a 2026
-            # table, so 2026 onward keeps the federal rate.
+            # R&TC 17052.6(a)(1) ties the credit to IRC 21 "as applicable for
+            # federal income tax purposes for the taxable year", which
+            # overrides the R&TC 17024.5 specified date. So outside 2021,
+            # FTB 3506 line 7 uses the federal decimal table for the same
+            # year, including the 2026 schedule of P.L. 119-21.
             return tax_unit("cdcc_rate", period)
 
         # California did not adopt the 2021 American Rescue Plan Act rate,

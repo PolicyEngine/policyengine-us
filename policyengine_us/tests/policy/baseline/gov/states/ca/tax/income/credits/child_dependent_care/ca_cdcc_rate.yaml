@@ -45,3 +45,16 @@
     adjusted_gross_income: 15_000
   output:
     ca_cdcc_rate: 0.35
+
+# R&TC 17052.6(a)(1) uses IRC 21 "as applicable for federal income tax
+# purposes for the taxable year", so 2026 takes the P.L. 119-21 schedule:
+# first phase-out max(.50 - ceil((80,000 - 15,000) / 2,000) x .01, .35) = .35;
+# second phase-out ceil((80,000 - 75,000) / 2,000) x .01 = .03; .35 - .03 = .32.
+- name: 2026 head of household with AGI of $80,000 gets the federal rate after the second phase-out
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 80_000
+  output:
+    ca_cdcc_rate: 0.32

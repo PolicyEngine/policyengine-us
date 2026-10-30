@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.income.adjusted_earnings import (
+    earnings_before_zero_floor,
+)
 
 
 class ny_cdcc_qualifying_expenses(Variable):
@@ -27,19 +30,18 @@ class ny_cdcc_qualifying_expenses(Variable):
         cap = p.expense_cap.calc(tax_unit("count_cdcc_eligible", period))
         # (C) defines earned income as "the wages, salaries, tips and other
         # employee compensation", without IRC 32(c)(2)(A)(i)'s "only if such
-        # amounts are includible in gross income". head_earned and
-        # spouse_earned follow 32(c)(2), so add back the pre-tax payroll
-        # deductions they leave out.
+        # amounts are includible in gross income", so measure it on gross
+        # wages, which keep the pre-tax payroll deductions. A business loss
+        # offsets these wages before the zero floor.
         person = tax_unit.members
-        excluded_wages = person("employment_income", period) - person(
-            "irs_employment_income", period
+        earned = max_(
+            0,
+            earnings_before_zero_floor(
+                person, period, parameters, person("employment_income", period)
+            ),
         )
-        head_earned = tax_unit("head_earned", period) + tax_unit.sum(
-            excluded_wages * person("is_tax_unit_head", period)
-        )
-        spouse_earned = tax_unit("spouse_earned", period) + tax_unit.sum(
-            excluded_wages * person("is_tax_unit_spouse", period)
-        )
+        head_earned = tax_unit.sum(earned * person("is_tax_unit_head", period))
+        spouse_earned = tax_unit.sum(earned * person("is_tax_unit_spouse", period))
         earned = where(
             tax_unit("tax_unit_is_joint", period),
             min_(head_earned, spouse_earned),

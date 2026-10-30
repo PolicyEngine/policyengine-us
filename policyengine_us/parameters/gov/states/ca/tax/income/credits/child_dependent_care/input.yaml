@@ -1,10 +1,10 @@
 description: California uses this input for the state child/dependent care credit, based on year.
 values:
-  2012-01-01:
-  - cdcc
   # FTB 3506 applies the federal decimal (line 7) to California's own
   # expense and earned income limits (lines 3-6), not to the federal credit.
-  2021-01-01:
+  # R&TC 17052.6 has done so since 2000, so the California computation
+  # applies in every year, including years before 2021.
+  2012-01-01:
   - ca_federal_capped_cdcc
 metadata:
   unit: list
@@ -15,3 +15,5 @@ metadata:
       href: https://www.ftb.ca.gov/about-ftb/data-reports-plans/Summary-of-Federal-Income-Tax-Changes/index.html#PL-117-2-9631
     - title: 2025 FTB 3506, Part III, lines 3-10
       href: https://www.ftb.ca.gov/forms/2025/2025-3506.pdf#page=1
+    - title: California Revenue and Taxation Code 17052.6(a)(1)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052.6

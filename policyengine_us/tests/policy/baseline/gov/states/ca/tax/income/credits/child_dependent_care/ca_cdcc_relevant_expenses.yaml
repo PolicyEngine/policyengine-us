@@ -82,9 +82,13 @@
     state_code: CA
     tax_unit_childcare_expenses: 10_000
     count_cdcc_eligible: 2
+    min_head_spouse_earned: 50_000
     ca_cdcc_min_head_spouse_earned: 50_000
     dependent_care_assistance_exclusion: 5_000
   output:
+    # California earned income equals federal earned income, so the
+    # California exclusion is the federal 5,000, within the $5,000 cap.
+    ca_dependent_care_assistance_exclusion: 5_000
     # min(10_000 expenses, $6,000 two-child cap - $5,000 exclusion, 50_000) = 1_000.
     ca_cdcc_relevant_expenses: 1_000
 
@@ -363,7 +367,7 @@
     spouse_earned: 4_000
     min_head_spouse_earned: 4_000
     # California (W-2 box 16): 6,000 - 1,000 401(k) = 5,000.
-    # ca_spouse_earned = 4,000 + (5,000 - 4,000) = 5,000.
+    # ca_adjusted_earnings measures earned income on these wages: 5,000.
     ca_spouse_earned: 5_000
     ca_cdcc_min_head_spouse_earned: 5_000
     # min(9,000 expenses, 6,000 two-person limit, federal line 31 of 6,000,

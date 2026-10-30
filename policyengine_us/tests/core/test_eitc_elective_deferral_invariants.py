@@ -1,11 +1,12 @@
 """Differential coverage of payroll exclusions across vectorized tax units.
 
 Replacing gross wages and pre-tax deductions with the same W-2 box 1 wages
-must leave federal EITC and ACTC earnings/credits, the CDCC earned income
-limit and the AMT earnings cap unchanged. California must retain taxable
-payroll HSA amounts, while gross earned income must remain independent of
-payroll deductions. The paired runs also remove dependents' wages to check
-that they cannot enter filer earnings.
+must leave federal EITC and ACTC earnings/credits and the CDCC earned income
+limit unchanged. California must retain taxable payroll HSA amounts, while
+gross earned income must remain independent of payroll deductions. The paired
+runs also remove dependents' wages to check that they cannot enter filer
+earnings. (The AMT child earnings cap applies only before 2018, so
+eitc_earned_income.yaml covers it.)
 Additional California pairs retain payroll HSA deductions when substituting
 California taxable wages, so YCTC must agree even with business losses.
 """
@@ -55,10 +56,6 @@ def _situations():
         tax_units[f"unit_{i}"] = {
             "members": members,
             "takes_up_eitc": {YEAR: True},
-            # Force the AMT child cap's kiddie tax flag (the cap itself only
-            # applies before 2018).
-            "amt_kiddie_tax_applies": {YEAR: True},
-            "amt_income": {YEAR: 200_000},
         }
         households[f"household_{i}"] = {
             "members": members,
@@ -103,8 +100,6 @@ def _situations():
         tax_units[f"unit_{i}"] = {
             "members": members,
             "takes_up_eitc": {YEAR: True},
-            "amt_kiddie_tax_applies": {YEAR: True},
-            "amt_income": {YEAR: 200_000},
         }
         households[f"household_{i}"] = {
             "members": members,
@@ -161,7 +156,6 @@ def _run(situation):
         "head_earned",
         "spouse_earned",
         "min_head_spouse_earned",
-        "amt_exemption",
     )
     return {name: simulation.calculate(name, YEAR).copy() for name in outputs}
 
@@ -182,7 +176,6 @@ def test_payroll_exclusions_match_equivalent_taxable_compensation():
         "head_earned",
         "spouse_earned",
         "min_head_spouse_earned",
-        "amt_exemption",
     ):
         np.testing.assert_allclose(
             with_deductions[name],
