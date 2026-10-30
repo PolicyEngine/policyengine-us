@@ -1,3 +1,110 @@
+## [2.79.7] - 2026-10-29
+
+### Fixed
+
+- Correct Rhode Island pregnancy Medicaid and CHIP routing for people with third-party health coverage, and preserve full postpartum Medicaid based on qualifying pregnancy eligibility through the last day of the month in which the 12-month postpartum period ends, including after income changes or another pregnancy. Fixes #10390.
+- Limit Arkansas's Medicaid aged, blind and disabled pathway (ARSeniors) to people aged 65 or older, except that noncitizens who fail the immigration test and meet SSI's income and resource tests, aged or not, keep it for emergency Medicaid, and apply Maine's savings exclusion and $100 couple income disregard.
+
+
+## [2.79.6] - 2026-10-29
+
+### Fixed
+
+- Extend standard pregnancy CHIP eligibility, including the lawfully residing pregnancy option, through each state's Medicaid postpartum period, and charge Missouri's CHIP premium only for CHIP children.
+- Updated Medicaid's aged, blind and disabled pathway: California's $20 deduction followed by the $230/$310 disregard before December 2020, its health insurance premium deduction, and its full Medicare Part B premium disregard, income-related amount included, from December 2020; Connecticut's 2026 disregard; South Carolina's $50 disregard; no SSI $20 disregard in Minnesota (Minn. Stat. 256B.056, subd. 1b); Missouri's 2015-2026 asset limits with July 1 updates, with a couple's resources equal to the couple limit qualifying, and from fiscal year 2018 an individual's resources equal to the individual limit, under RSMo 208.010.2(7); California's resources equal to the limit qualifying, with the $130,000 / $195,000 limit from July 2022; and asset limits equal to the Medicare Savings Program resource limit in Arkansas, Oklahoma and South Carolina, where resources equal to the limit qualify.
+- Applied state Medicare Savings Program rules: no asset test in Washington from 2023 or in Mississippi from July 1999; California asset limits of $130,000 / $195,000 (July 2022 to 2023, and again from 2026); Minnesota asset limits of $10,000 / $18,000; and general income exclusions of $25 in Illinois (one for each spouse with income other than SSI and contributions such as alimony and child support) and $50 in Mississippi (once for a couple).
+
+
+## [2.79.5] - 2026-10-29
+
+### Fixed
+
+- Make New Hampshire FANF resource eligibility require countable resources less than the limit, per RSA 167:79 III(f).
+- Prorate the 2018-2022 New York Empire State child credit to the children aged four to 16, as Form IT-213 lines 9-12 do, instead of excluding younger children from the federal credit.
+- Count the furnace or boiler credit once, drop advanced main air circulating fans after 2022, and add the heat pump credit to the $1,200-capped total of the energy efficient home improvement credit, as 26 U.S.C. 25C(b)(5) and Form 5695 line 30 require.
+- Phase out the California AMT exemption at 25% under R&TC 17062.1 instead of the federal 2026 rate of 50%.
+- Oklahoma's EITC, Washington's Working Families Tax Credit and the New York WFTC contributed reform now net a spouse's self-employment loss against the other spouse's wages when they compute earned income.
+- Apply the Florida TCA $90 standard disregard and the $200 and 1/2 earned income disregard to each earner's earnings instead of once to the unit's total, per ESS manual 2420.0304 and 2420.0314, and subtract the $90 of each earner in the unit-level test for the $200 and 1/2 disregard.
+- Give the saver's credit its 50% rate when adjusted gross income is negative, as the Form 8880 line 9 table's first row has no lower bound.
+
+
+## [2.79.4] - 2026-10-29
+
+### Fixed
+
+- Use the printed Virginia TANF Section 304, Appendix 2 standards of assistance and maximum payments from July 2021 and July 2022, instead of scaling the July 2020 amounts, which fell up to $1.59 a month short (Group II maximum $722 instead of $723).
+
+
+## [2.79.3] - 2026-10-29
+
+### Fixed
+
+- Allow the Maine dependent exemption credit only for dependents for whom the filer can claim the federal Child Tax Credit or credit for other dependents, so a dependent without an SSN, ITIN or ATIN, or a return with a filer without an SSN or ITIN, gets no credit.
+
+
+## [2.79.2] - 2026-10-29
+
+### Fixed
+
+- Update stale comments and references in ten state benefit income source lists: renumbered rules for Ohio PFCC (OAC 5180:6-1-03), Colorado CCAP (8 CCR 1403-1 3.111(I)), New Mexico CCAP (8.9.3 NMAC) and Rhode Island CCAP (definition 29), page ranges for Pennsylvania, West Virginia, Maine and DC, and the Maryland CCS and Arkansas SRA notes on annuities.
+- Count military retirement pay and Survivor Benefit Plan annuities as unearned income in the Kansas, Mississippi, North Carolina, New Jersey and New York LIHEAP programs.
+- Count dependents who get the federal credit for other dependents, not only Child Tax Credit children, for the Maine sales tax and property tax fairness credits.
+- Cite the current Ohio PFCC (OAC 5180:6-1-03) and New Mexico CCAP (8.9.3 NMAC) rules, apply New Mexico's age-19 special-supervision limit from the 2025-11-04 rule amendment, and classify New Mexico five-year-olds as school age from September 2026.
+- Count Social Security disability and survivor benefits once in Pennsylvania Child Care Works countable income.
+
+
+## [2.79.1] - 2026-10-29
+
+### Fixed
+
+- Exclude pregnant people with other health coverage from standard pregnancy CHIP and from the unborn-child (FCEP) option in every state, not only California.
+- Key the Illinois Health Benefits for Workers with Disabilities premium bands at the chart's band starts, so income of exactly $250, $500 and so on pays the lower band's premium.
+- Limit the Medicaid optional aged, blind and disabled pathway to states that cover people who do not receive SSI, turning it off in the 14 states that cover them only if they receive SSI (AL, DE, GA, KS, KY, MD, MS, NV, NM, ND, SD, TN, TX and WY). Noncitizens who fail the Medicaid immigration test keep the pathway there for emergency Medicaid and are tested against the SSI rate.
+- Use the SSI federal benefit rate, not 75% of the poverty guideline, as the Medicaid aged, blind, and disabled income limit in West Virginia and North Dakota.
+- Count blind people in the Medicaid medically needy disabled group, and test medically needy income and resources over the individual or married couple instead of the tax unit, counting a parent's excess resources and medical expenses for a child.
+- Apply the California employee SDI rate for each year from 2006 (1.1% in 2024 and 1.2% in 2025, not 1.3%) and the SDI taxable wage limit through 2023, from EDD's DE 3395.
+- Updated the 2024 and 2025 parent and caretaker Medicaid income limits for Texas, Florida, Mississippi and Wyoming from their 2021 values to each state's published standard for those years, and lowered Connecticut's limit to 138 percent of the federal poverty guidelines from October 1, 2024 (Public Act 24-81).
+
+
+## [2.79.0] - 2026-10-29
+
+### Added
+
+- Add Iowa State Supplementary Assistance for 2026.
+
+
+## [2.78.0] - 2026-10-29
+
+### Added
+
+- Add Alaska Heating Assistance Program (ak_hap): FY2027 regular heating benefit from community fuel points, dwelling and income factors up to 150% of the Alaska poverty guideline, with shared-dwelling and utility-allowance reductions applied to heating points under 7 AAC 44.080.
+
+
+## [2.77.0] - 2026-10-29
+
+### Added
+
+- Add an opt-in contributed reform applying SECA to owners' draws from pass-through profits, with configurable phase-in, cap, HI, deduction, and benefit-credit treatment.
+
+  Return zero draw in inactive historical years so the default AIME lookback does not read reporting-floor parameters before they exist.
+
+  Connect the actual owners' draw exclusion to the active-business NIIT reform, respecting OASDI room, optional HI and explicit net-earnings factors.
+
+
+## [2.76.2] - 2026-10-29
+
+### Fixed
+
+- Extend Maine's childless EITC expansion (36 M.R.S. 5219-S(5)-(6)) to every childless filer at least 18 and under 25 whose filer and spouse fail the federal EITC age test, including the 2021 student minimum of 24 (26 U.S.C. 32(n)(1)), so a 2021 full-time student aged 19 to 23 gets the Maine credit computed as if federally eligible. A joint return where one spouse is 18 to 24 and the other meets the federal age test now takes the Maine credit from the federal EITC, as other federally eligible filers do, so EITC take-up applies to it.
+
+
+## [2.76.1] - 2026-10-29
+
+### Fixed
+
+- Limit the self-employed health insurance deduction to net profit less the deductible part of self-employment tax and self-employed retirement plan deductions, as 26 U.S.C. 162(l)(2)(A) and Form 7206 require.
+
+
 ## [2.76.0] - 2026-10-28
 
 ### Added

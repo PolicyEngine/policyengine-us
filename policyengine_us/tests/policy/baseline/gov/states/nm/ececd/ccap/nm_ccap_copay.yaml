@@ -1,9 +1,12 @@
-# NM CCAP copayment (8.15.2.13 NMAC; ECECD Co-payments Waived flyer; LFC brief).
+# NM CCAP copayment (8.15.2.13 NMAC, then 8.9.3.13 NMAC from 2022-11-01 and
+# 8.9.3.12 and 8.9.3.14 NMAC from 2026-09-09; ECECD Co-payments Waived flyer;
+# LFC brief).
 # The copay is $0 for every modeled period, but for different reasons across
 # eras (LFC Policy Brief, Dec 9 2025, p.2):
 #   - 2022-05-01 to 2023-06-30 and 2025-11-01 onward: all copays waived -> $0;
 #   - 2023-07-01 to 2025-10-31: copays reinstated only for families above 200%
-#     FPL, using an unencoded published schedule (8.15.2.24), APPROXIMATED as $0;
+#     FPL, using an unencoded published schedule (8.9.3.24; from 2023-08-01
+#     the 8.9.3.13.D chart), APPROXIMATED as $0;
 #   - before 2022-05-01: the pre-2022 copay formula (8.15.2.13.B) is not modeled -> $0.
 
 - name: Case 1, copay is zero during the 2023-07 partial reinstatement window.
