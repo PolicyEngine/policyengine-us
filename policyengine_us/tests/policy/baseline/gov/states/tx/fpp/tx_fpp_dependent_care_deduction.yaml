@@ -144,6 +144,12 @@
         members: [person1]
       marital_unit2:
         members: [person2]
+    # An unrelated adult who is not claimed files their own return.
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
     spm_units:
       spm_unit:
         members: [person1, person2]
