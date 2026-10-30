@@ -1,16 +1,18 @@
-"""A pin copies only the parameters it edits.
+"""A pin copies the parameter tree's nodes and borrows its dated values.
 
 New York's and Alabama's formulas recompute federal credits under an earlier
-vintage. A pinned system copies the subtrees a pin edits and reads every other
-parameter from the tree it came from, where a full clone would rebuild 143,000
-nodes. These tests hold it to what that clone would have given:
+vintage. A pinned system gets its own tree, whose histories hold the entries of
+the tree it came from, where a full clone would rebuild all of them. These tests
+hold it to what that clone would have given:
 
+- the copied tree reads what a clone reads, whatever its source has cached, and
+  neither tree sees the other's later edits;
 - a pin reads what a full clone reads, for every parameter, and leaves its
   source as it found it;
 - a pin built after a change to its source reads that change;
-- a simulation's pinned system is its own, apart from the nodes it shares;
+- a simulation's pinned system is its own;
 - a traced simulation records what it would record on a full clone;
-- nothing outlives a finished simulation.
+- nothing outlives a finished simulation, and the cache holds nothing back.
 
 The Hypothesis test drives a tree of a few parameters. The others use the
 model, so they keep to the fewest simulations that show each behaviour.
@@ -23,18 +25,25 @@ import weakref
 import pytest
 from hypothesis import given, settings
 from hypothesis import strategies as st
-from policyengine_core.parameters import Parameter, ParameterNode
+from policyengine_core.parameters import (
+    Parameter,
+    ParameterAtInstant,
+    ParameterNode,
+)
+from policyengine_core.parameters.operations.interpolate_parameters import (
+    interpolate_parameters,
+)
 from policyengine_core.periods import instant
 from policyengine_core.reforms import Reform
 
 from policyengine_us import Simulation
-from policyengine_us.spm import pin_spm_policy, tree_is_shared, tree_owning_subtrees
+from policyengine_us.spm import copy_parameter_nodes, pin_spm_policy
 from policyengine_us.system import CountryTaxBenefitSystem, system
 from policyengine_us.tools import pinned_tbs
 
 YEAR = 2024
 AT = "2000-01-01"
-START = instant(AT)
+LATER = "2001-01-01"
 STOP = instant("2099-12-31")
 # The pins overwrite the credits' own parameters, so a change to those cannot
 # show through one. This rate reaches New York's credit through the federal
@@ -117,79 +126,104 @@ def small_tree():
     return ParameterNode(
         "",
         data={
-            "owned": {"a": parameter(1), "b": parameter(0), "scale": scale},
-            "outer": {
-                "owned": {"c": parameter(0)},
-                "lent": {"d": parameter(1)},
-            },
-            "lent": parameter(1),
+            "credit": {"amount": parameter(1), "scale": scale},
+            "tax": {"rate": parameter(1)},
         },
     )
 
 
-def pin_small_tree(tree):
-    amount = tree.owned.scale.brackets[0].amount
-    value = tree.owned.a(AT) + tree.lent(AT) + tree.outer.lent.d(AT)
-    tree.owned.b.update(start=START, stop=STOP, value=value)
-    tree.outer.owned.c.update(start=START, stop=STOP, value=amount(AT))
+def change_small_tree(tree, change, index, value):
+    """Change ``tree`` in one of the ways it can change.
+
+    Only ``update`` clears a cache, and on a loaded tree it stops at a scale's
+    bracket, which has no parent.
+    """
+    credit = tree.credit
+    parameter = (credit.amount, credit.scale.brackets[0].amount, tree.tax.rate)[index]
+    if change == "read":
+        tree(LATER)
+    elif change == "update":
+        parameter.update(start=instant(LATER), stop=STOP, value=value)
+    elif change == "add entry":
+        # What interpolation and uprating do to a history.
+        parameter.values_list.append(
+            ParameterAtInstant(parameter.name, LATER, data=value)
+        )
+        parameter.values_list.sort(key=lambda item: item.instant_str, reverse=True)
+    elif f"added_{value}" not in tree.tax.children:
+        added = Parameter(f"added_{value}", {"values": {AT: value}})
+        tree.tax.add_child(f"added_{value}", added)
 
 
-def small_tree_parameters(tree):
+def small_tree_readings(tree):
+    view = tree(LATER)
+    scale = view.credit.scale
+    added = sorted(name for name in tree.tax.children if name != "rate")
     return (
-        tree.owned.a,
-        tree.owned.scale.brackets[0].amount,
-        tree.lent,
-        tree.outer.lent.d,
+        view.credit.amount,
+        view.tax.rate,
+        list(scale.amounts),
+        list(scale.thresholds),
+        [getattr(view.tax, name) for name in added],
     )
 
 
+def nodes_of(tree):
+    return [tree, *tree.get_descendants()]
+
+
+def root_of(node):
+    while node.parent is not None:
+        node = node.parent
+    return node
+
+
 CHANGES = st.lists(
-    st.one_of(
-        st.tuples(st.just("read"), st.just(0), st.just(0)),
-        st.tuples(st.just("edit"), st.integers(0, 3), st.integers(1, 9)),
+    st.tuples(
+        st.sampled_from(["read", "update", "add entry", "add child"]),
+        st.integers(0, 2),
+        st.integers(1, 9),
     ),
     max_size=12,
 )
 
 
 @settings(deadline=None, max_examples=200)
-@given(CHANGES)
-def test_a_tree_owning_subtrees_reads_what_a_clone_reads(changes):
-    """A brand-new pin agrees with a brand-new clone after any changes.
+@given(CHANGES, CHANGES)
+def test_a_copy_of_the_nodes_reads_what_a_clone_reads(changes, later_changes):
+    """A copy agrees with a clone after any changes, and then goes its own way.
 
-    Reads fill the at-instant caches an edit has to clear, and a tree straight
-    from its loader has scale brackets with no parent, so an edit to a bracket
-    goes no further than the bracket.
+    The reads fill the at-instant caches that most of the changes leave stale,
+    which a tree that shared a node with its source would go on reading.
     """
     tree = small_tree()
-    for change, index, value in changes:
-        if change == "read":
-            tree(AT)
-        else:
-            parameter = small_tree_parameters(tree)[index]
-            parameter.update(start=START, stop=STOP, value=value)
+    for change in changes:
+        change_small_tree(tree, *change)
 
-        source_values = parameter_values(tree)
-        own = tree_owning_subtrees(tree, ("owned", "outer.owned"))
-        pin_small_tree(own)
-        clone = tree.clone()
-        pin_small_tree(clone)
+    copied = copy_parameter_nodes(tree)
+    clone = tree.clone()
 
-        assert parameter_values(own) == parameter_values(clone)
-        assert parameter_values(tree) == source_values
-        assert own(AT).owned.b == clone(AT).owned.b
-        assert own(AT).outer.owned.c == clone(AT).outer.owned.c
-        assert own(AT).outer.lent.d == clone(AT).outer.lent.d
+    assert parameter_values(copied) == parameter_values(clone)
+    assert small_tree_readings(copied) == small_tree_readings(clone)
 
-        assert own.lent is tree.lent and own.outer.lent is tree.outer.lent
-        assert own.owned is not tree.owned
-        assert own.outer.owned is not tree.outer.owned
-        assert tree_is_shared(own)
+    # It shares no node with its source, and every edit reaches its own root.
+    assert not {id(node) for node in nodes_of(tree)} & {
+        id(node) for node in nodes_of(copied)
+    }
+    for node in nodes_of(copied):
+        assert root_of(node) is copied
+        for name, child in getattr(node, "children", {}).items():
+            assert getattr(node, name) is child
 
-        # An edit to what the pin owns reaches its root and stops there.
-        own.owned.a.update(start=START, stop=STOP, value=100)
-        assert own(AT).owned.a == 100
-        assert parameter_values(tree) == source_values
+    copied_values = parameter_values(copied)
+    for change in later_changes:
+        change_small_tree(tree, *change)
+    assert parameter_values(copied) == copied_values
+
+    tree_values = parameter_values(tree)
+    for change in later_changes:
+        change_small_tree(copied, *change)
+    assert parameter_values(tree) == tree_values
 
 
 @pytest.fixture(scope="module")
@@ -199,10 +233,10 @@ def source():
 
 @pytest.mark.parametrize("pin_name", PINS)
 def test_every_pin_reads_what_a_full_clone_reads(source, pin_name):
-    """A pin that edited a node it does not own would fail here, twice."""
+    """A pin that wrote through to a borrowed entry would fail here, twice."""
     pin = getattr(pinned_tbs, pin_name)
     source_values = parameter_values(source.parameters)
-    pinned = pin_spm_policy(source, pinned_tbs.PINNED_SUBTREES)
+    pinned = pin_spm_policy(source)
     pin(pinned)
     clone = source.clone()
     pin(clone)
@@ -220,17 +254,34 @@ def test_a_simulation_builds_each_pin_once(monkeypatch):
     assert builds == ["ny_pre_tcja_ctc"]
 
 
-def test_simulations_share_what_no_pin_edits():
-    simulations = [Simulation(situation=household()) for _ in range(2)]
-    pins = [
-        pinned_tbs.get_pre_tcja_ctc_tbs(simulation.tax_benefit_system)
-        for simulation in simulations
-    ]
+def test_a_pin_borrows_every_dated_value(monkeypatch, source):
+    """What a pin saves on a clone is not rebuilding the histories."""
 
-    assert pins[0] is not pins[1]
-    assert pins[0].parameters.gov.states is pins[1].parameters.gov.states
-    assert pins[0].parameters.gov.irs.income is pins[1].parameters.gov.irs.income
-    assert pins[0].parameters.gov.irs.credits is not pins[1].parameters.gov.irs.credits
+    def fail(entry):
+        raise AssertionError(f"rebuilt {entry.name}")
+
+    monkeypatch.setattr(ParameterAtInstant, "clone", fail)
+    pinned = pin_spm_policy(source)
+
+    rate = pinned.parameters.get_child(BOTTOM_RATE)
+    source_rate = source.parameters.get_child(BOTTOM_RATE)
+    assert rate is not source_rate
+    assert rate.values_list is not source_rate.values_list
+    assert all(a is b for a, b in zip(rate.values_list, source_rate.values_list))
+    assert pinned.shares_parameters and source.shares_parameters
+
+
+def test_each_pin_is_cached_for_the_last_system_that_asked():
+    """A change no check sees, in place on a variable, ends with the entry."""
+    first, second = [
+        Simulation(situation=household()).tax_benefit_system for _ in range(2)
+    ]
+    pin = pinned_tbs.get_pre_tcja_ctc_tbs(first)
+    assert pinned_tbs.get_pre_tcja_ctc_tbs(first) is pin
+
+    other = pinned_tbs.get_pre_tcja_ctc_tbs(second)
+    assert other is not pin
+    assert pinned_tbs.get_pre_tcja_ctc_tbs(first) is not pin
 
 
 @pytest.mark.parametrize(
@@ -327,7 +378,62 @@ def test_an_edit_to_a_loaded_tree_reaches_the_next_simulation(monkeypatch):
     assert result() == edited
 
 
-def test_a_pinned_system_is_private_apart_from_the_nodes_it_shares():
+def test_a_pin_reads_past_a_view_its_source_has_left_stale(monkeypatch):
+    """Interpolation adds to a history and clears no cache.
+
+    So the source goes on serving the view it cached, and a pin reads the new
+    entry only because the view it builds is its own, as a clone's is.
+    """
+    supplied = system.clone()
+    rate = supplied.parameters.get_child(BOTTOM_RATE)
+    rate.values_list = [
+        ParameterAtInstant(rate.name, f"{year}-01-01", data=value)
+        for year, value in ((2025, 0.2), (2023, 0.01))
+    ]
+    rate.metadata["interpolation"] = {"interval": "year"}
+
+    def result():
+        simulation = Simulation(situation=household(), tax_benefit_system=supplied)
+        credit = simulation.calculate("ny_ctc", YEAR)[0]
+        del simulation
+        gc.collect()
+        return credit
+
+    before = result()
+    interpolate_parameters(supplied.parameters)
+    interpolated = result()
+
+    assert rate(f"{YEAR}-01-01") == pytest.approx(0.105)
+    assert interpolated != before
+    monkeypatch.setattr(pinned_tbs, "_get_pinned_tbs", fresh_clones())
+    assert result() == interpolated
+
+
+def test_a_reform_of_the_source_leaves_a_built_pin_alone():
+    """This system owns its tree, so only pinning stops a reform writing in place.
+
+    The reform has to change the tree's identity for the next pin to notice it.
+    """
+    policy = system.clone()
+    pin = pinned_tbs.get_pre_tcja_ctc_tbs(policy)
+
+    def rate(pinned):
+        return pinned.parameters.get_child(BOTTOM_RATE)(f"{YEAR}-01-01")
+
+    def lower_rate(parameters):
+        parameters.get_child(BOTTOM_RATE).update(
+            period=f"year:{YEAR}:1", value=LOWER_BOTTOM_RATE
+        )
+        return parameters
+
+    before = rate(pin)
+    policy.modify_parameters(lower_rate)
+
+    assert rate(pin) == before != LOWER_BOTTOM_RATE
+    assert rate(pinned_tbs.get_pre_tcja_ctc_tbs(policy)) == LOWER_BOTTOM_RATE
+
+
+def test_a_pinned_system_is_its_own():
     first = Simulation(situation=household())
     second = Simulation(situation=household(), spm={"geography_kind": "national"})
     policies = [first.tax_benefit_system, second.tax_benefit_system]
@@ -387,6 +493,18 @@ def test_nothing_outlives_a_finished_simulation(trace):
     assert policy() is None
     assert pinned() is None
     assert tracer() is None
+
+
+def test_a_simulation_built_on_a_pin_lets_go_of_the_one_it_came_from():
+    simulation = Simulation(situation=household())
+    pin = pinned_tbs.get_pre_tcja_ctc_tbs(simulation.tax_benefit_system)
+    built_on_pin = Simulation(situation=household(), tax_benefit_system=pin, reform={})
+    finished = weakref.ref(simulation)
+    del simulation, pin
+    gc.collect()
+
+    assert finished() is None
+    assert built_on_pin.tax_benefit_system is not None
 
 
 def test_a_traced_simulation_records_what_a_fresh_clone_records(monkeypatch):

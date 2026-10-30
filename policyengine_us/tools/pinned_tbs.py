@@ -2,9 +2,9 @@
 
 The NY EITC/CTC formulas recompute the federal EITC/CTC with parameters
 pinned to an earlier vintage (pre-ARPA 2020, pre-TCJA 2017). A pinned system
-copies only the subtrees a pin edits and reads every other parameter from the
-tree it came from, so it costs a fraction of a second and almost no memory
-(see policyengine_us.spm.pin_spm_policy).
+copies the parameter tree's nodes and borrows the dated values in them, so it
+costs a fraction of a second and little memory, and reads what a full clone
+reads (see policyengine_us.spm.pin_spm_policy).
 
 The pinned system must be treated as read-only by all callers.
 """
@@ -16,16 +16,10 @@ from policyengine_core.periods import instant
 
 from policyengine_us.spm import pin_spm_policy
 
-# Every parameter that a function below edits sits in one of these subtrees. An
-# edit anywhere else would reach every simulation that reads the same tree.
-PINNED_SUBTREES = (
-    "gov.irs.credits",
-    "gov.irs.gross_income.dependent_care_assistance_programs",
-)
-
-# base system -> pin name -> weakref to the system pinned from it. The branch
-# that reads a pinned system holds it, so this cache keeps nothing alive.
-_PINNED_TBS_CACHE = weakref.WeakKeyDictionary()
+# pin name -> the base system, its parameters and variables, and the system
+# pinned from them, all held weakly. The branch that reads a pinned system holds
+# it, so this cache keeps nothing alive, a finished simulation included.
+_PINNED_TBS_CACHE = {}
 
 # Variables without "ctc", "cdcc" or "eitc" in their names that read those
 # credits, so a branch that recomputes them under pinned rules must drop these
@@ -42,22 +36,26 @@ IRC_2020_RECOMPUTED_VARIABLES = ("dependent_care_assistance_exclusion",)
 
 def _get_pinned_tbs(base_tbs, pin_name, pin_fn):
     parameters = base_tbs.parameters
-    pins = _PINNED_TBS_CACHE.setdefault(base_tbs, {})
-    pin = pins.get(pin_name)
-    pinned = None if pin is None else pin()
+    entry = _PINNED_TBS_CACHE.get(pin_name)
+    pinned = None if entry is None else entry[3]()
     # A reform changes a system and keeps its identity: it detaches a private
     # tree in place (see policyengine_us.spm.SharedParameterPolicy), or swaps
     # entries in the variable registry.
     if (
-        pinned is None
-        or pinned.source_parameters is not parameters
-        or pinned.source_variables != base_tbs.variables
+        pinned is not None
+        and entry[0]() is base_tbs
+        and entry[1]() is parameters
+        and entry[2] == base_tbs.variables
     ):
-        pinned = pin_spm_policy(base_tbs, PINNED_SUBTREES)
-        pinned.source_parameters = parameters
-        pinned.source_variables = dict(base_tbs.variables)
-        pin_fn(pinned)
-        pins[pin_name] = weakref.ref(pinned)
+        return pinned
+    pinned = pin_spm_policy(base_tbs)
+    pin_fn(pinned)
+    _PINNED_TBS_CACHE[pin_name] = (
+        weakref.ref(base_tbs),
+        weakref.ref(parameters),
+        weakref.WeakValueDictionary(base_tbs.variables),
+        weakref.ref(pinned),
+    )
     return pinned
 
 

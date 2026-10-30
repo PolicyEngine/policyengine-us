@@ -1,1 +1,1 @@
-Copy only the parameters a pinned policy changes, so New York's and Alabama's recomputed federal credits no longer copy the whole tax-benefit system for each simulation.
+Share dated parameter values between a pinned policy and its source, so New York's and Alabama's recomputed federal credits no longer rebuild every parameter value for each simulation.

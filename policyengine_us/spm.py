@@ -13,6 +13,7 @@ from functools import lru_cache
 from inspect import ismethod, signature
 
 from policyengine_core import periods as periods_
+from policyengine_core.parameters import Parameter, ParameterScale
 from policyengine_core.simulations import Simulation as CoreSimulation
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 from spm_calculator.errors import SPMInputError
@@ -694,54 +695,46 @@ def clone_spm_system(system, *, copy_receipts=True, parameters=None):
     return cloned
 
 
-def private_parameter_node(node):
-    """Copy ``node`` alone: the same children, an at-instant cache of its own."""
-    private = copy(node)
-    private.children = dict(node.children)
-    private._at_instant_cache = {}
-    return private
+def copy_parameter_nodes(node, parent=None):
+    """Copy a parameter tree, sharing only the dated entries in its histories.
 
-
-def adopt_parameter_child(parent, name, child):
-    parent.children[name] = child
-    setattr(parent, name, child)
-    child.parent = parent
-    return child
-
-
-def tree_owning_subtrees(tree, paths):
-    """Copy ``tree``, cloning only the subtrees at ``paths``.
-
-    Every other node stays the one ``tree`` holds, so it costs nothing and
-    never disagrees with ``tree``. Only the ancestors of a cloned subtree need
-    a copy of their own, to hold it and to pass its edits up to this root.
+    Each node, history and at-instant cache in the copy is its own, as in a
+    clone, so the copy reads every value fresh and later edits on either side
+    stay on that side. Core never edits a ``ParameterAtInstant`` once built, so
+    sharing those is safe, and they and their metadata are nearly all of what
+    a clone rebuilds: this takes a twentieth of the time and an eighth of the
+    memory.
     """
-    root = private_parameter_node(tree)
-    for path in paths:
-        *ancestors, subtree = path.split(".")
-        node = root
-        for name in ancestors:
-            child = node.children[name]
-            # Paths can share ancestors, and an ancestor copied for an earlier
-            # path has to stay the parent of what it adopted then.
-            if child.parent is not node:
-                child = adopt_parameter_child(node, name, private_parameter_node(child))
-            node = child
-        adopt_parameter_child(node, subtree, node.children[subtree].clone())
-    return mark_tree_shared(root)
+    copied = object.__new__(type(node))
+    copied.__dict__.update(node.__dict__)
+    copied.parent = parent
+    if isinstance(node, Parameter):
+        copied.values_list = list(node.values_list)
+    elif isinstance(node, ParameterScale):
+        copied.brackets = [
+            copy_parameter_nodes(bracket, copied) for bracket in node.brackets
+        ]
+    else:
+        copied._at_instant_cache = {}
+        copied.children = {}
+        for name, child in node.children.items():
+            copied.children[name] = copy_parameter_nodes(child, copied)
+            setattr(copied, name, copied.children[name])
+    return copied
 
 
-def pin_spm_policy(system, subtrees):
-    """Clone ``system``, copying only the parameter subtrees a pin will edit.
+def pin_spm_policy(system):
+    """Clone ``system`` for a pin to edit, without rebuilding parameter values.
 
-    A pin edits a few hundred of the tree's 143,000 nodes, and a full clone
-    takes seconds and about 0.5 GB to rebuild the rest unchanged. This is that
-    clone in every other respect. The tree it gets counts as shared, so a
-    reform of this system still clones before it writes; a pin itself may edit
-    the subtrees it owns in place, and nothing else.
+    A pin edits a few hundred of the tree's 143,000 nodes through
+    ``Parameter.update``, which never touches an entry it replaces. This is a
+    clone in every other respect, except that the two trees hold the same
+    entries and metadata and so both count as shared: a reform of either system
+    takes a full clone before it writes.
     """
+    tree = mark_tree_shared(system.parameters)
     return clone_spm_system(
-        system, parameters=tree_owning_subtrees(system.parameters, subtrees)
+        system, parameters=mark_tree_shared(copy_parameter_nodes(tree))
     )
 
 
