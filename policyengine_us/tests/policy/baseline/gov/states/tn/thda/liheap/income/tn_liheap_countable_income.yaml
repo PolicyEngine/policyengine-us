@@ -1,0 +1,397 @@
+# 2026 Policy Manual 2.13: gross wages, net self-employment and farm income, regular
+# payments (Social Security net of Medicare premiums, TANF, child support, money
+# regularly received from outside the household), interest only above 200 a year,
+# net rental income and net gambling winnings are counted; capital gains, bank
+# withdrawals and dependents' earnings are not. A child is under 18 (1.2); earnings of
+# children under 18 are not counted (FFY2026 plan 1.9). An ineligible member's income
+# counts in full (2.4). Wages of 15,080 are full-time work (2,080 hours) at the federal
+# 7.25 minimum wage, which Tennessee follows. Electricity of 1,680 is about the EIA
+# 2024 Tennessee average residential bill of 140 a month.
+
+- name: Case 1, gross wages and business income count while business and rental losses are floored at zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_080
+        self_employment_income: 3_000
+        partnership_s_corp_income: -1_500
+        rental_income: -1_800
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 15,080 + 3,000 + max(-1,500, 0) + max(-1,800, 0) = 18,080
+    tn_liheap_countable_income: 18_080
+
+- name: Case 2, a married 17-year-old who is not a tax dependent has wages excluded by age.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 19
+        is_tax_unit_dependent: false
+        employment_income: 15_080
+      person2:
+        # Marriage emancipates a minor in Tennessee (2026 Policy Manual 1.2).
+        age: 17
+        is_tax_unit_dependent: false
+        employment_income: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # 15,080; the 17-year-old's 4,000 is excluded
+    tn_liheap_countable_income: 15_080
+
+- name: Case 3, an 18-year-old who is not a tax dependent has wages counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_dependent: false
+        employment_income: 30_000
+      person2:
+        age: 18
+        is_tax_unit_dependent: false
+        employment_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # 30,000 + 6,000 = 36,000
+    tn_liheap_countable_income: 36_000
+
+- name: Case 4, an adult tax dependent living with a parent has wages excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_dependent: false
+        employment_income: 30_000
+      person2:
+        # A college student claimed by the parent.
+        age: 20
+        is_tax_unit_dependent: true
+        employment_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # 30,000; the dependent's 6,000 is excluded (2026 Policy Manual 2.13 exclusions)
+    tn_liheap_countable_income: 30_000
+
+- name: Case 5, Social Security is counted net of the Medicare Part B premium and floors at zero for each person.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        ssi: 0
+        social_security_retirement: 24_000
+        # 2026 standard Part B premium of 202.90 a month.
+        medicare_part_b_premium: 2_434.80
+      person2:
+        age: 66
+        ssi: 0
+        social_security_retirement: 1_800
+        medicare_part_b_premium: 2_434.80
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # (24,000 - 2,434.80) + max(1,800 - 2,434.80, 0) = 21,565.20 + 0
+    tn_liheap_countable_income: 21_565.20
+
+- name: Case 6, interest of 200 a year is not counted while interest of 201 is counted in full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+        interest_income: 200
+      person2:
+        age: 41
+        interest_income: 201
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # 15,080 + 0 (200 does not exceed 200) + 201 = 15,281
+    tn_liheap_countable_income: 15_281
+
+- name: Case 7, child support is counted while capital gains and retirement-account withdrawals are not.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_080
+        # Child support of 400 a month.
+        child_support_received: 4_800
+        long_term_capital_gains: 1_000
+        taxable_ira_distributions: 2_000
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # 15,080 + 4,800 = 19,880
+    tn_liheap_countable_income: 19_880
+
+- name: Case 8, net gambling winnings count and one member's excess losses do not offset income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 20_000
+        gambling_winnings: 2_000
+        gambling_losses: 500
+      person2:
+        age: 48
+        gambling_winnings: 300
+        gambling_losses: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # 20,000 + max(2,000 - 500, 0) + max(300 - 1,000, 0) = 20,000 + 1,500 + 0
+    tn_liheap_countable_income: 21_500
+
+- name: Case 9, Families First cash assistance received by the household is counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # Families First three-person standard payment of 387 a month.
+        tanf: 4_644
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    # 387 x 12 = 4,644
+    tn_liheap_countable_income: 4_644
+
+- name: Case 10, an undocumented member's income counts in full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+      person2:
+        age: 42
+        immigration_status: UNDOCUMENTED
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # 15,080 + 20,000 (2026 Policy Manual 2.4)
+    tn_liheap_countable_income: 35_080
+
+- name: Case 11, SSI and regular contributions from outside the household count as unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        # 2026 federal SSI benefit rate of 994 a month.
+        ssi: 11_928
+        # Regular support of 100 a month from a relative.
+        financial_assistance: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 994 x 12 + 1,200 = 11,928 + 1,200
+    tn_liheap_countable_income: 13_128
+
+- name: Case 12, every earned income source counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 10_000
+        self_employment_income_before_lsr: 1_000
+        sstb_self_employment_income_before_lsr: 2_000
+        farm_operations_income: 3_000
+        partnership_income: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Wages 10,000 + self-employment 1,000 + SSTB self-employment 2,000
+    # + farm operations 3,000 + partnership 4,000 = 20,000
+    tn_liheap_countable_income: 20_000
+
+- name: Case 13, every listed unearned income source counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        general_assistance: 1_000
+        unemployment_compensation: 2_000
+        strike_benefits: 3_000
+        workers_compensation: 4_000
+        alimony_income: 5_000
+        survivor_benefits: 6_000
+        disability_benefits: 7_000
+        qualified_dividend_income: 8_000
+        rental_income: 9_000
+        farm_rent_income: 10_000
+        estate_income: 11_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # General assistance 1,000 + unemployment 2,000 + strike 3,000
+    # + workers' compensation 4,000 + alimony 5,000 + survivor 6,000
+    # + disability 7,000 + dividends 8,000 + rental 9,000 + farm rent 10,000
+    # + estate 11,000 = 66,000
+    tn_liheap_countable_income: 66_000
+
+- name: Case 14, railroad, pension, military retirement and VA benefits are counted net of Medicare Part A and Part B premiums.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        railroad_benefits: 16_000
+        taxable_private_pension_income: 4_000
+        # Premium-free Part A at the default 40 quarters; 2026 standard
+        # Part B premium of 202.90 a month.
+        medicare_part_b_premium: 2_434.80
+      person2:
+        age: 68
+        ssi: 0
+        military_retirement_pay: 8_000
+        # Survivor benefit plan annuity.
+        military_retirement_pay_survivors: 2_000
+        veterans_benefits: 1_000
+        # 2026 reduced Part A premium of 311 a month (30-39 quarters).
+        medicare_part_a_premium: 3_732
+        medicare_part_b_premium: 2_434.80
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # person1: 16,000 + 4,000 - (0 + 2,434.80) = 17,565.20
+    # person2: (8,000 + 2,000) + 1,000 - (3,732 + 2,434.80) = 4,833.20
+    # 17,565.20 + 4,833.20 = 22,398.40
+    tn_liheap_countable_income: 22_398.40

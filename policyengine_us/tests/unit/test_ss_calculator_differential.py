@@ -23,10 +23,11 @@ from policyengine_us.tools.general import earliest_input_year
 
 CALCULATOR_PREFIXES = ("ss_calculator_", "ss_calculated_")
 NEW_PARAMETER_NODES = (
-    # Benefit levers and COLA history also serve the reported-benefit route,
-    # which remains part of the reference when the calculator is removed.
-    "gov.contrib.ssa.pia",
-    "gov.contrib.congress.s770.section_2",
+    # Keep gov.contrib.ssa.pia and gov.contrib.congress.s770.section_2:
+    # reported-benefit PIA ratios read these shared formula switches even
+    # without the household calculator. Calculator-only variables are still
+    # removed above, so neutral formula dependencies on them remain detectable.
+    # Benefit levers and statutory COLA history also remain in the reference.
     "gov.ssa.social_security.pia.bend_points",
     "gov.ssa.social_security.cola",
 )
