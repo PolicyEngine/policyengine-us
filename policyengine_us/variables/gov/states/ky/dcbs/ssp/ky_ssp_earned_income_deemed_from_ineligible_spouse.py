@@ -10,7 +10,8 @@ class ky_ssp_earned_income_deemed_from_ineligible_spouse(Variable):
     defined_for = StateCode.KY
     reference = (
         "https://apps.legislature.ky.gov/law/kar/titles/921/002/015/",
-        "https://www.chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLIVA.pdf#page=188",
+        # PDF pages 187-188.
+        "https://www.chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLIVA.pdf#page=187",
         "https://www.law.cornell.edu/cfr/text/20/416.1163",
     )
     documentation = (

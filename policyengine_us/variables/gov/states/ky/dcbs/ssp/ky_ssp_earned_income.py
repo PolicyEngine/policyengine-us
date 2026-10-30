@@ -10,7 +10,8 @@ class ky_ssp_earned_income(Variable):
     defined_for = StateCode.KY
     reference = (
         "https://apps.legislature.ky.gov/law/kar/titles/921/002/015/",
-        "https://www.chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLIVA.pdf#page=188",
+        # PDF pages 187-188.
+        "https://www.chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLIVA.pdf#page=187",
     )
     documentation = (
         "Kentucky SSP own earned income, retaining the existing wage-limited "
