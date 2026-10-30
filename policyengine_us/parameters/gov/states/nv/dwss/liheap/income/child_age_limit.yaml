@@ -1,0 +1,18 @@
+description: Nevada excludes from eligibility income, but counts toward the Fixed Annual Credit, the earned income of school-attending household members younger than this age under the Low Income Home Energy Assistance Program.
+# Section 707 N covers children under 18 who attend elementary or high school
+# or GED classes at least half time, or are too young to attend school, and
+# live with the applicant parent or legal guardian. is_in_k12_school stands
+# in for school attendance, SPM membership for living with the parent, and
+# children too young for school are assumed to have no earnings.
+values:
+  2025-07-01: 18
+
+metadata:
+  unit: year
+  period: year
+  label: Nevada LIHEAP children's earned income age limit
+  reference:
+    - title: "Nevada SFY2026 Energy Assistance Program Manual, Sections 705 and 707 N #page 46,57"
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=46
+    - title: "Nevada SFY2027 Energy Assistance Program Manual, Sections 705 and 707 N #page 46,57"
+      href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/2027-eap-state-manual--08.25.26-1.pdf#page=46

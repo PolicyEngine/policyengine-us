@@ -1,0 +1,24 @@
+description: Vermont limits gross household income to this share of the federal poverty guideline under the Low Income Home Energy Assistance Program.
+# The income limit applies this rate to the whole-dollar monthly guideline
+# (vt_liheap_fpg / 12) and rounds half up to the dollar (size 1: 1.85 x 1,304 =
+# 2,412.40, so $2,412; size 2: 1.85 x 1,763 = 3,261.55, so $3,262). This
+# reproduces all 15 P-2913 amounts for 2025-26 and all 15 DCF amounts for
+# 2026-27 (size 1: 1.85 x 1,330 = 2,460.50, so $2,461). The same rate times the
+# annual guideline caps that amount where it rounds above 185% (size 2 in 2026:
+# 39,127.50 a year, not 3,262 x 12 = 39,144).
+values:
+  2024-06-22: 1.85
+
+metadata:
+  unit: /1
+  period: year
+  label: Vermont LIHEAP poverty guideline income limit rate
+  reference:
+    - title: 33 V.S.A. § 2604(a)
+      href: https://legislature.vermont.gov/statutes/section/33/026/02604
+    - title: Vermont Seasonal Fuel Assistance Rule 2913(b)
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=38
+    - title: Vermont DCF Procedure P-2913, Income Guidelines (effective March 1, 2025 to February 28, 2026)
+      href: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2913.pdf
+    - title: Vermont DCF Fuel Assistance Income Guidelines for 2026-2027
+      href: https://dcf.vermont.gov/esd/fuel/income-guidelines
