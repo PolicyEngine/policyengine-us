@@ -4215,6 +4215,35 @@ candidates:
   state: unreviewed
   note: PE-US follows the manual and surrounding report editions; obtain contemporaneous BEM 556 for October 2022-September
     2023.
+- id: us-mn:liheap-plan-income-checklist
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do foster care payments, minors' earnings and insurance wage replacement count for Minnesota EAP as the
+    manual provides or as the FY2026 plan checklist marks them?
+  sources:
+  - kind: manual
+    citation: Minnesota EAP Policy Manual FFY26, Chapter 3, Income Inclusions and Exclusions, PDF pages 91-92 and 99
+    url: https://mn.gov/commerce-stat/pdfs/ffy26-eap-policy-manual.pdf#page=91
+  - kind: plan
+    citation: Minnesota FY2026 LIHEAP State Plan, section 1.9, PDF pages 6-7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MN_Plan_2026.pdf#page=6
+  readings:
+    statute: No statute is supplied; the manual excludes foster care payments, counts minors' earnings unless they are
+      K-12 students aged 19 or under, and counts workers' compensation and wage-replacement disability pay.
+    other: The plan checks funds for the care of a foster child and leaves earned income of a child under 18 and
+      insurance payments made directly to the insured unchecked.
+  example: $6,000 of wages of a 17-year-old not in school counts $6,000 under the manual and $0 under the plan.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10433
+  state: ruled
+  note: 'Ruled 2026-10-06: follow the manual over the plan. Code not yet on main: mn_eap_countable_income,
+    gov.states.mn.commerce.eap.income.sources.'
 - id: us-mn:small-claim-of-right-repayment-deduction
   program: income-tax
   years:
