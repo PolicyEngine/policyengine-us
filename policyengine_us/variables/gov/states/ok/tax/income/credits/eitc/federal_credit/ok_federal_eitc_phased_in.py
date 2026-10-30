@@ -12,7 +12,7 @@ class ok_federal_eitc_phased_in(Variable):
     EITC phase-in amount using FROZEN 2020 parameters.
 
     The phase-in amount represents how much credit has been "earned" based
-    on the filer's adjusted earnings. It equals:
+    on earned income (Form 511-EIC line 15). It equals:
     min(maximum_credit, earnings * phase_in_rate)
 
     This creates the rising portion of the EITC where the credit increases
@@ -36,7 +36,9 @@ class ok_federal_eitc_phased_in(Variable):
         maximum = tax_unit("ok_federal_eitc_maximum", period)
         # Get the phase-in rate (frozen at 2020 values)
         phase_in_rate = tax_unit("ok_federal_eitc_phase_in_rate", period)
-        earnings = tax_unit("filer_adjusted_earnings", period)
+        # Form 511-EIC line 15: both spouses' earned income combined, with
+        # a net self-employment loss subtracted (lines 12 and 13).
+        earnings = tax_unit("eitc_earned_income", period)
         # Calculate phased-in amount, capped at maximum
         phased_in_amount = earnings * phase_in_rate
         return min_(maximum, phased_in_amount)
