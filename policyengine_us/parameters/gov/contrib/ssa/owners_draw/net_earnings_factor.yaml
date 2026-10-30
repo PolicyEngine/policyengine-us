@@ -1,0 +1,10 @@
+description: An owners' draw net-earnings factor override in (0, 1]; zero derives one minus the employer share times the sum of the SECA OASDI and HI rates.
+values:
+  0000-01-01: 0
+metadata:
+  unit: /1
+  label: Owners' draw net-earnings factor override
+  economy: false
+  reference:
+    - title: 26 U.S.C. 1402(a)(12)
+      href: https://www.law.cornell.edu/uscode/text/26/1402#a_12

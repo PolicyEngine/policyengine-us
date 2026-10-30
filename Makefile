@@ -83,6 +83,9 @@ REST_SS_CALCULATOR_DIFFERENTIAL_TESTS := $(TESTS)/unit/test_ss_calculator_differ
 # Local 4 GiB-capped run peaked at 2.385 GiB before its 1800s loaded-host cap;
 # CI run 40318424511 passed all 126 cases in 312.62s (6:20 process wall).
 REST_SOCIAL_SECURITY_INPUT_TESTS := $(TESTS)/core/test_social_security_inputs.py
+# Two-household H5 ingress and neutral-hook comparisons retain a reform tree.
+# Isolate this file in the existing input target; no national dataset is loaded.
+REST_SOCIAL_SECURITY_PIA_RATIO_INPUT_TESTS := $(TESTS)/core/test_ss_pia_ratio_inputs.py
 # These three parameter modules construct full reform trees; one also loads
 # a default Microsimulation only to read parameters. Release their heap before
 # the remaining policy tests, rather than stacking both in the 13.9 GB group.
@@ -98,7 +101,8 @@ REST_REMAINING_HEAVY_TESTS := $(TESTS)/test_niit_section_911_magi.py \
 	$(TESTS)/test_schedule_d_filer_net_capital_gain.py
 REST_LISTED_TESTS := $(REST_CACHED_ARRAY_TESTS) $(REST_HEAVY_A_TESTS) $(REST_HEAVY_B_TESTS) \
 	$(REST_CORE_HEAVY_TESTS) $(REST_SS_CALCULATOR_ENGINE_TESTS) $(REST_SS_CALCULATOR_DIFFERENTIAL_TESTS) \
-	$(REST_SOCIAL_SECURITY_INPUT_TESTS) $(REST_POLICY_PARAMETER_TESTS) $(REST_REMAINING_HEAVY_TESTS)
+	$(REST_SOCIAL_SECURITY_INPUT_TESTS) $(REST_SOCIAL_SECURITY_PIA_RATIO_INPUT_TESTS) \
+	$(REST_POLICY_PARAMETER_TESTS) $(REST_REMAINING_HEAVY_TESTS)
 REST_IGNORES := $(addprefix --ignore=,$(TESTS)/policy/contrib $(TESTS)/microsimulation $(REST_SPM_TESTS))
 # $(call rest_pytest,<group>,<paths>,<more paths to ignore>) is the pytest
 # command for one group. With REST_REPORT_DIR set, each group writes its own
@@ -330,7 +334,14 @@ test-other-python-rest-ss-calculator-engine:
 test-other-python-rest-ss-calculator-differential:
 	$(call rest_pytest,ss-calculator-differential,$(REST_SS_CALCULATOR_DIFFERENTIAL_TESTS))
 test-other-python-rest-social-security-inputs:
+	@failed=""; for group in compatibility pia-ratio; do \
+		$(MAKE) --no-print-directory test-other-python-rest-social-security-inputs-$$group || failed="$$failed $$group"; \
+	done; \
+	if [ -n "$$failed" ]; then echo "Failed Social Security input groups:$$failed"; exit 1; fi
+test-other-python-rest-social-security-inputs-compatibility:
 	$(call rest_pytest,social-security-inputs,$(REST_SOCIAL_SECURITY_INPUT_TESTS))
+test-other-python-rest-social-security-inputs-pia-ratio:
+	$(call rest_pytest,social-security-pia-ratio-inputs,$(REST_SOCIAL_SECURITY_PIA_RATIO_INPUT_TESTS))
 test-other-python-rest-core:
 	$(call rest_pytest,core,$(TESTS)/core,$(REST_LISTED_TESTS))
 test-other-python-rest-policy-parameters:

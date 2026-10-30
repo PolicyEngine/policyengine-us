@@ -11,6 +11,261 @@
 # unreviewed.
 version: 1
 candidates:
+- id: us-ak:hap-general-relief-assistance
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Does Alaska count general assistance paid directly to a household as heating assistance income, although
+    7 AAC 44.042(18) exempts General Relief Assistance payments?
+  sources:
+  - kind: regulation
+    citation: 7 AAC 44.042(18)
+    url: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+  - kind: plan
+    citation: FY2026 Alaska LIHEAP State Plan 1.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/AK_Plan_2026.pdf#page=7
+  - kind: manual
+    citation: Alaska HAP Manual 3003-1 B.6.o and 3003-2 A.19
+    url: null
+  readings:
+    statute: No statute is supplied; 7 AAC 44.042(18) excludes payments received under 7 AAC 38.030 (General Relief
+      Assistance) from gross monthly income.
+    other: Plan 1.9 counts "General Assistance and Borough of Indian Affairs (BIA) General Assistance benefits if paid
+      directly to the household"; manual 3003-1 B.6.o counts BIA General Assistance payments made to the household,
+      and 3003-2 A.19 exempts only General Relief Assistance payments made to a vendor.
+  example: A household with $1,200 a year of State General Relief Assistance paid to it has none of it counted under
+    7 AAC 44.042(18); plan 1.9 counts General Assistance paid directly to the household.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ak/dpa/hap/income/unearned_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10341
+  state: unreviewed
+  note: The code reads the general_assistance input as State General Relief Assistance and leaves it out of countable
+    income under 7 AAC 44.042(18). BIA General Assistance paid to the household, which plan 1.9 and manual 3003-1 B.6.o
+    count, has no separate input, so it is not counted. The manual is served only over http, at
+    http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-1_countable_income.htm.
+- id: us-ak:hap-income-limit-rounding
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Are Alaska's heating assistance income limits exact percentages of the monthly Alaska poverty guideline,
+    or Addendum E's amounts, which round the monthly guideline and then each percentage down to whole dollars?
+  sources:
+  - kind: regulation
+    citation: 7 AAC 44.040(a)(4) and 44.080(i)
+    url: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+  - kind: manual
+    citation: Alaska HAP Manual Addendum E, FFY 2027 AK Federal Poverty Income Guidelines
+    url: null
+  readings:
+    statute: No statute is supplied; 7 AAC 44.040(a)(4) and 44.080(i) compare gross monthly income with exact
+      percentages of the Alaska poverty level.
+    other: Addendum E floors the monthly guideline and then each percentage ("All dollars rounded down to guarantee
+      they are below income guidelines"), which puts 23 of its 108 limits for the six LIHEAP income factors $1 below
+      the exact percentage.
+  example: For four people, 150% of the FY2027 monthly guideline of $3,437.50 is $5,156.25, so a household with $5,156
+    of monthly income is eligible under 7 AAC 44.040(a)(4) and ineligible under Addendum E's $5,155.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ak/dpa/hap/ak_hap_income_factor.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10341
+  state: unreviewed
+  note: The code compares income with the exact percentages of the guideline, with no whole-dollar floors. Each of the
+    108 limits is $0.04 to $1.79 a month above its floored amount. The manual is served only over http, at
+    http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_e.htm.
+- id: us-ak:hap-loring-oil-points
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Does Loring receive 4 oil heating cost points, as in the FY2027 Addendum A, or 5, as in Appendix A to
+    7 AAC 44?
+  sources:
+  - kind: regulation
+    citation: 7 AAC 44.080(a) and Appendix A to 7 AAC 44, item (170) Loring
+    url: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+  - kind: manual
+    citation: Alaska HAP Manual Addendum A, FFY2027 Community Listing, 99901 Loring
+    url: null
+  readings:
+    statute: No statute is supplied; 7 AAC 44.080(a) assigns the community heating cost points listed in Appendix
+      A, which gives Loring 5 oil points.
+    other: Addendum A gives Loring 4 oil points ("99901 Loring/04/00/").
+  example: A Loring adult aged 40 with no income, a two-bedroom house and an oil bill receives 5 points, $875, under
+    Appendix A and 4 points, $700, under Addendum A.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ak/dpa/hap/benefit/community_points/oil.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10341
+  state: unreviewed
+  note: The code gives Loring Appendix A's 5 oil points. Tetlin also differs (Addendum A 12, Appendix A 16), and the
+    code uses Appendix A's 16; its residents are routed to their tribal program, so that value does not change
+    results. The manual is served only over http, at
+    http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm.
+- id: us-ak:hap-one-person-lowest-income-limit
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Is the FY2027 one-person income ceiling for Alaska's 100% heating point factor $415.625, 25% of the
+    Alaska poverty guideline, or the $407 printed in Addendum E?
+  sources:
+  - kind: regulation
+    citation: 7 AAC 44.080(i)(1)
+    url: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+  - kind: manual
+    citation: Alaska HAP Manual Addendum E, FFY 2027 AK Federal Poverty Income Guidelines, one person, 0% - 25%
+    url: null
+  readings:
+    statute: No statute is supplied; 7 AAC 44.080(i)(1) assigns 100% of points when gross monthly income is no more
+      than 25% of the Alaska poverty level, which for one person is 25% of $1,662.50 ($19,950 / 12), or $415.625.
+    other: Addendum E prints $407, which is 25% of the prior year's floored monthly guideline ($19,550 / 12, floored
+      to $1,629); its other 161 cells use the 2026 guideline.
+  example: A one-person household with $410 of monthly income receives the 1.0 income factor under the $415.625 limit
+    and 0.9 under Addendum E's $407.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ak/dpa/hap/ak_hap_income_factor.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10341
+  state: unreviewed
+  note: The code uses the exact 25% limit, $415.625 a month ($4,987.50 a year), with no whole-dollar floor (see
+    us-ak:hap-income-limit-rounding). The manual is served only over http, at
+    http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_e.htm.
+- id: us-ak:hap-shared-household-allocation
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Does Alaska reduce a sharing household's heating assistance to its share of the dwelling's heating cost at
+    the heating-point stage, or divide each dollar award equally among the dwelling's eligible households?
+  sources:
+  - kind: regulation
+    citation: 7 AAC 44.080(h) and 44.035(c)
+    url: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+  - kind: manual
+    citation: Alaska HAP Manual 3002-1 A.3 and A.5, Multiple Households Residing in the Same Dwelling and Housing
+      Percent Share
+    url: null
+  readings:
+    statute: No statute is supplied; 7 AAC 44.080(h) reduces each sharing household's heating cost points under
+      (a)-(g) to its proportionate share of the home heating expenses, before the income factor (i), the vulnerable
+      point (k), the 2.0-point minimum (m) and the rounding (n).
+    other: The manual divides each household's dollar award by the number of eligible households in the dwelling,
+      never pays a sharer more than 50%, disregards what each household contributes to heat or rent, and adds the
+      vulnerable point before the share.
+  example: Two eligible Fairbanks households paying 25% and 75% of the heating bills, with sole-household awards of
+    $1,925 and $1,050, receive $700 (3.5 points, rounded to 4) and $875 (4.5 points, rounded to 5) under 7 AAC
+    44.080(h), $962.50 and $525 under the manual, and $481.25 and $787.50 under 7 AAC 44.035(c).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ak/dpa/hap/ak_hap.py
+    - policyengine_us/variables/gov/states/ak/dpa/hap/ak_hap_base_benefit.py
+    - policyengine_us/parameters/gov/states/ak/dpa/hap/benefit/maximum_shared_household_share.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10341
+  state: unreviewed
+  note: The code follows 7 AAC 44.080(h). 7 AAC 44.035(c) is a second regulatory reading, which pays each household
+    the percentage of its sole-household dollar award equal to its share of the dwelling's heating cost. 7 AAC
+    44.900(11) counts heat paid indirectly through rent as a home heating cost, but the heat portion of rent is not
+    observed, so the code fills that gap with the manual's equal split. Each eligible heat-in-rent household gets an
+    equal share among the dwelling's eligible households, at most 50%, and households reporting heating bills split the
+    remaining share in proportion to their bills; when no household reports a bill, every household gets the equal
+    share. In a Fairbanks two-bedroom house where an adult household pays a $1,200 oil bill and an elderly household
+    has heat in its $6,000 rent, each gets half, so they receive $875 (5 points) and $1,050 (6 points). Draft
+    rulespec-us PR 1846 proposed this id with the manual reading. The manual is served only over http, at
+    http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm.
+- id: us-ak:hap-student-earnings-exemption
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Are a student's wages exempt from Alaska heating assistance income when the student is under 18, attends
+    school full time and is not the head of household, or when the student is under 18, under parental control and
+    enrolled at least half time in elementary or secondary school?
+  sources:
+  - kind: regulation
+    citation: 7 AAC 44.042(5)
+    url: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+  - kind: manual
+    citation: Alaska HAP Manual 3003-2 A.15, Earnings of Elementary and Secondary Students Under Age 18
+    url: null
+  readings:
+    statute: No statute is supplied; 7 AAC 44.042(5) exempts "wages received by a full-time student under 18 years
+      of age who is not the head of household".
+    other: The manual exempts the earned income of a student under 18 who lives with, or is under the parental
+      control of, an adult household member and is enrolled at least half time in elementary or secondary school,
+      including during school breaks.
+  example: A 17-year-old full-time college student who is not the head of household has wages exempt under 7 AAC
+    44.042(5) and counted under the manual, which covers only elementary and secondary students.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ak/dpa/hap/ak_hap_countable_income.py
+    - policyengine_us/parameters/gov/states/ak/dpa/hap/income/child_earnings_age_limit.yaml
+    - policyengine_us/parameters/gov/states/ak/dpa/hap/income/student_wage_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10341
+  state: unreviewed
+  note: The code exempts the wages (employment income and military basic pay) of a member under 18 who is a
+    full-time student (is_full_time_student) and not the tax-unit head, the closest existing input to the head of
+    household, in an SPM unit with an adult member; a minor in a unit without an adult is treated as its head. The
+    student's business income still counts. Half-time enrollment cannot be observed, and is_full_time_student treats
+    any K-12 attendance as full time, so a half-time high school student's wages are exempt in the code. The manual is served only over http,
+    at http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-2_noncountable_(exempt)_income.htm.
+- id: us-ak:hap-utility-allowance-order
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Does Alaska's 50% subsidized-housing utility-allowance reduction apply to heating points before the
+    2.0-point minimum and rounding, or to the rounded dollar award?
+  sources:
+  - kind: regulation
+    citation: 7 AAC 44.080(l)-(n)
+    url: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+  - kind: manual
+    citation: Alaska HAP Manual 3004-5, Grant Computation, Step 8
+    url: null
+  readings:
+    statute: No statute is supplied; 7 AAC 44.080(l) halves the heating cost points determined under (a)-(k), and
+      (m) and (n) then apply the 2.0-point minimum and the rounding to whole points.
+    other: The manual applies the 2.0-point minimum, rounding, the 35-point cap and the benefit rate first, then
+      halves the dollar award in step 8.
+  example: A one-person Juneau household with 3.0 points, direct oil bills and a utility allowance has its points
+    halved to 1.5 under 7 AAC 44.080(l)-(m), below the 2.0 minimum, so it receives $0; the manual pays $262.50 ($525
+    halved).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ak/dpa/hap/ak_hap.py
+    - policyengine_us/variables/gov/states/ak/dpa/hap/ak_hap_base_benefit.py
+    - policyengine_us/parameters/gov/states/ak/dpa/hap/benefit/utility_allowance_reduction.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10341
+  state: unreviewed
+  note: The code follows 7 AAC 44.080(l)-(n). It infers the allowance for subsidized households that pay heat
+    directly, because HUD sets a utility allowance for tenant-paid utilities (24 CFR 965.502(a) and 982.517(a)(1)).
+    The manual's step 8 example 1 halves a $700 award to $350, where the regulation's order gives 1.95 points and no
+    award. The manual is served only over http, at
+    http://dpaweb.hss.state.ak.us/manuals/HAP/3004/3004-5_grant_computation.htm.
 - id: us-ak:snap-abawd-implementation-date
   program: snap
   years:
@@ -2075,6 +2330,141 @@ candidates:
   state: ruled
   note: 'Ruled statute-first in October 2026; the rule requires replacing the approximation using claimant inputs,
     with annual verification because the supplied statutory URL is for 2026. Code not yet on main: ia_is_tax_exempt.'
+- id: us-ia:rcf-maximum-per-diem-rate
+  program: ssi-state-supplement
+  years:
+    from: 2023
+    to: 2026
+    type: calendar
+  question: Is Iowa's residential care supplement based on the maximum per diem rate, or on the manual's choice of
+    a facility rate or the $17.86 flat rate?
+  sources:
+  - kind: statute
+    citation: Iowa Code 249.12(3)
+    url: https://www.legis.iowa.gov/docs/code/249.pdf#page=5
+  - kind: regulation
+    citation: 441 IAC 52.1(3)
+    url: https://www.legis.iowa.gov/docs/iac/chapter/441.52.pdf#page=1
+  - kind: manual
+    citation: Iowa HHS Employees' Manual 6-B, Billing and Payments (RCF)
+    url: https://hhs.iowa.gov/media/3987/download?inline=#page=72
+  - kind: guidance
+    citation: Iowa HHS General Letter 6-B-45 (effective January 1, 2024)
+    url: https://hhs.iowa.gov/media/12206/download#page=24
+  - kind: guidance
+    citation: Iowa HHS State Supplementary Assistance Standards (effective January 1, 2023)
+    url: https://hhs.iowa.gov/media/9237/download
+  readings:
+    statute: Privately operated facilities "shall be reimbursed based on the maximum per diem rates established by
+      the general assembly".
+    other: The manual gives "two options", a cost-related rate up to $38.47 or "A flat per diem rate ... $17.86
+      beginning February 1, 2004".
+  example: An SSI-only resident with no facility rate entered gets $328.57 in January 2026 at the maximum rate, and
+    $0 at the flat rate (31 × 17.86 = 553.66, below the $864 participation).
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/8017
+  state: ruled
+  note: 'Code not yet on main: ia_ssa, ia_ssa_rcf_daily_rate. Iowa Code 249.12(3) names privately operated
+    facilities.'
+- id: us-ia:smme-blind-under-65
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Can a blind person under 65 who is not disabled receive Iowa's Supplement for Medicare and Medicaid
+    Eligibles (SMME)?
+  sources:
+  - kind: statute
+    citation: Iowa Code 249.3(4)(a)
+    url: https://www.legis.iowa.gov/docs/code/249.pdf#page=2
+  - kind: regulation
+    citation: 441 IAC 51.7(2)
+    url: https://www.legis.iowa.gov/docs/iac/chapter/441.51.pdf#page=2
+  - kind: manual
+    citation: Iowa HHS Employees' Manual 6-B, SMME and SSI eligibility requirements
+    url: https://hhs.iowa.gov/media/3987/download?inline=#page=76
+  readings:
+    statute: Only a person "Sixty-five years of age or older" or "Disabled as defined by 42 U.S.C. §1382c(a)(3)"
+      qualifies, so blindness alone does not.
+    other: The rule requires "all eligibility requirements for supplemental security income benefits other than
+      limits on substantial gainful activity and income", which include blindness.
+  example: A blind 50-year-old with a $2,020 monthly pension and SMME coverage gets $0 under the statute and $1
+    under the rule.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/8017
+  state: ruled
+  note: 'Code not yet on main: ia_ssa_nonfinancial_eligible.'
+- id: us-ia:smme-income-at-least-120-percent
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Does Iowa's SMME supplement require income of at least, or more than, 120 percent of the poverty
+    guideline?
+  sources:
+  - kind: statute
+    citation: Iowa Code 249.3(4)(g)
+    url: https://www.legis.iowa.gov/docs/code/249.pdf#page=2
+  - kind: regulation
+    citation: 441 IAC 51.7(6)
+    url: https://www.legis.iowa.gov/docs/iac/chapter/441.51.pdf#page=2
+  - kind: manual
+    citation: Iowa HHS Employees' Manual 6-B, Income (SMME)
+    url: https://hhs.iowa.gov/media/3987/download?inline=#page=77
+  readings:
+    statute: Income "of at least one hundred twenty percent of the federal poverty level" qualifies.
+    other: Income "must exceed 120 percent of the federal poverty level".
+  example: From April 2026, a single applicant with countable income of exactly $1,596 (1.2 × 15,960 / 12) gets $1
+    under the statute and $0 under the rule.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/8017
+  state: ruled
+  note: 'Code not yet on main: ia_ssa.'
+- id: us-ia:smme-student-exclusion-married
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Does the student earned income exclusion in Iowa's SMME income apply to a married student or a student
+    who heads a household?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1382a(b)(1)
+    url: https://www.law.cornell.edu/uscode/text/42/1382a
+  - kind: regulation
+    citation: 20 CFR 416.1112(c)(3)
+    url: https://www.ecfr.gov/current/title-20/section-416.1112
+  - kind: manual
+    citation: Iowa HHS Employees' Manual 8-E, Child Student's Earnings
+    url: https://hhs.iowa.gov/media/4011/download?inline#page=19
+  readings:
+    statute: The exclusion applies "if such individual is under the age of 22 and is ... a student regularly attending
+      a school, college, or university", with no marital or head-of-household test.
+    other: The student "must meet all of the following criteria", including "Not married" and "Not the head of the
+      household".
+  example: In April 2026, an SMME applicant with wages of $3,277 a month whose disabled student spouse, aged 20, earns
+    $1,200 a month has combined SMME income of $1,790.58 with the spouse's exclusion and $0 supplement; without it,
+    $2,196 and $1.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/8017
+  state: ruled
+  note: 'Code not yet on main: ia_ssa_smme_countable_income. Iowa determines SMME income according to SSI income
+    criteria (6-B p.77), and 20 CFR 416.1112(c)(3) also has no marital test.'
 - id: us-id:grocery-credit-claimable-spouse
   program: income-tax
   years:
@@ -2164,6 +2554,48 @@ candidates:
   state: ruled
   note: Statute text is in the Axiom corpus; registering needs a pdftotext capture of the official instructions
     page.
+- id: us-il:hbwd-premium-earned-1251-unearned-501-cell
+  program: medicaid
+  years:
+    from: 2009
+    type: calendar
+  question: Is the Illinois Health Benefits for Workers with Disabilities premium for countable earned income of
+    $1,251-1,500 and gross unearned income of $501-750 $79, as 89 Ill. Adm. Code 120.510(n)(3) prints, or $69, as
+    the HFS premium chart prints?
+  sources:
+  - kind: regulation
+    citation: 89 Ill. Adm. Code 120.510(n)(3)
+    url: https://ilga.gov/commission/jcar/admincode/089/089001200I05100R.html
+  - kind: form
+    citation: HFS HBWD Premium Chart (one page, June 2009)
+    url: https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalprograms/hbwd/documents/hfsweb004.pdf
+  - kind: guidance
+    citation: HFS 3792 (R-03-13), Health Benefits for Workers with Disabilities brochure, premium table
+    url: https://hfs.illinois.gov/medicalprograms/hbwd/hfs3792hbwd.html
+  readings:
+    statute: No statute is supplied; the regulation's table prints 79 for earned income 1251-1500 and unearned
+      income 501-750, in the text effective February 1, 2009 (33 Ill. Reg. 1681) and unchanged by the amendment
+      effective March 25, 2022 (46 Ill. Reg. 5705).
+    other: The HFS premium chart (June 2009) and the HFS 3792 brochure print 69 for the same cell, which PE-US
+      gives (31 + 38).
+  example: Countable earned income of $1,300 and gross unearned income of $600 a month give a $79 premium under the
+    regulation and a $69 premium under the chart and in PE-US.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/il/hfs/hbwd/premium/earned.yaml
+    - policyengine_us/parameters/gov/states/il/hfs/hbwd/premium/unearned.yaml
+    - policyengine_us/variables/gov/states/il/hfs/hbwd/il_hbwd_premium.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10372
+  state: ruled
+  note: 'Ruled 2026-10-27 for the regulation''s 79 by the project lead for the Medicaid fixes; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10372#issuecomment-6451385205. Under "Regulations are law" the
+    regulation binds, and the written canons have no exception for an apparent typesetting error, so the 69 in the
+    HFS chart and the HFS 3792 brochure does not override it. PE-US gives 69 because its premium adds an earned
+    component (31) and an unearned component (38), which cannot represent a cell that departs from that sum. Issue
+    10471, which encodes the full 21 x 21 table, will make PE-US follow the ruling. The other 440 cells of the
+    regulation and the chart agree.'
 - id: us-il:joint-childless-eitc-dependency-skip
   program: income-tax
   years:
@@ -2191,6 +2623,43 @@ candidates:
   state: ruled
   note: Ruled statute-first in October 2026; verify the incorporated dependency bar and annual questionnaire routing,
     including the 2026 draft.
+- id: us-il:msp-income-exemption-contributions
+  program: medicare-savings-programs
+  years:
+    from: 2026
+    type: calendar
+  question: Does Illinois's $25 income exemption for QMB, SLIB and QI-1 apply to contributions such as alimony and
+    child support?
+  sources:
+  - kind: regulation
+    citation: 89 Ill. Adm. Code 120.335(a)(1); 120.74 (QMB countable income under Parts 112, 113 and 120)
+    url: https://www.ilga.gov/ftp/JCAR/AdminCode/089/089001200H03350R.html
+  - kind: manual
+    citation: IDHS Policy Manual PM 15-04-03-a, reached from PM 06-12-01-b through PM 15-05-03
+    url: https://www.dhs.state.il.us/page.aspx?item=16387
+  - kind: manual
+    citation: IDHS Policy Manual PM 06-12-01-c
+    url: https://www.dhs.state.il.us/page.aspx?item=14179
+  readings:
+    statute: No statute is supplied; the regulation exempts the first $25 of income other than SSI income or contributions
+      from a spouse or other individual, and PM 15-04-03-a exempts income other than SSI income and contributions.
+    other: PM 06-12-01-c exempts the first $25 of earned or unearned income other than SSI income and names no
+      exception for contributions.
+  example: An Illinois QMB applicant whose only income is $1,000 a month of alimony counts $980 under the regulation,
+    which leaves the $20 SSI exclusion, and $975 under PM 06-12-01-c.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/msp_countable_income.py
+    - policyengine_us/parameters/gov/hhs/medicare/savings_programs/eligibility/income/state_general_exclusion_excludes_contributions.yaml
+    - policyengine_us/parameters/gov/hhs/medicare/savings_programs/eligibility/income/contribution_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10360
+  state: unreviewed
+  note: 'PE-US follows the regulation and PM 15-04-03-a: Illinois''s $25 applies only to income other than SSI and contributions
+    (alimony, child support and outside cash help), and the $20 SSI exclusion stays the floor (msp_countable_income.py,
+    state_general_exclusion_excludes_contributions.yaml, contribution_sources.yaml). Verify whether PM 06-12-01-c''s
+    silence on contributions reflects QMB policy.'
 - id: us-il:personal-exemption-claimed-vs-claimable
   program: income-tax
   years:
@@ -3746,6 +4215,35 @@ candidates:
   state: unreviewed
   note: PE-US follows the manual and surrounding report editions; obtain contemporaneous BEM 556 for October 2022-September
     2023.
+- id: us-mn:liheap-plan-income-checklist
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do foster care payments, minors' earnings and insurance wage replacement count for Minnesota EAP as the
+    manual provides or as the FY2026 plan checklist marks them?
+  sources:
+  - kind: manual
+    citation: Minnesota EAP Policy Manual FFY26, Chapter 3, Income Inclusions and Exclusions, PDF pages 91-92 and 99
+    url: https://mn.gov/commerce-stat/pdfs/ffy26-eap-policy-manual.pdf#page=91
+  - kind: plan
+    citation: Minnesota FY2026 LIHEAP State Plan, section 1.9, PDF pages 6-7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MN_Plan_2026.pdf#page=6
+  readings:
+    statute: No statute is supplied; the manual excludes foster care payments, counts minors' earnings unless they are
+      K-12 students aged 19 or under, and counts workers' compensation and wage-replacement disability pay.
+    other: The plan checks funds for the care of a foster child and leaves earned income of a child under 18 and
+      insurance payments made directly to the insured unchecked.
+  example: $6,000 of wages of a 17-year-old not in school counts $6,000 under the manual and $0 under the plan.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10433
+  state: ruled
+  note: 'Ruled 2026-10-06: follow the manual over the plan. Code not yet on main: mn_eap_countable_income,
+    gov.states.mn.commerce.eap.income.sources.'
 - id: us-mn:small-claim-of-right-repayment-deduction
   program: income-tax
   years:
@@ -3839,6 +4337,45 @@ candidates:
     in every state as an approximation. Missouri''s MHABD limits round up the same way (medicaid_optional_senior_or_disabled_income_limit.py),
     and its MHF parent limit uses the published schedule (mo_mhf_parent_income_limit.py). Verify the rounding gap-fill;
     the separate January-versus-April timing difference is a model approximation.'
+- id: us-mo:mhabd-resource-limit-boundary
+  program: medicaid
+  years:
+    from: 2018
+    type: state-fiscal
+  question: From fiscal year 2018, is a Missouri aged, blind or disabled claimant or couple whose countable resources
+    equal the limit eligible, as the statute's "not to exceed" says, or ineligible, as the rule's "at or in excess of"
+    says?
+  sources:
+  - kind: statute
+    citation: RSMo 208.010.2(7)
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=208.010
+  - kind: statute
+    citation: RSMo 536.014(2)
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=536.014
+  - kind: regulation
+    citation: 13 CSR 40-8.020(4)(B)
+    url: https://www.sos.mo.gov/CMSImages/AdRules/csr/current/13csr/13c40-8.pdf#page=2
+  readings:
+    statute: A claimant "owns or possesses resources not to exceed" the individual amount and a married couple "may
+      own resources not to exceed" the couple amount, so resources equal to either limit qualify.
+    other: A household with countable assets "at or in excess of" the limit is ineligible.
+  example: In 2026, an individual with $6,068.80 or a couple with $12,137.55 of countable resources is eligible under
+    the statute and ineligible under the rule.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/assets/limit/individual_limit_inclusive.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/assets/limit/couple_limit_inclusive.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10364
+  state: ruled
+  note: Ruled on 2026-10-27 by the project lead for these Medicaid fixes to follow the statute, first for couples
+    (ruling record https://github.com/PolicyEngine/policyengine-us/pull/10364#issuecomment-6451309562). It was applied
+    to individuals from fiscal year 2018 on 2026-10-29, when the project lead directed that the round-3 review fixes
+    be applied (https://github.com/PolicyEngine/policyengine-us/pull/10364#pullrequestreview-5675190584). RSMo
+    536.014(2) makes a rule that is in conflict with state law not valid. Missouri fiscal year 2018 began July 1,
+    2017. Before then, RSMo 208.010.2(4) (before August 28, 2016) and 13 CSR 40-2.030(12) set a strict single-person
+    test and an inclusive couple test, and the sources did not disagree.
 - id: us-mo:negative-federal-agi-combined-return
   program: income-tax
   years:
@@ -4560,6 +5097,41 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify whether the still-listed ruling applies during these years despite its obsolete tax base.
+- id: us-nh:fanf-resource-limit-equality
+  program: tanf
+  years:
+    from: 2022
+    type: calendar
+  question: Is a New Hampshire FANF assistance group whose countable resources equal its resource limit ($1,000 for
+    applicants, $5,000 for recipients) resource-eligible?
+  sources:
+  - kind: statute
+    citation: RSA 167:79, III(f)
+    url: https://gc.nh.gov/rsa/html/xii/167/167-79.htm
+  - kind: regulation
+    citation: N.H. Admin. Rules He-W 656.06(a)
+    url: https://gc.nh.gov/rules/state_agencies/he-w600.html
+  - kind: manual
+    citation: NH DHHS Family Assistance Manual 403, Resource Limits (SR 22-17, dated 07/22)
+    url: https://www.dhhs.nh.gov/fam_htm/html/403_resource_limits_fam.htm
+  readings:
+    statute: The assistance group's countable resources "shall be less than the allowable resource limit", so
+      resources equal to the limit fail the test.
+    other: Countable resources "cannot exceed the limits", so resources equal to the limit pass.
+  example: An applicant group with exactly $1,000 in countable resources is ineligible under the statute, which PE-US
+    follows, and resource-eligible under FAM 403; the same holds for a recipient group with exactly $5,000.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nh/dhhs/fanf/eligibility/nh_fanf_resources_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10499
+  state: unreviewed
+  note: He-W 656.06(a)(2) gives only the amounts and no comparison. He-W 656.04(c)(6) uses "exceed the allowable
+    limit" only to start a grace period for recipients whose excess resources are personal property that cannot
+    readily be converted to cash; it does not set the eligibility test. RSA 167:79, III(e) uses the same "less
+    than" wording for the income test, and FAM 611.01 follows it there. FAM 403 versions before SR 22-17 were not
+    checked, so the conflict may start earlier than 2022.
 - id: us-nh:fap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -4795,20 +5367,126 @@ candidates:
   - kind: regulation
     citation: 8.15.2.9 NMAC and 8.15.2.12 NMAC
     url: https://www.srca.nm.gov/parts/title08/08.015.0002.html
+  - kind: regulation
+    citation: 8.9.3.9(F)-(G) NMAC and 8.9.3.12 NMAC (2022-11-01 to 2025-11-03)
+    url: https://www.srca.nm.gov/parts/title08/08.009.0003.html
   - kind: agency-practice
     citation: LFC Policy Brief, New Mexico Childcare Assistance Eligibility Changes (Dec 9 2025), p.2
     url: https://www.nmlegis.gov/handouts/ALFC%20120825%20Item%208%20Policy%20Brief%20Child%20Care%20Update.pdf#page=2
   readings:
-    statute: No statute supplied; the regulation provides 200% initial and 250% continuation ceilings.
+    statute: No statute supplied; the regulation (8.15.2 NMAC, then 8.9.3 NMAC from 2022-11-01) provides 200% initial
+      and 250% continuation ceilings, or 400% and 425% for essential workers in priority four plus, until the 2025-11-04
+      amendment removed the caps.
     other: Practice uses 400%/425% from May 1, 2022 and no income limit from November 1, 2025.
   pe_us:
     follows: unknown
     code:
     - policyengine_us/parameters/gov/states/nm/ececd/ccap/eligibility/fpl_limit/continuation.yaml
     - policyengine_us/parameters/gov/states/nm/ececd/ccap/eligibility/fpl_limit/initial.yaml
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10417
   state: unreviewed
   note: PE-US follows agency practice; establish authority for departure from the codified regulation.
+- id: us-nm:ccap-school-age-start-date
+  program: child-care-assistance
+  years:
+    from: 2026
+    to: 2026
+    type: program
+    note: program year as the program defines it
+  question: Does the 2026 school-age category (a child five years old by September 1 of the school year) start on
+    September 1, 2026, the date 8.9.3.19(D) NMAC names, or on 2026-09-09, when the rule that replaced 8.9.3 NMAC was
+    published and took effect?
+  sources:
+  - kind: statute
+    citation: NMSA 14-4-5 (as quoted in the New Mexico Register)
+    url: https://www.srca.nm.gov/nmac-home/new-mexico-register/volume-xxxvi-issue-4/adopted-rules-issue-4/
+  - kind: regulation
+    citation: 8.9.3.5 NMAC (rule effective 2026-09-09)
+    url: https://prod-rf-lambda.rtssaas.com/PublicFiles/d89c47bd0d70402dba89b03a22bda6d1/b0e207a9-a1a3-412d-9660-0a6e925f6f25/8.9.3.pdf#page=1
+  - kind: regulation
+    citation: 8.9.3.7(I)(3) and 8.9.3.19(D) NMAC (rule effective 2026-09-09)
+    url: https://prod-rf-lambda.rtssaas.com/PublicFiles/d89c47bd0d70402dba89b03a22bda6d1/b0e207a9-a1a3-412d-9660-0a6e925f6f25/8.9.3.pdf#page=18
+  readings:
+    statute: NMSA 14-4-5 makes no rule valid or enforceable until it is published in the New Mexico Register, and
+      8.9.3.5 gives September 9, 2026 as the effective date, so the new category applies from 2026-09-09.
+    other: 8.9.3.19(D) says that a preschool child's placement category changes to school age "Effective September 1,
+      2026".
+  example: A five-year-old in a 2-star licensed center at full time gets the $735 preschool rate for September 1-8,
+    2026 on the statute reading and the $689 school-age rate on the 8.9.3.19(D) date.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/nm/ececd/ccap/rates/age_group/months.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10417
+  state: ruled
+  note: Monthly periods resolve parameters at the first of the month, so the 60-month threshold first applies in
+    October 2026. TheAxiomFoundation/rulespec-us#1956 lists the same choice as an open point.
+- id: us-nm:liheap-plan-income-checklist
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does New Mexico LIHEAP count gross Social Security including the Medicare premium, exclude lump sums, count
+    cash contributions and count earnings only of members over age 18, as the regulation provides, or follow the state
+    plan's income checklist?
+  sources:
+  - kind: regulation
+    citation: 8.150.520.12 B and 8.150.520.13 NMAC
+    url: https://www.srca.nm.gov/parts/title08/08.150.0520.html
+  - kind: plan
+    citation: FY2026 and FY2027 LIHEAP State Plans, section 1.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/NM_Plan_2026.pdf#page=6
+  readings:
+    statute: No statute supplied; the regulation counts gross OASDI including the Medicare premium and contributions
+      from family or friends, excludes lump sums, and counts earnings of members over the age of 18.
+    other: The checklist marks Social Security excluding the Medicare deduction and one-time lump sums, and leaves cash
+      gifts and earned income of a child under 18 unchecked.
+  example: A one-person FFY2026 household with $2,000 a month of OASDI and a $202.90 Part B premium counts $2,000 under
+    the rule and $1,797.10 under the checklist.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10431
+  state: ruled
+  note: 'Statute governs (2026-10-19 rule): PE-US follows the regulation for all four items. Code not yet on main:
+    nm_liheap_countable_income, gov.states.nm.hca.liheap.income.sources.unearned, gov.states.nm.hca.liheap.income.earned_income_age.'
+- id: us-nm:liheap-three-income-points
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does New Mexico LIHEAP give three income points for income up to 100% of the poverty guideline, as the
+    regulation provides, or up to 110%, as the agency's point and income guides apply?
+  sources:
+  - kind: regulation
+    citation: 8.150.620.9 B NMAC
+    url: https://www.srca.nm.gov/parts/title08/08.150.0620.html
+  - kind: guidance
+    citation: HCA LIHEAP FFY2026 Point and Income Guide
+    url: https://www.hca.nm.gov/wp-content/uploads/Heating-and-Cooling-Point-and-Income-Guide-2026.pdf
+  - kind: guidance
+    citation: HCA LIHEAP FFY2027 Point and Income Guidelines
+    url: https://www.hca.nm.gov/wp-content/uploads/NM-LIHEAP-FFY-2027-Point-and-Income-Guidelines.pdf
+  readings:
+    statute: No statute supplied; the regulation gives three points for income from zero to 100% of the poverty guideline
+      and two points from 100% to 150%.
+    other: The FFY2025-FFY2027 guides and the FFY2026 ISD 017 card give three points at or below 110% of the poverty guideline.
+  example: In FFY2026, a one-person household with monthly income of $1,400 (107% of the guideline) scores two income
+    points under the regulation and three under the guides.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10431
+  state: ruled
+  note: 'Statute governs (2026-10-19 rule): PE-US follows the regulation. The guides and the FFY2026 ISD 017 card apply
+    110%, and 8.150.620.10 C lets the secretary adjust point values, not the cutoff. Code not yet on main: nm_liheap,
+    gov.states.nm.hca.liheap.payment.income_points.low_income_fpg_rate.'
 - id: us-nm:medical-care-credit-mixed-age-spouses
   program: income-tax
   years:
@@ -4931,6 +5609,69 @@ candidates:
     nm_additional_2021_income_rebate.py, nm_supplemental_2021_income_rebate.py, nm_deduction_for_certain_dependents_eligible.py,
     nm_cdcc_eligible.py, nm_medical_expense_credit.py). Ruled in October 2026 to follow the per-spouse gap-fill;
     verify which listed credits and rebates share that treatment.'
+- id: us-nv:liheap-cap-band-125-percent-column
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: state-fiscal
+  question: Do Nevada's SFY2026 benefit cap bands end at 125% of the poverty guideline, or at Appendix A's printed
+    125% column, which differs from that rate for household sizes 4-8?
+  sources:
+  - kind: manual
+    citation: Nevada SFY2026 Energy Assistance Program Manual, Appendix A, FY 2026 income guidelines table, 125% Poverty
+      column
+    url: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=110
+  - kind: manual
+    citation: Nevada SFY2026 Energy Assistance Program Manual, Appendix A, FY 2026 benefit cap tables, >100-125% and
+      >125-150% bands
+    url: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=111
+  readings:
+    statute: No statute or regulation is supplied (NRS 702.260 sets no band); the cap tables key the bands to 75%, 100%,
+      125% and 150% of poverty, and 125% of the $37,650 size-5 guideline is $47,062.50.
+    other: The income table prints $53,937.50 as the size-5 125% figure and $40,062.50 for size 4; the SFY2027 table
+      matches the rate.
+  example: A size-5 household with Fixed Annual Credit income of $50,000 is in the >125-150% band by the rate (cap
+    $1,411) and in the >100-125% band by the printed $53,937.50 (cap $1,568).
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10432
+  state: unreviewed
+  note: 'PE-US keys the bands to the rates, which reproduce every SFY2027 row; confirm the SFY2026 column with the
+    state. Code not yet on main: gov.states.nv.dwss.liheap.payment.cap.income_band, nv_liheap.'
+- id: us-nv:liheap-minimum-fixed-annual-credit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: state-fiscal
+  question: Is Nevada's SFY2026 minimum Fixed Annual Credit $240, as manual Sections 504 A, 505 and 702 III print, or
+    $360, as Section 803 V and the state plan set?
+  sources:
+  - kind: manual
+    citation: Nevada SFY2026 Energy Assistance Program Manual, Sections 504 A, 505 D, F and G, 702 III and 803 V, PDF
+      pages 34, 36-37, 43 and 60-61
+    url: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=34
+  - kind: plan
+    citation: Nevada FY2026 LIHEAP State Plan, Sections 2.5-2.6
+    url: https://liheapch.acf.gov/docs/2026/state-plans/NV_Plan_2026.pdf#page=9
+  readings:
+    statute: No statute or regulation is supplied (NRS 702.260 sets no minimum); Sections 504 A, 505 D, F and G and
+      702 III print a $240 minimum payment.
+    other: Section 803 V pays $360 when the computed credit is less than $360, including a negative figure, and plan
+      2.5 pays $360 for a credit of zero to $359; the SFY2027 manual prints $360 throughout.
+  example: A household with a negative computed Fixed Annual Credit receives $360 under Section 803 V and $240 under
+    Section 702 III.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10432
+  state: unreviewed
+  note: 'PE-US pays the $360 minimum in SFY2026, matching Section 803 V, both plans and the SFY2027 manual. Code not
+    yet on main: gov.states.nv.dwss.liheap.payment.minimum, nv_liheap.'
 - id: us-ny:college-tuition-credit-claimed-spouse
   program: income-tax
   years:
@@ -6570,6 +7311,48 @@ candidates:
   note: 'PE-US follows the manual: workers_compensation counts, as does disability_benefits, which stands in for
     TDI and TCI, and the list''s comment records the plan''s unchecked insurance item (income/sources/unearned.yaml,
     ri_liheap_income.py). Verify whether the unchecked insurance category covers these payments.'
+- id: us-ri:medicaid-postpartum-end-month
+  program: medicaid
+  years:
+    from: 2022
+    type: calendar
+  question: For Rhode Island's section 1115 Budget Populations 6a and 6b, when a pregnancy ends on the first day of
+    a month, does the 12-month postpartum period begin that day and end Medicaid in the 11th following month, or does
+    coverage run to the end of the 12th following month?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1396a(e)(16), which subparagraph (A) applies to state plans and waivers
+    url: https://www.law.cornell.edu/uscode/text/42/1396a#e_16
+  - kind: plan
+    citation: Rhode Island Medicaid State Plan Amendment RI-22-0024, section B, page 7
+    url: https://www.medicaid.gov/medicaid/spa/downloads/RI-22-0024.pdf#page=7
+  - kind: policy
+    citation: CMS section 1115 amendment approval of the Rhode Island Comprehensive Demonstration (March 21, 2024; 2019
+      to 2024), expenditure authorities, Budget Populations 6a and 6b, file page 11
+    url: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/ri-comphnsve-dmnstrtn-aprvl.pdf#page=11
+  - kind: policy
+    citation: CMS section 1115 approval of the Rhode Island Comprehensive Demonstration (November 28, 2025), expenditure
+      authorities 1(b)-(c), Budget Populations 6a and 6b
+    url: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/ri-comp-demo-appvl-11282025.pdf#page=15
+  readings:
+    statute: The 12-month period begins on the last day of pregnancy and coverage runs through the last day of the
+      month in which that period ends; RI-22-0024 repeats this wording.
+    other: The 1115 expenditure authorities for Budget Populations 6a and 6b extend coverage to the end of the 12th
+      month following the end of the pregnancy.
+  example: For a Budget Population 6b enrollee whose pregnancy ends on January 1, 2023, coverage runs through December
+    2023 under the statute and through January 2024 under the 1115 wording; any other end day gives the same last month
+    under both.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ri/eohhs/medicaid/ri_medicaid_postpartum_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10391
+  state: unreviewed
+  note: The conflict is limited to the 1115 Budget Populations 6a and 6b, whose March 2024 and November 2025 approvals
+    use the same wording. The RI-22-0024 state plan groups, RIte Start and FCEP have no conflicting text, and CHIP
+    (RI-22-0025 CS27) ends the period "on the last day of the 12th month consistent with paragraphs (5) and (16) of
+    section 1902(e)". R.I. Gen. Laws 42-12.3-3(g) does not say when the 12-month period begins.
 - id: us-ri:ssp-category-d-without-federal-ssi
   program: ssi-state-supplement
   years:
@@ -6985,6 +7768,104 @@ candidates:
   state: unreviewed
   note: sd_ssp_care_joint_entry is true only in the month both spouses entered care; later months use the $2,000
     limit and each spouse's own income. integration.yaml Cases 5, 7 and 8 pin it.
+- id: us-tn:liheap-fy2026-printed-income-ceilings
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Are Tennessee's FY2026 LIHEAP income ceilings 60% of state median income, as the plan and manual state, or
+    the amounts printed in the benefit matrix and workshop deck where they differ?
+  sources:
+  - kind: plan
+    citation: Tennessee FY2026 LIHEAP State Plan, Section 2.1, page 8
+    url: https://liheapch.acf.gov/docs/2026/state-plans/TN_Plan_2026.pdf#page=8
+  - kind: manual
+    citation: Tennessee LIHEAP 2026 Policy Manual, Section 2.10, page 24
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-2026-Policy-Manual-for-Tennessee.pdf#page=24
+  - kind: guidance
+    citation: Tennessee LIHEAP 2026 Benefit Matrix, income end column
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/2026-LIHEAP-Eligible-Income-Household-Size-Benefits.pdf
+  - kind: guidance
+    citation: Tennessee LIHEAP 26 Workshop, Benefit Matrix Adjustments 2026, page 30
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-26-Workshop-Powerpoint-09.16.25.pdf#page=30
+  readings:
+    statute: No statute is supplied; the plan and manual set the limit at 60% of state median income, $85,064 for a
+      household of eight and $81,366 for a household of six.
+    other: The benefit matrix prints $85,064.50 for a household of eight, and the workshop deck prints $81,336 for a
+      household of six.
+  example: In FY2026, a household of eight with income of $85,064.50 and energy bills of $4,000 receives $300 under the
+    printed matrix ceiling (group D, burden 0.0470, column 1) and $0 under the 60% state median income limit.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10430
+  state: unreviewed
+  note: 'PE-US applies 60% of state median income, which reproduces every other printed FY2026 ceiling for sizes 1-12.
+    Code not yet on main: tn_liheap_income_limit, gov.states.tn.thda.liheap.eligibility.smi_rate.'
+- id: us-tn:liheap-fy2027-large-household-limits
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Are Tennessee's FY2027 LIHEAP income limits for households of 13 to 16 members 150% of the poverty guideline,
+    as the draft plan and manual state, or the lower ceilings printed in the LI-12 matrix?
+  sources:
+  - kind: plan
+    citation: Tennessee FY2027 LIHEAP State Plan (draft), Section 2.1, page 9
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/DETAILED-MODEL-PLAN-LIHEAP_10_01_2026.pdf#page=9
+  - kind: manual
+    citation: Tennessee LIHEAP 2027 Policy Manual (draft), Section 2.10, page 27
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/DRAFT-LIHEAP-2027-Policy-Manual-7-11-2026.pdf#page=27
+  - kind: guidance
+    citation: Tennessee FY2027 LIHEAP Benefit Matrix (LI-12), page 4
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/2027-LIHEAP-LI-12-Eligible-Income-Benefit-Matrix.pdf#page=4
+  readings:
+    statute: No statute is supplied; the draft plan (sizes 9-15) and draft manual (sizes 9-16) set the limit at 150% of
+      the poverty guideline, $126,180 to $151,740 for sizes 13-16.
+    other: The LI-12 matrix prints ceilings of $125,910 to $150,660 for sizes 13-16.
+  example: In FY2027, a household of 13 with income of $126,000 and energy bills of $4,200 receives $540 under the 150%
+    rule (group D, burden 0.0333, column 1) and $0 under the printed $125,910 ceiling.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10430
+  state: unreviewed
+  note: 'PE-US applies the stated 150% rule to every size from 9. Code not yet on main: tn_liheap_income_limit,
+    gov.states.tn.thda.liheap.eligibility.fpg_rate.'
+- id: us-tn:liheap-retirement-account-withdrawals
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does Tennessee LIHEAP count IRA and 401(k) withdrawals as income, as the plan's checked "Retirement / pension
+    benefits" box suggests, or exclude them, as the manual's income list does by naming none?
+  sources:
+  - kind: manual
+    citation: Tennessee LIHEAP 2026 Policy Manual, Section 2.13, pages 27-28
+    url: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-2026-Policy-Manual-for-Tennessee.pdf#page=27
+  - kind: plan
+    citation: Tennessee FY2026 LIHEAP State Plan, Section 1.9, page 6
+    url: https://liheapch.acf.gov/docs/2026/state-plans/TN_Plan_2026.pdf#page=6
+  readings:
+    statute: No statute is supplied; the manual counts pensions, annuities and regular insurance payments, names no
+      retirement-account withdrawals and excludes withdrawals from a bank account.
+    other: Plan 1.9 checks "Retirement / pension benefits" as countable income.
+  example: In FY2026, a single retiree aged 70 with Social Security of $12,000, a Part B premium of $2,434.80, IRA
+    withdrawals of $20,000 and an electric bill of $1,680 receives $710 with the withdrawals excluded (income $9,565.20,
+    group A, column 7) and $250 with them counted (income $29,565.20, group D, column 2).
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10430
+  state: ruled
+  note: 'Ruled 2026-10-23: exclude IRA/401(k) withdrawals as the manual does. Code not yet on main:
+    tn_liheap_countable_income, gov.states.tn.thda.liheap.income.sources.unearned.'
 - id: us-tx:family-planning-unearned-income-exclusions
   program: family-planning-program
   years:
@@ -7874,6 +8755,44 @@ candidates:
     threshold and federal-method conditions by year. Code not yet on main: gov/states/wv/tax/income/subtractions/wv_claim_of_right_subtraction.yaml,
     policyengine_us/variables/gov/states/wv/tax/income/subtractions/wv_subtractions.py, wv_claim_of_right_subtraction,
     gov.states.wv.tax.income.subtractions.claim_of_right.threshold.'
+- id: us-wv:medicaid-ssi-related-non-cash-income-at-standard
+  program: medicaid
+  years:
+    from: 2018
+    type: calendar
+  question: Does West Virginia's SSI-Related/Non-Cash Assistance group cover countable income exactly equal to the
+    SSI Maximum Payment level?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1396a(a)(10)(A)(ii)(I); 42 U.S.C. 1382(a)(1)(A) and (2)(A) (income "at a rate of not more than"
+      the benefit rate)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2023-title42/html/USCODE-2023-title42-chap7-subchapXVI-partA-sec1382.htm
+  - kind: regulation
+    citation: 42 CFR 435.210(b)
+    url: https://www.ecfr.gov/current/title-42/section-435.210
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual § 23.11.4 (consolidated PDF built 2026-10-05, PDF p.1889)
+    url: https://bfa.wv.gov/media/40005/download?inline#page=1889
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual § 4.14.3 Step 5 (PDF p.662)
+    url: https://bfa.wv.gov/media/40005/download?inline#page=662
+  readings:
+    statute: The optional group covers people who meet SSI's income requirement, which admits income at or below
+      the benefit rate.
+    other: Section 23.11.4 requires countable income "under" the SSI Maximum Payment level; the § 4.14 method it
+      applies (Step 5) makes income "equal to or less than" the level eligible.
+  example: An aged West Virginian with countable income of exactly $994 a month in 2026 qualifies under the statute
+    and Step 5 but not under § 23.11.4's wording.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/limit/requires_income_below_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10373
+  state: unreviewed
+  note: 'PE-US keeps WV out of requires_income_below_limit, so income equal to the SSI rate qualifies. This assumes
+    the group is the 42 CFR 435.210 group of section 1902(a)(10)(A)(ii)(I); West Virginia''s state plan page for the
+    group was not checked. The archived 2013 manual pairs the same two wordings (§ 16.7.H and § 10.23.C).'
 - id: us-wv:senior-modification-excluded-line-range
   program: income-tax
   years:

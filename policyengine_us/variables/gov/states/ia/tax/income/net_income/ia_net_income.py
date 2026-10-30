@@ -12,6 +12,13 @@ class ia_net_income(Variable):
         "https://revenue.iowa.gov/media/2650/download?inline",
         "https://revenue.iowa.gov/sites/default/files/2023-01/2022IA1040%2841001%29.pdf",
         "https://revenue.iowa.gov/media/2721/download?inline",
+        # Status 3: married filing separately on a combined return
+        "https://revenue.iowa.gov/media/2650/download?inline#page=7",
+        # Borrowed for dependents' income: parents filing separately report a
+        # child's income on the return of the parent with the greater
+        # taxable income
+        "https://www.law.cornell.edu/uscode/text/26/1#g_5_B",
+        "https://www.irs.gov/instructions/i8814",
     )
     defined_for = StateCode.IA
 
@@ -19,8 +26,7 @@ class ia_net_income(Variable):
         gross_income = person("ia_gross_income", period)
         income_adjustments = person("ia_income_adjustments", period)
         net_income = gross_income - income_adjustments
-        # allocate any dependent net_income to tax unit head
-        is_dependent = person("is_tax_unit_dependent", period)
-        sum_dep_net_income = person.tax_unit.sum(is_dependent * net_income)
-        is_head = person("is_tax_unit_head", period)
-        return ~is_dependent * net_income + is_head * sum_dep_net_income
+        # Each spouse's column holds their own income. The dependents' net
+        # income the model counts here goes on the column of the spouse with
+        # the greater net income (a modelling convention; see the helper).
+        return move_dependent_amounts_to_filer(person, period, net_income)

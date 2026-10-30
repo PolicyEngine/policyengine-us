@@ -1,0 +1,41 @@
+description: Minnesota uses this average annual energy cost for metered propane heat by housing type under the Energy Assistance Program.
+# No heating_type value selects this row; propane heat uses propane.yaml.
+APARTMENT:
+  2025-10-01: 2_272
+  2026-10-01: 2_306
+DUPLEX:
+  2025-10-01: 2_502
+  2026-10-01: 2_540
+TRIPLEX:
+  2025-10-01: 2_272
+  2026-10-01: 2_306
+FOURPLEX:
+  2025-10-01: 2_140
+  2026-10-01: 2_172
+TOWNHOUSE:
+  2025-10-01: 2_041
+  2026-10-01: 2_072
+HOUSE:
+  2025-10-01: 3_293
+  2026-10-01: 3_342
+MOBILE_HOME:
+  2025-10-01: 3_293
+  2026-10-01: 3_342
+OTHER:
+  2025-10-01: 2_469
+  2026-10-01: 2_506
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - mn_eap_housing_type
+  label: Minnesota EAP metered propane backup matrix energy cost
+  reference:
+    - title: Minnesota EAP Policy Manual FFY26 Appendix 4A Primary Heat Benefit Calculator, Backup Matrix Values!A50:C57
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/MN_BenefitMatrix_2026.xlsx
+    - title: Minnesota EAP Policy Manual FFY27 Appendix 4A Primary Heat Benefit Calculator, Backup Matrix Values!A50:C57
+      href: https://mn.gov/commerce-stat/xls/phb-calculator.xlsx
+    - title: "Minnesota EAP Policy Manual FFY26, Chapter 4, Backup Matrix and Knowing Which Method to Use #page 125-126"
+      href: https://mn.gov/commerce-stat/pdfs/ffy26-eap-policy-manual.pdf#page=125
+    - title: "Minnesota EAP Policy Manual FFY27, Chapter 4, Backup Matrix and Knowing Which Method to Use #page 127-128"
+      href: https://mn.gov/commerce-stat/pdfs/ffy27-eap-policy-manual.pdf#page=127

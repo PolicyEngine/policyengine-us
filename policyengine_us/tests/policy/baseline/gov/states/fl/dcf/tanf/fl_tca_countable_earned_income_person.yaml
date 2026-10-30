@@ -1,0 +1,93 @@
+# Tests Florida TCA countable earned income for each person.
+# Per DCF ESS Program Policy Manual 2420.0304, "The first $90 of each
+# individual's gross earned income is deducted in a regular budget", and per
+# 2420.0314 the $200 and 1/2 disregard applies to "a portion of the
+# individual's remaining earned income following the standard earned income
+# deduction". Per 2420.0315, the $90 "is included in the first $200", so an
+# eligible earner has $90, then $110, then half of the rest deducted.
+# Two parents and two children (ages 8 and 5), shelter obligation over $50:
+# payment standard $364 (ESS Appendix A-5, Tier I, filing unit size 4).
+
+- name: Case 1, each parent earns $300, unit enrolled in TCA.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 3_600  # $300/month
+        pre_subsidy_rent: 12_000
+      person2:
+        age: 33
+        employment_income_before_lsr: 3_600  # $300/month
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income_person: [50, 50, 0, 0]
+    # Enrolled, so 2420.0315 condition 1 makes each parent eligible for the
+    # $200 and 1/2. Each parent: (300 - 90 - 110) / 2 = 50.
+
+- name: Case 2, one parent earns $600, the other $0, unit enrolled in TCA.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 7_200  # $600/month
+        pre_subsidy_rent: 12_000
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income_person: [200, 0, 0, 0]
+    # (600 - 90 - 110) / 2 = 200.
+
+- name: Case 3, each parent earns $500, not enrolled, $200 and 1/2 not available.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 6_000  # $500/month
+        pre_subsidy_rent: 12_000
+      person2:
+        age: 33
+        employment_income_before_lsr: 6_000  # $500/month
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income_person: [410, 410, 0, 0]
+    # Income after the $90 is at or above the $364 payment standard however
+    # 2420.0315 condition 2 is read (1,000 - 90 = 910 or 1,000 - 2 x 90 = 820
+    # for the unit, 500 - 90 = 410 for each parent), so the condition fails.
+    # Only the $90 is deducted from each parent's earnings: 500 - 90 = 410.
