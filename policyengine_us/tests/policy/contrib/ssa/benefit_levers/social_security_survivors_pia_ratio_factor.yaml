@@ -1,0 +1,47 @@
+- name: Survivor ages and recipient entitlement dates do not identify worker PIA
+  period: 2026
+  input:
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+    people:
+      young_survivor:
+        age: 10
+        social_security_survivors_entitlement_year: 2025
+        social_security_survivors_reported: 6000
+      older_survivor:
+        age: 70
+        social_security_survivors_reported: 12000
+  output:
+    social_security_survivors_pia_ratio_factor: [1, 1]
+    social_security_survivors_pia_ratio_unmodeled: [true, true]
+    social_security_survivors: [6000, 12000]
+
+- name: A linked survivor composite ratio enters the inverse only once
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.ssa.social_security.pia.bend_points.first: 960
+    gov.ssa.social_security.pia.bend_points.second: 5785
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+    gov.contrib.ssa.pia.bend_point_multipliers.first: 1.15
+    people:
+      survivor:
+        age: 60
+        social_security_survivors_worker_id: worker
+        social_security_survivors_worker_benefit_ratio: 0.7
+        social_security_survivors_worker_ratio_identified: true
+        social_security_survivors_reported: 18117.12
+      worker:
+        age: 62
+        social_security_worker_computation_year: 2026
+  output:
+    people:
+      survivor:
+        social_security_survivors_pia_ratio_eligibility_year: 2026
+        social_security_survivors_inferred_aime: 5000
+        social_security_survivors_pia_ratio_factor: 1.0643082344
+        social_security_survivors_pia_ratio_unmodeled: false
+        social_security_survivors: 19282.20
+      worker:
+        social_security_survivors_pia_ratio_factor: 1

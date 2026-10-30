@@ -1,0 +1,234 @@
+# 2026 Policy Manual: income at or below 60% of state median income (2.10), size
+# counts only citizens and qualified noncitizens (2.4), an energy cost in rent remains
+# eligible (2.17) and an applicant without an energy account is ineligible (2.18).
+# 42 U.S.C. 8624(b)(2)(B) protects income below 110% of the poverty guideline (2025
+# guidelines in FFY2026: 15,650 + 5,500 per additional person).
+# Wages of 15,080 are full-time work (2,080 hours) at the federal 7.25 minimum wage,
+# which Tennessee follows; electricity of 1,680 is about the EIA 2024 Tennessee average
+# residential bill of 140 a month.
+
+- name: Case 1, income exactly at the FFY2026 size-one limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 32_053
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_liheap_eligible: true
+
+- name: Case 2, income one dollar above the FFY2026 size-one limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 32_054
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_liheap_eligible: false
+
+- name: Case 3, a fifteen-person household above the limit but below the poverty floor is eligible.
+  period: 2026
+  input:
+    people:
+      # Limit floor(61,641 x 1.59) = 98,009; floor (15,650 + 5,500 x 14) x 1.1 = 101,915.
+      person1: {age: 45, employment_income: 101_914}
+      person2: {age: 43}
+      person3: {age: 17}
+      person4: {age: 16}
+      person5: {age: 15}
+      person6: {age: 14}
+      person7: {age: 13}
+      person8: {age: 12}
+      person9: {age: 11}
+      person10: {age: 10}
+      person11: {age: 9}
+      person12: {age: 8}
+      person13: {age: 7}
+      person14: {age: 6}
+      person15: {age: 5}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15]
+        state_code: TN
+  output:
+    tn_liheap_eligible: true
+
+- name: Case 4, income equal to 110 percent of the poverty guideline is not protected.
+  period: 2026
+  input:
+    people:
+      # The floor protects income less than 101,915 only.
+      person1: {age: 45, employment_income: 101_915}
+      person2: {age: 43}
+      person3: {age: 17}
+      person4: {age: 16}
+      person5: {age: 15}
+      person6: {age: 14}
+      person7: {age: 13}
+      person8: {age: 12}
+      person9: {age: 11}
+      person10: {age: 10}
+      person11: {age: 9}
+      person12: {age: 8}
+      person13: {age: 7}
+      person14: {age: 6}
+      person15: {age: 5}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15]
+        state_code: TN
+  output:
+    tn_liheap_eligible: false
+
+- name: Case 5, a home with no heating that pays an electric bill is eligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # The electric account meets the active energy account test.
+    tn_liheap_eligible: true
+    # 1,680 / 15,080 = 0.111406 -> 0.1114 -> column 5; group C
+    # (13,615.50 < 15,080 <= 18,310.50); sizes 1-2 group C column 5
+    tn_liheap: 445
+
+- name: Case 6, an unknown heating fuel with heat included in rent is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_liheap_eligible: true
+
+- name: Case 7, an unknown heating fuel without heat in rent is ineligible even with an electric bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        pre_subsidy_electricity_expense: 1_680
+        heat_expense_included_in_rent: false
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_liheap_eligible: false
+
+- name: Case 8, a household with no heating bill and no heat in rent is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 0
+        heat_expense_included_in_rent: false
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_liheap_eligible: false
+
+- name: Case 9, a household of only undocumented members is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_liheap_eligible: false
+
+- name: Case 10, a household outside Tennessee is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    tn_liheap_eligible: false
