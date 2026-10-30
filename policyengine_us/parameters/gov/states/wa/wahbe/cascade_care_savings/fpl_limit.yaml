@@ -1,7 +1,8 @@
 description: Washington limits income to this share of the federal poverty line under the Cascade Care Savings program.
 values:
   # Eligibility caps household income (ACA MAGI per 26 U.S.C. 36B(d)(2)) at 250%
-  # of the federal poverty line, applied as a "<=" comparison ("up to 250%").
+  # of the federal poverty line, applied as a "<=" comparison ("up to 250%") on
+  # the exact income-to-guideline ratio, not the truncated aca_magi_fraction.
   2026-01-01: 2.5
 
 metadata:
