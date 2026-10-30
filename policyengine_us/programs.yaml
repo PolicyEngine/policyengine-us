@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, MN, MS, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
+    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, MN, MS, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
     state_implementations:
       - state: AL
         status: partial
@@ -1043,6 +1043,14 @@ programs:
         parameter_prefix: gov.states.ok.dhs.liheap
         verified_years: "2025-2027"
         notes: FY2025-FY2027 regular winter heating only, using the Appendix C-7-A payment matrix. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: PA
+        status: partial
+        name: Pennsylvania LIHEAP
+        full_name: Pennsylvania Low Income Home Energy Assistance Program
+        variable: pa_liheap
+        parameter_prefix: gov.states.pa.dhs.liheap
+        verified_years: "2025-2027"
+        notes: FY2025-FY2027 regular heating only, from the FY2025 and FY2026 benefit matrices and the current benefit lookup. Crisis, cooling and weatherization assistance are out of scope.
       - state: RI
         status: partial
         name: Rhode Island LIHEAP

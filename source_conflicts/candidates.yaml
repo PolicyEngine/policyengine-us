@@ -6992,26 +6992,33 @@ candidates:
     to: 2027
     type: program
     note: program year as the program defines it
-  question: Do interest and dividends count from the first dollar under the plan or only above $25 a month under
-    the handbook?
+  question: Do interest and dividends count from the first dollar under 55 Pa. Code and the plan or only above $25 a
+    month under the handbook?
   sources:
-  - kind: guidance
-    citation: FY2026 plan 601.82(4)(ix), page 51
-    url: null
+  - kind: regulation
+    citation: 55 Pa. Code 601.82(4)(ix)
+    url: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/055/chapter601/s601.82.html
+  - kind: plan
+    citation: FY2026 Pennsylvania LIHEAP State Plan 601.82(4)(ix), page 51
+    url: https://web.archive.org/web/20251016232745/https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=51
   - kind: manual
-    citation: LIHEAP Handbook 650.3(9)
+    citation: Pennsylvania LIHEAP Handbook 650.3(9)
     url: null
   readings:
-    statute: No statutory rule supplied; the plan counts interest and dividends without a threshold.
-    other: The handbook counts amounts over $25 a month.
+    statute: No statute is supplied; 55 Pa. Code 601.82(4)(ix) counts "Interest from investments or bank accounts" and
+      plan 601.82(4)(ix) counts "Interest and/or dividends from investments or bank accounts", with no threshold.
+    other: Handbook 650.3(9) counts interest and dividends "of more than $25 per month".
+  example: A one-person household with $25 a month of interest has $300 a year of countable income under the regulation
+    and plan and $0 under the handbook.
   pe_us:
-    follows: unknown
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/pa/dhs/liheap/income/sources/unearned.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9971
-  state: unreviewed
-  note: 'PE-US follows the handbook; obtain the plan link and effective versions. The code identifier is inferred,
-    not confirmed. Code not yet on main: pa_liheap_countable_income.'
+  state: ruled
+  note: PE-US counts interest and dividends in full under the regulation and plan (ruled 2026-10-29). Dividends count
+    under the plan's wording. The handbook is served only over http.
 - id: us-pa:liheap-railroad-retirement-medicare-premium
   program: liheap
   years:
@@ -7019,26 +7026,36 @@ candidates:
     to: 2027
     type: program
     note: program year as the program defines it
-  question: Are Medicare premiums deducted from Railroad Retirement excluded under the handbook or only premiums
-    deducted from Social Security under the plan?
+  question: Are Medicare premiums deducted from Railroad Retirement excluded, as the handbook says, or only premiums
+    deducted from Social Security, as 55 Pa. Code and the plan say?
   sources:
-  - kind: guidance
-    citation: FY2026 plan 601.84(10)
-    url: null
+  - kind: regulation
+    citation: 55 Pa. Code 601.84(10)
+    url: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/055/chapter601/s601.84.html
+  - kind: plan
+    citation: FY2026 Pennsylvania LIHEAP State Plan 601.84(10), page 52
+    url: https://web.archive.org/web/20251016232745/https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=52
   - kind: manual
-    citation: LIHEAP Handbook 650.6(10)
+    citation: Pennsylvania LIHEAP Handbook 650.6(10)
     url: null
   readings:
-    statute: No statutory rule supplied; the plan excludes only the premium deducted from Social Security.
-    other: The handbook also excludes premiums deducted from Railroad Retirement.
+    statute: No statute is supplied; 55 Pa. Code 601.84(10) excludes "Deductions for Medicare premiums deducted from Social
+      Security benefit payments" and plan 601.84(10) excludes "Medicare premiums deducted from Social Security benefit
+      payments".
+    other: Handbook 650.6(10) excludes "Medicare premiums deducted from Social Security, Railroad Retirement, and other
+      benefit payments."
+  example: A person aged 67 with a $24,000 railroad annuity and the $2,434.80 2026 Part B premium has $24,000 of income
+    under the regulation and plan, over the $23,475 one-person limit, and $21,565.20 under the handbook.
   pe_us:
-    follows: unknown
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/pa/dhs/liheap/income/pa_liheap_income.py
+    - policyengine_us/parameters/gov/states/pa/dhs/liheap/income/sources/unearned.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9971
-  state: unreviewed
-  note: 'PE-US follows the handbook; obtain section links and effective versions. The code identifier is inferred,
-    not confirmed. Code not yet on main: pa_liheap_countable_income.'
+  state: ruled
+  note: PE-US nets the Medicare Part B premium from Social Security only and counts railroad retirement in full as a
+    pension (ruled 2026-10-29). The handbook is served only over http.
 - id: us-pa:liheap-supplement-child-age
   program: liheap
   years:
@@ -7048,9 +7065,9 @@ candidates:
     note: program year as the program defines it
   question: Does a household whose only vulnerable member is five qualify for the supplement?
   sources:
-  - kind: guidance
-    citation: FY2026 plan pages 34 and 43
-    url: null
+  - kind: plan
+    citation: FY2026 Pennsylvania LIHEAP State Plan, pages 34 and 43
+    url: https://web.archive.org/web/20251016232745/https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=34
   - kind: guidance
     citation: July 30, 2026 announcement
     url: null
@@ -7058,17 +7075,20 @@ candidates:
     citation: Operations Memoranda 25-08-01 and 26-07-01, page 2
     url: null
   readings:
-    statute: No statutory rule supplied; the plan's age-five-and-under and announcement's under-six wording include
-      five-year-olds.
-    other: The memoranda's under-five wording excludes five-year-olds.
+    statute: No statute or regulation sets the age; the plan's "age five and under" and the announcement's under-six
+      wording include five-year-olds.
+    other: The memoranda's "under the age of five" wording excludes five-year-olds.
   example: A household whose only vulnerable member is five receives no supplement in the model.
   pe_us:
-    follows: unknown
-    code: []
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/pa/dhs/liheap/payment/pa_liheap_supplement.py
+    - policyengine_us/parameters/gov/states/pa/dhs/liheap/payment/supplement/child_age_limit.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9971
-  state: unreviewed
-  note: PE-US follows the memoranda; reconcile the age cutoff and verify the cited page.
+  state: ruled
+  note: PE-US follows the memoranda, the issuance directives for a payment the plan says "may" be issued (ruled
+    2026-10-28). The memoranda are served only over http.
 - id: us-pa:snap-child-support-deduction
   program: snap
   years:
