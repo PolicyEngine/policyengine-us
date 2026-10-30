@@ -12,8 +12,8 @@ class la_liheap(Variable):
         "Heating and Cooling Benefit Matrix: an amount by energy burden, on a "
         "total-energy-cost basis, and household size, plus one priority group "
         "supplement, whose disability group also covers Social Security "
-        "disability benefits and SSI paid on the basis of disability. Verified "
-        "for FY2026; earlier and later years are unverified estimates through "
+        "disability benefits and SSI receipt. Verified for FY2026; earlier "
+        "and later years are unverified estimates through "
         "parameter backfilling. Louisiana also pays a separate summer cooling "
         "award from the same matrix, with 45.5% of FY2026 funds against 25% for "
         "heating, so program-year regular assistance can be twice this amount; "
@@ -54,15 +54,17 @@ class la_liheap(Variable):
         person = spm_unit.members
         age = person("age", period)
         # Section 4.2 A accepts proof of disability from the Social Security
-        # Administration, so Social Security disability benefits and SSI paid on
-        # the basis of disability also place a member in the group.
+        # Administration, so Social Security disability benefits and SSI receipt
+        # also place a member in the group: SSI goes only to people who are aged
+        # (65 or older), blind or disabled, and aged recipients already qualify
+        # by age.
         receives_ssi = (add(person, period, ["ssi"]) > 0) | (
             add(person, period, ["receives_ssi"]) > 0
         )
         disabled = (
             person("is_disabled", period)
             | (person("social_security_disability", period) > 0)
-            | (receives_ssi & person("is_ssi_disabled", period))
+            | receives_ssi
         )
         priority_group = (
             (age >= p.elderly_age)

@@ -395,8 +395,8 @@
     people:
       person1:
         age: 45
-        # is_disabled is not set; no earnings, so no substantial gainful
-        # activity and is_ssi_disabled is true.
+        # is_disabled is not set; SSI receipt alone places the member in the
+        # disability group.
         meets_ssi_disability_criteria: true
         # 2026 federal SSI benefit rate of 994 a month.
         ssi: 11_928
@@ -411,5 +411,38 @@
         state_code: LA
   output:
     # Income 994 x 12 = 11,928; 2,400 / 11,928 = 0.2012 -> band 3, size 1: 500
-    # SSI paid on the basis of disability: 500 + 100
+    # SSI receipt: 500 + 100
     la_liheap: 600
+
+- name: Case 17, a blind SSI recipient reported without a modeled SSI amount receives the priority supplement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        # is_disabled and meets_ssi_disability_criteria are not set, so only
+        # the reported SSI receipt places the member in the disability group.
+        is_blind: true
+        # A 300 monthly pension less the 20 general exclusion leaves 280
+        # countable, so the federal SSI payment is about 994 - 280 = 714 a
+        # month. ssi stays 0 to test the reported-receipt term alone.
+        receives_ssi: true
+        ssi: 0
+        pension_income: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # Income 3,600 pension + 0 SSI + 0 Social Security + 0 FITAP = 3,600,
+    # at or below the size-one limit of 30,618
+    # (floor(floor(98,137 x 0.6) x 0.52)).
+    # 1,740 / 3,600 = 0.4833 -> band 4 (25% and greater), size 1: 650
+    # Reported SSI receipt: 650 + 100
+    la_liheap: 750

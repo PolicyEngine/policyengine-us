@@ -2800,12 +2800,14 @@ candidates:
     the plan.
   pe_us:
     follows: gap-fill
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/la/lhc/liheap/income/la_liheap_countable_income.py
+    - policyengine_us/parameters/gov/states/la/lhc/liheap/income/sources/earned.yaml
+    - policyengine_us/parameters/gov/states/la/lhc/liheap/income/sources/unearned.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10429
   state: ruled
-  note: 'Ruled 2026-10-06: follow the manual over the plan. Code not yet on main: la_liheap_countable_income,
-    gov.states.la.lhc.liheap.income.sources.'
+  note: 'Ruled 2026-10-06: follow the manual over the plan.'
 - id: us-la:liheap-utility-allowance-age
   program: liheap
   years:
@@ -2828,12 +2830,13 @@ candidates:
     eligible under the guide; under the plan it is -$300 and ineligible.
   pe_us:
     follows: gap-fill
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/la/lhc/liheap/la_liheap_energy_cost.py
+    - policyengine_us/parameters/gov/states/la/lhc/liheap/elderly_age.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10429
   state: ruled
-  note: 'Ruled 2026-10-06: follow the manual over the plan. Code not yet on main: la_liheap_energy_cost,
-    gov.states.la.lhc.liheap.elderly_age.'
+  note: 'Ruled 2026-10-06: follow the manual over the plan.'
 - id: us-la:school-readiness-incapable-child
   program: income-tax
   years:
