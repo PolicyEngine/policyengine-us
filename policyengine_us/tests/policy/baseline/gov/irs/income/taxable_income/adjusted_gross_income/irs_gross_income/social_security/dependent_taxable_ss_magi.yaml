@@ -170,3 +170,63 @@
         state_code: TX
   output:
     dependent_taxable_ss_magi: [0, 24_000]
+
+- name: A dependent's own estate or trust loss reduces their modified AGI
+  # Schedule E Part III carries the loss to Schedule 1 line 5, which AGI
+  # includes (Pub. 915 Worksheet 1 line 3): 20,000 of wages less a 2,000
+  # loss gives modified AGI of 18,000.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 80_000
+        is_tax_unit_head: true
+      student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        employment_income: 20_000
+        estate_income: -2_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    dependent_taxable_ss_magi: [0, 18_000]
+
+- name: A dependent's business losses are limited by IRC 461(l) on their own return
+  # 2025 Form 461: business losses are deductible up to business income
+  # (none here) plus the $313,000 single threshold, so $313,000 of the
+  # $700,000 estate business loss is allowed. Modified AGI: 400,000 of
+  # dividends + 1,000 of wages - 313,000 = 88,000. With $20,000 of benefits
+  # the combined income of 98,000 is far over the adjusted base amount, so
+  # 85% of the benefits, 17,000, is taxable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 80_000
+        is_tax_unit_head: true
+      student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        employment_income: 1_000
+        dividend_income: 400_000
+        estate_income: -700_000
+        social_security_survivors: 20_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    dependent_taxable_ss_magi: [0, 88_000]
+    dependent_taxable_social_security: [0, 17_000]
