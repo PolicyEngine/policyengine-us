@@ -7,3 +7,57 @@
     state_code: WI
   output:
     wi_homestead_property_tax: 360  # = 200 + 800 * 0.20
+
+# Property taxes count on a homestead the claimant or a household member owns
+# (Wis. Stat. 71.52(7)), and rent the claimant and household pay (71.52(8)).
+# The household is the claimant and spouse (71.52(4)).
+
+- name: Case 2, property taxes a dependent pays do not count.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+      person2:
+        age: 70
+        is_tax_unit_dependent: true
+        social_security_retirement: 26_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_homestead_property_tax: 0
+    wi_homestead_credit: 0
+
+- name: Case 3, the claimant's rent and the spouse's property taxes count; a dependent's rent does not.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        rent: 6_000
+      person2:
+        age: 44
+        real_estate_taxes: 300
+      person3:
+        age: 17
+        is_tax_unit_dependent: true
+        rent: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    # 300 + 6,000 x 20% = 1,500.
+    wi_homestead_property_tax: 1_500

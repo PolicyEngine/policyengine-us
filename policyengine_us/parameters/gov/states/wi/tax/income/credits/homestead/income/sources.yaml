@@ -12,7 +12,9 @@ values:
     - adjusted_gross_income
     # additional homestead income sources:
     - tax_exempt_interest_income
-    - tax_exempt_social_security
+    # The household is the claimant and spouse (Wis. Stat. 71.52(4)), so
+    # this leaves out a dependent's benefits, unlike tax_exempt_social_security.
+    - filer_tax_exempt_social_security
     - tax_exempt_pension_income
     - tax_exempt_unemployment_compensation
     # cash transfer income sources:
