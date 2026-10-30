@@ -1,0 +1,174 @@
+# Benefit = floor(heat cost percentage x standard heating cost x payment rate x housing
+# factor). Rule 2914(a)(7)-(8), (c) and (d), "#page 39-41":
+# https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=39
+# Housing factor (rule 2914(c); 33 V.S.A. 2605(d)-(f)): 100% when not subsidized and
+# paying a supplier; 30% with a $50 minimum when not subsidized and heat is in the rent;
+# 55% when subsidized and paying a supplier; a $21 nominal benefit when subsidized and
+# heat is in the rent. Round down to whole dollars (rule 2914(d)).
+# Statute: https://legislature.vermont.gov/statutes/section/33/026/02605
+# Worked example structure (P-2914D): multi-family, 3 bedrooms, propane =
+# 2,347; 2,347 x 0.87 = 2,041.89; housing factor 100%; cents dropped.
+# https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2914D.pdf
+# Payment rate 0.51 (an estimate inferred from the FFY2026 plan maximum of $2,089 =
+# floor(4,552 x 0.90 x 0.51); DCF does not publish the rate).
+# Wages use the 2026 Vermont minimum wage, $14.42 an hour (Vermont Department of
+# Labor, indexed under 21 V.S.A. 384(a)).
+
+- name: Case 1, an unsubsidized family buying propane follows the P-2914D example.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 33
+        # 14.42 x 28 hours x 52 weeks = 20,995.52.
+        employment_income: 20_995.52
+      child1:
+        age: 9
+      child2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+        # No Reach Up.
+        tanf: 0
+        heating_type: PROPANE
+        vt_liheap_dwelling_type: MULTI_FAMILY
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: VT
+        bedrooms: 3
+        is_in_public_housing: false
+  output:
+    # 20,995.52 / 12 = 1,749.63 a month, in P-2914A size 3 "75% To 84%"
+    # ($1,645-$1,866): 87%.
+    vt_liheap_heat_cost_percentage: 0.87
+    vt_liheap_heating_cost: 2_347
+    vt_liheap_eligible: true
+    # 2,347 x 0.87 = 2,041.89; x 0.51 = 1,041.3639; x 100% = 1,041.3639; floor = 1,041.
+    vt_liheap: 1_041
+
+- name: Case 2, a public housing tenant who pays for electric heat gets 55 percent.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 69
+        # Social Security of 1,150 a month.
+        social_security_retirement: 13_800
+        # Social Security is above the SSI federal benefit rate.
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: ELECTRICITY
+        vt_liheap_dwelling_type: MULTI_FAMILY
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 1
+        is_in_public_housing: true
+  output:
+    # 1,150 a month, in P-2914A size 1 "85% To 94%" ($1,097-$1,226): 84%.
+    vt_liheap_heat_cost_percentage: 0.84
+    # Multi-family, electricity, 1 bedroom.
+    vt_liheap_heating_cost: 967
+    # 967 x 0.84 = 812.28; x 0.51 = 414.2628; x 0.55 = 227.84454; floor = 227.
+    vt_liheap: 227
+
+- name: Case 3, an unsubsidized renter with heat in rent receives the $50 minimum.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 26
+        # 14.42 x 37.5 hours x 52 weeks = 28,119.
+        employment_income: 28_119
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: ELECTRICITY
+        vt_liheap_dwelling_type: MULTI_FAMILY
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 1
+        is_in_public_housing: false
+  output:
+    # 28,119 / 12 = 2,343.25 a month, in P-2914A size 1 "175% To 185%"
+    # ($2,270-$2,412): 27%.
+    vt_liheap_heat_cost_percentage: 0.27
+    vt_liheap_heating_cost: 967
+    vt_liheap_eligible: true
+    # 967 x 0.27 = 261.09; x 0.51 = 133.1559; x 0.30 = 39.94677 < 50: minimum 50.
+    vt_liheap: 50
+
+- name: Case 4, a Section 8 tenant with heat in rent receives $21 even with an unknown fuel.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 78
+        # Social Security of 1,300 a month.
+        social_security_retirement: 15_600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: UNSPECIFIED
+        vt_liheap_dwelling_type: MULTI_FAMILY
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 1
+        is_in_public_housing: false
+  output:
+    # The fuel is unknown, so there is no table cost.
+    vt_liheap_heating_cost: 0
+    # 1,300 a month <= P-2913's 2,412, and subsidized heat in rent needs no fuel.
+    vt_liheap_eligible: true
+    # Subsidized with heat in rent: the $21 nominal benefit.
+    vt_liheap: 21
+
+- name: Case 5, a full-time worker above the income limit receives nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        # 14.42 x 40 hours x 52 weeks = 29,993.60.
+        employment_income: 29_993.6
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: FUEL_OIL
+        vt_liheap_dwelling_type: SINGLE_FAMILY_OR_MOBILE_HOME
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 2
+        is_in_public_housing: false
+  output:
+    # 29,993.60 / 12 = 2,499.47 a month > P-2913's 2,412: not eligible, so no
+    # benefit even though the top band (27%) and the oil cost (3,123) are positive.
+    vt_liheap_eligible: false
+    vt_liheap: 0

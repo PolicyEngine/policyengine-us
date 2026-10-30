@@ -1,0 +1,160 @@
+# Each distinct parameter override combination retains a full model in Core's cache.
+# Group these cases to limit each file to at most five combinations.
+
+- name: This scoring year rebuilds eligibility from its own age cross section
+  period: 2035
+  input:
+    age: 70
+    social_security_retirement_claim_age_months: 744
+    social_security_retirement_reported: 12000
+  output:
+    social_security_retirement_pia_ratio_eligibility_year: 2027
+    social_security_retirement_pia_ratio_factor: 1
+
+- name: The same age in the 2026 cross section has a different eligibility year
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement_claim_age_months: 744
+    social_security_retirement_reported: 12000
+  output:
+    social_security_retirement_pia_ratio_eligibility_year: 2018
+    social_security_retirement_pia_ratio_factor: 1
+
+- name: Supplied entitlement and claim months override a conflicting age proxy
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    age: 70
+    social_security_retirement_entitlement_year: 2025
+    social_security_retirement_entitlement_month: 6
+    social_security_retirement_claim_age_months: 780
+    social_security_retirement_reported: 12000
+  output:
+    # First entitlement at 65 in June 2025 identifies June 2022 eligibility.
+    social_security_retirement_pia_ratio_eligibility_year: 2022
+    social_security_retirement_pia_ratio_claiming_adjustment: 0.8666666666666667
+
+- name: Changing the claiming sensitivity preserves the observed eligibility year
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement_entitlement_year: 2025
+    social_security_retirement_entitlement_month: 6
+    social_security_retirement_claim_age_months: 780
+    social_security_retirement_reported: 12000
+    gov.contrib.ssa.benefit_levers.pia_ratio.claiming_scenario: [fra]
+  output:
+    # The factual age-65 award fixes E independently of the FRA sensitivity.
+    social_security_retirement_pia_ratio_eligibility_year: 2022
+    social_security_retirement_pia_ratio_claiming_adjustment: 1
+
+- name: A supplied birth year determines the full retirement age cohort
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    birth_year: 1964
+    social_security_retirement_claim_age_months: 744
+    social_security_retirement_reported: 18117.12
+    gov.ssa.social_security.pia.bend_points.first: 960
+    gov.ssa.social_security.pia.bend_points.second: 5785
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+  output:
+    # The supplied cohort has FRA 67 despite this cross section's age proxy.
+    social_security_retirement_pia_ratio_eligibility_year: 2026
+    social_security_retirement_pia_ratio_claiming_adjustment: 0.70
+    social_security_retirement_inferred_aime: 5000
+
+- name: A linked worker computation year overrides the recipient age proxy
+  period: 2026
+  input:
+    people:
+      recipient:
+        age: 80
+        social_security_retirement_worker_id: worker
+        social_security_retirement_claim_age_months: 744
+        social_security_retirement_reported: 12000
+      worker:
+        age: 62
+        social_security_worker_computation_year: 2020
+  output:
+    people:
+      recipient:
+        social_security_retirement_pia_ratio_eligibility_year: 2020
+      worker:
+        social_security_retirement_pia_ratio_factor: 1
+
+- name: A linked eligibility cohort determines FRA before an unsupplied age proxy
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      recipient:
+        age: 70
+        social_security_retirement_worker_id: worker
+        social_security_retirement_claim_age_months: 744
+        social_security_retirement_reported: 12000
+      worker:
+        age: 70
+        social_security_worker_computation_year: 2015
+  output:
+    people:
+      recipient:
+        social_security_retirement_pia_ratio_eligibility_year: 2015
+        social_security_retirement_pia_ratio_claiming_adjustment: 0.75
+
+- name: Entitlement dates select the same 62 years 3 months claiming adjustment
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    age: 62
+    social_security_birth_month: 6
+    social_security_birth_day: 15
+    social_security_retirement_entitlement_year: 2026
+    social_security_retirement_entitlement_month: 9
+    social_security_retirement_reported: 18440.64
+    gov.contrib.ssa.benefit_levers.pia_ratio.claiming_scenario: [entitlement_dates]
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+  output:
+    social_security_retirement_pia_ratio_eligibility_year: 2026
+    social_security_retirement_pia_ratio_claiming_adjustment: 0.7125
+    social_security_retirement_pia_ratio_missing_claim_age: false
+
+- name: Entitlement dates accept birth year and month without a supplied day
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    age: 62
+    birth_year: 1964
+    social_security_birth_month: 6
+    social_security_retirement_entitlement_year: 2026
+    social_security_retirement_entitlement_month: 9
+    social_security_retirement_reported: 18440.64
+    gov.contrib.ssa.benefit_levers.pia_ratio.claiming_scenario: [entitlement_dates]
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+  output:
+    social_security_retirement_pia_ratio_eligibility_year: 2026
+    social_security_retirement_pia_ratio_claiming_adjustment: 0.7125
+    social_security_retirement_pia_ratio_proxy: true
+    social_security_retirement_pia_ratio_missing_claim_age: false
+
+- name: A supplied birth month and day still flag an age derived birth year
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    age: 62
+    social_security_birth_month: 6
+    social_security_birth_day: 15
+    social_security_retirement_claim_age_months: 747
+    social_security_retirement_reported: 18440.64
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+  output:
+    social_security_retirement_pia_ratio_eligibility_year: 2026
+    social_security_retirement_pia_ratio_claiming_adjustment: 0.7125
+    social_security_retirement_pia_ratio_proxy: true
+

@@ -1,0 +1,19 @@
+description: Vermont uses the federal poverty guidelines from this many years before the model year for the income limit and the percentage of poverty under the Low Income Home Energy Assistance Program.
+# P-2913 applies the 2025 guidelines to applications from March 1, 2025 through
+# February 28, 2026, and P-2910 starts the new guidelines each March, so model
+# period 2026 (the 2025-26 heating season) uses the 2025 guidelines and 2027
+# (the 2026-27 season) the 2026 guidelines. Earlier years are unverified backfill.
+values:
+  2025-03-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: Vermont LIHEAP poverty guideline year lag
+  reference:
+    - title: Vermont DCF Procedure P-2913, Income Guidelines (effective March 1, 2025 to February 28, 2026)
+      href: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2913.pdf
+    - title: Vermont DCF Procedure P-2910, Income
+      href: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2910.pdf
+    - title: Vermont DCF Fuel Assistance Income Guidelines for 2026-2027
+      href: https://dcf.vermont.gov/esd/fuel/income-guidelines
