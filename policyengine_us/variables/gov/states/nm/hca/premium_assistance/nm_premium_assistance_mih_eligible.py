@@ -39,6 +39,11 @@ class nm_premium_assistance_mih_eligible(Variable):
         # stand for filing (files_return_for_aca_ptc); only filing for another
         # reason counts.
         is_filer = tax_unit("tax_unit_is_filer", period)
-        magi_frac = tax_unit("aca_magi_fraction", period)
-        income_eligible = magi_frac > p.fpl_limit
+        # Addendum 1, Section I.A(3): "Have a household income above 400% of
+        # the FPL." Test the exact ratio, not the truncated aca_magi_fraction:
+        # truncation maps 400.00%-400.99% to 4.00, which would leave incomes
+        # just above 400% out of both this component and the base program.
+        magi = max_(tax_unit("aca_magi", period), 0)
+        exact_magi_frac = magi / tax_unit("tax_unit_fpg", period.last_year)
+        income_eligible = exact_magi_frac > p.fpl_limit
         return in_effect & pays_premium & not_separate & is_filer & income_eligible

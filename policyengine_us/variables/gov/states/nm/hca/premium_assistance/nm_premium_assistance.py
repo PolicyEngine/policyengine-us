@@ -40,17 +40,20 @@ class nm_premium_assistance(Variable):
         # called from this YEAR formula.
         slcsp = add(tax_unit, period, ["slcsp"])
         aca_ptc = tax_unit("aca_ptc", period)
-        magi_frac = tax_unit("aca_magi_fraction", period)
+        # The exact ratio of income to the prior-year guideline, not the
+        # truncated aca_magi_fraction, which maps 200.00%-200.99% to 2.00.
+        exact_magi_frac = income / tax_unit("tax_unit_fpg", period.last_year)
 
         # Base NMPA: gross up the benchmark by 10% up to the gross-up FPL limit,
         # subtract the federal APTC and the target contribution, floor at zero.
-        # PY2026 treats the 200% FPL limit as inclusive; PY2027 treats it as
-        # strict (below 200% FPL), toggled by benchmark_gross_up.boundary_inclusive.
+        # PY2026 treats the 200% FPL limit as inclusive ("up to 200% FPL"; the
+        # next range starts at "200.01"); PY2027 treats it as strict ("under
+        # 200% (< 200%)"), toggled by benchmark_gross_up.boundary_inclusive.
         limit = p.benchmark_gross_up.fpl_limit
         gross_up_applies = where(
             p.benchmark_gross_up.boundary_inclusive,
-            magi_frac <= limit,
-            magi_frac < limit,
+            exact_magi_frac <= limit,
+            exact_magi_frac < limit,
         )
         gross_up = where(gross_up_applies, 1 + p.benchmark_gross_up.rate, 1)
         benchmark = slcsp * gross_up
