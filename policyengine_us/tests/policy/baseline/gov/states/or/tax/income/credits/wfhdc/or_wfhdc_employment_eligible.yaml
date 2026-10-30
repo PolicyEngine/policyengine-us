@@ -159,3 +159,50 @@
         state_code: OR
   output:
     or_wfhdc_employment_eligible: false
+
+- name: On a joint return the spouse's earnings count when the head has none
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_disabled: false
+      person2:
+        age: 45
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_employment_eligible: true
+
+- name: On a joint return a disabled spouse has earned income imputed
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_disabled: true
+      person2:
+        age: 45
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_employment_eligible: true

@@ -691,6 +691,76 @@
     # 130,000 limit of July 1, 2022 (ACWDL 21-31) first applies in 2023.
     is_optional_senior_or_disabled_asset_eligible: false
 
+# Maine excludes up to $8,000 of savings for an individual and $12,000 for a
+# couple, and counts the rest against the $2,000 / $3,000 limits (22 M.R.S.
+# § 3174-AA(2); 10-144 C.M.R. ch. 332, Part 16, § 16-4, Section 4.47).
+- name: Maine applicant with savings above the 2,000 limit is eligible after the savings exclusion.
+  period: 2026
+  input:
+    age: 70
+    bank_account_assets: 9_000
+    state_code: ME
+  output:
+    # 9,000 minus the 8,000 exclusion leaves 1,000, under 2,000.
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: Maine applicant with 10,000 of savings is ineligible.
+  period: 2026
+  input:
+    age: 70
+    bank_account_assets: 10_000
+    state_code: ME
+  output:
+    # 10,000 minus the 8,000 exclusion leaves 2,000, not under 2,000.
+    is_optional_senior_or_disabled_asset_eligible: false
+
+- name: Maine couple uses the 12,000 couple savings exclusion.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        bank_account_assets: 9_000
+      person2:
+        age: 70
+        stock_assets: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # 14,000 combined minus the 12,000 exclusion leaves 2,000, under 3,000.
+    is_optional_senior_or_disabled_asset_eligible: [true, true]
+
+- name: Maine couple with 15,000 of savings is ineligible, since one 12,000 exclusion covers the couple.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        bank_account_assets: 10_000
+      person2:
+        age: 70
+        stock_assets: 5_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # 15,000 minus 12,000 leaves 3,000, not under 3,000. An 8,000
+    # exclusion per spouse would leave 2,000 + 0 = 2,000.
+    is_optional_senior_or_disabled_asset_eligible: [false, false]
+
 # California's limit falls to 21,000 for one person and 31,000 for two on
 # July 1, 2027. This annual variable reads the January 1 value, so the lower
 # limits first apply in 2028.

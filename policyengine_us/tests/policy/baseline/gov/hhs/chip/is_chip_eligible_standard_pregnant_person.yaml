@@ -788,3 +788,231 @@
         state_code: MO
   output:
     is_chip_eligible_standard_pregnant_person: false
+
+# 210-RICR-30-00-1 § 1.6(A)(2)(b)(1)-(2) requires the absence of
+# third-party insurance for standard pregnancy CHIP in Rhode Island.
+# https://risos-apa-production-public.s3.amazonaws.com/EOHHS/REG_13314_20250728104245127.pdf#page=5
+# Supply Medicaid ineligibility here to exercise the CHIP insurance gate
+# independently; the Medicaid integration cases test the insured pathway.
+- name: Case 28, Rhode Island standard pregnancy CHIP excludes third-party coverage independently of Medicaid eligibility.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_esi: true
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_marketplace_health_coverage_at_interview: true
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_non_marketplace_direct_purchase_health_coverage_at_interview: true
+      person4:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        medicare_enrolled: true
+      person5:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_tricare_health_coverage_at_interview: true
+      person6:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_champva_health_coverage_at_interview: true
+      person7:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: RI
+  output:
+    is_chip_eligible_standard_pregnant_person: [false, false, false, false, false, false, true]
+
+# RI-22-0025 CS27 continues the separate CHIP program through the postpartum
+# period; the full Medicaid benefit scope does not create duplicate enrollment.
+# https://www.medicaid.gov/CHIP/Downloads/RI-22-0025.pdf#page=4
+# R.I. Gen. Laws § 42-12.3-3(g) preserves the entitlement "without regard to the
+# availability of federal financial participation".
+# https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm
+- name: Case 29, Rhode Island retains pregnancy CHIP despite later income, insurance, pregnancy or immigration changes.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        immigration_status: CITIZEN
+        has_esi: false
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        has_esi: true
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+      person3:
+        age: 30
+        is_pregnant: false
+        immigration_status: UNDOCUMENTED
+        has_esi: true
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+      person4:
+        age: 30
+        is_pregnant: true
+        immigration_status: UNDOCUMENTED
+        has_esi: false
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+      person5:
+        age: 30
+        is_pregnant: false
+        immigration_status: CITIZEN
+        has_esi: false
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2022-11-27"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: RI
+  output:
+    is_chip_eligible_standard_pregnant_person: [true, true, true, true, false]
+    medicaid_enrolled: [false, false, false, false, false]
+    chip_enrolled: [true, true, true, true, false]
+
+# 210-RICR-30-00-1 § 1.6(A)(2)(b)(1) and (c) place a new pregnancy in the
+# CHIP band in CHIP, and 42 U.S.C. 1397jj(b)(1)(C) bars CHIP only for people
+# eligible under Title XIX, which the state-funded continuation is not.
+# https://risos-apa-production-public.s3.amazonaws.com/EOHHS/REG_13314_20250728104245127.pdf#page=5
+# https://www.law.cornell.edu/uscode/text/42/1397jj#b_1_C
+- name: Case 30, a new Rhode Island pregnancy in the CHIP band moves a state-funded continuation to CHIP.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        is_pregnant: true
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        takes_up_chip_if_eligible: true
+      person2:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        is_pregnant: true
+        ri_pregnancy_coverage: FCEP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.0
+        takes_up_chip_if_eligible: true
+      person3:
+        age: 30
+        immigration_status: CITIZEN
+        is_pregnant: true
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        takes_up_chip_if_eligible: false
+      person4:
+        age: 30
+        immigration_status: CITIZEN
+        is_pregnant: true
+        ri_pregnancy_coverage: MEDICAID
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        takes_up_chip_if_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    is_medicaid_eligible: [false, false, true, true]
+    is_chip_eligible_standard_pregnant_person: [true, false, false, false]
+    is_chip_fcep_eligible_person: [true, true, false, false]
+    chip_enrolled: [true, true, false, false]
+
+# 210-RICR-30-00-1 § 1.6(A)(2)(a)(2) and (b)(1) pair the routes: Medicaid with
+# third-party insurance, CHIP without it. VA coverage, other means-tested
+# coverage and the aggregate other-coverage flag are not on Rhode Island's
+# third-party list, so these applicants stay in standard CHIP.
+# https://risos-apa-production-public.s3.amazonaws.com/EOHHS/REG_13314_20250728104245127.pdf#page=5
+- name: Case 31, Rhode Island pregnant applicants whose only coverage is outside the third-party list stay in standard CHIP.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_va_health_coverage_at_interview: true
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_other_means_tested_health_coverage_at_interview: true
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_health_coverage_other_than_chip: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    is_medicaid_eligible: [false, false, false]
+    is_chip_eligible_standard_pregnant_person: [true, true, true]
