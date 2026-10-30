@@ -3,10 +3,14 @@
 # SB26-178), the household is in Colorado, at least one member is eligible for
 # the federal ACA premium tax credit, and household ACA MAGI is at or below the
 # 400% FPL ceiling (upper = 4.0 as an FPL fraction). Regulation 4-2-78 Section
-# 4.C sets a 400%-inclusive ceiling with NO lower bound, so there is no 100% FPL
-# floor: a sub-100%-FPL unit with an is_aca_ptc_eligible member is eligible.
-# is_aca_ptc_eligible and aca_magi_fraction are supplied directly so the gate
-# logic is tested in isolation from the premium-data / FPL lookups.
+# 4.C ("no greater than 400% of the Federal Poverty Level") sets a 400%-inclusive
+# ceiling with NO lower bound, so there is no 100% FPL floor: a sub-100%-FPL unit
+# with an is_aca_ptc_eligible member is eligible. The ceiling applies to the
+# exact ratio of ACA MAGI to the prior-year guideline, not the truncated
+# aca_magi_fraction. is_aca_ptc_eligible is supplied directly; supplied-income
+# cases pin the prior-year guideline to $10,000 and set aca_magi to the target
+# ratio, so the gate logic is tested in isolation from the premium-data / FPL
+# lookups. Income-derived cases use the actual 2025 one-person guideline, $15,650.
 
 - name: Case 1, CO APTC-eligible unit at 250% FPL in 2026 is eligible.
   # in_effect true, one is_aca_ptc_eligible member, 1.0 <= 2.50 <= 4.0.
@@ -19,7 +23,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -42,7 +48,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 0.99
+        aca_magi: 9_900
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -62,7 +70,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.00
+        aca_magi: 10_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -80,7 +90,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 4.00
+        aca_magi: 40_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -99,7 +111,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 4.01
+        aca_magi: 40_100
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -118,7 +132,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -140,7 +156,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        aca_magi_fraction: 3.00
+        aca_magi: 30_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1, person2]
@@ -158,7 +176,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -177,7 +197,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2024: 10_000
     households:
       household:
         members: [person1]
@@ -196,7 +218,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2027: 10_000
     households:
       household:
         members: [person1]
@@ -215,7 +239,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2026: 10_000
     households:
       household:
         members: [person1]
@@ -236,7 +262,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.01
+        aca_magi: 10_100
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -257,7 +285,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 3.99
+        aca_magi: 39_900
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -280,10 +310,116 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 0.50
+        aca_magi: 5_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
         state_code: CO
   output:
+    co_premium_assistance_eligible: false
+
+- name: Case 13, $62,599 (399.994% of the 2025 guideline) is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_599
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    aca_magi_fraction: 3.99
+    co_premium_assistance_eligible: true
+
+- name: Case 14, $62,600 (exactly 400%) is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_600
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    aca_magi_fraction: 4.00
+    co_premium_assistance_eligible: true
+
+- name: Case 15, $62,600.47 (400.003%) is ineligible though truncated to 4.00.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_600.47
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    aca_magi_fraction: 4.00
+    co_premium_assistance_eligible: false
+
+- name: Case 16, $62,755.56 (400.994%) is ineligible though truncated to 4.00.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_755.56
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    aca_magi_fraction: 4.00
+    co_premium_assistance_eligible: false
+
+- name: Case 17, with the federal credit extended above 400%, 400.003% is still ineligible.
+  # A reform that keeps the premium tax credit above 400% FPL (the enhanced-credit
+  # extension) makes is_aca_ptc_eligible true at $62,600.47, so the Colorado
+  # ceiling alone decides. 400.003% is above "no greater than 400%".
+  period: 2026
+  input:
+    gov.aca.ptc_income_eligibility[2].amount: true
+    people:
+      person1:
+        age: 40
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_600.47
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    is_aca_ptc_eligible: [true]
     co_premium_assistance_eligible: false
