@@ -4,12 +4,14 @@
 # APTC-eligible Connecticut tax units at or below 175% FPL:
 #   slcsp_annual = annualized second-lowest-cost silver plan (sum of 12 monthly slcsp)
 #   ct_covered_connecticut = where(eligible, max(0, slcsp_annual - aca_ptc), 0)
-#   eligible = in_effect AND any(is_aca_ptc_eligible) AND aca_magi_fraction <= 1.75
+#   eligible = in_effect AND any(is_aca_ptc_eligible) AND aca_magi / FPG <= 1.75
+#   (the exact ratio to the prior-year guideline, not the truncated fraction)
 # Scenario 1 DERIVES the whole federal ACA chain (aca_magi, aca_magi_fraction,
 # slcsp, aca_ptc) from raw employment_income for a 40-year-old single Connecticut
 # enrollee and then asserts the residual -- the highest-value test, since the CT
-# benefit rides on the derived federal APTC. Scenarios 2-7 inject
-# aca_magi_fraction / slcsp / aca_ptc / is_aca_ptc_eligible directly to isolate
+# benefit rides on the derived federal APTC. Scenarios 2-7 inject aca_magi
+# against a $10,000 prior-year tax_unit_fpg, slcsp, aca_ptc and
+# is_aca_ptc_eligible directly to isolate
 # the residual, boundary, zero-residual and ineligible branches. Derived values
 # in Scenario 1 are read from the model at 2026 parameters.
 
@@ -60,7 +62,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.50
+        aca_magi: 15_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 8_000
         aca_ptc: 7_500
     households:
@@ -89,7 +93,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.75
+        aca_magi: 17_500
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 10_000
         aca_ptc: 8_800
     households:
@@ -115,7 +121,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.50
+        aca_magi: 15_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 8_000
         aca_ptc: 8_000
     households:
@@ -140,7 +148,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.76
+        aca_magi: 17_600
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 10_000
         aca_ptc: 9_000
     households:
@@ -166,7 +176,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.50
+        aca_magi: 15_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 8_000
         aca_ptc: 7_000
     households:
@@ -198,7 +210,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        aca_magi_fraction: 1.60
+        aca_magi: 16_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 20_000
         aca_ptc: 18_500
     households:
@@ -225,7 +239,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.38
+        aca_magi: 13_800
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 8_500
         aca_ptc: 8_300
     households:
@@ -252,7 +268,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.50
+        aca_magi: 15_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 8_000
         aca_ptc: 9_000
     households:
@@ -290,7 +308,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5]
-        aca_magi_fraction: 1.50
+        aca_magi: 15_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 32_000
         aca_ptc: 27_000
     households:
