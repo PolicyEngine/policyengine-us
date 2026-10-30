@@ -598,6 +598,15 @@ def isolate_parameter_tracing(system, tracer, branch_name):
     return root
 
 
+def private_policy_copy(system):
+    """Copy ``system`` with its own variable registry, entities and barrier."""
+    policy = copy(system)
+    policy.variables = dict(system.variables)
+    bind_private_entities(policy)
+    with_parameter_barrier(policy)
+    return policy
+
+
 def share_spm_policy(system):
     """Isolate receipts and variable registration without rebuilding policy.
 
@@ -626,15 +635,41 @@ def share_spm_policy(system):
     returned system takes a private copy of the tree the first time a reform
     reads it: see :class:`SharedParameterPolicy`.
     """
-    policy = copy(system)
-    policy.variables = dict(system.variables)
-    bind_private_entities(policy)
-    with_parameter_barrier(policy)
+    policy = private_policy_copy(system)
     # The lender is now one reader among several, so neither side may write to
     # this tree in place - including a lender that had taken a private copy.
     mark_tree_shared(policy.__dict__["shared_parameters"])
     policy.spm_forecast_provider = system.spm_forecast_provider.snapshot(
         copy_receipts=False
+    )
+    return policy
+
+
+def pin_spm_policy(system, tree, at_instant_cache):
+    """Copy ``system`` to read ``tree`` in place of its own parameters.
+
+    A formula that recomputes a credit under an earlier vintage needs a system
+    that differs from its simulation's in the parameter tree alone. So, as in
+    :func:`share_spm_policy`, the copy takes private receipts, a private
+    variable registry and private entities, and reuses the variable objects -
+    including those of the structural reform this simulation applied at its
+    own start instant, which a shared copy of the variables could not hold.
+    Only the tree is expensive, and one tree can serve every simulation, so
+    mark it shared: from here on, no reader may write to it in place.
+
+    ``at_instant_cache`` must belong to ``tree``. The cache this copy inherits
+    from ``system`` holds nodes read from ``system``'s own parameters.
+
+    This copy joins a simulation that has already started, unlike the system
+    of a new simulation, so it keeps the receipts ``system`` holds, as cloning
+    ``system`` would.
+    """
+    policy = private_policy_copy(system)
+    mark_tree_shared(tree)
+    policy.parameters = tree
+    policy._parameters_at_instant_cache = at_instant_cache
+    policy.spm_forecast_provider = system.spm_forecast_provider.snapshot(
+        copy_receipts=True
     )
     return policy
 
