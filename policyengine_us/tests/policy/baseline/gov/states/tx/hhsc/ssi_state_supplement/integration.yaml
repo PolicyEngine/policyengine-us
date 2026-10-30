@@ -364,10 +364,11 @@
     tx_ssi_state_supplement: 0
 
 - name: Scenario 13, facility resident outside the SSI facility living arrangement with income at the full federal rate.
-  # Only is_in_medicaid_facility is set, so SSI uses the $943 own-household
-  # rate. A $963/month pension gives $943 of countable income: SSI is $0, and
-  # the income is far above the $30 reduced standard that H-6000 applies to a
-  # facility resident, so there is no supplement.
+  # Explicit SSI facility inputs are false, so SSI uses the $943 own-household
+  # rate despite Medicaid facility residence. A $963/month pension gives $943
+  # of countable income: SSI is $0, and the income is far above the $30 reduced
+  # standard that H-6000 applies to a facility resident, so there is no
+  # supplement.
   period: 2024
   input:
     people:
@@ -375,6 +376,8 @@
         age: 80
         pension_income: 11_556
         is_in_medicaid_facility: true
+        ssi_lives_in_medical_treatment_facility: false
+        ssi_medicaid_pays_majority_of_care: false
     tax_units:
       tax_unit:
         members: [person1]
@@ -403,8 +406,6 @@
         age: 80
         is_tax_unit_head: true
         is_in_medicaid_facility: true
-        ssi_lives_in_medical_treatment_facility: true
-        ssi_medicaid_pays_majority_of_care: true
       person2:
         age: 60
         pension_income: 6_000
@@ -423,20 +424,24 @@
         members: [person1, person2]
         state_code: TX
   output:
+    ssi_federal_living_arrangement: [MEDICAL_TREATMENT_FACILITY, OWN_HOUSEHOLD]
+    ssi_couple_computation_applies: [false, false]
     tx_ssi_state_supplement_eligible: [true, false]
     tx_ssi_state_supplement: [540, 0]
 
 - name: Scenario 15, facility resident on SSI's full rate gets no supplement.
-  # Only is_in_medicaid_facility is set, so SSI pays the $943 own-household
-  # rate, as in the month of entry (H-6000). 1 TAC 358.381(c)(2) gives the
-  # supplement only to a person "receiving the reduced SSI federal benefit
-  # rate".
+  # Explicit SSI facility inputs are false, so SSI pays the $943 own-household
+  # rate despite Medicaid facility residence, as in the month of entry
+  # (H-6000). 1 TAC 358.381(c)(2) gives the supplement only to a person
+  # "receiving the reduced SSI federal benefit rate".
   period: 2024
   input:
     people:
       person1:
         age: 80
         is_in_medicaid_facility: true
+        ssi_lives_in_medical_treatment_facility: false
+        ssi_medicaid_pays_majority_of_care: false
     tax_units:
       tax_unit:
         members: [person1]

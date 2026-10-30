@@ -1,0 +1,14 @@
+- name: Medicaid nursing facility defaults to an SSI medical treatment facility.
+  period: 2026-01
+  input:
+    is_in_medicaid_facility: true
+  output:
+    ssi_lives_in_medical_treatment_facility: true
+
+- name: Explicit SSI facility status overrides the Medicaid facility default.
+  period: 2026-01
+  input:
+    is_in_medicaid_facility: true
+    ssi_lives_in_medical_treatment_facility: false
+  output:
+    ssi_lives_in_medical_treatment_facility: false

@@ -118,14 +118,17 @@
     tx_ssi_state_supplement_eligible: false
 
 - name: Case 10, a facility resident still on SSI's full rate is not eligible.
-  # Only is_in_medicaid_facility is set, so SSI pays the own-household rate,
-  # as in the month of entry (H-6000); 1 TAC 358.381(c)(2) limits the
-  # supplement to people receiving the reduced rate.
+  # Explicit SSI facility inputs are false, so SSI pays the own-household rate
+  # despite Medicaid facility residence, as in the month of entry (H-6000);
+  # 1 TAC 358.381(c)(2) limits the supplement to people receiving the reduced
+  # rate.
   period: 2024
   input:
     is_ssi_eligible: true
     ssi_countable_income: 0
     is_in_medicaid_facility: true
+    ssi_lives_in_medical_treatment_facility: false
+    ssi_medicaid_pays_majority_of_care: false
     state_code: TX
   output:
     tx_ssi_state_supplement_eligible: false
@@ -135,6 +138,8 @@
   input:
     receives_ssi: true
     is_in_medicaid_facility: true
+    ssi_lives_in_medical_treatment_facility: false
+    ssi_medicaid_pays_majority_of_care: false
     state_code: TX
   output:
     tx_ssi_state_supplement_eligible: false
