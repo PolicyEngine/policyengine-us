@@ -1,0 +1,27 @@
+# EAP counts household members who are citizens or eligible non-citizens; an
+# ineligible non-citizen is left out of the size (FFY26 EAP Policy Manual,
+# Chapter 3, household composition).
+- name: Case 1, a citizen and a permanent resident count and an undocumented member does not.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 38
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+      person3:
+        age: 36
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # 1 citizen + 1 legal permanent resident = 2.
+    mn_eap_household_size: 2

@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, MD, MS, MT, NC, ND, NE, NH, NJ, NM, NY, OH, OK, OR, SD, RI, TX, UT, VA, WA, WY
+    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
     state_implementations:
       - state: AL
         status: partial
@@ -1043,6 +1043,14 @@ programs:
         parameter_prefix: gov.states.ok.dhs.liheap
         verified_years: "2025-2027"
         notes: FY2025-FY2027 regular winter heating only, using the Appendix C-7-A payment matrix. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: PA
+        status: partial
+        name: Pennsylvania LIHEAP
+        full_name: Pennsylvania Low Income Home Energy Assistance Program
+        variable: pa_liheap
+        parameter_prefix: gov.states.pa.dhs.liheap
+        verified_years: "2025-2027"
+        notes: FY2025-FY2027 regular heating only, from the FY2025 and FY2026 benefit matrices and the current benefit lookup. Crisis, cooling and weatherization assistance are out of scope.
       - state: RI
         status: partial
         name: Rhode Island LIHEAP
@@ -1108,6 +1116,14 @@ programs:
         parameter_prefix: gov.states.ky.dcbs.liheap
         verified_years: "2025-2026"
         notes: FY2025-FY2026 regular heating only, from the published benefit workbooks. Crisis and cooling assistance are out of scope.
+      - state: LA
+        status: partial
+        name: Louisiana LIHEAP
+        full_name: Louisiana Low Income Home Energy Assistance Program
+        variable: la_liheap
+        parameter_prefix: gov.states.la.lhc.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating-season benefit from the energy burden matrix, including the $100 priority supplement. The larger summer cooling award, crisis and weatherization assistance are out of scope.
       - state: MD
         status: partial
         name: Maryland MEAP
@@ -1116,6 +1132,22 @@ programs:
         parameter_prefix: gov.states.md.dhs.meap
         verified_years: "2025-2027"
         notes: FY25-FY27 regular heating only, with the fuel tables, the Garrett County multiplier and the subsidized and nominal levels. The SNAP nominal payment, cooling, EUSP, arrearage, crisis and equipment benefits are out of scope.
+      - state: MN
+        status: partial
+        name: Minnesota EAP
+        full_name: Minnesota Energy Assistance Program
+        variable: mn_eap
+        parameter_prefix: gov.states.mn.commerce.eap
+        verified_years: "2026-2027"
+        notes: FFY2026-FFY2027 Primary Heat, Minnesota's single regular benefit, based on total household energy costs including electricity. Crisis, Energy Related Repair and weatherization are out of scope.
+      - state: MO
+        status: partial
+        name: Missouri LIHEAP
+        full_name: Missouri Low Income Home Energy Assistance Program
+        variable: mo_liheap
+        parameter_prefix: gov.states.mo.dss.liheap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular Energy Assistance only, including the heat-in-rent payment. Crisis (ECIP), cooling and weatherization assistance are out of scope.
       - state: MS
         status: partial
         name: Mississippi LIHEAP
@@ -1180,6 +1212,14 @@ programs:
         parameter_prefix: gov.states.nm.hca.liheap
         verified_years: "2026-2027"
         notes: FY2026-FY2027 annual benefit from the point system on the household's heating fuel or electric bill, with three income points up to 100% of the poverty guideline. Crisis assistance and weatherization are out of scope.
+      - state: NV
+        status: partial
+        name: Nevada LIHEAP
+        full_name: Nevada Energy Assistance Program
+        variable: nv_liheap
+        parameter_prefix: gov.states.nv.dwss.liheap
+        verified_years: "2026-2027"
+        notes: SFY2026-SFY2027 Fixed Annual Credit, Nevada's single regular benefit toward primary heating and electric costs, with the $360 minimum and the capped benefit tables. Crisis assistance and weatherization are out of scope.
       - state: NY
         status: partial
         name: New York HEAP
@@ -1203,6 +1243,14 @@ programs:
         variable: sd_liheap
         parameter_prefix: gov.states.sd.dss.liheap
         notes: FY2024-FY2026 regular heating only; mixed-status income is counted in full and FY2026 Mid thresholds are inferred, so no year is verified. Crisis, cooling and weatherization are out of scope.
+      - state: TN
+        status: partial
+        name: Tennessee LIHEAP
+        full_name: Tennessee Low Income Home Energy Assistance Program
+        variable: tn_liheap
+        parameter_prefix: gov.states.tn.thda.liheap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular benefit from the THDA benefit matrices; FY2027 uses the posted LI-12 matrix while its plan and manual are drafts. Crisis and weatherization assistance are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP
@@ -1226,6 +1274,14 @@ programs:
         parameter_prefix: gov.states.va.dss.eap
         verified_years: "2026"
         notes: FFY2026 Fuel Assistance only, using the latest published (FFY2025) value per point and placeholder fuel-type and energy-burden points until VDSS publishes its survey. Crisis, cooling and weatherization assistance are out of scope.
+      - state: VT
+        status: partial
+        name: Vermont Seasonal Fuel Assistance
+        full_name: Vermont Seasonal Fuel Assistance Program
+        variable: vt_liheap
+        parameter_prefix: gov.states.vt.dcf.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating with an estimated 51% payment rate, which DCF does not publish; later years carry it forward, so they omit the larger 2026-27 oil and kerosene benefit. Late-application proration of the regular benefit is not modeled; crisis, Heat and Eat and weatherization are out of scope.
       - state: WA
         status: partial
         name: Washington LIHEAP
@@ -1234,6 +1290,14 @@ programs:
         parameter_prefix: gov.states.wa.commerce.liheap
         verified_years: "2026"
         notes: FY2026 regular heating from reported annual heating costs, with the $250 minimum when heat is included in rent. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: WI
+        status: partial
+        name: Wisconsin WHEAP
+        full_name: Wisconsin Home Energy Assistance Program
+        variable: wi_wheap
+        parameter_prefix: gov.states.wi.doa.wheap
+        verified_years: "2026"
+        notes: FFY2026 regular heating benefit from the HE+ formula with the published heat proxy table. The non-heating electric benefit, crisis and weatherization are out of scope.
       - state: WY
         status: partial
         name: Wyoming LIEAP
@@ -1706,7 +1770,7 @@ programs:
     variable: repayment_assistance_plan_payment
     parameter_prefix: gov.ed.student_loans.repayment_assistance_plan
     verified_start_year: 2026
-    notes: Monthly payment from July 2026 (base payment, dependent reduction, $10 minimum, spousal proration, final-payment cap) from balance inputs; interest subsidy, principal match and forgiveness not modeled; not subtracted from household net income
+    notes: Monthly payment from July 2026 (base payment on the latest return's AGI, dependent reduction, $10 minimum, spousal proration over Direct and FFEL debt, final-payment cap) from balance inputs; tax-dependent borrowers treated as ineligible; interest subsidy, principal match and forgiveness not modeled; not subtracted from household net income
 
   - id: income_based_repayment
     name: Income-Based Repayment
@@ -1718,7 +1782,7 @@ programs:
     variable: income_based_repayment_payment
     parameter_prefix: gov.ed.student_loans.income_based_repayment
     verified_start_year: 2026
-    notes: Monthly payment (15% or 10% for new borrowers of income above 150% of the poverty guideline, spousal proration, 10-year standard payment cap on the current balance, small payment adjustment); zero for borrowers with a Direct Loan made on or after July 1, 2026; interest and forgiveness not modeled; not subtracted from household net income
+    notes: Monthly payment (15% or 10% for new borrowers of income above 150% of the poverty guideline on the latest return's AGI, spousal and FFEL proration, cap at the borrower's own 10-year standard payment on their current Direct and FFEL balances, small payment adjustment); zero for borrowers with a Direct Loan made on or after July 1, 2026; tax-dependent borrowers treated as ineligible; interest and forgiveness not modeled; not subtracted from household net income
 
   - id: save_plan
     name: SAVE plan (counterfactual)
@@ -1730,7 +1794,7 @@ programs:
     variable: save_plan_payment
     parameter_prefix: gov.ed.student_loans.save_plan
     verified_start_year: 2026
-    notes: Counterfactual monthly payment under 34 CFR 685.209(f)(1) (5% undergraduate and 10% graduate rates on income above 225% of the poverty guideline, spousal proration, small payment adjustment); computed for any period without implying the plan is available; interest and forgiveness not modeled; not subtracted from household net income
+    notes: Counterfactual monthly payment under 34 CFR 685.209(f)(1) (5% undergraduate and 10% graduate rates on income above 225% of the poverty guideline on the latest return's AGI, spousal and FFEL proration, small payment adjustment); computed for any period without implying the plan is available; tax-dependent borrowers treated as ineligible; interest and forgiveness not modeled; not subtracted from household net income
 
   - id: pay_as_you_earn
     name: Pay As You Earn
@@ -1742,7 +1806,7 @@ programs:
     variable: pay_as_you_earn_payment
     parameter_prefix: gov.ed.student_loans.pay_as_you_earn
     verified_start_year: 2026
-    notes: Monthly payment (10% of income above 150% of the poverty guideline, spousal proration, 10-year standard payment cap on the current balance, small payment adjustment); zero for borrowers with a Direct Loan made on or after July 1, 2026; enrollment limits (new borrower, repaying under PAYE on July 1, 2024) and the June 30, 2028 end not modeled; interest and forgiveness not modeled; not subtracted from household net income
+    notes: Monthly payment (10% of income above 150% of the poverty guideline on the latest return's AGI, spousal and FFEL proration, cap at the borrower's own 10-year standard payment on their current Direct and FFEL balances, small payment adjustment); tax-dependent borrowers treated as ineligible; zero for borrowers with a Direct Loan made on or after July 1, 2026; enrollment limits (new borrower, repaying under PAYE on July 1, 2024) and the June 30, 2028 end not modeled; interest and forgiveness not modeled; not subtracted from household net income
 
   - id: income_contingent_repayment
     name: Income-Contingent Repayment
@@ -1754,7 +1818,7 @@ programs:
     variable: income_contingent_repayment_payment
     parameter_prefix: gov.ed.student_loans.income_contingent_repayment
     verified_start_year: 2026
-    notes: Monthly payment (lesser of the 12-year fixed payment on the current balance times the income percentage factor from the 2025 and 2026 Federal Register notices, and 20% of income above the poverty guideline; $5 minimum); zero for borrowers with a Direct Loan made on or after July 1, 2026; joint repayment by married borrowers, enrollment limits and the June 30, 2028 end not modeled; interest and forgiveness not modeled; not subtracted from household net income
+    notes: Monthly payment (lesser of the 12-year fixed payment on the current balance times the income percentage factor from the 2025 and 2026 Federal Register notices, and 20% of income above the poverty guideline, both on the latest return's AGI; $5 minimum); tax-dependent borrowers treated as ineligible; zero for borrowers with a Direct Loan made on or after July 1, 2026; joint repayment by married borrowers, enrollment limits and the June 30, 2028 end not modeled; interest and forgiveness not modeled; not subtracted from household net income
 
   - id: tiered_standard_repayment
     name: Tiered standard repayment plan

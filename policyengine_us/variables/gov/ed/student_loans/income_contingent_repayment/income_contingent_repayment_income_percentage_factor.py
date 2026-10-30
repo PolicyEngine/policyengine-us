@@ -8,7 +8,9 @@ class income_contingent_repayment_income_percentage_factor(Variable):
     documentation = (
         "Factor from the Department of Education's annual notice that scales "
         "the 12-year fixed payment under the Income-Contingent Repayment plan, "
-        "based on adjusted gross income. Single filers use the single table; "
+        "based on adjusted gross income from the most recent return "
+        "(income_driven_repayment_adjusted_gross_income). Single filers use "
+        "the single table; "
         "joint, separate, head of household and surviving spouse filers use "
         "the married or head of household table. An income between two rows "
         "of the table is linearly interpolated and rounded to the nearest "
@@ -27,7 +29,9 @@ class income_contingent_repayment_income_percentage_factor(Variable):
         p = parameters(
             period
         ).gov.ed.student_loans.income_contingent_repayment.income_percentage_factor
-        agi = tax_unit("adjusted_gross_income", period.this_year)
+        agi = tax_unit(
+            "income_driven_repayment_adjusted_gross_income", period.this_year
+        )
         filing_status = tax_unit("filing_status", period.this_year)
         is_single = filing_status == filing_status.possible_values.SINGLE
         # The table rows are points to interpolate between, not brackets.
