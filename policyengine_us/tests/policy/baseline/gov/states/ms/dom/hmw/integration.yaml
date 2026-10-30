@@ -79,7 +79,7 @@
   output:
     ms_hmw_eligible: false
 
-- name: Case 7, person eligible under standard optional ABD Medicaid does not use HMW.
+- name: Case 7, disabled person who receives SSI gets SSI-recipient Medicaid, not HMW.
   period: 2026
   input:
     age: 45
@@ -90,6 +90,7 @@
     medicaid_optional_senior_or_disabled_countable_income: 5_000
     ssi_countable_resources: 1_500
   output:
+    is_ssi_recipient_for_medicaid: true
     ms_hmw_eligible: false
     ms_hmw_other_coverage_ineligible: false
 

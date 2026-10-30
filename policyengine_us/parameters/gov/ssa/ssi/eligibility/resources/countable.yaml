@@ -3,7 +3,9 @@ description: >-
   Excludes home, one vehicle, household goods, burial plots, and retirement accounts.
 values:
   1975-01-01:
-    # Liquid assets counted as resources
+    # Liquid assets counted as resources. NOTE: Maine's Medicaid savings
+    # exclusion (gov.states.me.dhhs.medicaid.savings_exclusion) comes off
+    # all of these, so it assumes each listed resource is savings.
     - bank_account_assets  # Checking, savings, money market
     - stock_assets  # Stocks and mutual funds
     - bond_assets  # Bonds and government securities

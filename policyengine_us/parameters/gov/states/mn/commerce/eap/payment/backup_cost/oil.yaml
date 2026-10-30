@@ -1,0 +1,41 @@
+description: Minnesota uses this average annual energy cost for oil heat by housing type under the Energy Assistance Program.
+# Applies to the FUEL_OIL and KEROSENE heating types.
+APARTMENT:
+  2025-10-01: 2_631
+  2026-10-01: 2_690
+DUPLEX:
+  2025-10-01: 2_566
+  2026-10-01: 2_623
+TRIPLEX:
+  2025-10-01: 2_533
+  2026-10-01: 2_590
+FOURPLEX:
+  2025-10-01: 2_436
+  2026-10-01: 2_491
+TOWNHOUSE:
+  2025-10-01: 2_631
+  2026-10-01: 2_690
+HOUSE:
+  2025-10-01: 3_248
+  2026-10-01: 3_321
+MOBILE_HOME:
+  2025-10-01: 3_248
+  2026-10-01: 3_321
+OTHER:
+  2025-10-01: 2_631
+  2026-10-01: 2_690
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - mn_eap_housing_type
+  label: Minnesota EAP oil backup matrix energy cost
+  reference:
+    - title: Minnesota EAP Policy Manual FFY26 Appendix 4A Primary Heat Benefit Calculator, Backup Matrix Values!A2:C9
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/MN_BenefitMatrix_2026.xlsx
+    - title: Minnesota EAP Policy Manual FFY27 Appendix 4A Primary Heat Benefit Calculator, Backup Matrix Values!A2:C9
+      href: https://mn.gov/commerce-stat/xls/phb-calculator.xlsx
+    - title: "Minnesota EAP Policy Manual FFY26, Chapter 4, Backup Matrix and Knowing Which Method to Use #page 125-126"
+      href: https://mn.gov/commerce-stat/pdfs/ffy26-eap-policy-manual.pdf#page=125
+    - title: "Minnesota EAP Policy Manual FFY27, Chapter 4, Backup Matrix and Knowing Which Method to Use #page 127-128"
+      href: https://mn.gov/commerce-stat/pdfs/ffy27-eap-policy-manual.pdf#page=127
