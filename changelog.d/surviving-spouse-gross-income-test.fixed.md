@@ -1,0 +1,1 @@
+Stop applying the qualifying relative gross income test to surviving spouse filing status, which IRC 2(a)(1)(B) disregards, and stop counting a dependent whose parent ids or relationship flags show they are not the filer's son, daughter or stepchild.
