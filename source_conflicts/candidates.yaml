@@ -8291,6 +8291,102 @@ candidates:
   note: Transmittal 71 (July 1, 2021) removed Appendix 3, so the agency schedule applied only in state fiscal year
     2021 (July 2020 to June 2021). The 7/20 Chapter 900, Appendix II, Example 6 (a TANF-UP household of four in Group II) uses the $499 TANF
     standard. Before July 2020 and from July 2021 the manual has one schedule for all units.
+- id: us-vt:liheap-income-maximum-large-households
+  program: liheap
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Does the Seasonal Fuel Assistance income limit for households of 10 or more stop at the LIHEAP maximum
+    the statute adds, below the 185% amounts the procedure table prints?
+  sources:
+  - kind: statute
+    citation: 33 V.S.A. § 2604(a)
+    url: https://legislature.vermont.gov/statutes/section/33/026/02604
+  - kind: regulation
+    citation: Vermont Seasonal Fuel Assistance Rule 2913(b)
+    url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=38
+  - kind: manual
+    citation: DCF Procedure P-2913, Income Guidelines, effective March 1, 2025 to February 28, 2026
+    url: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2913.pdf
+  readings:
+    statute: Gross income may exceed neither 185% of the poverty guideline nor the LIHEAP maximum (the greater of 150%
+      of the guideline and 60% of state median income), so the FFY2026 size-10 limit is $113,748 a year.
+    other: P-2913 prints the 185% amounts for sizes 10-15 (size 10 $10,044 a month, $120,528 a year) without the LIHEAP
+      maximum.
+  example: A 10-person household with $115,000 of gross income in 2026 is ineligible under the statute and eligible under
+    the printed table.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10436
+  state: ruled
+  note: 'Rule 2913(b) repeats both statutory tests. No document shows whether DCF applies the LIHEAP maximum to large
+    households. Code not yet on main: vt_liheap_income_limit.'
+- id: us-vt:liheap-income-maximum-rounding
+  program: liheap
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Does the Seasonal Fuel Assistance income maximum stop at exactly 185% of the poverty guideline where
+    the procedure table's rounded monthly amounts are higher?
+  sources:
+  - kind: statute
+    citation: 33 V.S.A. § 2604(a)
+    url: https://legislature.vermont.gov/statutes/section/33/026/02604
+  - kind: regulation
+    citation: Vermont Seasonal Fuel Assistance Rules 2913(b)-(c) and 2914(a)(3)
+    url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=38
+  - kind: manual
+    citation: DCF Procedure P-2913, Income Guidelines, effective March 1, 2025 to February 28, 2026
+    url: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2913.pdf
+  readings:
+    statute: Gross income may not exceed exactly 185% of the poverty guideline, so the FFY2026 two-person limit is
+      $39,127.50 a year ($3,260.625 a month).
+    other: P-2913 prints 185% of the monthly guideline rounded half up to the dollar, above 185% of the guideline for
+      some sizes (two people $3,262 a month, $39,144 a year).
+  example: A two-person household with $3,261 a month ($39,132 a year) of gross income in 2026 is eligible under the
+    printed table and ineligible under the statute.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10436
+  state: ruled
+  note: 'The statute sets a ceiling, so the printed amount applies where it rounds below 185% (one person $2,412 a
+    month against $2,412.71). Code not yet on main: vt_liheap_income_limit.'
+- id: us-vt:liheap-plan-income-items
+  program: liheap
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Do Seasonal Fuel Assistance strike benefits count and does income stop at 185% of the poverty guideline,
+    as the statute and rules require, although the FY2026 plan leaves strike pay unchecked and reports 60% of state
+    median income for all sizes?
+  sources:
+  - kind: statute
+    citation: 33 V.S.A. § 2604(a)
+    url: https://legislature.vermont.gov/statutes/section/33/026/02604
+  - kind: regulation
+    citation: Vermont Seasonal Fuel Assistance Rules 2911.2(b)(10) and 2913(b)
+    url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=28
+  - kind: plan
+    citation: Vermont FY2026 LIHEAP State Plan, items 1.9 and 2.1
+    url: https://liheapch.acf.gov/docs/2026/state-plans/VT_Plan_2026.pdf#page=6
+  readings:
+    statute: Gross income follows the 3SquaresVT rules, which count strike benefits (7 CFR 273.9(b)(2)(ii); rule
+      2911.2(b)(10)), and may not exceed 185% of the poverty guideline (rule 2913(b)).
+    other: Plan 1.9 leaves Strike Pay unchecked and plan 2.1 sets 60% of state median income for all household sizes.
+  example: One person in 2026 with $24,000 of wages and $6,000 of strike benefits has $30,000 of gross income, above
+    the $28,944 limit, and is ineligible under the statute and rules; the $24,000 of wages alone is within the plan's
+    $41,075 limit (60% of state median income), so the person is eligible under the plan.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10436
+  state: ruled
+  note: 'Statute governs (2026-10-19 rule). Code not yet on main: vt_liheap_income, vt_liheap_income_limit.'
 - id: us-vt:low-income-cdcc-threshold-equality
   program: income-tax
   years:
