@@ -1,0 +1,92 @@
+# Each distinct parameter override combination retains a full model in Core's cache.
+# Group these cases to limit each file to at most five combinations.
+
+- name: C2 lower-endpoint inverse preserves the 15 percent bend fixture
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 62
+    social_security_retirement_claim_age_months: 744
+    social_security_retirement_reported: 18117.12
+    gov.ssa.social_security.pia.bend_points.first: 960
+    gov.ssa.social_security.pia.bend_points.second: 5785
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+    gov.contrib.ssa.pia.bend_point_multipliers.first: 1.15
+  output:
+    social_security_retirement_pia_ratio_eligibility_year: 2026
+    social_security_retirement_pia_ratio_claiming_adjustment: 0.70
+    social_security_retirement_inferred_aime: 5000
+    social_security_retirement_inferred_aime_lower_bound: 5000
+    social_security_retirement_inferred_aime_upper_bound: 5000.3125
+    social_security_retirement_pia_ratio_factor: 1.0643082344
+    social_security_retirement: 19282.20
+    social_security_retirement_pia_ratio_own_record_retired_worker: true
+    social_security_retirement_pia_ratio_measurement_uncertainty: true
+    social_security_retirement_pia_ratio_unmodeled: false
+
+- name: FRA is an explicit sensitivity and changes inferred AIME
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 62
+    social_security_retirement_reported: 18117.12
+    gov.contrib.ssa.benefit_levers.pia_ratio.claiming_scenario: [fra]
+    gov.ssa.social_security.pia.bend_points.first: 960
+    gov.ssa.social_security.pia.bend_points.second: 5785
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+    gov.contrib.ssa.pia.bend_point_multipliers.first: 1.15
+  output:
+    social_security_retirement_pia_ratio_claiming_adjustment: 1
+    social_security_retirement_inferred_aime: 2978
+    social_security_retirement_pia_ratio_proxy: true
+
+- name: Age 62 sensitivity identifies its claiming adjustment explicitly
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 62
+    social_security_retirement_reported: 18117.12
+    gov.contrib.ssa.benefit_levers.pia_ratio.claiming_scenario: [age_62]
+    gov.ssa.social_security.pia.bend_points.first: 960
+    gov.ssa.social_security.pia.bend_points.second: 5785
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+  output:
+    social_security_retirement_pia_ratio_claiming_adjustment: 0.70
+    social_security_retirement_inferred_aime: 5000
+    social_security_retirement_pia_ratio_proxy: true
+
+- name: Age 65 sensitivity retains the 24 month early retirement reduction
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 62
+    social_security_retirement_reported: 22430.72
+    gov.contrib.ssa.benefit_levers.pia_ratio.claiming_scenario: [age_65]
+    gov.ssa.social_security.pia.bend_points.first: 960
+    gov.ssa.social_security.pia.bend_points.second: 5785
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+  output:
+    social_security_retirement_pia_ratio_claiming_adjustment: 0.8666666666666667
+    social_security_retirement_inferred_aime: 5000
+    social_security_retirement_pia_ratio_proxy: true
+
+- name: Age 70 sensitivity uses the birth cohort delayed retirement credits
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 62
+    social_security_retirement_reported: 32093.184
+    gov.contrib.ssa.benefit_levers.pia_ratio.claiming_scenario: [age_70]
+    gov.ssa.social_security.pia.bend_points.first: 960
+    gov.ssa.social_security.pia.bend_points.second: 5785
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+  output:
+    social_security_retirement_pia_ratio_claiming_adjustment: 1.24
+    social_security_retirement_inferred_aime: 5000
+    social_security_retirement_pia_ratio_proxy: true
+

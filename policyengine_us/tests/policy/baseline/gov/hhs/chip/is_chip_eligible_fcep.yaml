@@ -333,7 +333,10 @@
 # California's FCEP population above the Medi-Cal pregnancy limit is the Medi-Cal
 # Access Program. WIC § 15833 excludes applicants eligible for no-cost Medi-Cal
 # or Medicare and WIC § 15834 excludes services already covered by private
-# coverage, so the CHIP disqualifying coverage list applies in California only.
+# coverage. The CHIP disqualifying coverage list applies to FCEP in every
+# state and carries these exclusions: 42 CFR 457.310(b)(2) excludes group
+# health plan and health insurance coverage, and 42 CFR 457.320(a)(7) lets a
+# state also exclude other coverage, such as Medicare.
 - name: California MCAP applicant without other coverage is eligible
   period: 2025
   input:
@@ -448,7 +451,7 @@
     is_chip_fcep_eligible_person: true
     chip_category: PREGNANT_FCEP
 
-- name: The California MCAP insurance exclusion does not reach Texas FCEP
+- name: Texas FCEP excludes a pregnant applicant with employer coverage (42 CFR 457.310(b)(2))
   period: 2025
   input:
     people:
@@ -456,7 +459,8 @@
         age: 30
         is_pregnant: true
         is_medicaid_eligible: false
-        medicaid_income_level: 2
+        # Above Texas Medicaid's 203% FPL pregnancy limit, within the 207% FCEP limit.
+        medicaid_income_level: 2.05
         has_esi: true
     tax_units:
       tax_unit:
@@ -468,7 +472,8 @@
         - head
         state_code: TX
   output:
-    is_chip_fcep_eligible_person: true
+    is_chip_fcep_eligible_person: false
+    chip_category: NONE
 
 # FCEP covers the unborn child regardless of the parent's immigration status.
 # https://www.medicaid.gov/chip/chip-eligibility-enrollment

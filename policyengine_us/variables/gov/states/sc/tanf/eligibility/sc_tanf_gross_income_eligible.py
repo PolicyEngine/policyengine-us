@@ -13,8 +13,7 @@ class sc_tanf_gross_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.sc.tanf.income
-        fpg = spm_unit("tanf_fpg", period)
-        need_standard = fpg * p.need_standard.rate
+        need_standard = spm_unit("sc_tanf_need_standard", period)
         gross_income_limit = need_standard * p.gross_income_limit
         gross_income = spm_unit("sc_tanf_gross_income", period)
         return gross_income <= gross_income_limit

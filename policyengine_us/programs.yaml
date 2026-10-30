@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, MD, MS, NC, ND, NE, NH, NJ, NY, OH, OK, OR, SD, RI, TX, UT, VA, WA, WI, WY
+    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, MD, MN, MS, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, SD, RI, TN, TX, UT, VA, WA, WI, WY
     state_implementations:
       - state: AL
         status: partial
@@ -997,6 +997,14 @@ programs:
         parameter_prefix: gov.states.al.adeca.liheap
         verified_years: "2026"
         notes: FY2026 regular heating with the HUD allowance deduction and the funded IIJA supplement. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: AK
+        status: partial
+        name: Alaska HAP
+        full_name: Alaska Heating Assistance Program
+        variable: ak_hap
+        parameter_prefix: gov.states.ak.dpa.hap
+        verified_years: "2027"
+        notes: FY2027 regular heating under the federal LIHEAP component (not the state-funded AAHP), with shared-dwelling and utility-allowance reductions applied to heating points as 7 AAC 44.080 directs. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: AR
         status: partial
         name: Arkansas LIHEAP
@@ -1108,6 +1116,14 @@ programs:
         parameter_prefix: gov.states.md.dhs.meap
         verified_years: "2025-2027"
         notes: FY25-FY27 regular heating only, with the fuel tables, the Garrett County multiplier and the subsidized and nominal levels. The SNAP nominal payment, cooling, EUSP, arrearage, crisis and equipment benefits are out of scope.
+      - state: MN
+        status: partial
+        name: Minnesota EAP
+        full_name: Minnesota Energy Assistance Program
+        variable: mn_eap
+        parameter_prefix: gov.states.mn.commerce.eap
+        verified_years: "2026-2027"
+        notes: FFY2026-FFY2027 Primary Heat, Minnesota's single regular benefit, based on total household energy costs including electricity. Crisis, Energy Related Repair and weatherization are out of scope.
       - state: MS
         status: partial
         name: Mississippi LIHEAP
@@ -1156,6 +1172,22 @@ programs:
         parameter_prefix: gov.states.nj.dca.liheap
         verified_years: "2026-2027"
         notes: FY2026-FY2027 regular heating only, covering eligibility, countable income and the benefit grid, including the one renters cell that changes in FY2027; the program is not modeled before FY2022. Crisis, cooling and equipment assistance are out of scope.
+      - state: NM
+        status: partial
+        name: New Mexico LIHEAP
+        full_name: New Mexico Low Income Home Energy Assistance Program
+        variable: nm_liheap
+        parameter_prefix: gov.states.nm.hca.liheap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 annual benefit from the point system on the household's heating fuel or electric bill, with three income points up to 100% of the poverty guideline. Crisis assistance and weatherization are out of scope.
+      - state: NV
+        status: partial
+        name: Nevada LIHEAP
+        full_name: Nevada Energy Assistance Program
+        variable: nv_liheap
+        parameter_prefix: gov.states.nv.dwss.liheap
+        verified_years: "2026-2027"
+        notes: SFY2026-SFY2027 Fixed Annual Credit, Nevada's single regular benefit toward primary heating and electric costs, with the $360 minimum and the capped benefit tables. Crisis assistance and weatherization are out of scope.
       - state: NY
         status: partial
         name: New York HEAP
@@ -1179,6 +1211,14 @@ programs:
         variable: sd_liheap
         parameter_prefix: gov.states.sd.dss.liheap
         notes: FY2024-FY2026 regular heating only; mixed-status income is counted in full and FY2026 Mid thresholds are inferred, so no year is verified. Crisis, cooling and weatherization are out of scope.
+      - state: TN
+        status: partial
+        name: Tennessee LIHEAP
+        full_name: Tennessee Low Income Home Energy Assistance Program
+        variable: tn_liheap
+        parameter_prefix: gov.states.tn.thda.liheap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular benefit from the THDA benefit matrices; FY2027 uses the posted LI-12 matrix while its plan and manual are drafts. Crisis and weatherization assistance are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP
@@ -1304,9 +1344,18 @@ programs:
         variable: hi_oss
         parameter_prefix: gov.states.hi.dhs.oss
       - state: IA
-        status: in_progress
-        name: Iowa SSP
-        full_name: Iowa State Supplemental Payment
+        status: partial
+        name: Iowa SSA
+        full_name: Iowa State Supplementary Assistance
+        variable: ia_ssa
+        parameter_prefix: gov.states.ia.hhs.ssa
+        verified_years: "2026"
+        notes: >-
+          Models 2026 blind, dependent-person, family-life home, residential
+          care, in-home health-related care and SMME supplements; special
+          categories need certification inputs, so microsimulation pays only
+          the blind supplement. Mandatory minimum-income-level and
+          conditional-benefit payments are not modeled.
       - state: ID
         status: complete
         name: Idaho AABD
