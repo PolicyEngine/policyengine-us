@@ -253,7 +253,20 @@
   input:
     age: 65
     state_code: CA
-    social_security_retirement: 14_000
+    # $17,000 / 12 = $1,416.67 a month; less the $20 disregard, $1,396.67 is
+    # above the $994 federal SSI rate and both California aged standards
+    # ($1,233.94, or $1,362.81 with the WIC 12200(e) restaurant meals
+    # allowance). No SSI or SSP is paid, so SNAP does not depend on
+    # living_arrangements_allow_for_food_preparation. At $14,000 the household
+    # got an SSP and, without the allowance, SNAP of $26 in September and $38
+    # from October, above the minimum.
+    # September: 1,416.67 - 209 = 1,207.67; shelter 663 - 603.83 = 59.17;
+    # net 1,148.50, rounded to 1,149; 30% = 344.70, rounded up to 345 > $298,
+    # so the $24 minimum applies.
+    # October: 1,416.67 - 217 = 1,199.67; shelter 663 - 599.83 = 63.17;
+    # net 1,136.50, rounded to 1,137; 30% = 341.10, rounded up to 342 > $306,
+    # so the $25 minimum applies.
+    social_security_retirement: 17_000
     takes_up_snap_if_eligible: true
   output:
     snap_max_allotment:
