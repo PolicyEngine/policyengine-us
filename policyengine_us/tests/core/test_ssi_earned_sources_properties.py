@@ -514,6 +514,28 @@ def test_spouse_loss_never_reduces_ct_or_md_applicant_earnings(policy, batch):
     unchanged = (deemed == 0).all(axis=1) & ~in_ct
     paa = applicant("md_paa_countable_income")
     np.testing.assert_array_equal(paa[unchanged, 0], paa[unchanged, 1])
+    # Where SSI deems no spouse earnings or unearned income, each Connecticut
+    # reader's earned budget is the applicant's own earnings in both versions.
+    # SSI itself, which Connecticut counts as unearned income, may change.
+    no_deemed = in_ct & (
+        (applicant("ssi_earned_income_deemed_from_ineligible_spouse") == 0)
+        & (applicant("ssi_unearned_income_deemed_from_ineligible_spouse") == 0)
+    ).all(axis=1)
+
+    def monthly(name):
+        return simulation.calculate(name, MONTH).reshape(-1, 2, 2)[:, :, 0]
+
+    unearned = applicant("ssi_unearned_income") / 12 + monthly("ssi")
+    gross_earned = monthly("ct_ssp_gross_income") - unearned
+    countable_earned = monthly("ct_ssp_countable_income") - np.maximum(
+        unearned - monthly("ct_ssp_unearned_income_disregard"), 0
+    )
+    for value in (gross_earned, monthly("ct_ssp_earned_income_disregard")):
+        np.testing.assert_allclose(value[no_deemed, 0], value[no_deemed, 1], atol=1e-3)
+    np.testing.assert_allclose(gross_earned[no_deemed], own[no_deemed] / 12, atol=1e-3)
+    np.testing.assert_allclose(
+        countable_earned[no_deemed, 0], countable_earned[no_deemed, 1], atol=1e-3
+    )
 
 
 @st.composite
