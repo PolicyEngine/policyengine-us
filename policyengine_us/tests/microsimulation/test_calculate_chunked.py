@@ -9,6 +9,9 @@ the complete, unchanged parameter tree and history, with copy-on-write for
 reforms, while entities, variable metadata and provider receipts remain private.
 Rebuilding the same history for every equivalent partition would dominate this
 API test's runtime. The separate TOB sequencing test uses ordinary clones.
+The retained default policy graph is frozen before any simulation is built,
+avoiding repeated GC scans of it. New simulation/branch cycles remain in normal
+GC generations and must still pass the weak-reference collection checks.
 """
 
 import gc
@@ -48,6 +51,10 @@ VARIABLES = (
 def lend_unchanged_parameter_history():
     import policyengine_us.spm as spm
 
+    owns_freeze = gc.get_freeze_count() == 0
+    if owns_freeze:
+        gc.collect()
+        gc.freeze()
     original = spm.clone_spm_system
 
     def clone(source, *, copy_receipts=True, parameters=None):
@@ -60,9 +67,13 @@ def lend_unchanged_parameter_history():
 
     # Scope the optimization to this module. In particular, importing fixture
     # builders from test_tob_sequencing does not apply it to that test module.
-    with pytest.MonkeyPatch.context() as patch:
-        patch.setattr(spm, "clone_spm_system", clone)
-        yield
+    try:
+        with pytest.MonkeyPatch.context() as patch:
+            patch.setattr(spm, "clone_spm_system", clone)
+            yield
+    finally:
+        if owns_freeze:
+            gc.unfreeze()
 
 
 def build_chunking_dataset() -> USSingleYearDataset:
@@ -91,12 +102,29 @@ def build_chunking_dataset() -> USSingleYearDataset:
         family_ids = [401_011 + 47 * household + offset for offset in (0, 17)]
         marital_ids = [501_019 + 53 * household + offset for offset in (0, 19, 23)]
         for tax_id in tax_ids:
+            # As in the signed TOB fixtures, these units report no itemized
+            # medical or SALT deductions. Keep optional sales-tax tables and
+            # premium attribution out of repeated income-tax counterfactuals;
+            # the standard-deduction choice and all requested formulas remain
+            # endogenous.
             records["tax_unit"].append(
-                {"tax_unit_id": tax_id, "tax_unit_weight": weight}
+                {
+                    "tax_unit_id": tax_id,
+                    "tax_unit_weight": weight,
+                    "itemized_medical_expenses": 0.0,
+                    "salt_deduction": 0.0,
+                }
             )
         for spm_id in spm_ids[: 2 if household % 2 == 0 else 1]:
+            # These positive-income units do not take up TANF. Supplying the
+            # take-up input avoids unrelated monthly eligibility calculations
+            # in each tax branch and in the net-income resource chain.
             records["spm_unit"].append(
-                {"spm_unit_id": spm_id, "spm_unit_weight": weight}
+                {
+                    "spm_unit_id": spm_id,
+                    "spm_unit_weight": weight,
+                    "takes_up_tanf_if_eligible": False,
+                }
             )
         for family_id in family_ids[: 2 if household % 2 == 0 else 1]:
             records["family"].append({"family_id": family_id, "family_weight": weight})
