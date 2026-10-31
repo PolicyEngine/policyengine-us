@@ -1,3 +1,10 @@
+## [2.88.3] - 2026-10-31
+
+### Fixed
+
+- Run the contrib SSA YAML tests in Contrib shard 3 instead of shard 1, which also runs the contrib Python tests and was hitting CI's 60-minute timeout.
+
+
 ## [2.88.2] - 2026-10-30
 
 ### Fixed
