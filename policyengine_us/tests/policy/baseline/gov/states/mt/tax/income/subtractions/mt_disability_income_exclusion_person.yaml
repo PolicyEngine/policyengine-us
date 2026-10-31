@@ -36,3 +36,52 @@
   output:
     # 5,000 - 2,000 = 3,000, under the 5,200 cap.
     mt_disability_income_exclusion_person: 3_000
+
+- name: Before its repeal, the exclusion is available in 2023.
+  period: 2023
+  input:
+    state_code: MT
+    age: 60
+    retired_on_total_disability: true
+    disability_benefits: 5_200
+  output:
+    # min(5_200 cap, 5_200 taxable disability benefits) = 5_200.
+    mt_disability_income_exclusion_person: 5_200
+
+- name: The exclusion ends in 2024, the first year after its repeal.
+  period: 2024
+  input:
+    state_code: MT
+    age: 60
+    retired_on_total_disability: true
+    disability_benefits: 5_200
+  output:
+    # 2021 Mont. Laws ch. 503 (SB 399) section 65 repeals 15-30-2110, MCA,
+    # which held the exclusion, for tax years beginning after December 31,
+    # 2023 (section 70(1)). The 2024 Form 2 instructions list the "partial
+    # retirement disability deduction for taxpayers under age 65" among the
+    # repealed deductions.
+    mt_disability_income_exclusion_eligible_person: false
+    mt_disability_income_exclusion_person: 0
+    mt_disability_income_exclusion: 0
+    mt_subtractions: 0
+
+- name: The repeal continues in 2025.
+  period: 2025
+  input:
+    state_code: MT
+    age: 60
+    retired_on_total_disability: true
+    disability_benefits: 5_200
+  output:
+    mt_disability_income_exclusion_person: 0
+    mt_subtractions: 0
+
+- name: After the repeal, even an eligibility input gives no exclusion.
+  period: 2024
+  input:
+    state_code: MT
+    disability_benefits: 15_000
+    mt_disability_income_exclusion_eligible_person: true
+  output:
+    mt_disability_income_exclusion_person: 0

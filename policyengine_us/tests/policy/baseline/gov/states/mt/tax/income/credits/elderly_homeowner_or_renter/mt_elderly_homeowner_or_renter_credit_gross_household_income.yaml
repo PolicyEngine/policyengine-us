@@ -72,10 +72,13 @@
         age: 70
         taxable_pension_income: 20_000
         mt_refundable_credits_before_renter_credit: 0
+        # Net household income is computed for eligible claimants.
+        mt_elderly_homeowner_or_renter_credit_eligible: true
       person2:
         age: 68
         self_employment_income: -5_000
         mt_refundable_credits_before_renter_credit: 0
+        mt_elderly_homeowner_or_renter_credit_eligible: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -202,6 +205,8 @@
       person2:
         age: 40
         employment_income: 10_000
+        # Federal EITC refund received during 2024.
+        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 632
     tax_units:
       tax_unit1:
         members: [person1]
@@ -214,11 +219,12 @@
   output:
     # 2024 Schedule 2EC line 8: "Combine all the refundable credits received
     # by all household members in 2024. Refundable credits include the
-    # federal and Montana earned income tax credits". Rev. Proc. 2023-34, no
-    # qualifying child: 10_000 is above the 8_260 earned income amount and
-    # under the 10_330 phaseout threshold, so the maximum 632; the Montana
-    # EITC is 10% of it, 63.20. The member's 10_000 + 632 + 63.20.
-    mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: [0, 632]
+    # federal and Montana earned income tax credits". The member received a
+    # 632 federal EITC refund. Rev. Proc. 2023-34, no qualifying child:
+    # 10_000 is above the 8_260 earned income amount and under the 10_330
+    # phaseout threshold, so this year's federal EITC is the maximum 632 and
+    # the Montana EITC is 10% of it, 63.20. The member's 10_000 + 632 +
+    # 63.20.
     mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 10_695.20]
 
 - name: A parent's federal EITC and refundable child tax credit count in gross household income
@@ -232,6 +238,8 @@
       person2:
         age: 30
         employment_income: 10_000
+        # Federal EITC and refundable CTC received during 2024.
+        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 4_525
       person3:
         age: 5
     tax_units:
@@ -331,6 +339,8 @@
         age: 40
         employment_income: 10_000
         mt_refundable_credits_before_renter_credit: 0
+        # Federal EITC refund received during 2017.
+        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 383.01
     tax_units:
       tax_unit:
         members: [person1]
@@ -354,6 +364,8 @@
         age: 40
         employment_income: 10_000
         mt_refundable_credits_before_renter_credit: 0
+        # Federal EITC refund received during 2016.
+        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 383.01
     tax_units:
       tax_unit:
         members: [person1]
@@ -517,6 +529,8 @@
       person2:
         age: 35
         employment_income: 25_000
+        # Federal EITC and refundable CTC received during 2024.
+        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 9_854.83
       person3:
         age: 5
       person4:

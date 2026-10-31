@@ -28,7 +28,7 @@ limit, and income under and over the 150_000 cutoff:
 1. The household's gross household income is the pension plus every
    member's unemployment compensation and disability benefits, each once,
    plus the refundable credits the household received (read from the model;
-   no one has earnings, so these are the recovery rebate credits).
+   no one has earnings or a supplied federal receipt, so these are zero).
 2. The credit equals an independent reading of the schedule (standard
    exclusion, Household Income Reduction Table, cap, Credit Multiplier
    Table), lies between zero and the cap, and is zero at 45_000 or more.
@@ -319,10 +319,10 @@ def test_worked_example(results):
     """2020 Elderly Homeowner/Renter Credit Schedule, own_return arrangement:
     the claimant's pension 12_000 and unemployment compensation 6_000, all
     excluded from federal AGI; the other adult's 12_000 of compensation,
-    1_800 of it in federal AGI; each return's recovery rebate credit 1_800.
-    Line 1 = 12_000 + 1_800; line 7 = 3_600; line 8 = 6_000 + 10_200; line
-    10 = 33_600; line 12 = 27_300; line 14 = 1_365; line 19 = 135; line 22 =
-    135 at the 100% multiplier."""
+    1_800 of it in federal AGI. No Economic Impact Payment receipt is
+    supplied, so line 7 = 0. Line 1 = 12_000 + 1_800; line 8 = 6_000 +
+    10_200; line 10 = 30_000; line 12 = 23_700; line 14 = 1_185; line 19 =
+    315; line 22 = 315 at the 100% multiplier."""
     i = CASES.index(
         dict(
             arrangement="own_return",
@@ -334,6 +334,6 @@ def test_worked_example(results):
         )
     )
     r = results[2020]
-    assert r["refundable_credits"][i] == pytest.approx(3_600, abs=TOLERANCE)
-    assert r["gross_household_income"][i] == pytest.approx(33_600, abs=TOLERANCE)
-    assert r["credit"][i] == pytest.approx(135, abs=TOLERANCE)
+    assert r["refundable_credits"][i] == pytest.approx(0, abs=TOLERANCE)
+    assert r["gross_household_income"][i] == pytest.approx(30_000, abs=TOLERANCE)
+    assert r["credit"][i] == pytest.approx(315, abs=TOLERANCE)

@@ -216,6 +216,8 @@
         age: 63
         employment_income: 20_892.60
         real_estate_taxes: 863.08
+        # The third Economic Impact Payment, received during 2021.
+        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 1_400
     tax_units:
       tax_unit:
         members: [person1]
@@ -227,13 +229,14 @@
     # (863.08 - (gross_hh - 6,300) x 0.05) x 1.0, capped at $1,000.
     # 2021 instructions, line 7: "Refundable credits include the federal and
     # Montana Earned Income Tax Credit, the federal Child Tax Credits,
-    # Economic Impact Payments". Federal EITC (ARPA, no qualifying child)
-    # 1_502 - 15.3% x (20_892.60 - 11_610) = 81.76; Montana EITC 3% = 2.45;
-    # Economic Impact Payment 1_400. Line 10 = 20_892.60 + 1_484.21 =
-    # 22_376.81; line 12 = 16_076.81; line 14 = 803.84; line 19 = 863.08 -
-    # 803.84 = 59.24. The earlier expected value, 133.33, counted only the
-    # Montana EITC.
-    mt_elderly_homeowner_or_renter_credit: 59.24
+    # Economic Impact Payments". Received in 2021: the 1_400 Economic Impact
+    # Payment. The 2021 federal EITC (ARPA, no qualifying child), 1_502 -
+    # 15.3% x (20_892.60 - 11_610) = 81.76, is paid in 2022, so it is not;
+    # the Montana EITC on the 2021 return, 3% = 2.45, counts as the model's
+    # Montana refundable credits. Line 10 = 20_892.60 + 1_400 + 2.45 =
+    # 22_295.05; line 12 = 15_995.05; line 14 = 799.75; line 19 = 863.08 -
+    # 799.75 = 63.33.
+    mt_elderly_homeowner_or_renter_credit: 63.33
 
 - name: MT EHRC uses the $12,600 exclusion from 2022 (HB 191)
   period: 2022
@@ -937,6 +940,8 @@
       person2:
         age: 40
         employment_income: 10_000
+        # Federal EITC refund received during 2024.
+        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 632
     tax_units:
       tax_unit1:
         members: [person1]
@@ -949,9 +954,9 @@
   output:
     # The claimant's adult son lives in the household and files his own
     # return. Line 5 pensions 20_000. Line 8, refundable credits received by
-    # all household members: his federal EITC 632 (Rev. Proc. 2023-34, no
-    # qualifying child, wages between 8_260 and 10_330) and Montana EITC
-    # 10% x 632 = 63.20, 695.20 in all. Line 17 his wages 10_000. Line 18
+    # all household members: the 632 federal EITC refund he received in 2024
+    # and Montana EITC 10% x 632 = 63.20 (Rev. Proc. 2023-34, no qualifying
+    # child, wages between 8_260 and 10_330), 695.20 in all. Line 17 his wages 10_000. Line 18
     # gross household income 30_695.20; line 20 = 30_695.20 - 12_600 =
     # 18_095.20; line 21 = 0.05; line 22 = 904.76; line 27 = 2_000 - 904.76
     # = 1_095.24; line 28 = 1_095.24 (under 1_150); line 29 = 100%; line 30 =
@@ -971,6 +976,8 @@
       person2:
         age: 30
         employment_income: 10_000
+        # Federal EITC and refundable CTC received during 2024.
+        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 4_525
       person3:
         age: 5
     tax_units:
@@ -984,8 +991,9 @@
         state_name: MT
   output:
     # The claimant's daughter and grandchild live in the household; the
-    # daughter files her own return. Line 8: federal EITC 34% x 10_000 =
-    # 3_400, refundable part of the federal child tax credit
+    # daughter files her own return. Line 8, received during 2024: federal
+    # EITC 34% x 10_000 = 3_400, refundable part of the federal child tax
+    # credit
     # min(1_700, 15% x (10_000 - 2_500)) = 1_125, Montana EITC 340; 4_865 in
     # all. Line 17 her wages 10_000. Line 18 = 20_000 + 4_865 + 10_000 =
     # 34_865; line 20 = 22_265; line 22 = 22_265 x 0.05 = 1_113.25; line 27 =
@@ -1007,6 +1015,8 @@
       person2:
         age: 30
         employment_income: 12_000
+        # Federal EITC and refundable CTC received during 2024.
+        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 5_505
       person3:
         age: 5
     tax_units:
@@ -1019,7 +1029,7 @@
         members: [person1, person2, person3]
         state_name: MT
   output:
-    # Line 8: federal EITC 34% x 12_000 = 4_080 (under the 12_390 earned
+    # Line 8, received during 2024: federal EITC 34% x 12_000 = 4_080 (under the 12_390 earned
     # income amount), refundable child tax credit
     # min(1_700, 15% x 9_500) = 1_425, Montana EITC 408; 5_913 in all.
     # Line 18 = 20_000 + 5_913 + 12_000 = 37_913; line 20 = 25_313;
@@ -1075,6 +1085,8 @@
       person2:
         age: 40
         employment_income: 10_000
+        # Federal EITC refund received during 2023.
+        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 584.70
     tax_units:
       tax_unit1:
         members: [person1]
@@ -1109,26 +1121,26 @@
         rent: 4_800
         mt_elderly_homeowner_or_renter_credit_received: 60
         mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 20
+        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 500
       person2:
         age: 70
         taxable_pension_income: 15_000
         rent: 7_200
         mt_elderly_homeowner_or_renter_credit_received: 40
         mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 80
+        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 300
     tax_units:
       tax_unit1:
         members: [person1]
-        income_tax_refundable_credits: 500
       tax_unit2:
         members: [person2]
-        income_tax_refundable_credits: 300
     households:
       household:
         members: [person1, person2]
         state_code: MT
   output:
-    # Schedule 2EC line 8 counts each return's federal refundable credits
-    # once, plus actual elderly-credit and rebate receipts. Person amounts:
+    # Schedule 2EC line 8 counts the federal refundable credits each person
+    # received, plus actual elderly-credit and rebate receipts. Person amounts:
     # 10_000 + 500 + 60 + 20 = 10_580; 15_000 + 300 + 40 + 80 = 15_420.
     # Line 18 = 26_000; line 22 = (26_000 - 12_600) * .05 = 670.
     # Line 25 rent equivalents = [4_800, 7_200] * .15 = [720, 1_080].
@@ -1297,7 +1309,7 @@
     # Line 18 = 20_000 + 10_000 = 30_000; line 22 = 870; line 30 = 1_130.
     mt_elderly_homeowner_or_renter_credit: [1_130, 0]
 
-- name: 2024 Schedule 2EC, a parent living in an adult child's home claims the child's property tax as rent
+- name: 2024 Schedule 2EC, a parent without owner, renter or lessee status in an adult child's home cannot claim
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -1328,6 +1340,51 @@
         members: [person1, person2]
         state_name: MT
   output:
+    # MCA 15-30-2338(1)(c): a claimant "must have occupied one or more
+    # dwellings in Montana as an owner, renter, or lessee for at least 6
+    # months". The parent pays no rent and is billed no property tax, and
+    # the child's bill does not establish the parent's status. ARM
+    # 42.4.302(2)(b) lets only an eligible claimant use another's bill as
+    # rent. The child is 45 (§ 15-30-2338(1)(a)). Neither may claim; before
+    # this test the parent's credit was 341.
+    mt_elderly_homeowner_or_renter_credit_eligible: [false, false]
+    mt_elderly_homeowner_or_renter_credit: [0, 0]
+    mt_refundable_credits: [0, 0]
+
+- name: 2024 Schedule 2EC, a parent who leases an adult child's home rent-free claims the child's property tax as rent
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        taxable_pension_income: 14_000
+        rent: 0
+        ssi: 0
+        # A documented lessee for the whole year.
+        mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 12
+      person2:
+        age: 45
+        taxable_interest_income: 6_000
+        rent: 0
+        real_estate_taxes: 4_000
+        ssi: 0
+        mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 12
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
     # The home is in the child's name. "If the property occupied by you is
     # in a name other than your own, the property taxes billed for that
     # property can qualify as rent only" (2025 instructions, line 23; ARM
@@ -1336,8 +1393,7 @@
     # line 21 = 0.035; line 22 = 259.
     # Parent: line 23 = 0; line 24 = 4_000 (the child's bill, as rent);
     # line 25 = 600; line 26 = 600; line 27 = 600 - 259 = 341; line 28 =
-    # 341; line 29 = 100% (under 35_000); line 30 = 341. Before this rule
-    # the parent's line 24 was 0 and the credit 0.
+    # 341; line 29 = 100% (under 35_000); line 30 = 341.
     # The child is 45, so not a claimant (§ 15-30-2338(1)(a)).
     mt_elderly_homeowner_or_renter_credit_net_household_income: [259, 0]
     mt_elderly_homeowner_or_renter_credit_gross_rent: [4_000, 0]
@@ -1453,12 +1509,15 @@
   output:
     # SSI is pinned at 0 to isolate the credit's arithmetic. Line 18 =
     # 20_000; line 20 = 7_400; line 21 = 0.035; line 22 = 259.
-    # person1 (home in person2's name): line 24 = 2_000; line 25 = 300;
-    # line 27 = 300 - 259 = 41.
+    # person1 pays no rent and is billed nothing, so nothing shows that they
+    # occupy the home as an owner, renter or lessee (MCA 15-30-2338(1)(c)):
+    # not eligible. As a lessee they would have line 24 = 2_000, line 25 =
+    # 300 and line 27 = 300 - 259 = 41.
     # person2: line 23 = 2_000; line 27 = 2_000 - 259 = 1_741; line 28 =
     # 1_150 cap.
     # One claimant per household (§ 15-30-2341(1)): person2 claims 1_150.
-    mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [41, 1_150]
+    mt_elderly_homeowner_or_renter_credit_eligible: [false, true]
+    mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [0, 1_150]
     mt_elderly_homeowner_or_renter_credit_selected_claimant: [false, true]
     mt_elderly_homeowner_or_renter_credit: [0, 1_150]
 
@@ -1585,15 +1644,20 @@
         taxable_pension_income: 14_000
         rent: 0
         ssi: 0
+        # A rent-free lessee. An input for one person gives the others the
+        # input default, not the formula, so record everyone's months.
+        mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 12
       person2:
         age: 45
         rent: 0
         ssi: 0
+        mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 12
       person3:
         age: 43
         rent: 0
         real_estate_taxes: 4_000
         ssi: 0
+        mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 12
     tax_units:
       tax_unit1:
         members: [person1]
