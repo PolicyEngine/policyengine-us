@@ -22,30 +22,8 @@ class tob_revenue_total(Variable):
         This isolates the tax impact of including taxable SS in AGI by
         comparing tax with and without taxable SS.
         """
-        sim = tax_unit.simulation
-
         # Calculate income tax WITH taxable SS
         income_tax_with_ss = tax_unit("income_tax", period)
-
-        # Create branch and neutralize taxable SS
-        branch = sim.get_branch("tob_calc", clone_system=True)
-        branch.tax_benefit_system.neutralize_variable(
-            "tax_unit_taxable_social_security"
-        )
-
-        # Delete non-input cached variables to force recalculation
-        input_vars = set(branch.input_variables)
-        for var_name in list(branch.tax_benefit_system.variables.keys()):
-            if var_name not in input_vars:
-                try:
-                    branch.delete_arrays(var_name)
-                except:
-                    pass
-
-        # Recalculate income tax without taxable SS
-        income_tax_without_ss = branch.tax_unit("income_tax", period)
-
-        # Clean up branch
-        del sim.branches["tob_calc"]
+        income_tax_without_ss = tax_unit("income_tax_without_social_security", period)
 
         return income_tax_with_ss - income_tax_without_ss
