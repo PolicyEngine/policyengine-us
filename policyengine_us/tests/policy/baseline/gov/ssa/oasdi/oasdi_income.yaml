@@ -1,0 +1,109 @@
+- name: Each person's payroll liability and each tax unit's revenue count once
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        social_security_retirement: 15_000
+        taxable_interest_income: 50_000
+      spouse:
+        age: 70
+        social_security_retirement: 15_000
+      worker:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      couple:
+        members: [head, spouse]
+        filing_status: JOINT
+      worker_unit:
+        members: [worker]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head, spouse, worker]
+        takes_up_tanf_if_eligible: false
+    households:
+      household:
+        members: [head, spouse, worker]
+        state_code: TX
+  output:
+    # The worker's 12.4% * $50,000 = $6,200 is the only payroll liability.
+    oasdi_payroll_tax_revenue: [0, 0, 6_200]
+    # The couple's OASDI benefit-taxation share, as in the two-person case.
+    oasdi_benefit_taxation_revenue: [1_500, 0]
+    oasdi_niit_revenue: [0, 0]
+    # $6,200 + $1,500. Projecting the couple's $1,500 to both members and
+    # summing would give $9,200.
+    oasdi_income: 7_700
+
+- name: Households keep their own liabilities
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      wage_earner:
+        age: 40
+        employment_income: 250_000
+      self_employed:
+        age: 40
+        self_employment_income: 100_000
+    tax_units:
+      tax_unit_1:
+        members: [wage_earner]
+      tax_unit_2:
+        members: [self_employed]
+    spm_units:
+      spm_unit_1:
+        members: [wage_earner]
+      spm_unit_2:
+        members: [self_employed]
+    households:
+      household_1:
+        members: [wage_earner]
+        state_code: TX
+      household_2:
+        members: [self_employed]
+        state_code: TX
+  output:
+    oasdi_income: [22_878, 11_451.40]
+
+- name: With the owners' draw and section 8 both on, each liability counts once
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms:
+    - policyengine_us.reforms.ssa.owners_draw.owners_draw
+    - policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    gov.contrib.congress.s770.section_8.transfer.mode: 3
+    age: 40
+    employment_income: 100_000
+    s_corp_income: 200_000
+    taxable_interest_income: 100_000
+    niit_magi: 400_000
+    filing_status: SINGLE
+    state_code: TX
+  output:
+    # Payroll: 6.2% * $100,000 twice, plus 12.4% of the draw's $100,000 of
+    # room = $24,800, with the draw's OASDI tax inside the SECA leaf once.
+    owners_draw_oasdi_tax: 12_400
+    oasdi_payroll_tax_revenue: 24_800
+    # M7: only the profits the draw's OASDI tax reaches leave the active base:
+    # $100,000 / 0.9235 = $108,283.70, leaving A = $91,716.30.
+    owners_draw_niit_exclusion: 108_283.70
+    s770_active_business_income: 91_716.30
+    # MAGI excess $200,000; NII base $100,000; active base $91,716.30.
+    # Liability $3,800 + $12,400 + 16.2% * $91,716.30 = $31,058.04; bill
+    # mode transfers 62%.
+    net_investment_income_tax: 31_058.04
+    oasdi_niit_revenue: 19_255.98
+    # $24,800 + $19,255.98. Leaving the taxed draw in the active base would
+    # give $24,800 + $20,088 = $44,888.
+    oasdi_income: 44_055.98

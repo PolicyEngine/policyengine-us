@@ -1,0 +1,42 @@
+- name: Without a section 8 option the transfer is zero, whatever the NIIT
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    employment_income: 300_000
+    taxable_interest_income: 100_000
+    filing_status: SINGLE
+    state_code: TX
+  output:
+    # Existing NIIT: 3.8% * min($100,000, $400,000 - $200,000) = $3,800.
+    net_investment_income_tax: 3_800
+    s770_revenue_oasdi: 0
+    oasdi_niit_revenue: 0
+
+- name: With section 8 on, OASDI gets the selected transfer and the liabilities add once
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    gov.contrib.congress.s770.section_8.transfer.mode: 3
+    age: 40
+    employment_income: 100_000
+    taxable_interest_income: 100_000
+    s_corp_income: 200_000
+    niit_magi: 400_000
+    filing_status: SINGLE
+    state_code: TX
+  output:
+    # Limit X = $400,000 - $200,000 = $200,000; NII n = $100,000 and active
+    # a = $100,000. Liability (3.8% + 12.4%) * n + 16.2% * a = $32,400.
+    net_investment_income_tax: 32_400
+    # Bill mode transfers 62% of all of it: $2,356 + $7,688 + $10,044.
+    s770_revenue_oasdi: 20_088
+    oasdi_niit_revenue: 20_088
+    oasdi_payroll_tax_revenue: 12_400
+    oasdi_benefit_taxation_revenue: 0
+    # $12,400 of payroll liability plus the $20,088 transfer.
+    oasdi_income: 32_488
+    oasdi_modeled_balance: 32_488
