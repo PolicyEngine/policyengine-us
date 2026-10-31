@@ -1,1 +1,1 @@
-Add worked YAML cases, properties and an end-to-end test for the contributed Social Security PIA formula paths, including progressive price indexing's bend-point-fraction threshold, and document the inputs a user must supply.
+Test and document the contributed Social Security PIA formula paths: worked YAML cases, properties and an end-to-end test, including progressive price indexing's bend-point-fraction threshold, and the inputs a user must supply.

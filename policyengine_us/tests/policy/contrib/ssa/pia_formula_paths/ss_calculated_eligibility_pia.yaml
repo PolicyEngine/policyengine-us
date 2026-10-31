@@ -6,10 +6,12 @@
 # truncated to the dime (POMS RS 00605.021):
 # https://secure.ssa.gov/poms.nsf/lnx/0300605021
 #
-# Each file in this folder holds one reformed parameter combination. Core's
-# test runner retains a full model per combination: locally the base model
-# peaked near 2.6 GiB and each combination added about 0.6 GiB, so a second
-# combination in one file passed a 4 GB per-process limit.
+# Each file in this folder builds one reformed system. Core's test runner
+# retains a full model per parameter combination, and it applies a `reforms:`
+# entry and inline overrides as two separate systems; the price-indexing
+# files therefore set every parameter in frozen_cohort_paths.py. Run locally
+# under a 4 GB per-process limit, a file with two reformed systems was killed;
+# one-system files peaked at 2.9-4.3 GB.
 
 - name: Current-law PIA at AIME $5,000 with the 2020 bend points
   # SSA's 2020 bend points are $960 and $5,785:
@@ -62,7 +64,9 @@
       2020-01: 2_295.5
 
 - name: 15 percent fixture reaches a reported benefit claimed at 62
-  # Same fixture through the population PIA ratio. Born 1964 (FRA 67) and
+  # Same fixture through the population PIA ratio. The inline bend-point
+  # override gives this 2026 cohort the fixture's $960 / $5,785 bend points
+  # rather than SSA's 2026 values ($1,286 / $7,749). Born 1964 (FRA 67) and
   # claiming at 62 (744 months), the claiming factor is
   # 1 - 36 * 5/9% - 24 * 5/12% = .70, so the reported annual benefit is
   # 12 * .70 * 2,156.80 = $18,117.12 and the inverse recovers AIME $5,000.

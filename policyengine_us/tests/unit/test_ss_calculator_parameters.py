@@ -253,9 +253,10 @@ def test_maximum_pia_tracks_a_cpi_w_target_in_every_cohort(
 
     An illustrative path: each cohort's maximum-career AIME is 1.5 times its
     second bend point, and the target grows the 2031 cohort's current-law
-    maximum PIA with `gov.ssa.uprating` (SSA's CPI-W series). Successive
-    cohorts' maximum PIAs therefore grow with CPI-W. No value is a claim
-    about any percentile or maximum-taxable career.
+    maximum PIA with `gov.ssa.uprating`, the CPI-W index the model uses for
+    COLAs (with its projected values). Successive cohorts' maximum PIAs
+    therefore grow with that index. No value is a claim about any percentile
+    or maximum-taxable career.
     """
     p = parameters.gov.contrib.ssa.pia
     progressive = p.progressive_price_indexing

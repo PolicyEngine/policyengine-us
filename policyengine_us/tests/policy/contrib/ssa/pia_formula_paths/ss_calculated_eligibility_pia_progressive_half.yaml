@@ -1,7 +1,7 @@
 # A contributed PIA formula path, read through the supplied-AIME calculator's
 # eligibility PIA (monthly dollars, before COLAs). See
 # ss_calculated_eligibility_pia.yaml for the formula and dime truncation, and
-# for why each file holds one reformed parameter combination.
+# for why each file builds one reformed system.
 #
 # Bend points after 2026 come from the model's wage-indexed projections. These
 # cases pin them to today's projections so a later projection update does not
@@ -20,17 +20,14 @@
   #   A = 9,000: G = 2,993.52 + k * (3,898.48 - 2,993.52) = $3,796.191 -> $3,796.10.
   #   A = 12,000: G = 2,993.52 + k * (4,618.44 - 2,993.52) = $4,434.773 -> $4,434.70.
   #   A = 17,000 (maximum): the $5,100 target.
-  # A higher fraction protects more of the formula, so every reduced PIA
-  # exceeds its counterpart in ss_calculated_eligibility_pia_progressive_quarter.yaml.
+  # A higher fraction protects more of the formula: at AIME 9,000 and 12,000
+  # the reduced PIAs exceed their counterparts in
+  # ss_calculated_eligibility_pia_progressive_quarter.yaml, and both files
+  # reach the same $5,100 target at the maximum AIME.
   period: 2035
   absolute_error_margin: 0.001
-  reforms: policyengine_us.tests.policy.contrib.ssa.pia_formula_paths.frozen_cohort_paths.progressive_2035_maximum_path
+  reforms: policyengine_us.tests.policy.contrib.ssa.pia_formula_paths.frozen_cohort_paths.progressive_2035_half_fraction
   input:
-    gov.ssa.social_security.pia.formula_factors[1].threshold: 1_756
-    gov.ssa.social_security.pia.formula_factors[2].threshold: 10_588
-    gov.contrib.ssa.pia.in_effect: true
-    gov.contrib.ssa.pia.progressive_price_indexing.in_effect: true
-    gov.contrib.ssa.pia.progressive_price_indexing.bend_point_fraction: 0.5
     people:
       below_threshold: &half_fraction_record
         ss_calculator_source: aime

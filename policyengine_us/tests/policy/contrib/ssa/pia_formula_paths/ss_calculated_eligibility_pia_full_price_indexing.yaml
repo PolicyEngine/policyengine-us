@@ -1,7 +1,7 @@
 # A contributed PIA formula path, read through the supplied-AIME calculator's
 # eligibility PIA (monthly dollars, before COLAs). See
 # ss_calculated_eligibility_pia.yaml for the formula and dime truncation, and
-# for why each file holds one reformed parameter combination.
+# for why each file builds one reformed system.
 #
 # Bend points after 2026 come from the model's wage-indexed projections. These
 # cases pin them to today's projections so a later projection update does not
@@ -19,12 +19,8 @@
   #     = $4,387.518 -> $4,387.50.
   period: 2035
   absolute_error_margin: 0.001
-  reforms: policyengine_us.tests.policy.contrib.ssa.pia_formula_paths.frozen_cohort_paths.full_price_indexing_scale_path
+  reforms: policyengine_us.tests.policy.contrib.ssa.pia_formula_paths.frozen_cohort_paths.full_price_indexing_2035
   input:
-    gov.ssa.social_security.pia.formula_factors[1].threshold: 1_756
-    gov.ssa.social_security.pia.formula_factors[2].threshold: 10_588
-    gov.contrib.ssa.pia.in_effect: true
-    gov.contrib.ssa.pia.full_price_indexing.in_effect: true
     people:
       cohort_2031: &full_indexing_record
         ss_calculator_source: aime

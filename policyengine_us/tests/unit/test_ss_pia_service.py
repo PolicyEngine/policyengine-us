@@ -256,7 +256,11 @@ def test_maximum_pia_tracks_a_price_grown_target_in_every_cohort(
 
     Bend points and the maximum-career AIME grow with wages from the 2031
     cohort; the target grows with prices from 2031's current-law maximum PIA.
-    Prices grow at most as fast as wages, keeping the target in its bounds.
+    Prices grow at most as fast as wages, so the target never exceeds the
+    current-law maximum PIA. The real-wage gap stays at or under 1.5% a
+    cohort, so after nine cohorts the target keeps at least 0.8746 of that
+    maximum, above F(BP2) / F(maximum) = 0.8457 for the 2031 values: the
+    target stays at or above the protected PIA for every fraction.
     Successive cohorts' maximum PIAs therefore grow with prices.
     """
     bends, maximum = (Fraction(1542), Fraction(9294)), Fraction(14000)
@@ -360,6 +364,8 @@ def test_recompute_requires_explicit_payment_year_and_supported_mode():
         compute_pia(1000, 2020, payment_year=2019, bend_points=BENDS)
 
 
+# These properties check arithmetic, not elapsed time on a shared test host.
+@settings(deadline=None)
 @given(st.integers(0, 50000), st.integers(0, 50000))
 @pytest.mark.parametrize(
     "path",
@@ -382,6 +388,7 @@ def test_every_formula_path_is_nondecreasing_in_aime(path, first, second):
     )
 
 
+@settings(deadline=None)
 @given(st.integers(0, 50000), st.integers(1983, 2035))
 def test_no_reform_equals_current_law_at_eligibility(aime, year):
     # Independent piecewise formula, evaluated as exact rational arithmetic.
@@ -396,6 +403,7 @@ def test_no_reform_equals_current_law_at_eligibility(aime, year):
     )
 
 
+@settings(deadline=None)
 @given(st.integers(0, 50000))
 def test_inverse_interval_contains_original_and_reproduces_rounded_pia(aime):
     pia = compute_pia(aime, 2020, bend_points=BENDS)

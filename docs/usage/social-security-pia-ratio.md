@@ -244,14 +244,15 @@ Person weights within a household, use the Person-indicator formula above.
 This approximation assumes the reported annual amount represents a full-year
 benefit at the stated valuation basis; partial-year entitlement, survey error,
 dual entitlement, withheld checks and binding caps can defeat unique inversion.
-PE-US encodes no package-specific parameter values and estimates no percentile.
-The named outputs above remain available for population diagnostics and drift
-checks.
+Beyond the S.770 preset, this route encodes no package values, and PE-US
+estimates no AIME percentile. The named outputs above remain available for
+population diagnostics and drift checks.
 
 ## Price-indexing inputs you supply
 
-PE-US ships no values for either price-indexing path, and both are off by
-default. The reported-benefit ratio and the
+Both price-indexing switches default to false, and PE-US ships no fraction,
+dollar threshold, maximum AIME, PIA target or real-wage scale for them. The
+reported-benefit ratio and the
 [supplied-record calculator](social-security-calculator.md) read the same
 parameters through `formula_path_at`. To turn on progressive price indexing,
 set these parameters under `gov.contrib.ssa.pia`:
@@ -269,14 +270,21 @@ set these parameters under `gov.contrib.ssa.pia`:
 For eligibility year E, the protected threshold is
 `T(E) = BP1(E) + f * (BP2(E) - BP1(E))`, using that cohort's own bend points,
 so it rises as they do. With f = 0 it equals BP1, and with f = 1 it equals BP2.
-Below the threshold the current-law formula applies unchanged. Above it, the
+Up to the threshold, the formula without progressive indexing applies
+unchanged; that formula is current law when no other path is on. Above it, the
 model scales the part of the PIA above `F(T(E))` by the single multiplier that
 makes the PIA at the maximum AIME equal the target.
 
+These gates read the worker's eligibility cohort. With `recompute_existing`,
+the switches, start year and fraction read the payment year instead, while the
+dollar threshold, maximum AIME and target still come from the worker's
+eligibility cohort.
+
 The fraction is an ordinary dated parameter and holds forward like any other.
-The dollar threshold, maximum AIME and target need an entry dated January 1 of
-each cohort's eligibility year, and an earlier cohort's entry never serves a
-later one. Full price indexing likewise needs `full_price_indexing.in_effect`,
+The maximum AIME and target, and a dollar threshold where you supply one, need
+an entry dated January 1 of each cohort's eligibility year; an earlier
+cohort's entry never serves a later one. A cohort without a dollar threshold
+entry uses the fraction. Full price indexing likewise needs `full_price_indexing.in_effect`,
 its `start_year`, and a `real_wage_scale` dated for each cohort.
 
 Your reform settings supply the fraction or dollar path and the maximum AIME

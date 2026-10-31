@@ -334,7 +334,7 @@ def test_benefit_cutting_path_ratio_never_exceeds_one(path, aime):
     """A path that lowers the formula at every AIME cannot raise a benefit.
 
     Truncating both PIAs to the dime preserves G <= F, so the ratio of the
-    rounded PIAs is at most one for every inferred AIME.
+    rounded PIAs never exceeds one for any inferred AIME.
     """
     pia = compute_pia(aime, 2032, bend_points=SYNTHETIC_BENDS)
     result = compute_pia_ratio(
