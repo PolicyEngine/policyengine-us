@@ -883,6 +883,85 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify the legal basis for the amended-return remedy and treatment of exactly $3,000.
+- id: us-ca:capi-payment-standard-offset
+  program: capi
+  years:
+    from: 2019
+    type: calendar
+  question: From June 1, 2019, do CAPI payment standards equal the SSI/SSP standards, or remain $10 (individual),
+    $20 (CAPI couple) or $10 (couple with one SSI/SSP member) below them as the regulations state?
+  sources:
+  - kind: statute
+    citation: Cal. WIC §18941
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=18941
+  - kind: regulation
+    citation: CDSS MPP §49-050.11-.13 (Manual Letter EAS-03-09, effective 10/16/03)
+    url: https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf#page=44
+  - kind: guidance
+    citation: CDSS ACIN I-59-25, Attachment A
+    url: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACINs/2025/I-59_25.pdf#page=5
+  readings:
+    statute: CAPI benefits equal SSI/SSP benefits, retroactive to June 1, 2019.
+    other: CAPI standards are $10 below the SSI/SSP individual standard, $20 below the couple standard for a CAPI
+      couple and $10 below the couple standard when the other spouse receives SSI/SSP.
+  example: In January 2026, an aged CAPI recipient living independently with cooking facilities and no income receives
+    $1,233.94 a month under the statute, which PE-US follows, and $1,223.94 under the regulation.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ca/cdss/capi/payment_standard_offset/couple.yaml
+    - policyengine_us/parameters/gov/states/ca/cdss/capi/payment_standard_offset/mixed_couple.yaml
+    - policyengine_us/parameters/gov/states/ca/cdss/capi/payment_standard_offset/single.yaml
+    - policyengine_us/variables/gov/states/ca/cdss/capi/ca_capi_payment_standard.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10379
+  state: ruled
+  note: 'Ruled 2026-10-27 for the statute by the project lead for the Medicaid fixes; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10379#issuecomment-6451310006. WIC 18941 (2019) makes CAPI
+    benefits "equivalent to the benefits provided under the SSI/SSP program" from June 1, 2019, so it governs over
+    MPP 49-050.11-.13 (2003); CDSS notices ACIN I-23-19 and I-59-25 agree. PE-US follows the statute: the three
+    offsets are $0 from 2019-06-01 and keep the regulation amounts before then (payment_standard_offset/*.yaml, read
+    by ca_capi_payment_standard.py).'
+- id: us-ca:capi-spousal-deeming-method
+  program: capi
+  years:
+    from: 1999
+    type: calendar
+  question: When income is deemed from an ineligible spouse, does CAPI take the lesser federal and lesser state amounts
+    separately, as SSA computes SSI/SSP, or the smaller of the two totals on form SOC 452?
+  sources:
+  - kind: statute
+    citation: Cal. WIC §18940(b)
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=18940
+  - kind: statute
+    citation: Cal. WIC §18941
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=18941
+  - kind: regulation
+    citation: CDSS MPP §49-035.71
+    url: https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf#page=30
+  - kind: manual
+    citation: SSA POMS SI 01320.430 D
+    url: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501320430
+  - kind: form
+    citation: CDSS SOC 452 (4/99), CAPI Income Eligibility - Adult, line C
+    url: https://www.cdss.ca.gov/cdssweb/entres/forms/English/SOC452.pdf
+  readings:
+    statute: Federal deeming rules govern CAPI and CAPI benefits equal SSI/SSP benefits, which SSA computes by taking
+      the lesser federal amount and the lesser state supplement separately (POMS SI 01320.430 D).
+    other: SOC 452 pays the smaller of the couple standard less the couple's countable income and the individual standard
+      less the recipient's own countable income.
+  example: In January 2026, a CAPI recipient with no income whose ineligible spouse earns $1,200 a month receives $1,173.44
+    under the statute and the POMS method, which PE-US follows, and $1,233.94 under SOC 452.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ca/cdss/capi/ca_capi_person.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10379
+  state: unreviewed
+  note: 'PE-US follows the statute: ca_capi_person.py takes the lesser of the federal parts and the lesser of the
+    state parts (POMS SI 01320.430 D). MPP 49-035.71 points to both 20 CFR 416.1160 et seq. and SOC 452. Verify
+    whether CDSS still uses the 1999 form''s line C rule and the years affected.'
 - id: us-ca:care-fera-housing-subsidies
   program: care-fera
   years:
@@ -1292,6 +1371,51 @@ candidates:
   state: unreviewed
   note: 'The rule requires statutory timing rather than the model''s 2025-11-01 proxy; verify commencement and authorized
     transitions before changing it. Code not yet on main: is_snap_sua_hr1_in_effect, snap_utility_allowance_type.'
+- id: us-ca:ssp-blind-couple-food-allowance
+  program: ssi-ssp
+  years:
+    from: 2025
+    type: calendar
+  question: Does a California couple paid the one-blind couple rate get the no-cooking food allowance for its aged
+    or disabled member?
+  sources:
+  - kind: statute
+    citation: Cal. WIC §12200(b), (e)
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200
+  - kind: manual
+    citation: SSA POMS SI 01415.058 B.1, code C note
+    url: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058
+  - kind: guidance
+    citation: CDSS ACIN I-59-25, Attachment A
+    url: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACINs/2025/I-59_25.pdf#page=5
+  readings:
+    statute: The allowance goes only to an aged or disabled individual (12200(c)) or a couple both aged or disabled
+      (12200(d)), so a couple under the one-blind rate (12200(b)) gets none.
+    other: POMS adds the individual restaurant meals allowance for the aged or disabled member of a couple with one
+      blind member whose living arrangement lacks cooking facilities.
+  example: In January 2026, a couple of an aged person and a blind person aged 50 without cooking facilities has a
+    $2,238.44 standard under the statute, which PE-US follows, and $2,367.31 under POMS.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ca/cdss/capi/_ca_capi_ssi_ssp_standard.py
+    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/payment_standard/ca_state_supplement_food_allowance.py
+    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/payment_standard/ca_state_supplement_payment_standard.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10379
+    - https://github.com/PolicyEngine/policyengine-us/pull/10546
+  state: ruled
+  ruling:
+    by: PolicyEngine
+    date: '2026-10-29'
+    record: https://github.com/PolicyEngine/policyengine-us/pull/10379#issuecomment-6509402355
+  note: 'Ruled 2026-10-29 for the statute by the project lead for the Medicaid fixes; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10379#issuecomment-6509402355. WIC 12200(e) gives the
+    no-cooking allowance only under (c) and (d), so a couple paid the one-blind rate under (b) gets none, in CAPI and
+    in the state supplement. CAPI (_ca_capi_ssi_ssp_standard.py) and the state supplement
+    (ca_state_supplement_food_allowance.py) both follow the statute: neither adds a food allowance to the one-blind
+    couple rate, and a couple both aged or disabled takes the aged or disabled rate with the couple allowance when
+    that is higher.'
 - id: us-ca:ssp-nmohc-couple-standard
   program: ssi-ssp
   years:
@@ -1327,8 +1451,10 @@ candidates:
     follows: statute
     code:
     - policyengine_us/parameters/gov/states/ca/cdss/state_supplement/payment_standard/allowance/out_of_home_care.yaml
+    - policyengine_us/variables/gov/states/ca/cdss/capi/_ca_capi_ssi_ssp_standard.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9709
+    - https://github.com/PolicyEngine/policyengine-us/pull/10379
   state: unreviewed
   note: 'PE-US follows the statute: the 2026 allowance is $1,153.31, from a $3,252.14 couple standard, twice the
     $1,626.07 individual rate (allowance/out_of_home_care.yaml), and the file''s comment lists the sources on each
@@ -3245,6 +3371,67 @@ candidates:
     CPI-U change rounded to one decimal and double the rounded single deduction for joint, head of household and
     surviving spouse filers (standard/amount.yaml, retirement/cap.yaml, extend_la_cpi_u_indexed_amounts in uprating_extensions.py).
     Verify that the bulletin permissibly fills the indexing and rounding gaps for both provisions.'
+- id: us-la:liheap-plan-income-checklist
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Louisiana LIHEAP count commissions and regular contributions and, among lump sums, only net gambling
+    and lottery winnings, as the guide lists, or follow the plan's income checklist?
+  sources:
+  - kind: manual
+    citation: Louisiana LIHEAP Service Delivery Guide (revised January 1, 2024), Section 3.6 C.1 and Appendix E, PDF
+      pages 29-30 and 84
+    url: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20REVISED%20January%201_%202024.pdf#page=29
+  - kind: plan
+    citation: FY2026 LIHEAP State Plan §1.9, page 6
+    url: https://liheapch.acf.gov/docs/2026/state-plans/LA_Plan_2026.pdf#page=6
+  readings:
+    statute: No statute is supplied; the guide counts commissions and regular contributions and, among lump sums, only
+      net gambling and lottery winnings.
+    other: Plan 1.9 checks one-time lump-sum payments and leaves commissions and cash gifts unchecked.
+  example: Wages of $15,080 plus $1,200 of regular contributions count as $16,280 under the guide and $15,080 under
+    the plan.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/la/lhc/liheap/income/la_liheap_countable_income.py
+    - policyengine_us/parameters/gov/states/la/lhc/liheap/income/sources/earned.yaml
+    - policyengine_us/parameters/gov/states/la/lhc/liheap/income/sources/unearned.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10429
+  state: ruled
+  note: 'Ruled 2026-10-06: follow the manual over the plan.'
+- id: us-la:liheap-utility-allowance-age
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Are Louisiana LIHEAP applicants aged exactly 60 exempt from subtracting the utility allowance, as the guide
+    states, or only applicants over 60, as the plan states?
+  sources:
+  - kind: manual
+    citation: Louisiana LIHEAP Service Delivery Guide (revised January 1, 2024), Section 4.1 C, PDF page 40
+    url: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20REVISED%20January%201_%202024.pdf#page=40
+  - kind: plan
+    citation: FY2026 LIHEAP State Plan §2.3, page 9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/LA_Plan_2026.pdf#page=9
+  readings:
+    statute: No statute is supplied; the guide exempts applicants 60 or older.
+    other: Plan 2.3 exempts applicants over 60.
+  example: A subsidized 60-year-old with a $1,500 bill and $1,800 allowance has a total energy cost of $1,500 and is
+    eligible under the guide; under the plan it is -$300 and ineligible.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/la/lhc/liheap/la_liheap_energy_cost.py
+    - policyengine_us/parameters/gov/states/la/lhc/liheap/elderly_age.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10429
+  state: ruled
+  note: 'Ruled 2026-10-06: follow the manual over the plan.'
 - id: us-la:school-readiness-incapable-child
   program: income-tax
   years:
@@ -4010,6 +4197,68 @@ candidates:
     invariant test's statutory oracle (test_me_childless_eitc_age_gate.py). Captures of the worksheet and the
     instructions page are in source_conflicts/sources/us-me/. Worksheets for 2020 to 2023 are unchecked, so the
     conflict may start earlier.
+- id: us-me:liheap-size-ten-income-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is Maine's FFY2026 HEAP income limit for ten people the greater of 150% of the poverty guideline and 60%
+    of state median income ($102,008) or 150% of the poverty guideline ($97,725)?
+  sources:
+  - kind: regulation
+    citation: 99-346 CMR ch. 24, section 4(A), poverty-level table (2025 edition, effective July 1, 2025; archived
+      July 22, 2025)
+    url: https://web.archive.org/web/20250722045413/https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=15
+  - kind: plan
+    citation: Maine FY2026 LIHEAP State Plan, Section 2.1
+    url: https://liheapch.acf.gov/docs/2026/state-plans/ME_Plan_2026.pdf#page=9
+  readings:
+    statute: The 70% band runs above 150% of the poverty guideline up to the greater of 150% of the guideline and
+      60% of state median income, $102,008 for ten people; MaineHousing's 2025-26 income chart prints the same figure.
+    other: Section 2.1 sets the ten-person threshold at 150% of the HHS poverty guidelines, $97,725.
+  example: A ten-person household with $100,000 of income is income eligible under the regulation and over the limit
+    under the plan.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/me/msha/heap/eligibility/me_heap_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10437
+  state: ruled
+  note: PE-US follows the regulation and the chart under the 2026-10-19 statute-governs rule.
+- id: us-me:liheap-tanf-and-disability-income
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does Maine HEAP count TANF and long-term disability payments as income from all sources under the rule,
+    although the FY2026 plan leaves TANF and insurance payments made directly to the insured unchecked?
+  sources:
+  - kind: regulation
+    citation: 99-346 CMR ch. 24, sections 1(EE) and 3(C)(1) (2025 edition and June 29, 2026 replacement), PDF pages
+      3 and 12-13
+    url: https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=12
+  - kind: plan
+    citation: Maine FY2026 LIHEAP State Plan, Section 1.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/ME_Plan_2026.pdf#page=6
+  readings:
+    statute: Household Income is the total income from all sources before taxes and deductions unless excluded; no
+      exclusion names TANF or recurring insurance payments (only one-time insurance payments, exclusion h), and item
+      (n) of the June 29, 2026 replacement lists long-term disability payments.
+    other: Section 1.9 leaves TANF benefits and insurance payments made directly to the insured unchecked.
+  example: In FFY2026 a parent of two young children with $2,400 of child support and $10,740 of TANF, heating a Penobscot
+    County stick-built home with oil, counts $13,140 and receives $704; excluding TANF counts $2,400 and pays $748.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/me/msha/heap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/me/msha/heap/me_heap_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10437
+  state: ruled
+  note: PE-US counts both under the 2026-10-19 statute-governs rule.
 - id: us-me:property-tax-credit-unknown-utilities
   program: income-tax
   years:
@@ -4301,6 +4550,201 @@ candidates:
   state: ruled
   note: 'Ruled in October 2026 to follow worksheets; the later statute-first rule requires a model change if this
     credit is outside the statutory exception. Code not yet on main: mo_federal_income_tax_deduction.'
+- id: us-mo:liheap-110-percent-poverty-floor
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Can Missouri's printed 60% SMI limit exclude a large household whose income is below the federal 110%
+    poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624
+  - kind: plan
+    citation: Missouri FFY2026 LIHEAP State Plan, section 2.1, 60% SMI for all household sizes
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MO_Plan_2026.pdf#page=8
+  - kind: guidance
+    citation: Missouri FFY26 Appendix K, Income Ranges and Benefit Amounts, 60% SMI monthly limits for sizes 1-20
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/MO_BenefitMatrix_2026.docx
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The printed Missouri limits fall below that floor starting at household size 16 in FFY2026 and FFY2027.
+  example: In FFY2026, a 16-person household with $107,000 of countable income exceeds the $106,164 state limit
+    but is below the $107,965 floor and receives the $326 natural-gas Energy Assistance payment.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mo/dss/liheap/eligibility/mo_liheap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10438
+  state: ruled
+  note: 'Ruled 2026-10-19: the statute governs. The implementation applies the federal floor
+    gov.hhs.liheap.fpg_floor with the poverty guidelines lagged one year.'
+- id: us-mo:liheap-interest-dividends-and-contributions
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does Missouri count interest and dividends and leave out cash gifts, as the plan's income checklist
+    indicates, or exclude interest and dividends and count contributions, as the manual does?
+  sources:
+  - kind: plan
+    citation: Missouri FFY2026 LIHEAP State Plan, section 1.9 (Interest, dividends, or royalties checked; Cash gifts
+      unchecked)
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MO_Plan_2026.pdf#page=6
+  - kind: manual
+    citation: Missouri LIHEAP Policy and Procedure Manual (October 2025), Unearned Income (contributions, pages
+      32-33) and Income Exclusions (Interest-Dividend Income, page 38)
+    url: https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=32
+  readings:
+    statute: No statute or regulation is supplied; the manual excludes interest and dividend income and counts
+      monetary assistance from family and friends as contributions.
+    other: The plan checklist counts interest, dividends and royalties and does not count cash gifts.
+  example: In FFY2026, a single adult with $40,000 of wages ($32,000 after the 20% deduction) and $2,500 of
+    dividends counts $32,000 under the manual and is eligible below the $34,080 limit, but counts $34,500 under
+    the plan and is not.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/mo/dss/liheap/income/unearned_sources.yaml
+    - policyengine_us/variables/gov/states/mo/dss/liheap/income/mo_liheap_countable_income_person.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10438
+  state: ruled
+  note: 'Ruled 2026-10-06: follow the manual over the plan.'
+- id: us-mo:liheap-qualified-noncitizen-members
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does Missouri count only citizens and legal permanent residents as household members, as the rule says,
+    or every qualified noncitizen, such as refugees, asylees, parolees and COFA citizens, as the manual accepts?
+  sources:
+  - kind: statute
+    citation: 8 U.S.C. 1611(a), 1612(b) and 1641(b)
+    url: https://www.law.cornell.edu/uscode/text/8/1612
+  - kind: regulation
+    citation: 13 CSR 40-19.020(6)(A) and (8)(A)
+    url: https://web.archive.org/web/20250603190025/https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-19.pdf#page=3
+  - kind: manual
+    citation: Missouri LIHEAP Policy and Procedure Manual (October 2025), Citizenship and Legal Permanent Residence,
+      pages 43-44
+    url: https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=43
+  readings:
+    statute: Qualified aliens (8 U.S.C. 1641(b)) may receive federal public benefits, and 8 U.S.C. 1612(b) lets a
+      state limit them only in TANF, the social services block grant and Medicaid; the manual (page 44) accepts
+      refugee, parolee and asylee I-94 annotations and includes COFA citizens among qualified noncitizens.
+    other: The rule and manual page 43 require a citizen of the United States or a legal permanent resident.
+  example: In FFY2026, a lawful permanent resident, a refugee and their citizen child count three members (a
+    $4,588 monthly limit); under the citizen-or-LPR text the refugee is left out and the household counts two
+    ($3,714).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mo/dss/liheap/mo_liheap_household_size.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10438
+  state: unreviewed
+  note: 'The model counts every citizen or qualified noncitizen (is_citizen_or_legal_immigrant). The statute
+    reading is an inference: 8 U.S.C. 1612(b) lets a state limit qualified aliens only in TANF, the social services
+    block grant and Medicaid, and LIHEAP is not among them. Under the citizen-or-LPR text, household-size Case 2
+    would count two members, not three.'
+- id: us-mo:liheap-renter-rent-share
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does a Missouri renter whose heat is included in the rent receive 8% of annual rent capped at the
+    Energy Assistance amount (the rule), 16% capped at that amount (manual and plans), or the lesser of 8% or $100
+    (RSMo 660.115.2)?
+  sources:
+  - kind: statute
+    citation: RSMo 660.115.1 and 660.115.2
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=660.115
+  - kind: regulation
+    citation: 13 CSR 40-19.020(13)
+    url: https://web.archive.org/web/20250603190025/https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-19.pdf#page=4
+  - kind: manual
+    citation: Missouri LIHEAP Policy and Procedure Manual (October 2025), Renter Household Payment
+    url: https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=63
+  - kind: plan
+    citation: Missouri FFY2026 LIHEAP State Plan, section 2.3
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MO_Plan_2026.pdf#page=8
+  readings:
+    statute: The rule pays no more than 8% of annual rent, not to exceed the maximum Energy Assistance payment;
+      RSMo 660.115.2 limits Utilicare renter payments to the lesser of 8% of annual rent or $100.
+    other: The manual and the FFY2024-FFY2027 plans pay 16% of annual rent, up to the Energy Assistance amount for
+      the household's size, income and energy source.
+  example: In FFY2026, a renter household paying $500 a month ($6,000 a year) with propane heat in the rent
+    receives $480 (8%) under the rule, $495 (16% is $960, capped at propane) under the manual and $100 under the
+    Utilicare limit.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/mo/dss/liheap/rent_share.yaml
+    - policyengine_us/variables/gov/states/mo/dss/liheap/mo_liheap.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10438
+  state: ruled
+  note: 'Ruled 2026-10-21: apply the rule''s 8% of annual rent, capped at the amount for the household''s fuel (the
+    manual''s reading of the maximum Energy Assistance payment). RSMo 660.115.2 is read as limited to payments
+    from the Utilicare stabilization fund (660.115.1); Energy Assistance is paid from federal LIHEAP funds.'
+- id: us-mo:liheap-rule-income-ranges-and-payments
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does Missouri Energy Assistance use the income ranges up to 135% of the poverty level and the tiered
+    payments in 13 CSR 40-19.020(14), or the 60% SMI limit and flat fuel amounts in the FFY2026-FFY2027 agency
+    documents?
+  sources:
+  - kind: statute
+    citation: RSMo 660.100.2
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=660.100
+  - kind: regulation
+    citation: 13 CSR 40-19.020(6)(D) and (14), Payment Levels for Missouri (amended effective May 30, 2017)
+    url: https://web.archive.org/web/20250603190025/https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-19.pdf#page=4
+  - kind: plan
+    citation: Missouri FFY2026 LIHEAP State Plan, sections 2.1, 2.5 and 2.6
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MO_Plan_2026.pdf#page=8
+  - kind: guidance
+    citation: Missouri FFY26 Appendix K, Income Ranges and Benefit Amounts
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/MO_BenefitMatrix_2026.docx
+  - kind: manual
+    citation: Missouri LIHEAP Policy and Procedure Manual (October 2025), Appendix K
+    url: https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=129
+  - kind: form
+    citation: Missouri LIHEAP application MO 886-4576 (8-2026), Program Description
+    url: https://dssmanuals.mo.gov/wp-content/uploads/2022/02/liheap-application.pdf#page=1
+  readings:
+    statute: RSMo 660.100.2 bounds income at 150% of the poverty level or 60% of state median income and requires
+      eligibility under the federal program; the rule sets monthly income ranges A-F from 0 to 135% of the poverty
+      level, with natural gas paying $296 in range A down to $203 in range F, and (14) determines payments using
+      metrics established by the division.
+    other: The plan, Appendix K, manual and application set 60% SMI for every size and one amount per fuel, such as
+      $326 for natural gas, paid for the fuel the household selects, including its electric account.
+  example: In FFY2026, a family of four with $39,936 of countable income ($3,328 a month, 124% of the 2025 guideline)
+    that heats with natural gas receives $221 in the rule's range E and $326 under the agency documents.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/mo/dss/liheap/amount.yaml
+    - policyengine_us/parameters/gov/states/mo/dss/liheap/eligibility/smi_rate.yaml
+    - policyengine_us/variables/gov/states/mo/dss/liheap/eligibility/mo_liheap_eligible.py
+    - policyengine_us/variables/gov/states/mo/dss/liheap/eligibility/mo_liheap_income_limit.py
+    - policyengine_us/variables/gov/states/mo/dss/liheap/mo_liheap.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10438
+  state: ruled
+  note: 'Ruled 2026-10-22: apply the operating 60% SMI limits and flat amounts; (14) sets payments using metrics
+    established by the division. The agency documents also pay the fuel the household selects, including its
+    electric account, where the rule''s table is headed Primary Fuel.'
 - id: us-mo:medicaid-published-dollar-limit-rounding
   program: medicaid
   years:
@@ -4745,6 +5189,260 @@ candidates:
     tax, the household''s property tax counts as rent, taking the larger of that and rent paid, so a rent-free occupant
     can qualify (mt_elderly_homeowner_or_renter_credit_gross_rent.py). The source-choice question remains open;
     the statute-first rule requires a model change if the regulation expands rather than interprets statutory eligibility.'
+- id: us-mt:liheap-business-equity-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Is Montana LIHEAP business asset equity limited to $25,000, as ARM 37.70.408(2) provides, or to the manual's
+    $29,290 (2025-2026) and $31,524 (2026-2027)?
+  sources:
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.408(2), effective May 27, 2023 and unchanged on May 23, 2026
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/68a4c23444a94d952bc1fa28f5b3c8f528f075b616525c34295b11b0630e1e4f#page=1
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2025-2026, section 3.13, PDF page 31
+    url: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=31
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2026-2027, section 3.13, PDF page 31
+    url: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=31
+  readings:
+    statute: Section 408(2) counts the equity value of business assets and allows business assets with equity value
+      that does not exceed $25,000.
+    other: Manual section 3.13 makes a household with business equity above $29,290 (2025-2026 edition) or $31,524
+      (2026-2027 edition) ineligible.
+  example: In FFY2026, a household with $27,000 of business equity is ineligible under the rule and passes the manual's
+    business equity test.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/eligibility/resources/business_equity_limit.yaml
+    - policyengine_us/variables/gov/states/mt/dphhs/liheap/eligibility/mt_liheap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10435
+  state: ruled
+  note: 'Ruled 2026-10-21 by the user under the 2026-10-19 statute-first rule: the rule''s $25,000.'
+- id: us-mt:liheap-categorical-premium-deduction
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Do out-of-pocket health insurance premiums reduce the income that sets a SNAP-categorical Montana LIHEAP
+    household's benefit multiplier, as ARM 37.70.407(1)(bb) provides with no categorical exception, or not, as manual
+    section 3.15 provides?
+  sources:
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.407(1)(bb), effective May 27, 2023 and unchanged on May 23, 2026
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/36b451e63d1ed5ab982f4c43f746503d7b5d88dc720f10b0fc9b151576d6e788#page=3
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.601(1)(a), effective May 23, 2026
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/b2add645c2eceddb643df5cdaf684339b968b43fc63b88f21ea882dfeb930366#page=1
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2025-2026, section 3.15, PDF page 40
+    url: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=40
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2026-2027, section 3.15, PDF page 40
+    url: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=40
+  readings:
+    statute: Section 407(1)(bb) provides that proof of out-of-pocket health insurance premiums paid by a member "will
+      reduce the income", with no categorical exception; 601(1)(a) varies the benefit by "household income level"
+      without defining income for categorically eligible households.
+    other: Manual section 3.15 provides that "Out-of-pocket insurance premiums are not deducted when an applicant is
+      determined categorically eligible."
+  example: In FFY2026, a SNAP-categorical Yellowstone County railroad retiree with a $16,000 annuity and a $2,434.80
+    Medicare Part B premium, in a two-bedroom single-family house heated with natural gas, receives $533 under the
+    manual, which PE-US follows ($16,000 is 102% of the $15,650 guideline, multiplier 0.69, $772 x 0.69 = $532.68),
+    and $602 with the premiums deducted ($13,565.20 is 87%, multiplier 0.78, $772 x 0.78 = $602.16).
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/mt/dphhs/liheap/income/mt_liheap_countable_income.py
+    - policyengine_us/variables/gov/states/mt/dphhs/liheap/payment/mt_liheap_benefit_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10435
+  state: ruled
+  note: 'Ruled 2026-10-21 by the user: categorical households'' benefit income follows manual sections 3.11 and 3.15,
+    so SNAP-categorical households use countable income without the premium deduction.'
+- id: us-mt:liheap-gift-threshold
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does Montana LIHEAP count a member's monetary gifts of $50 or more a month in full until May 22, 2026 and
+    exclude monetary gifts from May 23, 2026, as ARM 37.70.407(1)(w) provides, or count recurring gifts of $500 or more
+    per household, as manual section 3.15 provides?
+  sources:
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.407(1)(w), effective May 27, 2023 to May 22, 2026
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/36b451e63d1ed5ab982f4c43f746503d7b5d88dc720f10b0fc9b151576d6e788#page=2
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.407(1)(w), effective May 23, 2026
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/67c0cce58f641eb9e573034d17d76e21e7c3c27f2f915180538f865766863b61#page=2
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2025-2026, section 3.15, PDF page 36
+    url: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=36
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2026-2027, section 3.15, PDF page 36
+    url: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=36
+  readings:
+    statute: Until May 22, 2026, (w) excludes gifts of up to $50 a month per member and counts the entire gift when it
+      is $50 or more; from May 23, 2026, (w) excludes monetary gifts.
+    other: Manual section 3.15 counts recurring monetary gifts of $500 or more per household and excludes nonrecurring
+      gifts.
+  example: In FFY2026, a member's recurring $100 a month of gifts adds $1,200 a year under the rule and nothing under
+    the manual; in FFY2027, $600 a month adds nothing under the amended rule and $7,200 under the manual.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/income/gift_minimum.yaml
+    - policyengine_us/variables/gov/states/mt/dphhs/liheap/income/mt_liheap_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10435
+  state: ruled
+  note: 'Ruled under the 2026-10-19 statute-first rule: follow the administrative rule in force.'
+- id: us-mt:liheap-income-limit-size-nine
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Is a nine-member Montana LIHEAP household income-eligible only at or below 150% of the poverty guideline,
+    as ARM 37.70.406(1) provides, or at or below the published table's size-9 amount, which equals 60% of state median
+    income?
+  sources:
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.406(1), effective May 27, 2023 to May 22, 2026
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/b2d910910cc1ecf830fc66d844708df2504ed257f556ce252cc3b4d25dc84a88#page=1
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.406(1), effective May 23, 2026
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/f314cbda8448e499b69120f0401d35836fe02c4884e961091b2d56c86e3b1abc#page=1
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2025-2026, Appendix A 9.3 Table of Income Standards, PDF page 124
+    url: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=124
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2026-2027, Appendix A 9.3 Table of Income Standards, PDF page 126
+    url: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=126
+  readings:
+    statute: Section 406(1) makes households of nine or more members income-eligible only at or below 150% of the
+      poverty guideline for their size.
+    other: The 2025-2026 table prints $91,432 at size 9 and the 2026-2027 table $97,942, each 60% of state median income
+      and above 150% of the guideline.
+  example: In FFY2026, a nine-member household with $91,000 of income is eligible under the table and over 150% of the
+    2025 guideline ($89,475).
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/eligibility/smi_rate.yaml
+    - policyengine_us/variables/gov/states/mt/dphhs/liheap/eligibility/mt_liheap_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10435
+  state: ruled
+  note: 'Ruled 2026-10-21 by the user: published income tables.'
+- id: us-mt:liheap-incorporated-table-editions
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Do Montana LIHEAP's FFY2026 and FFY2027 income, resource and benefit tables follow the editions the rules
+    incorporate by reference or the 2025-2026 and 2026-2027 published tables?
+  sources:
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.406(2), effective May 27, 2023 to May 22, 2026 (2022-2023 income table)
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/b2d910910cc1ecf830fc66d844708df2504ed257f556ce252cc3b4d25dc84a88#page=1
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.406(2), effective May 23, 2026 (2025-2026 income table)
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/f314cbda8448e499b69120f0401d35836fe02c4884e961091b2d56c86e3b1abc#page=1
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.408(4), effective May 27, 2023 to May 22, 2026 (2022-2023 resource table)
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/68a4c23444a94d952bc1fa28f5b3c8f528f075b616525c34295b11b0630e1e4f#page=1
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.408(4), effective May 23, 2026 (2025-2026 resource table)
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/2421ff8e6709d83f812fd3c3a68f94c9895ab82bef2dcde672cf25d0869167c5#page=1
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.601(1), effective September 24, 2022 to May 22, 2026 (2022-2023 benefit matrix and
+      multipliers)
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/0074fe4c5989f116f77c281ac5736bf5b0f2facbfaf09daf76450ecad7fcdf47#page=1
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.601(1), effective May 23, 2026 (2025-2026 benefit matrix and multipliers)
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/b2add645c2eceddb643df5cdaf684339b968b43fc63b88f21ea882dfeb930366#page=1
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2026-2027, Appendix A 9.1-9.4, PDF pages 124-126
+    url: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=124
+  readings:
+    statute: Until May 22, 2026 the rules incorporate the 2022-2023 tables and from May 23, 2026 the 2025-2026 tables;
+      no rule incorporates the 2026-2027 tables.
+    other: The department publishes the 2025-2026 tables for the 2025-2026 heating season and the 2026-2027 manual tables
+      for the 2026-2027 season.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/eligibility/resources/limit.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/base_benefit/coal.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/base_benefit/electricity.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/base_benefit/fuel_oil.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/base_benefit/natural_gas.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/base_benefit/propane.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/base_benefit/wood.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_1_3.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_10.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_11.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_12.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_4.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_5.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_6.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_7.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_8.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/multiplier/district_9.yaml
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/payment/non_traditional_benefit.yaml
+    - policyengine_us/variables/gov/states/mt/dphhs/liheap/eligibility/mt_liheap_income_limit.py
+    - policyengine_us/variables/gov/states/mt/dphhs/liheap/mt_liheap.py
+    - policyengine_us/variables/gov/states/mt/dphhs/liheap/payment/mt_liheap_multiplier.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10435
+  state: ruled
+  note: 'Ruled 2026-10-21 by the user: published income tables for FFY2026-FFY2027.'
+- id: us-mt:liheap-minor-member-income
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does Montana LIHEAP count the income of household members under 18, as ARM 37.70.401(1) provides, or only
+    the income of members 18 or older, as manual section 3.12 provides?
+  sources:
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.401(1), effective May 27, 2023 to May 22, 2026
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/325b36e5abb6a3bfa036c3802fc997ed50711b5407868ec8f4b61eabc538e3ed#page=1
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.401(1), effective May 23, 2026
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/fa158b2cdbf766e585e1fbf5811523e0dff4e760111590ae75d0456ee81551ad#page=1
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2026-2027, sections 3.12, 3.15 and 3.22, PDF pages 30, 35 and 58
+    url: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=30
+  - kind: plan
+    citation: Montana FY2026 LIHEAP State Plan, item 1.9, earned income of a child under the age of 18
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MT_Plan_2026.pdf#page=7
+  readings:
+    statute: Section 401(1) counts all nonexcluded income received by the members of the household; the only age-based
+      exclusion in 407(1) is (d), OASDI benefits of full-time students aged 18 to 22.
+    other: Manual section 3.12 counts only the income of members 18 or older, and sections 3.15 and 3.22 repeat it;
+      plan item 1.9 lists earned income of a child under 18.
+  example: In FFY2026, a Yellowstone County parent with $20,000 of wages and a 10-year-old with $9,600 of survivors
+    benefits in a two-bedroom house heated with natural gas receive $463 counting the child's benefits and $602
+    without them.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/mt/dphhs/liheap/income/student_minimum_age.yaml
+    - policyengine_us/variables/gov/states/mt/dphhs/liheap/income/mt_liheap_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10435
+  state: ruled
+  note: 'Ruled under the 2026-10-19 statute-first rule: count every member''s nonexcluded income.'
 - id: us-mt:medical-floor-agi-base
   program: income-tax
   years:
@@ -6803,26 +7501,33 @@ candidates:
     to: 2027
     type: program
     note: program year as the program defines it
-  question: Do interest and dividends count from the first dollar under the plan or only above $25 a month under
-    the handbook?
+  question: Do interest and dividends count from the first dollar under 55 Pa. Code and the plan or only above $25 a
+    month under the handbook?
   sources:
-  - kind: guidance
-    citation: FY2026 plan 601.82(4)(ix), page 51
-    url: null
+  - kind: regulation
+    citation: 55 Pa. Code 601.82(4)(ix)
+    url: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/055/chapter601/s601.82.html
+  - kind: plan
+    citation: FY2026 Pennsylvania LIHEAP State Plan 601.82(4)(ix), page 51
+    url: https://web.archive.org/web/20251016232745/https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=51
   - kind: manual
-    citation: LIHEAP Handbook 650.3(9)
+    citation: Pennsylvania LIHEAP Handbook 650.3(9)
     url: null
   readings:
-    statute: No statutory rule supplied; the plan counts interest and dividends without a threshold.
-    other: The handbook counts amounts over $25 a month.
+    statute: No statute is supplied; 55 Pa. Code 601.82(4)(ix) counts "Interest from investments or bank accounts" and
+      plan 601.82(4)(ix) counts "Interest and/or dividends from investments or bank accounts", with no threshold.
+    other: Handbook 650.3(9) counts interest and dividends "of more than $25 per month".
+  example: A one-person household with $25 a month of interest has $300 a year of countable income under the regulation
+    and plan and $0 under the handbook.
   pe_us:
-    follows: unknown
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/pa/dhs/liheap/income/sources/unearned.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9971
-  state: unreviewed
-  note: 'PE-US follows the handbook; obtain the plan link and effective versions. The code identifier is inferred,
-    not confirmed. Code not yet on main: pa_liheap_countable_income.'
+  state: ruled
+  note: PE-US counts interest and dividends in full under the regulation and plan (ruled 2026-10-29). Dividends count
+    under the plan's wording. The handbook is served only over http.
 - id: us-pa:liheap-railroad-retirement-medicare-premium
   program: liheap
   years:
@@ -6830,26 +7535,36 @@ candidates:
     to: 2027
     type: program
     note: program year as the program defines it
-  question: Are Medicare premiums deducted from Railroad Retirement excluded under the handbook or only premiums
-    deducted from Social Security under the plan?
+  question: Are Medicare premiums deducted from Railroad Retirement excluded, as the handbook says, or only premiums
+    deducted from Social Security, as 55 Pa. Code and the plan say?
   sources:
-  - kind: guidance
-    citation: FY2026 plan 601.84(10)
-    url: null
+  - kind: regulation
+    citation: 55 Pa. Code 601.84(10)
+    url: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/055/chapter601/s601.84.html
+  - kind: plan
+    citation: FY2026 Pennsylvania LIHEAP State Plan 601.84(10), page 52
+    url: https://web.archive.org/web/20251016232745/https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=52
   - kind: manual
-    citation: LIHEAP Handbook 650.6(10)
+    citation: Pennsylvania LIHEAP Handbook 650.6(10)
     url: null
   readings:
-    statute: No statutory rule supplied; the plan excludes only the premium deducted from Social Security.
-    other: The handbook also excludes premiums deducted from Railroad Retirement.
+    statute: No statute is supplied; 55 Pa. Code 601.84(10) excludes "Deductions for Medicare premiums deducted from Social
+      Security benefit payments" and plan 601.84(10) excludes "Medicare premiums deducted from Social Security benefit
+      payments".
+    other: Handbook 650.6(10) excludes "Medicare premiums deducted from Social Security, Railroad Retirement, and other
+      benefit payments."
+  example: A person aged 67 with a $24,000 railroad annuity and the $2,434.80 2026 Part B premium has $24,000 of income
+    under the regulation and plan, over the $23,475 one-person limit, and $21,565.20 under the handbook.
   pe_us:
-    follows: unknown
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/pa/dhs/liheap/income/pa_liheap_income.py
+    - policyengine_us/parameters/gov/states/pa/dhs/liheap/income/sources/unearned.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9971
-  state: unreviewed
-  note: 'PE-US follows the handbook; obtain section links and effective versions. The code identifier is inferred,
-    not confirmed. Code not yet on main: pa_liheap_countable_income.'
+  state: ruled
+  note: PE-US nets the Medicare Part B premium from Social Security only and counts railroad retirement in full as a
+    pension (ruled 2026-10-29). The handbook is served only over http.
 - id: us-pa:liheap-supplement-child-age
   program: liheap
   years:
@@ -6859,9 +7574,9 @@ candidates:
     note: program year as the program defines it
   question: Does a household whose only vulnerable member is five qualify for the supplement?
   sources:
-  - kind: guidance
-    citation: FY2026 plan pages 34 and 43
-    url: null
+  - kind: plan
+    citation: FY2026 Pennsylvania LIHEAP State Plan, pages 34 and 43
+    url: https://web.archive.org/web/20251016232745/https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=34
   - kind: guidance
     citation: July 30, 2026 announcement
     url: null
@@ -6869,17 +7584,20 @@ candidates:
     citation: Operations Memoranda 25-08-01 and 26-07-01, page 2
     url: null
   readings:
-    statute: No statutory rule supplied; the plan's age-five-and-under and announcement's under-six wording include
-      five-year-olds.
-    other: The memoranda's under-five wording excludes five-year-olds.
+    statute: No statute or regulation sets the age; the plan's "age five and under" and the announcement's under-six
+      wording include five-year-olds.
+    other: The memoranda's "under the age of five" wording excludes five-year-olds.
   example: A household whose only vulnerable member is five receives no supplement in the model.
   pe_us:
-    follows: unknown
-    code: []
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/pa/dhs/liheap/payment/pa_liheap_supplement.py
+    - policyengine_us/parameters/gov/states/pa/dhs/liheap/payment/supplement/child_age_limit.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9971
-  state: unreviewed
-  note: PE-US follows the memoranda; reconcile the age cutoff and verify the cited page.
+  state: ruled
+  note: PE-US follows the memoranda, the issuance directives for a payment the plan says "may" be issued (ruled
+    2026-10-28). The memoranda are served only over http.
 - id: us-pa:snap-child-support-deduction
   program: snap
   years:

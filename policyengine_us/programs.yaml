@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, MD, MN, MS, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
+    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
     state_implementations:
       - state: AL
         status: partial
@@ -1043,6 +1043,14 @@ programs:
         parameter_prefix: gov.states.ok.dhs.liheap
         verified_years: "2025-2027"
         notes: FY2025-FY2027 regular winter heating only, using the Appendix C-7-A payment matrix. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: PA
+        status: partial
+        name: Pennsylvania LIHEAP
+        full_name: Pennsylvania Low Income Home Energy Assistance Program
+        variable: pa_liheap
+        parameter_prefix: gov.states.pa.dhs.liheap
+        verified_years: "2025-2027"
+        notes: FY2025-FY2027 regular heating only, from the FY2025 and FY2026 benefit matrices and the current benefit lookup. Crisis, cooling and weatherization assistance are out of scope.
       - state: RI
         status: partial
         name: Rhode Island LIHEAP
@@ -1108,6 +1116,14 @@ programs:
         parameter_prefix: gov.states.ky.dcbs.liheap
         verified_years: "2025-2026"
         notes: FY2025-FY2026 regular heating only, from the published benefit workbooks. Crisis and cooling assistance are out of scope.
+      - state: LA
+        status: partial
+        name: Louisiana LIHEAP
+        full_name: Louisiana Low Income Home Energy Assistance Program
+        variable: la_liheap
+        parameter_prefix: gov.states.la.lhc.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating-season benefit from the energy burden matrix, including the $100 priority supplement. The larger summer cooling award, crisis and weatherization assistance are out of scope.
       - state: MD
         status: partial
         name: Maryland MEAP
@@ -1116,6 +1132,14 @@ programs:
         parameter_prefix: gov.states.md.dhs.meap
         verified_years: "2025-2027"
         notes: FY25-FY27 regular heating only, with the fuel tables, the Garrett County multiplier and the subsidized and nominal levels. The SNAP nominal payment, cooling, EUSP, arrearage, crisis and equipment benefits are out of scope.
+      - state: ME
+        status: partial
+        name: Maine HEAP
+        full_name: Maine Home Energy Assistance Program
+        variable: me_heap
+        parameter_prefix: gov.states.me.msha.heap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 Fuel Assistance under both points matrices, with an estimated $22 per point because MaineHousing has not announced one. Crisis, the TANF fuel supplement, weatherization and CHIP are out of scope.
       - state: MN
         status: partial
         name: Minnesota EAP
@@ -1124,6 +1148,14 @@ programs:
         parameter_prefix: gov.states.mn.commerce.eap
         verified_years: "2026-2027"
         notes: FFY2026-FFY2027 Primary Heat, Minnesota's single regular benefit, based on total household energy costs including electricity. Crisis, Energy Related Repair and weatherization are out of scope.
+      - state: MO
+        status: partial
+        name: Missouri LIHEAP
+        full_name: Missouri Low Income Home Energy Assistance Program
+        variable: mo_liheap
+        parameter_prefix: gov.states.mo.dss.liheap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular Energy Assistance only, including the heat-in-rent payment. Crisis (ECIP), cooling and weatherization assistance are out of scope.
       - state: MS
         status: partial
         name: Mississippi LIHEAP
@@ -1132,6 +1164,14 @@ programs:
         parameter_prefix: gov.states.ms.mdhs.liheap
         verified_years: "2026"
         notes: FY2026 regular assistance for heating fuel and electric bills, using the published matrix as printed. Crisis assistance and energy equipment are out of scope.
+      - state: MT
+        status: partial
+        name: Montana LIHEAP
+        full_name: Montana Low Income Home Energy Assistance Program
+        variable: mt_liheap
+        parameter_prefix: gov.states.mt.dphhs.liheap
+        verified_years: "2026-2027"
+        notes: FFY2026-FFY2027 regular heating benefit from the base benefit matrix and district multipliers, including the modified benefit for subsidized heat-in-rent households. Emergency (CRF), proration and weatherization are out of scope.
       - state: NC
         status: partial
         name: North Carolina LIEAP
