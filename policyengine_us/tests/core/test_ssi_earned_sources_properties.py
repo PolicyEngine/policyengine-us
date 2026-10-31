@@ -505,6 +505,9 @@ def test_spouse_loss_never_reduces_ct_or_md_applicant_earnings(policy, batch):
     couple = simulation.calculate("ssi_couple_computation_applies", MONTH)
     assert not np.any(couple)
     in_ct = np.array([pair[0]["state"] == "CT" for pair in batch])
+    # Every Connecticut spouse here has a loss: own earnings floor at zero, so
+    # an own residual loss is not deducted again from deemed spouse earnings.
+    assert np.all(simulation.calculate("ct_ssp_own_earned_income", YEAR) >= 0)
     own = applicant("ct_ssp_own_earned_income")
     np.testing.assert_array_equal(own[:, 0], own[:, 1])
     np.testing.assert_array_equal(own[:, 0], np.where(in_ct, earned[:, 0], 0))
