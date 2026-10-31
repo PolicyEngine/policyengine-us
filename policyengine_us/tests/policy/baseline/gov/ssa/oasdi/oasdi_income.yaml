@@ -99,8 +99,9 @@
     # $100,000 / 0.9235 = $108,283.70, leaving A = $91,716.30.
     owners_draw_niit_exclusion: 108_283.70
     s770_active_business_income: 91_716.30
-    # X = $200,000; n = $100,000 and a = $91,716.30. Liability $3,800 +
-    # $12,400 + 16.2% * $91,716.30 = $31,058.04; bill mode transfers 62%.
+    # MAGI excess $200,000; NII base $100,000; active base $91,716.30.
+    # Liability $3,800 + $12,400 + 16.2% * $91,716.30 = $31,058.04; bill
+    # mode transfers 62%.
     net_investment_income_tax: 31_058.04
     oasdi_niit_revenue: 19_255.98
     # $24,800 + $19,255.98. Leaving the taxed draw in the active base would

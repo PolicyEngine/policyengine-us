@@ -12,9 +12,9 @@ class oasdi_income(Variable):
         "oasdi_niit_revenue, each counted once. Excludes reserve interest, "
         "Railroad Retirement interchange and general-fund reimbursements, "
         "which the model does not represent. tob_revenue_oasdi differences "
-        "income tax including the net investment income tax, so with an S.770 "
-        "section 8 option on, NIIT that benefit inclusion triggers also "
-        "enters oasdi_niit_revenue's transfer."
+        "income tax including the net investment income tax, so it carries "
+        "the NIIT that benefit inclusion adds; with an S.770 section 8 option "
+        "on, oasdi_niit_revenue's transfer also counts part of that increase."
     )
     unit = USD
 

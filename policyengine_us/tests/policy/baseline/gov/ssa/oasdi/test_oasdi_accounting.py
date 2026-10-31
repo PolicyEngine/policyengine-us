@@ -7,7 +7,7 @@ Each draw builds four to six households of one to three adults, filing as
 singles or as a joint couple plus singles, alongside fixed boundary witnesses,
 in one vectorized simulation that shares the benefit-taxation counterfactuals
 across the batch. Hypothesis tries the simplest draw first, so each strategy's
-first choice is a boundary value: that draw is a batch of beneficiaries aged 70
+first choice is an informative nonzero value: that draw is a batch of beneficiaries aged 70
 with wages above the base, self-employment earnings and taxable benefits. The
 second draw is random.
 
@@ -104,7 +104,8 @@ FIXED_HOUSEHOLDS = (
     ([adult(wages=300_000, interest=100_000)], False),
 )
 
-# Each first choice is a boundary value, so the simplest draw is informative.
+# Each first choice is an informative nonzero value, so the simplest draw is
+# informative.
 PERSON = st.builds(
     adult,
     wages=st.one_of(st.sampled_from([CAP + 1_000, CAP, 0]), st.integers(0, 300_000)),

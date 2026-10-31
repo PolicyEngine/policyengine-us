@@ -59,12 +59,13 @@ for the transfer modes.
 so `niit_magi`, so any NIIT that benefit inclusion triggers lands in the benefit
 taxation term. The trust fund transfer covers only chapter 1 income tax
 liabilities, and the NIIT sits in chapter 2A, so that piece doesn't belong in
-the term even at baseline. With an S.770 section 8 option on, `oasdi_niit_revenue`
-also transfers a share of the whole resulting NIIT, so `oasdi_income` counts the
-NIIT that benefit inclusion triggers in both terms. The fix belongs in
-`tob_revenue_oasdi`, which these outputs read unchanged. Until it lands, treat
-`oasdi_income` as overstated for beneficiaries whose inclusion pushes them past
-the NIIT threshold under section 8.
+the term even at baseline. With an S.770 section 8 option on,
+`oasdi_niit_revenue` also transfers shares of the section 8 add-on and active
+taxes, and in bill or combined-rate mode of the existing-rate NIIT. Benefit
+inclusion raises those taxes too, so `oasdi_income` counts that part of the
+increase in both terms. The fix belongs in `tob_revenue_oasdi`, which these
+outputs read unchanged. Until it lands, treat `oasdi_benefit_taxation_revenue`,
+and so `oasdi_income`, as overstated by the NIIT that benefit inclusion adds.
 
 ## Entity mapping and weights
 
@@ -103,8 +104,8 @@ state and local government jobs, as covered wages. This wage-coverage
 assumption differs from the missing cash flows.
 
 **Pass-through classification in the scoring data.** The owners' draw term in
-payroll liability and the active-business part of `oasdi_niit_revenue` depend on
-pass-through classification fields. The certified artifact's stored columns
+payroll liability and `oasdi_niit_revenue`, in both its NII and active parts,
+depend on pass-through classification fields. The certified artifact's stored columns
 don't include `passive_partnership_s_corp_income`, which therefore defaults to
 zero. Population values for those two terms stay provisional until a scoring
 artifact carries the repaired fields and the preflight receipt confirms them;
