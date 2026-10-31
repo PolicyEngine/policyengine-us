@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.status.ssi_federal_living_arrangement import (
     SSIFederalLivingArrangement,
 )
@@ -18,7 +21,7 @@ def ssi_state_supplement(
     SI 02001.005 and SI 02001.010. Callers apply state-specific eligibility.
     """
     joint = person("ssi_couple_computation_applies", period)
-    couple_total = person.marital_unit.sum(couple_rate / 2)
+    couple_total = _ssi_couple_total(person, period.this_year, couple_rate / 2)
     standard = where(joint, couple_total / 2, individual_rate)
     countable = person("ssi_countable_income", period)
     federal_amount = person("ssi_amount_if_eligible", period)

@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class is_optional_senior_or_disabled_income_eligible(Variable):
@@ -29,7 +32,7 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
         )
         # SSI financial responsibility rules (42 CFR 435.602): the unit is
         # the individual or the married couple, not the tax filing unit.
-        income = person.marital_unit.sum(personal_income)
+        income = _ssi_couple_total(person, period, personal_income)
         income_limit = person(
             "medicaid_optional_senior_or_disabled_income_limit", period
         )

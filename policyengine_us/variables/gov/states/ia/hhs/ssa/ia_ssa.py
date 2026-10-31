@@ -1,4 +1,10 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.ia.hhs.ssa._ia_ssa_spouses import (
+    ia_ssa_spouse_value,
+)
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 from policyengine_us.variables.gov.states.ia.hhs.ssa._ia_ssa_smme_spouse_income import (
     ia_ssa_smme_spouse_is_sga_applicant,
 )
@@ -68,7 +74,9 @@ class ia_ssa(Variable):
         # living expenses from the previous living arrangement, but do not
         # disregard an amount that is over the SSI standard". The model follows
         # the rule's fixed amount (ia_ssa.yaml Cases 52-53).
-        has_spouse = person("ia_ssa_has_spouse", period)
+        has_spouse = person("ia_ssa_has_spouse", period) | person(
+            "ia_ssa_rcf_couple_budget", period
+        )
         entry = where(has_spouse, federal.amount.couple, federal.amount.individual)
         entry = where(
             person("ia_ssa_rcf_couple_budget", period), entry / 2, entry
@@ -95,10 +103,12 @@ class ia_ssa(Variable):
             if source not in excluded:
                 has_other_income = has_other_income | (person(source, period) > 0)
         has_other_income = where(
-            joint, person.marital_unit.any(has_other_income), has_other_income
+            joint,
+            has_other_income | ia_ssa_spouse_value(person, period, has_other_income),
+            has_other_income,
         )
         flh = category == c.FAMILY_LIFE_HOME
-        recipients = person.marital_unit.sum(flh)
+        recipients = _ssi_couple_total(person, period.this_year, flh.astype(int))
         top_up = (
             ~has_other_income
             * receives_ssi

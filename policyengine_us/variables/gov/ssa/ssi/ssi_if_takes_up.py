@@ -17,23 +17,7 @@ class ssi_if_takes_up(Variable):
         if parameters(period).gov.ssa.ssi.abolish_ssi:
             return 0
 
-        uncapped = person("uncapped_ssi", period)
-
-        # Apply floor: SSI cannot be negative
-        benefit = max_(0, uncapped)
-
-        # Apply cap when spousal deeming: cannot exceed individual FBR
-        # per 20 CFR §416.1163
-        # This cap is necessary when spouse's gross income is just above $483:
-        # - Deeming applies (uses couple FBR)
-        # - After exclusions, countable may be low
-        # - Benefit could exceed individual FBR without this cap
-        deeming_applies = person("is_ssi_spousal_deeming_applies", period.this_year)
-        p = parameters(period).gov.ssa.ssi.amount
-        capped_benefit = min_(benefit, p.individual)
-
-        return where(
-            deeming_applies,
-            capped_benefit,
-            benefit,
-        )
+        # Apply floor: SSI cannot be negative. Under spousal deeming,
+        # uncapped_ssi already applies 20 CFR 416.1163(e)(2), which also keeps
+        # the benefit at or below the individual Federal benefit rate.
+        return max_(0, person("uncapped_ssi", period))

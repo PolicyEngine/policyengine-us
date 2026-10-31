@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+    _ssi_spouse_index,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.status.ssi_federal_living_arrangement import (
     SSIFederalLivingArrangement,
 )
@@ -23,7 +27,9 @@ def ca_capi_couple_computation(person, period):
     only the California facility input marks it.
     """
     in_facility = ca_capi_in_title_xix_facility(person, period)
-    one_in_facility = person.marital_unit.sum(in_facility) == 1
+    one_in_facility = (
+        _ssi_couple_total(person, period.this_year, in_facility.astype(int)) == 1
+    )
     return person("ssi_couple_computation_applies", period) & ~one_in_facility
 
 
@@ -35,11 +41,15 @@ def ca_capi_spouse_ssi_ssp(person, period):
     among the unit's members eligible for it; a citizen disabled child's
     supplement in the unit is then attributed to the spouse.
     """
-    spouse = ~person("ca_capi_eligible_person", period.this_year)
-    spouse_ssi = person.marital_unit.sum(person("ssi", period) * spouse)
+    spouse_index = _ssi_spouse_index(person, period.this_year)
+    safe_spouse = np.maximum(spouse_index, 0)
+    spouse = (spouse_index >= 0) & ~person("ca_capi_eligible_person", period.this_year)[
+        safe_spouse
+    ]
+    spouse_ssi = person("ssi", period)[safe_spouse] * spouse
     ssp_eligible = person("ca_state_supplement_eligible_person", period)
-    spouse_ssp_share = person.marital_unit.sum(ssp_eligible * spouse) / max_(
-        person.spm_unit.sum(ssp_eligible), 1
+    spouse_ssp_share = (
+        ssp_eligible[safe_spouse] * spouse / max_(person.spm_unit.sum(ssp_eligible), 1)
     )
     spouse_ssp = spouse_ssp_share * person.spm_unit("ca_state_supplement", period)
     return spouse_ssi + spouse_ssp
@@ -95,9 +105,13 @@ def ca_capi_ssi_ssp_standard(person, period, parameters):
     )
 
     joint = ca_capi_couple_computation(person, period)
-    blind_count = where(joint, person.marital_unit.sum(blind), 2 * blind)
+    blind_count = where(
+        joint, _ssi_couple_total(person, period.this_year, blind.astype(int)), 2 * blind
+    )
     aged_or_disabled_count = where(
-        joint, person.marital_unit.sum(aged_or_disabled), 2 * aged_or_disabled
+        joint,
+        _ssi_couple_total(person, period.this_year, aged_or_disabled.astype(int)),
+        2 * aged_or_disabled,
     )
     two_blind = (blind_count > 1) * p.blind.married.two_blind
     one_blind = (blind_count == 1) * p.blind.married.one_blind
@@ -135,5 +149,9 @@ def ca_capi_ssi_ssp_standard(person, period, parameters):
         ],
         default=max_(community_couple / 2, fbr.couple / 2),
     )
-    couple = where(joint, person.marital_unit.sum(couple_share), 2 * couple_share)
+    couple = where(
+        joint,
+        _ssi_couple_total(person, period.this_year, couple_share),
+        2 * couple_share,
+    )
     return individual, couple

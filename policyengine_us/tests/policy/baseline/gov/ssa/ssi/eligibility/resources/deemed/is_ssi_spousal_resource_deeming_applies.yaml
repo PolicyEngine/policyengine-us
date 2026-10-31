@@ -355,14 +355,18 @@
       home:
         members: [mother, claimant, spouse]
   output:
-    is_ssi_spousal_resource_deeming_applies: [false, true, true]
-    ssi_resources_deemed_from_ineligible_spouse: [0, 3001, 0]
+    # 416.1801(c): two aged, blind or disabled spouses living together are an
+    # eligible couple whatever their tax roles, so 416.1205(b) combines their
+    # resources through the joint claim rather than spousal deeming.
+    ssi_claim_is_joint: [false, true, true]
+    is_ssi_spousal_resource_deeming_applies: [false, false, false]
+    ssi_resources_deemed_from_ineligible_spouse: [0, 0, 0]
     meets_ssi_resource_test: [true, false, false]
 
 # Explicit marital units stand whatever tax roles the model infers: with
 # roles omitted the model may treat one spouse as the mother's tax spouse and
-# the other as her dependent, but 416.1205(b) still combines the couple's
-# resources: 0 + 3,001 > 3,000.
+# the other as her dependent, but the couple is still a joint claim and
+# 416.1205(b) combines their resources: 0 + 3,001 > 3,000.
 - name: Married adults in a parent's tax unit with roles omitted count each other's resources
   period: 2026-01
   input:
@@ -394,7 +398,8 @@
       home:
         members: [mother, claimant, spouse]
   output:
-    ssi_resources_deemed_from_ineligible_spouse: [0, 3001, 0]
+    ssi_claim_is_joint: [false, true, true]
+    ssi_resources_deemed_from_ineligible_spouse: [0, 0, 0]
     meets_ssi_resource_test: [true, false, false]
 
 # 416.1202(a)(2) excludes retroactive military payments of an ineligible
@@ -441,7 +446,10 @@
       home:
         members: [mother, claimant, spouse]
   output:
-    ssi_resources_deemed_from_ineligible_spouse: [0, 2000, 2000]
+    # The couple is a joint claim (416.1801(c)), so each spouse's 2,000
+    # counts in full in the combined test.
+    ssi_claim_is_joint: [false, true, true]
+    ssi_resources_deemed_from_ineligible_spouse: [0, 0, 0]
     meets_ssi_resource_test: [true, false, false]
 
 # A spouse who fails SSI's citizenship or qualified-noncitizen condition is
@@ -492,3 +500,38 @@
     ssi_resources_deemed_from_ineligible_spouse: [0, 1001, 0]
     meets_ssi_resource_test: [true, true, false]
 
+# The same rule for a couple in the usual tax-unit head and spouse roles:
+# both are aged, so their claim is joint, but the spouse is not eligible for
+# SSI (416.1801(c)(1), 416.1160(d)). Resources are deemed with the
+# ineligible-spouse exclusion: 3,001 - 2,000 = 1,001 <= 3,000.
+- name: An immigration-ineligible aged spouse in the tax-unit spouse role keeps ineligible-spouse exclusions
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 70
+        immigration_status: CITIZEN
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 68
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 3001
+        ssi_resource_deeming_excluded_military_resources: 2000
+    tax_units:
+      tax_unit:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+  output:
+    ssi_claim_is_joint: [true, true]
+    is_ssi_spousal_resource_deeming_applies: [true, true]
+    ssi_resources_deemed_from_ineligible_spouse: [1001, 0]
+    meets_ssi_resource_test: [true, false]

@@ -543,3 +543,132 @@
     sd_ssp_care:
       2026-01: 771.6
       2026-02: 1_166.48
+
+# ARSD 67:46:04:10(6) shares income equally for spouses entering care in the
+# same month, whatever their current room or household. ARSD 67:46:06:03
+# imports that income rule into the payment; 67:46:05:30 sets a $3,000 joint
+# resource limit when both spouses begin long-term care in the same month.
+# https://sdlegislature.gov/Rules/Administrative/67:46:04:10
+# https://sdlegislature.gov/Rules/Administrative/67:46:06:03
+# https://sdlegislature.gov/Rules/Administrative/67:46:05:30
+# ($1,800 + $1,200) / 2 = $1,500 income each; $2,000 approved care cost
+# - $1,500 = $500 payment each. $1,600 + $1,600 = $3,200 resources exceed
+# the $3,000 joint limit, so neither spouse receives a payment in that case.
+- name: Review SD joint care entry shares income across separate facility rooms
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        pension_income:
+          2026: 21600
+        ssi_countable_resources:
+          2026: 500
+        sd_ssp_care_joint_entry: true
+        sd_ssp_care_certified: true
+        sd_ssp_care_setting: ADULT_FOSTER_CARE
+        sd_ssp_approved_care_cost: 2000
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        pension_income:
+          2026: 14400
+        ssi_countable_resources:
+          2026: 500
+        sd_ssp_care_joint_entry: true
+        sd_ssp_care_certified: true
+        sd_ssp_care_setting: ADULT_FOSTER_CARE
+        sd_ssp_approved_care_cost: 2000
+    tax_units:
+      joint_tax_unit:
+        members:
+        - husband
+        - wife
+    marital_units:
+      declared_marriage:
+        members:
+        - husband
+        - wife
+    households:
+      husband_care_room:
+        members:
+        - husband
+        state_code:
+          2026: SD
+      wife_care_room:
+        members:
+        - wife
+        state_code:
+          2026: SD
+  output:
+    sd_ssp_care:
+    - 500
+    - 500
+    ssi:
+    - 0
+    - 0
+- name: Review SD joint entry resources exceed couple limit across facility households
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        pension_income:
+          2026: 21600
+        ssi_countable_resources:
+          2026: 1600
+        sd_ssp_care_joint_entry: true
+        sd_ssp_care_certified: true
+        sd_ssp_care_setting: ADULT_FOSTER_CARE
+        sd_ssp_approved_care_cost: 2000
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        pension_income:
+          2026: 14400
+        ssi_countable_resources:
+          2026: 1600
+        sd_ssp_care_joint_entry: true
+        sd_ssp_care_certified: true
+        sd_ssp_care_setting: ADULT_FOSTER_CARE
+        sd_ssp_approved_care_cost: 2000
+    tax_units:
+      joint_tax_unit:
+        members:
+        - husband
+        - wife
+    marital_units:
+      declared_marriage:
+        members:
+        - husband
+        - wife
+    households:
+      husband_care_room:
+        members:
+        - husband
+        state_code:
+          2026: SD
+      wife_care_room:
+        members:
+        - wife
+        state_code:
+          2026: SD
+  output:
+    sd_ssp_care:
+    - 0
+    - 0
+    ssi:
+    - 0
+    - 0

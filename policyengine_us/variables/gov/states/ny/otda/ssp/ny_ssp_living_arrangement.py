@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.status.ssi_federal_living_arrangement import (
     SSIFederalLivingArrangement,
 )
@@ -65,7 +68,10 @@ class ny_ssp_living_arrangement(Variable):
             & (care == NYSSPCareSetting.NONE)
         )
         housemates = person.household.sum(housemate) - housemate
-        spouse = person.marital_unit.sum(housemate) - housemate
+        spouse = (
+            _ssi_couple_total(person, period.this_year, housemate.astype(int))
+            - housemate
+        )
         alone = housemates == where(joint, spouse, 0)
         minor = person("ny_ssp_is_minor", period.this_year)
         return select(

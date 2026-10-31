@@ -1,16 +1,18 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.ia.hhs.ssa._ia_ssa_spouses import (
+    ia_ssa_spouse_value,
+)
 
 
 def ia_ssa_smme_spouse_is_not_ineligible(person, period):
-    """Whether the other member of a two-person marital unit is not an
+    """Whether the co-resident spouse is not an
     ineligible spouse under 8-E p.12: a person SSI treats as aged, blind or
     disabled, or an SMME applicant working above the SGA level, who receives
     full Medicaid under a group that does not rely on State Supplementary
     Assistance (6-B PDF page 76), such as MEPD (8-F PDF page 114) or 1619(b)
     (8-F PDF page 88). For an
-    applicant whom SSI does not count, any such member is the spouse.
-    Callers gate on ia_ssa_has_spouse, so the marital-unit sum less the
-    person's own value is the spouse's."""
+    applicant whom SSI does not count, that person's spouse is still found
+    by marriage rather than SSI eligibility or tax-unit role."""
     abd = person("is_ssi_aged_blind_disabled", period.this_year)
     sga_applicant = (
         person("meets_ssi_disability_criteria", period.this_year)
@@ -18,7 +20,7 @@ def ia_ssa_smme_spouse_is_not_ineligible(person, period):
         & person("ia_ssa_smme_coverage_eligible", period)
     )
     status = abd | sga_applicant
-    return person.marital_unit.sum(status) - status > 0
+    return ia_ssa_spouse_value(person, period, status)
 
 
 def ia_ssa_smme_spouse_is_sga_applicant(person, period):
@@ -26,13 +28,12 @@ def ia_ssa_smme_spouse_is_sga_applicant(person, period):
     an SMME applicant working above the SGA level whose SMME income combines
     the couple's income. SSI deems from that applicant, but under 8-E p.12
     the applicant is not an ineligible spouse, so the couple is combined.
-    The applicant's flag requires ia_ssa_has_spouse, so the marital-unit sum
-    less the person's own value is the spouse's."""
+    Unrelated household adults never enter this spouse test."""
     applicant = person("ia_ssa_smme_spousal_deeming_applies", period) & person(
         "ia_ssa_smme_coverage_eligible", period
     )
     abd = person("is_ssi_aged_blind_disabled", period.this_year)
-    return abd & (person.marital_unit.sum(applicant) - applicant > 0)
+    return abd & ia_ssa_spouse_value(person, period, applicant)
 
 
 def ia_ssa_smme_spouse_income(person, period):
@@ -41,8 +42,7 @@ def ia_ssa_smme_spouse_income(person, period):
     first (20 CFR 416.1163(b)(3)). A spouse who is not an ineligible spouse
     is combined as for an eligible couple, with no allocations and after the
     spouse's own student earned income exclusion (20 CFR 416.1112(c)(3)).
-    Callers gate on ia_ssa_has_spouse, so the marital-unit sum less the
-    person's own value is the spouse's. As in SSI's own deeming, support and
+    Only the identified co-resident spouse contributes. As in SSI's own deeming, support and
     alimony the spouse pays are not deducted (20 CFR 416.1161(a)(10), 8-E
     p.12; issue 10454), children are found through the applicant's tax unit,
     no allocation is skipped for a child who receives public
@@ -53,9 +53,11 @@ def ia_ssa_smme_spouse_income(person, period):
     unearned = person("ssi_unearned_income", period)
     exclusion = person("ssi_blind_or_disabled_working_student_exclusion", period)
     not_ineligible = ia_ssa_smme_spouse_is_not_ineligible(person, period)
-    spouse_exclusion = (person.marital_unit.sum(exclusion) - exclusion) * not_ineligible
-    spouse_earned = max_(person.marital_unit.sum(earned) - earned - spouse_exclusion, 0)
-    spouse_unearned = person.marital_unit.sum(unearned) - unearned
+    spouse_exclusion = ia_ssa_spouse_value(person, period, exclusion) * not_ineligible
+    spouse_earned = max_(
+        ia_ssa_spouse_value(person, period, earned) - spouse_exclusion, 0
+    )
+    spouse_unearned = ia_ssa_spouse_value(person, period, unearned)
     allocations = (
         add(person.tax_unit, period, ["ssi_ineligible_child_allocation"])
         * ~not_ineligible

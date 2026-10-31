@@ -1,0 +1,280 @@
+# Omitted marital units form one default group. Only the identified spouses
+# may enter these non-MAGI Medicaid budgets; the third adult is unrelated.
+- name: California excludes an unrelated adult's premiums from a couple budget.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        pension_income: 36_000
+        medicare_enrolled: false
+      spouse:
+        age: 67
+        is_tax_unit_spouse: true
+        pension_income: 24_000
+        medicare_enrolled: false
+      third:
+        age: 67
+        pension_income: 12_000
+        health_insurance_premiums: 12_000
+        medicare_enrolled: false
+        ssi_federal_living_arrangement:
+          2026-01: MEDICAL_TREATMENT_FACILITY
+    tax_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    families:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    spm_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    households:
+      household:
+        members: [head, spouse, third]
+        state_code: CA
+  output:
+    ssi_couple_computation_applies:
+      2026-01: [true, true, false]
+    # (36,000 + 24,000 - 240) / 2; the third adult's 12,000 is not deducted.
+    medicaid_optional_senior_or_disabled_countable_income: [29_880, 29_880, 0]
+
+- name: Optional ABD income and assets exclude an unrelated adult and retain the couple limits.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+        ssi_countable_resources: 1_200
+      spouse:
+        age: 68
+        is_tax_unit_spouse: true
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+        ssi_countable_resources: 1_200
+      third:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 50_000
+        ssi_countable_resources: 50_000
+    tax_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    families:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    spm_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    households:
+      household:
+        members: [head, spouse, third]
+        state_code: WV
+  output:
+    # West Virginia's 2026 annual SSI rates: couple 17,892; individual 11,928.
+    medicaid_optional_senior_or_disabled_income_limit: [17_892, 17_892, 11_928]
+    is_optional_senior_or_disabled_income_eligible: [true, true, false]
+    # Couple assets 2,400 are below 3,000; the third adult's 50,000 is excluded.
+    is_optional_senior_or_disabled_asset_eligible: [true, true, false]
+
+- name: Section 209b spenddown excludes an unrelated adult's medical expenses.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        is_optional_senior_or_disabled_income_eligible: false
+        medicaid_optional_senior_or_disabled_countable_income: 20_000
+        medicaid_medically_needy_medical_expenses: 5_000
+        medicaid_optional_senior_or_disabled_income_limit: 25_000
+      spouse:
+        age: 68
+        is_tax_unit_spouse: true
+        is_optional_senior_or_disabled_income_eligible: false
+        medicaid_optional_senior_or_disabled_countable_income: 20_000
+        medicaid_medically_needy_medical_expenses: 5_000
+        medicaid_optional_senior_or_disabled_income_limit: 25_000
+      third:
+        age: 70
+        is_optional_senior_or_disabled_income_eligible: false
+        medicaid_optional_senior_or_disabled_countable_income: 0
+        medicaid_medically_needy_medical_expenses: 12_000
+        medicaid_optional_senior_or_disabled_income_limit: 25_000
+    tax_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    families:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    spm_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    households:
+      household:
+        members: [head, spouse, third]
+        state_code: IL
+  output:
+    # 2 x (20,000 - 5,000) = 30,000, above 25,000; subtracting the third
+    # adult's expenses would incorrectly bring the couple down to 18,000.
+    is_209b_ssi_recipient_income_eligible_for_medicaid: [false, false, true]
+
+- name: Medically needy income and assets exclude an unrelated adult.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        is_adult_for_medicaid: false
+        is_optional_senior_or_disabled_for_medicaid: false
+        is_ssi_recipient_for_medicaid: false
+        ssi_countable_income: 10_000
+        medicaid_medically_needy_medical_expenses: 6_500
+        ssi_countable_resources: 1_000
+      spouse:
+        age: 68
+        is_tax_unit_spouse: true
+        is_adult_for_medicaid: false
+        is_optional_senior_or_disabled_for_medicaid: false
+        is_ssi_recipient_for_medicaid: false
+        ssi_countable_income: 10_000
+        medicaid_medically_needy_medical_expenses: 6_500
+        ssi_countable_resources: 1_000
+      third:
+        age: 70
+        is_adult_for_medicaid: false
+        is_optional_senior_or_disabled_for_medicaid: false
+        is_ssi_recipient_for_medicaid: false
+        ssi_countable_income: 50_000
+        ssi_countable_resources: 50_000
+    tax_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    families:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    spm_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    households:
+      household:
+        members: [head, spouse, third]
+        state_code: MA
+  output:
+    # 7,000 income <= 7,800 couple limit; 2,000 assets <= 3,000. The
+    # unrelated adult's income and assets do not enter either comparison.
+    is_medically_needy_for_medicaid: [true, true, false]
+
+- name: Missouri spouse deeming excludes an unrelated third adult's income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        ssi_unearned_income: 17_400
+      spouse:
+        age: 60
+        is_tax_unit_spouse: true
+        ssi_earned_income: 4_800
+      third:
+        age: 60
+        ssi_earned_income: 120_000
+        ssi_unearned_income: 120_000
+    tax_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    families:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    spm_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    households:
+      household:
+        members: [head, spouse, third]
+        state_code: MO
+  output:
+    # The SSI spouse-status mask already excludes an unrelated singleton.
+    is_ssi_ineligible_spouse: [false, true, false]
+    medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [2_004, 0, 0]
+
+- name: Missouri spouse deeming excludes another couple's ineligible spouse.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        ssi_unearned_income: 17_400
+      spouse:
+        age: 60
+        is_tax_unit_spouse: true
+        ssi_earned_income: 4_800
+      other_head:
+        age: 70
+        is_tax_unit_head: true
+      other_spouse:
+        age: 60
+        is_tax_unit_spouse: true
+        ssi_earned_income: 12_000
+        ssi_unearned_income: 12_000
+    tax_units:
+      couple:
+        members: [head, spouse]
+      other_couple:
+        members: [other_head, other_spouse]
+    families:
+      couple:
+        members: [head, spouse]
+      other_couple:
+        members: [other_head, other_spouse]
+    spm_units:
+      couple:
+        members: [head, spouse]
+      other_couple:
+        members: [other_head, other_spouse]
+    households:
+      household:
+        members: [head, spouse, other_head, other_spouse]
+        state_code: MO
+  output:
+    is_ssi_ineligible_spouse: [false, true, false, true]
+    # First couple: floor((400 - 65) / 2 + 1,450 - 20) - 1,430 = 167
+    # monthly. Second: floor((1,000 - 65) / 2 + 1,000 - 20) = 1,447.
+    medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [2_004, 0, 17_364, 0]

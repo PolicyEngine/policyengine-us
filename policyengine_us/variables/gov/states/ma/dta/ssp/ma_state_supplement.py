@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class ma_state_supplement(Variable):
@@ -19,8 +22,11 @@ class ma_state_supplement(Variable):
         meets_resource_test = person("meets_ssi_resource_test", period)
         eligible = abd & meets_resource_test
         joint_claim = person("ssi_claim_is_joint", period.this_year)
+        couple_supplement = _ssi_couple_total(
+            person, period.this_year, state_supplement
+        )
         return where(
             joint_claim,
-            person.marital_unit.sum(state_supplement) / 2,
+            couple_supplement / 2,
             state_supplement * eligible,
         )

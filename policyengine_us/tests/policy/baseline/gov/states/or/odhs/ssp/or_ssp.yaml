@@ -600,3 +600,53 @@
     # 994 - 180.42 = 813.58.
     or_ssp_countable_income: 180.42
     or_ssp: 813.58
+
+# OAR 461-155-0630(3) pays married SSI recipients who each receive community
+# care services, including at different facilities. OAR 461-001-0000(62)
+# defines spouse by legal marriage. Hub ruling:
+# us-or:ssp-community-care-spouses-separate-facilities.
+# https://ch461rules.odhs.oregon.gov/rules/461-155-0630.pdf#page=2
+# https://ch461rules.odhs.oregon.gov/rules/461-001-0000.pdf#page=15
+# OAR 461-140-0040(5)(e)(D) excludes income inaccessible due to incapacity.
+# https://ch461rules.odhs.oregon.gov/rules/461-140-0040.pdf#page=4
+# SSI $994 - inaccessible $194/$94 = countable income $800/$900. Neither
+# spouse has excess over $994, so payments are $994 - $800 = $194 and
+# $994 - $900 = $94, under the one-person OSIPM standard.
+- name: Review OR married SSI recipients in separate community-care facilities
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        or_ssp_category: COMMUNITY_CARE
+        or_ssp_inaccessible_income: 194
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        or_ssp_category: COMMUNITY_CARE
+        or_ssp_inaccessible_income: 94
+    tax_units:
+      joint_tax_unit:
+        members: [husband, wife]
+    marital_units:
+      declared_marriage:
+        members: [husband, wife]
+    households:
+      husband_foster_home:
+        members: [husband]
+        state_code:
+          2026: OR
+      wife_foster_home:
+        members: [wife]
+        state_code:
+          2026: OR
+  output:
+    ssi: [994, 994]
+    or_ssp_countable_income: [800, 900]
+    or_ssp: [194, 94]

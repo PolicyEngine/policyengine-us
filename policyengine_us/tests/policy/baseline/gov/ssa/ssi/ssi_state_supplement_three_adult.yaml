@@ -1,0 +1,1558 @@
+# State supplement regressions for an eligible couple sharing a household
+# and tax unit with a third adult, without explicit marital units.
+# Each case cites the state rule and computes its expectation independently.
+
+# co/ssa/oap/co_oap_three_adult.yaml
+# 9 CCR 2503-5 3.533(A)(2)(c): married clients split the $20 disregard.
+# 3.534(C) exempts spouses receiving SSI/OAP within the $1,032 OAP limit.
+# https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=12428#page=76
+# SSI = (1,491 - (300 + 200 - 20)) / 2 = $505.50 each; third = $614.
+# Own OAP incomes = $290/$190/$380. No spouse income is deemed.
+# Monthly OAP = 1,032 - 505.50 - 290/190 = $236.50/$336.50;
+# third = 1,032 - 614 - 380 = $38, raised to the $189 payment floor.
+- name: CO OAP counts only the spouse in a default marital unit
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age: 70
+        pension_income: 3_600
+        is_tax_unit_head: true
+      wife:
+        age: 70
+        pension_income: 2_400
+        is_tax_unit_spouse: true
+      third_adult:
+        age: 70
+        pension_income: 4_800
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code: CO
+  output:
+    co_oap_own_countable_income: [3_480, 2_280, 4_560]
+    co_oap_deemed_income: [0, 0, 0]
+    co_oap: [2_838, 4_038, 2_268]
+
+# ct/dss/ssp/third_adult.yaml
+# CT DSS State Supplement page and fact sheet: $2,400 combined assets for a
+# married couple; $1,600 for a single person. $1,000 + $1,000 = $2,000 passes;
+# the third adult's $1,000 is tested separately. Section 17b-600 in chapter
+# 319mm authorizes the program but does not specify these dollar limits.
+# https://portal.ct.gov/dss/knowledge-base/articles/cash-assistance/state-supplement-cash-assistance?language=en_US
+# https://portal.ct.gov/-/media/departments-and-agencies/dss/fact-sheets-and-issue-briefs/fact-sheets/agedblinddiabledfactsheet.pdf
+- name: Connecticut excludes a third adult from the couple resource test
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        ssi_countable_resources:
+          2026: 1000
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        ssi_countable_resources:
+          2026: 1000
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+        ssi_countable_resources:
+          2026: 1000
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: CT
+  output:
+    ct_ssp_resource_eligible: [true, true, true]
+
+# dc/dhcf/ossp/dc_ossp_three_adult.yaml
+- name: DC foster-care couple amount excludes a third aged adult in the default marital unit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        dc_ossp_in_adult_foster_care: true
+        dc_ossp_facility_size: 30
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        dc_ossp_in_adult_foster_care: true
+        dc_ossp_facility_size: 30
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        dc_ossp_in_adult_foster_care: true
+        dc_ossp_facility_size: 30
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: DC
+  output:
+    ssi_claim_is_joint: [true, true, false]
+    dc_ossp_eligible: [true, true, true]
+    # DC DHCF's 2026 OSSP table, OS-A (adult foster care, at most 50 beds):
+    # https://dhcf.dc.gov/service/optional-state-supplement-payment-program
+    # $1,717 / 2 = $858.50 per spouse; the individual rate is $681.
+    dc_ossp_payment_amount: [858.5, 858.5, 681]
+    dc_ossp: [858.5, 858.5, 681]
+
+# de/dhss/ssp/third_adult.yaml
+# POMS SI 01415.058 C.2: certified residential care pays $448 per couple and $140 per individual. With no excess income, each spouse receives $448 / 2 = $224; the third adult receives $140.
+# https://secure.ssa.gov/poms.nsf/lnx/0501415058#c2
+- name: Delaware pays a couple rate without including a third resident
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: DE
+        de_ssp_living_arrangement: CERTIFIED_RESIDENTIAL_CARE_HOME
+  output:
+    de_ssp: [224, 224, 140]
+
+# fl/dcf/oss/third_adult.yaml
+# DCF Appendix A-12 (January 2025), OSS Redesign: the couple provider rate is $1,885.80, or $942.90 each; the individual rate is $991.40. Both spouses occupy an ALF on the same track; the third adult does not occupy a qualifying facility.
+# https://www.myflfamilies.com/sites/default/files/2024-12/Appendix%20A-12.pdf
+- name: Florida tests the two spouses facility placement without a third adult
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2025: 70
+        is_tax_unit_head:
+          2025: true
+        fl_oss_program_track: REDESIGN
+        fl_oss_community_care_type: ALF
+      wife:
+        age:
+          2025: 70
+        is_tax_unit_spouse:
+          2025: true
+        fl_oss_program_track: REDESIGN
+        fl_oss_community_care_type: ALF
+      third_adult:
+        age:
+          2025: 70
+        is_tax_unit_dependent:
+          2025: true
+        fl_oss_program_track: REDESIGN
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2025: FL
+  output:
+    fl_oss_couple_rate_applies: [true, true, false]
+    fl_oss_provider_rate: [942.9, 942.9, 991.4]
+
+# hi/dhs/oss/third_adult.yaml
+# POMS SI 01415.058 E.2: community care pays $1,995 per eligible couple, so each spouse receives $997.50. The third adult is outside a qualifying care setting and receives $0.
+# https://secure.ssa.gov/poms.nsf/lnx/0501415058#e2
+- name: Hawaii compares only spouses when applying the community care couple rate
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        hi_oss_care_facility_type: COMMUNITY_CARE
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        hi_oss_care_facility_type: COMMUNITY_CARE
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: HI
+  output:
+    hi_oss_couple_rate_applies: [true, true, false]
+    hi_oss_payment_amount: [997.5, 997.5, 0]
+
+# in/fssa/ssp/third_adult.yaml
+# Medicaid Policy Manual 5005.05.00: SAPN fills the $52 personal-needs allowance, capped at $22 per person. Each spouse has $30 SSI and no other budgeted income: $52 - $30 = $22 each. The third adult is not SAPN-eligible; that adult's $100 monthly income is outside the couple budget.
+# https://www.in.gov/fssa/ompp/files/Medicaid_PM_5000.pdf#page=2
+- name: Indiana combines only spouses budgeted income for SAPN
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        in_ssp_sapn_eligible: true
+        ssi: 30
+        ssi_countable_income:
+          2026: 0
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        in_ssp_sapn_eligible: true
+        ssi: 30
+        ssi_countable_income:
+          2026: 0
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+        in_ssp_sapn_eligible: false
+        ssi: 0
+        ssi_countable_income:
+          2026: 1_200
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: IN
+  output:
+    in_ssp_sapn: [22, 22, 0]
+
+# ky/dcbs/ssp/third_adult.yaml
+# 921 KAR 2:015 Section 9(1)(c): the caretaker standard is $1,606 for an eligible couple both receiving care, or $803 per spouse, and $1,056 for an individual. No countable income reduces these standards.
+# https://apps.legislature.ky.gov/law/kar/titles/921/002/015/
+- name: Kentucky recognizes a caretaker couple alongside another aged adult
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        ky_ssp_category: CARETAKER
+        ky_ssp_care_receivers: BOTH
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        ky_ssp_category: CARETAKER
+        ky_ssp_care_receivers: BOTH
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+        ky_ssp_category: CARETAKER
+        ky_ssp_care_receivers: BOTH
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: KY
+  output:
+    ky_ssp_claim_type: [COUPLE_BOTH_ELIGIBLE, COUPLE_BOTH_ELIGIBLE, INDIVIDUAL]
+    ky_ssp_payment_standard: [803, 803, 1056]
+    ky_ssp: [803, 803, 1056]
+
+# me/dhhs/ssp/me_ssp_three_adult.yaml
+- name: Maine couple amount excludes a third aged adult in the default marital unit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: ME
+  output:
+    ssi_claim_is_joint: [true, true, false]
+    me_ssp_eligible: [true, true, true]
+    # Maine's 2026 approved state plan, maximum state supplement:
+    # independent living is $15/couple and $10/individual.
+    # https://www.medicaid.gov/medicaid/spa/downloads/ME-25-0016.pdf
+    # $15 / 2 = $7.50 per spouse; the third adult receives $10.
+    me_ssp: [7.5, 7.5, 10]
+
+- name: Maine couple category ignores the third adult's care arrangement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        me_ssp_living_arrangement: ADULT_FOSTER_HOME
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: ME
+  output:
+    # The same plan pays $49/individual in adult foster care.
+    # https://www.medicaid.gov/medicaid/spa/downloads/ME-25-0016.pdf
+    # The couple remains $15 / 2 = $7.50 each; the third adult gets $49.
+    me_ssp: [7.5, 7.5, 49]
+
+# mi/mdhhs/ssp/mi_ssp_three_adult.yaml
+- name: Michigan couple amount excludes a third aged adult in the default marital unit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: MI
+  output:
+    ssi_claim_is_joint: [true, true, false]
+    mi_ssp_couple_eligible: [true, true, false]
+    # Michigan RFT 248, independent living, effective January 1, 2026:
+    # https://mdhhs-pres-prod.michigan.gov/olmweb/ex/RF/Public/RFT/248.pdf#page=2
+    # $21 / 2 = $10.50 per spouse, plus $14 for the individual = $35.
+    mi_ssp_person: [10.5, 10.5, 14]
+    mi_ssp: 35
+
+# mn/dhs/msa/mn_msa_three_adult.yaml
+- name: Minnesota couple income excludes a third aged adult at the same address.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        # The couple forms a separate household at the shared address.
+        mn_msa_living_arrangement: COUPLE_LIVING_ALONE
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        mn_msa_living_arrangement: COUPLE_LIVING_ALONE
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        mn_msa_living_arrangement: INDIVIDUAL_LIVING_ALONE
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: MN
+  output:
+    # CM 0020.21 combines only spouses' income. A separate household within
+    # a shared address can receive the living-alone standard (PDF pages 3-4).
+    # https://www.dhs.state.mn.us/main/groups/county_access/documents/pub/mndhs-073585.pdf#page=3
+    # Couple: (1,582 - (1,491 - 20)) / 2 = 55.50 each.
+    # Individual: 1,055 - (994 - 20) = 81.
+    mn_msa_net_income_eligible: [true, true, true]
+    mn_msa_person: [55.5, 55.5, 81]
+
+- name: Minnesota non-SSI resource test excludes the third adult's resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        ssi: 0
+        ssi_countable_resources:
+          2026: 1_000
+        mn_msa_living_arrangement: COUPLE_LIVING_WITH_OTHERS
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        ssi: 0
+        ssi_countable_resources:
+          2026: 1_000
+        mn_msa_living_arrangement: COUPLE_LIVING_WITH_OTHERS
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        ssi: 0
+        ssi_countable_resources:
+          2026: 9_000
+        mn_msa_living_arrangement: INDIVIDUAL_LIVING_WITH_OTHERS
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: MN
+  output:
+    # Minn. Stat. 256P.02 Subd. 2 limits each assistance unit to $10,000:
+    # the couple has $2,000; the individual has $9,000.
+    # https://www.revisor.mn.gov/statutes/cite/256P.02#stat.256P.02.2
+    mn_msa_resource_eligible: [true, true, true]
+    # CM 0020.21, with no countable income: 1,058 / 2 = 529 each;
+    # the third adult's individual living-with-others standard is 755.33.
+    # https://www.dhs.state.mn.us/main/groups/county_access/documents/pub/mndhs-073585.pdf#page=4
+    mn_msa_person: [529, 529, 755.33]
+
+- name: Minnesota guardian fee cap uses only the recipient and spouse's gross income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        mn_msa_gross_income: 1_000
+        mn_msa_has_guardian: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        mn_msa_gross_income: 500
+        mn_msa_has_guardian: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        mn_msa_gross_income: 1_000
+        mn_msa_has_guardian: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: MN
+  output:
+    # Minn. Stat. 256D.44 Subd. 5(d): min(5% of AU gross income, $100).
+    # https://www.revisor.mn.gov/statutes/cite/256D.44#stat.256D.44.5
+    # Couple: min((1,000 + 500) * .05, 100) = 75; individual: 1,000 * .05 = 50.
+    mn_msa_guardian_fee: [75, 75, 50]
+
+# mo/dss/ssp/third_adult.yaml
+# DSS Manual 1035.005.00 counts property owned by either spouse. MHABD Appendix J (July 2026) allows $12,441 per couple and $6,220.50 per individual. The couple has $7,000 + $1,000 = $8,000; the third adult has $1,000.
+# https://dssmanuals.mo.gov/december-1973-eligibility-requirements/1035-000-00/1035-005-00/
+- name: Missouri identifies co-resident spouses for the SNC resource limit
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        ssi_countable_resources:
+          2026: 7000
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        ssi_countable_resources:
+          2026: 1000
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        ssi_countable_resources:
+          2026: 1000
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: MO
+  output:
+    mo_ssp_resource_eligible: [true, true, true]
+
+# mt/dphhs/ssp/mt_ssp_three_adult.yaml
+# POMS SI 01415.058 H.2.b: certified assisted/group/community care pays
+# $193 per eligible couple and $94 per individual; $193 / 2 = $96.50.
+# https://secure.ssa.gov/poms.nsf/lnx/0501415058#h2b
+# No marital units: only the head and spouse form the eligible couple.
+- name: MT couple rate excludes a third aged adult
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: MT
+  output:
+    mt_ssp: [96.5, 96.5, 94]
+
+# ne/dhhs/aabd/third_adult.yaml
+# 469 NAC 3-006.02B3a(1)(a) and 469-000-211: spouses living independently share the $887 two-person standard, $443.50 each with no shelter costs. The third adult in assisted living uses the $1,236 individual standard, giving $1,236 - $994 SSI = $242.
+# https://dhhs.ne.gov/Documents/Title-469-Complete.pdf#page=130
+- name: Nebraska independently budgets the couple despite a third care resident
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        ne_aabd_alternate_living_arrangement: INDEPENDENT
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        ne_aabd_alternate_living_arrangement: INDEPENDENT
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+        ne_aabd_alternate_living_arrangement: ASSISTED_LIVING_FACILITY
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: NE
+  output:
+    ne_aabd_couple_rate_applies: [true, true, false]
+    ne_aabd_standard_of_need: [443.5, 443.5, 1236]
+    ne_aabd: [0, 0, 242]
+
+# nj/njdhs/ssp/nj_ssp_three_adult.yaml
+# POMS SI 01415.058 J.2: independent living pays $25.35 per couple
+# and $31.25 per individual. $25.35 / 2 = $12.675; federal payment
+# rounding (POMS SI 02001.010) rounds each spouse up to $12.68.
+# https://secure.ssa.gov/poms.nsf/lnx/0501415058#j2
+# No marital units: only the head and spouse form the eligible couple.
+- name: NJ couple rate excludes a third aged adult
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: NJ
+  output:
+    nj_ssp: [12.68, 12.68, 31.25]
+
+# POMS SI 01415.025 NY B.2 and SI 01415.058 J.1: the higher variation is
+# for someone living ONLY with an ineligible spouse. A third adult rules it
+# out; the ordinary individual independent-living supplement is $31.25.
+# https://secure.ssa.gov/poms.nsf/lnx/0501415025NY
+- name: NJ third adult rules out living only with an ineligible spouse
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+      wife:
+        age:
+          2026: 60
+        is_tax_unit_spouse:
+          2026: true
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: NJ
+  output:
+    nj_ssp_living_arrangement: [LIVING_ALONE_OR_WITH_OTHERS, LIVING_ALONE_OR_WITH_OTHERS, LIVING_ALONE_OR_WITH_OTHERS]
+    nj_ssp: [31.25, 0, 31.25]
+
+# nv/dwss/oss/nv_oss_three_adult.yaml
+# POMS SI 01415.058 I.2: independent aged living pays
+# $74.46 per couple and $36.40 per individual; $74.46 / 2 = $37.23.
+# https://secure.ssa.gov/poms.nsf/lnx/0501415058#i2
+# No marital units: only the head and spouse form the eligible couple.
+- name: NV couple rate excludes a third aged adult
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: NV
+  output:
+    nv_oss: [37.23, 37.23, 36.4]
+
+# ny/otda/ssp/ny_ssp_three_adult.yaml
+# 18 NYCRR 398-4.5(a)(1)-(2): an unrelated third adult means living
+# with others. The official 2026 chart pays $46 per couple and $23 per
+# individual; $46 / 2 = $23 for each spouse.
+# https://opwdd.ny.gov/system/files/documents/2025/11/25-inf-06-attachment-1.pdf
+# No marital units: only the head and spouse form the eligible couple.
+- name: NY couple rate excludes a third aged adult
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: NY
+  output:
+    ny_ssp_living_arrangement: [LIVING_WITH_OTHERS, LIVING_WITH_OTHERS, LIVING_WITH_OTHERS]
+    ny_ssp: [23, 23, 23]
+
+# oh/dbh/rss/third_adult.yaml
+# OAC 5160:1-5-01(E)(2) combines spouses in the same RSS living arrangement. OAC 5160:1-3-03.2 applies one $20 exclusion: ($300 + $200 - $20) / 2 = $240 each; the third adult has $400 - $20 = $380. The $1,600 allowable fee plus $200 personal needs gives grants of $1,560, $1,560 and $1,420.
+# https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-5-01
+- name: Ohio pools only the RSS couple income
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        oh_rss_eligible: true
+        ssi: 0
+        ssi_unearned_income:
+          2026: 3600
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        oh_rss_eligible: true
+        ssi: 0
+        ssi_unearned_income:
+          2026: 2400
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+        oh_rss_eligible: true
+        ssi: 0
+        ssi_unearned_income:
+          2026: 4800
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: OH
+  output:
+    oh_rss_countable_income: [240, 240, 380]
+    oh_rss: [1560, 1560, 1420]
+
+# ok/dhs/ssp/ok_ssp_three_adult.yaml
+- name: Oklahoma couple countable income excludes a third aged adult.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        social_security_retirement:
+          2026: 1_200
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: OK
+  output:
+    # OKDHS Appendix C-1 Schedule VIII.A: eligible couple standard 1,571;
+    # individual standard 1,034; maximum $40 per recipient.
+    # https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-1.pdf#page=3
+    # Couple income is SSI 1,491, so (1,571 - 1,491) / 2 = 40 each.
+    # Third adult: (100 - 20) + SSI (994 - 80) = 994; 1,034 - 994 = 40.
+    ok_ssp_countable_income: [1_491, 1_491, 994]
+    ok_ssp: [40, 40, 40]
+
+# or/odhs/ssp/third_adult.yaml
+# OAR 461-155-0630(3) tops up each SSI spouse in community care to the one-person OSIPM standard, applying only the other spouses excess. OAR 461-155-0250(3) sets $994 in 2026. Both spouses are below it: $994 - $800 = $194 and $994 - $900 = $94. The unrelated third adult receives no couple payment.
+# https://ch461rules.odhs.oregon.gov/rules/461-155-0630.pdf#page=2
+- name: Oregon excludes another care resident from the spouses community care calculation
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        or_ssp_category: COMMUNITY_CARE
+        ssi: 100
+        or_ssp_countable_income: 800
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        or_ssp_category: COMMUNITY_CARE
+        ssi: 100
+        or_ssp_countable_income: 900
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+        or_ssp_category: COMMUNITY_CARE
+        ssi: 100
+        or_ssp_countable_income: 1500
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: OR
+  output:
+    or_ssp: [194, 94, 0]
+
+# pa/dhs/ssp/pa_ssp_three_adult.yaml
+# PA DHS budget schedule: independent living pays $33.30 per couple
+# and $22.10 per individual; $33.30 / 2 = $16.65.
+# 55 Pa. Code chapter 299 supplies the individual/couple SSI program rules.
+# https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/docs/publications/documents/budget-information/c_259013.pdf
+# https://www.pacodeandbulletin.gov/secure/pacode/data/055/chapter299/chap299toc.html
+# No marital units: only the head and spouse form the eligible couple.
+- name: PA couple rate excludes a third aged adult
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: PA
+  output:
+    pa_ssp: [16.65, 16.65, 22.1]
+
+# ri/dhs/ssp/ri_ssp_three_adult.yaml
+# R.I. Gen. Laws 40-6-27(a)(1)(i),(iii): living-alone state
+# standards are $79.38 per couple and $39.92 per individual.
+# $79.38 / 2 = $39.69; no federal one-third reduction applies.
+# https://webserver.rilegislature.gov/Statutes/TITLE40/40-6/40-6-27.htm
+# No marital units: only the head and spouse form the eligible couple.
+- name: RI couple rate excludes a third aged adult
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: RI
+  output:
+    ri_ssp: [39.69, 39.69, 39.92]
+
+# sd/dss/ssp/sd_ssp_three_adult.yaml
+- name: South Dakota couple with only SSI ignores the third adult's other income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        social_security_retirement:
+          2026: 1_200
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: SD
+  output:
+    # POMS SI DEN01415.011 B.5.b: a couple with no income other than SSI
+    # receives $8 and $7. The unrelated individual's $100/month is separate.
+    # https://secure.ssa.gov/poms.nsf/lnx/0501415011DEN
+    # Listing that individual first also must not consume the $8 spouse slot.
+    sd_ssp_independent: [0, 8, 7]
+    sd_ssp: [0, 8, 7]
+
+- name: South Dakota joint care entry excludes the third adult's income and resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        ssi_countable_resources:
+          2026: 500
+        sd_ssp_care_joint_entry: true
+        sd_ssp_care_certified: true
+        sd_ssp_care_setting: ADULT_FOSTER_CARE
+        sd_ssp_approved_care_cost: 1_500
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        ssi_countable_resources:
+          2026: 500
+        sd_ssp_care_joint_entry: true
+        sd_ssp_care_certified: true
+        sd_ssp_care_setting: ADULT_FOSTER_CARE
+        sd_ssp_approved_care_cost: 1_500
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        social_security_retirement:
+          2026: 1_200
+        ssi_countable_resources:
+          2026: 3_000
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: SD
+  output:
+    # ARSD 67:46:05:30 tests the entering couple's resources: 500 + 500 < 3,000.
+    # https://sdlegislature.gov/Rules/Administrative/67:46:05:30
+    # ARSD 67:46:04:10(6) and 67:46:06:03 share only spouses' gross income.
+    # https://sdlegislature.gov/Rules/Administrative/67:46:04:10
+    # Each spouse's contribution is SSI 1,491 / 2 = 745.50;
+    # care payment = approved charge 1,500 - 745.50 = 754.50.
+    sd_ssp_care: [754.5, 754.5, 0]
+    sd_ssp: [754.5, 754.5, 0]
+
+# ut/dws/ssp/ut_dws_ssp_three_adult.yaml
+- name: Utah couple amount excludes a third aged adult in the default marital unit.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: UT
+  output:
+    ssi_claim_is_joint: [true, true, false]
+    ut_dws_ssp_eligible: [true, true, true]
+    # Utah DWS Eligibility Manual 205-10, effective January 1, 2026:
+    # https://jobs.utah.gov/infosource/eligibilitymanual/200_Program_Eligibility_Requirements/205-10_State_Supplemental_Payments_to_SSI_Recipients_-_General_Information.htm
+    # Own-household couple $5.75 / 2 = $2.875 each; individual $3.91.
+    ut_dws_ssp: [2.875, 2.875, 3.91]
+    ut_ssp: [2.875, 2.875, 3.91]
+
+- name: Utah household-of-another couple amount excludes the third aged adult.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: UT
+  output:
+    # The same 205-10 table pays $12.19 to a couple in another's household.
+    # https://jobs.utah.gov/infosource/eligibilitymanual/200_Program_Eligibility_Requirements/205-10_State_Supplemental_Payments_to_SSI_Recipients_-_General_Information.htm
+    # $12.19 / 2 = $6.095 per spouse; individual $3.91.
+    ut_dws_ssp: [6.095, 6.095, 3.91]
+    ut_ssp: [6.095, 6.095, 3.91]
+
+# va/dars/ag/va_ag_three_adult.yaml
+- name: Virginia initial-month couple excludes the third adult's income and resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        social_security_retirement:
+          2026: 24_000
+        ssi_countable_resources:
+          2026: 1_000
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        ssi_countable_resources:
+          2026: 1_000
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        social_security_retirement:
+          2026: 24_000
+        ssi_countable_resources:
+          2026: 2_000
+        va_ag_certified: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: VA
+  output:
+    # AG Manual Chapter B section 6: the initial-month AU contains only the
+    # applicant and spouse; Chapter D uses SSI income exclusions.
+    # https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf#page=34
+    # Couple resources 1,000 + 1,000 = 2,000 <= 3,000; individual 2,000 <= 2,000.
+    # Couple: (2,000 - 20) / 2 = 990 each; individual: 2,000 - 20 = 1,980.
+    va_ag_eligible: [true, true, true]
+    va_ag_countable_income: [990, 990, 1_980]
+    # January 2026 rate letter: care 2,130 plus personal needs 87 = 2,217.
+    # https://www.dss.virginia.gov/media/vdss/licensing/documents/assisted-living-facilities/additional-resources/ARC2026_ag_rate_letter.pdf
+    # Grants: 2,217 - 990 = 1,227 each; third adult 2,217 - 1,980 = 237.
+    va_ag: [1_227, 1_227, 237]
+
+# vt/dcf/aabd/vt_aabd_three_adult.yaml
+# POMS SI 01415.058 M.2: independent living pays $105.80 per couple
+# and $55.68 per individual; $105.80 / 2 = $52.90.
+# https://secure.ssa.gov/poms.nsf/lnx/0501415058#m2
+# No marital units: only the head and spouse form the eligible couple.
+- name: VT couple rate excludes a third aged adult
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: VT
+  output:
+    vt_aabd: [52.9, 52.9, 55.68]
+
+# Vermont AABD rules 2780(A), 2783.1, 2784(C), 2786: one EP grant per
+# eligible couple, using the highest level certified on either spouse.
+# https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2700-AABD.pdf#page=44
+# Couple maximum = 1,491 + 105.80 + 183.84 = $1,780.64. With no own
+# income, SSI + federal AABD = 1,491 + 105.80 = $1,596.80. EP is
+# floor(1,780.64 - 1,596.80) / 2 = $91.50 each. Uncertified third gets $0.
+- name: VT essential-person certification and income exclude the third adult
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        vt_aabd_ep_level: FULL
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+        pension_income:
+          2026: 12_000
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: VT
+  output:
+    vt_aabd_ep_is_spouse: [false, false, false]
+    vt_aabd_ep: [91.5, 91.5, 0]
+
+# wa/dshs/ssp/wa_ssp_three_adult.yaml
+- name: Washington historical ineligible-spouse category excludes a third aged adult.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2022: 40
+        is_tax_unit_head:
+          2022: true
+        meets_ssi_disability_criteria:
+          2022: true
+      spouse:
+        age:
+          2022: 40
+        is_tax_unit_spouse:
+          2022: true
+      dependent:
+        age:
+          2022: 68
+        is_tax_unit_dependent:
+          2022: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2022: WA
+  output:
+    # WAC 388-474-0012(2)(b) includes an SSI recipient with an ineligible spouse.
+    # https://app.leg.wa.gov/wac/default.aspx?cite=388-474-0012
+    # WSR 20-23-053 set $38.25 for that category and for aged recipients.
+    # https://lawfilesext.leg.wa.gov/law/wsr/2020/23/20-23-053.htm
+    # Head qualifies through the actual spouse; the third adult through age.
+    wa_ssp_payment_category: [STANDARD, NONE, STANDARD]
+    wa_ssp: [38.25, 0, 38.25]
+
+# wi/dhs/ssp/wi_ssp_three_adult.yaml
+- name: Wisconsin couple amount excludes a third aged adult in the default marital unit.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: WI
+  output:
+    ssi_claim_is_joint: [true, true, false]
+    wi_ssp_eligible: [true, true, true]
+    # Wisconsin DMS Operations Memo 26-12, effective May 1, 2026:
+    # https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2026-12.pdf#page=2
+    # Eligible couple $145.26 / 2 = $72.63 each; individual $92.16.
+    wi_ssp_regular: [72.63, 72.63, 92.16]
+    wi_ssp: [72.63, 72.63, 92.16]
+
+- name: Wisconsin SSI-E couple amount excludes the third certified adult.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        wi_ssi_e_certified: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        wi_ssi_e_certified: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        wi_ssi_e_certified: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: WI
+  output:
+    # The memo's SSI-E rates are $379.90/couple and $105.59/individual.
+    # https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2026-12.pdf#page=2
+    # $379.90 / 2 = $189.95 each; plus regular $72.63 = $262.58 each.
+    # Third adult: $105.59 + $92.16 = $197.75.
+    wi_ssi_e: [189.95, 189.95, 105.59]
+    wi_ssp: [262.58, 262.58, 197.75]
+
+- name: Wisconsin ineligible-spouse rate applies only to the actual eligible spouse.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+      spouse:
+        age:
+          2026: 40
+        is_tax_unit_spouse:
+          2026: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: WI
+  output:
+    is_ssi_ineligible_spouse: [false, true, false]
+    wi_ssp_eligible: [true, false, true]
+    # The memo pays $143.47 to an eligible person with an ineligible spouse.
+    # https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2026-12.pdf#page=2
+    # The third adult has no spouse and keeps the $92.16 individual amount.
+    wi_ssp_regular: [143.47, 0, 92.16]
+    wi_ssp: [143.47, 0, 92.16]

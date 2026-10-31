@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+    _ssi_spouse_index,
+)
 
 
 class dc_ossp_payment_amount(Variable):
@@ -17,17 +21,13 @@ class dc_ossp_payment_amount(Variable):
         living_arrangement = person("dc_ossp_living_arrangement", period)
         eligible = person("dc_ossp_eligible", period)
         joint_claim = person("ssi_claim_is_joint", period.this_year)
-        both_eligible = person.marital_unit.sum(eligible) == 2
+        both_eligible = (
+            _ssi_couple_total(person, period.this_year, eligible.astype(int)) == 2
+        )
         # Couple rate requires joint SSI claim, both spouses OSSP-eligible,
         # and both in the same arrangement category.
-        is_os_a = living_arrangement == living_arrangement.possible_values.OS_A
-        is_os_b = living_arrangement == living_arrangement.possible_values.OS_B
-        is_os_g = living_arrangement == living_arrangement.possible_values.OS_G
-        both_same = (
-            (person.marital_unit.sum(is_os_a) == 2)
-            | (person.marital_unit.sum(is_os_b) == 2)
-            | (person.marital_unit.sum(is_os_g) == 2)
-        )
+        spouse = _ssi_spouse_index(person, period.this_year)
+        both_same = living_arrangement == living_arrangement[np.maximum(spouse, 0)]
         is_couple = joint_claim & both_eligible & both_same
         p = parameters(period).gov.states.dc.dhcf.ossp.payment
 

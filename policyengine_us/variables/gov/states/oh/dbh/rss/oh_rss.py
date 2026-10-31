@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class oh_rss(Variable):
@@ -32,7 +35,7 @@ class oh_rss(Variable):
         # SSI reform carries over to RSS.
         limits = parameters(period).gov.ssa.ssi.eligibility.resources.limit
         eligible = person("oh_rss_eligible", period)
-        couple = person.marital_unit.sum(eligible) == 2
+        couple = _ssi_couple_total(person, period.this_year, eligible.astype(int)) == 2
         # NOTE: When only one spouse qualifies, 5160:1-5-01(E)(3) applies the
         # individual standard, so the model tests own resources against
         # $2,000. Ohio's Medicaid resource rules, 5160:1-3-05.1(B)(9)(b) and
@@ -42,7 +45,9 @@ class oh_rss(Variable):
         # the SSI resource test both combine the couple's resources, so a
         # couple above $3,000 fails the Medicaid condition.
         resources = person("ssi_countable_resources", period.this_year)
-        resources = where(couple, person.marital_unit.sum(resources), resources)
+        resources = where(
+            couple, _ssi_couple_total(person, period.this_year, resources), resources
+        )
         limit = where(couple, limits.couple, limits.individual)
         payment = max_(
             p.allowable_fee

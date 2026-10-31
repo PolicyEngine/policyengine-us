@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_spouse_index,
+)
 
 
 class AKSSPClaimType(Enum):
@@ -21,54 +24,23 @@ class ak_ssp_claim_type(Variable):
 
     def formula(person, period, parameters):
         joint_claim = person("ssi_claim_is_joint", period.this_year)
-        marital_unit_size = person.marital_unit.sum(
-            person("age", period.this_year) >= 0
-        )
-        living_arrangement = person("ak_ssp_living_arrangement", period)
-        living_arrangement_values = living_arrangement.possible_values
+        # The spouse is the co-resident husband or wife the SSI joint claim
+        # uses, so a third adult in a default marital unit is not counted.
+        spouse = _ssi_spouse_index(person, period.this_year)
+        has_spouse = spouse >= 0
+        partner = np.where(has_spouse, spouse, np.arange(person.count))
         # Both spouses must share the same living arrangement to be
-        # treated as a joint couple claim. New enum values added to
-        # AKSSPLivingArrangement must be appended to this check.
-        shared_living_arrangement = (
-            (
-                person.marital_unit.sum(
-                    living_arrangement == living_arrangement_values.INDEPENDENT
-                )
-                == marital_unit_size
-            )
-            | (
-                person.marital_unit.sum(
-                    living_arrangement == living_arrangement_values.HOUSEHOLD_OF_ANOTHER
-                )
-                == marital_unit_size
-            )
-            | (
-                person.marital_unit.sum(
-                    living_arrangement == living_arrangement_values.ASSISTED_LIVING
-                )
-                == marital_unit_size
-            )
-            | (
-                person.marital_unit.sum(
-                    living_arrangement == living_arrangement_values.MEDICAID_FACILITY
-                )
-                == marital_unit_size
-            )
-        )
+        # treated as a joint couple claim.
+        living_arrangement = person("ak_ssp_living_arrangement", period)
+        shared_living_arrangement = living_arrangement == living_arrangement[partner]
         is_eligible_individual = person("is_ssi_aged_blind_disabled", period.this_year)
         # COUPLE_ONE_ELIGIBLE requires exactly one spouse to be
         # individually ABD-eligible. If both spouses qualify but they
         # are not jointly claiming, they should not be misclassified
         # as a one-eligible couple.
-        spouse_is_eligible = (
-            person.marital_unit.sum(is_eligible_individual.astype(int))
-            - is_eligible_individual.astype(int)
-        ) > 0
+        spouse_is_eligible = has_spouse & is_eligible_individual[partner]
         one_eligible_couple = (
-            ~joint_claim
-            & is_eligible_individual
-            & ~spouse_is_eligible
-            & (marital_unit_size == 2)
+            ~joint_claim & is_eligible_individual & has_spouse & ~spouse_is_eligible
         )
         couple_both_eligible = joint_claim & shared_living_arrangement
         return select(

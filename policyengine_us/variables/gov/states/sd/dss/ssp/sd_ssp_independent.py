@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+    _ssi_spouse_index,
+)
 
 
 class sd_ssp_independent(Variable):
@@ -53,10 +57,14 @@ class sd_ssp_independent(Variable):
         # ARSD 67:12:14:03(2) reads per person ("The person is receiving other
         # income").
         couple = person("ssi_claim_is_joint", period.this_year) & (
-            person.marital_unit.sum(qualifies) > 1
+            _ssi_couple_total(person, period.this_year, qualifies.astype(int)) > 1
         )
-        other_income = where(couple, person.marital_unit.sum(own_income), own_income)
-        first = person.marital_unit.reference_entity.members_position == 0
+        other_income = where(
+            couple, _ssi_couple_total(person, period.this_year, own_income), own_income
+        )
+        spouse = _ssi_spouse_index(person, period.this_year)
+        position = person.marital_unit.reference_entity.members_position
+        first = position < position[np.maximum(spouse, 0)]
         amount = where(
             couple,
             where(first, p.couple_first_amount, p.couple_second_amount),

@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.status.ssi_federal_living_arrangement import (
     SSIFederalLivingArrangement,
 )
@@ -21,7 +24,7 @@ class ut_dws_ssp(Variable):
         "https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/ut.html",
     )
     documentation = """
-    Spouses are the members of a marital unit. Set
+    Couple amounts include only the recipient and their co-resident spouse. Set
     ssi_lives_in_another_persons_household,
     ssi_receives_shelter_from_others_in_household and ssi_others_pay_all_meals
     for both spouses to place a couple in the household of another.
@@ -33,7 +36,7 @@ class ut_dws_ssp(Variable):
         # receives half. A person whose spouse does not qualify receives the
         # single person amount.
         eligible = person("ut_dws_ssp_eligible", period)
-        couple = person.marital_unit.sum(eligible) == 2
+        couple = _ssi_couple_total(person, period.this_year, eligible.astype(int)) == 2
         # 205-10 pays couples "who live in the household of another" and
         # couples "who live alone or with others in their own household". SSA
         # paid the same rows by federal living arrangement codes B and A
