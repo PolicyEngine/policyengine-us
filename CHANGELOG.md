@@ -1,3 +1,10 @@
+## [2.88.4] - 2026-10-31
+
+### Changed
+
+- Cut the CI time of the behavioural-response measurement copy tests: collect garbage less often while they copy policy trees, and run the pinned copy cases over three households in one simulation instead of three fixed generated examples.
+
+
 ## [2.88.3] - 2026-10-31
 
 ### Fixed
