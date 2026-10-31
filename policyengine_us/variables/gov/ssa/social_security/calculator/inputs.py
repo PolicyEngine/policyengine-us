@@ -13,7 +13,23 @@ class ss_calculator_source(Variable):
     definition_period = ETERNITY
     default_value = "off"
     label = "Social Security calculator source"
-    documentation = "Explicit source: off, aime, pia or survivor."
+    documentation = "Explicit source: off, aime, pia, survivor or history."
+
+
+class ss_calculator_earnings_history(Variable):
+    value_type = str
+    entity = Person
+    definition_period = ETERNITY
+    default_value = ""
+    label = "Social Security calculator annual earnings history"
+    documentation = (
+        "Complete JSON source with first_year, records (year, covered_wages, "
+        "covered_self_employment), certified_zero_years and an explicit "
+        "certified_zero_before_first_year assertion. Existing SE is adjusted "
+        "covered earnings, not gross profits. Earnings stop at claim year minus "
+        "one; missing years cannot inherit values from another year."
+    )
+    reference = "https://secure.ssa.gov/poms.nsf/lnx/0300605018"
 
 
 class ss_calculator_worker_id(Variable):

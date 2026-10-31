@@ -13,6 +13,14 @@ from decimal import Decimal, ROUND_CEILING
 from fractions import Fraction
 from typing import Mapping
 
+from .history import (
+    EarningsHistory,
+    HistoryCalculation,
+    HistoryParameters,
+    compute_history,
+    compute_history_pia,
+)
+
 from policyengine_us.tools.social_security.cola import (
     adjusted_events as adjust_cola_events,
     apply_colas,
@@ -223,12 +231,16 @@ class SuppliedRecord:
     no_special_monthly_test: bool = False
     no_prior_withholding_adjustment: bool = False
     earnings_test_no_trigger: bool = False
+    history: EarningsHistory | None = None
+    history_parameters: HistoryParameters | None = None
 
     def benchmark(self):
         if not self.worker_id.strip():
             raise ValueError("An explicit worker record ID is required")
-        if self.source not in ("aime", "pia", "survivor"):
-            raise ValueError("Choose an explicit aime, pia or survivor source")
+        if self.source not in ("aime", "pia", "survivor", "history"):
+            raise ValueError("Choose an explicit aime, pia, survivor or history source")
+        if self.source == "history" and not self.insured:
+            raise ValueError("History retirement requires an insured-status assertion")
         if self.source_basis != "unreformed_eligibility":
             raise ValueError("Only explicitly unreformed source amounts are supported")
         month_number(self.entitlement_month)
@@ -322,6 +334,7 @@ class AnnualBenefit:
     eligibility_pia_interval: tuple[Decimal, Decimal] | None = None
     inferred_aime_interval: tuple[Decimal, Decimal] | None = None
     settlements: tuple[EarningsTestSettlement, ...] = ()
+    history: HistoryCalculation | None = None
 
     @property
     def deferred_earnings_test_payment(self):
@@ -475,8 +488,21 @@ def calculate_year(
         if payment_year == year:
             settlement_years.add(earnings_year)
     benchmark = record.benchmark()
+    history = None
+    source_record = record
+    if record.source == "history":
+        if record.history is None or record.history_parameters is None:
+            raise ValueError("History source requires annual records and parameters")
+        history = compute_history(
+            record.history,
+            benchmark,
+            month_number(record.entitlement_month) // 12,
+            record.history_parameters,
+            birth_year=record.birth_date.year,
+        )
+        source_record = replace(record, source="aime", aime=history.aime)
     baseline_pia, aime, pia_interval = _source_pia(
-        record, benchmark, bend_points, cola_events
+        source_record, benchmark, bend_points, cola_events
     )
     paths = formula_path
     policies = policies or BenefitPolicies()
@@ -548,7 +574,15 @@ def calculate_year(
             path = replace(path, s770_increase_first_bend_point=flag)
         # Only infer AIME if the selected path actually changes the baseline.
         pia = baseline_pia
-        if payment_year >= benchmark and has_active_reform(
+        if history is not None and payment_year >= benchmark:
+            pia = compute_history_pia(
+                history,
+                bend_points=bend_points,
+                formula_path=path,
+                payment_year=payment_year,
+                recompute_mode=mode,
+            )
+        elif payment_year >= benchmark and has_active_reform(
             path, benchmark, payment_year, mode
         ):
             if aime is None and baseline_pia != 0:
@@ -768,4 +802,5 @@ def calculate_year(
         pia_interval,
         inferred_interval,
         tuple(settlements),
+        history,
     )

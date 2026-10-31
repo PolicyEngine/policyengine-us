@@ -1,0 +1,207 @@
+"""Complete, explicitly certified annual earnings for own-record retirement.
+
+Initial earnings are frozen at claim year Q, through Q-1. This is an opt-in
+household service, not a replacement for the population variable's rolling
+lookback. Annual caps precede E-2 wage indexing; top 35 / 420 is floored.
+"""
+
+from dataclasses import dataclass
+from decimal import Decimal
+import json
+from typing import Mapping
+
+from .earnings import highest_earnings, index_covered_earnings
+from .pia import compute_pia
+
+
+def _money(value, name):
+    if isinstance(value, bool):
+        raise ValueError(f"{name} must be a finite nonnegative amount")
+    try:
+        amount = Decimal(str(value))
+    except (ValueError, ArithmeticError) as error:
+        raise ValueError(f"{name} must be a finite nonnegative amount") from error
+    if not amount.is_finite() or amount < 0:
+        raise ValueError(f"{name} must be a finite nonnegative amount")
+    return amount
+
+
+def _year(value):
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError("History years must be integer calendar years")
+    return value
+
+
+@dataclass(frozen=True)
+class EarningsRecord:
+    year: int
+    covered_wages: Decimal | int | str
+    covered_self_employment: Decimal | int | str
+
+
+@dataclass(frozen=True)
+class EarningsHistory:
+    first_year: int
+    records: tuple[EarningsRecord, ...] = ()
+    certified_zero_years: tuple[int, ...] = ()
+    certified_zero_before_first_year: bool = False
+
+    @classmethod
+    def from_json(cls, payload):
+        """A single structural source preserves every year and exact money.
+
+        Explicit zero records contain both wage and adjusted existing-SE zero.
+        Omitted years never inherit another year's value. A zero certification
+        cannot also carry an observed record for the same year.
+        """
+        try:
+            data = json.loads(payload, parse_float=Decimal)
+            if not isinstance(data, dict):
+                raise ValueError("History must be a JSON object")
+            records = tuple(EarningsRecord(**row) for row in data.pop("records", []))
+            return cls(records=records, **data)
+        except (TypeError, KeyError, json.JSONDecodeError) as error:
+            raise ValueError("Invalid annual earnings history JSON") from error
+
+    def through_claim(self, claim_year, birth_year=None):
+        first = _year(self.first_year)
+        claim = _year(claim_year)
+        earliest = max(1951, birth_year) if birth_year is not None else 1951
+        if first < earliest or first >= claim:
+            raise ValueError(
+                "History first_year must be within the worker's base years"
+            )
+        if not isinstance(self.certified_zero_before_first_year, bool):
+            raise ValueError("Earlier-zero certification must be a boolean")
+        if first > earliest and not self.certified_zero_before_first_year:
+            raise ValueError("Certify zero earnings before history first_year")
+        records = {}
+        for row in self.records:
+            year = _year(row.year)
+            if year < first:
+                raise ValueError("A history record precedes first_year")
+            if year in records:
+                raise ValueError(f"Duplicate earnings year {year}")
+            _money(row.covered_wages, "Covered wages")
+            _money(row.covered_self_employment, "Existing covered SE earnings")
+            records[year] = row
+        zeros = tuple(_year(year) for year in self.certified_zero_years)
+        if len(set(zeros)) != len(zeros) or set(zeros) & records.keys():
+            raise ValueError("Duplicate or conflicting certified-zero earnings year")
+        if any(year < first for year in zeros):
+            raise ValueError("A certified-zero year precedes first_year")
+        missing = set(range(first, claim)) - records.keys() - set(zeros)
+        if missing:
+            raise ValueError(f"Missing required earnings years: {sorted(missing)}")
+        return tuple(
+            records.get(year, EarningsRecord(year, 0, 0))
+            for year in range(first, claim)
+        )
+
+
+@dataclass(frozen=True)
+class HistoryParameters:
+    wage_base: Mapping[int, Decimal | int | str]
+    nawi: Mapping[int, Decimal | int | str]
+
+
+@dataclass(frozen=True)
+class AnnualEarnings:
+    year: int
+    covered_wages: Decimal
+    covered_self_employment: Decimal
+    ordinary_cap: Decimal
+    ordinary_covered: Decimal
+    indexing_factor: Decimal
+    indexed_ordinary: Decimal
+
+
+@dataclass(frozen=True)
+class HistoryCalculation:
+    eligibility_year: int
+    claim_year: int
+    ledger: tuple[AnnualEarnings, ...]
+    aime: int
+
+
+def _parameter(path, year, name, *, positive=False):
+    if year not in path:
+        raise ValueError(f"Missing {name} for year {year}")
+    value = _money(path[year], name)
+    if positive and not value:
+        raise ValueError(f"{name} must be positive")
+    return value
+
+
+def aime_from_indexed(indexed_amounts):
+    selected = highest_earnings(tuple(indexed_amounts) or (Decimal(0),))
+    return int(sum(selected, Decimal(0)) // 420)
+
+
+def compute_history(
+    history, eligibility_year, claim_year, parameters, *, birth_year=None
+):
+    """Compute a complete career, including earnings after 62 through Q-1."""
+    eligibility = _year(eligibility_year)
+    if eligibility < 1983:
+        raise ValueError("Computation benchmarks before 1983 are unsupported")
+    if claim_year < eligibility:
+        raise ValueError("Claim year cannot precede eligibility")
+    records = history.through_claim(claim_year, birth_year)
+    anchor_year = eligibility - 2
+    anchor = _parameter(parameters.nawi, anchor_year, "NAWI", positive=True)
+    ledger = []
+    for row in records:
+        wages = _money(row.covered_wages, "Covered wages")
+        se = _money(row.covered_self_employment, "Existing covered SE earnings")
+        cap = _parameter(parameters.wage_base, row.year, "Ordinary cap", positive=True)
+        covered = min(wages + se, cap)
+        nawi = (
+            _parameter(parameters.nawi, row.year, "NAWI", positive=True)
+            if row.year < anchor_year
+            else anchor
+        )
+        indexed = index_covered_earnings(covered, nawi, anchor, round_cents=True)
+        ledger.append(
+            AnnualEarnings(row.year, wages, se, cap, covered, anchor / nawi, indexed)
+        )
+    return HistoryCalculation(
+        eligibility,
+        claim_year,
+        tuple(ledger),
+        aime_from_indexed(row.indexed_ordinary for row in ledger),
+    )
+
+
+def compute_history_pia(
+    calculation,
+    *,
+    bend_points,
+    formula_path=None,
+    payment_year=None,
+    recompute_mode="cohort",
+):
+    return compute_pia(
+        calculation.aime,
+        calculation.eligibility_year,
+        formula_path,
+        payment_year,
+        recompute_mode,
+        bend_points=bend_points,
+    )
+
+
+def history_parameters_at(
+    parameters, history, eligibility_year, claim_year, *, birth_year=None
+):
+    years = [row.year for row in history.through_claim(claim_year, birth_year)]
+    return HistoryParameters(
+        wage_base={
+            year: parameters.gov.ssa.social_security(f"{year}-01-01").wage_base
+            for year in years
+        },
+        nawi={
+            year: parameters.gov.ssa.nawi(f"{year}-01-01")
+            for year in set(years) | {eligibility_year - 2}
+        },
+    )
