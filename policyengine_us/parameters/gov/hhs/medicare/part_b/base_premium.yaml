@@ -4,6 +4,18 @@ metadata:
   period: month
   label: Medicare Part B base premium
   reference:
+    - title: Medicare Part B premium rates beginning January 1, 2015 (79 FR 61314)
+      href: https://www.govinfo.gov/content/pkg/FR-2014-10-10/pdf/2014-24248.pdf#page=1
+    - title: Medicare Part B premium rates beginning January 1, 2016 (80 FR 70811)
+      href: https://www.govinfo.gov/content/pkg/FR-2015-11-16/pdf/2015-29181.pdf#page=1
+    - title: Medicare Part B premium rates beginning January 1, 2017 (81 FR 80063)
+      href: https://www.govinfo.gov/content/pkg/FR-2016-11-15/pdf/2016-27425.pdf#page=1
+    - title: Medicare Part B premium rates beginning January 1, 2018 (82 FR 55370)
+      href: https://www.govinfo.gov/content/pkg/FR-2017-11-21/pdf/2017-24877.pdf#page=1
+    - title: Medicare Part B premium rates beginning January 1, 2019 (83 FR 52462)
+      href: https://www.govinfo.gov/content/pkg/FR-2018-10-17/pdf/2018-22530.pdf#page=2
+    - title: Medicare Part B premium rates beginning January 1, 2020 (84 FR 61625)
+      href: https://www.govinfo.gov/content/pkg/FR-2019-11-13/pdf/2019-24440.pdf#page=1
     - title: 2021 Medicare Parts A & B Premiums and Deductibles
       href: https://www.cms.gov/newsroom/press-releases/2021-medicare-part-b-premiums-remain-steady
     - title: 2022 Medicare Parts A & B Premiums and Deductibles
@@ -17,6 +29,12 @@ metadata:
     - title: 2026 Medicare Parts A & B Premiums and Deductibles
       href: https://www.cms.gov/newsroom/fact-sheets/2026-medicare-parts-b-premiums-deductibles
 values:
+  2015-01-01: 104.90
+  2016-01-01: 121.80
+  2017-01-01: 134.00
+  2018-01-01: 134.00
+  2019-01-01: 135.50
+  2020-01-01: 144.60
   2021-01-01: 148.50
   2022-01-01: 170.1
   2023-01-01: 164.9
