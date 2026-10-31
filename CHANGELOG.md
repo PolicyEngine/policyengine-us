@@ -1,3 +1,10 @@
+## [2.88.7] - 2026-10-31
+
+### Fixed
+
+- Georgia's HB463 cash tip and overtime exclusions no longer count a dependent's tips or overtime, which are the dependent's own income and not in the filer's federal AGI.
+
+
 ## [2.88.6] - 2026-10-31
 
 ### Fixed
