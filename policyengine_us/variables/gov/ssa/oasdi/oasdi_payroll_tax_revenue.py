@@ -15,7 +15,7 @@ class oasdi_payroll_tax_revenue(Variable):
         "the sum counts it once. The sum leaves out "
         "employer_total_social_security_tax, which applies the employer rate "
         "to a separate input for employer-only payroll tax calculations rather "
-        "than to a worker's wages; where both are populated they describe the "
+        "than to a worker's wages; where data populate both, they describe the "
         "same employer liability, so it is not a fourth stream. A modeled "
         "liability, not a trust-fund receipt."
     )

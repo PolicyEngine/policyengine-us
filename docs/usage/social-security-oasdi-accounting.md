@@ -42,7 +42,7 @@ for the transfer modes.
 * `employer_total_social_security_tax` applies the employer rate to
   `employer_total_taxable_earnings_for_social_security`, a separate input for
   employer-only payroll tax calculations that defaults to zero, rather than to a
-  worker's own wages. Where both are populated they describe the same employer
+  worker's own wages. Where data populate both, they describe the same employer
   liability, so the sum keeps only the worker-level `employer_social_security_tax`
   and the aggregate is not a fourth stream.
 * `unreported_payroll_tax`, the tax on unreported tips and wages from Forms 4137
