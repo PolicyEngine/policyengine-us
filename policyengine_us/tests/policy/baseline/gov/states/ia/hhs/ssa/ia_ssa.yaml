@@ -4115,3 +4115,102 @@
     ia_ssa_rcf_couple_budget: [false, false]
     ia_ssa_care_countable_income: [994, 994]
     ia_ssa: [1_192.57, 1_192.57]
+
+- name: Case 120, separated parent and dependent adult child retain individual RCF budgets with omitted marital units.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 96
+        person_id:
+          2026: 1
+        ssi_countable_resources:
+          2026: 1_800
+        ia_ssa_category: RESIDENTIAL_CARE
+        ia_ssa_care_initial_partial_month: true
+        ia_ssa_rcf_received_ssi_before_entry: true
+      child:
+        age:
+          2026: 66
+        person_id:
+          2026: 2
+        parent_1_id:
+          2026: 1
+        is_tax_unit_dependent:
+          2026: true
+        ssi_countable_resources:
+          2026: 1_800
+        ia_ssa_category: RESIDENTIAL_CARE
+        ia_ssa_care_initial_partial_month: true
+    tax_units:
+      family:
+        members: [parent, child]
+    households:
+      first_facility:
+        members: [parent]
+        state_code: IA
+      second_facility:
+        members: [child]
+        state_code: IA
+  output:
+    # A named parent remains a parent across households. Neither person's
+    # resources enter the other's individual $2,000 resource test.
+    ia_ssa_has_spouse: [false, false]
+    ssi_claim_is_joint: [false, false]
+    ia_ssa_rcf_couple_budget: [false, false]
+    ia_ssa_eligible: [true, true]
+    ia_ssa_care_countable_income: [994, 994]
+    ia_ssa: [1_192.57, 1_192.57]
+
+- name: Case 121, explicit singleton marital units give the same separated parent and child RCF payments.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 96
+        person_id:
+          2026: 1
+        ssi_countable_resources:
+          2026: 1_800
+        ia_ssa_category: RESIDENTIAL_CARE
+        ia_ssa_care_initial_partial_month: true
+        ia_ssa_rcf_received_ssi_before_entry: true
+      child:
+        age:
+          2026: 66
+        person_id:
+          2026: 2
+        parent_1_id:
+          2026: 1
+        is_tax_unit_dependent:
+          2026: true
+        ssi_countable_resources:
+          2026: 1_800
+        ia_ssa_category: RESIDENTIAL_CARE
+        ia_ssa_care_initial_partial_month: true
+    marital_units:
+      parent:
+        members: [parent]
+      child:
+        members: [child]
+    tax_units:
+      family:
+        members: [parent, child]
+    households:
+      first_facility:
+        members: [parent]
+        state_code: IA
+      second_facility:
+        members: [child]
+        state_code: IA
+  output:
+    ia_ssa_has_spouse: [false, false]
+    ssi_claim_is_joint: [false, false]
+    ia_ssa_rcf_couple_budget: [false, false]
+    ia_ssa_eligible: [true, true]
+    ia_ssa_care_countable_income: [994, 994]
+    ia_ssa: [1_192.57, 1_192.57]

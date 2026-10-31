@@ -32,6 +32,9 @@ simulations for the generated income and state-supplement properties:
   apiece per state, sharing the same read-only system. Generated examples
   enter the states' care budgets; independent budget checks also detect a
   lost spouse when both simulations make the same error.
+- Separated parent/child and dependent pairs in the retained-marriage state
+  programs, comparing the default marital unit with explicit singletons.
+  Generated incomes and resources exercise both relationship exclusions.
 
 YAML covers worked cases. Python is needed to check the for-all properties
 over every ordered edge of the grids and to compare with an oracle that does
@@ -39,6 +42,7 @@ not use the model. Both grids share the read-only system singleton; neither
 constructs a model per household. This file routes to the Rest/core group.
 """
 
+from copy import deepcopy
 from itertools import product
 from pathlib import Path
 
@@ -47,8 +51,13 @@ import pytest
 import yaml
 from hypothesis import HealthCheck, example, given, settings
 from hypothesis import strategies as st
+from policyengine_core.periods import period as make_period
 
 from policyengine_us import Simulation
+from policyengine_us.variables.gov.states._spouses import (
+    state_couple_total,
+    state_is_married,
+)
 
 YEAR = 2026
 PERIOD = "2026-01"
@@ -70,7 +79,7 @@ def _countable(unearned, earned):
     return unearned - general + earned_after
 
 
-def _oracle_ssi(claimant_unearned, spouse_unearned, spouse_earned):
+def _oracle_ssi(claimant_unearned, spouse_unearned, spouse_earned, claimant_earned=0):
     """Monthly SSI for an aged claimant with an ineligible spouse.
 
     416.1163(d)(1): no deeming when the spouse's income is not more than the
@@ -80,19 +89,21 @@ def _oracle_ssi(claimant_unearned, spouse_unearned, spouse_earned):
     own countable income.
     """
     alone = np.maximum(
-        INDIVIDUAL_FBR
-        - _countable(claimant_unearned, np.zeros_like(claimant_unearned)),
+        INDIVIDUAL_FBR - _countable(claimant_unearned, claimant_earned),
         0,
     )
     couple = np.maximum(
-        COUPLE_FBR - _countable(claimant_unearned + spouse_unearned, spouse_earned),
+        COUPLE_FBR
+        - _countable(
+            claimant_unearned + spouse_unearned, claimant_earned + spouse_earned
+        ),
         0,
     )
     deems = spouse_unearned + spouse_earned > COUPLE_FBR - INDIVIDUAL_FBR
     return np.where(deems, np.minimum(couple, alone), alone)
 
 
-def _income_situation(rows):
+def _income_situation(rows, claimant_earnings=None):
     situation = {
         plural: {}
         for plural in (
@@ -109,6 +120,9 @@ def _income_situation(rows):
         situation["people"][claimant] = {
             "age": {YEAR: 70},
             "pension_income": {YEAR: 12 * claimant_unearned},
+            "employment_income": {
+                YEAR: 12 * claimant_earnings[index] if claimant_earnings else 0
+            },
         }
         situation["people"][spouse] = {
             "age": {YEAR: 60},
@@ -128,8 +142,8 @@ def _income_situation(rows):
     return situation
 
 
-def _income_ssi(rows):
-    simulation = Simulation(situation=_income_situation(rows))
+def _income_ssi(rows, claimant_earnings=None):
+    simulation = Simulation(situation=_income_situation(rows, claimant_earnings))
     ssi = simulation.calculate("ssi", PERIOD)
     without_deeming = simulation.calculate(
         "uncapped_ssi_without_spousal_deeming", PERIOD
@@ -168,6 +182,31 @@ def test_ssi_never_rises_with_income(income_grid, axis):
     assert np.all(np.diff(income_grid["ssi"], axis=axis) <= 0.01)
 
 
+def test_claimant_wages_preserve_the_cap_with_and_without_deeming():
+    """The two #10138 cases share the same individual countable-income cap."""
+    spouse_earnings = (6_000, 5_900)
+    situation = _income_situation(
+        [(0, 0, income / 12) for income in spouse_earnings],
+        claimant_earnings=(1_000, 1_000),
+    )
+    for index, income in enumerate(spouse_earnings):
+        claimant = situation["people"][f"c{index}"]
+        spouse = situation["people"][f"s{index}"]
+        claimant["age"] = {YEAR: 67}
+        spouse["age"] = {YEAR: 45}
+        spouse.pop("employment_income")
+        spouse["self_employment_income"] = {YEAR: income}
+    simulation = Simulation(situation=situation)
+    np.testing.assert_array_equal(
+        simulation.calculate("is_ssi_spousal_deeming_applies", YEAR)[0::2],
+        [True, False],
+    )
+    # $994 - ($1,000 - $20 - $65) / 2 = $536.50 monthly, $6,438 annually.
+    np.testing.assert_allclose(
+        simulation.calculate("ssi", YEAR)[0::2], [6_438, 6_438], atol=0.01
+    )
+
+
 @settings(
     max_examples=3,
     deadline=None,
@@ -180,15 +219,32 @@ def test_ssi_never_rises_with_income(income_grid, axis):
             st.integers(0, 1_300),
             st.integers(0, 900),
             st.integers(0, 3_500),
+            st.integers(0, 2_500),
         ),
         min_size=40,
         max_size=40,
     )
 )
 def test_random_incomes_match_independent_oracle(rows):
-    claimant_ssi, _, _ = _income_ssi(rows)
-    expected = _oracle_ssi(*np.array(rows, dtype=float).T)
+    # Add the three sides of the $497 threshold to the same simulation, so
+    # generated claimant wages exercise 416.1163(e)(2) without more setup.
+    income_rows = [row[:3] for row in rows]
+    claimant_earnings = [row[3] for row in rows]
+    for claimant_unearned, _, _, claimant_earned in rows:
+        for spouse_unearned in (496, 497, 498):
+            income_rows.append((claimant_unearned, spouse_unearned, 0))
+            claimant_earnings.append(claimant_earned)
+    claimant_ssi, _, _ = _income_ssi(income_rows, claimant_earnings)
+    expected = _oracle_ssi(
+        *np.array(income_rows, dtype=float).T, np.asarray(claimant_earnings)
+    )
     np.testing.assert_allclose(claimant_ssi, expected, atol=0.01)
+    threshold = claimant_ssi[len(rows) :].reshape(len(rows), 3)
+    np.testing.assert_allclose(threshold[:, 0], threshold[:, 1], atol=0.01)
+    # One extra dollar of spouse income may reduce SSI by at most a dollar;
+    # starting deeming cannot cause a jump when the claimant earns wages.
+    assert np.all(np.diff(threshold, axis=1) <= 0.01)
+    assert np.all(np.diff(threshold, axis=1) >= -1.01)
 
 
 # Role grid: adults "a" and "b" are married; "c" lives with them in its own
@@ -720,6 +776,51 @@ SEPARATED_SUPPLEMENT_STATES = ("CO", "MO", "OR", "SD", "VA", "IA")
 SEPARATED_PERIOD = "2026-07"
 
 
+def _retained_state_pair_situation():
+    situation = _income_situation([(0, 0, 0)])
+    names = ("c0", "s0")
+    for name in names:
+        situation["people"][name].update(
+            {
+                "is_tax_unit_head": {YEAR: True},
+                "is_tax_unit_spouse": {YEAR: False},
+                "is_tax_unit_dependent": {YEAR: False},
+            }
+        )
+    for plural in ("tax_units", "families", "spm_units", "households"):
+        situation[plural] = {name: {"members": [name]} for name in names}
+    for household in situation["households"].values():
+        household["state_code"] = {YEAR: "IA"}
+    return situation
+
+
+def test_retained_state_spouse_helpers_keep_separated_marriage():
+    """Exercise the helpers without calculating a state's whole grant chain."""
+    simulation = Simulation(situation=_retained_state_pair_situation())
+    person = simulation.get_population("people")
+    year = make_period(YEAR)
+    np.testing.assert_array_equal(state_is_married(person, year), [True, True])
+    np.testing.assert_array_equal(
+        state_couple_total(person, year, np.array([175, 100])), [275, 275]
+    )
+
+
+def test_retained_state_spouse_helpers_exclude_cross_household_parent():
+    """A parent link alone excludes a pair across households and tax units."""
+    situation = _retained_state_pair_situation()
+    del situation["marital_units"]
+    situation["people"]["c0"]["person_id"] = {YEAR: 1}
+    situation["people"]["s0"]["person_id"] = {YEAR: 2}
+    situation["people"]["s0"]["parent_1_id"] = {YEAR: 1}
+    simulation = Simulation(situation=situation)
+    person = simulation.get_population("people")
+    year = make_period(YEAR)
+    np.testing.assert_array_equal(state_is_married(person, year), [False, False])
+    np.testing.assert_array_equal(
+        state_couple_total(person, year, np.array([175, 100])), [175, 100]
+    )
+
+
 def _separated_supplement_situation(
     system,
     state,
@@ -1010,6 +1111,81 @@ def test_separated_spouses_supplements_ignore_unrelated_household_adult(
         )
         if check_care_budget:
             _assert_separated_care_budget(simulation, state, pensions, amounts[-1])
+    for name in SUPPLEMENT_PROGRAMS[state]:
+        np.testing.assert_allclose(
+            amounts[0][name], amounts[1][name], atol=0.01, err_msg=f"{state}: {name}"
+        )
+
+
+@pytest.mark.parametrize("state", ("MO", "OR", "SD", "VA", "IA"))
+@pytest.mark.parametrize("relationship", ("parent", "dependent"))
+@settings(
+    max_examples=2,
+    deadline=None,
+    derandomize=True,
+    suppress_health_check=[HealthCheck.too_slow],
+)
+@given(
+    pensions=st.tuples(st.integers(0, 300), st.integers(400, 600)),
+    resources=st.tuples(st.integers(1_501, 2_000), st.integers(1_501, 2_000)),
+    child_age=st.integers(65, 70),
+    parent_first=st.booleans(),
+)
+def test_separated_known_nonspouses_match_explicit_singletons(
+    state, relationship, pensions, resources, child_age, parent_first
+):
+    """A default two-person unit cannot marry known nonspouses living apart.
+
+    Parent links and dependency are tested separately, so either exclusion
+    being dropped is observable. Both representations have the same entry
+    and care facts; only their marital-unit representation differs.
+    """
+    system = Simulation.default_tax_benefit_system_instance
+    default = _separated_supplement_situation(
+        system,
+        state,
+        (*pensions, 0),
+        (child_age + 30, child_age, 65),
+        (*resources, 0),
+        care=True,
+        joint_entry=True,
+        third_care=False,
+        third_household=0,
+        add_third=False,
+    )
+    del default["marital_units"]
+    names = ("claimant", "spouse")
+    parent, child = names if parent_first else names[::-1]
+    default["people"][parent]["age"] = {YEAR: child_age + 30}
+    default["people"][child]["age"] = {YEAR: child_age}
+    if relationship == "parent":
+        # Keep independent tax units: only the cross-household parent link
+        # proves this pair cannot be spouses.
+        default["people"][parent]["person_id"] = {YEAR: 1}
+        default["people"][child]["person_id"] = {YEAR: 2}
+        default["people"][child]["parent_1_id"] = {YEAR: 1}
+    else:
+        # A dependent and the person claiming them cannot be spouses, even
+        # without a supplied parent link and after moving to separate homes.
+        default["tax_units"] = {"family": {"members": list(names)}}
+        default["people"][parent]["is_tax_unit_head"] = {YEAR: True}
+        default["people"][child]["is_tax_unit_head"] = {YEAR: False}
+        default["people"][child]["is_tax_unit_dependent"] = {YEAR: True}
+    explicit = deepcopy(default)
+    explicit["marital_units"] = {name: {"members": [name]} for name in names}
+    amounts = []
+    for situation in (default, explicit):
+        simulation = Simulation(situation=situation)
+        amounts.append(
+            {
+                name: simulation.calculate(name, SEPARATED_PERIOD)
+                for name in SUPPLEMENT_PROGRAMS[state]
+            }
+        )
+        if state == "IA":
+            assert not np.any(
+                simulation.calculate("ia_ssa_rcf_couple_budget", SEPARATED_PERIOD)
+            )
     for name in SUPPLEMENT_PROGRAMS[state]:
         np.testing.assert_allclose(
             amounts[0][name], amounts[1][name], atol=0.01, err_msg=f"{state}: {name}"
