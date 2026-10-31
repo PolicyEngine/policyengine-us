@@ -1,0 +1,455 @@
+# Virginia EAP Fuel Assistance eligibility: at least one citizen or qualified
+# alien, income eligible, a primary fuel of electricity, natural gas, oil,
+# kerosene, LP gas (propane), wood or coal, and a heating expense paid
+# directly or included in rent. Subsidized households whose heat is included
+# in rent, and homeless persons, are ineligible; subsidized households that
+# pay their own heating bill are eligible (Complete EAP Manual B.5.c, B.7,
+# D.1.c). UNSPECIFIED, SOLAR, OTHER and NONE heating types are ineligible.
+# Unless noted, the household is one adult with $20,000 of wages (under the
+# $23,472 one-person limit).
+
+- name: Case 1, natural gas heat with a gas bill is eligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: true
+
+- name: Case 2, electric heat with an electric bill is eligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: true
+
+- name: Case 3, fuel oil heat with an oil bill is eligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 1_800
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: true
+
+- name: Case 4, kerosene heat with a kerosene bill is eligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: KEROSENE
+        fuel_oil_expense: 1_000
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: true
+
+- name: Case 5, propane heat with a bottled gas bill is eligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_400
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: true
+
+- name: Case 6, wood heat with a wood expense is eligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: WOOD
+        wood_expense: 600
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: true
+
+- name: Case 7, coal heat with a coal expense is eligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: COAL
+        coal_expense: 700
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: true
+
+- name: Case 8, unspecified heating type is ineligible even with a gas bill.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: UNSPECIFIED
+        gas_expense: 1_200
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: false
+
+- name: Case 9, solar heat is not an eligible primary fuel.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: SOLAR
+        pre_subsidy_electricity_expense: 900
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: false
+
+- name: Case 10, a home with no heating is ineligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NONE
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: false
+
+- name: Case 11, other heating fuel is not an eligible primary fuel.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: OTHER
+        other_heating_fuel_expense: 500
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: false
+
+- name: Case 12, natural gas heat with no bill and no heat in rent is ineligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: false
+
+- name: Case 13, unsubsidized renter with heat included in rent is eligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: true
+
+- name: Case 14, heat included in rent with an unspecified fuel is ineligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: false
+
+- name: Case 15, voucher household with heat included in rent is ineligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: false
+
+- name: Case 16, public housing tenant with heat included in rent is ineligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: ELECTRICITY
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        is_in_public_housing: true
+  output:
+    va_eap_eligible: false
+
+- name: Case 17, subsidized household paying its own electric heating bill is eligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_300
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: true
+
+- name: Case 18, person living in a vehicle with a propane heater is homeless and ineligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: PROPANE
+        bottled_gas_expense: 300
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        is_homeless: true
+  output:
+    va_eap_eligible: false
+
+- name: Case 19, household with no citizen or qualified alien is ineligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: false
+
+- name: Case 20, wages over the one-person limit make the household ineligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: false
+
+- name: Case 21, working SSI recipient over the limit is eligible through the all-SSI exception.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 24_000
+        ssi: 438
+        is_ssi_disabled: true
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: KEROSENE
+        fuel_oil_expense: 1_100
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_eligible: true
+
+- name: Case 22, household outside Virginia is not computed.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [head]
+        state_code: MD
+  output:
+    va_eap_eligible: false
+
+- name: Case 23, cash help from a relative pushes a one-person household over the limit.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+        financial_assistance: 4_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # 20,000 + 4,000 = 24,000 > 23,472.
+    va_eap_income_eligible: false
+    va_eap_eligible: false

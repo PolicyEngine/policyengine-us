@@ -158,3 +158,49 @@
     additional_senior_deduction: 0
     tip_income_deduction: 8_000
     mt_federal_obbba_subtraction: 8_000
+
+- name: 2028 tipped worker — the federal tips and overtime deductions flow through
+  period: 2028
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 30_000
+        tip_income: 8_000
+        treasury_tipped_occupation_code: 102
+        fsla_overtime_premium: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    tip_income_deduction: 8_000
+    overtime_income_deduction: 2_000
+    mt_federal_obbba_subtraction: 10_000
+
+- name: 2029 tipped worker — nothing flows through after the federal deductions end
+  # Montana taxable income starts from federal taxable income (15-30-2101(22)),
+  # and 26 U.S.C. 224(h) and 225(g) allow no deduction after 2028.
+  period: 2029
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 30_000
+        tip_income: 8_000
+        treasury_tipped_occupation_code: 102
+        fsla_overtime_premium: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    tip_income_deduction: 0
+    overtime_income_deduction: 0
+    mt_federal_obbba_subtraction: 0

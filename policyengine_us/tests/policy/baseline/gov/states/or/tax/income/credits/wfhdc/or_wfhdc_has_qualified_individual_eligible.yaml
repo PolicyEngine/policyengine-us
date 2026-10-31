@@ -357,3 +357,21 @@
         state_code: OR
   output:
     or_wfhdc_has_qualified_individual_eligible: true
+
+- name: A disabled single filer is not their own qualifying individual
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    or_wfhdc_has_qualified_individual_eligible: false

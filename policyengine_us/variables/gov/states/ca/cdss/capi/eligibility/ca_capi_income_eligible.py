@@ -7,17 +7,11 @@ class ca_capi_income_eligible(Variable):
     label = "California CAPI income eligible"
     definition_period = YEAR
     defined_for = StateCode.CA
-    reference = "https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf"
+    reference = (
+        "https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf#page=25"
+    )
 
     def formula(spm_unit, period, parameters):
-        payment_standard = add(
-            spm_unit,
-            period,
-            ["ssi_amount_if_eligible", "ca_state_supplement_payment_standard"],
-        )
-        person = spm_unit.members
-        eligible_person = person("ca_capi_eligible_person", period)
-        countable_income = spm_unit.sum(
-            (person("ssi_countable_income", period) * eligible_person)
-        )
-        return payment_standard > countable_income
+        # MPP 49-035.1 compares each individual's or couple's countable income
+        # with the CAPI payment standard; a payment remains only when it is lower.
+        return add(spm_unit, period, ["ca_capi_person"]) > 0

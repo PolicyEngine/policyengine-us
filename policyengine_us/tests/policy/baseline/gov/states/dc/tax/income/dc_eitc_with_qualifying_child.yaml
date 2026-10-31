@@ -20,7 +20,7 @@
       tax_unit:
         members: [head, child]
         filing_status: HEAD_OF_HOUSEHOLD
-        filer_adjusted_earnings: 294.11764705882354
+        eitc_earned_income: 294.11764705882354
         adjusted_gross_income: 294.11764705882354
     households:
       household:
@@ -92,3 +92,36 @@
     # and the childless schedule returns zero.
     dc_eitc_with_qualifying_child: 3_400
     dc_eitc_without_qualifying_child: 0
+
+- name: DC EITC with a qualifying child nets a spouse's self-employment loss (70% x 2,040)
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        self_employment_income: -4_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: DC
+  output:
+    # The spouse's $4,000 self-employment loss offsets the head's $10,000 of
+    # wages, so federal earned income is $6,000 (Form 1040 EIC Worksheet B,
+    # line 4b, combines both spouses' amounts on a joint return).
+    dc_eitc_with_qualifying_child: 1_428
