@@ -7,7 +7,10 @@ class tob_revenue_oasdi(Variable):
     definition_period = YEAR
     label = "OASDI trust fund revenue from SS benefit taxation"
     documentation = (
-        "Tax revenue credited to OASDI trust funds per 42 U.S.C. 401 note. "
+        "Increase in chapter 1 income tax liability after nonrefundable credits and "
+        "before refundable credits credited to OASDI trust funds per "
+        "42 U.S.C. 401 note. Excludes chapter 2A net investment income tax "
+        "under section 1411. "
         "Per Section 121(e) of PL 98-21, OASDI receives the 'increase in tax "
         "liabilities attributable to' section 86 LESS the 1993 amendments. "
         "Calculated using branching to isolate the signed marginal tax "
@@ -15,7 +18,11 @@ class tob_revenue_oasdi(Variable):
         "tax liabilities."
     )
     unit = USD
-    reference = "https://www.ssa.gov/OP_Home/comp2/F098-021.html"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/42/401",
+        "https://www.law.cornell.edu/uscode/text/26/1411",
+        "https://www.ssa.gov/OP_Home/comp2/F098-021.html",
+    )
 
     def formula(tax_unit, period, parameters):
         """
@@ -49,7 +56,7 @@ class tob_revenue_oasdi(Variable):
                 except:
                     pass
 
-        tax_no_ss = branch_no_ss.tax_unit("income_tax", period)
+        tax_no_ss = branch_no_ss.tax_unit("income_tax_chapter_1", period)
         del sim.branches["oasdi_no_ss"]
 
         # === Branch 2: Tax with the pre-1993 includible amount ===
@@ -69,7 +76,7 @@ class tob_revenue_oasdi(Variable):
         holder = tax_unit_pop.get_holder("tax_unit_taxable_social_security")
         holder.set_input(period, old_law_taxable_ss)
 
-        tax_old_law_ss = branch_old_law.tax_unit("income_tax", period)
+        tax_old_law_ss = branch_old_law.tax_unit("income_tax_chapter_1", period)
         del sim.branches["oasdi_old_law"]
 
         return tax_old_law_ss - tax_no_ss
