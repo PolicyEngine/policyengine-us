@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.income.adjusted_earnings import (
+    earnings_before_zero_floor,
+)
 
 
 class ny_cdcc_qualifying_expenses(Variable):
@@ -7,7 +10,7 @@ class ny_cdcc_qualifying_expenses(Variable):
     label = "New York child and dependent care credit qualifying expenses"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-2)(2)(D)
+    reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-2)(2)(C), (D)
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
@@ -25,10 +28,23 @@ class ny_cdcc_qualifying_expenses(Variable):
         # IRC 21(d)(2), 606(c-2) deems no earned income for a student or
         # incapacitated spouse.
         cap = p.expense_cap.calc(tax_unit("count_cdcc_eligible", period))
-        head_earned = tax_unit("head_earned", period)
+        # (C) defines earned income as "the wages, salaries, tips and other
+        # employee compensation", without IRC 32(c)(2)(A)(i)'s "only if such
+        # amounts are includible in gross income", so measure it on gross
+        # wages, which keep the pre-tax payroll deductions. A business loss
+        # offsets these wages before the zero floor.
+        person = tax_unit.members
+        earned = max_(
+            0,
+            earnings_before_zero_floor(
+                person, period, parameters, person("employment_income", period)
+            ),
+        )
+        head_earned = tax_unit.sum(earned * person("is_tax_unit_head", period))
+        spouse_earned = tax_unit.sum(earned * person("is_tax_unit_spouse", period))
         earned = where(
             tax_unit("tax_unit_is_joint", period),
-            min_(head_earned, tax_unit("spouse_earned", period)),
+            min_(head_earned, spouse_earned),
             head_earned,
         )
         return min_(expenses, min_(cap, earned))

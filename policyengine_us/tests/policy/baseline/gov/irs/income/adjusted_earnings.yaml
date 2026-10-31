@@ -1,0 +1,55 @@
+# IRC 32(c)(2)(A)(i) counts employee compensation only if it is includible in
+# gross income. Treas. Reg. 1.21-2(b)(3) (CDCC) and IRC 129(e)(2) (dependent
+# care exclusion) use that definition, and Form 2441 lines 4 and 5 start from
+# Form 1040 line 1z (W-2 box 1).
+
+- name: Traditional 401(k) deferral is left out of adjusted earnings
+  period: 2025
+  input:
+    employment_income: 4_000
+    traditional_401k_contributions_desired: 1_000
+  output:
+    # Gross earned income keeps the deferral: 4,000.
+    earned_income: 4_000
+    # W-2 box 1 wages: 4,000 - 1,000 = 3,000 (IRC 402(e)(3)).
+    irs_employment_income: 3_000
+    # 4,000 - (4,000 - 3,000) excluded wages - 0 SE adjustment = 3,000.
+    adjusted_earnings: 3_000
+
+- name: Roth deferral stays in adjusted earnings, other pre-tax payroll deductions do not
+  period: 2025
+  input:
+    employment_income: 10_000
+    roth_401k_contributions_desired: 1_000
+    pre_tax_health_insurance_premiums: 500
+    health_savings_account_payroll_contributions: 1_000
+  output:
+    # Designated Roth contributions are includible in gross income
+    # (IRC 402A(a)(1)); the cafeteria-plan premium and HSA payroll
+    # contribution are not (IRC 106, 125).
+    # 10,000 - 500 - 1,000 = 8,500.
+    irs_employment_income: 8_500
+    adjusted_earnings: 8_500
+
+- name: Deferral and self-employment income together
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    employment_income: 4_000
+    traditional_401k_contributions_desired: 1_000
+    self_employment_income: 10_000
+  output:
+    # SE tax: 10,000 * 0.9235 * 0.153 = 1,412.96.
+    # Adjustment: 0.5 * 1,412.955 = 706.48.
+    # 4,000 + 10,000 - 1,000 excluded wages - 706.48 = 12,293.52.
+    adjusted_earnings: 12_293.52
+
+- name: Self-employment loss larger than taxable wages floors adjusted earnings at zero
+  period: 2025
+  input:
+    employment_income: 2_000
+    traditional_401k_contributions_desired: 1_000
+    self_employment_income: -3_000
+  output:
+    # max(0, 2,000 - 3,000 - 1,000 excluded wages - 0) = 0.
+    adjusted_earnings: 0

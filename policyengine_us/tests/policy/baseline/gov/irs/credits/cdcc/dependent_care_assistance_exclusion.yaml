@@ -404,3 +404,30 @@
     cdcc_treated_as_unmarried: true
     # min($6,000 benefits, $5,000 unmarried cap, $38,000 earnings) = $5,000.
     dependent_care_assistance_exclusion: 5_000
+
+# IRC 129(e)(2) gives earned income the IRC 32(c)(2) meaning, which counts
+# wages only if includible in gross income. Form 2441 lines 18 and 19 figure
+# it the same way as lines 4 and 5 (Form 1040 line 1z).
+- name: Section 129(b) limit uses the lower earner's wages after a 401(k) deferral
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        dependent_care_employer_benefits: 5_000
+      spouse:
+        age: 38
+        employment_income: 4_000
+        traditional_401k_contributions_desired: 1_500
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+  output:
+    # Spouse: 4,000 wages - 1,500 deferral = 2,500.
+    min_head_spouse_earned: 2_500
+    # min(5,000 benefits, 5,000 joint cap, 2,500 earned income) = 2,500.
+    dependent_care_assistance_exclusion: 2_500

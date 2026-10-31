@@ -15,22 +15,8 @@ class filer_adjusted_earnings(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        p = parameters(period).gov.irs.ald.misc
-        adjustment = (
-            (1 - p.self_emp_tax_adj)
-            * p.employer_share
-            * person("self_employment_tax", period)
-        )
-        # Federal-style state credits exclude wages that are not includible
-        # in federal gross income. Preserve the existing personal SE-tax
-        # adjustment and zero floor, without changing gross earned_income.
-        excluded_wages = person("employment_income", period) - person(
-            "irs_employment_income", period
-        )
-        # Disability pensions reported as wages before minimum retirement
-        # age are earned income (Pub. 596).
-        earnings = add(person, period, ["earned_income", "earned_disability_benefits"])
-        adjusted = max_(0, earnings - excluded_wages - adjustment)
-        is_dependent = person("is_tax_unit_dependent", period)
-        return tax_unit.sum(adjusted * ~is_dependent)
+        # adjusted_earnings already leaves out wages that are not includible
+        # in federal gross income (IRC 32(c)(2)(A)(i)) and keeps the
+        # personal SE-tax adjustment and zero floor. Dependents' earnings
+        # belong on their own returns.
+        return tax_unit_non_dep_sum("adjusted_earnings", tax_unit, period)

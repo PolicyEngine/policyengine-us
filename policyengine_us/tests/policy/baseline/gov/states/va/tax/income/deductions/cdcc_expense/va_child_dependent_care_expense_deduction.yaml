@@ -116,3 +116,38 @@
     dependent_care_assistance_exclusion: 5_000
     va_child_dependent_care_deduction_cdcc_limit: 1_000
     va_child_dependent_care_expense_deduction: 1_000
+
+# Va. Code 58.1-322.03(3) deducts "the amount of employment-related expenses
+# upon which the federal credit is based under § 21", so the federal earned
+# income limit (taxable wages, Treas. Reg. 1.21-2(b)(3)) carries over.
+- name: Lower-earning spouse's 401(k) deferral lowers the deduction
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+      spouse:
+        age: 38
+        employment_income: 4_000
+        traditional_401k_contributions_desired: 1_500
+      child1:
+        age: 5
+      child2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: VA
+  output:
+    # Spouse: 4,000 wages - 1,500 deferral = 2,500.
+    min_head_spouse_earned: 2_500
+    # 6,000 two-child federal limit, no employer benefits.
+    va_child_dependent_care_deduction_cdcc_limit: 6_000
+    # min(9,000 expenses, 6,000 limit, 2,500 earned income) = 2,500.
+    va_child_dependent_care_expense_deduction: 2_500
