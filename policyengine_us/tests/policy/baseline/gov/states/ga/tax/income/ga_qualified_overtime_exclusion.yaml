@@ -283,7 +283,7 @@
     # Head: 1,000. Spouse: part-time, so none.
     ga_qualified_overtime_exclusion: 1_000
 
-- name: Railway Labor Act overtime needs no hourly wage and keeps the cap
+- name: Railway Labor Act overtime counts up to the cap
   period: 2026
   input:
     people:
@@ -291,7 +291,7 @@
         age: 40
         is_tax_unit_head: true
         employment_income: 80_000
-        is_paid_hourly: false
+        is_paid_hourly: true
         weekly_hours_worked_before_lsr: 40
         ga_rla_hourly_component_overtime: 3_000
     tax_units:
@@ -318,6 +318,7 @@
         age: 40
         is_tax_unit_head: true
         employment_income: 30_000
+        is_paid_hourly: true
         weekly_hours_worked_before_lsr: 20
         ga_rla_hourly_component_overtime: 1_000
     tax_units:
@@ -329,8 +330,31 @@
         members: [head]
         state_code: GA
   output:
-    # (16)(B) changes the compensation that counts and leaves (16)(A)'s
-    # "full-time employee" in place.
+    # (16)(B) replaces the compensation that counts. "Full-time employee paid
+    # by an hourly wage" stays. The DOR's guide, p. 22, places the Railway
+    # Labor Act rule inside that description.
+    ga_qualified_overtime_exclusion: 0
+
+- name: Salaried Railway Labor Act overtime gets no exclusion
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 80_000
+        is_paid_hourly: false
+        weekly_hours_worked_before_lsr: 40
+        ga_rla_hourly_component_overtime: 1_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: GA
+  output:
     ga_qualified_overtime_exclusion: 0
 
 - name: Railway Labor Act overtime and qualified overtime share one cap
@@ -356,29 +380,6 @@
   output:
     ga_qualified_overtime_exclusion: 1_750
 
-- name: A salaried premium stays out while Railway Labor Act overtime counts
-  period: 2026
-  input:
-    people:
-      head:
-        age: 40
-        is_tax_unit_head: true
-        employment_income: 40_000
-        fsla_overtime_premium: 1_000
-        is_paid_hourly: false
-        weekly_hours_worked_before_lsr: 40
-        ga_rla_hourly_component_overtime: 500
-    tax_units:
-      tax_unit:
-        members: [head]
-        filing_status: SINGLE
-    households:
-      household:
-        members: [head]
-        state_code: GA
-  output:
-    ga_qualified_overtime_exclusion: 500
-
 - name: A dependent's Railway Labor Act overtime stays off the filer's return
   period: 2026
   input:
@@ -391,6 +392,7 @@
         age: 18
         is_tax_unit_dependent: true
         employment_income: 8_000
+        is_paid_hourly: true
         weekly_hours_worked_before_lsr: 40
         ga_rla_hourly_component_overtime: 1_000
     tax_units:
@@ -410,19 +412,25 @@
       head:
         age: 40
         is_tax_unit_head: true
-        employment_income: 50_000
+        employment_income: 40_000
+        fsla_overtime_premium: 1_000
+        is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 40_000
         fsla_overtime_premium: 1_000
         is_paid_hourly: false
         weekly_hours_worked_before_lsr: 40
-        ga_rla_hourly_component_overtime: 200
     tax_units:
       tax_unit:
-        members: [head]
-        filing_status: SINGLE
+        members: [head, spouse]
+        filing_status: JOINT
     households:
       household:
-        members: [head]
+        members: [head, spouse]
         state_code: GA
   output:
-    ga_qualified_overtime_exclusion: 200
-    ga_subtractions: 200
+    ga_qualified_overtime_exclusion: 1_000
+    ga_subtractions: 1_000

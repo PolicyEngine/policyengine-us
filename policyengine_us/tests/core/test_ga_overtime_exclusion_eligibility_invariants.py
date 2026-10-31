@@ -9,6 +9,9 @@ National Railway Labor Act, the exemption provided in this paragraph shall
 apply to hourly component overtime compensation as defined in applicable
 collective bargaining agreements."
 
+Each case below compares runs or sums a population, which a YAML case can't do.
+The YAML file for the variable holds the worked examples.
+
 Hypothesis draws batches of Georgia tax units (single, joint, and either with
 dependents), and a seeded population of 300 units adds breadth. Each person
 gets an hourly flag, usual weekly hours on both sides of the 35-hour line,
@@ -17,23 +20,21 @@ batch runs as vectorized simulations with one input changed at a time. For
 every tax unit:
 
 1. Differential: the exclusion equals an independent numpy sum, over the head
-   and spouse who work at least 35 hours, of min(premium if hourly, plus
-   Railway Labor Act overtime, $1,750), with both constants restated from the
-   law rather than read from the parameter files.
-2. No leakage: zeroing the premium of everyone who fails either test and the
-   Railway Labor Act overtime of everyone under 35 hours leaves the exclusion,
-   Georgia subtractions and Georgia AGI unchanged.
+   and spouse who are paid hourly and work at least 35 hours, of min(premium
+   plus Railway Labor Act overtime, $1,750), with both constants restated from
+   the law rather than read from the parameter files.
+2. No leakage: zeroing both overtime amounts of everyone who fails either test
+   leaves the exclusion, Georgia subtractions and Georgia AGI unchanged.
 3. Monotonicity: paying everyone hourly, raising hours, raising the premium or
    raising Railway Labor Act overtime never lowers the exclusion.
-4. Railway Labor Act overtime needs no hourly wage: with no premium, changing
-   the hourly flag leaves the exclusion unchanged.
+4. The two amounts are interchangeable: swapping each person's premium and
+   Railway Labor Act overtime leaves the exclusion unchanged, since one limit
+   and the same tests cover both.
 5. Bounds: the exclusion lies between 0 and $1,750 times the number of filers.
 6. Flow: a change in the exclusion moves Georgia subtractions by the same
    amount and Georgia AGI by the opposite amount.
 7. The cash tip exclusion, which has neither test, ignores hourly pay, hours
    and Railway Labor Act overtime.
-8. A person paid hourly always passes is_eligible_for_fsla_overtime, so the
-   exclusion gains nothing from reading it.
 
 The seeded population also checks that each failing group holds amounts, so
 1 and 2 are not vacuous.
@@ -203,9 +204,6 @@ def _run(units, year, change=lambda amounts: amounts):
         out[name] = np.asarray(sim.calculate(name, year), dtype=float)
     out["hourly"] = out["is_paid_hourly"] > 0
     out["filer"] = ~np.asarray(sim.calculate("is_tax_unit_dependent", year), dtype=bool)
-    out["fsla_eligible"] = np.asarray(
-        sim.calculate("is_eligible_for_fsla_overtime", year), dtype=bool
-    )
     out["unit"] = sim.populations["tax_unit"].members_entity_id
     return out
 
@@ -219,27 +217,30 @@ def _unit_sum(run, values):
 
 
 def _without_failing_amounts(amounts):
-    full_time = amounts["weekly_hours_worked_before_lsr"] >= FULL_TIME_HOURS
+    if (
+        amounts["is_paid_hourly"]
+        and amounts["weekly_hours_worked_before_lsr"] >= FULL_TIME_HOURS
+    ):
+        return amounts
     return {
         **amounts,
-        "fsla_overtime_premium": (
-            amounts["fsla_overtime_premium"]
-            if full_time and amounts["is_paid_hourly"]
-            else 0.0
-        ),
-        "ga_rla_hourly_component_overtime": (
-            amounts["ga_rla_hourly_component_overtime"] if full_time else 0.0
-        ),
+        "fsla_overtime_premium": 0.0,
+        "ga_rla_hourly_component_overtime": 0.0,
+    }
+
+
+def _swap_overtime(amounts):
+    return {
+        **amounts,
+        "fsla_overtime_premium": amounts["ga_rla_hourly_component_overtime"],
+        "ga_rla_hourly_component_overtime": amounts["fsla_overtime_premium"],
     }
 
 
 def _expected(run):
-    full_time = run["weekly_hours_worked_before_lsr"] >= FULL_TIME_HOURS
-    counted = (
-        run["fsla_overtime_premium"] * run["hourly"]
-        + run["ga_rla_hourly_component_overtime"]
-    )
-    return _unit_sum(run, run["filer"] * full_time * np.minimum(counted, CAP))
+    passes = run["hourly"] & (run["weekly_hours_worked_before_lsr"] >= FULL_TIME_HOURS)
+    counted = run["fsla_overtime_premium"] + run["ga_rla_hourly_component_overtime"]
+    return _unit_sum(run, run["filer"] * passes * np.minimum(counted, CAP))
 
 
 def _at_least(lower, higher, name):
@@ -290,20 +291,9 @@ def _check(units, year, *, require_failing_premiums=False):
     for higher in (all_hourly, more_hours, more_premium, more_rla):
         _at_least(base, higher, exclusion)
 
-    # 4. Railway Labor Act overtime needs no hourly wage.
-    rla_hourly = _run(
-        units,
-        year,
-        lambda a: {**a, "fsla_overtime_premium": 0.0, "is_paid_hourly": True},
-    )
-    rla_salaried = _run(
-        units,
-        year,
-        lambda a: {**a, "fsla_overtime_premium": 0.0, "is_paid_hourly": False},
-    )
-    np.testing.assert_allclose(
-        rla_hourly[exclusion], rla_salaried[exclusion], atol=TOLERANCE
-    )
+    # 4. One limit and the same tests cover both amounts.
+    swapped = _run(units, year, _swap_overtime)
+    np.testing.assert_allclose(base[exclusion], swapped[exclusion], atol=TOLERANCE)
 
     # 5. Bounds: 0 to $1,750 per filer.
     filers = _unit_sum(base, base["filer"].astype(float))
@@ -322,25 +312,20 @@ def _check(units, year, *, require_failing_premiums=False):
     )
 
     # 7. The tip exclusion has neither test.
-    for other in (all_hourly, more_hours, more_rla, rla_salaried):
+    for other in (all_hourly, more_hours, more_rla):
         np.testing.assert_allclose(
             other["ga_cash_tip_exclusion"],
             base["ga_cash_tip_exclusion"],
             atol=TOLERANCE,
         )
 
-    # 8. Reading is_eligible_for_fsla_overtime would add nothing.
-    assert base["fsla_eligible"][base["hourly"]].all()
-
     if require_failing_premiums:
         full_time = base["weekly_hours_worked_before_lsr"] >= FULL_TIME_HOURS
-        has_premium = base["filer"] & (base["fsla_overtime_premium"] > 0)
-        has_rla = base["filer"] & (base["ga_rla_hourly_component_overtime"] > 0)
-        assert (has_premium & base["hourly"] & ~full_time).sum() >= 10
-        assert (has_premium & ~base["hourly"] & full_time).sum() >= 10
-        assert (has_premium & base["hourly"] & full_time).sum() >= 10
-        assert (has_rla & ~base["hourly"] & full_time).sum() >= 10
-        assert (has_rla & ~full_time).sum() >= 10
+        for amount in ("fsla_overtime_premium", "ga_rla_hourly_component_overtime"):
+            held = base["filer"] & (base[amount] > 0)
+            assert (held & base["hourly"] & ~full_time).sum() >= 10, amount
+            assert (held & ~base["hourly"] & full_time).sum() >= 10, amount
+            assert (held & base["hourly"] & full_time).sum() >= 10, amount
         assert (change > 0).sum() >= 10
 
 
@@ -363,22 +348,3 @@ def test_overtime_exclusion_eligibility_invariants(units):
 @pytest.mark.parametrize("year", [2026, 2028])
 def test_seeded_population(year):
     _check(_seeded_units(), year, require_failing_premiums=True)
-
-
-@pytest.mark.parametrize(
-    "hours,counted",
-    [(34.99, False), (35, True), (35.01, True)],
-)
-def test_full_time_threshold_edge(hours, counted):
-    amounts = {
-        "age": 40,
-        "employment_income": 50_000.0,
-        "is_paid_hourly": True,
-        "weekly_hours_worked_before_lsr": hours,
-        "fsla_overtime_premium": 1_000.0,
-        "ga_rla_hourly_component_overtime": 0.0,
-        "tip_income": 0.0,
-        "treasury_tipped_occupation_code": TIPPED_CODE,
-    }
-    run = _run([{"head": amounts, "spouse": None, "dependents": []}], 2026)
-    assert run["ga_qualified_overtime_exclusion"][0] == (1_000 if counted else 0)
