@@ -2,6 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 from policyengine_us.variables.gov.states.ca.cdss.capi._ca_capi_ssi_ssp_standard import (
     ca_capi_couple_computation,
     ca_capi_in_title_xix_facility,
@@ -67,9 +70,11 @@ class ca_capi_person(Variable):
         # can still pay such a spouse SSI that SSA would not (issue 10481).
         capi_eligible = person("ca_capi_eligible_person", period.this_year)
         joint = ca_capi_couple_computation(person, period)
-        couple_with_spouse = joint & ~(person.marital_unit.sum(capi_eligible) > 1)
+        couple_with_spouse = joint & ~(
+            _ssi_couple_total(person, period.this_year, capi_eligible.astype(int)) > 1
+        )
         spouse_ssi_ssp = ca_capi_spouse_ssi_ssp(person, period)
-        couple_income = person.marital_unit.sum(countable_income)
+        couple_income = _ssi_couple_total(person, period.this_year, countable_income)
         # A spouse counts as an eligible spouse only while receiving SSI/SSP
         # (MPP 49-005(e)(3), 49-050.13). A spouse paid neither is an
         # ineligible spouse (MPP 49-005(i)(2)), whose income is deemed.
