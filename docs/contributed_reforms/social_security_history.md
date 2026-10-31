@@ -71,6 +71,8 @@ The calculator also requires the existing own-record fields: worker ID, exact
 birth date, age-62 eligibility year, first entitlement month, insured-status
 assertion, and assertions about unsupported special earnings tests and prior
 withholding adjustments. The supported eligibility benchmark begins in 1983.
+Earnings can precede that benchmark, beginning in 1951 or the worker's birth
+year, whichever is later; annual inactive-policy defaults cover those years.
 
 ## Conventional AIME and the shared benefit pipeline
 

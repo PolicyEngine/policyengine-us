@@ -5,7 +5,7 @@ These few vector cases exercise the real Simulation boundary and dated policy.
 """
 
 import json
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 
 import numpy as np
 import pytest
@@ -285,3 +285,44 @@ def test_all_three_reforms_reconcile_hand_computed_history_in_real_engine():
     assert Decimal(rows[2037]["mini_pia"]) == Decimal("2057.6")
     assert Decimal(rows[2038]["donut_taxed"]) == 100800
     assert sum(row["ordinary_top35"] for row in rows.values()) == 35
+
+
+def test_default_history_accepts_earnings_before_1983_with_disabled_reforms():
+    """Earnings-year policy reads must support a modern worker's whole career."""
+    record = _record("historical-earnings", eligibility=2026, claim=2029)
+    record["ss_calculator_earnings_history"] = json.dumps(
+        {
+            "first_year": 1980,
+            "certified_zero_before_first_year": True,
+            "certified_zero_years": list(range(1981, 2029)),
+            "records": [
+                {
+                    "year": 1980,
+                    "covered_wages": "18000.00",
+                    "covered_self_employment": "0.00",
+                }
+            ],
+        }
+    )
+    simulation = _simulation(_situation({"worker": record}))
+    # SSA published NAWI: 1980 $12,513.46; E-2 = 2024 $69,846.57.
+    # The 1980 contribution/benefit base is $25,900, above supplied wages.
+    # https://www.ssa.gov/OACT/COLA/AWI.html
+    expected_indexed = (
+        Decimal("18000.00") * Decimal("69846.57") / Decimal("12513.46")
+    ).quantize(Decimal(".01"), rounding=ROUND_HALF_UP)
+    expected_aime = int(expected_indexed // 420)
+    assert expected_aime == 239
+    assert simulation.calculate("ss_calculated_history_aime", 2029)[0] == expected_aime
+    assert simulation.calculate("ss_calculated_history_aime_plus", 2029)[0] == 0
+    assert simulation.calculate("ss_calculated_history_conventional_pia", 2029)[
+        0
+    ] == pytest.approx(215.1)
+    report = json.loads(simulation.calculate("ss_calculated_history_ledger", 2029)[0])
+    first = report["rows"][0]
+    assert first["year"] == 1980
+    assert Decimal(first["ordinary_cap"]) == 25_900
+    assert Decimal(first["ordinary_covered"]) == 18_000
+    assert Decimal(first["indexed_ordinary"]) == expected_indexed
+    assert Decimal(first["donut_taxed"]) == 0
+    assert len(report["rows"]) == 49

@@ -41,6 +41,21 @@ def _parameters():
     return root
 
 
+@pytest.mark.parametrize("year", [1951, 1980])
+@pytest.mark.parametrize("variant", DONUT_VARIANTS)
+def test_all_off_donut_parameters_accept_pre1983_earnings_years(year, variant):
+    # Eligibility benchmarks start in 1983, while covered-earnings histories
+    # start in 1951. Read every scalar from the real authored Core subtree:
+    # an eligibility-dated default would fail before annual activation checks.
+    parameters = _parameters()
+    settings = donut_parameters_at(parameters, year, variant)
+    assert settings.in_effect is False
+    result = compute_donut_year(
+        year, covered_wages=500800, ordinary_cap=120000, parameters=settings
+    )
+    assert result.taxed_earnings == result.credited_earnings == result.tax == 0
+
+
 @pytest.mark.parametrize(
     "wages,expected",
     [
