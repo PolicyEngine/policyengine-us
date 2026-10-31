@@ -1302,6 +1302,11 @@ def export_source_inputs(simulation):
                 "sources": sources,
                 "overrides": overrides,
                 _PROVENANCE: _automatic_reported_metadata(simulation),
+                # Every group is written out with its members, so record
+                # which ones the caller supplied rather than the model built.
+                "input_group_entities": sorted(
+                    getattr(simulation, "input_group_entities", ())
+                ),
                 "default_input_period": str(simulation.default_input_period),
                 "default_calculation_period": str(
                     simulation.default_calculation_period
@@ -1325,6 +1330,15 @@ def reload_source_inputs(payload, **simulation_kwargs):
     if metadata is not None:
         sources = {**sources, _PROVENANCE: metadata}
     simulation = Simulation(situation=sources, **simulation_kwargs)
+    # The exported members include groups the model built, such as inferred
+    # marital units; restore their provenance so formulas that honour
+    # supplied membership treat the reloaded simulation like the original.
+    # Earlier snapshots omit the key and keep every group as supplied.
+    supplied_groups = payload.get("input_group_entities")
+    if supplied_groups is not None:
+        for reloaded in (simulation, getattr(simulation, "baseline", None)):
+            if reloaded is not None:
+                reloaded.input_group_entities = frozenset(supplied_groups)
     for name, periods in payload["overrides"].items():
         for period, values in periods.items():
             simulation.set_input(name, period, values)

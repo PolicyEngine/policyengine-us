@@ -1,5 +1,7 @@
 # Microsimulation
 
+The `Microsimulation` class is the primary tool for population-level policy analysis in PolicyEngine US. It combines representative survey microdata with PolicyEngine's tax-benefit model to estimate how policies affect the entire US population.
+
 ## Marital membership and tax roles
 
 Dataset `person_marital_unit_id` and `marital_unit_id` columns define marital
@@ -12,23 +14,33 @@ authoritative. An empty mapping assigns each person their own unit using
 core's existing unallocated-person behavior. A married couple may share a
 marital unit while belonging to separate tax units.
 
-When an entity-form situation omits `marital_units`, the model pairs only an
-unambiguous, explicitly supplied `is_tax_unit_head` / `is_tax_unit_spouse`
-pair in the same tax unit and household. Their true role inputs must overlap
-in period, neither may be input as a dependent or separated, and changing
-roles require an explicit marital mapping because population membership is
-static. Other people receive singleton units. A singleton synthesized without
-relationship inputs does not establish that the person is unmarried.
+When an entity-form situation omits `marital_units`, the model pairs a couple
+in the same tax unit and household in two cases:
+
+- an unambiguous, explicitly supplied `is_tax_unit_head` / `is_tax_unit_spouse`
+  pair whose true role inputs overlap in period, neither input as a dependent
+  or separated; or
+- otherwise, the two adults of a family whose explicit `is_married` input is
+  true, when exactly two of its adults in that tax unit and household are
+  neither input as dependents nor separated. Ages are read only to set its
+  children aside.
+
+Changing role or `is_married` inputs require an explicit marital mapping
+because population membership is static. Other people receive singleton
+units. A singleton synthesized without relationship inputs does not establish
+that the person is unmarried, but SSI and other programs that read marital
+units treat such adults as individuals: a couple sent with neither roles nor
+`is_married` still files jointly for tax but is not an SSI couple.
 
 The model never uses calculated tax roles to construct marital units. When
 marital membership was explicitly supplied, inferred tax spouses must share
 the head's marital unit as well as their tax unit. When membership was omitted,
 the existing tax-role fallback is retained. Direct tax-role inputs still
 override formulas. These construction rules apply to both Python household
-simulations and entity-form YAML tests; variable-only tests retain core's
-singleton defaults.
-
-The `Microsimulation` class is the primary tool for population-level policy analysis in PolicyEngine US. It combines representative survey microdata with PolicyEngine's tax-benefit model to estimate how policies affect the entire US population.
+simulations and entity-form YAML tests, including tests with reforms or
+inline parameters; variable-only tests retain core's singleton defaults.
+Source-input snapshots record which groups were supplied, so a reloaded
+simulation keeps the original's treatment.
 
 ## Getting started
 

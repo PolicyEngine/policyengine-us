@@ -2,9 +2,9 @@
 
 Policy outcomes live in is_tax_unit_spouse.yaml and
 ssi_marital_earned_income.yaml. These tests use one six-person dataset and
-one small household to check identifiers, year extension, caller isolation,
-and clone provenance. Input-validation tests call the preprocessing helper
-directly, without constructing simulations.
+small households to check identifiers, year extension, caller isolation,
+clone provenance and source-snapshot round trips. Input-validation tests call
+the preprocessing helper directly, without constructing simulations.
 """
 
 from copy import deepcopy
@@ -16,6 +16,10 @@ import pytest
 from policyengine_us import Microsimulation, Simulation
 from policyengine_us.data.dataset_schema import USSingleYearDataset
 from policyengine_us.tools.marital_units import infer_missing_marital_units
+from policyengine_us.tools.social_security_inputs import (
+    export_source_inputs,
+    reload_source_inputs,
+)
 
 
 def _explicit_pair():
@@ -149,3 +153,77 @@ def test_separated_pair_and_partial_tax_units_stay_singletons():
         assert all(
             len(unit["members"]) == 1 for unit in inferred["marital_units"].values()
         )
+
+
+def test_source_snapshot_round_trip_keeps_the_inferred_tax_spouse():
+    # The snapshot writes the synthesized singleton marital units out as
+    # members; reloading must not treat them as supplied, or the spouse
+    # check would drop the second adult's tax-spouse role.
+    sim = Simulation(situation={"people": {"first": {}, "second": {}}})
+    reloaded = reload_source_inputs(export_source_inputs(sim))
+    assert reloaded.input_group_entities == sim.input_group_entities
+    assert sim.calculate("is_tax_unit_spouse", 2024).tolist() == [False, True]
+    np.testing.assert_array_equal(
+        reloaded.calculate("is_tax_unit_spouse", 2024),
+        sim.calculate("is_tax_unit_spouse", 2024),
+    )
+
+
+def _married_family(**people):
+    people = {
+        "first": {"age": {"2024": 40}},
+        "second": {"age": {"2024": 38}},
+        "child": {"age": {"2024": 10}},
+        **people,
+    }
+    return {
+        "people": people,
+        "tax_units": {"tax_unit": {"members": list(people)}},
+        "families": {"family": {"members": list(people), "is_married": {"2024": True}}},
+    }
+
+
+def _pairs(situation):
+    units = infer_missing_marital_units(situation)["marital_units"].values()
+    return sorted(sorted(unit["members"]) for unit in units if len(unit["members"]) > 1)
+
+
+def test_a_married_family_pairs_its_two_adults_but_not_its_children():
+    assert _pairs(_married_family()) == [["first", "second"]]
+
+
+@pytest.mark.parametrize(
+    "people",
+    [
+        # A third adult leaves the married couple ambiguous.
+        {"adult_child": {"age": {"2024": 21}}},
+        {"second": {"age": {"2024": 38}, "is_separated": {"2024": True}}},
+        {"second": {"age": {"2024": 38}, "is_tax_unit_dependent": {"2024": True}}},
+    ],
+)
+def test_a_married_family_stays_unpaired_when_ambiguous(people):
+    assert _pairs(_married_family(**people)) == []
+
+
+@pytest.mark.parametrize(
+    "head, spouse",
+    [
+        ({"2024": np.True_}, {"2024": 1}),
+        # Overlapping year and month inputs both apply to 2024.
+        ({"2024": True}, {"2024-01": True}),
+    ],
+)
+def test_true_role_inputs_pair_in_any_form_and_overlapping_period(head, spouse):
+    situation = _explicit_pair()
+    situation["people"]["head"]["is_tax_unit_head"] = head
+    situation["people"]["spouse"]["is_tax_unit_spouse"] = spouse
+    assert _pairs(situation) == [["head", "spouse"]]
+
+
+def test_malformed_input_is_left_to_core_validation():
+    bad_period = _explicit_pair()
+    bad_period["people"]["head"]["is_tax_unit_head"] = {"not a period": True}
+    listed_twice = _explicit_pair()
+    listed_twice["tax_units"]["other"] = {"members": ["child"]}
+    for situation in (bad_period, listed_twice):
+        assert "marital_units" not in infer_missing_marital_units(situation)
