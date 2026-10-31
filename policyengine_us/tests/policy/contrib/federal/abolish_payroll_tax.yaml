@@ -1,16 +1,24 @@
-- name: Abolish federal income tax reform
+# With gov.contrib.ubi_center.flat_tax.abolish_payroll_tax on,
+# employee_payroll_tax is zero and every other component of the household
+# total stays. Each case below leaves payroll tax to its formula on earnings,
+# pins federal income tax, and leaves one other component to its own formula
+# or input.
+
+- name: Abolishing payroll tax drops it from the household total
   period: 2022
-  reforms: policyengine_us.reforms.federal.abolish_payroll_tax.abolish_payroll_tax
   input:
     gov.contrib.ubi_center.flat_tax.abolish_payroll_tax: true
+    state_code: CA
+    employment_income: 10_000
+    income_tax_before_refundable_credits: 0
     ca_income_tax_before_refundable_credits: 1_000
-    employee_payroll_tax: 600
+    ca_use_tax: 0
   output:
+    employee_payroll_tax: 0
     household_state_tax_before_refundable_credits: 1_000
     household_tax_before_refundable_credits: 1_000
 
-
-- name: No reform
+- name: Payroll tax counts when not abolished
   period: 2022
   input:
     gov.contrib.ubi_center.flat_tax.abolish_payroll_tax: false
@@ -19,3 +27,67 @@
   output:
     household_state_tax_before_refundable_credits: 1_000
     household_tax_before_refundable_credits: 1_600
+
+- name: Abolishing payroll tax keeps the Idaho permanent building fund tax
+  period: 2025
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_payroll_tax: true
+    state_code: ID
+    employment_income: 60_000
+    income_tax_before_refundable_credits: 5_000
+    income_tax_refundable_credits: 800
+    id_income_tax_before_refundable_credits: 2_000
+    id_refundable_credits: 100
+    household_market_income: 60_000
+    household_benefits: 0
+  output:
+    employee_payroll_tax: 0
+    id_pbf: 10
+    household_state_tax_before_refundable_credits: 2_010
+    household_tax_before_refundable_credits: 7_010  # 5,000 + 2,000 + 10
+    household_refundable_tax_credits: 900
+    household_net_income: 53_890  # 60,000 + 900 - 7,010
+
+- name: Abolishing payroll tax keeps North Carolina use tax
+  period: 2025
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_payroll_tax: true
+    state_code: NC
+    employment_income: 60_000
+    income_tax_before_refundable_credits: 0
+    nc_income_tax: 1_000
+    nc_use_tax: 20
+  output:
+    employee_payroll_tax: 0
+    state_use_tax: 20
+    household_state_tax_before_refundable_credits: 1_020
+    household_tax_before_refundable_credits: 1_020
+
+- name: Abolishing payroll tax keeps the Jefferson County occupational tax
+  period: 2025
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_payroll_tax: true
+    state_code: KY
+    county_str: JEFFERSON_COUNTY_KY
+    employment_income: 50_000
+    income_tax_before_refundable_credits: 3_000
+    ky_income_tax_before_refundable_credits: 1_500
+  output:
+    employee_payroll_tax: 0
+    ky_jefferson_occupational_tax: 1_100  # 50,000 * 2.20%
+    local_occupational_tax: 1_100
+    household_tax_before_refundable_credits: 5_600  # 3,000 + 1,500 + 1,100
+
+- name: Abolishing payroll tax keeps Maryland county income tax
+  period: 2025
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_payroll_tax: true
+    state_code: MD
+    employment_income: 60_000
+    income_tax_before_refundable_credits: 0
+    md_income_tax_before_refundable_credits: 1_000
+    md_local_income_tax_before_credits: 400
+  output:
+    employee_payroll_tax: 0
+    local_income_tax_before_refundable_credits: 400
+    household_tax_before_refundable_credits: 1_400
