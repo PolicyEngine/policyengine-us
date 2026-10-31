@@ -8,13 +8,16 @@ Code, up to $1,750.00 received by a full-time employee paid by an hourly
 wage", and (17)(A) "any amount up to $1,750.00 received in cash tips". A
 dependent's tips and overtime are the dependent's own income (26 U.S.C.
 73(a) for a child's services). They are not in the filer's federal AGI, so
-the filer cannot subtract them.
+the filer cannot subtract them. test_ga_overtime_exclusion_eligibility_
+invariants.py covers the full-time and hourly tests.
 
 Hypothesis draws batches of Georgia tax units (single, head of household
 with dependents, joint with and without dependents), and a seeded population
 of 150 units adds breadth. Heads, spouses and dependents each get wages,
-tips in or outside a Treasury tipped occupation, and overtime premiums, some
-above the cap. Each batch runs as one vectorized simulation, twice: with the
+tips in or outside a Treasury tipped occupation, and overtime premiums and
+Railway Labor Act overtime, some above the cap. Everyone works full-time and
+earns an hourly wage, so a dependent's overtime would count but for the rule
+under test. Each batch runs as one vectorized simulation, twice: with the
 dependents' tips, occupation codes and overtime as drawn and with them set
 to zero. For every tax unit:
 
@@ -45,11 +48,13 @@ TOLERANCE = 0.01  # dollars
 CAP = 1_750
 # A Treasury Tipped Occupation Code (102, bartenders) and none.
 TIPPED_CODE = 102
+FULL_TIME_HOURLY = {"is_paid_hourly": True, "weekly_hours_worked_before_lsr": 40}
 
 DEPENDENT_INPUTS = [
     "tip_income",
     "treasury_tipped_occupation_code",
     "fsla_overtime_premium",
+    "ga_rla_hourly_component_overtime",
 ]
 OUTPUTS = [
     "ga_cash_tip_exclusion",
@@ -68,13 +73,18 @@ overtime = st.one_of(st.just(0.0), st.integers(1, 4_000).map(float))
 def person_amounts(draw):
     tip_income = draw(tips)
     overtime_premium = draw(overtime)
-    # Tips and the overtime premium are parts of employment income.
+    rla_overtime = draw(overtime)
+    # Tips and both overtime amounts are parts of employment income.
     base_wages = draw(st.integers(0, 60_000))
     return {
-        "employment_income": float(base_wages) + tip_income + overtime_premium,
+        "employment_income": (
+            float(base_wages) + tip_income + overtime_premium + rla_overtime
+        ),
         "tip_income": tip_income,
         "treasury_tipped_occupation_code": draw(st.sampled_from([0, TIPPED_CODE])),
         "fsla_overtime_premium": overtime_premium,
+        "ga_rla_hourly_component_overtime": rla_overtime,
+        **FULL_TIME_HOURLY,
     }
 
 
@@ -105,11 +115,16 @@ def _seeded_amounts(rng):
 
     tip_income = some(1, 6_000, 0.6)
     overtime_premium = some(1, 4_000, 0.6)
+    rla_overtime = some(1, 4_000, 0.2)
     return {
-        "employment_income": some(1, 60_000, 0.8) + tip_income + overtime_premium,
+        "employment_income": (
+            some(1, 60_000, 0.8) + tip_income + overtime_premium + rla_overtime
+        ),
         "tip_income": tip_income,
         "treasury_tipped_occupation_code": TIPPED_CODE if rng.random() < 0.7 else 0,
         "fsla_overtime_premium": overtime_premium,
+        "ga_rla_hourly_component_overtime": rla_overtime,
+        **FULL_TIME_HOURLY,
     }
 
 
@@ -209,9 +224,12 @@ def _unit_sum(run, values):
 def _amounts(run):
     """Each person's own tips (tipped occupation only) and overtime, capped."""
     tipped = run["treasury_tipped_occupation_code"] > 0
+    overtime_total = (
+        run["fsla_overtime_premium"] + (run["ga_rla_hourly_component_overtime"])
+    )
     return (
         np.minimum(run["tip_income"] * tipped, CAP),
-        np.minimum(run["fsla_overtime_premium"], CAP),
+        np.minimum(overtime_total, CAP),
     )
 
 

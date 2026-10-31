@@ -156,6 +156,7 @@
         age: 35
         is_tax_unit_head: true
         is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
         employment_income: 50_000
         fsla_overtime_premium: 3_000
     tax_units:
@@ -178,6 +179,7 @@
         age: 35
         is_tax_unit_head: true
         is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
         employment_income: 40_000
         fsla_overtime_premium: 1_000
     tax_units:
@@ -222,12 +224,14 @@
         age: 38
         is_tax_unit_head: true
         is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
         employment_income: 50_000
         fsla_overtime_premium: 3_000
       spouse:
         age: 36
         is_tax_unit_spouse: true
         is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
         employment_income: 50_000
         fsla_overtime_premium: 3_000
     tax_units:
@@ -254,6 +258,7 @@
         age: 35
         is_tax_unit_head: true
         is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
         employment_income: 50_000
         fsla_overtime_premium: 3_000
         tip_income: 4_000

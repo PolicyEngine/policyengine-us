@@ -11,6 +11,8 @@
         is_tax_unit_dependent: true
         employment_income: 8_000
         fsla_overtime_premium: 1_000
+        is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
     tax_units:
       tax_unit:
         members: [parent, teen]
@@ -37,6 +39,8 @@
         age: 17
         employment_income: 8_000
         fsla_overtime_premium: 1_000
+        is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
     tax_units:
       tax_unit:
         members: [parent, teen]
@@ -56,16 +60,22 @@
         is_tax_unit_head: true
         employment_income: 40_000
         fsla_overtime_premium: 3_000
+        is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
       spouse:
         age: 40
         is_tax_unit_spouse: true
         employment_income: 40_000
         fsla_overtime_premium: 1_000
+        is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
       teen:
         age: 17
         is_tax_unit_dependent: true
         employment_income: 8_000
         fsla_overtime_premium: 2_000
+        is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
     tax_units:
       tax_unit:
         members: [head, spouse, teen]
@@ -87,6 +97,8 @@
         is_tax_unit_head: true
         employment_income: 8_000
         fsla_overtime_premium: 1_000
+        is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
     tax_units:
       tax_unit:
         members: [teen]
@@ -97,3 +109,294 @@
         state_code: GA
   output:
     ga_qualified_overtime_exclusion: 1_000
+
+- name: A full-time hourly employee at the 35-hour threshold keeps the exclusion
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 50_000
+        fsla_overtime_premium: 1_000
+        is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 35
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: GA
+  output:
+    # O.C.G.A. § 48-7-27(a)(16)(A): "a full-time employee paid by an hourly
+    # wage". Chapter 7's credits set full-time at "a minimum of 35 hours a
+    # week" (§ 48-7-40(a)(5)).
+    ga_qualified_overtime_exclusion: 1_000
+    ga_subtractions: 1_000
+    ga_agi: 49_000
+
+- name: An hourly employee below the full-time threshold gets no exclusion
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 50_000
+        fsla_overtime_premium: 1_000
+        is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 34.5
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: GA
+  output:
+    ga_qualified_overtime_exclusion: 0
+    ga_subtractions: 0
+    ga_agi: 50_000
+
+- name: A full-time salaried employee gets no exclusion for overtime
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 50_000
+        fsla_overtime_premium: 1_000
+        is_paid_hourly: false
+        weekly_hours_worked_before_lsr: 45
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: GA
+  output:
+    # Salaried non-exempt pay can be qualified overtime compensation under
+    # IRC § 225, but (16)(A) reaches only an employee "paid by an hourly wage".
+    ga_qualified_overtime_exclusion: 0
+
+- name: A record with overtime but no hourly or hours input gets no exclusion
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 50_000
+        fsla_overtime_premium: 1_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: GA
+  output:
+    ga_qualified_overtime_full_time_employee: false
+    ga_qualified_overtime_exclusion: 0
+
+- name: Full-time status can be set directly when hours are not known
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 50_000
+        fsla_overtime_premium: 1_000
+        is_paid_hourly: true
+        ga_qualified_overtime_full_time_employee: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: GA
+  output:
+    ga_qualified_overtime_exclusion: 1_000
+
+- name: A part-year full-time hourly employee keeps the exclusion
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 20_000
+        fsla_overtime_premium: 500
+        is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
+        weeks_worked: 20
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: GA
+  output:
+    # Full-time describes the employee's usual hours in the weeks worked, not
+    # an average over the whole year.
+    ga_qualified_overtime_exclusion: 500
+
+- name: On a joint return each spouse passes or fails the tests alone
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 40_000
+        fsla_overtime_premium: 1_000
+        is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 40_000
+        fsla_overtime_premium: 1_000
+        is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 20
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: GA
+  output:
+    # Head: 1,000. Spouse: part-time, so none.
+    ga_qualified_overtime_exclusion: 1_000
+
+- name: Railway Labor Act overtime needs neither test and keeps the cap
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 80_000
+        ga_rla_hourly_component_overtime: 3_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: GA
+  output:
+    # O.C.G.A. § 48-7-27(a)(16)(B). The DOR's 2026 Employer's Withholding Tax
+    # Guide, p. 4, has employers report the full amount in W-2 Box 14a, code
+    # GA OT, and applies "the $1,750 limitation" when the employee files.
+    ga_qualified_overtime_exclusion: 1_750
+    ga_subtractions: 1_750
+    ga_agi: 78_250
+
+- name: Railway Labor Act overtime and qualified overtime share one cap
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 80_000
+        fsla_overtime_premium: 1_000
+        is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
+        ga_rla_hourly_component_overtime: 1_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: GA
+  output:
+    ga_qualified_overtime_exclusion: 1_750
+
+- name: Part-time overtime stays out while Railway Labor Act overtime counts
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 40_000
+        fsla_overtime_premium: 1_000
+        is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 20
+        ga_rla_hourly_component_overtime: 500
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: GA
+  output:
+    ga_qualified_overtime_exclusion: 500
+
+- name: A dependent's Railway Labor Act overtime stays off the filer's return
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 60_000
+      teen:
+        age: 18
+        is_tax_unit_dependent: true
+        employment_income: 8_000
+        ga_rla_hourly_component_overtime: 1_000
+    tax_units:
+      tax_unit:
+        members: [parent, teen]
+    households:
+      household:
+        members: [parent, teen]
+        state_code: GA
+  output:
+    ga_qualified_overtime_exclusion: 0
+
+- name: The tests reach 2028, the exclusion's last year
+  period: 2028
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 50_000
+        fsla_overtime_premium: 1_000
+        is_paid_hourly: false
+        weekly_hours_worked_before_lsr: 40
+        ga_rla_hourly_component_overtime: 200
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: GA
+  output:
+    ga_qualified_overtime_exclusion: 200
+    ga_subtractions: 200
