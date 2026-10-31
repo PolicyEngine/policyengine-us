@@ -1,1 +1,0 @@
-Limit the tips and overtime deductions to 2025-2028, as 26 U.S.C. 224(h) and 225(g) and their effective dates require, with new in_effect parameters; the federal deduction lists now name both deductions in every year so those parameters alone set the years. From 2029 Montana and Arizona no longer subtract them and South Carolina's OBBBA add-back no longer includes them.
