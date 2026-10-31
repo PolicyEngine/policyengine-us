@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.childcare import childcare_hours_for_weekly_schedule
 
 
 class WISharesTimeCategory(Enum):
@@ -24,7 +25,7 @@ class wi_shares_time_category(Variable):
         # Authorizations of 20 weekly hours or less are part time;
         # authorizations of more than 20 weekly hours are full time
         # (Section 16.1.1).
-        weekly_hours = person("childcare_hours_per_week", period.this_year)
+        weekly_hours = childcare_hours_for_weekly_schedule(person, period)
         # Zero also represents unknown hours, so retain full-time pricing.
         return where(
             (weekly_hours == 0) | (weekly_hours > p.part_time_max_weekly_hours),

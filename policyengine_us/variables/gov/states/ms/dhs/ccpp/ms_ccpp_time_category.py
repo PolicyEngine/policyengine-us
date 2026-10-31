@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.childcare import childcare_hours_for_daily_schedule
 
 
 class MSCCPPTimeCategory(Enum):
@@ -17,7 +18,7 @@ class ms_ccpp_time_category(Variable):
     reference = "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=12"
 
     def formula(person, period, parameters):
-        hours_per_day = person("childcare_hours_per_day", period.this_year)
+        hours_per_day = childcare_hours_for_daily_schedule(person, period)
         p = parameters(period).gov.states.ms.dhs.ccpp.time_category
         # Part-time = care for fewer than 6 hours of a 24-hour day; full-time is
         # 6 or more hours. The bracket returns 0=PART_TIME, 1=FULL_TIME, which
