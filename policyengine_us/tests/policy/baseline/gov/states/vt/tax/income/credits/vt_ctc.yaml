@@ -1,3 +1,26 @@
+- name: Two children halfway phased out at $150,000 each lose $500
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 3
+      child2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        adjusted_gross_income: 150_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: VT
+  output:
+    # 32 V.S.A. 5830f(b): "the amount of the credit per child" is reduced by
+    # $20 per $1,000 over $125,000: 2 x ($1,000 - 25 x $20) = $1,000.
+    vt_ctc: 1_000
+
 - name: Five qualifying children.
   period: 2023
   input:
