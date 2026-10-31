@@ -40,7 +40,7 @@ class ny_ctc_pre_2024(Variable):
             qualifies_for_federal_ctc = person("ctc_qualifying_child", period)
         else:
             # Initialize pre-TCJA CTC branch with cached pinned parameters
-            # (one clone per process; see tools/pinned_tbs.py, issue #8114).
+            # (see tools/pinned_tbs.py, issue #8114).
             # IT-213 Worksheet A computes the federal credit with recomputed
             # federal AGI (IT-201 line 19a), so the branch starts from the
             # one where federal AGI is line 19a when they differ.
