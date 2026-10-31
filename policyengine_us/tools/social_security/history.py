@@ -12,6 +12,7 @@ import json
 from typing import Mapping
 
 from .earnings import highest_earnings, index_covered_earnings
+from .donut import DonutParameters, compute_donut_year, donut_parameters_at
 from .owners_draw import OwnersDrawInputs, OwnersDrawParameters, compute_owners_draw
 from .mini_pia import blend_mini_pia, compute_mini_pia, mini_pia_share_at
 from .pia import _number, compute_pia
@@ -109,6 +110,8 @@ class HistoryParameters:
     nawi: Mapping[int, Decimal | int | str]
     owners_draw_by_year: Mapping[int, OwnersDrawParameters] | None = None
     mini_share: Decimal | Fraction | int | str = 0
+    donut_by_year: Mapping[int, DonutParameters] | None = None
+    donut_credit_rate: Decimal | Fraction | int | str | None = None
 
 
 @dataclass(frozen=True)
@@ -125,6 +128,10 @@ class AnnualEarnings:
     e1_credited: Decimal = Decimal(0)
     e1_oasdi_base: Decimal = Decimal(0)
     e1_niit_exclusion: Decimal = Decimal(0)
+    donut_taxed: Decimal = Decimal(0)
+    donut_credited: Decimal = Decimal(0)
+    indexed_donut: Decimal = Decimal(0)
+    donut_tax: Decimal = Decimal(0)
 
 
 @dataclass(frozen=True)
@@ -134,6 +141,8 @@ class HistoryCalculation:
     ledger: tuple[AnnualEarnings, ...]
     aime: int
     mini_share: Fraction = Fraction(0)
+    aime_plus: int = 0
+    donut_credit_pia: Fraction = Fraction(0)
 
 
 def _parameter(path, year, name, *, positive=False):
@@ -223,6 +232,7 @@ def compute_history(
     anchor_year = eligibility - 2
     anchor = _parameter(parameters.nawi, anchor_year, "NAWI", positive=True)
     ledger = []
+    credit_rates = set()
     for row in records:
         wages = _money(row.covered_wages, "Covered wages")
         se = _money(row.covered_self_employment, "Existing covered SE earnings")
@@ -247,6 +257,37 @@ def compute_history(
             else anchor
         )
         indexed = index_covered_earnings(covered, nawi, anchor, round_cents=True)
+        donut_parameters = (parameters.donut_by_year or {}).get(row.year)
+        donut = None
+        if donut_parameters is not None:
+            donut = compute_donut_year(
+                row.year,
+                covered_wages=wages,
+                existing_covered_se=se,
+                owners_draw_net_earnings=Decimal(str(float(draw.net_earnings)))
+                if draw
+                else 0,
+                ordinary_cap=cap,
+                parameters=donut_parameters,
+            )
+            if donut.credited_earnings:
+                credit_rates.add(
+                    _number(donut_parameters.credit_rate, "donut credit rate")
+                )
+        donut_taxed = (
+            Decimal(donut.taxed_earnings.numerator) / donut.taxed_earnings.denominator
+            if donut
+            else Decimal(0)
+        )
+        donut_credited = (
+            Decimal(donut.credited_earnings.numerator)
+            / donut.credited_earnings.denominator
+            if donut
+            else Decimal(0)
+        )
+        indexed_donut = index_covered_earnings(
+            donut_credited, nawi, anchor, round_cents=True
+        )
         ledger.append(
             AnnualEarnings(
                 row.year,
@@ -267,14 +308,33 @@ def compute_history(
                 e1_niit_exclusion=Decimal(str(float(draw.niit_exclusion)))
                 if draw
                 else Decimal(0),
+                donut_taxed=donut_taxed,
+                donut_credited=donut_credited,
+                indexed_donut=indexed_donut,
+                donut_tax=Decimal(donut.tax.numerator) / donut.tax.denominator
+                if donut
+                else Decimal(0),
             )
         )
+    if parameters.donut_credit_rate is None:
+        if len(credit_rates) > 1:
+            raise ValueError(
+                "Mixed annual donut rates require an explicit eligibility-cohort coefficient"
+            )
+        credit_rate = next(iter(credit_rates), Fraction(0))
+    else:
+        credit_rate = _number(parameters.donut_credit_rate, "donut credit rate")
+    if credit_rate < 0:
+        raise ValueError("Donut credit rate must be nonnegative")
+    aime_plus = aime_from_indexed(row.indexed_donut for row in ledger)
     return HistoryCalculation(
         eligibility,
         claim_year,
         tuple(ledger),
         aime_from_indexed(row.indexed_ordinary for row in ledger),
         mini_share,
+        aime_plus,
+        credit_rate * aime_plus,
     )
 
 
@@ -303,11 +363,18 @@ def compute_history_pia(
         recompute_mode=recompute_mode,
     )
     blended = blend_mini_pia(conventional, minis.mini_pia, calculation.mini_share)
-    return Decimal((blended * 10).__floor__()) / 10
+    combined = blended + calculation.donut_credit_pia
+    return Decimal((combined * 10).__floor__()) / 10
 
 
 def history_parameters_at(
-    parameters, history, eligibility_year, claim_year, *, birth_year=None
+    parameters,
+    history,
+    eligibility_year,
+    claim_year,
+    *,
+    birth_year=None,
+    donut_variant="custom",
 ):
     years = [row.year for row in history.through_claim(claim_year, birth_year)]
     from types import SimpleNamespace as Node
@@ -338,4 +405,12 @@ def history_parameters_at(
         },
         owners_draw_by_year=owners,
         mini_share=mini_pia_share_at(parameters, eligibility_year),
+        donut_by_year={
+            year: donut_parameters_at(parameters, year, donut_variant) for year in years
+        },
+        # Annual parameters define the taxed stream. The PIA coefficient is
+        # selected at initial eligibility, like the ordinary formula factors.
+        donut_credit_rate=donut_parameters_at(
+            parameters, eligibility_year, donut_variant
+        ).credit_rate,
     )

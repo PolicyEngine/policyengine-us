@@ -122,6 +122,7 @@ def calculator_output(person, period, parameters, output):
                     benchmark,
                     month_number(record.entitlement_month) // 12,
                     birth_year=record.birth_date.year,
+                    donut_variant=text("donut_variant"),
                 ),
             )
         # Include the following January to price December entitlement, and any

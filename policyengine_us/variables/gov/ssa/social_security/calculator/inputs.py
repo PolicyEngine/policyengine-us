@@ -32,6 +32,19 @@ class ss_calculator_earnings_history(Variable):
     reference = "https://secure.ssa.gov/poms.nsf/lnx/0300605018"
 
 
+class ss_calculator_donut_variant(Variable):
+    value_type = str
+    entity = Person
+    definition_period = ETERNITY
+    default_value = "custom"
+    label = "Social Security calculator donut provision"
+    documentation = (
+        "Named annual parameter set: custom, oact_2025_e2_13 or oact_2025_e2_14. "
+        "Several variants may be configured independently; only this selected "
+        "set applies to a worker record. All sets are inactive by default."
+    )
+
+
 class ss_calculator_worker_id(Variable):
     value_type = str
     entity = Person
