@@ -132,6 +132,18 @@ class AnnualEarnings:
     donut_credited: Decimal = Decimal(0)
     indexed_donut: Decimal = Decimal(0)
     donut_tax: Decimal = Decimal(0)
+    certified_zero: bool = False
+    ordinary_without_e1: Decimal = Decimal(0)
+    e1_ordinary_increment: Decimal = Decimal(0)
+    e1_active_income: Decimal = Decimal(0)
+    e1_phase_in_share: Decimal = Decimal(0)
+    e1_net_earnings_factor: Decimal = Decimal(0)
+    e1_planned_gross: Decimal = Decimal(0)
+    e1_oasdi_room: Decimal = Decimal(0)
+    e1_oasdi_tax: Decimal = Decimal(0)
+    e1_hi_tax: Decimal = Decimal(0)
+    donut_variant: str = ""
+    donut_tier_start: Decimal = Decimal(0)
 
 
 @dataclass(frozen=True)
@@ -143,6 +155,15 @@ class HistoryCalculation:
     mini_share: Fraction = Fraction(0)
     aime_plus: int = 0
     donut_credit_pia: Fraction = Fraction(0)
+
+
+@dataclass(frozen=True)
+class HistoryPIACalculation:
+    conventional_pia: Decimal
+    mini_pia: Fraction
+    annual_mini_pias: tuple[Fraction, ...]
+    blended_pia: Fraction
+    eligibility_pia: Decimal
 
 
 def _parameter(path, year, name, *, positive=False):
@@ -314,6 +335,33 @@ def compute_history(
                 donut_tax=Decimal(donut.tax.numerator) / donut.tax.denominator
                 if donut
                 else Decimal(0),
+                certified_zero=row.year in history.certified_zero_years,
+                ordinary_without_e1=min(wages + se, cap),
+                e1_ordinary_increment=covered - min(wages + se, cap),
+                e1_active_income=Decimal(str(float(draw.active_income)))
+                if draw
+                else Decimal(0),
+                e1_phase_in_share=Decimal(str(float(draw.phase_in_share)))
+                if draw
+                else Decimal(0),
+                e1_net_earnings_factor=Decimal(str(float(draw.net_earnings_factor)))
+                if draw
+                else Decimal(0),
+                e1_planned_gross=Decimal(str(float(draw.planned_gross)))
+                if draw
+                else Decimal(0),
+                e1_oasdi_room=Decimal(str(float(draw.oasdi_room)))
+                if draw
+                else Decimal(0),
+                e1_oasdi_tax=Decimal(str(float(draw.oasdi_tax)))
+                if draw
+                else Decimal(0),
+                e1_hi_tax=Decimal(str(float(draw.hi_tax))) if draw else Decimal(0),
+                donut_variant=donut_parameters.name if donut_parameters else "",
+                donut_tier_start=Decimal(donut.threshold.numerator)
+                / donut.threshold.denominator
+                if donut
+                else Decimal(0),
             )
         )
     if parameters.donut_credit_rate is None:
@@ -338,7 +386,7 @@ def compute_history(
     )
 
 
-def compute_history_pia(
+def history_pia_details(
     calculation,
     *,
     bend_points,
@@ -364,7 +412,31 @@ def compute_history_pia(
     )
     blended = blend_mini_pia(conventional, minis.mini_pia, calculation.mini_share)
     combined = blended + calculation.donut_credit_pia
-    return Decimal((combined * 10).__floor__()) / 10
+    return HistoryPIACalculation(
+        conventional,
+        minis.mini_pia,
+        minis.annual_mini_pias,
+        blended,
+        Decimal((combined * 10).__floor__()) / 10,
+    )
+
+
+def compute_history_pia(
+    calculation,
+    *,
+    bend_points,
+    formula_path=None,
+    payment_year=None,
+    recompute_mode="cohort",
+):
+    """Combined eligibility PIA, before COLAs and claiming adjustments."""
+    return history_pia_details(
+        calculation,
+        bend_points=bend_points,
+        formula_path=formula_path,
+        payment_year=payment_year,
+        recompute_mode=recompute_mode,
+    ).eligibility_pia
 
 
 def history_parameters_at(

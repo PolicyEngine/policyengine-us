@@ -13,16 +13,22 @@ Exact national average wage index observations:
 https://www.ssa.gov/OACT/COLA/AWI.html
 """
 
+from datetime import date
 from decimal import Decimal
 
 import pytest
 
+from policyengine_us.tools.social_security.cola import ColaEvent
 from policyengine_us.tools.social_security.history import (
     EarningsHistory,
     EarningsRecord,
     HistoryParameters,
     compute_history,
     compute_history_pia,
+)
+from policyengine_us.tools.social_security.household import (
+    SuppliedRecord,
+    calculate_year,
 )
 
 
@@ -113,3 +119,36 @@ def test_ssa_published_full_earnings_history(
     # Case B includes five years after its eligibility year; these must remain
     # available through Q-1 rather than stopping the history at age 62.
     assert calculation.ledger[-1].year == 2026
+    if case == "B":
+        # The same retirebenefit2 example publishes these December-effective
+        # COLAs, its resulting PIA $4,187.40, and the FRA payment $4,187.
+        cola_events = tuple(
+            ColaEvent(f"{year}-12", f"{year + 1}-01", Decimal(rate))
+            for year, rate in zip(
+                range(2022, 2027), (".087", ".032", ".025", ".028", ".036"), strict=True
+            )
+        )
+        record = SuppliedRecord(
+            source="history",
+            worker_id="ssa-case-b",
+            birth_date=date(1960, 1, 2),
+            entitlement_month="2027-01",
+            insured=True,
+            eligibility_year=2022,
+            history=history,
+            history_parameters=frozen_parameters,
+            no_special_monthly_test=True,
+            no_prior_withholding_adjustment=True,
+            earnings_test_no_trigger=True,
+        )
+        benefit = calculate_year(
+            record, 2027, bend_points=bends, cola_events=cola_events
+        )
+        january = next(
+            row for row in benefit.ledger if row.entitlement_month == "2027-01"
+        )
+        assert january.eligibility_pia == Decimal("3419.6")
+        assert january.cola_pia == Decimal("4187.4")
+        assert january.payable_benefit == 4187
+        assert benefit.entitlement_total == 4187 * 12
+        assert benefit.payment_total == 4187 * 11

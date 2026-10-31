@@ -17,8 +17,9 @@ from .history import (
     EarningsHistory,
     HistoryCalculation,
     HistoryParameters,
+    HistoryPIACalculation,
     compute_history,
-    compute_history_pia,
+    history_pia_details,
 )
 
 from policyengine_us.tools.social_security.cola import (
@@ -335,6 +336,7 @@ class AnnualBenefit:
     inferred_aime_interval: tuple[Decimal, Decimal] | None = None
     settlements: tuple[EarningsTestSettlement, ...] = ()
     history: HistoryCalculation | None = None
+    history_pia: HistoryPIACalculation | None = None
 
     @property
     def deferred_earnings_test_payment(self):
@@ -548,6 +550,7 @@ def calculate_year(
     claim = month_number(record.entitlement_month)
     rows = []
     inferred_interval = None
+    history_pia = None
     for number in range(year * 12 - int(_include_previous_check), (year + 1) * 12):
         entitlement = month_string(number)
         payment = month_string(number + 1)
@@ -575,13 +578,19 @@ def calculate_year(
         # Only infer AIME if the selected path actually changes the baseline.
         pia = baseline_pia
         if history is not None and payment_year >= benchmark:
-            pia = compute_history_pia(
+            details = history_pia_details(
                 history,
                 bend_points=bend_points,
                 formula_path=path,
                 payment_year=payment_year,
                 recompute_mode=mode,
             )
+            pia = details.eligibility_pia
+            if number == year * 12:
+                # An annual reconciliation prices the frozen career with the
+                # formula for January entitlement. December can reflect the
+                # following check year's distinct policy, as in 4a-1.
+                history_pia = details
         elif payment_year >= benchmark and has_active_reform(
             path, benchmark, payment_year, mode
         ):
@@ -803,4 +812,5 @@ def calculate_year(
         inferred_interval,
         tuple(settlements),
         history,
+        history_pia,
     )

@@ -208,3 +208,80 @@ class ss_calculated_aime_upper(Variable):
 
     def formula(person, period, parameters):
         return calculator_output(person, period, parameters, "aime_upper")
+
+
+class ss_calculated_history_ledger(Variable):
+    value_type = str
+    entity = Person
+    definition_period = YEAR
+    default_value = ""
+    label = "Calculated Social Security annual earnings ledger"
+    documentation = (
+        "JSON annual earnings ledger with ordinary, owners' draw and above-cap "
+        "credit amounts, indexing, mini-PIAs and selected computation years. "
+        "Money uses decimal strings; rational mini-PIAs also retain exact fractions."
+    )
+
+    def formula(person, period, parameters):
+        return calculator_output(person, period, parameters, "history_ledger")
+
+
+class ss_calculated_history_aime(Variable):
+    value_type = float
+    entity = Person
+    definition_period = YEAR
+    unit = USD
+    label = "Calculated Social Security history AIME"
+    documentation = (
+        "Conventional monthly AIME from the annual earnings record frozen at "
+        "initial claim; zero when the history source is unselected."
+    )
+
+    def formula(person, period, parameters):
+        return calculator_output(person, period, parameters, "history_aime")
+
+
+class ss_calculated_history_aime_plus(Variable):
+    value_type = float
+    entity = Person
+    definition_period = YEAR
+    unit = USD
+    label = "Calculated Social Security history AIME plus"
+    documentation = (
+        "Separate whole-dollar monthly AIME+ from eligible above-cap earnings "
+        "in the initial-claim history; zero when the history source is unselected."
+    )
+
+    def formula(person, period, parameters):
+        return calculator_output(person, period, parameters, "history_aime_plus")
+
+
+class ss_calculated_history_mini_pia(Variable):
+    value_type = float
+    entity = Person
+    definition_period = YEAR
+    unit = USD
+    label = "Calculated Social Security history mini PIA"
+    documentation = (
+        "Unrounded monthly mini-PIA before the cohort blend, using the January "
+        "entitlement formula; zero before eligibility or without a history source."
+    )
+
+    def formula(person, period, parameters):
+        return calculator_output(person, period, parameters, "history_mini_pia")
+
+
+class ss_calculated_history_conventional_pia(Variable):
+    value_type = float
+    entity = Person
+    definition_period = YEAR
+    unit = USD
+    label = "Calculated Social Security history conventional PIA"
+    documentation = (
+        "Dime-rounded monthly conventional PIA before mini-PIA blending and "
+        "AIME+ credit, using the January entitlement formula; zero before "
+        "eligibility or without a history source."
+    )
+
+    def formula(person, period, parameters):
+        return calculator_output(person, period, parameters, "history_conventional_pia")

@@ -18,6 +18,7 @@ from .household import (
 from .parameters import bend_points_at, formula_path_at
 from .pia import FormulaPath
 from .history import EarningsHistory, history_parameters_at
+from .history_report import history_report
 
 
 def calculator_output(person, period, parameters, output):
@@ -30,9 +31,13 @@ def calculator_output(person, period, parameters, output):
     """
     year = period.start.year
     sources = person("ss_calculator_source", period)
-    result = np.zeros(len(sources))
+    result = (
+        np.full(len(sources), "", dtype=object)
+        if output == "history_ledger"
+        else np.zeros(len(sources))
+    )
     for index, source in enumerate(sources):
-        if source == "off":
+        if source == "off" or (output.startswith("history_") and source != "history"):
             continue
 
         def value(name, when=period):
@@ -273,7 +278,10 @@ def calculator_output(person, period, parameters, output):
             ),
             earnings_test_settlement_months=settlement_months,
         )
-        if output in ("retirement", "survivors"):
+        if output.startswith("history_"):
+            report = history_report(annual, output)
+            result[index] = report if output == "history_ledger" else float(report)
+        elif output in ("retirement", "survivors"):
             selected = (
                 source != "survivor" if output == "retirement" else source == "survivor"
             )
