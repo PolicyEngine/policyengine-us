@@ -125,9 +125,7 @@ def _simulation(situation, reform=None, system=None):
 def _override_situation(records, incomes=None):
     """Exercise person decisions within one tax unit and across tax units."""
     situation = _situation(records, incomes)
-    situation["people"]["B"].update(
-        is_tax_unit_head=False, is_tax_unit_spouse=True
-    )
+    situation["people"]["B"].update(is_tax_unit_head=False, is_tax_unit_spouse=True)
     situation["tax_units"]["A"]["members"] = ["A", "B"]
     situation["tax_units"].pop("B")
     return situation
