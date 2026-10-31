@@ -1,5 +1,6 @@
 # Unit tests for SSI variable (final benefit calculation)
-# These tests only use the direct inputs to the ssi variable
+# The first tests only use the direct inputs to the ssi variable; the railroad
+# retirement cases at the end run the full income calculation.
 
 # Note: The 'abolish_ssi' parameter test would need a reform, which is not
 # supported in the current test framework for YAML tests. This would need to be
@@ -24,4 +25,34 @@
   input:
     uncapped_ssi: -100
   output:
+    ssi: 0
+
+- name: A railroad retirement annuity reduces an aged divorced spouse's SSI.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    # 900 a month, near the RRB's September 2025 average divorced spouse
+    # annuity of 893.35 (Quarterly Benefit Statistics, Table 1).
+    railroad_benefits: 10_800
+  output:
+    # (900 - 20 general exclusion) x 12 = 10,560.
+    ssi_countable_income: 10_560
+    # 2026 federal benefit rate of 994 x 12 = 11,928; 11,928 - 10,560 = 1,368.
+    uncapped_ssi: 1_368
+    ssi: 1_368
+
+- name: The average railroad retirement employee annuity leaves an aged retiree no SSI.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    # RRB News Release 25-8: the average regular employee annuity is 3,636 a
+    # month in January 2026; 3,636 x 12 = 43,632.
+    railroad_benefits: 43_632
+  output:
+    # (3,636 - 20 general exclusion) x 12 = 43,392.
+    ssi_countable_income: 43_392
+    # 11,928 - 43,392 = -31,464.
+    uncapped_ssi: -31_464
     ssi: 0
