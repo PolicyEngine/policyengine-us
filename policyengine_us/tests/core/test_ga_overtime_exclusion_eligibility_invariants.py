@@ -17,15 +17,16 @@ batch runs as vectorized simulations with one input changed at a time. For
 every tax unit:
 
 1. Differential: the exclusion equals an independent numpy sum, over the head
-   and spouse, of min(premium if hourly and at least 35 hours, plus Railway
-   Labor Act overtime, $1,750), with both constants restated from the law
-   rather than read from the parameter files.
-2. No leakage: zeroing the premium of everyone who fails either test leaves
-   the exclusion, Georgia subtractions and Georgia AGI unchanged.
+   and spouse who work at least 35 hours, of min(premium if hourly, plus
+   Railway Labor Act overtime, $1,750), with both constants restated from the
+   law rather than read from the parameter files.
+2. No leakage: zeroing the premium of everyone who fails either test and the
+   Railway Labor Act overtime of everyone under 35 hours leaves the exclusion,
+   Georgia subtractions and Georgia AGI unchanged.
 3. Monotonicity: paying everyone hourly, raising hours, raising the premium or
    raising Railway Labor Act overtime never lowers the exclusion.
-4. Railway Labor Act overtime needs neither test: with no premium, changing
-   the hourly flag and hours leaves the exclusion unchanged.
+4. Railway Labor Act overtime needs no hourly wage: with no premium, changing
+   the hourly flag leaves the exclusion unchanged.
 5. Bounds: the exclusion lies between 0 and $1,750 times the number of filers.
 6. Flow: a change in the exclusion moves Georgia subtractions by the same
    amount and Georgia AGI by the opposite amount.
@@ -34,7 +35,7 @@ every tax unit:
 8. A person paid hourly always passes is_eligible_for_fsla_overtime, so the
    exclusion gains nothing from reading it.
 
-The seeded population also checks that each failing group holds premiums, so
+The seeded population also checks that each failing group holds amounts, so
 1 and 2 are not vacuous.
 """
 
@@ -217,20 +218,28 @@ def _unit_sum(run, values):
     )
 
 
-def _passes(amounts):
-    return (
-        amounts["is_paid_hourly"]
-        and amounts["weekly_hours_worked_before_lsr"] >= FULL_TIME_HOURS
-    )
+def _without_failing_amounts(amounts):
+    full_time = amounts["weekly_hours_worked_before_lsr"] >= FULL_TIME_HOURS
+    return {
+        **amounts,
+        "fsla_overtime_premium": (
+            amounts["fsla_overtime_premium"]
+            if full_time and amounts["is_paid_hourly"]
+            else 0.0
+        ),
+        "ga_rla_hourly_component_overtime": (
+            amounts["ga_rla_hourly_component_overtime"] if full_time else 0.0
+        ),
+    }
 
 
 def _expected(run):
-    passes = run["hourly"] & (run["weekly_hours_worked_before_lsr"] >= FULL_TIME_HOURS)
+    full_time = run["weekly_hours_worked_before_lsr"] >= FULL_TIME_HOURS
     counted = (
-        run["fsla_overtime_premium"] * passes
-        + (run["ga_rla_hourly_component_overtime"])
+        run["fsla_overtime_premium"] * run["hourly"]
+        + run["ga_rla_hourly_component_overtime"]
     )
-    return _unit_sum(run, run["filer"] * np.minimum(counted, CAP))
+    return _unit_sum(run, run["filer"] * full_time * np.minimum(counted, CAP))
 
 
 def _at_least(lower, higher, name):
@@ -244,15 +253,11 @@ def _check(units, year, *, require_failing_premiums=False):
     # 1. Differential against numpy.
     np.testing.assert_allclose(base[exclusion], _expected(base), atol=TOLERANCE)
 
-    # 2. A premium that fails either test reaches nothing.
-    no_failing_premium = _run(
-        units,
-        year,
-        lambda a: a if _passes(a) else {**a, "fsla_overtime_premium": 0.0},
-    )
+    # 2. An amount that fails its tests reaches nothing.
+    no_failing_amounts = _run(units, year, _without_failing_amounts)
     for name in (exclusion, "ga_subtractions", "ga_agi"):
         np.testing.assert_allclose(
-            base[name], no_failing_premium[name], atol=TOLERANCE, err_msg=name
+            base[name], no_failing_amounts[name], atol=TOLERANCE, err_msg=name
         )
 
     # 3. Monotonicity in each input.
@@ -285,20 +290,19 @@ def _check(units, year, *, require_failing_premiums=False):
     for higher in (all_hourly, more_hours, more_premium, more_rla):
         _at_least(base, higher, exclusion)
 
-    # 4. Railway Labor Act overtime needs neither test.
-    rla_only = _run(units, year, lambda a: {**a, "fsla_overtime_premium": 0.0})
-    rla_only_failing = _run(
+    # 4. Railway Labor Act overtime needs no hourly wage.
+    rla_hourly = _run(
         units,
         year,
-        lambda a: {
-            **a,
-            "fsla_overtime_premium": 0.0,
-            "is_paid_hourly": False,
-            "weekly_hours_worked_before_lsr": 0.0,
-        },
+        lambda a: {**a, "fsla_overtime_premium": 0.0, "is_paid_hourly": True},
+    )
+    rla_salaried = _run(
+        units,
+        year,
+        lambda a: {**a, "fsla_overtime_premium": 0.0, "is_paid_hourly": False},
     )
     np.testing.assert_allclose(
-        rla_only[exclusion], rla_only_failing[exclusion], atol=TOLERANCE
+        rla_hourly[exclusion], rla_salaried[exclusion], atol=TOLERANCE
     )
 
     # 5. Bounds: 0 to $1,750 per filer.
@@ -318,7 +322,7 @@ def _check(units, year, *, require_failing_premiums=False):
     )
 
     # 7. The tip exclusion has neither test.
-    for other in (all_hourly, more_hours, more_rla, rla_only_failing):
+    for other in (all_hourly, more_hours, more_rla, rla_salaried):
         np.testing.assert_allclose(
             other["ga_cash_tip_exclusion"],
             base["ga_cash_tip_exclusion"],
@@ -331,9 +335,12 @@ def _check(units, year, *, require_failing_premiums=False):
     if require_failing_premiums:
         full_time = base["weekly_hours_worked_before_lsr"] >= FULL_TIME_HOURS
         has_premium = base["filer"] & (base["fsla_overtime_premium"] > 0)
+        has_rla = base["filer"] & (base["ga_rla_hourly_component_overtime"] > 0)
         assert (has_premium & base["hourly"] & ~full_time).sum() >= 10
         assert (has_premium & ~base["hourly"] & full_time).sum() >= 10
         assert (has_premium & base["hourly"] & full_time).sum() >= 10
+        assert (has_rla & ~base["hourly"] & full_time).sum() >= 10
+        assert (has_rla & ~full_time).sum() >= 10
         assert (change > 0).sum() >= 10
 
 

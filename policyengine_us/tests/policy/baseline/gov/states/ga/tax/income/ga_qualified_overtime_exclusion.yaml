@@ -283,7 +283,7 @@
     # Head: 1,000. Spouse: part-time, so none.
     ga_qualified_overtime_exclusion: 1_000
 
-- name: Railway Labor Act overtime needs neither test and keeps the cap
+- name: Railway Labor Act overtime needs no hourly wage and keeps the cap
   period: 2026
   input:
     people:
@@ -291,6 +291,8 @@
         age: 40
         is_tax_unit_head: true
         employment_income: 80_000
+        is_paid_hourly: false
+        weekly_hours_worked_before_lsr: 40
         ga_rla_hourly_component_overtime: 3_000
     tax_units:
       tax_unit:
@@ -307,6 +309,29 @@
     ga_qualified_overtime_exclusion: 1_750
     ga_subtractions: 1_750
     ga_agi: 78_250
+
+- name: Part-time Railway Labor Act overtime gets no exclusion
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 20
+        ga_rla_hourly_component_overtime: 1_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: GA
+  output:
+    # (16)(B) changes the compensation that counts and leaves (16)(A)'s
+    # "full-time employee" in place.
+    ga_qualified_overtime_exclusion: 0
 
 - name: Railway Labor Act overtime and qualified overtime share one cap
   period: 2026
@@ -331,7 +356,7 @@
   output:
     ga_qualified_overtime_exclusion: 1_750
 
-- name: Part-time overtime stays out while Railway Labor Act overtime counts
+- name: A salaried premium stays out while Railway Labor Act overtime counts
   period: 2026
   input:
     people:
@@ -340,8 +365,8 @@
         is_tax_unit_head: true
         employment_income: 40_000
         fsla_overtime_premium: 1_000
-        is_paid_hourly: true
-        weekly_hours_worked_before_lsr: 20
+        is_paid_hourly: false
+        weekly_hours_worked_before_lsr: 40
         ga_rla_hourly_component_overtime: 500
     tax_units:
       tax_unit:
@@ -366,6 +391,7 @@
         age: 18
         is_tax_unit_dependent: true
         employment_income: 8_000
+        weekly_hours_worked_before_lsr: 40
         ga_rla_hourly_component_overtime: 1_000
     tax_units:
       tax_unit:

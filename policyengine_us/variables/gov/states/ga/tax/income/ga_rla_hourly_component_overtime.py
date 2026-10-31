@@ -9,7 +9,8 @@ class ga_rla_hourly_component_overtime(Variable):
     documentation = (
         "Annual hourly component overtime compensation, as the applicable "
         "collective bargaining agreement defines it, from an employer governed "
-        "by the federal Railway Labor Act, included in employment_income. "
+        "by the federal Railway Labor Act, included in employment_income. It "
+        "counts only for a full-time employee, with or without an hourly wage. "
         "Employers report it in Form W-2, Box 14a, code GA OT, before the "
         "$1,750 limit. The default dataset does not carry it, so "
         "microsimulations on that dataset count none."
