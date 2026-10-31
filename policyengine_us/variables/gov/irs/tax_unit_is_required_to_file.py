@@ -123,10 +123,16 @@ class tax_unit_is_required_to_file(Variable):
         # amount plus their own additional standard deduction for age or
         # blindness: section 6012(a)(1)(C)(i)(I) and Publication 501, Table 2.
         # On a joint return the test applies to each spouse who can be claimed.
-        # Section 6012(f)(2)(D), which governs joint returns for 2018 to 2025,
-        # names the section 63(c)(5)(A) amount alone; Table 2 adds the
-        # additional standard deduction, and this follows Table 2 (open as
-        # decision d1395). Nobody else has an unearned income test.
+        # For 2018 to 2025, section 6012(f)(2)(D) sets the joint return test
+        # at "the amount in effect under section 63(c)(5)(A)" alone, with no
+        # addition for age or blindness, so a claimable spouse aged 65 or
+        # blind must file with more than that amount of income other than
+        # earned income. Chart B adds the additional standard deduction
+        # ($2,950 rather than $1,350 for 2025); the model follows the statute.
+        # For an unmarried filer, section 6012(f)(1) has no separate unearned
+        # income test, and Table 2's test with the addition is already implied
+        # by the gross income test against the limited standard deduction.
+        # Nobody else has an unearned income test.
         #
         # Table 2's other two tests need no code here. The standard deduction
         # in the threshold above is already the limited one for these filers
@@ -168,8 +174,14 @@ class tax_unit_is_required_to_file(Variable):
         additional_standard_deduction = aged_or_blind_count * tax_unit.project(
             p_standard.aged_or_blind.amount[filing_status]
         )
-        unearned_income_threshold = (
-            p_standard.dependent.amount + additional_standard_deduction
+        joint = filing_status == filing_status.possible_values.JOINT
+        statutory_joint_test = (
+            joint & p.income.filing_requirement.standard_deduction_rule.applies
+        )
+        unearned_income_threshold = p_standard.dependent.amount + where(
+            tax_unit.project(statutory_joint_test),
+            0,
+            additional_standard_deduction,
         )
         unearned_income_over_threshold = tax_unit.any(
             can_be_claimed & (unearned_income > unearned_income_threshold)
