@@ -409,3 +409,300 @@
   output:
     # 967 x 12
     medicaid_optional_senior_or_disabled_income_limit: [11_604]
+
+# Alaska tests these people against the 7 AAC 40.310 standard, which the
+# state plan reaches by disregarding income between the Adult Public
+# Assistance standard ($1,356 and $2,019 a month in 2026) and $1,845 for an
+# individual or $2,732 for a couple (AK-26-0001; ADLTC Manual Addendum 1).
+# The couple here has $1,376 a month of Social Security each, $2,732 of
+# countable income after the $20 disregard: exactly the couple standard,
+# which "may not exceed" allows (7 AAC 40.230). 83% of Alaska's 2026
+# two-person poverty guideline would be $1,871 a month.
+- name: Alaska couple with income at the 2026 couple standard is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 16_392
+      person2:
+        age: 68
+        medicaid_optional_senior_or_disabled_countable_income: 16_392
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # 2,732 x 12
+    medicaid_optional_senior_or_disabled_income_limit: [32_784, 32_784]
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+
+# Vermont tests these people against the SSI/AABD payment level, "at or
+# below" (HBEE § 8.05(b)): the SSI couple rate of $1,491 plus the $105.80
+# AABD supplement, $1,596.80 a month in 2026 (DVHA Standards Change for
+# Healthcare 2026). The couple here has $808.40 a month of Social Security
+# each, $1,596.80 of countable income after the $20 disregard. 80% of the
+# 2026 two-person poverty guideline would be $1,443 a month.
+- name: Vermont couple with income at the 2026 SSI/AABD couple level is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        medicaid_optional_senior_or_disabled_countable_income: 9_580.8
+      person2:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 9_580.8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # (1,491 + 105.80) x 12
+    medicaid_optional_senior_or_disabled_income_limit:
+      [19_161.6, 19_161.6]
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+
+# Wisconsin's categorically needy standard is "the maximum SSI payment
+# including state supplement" (DHS 103.04(1)(c)): $967 plus the $83.78
+# supplement, $1,050.78 a month from January 2025 (MEH 39.4.1). 100% of the
+# 2025 one-person poverty guideline would be $15,650 a year. A person with
+# $1,070.83 a month of Social Security ($1,050.83 countable) is over the
+# categorically needy standard by five cents a month.
+- name: Wisconsin individual just over the 2025 categorically needy standard is ineligible
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 12_610
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    # (967 + 83.78) x 12
+    medicaid_optional_senior_or_disabled_income_limit: [12_609.36]
+    is_optional_senior_or_disabled_income_eligible: [false]
+
+# Until July 2020 Wisconsin's standard was a base amount plus the person's
+# shelter costs up to a cap: $605.78 plus up to $261.00 in 2020 (DHS
+# Operations Memo 20-13). The model uses the base plus the cap, $866.78 a
+# month, which equals the $783 SSI rate plus the $83.78 supplement. The 0.83
+# share of the poverty guideline would be 0.83 x 12,760 = 10,590.80.
+- name: Wisconsin uses the shelter cap, the SSI rate plus the supplement, before August 2020
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    # (783 + 83.78) x 12
+    medicaid_optional_senior_or_disabled_income_limit: [10_401.36]
+
+# Idaho tests these people against the AABD basic allowance (IDAPA
+# 16.03.05.301.01 and 501): $545 raised by each dollar SSI increase since
+# 2001, $1,027 a month in 2026, $33 above the SSI rate. DHW publishes it as
+# a $1,047 gross limit including the $20 disregard. A person has financial
+# need only if the allowance is "more than their income" (IDAPA
+# 16.03.05.500), so $1,047 of Social Security ($1,027 countable) does not
+# qualify. 78% of the 2026 one-person guideline would be $1,037 a month.
+- name: Idaho individual with income equal to the 2026 AABD allowance is ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 12_324
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # (994 + 33) x 12
+    medicaid_optional_senior_or_disabled_income_limit: [12_324]
+    is_optional_senior_or_disabled_income_eligible: [false]
+
+# Before 2024 Vermont's AABD supplement for an individual living
+# independently was $52.04 (DCF Bulletin 17-26), so the 2023 SSI/AABD
+# payment level was $914 plus $52.04, $966.04 a month (DVHA 2024 Standards
+# Change for Healthcare).
+- name: Vermont uses the $52.04 AABD supplement before 2024
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # (914 + 52.04) x 12
+    medicaid_optional_senior_or_disabled_income_limit: [11_592.48]
+
+# The remaining 2026 branches: New Hampshire's individual standard of need,
+# $994 + $27 - $13 = $1,008 (SR 26-01; MAM 601 Table A); Alaska's individual
+# standard, $1,845 (ADLTC Manual Addendum 1); Idaho's couple allowance,
+# $1,491 (DHW's $1,511 less the $20 disregard); and Wisconsin's couple
+# standard, $1,491 + $132.05 = $1,623.05 (MEH 39.4.1, Release 26-01).
+- name: Individual and couple standards in New Hampshire, Alaska, Idaho and Wisconsin in 2026
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+      person3:
+        age: 72
+      person4:
+        age: 70
+      person5:
+        age: 72
+      person6:
+        age: 70
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3, person4]
+        tax_unit_is_joint: true
+      tax_unit4:
+        members: [person5, person6]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3, person4]
+      marital_unit4:
+        members: [person5, person6]
+    households:
+      household1:
+        members: [person1]
+        state_code: NH
+      household2:
+        members: [person2]
+        state_code: AK
+      household3:
+        members: [person3, person4]
+        state_code: ID
+      household4:
+        members: [person5, person6]
+        state_code: WI
+  output:
+    # NH (994 + 27 - 13) x 12; AK 1,845 x 12; ID 1,491 x 12;
+    # WI (1,491 + 132.05) x 12
+    medicaid_optional_senior_or_disabled_income_limit:
+      [12_096, 22_140, 17_892, 17_892, 19_476.6, 19_476.6]
+
+- name: Vermont couple uses the $98.88 AABD couple supplement before 2024
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # (1,371 + 98.88) x 12
+    medicaid_optional_senior_or_disabled_income_limit: [17_638.56, 17_638.56]
+
+- name: Vermont uses the $55.68 and $105.80 AABD supplements from 2024
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+      person3:
+        age: 70
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+    households:
+      household1:
+        members: [person1]
+        state_code: VT
+      household2:
+        members: [person2, person3]
+        state_code: VT
+  output:
+    # (943 + 55.68) x 12; (1,415 + 105.80) x 12
+    medicaid_optional_senior_or_disabled_income_limit:
+      [11_984.16, 18_249.6, 18_249.6]
+
+- name: Alaska uses the Adult Public Assistance need standard in 2019
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+      person3:
+        age: 70
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+      household2:
+        members: [person2, person3]
+        state_code: AK
+  output:
+    # 1,432 x 12; 2,121 x 12
+    medicaid_optional_senior_or_disabled_income_limit: [17_184, 25_452, 25_452]

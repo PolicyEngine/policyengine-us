@@ -1,4 +1,4 @@
-description: Maximum countable income limit for an individual to qualify for Medicaid under the optional senior or disabled pathway, as percent of Federal Poverty Line. States whose limit is the SSI federal benefit rate are listed in uses_ssi_federal_benefit_rate and omitted here; states where covers_non_ssi_recipients is false also use that rate, and their values here apply only if that flag is true.
+description: Maximum countable income limit for an individual to qualify for Medicaid under the optional senior or disabled pathway, as percent of Federal Poverty Line. States whose limit is the SSI federal benefit rate (uses_ssi_federal_benefit_rate) or a dollar standard of their own (uses_state_standard) in every year are omitted here; states where covers_non_ssi_recipients is false also use the SSI rate, and their values here apply only if that flag is true.
 metadata:
   unit: /1
   label: Medicaid senior or disabled income limit (individual)
@@ -19,9 +19,6 @@ metadata:
     - title: California DHCS All County Welfare Directors Letter 20-24, Aged and Disabled Federal Poverty Level program (138 percent of the poverty level effective December 1, 2020)
       href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/20-24.pdf#page=1
 
-AK:
-  2018-01-01: 0.74
-  2021-01-01: 0.83
 AL:
   2018-01-01: 0.75
 AZ:
@@ -48,9 +45,6 @@ GA:
   2018-01-01: 0.75
 HI:
   2018-01-01: 1.00
-ID:
-  2018-01-01: 0.80
-  2021-01-01: 0.78
 IL:
   2018-01-01: 1.00
 IN:
@@ -78,8 +72,6 @@ NE:
   2018-01-01: 1.00
 NV:
   2018-01-01: 0.75
-NH:
-  2018-01-01: 0.75
 NJ:
   2018-01-01: 1.00
 NM:
@@ -104,13 +96,7 @@ TX:
   2018-01-01: 0.75
 UT:
   2018-01-01: 1.00
-VT:
-  2018-01-01: 0.74
-  2021-01-01: 0.80
 VA:
   2018-01-01: 0.80
-WI:
-  2018-01-01: 0.83
-  2021-01-01: 1.00
 WY:
   2018-01-01: 0.75
