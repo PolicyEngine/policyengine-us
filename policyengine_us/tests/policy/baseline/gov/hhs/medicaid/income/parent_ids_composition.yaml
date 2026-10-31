@@ -2058,7 +2058,7 @@
 
 # Additional linked-household membership regressions from the recovery audit.
 
-- name: A grandparent inferred as the teen parent's tax spouse is not a stepparent
+- name: A teen parent in their own marital unit is not the grandparent's spouse, and the grandparent is not a stepparent
   period: 2026
   input:
     people:
@@ -2096,10 +2096,11 @@
         members: [grandparent, teen, baby]
         state_code: OH
   output:
-    # The default tax roles label the two adults as head and spouse, but the
-    # parent links show that they are parent and child. That role inference
-    # cannot establish a marriage or make the grandparent the baby's step
-    # parent. The baby uses non-filer rules and counts only baby plus teen.
+    # The teen has their own marital unit, so the default tax roles make them
+    # the grandparent's dependent rather than spouse, and the parent links
+    # show that the two are parent and child. The grandparent is not the
+    # baby's step parent. The baby uses non-filer rules and counts only baby
+    # plus teen.
     medicaid_uses_non_filer_rules: [false, false, true]
     medicaid_household_size: [2, 2, 2]
     medicaid_household_income: [40_000, 40_000, 0]
@@ -2228,3 +2229,43 @@
     ca_medicaid_household_pregnancies: [1, 1]
     medicaid_household_size: [3, 3]
     medicaid_household_income: [40_000, 40_000]
+
+- name: Without marital units, a grandparent inferred as the teen parent's tax spouse is not a stepparent
+  period: 2026
+  input:
+    people:
+      grandparent:
+        person_id: 1
+        age: 60
+        employment_income: 40_000
+      teen:
+        person_id: 2
+        age: 18
+        parent_1_id: 1
+      baby:
+        person_id: 3
+        age: 1
+        parent_1_id: 2
+    tax_units:
+      adult_return:
+        members: [grandparent, teen]
+        tax_unit_is_filer: true
+      baby_unit:
+        members: [baby]
+        tax_unit_is_filer: false
+    families:
+      family:
+        members: [grandparent, teen, baby]
+    households:
+      home:
+        members: [grandparent, teen, baby]
+        state_code: OH
+  output:
+    # With marital units omitted, Core puts everyone in one marital unit and
+    # the default tax roles label the two adults as head and spouse, but the
+    # parent links show that they are parent and child. That role inference
+    # cannot establish a marriage or make the grandparent the baby's step
+    # parent. The baby uses non-filer rules and counts only baby plus teen.
+    medicaid_uses_non_filer_rules: [false, false, true]
+    medicaid_household_size: [2, 2, 2]
+    medicaid_household_income: [40_000, 40_000, 0]
