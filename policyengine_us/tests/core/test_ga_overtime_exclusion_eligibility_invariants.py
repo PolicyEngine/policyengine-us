@@ -30,11 +30,11 @@ every tax unit:
 4. The two amounts are interchangeable: swapping each person's premium and
    Railway Labor Act overtime leaves the exclusion unchanged, since one limit
    and the same tests cover both.
-5. Bounds: the exclusion lies between 0 and $1,750 times the number of filers.
-6. Flow: a change in the exclusion moves Georgia subtractions by the same
+5. Flow: a change in the exclusion moves Georgia subtractions by the same
    amount and Georgia AGI by the opposite amount.
-7. The cash tip exclusion, which has neither test, ignores hourly pay, hours
-   and Railway Labor Act overtime.
+
+Case 1 also bounds the exclusion between 0 and $1,750 times the number of
+filers.
 
 The seeded population also checks that each failing group holds amounts, so
 1 and 2 are not vacuous.
@@ -54,10 +54,8 @@ CAP = 1_750
 # (O.C.G.A. § 48-7-40(a)(5)).
 FULL_TIME_HOURS = 35
 HOURS = [0, 20, 34, 34.99, 35, 35.01, 40, 60]
-TIPPED_CODE = 102
 
 OUTPUTS = [
-    "ga_cash_tip_exclusion",
     "ga_qualified_overtime_exclusion",
     "ga_subtractions",
     "ga_agi",
@@ -76,17 +74,14 @@ overtime = st.one_of(st.just(0.0), st.integers(1, 4_000).map(float))
 def person_amounts(draw):
     premium = draw(overtime)
     rla_overtime = draw(st.one_of(st.just(0.0), overtime))
-    tip_income = draw(st.one_of(st.just(0.0), st.integers(1, 4_000).map(float)))
     return {
         "employment_income": (
-            float(draw(st.integers(0, 60_000))) + premium + rla_overtime + tip_income
+            float(draw(st.integers(0, 60_000))) + premium + rla_overtime
         ),
         "is_paid_hourly": draw(st.booleans()),
         "weekly_hours_worked_before_lsr": draw(st.sampled_from(HOURS)),
         "fsla_overtime_premium": premium,
         "ga_rla_hourly_component_overtime": rla_overtime,
-        "tip_income": tip_income,
-        "treasury_tipped_occupation_code": TIPPED_CODE,
     }
 
 
@@ -117,17 +112,12 @@ def _seeded_amounts(rng):
 
     premium = some(1, 4_000, 0.7)
     rla_overtime = some(1, 4_000, 0.25)
-    tip_income = some(1, 4_000, 0.3)
     return {
-        "employment_income": (
-            some(1, 60_000, 0.8) + premium + rla_overtime + tip_income
-        ),
+        "employment_income": some(1, 60_000, 0.8) + premium + rla_overtime,
         "is_paid_hourly": bool(rng.random() < 0.6),
         "weekly_hours_worked_before_lsr": float(rng.choice(HOURS)),
         "fsla_overtime_premium": premium,
         "ga_rla_hourly_component_overtime": rla_overtime,
-        "tip_income": tip_income,
-        "treasury_tipped_occupation_code": TIPPED_CODE,
     }
 
 
@@ -295,12 +285,7 @@ def _check(units, year, *, require_failing_premiums=False):
     swapped = _run(units, year, _swap_overtime)
     np.testing.assert_allclose(base[exclusion], swapped[exclusion], atol=TOLERANCE)
 
-    # 5. Bounds: 0 to $1,750 per filer.
-    filers = _unit_sum(base, base["filer"].astype(float))
-    assert (base[exclusion] >= -TOLERANCE).all()
-    assert (base[exclusion] <= CAP * filers + TOLERANCE).all()
-
-    # 6. The exclusion flows dollar for dollar.
+    # 5. The exclusion flows dollar for dollar.
     change = all_hourly[exclusion] - base[exclusion]
     np.testing.assert_allclose(
         all_hourly["ga_subtractions"] - base["ga_subtractions"],
@@ -310,14 +295,6 @@ def _check(units, year, *, require_failing_premiums=False):
     np.testing.assert_allclose(
         all_hourly["ga_agi"] - base["ga_agi"], -change, atol=TOLERANCE
     )
-
-    # 7. The tip exclusion has neither test.
-    for other in (all_hourly, more_hours, more_rla):
-        np.testing.assert_allclose(
-            other["ga_cash_tip_exclusion"],
-            base["ga_cash_tip_exclusion"],
-            atol=TOLERANCE,
-        )
 
     if require_failing_premiums:
         full_time = base["weekly_hours_worked_before_lsr"] >= FULL_TIME_HOURS

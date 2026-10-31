@@ -225,7 +225,7 @@ def _amounts(run):
     """Each person's own tips (tipped occupation only) and overtime, capped."""
     tipped = run["treasury_tipped_occupation_code"] > 0
     overtime_total = (
-        run["fsla_overtime_premium"] + (run["ga_rla_hourly_component_overtime"])
+        run["fsla_overtime_premium"] + run["ga_rla_hourly_component_overtime"]
     )
     return (
         np.minimum(run["tip_income"] * tipped, CAP),

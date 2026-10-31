@@ -434,3 +434,29 @@
   output:
     ga_qualified_overtime_exclusion: 1_000
     ga_subtractions: 1_000
+
+- name: The cash tip exclusion has neither employee test
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 40_000
+        is_paid_hourly: false
+        weekly_hours_worked_before_lsr: 20
+        fsla_overtime_premium: 1_000
+        ga_rla_hourly_component_overtime: 1_000
+        tip_income: 4_000
+        tip_income_deduction_occupation_requirement_met: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: GA
+  output:
+    ga_qualified_overtime_exclusion: 0
+    ga_cash_tip_exclusion: 1_750
