@@ -1,0 +1,35 @@
+description: The Department of Health and Human Services sets this federal minimum home equity limit under the Medicaid long-term services and supports program.
+values:
+  2020-01-01: 595_000
+  2021-01-01: 603_000
+  2022-01-01: 636_000
+  # CMS annual CPI increases: 8.2% for 2023 and 3.7% for 2024.
+  2023-01-01: 688_000
+  2024-01-01: 713_000
+  2025-01-01: 730_000
+  2026-01-01: 752_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Medicaid long-term care federal minimum home equity limit
+  # Projected in uprating_extensions.py using CMS's September-to-September
+  # CPI-U increase rounded to 0.1%, then rounding the amount to $1,000.
+  # The consuming formula caps this minimum at the non-agricultural maximum.
+  reference:
+    - title: MEPD Handbook F-3600 - Substantial Home Equity
+      href: https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/f-3600-substantial-home-equity
+    - title: 42 USC 1396p(f)(1)(A) and (C) - Disqualification for long-term care assistance for individuals with substantial home equity
+      href: https://www.law.cornell.edu/uscode/text/42/1396p#f_1
+    - title: Updated 2020 SSI and Spousal Impoverishment Standards, CMCS Informational Bulletin, June 24, 2020
+      href: https://www.medicaid.gov/federal-policy-guidance/downloads/cib062420-new.pdf#page=2
+    - title: Updated 2021 SSI and Spousal Impoverishment Standards, CMCS Informational Bulletin, June 4, 2021
+      href: https://www.medicaid.gov/federal-policy-guidance/downloads/cib060421.pdf#page=2
+    - title: Updated 2022 SSI and Spousal Impoverishment Standards, CMCS Informational Bulletin, June 2, 2022
+      href: https://www.medicaid.gov/federal-policy-guidance/downloads/cib06022022.pdf#page=2
+    - title: Updated 2025 SSI and Spousal Impoverishment Standards, CMCS Informational Bulletin, May 28, 2025
+      href: https://www.medicaid.gov/federal-policy-guidance/downloads/cib05282025.pdf#page=2
+    - title: Updated 2026 SSI and Spousal Impoverishment Standards, CMCS Informational Bulletin, April 27, 2026
+      href: https://www.medicaid.gov/sites/default/files/2026-04/cib04272026.pdf#page=2
+    - title: CMCS Informational Bulletin, November 18, 2025, Section 71108 - Revising Home Equity Limit
+      href: https://www.medicaid.gov/federal-policy-guidance/downloads/cib11182025.pdf#page=9

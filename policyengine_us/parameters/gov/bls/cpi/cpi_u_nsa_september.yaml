@@ -1,6 +1,7 @@
-description: The Bureau of Labor Statistics publishes this September value of the Consumer Price Index for All Urban Consumers, not seasonally adjusted, from which CMS takes the September-to-September percentage change it applies to the Medicaid long-term care home equity limits.
+description: The Bureau of Labor Statistics provides this September value of the not seasonally adjusted Consumer Price Index for All Urban Consumers.
 values:
   # BLS series CUUR0000SA0 (U.S. city average, all items, 1982-84=100).
+  1988-09-01: 119.8
   2018-09-01: 252.439
   2019-09-01: 256.759
   2020-09-01: 260.28
@@ -16,3 +17,5 @@ metadata:
   reference:
     - title: BLS | CPI-U, U.S. city average, all items, not seasonally adjusted (CUUR0000SA0)
       href: https://data.bls.gov/timeseries/CUUR0000SA0
+    - title: BLS | Historical Consumer Price Index for All Urban Consumers, September 2018 release
+      href: https://www.bls.gov/cpi/tables/supplemental-files/historical-cpi-u-201809.pdf#page=2
