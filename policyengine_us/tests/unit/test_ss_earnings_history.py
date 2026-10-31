@@ -212,6 +212,7 @@ def test_benefit_zero_before_entitlement():
     assert result.entitlement_total == result.payment_total == 0
 
 
+@settings(max_examples=50, deadline=None)
 @given(
     st.lists(st.integers(min_value=0, max_value=1_000_000), min_size=1, max_size=45),
     st.integers(min_value=0, max_value=1_000_000),

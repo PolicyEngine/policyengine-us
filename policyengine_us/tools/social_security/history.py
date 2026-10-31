@@ -7,12 +7,14 @@ lookback. Annual caps precede E-2 wage indexing; top 35 / 420 is floored.
 
 from dataclasses import dataclass
 from decimal import Decimal
+from fractions import Fraction
 import json
 from typing import Mapping
 
 from .earnings import highest_earnings, index_covered_earnings
 from .owners_draw import OwnersDrawInputs, OwnersDrawParameters, compute_owners_draw
-from .pia import compute_pia
+from .mini_pia import blend_mini_pia, compute_mini_pia, mini_pia_share_at
+from .pia import _number, compute_pia
 
 
 def _money(value, name):
@@ -106,6 +108,7 @@ class HistoryParameters:
     wage_base: Mapping[int, Decimal | int | str]
     nawi: Mapping[int, Decimal | int | str]
     owners_draw_by_year: Mapping[int, OwnersDrawParameters] | None = None
+    mini_share: Decimal | Fraction | int | str = 0
 
 
 @dataclass(frozen=True)
@@ -130,6 +133,7 @@ class HistoryCalculation:
     claim_year: int
     ledger: tuple[AnnualEarnings, ...]
     aime: int
+    mini_share: Fraction = Fraction(0)
 
 
 def _parameter(path, year, name, *, positive=False):
@@ -142,7 +146,10 @@ def _parameter(path, year, name, *, positive=False):
 
 
 def aime_from_indexed(indexed_amounts):
-    selected = highest_earnings(tuple(indexed_amounts) or (Decimal(0),))
+    amounts = tuple(
+        _money(value, "Indexed annual earnings") for value in indexed_amounts
+    )
+    selected = highest_earnings(amounts or (Decimal(0),))
     return int(sum(selected, Decimal(0)) // 420)
 
 
@@ -210,6 +217,9 @@ def compute_history(
     if claim_year < eligibility:
         raise ValueError("Claim year cannot precede eligibility")
     records = history.through_claim(claim_year, birth_year)
+    mini_share = _number(parameters.mini_share, "mini-PIA share")
+    if not 0 <= mini_share <= 1:
+        raise ValueError("mini-PIA share must be between zero and one")
     anchor_year = eligibility - 2
     anchor = _parameter(parameters.nawi, anchor_year, "NAWI", positive=True)
     ledger = []
@@ -264,6 +274,7 @@ def compute_history(
         claim_year,
         tuple(ledger),
         aime_from_indexed(row.indexed_ordinary for row in ledger),
+        mini_share,
     )
 
 
@@ -275,7 +286,7 @@ def compute_history_pia(
     payment_year=None,
     recompute_mode="cohort",
 ):
-    return compute_pia(
+    conventional = compute_pia(
         calculation.aime,
         calculation.eligibility_year,
         formula_path,
@@ -283,6 +294,16 @@ def compute_history_pia(
         recompute_mode,
         bend_points=bend_points,
     )
+    minis = compute_mini_pia(
+        (row.indexed_ordinary for row in calculation.ledger),
+        calculation.eligibility_year,
+        bend_points=bend_points,
+        formula_path=formula_path,
+        payment_year=payment_year,
+        recompute_mode=recompute_mode,
+    )
+    blended = blend_mini_pia(conventional, minis.mini_pia, calculation.mini_share)
+    return Decimal((blended * 10).__floor__()) / 10
 
 
 def history_parameters_at(
@@ -316,4 +337,5 @@ def history_parameters_at(
             for year in set(years) | {eligibility_year - 2}
         },
         owners_draw_by_year=owners,
+        mini_share=mini_pia_share_at(parameters, eligibility_year),
     )
