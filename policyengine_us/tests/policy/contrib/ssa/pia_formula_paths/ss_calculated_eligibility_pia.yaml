@@ -1,0 +1,90 @@
+# Worked cases for the contributed PIA formula paths, read through the
+# supplied-AIME calculator's eligibility PIA (monthly dollars, before COLAs)
+# and, for the review fixture, the reported-benefit PIA ratio.
+#
+# PIA(A) = .90 * min(A, BP1) + .32 * (min(A, BP2) - BP1)+ + .15 * (A - BP2)+,
+# truncated to the dime (POMS RS 00605.021):
+# https://secure.ssa.gov/poms.nsf/lnx/0300605021
+#
+# Each file in this folder holds one reformed parameter combination. Core's
+# test runner retains a full model per combination: locally the base model
+# peaked near 2.6 GiB and each combination added about 0.6 GiB, so a second
+# combination in one file passed a 4 GB per-process limit.
+
+- name: Current-law PIA at AIME $5,000 with the 2020 bend points
+  # SSA's 2020 bend points are $960 and $5,785:
+  # https://www.ssa.gov/OACT/COLA/bendpoints.html
+  # .90 * 960 + .32 * (5,000 - 960) = 864 + 1,292.80 = $2,156.80.
+  period: 2020
+  absolute_error_margin: 0.001
+  input:
+    ss_calculator_source: aime
+    ss_calculator_worker_id: fixture-baseline
+    ss_calculator_birth_date: '1958-01-02'
+    ss_calculator_eligibility_year: 2020
+    ss_calculator_entitlement_month: '2020-01'
+    ss_calculator_supplied_aime: 5_000
+    ss_calculator_insured: true
+    ss_calculator_no_special_monthly_test: true
+    ss_calculator_no_prior_withholding_adjustment: true
+    ss_calculator_earnings_test_no_trigger: true
+  output:
+    ss_calculated_eligibility_pia:
+      2020-01: 2_156.8
+
+- name: 15 percent first-bend-point review fixture raises the eligibility PIA
+  # The design review's illustrative fixture, not the introduced S.770 preset
+  # (which raises the first bend point 18%). First factor .90 -> .95, first
+  # bend point 960 * 1.15 = $1,104, other rates and the second bend unchanged:
+  # .95 * 1,104 + .32 * (5,000 - 1,104) = 1,048.80 + 1,246.72 = $2,295.52,
+  # truncated to $2,295.50. Against the old $2,156.80, the unrounded ratio is
+  # 2,295.52 / 2,156.80 = 1.0643175074184.
+  period: 2020
+  absolute_error_margin: 0.001
+  input:
+    gov.ssa.social_security.pia.bend_points.first: 960
+    gov.ssa.social_security.pia.bend_points.second: 5_785
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+    gov.contrib.ssa.pia.bend_point_multipliers.first: 1.15
+    ss_calculator_source: aime
+    ss_calculator_worker_id: fixture-reform
+    ss_calculator_birth_date: '1958-01-02'
+    ss_calculator_eligibility_year: 2020
+    ss_calculator_entitlement_month: '2020-01'
+    ss_calculator_supplied_aime: 5_000
+    ss_calculator_insured: true
+    ss_calculator_no_special_monthly_test: true
+    ss_calculator_no_prior_withholding_adjustment: true
+    ss_calculator_earnings_test_no_trigger: true
+  output:
+    ss_calculated_eligibility_pia:
+      2020-01: 2_295.5
+
+- name: 15 percent fixture reaches a reported benefit claimed at 62
+  # Same fixture through the population PIA ratio. Born 1964 (FRA 67) and
+  # claiming at 62 (744 months), the claiming factor is
+  # 1 - 36 * 5/9% - 24 * 5/12% = .70, so the reported annual benefit is
+  # 12 * .70 * 2,156.80 = $18,117.12 and the inverse recovers AIME $5,000.
+  # Before dime truncation the annual benefit becomes 12 * .70 * 2,295.52 =
+  # $19,282.368, a gain of $1,165.248 (ratio 1.0643175074184). The model
+  # truncates both PIAs to the dime, so its ratio is 2,295.50 / 2,156.80 =
+  # 1.0643082344 and the benefit is 18,117.12 * 1.0643082344 = $19,282.20,
+  # a gain of $1,165.08.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.ssa.social_security.pia.bend_points.first: 960
+    gov.ssa.social_security.pia.bend_points.second: 5_785
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+    gov.contrib.ssa.pia.bend_point_multipliers.first: 1.15
+    age: 62
+    social_security_retirement_claim_age_months: 744
+    social_security_retirement_reported: 18_117.12
+  output:
+    social_security_retirement_pia_ratio_eligibility_year: 2026
+    social_security_retirement_pia_ratio_claiming_adjustment: 0.7
+    social_security_retirement_inferred_aime: 5_000
+    social_security_retirement_pia_ratio_factor: 1.0643082344
+    social_security_retirement: 19_282.2

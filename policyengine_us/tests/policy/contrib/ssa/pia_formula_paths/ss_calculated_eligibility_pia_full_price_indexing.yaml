@@ -1,0 +1,61 @@
+# A contributed PIA formula path, read through the supplied-AIME calculator's
+# eligibility PIA (monthly dollars, before COLAs). See
+# ss_calculated_eligibility_pia.yaml for the formula and dime truncation, and
+# for why each file holds one reformed parameter combination.
+#
+# Bend points after 2026 come from the model's wage-indexed projections. These
+# cases pin them to today's projections so a later projection update does not
+# move the hand-computed values.
+
+- name: Full price indexing scales every factor from the 2032 cohort
+  # Illustrative frozen real-wage scales from frozen_cohort_paths.py:
+  # 1 for the 2032 anchor cohort and .95 for 2035. Bend points pinned at
+  # $1,756 / $10,588 for every cohort here, so only the scale differs.
+  #   2031 (before the start), AIME 5,000: 1,580.40 + .32 * 3,244 = $2,618.48
+  #     -> $2,618.40, needing no frozen scale.
+  #   2032 (anchor, scale 1), AIME 5,000: $2,618.40.
+  #   2035, AIME 5,000: .95 * 2,618.48 = $2,487.556 -> $2,487.50.
+  #   2035, AIME 12,000: .95 * (4,406.64 + .15 * 1,412) = .95 * 4,618.44
+  #     = $4,387.518 -> $4,387.50.
+  period: 2035
+  absolute_error_margin: 0.001
+  reforms: policyengine_us.tests.policy.contrib.ssa.pia_formula_paths.frozen_cohort_paths.full_price_indexing_scale_path
+  input:
+    gov.ssa.social_security.pia.formula_factors[1].threshold: 1_756
+    gov.ssa.social_security.pia.formula_factors[2].threshold: 10_588
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.full_price_indexing.in_effect: true
+    people:
+      cohort_2031: &full_indexing_record
+        ss_calculator_source: aime
+        ss_calculator_worker_id: full-indexing-2031
+        ss_calculator_birth_date: '1969-01-02'
+        ss_calculator_eligibility_year: 2031
+        ss_calculator_entitlement_month: '2031-01'
+        ss_calculator_supplied_aime: 5_000
+        ss_calculator_insured: true
+        ss_calculator_no_special_monthly_test: true
+        ss_calculator_no_prior_withholding_adjustment: true
+        ss_calculator_earnings_test_no_trigger: true
+      cohort_2032:
+        <<: *full_indexing_record
+        ss_calculator_worker_id: full-indexing-2032
+        ss_calculator_birth_date: '1970-01-02'
+        ss_calculator_eligibility_year: 2032
+        ss_calculator_entitlement_month: '2032-01'
+      cohort_2035:
+        <<: *full_indexing_record
+        ss_calculator_worker_id: full-indexing-2035
+        ss_calculator_birth_date: '1973-01-02'
+        ss_calculator_eligibility_year: 2035
+        ss_calculator_entitlement_month: '2035-01'
+      cohort_2035_above_second_bend:
+        <<: *full_indexing_record
+        ss_calculator_worker_id: full-indexing-2035-high
+        ss_calculator_birth_date: '1973-01-02'
+        ss_calculator_eligibility_year: 2035
+        ss_calculator_entitlement_month: '2035-01'
+        ss_calculator_supplied_aime: 12_000
+  output:
+    ss_calculated_eligibility_pia:
+      2035-01: [2_618.4, 2_618.4, 2_487.5, 4_387.5]

@@ -1,0 +1,55 @@
+# A contributed PIA formula path, read through the supplied-AIME calculator's
+# eligibility PIA (monthly dollars, before COLAs). See
+# ss_calculated_eligibility_pia.yaml for the formula and dime truncation, and
+# for why each file holds one reformed parameter combination.
+#
+# Bend points after 2026 come from the model's wage-indexed projections. These
+# cases pin them to today's projections so a later projection update does not
+# move the hand-computed values.
+
+- name: Top factor falls from 15 to 5 percent from the 2027 cohort
+  # Bend points: published 2026 ($1,286 / $7,749); 2027 pinned to the model's
+  # projection ($1,340 / $8,077). Cohorts before 2027 keep the 15% factor.
+  # 2026, AIME 10,000: 1,157.40 + .32 * 6,463 + .15 * 2,251
+  #   = 1,157.40 + 2,068.16 + 337.65 = $3,563.21 -> $3,563.20 (unchanged).
+  # 2027, AIME 10,000: 1,206 + .32 * 6,737 + .05 * 1,923
+  #   = 1,206 + 2,155.84 + 96.15 = $3,457.99 -> $3,457.90
+  #   (current law: + .15 * 1,923 = $3,650.29 -> $3,650.20).
+  # 2027, AIME 5,000 is below the second bend point: 1,206 + .32 * 3,660
+  #   = $2,377.20 under either factor.
+  period: 2027
+  absolute_error_margin: 0.001
+  input:
+    gov.ssa.social_security.pia.formula_factors[1].threshold: 1_340
+    gov.ssa.social_security.pia.formula_factors[2].threshold: 8_077
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.third: 0.05
+    gov.contrib.ssa.pia.factors.start_year: 2027
+    people:
+      cohort_2026: &top_factor_record
+        ss_calculator_source: aime
+        ss_calculator_worker_id: top-factor-2026
+        ss_calculator_birth_date: '1964-01-02'
+        ss_calculator_eligibility_year: 2026
+        ss_calculator_entitlement_month: '2026-01'
+        ss_calculator_supplied_aime: 10_000
+        ss_calculator_insured: true
+        ss_calculator_no_special_monthly_test: true
+        ss_calculator_no_prior_withholding_adjustment: true
+        ss_calculator_earnings_test_no_trigger: true
+      cohort_2027_high:
+        <<: *top_factor_record
+        ss_calculator_worker_id: top-factor-2027-high
+        ss_calculator_birth_date: '1965-01-02'
+        ss_calculator_eligibility_year: 2027
+        ss_calculator_entitlement_month: '2027-01'
+      cohort_2027_below_second_bend:
+        <<: *top_factor_record
+        ss_calculator_worker_id: top-factor-2027-low
+        ss_calculator_birth_date: '1965-01-02'
+        ss_calculator_eligibility_year: 2027
+        ss_calculator_entitlement_month: '2027-01'
+        ss_calculator_supplied_aime: 5_000
+  output:
+    ss_calculated_eligibility_pia:
+      2027-01: [3_563.2, 3_457.9, 2_377.2]
