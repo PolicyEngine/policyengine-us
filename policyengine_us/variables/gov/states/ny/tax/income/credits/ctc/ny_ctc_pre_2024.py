@@ -3,6 +3,9 @@ from policyengine_us.tools.pinned_tbs import (
     CREDIT_DEPENDENT_VARIABLES,
     get_pre_tcja_ctc_tbs,
 )
+from policyengine_us.variables.gov.states.ny.tax.income.adjusted_gross_income.ny_recomputed_federal_agi import (
+    get_ny_recomputed_branch,
+)
 
 
 class ny_ctc_pre_2024(Variable):
@@ -14,14 +17,21 @@ class ny_ctc_pre_2024(Variable):
     )
     unit = USD
     definition_period = YEAR
-    reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-1)
+    reference = (
+        "https://www.nysenate.gov/legislation/laws/TAX/606",  # (c-1)
+        # 2020 IT-213 instructions: the credit uses recomputed federal AGI.
+        "https://www.tax.ny.gov/pdf/2020/inc/it213i_2020.pdf#page=2",
+        # 2022 IT-213, lines 9-12: prorate the federal credit to the
+        # children aged at least four.
+        "https://www.tax.ny.gov/pdf/2022/inc/it213_2022_fill_in.pdf#page=2",
+    )
     defined_for = "ny_ctc_pre_2024_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ny.tax.income.credits.ctc
         person = tax_unit.members
         age = person("age", period)
-        agi = tax_unit("adjusted_gross_income", period)
+        agi = tax_unit("ny_recomputed_federal_agi", period)
 
         # Original CTC rules (pre-2025 and post-2027)
         if not p.pre_tcja:
@@ -31,7 +41,13 @@ class ny_ctc_pre_2024(Variable):
         else:
             # Initialize pre-TCJA CTC branch with cached pinned parameters
             # (one clone per process; see tools/pinned_tbs.py, issue #8114).
-            simulation = tax_unit.simulation
+            # IT-213 Worksheet A computes the federal credit with recomputed
+            # federal AGI (IT-201 line 19a), so the branch starts from the
+            # one where federal AGI is line 19a when they differ.
+            recomputed = get_ny_recomputed_branch(
+                tax_unit, period, keep_reported_tax_and_eitc=True
+            )
+            simulation = tax_unit.simulation if recomputed is None else recomputed
             pre_tcja_ctc = get_branch_for_period(simulation, "pre_tcja_ctc", period)
             pre_tcja_ctc.tax_benefit_system = get_pre_tcja_ctc_tbs(
                 simulation.tax_benefit_system
@@ -43,15 +59,9 @@ class ny_ctc_pre_2024(Variable):
                     name in variable for name in CREDIT_DEPENDENT_VARIABLES
                 ):
                     pre_tcja_ctc.delete_arrays(variable)
-            # Calculate pre-TCJA CTC.
-            maximum_ctc = pre_tcja_ctc.calculate("ctc_child_individual_maximum", period)
-            meets_ny_minimum_age = age >= p.minimum_age
-            pre_tcja_ctc.set_input(
-                "ctc_individual_maximum",
-                period,
-                maximum_ctc * meets_ny_minimum_age,
-            )
-            # Get maximum federal CTC from pre-TCJA rules
+            # Calculate pre-TCJA CTC. IT-213 Worksheet A, line 1 counts every
+            # child on form line 4, including children under the NY minimum
+            # age; lines 9-12 below prorate the result.
             max_federal_ctc = pre_tcja_ctc.tax_unit("ctc", period)
 
             # Limit by actual tax liability (for non-refundable portion)
@@ -72,7 +82,17 @@ class ny_ctc_pre_2024(Variable):
         # Remaining logic is based on NY parameters.
         qualifies = qualifies_for_federal_ctc & (age >= p.minimum_age)
         qualifying_children = tax_unit.sum(qualifies)
-        federal_match = federal_ctc * p.amount.percent
+        # IT-213 lines 9-12: divide the federal credit by the number of
+        # children who qualify for it (line 4) and multiply by the number of
+        # those children who meet the NY minimum age (line 5).
+        federal_children = tax_unit.sum(qualifies_for_federal_ctc)
+        share = np.divide(
+            qualifying_children,
+            federal_children,
+            out=np.zeros_like(federal_ctc),
+            where=federal_children > 0,
+        )
+        federal_match = federal_ctc * share * p.amount.percent
         # Filers with income below the CTC phase-out threshold receive a
         # minimum amount per child.
         minimum = p.amount.minimum * qualifying_children

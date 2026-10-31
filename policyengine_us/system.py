@@ -36,6 +36,12 @@ from policyengine_core.parameters.operations.uprate_parameters import (
 )
 from .tools.default_uprating import add_default_uprating
 from .tools.marital_units import infer_missing_marital_units
+from .tools.period_branch import delete_input_values
+from .tools.social_security_inputs import (
+    install_social_security_input_compatibility,
+    migrate_social_security_inputs,
+)
+from .tools.section_911 import validate_section_911_batch_inputs
 from .tools.per_capita_uprating import (
     add_per_capita_parameters_for_parameter_uprating,
     add_per_capita_uprating,
@@ -53,6 +59,8 @@ from policyengine_us.spm import (
     clone_spm_system,
     create_spm_provider,
 )
+
+install_social_security_input_compatibility()
 
 COUNTRY_DIR = Path(__file__).parent
 
@@ -94,6 +102,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
     """
 
     variables_dir = COUNTRY_DIR / "variables"
+    _social_security_input_compatibility = True
     auto_carry_over_input_variables = True
     basic_inputs = [
         "state_name",
@@ -137,6 +146,19 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         # the two undefined.
         self.parameters = backdate_parameters(
             self.parameters, first_instant=f"{FIRST_MODELED_YEAR}-01-01"
+        )
+
+        # Preserve the processed current-law path before user reforms can
+        # remove/change the payroll cap. Owners' draw can keep this ceiling
+        # independently or explicitly select no ceiling.
+        draw_cap = self.parameters.gov.irs.payroll.social_security.cap.clone()
+        draw_cap.name = "gov.contrib.ssa.owners_draw.current_law_cap"
+        draw_cap.metadata.update(
+            label="Current-law OASDI cap preserved for owners' draw", economy=False
+        )
+        draw_cap.metadata.pop("uprating", None)
+        self.parameters.gov.contrib.ssa.owners_draw.add_child(
+            "current_law_cap", draw_cap
         )
 
         if reform:
@@ -249,6 +271,10 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
         args, kwargs = self._prepare_spm_system(
             args, kwargs, kwargs.pop("spm", None), start_instant
         )
+        validate_section_911_batch_inputs(
+            kwargs.get("situation"),
+            kwargs.get("default_input_period") or self.default_input_period,
+        )
         super().__init__(*args, **kwargs)
 
         reform = create_structural_reforms_from_parameters(
@@ -257,19 +283,21 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
         if reform is not None:
             self.apply_reform(reform)
 
+        migrate_social_security_inputs(self)
+
         # Labor supply responses
 
         employment_income = self.get_holder("employment_income")
         for known_period in employment_income.get_known_periods():
             array = employment_income.get_array(known_period)
             self.set_input("employment_income_before_lsr", known_period, array)
-            employment_income.delete_arrays(known_period)
+            delete_input_values(employment_income, known_period)
 
         self_employment_income = self.get_holder("self_employment_income")
         for known_period in self_employment_income.get_known_periods():
             array = self_employment_income.get_array(known_period)
             self.set_input("self_employment_income_before_lsr", known_period, array)
-            self_employment_income.delete_arrays(known_period)
+            delete_input_values(self_employment_income, known_period)
 
         sstb_self_employment_income = self.get_holder("sstb_self_employment_income")
         for known_period in sstb_self_employment_income.get_known_periods():
@@ -277,13 +305,13 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
             self.set_input(
                 "sstb_self_employment_income_before_lsr", known_period, array
             )
-            sstb_self_employment_income.delete_arrays(known_period)
+            delete_input_values(sstb_self_employment_income, known_period)
 
         weekly_hours = self.get_holder("weekly_hours_worked")
         for known_period in weekly_hours.get_known_periods():
             array = weekly_hours.get_array(known_period)
             self.set_input("weekly_hours_worked_before_lsr", known_period, array)
-            weekly_hours.delete_arrays(known_period)
+            delete_input_values(weekly_hours, known_period)
 
         # Capital gains responses
 
@@ -293,7 +321,7 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
             self.set_input(
                 "long_term_capital_gains_before_response", known_period, array
             )
-            cg_holder.delete_arrays(known_period)
+            delete_input_values(cg_holder, known_period)
 
         # Geography backfill: state_code_str-only input -> state_code enum.
         _backfill_state_code_from_str(self)
@@ -517,19 +545,21 @@ class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
         if reform is not None:
             self.apply_reform(reform)
 
+        migrate_social_security_inputs(self)
+
         # Labor supply responses
 
         employment_income = self.get_holder("employment_income")
         for known_period in employment_income.get_known_periods():
             array = employment_income.get_array(known_period)
             self.set_input("employment_income_before_lsr", known_period, array)
-            employment_income.delete_arrays(known_period)
+            delete_input_values(employment_income, known_period)
 
         self_employment_income = self.get_holder("self_employment_income")
         for known_period in self_employment_income.get_known_periods():
             array = self_employment_income.get_array(known_period)
             self.set_input("self_employment_income_before_lsr", known_period, array)
-            self_employment_income.delete_arrays(known_period)
+            delete_input_values(self_employment_income, known_period)
 
         sstb_self_employment_income = self.get_holder("sstb_self_employment_income")
         for known_period in sstb_self_employment_income.get_known_periods():
@@ -537,13 +567,13 @@ class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
             self.set_input(
                 "sstb_self_employment_income_before_lsr", known_period, array
             )
-            sstb_self_employment_income.delete_arrays(known_period)
+            delete_input_values(sstb_self_employment_income, known_period)
 
         weekly_hours = self.get_holder("weekly_hours_worked")
         for known_period in weekly_hours.get_known_periods():
             array = weekly_hours.get_array(known_period)
             self.set_input("weekly_hours_worked_before_lsr", known_period, array)
-            weekly_hours.delete_arrays(known_period)
+            delete_input_values(weekly_hours, known_period)
 
         # Capital gains responses
 
@@ -553,7 +583,7 @@ class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
             self.set_input(
                 "long_term_capital_gains_before_response", known_period, array
             )
-            cg_holder.delete_arrays(known_period)
+            delete_input_values(cg_holder, known_period)
 
         # Geography backfill: state_code_str-only input -> state_code enum.
         # Datasets carry state_fips, so this only fires for situations that

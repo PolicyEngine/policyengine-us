@@ -13,6 +13,9 @@
 # test growth, and --workers 1 everywhere except the partners target
 # (its largest batch measured 2.5 GB, so two-wide stays trivially safe).
 BATCH := python policyengine_us/tests/test_batched.py
+# CI's Baseline and Contrib jobs set POLICYENGINE_BATCH_WORKERS=2, which
+# overrides --workers below: test_batched.py then runs two batch subprocesses
+# per runner while its memory allows. Local runs keep the counts given here.
 TESTS := policyengine_us/tests
 # Run SPM construction/isolation tests in their own process on the existing
 # Microsimulation CI runner, before the dataset tests. Rest excludes these
@@ -32,34 +35,81 @@ REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 # modules, then core/, then policy/, and remaining takes every other file.
 # code_health/test_rest_python_groups.py checks that the groups together
 # collect each file of the old single process exactly once.
-# Test time per group, from run 37198184683 (1,453 s in all) plus the three
-# core modules added since, timed in runs 37171744596, 37196338557 and
-# 37198179476 and scaled to the speed of 37198184683:
-#   cached-arrays (403 s): test_formulas_do_not_write_into_cached_arrays.
-#   heavy-a (350 s): md_poverty_line_credit_invariants (134 s),
-#     ald_determinism (94 s), dependent_net_investment_income_invariants
-#     (64 s), ssi_state_supplement_medicaid_dependency (59 s).
-#   heavy-b (345 s): marginal_tax_rate_coverage (124 s),
-#     multi_year_simulation (88 s), behavioral_response_measurements (84 s),
-#     dependent_losses_agi_invariants (49 s).
-#   core (142 s), policy (185 s), remaining (239 s).
-REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core policy remaining
+# CI run 38141803955 measured RSS/wall: cached-arrays 3.3 GB/5:26,
+# heavy-a 8.1 GB/9:55 (including pending #10058), heavy-b 8.5 GB/7:31,
+# core 13.3 GB/11:51, policy 13.9 GB/8:46, remaining 14.4 GB/22:18.
+# JUnit measures per-file elapsed time, not memory. The extra boundaries
+# below isolate retained full models and target <= ~10 GB per process;
+# verify those estimates against each group's GNU time report in CI.
+# heavy-a also holds capital_gains_mtr_measurement (#10058): 396 s of
+# reformed household simulations in run 40045994536, with heavy-a at
+# 8.1 GiB/11:16.
+# SSI resource deeming retains a reformed system at import and builds another
+# in its grid fixture. Core reached 13.3 GB in CI run 38141803955 after this
+# and three smaller modules arrived; isolate SSI rather than filling heavy-a
+# (8.1 GB including the pending capital-gains MTR change).
+# CI does not run this target. tests/rest_python_shards.py reads these groups
+# from its dry run and spreads their files over parallel runners by recent
+# CI times, splitting a long group into chunks. A process still runs files
+# of one group only, in this order, so none holds more than its group here.
+REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy ss-calculator-engine ss-calculator-differential social-security-inputs core policy-parameters policy remaining-heavy remaining
 REST_CACHED_ARRAY_TESTS := $(TESTS)/test_formulas_do_not_write_into_cached_arrays.py
 REST_HEAVY_A_TESTS := $(TESTS)/test_md_poverty_line_credit_invariants.py \
 	$(TESTS)/core/test_ald_determinism.py \
 	$(TESTS)/core/test_dependent_net_investment_income_invariants.py \
-	$(TESTS)/core/test_ssi_state_supplement_medicaid_dependency.py
+	$(TESTS)/core/test_ssi_state_supplement_medicaid_dependency.py \
+	$(TESTS)/core/test_capital_gains_mtr_measurement.py
 REST_HEAVY_B_TESTS := $(TESTS)/core/test_marginal_tax_rate_coverage.py \
 	$(TESTS)/core/test_multi_year_simulation.py \
 	$(TESTS)/core/test_behavioral_response_measurements.py \
 	$(TESTS)/core/test_dependent_losses_agi_invariants.py
-REST_LISTED_TESTS := $(REST_CACHED_ARRAY_TESTS) $(REST_HEAVY_A_TESTS) $(REST_HEAVY_B_TESTS)
+# SSI runs before the federal-credit fixture and NY/AL pinned-system cache
+# are built. Pins have three bounded entries; keep them apart from the NIIT,
+# CTC and Medicaid systems below, which stay resident after their files end.
+REST_CORE_HEAVY_TESTS := $(TESTS)/core/test_ssi_resource_deeming_invariants.py \
+	$(TESTS)/test_federal_credit_limit_order.py \
+	$(TESTS)/test_pinned_branch_credit_dependents.py
+# Supplied-record calculator API checks load no national dataset. Keep each
+# file in a separate process so retained reform trees are released on exit.
+# Local macOS/Python 3.13.9, four numeric threads: peak RSS 2.98 GiB
+# through 13 cases before the 1,800-second cap; the previous complete
+# 18-case run recorded 3.06 GiB. CI reports the complete 20-case process.
+REST_SS_CALCULATOR_ENGINE_TESTS := $(TESTS)/unit/test_ss_calculator_engine.py
+# Local macOS/Python 3.13.9, four numeric threads: all eight cases passed
+# with 2.45 GiB peak RSS, below the ~10 GB per-process target above.
+REST_SS_CALCULATOR_DIFFERENTIAL_TESTS := $(TESTS)/unit/test_ss_calculator_differential.py
+# Synthetic household input/branch checks load no national dataset. Keep their
+# retained reform systems in a separate process rather than growing core's heap.
+# Local 4 GiB-capped run peaked at 2.385 GiB before its 1800s loaded-host cap;
+# CI run 40318424511 passed all 126 cases in 312.62s (6:20 process wall).
+REST_SOCIAL_SECURITY_INPUT_TESTS := $(TESTS)/core/test_social_security_inputs.py
+# Two-household H5 ingress and neutral-hook comparisons retain a reform tree.
+# Isolate this file in the existing input target; no national dataset is loaded.
+REST_SOCIAL_SECURITY_PIA_RATIO_INPUT_TESTS := $(TESTS)/core/test_ss_pia_ratio_inputs.py
+# These three parameter modules construct full reform trees; one also loads
+# a default Microsimulation only to read parameters. Release their heap before
+# the remaining policy tests, rather than stacking both in the 13.9 GB group.
+REST_POLICY_PARAMETER_TESTS := $(TESTS)/policy/baseline/parameters
+# The first four files retain three independent full systems (the two CTC
+# files share one). The last two use transient TX simulations and balance
+# elapsed time without warming the NY/AL pinned-system cache.
+REST_REMAINING_HEAVY_TESTS := $(TESTS)/test_niit_section_911_magi.py \
+	$(TESTS)/test_ctc_foreign_earned_income_exclusion.py \
+	$(TESTS)/test_ctc_foreign_earned_income_exclusion_property.py \
+	$(TESTS)/unit/test_medicaid_abd_ssi_rate_standard_properties.py \
+	$(TESTS)/test_capital_gain_distributions_loss_limit.py \
+	$(TESTS)/test_schedule_d_filer_net_capital_gain.py
+REST_LISTED_TESTS := $(REST_CACHED_ARRAY_TESTS) $(REST_HEAVY_A_TESTS) $(REST_HEAVY_B_TESTS) \
+	$(REST_CORE_HEAVY_TESTS) $(REST_SS_CALCULATOR_ENGINE_TESTS) $(REST_SS_CALCULATOR_DIFFERENTIAL_TESTS) \
+	$(REST_SOCIAL_SECURITY_INPUT_TESTS) $(REST_SOCIAL_SECURITY_PIA_RATIO_INPUT_TESTS) \
+	$(REST_POLICY_PARAMETER_TESTS) $(REST_REMAINING_HEAVY_TESTS)
 REST_IGNORES := $(addprefix --ignore=,$(TESTS)/policy/contrib $(TESTS)/microsimulation $(REST_SPM_TESTS))
 # $(call rest_pytest,<group>,<paths>,<more paths to ignore>) is the pytest
-# command for one group. CI sets REST_REPORT_DIR, and each group then writes
-# its own JUnit XML and GNU time report there: rest-python-<group>.xml and
-# rest-python-<group>-resources.txt. Unset, it is plain pytest, since macOS
-# /usr/bin/time has no -v.
+# command for one group. With REST_REPORT_DIR set, each group writes its own
+# JUnit XML and GNU time report there: rest-python-<group>.xml and
+# rest-python-<group>-resources.txt; rest_python_shards.py names the groups
+# from these files. Unset, it is plain pytest, since macOS /usr/bin/time has
+# no -v.
 rest_pytest = $(strip $(if $(REST_REPORT_DIR),/usr/bin/time -v -o $(REST_REPORT_DIR)/rest-python-$(1)-resources.txt) \
 	pytest $(2) --maxfail=0 $(REST_IGNORES) $(addprefix --ignore=,$(3)) \
 	$(if $(REST_REPORT_DIR),--junitxml=$(REST_REPORT_DIR)/rest-python-$(1).xml))
@@ -125,9 +175,8 @@ test-yaml-structural-heavy-shard-4:
 test-yaml-structural-other:
 	# Per-subdir so every remaining contrib folder runs in its own subprocess,
 	# instead of stacking ~20 light files into one ~13-min catch-all batch that
-	# risked the 30-min per-batch timeout on slow runners. ssa is excluded (it
-	# has no YAML tests — only a pytest .py run elsewhere). --workers 1 so a
-	# single ~1-5 GB peak is resident at a time, leaving headroom for growth.
+	# risked the 30-min per-batch timeout on slow runners. SSA runs per-file in
+	# shard 3 because its reform combinations retain large model copies.
 	$(BATCH) $(TESTS)/policy/contrib --exclude states,ctc,ubi_center,federal,harris,treasury,crfb,congress,refundable_credit_conversion,ssa --mode per-subdir --workers 1
 test-yaml-structural-other-shard-2a:
 	# ctc is microsim-heavy: per-file isolation frees each ~5 GB peak between
@@ -149,6 +198,12 @@ test-yaml-structural-other-shard-3:
 	# file). Per-file isolation frees each peak between files; --workers 1 keeps
 	# one peak resident at a time.
 	$(BATCH) $(TESTS)/policy/contrib/refundable_credit_conversion --mode per-file --workers 1
+	# SSA's COLA file measured about 11 GB locally. Override CI's worker setting
+	# as well as the CLI default so each file exits before the next one starts.
+	# SSA moved here from shard 1, which also runs the contrib Python tests:
+	# with 12 files it took 27 min there, and the shard hit CI's 60-min timeout
+	# (release run 41123038987).
+	POLICYENGINE_BATCH_WORKERS=1 $(BATCH) $(TESTS)/policy/contrib/ssa --mode per-file --workers 1
 test-yaml-structural-congress:
 	# One subprocess per congress proposal, split when a proposal's reform
 	# combos exceed the batcher's budget; new proposals auto-route.
@@ -159,8 +214,9 @@ test-yaml-variables:
 	$(BATCH) $(TESTS)/variables --batches 1
 test-yaml-no-structural-states:
 	# Release model/parameter caches between states. The former NY/OH/OK
-	# group peaked at 15.1 GB; keep one subprocess at a time on each of
-	# the existing four CI runners. Root-level state tests remain included.
+	# group peaked at 15.1 GB; keep one subprocess at a time here. CI's four
+	# runners run up to two while memory allows (POLICYENGINE_BATCH_WORKERS).
+	# Root-level state tests remain included.
 	$(BATCH) $(TESTS)/policy/baseline/gov/states --mode per-subdir --workers 1
 test-yaml-no-structural-other:
 	$(BATCH) $(TESTS)/policy/baseline --batches 2 --exclude states
@@ -174,8 +230,9 @@ test-yaml-no-structural-other-irs:
 	$(BATCH) $(TESTS)/policy/baseline/gov/irs --mode per-subdir --workers 1
 test-yaml-no-structural-other-household:
 	# 4 batches (was 2), --workers 1: a 2-batch half of this folder (incl.
-	# the weights/MTR files) peaked 11.8 GB on CI run 28698452678. Quarter
-	# batches keep each subprocess <= ~6 GB.
+	# the weights/MTR files) peaked 11.8 GB on CI run 28698452678, and by
+	# October 2026 the last quarter batch reached 15.1 GB. test_batched.py's
+	# memory budget now continues a batch in a fresh subprocess past ~8 GB.
 	$(BATCH) $(TESTS)/policy/baseline/household --batches 4 --workers 1
 test-yaml-no-structural-other-contrib:
 	# ubi_center is microsim-heavy → per-file, one ~4 GB peak at a time.
@@ -196,8 +253,9 @@ test-yaml-reform:
 	# ~8 GB file runs solo with ~8 GB spare); new reform files auto-route.
 	$(BATCH) $(TESTS)/policy/reform --mode per-file --workers 1
 test-yaml-no-structural-other-hhs:
-	# hhs (~2.7 GB peak) rides along with the baseline-contrib runner,
-	# which has spare headroom.
+	# hhs rides along with the baseline-contrib runner. As one process it
+	# peaked at 15.1 GB (CI run 38656284185); test_batched.py's memory budget
+	# continues it in a fresh subprocess past ~8 GB.
 	$(BATCH) $(TESTS)/policy/baseline/gov/hhs --batches 1
 # baseline contrib + gov/hhs share one CI runner. policy/reform no longer
 # rides along: its per-file peaks (~5.5-8 GB) plus this pair filled a job
@@ -213,7 +271,8 @@ test-yaml-no-structural-other-usda:
 	# The single USDA process peaked at 14.9 GB in CI before a later run
 	# shut down in WIC. Release accumulated model and parameter caches
 	# between eight sequential YAML batches on the same runner. USDA Python
-	# tests remain covered by test-other-python-rest in the Rest job.
+	# tests stay in test-other-python-rest's policy group, which CI spreads
+	# over the planned Rest Python shards.
 	$(BATCH) $(TESTS)/policy/baseline/gov/usda --batches 8 --workers 1
 test-yaml-no-structural-other-ssa-usda: test-yaml-no-structural-other-ssa test-yaml-no-structural-other-usda
 test-yaml-no-structural-other-rest-a:
@@ -271,14 +330,45 @@ test-other-python-rest-heavy-a:
 	$(call rest_pytest,heavy-a,$(REST_HEAVY_A_TESTS))
 test-other-python-rest-heavy-b:
 	$(call rest_pytest,heavy-b,$(REST_HEAVY_B_TESTS))
+test-other-python-rest-core-heavy:
+	$(call rest_pytest,core-heavy,$(REST_CORE_HEAVY_TESTS))
+test-other-python-rest-ss-calculator-engine:
+	$(call rest_pytest,ss-calculator-engine,$(REST_SS_CALCULATOR_ENGINE_TESTS))
+test-other-python-rest-ss-calculator-differential:
+	$(call rest_pytest,ss-calculator-differential,$(REST_SS_CALCULATOR_DIFFERENTIAL_TESTS))
+test-other-python-rest-social-security-inputs:
+	@failed=""; for group in compatibility pia-ratio; do \
+		$(MAKE) --no-print-directory test-other-python-rest-social-security-inputs-$$group || failed="$$failed $$group"; \
+	done; \
+	if [ -n "$$failed" ]; then echo "Failed Social Security input groups:$$failed"; exit 1; fi
+test-other-python-rest-social-security-inputs-compatibility:
+	$(call rest_pytest,social-security-inputs,$(REST_SOCIAL_SECURITY_INPUT_TESTS))
+test-other-python-rest-social-security-inputs-pia-ratio:
+	$(call rest_pytest,social-security-pia-ratio-inputs,$(REST_SOCIAL_SECURITY_PIA_RATIO_INPUT_TESTS))
 test-other-python-rest-core:
 	$(call rest_pytest,core,$(TESTS)/core,$(REST_LISTED_TESTS))
+test-other-python-rest-policy-parameters:
+	$(call rest_pytest,policy-parameters,$(REST_POLICY_PARAMETER_TESTS))
 test-other-python-rest-policy:
 	$(call rest_pytest,policy,$(TESTS)/policy,$(REST_LISTED_TESTS))
+test-other-python-rest-remaining-heavy:
+	$(call rest_pytest,remaining-heavy,$(REST_REMAINING_HEAVY_TESTS))
 test-other-python-rest-remaining:
 	$(call rest_pytest,remaining,$(TESTS)/,$(REST_LISTED_TESTS) $(TESTS)/core $(TESTS)/policy)
+MICROSIMULATION_GROUPS := base social-security-current-law
 test-microsimulation:
-	pytest $(TESTS)/microsimulation --maxfail=0
+	@failed=""; for group in $(MICROSIMULATION_GROUPS); do \
+		$(MAKE) --no-print-directory test-microsimulation-$$group || failed="$$failed $$group"; \
+	done; \
+	if [ -n "$$failed" ]; then echo "Failed microsimulation groups:$$failed"; exit 1; fi
+test-microsimulation-base:
+	# Compatibility checks copy policy for differential/branch isolation. Keep
+	# their heaps separate on this existing runner (local differential peak 7 GB).
+	pytest $(TESTS)/microsimulation --maxfail=0 --ignore=$(TESTS)/microsimulation/test_social_security_current_law.py
+test-microsimulation-social-security-current-law:
+	# Only the two probes need a country system. Avoid importing another through
+	# the empty parent conftest in the pytest process that compares their JSON.
+	pytest $(TESTS)/microsimulation/test_social_security_current_law.py --confcutdir=$(TESTS)/microsimulation --maxfail=0 $(if $(findstring --junitxml,$(PYTEST_ADDOPTS)),--junitxml=simulation-social-security-current-law.xml)
 # Local convenience: run both halves back to back.
 test-other: test-other-python test-microsimulation
 test-policy-contrib-python:

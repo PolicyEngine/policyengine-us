@@ -1,0 +1,63 @@
+# SC DSS TANF Policy Manual (Volume 67), Section 3.6 (page 56) and Section 7.7
+# (page 117): exclude an SSI recipient living with the benefit group.
+
+- name: Case 1, everyone in the unit is in the benefit group.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 9
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    sc_tanf_benefit_group_size: 3
+
+- name: Case 2, an SSI recipient is left out.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 9
+        receives_ssi: true
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    sc_tanf_benefit_group_size: 2
+
+- name: Case 3, a unit of SSI recipients has no benefit group members.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        receives_ssi: true
+      person2:
+        age: 9
+        receives_ssi: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_tanf_benefit_group_size: 0

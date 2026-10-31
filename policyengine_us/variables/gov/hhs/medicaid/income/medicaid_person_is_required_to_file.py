@@ -12,14 +12,36 @@ class medicaid_person_is_required_to_file(Variable):
     reference = (
         "https://www.law.cornell.edu/cfr/text/42/435.603#d_2",
         "https://www.irs.gov/publications/p501",
+        "https://www.irs.gov/pub/irs-prior/p501--2025.pdf#page=4",
+        # Form 1040 instructions: line 1a is Form(s) W-2, box 1 (PDF page 23),
+        # which leaves out elective deferrals (page 25); the Standard
+        # Deduction Worksheet for Dependents' earned income subtracts Schedule
+        # 1, line 15 (page 35).
+        # PDF pages 23, 25, 35
+        "https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=23",
     )
 
     def formula(person, period, parameters):
         standard = parameters(period).gov.irs.deductions.standard
         filing_requirement = parameters(period).gov.irs.income.filing_requirement
         gross_income = person("medicaid_irs_gross_income", period)
-        earned_income = person("earned_income", period)
-        unearned_income = gross_income - earned_income
+        # Earned income is figured as on the IRS dependent worksheet, which
+        # sets the limited standard deduction the gross income test compares
+        # against: W-2 box 1 wages (which leave out elective deferrals) plus
+        # earned disability benefits and business and farm income, minus
+        # deductible self-employment tax, and not below zero.
+        earned_income = max_(
+            person("standard_deduction_worksheet_earned_income_person", period), 0
+        )
+        # Unearned income is gross income other than earned income (IRS Pub.
+        # 501, Table 2). Gross income counts each source's positive amount, so
+        # subtract those sources' positive amounts: a business loss does not
+        # turn other income into unearned income.
+        earned_gross_income = 0
+        for source in filing_requirement.dependent.earned_income_sources:
+            earned_gross_income += max_(0, person(source, period))
+        earned_gross_income += person("earned_disability_benefits", period)
+        unearned_income = max_(0, gross_income - earned_gross_income)
 
         married = person.marital_unit.nb_persons() == 2
         filing_status = where(married, FilingStatus.SEPARATE, FilingStatus.SINGLE)

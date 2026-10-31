@@ -139,6 +139,25 @@
     capital_gains_28_percent_rate_gain: 0
     schedule_d_unrecaptured_section_1250_gain: 20_000
 
+- name: A dependent's short-term loss does not reduce the head's line 19
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        long_term_capital_gains: 50_000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        short_term_capital_gains: -6_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        unrecaptured_section_1250_gain_before_losses: 20_000
+  output:
+    # Line 15 is the head's Schedule D line 7 loss: none, so line 18 = 20,000.
+    schedule_d_unrecaptured_section_1250_gain: 20_000
+
 # The 2025 Schedule D instructions' 28% Rate Gain Worksheet (page 11) and
 # Unrecaptured Section 1250 Gain Worksheet (page 13) apply to the filer's
 # return. Include a joint filer's spouse, but exclude dependent amounts.

@@ -8,3 +8,5 @@ class wv_additions(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.WV
+
+    adds = ["wv_other_additions"]

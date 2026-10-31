@@ -1,0 +1,25 @@
+description: Missouri limits household income to this share of the state median income under the Low Income Home Energy Assistance Program.
+# The published monthly limits equal the HHS LIHEAP limit for the household
+# size divided by twelve and rounded to the nearest dollar (FFY2026 sizes 1-20,
+# FFY2027 sizes 1-10). 13 CSR 40-19.020(6)(D) refers to the income ranges of
+# section (14), a 2017 table that runs from 0 to 135 percent of the poverty
+# level; the FFY2026 plan, Appendix K, the October 2025 manual and the 8-2026
+# application set this share of state median income.
+values:
+  2023-10-01: 0.6
+
+metadata:
+  unit: /1
+  period: year
+  label: Missouri LIHEAP state median income rate
+  reference:
+    - title: Missouri LIHEAP FFY2026 State Plan, Section 2.1
+      href: https://liheapch.acf.gov/docs/2026/state-plans/MO_Plan_2026.pdf#page=8
+    - title: Missouri LIHEAP FFY2026 Appendix K, Income Ranges and Benefit Amounts
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/MO_BenefitMatrix_2026.docx
+    - title: Missouri LIHEAP application MO 886-4576 (8-2026), Program Description
+      href: https://dssmanuals.mo.gov/wp-content/uploads/2022/02/liheap-application.pdf#page=1
+    - title: Missouri LIHEAP Policy and Procedure Manual (October 2025), Appendix K
+      href: https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=129
+    - title: Missouri DSS draft FFY2027 LIHEAP State Plan (report status Saved with Errors), Section 2.1
+      href: https://dss.mo.gov/sites/mydss/files/media/pdf/2026/08/liheap-active-ffy2027.pdf#page=8

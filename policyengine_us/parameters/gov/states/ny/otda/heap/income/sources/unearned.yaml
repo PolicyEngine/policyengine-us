@@ -1,0 +1,44 @@
+description: New York uses these sources as unearned income under the Home Energy Assistance Program.
+values:
+  2025-10-01:
+  # Social Security and railroad benefits are counted in the formula, net of the
+  # Medicare Part B premium under D.12(a)(6) and (8).
+  - ssi
+  - total_unemployment_compensation
+  - strike_benefits
+  - workers_compensation
+  - disability_benefits
+  - veterans_benefits
+  # Survivor benefits other than Social Security survivor benefits: employer
+  # pension survivor annuities under D.12(a)(13) pensions and (14) payments from
+  # insurance and annuities; veterans' survivor benefits under D.12(a)(12).
+  - survivor_benefits
+  - pension_income
+  # Military retirement income (retiree pay plus Survivor Benefit Plan
+  # annuities) is a separate input from the pension inputs that pension_income
+  # adds; a household reports the amount in one or the other. D.12(a)(13)
+  # counts pensions and (14) annuities, and D.13 excludes neither. A military
+  # survivor annuity belongs in military_retirement_pay_survivors, not
+  # survivor_benefits.
+  - military_retirement_income
+  - retirement_distributions
+  - alimony_income
+  - child_support_received
+  - ordinary_dividend_income
+  - interest_income
+  - rental_income
+  # D.12(a)(27): income from rents.
+  - farm_rent_income
+  - estate_income
+  # D.12(a)(38): all other income not specifically excluded under D.13. Plan
+  # section 1.9 (page 7) leaves the "Other" box unchecked; the manual controls.
+  - miscellaneous_income
+metadata:
+  unit: list
+  period: year
+  label: New York HEAP unearned sources
+  reference:
+  - title: HEAP Manual (edition dated 7/1/2021), Chapter 8 D.12-D.14, PDF pages 37, 38, 39, 40, 41, 42, 43
+    href: https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=37
+  - title: FY2026 LIHEAP State Plan, section 1.9 countable income, PDF pages 6, 7
+    href: https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=6

@@ -26,6 +26,7 @@ MICRODATA_UPRATING_OVERRIDES = {
     "employment_income": "calibration.gov.irs.soi.employment_income",
     "employment_income_last_year": "calibration.gov.irs.soi.employment_income",
     "energy_efficient_home_improvement_credit": DEFAULT_MICRODATA_UPRATING,
+    "foreign_earned_income_exclusion": DEFAULT_MICRODATA_UPRATING,
     "foreign_tax_credit": DEFAULT_MICRODATA_UPRATING,
     "interest_deduction": DEFAULT_MICRODATA_UPRATING,
     "long_term_capital_gains": "calibration.gov.irs.soi.long_term_capital_gains",
@@ -41,6 +42,12 @@ MICRODATA_UPRATING_OVERRIDES = {
     "self_employed_health_insurance_ald": DEFAULT_MICRODATA_UPRATING,
     "self_employed_pension_contribution_ald": DEFAULT_MICRODATA_UPRATING,
     "social_security": "calibration.gov.irs.soi.social_security",
+    # Dataset extension precedes constructor migration to the reported twins.
+    # Resolve these national totals through the existing per-capita uprater.
+    "social_security_retirement": "calibration.gov.irs.soi.social_security",
+    "social_security_disability": "calibration.gov.irs.soi.social_security",
+    "social_security_survivors": "calibration.gov.irs.soi.social_security",
+    "social_security_dependents": "calibration.gov.irs.soi.social_security",
     "s_corp_income": "calibration.gov.irs.soi.partnership_s_corp_income",
     "spm_unit_weight": "calibration.gov.census.populations.total",
     "state_and_local_sales_or_income_tax": DEFAULT_MICRODATA_UPRATING,

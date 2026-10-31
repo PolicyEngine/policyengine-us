@@ -1,0 +1,24 @@
+description: States apply the general income exclusion to each applying spouse's own income, instead of once to the couple's combined income, under the Medicare Savings Programs, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: MSP state general income exclusion per spouse
+  breakdown:
+    - state_code
+  reference:
+    - title: Illinois Department of Human Services Policy Manual PM 15-04-03-a - AABD Income Disregard (Community Cases)
+      href: https://www.dhs.state.il.us/page.aspx?item=16387
+    - title: Illinois Department of Human Services Policy Manual PM 06-12-01-c - Income Exemption
+      href: https://www.dhs.state.il.us/page.aspx?item=14179
+    - title: 89 Illinois Administrative Code 120.335(a)(1) - Exempt Unearned Income
+      href: https://www.ilga.gov/ftp/JCAR/AdminCode/089/089001200H03350R.html
+    - title: 23 Mississippi Administrative Code Part 104, Rule 4.2(C)(2) - General Income Exclusion
+      href: https://www.sos.ms.gov/adminsearch/ACCode/00000278c.pdf#page=22
+
+IL:
+  0000-01-01: false
+  # PM 06-12-01-c revision date; the exemption is in effect no later than this.
+  1997-03-01: true
+MS:
+  # Rule 4.2(C)(2): one general exclusion for a couple's combined income.
+  0000-01-01: false

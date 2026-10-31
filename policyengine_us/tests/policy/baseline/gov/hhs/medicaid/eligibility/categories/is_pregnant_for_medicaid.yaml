@@ -25,6 +25,8 @@
   output:
     is_pregnant_for_medicaid: false
 
+# California elected 12 months from 2022-04-01 (SPA CA-22-0030). The annual
+# variable reads January 1, so annual 2022 still applies the 60-day rule.
 - name: Under FPL limit, 59 days postpartum, eligible in CA.
   period: 2022
   input:
@@ -135,3 +137,749 @@
   output:
     is_pregnant_for_medicaid_fc: false
     is_pregnant_for_medicaid: false
+
+# 42 USC 1396a(e)(16) lets a state cover pregnant people through the month in
+# which a 12-month postpartum period ends. count_days_postpartum maps
+# under_12_months_postpartum to 60 days, which is below the 365-day parameter
+# value of electing states. Texas elects the option through SPA TX-23-0028
+# from 2024-03-01; this YEAR-defined variable reads the parameter on January 1,
+# so annual 2024 still applies the 60-day rule.
+- name: TX mother between 60 days and 12 months postpartum is not covered as pregnant in annual 2024, before the March 2024 election
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 20_000
+        under_12_months_postpartum: true
+      person2:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    families:
+      family:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    is_pregnant_for_medicaid_nfc: [false, false]
+    is_pregnant_for_medicaid: [false, false]
+    medicaid_category: [NONE, INFANT]
+    is_medicaid_eligible: [false, true]
+
+- name: TX mother between 60 days and 12 months postpartum is covered as pregnant in 2025 under SPA TX-23-0028
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 20_000
+        under_12_months_postpartum: true
+      person2:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    families:
+      family:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    is_pregnant_for_medicaid_nfc: [true, false]
+    is_pregnant_for_medicaid: [true, false]
+    medicaid_category: [PREGNANT, INFANT]
+    is_medicaid_eligible: [true, true]
+
+# This pins the model's postpartum day limit (count_days_postpartum <
+# postpartum_coverage). SPA CA-22-0030 and 42 USC 1396a(e)(16)(A) run coverage
+# through the last day of the month in which the 12-month postpartum period
+# ends, so day 365 is usually still covered in law.
+- name: CA postpartum coverage holds at 364 days and stops at the model's 365-day postpartum limit
+  period: 2023
+  input:
+    people:
+      person1:
+        count_days_postpartum: 364
+        medicaid_income_level: 1
+      person2:
+        count_days_postpartum: 365
+        medicaid_income_level: 1
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+      household2:
+        members: [person2]
+        state_code: CA
+  output:
+    is_pregnant_for_medicaid_nfc: [true, false]
+    is_pregnant_for_medicaid: [true, false]
+
+- name: AR, which has not elected 12-month postpartum coverage, keeps the 60-day period
+  period: 2026
+  input:
+    state_code: AR
+    count_days_postpartum: 90
+    medicaid_income_level: 1
+  output:
+    is_pregnant_for_medicaid_nfc: false
+    is_pregnant_for_medicaid: false
+
+- name: AR postpartum coverage holds inside the 60-day period in 2026
+  period: 2026
+  input:
+    state_code: AR
+    count_days_postpartum: 59
+    medicaid_income_level: 1
+  output:
+    is_pregnant_for_medicaid_nfc: true
+    is_pregnant_for_medicaid: true
+
+# SPA WI-26-0014 takes effect 2026-06-01, so annual 2026 still applies the
+# 60-day rule.
+- name: WI postpartum coverage stays at 60 days in annual 2026, before the June 2026 election
+  period: 2026
+  input:
+    state_code: WI
+    count_days_postpartum: 90
+    medicaid_income_level: 1
+  output:
+    is_pregnant_for_medicaid_nfc: false
+    is_pregnant_for_medicaid: false
+
+- name: WI postpartum coverage extends to 12 months in 2027 under SPA WI-26-0014
+  period: 2027
+  input:
+    state_code: WI
+    count_days_postpartum: 90
+    medicaid_income_level: 1
+  output:
+    is_pregnant_for_medicaid_nfc: true
+    is_pregnant_for_medicaid: true
+
+# SPAs IA-25-0018 and IA-25-0019 moved Iowa's postpartum extension from
+# January 1 to April 1, 2025. The annual variable reads January 1, so annual
+# 2025 keeps the 60-day rule and annual 2026 applies the extension.
+- name: IA postpartum coverage stays at 60 days in annual 2025, before the April 2025 extension
+  period: 2025
+  input:
+    state_code: IA
+    age: 28
+    count_days_postpartum: 90
+    medicaid_income_level: 1
+  output:
+    is_pregnant_for_medicaid_nfc: false
+    is_pregnant_for_medicaid: false
+
+- name: IA postpartum coverage extends to 12 months in 2026 under SPA IA-25-0019
+  period: 2026
+  input:
+    state_code: IA
+    age: 28
+    count_days_postpartum: 90
+    medicaid_income_level: 1
+  output:
+    is_pregnant_for_medicaid_nfc: true
+    is_pregnant_for_medicaid: true
+
+# Illinois (2021-04-12) and New Jersey (2021-10-28) extended postpartum
+# coverage through section 1115 demonstration amendments before the state
+# plan option existed. Both start after January 1, 2021, so annual 2021
+# applies the 60-day rule and annual 2022 applies 12 months.
+- name: IL and NJ section 1115 postpartum extensions do not apply in annual 2021
+  period: 2021
+  input:
+    people:
+      person1:
+        count_days_postpartum: 90
+        medicaid_income_level: 1
+      person2:
+        count_days_postpartum: 90
+        medicaid_income_level: 1
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household1:
+        members: [person1]
+        state_code: IL
+      household2:
+        members: [person2]
+        state_code: NJ
+  output:
+    is_pregnant_for_medicaid_nfc: [false, false]
+    is_pregnant_for_medicaid: [false, false]
+
+- name: IL and NJ section 1115 postpartum extensions apply in 2022
+  period: 2022
+  input:
+    people:
+      person1:
+        count_days_postpartum: 90
+        medicaid_income_level: 1
+      person2:
+        count_days_postpartum: 90
+        medicaid_income_level: 1
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household1:
+        members: [person1]
+        state_code: IL
+      household2:
+        members: [person2]
+        state_code: NJ
+  output:
+    is_pregnant_for_medicaid_nfc: [true, true]
+    is_pregnant_for_medicaid: [true, true]
+
+# Louisiana (SPA LA-22-0009) and Michigan (SPA MI-22-0100) elect the option
+# from 2022-04-01, and Virginia's section 1115 coverage began 2022-07-01. All
+# three start after January 1, 2022, so annual 2022 applies the 60-day rule
+# and annual 2023 applies 12 months.
+- name: LA, MI and VA postpartum extensions do not apply in annual 2022
+  period: 2022
+  input:
+    people:
+      person1:
+        count_days_postpartum: 90
+        medicaid_income_level: 1
+      person2:
+        count_days_postpartum: 90
+        medicaid_income_level: 1
+      person3:
+        count_days_postpartum: 90
+        medicaid_income_level: 1
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+      family3:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household1:
+        members: [person1]
+        state_code: LA
+      household2:
+        members: [person2]
+        state_code: MI
+      household3:
+        members: [person3]
+        state_code: VA
+  output:
+    is_pregnant_for_medicaid_nfc: [false, false, false]
+    is_pregnant_for_medicaid: [false, false, false]
+
+- name: LA, MI and VA postpartum extensions apply in 2023
+  period: 2023
+  input:
+    people:
+      person1:
+        count_days_postpartum: 90
+        medicaid_income_level: 1
+      person2:
+        count_days_postpartum: 90
+        medicaid_income_level: 1
+      person3:
+        count_days_postpartum: 90
+        medicaid_income_level: 1
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+      family3:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household1:
+        members: [person1]
+        state_code: LA
+      household2:
+        members: [person2]
+        state_code: MI
+      household3:
+        members: [person3]
+        state_code: VA
+  output:
+    is_pregnant_for_medicaid_nfc: [true, true, true]
+    is_pregnant_for_medicaid: [true, true, true]
+
+# SPA ID-25-0001 takes effect on January 1, 2025, so annual 2025 applies
+# 12 months in the same year.
+- name: ID postpartum coverage stays at 60 days in 2024
+  period: 2024
+  input:
+    state_code: ID
+    count_days_postpartum: 90
+    medicaid_income_level: 1
+  output:
+    is_pregnant_for_medicaid_nfc: false
+    is_pregnant_for_medicaid: false
+
+- name: ID postpartum coverage extends to 12 months in 2025 under SPA ID-25-0001
+  period: 2025
+  input:
+    state_code: ID
+    count_days_postpartum: 90
+    medicaid_income_level: 1
+  output:
+    is_pregnant_for_medicaid_nfc: true
+    is_pregnant_for_medicaid: true
+
+# SPA UT-23-0017 takes effect on January 1, 2024, so annual 2024 applies
+# 12 months in the same year.
+- name: UT postpartum coverage extends to 12 months in 2024 under SPA UT-23-0017
+  period: 2024
+  input:
+    state_code: UT
+    count_days_postpartum: 90
+    medicaid_income_level: 1
+  output:
+    is_pregnant_for_medicaid_nfc: true
+    is_pregnant_for_medicaid: true
+
+# SPA UT-25-0024 moved Utah's election into the Medicaid Reform section 1115
+# demonstration on 2026-01-01, and 12-month coverage continues.
+- name: UT postpartum coverage stays at 12 months in 2026 under the section 1115 demonstration
+  period: 2026
+  input:
+    state_code: UT
+    count_days_postpartum: 90
+    medicaid_income_level: 1
+  output:
+    is_pregnant_for_medicaid_nfc: true
+    is_pregnant_for_medicaid: true
+
+# SPA WV-19-0004 raised the pregnancy standard to 185% FPL (190% with the
+# disregard) effective 2019-07-01; the YEAR-defined variable resolves the
+# January value, so the change first applies in 2020.
+- name: Pregnancy above the pre-July 2019 FPL limit confers ineligibility in WV
+  period: 2019
+  input:
+    state_code: WV
+    is_pregnant: true
+    medicaid_income_level: 1.8
+  output:
+    is_pregnant_for_medicaid: false
+
+- name: Pregnancy under the 190% FPL limit (185% plus the disregard) confers eligibility in WV
+  period: 2020
+  input:
+    state_code: WV
+    is_pregnant: true
+    medicaid_income_level: 1.8
+  output:
+    is_pregnant_for_medicaid: true
+
+# WV-19-0004 S14 sets 185% FPL; with the 5 percentage point disregard the
+# limit is 190%. 2026 household of 2: 21,640 x 1.90 / 12 = 3,426.33 -> $3,427.
+- name: Pregnancy at the 190% FPL limit confers eligibility in WV
+  period: 2026
+  input:
+    state_code: WV
+    is_pregnant: true
+    medicaid_income_level: 1.9
+  output:
+    is_pregnant_for_medicaid: true
+
+# 21,640 x 1.91 / 12 = $3,444.37 per month, above the $3,427 ceiling.
+- name: Pregnancy one point above the 190% FPL limit confers ineligibility in WV
+  period: 2026
+  input:
+    state_code: WV
+    is_pregnant: true
+    medicaid_income_level: 1.91
+  output:
+    is_pregnant_for_medicaid: false
+
+# R.I. Gen. Laws § 42-12.3-3(g): from October 1, 2022, people eligible for
+# Medicaid or CHIP while pregnant keep full Medicaid through the postpartum
+# period. $47,000 is about 230% FPL for a household of 2 in 2024 ($20,440).
+# https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm
+# Only a Medicaid pregnancy keeps the pregnancy group (SHO 21-007 Q6), so the
+# parent, whose pregnancy CHIP covered, stays in CHIP (RI-22-0025 CS27).
+- name: Case 34, Rhode Island postpartum parent with a CHIP-covered pregnancy stays in CHIP outside the pregnancy group, and the newborn is an infant.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 28
+        is_pregnant: false
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2023-12-01"
+        employment_income: 47_000
+      person2:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    is_pregnant_for_medicaid: [false, false]
+    medicaid_category: [NONE, INFANT]
+    is_medicaid_eligible: [true, true]
+    medicaid_enrolled: [false, true]
+    chip_enrolled: [true, false]
+    is_chip_eligible_standard_pregnant_person: [true, false]
+
+# While pregnant, the same income is above RI's 190% Medicaid standard (195%
+# with the disregard), so an uninsured applicant is in CHIP rather than
+# Medicaid (210-RICR-30-00-1 § 1.6(A)(2)(b)(1)).
+- name: Case 35, Rhode Island uninsured pregnant applicant at 230 percent FPL receives CHIP.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 28
+        is_pregnant: true
+        immigration_status: CITIZEN
+        employment_income: 47_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    is_pregnant_for_medicaid: false
+    is_medicaid_eligible: false
+    is_chip_eligible_standard_pregnant_person: true
+
+# 210-RICR-30-00-1 § 1.6(A)(2)(a)(2) covers pregnant applicants with
+# third-party insurance through the upper 253% standard (258% with the
+# disregard). Employer, individual and Medicare/military coverage are
+# independent of Medicaid enrollment, so the eligibility calculation must
+# also work without a circular dependency on medicaid_enrolled.
+# https://risos-apa-production-public.s3.amazonaws.com/EOHHS/REG_13314_20250728104245127.pdf#page=5
+- name: Case 36, Rhode Island pregnancy Medicaid covers applicants with each modeled third-party insurance source.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_esi: true
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_marketplace_health_coverage_at_interview: true
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_non_marketplace_direct_purchase_health_coverage_at_interview: true
+      person4:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        medicare_enrolled: true
+      person5:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_tricare_health_coverage_at_interview: true
+      person6:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_champva_health_coverage_at_interview: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: RI
+  output:
+    is_pregnant_for_medicaid: [true, true, true, true, true, true]
+    is_medicaid_eligible: [true, true, true, true, true, true]
+    is_chip_eligible_standard_pregnant_person: [false, false, false, false, false, false]
+
+# The ordinary standard is 190% plus the five-point disregard; the insured
+# standard is 253% plus the disregard. The same insurance does not extend
+# another state's ordinary Medicaid pregnancy band.
+- name: Case 37, Rhode Island pregnancy income boundaries and state controls preserve the coverage split.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        medicaid_household_size: 2
+        medicaid_income_level: 1.95
+      person2:
+        age: 30
+        is_pregnant: true
+        medicaid_household_size: 2
+        medicaid_income_level: 1.96
+      person3:
+        age: 30
+        is_pregnant: true
+        has_esi: true
+        medicaid_household_size: 2
+        medicaid_income_level: 2.58
+      person4:
+        age: 30
+        is_pregnant: true
+        has_esi: true
+        medicaid_household_size: 2
+        medicaid_income_level: 2.59
+      person5:
+        age: 30
+        is_pregnant: false
+        has_esi: true
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+      person6:
+        age: 30
+        is_pregnant: true
+        has_esi: true
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5]
+        state_code: RI
+      household2:
+        members: [person6]
+        state_code: CO
+  output:
+    is_pregnant_for_medicaid: [true, false, true, false, false, false]
+
+# R.I. Gen. Laws § 42-12.3-3(g) supplies twelve months of full Medicaid
+# from October 1, 2022, including people covered under Title XXI while
+# pregnant. At January 1, 2024, the March 2023 pregnancies are within the
+# continuation period and the November 2022 pregnancies have expired.
+# Pregnancy Medicaid requires a qualifying immigration status, so the
+# undocumented parents had unborn-child CHIP (FCEP) coverage while pregnant
+# (210-RICR-30-00-1 § 1.6(A)(2)(a)). Their continuation is state-funded and
+# outside the pregnancy group.
+- name: Case 38, Rhode Island citizen and undocumented postpartum parents receive coverage within the extended period.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        immigration_status: CITIZEN
+        count_days_postpartum: 300
+        ri_pregnancy_coverage: MEDICAID
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+      person2:
+        age: 30
+        is_pregnant: false
+        immigration_status: CITIZEN
+        count_days_postpartum: 400
+        ri_pregnancy_coverage: MEDICAID
+        ri_pregnancy_end_date: "2022-11-27"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+      person3:
+        age: 30
+        is_pregnant: false
+        immigration_status: UNDOCUMENTED
+        count_days_postpartum: 300
+        ri_pregnancy_coverage: FCEP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+      person4:
+        age: 30
+        is_pregnant: false
+        immigration_status: UNDOCUMENTED
+        count_days_postpartum: 400
+        ri_pregnancy_coverage: FCEP
+        ri_pregnancy_end_date: "2022-11-27"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    is_pregnant_for_medicaid: [true, false, false, false]
+    is_medicaid_eligible: [true, false, true, false]
+    is_chip_eligible_standard_pregnant_person: [false, false, false, false]
+
+# The YEAR-defined formula reads January 1, so the October 2022 extension
+# is reflected in 2023 annual results. The parameter retains its legal date.
+- name: Case 39, Rhode Island annual postpartum eligibility reflects the October 2022 extension in 2023.
+  period: 2023
+  input:
+    state_code:
+      2022: RI
+      2023: RI
+    count_days_postpartum:
+      2022: 90
+      2023: 90
+    ri_pregnancy_coverage:
+      2022: MEDICAID
+      2023: MEDICAID
+    ri_pregnancy_end_date:
+      2022: "2021-10-03"
+      2023: "2022-10-03"
+    medicaid_household_size:
+      2022: 2
+      2023: 2
+    medicaid_income_level:
+      2022: 2.3
+      2023: 2.3
+  output:
+    is_pregnant_for_medicaid:
+      2022: false
+      2023: true
+
+# The state-funded postpartum continuation does not change the citizenship
+# rules for someone seeking Medicaid during pregnancy. An undocumented
+# pregnant applicant instead has the existing unborn-child CHIP pathway.
+- name: Case 40, Rhode Island state-funded postpartum coverage does not bypass pregnancy immigration requirements.
+  period: 2024
+  input:
+    state_code: RI
+    age: 30
+    is_pregnant: true
+    immigration_status: UNDOCUMENTED
+    medicaid_household_size: 2
+    medicaid_income_level: 1.8
+  output:
+    is_pregnant_for_medicaid: true
+    is_medicaid_eligible: false
+    is_chip_eligible_standard_pregnant_person: false
+    is_chip_fcep_eligible_person: true

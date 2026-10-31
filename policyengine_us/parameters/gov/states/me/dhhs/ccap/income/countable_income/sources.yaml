@@ -16,8 +16,8 @@ values:
     # TANF is countable per Rule §2.C.4, but excluded here to avoid
     # circular dependency: tanf → childcare_expenses → me_ccap → me_ccap_countable_income → tanf
     - veterans_benefits
-    - military_retirement_pay
-    - unemployment_compensation
+    - military_retirement_income
+    - total_unemployment_compensation
     - workers_compensation
     - interest_income
     - dividend_income
@@ -30,5 +30,5 @@ metadata:
   period: year
   label: Maine CCAP countable income sources
   reference:
-    - title: 10-148 C.M.R. Chapter 6 §2.C.3-4
+    - title: "10-148 C.M.R. Chapter 6 §2.C.3-4 #page 13-16"
       href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/CCAP%20Full%20Rule%208.18.2025_1.pdf#page=13

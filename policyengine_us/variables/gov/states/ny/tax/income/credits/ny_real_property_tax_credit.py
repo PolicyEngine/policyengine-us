@@ -14,11 +14,18 @@ class ny_real_property_tax_credit(Variable):
         rptc = parameters(period).gov.states.ny.tax.income.credits.real_property_tax
 
         # Age-based eligibility. The elderly tier (IT-214 line 7) applies if the
-        # filer, spouse, or a claimed dependent is 65 or older.
+        # filer, spouse, or a claimed dependent is 65 or older. A return on
+        # which a filer can be claimed as a dependent (outside the claimant
+        # filing exception) has no dependents (IRC 152(b)(1)), so a
+        # dependent's age does not count there.
         person = tax_unit.members
         age = person("age", period)
         aged = age >= rptc.elderly_age
-        meets_age_condition = tax_unit.any(aged)
+        filer = person("is_tax_unit_head_or_spouse", period)
+        no_dependents = person.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
+        meets_age_condition = tax_unit.any(aged & (filer | ~no_dependents))
 
         # Real-estate-based phase-in.
         real_estate_tax = add(tax_unit, period, ["real_estate_taxes"])
@@ -35,7 +42,7 @@ class ny_real_property_tax_credit(Variable):
         if rptc.uses_household_gross_income:
             income = tax_unit("ny_household_gross_income", period)
         else:
-            income = tax_unit("adjusted_gross_income", period)
+            income = tax_unit("ny_recomputed_federal_agi", period)
         # IT-214: "Your federal adjusted gross income cannot be an amount less
         # than zero. If the amount is less than zero, enter 0."
         income = max_(income, 0)
@@ -68,7 +75,16 @@ class ny_real_property_tax_credit(Variable):
         # IT-214 income limit ("$18,000 or less").
         meets_income_condition = income <= rptc.max_agi
 
-        eligible = meets_value_conditions & meets_income_condition
+        # Tax Law 606(e)(7)(E) excludes an individual whom another taxpayer can
+        # claim as a dependent ("You could not be claimed as a dependent",
+        # IT-214), while 606(e)(6)(C) covers "a qualified taxpayer and their
+        # spouse", so one qualified spouse keeps the credit.
+        independent_filers = tax_unit(
+            "head_spouse_count_not_dependent_elsewhere", period
+        )
+        eligible = (
+            meets_value_conditions & meets_income_condition & (independent_filers > 0)
+        )
 
         # From 2025 (Part RR of Chapter 59 of the Laws of 2025) the credit is a
         # flat amount looked up by federal AGI bracket, allowed only when the

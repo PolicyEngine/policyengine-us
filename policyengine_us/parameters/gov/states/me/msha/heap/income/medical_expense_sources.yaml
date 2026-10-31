@@ -1,0 +1,22 @@
+description: Maine deducts these medical expenses, up to the amount needed to reach the income limit, from the income of a household over the limit under the Low Income Home Energy Assistance Program.
+# Rule 3(C)(1) defines medical expenses by IRS Publication 502 and allows only
+# the amount necessary to make the household eligible. Annual expenses stand in
+# for those paid during the income period.
+values:
+  2024-07-03:
+    - medical_expense_health_insurance_premiums
+    - other_medical_expenses
+
+metadata:
+  unit: list
+  period: year
+  label: Maine HEAP medical expense sources
+  reference:
+    - title: 99-346 CMR ch. 24, section 3(C)(1) (2025 edition, SOS filing 2025-135)
+      href: https://www.maine.gov/sos/sites/maine.gov.sos/files/inline-files/346c024.docx
+    - title: 99-346 CMR ch. 24, section 3(C)(1) (effective June 29, 2026)
+      href: https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=15
+    - title: MaineHousing Home Energy Assistance Program page, 2025-2026 season income limits (archived November 1, 2025)
+      href: https://web.archive.org/web/20251101091454id_/https://www.mainehousing.org/programs-services/energy/energydetails/liheap
+    - title: MaineHousing Home Energy Assistance Program page, 2026-2027 season income limits (archived October 15, 2026)
+      href: https://web.archive.org/web/20261015145903id_/https://www.mainehousing.org/programs-services/energy/energydetails/liheap

@@ -1,0 +1,170 @@
+# Income percentage factors from Attachment 1 of the annual notices:
+# 2025 (90 FR 37477) from July 1, 2025 and 2026 (91 FR 34815) from July 1,
+# 2026. Between two rows the factor is linearly interpolated and rounded to
+# the nearest hundredth of a percent (91 FR 34818). Outside the table it is
+# held at the first or last row's factor.
+
+- name: Case 1, a single income on a table row takes that row's factor.
+  period: 2026
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 35_104
+  output:
+    income_contingent_repayment_income_percentage_factor:
+      2026-10: 0.7189
+
+- name: Case 2, the notice's interpolation example.
+  period: 2026
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+  output:
+    # 52,462 - 41,769 = 10,693; 88.77 - 80.33 = 8.44;
+    # 50,000 - 41,769 = 8,231; 8,231 / 10,693 = 0.769756;
+    # 8.44 x 0.769756 = 6.4967; 80.33 + 6.4967 = 86.8267 -> 86.83%.
+    income_contingent_repayment_income_percentage_factor:
+      2026-10: 0.8683
+
+- name: Case 3, joint filers use the married or head of household table.
+  period: 2026
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 60_000
+  output:
+    # 65,797 - 52,462 = 13,335; 100 - 87.61 = 12.39;
+    # (60,000 - 52,462) / 13,335 = 0.565279; 87.61 + 12.39 x 0.565279 =
+    # 94.6138 -> 94.61%.
+    income_contingent_repayment_income_percentage_factor:
+      2026-10: 0.9461
+
+- name: Case 4, a head of household uses the married or head of household table.
+  period: 2026
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 55_000
+  output:
+    # (55,000 - 52,462) / 13,335 = 0.190326; 87.61 + 12.39 x 0.190326 =
+    # 89.9681 -> 89.97%.
+    income_contingent_repayment_income_percentage_factor:
+      2026-10: 0.8997
+
+- name: Case 5, a married person filing separately uses the married table.
+  period: 2026
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 41_769
+  output:
+    # Married row at 41,769: 75.22% (the single row is 80.33%).
+    income_contingent_repayment_income_percentage_factor:
+      2026-10: 0.7522
+
+- name: Case 6, the 2025 table applies before July 2026.
+  period: 2026
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 65_798
+  output:
+    # January: 2025 rows 52,483 (88.77%) and 65,824 (100%);
+    # (65,798 - 52,483) / 13,341 = 0.998051; 88.77 + 11.23 x 0.998051 =
+    # 99.9781 -> 99.98%.
+    # October: 2026 row at 65,798 is 100%.
+    income_contingent_repayment_income_percentage_factor:
+      2026-01: 0.9998
+      2026-10: 1
+
+- name: Case 7, incomes below the first row or above the last row take the end factors.
+  period: 2026
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 40
+      person4:
+        age: 38
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 500_000
+      tax_unit3:
+        members: [person3, person4]
+        filing_status: JOINT
+        adjusted_gross_income: 10_000
+  output:
+    # Single below 13,717: 55%; single above 352,277: 200%; married below
+    # 13,717: 50.52%.
+    income_contingent_repayment_income_percentage_factor:
+      2026-10: [0.55, 2, 0.5052]
+
+- name: Case 8, the factor uses the latest return's AGI.
+  period: 2026
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        # The most recent return shows 35,104; income this year is 80,000.
+        income_driven_repayment_adjusted_gross_income: 35_104
+        adjusted_gross_income: 80_000
+  output:
+    # The 35,104 row's factor, as in Case 1.
+    income_contingent_repayment_income_percentage_factor:
+      2026-10: 0.7189

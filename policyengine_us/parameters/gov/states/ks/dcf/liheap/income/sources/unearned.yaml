@@ -1,12 +1,20 @@
 description: Kansas uses these unearned income sources to determine gross household income under the Low Income Energy Assistance Program.
 values:
   2024-10-01:
-    - unemployment_compensation
+    - total_unemployment_compensation
     - strike_benefits
     # SSA benefits are counted gross, including the Medicare deduction.
     - social_security
     - ssi
+    # Military retirement income (retiree pay plus Survivor Benefit Plan
+    # annuities) is a separate input from the pension inputs that
+    # pension_income adds, so both are listed; a household reports the amount
+    # in one or the other. A military survivor annuity belongs in
+    # military_retirement_pay_survivors, not survivor_benefits. Plan Section
+    # 1.9 counts retirement and pension benefits, and KEESM 13361 exempts
+    # neither.
     - pension_income
+    - military_retirement_income
     - general_assistance
     - ks_tanf
     - rental_income

@@ -106,3 +106,19 @@
     # Excess = max(0, $300 - 0.01 * $9,000) = max(0, $300 - $90) = $210
     # Credit = min($200, $210) = $200
     ok_ptc: 200
+
+- name: OK PTC - 2025 - a disabled spouse under 65 qualifies
+  period: 2025
+  input:
+    age_head: 55
+    age_spouse: 55
+    head_is_disabled: false
+    spouse_is_disabled: true
+    ok_gross_income: 9_000
+    real_estate_taxes: 400
+    state_code: OK
+  output:
+    # Either spouse can claim as the disabled head of household, so the
+    # couple qualifies whichever of them is listed first.
+    # Excess tax: $400 - 1% * $9,000 = $310, capped at $200.
+    ok_ptc: 200
