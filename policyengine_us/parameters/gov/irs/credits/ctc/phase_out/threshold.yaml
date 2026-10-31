@@ -13,7 +13,7 @@ HEAD_OF_HOUSEHOLD:
   2018-01-01: 200_000
 SURVIVING_SPOUSE:
   2013-01-01: 75_000
-  2018-01-01: 400_000
+  2018-01-01: 200_000
 metadata:
   propagate_metadata_to_children: true
   unit: currency-USD
@@ -27,6 +27,8 @@ metadata:
     # TCJA:
     - title: U.S.C 26 U.S. Code § 24(h)(3)
       href: https://www.law.cornell.edu/uscode/text/26/24#h_3
+    - title: 2021 Schedule 8812, line 9
+      href: https://www.irs.gov/pub/irs-prior/f1040s8--2021.pdf#page=1
     - title: H.R.1 - One Big Beautiful Bill Act
       href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
     # OBBB extends TCJA CTC phaseout thresholds.

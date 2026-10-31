@@ -6,3 +6,31 @@
     ctc_phase_out: 1
   output:
     ctc: 2
+
+- name: A surviving spouse phases out the 2021 child credit above 200000.
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 200_001
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    ctc_arpa_phase_out_threshold: 150_000
+    ctc_arpa_phase_out: 1_600
+    ctc_phase_out_threshold: 200_000
+    ctc_phase_out: 50
+    ctc: 1_950
+    refundable_ctc: 1_950
+    non_refundable_ctc: 0
