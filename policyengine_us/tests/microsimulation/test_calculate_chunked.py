@@ -131,6 +131,10 @@ def build_chunking_dataset() -> USSingleYearDataset:
                     "spm_unit_medical_out_of_pocket_expenses": (
                         600.0 + 20 * household + unit_offset
                     ),
+                    # Nobody reports childcare expenses or subsidy receipt.
+                    "nv_child_care_subsidies": 0.0,
+                    "ca_child_care_subsidies": 0.0,
+                    "wa_child_care_subsidies": 0.0,
                 }
             )
         for family_id in family_ids[: 2 if household % 2 == 0 else 1]:
