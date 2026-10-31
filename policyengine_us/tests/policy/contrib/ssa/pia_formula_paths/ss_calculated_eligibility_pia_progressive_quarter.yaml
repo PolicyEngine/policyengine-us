@@ -1,0 +1,60 @@
+# A contributed PIA formula path, read through the supplied-AIME calculator's
+# eligibility PIA (monthly dollars, before COLAs). See
+# ss_calculated_eligibility_pia.yaml for the formula and dime truncation, and
+# for why each file builds one reformed system.
+#
+# Bend points after 2026 come from the model's wage-indexed projections. These
+# cases pin them to today's projections so a later projection update does not
+# move the hand-computed values.
+
+- name: Progressive price indexing for the 2035 cohort with a one-quarter fraction
+  # The fractions in this file are illustrative; they make no claim about any
+  # percentile. The maximum-career AIME ($17,000) and maximum PIA target
+  # ($5,100) for the 2035 cohort are illustrative frozen values from
+  # frozen_cohort_paths.py. Bend points pinned to the model's 2035
+  # projection: $1,756 / $10,588.
+  # Threshold T = 1,756 + .25 * (10,588 - 1,756) = 1,756 + 2,208 = $3,964.
+  # F(T) = 1,580.40 + .32 * 2,208 = $2,286.96;
+  # F(M) = 1,580.40 + 2,826.24 + .15 * 6,412 = $5,368.44;
+  # k = (5,100 - 2,286.96) / (5,368.44 - 2,286.96) = 2,813.04 / 3,081.48.
+  # G(A) = F(min(A, T)) + k * (F(A) - F(T))+:
+  #   A = 3,000 (below T): F = 1,580.40 + .32 * 1,244 = $1,978.48 -> $1,978.40.
+  #   A = 3,964 (at T): $2,286.96 -> $2,286.90.
+  #   A = 9,000: F = $3,898.48; G = 2,286.96 + k * 1,611.52 = $3,758.094 -> $3,758.00.
+  #   A = 12,000: F = $4,618.44; G = 2,286.96 + k * 2,331.48 = $4,415.335 -> $4,415.30.
+  #   A = 17,000 (maximum): G = the $5,100 target.
+  period: 2035
+  absolute_error_margin: 0.001
+  reforms: policyengine_us.tests.policy.contrib.ssa.pia_formula_paths.frozen_cohort_paths.progressive_2035_quarter_fraction
+  input:
+    people:
+      below_threshold: &progressive_record
+        ss_calculator_source: aime
+        ss_calculator_worker_id: progressive-below
+        ss_calculator_birth_date: '1973-01-02'
+        ss_calculator_eligibility_year: 2035
+        ss_calculator_entitlement_month: '2035-01'
+        ss_calculator_supplied_aime: 3_000
+        ss_calculator_insured: true
+        ss_calculator_no_special_monthly_test: true
+        ss_calculator_no_prior_withholding_adjustment: true
+        ss_calculator_earnings_test_no_trigger: true
+      at_threshold:
+        <<: *progressive_record
+        ss_calculator_worker_id: progressive-at
+        ss_calculator_supplied_aime: 3_964
+      above_threshold:
+        <<: *progressive_record
+        ss_calculator_worker_id: progressive-above
+        ss_calculator_supplied_aime: 9_000
+      above_second_bend:
+        <<: *progressive_record
+        ss_calculator_worker_id: progressive-above-second-bend
+        ss_calculator_supplied_aime: 12_000
+      maximum_aime:
+        <<: *progressive_record
+        ss_calculator_worker_id: progressive-maximum
+        ss_calculator_supplied_aime: 17_000
+  output:
+    ss_calculated_eligibility_pia:
+      2035-01: [1_978.4, 2_286.9, 3_758, 4_415.3, 5_100]

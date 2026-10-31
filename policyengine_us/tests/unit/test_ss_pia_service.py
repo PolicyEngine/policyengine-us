@@ -3,7 +3,7 @@
 from decimal import Decimal
 from fractions import Fraction
 
-from hypothesis import given, strategies as st
+from hypothesis import given, settings, strategies as st
 import pytest
 
 from policyengine_us.tools.social_security.pia import (
@@ -233,6 +233,65 @@ def test_progressive_no_change_anchor_has_unit_above_threshold_multiplier():
         )
 
 
+def _scale(aime, bend_points):
+    # Independent unreformed formula in exact rational arithmetic.
+    first, second = bend_points
+    return (
+        Fraction(9, 10) * min(aime, first)
+        + Fraction(32, 100) * max(min(aime, second) - first, 0)
+        + Fraction(15, 100) * max(aime - second, 0)
+    )
+
+
+@settings(deadline=None)
+@given(
+    st.lists(st.integers(0, 50), min_size=9, max_size=9),
+    st.lists(st.integers(0, 15), min_size=9, max_size=9),
+    st.fractions(min_value=0, max_value=1, max_denominator=1000),
+)
+def test_maximum_pia_tracks_a_price_grown_target_in_every_cohort(
+    wage_growth, real_wage_gap, fraction
+):
+    """The maximum-AIME PIA equals each cohort's price-grown target exactly.
+
+    Bend points and the maximum-career AIME grow with wages from the 2031
+    cohort; the target grows with prices from 2031's current-law maximum PIA.
+    Prices grow at most as fast as wages, so the target never exceeds the
+    current-law maximum PIA. The real-wage gap stays at or under 1.5% a
+    cohort, so after nine cohorts the target keeps at least 0.8746 of that
+    maximum, above F(BP2) / F(maximum) = 0.8457 for the 2031 values: the
+    target stays at or above the protected PIA for every fraction.
+    Successive cohorts' maximum PIAs therefore grow with prices.
+    """
+    bends, maximum = (Fraction(1542), Fraction(9294)), Fraction(14000)
+    target = _scale(maximum, bends)
+    wages = {}
+    targets = {}
+    for offset, (wage, gap) in enumerate(zip(wage_growth, real_wage_gap)):
+        year = 2032 + offset
+        growth = 1 + Fraction(wage, 1000)
+        bends = tuple(bend * growth for bend in bends)
+        maximum *= growth
+        target *= growth / (1 + Fraction(gap, 1000))
+        wages[year] = bends, maximum
+        targets[year] = target
+    path = FormulaPath(
+        progressive_price_indexing_start_year=2032,
+        bend_point_fraction=fraction,
+        maximum_aime_by_year={year: value[1] for year, value in wages.items()},
+        maximum_pia_target_by_year=targets,
+    )
+    previous = None
+    for year, (bends, maximum) in wages.items():
+        result = compute_pia(maximum, year, path, bend_points=bends, round_result=False)
+        # A 50-digit Decimal of the exact rational target.
+        assert abs(Fraction(result) - targets[year]) < Fraction(1, 10**40)
+        if previous is not None:
+            ratio = Fraction(result) / previous
+            assert abs(ratio - targets[year] / targets[year - 1]) < Fraction(1, 10**30)
+        previous = Fraction(result)
+
+
 def test_progressive_path_before_start_needs_no_frozen_data():
     path = FormulaPath(progressive_price_indexing_start_year=2032)
     assert compute_pia(5000, 2031, path, bend_points=BENDS) == D("2156.8")
@@ -305,6 +364,8 @@ def test_recompute_requires_explicit_payment_year_and_supported_mode():
         compute_pia(1000, 2020, payment_year=2019, bend_points=BENDS)
 
 
+# These properties check arithmetic, not elapsed time on a shared test host.
+@settings(deadline=None)
 @given(st.integers(0, 50000), st.integers(0, 50000))
 @pytest.mark.parametrize(
     "path",
@@ -327,6 +388,7 @@ def test_every_formula_path_is_nondecreasing_in_aime(path, first, second):
     )
 
 
+@settings(deadline=None)
 @given(st.integers(0, 50000), st.integers(1983, 2035))
 def test_no_reform_equals_current_law_at_eligibility(aime, year):
     # Independent piecewise formula, evaluated as exact rational arithmetic.
@@ -341,6 +403,7 @@ def test_no_reform_equals_current_law_at_eligibility(aime, year):
     )
 
 
+@settings(deadline=None)
 @given(st.integers(0, 50000))
 def test_inverse_interval_contains_original_and_reproduces_rounded_pia(aime):
     pia = compute_pia(aime, 2020, bend_points=BENDS)
