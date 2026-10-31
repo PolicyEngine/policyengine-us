@@ -18,4 +18,6 @@ class ca_state_supplement_aged_disabled_count(Variable):
         is_aged = age >= p.aged_or_disabled.age_threshold
         aged_or_disabled = is_aged | is_ssi_disabled
         eligible = person("ca_state_supplement_eligible_person", period)
-        return spm_unit.sum(aged_or_disabled * eligible)
+        # The model pays dependent children the dependent amount instead.
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        return spm_unit.sum(aged_or_disabled * eligible * head_or_spouse)
