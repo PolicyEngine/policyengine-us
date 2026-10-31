@@ -57,36 +57,36 @@
   absolute_error_margin: 0.01
   input:
     people:
-      older_roommate:
-        age: 50
-        employment_income: 50_000
       younger_roommate:
         age: 25
         employment_income: 50_000
+      older_roommate:
+        age: 50
+        employment_income: 50_000
     tax_units:
-      older_unit:
-        members: [older_roommate]
       younger_unit:
         members: [younger_roommate]
-    marital_units:
-      older_marital_unit:
+      older_unit:
         members: [older_roommate]
+    marital_units:
       younger_marital_unit:
         members: [younger_roommate]
-    spm_units:
-      older_spm_unit:
+      older_marital_unit:
         members: [older_roommate]
+    spm_units:
       younger_spm_unit:
         members: [younger_roommate]
+      older_spm_unit:
+        members: [older_roommate]
     households:
       household:
-        members: [older_roommate, younger_roommate]
+        members: [younger_roommate, older_roommate]
         state_code: TX
         qualified_passenger_vehicle_loan_interest: 5_000
   output:
     # Before: [2_500, 2_500].
-    tax_unit_qualified_passenger_vehicle_loan_interest: [5_000, 0]
-    auto_loan_interest_deduction: [5_000, 0]
+    tax_unit_qualified_passenger_vehicle_loan_interest: [0, 5_000]
+    auto_loan_interest_deduction: [0, 5_000]
 
 - name: A parent's three-person unit and a roommate no longer split by head count
   period: 2025
