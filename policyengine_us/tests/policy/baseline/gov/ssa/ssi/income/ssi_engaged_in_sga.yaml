@@ -53,3 +53,27 @@
     # Only 12,000 of excluded wages is restored, below the SGA threshold.
     ssi_earned_income: 0
     ssi_engaged_in_sga: false
+
+- name: Farm profit alone above the SGA amount is substantial gainful activity.
+  period: 2026
+  input:
+    farm_operations_income: 24_000
+    is_blind: false
+  output:
+    # 20 CFR 416.975 evaluates self-employment, and POMS DI 10510.012 B
+    # starts from net earnings from self-employment, which include a farm
+    # business (20 CFR 416.1110(b)): 24,000 / 12 = 2,000 monthly, above the
+    # 1,690 non-blind SGA amount for 2026.
+    ssi_earned_income: 24_000
+    ssi_engaged_in_sga: true
+
+- name: Partnership self-employment earnings alone above the SGA amount are substantial gainful activity.
+  period: 2026
+  input:
+    partnership_self_employment_net_earnings: 24_000
+    is_blind: false
+  output:
+    # A partner's distributive share is net earnings from self-employment
+    # (20 CFR 416.1110(b)): 24,000 / 12 = 2,000 monthly, above 1,690.
+    ssi_earned_income: 24_000
+    ssi_engaged_in_sga: true

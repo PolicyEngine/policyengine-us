@@ -19,7 +19,7 @@ class ssi_earned_income_deemed_from_ineligible_spouse(Variable):
             marital_unit.sum(ineligible_spouse * unearned_income)
             - ineligible_spouse * unearned_income
         )
-        earned_income = person("ssi_earned_income", period)
+        earned_income = person("ssi_earned_income_after_spousal_loss", period)
         ineligible_spousal_earned_income = (
             marital_unit.sum(ineligible_spouse * earned_income)
             - ineligible_spouse * earned_income

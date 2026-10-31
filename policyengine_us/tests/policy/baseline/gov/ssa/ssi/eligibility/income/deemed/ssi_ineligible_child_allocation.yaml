@@ -17,3 +17,35 @@
     # 20 CFR 416.1163(b)(1)-(2): (1,450 - 967) * 12 - 1,200 = 4,596.
     ssi_earned_income: 1_200
     ssi_ineligible_child_allocation: 4_596
+
+- name: An ineligible child's excess farm loss cannot offset their unearned income.
+  period: 2026
+  input:
+    age: 14
+    employment_income: 2_000
+    farm_operations_income: -5_000
+    ssi_unearned_income: 600
+  output:
+    # 416.1111(b) permits loss offsets only against earned income.
+    # 416.1163(b): (1,491 - 994) * 12 - 600 = 5,364.
+    ssi_earned_income: -3_000
+    ssi_ineligible_child_allocation: 5_364
+
+- name: An ineligible child's Schedule C loss cannot increase the allocation above the federal rate difference.
+  period: 2026
+  input:
+    age: 14
+    self_employment_income: -5_000
+  output:
+    # The same loss rule applies to the existing Schedule C source.
+    ssi_ineligible_child_allocation: 5_964
+
+- name: An ineligible child's farm loss offsets wages before reducing the child allocation.
+  period: 2026
+  input:
+    age: 14
+    employment_income: 5_000
+    farm_operations_income: -2_000
+  output:
+    ssi_earned_income: 3_000
+    ssi_ineligible_child_allocation: 2_964

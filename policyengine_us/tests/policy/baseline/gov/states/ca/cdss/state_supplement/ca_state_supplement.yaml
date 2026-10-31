@@ -355,3 +355,33 @@
     # 2,098.83 - 1,491 = 607.83; 2,098.83 - 2,098.83 = 0;
     # 2,356.57 - 2,098.83 = 257.74; 2,356.57 - 2,356.57 = 0.
     ca_state_supplement: [7_293.96, 0, 3_092.88, 0]
+
+- name: Case 10, 2026 aged individual with Social Security and farm profit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 13_200 # 1,100 a month
+        farm_operations_income: 30_000 # 2,500 a month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # The federally administered supplement uses SSI countable income
+    # (20 CFR 416.2025(b)), which counts farm net earnings as earned income.
+    # Countable unearned is 1,100 - 20 = 1,080 and countable earned is
+    # (2,500 - 65) / 2 = 1,217.50, for 2,297.50 a month. That exceeds both the
+    # 994 federal benefit rate and the 1,362.81 no-cooking payment standard,
+    # so SSI and the supplement are 0. Counting only the Social Security,
+    # the supplement would be (1,362.81 - 1,080) * 12 = 3,393.72.
+    ssi: 0
+    ca_state_supplement: 0

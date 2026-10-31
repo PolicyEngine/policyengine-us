@@ -1,0 +1,22 @@
+# ARSD 67:12:14:03(2): any other income ends the independent-living supplement.
+# https://sdlegislature.gov/Rules/Administrative/67%3A12%3A14%3A03
+- name: Farm profit is other income for South Dakota independent supplementation.
+  period: 2026-01
+  input:
+    state_code: SD
+    age: 70
+    ssi: 994
+    farm_operations_income: 1_200
+  output:
+    # The $100 monthly farm profit is other income even while SSI is paid.
+    sd_ssp_independent: 0
+
+- name: Partnership earnings are other income for South Dakota independent supplementation.
+  period: 2026-01
+  input:
+    state_code: SD
+    age: 70
+    ssi: 994
+    partnership_self_employment_net_earnings: 1_200
+  output:
+    sd_ssp_independent: 0

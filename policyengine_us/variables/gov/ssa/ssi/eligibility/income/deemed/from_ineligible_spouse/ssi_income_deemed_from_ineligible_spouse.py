@@ -37,7 +37,7 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
         )
 
         # Get individual's own income
-        individual_earned = person("ssi_earned_income", period)
+        individual_earned = person("ssi_earned_income_after_spousal_loss", period)
         individual_unearned = person("ssi_unearned_income", period)
 
         # Calculate individual's countable income (alone)

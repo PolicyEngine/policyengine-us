@@ -1,0 +1,108 @@
+- name: An individual's excess business loss cannot reduce unearned income or create a negative student exclusion.
+  period: 2026
+  input:
+    age: 20
+    employment_income: 2_000
+    farm_operations_income: -5_000
+    ssi_unearned_income: 600
+    is_ssi_blind_or_disabled_working_student_exclusion_eligible: true
+  output:
+    ssi_earned_income: -3_000
+    ssi_earned_income_after_spousal_loss: 0
+    ssi_blind_or_disabled_working_student_exclusion: 0
+
+- name: An ineligible spouse's loss offsets their own wages first and then the applicant's wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      applicant:
+        age: 67
+        employment_income: 12_000
+        is_tax_unit_head: true
+      spouse:
+        age: 60
+        employment_income: 2_000
+        farm_operations_income: -7_000
+        is_tax_unit_spouse: true
+    households:
+      household:
+        members: [applicant, spouse]
+        state_code: TX
+    tax_units:
+      couple:
+        members: [applicant, spouse]
+        tax_unit_is_joint: true
+    marital_units:
+      couple:
+        members: [applicant, spouse]
+  output:
+    # POMS SI 00820.210 B.2.c includes an eligible individual and ineligible spouse.
+    # Annual earned budget = 12,000 + 2,000 - 7,000 = 7,000.
+    ssi_earned_income: [12_000, -5_000]
+    ssi_earned_income_after_spousal_loss: [7_000, 0]
+    is_ssi_spousal_deeming_applies: [false, false]
+    ssi_countable_income: [2_990, 0]
+    medicaid_optional_senior_or_disabled_countable_income: [2_990, 0]
+    ssi: [8_938, 0]
+
+- name: A spouse's loss does not offset earnings when the spouses live in different households.
+  period: 2026
+  input:
+    people:
+      earner:
+        age: 67
+        ssi_earned_income: 12_000
+        is_tax_unit_head: true
+      spouse:
+        age: 60
+        ssi_earned_income: -5_000
+        is_tax_unit_spouse: true
+    households:
+      applicant_home:
+        members: [earner]
+      spouse_home:
+        members: [spouse]
+    tax_units:
+      couple:
+        members: [earner, spouse]
+        tax_unit_is_joint: true
+    marital_units:
+      couple:
+        members: [earner, spouse]
+  output:
+    ssi_earned_income_after_spousal_loss: [12_000, 0]
+
+- name: A third adult's business loss does not offset a married couple's earnings in a default marital unit.
+  period: 2026
+  input:
+    people:
+      earner:
+        age: 67
+        ssi_earned_income: 12_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      spouse:
+        age: 60
+        ssi_earned_income: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      other_adult:
+        age: 45
+        ssi_earned_income: -5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+    tax_units:
+      couple:
+        members: [earner, spouse]
+        tax_unit_is_joint: true
+      other:
+        members: [other_adult]
+    marital_units:
+      default_group:
+        members: [earner, spouse, other_adult]
+  output:
+    ssi_earned_income_after_spousal_loss: [12_000, 0, 0]

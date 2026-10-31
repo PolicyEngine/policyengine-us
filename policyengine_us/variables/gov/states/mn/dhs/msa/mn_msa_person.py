@@ -84,7 +84,7 @@ class mn_msa_person(Variable):
             person,
             period.this_year,
             [
-                "ssi_earned_income",
+                "ssi_earned_income_after_spousal_loss",
                 "ssi_earned_income_deemed_from_ineligible_spouse",
             ],
         )

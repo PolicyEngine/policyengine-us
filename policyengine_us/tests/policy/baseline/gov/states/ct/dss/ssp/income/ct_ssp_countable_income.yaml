@@ -190,3 +190,119 @@
     # Countable unearned = max(600 - 562, 0) = $38.
     # Countable earned = 300 - (65 + 0.5 * (300 - 65)) = $117.50.
     ct_ssp_countable_income: 155.50
+
+- name: A Connecticut applicant's partnership loss offsets spouse earnings exactly once.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      applicant:
+        age: 70
+        partnership_self_employment_net_earnings: -5_000
+        is_tax_unit_head: true
+        ssi: 0
+      spouse:
+        age: 40
+        employment_income: 20_000
+        is_tax_unit_spouse: true
+        ssi: 0
+    tax_units:
+      couple:
+        members: [applicant, spouse]
+        tax_unit_is_joint: true
+    marital_units:
+      couple:
+        members: [applicant, spouse]
+    households:
+      household:
+        members: [applicant, spouse]
+        state_code: CT
+  output:
+    # Applicant: own earnings floor at 0, and SSI deems the spouse's
+    # 20,000 - 5,000 = 15,000 after-loss earnings, so the loss counts once:
+    # 15,000 / 12 = $1,250 monthly. $65 + half of ($1,250 - $65) = $657.50 is
+    # disregarded, leaving $592.50.
+    # Spouse: Connecticut counts this person's own 20,000 of wages in full
+    # (UPM 5020.05 A, 5020.70 C.3); the applicant's loss does not cross to
+    # them. 20,000 / 12 = $1,666.67; $65 + half of ($1,666.67 - $65) =
+    # $865.83 is disregarded, leaving $800.83.
+    ct_ssp_gross_income: [1_250, 1_666.6667]
+    ct_ssp_earned_income_disregard: [657.5, 865.8333]
+    ct_ssp_countable_income: [592.5, 800.8333]
+
+- name: An ineligible spouse's farm loss does not reduce Connecticut applicant earnings.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      applicant:
+        age: 70
+        employment_income: 12_000
+        is_tax_unit_head: true
+        ssi: 0
+      spouse:
+        age: 40
+        farm_operations_income: -5_000
+        is_tax_unit_spouse: true
+        ssi: 0
+    tax_units:
+      couple:
+        members: [applicant, spouse]
+        tax_unit_is_joint: true
+    marital_units:
+      couple:
+        members: [applicant, spouse]
+    households:
+      household:
+        members: [applicant, spouse]
+        state_code: CT
+  output:
+    # UPM 5030.10 A takes the disregard from the applicant's own gross
+    # earnings, and no UPM text lets a spouse's loss reduce them, unlike SSI
+    # under POMS SI 00820.210 B.2.c. Applicant earnings stay 12,000 / 12 =
+    # $1,000 monthly. The spouse's after-loss earnings are 0, so nothing is
+    # deemed. Disregard: $65 + half of ($1,000 - $65) = $532.50; countable
+    # earned: $1,000 - $532.50 = $467.50. The spouse's own earnings floor at 0.
+    ct_ssp_gross_income: [1_000, 0]
+    ct_ssp_earned_income_disregard: [532.5, 0]
+    ct_ssp_countable_income: [467.5, 0]
+
+- name: Connecticut counts SSI raised by a spouse's loss, but not the loss itself.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      applicant:
+        age: 67
+        employment_income: 12_000
+        is_tax_unit_head: true
+      spouse:
+        age: 60
+        employment_income: 2_000
+        self_employment_income: -7_000
+        is_tax_unit_spouse: true
+    tax_units:
+      couple:
+        members: [applicant, spouse]
+        tax_unit_is_joint: true
+    marital_units:
+      couple:
+        members: [applicant, spouse]
+    households:
+      household:
+        members: [applicant, spouse]
+        state_code: CT
+  output:
+    # SSI applies the spouse's $5,000 residual loss to the applicant's wages
+    # (POMS SI 00820.210 B.2.c): countable income is
+    # (12,000 - 5,000 - 240 - 780) / 2 = $2,990 a year, so SSI is
+    # 12 * 994 - 2,990 = $8,938 a year, or $744.83 a month.
+    ssi: [744.8333, 0]
+    # Connecticut keeps the applicant's own $1,000 of monthly earnings and
+    # counts the SSI payment as unearned income: $1,000 + $744.83.
+    ct_ssp_gross_income: [1_744.8333, 0]
+    # $65 + half of ($1,000 - $65) = $532.50.
+    ct_ssp_earned_income_disregard: [532.5, 0]
+    # Earned: $1,000 - $532.50 = $467.50. Unearned: $744.83 - $562 community
+    # disregard = $182.83. Countable: $650.33.
+    ct_ssp_countable_income: [650.3333, 0]

@@ -1,0 +1,14 @@
+description: Kentucky counts positive income from these self-employment sources as earned income for State Supplementation, without offsetting losses against another business.
+values:
+  0000-01-01:
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_self_employment_net_earnings
+metadata:
+  label: Kentucky SSP self-employment income sources
+  reference:
+    - title: 921 KAR 2:015 Section 8(1), Medically needy income policy
+      href: https://apps.legislature.ky.gov/law/kar/titles/921/002/015/
+    - title: Non-MAGI Medicaid and State Supplementation Manual, MS 2450 C.8(b)
+      href: https://www.chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLIVA.pdf#page=188

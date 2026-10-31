@@ -1,0 +1,12 @@
+description: New Hampshire counts these self-employment income sources separately from wages under the adult category financial assistance program.
+values:
+  0000-01-01:
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_self_employment_net_earnings
+metadata:
+  label: New Hampshire SSP self-employment income sources
+  reference:
+    - title: He-W 601.04(n) and 654.01(b)-(c), Self-employment income and losses
+      href: https://gc.nh.gov/rules/state_agencies/he-w600.html
