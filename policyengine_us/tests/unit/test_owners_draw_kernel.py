@@ -6,7 +6,9 @@ that annual history and installed Variables must share.
 """
 
 from dataclasses import fields, replace
+import gc
 from types import SimpleNamespace
+import weakref
 
 import numpy as np
 import pytest
@@ -37,6 +39,49 @@ INPUTS = OwnersDrawInputs(
 PARAMETERS = OwnersDrawParameters(
     in_effect=True, phase_in_share=1, current_law_cap=200_000
 )
+
+
+@pytest.mark.parametrize(
+    "output, override_intermediates",
+    [("active_income", False), ("oasdi_base", True), (None, False)],
+)
+def test_returned_result_does_not_retain_person_accessors_until_cyclic_gc(
+    output, override_intermediates
+):
+    class AccessorOwner:
+        """A Person accessor also owns its simulation and policy in Core."""
+
+        def __init__(self):
+            self.annual = OwnersDrawInputs(s_corp_income=1_000)
+
+        def annual_input(self, name):
+            return getattr(self.annual, name)
+
+        def intermediate(self, name):
+            return {"net_earnings": 923.5, "oasdi_room": 200_000}[name]
+
+    owner = AccessorOwner()
+    observed = weakref.ref(owner)
+    was_enabled = gc.isenabled()
+    gc.disable()
+    try:
+        result = compute_owners_draw(
+            2027,
+            inputs=owner.annual_input,
+            parameters=PARAMETERS,
+            output=output,
+            overrides=owner.intermediate if override_intermediates else None,
+        )
+        del owner
+        # No explicit collection: ordinary return must release both kinds of
+        # callbacks even while callers keep the complete annual result alive.
+        assert observed() is None
+        assert (result.credited_earnings if output is None else result) == (
+            1_000 if output == "active_income" else 923.5
+        )
+    finally:
+        if was_enabled:
+            gc.enable()
 
 
 def _old_formula(output, year, inputs, p, overrides=None):

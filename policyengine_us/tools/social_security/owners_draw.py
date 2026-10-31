@@ -275,8 +275,14 @@ def compute_owners_draw(
         cache[name] = value
         return value
 
-    if output is not None:
-        return evaluate(output)
-    return OwnersDrawResult(
-        **{name: evaluate(name) for name in OwnersDrawResult.__dataclass_fields__}
-    )
+    try:
+        if output is not None:
+            return evaluate(output)
+        return OwnersDrawResult(
+            **{name: evaluate(name) for name in OwnersDrawResult.__dataclass_fields__}
+        )
+    finally:
+        # Recursive closures otherwise retain each other and their Person
+        # accessors until cyclic GC, keeping whole simulations/policies alive.
+        # All evaluation is complete; sever the shared closure cell promptly.
+        evaluate = None
