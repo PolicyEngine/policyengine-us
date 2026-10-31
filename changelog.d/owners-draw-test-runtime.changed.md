@@ -1,1 +1,1 @@
-Speed up the owners' draw reform tests: their full-system tests now pause automatic garbage collection and free each private system with one young-generation collection, leaving every assertion and example unchanged.
+Speed up the owners' draw reform tests: their full-system tests now pause automatic garbage collection, free each Hypothesis example's released simulations when it ends, and restore the caller's collection setting afterwards, leaving every assertion and example unchanged.

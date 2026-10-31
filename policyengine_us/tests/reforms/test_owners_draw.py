@@ -7,11 +7,14 @@ constructor activation, baseline equality, cap preservation and AIME history;
 they pause automatic garbage collection while they run (see paused_gc).
 """
 
+from contextlib import contextmanager
+from functools import wraps
 import gc
 from hashlib import sha256
 from itertools import chain
 import pickle
 from types import SimpleNamespace
+import weakref
 
 import numpy as np
 import pytest
@@ -688,6 +691,35 @@ def test_generated_deduction_tracks_existing_deductible_share(
     )
 
 
+@contextmanager
+def _paused_collection():
+    """Pause automatic collection, then restore the setting found on entry."""
+    enabled = gc.isenabled()
+    gc.collect()
+    gc.disable()
+    try:
+        yield
+    finally:
+        try:
+            gc.collect(1)
+        finally:
+            if enabled:
+                gc.enable()
+
+
+def _collect_each_example(test):
+    """Free what each Hypothesis example released when it ends, pass or fail."""
+
+    @wraps(test)
+    def collected(*args, **kwargs):
+        try:
+            return test(*args, **kwargs)
+        finally:
+            gc.collect(0)
+
+    return collected
+
+
 @pytest.fixture
 def paused_gc():
     """Pause automatic collection while a test clones or reads a full tree.
@@ -695,19 +727,20 @@ def paused_gc():
     Every automatic collection traverses all the objects the shared country
     system and its parameter views hold, and cloning or materializing a
     parameter tree triggers many of them. Setup still starts from a fully
-    collected heap. With no collection running, nothing leaves the young
-    generation, so a young collection at teardown frees everything the test
-    released, its private system included, without traversing the shared
-    system again. The next test's full collection catches anything an explicit
-    mid-test collection (Hypothesis's first in a process) promoted.
+    collected heap. Properties free each example's released simulations with
+    a young collection when the example ends (_collect_each_example), so
+    shrinking a failure cannot pile them up. Those collections move whatever
+    survives, such as the private system and every failing example's locals,
+    which Hypothesis keeps with the exception until the property finishes,
+    into the middle generation only. A middle-generation collection at
+    teardown therefore frees everything the test released without traversing
+    the shared system again. Teardown then restores the collection setting
+    found on entry, even if that collection raises. The next test's full
+    collection catches anything an explicit mid-test full collection
+    (Hypothesis's first in a process) promoted further.
     """
-    gc.collect()
-    gc.disable()
-    try:
+    with _paused_collection():
         yield
-    finally:
-        gc.collect(0)
-        gc.enable()
 
 
 @pytest.fixture
@@ -733,6 +766,105 @@ def private_draw_system(paused_gc):
             "parameter_fingerprint",
         ):
             owner.__dict__.pop(name, None)
+
+
+# The collection lifecycle needs no country system. These checks skip each
+# full collection, which would traverse it, and run the others for real.
+class _Cycle:
+    def __init__(self):
+        self.self = self
+
+
+@pytest.fixture
+def collection_calls(monkeypatch):
+    enabled = gc.isenabled()
+    collect = gc.collect
+    generations = []
+
+    def young_only(generation=2):
+        generations.append(generation)
+        return 0 if generation == 2 else collect(generation)
+
+    monkeypatch.setattr(gc, "collect", young_only)
+    yield generations
+    (gc.enable if enabled else gc.disable)()
+
+
+@pytest.mark.parametrize("enabled", [True, False])
+def test_paused_collection_restores_the_entry_setting(collection_calls, enabled):
+    (gc.enable if enabled else gc.disable)()
+    with _paused_collection():
+        assert collection_calls == [2]
+        assert not gc.isenabled()
+    assert gc.isenabled() is enabled
+
+
+@pytest.mark.parametrize("enabled", [True, False])
+def test_paused_collection_restores_the_setting_when_teardown_collection_fails(
+    collection_calls, monkeypatch, enabled
+):
+    (gc.enable if enabled else gc.disable)()
+    collect = gc.collect
+    tearing_down = False
+
+    def fail_at_teardown(*args):
+        if tearing_down:
+            raise MemoryError("teardown collection")
+        return collect(*args)
+
+    monkeypatch.setattr(gc, "collect", fail_at_teardown)
+    with pytest.raises(MemoryError, match="teardown collection"):
+        with _paused_collection():
+            tearing_down = True
+    assert gc.isenabled() is enabled
+
+
+@pytest.mark.parametrize("fails", [False, True])
+def test_each_example_frees_the_cycles_it_released(collection_calls, fails):
+    released = []
+
+    @_collect_each_example
+    def generated_example():
+        cycle = _Cycle()
+        released.append(weakref.ref(cycle))
+        del cycle
+        assert not fails
+
+    with _paused_collection():
+        if fails:
+            with pytest.raises(AssertionError):
+                generated_example()
+        else:
+            generated_example()
+        assert released[0]() is None
+
+
+def test_examples_keep_what_the_property_holds_until_teardown(collection_calls):
+    owner = SimpleNamespace(kept=None)
+    failures = []
+
+    @_collect_each_example
+    def generated_example(fails):
+        if owner.kept is None:
+            owner.kept = _Cycle()
+        local = _Cycle()
+        failures.append(weakref.ref(local))
+        assert not fails
+
+    with _paused_collection():
+        generated_example(False)
+        kept = weakref.ref(owner.kept)
+        # Like Hypothesis, hold a failing example's exception and so its locals.
+        with pytest.raises(AssertionError) as failure:
+            generated_example(True)
+        generated_example(False)
+        assert kept() is owner.kept
+        assert failures[1]() is not None
+        assert failures[0]() is None and failures[2]() is None
+        owner.kept = None
+        del failure
+    assert kept() is None
+    assert failures[1]() is None
 
 
 SIMULATION_SETTINGS = {
@@ -865,6 +997,7 @@ def _parameter_policy_fingerprint(root):
         (62, 600_000, 250_000, 600_000, 0, 0, 0),
     ],
 )
+@_collect_each_example
 def test_generated_raised_cap_paths_preserve_current_law_room(
     private_draw_system, reform_variables, route, batch
 ):
@@ -938,6 +1071,7 @@ def test_generated_raised_cap_paths_preserve_current_law_room(
         (85, 100_000, -20_000, 0, 100_000, 40_000, 20_000),
     ]
 )
+@_collect_each_example
 def test_generated_disabled_reform_matches_public_baseline(
     private_draw_system, reform_variables, batch
 ):
@@ -1054,6 +1188,7 @@ def test_generated_disabled_reform_matches_public_baseline(
     year=2027,
 )
 @example(amounts=[(0, 0, 0), (0, 0, 100_000), (100_000, 50_000, 100_000)], year=2036)
+@_collect_each_example
 def test_generated_benefit_credit_cap_override_and_historical_lookback(
     private_draw_system, reform_variables, amounts, year
 ):
