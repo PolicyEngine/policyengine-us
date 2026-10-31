@@ -2,6 +2,9 @@ import numpy as np
 import pytest
 
 from policyengine_us import Simulation
+
+hypothesis = pytest.importorskip("hypothesis")
+st = pytest.importorskip("hypothesis.strategies")
 from policyengine_us.variables.household.demographic.geographic.state_code import (
     StateCode,
 )
@@ -219,6 +222,129 @@ def test_ssp_preserves_medicaid_inputs_set_after_initialization(
         False,
     ]
     assert simulation.calculate(variable, 2030).tolist() == [False, True]
+
+
+SSP = {"IN": ("in_ssp", "in_ssp_sapn_eligible"), "KS": ("ks_sspp", "ks_sspp_eligible")}
+SSP_MEDICAID = "medicaid_enrolled_for_ssi_state_supplement"
+PASS_THROUGH = "medicaid_community_engagement_pass_through_eligible"
+# Variables a caller may calculate before the SSP's Medicaid enrollment, each
+# with the period it is asked for.
+CALCULATED_FIRST = {
+    "medicaid_enrolled": 2027,
+    "is_medicaid_eligible": 2027,
+    PASS_THROUGH: "2027-01",
+    "snap": "2027-01",
+    "in_ssp": "2027-01",
+    "ks_sspp": "2027-01",
+}
+
+
+def supplied_situation(state, supplied, year=2027):
+    """``situation`` with one value on the SNAP-SSP-Medicaid cycle supplied.
+
+    Supplying SNAP or the pass-through means calculating medicaid_enrolled no
+    longer runs the SSP on the way, so medicaid_enrolled can be stored before
+    the SSP's Medicaid enrollment is first asked for.
+    """
+    data = situation(year, state)
+    if supplied == "snap":
+        data["spm_units"]["recipient"]["snap"] = {year: 0}
+        data["spm_units"]["adult"]["snap"] = {year: 1_200}
+    elif supplied == "pass_through":
+        data["people"]["adult"][PASS_THROUGH] = {f"{year}-01": True}
+    elif supplied == "medicaid_enrolled":
+        data["people"]["recipient"]["medicaid_enrolled"] = {year: True}
+        data["people"]["adult"]["medicaid_enrolled"] = {year: True}
+    return data
+
+
+@hypothesis.settings(max_examples=6, deadline=None, derandomize=True)
+# The reproducing case: with SNAP supplied, the SNAP pass-through adult's SSP
+# enrollment was False asked alone, but True once medicaid_enrolled, which
+# keeps the pass-through, had been calculated.
+@hypothesis.example(state="IN", supplied="snap", first=["medicaid_enrolled"])
+@hypothesis.given(
+    state=st.sampled_from(["IN", "KS"]),
+    supplied=st.sampled_from([None, "snap", "pass_through", "medicaid_enrolled"]),
+    first=st.lists(st.sampled_from(list(CALCULATED_FIRST)), unique=True, max_size=4),
+)
+def test_ssp_medicaid_enrollment_does_not_depend_on_calculation_order(
+    state, supplied, first
+):
+    benefit, eligibility = SSP[state]
+    fresh = Simulation(situation=supplied_situation(state, supplied))
+    simulation = Simulation(situation=supplied_situation(state, supplied))
+    for name in first:
+        simulation.calculate(name, CALCULATED_FIRST[name])
+    for name, year in ((SSP_MEDICAID, 2027), (eligibility, "2027-01"), (benefit, 2027)):
+        np.testing.assert_array_equal(
+            simulation.calculate(name, year), fresh.calculate(name, year)
+        )
+
+
+@pytest.mark.parametrize("route", ["snap", "tanf"])
+@pytest.mark.parametrize("first", [(), ("medicaid_enrolled",)])
+def test_pass_through_adult_drops_the_exclusion_in_either_order(route, first):
+    """The adult is enrolled in Medicaid only through the SNAP or TANF
+    exclusion from the community engagement requirement. SNAP is supplied, so
+    medicaid_enrolled can be stored first. The SSP's enrollment drops the
+    exclusion whether or not medicaid_enrolled was calculated first."""
+    data = supplied_situation("IN", "snap")
+    if route == "tanf":
+        data["people"]["adult"].pop("is_snap_workfare_participant")
+        data["spm_units"]["adult"]["snap"] = {2027: 0}
+        data["spm_units"]["adult"]["receives_tanf"] = {2027: True}
+        data["spm_units"]["adult"]["meets_tanf_work_requirements"] = {2027: True}
+    simulation = Simulation(situation=data)
+    for name in first:
+        simulation.calculate(name, CALCULATED_FIRST[name])
+    assert simulation.calculate(SSP_MEDICAID, 2027).tolist() == [True, False]
+    assert simulation.calculate("medicaid_enrolled", 2027).tolist() == [True, True]
+
+
+@pytest.mark.parametrize("first", [(), ("medicaid_enrolled",)])
+def test_ssi_recipient_in_the_adult_group_gets_the_same_sapn_in_either_order(first):
+    """A reform that ends Indiana's Medicaid coverage of SSI recipients puts
+    this 40-year-old, institutionalized SSI recipient with no disability
+    finding in the adult group, where the community engagement requirement
+    applies; ``is_ssi_recipient_for_medicaid: False`` does the same here. The
+    recipient is exempt only through the supplied SNAP pass-through, which
+    the SSP's enrollment drops. SAPN was $22 when medicaid_enrolled had been
+    calculated first and $0 otherwise; it is now $0 in either order."""
+    year = 2027
+    people = {
+        "recipient": {
+            "age": {year: 40},
+            "receives_ssi": {year: True},
+            "is_ssi_recipient_for_medicaid": {year: False},
+            "ssi_lives_in_medical_treatment_facility": {year: True},
+            "ssi_medicaid_pays_majority_of_care": {year: True},
+            PASS_THROUGH: {f"{year}-01": True},
+        }
+    }
+    unit = {"unit": {"members": ["recipient"]}}
+    simulation = Simulation(
+        situation={
+            "people": people,
+            **{e: unit for e in ("tax_units", "spm_units", "families")},
+            "households": {
+                "unit": {"members": ["recipient"], "state_code": {year: "IN"}}
+            },
+        }
+    )
+    for name in first:
+        simulation.calculate(name, CALCULATED_FIRST[name])
+    # Ask for the SSP before medicaid_enrolled, so that with nothing
+    # calculated first this is the order in which the SSP comes first.
+    assert simulation.calculate(SSP_MEDICAID, year).tolist() == [False]
+    assert simulation.calculate("in_ssp_sapn_eligible", f"{year}-01").tolist() == [
+        False
+    ]
+    assert simulation.calculate("in_ssp", year).tolist() == [0]
+    assert simulation.calculate("medicaid_category", year).decode_to_str().tolist() == [
+        "ADULT"
+    ]
+    assert simulation.calculate("medicaid_enrolled", year).tolist() == [True]
 
 
 @pytest.mark.parametrize("year", [2027, 2030, 2035])
