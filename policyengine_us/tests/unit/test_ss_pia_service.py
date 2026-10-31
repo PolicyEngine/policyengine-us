@@ -3,7 +3,7 @@
 from decimal import Decimal
 from fractions import Fraction
 
-from hypothesis import given, strategies as st
+from hypothesis import given, settings, strategies as st
 import pytest
 
 from policyengine_us.tools.social_security.pia import (
@@ -231,6 +231,61 @@ def test_progressive_no_change_anchor_has_unit_above_threshold_multiplier():
         assert compute_pia(aime, 2032, path, bend_points=(1000, 6000)) == compute_pia(
             aime, 2032, bend_points=(1000, 6000)
         )
+
+
+def _scale(aime, bend_points):
+    # Independent unreformed formula in exact rational arithmetic.
+    first, second = bend_points
+    return (
+        Fraction(9, 10) * min(aime, first)
+        + Fraction(32, 100) * max(min(aime, second) - first, 0)
+        + Fraction(15, 100) * max(aime - second, 0)
+    )
+
+
+@settings(deadline=None)
+@given(
+    st.lists(st.integers(0, 50), min_size=9, max_size=9),
+    st.lists(st.integers(0, 15), min_size=9, max_size=9),
+    st.fractions(min_value=0, max_value=1, max_denominator=1000),
+)
+def test_maximum_pia_tracks_a_price_grown_target_in_every_cohort(
+    wage_growth, real_wage_gap, fraction
+):
+    """The maximum-AIME PIA equals each cohort's price-grown target exactly.
+
+    Bend points and the maximum-career AIME grow with wages from the 2031
+    cohort; the target grows with prices from 2031's current-law maximum PIA.
+    Prices grow at most as fast as wages, keeping the target in its bounds.
+    Successive cohorts' maximum PIAs therefore grow with prices.
+    """
+    bends, maximum = (Fraction(1542), Fraction(9294)), Fraction(14000)
+    target = _scale(maximum, bends)
+    wages = {}
+    targets = {}
+    for offset, (wage, gap) in enumerate(zip(wage_growth, real_wage_gap)):
+        year = 2032 + offset
+        growth = 1 + Fraction(wage, 1000)
+        bends = tuple(bend * growth for bend in bends)
+        maximum *= growth
+        target *= growth / (1 + Fraction(gap, 1000))
+        wages[year] = bends, maximum
+        targets[year] = target
+    path = FormulaPath(
+        progressive_price_indexing_start_year=2032,
+        bend_point_fraction=fraction,
+        maximum_aime_by_year={year: value[1] for year, value in wages.items()},
+        maximum_pia_target_by_year=targets,
+    )
+    previous = None
+    for year, (bends, maximum) in wages.items():
+        result = compute_pia(maximum, year, path, bend_points=bends, round_result=False)
+        # A 50-digit Decimal of the exact rational target.
+        assert abs(Fraction(result) - targets[year]) < Fraction(1, 10**40)
+        if previous is not None:
+            ratio = Fraction(result) / previous
+            assert abs(ratio - targets[year] / targets[year - 1]) < Fraction(1, 10**30)
+        previous = Fraction(result)
 
 
 def test_progressive_path_before_start_needs_no_frozen_data():

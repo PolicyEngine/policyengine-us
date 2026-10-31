@@ -245,6 +245,56 @@ def test_progressive_recompute_uses_selected_fraction_and_original_bends(paramet
     assert _calculate(parameters, 10000, 2020, 2032) == 2800
 
 
+@pytest.mark.parametrize("fraction", [0, 0.3, 0.6])
+def test_maximum_pia_tracks_a_cpi_w_target_in_every_cohort(
+    parameters, reference_parameters, fraction
+):
+    """Each cohort's maximum-AIME PIA equals its frozen CPI-W-grown target.
+
+    An illustrative path: each cohort's maximum-career AIME is 1.5 times its
+    second bend point, and the target grows the 2031 cohort's current-law
+    maximum PIA with `gov.ssa.uprating` (SSA's CPI-W series). Successive
+    cohorts' maximum PIAs therefore grow with CPI-W. No value is a claim
+    about any percentile or maximum-taxable career.
+    """
+    p = parameters.gov.contrib.ssa.pia
+    progressive = p.progressive_price_indexing
+    _set(p.in_effect, True, "2032-01-01")
+    _set(progressive.in_effect, True, "2032-01-01")
+    _set(progressive.bend_point_fraction, fraction, "2032-01-01")
+    cpi_w = reference_parameters.gov.ssa.uprating
+    anchor_bends = bend_points_at(parameters, 2031)
+    anchor = compute_pia(
+        1.5 * anchor_bends[1], 2031, bend_points=anchor_bends, round_result=False
+    )
+    cohorts = {}
+    for year in range(2032, 2041):
+        maximum = 1.5 * bend_points_at(parameters, year)[1]
+        target = round(float(anchor) * cpi_w(f"{year}-01-01") / cpi_w("2031-01-01"), 2)
+        _set(progressive.maximum_aime, maximum, f"{year}-01-01")
+        _set(progressive.maximum_pia_target, target, f"{year}-01-01")
+        cohorts[year] = maximum, target
+    previous = None
+    for year, (maximum, target) in cohorts.items():
+        path, mode = formula_path_at(parameters, year, year)
+        assert path.maximum_pia_target_by_year == {year: target}
+        result = compute_pia(
+            maximum,
+            year,
+            path,
+            year,
+            mode,
+            bend_points=bend_points_at(parameters, year),
+            round_result=False,
+        )
+        assert result == Decimal(str(target))
+        if previous is not None:
+            assert float(result / previous) == pytest.approx(
+                cpi_w(f"{year}-01-01") / cpi_w(f"{year - 1}-01-01"), rel=1e-5
+            )
+        previous = result
+
+
 def test_full_indexing_rejects_missing_frozen_runtime_scale(parameters):
     p = parameters.gov.contrib.ssa.pia
     _set(p.in_effect, True)

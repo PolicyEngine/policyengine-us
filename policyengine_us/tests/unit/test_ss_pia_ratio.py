@@ -296,6 +296,71 @@ def test_factor_is_never_negative_for_nonnegative_reform_scale(aime, percent):
     assert result.factor >= 0
 
 
+SYNTHETIC_BENDS = (1000, 6000)
+
+
+def _progressive_cut(fraction, multiplier):
+    """A progressive path whose above-threshold multiplier is ``multiplier``.
+
+    With bends 1,000/6,000 and a maximum AIME of 10,000, F(10,000) = 3,100.
+    A target between F(threshold) and 3,100 sets k in [0, 1].
+    """
+    threshold = 1000 + fraction * 5000
+    protected = 900 + Fraction(32, 100) * (threshold - 1000)
+    return FormulaPath(
+        progressive_price_indexing_start_year=2032,
+        bend_point_fraction=fraction,
+        maximum_aime_by_year={2032: 10000},
+        maximum_pia_target_by_year={2032: protected + multiplier * (3100 - protected)},
+    )
+
+
+CUTTING_PATHS = [
+    _progressive_cut(Fraction(2, 5), Fraction(21, 26)),
+    _progressive_cut(Fraction(0), Fraction(0)),
+    FormulaPath(
+        full_price_indexing_start_year=2032, real_wage_scale_by_year={2032: ".9"}
+    ),
+    FormulaPath(factor_values=(".90", ".32", ".05")),
+    FormulaPath(factor_values=(".85", ".30", ".10")),
+    FormulaPath(bend_point_multipliers=(".95", 1)),
+]
+
+
+@settings(deadline=None)
+@given(st.integers(1, 50000))
+@pytest.mark.parametrize("path", CUTTING_PATHS)
+def test_benefit_cutting_path_ratio_never_exceeds_one(path, aime):
+    """A path that lowers the formula at every AIME cannot raise a benefit.
+
+    Truncating both PIAs to the dime preserves G <= F, so the ratio of the
+    rounded PIAs is at most one for every inferred AIME.
+    """
+    pia = compute_pia(aime, 2032, bend_points=SYNTHETIC_BENDS)
+    result = compute_pia_ratio(
+        12 * pia, 2032, path, bend_points=SYNTHETIC_BENDS, exact_eligibility_pia=True
+    )
+    assert 0 <= result.factor <= 1
+
+
+@settings(deadline=None)
+@given(
+    st.integers(1, 50000),
+    st.fractions(min_value=0, max_value=1, max_denominator=1000),
+    st.fractions(min_value=0, max_value=1, max_denominator=1000),
+)
+def test_progressive_cut_is_one_at_and_below_threshold(aime, fraction, multiplier):
+    """Below the protected threshold the reformed and current-law PIAs match."""
+    path = _progressive_cut(fraction, multiplier)
+    pia = compute_pia(aime, 2032, bend_points=SYNTHETIC_BENDS)
+    result = compute_pia_ratio(
+        12 * pia, 2032, path, bend_points=SYNTHETIC_BENDS, exact_eligibility_pia=True
+    )
+    assert result.factor <= 1
+    if aime <= 1000 + fraction * 5000:
+        assert result.factor == 1
+
+
 @settings(deadline=None)
 @given(st.integers(1983, 2035))
 def test_zero_remains_zero_under_an_active_reform(year):
