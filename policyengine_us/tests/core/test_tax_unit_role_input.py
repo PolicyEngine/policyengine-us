@@ -111,7 +111,8 @@ def _dataset(
             "person_tax_unit_id": tax_unit_of,
             "person_spm_unit_id": np.ones(6, dtype=int),
             "person_family_id": np.ones(6, dtype=int),
-            "person_marital_unit_id": np.arange(1, 7),
+            # The couple shares a marital unit; everyone else has their own.
+            "person_marital_unit_id": [1, 1, 2, 3, 4, 5],
             "age": np.asarray(ages, dtype=float),
             "is_full_time_student": [False, False, True, False, False, True],
         }
@@ -131,7 +132,7 @@ def _dataset(
         tax_unit=tax_unit,
         spm_unit=pd.DataFrame({"spm_unit_id": [1]}),
         family=pd.DataFrame({"family_id": [1]}),
-        marital_unit=pd.DataFrame({"marital_unit_id": np.arange(1, 7)}),
+        marital_unit=pd.DataFrame({"marital_unit_id": np.arange(1, 6)}),
         time_period=YEAR,
     )
 
@@ -197,13 +198,15 @@ def test_a_tax_unit_without_members_falls_back_rather_than_raising():
 def test_dataset_without_supplied_columns_keeps_age_ordering():
     """The same people without the columns: the oldest adult heads each unit.
 
-    The 60-year-old heads the couple, the 16-year-old heads nothing, and the
-    student becomes the parent's spouse, so both multi-person units file
-    jointly - the behaviour the supplied roles exist to correct.
+    The 60-year-old heads the couple instead of the reference person - the
+    behaviour the supplied roles exist to correct - and the 16-year-old heads
+    nothing. The spouse must share the head's marital unit, so the parent's
+    student, who has their own, is a dependent and the parent files as head
+    of household.
     """
     simulation = Microsimulation(dataset=_dataset(False), dataset_end_year=YEAR)
     heads, spouses, dependents, statuses = _roles_and_statuses(simulation, YEAR)
     assert heads == [False, True, False, False, True, False]
-    assert spouses == [True, False, False, False, False, True]
-    assert dependents == [False, False, True, True, False, False]
-    assert statuses == ["JOINT", "HEAD_OF_HOUSEHOLD", "JOINT"]
+    assert spouses == [True, False, False, False, False, False]
+    assert dependents == [False, False, True, True, False, True]
+    assert statuses == ["JOINT", "HEAD_OF_HOUSEHOLD", "HEAD_OF_HOUSEHOLD"]
