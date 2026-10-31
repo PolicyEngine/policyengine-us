@@ -13,6 +13,7 @@ import numpy as np
 import pytest
 from hypothesis import given, settings, strategies as st
 from policyengine_core.parameters import ParameterNode
+from policyengine_core.simulations import SimulationBuilder
 
 from policyengine_us import Simulation
 from policyengine_us.reforms.ssa.cola_means_test import a9
@@ -119,6 +120,17 @@ def _simulation(situation, reform=None, system=None):
         tax_benefit_system=(system or Simulation.default_tax_benefit_system_instance),
         **({"reform": reform} if reform is not None else {}),
     )
+
+
+def _override_situation(records, incomes=None):
+    """Exercise person decisions within one tax unit and across tax units."""
+    situation = _situation(records, incomes)
+    situation["people"]["B"].update(
+        is_tax_unit_head=False, is_tax_unit_spouse=True
+    )
+    situation["tax_units"]["A"]["members"] = ["A", "B"]
+    situation["tax_units"].pop("B")
+    return situation
 
 
 @pytest.fixture(scope="module")
@@ -425,17 +437,24 @@ def test_static_cross_section_proxy_sensitivities(sensitivity, income, expected)
 
 
 def test_explicit_withholding_input_remains_a_final_decision(means_test_system):
+    records = {name: _record() for name in ("A", "B", "C")}
+    records["B"]["social_security_retirement_cola_override"] = {2027: 1}
     simulation = _simulation(
-        _situation(
-            {"worker": _record(social_security_retirement_cola_override={2027: 1})},
-            {"worker": 0},
-        ),
+        _override_situation(records, {name: 0 for name in records}),
         system=means_test_system,
     )
-    assert simulation.calculate(
-        "social_security_retirement_cola_means_test_withheld", 2027
-    )[0]
-    assert simulation.calculate("social_security_retirement", 2027)[0] < 12_000
+    np.testing.assert_array_equal(
+        simulation.calculate(
+            "social_security_retirement_cola_means_test_withheld", 2027
+        ),
+        [False, True, False],
+    )
+    np.testing.assert_allclose(
+        simulation.calculate("social_security_retirement", 2027),
+        [12000, 11583.01, 12000],
+        rtol=0,
+        atol=0.01,
+    )
 
 
 def test_disabled_means_test_preserves_manual_input_carry_over():
@@ -543,10 +562,11 @@ def test_partial_paid_override_preserves_other_persons_automatic_decision(
     means_test_system, calculator
 ):
     # Core stores a complete array for each supplied variable/year. The -1
-    # default must keep A automatic when only B supplies a paid decision.
+    # default must keep A automatic when B in the same tax unit supplies a
+    # paid decision. C in another tax unit also remains automatic.
     records = {
         name: _calculator_record(name) if calculator else _record()
-        for name in ("A", "B")
+        for name in ("A", "B", "C")
     }
     override = (
         "ss_calculator_cola_override"
@@ -555,13 +575,13 @@ def test_partial_paid_override_preserves_other_persons_automatic_decision(
     )
     records["B"][override] = {2027: 0}
     simulation = _simulation(
-        _situation(records, {"A": 1_000_000, "B": 1_000_000}),
+        _override_situation(records, {name: 1_000_000 for name in records}),
         system=means_test_system,
     )
     variable, period, expected = (
-        ("ss_calculated_payment", "2027-01", [1000, 1036])
+        ("ss_calculated_payment", "2027-01", [1000, 1036, 1000])
         if calculator
-        else ("social_security_retirement", 2027, [11583.01, 12000])
+        else ("social_security_retirement", 2027, [11583.01, 12000, 11583.01])
     )
     np.testing.assert_allclose(
         simulation.calculate(variable, period), expected, rtol=0, atol=0.01
@@ -582,7 +602,7 @@ def test_calculator_override_precedence_and_exact_year_expiry(means_test_system)
         ss_calculator_cola_override={2027: 1},
     )
     simulation = _simulation(
-        _situation(
+        _override_situation(
             records,
             {name: {2026: 1_000_000, 2027: 1_000_000} for name in records},
         ),
@@ -621,14 +641,14 @@ def test_disabled_means_test_calculator_ignores_component_withholding():
 
 
 def test_disabled_means_test_calculator_manual_decision_is_exact_year():
-    records = {name: _calculator_record(name) for name in ("A", "B")}
+    records = {name: _calculator_record(name) for name in ("A", "B", "C")}
     for record in records.values():
         record["ss_calculator_supplied_pia"] = 1000.1
     records["B"]["ss_calculator_withhold_cola"] = {2027: True}
     # New E3 inputs have no effect when E3 is off.
     records["A"]["ss_calculator_cola_override"] = {2027: 1}
     simulation = _simulation(
-        _situation(records),
+        _override_situation(records),
         reform={
             "gov.contrib.ssa.benefit_levers.cola.withholding_enabled": {
                 "2020-01-01": True
@@ -636,10 +656,10 @@ def test_disabled_means_test_calculator_manual_decision_is_exact_year():
         },
     )
     np.testing.assert_array_equal(
-        simulation.calculate("ss_calculated_payment", "2027-01"), [1036, 1000]
+        simulation.calculate("ss_calculated_payment", "2027-01"), [1036, 1000, 1036]
     )
     np.testing.assert_array_equal(
-        simulation.calculate("ss_calculated_payment", "2028-01"), [1062, 1025]
+        simulation.calculate("ss_calculated_payment", "2028-01"), [1062, 1025, 1062]
     )
 
 
@@ -688,6 +708,54 @@ def test_calculated_source_applies_withholding_and_cpi_e_once(other_payment_fact
     np.testing.assert_array_equal(
         simulation.calculate("social_security_retirement", 2027),
         [10_752, 10_368] if other_payment_factors else [12_444, 12_000],
+    )
+    if not other_payment_factors:
+        _assert_raw_builder_means_test(simulation.tax_benefit_system)
+
+
+def _assert_raw_builder_means_test(system):
+    # Preserve the former YAML case's raw Core ingress while reusing the
+    # existing reform system, avoiding a separate policy CLI process.
+    builder = SimulationBuilder()
+    builder.set_default_period("2027")
+    simulation = builder.build_from_dict(
+        system,
+        {
+            "people": {
+                name: {
+                    "age": 64 if name == "older_cohort" else 63,
+                    "social_security_retirement_worker_eligibility_year": (
+                        2025 if name == "older_cohort" else 2026
+                    ),
+                    "social_security_retirement_first_cola_year": 2027,
+                    "social_security_retirement_reported": 12000,
+                }
+                for name in ("equal", "above", "older_cohort")
+            },
+            "tax_units": {
+                name: {
+                    "members": [name],
+                    "social_security_cola_means_test_magi": {
+                        2026: 100000 if name == "equal" else 100001
+                    },
+                }
+                for name in ("equal", "above", "older_cohort")
+            },
+        },
+    )
+    np.testing.assert_array_equal(
+        simulation.calculate(
+            "social_security_retirement_cola_means_test_withheld", 2027
+        ),
+        [False, True, False],
+    )
+    # January 2027 statutory rate is 3.6%. The CPI-E addition appears only
+    # in the two paid numerators; the withheld numerator is exactly one.
+    np.testing.assert_allclose(
+        simulation.calculate("social_security_retirement", 2027),
+        [12017.374517374517, 11583.011583011583, 12017.374517374517],
+        rtol=0,
+        atol=0.01,
     )
 
 

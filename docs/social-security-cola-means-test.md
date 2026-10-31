@@ -71,6 +71,18 @@ restrictions apply to automatic decisions; an explicit override supplies the
 final decision for that person and year. The tri-state overrides expire after
 their supplied year; later years return to automatic decisions.
 
+These controls do not establish income history for Medicare IRMAA's lookback.
+With reform parameters at their defaults, supplying them changes no benefit,
+tax or Medicare premium. This exclusion is specific to the new controls;
+legacy component withholding inputs retain their existing history behavior.
+Dataset extension resets all five controls to `-1` in generated future rows,
+while preserving decisions in every year the dataset actually supplied.
+
+Core stores these inputs as integers: floats truncate first (for example,
+`0.5` becomes `0`). Integers outside `-1`, `0` and `1` raise `ValueError` when
+an active exact-year decision reads them. A multi-year input such as
+`year:2027:2` creates no exact annual decision in either year.
+
 With the means test disabled, the reported route retains A5's boolean
 `social_security_X_cola_withheld` inputs and their legacy carry-forward
 behavior. The calculator reads only `ss_calculator_withhold_cola`, in its
@@ -183,7 +195,9 @@ The default one-year lag uses the December 1, 2028 lookup for January 2029
 checks. The A9 preset's $85,000/$170,000 base lines, December 2018 value
 `251.233`, and projected value `348.3` give $117,800/$235,700 after nearest-$100
 half-up rounding. OACT's displayed $117,300/$234,600 lines use a different
-CPI projection. The December 1 lookup, one-year payment lag and rounding are
+CPI projection. This December lookup is a scoring assumption: a single filer
+at $117,500 falls between PolicyEngine's and OACT's lines. The December 1
+lookup, one-year payment lag and rounding are
 documented modeling conventions: A9 specifies CPI-U indexing without
 prescribing these details. Pin both the authored index path and these
 settings for a score.
