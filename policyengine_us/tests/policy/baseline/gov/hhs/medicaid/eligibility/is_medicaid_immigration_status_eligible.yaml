@@ -9,6 +9,8 @@
   period: 2024
   input:
     immigration_status: LEGAL_PERMANENT_RESIDENT
+    # Past the five-year bar; this case checks the eligible status list.
+    years_since_us_entry: 5
   output:
     is_medicaid_immigration_status_eligible: true
 
@@ -27,6 +29,14 @@
     years_since_us_entry: 5
   output:
     is_medicaid_immigration_status_eligible: true
+
+- name: Legal permanent resident without years_since_us_entry is treated as inside the five-year bar
+  period: 2025
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    # years_since_us_entry is omitted, so its default of 0 applies.
+  output:
+    is_medicaid_immigration_status_eligible: false
 
 - name: Recent one-year parolee is ineligible during five-year bar
   period: 2025

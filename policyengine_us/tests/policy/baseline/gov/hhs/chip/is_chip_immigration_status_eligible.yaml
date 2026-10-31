@@ -34,6 +34,16 @@
   output:
     is_chip_immigration_status_eligible: [false, true]
 
+- name: Case 2b, Arizona permanent resident child without years_since_us_entry is inside the five-year bar.
+  period: 2025
+  input:
+    state_code: AZ
+    age: 10
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    # years_since_us_entry is omitted, so its default of 0 applies.
+  output:
+    is_chip_immigration_status_eligible: false
+
 - name: Case 3, Texas option covers recent permanent resident children under 19 only.
   period: 2025
   input:
@@ -133,6 +143,8 @@
       person4:
         age: 10
         immigration_status: LEGAL_PERMANENT_RESIDENT
+        # Past the five-year bar; this case checks the eligible status list.
+        years_since_us_entry: 5
     households:
       household1:
         members: [person1]
@@ -266,8 +278,10 @@
 # From October 1, 2026, 42 USC 1397gg(e)(1)(R) applies the 1396b(v)(5) limit to
 # CHIP, which ends federal CHIP funding for asylees, people granted withholding
 # of deportation, parolees and conditional entrants outside the option (SHO
-# #26-001 Appendix A). Arizona elected neither option, and the default five years
-# since entry clears the bar, so only the status limit applies.
+# #26-001 Appendix A). Arizona elected neither option. Asylees and people granted
+# withholding are exempt from the five-year bar, and the parolee and conditional
+# entrant state five years since entry to clear it, so only the status limit
+# applies.
 - name: Case 14, after section 71109 asylees, withheld deportations, parolees and conditional entrants lose CHIP in Arizona.
   period: 2027
   input:
@@ -281,9 +295,11 @@
       person3:
         age: 10
         immigration_status: PAROLED_ONE_YEAR
+        years_since_us_entry: 5
       person4:
         age: 10
         immigration_status: CONDITIONAL_ENTRANT
+        years_since_us_entry: 5
     households:
       household1:
         members: [person1]

@@ -110,6 +110,9 @@
         ne_aabd: 0
         general_assistance: 0
         immigration_status: LEGAL_PERMANENT_RESIDENT
+        # Past the SNAP waiting period; this case checks that permanent
+        # residents count.
+        years_since_us_entry: 5
         employment_income: 24_000
       person6:
         age: 43
@@ -117,6 +120,8 @@
         ne_aabd: 0
         general_assistance: 0
         immigration_status: LEGAL_PERMANENT_RESIDENT
+        # Past the SNAP waiting period, as for person5.
+        years_since_us_entry: 5
     spm_units:
       spm1:
         members:
