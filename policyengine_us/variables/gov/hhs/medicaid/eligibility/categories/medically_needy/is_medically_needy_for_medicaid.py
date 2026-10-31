@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+    _ssi_spouse_index,
+)
 
 
 class is_medically_needy_for_medicaid(Variable):
@@ -39,7 +43,6 @@ class is_medically_needy_for_medicaid(Variable):
         # SSI financial responsibility rules (42 CFR 435.602): the unit is
         # the individual or the married couple, plus parents for a child,
         # not the tax filing unit.
-        marital_unit = person.marital_unit
         # 42 CFR 435.831(d) deducts expenses of financially responsible
         # relatives. For a child these are the ineligible parents whose
         # income SSI deems (20 CFR 416.1165); split their expenses among the
@@ -54,13 +57,15 @@ class is_medically_needy_for_medicaid(Variable):
         parental_expense_share = where(
             eligible_child, parental_expenses / max_(eligible_children, 1), 0
         )
-        income = marital_unit.sum(
-            personal_income - medical_expenses - parental_expense_share
+        income = _ssi_couple_total(
+            person,
+            period,
+            personal_income - medical_expenses - parental_expense_share,
         )
-        assets = marital_unit.sum(personal_assets)
+        assets = _ssi_couple_total(person, period, personal_assets)
         ma = parameters(period).gov.hhs.medicaid
         mn = ma.eligibility.categories.medically_needy
-        is_joint = marital_unit.nb_persons() == 2
+        is_joint = _ssi_spouse_index(person, period) >= 0
         state = person.household("state_code_str", period)
         income_limit = MONTHS_IN_YEAR * where(
             is_joint,

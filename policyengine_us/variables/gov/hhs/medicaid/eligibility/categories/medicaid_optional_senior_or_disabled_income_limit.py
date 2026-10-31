@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_spouse_index,
+)
 
 
 class medicaid_optional_senior_or_disabled_income_limit(Variable):
@@ -25,7 +28,7 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
         # Non-MAGI Medicaid follows the SSI financial responsibility rules
         # (42 CFR 435.602): the unit is the individual, or the married
         # couple living together, whatever their filing status.
-        is_couple = person.marital_unit.nb_persons() == 2
+        is_couple = _ssi_spouse_index(person, period) >= 0
         state = person.household("state_code_str", period)
         p = parameters(
             period

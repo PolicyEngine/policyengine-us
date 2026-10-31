@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+    _ssi_spouse_index,
+)
 
 
 class is_optional_senior_or_disabled_asset_eligible(Variable):
@@ -19,8 +23,8 @@ class is_optional_senior_or_disabled_asset_eligible(Variable):
         # the individual or the married couple, not the tax filing unit.
         personal_assets = person("ssi_countable_resources", period)  # $
         # Inputs are stored as float32, so compare whole cents with the limit.
-        assets = np.round(person.marital_unit.sum(personal_assets), 2)
-        is_couple = person.marital_unit.nb_persons() == 2
+        assets = np.round(_ssi_couple_total(person, period, personal_assets), 2)
+        is_couple = _ssi_spouse_index(person, period) >= 0
         state = person.household("state_code_str", period)
 
         #  Parameters
