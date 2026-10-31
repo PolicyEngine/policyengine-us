@@ -66,16 +66,16 @@ GC_THRESHOLD = 100_000
 def collect_cycles_less_often():
     """Run the cycle collector less often while these tests copy policy.
 
-    Every reform simulation, measurement and clone here deep-copies the
-    parameter tree: 6.9 million objects the collector tracks, none of them
-    garbage while the copy is in use. A collection starts each time
-    allocations exceed deallocations by the first threshold. At the default of
-    2,000, three rounds of building, measuring, cloning and branching a reform
-    simulation ran 28 full collections, each traversing every live tree; at
-    100,000 they ran 9 (2026-10-30). In CI the tests this module did not
-    otherwise change then took 744 s (run 41143310235), against a median of
-    955 s over 57 runs without this fixture. At 200,000 this file ran a further
-    10% faster locally but peaked 27% higher.
+    Every reform simulation, measurement and clone here deep-copies the policy
+    system: 6.9 million objects the collector tracks, none of them garbage
+    while the copy is in use. A collection starts each time allocations exceed
+    deallocations by the first threshold. At the default of 2,000, three rounds
+    of building, measuring, cloning and branching a reform simulation ran 28
+    full collections, each traversing every live copy; at 100,000 they ran 9
+    (2026-10-30). In CI the tests this module did not otherwise change then
+    took 743 s (run 41143310235), against a median of 955 s over 57 runs without
+    this fixture. At 200,000 this file ran a further 10% faster locally but
+    peaked 27% higher.
     """
     thresholds = gc.get_threshold()
     gc.set_threshold(GC_THRESHOLD, *thresholds[1:])
