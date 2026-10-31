@@ -1,4 +1,5 @@
 description: Whether people with disabilities can qualify for Medicaid under the 'medically needy' pathway.
+# NOTE: Like every other state's, the AR, IA, IL, ND and NJ switches date from 2015-01-01, while their income and asset limits start in 2018, so 2015-2017 use the 2018 limits.
 metadata:
   label: Medicaid medically needy pathway for people with disabilities
   breakdown:
@@ -7,15 +8,34 @@ metadata:
   reference:
     - title: "Medicaid Financial Eligibility for Seniors and People with Disabilities: Findings from a 50-State Survey | KFF"
       href: https://www.kff.org/report-section/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey-appendix-tables/
+    - title: KFF, Medicaid Eligibility Levels for Older Adults and People with Disabilities (Non-MAGI) in 2026, Appendix Table 4
+      href: https://www.kff.org/medicaid/medicaid-eligibility-levels-for-older-adults-and-people-with-disabilities-non-magi-in-2026/
+    - title: Arkansas DHS Division of County Operations, Health Care Eligibility Quick Reference (January 2025), AABD Adult Spend Down
+      href: https://humanservices.arkansas.gov/wp-content/uploads/Quick-Reference.pdf#page=1
+    - title: "Iowa Administrative Code 441-75.8 - Medically needy #page 20,24"
+      href: https://www.legis.iowa.gov/docs/iac/chapter/441.75.pdf#page=20
+    - title: Illinois Department of Human Services Policy Manual PM 15-08-00 - Spenddown
+      href: https://www.dhs.state.il.us/page.aspx?item=16536
+    - title: New Jersey DMAHS, Medically Needy Segment fact sheet
+      href: https://web.archive.org/web/20260514003440id_/https://www.nj.gov/humanservices/dmahs/clients/medicaid/medically_needy_fact_sheet.pdf#page=1
+    - title: N.J.A.C. 10:70-1.2 - Purpose of the Medically Needy Manual
+      href: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-70-1-2
+    - title: N.J.A.C. 10:70-5.1 - Resource eligibility limits
+      href: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-70-5-1
+    - title: North Dakota Non-ACA Medicaid Manual 510-05-85-40 - Medically needy income levels
+      href: https://www.nd.gov/dhs/policymanuals/51005/510_05_85_40.htm
+    - title: North Dakota Administrative Code 75-02-02.1-26(1) - Asset limits, medically needy aged, blind, and disabled
+      href: https://ndlegis.gov/information/acdata/pdf/75-02-02.1.pdf#page=40
 
 AK:
   2015-01-01: false
 AL:
   2015-01-01: false
 AR:
-  2015-01-01: false
-AZ:
   2015-01-01: true
+AZ:
+  # No medically needy pathway for aged, blind or disabled people (KFF 2018, 2026).
+  2015-01-01: false
 CA:
   2015-01-01: true
 CO:
@@ -33,13 +53,15 @@ GA:
 HI:
   2015-01-01: true
 IA:
-  2015-01-01: false
+  2015-01-01: true
 ID:
-  2015-01-01: true
-IL:
+  # No medically needy pathway for aged, blind or disabled people (KFF 2018, 2026).
   2015-01-01: false
-IN:
+IL:
   2015-01-01: true
+IN:
+  # No medically needy pathway for aged, blind or disabled people (KFF 2018, 2026).
+  2015-01-01: false
 KS:
   2015-01-01: true
 KY:
@@ -65,17 +87,19 @@ MT:
 NC:
   2015-01-01: true
 ND:
-  2015-01-01: false
+  2015-01-01: true
 NE:
   2015-01-01: true
 NH:
   2015-01-01: true
 NJ:
-  2015-01-01: false
+  2015-01-01: true
 NM:
-  2015-01-01: true
+  # No medically needy pathway for aged, blind or disabled people (KFF 2018, 2026).
+  2015-01-01: false
 NV:
-  2015-01-01: true
+  # No medically needy pathway for aged, blind or disabled people (KFF 2018, 2026).
+  2015-01-01: false
 NY:
   2015-01-01: true
 OH:

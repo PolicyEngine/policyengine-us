@@ -1,4 +1,5 @@
-description: Maximum income for an individual to qualify for Medicaid under the 'medically needy' pathway.
+description: States limit monthly income for an individual to this amount under the Medicaid medically needy program.
+# NOTE: From the date a state's fpg_rate or ssi_rate is positive, the formula uses that rate instead of this amount. IL, MN, ND, UT and WA use a rate from 2018 and have no dollar entry.
 metadata:
   label: Medicaid medically needy pathway for individuals income limit
   breakdown:
@@ -6,15 +7,95 @@ metadata:
   unit: currency-USD
   period: month
   reference:
+    - title: Iowa Administrative Code 441-75.8(7) - Medically needy income level
+      href: https://www.legis.iowa.gov/docs/iac/chapter/441.75.pdf#page=24
+    - title: New Jersey DMAHS, Medically Needy Segment fact sheet
+      href: https://web.archive.org/web/20260514003440id_/https://www.nj.gov/humanservices/dmahs/clients/medicaid/medically_needy_fact_sheet.pdf#page=1
+    - title: N.J.A.C. 10:70-1.2 - Purpose of the Medically Needy Manual
+      href: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-70-1-2
+    - title: N.J.A.C. 10:70-5.1 - Resource eligibility limits
+      href: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-70-5-1
+    - title: CMS approval of Kansas State Plan Amendment KS-25-0019, medically needy income level
+      href: https://www.medicaid.gov/medicaid/spa/downloads/KS-25-0019.pdf#page=7
+    - title: Arkansas DHS Division of County Operations, Health Care Eligibility Quick Reference (January 2025), AABD Adult Spend Down
+      href: https://humanservices.arkansas.gov/wp-content/uploads/Quick-Reference.pdf#page=1
+    - title: Arkansas DHS Medical Services Policy Manual (September 2026), O-710 Medically Needy Income Levels
+      href: https://humanservices.arkansas.gov/wp-content/uploads/MS-Policy-9.26-New.pdf#page=435
     - title: "Medicaid Financial Eligibility for Seniors and People with Disabilities: Findings from a 50-State Survey | KFF"
       href: https://www.kff.org/report-section/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey-appendix-tables/
+    - title: Connecticut State Plan Amendment CT-22-0031, Medically Needy Income Level (effective July 1, 2022)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/CT-22-0031.pdf#page=7
+    - title: Connecticut State Plan Amendment CT-24-0003, Medically Needy Income Level (effective January 1, 2024)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/CT-24-0003.pdf#page=7
+    - title: Connecticut State Plan Amendment CT-24-0006, Medically Needy Income Level (effective March 1, 2024)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/CT-24-0006.pdf#page=7
+    - title: Connecticut State Plan Amendment CT-25-0013, Medically Needy Income Level (effective March 1, 2025)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/CT-25-0013.pdf#page=7
+    - title: Connecticut State Plan Amendment CT-26-0006, Medically Needy Income Level (effective March 1, 2026)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/CT-26-0006.pdf#page=7
+    - title: Connecticut DSS Program Standards Chart (effective March 1, 2026), HUSKY C Medically Needy Income Limit
+      href: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/fact-sheets-and-issue-briefs/fact-sheets/dss-program-standards-chart-effective-030126.pdf
+    - title: "District of Columbia Municipal Regulations 29-901.1, Medically Needy Income Levels (50 DCR 8467, October 10, 2003) #page 1-2"
+      href: https://dbh.dc.gov/sites/default/files/dc/sites/dmh/publication/attachments/GrievanceFinalRulemaking.pdf#page=1
+    - title: District of Columbia DHCF Non-MAGI Spend Down Notice (2023 Medically Needy Income Limit)
+      href: https://dhcf.dc.gov/sites/default/files/dc/sites/dhcf/documents/%2316%20Non%20MAGI%20Spend%20Down%20Notice.pdf#page=2
+    - title: District of Columbia DHCF Spend Down Fact Sheet (revised September 2024)
+      href: https://dhcf.dc.gov/sites/default/files/dc/sites/dhcf/service_content/attachments/Spend_Down_Fact_Sheet.pdf#page=2
+    - title: KFF, Medicaid Eligibility Levels for Older Adults and People with Disabilities (Non-MAGI) in 2026, Appendix Table 4
+      href: https://www.kff.org/medicaid/medicaid-eligibility-levels-for-older-adults-and-people-with-disabilities-non-magi-in-2026/
+    - title: New Hampshire State Plan Amendment NH-23-0029, Medically Needy Income Level (effective January 1, 2023)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/NH-23-0029.pdf#page=7
+    - title: New Hampshire State Plan Amendment NH-25-0012, Medically Needy Income Level (effective January 1, 2025)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/NH-25-0012.pdf#page=7
+    - title: New Hampshire State Plan Amendment NH-25-0019, Medically Needy Income Level (effective July 1, 2025)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/NH-25-0019.pdf#page=7
+    - title: New York DOH GIS 22 MA/01, Attachment I, 2022 SSI-Related Medicaid Income and Resource Levels
+      href: https://www.health.ny.gov/health_care/medicaid/publications/docs/gis/22ma01_att1.pdf#page=2
+    - title: New York DOH GIS 22 MA/11, Increase of Medicaid Medically Needy Income Level to 138% of the Federal Poverty Level
+      href: https://www.health.ny.gov/health_care/medicaid/publications/docs/gis/22ma11.pdf#page=1
+    - title: Rhode Island 210-RICR-40-00-3, Medicaid Integrated Health Care Coverage, SSI Financial Eligibility Determinations (version effective January 1, 2020)
+      href: https://rules.sos.ri.gov/Regulations/part/210-40-00-3?reg_id=10945
+    - title: Rhode Island 210-RICR-40-00-3, section 3.2.8(A)(8), Medically Needy Income Limit
+      href: https://rules.sos.ri.gov/regulations/part/210-40-00-3
+    - title: Rhode Island State Plan Amendment RI-21-0004, Medically Needy Income Level (effective January 1, 2021)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/RI-21-0004.pdf#page=4
+    - title: Rhode Island State Plan Amendment RI-22-0003, Medically Needy Income Level (effective January 1, 2022)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/RI-22-0003.pdf#page=7
+    - title: Rhode Island State Plan Amendment RI-23-0005, Medically Needy Income Level (effective January 1, 2023)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/RI-23-0005.pdf#page=7
+    - title: Rhode Island State Plan Amendment RI-24-0003, Medically Needy Income Level (effective January 1, 2024)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/RI-24-0003.pdf#page=7
+    - title: Rhode Island State Plan Amendment RI-25-0003, Medically Needy Income Level (effective January 1, 2025)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/RI-25-0003.pdf#page=7
+    - title: Rhode Island State Plan Amendment RI-26-0001, Medically Needy Income Level (effective January 1, 2026)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/RI-26-0001.pdf#page=7
+    - title: Vermont Health Benefits Eligibility and Enrollment Rule, Part 2, section 8.06 - Medically-needy coverage group
+      href: https://humanservices.vermont.gov/sites/ahsnew/files/documents/HBEE-Part-2-Eligibility-Standards.pdf#page=19
+    - title: "Vermont Health Benefits Eligibility and Enrollment Rule, Part 5, section 29.14 - Determination of countable income #page 50-52"
+      href: https://humanservices.vermont.gov/sites/ahsnew/files/documents/HBEE-Part-5-Financial-Methodologies.pdf#page=50
+    - title: Vermont DCF Bulletin 17-26, P-2420 Eligibility maximums for MABD, effective 1/1/18
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules-Adopted/B17-26.pdf#page=3
+    - title: Vermont DVHA 2020 MABD PIL FPL Income Chart, effective 1/1/2020
+      href: https://dvha.vermont.gov/sites/dvha/files/doc_library/2020%20MABD%20PIL%20Chart%20FINAL.pdf
+    - title: Vermont DVHA 2021 Standards Change for Healthcare
+      href: https://dvha.vermont.gov/sites/dvha/files/doc_library/2021%20Standards%20Change%20for%20Healthcare%20Updated%201.14.21.pdf#page=1
+    - title: Vermont DVHA 2022 Standards Change for Healthcare
+      href: https://dvha.vermont.gov/sites/dvha/files/doc_library/2022%20Standards%20Change%20for%20Healthcare%20Draft%20FINAL%20V.2%20corrected.pdf#page=1
+    - title: Vermont DVHA 2023 Standards Change for Healthcare
+      href: https://dvha.vermont.gov/sites/dvha/files/documents/2023%20Standards%20Change%20for%20Healthcare%20FINAL%20%28with%2010-1-23%20DR%20Numbers%29%20%28003%29.pdf#page=1
+    - title: Vermont DVHA 2024 Standards Change for Healthcare
+      href: https://dvha.vermont.gov/sites/dvha/files/documents/2024%20Standards%20Change%20for%20Healthcare%20FINAL%20Corrected%2012.19.pdf#page=1
+    - title: Vermont DVHA 2025 Standards Change for Healthcare
+      href: https://dvha.vermont.gov/sites/dvha/files/documents/2025%20Standards%20Change%20for%20Healthcare%20FINAL.pdf#page=1
+    - title: Vermont DVHA 2026 Standards Change for Healthcare
+      href: https://dvha.vermont.gov/sites/dvha/files/documents/Standards_Change_for_Healthcare_2026.pdf#page=1
 
 AK:
   2018-01-01: -.inf
 AL:
   2018-01-01: -.inf
 AR:
-  2018-01-01: 108
+  2018-01-01: 108.33
 AZ:
   2018-01-01: -.inf
 CA:
@@ -23,8 +104,21 @@ CO:
   2018-01-01: -.inf
 CT:
   2018-01-01: 523
+  2022-07-01: 653
+  2024-01-01: 700
+  2024-03-01: 723
+  2025-03-01: 835
+  2026-03-01: 851
 DC:
   2018-01-01: 652
+  2019-01-01: 669.35
+  2020-01-01: 682.42
+  2021-01-01: 689.54
+  2022-01-01: 724.77
+  2023-01-01: 780.58
+  2024-01-01: 809.08
+  2025-01-01: 837.19
+  2026-01-01: 856.58
 DE:
   2018-01-01: -.inf
 FL:
@@ -37,8 +131,6 @@ IA:
   2018-01-01: 483
 ID:
   2018-01-01: -.inf
-IL:
-  2018-01-01: 1_012
 IN:
   2018-01-01: -.inf
 KS:
@@ -55,8 +147,6 @@ ME:
   2018-01-01: 315
 MI:
   2018-01-01: 1_012
-MN:
-  2018-01-01: 810
 MO:
   2018-01-01: -.inf
 MS:
@@ -65,12 +155,13 @@ MT:
   2018-01-01: 525
 NC:
   2018-01-01: 242
-ND:
-  2018-01-01: 840
 NE:
   2018-01-01: 392
 NH:
   2018-01-01: 591
+  2023-01-01: 888
+  2025-01-01: 916
+  2025-07-01: 939
 NJ:
   2018-01-01: 367
 NM:
@@ -79,6 +170,7 @@ NV:
   2018-01-01: -.inf
 NY:
   2018-01-01: 842
+  2022-01-01: 934
 OH:
   2018-01-01: -.inf
 OK:
@@ -89,6 +181,14 @@ PA:
   2018-01-01: 425
 RI:
   2018-01-01: 903
+  2019-01-01: 917
+  2020-01-01: 933
+  2021-01-01: 950
+  2022-01-01: 1_008
+  2023-01-01: 1_092
+  2024-01-01: 1_133
+  2025-01-01: 1_167
+  2026-01-01: 1_200
 SC:
   2018-01-01: -.inf
 SD:
@@ -97,14 +197,21 @@ TN:
   2018-01-01: 241
 TX:
   2018-01-01: 104
-UT:
-  2018-01-01: 1_012
 VA:
   2018-01-01: 493
 VT:
+  # The protected income level (PIL) outside Chittenden County, the same for
+  # one and two people (HBEE 8.06(b), 29.14). The higher PIL inside Chittenden
+  # County is not modeled. No 2019 PIL was found, so 2018's value stays in
+  # force through 2019.
   2018-01-01: 1_041
-WA:
-  2018-01-01: 750
+  2020-01-01: 1_091
+  2021-01-01: 1_100
+  2022-01-01: 1_166
+  2023-01-01: 1_258
+  2024-01-01: 1_300
+  2025-01-01: 1_333
+  2026-01-01: 1_375
 WV:
   2018-01-01: 200
 WI:
