@@ -62,11 +62,7 @@ class is_medically_needy_for_medicaid(Variable):
         mn = ma.eligibility.categories.medically_needy
         is_joint = marital_unit.nb_persons() == 2
         state = person.household("state_code_str", period)
-        income_limit = MONTHS_IN_YEAR * where(
-            is_joint,
-            mn.limit.income.couple[state],
-            mn.limit.income.individual[state],
-        )
+        income_limit = person("medicaid_medically_needy_income_limit", period)
         asset_limit = where(
             is_joint,
             mn.limit.assets.couple[state],

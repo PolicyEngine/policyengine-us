@@ -6,7 +6,11 @@ class ca_wdp_asset_eligible(Variable):
     entity = Person
     label = "California 250 Percent Working Disabled Program asset eligible"
     definition_period = YEAR
-    reference = "https://www.dhcs.ca.gov/services/working-disabled-program/"
+    reference = (
+        "https://www.dhcs.ca.gov/services/working-disabled-program/",
+        "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=14007.9.&lawCode=WIC",
+        "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260SB164",
+    )
     defined_for = StateCode.CA
 
     def formula(person, period, parameters):
@@ -16,5 +20,9 @@ class ca_wdp_asset_eligible(Variable):
         )
         tax_unit_size = person.tax_unit("tax_unit_size", period)
         capped_size = min_(tax_unit_size, p.max_people)
-        asset_limit = p.base + max_(capped_size - 1, 0) * p.additional_person
+        asset_limit = where(
+            capped_size >= 2,
+            p.two_people + (capped_size - 2) * p.additional_person,
+            p.base,
+        )
         return countable_resources <= asset_limit
