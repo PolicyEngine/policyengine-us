@@ -15,7 +15,7 @@ class ca_state_supplement_medical_care_facility_amount(Variable):
         # Medical care facility amount
         person = spm_unit.members
         eligible = person("ca_state_supplement_eligible_person", period)
-        # Dependent children get the dependent amount instead.
+        # The model pays dependent children the dependent amount instead.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         in_medical_care_facility = person("ca_in_medical_care_facility", period)
         medical_care_facility_count = spm_unit.sum(

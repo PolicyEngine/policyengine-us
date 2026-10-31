@@ -14,7 +14,7 @@ class ca_state_supplement_out_of_home_care_facility_amount(Variable):
         p = parameters(period).gov.states.ca.cdss.state_supplement.payment_standard
         person = spm_unit.members
         eligible = person("ca_state_supplement_eligible_person", period)
-        # Dependent children get the dependent amount instead.
+        # The model pays dependent children the dependent amount instead.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         in_out_of_home_care_facility = person("in_out_of_home_care_facility", period)
         out_of_home_care_facility_count = spm_unit.sum(

@@ -91,4 +91,7 @@
         members: [person1, person2]
         state_code: CA
   output:
+    # Known limitation: POMS SI 01415.058 pays a disabled dependent aged 18 or
+    # older the adult rate, but the model pays them nothing and leaves the
+    # flag false (issue 10557).
     ca_state_supplement_eligible_person: [false, false]
