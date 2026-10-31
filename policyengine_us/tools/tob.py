@@ -18,9 +18,23 @@ class TobCalculationMixin:
     def _uses_standard_tob_formula(self, name, period):
         from policyengine_us.system import system
 
-        return self.tax_benefit_system.variables[name].get_formula(
-            period
-        ) is system.variables[name].get_formula(period)
+        formula = self.tax_benefit_system.variables[name].get_formula(period)
+        standard = system.variables[name].get_formula(period)
+        if formula is standard:
+            return True
+        # A fresh country system reloads unchanged variable source in separate
+        # modules. These three formulas use only arguments and literals, so
+        # equal code also identifies them without accepting reform functions
+        # whose behavior depends on different module globals or closures.
+        code = getattr(formula, "__code__", None)
+        return (
+            code is not None
+            and not code.co_names
+            and not code.co_freevars
+            and code == getattr(standard, "__code__", None)
+            and formula.__defaults__ == standard.__defaults__
+            and formula.__kwdefaults__ == standard.__kwdefaults__
+        )
 
     def calculate(self, variable_name, period=None, *args, **kwargs):
         if variable_name in (

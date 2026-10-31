@@ -1,6 +1,6 @@
 """Counterfactual branches retain only their returned income-tax array."""
 
-from types import SimpleNamespace
+from types import FunctionType, SimpleNamespace
 import weakref
 
 import numpy as np
@@ -195,3 +195,50 @@ def test_tob_reuses_states_and_forwards_original_request_options(monkeypatch):
         ("collect",),
         ("calculate", OASDI, None, ("person",), {"decode_enums": False}),
     ]
+
+
+def test_standard_formula_detection_accepts_fresh_import_but_rejects_replacement():
+    from policyengine_us.system import system
+
+    standard = system.variables[OASDI].get_formula(2026)
+    # Fresh country systems import the same source in another module, so both
+    # the function and its code object can differ in identity.
+    reimported = FunctionType(
+        standard.__code__.replace(),
+        dict(standard.__globals__),
+        argdefs=standard.__defaults__,
+        closure=standard.__closure__,
+    )
+    reimported.__kwdefaults__ = standard.__kwdefaults__
+    assert reimported is not standard
+    assert reimported.__code__ is not standard.__code__
+    variable = SimpleNamespace(get_formula=lambda period: reimported)
+    simulation = tob.TobCalculationMixin()
+    simulation.tax_benefit_system = SimpleNamespace(variables={OASDI: variable})
+
+    assert simulation._uses_standard_tob_formula(OASDI, 2026)
+
+    variable.get_formula = lambda period: lambda tax_unit, period, parameters: 0
+    assert not simulation._uses_standard_tob_formula(OASDI, 2026)
+
+
+def test_equal_formula_code_with_different_globals_is_not_standard(monkeypatch):
+    from policyengine_us.system import system
+
+    def standard(tax_unit, period, parameters):
+        return np.ones(1)
+
+    replacement = FunctionType(
+        standard.__code__, {"np": SimpleNamespace(ones=lambda size: np.zeros(size))}
+    )
+    monkeypatch.setitem(
+        system.variables, OASDI, SimpleNamespace(get_formula=lambda period: standard)
+    )
+    simulation = tob.TobCalculationMixin()
+    simulation.tax_benefit_system = SimpleNamespace(
+        variables={OASDI: SimpleNamespace(get_formula=lambda period: replacement)}
+    )
+
+    np.testing.assert_array_equal(standard(None, None, None), [1])
+    np.testing.assert_array_equal(replacement(None, None, None), [0])
+    assert not simulation._uses_standard_tob_formula(OASDI, 2026)

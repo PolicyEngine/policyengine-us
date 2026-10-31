@@ -7,6 +7,7 @@ import numpy as np
 
 from policyengine_us.tests.microsimulation.test_calculate_chunked import (
     YEAR,
+    _release_reference_simulation,
     build_chunking_dataset,
     make_simulation,
 )
@@ -34,13 +35,9 @@ def _main_counterfactual(simulation, name, taxable_social_security=None):
         return np.asarray(branch.tax_unit("income_tax", YEAR)).copy()
     finally:
         simulation.branches.pop(name)
+        _release_reference_simulation(branch)
         del branch
         gc.collect()
-
-
-def _release_system_backreference(simulation):
-    if getattr(simulation.tax_benefit_system, "simulation", None) is simulation:
-        del simulation.tax_benefit_system.simulation
 
 
 def test_sequential_tob_matches_main_elementwise_and_reuses_states(monkeypatch):
@@ -63,7 +60,7 @@ def test_sequential_tob_matches_main_elementwise_and_reuses_states(monkeypatch):
         expected["tob_revenue_total"] - expected["tob_revenue_oasdi"]
     )
     weights = np.asarray(baseline.calculate("tax_unit_weight", YEAR)).copy()
-    _release_system_backreference(baseline)
+    _release_reference_simulation(baseline)
     del baseline
     gc.collect()
 
@@ -96,6 +93,6 @@ def test_sequential_tob_matches_main_elementwise_and_reuses_states(monkeypatch):
 
     assert names == ["_tob_no_social_security", "_tob_pre_1993_social_security"]
     assert not any(name.startswith("_tob_") for name in simulation.branches)
-    _release_system_backreference(simulation)
+    _release_reference_simulation(simulation)
     del simulation
     gc.collect()

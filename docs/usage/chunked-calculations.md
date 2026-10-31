@@ -35,7 +35,8 @@ columns, with exactly the source entity order. `weight` is the weight used by
 `Microsimulation.get_weights`, projected from household weights; native input
 entity weight columns are preserved in the chunk datasets. Weighted sums are
 calculated from the assembled source-order arrays, avoiding changes in reduction
-order. A requested variable can itself be an entity weight variable.
+order. A requested variable can itself be an entity weight variable. The name
+`weight` is reserved for the output weight column.
 
 ## Exact partition invariants
 

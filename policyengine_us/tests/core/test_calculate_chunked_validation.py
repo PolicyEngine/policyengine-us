@@ -1,5 +1,6 @@
 """Reject invalid household partitions before constructing a simulation."""
 
+import weakref
 from types import SimpleNamespace
 
 import numpy as np
@@ -57,6 +58,11 @@ def test_rejects_invalid_chunk_counts(dataset, n_chunks):
 def test_rejects_empty_or_duplicate_variables(dataset, variables):
     with pytest.raises(ValueError, match="nonempty.*unique"):
         calculate(dataset, variables=variables)
+
+
+def test_rejects_reserved_weight_column(dataset):
+    with pytest.raises(ValueError, match="weight is reserved"):
+        calculate(dataset, variables=["weight"])
 
 
 @pytest.mark.parametrize("assignments", [[0], [[0], [1]], [0.0, 1.0], [-1, 0], [0, 2]])
@@ -227,3 +233,71 @@ def test_skips_empty_chunks_and_preserves_native_and_projected_weights(dataset):
         pd.concat(snapshots).person_weight, dataset.person.person_weight
     )
     np.testing.assert_array_equal(dataset.person.person_weight, [999.0, 888.0])
+
+
+@pytest.mark.parametrize("route", ["baseline", "branch", "popped_branch"])
+def test_releases_simulations_retained_by_system_backreferences(dataset, route):
+    # A baseline can use a shared system whose backreference keeps the baseline
+    # and its parent alive. A removed branch can likewise remain reachable only
+    # through its parent's system.simulation pointer.
+    shared_system = SimpleNamespace(get_variable=system.get_variable, simulation=None)
+    references = []
+    factory_calls = []
+
+    def factory(chunk):
+        assert all(reference() is None for reference in references)
+        assert shared_system.simulation is None
+        root = InputSimulation(chunk)
+        root.parent_branch = None
+        root.tax_benefit_system = SimpleNamespace(
+            get_variable=system.get_variable, simulation=root
+        )
+        child = InputSimulation(chunk)
+        child.parent_branch = root
+        child.tax_benefit_system = shared_system
+        shared_system.simulation = child
+        if route == "baseline":
+            root.baseline = child
+        elif route == "branch":
+            root.branches["retained"] = child
+        else:
+            # Model get_branch(..., clone_system=False), followed by pop().
+            root.tax_benefit_system = shared_system
+        references.extend((weakref.ref(root), weakref.ref(child)))
+        factory_calls.append(True)
+        return root
+
+    result = calculate_chunked(factory, ["household_weight"], YEAR, 2, dataset=dataset)
+
+    assert len(factory_calls) == 2
+    assert all(reference() is None for reference in references)
+    assert shared_system.simulation is None
+    np.testing.assert_array_equal(
+        result.entities["household"].household_weight,
+        dataset.household.household_weight,
+    )
+
+
+def test_cleanup_preserves_unrelated_shared_system_simulation(dataset):
+    external_simulation = SimpleNamespace(parent_branch=None)
+    shared_system = SimpleNamespace(
+        get_variable=system.get_variable, simulation=external_simulation
+    )
+    references = []
+    factory_calls = []
+
+    def factory(chunk):
+        assert all(reference() is None for reference in references)
+        assert shared_system.simulation is external_simulation
+        simulation = InputSimulation(chunk)
+        simulation.parent_branch = None
+        simulation.tax_benefit_system = shared_system
+        references.append(weakref.ref(simulation))
+        factory_calls.append(True)
+        return simulation
+
+    calculate_chunked(factory, ["household_weight"], YEAR, 2, dataset=dataset)
+
+    assert len(factory_calls) == 2
+    assert all(reference() is None for reference in references)
+    assert shared_system.simulation is external_simulation

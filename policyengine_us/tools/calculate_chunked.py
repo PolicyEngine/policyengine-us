@@ -75,6 +75,35 @@ def _guard(simulation, seen=None):
         _guard(baseline, seen)
 
 
+def _detach_simulation_links(root):
+    """Release systems' references to this chunk and its owned branches.
+
+    A reform baseline can use the globally shared baseline system. Its
+    ``simulation`` reference otherwise retains the baseline and its parent
+    after the factory's result has been deleted.
+    """
+    pending = [root]
+    seen = set()
+    while pending:
+        simulation = pending.pop()
+        if id(simulation) in seen:
+            continue
+        seen.add(id(simulation))
+        system = simulation.tax_benefit_system
+        owner = getattr(system, "simulation", None)
+        ancestors = set()
+        while owner is not None and id(owner) not in ancestors:
+            if owner is root:
+                system.simulation = None
+                break
+            ancestors.add(id(owner))
+            owner = getattr(owner, "parent_branch", None)
+        pending.extend(getattr(simulation, "branches", {}).values())
+        baseline = getattr(simulation, "baseline", None)
+        if baseline is not None:
+            pending.append(baseline)
+
+
 @dataclass
 class ChunkedCalculation:
     """Entity tables in source order, and sums using simulation weights."""
@@ -191,6 +220,8 @@ def calculate_chunked(
     variables = [variables] if isinstance(variables, str) else list(variables)
     if not variables or len(set(variables)) != len(variables):
         raise ValueError("variables must be a nonempty sequence of unique names.")
+    if "weight" in variables:
+        raise ValueError("weight is reserved for the returned simulation weights.")
     dataset = _load_dataset(dataset)
     years = (
         list(dataset.datasets.values())
@@ -313,12 +344,8 @@ def calculate_chunked(
         finally:
             # Populations, branches and systems can refer back to a simulation.
             # Collection here is deliberate: the next factory must not overlap.
-            if (
-                simulation is not None
-                and getattr(simulation.tax_benefit_system, "simulation", None)
-                is simulation
-            ):
-                simulation.tax_benefit_system.simulation = None
+            if simulation is not None:
+                _detach_simulation_links(simulation)
             del simulation
             del chunk_dataset, subsets
             gc.collect()

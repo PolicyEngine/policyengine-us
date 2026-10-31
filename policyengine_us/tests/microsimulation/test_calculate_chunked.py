@@ -3,6 +3,12 @@
 Python is needed to exercise the dataset/factory API, arbitrary partitions and
 simulation lifetime. The 32-household reference is calculated once; only its
 arrays survive, so no reference simulation remains live during chunked runs.
+
+Partition cases use the country's parameter-lending clone route: branches keep
+the complete, unchanged parameter tree and history, with copy-on-write for
+reforms, while entities, variable metadata and provider receipts remain private.
+Rebuilding the same history for every equivalent partition would dominate this
+API test's runtime. The separate TOB sequencing test uses ordinary clones.
 """
 
 import gc
@@ -38,6 +44,27 @@ VARIABLES = (
 )
 
 
+@pytest.fixture(scope="module", autouse=True)
+def lend_unchanged_parameter_history():
+    import policyengine_us.spm as spm
+
+    original = spm.clone_spm_system
+
+    def clone(source, *, copy_receipts=True, parameters=None):
+        tree = source.parameters if parameters is None else parameters
+        # Lending creates another reader even when the source just acquired a
+        # private reform tree. Keep the country's write barrier armed for both
+        # readers; a parameter reform still pays for its own detached clone.
+        spm.mark_tree_shared(tree)
+        return original(source, copy_receipts=copy_receipts, parameters=tree)
+
+    # Scope the optimization to this module. In particular, importing fixture
+    # builders from test_tob_sequencing does not apply it to that test module.
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setattr(spm, "clone_spm_system", clone)
+        yield
+
+
 def build_chunking_dataset() -> USSingleYearDataset:
     """Several states, multi-unit households and taxable Social Security.
 
@@ -46,7 +73,7 @@ def build_chunking_dataset() -> USSingleYearDataset:
     rather than coincident entity positions, ID sorting, or pandas indices.
     """
     records = {entity: [] for entity in US_ENTITIES}
-    state_fips = (6, 36, 48, 20, 12)
+    state_fips = (6, 48, 12, 53, 32)
     for household in range(HOUSEHOLDS):
         household_id = 90_001 + 37 * household
         # Non-binary fractions expose accidental float32 weighted reductions.
@@ -139,9 +166,7 @@ def reference(chunking_dataset):
             weights[entity] = np.asarray(calculated.weights).copy()
         weighted_sums[variable] = float(calculated.sum())
     del calculated
-    # Core stores this backreference even for the global default system.
-    if getattr(simulation.tax_benefit_system, "simulation", None) is simulation:
-        del simulation.tax_benefit_system.simulation
+    _release_reference_simulation(simulation)
     del simulation
     gc.collect()
     for variable in (
@@ -319,8 +344,24 @@ def _assert_snapshot_matches(result, dataset, expected):
 
 
 def _release_reference_simulation(simulation):
-    if getattr(simulation.tax_benefit_system, "simulation", None) is simulation:
-        simulation.tax_benefit_system.simulation = None
+    """Detach reference simulations without using production cleanup code."""
+    owned = []
+    seen = set()
+    pending = [simulation]
+    while pending:
+        current = pending.pop()
+        if id(current) in seen:
+            continue
+        seen.add(id(current))
+        owned.append(current)
+        pending.extend(current.branches.values())
+        baseline = getattr(current, "baseline", None)
+        if baseline is not None:
+            pending.append(baseline)
+    for current in owned:
+        policy = current.tax_benefit_system
+        if id(getattr(policy, "simulation", None)) in seen:
+            policy.simulation = None
 
 
 def test_single_year_factory_automatically_projects_future_inputs(chunking_dataset):
@@ -350,6 +391,7 @@ def test_single_year_factory_automatically_projects_future_inputs(chunking_datas
 
 def test_reform_factory_is_exact_and_releases_its_baseline(chunking_dataset):
     from policyengine_core.reforms import Reform
+    from policyengine_us.spm import clone_spm_system
 
     variables = ("income_tax", "household_net_income")
     # Share a reform specification; each factory call gets a fresh simulation
@@ -367,8 +409,12 @@ def test_reform_factory_is_exact_and_releases_its_baseline(chunking_dataset):
     )
 
     def build(dataset):
+        # The country clone preserves instance-level variable metadata and
+        # provider state while avoiding repeated country/parameter loading.
         return Microsimulation(
-            dataset=USMultiYearDataset(datasets=[dataset]), reform=reform
+            dataset=USMultiYearDataset(datasets=[dataset]),
+            tax_benefit_system=clone_spm_system(system),
+            reform=reform,
         )
 
     baseline = make_simulation(chunking_dataset)
@@ -415,8 +461,9 @@ def test_entity_hdfstore_paths_match_full_calculation(
     # The direct constructor supports a single-year HDFStore path. Pass the
     # explicit multi-year object for its full-population reference; the chunk
     # API itself must detect and load both on-disk layouts.
+    constructor_options = {} if multi_year else {"dataset_end_year": YEAR}
     simulation = Microsimulation(
-        dataset=source if multi_year else str(path), dataset_end_year=YEAR
+        dataset=source if multi_year else str(path), **constructor_options
     )
     expected = _snapshot_calculations(simulation, variables, YEAR)
     _release_reference_simulation(simulation)
@@ -424,7 +471,7 @@ def test_entity_hdfstore_paths_match_full_calculation(
     gc.collect()
 
     result = calculate_chunked(
-        lambda dataset: Microsimulation(dataset=dataset, dataset_end_year=YEAR),
+        lambda dataset: Microsimulation(dataset=dataset, **constructor_options),
         variables,
         YEAR,
         2,
