@@ -6,6 +6,10 @@ docs/contributed_reforms/owners_draw.md for the input and classification contrac
 """
 
 from policyengine_us.model_api import *
+from policyengine_us.tools.social_security.owners_draw import (
+    OwnersDrawParameters,
+    compute_owners_draw,
+)
 from policyengine_us.variables.gov.irs.tax.self_employment.self_employment_social_security_tax import (
     self_employment_social_security_tax as baseline_oasdi_tax,
 )
@@ -26,17 +30,29 @@ def _enabled(period, parameters):
     return p.in_effect and period.start.year >= p.start_year
 
 
-def _share(period, parameters):
-    p = parameters(period).gov.contrib.ssa.owners_draw
-    if not _enabled(period, parameters):
-        return 0
-    if p.phase_in_years < 1 or int(p.phase_in_years) != p.phase_in_years:
-        raise ValueError("Owners' draw phase_in_years must be a positive integer")
-    if p.phase_in_share == -1:
-        return min(1, (period.start.year - p.start_year + 1) / p.phase_in_years)
-    if not np.isfinite(p.phase_in_share) or not 0 <= p.phase_in_share <= 1:
-        raise ValueError("Owners' draw phase_in_share must be -1 or in [0, 1]")
-    return p.phase_in_share
+_DRAW_INPUT_VARIABLES = {
+    "s_corp_income": "s_corp_income",
+    "partnership_income": "partnership_income",
+    "passive_income": "passive_partnership_s_corp_income",
+    "already_se_income": "partnership_self_employment_net_earnings",
+    "subsets_are_disjoint": "owners_draw_subsets_are_disjoint",
+    "passive_se_overlap": "owners_draw_passive_se_overlap",
+    "covered_wages": "taxable_earnings_for_social_security",
+    "existing_covered_se": "social_security_taxable_self_employment_income",
+}
+
+
+def _draw(person, period, parameters, output):
+    """Delegate one stage while honoring directly supplied intermediate inputs."""
+    return compute_owners_draw(
+        period.start.year,
+        inputs=lambda name: person(_DRAW_INPUT_VARIABLES[name], period),
+        parameters=OwnersDrawParameters.from_policy_parameters(
+            parameters(period).gov, year=period.start.year, output=output
+        ),
+        output=output,
+        overrides=lambda name: person(f"owners_draw_{name}", period),
+    )
 
 
 def create_owners_draw():
@@ -72,31 +88,7 @@ def create_owners_draw():
         reference = "https://www.ssa.gov/OACT/solvency/provisions/coverage.html"
 
         def formula(person, period, parameters):
-            if not _enabled(period, parameters):
-                return 0
-            total = add(person, period, ["s_corp_income", "partnership_income"])
-            already_se = person("partnership_self_employment_net_earnings", period)
-            if not parameters(
-                period
-            ).gov.contrib.ssa.owners_draw.material_participation_only:
-                return total - already_se
-            passive = person("passive_partnership_s_corp_income", period)
-            disjoint = person("owners_draw_subsets_are_disjoint", period)
-            overlap = person("owners_draw_passive_se_overlap", period)
-            unknown_overlap = ~np.isfinite(overlap)
-            ambiguous = (passive != 0) & (already_se != 0) & ~disjoint & unknown_overlap
-            if np.any(ambiguous):
-                raise ValueError(
-                    "Owners' draw needs a validated disjoint-subset assertion "
-                    "or explicit passive/SE overlap when both subsets are nonzero"
-                )
-            if np.any(disjoint & ~unknown_overlap & (overlap != 0)):
-                raise ValueError(
-                    "Owners' draw disjoint assertion contradicts supplied overlap"
-                )
-            # Net signed entity profits/losses before flooring. The residual
-            # does not offset wages or the preexisting SE earnings base.
-            return total - passive - already_se + where(unknown_overlap, 0, overlap)
+            return _draw(person, period, parameters, "active_income")
 
     class owners_draw_planned_gross(Variable):
         value_type = float
@@ -106,9 +98,7 @@ def create_owners_draw():
         label = "Planned gross owners' draw before the separate reporting floor"
 
         def formula(person, period, parameters):
-            return _share(period, parameters) * max_(
-                0, person("owners_draw_active_income", period)
-            )
+            return _draw(person, period, parameters, "planned_gross")
 
     class owners_draw_net_earnings_factor(Variable):
         value_type = float
@@ -117,18 +107,7 @@ def create_owners_draw():
         label = "Net earnings factor applied to owners' draw"
 
         def formula(person, period, parameters):
-            if not _enabled(period, parameters):
-                return 0
-            p = parameters(period).gov
-            factor = p.contrib.ssa.owners_draw.net_earnings_factor
-            if factor == 0:
-                factor = 1 - p.irs.ald.misc.employer_share * (
-                    p.irs.self_employment.rate.social_security
-                    + p.irs.self_employment.rate.medicare
-                )
-            if not np.isfinite(factor) or not 0 < factor <= 1:
-                raise ValueError("Owners' draw net earnings factor must be in (0, 1]")
-            return factor
+            return _draw(person, period, parameters, "net_earnings_factor")
 
     class owners_draw_gross(Variable):
         value_type = float
@@ -138,12 +117,7 @@ def create_owners_draw():
         label = "Actual gross owners' draw accepted by the reporting floor"
 
         def formula(person, period, parameters):
-            if not _enabled(period, parameters):
-                return 0
-            planned = person("owners_draw_planned_gross", period)
-            adjusted = planned * person("owners_draw_net_earnings_factor", period)
-            floor = parameters(period).gov.irs.self_employment.net_earnings_exemption
-            return where(adjusted >= floor, planned, 0)
+            return _draw(person, period, parameters, "gross")
 
     class owners_draw_net_earnings(Variable):
         value_type = float
@@ -153,9 +127,7 @@ def create_owners_draw():
         label = "Adjusted owners' draw before the OASDI room cap"
 
         def formula(person, period, parameters):
-            return person("owners_draw_gross", period) * person(
-                "owners_draw_net_earnings_factor", period
-            )
+            return _draw(person, period, parameters, "net_earnings")
 
     class owners_draw_oasdi_room(Variable):
         value_type = float
@@ -165,22 +137,7 @@ def create_owners_draw():
         label = "OASDI room after wages and existing adjusted SE earnings"
 
         def formula(person, period, parameters):
-            if not _enabled(period, parameters):
-                return 0
-            p = parameters(period).gov.contrib.ssa.owners_draw
-            if p.room_cap_basis == 1:
-                return np.inf
-            if p.room_cap_basis != 0:
-                raise ValueError(
-                    "Owners' draw room_cap_basis must be 0 (current law) or 1 (no ceiling)"
-                )
-            wages = person("taxable_earnings_for_social_security", period)
-            existing_se = person(
-                "social_security_taxable_self_employment_income", period
-            )
-            # The existing base is already adjusted and capped; #10376 also
-            # floors its room when another reform taxes above-cap wages.
-            return max_(0, p.current_law_cap - wages - existing_se)
+            return _draw(person, period, parameters, "oasdi_room")
 
     class owners_draw_oasdi_base(Variable):
         value_type = float
@@ -190,10 +147,7 @@ def create_owners_draw():
         label = "Owners' draw subject to SECA OASDI"
 
         def formula(person, period, parameters):
-            return min_(
-                person("owners_draw_net_earnings", period),
-                person("owners_draw_oasdi_room", period),
-            )
+            return _draw(person, period, parameters, "oasdi_base")
 
     class owners_draw_oasdi_tax(Variable):
         value_type = float
@@ -203,8 +157,7 @@ def create_owners_draw():
         label = "Incremental SECA OASDI tax on owners' draw"
 
         def formula(person, period, parameters):
-            rate = parameters(period).gov.irs.self_employment.rate.social_security
-            return rate * person("owners_draw_oasdi_base", period)
+            return _draw(person, period, parameters, "oasdi_tax")
 
     class owners_draw_hi_tax(Variable):
         value_type = float
@@ -214,10 +167,7 @@ def create_owners_draw():
         label = "Optional incremental SECA HI tax on owners' draw"
 
         def formula(person, period, parameters):
-            if not parameters(period).gov.contrib.ssa.owners_draw.include_hi:
-                return 0
-            rate = parameters(period).gov.irs.self_employment.rate.medicare
-            return rate * person("owners_draw_net_earnings", period)
+            return _draw(person, period, parameters, "hi_tax")
 
     class owners_draw_niit_exclusion(Variable):
         value_type = float
@@ -232,13 +182,7 @@ def create_owners_draw():
         )
 
         def formula(person, period, parameters):
-            if not _enabled(period, parameters):
-                return 0
-            if parameters(period).gov.contrib.ssa.owners_draw.include_hi:
-                return person("owners_draw_gross", period)
-            return person("owners_draw_oasdi_base", period) / person(
-                "owners_draw_net_earnings_factor", period
-            )
+            return _draw(person, period, parameters, "niit_exclusion")
 
     class owners_draw_credited_earnings(Variable):
         value_type = float
@@ -252,9 +196,7 @@ def create_owners_draw():
         )
 
         def formula(person, period, parameters):
-            if not parameters(period).gov.contrib.ssa.owners_draw.benefit_credit:
-                return 0
-            return person("owners_draw_net_earnings", period)
+            return _draw(person, period, parameters, "credited_earnings")
 
     class self_employment_social_security_tax(baseline_oasdi_tax):
         def formula(person, period, parameters):

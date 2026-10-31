@@ -1,0 +1,10 @@
+description: Whether this variant's newly taxed above-threshold earnings receive separate AIME+ benefit credit.
+values:
+  0000-01-01: false
+metadata:
+  unit: bool
+  label: Custom annual-history donut benefit credit
+  economy: false
+  reference:
+    - title: 2025 OACT fixed-threshold donut provisions
+      href: https://www.ssa.gov/OACT/solvency/provisions_tr2025/payrolltax.html
