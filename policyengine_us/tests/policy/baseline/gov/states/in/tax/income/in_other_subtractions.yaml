@@ -1,0 +1,22 @@
+- name: Case 1, default in_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: IN
+    adjusted_gross_income: 50_000
+    in_exemptions: 1_000
+  output:
+    in_other_subtractions: 0
+    in_deductions: 0
+    in_agi: 49_000
+
+- name: Case 2, in_other_subtractions increases IN deductions and reduces AGI
+  period: 2024
+  input:
+    state_code: IN
+    adjusted_gross_income: 50_000
+    in_exemptions: 1_000
+    in_other_subtractions: 2_000
+  output:
+    in_other_subtractions: 2_000
+    in_deductions: 2_000
+    in_agi: 47_000

@@ -1,0 +1,17 @@
+description: Alaska exempts these wage sources of a full-time student under 18 who is not the head of household under the Heating Assistance Program.
+# 7 AAC 44.042(5) exempts "wages received by a full-time student under 18
+# years of age who is not the head of household". Military basic pay includes
+# National Guard and reserve drill pay. A student's business income is not
+# wages and still counts.
+values:
+  2026-10-01:
+    - employment_income
+    - military_basic_pay
+
+metadata:
+  unit: list
+  period: year
+  label: Alaska HAP student exempt wage sources
+  reference:
+    - title: 7 AAC 44.042(5)
+      href: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001

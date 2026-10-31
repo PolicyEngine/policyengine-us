@@ -53,7 +53,10 @@ def earliest_input_year(simulation):
     later one.
 
     Inputs of a variable the tax-benefit system no longer has, or has
-    neutralized, are skipped: they are never read. As with
+    neutralized, are skipped: they are never read. Social Security calculator
+    records and output overrides are also skipped: a historical earnings-test
+    amount, COLA decision or calculator result is not a tax-year income return
+    for the IRMAA lookback. As with
     ``has_input_for_period``, core versions before 3.32.27 can keep
     an input key after the input is deleted, and a value recalculated for
     that period then still counts. Formulas that read this cache their
@@ -66,6 +69,7 @@ def earliest_input_year(simulation):
         if (
             branch_name in visible_branches
             and period.unit != ETERNITY
+            and not variable.startswith(("ss_calculator_", "ss_calculated_"))
             and variable in variables
             and not variables[variable].is_neutralized
         ):
@@ -122,7 +126,13 @@ def tax_unit_non_dep_add(tax_unit, period, variables, include_dependents=()):
     return total
 
 
-def person_share_of_tax_unit_amount(person, period, tax_unit_variable, person_variable):
+def person_share_of_tax_unit_amount(
+    person,
+    period,
+    tax_unit_variable,
+    person_variable,
+    split_between_spouses=False,
+):
     """
     Attribute a tax unit's amount to its members.
 
@@ -131,9 +141,11 @@ def person_share_of_tax_unit_amount(person, period, tax_unit_variable, person_va
     own amounts when those sum to the tax unit's amount. When the tax-unit
     amount differs, as when it is an input or a reform changes its formula,
     the head's and spouse's own amounts are scaled to sum to it; if they have
-    no own amounts, the head takes it. With non-negative own amounts and a
-    non-negative tax-unit amount, as for deductions, no share is negative.
-    Every tax unit is assumed to have a head.
+    no own amounts, the head takes it, or with `split_between_spouses` the
+    head and spouse take equal halves, which does not depend on which spouse
+    is labelled head. With non-negative own amounts and a non-negative
+    tax-unit amount, as for deductions, no share is negative. Every tax unit
+    is assumed to have a head.
     """
     # The person-level projector returns tax-unit values for each member.
     tax_unit = person.tax_unit
@@ -150,9 +162,13 @@ def person_share_of_tax_unit_amount(person, period, tax_unit_variable, person_va
         out=np.zeros_like(filers_own, dtype=float),
         where=has_own,
     )
-    reconciled = own * scale + person("is_tax_unit_head", period) * where(
-        has_own, 0, amount
-    )
+    is_head = person("is_tax_unit_head", period)
+    if split_between_spouses:
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        takes_unattributed = head_or_spouse / max_(tax_unit.sum(head_or_spouse), 1)
+    else:
+        takes_unattributed = is_head
+    reconciled = own * scale + takes_unattributed * where(has_own, 0, amount)
     filer_share = where(matches, own, reconciled)
     return where(filer, filer_share, own)
 

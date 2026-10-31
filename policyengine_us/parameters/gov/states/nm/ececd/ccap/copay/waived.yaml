@@ -4,12 +4,18 @@ description: New Mexico uses this indicator to determine whether child care assi
 #   2023-07-01: copay waiver expired -- copays reinstated for families above
 #               200% FPL (families at or below 200% FPL remained at $0);
 #   2025-11-01: Universal Child Care -- no copays for anyone.
+# 8.9.3.13.E NMAC, as amended effective 2025-11-04, states that copayments are
+# waived. The rule that replaced 8.9.3 NMAC on 2026-09-09 has the department
+# pay copayments for families at or below 600% FPL, and requires copayments
+# only after a fiscal trigger (8.9.3.12), on a schedule that starts no earlier
+# than 2027-03-01 (8.9.3.14.D).
 # This flag is true only when copays are fully waived for every family (the
 # 2022-05-01 to 2023-06-30 and 2025-11-01-onward windows). In the interim
 # window it is false, but PolicyEngine still returns a $0 copay there because
 # the reinstated >200% FPL copay uses the annually published copay schedule
-# (8.15.2.24) that is not encoded, and the pre-2022 copay formula (8.15.2.13.B)
-# is likewise not modeled -- see nm_ccap_copay for the documented approximation.
+# (8.9.3.24 NMAC; from 2023-08-01 the percent-of-income chart in 8.9.3.13.D)
+# that is not encoded, and the pre-2022 copay formula (8.15.2.13.B) is
+# likewise not modeled -- see nm_ccap_copay for the documented approximation.
 values:
   2016-10-01: false
   2022-05-01: true
@@ -25,5 +31,11 @@ metadata:
       href: https://www.nmececd.org/wp-content/uploads/2024/09/CCA-Co-payments-waived_rev1l.pdf#page=1
     - title: LFC Policy Brief, New Mexico Childcare Assistance Eligibility Changes (Dec 9 2025), p.2 (copay waiver expired 2023-07-01 for >200% FPL; no copays from 2025-11-01)
       href: https://www.nmlegis.gov/handouts/ALFC%20120825%20Item%208%20Policy%20Brief%20Child%20Care%20Update.pdf#page=2
-    - title: 8.15.2.13.B NMAC
+    - title: 8.15.2.13.B NMAC (before 2022-11-01)
       href: https://www.srca.nm.gov/parts/title08/08.015.0002.html
+    - title: 8.9.3.13 and 8.9.3.24 NMAC (2022-11-01 to 2026-09-08)
+      href: https://www.srca.nm.gov/parts/title08/08.009.0003.html
+    - title: "8.9.3.13.A-E NMAC, as amended effective 2025-11-04 (copayments are waived) #page 12-13"
+      href: https://www.nmececd.org/wp-content/uploads/2025/11/8.9.3_integrated_FULL-TEXT.pdf#page=12
+    - title: "8.9.3.12 and 8.9.3.14 NMAC (from 2026-09-09) #page 12-13"
+      href: https://prod-rf-lambda.rtssaas.com/PublicFiles/d89c47bd0d70402dba89b03a22bda6d1/b0e207a9-a1a3-412d-9660-0a6e925f6f25/8.9.3.pdf#page=12

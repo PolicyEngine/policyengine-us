@@ -1,0 +1,21 @@
+description: Arizona treats a household as categorically eligible when a member receives one of these benefits under the Low Income Home Energy Assistance Program.
+# Section VI.A.6.b.i: "If one (1) Household member's current enrollment in Cash
+# Assistance or Nutrition Assistance is verified, the Household will be
+# considered categorically eligible." A positive modeled benefit stands for
+# current enrollment; snap and tanf are take-up gated, and tanf includes
+# Arizona Cash Assistance (az_tanf). The FY2026 plan (Section 1.4) answers No
+# for SSI and for means-tested veterans programs.
+values:
+  2025-08-25:
+    - snap
+    - tanf
+
+metadata:
+  unit: list
+  period: year
+  label: Arizona LIHEAP categorical eligibility programs
+  reference:
+    - title: "Arizona DES LIHEAP Policy, revision 16A (effective July 1, 2026), Categorical Eligibility definition and Section VI.A.6.a-b #page 3-4,7-8"
+      href: https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=3
+    - title: Arizona LIHEAP FY2026 State Plan, Sections 1.4 and 1.4a (TANF and SNAP yes; SSI and means-tested veterans programs no)
+      href: https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=5

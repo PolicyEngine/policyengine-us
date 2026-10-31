@@ -1,0 +1,533 @@
+# ARM 37.70.601, 37.70.607; LIHEAP Manual 2025-2026 sections 3.20-3.23 and
+# Appendix A 9.1-9.2; LIHEAP Manual 2026-2027 Appendix A 9.1-9.2. Regular
+# benefit = base benefit (dwelling type x bedrooms 1-4 x fuel) x district
+# multiplier, rounded to the nearest dollar; non-traditional dwellings get a
+# flat $150.
+# Manual 2025-2026 section 3.23 example: three people, two eligible, $15,000
+# income, District 7 (Yellowstone County), two-bedroom single-family home
+# heated with propane. $15,000 / $21,150 = 70.9% -> 71%, 51-74% band -> 0.83.
+# $1,503 x 0.83 = $1,247.49 -> $1,247.
+- name: Case 1, the manual example with an ineligible member pays 1,247 dollars.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+        employment_income: 9_000
+        ssi: 0
+      person2:
+        age: 33
+        immigration_status: UNDOCUMENTED
+        employment_income: 6_000
+        ssi: 0
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: PROPANE
+        heating_expense: 1_800
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+        county: YELLOWSTONE_COUNTY_MT
+        bedrooms: 2
+  output:
+    mt_liheap_household_size: 2
+    mt_liheap_countable_income: 15_000
+    mt_liheap_categorical_eligibility: NONE
+    mt_liheap_benefit_income: 15_000
+    mt_liheap_multiplier: 0.83
+    mt_liheap_eligible: true
+    mt_liheap: 1_247
+
+# Manual section 3.21: at most four bedrooms are used; a home reported with no
+# bedrooms uses the one-bedroom row. Single-family natural gas, District 7,
+# no income (0-25% band, 0.92):
+#   0 bedrooms -> one-bedroom $531 x 0.92 = $488.52 -> $489;
+#   6 bedrooms -> four-bedroom $1,447 x 0.92 = $1,331.24 -> $1,331.
+- name: Case 2, bedroom counts below one and above four use the end rows.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MT, MT]
+    county: [YELLOWSTONE_COUNTY_MT, YELLOWSTONE_COUNTY_MT]
+    age: [45, 45]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [0, 0]
+    bedrooms: [0, 6]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [700, 1_100]
+    ssi: [0, 0]
+    snap: [0, 0]
+    tanf: [0, 0]
+  output:
+    mt_liheap: [489, 1_331]
+
+# Appendix A 9.1 dwelling types, two bedrooms, District 7, no income (0.92):
+#   apartment electric $872 x 0.92 = $802.24 -> $802;
+#   mobile home wood $968 x 0.92 = $890.56 -> $891;
+#   non-traditional dwelling, any fuel: flat $150 with no multiplier.
+- name: Case 3, each dwelling type uses its matrix and non-traditional dwellings get 150 dollars.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MT, MT, MT]
+    county: [YELLOWSTONE_COUNTY_MT, YELLOWSTONE_COUNTY_MT, YELLOWSTONE_COUNTY_MT]
+    age: [45, 45, 45]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [0, 0, 0]
+    bedrooms: [2, 2, 2]
+    mt_liheap_dwelling_type: [MULTI_FAMILY, MOBILE_HOME, NON_TRADITIONAL]
+    heating_type: [ELECTRICITY, WOOD, PROPANE]
+    heating_expense: [1_300, 900, 1_600]
+    ssi: [0, 0, 0]
+    snap: [0, 0, 0]
+    tanf: [0, 0, 0]
+  output:
+    mt_liheap: [802, 891, 150]
+
+# Appendix A 9.1 single-family two-bedroom fuels, District 7, no income (0.92):
+#   coal $671 x 0.92 = $617.32 -> $617;
+#   fuel oil $1,794 x 0.92 = $1,650.48 -> $1,650;
+#   kerosene, a deliverable fuel (ARM 37.70.401(5)), uses the fuel oil column:
+#   $1,650; solar has no matrix column: $0 although eligible.
+- name: Case 4, fuels map to matrix columns and kerosene uses fuel oil while solar pays nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MT, MT, MT, MT]
+    county: [YELLOWSTONE_COUNTY_MT, YELLOWSTONE_COUNTY_MT, YELLOWSTONE_COUNTY_MT, YELLOWSTONE_COUNTY_MT]
+    age: [45, 45, 45, 45]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [0, 0, 0, 0]
+    bedrooms: [2, 2, 2, 2]
+    heating_type: [COAL, FUEL_OIL, KEROSENE, SOLAR]
+    heating_expense: [800, 2_000, 2_000, 300]
+    ssi: [0, 0, 0, 0]
+    snap: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+  output:
+    mt_liheap_eligible: [true, true, true, true]
+    mt_liheap: [617, 1_650, 1_650, 0]
+
+# ARM 37.70.402(7), 37.70.601(3): subsidized housing with heat in rent gets the
+# modified benefit, the greater of 5% of the regular benefit and $25.
+# District 7, no income (0.92):
+#   apartment electric two bedrooms, HUD assistance: regular $802 -> 5% =
+#   $40.10;
+#   apartment natural gas one bedroom, public housing: regular $378 x 0.92 =
+#   $347.76 -> $348 -> 5% = $17.40 -> $25 minimum.
+- name: Case 5, subsidized heat-in-rent households get the modified benefit with a 25 dollar minimum.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MT, MT]
+    county: [YELLOWSTONE_COUNTY_MT, YELLOWSTONE_COUNTY_MT]
+    age: [45, 45]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [0, 0]
+    bedrooms: [2, 1]
+    mt_liheap_dwelling_type: [MULTI_FAMILY, MULTI_FAMILY]
+    heating_type: [ELECTRICITY, NATURAL_GAS]
+    heating_expense: [0, 0]
+    heat_expense_included_in_rent: [true, true]
+    pre_subsidy_rent: [10_800, 9_600]
+    receives_housing_assistance: [true, false]
+    is_in_public_housing: [false, true]
+    ssi: [0, 0]
+    snap: [0, 0]
+    tanf: [0, 0]
+  output:
+    mt_liheap: [40.10, 25]
+
+# ARM 37.70.607(3): an unsubsidized heat-in-rent household is paid the regular
+# benefit monthly, each month at most 50% of rent, over the seven-month
+# season. Silver Bow County is District 12; single-family propane two
+# bedrooms, no income (1.06): $1,503 x 1.06 = $1,593.18 -> $1,593.
+#   rent $450 a month: cap 50% x 7 x $5,400 / 12 = $1,575 -> $1,575;
+#   rent $900 a month: cap $3,150 -> $1,593.
+- name: Case 6, unsubsidized heat-in-rent benefits are capped at half of seven months of rent.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MT, MT]
+    county: [SILVER_BOW_COUNTY_MT, SILVER_BOW_COUNTY_MT]
+    age: [45, 45]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [0, 0]
+    bedrooms: [2, 2]
+    heating_type: [PROPANE, PROPANE]
+    heating_expense: [0, 0]
+    heat_expense_included_in_rent: [true, true]
+    pre_subsidy_rent: [5_400, 10_800]
+    ssi: [0, 0]
+    snap: [0, 0]
+    tanf: [0, 0]
+  output:
+    mt_liheap: [1_575, 1_593]
+
+# Manual 2026-2027 Appendix A 9.8: "Single person receives SSI of $22 and SS
+# of $696" uses the $994 SSI standard. Benefit income $994 x 12 = $11,928;
+# $11,928 / $15,960 = 74.7% -> 75%, 75-100% band; Gallatin County is
+# District 9, FFY2027 0.88. Mobile home electric one bedroom: $841 x 0.88 =
+# $740.08 -> $740. Countable income is $264 + $8,352 = $8,616 (Medicaid pays
+# the Part B premium).
+- name: Case 7, an SSI categorical household uses the SSI standard for the multiplier in FFY2027.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    county: GALLATIN_COUNTY_MT
+    age: 72
+    immigration_status: CITIZEN
+    ssi: 264
+    social_security_retirement: 8_352
+    medicare_part_b_premium: 0
+    bedrooms: 1
+    mt_liheap_dwelling_type: MOBILE_HOME
+    heating_type: ELECTRICITY
+    heating_expense: 1_500
+    snap: 0
+    tanf: 0
+  output:
+    mt_liheap_categorical_eligibility: SSI_TANF
+    mt_liheap_countable_income: 8_616
+    mt_liheap_benefit_income: 11_928
+    mt_liheap_multiplier: 0.88
+    mt_liheap_eligible: true
+    mt_liheap: 740
+
+# FFY2027 Missoula County (District 11) family of four in a three-bedroom house
+# heated with natural gas. Countable income $42,000 - $2,400 payroll health
+# premiums = $39,600 <= $69,463 limit; savings $2,500 <= $25,518.
+# $39,600 / $33,000 = 120%, 101-125% band -> 0.71.
+# $1,052 x 0.71 = $746.92 -> $747.
+- name: Case 8, a Missoula County family heating with natural gas in FFY2027.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        immigration_status: CITIZEN
+        employment_income: 42_000
+        pre_tax_health_insurance_premiums: 2_400
+        bank_account_assets: 2_500
+        ssi: 0
+      person2:
+        age: 36
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 9
+        immigration_status: CITIZEN
+        ssi: 0
+      person4:
+        age: 6
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        heating_expense: 950
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MT
+        county: MISSOULA_COUNTY_MT
+        bedrooms: 3
+  output:
+    mt_liheap_household_size: 4
+    mt_liheap_countable_income: 39_600
+    mt_liheap_income_limit: 69_463
+    mt_liheap_categorical_eligibility: NONE
+    mt_liheap_benefit_income: 39_600
+    mt_liheap_multiplier: 0.71
+    mt_liheap_eligible: true
+    mt_liheap: 747
+
+# FFY2026 size 1 limit $33,719: $33,720 of wages is ineligible, so no benefit.
+- name: Case 9, an ineligible household receives no benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    county: YELLOWSTONE_COUNTY_MT
+    age: 40
+    immigration_status: CITIZEN
+    employment_income: 33_720
+    bedrooms: 2
+    heating_type: NATURAL_GAS
+    heating_expense: 900
+    ssi: 0
+    snap: 0
+    tanf: 0
+  output:
+    mt_liheap: 0
+
+# FFY2026 Yellowstone County: parents (45, $40,000 wages; 43), an SSI child
+# (10, $6,000 SSI) and a 20-year-old sibling ($25,000 wages) filing his own
+# return. The sibling's income was not considered for the SSI grant, so the
+# household is not categorical (ARM 37.70.402(3)) and takes the income test.
+# Every member's income counts (ARM 37.70.401(1)): wages $40,000 + $25,000 +
+# the child's $6,000 of SSI = $71,000 > $64,846 size-4 limit, so ineligible and
+# no benefit.
+- name: Case 10, an SSI child's household with a separately filing adult sibling takes the income test.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        employment_income: 40_000
+        ssi: 0
+      person2:
+        age: 43
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 6_000
+      person4:
+        age: 20
+        immigration_status: CITIZEN
+        employment_income: 25_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_000
+        snap: 0
+        tanf: 0
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+      tax_unit2:
+        members: [person4]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+      marital_unit3:
+        members: [person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MT
+        county: YELLOWSTONE_COUNTY_MT
+        bedrooms: 3
+  output:
+    mt_liheap_categorical_eligibility: NONE
+    mt_liheap_countable_income: 71_000
+    mt_liheap_income_limit: 64_846
+    mt_liheap_eligible: false
+    mt_liheap: 0
+
+# ARM 37.70.407(1)(d): OASDI benefits of full-time students aged 18 to 22 are
+# excluded. FFY2026 Yellowstone County (District 7): a parent (45, $36,000
+# wages) and an 18-year-old full-time high-school student with $800 a month
+# ($9,600 a year) of survivors benefits. Countable income $36,000 + ($9,600 -
+# $9,600) = $36,000 <= $44,095 size-2 limit (counting the benefit, $45,600
+# would be over it). $36,000 / $21,150 = 170.2% -> 170%, 151-175% band ->
+# 0.51. Single-family two-bedroom natural gas: $772 x 0.51 = $393.72 -> $394.
+- name: Case 11, survivors benefits of an 18-year-old full-time student are excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        employment_income: 36_000
+        ssi: 0
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        is_full_time_student: true
+        social_security_survivors: 9_600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_000
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+        county: YELLOWSTONE_COUNTY_MT
+        bedrooms: 2
+  output:
+    mt_liheap_household_size: 2
+    mt_liheap_countable_income: 36_000
+    mt_liheap_income_limit: 44_095
+    mt_liheap_categorical_eligibility: NONE
+    mt_liheap_benefit_income: 36_000
+    mt_liheap_multiplier: 0.51
+    mt_liheap_eligible: true
+    mt_liheap: 394
+
+# ARM 37.70.407(1)(bb): out-of-pocket health insurance premiums reduce the
+# income of a household that is not categorically eligible, including a
+# Medicare Part B premium withheld from a railroad retirement annuity. FFY2026
+# Yellowstone County (District 7): a 70-year-old railroad retiree with $34,000
+# of railroad benefits pays the 2026 standard Part B premium ($202.90 x 12 =
+# $2,434.80); Part A is premium-free. Countable income $34,000 - $2,434.80 =
+# $31,565.20 <= $33,719 size-1 limit. $31,565.20 / $15,650 = 201.7% -> 202%,
+# the 201% and over band -> 0.32. Single-family two-bedroom natural gas:
+# $772 x 0.32 = $247.04 -> $247.
+- name: Case 12, a railroad retiree's Medicare Part B premium is deducted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    county: YELLOWSTONE_COUNTY_MT
+    age: 70
+    immigration_status: CITIZEN
+    railroad_benefits: 34_000
+    medicare_part_b_premium: 2_434.80
+    bedrooms: 2
+    heating_type: NATURAL_GAS
+    gas_expense: 900
+    ssi: 0
+    snap: 0
+    tanf: 0
+  output:
+    mt_liheap_categorical_eligibility: NONE
+    mt_liheap_countable_income: 31_565.20
+    mt_liheap_multiplier: 0.32
+    mt_liheap: 247
+
+# ARM 37.70.407(1)(bb): a Medicare Part A premium paid out of pocket is also
+# deducted. FFY2026 Yellowstone County: a 70-year-old retired public employee
+# with a $36,000 pension and 35 quarters of Medicare-covered work buys Part A
+# at the 2026 reduced premium ($311 x 12 = $3,732) and pays the standard
+# Part B premium ($2,434.80). Countable income $36,000 - $3,732 - $2,434.80 =
+# $29,833.20 <= $33,719. $29,833.20 / $15,650 = 190.6% -> 191%, 176-200% band
+# -> 0.41. $772 x 0.41 = $316.52 -> $317.
+- name: Case 13, a Medicare Part A premium is deducted with the Part B premium.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    county: YELLOWSTONE_COUNTY_MT
+    age: 70
+    immigration_status: CITIZEN
+    taxable_public_pension_income: 36_000
+    medicare_quarters_of_coverage: 35
+    medicare_part_b_premium: 2_434.80
+    bedrooms: 2
+    heating_type: NATURAL_GAS
+    gas_expense: 900
+    ssi: 0
+    snap: 0
+    tanf: 0
+  output:
+    medicare_part_a_premium: 3_732
+    mt_liheap_countable_income: 29_833.20
+    mt_liheap_multiplier: 0.41
+    mt_liheap: 317
+
+# ARM 37.70.401(1) counts the income of every member, and the ARM
+# 37.70.407(1)(d) student exclusion starts at 18. FFY2026 Yellowstone County:
+# a parent (40, $20,000 wages) and a 10-year-old pupil with $800 a month
+# ($9,600 a year) of survivors benefits. Countable income $20,000 + $9,600 =
+# $29,600 <= $44,095 size-2 limit. $29,600 / $21,150 = 140.0% -> 140%,
+# 126-150% band -> 0.60. $772 x 0.60 = $463.20 -> $463.
+- name: Case 14, a child's survivors benefits count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income_before_lsr: 20_000
+        ssi: 0
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        social_security_survivors: 9_600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        snap: 0
+        tanf: 0
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+        county: YELLOWSTONE_COUNTY_MT
+        bedrooms: 2
+  output:
+    is_full_time_student: [false, true]
+    mt_liheap_countable_income: 29_600
+    mt_liheap_income_limit: 44_095
+    mt_liheap_multiplier: 0.6
+    mt_liheap: 463
+
+# Manual 8.1 Fuel Types allows heating assistance only for propane, wood,
+# coal, fuel oil, natural gas and electricity, and excludes solar; the
+# matrices have no column for other fuels. Manual 3.36 pays non-traditional
+# dwellings a flat $150 for any allowable fuel, and ARM 37.70.601(3) pays
+# subsidized heat-in-rent households the greater of 5% of the regular benefit
+# and $25. FFY2026, Yellowstone County (District 7): each adult works full
+# time at Montana's 2026 minimum wage, $10.85 x 2,080 = $22,568 <= the
+# $33,719 size-1 limit. With SNAP, SSI and TANF at $0 neither household is
+# categorical, so both are eligible.
+#   (a) A yurt heated by its own solar panels, a non-traditional dwelling.
+#   Solar reads the pre-subsidy electric bill, $107.91 x 12 = $1,294.92 (EIA
+#   2024 Montana residential average). It gets $0; without the fuel-column
+#   gate it would get the flat $150.
+#   (b) A HUD-assisted apartment with heat in rent, in a building heated with
+#   another fuel. $22,568 / $15,650 = 144.2% -> 144%, 126-150% band -> 0.60;
+#   the fuel has no matrix column, so the regular benefit is
+#   floor($0 x 0.60 + 0.5) = $0. It gets $0; without the gate the modified
+#   benefit would be max(5% x $0, $25) = $25.
+- name: Case 15, solar and other fuels pay nothing in a non-traditional dwelling or as subsidized heat in rent.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MT, MT]
+    county: [YELLOWSTONE_COUNTY_MT, YELLOWSTONE_COUNTY_MT]
+    age: [45, 45]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [22_568, 22_568]
+    bedrooms: [1, 1]
+    mt_liheap_dwelling_type: [NON_TRADITIONAL, MULTI_FAMILY]
+    heating_type: [SOLAR, OTHER]
+    pre_subsidy_electricity_expense: [1_294.92, 0]
+    other_heating_fuel_expense: [0, 0]
+    heat_expense_included_in_rent: [false, true]
+    receives_housing_assistance: [false, true]
+    ssi: [0, 0]
+    snap: [0, 0]
+    tanf: [0, 0]
+  output:
+    mt_liheap_eligible: [true, true]
+    mt_liheap: [0, 0]

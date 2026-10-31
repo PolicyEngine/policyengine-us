@@ -1,0 +1,77 @@
+description: Vermont pays this percentage of the standard heating cost, based on gross income as a share of the federal poverty guideline, under the Low Income Home Energy Assistance Program.
+# Rule 2915(b) delegates the percentage of poverty to the P-2914A table of
+# monthly dollar bands. Each threshold after -.inf tops the band below it: the
+# band's monthly dollar top is the threshold times the whole-dollar monthly
+# guideline (vt_liheap_fpg / 12), rounded up to the dollar, and monthly income at
+# or below a top stays in that band (right-closed). This reproduces all 165
+# printed 2025-26 tops for sizes 1-15 (size 1: 0.74 x 1,304 = 964.96, top $965;
+# size 2: 0.74 x 1,763 = 1,304.62, top $1,305). No 2026-27 P-2914A is published;
+# 2027 applies the same construction to the 2026 guideline. Income above the
+# income limit is excluded by eligibility, not here.
+brackets:
+  - threshold:
+      2024-06-22: -.inf
+    amount:
+      2024-06-22: 0.9
+  - threshold:
+      2024-06-22: 0.74
+    amount:
+      2024-06-22: 0.87
+  - threshold:
+      2024-06-22: 0.84
+    amount:
+      2024-06-22: 0.84
+  - threshold:
+      2024-06-22: 0.94
+    amount:
+      2024-06-22: 0.81
+  - threshold:
+      2024-06-22: 1.04
+    amount:
+      2024-06-22: 0.78
+  - threshold:
+      2024-06-22: 1.14
+    amount:
+      2024-06-22: 0.75
+  - threshold:
+      2024-06-22: 1.24
+    amount:
+      2024-06-22: 0.72
+  - threshold:
+      2024-06-22: 1.34
+    amount:
+      2024-06-22: 0.69
+  - threshold:
+      2024-06-22: 1.44
+    amount:
+      2024-06-22: 0.66
+  - threshold:
+      2024-06-22: 1.54
+    amount:
+      2024-06-22: 0.33
+  - threshold:
+      2024-06-22: 1.64
+    amount:
+      2024-06-22: 0.3
+  - threshold:
+      2024-06-22: 1.74
+    amount:
+      2024-06-22: 0.27
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Vermont LIHEAP heat cost percentage
+  reference:
+    - title: Vermont Seasonal Fuel Assistance Rule 2915(b)-(d)
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=42
+    - title: Vermont DCF Procedure P-2915, Heat Cost Percentage Table
+      href: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2915.pdf
+    - title: "Vermont DCF Procedure P-2914A, Percentage of Poverty, 2025-2026 #page 1-3"
+      href: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2914A.pdf#page=1
+    - title: Vermont AHS 2026-2027 Benefits Matrix, Heat Cost Percentage Table
+      href: https://humanservices.vermont.gov/sites/ahsnew/files/documents/2026-2027%20Benefits%20Matrx.pdf#page=1
+    - title: 33 V.S.A. § 2605(a)-(b)
+      href: https://legislature.vermont.gov/statutes/section/33/026/02605

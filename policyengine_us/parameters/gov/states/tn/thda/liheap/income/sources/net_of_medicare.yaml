@@ -1,0 +1,29 @@
+description: Tennessee deducts Medicare premiums from Social Security and these benefit sources under the Low Income Home Energy Assistance Program.
+# Section 2.13 counts net income from Social Security, pensions (private and
+# government, including military retirement pay) and VA benefits, excluding
+# Medicare premiums. Railroad retirement annuities are government pensions,
+# and the Railroad Retirement Board withholds Part B premiums from them.
+# Military retirement income includes survivor benefit plan annuities.
+# tn_liheap_countable_income adds each member's Social Security to these
+# sources, each floored at zero, and subtracts the member's Medicare Part A
+# and Part B premiums, flooring the result at zero.
+values:
+  2025-10-01:
+    - railroad_benefits
+    - veterans_benefits
+    # Private and government pensions, annuities and regular insurance
+    # payments.
+    - pension_income
+    - military_retirement_income
+
+metadata:
+  unit: list
+  period: year
+  label: Tennessee LIHEAP benefit sources net of Medicare premiums
+  reference:
+    - title: Tennessee LIHEAP 2026 Policy Manual, Section 2.13
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-2026-Policy-Manual-for-Tennessee.pdf#page=27
+    - title: Tennessee LIHEAP 2027 Policy Manual (draft), Section 2.13
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/DRAFT-LIHEAP-2027-Policy-Manual-7-11-2026.pdf#page=29
+    - title: Tennessee FY2026 LIHEAP State Plan, Section 1.9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/TN_Plan_2026.pdf#page=6

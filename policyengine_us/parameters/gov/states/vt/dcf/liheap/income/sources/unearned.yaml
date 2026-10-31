@@ -1,0 +1,58 @@
+description: Vermont uses these sources as unearned income under the Low Income Home Energy Assistance Program.
+# Rule 2911.2(b) items: public assistance (SSI and General Assistance; Reach Up
+# is added once through the SPM-unit tanf aggregate), annuities, pensions and
+# retirement benefits, veterans' and disability benefits, workers' and
+# unemployment compensation, survivors or social security benefits (Social
+# Security counted gross), strike benefits, rental income, child support and
+# alimony, dividends and interest, trust withdrawals and other direct money
+# payments. Each listed source is floored at zero. Royalties, non-excluded scholarships and foster care or
+# difficulty of care payments have no specific inputs.
+values:
+  2024-06-22:
+    - ssi
+    # The state AABD supplement to SSI is public assistance under rule
+    # 2911.2(b)(1).
+    - vt_aabd
+    - general_assistance
+    - pension_income
+    # Railroad Retirement annuities are annuities and retirement benefits under
+    # rule 2911.2(b)(2)-(4).
+    - railroad_benefits
+    # Military retired pay and Survivor Benefit Plan annuities are separate
+    # inputs from the pension inputs that pension_income adds.
+    - military_retirement_income
+    # Retirement account distributions are retirement benefits under rule
+    # 2911.2(b)(4) and a separate input from pension_income.
+    - retirement_distributions
+    - veterans_benefits
+    - disability_benefits
+    - workers_compensation
+    - total_unemployment_compensation
+    - social_security
+    # Survivor benefits other than Social Security survivor benefits.
+    - survivor_benefits
+    - strike_benefits
+    # Rent from property a member manages is self-employment income under rule
+    # 2911.3(a)(1); either way it counts, so it is listed once here.
+    - rental_income
+    - farm_rent_income
+    - child_support_received
+    - alimony_income
+    - interest_income
+    - ordinary_dividend_income
+    - estate_income
+    # Rule 2911.2(b)(16) also counts "all other direct money payments from any
+    # source that can be construed to be a gain or benefit".
+    - miscellaneous_income
+
+metadata:
+  unit: list
+  period: year
+  label: Vermont LIHEAP unearned income sources
+  reference:
+    - title: "Vermont Seasonal Fuel Assistance Rules 2910, 2911.2 and 2911.3 #page 25,27-29"
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=25
+    - title: Vermont DCF Procedure P-2910, Income
+      href: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2910.pdf
+    - title: "Vermont FY2026 LIHEAP State Plan, Section 1.9 #page 6-7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/VT_Plan_2026.pdf#page=6
