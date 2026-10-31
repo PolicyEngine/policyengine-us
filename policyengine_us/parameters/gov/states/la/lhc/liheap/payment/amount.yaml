@@ -1,0 +1,48 @@
+description: Louisiana provides this regular heating benefit by energy burden band and household size group under the Low Income Home Energy Assistance Program.
+# The matrix prints one amount for sizes 1-3 and another for sizes 4 through
+# "8 or More". The FY2026 plan's $200 minimum and $800 maximum (Section 2.6)
+# equal the lowest cell and the highest cell plus the $100 priority supplement.
+# Energy burden band 1: 9.9% and less.
+1:
+  1:
+    2025-10-01: 200
+  2:
+    2025-10-01: 250
+# Energy burden band 2: 10% to 17.9%.
+2:
+  1:
+    2025-10-01: 350
+  2:
+    2025-10-01: 400
+# Energy burden band 3: 18% to 24.9%.
+3:
+  1:
+    2025-10-01: 500
+  2:
+    2025-10-01: 550
+# Energy burden band 4: 25% and greater.
+4:
+  1:
+    2025-10-01: 650
+  2:
+    2025-10-01: 700
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Louisiana LIHEAP regular heating benefit amount
+  breakdown:
+    - range(1, 5) # energy burden band
+    - range(1, 3) # household size group (1 = size 1-3, 2 = size 4+)
+  breakdown_labels:
+    - Energy burden band
+    - Household size group
+  reference:
+    - title: Louisiana FFY2026 Heating and Cooling Benefit Matrix, benefit amount
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/LA_BenefitMatrix_Heat-Cool_2026.pdf
+    - title: Louisiana FY2026 LIHEAP State Plan, Sections 2.4-2.6
+      href: https://liheapch.acf.gov/docs/2026/state-plans/LA_Plan_2026.pdf#page=10
+    - title: Louisiana LIHEAP Service Delivery Guide, revised January 1, 2024, Section 4.2
+      href: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20REVISED%20January%201_%202024.pdf#page=41
+    - title: Louisiana LIHEAP Service Delivery Guide, effective April 1, 2026, Section 4.2
+      href: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20FINAL%20-%20Effective%20April%201%2c%202026.pdf#page=48

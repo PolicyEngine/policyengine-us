@@ -1,0 +1,16 @@
+description: The Medicare Savings Programs treat these income sources as contributions, which are income from a person outside the medical unit, when a state excludes contributions from its general income exclusion.
+values:
+  # Same start as the SSI unearned income source list these come from.
+  1975-01-01:
+    - alimony_income
+    - child_support_received
+    - financial_assistance
+metadata:
+  unit: list
+  period: year
+  label: MSP contribution income sources
+  reference:
+    - title: Illinois Department of Human Services Policy Manual PM 15-04-03-a - AABD Income Disregard (Community Cases)
+      href: https://www.dhs.state.il.us/page.aspx?item=16387
+    - title: 89 Illinois Administrative Code 120.335(a)(1) - Exempt Unearned Income
+      href: https://www.ilga.gov/ftp/JCAR/AdminCode/089/089001200H03350R.html

@@ -14,10 +14,21 @@ for a 2023 filer aged 70, and
 100,000 (federal AGI) for a 2024 filer aged 70 whose Montana taxable income
 nets a 5,500 subtraction.
 
+For 2021-2023 Montana subtracts a partial pension, annuity, and IRA income
+exemption (MCA 15-30-2110(2)(c); Form 2 Subtractions Schedule line 35 for
+2021, line 34 for 2022-2023): the smaller of each taxpayer's pension income
+and the cap (4,400 for 2021), reduced by 2 for each dollar of federal AGI
+above the threshold (36,700 for 2021). PE subtracts it outside
+`mt_subtractions`: `mt_agi_joint` takes the spouses' combined amount, reduced
+once by the joint federal AGI (`mt_pension_exemption_joint`), and
+`mt_agi_indiv` takes each spouse's own amount, reduced by that spouse's
+federal AGI (`mt_pension_exemption_indiv`).
+
 A seeded grid of single filers and couples (ages 40 and 70, wages,
-self-employment gains and losses, pensions, Social Security and interest)
-runs as one simulation per year from 2021 to 2027, and Hypothesis draws
-further batches. For every tax unit:
+self-employment gains and losses, pensions, Social Security and interest,
+and a single filer whose only income is a pension) runs as one simulation
+per year from 2021 to 2027, and Hypothesis draws further batches. For every
+tax unit:
 
 1. Filing path: `mt_agi` is the sum of each spouse's `mt_agi_indiv` when the
    couple files separately on the same form, and `mt_agi_joint` otherwise.
@@ -25,7 +36,13 @@ further batches. For every tax unit:
    through 2023 and federal adjusted gross income from 2024.
 3. Pooling: through 2023, a unit on the joint path with non-negative federal
    AGI, no Montana additions or subtractions and no Social Security reports
-   federal AGI, so one spouse's loss offsets the other spouse's income.
+   federal AGI less the joint pension exemption, floored at zero:
+   `max(federal AGI - mt_pension_exemption_joint, 0)`. So one spouse's loss
+   offsets the other spouse's income, and the exemption is taken once. As
+   #10496 explained, the exemption is outside `mt_subtractions`
+   (`mt_agi_indiv` and `mt_agi_joint` subtract it), so the condition of no
+   subtractions does not exclude units that claim it: they stay in this
+   property, and their expected value nets it.
 4. Bounds: `mt_agi` is never negative, and a unit outside Montana has no
    `mt_agi`.
 
@@ -37,16 +54,17 @@ zero. Property 3 excludes negative federal AGI rather than endorsing that
 existing discrepancy. Properties 1, 2 and 4 still exercise those units.
 
 Guards check that the grid reaches both filing paths, a joint-path couple
-whose pooled AGI differs from the sum of the spouses' floored AGIs, and, from
-2024, a filer whose Montana base differs from federal AGI, so properties 1-3
-are never vacuous.
+with no pension exemption whose pooled AGI differs from the sum of the
+spouses' floored AGIs, a unit on the property 3 path with a nonzero pension
+exemption through 2023, and, from 2024, a filer whose Montana base differs
+from federal AGI, so properties 1-3 are never vacuous.
 """
 
 from itertools import product
 
 import numpy as np
 import pytest
-from hypothesis import HealthCheck, given, settings
+from hypothesis import HealthCheck, example, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us import Simulation
@@ -72,11 +90,13 @@ TAX_UNIT_OUTPUTS = (
     "taxsim_state_agi",
     "state_agi",
     "adjusted_gross_income",
+    "mt_pension_exemption_joint",
 )
 PERSON_OUTPUTS = (
     "mt_agi_indiv",
     "mt_additions",
     "mt_subtractions",
+    "mt_pension_exemption_indiv",
     "social_security",
 )
 
@@ -116,6 +136,9 @@ def _seeded_units():
                 _person(age, spouse_wages, spouse_self_employment, **extra),
             )
         )
+    # A pension below the phase-out and no other income: property 3 nets the
+    # whole exemption (4,400 of 12,000 for 2021).
+    units.append(("MT", _person(40, pension=12_000), None))
     units.append(("ID", _person(40, 100_000), _person(40, 0, -20_000)))
     return units
 
@@ -192,17 +215,22 @@ def _check(units, year):
     )
     np.testing.assert_allclose(run["state_agi"], reported, atol=TOLERANCE)
 
-    # 3. Pooling.
+    # 3. Pooling. The pension exemption is not in mt_subtractions, so these
+    # units can still claim it.
     unadjusted = (
         (run["mt_additions"] == 0)
         & (run["mt_subtractions"] == 0)
         & (run["social_security"] == 0)
     )
     pooled = in_mt & ~separate & unadjusted & (run["adjusted_gross_income"] >= 0)
+    run["pooled"] = pooled
     if year < FIRST_FEDERAL_AGI_YEAR:
+        expected_pooled = np.maximum(
+            run["adjusted_gross_income"] - run["mt_pension_exemption_joint"], 0
+        )
         np.testing.assert_allclose(
             reported[pooled],
-            run["adjusted_gross_income"][pooled],
+            expected_pooled[pooled],
             atol=TOLERANCE,
         )
 
@@ -224,16 +252,18 @@ def test_seeded_grid(year):
         assert (in_mt & ~separate).any()
         # Pooling matters for some joint-path couple: summing each spouse's
         # floored Montana AGI, as taxsim_state_agi used to, overstates it.
+        # The pension exemption is reduced by each spouse's own AGI on the
+        # separate path and by the joint AGI on the joint path, so the couple
+        # has none on either and the gap is the pooling alone.
         floored_sum = run["mt_agi_indiv"]
         joint_path = (
-            in_mt
-            & ~separate
-            & (run["adjusted_gross_income"] >= 0)
-            & (run["mt_additions"] == 0)
-            & (run["mt_subtractions"] == 0)
-            & (run["social_security"] == 0)
+            run["pooled"]
+            & (run["mt_pension_exemption_indiv"] == 0)
+            & (run["mt_pension_exemption_joint"] == 0)
         )
         assert (floored_sum[joint_path] > run["mt_agi"][joint_path] + 1).any()
+        # Property 3 nets a nonzero pension exemption for some unit.
+        assert (run["pooled"] & (run["mt_pension_exemption_joint"] > 0)).any()
     else:
         # Federal AGI is not just the Montana base under another name.
         assert (
@@ -266,5 +296,12 @@ SETTINGS = dict(
 
 @settings(**SETTINGS)
 @given(st.lists(units, min_size=10, max_size=30), st.sampled_from(list(YEARS)))
+# The shrunk draw from a CI failure just after the pension exemption was
+# added: a 2021 single filer aged 25 whose only income is a 12,000 pension
+# has Montana AGI 7,600, not federal AGI 12,000.
+@example(
+    batch=[("MT", _person(25), None)] * 9 + [("MT", _person(25, pension=12_000), None)],
+    year=2021,
+)
 def test_drawn_batches(batch, year):
     _check(batch, year)

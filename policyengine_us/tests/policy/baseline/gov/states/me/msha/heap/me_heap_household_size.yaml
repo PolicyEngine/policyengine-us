@@ -1,0 +1,33 @@
+# Rule 3(A)(1) counts only citizens, nationals and qualified aliens in the HEAP
+# household size. Members with another status remain in the household, and rule
+# 3(C)(1) still counts their income (me_heap_income.yaml Case 7).
+# 99-346 CMR ch. 24 (2026 edition), pages 6 and 15:
+# https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=6
+
+- name: Case 1, a mixed-status family counts its citizen and refugee members only.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 41
+        immigration_status: CITIZEN
+      spouse:
+        age: 38
+        immigration_status: UNDOCUMENTED
+      child1:
+        age: 15
+        immigration_status: REFUGEE
+      child2:
+        age: 9
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: ME
+  output:
+    # head (citizen), child1 (refugee, a qualified alien) and child2 (citizen)
+    # count; the undocumented spouse does not: 3.
+    me_heap_household_size: 3

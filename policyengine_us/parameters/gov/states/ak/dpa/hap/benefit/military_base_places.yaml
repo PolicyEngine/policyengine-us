@@ -1,0 +1,24 @@
+description: Alaska excludes residents of these military base Census places under the Heating Assistance Program.
+# Census delineates Eielson AFB CDP (21370) and Fort Greely CDP (26100) from
+# the installations themselves, so their residents live on base. Addendum A
+# marks both installations 0/USA. Kodiak Station CDP (41210) is the housing
+# area of Coast Guard Base Kodiak, and Addendum A says Coast Guard members
+# living on base in provided housing do not qualify. Eareckson Station CDP
+# (20716) is drawn on Shemya Island around Eareckson Air Station, an Air Force
+# installation; Addendum A lists no community there. Elmendorf AFB and Fort Richardson, also
+# 0/USA, lie inside the Anchorage municipality with no separate Census place,
+# so their residents cannot be identified.
+values:
+  2026-10-01: ["20716", "21370", "26100", "41210"]
+
+metadata:
+  unit: list
+  period: year
+  label: Alaska HAP military base places
+  reference:
+    - title: 7 AAC 44.040(b)(3)(B)
+      href: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+    - title: Alaska HAP Manual Addendum A, FFY2027 Community Listing and symbol key
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm
+    - title: Census 2025 Alaska Places Gazetteer
+      href: https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2025_Gazetteer/2025_gaz_place_02.txt

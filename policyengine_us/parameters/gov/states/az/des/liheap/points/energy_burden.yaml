@@ -1,0 +1,50 @@
+description: Arizona awards these benefit matrix points by the ratio of energy cost to gross income under the Low Income Home Energy Assistance Program.
+# Worksheet rows "5% or less 0 points, 6% - 10% 1 point, 11% - 15% 2 points,
+# 16% - 20% 3 points, 21% - 25% 4 points, 26% - 30% 5 points, 31% or over 6
+# points". "5% or less" is band-top wording and the DES page places its 17.5%
+# example in the 16% to 20% band, so the thresholds are the band tops and
+# callers use calc(burden, right=True). The -inf first threshold keeps a zero
+# burden in the first band.
+brackets:
+  - threshold:
+      2024-10-12: -.inf
+    amount:
+      2024-10-12: 0
+  - threshold:
+      2024-10-12: 0.05
+    amount:
+      2024-10-12: 1
+  - threshold:
+      2024-10-12: 0.1
+    amount:
+      2024-10-12: 2
+  - threshold:
+      2024-10-12: 0.15
+    amount:
+      2024-10-12: 3
+  - threshold:
+      2024-10-12: 0.2
+    amount:
+      2024-10-12: 4
+  - threshold:
+      2024-10-12: 0.25
+    amount:
+      2024-10-12: 5
+  - threshold:
+      2024-10-12: 0.3
+    amount:
+      2024-10-12: 6
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Arizona LIHEAP energy burden points
+  reference:
+    - title: Arizona LIHEAP Eligibility Worksheet, $640 Limit (effective October 12, 2024), Section 2 Energy Burden
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/AZ_BenefitMatrix_Heating_2026.pdf#page=1
+    - title: Arizona DES, Low Income Home Energy Assistance Program page (energy burden formula and the 350 / 2,000 = 17.5% example)
+      href: https://des.az.gov/liheap
+    - title: Arizona DES LIHEAP Policy, revision 16A (effective July 1, 2026), Appendix B Section 2 Energy Burden
+      href: https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=40
