@@ -4,7 +4,7 @@
   absolute_error_margin: 20
   input:
     state_code: CA
-    eitc_child_count: 3
+    ca_eitc_child_count: 3
     employment_income: 8_000
     # AGI equals earned income so the worksheet's earned-income/AGI credit
     # comparison isolates the table value.
@@ -18,7 +18,7 @@
   absolute_error_margin: 6
   input:
     state_code: CA
-    eitc_child_count: 1
+    ca_eitc_child_count: 1
     employment_income: 6_400
     adjusted_gross_income: 6_400
   output:
@@ -30,7 +30,7 @@
   absolute_error_margin: 2
   input:
     state_code: CA
-    eitc_child_count: 0
+    ca_eitc_child_count: 0
     employment_income: 9_951
     adjusted_gross_income: 9_951
   output:
