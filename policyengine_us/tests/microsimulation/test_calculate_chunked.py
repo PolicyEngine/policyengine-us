@@ -115,7 +115,7 @@ def build_chunking_dataset() -> USSingleYearDataset:
                     "salt_deduction": 0.0,
                 }
             )
-        for spm_id in spm_ids[: 2 if household % 2 == 0 else 1]:
+        for unit_offset, spm_id in enumerate(spm_ids[: 2 if household % 2 == 0 else 1]):
             # These positive-income units do not take up TANF. Supplying the
             # take-up input avoids unrelated monthly eligibility calculations
             # in each tax branch and in the net-income resource chain.
@@ -124,6 +124,13 @@ def build_chunking_dataset() -> USSingleYearDataset:
                     "spm_unit_id": spm_id,
                     "spm_unit_weight": weight,
                     "takes_up_tanf_if_eligible": False,
+                    # Observed annual benefits and expenses keep this dataset
+                    # test independent of unrelated eligibility networks.
+                    "snap": 1_200.0 if household == 0 and unit_offset == 1 else 0.0,
+                    "housing_assistance": 0.0,
+                    "spm_unit_medical_out_of_pocket_expenses": (
+                        600.0 + 20 * household + unit_offset
+                    ),
                 }
             )
         for family_id in family_ids[: 2 if household % 2 == 0 else 1]:
@@ -154,6 +161,10 @@ def build_chunking_dataset() -> USSingleYearDataset:
                 "social_security_retirement": (
                     25_000 + household * 150 if member < 2 else 0.0
                 ),
+                # Nobody reports SSI or WIC receipt. Core distributes these
+                # annual flow inputs across their twelve monthly periods.
+                "ssi": 0.0,
+                "wic": 0.0,
             }
             for entity, entity_id in links.items():
                 person[f"person_{entity}_id"] = entity_id
