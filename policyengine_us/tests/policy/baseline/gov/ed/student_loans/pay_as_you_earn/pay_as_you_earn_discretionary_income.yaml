@@ -40,3 +40,25 @@
         state_code: TX
   output:
     pay_as_you_earn_discretionary_income: 0
+
+- name: Case 3, discretionary income uses the latest return's AGI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        # The most recent return shows 40,000; income this year is 80,000.
+        income_driven_repayment_adjusted_gross_income: 40_000
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # (40,000 - 23,940) / 12 = 1,338.33, as in Case 1.
+    pay_as_you_earn_discretionary_income: 1_338.33

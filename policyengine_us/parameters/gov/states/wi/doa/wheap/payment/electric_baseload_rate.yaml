@@ -1,0 +1,14 @@
+description: Wisconsin removes this share of the reported electric bill as non-heating use when electricity is the heating fuel under the Home Energy Assistance Program.
+# HE+ removes the baseload only when one meter serves heat and other uses
+# (Computation!C22); heat-only meters are not identified.
+values:
+  2025-10-01: 0.6
+metadata:
+  unit: /1
+  period: year
+  label: Wisconsin WHEAP electric baseload rate
+  reference:
+    - title: Wisconsin HE+ Benefit Calculator FFY2026, Benefits!D19 and Computation!C19, C22
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/WI_BenefitMatrix_2026.xlsx
+    - title: Wisconsin PY26 WHEAP Manual, section 2.3.1
+      href: https://web.archive.org/web/20260428215048/https://energyandhousing.wi.gov/Documents/WHEAP/WheapManual_PY26.pdf#page=26

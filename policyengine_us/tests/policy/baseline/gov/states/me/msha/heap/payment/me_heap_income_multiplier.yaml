@@ -1,0 +1,74 @@
+# Income multiplier ("Percentage of Points") by poverty level, the household's
+# income as a percent of the poverty guideline for its eligible members.
+# - 2025 edition (period 2026), benefit matrix page 2: 0%-25% 130%, 26%-50% 120%,
+#   51%-75% 110%, 76%-100% 100%, 101%-125% 90%, 126%-150% 80%, above 150% 70%.
+#   "income at 75.1% will be rounded to 75%; income at 100.6% will be rounded to
+#   101%": https://liheapch.acf.gov/docs/2026/benefits-matricies/ME_BenefitMatrix_2026.pdf#page=2
+# - 2026 edition (period 2027), rule page 17: 0-10.99% 1.8, 11-33.99% 1.6,
+#   34-75.99% 1.4, 76-100.99% 1.2, 101-125.99% 1, 126-150.99% 0.9, 151-175.99% 0.8,
+#   above 176% 0.7, with percents to two decimals:
+#   https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=17
+# Percents round half up to whole numbers (period 2026) or two decimals
+# (period 2027), then the band that starts at or below the percent applies.
+# Guidelines lag one year: 2026 uses 15,650 for one person; 2027 uses 33,000 for
+# four (15,960 + 3 x 5,680). Size and income are set directly to place the percent.
+
+- name: Case 1, threshold edge, 25.4 percent rounds to 25 and 25.5 percent rounds to 26 in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ME, ME]
+    me_heap_household_size: [1, 1]
+    me_heap_income: [3_975.1, 3_990.75]
+  output:
+    # 3,975.10 / 15,650 = 25.4% -> 25 -> 0%-25% band: 1.30.
+    # 3,990.75 / 15,650 = 25.5% -> 26 -> 26%-50% band: 1.20. Without rounding,
+    # 25.5 would stay in the first band; rounding every fraction up would move
+    # 25.4 to the second.
+    me_heap_income_multiplier: [1.3, 1.2]
+
+- name: Case 2, each remaining 2026 band, through above 150 percent.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ME, ME, ME, ME, ME]
+    me_heap_household_size: [1, 1, 1, 1, 1]
+    # SSI at the 2025 federal benefit rate (967 x 12); half-time, 30-hour and
+    # full-time work at Maine's 2025 minimum wage of $14.65 (14.65 x 20, 30 and
+    # 40 hours x 52 weeks); and the 2025 average Social Security disability
+    # benefit (1,580 x 12, SSA 2025 COLA fact sheet).
+    me_heap_income: [11_604, 15_236, 18_960, 22_854, 30_472]
+  output:
+    # 11,604 / 15,650 = 74.15% -> 74: 1.10.
+    # 15,236 / 15,650 = 97.35% -> 97: 1.00.
+    # 18,960 / 15,650 = 121.15% -> 121: 0.90.
+    # 22,854 / 15,650 = 146.03% -> 146: 0.80.
+    # 30,472 / 15,650 = 194.71% -> 195: 0.70.
+    me_heap_income_multiplier: [1.1, 1.0, 0.9, 0.8, 0.7]
+
+- name: Case 3, threshold edges at 11, 76 and 176 percent in 2027.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ME, ME, ME, ME, ME, ME]
+    me_heap_household_size: [4, 4, 4, 4, 4, 4]
+    me_heap_income: [3_626.7, 3_630, 25_076.7, 25_080, 58_076.7, 58_080]
+  output:
+    # 3,626.70 / 33,000 = 10.99%: 1.8. 3,630 / 33,000 = 11.00%: 1.6. Whole-percent
+    # rounding would put 10.99 in the 1.6 band.
+    # 25,076.70 / 33,000 = 75.99%: 1.4. 25,080 / 33,000 = 76.00%: 1.2.
+    # 58,076.70 / 33,000 = 175.99%: 0.8. 58,080 / 33,000 = 176.00%: 0.7.
+    me_heap_income_multiplier: [1.8, 1.6, 1.4, 1.2, 0.8, 0.7]
+
+- name: Case 4, zero income and the 1.0 and 0.9 bands in 2027.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ME, ME, ME]
+    me_heap_household_size: [4, 4, 4]
+    # Full-time work at Maine's 2026 minimum wage of $15.10 (15.10 x 40 x 52 =
+    # 31,408) plus a second earner's 10 or 20 hours a week (7,852 or 15,704).
+    me_heap_income: [0, 39_260, 47_112]
+  output:
+    # 0%: 1.8. 39,260 / 33,000 = 118.97%: 1.0. 47,112 / 33,000 = 142.76%: 0.9.
+    me_heap_income_multiplier: [1.8, 1.0, 0.9]

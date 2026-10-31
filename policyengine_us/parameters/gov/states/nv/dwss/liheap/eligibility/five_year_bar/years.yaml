@@ -1,0 +1,17 @@
+description: Nevada sets the bar on qualified non-citizens to this threshold of years after entry under the Low Income Home Energy Assistance Program.
+# Section 302 C makes qualified non-citizens who entered the United States after
+# August 22, 1996 ineligible for the years beginning on the date of entry,
+# unless an exemption applies. Section 302 A I applies the bar to lawful
+# permanent residents.
+values:
+  2025-07-01: 5
+
+metadata:
+  unit: year
+  period: year
+  label: Nevada LIHEAP five-year bar duration
+  reference:
+    - title: "Nevada SFY2026 Energy Assistance Program Manual, Sections 302 A I and 302 C #page 21-22"
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=21
+    - title: "Nevada SFY2027 Energy Assistance Program Manual, Sections 302 A I and 302 C #page 21,23"
+      href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/2027-eap-state-manual--08.25.26-1.pdf#page=21

@@ -482,6 +482,12 @@ def _probe():
         {
             "age__2024": [70],
             "social_security_retirement__2024": [12_000],
+            # Texas in both snapshot years, as in situation(). state_code has
+            # a formula, so a 2024 input alone leaves 2026 on the default
+            # state (CA), where this household's SSI/SSP state supplement
+            # brings unrelated California law into household_net_income.
+            "state_code__2024": ["TX"],
+            "state_code__2026": ["TX"],
         }
     )
     simulation = CoreSimulation(

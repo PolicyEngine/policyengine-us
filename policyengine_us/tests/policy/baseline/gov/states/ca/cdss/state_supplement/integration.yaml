@@ -48,7 +48,11 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: false
   output:
-    ca_state_supplement_payment_standard: 2_639
+    # Both spouses are aged, so the couple takes the higher of the one-blind
+    # rate, 1,295, and the aged couple amount with the food allowance, 1,167
+    # + 136 = 1,303 (WIC 12200(b), (d), (e)). With the 499 dependent amount
+    # and the 709 out-of-home care amount: 1,303 + 499 + 709 = 2,511.
+    ca_state_supplement_payment_standard: 2_511
 
 - name: Case A ,single disabled parent with non eligible dependent child.
   period: 2025-01
