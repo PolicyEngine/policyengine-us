@@ -198,8 +198,8 @@ population payroll-tax variables.
 For a custom changing path, annual tax/coverage settings determine the extra
 earnings stream, and the PIA credit coefficient is read at eligibility E.
 This is a cohort-selection convention; the archived variants' coefficient is
-constant at 2%. Pure callers supplying mixed annual coefficients must supply
-the eligibility coefficient explicitly.
+constant at 2%. Pure callers whose credited annual streams use different
+coefficients must supply the eligibility coefficient explicitly.
 
 ## Annual earnings ledger
 

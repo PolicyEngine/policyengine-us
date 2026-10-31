@@ -32,7 +32,7 @@ from policyengine_us.tools.social_security.owners_draw import (
     OwnersDrawInputs,
     OwnersDrawParameters,
 )
-from policyengine_us.tools.social_security.pia import compute_pia
+from policyengine_us.tools.social_security.pia import FormulaPath, compute_pia
 
 
 D = Decimal
@@ -330,6 +330,29 @@ def test_donut_pia_factor_uses_the_supplied_eligibility_cohort_coefficient():
     assert calculation.aime_plus == 240
     assert calculation.donut_credit_pia == Fraction("7.2")
     assert compute_history_pia(calculation, bend_points=BENDS) == D("2187.2")
+
+
+def test_mini_precision_is_retained_until_after_fractional_donut_credit():
+    # A linear sensitivity gives mini_PIA=164319.96/444=370.09 exactly.
+    # AIME+=420/420=1 adds .02; truncating the mini early would lose a dime.
+    history = EarningsHistory(
+        first_year=2037,
+        records=(EarningsRecord(2037, "44319.96", 0), EarningsRecord(2038, 400420, 0)),
+        certified_zero_before_first_year=True,
+    )
+    parameters = HistoryParameters(
+        wage_base={2037: 120000, 2038: 120000},
+        nawi={2034: 1, 2037: 1, 2038: 1},
+        mini_share=1,
+        donut_by_year={2037: DONUT, 2038: DONUT},
+    )
+    calculation = compute_history(history, 2036, 2039, parameters)
+    assert calculation.aime_plus == 1
+    assert compute_history_pia(
+        calculation,
+        bend_points=BENDS,
+        formula_path=FormulaPath(factor_values=(1, 1, 1)),
+    ) == D("370.1")
 
 
 def test_mixed_annual_donut_rates_require_an_explicit_cohort_coefficient():

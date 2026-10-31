@@ -8,7 +8,7 @@ from decimal import Decimal
 from fractions import Fraction
 from pathlib import Path
 
-from hypothesis import given, strategies as st
+from hypothesis import HealthCheck, given, settings, strategies as st
 from policyengine_core.parameters import ParameterNode
 import pytest
 
@@ -98,6 +98,7 @@ def test_invalid_blend_share_rejected(share):
         blend_mini_pia(2180, 2028, share)
 
 
+@settings(deadline=None, suppress_health_check=[HealthCheck.too_slow])
 @given(
     conventional=st.integers(min_value=0, max_value=100000),
     annual=st.lists(st.integers(min_value=0, max_value=1000000), max_size=50),

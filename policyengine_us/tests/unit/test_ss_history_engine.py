@@ -274,7 +274,7 @@ def test_all_three_reforms_reconcile_hand_computed_history_in_real_engine():
     ] == pytest.approx(2221.9)
     assert simulation.calculate("ss_calculated_history_mini_pia", 2039)[
         0
-    ] == pytest.approx(Decimal("77097.6") / 37)
+    ] == pytest.approx(float(Decimal("77097.6") / 37))
     ledger = json.loads(simulation.calculate("ss_calculated_history_ledger", 2039)[0])
     assert ledger["eligibility_pia"] == "2088.5"
     assert ledger["mini_pia_exact"] == "385488/185"

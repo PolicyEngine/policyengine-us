@@ -112,10 +112,13 @@ annual earnings to the existing `ss_aime` earnings-history helper and adds
 them before applying each year's wage-base cap. A supplied positive
 `ss_aime_input` retains its baseline precedence. This reform does not append
 an amount to final AIME or alter reported benefits. This bridge inherits
-main's AIME lookback and age rules and its separate
-`gov.ssa.social_security.wage_base` path, last authored for 2026; it does not
-synchronize that path with the current tax cap. Mini-PIA integration and a
-complete annual-history ledger remain separate future work.
+main's AIME lookback, age rules and separate
+`gov.ssa.social_security.wage_base` path. The processed current-law wage-indexed
+paths now extend through 2100; tax-cap and benefit-cap reforms remain separate
+policy choices. The opt-in [annual-history calculator](social_security_history.md)
+uses the same per-year owners' draw kernel, retains earnings through the year
+before claiming, and carries the adjusted draw into both conventional AIME
+and annual mini-PIAs. Its ledger also coordinates separate above-cap credit.
 
 `owners_draw_niit_exclusion` is the matching gross-profit exclusion for a
 S.770 active-business NIIT option. With OASDI only it is
