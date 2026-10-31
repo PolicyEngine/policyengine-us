@@ -103,3 +103,126 @@
     is_tax_unit_head: [true, false, false, false]
     is_tax_unit_spouse: [false, true, false, false]
     tax_unit_dependents: 2
+
+- name: Supplied singleton marital units keep an adult child out of the spouse role.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 20_000
+      adult_child:
+        age: 18
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [adult_child]
+  output:
+    is_tax_unit_head: [true, false]
+    is_tax_unit_spouse: [false, false]
+    is_tax_unit_dependent: [false, true]
+    filing_status: HEAD_OF_HOUSEHOLD
+    eitc_child_count: 1
+    eitc: 4_328
+
+- name: The supplied marital partner takes precedence over an older adult in the same tax unit.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 60
+      relative:
+        age: 55
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, relative, spouse]
+    marital_units:
+      couple:
+        members: [head, spouse]
+      relative_unit:
+        members: [relative]
+  output:
+    is_tax_unit_spouse: [false, false, true]
+    is_tax_unit_dependent: [false, true, false]
+
+- name: Multiple supplied couples remain separate within one household.
+  period: 2025
+  input:
+    people:
+      first_head:
+        age: 60
+      first_spouse:
+        age: 50
+      second_head:
+        age: 40
+      second_spouse:
+        age: 35
+    tax_units:
+      first_tax_unit:
+        members: [first_head, first_spouse]
+      second_tax_unit:
+        members: [second_head, second_spouse]
+    marital_units:
+      first_couple:
+        members: [first_head, first_spouse]
+      second_couple:
+        members: [second_head, second_spouse]
+  output:
+    is_tax_unit_head: [true, false, true, false]
+    is_tax_unit_spouse: [false, true, false, true]
+
+- name: A supplied couple in separate tax units does not acquire a tax unit spouse.
+  period: 2025
+  input:
+    people:
+      first:
+        age: 60
+      second:
+        age: 50
+    tax_units:
+      first_tax_unit:
+        members: [first]
+      second_tax_unit:
+        members: [second]
+    marital_units:
+      couple:
+        members: [first, second]
+  output:
+    is_tax_unit_head: [true, true]
+    is_tax_unit_spouse: [false, false]
+
+- name: An explicit empty marital mapping means supplied singleton memberships.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 45
+      adult_child:
+        age: 18
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+    marital_units: {}
+  output:
+    is_tax_unit_spouse: [false, false]
+
+- name: Explicit tax role overrides remain authoritative even with supplied marital units.
+  period: 2025
+  input:
+    people:
+      first:
+        is_tax_unit_head: true
+      second:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [first, second]
+    marital_units: {}
+  output:
+    is_tax_unit_spouse: [false, true]
