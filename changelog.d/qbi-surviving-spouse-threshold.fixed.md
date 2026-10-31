@@ -1,1 +1,0 @@
-Give a qualifying surviving spouse the single ("all other returns") qualified business income deduction threshold and phase-in range instead of the joint amounts, and round projected thresholds as section 1(f)(7) does.

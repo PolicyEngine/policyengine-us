@@ -1,3 +1,10 @@
+## [2.88.9] - 2026-10-31
+
+### Fixed
+
+- Give a qualifying surviving spouse the single ("all other returns") qualified business income deduction threshold and phase-in range instead of the joint amounts, and round projected thresholds as section 1(f)(7) does.
+
+
 ## [2.88.8] - 2026-10-31
 
 ### Fixed
