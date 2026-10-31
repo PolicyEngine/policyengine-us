@@ -35,6 +35,7 @@ from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
 from .tools.default_uprating import add_default_uprating
+from .tools.tob import TobCalculationMixin
 from .tools.period_branch import delete_input_values
 from .tools.social_security_inputs import (
     install_social_security_input_compatibility,
@@ -238,7 +239,7 @@ def _backfill_state_code_from_str(simulation):
         state_code_str.delete_arrays(known_period)
 
 
-class Simulation(SPMSimulationMixin, CoreSimulation):
+class Simulation(TobCalculationMixin, SPMSimulationMixin, CoreSimulation):
     """
     A simulation of the tax-benefit system for the United States,
     defined against the base simulation class in the -core package.
@@ -441,7 +442,7 @@ def _is_hdfstore_format(file_path):
         return False
 
 
-class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
+class Microsimulation(TobCalculationMixin, SPMSimulationMixin, CoreMicrosimulation):
     """
     A microsimulation of the tax-benefit system for the United States,
     defined against the base microsimulation class in the -core package.
