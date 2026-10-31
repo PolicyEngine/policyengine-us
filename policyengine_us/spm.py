@@ -695,20 +695,28 @@ def clone_spm_system(system, *, copy_receipts=True, parameters=None):
     return cloned
 
 
-def copy_parameter_nodes(node, parent=None):
-    """Copy a parameter tree, sharing only its dated entries and metadata.
+def copy_metadata(value):
+    """``deepcopy`` for what YAML loads, in a third of the time."""
+    if isinstance(value, dict):
+        return {key: copy_metadata(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [copy_metadata(item) for item in value]
+    return value
 
-    Each node, history and at-instant cache in the copy is its own, as in a
-    clone, so the copy builds every view from its histories, and an update, an
-    added child or an added entry on either tree stays on that tree. Core sets
-    an entry's value only when it builds the entry, and writes metadata only
-    while it constructs a system, so neither needs a copy of its own. They are
-    nearly all of what a clone rebuilds: this takes about a twenty-fifth of the
-    time and an eighth of the memory.
+
+def copy_parameter_nodes(node, parent=None):
+    """Copy a parameter tree, sharing only its dated entries.
+
+    Everything else matches a clone: each node, history, metadata dictionary and
+    at-instant cache is the copy's own, so the copy builds every view from its
+    histories, and an update, interpolation or added child on either tree stays
+    on that tree. A reform method is the only thing that changes an entry after
+    core builds it, and it detaches first (see :class:`SharedParameterPolicy`).
+    The 1.3 million entries are what a clone spends most of its time rebuilding.
     """
     copied = object.__new__(type(node))
     copied.__dict__.update(node.__dict__)
-    copied.parent = parent
+    copied.metadata = copy_metadata(node.metadata)
     if isinstance(node, Parameter):
         copied.values_list = list(node.values_list)
     elif isinstance(node, ParameterScale):
@@ -721,6 +729,9 @@ def copy_parameter_nodes(node, parent=None):
         for name, child in node.children.items():
             copied.children[name] = copy_parameter_nodes(child, copied)
             setattr(copied, name, copied.children[name])
+    # Last, as a clone does it: Medicaid's categories have a child named
+    # ``parent``, and an attribute per child would otherwise replace the ancestor.
+    copied.parent = parent
     return copied
 
 
@@ -730,10 +741,18 @@ def pin_spm_policy(system):
     A pin edits a few hundred of the tree's 143,000 nodes through
     ``Parameter.update``, which never touches an entry it replaces. This is a
     clone in every other respect, except that the two trees hold the same
-    entries and metadata and so both count as shared: a reform of either system
-    takes a full clone before it writes. A write that skips the reform methods
-    reaches the other tree, as it reaches every reader of any shared tree.
+    entries and so both count as shared: a reform of either system takes a full
+    clone before it writes. A system with no barrier cannot do that, and marking
+    a tree while a reform writes to it would detach the system from that tree,
+    so both take the full clone here. Assigning an entry's value outside a
+    reform method reaches the other tree, as it reaches every reader of any
+    shared tree.
     """
+    if (
+        not isinstance(system, SharedParameterPolicy)
+        or system.detaching_shared_parameters
+    ):
+        return clone_spm_system(system)
     tree = mark_tree_shared(system.parameters)
     return clone_spm_system(
         system, parameters=mark_tree_shared(copy_parameter_nodes(tree))

@@ -10,6 +10,8 @@ hold it to what that clone would have given:
 - a pin reads what a full clone reads, for every parameter, and leaves its
   source as it found it;
 - a pin built after a change to its source reads that change;
+- only the dated entries are shared, and only where a reform takes a full clone
+  before it writes;
 - a simulation's pinned system is its own;
 - a traced simulation records what it would record on a full clone;
 - nothing outlives a finished simulation, and the cache holds nothing back.
@@ -21,7 +23,7 @@ model, so they keep to the fewest simulations that show each behaviour.
 import collections
 import gc
 import weakref
-from copy import copy
+from copy import copy, deepcopy
 
 import pytest
 from hypothesis import given, settings
@@ -30,6 +32,7 @@ from policyengine_core.parameters import (
     Parameter,
     ParameterAtInstant,
     ParameterNode,
+    ParameterScale,
 )
 from policyengine_core.parameters.operations.interpolate_parameters import (
     interpolate_parameters,
@@ -38,7 +41,12 @@ from policyengine_core.periods import instant
 from policyengine_core.reforms import Reform
 
 from policyengine_us import Simulation
-from policyengine_us.spm import copy_parameter_nodes, pin_spm_policy
+from policyengine_us.spm import (
+    SharedParameterPolicy,
+    copy_metadata,
+    copy_parameter_nodes,
+    pin_spm_policy,
+)
 from policyengine_us.system import CountryTaxBenefitSystem, system
 from policyengine_us.tools import pinned_tbs
 
@@ -51,6 +59,11 @@ STOP = instant("2099-12-31")
 # limit on the non-refundable credit, which the branch recomputes.
 BOTTOM_RATE = "gov.irs.income.bracket.rates.1"
 LOWER_BOTTOM_RATE = 0.05
+# Core's clone keeps the ancestor in a node's ``parent`` attribute, even when the
+# node has a child of that name.
+CHILD_NAMED_PARENT = (
+    "gov.hhs.medicaid.eligibility.categories.medically_needy.categories.parent"
+)
 PINS = sorted(name for name in vars(pinned_tbs) if name.startswith("_pin_"))
 
 
@@ -70,6 +83,13 @@ def household(year=YEAR, state_code="NY", earnings=6_000, interest=20_000):
             "household": {"members": members, "state_code": {year: state_code}}
         },
     }
+
+
+def raise_rate_in_place(parameters):
+    """Change each dated value, the way core's reform template does."""
+    for entry in parameters.get_child(BOTTOM_RATE).values_list:
+        entry.value += 0.1
+    return parameters
 
 
 def fresh_clones():
@@ -129,6 +149,7 @@ def small_tree():
         data={
             "credit": {"amount": parameter(1), "scale": scale},
             "tax": {"rate": parameter(1)},
+            "categories": {"group": {"parent": parameter(1)}},
         },
     )
 
@@ -140,7 +161,13 @@ def change_small_tree(tree, change, index, value):
     bracket, which has no parent.
     """
     credit = tree.credit
-    parameter = (credit.amount, credit.scale.brackets[0].amount, tree.tax.rate)[index]
+    named_parent = tree.categories.group.children["parent"]
+    parameter = (
+        credit.amount,
+        credit.scale.brackets[0].amount,
+        tree.tax.rate,
+        named_parent,
+    )[index]
     if change == "read":
         tree(LATER)
     elif change == "update":
@@ -151,6 +178,9 @@ def change_small_tree(tree, change, index, value):
             ParameterAtInstant(parameter.name, LATER, data=value)
         )
         parameter.values_list.sort(key=lambda item: item.instant_str, reverse=True)
+    elif change == "change metadata":
+        # What interpolation does to a parameter's metadata.
+        parameter.metadata.setdefault("interpolation", {})["completed"] = value
     elif f"added_{value}" not in tree.tax.children:
         added = Parameter(f"added_{value}", {"values": {AT: value}})
         tree.tax.add_child(f"added_{value}", added)
@@ -163,6 +193,7 @@ def small_tree_readings(tree):
     return (
         view.credit.amount,
         view.tax.rate,
+        view.categories.group["parent"],
         list(scale.amounts),
         list(scale.thresholds),
         [getattr(view.tax, name) for name in added],
@@ -173,20 +204,66 @@ def nodes_of(tree):
     return [tree, *tree.get_descendants()]
 
 
-def root_of(node):
-    while node.parent is not None:
-        node = node.parent
-    return node
+def assert_ancestors_hold(tree):
+    """Every edit clears caches up the ``parent`` links, so they have to hold."""
+    assert tree.parent is None
+    for node in nodes_of(tree):
+        if isinstance(node, ParameterScale):
+            assert all(bracket.parent is node for bracket in node.brackets)
+        for name, child in getattr(node, "children", {}).items():
+            assert child.parent is node
+            if name != "parent":
+                assert getattr(node, name) is child
+
+
+def metadata_of(tree):
+    return {node.name: deepcopy(node.metadata) for node in nodes_of(tree)}
+
+
+def containers_in(value):
+    """The dictionaries and lists in ``value``, by identity."""
+    if isinstance(value, dict):
+        children = value.values()
+    elif isinstance(value, list):
+        children = value
+    else:
+        return set()
+    return {id(value)}.union(*map(containers_in, children))
+
+
+def leaves_in(value):
+    if isinstance(value, dict):
+        value = list(value.values())
+    if isinstance(value, list):
+        return [leaf for item in value for leaf in leaves_in(item)]
+    return [value]
 
 
 CHANGES = st.lists(
     st.tuples(
-        st.sampled_from(["read", "update", "add entry", "add child"]),
-        st.integers(0, 2),
+        st.sampled_from(
+            ["read", "update", "add entry", "change metadata", "add child"]
+        ),
+        st.integers(0, 3),
         st.integers(1, 9),
     ),
     max_size=12,
 )
+
+
+METADATA = st.recursive(
+    st.none() | st.booleans() | st.integers() | st.floats() | st.text(),
+    lambda items: st.lists(items) | st.dictionaries(st.text(), items),
+)
+
+
+@settings(deadline=None, max_examples=200)
+@given(METADATA)
+def test_metadata_copies_as_a_deep_copy_would(metadata):
+    copied = copy_metadata(metadata)
+
+    assert repr(copied) == repr(deepcopy(metadata))
+    assert not containers_in(copied) & containers_in(metadata)
 
 
 @settings(deadline=None, max_examples=200)
@@ -205,26 +282,44 @@ def test_a_copy_of_the_nodes_reads_what_a_clone_reads(changes, later_changes):
     clone = tree.clone()
 
     assert parameter_values(copied) == parameter_values(clone)
+    assert metadata_of(copied) == metadata_of(clone)
     assert small_tree_readings(copied) == small_tree_readings(clone)
 
     # It shares no node with its source, and every edit reaches its own root.
     assert not {id(node) for node in nodes_of(tree)} & {
         id(node) for node in nodes_of(copied)
     }
-    for node in nodes_of(copied):
-        assert root_of(node) is copied
-        for name, child in getattr(node, "children", {}).items():
-            assert getattr(node, name) is child
+    assert_ancestors_hold(copied)
 
-    copied_values = parameter_values(copied)
+    copied_state = parameter_values(copied), metadata_of(copied)
     for change in later_changes:
         change_small_tree(tree, *change)
-    assert parameter_values(copied) == copied_values
+    assert (parameter_values(copied), metadata_of(copied)) == copied_state
 
-    tree_values = parameter_values(tree)
+    tree_state = parameter_values(tree), metadata_of(tree)
     for change in later_changes:
         change_small_tree(copied, *change)
-    assert parameter_values(tree) == tree_values
+    assert (parameter_values(tree), metadata_of(tree)) == tree_state
+
+
+def test_each_tree_interpolates_for_itself():
+    """Core records in a parameter's metadata that it interpolated the parameter.
+
+    A record shared with the source would stop the copy interpolating at all.
+    """
+    tree = small_tree()
+    rate = tree.tax.rate
+    rate.values_list = [
+        ParameterAtInstant(rate.name, f"{year}-01-01", data=value)
+        for year, value in ((2025, 0.2), (2023, 0.01))
+    ]
+    rate.metadata["interpolation"] = {"interval": "year"}
+    copied = copy_parameter_nodes(tree)
+
+    interpolate_parameters(tree)
+    interpolate_parameters(copied)
+
+    assert copied.tax.rate("2024-01-01") == pytest.approx(0.105)
 
 
 @pytest.fixture(scope="module")
@@ -270,6 +365,58 @@ def test_a_pin_borrows_every_dated_value(monkeypatch, source):
     assert rate.values_list is not source_rate.values_list
     assert all(a is b for a, b in zip(rate.values_list, source_rate.values_list))
     assert pinned.shares_parameters and source.shares_parameters
+
+
+def test_a_pin_keeps_every_ancestor(source):
+    """An edit under a child named ``parent`` would otherwise never return."""
+    pinned = pin_spm_policy(source)
+
+    assert_ancestors_hold(pinned.parameters)
+    pinned.parameters.get_child(f"{CHILD_NAMED_PARENT}.CA").update(
+        period=f"year:{YEAR}:1", value=False
+    )
+
+
+def test_a_pin_holds_its_own_copy_of_all_metadata(source):
+    """``copy_metadata`` would leave any other mutable value shared."""
+    pinned = pin_spm_policy(source)
+    nodes = nodes_of(pinned.parameters)
+
+    for node, copied in zip(nodes_of(source.parameters), nodes, strict=True):
+        assert repr(copied.metadata) == repr(node.metadata)
+        assert not containers_in(copied.metadata) & containers_in(node.metadata)
+    kinds = {type(leaf) for node in nodes for leaf in leaves_in(node.metadata)}
+    assert kinds <= {str, bool, int, float, type(None)}
+
+
+def test_a_system_without_a_barrier_keeps_its_entries():
+    """Nothing would stop a reform of this system writing to a pin's entries."""
+    plain = system.clone().unshared_copy()
+    assert not isinstance(plain, SharedParameterPolicy)
+    pin = pin_spm_policy(plain)
+    rate = pin.parameters.get_child(BOTTOM_RATE)(f"{YEAR}-01-01")
+
+    plain.modify_parameters(raise_rate_in_place)
+
+    assert plain.parameters.get_child(BOTTOM_RATE)(f"{YEAR}-01-01") != rate
+    assert pin.parameters.get_child(BOTTOM_RATE)(f"{YEAR}-01-01") == rate
+
+
+def test_a_pin_built_during_a_reform_leaves_the_reform_its_tree():
+    """Marking the tree here would detach the system from what the reform holds."""
+    policy = system.clone()
+    with policy.detaching_parameters():
+        tree = policy.parameters
+        pin = pin_spm_policy(policy)
+        tree.get_child(BOTTOM_RATE).update(
+            period=f"year:{YEAR}:1", value=LOWER_BOTTOM_RATE
+        )
+        assert policy.parameters is tree
+
+    rate = f"{YEAR}-01-01"
+    assert policy.parameters.get_child(BOTTOM_RATE)(rate) == LOWER_BOTTOM_RATE
+    assert pin.parameters.get_child(BOTTOM_RATE)(rate) != LOWER_BOTTOM_RATE
+    assert not policy.shares_parameters
 
 
 def test_each_pin_is_cached_for_the_last_system_that_asked():
@@ -428,6 +575,8 @@ def test_a_reform_of_the_source_leaves_a_built_pin_alone():
         return parameters
 
     before = rate(pin)
+    policy.modify_parameters(raise_rate_in_place)
+    assert rate(pin) == before
     policy.modify_parameters(lower_rate)
 
     assert rate(pin) == before != LOWER_BOTTOM_RATE
