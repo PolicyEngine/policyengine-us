@@ -10,8 +10,8 @@ hold it to what that clone would have given:
 - a pin reads what a full clone reads, for every parameter, and leaves its
   source as it found it;
 - a pin built after a change to its source reads that change;
-- only the dated entries are shared, and only where a reform takes a full clone
-  before it writes;
+- only the dated entries and metadata lists are shared, and only where a reform
+  takes a full clone before it writes;
 - a simulation's pinned system is its own;
 - a traced simulation records what it would record on a full clone;
 - nothing outlives a finished simulation, and the cache holds nothing back.
@@ -37,6 +37,9 @@ from policyengine_core.parameters import (
 from policyengine_core.parameters.operations.interpolate_parameters import (
     interpolate_parameters,
 )
+from policyengine_core.parameters.operations.propagate_parameter_metadata import (
+    propagate_parameter_metadata,
+)
 from policyengine_core.periods import instant
 from policyengine_core.reforms import Reform
 
@@ -46,6 +49,7 @@ from policyengine_us.spm import (
     copy_metadata,
     copy_parameter_nodes,
     pin_spm_policy,
+    share_spm_policy,
 )
 from policyengine_us.system import CountryTaxBenefitSystem, system
 from policyengine_us.tools import pinned_tbs
@@ -220,23 +224,18 @@ def metadata_of(tree):
     return {node.name: deepcopy(node.metadata) for node in nodes_of(tree)}
 
 
-def containers_in(value):
-    """The dictionaries and lists in ``value``, by identity."""
-    if isinstance(value, dict):
-        children = value.values()
-    elif isinstance(value, list):
-        children = value
-    else:
+def dictionaries_in(value):
+    """The dictionaries ``copy_metadata`` has to copy, by identity."""
+    if not isinstance(value, dict):
         return set()
-    return {id(value)}.union(*map(containers_in, children))
+    return {id(value)}.union(*map(dictionaries_in, value.values()))
 
 
-def leaves_in(value):
-    if isinstance(value, dict):
-        value = list(value.values())
-    if isinstance(value, list):
-        return [leaf for item in value for leaf in leaves_in(item)]
-    return [value]
+def values_in(value):
+    """What ``copy_metadata`` leaves shared."""
+    if not isinstance(value, dict):
+        return [value]
+    return [item for child in value.values() for item in values_in(child)]
 
 
 CHANGES = st.lists(
@@ -259,11 +258,11 @@ METADATA = st.recursive(
 
 @settings(deadline=None, max_examples=200)
 @given(METADATA)
-def test_metadata_copies_as_a_deep_copy_would(metadata):
+def test_metadata_reads_as_a_deep_copy_would(metadata):
     copied = copy_metadata(metadata)
 
     assert repr(copied) == repr(deepcopy(metadata))
-    assert not containers_in(copied) & containers_in(metadata)
+    assert not dictionaries_in(copied) & dictionaries_in(metadata)
 
 
 @settings(deadline=None, max_examples=200)
@@ -322,6 +321,29 @@ def test_each_tree_interpolates_for_itself():
     assert copied.tax.rate("2024-01-01") == pytest.approx(0.105)
 
 
+def test_propagated_metadata_stays_on_its_own_tree():
+    tree = small_tree()
+    tree.credit.metadata.update(propagate_metadata_to_children=True, unit="currency")
+    copied = copy_parameter_nodes(tree)
+
+    propagate_parameter_metadata(tree)
+
+    assert tree.credit.scale.metadata["unit"] == "currency"
+    assert "unit" not in copied.credit.scale.metadata
+
+
+def test_a_child_named_for_the_cache_leaves_the_copy_a_cache():
+    """A reform can add a child of any name, and a clone reads past this one."""
+    tree = small_tree()
+    name = "_at_instant_cache"
+    tree.tax.add_child(name, Parameter(name, {"values": {AT: 1}}))
+    copied = copy_parameter_nodes(tree.clone())
+
+    copied.tax.rate.update(start=instant(LATER), stop=STOP, value=2)
+
+    assert copied(LATER).tax.rate == 2
+
+
 @pytest.fixture(scope="module")
 def source():
     return system.clone()
@@ -378,15 +400,15 @@ def test_a_pin_keeps_every_ancestor(source):
 
 
 def test_a_pin_holds_its_own_copy_of_all_metadata(source):
-    """``copy_metadata`` would leave any other mutable value shared."""
+    """``copy_metadata`` leaves anything but a dictionary shared."""
     pinned = pin_spm_policy(source)
     nodes = nodes_of(pinned.parameters)
 
     for node, copied in zip(nodes_of(source.parameters), nodes, strict=True):
         assert repr(copied.metadata) == repr(node.metadata)
-        assert not containers_in(copied.metadata) & containers_in(node.metadata)
-    kinds = {type(leaf) for node in nodes for leaf in leaves_in(node.metadata)}
-    assert kinds <= {str, bool, int, float, type(None)}
+        assert not dictionaries_in(copied.metadata) & dictionaries_in(node.metadata)
+    kinds = {type(item) for node in nodes for item in values_in(node.metadata)}
+    assert kinds <= {list, str, bool, int, float, type(None)}
 
 
 def test_a_system_without_a_barrier_keeps_its_entries():
@@ -417,6 +439,22 @@ def test_a_pin_built_during_a_reform_leaves_the_reform_its_tree():
     assert policy.parameters.get_child(BOTTOM_RATE)(rate) == LOWER_BOTTOM_RATE
     assert pin.parameters.get_child(BOTTOM_RATE)(rate) != LOWER_BOTTOM_RATE
     assert not policy.shares_parameters
+
+
+def test_a_pin_built_during_a_reform_leaves_the_barrier_armed():
+    """A reform of a shared tree still has its private copy to take."""
+    policy = system.clone()
+    share_spm_policy(policy)
+    with policy.detaching_parameters():
+        pin_spm_policy(policy)
+        borrower = share_spm_policy(policy)
+        policy.parameters.get_child(BOTTOM_RATE).update(
+            period=f"year:{YEAR}:1", value=LOWER_BOTTOM_RATE
+        )
+
+    rate = f"{YEAR}-01-01"
+    assert policy.parameters.get_child(BOTTOM_RATE)(rate) == LOWER_BOTTOM_RATE
+    assert borrower.parameters.get_child(BOTTOM_RATE)(rate) != LOWER_BOTTOM_RATE
 
 
 def test_each_pin_is_cached_for_the_last_system_that_asked():

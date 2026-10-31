@@ -696,23 +696,25 @@ def clone_spm_system(system, *, copy_receipts=True, parameters=None):
 
 
 def copy_metadata(value):
-    """``deepcopy`` for what YAML loads, in a third of the time."""
+    """Copy the dictionaries in ``value``, the only part of it core writes to.
+
+    Its lists stay shared. They are three quarters of its memory.
+    """
     if isinstance(value, dict):
         return {key: copy_metadata(item) for key, item in value.items()}
-    if isinstance(value, list):
-        return [copy_metadata(item) for item in value]
     return value
 
 
 def copy_parameter_nodes(node, parent=None):
-    """Copy a parameter tree, sharing only its dated entries.
+    """Copy a parameter tree, sharing only its dated entries and metadata lists.
 
     Everything else matches a clone: each node, history, metadata dictionary and
     at-instant cache is the copy's own, so the copy builds every view from its
-    histories, and an update, interpolation or added child on either tree stays
-    on that tree. A reform method is the only thing that changes an entry after
-    core builds it, and it detaches first (see :class:`SharedParameterPolicy`).
-    The 1.3 million entries are what a clone spends most of its time rebuilding.
+    histories, and an update, interpolation or added child on either tree leaves
+    the other's numbers alone. Only a reform modifier assigns an entry's value
+    after core builds the entry, and it runs on a private tree (see
+    :class:`SharedParameterPolicy`). The 1.3 million entries are what a clone
+    spends most of its time rebuilding.
     """
     copied = object.__new__(type(node))
     copied.__dict__.update(node.__dict__)
@@ -724,35 +726,37 @@ def copy_parameter_nodes(node, parent=None):
             copy_parameter_nodes(bracket, copied) for bracket in node.brackets
         ]
     else:
+        copied.children = {
+            name: copy_parameter_nodes(child, copied)
+            for name, child in node.children.items()
+        }
+        for name, child in copied.children.items():
+            setattr(copied, name, child)
         copied._at_instant_cache = {}
-        copied.children = {}
-        for name, child in node.children.items():
-            copied.children[name] = copy_parameter_nodes(child, copied)
-            setattr(copied, name, copied.children[name])
-    # Last, as a clone does it: Medicaid's categories have a child named
-    # ``parent``, and an attribute per child would otherwise replace the ancestor.
+    # After the children, as in a clone, because each child sets an attribute of
+    # its own name: Medicaid's categories have a child named ``parent``.
     copied.parent = parent
     return copied
 
 
 def pin_spm_policy(system):
-    """Clone ``system`` for a pin to edit, without rebuilding parameter values.
+    """Clone ``system`` for a pin to edit, rebuilding no dated values if it can.
 
     A pin edits a few hundred of the tree's 143,000 nodes through
-    ``Parameter.update``, which never touches an entry it replaces. This is a
-    clone in every other respect, except that the two trees hold the same
-    entries and so both count as shared: a reform of either system takes a full
-    clone before it writes. A system with no barrier cannot do that, and marking
-    a tree while a reform writes to it would detach the system from that tree,
-    so both take the full clone here. Assigning an entry's value outside a
-    reform method reaches the other tree, as it reaches every reader of any
-    shared tree.
+    ``Parameter.update``, which never touches an entry it replaces. So the result
+    differs from a clone only in sharing what :func:`copy_parameter_nodes`
+    shares, which makes both trees count as shared: a reform of either system
+    takes a full clone before it writes. A system with no barrier cannot do that,
+    and marking a tree while a reform writes to it would detach the system from
+    that tree, so both of those get an ordinary clone. Assigning an entry's value
+    outside a reform method reaches the other tree, as it reaches every reader of
+    any shared tree.
     """
     if (
         not isinstance(system, SharedParameterPolicy)
         or system.detaching_shared_parameters
     ):
-        return clone_spm_system(system)
+        return system.clone()
     tree = mark_tree_shared(system.parameters)
     return clone_spm_system(
         system, parameters=mark_tree_shared(copy_parameter_nodes(tree))

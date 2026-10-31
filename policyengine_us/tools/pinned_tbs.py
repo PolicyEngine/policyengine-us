@@ -1,10 +1,10 @@
 """Tax-benefit systems pinned to earlier parameters (issue #8114).
 
 The NY EITC/CTC formulas recompute the federal EITC/CTC with parameters
-pinned to an earlier vintage (pre-ARPA 2020, pre-TCJA 2017). A pinned system
-copies the parameter tree's nodes and borrows the dated values in them, so it
-costs a fraction of a second and little memory, and reads what a full clone
-reads (see policyengine_us.spm.pin_spm_policy).
+pinned to an earlier vintage (pre-ARPA 2020, pre-TCJA 2017). A simulation's
+pinned system copies the parameter tree's nodes and borrows the dated values in
+them, so it costs a fraction of a second and little memory, and reads what a
+full clone reads (see policyengine_us.spm.pin_spm_policy).
 
 The pinned system must be treated as read-only by all callers.
 """
