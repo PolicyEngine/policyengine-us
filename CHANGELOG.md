@@ -1,3 +1,10 @@
+## [2.88.6] - 2026-10-31
+
+### Fixed
+
+- Share dated parameter values between a pinned policy and its source, so New York's and Alabama's recomputed federal credits no longer rebuild every parameter value for each simulation.
+
+
 ## [2.88.5] - 2026-10-31
 
 ### Fixed
