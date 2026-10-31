@@ -172,7 +172,7 @@ Inspect the flags before interpreting them as zero earnings. The own-record
 indicator describes the modeling classification; it is not evidence of insured
 status or an administrative validation of benefit type. It is independent of
 whether claiming data are missing or the benchmark predates 1983. For an AIME
-distribution or percentile calculation, also exclude `_pia_ratio_unmodeled`,
+distribution computed from these outputs, also exclude `_pia_ratio_unmodeled`,
 `_pia_ratio_missing_claim_age` and `_pia_ratio_pre_1983` records and inspect
 the proxy and measurement-uncertainty flags.
 For identified-only distributions, also exclude `_pia_ratio_proxy` records;
@@ -244,7 +244,62 @@ Person weights within a household, use the Person-indicator formula above.
 This approximation assumes the reported annual amount represents a full-year
 benefit at the stated valuation basis; partial-year entitlement, survey error,
 dual entitlement, withheld checks and binding caps can defeat unique inversion.
-No package-specific parameter values or administrative percentile estimates are
-encoded here. M8 allows progressive price-indexing thresholds from a supplied
-bend-point fraction or dollar path; C's named outputs remain available for
-population diagnostics and drift checks.
+PE-US encodes no package-specific parameter values and estimates no percentile.
+The named outputs above remain available for population diagnostics and drift
+checks.
+
+## Price-indexing inputs you supply
+
+PE-US ships no values for either price-indexing path, and both are off by
+default. The reported-benefit ratio and the
+[supplied-record calculator](social-security-calculator.md) read the same
+parameters through `formula_path_at`. To turn on progressive price indexing,
+set these parameters under `gov.contrib.ssa.pia`:
+
+| Parameter | What you supply |
+|---|---|
+| `in_effect` | `true` for the eligibility cohorts the formula path reaches. |
+| `progressive_price_indexing.in_effect` | `true`. |
+| `progressive_price_indexing.start_year` | The first eligibility cohort indexed. The default is 2032. |
+| `progressive_price_indexing.bend_point_fraction` | The fraction f of the way from the first to the second bend point. It has no default. |
+| `progressive_price_indexing.threshold` | Optional: a monthly dollar threshold for each cohort. Where you set one, it takes precedence over the fraction. |
+| `progressive_price_indexing.maximum_aime` | The monthly maximum-career AIME for each cohort. |
+| `progressive_price_indexing.maximum_pia_target` | The target initial monthly PIA at that maximum AIME for each cohort. |
+
+For eligibility year E, the protected threshold is
+`T(E) = BP1(E) + f * (BP2(E) - BP1(E))`, using that cohort's own bend points,
+so it rises as they do. With f = 0 it equals BP1, and with f = 1 it equals BP2.
+Below the threshold the current-law formula applies unchanged. Above it, the
+model scales the part of the PIA above `F(T(E))` by the single multiplier that
+makes the PIA at the maximum AIME equal the target.
+
+The fraction is an ordinary dated parameter and holds forward like any other.
+The dollar threshold, maximum AIME and target need an entry dated January 1 of
+each cohort's eligibility year, and an earlier cohort's entry never serves a
+later one. Full price indexing likewise needs `full_price_indexing.in_effect`,
+its `start_year`, and a `real_wage_scale` dated for each cohort.
+
+Your reform settings supply the fraction or dollar path and the maximum AIME
+and target paths; PE-US computes none of them. With progressive indexing on,
+a cohort with neither a fraction nor a dollar threshold, or without its
+maximum AIME or target, raises an error rather than falling back to current
+law. The fractions in the PE-US tests are illustrative and make no claim about
+any percentile.
+
+```python
+from policyengine_core.reforms import Reform
+
+# Illustrative values for one 2035 cohort. Add a maximum AIME and target
+# for every cohort the score reaches.
+reform = Reform.from_dict(
+    {
+        "gov.contrib.ssa.pia.in_effect": {"2032-01-01": True},
+        "gov.contrib.ssa.pia.progressive_price_indexing.in_effect": {"2032-01-01": True},
+        "gov.contrib.ssa.pia.progressive_price_indexing.start_year": {"2032-01-01": 2032},
+        "gov.contrib.ssa.pia.progressive_price_indexing.bend_point_fraction": {"2032-01-01": 0.25},
+        "gov.contrib.ssa.pia.progressive_price_indexing.maximum_aime": {"2035-01-01": 17_000},
+        "gov.contrib.ssa.pia.progressive_price_indexing.maximum_pia_target": {"2035-01-01": 5_100},
+    },
+    country_id="us",
+)
+```
