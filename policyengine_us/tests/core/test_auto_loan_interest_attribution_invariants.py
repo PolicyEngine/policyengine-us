@@ -38,7 +38,7 @@ CAP = 10_000  # 26 U.S.C. 163(h)(4)(C)(i)
 THRESHOLD = {"JOINT": 200_000}  # 163(h)(4)(C)(ii)(I); 100,000 otherwise
 OTHER_THRESHOLD = 100_000
 STEP, INCREMENT = 200, 1_000
-KINDS = ["single", "joint", "hoh", "joint_with_child", "adult_dependent"]
+KINDS = ["single", "separate", "joint", "hoh", "joint_with_child", "adult_dependent"]
 # Each kind's dependent, if any, and its age range. An adult dependent (a
 # student, an elderly parent) can hold their own loan and be the household's
 # oldest member.
@@ -167,6 +167,7 @@ def _situation(households, year, shuffle_seed=None):
                     },
                     "is_tax_unit_dependent": {year: p["dependent"]},
                     "is_household_head": {year: p["head_flag"]},
+                    "is_separated": {year: unit["kind"] == "separate"},
                 }
                 unit_members.append(name)
             tax_units[f"t_{h}_{t}"] = {"members": unit_members}
@@ -290,8 +291,7 @@ def _zero_odd_units(households):
     return out
 
 
-def _check_locality(households, year):
-    before = _calculate(households, year)["deduction"]
+def _check_locality(households, year, before):
     after = _calculate(_zero_odd_units(households), year)["deduction"]
     unit_index = np.array(
         [t for household in households for t in range(len(household["tax_units"]))]
@@ -306,12 +306,13 @@ def test_seeded_mixed_batch_2025():
     result = _check(households, "2025")
     # The two tie households at the end: the first listed tax unit holds it.
     assert result["interest"][-4:].tolist() == [5_000, 0, 5_000, 0]
+    assert "SEPARATE" in result["filing_status"]
 
 
 def test_seeded_mixed_batch_2026_locality():
     households = _seeded_households(seed=20261024)
-    _check(households, "2026")
-    _check_locality(households, "2026")
+    result = _check(households, "2026")
+    _check_locality(households, "2026", result["deduction"])
 
 
 def test_people_listed_out_of_household_order():
@@ -330,5 +331,5 @@ def test_people_listed_out_of_household_order():
     st.sampled_from(["2025", "2026", "2028"]),
 )
 def test_attribution_invariants(households, year):
-    _check(households, year)
-    _check_locality(households, year)
+    result = _check(households, year)
+    _check_locality(households, year, result["deduction"])
