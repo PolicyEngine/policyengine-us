@@ -37,6 +37,7 @@
       tax_unit:
         members: [retiree]
         filing_status: SINGLE
+        tax_unit_itemizes: false
     spm_units:
       spm_unit:
         members: [retiree]
@@ -80,6 +81,7 @@
       tax_unit:
         members: [parent, child]
         filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_itemizes: false
     marital_units:
       parent_unit:
         members: [parent]
@@ -133,6 +135,7 @@
       tax_unit:
         members: [parent, child]
         filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_itemizes: false
     marital_units:
       parent_unit:
         members: [parent]
