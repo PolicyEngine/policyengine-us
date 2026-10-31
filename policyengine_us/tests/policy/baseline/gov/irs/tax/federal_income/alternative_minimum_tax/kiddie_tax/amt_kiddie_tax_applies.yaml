@@ -3,6 +3,7 @@
   period: 2022
   input:
     age_head: 18
+    filing_status: SINGLE
   output:
     amt_kiddie_tax_applies: true
 
@@ -14,13 +15,14 @@
   output:
     amt_kiddie_tax_applies: false
 
-- name: Kiddie tax applies when both head and spouse under 19
+- name: Kiddie tax does not apply to a joint return when both spouses are under 19
   period: 2022
   input:
     age_head: 18
     age_spouse: 18
+    filing_status: JOINT
   output:
-    amt_kiddie_tax_applies: true
+    amt_kiddie_tax_applies: false
 
 - name: Kiddie tax does not apply when head is 19+ (non-student)
   period: 2022
@@ -102,5 +104,32 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+  output:
+    amt_kiddie_tax_applies: false
+
+- name: A young separate filer remains subject to the child limitation before 2018
+  period: 2017
+  input:
+    age_head: 18
+    filing_status: SEPARATE
+  output:
+    amt_kiddie_tax_applies: true
+
+- name: Young full-time students filing jointly are excluded before 2018
+  period: 2017
+  input:
+    people:
+      head:
+        age: 22
+        is_full_time_college_student: true
+        is_tax_unit_head: true
+      spouse:
+        age: 23
+        is_full_time_college_student: true
+        is_tax_unit_spouse: true
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
   output:
     amt_kiddie_tax_applies: false
