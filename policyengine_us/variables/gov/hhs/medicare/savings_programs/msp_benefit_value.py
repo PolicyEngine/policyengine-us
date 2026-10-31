@@ -14,6 +14,10 @@ class msp_benefit_value(Variable):
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
     )
     defined_for = "msp_eligible"
+    documentation = (
+        "Potential monthly premium assistance for an eligible person, before "
+        "take-up. QMB cost sharing is estimated separately in qmb_cost_sharing."
+    )
 
     def formula(person, period, parameters):
         category = person("msp_category", period)

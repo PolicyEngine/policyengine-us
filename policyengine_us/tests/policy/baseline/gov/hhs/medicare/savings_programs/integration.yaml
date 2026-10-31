@@ -296,3 +296,142 @@
   output:
     msp_eligible: [false, false]
     msp_category: [NONE, NONE]
+
+- name: Case 10, QMB nonparticipation removes coverage and costs but preserves estimates.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    age: 68
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    medicaid_enrolled: false
+    social_security_retirement: 16_000
+    receives_ssi: false
+    takes_up_msp_if_eligible: false
+    base_part_a_premium: 2_400
+    base_part_b_premium: 2_434.8
+    gross_medicare_part_b_premium: 2_434.8
+  output:
+    ssi: 0
+    msp_category:
+      2026-01: QMB
+    msp_eligible:
+      2026-01: true
+    # Potential premiums: (2,400 + 2,434.80) / 12 = 402.90.
+    msp_benefit_value:
+      2026-01: 402.9
+    # Potential cost sharing: 14,500 * 20% / 12, independent of take-up.
+    qmb_cost_sharing:
+      2026-01: 241.666667
+    msp: 0
+    msp_part_a_premium_coverage: 0
+    msp_part_b_premium_coverage: 0
+    medicare_part_b_premium: 2_434.8
+    msp_cost: 0
+    msp_federal_cost: 0
+    msp_state_cost: 0
+
+- name: Case 11, QMB participation includes premiums and cost sharing in actual costs.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    age: 68
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    medicaid_enrolled: false
+    social_security_retirement: 16_000
+    receives_ssi: false
+    takes_up_msp_if_eligible: true
+    base_part_a_premium: 2_400
+    base_part_b_premium: 2_434.8
+    gross_medicare_part_b_premium: 2_434.8
+  output:
+    ssi: 0
+    msp_category:
+      2026-01: QMB
+    msp: 4_834.8
+    msp_benefit_value: 4_834.8
+    msp_part_a_premium_coverage: 2_400
+    msp_part_b_premium_coverage: 2_434.8
+    medicare_part_b_premium: 0
+    # Premiums 4,834.80 + cost sharing 2,900; CA FMAP is 50%.
+    msp_cost: 7_734.8
+    msp_federal_cost: 3_867.4
+    msp_state_cost: 3_867.4
+
+- name: Case 12, SSI buy-in coverage is preserved only in months of SSI receipt.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    age: 68
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    medicaid_enrolled: true
+    ssi:
+      2026: 0
+      2026-01: 994
+    receives_ssi: false
+    takes_up_msp_if_eligible: false
+    base_part_a_premium: 0
+    base_part_b_premium: 2_434.8
+    gross_medicare_part_b_premium: 2_434.8
+  output:
+    msp:
+      2026-01: 202.9
+      2026-02: 0
+    msp_part_b_premium_coverage: 202.9
+    medicare_part_b_premium: 2_231.9
+    # Full Medicaid costs already include the assistance; avoid double counting.
+    msp_cost: 0
+    msp_federal_cost: 0
+    msp_state_cost: 0
+
+- name: Case 13, a child's SSI receipt does not restore a nonparticipating senior's MSP coverage.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        social_security_retirement: 16_000
+        is_medicare_eligible: true
+        medicare_enrolled: true
+        medicaid_enrolled: false
+        takes_up_msp_if_eligible: false
+        ssi: 0
+        receives_ssi: false
+        base_part_a_premium: 0
+        base_part_b_premium: 2_434.8
+      person2:
+        age: 35
+        is_medicare_eligible: false
+        medicare_enrolled: false
+        medicaid_enrolled: true
+        takes_up_msp_if_eligible: false
+        ssi: 0
+        receives_ssi: true
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    msp_eligible:
+      2026-01: [true, false]
+    msp_benefit_value:
+      2026-01: [202.9, 0]
+    msp: [0, 0]
+    msp_part_b_premium_coverage: [0, 0]
+    msp_cost: [0, 0]
+    msp_federal_cost: [0, 0]
+    msp_state_cost: [0, 0]

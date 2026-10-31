@@ -493,3 +493,107 @@
     ks_dcf_csfp_categorically_eligible: true
     commodity_supplemental_food_program_eligible: true
     commodity_supplemental_food_program: 651
+
+- name: Case 17, computed MSP with take-up true controls the Kansas income bypass.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        social_security_retirement: 16_000
+        is_medicare_eligible: true
+        medicare_enrolled: true
+        medicaid_enrolled: false
+        receives_ssi: false
+        takes_up_msp_if_eligible: true
+        base_part_a_premium: 0
+        base_part_b_premium: 2_434.8
+      person2:
+        age: 35
+        employment_income: 33_000
+        is_medicare_eligible: false
+        medicare_enrolled: false
+        receives_ssi: false
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        snap: 0
+        receives_snap: false
+        fdpir: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county_str: SEDGWICK_COUNTY_KS
+  output:
+    # The adult child's earnings affect CSFP income, not the senior's MSP income.
+    school_meal_countable_income: 49_000
+    ssi: [0, 0]
+    msp_eligible:
+      2026-01: [true, false]
+    msp_benefit_value:
+      2026-01: [202.9, 0]
+    msp:
+      2026-01: [202.9, 0]
+    ks_dcf_csfp_categorically_eligible:
+      2026-01: [true, false]
+    commodity_supplemental_food_program_eligible: [true, false]
+    commodity_supplemental_food_program: [651, 0]
+
+- name: Case 18, computed MSP with take-up false controls the Kansas income bypass.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        social_security_retirement: 16_000
+        is_medicare_eligible: true
+        medicare_enrolled: true
+        medicaid_enrolled: false
+        receives_ssi: false
+        takes_up_msp_if_eligible: false
+        base_part_a_premium: 0
+        base_part_b_premium: 2_434.8
+      person2:
+        age: 35
+        employment_income: 33_000
+        is_medicare_eligible: false
+        medicare_enrolled: false
+        receives_ssi: false
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        snap: 0
+        receives_snap: false
+        fdpir: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county_str: SEDGWICK_COUNTY_KS
+  output:
+    # The adult child's earnings affect CSFP income, not the senior's MSP income.
+    school_meal_countable_income: 49_000
+    ssi: [0, 0]
+    msp_eligible:
+      2026-01: [true, false]
+    msp_benefit_value:
+      2026-01: [202.9, 0]
+    msp:
+      2026-01: [0, 0]
+    ks_dcf_csfp_categorically_eligible:
+      2026-01: [false, false]
+    commodity_supplemental_food_program_eligible: [false, false]
+    commodity_supplemental_food_program: [0, 0]

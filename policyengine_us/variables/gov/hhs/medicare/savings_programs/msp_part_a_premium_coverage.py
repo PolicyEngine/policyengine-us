@@ -32,8 +32,9 @@ class msp_part_a_premium_coverage(Variable):
         monthly_coverage = 0
         for month in period.get_subperiods(MONTH):
             qmb_eligible = person("is_qmb_eligible", month)
+            participates = person("msp_participation", month)
             monthly_coverage += where(
-                enrolled & qmb_eligible,
+                enrolled & qmb_eligible & participates,
                 monthly_part_a_premium,
                 0,
             )
