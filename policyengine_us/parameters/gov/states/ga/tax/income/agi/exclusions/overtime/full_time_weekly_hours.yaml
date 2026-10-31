@@ -1,0 +1,21 @@
+description: Georgia treats an employee who usually works at least this many hours a week as full-time under the qualified overtime compensation exclusion.
+
+# O.C.G.A. § 48-7-27(a)(16)(A) says "full-time employee" and does not define
+# the term. The value follows the income tax chapter's own usage: Chapter 7's
+# job credits set the term at "a minimum of 35 hours a week".
+values:
+  2026-01-01: 35
+
+metadata:
+  period: year
+  unit: hour
+  label: Georgia qualified overtime exclusion full-time weekly hours
+  reference:
+    - title: Georgia HB463 (2025-2026), Section 2-4 adding O.C.G.A. § 48-7-27(a)(16)(A)
+      href: https://www.legis.ga.gov/api/legislation/document/20252026/249080#page=6
+    - title: O.C.G.A. § 48-7-40(a)(5), new full-time employee job
+      href: https://codes.findlaw.com/ga/title-48-revenue-and-taxation/ga-code-sect-48-7-40/
+    - title: O.C.G.A. § 48-7-40.1(a)(3), new full-time employee job
+      href: https://codes.findlaw.com/ga/title-48-revenue-and-taxation/ga-code-sect-48-7-40-1/
+    - title: O.C.G.A. § 48-7-40.26(e)(10)(A), full-time employee
+      href: https://codes.findlaw.com/ga/title-48-revenue-and-taxation/ga-code-sect-48-7-40-26/
