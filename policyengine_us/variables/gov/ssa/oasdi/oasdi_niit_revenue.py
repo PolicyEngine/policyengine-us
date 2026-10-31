@@ -8,7 +8,7 @@ class oasdi_niit_revenue(Variable):
     label = "OASDI modeled net investment income tax transfer"
     documentation = (
         "The OASDI transfer selected by the S.770 section 8 options "
-        "(s770_revenue_oasdi): zero unless an option is enabled. This is the "
+        "(s770_revenue_oasdi): zero unless an option applies. This is the "
         "transfer under the selected mode, not the full net investment "
         "income tax liability."
     )

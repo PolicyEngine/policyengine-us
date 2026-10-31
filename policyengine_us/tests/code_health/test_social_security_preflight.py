@@ -106,12 +106,43 @@ def test_reported_columns_are_not_migrated_again(tmp_path):
         "tob_revenue_oasdi",
         "tob_revenue_medicare_hi",
         "tob_revenue_total",
+        "s770_revenue_oasdi",
+        "s770_existing_niit_revenue_oasdi",
+        "s770_nii_addon_tax",
+        "s770_active_business_income_tax",
+        "owners_draw_oasdi_tax",
+        "oasdi_payroll_tax_revenue",
+        "oasdi_benefit_taxation_revenue",
+        "oasdi_income",
+        "oasdi_cost",
+        "oasdi_modeled_balance",
     ],
 )
 def test_stored_outputs_rejected_even_when_zero(tmp_path, column):
     path = make_dataset(tmp_path, tax_unit_extra={column: [0]})
     with pytest.raises(ValueError, match="bypass reform formulas"):
         audit(path)
+
+
+@pytest.mark.parametrize(
+    "column",
+    [
+        "s770_passive_se_income",
+        "s770_active_fica_income",
+        "s770_nii_fica_seca_income",
+        "s770_niit_nol_deduction",
+        "s770_draw_gross",
+        "s770_draw_oasdi_base",
+        "s770_draw_hi_in_effect",
+        "owners_draw_subsets_are_disjoint",
+        "owners_draw_passive_se_overlap",
+    ],
+)
+def test_section_8_and_owners_draw_classification_inputs_remain_sources(
+    tmp_path, column
+):
+    receipt = audit(make_dataset(tmp_path, tax_unit_extra={column: [0]}))
+    assert column in receipt["stored_columns"]
 
 
 def test_both_component_names_would_preserve_a_bypassing_override(tmp_path):

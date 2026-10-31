@@ -1,0 +1,70 @@
+- name: Each person's payroll liability and each tax unit's revenue count once
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        social_security_retirement: 15_000
+        taxable_interest_income: 50_000
+      spouse:
+        age: 70
+        social_security_retirement: 15_000
+      worker:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      couple:
+        members: [head, spouse]
+        filing_status: JOINT
+      worker_unit:
+        members: [worker]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head, spouse, worker]
+        takes_up_tanf_if_eligible: false
+    households:
+      household:
+        members: [head, spouse, worker]
+        state_code: TX
+  output:
+    # The worker's 12.4% * $50,000 = $6,200 is the only payroll liability.
+    oasdi_payroll_tax_revenue: [0, 0, 6_200]
+    # The couple's OASDI benefit-taxation share, as in the two-person case.
+    oasdi_benefit_taxation_revenue: [1_500, 0]
+    oasdi_niit_revenue: [0, 0]
+    # $6,200 + $1,500. Projecting the couple's $1,500 to both members and
+    # summing would give $9,200.
+    oasdi_income: 7_700
+
+- name: Households keep their own liabilities
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      wage_earner:
+        age: 40
+        employment_income: 250_000
+      self_employed:
+        age: 40
+        self_employment_income: 100_000
+    tax_units:
+      tax_unit_1:
+        members: [wage_earner]
+      tax_unit_2:
+        members: [self_employed]
+    spm_units:
+      spm_unit_1:
+        members: [wage_earner]
+      spm_unit_2:
+        members: [self_employed]
+    households:
+      household_1:
+        members: [wage_earner]
+        state_code: TX
+      household_2:
+        members: [self_employed]
+        state_code: TX
+  output:
+    oasdi_income: [22_878, 11_451.40]

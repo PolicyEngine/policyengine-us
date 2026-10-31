@@ -1,0 +1,41 @@
+- name: Modeled balance is modeled liabilities less modeled benefits
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      worker:
+        age: 40
+        employment_income: 50_000
+      head:
+        age: 70
+        social_security_retirement: 15_000
+        taxable_interest_income: 50_000
+      spouse:
+        age: 70
+        social_security_retirement: 15_000
+    tax_units:
+      worker_unit:
+        members: [worker]
+        filing_status: SINGLE
+      couple:
+        members: [head, spouse]
+        filing_status: JOINT
+    spm_units:
+      worker_spm_unit:
+        members: [worker]
+      couple_spm_unit:
+        members: [head, spouse]
+        takes_up_tanf_if_eligible: false
+    households:
+      worker_household:
+        members: [worker]
+        state_code: TX
+      couple_household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # Worker: $6,200 of payroll liability and no benefits.
+    # Couple: $1,500 of OASDI benefit taxation and $30,000 of benefits.
+    oasdi_income: [6_200, 1_500]
+    oasdi_cost: [0, 30_000]
+    oasdi_modeled_balance: [6_200, -28_500]
