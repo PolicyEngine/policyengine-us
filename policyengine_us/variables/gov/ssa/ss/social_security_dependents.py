@@ -13,11 +13,15 @@ class social_security_dependents(Variable):
     documentation = "Selected source with applicable benefit levers; an explicit public input is a final override."
 
     def formula(person, period, parameters):
-        return (
-            person("social_security_dependents_base", period)
+        base = person("social_security_dependents_base", period)
+        reported = (
+            person("social_security_dependents_source", period)
+            == SocialSecurityBenefitSource.reported
+        )
+        reported_benefit = (
+            base
             * where(
-                person("social_security_dependents_source", period)
-                == SocialSecurityBenefitSource.reported,
+                reported,
                 person("social_security_dependents_joint_cola_factor", period)
                 * person("social_security_dependents_pia_ratio_factor", period),
                 1,
@@ -25,3 +29,6 @@ class social_security_dependents(Variable):
             * person("social_security_across_the_board_factor", period)
             * person("social_security_dependents_payable_factor", period)
         )
+        # The calculator applies the complete payment policy before its
+        # earnings test. Its public route must not repeat any of those factors.
+        return where(reported, reported_benefit, base)

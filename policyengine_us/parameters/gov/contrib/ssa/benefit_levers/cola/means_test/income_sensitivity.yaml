@@ -1,0 +1,9 @@
+description: "Income decision for the COLA means test: 0 = prior_year uses the preceding tax year's MAGI excluding Social Security; 1 = never_withheld and 2 = always_withheld provide the missing-history sensitivity envelope. Extended population data are static cross-sections, so the prior-year copy of a record is a proxy rather than an observed income history; supplied histories override that proxy. Numeric codes provide compatibility with the parameter engine."
+values:
+  0000-01-01: 0
+metadata:
+  label: Social Security COLA means-test income sensitivity
+  economy: false
+  reference:
+    - title: OACT provision A9, 2026 Trustees Report basis
+      href: https://www.ssa.gov/OACT/solvency/provisions/cola.html

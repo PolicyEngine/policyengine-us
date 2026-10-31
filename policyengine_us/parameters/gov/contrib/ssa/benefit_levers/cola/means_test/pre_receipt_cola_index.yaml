@@ -1,0 +1,9 @@
+description: "COLA index before benefit receipt: -1 = follow_below_threshold uses below_threshold_cola_index; 0 = statutory and 1 = chained_cpi_u override it. The default therefore follows the below-threshold policy. The A9 preset uses 1. Numeric codes provide compatibility with the parameter engine."
+values:
+  0000-01-01: -1
+metadata:
+  label: Social Security pre-receipt COLA index
+  economy: false
+  reference:
+    - title: OACT provision A9, 2026 Trustees Report basis
+      href: https://www.ssa.gov/OACT/solvency/provisions/cola.html

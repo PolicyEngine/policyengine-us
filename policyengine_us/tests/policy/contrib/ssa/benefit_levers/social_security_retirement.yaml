@@ -38,21 +38,21 @@
   output:
     social_security_retirement: 12000
 
-- name: OASI-only payable share preserves disability benefits
+- name: OASI-only payable share preserves disability and dependent DI benefits
   period: 2027
   input:
     gov.contrib.ssa.benefit_levers.payable.share: 0.8
     gov.contrib.ssa.benefit_levers.payable.oasi_only: true
-    social_security_dependents_fund: oasi
-    social_security_retirement_reported: 12000
-    social_security_disability_reported: 6000
-    social_security_survivors_reported: 3000
-    social_security_dependents_reported: 1000
+    social_security_dependents_fund: [oasi, di]
+    social_security_retirement_reported: [12000, 0]
+    social_security_disability_reported: [6000, 0]
+    social_security_survivors_reported: [3000, 0]
+    social_security_dependents_reported: [1000, 6000]
   output:
-    social_security_retirement: 9600
-    social_security_disability: 6000
-    social_security_survivors: 2400
-    social_security_dependents: 800
+    social_security_retirement: [9600, 0]
+    social_security_disability: [6000, 0]
+    social_security_survivors: [2400, 0]
+    social_security_dependents: [800, 6000]
 
 - name: A full across-the-board cut produces zero
   period: 2027
@@ -89,17 +89,7 @@
   output:
     social_security_retirement: 10575.289575289577
 
-- name: OASI-only payable scenario preserves a dependent DI benefit
-  period: 2027
-  input:
-    gov.contrib.ssa.benefit_levers.payable.share: 0.8
-    gov.contrib.ssa.benefit_levers.payable.oasi_only: true
-    social_security_dependents_fund: di
-    social_security_dependents_reported: 6000
-  output:
-    social_security_dependents: 6000
-
-- name: Calculated-base extension point bypasses population PIA and COLA factors
+- name: Complete calculated base bypasses every population benefit factor
   period: 2027
   input:
     age: 70
@@ -109,13 +99,15 @@
     gov.contrib.ssa.benefit_levers.across_the_board.rate: 0.1
     gov.contrib.ssa.benefit_levers.payable.share: 0.8
     social_security_retirement_source: supplied_pia
-    # The route itself is reserved. A supplied selected base stands in for
-    # the future service's amount already containing its reformed PIA/COLAs.
+    # This replaces the calculator's complete checks, including its PIA,
+    # COLAs, across-the-board change and payable share before the earnings test.
     social_security_retirement_base: 10000
     social_security_retirement_pia_ratio_factor: 1.2
     social_security_retirement_joint_cola_factor: 1.3
   output:
-    social_security_retirement: 8800
+    # The public route returns 10000 * 1. Applying 1.1 * 0.8 again would
+    # incorrectly reduce these already calculated checks to 8800.
+    social_security_retirement: 10000
 
 - name: Selecting an OASI-only basis before depletion remains neutral
   period: 2027
