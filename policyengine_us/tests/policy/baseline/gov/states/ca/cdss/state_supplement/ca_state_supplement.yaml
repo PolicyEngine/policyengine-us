@@ -355,3 +355,308 @@
     # 2,098.83 - 1,491 = 607.83; 2,098.83 - 2,098.83 = 0;
     # 2,356.57 - 2,098.83 = 257.74; 2,356.57 - 2,356.57 = 0.
     ca_state_supplement: [7_293.96, 0, 3_092.88, 0]
+
+# A CAPI-eligible member's income does not reduce the state supplement: CAPI
+# budgets its own members' income (CAPI regulations MPP 49-035), and SSI/SSP
+# counts another member's income only when it is deemed (20 CFR 416.1160(a)).
+# 2025: federal SSI is $967; the no-cooking individual standard is
+# $1,206.94 + $128.87 = $1,335.81.
+- name: Case 10, 2025 aged citizen sharing an SPM unit with a CAPI-eligible sibling keeps the supplement.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 6_000 # 500 a month
+      person2:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 10
+        ssi_qualifying_quarters_earnings: 0
+        pension_income: 6_000 # 500 a month
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # person2 is an LPR with fewer than 40 quarters, so SSI and the state
+    # supplement bar her and she is CAPI-eligible.
+    ca_capi_eligible_person: [false, true]
+    # Each has 500 - 20 = 480 a month of countable income.
+    ssi_countable_income: [5_760, 5_760]
+    # person1's SSI is 967 - 480 = 487 a month.
+    ssi: [5_844, 0] # 487 * 12
+    # One eligible aged member without cooking facilities, so the standard is
+    # 1,206.94 + 128.87 = 1,335.81.
+    ca_state_supplement_payment_standard: 16_029.72 # 1,335.81 * 12
+    # The supplement is 1,335.81 - 487 - 480 = 368.81 a month; person2's 480
+    # is not counted.
+    ca_state_supplement: 4_425.72 # 368.81 * 12
+
+# Under the model's SSI couple computation each aged spouse carries half of
+# the couple's countable income for SSI. SSA treats the noncitizen spouse as
+# an ineligible spouse (20 CFR 416.1160(d)) but deems none of the spouse's
+# income: CAPI is a public income-maintenance payment (20 CFR 416.1142(a)(6);
+# POMS SI 00830.175), and income counted in figuring it is not deemed
+# (20 CFR 416.1161(a)(2)-(3); POMS SI 01320.141 A). So the supplement counts
+# the citizen's own income. 2025: the couple federal benefit rate is $1,450;
+# the no-cooking individual standard is $1,206.94 + $128.87 = $1,335.81.
+# NOTE: SSA pays SSI of 967 - 480 = 487 and a supplement of 368.81. The
+# model's SSI is still the couple computation, 235 (#10481), so its
+# supplement is 620.81; the citizen's total, 855.81, is the same.
+- name: Case 11, 2025 aged citizen married to a CAPI-eligible spouse, the supplement counts the citizen's own income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 6_000 # 500 a month
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        pension_income: 6_000 # 500 a month foreign pension
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # SSI and the state supplement bar person2 for immigration status, so she
+    # is CAPI-eligible.
+    ca_capi_eligible_person: [false, true]
+    # Both spouses are aged, so the model applies the SSI couple computation:
+    # (500 + 500 - 20) / 2 = 490 a month each (5,880 a year).
+    ssi_countable_income: [5_880, 5_880]
+    # person1's SSI is 1,450 / 2 - 490 = 235 a month.
+    ssi: [2_820, 0] # 235 * 12
+    # One eligible aged member without cooking facilities, so the standard is
+    # 1,206.94 + 128.87 = 1,335.81.
+    ca_state_supplement_payment_standard: 16_029.72 # 1,335.81 * 12
+    # The supplement counts the citizen's own 500 - 20 = 480:
+    # 1,335.81 - 235 - 480 = 620.81 a month.
+    ca_state_supplement: 7_449.72 # 620.81 * 12
+
+- name: Case 12, 2025 aged citizen sharing an SPM unit with an undocumented sibling who is not CAPI-eligible keeps the supplement.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 6_000 # 500 a month
+      person2:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: UNDOCUMENTED
+        pension_income: 6_000 # 500 a month
+        # WIC 18938 and MPP 49-020 bar undocumented people from CAPI (#10482).
+        ca_capi_eligible_person: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # Each has 500 - 20 = 480 a month of countable income.
+    ssi_countable_income: [5_760, 5_760]
+    ssi: [5_844, 0] # 487 * 12
+    ca_state_supplement_payment_standard: 16_029.72 # 1,335.81 * 12
+    # A sibling's income is never deemed to an SSI/SSP recipient
+    # (20 CFR 416.1160(a)), so the supplement stays 1,335.81 - 487 - 480 =
+    # 368.81 a month.
+    ca_state_supplement: 4_425.72 # 368.81 * 12
+
+- name: Case 13, 2025 aged citizen sharing an SPM unit with a married CAPI couple keeps the supplement.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 6_000 # 500 a month
+      person2:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 0
+        pension_income: 6_000 # 500 a month
+      person3:
+        age: 70
+        is_tax_unit_spouse: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 0
+        pension_income: 6_000 # 500 a month
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # Neither member of the couple meets SSI's noncitizen test, so neither
+    # one's income is deemed to the citizen (20 CFR 416.1160(a)). The citizen
+    # has 480 a month of countable income and SSI of 967 - 480 = 487, so the
+    # supplement is 1,335.81 - 487 - 480 = 368.81 a month.
+    ssi: [5_844, 0, 0] # 487 * 12
+    ca_state_supplement: 4_425.72 # 368.81 * 12
+
+- name: Case 14, 2026 mixed couple where both spouses have income, the supplement counts the citizen's own income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+        social_security_retirement: 9_600 # 800 a month
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        pension_income: 9_600 # 800 a month
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The model's SSI couple computation gives each spouse (1,600 - 20) / 2
+    # = 790, so the citizen's SSI is max(745.50 - 790, 0) = 0. The supplement
+    # counts the citizen's own 800 - 20 = 780: 1,233.94 - 0 - 780 = 453.94.
+    # SSA pays the citizen 994 - 780 = 214 of SSI and 239.94 of supplement,
+    # the same 453.94 in all (#10481).
+    ssi: [0, 0]
+    ca_state_supplement: 453.94
+    # The spouse is paid, so CAPI is the mixed-couple amount:
+    # 2,098.83 - 1,580 - 0 - 453.94 = 64.89.
+    ca_capi_person: [0, 64.89]
+
+- name: Case 15, 2026 mixed couple whose CAPI spouse has too much income for CAPI, so the spouse's income is deemed.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        pension_income: 24_000 # 2,000 a month
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The spouse's 2,000 - 20 = 1,980 leaves no CAPI, so it is deemed (20 CFR
+    # 416.1163): the lesser of 1,233.94 - 0 and 2,098.83 - 1,980 = 118.83.
+    # The model's joint SSI is max(745.50 - 990, 0) = 0, so the supplement is
+    # 118.83.
+    ssi: [0, 0]
+    ca_state_supplement: 118.83
+    # CAPI: 2,098.83 - 1,980 - 118.83 = 0.
+    ca_capi_person: [0, 0]
+
+- name: Case 16, 2026 citizen married to an aged spouse who fails SSI's noncitizen test and cannot receive CAPI, so the spouse's income is not excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+        social_security: 3_840 # 320 a month
+      person2:
+        age: 70
+        immigration_status: UNDOCUMENTED
+        pension_income: 8_400 # 700 a month
+        # WIC 18938 bars undocumented people from CAPI (#10482).
+        ca_capi_eligible_person: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The spouse receives no CAPI, so 20 CFR 416.1161(a)(2)-(3) does not
+    # apply and the spouse's 700 a month, above the 1,491 - 994 = 497
+    # threshold, is deemed (20 CFR 416.1163). The model's joint SSI gives each
+    # spouse (320 + 700 - 20) / 2 = 500: SSI 745.50 - 500 = 245.50 and a
+    # supplement of 1,233.94 - 245.50 - 500 = 488.44, 733.94 in all.
+    # NOTE: SSA pays min(994 - 300, 1,491 - 1,000) = 491 of SSI and 239.94 of
+    # supplement, 730.94 in all; the gap is the joint SSI (#10481).
+    ssi: [245.50, 0]
+    ca_state_supplement: 488.44
+    ca_capi_person: [0, 0]

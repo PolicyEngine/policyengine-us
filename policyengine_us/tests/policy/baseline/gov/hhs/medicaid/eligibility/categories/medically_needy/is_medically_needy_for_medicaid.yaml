@@ -332,3 +332,79 @@
     # 12,000 - 6,000 = 6,000 <= 6,264; resources 1,000 <= 2,000.
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
+
+- name: Case 11, aged permanent resident without 40 SSI quarters has pension counted.
+  period: 2026
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 10
+    ssi_qualifying_quarters_earnings: 20
+    pension_income: 60_000
+    is_in_medicaid_medically_needy_category: true
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_medically_needy_medical_expenses: 6_000
+    ssi_countable_resources: 1_000
+    state_code: MA
+  output:
+    # 60,000 - 20 x 12 = 59,760; 59,760 - 6,000 = 53,760 > 522 x 12 = 6,264.
+    is_medically_needy_for_medicaid: false
+
+- name: Case 12, aged permanent resident without 40 SSI quarters qualifies after medical spenddown.
+  period: 2026
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 10
+    ssi_qualifying_quarters_earnings: 20
+    pension_income: 18_000
+    is_in_medicaid_medically_needy_category: true
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_medically_needy_medical_expenses: 12_000
+    ssi_countable_resources: 1_000
+    state_code: MA
+  output:
+    # 18,000 - 20 x 12 = 17,760; 17,760 - 12,000 = 5,760 <= 522 x 12 = 6,264.
+    is_medically_needy_for_medicaid: true
+
+- name: Case 13, an aged noncitizen dependent parent's pension does not count against the head.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        immigration_status: CITIZEN
+        pension_income: 20_000
+        medicaid_medically_needy_medical_expenses: 15_000
+        ssi_countable_resources: 1_000
+        is_in_medicaid_medically_needy_category: true
+        is_optional_senior_or_disabled_for_medicaid: false
+      parent:
+        age: 90
+        is_tax_unit_dependent: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 10
+        ssi_qualifying_quarters_earnings: 20
+        pension_income: 30_000
+        ssi_countable_resources: 0
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    marital_units:
+      head_unit:
+        members: [head]
+      parent_unit:
+        members: [parent]
+    households:
+      household:
+        members: [head, parent]
+        state_code: MA
+  output:
+    # The parent's 30,000 - 240 = 29,760 now counts (this PR), but a parent's
+    # income is never deemed to an adult child aged 70 (42 CFR
+    # 435.602(a)(2)(i)). The head: 20,000 - 240 - 15,000 = 4,760 <= 522 x 12
+    # = 6,264.
+    ssi_countable_income: [19_760, 29_760]
+    is_medically_needy_for_medicaid: [true, false]

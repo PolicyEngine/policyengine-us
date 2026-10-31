@@ -4,8 +4,8 @@
     age: 70
     immigration_status: LEGAL_PERMANENT_RESIDENT
     ssi_qualifying_quarters_earnings: 39
-    # SSI zeroes countable income for people who fail its immigration test,
-    # so the case supplies it: 1,234.94 per month (14,819.28 per year).
+    # The case supplies countable income directly to isolate the CAPI income
+    # test: 1,234.94 per month (14,819.28 per year).
     ssi_countable_income: 14_819.28
     living_arrangements_allow_for_food_preparation: true
     state_code: CA
@@ -37,13 +37,6 @@
         age: 70
         immigration_status: LEGAL_PERMANENT_RESIDENT
         ssi_qualifying_quarters_earnings: 39
-        # SSI does not compute these for people who fail its immigration
-        # test, so the case supplies them. The spouse earns 5,000 per month;
-        # couple countable income is (5,000 - 20 - 65) / 2 = 2,457.50 per
-        # month (29,490 per year), all deemed.
-        is_ssi_spousal_deeming_applies: true
-        ssi_income_deemed_from_ineligible_spouse: 29_490
-        ssi_countable_income: 29_490
       person2:
         age: 50
         employment_income: 60_000
@@ -56,6 +49,12 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
+    # The spouse earns 5,000 per month; couple countable income is
+    # (5,000 - 20 - 65) / 2 = 2,457.50 per month (29,490 per year), all
+    # deemed.
+    is_ssi_spousal_deeming_applies: [true, false]
+    ssi_income_deemed_from_ineligible_spouse: [29_490, 0]
+    ssi_countable_income: [29_490, 0]
     # POMS SI 01320.430 D. As an individual: federal 994, state 239.94.
     # Under deeming: 2,457.50 exceeds the couple FBR 1,491 by 966.50, which
     # exceeds the couple OSS 607.83, so neither a federal benefit nor a

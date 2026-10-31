@@ -199,3 +199,25 @@
 
     # Not eligible so OSS = $0
     sc_ssi_state_supplement: [0]
+
+- name: Case 8, aged permanent resident without 40 SSI quarters in a CRCF has a pension above the NIL.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 10
+        ssi_qualifying_quarters_earnings: 20
+        pension_income: 24_000
+        is_in_residential_care_facility: true
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # The pension now counts: 24,000 - 240 = 23,760, above the 21,648 net
+    # income limit, so the person is not eligible.
+    ssi_countable_income: [23_760]
+    sc_ssi_state_supplement_eligible: [false]
+    sc_ssi_state_supplement: [0]
