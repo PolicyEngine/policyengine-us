@@ -10,7 +10,11 @@ from policyengine_us.tools.social_security.parameters import (
     bend_points_at,
     formula_path_at,
 )
-from policyengine_us.tools.social_security.pia import compute_pia, progressive_threshold
+from policyengine_us.tools.social_security.pia import (
+    FormulaPath,
+    compute_pia,
+    progressive_threshold,
+)
 
 
 @pytest.fixture(scope="module")
@@ -170,6 +174,43 @@ def test_progressive_enable_with_unset_fraction_fails_on_runtime_adapter(paramet
     _set(p.progressive_price_indexing.in_effect, True)
     with pytest.raises(ValueError, match="bend-point fraction"):
         _calculate(parameters, 5000, 2032, 2032)
+
+
+def test_threshold_fraction_hand_example_at_published_2026_bends(reference_parameters):
+    # SSA's 2026 bend points are $1,286 and $7,749:
+    # https://www.ssa.gov/OACT/COLA/bendpoints.html
+    # T = 1,286 + 0.4 * (7,749 - 1,286) = 1,286 + 2,585.20 = 3,871.20.
+    bends = bend_points_at(reference_parameters, 2026)
+    assert bends == (1286, 7749)
+    for fraction, expected in ((0, "1286"), (0.4, "3871.2"), (1, "7749")):
+        path = FormulaPath(bend_point_fraction=fraction)
+        assert progressive_threshold(2026, path, bend_points=bends) == Decimal(expected)
+
+
+@pytest.mark.parametrize("fraction", [0, 0.4, 1])
+def test_runtime_threshold_reads_each_cohorts_bend_points(parameters, fraction):
+    """M8: T(E) = BP1(E) + f * (BP2(E) - BP1(E)), rising as the bends do.
+
+    The fractions are illustrative and make no claim about any percentile.
+    """
+    p = parameters.gov.contrib.ssa.pia
+    progressive = p.progressive_price_indexing
+    _set(p.in_effect, True, "2032-01-01")
+    _set(progressive.in_effect, True, "2032-01-01")
+    _set(progressive.bend_point_fraction, fraction, "2032-01-01")
+    previous = None
+    for year in range(2032, 2041):
+        bends = bend_points_at(parameters, year)
+        path, _ = formula_path_at(parameters, year, year)
+        threshold = progressive_threshold(year, path, bend_points=bends)
+        first, second = (Decimal(str(bend)) for bend in bends)
+        assert threshold == first + Decimal(str(fraction)) * (second - first)
+        if previous is not None:
+            # Each cohort's projected bends exceed the previous cohort's, so
+            # the threshold between them rises too.
+            assert first > previous[1] and second > previous[2]
+            assert threshold > previous[0]
+        previous = threshold, first, second
 
 
 def test_runtime_progressive_dollar_path_overrides_fraction(parameters):
