@@ -33,7 +33,13 @@ class ga_qualified_overtime_exclusion(Variable):
         #     is a known under-modeling of a specifically eligible group.
         #   - The employer reporting obligations in § 48-7-27(a)(16)(C)-(D)
         #     are administrative and do not affect household tax liability.
+        #
+        # § 48-7-27(a) subtracts the exclusion from the taxpayer's federal
+        # adjusted gross income. A dependent's overtime is the dependent's own
+        # income (26 U.S.C. 73(a) for a child's services), left out of the
+        # filer's federal AGI (see irs_gross_income), so it never counts.
         person = tax_unit.members
         overtime = person("fsla_overtime_premium", period)
+        not_dependent = ~person("is_tax_unit_dependent", period)
         cap = parameters(period).gov.states.ga.tax.income.agi.exclusions.overtime.cap
-        return tax_unit.sum(min_(overtime, cap))
+        return tax_unit.sum(min_(overtime, cap) * not_dependent)
