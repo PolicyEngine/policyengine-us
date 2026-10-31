@@ -821,6 +821,35 @@ def test_retained_state_spouse_helpers_exclude_cross_household_parent():
     )
 
 
+def test_retained_state_spouse_helpers_prefer_co_resident_parent_identity():
+    """A co-resident parent's id cannot identify the remote spouse instead.
+
+    Ids may repeat across households when every tax unit stays within its
+    household and no claiming tax unit is set. The declared marriage spans
+    households, but the claimant's parent link names the co-resident parent.
+    """
+    situation = _retained_state_pair_situation()
+    situation["people"]["c0"].update(person_id={YEAR: 1}, parent_1_id={YEAR: 2})
+    situation["people"]["s0"]["person_id"] = {YEAR: 2}
+    situation["people"]["parent"] = {
+        "age": {YEAR: 95},
+        "person_id": {YEAR: 2},
+        "is_tax_unit_head": {YEAR: True},
+        "is_tax_unit_spouse": {YEAR: False},
+        "is_tax_unit_dependent": {YEAR: False},
+    }
+    for plural in ("tax_units", "families", "spm_units", "marital_units"):
+        situation[plural]["parent"] = {"members": ["parent"]}
+    situation["households"]["c0"]["members"].append("parent")
+    simulation = Simulation(situation=situation)
+    person = simulation.get_population("people")
+    year = make_period(YEAR)
+    np.testing.assert_array_equal(state_is_married(person, year), [True, True, False])
+    np.testing.assert_array_equal(
+        state_couple_total(person, year, np.array([175, 100, 500])), [275, 275, 500]
+    )
+
+
 def _separated_supplement_situation(
     system,
     state,

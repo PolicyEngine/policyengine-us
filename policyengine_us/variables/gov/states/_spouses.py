@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.household.demographic.person._parent_links import (
     _parent_indices,
+    co_resident_parent_indices,
 )
 from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
     _ssi_couple_total,
@@ -12,11 +13,22 @@ def _state_retained_pair(person, year):
     """A two-person marriage, excluding known parent/dependent pairs.
 
     Resolve parent links within the marital unit, including across households
-    and tax units. The existing parent resolver keeps its ambiguous-id fallback.
+    and tax units. A link naming a co-resident keeps that identity when the
+    same id is reused by a spouse in another household. The existing parent
+    resolver keeps its ambiguous-id fallback.
     As in SSI's spouse test, a possible default unit cannot make someone a
     spouse of the person who claims them as a tax dependent.
     """
     first, second = _parent_indices(person, year, person.marital_unit)
+    home_first, home_second = co_resident_parent_indices(person, year)
+    marital_unit = person.marital_unit.reference_entity.members_entity_id
+
+    def prefer_co_resident(slot, home):
+        in_unit = np.where(marital_unit[np.maximum(home, 0)] == marital_unit, home, -1)
+        return np.where(home >= 0, in_unit, slot)
+
+    first = prefer_co_resident(first, home_first)
+    second = prefer_co_resident(second, home_second)
     parent_link = person.marital_unit.any((first >= 0) | (second >= 0))
     tax_unit = person.tax_unit.reference_entity.members_entity_id
     same_tax_unit = person.marital_unit.min(tax_unit) == person.marital_unit.max(
