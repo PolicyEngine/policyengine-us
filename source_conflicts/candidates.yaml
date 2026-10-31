@@ -6053,6 +6053,43 @@ candidates:
     and from July 2027 only breakfast stays at 224%, under c.336''s breakfast limit, which has no end date (state_free_income_limit.yaml,
     state_free_income_limit_breakfast_only.yaml, school_meal_tier.py). Verify that the appropriations carry the
     lunch limit.'
+- id: us-nj:school-meals-income-limit-rounding
+  program: school-meals
+  years:
+    from: 2026
+    type: program
+    note: program year as the program defines it
+  question: Does New Jersey's free-meal income limit apply at the statutory 224% of the poverty guideline or at Form
+    427's annual dollar limits, which round that product up to the next whole dollar?
+  sources:
+  - kind: statute
+    citation: N.J.S.A. 18A:33-4(a) and 18A:33-14a(a)(3), as amended by P.L.2023, c.336
+    url: https://pub.njleg.state.nj.us/Bills/2022/AL23/336_.HTM
+  - kind: form
+    citation: NJ Department of Agriculture Form 427, Federal & New Jersey Expanded Income Eligibility Guidelines, SY
+      2026-2027
+    url: https://www.nj.gov/agriculture/divisions/fn/pdf/Form%20427%20Federal%20and%20State%20Income%20Eligibility%20Guidelines%20SY%202026-2027.pdf#page=1
+  readings:
+    statute: A student qualifies with annual household income "not more than 224 percent" of the federal poverty level,
+      so the limit is 2.24 times the guideline, unrounded.
+    other: Households qualify "at or below the limits on this chart", whose annual 224% rows are 2.24 times the
+      guideline rounded up to the next whole dollar ($35,751 for one person, $48,474 for two).
+  example: In SY 2026-27, a two-person household with $48,474 of income (224.002% of the $21,640 guideline) pays full
+    price under the statute, which PE-US follows, but has no charge under Form 427.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/usda/school_meals/school_meal_tier.py
+    - policyengine_us/variables/gov/usda/school_meals/school_meal_breakfast_tier.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10384
+  state: ruled
+  note: 'PE-US compares New Jersey''s state limits with the poverty ratio exactly, while the federal 130% and 185% limits
+    use USDA''s whole-dollar values, rounded up in the Federal Register notice that 7 CFR 245.3(a) adopts (school_meal_tier.py,
+    school_meal_breakfast_tier.py). The October 2026 ruling applies the statute-first rule because c.336 sets the percentage
+    and delegates no dollar conversion. Pinning cases: the New Jersey statutory-limit cases in school_meal_tier.yaml
+    (2024 at 199%; 2026 one and two people at 224%) and the 2028 breakfast-only case in school_meal_breakfast_tier.yaml.
+    Form 427s before SY 2026-27 were not checked.'
 - id: us-nm:ccap-income-ceilings
   program: child-care-assistance
   years:
