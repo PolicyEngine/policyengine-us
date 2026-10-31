@@ -698,7 +698,8 @@ def clone_spm_system(system, *, copy_receipts=True, parameters=None):
 def copy_metadata(value):
     """Copy the dictionaries in ``value``, the only part of it core writes to.
 
-    Its lists stay shared. They are three quarters of its memory.
+    Its lists, and whatever they hold, stay shared. They are three quarters of
+    its memory.
     """
     if isinstance(value, dict):
         return {key: copy_metadata(item) for key, item in value.items()}
@@ -708,13 +709,13 @@ def copy_metadata(value):
 def copy_parameter_nodes(node, parent=None):
     """Copy a parameter tree, sharing only its dated entries and metadata lists.
 
-    Everything else matches a clone: each node, history, metadata dictionary and
-    at-instant cache is the copy's own, so the copy builds every view from its
-    histories, and an update, interpolation or added child on either tree leaves
-    the other's numbers alone. Only a reform modifier assigns an entry's value
-    after core builds the entry, and it runs on a private tree (see
-    :class:`SharedParameterPolicy`). The 1.3 million entries are what a clone
-    spends most of its time rebuilding.
+    Everything else matches a clone: each node, history, at-instant cache and
+    metadata dictionary outside those lists is the copy's own, so the copy builds
+    every view from its histories, and an update, interpolation or added child on
+    either tree leaves the other's numbers alone. Only a reform modifier assigns
+    an entry's value after core builds the entry, and it runs on a private tree
+    (see :class:`SharedParameterPolicy`). The 1.3 million entries are what a
+    clone spends most of its time rebuilding.
     """
     copied = object.__new__(type(node))
     copied.__dict__.update(node.__dict__)
@@ -749,8 +750,9 @@ def pin_spm_policy(system):
     takes a full clone before it writes. A system with no barrier cannot do that,
     and marking a tree while a reform writes to it would detach the system from
     that tree, so both of those get an ordinary clone. Assigning an entry's value
-    outside a reform method reaches the other tree, as it reaches every reader of
-    any shared tree.
+    still reaches the other tree outside a reform method, as it reaches every
+    reader of any shared tree, and in a reform that builds this pin once its
+    barrier has fired.
     """
     if (
         not isinstance(system, SharedParameterPolicy)
