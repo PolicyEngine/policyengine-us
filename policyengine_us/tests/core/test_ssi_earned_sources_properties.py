@@ -14,7 +14,9 @@ student-exclusion income. The nonnegative domain excludes these corrections,
 New Hampshire's prohibition on offsetting wages with a business loss, and
 Kentucky's separate prohibition on one business loss offsetting another
 business. Separate generated loss properties cover those intentional changes,
-including losses belonging to either spouse, children and students. An actual
+including losses belonging to either spouse, children and students, and
+Connecticut's and Maryland's rule that a spouse's loss never reduces the
+applicant's own earnings. An actual
 git-base differential is run separately. A seeded, stratified sample of 200
 households supplements the smaller Hypothesis batches, including spouses and
 disabled children.
@@ -89,6 +91,7 @@ STATE_READERS = (
     "ct_ssp_countable_income",
     "ct_ssp_earned_income_disregard",
     "ct_ssp_gross_income",
+    "ct_ssp_own_earned_income",
     "ky_ssp_countable_income",
     "ky_ssp_earned_income",
     "md_paa_countable_income",
@@ -437,6 +440,80 @@ def test_spousal_loss_pool_is_nonnegative_and_conserves_net_earnings(policy, bat
         after_loss.reshape(-1, 2).sum(axis=1),
         np.maximum(earned.sum(axis=1), 0),
     )
+
+
+@st.composite
+def ct_md_applicants_with_spouse_losses(draw):
+    # The applicant's own earned income is nonnegative: wages cover any own
+    # business loss. The ineligible spouse (under 65, not blind or disabled)
+    # has a residual business loss in the first version, so SSI applies part
+    # of it to the applicant's wages under POMS SI 00820.210 B.2.c, and any
+    # loss in the second. Varying the spouse's loss, from any business
+    # source, must leave the applicant's state figures unchanged.
+    wages = draw(st.integers(0, 40_000))
+    applicant = _person(
+        age=draw(st.integers(65, 85)),
+        employment_income=wages,
+        social_security_retirement=draw(st.integers(0, 20_000)),
+        **{draw(st.sampled_from(BUSINESS_SOURCES)): draw(st.integers(-wages, 30_000))},
+    )
+    spouse_wages = draw(st.integers(0, 30_000))
+    source = draw(st.sampled_from(BUSINESS_SOURCES))
+    spouse_age = draw(st.integers(30, 64))
+    losses = (
+        spouse_wages + draw(st.integers(1, 40_000)),
+        draw(st.integers(0, spouse_wages + 40_000)),
+    )
+    spouses = [
+        _person(age=spouse_age, employment_income=spouse_wages, **{source: -loss})
+        for loss in losses
+    ]
+    state = draw(st.sampled_from(("CT", "MD")))
+    return [{"state": state, "adults": [applicant, spouse]} for spouse in spouses]
+
+
+@settings(max_examples=6, deadline=None, suppress_health_check=[HealthCheck.too_slow])
+@example(
+    batch=[
+        [
+            {
+                "state": state,
+                "adults": [
+                    _person(employment_income=12_000),
+                    _person(
+                        age=60, employment_income=2_000, self_employment_income=-loss
+                    ),
+                ],
+            }
+            for loss in (7_000, 30_000)
+        ]
+        for state in ("CT", "MD")
+    ]
+)
+@given(batch=st.lists(ct_md_applicants_with_spouse_losses(), min_size=1, max_size=4))
+def test_spouse_loss_never_reduces_ct_or_md_applicant_earnings(policy, batch):
+    simulation = _simulation(
+        policy, [household for pair in batch for household in pair]
+    )
+
+    def applicant(name):
+        # Rows are [applicant, spouse] per household, two households per pair.
+        return simulation.calculate(name, YEAR).reshape(-1, 2, 2)[:, :, 0]
+
+    earned = applicant("ssi_earned_income")
+    assert np.all(earned >= 0)
+    couple = simulation.calculate("ssi_couple_computation_applies", MONTH)
+    assert not np.any(couple)
+    in_ct = np.array([pair[0]["state"] == "CT" for pair in batch])
+    own = applicant("ct_ssp_own_earned_income")
+    np.testing.assert_array_equal(own[:, 0], own[:, 1])
+    np.testing.assert_array_equal(own[:, 0], np.where(in_ct, earned[:, 0], 0))
+    # Holding SSI's spouse-deemed income at zero isolates the applicant's own
+    # earnings, which Maryland counts under COMAR 07.03.07.08.
+    deemed = applicant("ssi_income_deemed_from_ineligible_spouse")
+    unchanged = (deemed == 0).all(axis=1) & ~in_ct
+    paa = applicant("md_paa_countable_income")
+    np.testing.assert_array_equal(paa[unchanged, 0], paa[unchanged, 1])
 
 
 @st.composite

@@ -1,0 +1,80 @@
+# Counting farm net earnings moves the substantial gainful activity test, so it
+# can move disability status and the couple computation. 2026 amounts: federal
+# benefit rates $994 (individual) and $1,491 (couple); non-blind SGA $1,690.
+- name: A spouse whose farm profit exceeds the SGA amount is an ineligible spouse whose income is deemed.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        meets_ssi_disability_criteria: true
+        farm_operations_income: 24_000
+        is_tax_unit_spouse: true
+    tax_units:
+      couple:
+        members: [head, spouse]
+        tax_unit_is_joint: true
+    marital_units:
+      couple:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # The spouse's $2,000 of monthly farm earnings exceed $1,690, so the spouse
+    # is engaged in SGA and not disabled (20 CFR 416.905(a), 416.971). Not
+    # aged, blind or disabled, the spouse is an ineligible spouse
+    # (416.1160(d)), and the head is an eligible individual.
+    is_ssi_disabled: [false, false]
+    is_ssi_ineligible_spouse: [false, true]
+    # 416.1163(d): $2,000 exceeds the $497 threshold, so the head's benefit is
+    # figured as for a couple: ($2,000 - $20 - $65) / 2 = $957.50 countable,
+    # and $1,491 - $957.50 = $533.50 a month, or $6,402 a year. The spouse
+    # receives nothing. Without farm earnings both spouses were an eligible
+    # couple with no income, each receiving $1,491 / 2 = $745.50 a month.
+    # 416.1163(e)(2) cannot bind: $533.50 is below the $994 the head would
+    # receive with no deeming.
+    ssi: [6_402, 0]
+
+- name: Farm earnings that lift a spouse's wages over the SGA amount end the couple computation.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        meets_ssi_disability_criteria: true
+        employment_income: 18_000
+        farm_operations_income: 6_000
+        is_tax_unit_spouse: true
+    tax_units:
+      couple:
+        members: [head, spouse]
+        tax_unit_is_joint: true
+    marital_units:
+      couple:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # Wages alone are $1,500 a month, under $1,690; with farm earnings the
+    # spouse's work earnings are $2,000, so the spouse is engaged in SGA and is
+    # an ineligible spouse. The head's deemed benefit is again
+    # $1,491 - ($2,000 - $85) / 2 = $533.50 a month, or $6,402 a year.
+    # Counting wages only, the spouses were an eligible couple with
+    # ($1,500 - $85) / 2 = $707.50 of combined countable income, each
+    # receiving ($1,491 - $707.50) / 2 = $391.75 a month, or $4,701 a year.
+    # 416.1163(e)(2) cannot bind: $533.50 is below $994.
+    is_ssi_disabled: [false, false]
+    is_ssi_ineligible_spouse: [false, true]
+    ssi: [6_402, 0]
