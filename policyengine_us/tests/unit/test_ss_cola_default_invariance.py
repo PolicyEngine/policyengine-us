@@ -32,13 +32,14 @@ def irmaa_control():
             "worker": {
                 "age": {2027: 70},
                 "employment_income": {2027: 500_000},
-                "is_tax_unit_head": True,
+                "is_tax_unit_head": {2027: True},
             }
         }
     )
     # The review's minimal record has no auxiliary tax-unit input history.
     situation["tax_units"]["worker"].pop("tax_unit_itemizes")
     simulation = _simulation(situation)
+    assert earliest_input_year(simulation) == 2027
     values = {
         name: simulation.calculate(name, 2027).copy()
         for name in ("medicare_irmaa_magi_two_years_prior", "medicare_part_b_premium")
