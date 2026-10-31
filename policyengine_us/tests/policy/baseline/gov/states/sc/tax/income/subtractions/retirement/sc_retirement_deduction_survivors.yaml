@@ -3,6 +3,7 @@
   input:
     pension_survivors: 1_000
     military_retirement_pay_survivors: 4_000
+    is_surviving_spouse: true
     age: 70
     state_code: SC
   output:
@@ -13,6 +14,7 @@
   input:
     pension_survivors: 4_000
     military_retirement_pay_survivors: 6_000
+    is_surviving_spouse: true
     age: 64
     state_code: SC
   output:
@@ -23,6 +25,7 @@
   input:
     pension_survivors: 2_000
     military_retirement_pay_survivors: 4_000
+    is_surviving_spouse: true
     age: 70
     state_code: SC
   output:
@@ -33,10 +36,25 @@
   input:
     pension_survivors: 4_000
     military_retirement_pay_survivors: 6_000
+    is_surviving_spouse: true
     age: 64
     state_code: SC
   output:
     sc_retirement_deduction_survivors: 0
+
+- name: Military survivor income that was not deducted does not reduce the general pension cap.
+  period: 2021
+  input:
+    pension_survivors: 4_000
+    military_retirement_pay_survivors: 6_000
+    # Isolate the worksheet offset from the separately tested military
+    # eligibility calculation; line p-6 contains only an allowed deduction.
+    sc_military_deduction_survivors: 0
+    is_surviving_spouse: true
+    age: 64
+    state_code: SC
+  output:
+    sc_retirement_deduction_survivors: 3_000
 
 # Only the head's and spouse's survivor benefits are in the filer's federal
 # AGI; a dependent reports their own on their own return.

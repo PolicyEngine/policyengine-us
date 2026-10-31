@@ -1,0 +1,57 @@
+- name: North Dakota does not subtract a nonspouse survivor's benefits on their own return.
+  period: 2024
+  input:
+    state_code: ND
+    age: 20
+    is_surviving_spouse: false
+    employment_income: 40_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    adjusted_gross_income: 50_000
+    nd_military_retirement_subtraction: 0
+    nd_subtractions: 0
+    nd_taxable_income: 35_400
+
+- name: North Dakota subtracts a surviving spouse's military survivor benefits.
+  period: 2024
+  input:
+    state_code: ND
+    age: 50
+    is_surviving_spouse: true
+    military_retirement_pay_survivors: 10_000
+  output:
+    nd_military_retirement_subtraction: 10_000
+    nd_subtractions: 10_000
+
+- name: North Dakota subtracts own military retirement pay without requiring surviving spouse status.
+  period: 2024
+  input:
+    state_code: ND
+    age: 60
+    is_surviving_spouse: false
+    military_retirement_pay: 20_000
+  output:
+    nd_military_retirement_subtraction: 20_000
+    nd_subtractions: 20_000
+
+- name: North Dakota keeps own retirement pay separate from a nonspouse survivor annuity.
+  period: 2025
+  input:
+    state_code: ND
+    is_surviving_spouse: false
+    military_retirement_pay: 20_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    nd_military_retirement_subtraction: 20_000
+    nd_subtractions: 20_000
+
+- name: North Dakota combines own retirement and eligible surviving spouse benefits.
+  period: 2025
+  input:
+    state_code: ND
+    is_surviving_spouse: true
+    military_retirement_pay: 20_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    nd_military_retirement_subtraction: 30_000
+    nd_subtractions: 30_000

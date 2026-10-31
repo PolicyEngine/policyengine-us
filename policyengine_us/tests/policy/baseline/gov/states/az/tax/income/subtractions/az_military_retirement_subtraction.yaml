@@ -119,3 +119,32 @@
         state_code: AZ
   output:
     az_military_retirement_subtraction: 9_000
+
+- name: Arizona excludes a surviving spouse's military survivor benefits.
+  period: 2024
+  input:
+    state_code: AZ
+    is_surviving_spouse: true
+    military_retirement_pay_survivors: 10_000
+  output:
+    az_military_retirement_subtraction: 10_000
+
+- name: Arizona does not exclude a non-spouse survivor's military benefits.
+  period: 2024
+  input:
+    state_code: AZ
+    age: 20
+    is_surviving_spouse: false
+    military_retirement_pay_survivors: 10_000
+  output:
+    az_military_retirement_subtraction: 0
+
+- name: Arizona retains own military retirement pay without excluding non-spouse survivor benefits.
+  period: 2024
+  input:
+    state_code: AZ
+    is_surviving_spouse: false
+    military_retirement_pay: 30_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    az_military_retirement_subtraction: 30_000

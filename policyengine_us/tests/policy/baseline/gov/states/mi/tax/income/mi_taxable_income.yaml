@@ -19,3 +19,48 @@
     state_code: MI
   output: # 20_000 - 19_000 - 5_000 < 0 
     mi_taxable_income: 0
+
+- name: A non-spouse military survivor pays Michigan tax on benefits from a deceased parent.
+  period: 2024
+  input:
+    age: 20
+    employment_income: 40_000
+    military_retirement_pay_survivors: 10_000
+    is_surviving_spouse: false
+    state_code: MI
+  output:
+    adjusted_gross_income: 50_000
+    mi_military_retirement_subtraction: 0
+    mi_subtractions: 0
+    mi_taxable_income: 44_400
+    mi_income_tax_before_non_refundable_credits: 1_887
+
+- name: A surviving spouse subtracts military survivor retirement benefits.
+  period: 2024
+  input:
+    age: 40
+    employment_income: 40_000
+    military_retirement_pay_survivors: 10_000
+    is_surviving_spouse: true
+    state_code: MI
+  output:
+    adjusted_gross_income: 50_000
+    mi_military_retirement_subtraction: 10_000
+    mi_subtractions: 10_000
+    mi_taxable_income: 34_400
+    mi_income_tax_before_non_refundable_credits: 1_462
+
+- name: A military retiree subtracts their own pay without surviving-spouse status.
+  period: 2024
+  input:
+    age: 40
+    employment_income: 40_000
+    military_retirement_pay: 10_000
+    is_surviving_spouse: false
+    state_code: MI
+  output:
+    adjusted_gross_income: 50_000
+    mi_military_retirement_subtraction: 10_000
+    mi_subtractions: 10_000
+    mi_taxable_income: 34_400
+    mi_income_tax_before_non_refundable_credits: 1_462
