@@ -11,6 +11,7 @@ import json
 from typing import Mapping
 
 from .earnings import highest_earnings, index_covered_earnings
+from .owners_draw import OwnersDrawInputs, OwnersDrawParameters, compute_owners_draw
 from .pia import compute_pia
 
 
@@ -37,6 +38,7 @@ class EarningsRecord:
     year: int
     covered_wages: Decimal | int | str
     covered_self_employment: Decimal | int | str
+    owners_draw: OwnersDrawInputs | dict | None = None
 
 
 @dataclass(frozen=True)
@@ -94,7 +96,7 @@ class EarningsHistory:
         if missing:
             raise ValueError(f"Missing required earnings years: {sorted(missing)}")
         return tuple(
-            records.get(year, EarningsRecord(year, 0, 0))
+            records.get(year, EarningsRecord(year, 0, 0, OwnersDrawInputs()))
             for year in range(first, claim)
         )
 
@@ -103,6 +105,7 @@ class EarningsHistory:
 class HistoryParameters:
     wage_base: Mapping[int, Decimal | int | str]
     nawi: Mapping[int, Decimal | int | str]
+    owners_draw_by_year: Mapping[int, OwnersDrawParameters] | None = None
 
 
 @dataclass(frozen=True)
@@ -114,6 +117,11 @@ class AnnualEarnings:
     ordinary_covered: Decimal
     indexing_factor: Decimal
     indexed_ordinary: Decimal
+    e1_gross: Decimal = Decimal(0)
+    e1_net_earnings: Decimal = Decimal(0)
+    e1_credited: Decimal = Decimal(0)
+    e1_oasdi_base: Decimal = Decimal(0)
+    e1_niit_exclusion: Decimal = Decimal(0)
 
 
 @dataclass(frozen=True)
@@ -138,6 +146,60 @@ def aime_from_indexed(indexed_amounts):
     return int(sum(selected, Decimal(0)) // 420)
 
 
+def _owners_inputs(row, wages, se):
+    supplied = row.owners_draw
+    if isinstance(supplied, dict):
+        required = {
+            "s_corp_income",
+            "partnership_income",
+            "passive_income",
+            "already_se_income",
+        }
+        if not required <= supplied.keys():
+            raise ValueError(f"Missing owners' draw source fields for year {row.year}")
+        if supplied.keys() - required - {"subsets_are_disjoint", "passive_se_overlap"}:
+            raise ValueError("Unknown owners' draw history input")
+        supplied = OwnersDrawInputs(**supplied)
+    if not isinstance(supplied, OwnersDrawInputs):
+        raise ValueError(f"Supply owners' draw source fields for year {row.year}")
+    values = {}
+    for name in (
+        "s_corp_income",
+        "partnership_income",
+        "passive_income",
+        "already_se_income",
+        "passive_se_overlap",
+    ):
+        raw = getattr(supplied, name)
+        if name == "passive_se_overlap" and (raw is None or str(raw).lower() == "nan"):
+            values[name] = float("nan")
+            continue
+        try:
+            amount = Decimal(str(raw))
+            converted = float(amount)
+        except (ValueError, TypeError, ArithmeticError) as error:
+            raise ValueError(
+                "Owners' draw source amounts must be finite signed numbers"
+            ) from error
+        if (
+            isinstance(raw, bool)
+            or not amount.is_finite()
+            or not Decimal(str(converted)).is_finite()
+        ):
+            raise ValueError(
+                "Owners' draw source amounts must be finite signed numbers"
+            )
+        values[name] = converted
+    if not isinstance(supplied.subsets_are_disjoint, bool):
+        raise ValueError("Owners' draw disjoint-subset assertion must be boolean")
+    return OwnersDrawInputs(
+        **values,
+        subsets_are_disjoint=supplied.subsets_are_disjoint,
+        covered_wages=float(wages),
+        existing_covered_se=float(se),
+    )
+
+
 def compute_history(
     history, eligibility_year, claim_year, parameters, *, birth_year=None
 ):
@@ -155,7 +217,20 @@ def compute_history(
         wages = _money(row.covered_wages, "Covered wages")
         se = _money(row.covered_self_employment, "Existing covered SE earnings")
         cap = _parameter(parameters.wage_base, row.year, "Ordinary cap", positive=True)
-        covered = min(wages + se, cap)
+        draw_parameters = (parameters.owners_draw_by_year or {}).get(
+            row.year, OwnersDrawParameters()
+        )
+        draw = None
+        if draw_parameters.in_effect and row.year >= draw_parameters.start_year:
+            draw = compute_owners_draw(
+                row.year,
+                inputs=_owners_inputs(row, wages, se),
+                parameters=draw_parameters,
+            )
+        # Preserve the existing kernel's arithmetic, then keep decimal earnings
+        # through annual cent rounding. Credit is N_D before any room cap.
+        credited = Decimal(str(float(draw.credited_earnings))) if draw else Decimal(0)
+        covered = min(wages + se + credited, cap)
         nawi = (
             _parameter(parameters.nawi, row.year, "NAWI", positive=True)
             if row.year < anchor_year
@@ -163,7 +238,26 @@ def compute_history(
         )
         indexed = index_covered_earnings(covered, nawi, anchor, round_cents=True)
         ledger.append(
-            AnnualEarnings(row.year, wages, se, cap, covered, anchor / nawi, indexed)
+            AnnualEarnings(
+                row.year,
+                wages,
+                se,
+                cap,
+                covered,
+                anchor / nawi,
+                indexed,
+                e1_gross=Decimal(str(float(draw.gross))) if draw else Decimal(0),
+                e1_net_earnings=Decimal(str(float(draw.net_earnings)))
+                if draw
+                else Decimal(0),
+                e1_credited=credited,
+                e1_oasdi_base=Decimal(str(float(draw.oasdi_base)))
+                if draw
+                else Decimal(0),
+                e1_niit_exclusion=Decimal(str(float(draw.niit_exclusion)))
+                if draw
+                else Decimal(0),
+            )
         )
     return HistoryCalculation(
         eligibility,
@@ -195,6 +289,23 @@ def history_parameters_at(
     parameters, history, eligibility_year, claim_year, *, birth_year=None
 ):
     years = [row.year for row in history.through_claim(claim_year, birth_year)]
+    from types import SimpleNamespace as Node
+
+    owners = {}
+    for year in years:
+        when = f"{year}-01-01"
+        settings = parameters.gov.contrib.ssa.owners_draw(when)
+        if not settings.in_effect or year < settings.start_year:
+            continue
+        # Snapshot only the relevant subtrees, not every US parameter/year.
+        gov = Node(
+            contrib=Node(ssa=Node(owners_draw=settings)),
+            irs=Node(
+                ald=Node(misc=parameters.gov.irs.ald.misc(when)),
+                self_employment=parameters.gov.irs.self_employment(when),
+            ),
+        )
+        owners[year] = OwnersDrawParameters.from_policy_parameters(gov)
     return HistoryParameters(
         wage_base={
             year: parameters.gov.ssa.social_security(f"{year}-01-01").wage_base
@@ -204,4 +315,5 @@ def history_parameters_at(
             year: parameters.gov.ssa.nawi(f"{year}-01-01")
             for year in set(years) | {eligibility_year - 2}
         },
+        owners_draw_by_year=owners,
     )

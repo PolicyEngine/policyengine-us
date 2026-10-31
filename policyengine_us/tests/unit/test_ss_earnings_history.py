@@ -11,7 +11,7 @@ from types import SimpleNamespace as Node
 
 import numpy as np
 import pytest
-from hypothesis import given, strategies as st
+from hypothesis import given, settings, strategies as st
 from policyengine_core.periods import period
 
 from policyengine_us.tools.social_security.history import (
@@ -222,6 +222,53 @@ def test_aime_nondecreasing_in_any_earnings_year(earnings, extra):
     bumped = list(earnings)
     bumped[position] += extra
     assert aime_from_indexed(bumped) >= aime_from_indexed(earnings)
+
+
+@settings(max_examples=50, deadline=None)
+@given(
+    annual=st.lists(
+        st.tuples(
+            st.integers(min_value=0, max_value=1_000_000),
+            st.integers(min_value=0, max_value=50_000),
+            st.integers(min_value=60_000, max_value=200_000),
+            st.integers(min_value=50, max_value=500),
+        ),
+        min_size=1,
+        max_size=45,
+    ),
+    position=st.integers(min_value=0, max_value=44),
+    extra=st.integers(min_value=0, max_value=1_000_000),
+)
+def test_history_aime_nondecreasing_when_any_years_covered_wages_increase(
+    annual, position, extra
+):
+    """Exercise annual cap, E-2 indexing, cents, top 35, and whole-dollar AIME."""
+    first = 2039 - len(annual)
+    years = tuple(range(first, 2039))
+    supplied = history(
+        [
+            EarningsRecord(year, wages, se)
+            for year, (wages, se, _, _) in zip(years, annual, strict=True)
+        ],
+        first=first,
+    )
+    nawi = {year: values[3] for year, values in zip(years, annual, strict=True)}
+    nawi.setdefault(2034, 100)
+    policy = HistoryParameters(
+        wage_base={year: values[2] for year, values in zip(years, annual, strict=True)},
+        nawi=nawi,
+    )
+    changed_position = position % len(annual)
+    bumped_records = list(supplied.records)
+    original = bumped_records[changed_position]
+    bumped_records[changed_position] = replace(
+        original, covered_wages=original.covered_wages + extra
+    )
+    original_aime = compute_history(supplied, 2036, 2039, policy).aime
+    bumped_aime = compute_history(
+        replace(supplied, records=tuple(bumped_records)), 2036, 2039, policy
+    ).aime
+    assert bumped_aime >= original_aime
 
 
 def test_legacy_aime_differential_on_shared_year_window_and_exact_rounding():
