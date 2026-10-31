@@ -1,0 +1,21 @@
+description: Washington qualifies a veteran entitled to and receiving VA compensation for the senior citizens and disabled persons property tax exemption at a combined service-connected evaluation rating of at least this share.
+values:
+  # 2015 3rd sp.s. c 30 s 2: only a total disability rating qualifies.
+  2016-01-01: .inf
+  # 2019 c 453 s 1, for taxes levied for collection in 2020 and after (s 9).
+  2020-01-01: 0.8
+  # 2025 c 200 s 1, for taxes levied for collection in 2027 and after (s 3).
+  2027-01-01: 0.4
+metadata:
+  unit: /1
+  period: year
+  label: Washington senior and disabled property tax exemption veteran combined rating threshold
+  reference:
+    - title: RCW 84.36.381(3)(a)(ii)(A)
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=84.36.381
+    - title: RCW 84.36.381 as amended by 2015 3rd sp.s. c 30 s 2, with the s 4 application note
+      href: https://lawfilestestext.leg.wa.gov/LawTest/RCW%20Supplement/RCW%20%2084%20%20TITLE/RCW%20%2084%20.%2036%20%20CHAPTER/RCW%20%2084%20.%2036%20.381.htm
+    - title: "2019 c 453 ss 1, 9 (SSB 5160) #page 3,13"
+      href: https://lawfilesext.leg.wa.gov/biennium/2019-20/Pdf/Bills/Session%20Laws/Senate/5160-S.SL.pdf#page=3
+    - title: "2025 c 200 ss 1, 3 (HB 1106) #page 3,5"
+      href: https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Session%20Laws/House/1106.SL.pdf#page=3

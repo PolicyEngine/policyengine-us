@@ -18,13 +18,14 @@
   output:
     wa_pte_categorical_eligible: true
 
-- name: Case 2, person under age threshold who is disabled is categorically eligible by disability.
+- name: Case 2, person under age threshold retired by reason of disability is categorically eligible.
   period: 2024
   input:
     people:
       person1:
         age: 45
         is_disabled: true
+        wa_pte_retired_due_to_disability: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -58,13 +59,14 @@
   output:
     wa_pte_categorical_eligible: false
 
-- name: Case 4, person aged 70 who is also disabled is categorically eligible (OR semantics).
+- name: Case 4, person aged 70 who is also retired by reason of disability is categorically eligible (OR semantics).
   period: 2024
   input:
     people:
       person1:
         age: 70
         is_disabled: true
+        wa_pte_retired_due_to_disability: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -142,3 +144,241 @@
     # ESHB 1105 lowered the age threshold to 61 effective 2020-01-01.
     # 60 < 61 -> not categorically eligible.
     wa_pte_categorical_eligible: false
+
+# RCW 84.36.381(3)(a): the claimant must be (i) 61 or older, or retired from
+# regular gainful employment by reason of disability, or (ii) a veteran
+# entitled to and receiving VA compensation at a qualifying service-connected
+# rating. Generic disability (is_disabled) establishes neither pathway.
+# Veteran rating tests by collection year (session laws, PDF page 3 each):
+# - 2016-2019 (2015 3rd sp.s. c 30 s 2): a total disability rating; a 100%
+#   combined evaluation is a total rating (38 CFR 3.340(a)(2)).
+# - 2020-2026 (2019 c 453 s 1): combined rating of 80% or more, or a total rating.
+# - 2027 on (2025 c 200 s 1): combined rating of 40% or more, or a total rating.
+
+- name: Case 8, generic disability without disability retirement does not qualify.
+  period: 2024
+  input:
+    state_code: WA
+    age: 45
+    is_disabled: true
+    is_veteran: false
+    wa_pte_retired_due_to_disability: false
+    wa_pte_receives_va_disability_compensation: false
+    real_estate_taxes: 5_000
+    assessed_property_value: 500_000
+    wa_pte_income_eligible: true
+    wa_pte_tier: 1
+  output:
+    # 45 < 61 and neither statutory disability pathway holds. Before this fix
+    # the model awarded 5,000 x 0.30 + 300,000 x (5,000 x 0.70 / 500,000)
+    # = 3,600.
+    wa_pte_categorical_eligible: false
+    wa_pte_eligible: false
+    wa_senior_disabled_property_tax_exemption: 0
+
+- name: Case 9, retirement by reason of disability establishes the disability pathway.
+  period: 2024
+  input:
+    state_code: WA
+    age: 45
+    is_disabled: true
+    is_veteran: false
+    wa_pte_retired_due_to_disability: true
+    wa_pte_receives_va_disability_compensation: false
+    real_estate_taxes: 5_000
+    assessed_property_value: 500_000
+    wa_pte_income_eligible: true
+    wa_pte_tier: 1
+  output:
+    # 5,000 x 0.30 + max(60,000, 500,000 x 0.60) x (5,000 x 0.70 / 500,000)
+    # = 1,500 + 300,000 x 0.007 = 3,600.
+    wa_pte_categorical_eligible: true
+    wa_pte_eligible: true
+    wa_senior_disabled_property_tax_exemption: 3_600
+
+- name: Case 10, a compensated 40 percent veteran qualifies beginning in collection year 2027.
+  period: 2027
+  input:
+    state_code:
+      2026: WA
+      2027: WA
+    age:
+      2026: 45
+      2027: 46
+    is_disabled:
+      2026: false
+      2027: false
+    is_veteran:
+      2026: true
+      2027: true
+    wa_pte_retired_due_to_disability:
+      2026: false
+      2027: false
+    wa_pte_receives_va_disability_compensation:
+      2026: true
+      2027: true
+    wa_pte_va_service_connected_rating:
+      2026: 0.4
+      2027: 0.4
+    wa_pte_va_total_disability_rating:
+      2026: false
+      2027: false
+  output:
+    # 0.40 < 0.80 in 2026; 0.40 >= 0.40 in 2027.
+    wa_pte_categorical_eligible:
+      2026: false
+      2027: true
+
+- name: Case 11, a compensated veteran rated 80 percent qualifies in 2024 without generic disability.
+  period: 2024
+  input:
+    state_code: WA
+    age: 45
+    is_disabled: false
+    is_veteran: true
+    wa_pte_receives_va_disability_compensation: true
+    wa_pte_va_service_connected_rating: 0.8
+  output:
+    # 2019 c 453 s 1: a combined rating of 80% or higher. Before this fix the
+    # model required is_disabled and returned false.
+    wa_pte_categorical_eligible: true
+
+- name: Case 12, a compensated veteran rated 70 percent does not qualify in 2024.
+  period: 2024
+  input:
+    state_code: WA
+    age: 45
+    is_veteran: true
+    wa_pte_receives_va_disability_compensation: true
+    wa_pte_va_service_connected_rating: 0.7
+  output:
+    wa_pte_categorical_eligible: false
+
+- name: Case 13, a total disability rating qualifies a compensated veteran regardless of the combined rating.
+  period: 2024
+  input:
+    state_code: WA
+    age: 45
+    is_veteran: true
+    wa_pte_receives_va_disability_compensation: true
+    wa_pte_va_service_connected_rating: 0.6
+    wa_pte_va_total_disability_rating: true
+  output:
+    # RCW 84.36.381(3)(a)(ii)(B): a total disability rating "without regard to
+    # evaluation percent".
+    wa_pte_categorical_eligible: true
+
+- name: Case 14, a qualifying rating without receipt of VA compensation does not qualify.
+  period: 2024
+  input:
+    state_code: WA
+    age: 45
+    is_veteran: true
+    wa_pte_receives_va_disability_compensation: false
+    wa_pte_va_service_connected_rating: 1
+    wa_pte_va_total_disability_rating: true
+  output:
+    # The veteran must be "entitled to and receiving compensation".
+    wa_pte_categorical_eligible: false
+
+- name: Case 15, a non-veteran's rating inputs do not establish the veteran pathway.
+  period: 2024
+  input:
+    state_code: WA
+    age: 45
+    is_veteran: false
+    wa_pte_receives_va_disability_compensation: true
+    wa_pte_va_service_connected_rating: 1
+    wa_pte_va_total_disability_rating: true
+  output:
+    wa_pte_categorical_eligible: false
+
+- name: Case 16, in 2019 a compensated veteran rated 90 percent without a total rating does not qualify.
+  period: 2019
+  input:
+    state_code: WA
+    age: 45
+    is_veteran: true
+    wa_pte_receives_va_disability_compensation: true
+    wa_pte_va_service_connected_rating: 0.9
+    wa_pte_va_total_disability_rating: false
+  output:
+    # Collection years 2016-2019 require a total disability rating.
+    wa_pte_categorical_eligible: false
+
+- name: Case 17, in 2019 a compensated veteran with a 100 percent combined rating qualifies.
+  period: 2019
+  input:
+    state_code: WA
+    age: 45
+    is_veteran: true
+    wa_pte_receives_va_disability_compensation: true
+    wa_pte_va_service_connected_rating: 1
+    wa_pte_va_total_disability_rating: false
+  output:
+    # A 100% evaluation is a total rating (38 CFR 3.340(a)(2)).
+    wa_pte_categorical_eligible: true
+
+- name: Case 18, in 2019 a compensated veteran with a total rating below 100 percent qualifies.
+  period: 2019
+  input:
+    state_code: WA
+    age: 45
+    is_veteran: true
+    wa_pte_receives_va_disability_compensation: true
+    wa_pte_va_service_connected_rating: 0.7
+    wa_pte_va_total_disability_rating: true
+  output:
+    wa_pte_categorical_eligible: true
+
+- name: Case 19, in 2015 generic disability without disability retirement does not qualify a non-veteran.
+  period: 2015
+  input:
+    state_code: WA
+    age: 45
+    is_disabled: true
+    is_veteran: false
+    wa_pte_retired_due_to_disability: false
+  output:
+    # 2008 c 6 s 706 (PDF page 85) already required retirement from regular
+    # gainful employment by reason of disability.
+    wa_pte_categorical_eligible: false
+
+- name: Case 20, in 2015 a disabled veteran keeps the generic disability treatment.
+  period: 2015
+  input:
+    state_code: WA
+    age: 45
+    is_disabled: true
+    is_veteran: true
+    wa_pte_retired_due_to_disability: false
+  output:
+    # Before collection year 2016 the veteran pathway was "one hundred percent
+    # service-connected disability as provided in 42 U.S.C. Sec. 423(d)(1)(A)",
+    # which admits more than one reading, so the model keeps generic disability
+    # for veterans in those years.
+    wa_pte_categorical_eligible: true
+
+- name: Case 21, mixed people are evaluated together.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 61
+      person2:
+        age: 45
+        is_disabled: true
+      person3:
+        age: 45
+        wa_pte_retired_due_to_disability: true
+      person4:
+        age: 45
+        is_veteran: true
+        wa_pte_receives_va_disability_compensation: true
+        wa_pte_va_service_connected_rating: 0.8
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WA
+  output:
+    wa_pte_categorical_eligible: [true, false, true, true]

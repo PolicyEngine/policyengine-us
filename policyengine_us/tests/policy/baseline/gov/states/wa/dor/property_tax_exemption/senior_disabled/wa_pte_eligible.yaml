@@ -65,13 +65,14 @@
   output:
     wa_pte_eligible: false
 
-- name: Case 4, disabled owner-occupant is eligible.
+- name: Case 4, owner-occupant retired by reason of disability is eligible.
   period: 2024
   input:
     people:
       person1:
         age: 45
         is_disabled: true
+        wa_pte_retired_due_to_disability: true
         real_estate_taxes: 6_000
     tax_units:
       tax_unit:
@@ -122,6 +123,7 @@
       person2:
         age: 30
         is_disabled: true
+        wa_pte_retired_due_to_disability: true
     tax_units:
       tax_unit:
         members: [person1, person2]
