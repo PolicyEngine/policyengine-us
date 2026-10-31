@@ -68,3 +68,41 @@
         state_code: TX
   output:
     oasdi_income: [22_878, 11_451.40]
+
+- name: With the owners' draw and section 8 both on, each liability counts once
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms:
+    - policyengine_us.reforms.ssa.owners_draw.owners_draw
+    - policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    gov.contrib.congress.s770.section_8.transfer.mode: 3
+    age: 40
+    employment_income: 100_000
+    s_corp_income: 200_000
+    taxable_interest_income: 100_000
+    niit_magi: 400_000
+    filing_status: SINGLE
+    state_code: TX
+  output:
+    # Payroll: 6.2% * $100,000 twice, plus 12.4% of the draw's $100,000 of
+    # room = $24,800, with the draw's OASDI tax inside the SECA leaf once.
+    owners_draw_oasdi_tax: 12_400
+    oasdi_payroll_tax_revenue: 24_800
+    # M7: only the profits the draw's OASDI tax reaches leave the active base:
+    # $100,000 / 0.9235 = $108,283.70, leaving A = $91,716.30.
+    owners_draw_niit_exclusion: 108_283.70
+    s770_active_business_income: 91_716.30
+    # X = $200,000; n = $100,000 and a = $91,716.30. Liability $3,800 +
+    # $12,400 + 16.2% * $91,716.30 = $31,058.04; bill mode transfers 62%.
+    net_investment_income_tax: 31_058.04
+    oasdi_niit_revenue: 19_255.98
+    # $24,800 + $19,255.98. Leaving the taxed draw in the active base would
+    # give $24,800 + $20,088 = $44,888.
+    oasdi_income: 44_055.98

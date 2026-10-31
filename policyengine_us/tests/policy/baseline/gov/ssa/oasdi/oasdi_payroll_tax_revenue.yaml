@@ -86,8 +86,8 @@
   absolute_error_margin: 0.02
   reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
   input:
-    # Fix the wage base and the draw's current-law room cap, as the owners'
-    # draw tests do, so the case does not depend on wage base projections.
+    # Fix the wage base and the draw's current-law room cap at $200,000, as
+    # the owners' draw tests do.
     gov.contrib.ssa.owners_draw.current_law_cap: 200_000
     gov.contrib.ssa.owners_draw.in_effect: true
     gov.contrib.ssa.owners_draw.phase_in_share: 1

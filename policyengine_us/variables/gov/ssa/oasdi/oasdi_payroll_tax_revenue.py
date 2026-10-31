@@ -13,10 +13,11 @@ class oasdi_payroll_tax_revenue(Variable):
         "A reform that replaces one of these leaves arrives through that leaf; "
         "the owners' draw reform adds its OASDI tax inside the SECA leaf, so "
         "the sum counts it once. The sum leaves out "
-        "employer_total_social_security_tax: it applies the employer rate to a "
-        "separate employer-aggregate earnings input, another measure of the "
-        "employer share this sum already counts, not a fourth stream. A "
-        "modeled liability, not a trust-fund receipt."
+        "employer_total_social_security_tax, which applies the employer rate "
+        "to a separate input for employer-only payroll tax calculations rather "
+        "than to a worker's wages; where both are populated they describe the "
+        "same employer liability, so it is not a fourth stream. A modeled "
+        "liability, not a trust-fund receipt."
     )
     unit = USD
     reference = (

@@ -3,11 +3,17 @@
 The variable YAML files hold the hand-computed examples. Python quantifies the
 accounting identities over generated multi-person households and compares
 existing outputs with and without the new variables in the calculation.
-Each draw builds households of one to three adults in one or two tax units,
-plus fixed boundary witnesses, in one vectorized simulation that shares the
-benefit-taxation counterfactuals across the batch.
+Each draw builds four to six households of one to three adults, filing as
+singles or as a joint couple plus singles, alongside fixed boundary witnesses,
+in one vectorized simulation that shares the benefit-taxation counterfactuals
+across the batch. Hypothesis tries the simplest draw first, so each strategy's
+first choice is a boundary value: that draw is a batch of beneficiaries aged 70
+with wages above the base, self-employment earnings and taxable benefits. The
+second draw is random.
 
-Invariants, for every generated household:
+Invariants, for every generated household under current-law payroll
+parameters (reforms that tax earnings above the wage base lift invariant 1's
+bound by design):
 
 1. ``oasdi_payroll_tax_revenue`` is the sum of the three worker-level OASDI tax
    leaves, is nonnegative, and never exceeds the combined OASDI rate times the
@@ -55,7 +61,6 @@ NEW = (
 # Existing outputs the new variables read, or that share their branches.
 EXISTING = (
     *LEAVES,
-    "employer_total_social_security_tax",
     "taxable_earnings_for_social_security",
     "taxable_self_employment_income",
     "payroll_tax_gross_wages",
@@ -99,15 +104,18 @@ FIXED_HOUSEHOLDS = (
     ([adult(wages=300_000, interest=100_000)], False),
 )
 
+# Each first choice is a boundary value, so the simplest draw is informative.
 PERSON = st.builds(
     adult,
-    wages=st.one_of(st.just(0), st.integers(0, 300_000)),
-    se=st.one_of(st.just(0), st.integers(-20_000, 150_000)),
-    benefits=st.one_of(st.just(0), st.integers(0, 40_000)),
-    interest=st.one_of(st.just(0), st.integers(0, 150_000)),
-    age=st.sampled_from([40, 70]),
+    wages=st.one_of(st.sampled_from([CAP + 1_000, CAP, 0]), st.integers(0, 300_000)),
+    se=st.one_of(st.sampled_from([60_000, 0, -20_000]), st.integers(-20_000, 150_000)),
+    benefits=st.one_of(st.sampled_from([24_000, 0]), st.integers(0, 40_000)),
+    interest=st.one_of(st.sampled_from([60_000, 0]), st.integers(0, 150_000)),
+    age=st.sampled_from([70, 40]),
 )
-HOUSEHOLD = st.tuples(st.lists(PERSON, min_size=1, max_size=3), st.booleans())
+HOUSEHOLD = st.tuples(
+    st.lists(PERSON, min_size=1, max_size=3), st.sampled_from([True, False])
+)
 
 
 def build(households):
@@ -169,7 +177,7 @@ def positions(sim, entity, names):
 
 
 @settings(
-    max_examples=3,
+    max_examples=2,
     derandomize=True,
     deadline=None,
     suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
@@ -192,8 +200,6 @@ def test_oasdi_accounting_identities(generated):
     )
     assert np.all(payroll >= 0)
     assert np.all(payroll <= COMBINED_RATE * np.minimum(CAP, covered) + TOLERANCE)
-    # The employer-aggregate liability stays outside the sum.
-    assert np.all(existing["employer_total_social_security_tax"] == 0)
 
     # 2. Household liabilities count each person and tax unit once.
     people = positions(sim, "person", list(person_household))

@@ -125,24 +125,24 @@ def test_stored_outputs_rejected_even_when_zero(tmp_path, column):
 
 
 @pytest.mark.parametrize(
-    "column",
+    "entity, column",
     [
-        "s770_passive_se_income",
-        "s770_active_fica_income",
-        "s770_nii_fica_seca_income",
-        "s770_niit_nol_deduction",
-        "s770_draw_gross",
-        "s770_draw_oasdi_base",
-        "s770_draw_hi_in_effect",
-        "owners_draw_subsets_are_disjoint",
-        "owners_draw_passive_se_overlap",
+        ("person", "s770_passive_se_income"),
+        ("person", "s770_active_fica_income"),
+        ("tax_unit", "s770_nii_fica_seca_income"),
+        ("tax_unit", "s770_niit_nol_deduction"),
+        ("person", "s770_draw_gross"),
+        ("person", "s770_draw_oasdi_base"),
+        ("person", "s770_draw_hi_in_effect"),
+        ("person", "owners_draw_subsets_are_disjoint"),
+        ("person", "owners_draw_passive_se_overlap"),
     ],
 )
 def test_section_8_and_owners_draw_classification_inputs_remain_sources(
-    tmp_path, column
+    tmp_path, entity, column
 ):
-    receipt = audit(make_dataset(tmp_path, tax_unit_extra={column: [0]}))
-    assert column in receipt["stored_columns"]
+    path = make_dataset(tmp_path, **{f"{entity}_extra": {column: [0]}})
+    assert column in audit(path)["stored_columns"]
 
 
 def test_both_component_names_would_preserve_a_bypassing_override(tmp_path):
