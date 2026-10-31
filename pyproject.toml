@@ -24,7 +24,7 @@ dependencies = [
     # extension and is available on every supported Python version.
     "pandas>=3.0",
     # Draft prerequisite: replace with a released minimum before merging.
-    "policyengine-core @ git+https://github.com/PolicyEngine/policyengine-core.git@6d839a148cee47981e8289de37da276f3e7beeec",
+    "policyengine-core @ git+https://github.com/PolicyEngine/policyengine-core.git@8537b6ee21dca4b5a537aedb60ae4fcbdabe3b99",
     "spm-calculator>=1.0.0,<=1.0.0.post1",
     "tables>=3.9",
     "tqdm>=4.67.1",

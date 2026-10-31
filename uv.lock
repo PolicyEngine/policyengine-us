@@ -1786,8 +1786,8 @@ wheels = [
 
 [[package]]
 name = "policyengine-core"
-version = "3.32.21"
-source = { git = "https://github.com/PolicyEngine/policyengine-core.git?rev=6d839a148cee47981e8289de37da276f3e7beeec#6d839a148cee47981e8289de37da276f3e7beeec" }
+version = "3.34.0"
+source = { git = "https://github.com/PolicyEngine/policyengine-core.git?rev=8537b6ee21dca4b5a537aedb60ae4fcbdabe3b99#8537b6ee21dca4b5a537aedb60ae4fcbdabe3b99" }
 dependencies = [
     { name = "dpath" },
     { name = "h5py" },
@@ -1841,7 +1841,7 @@ requires-dist = [
     { name = "jupyter-book", marker = "extra == 'dev'", specifier = ">=1.0.4.post1" },
     { name = "microdf-python", specifier = ">=1.0.0" },
     { name = "pandas", specifier = ">=3.0" },
-    { name = "policyengine-core", git = "https://github.com/PolicyEngine/policyengine-core.git?rev=6d839a148cee47981e8289de37da276f3e7beeec" },
+    { name = "policyengine-core", git = "https://github.com/PolicyEngine/policyengine-core.git?rev=8537b6ee21dca4b5a537aedb60ae4fcbdabe3b99" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.9.0" },
     { name = "setuptools", marker = "extra == 'dev'", specifier = ">=80.9.0" },
     { name = "spm-calculator", specifier = ">=1.0.0,<=1.0.0.post1" },
