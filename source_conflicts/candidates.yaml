@@ -2107,6 +2107,36 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/9969
   state: unreviewed
   note: 'PE-US uses 60% of SMI for size 13, within the federal ceiling, for the limit and the payment bands (fl_liheap_income_limit.py). Distinguish the federal maximum from Florida''s chosen limit and verify the apparently erroneous row.'
+- id: us-ga:cash-tips-rla-employees
+  program: income-tax
+  years:
+    from: 2026
+    to: 2028
+    type: tax
+  question: Does Georgia's cash tip subtraction reach an employee under the Railway Labor Act, although the Department
+    of Revenue's 2026 employer guide says it does not?
+  sources:
+  - kind: statute
+    citation: O.C.G.A. §48-7-27(a)(17)(A), added by HB463 (2026) Section 2-4
+    url: https://www.legis.ga.gov/api/legislation/document/20252026/249080#page=7
+  - kind: guidance
+    citation: Georgia DOR, 2026 Employer's Withholding Tax Guide, p. 5
+    url: https://dor.georgia.gov/document/document/2026-employers-tax-guide-updated-june-2026/download#page=5
+  readings:
+    statute: Paragraph (17) subtracts up to $1,750 of cash tips with no Railway Labor Act condition. HB463 names that
+      Act only in paragraph (16)(B).
+    other: The guide says the provision does not apply to employees whose employment is subject to the federal Railway
+      Labor Act.
+  example: An airline employee with $4,000 of cash tips in a qualifying occupation subtracts $1,750 under the statute
+    and nothing under the guide.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ga/tax/income/ga_cash_tip_exclusion.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10562
+  state: ruled
+  note: The model has no Railway Labor Act status for this test, so the exclusion applies to every employee.
 - id: us-ga:liheap-income-floor-vs-smi-limit
   program: liheap
   years:

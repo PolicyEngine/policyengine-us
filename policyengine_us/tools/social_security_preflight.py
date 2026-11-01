@@ -57,6 +57,7 @@ CALCULATED_TAX_LEAVES = frozenset(
         "oasdi_niit_revenue",
         "oasdi_income",
         "oasdi_cost",
+        "oasdi_modeled_balance",
     )
 )
 
@@ -64,6 +65,8 @@ CALCULATED_TAX_LEAVES = frozenset(
 def _is_calculated_tax_leaf(name: str) -> bool:
     # Include later NIIT and TOB revenue variants without rejecting source
     # inputs such as net investment income or a supplied NIIT income basis.
+    # The S.770 section 8 and owners' draw tax and OASDI transfer leaves feed
+    # the OASDI accounting outputs; their classification hooks remain inputs.
     return (
         name in CALCULATED_TAX_LEAVES
         or name.startswith("tob_revenue_")
@@ -71,6 +74,10 @@ def _is_calculated_tax_leaf(name: str) -> bool:
         or name.startswith("niit_liability")
         or name.startswith("niit_revenue")
         or name.endswith("_niit_revenue")
+        or (
+            name.startswith(("s770_", "owners_draw_"))
+            and name.endswith(("_tax", "_revenue_oasdi"))
+        )
     )
 
 
