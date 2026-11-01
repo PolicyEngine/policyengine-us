@@ -49,8 +49,13 @@ Limits. Table VI.G1 labels the price series "Adjusted CPI" and Table V.B1
 labels it "Consumer Price Index"; neither names the CPI-W. The module treats
 it as the path behind benefit COLAs. Other price paths keep their CBO
 extensions: CPI-U, chained CPI-U, ``gov.irs.uprating``, and the SNAP and HHS
-upraters. The SOI income totals keep their CBO values through 2036. A
-``Microsimulation`` built from a single-year dataset extends that dataset with
+upraters. Inputs uprated by CPI-U keep the default path too. The SOI income
+totals keep their CBO values through 2036. Inputs uprated by
+``calibration.gov.cbo.income_by_source.adjusted_gross_income`` or its
+per-capita series keep the default path: 348 variables, including 16 stored
+in the default dataset. From 2036 to 2100, that path grows 10.393 times per
+capita, versus 9.418 for wages. A ``Microsimulation`` built from a single-year
+dataset extends that dataset with
 the default system, so its inputs age on the default paths; to age them on
 these, pass a dataset that ``extend_single_year_dataset`` extended with the
 reformed system.
@@ -439,6 +444,15 @@ def apply_trustees_2026_economic_assumptions(
         parameters,
         last_projected_year=TRUSTEES_2026_LAST_DETERMINED_CAP_YEAR,
         end_year=end_year,
+    )
+    # Preserve the assumption's cap before later policy reforms can change it.
+    cap = parameters.gov.irs.payroll.social_security.cap
+    _set_annual_values(
+        parameters.gov.contrib.ssa.owners_draw.current_law_cap,
+        {
+            year: cap(f"{year}-01-01")
+            for year in range(TRUSTEES_2026_LAST_DETERMINED_CAP_YEAR + 1, end_year + 1)
+        },
     )
     extend_social_security_wage_indexed_parameters(parameters, end_year=end_year)
     apply_trustees_2026_path_readers(parameters, end_year=end_year)

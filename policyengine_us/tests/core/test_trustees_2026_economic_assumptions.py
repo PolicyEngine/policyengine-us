@@ -53,6 +53,7 @@ from policyengine_us.tools.social_security_benefit_levers import cola_events
 NAWI = "gov.ssa.nawi"
 UPRATING = "gov.ssa.uprating"
 CAP = "gov.irs.payroll.social_security.cap"
+OWNERS_DRAW_CAP = "gov.contrib.ssa.owners_draw.current_law_cap"
 SOCIAL_SECURITY = "gov.ssa.social_security"
 WAGE_BASE = f"{SOCIAL_SECURITY}.wage_base"
 QC_THRESHOLD = f"{SOCIAL_SECURITY}.quarters_of_coverage_threshold"
@@ -99,6 +100,7 @@ TOUCHED = (
     NAWI,
     UPRATING,
     CAP,
+    OWNERS_DRAW_CAP,
     *WAGE_INDEXED,
     *SOI_TOTALS,
     *UPRATING_READERS,
@@ -297,6 +299,42 @@ def test_wage_base_equals_the_cap():
         )
 
 
+def test_owners_draw_current_law_cap_follows_the_assumption():
+    tree = _reformed()
+    for year in range(2028, LAST_TABLE_YEAR + 1):
+        assert _value(tree, OWNERS_DRAW_CAP, year) == _value(tree, CAP, year), year
+    assert _entries(tree, OWNERS_DRAW_CAP, "2027-12-31") == _entries(
+        system.parameters, CAP, "2027-12-31"
+    )
+
+
+def test_owners_draw_current_law_cap_pins():
+    assert _value(system.parameters, OWNERS_DRAW_CAP, 2060) == 558_600
+    assert _value(_reformed(), OWNERS_DRAW_CAP, 2060) == 654_900
+
+
+def test_owners_draw_current_law_cap_survives_later_cap_policy():
+    """A later policy changes the payroll cap while the assumption copy holds.
+
+    Reuse the cached default-tree copy and restore its cap after the check.
+    """
+    tree = _applied_once()
+    expected_copy = _entries(tree, OWNERS_DRAW_CAP)
+    cap = get_parameter(tree, CAP)
+    original_values = cap.values_list
+    try:
+        cap.update(start="2028-01-01", value=10_000_000)
+        for year in range(2028, LAST_TABLE_YEAR + 1):
+            assert _value(tree, CAP, year) == 10_000_000, year
+            assert _value(tree, OWNERS_DRAW_CAP, year) == _statutory_path(CAP)[year], (
+                year
+            )
+        assert _entries(tree, OWNERS_DRAW_CAP) == expected_copy
+    finally:
+        cap.values_list = original_values
+        cap.parent.clear_parent_cache()
+
+
 def test_the_tree_has_the_expected_readers():
     """A new reader of either path needs a look before it joins the reach."""
 
@@ -413,6 +451,7 @@ PUBLISHED_CASES = [
     (NAWI, 2025),
     (UPRATING, 2027),
     (CAP, 2027),
+    (OWNERS_DRAW_CAP, 2027),
     *[(path, 2027) for path in WAGE_INDEXED],
     *[(path, 2036) for path in SOI_TOTALS],
     *[(path, 2027) for path in UPRATING_READERS],
