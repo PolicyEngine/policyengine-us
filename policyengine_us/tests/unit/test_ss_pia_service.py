@@ -233,6 +233,33 @@ def test_progressive_no_change_anchor_has_unit_above_threshold_multiplier():
         )
 
 
+def test_progressive_target_at_protected_pia_holds_pia_flat_above_threshold():
+    """A target equal to the protected PIA sets a zero multiplier above T.
+
+    The target's lower bound is inclusive. F(3,000) = 1,540, so a 1,540
+    target gives k = (1,540 - 1,540) / (3,100 - 1,540) = 0: every AIME from
+    the threshold to the maximum gets the protected PIA. A price-grown target
+    falls against the wage-indexed protected PIA, so a larger fraction reaches
+    this bound in a later cohort.
+    """
+    bends = (1000, 6000)
+    path = _progressive_path(maximum_pia_target_by_year={2032: 1540})
+    protected = compute_pia(3000, 2032, path, bend_points=bends)
+    assert protected == compute_pia(3000, 2032, bend_points=bends) == 1540
+    # Between the bends, above the second bend and at the maximum AIME.
+    for aime in (4500, 8000, 10000):
+        assert compute_pia(aime, 2032, path, bend_points=bends) == protected
+        assert (
+            compute_pia(aime, 2032, path, bend_points=bends, round_result=False)
+            == 1540
+        )
+    # Below the threshold, the ordinary formula: F(2,000) = 900 + 320.
+    assert compute_pia(2000, 2032, path, bend_points=bends) == 1220
+    assert compute_pia(2000, 2032, path, bend_points=bends) == compute_pia(
+        2000, 2032, bend_points=bends
+    )
+
+
 def _scale(aime, bend_points):
     # Independent unreformed formula in exact rational arithmetic.
     first, second = bend_points
