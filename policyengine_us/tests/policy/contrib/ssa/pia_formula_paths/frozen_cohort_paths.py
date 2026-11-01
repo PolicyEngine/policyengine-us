@@ -27,14 +27,14 @@ def _pin_2035_bend_points(parameters):
     parameters.gov.contrib.ssa.pia.in_effect.update(start=START, stop=STOP, value=True)
 
 
-def _progressive_2035(fraction):
+def _progressive_2035(fraction, target=5_100):
     def modify(parameters):
         _pin_2035_bend_points(parameters)
         progressive = parameters.gov.contrib.ssa.pia.progressive_price_indexing
         progressive.in_effect.update(start=START, stop=STOP, value=True)
         progressive.bend_point_fraction.update(start=START, stop=STOP, value=fraction)
         progressive.maximum_aime.update(start=instant("2035-01-01"), value=17_000)
-        progressive.maximum_pia_target.update(start=instant("2035-01-01"), value=5_100)
+        progressive.maximum_pia_target.update(start=instant("2035-01-01"), value=target)
         return parameters
 
     return modify
@@ -58,6 +58,12 @@ class progressive_2035_quarter_fraction(Reform):
 class progressive_2035_half_fraction(Reform):
     def apply(self):
         self.modify_parameters(_progressive_2035(0.5))
+
+
+class progressive_2035_target_at_protected_pia(Reform):
+    # F(T) at the one-half threshold of $6,172, so the multiplier is zero.
+    def apply(self):
+        self.modify_parameters(_progressive_2035(0.5, target=2_993.52))
 
 
 class full_price_indexing_2035(Reform):

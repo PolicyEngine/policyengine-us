@@ -250,8 +250,7 @@ def test_progressive_target_at_protected_pia_holds_pia_flat_above_threshold():
     for aime in (4500, 8000, 10000):
         assert compute_pia(aime, 2032, path, bend_points=bends) == protected
         assert (
-            compute_pia(aime, 2032, path, bend_points=bends, round_result=False)
-            == 1540
+            compute_pia(aime, 2032, path, bend_points=bends, round_result=False) == 1540
         )
     # Below the threshold, the ordinary formula: F(2,000) = 900 + 320.
     assert compute_pia(2000, 2032, path, bend_points=bends) == 1220
