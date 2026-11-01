@@ -95,6 +95,13 @@ COUNTY_INPUT_FIX = (
     'geography_kind="national" in the spm configuration'
 )
 
+SPM_COMPOSITION_FIX = (
+    " Each SPM unit needs someone aged 18 or over, or someone aged 15 to 17 with "
+    "is_household_head, is_household_spouse or is_spm_independent_minor_role "
+    "set. These hold for all time, so an export names them __ETERNITY, and a "
+    "filter on one year's columns drops them."
+)
+
 
 def is_county_fips(value):
     """Accept only a five-digit county FIPS code, supplied as text.
@@ -780,6 +787,18 @@ class SPMSimulationMixin:
         # Every input path - situation builder, dataset loader, direct
         # set_input - has landed in the holder by now.
         self._record_county_input_types()
+
+    def calculate(self, *args, **kwargs):
+        try:
+            return super().calculate(*args, **kwargs)
+        except SPMInputError as error:
+            # The calculator names what is missing, in a release this model
+            # pins. Name the columns, once, for a caller holding a flat file.
+            if error.code != "SPM_COMPOSITION_REQUIRED" or (
+                SPM_COMPOSITION_FIX in str(error)
+            ):
+                raise
+            raise SPMInputError(error.code, f"{error}.{SPM_COMPOSITION_FIX}") from error
 
     @property
     def trace(self):

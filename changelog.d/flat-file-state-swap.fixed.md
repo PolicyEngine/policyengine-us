@@ -1,0 +1,1 @@
+Let `state_fips` decide a dataset household's state: stored state labels now follow it, and local geography that contradicts it becomes unknown for that household with a logged warning, so a state swap on a flat file no longer crashes county-keyed parameters or keeps the old state's rules without saying so.

@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 from policyengine_us.model_api import *
 from policyengine_us.variables.household.demographic.geographic.county.county_enum import (
     County,
@@ -5,6 +7,29 @@ from policyengine_us.variables.household.demographic.geographic.county.county_en
 from policyengine_us.variables.household.demographic.geographic.state_code import (
     StateCode,
 )
+
+
+@lru_cache(maxsize=1)
+def first_county_by_state():
+    """Map each state's postal code to its alphabetically first county."""
+    state_to_first_county = {}
+
+    for state in StateCode:
+        state_abbr = state.value  # e.g., "CA", "TX", etc.
+
+        # Find all counties for this state
+        state_counties = [
+            county
+            for county in County
+            if county != County.UNKNOWN and county.value.endswith(f", {state_abbr}")
+        ]
+
+        # Sort alphabetically and get the first one
+        if state_counties:
+            first_county = min(state_counties, key=lambda c: c.value)
+            state_to_first_county[state_abbr] = first_county
+
+    return state_to_first_county
 
 
 class first_county_in_state(Variable):
@@ -18,24 +43,7 @@ class first_county_in_state(Variable):
     def formula(household, period, parameters):
         # Get state codes as strings
         state_code_str = household("state_code_str", period)
-
-        # Build mapping of state abbreviations to first county
-        state_to_first_county = {}
-
-        for state in StateCode:
-            state_abbr = state.value  # e.g., "CA", "TX", etc.
-
-            # Find all counties for this state
-            state_counties = [
-                county
-                for county in County
-                if county != County.UNKNOWN and county.value.endswith(f", {state_abbr}")
-            ]
-
-            # Sort alphabetically and get the first one
-            if state_counties:
-                first_county = min(state_counties, key=lambda c: c.value)
-                state_to_first_county[state_abbr] = first_county
+        state_to_first_county = first_county_by_state()
 
         # Map each household's state to its first county
         result = []
