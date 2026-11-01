@@ -1,0 +1,133 @@
+# Reform scoring: actual inclusion caps the old-law inclusion in the
+# OASDI/HI split (ruling us:tob-oasdi-old-law-bound).
+#
+# Every case reuses the 2026 single retiree from tob_revenue_oasdi.yaml:
+# age 70, $20,000 benefits and $30,000 taxable interest in Texas. At current
+# law that unit includes $9,600 against a $7,500 pre-1993 amount, with
+# OASDI $769, HI $252 and total $1,021. The pre-1993 amount reads its own
+# gov.ssa.revenue.pre_1993 parameters, so it stays $7,500 under each reform
+# below.
+#
+# Deductions are $16,100 + $2,050 + $6,000 = $24,150 in every state, and
+# taxable income is $30,000 + inclusion - $24,150. Tax is 10% up to $12,400,
+# then 12%. Tax with no inclusion is 10% * $5,850 = $585. Nontaxable
+# benefits stay above the $5,000 elderly-credit base, or AGI phases the
+# credit out, so the credit is zero in every state.
+#
+# OASDI + HI = total in each case.
+
+- name: Repealing benefit taxation leaves OASDI, HI and the total at zero
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.irs.social_security.taxability.rate.base.benefit_cap: 0
+    gov.irs.social_security.taxability.rate.base.excess: 0
+    gov.irs.social_security.taxability.rate.additional.benefit_cap: 0
+    gov.irs.social_security.taxability.rate.additional.bracket: 0
+    gov.irs.social_security.taxability.rate.additional.excess: 0
+    people:
+      retiree:
+        age: 70
+        social_security: 20_000
+        taxable_interest_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [retiree]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [retiree]
+        takes_up_tanf_if_eligible: false
+    households:
+      household:
+        members: [retiree]
+  output:
+    tax_unit_combined_income_for_social_security_taxability: 40_000
+    # Old law: min(50% * $20,000, 50% * ($40,000 - $25,000)) = $7,500.
+    tax_unit_taxable_social_security_pre_1993: 7_500
+    # Every section 86 rate is zero, so the unit includes nothing.
+    tax_unit_taxable_social_security: 0
+    # The cap gives old-law inclusion min($7,500, $0) = $0, so all three
+    # branches tax $0 of benefits. Without the cap OASDI would be
+    # $1,354 - $585 = $769 and HI -$769 on a $0 total.
+    tob_revenue_oasdi: 0
+    tob_revenue_medicare_hi: 0
+    tob_revenue_total: 0
+
+- name: Raised thresholds put inclusion below the old-law amount, so OASDI takes it all
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.irs.social_security.taxability.threshold.base.main.SINGLE: 30_000
+    gov.irs.social_security.taxability.threshold.adjusted_base.main.SINGLE: 44_000
+    people:
+      retiree:
+        age: 70
+        social_security: 20_000
+        taxable_interest_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [retiree]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [retiree]
+        takes_up_tanf_if_eligible: false
+    households:
+      household:
+        members: [retiree]
+  output:
+    tax_unit_combined_income_for_social_security_taxability: 40_000
+    tax_unit_taxable_social_security_pre_1993: 7_500
+    # Provisional income of $40,000 falls between the $30,000 base and the
+    # $44,000 adjusted base, so only the first tier applies:
+    # min(50% * $20,000, 50% * ($40,000 - $30,000)) = $5,000.
+    # That is positive and below the $7,500 old-law amount.
+    tax_unit_taxable_social_security: 5_000
+    # Old-law inclusion = min($7,500, $5,000) = $5,000, the actual inclusion.
+    # Taxable income with $5,000 included = $35,000 - $24,150 = $10,850,
+    # all in the 10% bracket, so tax = $1,085.
+    # Total = OASDI = $1,085 - $585 = $500; HI = $500 - $500 = $0.
+    # Without the cap OASDI would be $1,354 - $585 = $769 and HI -$269.
+    tob_revenue_oasdi: 500
+    tob_revenue_medicare_hi: 0
+    tob_revenue_total: 500
+
+- name: A reform that raises inclusion keeps the pre-1993 OASDI share and gives HI the rest
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    # The same override as tax_unit_taxable_social_security_pre_1993.yaml.
+    gov.irs.social_security.taxability.combined_income_ss_fraction: 0.85
+    people:
+      retiree:
+        age: 70
+        social_security: 20_000
+        taxable_interest_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [retiree]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [retiree]
+        takes_up_tanf_if_eligible: false
+    households:
+      household:
+        members: [retiree]
+  output:
+    # Current-law provisional income = $30,000 + 85% * $20,000 = $47,000.
+    tax_unit_combined_income_for_social_security_taxability: 47_000
+    tax_unit_taxable_social_security_pre_1993: 7_500
+    # min(85% * ($47,000 - $34,000) + min($10,000, $4,500), 85% * $20,000)
+    # = min($11,050 + $4,500, $17,000) = $15,550, above the $9,600 at
+    # current law.
+    tax_unit_taxable_social_security: 15_550
+    # Old-law inclusion = min($7,500, $15,550) = $7,500, as at current law.
+    # Taxable income $13,350 / $21,400 with old-law / reform inclusion;
+    # tax $1,240 + 12% * $950 = $1,354 and $1,240 + 12% * $9,000 = $2,320.
+    # OASDI = $1,354 - $585 = $769, its current-law value.
+    # HI = $2,320 - $1,354 = $966; total = $2,320 - $585 = $1,735.
+    tob_revenue_oasdi: 769
+    tob_revenue_medicare_hi: 966
+    tob_revenue_total: 1_735

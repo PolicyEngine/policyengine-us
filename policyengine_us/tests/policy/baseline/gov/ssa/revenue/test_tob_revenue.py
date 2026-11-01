@@ -275,7 +275,11 @@ def check_invariants(sim, year, order=REVENUE_VARIABLES):
     np.testing.assert_allclose(oasdi[old_law_ss == 0], 0, rtol=0, atol=tolerance)
     np.testing.assert_allclose(hi[old_law_ss == taxable_ss], 0, rtol=0, atol=tolerance)
     assert np.all(old_law_ss >= -tolerance)
-    assert np.all(old_law_ss <= taxable_ss + tolerance)
+    # OASDI caps old-law inclusion at actual inclusion. At current law the
+    # pre-1993 amount never exceeds actual inclusion, with no tolerance, so
+    # the cap returns the pre-1993 amount exactly and changes nothing. The
+    # independent pre-1993 differentials confirm the OASDI values.
+    assert np.all(old_law_ss <= taxable_ss)
     np.testing.assert_array_equal(
         sim.calculate("tax_unit_taxable_social_security", year), taxable_ss
     )

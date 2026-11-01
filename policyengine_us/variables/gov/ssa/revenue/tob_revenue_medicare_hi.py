@@ -15,7 +15,10 @@ class tob_revenue_medicare_hi(Variable):
         "benefits revenue less the pre-1993 OASDI allocation. Both amounts "
         "exclude chapter 2A net investment income tax under section 1411 and "
         "use branches to calculate signed marginal chapter 1 liabilities, "
-        "retaining negative unit differences for aggregation."
+        "retaining negative unit differences for aggregation. The OASDI "
+        "allocation caps old-law inclusion at actual inclusion, so HI gets "
+        "nothing from a unit whose inclusion does not exceed the pre-1993 "
+        "amount."
     )
     unit = USD
     reference = (
