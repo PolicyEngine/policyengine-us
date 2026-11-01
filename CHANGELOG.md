@@ -1,3 +1,10 @@
+## [2.90.2] - 2026-11-01
+
+### Fixed
+
+- Measure Social Security benefit-taxation trust-fund revenue using chapter 1 income tax liability after nonrefundable credits and before refundable credits, excluding net investment income tax and unreported payroll tax.
+
+
 ## [2.90.1] - 2026-11-01
 
 ### Changed
