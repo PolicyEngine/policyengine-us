@@ -13,6 +13,7 @@ more system, keeping only the values they compare.
 
 import hashlib
 import math
+from contextlib import contextmanager
 from decimal import ROUND_HALF_UP, Decimal
 from fractions import Fraction
 from functools import lru_cache
@@ -313,8 +314,9 @@ def test_owners_draw_current_law_cap_pins():
     assert _value(_reformed(), OWNERS_DRAW_CAP, 2060) == 654_900
 
 
-def test_owners_draw_current_law_cap_survives_later_cap_policy():
-    """A later policy changes the payroll cap while the assumption copy holds.
+def test_owners_draw_current_law_cap_holds_after_one_cap_policy_from_2028():
+    """One pass: after the assumption, a policy sets the payroll cap from
+    2028, and the assumption's copy holds.
 
     Reuse the cached default-tree copy and restore its cap after the check.
     """
@@ -333,6 +335,82 @@ def test_owners_draw_current_law_cap_survives_later_cap_policy():
     finally:
         cap.values_list = original_values
         cap.parent.clear_parent_cache()
+
+
+@contextmanager
+def _on_default_values(tree):
+    """Put each touched parameter of the cached copy on the default tree's
+    values, then give the copy its own values back.
+
+    Core's ``update`` replaces a parameter's value list and never edits the
+    entries in it, so the copy can share the default tree's entries meanwhile.
+    """
+    parameters = {path: get_parameter(tree, path) for path in TOUCHED}
+    before = _snapshot(tree)
+    own = {path: parameter.values_list for path, parameter in parameters.items()}
+
+    def put(values_by_path):
+        for path, parameter in parameters.items():
+            parameter.values_list = list(values_by_path[path])
+            parameter.parent.clear_parent_cache()
+
+    put({path: get_parameter(system.parameters, path).values_list for path in TOUCHED})
+    try:
+        yield
+    finally:
+        put(own)
+    assert _snapshot(tree) == before
+    _assert_default_tree_untouched()
+
+
+CAP_POLICIES = {"cap_removed": math.inf, "cap_of_10_million": 10_000_000}
+
+
+@pytest.mark.parametrize("order", ["assumption_first", "policy_first"])
+@pytest.mark.parametrize("policy_cap", CAP_POLICIES.values(), ids=CAP_POLICIES)
+def test_owners_draw_current_law_cap_survives_both_passes_of_a_2027_cap_policy(
+    policy_cap, order
+):
+    """A built system applies its reform set twice. Replay both passes with a
+    policy that sets the payroll cap from 2027, in either tuple order: the
+    policy's 2027 cap must not become the copy's no-decrease floor."""
+
+    def policy(parameters):
+        get_parameter(parameters, CAP).update(start="2027-01-01", value=policy_cap)
+
+    reform_set = (apply_trustees_2026_economic_assumptions, policy)
+    if order == "policy_first":
+        reform_set = reform_set[::-1]
+    tree = _applied_once()
+    with _on_default_values(tree):
+        for apply in reform_set * 2:
+            apply(tree)
+        assert _value(tree, OWNERS_DRAW_CAP, 2060) == 654_900
+        for year in range(2028, LAST_TABLE_YEAR + 1):
+            assert _value(tree, OWNERS_DRAW_CAP, year) == _statutory_path(CAP)[year], (
+                year
+            )
+        assert _entries(tree, OWNERS_DRAW_CAP, "2027-12-31") == _entries(
+            system.parameters, CAP, "2027-12-31"
+        )
+        for year in range(2027, LAST_TABLE_YEAR + 1):
+            assert _value(tree, CAP, year) == policy_cap, year
+
+
+@pytest.mark.parametrize("end_year", [2028, 2030, 2036])
+def test_a_short_end_year_keeps_the_cbo_income_totals(end_year):
+    """The SOI helper holds each total at its end_year value from end_year
+    on, so the assumption skips it for an end_year of 2036 or earlier."""
+    tree = _applied_once()
+    with _on_default_values(tree):
+        apply_trustees_2026_economic_assumptions(tree, end_year=end_year)
+        for path in SOI_TOTALS:
+            assert _entries(tree, path, "2036-12-31") == _entries(
+                system.parameters, path, "2036-12-31"
+            ), path
+            assert _value(tree, path, 2040) == _value(system.parameters, path, 2040), (
+                path
+            )
 
 
 def test_the_tree_has_the_expected_readers():

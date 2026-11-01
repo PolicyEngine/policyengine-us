@@ -32,9 +32,13 @@ Both paths hold their ``end_year`` value after ``end_year``.
 Reach. From those two paths the module re-derives:
 
 - the SOI income totals that age microdata incomes, from 2037, with
-  ``apply_trustees_2025_soi_income_projection``;
+  ``apply_trustees_2025_soi_income_projection``, when ``end_year`` is after
+  2036;
 - the contribution and benefit base from 2028, since SSA last determined it
   for 2027 and the 2028 to 2036 values in its YAML derive from CBO;
+- the base's owners' draw copy, ``gov.contrib.ssa.owners_draw.current_law_cap``,
+  on the same rule from the copy's own values through 2027, so a policy reform
+  that changes the live base doesn't reach it;
 - the wage base, quarter-of-coverage threshold, earnings-test exempt amounts,
   PIA bend points and SGA amounts, from 2027;
 - every parameter whose ``uprating`` metadata names either path. Core's
@@ -54,17 +58,30 @@ totals keep their CBO values through 2036. Inputs uprated by
 ``calibration.gov.cbo.income_by_source.adjusted_gross_income`` or its
 per-capita series keep the default path: 348 variables, including 16 stored
 in the default dataset. From 2036 to 2100, that path grows 10.393 times per
-capita, versus 9.418 for wages. A ``Microsimulation`` built from a single-year
-dataset extends that dataset with
-the default system, so its inputs age on the default paths; to age them on
-these, pass a dataset that ``extend_single_year_dataset`` extended with the
-reformed system.
+capita, versus 9.418 for wages.
+
+A ``Microsimulation`` built from a single-year dataset calls
+``extend_single_year_dataset`` without ``system=``, so the default system ages
+that dataset. By default the extension runs through the last year in the
+CPI-U YAML, 2036, and inputs age on the default paths through that year. For
+a later year core uprates each input whose variable names an ``uprating``
+parameter from its 2036 value on the reformed system's path, so that year
+carries only the gap accumulated by 2036. The SOI totals keep their CBO values
+through 2036 here, so the gap falls on the input that reads
+``gov.ssa.uprating`` directly, ``veterans_benefits``: the index reads 403.287
+by default against 407.218 here at 2036, a ratio of 0.990347. To age inputs
+on these paths, pass a dataset that ``extend_single_year_dataset`` extended
+with the reformed system.
 
 Order with other reforms. The assumption rewrites the parameters above for
 years after their last published values, so list it before any policy reform
 that sets one of them. A built system applies its reform set twice, so with
 ``trustees_core_thresholds_reform`` either order wage-indexes the IRS
-thresholds on the 2026 Trustees NAWI.
+thresholds on the 2026 Trustees NAWI. The order rule keeps the parameters a
+later reform overrides directly; it doesn't re-derive their readers. An
+override of ``gov.ssa.uprating`` after the assumption moves
+``veterans_benefits``, which reads the index when it runs, and leaves the SSI
+amounts derived from the index alone.
 """
 
 from __future__ import annotations
@@ -114,6 +131,8 @@ TRUSTEES_2026_LAST_PUBLISHED_NAWI_YEAR = 2025
 TRUSTEES_2026_LAST_ACTUAL_SSA_UPRATING_YEAR = 2027
 # SSA last determined the contribution and benefit base for 2027.
 TRUSTEES_2026_LAST_DETERMINED_CAP_YEAR = 2027
+# The SOI income totals follow CBO's income projections through 2036.
+TRUSTEES_2026_LAST_CBO_SOI_YEAR = 2036
 
 # 2026 Trustees Report, single-year tables, Table VI.G1, intermediate
 # assumptions: the average wage index (AWI) for each calendar year.
@@ -438,21 +457,28 @@ def apply_trustees_2026_economic_assumptions(
     )
     apply_trustees_2026_nawi_projection(parameters, end_year=end_year)
     apply_trustees_2026_price_projection(parameters, end_year=end_year)
-    # Reads the active NAWI, so the income totals follow the new path.
-    apply_trustees_2025_soi_income_projection(parameters, end_year=end_year)
+    # Reads the active NAWI, so the income totals follow the new path. The
+    # helper holds each total at its end_year value from end_year on, so for
+    # an end_year of 2036 or earlier it would overwrite CBO's later values.
+    if end_year > TRUSTEES_2026_LAST_CBO_SOI_YEAR:
+        apply_trustees_2025_soi_income_projection(
+            parameters,
+            last_projected_year=TRUSTEES_2026_LAST_CBO_SOI_YEAR,
+            end_year=end_year,
+        )
     extend_social_security_payroll_cap(
         parameters,
         last_projected_year=TRUSTEES_2026_LAST_DETERMINED_CAP_YEAR,
         end_year=end_year,
     )
-    # Preserve the assumption's cap before later policy reforms can change it.
-    cap = parameters.gov.irs.payroll.social_security.cap
-    _set_annual_values(
-        parameters.gov.contrib.ssa.owners_draw.current_law_cap,
-        {
-            year: cap(f"{year}-01-01")
-            for year in range(TRUSTEES_2026_LAST_DETERMINED_CAP_YEAR + 1, end_year + 1)
-        },
+    # Extend the owners' draw copy on the same rule from its own values
+    # through 2027, not from the live cap, so a policy reform's cap from 2027
+    # can't become the copy's no-decrease floor when the reform set runs again.
+    extend_social_security_payroll_cap(
+        parameters,
+        last_projected_year=TRUSTEES_2026_LAST_DETERMINED_CAP_YEAR,
+        end_year=end_year,
+        cap=parameters.gov.contrib.ssa.owners_draw.current_law_cap,
     )
     extend_social_security_wage_indexed_parameters(parameters, end_year=end_year)
     apply_trustees_2026_path_readers(parameters, end_year=end_year)
