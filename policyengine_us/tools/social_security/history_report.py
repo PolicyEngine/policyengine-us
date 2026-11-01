@@ -59,8 +59,10 @@ def history_report(annual, output):
     """Return an annual history diagnostic, or an empty unselected result.
 
     ``annual.history_pia`` is the formula diagnostic for January entitlement in
-    the requested year. Before eligibility it may be absent while the initial
-    claim-year earnings calculation remains available for reconciliation.
+    the requested year; the ledger JSON names that period. Before eligibility
+    it may be absent while the initial claim-year earnings calculation remains
+    available for reconciliation. The ledger also names the donut credit
+    coefficient applied and the year whose parameters selected it.
     """
     if output not in OUTPUTS:
         raise ValueError(f"Unknown history report output {output}")
@@ -78,7 +80,12 @@ def history_report(annual, output):
         return details.conventional_pia if details is not None else 0
 
     rows = tuple(history.ledger)
-    ordinary_selected = _selected(rows, [row.indexed_ordinary for row in rows], 35)
+    # The ordinary flag keeps its key; it marks the cohort's computation years
+    # (35 from 1991 eligibility, fewer before). AIME+ always selects 35.
+    computation_years = getattr(history, "computation_years", 35)
+    ordinary_selected = _selected(
+        rows, [row.indexed_ordinary for row in rows], computation_years
+    )
     donut_selected = _selected(
         rows, [getattr(row, "indexed_donut", 0) for row in rows], 35
     )
@@ -119,6 +126,7 @@ def history_report(annual, output):
     donut_credit = getattr(history, "donut_credit_pia", Fraction(0))
     mini_pia = pia_amount("mini_pia")
     blended_pia = pia_amount("blended_pia")
+    credit_rate = getattr(history, "donut_credit_rate", Fraction(0))
     return json.dumps(
         {
             "schema_version": 1,
@@ -136,6 +144,15 @@ def history_report(annual, output):
             "blended_pia": _amount(blended_pia),
             "blended_pia_exact": str(blended_pia) if blended_pia is not None else None,
             "eligibility_pia": _amount(pia_amount("eligibility_pia")),
+            "computation_years": computation_years,
+            "donut_credit_rate": _amount(credit_rate),
+            "donut_credit_rate_exact": str(credit_rate),
+            "donut_credit_rate_year": getattr(history, "donut_credit_rate_year", None),
+            # The January diagnostic's entitlement month and formula year.
+            "diagnostic_pia_entitlement_month": getattr(
+                details, "entitlement_month", None
+            ),
+            "diagnostic_pia_formula_year": getattr(details, "formula_year", None),
             "rows": serialized_rows,
         },
         separators=(",", ":"),

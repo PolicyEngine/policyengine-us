@@ -1,8 +1,9 @@
 """Separate annual above-threshold tax and optional benefit-credit streams.
 
-The fixed-threshold 2025 OACT E2.13/E2.14 variants remain separate parameter
-sets. This service supplies a ledger for the household calculator, rather
-than changing population payroll-tax variables or ordinary covered earnings.
+The fixed-threshold E2.13/E2.14 variants (OACT, 2025 Trustees Report edition)
+remain separate parameter sets. This service supplies a ledger for the
+household calculator, rather than changing population payroll-tax variables
+or ordinary covered earnings.
 
 https://www.ssa.gov/OACT/solvency/provisions_tr2025/payrolltax.html
 """

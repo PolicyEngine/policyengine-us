@@ -133,3 +133,98 @@ def test_inconsistent_annual_mini_ledger_and_unknown_outputs_are_rejected():
         history_report(annual, "history_ledger")
     with pytest.raises(ValueError, match="Unknown history report"):
         history_report(annual, "unregistered")
+
+
+def _calculated(donut_rate, *, eligibility=2036, wages=60_000, top=500_800):
+    """A real calculate_year result on a flat-NAWI, $120,000-cap fixture."""
+    from datetime import date
+
+    from policyengine_us.tools.social_security.donut import DonutParameters
+    from policyengine_us.tools.social_security.history import (
+        EarningsHistory,
+        EarningsRecord,
+        HistoryParameters,
+    )
+    from policyengine_us.tools.social_security.household import (
+        SuppliedRecord,
+        calculate_year,
+    )
+
+    first, claim = eligibility - 37, eligibility + 3
+    years = range(first, claim)
+    donut = DonutParameters(
+        in_effect=donut_rate is not None,
+        start_year=first,
+        threshold=400_000,
+        tax_rate=".124",
+        credit_enabled=donut_rate is not None,
+        credit_rate=donut_rate or 0,
+    )
+    history = EarningsHistory(
+        first,
+        tuple(
+            EarningsRecord(year, top if year == claim - 1 else wages, 0)
+            for year in years
+        ),
+        certified_zero_before_first_year=True,
+    )
+    parameters = HistoryParameters(
+        wage_base={year: 120_000 for year in years},
+        nawi={year: 1 for year in years},
+        donut_by_year={year: donut for year in years},
+        # Selected at eligibility, as history_parameters_at does.
+        donut_credit_rate=donut.credit_rate,
+        donut_credit_rate_year=eligibility,
+    )
+    record = SuppliedRecord(
+        source="history",
+        worker_id="report-fields",
+        birth_date=date(eligibility - 62, 1, 2),
+        entitlement_month=f"{claim}-01",
+        insured=True,
+        eligibility_year=eligibility,
+        history=history,
+        history_parameters=parameters,
+        no_special_monthly_test=True,
+        no_prior_withholding_adjustment=True,
+        earnings_test_no_trigger=True,
+    )
+    return calculate_year(record, claim, bend_points=(1000, 6000))
+
+
+def test_report_names_the_donut_coefficient_and_diagnostic_period_with_donut_on():
+    report = json.loads(history_report(_calculated(".02"), "history_ledger"))
+    # $500,800 in 2038 credits $100,800 above $400,000: AIME+ 240, PIA+ 4.80.
+    assert report["aime_plus"] == 240
+    assert report["donut_credit_rate"] == "0.02"
+    assert report["donut_credit_rate_exact"] == "1/50"
+    assert report["donut_credit_rate_year"] == 2036
+    assert report["donut_credit_pia_exact"] == "24/5"
+    # January 2039 entitlement is priced with the 2039 formula.
+    assert report["diagnostic_pia_entitlement_month"] == "2039-01"
+    assert report["diagnostic_pia_formula_year"] == 2039
+    assert report["computation_years"] == 35
+
+
+def test_report_names_the_donut_coefficient_and_diagnostic_period_with_donut_off():
+    report = json.loads(history_report(_calculated(None), "history_ledger"))
+    assert report["aime_plus"] == 0
+    assert report["donut_credit_rate"] == "0"
+    assert report["donut_credit_rate_year"] == 2036
+    assert report["donut_credit_pia_exact"] == "0"
+    assert report["diagnostic_pia_entitlement_month"] == "2039-01"
+    assert report["diagnostic_pia_formula_year"] == 2039
+
+
+def test_report_period_fields_are_null_before_eligibility_and_flags_follow_cohort():
+    before = json.loads(
+        history_report(_calculated(".02", eligibility=1990), "history_ledger")
+    )
+    assert before["computation_years"] == 34
+    assert sum(row["ordinary_top35"] for row in before["rows"]) == 34
+    assert sum(row["donut_top35"] for row in before["rows"]) == 35
+    unpriced = json.loads(
+        history_report(_annual([ReportRow(2038)], details=False), "history_ledger")
+    )
+    assert unpriced["diagnostic_pia_entitlement_month"] is None
+    assert unpriced["diagnostic_pia_formula_year"] is None

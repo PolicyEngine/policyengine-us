@@ -2,7 +2,9 @@
 
 Initial earnings are frozen at claim year Q, through Q-1. This is an opt-in
 household service, not a replacement for the population variable's rolling
-lookback. Annual caps precede E-2 wage indexing; top 35 / 420 is floored.
+lookback. Annual caps precede E-2 wage indexing. The ordinary AIME selects the
+cohort's computation years (35 from 1991 eligibility, fewer before) and floors
+their sum divided by that many months.
 """
 
 from dataclasses import dataclass
@@ -112,6 +114,8 @@ class HistoryParameters:
     mini_share: Decimal | Fraction | int | str = 0
     donut_by_year: Mapping[int, DonutParameters] | None = None
     donut_credit_rate: Decimal | Fraction | int | str | None = None
+    # The year whose parameters supplied donut_credit_rate, when known.
+    donut_credit_rate_year: int | None = None
 
 
 @dataclass(frozen=True)
@@ -155,6 +159,9 @@ class HistoryCalculation:
     mini_share: Fraction = Fraction(0)
     aime_plus: int = 0
     donut_credit_pia: Fraction = Fraction(0)
+    computation_years: int = 35
+    donut_credit_rate: Fraction = Fraction(0)
+    donut_credit_rate_year: int | None = None
 
 
 @dataclass(frozen=True)
@@ -164,6 +171,9 @@ class HistoryPIACalculation:
     annual_mini_pias: tuple[Fraction, ...]
     blended_pia: Fraction
     eligibility_pia: Decimal
+    # Set by the household service for the annual report's January diagnostic.
+    entitlement_month: str | None = None
+    formula_year: int | None = None
 
 
 def _parameter(path, year, name, *, positive=False):
@@ -175,12 +185,29 @@ def _parameter(path, year, name, *, positive=False):
     return value
 
 
-def aime_from_indexed(indexed_amounts):
+def computation_years(eligibility_year):
+    """Retirement computation years for age-62 eligibility year E.
+
+    42 U.S.C. 415(b)(2): elapsed years run from 1951 (or the year after age
+    21, if later) through the year before eligibility, and the computation
+    period is elapsed years less five, at least two. For age-62 eligibility
+    from 1983, the supported range, that is min(35, E - 1956): 27 years in
+    1983, 34 in 1990 and 35 from 1991.
+    """
+    if _year(eligibility_year) < 1983:
+        raise ValueError("Computation benchmarks before 1983 are unsupported")
+    return min(35, eligibility_year - 1956)
+
+
+def aime_from_indexed(indexed_amounts, years=35):
+    """Floor the highest ``years`` indexed amounts divided by ``years`` × 12."""
+    if isinstance(years, bool) or not isinstance(years, int) or years < 1:
+        raise ValueError("Computation years must be a positive integer")
     amounts = tuple(
         _money(value, "Indexed annual earnings") for value in indexed_amounts
     )
-    selected = highest_earnings(amounts or (Decimal(0),))
-    return int(sum(selected, Decimal(0)) // 420)
+    selected = highest_earnings(amounts or (Decimal(0),), years)
+    return int(sum(selected, Decimal(0)) // (12 * years))
 
 
 def _owners_inputs(row, wages, se):
@@ -253,7 +280,7 @@ def compute_history(
     anchor_year = eligibility - 2
     anchor = _parameter(parameters.nawi, anchor_year, "NAWI", positive=True)
     ledger = []
-    credit_rates = set()
+    credit_rates = {}
     for row in records:
         wages = _money(row.covered_wages, "Covered wages")
         se = _money(row.covered_self_employment, "Existing covered SE earnings")
@@ -292,8 +319,9 @@ def compute_history(
                 parameters=donut_parameters,
             )
             if donut.credited_earnings:
-                credit_rates.add(
-                    _number(donut_parameters.credit_rate, "donut credit rate")
+                credit_rates.setdefault(
+                    _number(donut_parameters.credit_rate, "donut credit rate"),
+                    row.year,
                 )
         donut_taxed = (
             Decimal(donut.taxed_earnings.numerator) / donut.taxed_earnings.denominator
@@ -369,20 +397,29 @@ def compute_history(
             raise ValueError(
                 "Mixed annual donut rates require an explicit eligibility-cohort coefficient"
             )
-        credit_rate = next(iter(credit_rates), Fraction(0))
+        # One rate across every credited year: report the first such year.
+        credit_rate, credit_rate_year = next(
+            iter(credit_rates.items()), (Fraction(0), None)
+        )
     else:
         credit_rate = _number(parameters.donut_credit_rate, "donut credit rate")
+        credit_rate_year = parameters.donut_credit_rate_year
     if credit_rate < 0:
         raise ValueError("Donut credit rate must be nonnegative")
+    # AIME+ keeps its own highest-35 / 420 selection for every cohort.
     aime_plus = aime_from_indexed(row.indexed_donut for row in ledger)
+    years = computation_years(eligibility)
     return HistoryCalculation(
         eligibility,
         claim_year,
         tuple(ledger),
-        aime_from_indexed(row.indexed_ordinary for row in ledger),
+        aime_from_indexed((row.indexed_ordinary for row in ledger), years),
         mini_share,
         aime_plus,
         credit_rate * aime_plus,
+        years,
+        credit_rate,
+        credit_rate_year,
     )
 
 
@@ -485,4 +522,5 @@ def history_parameters_at(
         donut_credit_rate=donut_parameters_at(
             parameters, eligibility_year, donut_variant
         ).credit_rate,
+        donut_credit_rate_year=eligibility_year,
     )

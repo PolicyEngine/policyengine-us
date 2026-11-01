@@ -590,7 +590,9 @@ def calculate_year(
                 # An annual reconciliation prices the frozen career with the
                 # formula for January entitlement. December can reflect the
                 # following check year's distinct policy, as in 4a-1.
-                history_pia = details
+                history_pia = replace(
+                    details, entitlement_month=entitlement, formula_year=payment_year
+                )
         elif payment_year >= benchmark and has_active_reform(
             path, benchmark, payment_year, mode
         ):

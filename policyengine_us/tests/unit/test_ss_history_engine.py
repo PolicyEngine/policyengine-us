@@ -277,6 +277,12 @@ def test_all_three_reforms_reconcile_hand_computed_history_in_real_engine():
     ] == pytest.approx(float(Decimal("77097.6") / 37))
     ledger = json.loads(simulation.calculate("ss_calculated_history_ledger", 2039)[0])
     assert ledger["eligibility_pia"] == "2088.5"
+    # E2.13's coefficient, selected at eligibility 2036; January 2039 formula.
+    assert ledger["donut_credit_rate"] == "0.02"
+    assert ledger["donut_credit_rate_year"] == 2036
+    assert ledger["diagnostic_pia_entitlement_month"] == "2039-01"
+    assert ledger["diagnostic_pia_formula_year"] == 2039
+    assert ledger["computation_years"] == 35
     assert ledger["mini_pia_exact"] == "385488/185"
     assert ledger["donut_credit_pia_exact"] == "24/5"
     rows = {row["year"]: row for row in ledger["rows"]}
@@ -326,3 +332,8 @@ def test_default_history_accepts_earnings_before_1983_with_disabled_reforms():
     assert Decimal(first["indexed_ordinary"]) == expected_indexed
     assert Decimal(first["donut_taxed"]) == 0
     assert len(report["rows"]) == 49
+    # The inactive custom donut's coefficient, read at eligibility 2026.
+    assert report["donut_credit_rate"] == "0"
+    assert report["donut_credit_rate_year"] == 2026
+    assert report["diagnostic_pia_entitlement_month"] == "2029-01"
+    assert report["diagnostic_pia_formula_year"] == 2029

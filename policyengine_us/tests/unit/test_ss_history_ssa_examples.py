@@ -82,7 +82,10 @@ SSA_ROWS = """
 @pytest.mark.parametrize(
     "case,birth_year,eligibility,bends,expected_aime,expected_pia",
     [
+        # SSA prints Case A's formula result $2,720.24 and then $2,720.20.
         ("A", 1965, 2027, (1340, 8077), 6072, "2720.20"),
+        # SSA prints Case B's formula result, $3,419.61; $3,419.60 is its
+        # floor to a dime, the initial PIA the calculator reports.
         ("B", 1960, 2022, (1024, 6172), 11843, "3419.60"),
     ],
 )

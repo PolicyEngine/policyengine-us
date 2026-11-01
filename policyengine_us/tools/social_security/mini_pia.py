@@ -1,8 +1,9 @@
 """Annual mini-PIAs for the opt-in covered-earnings history route.
 
-OACT's archived 2025 B3.12 specifies the highest 40 annual mini-PIAs and the
-fixed divisor 37. Keeping annual and blended values exact until the combined
-eligibility PIA's final dime truncation is an explicit modeling convention.
+OACT's archived B3.12 (2025 Trustees Report edition) specifies the highest 40
+annual mini-PIAs and the fixed divisor 37. Keeping annual and blended values
+exact until the combined eligibility PIA's final dime truncation is an
+explicit modeling convention.
 
 https://www.ssa.gov/OACT/solvency/provisions_tr2025/benefitlevel.html
 """
