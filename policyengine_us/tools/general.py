@@ -56,7 +56,13 @@ def earliest_input_year(simulation):
     neutralized, are skipped: they are never read. Social Security calculator
     records and output overrides are also skipped: a historical earnings-test
     amount, COLA decision or calculator result is not a tax-year income return
-    for the IRMAA lookback. As with
+    for the IRMAA lookback. The four component controls
+    ``social_security_retirement_cola_override``,
+    ``social_security_disability_cola_override``,
+    ``social_security_survivors_cola_override`` and
+    ``social_security_dependents_cola_override`` are excluded by exact name
+    for the same reason. Legacy ``social_security_*_cola_withheld`` inputs
+    still count, preserving their existing income-history behavior. As with
     ``has_input_for_period``, core versions before 3.32.27 can keep
     an input key after the input is deleted, and a value recalculated for
     that period then still counts. Formulas that read this cache their
@@ -70,6 +76,13 @@ def earliest_input_year(simulation):
             branch_name in visible_branches
             and period.unit != ETERNITY
             and not variable.startswith(("ss_calculator_", "ss_calculated_"))
+            and variable
+            not in (
+                "social_security_retirement_cola_override",
+                "social_security_disability_cola_override",
+                "social_security_survivors_cola_override",
+                "social_security_dependents_cola_override",
+            )
             and variable in variables
             and not variables[variable].is_neutralized
         ):
