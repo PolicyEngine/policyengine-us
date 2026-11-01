@@ -25,11 +25,16 @@ leaf reaches the sum through that leaf. The owners' draw reform's
 `self_employment_social_security_tax` adds `owners_draw_oasdi_tax`, so the draw's
 OASDI tax counts once; don't add it again.
 
-`oasdi_benefit_taxation_revenue` is the OASDI share of income tax on benefits:
-the tax with section 86 inclusion as before the 1993 amendments, less the tax
-with no inclusion. The HI share, `tob_revenue_medicare_hi`, stays out. The share
-carries a sign: a unit whose tax falls when its benefits enter income contributes
-a negative amount, so sum units without a floor.
+`oasdi_benefit_taxation_revenue` is the OASDI share of income tax on benefits.
+It measures `income_tax_chapter_1`, chapter 1 liability after nonrefundable
+credits and before refundable credits. The share is that liability with section
+86 inclusion as before the 1993 amendments, capped at actual inclusion, less the
+liability with no inclusion. At current law the cap changes nothing. When a
+reform cuts inclusion below the pre-1993 amount, the 1993 amendments add
+nothing, so OASDI takes the whole increase. The HI share,
+`tob_revenue_medicare_hi`, stays out. The share carries a sign: a unit whose tax
+falls when its benefits enter income contributes a negative amount, so sum units
+without a floor.
 
 `oasdi_niit_revenue` is the OASDI transfer that the enabled S.770 section 8
 options select. It is zero unless an option applies, and it counts only the
@@ -52,20 +57,17 @@ for the transfer modes.
   income, isn't part of `oasdi_income`. A score that enables that reform adds it
   separately.
 
-### Benefit taxation and the NIIT transfer overlap
+### Benefit taxation and the NIIT transfer
 
-`tob_revenue_oasdi` takes the difference in `income_tax`, which includes
-`net_investment_income_tax`. Including benefits raises adjusted gross income and
-so `niit_magi`, so any NIIT that benefit inclusion triggers lands in the benefit
-taxation term. The trust fund transfer covers only chapter 1 income tax
-liabilities, and the NIIT sits in chapter 2A, so that piece doesn't belong in
-the term even at baseline. With an S.770 section 8 option on,
-`oasdi_niit_revenue` also transfers shares of the section 8 add-on and active
-taxes, and in bill or combined-rate mode of the existing-rate NIIT. Benefit
-inclusion raises those taxes too, so `oasdi_income` counts that part of the
-increase in both terms. The fix belongs in `tob_revenue_oasdi`, which these
-outputs read unchanged. Until it lands, treat `oasdi_benefit_taxation_revenue`,
-and so `oasdi_income`, as overstated by the NIIT that benefit inclusion adds.
+`tob_revenue_oasdi` takes the difference in `income_tax_chapter_1`, which leaves
+out `net_investment_income_tax`. Including benefits raises adjusted gross income
+and so `niit_magi`, so benefit inclusion can trigger NIIT. The trust fund
+transfer covers only chapter 1 income tax liabilities, and the NIIT sits in
+chapter 2A, so that NIIT stays out of the benefit taxation term. With an S.770
+section 8 option on, `oasdi_niit_revenue` transfers shares of the section 8
+add-on and active taxes, and in bill or combined-rate mode of the existing-rate
+NIIT. Benefit inclusion can raise those taxes too. `oasdi_income` counts the
+transferred share of that increase once, in the NIIT transfer term.
 
 ## Entity mapping and weights
 
@@ -125,9 +127,10 @@ describes the repairs.
    It checks the artifact's hash and base year and the four benefit components'
    sources. It also rejects stored columns that would bypass these formulas: the
    six outputs above, aggregate `social_security`, the worker and employer OASDI
-   tax leaves, the TOB revenue leaves, and the NIIT liability and transfer
-   leaves, including the S.770 section 8 and owners' draw tax and OASDI
-   transfer leaves. Keep the receipt with the score.
+   tax leaves, the TOB revenue leaves and the `income_tax_chapter_1` they
+   difference, and the NIIT liability and transfer leaves, including the S.770
+   section 8 and owners' draw tax and OASDI transfer leaves. Keep the receipt
+   with the score.
 
 2. **Score in household chunks.** On main, `tob_revenue_oasdi` recalculates
    income tax in two branches of the whole simulation, so its working memory
