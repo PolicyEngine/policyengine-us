@@ -84,9 +84,23 @@ For eligibility year E and initial claim year Q:
 3. For a year y before E−2, multiply by `NAWI(E−2) / NAWI(y)` and round to
    cents, with half cents rounded upward. Earnings in E−2 and later remain at
    face value.
-4. Select the highest 35 annual indexed amounts, pad with certified zeros,
-   divide by 420, and floor to a whole monthly dollar.
+4. Select the cohort's computation years: `min(35, E − 1956)`, so 27 years
+   for E = 1983, 34 for E = 1990 and 35 from E = 1991. Select that many
+   highest annual indexed amounts, pad with certified zeros, divide by that
+   count times 12 (324, 408 or 420 months in those examples), and floor to a
+   whole monthly dollar.
 5. Call the same eligibility-year `compute_pia` service used by supplied AIME.
+
+Step 4 follows [42 U.S.C. 415(b)(2)](https://www.law.cornell.edu/uscode/text/42/415):
+elapsed years run from 1951 (or the year after age 21, if later) through the
+year before age-62 eligibility, and the computation period is elapsed years
+less five, with a minimum of two (POMS RS 00605.016 and RS 00605.017). A
+worker first eligible in 1990 has 39 elapsed years and 34 computation years.
+For example, $3,000 of covered wages in every year 1951–1989 with eligibility
+and claim in 1990 indexes to a highest-34 sum of $372,486.21, so AIME is
+floor(372,486.21 / 408) = $912 and the PIA is $498.30; a fixed 35-year,
+420-month selection would give $895 and $492.80. Legacy `ss_aime` keeps its
+own window, and the supplied-AIME and supplied-PIA routes are unchanged.
 
 The [POMS indexing procedure](https://secure.ssa.gov/poms.nsf/lnx/0300605018)
 establishes the index year and cent rounding. The
@@ -153,20 +167,22 @@ formula to each annual ordinary indexed covered amount divided by 12. It
 selects the highest 40 annual mini-PIAs, pads shorter certified careers with
 zeros, and divides their sum by 37. The divisor is always 37.
 
-The archived [2025 OACT B3.12 description](https://www.ssa.gov/OACT/solvency/provisions_tr2025/benefitlevel.html)
+The archived [B3.12 description in OACT's 2025 Trustees Report edition](https://www.ssa.gov/OACT/solvency/provisions_tr2025/benefitlevel.html)
 says, “Sum these individual PIAs for the 40 highest years of indexed earnings
-and divide that total amount by 37”. Its retired-worker phase-in is 20% in
-2032, 40% in 2033, 60% in 2034, 80% in 2035, and 100% from 2036. Disability
+and divide that total amount by 37”. Its retired-worker phase-in, in that
+2025 edition, is 20% in 2032, 40% in 2033, 60% in 2034, 80% in 2035, and 100% from 2036. Disability
 benefits are unchanged. The independently enabled parameter path is under
 `gov.contrib.ssa.history.mini_pia`.
 
-**Modeling conventions:** retain precision in each mini-AIME and mini-PIA,
-aggregate with /37, and blend
-`mini_share_E × mini_PIA + (1 − mini_share_E) × conventional_PIA` before final
-dime truncation. Conventional AIME/PIA retains its statutory rounding. Add
-the separate AIME+ PIA after the blend, then truncate the combined eligibility
-PIA to dimes. These intermediate rounding and composition choices come from
-the calculator design; OACT's summary does not prescribe them.
+**Modeling convention: combined dime rounding.** Retain precision in each
+mini-AIME and mini-PIA, aggregate with /37, and blend
+`mini_share_E × mini_PIA + (1 − mini_share_E) × conventional_PIA`.
+Conventional AIME/PIA retains its statutory rounding. Add the separate AIME+
+PIA after the blend, then floor the combined eligibility PIA to a dime once.
+42 U.S.C. 415(a)(1)(A) rounds the summed formula result down to a multiple of
+$0.10; the provision descriptions do not address rounding. For example, a mini of $399.99 plus a
+$0.02 credit gives a $400 PIA and payment; truncating the mini first would
+give $399.90 and $399.
 
 ## Above-cap AIME+ credit
 
@@ -176,11 +192,14 @@ set. Activation, threshold, start year, tax rate, credit flag/rate, and
 inclusion of existing SE or reclassified draw are separate settings. A
 credit-off variant can tax earnings while producing no AIME+ credit.
 
-The archived [2025 OACT payroll-tax descriptions](https://www.ssa.gov/OACT/solvency/provisions_tr2025/payrolltax.html)
+The archived [payroll-tax descriptions in OACT's 2025 Trustees Report edition](https://www.ssa.gov/OACT/solvency/provisions_tr2025/payrolltax.html)
 state E2.13 as “Apply OASDI 12.4 percent payroll tax rate on earnings above
 $400,000” and E2.14 as “Apply OASDI 12.4 percent payroll tax rate on earnings
-above $250,000”. Both begin with 2027 earnings and use a 2% secondary AIME+
-factor. Their thresholds stay fixed; once the ordinary cap reaches the
+above $250,000”. In that 2025 edition both begin with 2027 earnings and use a
+2% secondary AIME+ factor. The 2026 Trustees Report edition moved the start of E2.13
+and E2.14 to 2028. This calculator keeps the 2025 edition's years and
+citations; its named variants (`oact_2025_e2_13`, `oact_2025_e2_14`) and the
+B3.12 phase-in above are the 2025 edition's. Their thresholds stay fixed; once the ordinary cap reaches the
 threshold, the gap disappears.
 
 For each enabled earnings year, the separate taxed stream is
@@ -197,11 +216,15 @@ stream never changes conventional AIME. These services expose hypothetical
 annual tax/credit amounts for the household report; they do not change
 population payroll-tax variables.
 
-For a custom changing path, annual tax/coverage settings determine the extra
-earnings stream, and the PIA credit coefficient is read at eligibility E.
-This is a cohort-selection convention; the archived variants' coefficient is
-constant at 2%. Pure callers whose credited annual streams use different
-coefficients must supply the eligibility coefficient explicitly.
+**Modeling convention: cohort-selected donut coefficient.** For a custom
+changing path, annual tax/coverage settings determine the extra earnings
+stream, and the PIA credit coefficient is read at eligibility E, as benefit
+formulas select by cohort. The named E2.13 and E2.14 variants carry a
+constant 2%, so this only moves a custom path that varies. For example, AIME+
+$240 at 2% against 3% gives $4.80 against $7.20; with a $2,180 baseline PIA
+and claiming at 65, payment is $1,893 against $1,895. Pure callers whose
+credited annual streams use different coefficients must supply the
+eligibility coefficient explicitly.
 
 ## Annual earnings ledger
 
@@ -219,7 +242,13 @@ initial-claim earnings calculation when a later payment year is requested.
 default `custom` set is inactive until explicitly configured.
 
 The annual report prices mini-PIAs and PIA diagnostics using January
-entitlement's formula. Its income ledger stays frozen at Q−1. An exact fraction
+entitlement's formula; `diagnostic_pia_entitlement_month` and
+`diagnostic_pia_formula_year` name that period. `donut_credit_rate` (with its
+exact fraction) and `donut_credit_rate_year` name the AIME+ coefficient
+applied and the year whose parameters selected it. `computation_years` gives
+the ordinary selection count, which the `ordinary_top35` flags follow; the
+`donut_top35` flags always mark 35 years. Its income ledger stays frozen at
+Q−1. An exact fraction
 accompanies recurring mini-PIA decimals, and highest-year selection flags use
 the earlier earnings year to resolve ties. Before eligibility, the report
 retains the earnings ledger and leaves PIA diagnostics unset.
@@ -242,9 +271,11 @@ truncating to dimes gives $2,088.50. Claiming 24 months before FRA uses
 Published conventional comparisons use SSA's
 [annual earnings histories](https://www.ssa.gov/OACT/ProgData/retirebenefit1.html)
 and [PIA examples](https://www.ssa.gov/OACT/ProgData/retirebenefit2.html).
-The published 2027 Case A has AIME $6,072 and initial PIA $2,720.20. Case B
-first eligible in 2022 has AIME $11,843, including later earnings through
-2026, and initial PIA $3,419.60. Source data are fixed in the corresponding
+In the 2027 examples, Case A has AIME $6,072; SSA prints the formula result
+$2,720.24 and then the initial PIA $2,720.20. Case B, first eligible in 2022,
+has AIME $11,843, including later earnings through 2026; SSA's page prints the
+formula result $3,419.61, and $3,419.60 is its floor to a dime, which the
+calculator reports as the initial PIA. Source data are fixed in the corresponding
 test fixtures; the live SSA examples can advance to another retirement year.
 
 The merged implementation takes precedence over older design descriptions:
