@@ -38,14 +38,19 @@ STATE_NAMING_GEOGRAPHY = (
     *COUNTY_NAMES,
     "congressional_district_geoid",
 )
-# Local geography that does not name its state. It cannot contradict state_fips
-# on its own, and goes with the columns above when they do.
+# Local geography that does not name its state, and what the model derives from
+# local geography. These cannot contradict state_fips on their own, and go with
+# the columns above when they do.
 OTHER_LOCAL_GEOGRAPHY = (
     "cbsa_code",
+    "in_ny_mctd_zone_2",
+    "in_nyc",
+    "medicaid_rating_area",
     "place_fips",
     "puma",
     "sldl",
     "sldu",
+    "three_digit_zip_code",
     "vtd",
     "zcta",
     "zip_code",
@@ -144,19 +149,20 @@ def _forget_local_geography(simulation, period, outside, state):
         values = _stored(simulation, name).get(period)
         if values is None:
             continue
-        variable = simulation.tax_benefit_system.get_variable(name)
-        if variable.value_type is int:
-            replaced = np.array(values, copy=True)
-        else:
-            replaced = _as_text(values)
         if name in COUNTY_NAMES:
             # A stored county overrides the formula's fallback, so it takes
             # that fallback's value itself.
+            replaced = _as_text(values)
             replaced[outside] = [
                 first_counties.get(code, County.UNKNOWN).name
                 for code in STATE_CODE_LOOKUP[state[outside]]
             ]
         else:
+            variable = simulation.tax_benefit_system.get_variable(name)
+            if variable.value_type is str:
+                replaced = _as_text(values)
+            else:
+                replaced = np.array(values, copy=True)
             replaced[outside] = variable.default_value
         simulation.set_input(name, period, replaced)
 

@@ -176,6 +176,20 @@ def test_geography_inside_the_state_stays_and_stays_quiet(tmp_path, caplog):
     assert simulation.calculate("spm_unit_spm_threshold", YEAR).sum() > 0
 
 
+def test_values_derived_from_a_stale_county_leave_with_it(tmp_path):
+    people = with_state(read_survey(tmp_path), MISSISSIPPI)
+    people[f"county_fips__{YEAR}"] = "36061"
+    people[f"in_nyc__{YEAR}"] = True
+    people[f"three_digit_zip_code__{YEAR}"] = "100"
+    people[f"medicaid_rating_area__{YEAR}"] = 4
+
+    simulation = simulate(people)
+
+    assert not simulation.calculate("in_nyc", YEAR).any()
+    assert set(simulation.calculate("three_digit_zip_code", YEAR).values) == {""}
+    assert set(simulation.calculate("medicaid_rating_area", YEAR).values) == {0}
+
+
 def test_only_households_outside_the_state_lose_their_geography(tmp_path):
     people = read_survey(tmp_path)
     people[f"state_fips__{YEAR}"] = people["household_id"].map({1: 6, 2: 6, 3: 28})
