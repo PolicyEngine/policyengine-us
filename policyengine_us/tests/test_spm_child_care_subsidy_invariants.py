@@ -29,10 +29,11 @@ For every SPM unit:
 5. No program is counted twice. No *_child_care_subsidies variable, and no
    program one of them adds, appears in spm_unit_benefits or in a reform's copy
    of that list, and all of them reach child_care_subsidies.
-6. Differential. With real programs turned on and off, the SPM and household
-   measures agree on what else changed: the change in SPM net income is the
-   change in household net income, less the subsidy the household measure
-   counts, plus the fall in the expense.
+6. Differential. With real programs turned on and off, the expense falls by
+   the amount the reference gives for the subsidy the program paid, and the
+   SPM and household measures agree on what else changed: the change in SPM
+   net income is the change in household net income, less the subsidy the
+   household measure counts, plus the fall in the expense.
 
 Intended violation of "a subsidy never lowers SPM resources". Property 3 holds
 taxes and other benefits fixed, and it has to. SNAP, TANF and tax credits read
@@ -62,10 +63,14 @@ from test_aggregate_list_integrity import (
 
 hypothesis = pytest.importorskip("hypothesis")
 st = pytest.importorskip("hypothesis.strategies")
-given, settings = hypothesis.given, hypothesis.settings
+example, given, settings = hypothesis.example, hypothesis.given, hypothesis.settings
 
 YEAR = 2026
 TOLERANCE = 0.01
+# Income variables are float32, which rounds to about $0.03 at the $400,000 the
+# fixtures below earn. Every input is a whole dollar, so this still catches a
+# $1 error.
+INCOME_TOLERANCE = 0.25
 PROGRAMS_LIST = "gov/hhs/ccdf/child_care_subsidy_programs.yaml"
 STATE_SUBSIDIES = sorted(members_of(PROGRAMS_LIST))
 STATES = [name[:2].upper() for name in STATE_SUBSIDIES]
@@ -178,7 +183,7 @@ def test_expense_nets_subsidies_exactly_once(units):
         # the expense and by nothing else.
         assert benefits[i] == pytest.approx(benefits[n + i], abs=TOLERANCE)
         gain = net_income[i] - net_income[n + i]
-        assert gain == pytest.approx(fall, abs=TOLERANCE)
+        assert gain == pytest.approx(fall, abs=INCOME_TOLERANCE)
 
 
 def state_subsidy_adds():
@@ -212,7 +217,7 @@ def test_no_subsidy_is_a_spm_resource():
     )
 
 
-def test_every_state_subsidy_reaches_the_spm_expense():
+def test_every_state_subsidy_is_in_the_programs_list():
     variables_dir = PACKAGE / "variables/gov/states"
     defined = {path.stem for path in variables_dir.rglob("*_child_care_subsidies.py")}
     latest_block = max(
@@ -270,8 +275,7 @@ def family(state, earnings, expenses):
     }
 
 
-def with_and_without_subsidies(state, earnings, expenses):
-    situation = family(state, earnings, expenses)
+def with_and_without_subsidies(situation):
     on = Simulation(situation=situation)
     off = Simulation(situation=situation, tax_benefit_system=no_subsidy_system())
 
@@ -302,12 +306,28 @@ def subsidy_counted_by_household_measure(simulation, state):
     earnings=st.integers(5_000, 60_000),
     expenses=st.integers(0, 25_000),
 )
+# States that left the subsidy out before and states that counted it as a
+# resource, at amounts where each program pays.
+@example("NY", 30_000, 14_000)
+@example("TX", 30_000, 14_000)
+@example("AK", 30_000, 14_000)
+@example("WA", 30_000, 14_000)
+@example("WV", 30_000, 14_000)
+@example("CO", 30_000, 14_000)
 def test_spm_and_household_measures_agree(state, earnings, expenses):
-    on, change = with_and_without_subsidies(state, earnings, expenses)
+    on, change = with_and_without_subsidies(family(state, earnings, expenses))
+    subsidy = float(on.calculate("child_care_subsidies", YEAR).sum())
+    work = float(on.calculate("spm_unit_work_expenses", YEAR).sum())
+    cap = float(on.calculate("spm_unit_head_spouse_earned_cap", YEAR).sum())
     fall = -change("spm_unit_capped_work_childcare_expenses")
+    assert fall == pytest.approx(
+        reference_expense(expenses, 0, work, cap)
+        - reference_expense(expenses, subsidy, work, cap),
+        abs=TOLERANCE,
+    )
     counted = subsidy_counted_by_household_measure(on, state)
     assert change("spm_unit_net_income") == pytest.approx(
-        change("household_net_income") - counted + fall, abs=TOLERANCE
+        change("household_net_income") - counted + fall, abs=INCOME_TOLERANCE
     )
 
 
@@ -316,14 +336,7 @@ def test_new_york_subsidy_raises_both_measures_by_the_same_amount():
     situation = family("NY", 30_000, 14_000)
     situation["households"]["household"]["county_fips"] = {YEAR: "36061"}
     del situation["people"]["parent"]["weeks_worked"]
-    on = Simulation(situation=situation)
-    off = Simulation(situation=situation, tax_benefit_system=no_subsidy_system())
-
-    def change(variable):
-        return float(on.calculate(variable, YEAR).sum()) - float(
-            off.calculate(variable, YEAR).sum()
-        )
-
+    on, change = with_and_without_subsidies(situation)
     subsidy = float(on.calculate("child_care_subsidies", YEAR).sum())
     assert subsidy > 13_000
     assert change("spm_unit_capped_work_childcare_expenses") == pytest.approx(
@@ -331,7 +344,7 @@ def test_new_york_subsidy_raises_both_measures_by_the_same_amount():
     )
     assert change("household_net_income") > 0
     assert change("spm_unit_net_income") == pytest.approx(
-        change("household_net_income"), abs=TOLERANCE
+        change("household_net_income"), abs=INCOME_TOLERANCE
     )
 
 
@@ -339,13 +352,13 @@ def test_subsidy_at_the_cap_can_lower_spm_income():
     # Intended: this unit stays at the earnings cap, so the SPM expense does
     # not move, while the fall in out-of-pocket expenses cuts SNAP. See the
     # module docstring.
-    on, change = with_and_without_subsidies("CA", 8_000, 25_000)
+    on, change = with_and_without_subsidies(family("CA", 8_000, 25_000))
     assert float(on.calculate("child_care_subsidies", YEAR).sum()) > 0
     assert change("spm_unit_capped_work_childcare_expenses") == pytest.approx(
         0, abs=TOLERANCE
     )
     assert change("snap") < 0
     assert change("spm_unit_net_income") == pytest.approx(
-        change("spm_unit_benefits") - change("spm_unit_taxes"), abs=TOLERANCE
+        change("spm_unit_benefits") - change("spm_unit_taxes"), abs=INCOME_TOLERANCE
     )
     assert change("spm_unit_net_income") < 0
