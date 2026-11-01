@@ -107,7 +107,6 @@ def create_boost_middle_class_tax_credit() -> Reform:
                 # California programs.
                 "ca_cvrp",  # California Clean Vehicle Rebate Project.
                 # Colorado programs.
-                "co_ccap_subsidy",
                 "co_state_supplement",
                 "co_oap",
                 "snap",

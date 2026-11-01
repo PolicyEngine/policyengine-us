@@ -77,19 +77,14 @@ def create_tx_rebate() -> Reform:
                 # California programs.
                 "ca_cvrp",  # California Clean Vehicle Rebate Project.
                 # Colorado programs.
-                "co_ccap_subsidy",
                 "co_state_supplement",
                 "co_oap",
-                # Washington programs.
-                "wa_child_care_subsidies",
                 # New Mexico programs.
                 "nm_ssi_state_supplement",
                 # South Carolina programs.
                 "sc_ssi_state_supplement",
                 # Texas programs.
                 "tx_ssi_state_supplement",
-                # West Virginia programs.
-                "wv_child_care_subsidies",
                 "snap",
                 "wic",
                 "free_school_meals",

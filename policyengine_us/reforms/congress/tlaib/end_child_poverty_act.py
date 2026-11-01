@@ -135,7 +135,6 @@ def create_end_child_poverty_act() -> Reform:
                 # California programs.
                 "ca_cvrp",  # California Clean Vehicle Rebate Project.
                 # Colorado programs.
-                "co_ccap_subsidy",
                 "co_state_supplement",
                 "co_oap",
                 "snap",

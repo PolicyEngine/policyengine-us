@@ -119,7 +119,6 @@ def create_ecpa_only() -> Reform:
                 "ssi",
                 "ma_state_supplement",
                 "ca_cvrp",
-                "co_ccap_subsidy",
                 "co_state_supplement",
                 "co_oap",
                 "snap",

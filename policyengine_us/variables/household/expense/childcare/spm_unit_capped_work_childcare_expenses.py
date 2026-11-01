@@ -7,9 +7,19 @@ class spm_unit_capped_work_childcare_expenses(Variable):
     label = "SPM unit work and childcare expenses"
     definition_period = YEAR
     unit = USD
+    reference = "https://www2.census.gov/programs-surveys/supplemental-poverty-measure/datasets/spm/spm_techdoc.pdf#page=17"
 
     def formula_2024(spm_unit, period, parameters):
         work_expenses = spm_unit("spm_unit_work_expenses", period)
-        childcare_expenses = spm_unit("spm_unit_pre_subsidy_childcare_expenses", period)
+        pre_subsidy_expenses = spm_unit(
+            "spm_unit_pre_subsidy_childcare_expenses", period
+        )
+        # The SPM subtracts what parents paid for child care, and child care
+        # is not among its noncash benefits, so a subsidy lowers this expense
+        # rather than adding to resources. This reads the SPM unit's expenses
+        # directly because childcare_expenses divides them among children and
+        # drops them from a unit with no child.
+        subsidies = spm_unit("child_care_subsidies", period)
+        childcare_expenses = max_(pre_subsidy_expenses - subsidies, 0)
         earned_cap = spm_unit("spm_unit_head_spouse_earned_cap", period)
-        return min_(work_expenses + np.maximum(childcare_expenses, 0), earned_cap)
+        return min_(work_expenses + childcare_expenses, earned_cap)
