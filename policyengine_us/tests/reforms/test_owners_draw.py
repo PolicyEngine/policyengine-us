@@ -33,6 +33,9 @@ from policyengine_us.system import system
 from policyengine_us.variables.gov.contrib.congress.s770.s770_active_business_income import (
     s770_active_business_income,
 )
+from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.above_the_line_deductions.self_employed_health_insurance_earned_income_limit import (
+    self_employed_health_insurance_earned_income_limit,
+)
 from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.above_the_line_deductions.self_employment_tax_ald_person import (
     self_employment_tax_ald_person,
 )
@@ -66,6 +69,7 @@ BASELINE_VARIABLES = {
         self_employment_medicare_tax,
         self_employment_tax,
         self_employment_tax_ald_person,
+        self_employed_health_insurance_earned_income_limit,
     )
 }
 PERIOD = period("2027")
@@ -145,10 +149,23 @@ def _calculate(variables, parameters, inputs, outputs=None):
         "sstb_self_employment_income": 0,
         "farm_operations_income": 0,
         "payroll_tax_gross_wages": 0,
+        "self_employed_pension_contribution_ald_person": 0,
         **inputs,
     }
 
-    values = {name: np.asarray(value) for name, value in values.items()}
+    # Core stores these money inputs as floats; integer literals would make
+    # the limit's zeros_like() output integer and reject its float division.
+    values = {
+        name: np.asarray(value, dtype=float)
+        if np.asarray(value).dtype.kind in "iu"
+        else np.asarray(value)
+        for name, value in values.items()
+    }
+    # Form 7206 line 4 reads this adds-variable; mirror its two components.
+    values.setdefault(
+        "total_self_employment_income",
+        values["self_employment_income"] + values["sstb_self_employment_income"],
+    )
 
     def person(name, instant, options=None):
         if name not in values:
@@ -689,6 +706,95 @@ def test_generated_deduction_tracks_existing_deductible_share(
         disabled["self_employment_tax_ald_person"],
         baseline["self_employment_tax_ald_person"],
     )
+
+
+_SEHI_ROWS = st.lists(
+    st.tuples(
+        st.integers(-200_000, 500_000),  # Schedule C (plan business)
+        st.integers(-200_000, 500_000),  # farm
+        st.integers(-200_000, 500_000),  # partnership SE earnings
+        st.integers(-500_000, 1_000_000),  # S-corporation profits
+        st.integers(0, 1_000_000),  # wages
+        st.integers(0, 60_000),  # SEP/SIMPLE/qualified plan deduction
+    ),
+    min_size=1,
+    max_size=12,
+)
+
+
+def _sehi_inputs(rows):
+    sched_c, farm, partnership_se, s_corp, wages, pension = np.asarray(
+        rows, dtype=float
+    ).T
+    return {
+        "self_employment_income": sched_c,
+        "farm_operations_income": farm,
+        "partnership_self_employment_net_earnings": partnership_se,
+        "partnership_income": partnership_se,
+        "s_corp_income": s_corp,
+        "payroll_tax_gross_wages": wages,
+        "self_employed_pension_contribution_ald_person": pension,
+    }
+
+
+SEHI_LIMIT = "self_employed_health_insurance_earned_income_limit"
+# Form 7206 line 4 net profit 40,000 and a draw with 60,000 of net earnings.
+SEHI_HAND_CASE = [(40_000, 0, 0, 64_970.22, 0, 0)]
+
+
+@settings(**SETTINGS)
+@given(rows=_SEHI_ROWS, rates=_RATE_POLICY)
+@example(rows=SEHI_HAND_CASE, rates=(124, 29, 500))
+def test_generated_disabled_sehi_limit_equals_baseline(reform_variables, rows, rates):
+    inputs = _sehi_inputs(rows)
+    parameters = _parameters(in_effect=False, **_policy_rates(rates))
+    baseline = _calculate(BASELINE_VARIABLES, parameters, inputs, [SEHI_LIMIT])
+    reformed = _calculate(reform_variables, parameters, inputs, [SEHI_LIMIT])
+    np.testing.assert_array_equal(reformed[SEHI_LIMIT], baseline[SEHI_LIMIT])
+
+
+@settings(**SETTINGS)
+@given(rows=_SEHI_ROWS, rates=_RATE_POLICY, include_hi=st.booleans())
+@example(rows=SEHI_HAND_CASE, rates=(124, 29, 500), include_hi=False)
+def test_generated_sehi_limit_counts_the_draw_in_line_5(
+    reform_variables, rows, rates, include_hi
+):
+    """Form 7206 lines 4-13 with every SE-taxed business in line 5."""
+    inputs = _sehi_inputs(rows)
+    policy = dict(**_policy_rates(rates), include_hi=include_hi)
+    enabled = _calculate(reform_variables, _parameters(**policy), inputs)
+    # Main's formula on the same reformed SE tax omits the draw from line 5.
+    main = _calculate(
+        BASELINE_VARIABLES,
+        _parameters(**policy),
+        {
+            **inputs,
+            "self_employment_tax_ald_person": enabled["self_employment_tax_ald_person"],
+        },
+        [SEHI_LIMIT],
+    )
+    line_4 = np.maximum(0, inputs["self_employment_income"])
+    line_5 = (
+        line_4
+        + np.maximum(0, inputs["farm_operations_income"])
+        + np.maximum(0, inputs["partnership_self_employment_net_earnings"])
+        + np.maximum(0, enabled["owners_draw_gross"])
+    )
+    share = np.divide(line_4, line_5, out=np.zeros_like(line_5), where=line_5 > 0)
+    plan_share_of_se_tax = enabled["self_employment_tax_ald_person"] * share
+    pension = inputs["self_employed_pension_contribution_ald_person"]
+    limit = enabled[SEHI_LIMIT]
+    np.testing.assert_allclose(
+        limit, np.maximum(0, line_4 - plan_share_of_se_tax - pension), atol=1e-6
+    )
+    # Never above line 4 less the plan business's line 6 share of the
+    # deductible SE tax (line 8), and never below main's draw-free share.
+    assert np.all(limit <= np.maximum(0, line_4 - plan_share_of_se_tax) + 1e-6)
+    assert np.all(limit >= main[SEHI_LIMIT] - 1e-6)
+    assert np.all(limit <= np.maximum(0, line_4 - pension) + 1e-6)
+    # With no draw, the reform's line 5 equals main's.
+    no_draw = enabled["owners_draw_gross"] == 0
+    np.testing.assert_allclose(limit[no_draw], main[SEHI_LIMIT][no_draw], atol=1e-6)
 
 
 @contextmanager
