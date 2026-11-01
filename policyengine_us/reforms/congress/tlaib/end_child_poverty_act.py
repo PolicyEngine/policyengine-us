@@ -164,6 +164,12 @@ def create_end_child_poverty_act() -> Reform:
                 BENEFITS.append("aca_ptc")
             if not parameters(period).gov.hud.abolition:
                 BENEFITS.append("spm_unit_capped_housing_subsidy")
+            # From 2024, child care subsidies lower the expense in
+            # spm_unit_capped_work_childcare_expenses instead of adding to
+            # resources. That expense has no formula before 2024, so this one
+            # stays a resource until then.
+            if period.start.year < 2024:
+                BENEFITS.append("co_ccap_subsidy")
             return add(spm_unit, period, BENEFITS)
 
     class income_tax_refundable_credits(Variable):

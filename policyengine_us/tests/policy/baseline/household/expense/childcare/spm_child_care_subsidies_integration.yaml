@@ -2,9 +2,10 @@
 # Alaska subsidies never reached the SPM before; Colorado, Washington and West
 # Virginia reached it as resources, on top of pre-subsidy expenses.
 #
-# Each family is one working parent with earnings of $30,000 and a child aged 3
-# in care 8 hours a day, 5 days a week. Without weeks_worked, work expenses are
-# zero, so the SPM expense is the out-of-pocket amount.
+# Each family is one working parent and a child aged 3 in care 8 hours a day, 5
+# days a week. The 2026 cases earn $30,000 and the 2024 cases earn $24,000.
+# Without weeks_worked, work expenses are zero, so the SPM expense is the
+# out-of-pocket amount.
 
 - name: New York, Manhattan family with a subsidy just below the expense
   period: 2026

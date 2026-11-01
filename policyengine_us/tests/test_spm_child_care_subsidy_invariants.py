@@ -14,6 +14,9 @@ expense, S the subsidy, W work expenses and C the earnings cap:
 
     expense(S) = min(W + max(E - S, 0), C)
 
+A direct childcare_expenses input replaces max(E - S, 0) in a unit with a
+child, so these properties cover units that leave that variable to its formula.
+
 For every SPM unit:
 
 1. The model's expense equals that reference, written from the documentation

@@ -211,3 +211,26 @@
   output:
     household_benefits: 0
     spm_unit_benefits: 0
+
+- name: Before 2024 the Colorado subsidy stays a resource under this reform's list.
+  period: 2023
+  reforms: policyengine_us.reforms.congress.tlaib.boost.boost_middle_class_tax_credit.boost_middle_class_tax_credit
+  input:
+    co_ccap_subsidy: 1
+    boost_middle_class_tax_credit: 0
+    spm_unit_capped_housing_subsidy: 0
+    social_security: 0
+    ssi: 0
+    ca_cvrp: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    spm_unit_energy_subsidy: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    basic_income: 0
+  output:
+    spm_unit_benefits: 1
