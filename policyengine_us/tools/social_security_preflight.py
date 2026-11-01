@@ -50,6 +50,9 @@ CALCULATED_TAX_LEAVES = frozenset(
         "employer_social_security_tax",
         "self_employment_social_security_tax",
         "employer_total_social_security_tax",
+        # The TOB leaves difference it, so a stored value freezes every tax
+        # state they measure and zeroes TOB.
+        "income_tax_chapter_1",
         "net_investment_income_tax",
         "niit",
         "oasdi_payroll_tax_revenue",

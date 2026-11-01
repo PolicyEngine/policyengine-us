@@ -99,6 +99,7 @@ def test_reported_columns_are_not_migrated_again(tmp_path):
         "employer_social_security_tax",
         "self_employment_social_security_tax",
         "employer_total_social_security_tax",
+        "income_tax_chapter_1",
         "net_investment_income_tax",
         "niit_liability",
         "niit_revenue_oasdi",
@@ -168,6 +169,7 @@ def test_missing_component_cannot_be_invented_from_aggregate(tmp_path):
         "social_security",
         "social_security_retirement",
         "tob_revenue_oasdi",
+        "income_tax_chapter_1",
         "social_security_payable_factor",
     ],
 )
