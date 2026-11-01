@@ -1,8 +1,14 @@
-"""Generated chapter 1 TOB differentials and branch cache isolation.
+"""Generated chapter 1 TOB differentials, branch cache isolation and reforms.
 
 Policy examples and independent tax calculations live in the variable YAML
-files. Python is needed to quantify the split invariants over generated
-inputs and to exercise calculation order on an already populated cache.
+files, except the three parameter reforms that test actual inclusion's cap
+on the old-law inclusion. Core's YAML runner keeps a cloned policy system
+for each distinct parameter reform until its process ends, and in CI the
+YAML file holding those three peaked at 8,244 MB. The last test here runs
+them in turn on one private clone and restores its parameters between them.
+Python is also
+needed to quantify the split invariants over generated inputs and to
+exercise calculation order on an already populated cache.
 Each generated batch combines eight income/donation draws with fixed
 boundary and signed-allocation witnesses. Five filing profiles cover
 single, joint, separate living together, separate living apart, and an
@@ -20,13 +26,17 @@ children ensure that excluding NIIT and refundable credits is observable.
 """
 
 from copy import deepcopy
+from functools import reduce
+import gc
 from itertools import product
 
 import numpy as np
 from hypothesis import given, settings
 from hypothesis import strategies as st
+from policyengine_core.reforms import set_parameter
 
 from policyengine_us import Simulation
+from policyengine_us.system import system
 
 
 PROFILES = (
@@ -382,3 +392,205 @@ def test_tob_split_preserves_inputs_and_cached_current_law_tax_in_either_order()
         np.testing.assert_array_equal(reverse[name], first[name])
     for name in names:
         np.testing.assert_array_equal(sim.calculate(name, year), original[name])
+
+
+# Reform scoring: actual inclusion caps the old-law inclusion in the
+# OASDI/HI split (ruling us:tob-oasdi-old-law-bound).
+#
+# Every case reuses the 2026 single retiree from tob_revenue_oasdi.yaml:
+# age 70, $20,000 benefits and $30,000 taxable interest. At current law that
+# unit includes $9,600 against a $7,500 pre-1993 amount, with OASDI $769,
+# HI $252 and total $1,021. The pre-1993 amount reads its own
+# gov.ssa.revenue.pre_1993 parameters, so it stays $7,500 under each reform
+# below.
+#
+# Deductions are $16,100 + $2,050 + $6,000 = $24,150 in every counterfactual,
+# and taxable income is $30,000 + inclusion - $24,150. Tax is 10% up to
+# $12,400, then 12%. Tax with no inclusion is 10% * $5,850 = $585. Nontaxable
+# benefits stay above the $5,000 elderly-credit base, or AGI phases the
+# credit out, so the credit is zero in every counterfactual.
+#
+# OASDI + HI = total in each case.
+REFORM_YEAR = 2026
+RETIREE = {
+    "people": {
+        "retiree": {
+            "age": {REFORM_YEAR: 70},
+            "social_security": {REFORM_YEAR: 20_000},
+            "taxable_interest_income": {REFORM_YEAR: 30_000},
+        }
+    },
+    "tax_units": {
+        "tax_unit": {
+            "members": ["retiree"],
+            "filing_status": {REFORM_YEAR: "SINGLE"},
+        }
+    },
+    "spm_units": {
+        "spm_unit": {
+            "members": ["retiree"],
+            "takes_up_tanf_if_eligible": {REFORM_YEAR: False},
+        }
+    },
+    "households": {"household": {"members": ["retiree"]}},
+}
+# Every parameter leaf that any case below reforms.
+REFORMED_LEAVES = (
+    "gov.irs.social_security.taxability.rate.base.benefit_cap",
+    "gov.irs.social_security.taxability.rate.base.excess",
+    "gov.irs.social_security.taxability.rate.additional.benefit_cap",
+    "gov.irs.social_security.taxability.rate.additional.bracket",
+    "gov.irs.social_security.taxability.rate.additional.excess",
+    "gov.irs.social_security.taxability.threshold.base.main.SINGLE",
+    "gov.irs.social_security.taxability.threshold.adjusted_base.main.SINGLE",
+    "gov.irs.social_security.taxability.combined_income_ss_fraction",
+)
+# Each case: its name, its parameter inputs and its expected outputs.
+REFORM_CASES = (
+    (
+        "Repealing benefit taxation leaves OASDI, HI and the total at zero",
+        {
+            "gov.irs.social_security.taxability.rate.base.benefit_cap": 0,
+            "gov.irs.social_security.taxability.rate.base.excess": 0,
+            "gov.irs.social_security.taxability.rate.additional.benefit_cap": 0,
+            "gov.irs.social_security.taxability.rate.additional.bracket": 0,
+            "gov.irs.social_security.taxability.rate.additional.excess": 0,
+        },
+        {
+            "tax_unit_combined_income_for_social_security_taxability": 40_000,
+            # Old law: min(50% * $20,000, 50% * ($40,000 - $25,000)) = $7,500.
+            "tax_unit_taxable_social_security_pre_1993": 7_500,
+            # Every section 86 rate is zero, so the unit includes nothing.
+            "tax_unit_taxable_social_security": 0,
+            # The cap gives old-law inclusion min($7,500, $0) = $0, so all three
+            # branches tax $0 of benefits. Without the cap OASDI would be
+            # $1,354 - $585 = $769 and HI -$769 on a $0 total.
+            "tob_revenue_oasdi": 0,
+            "tob_revenue_medicare_hi": 0,
+            "tob_revenue_total": 0,
+        },
+    ),
+    (
+        "Raised thresholds put inclusion below the old-law amount, so OASDI "
+        "takes it all",
+        {
+            "gov.irs.social_security.taxability.threshold.base.main.SINGLE": 30_000,
+            "gov.irs.social_security.taxability.threshold.adjusted_base.main.SINGLE": 44_000,
+        },
+        {
+            "tax_unit_combined_income_for_social_security_taxability": 40_000,
+            "tax_unit_taxable_social_security_pre_1993": 7_500,
+            # Provisional income of $40,000 falls between the $30,000 base and
+            # the $44,000 adjusted base, so only the first tier applies:
+            # min(50% * $20,000, 50% * ($40,000 - $30,000)) = $5,000.
+            # That is positive and below the $7,500 old-law amount.
+            "tax_unit_taxable_social_security": 5_000,
+            # Old-law inclusion = min($7,500, $5,000) = $5,000, the actual
+            # inclusion. Taxable income with $5,000 included =
+            # $35,000 - $24,150 = $10,850, all in the 10% bracket, so
+            # tax = $1,085.
+            # Total = OASDI = $1,085 - $585 = $500; HI = $500 - $500 = $0.
+            # Without the cap OASDI would be $1,354 - $585 = $769 and HI -$269.
+            "tob_revenue_oasdi": 500,
+            "tob_revenue_medicare_hi": 0,
+            "tob_revenue_total": 500,
+        },
+    ),
+    (
+        "A reform that raises inclusion keeps the pre-1993 OASDI share and "
+        "gives HI the rest",
+        # The same override as tax_unit_taxable_social_security_pre_1993.yaml.
+        {"gov.irs.social_security.taxability.combined_income_ss_fraction": 0.85},
+        {
+            # Current-law provisional income = $30,000 + 85% * $20,000
+            # = $47,000.
+            "tax_unit_combined_income_for_social_security_taxability": 47_000,
+            "tax_unit_taxable_social_security_pre_1993": 7_500,
+            # min(85% * ($47,000 - $34,000) + min($10,000, $4,500),
+            # 85% * $20,000) = min($11,050 + $4,500, $17,000) = $15,550,
+            # above the $9,600 at current law.
+            "tax_unit_taxable_social_security": 15_550,
+            # Old-law inclusion = min($7,500, $15,550) = $7,500, as at current
+            # law. Taxable income $13,350 / $21,400 with old-law / reform
+            # inclusion; tax $1,240 + 12% * $950 = $1,354 and
+            # $1,240 + 12% * $9,000 = $2,320.
+            # OASDI = $1,354 - $585 = $769, its current-law value.
+            # HI = $2,320 - $1,354 = $966; total = $2,320 - $585 = $1,735.
+            "tob_revenue_oasdi": 769,
+            "tob_revenue_medicare_hi": 966,
+            "tob_revenue_total": 1_735,
+        },
+    ),
+)
+
+
+def parameter_history(parameter):
+    return tuple((entry.instant_str, entry.value) for entry in parameter.values_list)
+
+
+def test_reforms_cap_old_law_inclusion_at_actual_inclusion():
+    """Run each reform case in turn on one private copy of the shared policy.
+
+    As YAML, each case's parameter inputs built and kept one more cloned
+    system. Here every case shares one clone: it starts from current law on
+    all eight reformed leaves and applies its inputs exactly as Core's YAML
+    runner does. The shared system's leaves must be unchanged afterwards,
+    whether or not a case failed.
+    """
+    instant = f"{REFORM_YEAR}-01-01"
+    shared = {path: system.parameters.get_child(path) for path in REFORMED_LEAVES}
+    shared_lists = {path: leaf.values_list for path, leaf in shared.items()}
+    shared_histories = {path: parameter_history(leaf) for path, leaf in shared.items()}
+    current_law = {path: leaf(instant) for path, leaf in shared.items()}
+    policy = system.clone()
+    try:
+        leaves = {path: policy.parameters.get_child(path) for path in REFORMED_LEAVES}
+        for path, leaf in leaves.items():
+            assert leaf is not shared[path]
+            assert parameter_history(leaf) == shared_histories[path]
+        # Parameter.update replaces a leaf's list of dated values and never
+        # edits an entry, so the clone's original lists restore current law.
+        current_law_lists = {path: leaf.values_list for path, leaf in leaves.items()}
+        for name, reform, expected in REFORM_CASES:
+            for path, leaf in leaves.items():
+                leaf.values_list = list(current_law_lists[path])
+                # Assigning the list skips the cache clearing update does.
+                leaf.parent.clear_parent_cache()
+            for path, value in reform.items():
+                # The modifier Core's YAML runner applies for a parameter input.
+                set_parameter(path, value, period="year:2000:40", return_modifier=True)(
+                    policy.parameters
+                )
+            # Updates clear each node's cache from the leaf up to the root, but
+            # not the system's own cache of parameters at each instant.
+            policy._parameters_at_instant_cache.clear()
+            # A new simulation of the same situation, built after the reform,
+            # holds no calculated value from an earlier case.
+            simulation = Simulation(
+                tax_benefit_system=policy, situation=deepcopy(RETIREE)
+            )
+            try:
+                parameters = simulation.tax_benefit_system.parameters(instant)
+                for path in REFORMED_LEAVES:
+                    assert reduce(getattr, path.split("."), parameters) == (
+                        reform.get(path, current_law[path])
+                    ), f"{name}: {path}"
+                for variable, value in expected.items():
+                    np.testing.assert_allclose(
+                        simulation.calculate(variable, REFORM_YEAR),
+                        value,
+                        rtol=0,
+                        atol=0.01,
+                        err_msg=f"{name}: {variable}",
+                    )
+            finally:
+                # Release this case's simulation and its branch systems.
+                del simulation
+                gc.collect()
+    finally:
+        del policy
+        gc.collect()
+        for path, leaf in shared.items():
+            assert system.parameters.get_child(path) is leaf
+            assert leaf.values_list is shared_lists[path]
+            assert parameter_history(leaf) == shared_histories[path]
