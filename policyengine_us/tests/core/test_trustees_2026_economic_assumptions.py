@@ -7,8 +7,8 @@ from the Trustees' workbook. No expectation calls the extension functions the
 module reuses.
 
 Cost: the module builds one reformed system and copies the default tree once,
-both cached; the composition test, last, frees them and builds two more
-systems, keeping only the values it compares.
+both cached. The two composition tests, last, free them and each build one
+more system, keeping only the values they compare.
 """
 
 import hashlib
@@ -687,9 +687,9 @@ def test_real_wage_growth_matches_the_trustees_long_run():
 
 def _core_thresholds_under(reforms):
     parameters = CountryTaxBenefitSystem(reform=reforms).parameters
-    nawi = tuple(_value(parameters, NAWI, year) for year in range(2026, 2101))
+    nawi = {year: _value(parameters, NAWI, year) for year in range(2026, 2101)}
     thresholds = {
-        parameter.name: tuple(parameter(f"{year}-01-01") for year in range(2027, 2101))
+        parameter.name: {year: parameter(f"{year}-01-01") for year in range(2027, 2101)}
         for parameter in _iter_updatable_parameters(
             parameters.gov.irs, uprating_parameter="gov.irs.uprating"
         )
@@ -698,49 +698,64 @@ def _core_thresholds_under(reforms):
 
 
 def _round_like_core_thresholds(amount, rounding):
+    if not rounding:
+        return amount
     if rounding["type"] == "downwards":
         return math.floor(amount / rounding["interval"]) * rounding["interval"]
     assert rounding["type"] == "nearest"
     return math.floor(amount / rounding["interval"] + 0.5) * rounding["interval"]
 
 
-def test_core_thresholds_follow_the_trustees_2026_nawi_in_either_order():
-    """A built system applies its reform set twice, so the core-thresholds
-    reform reads the Trustees' NAWI whichever comes first.
+COMPOSITIONS = {
+    "assumption_first": (
+        trustees_2026_economic_assumptions_reform,
+        trustees_core_thresholds_reform,
+    ),
+    "core_thresholds_first": (
+        trustees_core_thresholds_reform,
+        trustees_2026_economic_assumptions_reform,
+    ),
+}
 
-    Last in the module: it frees the cached trees before building two more.
+
+@pytest.mark.parametrize("order", COMPOSITIONS)
+def test_core_thresholds_follow_the_trustees_2026_nawi(order):
+    """In either order, every IRS parameter the core-thresholds reform
+    wage-indexes follows the Trustees' NAWI after 2034. A built system
+    applies its reform set twice, so on the second pass the core-thresholds
+    reform reads this assumption's NAWI whichever comes first.
+
+    Last in the module: it frees the cached trees before building its own.
     """
     for cached in (_reformed_system, _applied_once, _end_to_end):
         cached.cache_clear()
-    first = _core_thresholds_under(
-        (trustees_2026_economic_assumptions_reform, trustees_core_thresholds_reform)
-    )
-    second = _core_thresholds_under(
-        (trustees_core_thresholds_reform, trustees_2026_economic_assumptions_reform)
-    )
-    assert first == second
-    nawi, thresholds = first
-    assert nawi == pytest.approx(
-        tuple(_tr_nawi(year) for year in range(2026, 2101)), rel=1e-12
-    )
+    nawi, thresholds = _core_thresholds_under(COMPOSITIONS[order])
+    for year in range(2026, 2101):
+        assert nawi[year] == pytest.approx(_tr_nawi(year), rel=1e-12)
     assert len(thresholds) > 100
+    for path, values in thresholds.items():
+        default = get_parameter(system.parameters, path)
+        rounding = _rounding(default.metadata["uprating"])
+        base = default("2034-01-01")
+        for year, value in values.items():
+            if year <= 2034:
+                expected = default(f"{year}-01-01")
+            else:
+                expected = _round_like_core_thresholds(
+                    base * (nawi[year - 1] / nawi[2033]), rounding
+                )
+            assert value == pytest.approx(expected, rel=1e-12), (path, year)
     for path in (
         "gov.irs.income.bracket.thresholds.1.SINGLE",
         "gov.irs.deductions.standard.amount.SINGLE",
     ):
-        rounding = get_parameter(system.parameters, path).metadata["uprating"][
-            "rounding"
-        ]
-        base = _value(system.parameters, path, 2034)
+        default = get_parameter(system.parameters, path)
+        rounding = _rounding(default.metadata["uprating"])
         for year in (2035, 2060, 2100):
-            expected = _round_like_core_thresholds(
-                base * _tr_nawi(year - 1) / _tr_nawi(2033), rounding
-            )
             on_default_nawi = _round_like_core_thresholds(
-                base
+                default("2034-01-01")
                 * _value(system.parameters, NAWI, year - 1)
                 / _value(system.parameters, NAWI, 2033),
                 rounding,
             )
-            assert thresholds[path][year - 2027] == expected
-            assert expected != on_default_nawi
+            assert thresholds[path][year] != on_default_nawi
