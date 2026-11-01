@@ -1,3 +1,10 @@
+## [2.90.3] - 2026-11-01
+
+### Changed
+
+- Require every S.770 and SSA contributed parameter node to be classified in the household calculator reference test.
+
+
 ## [2.90.2] - 2026-11-01
 
 ### Fixed
