@@ -5,8 +5,8 @@ files, except the three parameter reforms that test actual inclusion's cap
 on the old-law inclusion. Core's YAML runner keeps a cloned policy system
 for each distinct parameter reform until its process ends, and in CI the
 YAML file holding those three peaked at 8,244 MB. The last test here runs
-them in turn on one private clone and restores its parameters between them.
-Python is also
+them in turn on one private copy of the policy and restores its parameters
+between them. Python is also
 needed to quantify the split invariants over generated inputs and to
 exercise calculation order on an already populated cache.
 Each generated batch combines eight income/donation draws with fixed
@@ -36,6 +36,7 @@ from hypothesis import strategies as st
 from policyengine_core.reforms import set_parameter
 
 from policyengine_us import Simulation
+from policyengine_us.spm import clone_spm_system, copy_parameter_nodes
 from policyengine_us.system import system
 
 
@@ -532,9 +533,9 @@ def test_reforms_cap_old_law_inclusion_at_actual_inclusion():
     """Run each reform case in turn on one private copy of the shared policy.
 
     As YAML, each case's parameter inputs built and kept one more cloned
-    system. Here every case shares one clone: it starts from current law on
-    all eight reformed leaves and applies its inputs exactly as Core's YAML
-    runner does. The shared system's leaves must be unchanged afterwards,
+    system. Here every case shares one private copy: it starts from current
+    law on all eight reformed leaves and applies its inputs exactly as Core's
+    YAML runner does. The shared system's leaves must be unchanged afterwards,
     whether or not a case failed.
     """
     instant = f"{REFORM_YEAR}-01-01"
@@ -542,14 +543,20 @@ def test_reforms_cap_old_law_inclusion_at_actual_inclusion():
     shared_lists = {path: leaf.values_list for path, leaf in shared.items()}
     shared_histories = {path: parameter_history(leaf) for path, leaf in shared.items()}
     current_law = {path: leaf(instant) for path, leaf in shared.items()}
-    policy = system.clone()
+    # The copy owns every node and each leaf's list of dated values, and
+    # borrows the entries in those lists rather than rebuilding them as a
+    # full clone does. Parameter.update replaces a leaf's list and never
+    # edits an entry, so no write here reaches the shared system.
+    policy = clone_spm_system(
+        system, parameters=copy_parameter_nodes(system.parameters)
+    )
     try:
         leaves = {path: policy.parameters.get_child(path) for path in REFORMED_LEAVES}
         for path, leaf in leaves.items():
             assert leaf is not shared[path]
+            assert leaf.values_list is not shared_lists[path]
             assert parameter_history(leaf) == shared_histories[path]
-        # Parameter.update replaces a leaf's list of dated values and never
-        # edits an entry, so the clone's original lists restore current law.
+        # The copy's original lists hold current law, so they restore it.
         current_law_lists = {path: leaf.values_list for path, leaf in leaves.items()}
         for name, reform, expected in REFORM_CASES:
             for path, leaf in leaves.items():
@@ -584,7 +591,8 @@ def test_reforms_cap_old_law_inclusion_at_actual_inclusion():
                         err_msg=f"{name}: {variable}",
                     )
             finally:
-                # Release this case's simulation and its branch systems.
+                # Free this case's simulation and the branch systems its TOB
+                # formulas discarded.
                 del simulation
                 gc.collect()
     finally:
