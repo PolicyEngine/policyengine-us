@@ -15,6 +15,9 @@ from policyengine_us.variables.gov.irs.tax.self_employment.self_employment_medic
 from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.above_the_line_deductions.self_employment_tax_ald_person import (
     self_employment_tax_ald_person as baseline_se_deduction,
 )
+from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.above_the_line_deductions.self_employed_health_insurance_earned_income_limit import (
+    self_employed_health_insurance_earned_income_limit as baseline_sehi_limit,
+)
 from policyengine_us.variables.gov.ssa.social_security.ss_aime import (
     ss_aime as baseline_aime,
     _compute_aime,
@@ -284,6 +287,43 @@ def create_owners_draw():
                 )
             return deductible_tax * p.irs.ald.self_employment_tax.percent_deductible
 
+    class self_employed_health_insurance_earned_income_limit(baseline_sehi_limit):
+        def formula(person, period, parameters):
+            if not _enabled(period, parameters):
+                return baseline_sehi_limit.formula(person, period, parameters)
+            # Form 7206 as in the baseline formula, except that line 5 also
+            # counts the owners' draw: under this reform its profits bear SE
+            # tax, and line 7's deductible SE tax above includes that tax.
+            # Line 5 sums net profits before the net-earnings factor, so the
+            # draw enters as its gross amount, like line 4's Schedule C profit.
+            plan_business_profit = max_(
+                0, person("total_self_employment_income", period)
+            )
+            all_business_profits = (
+                plan_business_profit
+                + max_(0, person("farm_operations_income", period))
+                + max_(0, person("partnership_self_employment_net_earnings", period))
+                + max_(0, person("owners_draw_gross", period))
+            )
+            plan_business_share = np.divide(
+                plan_business_profit,
+                all_business_profits,
+                out=np.zeros_like(all_business_profits),
+                where=all_business_profits > 0,
+            )
+            self_employment_tax_deduction = (
+                person("self_employment_tax_ald_person", period) * plan_business_share
+            )
+            retirement_plan_deduction = person(
+                "self_employed_pension_contribution_ald_person", period
+            )
+            return max_(
+                0,
+                plan_business_profit
+                - self_employment_tax_deduction
+                - retirement_plan_deduction,
+            )
+
     class ss_aime(baseline_aime):
         def formula(person, period, parameters):
             supplied = person("ss_aime_input", period)
@@ -316,6 +356,7 @@ def create_owners_draw():
             self.update_variable(self_employment_social_security_tax)
             self.update_variable(self_employment_medicare_tax)
             self.update_variable(self_employment_tax_ald_person)
+            self.update_variable(self_employed_health_insurance_earned_income_limit)
             self.update_variable(ss_aime)
 
     return reform
