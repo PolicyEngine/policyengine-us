@@ -26,9 +26,11 @@ For every SPM unit:
    and never exceeds the subsidy.
 4. A subsidy of zero leaves the expense at min(W + max(E, 0), C), the formula
    before this rule, in every state.
-5. No program is counted twice. No *_child_care_subsidies variable, and no
-   program one of them adds, appears in spm_unit_benefits or in a reform's copy
-   of that list, and all of them reach child_care_subsidies.
+5. No program is counted twice. From 2024, no *_child_care_subsidies variable,
+   and no program one of them adds, appears in spm_unit_benefits or in a
+   reform's copy of that list, and all of them reach child_care_subsidies.
+   Before 2024 the expense has no formula, so Colorado's, Washington's and West
+   Virginia's subsidies stay resources and still count once.
 6. Differential. With real programs turned on and off, the expense falls by
    the amount the reference gives for the subsidy the program paid, and the
    SPM and household measures agree on what else changed: the change in SPM
@@ -38,10 +40,16 @@ For every SPM unit:
 Intended violation of "a subsidy never lowers SPM resources". Property 3 holds
 taxes and other benefits fixed, and it has to. SNAP, TANF and tax credits read
 out-of-pocket expenses, so a subsidy can cut them by more than the SPM expense
-falls, most plainly when the unit stays at the earnings cap and the expense
-does not move at all. The household measure shows the same interaction.
-test_subsidy_at_the_cap_can_lower_spm_income pins one such case; the fall comes
-from those programs and not from this rule.
+falls. A unit that stays at the earnings cap shows this most plainly, because
+its expense does not move at all, and a benefit cliff can do it below the cap.
+Household net income loses the same benefits but also counts the subsidy, so it
+can rise while SPM income falls. test_subsidy_at_the_cap_can_lower_spm_income
+pins one such case; the fall comes from those programs and not from this rule.
+
+These properties read spm_unit_pre_subsidy_childcare_expenses as a pre-subsidy
+price, which is what it means in a household calculation. Datasets fill it from
+the ASEC's reported spending, so on microdata the rule nets a modeled subsidy
+from a reported payment.
 """
 
 from functools import cache
@@ -220,12 +228,15 @@ def test_no_subsidy_is_a_spm_resource():
 def test_every_state_subsidy_is_in_the_programs_list():
     variables_dir = PACKAGE / "variables/gov/states"
     defined = {path.stem for path in variables_dir.rglob("*_child_care_subsidies.py")}
-    latest_block = max(
-        yaml.load(
-            (PACKAGE / "parameters" / PROGRAMS_LIST).read_text(), yaml.BaseLoader
-        )["values"].items()
-    )[1]
-    assert defined == set(latest_block)
+    blocks = yaml.load(
+        (PACKAGE / "parameters" / PROGRAMS_LIST).read_text(), yaml.BaseLoader
+    )["values"]
+    # The SPM expense reads the list from 2024, at the start of each year, so a
+    # program that starts paying during a year has to be in that year's block.
+    assert "2024-01-01" in blocks
+    for start, programs in blocks.items():
+        if start >= "2024":
+            assert defined == set(programs), start
     assert len(defined) == 51
 
 

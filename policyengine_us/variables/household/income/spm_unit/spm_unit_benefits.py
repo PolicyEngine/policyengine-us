@@ -9,8 +9,6 @@ class spm_unit_benefits(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        # Child care subsidies stay out of this list: they lower the expense
-        # in spm_unit_capped_work_childcare_expenses instead.
         BENEFITS = [
             "social_security",
             "ssi",
@@ -101,4 +99,16 @@ class spm_unit_benefits(Variable):
             BENEFITS.append("assigned_aca_ptc")
         if not parameters(period).gov.hud.abolition:
             BENEFITS.append("spm_unit_capped_housing_subsidy")
+        # From 2024, child care subsidies lower the expense in
+        # spm_unit_capped_work_childcare_expenses instead of adding to
+        # resources. That expense has no formula before 2024, so these three
+        # stay resources until then.
+        if period.start.year < 2024:
+            BENEFITS.extend(
+                [
+                    "co_ccap_subsidy",
+                    "wa_child_care_subsidies",
+                    "wv_child_care_subsidies",
+                ]
+            )
         return add(spm_unit, period, BENEFITS)

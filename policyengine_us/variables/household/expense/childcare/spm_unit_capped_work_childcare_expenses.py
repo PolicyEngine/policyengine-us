@@ -16,10 +16,17 @@ class spm_unit_capped_work_childcare_expenses(Variable):
         )
         # The SPM subtracts what parents paid for child care, and child care
         # is not among its noncash benefits, so a subsidy lowers this expense
-        # rather than adding to resources. This reads the SPM unit's expenses
-        # directly because childcare_expenses divides them among children and
-        # drops them from a unit with no child.
+        # rather than adding to resources. childcare_expenses holds that
+        # out-of-pocket amount, but it allocates expenses to children, so a
+        # unit with no child nets its own expenses here.
+        # Datasets fill the pre-subsidy input from the ASEC's reported spending,
+        # so on microdata this nets a modeled subsidy from a reported payment.
         subsidies = spm_unit("child_care_subsidies", period)
-        childcare_expenses = max_(pre_subsidy_expenses - subsidies, 0)
+        has_child = add(spm_unit, period, ["is_child"]) > 0
+        out_of_pocket_expenses = where(
+            has_child,
+            spm_unit("childcare_expenses", period),
+            max_(pre_subsidy_expenses - subsidies, 0),
+        )
         earned_cap = spm_unit("spm_unit_head_spouse_earned_cap", period)
-        return min_(work_expenses + childcare_expenses, earned_cap)
+        return min_(work_expenses + out_of_pocket_expenses, earned_cap)

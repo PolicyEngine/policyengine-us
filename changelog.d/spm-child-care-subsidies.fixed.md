@@ -1,1 +1,1 @@
-Count every state child care subsidy in the Supplemental Poverty Measure by netting it from the SPM child care expense.
+Count every state child care subsidy in the Supplemental Poverty Measure from 2024 by netting it from the SPM child care expense, and add the District of Columbia, Tennessee and Texas subsidies to the 2024 program list.

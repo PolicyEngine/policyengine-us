@@ -254,3 +254,111 @@
     child_care_subsidies: 12_613.16
     # 14,000 - 12,613.16.
     spm_unit_capped_work_childcare_expenses: 1_386.84
+
+- name: District of Columbia, a program the 2024 list left out
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_head: true
+        is_household_head: true
+      child:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 21
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: DC
+  output:
+    child_care_subsidies: 15_876
+    # 20,000 - 15,876.
+    spm_unit_capped_work_childcare_expenses: 4_124
+
+- name: Tennessee, paying from October 2024
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_head: true
+        is_household_head: true
+      child:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 21
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    child_care_subsidies: 2_704
+    # 20,000 - 2,704.
+    spm_unit_capped_work_childcare_expenses: 17_296
+
+- name: Texas, a program the 2024 list left out
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_head: true
+        is_household_head: true
+      child:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 21
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    child_care_subsidies: 5_793.01
+    # 20,000 - 5,793.01.
+    spm_unit_capped_work_childcare_expenses: 14_206.99
