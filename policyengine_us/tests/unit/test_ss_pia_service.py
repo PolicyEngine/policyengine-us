@@ -238,9 +238,9 @@ def test_progressive_target_at_protected_pia_holds_pia_flat_above_threshold():
 
     The target's lower bound is inclusive. F(3,000) = 1,540, so a 1,540
     target gives k = (1,540 - 1,540) / (3,100 - 1,540) = 0: every AIME from
-    the threshold to the maximum gets the protected PIA. A price-grown target
-    falls against the wage-indexed protected PIA, so a larger fraction reaches
-    this bound in a later cohort.
+    the threshold to the maximum gets the protected PIA. When wages outgrow
+    prices, a price-grown target falls against the wage-indexed protected PIA,
+    so with a larger fraction a later cohort can reach this bound.
     """
     bends = (1000, 6000)
     path = _progressive_path(maximum_pia_target_by_year={2032: 1540})
