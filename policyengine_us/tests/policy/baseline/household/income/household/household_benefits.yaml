@@ -116,19 +116,22 @@
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      adult1:
         age: 40
         employment_income: 500_000
-      child:
-        age: 15
+      adult2:
+        age: 40
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2]
     spm_units:
       spm_unit:
-        members: [parent, child]
+        members: [adult1, adult2]
     households:
       household:
-        members: [parent, child]
+        members: [adult1, adult2]
         state_code: AK
-        household_health_benefits: 0
   output:
     ak_energy_relief: [298.17, 298.17]
     household_benefits: 2 * 298.17
