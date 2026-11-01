@@ -6,27 +6,14 @@ class dwks10(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "IRS Form 1040 Schedule D worksheet (part 3 of 6)"
+    documentation = (
+        "Schedule D Tax Worksheet line 10: lines 6 and 9, the qualified "
+        "dividends and net capital gain left after any Form 4952 line 4g "
+        "election. Equals net_capital_gain."
+    )
     unit = USD
-
-    def formula(tax_unit, period, parameters):
-        dwks10_if_gains = add(
-            tax_unit,
-            period,
-            ["dividend_income_reduced_by_investment_income", "dwks09"],
-        )
-        dwks10_if_no_gains = max_(
-            0,
-            min_(
-                add(
-                    tax_unit,
-                    period,
-                    ["long_term_capital_gains", "qualified_dividend_income"],
-                ),
-                tax_unit("net_capital_gains", period),
-            ),
-        ) + add(tax_unit, period, ["non_sch_d_capital_gains"])
-        return where(
-            tax_unit("has_qdiv_or_ltcg", period),
-            dwks10_if_gains,
-            dwks10_if_no_gains,
-        )
+    reference = dict(
+        title="2025 Instructions for Schedule D, Schedule D Tax Worksheet, line 10",
+        href="https://www.irs.gov/pub/irs-prior/i1040sd--2025.pdf#page=15",
+    )
+    adds = ["dividend_income_reduced_by_investment_income", "dwks09"]

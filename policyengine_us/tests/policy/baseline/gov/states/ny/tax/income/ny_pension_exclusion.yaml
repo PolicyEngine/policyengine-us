@@ -209,3 +209,118 @@
   output:
     ny_pension_exclusion: 15_000
 
+- name: A dependent parent over 59 1/2 gets no NY pension exclusion on the filer's return
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 50_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      parent:
+        age: 80
+        taxable_ira_distributions: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      parent_marital_unit:
+        members: [parent]
+    households:
+      household:
+        members: [head, parent]
+        state_code: NY
+  output:
+    # The parent meets the age test, but the IRA distribution is not in the
+    # filer's federal AGI, so Tax Law 612(c)(3-a) does not exclude it.
+    ny_pension_exclusion: [0, 0]
+    ny_agi_subtractions: 0
+
+- name: The head's and spouse's exclusions are capped per person and a dependent's is excluded
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 65
+        taxable_private_pension_income: 25_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      spouse:
+        age: 62
+        taxable_ira_distributions: 12_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      parent:
+        age: 85
+        taxable_private_pension_income: 15_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, parent]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      parent_marital_unit:
+        members: [parent]
+    households:
+      household:
+        members: [head, spouse, parent]
+        state_code: NY
+  output:
+    # Head: min(25,000, 20,000 cap) = 20,000. Spouse: 12,000 (under the cap).
+    # Dependent parent: 0.
+    ny_pension_exclusion: [20_000, 12_000, 0]
+    ny_agi_subtractions: 32_000
+
+- name: The age test applies to the head and spouse, and a dependent over 59 1/2 still gets nothing
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 58
+        taxable_401k_distributions: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      spouse:
+        age: 60
+        taxable_403b_distributions: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      parent:
+        age: 70
+        taxable_ira_distributions: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, parent]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      parent_marital_unit:
+        members: [parent]
+    households:
+      household:
+        members: [head, spouse, parent]
+        state_code: NY
+  output:
+    # Head is under 59 1/2: 0. Spouse is over 59 1/2: 5,000. Dependent: 0.
+    ny_pension_exclusion: [0, 5_000, 0]
+    ny_agi_subtractions: 5_000

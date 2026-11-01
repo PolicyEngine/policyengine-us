@@ -1,0 +1,42 @@
+# 26 U.S.C. 911(f)(2)(B)(i); 2025 Form 6251 instructions, Part III, Form 2555:
+# "subtract Form 6251, line 6, from line 4 of your AMT Qualified Dividends and
+# Capital Gain Tax Worksheet or line 10 of your AMT Schedule D Tax Worksheet".
+- name: Worksheet line 10 above the taxable excess is the AMT excess
+  period: 2025
+  input:
+    foreign_earned_income_exclusion: 100_000
+    long_term_capital_gains: 300_000 # Schedule D Tax Worksheet line 10
+    amt_income_less_exemptions: 211_900
+  output:
+    amt_section_911_capital_gain_excess: 88_100
+
+- name: No AMT excess when the taxable excess covers worksheet line 10
+  period: 2025
+  input:
+    foreign_earned_income_exclusion: 100_000
+    long_term_capital_gains: 300_000 # Schedule D Tax Worksheet line 10
+    amt_income_less_exemptions: 400_000
+  output:
+    amt_section_911_capital_gain_excess: 0
+
+- name: No AMT excess without an exclusion
+  period: 2025
+  input:
+    foreign_earned_income_exclusion: 0
+    long_term_capital_gains: 300_000 # Schedule D Tax Worksheet line 10
+    amt_income_less_exemptions: 211_900
+  output:
+    amt_section_911_capital_gain_excess: 0
+
+# Synthetic inputs: on a real return, and in the model for the same inputs,
+# worksheet line 10 and net capital gain are the same amount. They are set apart here only to show which one the
+# AMT excess reads.
+- name: The AMT excess reads worksheet line 10, not net_capital_gain
+  period: 2025
+  input:
+    foreign_earned_income_exclusion: 100_000
+    dwks10: 300_000
+    net_capital_gain: 250_000
+    amt_income_less_exemptions: 211_900
+  output:
+    amt_section_911_capital_gain_excess: 88_100 # 300,000 - 211,900

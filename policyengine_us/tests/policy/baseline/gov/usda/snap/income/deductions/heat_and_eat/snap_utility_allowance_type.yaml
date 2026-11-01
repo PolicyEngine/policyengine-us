@@ -1,0 +1,250 @@
+# P.L. 119-21 section 10103(a) and the August 29, 2025 FNS memo.
+# SNAP evaluates monthly policy at month start: the July 4 change first
+# applies to the full benefit month beginning August 1, 2025.
+- name: Pennsylvania heat-and-eat eligibility changes after enactment
+  period: 2025
+  input:
+    age: 40
+    state_code: PA
+  output:
+    snap_state_using_standard_utility_allowance: true
+    snap_utility_allowance_type:
+      2025-06: SUA
+      2025-07: SUA
+      2025-08: NONE
+
+- name: Pennsylvania adult without qualifying utility costs loses deemed SUA
+  period: 2026
+  input:
+    age: 40
+    weekly_hours_worked_before_lsr: 30
+    state_code: PA
+  output:
+    snap_utility_allowance_type: NONE
+    snap_utility_allowance: 0
+
+- name: Montana adult without qualifying utility costs loses deemed SUA
+  period: 2026
+  input:
+    age: 40
+    state_code: MT
+  output:
+    snap_utility_allowance_type: NONE
+    snap_utility_allowance: 0
+
+- name: California adult without qualifying utility costs loses deemed SUA
+  period: 2026
+  input:
+    age: 40
+    state_code: CA
+  output:
+    snap_utility_allowance_type: NONE
+    snap_utility_allowance: 0
+
+- name: The federal restriction continues after 2026
+  period: 2027
+  input:
+    age: 40
+    state_code: PA
+  output:
+    snap_utility_allowance_type: NONE
+
+- name: Age 59 does not qualify for the elderly exception
+  period: 2026
+  input:
+    age: 59
+    weekly_hours_worked_before_lsr: 30
+    state_code: PA
+  output:
+    has_snap_elderly_disabled_member: false
+    snap_utility_allowance_type: NONE
+
+- name: Age 60 preserves the heat-and-eat SUA
+  period: 2026
+  input:
+    age: 60
+    weekly_hours_worked_before_lsr: 30
+    state_code: PA
+  output:
+    has_snap_elderly_disabled_member: true
+    snap_utility_allowance_type: SUA
+
+- name: SSDI receipt preserves the heat-and-eat SUA below age 60
+  period: 2026
+  input:
+    age: 40
+    social_security_disability: 1_200
+    state_code: MT
+  output:
+    has_snap_elderly_disabled_member: true
+    snap_utility_allowance_type: SUA
+    snap_utility_allowance:
+      2026-01: 799
+
+- name: General disability alone does not meet the USDA definition
+  period: 2026
+  input:
+    age: 40
+    is_disabled: true
+    state_code: PA
+  output:
+    has_snap_elderly_disabled_member: false
+    snap_utility_allowance_type: NONE
+
+- name: Actual heating costs independently preserve SUA eligibility
+  period: 2026
+  input:
+    age: 40
+    state_code: PA
+    heating_cooling_expense: 120
+  output:
+    has_snap_elderly_disabled_member: false
+    snap_utility_allowance_type: SUA
+    snap_utility_allowance:
+      2026-01: 857
+
+- name: Two non-heating utility bills qualify for Pennsylvania LUA
+  period: 2026
+  input:
+    age: 40
+    state_code: PA
+    pre_subsidy_electricity_expense: 120
+    water_expense: 120
+  output:
+    snap_utility_allowance_type: LUA
+
+- name: A phone bill qualifies for California IUA
+  period: 2026
+  input:
+    age: 40
+    state_code: CA
+    phone_expense: 120
+  output:
+    snap_utility_allowance_type: IUA
+
+- name: Elderly members do not create heat-and-eat eligibility in Texas
+  period: 2026
+  input:
+    age: 60
+    state_code: TX
+  output:
+    snap_state_using_standard_utility_allowance: false
+    snap_utility_allowance_type: NONE
+
+- name: SNAP-excluded elderly members do not confer the heat-and-eat exception
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        weekly_hours_worked_before_lsr: 30
+      excluded_elder:
+        age: 65
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [adult, excluded_elder]
+    households:
+      household:
+        members: [adult, excluded_elder]
+        state_code: PA
+  output:
+    has_usda_elderly_disabled: true
+    has_snap_elderly_disabled_member: false
+    snap_utility_allowance_type: NONE
+
+# Each adjacent pair has the same expenses, with state deeming enabled
+# in the first household and disabled in its expense-only control.
+# The YAML builder gives each person a separate SPM unit and household.
+- name: Restricted heat-and-eat households match expense-only utility controls
+  period: 2026
+  input:
+    age:
+      2025: [40, 40, 40, 40, 40, 40, 40, 40]
+      2026: [40, 40, 40, 40, 40, 40, 40, 40]
+    weekly_hours_worked_before_lsr:
+      2025: [30, 30, 30, 30, 30, 30, 30, 30]
+      2026: [30, 30, 30, 30, 30, 30, 30, 30]
+    state_code:
+      2025: [PA, PA, PA, PA, PA, PA, MI, MI]
+      2026: [PA, PA, PA, PA, PA, PA, MI, MI]
+    # No bills, phone only, PA electricity + water, MI electricity + water.
+    phone_expense:
+      2025: [0, 0, 360, 360, 0, 0, 0, 0]
+      2026: [0, 0, 360, 360, 0, 0, 0, 0]
+    pre_subsidy_electricity_expense:
+      2025: [0, 0, 0, 0, 600, 600, 600, 600]
+      2026: [0, 0, 0, 0, 600, 600, 600, 600]
+    water_expense:
+      2025: [0, 0, 0, 0, 300, 300, 300, 300]
+      2026: [0, 0, 0, 0, 300, 300, 300, 300]
+    # Full vectors preserve the state option in primary households.
+    snap_state_using_standard_utility_allowance:
+      2025-08: [true, false, true, false, true, false, true, false]
+      2026-01: [true, false, true, false, true, false, true, false]
+  output:
+    has_snap_elderly_disabled_member:
+      2025-08: [false, false, false, false, false, false, false, false]
+      2026-01: [false, false, false, false, false, false, false, false]
+    is_snap_excluded_member:
+      2025-08: [false, false, false, false, false, false, false, false]
+      2026-01: [false, false, false, false, false, false, false, false]
+    snap_utility_allowance_type:
+      2025-08: [NONE, NONE, IUA, IUA, LUA, LUA, IUA, IUA]
+      2026-01: [NONE, NONE, IUA, IUA, LUA, LUA, IUA, IUA]
+    snap_utility_allowance:
+      # FY2025: PA phone $34, LUA $402; MI $176 electric + $115 water.
+      2025-08: [0, 0, 34, 34, 402, 402, 291, 291]
+      # FY2026: PA phone $107, LUA $488; MI $181 electric + $119 water.
+      2026-01: [0, 0, 107, 107, 488, 488, 300, 300]
+
+# Dotted parameter inputs create an inline Core reform. Keep reform
+# behavior in YAML rather than constructing a 53-state Python grid.
+- name: Restoring the former heat-and-eat rule preserves expense and qualifying-member paths
+  period: 2026
+  input:
+    gov.usda.snap.income.deductions.utility.heat_and_eat_requires_elderly_disabled: false
+    # PA: no bills, phone, two bills, heating, elderly, SSDI; then TX elderly.
+    age:
+      2025: [40, 40, 40, 40, 60, 40, 60]
+      2026: [40, 40, 40, 40, 60, 40, 60]
+    weekly_hours_worked_before_lsr:
+      2025: [30, 30, 30, 30, 30, 30, 30]
+      2026: [30, 30, 30, 30, 30, 30, 30]
+    state_code:
+      2025: [PA, PA, PA, PA, PA, PA, TX]
+      2026: [PA, PA, PA, PA, PA, PA, TX]
+    social_security_disability:
+      2025: [0, 0, 0, 0, 0, 1_200, 0]
+      2026: [0, 0, 0, 0, 0, 1_200, 0]
+    heating_cooling_expense:
+      2025: [0, 0, 0, 1_200, 0, 0, 0]
+      2026: [0, 0, 0, 1_200, 0, 0, 0]
+    phone_expense:
+      2025: [0, 360, 0, 0, 0, 0, 0]
+      2026: [0, 360, 0, 0, 0, 0, 0]
+    pre_subsidy_electricity_expense:
+      2025: [0, 0, 600, 0, 0, 0, 0]
+      2026: [0, 0, 600, 0, 0, 0, 0]
+    water_expense:
+      2025: [0, 0, 300, 0, 0, 0, 0]
+      2026: [0, 0, 300, 0, 0, 0, 0]
+  output:
+    snap_state_using_standard_utility_allowance:
+      2025-07: [true, true, true, true, true, true, false]
+      2025-08: [true, true, true, true, true, true, false]
+      2026-01: [true, true, true, true, true, true, false]
+    has_snap_elderly_disabled_member:
+      2025-08: [false, false, false, false, true, true, true]
+      2026-01: [false, false, false, false, true, true, true]
+    is_snap_excluded_member:
+      2025-08: [false, false, false, false, false, false, false]
+      2026-01: [false, false, false, false, false, false, false]
+    snap_utility_allowance_type:
+      2025-07: [SUA, SUA, SUA, SUA, SUA, SUA, NONE]
+      2025-08: [SUA, SUA, SUA, SUA, SUA, SUA, NONE]
+      2026-01: [SUA, SUA, SUA, SUA, SUA, SUA, NONE]
+    snap_utility_allowance:
+      2025-07: [758, 758, 758, 758, 758, 758, 0]
+      2025-08: [758, 758, 758, 758, 758, 758, 0]
+      2026-01: [857, 857, 857, 857, 857, 857, 0]

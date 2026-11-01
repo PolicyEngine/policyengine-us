@@ -7,7 +7,7 @@ class va_up_tanf_eligibility(Variable):
     label = "VA TANF-UP eligibility"
     definition_period = MONTH
     defined_for = StateCode.VA
-    reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/700_07-20.pdf#page=2"
+    reference = "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfx2fview/tanf/Chapter-700---TANF-UP-Unemployed-Parent-Program.pdf#page=2"
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members

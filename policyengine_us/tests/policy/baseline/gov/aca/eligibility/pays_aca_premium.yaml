@@ -142,3 +142,182 @@
   output:
     pays_aca_premium: [true, true, true, true, false]
     is_aca_ptc_eligible: [false, false, false, false, false]
+
+# The coverage gap: under the premium tax credit's floor with no Medicaid
+# pathway, the model assumes nobody buys the full-price plan
+# (policyengine-us #9472).
+- name: An adult in the coverage gap pays no premium (under the PTC floor, no Medicaid)
+  period: 2026
+  input:
+    age: 40
+    is_medicaid_eligible: false
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    is_chip_eligible: false
+    aca_magi_fraction: 0.5
+  output:
+    pays_aca_premium: false
+    is_aca_ptc_eligible: false
+
+- name: At the floor the premium is paid and subsidized
+  period: 2026
+  input:
+    age: 40
+    is_medicaid_eligible: false
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    is_chip_eligible: false
+    aca_magi_fraction: 1.0
+  output:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: true
+
+- name: Before 2026 a lawfully present immigrant under the floor is not in the gap (36B(c)(1)(B))
+  period: 2025
+  input:
+    age: 40
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_medicaid_eligible: false
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    is_chip_eligible: false
+    aca_magi_fraction: 0.5
+  output:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: true
+
+- name: From 2026 the same immigrant is in the gap, the exception repealed by P.L. 119-21
+  period: 2026
+  input:
+    age: 40
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_medicaid_eligible: false
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    is_chip_eligible: false
+    aca_magi_fraction: 0.5
+  output:
+    pays_aca_premium: false
+    is_aca_ptc_eligible: false
+
+# The gate reads the eligibility scale's result, not only its threshold, so a
+# reform that makes the first bracket income-eligible reopens the premium tax
+# credit below 100% FPL instead of being blocked by a threshold that did not
+# move. Under the threshold-only gate this household got $0 of PTC.
+- name: A reform making the first PTC bracket eligible reopens the credit below the floor
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.aca.ptc_income_eligibility[0].amount: true
+    people:
+      person1:
+        age: 40
+        employment_income: 8_000
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    aca_magi_fraction: 0.51
+    pays_aca_premium: true
+    is_aca_ptc_eligible: true
+    aca_ptc: 7_670.46
+    marketplace_net_premium: 168
+    spm_unit_medical_out_of_pocket_expenses: 168
+
+- name: Without that reform the same household is in the gap and buys nothing
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 8_000
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    aca_magi_fraction: 0.51
+    pays_aca_premium: false
+    is_aca_ptc_eligible: false
+    aca_ptc: 0
+    marketplace_net_premium: 0
+    spm_unit_medical_out_of_pocket_expenses: 0
+
+# Texas has not expanded Medicaid, so a below-poverty citizen adult has no
+# Medicaid pathway and no premium tax credit. Before this gate the model
+# charged the household the full benchmark premium, $6,194.58 in 2025, and
+# counted it as a medical out-of-pocket expense.
+- name: A below-poverty Texas citizen is charged no premium and no medical out-of-pocket cost in 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 8_000
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    aca_magi_fraction: 0.53
+    is_medicaid_eligible: false
+    pays_aca_premium: false
+    is_aca_ptc_eligible: false
+    slcsp: 0
+    aca_ptc: 0
+    selected_marketplace_plan_premium_proxy: 0
+    marketplace_net_premium: 0
+    spm_unit_health_insurance_premiums: 0
+    spm_unit_medical_out_of_pocket_expenses: 0
+    marketplace_effective_actuarial_value: 0
+
+# Above the floor the same Texas household enrolls, is subsidized, and pays a
+# real net premium: the gate touches only the coverage gap.
+- name: An above-poverty Texas citizen still pays a subsidized premium in 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    aca_magi_fraction: 1.99
+    pays_aca_premium: true
+    is_aca_ptc_eligible: true
+    slcsp: 6_194.58
+    aca_ptc: 5_606.58
+    selected_marketplace_plan_premium_proxy: 6_194.58
+    marketplace_net_premium: 588
+    spm_unit_health_insurance_premiums: 588
+    spm_unit_medical_out_of_pocket_expenses: 588
+    marketplace_effective_actuarial_value: 0.87

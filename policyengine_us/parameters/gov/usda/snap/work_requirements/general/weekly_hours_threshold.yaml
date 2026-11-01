@@ -1,4 +1,4 @@
-description: The Department of Agriculture limits the Supplemental Nutrition Assistance Program to individuals working more than this number of weekly hours from the general work requirements.
+description: The Department of Agriculture excludes individuals working at least this number of weekly hours from work registration under the Supplemental Nutrition Assistance Program.
 
 values:
   2015-10-01: 30
@@ -8,5 +8,7 @@ metadata:
   label: USDA SNAP general work requirements weekly hours threshold
   period: week
   reference:
+    - title: 7 U.S.C. 2015(d)(2)(E)
+      href: https://www.law.cornell.edu/uscode/text/7/2015#d_2
     - title: 7 C.F.R. § 273.7 Work provisions (b)(1)(vii)
       href: https://www.law.cornell.edu/cfr/text/7/273.7#b_1_vii

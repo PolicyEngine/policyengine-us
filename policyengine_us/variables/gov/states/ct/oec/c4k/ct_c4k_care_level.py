@@ -16,7 +16,7 @@ class ct_c4k_care_level(Variable):
     definition_period = MONTH
     defined_for = StateCode.CT
     label = "Connecticut Care 4 Kids care level"
-    reference = "https://www.ctoec.org/care-4-kids/c4k-providers/c4k-rates/"
+    reference = "https://www.ctoec.org/care-4-kids-regulations/#rates"
 
     def formula(person, period, parameters):
         hours = person("childcare_hours_per_week", period.this_year)

@@ -41,3 +41,14 @@
     state_code: MN
   output:
     mn_exemptions: 10_400
+
+- name: MN exemptions 2026 joint below threshold
+  period: 2026
+  input:
+    filing_status: JOINT
+    tax_unit_dependents: 2
+    adjusted_gross_income: 300_000
+    state_code: MN
+  output:
+    # Tax Year 2026 Inflation-Adjusted Amounts, page 1: dependent exemption $5,300.
+    mn_exemptions: 2 * 5_300

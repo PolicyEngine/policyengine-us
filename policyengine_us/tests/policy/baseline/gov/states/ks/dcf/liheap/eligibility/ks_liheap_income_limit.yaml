@@ -1,0 +1,92 @@
+# KEESM 13362, October 2024 and January 2026 editions:
+# https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm13360.htm
+# https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm13360.htm
+# Expected amounts below annualize the published monthly limits. Sizes 9 and
+# 10 use the published additional-person increment; the final row is outside KS.
+- name: Case 1, FY2025 published income limits retain cents for all household sizes.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [KS, KS, KS, KS, KS, KS, KS, KS, KS, KS, MO]
+    ks_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1]
+  output:
+    ks_liheap_income_limit: [22_590, 30_660, 38_730, 46_800, 54_870, 62_940, 71_010, 79_080, 87_150, 95_220, 0]
+
+- name: Case 2, FY2026 published income limits round the base and additional-person increment separately.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [KS, KS, KS, KS, KS, KS, KS, KS, KS, KS, MO]
+    ks_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1]
+  output:
+    ks_liheap_income_limit: [23_472, 31_728, 39_972, 48_228, 56_472, 64_728, 72_972, 81_228, 89_484, 97_740, 0]
+
+# Hypothetical reforms ensure the calculation follows the policy parameters
+# instead of retaining the baseline dollar amounts in another lookup table.
+- name: Case 3, an income-limit rate reform changes the derived threshold.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.states.ks.dcf.liheap.eligibility.fpg_rate: 2
+    state_code: KS
+    ks_liheap_household_size: 1
+  output:
+    # $15,650 * 2 / 12 = $2,608.333... -> $2,608 per month.
+    ks_liheap_income_limit: 31_296
+
+- name: Case 4, a guideline-year lag reform selects an earlier poverty guideline.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.states.ks.dcf.liheap.eligibility.fpg_year_lag: 2
+    state_code: KS
+    ks_liheap_household_size: 1
+  output:
+    # Two-year lag selects 2024: $15,060 * 1.5 / 12 = $1,882.50 -> $1,883.
+    ks_liheap_income_limit: 22_596
+
+- name: Case 5, a cents-precision reform retains the exact FPG amount above eight people.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.states.ks.dcf.liheap.eligibility.rounding_increment: 0.01
+    state_code: KS
+    ks_liheap_household_size: 9
+  output:
+    # ($15,650 + 8 * $5,500) * 1.5 = $89,475.
+    ks_liheap_income_limit: 89_475
+
+- name: Case 6, the separately rounded additional-person rule uses the parameterized breakpoint.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.states.ks.dcf.liheap.eligibility.max_table_size: 6
+    state_code: KS
+    ks_liheap_household_size: 7
+  output:
+    # Six-person $5,394 monthly limit plus rounded $688 increment.
+    ks_liheap_income_limit: 72_984
+
+# These are regression checks on the fallback year selection, not verification
+# of Kansas policy outside the supported FY2025-FY2026 seasons. The rate and
+# rounding parameters still carry the earliest/latest available policy values.
+- name: Case 7, historical fallback guideline year follows the modeled year.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    ks_liheap_household_size: 1
+  output:
+    # One-year lag: 2021 FPG of $12,880, using the fallback 150% rate.
+    ks_liheap_income_limit: 19_320
+
+- name: Case 8, future fallback guideline year follows the modeled year.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    ks_liheap_household_size: 1
+  output:
+    # One-year lag: 2026 FPG of $15,960, using the fallback 150% rate.
+    # $15,960 * 1.5 / 12 = $1,995, so whole-dollar rounding is unchanged.
+    ks_liheap_income_limit: 23_940

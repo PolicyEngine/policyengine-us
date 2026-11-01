@@ -1,0 +1,14 @@
+description: Idaho limits its child tax credit to qualifying children below this age.
+values:
+  2018-01-01: 17
+metadata:
+  unit: year
+  period: year
+  label: Idaho child tax credit ineligible age
+  reference:
+    - title: Idaho Code 63-3029L(1), "qualifying child" as defined in IRC 24(c)
+      href: https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3029L/
+    - title: 26 U.S. Code 24(c)(1), qualifying child who has not attained age 17
+      href: https://www.law.cornell.edu/uscode/text/26/24#c_1
+    - title: 2021 Idaho Form 40 Instructions, Line 25 Idaho Child Tax Credit Worksheet ("Be age 16 or under as of December 31, 2021")
+      href: https://taxsim.nber.org/historical_state_tax_forms/ID/2021/EIN00046_11-15-2021.pdf#page=10

@@ -113,3 +113,117 @@
     military_retirement_pay_survivors: 10_000
   output:
     md_military_retirement_subtraction: 12_500
+
+- name: Dependent child's military retirement pay is not subtracted from the filer's income
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        military_retirement_pay: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MD
+  output:
+    # Md. Code Tax-Gen. § 10-207(a) subtracts amounts only to the extent
+    # included in federal AGI; the child's pay is not in the filer's AGI.
+    md_military_retirement_subtraction: 0
+
+- name: Head and spouse military retirement counts but a dependent's does not
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 60
+        military_retirement_pay: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      spouse:
+        age: 58
+        military_retirement_pay_survivors: 6_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      child:
+        age: 16
+        military_retirement_pay: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      couple:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MD
+  output:
+    # Head 8,000 + spouse 6,000, both below the 20,000 cap for age 55+.
+    md_military_retirement_subtraction: 14_000
+
+- name: Per-person age caps apply to head and spouse and an adult dependent aged 55 or older gets none
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        military_retirement_pay: 15_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      spouse:
+        age: 60
+        military_retirement_pay: 25_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      parent:
+        age: 70
+        military_retirement_pay: 30_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, parent]
+    marital_units:
+      couple:
+        members: [head, spouse]
+      parent_marital_unit:
+        members: [parent]
+    households:
+      household:
+        members: [head, spouse, parent]
+        state_code: MD
+  output:
+    # Head under 55: min(15,000, 12,500) = 12,500.
+    # Spouse 55 or older: min(25,000, 20,000) = 20,000.
+    # Dependent parent: 0, although 20,000 would apply on their own return.
+    md_military_retirement_subtraction: 32_500

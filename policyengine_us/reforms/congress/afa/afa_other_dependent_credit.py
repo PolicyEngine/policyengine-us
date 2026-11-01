@@ -5,6 +5,21 @@ import numpy as np
 
 
 def create_afa_other_dependent_credit() -> Reform:
+    class refundable_ctc_barred_by_section_911_exclusion(Variable):
+        reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
+        documentation = (
+            "The American Family Act replaces section 24 from 2025 with "
+            "section 24A, which does not bar refundability for section 911 "
+            "claimants, including in Puerto Rico. Earlier years retain "
+            "the current-law bar."
+        )
+
+        def formula_2025(tax_unit, period, parameters):
+            # Section 2(c) ends old section 24 after 2024; sections 24A(d)
+            # and 2(f)(1) provide refundability from 2025 without a sunset.
+            # Keep this rule after the fully_refundable parameter expires.
+            return False
+
     class other_dependent_credit(Variable):
         value_type = float
         entity = TaxUnit
@@ -133,7 +148,13 @@ def create_afa_other_dependent_credit() -> Reform:
             if ctc.refundable.fully_refundable:
                 reduction = tax_unit("ctc_lower_phase_out", period)
                 p = parameters(period).gov.contrib.congress.afa.ctc.phase_out
-                qualifying_children = tax_unit("ctc_qualifying_children", period)
+                # Proposed section 24A has no filer SSN rule, so the floor
+                # counts children without the federal filer test.
+                qualifying_children = add(
+                    tax_unit,
+                    period,
+                    ["ctc_qualifying_child_ignoring_filer_identification"],
+                )
                 lower_floor = p.lower_floor * qualifying_children
                 capped_credit = min_(lower_floor, maximum_amount)
                 reduced_max_amount_lower = max_(
@@ -152,7 +173,9 @@ def create_afa_other_dependent_credit() -> Reform:
             ctc_capped_by_tax = min_(total_ctc, limiting_tax)
             ctc_capped_by_increased_tax = min_(total_ctc, limiting_tax + phase_in)
             amount_ctc_would_increase = ctc_capped_by_increased_tax - ctc_capped_by_tax
-            return min_(maximum_refundable_ctc, amount_ctc_would_increase)
+            refundable_amount = min_(maximum_refundable_ctc, amount_ctc_would_increase)
+            barred = tax_unit("refundable_ctc_barred_by_section_911_exclusion", period)
+            return where(barred, 0, refundable_amount)
 
     class ctc(Variable):
         value_type = float
@@ -169,7 +192,14 @@ def create_afa_other_dependent_credit() -> Reform:
             )
             reduction = tax_unit("ctc_lower_phase_out", period)
             p = parameters(period).gov.contrib.congress.afa.ctc.phase_out
-            qualifying_children = tax_unit("ctc_qualifying_children", period)
+            # Proposed section 24A has no filer SSN rule (only a timely
+            # taxpayer TIN, 24A(e)(2)), so the floor counts children without
+            # the federal filer test.
+            qualifying_children = add(
+                tax_unit,
+                period,
+                ["ctc_qualifying_child_ignoring_filer_identification"],
+            )
             lower_floor = p.lower_floor * qualifying_children
             reduced_max_amount_lower = max_(lower_floor, maximum_amount - reduction)
             higher_reduction = tax_unit("ctc_higher_phase_out", period)
@@ -199,22 +229,38 @@ def create_afa_other_dependent_credit() -> Reform:
             return pre_baby_bonus_amount + baby_bonus_amount
 
     def modify_parameters(parameters):
-        parameters.gov.irs.credits.non_refundable.update(
+        credits = parameters.gov.irs.credits
+        # The baseline order of gov.irs.credits.non_refundable, with the
+        # separate other dependent credit in the Child Tax Credit's place.
+        credits_before_residential_clean_energy = [
+            "foreign_tax_credit",
+            "cdcc",
+            "elderly_disabled_credit",
+            "non_refundable_american_opportunity_credit",
+            "lifetime_learning_credit",
+            "savers_credit",
+            "energy_efficient_home_improvement_credit",
+            "used_clean_vehicle_credit",
+            "new_clean_vehicle_credit",
+            "other_dependent_credit",
+        ]
+        credits.non_refundable.update(
             start=instant("2025-01-01"),
             stop=instant("2039-12-31"),
-            value=[
-                "cdcc",
-                "elderly_disabled_credit",
-                "non_refundable_american_opportunity_credit",
-                "lifetime_learning_credit",
-                "savers_credit",
-                "residential_clean_energy_credit",
-                "energy_efficient_home_improvement_credit",
-                "new_clean_vehicle_credit",
-                "used_clean_vehicle_credit",
-                "other_dependent_credit",
-            ],
+            value=credits_before_residential_clean_energy
+            + ["residential_clean_energy_credit"],
         )
+        # 26 U.S.C. 25D(c) orders the residential clean energy credit after
+        # every other credit, including the separate other dependent credit.
+        for preceding_credits in (
+            credits.ctc_tax_liability_limit.preceding_credits,
+            credits.residential_clean_energy.preceding_credits,
+        ):
+            preceding_credits.update(
+                start=instant("2025-01-01"),
+                stop=instant("2039-12-31"),
+                value=credits_before_residential_clean_energy,
+            )
         parameters.gov.irs.credits.ctc.refundable.fully_refundable.update(
             start=instant("2025-01-01"),
             stop=instant("2039-12-31"),
@@ -240,6 +286,7 @@ def create_afa_other_dependent_credit() -> Reform:
             self.update_variable(ctc_lower_phase_out)
             self.update_variable(ctc_higher_phase_out)
             self.update_variable(ctc)
+            self.update_variable(refundable_ctc_barred_by_section_911_exclusion)
             self.update_variable(refundable_ctc)
             self.update_variable(ctc_child_individual_maximum_arpa)
             self.modify_parameters(modify_parameters)

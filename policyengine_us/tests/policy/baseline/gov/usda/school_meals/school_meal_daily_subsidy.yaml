@@ -12,10 +12,251 @@
   output:
     school_meal_daily_subsidy: 3.66 + 1.97
 
-# Test 2025 values (effective January 1, 2025)
+# Calendar 2025 reads the SY 2024-25 rates in force on January 1.
 - name: Contiguous US - 2025 FREE tier
   period: 2025
   input:
     school_meal_tier: FREE
   output:
-    school_meal_daily_subsidy: 7.06  # NSLP 4.60 + SBP 2.46
+    school_meal_daily_subsidy: 6.80  # NSLP 4.43 + SBP 2.37 (SY 2024-25 rates)
+
+# Annual periods read the rates in force at their start, so calendar 2026 uses
+# SY 2025-26 and calendar 2027 uses SY 2026-27. Keep calendar-year test periods
+# for compatibility with the annual variable and the core cache.
+# NSLP under-60% rates plus SBP non-severe-need rates:
+# https://www.govinfo.gov/content/pkg/FR-2025-07-24/pdf/2025-13879.pdf
+# https://www.govinfo.gov/content/pkg/FR-2026-07-16/pdf/2026-14252.pdf
+- name: Published SY 2025-26 rates apply in calendar 2026 across regions and tiers.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [NC, NC, NC, AK, AK, AK, HI, HI, HI]
+    school_meal_tier: [FREE, REDUCED, PAID, FREE, REDUCED, PAID, FREE, REDUCED, PAID]
+  output:
+    school_meal_daily_subsidy: [7.06, 6.36, 0.84, 11.40, 10.70, 1.33, 9.16, 8.46, 1.08]
+
+- name: Published SY 2026-27 rates stay fixed in calendar 2027.
+  period: 2027
+  absolute_error_margin: 0.001
+  input:
+    state_code: [NC, NC, NC, AK, AK, AK, HI, HI, HI]
+    school_meal_tier: [FREE, REDUCED, PAID, FREE, REDUCED, PAID, FREE, REDUCED, PAID]
+  output:
+    school_meal_daily_subsidy: [7.30, 6.60, 0.87, 11.81, 11.11, 1.38, 9.48, 8.78, 1.11]
+
+# The standard uprater first projects rates on July 1, 2027, so calendar 2028
+# uses the CPI-U proxy ratio 340.3 / 333.979. Round each meal and tier down
+# separately to cents. These are model projections, not published USDA rates.
+# Contiguous FREE: floor(4.76 * ratio * 100) / 100 +
+# floor(2.54 * ratio * 100) / 100 = 4.85 + 2.58 = 7.43.
+# Contiguous REDUCED: 4.44 + 2.28 = 6.72; PAID: 0.45 + 0.42 = 0.87.
+- name: Calendar 2028 uses standard CPI-U projections rounded down by meal and tier.
+  period: 2028
+  absolute_error_margin: 0.001
+  input:
+    state_code: [NC, NC, NC, AK, AK, AK, HI, HI, HI]
+    school_meal_tier: [FREE, REDUCED, PAID, FREE, REDUCED, PAID, FREE, REDUCED, PAID]
+  output:
+    school_meal_daily_subsidy: [7.43, 6.72, 0.87, 12.02, 11.31, 1.40, 9.65, 8.93, 1.12]
+
+# Per-meal tiers: the School Breakfast Program rate follows
+# school_meal_breakfast_tier and the National School Lunch Program rate
+# follows school_meal_lunch_tier. Calendar 2026 uses SY 2025-26 rates:
+# contiguous SBP FREE 2.46, REDUCED 2.16; NSLP FREE 4.60, REDUCED 4.20,
+# PAID 0.44. AK SBP FREE 3.95, NSLP PAID 0.71. HI SBP REDUCED 2.88, NSLP
+# FREE 5.98.
+# NC FREE breakfast, REDUCED lunch: 2.46 + 4.20 = 6.66.
+# NC REDUCED breakfast, FREE lunch: 2.16 + 4.60 = 6.76.
+# NC FREE breakfast, PAID lunch: 2.46 + 0.44 = 2.90.
+# AK FREE breakfast, PAID lunch: 3.95 + 0.71 = 4.66.
+# HI REDUCED breakfast, FREE lunch: 2.88 + 5.98 = 8.86.
+- name: Daily subsidy adds the breakfast rate at the breakfast tier and the lunch rate at the lunch tier.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [NC, NC, NC, AK, HI]
+    school_meal_breakfast_tier: [FREE, REDUCED, FREE, FREE, REDUCED]
+    school_meal_lunch_tier: [REDUCED, FREE, PAID, PAID, FREE]
+  output:
+    school_meal_daily_subsidy: [6.66, 6.76, 2.90, 4.66, 8.86]
+
+# State per-meal policies from income and state, with no categorical
+# eligibility. Annual periods read the rates and state parameters in force on
+# January 1. Daily subsidy = SBP rate at the breakfast tier + NSLP rate at the
+# lunch tier.
+
+# Calendar 2020 rates: breakfast (SBP) FREE 1.84, REDUCED 1.54,
+# PAID 0.31; lunch (NSLP) FREE 3.41, REDUCED 3.01, PAID 0.32.
+# NC at 180% of FPG: breakfast FREE, lunch REDUCED.
+#   1.84 + 3.01 = 4.85.
+# WA at 180% of FPG: breakfast FREE, lunch REDUCED.
+#   1.84 + 3.01 = 4.85.
+- name: Breakfast-only copay coverage in North Carolina and Washington sets a mixed daily subsidy in 2020.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: [NC, WA]
+    school_meal_fpg_ratio: [1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false]
+  output:
+    school_meal_daily_subsidy: [4.85, 4.85]
+
+# Calendar 2021 rates: breakfast (SBP) FREE 1.89, REDUCED 1.59,
+# PAID 0.32; lunch (NSLP) FREE 3.51, REDUCED 3.11, PAID 0.33.
+# WA at 180% of FPG: breakfast FREE, lunch REDUCED.
+#   1.89 + 3.11 = 5.00.
+# NC at 180% of FPG: breakfast FREE, lunch FREE.
+#   1.89 + 3.51 = 5.40.
+- name: Washington's breakfast-only coverage and North Carolina's coverage of both meals set daily subsidies in 2021.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: [WA, NC]
+    school_meal_fpg_ratio: [1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false]
+  output:
+    school_meal_daily_subsidy: [5.00, 5.40]
+
+# Calendar 2022 rates: breakfast (SBP) FREE 1.97, REDUCED 1.67,
+# PAID 0.33; lunch (NSLP) FREE 3.66, REDUCED 3.26, PAID 0.35.
+# MD at 180% of FPG: breakfast FREE, lunch REDUCED.
+#   1.97 + 3.26 = 5.23.
+- name: Maryland's breakfast-only coverage sets a mixed daily subsidy in 2022.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    school_meal_fpg_ratio: 1.8
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_daily_subsidy: 5.23
+
+# Calendar 2023 rates: breakfast (SBP) FREE 2.11, REDUCED 1.81,
+# PAID 0.35; lunch (NSLP) FREE 3.93, REDUCED 3.53, PAID 0.37.
+# DC at 300% of FPG: breakfast FREE, lunch PAID.
+#   2.11 + 0.37 = 2.48.
+- name: District of Columbia universal free breakfast sets the daily subsidy above the paid rate in 2023.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: DC
+    school_meal_fpg_ratio: 3
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_daily_subsidy: 2.48
+
+# Calendar 2024 rates: breakfast (SBP) FREE 2.28, REDUCED 1.98,
+# PAID 0.38; lunch (NSLP) FREE 4.25, REDUCED 3.85, PAID 0.40.
+# TX at 180% of FPG: breakfast FREE, lunch REDUCED.
+#   2.28 + 3.85 = 6.13.
+# PA at 300% of FPG: breakfast FREE, lunch PAID.
+#   2.28 + 0.40 = 2.68.
+- name: Texas breakfast-only coverage and Pennsylvania universal free breakfast set mixed daily subsidies in 2024.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: [TX, PA]
+    school_meal_fpg_ratio: [1.8, 3]
+    meets_school_meal_categorical_eligibility: [false, false]
+  output:
+    school_meal_daily_subsidy: [6.13, 2.68]
+
+# Calendar 2025 rates: breakfast (SBP) FREE 2.37, REDUCED 2.07,
+# PAID 0.39; lunch (NSLP) FREE 4.43, REDUCED 4.03, PAID 0.42.
+# TX at 180% of FPG: breakfast FREE, lunch REDUCED.
+#   2.37 + 4.03 = 6.40.
+- name: Texas breakfast-only coverage sets a mixed daily subsidy in 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: TX
+    school_meal_fpg_ratio: 1.8
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_daily_subsidy: 6.40
+
+# Calendar 2026 rates: breakfast (SBP) FREE 2.46, REDUCED 2.16,
+# PAID 0.40; lunch (NSLP) FREE 4.60, REDUCED 4.20, PAID 0.44.
+# UT at 180% of FPG: breakfast REDUCED, lunch FREE.
+#   2.16 + 4.60 = 6.76.
+# NH at 180% of FPG: breakfast FREE, lunch REDUCED.
+#   2.46 + 4.20 = 6.66.
+# AR at 300% of FPG: breakfast FREE, lunch PAID.
+#   2.46 + 0.44 = 2.90.
+# FL at 180% of FPG: breakfast REDUCED, lunch REDUCED.
+#   2.16 + 4.20 = 6.36.
+# TX at 180% of FPG: breakfast FREE, lunch FREE.
+#   2.46 + 4.60 = 7.06.
+- name: Per-meal state policies set daily subsidies in Utah, New Hampshire, Arkansas, Florida and Texas in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [UT, NH, AR, FL, TX]
+    school_meal_fpg_ratio: [1.8, 1.8, 3, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false]
+  output:
+    school_meal_daily_subsidy: [6.76, 6.66, 2.90, 6.36, 7.06]
+
+# Calendar 2027 rates: breakfast (SBP) FREE 2.54, REDUCED 2.24,
+# PAID 0.42; lunch (NSLP) FREE 4.76, REDUCED 4.36, PAID 0.45.
+# SC at 300% of FPG: breakfast FREE, lunch PAID.
+#   2.54 + 0.45 = 2.99.
+- name: South Carolina universal free breakfast sets the daily subsidy above the paid rate in 2027.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: SC
+    school_meal_fpg_ratio: 3
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_daily_subsidy: 2.99
+
+# Edge cases for non-contiguous state groups and extreme incomes.
+
+# Alaska and Hawaii rates for each mixed pair of meal tiers that state
+# policies produce: free breakfast with reduced-price lunch, reduced-price
+# breakfast with free lunch, and free breakfast with paid lunch. Calendar 2027
+# uses the published SY 2026-27 rates:
+# AK breakfast (SBP) FREE 4.09, REDUCED 3.79; lunch (NSLP) FREE 7.72,
+#   REDUCED 7.32, PAID 0.74.
+# HI breakfast (SBP) FREE 3.29, REDUCED 2.99; lunch (NSLP) FREE 6.19,
+#   REDUCED 5.79, PAID 0.59.
+# AK: 4.09 + 7.32 = 11.41; 3.79 + 7.72 = 11.51; 4.09 + 0.74 = 4.83.
+# HI: 3.29 + 5.79 = 9.08; 2.99 + 6.19 = 9.18; 3.29 + 0.59 = 3.88.
+- name: Alaska and Hawaii daily subsidies use each meal's own tier at their own rates in 2027.
+  period: 2027
+  absolute_error_margin: 0.001
+  input:
+    state_code: [AK, AK, AK, HI, HI, HI]
+    school_meal_breakfast_tier: [FREE, REDUCED, FREE, FREE, REDUCED, FREE]
+    school_meal_lunch_tier: [REDUCED, FREE, PAID, REDUCED, FREE, PAID]
+  output:
+    school_meal_daily_subsidy: [11.41, 11.51, 4.83, 9.08, 9.18, 3.88]
+
+# Zero, negative and very high countable income in a state of each policy
+# type, one-person SPM units, no categorical eligibility, calendar 2027:
+# CA universal meals; DC universal free breakfast plus reduced-price coverage;
+# NH breakfast-only and UT lunch-only coverage; NJ income limit plus
+# reduced-price coverage; ND income limit only; HI income limit plus
+# reduced-price coverage (Hawaii guideline and rates); AK and FL no state
+# policy (AK with Alaska guideline and rates).
+# Zero and negative income (for example a self-employment loss) give a ratio
+# at or below 0, so both meals are FREE everywhere. At $1,000,000 only
+# universal meals (CA, both meals) and universal free breakfast (DC,
+# breakfast only) remain.
+# Rates: contiguous SBP FREE 2.54, PAID 0.42; NSLP FREE 4.76, PAID 0.45.
+# HI SBP FREE 3.29, PAID 0.52; NSLP FREE 6.19, PAID 0.59. AK SBP FREE 4.09,
+# PAID 0.64; NSLP FREE 7.72, PAID 0.74.
+# Both FREE: contiguous 7.30, HI 9.48, AK 11.81. FREE breakfast and PAID
+# lunch: 2.54 + 0.45 = 2.99. Both PAID: contiguous 0.87, HI 1.11, AK 1.38.
+- name: Zero, negative and very high income set per-meal tiers and daily subsidies across state policy types in 2027.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [CA, DC, NH, UT, NJ, ND, HI, AK, FL, CA, DC, NH, UT, NJ, ND, HI, AK, FL, FL]
+    school_meal_countable_income: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1_000_000, 1_000_000, 1_000_000, 1_000_000, 1_000_000, 1_000_000, 1_000_000, 1_000_000, 1_000_000, -50_000]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_breakfast_tier: [FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, PAID, PAID, PAID, PAID, PAID, PAID, PAID, FREE]
+    school_meal_lunch_tier: [FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, PAID, PAID, PAID, PAID, PAID, PAID, PAID, PAID, FREE]
+    school_meal_daily_subsidy: [7.30, 7.30, 7.30, 7.30, 7.30, 7.30, 9.48, 11.81, 7.30, 7.30, 2.99, 0.87, 0.87, 0.87, 0.87, 1.11, 1.38, 0.87, 7.30]

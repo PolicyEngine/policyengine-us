@@ -57,12 +57,11 @@
     wi_taxable_income: 10_000
     wi_retirement_income_subtraction: 3_000
   output:
-    # Line 17 ($3k) is already subtracted in wi_taxable_income.
-    # Per the Line 17 worksheet step 4, Line 17 self-adjusts when
-    # Line 16 is claimed. We simply subtract Line 16:
-    # exclusion_taxinc = max(0, 10000 - 8000) = 2000
-    # exclusion_tax = 2000 * 0.035 = 70
-    wi_retirement_income_exclusion_tax: 70
+    # Line 17 ($3k) is already subtracted in wi_taxable_income, but all of
+    # this pension is subtracted on Line 16. Add back the overlapping $3k:
+    # exclusion_taxinc = max(0, 10000 - 8000 + 3000) = 5000.
+    wi_retirement_income_exclusion_line17_offset: 3_000
+    wi_retirement_income_exclusion_tax: 175
 
 - name: Joint filing - both spouses eligible
   absolute_error_margin: 0.01

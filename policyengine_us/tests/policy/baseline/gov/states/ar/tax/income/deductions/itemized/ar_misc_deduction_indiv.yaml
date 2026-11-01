@@ -1,17 +1,65 @@
-- name: Arkansas miscellaneous deduction (below the floor)
+- name: Below the 2% floor
   period: 2021
   input:
-    misc_deduction: 800
+    total_misc_deductions: 800
     ar_agi_indiv: 100_000
     state_code: AR
   output:
     ar_misc_deduction_indiv: 0
-  
-- name: Arkansas miscellaneous deduction (above the floor)
+
+- name: Above the 2% floor
   period: 2021
   input:
-    misc_deduction: 3_000
+    total_misc_deductions: 3_000
     ar_agi_indiv: 100_000
     state_code: AR
   output:
     ar_misc_deduction_indiv: 1_000
+
+- name: 2017, the 2% floor applies once, to Arkansas AGI
+  # 10,000 - 2% * 50,000 = 9,000. The federal misc_deduction has already
+  # subtracted 2% of federal AGI, so it must not be the starting point.
+  period: 2017
+  input:
+    total_misc_deductions: 10_000
+    ar_agi_indiv: 50_000
+    state_code: AR
+  output:
+    ar_misc_deduction_indiv: 9_000
+
+- name: 2018, Arkansas did not adopt the federal suspension
+  period: 2018
+  input:
+    total_misc_deductions: 10_000
+    ar_agi_indiv: 50_000
+    state_code: AR
+  output:
+    ar_misc_deduction_indiv: 9_000
+
+- name: 2022, Arkansas did not adopt the federal suspension
+  period: 2022
+  input:
+    total_misc_deductions: 10_000
+    ar_agi_indiv: 50_000
+    state_code: AR
+  output:
+    ar_misc_deduction_indiv: 9_000
+
+- name: 2025, employee expenses and tax preparation fees
+  # 6,000 + 500 - 2% * 50,000 = 5,500
+  period: 2025
+  input:
+    people:
+      person1:
+        unreimbursed_business_employee_expenses: 6_000
+        tax_preparation_fees: 500
+        ar_agi_indiv: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_misc_deduction_indiv: 5_500

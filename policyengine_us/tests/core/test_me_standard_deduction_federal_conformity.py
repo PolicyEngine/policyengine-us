@@ -109,22 +109,24 @@ def test_me_standard_deduction_does_not_follow_federal_in_2026():
 
 
 def test_me_standard_deduction_applies_the_federal_dependent_cap_in_2027():
-    # IRC Section 63(c)(5), as adjusted by Rev. Proc. 2025-32 section .14(2):
-    # an individual who is a dependent of another taxpayer gets at most the
+    # IRC Section 63(c)(5), as adjusted by Rev. Proc. 2025-32 section 4.14(2):
+    # an individual who can be claimed by another taxpayer gets at most the
     # greater of the dependent floor and earned income plus a fixed addition,
     # capped at the ordinary basic standard deduction. Maine follows the federal
-    # standard deduction from 2027, so the cap has to reach Maine too.
+    # standard deduction from 2027, so the cap has to reach Maine too. Supply
+    # the filer's claimability even though no actual claim is made.
     simulation = _simulation(
         {
             "person": {
                 "age": 17,
                 "employment_income": 3_000,
                 "is_tax_unit_head": True,
+                "claimable_as_dependent_on_another_return": True,
+                "claimed_as_dependent_on_another_return": False,
             }
         },
         "SINGLE",
         2027,
-        tax_unit_inputs={"head_is_dependent_elsewhere": True},
     )
     maine = simulation.calculate("me_standard_deduction", "2027")[0]
     federal = simulation.calculate("standard_deduction", "2027")[0]

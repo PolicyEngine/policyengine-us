@@ -6,7 +6,7 @@ class ca_standard_deduction(Variable):
     entity = TaxUnit
     label = "California standard deduction"
     unit = USD
-    documentation = "https://www.ftb.ca.gov/forms/2021/2021-540.pdf"
+    reference = "https://www.ftb.ca.gov/forms/2021/2021-540.pdf"
     definition_period = YEAR
     defined_for = StateCode.CA
 

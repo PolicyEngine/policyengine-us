@@ -1,0 +1,337 @@
+# A tax unit dependent's above-the-line deductions belong on the dependent's
+# own return, not the filer's. irs_gross_income already leaves the
+# dependent's income off the filer's return; these tests check that the
+# dependent's deductions are left off too. Only spouses aggregate on one
+# return (26 USC 6013(a)); 26 USC 1(g)(7) moves only a child's interest and
+# dividend gross income to a parent's return. Even under that election, the
+# Instructions for Form 8814 (2025), p. 2, list "Penalty on early withdrawal
+# of child's savings" among the deductions the parent cannot take.
+#
+# Expected values follow the TY2025 forms, figured in cents:
+# - Schedule SE (Form 1040) 2025, lines 2-13, filed by each person with
+#   self-employment income:
+#   https://www.irs.gov/pub/irs-prior/f1040sse--2025.pdf
+# - Schedule 1 (Form 1040) 2025, Part II, lines 11-26 (adjustments):
+#   https://www.irs.gov/pub/irs-prior/f1040s1--2025.pdf
+# - Form 1040 (2025) lines 9-11, and the Social Security Benefits Worksheet
+#   and Student Loan Interest Deduction Worksheet in the 2025 Form 1040
+#   instructions: https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=32
+#   and #page=99.
+# The model does not round Schedule SE lines to cents, so the margin is 0.01.
+#
+# Three amounts stay on the filer's return whatever member they are recorded
+# on (the last three cases): a dependent's tuition in the tuition and fees
+# deduction (Form 8917, through 2020), employer adoption assistance recorded on
+# the adopted child, and education savings bond interest recorded on the
+# student (gov.irs.ald.filer_amounts_recorded_on_dependents).
+
+- name: Child's Schedule C income and self-employment tax stay off the head of household parent's return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 17
+        self_employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    is_tax_unit_dependent: [false, true]
+    # Child's own Schedule SE: line 2 = line 3 = 10,000; line 4a = line 6 =
+    # 10,000 x 0.9235 = 9,235.00; line 9 = 176,100 (no wages); line 10 =
+    # 9,235 x 0.124 = 1,145.14; line 11 = 9,235 x 0.029 = 267.82;
+    # line 12 = 1,412.96; line 13 = 1,412.96 x 0.50 = 706.48. Line 13 goes on
+    # the child's own Schedule 1, line 15.
+    self_employment_tax: [0, 1_412.96]
+    self_employment_tax_ald_person: [0, 706.48]
+    # Parent's Schedule 1, line 15: no self-employment tax of the parent's.
+    self_employment_tax_ald: 0
+    # Parent's Schedule 1, line 26, and Form 1040, line 10.
+    above_the_line_deductions: 0
+    # Parent's Form 1040: line 1a = line 9 = 40,000; line 11 = 40,000 - 0.
+    adjusted_gross_income: 40_000
+    adjusted_gross_income_person: [40_000, 0]
+
+- name: Spouse's self-employment deductions stay on the joint return and the child's do not
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+      spouse:
+        age: 44
+        self_employment_income: 20_000
+      child:
+        age: 16
+        self_employment_income: 8_000
+        self_employed_health_insurance_premiums: 1_000
+        self_employed_pension_contributions: 500
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    is_tax_unit_dependent: [false, false, true]
+    # Spouse's Schedule SE: line 2 = 20,000; line 4a = line 6 = 18,470.00;
+    # line 10 = 18,470 x 0.124 = 2,290.28; line 11 = 18,470 x 0.029 =
+    # 535.63; line 12 = 2,825.91; line 13 = 1,412.96 (1,412.955 unrounded).
+    # Child's own Schedule SE: line 2 = 8,000; line 4a = line 6 = 7,388.00;
+    # line 10 = 916.11; line 11 = 214.25; line 12 = 1,130.36;
+    # line 13 = 565.18. The child's line 13, health insurance (1,000) and
+    # SEP contribution (500) go on the child's own Schedule 1, lines 15-17.
+    self_employment_tax: [0, 2_825.91, 1_130.36]
+    self_employment_tax_ald_person: [0, 1_412.96, 565.18]
+    self_employed_health_insurance_ald_person: [0, 0, 1_000]
+    self_employed_pension_contribution_ald_person: [0, 0, 500]
+    # Joint return's Schedule 1: line 15 = the spouse's 1,412.96 only;
+    # lines 16 and 17 = 0; line 26 = 1,412.96.
+    self_employment_tax_ald: 1_412.96
+    self_employed_pension_contribution_ald: 0
+    self_employed_health_insurance_ald: 0
+    above_the_line_deductions: 1_412.96
+    # Joint Form 1040: line 1a = 60,000; Schedule 1, line 3 = 20,000; line 9
+    # = 80,000; line 10 = 1,412.96; line 11 = 78,587.04.
+    adjusted_gross_income: 78_587.04
+    adjusted_gross_income_person: [60_000, 18_587.04, 0]
+
+- name: Student dependent's IRA deduction, early withdrawal penalty and educator expenses stay off the parent's return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 50_000
+      student:
+        age: 23
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income: 6_000
+        taxable_interest_income: 500
+        traditional_ira_contributions: 2_000
+        early_withdrawal_penalty: 100
+        educator_expense: 300
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+    is_tax_unit_dependent: [false, true]
+    # The student's own Schedule 1: line 11 = 300, line 18 = 100, line 20 =
+    # 2,000, line 26 = 2,400. The parent's Schedule 1, line 26 = 0.
+    above_the_line_deductions: 0
+    # Parent's Form 1040: line 9 = 50,000; line 10 = 0; line 11 = 50,000.
+    adjusted_gross_income: 50_000
+    adjusted_gross_income_person: [50_000, 0]
+
+- name: Dependent parent's alimony paid stays off the filer's return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      mother:
+        age: 72
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        alimony_expense: 3_000
+        divorce_year: 2010
+    tax_units:
+      tax_unit:
+        members: [filer, mother]
+    households:
+      household:
+        members: [filer, mother]
+        state_code: TX
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+    # The mother's pre-2019 alimony goes on her own Schedule 1, line 19a.
+    alimony_expense_ald: 0
+    above_the_line_deductions: 0
+    adjusted_gross_income: 50_000
+
+- name: Grandchild's self-employment tax does not lower the grandparent's taxable Social Security
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      grandparent:
+        age: 67
+        social_security_retirement: 24_000
+        taxable_private_pension_income: 20_000
+      grandchild:
+        age: 17
+        self_employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [grandparent, grandchild]
+    households:
+      household:
+        members: [grandparent, grandchild]
+        state_code: TX
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+    # Social Security Benefits Worksheet (2025): line 1 = 24,000; line 2 =
+    # 12,000; line 3 = Form 1040 line 5b = 20,000; line 4 = 0; line 5 =
+    # 32,000; line 6 = the grandparent's Schedule 1, lines 11-20, 23, 25 = 0
+    # (the grandchild's line 15 deduction is on the grandchild's return).
+    # Line 3 + line 4 - line 6:
+    taxable_ss_magi: 20_000
+    # Line 7 = 32,000; line 8 = 25,000; line 9 = 7,000; line 10 = 9,000;
+    # line 11 = 0; line 12 = 7,000; line 13 = 3,500; line 14 = 3,500;
+    # line 15 = 0; line 16 = 3,500; line 17 = 20,400; line 18 = 3,500.
+    tax_unit_taxable_social_security: 3_500
+    # Form 1040: line 9 = 20,000 + 3,500 = 23,500; line 10 = 0; line 11.
+    adjusted_gross_income: 23_500
+
+- name: Dependent's IRA deduction does not lower the parent's student loan interest MAGI
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 91_000
+        student_loan_interest: 2_500
+      student:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income: 6_000
+        traditional_ira_contributions: 2_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+    # Student Loan Interest Deduction Worksheet (2025): line 1 = 2,500;
+    # line 2 = Form 1040 line 9 = 91,000; line 3 = the parent's Schedule 1,
+    # lines 11-20, 23, 25 = 0; line 4 = 91,000.
+    student_loan_interest_ald_magi: [91_000, 0]
+    # Line 5 = 85,000; line 6 = 6,000; line 7 = 6,000 / 15,000 = 0.400;
+    # line 8 = 1,000; line 9 = 1,500 (Schedule 1, line 21).
+    student_loan_interest_ald: [1_500, 0]
+    # Form 1040: line 9 = 91,000; line 10 = 1,500; line 11 = 89,500.
+    adjusted_gross_income: 89_500
+
+- name: A dependent student's tuition stays in the parent's tuition and fees deduction
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 50_000
+      student:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        qualified_tuition_expenses: 3_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    # Form 8917 (Rev. January 2020), on the parent's return, which claims the
+    # student as a dependent: line 1(c) = line 2 = 3,000; line 3 = 50,000;
+    # line 4 = 0; line 5 = 50,000, not more than 65,000, so line 6 = the
+    # smaller of 3,000 or 4,000 = 3,000.
+    capped_qualified_tuition_expenses_ald: 3_000
+    above_the_line_deductions: 3_000
+    adjusted_gross_income: 47_000
+
+- name: Employer adoption assistance recorded on the adopted child stays on the parent's return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 50_000
+      child:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        qualified_adoption_assistance_expense: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # The 26 USC 137(a) exclusion is the adopting employee's.
+    above_the_line_deductions: 5_000
+    adjusted_gross_income: 45_000
+
+- name: Education savings bond interest recorded on the student stays on the parent's return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 50_000
+        taxable_interest_income: 2_000
+      student:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        us_bonds_for_higher_ed: 1_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    # A bond issued in the name of a child under 24 does not qualify (Form
+    # 8815, 2025, p. 3), so the exclusion is the parent's: 52,000 - 1,000.
+    above_the_line_deductions: 1_000
+    adjusted_gross_income: 51_000
+

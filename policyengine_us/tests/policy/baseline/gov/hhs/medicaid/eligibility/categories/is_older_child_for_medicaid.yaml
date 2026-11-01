@@ -6,13 +6,13 @@
   output:
     is_older_child_for_medicaid: true
 
-- name: Child under 19 but not FPL limit, ineligible in CA
+- name: Child under 19 at the inclusive FPL limit, eligible in CA
   period: 2022
   input:
     age: 18
     medicaid_income_level: 2.66
   output:
-    is_older_child_for_medicaid: false
+    is_older_child_for_medicaid: true
 
 - name: Child over 19, ineligible in CA
   period: 2022
@@ -30,10 +30,7 @@
   output:
     is_older_child_for_medicaid: true
 
-# The formula compares with strict less-than, but the float32-stored input
-# 1.53 (~1.52999997) lands just below the float64 parameter 1.53, so the
-# exact boundary evaluates eligible under both < and <= — matching the
-# manual's income-maximum (<=) semantics.
+# The published monthly ceiling includes income exactly at 153% FPL.
 - name: MO child at exactly 153% FPL, the income maximum, eligible
   period: 2026
   input:
@@ -96,3 +93,30 @@
         state_code: MO
   output:
     is_older_child_for_medicaid: [false, false, false]
+
+# 42 USC 1396a(l)(1)(D) and 42 CFR 435.118 require both the age test and the
+# income test, so the category is the AND of the _fc and _nfc halves.
+# CA household of 2 in 2026: 21,640 x 2.66 / 12 = 4,796.87 -> $4,797 -> 57,564/yr.
+- name: CA 19-year-old with income at the limit passes the income test but fails the age test, ineligible
+  period: 2026
+  input:
+    state_code: CA
+    age: 19
+    medicaid_household_size: 2
+    medicaid_household_income: 57_564
+  output:
+    is_older_child_for_medicaid_fc: true
+    is_older_child_for_medicaid_nfc: false
+    is_older_child_for_medicaid: false
+
+- name: CA 10-year-old with income one cent monthly above the limit passes the age test but fails the income test, ineligible
+  period: 2026
+  input:
+    state_code: CA
+    age: 10
+    medicaid_household_size: 2
+    medicaid_household_income: 57_564.12
+  output:
+    is_older_child_for_medicaid_fc: false
+    is_older_child_for_medicaid_nfc: true
+    is_older_child_for_medicaid: false

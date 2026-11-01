@@ -18,7 +18,7 @@ class amt_part_iii_required(Variable):
                 "dwks13",
                 "dwks14",
                 "dwks19",
-                "unrecaptured_section_1250_gain",
+                "schedule_d_unrecaptured_section_1250_gain",
             ],
         )
         return relevant_inputs > 0

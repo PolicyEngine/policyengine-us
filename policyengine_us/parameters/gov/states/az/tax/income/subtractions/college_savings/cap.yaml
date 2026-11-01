@@ -6,6 +6,19 @@ metadata:
   label: Arizona college savings plan subtraction cap
   breakdown:
     - az_filing_status  
+  reference:
+    - title: 43-1022. Subtractions from Arizona gross income (27)
+      href: https://www.azleg.gov/ars/43/01022.htm
+    - title: 2025 Arizona Form 140 Resident Personal Income Tax Instructions
+      href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf#page=16
+    - title: 2024 Arizona Form  140 Resident Personal Income Tax Booklet, Line 34
+      href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2024_140Booklet.pdf#page=22
+    - title: 2023 Arizona Form  140 Resident Personal Income Tax Booklet, Line 34
+      href: https://azdor.gov/sites/default/files/2023-12/FORMS_INDIVIDUAL_2023_140Booklet.pdf#page=22
+    - title: 2022 Arizona Resident Personal Income Tax Form140 Instructions
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140i.pdf#page=15
+    - title: 2021 Arizona Resident Personal Income Tax Form140 Instructions
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140i.pdf#page=14
 SINGLE:
   2021-01-01: 2_000
 HEAD_OF_HOUSEHOLD:
@@ -14,16 +27,3 @@ JOINT:
   2021-01-01: 4_000
 SEPARATE:
   2021-01-01: 4_000
-reference:
-  - title: 43-1022. Subtractions from Arizona gross income (27)
-    href: https://www.azleg.gov/ars/43/01022.htm
-  - title: 2025 Arizona Form 140 Resident Personal Income Tax Instructions
-    href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf#page=16
-  - title: 2024 Arizona Form  140 Resident Personal Income Tax Booklet, Line 34
-    href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2024_140Booklet.pdf#page=22
-  - title: 2023 Arizona Form  140 Resident Personal Income Tax Booklet, Line 34
-    href: https://azdor.gov/sites/default/files/2023-12/FORMS_INDIVIDUAL_2023_140Booklet.pdf#page=22
-  - title: 2022 Arizona Resident Personal Income Tax Form140 Instructions
-    href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140i.pdf#page=15
-  - title: 2021 Arizona Resident Personal Income Tax Form140 Instructions
-    href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140i.pdf#page=14

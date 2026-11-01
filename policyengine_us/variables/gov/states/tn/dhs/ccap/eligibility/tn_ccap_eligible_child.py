@@ -7,17 +7,20 @@ class tn_ccap_eligible_child(Variable):
     label = "Eligible child for Tennessee CCAP"
     definition_period = MONTH
     defined_for = StateCode.TN
-    reference = "https://www.tn.gov/content/dam/tn/human-services/documents/CCDF%20State%20Plan%20FFY%202025-2027%20Tennessee.pdf#page=23"
+    reference = (
+        "https://www.tn.gov/content/dam/tn/human-services/documents/CCDF%20State%20Plan%20FFY%202025-2027%20Tennessee.pdf#page=23",
+        "https://www.tn.gov/content/dam/tn/human-services/documents/CCDF%20State%20Plan%20FFY%202025-2027%20Tennessee.pdf#page=24",
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.tn.dhs.ccap.eligibility
         age = person("age", period.this_year)
         is_disabled = person("is_disabled", period.this_year)
-        # NOTE: Court-supervision eligibility awaits a general input variable.
-        # The State Plan sets the special-needs upper age at 18 (Section
-        # 2.2.1(b): "18.00"), so children remain eligible through age 18.
+        # State Plan 2.2.1(b)-(c) sets the upper age at 18 for both
+        # incapacity and court supervision: children qualify through age 18.
+        under_court_supervision = person("is_under_court_supervision", period.this_year)
         age_eligible = where(
-            is_disabled,
+            is_disabled | under_court_supervision,
             age <= p.special_needs_age_limit,
             age < p.child_age_limit,
         )

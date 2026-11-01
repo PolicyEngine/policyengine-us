@@ -1,0 +1,159 @@
+# Dead reference URLs retired in the south batch of the 2026-09-30 audit.
+# Each prefix failed a GET request (404/410, a soft 404, a dead host or a
+# persistent server error) on the date given; see the PR for evidence.
+# See test_known_dead_reference_urls.py for the format.
+
+[[dead]]
+prefix = "https://houpl.org/wp-content/uploads/2022/01/2021_IT-511_Individual_Income_Tax_Booklet-12.29.21-Web-Version.pdf"
+verified = "2026-10-01"
+replacement = "https://dor.georgia.gov/document/booklet/2021-it-511-individual-income-tax-booklet/download"
+
+[[dead]]
+prefix = "https://houpl.org/wp-content/uploads/2023/01/2022-IT-511_Individual_Income_Tax_-Booklet-compressed.pdf"
+verified = "2026-10-01"
+replacement = "https://dor.georgia.gov/document/document/2022-it-511-individual-income-tax-booklet/download"
+
+[[dead]]
+prefix = "https://revenue.louisiana.gov/TaxForms/IT540(2022)%20Tax%20Table.pdf"
+verified = "2026-10-01"
+replacement = "https://dam.ldr.la.gov/taxforms/IT540(2022)%20Tax%20Table.pdf"
+
+[[dead]]
+prefix = "https://revenue.louisiana.gov/TaxForms/IT540(2023)%20TT.pdf"
+verified = "2026-10-01"
+replacement = "https://dam.ldr.la.gov/taxforms/IT540(2023)%20TT.pdf"
+
+[[dead]]
+prefix = "https://revenue.louisiana.gov/TaxForms/IT540WEB(2021)%20F.pdf"
+verified = "2026-10-01"
+replacement = "https://dam.ldr.la.gov/taxforms/IT-540-WEB-2021-F.pdf"
+
+[[dead]]
+prefix = "https://revenue.louisiana.gov/TaxForms/IT540WEB(2022)%20F%20D2.pdf"
+verified = "2026-10-01"
+replacement = "https://dam.ldr.la.gov/taxforms/IT540WEB(2022)%20F%20D2.pdf"
+
+[[dead]]
+prefix = "https://revenue.louisiana.gov/TaxForms/IT540WEB(2022)%20F.pdf"
+verified = "2026-10-01"
+replacement = "https://dam.ldr.la.gov/taxforms/IT-540-WEB-2022-F.pdf"
+
+[[dead]]
+prefix = "https://revenue.louisiana.gov/TaxForms/IT540WEB(2023)%20F.pdf"
+verified = "2026-10-01"
+replacement = "https://dam.ldr.la.gov/taxforms/IT540WEB(2023)%20F.pdf"
+
+[[dead]]
+prefix = "https://revenue.louisiana.gov/TaxForms/IT540i%20WEB(2023)%20INSTRUCTIONS.pdf"
+verified = "2026-10-01"
+replacement = "https://dam.ldr.la.gov/taxforms/IT540i%20WEB(2023)%20INSTRUCTIONS.pdf"
+
+[[dead]]
+prefix = "https://revenue.louisiana.gov/TaxForms/IT540i(2021)%20Instructions.pdf"
+verified = "2026-10-01"
+replacement = "https://dam.ldr.la.gov/taxforms/IT540i(2021)%20Instructions.pdf"
+
+[[dead]]
+prefix = "https://revenue.louisiana.gov/TaxForms/IT540iWEB(2022)D1.pdf"
+verified = "2026-10-01"
+replacement = "https://dam.ldr.la.gov/taxforms/IT540iWEB(2022)D1.pdf"
+
+[[dead]]
+prefix = "https://revenue.louisiana.gov/TaxForms/IT540iWEB(2023)D1.pdf"
+verified = "2026-10-01"
+replacement = "https://dam.ldr.la.gov/taxforms/IT540i%20WEB(2023)%20INSTRUCTIONS.pdf"
+
+[[dead]]
+prefix = "https://tea.texas.gov/sites/default/files/taa-2025-06-12-tax-year-2025-maximum-compressed-tax-rates.pdf"
+verified = "2026-10-01"
+replacement = "https://tea.texas.gov/system/files/taa-letters/taa-2025-06-12-tax-year-2025-maximum-compressed-tax-rates.pdf"
+
+[[dead]]
+prefix = "https://www.alabamapublichealth.gov/allkids/assets/allkidsincomeguidelines.pdf"
+verified = "2026-10-01"
+replacement = "https://www.alabamapublichealth.gov/allkids/income.html"
+
+[[dead]]
+prefix = "https://www.dcfs.louisiana.gov/assets/docs/searchable/EconomicStability/TANF/2014TANFRenewal.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20161201201738/https://www.dcfs.louisiana.gov/assets/docs/searchable/EconomicStability/TANF/2014TANFRenewal.pdf"
+
+[[dead]]
+prefix = "https://www.doa.la.gov/media/tp3lmkyg/67.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20260125030953/https://www.doa.la.gov/media/tp3lmkyg/67.pdf"
+
+[[dead]]
+prefix = "https://www.dor.ms.gov/sites/default/files/Forms/Individual/2024/80105248.pdf"
+verified = "2026-10-01"
+replacement = "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80105248.pdf"
+
+[[dead]]
+prefix = "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100211_0.pdf"
+verified = "2026-10-01"
+replacement = "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100211_0.pdf"
+
+[[dead]]
+prefix = "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf"
+verified = "2026-10-01"
+replacement = "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100221.pdf"
+
+[[dead]]
+prefix = "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100231.pdf"
+verified = "2026-10-01"
+replacement = "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100231.pdf"
+
+[[dead]]
+prefix = "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80105228.pdf"
+verified = "2026-10-01"
+replacement = "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80105228.pdf"
+
+[[dead]]
+prefix = "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80108228.pdf"
+verified = "2026-10-01"
+replacement = "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80108228.pdf"
+
+[[dead]]
+prefix = "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-2421-eligibility-criteria"
+verified = "2026-10-01"
+replacement = "https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/a-2420-eligibility-requirements"
+
+[[dead]]
+prefix = "https://www.hhs.texas.gov/sites/default/files/documents/fpppm-9000-definitions-of-income.pdf"
+verified = "2026-10-01"
+replacement = "https://fhb.hhs.texas.gov/sites/default/files/documents/fpppm-9000-definitions-of-income.pdf"
+
+[[dead]]
+prefix = "https://www.hhs.texas.gov/sites/default/files/documents/mepd-and-twh-Bulletin-24-12.pdf"
+verified = "2026-10-01"
+replacement = "https://fhb.hhs.texas.gov/sites/default/files/documents/mepd-and-twh-Bulletin-24-12.pdf"
+
+[[dead]]
+prefix = "https://www.hhs.texas.gov/sites/default/files/documents/twh_24-3.pdf"
+verified = "2026-10-01"
+replacement = "https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/a-1210-general-policy"
+
+[[dead]]
+prefix = "https://www.revenue.alabama.gov/forms/2021-alabama-individual-income-tax-return-2/"
+verified = "2026-10-01"
+replacement = "https://www.revenue.alabama.gov/forms/2021-alabama-individual-income-tax-return-residents-part-year-residents-2/"
+
+[[dead]]
+prefix = "https://www.revenue.alabama.gov/wp-content/uploads/2023/01/22f40blk.pdf"
+verified = "2026-10-01"
+replacement = "https://www.revenue.alabama.gov/wp-content/uploads/2023/01/22f40bk.pdf"
+
+[[dead]]
+prefix = "https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit"
+verified = "2026-10-01"
+replacement = "https://revenue.louisiana.gov/individuals/general-resources/school-readiness-credit/"
+
+[[dead]]
+prefix = "https://www.revenue.louisiana.gov/taxforms/6935(11_02)F.pdf"
+verified = "2026-10-01"
+replacement = "https://dam.ldr.la.gov/taxforms/6935(11_02)F.pdf"
+
+[[dead]]
+prefix = "https://www.tdhca.texas.gov/section-8-housing-choice-voucher-program"
+verified = "2026-10-01"
+replacement = "https://www.tdhca.texas.gov/programs/housing-choice-voucher-section8-housing"

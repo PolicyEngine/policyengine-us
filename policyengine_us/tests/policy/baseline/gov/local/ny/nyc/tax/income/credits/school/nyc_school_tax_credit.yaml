@@ -1,0 +1,149 @@
+# End-to-end tests of the NYC school tax credit income tests.
+# NY Tax Law § 606(ggg): https://www.nysenate.gov/legislation/laws/TAX/606
+# 2025 IT-201-I lines 69 and 69a:
+# https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=20
+
+- name: Income of exactly $500,000 keeps the rate reduction amount when New York subtracts Social Security.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 449_000
+        social_security_retirement: 60_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NY
+        in_nyc: true
+  output:
+    # Taxable Social Security is 85% of 60,000 = 51,000, so federal AGI and
+    # school tax credit income are 449,000 + 51,000 = 500,000.
+    adjusted_gross_income: 500_000
+    nyc_school_credit_income: 500_000
+    # New York subtracts taxable Social Security: 449,000 - 8,000 standard
+    # deduction = 441,000.
+    nyc_taxable_income: 441_000
+    nyc_school_tax_credit_fixed_amount_eligible: false
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+    # 0.171% x 12,000 + 0.228% x (441,000 - 12,000) = 20.52 + 978.12
+    nyc_school_tax_credit_rate_reduction_amount: 998.64
+    nyc_school_tax_credit: 998.64
+
+- name: Income just over $500,000 denies the rate reduction amount although city taxable income is under $500,000.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 449_001
+        social_security_retirement: 60_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NY
+        in_nyc: true
+  output:
+    adjusted_gross_income: 500_001
+    nyc_school_credit_income: 500_001
+    nyc_taxable_income: 441_001
+    nyc_school_tax_credit_rate_reduction_amount_eligible: false
+    nyc_school_tax_credit_rate_reduction_amount: 0
+    nyc_school_tax_credit: 0
+
+- name: Subtracting IRA distributions qualifies a retiree for the fixed amount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 100_000
+        taxable_ira_distributions: 200_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NY
+        in_nyc: true
+  output:
+    adjusted_gross_income: 300_000
+    # 300,000 - 200,000 IRA distributions = 100,000, under the 250,000 limit.
+    nyc_school_credit_income: 100_000
+    # 300,000 - 20,000 pension and annuity exclusion - 8,000 standard
+    # deduction = 272,000.
+    nyc_taxable_income: 272_000
+    nyc_school_tax_credit_fixed_amount: 63
+    # 20.52 + 0.228% x (272,000 - 12,000) = 20.52 + 592.80
+    nyc_school_tax_credit_rate_reduction_amount: 613.32
+    nyc_school_tax_credit: 676.32
+
+- name: City taxable income over $500,000 denies the rate reduction amount although income is under $500,000.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 300_000
+        taxable_ira_distributions: 220_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NY
+        in_nyc: true
+  output:
+    adjusted_gross_income: 520_000
+    nyc_school_credit_income: 300_000
+    # 520,000 - 8,000 standard deduction = 512,000.
+    nyc_taxable_income: 512_000
+    nyc_school_tax_credit_rate_reduction_amount_eligible: false
+    nyc_school_tax_credit: 0
+
+- name: Joint filers subtract both spouses' IRA and SEP distributions but not a dependent's.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 380_000
+        taxable_sep_distributions: 30_000
+      spouse:
+        age: 45
+        taxable_ira_distributions: 90_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        taxable_ira_distributions: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: NY
+        in_nyc: true
+  output:
+    filing_status: JOINT
+    # 380,000 + 30,000 + 90,000; the dependent's distribution is not in AGI.
+    adjusted_gross_income: 500_000
+    nyc_school_credit_income: 380_000
+    # 500,000 - 16,050 standard deduction - 1,000 dependent exemption.
+    nyc_taxable_income: 482_950
+    nyc_school_tax_credit_fixed_amount_eligible: false
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+    # 0.171% x 21,600 + 0.228% x (482,950 - 21,600) = 36.936 + 1,051.878
+    nyc_school_tax_credit_rate_reduction_amount: 1_088.81
+    nyc_school_tax_credit: 1_088.81

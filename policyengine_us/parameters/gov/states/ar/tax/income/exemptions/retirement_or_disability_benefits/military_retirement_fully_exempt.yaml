@@ -1,0 +1,16 @@
+description: Arkansas fully exempts military retirement pay from income tax if this is true; otherwise military retirement shares the retirement benefits exemption cap with employment-related pensions and IRA distributions.
+values:
+  2015-01-01: false
+  # Act 141 of 2017 exempts military retirement from tax year 2018.
+  2018-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Arkansas military retirement full exemption in effect
+  reference:
+    - title: Arkansas 2016 Individual Income Tax Instructions, Line 9A (enter U.S. military retirement on Line 17A) and Line 17A ($6,000 exemption)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2016.pdf#page=12
+    - title: Arkansas 2017 Individual Income Tax Instructions, Additional Information for Tax Year 2018 (Military Retirement Exemption, Act 141 of 2017)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/AR1000FandAR1000NRInstructions.pdf#page=5
+    - title: Arkansas Act 141 of 2017
+      href: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2017R%2FPublic%2F&file=141.pdf&ddBienniumSession=2017%2F2017R

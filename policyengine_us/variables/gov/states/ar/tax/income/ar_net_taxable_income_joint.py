@@ -8,7 +8,7 @@ class ar_net_taxable_income_joint(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2024_AR1000F_and_AR1000NR_Instructions.pdf",
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2024_AR1000F_and_AR1000NR_Instructions.pdf",
         "https://law.justia.com/codes/arkansas/title-26/subtitle-5/chapter-51/subchapter-5/section-26-51-501/",
     )
     defined_for = StateCode.AR
@@ -22,7 +22,9 @@ class ar_net_taxable_income_joint(Variable):
         # is built in, so use AGI instead of taxable income.
         agi = person("ar_agi_joint", period)
         is_head = person("is_tax_unit_head", period)
-        total_agi = is_head * person.tax_unit.sum(agi)
+        # A spouse's loss can make the joint total negative; the tax base
+        # cannot be.
+        total_agi = is_head * max_(person.tax_unit.sum(agi), 0)
         return where(
             uses_low_income_tax_tables,
             total_agi,

@@ -8,7 +8,7 @@ class ms_529_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://law.justia.com/codes/mississippi/2022/title-27/chapter-7/article-1/section-27-7-18/",
+        "https://billstatus.ls.state.ms.us/documents/2017/pdf/SB/2300-2399/SB2311SG.pdf#page=53",
         "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100251%202.pdf#page=12",
     )
     defined_for = StateCode.MS

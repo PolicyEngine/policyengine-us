@@ -38,14 +38,16 @@
   output:
     az_property_tax_credit_agi: 25_000
 
-- name: Capped at zero when Social Security exceeds other income
+- name: Negative when losses leave other income below taxable Social Security
   period: 2024
   input:
     state_code: AZ
     adjusted_gross_income: 5_000
     tax_unit_taxable_social_security: 6_000
   output:
-    az_property_tax_credit_agi: 0
+    # $5,000 - $6,000 = -$1,000. Not floored: Form 140PTC line J can be
+    # negative, and az_property_tax_credit uses zero only for the schedules.
+    az_property_tax_credit_agi: -1_000
 
 - name: Combined income types with Social Security exclusion
   period: 2024
@@ -56,3 +58,49 @@
   output:
     # $22,250 - $4,250 = $18,000
     az_property_tax_credit_agi: 18_000
+
+# A.A.C. R15-2C-502(C)(3): each member's net capital loss is limited to
+# $1,500, in place of federal AGI's $3,000 limit per return.
+- name: Federal capital loss limit is replaced by the 1,500 member limit
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 10_000
+        long_term_capital_gains: -5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Federal AGI: 10,000 - 3,000 = 7,000.
+    adjusted_gross_income: 7_000
+    # Form 140PTC line A 10,000 + line D (1,500) = 8,500.
+    az_property_tax_credit_agi: 8_500
+
+- name: A dependent's capital loss is left to dependent income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 3_000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        long_term_capital_gains: -2_500
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: AZ
+  output:
+    # Only the head's line A wages. The dependent's line D (1,500) is in
+    # az_property_tax_credit_dependent_income.
+    az_property_tax_credit_agi: 3_000

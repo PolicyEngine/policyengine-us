@@ -1,0 +1,415 @@
+# Court-supervision route for sd_cca_eligible_child (ARSD 67:47:01:03(4);
+# Policy Manual 4.3, p.18): a child under court supervision is eligible under
+# 18, or under 19 if enrolled in school. is_in_k12_school is imputed only
+# through 17, so age-18 cases set a school input explicitly. The program's
+# parameters start 2026-08-01, so cases use 2027-01. Court status does not
+# waive the reason-for-care, income, activity, or immigration requirements.
+- name: Case 1, court supervision extends the age limit to under 18 without school facts.
+  period: 2027-01
+  input:
+    state_code:
+      2027: [SD, SD, SD, SD, SD, SD]
+    age:
+      2027: [12, 13, 17, 18, 19, 40]
+    is_under_court_supervision:
+      2027: [true, true, true, true, true, true]
+    meets_ccdf_activity_test:
+      2027: [true, true, true, true, true, true]
+  output:
+    sd_cca_eligible_child: [true, true, true, false, false, false]
+
+- name: Case 2, a supervised 17-year-old not in school is eligible under the under-18 limit.
+  period: 2027-01
+  input:
+    state_code:
+      2027: SD
+    age:
+      2027: 17
+    is_under_court_supervision:
+      2027: true
+    is_in_k12_school:
+      2027: false
+    meets_ccdf_activity_test:
+      2027: true
+  output:
+    sd_cca_eligible_child: true
+
+- name: Case 3, supervised 18-year-old in secondary school is eligible.
+  period: 2027-01
+  input:
+    state_code:
+      2027: SD
+    age:
+      2027: 18
+    is_under_court_supervision:
+      2027: true
+    is_in_secondary_school:
+      2027: true
+    meets_ccdf_activity_test:
+      2027: true
+  output:
+    sd_cca_eligible_child: true
+
+- name: Case 4, supervised 18-year-old flagged through the K-12 input is eligible.
+  period: 2027-01
+  input:
+    state_code:
+      2027: SD
+    age:
+      2027: 18
+    is_under_court_supervision:
+      2027: true
+    is_in_k12_school:
+      2027: true
+    meets_ccdf_activity_test:
+      2027: true
+  output:
+    sd_cca_eligible_child: true
+
+- name: Case 5, a 19-year-old student under court supervision is too old.
+  period: 2027-01
+  input:
+    state_code:
+      2027: SD
+    age:
+      2027: 19
+    is_under_court_supervision:
+      2027: true
+    is_in_secondary_school:
+      2027: true
+    meets_ccdf_activity_test:
+      2027: true
+  output:
+    sd_cca_eligible_child: false
+
+- name: Case 6, an 18-year-old student incapable of self-care is also eligible.
+  period: 2027-01
+  input:
+    state_code:
+      2027: SD
+    age:
+      2027: 18
+    is_disabled:
+      2027: true
+    is_in_secondary_school:
+      2027: true
+    meets_ccdf_activity_test:
+      2027: true
+  output:
+    sd_cca_eligible_child: true
+
+- name: Case 7, court supervision does not replace the reason for care.
+  period: 2027-01
+  input:
+    state_code:
+      2027: SD
+    age:
+      2027: 17
+    is_under_court_supervision:
+      2027: true
+    sd_cca_activity_eligible: false
+  output:
+    sd_cca_eligible_child: false
+
+- name: Case 8, court supervision does not bypass the citizen or permanent resident requirement.
+  period: 2027-01
+  input:
+    state_code:
+      2027: [SD, SD, SD]
+    age:
+      2027: [17, 17, 17]
+    is_under_court_supervision:
+      2027: [true, true, true]
+    meets_ccdf_activity_test:
+      2027: [true, true, true]
+    immigration_status:
+      2027: [CITIZEN, LEGAL_PERMANENT_RESIDENT, REFUGEE]
+  output:
+    sd_cca_eligible_child: [true, true, false]
+
+# Monthly expenses of $100 are below the school-age rate, so the payment is
+# capped at the $100 charge.
+- name: Case 9, supervised 17-year-old receives child-care benefit through the full pipeline.
+  period: 2027-01
+  absolute_error_margin: 0.02
+  input:
+    people:
+      person1:
+        age:
+          2027: 35
+        employment_income:
+          2027: 12_000
+        weekly_hours_worked_before_lsr:
+          2027: 25
+      person2:
+        age:
+          2027: 17
+        is_tax_unit_dependent:
+          2027: true
+        is_in_k12_school:
+          2027: true
+        childcare_hours_per_week:
+          2027: 30
+        childcare_hours_per_day:
+          2027: 6
+        childcare_days_per_week:
+          2027: 5
+        childcare_attending_days_per_month:
+          2027: 20
+        pre_subsidy_childcare_expenses:
+          2027: 1_200
+        is_under_court_supervision:
+          2027: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses:
+          2027: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2027: SD
+        county_str:
+          2027: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_eligible_child: [false, true]
+    sd_cca_eligible: true
+    sd_cca: 100
+
+- name: Case 10, supervised 18-year-old student receives the same benefit.
+  # An 18-year-old is a non-child adult, so the head/spouse roles are set
+  # explicitly to keep the parent as the only caretaker.
+  period: 2027-01
+  absolute_error_margin: 0.02
+  input:
+    people:
+      person1:
+        age:
+          2027: 35
+        is_tax_unit_head_or_spouse:
+          2027: true
+        employment_income:
+          2027: 12_000
+        weekly_hours_worked_before_lsr:
+          2027: 25
+      person2:
+        age:
+          2027: 18
+        is_tax_unit_dependent:
+          2027: true
+        is_tax_unit_head_or_spouse:
+          2027: false
+        is_in_secondary_school:
+          2027: true
+        childcare_hours_per_week:
+          2027: 30
+        childcare_hours_per_day:
+          2027: 6
+        childcare_days_per_week:
+          2027: 5
+        childcare_attending_days_per_month:
+          2027: 20
+        pre_subsidy_childcare_expenses:
+          2027: 1_200
+        is_under_court_supervision:
+          2027: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses:
+          2027: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2027: SD
+        county_str:
+          2027: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_eligible_child: [false, true]
+    sd_cca_eligible: true
+    sd_cca: 100
+
+- name: Case 11, court supervision does not waive the income requirement.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age:
+          2027: 35
+        employment_income:
+          2027: 500_000
+        weekly_hours_worked_before_lsr:
+          2027: 25
+      person2:
+        age:
+          2027: 17
+        is_tax_unit_dependent:
+          2027: true
+        is_in_k12_school:
+          2027: true
+        childcare_hours_per_week:
+          2027: 30
+        childcare_hours_per_day:
+          2027: 6
+        childcare_days_per_week:
+          2027: 5
+        childcare_attending_days_per_month:
+          2027: 20
+        pre_subsidy_childcare_expenses:
+          2027: 1_200
+        is_under_court_supervision:
+          2027: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses:
+          2027: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2027: SD
+        county_str:
+          2027: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_income_eligible: false
+    sd_cca: 0
+
+- name: Case 12, court supervision does not waive the parent activity requirement.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age:
+          2027: 35
+        employment_income:
+          2027: 0
+        weekly_hours_worked_before_lsr:
+          2027: 0
+      person2:
+        age:
+          2027: 17
+        is_tax_unit_dependent:
+          2027: true
+        is_in_k12_school:
+          2027: true
+        childcare_hours_per_week:
+          2027: 30
+        childcare_hours_per_day:
+          2027: 6
+        childcare_days_per_week:
+          2027: 5
+        childcare_attending_days_per_month:
+          2027: 20
+        pre_subsidy_childcare_expenses:
+          2027: 1_200
+        is_under_court_supervision:
+          2027: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses:
+          2027: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2027: SD
+        county_str:
+          2027: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_activity_eligible: false
+    sd_cca: 0
+
+- name: Case 13, eligible supervised child without care receives zero.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age:
+          2027: 35
+        employment_income:
+          2027: 12_000
+        weekly_hours_worked_before_lsr:
+          2027: 25
+      person2:
+        age:
+          2027: 17
+        is_tax_unit_dependent:
+          2027: true
+        is_in_k12_school:
+          2027: true
+        childcare_hours_per_week:
+          2027: 0
+        childcare_hours_per_day:
+          2027: 0
+        childcare_days_per_week:
+          2027: 0
+        childcare_attending_days_per_month:
+          2027: 0
+        pre_subsidy_childcare_expenses:
+          2027: 0
+        is_under_court_supervision:
+          2027: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses:
+          2027: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2027: SD
+        county_str:
+          2027: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_eligible: true
+    sd_cca: 0
+
+- name: Case 14, court supervision is specific to the child in a mixed household.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age:
+          2027: 35
+        is_under_court_supervision:
+          2027: true
+      person2:
+        age:
+          2027: 17
+        is_under_court_supervision:
+          2027: true
+      person3:
+        age:
+          2027: 17
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test:
+          2027: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2027: SD
+  output:
+    sd_cca_eligible_child: [false, true, false]

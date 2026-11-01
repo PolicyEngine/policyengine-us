@@ -1,49 +1,42 @@
 from policyengine_us.model_api import *
 
 
-PERSON_LEVEL_MEDICAID_AGI_ALDS = [
-    "self_employment_tax_ald_person",
-    "self_employed_health_insurance_ald_person",
-    "self_employed_pension_contribution_ald_person",
-]
-
-TAX_UNIT_AGI_ALDS_WITH_PERSON_LEVEL_EQUIVALENTS = (
-    "self_employment_tax_ald",
-    "self_employed_health_insurance_ald",
-    "self_employed_pension_contribution_ald",
-)
-
-
 class medicaid_adjusted_gross_income_person(Variable):
     value_type = float
     entity = Person
     label = "Federal adjusted gross income for Medicaid MAGI household rules"
     unit = USD
+    documentation = (
+        "Each person's AGI for Medicaid MAGI-based income: their own gross "
+        "income less their own above-the-line deductions "
+        "(above_the_line_deductions_person). On a joint return a deduction "
+        "that belongs to one spouse, such as their IRA deduction, lowers only "
+        "that spouse's amount. A business loss is divided between the spouses "
+        "as loss_ald_person divides it (see that variable), so it can lower "
+        "both spouses' amounts. The head's and spouse's amounts add up to the "
+        "return's AGI. "
+        "A tax unit dependent's amount is "
+        "their own income less their own person-level deductions, alimony "
+        "paid included; the dependent's own business and capital losses are "
+        "not modeled. It can be negative; "
+        "medicaid_household_income floors the household's total, not each "
+        "person's amount."
+    )
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/62"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/62",
+        "https://www.law.cornell.edu/cfr/text/42/435.603#e",
+    )
 
     def formula(person, period, parameters):
         gross_income = person("medicaid_irs_gross_income", period)
-        ald_sum_person = add(person, period, PERSON_LEVEL_MEDICAID_AGI_ALDS)
-        all_alds = parameters(period).gov.irs.ald.deductions
-        other_alds = [
-            ald
-            for ald in all_alds
-            if ald not in TAX_UNIT_AGI_ALDS_WITH_PERSON_LEVEL_EQUIVALENTS
-        ]
-        ald_sum_taxunit = add(person.tax_unit, period, other_alds)
-        filing_status = person.tax_unit("filing_status", period)
-        frac = where(
-            filing_status == filing_status.possible_values.JOINT,
-            0.5,
-            1.0,
-        )
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        shared_ald = head_or_spouse * ald_sum_taxunit * frac
-        agi = gross_income - ald_sum_person - shared_ald
+        deductions = person("above_the_line_deductions_person", period)
+        agi = gross_income - deductions
 
         if parameters(period).gov.contrib.ubi_center.basic_income.taxable:
             basic_income = person.tax_unit("basic_income", period)
-            agi += head_or_spouse * basic_income * frac
+            # Divided equally between the head and spouse, as in
+            # adjusted_gross_income_person.
+            agi += basic_income * filer_share(person, period, 0 * basic_income)
 
         return agi

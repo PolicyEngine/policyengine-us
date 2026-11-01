@@ -1,0 +1,326 @@
+# Earned income for the Maryland poverty level credit is § 32(c)(2) earned
+# income (Md. Code, Tax-General § 10-709(a)(3)(ii), (c)(2), (d)(2)).
+# Expected values are NBER TAXSIM `taxsimtest` output, identical in builds
+# cdate-20260521 and cd2026090910 (Maryland `siitax`, which is state-only).
+# The "General/Food/Low Inc crd" line of TAXSIM's idtl=5 output is its
+# poverty level credit.
+
+- name: Self-employment loss gives no credit instead of a negative one (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        self_employment_income: -10_000
+        taxable_interest_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    # TAXSIM: siitax 185.00 = staxbc 185.00, low-income credit 0.00.
+    # Eligible: Worksheet 18B line 4 is 10,000, below line 3 (15,060).
+    is_eligible_md_poverty_line_credit: true
+    md_poverty_line_credit: 0
+    md_income_tax: 185
+
+- name: Self-employment loss gives no credit (2021)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        self_employment_income: -10_000
+        taxable_interest_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    # TAXSIM: siitax 196.88 = staxbc 196.88, low-income credit 0.00. For
+    # 2021 TAXSIM's credit reaches siitax only through a refundable path, so
+    # the credit line is the check.
+    md_poverty_line_credit: 0
+    md_income_tax: 196.88
+
+- name: Self-employment loss gives no credit (2022)
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        self_employment_income: -10_000
+        taxable_interest_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    # TAXSIM: siitax 194.50 = staxbc 194.50.
+    md_poverty_line_credit: 0
+    md_income_tax: 194.5
+
+- name: Self-employment loss gives no credit (2023)
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        self_employment_income: -10_000
+        taxable_interest_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    # TAXSIM: siitax 189.75 = staxbc 189.75.
+    md_poverty_line_credit: 0
+    md_income_tax: 189.75
+
+- name: Self-employment loss gives no credit (2025)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        self_employment_income: -10_000
+        taxable_interest_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    # TAXSIM: siitax 111.38 = staxbc 111.38.
+    md_poverty_line_credit: 0
+    md_income_tax: 111.38
+
+- name: Wages below a self-employment loss give no credit (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 5_000
+        self_employment_income: -10_000
+        taxable_interest_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    # TAXSIM: siitax 401.13 = staxbc 401.13, low-income credit 0.00.
+    # § 32(c)(2) nets the loss against wages (26 CFR 1.32-2(c)(2)). Form 502
+    # Worksheet 18B line 2 would instead exclude the loss, giving 5,000 and a
+    # $250 credit.
+    md_poverty_line_credit: 0
+    md_income_tax: 401.13
+
+- name: A farm loss is netted against wages like other self-employment (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 5_000
+        farm_operations_income: -10_000
+        taxable_interest_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    # § 1402(a) net earnings cover "any trade or business", and the 2024
+    # EIC Worksheet B, Part 2 (filers not required to file Schedule SE),
+    # line 2a takes "net farm profit or (loss)". TAXSIM
+    # has one self-employment input, so this reuses the record above
+    # (pwages 5,000, psemp -10,000, intrec 20,000): siitax 401.13,
+    # low-income credit 0.00.
+    md_poverty_line_credit: 0
+    md_income_tax: 401.13
+
+- name: A spouse's self-employment loss is netted against wages (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 4_000
+        taxable_interest_income: 8_000
+      spouse:
+        is_tax_unit_spouse: true
+        age: 40
+        self_employment_income: -2_000
+        taxable_interest_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MD
+  output:
+    # TAXSIM: low-income credit 100.00 = 5% x (4,000 - 2,000);
+    # siitax 168.13 = staxbc 268.13 - 100.00.
+    eitc_earned_income: 2_000
+    md_poverty_line_credit: 100
+    md_income_tax: 168.13
+
+- name: Self-employment earnings are net of the section 164(f) deduction (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        self_employment_income: 3_000
+        taxable_interest_income: 11_700
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    # TAXSIM: low-income credit 139.40 = 5% x 2,788.06 (3,000 less half of
+    # self-employment tax); siitax 241.05 = staxbc 380.46 - 139.40.
+    md_poverty_line_credit: 139.40
+    md_income_tax: 241.05
+
+- name: Joint self-employment earnings are net of the section 164(f) deduction (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        self_employment_income: 4_000
+        taxable_interest_income: 8_000
+      spouse:
+        is_tax_unit_spouse: true
+        age: 40
+        taxable_interest_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MD
+  output:
+    # TAXSIM: low-income credit 185.87 = 5% x 3,717.41;
+    # siitax 163.83 = staxbc 349.70 - 185.87.
+    md_poverty_line_credit: 185.87
+    md_income_tax: 163.83
+
+- name: Self-employment income above the poverty level can still qualify after the section 164(f) deduction (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        self_employment_income: 16_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    # Earned income 14,869.64 (16,000 less half of self-employment tax) is
+    # below the 15,060 one-person poverty level. TAXSIM: siitax 0.00 with a
+    # nonzero low-income credit in both builds; staxbc 395.86. Form 502
+    # Worksheet 18B would enter net profit of 16,000 on line 2 and deny the
+    # credit.
+    is_eligible_md_poverty_line_credit: true
+    md_income_tax_before_credits: 395.86
+    md_income_tax: 0
+
+- name: Wages above the poverty level do not qualify (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 16_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    # TAXSIM: low-income credit 0.00.
+    is_eligible_md_poverty_line_credit: false
+    md_poverty_line_credit: 0

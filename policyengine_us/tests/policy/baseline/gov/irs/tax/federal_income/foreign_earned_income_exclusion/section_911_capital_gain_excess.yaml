@@ -1,0 +1,40 @@
+# 26 U.S.C. 911(f)(2)(A): "the taxpayer's net capital gain exceeds taxable
+# income (hereafter in this subparagraph referred to as the capital gain
+# excess)". Worksheet footnote: line 4 of the Qualified Dividends and Capital
+# Gain Tax Worksheet (line 10 of the Schedule D Tax Worksheet) less Form 1040
+# line 15.
+- name: Net capital gain above taxable income is the excess
+  period: 2025
+  input:
+    foreign_earned_income_exclusion: 100_000
+    net_capital_gain: 50_000
+    taxable_income: 34_250
+  output:
+    section_911_capital_gain_excess: 15_750
+
+- name: No excess when taxable income covers the gain
+  period: 2025
+  input:
+    foreign_earned_income_exclusion: 100_000
+    net_capital_gain: 30_000
+    taxable_income: 40_000
+  output:
+    section_911_capital_gain_excess: 0
+
+- name: No excess without an exclusion
+  period: 2025
+  input:
+    foreign_earned_income_exclusion: 0
+    net_capital_gain: 50_000
+    taxable_income: 34_250
+  output:
+    section_911_capital_gain_excess: 0
+
+- name: With no taxable income the whole gain is the excess
+  period: 2025
+  input:
+    foreign_earned_income_exclusion: 130_000
+    net_capital_gain: 3_000
+    taxable_income: 0
+  output:
+    section_911_capital_gain_excess: 3_000

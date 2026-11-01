@@ -305,3 +305,107 @@
   output:
     # child: 0.88 x 15,650; parents: 0.88 x 21,150
     medicaid_optional_senior_or_disabled_income_limit: [13_772, 18_612, 18_612, 13_772]
+
+# Montana has not elected the poverty-level group of 42 U.S.C. 1396a(m). Its
+# categorically needy income standards for aged, blind, and disabled
+# Medicaid are the SSI payment amounts: $994 a month for an individual and
+# $1,491 for a couple living in the community from January 2026 (DPHHS
+# Medicaid manual ABD 008). They are not a share of the poverty guideline:
+# 75% of the 2026 one-person guideline would be $11,970 a year and 75% of
+# the two-person guideline $16,230.
+- name: Montana single person gets the 2026 SSI individual rate
+  period: 2026
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # 994 x 12
+    medicaid_optional_senior_or_disabled_income_limit: [11_928]
+
+- name: Montana married couple gets the 2026 SSI couple rate
+  period: 2026
+  input:
+    people:
+      person1: {}
+      person2: {}
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # 1,491 x 12
+    medicaid_optional_senior_or_disabled_income_limit: [17_892, 17_892]
+
+# The standard moves with the SSI rate each January, not with the poverty
+# guideline: $943 a month in 2024, when 75% of the one-person guideline
+# was $11,295 a year.
+- name: Montana single person gets the 2024 SSI individual rate
+  period: 2024
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # 943 x 12
+    medicaid_optional_senior_or_disabled_income_limit: [11_316]
+
+# Colorado, Iowa, Louisiana, Ohio, Oregon, and Washington set the same
+# standard in their own rules (cited in uses_ssi_federal_benefit_rate.yaml).
+# Ohio defines the "couple income standard" as "the current supplemental
+# security income (SSI) benefit rate for a couple" (OAC 5160:1-3-03.5), and
+# Washington's standards "are the same as the SSI payment standards for
+# single persons and couples" (WAC 182-512-0010).
+- name: Ohio married couple gets the 2026 SSI couple rate
+  period: 2026
+  input:
+    people:
+      person1: {}
+      person2: {}
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # 1,491 x 12
+    medicaid_optional_senior_or_disabled_income_limit: [17_892, 17_892]
+
+- name: Washington single person gets the 2025 SSI individual rate
+  period: 2025
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # 967 x 12
+    medicaid_optional_senior_or_disabled_income_limit: [11_604]

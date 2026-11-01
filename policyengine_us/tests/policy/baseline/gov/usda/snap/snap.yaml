@@ -362,3 +362,55 @@
     meets_snap_work_requirements_person: [false]
     meets_snap_work_requirements: false
     snap_unit_size: 0
+
+- name: Case 11, Texas family of three with net income of exactly 50 cents rounds up before the expected contribution.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        # Parent of children under 6: exempt from the general work
+        # requirement, and ABAWD rules are skipped with a dependent child.
+        age:
+          2026: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+      person2:
+        age:
+          2026: 5
+        monthly_age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age:
+          2026: 3
+        monthly_age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # $1,301.45 - $760.95 = $540.50, which 7 CFR 273.10(e)(1)(ii)(A)
+        # rounds up to $541. In single precision the difference is
+        # $540.49994, which must not round down to $540.
+        snap_gross_income: 1_301.45
+        snap_deductions: 760.95
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    snap_unit_size: 3
+    # $541 is below the FY 2026 three-person net standard of $2,221, and
+    # $1,301.45 is below the $2,888 gross standard.
+    snap_net_income: 541
+    is_snap_eligible: true
+    # FY 2026 48-state maximum allotment for three people.
+    snap_max_allotment: 785
+    # 30% x $541 = $162.30, rounded up to $163 under
+    # 7 CFR 273.10(e)(2)(ii)(A)(1).
+    snap_expected_contribution: 163
+    # $785 - $163 = $622. Rounding net income down to $540 would give a
+    # $162 contribution and a $623 allotment.
+    snap: 622

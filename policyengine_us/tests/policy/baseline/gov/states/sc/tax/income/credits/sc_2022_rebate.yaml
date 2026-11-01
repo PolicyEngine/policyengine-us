@@ -74,3 +74,57 @@
     state_code: SC
   output:
     sc_2022_rebate: 800
+
+- name: No rebate before the one-time 2021 program
+  period: 2020
+  input:
+    sc_income_tax_before_non_refundable_credits: 1_200
+    state_code: SC
+  output:
+    sc_2022_rebate: 0
+
+- name: No rebate after the one-time 2021 program
+  period: 2022
+  input:
+    sc_income_tax_before_non_refundable_credits: 1_200
+    state_code: SC
+  output:
+    sc_2022_rebate: 0
+
+- name: Rebate does not reach South Carolina non-refundable credits or income tax in 2020
+  period: 2020
+  input:
+    sc_income_tax_before_non_refundable_credits: 1_200
+    sc_cdcc: 0
+    sc_eitc: 0
+    sc_two_wage_earner_credit: 0
+    sc_tuition_credit: 0
+    state_code: SC
+  output:
+    # min(1,200 remaining tax, 0 rebate cap in 2020) = 0.
+    sc_2022_rebate: 0
+    # Backdated 2021 list: 0 cdcc + 0 eitc + 0 two-wage-earner + 0 rebate = 0.
+    sc_non_refundable_credits: 0
+    # max(1,200 - 0 non-refundable credits, 0) = 1,200.
+    sc_income_tax_before_refundable_credits: 1_200
+    # 1,200 - 0 tuition credit = 1,200.
+    sc_income_tax: 1_200
+
+- name: Rebate reaches South Carolina non-refundable credits and income tax in 2021
+  period: 2021
+  input:
+    sc_income_tax_before_non_refundable_credits: 1_200
+    sc_cdcc: 0
+    sc_eitc: 0
+    sc_two_wage_earner_credit: 0
+    sc_tuition_credit: 0
+    state_code: SC
+  output:
+    # min(1,200 remaining tax, 800 rebate cap) = 800.
+    sc_2022_rebate: 800
+    # 0 cdcc + 0 eitc + 0 two-wage-earner + 800 rebate = 800.
+    sc_non_refundable_credits: 800
+    # max(1,200 - 800 non-refundable credits, 0) = 400.
+    sc_income_tax_before_refundable_credits: 400
+    # 400 - 0 tuition credit = 400.
+    sc_income_tax: 400

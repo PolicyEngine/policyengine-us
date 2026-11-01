@@ -42,7 +42,7 @@ class ar_medicaid_work_requirement_eligible(Variable):
             is_dependent & (is_disabled | is_blind | is_incapable_of_self_care)
         )
         receives_unemployment_compensation = (
-            person("unemployment_compensation", period) > 0
+            person("total_unemployment_compensation", period) > 0
         )
         eligible_disabled = is_disabled | is_blind | is_incapable_of_self_care
 

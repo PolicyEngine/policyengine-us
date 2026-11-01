@@ -1,0 +1,29 @@
+description: Nevada extends Child Care and Development Program age eligibility to children under court supervision up to the special needs child age limit if this is true.
+values:
+  # The FFY 2014-2015 plan (effective October 1, 2013) declines the 45 CFR
+  # 98.20(a)(1)(ii) court-supervision option; the FFY 2016-2018 plan (effective
+  # June 1, 2016) elects it with an upper age of 18; the FFY 2019-2021 and FFY
+  # 2022-2024 plans decline it; the FFY 2025-2027 plan elects it again with an
+  # upper age of 18.
+  2013-10-01: false
+  2016-06-01: true
+  2018-10-01: false
+  2024-10-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Nevada CCDP court-supervision age extension
+  reference:
+    - title: 45 CFR 98.20(a)(1)(ii)
+      href: https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-A/part-98/subpart-C/section-98.20#p-98.20(a)(1)(ii)
+    - title: Nevada CCDF Plan FFY 2014-2015, Section 2.3.2(c)
+      href: https://web.archive.org/web/20151018094250id_/https://dwss.nv.gov/pdf/CC_StatePlan-2014.pdf#page=33
+    - title: Nevada CCDF Plan FFY 2016-2018, Section 3.1.1(c), upper age 18
+      href: https://web.archive.org/web/20190115130712id_/https://www.acf.hhs.gov/sites/default/files/occ/nevada_stplan_pdf_2016.pdf#page=60
+    - title: Nevada CCDF Plan FFY 2019-2021, Section 3.1.1(c)
+      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/CC_StatePlan-2019.pdf#page=90
+    - title: Nevada CCDF Plan FFY 2022-2024, Section 3.1.1(c)
+      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/Child_Care_Plan_FFY_2022-2024.pdf#page=65
+    - title: Nevada CCDF Plan FFY 2025-2027, Section 2.2.1(c), upper age 18.00
+      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/ACF-118_CCDF_FFY_2025-2027_For_Nevada__3.pdf#page=18

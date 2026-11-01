@@ -8,3 +8,104 @@
   output:
     eitc: 0
     federal_eitc_without_age_minimum: 382.50
+
+- name: Childless filer aged 65 fails the federal maximum age, which Maryland keeps (taxsim 1260)
+  period: 2025
+  input:
+    age: 65
+    employment_income: 7_542.86
+    social_security_retirement: 12_360.58
+    state_code: MD
+  output:
+    # Md. Code Tax-Gen. § 10-704(c)(3)(i) disregards only the minimum age in
+    # IRC § 32(c)(1)(A)(ii)(II) ("attained age 25 but not attained age 65").
+    # TaxAct's 2025 Form 502 EIC worksheets show $0.
+    eitc: 0
+    federal_eitc_without_age_minimum: 0
+    md_eitc: 0
+
+- name: Childless filer aged 64 is within the federal age limits
+  period: 2025
+  input:
+    age: 64
+    employment_income: 7_000
+    state_code: MD
+  output:
+    # 7.65% x $7,000 = $535.50, below the $649 maximum (Rev. Proc. 2024-40).
+    eitc: 535.50
+    federal_eitc_without_age_minimum: 535.50
+
+- name: Childless filer aged 70 in 2021, when federal law had no maximum age
+  period: 2021
+  input:
+    age: 70
+    employment_income: 5_000
+    state_code: MD
+  output:
+    # IRC § 32(n)(2) removed the maximum age for 2021: 15.3% x $5,000 = $765.
+    eitc: 765
+    federal_eitc_without_age_minimum: 765
+
+- name: Married childless couple both aged 65 or older gets no Maryland EITC
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 5_000
+      spouse:
+        age: 70
+        employment_income: 5_000
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    families:
+      family:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MD
+  output:
+    eitc: 0
+    federal_eitc_without_age_minimum: 0
+    md_eitc: 0
+
+- name: Married childless couple with one spouse under 65 keeps the Maryland EITC
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 5_000
+      spouse:
+        age: 60
+        employment_income: 5_000
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    families:
+      family:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MD
+  output:
+    # IRC § 32(c)(1)(A)(ii)(II) is met if either spouse is 25-64. 7.65% x
+    # $10,000 exceeds the $649 maximum; AGI is below the $17,730 joint
+    # phase-out start (Rev. Proc. 2024-40).
+    eitc: 649
+    federal_eitc_without_age_minimum: 649

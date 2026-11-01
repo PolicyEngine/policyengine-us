@@ -1,0 +1,1722 @@
+# ARS 43-1072(B) Schedules 1 and 2 (Form 140PTC page 2, identical in
+# 2021-2025): every band edge on both sides, the (A)(3) income limits
+# ("less than" $3,751 living alone and $5,501 living with others), and
+# cents between whole-dollar bands, which stay in the lower band (see the
+# note in each schedule's parameter file). Property taxes paid ($1,000) exceed
+# every table amount, so the credit equals the table amount.
+
+# Schedule 1: ARS 43-1072(B)(1), living alone.
+
+- name: Schedule 1 (living alone), income of $0 gets $502
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 0
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 502
+
+- name: Schedule 1 (living alone), income of $1,750 is the upper edge of the $0-1,750 band ($502)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 1_750
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 502
+
+- name: Schedule 1 (living alone), income of $1,750.50 is between bands and stays in $0-1,750 ($502)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 1_750.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 502
+
+- name: Schedule 1 (living alone), income of $1,751 is the lower edge of the $1,751-1,850 band ($479)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 1_751
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 479
+
+- name: Schedule 1 (living alone), income of $1,850 is the upper edge of the $1,751-1,850 band ($479)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 1_850
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 479
+
+- name: Schedule 1 (living alone), income of $1,850.50 is between bands and stays in $1,751-1,850 ($479)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 1_850.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 479
+
+- name: Schedule 1 (living alone), income of $1,851 is the lower edge of the $1,851-1,950 band ($457)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 1_851
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 457
+
+- name: Schedule 1 (living alone), income of $1,950 is the upper edge of the $1,851-1,950 band ($457)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 1_950
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 457
+
+- name: Schedule 1 (living alone), income of $1,950.50 is between bands and stays in $1,851-1,950 ($457)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 1_950.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 457
+
+- name: Schedule 1 (living alone), income of $1,951 is the lower edge of the $1,951-2,050 band ($435)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 1_951
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 435
+
+- name: Schedule 1 (living alone), income of $2,050 is the upper edge of the $1,951-2,050 band ($435)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_050
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 435
+
+- name: Schedule 1 (living alone), income of $2,050.50 is between bands and stays in $1,951-2,050 ($435)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_050.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 435
+
+- name: Schedule 1 (living alone), income of $2,051 is the lower edge of the $2,051-2,150 band ($412)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_051
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 412
+
+- name: Schedule 1 (living alone), income of $2,150 is the upper edge of the $2,051-2,150 band ($412)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_150
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 412
+
+- name: Schedule 1 (living alone), income of $2,150.50 is between bands and stays in $2,051-2,150 ($412)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_150.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 412
+
+- name: Schedule 1 (living alone), income of $2,151 is the lower edge of the $2,151-2,250 band ($390)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_151
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 390
+
+- name: Schedule 1 (living alone), income of $2,250 is the upper edge of the $2,151-2,250 band ($390)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_250
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 390
+
+- name: Schedule 1 (living alone), income of $2,250.50 is between bands and stays in $2,151-2,250 ($390)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_250.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 390
+
+- name: Schedule 1 (living alone), income of $2,251 is the lower edge of the $2,251-2,350 band ($368)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_251
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 368
+
+- name: Schedule 1 (living alone), income of $2,350 is the upper edge of the $2,251-2,350 band ($368)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_350
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 368
+
+- name: Schedule 1 (living alone), income of $2,350.50 is between bands and stays in $2,251-2,350 ($368)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_350.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 368
+
+- name: Schedule 1 (living alone), income of $2,351 is the lower edge of the $2,351-2,450 band ($345)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_351
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 345
+
+- name: Schedule 1 (living alone), income of $2,450 is the upper edge of the $2,351-2,450 band ($345)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_450
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 345
+
+- name: Schedule 1 (living alone), income of $2,450.50 is between bands and stays in $2,351-2,450 ($345)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_450.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 345
+
+- name: Schedule 1 (living alone), income of $2,451 is the lower edge of the $2,451-2,550 band ($323)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_451
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 323
+
+- name: Schedule 1 (living alone), income of $2,550 is the upper edge of the $2,451-2,550 band ($323)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_550
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 323
+
+- name: Schedule 1 (living alone), income of $2,550.50 is between bands and stays in $2,451-2,550 ($323)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_550.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 323
+
+- name: Schedule 1 (living alone), income of $2,551 is the lower edge of the $2,551-2,650 band ($301)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_551
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 301
+
+- name: Schedule 1 (living alone), income of $2,650 is the upper edge of the $2,551-2,650 band ($301)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_650
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 301
+
+- name: Schedule 1 (living alone), income of $2,650.50 is between bands and stays in $2,551-2,650 ($301)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_650.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 301
+
+- name: Schedule 1 (living alone), income of $2,651 is the lower edge of the $2,651-2,750 band ($279)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_651
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 279
+
+- name: Schedule 1 (living alone), income of $2,750 is the upper edge of the $2,651-2,750 band ($279)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_750
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 279
+
+- name: Schedule 1 (living alone), income of $2,750.50 is between bands and stays in $2,651-2,750 ($279)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_750.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 279
+
+- name: Schedule 1 (living alone), income of $2,751 is the lower edge of the $2,751-2,850 band ($256)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_751
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 256
+
+- name: Schedule 1 (living alone), income of $2,850 is the upper edge of the $2,751-2,850 band ($256)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_850
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 256
+
+- name: Schedule 1 (living alone), income of $2,850.50 is between bands and stays in $2,751-2,850 ($256)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_850.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 256
+
+- name: Schedule 1 (living alone), income of $2,851 is the lower edge of the $2,851-2,950 band ($234)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_851
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 234
+
+- name: Schedule 1 (living alone), income of $2,950 is the upper edge of the $2,851-2,950 band ($234)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_950
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 234
+
+- name: Schedule 1 (living alone), income of $2,950.50 is between bands and stays in $2,851-2,950 ($234)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_950.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 234
+
+- name: Schedule 1 (living alone), income of $2,951 is the lower edge of the $2,951-3,050 band ($212)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_951
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 212
+
+- name: Schedule 1 (living alone), income of $3,050 is the upper edge of the $2,951-3,050 band ($212)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_050
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 212
+
+- name: Schedule 1 (living alone), income of $3,050.50 is between bands and stays in $2,951-3,050 ($212)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_050.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 212
+
+- name: Schedule 1 (living alone), income of $3,051 is the lower edge of the $3,051-3,150 band ($189)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_051
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 189
+
+- name: Schedule 1 (living alone), income of $3,150 is the upper edge of the $3,051-3,150 band ($189)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_150
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 189
+
+- name: Schedule 1 (living alone), income of $3,150.50 is between bands and stays in $3,051-3,150 ($189)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_150.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 189
+
+- name: Schedule 1 (living alone), income of $3,151 is the lower edge of the $3,151-3,250 band ($167)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_151
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 167
+
+- name: Schedule 1 (living alone), income of $3,250 is the upper edge of the $3,151-3,250 band ($167)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_250
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 167
+
+- name: Schedule 1 (living alone), income of $3,250.50 is between bands and stays in $3,151-3,250 ($167)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_250.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 167
+
+- name: Schedule 1 (living alone), income of $3,251 is the lower edge of the $3,251-3,350 band ($145)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_251
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 145
+
+- name: Schedule 1 (living alone), income of $3,350 is the upper edge of the $3,251-3,350 band ($145)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_350
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 145
+
+- name: Schedule 1 (living alone), income of $3,350.50 is between bands and stays in $3,251-3,350 ($145)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_350.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 145
+
+- name: Schedule 1 (living alone), income of $3,351 is the lower edge of the $3,351-3,450 band ($123)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_351
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 123
+
+- name: Schedule 1 (living alone), income of $3,450 is the upper edge of the $3,351-3,450 band ($123)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_450
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 123
+
+- name: Schedule 1 (living alone), income of $3,450.50 is between bands and stays in $3,351-3,450 ($123)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_450.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 123
+
+- name: Schedule 1 (living alone), income of $3,451 is the lower edge of the $3,451-3,550 band ($100)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_451
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 100
+
+- name: Schedule 1 (living alone), income of $3,550 is the upper edge of the $3,451-3,550 band ($100)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_550
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 100
+
+- name: Schedule 1 (living alone), income of $3,550.50 is between bands and stays in $3,451-3,550 ($100)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_550.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 100
+
+- name: Schedule 1 (living alone), income of $3,551 is the lower edge of the $3,551-3,650 band ($78)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_551
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 78
+
+- name: Schedule 1 (living alone), income of $3,650 is the upper edge of the $3,551-3,650 band ($78)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_650
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 78
+
+- name: Schedule 1 (living alone), income of $3,650.50 is between bands and stays in $3,551-3,650 ($78)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_650.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 78
+
+- name: Schedule 1 (living alone), income of $3,651 is the lower edge of the $3,651-3,750 band ($56)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_651
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 56
+
+- name: Schedule 1 (living alone), income of $3,750 is the upper edge of the $3,651-3,750 band ($56)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_750
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 56
+
+- name: Schedule 1 (living alone), income of $3,750.50 is between bands and stays in $3,651-3,750 ($56)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_750.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 56
+
+- name: Schedule 1 (living alone), income of $3,750.99 is below the "less than $3,751" limit of (A)(3)(a) ($56)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_750.99
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 56
+
+- name: Schedule 1 (living alone), income of $3,751 is not "less than $3,751" under (A)(3)(a) ($0)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_751
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 0
+
+- name: Schedule 1 (living alone), income of $1,750 is the upper edge of the $0-1,750 band in 2021 ($502)
+  period: 2021
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 1_750
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 502
+
+- name: Schedule 1 (living alone), income of $3,750 is the upper edge of the $3,651-3,750 band in 2021 ($56)
+  period: 2021
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_750
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 56
+
+- name: Schedule 1 (living alone), income of $3,751 is at the limit in 2021 ($0)
+  period: 2021
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_751
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 0
+
+# Schedule 2: ARS 43-1072(B)(2), living with others.
+
+- name: Schedule 2 (living with others), income of $0 gets $502
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 0
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 502
+
+- name: Schedule 2 (living with others), income of $2,500 is the upper edge of the $0-2,500 band ($502)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_500
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 502
+
+- name: Schedule 2 (living with others), income of $2,500.50 is between bands and stays in $0-2,500 ($502)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_500.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 502
+
+- name: Schedule 2 (living with others), income of $2,501 is the lower edge of the $2,501-2,650 band ($479)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_501
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 479
+
+- name: Schedule 2 (living with others), income of $2,650 is the upper edge of the $2,501-2,650 band ($479)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_650
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 479
+
+- name: Schedule 2 (living with others), income of $2,650.50 is between bands and stays in $2,501-2,650 ($479)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_650.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 479
+
+- name: Schedule 2 (living with others), income of $2,651 is the lower edge of the $2,651-2,800 band ($457)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_651
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 457
+
+- name: Schedule 2 (living with others), income of $2,800 is the upper edge of the $2,651-2,800 band ($457)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_800
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 457
+
+- name: Schedule 2 (living with others), income of $2,800.50 is between bands and stays in $2,651-2,800 ($457)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_800.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 457
+
+- name: Schedule 2 (living with others), income of $2,801 is the lower edge of the $2,801-2,950 band ($435)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_801
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 435
+
+- name: Schedule 2 (living with others), income of $2,950 is the upper edge of the $2,801-2,950 band ($435)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_950
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 435
+
+- name: Schedule 2 (living with others), income of $2,950.50 is between bands and stays in $2,801-2,950 ($435)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_950.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 435
+
+- name: Schedule 2 (living with others), income of $2,951 is the lower edge of the $2,951-3,100 band ($412)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_951
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 412
+
+- name: Schedule 2 (living with others), income of $3,100 is the upper edge of the $2,951-3,100 band ($412)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_100
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 412
+
+- name: Schedule 2 (living with others), income of $3,100.50 is between bands and stays in $2,951-3,100 ($412)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_100.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 412
+
+- name: Schedule 2 (living with others), income of $3,101 is the lower edge of the $3,101-3,250 band ($390)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_101
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 390
+
+- name: Schedule 2 (living with others), income of $3,250 is the upper edge of the $3,101-3,250 band ($390)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_250
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 390
+
+- name: Schedule 2 (living with others), income of $3,250.50 is between bands and stays in $3,101-3,250 ($390)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_250.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 390
+
+- name: Schedule 2 (living with others), income of $3,251 is the lower edge of the $3,251-3,400 band ($368)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_251
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 368
+
+- name: Schedule 2 (living with others), income of $3,400 is the upper edge of the $3,251-3,400 band ($368)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_400
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 368
+
+- name: Schedule 2 (living with others), income of $3,400.50 is between bands and stays in $3,251-3,400 ($368)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_400.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 368
+
+- name: Schedule 2 (living with others), income of $3,401 is the lower edge of the $3,401-3,550 band ($345)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_401
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 345
+
+- name: Schedule 2 (living with others), income of $3,550 is the upper edge of the $3,401-3,550 band ($345)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_550
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 345
+
+- name: Schedule 2 (living with others), income of $3,550.50 is between bands and stays in $3,401-3,550 ($345)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_550.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 345
+
+- name: Schedule 2 (living with others), income of $3,551 is the lower edge of the $3,551-3,700 band ($323)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_551
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 323
+
+- name: Schedule 2 (living with others), income of $3,700 is the upper edge of the $3,551-3,700 band ($323)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_700
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 323
+
+- name: Schedule 2 (living with others), income of $3,700.50 is between bands and stays in $3,551-3,700 ($323)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_700.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 323
+
+- name: Schedule 2 (living with others), income of $3,701 is the lower edge of the $3,701-3,850 band ($301)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_701
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 301
+
+- name: Schedule 2 (living with others), income of $3,850 is the upper edge of the $3,701-3,850 band ($301)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_850
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 301
+
+- name: Schedule 2 (living with others), income of $3,850.50 is between bands and stays in $3,701-3,850 ($301)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_850.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 301
+
+- name: Schedule 2 (living with others), income of $3,851 is the lower edge of the $3,851-4,000 band ($279)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 3_851
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 279
+
+- name: Schedule 2 (living with others), income of $4,000 is the upper edge of the $3,851-4,000 band ($279)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_000
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 279
+
+- name: Schedule 2 (living with others), income of $4,000.50 is between bands and stays in $3,851-4,000 ($279)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_000.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 279
+
+- name: Schedule 2 (living with others), income of $4,001 is the lower edge of the $4,001-4,150 band ($256)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_001
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 256
+
+- name: Schedule 2 (living with others), income of $4,150 is the upper edge of the $4,001-4,150 band ($256)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_150
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 256
+
+- name: Schedule 2 (living with others), income of $4,150.50 is between bands and stays in $4,001-4,150 ($256)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_150.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 256
+
+- name: Schedule 2 (living with others), income of $4,151 is the lower edge of the $4,151-4,300 band ($234)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_151
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 234
+
+- name: Schedule 2 (living with others), income of $4,300 is the upper edge of the $4,151-4,300 band ($234)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_300
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 234
+
+- name: Schedule 2 (living with others), income of $4,300.50 is between bands and stays in $4,151-4,300 ($234)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_300.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 234
+
+- name: Schedule 2 (living with others), income of $4,301 is the lower edge of the $4,301-4,450 band ($212)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_301
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 212
+
+- name: Schedule 2 (living with others), income of $4,450 is the upper edge of the $4,301-4,450 band ($212)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_450
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 212
+
+- name: Schedule 2 (living with others), income of $4,450.50 is between bands and stays in $4,301-4,450 ($212)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_450.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 212
+
+- name: Schedule 2 (living with others), income of $4,451 is the lower edge of the $4,451-4,600 band ($189)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_451
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 189
+
+- name: Schedule 2 (living with others), income of $4,600 is the upper edge of the $4,451-4,600 band ($189)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_600
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 189
+
+- name: Schedule 2 (living with others), income of $4,600.50 is between bands and stays in $4,451-4,600 ($189)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_600.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 189
+
+- name: Schedule 2 (living with others), income of $4,601 is the lower edge of the $4,601-4,750 band ($167)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_601
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 167
+
+- name: Schedule 2 (living with others), income of $4,750 is the upper edge of the $4,601-4,750 band ($167)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_750
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 167
+
+- name: Schedule 2 (living with others), income of $4,750.50 is between bands and stays in $4,601-4,750 ($167)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_750.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 167
+
+- name: Schedule 2 (living with others), income of $4,751 is the lower edge of the $4,751-4,900 band ($145)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_751
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 145
+
+- name: Schedule 2 (living with others), income of $4,900 is the upper edge of the $4,751-4,900 band ($145)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_900
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 145
+
+- name: Schedule 2 (living with others), income of $4,900.50 is between bands and stays in $4,751-4,900 ($145)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_900.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 145
+
+- name: Schedule 2 (living with others), income of $4,901 is the lower edge of the $4,901-5,050 band ($123)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 4_901
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 123
+
+- name: Schedule 2 (living with others), income of $5,050 is the upper edge of the $4,901-5,050 band ($123)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 5_050
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 123
+
+- name: Schedule 2 (living with others), income of $5,050.50 is between bands and stays in $4,901-5,050 ($123)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 5_050.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 123
+
+- name: Schedule 2 (living with others), income of $5,051 is the lower edge of the $5,051-5,200 band ($100)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 5_051
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 100
+
+- name: Schedule 2 (living with others), income of $5,200 is the upper edge of the $5,051-5,200 band ($100)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 5_200
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 100
+
+- name: Schedule 2 (living with others), income of $5,200.50 is between bands and stays in $5,051-5,200 ($100)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 5_200.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 100
+
+- name: Schedule 2 (living with others), income of $5,201 is the lower edge of the $5,201-5,350 band ($78)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 5_201
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 78
+
+- name: Schedule 2 (living with others), income of $5,350 is the upper edge of the $5,201-5,350 band ($78)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 5_350
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 78
+
+- name: Schedule 2 (living with others), income of $5,350.50 is between bands and stays in $5,201-5,350 ($78)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 5_350.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 78
+
+- name: Schedule 2 (living with others), income of $5,351 is the lower edge of the $5,351-5,500 band ($56)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 5_351
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 56
+
+- name: Schedule 2 (living with others), income of $5,500 is the upper edge of the $5,351-5,500 band ($56)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 5_500
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 56
+
+- name: Schedule 2 (living with others), income of $5,500.50 is between bands and stays in $5,351-5,500 ($56)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 5_500.50
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 56
+
+- name: Schedule 2 (living with others), income of $5,500.99 is below the "less than $5,501" limit of (A)(3)(b) ($56)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 5_500.99
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 56
+
+- name: Schedule 2 (living with others), income of $5,501 is not "less than $5,501" under (A)(3)(b) ($0)
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 5_501
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 0
+
+- name: Schedule 2 (living with others), income of $2,500 is the upper edge of the $0-2,500 band in 2021 ($502)
+  period: 2021
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 2_500
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 502
+
+- name: Schedule 2 (living with others), income of $5,500 is the upper edge of the $5,351-5,500 band in 2021 ($56)
+  period: 2021
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 5_500
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 56
+
+- name: Schedule 2 (living with others), income of $5,501 is at the limit in 2021 ($0)
+  period: 2021
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_eligible: true
+    az_property_tax_credit_income: 5_501
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    az_property_tax_credit: 0
+
+# Household path: household income computed from its components and the
+# schedule chosen from the household, not given as inputs.
+
+- name: Married couple with $2,500 of income gets the Schedule 2 $0-2,500 amount
+  period: 2025
+  input:
+    people:
+      head: {age: 70, taxable_interest_income: 2_500, real_estate_taxes: 1_000}
+      spouse: {age: 70}
+    tax_units: {tax_unit: {members: [head, spouse]}}
+    households: {household: {members: [head, spouse], state_code: AZ}}
+  output:
+    az_property_tax_credit_income: 2_500
+    az_property_tax_credit: 502
+
+- name: Married couple with $2,501 of income gets the Schedule 2 $2,501-2,650 amount
+  period: 2025
+  input:
+    people:
+      head: {age: 70, taxable_interest_income: 2_501, real_estate_taxes: 1_000}
+      spouse: {age: 70}
+    tax_units: {tax_unit: {members: [head, spouse]}}
+    households: {household: {members: [head, spouse], state_code: AZ}}
+  output:
+    az_property_tax_credit_income: 2_501
+    az_property_tax_credit: 479
+
+# ARS 43-1072(A)(3)(b): a single claimant living with an adult child uses
+# Schedule 2, and $5,500 is less than $5,501.
+- name: Single claimant living with an adult child at $5,500 gets the Schedule 2 $56
+  period: 2025
+  input:
+    people:
+      head: {age: 70, taxable_interest_income: 5_500, real_estate_taxes: 1_000}
+      child: {age: 40, is_tax_unit_dependent: false}
+    tax_units:
+      claimant: {members: [head]}
+      child_unit: {members: [child]}
+    households: {household: {members: [head, child], state_code: AZ}}
+  output:
+    az_property_tax_credit_income: [5_500, 0]
+    az_property_tax_credit: [56, 0]
+
+- name: Single claimant living with an adult child at $5,501 gets no credit
+  period: 2025
+  input:
+    people:
+      head: {age: 70, taxable_interest_income: 5_501, real_estate_taxes: 1_000}
+      child: {age: 40, is_tax_unit_dependent: false}
+    tax_units:
+      claimant: {members: [head]}
+      child_unit: {members: [child]}
+    households: {household: {members: [head, child], state_code: AZ}}
+  output:
+    az_property_tax_credit_income: [5_501, 0]
+    az_property_tax_credit: [0, 0]
+
+# ARS 43-1072(A)(3)(a): living alone, $3,750 is less than $3,751.
+- name: Single claimant living alone at $3,750 gets the Schedule 1 $56
+  period: 2025
+  input:
+    people:
+      head: {age: 70, taxable_interest_income: 3_750, real_estate_taxes: 1_000}
+    tax_units: {tax_unit: {members: [head]}}
+    households: {household: {members: [head], state_code: AZ}}
+  output:
+    az_property_tax_credit_income: 3_750
+    az_property_tax_credit: 56
+
+- name: Single claimant living alone at $3,751 gets no credit
+  period: 2025
+  input:
+    people:
+      head: {age: 70, taxable_interest_income: 3_751, real_estate_taxes: 1_000}
+    tax_units: {tax_unit: {members: [head]}}
+    households: {household: {members: [head], state_code: AZ}}
+  output:
+    az_property_tax_credit_income: 3_751
+    az_property_tax_credit: 0

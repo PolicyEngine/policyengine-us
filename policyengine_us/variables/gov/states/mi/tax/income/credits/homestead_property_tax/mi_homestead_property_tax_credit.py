@@ -8,8 +8,8 @@ class mi_homestead_property_tax_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040CR.pdf#page=2",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=34",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/MI-1040CR.pdf#page=2",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/BOOK_MI-1040.pdf#page=34",
     )
     defined_for = "mi_homestead_property_tax_credit_eligible"
 

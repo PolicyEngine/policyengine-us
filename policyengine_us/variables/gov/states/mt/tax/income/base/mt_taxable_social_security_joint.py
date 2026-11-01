@@ -7,9 +7,7 @@ class mt_taxable_social_security_joint(Variable):
     label = "Montana taxable social security benefits for joint filers"
     defined_for = StateCode.MT
     definition_period = YEAR
-    reference = (
-        "https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf#page=6"
-    )
+    reference = "https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2021_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=6"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.social_security.amount
@@ -40,7 +38,11 @@ class mt_taxable_social_security_joint(Variable):
             tax_unit, period, ["mt_applicable_ald_deductions"]
         ) - add(tax_unit, period, ["student_loan_interest_ald"])
         # line 8: Montana subtractions + ald
-        subtractions = add(tax_unit, period, ["mt_subtractions"])
+        # Subtractions Schedule line 35 includes the partial pension, annuity,
+        # and IRA income exemption (line 34).
+        subtractions = add(tax_unit, period, ["mt_subtractions"]) + tax_unit(
+            "mt_pension_exemption_joint", period
+        )
         increased_subtractions = subtractions + ald_less_student_loan
         # line 9: line 6 - line 8, if line 8 >= line 6, return 0
         income_reduced_by_subtractions = max_(

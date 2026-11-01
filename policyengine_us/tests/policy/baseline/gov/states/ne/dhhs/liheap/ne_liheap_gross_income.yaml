@@ -1,0 +1,117 @@
+# Source: 475 NAC 3-002.06(A)-(B), incorporated by 476 NAC 2-002.01. An excluded
+# member's countable income is divided evenly among all household members and
+# the eligible members' shares are counted: eligible members / all members.
+# https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/historical-chapter-pdfs/475%20NAC%203%20(09-17-2024)-202607280000.pdf#page=47
+
+- name: Case 1, excluded member income is prorated by eligible members over all members.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        employment_income: 14_000
+      person2:
+        age: 36
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        immigration_status: UNDOCUMENTED
+        employment_income: 21_000
+        interest_income: 300
+      person3:
+        age: 6
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    # Two eligible members of three: the excluded member's share is 2/3,
+    # which differs from excluded / all = 1/3 and 1 / all = 1/3.
+    ne_liheap_household_size: 2
+    # 14,000 + 21,000 * 2 / 3 = 28,000 (a 1/3 share would give 21,000).
+    ne_liheap_earned_income: 28_000
+    # 28,000 + 300 * 2 / 3 = 28,200.
+    ne_liheap_gross_income: 28_200
+    # 2025 guideline for two: 15,650 + 5,500 = 21,150; limit 31,725.
+    ne_liheap_fpg: 21_150
+    ne_liheap_income_eligible: true
+    ne_liheap_eligible: true
+    # 28,200 - 0.2 * 28,000 = 22,600; 22,600 / 21,150 = 1.069,
+    # natural gas Tier 3.
+    ne_liheap: 400
+
+- name: Case 2, unit-level TANF is counted in full alongside prorated member income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 37
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        immigration_status: UNDOCUMENTED
+        employment_income: 15_000
+      person2:
+        age: 35
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        immigration_status: UNDOCUMENTED
+        employment_income: 5_000
+        child_support_received: 3_000
+      person3:
+        age: 11
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+      person4:
+        age: 8
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+      person5:
+        age: 4
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_500
+        # Child-only grant of $300 a month: 300 * 12 = 3,600.
+        tanf: 3_600
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: NE
+  output:
+    # Three eligible children of five members: share 3/5, which differs
+    # from excluded / all = 2/5 and 1 / all = 1/5.
+    ne_liheap_household_size: 3
+    # (15,000 + 5,000) * 3 / 5 = 12,000.
+    ne_liheap_earned_income: 12_000
+    # 12,000 + 3,000 * 3 / 5 + 3,600 = 17,400. TANF is not prorated
+    # (3,600 * 3 / 5 = 2,160 would give 15,960).
+    ne_liheap_gross_income: 17_400
+    # 2025 guideline for three: 15,650 + 2 * 5,500 = 26,650; limit 39,975.
+    ne_liheap_fpg: 26_650
+    ne_liheap_income_eligible: true
+    ne_liheap_eligible: true
+    # 17,400 - 0.2 * 12,000 = 15,000; 15,000 / 26,650 = 0.563,
+    # propane Tier 1.
+    ne_liheap: 850

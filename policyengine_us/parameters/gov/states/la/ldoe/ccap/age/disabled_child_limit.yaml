@@ -1,11 +1,15 @@
-description: Louisiana limits child eligibility to disabled children below this age under the Child Care Assistance Program.
+description: Louisiana limits special-needs status and disability, Supplemental Security Income, or court-supervision eligibility to children younger than this age under the Child Care Assistance Program.
 values:
   2022-02-01: 18
 
 metadata:
   unit: year
   period: year
-  label: Louisiana CCAP disabled child age limit
+  label: Louisiana CCAP special needs or court-supervised child age limit
   reference:
-    - title: LAC 28:CLXV.503.A.2 (Bulletin 139), age 13-17 incapable of self-care
+    - title: LAC 28:CLXV.503.A.2 (Bulletin 139), age 13-17 incapable of self-care or under court supervision
       href: https://www.doa.la.gov/media/043btqeh/28v165.docx
+    - title: LAC 28:CLXV.503.A.2 (Bulletin 139, April 2025 edition)
+      href: https://doe.louisiana.gov/docs/default-source/academics/bulletin-139.pdf?Status=Master&sfvrsn=f94813df_2#page=21
+    - title: LAC 28:CLXV.103 (Bulletin 139, April 2025 edition), Care for Children with Disabilities
+      href: https://doe.louisiana.gov/docs/default-source/academics/bulletin-139.pdf?Status=Master&sfvrsn=f94813df_2#page=3

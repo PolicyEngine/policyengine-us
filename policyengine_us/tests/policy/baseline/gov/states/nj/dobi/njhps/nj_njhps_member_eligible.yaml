@@ -8,7 +8,7 @@
 #   & (fpl_floor <= aca_magi_fraction <= fpl_limit)   [1.38 <= frac <= 6.0]
 #
 # pays_aca_premium is a Person YEAR bool supplied directly so each case is
-# independent of the immigration / MEC / TIN internals. aca_magi_fraction and
+# independent of the immigration / MEC / TIN / coverage-gap internals. aca_magi_fraction and
 # filing_status are TaxUnit inputs. The band boundaries are inclusive on both ends:
 # 1.38 (138% floor) and 6.0 (600% ceiling).
 

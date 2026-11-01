@@ -1,0 +1,152 @@
+description: Kansas provides this annual benefit to households heating primarily with other fuels, by one-month income band, dwelling type and household size group, under the Low Income Energy Assistance Program.
+
+# Income band 1: one-month income $0 to $899
+1:
+  HOUSE_MODULAR_MOBILE:
+    1:
+      2024-10-01: 848
+      2025-10-01: 639
+    2:
+      2024-10-01: 970
+      2025-10-01: 731
+  DUPLEX:
+    1:
+      2024-10-01: 636
+      2025-10-01: 479
+    2:
+      2024-10-01: 728
+      2025-10-01: 548
+  APARTMENT:
+    1:
+      2024-10-01: 424
+      2025-10-01: 319
+    2:
+      2024-10-01: 485
+      2025-10-01: 365
+  TRAILER_OTHER:
+    1:
+      2024-10-01: 212
+      2025-10-01: 160
+    2:
+      2024-10-01: 243
+      2025-10-01: 183
+
+# Income band 2: one-month income $900 to $1,199
+2:
+  HOUSE_MODULAR_MOBILE:
+    1:
+      2024-10-01: 763
+      2025-10-01: 575
+    2:
+      2024-10-01: 873
+      2025-10-01: 658
+  DUPLEX:
+    1:
+      2024-10-01: 572
+      2025-10-01: 431
+    2:
+      2024-10-01: 655
+      2025-10-01: 493
+  APARTMENT:
+    1:
+      2024-10-01: 382
+      2025-10-01: 287
+    2:
+      2024-10-01: 437
+      2025-10-01: 329
+  TRAILER_OTHER:
+    1:
+      2024-10-01: 191
+      2025-10-01: 144
+    2:
+      2024-10-01: 218
+      2025-10-01: 164
+
+# Income band 3: one-month income $1,200 to $1,699
+3:
+  HOUSE_MODULAR_MOBILE:
+    1:
+      2024-10-01: 678
+      2025-10-01: 511
+    2:
+      2024-10-01: 776
+      2025-10-01: 585
+  DUPLEX:
+    1:
+      2024-10-01: 509
+      2025-10-01: 383
+    2:
+      2024-10-01: 582
+      2025-10-01: 439
+  APARTMENT:
+    1:
+      2024-10-01: 339
+      2025-10-01: 256
+    2:
+      2024-10-01: 388
+      2025-10-01: 292
+  TRAILER_OTHER:
+    1:
+      2024-10-01: 170
+      2025-10-01: 128
+    2:
+      2024-10-01: 194
+      2025-10-01: 146
+
+# Income band 4: one-month income $1,700 and over
+4:
+  HOUSE_MODULAR_MOBILE:
+    1:
+      2024-10-01: 594
+      2025-10-01: 447
+    2:
+      2024-10-01: 679
+      2025-10-01: 512
+  DUPLEX:
+    1:
+      2024-10-01: 445
+      2025-10-01: 335
+    2:
+      2024-10-01: 509
+      2025-10-01: 384
+  APARTMENT:
+    1:
+      2024-10-01: 297
+      2025-10-01: 224
+    2:
+      2024-10-01: 340
+      2025-10-01: 256
+  TRAILER_OTHER:
+    1:
+      2024-10-01: 148
+      2025-10-01: 112
+    2:
+      2024-10-01: 170
+      2025-10-01: 128
+
+metadata:
+  propagate_metadata_to_children: true
+  period: year
+  unit: currency-USD
+  label: Kansas LIEAP other fuels benefit matrix
+  breakdown:
+    - range(1, 5) # one-month income band
+    - ks_liheap_dwelling_type
+    - range(1, 3) # household size group (1 = size 1-4, 2 = size 5+)
+  breakdown_labels:
+    - One-month income band
+    - Dwelling type
+    - Household size group
+  reference:
+    - title: Kansas LIEAP FY2026 Benefit Matrix, Other fuels (Benefit Adjustment @ 80% table)
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/KS_BenefitMatrix_2026.pdf#page=4
+    - title: Kansas LIEAP FY2025 Benefit Matrix, Other fuels (Ben Adj 100.0%)
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/KS_BenefitMatrix_2025.pdf#page=3
+    - title: Kansas LIHEAP FY2026 State Plan, Section 2.5, pages 8-9 (benefit variables)
+      href: https://liheapch.acf.gov/docs/2026/state-plans/KS_Plan_2026.pdf#page=8
+    - title: Kansas LIHEAP FY2025 State Plan, Section 2.5, pages 8-9 (benefit variables)
+      href: https://liheapch.acf.gov/docs/2025/state-plans/KS_Plan_2025.pdf#page=8
+    - title: KEESM 13410 Benefit Levels, October 2024 edition
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm13400.htm
+    - title: KEESM 13410 Benefit Levels, January 2026 edition
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm13400.htm

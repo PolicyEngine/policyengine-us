@@ -1,0 +1,27 @@
+# 26 U.S.C. 911(f)(2)(A)(iii) with 1(h)(4): the capital gain excess is added
+# to the losses subtracted in figuring 28-percent rate gain. Worksheet
+# footnote, modification 3: "Reduce (but not below zero) the amount on your
+# Schedule D, line 18, by your capital gain excess."
+- name: The excess reduces 28-percent rate gain
+  period: 2025
+  input:
+    capital_gains_28_percent_rate_gain: 10_000
+    section_911_capital_gain_excess: 4_000
+  output:
+    section_911_28_percent_rate_gain: 6_000
+
+- name: 28-percent rate gain is not reduced below zero
+  period: 2025
+  input:
+    capital_gains_28_percent_rate_gain: 10_000
+    section_911_capital_gain_excess: 15_000
+  output:
+    section_911_28_percent_rate_gain: 0
+
+- name: No excess leaves 28-percent rate gain unchanged
+  period: 2025
+  input:
+    capital_gains_28_percent_rate_gain: 10_000
+    section_911_capital_gain_excess: 0
+  output:
+    section_911_28_percent_rate_gain: 10_000

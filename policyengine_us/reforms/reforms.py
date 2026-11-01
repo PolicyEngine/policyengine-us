@@ -1,3 +1,4 @@
+from .congress.s770 import create_s770_section_8_reform
 from .congress.delauro import create_american_family_act_with_baby_bonus_reform
 from .states.al.hb527 import create_al_hb527_overtime_deduction_reform
 from .dc_kccatc import create_dc_kccatc_reform
@@ -11,6 +12,7 @@ from .congress.romney.family_security_act import (
 from .cbo.payroll import (
     create_increase_taxable_earnings_for_social_security_reform,
 )
+from .ssa.owners_draw import create_owners_draw_reform
 from .congress.wyden_smith import create_ctc_expansion_reform
 from .federal import create_abolish_federal_income_tax_reform
 from .federal import create_abolish_payroll_tax_reform
@@ -95,6 +97,12 @@ from .states.mt.hb268 import (
 )
 from .states.mt.ctc import (
     create_mt_ctc_reform,
+)
+from .states.ma.tiered_child_and_family_credit import (
+    create_ma_tiered_child_and_family_credit_reform,
+)
+from .states.ma.commonwealth_credit import (
+    create_ma_commonwealth_credit_reform,
 )
 from .states.mt.newborn_credit import (
     create_mt_newborn_credit_reform,
@@ -197,6 +205,13 @@ from .states.ia.dependent_credit.ia_dependent_credit_reform import (
 )
 from .states.az.dependent_credit.az_dependent_credit_reform import (
     create_az_dependent_credit_reform_fn,
+    create_az_refundable_dependent_credit_reform_fn,
+)
+from .states.ma.dependent_exemption.ma_dependent_exemption_reform import (
+    create_ma_dependent_exemption_reform_fn,
+)
+from .states.ut.dependent_exemption.ut_dependent_exemption_reform import (
+    create_ut_dependent_exemption_reform_fn,
 )
 from .states.md.dependent_exemption.md_dependent_exemption_reform import (
     create_md_dependent_exemption_reform_fn,
@@ -277,6 +292,9 @@ from .refundable_credit_conversion import (
 from .states.ca.ab2591 import (
     create_ca_ab2591_reform,
 )
+from .states.ca.prop3 import (
+    create_ca_prop3_reform,
+)
 from .states.ga.sb520 import (
     create_ga_sb520_reform,
 )
@@ -351,6 +369,7 @@ import warnings
 
 
 def create_structural_reforms_from_parameters(parameters, period):
+    owners_draw = create_owners_draw_reform(parameters, period)
     afa_reform = create_american_family_act_with_baby_bonus_reform(parameters, period)
     winship_reform = create_eitc_winship_reform(parameters, period)
     dc_kccatc_reform = create_dc_kccatc_reform(parameters, period)
@@ -436,6 +455,10 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     mt_hb268 = create_mt_hb268_reform(parameters, period)
     mt_ctc = create_mt_ctc_reform(parameters, period)
+    ma_tiered_child_and_family_credit = create_ma_tiered_child_and_family_credit_reform(
+        parameters, period
+    )
+    ma_commonwealth_credit = create_ma_commonwealth_credit_reform(parameters, period)
     mt_newborn_credit = create_mt_newborn_credit_reform(parameters, period)
     fisc_act = create_fisc_act_reform(parameters, period)
     tax_employer_social_security_tax = create_tax_employer_social_security_tax_reform(
@@ -505,6 +528,11 @@ def create_structural_reforms_from_parameters(parameters, period):
     ca_dependent_credit = create_ca_dependent_credit_reform_fn(parameters, period)
     ia_dependent_credit = create_ia_dependent_credit_reform_fn(parameters, period)
     az_dependent_credit = create_az_dependent_credit_reform_fn(parameters, period)
+    az_refundable_dependent_credit = create_az_refundable_dependent_credit_reform_fn(
+        parameters, period
+    )
+    ma_dependent_exemption = create_ma_dependent_exemption_reform_fn(parameters, period)
+    ut_dependent_exemption = create_ut_dependent_exemption_reform_fn(parameters, period)
     md_dependent_exemption = create_md_dependent_exemption_reform_fn(parameters, period)
     oh_dependent_exemption = create_oh_dependent_exemption_reform_fn(parameters, period)
     ar_dependent_credit = create_ar_dependent_credit_reform_fn(parameters, period)
@@ -540,6 +568,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     ca_ab2591 = create_ca_ab2591_reform(parameters, period)
+    ca_prop3 = create_ca_prop3_reform(parameters, period)
     ga_sb520 = create_ga_sb520_reform(parameters, period)
     hi_hb2306_cdcc = create_hi_hb2306_cdcc_reform(parameters, period)
     nc_eitc = create_nc_eitc_reform(parameters, period)
@@ -575,7 +604,11 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
 
+    s770_section_8 = create_s770_section_8_reform(parameters, period)
+
     reforms = [
+        owners_draw,
+        s770_section_8,
         afa_reform,
         winship_reform,
         dc_kccatc_reform,
@@ -616,6 +649,8 @@ def create_structural_reforms_from_parameters(parameters, period):
         nyc_school_tax_credit_with_phase_out,
         mt_hb268,
         mt_ctc,
+        ma_tiered_child_and_family_credit,
+        ma_commonwealth_credit,
         mt_newborn_credit,
         fisc_act,
         tax_employer_social_security_tax,
@@ -660,6 +695,9 @@ def create_structural_reforms_from_parameters(parameters, period):
         ca_dependent_credit,
         ia_dependent_credit,
         az_dependent_credit,
+        az_refundable_dependent_credit,
+        ma_dependent_exemption,
+        ut_dependent_exemption,
         md_dependent_exemption,
         oh_dependent_exemption,
         ar_dependent_credit,
@@ -685,6 +723,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         tx_rebate,
         al_hb527_overtime_deduction,
         ca_ab2591,
+        ca_prop3,
         ga_sb520,
         hi_hb2306_cdcc,
         nc_eitc,

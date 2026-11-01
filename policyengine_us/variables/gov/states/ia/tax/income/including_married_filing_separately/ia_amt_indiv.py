@@ -8,9 +8,9 @@ class ia_amt_indiv(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://revenue.iowa.gov/sites/default/files/2023-01/2021%20Expanded%20Instructions_010323.pdf#page=55",
+        "https://revenue.iowa.gov/media/2650/download?inline#page=55",
         "https://revenue.iowa.gov/sites/default/files/2021-12/IA6251%2841131%29.pdf",
-        "https://revenue.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf#page=55",
+        "https://revenue.iowa.gov/media/2721/download?inline#page=55",
         "https://revenue.iowa.gov/sites/default/files/2023-01/IA6251%2841131%29.pdf",
     )
     defined_for = StateCode.IA

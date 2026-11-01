@@ -1,14 +1,21 @@
-description: Kentucky adds this daily amount to the maximum payment rate for a child with a special need under the Child Care Assistance Program.
+description: Kentucky provides this amount as a daily special-care supplement for children with special needs or under court supervision under the Child Care Assistance Program.
+# Section 10(3)(b) covers a child age 13 but under 19 who is incapable of
+# self-care or under court supervision. ky_ccap_daily_benefit applies that band
+# with the Section 3(1)(b) eligibility age parameters, which set the same ages.
 values:
   2019-05-31: 1
-  2024-11-18: 5
+  2022-08-01: 5
 
 metadata:
   period: day
   unit: currency-USD
   label: Kentucky CCAP special-care rate supplement
   reference:
-    - title: 922 KAR 2:160 Section 10(3) — special-care rate (p.10, eff. 5-31-2019 edition)
-      href: https://apps.legislature.ky.gov/services/karmaservice/documents/10239/ToPDF?markup=false#page=10
+    - title: 922 KAR 2:160 Section 10(3) — special-care rate (eff. 5-31-2019 edition)
+      href: https://apps.legislature.ky.gov/law/kar/downloads/docs/10239/document.engrossed.pdf#page=10
+    - title: 922 KAR 2:160E Section 10(3) — special-care rate effective August 1, 2022 (49 Ky.R. 300)
+      href: https://apps.legislature.ky.gov/law/kar/registers/49Ky_R_2022-23/02_Aug.pdf#page=70
+    - title: 922 KAR 2:160 Section 10(3) — special-care rate (eff. 11-15-2022 edition)
+      href: https://apps.legislature.ky.gov/law/kar/downloads/docs/13685/document.engrossed.pdf#page=11
     - title: 922 KAR 2:160 Section 10(3) — special-care rate (eff. 11-18-2024 edition)
       href: https://apps.legislature.ky.gov/law/kar/downloads/docs/15544/document.engrossed.pdf#page=11

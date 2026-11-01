@@ -1,15 +1,375 @@
-- name: California doesn't deduct child support.
+- name: California excludes child support payments from gross income.
   period: 2022
   input:
+    state_code: CA
     child_support_expense: 100
+    weekly_hours_worked_before_lsr: 40
   output:
-    snap_child_support_gross_income_deduction: 0
+    snap_child_support_gross_income_deduction: 100
 
-- name: Alaska does deduct child support.
+- name: Alaska deducts child support payments from net income instead of excluding them from gross income.
   period: 2022
   input:
     state_code: AK
     child_support_expense: 100
     weekly_hours_worked_before_lsr: 40
   output:
+    snap_child_support_gross_income_deduction: 0
+
+- name: Michigan deducts child support payments from net income in 2026.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MI
+    child_support_expense: 5_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    snap_child_support_gross_income_deduction: 0
+
+- name: New York excludes child support payments from gross income in 2026.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    child_support_expense: 5_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # $5,200 / 12 = $433.33 per month.
+    snap_child_support_gross_income_deduction: 433.33
+
+- name: Oregon deducts child support payments before its exclusion rule takes effect on 2023-01-19.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: OR
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    snap_child_support_gross_income_deduction: 0
+
+- name: Oregon excludes child support payments from February 2023, after its exclusion rule takes effect on 2023-01-19.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: OR
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # $100 a month for February through December.
+    snap_child_support_gross_income_deduction: 1_100
+
+- name: Virginia excludes child support payments in fiscal year 2024 under 22VAC40-601-70.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
     snap_child_support_gross_income_deduction: 100
+
+- name: Vermont deducts child support payments in 2024, although the 16th edition lists an exclusion for fiscal year 2024.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # 3SquaresVT Program Manual 1700.1.1, 1700.2.1: a net income deduction.
+    snap_child_support_gross_income_deduction: 0
+
+- name: Iowa excludes child support payments through September 2022 under the 14th edition and deducts them from October 2022 under the 15th.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: IA
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # $100 a month for January through September.
+    snap_child_support_gross_income_deduction: 900
+
+- name: Michigan deducts child support payments in 2023, although the 15th edition lists an exclusion for fiscal year 2023.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: MI
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    snap_child_support_gross_income_deduction: 0
+
+- name: Louisiana excludes child support payments from gross income in 2022, when the 15th edition lists it as under review.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: LA
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: Louisiana still excludes child support payments from gross income in 2023, although the 16th edition lists a deduction.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: LA
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # LAC 67:III.1980(A)(3): excluded for the gross income standards.
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: Louisiana excludes child support payments from gross income in 2026.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: LA
+    child_support_expense: 5_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # LAC 67:III.1980(A)(3). $5,200 / 12.
+    snap_child_support_gross_income_deduction: 433.33
+
+- name: Massachusetts excludes child support payments from gross income in 2016, although the 13th edition lists a deduction.
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    state_code: MA
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # 106 CMR 363.230(O) (Rev. 7/2009).
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: North Carolina excludes child support payments from gross income in 2026.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    child_support_expense: 5_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # NCDHHS FNS 340.19(A): allowed before the gross income screen. $5,200 / 12.
+    snap_child_support_gross_income_deduction: 433.33
+
+- name: Missouri excludes child support payments from gross income in 2020, before the 15th edition lists it.
+  period: 2020
+  input:
+    state_code: MO
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # Missouri IM-39 (2003): excluded before the gross income test.
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: New Jersey excludes child support payments from gross income in 2015, under P.L. 2013, c.45 (effective 2013-11-01).
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # N.J.S.A. 44:10-104.
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: Washington excludes child support payments from gross income in 2015, before the 14th edition.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # WSR 09-15-085, effective 2009-11-15.
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: Rhode Island excludes child support payments from gross income in 2015, before the 14th edition.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # RI DHS SNAP rules 1008.20.22, REV 05/2005.
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: Colorado excludes child support payments from gross income in 2015, before the 14th edition.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    state_code: CO
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # 10 CCR 2506-1 B-4223.6, version effective 2009-07-01.
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: New York excludes child support payments from gross income in 2015, as the 9th to 14th editions list.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # 9th to 14th editions.
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: Iowa excludes child support payments from gross income in 2015.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    state_code: IA
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # Iowa Employees' Manual 7-F (General Letter 7-F-81, effective 2009-02-01).
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: Arizona deducts child support payments in 2015, after the 11th edition first lists a deduction.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    state_code: AZ
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    snap_child_support_gross_income_deduction: 0
+
+- name: Vermont deducts child support payments in 2016, although the 12th and 13th editions list an exclusion; the 3SquaresVT Rules and procedures P-2510 E12 deduct them.
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    snap_child_support_gross_income_deduction: 0
+
+# The cases below are before 2015. policyengine-us backdates parameters only to
+# 2015-01-01 (backdate_parameters in system.py), and
+# gov.usda.snap.eligibility.eligible_immigration_statuses starts in 2018, so
+# snap_income_counted_share cannot be computed for these years. Each case sets
+# it to 1, counting the payer's child support in full.
+
+- name: Arizona excludes child support payments from gross income in 2012, as the 8th to 10th editions list.
+  period: 2012
+  absolute_error_margin: 0.01
+  input:
+    state_code: AZ
+    child_support_expense: 1_200
+    snap_income_counted_share: 1
+  output:
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: Arizona excludes child support payments from January to August 2013 and deducts them from September, when the 11th edition first lists a deduction.
+  period: 2013
+  absolute_error_margin: 0.01
+  input:
+    state_code: AZ
+    child_support_expense: 1_200
+    snap_income_counted_share: 1
+  output:
+    # $100 a month for January through August.
+    snap_child_support_gross_income_deduction: 800
+
+- name: The model deducts Delaware child support payments for June 2010, because a monthly period reads the parameter on its first day (2010-06-01), before DSSM 9059(26) takes effect on 2010-06-10; it excludes them from July.
+  period: 2010
+  absolute_error_margin: 0.01
+  input:
+    state_code: DE
+    child_support_expense: 1_200
+    snap_income_counted_share: 1
+  output:
+    # Monthly outputs under a yearly test period: a test period of 2010-06
+    # would store the yearly inputs under a 12-month period starting in June,
+    # which policyengine-core's simulation builder cannot read back.
+    snap_child_support_gross_income_deduction:
+      2010-06: 0
+      2010-07: 100
+
+- name: Delaware excludes child support payments from July 2010, the first month that starts after DSSM 9059(26) takes effect on 2010-06-10.
+  period: 2010
+  absolute_error_margin: 0.01
+  input:
+    state_code: DE
+    child_support_expense: 1_200
+    snap_income_counted_share: 1
+  output:
+    # $100 a month for July through December.
+    snap_child_support_gross_income_deduction: 600
+
+- name: New Jersey excludes child support payments from November 2013, when P.L. 2013, c.45 takes effect.
+  period: 2013
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    child_support_expense: 1_200
+    snap_income_counted_share: 1
+  output:
+    # $100 a month for November and December.
+    snap_child_support_gross_income_deduction: 200
+
+- name: Massachusetts excludes child support payments from gross income in 2010 under 106 CMR 363.230(O) (Rev. 7/2009).
+  period: 2010
+  absolute_error_margin: 0.01
+  input:
+    state_code: MA
+    child_support_expense: 1_200
+    snap_income_counted_share: 1
+  output:
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: Washington excludes child support payments from gross income in 2010 under WAC 388-450-0015 (WSR 09-15-085, effective 2009-11-15).
+  period: 2010
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    child_support_expense: 1_200
+    snap_income_counted_share: 1
+  output:
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: Hawaii deducts child support payments in 2014, although the 11th edition lists an exclusion; HAR 17-676-56(f) and 17-676-72(6) deduct them.
+  period: 2014
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    child_support_expense: 1_200
+    snap_income_counted_share: 1
+  output:
+    snap_child_support_gross_income_deduction: 0
+
+- name: Maryland deducts child support payments in 2014, although the 11th edition lists an exclusion; COMAR 07.03.17.35 and .43G deduct them.
+  period: 2014
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    child_support_expense: 1_200
+    snap_income_counted_share: 1
+  output:
+    snap_child_support_gross_income_deduction: 0
+
+- name: Pennsylvania deducts child support payments in 2014, although the 11th edition lists an exclusion; SNAP Handbook 560.6 deducts them.
+  period: 2014
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    child_support_expense: 1_200
+    snap_income_counted_share: 1
+  output:
+    snap_child_support_gross_income_deduction: 0
+
+- name: Arkansas deducts child support payments in 2010, although the 6th to 8th editions list an exclusion; Certification Manual 6550 deducts them and 7524 allows no deduction but farm loss in total gross income.
+  period: 2010
+  absolute_error_margin: 0.01
+  input:
+    state_code: AR
+    child_support_expense: 1_200
+    snap_income_counted_share: 1
+  output:
+    snap_child_support_gross_income_deduction: 0

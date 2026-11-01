@@ -7,8 +7,8 @@ class vt_low_income_cdcc_eligible(Variable):
     label = "Eligible for the Vermont low-income child care and dependent care credit"
     definition_period = YEAR
     reference = (
-        "https://tax.vermont.gov/sites/tax/files/documents/IN-112-2021.pdf#page=2"
-        "https://law.justia.com/codes/vermont/2021/title-32/chapter-151/section-5828c/"
+        "https://tax.vermont.gov/sites/tax/files/documents/IN-112-2021.pdf#page=2",
+        "https://law.justia.com/codes/vermont/2021/title-32/chapter-151/section-5828c/",
     )
     defined_for = StateCode.VT
 

@@ -7,4 +7,4 @@ class heating_expense_last_year(Variable):
     definition_period = YEAR
     label = "Household's heating expense last year"
     definition_period = YEAR
-    reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
+    reference = "https://web.archive.org/web/20250720165524/https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"

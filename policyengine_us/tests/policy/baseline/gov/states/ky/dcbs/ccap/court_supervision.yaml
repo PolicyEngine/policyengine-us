@@ -1,0 +1,297 @@
+# Court supervision extends this state's age test without setting disability
+# or protective-services status. Cases include both age boundaries and adults.
+- name: Case 1, KY court supervision age boundaries and default status.
+  period: 2025-01
+  input:
+    state_code: [KY, KY, KY, KY, KY, KY, KY, KY]
+    age: [12, 13, 13, 17, 18, 19, 18, 40]
+    is_under_court_supervision: [false, false, true, true, true, true, false, true]
+  output:
+    ky_ccap_eligible_child: [true, false, true, true, true, false, false, false]
+    # No one reports work hours, so the activity test fails for every unit.
+    # Court supervision does not open the Protection and Permanency bypass of
+    # Section 5, which would make the court-supervised units pass. Case 3 shows
+    # the disability side: its court-supervised 12-year-old gets no supplement.
+    ky_ccap_activity_eligible: [false, false, false, false, false, false, false, false]
+
+- name: Case 2, KY court supervision does not bypass child immigration eligibility.
+  period: 2025-01
+  input:
+    state_code: KY
+    age: 17
+    is_under_court_supervision: true
+    immigration_status: UNDOCUMENTED
+  output:
+    ky_ccap_eligible_child: false
+
+- name: Case 3, KY 2024-01 court-supervision supplement is limited to ages 13 through 18.
+  period: 2024-01
+  input:
+    state_code:
+    - KY
+    - KY
+    - KY
+    - KY
+    - KY
+    age:
+    - 12
+    - 13
+    - 18
+    - 19
+    - 13
+    is_under_court_supervision:
+    - true
+    - true
+    - true
+    - true
+    - false
+    ky_ccap_daily_rate:
+    - 30
+    - 30
+    - 30
+    - 30
+    - 30
+    pre_subsidy_childcare_expenses:
+    - 24_000
+    - 24_000
+    - 24_000
+    - 24_000
+    - 24_000
+    childcare_attending_days_per_month:
+    - 20
+    - 20
+    - 20
+    - 20
+    - 20
+  output:
+    # Daily charge = 24_000 / 12 / 20 = $100 for each child.
+    # The special-care supplement is $5 from 2022-08-01 (49 Ky.R. 300).
+    # Age 12: eligible under 13, below the age-13 supplement band -> min(30, 100) = 30.
+    # Ages 13 and 18 under court supervision: min(30 + 5, 100) = 35.
+    # Age 19 under court supervision and age 13 without it: not eligible -> 0.
+    ky_ccap_daily_benefit:
+    - 30
+    - 35
+    - 35
+    - 0
+    - 0
+
+- name: Case 4, KY 2025-01 court-supervision supplement is limited to ages 13 through 18.
+  period: 2025-01
+  input:
+    state_code:
+    - KY
+    - KY
+    - KY
+    - KY
+    - KY
+    age:
+    - 12
+    - 13
+    - 18
+    - 19
+    - 13
+    is_under_court_supervision:
+    - true
+    - true
+    - true
+    - true
+    - false
+    ky_ccap_daily_rate:
+    - 30
+    - 30
+    - 30
+    - 30
+    - 30
+    pre_subsidy_childcare_expenses:
+    - 24_000
+    - 24_000
+    - 24_000
+    - 24_000
+    - 24_000
+    childcare_attending_days_per_month:
+    - 20
+    - 20
+    - 20
+    - 20
+    - 20
+  output:
+    ky_ccap_daily_benefit:
+    - 30
+    - 35
+    - 35
+    - 0
+    - 0
+
+# Cases 5-8 share one household: a parent working 40 hours a week and a
+# court-supervised 15-year-old in full-day care at a Licensed Type I provider
+# in Jefferson County (Region 4) for 20 days a month.
+# Age 15 = 180 months -> SCHOOL_AGE; 8 hours a day -> FULL_DAY.
+# DCC-300 Region 4, Licensed Type I, School Age, Full Day = $37 per day.
+# Section 10(3)(b) adds the $5 special-care supplement for a court-supervised
+# child age 13 through 18 -> $42 per day before the charge cap.
+- name: Case 5, KY court-supervised 15-year-old receives the supplement through the full benefit chain.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 36_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 15
+        is_under_court_supervision: true
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    # Age 15 < 19 court-supervision age limit.
+    ky_ccap_eligible_child: [false, true]
+    # 36_000 / 12 = 3_000 per month <= 4_217 size-2 limit (85% SMI).
+    ky_ccap_countable_income: 3_000
+    ky_ccap_income_eligible: true
+    # Single parent works 40 >= 20 hours per week.
+    ky_ccap_activity_eligible: true
+    ky_ccap_eligible: true
+    ky_ccap_rate_region: REGION_4
+    ky_ccap_daily_rate: [0, 37]
+    # Daily charge = 24_000 / 12 / 20 = $100 > $42 -> min(37 + 5, 100) = 42.
+    ky_ccap_daily_benefit: [0, 42]
+    # 11-18-2024 chart: 3_000 falls in the [2_800, 3_100) band -> $8 per day
+    # for a household of two, no size reduction, no escalation. Court
+    # supervision is not a Protection and Permanency case, so the copay is
+    # not waived: 8 x 20 days = 160.
+    ky_ccap_copay: 160
+    # 42 x 20 = 840 reimbursement; max(840 - 160, 0) = 680.
+    ky_ccap: 680
+
+- name: Case 6, KY court supervision does not waive the income test in the full chain.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 15
+        is_under_court_supervision: true
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    # The child still qualifies and still carries the $42 daily maximum.
+    ky_ccap_eligible_child: [false, true]
+    ky_ccap_daily_benefit: [0, 42]
+    # 60_000 / 12 = 5_000 per month > 4_217 size-2 limit.
+    ky_ccap_countable_income: 5_000
+    ky_ccap_income_eligible: false
+    ky_ccap_eligible: false
+    ky_ccap: 0
+
+- name: Case 7, KY court-supervised child with a disability gets one special-care supplement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 36_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 15
+        is_under_court_supervision: true
+        is_disabled: true
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    ky_ccap_eligible_child: [false, true]
+    ky_ccap_daily_rate: [0, 37]
+    # Special need and court supervision both qualify for Section 10(3), but
+    # the supplement is paid once: min(37 + 5, 100) = 42, not 47.
+    ky_ccap_daily_benefit: [0, 42]
+    # Same $8 x 20 copay as Case 5.
+    ky_ccap_copay: 160
+    # 42 x 20 = 840; max(840 - 160, 0) = 680.
+    ky_ccap: 680
+
+- name: Case 8, KY provider charge between the rate and the supplemented rate caps the benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 36_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 15
+        is_under_court_supervision: true
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 9_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    ky_ccap_daily_rate: [0, 37]
+    # Daily charge = 9_600 / 12 / 20 = $40, between the $37 rate and the
+    # $42 supplemented rate. Section 10(4) caps payment at the charge:
+    # min(37 + 5, 40) = 40.
+    ky_ccap_daily_benefit: [0, 40]
+    # Same $8 x 20 copay as Case 5.
+    ky_ccap_copay: 160
+    # 40 x 20 = 800; max(800 - 160, 0) = 640.
+    ky_ccap: 640

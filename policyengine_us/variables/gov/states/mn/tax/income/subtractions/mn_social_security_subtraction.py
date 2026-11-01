@@ -8,8 +8,11 @@ class mn_social_security_subtraction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.taxformfinder.org/forms/2021/2021-minnesota-form-m1m.pdf"
-        "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1m_22.pdf"
+        "https://www.taxformfinder.org/forms/2021/2021-minnesota-form-m1m.pdf",
+        "https://www.revenue.state.mn.us/sites/default/files/2024-01/m1m-22.pdf",
+        # 2020 Schedule M1M instructions, line 39 worksheet, step 8: federal
+        # Schedule 1 adjustments only, not Form 1040 line 10b.
+        "https://www.revenue.state.mn.us/sites/default/files/2024-01/m1m_20.pdf#page=8",
     )
     defined_for = StateCode.MN
 
@@ -47,7 +50,10 @@ class mn_social_security_subtraction(Variable):
         sum_income = adj_income + oasdi_amount + tax_exempt_int
         us_ald = tax_unit("above_the_line_deductions", period)
         student_loan_int = add(tax_unit, period, ["student_loan_interest"])
-        mn_ald = max_(0, us_ald - student_loan_int)
+        # Step 8 counts the Schedule 1 adjustments, so not the 2020
+        # charitable deduction for non-itemizers (Form 1040 line 10b).
+        charitable_ald = tax_unit("charitable_contributions_ald", period)
+        mn_ald = max_(0, us_ald - student_loan_int - charitable_ald)
         income = max_(0, sum_income - mn_ald)
         net_income = max_(0, income - income_amount)
         alt_sub_amt = max_(0, alt_amount - (net_income * p.net_income_fraction))

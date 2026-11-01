@@ -1,0 +1,124 @@
+# Source: 476 NAC 1-004.09 (household, including energy paid through rent) and
+# 2-002 (eligibility); FY2026 state plan section 2.3 (renters in subsidized
+# housing and renters with utilities included in rent), page 9.
+# https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%201%20(12-26-2020).pdf/1746#page=1
+# https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%202%20(06-26-2022).pdf/1747#page=1
+# https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=9
+
+- name: Case 1, direct heating bill establishes energy responsibility.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_income_eligible: true
+    heating_type: NATURAL_GAS
+    gas_expense: 100
+  output:
+    ne_liheap_eligible: true
+- name: Case 2, heat in rent qualifies with zero separate heating expense under the vulnerability assumption.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_income_eligible: true
+    heat_expense_included_in_rent: true
+    heating_type: UNSPECIFIED
+  output:
+    heating_expense: 0
+    ne_liheap_eligible: true
+- name: Case 3, heat in rent does not bypass the income test.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_income_eligible: false
+    heat_expense_included_in_rent: true
+    heating_type: UNSPECIFIED
+  output:
+    heating_expense: 0
+    ne_liheap_eligible: false
+- name: Case 4, another state receives no Nebraska benefit.
+  period: 2026
+  input:
+    state_code: KS
+    ne_liheap_income_eligible: true
+    heating_type: NATURAL_GAS
+    gas_expense: 100
+  output:
+    ne_liheap_eligible: false
+    ne_liheap: 0
+
+- name: Case 5, no reported heating responsibility remains ineligible.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_income_eligible: true
+    heat_expense_included_in_rent: false
+    heating_type: UNSPECIFIED
+  output:
+    heating_expense: 0
+    ne_liheap_eligible: false
+    ne_liheap: 0
+
+# Cases 6-9: FY2026 state plan section 2.3 (page 9): "For subsidized housing,
+# the household must be responsible for a portion of the heating payment to be
+# eligible for heating" and "For renters with utilities included in the rent,
+# the household must be responsible for a portion of the heating." Market-rate
+# renters with heat included in rent are treated as responsible under the
+# documented modeling assumption; 476 NAC 3-002.02 lets the Department pay a
+# household directly if utilities are included in rent, and plan sections 1.1
+# (page 5) and 9.1 (page 25) list such households among those paid directly.
+# https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=9
+# https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%203%20(12-26-2020).pdf/1748#page=1
+- name: Case 6, housing-assisted renter with heat in rent and no heating bill is ineligible.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_income_eligible: true
+    receives_housing_assistance: true
+    heat_expense_included_in_rent: true
+    heating_type: NATURAL_GAS
+    gas_expense: 0
+  output:
+    # The matching gas bill is zero, so no portion of the heating is paid.
+    heating_expense: 0
+    ne_liheap_eligible: false
+    ne_liheap: 0
+
+- name: Case 7, public housing tenant with heat in rent and no heating bill is ineligible.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_income_eligible: true
+    is_in_public_housing: true
+    heat_expense_included_in_rent: true
+    heating_type: UNSPECIFIED
+  output:
+    # An unspecified fuel has no matching bill.
+    heating_expense: 0
+    ne_liheap_eligible: false
+    ne_liheap: 0
+
+- name: Case 8, housing-assisted renter who pays part of the heating cost is eligible.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_income_eligible: true
+    receives_housing_assistance: true
+    heat_expense_included_in_rent: true
+    heating_type: NATURAL_GAS
+    gas_expense: 420
+  output:
+    # A $35 monthly gas charge on top of rent: 35 * 12 = 420.
+    heating_expense: 420
+    ne_liheap_eligible: true
+
+- name: Case 9, market-rate renter with heat in rent and no heating bill stays eligible.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_income_eligible: true
+    receives_housing_assistance: false
+    is_in_public_housing: false
+    heat_expense_included_in_rent: true
+    heating_type: UNSPECIFIED
+  output:
+    heating_expense: 0
+    ne_liheap_eligible: true

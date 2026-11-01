@@ -1,0 +1,189 @@
+- name: VT ordinary child remains eligible.
+  period: 2026-01
+  input:
+    state_code: VT
+    age: 12
+    is_under_court_supervision: false
+    is_disabled: false
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+  output:
+    vt_ccfap_eligible_child: true
+
+- name: VT older child needs an exception.
+  period: 2026-01
+  input:
+    state_code: VT
+    age: 13
+    is_under_court_supervision: false
+    is_disabled: false
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+  output:
+    vt_ccfap_eligible_child: false
+
+- name: VT court supervision at the lower boundary.
+  period: 2026-01
+  input:
+    state_code: VT
+    age: 13
+    is_under_court_supervision: true
+    is_disabled: false
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+  output:
+    vt_ccfap_eligible_child: true
+
+- name: VT court supervision at the upper boundary.
+  period: 2026-01
+  input:
+    state_code: VT
+    age: 18
+    is_under_court_supervision: true
+    is_disabled: false
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+  output:
+    vt_ccfap_eligible_child: true
+
+- name: VT court supervision does not override the upper age limit.
+  period: 2026-01
+  input:
+    state_code: VT
+    age: 19
+    is_under_court_supervision: true
+    is_disabled: false
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+  output:
+    vt_ccfap_eligible_child: false
+
+- name: VT supervised adult does not qualify.
+  period: 2026-01
+  input:
+    state_code: VT
+    age: 30
+    is_under_court_supervision: true
+    is_disabled: false
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+  output:
+    vt_ccfap_eligible_child: false
+
+- name: VT supervision is specific to the child in a mixed household.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        is_under_court_supervision: true
+      supervised_child:
+        age: 17
+        is_tax_unit_dependent: true
+        is_under_court_supervision: true
+        immigration_status: CITIZEN
+      other_child:
+        age: 17
+        is_tax_unit_dependent: true
+        is_under_court_supervision: false
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [parent, supervised_child, other_child]
+        state_code: VT
+  output:
+    vt_ccfap_eligible_child: [false, true, false]
+
+- name: VT court-supervised 17-year-old receives a benefit through the full pipeline.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 60_000
+      person2:
+        age: 17
+        is_disabled: false
+        is_under_court_supervision: true
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 6
+        pre_subsidy_childcare_expenses: 16_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # person2: age 17, not disabled, under court supervision (13-18) => eligible child
+    vt_ccfap_eligible_child: [false, true]
+    vt_ccfap_eligible: true
+    # Age group: age 17 => SCHOOL_AGE
+    vt_ccfap_age_group: [SCHOOL_AGE, SCHOOL_AGE]
+    # State rate: licensed center, full time (5 * 6 = 30 hrs/wk), school age = $371/wk
+    vt_ccfap_state_rate: [0, 371]
+    # Family share: FPL ratio 60,000 / 21,150 = 2.837 > 2.7501 => $150/wk = 150 * 52 / 12 = 650
+    vt_ccfap_family_share: 650
+    # Benefit: 371 * 52 / 12 = 1,607.67 - 650 = 957.67
+    vt_ccfap: 957.67
+
+- name: VT court supervision combines with disability and applies below 13.
+  period: 2026-01
+  input:
+    state_code: [VT, VT, VT]
+    age: [12, 18, 19]
+    is_under_court_supervision: [true, true, true]
+    is_disabled: [false, true, true]
+    is_tax_unit_dependent: [true, true, true]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+  output:
+    vt_ccfap_eligible_child: [true, true, false]
+
+# Vermont dropped the child citizenship test on June 30, 2024 (Act 76), so
+# only the dependency gate applies in 2026.
+- name: VT court supervision does not bypass the dependency gate.
+  period: 2026-01
+  input:
+    state_code: [VT, VT]
+    age: [17, 17]
+    is_under_court_supervision: [true, true]
+    is_tax_unit_dependent: [false, true]
+    immigration_status: [CITIZEN, UNDOCUMENTED]
+  output:
+    vt_ccfap_eligible_child: [false, true]
+
+# Regulations II.B.1.g count only a child with a special health need as a
+# service need, so court supervision does not excuse a non-working parent.
+- name: VT court supervision is not a service need for a non-working parent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 0
+      person2:
+        age: 17
+        is_under_court_supervision: true
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 6
+        pre_subsidy_childcare_expenses: 16_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    vt_ccfap_eligible_child: [false, true]
+    vt_ccfap_meets_activity_test: false
+    vt_ccfap_eligible: false
+    vt_ccfap: 0

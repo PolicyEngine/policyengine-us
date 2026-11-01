@@ -1,13 +1,17 @@
 """Each dollar input follows the series closest to what it measures: its own
 national series, the income source it is part of, prices for consumption
-expenses and debts, CMS per-capita spending for health costs."""
+expenses and debts, CMS per-capita out-of-pocket spending for health costs,
+premiums per enrollee, or the prices that index them, for health insurance
+premiums, and the statutory limit for capped contributions."""
+
+from pathlib import Path
 
 import pytest
 from policyengine_core.parameters.operations.get_parameter import get_parameter
 
 from policyengine_us.data.economic_assumptions import MICRODATA_UPRATING_OVERRIDES
 from policyengine_us.system import system
-from policyengine_us.tools.per_capita_uprating import per_capita_path
+from policyengine_us.tools.per_capita_uprating import DERIVED_FROM, per_capita_path
 
 EMPLOYMENT = per_capita_path("calibration.gov.irs.soi.employment_income")
 SELF_EMPLOYMENT = per_capita_path("calibration.gov.irs.soi.self_employment_income")
@@ -16,8 +20,15 @@ ALIMONY = per_capita_path("calibration.gov.irs.soi.alimony_income")
 UNEMPLOYMENT = per_capita_path("calibration.gov.irs.soi.unemployment_compensation")
 DEFAULT = per_capita_path("calibration.gov.cbo.income_by_source.adjusted_gross_income")
 CMS = "calibration.gov.hhs.cms.moop_per_capita"
+ESI = "calibration.gov.hhs.cms.esi_premium_per_enrollee"
+DIRECT_PURCHASE = "calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee"
 CPI_U = "gov.bls.cpi.cpi_u"
+MEDICAL_CPI = "gov.bls.cpi.cpi_u_medical_care"
+PART_B = "calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee"
 COLA = "gov.ssa.uprating"
+HSA_FAMILY_LIMIT = (
+    "gov.irs.gross_income.health_savings_account_contributions.limit.family"
+)
 
 EXPECTED = {
     # Pay, and amounts set as a share of pay.
@@ -38,9 +49,15 @@ EXPECTED = {
     # Wage-replacement benefits.
     "workers_compensation": EMPLOYMENT,
     "disability_benefits": EMPLOYMENT,
+    "tax_exempt_disability_benefits": EMPLOYMENT,
+    "disability_benefits_before_minimum_retirement_age": EMPLOYMENT,
     "self_employed_pension_contributions_desired": SELF_EMPLOYMENT,
     # Components of capital gains.
     "long_term_capital_gains_on_collectibles": CAPITAL_GAINS,
+    "long_term_capital_loss_carryover": CAPITAL_GAINS,
+    "collectibles_gain_or_loss": CAPITAL_GAINS,
+    "section_1202_gain": CAPITAL_GAINS,
+    "unrecaptured_section_1250_gain_before_losses": CAPITAL_GAINS,
     "unrecaptured_section_1250_gain": CAPITAL_GAINS,
     "non_sch_d_capital_gains": CAPITAL_GAINS,
     "schedule_d_capital_gain_distributions": CAPITAL_GAINS,
@@ -52,14 +69,31 @@ EXPECTED = {
     "alimony_income": ALIMONY,
     "alimony_expense": ALIMONY,
     "unemployment_compensation": UNEMPLOYMENT,
-    # Health costs.
-    "health_insurance_premiums": CMS,
+    # Health costs paid out of pocket.
+    "other_medical_expenses": CMS,
+    "over_the_counter_health_expenses": CMS,
+    # Premiums for employer plans: the employer's share, the employee's
+    # pre-tax share, and the premiums people report, most of them paid by
+    # people with employer coverage.
+    "employer_sponsored_insurance_premiums": ESI,
+    "pre_tax_health_insurance_premiums": ESI,
+    "health_insurance_premiums_without_medicare_part_b": ESI,
+    "other_health_insurance_premiums": ESI,
+    # Premiums for plans bought directly.
+    "health_insurance_premiums": DIRECT_PURCHASE,
+    # Long-term care insurance premiums, whose deductible limits follow
+    # medical care prices.
+    "long_term_health_insurance_premiums": MEDICAL_CPI,
+    # Medicare Part B premiums.
+    "medicare_part_b_premiums_reported": PART_B,
+    # Contributions under a cap that 26 U.S.C. 223(g) indexes to chained
+    # CPI-U.
+    "health_savings_account_payroll_contributions": HSA_FAMILY_LIMIT,
     # Benefits adjusted by the Social Security cost-of-living index.
     "veterans_benefits": COLA,
     # Consumption expenses, and the interest on debts, follow prices. The
-    # structured first and second mortgage inputs stay on the default: two are
-    # deprecated (issue #9275) and the file's formulas are outside the
-    # selective coverage job.
+    # per-mortgage balance and origination-year inputs stay on the default:
+    # the file's formulas are outside the selective coverage job.
     "pre_subsidy_rent": CPI_U,
     "pre_subsidy_care_expenses": CPI_U,
     "spm_unit_pre_subsidy_childcare_expenses": CPI_U,
@@ -88,6 +122,11 @@ EXPECTED = {
     "homeowners_association_fees": CPI_U,
     "pre_subsidy_transportation_expense": CPI_U,
     "home_mortgage_interest": CPI_U,
+    "home_mortgage_points": CPI_U,
+    "mortgage_insurance_premiums": CPI_U,
+    "second_residence_mortgage_interest": CPI_U,
+    "second_residence_mortgage_points": CPI_U,
+    "second_residence_mortgage_insurance_premiums": CPI_U,
     "student_loan_interest": CPI_U,
     "investment_interest_expense": CPI_U,
     # Still on the default.
@@ -138,3 +177,48 @@ def test_alimony_series_is_labelled_as_alimony():
 def test_rent_override_matches_the_rent_input():
     assert MICRODATA_UPRATING_OVERRIDES["rent"] == CPI_U
     assert system.variables["pre_subsidy_rent"].uprating == CPI_U
+
+
+METHODOLOGY_PAGE = (
+    Path(__file__).parents[3] / "docs-quarto" / "methodology" / "spm-poverty.qmd"
+)
+PARAMETERS_FOLDER = "policyengine_us/parameters/"
+
+
+def _authored_series(uprating):
+    """The authored parameter behind an uprating path: a derived per-capita
+    series names the national total it divides."""
+    parameter = get_parameter(system.parameters, uprating)
+    return parameter.metadata.get(DERIVED_FROM, uprating)
+
+
+def _series_that_inputs_follow():
+    return sorted(
+        {
+            _authored_series(variable.uprating)
+            for variable in system.variables.values()
+            if getattr(variable, "uprating", None)
+        }
+    )
+
+
+@pytest.mark.parametrize("series", _series_that_inputs_follow())
+def test_methodology_page_links_every_series_an_input_follows(series):
+    """The SPM methodology page names the series each family of inputs follows
+    and sends every other uprated input to the default. That stays true only
+    while the page links every series some input follows: the parameter's own
+    file, the file that holds it, or the folder that holds it."""
+    if not METHODOLOGY_PAGE.exists():
+        pytest.skip("The documentation is not part of an installed package.")
+    page = METHODOLOGY_PAGE.read_text()
+    path = series.replace(".", "/")
+    holder = path.rpartition("/")[0]
+    links = (
+        f"{PARAMETERS_FOLDER}{path}.yaml",
+        f"{PARAMETERS_FOLDER}{holder}.yaml",
+        f"{PARAMETERS_FOLDER}{holder})",
+    )
+    assert any(link in page for link in links), (
+        f"{METHODOLOGY_PAGE.name} does not link {series}, which uprates at "
+        "least one input. Say on the page which inputs follow it."
+    )

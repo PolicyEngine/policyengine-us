@@ -9,9 +9,5 @@ class tax_liability_if_itemizing(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        simulation = tax_unit.simulation
-        itemized_branch = simulation.get_branch("itemizing")
-        itemized_branch.set_input(
-            "tax_unit_itemizes", period, np.ones((tax_unit.count,), dtype=bool)
-        )
-        return itemized_branch.calculate("income_tax", period)
+        branch = get_itemization_branch(tax_unit, period, itemizes=True)
+        return branch.calculate("income_tax", period)

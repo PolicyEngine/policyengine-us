@@ -7,7 +7,7 @@ class ca_calworks_child_care_full_time(Variable):
     label = "Whether a child is classified as receiving full-time care for CalWORKs Child Care"
     definition_period = MONTH
     defined_for = StateCode.CA
-    reference = "http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FChild%20Care%2FChild_Care%2F1210_8_Regional_Market_Rate_Ceilings%2F1210_8_Regional_Market_Rate_Ceilings.htm%23Contactbc-13&rhtocid=_3_3_8_12"
+    reference = "https://my.dpss.lacounty.gov/public/en/home/epolicy/program/child-care/regional-market-rate-ceilings.html"
 
     def formula(person, period, parameters):
         p = parameters(

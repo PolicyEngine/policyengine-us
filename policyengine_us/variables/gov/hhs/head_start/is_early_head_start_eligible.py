@@ -7,8 +7,8 @@ class is_early_head_start_eligible(Variable):
     label = "Eligible person for the Early Head Start program"
     definition_period = YEAR
     reference = (
-        "https://eclkc.ohs.acf.hhs.gov/policy/45-cfr-chap-xiii/1302-12-determining-verifying-documenting-eligibility"
-        "https://www.hhs.gov/answers/programs-for-families-and-children/how-can-i-get-my-child-into-head-start/index.html"
+        "https://eclkc.ohs.acf.hhs.gov/policy/45-cfr-chap-xiii/1302-12-determining-verifying-documenting-eligibility",
+        "https://www.hhs.gov/answers/programs-for-families-and-children/how-can-i-get-my-child-into-head-start/index.html",
     )
 
     def formula(person, period, parameters):

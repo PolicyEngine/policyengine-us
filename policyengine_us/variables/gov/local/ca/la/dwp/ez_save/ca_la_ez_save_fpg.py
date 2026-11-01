@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ca_la_ez_save_fpg(Variable):
     value_type = float
     entity = Household
-    label = "Los Angeles County EZ save federal poverty guideline"
+    label = "Los Angeles EZ-SAVE federal poverty guideline"
     unit = USD
     documentation = (
         "The federal poverty guideline used to determine LA ez save eligibility."

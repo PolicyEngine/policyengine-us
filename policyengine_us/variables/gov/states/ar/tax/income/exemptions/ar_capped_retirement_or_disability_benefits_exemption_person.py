@@ -7,7 +7,7 @@ class ar_capped_retirement_or_disability_benefits_exemption_person(Variable):
     label = "Arkansas capped individual retirement or disability benefits exemption"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2024_AR1000F_and_AR1000NR_Instructions.pdf#page=13"
+    reference = "https://www.dfa.arkansas.gov/wp-content/uploads/2024_AR1000F_and_AR1000NR_Instructions.pdf#page=13"
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
@@ -20,8 +20,12 @@ class ar_capped_retirement_or_disability_benefits_exemption_person(Variable):
         military_retirement_exemption = person(
             "ar_military_retirement_income_person", period
         )
-        # Military retirement is fully exempt (no cap).
-        # The $6,000 cap applies to pension/IRA, reduced by military retirement.
-        remaining_cap = max_(p.cap - military_retirement_exemption, 0)
-        pension_exempt = min_(eligible_pension_income, remaining_cap)
-        return military_retirement_exemption + pension_exempt
+        if p.military_retirement_fully_exempt:
+            # Military retirement is fully exempt (no cap). The $6,000 cap
+            # applies to pension/IRA, reduced by military retirement.
+            remaining_cap = max_(p.cap - military_retirement_exemption, 0)
+            pension_exempt = min_(eligible_pension_income, remaining_cap)
+            return military_retirement_exemption + pension_exempt
+        # Before 2018, military retirement was reported with employment-related
+        # pensions and shared the same $6,000 exemption.
+        return min_(eligible_pension_income + military_retirement_exemption, p.cap)

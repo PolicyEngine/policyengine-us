@@ -8,7 +8,7 @@ class medicare_part_b_premium(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "medicare_enrolled"
-    reference = "https://www.medicare.gov/your-medicare-costs/part-b-costs"
+    reference = "https://www.medicare.gov/basics/costs/medicare-costs#partB"
     documentation = "Annual Medicare Part B premium paid out of pocket by the enrollee, net of Medicare Savings Program coverage."
 
     def formula(person, period, parameters):

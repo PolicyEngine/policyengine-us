@@ -10,7 +10,7 @@ class ct_c4k(Variable):
     label = "Connecticut Care 4 Kids subsidy amount"
     reference = (
         "https://eregulations.ct.gov/eRegsPortal/Browse/RCSA/Title_17bSubtitle_17b-749Section_17b-749-13/",
-        "https://www.ctoec.org/care-4-kids/c4k-providers/c4k-rates/",
+        "https://www.ctoec.org/care-4-kids-regulations/#rates",
     )
 
     def formula(spm_unit, period, parameters):

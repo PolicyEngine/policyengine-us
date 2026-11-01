@@ -9,6 +9,7 @@ class is_snap_immigration_status_eligible(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/7/2015#f",
         "https://www.law.cornell.edu/uscode/text/8/1612",
+        "https://www.law.cornell.edu/cfr/text/7/273.4#a_6",
         "https://www.fns.usda.gov/snap/obbb-alien-eligibility",
     )
 
@@ -22,5 +23,8 @@ class is_snap_immigration_status_eligible(Variable):
             p.eligible_immigration_statuses,
         )
         ca_eligible = person("ca_snap_immigration_status_eligible", period)
-
-        return federal_eligible | ca_eligible
+        # 8 USC 1612(a) and 7 CFR 273.4(a)(6) apply on top of the 7 USC
+        # 2015(f) status list, including in California during its delayed
+        # implementation of P.L. 119-21 sec. 10108 (CDSS ACL 25-92).
+        waiting_period = person("meets_snap_qualified_alien_waiting_period", period)
+        return (federal_eligible | ca_eligible) & waiting_period

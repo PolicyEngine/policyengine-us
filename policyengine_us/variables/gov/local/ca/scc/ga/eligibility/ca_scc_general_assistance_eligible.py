@@ -9,7 +9,7 @@ class ca_scc_general_assistance_eligible(Variable):
     defined_for = "in_scc"
     reference = (
         "https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/02Application/Application_Process.htm",
-        "https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/09Income/Potential_Inc_Res.htm",
+        "https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/09Income/Potential_Income_Resources.htm",
     )
 
     def formula(spm_unit, period, parameters):

@@ -1,0 +1,34 @@
+description: Kansas sets this benefit matrix income band based on one-month gross countable income under the Low Income Energy Assistance Program.
+brackets:
+  - threshold:
+      2024-10-01: 0
+    amount:
+      2024-10-01: 1
+  - threshold:
+      2024-10-01: 900
+    amount:
+      2024-10-01: 2
+  - threshold:
+      2024-10-01: 1_200
+    amount:
+      2024-10-01: 3
+  - threshold:
+      2024-10-01: 1_700
+    amount:
+      2024-10-01: 4
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: month
+  label: Kansas LIEAP one-month income band
+  reference:
+    - title: Kansas LIEAP FY2026 Benefit Matrix (one-month income rows 0-899, 900-1,199, 1,200-1,699, 1,700 and over)
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/KS_BenefitMatrix_2026.pdf#page=1
+    - title: Kansas LIEAP FY2025 Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/KS_BenefitMatrix_2025.pdf#page=1
+    - title: KEESM 13230 Proof of Information Requirement, October 2024 edition (gross income of the month of application)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm13200.htm
+    - title: KEESM 13230 Proof of Information Requirement, January 2026 edition (gross income of the month of application)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm13200.htm

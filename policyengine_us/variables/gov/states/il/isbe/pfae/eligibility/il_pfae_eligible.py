@@ -7,7 +7,7 @@ class il_pfae_eligible(Variable):
     label = "Eligible for Illinois Preschool For All Expansion (PFAE)"
     definition_period = YEAR
     reference = (
-        "https://www.isbe.net/pages/preschool-for-all.aspx",
+        "https://idec.illinois.gov/forproviders/preschool-for-all.html",
         "https://www.isbe.net/Documents/pdg-eg-grant-enrollment-form.pdf#page=2",
     )
     defined_for = StateCode.IL

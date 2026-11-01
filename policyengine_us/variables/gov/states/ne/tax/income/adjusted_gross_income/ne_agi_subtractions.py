@@ -8,15 +8,18 @@ class ne_agi_subtractions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://revenue.nebraska.gov/files/doc/tax-forms/2021/f_1040n_booklet.pdf"
-        "https://revenue.nebraska.gov/files/doc/2022_Ne_Individual_Income_Tax_Booklet_8-307-2022_final_5.pdf"
-        "https://revenue.nebraska.gov/about/2023-nebraska-legislative-changes"
-        "https://www.nebraskalegislature.gov/FloorDocs/108/PDF/Slip/LB754.pdf#page=10"
+        "https://revenue.nebraska.gov/files/doc/tax-forms/2021/f_1040n_booklet.pdf",
+        "https://revenue.nebraska.gov/files/doc/2022_Ne_Individual_Income_Tax_Booklet_8-307-2022_final_5.pdf",
+        "https://revenue.nebraska.gov/about/2023-nebraska-legislative-changes",
+        "https://www.nebraskalegislature.gov/FloorDocs/108/PDF/Slip/LB754.pdf#page=10",
     )
     defined_for = StateCode.NE
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ne.tax.income.agi.subtractions
-        total_subtractions = add(tax_unit, period, p.subtractions)
+        # Nebraska subtracts these amounts only to the extent they are included
+        # in federal AGI. Dependents' income is not in the filer's federal AGI;
+        # they report it on their own return.
+        total_subtractions = tax_unit_non_dep_add(tax_unit, period, p.subtractions)
         # Prevent negative subtractions from acting as additions
         return max_(0, total_subtractions)

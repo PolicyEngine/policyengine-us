@@ -1,0 +1,1076 @@
+- name: Case 1, independent SSI recipient.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 65
+  output:
+    nh_ssp: 27
+
+- name: Case 2, certified subsidized community residence.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 65
+    nh_ssp_living_arrangement: SUBSIDIZED_COMMUNITY_RESIDENCE
+  output:
+    nh_ssp: 89
+
+- name: Case 3, certified nonsubsidized community residence.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 65
+    nh_ssp_living_arrangement: NONSUBSIDIZED_COMMUNITY_RESIDENCE
+  output:
+    nh_ssp: 149
+
+- name: Case 4, certified enhanced family care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 65
+    nh_ssp_living_arrangement: ENHANCED_FAMILY_CARE
+  output:
+    nh_ssp: 207
+
+- name: Case 5, certified residential care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 65
+    nh_ssp_living_arrangement: RESIDENTIAL_CARE
+  output:
+    nh_ssp: 207
+
+- name: Case 6, resources at state limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 65
+    ssi_countable_resources: 1_500
+  output:
+    nh_ssp: 27
+
+- name: Case 7, resources exceed state limit despite federal eligibility.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 65
+    ssi_countable_resources: 1_501
+  output:
+    nh_ssp: 0
+
+- name: Case 8, twenty dollars of Social Security reduces state grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 65
+    social_security_retirement: 240
+  output:
+    nh_ssp: 7
+
+- name: Case 9, state only benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 65
+    social_security_retirement: 12_216
+  output:
+    nh_ssp: 3
+
+- name: Case 10, grant below state minimum is not paid.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 65
+    nh_ssp_countable_income: 1_007
+  output:
+    # 1,008 - 1,007 = 1, below the $2 minimum of He-W 670.03(a)(4): no payment.
+    nh_ssp: 0
+
+- name: Case 11, income at standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 65
+    nh_ssp_countable_income: 1_008
+  output:
+    nh_ssp: 0
+
+- name: Case 12, aged employment rules.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 65
+    employment_income: 1_200
+  output:
+    nh_ssp: 3
+
+- name: Case 13, blind employment rules.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 40
+    is_blind: true
+    employment_income: 1_200
+  output:
+    nh_ssp: 27
+
+- name: Case 14, payroll taxes above the minimum employment expense are deducted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 40
+    meets_ssi_disability_criteria: true
+    is_permanently_and_totally_disabled: true
+    nh_ssp_living_arrangement: ENHANCED_FAMILY_CARE
+    # Supported employment, 10 hours a week at the $7.25 minimum wage
+    # (RSA 279:21 adopts the federal rate): 10 * 52 * 7.25 = 3,770.
+    employment_income: 3_770
+  output:
+    # SSI: 994 - (3,770 / 12 - 85) * 0.5 = 994 - 114.58 = 879.42.
+    ssi: 879.42
+    # FICA: 3,770 * 0.0765 / 12 = 24.03, above the $18 minimum.
+    nh_ssp_employment_expenses: 24.03
+    # Earned: 314.17 - 20 - 30 - 24.03 = 240.13; 240.13 + 879.42 - 13 = 1,106.55.
+    nh_ssp_countable_income: 1_106.55
+    # 1,188 - 1,106.55 = 81.45, rounded to 81.
+    nh_ssp: 81
+
+- name: Case 15, court-ordered child support is deducted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 40
+    meets_ssi_disability_criteria: true
+    is_permanently_and_totally_disabled: true
+    # The $50 monthly minimum support order of RSA 458-C:2, V: 50 * 12 = 600.
+    child_support_expense: 600
+  output:
+    # 600 / 12 = 50 under He-W 654.20(a)(1).
+    nh_ssp_other_income_deductions: 50
+    # 994 SSI - 13 disregard - 50 support = 931.
+    nh_ssp_countable_income: 931
+    # 1,008 - 931 = 77.
+    nh_ssp: 77
+
+- name: Case 16, independently determined one third grant reduction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 65
+    nh_ssp_grant_reduction_applies: true
+  output:
+    nh_ssp: 18
+
+- name: Case 17, federal disability alone does not establish forty eight month duration.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 40
+    meets_ssi_disability_criteria: true
+  output:
+    nh_ssp: 0
+
+- name: Case 18, permanently disabled adult.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 40
+    meets_ssi_disability_criteria: true
+    is_permanently_and_totally_disabled: true
+  output:
+    nh_ssp: 27
+
+- name: Case 19, blind child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 17
+    is_blind: true
+  output:
+    nh_ssp: 27
+
+- name: Case 20, disabled child without blindness.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 17
+    meets_ssi_disability_criteria: true
+    is_permanently_and_totally_disabled: true
+  output:
+    nh_ssp: 0
+
+- name: Case 21, nonresident.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 65
+  output:
+    nh_ssp: 0
+
+- name: Case 22, required federal benefit application declined.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 65
+    takes_up_ssi_if_eligible: false
+  output:
+    nh_ssp: 0
+
+- name: Case 23, excluded living arrangement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 65
+    nh_ssp_living_arrangement: NONE
+  output:
+    nh_ssp: 0
+
+- name: Case 24, single recipient and certified essential person use group size two.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    ssi: 994
+    nh_ssp_has_essential_person: true
+  output:
+    nh_ssp: 518
+
+- name: Case 25, essential person income is added before the group disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    ssi: 994
+    nh_ssp_has_essential_person: true
+    nh_ssp_essential_person_countable_income: 100
+  output:
+    nh_ssp: 418
+
+- name: Case 26, essential person resources are counted even when recipient receives SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    ssi: 994
+    nh_ssp_has_essential_person: true
+    ssi_countable_resources: 1_000
+    nh_ssp_essential_person_resources: 501
+  output:
+    nh_ssp: 0
+
+- name: Case 27, essential person resource limit is inclusive.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    ssi: 994
+    nh_ssp_has_essential_person: true
+    ssi_countable_resources: 1_000
+    nh_ssp_essential_person_resources: 500
+  output:
+    nh_ssp: 518
+
+- name: Case 28, care facilities remain single-person groups.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    ssi: 994
+    nh_ssp_has_essential_person: true
+    nh_ssp_living_arrangement: RESIDENTIAL_CARE
+    nh_ssp_essential_person_countable_income: 100
+  output:
+    nh_ssp: 207
+
+- name: Case 29, uncertified caregiver does not increase the standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    ssi: 994
+    nh_ssp_has_essential_person: false
+  output:
+    nh_ssp: 27
+
+- name: Case 30, group standard disregard does not turn excess essential-person income into eligibility.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    ssi: 994
+    nh_ssp_has_essential_person: true
+    nh_ssp_essential_person_countable_income: 518
+  output:
+    nh_ssp: 0
+
+- name: Case 31, annual essential-person resource input stays a balance in each month.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    # The monthly SSI of 994 summed over the year: 994 * 12 = 11,928.
+    ssi: 11_928
+    nh_ssp_has_essential_person: true
+    ssi_countable_resources: 1_000
+    nh_ssp_essential_person_resources: 501
+  output:
+    # 1,000 + 501 = 1,501 > 1,500 in every month.
+    nh_ssp: 0
+
+# He-W 652.03(i)-(j),(q): full parental excess, NH $1500 ceiling, and adult control.
+# https://gc.nh.gov/rules/state_agencies/he-w600.html
+- name: Case 32, blind child is ineligible with excess co-resident parent resources.
+  period: 2026-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        bank_account_assets:
+          2026: 10_000
+      person2:
+        age:
+          2026: 10
+        person_id:
+          2026: 3
+        parent_1_id:
+          2026: 1
+        is_blind:
+          2026: true
+    marital_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
+    families:
+      family:
+        members: [person1, person2]
+    tax_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code:
+          2026: NH
+  output:
+    nh_ssp: [0, 0]
+
+- name: Case 33, parental allowance plus the NH child resource ceiling is inclusive.
+  period: 2026-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        bank_account_assets:
+          2026: 3_500
+      person2:
+        age:
+          2026: 10
+        person_id:
+          2026: 3
+        parent_1_id:
+          2026: 1
+        is_blind:
+          2026: true
+    marital_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
+    families:
+      family:
+        members: [person1, person2]
+    tax_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code:
+          2026: NH
+  output:
+    nh_ssp: [0, 27]
+
+- name: Case 34, one cent above the parent allowance and NH resource ceiling is ineligible.
+  period: 2026-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        bank_account_assets:
+          2026: 3_500.01
+      person2:
+        age:
+          2026: 10
+        person_id:
+          2026: 3
+        parent_1_id:
+          2026: 1
+        is_blind:
+          2026: true
+    marital_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
+    families:
+      family:
+        members: [person1, person2]
+    tax_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code:
+          2026: NH
+  output:
+    nh_ssp: [0, 0]
+
+- name: Case 35, a blind adult does not receive deemed parental resources.
+  period: 2026-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        bank_account_assets:
+          2026: 10_000
+      person2:
+        age:
+          2026: 19
+        person_id:
+          2026: 3
+        parent_1_id:
+          2026: 1
+        is_blind:
+          2026: true
+    marital_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
+    families:
+      family:
+        members: [person1, person2]
+    tax_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code:
+          2026: NH
+  output:
+    nh_ssp: [0, 27]
+
+- name: Case 36, each blind sibling receives the full excess under the NH rule.
+  period: 2026-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        bank_account_assets:
+          2026: 5_500
+      person2:
+        age:
+          2026: 40
+        person_id:
+          2026: 2
+      person3:
+        age:
+          2026: 10
+        person_id:
+          2026: 3
+        parent_1_id:
+          2026: 1
+        is_blind:
+          2026: true
+        parent_2_id:
+          2026: 2
+      person4:
+        age:
+          2026: 10
+        person_id:
+          2026: 4
+        parent_1_id:
+          2026: 1
+        is_blind:
+          2026: true
+        parent_2_id:
+          2026: 2
+    marital_units:
+      parent1:
+        members: [person1]
+      parent2:
+        members: [person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+    families:
+      family:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      parent1:
+        members: [person1]
+      parent2:
+        members: [person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+    spm_units:
+      unit:
+        members: [person1, person2, person3, person4]
+    households:
+      home:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: NH
+  output:
+    nh_ssp: [0, 0, 0, 0]
+
+# He-W 616.02(a) and AAM 305.11-305.13: five-year rule instead of SSI's 40 quarters.
+- name: Case 37, permanent resident past the five-year wait without forty quarters.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 10
+    ssi_qualifying_quarters_earnings: 0
+  output:
+    # 0 of the 40 qualifying quarters SSI requires, so no SSI.
+    ssi: 0
+    # 10 years since entry >= 5-year waiting period.
+    nh_ssp_eligible: true
+    # max(0 + 0 - 13, 0) = 0 countable; 1,008 - 0 = 1,008.
+    nh_ssp: 1_008
+
+- name: Case 38, permanent resident within the five-year wait is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    # No credited quarters are supplied (snap_alien_qualifying_quarters
+    # defaults to 0), so the 8 USC 1622(b)(2) exception does not apply.
+    years_since_us_entry: 2
+  output:
+    # 2 years since entry < 5-year waiting period.
+    nh_ssp_eligible: false
+    nh_ssp: 0
+
+- name: Case 39, refugee is eligible without a waiting period.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    immigration_status: REFUGEE
+    years_since_us_entry: 1
+  output:
+    # Refugees are SSI qualified noncitizens.
+    ssi: 994
+    # AAM 305.11 exempts refugees from the waiting period.
+    nh_ssp_eligible: true
+    # 994 - 13 = 981 countable; 1,008 - 981 = 27.
+    nh_ssp: 27
+
+- name: Case 40, parent and adult child in a default marital unit use an individual budget.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        person_id: 1
+      person2:
+        age: 40
+        person_id: 2
+        parent_1_id: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # The omitted marital units put both people in one default unit; the
+    # parent link rules out a spouse, so each is a one-person group.
+    ssi: [994, 0]
+    # person1: 994 - 13 = 981; person2: max(0 - 13, 0) = 0.
+    nh_ssp_countable_income: [981, 0]
+    # 1,008 - 981 = 27; person2 is not aged, blind or disabled.
+    nh_ssp: [27, 0]
+
+- name: Case 41, grant reduction flag on either spouse reduces the couple grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 65
+        nh_ssp_grant_reduction_applies: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # 745.5 SSI each: 745.5 + 745.5 - 20 = 1,471 for the couple.
+    nh_ssp_countable_income: [1_471, 1_471]
+    # 1,492 - 1,471 = 21; 21 * 2 / 3 = 14 for the couple, whichever spouse has
+    # the flag; 14 / 2 = 7 each.
+    nh_ssp: [7, 7]
+
+- name: Case 42, a resident of a medical facility where Medicaid pays most of the cost has no grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    nh_ssp_living_arrangement: NONE
+    # Federal living arrangement D: the $30 reduced SSI payment.
+    ssi: 30
+    nh_ssp_eligible: false
+    nh_ssp: 0
+
+- name: Case 43, an incarcerated person is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    is_incarcerated: true
+  output:
+    nh_ssp_eligible: false
+    nh_ssp: 0
+
+- name: Case 44, an undocumented immigrant is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    immigration_status: UNDOCUMENTED
+  output:
+    ssi: 0
+    nh_ssp_eligible: false
+    nh_ssp: 0
+
+- name: Case 45, the federal one-third reduction alone does not reduce the state grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    # $994 * 2/3 = $662.67 federal payment in another person's household.
+    ssi: 662.67
+    # $662.67 - $13 = $649.67 countable; $1,008 - $649.67 = $358.33, rounded to
+    # $358. He-W 670.03(c) also requires no SNAP receipt, so the state reduction
+    # is the separate nh_ssp_grant_reduction_applies input (a SNAP recipient keeps $358).
+    nh_ssp: 358
+
+- name: Case 46, the same household without SNAP takes the state one-third reduction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+    nh_ssp_grant_reduction_applies: true
+  output:
+    ssi: 662.67
+    # $358 * (1 - 1/3) = $238.67, rounded to $239.
+    nh_ssp: 239
+
+- name: Case 47, a permanently and totally disabled applicant qualifies at exactly 18.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 18
+    meets_ssi_disability_criteria: true
+    is_permanently_and_totally_disabled: true
+  output:
+    nh_ssp_eligible: true
+    # $1,008 - ($994 - $13) = $27.
+    nh_ssp: 27
+
+- name: Case 48, a permanent resident qualifies exactly five years after entry.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 5
+    ssi_qualifying_quarters_earnings: 0
+  output:
+    # 0 of the 40 qualifying quarters SSI requires, so no SSI.
+    ssi: 0
+    # 5 years since entry >= 5-year waiting period.
+    nh_ssp_eligible: true
+    # max(0 - 13, 0) = 0 countable; $1,008 - $0 = $1,008.
+    nh_ssp: 1_008
+
+- name: Case 49, a mixed blind and aged applicant couple uses each member's own earned income disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 40
+        is_blind: true
+        # 10 hours a week as a cashier at the New Hampshire median wage of
+        # $16.27 (BLS OEWS May 2025): $16.27 * 10 * 52 = $8,460.40 a year.
+        employment_income: 8_460.4
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # $8,460.40 / 12 = $705.03 a month; ($705.03 - $20 - $65) * 0.5 = $310.02
+    # countable; ($1,491 - $310.02) / 2 = $590.49 each.
+    ssi: [590.49, 590.49]
+    # He-W 654.15(b), blind: ($705.03 - $85) * 0.5 = $310.02 net earnings; the
+    # aged member has none. $310.02 + $1,180.98 SSI - $20 = $1,471.
+    nh_ssp_countable_income: [1_471, 1_471]
+    # $1,492 two-person standard - $1,471 = $21, split between two recipients.
+    nh_ssp: [10.5, 10.5]
+
+- name: Case 50, a blind applicant's nonapplicant spouse's earnings get the blind disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+      person2:
+        age: 40
+        # 20 hours a week as a cashier at the New Hampshire median wage of
+        # $16.27 (BLS OEWS May 2025): $16.27 * 20 * 52 = $16,920.80 a year.
+        employment_income: 16_920.8
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # $16,920.80 / 12 = $1,410.07 a month, above the $497 difference, so SSI
+    # deems ($1,410.07 - $20 - $65) * 0.5 = $662.53; $1,491 - $662.53 = $828.47.
+    ssi: [828.47, 0]
+    nh_ssp_eligible: [true, false]
+    # He-W 654.02(e) combines the spouse's earnings before the blind disregard:
+    # ($1,410.07 - $85) * 0.5 = $662.53; $662.53 + $828.47 - $20 = $1,471.
+    # $1,492 two-person standard - $1,471 = $21.
+    nh_ssp: [21, 0]
+
+- name: Case 51, a permanent resident with 40 credited quarters is eligible within the five-year wait.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    # 8 USC 1622(b)(2): 40 qualifying quarters credited under 8 USC 1645.
+    snap_alien_qualifying_quarters: 40
+    # 8 USC 1613(a) bars federal SSI for 5 years after entry; the federal SSI
+    # model does not apply that bar, so SSI is set to the $0 it would pay.
+    ssi: 0
+  output:
+    nh_ssp_eligible: true
+    # max(0 - 13, 0) = 0 countable; $1,008 - $0 = $1,008.
+    nh_ssp: 1_008
+
+- name: Case 52, the independent-living standard moves with the SSI cost-of-living increase.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+  output:
+    # He-W 658.03(e): standard = SSI individual rate + $27 - $13, and countable
+    # income = SSI - $13, so the grant stays $27 whatever the 2027 rate is.
+    nh_ssp: 27
+
+- name: Case 53, the residential care standard moves with the SSI cost-of-living increase.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    nh_ssp_living_arrangement: RESIDENTIAL_CARE
+  output:
+    # He-W 648.04(b): standard = SSI individual rate - $13 + $207, so the grant
+    # stays $207.
+    nh_ssp: 207
+
+- name: Case 54, the two-person standard moves with the SSI cost-of-living increase.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Standard = SSI couple rate + $21 - $20 and countable income = SSI - $20,
+    # so the group grant stays $21, split between two recipients.
+    nh_ssp: [10.5, 10.5]
+
+- name: Case 55, a New Hampshire resident and a Massachusetts resident in one simulation.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+    # Separate units, so default units don't pair the two as spouses.
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      nh_home:
+        members: [person1]
+        state_code: NH
+      ma_home:
+        members: [person2]
+        state_code: MA
+  output:
+    # person1: $994 SSI - $13 = $981 countable; $1,008 - $981 = $27. person2 is
+    # outside New Hampshire.
+    nh_ssp_countable_income: [981, 0]
+    nh_ssp: [27, 0]
+
+- name: Case 56, a rounded grant of exactly the $2 minimum is paid.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 65
+    nh_ssp_countable_income: 1_006
+  output:
+    # 1,008 - 1,006 = 2, the He-W 670.03(a)(4) minimum: paid.
+    nh_ssp: 2
+
+- name: Case 57, the one-third reduction applies after the minimum grant test.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 65
+    nh_ssp_countable_income: 1_006
+    nh_ssp_grant_reduction_applies: true
+  output:
+    # The $2 grant passes the minimum, then He-W 670.03(c) reduces it:
+    # 2 * 2/3 = 1.33, rounded to 1.
+    nh_ssp: 1
+
+- name: Case 58, a grant of $2.49 rounds down to the $2 minimum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 65
+    nh_ssp_countable_income: 1_005.51
+  output:
+    # 1,008 - 1,005.51 = 2.49, rounded down to 2 under He-W 670.03(a)(3)a.: paid.
+    nh_ssp: 2
+
+- name: Case 59, a permanent resident with 39 credited quarters stays in the five-year wait.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    # One quarter short of the 40 in 8 USC 1622(b)(2).
+    snap_alien_qualifying_quarters: 39
+    # As in Case 51, 8 USC 1613(a) bars federal SSI for 5 years after entry.
+    ssi: 0
+  output:
+    # 2 < 5 years, not exempt, and 39 < 40 quarters: ineligible.
+    nh_ssp_eligible: false
+    nh_ssp: 0
+
+- name: Case 60, pre-tax health premiums still count as New Hampshire wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 40
+    is_blind: true
+    # $1,000 a month, about 14 hours a week at the New Hampshire cashier
+    # median of $16.27 (BLS OEWS May 2025).
+    employment_income: 12_000
+    # $100 a month for self-only coverage through a cafeteria plan, below the
+    # 2025 average worker contribution of $1,440 (KFF Employer Health
+    # Benefits Survey).
+    pre_tax_health_insurance_premiums: 1_200
+  output:
+    # SSI excludes the premiums (POMS SI 00820.102 C.2): 1,000 - 100 = 900;
+    # 994 - (900 - 20 - 65) * 0.5 = 994 - 407.50 = 586.50.
+    ssi: 586.5
+    # He-W 601.04(m) counts the 1,000 before payroll deductions. He-W
+    # 654.15(b): (1,000 - 85) * 0.5 = 457.50; 457.50 + 586.50 - 13 = 1,031.
+    nh_ssp_countable_income: 1_031
+    # 1,031 is above the 1,008 standard (994 + 27 - 13): no grant.
+    nh_ssp: 0
+
+- name: Case 61, a nonapplicant spouse's pre-tax health premiums still count as New Hampshire wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+      person2:
+        age: 40
+        # As in Case 50: 20 hours a week at $16.27, $16,920.80 a year.
+        employment_income: 16_920.8
+        # $100 a month through a cafeteria plan, as in Case 60.
+        pre_tax_health_insurance_premiums: 1_200
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # SSI deems the spouse's wages net of premiums: 1,410.07 - 100 = 1,310.07;
+    # (1,310.07 - 20 - 65) * 0.5 = 612.53; 1,491 - 612.53 = 878.47.
+    ssi: [878.47, 0]
+    nh_ssp_eligible: [true, false]
+    # He-W 654.02(e)(1) combines gross earnings: (1,410.07 - 85) * 0.5 = 662.53;
+    # 662.53 + 878.47 - 20 = 1,521, above the 1,492 two-person standard.
+    nh_ssp: [0, 0]

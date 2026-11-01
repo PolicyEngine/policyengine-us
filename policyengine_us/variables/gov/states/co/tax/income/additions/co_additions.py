@@ -9,7 +9,7 @@ class co_additions(Variable):
     definition_period = YEAR
     reference = (
         # C.R.S. 39-22-104 . Income tax imposed on individuals, estates, and trusts - section (3)
-        "https://casetext.com/statute/colorado-revised-statutes/title-39-taxation/specific-taxes/income-tax/article-22-income-tax/part-1-general/section-39-22-104-effective-until-official-proclamation-by-governor-income-tax-imposed-on-individuals-estates-and-trusts-single-rate-report-legislative-declaration-definitions-repeal",
+        "https://law.justia.com/codes/colorado/2022/title-39/article-22/part-1/section-39-22-104/",
         # 2022 Colorado Individual Income Tax Filing Guide - Additions
         "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=5",
         # 2021 Colorado Individual Income Tax Filing Guide - Additions

@@ -1,0 +1,14 @@
+- name: Defaults to this year's filing status.
+  period: 2024
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    clean_vehicle_credit_prior_year_filing_status: HEAD_OF_HOUSEHOLD
+
+- name: A provided filing status overrides the default.
+  period: 2024
+  input:
+    filing_status: SINGLE
+    clean_vehicle_credit_prior_year_filing_status: JOINT
+  output:
+    clean_vehicle_credit_prior_year_filing_status: JOINT

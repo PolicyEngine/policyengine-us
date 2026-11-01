@@ -22,7 +22,7 @@ from policyengine_us.data.economic_assumptions import (
 from policyengine_us.tests.microsimulation.data.fixtures.test_extend_single_year_dataset import (  # noqa: E501
     BASE_YEAR,
     END_YEAR_SHORT,
-    END_YEAR_DEFAULT,
+    END_YEAR_EXPLICIT,
     NUM_PERSONS,
     NUM_HOUSEHOLDS,
     EMPLOYMENT_INCOME_BASE,
@@ -344,14 +344,14 @@ class TestExtendSingleYearDataset:
         assert result.years == [BASE_YEAR]
 
     def test_given_explicit_end_year_2035_then_extends_correctly(self):
-        # Given — need param values through END_YEAR_DEFAULT
+        # Given — need param values through END_YEAR_EXPLICIT
         extended_values = {
             f"{y}-01-01": 100.0 * (1.1 ** (y - BASE_YEAR))
-            for y in range(BASE_YEAR, END_YEAR_DEFAULT + 1)
+            for y in range(BASE_YEAR, END_YEAR_EXPLICIT + 1)
         }
         cpi_values = {
             f"{y}-01-01": 300.0 * (1.03 ** (y - BASE_YEAR))
-            for y in range(BASE_YEAR, END_YEAR_DEFAULT + 1)
+            for y in range(BASE_YEAR, END_YEAR_EXPLICIT + 1)
         }
         system = MockSystem(
             parameters=build_mock_parameters(
@@ -365,11 +365,11 @@ class TestExtendSingleYearDataset:
 
         # When
         result = call_extend_with_mock_system(
-            system, dataset, end_year=END_YEAR_DEFAULT
+            system, dataset, end_year=END_YEAR_EXPLICIT
         )
 
         # Then
-        assert result.years == list(range(BASE_YEAR, END_YEAR_DEFAULT + 1))
+        assert result.years == list(range(BASE_YEAR, END_YEAR_EXPLICIT + 1))
 
     def test_given_extended_dataset_then_base_year_values_unchanged(
         self, base_dataset, mock_system
@@ -996,6 +996,33 @@ class TestMicrosimulationDatasetRouting:
         assert extend_called["value"] is True
         assert isinstance(original_dataset[0], USSingleYearDataset)
 
+    def test_string_hdfstore_path_passes_dataset_end_year(
+        self, base_dataset, tmp_path, monkeypatch
+    ):
+        path = str(tmp_path / "entity_level.h5")
+        base_dataset.save(path)
+        captured_end_year = [None]
+
+        def mock_extend(ds, *, end_year=None, **kwargs):
+            captured_end_year[0] = end_year
+            return USMultiYearDataset(datasets=[ds])
+
+        monkeypatch.setattr(
+            "policyengine_us.data.economic_assumptions.extend_single_year_dataset",
+            mock_extend,
+        )
+
+        from policyengine_us import system as system_module
+
+        monkeypatch.setattr(
+            system_module.CoreMicrosimulation,
+            "__init__",
+            make_mock_super_init(system_module),
+        )
+
+        system_module.Microsimulation(dataset=path, dataset_end_year=BASE_YEAR)
+        assert captured_end_year[0] == BASE_YEAR
+
     def test_single_year_dataset_triggers_extend(self, base_dataset, monkeypatch):
         extend_called = {"value": False}
 
@@ -1018,6 +1045,31 @@ class TestMicrosimulationDatasetRouting:
 
         sim = system_module.Microsimulation(dataset=base_dataset)
         assert extend_called["value"] is True
+
+    def test_single_year_dataset_passes_dataset_end_year(
+        self, base_dataset, monkeypatch
+    ):
+        captured_end_year = [None]
+
+        def mock_extend(ds, *, end_year=None, **kwargs):
+            captured_end_year[0] = end_year
+            return USMultiYearDataset(datasets=[ds])
+
+        monkeypatch.setattr(
+            "policyengine_us.data.economic_assumptions.extend_single_year_dataset",
+            mock_extend,
+        )
+
+        from policyengine_us import system as system_module
+
+        monkeypatch.setattr(
+            system_module.CoreMicrosimulation,
+            "__init__",
+            make_mock_super_init(system_module),
+        )
+
+        system_module.Microsimulation(dataset=base_dataset, dataset_end_year=BASE_YEAR)
+        assert captured_end_year[0] == BASE_YEAR
 
     def test_multi_year_dataset_passes_through(self, base_dataset, monkeypatch):
         multi = USMultiYearDataset(datasets=[base_dataset])
@@ -1046,6 +1098,42 @@ class TestMicrosimulationDatasetRouting:
         sim = system_module.Microsimulation(dataset=multi)
         assert extend_called["value"] is False
         assert captured_dataset[0] is multi
+
+    def test_multi_year_dataset_rejects_dataset_end_year(
+        self, base_dataset, monkeypatch
+    ):
+        from policyengine_us import system as system_module
+
+        multi = USMultiYearDataset(datasets=[base_dataset])
+        monkeypatch.setattr(
+            system_module.CoreMicrosimulation,
+            "__init__",
+            make_mock_super_init(system_module),
+        )
+
+        with pytest.raises(
+            ValueError, match="applies only to entity-level single-year datasets"
+        ):
+            system_module.Microsimulation(dataset=multi, dataset_end_year=BASE_YEAR)
+
+    def test_legacy_h5_rejects_dataset_end_year(self, tmp_path, monkeypatch):
+        import h5py
+
+        from policyengine_us import system as system_module
+
+        path = str(tmp_path / "legacy.h5")
+        with h5py.File(path, "w") as file:
+            file.create_dataset("employment_income/2024", data=np.array([50_000.0]))
+        monkeypatch.setattr(
+            system_module.CoreMicrosimulation,
+            "__init__",
+            make_mock_super_init(system_module),
+        )
+
+        with pytest.raises(
+            ValueError, match="applies only to entity-level single-year datasets"
+        ):
+            system_module.Microsimulation(dataset=path, dataset_end_year=BASE_YEAR)
 
 
 # ---------------------------------------------------------------------------
@@ -1103,14 +1191,15 @@ class TestGetParameterLastYear:
 
     def test_with_real_cpi_u_parameter(self):
         """Verify get_parameter_last_year works on the actual CPI-U
-        parameter YAML, returning 2035 (not 2100 from uprating_extensions)."""
+        parameter YAML, returning 2036 (not 2100 from uprating_extensions)."""
         from policyengine_us.system import system
 
         cpi_u = _resolve_parameter(system.parameters, "gov.bls.cpi.cpi_u")
         last_year = get_parameter_last_year(cpi_u)
-        # CPI-U YAML currently extends to 2035; if the YAML is updated,
-        # this assertion should be updated to match.
-        assert last_year == 2035
+        # CPI-U YAML currently extends to 2036 (CBO's February 2026
+        # projections); if the YAML is updated, this assertion should be
+        # updated to match.
+        assert last_year == 2036
 
 
 # ---------------------------------------------------------------------------

@@ -26,5 +26,11 @@ class taxable_uc_agi(Variable):
             gross_income += not_dependent * max_(0, add(person, period, [source]))
         gross_income = tax_unit.sum(gross_income)
         above_the_line_deductions = irs.ald.deductions
-        total_deductions = add(tax_unit, period, above_the_line_deductions)
+        # A tax unit dependent's deductions are on their own return.
+        total_deductions = tax_unit_non_dep_add(
+            tax_unit,
+            period,
+            above_the_line_deductions,
+            include_dependents=irs.ald.filer_amounts_recorded_on_dependents,
+        )
         return max_(0, gross_income - total_deductions)

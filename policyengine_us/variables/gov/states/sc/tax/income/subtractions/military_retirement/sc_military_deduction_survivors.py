@@ -14,4 +14,7 @@ class sc_military_deduction_survivors(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        return person("military_retirement_pay_survivors", period)
+        # Only the head's and spouse's survivor benefits are in the filer's
+        # federal AGI; a dependent reports their own on their own return.
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        return person("military_retirement_pay_survivors", period) * head_or_spouse

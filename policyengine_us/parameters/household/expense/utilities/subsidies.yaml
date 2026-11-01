@@ -1,11 +1,11 @@
-description: The total utility expense subsidies.
+description: PolicyEngine subtracts these subsidies from the pre-subsidy electricity expense.
 values:
   0000-01-01:
-    - ca_care
+    - ca_care_electricity_discount
     - ca_fera
     - ca_la_ez_save
 
 metadata:
   unit: list
   period: year
-  label: Total utility expense subsidies
+  label: Electricity expense subsidies

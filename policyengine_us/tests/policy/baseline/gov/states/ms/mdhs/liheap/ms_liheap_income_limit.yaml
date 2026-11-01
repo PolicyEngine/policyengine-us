@@ -1,0 +1,20 @@
+- name: Case 1, published FY2026 sixty percent state median income limits for household sizes one through twenty.
+  period: 2026
+  input:
+    state_code: [MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS]
+    ms_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  output:
+    # Manual PDF page 58, Appendix table, "60% State Median Income" column for
+    # household sizes 1 through 20, effective 10/1/2025.
+    ms_liheap_income_limit: [26_740, 34_968, 43_196, 51_424, 59_651, 67_879, 69_422, 70_965, 72_507, 74_050, 75_593,
+      77_136, 78_678, 80_221, 81_764, 83_306, 84_849, 86_392, 87_935, 89_477]
+- name: Case 2, a household with no documented member has no income limit.
+  period: 2026
+  input:
+    state_code: MS
+    ms_liheap_household_size: 0
+  output:
+    # Rule 6.3 A (manual PDF page 23) denies a household with no documented
+    # member, and the Appendix table (page 58) starts at household size 1, so
+    # no limit applies to size 0.
+    ms_liheap_income_limit: 0

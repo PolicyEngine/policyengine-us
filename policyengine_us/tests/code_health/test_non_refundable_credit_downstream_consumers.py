@@ -8,18 +8,17 @@ REFORMS_ROOT = REPO / "reforms"
 
 
 REVIEWED_APPLIED_CREDIT_EXTERNAL_REFERENCES = {
-    "de_cdcc": {
-        # Delaware combined separate (FS4) routes the applied CDCC to the
-        # lower-income spouse's column (PIT-RES Line 31); it is re-capped at
-        # that column's tax in de_income_tax_after_non_refundable_credits_indv.
-        "variables/gov/states/de/tax/income/credits/cdcc/de_cdcc_indv.py",
-    },
     "de_non_refundable_eitc": {
         "variables/gov/states/de/tax/income/credits/eitc/de_eitc.py",
         "variables/gov/states/de/tax/income/credits/eitc/refundability_calculation/de_income_tax_if_claiming_non_refundable_eitc.py",
-        # Combined separate (FS4) path applies the EITC to the higher-income
-        # spouse's column (PIT-RES Line 34), capped at that column's tax.
-        "variables/gov/states/de/tax/income/de_income_tax_before_refundable_credits_separate.py",
+    },
+    "az_dependent_tax_credit": {
+        # Arizona refundable dependent credit contrib reform references
+        # "az_dependent_tax_credit" only as the ordering key for
+        # state_non_refundable_credit_limit; it reads the pre-ordering
+        # az_dependent_tax_credit_potential for the value, not the applied
+        # credit.
+        "reforms/states/az/dependent_credit/az_dependent_credit_reform.py",
     },
     "ga_ctc": {
         # Georgia refundable CTC contrib reform references "ga_ctc" only as the
@@ -70,7 +69,6 @@ REVIEWED_APPLIED_CREDIT_EXTERNAL_REFERENCES = {
     "va_non_refundable_eitc": {
         "variables/gov/states/va/tax/income/credits/eitc/refundability_calculation/va_income_tax_if_claiming_non_refundable_eitc.py",
         "variables/gov/states/va/tax/income/credits/eitc/va_eitc.py",
-        "variables/gov/states/va/tax/income/credits/eitc/va_eitc_person.py",
     },
 }
 

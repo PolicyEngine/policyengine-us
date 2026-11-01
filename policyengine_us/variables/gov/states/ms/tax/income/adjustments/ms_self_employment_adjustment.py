@@ -8,7 +8,7 @@ class ms_self_employment_adjustment(Variable):
     unit = USD
     definition_period = YEAR
     reference = [
-        "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=13",  # Line 61
+        "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100221.pdf#page=13",  # Line 61
         "https://law.justia.com/codes/mississippi/2020/title-27/chapter-7/article-1/section-27-7-18/",  # 6(c)
     ]
     defined_for = StateCode.MS

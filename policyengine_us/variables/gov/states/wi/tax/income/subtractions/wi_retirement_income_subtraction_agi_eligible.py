@@ -8,10 +8,10 @@ class wi_retirement_income_subtraction_agi_eligible(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB.pdf"
-        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB-inst.pdf#page=9"
-        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSBf.pdf"
-        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSB-Inst.pdf#page=7"
+        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB.pdf",
+        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB-inst.pdf#page=9",
+        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSBf.pdf",
+        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSB-Inst.pdf#page=7",
     )
     defined_for = StateCode.WI
 

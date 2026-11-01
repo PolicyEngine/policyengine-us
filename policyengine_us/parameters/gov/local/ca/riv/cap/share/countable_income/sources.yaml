@@ -7,7 +7,7 @@ values:
     - alimony_income
     - child_support_received
     - pension_income
-    - unemployment_compensation
+    - total_unemployment_compensation
     - social_security
     - ssi 
     - ca_tanf
@@ -15,7 +15,7 @@ values:
 metadata:
   unit: list
   period: year
-  label: Riverside County SHARE countable income sources
+  label: Riverside SHARE countable income sources
   reference:
     - title: SHARE Program Guidelines
       href: https://riversideca.gov/utilities/residents/assistance-programs/share-english

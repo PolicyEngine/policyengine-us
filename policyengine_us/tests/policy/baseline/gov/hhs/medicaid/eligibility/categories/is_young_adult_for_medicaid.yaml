@@ -7,12 +7,22 @@
   output:
     is_young_adult_for_medicaid: true
 
-- name: Age 19 in DC, over FPL limit, not young adult
+# 42 CFR 435.222(b) includes income at the state's standard.
+- name: Age 19 in DC and exactly at FPL limit, young adult
   period: 2022
   input:
     age: 19
     state_code: DC
     medicaid_income_level: 2.21
+  output:
+    is_young_adult_for_medicaid: true
+
+- name: Age 19 in DC, over FPL limit, not young adult
+  period: 2022
+  input:
+    age: 19
+    state_code: DC
+    medicaid_income_level: 2.22
   output:
     is_young_adult_for_medicaid: false
 

@@ -9,7 +9,7 @@ class ca_child_care_smi(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.CA
-    reference = "https://www.cde.ca.gov/sp/cd/ci/mb2505.asp"
+    reference = "https://web.archive.org/web/20260125002512/https://www.cde.ca.gov/sp/cd/ci/mb2505.asp"
 
     def formula(spm_unit, period, parameters):
         # California uses July 1 fiscal year for SMI

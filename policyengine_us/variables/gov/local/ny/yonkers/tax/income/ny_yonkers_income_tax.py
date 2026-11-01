@@ -8,7 +8,11 @@ class ny_yonkers_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NY
-    reference = "https://www.tax.ny.gov/pit/file/nyc_yonkers_residents.htm"
+    reference = (
+        "https://www.tax.ny.gov/pit/file/nyc_yonkers_residents.htm",
+        "https://www.nysenate.gov/legislation/laws/TAX/1321",
+        "https://www.nysenate.gov/legislation/laws/TAX/1340",
+    )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.local.ny.yonkers.tax.income

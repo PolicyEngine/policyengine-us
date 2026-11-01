@@ -2,6 +2,10 @@ description: Counties in California with an approved USDA FNS waiver of the SNAP
 
 values:
   2018-01-01: []
+  # FY2026 waiver (unemployment over 10 percent): Colusa, Imperial, and
+  # Tulare counties (FNS response, October 23, 2025), modified to add
+  # Alpine, Merced, Monterey, and Plumas counties (FNS response, February
+  # 10, 2026), all 2025-11-01 through 2026-10-31.
   2025-11-01:
     - ALPINE_COUNTY_CA # FIPS 06003
     - COLUSA_COUNTY_CA # FIPS 06011
@@ -21,3 +25,11 @@ metadata:
       href: https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2025/25-79.pdf#page=5
     - title: CDSS All County Letter No. 26-15
       href: https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2026/26-15.pdf#page=6
+    - title: USDA FNS California ABAWD Waiver Response, October 23, 2025 - requested area and county list (Colusa, Imperial, and Tulare counties)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ca-abawd-response-fy2026-a.pdf#page=2
+    - title: USDA FNS California ABAWD Waiver Response, October 23, 2025 - implementation date (2025-11-01) and expiration date (2026-10-31)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ca-abawd-response-fy2026-a.pdf#page=3
+    - title: USDA FNS California ABAWD Waiver Response, February 10, 2026 (modification) - requested area (seven counties) and Table 1
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ca-abawd-response-fy2026-b.pdf#page=2
+    - title: USDA FNS California ABAWD Waiver Response, February 10, 2026 (modification) - Tables 2 and 3 (Monterey, Plumas, Alpine, and Merced counties), implementation date (2025-11-01), and expiration date (2026-10-31)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ca-abawd-response-fy2026-b.pdf#page=3

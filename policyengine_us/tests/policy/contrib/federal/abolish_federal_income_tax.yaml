@@ -39,3 +39,37 @@
     household_refundable_tax_credits: 1_400
     household_state_tax_before_refundable_credits: 1_000
     household_tax_before_refundable_credits: 2_200
+
+- name: Abolishing federal income tax preserves Montgomery County refundable EITC
+  period: 2024
+  reforms: policyengine_us.reforms.federal.abolish_federal_income_tax.abolish_federal_income_tax
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: true
+    age: 30
+    state_code: MD
+    county_str: MONTGOMERY_COUNTY_MD
+    md_refundable_eitc: 100
+    income_tax_refundable_credits: 800
+  output:
+    md_montgomery_eitc: 56
+    household_refundable_state_tax_credits: 100
+    household_refundable_local_tax_credits: 56
+    household_refundable_tax_credits: 156
+    household_tax: -156
+
+- name: Abolishing federal income tax includes NYC refundable credits exactly once
+  period: 2024
+  reforms: policyengine_us.reforms.federal.abolish_federal_income_tax.abolish_federal_income_tax
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: true
+    age: 30
+    state_code: NY
+    in_nyc: true
+    ny_refundable_credits: 100
+    nyc_refundable_credits: 200
+    income_tax_refundable_credits: 800
+  output:
+    household_refundable_state_tax_credits: 100
+    household_refundable_local_tax_credits: 200
+    household_refundable_tax_credits: 300
+    household_tax: -300

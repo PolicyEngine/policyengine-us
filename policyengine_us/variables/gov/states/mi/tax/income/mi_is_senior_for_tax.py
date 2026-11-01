@@ -6,7 +6,7 @@ class mi_is_senior_for_tax(Variable):
     entity = TaxUnit
     label = "Michigan filer is a senior"
     definition_period = YEAR
-    reference = "http://legislature.mi.gov/doc.aspx?mcl-206-514"
+    reference = "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-514"
     defined_for = StateCode.MI
 
     def formula(tax_unit, period, parameters):

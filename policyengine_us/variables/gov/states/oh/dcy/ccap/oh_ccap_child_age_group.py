@@ -17,7 +17,7 @@ class oh_ccap_child_age_group(Variable):
     definition_period = MONTH
     label = "Ohio CCAP child age group"
     defined_for = StateCode.OH
-    reference = "https://codes.ohio.gov/ohio-administrative-code/rule-5180:2-16-01"
+    reference = "https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/2/16/5180$2-16-01_20221211.pdf"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.oh.dcy.ccap.age_group

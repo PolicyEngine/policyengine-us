@@ -6,9 +6,7 @@ class la_school_readiness_credit_eligible_child(Variable):
     entity = Person
     label = "Eligible child for the Louisiana school readiness tax credit"
     definition_period = YEAR
-    reference = (
-        "https://revenue.louisiana.gov/TaxForms/IT540WEB(2022)%20F%20D2.pdf#page=15"
-    )
+    reference = "https://dam.ldr.la.gov/taxforms/IT540WEB(2022)%20F%20D2.pdf#page=15"
     defined_for = StateCode.LA
 
     def formula(person, period, parameters):

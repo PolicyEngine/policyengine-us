@@ -15,4 +15,4 @@ class fl_oss_program_track(Variable):
     defined_for = StateCode.FL
     possible_values = FLOSSProgramTrack
     default_value = FLOSSProgramTrack.NONE
-    reference = "https://www.myflfamilies.com/sites/default/files/2025-05/Appendix%20A-12%20-%20State%20Funded%20Programs%20Eligibility%20Standards.pdf"
+    reference = "https://web.archive.org/web/20251030232040/https://www.myflfamilies.com/sites/default/files/2025-05/Appendix%20A-12%20-%20State%20Funded%20Programs%20Eligibility%20Standards.pdf"

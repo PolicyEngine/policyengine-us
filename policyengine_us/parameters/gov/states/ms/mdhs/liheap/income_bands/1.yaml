@@ -1,0 +1,35 @@
+description: Mississippi sets these income bands for an eligible household of 1 member under the Low Income Home Energy Assistance Program.
+brackets:
+  - threshold:
+      2025-10-01: -.inf
+    amount:
+      2025-10-01: 1
+  - threshold:
+      2025-10-01: 3_913
+    amount:
+      2025-10-01: 2
+  - threshold:
+      2025-10-01: 7_825
+    amount:
+      2025-10-01: 3
+  - threshold:
+      2025-10-01: 11_738
+    amount:
+      2025-10-01: 4
+  - threshold:
+      2025-10-01: 15_650
+    amount:
+      2025-10-01: 5
+  - threshold:
+      2025-10-01: 19_563
+    amount:
+      2025-10-01: 6
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: Mississippi LIHEAP income bands for household size 1
+  reference:
+    - title: Mississippi FY2026 benefit matrix, household size 1, page 1
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/MS_BenefitMatrix_Heat-Cool_2026.pdf#page=1

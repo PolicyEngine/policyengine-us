@@ -8,15 +8,15 @@ class wi_income_subtractions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB.pdf"
-        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB-inst.pdf"
-        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSBf.pdf"
-        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSB-Inst.pdf"
+        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB.pdf",
+        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB-inst.pdf",
+        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSBf.pdf",
+        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSB-Inst.pdf",
     )
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.wi.tax.income.subtractions
-        total_subtractions = add(tax_unit, period, p.sources)
+        total_subtractions = tax_unit_non_dep_add(tax_unit, period, p.sources)
         # Prevent negative subtractions from acting as additions
         return max_(0, total_subtractions)

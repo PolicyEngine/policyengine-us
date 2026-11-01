@@ -6,7 +6,7 @@ class tx_ccs_countable_income(Variable):
     entity = SPMUnit
     definition_period = MONTH
     label = "Texas Child Care Services countable income"
-    reference = "http://txrules.elaws.us/rule/title40_chapter809_sec.809.44"
+    reference = "https://texas-sos.appianportalsgov.com/rules-and-meetings?interface=VIEW_TAC_SUMMARY&recordId=210290"
     unit = USD
     defined_for = StateCode.TX
 

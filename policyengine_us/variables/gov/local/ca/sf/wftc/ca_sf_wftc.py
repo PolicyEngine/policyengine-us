@@ -7,7 +7,7 @@ class ca_sf_wftc(Variable):
     label = "San Francisco Working Families Tax Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.sfhsa.org/sites/default/files/media/document/2024-01/form_wfc_english_1.26.24.pdf#page=4"
+    reference = "https://www.sf.gov/news--san-francisco-launches-free-tax-preparation-assistance-and-local-tax-credit-program-and"
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):

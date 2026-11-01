@@ -9,9 +9,9 @@ class mi_pension_benefit(Variable):
     definition_period = YEAR
     documentation = "Michigan retirement and pension benefits of qualifying age."
     reference = (
-        "http://legislature.mi.gov/doc.aspx?mcl-206-30",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=18",
-        "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits",
+        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-30",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/BOOK_MI-1040.pdf#page=18",
+        "https://web.archive.org/web/20250202214915/https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits",
     )
     defined_for = StateCode.MI
 

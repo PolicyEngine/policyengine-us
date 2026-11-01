@@ -7,7 +7,7 @@ class va_tanf_income_eligibility(Variable):
     label = "VA TANF income eligibility"
     definition_period = MONTH
     defined_for = StateCode.VA
-    reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=47"
+    reference = "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfx2fview/tanf/Chapter-300---Need-and-Amount-of-Assistance.pdf#page=51"
 
     def formula(spm_unit, period, parameters):
         # Two-step income test per Virginia TANF Manual Section 305.1
@@ -18,11 +18,14 @@ class va_tanf_income_eligibility(Variable):
 
         # Step 2: Countable income (after all deductions) <= Grant Standard
         countable_income = spm_unit("va_tanf_countable_income", period)
-        # Use appropriate grant standard based on UP eligibility
+        # Two-parent (TANF-UP) units are screened at the TANF standard unless
+        # the separate TANF-UP standards are in effect.
+        p_up = parameters(period).gov.states.va.dss.tanf.payment.up_grant_standard
         up_eligible = spm_unit("va_up_tanf_eligibility", period)
+        uses_up_standards = up_eligible & p_up.in_effect
         grant_standard = spm_unit("va_tanf_grant_standard", period)
         up_grant_standard = spm_unit("va_tanf_up_grant_standard", period)
-        applicable_grant = where(up_eligible, up_grant_standard, grant_standard)
+        applicable_grant = where(uses_up_standards, up_grant_standard, grant_standard)
         step2_pass = countable_income <= applicable_grant
 
         return step1_pass & step2_pass

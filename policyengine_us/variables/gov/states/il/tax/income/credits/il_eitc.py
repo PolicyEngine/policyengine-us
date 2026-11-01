@@ -11,30 +11,30 @@ class il_eitc(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www2.illinois.gov/rev/programs/EIC/Pages/default.aspx",
+        "https://tax.illinois.gov/programs/eitc.html",
         # 35 ILCS 5/212 bases the IL EIC on the federal IRC 32 credit.
         "https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=003500050K212",
-        # IRC 152(c)(3)(B) waives the qualifying-child age test for permanently and totally disabled individuals.
-        "https://www.law.cornell.edu/uscode/text/26/152#c_3_B",
+        # IRC 32(c)(3)(A) applies the IRC 152(c) qualifying-child definition.
+        "https://www.law.cornell.edu/uscode/text/26/32#c_3_A",
     )
     defined_for = StateCode.IL
 
     def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.il.tax.income.credits.eitc
+        if not p.expansion_in_effect:
+            # Before 2023 the IL EIC is a percentage of the federal credit
+            # allowed, with no age or ITIN route (35 ILCS 5/212(a); Schedule
+            # IL-E/EIC Step 4, lines 5 and 6).
+            return tax_unit("eitc", period) * p.match
         person = tax_unit.members
         age = person("age", period)
         has_tin = person("has_tin", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        # IRC 152(c)(3)(B) waives the age test for a permanently and totally
-        # disabled dependent, matching the federal eitc_child_count.
-        is_disabled_dependent = person("is_tax_unit_dependent", period) & person(
-            "is_permanently_and_totally_disabled", period
-        )
-        qualifying_child = (
-            person("is_qualifying_child_dependent", period) | is_disabled_dependent
-        ) & has_tin
+        # Same qualifying-child test as the federal eitc_child_count, with an
+        # ITIN accepted in place of a Social Security number.
+        qualifying_child = person("is_eitc_qualifying_child", period) & has_tin
         child_count = tax_unit.sum(qualifying_child)
         filer_has_tin = tax_unit.sum(is_head_or_spouse & ~has_tin) == 0
-        p = parameters(period).gov.states.il.tax.income.credits.eitc
         demographic_eligible = (child_count > 0) | tax_unit.any(
             is_head_or_spouse & (age >= p.childless_min_age)
         )
@@ -46,5 +46,4 @@ class il_eitc(Variable):
             demographic_eligible,
             filer_has_tin,
         )
-        match = parameters(period).gov.states.il.tax.income.credits.eitc.match
-        return state_eitc * match
+        return state_eitc * p.match

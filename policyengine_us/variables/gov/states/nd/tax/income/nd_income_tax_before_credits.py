@@ -8,7 +8,7 @@ class nd_income_tax_before_credits(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://casetext.com/statute/north-dakota-century-code/title-57-taxation/chapter-57-38-income-tax/section-57-38-303-individual-estate-and-trust-income-tax"
+        "https://ndlegis.gov/cencode/t57c38.pdf#nameddest=57-38-30p3"
         # North Dakota legal code 57-38-30.3.(1)
     )
     defined_for = StateCode.ND

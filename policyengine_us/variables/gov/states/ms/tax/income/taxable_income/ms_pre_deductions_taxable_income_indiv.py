@@ -10,8 +10,8 @@ class ms_pre_deductions_taxable_income_indiv(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=13",
-        "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80105228.pdf",  # Line 38 - 49,
+        "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100221.pdf#page=13",
+        "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80105228.pdf",  # Line 38 - 49,
     )
     defined_for = StateCode.MS
 

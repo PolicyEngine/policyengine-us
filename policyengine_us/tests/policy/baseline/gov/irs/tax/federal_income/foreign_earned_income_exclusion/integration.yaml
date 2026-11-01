@@ -1,0 +1,288 @@
+# Household cases for 26 U.S.C. 911(f): a taxpayer who excludes foreign earned
+# income pays tax on the rest at the rates it would face on top of the
+# excluded amount. Line numbers are from the 2025 Instructions for Form 1040
+# (Foreign Earned Income Tax Worksheet—Line 16, page 37; Qualified Dividends
+# and Capital Gain Tax Worksheet—Line 16, page 38) and the 2025 Form 6251 and
+# its instructions. Tax amounts were checked against the 2025 Tax Table and
+# Tax Computation Worksheet in the same instructions. Income amounts are the
+# amounts left in gross income after the exclusion.
+
+- name: Head of household, both worksheet lookups in the Tax Table
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 53_675
+      child1:
+        age: 10
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        foreign_earned_income_exclusion: 30_025
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: TX
+  output:
+    # Form 1040 line 15: 53,675 - 23,625 standard deduction.
+    taxable_income: 30_050 # worksheet line 1
+    taxable_income_plus_section_911_exclusion: 60_075 # line 3 (line 2c is 30,025)
+    # Line 4: Tax Table, at least 60,050 but less than 60,100, head of
+    # household: 6,869. Line 5: at least 30,000 but less than 30,050: 3,263.
+    # Line 6: 3,606. Taxed from the bottom bracket, 30,050 would bear 3,266.
+    income_tax_main_rates: 3_606
+    capital_gains_tax: 0
+    alternative_minimum_tax: 0
+    income_tax_before_credits: 3_606
+    # The child tax credit's tax limit sees the stacked tax.
+    ctc_limiting_tax_liability: 3_606
+
+- name: The same household without the exclusion
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 53_675
+      child1:
+        age: 10
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: TX
+  output:
+    taxable_income: 30_050
+    taxable_income_plus_section_911_exclusion: 30_050
+    # 1,700 + 12% of 13,050.
+    income_tax_main_rates: 3_266
+    income_tax_before_credits: 3_266
+    ctc_limiting_tax_liability: 3_266
+
+- name: Head of household with 60,000 of wages and 40,000 excluded
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 10
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        foreign_earned_income_exclusion: 40_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: TX
+  output:
+    taxable_income: 36_375 # line 1
+    taxable_income_plus_section_911_exclusion: 76_375 # line 3
+    # Line 4: Tax Table 9,978 (9,977.50 exactly). Line 5: Tax Table 4,463,
+    # the tax on the middle of the 40,000-40,050 row (4,460.00 on 40,000
+    # exactly). Line 6: 5,515 by the table, 5,517.50 exactly. Taxed from the
+    # bottom bracket, 36,375 would bear 4,025.
+    income_tax_main_rates: 5_517.50
+    income_tax_before_credits: 5_517.50
+    ctc_limiting_tax_liability: 5_517.50
+
+- name: Joint filers above 100,000 use the Tax Computation Worksheet
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 45
+        employment_income: 250_000
+      spouse2:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+        # Both spouses' Form 2555 amounts.
+        foreign_earned_income_exclusion: 260_000
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: TX
+  output:
+    # 250,000 - 31,500 standard deduction.
+    taxable_income: 218_500 # line 1
+    taxable_income_plus_section_911_exclusion: 478_500 # line 3
+    # Line 4: 478,500 x 32% - 45,874 = 107,246. Line 5: 260,000 x 24% -
+    # 14,306 = 48,094. Line 6: 59,152. Without the exclusion: 218,500 x 24%
+    # - 14,306 = 38,134.
+    income_tax_main_rates: 59_152
+    capital_gains_tax: 0
+
+- name: Capital gains within taxable income lose the 0% bracket to the excluded amount
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 25_750
+        long_term_capital_gains: 30_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        foreign_earned_income_exclusion: 30_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # 55,750 - 15,750 standard deduction.
+    taxable_income: 40_000 # line 1
+    # The gains (30,000) do not exceed taxable income: no capital gain excess.
+    section_911_capital_gain_excess: 0
+    # Qualified Dividends and Capital Gain Tax Worksheet: line 1 = 70,000,
+    # line 4 = 30,000, line 5 = 40,000, line 7 = 48,350, line 9 = 8,350 (0%),
+    # line 17 = 21,650, line 18 = 3,247.50, line 22 = 4,561.50 (tax on
+    # 40,000), line 23 = 7,809. Foreign Earned Income Tax Worksheet line 5 =
+    # 3,361.50 (tax on 30,000), line 6 = 4,447.50. Without the exclusion the
+    # tax is 1,000: 10% of 10,000, and the gains at 0%.
+    income_tax_main_rates: 1_200
+    capital_gains_tax: 3_247.50
+    income_tax_before_credits: 4_447.50
+
+- name: A capital gain excess keeps the excluded amount at ordinary rates
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person:
+        age: 40
+        long_term_capital_gains: 50_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        foreign_earned_income_exclusion: 100_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # 50,000 - 15,750 standard deduction.
+    taxable_income: 34_250 # line 1
+    # Worksheet footnote: line 4 of the capital gains worksheet (50,000) less
+    # Form 1040 line 15 (34,250).
+    section_911_capital_gain_excess: 15_750
+    section_911_net_capital_gain: 34_250
+    # Second capital gains worksheet: line 1 = 134,250, line 3 = 34,250,
+    # line 5 = 100,000, line 9 = 0, line 17 = 34,250, line 18 = 5,137.50,
+    # line 22 = tax on 100,000, which equals line 5 of the Foreign Earned
+    # Income Tax Worksheet. Line 6 = 5,137.50. Without the exclusion the
+    # 34,250 of gains falls in the 0% bracket and the tax is 0.
+    income_tax_main_rates: 0
+    capital_gains_tax: 5_137.50
+    income_tax_before_credits: 5_137.50
+
+- name: A capital gain excess that reaches the qualified dividends
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person:
+        age: 40
+        qualified_dividend_income: 20_000
+        long_term_capital_gains: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        foreign_earned_income_exclusion: 100_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    taxable_income: 14_250 # line 1
+    section_911_capital_gain_excess: 15_750 # 30,000 - 14,250
+    # Modification 1 takes line 3 from 10,000 to 0; modification 2 takes
+    # line 2 from 20,000 to 14,250.
+    section_911_qualified_dividend_income: 14_250
+    section_911_net_capital_gain: 14_250
+    # Line 1 = 114,250, line 5 = 100,000, line 17 = 14,250 at 15%.
+    income_tax_main_rates: 0
+    capital_gains_tax: 2_137.50
+
+- name: No taxable income, no tax, whatever is excluded
+  period: 2025
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 10_000
+        qualified_dividend_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        foreign_earned_income_exclusion: 130_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # "If Form 1040 or 1040-SR, line 15, is zero, don't complete this
+    # worksheet."
+    taxable_income: 0
+    income_tax_main_rates: 0
+    capital_gains_tax: 0
+    alternative_minimum_tax: 0
+    income_tax_before_credits: 0
+
+- name: Alternative minimum tax with an AMT capital gain excess
+  absolute_error_margin: 0.5
+  period: 2025
+  input:
+    people:
+      person:
+        age: 40
+        qualified_dividend_income: 25_000
+        long_term_capital_gains: 900_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        foreign_earned_income_exclusion: 130_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    taxable_income: 909_250 # 925,000 - 15,750
+    # Regular tax. Capital gain excess 15,750, so line 3 of the capital
+    # gains worksheet is 884,250. Line 1 = 1,039,250, line 4 = 909,250,
+    # line 5 = 130,000, line 9 = 0, line 17 = 533,400 - 130,000 = 403,400,
+    # line 18 = 60,510, line 20 = 505,850, line 21 = 101,170, line 22 = tax
+    # on 130,000, which equals line 5 of the Foreign Earned Income Tax
+    # Worksheet. Line 6 = 161,680.
+    section_911_capital_gain_excess: 15_750
+    income_tax_main_rates: 0
+    capital_gains_tax: 161_680
+    # Form 6251. AMTI 925,000; exemption 88,100 - 25% x (925,000 - 626,350)
+    # = 13,437.50; line 6 = 911,562.50. AMT capital gain excess: 925,000 -
+    # 911,562.50.
+    amt_income_less_exemptions: 911_562.50
+    amt_section_911_capital_gain_excess: 13_437.50
+    # Worksheet line 3 = 1,041,562.50 = Form 6251 line 12. Lines 13 and 15 =
+    # 911,562.50, line 17 = 130,000, line 18 = 33,800. Line 20 = 130,000,
+    # line 21 = 0, line 22 = 911,562.50, line 29 = 403,400, line 30 =
+    # 403,400, line 31 = 60,510, line 33 = 508,162.50, line 34 = 101,632.50,
+    # line 38 = 195,942.50. Worksheet line 5 = 130,000 x 26% = 33,800, line
+    # 6 = 162,142.50. Form 6251 line 11 = 162,142.50 - 161,680.
+    alternative_minimum_tax: 462.50
+    income_tax_before_credits: 162_142.50

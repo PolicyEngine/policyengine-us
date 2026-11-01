@@ -1,0 +1,131 @@
+# snap_work_requirement_weekly_hours: usual weekly hours averaged over all
+# 52 weeks of the year, usual hours x min(weeks worked, 52) / 52, as the
+# annual proxy for "20 hours per week, averaged monthly" (7 CFR
+# 273.24(a)(1)(i)) and the 30-hour exemption (7 CFR 273.7(b)(1)(vii)).
+# weeks_worked of 0 (not reported) keeps usual hours unchanged.
+
+- name: Case 1, full-year worker keeps usual hours.
+  period: 2026
+  input:
+    weekly_hours_worked_before_lsr: 25
+    weeks_worked: 52
+  output:
+    # 25 x 52 / 52 = 25
+    snap_work_requirement_weekly_hours: 25
+
+- name: Case 2, 10-week worker at 40 usual hours averages 7.69 hours.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    weekly_hours_worked_before_lsr: 40
+    weeks_worked: 10
+  output:
+    # 40 x 10 / 52 = 7.6923
+    snap_work_requirement_weekly_hours: 7.69
+
+- name: Case 3, 51-week worker at 30 usual hours averages just under 30.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    weekly_hours_worked_before_lsr: 30
+    weeks_worked: 51
+  output:
+    # 30 x 51 / 52 = 29.4231
+    snap_work_requirement_weekly_hours: 29.42
+
+- name: Case 4, weeks above 52 are capped at 52.
+  period: 2026
+  input:
+    weekly_hours_worked_before_lsr: 30
+    weeks_worked: 53
+  output:
+    # 30 x min(53, 52) / 52 = 30
+    snap_work_requirement_weekly_hours: 30
+
+- name: Case 5, weeks worked not reported falls back to usual hours.
+  period: 2026
+  input:
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # weeks_worked defaults to 0 -> usual hours 40 unchanged
+    snap_work_requirement_weekly_hours: 40
+
+- name: Case 6, toggle off uses usual hours even when weeks are reported.
+  period: 2026
+  input:
+    gov.simulation.snap_work_tests_average_over_year: false
+    weekly_hours_worked_before_lsr: 40
+    weeks_worked: 10
+  output:
+    # Toggle off -> usual hours 40 (not 40 x 10 / 52 = 7.69)
+    snap_work_requirement_weekly_hours: 40
+
+- name: Case 7, weeks worked reported for 2024 carry forward to 2026.
+  period: 2026
+  input:
+    people:
+      person:
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        weeks_worked:
+          2024: 26
+  output:
+    # weeks_worked(2026) = 26 by auto carry-over; 40 x 26 / 52 = 20
+    snap_work_requirement_weekly_hours: 20
+
+- name: Case 8, explicit zero weeks worked is read as not reported and keeps usual hours.
+  period: 2026
+  input:
+    weekly_hours_worked_before_lsr: 25
+    weeks_worked: 0
+  output:
+    # weeks_worked = 0 -> inert fallback to usual hours 25 (not 25 x 0 / 52 = 0)
+    snap_work_requirement_weekly_hours: 25
+
+- name: Case 9, weeks far above 52 are still capped at 52.
+  period: 2026
+  input:
+    weekly_hours_worked_before_lsr: 25
+    weeks_worked: 60
+  output:
+    # 25 x min(60, 52) / 52 = 25 (not 25 x 60 / 52 = 28.85)
+    snap_work_requirement_weekly_hours: 25
+
+- name: Case 10, 40 usual hours for 24 weeks averages the 80-hour monthly boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    weekly_hours_worked_before_lsr: 40
+    weeks_worked: 24
+  output:
+    # 40 x 24 / 52 = 18.4615; x 52 / 12 = 80.0 hours a month
+    snap_work_requirement_weekly_hours: 18.46
+
+- name: Case 11, 40 usual hours for 26 weeks averages exactly 20 hours.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    weekly_hours_worked_before_lsr: 40
+    weeks_worked: 26
+  output:
+    # 40 x 26 / 52 = 20
+    snap_work_requirement_weekly_hours: 20
+
+- name: Case 12, 25 usual hours for 40 weeks averages 19.23 hours.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    weekly_hours_worked_before_lsr: 25
+    weeks_worked: 40
+  output:
+    # 25 x 40 / 52 = 19.2308
+    snap_work_requirement_weekly_hours: 19.23
+
+- name: Case 13, weeks worked without usual hours average to zero.
+  period: 2026
+  input:
+    weekly_hours_worked_before_lsr: 0
+    weeks_worked: 30
+  output:
+    # 0 x 30 / 52 = 0
+    snap_work_requirement_weekly_hours: 0

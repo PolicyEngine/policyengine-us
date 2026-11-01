@@ -8,7 +8,7 @@ class sd_cca_activity_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.SD
     reference = (
-        "https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=8",
+        "https://web.archive.org/web/20251031171652/https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=8",
         "https://sdlegislature.gov/Rules/Administrative/67:47:01:03",
     )
 

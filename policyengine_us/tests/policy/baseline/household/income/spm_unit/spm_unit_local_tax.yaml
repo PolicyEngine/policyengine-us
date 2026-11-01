@@ -1,0 +1,62 @@
+# SPM unit local tax integration tests: confirm local income and occupational
+# taxes net of local refundable credits feed spm_unit_local_tax, spm_unit_taxes,
+# and spm_unit_net_income, preserving poverty metrics across localities.
+
+- name: NYC local income tax flows into SPM taxes and reduces SPM net income
+  period: 2024
+  input:
+    state_code: NY
+    in_nyc: true
+    employment_income: 100_000
+  output:
+    nyc_income_tax: 3_175.1702
+    local_tax: 3_175.1702
+    spm_unit_local_tax: 3_175.1702
+    spm_unit_state_tax: 4_951.75
+    # Includes the 2024 New York Paid Family Leave contribution,
+    # min(0.373% * 100,000, 333.25) = 333.25.
+    spm_unit_taxes: 29_982.37
+    spm_unit_net_income: 62_901.633
+
+- name: NYC refundable tax credits reduce SPM taxes and increase SPM net income
+  period: 2024
+  input:
+    state_code: NY
+    in_nyc: true
+    employment_income: 10_000
+    nyc_income_tax_before_refundable_credits: 100
+    nyc_refundable_credits: 500
+  output:
+    local_tax: -400
+    spm_unit_local_tax: -400
+    # Includes the 2024 New York Paid Family Leave contribution,
+    # 0.373% * 10,000 = 37.30.
+    spm_unit_taxes: -308.1
+
+- name: Maryland county income tax flows into SPM taxes and reduces SPM net income
+  period: 2021
+  input:
+    state_code: MD
+    county_str: BALTIMORE_CITY_MD
+    household_market_income: 100_000
+    md_taxable_income: 90_540
+    income_tax: 20_000
+    md_income_tax_before_refundable_credits: 4_248.15
+  output:
+    md_local_income_tax_before_refundable_credits: 2_897.28
+    local_tax: 2_897.28
+    spm_unit_local_tax: 2_897.28
+    spm_unit_state_tax: 4_248.15
+    spm_unit_taxes: 27_145.43
+
+- name: Montgomery County Maryland refundable EITC feeds local tax refund and SPM
+  period: 2021
+  input:
+    state_code: MD
+    county_str: MONTGOMERY_COUNTY_MD
+    md_refundable_eitc: 100
+  output:
+    md_montgomery_eitc: 100
+    household_refundable_local_tax_credits: 100
+    local_tax: -100
+    spm_unit_local_tax: -100

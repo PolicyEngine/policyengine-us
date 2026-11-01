@@ -7,6 +7,7 @@ class ne_child_care_subsidy_eligible_child(Variable):
     label = "Nebraska Child Care Subsidy program eligible child"
     definition_period = MONTH
     reference = (
+        "https://dhhs.ne.gov/Child%20Care%20Documents/ACF-118%20CCDF%20FFY%202025-2027%20For%20Nebraska%20-%20APPROVED.pdf#page=16",
         "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=9",
         "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=11",
     )
@@ -14,6 +15,8 @@ class ne_child_care_subsidy_eligible_child(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ne.dhhs.child_care_subsidy.age_threshold
+        # CCDF Plan 2.2.1(c) explicitly declines an age extension based only
+        # on court supervision; do not treat that status as special needs.
         age = person("age", period.this_year)
         has_special_needs = person("ne_dhhs_has_special_needs", period.this_year)
         enrolled = person.spm_unit("ne_child_care_subsidy_enrolled", period)

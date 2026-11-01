@@ -8,9 +8,9 @@ class mi_standard_deduction_tier_two(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (9)(b) & (c)
-        "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits/michigan-standard-deduction",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=15",
+        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-30",  # (9)(b) & (c)
+        "https://web.archive.org/web/20250202140014/https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits/michigan-standard-deduction",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/BOOK_MI-1040.pdf#page=15",
     )
     defined_for = "mi_standard_deduction_tier_two_eligible"
 
@@ -32,7 +32,10 @@ class mi_standard_deduction_tier_two(Variable):
         military_pay = add(
             person,
             period,
-            ["military_retirement_pay", "military_service_income"],
+            [
+                "military_retirement_income",
+                "military_service_income",
+            ],
         )
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         head_or_spouse_military_pay = tax_unit.sum(military_pay * is_head_or_spouse)

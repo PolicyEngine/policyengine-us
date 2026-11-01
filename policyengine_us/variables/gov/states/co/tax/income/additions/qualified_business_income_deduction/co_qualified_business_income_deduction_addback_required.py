@@ -8,7 +8,7 @@ class co_qualified_business_income_deduction_addback_required(Variable):
     definition_period = YEAR
     reference = (
         # C.R.S. 39-22-104 . Income tax imposed on individuals, estates, and trusts - section (3) (o)
-        "https://casetext.com/statute/colorado-revised-statutes/title-39-taxation/specific-taxes/income-tax/article-22-income-tax/part-1-general/section-39-22-104-effective-until-official-proclamation-by-governor-income-tax-imposed-on-individuals-estates-and-trusts-single-rate-report-legislative-declaration-definitions-repeal",
+        "https://law.justia.com/codes/colorado/2022/title-39/article-22/part-1/section-39-22-104/",
         # C.R.S. 39-22-104(3)(o) Schedule F exception (Colorado Revised
         # Statutes 2025 official compilation, p. 383); addback continued
         # indefinitely by HB25B-1001 (2025 special session B), SECTION 2.

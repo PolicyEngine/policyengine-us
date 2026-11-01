@@ -1,0 +1,9 @@
+description: Utah provides this exemption amount per eligible dependent in the Taxpayer Tax Credit under the contributed reform. A negative sentinel uses the baseline (uprated) personal exemption amount (a no-op at default); a non-negative value applies a flat per-dependent amount.
+
+values:
+  0000-01-01: -1
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Utah dependent exemption reform amount

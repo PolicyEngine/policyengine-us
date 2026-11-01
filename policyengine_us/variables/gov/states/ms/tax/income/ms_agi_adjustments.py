@@ -8,8 +8,8 @@ class ms_agi_adjustments(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=13",
-        "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80105228.pdf",  # Line 50 - 66
+        "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100221.pdf#page=13",
+        "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80105228.pdf",  # Line 50 - 66
     )
     defined_for = StateCode.MS
 

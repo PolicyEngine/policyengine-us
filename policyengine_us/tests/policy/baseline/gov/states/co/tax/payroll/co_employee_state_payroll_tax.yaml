@@ -1,0 +1,51 @@
+# Colorado FAMLI premiums begin January 1, 2023 (C.R.S. 8-13.3-507 (2)). The
+# premium is 0.9% of wages for 2023 and 2024 (8-13.3-507 (3)(a)) and stays
+# 0.9% for 2025 (CDLE FAMLI bulletin, September 24, 2024). An employer with
+# 10 or more employees may deduct up to 50% of the premium from the employee
+# and remits the full premium (8-13.3-507 (5)), so each side pays 0.45%.
+
+- name: Colorado FAMLI premiums do not apply in 2021, before the program starts.
+  period: 2021
+  input:
+    employment_income: 50_000
+    state_code: CO
+  output:
+    co_employee_famli_contribution: 0
+    co_employer_famli_contribution: 0
+    co_employee_state_payroll_tax: 0
+    employee_state_payroll_tax: 0
+
+- name: Colorado FAMLI premiums do not apply in 2022, before the program starts.
+  period: 2022
+  input:
+    employment_income: 50_000
+    state_code: CO
+  output:
+    co_employee_famli_contribution: 0
+    co_employer_famli_contribution: 0
+    co_employee_state_payroll_tax: 0
+    employee_state_payroll_tax: 0
+
+- name: Colorado FAMLI premium is 0.9% of wages in 2023, split evenly.
+  period: 2023
+  input:
+    employment_income: 50_000
+    state_code: CO
+  output:
+    # 50,000 * 0.9% * 50% = 225
+    co_employee_famli_contribution: 225
+    co_employer_famli_contribution: 225
+    co_employee_state_payroll_tax: 225
+    employee_state_payroll_tax: 225
+
+- name: Colorado FAMLI premium stays 0.9% of wages in 2025.
+  period: 2025
+  input:
+    employment_income: 50_000
+    state_code: CO
+  output:
+    # 50,000 * 0.9% * 50% = 225
+    co_employee_famli_contribution: 225
+    co_employer_famli_contribution: 225
+    co_employee_state_payroll_tax: 225
+    employee_state_payroll_tax: 225

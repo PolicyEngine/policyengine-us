@@ -1,0 +1,25 @@
+- name: 2025 taxable nonbusiness income equal to the threshold is exempt
+  period: 2025
+  input:
+    oh_taxable_income: 26_050
+    state_code: OH
+  output:
+    # ORC 5747.02(A)(3): "equal to or less than twenty-six thousand fifty dollars, no tax"
+    oh_income_tax_exempt: true
+
+- name: 2025 taxable nonbusiness income one dollar above the threshold is taxed
+  period: 2025
+  input:
+    oh_taxable_income: 26_051
+    state_code: OH
+  output:
+    oh_income_tax_exempt: false
+
+- name: 2021 taxable nonbusiness income equal to the threshold is exempt
+  period: 2021
+  input:
+    oh_taxable_income: 25_000
+    state_code: OH
+  output:
+    # 2021 IT 1040 booklet: "those with taxable income of $25,000 or less will pay no income tax"
+    oh_income_tax_exempt: true

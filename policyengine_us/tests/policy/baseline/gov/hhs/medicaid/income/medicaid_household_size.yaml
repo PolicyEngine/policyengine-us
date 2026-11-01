@@ -1,0 +1,99 @@
+# Medicaid MAGI household size (42 CFR 435.603(b) and (f)). Outside California
+# a pregnant person counts herself plus her expected children only in her own
+# household; California (DHCS ACWDL 20-10, page 3) counts the unborn children of
+# every member of the applicant's MAGI household, see
+# ca_medicaid_household_pregnancies.
+- name: Case 1, Kansas joint filers with one child count the pregnancy only in the pregnant member's household.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+        current_pregnancies: 1
+      person2:
+        age: 35
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # Tax household of 3; only person1 adds her 1 expected child.
+    medicaid_household_size: [4, 3, 3]
+
+- name: Case 2, California joint filers with one child count the pregnancy for every member.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+        current_pregnancies: 1
+      person2:
+        age: 35
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    # Tax household of 3 plus the 1 expected child for all three members.
+    ca_medicaid_household_pregnancies: [1, 1, 1]
+    medicaid_household_size: [4, 4, 4]
+
+- name: Case 3, Kansas single filer without a pregnancy is a household of one.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+    families:
+      family:
+        members: [person1]
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    medicaid_household_size: 1

@@ -7,7 +7,8 @@ class de_deduction_indv(Variable):
     label = "Delaware deduction when married couples are filing separately"
     unit = USD
     definition_period = YEAR
-    reference = "https://delcode.delaware.gov/title30/c011/sc02/index.html title 30, chapter 11, subchapter II, section 1108"
+    # Delaware Code title 30, chapter 11, subchapter II, section 1108
+    reference = "https://delcode.delaware.gov/title30/c011/sc02/index.html"
     defined_for = StateCode.DE
 
     def formula(person, period, parameters):

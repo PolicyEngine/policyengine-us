@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.medicaid.income.medicaid_income_level import (
+    medicaid_income_eligible,
+)
 
 
 class is_chip_fcep_eligible_person(Variable):
@@ -19,7 +22,19 @@ class is_chip_fcep_eligible_person(Variable):
         # 42 CFR 457.10 defines "child" to include the period from conception to
         # birth, so the unborn child (not the parent) is the CHIP beneficiary.
         "https://www.law.cornell.edu/cfr/text/42/457.10",
+        "https://www.ecfr.gov/current/title-42/section-457.310#p-457.310(b)(2)",
         "https://www.kff.org/affordable-care-act/state-indicator/medicaid-and-chip-income-eligibility-limits-for-pregnant-women-as-a-percent-of-the-federal-poverty-level",
+        # California's FCEP population is the Medi-Cal Access Program. WIC
+        # § 15833 excludes applicants eligible for no-cost Medi-Cal or Medicare
+        # and WIC § 15834 excludes services already covered by private coverage.
+        # 10 CCR § 2699.200 is the former MRMIB Access for Infants and Mothers
+        # (AIM) regulation; its 200-300 percent FPL band and $50 prepayment are
+        # superseded by WIC § 15832. Only (b)(1)(F)-(G) (no-cost Medi-Cal or
+        # Medicare; private maternity coverage and the maternity-only deductible
+        # or copayment above $500 exception) are relied on here.
+        "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=15833.",
+        "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=15834.",
+        "https://www.law.cornell.edu/regulations/california/10-CCR-2699.200",
     )
 
     def formula(person, period, parameters):
@@ -59,9 +74,22 @@ class is_chip_fcep_eligible_person(Variable):
         medicaid_eligible = person("is_medicaid_eligible", period)
 
         # Check if family income is below CHIP threshold
-        # Use medicaid_income_level as the income measure
-        income_ratio = person("medicaid_income_level", period)
-        income_eligible = income_ratio <= income_limit
+        income_eligible = medicaid_income_eligible(
+            person, period, parameters, income_limit
+        )
+
+        # The unborn child is a targeted low-income child, so it must not be
+        # covered under a group health plan or health insurance coverage
+        # (42 CFR 457.310(b)(2)). The pregnant person's coverage stands in for
+        # the unborn child's. California's FCEP population above the Medi-Cal
+        # pregnancy limit is the Medi-Cal Access Program (MCAP), which states
+        # the same exclusions (WIC §§ 15833-15834; former AIM rule 10 CCR
+        # § 2699.200(b)(1)(F)-(G)). MCAP's exception for private plans that
+        # omit maternity benefits, or carry a maternity-only deductible or
+        # copayment above $500, is not modeled.
+        has_disqualifying_coverage = person(
+            "has_chip_disqualifying_health_coverage", period
+        )
 
         return (
             is_pregnant
@@ -69,4 +97,5 @@ class is_chip_fcep_eligible_person(Variable):
             & fcep_geographic_eligible
             & ~medicaid_eligible
             & income_eligible
+            & ~has_disqualifying_coverage
         )

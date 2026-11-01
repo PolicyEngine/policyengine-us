@@ -1,13 +1,16 @@
-description: West Virginia limits special needs child eligibility to under this age under the Child Care Assistance Program.
+description: West Virginia limits eligibility for children with special needs or under court supervision to those under this age under the Child Care Assistance Program.
 values:
+  # Manual 3.1.2 ("13 years through 17 years of age") and 1.0.1 ("under the
+  # age of eighteen") read the State Plan's upper age of 18.00 as under 18;
+  # the "13 to 18" wording of the 1.1.6 definition is read the same way.
   2024-01-01: 18
 
 metadata:
   unit: year
   period: year
-  label: West Virginia CCAP special needs child age limit
+  label: West Virginia CCAP special needs or court-supervised child age limit
   reference:
-    - title: WV Child Care Subsidy Policy & Procedures Manual, Chapter 3, Section 3.1.2.2 — Special Needs Children
+    - title: WV Child Care Subsidy Policy & Procedures Manual, Chapter 3, Sections 3.1.2.1-3.1.2.2 — court supervision and special needs children
       href: https://bfa.wv.gov/media/6766/download?inline#page=25
-    - title: WV CCDF State Plan FFY 2025-2027, Section 2.2
-      href: https://bfa.wv.gov/media/39915/download?inline#page=16
+    - title: WV CCDF State Plan FFY 2025-2027, Section 2.2.1(b)-(c)
+      href: https://bfa.wv.gov/media/39915/download?inline#page=17

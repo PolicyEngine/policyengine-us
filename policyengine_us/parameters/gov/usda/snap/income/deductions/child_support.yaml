@@ -1,170 +1,437 @@
-description: Whether legally mandated child support payments can be deducted from gross income for SNAP.
+description: Whether the state excludes legally obligated child support payments to nonhousehold members from gross income under the Supplemental Nutrition Assistance Program, rather than deducting them when computing net income.
+# true: the state takes the 7 CFR 273.9(c)(17) option and excludes the
+# payments from gross income, which lowers the income compared against the
+# gross income limit.
+# false: the state deducts the payments when computing net income under
+# 7 CFR 273.9(d)(5).
+# Each state's value on these dates comes from one edition of the USDA SNAP
+# State Options Report:
+#   2017-10-01: 14th edition (options as of October 1, 2017)
+#   2022-10-01: 15th edition (options chosen in fiscal year 2023)
+#   2023-10-01: 16th edition (current as of October 1, 2023)
+#   2024-10-01: 17th edition (data reference period October 2024)
+# Where a state's own rules contradict an edition, the state's rules govern
+# and the comment on that value names them. Where one edition disagrees with
+# the editions before and after it, the comment on that value says which
+# source the value follows.
+# Before 2017-10-01 the values follow the 9th to 13th editions (as of
+# November 2010, August 2012, September 2013, October 1, 2015 and October 1,
+# 2016) and the state rules the comments cite. States every edition from the
+# 9th to the 14th lists as deducting are false from 2010-01-01; IA, ME, NY and
+# SD, which every one of those editions lists as excluding, are true. A state
+# listed as excluding in a single edition (CT, NM in the 10th; MS, UT in the
+# 11th; ID, TN in the 12th; MI in the 13th; WI in the 9th) follows the
+# editions around it, as MI and VT do after 2022. HI, MD and PA (11th and
+# 12th) and VT (12th and 13th) are listed as excluding in two consecutive
+# editions, and AR in three (6th to 8th, October 2006 to June 2009, the last
+# of them current on 2010-01-01), but their own rules deduct throughout, as
+# the comments on their values cite.
 AK:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 AL:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 AR:
+  # The DHS Food Stamp (later SNAP) Certification Manual deducts legally
+  # obligated child support paid (6550) and allows no deduction but farm loss
+  # in total gross income (7524); the 6th to 8th editions list an exclusion,
+  # the 9th and later a deduction.
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 AZ:
-  2010-01-01: false
-  2021-10-01: true
+  # The 8th to 10th editions (June 2009 to August 2012) list an exclusion.
+  2010-01-01: true
+  # The 11th edition (September 2013) is the first to list a deduction, as all
+  # later editions do; the exact switch date is not sourced.
+  2013-09-01: false
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 CA:
-  2010-01-01: false
-  2021-10-01: false
+  # CDSS ACL 06-31: exclusion since 2006-10-01.
+  2010-01-01: true
+  2017-10-01: true
+  # 15th edition lists a deduction; ACL 06-31 and MPP 63-502.2(p) exclude.
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 CO:
-  2010-01-01: false
-  2021-10-01: false
-  # May have changed prior to 2022-11-30.
-  2022-11-30:
-    value: true
-    metadata:
-      reference:
-        - title: Code of Colorado Regulations | Rule Manual Volume 4, SNAP | 4.407.5(A) (page 111)
-          href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10492&fileName=10%20CCR%202506-1
+  # 10 CCR 2506-1 B-4223.6 (version effective 2009-07-01) subtracts child
+  # support from countable gross income "prior to any gross income test";
+  # 4.407.5(A) keeps the exclusion.
+  2010-01-01: true
+  2017-10-01: true
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 CT:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 DC:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 DE:
   2010-01-01: false
-  2021-10-01: false
+  # DSSM 9059(26), adopted by the final order at 13 DE Reg. 1550 (June 1,
+  # 2010 Register), which took effect 2010-06-10.
+  2010-06-10: true
+  2017-10-01: true
+  # 15th and 16th editions list a deduction; DSSM 9059(26) excludes.
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 FL:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 GA:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 GU:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 HI:
+  # HAR 17-676-56(f) subtracts child support paid after (b) totals gross
+  # income, and 17-676-72(6) makes it a deduction (both am 11/22/08, unchanged
+  # through the 2019 compilation); the 11th and 12th editions list an
+  # exclusion.
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 IA:
-  2010-01-01: false
-  2021-10-01: false
+  # Iowa DHS Employees' Manual 7-F, General Letter 7-F-81 (effective
+  # 2009-02-01), excludes child support paid when comparing income to the gross
+  # income limit; the 9th to 14th editions all list an exclusion.
+  2010-01-01: true
+  2017-10-01: true
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 ID:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 IL:
-  2010-01-01: false
-  2021-10-01: false
+  # IDHS MR #23.22: exclusion implemented June 2004.
+  2010-01-01: true
+  2017-10-01: true
+  # 15th edition lists a deduction; IDHS MR #23.22 confirms the exclusion.
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 IN:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 KS:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 KY:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 LA:
-  2010-01-01: false
-  2021-10-01: false
+  # LAC 67:III.1980(A)(3): legally obligated child support payments to
+  # non-household members are excluded when determining eligibility based on
+  # gross income standards (adopted as 1980(C), Louisiana Register Vol. 29,
+  # p. 607, April 2003); 67:III.1981 deducts them in the net budget.
+  2010-01-01: true
+  2017-10-01: true
+  # The 15th edition lists Louisiana as under review.
+  2022-10-01: true
+  # The 16th and 17th editions list a deduction; LAC 67:III.1980(A)(3) excludes.
+  2023-10-01: true
+  2024-10-01: true
 MA:
-  2010-01-01: false
-  2021-10-01: true
+  # 106 CMR 363.230(O) (Rev. 7/2009, and in the current compilation) excludes
+  # the payments for the gross income test, and the 9th to 12th editions list
+  # an exclusion. The 13th to 16th editions list a deduction; the rule and the
+  # DTA SNAP policy govern.
+  2010-01-01: true
+  2017-10-01: true
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 MD:
+  # COMAR 07.03.17.35 and .43G (effective 2009-12-14) and the DHR Food
+  # Supplement Program Manual (212.11, 409.3G) deduct child support paid when
+  # computing net income, and manual 409.2B applies the gross income test to
+  # income before any deductions; the 11th and 12th editions list an
+  # exclusion.
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 ME:
-  2010-01-01: false
-  2021-10-01: false
+  # 9th to 14th editions all list an exclusion.
+  2010-01-01: true
+  2017-10-01: true
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 MI:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  # The 15th edition lists an exclusion, but the 14th, 16th and 17th editions
+  # list a deduction, and the current BEM 556 subtracts child support after
+  # gross income (DHS-2242 line 20). No Michigan policy adopting an exclusion
+  # for fiscal year 2023 alone has been found, and the 15th edition's table
+  # contradicts state rules for California, Delaware, Illinois and
+  # Massachusetts.
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 MN:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 MO:
-  2010-01-01: false
-  2021-10-01: true
+  # Missouri IM-39 (2003): exclusion before the gross income test for budgets
+  # completed on or after 2003-03-10; IM-34 (2013) and SNAP Manual
+  # 1115.035.20 keep it.
+  2010-01-01: true
+  # 14th edition lists a deduction; IM-39 and IM-34 exclude.
+  2017-10-01: true
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 MS:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 MT:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 NC:
-  2010-01-01: false
-  2021-10-01: true
+  # NC DSS Administrative Letter 6-2005: legally obligated child support is
+  # excluded from gross income beginning 2005-01-01; NCDHHS FNS manual 340.19(A)
+  # (August 2026) still allows it before the gross income screen.
+  2010-01-01: true
+  # The 14th through 17th editions list a deduction; the state's rules exclude.
+  2017-10-01: true
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 ND:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 NE:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 NH:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 NJ:
   2010-01-01: false
-  2021-10-01: false
+  # P.L. 2013, c.45, sec. 10 (N.J.S.A. 44:10-104) requires the exclusion for
+  # the gross and net income standards from 2013-11-01 (sec. 11: the first day
+  # of the seventh month after enactment on 2013-04-15). N.J.A.C.
+  # 10:87-5.9(a)20 (R.2017 d.022, effective 2017-02-06) later codified it.
+  2013-11-01: true
+  2017-10-01: true
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 NM:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 NV:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 NY:
-  2010-01-01: false
-  2021-10-01: false
+  # 9th to 14th editions all list an exclusion.
+  2010-01-01: true
+  2017-10-01: true
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 OH:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 OK:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 OR:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  # OAR 461-140-0266, effective 2023-01-19.
+  2023-01-19: true
+  2023-10-01: true
+  2024-10-01: true
 PA:
+  # The Food Stamp (later SNAP) Handbook 560.6 (reissued 2005, 2009 and 2012)
+  # and the 560 Appendix A tables (effective October 2009 and October 2012 to
+  # 2017) deduct child support under 7 CFR 273.9(d)(5); the 11th and 12th
+  # editions list an exclusion.
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 RI:
-  2010-01-01: false
-  2021-10-01: false
+  # RI DHS SNAP rules 1008.20.22 and 1010.20 (REV 05/2005): child support
+  # paid is an income exclusion, not a deduction (superseding the REV 09/2000
+  # deduction text still printed at 1038.19); 218-RICR-20-00-1 1.5.3 keeps it.
+  2010-01-01: true
+  2017-10-01: true
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 SC:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 SD:
-  2010-01-01: false
-  2021-10-01: false
+  # 9th to 14th editions all list an exclusion.
+  2010-01-01: true
+  2017-10-01: true
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 TN:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 TX:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 UT:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 VA:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  # 22VAC40-601-70, effective 2018-10-31.
+  2018-10-31: true
+  2022-10-01: true
+  # 16th edition lists a deduction; 22VAC40-601-70 excludes.
+  2023-10-01: true
+  2024-10-01: true
 VI:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 VT:
+  # The Food Stamp (later 3SquaresVT) Rules 273.9(d)(7) and 273.10(e)(1)(i)(F)
+  # and procedures P-2510 E12 deduct child support paid in the net income
+  # calculation, and P-2510 E5 applies the gross income test to non-excluded
+  # income; the 12th and 13th editions list an exclusion, the 11th and 14th a
+  # deduction.
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  # The 16th edition alone lists an exclusion for fiscal year 2024; the 15th
+  # and 17th editions list a deduction, and the 3SquaresVT Program Manual
+  # treats child support as a net income deduction under 7 CFR 273.9(d)
+  # (1700.1.1, 1700.2.1), with the gross income limit counting all
+  # non-excluded income (1800.7.2).
+  2023-10-01: false
+  2024-10-01: false
 WA:
-  2010-01-01: false
-  2021-10-01: false
+  # WAC 388-450-0015, amended by WSR 09-15-085 effective 2009-11-15 (WSR
+  # 09-16-095), treats child support paid as an income exclusion before the
+  # gross income test.
+  2010-01-01: true
+  2017-10-01: true
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 WI:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 WV:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 WY:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 metadata:
   propagate_metadata_to_children: true
   unit: bool
@@ -172,5 +439,125 @@ metadata:
   breakdown:
   - state_code
   reference:
-    - title: SNAP Screener SNAP Eligibility Parameters
-      href: https://www.snapscreener.com/?p=table
+    - title: 7 CFR 273.9(c)(17) - Child support exclusion option
+      href: https://www.law.cornell.edu/cfr/text/7/273.9#c_17
+    - title: 7 CFR 273.9(d)(5) - Child support deduction
+      href: https://www.law.cornell.edu/cfr/text/7/273.9#d_5
+    - title: Food Stamp Program State Options Report, 6th Edition (October 2006), Child Support Expense Income Exclusion (page 12)
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/6-State_Options.pdf#page=16
+    - title: Food Stamp Program State Options Report, 7th Edition (as of November 2007), Child Support Expense Income Exclusion (page 13)
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/7-State_Options.pdf#page=17
+    - title: SNAP State Options Report, 8th Edition (as of June 2009), Child Support Expense Income Exclusion
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/8-State_Options.pdf#page=18
+    - title: SNAP State Options Report, 9th Edition (as of November 2010), Child Support Expense Exclusion (page 12)
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/9-State_Options.pdf#page=16
+    - title: SNAP State Options Report, 10th Edition (as of August 2012), Child Support Expense Exclusion (page 12)
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/10-State_Options.pdf#page=15
+    - title: SNAP State Options Report, 11th Edition (as of September 2013), Child Support Expense Income Exclusion (page 8)
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/11-State_Options.pdf#page=10
+    - title: SNAP State Options Report, 12th Edition (as of October 1, 2015), Child Support Expense Income Exclusion (page 12)
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/12-State_Options.pdf#page=16
+    - title: SNAP State Options Report, 13th Edition (as of October 1, 2016), Treatment of Child Support Payments (page 13)
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/13-State_Options-revised.pdf#page=17
+    - title: SNAP State Options Report, 14th Edition, Treatment of Child Support Payments (page 18)
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/14-State-Options.pdf#page=24
+    - title: SNAP State Options Report, 15th Edition, Treatment of Child Support Payments (page 15)
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-15th-state-options-report-october23.pdf#page=17
+    - title: SNAP State Options Report, 16th Edition, Treatment of Child Support Payments (page 15)
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-16th-state-options-report-june24.pdf#page=17
+    - title: SNAP State Options Report, 17th Edition, Treatment of Child Support Payments (page 21)
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-stateOptionsReport-17edition-120925.pdf#page=23
+    - title: Arkansas DHS Food Stamps Certification Manual 6550 - Child support deductions (captured 2010-10-24)
+      href: https://web.archive.org/web/20101024173725/http://www.arkansas.gov/dhs/webpolicy/Food%20Stamp%20Certification/FSC6100_new.htm
+    - title: Arkansas DHS Food Stamps Certification Manual 7524 - No deductions but farm loss in total gross income (captured 2010-10-24)
+      href: https://web.archive.org/web/20101024164247/http://www.arkansas.gov/dhs/webpolicy/Food%20Stamp%20Certification/FSC7100_new.htm
+    - title: Arkansas DHS SNAP Certification Manual (2020 compilation) - 6550 Child support deductions (stamped 06/01/98) and 7524 Determining eligibility (stamped 07/01/98)
+      href: https://humanservices.arkansas.gov/wp-content/uploads/Complete_SNAP_Manual.pdf
+    - title: California Department of Social Services All County Letter 06-31 (legally obligated child support payment exclusion)
+      href: https://www.cdss.ca.gov/getinfo/acl06/pdf/06-31.pdf
+    - title: Code of Colorado Regulations | Rule Manual Volume 4, SNAP | 4.407.5(A) (version effective 2025-12-30, page 113)
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12299&fileName=10%20CCR%202506-1#page=113
+    - title: Code of Colorado Regulations | Rule Manual Volume 4B, Food Stamps | B-4223.6 (version effective 2009-07-01)
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=3031&fileName=10%20CCR%202506-1
+    - title: Delaware Social Services Manual 9059(26) - Income exclusions, child support payments
+      href: https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-9000-9059
+    - title: 13 DE Reg. 1550 (June 1, 2010) - Final order adopting the child support income exclusion, effective June 10, 2010
+      href: https://archive.regulations.delaware.gov/register/june2010/final/13%20DE%20Reg%201550%2006-01-10.htm
+    - title: Hawaii Administrative Rules 17-676-56(b) and (f) and 17-676-72(6) (chapter 17-676 as captured 2010-12-09) - Child support paid subtracted after total gross income is computed
+      href: https://web.archive.org/web/20101209144128/http://hawaii.gov/dhs/main/har/har_current/676.pdf
+    - title: Hawaii Administrative Rules chapter 17-676, Income (DHS copy posted January 2014) - 17-676-56(f) and 17-676-72(6), am 11/22/08
+      href: https://humanservices.hawaii.gov/wp-content/uploads/2014/01/17-676.pdf
+    - title: Iowa DHS Employees' Manual 7-F, General Letter 7-F-81 (January 16, 2009, effective February 1, 2009) - Child support paid excluded for the gross income limit
+      href: http://web.archive.org/web/20110812123737/http://www.dhs.state.ia.us:80/policyanalysis/policymanualpages/Manual_Documents/Master/7-f.pdf
+    - title: Illinois Department of Human Services Manual Release 23.22 - SNAP policy clarification on child support income exclusion
+      href: https://www.dhs.state.il.us/page.aspx?item=149614
+    - title: 106 CMR 363.230(O) - Legally obligated child support payments excluded for the gross income test
+      href: https://www.law.cornell.edu/regulations/massachusetts/106-CMR-363-230
+    - title: Louisiana Administrative Code 67:III.1980(A)(3) and 67:III.1981 (Title 67, Social Services, August 2026 compilation) - Child support excluded for the gross income test
+      href: https://www.doa.la.gov/media/oq1j3hys/67.docx
+    - title: Louisiana Register Vol. 29, No. 4 (April 20, 2003), p. 607 - Rule adding the child support exclusion to LAC 67:III.1980
+      href: https://www.doa.louisiana.gov/media/m23b1mhf/0304.pdf#page=96
+    - title: 106 CMR 363.230(O), Rev. 7/2009 (Trans. by S.L. 1353) - Child support paid excluded for the gross income test
+      href: http://web.archive.org/web/20091202182220/http://www.mass.gov/Eeohhs2/docs/dta/g_reg_363.pdf
+    - title: Massachusetts Department of Transitional Assistance SNAP policy - Child support expenses deduction (excluding child support from the gross income test)
+      href: https://eohhs.ehs.state.ma.us/DTA/PolicyOnline/BEACON5/!SSL!/WebHelp/SNAP/ExpensesDeductions/Ex_CSExpDed.htm
+    - title: COMAR 07.03.17.35 - Child support deduction (captured 2011-10-01)
+      href: https://web.archive.org/web/20111001192853/http://www.dsd.state.md.us/comar/comarhtml/07/07.03.17.35.htm
+    - title: COMAR 07.03.17.43 - Calculation of household net monthly income, child support subtracted at G (captured 2011-10-01)
+      href: https://web.archive.org/web/20111001192904/http://www.dsd.state.md.us/comar/comarhtml/07/07.03.17.43.htm
+    - title: Maryland DHR Food Supplement Program Manual 212 Deductions (Revised 1/09), 212.11 Child support deduction (captured 2014-01-03)
+      href: https://web.archive.org/web/20140103182105/http://dhr.maryland.gov/documents/Manuals/FSP%20(Food%20Supplement%20Program)%20Manual/212%20Deductions/212%20Deductions.pdf
+    - title: Maryland DHR Food Supplement Program Manual 409 Income Eligibility (Revised 2/09) - Gross income before any deductions (409.2B) and child support subtracted for net income (409.3G) (captured 2011-04-19)
+      href: https://web.archive.org/web/20110419150954/http://www.dhr.state.md.us/manuals/fstamp/409_inco.pdf
+    - title: Michigan Bridges Eligibility Manual 556 - Computing the Food Assistance budget (child support expenses, line 20)
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/556.pdf#page=5
+    - title: Missouri Income Maintenance Memorandum IM-39 (March 4, 2003) - Court ordered child support expense policy
+      href: https://dssmanuals.mo.gov/wp-content/themes/mogovwp_dssmanuals/public/memos/memos_03/im39_03.html
+    - title: Missouri Income Maintenance Memorandum IM-34 (2013) - Disqualified or ineligible members earned income and expense budgeting (child support exclusion from gross income)
+      href: https://dssmanuals.mo.gov/wp-content/themes/mogovwp_dssmanuals/public/memos/memos_13/im34_13.html
+    - title: Missouri Food Stamp Program Manual 1115.035.20 - Child support exclusion
+      href: https://dssmanuals.mo.gov/food-stamps/1115-000-00/1115-035-00/1115-035-20/
+    - title: New Jersey P.L. 2013, c.45, sec. 10 (N.J.S.A. 44:10-104) - Child support paid excluded for the SNAP gross and net income standards, effective 2013-11-01
+      href: https://pub.njleg.gov/bills/2012/PL13/45_.HTM
+    - title: N.J.A.C. 10:87-5.9(a)20 - Income exclusions, legally obligated child support paid (added by R.2017 d.022, effective 2017-02-06)
+      href: https://www.nj.gov/humanservices/notices/documents/rules-and-regulations/SNAPManual_10.14.25.pdf
+    - title: New Jersey PRN 2016-017 - Proposal codifying the child support income exclusion required by P.L. 2013, c.45
+      href: https://www.nj.gov/humanservices/notices/documents/rule-proposals/(F)%20PRN%202016-017%20(DHS-DFD%2010_87-1.11).pdf
+    - title: North Carolina DSS Administrative Letter Economic Services No. 6-2005 - Treatment of legally obligated child support exclusion
+      href: https://policies.ncdhhs.gov/wp-content/uploads/es_al-6-2005.pdf
+    - title: NCDHHS FNS 340 Deductions, 340.19(A) Child support deduction (August 4, 2026)
+      href: https://policies.ncdhhs.gov/wp-content/uploads/FNS-340-Deductions_8.4.2026.pdf#page=25
+    - title: Oregon Administrative Rules 461-140-0266 - Court ordered child support exclusion; SNAP
+      href: https://ch461rules.odhs.oregon.gov/rules/461-140-0266.pdf
+    - title: Pennsylvania Food Stamp Handbook 560.6 Child support deduction (reissued September 2, 2005; captured 2009-03-17)
+      href: https://web.archive.org/web/20090317101108/http://www.dpw.state.pa.us:80/oimpolicymanuals/manuals/bop/fs/560/560-05.htm
+    - title: Pennsylvania SNAP Handbook 560.6 Child support deduction (reissued April 21, 2009; captured 2011-10-10)
+      href: https://web.archive.org/web/20111010032538/http://services.dpw.state.pa.us:80/oimpolicymanuals/manuals/bop/fs/560/560-05.htm
+    - title: Pennsylvania SNAP Handbook 560.6 Child support deduction (reissued March 1, 2012)
+      href: http://services.dpw.state.pa.us/oimpolicymanuals/snap/560_Income_Deductions/560_6_Child_Support_Deduction.htm
+    - title: Pennsylvania SNAP Handbook 560 Appendix A - Deduction table effective October 1, 2009, child support under 7 CFR 273.9(d)(5) (captured 2011-02-14)
+      href: https://web.archive.org/web/20110214145931/http://services.dpw.state.pa.us:80/oimpolicymanuals/manuals/bop/fs/560/560_A.htm
+    - title: Pennsylvania SNAP Handbook 560 Appendix A - Deduction tables effective October 1, 2012 to 2015, child support under 7 CFR 273.9(d)(5) (captured 2016-03-07)
+      href: https://web.archive.org/web/20160307073624/http://services.dpw.state.pa.us:80/oimpolicymanuals/snap/560_Income_Deductions/560_Appendix_A.htm
+    - title: Pennsylvania SNAP Handbook 560 Appendix A - Deduction tables, including those effective October 1, 2016 and 2017
+      href: http://services.dpw.state.pa.us/oimpolicymanuals/snap/560_Income_Deductions/560_Appendix_A.htm
+    - title: Rhode Island DHS SNAP Rules and Regulations (October 2014) - 1008.20.22 Child support income exclusion and 1010.20 (REV 05/2005)
+      href: https://risos-apa-production-public.s3.amazonaws.com/DHS/7907.pdf
+    - title: Rhode Island 218-RICR-20-00-1, 1.5.3 Excluded income (item 7, child support income exclusion)
+      href: https://rules.sos.ri.gov/regulations/part/218-20-00-1
+    - title: Vermont Food Stamp Rules 273.9(d)(7) and 273.10(e)(1)(i)(F) - Child support deduction (captured 2009-09-07)
+      href: https://web.archive.org/web/20090907172152/http://humanservices.vermont.gov/on-line-rules/esd/group-food-stamp-rules/view
+    - title: Vermont 3SquaresVT Rules 273.9(d)(7), 273.10(e)(1)(i)(F) and 273.10(e)(2)(i)(B) - Child support deducted for net income; gross income test on (e)(1)(i)(A) income (June 2017 compilation, captured 2017-11-20)
+      href: https://web.archive.org/web/20171120015819/http://humanservices.vermont.gov/on-line-rules/esd/group-food-stamp-rules/view
+    - title: Vermont ESD Food Stamps Procedures P-2510 E5 (gross income test) and E12 (child support payments) (captured 2015-10-13)
+      href: https://web.archive.org/web/20151013210556/http://humanservices.vermont.gov/on-line-rules/esd/esd-procedures/P2500/P2510E.pdf/view
+    - title: 3SquaresVT Program Manual 1700 - Deductions (1700.2.1 Child support deduction)
+      href: https://www.ahsnet.ahs.state.vt.us/Public/3sVT/assets/BRM/1600_Deductions.htm
+    - title: 3SquaresVT Program Manual 1800 - Determining income and deductions (1800.7.2 Gross income limit)
+      href: https://www.ahsnet.ahs.state.vt.us/Public/3sVT/assets/BRM/1700DetIncDeduct.htm
+    - title: 22 Virginia Administrative Code 40-601-70 - Income exclusion for legally obligated child support payments
+      href: https://law.lis.virginia.gov/admincode/title22/agency40/chapter601/section70/
+    - title: Washington State Register 09-15-085 - Amending WAC 388-450-0015 to exclude child support paid before the gross income test
+      href: https://lawfilesext.leg.wa.gov/law/wsr/2009/15/09-15-085.htm
+    - title: Washington State Register 09-16-095 - Effective date of WSR 09-15-085 moved to November 15, 2009
+      href: https://lawfilesext.leg.wa.gov/law/wsr/2009/16/09-16-095.htm

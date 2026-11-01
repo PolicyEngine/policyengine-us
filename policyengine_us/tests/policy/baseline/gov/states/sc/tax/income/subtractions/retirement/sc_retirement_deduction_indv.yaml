@@ -53,3 +53,15 @@
     state_code: SC
   output:
     sc_retirement_deduction_indv: 7_000
+
+- name: Case 6, age 65+, taxable Roth conversions eligible for deduction.
+  period: 2024
+  input:
+    taxable_roth_conversions: 5_000
+    military_retirement_pay: 0
+    age: 66
+    is_tax_unit_head_or_spouse: true
+    state_code: SC
+  output:
+    sc_retirement_deduction_indv: 5_000
+

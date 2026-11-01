@@ -14,7 +14,7 @@ class medicaid_enrolled_for_ssi_state_supplement(Variable):
     )
     documentation = (
         "Medicaid enrollment condition for SSI/aged/blind/disabled state "
-        "supplement candidates only (Indiana SAPN/RCAP and Kansas SSPP). "
+        "supplement candidates only (state supplements that require Medicaid enrollment). "
         "SSI recipients and aged, blind, or disabled RCAP candidates do not "
         "need the SNAP/TANF community-engagement exclusion. Other consumers "
         "must use medicaid_enrolled, which retains that exclusion."
@@ -35,12 +35,17 @@ class medicaid_enrolled_for_ssi_state_supplement(Variable):
         # age/blindness/disability independently of SNAP/TANF. Keep all other
         # Medicaid conditions, take-up and supplied inputs in a private branch.
         branch_name = f"{simulation.branch_name}_ssi_state_supplement_medicaid_{period}"
-        branch = simulation.get_branch(branch_name)
         try:
-            branch.set_input(
-                "medicaid_community_engagement_pass_through_eligible",
-                period.first_month,
-                np.zeros(person.count, dtype=bool),
+            branch = get_override_branch(
+                simulation,
+                branch_name,
+                period,
+                {
+                    "medicaid_community_engagement_pass_through_eligible": (
+                        period.first_month,
+                        np.zeros(person.count, dtype=bool),
+                    )
+                },
             )
             return branch.calculate("medicaid_enrolled", period)
         finally:

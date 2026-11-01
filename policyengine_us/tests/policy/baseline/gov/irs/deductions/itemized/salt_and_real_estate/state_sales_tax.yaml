@@ -25,7 +25,7 @@
   output:
     state_sales_tax: 1_773
 
-- name: Integration test, 0 income bracket
+- name: Delaware is not in the IRS state table, so no state table amount
   period: 2026
   input:
     state_code: DE
@@ -33,3 +33,1504 @@
     state_sales_tax_income_bracket: 0
   output:
     state_sales_tax: 0
+
+# Expected values below are read from the IRS Optional State Sales Tax Tables
+# in the Instructions for Schedule A (Form 1040):
+#   2018: https://www.irs.gov/pub/irs-prior/i1040sca--2018.pdf#page=14
+#   2019: https://www.irs.gov/pub/irs-prior/i1040sca--2019.pdf#page=15
+#   2020: https://www.irs.gov/pub/irs-prior/i1040sca--2020.pdf#page=14
+#   2021: https://www.irs.gov/pub/irs-prior/i1040sca--2021.pdf#page=14
+#   2022: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=13
+#   2023: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=13
+#   2024: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=12
+#   2025: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=13
+# The IRS prints the table in blocks of three states, six family-size columns
+# each. Cases cover the 1st, 2nd, and 3rd state of a block in every year,
+# because a column shift within blocks misassigned 30 states (#9595).
+
+- name: Texas (3rd state in its IRS block), 2 exemptions, $80,000-$90,000, 2015
+  period: 2015
+  input:
+    state_code: TX
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 912
+
+- name: Texas (3rd state in its IRS block), 2 exemptions, $80,000-$90,000, 2016
+  period: 2016
+  input:
+    state_code: TX
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 970
+
+- name: Texas (3rd state in its IRS block), 2 exemptions, $80,000-$90,000, 2017
+  period: 2017
+  input:
+    state_code: TX
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 976
+
+- name: Texas (3rd state in its IRS block), family size 2, $80,000-$90,000, 2018
+  period: 2018
+  input:
+    state_code: TX
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 989
+
+- name: Texas (3rd state in its IRS block), family size 2, $80,000-$90,000, 2019
+  period: 2019
+  input:
+    state_code: TX
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 969
+
+- name: Texas (3rd state in its IRS block), family size 2, $80,000-$90,000, 2020
+  period: 2020
+  input:
+    state_code: TX
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 961
+
+- name: Texas (3rd state in its IRS block), family size 2, $80,000-$90,000, 2021
+  period: 2021
+  input:
+    state_code: TX
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 851
+
+- name: Texas (3rd state in its IRS block), family size 2, $80,000-$90,000, 2022
+  period: 2022
+  input:
+    state_code: TX
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 1_001
+
+- name: Texas (3rd state in its IRS block), family size 2, $80,000-$90,000, 2023
+  period: 2023
+  input:
+    state_code: TX
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 1_152
+
+- name: Texas (3rd state in its IRS block), family size 2, $80,000-$90,000, 2024
+  period: 2024
+  input:
+    state_code: TX
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 972
+
+- name: Texas (3rd state in its IRS block), family size 2, $80,000-$90,000, 2025
+  period: 2025
+  input:
+    state_code: TX
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 987
+
+- name: Arizona (2nd state in its IRS block), 1 exemption, $0-$20,000, 2015
+  period: 2015
+  input:
+    state_code: AZ
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 198
+
+- name: Arizona (2nd state in its IRS block), 1 exemption, $0-$20,000, 2016
+  period: 2016
+  input:
+    state_code: AZ
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 231
+
+- name: Arizona (2nd state in its IRS block), 1 exemption, $0-$20,000, 2017
+  period: 2017
+  input:
+    state_code: AZ
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 256
+
+- name: Arizona (2nd state in its IRS block), family size 1, $0-$20,000, 2018
+  period: 2018
+  input:
+    state_code: AZ
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 291
+
+- name: Arizona (2nd state in its IRS block), family size 1, $0-$20,000, 2019
+  period: 2019
+  input:
+    state_code: AZ
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 261
+
+- name: Arizona (2nd state in its IRS block), family size 1, $0-$20,000, 2020
+  period: 2020
+  input:
+    state_code: AZ
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 280
+
+- name: Arizona (2nd state in its IRS block), family size 1, $0-$20,000, 2021
+  period: 2021
+  input:
+    state_code: AZ
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 246
+
+- name: Arizona (2nd state in its IRS block), family size 1, $0-$20,000, 2022
+  period: 2022
+  input:
+    state_code: AZ
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 321
+
+- name: Arizona (2nd state in its IRS block), family size 1, $0-$20,000, 2023
+  period: 2023
+  input:
+    state_code: AZ
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 382
+
+- name: Arizona (2nd state in its IRS block), family size 1, $0-$20,000, 2024
+  period: 2024
+  input:
+    state_code: AZ
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 330
+
+- name: Arizona (2nd state in its IRS block), family size 1, $0-$20,000, 2025
+  period: 2025
+  input:
+    state_code: AZ
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 335
+
+- name: Arkansas (3rd state in its IRS block), 6 exemptions, $300,000 or more, 2015
+  period: 2015
+  input:
+    state_code: AR
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 3_233
+
+- name: Arkansas (3rd state in its IRS block), 6 exemptions, $300,000 or more, 2016
+  period: 2016
+  input:
+    state_code: AR
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 3_192
+
+- name: Arkansas (3rd state in its IRS block), 6 exemptions, $300,000 or more, 2017
+  period: 2017
+  input:
+    state_code: AR
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 2_931
+
+- name: Arkansas (3rd state in its IRS block), family size 6, $300,000 or more, 2018
+  period: 2018
+  input:
+    state_code: AR
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 2_858
+
+- name: Arkansas (3rd state in its IRS block), family size 6, $300,000 or more, 2019
+  period: 2019
+  input:
+    state_code: AR
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 2_858
+
+- name: Arkansas (3rd state in its IRS block), family size 6, $300,000 or more, 2020
+  period: 2020
+  input:
+    state_code: AR
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 2_594
+
+- name: Arkansas (3rd state in its IRS block), family size 6, $300,000 or more, 2021
+  period: 2021
+  input:
+    state_code: AR
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 2_640
+
+- name: Arkansas (3rd state in its IRS block), family size 6, $300,000 or more, 2022
+  period: 2022
+  input:
+    state_code: AR
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 2_774
+
+- name: Arkansas (3rd state in its IRS block), family size 6, $300,000 or more, 2023
+  period: 2023
+  input:
+    state_code: AR
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 3_085
+
+- name: Arkansas (3rd state in its IRS block), family size 6, $300,000 or more, 2024
+  period: 2024
+  input:
+    state_code: AR
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 2_652
+
+- name: Arkansas (3rd state in its IRS block), family size 6, $300,000 or more, 2025
+  period: 2025
+  input:
+    state_code: AR
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 2_693
+
+- name: Alabama (1st state in its IRS block), 4 exemptions, $100,000-$120,000, 2015
+  period: 2015
+  input:
+    state_code: AL
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 10
+  output:
+    state_sales_tax: 873
+
+- name: Alabama (1st state in its IRS block), 4 exemptions, $100,000-$120,000, 2016
+  period: 2016
+  input:
+    state_code: AL
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 10
+  output:
+    state_sales_tax: 892
+
+- name: Alabama (1st state in its IRS block), 4 exemptions, $100,000-$120,000, 2017
+  period: 2017
+  input:
+    state_code: AL
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 10
+  output:
+    state_sales_tax: 946
+
+- name: Alabama (1st state in its IRS block), family size 4, $100,000-$120,000, 2018
+  period: 2018
+  input:
+    state_code: AL
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 10
+  output:
+    state_sales_tax: 951
+
+- name: Alabama (1st state in its IRS block), family size 4, $100,000-$120,000, 2019
+  period: 2019
+  input:
+    state_code: AL
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 10
+  output:
+    state_sales_tax: 939
+
+- name: Alabama (1st state in its IRS block), family size 4, $100,000-$120,000, 2020
+  period: 2020
+  input:
+    state_code: AL
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 10
+  output:
+    state_sales_tax: 937
+
+- name: Alabama (1st state in its IRS block), family size 4, $100,000-$120,000, 2021
+  period: 2021
+  input:
+    state_code: AL
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 10
+  output:
+    state_sales_tax: 911
+
+- name: Alabama (1st state in its IRS block), family size 4, $100,000-$120,000, 2022
+  period: 2022
+  input:
+    state_code: AL
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 10
+  output:
+    state_sales_tax: 1_036
+
+- name: Alabama (1st state in its IRS block), family size 4, $100,000-$120,000, 2023
+  period: 2023
+  input:
+    state_code: AL
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 10
+  output:
+    state_sales_tax: 1_151
+
+- name: Alabama (1st state in its IRS block), family size 4, $100,000-$120,000, 2024
+  period: 2024
+  input:
+    state_code: AL
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 10
+  output:
+    state_sales_tax: 949
+
+- name: Alabama (1st state in its IRS block), family size 4, $100,000-$120,000, 2025
+  period: 2025
+  input:
+    state_code: AL
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 10
+  output:
+    state_sales_tax: 964
+
+- name: Tennessee (2nd state in its IRS block), 3 exemptions, $50,000-$60,000, 2015
+  period: 2015
+  input:
+    state_code: TN
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 1_046
+
+- name: Tennessee (2nd state in its IRS block), 3 exemptions, $50,000-$60,000, 2016
+  period: 2016
+  input:
+    state_code: TN
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 1_086
+
+- name: Tennessee (2nd state in its IRS block), 3 exemptions, $50,000-$60,000, 2017
+  period: 2017
+  input:
+    state_code: TN
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 1_087
+
+- name: Tennessee (2nd state in its IRS block), family size 3, $50,000-$60,000, 2018
+  period: 2018
+  input:
+    state_code: TN
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 1_101
+
+- name: Tennessee (2nd state in its IRS block), family size 3, $50,000-$60,000, 2019
+  period: 2019
+  input:
+    state_code: TN
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 1_066
+
+- name: Tennessee (2nd state in its IRS block), family size 3, $50,000-$60,000, 2020
+  period: 2020
+  input:
+    state_code: TN
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 1_079
+
+- name: Tennessee (2nd state in its IRS block), family size 3, $50,000-$60,000, 2021
+  period: 2021
+  input:
+    state_code: TN
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 1_021
+
+- name: Tennessee (2nd state in its IRS block), family size 3, $50,000-$60,000, 2022
+  period: 2022
+  input:
+    state_code: TN
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 1_183
+
+- name: Tennessee (2nd state in its IRS block), family size 3, $50,000-$60,000, 2023
+  period: 2023
+  input:
+    state_code: TN
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 1_348
+
+- name: Tennessee (2nd state in its IRS block), family size 3, $50,000-$60,000, 2024
+  period: 2024
+  input:
+    state_code: TN
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 1_253
+
+- name: Tennessee (2nd state in its IRS block), family size 3, $50,000-$60,000, 2025
+  period: 2025
+  input:
+    state_code: TN
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 1_273
+
+- name: Florida (2nd state in its IRS block), 2 exemptions, $140,000-$160,000, 2015
+  period: 2015
+  input:
+    state_code: FL
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 12
+  output:
+    state_sales_tax: 1_194
+
+- name: Florida (2nd state in its IRS block), 2 exemptions, $140,000-$160,000, 2016
+  period: 2016
+  input:
+    state_code: FL
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 12
+  output:
+    state_sales_tax: 1_261
+
+- name: Florida (2nd state in its IRS block), 2 exemptions, $140,000-$160,000, 2017
+  period: 2017
+  input:
+    state_code: FL
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 12
+  output:
+    state_sales_tax: 1_186
+
+- name: Florida (2nd state in its IRS block), family size 2, $140,000-$160,000, 2018
+  period: 2018
+  input:
+    state_code: FL
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 12
+  output:
+    state_sales_tax: 1_188
+
+- name: Florida (2nd state in its IRS block), family size 2, $140,000-$160,000, 2019
+  period: 2019
+  input:
+    state_code: FL
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 12
+  output:
+    state_sales_tax: 1_194
+
+- name: Florida (2nd state in its IRS block), family size 2, $140,000-$160,000, 2020
+  period: 2020
+  input:
+    state_code: FL
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 12
+  output:
+    state_sales_tax: 1_159
+
+- name: Florida (2nd state in its IRS block), family size 2, $140,000-$160,000, 2021
+  period: 2021
+  input:
+    state_code: FL
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 12
+  output:
+    state_sales_tax: 1_025
+
+- name: Florida (2nd state in its IRS block), family size 2, $140,000-$160,000, 2022
+  period: 2022
+  input:
+    state_code: FL
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 12
+  output:
+    state_sales_tax: 1_188
+
+- name: Florida (2nd state in its IRS block), family size 2, $140,000-$160,000, 2023
+  period: 2023
+  input:
+    state_code: FL
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 12
+  output:
+    state_sales_tax: 1_404
+
+- name: Florida (2nd state in its IRS block), family size 2, $140,000-$160,000, 2024
+  period: 2024
+  input:
+    state_code: FL
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 12
+  output:
+    state_sales_tax: 1_164
+
+- name: Florida (2nd state in its IRS block), family size 2, $140,000-$160,000, 2025
+  period: 2025
+  input:
+    state_code: FL
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 12
+  output:
+    state_sales_tax: 1_182
+
+- name: Washington (1st state in its IRS block), 5 exemptions, $200,000-$225,000, 2015
+  period: 2015
+  input:
+    state_code: WA
+    tax_unit_size: 5
+    state_sales_tax_income_bracket: 15
+  output:
+    state_sales_tax: 1_873
+
+- name: Washington (1st state in its IRS block), 5 exemptions, $200,000-$225,000, 2016
+  period: 2016
+  input:
+    state_code: WA
+    tax_unit_size: 5
+    state_sales_tax_income_bracket: 15
+  output:
+    state_sales_tax: 1_888
+
+- name: Washington (1st state in its IRS block), 5 exemptions, $200,000-$225,000, 2017
+  period: 2017
+  input:
+    state_code: WA
+    tax_unit_size: 5
+    state_sales_tax_income_bracket: 15
+  output:
+    state_sales_tax: 1_761
+
+- name: Washington (1st state in its IRS block), family size 5, $200,000-$225,000, 2018
+  period: 2018
+  input:
+    state_code: WA
+    tax_unit_size: 5
+    state_sales_tax_income_bracket: 15
+  output:
+    state_sales_tax: 1_690
+
+- name: Washington (1st state in its IRS block), family size 5, $200,000-$225,000, 2019
+  period: 2019
+  input:
+    state_code: WA
+    tax_unit_size: 5
+    state_sales_tax_income_bracket: 15
+  output:
+    state_sales_tax: 1_804
+
+- name: Washington (1st state in its IRS block), family size 5, $200,000-$225,000, 2020
+  period: 2020
+  input:
+    state_code: WA
+    tax_unit_size: 5
+    state_sales_tax_income_bracket: 15
+  output:
+    state_sales_tax: 1_702
+
+- name: Washington (1st state in its IRS block), family size 5, $200,000-$225,000, 2021
+  period: 2021
+  input:
+    state_code: WA
+    tax_unit_size: 5
+    state_sales_tax_income_bracket: 15
+  output:
+    state_sales_tax: 1_663
+
+- name: Washington (1st state in its IRS block), family size 5, $200,000-$225,000, 2022
+  period: 2022
+  input:
+    state_code: WA
+    tax_unit_size: 5
+    state_sales_tax_income_bracket: 15
+  output:
+    state_sales_tax: 1_876
+
+- name: Washington (1st state in its IRS block), family size 5, $200,000-$225,000, 2023
+  period: 2023
+  input:
+    state_code: WA
+    tax_unit_size: 5
+    state_sales_tax_income_bracket: 15
+  output:
+    state_sales_tax: 2_167
+
+- name: Washington (1st state in its IRS block), family size 5, $200,000-$225,000, 2024
+  period: 2024
+  input:
+    state_code: WA
+    tax_unit_size: 5
+    state_sales_tax_income_bracket: 15
+  output:
+    state_sales_tax: 1_810
+
+- name: Washington (1st state in its IRS block), family size 5, $200,000-$225,000, 2025
+  period: 2025
+  input:
+    state_code: WA
+    tax_unit_size: 5
+    state_sales_tax_income_bracket: 15
+  output:
+    state_sales_tax: 1_838
+
+- name: Nevada (2nd state in its IRS block), 1 exemption, $300,000 or more, 2015
+  period: 2015
+  input:
+    state_code: NV
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_944
+
+- name: Nevada (2nd state in its IRS block), 1 exemption, $300,000 or more, 2016
+  period: 2016
+  input:
+    state_code: NV
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 2_141
+
+- name: Nevada (2nd state in its IRS block), 1 exemption, $300,000 or more, 2017
+  period: 2017
+  input:
+    state_code: NV
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 2_048
+
+- name: Nevada (2nd state in its IRS block), family size 1, $300,000 or more, 2018
+  period: 2018
+  input:
+    state_code: NV
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_842
+
+- name: Nevada (2nd state in its IRS block), family size 1, $300,000 or more, 2019
+  period: 2019
+  input:
+    state_code: NV
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 2_103
+
+- name: Nevada (2nd state in its IRS block), family size 1, $300,000 or more, 2020
+  period: 2020
+  input:
+    state_code: NV
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_895
+
+- name: Nevada (2nd state in its IRS block), family size 1, $300,000 or more, 2021
+  period: 2021
+  input:
+    state_code: NV
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_599
+
+- name: Nevada (2nd state in its IRS block), family size 1, $300,000 or more, 2022
+  period: 2022
+  input:
+    state_code: NV
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_728
+
+- name: Nevada (2nd state in its IRS block), family size 1, $300,000 or more, 2023
+  period: 2023
+  input:
+    state_code: NV
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 2_033
+
+- name: Nevada (2nd state in its IRS block), family size 1, $300,000 or more, 2024
+  period: 2024
+  input:
+    state_code: NV
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_526
+
+- name: Nevada (2nd state in its IRS block), family size 1, $300,000 or more, 2025
+  period: 2025
+  input:
+    state_code: NV
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_550
+
+- name: Connecticut (3rd state in its IRS block), 6 exemptions, $0-$20,000, 2015
+  period: 2015
+  input:
+    state_code: CT
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 325
+
+- name: Connecticut (3rd state in its IRS block), 6 exemptions, $0-$20,000, 2016
+  period: 2016
+  input:
+    state_code: CT
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 337
+
+- name: Connecticut (3rd state in its IRS block), 6 exemptions, $0-$20,000, 2017
+  period: 2017
+  input:
+    state_code: CT
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 376
+
+- name: Connecticut (3rd state in its IRS block), family size 6, $0-$20,000, 2018
+  period: 2018
+  input:
+    state_code: CT
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 410
+
+- name: Connecticut (3rd state in its IRS block), family size 6, $0-$20,000, 2019
+  period: 2019
+  input:
+    state_code: CT
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 370
+
+- name: Connecticut (3rd state in its IRS block), family size 6, $0-$20,000, 2020
+  period: 2020
+  input:
+    state_code: CT
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 306
+
+- name: Connecticut (3rd state in its IRS block), family size 6, $0-$20,000, 2021
+  period: 2021
+  input:
+    state_code: CT
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 273
+
+- name: Connecticut (3rd state in its IRS block), family size 6, $0-$20,000, 2022
+  period: 2022
+  input:
+    state_code: CT
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 431
+
+- name: Connecticut (3rd state in its IRS block), family size 6, $0-$20,000, 2023
+  period: 2023
+  input:
+    state_code: CT
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 537
+
+- name: Connecticut (3rd state in its IRS block), family size 6, $0-$20,000, 2024
+  period: 2024
+  input:
+    state_code: CT
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 487
+
+- name: Connecticut (3rd state in its IRS block), family size 6, $0-$20,000, 2025
+  period: 2025
+  input:
+    state_code: CT
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 495
+
+- name: Wyoming (alone in its IRS block), 6 exemptions, $300,000 or more, 2015
+  period: 2015
+  input:
+    state_code: WY
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_803
+
+- name: Wyoming (alone in its IRS block), 6 exemptions, $300,000 or more, 2016
+  period: 2016
+  input:
+    state_code: WY
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_811
+
+- name: Wyoming (alone in its IRS block), 6 exemptions, $300,000 or more, 2017
+  period: 2017
+  input:
+    state_code: WY
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_623
+
+- name: Wyoming (alone in its IRS block), family size 6, $300,000 or more, 2018
+  period: 2018
+  input:
+    state_code: WY
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_524
+
+- name: Wyoming (alone in its IRS block), family size 6, $300,000 or more, 2019
+  period: 2019
+  input:
+    state_code: WY
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_586
+
+- name: Wyoming (alone in its IRS block), family size 6, $300,000 or more, 2020
+  period: 2020
+  input:
+    state_code: WY
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_470
+
+- name: Wyoming (alone in its IRS block), family size 6, $300,000 or more, 2021
+  period: 2021
+  input:
+    state_code: WY
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_409
+
+- name: Wyoming (alone in its IRS block), family size 6, $300,000 or more, 2022
+  period: 2022
+  input:
+    state_code: WY
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_577
+
+# In 2021 the footnote text beside the Wyoming block crowds this row, and
+# `pdftotext -layout` prints its "Over 5" cell on the next line.
+- name: Wyoming (alone in its IRS block), family size 6, $100,000-$120,000, 2021
+  period: 2021
+  input:
+    state_code: WY
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 10
+  output:
+    state_sales_tax: 705
+
+- name: Wyoming (alone in its IRS block), family size 6, $300,000 or more, 2023
+  period: 2023
+  input:
+    state_code: WY
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_773
+
+- name: Wyoming (alone in its IRS block), family size 6, $300,000 or more, 2024
+  period: 2024
+  input:
+    state_code: WY
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_488
+
+- name: Wyoming (alone in its IRS block), family size 6, $300,000 or more, 2025
+  period: 2025
+  input:
+    state_code: WY
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_511
+
+- name: Massachusetts (2nd state in its IRS block), 3 exemptions, $50,000-$60,000, 2015
+  period: 2015
+  input:
+    state_code: MA
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 538
+
+- name: Massachusetts (2nd state in its IRS block), 3 exemptions, $50,000-$60,000, 2016
+  period: 2016
+  input:
+    state_code: MA
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 562
+
+- name: Massachusetts (2nd state in its IRS block), 3 exemptions, $50,000-$60,000, 2017
+  period: 2017
+  input:
+    state_code: MA
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 612
+
+- name: Massachusetts (2nd state in its IRS block), family size 3, $50,000-$60,000, 2018
+  period: 2018
+  input:
+    state_code: MA
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 642
+
+- name: Massachusetts (2nd state in its IRS block), family size 3, $50,000-$60,000, 2019
+  period: 2019
+  input:
+    state_code: MA
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 624
+
+- name: Massachusetts (2nd state in its IRS block), family size 3, $50,000-$60,000, 2020
+  period: 2020
+  input:
+    state_code: MA
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 639
+
+- name: Massachusetts (2nd state in its IRS block), family size 3, $50,000-$60,000, 2021
+  period: 2021
+  input:
+    state_code: MA
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 594
+
+- name: Massachusetts (2nd state in its IRS block), family size 3, $50,000-$60,000, 2022
+  period: 2022
+  input:
+    state_code: MA
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 718
+
+- name: Massachusetts (2nd state in its IRS block), family size 3, $50,000-$60,000, 2023
+  period: 2023
+  input:
+    state_code: MA
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 864
+
+- name: Massachusetts (2nd state in its IRS block), family size 3, $50,000-$60,000, 2024
+  period: 2024
+  input:
+    state_code: MA
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 691
+
+- name: Massachusetts (2nd state in its IRS block), family size 3, $50,000-$60,000, 2025
+  period: 2025
+  input:
+    state_code: MA
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+  output:
+    state_sales_tax: 702
+
+- name: New York (2nd state in its IRS block), 4 exemptions, $90,000-$100,000, 2015
+  period: 2015
+  input:
+    state_code: NY
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 9
+  output:
+    state_sales_tax: 591
+
+- name: New York (2nd state in its IRS block), 4 exemptions, $90,000-$100,000, 2016
+  period: 2016
+  input:
+    state_code: NY
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 9
+  output:
+    state_sales_tax: 620
+
+- name: New York (2nd state in its IRS block), 4 exemptions, $90,000-$100,000, 2017
+  period: 2017
+  input:
+    state_code: NY
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 9
+  output:
+    state_sales_tax: 616
+
+- name: New York (2nd state in its IRS block), family size 4, $90,000-$100,000, 2018
+  period: 2018
+  input:
+    state_code: NY
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 9
+  output:
+    state_sales_tax: 627
+
+- name: New York (2nd state in its IRS block), family size 4, $90,000-$100,000, 2019
+  period: 2019
+  input:
+    state_code: NY
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 9
+  output:
+    state_sales_tax: 617
+
+- name: New York (2nd state in its IRS block), family size 4, $90,000-$100,000, 2020
+  period: 2020
+  input:
+    state_code: NY
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 9
+  output:
+    state_sales_tax: 610
+
+- name: New York (2nd state in its IRS block), family size 4, $90,000-$100,000, 2021
+  period: 2021
+  input:
+    state_code: NY
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 9
+  output:
+    state_sales_tax: 555
+
+- name: New York (2nd state in its IRS block), family size 4, $90,000-$100,000, 2022
+  period: 2022
+  input:
+    state_code: NY
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 9
+  output:
+    state_sales_tax: 700
+
+- name: New York (2nd state in its IRS block), family size 4, $90,000-$100,000, 2023
+  period: 2023
+  input:
+    state_code: NY
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 9
+  output:
+    state_sales_tax: 815
+
+- name: New York (2nd state in its IRS block), family size 4, $90,000-$100,000, 2024
+  period: 2024
+  input:
+    state_code: NY
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 9
+  output:
+    state_sales_tax: 692
+
+- name: New York (2nd state in its IRS block), family size 4, $90,000-$100,000, 2025
+  period: 2025
+  input:
+    state_code: NY
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 9
+  output:
+    state_sales_tax: 703
+
+- name: More than 6 exemptions use the IRS "Over 5" column, 2015
+  period: 2015
+  input:
+    state_code: TX
+    tax_unit_size: 8
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 1_125
+
+- name: More than 6 exemptions use the IRS "Over 5" column, 2016
+  period: 2016
+  input:
+    state_code: TX
+    tax_unit_size: 8
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 1_160
+
+- name: More than 6 exemptions use the IRS "Over 5" column, 2017
+  period: 2017
+  input:
+    state_code: TX
+    tax_unit_size: 8
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 1_163
+
+- name: Family size above 6 uses the IRS "Over 5" column, 2018
+  period: 2018
+  input:
+    state_code: TX
+    tax_unit_size: 8
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 1_150
+
+- name: Family size above 6 uses the IRS "Over 5" column, 2019
+  period: 2019
+  input:
+    state_code: TX
+    tax_unit_size: 8
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 1_127
+
+- name: Family size above 6 uses the IRS "Over 5" column, 2020
+  period: 2020
+  input:
+    state_code: TX
+    tax_unit_size: 8
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 1_113
+
+- name: Family size above 6 uses the IRS "Over 5" column, 2021
+  period: 2021
+  input:
+    state_code: TX
+    tax_unit_size: 8
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 1_042
+
+- name: Family size above 6 uses the IRS "Over 5" column, 2022
+  period: 2022
+  input:
+    state_code: TX
+    tax_unit_size: 8
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 1_269
+
+- name: Family size above 6 uses the IRS "Over 5" column, 2023
+  period: 2023
+  input:
+    state_code: TX
+    tax_unit_size: 8
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 1_448
+
+- name: Family size above 6 uses the IRS "Over 5" column, 2024
+  period: 2024
+  input:
+    state_code: TX
+    tax_unit_size: 8
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 1_281
+
+- name: Family size above 6 uses the IRS "Over 5" column, 2025
+  period: 2025
+  input:
+    state_code: TX
+    tax_unit_size: 8
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 1_301
+
+- name: Alaska has no state sales tax, so no state table amount
+  period: 2024
+  input:
+    state_code: AK
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 10
+  output:
+    state_sales_tax: 0
+
+- name: Texas couple with 2022 income in the $80,000-$90,000 row gets the 2022 Texas amount
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 87_962
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 87_962
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 8
+    state_sales_tax: 1_001
+
+- name: Massachusetts family of 3 deducts only the state table amount, 2024
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 55_000
+      spouse:
+        age: 40
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        adjusted_gross_income: 55_000
+        state_withheld_income_tax: 0
+        local_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child]
+        # Public assistance counts toward the table income; pin it so the
+        # case isolates the table lookup.
+        tanf: 0
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MA
+  output:
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+    state_sales_tax: 691
+    local_sales_tax: 0
+    state_and_local_sales_or_income_tax: 691
+
+# The SALT deduction adds the table amount to real estate taxes; the total is
+# under the $10,000 cap that 26 USC 164(b)(6) sets for 2019.
+- name: Massachusetts family of 3 deducts only the state table amount, 2019
+  period: 2019
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 55_000
+        real_estate_taxes: 4_000
+      spouse:
+        age: 40
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        adjusted_gross_income: 55_000
+        state_withheld_income_tax: 0
+        local_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child]
+        # Public assistance counts toward the table income; pin it so the
+        # case isolates the table lookup.
+        tanf: 0
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MA
+  output:
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+    state_sales_tax: 624
+    local_sales_tax: 0
+    state_and_local_sales_or_income_tax: 624
+    salt_deduction: 4_624
+
+# The 2015 table prints this cell as "s1826" (i1040sca--2015.pdf, p. 16, Ohio,
+# $250,000-$275,000, "Over 5"); the stray "s" is in the PDF. The cell lies
+# between 1,754 (5 exemptions) and, down the column, 1,723 and 1,924.
+- name: Ohio 2015 "Over 5" cell the IRS prints as "s1826"
+  period: 2015
+  input:
+    state_code: OH
+    tax_unit_size: 7
+    state_sales_tax_income_bracket: 17
+  output:
+    state_sales_tax: 1_826
+
+# Through 2017 there is no SALT cap (cap.yaml is .inf), so the table amount
+# and real estate taxes are deducted in full above $10,000. Table cell:
+# Massachusetts, 3 exemptions, $50,000-$60,000, 2016 (p. 15).
+- name: Massachusetts family of 3 deducts the table amount without a SALT cap, 2016
+  period: 2016
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 55_000
+        real_estate_taxes: 12_000
+      spouse:
+        age: 40
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        adjusted_gross_income: 55_000
+        state_withheld_income_tax: 0
+        local_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child]
+        tanf: 0
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MA
+  output:
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 5
+    state_sales_tax: 562
+    local_sales_tax: 0
+    salt_deduction: 12_562
+
+# 2016 Itemized Deductions Worksheet—Line 29 (i1040sca--2016.pdf, p. 13), with
+# the SALT deduction as the only itemized deduction: line 1 is 20,000 of real
+# estate taxes plus the 1,728 table amount (Massachusetts, 2 exemptions,
+# "$300,000 or more"); line 4 is 80% of that, 17,382.40; line 6 is "$311,300
+# if married filing jointly"; line 8 is 3% of (400,000 - 311,300), 2,661;
+# line 9 is the smaller, 2,661; line 10 is 21,728 - 2,661 = 19,067.
+- name: Massachusetts joint filers' table amount goes through the 2016 itemized deduction limit
+  period: 2016
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 400_000
+        real_estate_taxes: 20_000
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 400_000
+        state_withheld_income_tax: 0
+        local_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+        tanf: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MA
+  output:
+    tax_unit_size: 2
+    state_sales_tax_income_bracket: 19
+    state_sales_tax: 1_728
+    salt_deduction: 21_728
+    itemized_taxable_income_deductions_reduction: 2_661
+    itemized_taxable_income_deductions: 19_067

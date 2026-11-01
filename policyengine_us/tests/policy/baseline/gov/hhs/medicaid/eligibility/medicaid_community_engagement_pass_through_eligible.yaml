@@ -433,3 +433,113 @@
         state_code: CA
   output:
     medicaid_community_engagement_pass_through_eligible: false
+
+# SNAP work-test changes (7 CFR 273.7(b)(1)(v) and (vii)) flow into the
+# pass-through through is_snap_work_registration_exempt_non_age and
+# is_subject_to_snap_abawd. Hours are averaged over the year (usual hours x
+# weeks worked / 52), earnings over 52 weeks against 7.25 x 30 = 217.50 a
+# week, and UI exempts only in its months of receipt.
+- name: Case 21, SNAP member working 40 usual hours for 10 weeks is subject to SNAP work rules and passes through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        weeks_worked:
+          2026: 10
+        employment_income_before_lsr:
+          2026: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: TX
+  output:
+    # 40 x 10 / 52 = 7.69 hours < 30 and 6,000 / 52 = 115.38 < 217.50: not
+    # registration-exempt -> subject to the general requirement -> passes
+    # through. Before this change: 40 hours -> exempt -> false.
+    medicaid_community_engagement_pass_through_eligible: true
+
+- name: Case 22, same person without weeks worked is still 30-hour exempt and does not pass through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: TX
+  output:
+    # weeks_worked absent -> usual 40 hours >= 30 -> exempt from both SNAP
+    # work requirements.
+    medicaid_community_engagement_pass_through_eligible: false
+
+- name: Case 23, SNAP member earning the minimum wage times 30 is exempt and does not pass through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 15
+        employment_income_before_lsr:
+          2026: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: TX
+  output:
+    # 15 hours < 30, but 12,000 / 52 = 230.77 >= 217.50 -> registration-exempt
+    # and ABAWD-exempt. Before this change: 15 hours -> subject -> true.
+    medicaid_community_engagement_pass_through_eligible: false
+
+- name: Case 24, UI recipient whose receipt block starts in February passes through in January.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+        person_id:
+          2026: 1
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: TX
+  output:
+    # months = ceil(13 x 12 / 52) = 3; person_id 1 starts in February ->
+    # Feb-Apr, so January (the month medicaid_work_requirement_eligible reads)
+    # has no UI exemption -> subject -> passes through. Before this change:
+    # any UI exempted all 12 months -> false.
+    medicaid_community_engagement_pass_through_eligible: true

@@ -11,17 +11,28 @@ class hi_eitc(Variable):
     defined_for = StateCode.HI
     unit = USD
     definition_period = YEAR
-    reference = "https://www.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0055_0075.htm"
+    reference = (
+        "https://www.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0055_0007_0005.htm",
+        # Form N-356, lines 10 to 13: the nonrefundable credit is limited to
+        # the adjusted tax liability, "the amount from Form N-11, line 34"
+        # (2018-2019 wording; 2020-2022 forms name the line "Adjusted Tax
+        # Liability"). files.hawaii.gov no longer serves the 2018-2021 forms.
+        "https://web.archive.org/web/20201129163620/https://files.hawaii.gov/tax/forms/2019/n356_i.pdf#page=1",
+        "https://files.hawaii.gov/tax/forms/2022/n356_i.pdf#page=1",
+    )
 
     def formula(tax_unit, period, parameters):
-        if period.start.year >= 2023:
+        ordered_credits = parameters(
+            period
+        ).gov.states.hi.tax.income.credits.non_refundable
+        if "hi_eitc" not in ordered_credits:
             return tax_unit("hi_eitc_potential", period)
 
         return applied_state_non_refundable_credit(
             tax_unit,
             period,
-            ["hi_eitc"],
-            "hi_income_tax_before_non_refundable_credits",
+            ordered_credits,
+            "hi_adjusted_tax_liability",
             "hi_eitc",
             "hi_eitc_potential",
         )

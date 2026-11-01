@@ -81,6 +81,40 @@
       household:
         state_code: DC
   output:
+    # DC deducts child support when computing net income rather than
+    # excluding it from gross income.
+    snap_child_support_gross_income_deduction: 0
+    snap_gross_income: 2_000
+    snap_child_support_deduction: 500
+    snap_deductions: 500
+    snap_net_income: 1_500
+
+- name: SNAP child support exclusion integration test
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_1:
+        age: 30
+        child_support_expense: 500
+      person_2:
+        age: 10
+    spm_units:
+      spm_unit:
+        snap_earned_income: 2_000
+        snap_unearned_income: 0
+        members: [person_1, person_2]
+        snap_standard_deduction: 0
+        snap_earned_income_deduction: 0
+        snap_excess_medical_expense_deduction: 0
+        snap_excess_shelter_expense_deduction: 0
+        snap_dependent_care_deduction: 0
+    households:
+      household:
+        state_code: NY
+  output:
+    # New York excludes child support from gross income, so it reduces gross
+    # income and is not deducted again from net income.
     snap_child_support_gross_income_deduction: 500
     snap_gross_income: 1_500
     snap_child_support_deduction: 0

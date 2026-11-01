@@ -1,0 +1,33 @@
+description: Counties in Delaware with an approved USDA FNS waiver of the SNAP ABAWD time limit.
+
+values:
+  2018-01-01: []
+  # FY2025 waiver: Kent and Sussex counties plus the city of Wilmington
+  # (sub-county, not modeled), 2024-10-01 through 2025-09-30. The FY2024
+  # statewide waiver it replaced (FNS response, September 28, 2023,
+  # 2023-10-01 through 2024-09-30) ended before waived_states' 2024-11-01
+  # modeling start. The FY 2025 Quarter 1 status report (as of
+  # 2024-10-01) still lists Delaware as statewide; the approval letter
+  # governs.
+  2024-10-01:
+    - KENT_COUNTY_DE # FIPS 10001
+    - SUSSEX_COUNTY_DE # FIPS 10005
+  # Expired 2025-09-30; FNS denied the FY2026 renewal on 2025-10-06 because
+  # P.L. 119-21 removed its lack-of-sufficient-jobs basis.
+  2025-10-01: []
+
+metadata:
+  unit: list
+  period: month
+  label: SNAP ABAWD waived counties in Delaware
+  reference:
+    - title: USDA FNS Delaware ABAWD Waiver Response, September 19, 2024 - requested area (one city and two counties)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/de-abawd-response-fy2025.pdf#page=2
+    - title: USDA FNS Delaware ABAWD Waiver Response, September 19, 2024 - Kent and Sussex counties, implementation date (2024-10-01), and expiration date (2025-09-30)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/de-abawd-response-fy2025.pdf#page=3
+    - title: USDA FNS Delaware ABAWD Waiver Response, October 6, 2025 - FY2026 request denied
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/de-abawd-response-fy2026.pdf#page=1
+    - title: USDA FNS Delaware Statewide ABAWD Waiver Response, September 28, 2023 - requested area (throughout the State, 2023-10-01 through 2024-09-30)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/de-abawd-response-fy2024.pdf#page=2
+    - title: USDA FNS Delaware Statewide ABAWD Waiver Response, September 28, 2023 - implementation date (2023-10-01) and expiration date (2024-09-30)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/de-abawd-response-fy2024.pdf#page=3

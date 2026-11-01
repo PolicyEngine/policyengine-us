@@ -7,7 +7,7 @@ class oh_ccap_special_needs(Variable):
     definition_period = MONTH
     label = "Whether the child has verified Ohio CCAP special needs"
     defined_for = StateCode.OH
-    reference = "https://codes.ohio.gov/ohio-administrative-code/rule-5180:2-16-01"
+    reference = "https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/2/16/5180$2-16-01_20221211.pdf"
 
     def formula(person, period, parameters):
         # 5180:2-16-01(AA): a special needs child has a chronic health

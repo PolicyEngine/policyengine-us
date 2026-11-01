@@ -9,9 +9,10 @@ class ia_itemized_deductions_unit(Variable):
     definition_period = YEAR
     reference = (
         "https://revenue.iowa.gov/sites/default/files/2022-01/IA1040%2841-001%29.pdf",
-        "https://revenue.iowa.gov/sites/default/files/2023-01/2021%20Expanded%20Instructions_010323.pdf",
+        "https://revenue.iowa.gov/media/2650/download?inline",
         "https://revenue.iowa.gov/sites/default/files/2023-01/2022IA1040%2841001%29.pdf",
-        "https://revenue.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf",
+        "https://revenue.iowa.gov/media/2721/download?inline",
+        "https://revenue.iowa.gov/taxes/tax-guidance/individual-income-tax/iowa-nonconformity-taxpayer-certainty-and-disaster-tax-relief-act-2019",
     )
     defined_for = StateCode.IA
 
@@ -29,8 +30,15 @@ class ia_itemized_deductions_unit(Variable):
             p_fed = parameters(period).gov.irs.deductions
             return add(tax_unit, period, p_fed.itemized_deductions)
         else:
-            return add(
+            deductions = add(
                 tax_unit,
                 period,
                 ["itemized_deductions_less_salt", "real_estate_taxes"],
             )
+            # Iowa did not adopt the retroactive extension of the mortgage
+            # insurance premium deduction for 2018 and 2019.
+            if p.disallowed_interest_components:
+                deductions = deductions - add(
+                    tax_unit, period, p.disallowed_interest_components
+                )
+            return deductions

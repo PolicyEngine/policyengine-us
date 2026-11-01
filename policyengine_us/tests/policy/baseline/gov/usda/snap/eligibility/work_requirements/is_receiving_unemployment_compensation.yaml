@@ -1,0 +1,282 @@
+# is_receiving_unemployment_compensation: the unemployment_compensation_months
+# of the year form one contiguous block of calendar months that wraps within
+# the year. The block starts at splitmix64(key) mod 12 (0 = January). The key
+# is person_id when it is supplied (microdata or an explicit input) and the
+# person's position in the household otherwise, so axis copies match.
+# Start months used below: key 0 -> Jan, 1 -> Feb, 2 -> Nov,
+# 6 -> May, 14 -> Oct, 19 -> Dec.
+# Every case runs in January, so the January position is
+# (0 - start) mod 12 and the person receives when that position < months.
+
+- name: Case 1, 13 weeks from a January start covers January.
+  period: 2026-01
+  input:
+    unemployment_compensation:
+      2026: 5_000
+    weeks_unemployed:
+      2026: 13
+    person_id:
+      2026: 0
+  output:
+    # months = ceil(13 x 12 / 52) = 3 -> Jan, Feb, Mar; position (0 - 0) mod 12 = 0 < 3
+    is_receiving_unemployment_compensation: true
+
+- name: Case 2, 13 weeks from a February start does not cover January.
+  period: 2026-01
+  input:
+    unemployment_compensation:
+      2026: 5_000
+    weeks_unemployed:
+      2026: 13
+    person_id:
+      2026: 1
+  output:
+    # 3 months -> Feb, Mar, Apr; position (0 - 1) mod 12 = 11, not < 3.
+    # A January-anchored block would cover January.
+    is_receiving_unemployment_compensation: false
+
+- name: Case 3, one week from a January start covers January only.
+  period: 2026-01
+  input:
+    unemployment_compensation:
+      2026: 500
+    weeks_unemployed:
+      2026: 1
+    person_id:
+      2026: 0
+  output:
+    # months = ceil(1 x 12 / 52) = 1 -> Jan; position 0 < 1
+    is_receiving_unemployment_compensation: true
+
+- name: Case 4, one week from a December start does not reach January.
+  period: 2026-01
+  input:
+    unemployment_compensation:
+      2026: 500
+    weeks_unemployed:
+      2026: 1
+    person_id:
+      2026: 19
+  output:
+    # 1 month -> Dec; position (0 - 11) mod 12 = 1, not < 1
+    is_receiving_unemployment_compensation: false
+
+- name: Case 5, five weeks from a December start wraps into January.
+  period: 2026-01
+  input:
+    unemployment_compensation:
+      2026: 2_000
+    weeks_unemployed:
+      2026: 5
+    person_id:
+      2026: 19
+  output:
+    # months = ceil(5 x 12 / 52) = ceil(1.15) = 2 -> Dec, Jan; position 1 < 2
+    is_receiving_unemployment_compensation: true
+
+- name: Case 6, nine weeks from a November start wraps so January is the last month.
+  period: 2026-01
+  input:
+    unemployment_compensation:
+      2026: 3_000
+    weeks_unemployed:
+      2026: 9
+    person_id:
+      2026: 2
+  output:
+    # months = ceil(9 x 12 / 52) = ceil(2.08) = 3 -> Nov, Dec, Jan; position (0 - 10) mod 12 = 2 < 3
+    is_receiving_unemployment_compensation: true
+
+- name: Case 7, eight weeks from a November start ends in December.
+  period: 2026-01
+  input:
+    unemployment_compensation:
+      2026: 3_000
+    weeks_unemployed:
+      2026: 8
+    person_id:
+      2026: 2
+  output:
+    # months = ceil(8 x 12 / 52) = ceil(1.85) = 2 -> Nov, Dec; position 2, not < 2
+    is_receiving_unemployment_compensation: false
+
+- name: Case 8, 14 weeks from an October start rounds up to a fourth month in January.
+  period: 2026-01
+  input:
+    unemployment_compensation:
+      2026: 5_000
+    weeks_unemployed:
+      2026: 14
+    person_id:
+      2026: 14
+  output:
+    # months = ceil(14 x 12 / 52) = ceil(3.23) = 4 -> Oct, Nov, Dec, Jan;
+    # position (0 - 9) mod 12 = 3 < 4
+    is_receiving_unemployment_compensation: true
+
+- name: Case 9, 13 weeks from an October start ends in December.
+  period: 2026-01
+  input:
+    unemployment_compensation:
+      2026: 5_000
+    weeks_unemployed:
+      2026: 13
+    person_id:
+      2026: 14
+  output:
+    # 3 months -> Oct, Nov, Dec; position 3, not < 3
+    is_receiving_unemployment_compensation: false
+
+- name: Case 10, 47 weeks from a February start runs through December without wrapping.
+  period: 2026-01
+  input:
+    unemployment_compensation:
+      2026: 15_000
+    weeks_unemployed:
+      2026: 47
+    person_id:
+      2026: 1
+  output:
+    # months = ceil(47 x 12 / 52) = 11 -> Feb through Dec; position 11, not < 11
+    is_receiving_unemployment_compensation: false
+
+- name: Case 11, 48 weeks gives 12 months and covers January from a February start.
+  period: 2026-01
+  input:
+    unemployment_compensation:
+      2026: 15_000
+    weeks_unemployed:
+      2026: 48
+    person_id:
+      2026: 1
+  output:
+    # months = ceil(48 x 12 / 52) = ceil(11.08) = 12 -> every month; position 11 < 12
+    is_receiving_unemployment_compensation: true
+
+- name: Case 12, UI without weeks unemployed covers every month even from a May start.
+  period: 2026-01
+  input:
+    unemployment_compensation:
+      2026: 5_000
+    person_id:
+      2026: 6
+  output:
+    # weeks_unemployed = 0 -> 12 months; position (0 - 4) mod 12 = 8 < 12
+    is_receiving_unemployment_compensation: true
+
+- name: Case 13, weeks unemployed without UI never counts as receipt.
+  period: 2026-01
+  input:
+    unemployment_compensation:
+      2026: 0
+    weeks_unemployed:
+      2026: 13
+    person_id:
+      2026: 0
+  output:
+    # months = 0 -> position 0, not < 0
+    is_receiving_unemployment_compensation: false
+
+- name: Case 14, without supplied person IDs the household position rotates the block start between members.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+      person2:
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # No person_id input -> key = position in the household [0, 1] -> starts
+    # Jan and Feb; 3 months each.
+    # person1: Jan-Mar covers January; person2: Feb-Apr does not.
+    is_receiving_unemployment_compensation: [true, false]
+
+- name: Case 15, axis copies of a household keep each member's start month.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+      person2:
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+    axes:
+      - - name: employment_income
+          min: 0
+          max: 60_000
+          count: 3
+          period: 2026
+  output:
+    # The default person_id runs 0-5 across the three copies, but the key is
+    # the position in the household, so every copy matches Case 14:
+    # person1 starts in January (covered) and person2 in February (not).
+    # Hashing the default IDs would give starts Jan, Feb, Nov, Sep, Sep, Jan
+    # -> [true, false, true, false, false, true].
+    is_receiving_unemployment_compensation: [true, false, true, false, true, false]
+
+- name: Case 16, supplied person IDs are hashed as given in every axis copy.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        person_id:
+          2026: 1
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+      person2:
+        person_id:
+          2026: 19
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+    axes:
+      - - name: employment_income
+          min: 0
+          max: 60_000
+          count: 2
+          period: 2026
+  output:
+    # person_id 1 -> Feb-Apr, not January; person_id 19 -> Dec-Feb, covers
+    # January (position (0 - 11) mod 12 = 1 < 3). Both copies repeat this.
+    is_receiving_unemployment_compensation: [false, true, false, true]

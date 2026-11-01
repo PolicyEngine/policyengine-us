@@ -7,7 +7,7 @@ class la_refundable_cdcc(Variable):
     label = "Louisiana refundable Child and Dependent Care Credit"
     unit = USD
     definition_period = YEAR
-    reference = "http://legis.la.gov/Legis/Law.aspx?d=101769"
+    reference = "https://legis.la.gov/Legis/Law.aspx?d=101769"
     defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):

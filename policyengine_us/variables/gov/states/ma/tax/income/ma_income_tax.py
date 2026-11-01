@@ -8,7 +8,7 @@ class ma_income_tax(Variable):
     unit = USD
     documentation = "Massachusetts State income tax."
     definition_period = YEAR
-    reference = "https://www.mass.gov/doc/2021-form-1-massachusetts-resident-income-tax-return/download"
+    reference = "https://web.archive.org/web/20230513222941/https://www.mass.gov/doc/2021-form-1-massachusetts-resident-income-tax-return/download"
     defined_for = StateCode.MA
     adds = ["ma_income_tax_before_refundable_credits"]
     subtracts = ["ma_refundable_credits"]

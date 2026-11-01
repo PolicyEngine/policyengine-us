@@ -4,10 +4,12 @@ values:
   2021-01-01:
     - investment_in_529_plan # RIGL §44-30-12(4)
     - tax_exempt_unemployment_compensation # RIGL §44-30-12(b)(6)
+    - ri_other_additions
   2025-01-01:
     - investment_in_529_plan # RIGL §44-30-12(4)
     - tax_exempt_unemployment_compensation # RIGL §44-30-12(b)(6)
     - ri_section_179_expense_add_back # P.L. 119-21, H.R.1 (2025) - RI Schedule HR1
+    - ri_other_additions
 
 metadata:
   unit: list

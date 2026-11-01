@@ -20,11 +20,13 @@ class market_income(Variable):
             "gi_cash_assistance",
             "capital_gains",
             "rental_income",
+            "estate_income",
             "illicit_income",
             "farm_operations_income",
             "miscellaneous_income",
             "alimony_income",
             "strike_benefits",
             "retirement_distributions",
+            "military_retirement_income",
         ]
         return add(person, period, COMPONENTS)

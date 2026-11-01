@@ -16,14 +16,8 @@ class vt_military_retirement_pay_exclusion(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.vt.tax.income.agi.retirement_income_exemption
-        # Get retirement amount from military retirement system
-        tax_unit_military_retirement_pay = add(
-            tax_unit, period, ["military_retirement_pay"]
-        )
-
         # S.51 (2025): Income-based military pension exemption
         is_income_based_system = p.military_retirement.income_based_structure.in_effect
-        agi = tax_unit("adjusted_gross_income", period)
 
         # Calculate exemption based on system type
         income_based_exemption = tax_unit(

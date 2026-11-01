@@ -37,3 +37,63 @@
     state_code: WI
   output:
     wi_standard_deduction: 7_864.22 - 0.12 * 10_000
+
+# 2026 Form 1-ES instructions, page 2, "2026 Standard Deduction" schedules.
+- name: WI 2026 single standard deduction below the phase-out
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: SINGLE
+    wi_agi: 15_000
+    state_code: WI
+  output:
+    # Single, Wisconsin income not over $20,119: $13,960.
+    wi_standard_deduction: 13_960
+
+- name: WI 2026 joint standard deduction in the phase-out
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: JOINT
+    wi_agi: 50_000
+    state_code: WI
+  output:
+    # Married filing jointly: 25,840 less 19.778% of the amount over $29,040.
+    wi_standard_deduction: 25_840 - 0.19778 * (50_000 - 29_040)
+
+- name: WI 2026 separate standard deduction in the phase-out
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: SEPARATE
+    wi_agi: 20_000
+    state_code: WI
+  output:
+    # Married filing separately: 12,280 less 19.778% of the amount over $13,780.
+    wi_standard_deduction: 12_280 - 0.19778 * (20_000 - 13_780)
+
+- name: WI 2026 head of household standard deduction in the 22.515% phase-out
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    wi_agi: 30_000
+    state_code: WI
+  output:
+    # Head of household, over $20,119 but not over $58,827:
+    # 18,030 less 22.515% of the amount over $20,120.
+    wi_standard_deduction: 18_030 - 0.22515 * (30_000 - 20_120)
+
+- name: WI 2026 head of household standard deduction in the 12% phase-out
+  absolute_error_margin: 0.05
+  period: 2026
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    wi_agi: 70_000
+    state_code: WI
+  output:
+    # Head of household, over $58,827 but not over $136,453:
+    # 13,960 less 12% of the amount over $20,120. The model reaches the
+    # same amount through the 22.515% and 12% segments that meet at $58,827,
+    # within $0.05 of the schedule.
+    wi_standard_deduction: 13_960 - 0.12 * (70_000 - 20_120)

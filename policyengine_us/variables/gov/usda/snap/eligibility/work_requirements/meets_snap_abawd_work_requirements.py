@@ -21,7 +21,11 @@ class meets_snap_abawd_work_requirements(Variable):
         "exhausted their 3 countable months, but overstates ineligibility "
         "for new noncompliance spells. The overstatement is largest in "
         "FY2026, when HR1 (P.L. 119-21) restarts time-limit clocks for newly "
-        "covered populations."
+        "covered populations. The work test compares average weekly hours "
+        "(worked plus work program) times 52 / 12 with 80 hours a month, the "
+        "7 CFR 273.24(a)(1)(i) definition of 20 hours a week averaged "
+        "monthly; hours worked are averaged over the year, so the result "
+        "applies to every month (see snap_work_requirement_weekly_hours)."
     )
     reference = (
         "https://www.law.cornell.edu/cfr/text/7/273.24",
@@ -31,15 +35,20 @@ class meets_snap_abawd_work_requirements(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.usda.snap.work_requirements.abawd
         # Work activity — 7 U.S.C. 2015(o)(2); 7 CFR 273.24(a)(1):
-        # (i) work 20+ hours per week, (ii) participate in and comply
-        # with a qualifying work program 20+ hours per week, or
-        # (iii) any combination totaling 20+ hours per week. Compliance is
-        # defined monthly (80 hours per month); annual average weekly hours
-        # are used as a proxy since survey data lack monthly work histories.
-        weekly_hours_worked = person("weekly_hours_worked_before_lsr", period.this_year)
+        # (i) work 20 hours per week averaged monthly, which 273.24(a)(1)(i)
+        # defines as 80 hours a month, (ii) participate in and comply with a
+        # qualifying work program 20+ hours per week, or (iii) any
+        # combination. Hours worked are usual weekly hours averaged over all
+        # weeks of the year (snap_work_requirement_weekly_hours), since
+        # survey data lack monthly work histories; weekly hours convert to a
+        # monthly total at 52 / 12 weeks per month.
+        weekly_hours_worked = person(
+            "snap_work_requirement_weekly_hours", period.this_year
+        )
         work_program_hours = person("weekly_snap_work_program_hours", period.this_year)
         combined_weekly_hours = weekly_hours_worked + work_program_hours
-        meets_hours_threshold = combined_weekly_hours >= p.weekly_hours_threshold
+        monthly_hours = combined_weekly_hours * WEEKS_IN_YEAR / MONTHS_IN_YEAR
+        meets_hours_threshold = monthly_hours >= p.monthly_hours_threshold
         # (iv) participate in and comply with a workfare program under
         # 7 CFR 273.7(m), which satisfies the requirement regardless of hours.
         is_workfare_participant = person(

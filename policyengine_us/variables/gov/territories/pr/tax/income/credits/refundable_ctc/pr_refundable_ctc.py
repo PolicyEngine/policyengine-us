@@ -8,8 +8,10 @@ class pr_refundable_ctc(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.irs.gov/pub/irs-pdf/f1040s8.pdf"
-        "https://www.law.cornell.edu/uscode/text/26/24#h_4_A"
+        "https://www.irs.gov/pub/irs-pdf/f1040s8.pdf",
+        "https://www.law.cornell.edu/uscode/text/26/24#h_4_A",
+        "https://www.law.cornell.edu/uscode/text/26/24#k_2_B_ii",
+        "https://www.law.cornell.edu/uscode/text/26/24#d_3",
     )
 
     # This provision is part of the federal CTC legal code
@@ -30,4 +32,9 @@ class pr_refundable_ctc(Variable):
         base_credit = max_(tax_unit("refundable_ctc", period), reduced_ss_tax)
 
         # line 27
-        return min_(base_credit, tax_unit("ctc", period))
+        credit = min_(base_credit, tax_unit("ctc", period))
+        # Section 24(k)(2)(B)(ii) drops only the three-children condition for
+        # residents of Puerto Rico. Section 24(d)(3) still denies the
+        # refundable credit to a filer electing a section 911 exclusion.
+        barred = tax_unit("refundable_ctc_barred_by_section_911_exclusion", period)
+        return where(barred, 0, credit)

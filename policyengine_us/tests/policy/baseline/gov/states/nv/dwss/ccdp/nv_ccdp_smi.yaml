@@ -181,3 +181,29 @@
   output:
     # FY2026: NV base 100_681 * 1.00 / 12 = 8_390.08 (vs FY2025 96_026 -> 8_002.17)
     nv_ccdp_smi: 8_390.08
+
+# Months before October 2015 select the 2014-10-01 table (FFY 2015), which
+# precedes the first modeled year; October 2015 switches to FFY 2016.
+
+- name: SMI for a family of 2 switches from the FFY 2015 to the FFY 2016 table in October 2015.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_ccdp_smi:
+      # FFY 2015: 65_832 * 0.68 / 12 = 3_730.48
+      2015-09: 3_730.48
+      # FFY 2016: 66_461 * 0.68 / 12 = 3_766.12
+      2015-10: 3_766.12

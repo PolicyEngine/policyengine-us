@@ -1,13 +1,16 @@
-description: Illinois limits the Child Care Assistance Program to applicants with special needs children younger than this age.
+description: Illinois limits the Child Care Assistance Program to children younger than this age who have special needs or are under court supervision.
+# CCDF Plan 2.2.1(b)-(c) sets the same upper age of 18 (under 19) for both routes.
 values:
   2021-01-01: 19
   
 metadata:
   unit: year
   period: year
-  label: Illinois CCAP special needs child age limit
+  label: Illinois CCAP special needs or court supervision child age limit
   reference:
     - title: CCAP Eligibility 
       href: https://www.dhs.state.il.us/page.aspx?item=104995
     - title: Ill. Admin. Code tit. 89, § 50.230 - Child Care Eligibility (b)(2)
       href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-50.230
+    - title: Illinois CCDF Plan FFY 2025-2027 (Amendment 2), Section 2.2.1(b)-(c), upper age 18.00
+      href: https://idec.illinois.gov/content/dam/soi/en/web/idec/documents/policies/ACF-118%20CCDF%20FFY%202025-2027%20For%20Illinois%20Amend%202.pdf#page=18

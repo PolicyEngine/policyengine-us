@@ -11,7 +11,7 @@ class co_sales_tax_refund_person_eligible(Variable):
         # disjunctive test: (I) has CO income tax liability or files to claim a
         # refund of withheld wages, OR (II) is at least 18 years of age.
         "https://leg.colorado.gov/sites/default/files/images/olls/crs2023-title-39.pdf",
-        "https://tax.colorado.gov/sites/tax/files/documents/DR_0104_Book_2022.pdf#page=23",
+        "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=23",
     )
     defined_for = StateCode.CO
 

@@ -15,3 +15,109 @@
     id_non_refundable_credits: 500
   output:
     id_income_tax_before_refundable_credits: 0
+
+# Audited PolicyBench households, using their supplied person-level facts.
+- name: PolicyBench scenario_007 Idaho paid health insurance premiums
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        age: 56
+        employment_income: 0.0
+        bank_account_assets: 71500.0
+        employer_sponsored_insurance_premiums: 6309.27587890625
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 2080.0
+        hours_worked_last_week: 50.0
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        other_health_insurance_premiums: 2080.0
+        other_medical_expenses: 150.0
+        pre_subsidy_rent: 18352.94140625
+        social_security_disability: 19285.0
+        tax_exempt_private_pension_income: 284.1176452636719
+        taxable_private_pension_income: 35280.0
+        weekly_hours_worked_before_lsr: 50.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+    tax_units:
+      tax_unit:
+        members: &id001
+        - head
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members: *id001
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      marital_unit:
+        members: *id001
+    households:
+      household:
+        members: *id001
+        state_code: ID
+        household_vehicles_value: 2660.0
+  output:
+    id_income_tax_before_refundable_credits: 645.54
+    state_income_tax_before_refundable_credits: 655.54  # Includes the $10 PBF tax.
+- name: PolicyBench scenario_053 Idaho paid health insurance premiums
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        age: 25
+        employment_income: 66968.6796875
+        bank_account_assets: 3660.0
+        employer_sponsored_insurance_premiums: 3389.27587890625
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 5000.0
+        hourly_wage: 32.0
+        hours_worked_last_week: 40.0
+        is_paid_hourly: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        other_health_insurance_premiums: 5000.0
+        other_medical_expenses: 400.0
+        over_the_counter_health_expenses: 150.0
+        pre_subsidy_rent: 37200.0
+        weekly_hours_worked_before_lsr: 40.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+    tax_units:
+      tax_unit:
+        members: &id002
+        - head
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members: *id002
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members: *id002
+    marital_units:
+      marital_unit:
+        members: *id002
+    households:
+      household:
+        members: *id002
+        state_code: ID
+        auto_loan_balance: 19000.0
+        auto_loan_interest: 950.0
+        household_vehicles_value: 7410.0
+  output:
+    id_income_tax_before_refundable_credits: 2170.28
+    state_income_tax_before_refundable_credits: 2180.28  # Includes the $10 PBF tax.

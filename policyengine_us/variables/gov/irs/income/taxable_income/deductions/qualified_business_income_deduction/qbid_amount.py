@@ -9,6 +9,7 @@ class qbid_amount(Variable):
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/199A#b_1",
+        "https://www.law.cornell.edu/cfr/text/26/1.199A-1#d_2",
         "https://www.law.cornell.edu/uscode/text/26/199A#d_3",
         "https://www.irs.gov/pub/irs-prior/p535--2018.pdf",
         "https://www.irs.gov/pub/irs-pdf/f8995.pdf",
@@ -76,8 +77,8 @@ class qbid_amount(Variable):
         non_sstb_gross_final = where(is_sstb_legacy, 0, non_sstb_gross)
         sstb_gross_final = sstb_gross + where(is_sstb_legacy, non_sstb_gross, 0)
 
-        has_non_sstb = (non_sstb_gross_final != 0) | (non_sstb_qbi_final > 0)
-        has_sstb = (sstb_gross_final != 0) | (sstb_qbi > 0)
+        has_non_sstb = (non_sstb_gross_final != 0) | (non_sstb_qbi_final != 0)
+        has_sstb = (sstb_gross_final != 0) | (sstb_qbi != 0)
         has_mixed_categories = has_non_sstb & has_sstb
 
         # Schedule A applies the SSTB applicable percentage to the SSTB's own
@@ -130,15 +131,42 @@ class qbid_amount(Variable):
             )
             return max_(wage_cap, alt_cap)  # Worksheet 12-A, line 10
 
+        # Section 1.199A-1(d)(2) orders SSTB exclusion before loss netting,
+        # then applies wage/property limits to each positive component.
+        # Allocate all eligible losses on the return proportionately to
+        # positive QBI; a losing business supplies no wages/property to
+        # another one. The head's and spouse's businesses are netted together;
+        # a tax unit dependent's businesses are on the dependent's own return,
+        # so they are netted alone and never offset the filer's.
+        eligible_sstb_qbi = sstb_qbi * applicable_rate
+        positive_non_sstb = max_(0, non_sstb_qbi_final)
+        positive_sstb = max_(0, eligible_sstb_qbi)
+        own_positive = positive_non_sstb + positive_sstb
+        own_losses = max_(0, -non_sstb_qbi_final) + max_(0, -eligible_sstb_qbi)
+        is_dependent = person("is_tax_unit_dependent", period)
+        filer = ~is_dependent
+        total_positive = where(
+            is_dependent, own_positive, person.tax_unit.sum(own_positive * filer)
+        )
+        total_losses = where(
+            is_dependent, own_losses, person.tax_unit.sum(own_losses * filer)
+        )
+        retained_share = np.divide(
+            max_(0, total_positive - total_losses),
+            total_positive,
+            out=np.zeros_like(total_positive),
+            where=total_positive > 0,
+        )
+
         non_sstb_component = qbi_component(
-            non_sstb_qbi_final,
+            positive_non_sstb * retained_share,
             full_cap(non_sstb_w2_wages, non_sstb_b_property),
             1,
         )
         sstb_component = qbi_component(
-            sstb_qbi,
-            full_cap(sstb_w2_wages, sstb_b_property),
-            applicable_rate,
+            positive_sstb * retained_share,
+            full_cap(sstb_w2_wages, sstb_b_property) * applicable_rate,
+            1,
         )
 
         # REIT/PTP component (Form 8995 Lines 6-9).

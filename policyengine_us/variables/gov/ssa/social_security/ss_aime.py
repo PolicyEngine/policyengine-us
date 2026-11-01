@@ -15,7 +15,7 @@ class ss_aime(Variable):
     )
     unit = USD
     reference = (
-        "https://www.ssa.gov/OACT/COLA/aime.html",
+        "https://www.ssa.gov/OACT/COLA/Benefits.html#aime",
         "https://www.law.cornell.edu/uscode/text/42/415#b",
     )
 
@@ -30,7 +30,7 @@ class ss_aime(Variable):
         return where(has_input, aime_input, computed_aime)
 
 
-def _compute_aime(person, period, parameters):
+def _compute_aime(person, period, parameters, additional_earnings_variable=None):
     age = person("age", period)
     current_year = period.start.year
 
@@ -55,6 +55,10 @@ def _compute_aime(person, period, parameters):
             employment_income = person("employment_income", year_period)
             self_employment_income = person("total_self_employment_income", year_period)
             total_earnings = employment_income + self_employment_income
+            if additional_earnings_variable is not None:
+                total_earnings = total_earnings + person(
+                    additional_earnings_variable, year_period
+                )
 
             wage_base = parameters(year_period).gov.ssa.social_security.wage_base
             covered_earnings = min_(total_earnings, wage_base)

@@ -7,9 +7,7 @@ class la_school_readiness_credit(Variable):
     label = "Louisiana school readiness tax credit"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit"
-    )
+    reference = "https://revenue.louisiana.gov/individuals/general-resources/school-readiness-credit/"
     defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):

@@ -7,7 +7,7 @@ class ma_liheap_standard_payment(Variable):
     label = "Massachusetts LIHEAP standard payment"
     definition_period = YEAR
     defined_for = "ma_liheap_eligible"
-    reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
+    reference = "https://web.archive.org/web/20250720165524/https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ma.doer.liheap.standard.amount

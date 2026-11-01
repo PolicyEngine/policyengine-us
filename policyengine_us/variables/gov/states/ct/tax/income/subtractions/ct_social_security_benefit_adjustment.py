@@ -8,7 +8,7 @@ class ct_social_security_benefit_adjustment(Variable):
     label = "Connecticut social security benefit adjustment"
     reference = (
         "https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-701",
-        "https://portal.ct.gov/-/media/DRS/Forms/2024/Income/CT-1040-Instructions_1224.pdf#page=24",
+        "https://portal.ct.gov/-/media/drs/forms/2024/income/2024-ct-1040-instructions_1224.pdf#page=24",
     )
     definition_period = YEAR
     defined_for = StateCode.CT

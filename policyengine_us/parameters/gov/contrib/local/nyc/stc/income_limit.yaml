@@ -1,11 +1,11 @@
-description: Limit NYC School Tax Credit eligibility by filing status to filers with NY AGI not above this amount.
+description: Limit NYC School Tax Credit eligibility by filing status to filers with school tax credit income (federal adjusted gross income minus IRA distributions) not above this amount.
 metadata:
   propagate_metadata_to_children: true
   unit: currency-USD
   label: NYC School Tax Credit Income Limit
   reference:
     - title: Instructions for Form IT-201 (2023)
-      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=27
+      href: https://www.tax.ny.gov/forms/html-instructions/2023/it/it201i-2023.htm#step-8
     - title: Instructions for Form IT-201 (2022)
       href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=25
   breakdown:

@@ -1,0 +1,107 @@
+# Iowa LIHEAP fuel points (REQ-028). Appendix I p. 137 of the FY26 LIHEAP
+# Policy and Procedures Manual, "Fuel/Energy Type": Natural Gas 4, Electric 4,
+# Liquid Propane 5, Fuel Oil 5, Solid Fuel (Wood/Coal/Corn) 2:
+# https://hhs.iowa.gov/media/17262/download?inline#page=137
+# Identical Clearinghouse copy of the matrix:
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/IA_BenefitMatrix_Heat-Crisis_2026.pdf#page=1
+# Modeling: kerosene takes the fuel-oil points by inference; OTHER, SOLAR,
+# UNSPECIFIED and NONE have no published points and score 0.
+
+- name: Case 1, natural gas scores 4.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: NATURAL_GAS
+    gas_expense: 1_100
+  output:
+    ia_liheap_fuel_points: 4
+
+- name: Case 2, electricity scores 4.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 1_500
+  output:
+    ia_liheap_fuel_points: 4
+
+- name: Case 3, propane scores 5.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: PROPANE
+    bottled_gas_expense: 2_200
+  output:
+    ia_liheap_fuel_points: 5
+
+- name: Case 4, fuel oil scores 5.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: FUEL_OIL
+    fuel_oil_expense: 2_000
+  output:
+    ia_liheap_fuel_points: 5
+
+- name: Case 5, kerosene scores the fuel-oil 5.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: KEROSENE
+    fuel_oil_expense: 1_600
+  output:
+    ia_liheap_fuel_points: 5
+
+- name: Case 6, wood scores 2.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: WOOD
+    wood_expense: 700
+  output:
+    ia_liheap_fuel_points: 2
+
+- name: Case 7, coal scores 2.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: COAL
+    coal_expense: 900
+  output:
+    ia_liheap_fuel_points: 2
+
+- name: Case 8, other fuel scores 0.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: OTHER
+    other_heating_fuel_expense: 700
+  output:
+    ia_liheap_fuel_points: 0
+
+- name: Case 9, unspecified fuel scores 0.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: UNSPECIFIED
+  output:
+    ia_liheap_fuel_points: 0
+
+- name: Case 10, solar scores 0.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: SOLAR
+    pre_subsidy_electricity_expense: 600
+  output:
+    ia_liheap_fuel_points: 0

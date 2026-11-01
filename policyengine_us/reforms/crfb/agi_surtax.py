@@ -15,8 +15,16 @@ def agi_surtax_reform() -> Reform:
             agi = tax_unit("adjusted_gross_income", period)
             p = parameters(period).gov.contrib.crfb.surtax
             if p.increased_base.in_effect:
-                additional_sources = add(tax_unit, period, p.increased_base.sources)
-                agi += additional_sources
+                # CRFB's Break Glass plan (footnote 2) defines the base as
+                # AGI plus other income. AGI is this return's, so the base
+                # adds the head's and spouse's own amounts; a tax unit
+                # dependent's income and deductions are on the dependent's
+                # own return. The plan does not address dependents, so this
+                # attribution is inferred.
+                additional_sources = tax_unit_non_dep_add(
+                    tax_unit, period, p.increased_base.sources
+                )
+                agi = agi + additional_sources
             filing_status = tax_unit("filing_status", period)
             joint = filing_status == filing_status.possible_values.JOINT
             return where(joint, p.rate.joint.calc(agi), p.rate.single.calc(agi))

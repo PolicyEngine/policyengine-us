@@ -1,0 +1,139 @@
+# Dead reference URLs retired in the federal batch of the 2026-09-30 audit.
+# Each prefix failed a GET request (404/410, a soft 404, a dead host or a
+# persistent server error) on the date given; see the PR for evidence.
+# See test_known_dead_reference_urls.py for the format.
+
+[[dead]]
+prefix = "https://content.govdelivery.com/accounts/INOECOSL/bulletins/366774c"
+verified = "2026-10-01"
+replacement = "https://www.in.gov/fssa/carefinder/system-updates-2023"
+
+[[dead]]
+prefix = "https://content.govdelivery.com/accounts/INOECOSL/bulletins/3f4db24"
+verified = "2026-10-01"
+replacement = "https://www.in.gov/fssa/carefinder/files/ReimbursementRateFAQs.pdf"
+
+[[dead]]
+prefix = "https://fns-prod.azureedge.us/sites/default/files/resource-files/csfp-program-fact-sheet-2019.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20230422132035/https://fns-prod.azureedge.us/sites/default/files/resource-files/csfp-program-fact-sheet-2019.pdf"
+
+[[dead]]
+prefix = "https://fns-prod.azureedge.us/sites/default/files/resource-files/csfp-revised-incomeGuidelines2024.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250202034640/https://fns-prod.azureedge.us/sites/default/files/resource-files/csfp-revised-incomeGuidelines2024.pdf"
+
+[[dead]]
+prefix = "https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-covid-emergency-allotments-phase-3-guidance.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20220519071036/https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-covid-emergency-allotments-phase-3-guidance.pdf"
+
+[[dead]]
+prefix = "https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-fy-2023-cola-adjustments.pdf"
+verified = "2026-10-01"
+replacement = "https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-COLAMemoFY23_0.pdf"
+
+[[dead]]
+prefix = "https://law.justia.com/codes/georgia/2022/title-48/chapter-7/article-2/section-48-7-20-2/"
+verified = "2026-10-01"
+replacement = "https://www.legis.ga.gov/api/legislation/document/20232024/217823"
+
+[[dead]]
+prefix = "https://law.justia.com/codes/mississippi/2022/title-27/chapter-7/article-1/section-27-7-18/"
+verified = "2026-10-01"
+replacement = "https://billstatus.ls.state.ms.us/documents/2017/pdf/SB/2300-2399/SB2311SG.pdf"
+
+[[dead]]
+prefix = "https://law.justia.com/codes/north-dakota/2022/title-57/chapter-57-38/section-57-38-30-3/"
+verified = "2026-10-01"
+replacement = "https://ndlegis.gov/cencode/t57c38.pdf"
+
+[[dead]]
+prefix = "https://secure.ssa.gov/poms.nsf/lnx/0300605020"
+verified = "2026-10-01"
+replacement = "https://secure.ssa.gov/poms.nsf/lnx/0300605018"
+
+[[dead]]
+prefix = "https://squaremeals.org/Portals/8/FND%20Forms/Program%20Forms/H1666%202025%20Income%20Eligibility%20Guidelines%20for%20the%20Elderly_.pdf?ver=joHDl3vcgPiW3mdgaMM7vA%3d%3d"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20251104061444/https://squaremeals.org/Portals/8/FND%20Forms/Program%20Forms/H1666%202025%20Income%20Eligibility%20Guidelines%20for%20the%20Elderly_.pdf?ver=joHDl3vcgPiW3mdgaMM7vA%3d%3d"
+
+[[dead]]
+prefix = "https://web.archive.org/web/20211129161302/https://www.kff.org/medicaid/state-indicator/total-medicaid-spending/?currentTimeframe=0&selectedRows=%7B%22states%22:%7B%22all%22:%7B%7D%7D%7D&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20220810000951/https://www.kff.org/medicaid/state-indicator/total-medicaid-spending/?currentTimeframe=0&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D"
+
+[[dead]]
+prefix = "https://woodacctservices.com/publications/PA%20Income%20Tax%20Forgiveness%20Chart.pdf"
+verified = "2026-10-01"
+replacement = "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/papersonalincometaxguide/documents/pitguide_taxforgiveness.pdf"
+
+[[dead]]
+prefix = "https://www.acct.org/files/Advocacy/Factsheets%20and%20Summaries/pell%20grant%20eligibility%20changes%20website.pdf"
+verified = "2026-10-01"
+replacement = "https://files.eric.ed.gov/fulltext/ED585399.pdf"
+
+[[dead]]
+prefix = "https://www.atlantafed.org/-/media/documents/economic-mobility-and-resilience/advancing-careers-for-low-income-families/policy-rules-database/policy-rules-database-technical-manual.pdf"
+verified = "2026-10-01"
+replacement = "https://github.com/Research-Division/policy-rules-database/blob/a806195682b7515f01b5739343b91201293dddb4/PRD%20Technical%20Manual.pdf"
+
+[[dead]]
+prefix = "https://www.cbo.gov/system/files/2026-02/51138-2026-02-Revenue-Projections.xlsx"
+verified = "2026-10-01"
+replacement = "https://www.cbo.gov/system/files/2026-02/51138-2026-02-Revenue.xlsx"
+
+[[dead]]
+prefix = "https://www.ecfr.gov/current/title-45/subtitle-B/chapter-IV/part-400/subpart-D/section-400.47"
+verified = "2026-10-01"
+replacement = "https://www.ecfr.gov/current/title-45/subtitle-B/chapter-IV/part-400/subpart-E/section-400.53"
+
+[[dead]]
+prefix = "https://www.fns.usda.gov/snap/covid-19-emergency-allotments-guidance"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20251117084030/https://www.fns.usda.gov/snap/covid-19-emergency-allotments-guidance"
+
+[[dead]]
+prefix = "https://www.fns.usda.gov/snap/simplified-homeless-housing-cost-deduction-questions-and-answers"
+verified = "2026-10-01"
+replacement = "https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-FarmBill2018Section4004.pdf"
+
+[[dead]]
+prefix = "https://www.irs.gov/pub/irs-drop/rp-19-45.pdf"
+verified = "2026-10-01"
+replacement = "https://www.irs.gov/pub/irs-drop/rp-19-44.pdf"
+
+[[dead]]
+prefix = "https://www.irs.gov/publications/p929"
+verified = "2026-10-01"
+replacement = "https://www.irs.gov/pub/irs-prior/p929--2021.pdf"
+
+[[dead]]
+prefix = "https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-childrens-health-insurance-program-basic-health-program-eligibility-levels/index.html"
+verified = "2026-10-01"
+replacement = "https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-childrens-health-insurance-program-basic-health-program-eligibility-levels"
+
+[[dead]]
+prefix = "https://www.medicare.gov/basics/costs/medicare-costs/part-a-costs"
+verified = "2026-10-01"
+replacement = "https://www.cms.gov/newsroom/fact-sheets/2026-medicare-parts-b-premiums-deductibles"
+
+[[dead]]
+prefix = "https://www.medicare.gov/your-medicare-costs/part-b-costs"
+verified = "2026-10-01"
+replacement = "https://www.medicare.gov/basics/costs/medicare-costs"
+
+[[dead]]
+prefix = "https://www.oecd.org/economy/growth/OECD-Note-EquivalenceScales.pdf"
+verified = "2026-10-01"
+replacement = "https://www.oecd.org/content/dam/oecd/en/data/datasets/income-and-wealth-distribution-databases/idd-tor-2012-onwards.pdf"
+
+[[dead]]
+prefix = "https://www.snapscreener.com/blog/pennsylvania-snap-increase"
+verified = "2026-10-01"
+replacement = "http://services.dpw.state.pa.us/oimpolicymanuals/snap/512_Categorical_Eligibility/512_1_General_Policy.htm"
+
+[[dead]]
+prefix = "https://www.ssa.gov/OACT/COLA/aime.html"
+verified = "2026-10-01"
+replacement = "https://www.ssa.gov/OACT/COLA/Benefits.html"

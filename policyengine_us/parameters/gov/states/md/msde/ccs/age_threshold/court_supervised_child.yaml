@@ -1,0 +1,31 @@
+description: Maryland limits the Child Care Scholarship program to court-supervised children under this age.
+values:
+  # The FFY 2019-2021 plan, section 3.1.1(c), elected No for court-supervised
+  # children, so before 2021-10-01 this threshold equals the ordinary child
+  # ceiling of 13 and the court route is inert.
+  2018-01-01: 13
+  # The FFY 2022-2024 plan, effective October 1, 2021, and the FFY 2025-2027
+  # plan elected Yes with an upper age of 18 (under 19).
+  2021-10-01: 19
+
+metadata:
+  unit: year
+  period: year
+  label: Maryland CCS court-supervised child age threshold
+  reference:
+    # COMAR supports only the ordinary ceiling of 13; it does not provide the
+    # court-supervision route, which follows the CCDF plan elections.
+    - title: COMAR 13A.14.06.02B(11), Definitions, "Child"
+      href: https://regs.maryland.gov/us/md/exec/comar/13A.14.06.02#B(11)
+    - title: Maryland CCDF Plan FFY 2019-2021, §3.1.1(c)
+      href: https://web.archive.org/web/20220121165420id_/https://earlychildhood.marylandpublicschools.org/system/files/filedepot/3/2018_maryland_state_plan.pdf#page=81
+    - title: Maryland CCDF Plan FFY 2022-2024 (approved), §3.1.1(c)
+      href: https://web.archive.org/web/20241110153119id_/https://earlychildhood.marylandpublicschools.org/system/files/filedepot/12/ffy2022_2024_ccdf_plan_approved.pdf#page=87
+    - title: Maryland CCDF Plan FFY 2022-2024 (approved), §1.3.2(a), October 1, 2021 effective date
+      href: https://web.archive.org/web/20241110153119id_/https://earlychildhood.marylandpublicschools.org/system/files/filedepot/12/ffy2022_2024_ccdf_plan_approved.pdf#page=16
+    - title: Maryland CCDF Plan FFY 2022-2024 (public-hearing draft), §3.1.1(c)
+      href: https://earlychildhood.marylandpublicschools.org/system/files/filedepot/3/final_fy_2022_-_2024_ccdf_online_draft_.pdf#page=62
+    - title: Maryland CCDF Plan FFY 2025-2027 (Initial Plan), §2.2.1(c), upper age 18
+      href: https://web.archive.org/web/20250930193323id_/https://earlychildhood.marylandpublicschools.org/system/files/filedepot/12/acf-118_ccdf_ffy_2025-2027_for_maryland_acf_approved_11.9.2024.pdf#page=23
+    - title: Maryland CCDF Plan FFY 2025-2027 (Amendment 1), §2.2.1(c), upper age 18
+      href: https://earlychildhood.marylandpublicschools.org/system/files/filedepot/12/acf-118_ccdf_ffy_2025-2027_plan_approved_updated_6.25.25_amendment_request_1.pdf#page=23

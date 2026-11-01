@@ -1,0 +1,610 @@
+# Parents in the Missouri TANF assistance unit when someone else claims them
+# as a tax dependent: 13 CSR 40-2.300(5)(C), 13 CSR 40-2.310(1)(F) and
+# DSS Manual 0210.005.05, 0210.005.10 and 0210.005.30.
+# Standard of need: size 1 $393, size 2 $678, size 3 $846. Payment is 34.526%
+# of the standard: size 1 $135.687, size 2 $234.086, size 3 $292.090.
+
+- name: A mother claimed as her own mother's tax dependent is the caretaker for her child
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        mo_tanf_is_non_parent_caretaker: true
+      mother:
+        age: 20
+        is_tax_unit_dependent: true
+        mo_tanf_is_parent_of_dependent_child: true
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, mother, child]
+    spm_units:
+      spm_unit:
+        members: [grandparent, mother, child]
+    households:
+      household:
+        members: [grandparent, mother, child]
+        state_code: MO
+  output:
+    # DSS Manual 0210.005.05 includes the "Biological or adoptive parents of
+    # one or more of the eligible children" whatever their tax filing. The
+    # grandparent is excluded because a parent is in the home (0210.005.10).
+    mo_tanf_non_parent_caretaker: [false, false, false]
+    mo_tanf_is_assistance_unit_member: [false, true, true]
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf: 234.086
+
+- name: The dependent mother's earnings count and the excluded grandparent's do not
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        employment_income_before_lsr: 24_000  # $2,000/month
+        mo_tanf_is_non_parent_caretaker: true
+      mother:
+        age: 20
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 3_600  # $300/month
+        own_children_in_household: 1
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, mother, child]
+    spm_units:
+      spm_unit:
+        members: [grandparent, mother, child]
+    households:
+      household:
+        members: [grandparent, mother, child]
+        state_code: MO
+  output:
+    # 0210.005.05: "Include the needs and income of the following persons".
+    # The mother's $300 less the $90 work expense, $30 and one-third of the
+    # remaining $180 leaves $120 (13 CSR 40-2.310(9)(A)2-3):
+    # 234.086 - 120 = 114.086. The mother is 20, so no minor-parent deeming
+    # of the grandparent's income applies (13 CSR 40-2.310(8)(B)1.F).
+    mo_tanf_is_assistance_unit_member: [false, true, true]
+    mo_tanf_gross_earned_income: 300
+    mo_tanf_countable_income: 120
+    mo_tanf: 114.086
+
+- name: An 18-year-old mother out of school is the caretaker, not a child
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 50
+        mo_tanf_is_non_parent_caretaker: true
+      mother:
+        age: 18
+        is_tax_unit_dependent: true
+        is_in_secondary_school: false
+        own_children_in_household: 1
+      baby:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, mother, baby]
+    spm_units:
+      spm_unit:
+        members: [grandparent, mother, baby]
+    households:
+      household:
+        members: [grandparent, mother, baby]
+        state_code: MO
+  output:
+    # An 18-year-old not in secondary school is not a dependent child
+    # (13 CSR 40-2.325(1)(A)), so she is the parent member.
+    mo_tanf_dependent_child: [false, false, true]
+    mo_tanf_is_assistance_unit_member: [false, true, true]
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf: 234.086
+
+- name: An 18-year-old mother in high school is a cash-eligible child, grouped with her own mother under one reading
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 50
+      mother:
+        age: 18
+        is_tax_unit_dependent: true
+        is_in_secondary_school: true
+        employment_income_before_lsr: 6_000  # $500/month
+        own_children_in_household: 1
+      baby:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, mother, baby]
+    spm_units:
+      spm_unit:
+        members: [grandparent, mother, baby]
+    households:
+      household:
+        members: [grandparent, mother, baby]
+        state_code: MO
+  output:
+    # She is a dependent child (under 19 and in secondary school), so she is a
+    # member as an eligible child and her student earnings are exempt
+    # (13 CSR 40-2.310(9)(A)1). School enrollment alone does not make her a
+    # minor parent: archived DSS Manual
+    # 0210.005.30 defines one as "a parent under the age of 18, including the
+    # month turning 18", and current Combined Manual 4.3 as a parent "under
+    # the age of 18, including the month of their 18th birthday". The sources
+    # do not settle her grouping. This case records the model's retained
+    # interpretation (i), one combined three-generation unit with her mother
+    # (size 3). The other readings give a unit of two ($234.08628 at zero
+    # income).
+    mo_tanf_dependent_child: [false, true, true]
+    mo_tanf_is_assistance_unit_member: [true, true, true]
+    mo_tanf_gross_earned_income: 0
+    mo_tanf_assistance_unit_size: 3
+    mo_tanf: 292.090
+
+- name: A 16-year-old mother, her baby and her mother form one three-generation group
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 40
+      mother:
+        age: 16
+        is_tax_unit_dependent: true
+        own_children_in_household: 1
+      baby:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, mother, baby]
+    spm_units:
+      spm_unit:
+        members: [grandparent, mother, baby]
+    households:
+      household:
+        members: [grandparent, mother, baby]
+        state_code: MO
+  output:
+    # DSS Manual 0210.005.30: "If a three-generation family ... files together
+    # as one assistance group, consider all their needs and income as a single
+    # assistance group". The minor mother is a member as an eligible child.
+    mo_tanf_is_assistance_unit_member: [true, true, true]
+    mo_tanf_assistance_unit_size: 3
+    mo_tanf: 292.090
+
+- name: An unmarried father claimed as the mother's dependent is a member with their child
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 30
+      father:
+        age: 28
+        is_tax_unit_dependent: true
+        own_children_in_household: 1
+      child:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [mother, father, child]
+    spm_units:
+      spm_unit:
+        members: [mother, father, child]
+    households:
+      household:
+        members: [mother, father, child]
+        state_code: MO
+  output:
+    # DSS Manual 0210.005.05: "Ms. Devin and Mr. Roberts are not married, but
+    # they have an in-common child ... Complete an application for the
+    # household with everyone included."
+    mo_tanf_is_assistance_unit_member: [true, true, true]
+    mo_tanf_assistance_unit_size: 3
+    mo_tanf: 292.090
+
+- name: Two dependent parents living with the child's grandparents are both members
+  period: 2026-01
+  input:
+    people:
+      grandfather:
+        age: 60
+        mo_tanf_is_non_parent_caretaker: true
+      grandmother:
+        age: 58
+        mo_tanf_is_non_parent_caretaker: true
+      mother:
+        age: 22
+        is_tax_unit_dependent: true
+        own_children_in_household: 1
+      father:
+        age: 21
+        is_tax_unit_dependent: true
+        own_children_in_household: 1
+      child:
+        age: 1
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandfather, grandmother, mother, father, child]
+    spm_units:
+      spm_unit:
+        members: [grandfather, grandmother, mother, father, child]
+    households:
+      household:
+        members: [grandfather, grandmother, mother, father, child]
+        state_code: MO
+  output:
+    mo_tanf_non_parent_caretaker: [false, false, false, false, false]
+    mo_tanf_is_assistance_unit_member: [false, false, true, true, true]
+    mo_tanf_assistance_unit_size: 3
+    mo_tanf: 292.090
+
+- name: A dependent adult who is a parent, but not of an eligible child, is not a member
+  period: 2026-01
+  input:
+    people:
+      grandmother:
+        age: 58
+        is_tax_unit_dependent: true
+        unemployment_compensation: 6_000  # $500/month
+        # Her own child in the household is the mother, an adult.
+        own_children_in_household: 1
+        mo_tanf_is_parent_of_dependent_child: false
+      mother:
+        age: 38
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandmother, mother, child]
+    spm_units:
+      spm_unit:
+        members: [grandmother, mother, child]
+    households:
+      household:
+        members: [grandmother, mother, child]
+        state_code: MO
+  output:
+    # 0210.005.05 includes only parents "of one or more of the eligible
+    # children"; 0210.005.10 excludes other household members' needs and
+    # income.
+    mo_tanf_is_assistance_unit_member: [false, true, true]
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf_gross_unearned_income: 0
+    mo_tanf: 234.086
+
+- name: Without the input, a grandmother young enough to be the child's parent is counted as one
+  period: 2026-01
+  input:
+    people:
+      grandmother:
+        age: 58
+        is_tax_unit_dependent: true
+        unemployment_compensation: 6_000
+        own_children_in_household: 1
+      mother:
+        age: 38
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandmother, mother, child]
+    spm_units:
+      spm_unit:
+        members: [grandmother, mother, child]
+    households:
+      household:
+        members: [grandmother, mother, child]
+        state_code: MO
+  output:
+    # Known limit of the default: own_children_in_household cannot say whose
+    # parent she is, and a 46-year gap is possible for a parent, so she is
+    # counted with her $500 (292.090 - 500 < 0). Callers who know she is the
+    # mother's mother set mo_tanf_is_parent_of_dependent_child to false, as in
+    # the case above.
+    mo_tanf_is_parent_of_dependent_child: [true, false, false]
+    mo_tanf_is_assistance_unit_member: [true, true, true]
+    mo_tanf: 0
+
+- name: The default rules out a dependent too old to be the child's parent
+  period: 2026-01
+  input:
+    people:
+      grandmother:
+        age: 64
+        is_tax_unit_dependent: true
+        unemployment_compensation: 6_000
+        own_children_in_household: 1
+      mother:
+        age: 40
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandmother, mother, child]
+    spm_units:
+      spm_unit:
+        members: [grandmother, mother, child]
+    households:
+      household:
+        members: [grandmother, mother, child]
+        state_code: MO
+  output:
+    # 64 - 10 = 54 years, more than the 50 the default allows between a
+    # parent and child, so her own child in the home must be someone else.
+    mo_tanf_is_parent_of_dependent_child: [false, false, false]
+    mo_tanf_is_assistance_unit_member: [false, true, true]
+    mo_tanf: 234.086
+
+- name: The default rules out a dependent too young to be the child's parent
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+      sibling:
+        age: 19
+        is_tax_unit_dependent: true
+        # Her baby lives elsewhere; the child here is her 9-year-old brother.
+        own_children_in_household: 1
+      child:
+        age: 9
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, sibling, child]
+    spm_units:
+      spm_unit:
+        members: [parent, sibling, child]
+    households:
+      household:
+        members: [parent, sibling, child]
+        state_code: MO
+  output:
+    # 19 - 9 = 10 years, fewer than the 12 the default requires.
+    mo_tanf_is_parent_of_dependent_child: [false, false, false]
+    mo_tanf_is_assistance_unit_member: [true, false, true]
+    mo_tanf: 234.086
+
+- name: A dependent parent on SSI is not a member but still excludes the non-parent caretaker
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        mo_tanf_is_non_parent_caretaker: true
+      mother:
+        age: 20
+        is_tax_unit_dependent: true
+        receives_ssi: true
+        own_children_in_household: 1
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, mother, child]
+    spm_units:
+      spm_unit:
+        members: [grandparent, mother, child]
+    households:
+      household:
+        members: [grandparent, mother, child]
+        state_code: MO
+  output:
+    # 13 CSR 40-2.310(1)(F) excludes the SSI recipient; 0210.005.10 excludes
+    # "A legal guardian or NPCR if a biological or adoptive parent is in the
+    # home."
+    mo_tanf_non_parent_caretaker: [false, false, false]
+    mo_tanf_is_assistance_unit_member: [false, false, true]
+    mo_tanf_assistance_unit_size: 1
+    mo_tanf: 135.687
+
+- name: A grandparent marked as a non-parent stays out even when their own adult child is counted
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 45
+        # The grandparent's own child in the household is the mother.
+        own_children_in_household: 1
+        mo_tanf_is_non_parent_caretaker: true
+      mother:
+        age: 20
+        is_tax_unit_dependent: true
+        own_children_in_household: 1
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, mother, child]
+    spm_units:
+      spm_unit:
+        members: [grandparent, mother, child]
+    households:
+      household:
+        members: [grandparent, mother, child]
+        state_code: MO
+  output:
+    # own_children_in_household cannot say whose parent the grandparent is,
+    # and at 45 she is young enough to be the child's parent, so the default
+    # marks her; the non-parent mark decides for a head or spouse.
+    mo_tanf_is_parent_of_dependent_child: [true, true, false]
+    mo_tanf_is_assistance_unit_member: [false, true, true]
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf: 234.086
+
+- name: A mandatory dependent parent's income can eliminate the children's grant
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        mo_tanf_is_non_parent_caretaker: true
+      mother:
+        age: 31
+        is_tax_unit_dependent: true
+        own_children_in_household: 3
+        disability_benefits: 14_400  # $1,200/month
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+      child3:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, mother, child1, child2, child3]
+    spm_units:
+      spm_unit:
+        members: [grandparent, mother, child1, child2, child3]
+    households:
+      household:
+        members: [grandparent, mother, child1, child2, child3]
+        state_code: MO
+  output:
+    # The mother is a mandatory member (13 CSR 40-2.300(5)(C)), so her
+    # $14,400 / 12 = $1,200 counts. It exceeds the $990 standard of need for
+    # four, so the grant is 0. Without her, the three children alone would
+    # get 846 * 0.34526 = $292.08996.
+    mo_tanf_is_assistance_unit_member: [false, true, true, true, true]
+    mo_tanf_assistance_unit_size: 4
+    mo_tanf_gross_unearned_income: 1_200
+    mo_tanf_countable_income: 1_200
+    mo_tanf_standard_of_need: 990
+    mo_tanf_standard_of_need_test: false
+    mo_tanf: 0
+
+- name: The same household with no income gets the payment standard for four
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        mo_tanf_is_non_parent_caretaker: true
+      mother:
+        age: 31
+        is_tax_unit_dependent: true
+        own_children_in_household: 3
+        disability_benefits: 0
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+      child3:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, mother, child1, child2, child3]
+    spm_units:
+      spm_unit:
+        members: [grandparent, mother, child1, child2, child3]
+    households:
+      household:
+        members: [grandparent, mother, child1, child2, child3]
+        state_code: MO
+  output:
+    # 990 * 0.34526 = 341.8074, $49.71744 more than the three children's
+    # $292.08996 without their mother.
+    mo_tanf_is_assistance_unit_member: [false, true, true, true, true]
+    mo_tanf_assistance_unit_size: 4
+    mo_tanf_gross_earned_income: 0
+    mo_tanf_gross_unearned_income: 0
+    mo_tanf_countable_income: 0
+    mo_tanf_standard_of_need_test: true
+    mo_tanf: 341.8074
+
+- name: An explicit parent flag requires a dependent child in that person's tax unit
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      adult:
+        age: 25
+        is_tax_unit_dependent: false
+        mo_tanf_is_parent_of_dependent_child: true
+    tax_units:
+      family:
+        members: [mother, child]
+      other:
+        members: [adult]
+    spm_units:
+      spm_unit:
+        members: [mother, child, adult]
+    households:
+      household:
+        members: [mother, child, adult]
+        state_code: MO
+  output:
+    # The adult files alone, so their tax unit has no dependent child and the
+    # flag does not make them a member. Two members: 678 * 0.34526 =
+    # 234.08628. Without the dependent-child guard the adult would join, for
+    # size 3 and 846 * 0.34526 = 292.08996.
+    mo_tanf_is_assistance_unit_member: [true, true, false]
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf: 234.08628
+
+- name: A real second parent filing separately stays excluded despite an explicit true parent flag
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      father:
+        age: 35
+        is_tax_unit_dependent: false
+        own_children_in_household: 1
+        mo_tanf_is_parent_of_dependent_child: true
+    tax_units:
+      mother_and_child:
+        members: [mother, child]
+      father_return:
+        members: [father]
+    spm_units:
+      spm_unit:
+        members: [mother, child, father]
+    households:
+      household:
+        members: [mother, child, father]
+        state_code: MO
+  output:
+    # The father is the child's biological parent and legally mandatory
+    # under 13 CSR 40-2.300(5)(C), but child grouping uses each person's own
+    # tax unit. The explicit flag remains true without attaching the child
+    # from the mother's return: this unmodeled cross-tax-unit relationship
+    # leaves size 2 and 678 * 0.34526 = 234.08628 rather than size 3.
+    # Annual explicit input also sets unspecified people's parent flags to
+    # false; the mother still qualifies as the head with a dependent child.
+    mo_tanf_is_parent_of_dependent_child: [false, false, true]
+    mo_tanf_is_assistance_unit_member: [true, true, false]
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf: 234.08628

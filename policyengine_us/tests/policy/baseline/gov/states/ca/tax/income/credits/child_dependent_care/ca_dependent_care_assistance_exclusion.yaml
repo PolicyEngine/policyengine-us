@@ -1,0 +1,70 @@
+# FTB 3506 Part IV line 22 caps California's excluded dependent care benefits
+# at $5,000 ($2,500 for a separate return). California did not adopt the 2021
+# federal cap of $10,500 ($5,250) (ARPA section 9632) or the 2026 federal cap
+# of $7,500 ($3,750) (Pub. L. 119-21 section 70404).
+
+- name: Benefits below the cap are excluded in full
+  period: 2024
+  input:
+    state_code: CA
+    filing_status: JOINT
+    dependent_care_assistance_exclusion: 4_000
+  output:
+    ca_dependent_care_assistance_exclusion: 4_000
+
+- name: California keeps the $5,000 cap in 2021
+  period: 2021
+  input:
+    state_code: CA
+    filing_status: JOINT
+    dependent_care_assistance_exclusion: 9_000
+  output:
+    # Federal exclusion $9,000 under the $10,500 cap; California line 22 is
+    # $5,000, so min($9,000, $5,000) = $5,000.
+    ca_dependent_care_assistance_exclusion: 5_000
+
+- name: California keeps the $2,500 separate-return cap in 2021
+  period: 2021
+  input:
+    state_code: CA
+    filing_status: SEPARATE
+    dependent_care_assistance_exclusion: 5_250
+  output:
+    # min($5,250 federal exclusion, $2,500) = $2,500.
+    ca_dependent_care_assistance_exclusion: 2_500
+
+- name: A separate filer living apart from their spouse uses the $5,000 cap in 2021
+  period: 2021
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_separated: true
+        employment_income: 50_000
+        dependent_care_employer_benefits: 6_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [head, child]
+        state_code: CA
+  output:
+    # FTB 3506 line 20 instructions: a separate filer meeting Section E item 1
+    # enters $5,000 on line 22. The federal exclusion is at least $5,250, so
+    # California's is min($6,000, $5,000, $50,000) = $5,000.
+    ca_dependent_care_assistance_exclusion: 5_000
+
+- name: California keeps the $5,000 cap in 2026
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: JOINT
+    dependent_care_assistance_exclusion: 7_000
+  output:
+    # min($7,000 federal exclusion under the $7,500 cap, $5,000) = $5,000.
+    ca_dependent_care_assistance_exclusion: 5_000

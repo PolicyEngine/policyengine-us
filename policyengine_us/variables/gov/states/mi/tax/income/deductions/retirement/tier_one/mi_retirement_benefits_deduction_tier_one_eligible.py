@@ -7,9 +7,9 @@ class mi_retirement_benefits_deduction_tier_one_eligible(Variable):
     label = "Eligible for the Michigan tier one retirement benefits deduction"
     definition_period = YEAR
     reference = (
-        "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (1)(f)
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=17",
-        "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits",
+        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-30",  # (1)(f)
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/BOOK_MI-1040.pdf#page=17",
+        "https://web.archive.org/web/20250202214915/https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits",
     )
     defined_for = StateCode.MI
 

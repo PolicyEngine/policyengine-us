@@ -105,3 +105,29 @@
     state_code_str: TX
   output:
     hhs_smi: 112_239
+
+# Periods 2015-2017 resolve to the published FFY 2015-2017 estimates, not the
+# FFY 2018 table carried back.
+- name: Household size 4, State NV, period 2015 (FFY 2015 SMI)
+  period: 2015
+  input:
+    spm_unit_size: 4
+    state_code_str: NV
+  output:
+    hhs_smi: 65_832
+
+- name: Household size 2, State CA, period 2016 (FFY 2016 SMI)
+  period: 2016
+  input:
+    spm_unit_size: 2
+    state_code_str: CA
+  output:
+    hhs_smi: 0.68 * 77_106
+
+- name: Household size 7, State PR, period 2017 (FFY 2017 SMI)
+  period: 2017
+  input:
+    spm_unit_size: 7
+    state_code_str: PR
+  output:
+    hhs_smi: 1.35 * 29_598

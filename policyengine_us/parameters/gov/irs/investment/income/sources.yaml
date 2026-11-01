@@ -1,16 +1,51 @@
 description: Income sources counted as net investment income.
+# net_investment_income sums person-level sources over the head and spouse
+# only. Section 1411(a)(1) taxes each individual's own net investment income,
+# so a tax unit dependent's amounts go on the dependent's own Form 8960. A
+# parent's Form 8960 includes a child's interest, dividends and capital gain
+# distributions only under a Form 8814 election (Form 8960 line 7), which is
+# not modeled. A tax-unit-level source must already leave dependents out.
 values:
   2013-01-01:
     - taxable_interest_income
     - dividend_income
     - rental_income
     - passive_partnership_s_corp_income
-    - loss_limited_net_capital_gains
-    - non_sch_d_capital_gains
-    # Capital gain distributions received without filing Schedule D (Form 1040 line 7).
+    # Income from estates and trusts (Schedule E Part III) keeps its character
+    # in the beneficiary's hands (§§ 652(b), 662(b)). Form 8960 line 4a
+    # includes all of it with the rest of Schedule 1 line 5; the fiduciary's
+    # Schedule K-1 (Form 1041) box 14 code H adjustment is then entered on
+    # line 7, for example to remove income that is not net investment income.
+    # The model follows that structure: all estate_income counts unless the
+    # code H input says otherwise, and a dependent's amounts stay out of the
+    # filer's net investment income.
+    - estate_net_investment_income
+    # Form 8960 line 5a: the head and spouse's Form 1040 line 7a capital gain
+    # or loss, Schedule D gains and losses with capital gain distributions
+    # (line 13), limited under § 1211(b). Distributions reported without
+    # Schedule D are the same amount.
+    - filer_loss_limited_net_capital_gains
 metadata:
   unit: currency-USD
   label: net investment income sources
   reference:
     - title: Instructions for Form 8960, Net Investment Income Tax
       href: https://www.irs.gov/pub/irs-pdf/i8960.pdf
+    - title: 26 U.S. Code § 1411(c)(1)(A) - Net investment income
+      href: https://www.law.cornell.edu/uscode/text/26/1411#c_1_A
+    - title: 26 U.S. Code § 652(b) - Character of amounts (simple trusts)
+      href: https://www.law.cornell.edu/uscode/text/26/652#b
+    - title: 26 U.S. Code § 662(b) - Character of amounts (complex trusts and estates)
+      href: https://www.law.cornell.edu/uscode/text/26/662#b
+    - title: 2024 Instructions for Form 8960, line 4a (Schedule 1 line 5 income)
+      href: https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=6
+    - title: 2024 Instructions for Form 8960, line 4b note (estate and trust adjustments belong on line 7)
+      href: https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=7
+    - title: 2024 Instructions for Form 8960, line 7 (distributions from estates and trusts)
+      href: https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=11
+    - title: 26 U.S. Code § 1411(a)(1) - Imposition of tax on individuals
+      href: https://www.law.cornell.edu/uscode/text/26/1411#a_1
+    - title: 2024 Instructions for Form 8960, line 7 (Form 8814 election)
+      href: https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=11
+    - title: 2025 Instructions for Form 8814, Net Investment Income Tax (NIIT)
+      href: https://www.irs.gov/pub/irs-pdf/i8814.pdf#page=2

@@ -1,0 +1,166 @@
+- name: The default marital unit created when none is listed does not pair a dependent with the head.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Both people fall in one default marital unit, but a dependent is never
+    # the spouse of the head of their own tax unit (IRC 152(d)(2)(H)).
+    dependent_lives_with_spouse: [false, false]
+
+- name: A default marital unit of three people is not a marriage.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+      mother:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+      father:
+        age: 72
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [head, mother, father]
+    households:
+      household:
+        members: [head, mother, father]
+  output:
+    dependent_lives_with_spouse: [false, false, false]
+
+- name: Two dependents who share a marital unit live with their spouse.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+      mother:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+      father:
+        age: 72
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      parents_marital_unit:
+        members: [mother, father]
+    tax_units:
+      tax_unit:
+        members: [head, mother, father]
+    households:
+      household:
+        members: [head, mother, father]
+  output:
+    dependent_lives_with_spouse: [false, true, true]
+
+- name: A dependent whose spouse heads another tax unit lives with their spouse.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+      mother:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+      father:
+        age: 72
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      parents_marital_unit:
+        members: [mother, father]
+    tax_units:
+      head_tax_unit:
+        members: [head, mother]
+      father_tax_unit:
+        members: [father]
+    households:
+      household:
+        members: [head, mother, father]
+  output:
+    # The father is not a dependent, so the variable is not computed for him.
+    dependent_lives_with_spouse: [false, true, false]
+
+- name: A legally separated dependent is not treated as married.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+      mother:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_separated: true
+      father:
+        age: 72
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_separated: true
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      parents_marital_unit:
+        members: [mother, father]
+    tax_units:
+      tax_unit:
+        members: [head, mother, father]
+    households:
+      household:
+        members: [head, mother, father]
+  output:
+    # IRC 7703(a)(2): legally separated individuals are not married.
+    dependent_lives_with_spouse: [false, false, false]
+
+- name: A dependent child in their own marital unit does not live with a spouse.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+      spouse:
+        age: 43
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    marital_units:
+      parents_marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+  output:
+    dependent_lives_with_spouse: [false, false, false]

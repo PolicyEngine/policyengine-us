@@ -1,0 +1,83 @@
+# Nebraska's approved CCDF Plan 2.2.1(c) (p.16) declines the court-supervision
+# age extension, so is_under_court_supervision has no effect on
+# ne_child_care_subsidy_eligible_child, the protective-services waiver, or fees.
+- name: Case 1, court supervision does not extend the age limit.
+  period: 2026-01
+  input:
+    state_code: [NE, NE, NE, NE, NE]
+    age: [12, 13, 17, 18, 19]
+    is_under_court_supervision: [true, true, true, true, true]
+  output:
+    ne_child_care_subsidy_eligible_child: [true, false, false, false, false]
+    ne_child_care_subsidy_categorical_waived: false
+
+- name: Case 2, the enrolled continuation through 13 applies regardless of court supervision.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+        is_under_court_supervision: true
+      person2:
+        age: 14
+        is_under_court_supervision: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ne_child_care_subsidy_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: [true, false]
+
+# The family fee is 7% of monthly gross income: 120,000 / 12 x 0.07 = 700.
+- name: Case 3, a court-supervised family member does not waive income or fees.
+  period: 2026-01
+  input:
+    state_code: NE
+    age: 35
+    is_under_court_supervision: true
+    ne_child_care_subsidy_countable_income: 10_000
+    ne_child_care_subsidy_gross_income: 120_000
+    ne_child_care_subsidy_fpg: 2_000
+    ne_child_care_subsidy_smi: 5_000
+  output:
+    ne_child_care_subsidy_categorical_waived: false
+    ne_child_care_subsidy_income_eligible: false
+    ne_child_care_subsidy_family_fee: 700
+
+- name: Case 4, a supervised 17-year-old in care receives nothing end to end.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        immigration_status: CITIZEN
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 17
+        is_under_court_supervision: true
+        childcare_attending_days_per_month: 10
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        immigration_status: CITIZEN
+        is_tax_unit_head_or_spouse: false
+        ne_child_care_subsidy_provider_type: CENTER
+        ne_child_care_subsidy_quality_tier: BASE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 0
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        county_str: LANCASTER_COUNTY_NE
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: [false, false]
+    ne_child_care_subsidy: 0

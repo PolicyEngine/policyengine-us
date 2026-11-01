@@ -8,24 +8,30 @@ class snap_min_allotment(Variable):
     label = "SNAP minimum allotment"
     documentation = "Minimum allotment for SNAP based on household size and state"
     unit = USD
+    reference = "https://www.law.cornell.edu/uscode/text/7/2017#a"
 
     def formula(spm_unit, period, parameters):
         # Parameters for the minimum benefit.
         snap = parameters(period).gov.usda.snap
         min_allotment = snap.min_allotment
-        # Calculate the relevant maximum benefit, defined as the maximum
-        # benefit for a household of a certain size in their state.
         snap_region = spm_unit.household("snap_region_str", period)
-        relevant_max_allotment = snap.max_allotment.main[snap_region][
-            str(snap.min_allotment.relevant_max_allotment_household_size)
-        ]
 
         # Minimum benefits only apply to households up to a certain size.
         size = spm_unit("snap_unit_size", period)
         eligible = size <= snap.min_allotment.maximum_household_size
-        # 7 CFR 273.10(e)(2)(ii)(C): 8 percent of the one-person maximum
-        # allotment, rounded to the nearest whole dollar.
-        min_allotment = np.round(eligible * min_allotment.rate * relevant_max_allotment)
+        # 7 U.S.C. 2017(a): 8 percent of the one-person thrifty food plan
+        # cost, rounded to the nearest whole dollar. USDA rounds 8 percent
+        # of the unrounded cost, which can land a dollar above 8 percent of
+        # the rounded-down one-person maximum (FY2027: $25, not $24); the
+        # published adjustment reconciles the two in years USDA published.
+        relevant_max_allotment = snap.max_allotment.main[snap_region][
+            str(min_allotment.relevant_max_allotment_household_size)
+        ]
+        federal_minimum = (
+            np.round(min_allotment.rate * relevant_max_allotment)
+            + min_allotment.published_adjustment[snap_region]
+        )
+        min_allotment = eligible * federal_minimum
 
         # DC, NM, MD and NJ provide separate minimum allotment amounts
         state_code = spm_unit.household("state_code_str", period)

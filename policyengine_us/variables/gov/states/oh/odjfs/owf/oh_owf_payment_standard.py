@@ -8,7 +8,7 @@ class oh_owf_payment_standard(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.OH
-    reference = "https://emanuals.jfs.ohio.gov/CashFoodAssist/CAM/ACT/"
+    reference = "https://web.archive.org/web/20240806164713/https://emanuals.jfs.ohio.gov/CashFoodAssist/CAM/ACT/"
 
     def formula(spm_unit, period, parameters):
         size = spm_unit("spm_unit_size", period.this_year)

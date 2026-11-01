@@ -8,9 +8,7 @@ class sd_cca_self_employment_income(Variable):
     label = "South Dakota CCA countable self-employment income"
     definition_period = YEAR
     defined_for = StateCode.SD
-    reference = (
-        "https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=14"
-    )
+    reference = "https://web.archive.org/web/20251031171652/https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=14"
 
     def formula(person, period, parameters):
         # Subsidy Manual, Section 6: "Self-employment showing a loss shall be

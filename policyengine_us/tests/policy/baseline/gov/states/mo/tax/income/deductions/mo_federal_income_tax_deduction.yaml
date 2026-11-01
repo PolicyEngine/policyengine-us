@@ -131,3 +131,38 @@
     state_code: MO
   output:
     mo_federal_income_tax_deduction: 375
+
+- name: EITC reduces the deduction base (MO-1040 Line 9 is 1040 Line 22 less the EIC on Line 27)
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    # Head of household with $54,476 of wages: 1040 Line 22 is 727.12 and the EIC is 497.90.
+    # Income tax after refundable credits is 727.12 - 497.90 = 229.22.
+    # Base is Line 22 less the EIC = 229.22; times 15% (AGI between 50,001 and 100,000) = 34.38.
+    mo_adjusted_gross_income: 54_476
+    income_tax: 229.22
+    eitc: 497.90
+    recovery_rebate_credit: 0
+    refundable_ctc: 0
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: MO
+  output:
+    mo_federal_income_tax_deduction: 34.38
+
+- name: EITC larger than the tax on the federal return gives a zero deduction
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    # Single with $14,007.54 of income: 1040 Line 22 is 145.75, the EIC is 1,135.18
+    # and the recovery rebate is 1,400. Income tax is 145.75 - 1,135.18 - 1,400 = -2,389.43.
+    # Line 22 less the EIC is negative, so the worksheet enters 0.
+    mo_adjusted_gross_income: 14_007.54
+    income_tax: -2_389.43
+    eitc: 1_135.18
+    recovery_rebate_credit: 1_400
+    refundable_ctc: 0
+    cdcc: 0
+    filing_status: SINGLE
+    state_code: MO
+  output:
+    mo_federal_income_tax_deduction: 0

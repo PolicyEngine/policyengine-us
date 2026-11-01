@@ -1,0 +1,214 @@
+# Dead reference URLs retired in the wave2 batch of the 2026-09-30 audit.
+# Each prefix failed a GET request (404/410, a soft 404, a dead host or a
+# persistent server error) on the date given; see the PR for evidence.
+# See test_known_dead_reference_urls.py for the format.
+
+[[dead]]
+prefix = "http://dcrules.elaws.us/dcmr/5-a199"
+verified = "2026-10-01"
+replacement = "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/Final%20Rulemaking%20for%20the%20Licensing%20of%20Child%20Development%20Facilities.pdf"
+
+[[dead]]
+prefix = "http://ilrules.elaws.us/iac/t23_pt235_sec.235.10"
+verified = "2026-10-01"
+replacement = "https://www.ilga.gov/commission/jcar/admincode/023/023020500A00100R.html"
+
+[[dead]]
+prefix = "http://txrules.elaws.us/rule/title1_chapter372_sec.372.408"
+verified = "2026-10-01"
+replacement = "https://texas-sos.appianportalsgov.com/rules-and-meetings?interface=VIEW_TAC_SUMMARY&recordId=141498"
+
+[[dead]]
+prefix = "http://txrules.elaws.us/rule/title40_chapter809_sec.809.41"
+verified = "2026-10-01"
+replacement = "https://texas-sos.appianportalsgov.com/rules-and-meetings?interface=VIEW_TAC_SUMMARY&recordId=229534"
+
+[[dead]]
+prefix = "http://txrules.elaws.us/rule/title40_chapter809_sec.809.44"
+verified = "2026-10-01"
+replacement = "https://texas-sos.appianportalsgov.com/rules-and-meetings?interface=VIEW_TAC_SUMMARY&recordId=210290"
+
+[[dead]]
+prefix = "https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm"
+verified = "2026-10-01"
+replacement = "https://alison.legislature.state.al.us/code-of-alabama"
+
+[[dead]]
+prefix = "https://budget.lis.virginia.gov/amendment/2024/2/HB30/Enrolled/CR/126/2h/"
+verified = "2026-10-01"
+replacement = "https://budget.lis.virginia.gov/item/2025/1/HB1600/Chapter/1/125.10/"
+
+[[dead]]
+prefix = "https://codes.findlaw.com/il/chapter-35-revenue/il-st-sect-35-5-212-1.html"
+verified = "2026-10-01"
+replacement = "https://www.ilga.gov/Documents/legislation/publicacts/102/PDF/102-0700.pdf"
+
+[[dead]]
+prefix = "https://des.az.gov/sites/default/files/dl/CCA-1210B.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20251031002516/https://des.az.gov/sites/default/files/dl/CCA-1210B.pdf"
+
+[[dead]]
+prefix = "https://doe.virginia.gov/home/showpublisheddocument/56270"
+verified = "2026-10-01"
+replacement = "https://ris.dls.virginia.gov/uploads/22VAC40/dibr/VDOE%20Child%20Care%20Program%20Guidance%20Manual%205.3.2023-20240822104447.pdf"
+
+[[dead]]
+prefix = "https://emanuals.jfs.ohio.gov/CashFoodAssist/CAM/ACT/"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20240806164713/https://emanuals.jfs.ohio.gov/CashFoodAssist/CAM/ACT/"
+
+[[dead]]
+prefix = "https://fns-prod.azureedge.net/sites/default/files/resource-files/WICPC2018FoodPackage-Summary.pdf"
+verified = "2026-10-01"
+replacement = "https://www.fns.usda.gov/sites/default/files/resource-files/WICPC2018FoodPackage-Summary.pdf"
+
+[[dead]]
+prefix = "https://fns-prod.azureedge.net/sites/default/files/resource-files/fna-2008-amended-through-pl-116-94.pdf"
+verified = "2026-10-01"
+replacement = "https://www.govinfo.gov/content/pkg/USCODE-2019-title7/html/USCODE-2019-title7-chap51-sec2014.htm"
+
+[[dead]]
+prefix = "https://govt.westlaw.com/mdc/Document/N05479690A64A11DBB5DDAC3692B918BC?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)"
+verified = "2026-10-01"
+replacement = "https://mgaleg.maryland.gov/2022RS/Statute_Web/gtg/10-218.pdf"
+
+[[dead]]
+prefix = "https://govt.westlaw.com/mdc/Document/N5C14CC91D9D311E2A5EFA1428CB399FF?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)"
+verified = "2026-10-01"
+replacement = "https://mgaleg.maryland.gov/2024RS/Statute_Web/gtg/10-105.pdf"
+
+[[dead]]
+prefix = "https://govt.westlaw.com/mdc/Document/N9D9D6B70E6C811ECB80FD99D7E19CB35?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)"
+verified = "2026-10-01"
+replacement = "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-754&enactments=false"
+
+[[dead]]
+prefix = "https://govt.westlaw.com/mdc/Document/NC8EB19606F6911E8A99BCF2C90B83D38?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)"
+verified = "2026-10-01"
+replacement = "https://mgaleg.maryland.gov/2024RS/Statute_Web/gtg/10-217.pdf"
+
+[[dead]]
+prefix = "https://govt.westlaw.com/mdc/Document/NF93A7BD2E6C811ECA065A3F5EAA0E5C9?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)"
+verified = "2026-10-01"
+replacement = "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-207&enactments=false"
+
+[[dead]]
+prefix = "https://housingforhouston.com/residents/housing-choice-voucher/payment-standards/"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20251109130455/https://housingforhouston.com/residents/housing-choice-voucher/payment-standards/"
+
+[[dead]]
+prefix = "https://revenue.iowa.gov/press-release/2023-10-25/idr-announces-2024-individual-income-tax-brackets-and-interest-rates"
+verified = "2026-10-01"
+replacement = "https://content.govdelivery.com/accounts/IACIO/bulletins/3779769"
+
+[[dead]]
+prefix = "https://tax.utah.gov/forms/2021/tc-40.pdf"
+verified = "2026-10-01"
+replacement = "https://files.tax.utah.gov/tax/forms/2021/tc-40.pdf"
+
+[[dead]]
+prefix = "https://tax.utah.gov/forms/2021/tc-40inst.pdf"
+verified = "2026-10-01"
+replacement = "https://files.tax.utah.gov/tax/forms/2021/tc-40inst.pdf"
+
+[[dead]]
+prefix = "https://tax.utah.gov/forms/2022/tc-40inst.pdf"
+verified = "2026-10-01"
+replacement = "https://files.tax.utah.gov/tax/forms/2022/tc-40inst.pdf"
+
+[[dead]]
+prefix = "https://tax.utah.gov/forms/2023/tc-40inst.pdf"
+verified = "2026-10-01"
+replacement = "https://files.tax.utah.gov/tax/forms/2023/tc-40inst.pdf"
+
+[[dead]]
+prefix = "https://tax.utah.gov/forms/drafts/tc-40inst.pdf"
+verified = "2026-10-01"
+replacement = "https://files.tax.utah.gov/tax/forms/2025/tc-40inst.pdf"
+
+[[dead]]
+prefix = "https://trackbill.com/bill/maryland-house-bill-186-income-tax-subtraction-modification-for-centenarians/2173534/"
+verified = "2026-10-01"
+replacement = "https://mgaleg.maryland.gov/mgawebsite/Legislation/Details/hb0186?ys=2022RS"
+
+[[dead]]
+prefix = "https://www.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0055_0075.htm"
+verified = "2026-10-01"
+replacement = "https://www.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0055_0007_0005.htm"
+
+[[dead]]
+prefix = "https://www.cde.ca.gov/sp/cd/ci/mb2505.asp"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20260125002512/https://www.cde.ca.gov/sp/cd/ci/mb2505.asp"
+
+[[dead]]
+prefix = "https://www.revenue.nh.gov/forms/2021/documents/dp-10-2020-print.pdf"
+verified = "2026-10-01"
+replacement = "https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2020-print.pdf"
+
+[[dead]]
+prefix = "https://www.revenue.nh.gov/forms/2023/documents/dp-10-2022-print.pdf"
+verified = "2026-10-01"
+replacement = "https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2022-print.pdf"
+
+[[dead]]
+prefix = "https://www.revenue.nh.gov/forms/2024/documents/dp-10-instructions-2023.pdf"
+verified = "2026-10-01"
+replacement = "https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-instructions-2023.pdf"
+
+[[dead]]
+prefix = "https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2023_pro.pdf"
+verified = "2026-10-01"
+replacement = "https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2023-form.pdf"
+
+[[dead]]
+prefix = "https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-instructions-2023_0.pdf"
+verified = "2026-10-01"
+replacement = "https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-instructions-2023.pdf"
+
+[[dead]]
+prefix = "https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/ed-02-2023_PRO.pdf"
+verified = "2026-10-01"
+replacement = "https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/ed-02-form.pdf"
+
+[[dead]]
+prefix = "https://www.romney.senate.gov/wp-content/uploads/2022/06/family-security-act-2.0_one-pager_appendix.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250101020512/https://www.romney.senate.gov/wp-content/uploads/2022/06/family-security-act-2.0_one-pager_appendix.pdf"
+
+[[dead]]
+prefix = "https://www.romney.senate.gov/wp-content/uploads/2024/09/FSA-Scanned-and-Final.pdf"
+verified = "2026-10-01"
+replacement = "https://www.govinfo.gov/content/pkg/BILLS-118s5256is/pdf/BILLS-118s5256is.pdf"
+
+[[dead]]
+prefix = "https://www.sos.state.tx.us/texreg/archive/December272024/Adopted%20Rules/10.COMMUNITY%20DEVELOPMENT.html"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250625061143/https://www.sos.state.tx.us/texreg/archive/December272024/Adopted%20Rules/10.COMMUNITY%20DEVELOPMENT.html"
+
+[[dead]]
+prefix = "https://www2.illinois.gov/rev/forms/incometax/Documents/currentyear/individual/il-1040-schedule-m.pdf"
+verified = "2026-10-01"
+replacement = "https://taxarchive.illinois.gov/content/dam/soi/en/web/taxarchive/forms/income-tax/2019/individual/il-1040-schedule-m.pdf"
+
+[[dead]]
+prefix = "https://www2.illinois.gov/rev/programs/EIC/Pages/default.aspx"
+verified = "2026-10-01"
+replacement = "https://tax.illinois.gov/programs/eitc.html"
+
+[[dead]]
+prefix = "https://www2.illinois.gov/rev/research/taxrates/Pages/income.aspx"
+verified = "2026-10-01"
+replacement = "https://tax.illinois.gov/research/taxrates/income.html"
+
+[[dead]]
+prefix = "https://www3.montgomerycountymd.gov/311/Solutions.aspx?SolutionId=1-4DAM0I"
+verified = "2026-10-01"
+replacement = "https://www2.montgomerycountymd.gov/mcgportalapps/Press_Detail.aspx?Item_ID=44684"
+
+[[dead]]
+prefix = "https://wwwa.fileyourtaxes.com/www17/cgi-bin/static/displayBlankPDF.pl?form=MT-FORM2.pdf&year=2023"
+verified = "2026-10-01"
+replacement = "https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2023_Montana_Individual_Income_Tax_Return_Form_2.pdf"

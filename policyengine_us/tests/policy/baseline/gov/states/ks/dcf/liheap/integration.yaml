@@ -1,0 +1,483 @@
+# Kansas LIEAP end-to-end integration tests.
+# Sources: KEESM 13100-13400 (eligibility, household, citizenship, energy
+# vulnerability, benefit levels); KS LIHEAP State Plan FY2026 (income sources
+# 1.8-1.9 pages 5-7, income verification 1.4 page 5, 150% FPG 2.1 and
+# subsidized housing 2.3 page 8, $130 minimum 2.6 page 9);
+# KS_BenefitMatrix_2026.pdf (FY2026 season, "Benefit Adjustment @ 80%" table);
+# KS_BenefitMatrix_2025.pdf (FY2025 season, 100%).
+# Annualized published monthly income limits (KEESM 13362):
+# 2026: 23,472 (1) / 31,728 (2) / 48,228 (4) / 56,472 (5);
+# 2025: 22,590 (1) / 46,800 (4).
+# Monthly income band = annual countable income / 12:
+# 1 = 0-899, 2 = 900-1,199, 3 = 1,200-1,699, 4 = 1,700+.
+# KEESM sections refer to the October 2024 and January 2026 editions:
+# https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/ and
+# https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/ (keesm<section>.htm).
+
+- name: Case 1, single adult renting an apartment with natural gas heat.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        employment_income: 22_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ks_liheap_dwelling_type: APARTMENT
+        snap: 0
+        ks_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_household_size: 1
+    ks_liheap_household_size_group: 1
+    ks_liheap_countable_income: 22_000
+    # 22,000 <= 23,472
+    ks_liheap_income_eligible: true
+    ks_liheap_eligible: true
+    # 22,000 / 12 = 1,833 -> 1,700 & over
+    ks_liheap_income_band: 4
+    ks_liheap_fuel_category: NATURAL_GAS
+    # matrix p.1 (80%) 1,700 & over, tier E (default), Apt, size 1-4 = 248
+    ks_liheap_matrix_amount: 248
+    ks_liheap: 248
+
+- name: Case 2, family of four in an all-electric house.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+      person2:
+        age: 38
+        employment_income: 15_000
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+        ks_liheap_utility_rate_tier: E
+        snap: 0
+        ks_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: KS
+  output:
+    ks_liheap_household_size: 4
+    ks_liheap_household_size_group: 1
+    ks_liheap_countable_income: 45_000
+    # 45,000 <= 4,019 x 12 = 48,228
+    ks_liheap_income_eligible: true
+    ks_liheap_eligible: true
+    # 45,000 / 12 = 3,750 -> 1,700 & over
+    ks_liheap_income_band: 4
+    ks_liheap_fuel_category: ELECTRICITY
+    # matrix p.2 electricity (80%) 1,700 & over, tier E, House, size 1-4 = 730
+    ks_liheap_matrix_amount: 730
+    ks_liheap: 730
+
+- name: Case 3, family of five in a propane-heated duplex on a tier C provider.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 36
+        employment_income: 13_200
+      person2:
+        age: 35
+      person3:
+        age: 11
+      person4:
+        age: 8
+      person5:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        ks_tanf: 0
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        ks_liheap_dwelling_type: DUPLEX
+        ks_liheap_utility_rate_tier: C
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: KS
+  output:
+    ks_liheap_household_size: 5
+    ks_liheap_household_size_group: 2
+    ks_liheap_countable_income: 13_200
+    # 13,200 <= 56,472
+    ks_liheap_income_eligible: true
+    ks_liheap_eligible: true
+    # 13,200 / 12 = 1,100 -> 900-1,199
+    ks_liheap_income_band: 2
+    ks_liheap_fuel_category: PROPANE
+    # matrix p.3 propane (80%) 900-1,199, tier C, Duplex, size 5+ = 393
+    ks_liheap_matrix_amount: 393
+    ks_liheap: 393
+
+- name: Case 4, mixed-status family of five with an undocumented earner.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 33
+        immigration_status: CITIZEN
+        employment_income: 6_000
+      person2:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        employment_income: 12_000
+      person3:
+        age: 9
+        immigration_status: CITIZEN
+      person4:
+        age: 6
+        immigration_status: CITIZEN
+      person5:
+        age: 2
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+        ks_liheap_utility_rate_tier: E
+        snap: 0
+        ks_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: KS
+  output:
+    # KEESM 13330: undocumented member excluded from size, income counted.
+    ks_liheap_household_size: 4
+    ks_liheap_household_size_group: 1
+    ks_liheap_countable_income: 18_000
+    # 18,000 <= 48,228 (size 4)
+    ks_liheap_income_eligible: true
+    ks_liheap_eligible: true
+    # 18,000 / 12 = 1,500 -> 1,200-1,699
+    ks_liheap_income_band: 3
+    ks_liheap_fuel_category: NATURAL_GAS
+    # size 4 -> 1-4 column: matrix p.1 (80%) 1,200-1,699, tier E, House = 567
+    # (the 5+ column would give 648)
+    ks_liheap_matrix_amount: 567
+    ks_liheap: 567
+
+- name: Case 5, retired couple over the income limit but one spouse receives SSI.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        social_security: 20_000
+      person2:
+        age: 70
+        social_security: 15_000
+        ssi: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        ks_liheap_dwelling_type: APARTMENT
+        ks_liheap_utility_rate_tier: E
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    ks_liheap_household_size: 2
+    ks_liheap_household_size_group: 1
+    # 20,000 + 15,000 + 1,200 SSI = 36,200 (SSA and SSI both counted)
+    ks_liheap_countable_income: 36_200
+    # 36,200 > 2,644 x 12 = 31,728; SSI receipt does not waive the limit.
+    ks_liheap_income_eligible: false
+    ks_liheap_eligible: false
+    # 36,200 / 12 = 3,017 -> 1,700 & over
+    ks_liheap_income_band: 4
+    ks_liheap_fuel_category: ELECTRICITY
+    # matrix p.2 electricity (80%) 1,700 & over, tier E, Apt, size 1-4 = 365
+    ks_liheap_matrix_amount: 365
+    ks_liheap: 0
+
+- name: Case 6, family of four with natural gas in the FY2025 season.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 10_000
+      person2:
+        age: 38
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ks_tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+        ks_liheap_utility_rate_tier: E
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: KS
+  output:
+    ks_liheap_household_size: 4
+    ks_liheap_household_size_group: 1
+    ks_liheap_countable_income: 10_000
+    # 10,000 <= 1.5 x (15,060 + 3 x 5,380) = 46,800
+    ks_liheap_income_eligible: true
+    ks_liheap_eligible: true
+    # 10,000 / 12 = 833 -> 0-899
+    ks_liheap_income_band: 1
+    ks_liheap_fuel_category: NATURAL_GAS
+    # KS_BenefitMatrix_2025.pdf p.1 (100%) 0-899, tier E, House, size 1-4 = 941
+    ks_liheap_matrix_amount: 941
+    ks_liheap: 941
+
+- name: Case 7, the same family of four in the FY2026 season gets the 80 percent value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 10_000
+      person2:
+        age: 38
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ks_tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+        ks_liheap_utility_rate_tier: E
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: KS
+  output:
+    ks_liheap_household_size: 4
+    ks_liheap_household_size_group: 1
+    ks_liheap_countable_income: 10_000
+    ks_liheap_income_eligible: true
+    ks_liheap_eligible: true
+    ks_liheap_income_band: 1
+    ks_liheap_fuel_category: NATURAL_GAS
+    # matrix p.1 (80%) 0-899, tier E, House, size 1-4 = 709: 80% of the
+    # FY2026 unadjusted cell of 886 (886 x 0.8 = 708.8, rounded to 709)
+    ks_liheap_matrix_amount: 709
+    ks_liheap: 709
+
+- name: Case 8, subsidized-housing renter with heat in rent is income eligible but not vulnerable.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 29
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        ks_liheap_dwelling_type: APARTMENT
+        receives_housing_assistance: true
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_household_size: 1
+    ks_liheap_household_size_group: 1
+    ks_liheap_countable_income: 12_000
+    ks_liheap_income_eligible: true
+    # KEESM 13340 / plan 2.3: heat included in subsidized rent -> ineligible
+    ks_liheap_eligible: false
+    ks_liheap_income_band: 2
+    ks_liheap_fuel_category: ELECTRICITY
+    ks_liheap: 0
+
+- name: Case 9, single adult in a propane trailer on the lowest tier gets the 130 minimum.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 21_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        ks_liheap_dwelling_type: TRAILER_OTHER
+        ks_liheap_utility_rate_tier: A
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_household_size: 1
+    ks_liheap_household_size_group: 1
+    ks_liheap_countable_income: 21_600
+    # 21,600 <= 23,472
+    ks_liheap_income_eligible: true
+    ks_liheap_eligible: true
+    # 21,600 / 12 = 1,800 -> 1,700 & over
+    ks_liheap_income_band: 4
+    ks_liheap_fuel_category: PROPANE
+    # matrix p.3 propane (80%) 1,700 & over, tier A, Trailer/Other, size 1-4 = 75
+    ks_liheap_matrix_amount: 75
+    # max(75, 130) = 130 (plan 2.6 minimum benefit)
+    ks_liheap: 130
+
+- name: Case 10, single parent on TANF heating with purchased wood.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 26
+        employment_income: 0
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: WOOD
+        wood_expense: 1_200
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+        ks_tanf: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    ks_liheap_household_size: 2
+    ks_liheap_household_size_group: 1
+    # TANF counts as income (plan 1.8): 3,600
+    ks_liheap_countable_income: 3_600
+    ks_liheap_income_eligible: true
+    ks_liheap_eligible: true
+    # 3,600 / 12 = 300 -> 0-899
+    ks_liheap_income_band: 1
+    # WOOD -> other table (no utility tier)
+    ks_liheap_fuel_category: OTHER
+    # matrix p.4 other (80%) 0-899, House, size 1-4 = 639
+    ks_liheap_matrix_amount: 639
+    ks_liheap: 639
+
+- name: Case 11, working household with a teenager whose earnings are excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 44
+        employment_income: 20_000
+      person2:
+        age: 42
+        employment_income: 8_000
+        interest_income: 1_500
+      person3:
+        age: 17
+        employment_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ks_liheap_dwelling_type: DUPLEX
+        ks_liheap_utility_rate_tier: B
+        snap: 0
+        ks_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    ks_liheap_household_size: 3
+    ks_liheap_household_size_group: 1
+    # 20,000 + 8,000 + 1,500 = 29,500; only the teenager's wages excluded
+    ks_liheap_countable_income: 29_500
+    # 29,500 <= 3,331 x 12 = 39,972
+    ks_liheap_income_eligible: true
+    ks_liheap_eligible: true
+    # 29,500 / 12 = 2,458 -> 1,700 & over
+    ks_liheap_income_band: 4
+    ks_liheap_fuel_category: NATURAL_GAS
+    # matrix p.1 (80%) 1,700 & over, tier B, Duplex, size 1-4 = 307
+    ks_liheap_matrix_amount: 307
+    ks_liheap: 307
+
+- name: Case 12, single adult in a propane trailer on the lowest tier in the FY2025 season gets the 100 minimum.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 21_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        ks_liheap_dwelling_type: TRAILER_OTHER
+        ks_liheap_utility_rate_tier: A
+        snap: 0
+        ks_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_household_size: 1
+    ks_liheap_household_size_group: 1
+    ks_liheap_countable_income: 21_600
+    # 21,600 <= 1.5 x 15,060 = 22,590 (2025 season uses 2024 guidelines)
+    ks_liheap_income_eligible: true
+    ks_liheap_eligible: true
+    # 21,600 / 12 = 1,800 -> 1,700 & over
+    ks_liheap_income_band: 4
+    ks_liheap_fuel_category: PROPANE
+    # KS_BenefitMatrix_2025.pdf p.3 (100%) propane 1,700 & over, tier A,
+    # Trailer/Other, size 1-4 = 100
+    ks_liheap_matrix_amount: 100
+    # FY2025 minimum benefit $100 (KS LIHEAP State Plan FY2025 2.6, #page=9):
+    # max(100, 100) = 100 (Case 9 shows the same household in FY2026: 75 -> 130)
+    ks_liheap: 100

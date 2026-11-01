@@ -1,0 +1,58 @@
+# Form 5695, Residential Clean Energy Credit Limit Worksheet (2025 instructions):
+# https://www.irs.gov/pub/irs-pdf/i5695.pdf#page=5
+
+- name: With Credit Limit Worksheet B, only the CTC that cannot be refunded precedes the credit.
+  period: 2025
+  input:
+    income_tax_before_credits: 2_943
+    ctc: 4_400
+    ctc_credit_limit_worksheet_b_applies: true
+    ctc_non_refundable_minimum: 1_000 # Credit Limit Worksheet B, line 14
+  output:
+    residential_clean_energy_credit_credit_limit: 1_943
+
+- name: Without Credit Limit Worksheet B, the non-refundable CTC precedes the credit (Form 1040, line 19).
+  period: 2025
+  input:
+    income_tax_before_credits: 2_943
+    ctc: 500
+    ctc_credit_limit_worksheet_b_applies: false
+  output:
+    residential_clean_energy_credit_credit_limit: 2_443
+
+- name: Without Credit Limit Worksheet B, a CTC above the liability leaves nothing.
+  period: 2025
+  input:
+    income_tax_before_credits: 2_943
+    ctc: 4_000
+    ctc_credit_limit_worksheet_b_applies: false
+  output:
+    residential_clean_energy_credit_credit_limit: 0
+
+- name: Every other non-refundable credit precedes the credit.
+  period: 2025
+  input:
+    income_tax_before_credits: 5_000
+    foreign_tax_credit: 100
+    cdcc: 200
+    non_refundable_american_opportunity_credit: 300
+    savers_credit: 400
+    energy_efficient_home_improvement_credit: 500
+    elderly_disabled_credit: 600
+    new_clean_vehicle_credit: 700
+    used_clean_vehicle_credit: 800
+    ctc: 0
+  output:
+    # 5,000 - (100 + 200 + 300 + 400 + 500 + 600 + 700 + 800)
+    residential_clean_energy_credit_credit_limit: 1_400
+
+- name: In 2021, only the CTC that is not refunded precedes the credit, and the refundable CDCC does not.
+  period: 2021
+  input:
+    income_tax_before_credits: 3_000
+    cdcc: 1_000
+    ctc: 6_500
+    refundable_ctc: 6_000
+  output:
+    # 3,000 - (6,500 - 6,000)
+    residential_clean_energy_credit_credit_limit: 2_500

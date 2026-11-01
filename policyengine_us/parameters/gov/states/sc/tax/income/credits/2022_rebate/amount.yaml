@@ -1,12 +1,21 @@
-description: South Carolina provides a 2022 rebate of this amount.
+description: South Carolina limits the income tax rebate to this amount under the South Carolina 2022 Income Tax Rebate program.
 values:
+  # S.1087 (Act 228 of 2022) Section 6(B) paid a one-time rebate on 2021
+  # returns in 2022, so it is booked to 2021. The rebate equals 2021 tax
+  # liability up to a $700 cap, which the Department of Revenue could raise if
+  # funds allowed; it raised the cap to $800 ($700 statutory + $100 increase).
+  # The explicit zeros keep it out of other years. Without the 2020 zero,
+  # backdating would copy the 2021 value into 2015-2020, where the backdated
+  # 2021 non-refundable credits list would pay it.
+  2020-01-01: 0
   2021-01-01: 800
+  2022-01-01: 0
 metadata:
   unit: currency-USD
   period: year
   label: South Carolina 2022 rebate amount
   reference:
-    - title: South Carolina General Assembly, S1087, Section 6, (B)
-    # The house bill initially appropriated a $700 rebate which was increased to $800 due to sufficient funds
-    # https://dor.sc.gov/rebate-2022
+    - title: South Carolina General Assembly, S.1087 (Act 228 of 2022), Section 6(B)
       href: https://www.scstatehouse.gov/sess124_2021-2022/bills/1087.htm
+    - title: South Carolina Department of Revenue, South Carolina Income Tax Rebate 2022, How to calculate your rebate amount
+      href: https://web.archive.org/web/20230103200924/https://dor.sc.gov/rebate-2022

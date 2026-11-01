@@ -7,7 +7,7 @@ class mt_interest_exemption(Variable):
     label = "Montana interest exemption for the tax unit"
     unit = USD
     definition_period = YEAR
-    reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=25"
+    reference = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=25"
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):

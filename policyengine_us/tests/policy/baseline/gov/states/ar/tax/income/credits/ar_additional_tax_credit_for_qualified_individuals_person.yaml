@@ -210,3 +210,23 @@
   output:
     # Income $27,700 > $27,600 => $0 credit
     ar_additional_tax_credit_for_qualified_individuals_person: 0
+
+- name: The additional tax credit for qualified individuals does not exist before 2022
+  period: 2019
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ar_files_separately: false
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # Created for tax year 2022 by Act 1 of the Second Extraordinary Session of 2021
+    ar_additional_tax_credit_for_qualified_individuals_person: 0

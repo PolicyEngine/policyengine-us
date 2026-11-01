@@ -8,9 +8,7 @@ class is_father(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        # In the absence of relationship identifiers, check if the person is
-        # male and has some children in their own household (provided in the
-        # CPS).
+        # is_parent combines the child count with co-resident parent links.
         female = person("is_female", period)
         has_children = person("is_parent", period)
         return ~female & has_children

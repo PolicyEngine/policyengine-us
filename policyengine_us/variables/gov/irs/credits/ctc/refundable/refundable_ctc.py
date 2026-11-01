@@ -8,7 +8,11 @@ class refundable_ctc(Variable):
     unit = USD
     documentation = "The portion of the Child Tax Credit that is refundable."
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/24#d",
+        # No refundable CTC for filers electing a section 911 exclusion.
+        "https://www.law.cornell.edu/uscode/text/26/24#d_3",
+    )
 
     def formula(tax_unit, period, parameters):
         # This line corresponds to "the credit which would be allowed under this section [the CTC section]"
@@ -35,4 +39,8 @@ class refundable_ctc(Variable):
         ctc_capped_by_tax = min_(total_ctc, limiting_tax)
         ctc_capped_by_increased_tax = min_(total_ctc, limiting_tax + phase_in)
         amount_ctc_would_increase = ctc_capped_by_increased_tax - ctc_capped_by_tax
-        return min_(maximum_refundable_ctc, amount_ctc_would_increase)
+        refundable_amount = min_(maximum_refundable_ctc, amount_ctc_would_increase)
+        # Section 24(d)(3): the CTC is not refundable for a filer who elects to
+        # exclude any amount from gross income under section 911 (Form 2555).
+        barred = tax_unit("refundable_ctc_barred_by_section_911_exclusion", period)
+        return where(barred, 0, refundable_amount)

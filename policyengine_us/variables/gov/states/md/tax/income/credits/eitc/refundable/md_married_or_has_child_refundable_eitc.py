@@ -9,9 +9,7 @@ class md_married_or_has_child_refundable_eitc(Variable):
     )
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=23"
-    )
+    reference = "https://interactive.marylandtaxes.gov/Individuals/iFile_ChooseForm/PriorYearForms/Resident_Booklet_2021.pdf#page=23"
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):

@@ -1,0 +1,39 @@
+description: North Carolina deducts this amount from monthly earned income, based on the earnings band, under the Low Income Energy Assistance Program.
+brackets:
+  - threshold:
+      2025-10-01: -.inf
+    amount:
+      2025-10-01: 0
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 10
+  - threshold:
+      2025-10-01: 50
+    amount:
+      2025-10-01: 20
+  - threshold:
+      2025-10-01: 100
+    amount:
+      2025-10-01: 30
+  - threshold:
+      2025-10-01: 150
+    amount:
+      2025-10-01: 40
+  - threshold:
+      2025-10-01: 200
+    amount:
+      2025-10-01: 60
+  - threshold:
+      2025-10-01: 300
+    amount:
+      2025-10-01: 80
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: month
+  label: North Carolina LIEAP monthly earned income deduction
+  reference:
+    - title: North Carolina Energy Programs Manual, Section 300.09 B.3, pages 12-13
+      href: https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=12

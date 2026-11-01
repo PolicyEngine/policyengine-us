@@ -7,9 +7,7 @@ class mt_taxable_social_security(Variable):
     label = "Montana taxable social security benefits"
     defined_for = StateCode.MT
     definition_period = YEAR
-    reference = (
-        "https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf#page=6"
-    )
+    reference = "https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2021_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=6"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.social_security.amount
@@ -39,7 +37,11 @@ class mt_taxable_social_security(Variable):
             "student_loan_interest_ald", period
         )
         # Line 8 - Montana subtractions + ald
-        subtractions = person("mt_subtractions", period)
+        # Subtractions Schedule line 35 includes the partial pension, annuity,
+        # and IRA income exemption (line 34).
+        subtractions = person("mt_subtractions", period) + person(
+            "mt_pension_exemption_indiv", period
+        )
         increased_subtractions = subtractions + ald_less_student_loan
         # line 9: line 6 -line 8, if line 8 >= line 6, return 0
         income_reduced_by_subtractions = max_(

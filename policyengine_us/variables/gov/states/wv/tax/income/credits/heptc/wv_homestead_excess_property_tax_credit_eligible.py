@@ -6,9 +6,9 @@ class wv_homestead_excess_property_tax_credit_eligible(Variable):
     entity = TaxUnit
     label = "Eligible for the West Virginia homestead excess property tax credit"
     reference = (
-        "https://code.wvlegislature.gov/11-21-23/"
-        "https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=13"
-        "https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=14"
+        "https://code.wvlegislature.gov/11-21-23/",
+        "https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=13",
+        "https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=14",
     )
     definition_period = YEAR
     defined_for = StateCode.WV

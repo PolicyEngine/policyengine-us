@@ -8,7 +8,7 @@ class la_general_relief_immigration_status_eligible_person(Variable):
     label = "Eligible Person for the Los Angeles County General Relief based on the immigration status requirements"
     # Person has to be a resident of LA County
     defined_for = "in_la"
-    reference = "http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FGR%2FGR%2F42-404_Immigrant_Eligibility_Chart%2F42-404_Immigrant_Eligibility_Chart.htm"
+    reference = "https://my.dpss.lacounty.gov/public/en/home/epolicy/program/gr/residence/immigrant-eligibility-chart.html"
 
     def formula(person, period, parameters):
         # Undocumented, DACA, and TPS classified applicants/participants are ineligible for GR

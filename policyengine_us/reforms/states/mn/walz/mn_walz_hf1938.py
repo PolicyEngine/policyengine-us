@@ -10,8 +10,8 @@ def create_mn_walz_hf1938_repeal() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ref_21.pdf"
-            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ref_22.pdf"
+            "https://www.revenue.state.mn.us/sites/default/files/2021-12/m1ref_21_0.pdf",
+            "https://www.revenue.state.mn.us/sites/default/files/2022-12/m1ref_22.pdf",
         )
         defined_for = StateCode.MN
 
@@ -30,8 +30,8 @@ def create_mn_walz_hf1938_repeal() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://www.taxformfinder.org/forms/2021/2021-minnesota-form-m1m.pdf"
-            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1m_22.pdf"
+            "https://www.taxformfinder.org/forms/2021/2021-minnesota-form-m1m.pdf",
+            "https://www.revenue.state.mn.us/sites/default/files/2024-01/m1m-22.pdf",
         )
         defined_for = StateCode.MN
 
@@ -68,8 +68,8 @@ def create_mn_walz_hf1938_repeal() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1_inst_21.pdf"
-            "https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf"
+            "https://www.revenue.state.mn.us/sites/default/files/2023-12/m1_inst_21.pdf",
+            "https://www.revenue.state.mn.us/sites/default/files/2024-02/m1-inst-22.pdf",
         )
         defined_for = StateCode.MN
 
@@ -96,10 +96,10 @@ def create_mn_walz_hf1938_repeal() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://www.revenue.state.mn.us/sites/default/files/2021-12/m1_21_0.pdf"
-            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1_inst_21.pdf"
-            "https://www.revenue.state.mn.us/sites/default/files/2022-12/m1_22.pdf"
-            "https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf"
+            "https://www.revenue.state.mn.us/sites/default/files/2023-12/m1_21_0.pdf",
+            "https://www.revenue.state.mn.us/sites/default/files/2023-12/m1_inst_21.pdf",
+            "https://www.revenue.state.mn.us/sites/default/files/2023-12/m1_22.pdf",
+            "https://www.revenue.state.mn.us/sites/default/files/2024-02/m1-inst-22.pdf",
         )
         defined_for = StateCode.MN
 
@@ -112,13 +112,22 @@ def create_mn_walz_hf1938_repeal() -> Reform:
             # ... calculate pre-limitation itemized deductions
             itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
             capped_property_taxes = tax_unit("capped_property_taxes", period)
-            mn_itm_deds = itm_deds_less_salt + capped_property_taxes
+            # Schedule M1SA line 19 takes Minnesota's own casualty and theft
+            # loss (Schedule M1CAT) in place of the federal one.
+            federal_casualty_loss = tax_unit("casualty_loss_deduction", period)
+            mn_casualty_loss = tax_unit("mn_casualty_loss_deduction", period)
+            mn_itm_deds = (
+                itm_deds_less_salt
+                - federal_casualty_loss
+                + mn_casualty_loss
+                + capped_property_taxes
+            )
             # ... calculate itemized deductions offset
             p = parameters(period).gov.states.mn.tax.income.deductions.itemized
             exempt_deds = add(
                 tax_unit,
                 period,
-                ["medical_expense_deduction", "casualty_loss_deduction"],
+                ["medical_expense_deduction", "mn_casualty_loss_deduction"],
             )
             net_deds = max_(0, mn_itm_deds - exempt_deds)
             net_deds_offset = p.reduction.alternate.rate * net_deds
@@ -136,8 +145,8 @@ def create_mn_walz_hf1938_repeal() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://www.revenue.state.mn.us/sites/default/files/2023-02/m1cd_21.pdf"
-            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1cd_22_0.pdf"
+            "https://www.revenue.state.mn.us/sites/default/files/2023-02/m1cd_21.pdf",
+            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1cd_22_0.pdf",
         )
         defined_for = StateCode.MN
 

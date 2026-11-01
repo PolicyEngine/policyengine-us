@@ -1,0 +1,53 @@
+- name: Case 1, CARE-eligible household gets the gas discount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    ca_care_eligible: true
+    gas_expense: 1_200
+  output:
+    # 20% of $1,200.
+    ca_care_gas_discount: 240
+
+- name: Case 2, household not eligible for CARE gets no gas discount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    ca_care_eligible: false
+    gas_expense: 1_200
+  output:
+    ca_care_gas_discount: 0
+
+- name: Case 3, CARE-eligible household without a gas expense gets no gas discount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    ca_care_eligible: true
+    gas_expense: 0
+  output:
+    ca_care_gas_discount: 0
+
+- name: Case 4, CARE-eligible household with multiple SPM units sums their gas expenses.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      p1: {}
+      p2: {}
+    spm_units:
+      spm_unit_1:
+        members: [p1]
+        gas_expense: 600
+      spm_unit_2:
+        members: [p2]
+        gas_expense: 600
+    households:
+      household:
+        members: [p1, p2]
+        state_code: CA
+        ca_care_eligible: true
+  output:
+    # 20% of $1,200.
+    ca_care_gas_discount: 240

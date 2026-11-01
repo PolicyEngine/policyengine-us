@@ -1,9 +1,10 @@
 # MO CCS "child with special needs" tests (5 CSR 25-200.050(11)).
 # mo_ccs_special_needs is Person, MONTH. True for the modeled criteria:
-# (A) SSI receipt, (C) verified disability, (D) protective services. Criteria
-# (B) DMH services, (E) adoption subsidy, and (F) court-ordered supervision are
-# not tracked. The same variable drives the extended age ceiling, the +25% rate
-# column, and the sliding-fee waiver.
+# (A) SSI receipt, (C) verified disability, (D) protective services, and
+# (F) court-ordered supervision (via is_under_court_supervision; tested in
+# ../court_supervision.yaml). Criteria (B) DMH services and (E) adoption
+# subsidy are not tracked. The same variable drives the extended age ceiling,
+# the +25% rate column, and the sliding-fee waiver.
 
 - name: Case 1, disabled child is a child with special needs (criterion C).
   period: 2025-01

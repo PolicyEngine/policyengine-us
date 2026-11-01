@@ -74,3 +74,41 @@
     eitc: 0
   output:
     or_federal_tax_liability_subtraction: 0
+
+# 2026: Publication OR-ESTIMATE (page 3) gives a federal tax subtraction of
+# "$0 to $8,750"; the 2026 Withholding Tax Formulas (page 7) give the
+# phase-out amounts 8,750 / 7,000 / 5,250 / 3,500 / 1,750 / 0. Married filing
+# separately uses 50 percent of these amounts (ORS 316.680(3)(d)).
+- name: 2026 single filer, capped at $8,750
+  period: 2026
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    adjusted_gross_income: 80_000
+    income_tax: 10_000
+    eitc: 0
+  output:
+    or_federal_tax_liability_subtraction: 8_750
+
+- name: 2026 joint filer in the first phase-out step, capped at $7,000
+  period: 2026
+  input:
+    state_code: OR
+    filing_status: JOINT
+    adjusted_gross_income: 255_000
+    income_tax: 30_000
+    eitc: 0
+  output:
+    or_federal_tax_liability_subtraction: 7_000
+
+- name: 2026 separate filer, capped at $4,375
+  period: 2026
+  input:
+    state_code: OR
+    filing_status: SEPARATE
+    adjusted_gross_income: 80_000
+    income_tax: 10_000
+    eitc: 0
+  output:
+    # 50% x 8,750
+    or_federal_tax_liability_subtraction: 4_375

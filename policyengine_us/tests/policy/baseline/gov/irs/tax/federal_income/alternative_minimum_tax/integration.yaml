@@ -24,3 +24,188 @@
     alternative_minimum_tax: 0
     # Expected income tax from TAXSIM35
     income_tax: 85_538
+
+# Married filing separately with qualified dividends and long-term gain, so
+# Form 6251 Part III applies and line 18 uses the separate breakpoint
+# ($119,550 for 2025; 26 U.S.C. 55(b)(1)(C)). Worked by hand from the 2025
+# Form 1040 instructions (Qualified Dividends and Capital Gain Tax Worksheet,
+# Tax Computation Worksheet) and the 2025 Form 6251.
+- name: Married filing separately with dividends and long-term gain, 2025
+  period: 2025
+  input:
+    people:
+      person:
+        age: 45
+        employment_income: 150_000
+        qualified_dividend_income: 25_000
+        long_term_capital_gains: 900_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # Taxable income: $1,075,000 - $15,750 standard deduction = $1,059,250.
+    # Qualified Dividends and Capital Gain Tax Worksheet: line 4 $925,000;
+    # line 5 $134,250; line 18 15% * $165,750 = $24,862.50; line 21 20% *
+    # $759,250 = $151,850; line 22 tax on $134,250 = $25,067; line 25
+    # $201,779.50.
+    taxable_income: 1_059_250
+    income_tax_main_rates: 25_067
+    capital_gains_tax: 176_712.5
+    regular_tax_before_credits: 201_779.5
+    # Form 6251: line 1 $1,059,250; line 2a $15,750; line 4 $1,075,000 plus
+    # 25% * ($1,075,000 - $900,350) = $43,662.50 for married filing
+    # separately (line 4 instructions) = $1,118,662.50. Line 5: $68,500 -
+    # 25% * ($1,118,662.50 - $626,350) < 0, so $0. Line 6: $1,118,662.50.
+    amt_income_less_exemptions: 1_118_662.5
+    # Part III: line 12 $1,118,662.50; lines 13, 15, 16 $925,000; line 17
+    # $193,662.50; line 18 28% * $193,662.50 - $2,391 = $51,834.50; line 20
+    # $134,250; line 21 $0; line 22 $925,000; line 29 $300,000 - $134,250 =
+    # $165,750; line 31 $24,862.50; line 33 $759,250; line 34 $151,850;
+    # line 38 $228,547. Line 39: 28% * $1,118,662.50 - $2,391 =
+    # $310,834.50. Line 40 and line 7: $228,547.
+    amt_tax_including_cg: 228_547
+    amt_base_tax: 310_834.5
+    # Line 9 $228,547 less line 10 $201,779.50 = $26,767.50 (26% on line 18
+    # would give $25,285.25).
+    alternative_minimum_tax: 26_767.5
+    income_tax_before_credits: 228_547
+
+# Unrecaptured section 1250 gain, 2025, single. Worked by hand from the 2025
+# Instructions for Schedule D (Schedule D Tax Worksheet), the 2025 Form 1040
+# instructions (Tax Computation Worksheet) and the 2025 Form 6251.
+# 26 U.S.C. 1(h)(1)(A) taxes at the regular rates the greater of taxable
+# income less net capital gain, or the lesser of the taxable income taxed at
+# a rate below 25 percent and taxable income less adjusted net capital gain
+# (worksheet line 21); Form 6251 line 27 is that line 21.
+- name: Single with unrecaptured section 1250 gain, 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 45
+        employment_income: 200_000
+        long_term_capital_gains: 400_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        unrecaptured_section_1250_gain: 100_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # Taxable income: $600,000 - $15,750 = $584,250.
+    # Schedule D Tax Worksheet: lines 9 and 10 $400,000; line 11 $100,000
+    # (Schedule D line 19); line 12 $100,000; line 13 $300,000; line 14
+    # $284,250; line 18 $184,250; line 19 $197,300; line 20 $197,300; line
+    # 21 $197,300; line 22 $0; line 23 $300,000; line 27 $533,400; line 28
+    # $197,300; line 29 $336,100; line 30 $300,000; line 31 $45,000; line 33
+    # $0; line 35 $100,000; line 36 $597,300; line 38 $13,050; line 39
+    # $86,950; line 40 $21,737.50; line 44 (tax on $197,300) 24% * $197,300
+    # - $7,153 = $40,199; line 45 $106,936.50; line 46 $174,034.75; line 47
+    # $106,936.50.
+    taxable_income: 584_250
+    dwks19: 197_300
+    income_tax_main_rates: 40_199
+    capital_gains_tax: 66_737.5
+    # Form 6251: line 4 $600,000; exemption $88,100; line 12 $511,900;
+    # line 13 $300,000; line 14 $100,000; line 15 $400,000; line 16
+    # $400,000; line 17 $111,900; line 18 26% = $29,094; line 19 $48,350;
+    # line 20 $284,250; line 21 $0; line 22 $300,000; line 23 $0; line 24
+    # $300,000; line 25 $533,400; line 27 $197,300; line 28 $197,300; line
+    # 29 $336,100; line 30 $300,000; line 31 $45,000; line 33 $0; line 35
+    # $411,900; line 36 $100,000; line 37 $25,000; line 38 $99,094; line 39
+    # 28% * $511,900 - $4,782 = $138,550; line 40 $99,094. Line 10:
+    # $106,936.50, so line 11 is $0.
+    amt_tax_including_cg: 99_094
+    amt_base_tax: 138_550
+    alternative_minimum_tax: 0
+    income_tax_before_credits: 106_936.5
+
+# The same with $900,000 of long-term gain, $225,000 of it unrecaptured
+# section 1250 gain, and no wages. Both the regular tax (line 10) and Part III
+# change, and the AMT is positive.
+- name: Single with unrecaptured section 1250 gain owing AMT, 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 45
+        long_term_capital_gains: 900_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        unrecaptured_section_1250_gain: 225_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # Taxable income: $900,000 - $15,750 = $884,250.
+    # Schedule D Tax Worksheet: line 10 $900,000; line 12 $225,000; line 13
+    # $675,000; line 14 $209,250; line 18 $0; line 19 $197,300; line 21
+    # $197,300; line 22 $0; line 25 $675,000; line 29 $336,100; line 30
+    # $336,100; line 31 $50,415; line 33 $338,900; line 34 $67,780; line 35
+    # $225,000; line 36 $1,097,300; line 38 $213,050; line 39 $11,950; line
+    # 40 $2,987.50; line 44 $40,199; line 45 $161,381.50.
+    dwks14: 209_250
+    dwks19: 197_300
+    income_tax_main_rates: 40_199
+    capital_gains_tax: 121_182.5
+    # Form 6251: line 4 $900,000; exemption $88,100 - 25% * ($900,000 -
+    # $626,350) = $19,687.50; line 12 $880,312.50; line 13 $675,000; line
+    # 14 $225,000; line 15 $900,000; line 16 $880,312.50; line 17 $0; line
+    # 20 $209,250; line 21 $0; line 22 $675,000; line 24 $675,000; line 27
+    # $197,300; line 29 $336,100; line 30 $336,100; line 31 $50,415; line 33
+    # $338,900; line 34 $67,780; line 35 $675,000; line 36 $205,312.50; line
+    # 37 $51,328.13; line 38 $169,523.13; line 39 $241,705.50; line 40
+    # $169,523.13. Line 11: $169,523.13 - $161,381.50 = $8,141.63.
+    amt_income_less_exemptions: 880_312.5
+    amt_tax_including_cg: 169_523.125
+    alternative_minimum_tax: 8_141.625
+
+# Collectibles gain (28 percent rate gain), 2025, single. The part of the 28
+# percent rate gain that falls in the brackets below 25 percent is taxed at
+# the regular rates (worksheet line 21); only the rest is taxed at 28 percent
+# (worksheet lines 41 to 43, 26 U.S.C. 1(h)(1)(F)).
+- name: Single with collectibles gain, 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 45
+        long_term_capital_gains: 900_000
+        long_term_capital_gains_on_collectibles: 270_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # Schedule D Tax Worksheet: line 10 $900,000; line 11 $270,000; line 13
+    # $630,000; line 14 $254,250; line 18 $0; line 21 $197,300; line 22 $0;
+    # line 23 $630,000; line 29 $336,100; line 30 $336,100; line 31
+    # $50,415; line 33 $293,900; line 34 $58,780; Schedule D line 19 is zero,
+    # so lines 35 to 40 are skipped; line 41 $827,300; line 42 $56,950; line
+    # 43 $15,946; line 44 $40,199; line 45 $165,340.
+    dwks19: 197_300
+    capital_gains_tax: 125_141
+    income_tax_main_rates: 40_199
+    # Form 6251: line 12 $880,312.50; line 13 $630,000; line 14 $0; line 15
+    # $630,000; line 17 $250,312.50; line 18 28% - $4,782 = $65,305.50; line
+    # 20 $254,250; line 22 $630,000; line 27 $197,300; line 29 $336,100;
+    # line 30 $336,100; line 31 $50,415; line 33 $293,900; line 34 $58,780;
+    # line 38 $174,500.50; line 39 $241,705.50. Line 11: $174,500.50 -
+    # $165,340 = $9,160.50.
+    amt_tax_including_cg: 174_500.5
+    alternative_minimum_tax: 9_160.5

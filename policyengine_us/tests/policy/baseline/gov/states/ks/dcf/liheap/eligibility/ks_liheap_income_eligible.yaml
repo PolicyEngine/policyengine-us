@@ -1,0 +1,99 @@
+# KEESM 13360-13362, October 2024 and January 2026 editions:
+# https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm13360.htm
+# https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm13360.htm
+# Values annualize the published monthly limits; FY2026 includes rounding.
+- name: Case 1, 2025 household size 1, income 0 dollar above the published limit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    ks_liheap_household_size: 1
+    ks_liheap_countable_income: 22_590
+  output:
+    ks_liheap_income_limit: 22_590
+    ks_liheap_income_eligible: true
+
+- name: Case 2, 2025 household size 1, income 1 dollar above the published limit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    ks_liheap_household_size: 1
+    ks_liheap_countable_income: 22_591
+  output:
+    ks_liheap_income_limit: 22_590
+    ks_liheap_income_eligible: false
+
+- name: Case 3, 2026 household size 1, income 0 dollar above the published limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    ks_liheap_household_size: 1
+    ks_liheap_countable_income: 23_472
+  output:
+    ks_liheap_income_limit: 23_472
+    ks_liheap_income_eligible: true
+
+- name: Case 4, 2026 household size 1, income 1 dollar above the published limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    ks_liheap_household_size: 1
+    ks_liheap_countable_income: 23_473
+  output:
+    ks_liheap_income_limit: 23_472
+    ks_liheap_income_eligible: false
+
+- name: Case 5, 2026 household size 9, income 0 dollar above the published limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    ks_liheap_household_size: 9
+    ks_liheap_countable_income: 89_484
+  output:
+    ks_liheap_income_limit: 89_484
+    ks_liheap_income_eligible: true
+
+- name: Case 6, 2026 household size 9, income 1 dollar above the published limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    ks_liheap_household_size: 9
+    ks_liheap_countable_income: 89_485
+  output:
+    ks_liheap_income_limit: 89_484
+    ks_liheap_income_eligible: false
+
+- name: Case 7, snap receipt does not waive the household income limit.
+  period: 2026
+  input:
+    state_code: KS
+    ks_liheap_household_size: 2
+    ks_liheap_countable_income: 40_000
+    snap: 1_200
+  output:
+    ks_liheap_income_eligible: false
+
+- name: Case 8, ssi receipt does not waive the household income limit.
+  period: 2026
+  input:
+    state_code: KS
+    ks_liheap_household_size: 2
+    ks_liheap_countable_income: 40_000
+    ssi: 1_200
+  output:
+    ks_liheap_income_eligible: false
+
+- name: Case 9, ks_tanf receipt does not waive the household income limit.
+  period: 2026
+  input:
+    state_code: KS
+    ks_liheap_household_size: 2
+    ks_liheap_countable_income: 40_000
+    ks_tanf: 1_200
+  output:
+    ks_liheap_income_eligible: false

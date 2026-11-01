@@ -83,7 +83,7 @@
   output:
     student_loan_interest_ald: [0, 0]
 
-- name: No deduction for separate filers, unemployment comp excluded
+- name: No deduction for separate filers
   period: 2021
   absolute_error_margin: 0.1
   input:
@@ -91,7 +91,7 @@
       person1:
         student_loan_interest: 3_000
         miscellaneous_income: 80_000
-        taxable_unemployment_compensation: 10_000
+        unemployment_compensation: 10_000
         student_loan_interest_ald_eligible: false
       person2:
         student_loan_interest: 1_000
@@ -148,3 +148,114 @@
   # (default MAGI below the phase-out start for joint filers).
   output:
     student_loan_interest_ald: [1_250, 1_250]
+
+# 2024 phase-out: $80,000 to $95,000 single, $165,000 to $195,000 joint.
+- name: Section 931 possession income counts toward the phase-out
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        student_loan_interest: 2_500
+        irs_employment_income: 85_000
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        specified_possession_income: 10_000
+  output:
+    # MAGI 85,000: reduced by (85,000 - 80,000) / 15,000 = 1/3.
+    student_loan_interest_ald: 1_666.67
+
+- name: Section 933 Puerto Rico income counts toward the phase-out
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        student_loan_interest: 2_500
+        irs_employment_income: 85_000
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        puerto_rico_income: 10_000
+  output:
+    student_loan_interest_ald: 1_666.67
+
+- name: Section 911 excluded foreign earned income counts toward the phase-out
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        student_loan_interest: 2_500
+        irs_employment_income: 75_000
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        foreign_earned_income_exclusion: 10_000
+  output:
+    student_loan_interest_ald: 1_666.67
+
+- name: Unemployment compensation counts toward the phase-out
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        student_loan_interest: 2_500
+        irs_employment_income: 75_000
+        unemployment_compensation: 10_000
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+  output:
+    student_loan_interest_ald: 1_666.67
+
+- name: Joint return with section 911 and 931 exclusions is in the phase-out
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        student_loan_interest: 2_500
+        irs_employment_income: 100_000
+        student_loan_interest_ald_eligible: true
+      person2:
+        irs_employment_income: 80_000
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        foreign_earned_income_exclusion: 10_000
+        specified_possession_income: 20_000
+  output:
+    # AGI 160,000; MAGI 190,000: reduced by (190,000 - 165,000) / 30,000.
+    student_loan_interest_ald: [416.67, 0]
+
+- name: Disallowed deductions do not reduce the section 911 add-back
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        student_loan_interest: 2_500
+        irs_employment_income: 70_000
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        section_911_excluded_income: 15_000
+        foreign_earned_income_exclusion: 5_000
+  output:
+    # MAGI 70,000 + 15,000 = 85,000; reduced by (85,000 - 80,000) / 15,000.
+    student_loan_interest_ald: 1_666.67

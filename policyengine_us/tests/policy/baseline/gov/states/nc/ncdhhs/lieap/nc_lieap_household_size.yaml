@@ -1,0 +1,27 @@
+# Sources: EP-150.01, EP-175.01 and 175.05, and EP-300.10.
+- name: Case 1, permanent residents and refugees count in the household size and an undocumented member does not.
+  # EP-175.05 chart: a permanent resident is "Eligible for Energy Programs"
+  # (page 4) and so is a refugee (page 5). EP-175.01 D (page 1): illegal aliens
+  # are not eligible. EP-150.01: do not include an ineligible alien in the
+  # number in the household. Three of the four members count.
+  period: 2026
+  input:
+    people:
+      person1:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+      person2:
+        immigration_status: REFUGEE
+      person3:
+        immigration_status: CITIZEN
+      person4:
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NC
+  output:
+    is_citizen_or_legal_immigrant: [true, true, true, false]
+    nc_lieap_household_size: 3

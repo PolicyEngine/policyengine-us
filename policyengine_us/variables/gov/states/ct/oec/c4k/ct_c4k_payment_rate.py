@@ -8,7 +8,7 @@ class ct_c4k_payment_rate(Variable):
     definition_period = MONTH
     defined_for = "ct_c4k_eligible_child"
     label = "Connecticut Care 4 Kids weekly payment rate per child"
-    reference = "https://www.ctoec.org/care-4-kids/c4k-providers/c4k-rates/"
+    reference = "https://www.ctoec.org/care-4-kids-regulations/#rates"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ct.oec.c4k

@@ -1,0 +1,21 @@
+description: The Department of Agriculture excludes military-connected full-time student dependents below this age threshold from the waiting period under the Supplemental Nutrition Assistance Program.
+
+# Covers the unmarried dependent child of a veteran or active duty member who
+# is a full-time student. The statute (8 USC 1612(a)(2)(C)(iii)) sets no ages;
+# they come from the regulation, first adopted as 7 CFR 273.4(a)(5)(ii)(G)(3)
+# by the final rule at 65 FR 70134 (November 21, 2000), effective January 20,
+# 2001, and now at 7 CFR 273.4(a)(6)(ii)(G)(3).
+values:
+  2001-01-20: 22
+
+metadata:
+  unit: year
+  period: year
+  label: SNAP qualified alien waiting period military dependent student age threshold
+  reference:
+    - title: 7 CFR 273.4(a)(6)(ii)(G)(3) - Spouse and unmarried dependent children of a veteran or active duty member
+      href: https://www.law.cornell.edu/cfr/text/7/273.4#a_6_ii_G_3
+    - title: 65 FR 70134 (November 21, 2000) - Final rule effective January 20, 2001
+      href: https://www.govinfo.gov/content/pkg/FR-2000-11-21/pdf/00-29355.pdf#page=1
+    - title: 65 FR 70134 (November 21, 2000) - Amendatory text of 7 CFR 273.4(a)(5)(ii)(G)(3)
+      href: https://www.govinfo.gov/content/pkg/FR-2000-11-21/pdf/00-29355.pdf#page=68

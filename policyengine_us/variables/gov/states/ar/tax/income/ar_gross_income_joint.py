@@ -7,7 +7,7 @@ class ar_gross_income_joint(Variable):
     label = "Arkansas gross income when married filing jointly"
     unit = USD
     definition_period = YEAR
-    reference = "https://casetext.com/statute/arkansas-code-of-1987/title-26-taxation/subtitle-5-state-taxes/chapter-51-income-taxes/subchapter-4-computation-of-tax-liability/section-26-51-404-gross-income-generally"
+    reference = "https://law.justia.com/codes/arkansas/title-26/subtitle-5/chapter-51/subchapter-4/section-26-51-404/"
     defined_for = StateCode.AR
 
     adds = "gov.states.ar.tax.income.gross_income.sources.joint"

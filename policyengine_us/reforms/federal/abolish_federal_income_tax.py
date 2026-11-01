@@ -27,13 +27,10 @@ def create_abolish_federal_income_tax() -> Reform:
         definition_period = YEAR
         unit = USD
 
-        def formula(household, period, parameters):
-            p = parameters(period)
-            added_components = p.gov.household.household_refundable_credits
-            added_components = [
-                c for c in added_components if c != "income_tax_refundable_credits"
-            ]
-            return add(household, period, added_components)
+        adds = [
+            "household_refundable_state_tax_credits",
+            "household_refundable_local_tax_credits",
+        ]
 
     class reform(Reform):
         def apply(self):

@@ -1,0 +1,19 @@
+description: Nebraska counts these earned income sources under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - employment_income
+    # 475 NAC 3-002.04(B)(i), in the text in effect for FY2026, counts each
+    # source of self-employment. The existing net business and farm inputs are
+    # read without another business expense deduction.
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+metadata:
+  unit: list
+  period: year
+  label: Nebraska LIHEAP earned income sources
+  reference:
+    - title: 475 NAC 3-002.04(B)(i), text in effect for FY2026, page 44 (each source of self-employment)
+      href: https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/historical-chapter-pdfs/475%20NAC%203%20(09-17-2024)-202607280000.pdf#page=44
+    - title: Nebraska FY2026 state plan, Section 1.9, page 7
+      href: https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=7
