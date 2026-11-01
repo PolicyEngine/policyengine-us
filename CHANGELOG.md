@@ -1,3 +1,10 @@
+## [2.88.10] - 2026-11-01
+
+### Fixed
+
+- Apply the full-time and hourly tests and the Railway Labor Act rule in Georgia's qualified overtime exclusion, O.C.G.A. 48-7-27(a)(16).
+
+
 ## [2.88.9] - 2026-10-31
 
 ### Fixed
