@@ -2,9 +2,6 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.hhs.medicaid.income._apply_medicaid_optional_senior_or_disabled_exclusions import (
     _apply_medicaid_optional_senior_or_disabled_exclusions,
 )
-from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
-    _ssi_couple_total,
-)
 
 
 class medicaid_optional_senior_or_disabled_countable_income(Variable):
@@ -96,7 +93,7 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
         )
         premiums = where(
             couple_computation,
-            _ssi_couple_total(person, period, own_premiums),
+            person.marital_unit.sum(own_premiums),
             own_premiums,
         )
         deducts_premiums = p.deducts_health_insurance_premiums[state].astype(bool)
