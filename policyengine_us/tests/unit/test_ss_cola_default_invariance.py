@@ -5,11 +5,15 @@ years/values. All cases reuse the default country system without a reform.
 """
 
 from copy import deepcopy
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
 from hypothesis import example, given, settings, strategies as st
+from policyengine_core.periods import period as to_period
 
+from policyengine_us import Simulation
+from policyengine_us.data.economic_assumptions import _EXACT_YEAR_COLA_OVERRIDES
 from policyengine_us.tests.unit.test_ss_cola_means_test import (
     COMPONENTS,
     _calculator_record,
@@ -23,6 +27,41 @@ from policyengine_us.tools.general import earliest_input_year
 OVERRIDES = tuple(f"social_security_{c}_cola_override" for c in COMPONENTS) + (
     "ss_calculator_cola_override",
 )
+
+
+def test_cola_override_inventory_covers_inference_reset_and_invariance():
+    system = Simulation.default_tax_benefit_system_instance
+    registered = {name for name in system.variables if name.endswith("_cola_override")}
+    coverage_message = (
+        "New COLA override controls need inference, reset and invariance coverage: "
+        "update earliest_input_year, _EXACT_YEAR_COLA_OVERRIDES and OVERRIDES."
+    )
+    assert registered == set(OVERRIDES), coverage_message
+    assert registered == set(_EXACT_YEAR_COLA_OVERRIDES), coverage_message
+
+    # Exercise the exclusions without building another country system or simulation.
+    historical_period = to_period(2020)
+    holder = SimpleNamespace(
+        get_known_branch_periods=lambda: {("default", historical_period)}
+    )
+    probe = SimpleNamespace(
+        tax_benefit_system=system,
+        _get_visible_branch_names=lambda: ["default"],
+        _user_input_keys=[(name, "default", historical_period) for name in registered],
+        get_holder=lambda name: holder,
+    )
+    assert earliest_input_year(probe) is None, coverage_message
+
+    # Component exclusions stay exact; calculator records use the prefix rule.
+    variables = system.variables.copy()
+    probe.tax_benefit_system = SimpleNamespace(variables=variables)
+    for name, expected in (
+        ("social_security_auxiliary_cola_override", 2020),
+        ("ss_calculator_inventory_guard", None),
+    ):
+        variables[name] = system.variables[OVERRIDES[0]]
+        probe._user_input_keys = [(name, "default", historical_period)]
+        assert earliest_input_year(probe) == expected, name
 
 
 @pytest.fixture(scope="module")
