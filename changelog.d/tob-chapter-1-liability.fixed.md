@@ -1,0 +1,1 @@
+Measure Social Security benefit-taxation trust-fund revenue using chapter 1 income tax liability after nonrefundable credits and before refundable credits, excluding net investment income tax and unreported payroll tax.
