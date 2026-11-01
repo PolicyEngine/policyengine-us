@@ -220,23 +220,23 @@ Withholding sets that event's COLA to zero, jointly with any rate change; no
 second COLA factor is applied. Payable shares must lie in [0,1], and rates must
 not imply a negative benefit. A depletion-year midyear blend is supplied in the
 annual payable-share path. E2 and E3 income/threshold computation belong to
-their respective modules; their policies and jointly calculated tax-unit
-outputs can consume this route once public wiring exists.
+their respective modules. The [COLA means test](../social-security-cola-means-test.md)
+now supplies these decisions from prior-tax-year MAGI and filing status.
 
 ## Public source-selector wiring
 
-Source-selector PR #10400 was open when this route was built. Its canonical
-COLA history and common lever parameter files are reused here. Historical bend
+The source selectors reuse the canonical COLA history and common lever
+parameter files. Historical bend
 points remain in a separate table because copying its legacy scale backfill
-would change existing pre-2015 `ss_pia` outputs with this route disabled. This change adds
-no `_reported` twins and changes no public benefit formula. Once it merges,
-map its supplied-AIME/PIA retirement modes to `ss_calculated_retirement` and its
-restricted survivor mode to `ss_calculated_survivors`. Bypass population
-PIA/COLA factors and any across/payable factors already applied in this ledger;
-perform the earnings test once. Preserve explicit public final overrides.
-For joint household tax calculations before that wiring, explicitly supply the
-calculated annual checks to the existing public components in a separate
-calculation; never write them into `_reported` as if they were original data.
+would change existing pre-2015 `ss_pia` outputs with this route disabled.
+Select `social_security_retirement_source` as `supplied_aime` or `supplied_pia`
+with matching `ss_calculator_source` of `aime` or `pia`. For the restricted
+survivor route, select `social_security_survivors_source` as
+`supplied_ratio_survivor` with calculator source `survivor`. The public benefit
+then reads the calculated checks, bypassing population PIA, COLA, across-the-board
+and payable factors already applied in this ledger. The earnings test runs
+once. Explicit public final overrides retain their precedence. Calculated
+checks are never written into `_reported` as original data.
 
 ## Sources and validation
 

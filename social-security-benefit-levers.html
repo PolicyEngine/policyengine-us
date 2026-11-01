@@ -467,8 +467,10 @@ pinned and recorded by its supplier; it is not generated from a household.</p>
 addition delta give adjusted rate max(0,c+delta), without a second rounding of
 the policy addition. The joint multiplier is <code class="docutils literal notranslate"><span class="pre">(1+adjusted)/(1+c)</span></code> unless that
 event is withheld, in which case it is <code class="docutils literal notranslate"><span class="pre">1/(1+c)</span></code>. Each component’s
-<code class="docutils literal notranslate"><span class="pre">_cola_withheld</span></code> term defaults false; a subsequent means-test implementation
-supplies the rules. Switching a policy off later preserves its earlier effect
+<code class="docutils literal notranslate"><span class="pre">_cola_withheld</span></code> term defaults false; the optional
+<a class="reference internal" href="social-security-cola-means-test.html"><span class="std std-doc">COLA means test</span></a> supplies prior-year income
+decisions when enabled. Explicit decisions remain available. Switching a policy
+off later preserves its earlier effect
 on the benefit level. Public reported-route benefits multiply this joint factor,
 the PIA ratio factor, the across-the-board factor, and the payable factor once.</p>
 <p>The payable supplier specifies an annual path beginning in the depletion year
