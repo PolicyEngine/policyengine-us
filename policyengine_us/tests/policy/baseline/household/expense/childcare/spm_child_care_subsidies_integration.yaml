@@ -1,0 +1,256 @@
+# Real state programs through the SPM child care expense. New York, Texas and
+# Alaska subsidies never reached the SPM before; Colorado, Washington and West
+# Virginia reached it as resources, on top of pre-subsidy expenses.
+#
+# Each family is one working parent with earnings of $30,000 and a child aged 3
+# in care 8 hours a day, 5 days a week. Without weeks_worked, work expenses are
+# zero, so the SPM expense is the out-of-pocket amount.
+
+- name: New York, Manhattan family with a subsidy just below the expense
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_head: true
+        is_household_head: true
+      child:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 14_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+        county_fips: "36061"
+  output:
+    child_care_subsidies: 13_916.40
+    # 14,000 - 13,916.40.
+    spm_unit_capped_work_childcare_expenses: 83.60
+
+- name: New York, a child with no reported care hours gets no subsidy, so the expense stays
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_head: true
+        is_household_head: true
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 14_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+        county_fips: "36061"
+  output:
+    child_care_subsidies: 0
+    spm_unit_capped_work_childcare_expenses: 14_000
+
+- name: Texas, a subsidy the SPM left out before
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_head: true
+        is_household_head: true
+      child:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 21
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 14_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    child_care_subsidies: 6_014.49
+    # 14,000 - 6,014.49.
+    spm_unit_capped_work_childcare_expenses: 7_985.51
+
+- name: Alaska, a subsidy the SPM left out before
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_head: true
+        is_household_head: true
+      child:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 21
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 14_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    child_care_subsidies: 9_432
+    # 14,000 - 9,432.
+    spm_unit_capped_work_childcare_expenses: 4_568
+
+- name: Washington, a subsidy the SPM counted as a resource before
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_head: true
+        is_household_head: true
+      child:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 21
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 14_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    child_care_subsidies: 13_220
+    # 14,000 - 13,220.
+    spm_unit_capped_work_childcare_expenses: 780
+
+- name: West Virginia, a subsidy the SPM counted as a resource before
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_head: true
+        is_household_head: true
+      child:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 21
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 14_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: WV
+  output:
+    child_care_subsidies: 7_623
+    # 14,000 - 7,623.
+    spm_unit_capped_work_childcare_expenses: 6_377
+
+- name: Colorado, a subsidy the SPM counted as a resource before
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_head: true
+        is_household_head: true
+      child:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 21
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 14_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    child_care_subsidies: 12_613.16
+    # 14,000 - 12,613.16.
+    spm_unit_capped_work_childcare_expenses: 1_386.84
