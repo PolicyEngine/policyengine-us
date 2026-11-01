@@ -276,6 +276,7 @@
 <li class="toctree-l2"><a class="reference internal" href="social-security/RULINGS.html">Restricted-survivor modeling ruling</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="social-security-oasdi-accounting.html">OASDI modeled liabilities and benefits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="speed.html">Speed</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
@@ -338,8 +339,11 @@ The receipt records the source mapping that the PE-US constructor must implement
 Two names for one component would retain a final public override and are rejected.
 Stored aggregate <code class="docutils literal notranslate"><span class="pre">social_security</span></code>, OASDI payroll-tax outputs, federal NIIT
 liabilities/revenues and TOB revenue outputs are also rejected: these would bypass
-the formulas being scored. This population-data contract permits household
-situations to continue using explicit final benefit overrides.</p>
+the formulas being scored. The preflight also rejects the S.770 section 8 and
+owners’ draw tax and OASDI transfer leaves and the
+<a class="reference internal" href="social-security-oasdi-accounting.html"><span class="std std-doc">OASDI accounting outputs</span></a>; their
+classification inputs remain valid sources. This population-data contract permits
+household situations to continue using explicit final benefit overrides.</p>
 <p>The JSON receipt records the artifact, hash, base year, stored H5 keys, complete
 column inventory by entity, row counts, source mapping and any declared final
 overrides. The Python function also accepts <code class="docutils literal notranslate"><span class="pre">intentional_final_overrides</span></code> so a
