@@ -2,17 +2,17 @@
 # OASDI/HI split (ruling us:tob-oasdi-old-law-bound).
 #
 # Every case reuses the 2026 single retiree from tob_revenue_oasdi.yaml:
-# age 70, $20,000 benefits and $30,000 taxable interest in Texas. At current
-# law that unit includes $9,600 against a $7,500 pre-1993 amount, with
-# OASDI $769, HI $252 and total $1,021. The pre-1993 amount reads its own
+# age 70, $20,000 benefits and $30,000 taxable interest. At current law that
+# unit includes $9,600 against a $7,500 pre-1993 amount, with OASDI $769,
+# HI $252 and total $1,021. The pre-1993 amount reads its own
 # gov.ssa.revenue.pre_1993 parameters, so it stays $7,500 under each reform
 # below.
 #
-# Deductions are $16,100 + $2,050 + $6,000 = $24,150 in every state, and
-# taxable income is $30,000 + inclusion - $24,150. Tax is 10% up to $12,400,
-# then 12%. Tax with no inclusion is 10% * $5,850 = $585. Nontaxable
+# Deductions are $16,100 + $2,050 + $6,000 = $24,150 in every counterfactual,
+# and taxable income is $30,000 + inclusion - $24,150. Tax is 10% up to
+# $12,400, then 12%. Tax with no inclusion is 10% * $5,850 = $585. Nontaxable
 # benefits stay above the $5,000 elderly-credit base, or AGI phases the
-# credit out, so the credit is zero in every state.
+# credit out, so the credit is zero in every counterfactual.
 #
 # OASDI + HI = total in each case.
 
