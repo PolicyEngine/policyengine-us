@@ -68,7 +68,8 @@ REST_HEAVY_B_TESTS := $(TESTS)/core/test_marginal_tax_rate_coverage.py \
 # CTC and Medicaid systems below, which stay resident after their files end.
 REST_CORE_HEAVY_TESTS := $(TESTS)/core/test_ssi_resource_deeming_invariants.py \
 	$(TESTS)/test_federal_credit_limit_order.py \
-	$(TESTS)/test_pinned_branch_credit_dependents.py
+	$(TESTS)/test_pinned_branch_credit_dependents.py \
+	$(TESTS)/test_pinned_tbs_sharing.py
 # Supplied-record calculator API checks load no national dataset. Keep each
 # file in a separate process so retained reform trees are released on exit.
 # Local macOS/Python 3.13.9, four numeric threads: peak RSS 2.98 GiB
