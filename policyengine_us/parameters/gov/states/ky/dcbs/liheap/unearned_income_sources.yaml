@@ -1,7 +1,7 @@
 description: Kentucky counts these unearned income sources under the Low Income Home Energy Assistance Program.
 values:
   2024-10-01:
-    - unemployment_compensation
+    - total_unemployment_compensation
     - strike_benefits
     # Social Security is counted in the formula, gross for FY2025 and net of
     # the Medicare Part B premium from FY2026
@@ -10,11 +10,12 @@ values:
     # Plan Section 17.4 lists the DCBS State Supplementation award letter as
     # income documentation.
     - ky_ssp
-    # Military retirement pay is a separate input from the pension inputs that
+    # Military retirement income (retiree pay plus Survivor Benefit Plan
+    # annuities) is a separate input from the pension inputs that
     # pension_income adds, so both are listed; a household reports the amount
     # in one or the other.
     - pension_income
-    - military_retirement_pay
+    - military_retirement_income
     # Plan Section 17.4 lists Railroad Retirement records.
     - railroad_benefits
     - retirement_distributions

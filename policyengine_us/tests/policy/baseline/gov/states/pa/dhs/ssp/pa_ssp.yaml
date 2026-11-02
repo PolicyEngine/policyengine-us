@@ -1,0 +1,276 @@
+# 55 Pa. Code Chapter 299; POMS SI 01415.058.
+- name: Case 1, independent living.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+  output:
+    pa_ssp: 22.1
+
+- name: Case 2, living in household of another.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    # One-third-reduced FBR: 994 * 2 / 3 = 662.67.
+    ssi: 662.67
+    pa_ssp: 25.53
+
+- name: Case 3, certified domiciliary care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    pa_ssp_care_home: DOMICILIARY_CARE
+  output:
+    pa_ssp: 634.3
+
+- name: Case 4, certified personal care home.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    pa_ssp_care_home: PERSONAL_CARE
+  output:
+    pa_ssp: 639.3
+
+- name: Case 5, care category requires adulthood.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 17
+    meets_ssi_disability_criteria: true
+    pa_ssp_care_home: PERSONAL_CARE
+  output:
+    pa_ssp: 0
+
+- name: Case 6, medical institution.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ssi: 30
+    pa_ssp: 22.1
+
+- name: Case 7, SSI exhausted but state payment remains.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    social_security_retirement: 12_360
+  output:
+    # 12,360 / 12 = 1,030; countable 1,030 - 20 = 1,010 exceeds the 994 FBR
+    # by 16, so 22.10 - 16 = 6.10.
+    pa_ssp: 6.1
+
+- name: Case 8, state administered payment below a dollar.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    social_security_retirement: 12_432
+  output:
+    # 12,432 / 12 = 1,036; countable 1,036 - 20 = 1,016 exceeds the 994 FBR
+    # by 22, so 22.10 - 22 = 0.10. The state-administered payment gets no $1
+    # federal minimum.
+    pa_ssp: 0.1
+
+- name: Case 9, income above the combined income cutoff.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    social_security_retirement: 12_444
+  output:
+    # 12,444 / 12 = 1,037; countable 1,037 - 20 = 1,017 exceeds the 994 FBR
+    # by 23, more than the 22.10 supplement, so 0.
+    pa_ssp: 0
+
+- name: Case 10, excess resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    ssi_countable_resources: 2_001
+  output:
+    pa_ssp: 0
+
+- name: Case 11, not aged blind or disabled.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 30
+  output:
+    pa_ssp: 0
+
+- name: Case 12, nonresident.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    age: 65
+  output:
+    pa_ssp: 0
+
+- name: Case 13, declines required SSI application.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    takes_up_ssi_if_eligible: false
+  output:
+    pa_ssp: 0
+
+- name: Case 14, institutional payment requires SSI receipt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    social_security_retirement: 600
+  output:
+    pa_ssp: 0
+
+- name: Case 15, federally administered care payment rises to the one dollar minimum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    pa_ssp_care_home: PERSONAL_CARE
+    social_security_retirement: 19_836
+  output:
+    # 19,836 / 12 = 1,653; countable 1,653 - 20 = 1,633 exceeds the 994 FBR.
+    ssi: 0
+    # Excess 1,633 - 994 = 639, so 639.30 - 639 = 0.30; SSA administers the
+    # personal care home rate and pays the $1 federal minimum.
+    pa_ssp: 1
+
+- name: Case 16, earned income exclusions keep the full independent payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    # Pennsylvania minimum wage, 7.25 per hour x 40 hours x 52 weeks.
+    employment_income: 15_080
+  output:
+    # 15,080 / 12 = 1,256.67; countable (1,256.67 - 20 - 65) / 2 = 585.83;
+    # 994 - 585.83 = 408.17.
+    ssi: 408.17
+    # Countable 585.83 is below the 994 FBR, so no reduction: 22.10.
+    pa_ssp: 22.1
+
+- name: Case 17, reported SSI receipt qualifies an institution resident without modeled SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    takes_up_ssi_if_eligible: false
+    receives_ssi: true
+  output:
+    # No modeled take-up, so the modeled federal payment is 0.
+    ssi: 0
+    # Reported receipt meets the SSI gate; the state-issued Supplement for
+    # Personal Needs is the individual MEDICAID_INSTITUTION rate, 22.10.
+    pa_ssp: 22.1
+
+- name: Case 18, disabled child living with a working parent gets the independent supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        # Full-time work at the $7.25 Pennsylvania minimum wage.
+        employment_income: 15_080
+        own_children_in_household: 1
+      person2:
+        age: 10
+        meets_ssi_disability_criteria: true
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # SSA 2011: "Blind and disabled children are eligible for optional
+    # supplementation." The parent's (1,256.67 - 85) / 2 = 585.83 is below the
+    # 994 parental allocation, so nothing is deemed.
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0]
+    ssi: [0, 994]
+    pa_ssp: [0, 22.1]
+
+- name: Case 19, private medical facility where Medicaid pays half or less counts as independent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: false
+  output:
+    ssi: 994
+    pa_ssp: 22.1
+
+- name: Case 20, a care home input for one person does not reset another person's arrangement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        pa_ssp_care_home: PERSONAL_CARE
+      person2:
+        age: 70
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    households:
+      home1:
+        members: [person1]
+        state_code: PA
+      home2:
+        members: [person2]
+        state_code: PA
+  output:
+    pa_ssp_living_arrangement: [PERSONAL_CARE, INDEPENDENT]
+    pa_ssp: [639.3, 22.1]

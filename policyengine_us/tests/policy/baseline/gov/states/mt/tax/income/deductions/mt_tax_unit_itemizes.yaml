@@ -15,3 +15,41 @@
     mt_standard_deduction_indiv: 10_000
   output:
     mt_tax_unit_itemizes: false
+
+- name: Combined-AGI care phaseout keeps itemized deductions below the standard deduction
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        mt_agi_indiv: 20_000
+        real_estate_taxes: 4_650
+      spouse:
+        age: 40
+        mt_agi_indiv: 0
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    # 2022 Form 2441-M, PDF p. 1, lines 2-7: min(3,000, 2,400)
+    # - .5 * (20,000 - 18,000) = 1,400; half to each spouse = 700.
+    # https://revenue.mt.gov/files/Forms/Child-and-Dependent-Care-Expense-Deduction-Form-2441-M/2022_Child_and_Dependent_Care_Expense_Deduction_Form_2441-M.pdf#page=1
+    mt_child_dependent_care_expense_deduction: [700, 700, 0]
+    # 2022 Form 2 instructions, PDF p. 35: standard deductions are
+    # max(min(.2 * 20,000, 5,090), 2,260) = 4,000 and the 2,260 floor.
+    # https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=35
+    # Itemized total = 4,650 + 700 + 700 = 6,050 < 4,000 + 2,260 = 6,260.
+    # Using each spouse's AGI would give the spouse 1,200 and total 6,550,
+    # incorrectly switching the couple to itemization.
+    mt_itemized_deductions_indiv: [5_350, 700, 0]
+    mt_standard_deduction_indiv: [4_000, 2_260, 0]
+    mt_tax_unit_itemizes: false
+    mt_deductions_indiv: [4_000, 2_260, 0]
