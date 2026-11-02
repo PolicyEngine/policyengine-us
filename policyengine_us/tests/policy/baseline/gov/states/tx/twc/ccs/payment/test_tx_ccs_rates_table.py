@@ -1,15 +1,23 @@
 """The Texas CCS four-age-group rate table obeys the rules that set it.
 
 The table holds seven statewide TWC tables, from WD Letter 12-18 (effective
-August 1, 2018) to BCY 2025. 40 TAC §809.20(c)-(d) sets Texas Rising Star
-rates at least 5, 7 and 9 percent above a provider's regular rate, and a
-Texas School Ready (TSR) rate at least 5 percent above it for the age groups
-in §809.20(b)(2). Each rate letter from WD 12-18 to WD 20-23 says no provider
-rate will be reduced, and WD Letter 19-24, Change 1, keeps every BCY 2025
-rate at or above its BCY 2024 level, except relative care, which Boards set
-locally. Each check runs over all 4,032 cells of every table, so a value
-copied into the wrong cell fails here. The test reads the YAML file directly
-and builds no tax-benefit system.
+August 1, 2018) to BCY 2025. Under 40 TAC §809.20(c), Texas Rising Star rates
+must exceed a provider's regular rate by at least 5, 7 and 9 percent, and a
+Texas School Ready (TSR) rate must exceed it by at least 5 percent for the age
+groups in §809.20(b)(2). Under §809.20(d), Boards may go higher if each star
+level stays at least 2 percentage points above the one below. Every full-time
+and part-time rate meets these bounds exactly, and so does every school-age
+blended rate for BCY 2020, BCY 2021, revised BCY 2024 and BCY 2025. Each
+blended rate follows WD 02-20's formula from its own part-time and full-time
+rates, so in WD 12-18, BCY 2022 and BCY 2023 rounding leaves some enhanced
+blended rates under a cent short. In the August 29, 2023 original of the
+BCY 2024 table, hundreds of rates miss the bounds by under a cent, so these
+checks also tell its two versions apart. In each rate letter from WD 12-18 to
+WD 20-23, TWC says it will reduce no provider rate, and in WD Letter 19-24,
+Change 1, TWC keeps every BCY 2025 rate at or above its BCY 2024 level, except
+relative care, which Boards set locally. Each check runs over all 4,032 cells
+of every table, so a value copied into the wrong cell fails here. The test
+reads the YAML file directly and builds no tax-benefit system.
 """
 
 import datetime
@@ -39,13 +47,17 @@ BCY_2024 = datetime.date(2023, 10, 1)
 BCY_2025 = datetime.date(2024, 10, 1)
 YEARS = [WD_12_18, BCY_2020, BCY_2021, BCY_2022, BCY_2023, BCY_2024, BCY_2025]
 
-TRS_MARKUP = {
+MARKUP = {
     "TRS2": Decimal("1.05"),
+    "TSR": Decimal("1.05"),
     "TRS3": Decimal("1.07"),
     "TRS4": Decimal("1.09"),
 }
-TSR_MARKUP = Decimal("1.05")
+STAR_GAP = Decimal("0.02")
 CENT = Decimal("0.01")
+
+# Tables whose enhanced blended rates may fall under a cent short of a bound.
+BLENDED_SHORT = {WD_12_18, BCY_2022, BCY_2023}
 
 # TWC printed these part-time rates above the full-time rate, as
 # (region, provider type, rating, age). No other table has one.
@@ -73,6 +85,12 @@ PART_TIME_ABOVE_FULL_TIME = {
         ("COASTAL_BEND", "LCCH", "REG", "SCHOOL_AGE"),
         ("COASTAL_BEND", "LCCH", "TSR", "SCHOOL_AGE"),
     },
+}
+
+# TWC printed this blended rate at $12.21, where the school-year formula and
+# the BCY 2025 table give $12.12. No other printed blended rate misses it.
+BLENDED_OFF_FORMULA = {
+    BCY_2024: {("EAST_TEXAS", "RELATIVE", "NONE", "SCHOOL_AGE")},
 }
 
 
@@ -109,13 +127,18 @@ def _with(cell, **changes):
     return tuple(fields.values())
 
 
+def _rate(cell, year, **changes):
+    return Decimal(str(CELLS[_with(cell, **changes)][year]))
+
+
+def _meets(amount, bound, cell, year):
+    if cell[4] == "BLENDED" and year in BLENDED_SHORT:
+        return amount > bound - CENT
+    return amount >= bound
+
+
 def _assert_none(failures):
     assert not failures, f"{len(failures)} cells fail, e.g. {failures[:5]}"
-
-
-def _floor(regular, markup):
-    # TWC rounds some enhanced rates down, so allow a cent below the markup.
-    return (Decimal(str(regular)) * markup).quantize(CENT, ROUND_HALF_UP) - CENT
 
 
 def _tsr_ages(year):
@@ -130,8 +153,7 @@ def _tsr_ages(year):
 def _school_year_blend(full_time, part_time):
     # WD Letter 02-20: the part-day rate for 175 days plus the full-day rate
     # for 30 days, divided by the 205 days of the school year.
-    days = Decimal(str(part_time)) * 175 + Decimal(str(full_time)) * 30
-    return (days / 205).quantize(CENT, ROUND_HALF_UP)
+    return ((part_time * 175 + full_time * 30) / 205).quantize(CENT, ROUND_HALF_UP)
 
 
 def _in_force(values, day):
@@ -152,54 +174,55 @@ def test_every_cell_has_every_year():
 
 
 @pytest.mark.parametrize("year", YEARS)
-def test_texas_rising_star_rates_meet_markups(year):
+def test_enhanced_rates_meet_markups(year):
+    # A TSR rate has a floor only for the age groups in §809.20(b)(2).
     failures = []
-    for cell, values in CELLS.items():
-        markup = TRS_MARKUP.get(cell[2])
-        if markup is None:
+    for cell in CELLS:
+        markup = MARKUP.get(cell[2])
+        if markup is None or (cell[2] == "TSR" and cell[3] not in _tsr_ages(year)):
             continue
-        floor = _floor(CELLS[_with(cell, rating="REG")][year], markup)
-        if Decimal(str(values[year])) < floor:
-            failures.append((cell, values[year], float(floor)))
+        floor = _rate(cell, year, rating="REG") * markup
+        if not _meets(_rate(cell, year), floor, cell, year):
+            failures.append((cell, float(_rate(cell, year)), float(floor)))
     _assert_none(failures)
 
 
 @pytest.mark.parametrize("year", YEARS)
-def test_star_levels_rise(year):
+def test_star_levels_two_points_apart(year):
     failures = []
     for cell in CELLS:
         if cell[2] != "TRS2":
             continue
-        tiers = [CELLS[_with(cell, rating=r)][year] for r in ("TRS2", "TRS3", "TRS4")]
-        if tiers != sorted(tiers):
-            failures.append((cell, tiers))
+        gap = STAR_GAP * _rate(cell, year, rating="REG")
+        tiers = [_rate(cell, year, rating=r) for r in ("TRS2", "TRS3", "TRS4")]
+        if not all(
+            _meets(higher - lower, gap, cell, year)
+            for lower, higher in zip(tiers, tiers[1:])
+        ):
+            failures.append((cell, float(gap), [float(t) for t in tiers]))
     _assert_none(failures)
 
 
 @pytest.mark.parametrize("year", YEARS)
 def test_texas_school_ready_rates(year):
-    # A TSR rate for an age group in §809.20(b)(2) meets the 5 percent floor
-    # of §809.20(c)(1)(B). From the BCY 2023 table on, each also matches or
-    # exceeds the 2-star rate, the minimum TWC set in WD Letter 09-23
-    # (June 12, 2023). For other age groups, the tables from WD 12-18 to
+    # From the BCY 2023 table on, a TSR rate for an age group in §809.20(b)(2)
+    # matches or exceeds the 2-star rate, the minimum TWC set in WD Letter
+    # 09-23 (June 12, 2023). For other age groups, the tables from WD 12-18 to
     # BCY 2023 give TSR providers the regular rate, while BCY 2024 and
     # BCY 2025 print the 2-star rate.
     failures = []
-    for cell, values in CELLS.items():
+    for cell in CELLS:
         if cell[2] != "TSR":
             continue
-        regular = CELLS[_with(cell, rating="REG")][year]
-        two_star = CELLS[_with(cell, rating="TRS2")][year]
+        rate = _rate(cell, year)
         if cell[3] in _tsr_ages(year):
-            meets = Decimal(str(values[year])) >= _floor(regular, TSR_MARKUP)
-            if year >= BCY_2023:
-                meets = meets and values[year] >= two_star
+            meets = year < BCY_2023 or rate >= _rate(cell, year, rating="TRS2")
         elif year < BCY_2024:
-            meets = values[year] == regular
+            meets = rate == _rate(cell, year, rating="REG")
         else:
-            meets = values[year] == two_star
+            meets = rate == _rate(cell, year, rating="TRS2")
         if not meets:
-            failures.append((cell, values[year], regular))
+            failures.append((cell, float(rate)))
     _assert_none(failures)
 
 
@@ -209,9 +232,9 @@ def test_part_time_rates_within_full_time(year):
     # in the wrong column, so only the rates TWC printed that way pass.
     above = {
         cell[:4]
-        for cell, values in CELLS.items()
+        for cell in CELLS
         if cell[4] == "PART_TIME"
-        and values[year] > CELLS[_with(cell, schedule="FULL_TIME")][year]
+        and _rate(cell, year) > _rate(cell, year, schedule="FULL_TIME")
     }
     assert above == PART_TIME_ABOVE_FULL_TIME.get(year, set())
 
@@ -219,33 +242,30 @@ def test_part_time_rates_within_full_time(year):
 @pytest.mark.parametrize("year", YEARS)
 def test_blended_rates_between_part_time_and_full_time(year):
     failures = []
-    for cell, values in CELLS.items():
+    for cell in CELLS:
         if cell[4] != "BLENDED":
             continue
-        rates = [
-            CELLS[_with(cell, schedule=s)][year] for s in ("PART_TIME", "FULL_TIME")
-        ]
-        if not min(rates) <= values[year] <= max(rates):
-            failures.append((cell, values[year], rates))
+        rates = [_rate(cell, year, schedule=s) for s in ("PART_TIME", "FULL_TIME")]
+        if not min(rates) <= _rate(cell, year) <= max(rates):
+            failures.append((cell, float(_rate(cell, year)), rates))
     _assert_none(failures)
 
 
 @pytest.mark.parametrize("year", YEARS)
 def test_blended_rates_follow_school_year_formula(year):
     # WD 23-19, 25-20 and 24-21 print no blended rates, so the table computes
-    # them this way. The rates WD 12-18, WD 22-22 and BCY 2025 print match it
-    # exactly. WD 20-23 prints 16 of them a cent off.
-    tolerance = CENT if year == BCY_2024 else 0
-    failures = []
-    for cell, values in CELLS.items():
-        if cell[4] != "BLENDED":
-            continue
-        full_time = CELLS[_with(cell, schedule="FULL_TIME")][year]
-        part_time = CELLS[_with(cell, schedule="PART_TIME")][year]
-        blend = _school_year_blend(full_time, part_time)
-        if abs(Decimal(str(values[year])) - blend) > tolerance:
-            failures.append((cell, values[year], float(blend)))
-    _assert_none(failures)
+    # them this way.
+    off = {
+        cell[:4]
+        for cell in CELLS
+        if cell[4] == "BLENDED"
+        and _rate(cell, year)
+        != _school_year_blend(
+            _rate(cell, year, schedule="FULL_TIME"),
+            _rate(cell, year, schedule="PART_TIME"),
+        )
+    }
+    assert off == BLENDED_OFF_FORMULA.get(year, set())
 
 
 @pytest.mark.parametrize("earlier, later", list(zip(YEARS, YEARS[1:])))
