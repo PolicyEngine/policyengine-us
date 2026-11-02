@@ -298,3 +298,99 @@
     filing_status: HEAD_OF_HOUSEHOLD
     eitc_spouses_lived_apart_last_six_months: false
     eitc_marital_eligible: true
+
+- name: Separated head of household under a decree of separate maintenance is unmarried for the EITC
+  # IRC 7703(a)(2) treats a filer separated under a decree of separate
+  # maintenance as unmarried, so IRC 32(d)(1) doesn't apply and no
+  # qualifying child is needed for the marital test.
+  # 2025, no qualifying child: phase-in 0.0765 x 10_000 = 765, capped at the
+  # 649 maximum; earnings 10_000 are below the 10_620 phase-out start, so
+  # the reduction is 0 and the EITC is 649.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 10_000
+        is_separated: true
+        is_separated_under_decree: true
+      mother:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, mother]
+        filing_status: HEAD_OF_HOUSEHOLD
+        eitc_spouses_lived_apart_last_six_months: true
+        eitc_legal_separation_and_apart_at_year_end: true
+    households:
+      household:
+        members: [head, mother]
+        state_code: TX
+  output:
+    eitc_child_count: 0
+    eitc_marital_eligible: true
+    eitc_eligible: true
+    eitc: 649
+
+- name: Separated head of household without a decree stays married and needs a qualifying child
+  # Same household with is_separated_under_decree false (the default): the
+  # filer is married under IRC 7703(a), the exception in IRC 32(d)(2)(B)
+  # needs a resident qualifying child, and there is none, so the EITC is 0.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 10_000
+        is_separated: true
+        is_separated_under_decree: false
+      mother:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, mother]
+        filing_status: HEAD_OF_HOUSEHOLD
+        eitc_spouses_lived_apart_last_six_months: true
+        eitc_legal_separation_and_apart_at_year_end: true
+    households:
+      household:
+        members: [head, mother]
+        state_code: TX
+  output:
+    eitc_child_count: 0
+    eitc_marital_eligible: false
+    eitc_eligible: false
+    eitc: 0
+
+- name: Separate filer under a decree needs no living-apart fact
+  # IRC 7703(a)(2): the decree makes the unit unmarried, so the exception
+  # isn't needed and no separation route is checked. Both routes are false.
+  # 2026, one child: 4_427 - 0.1598 x (30_000 - 23_890) = 3_450.62, the same
+  # schedule as the separated MFS parent above.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 30_000
+        is_separated_under_decree: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+        eitc_spouses_lived_apart_last_six_months: false
+        eitc_legal_separation_and_apart_at_year_end: false
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    eitc_marital_eligible: true
+    eitc_eligible: true
+    eitc: 3_450.62

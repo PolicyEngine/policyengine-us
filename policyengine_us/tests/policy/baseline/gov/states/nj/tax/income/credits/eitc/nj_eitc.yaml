@@ -138,3 +138,58 @@
         state_code: NJ
   output:
     nj_eitc: 0
+
+- name: Married separated head of household without a qualifying child gets no NJ age fallback
+  # The filer is married under IRC 7703(a) (7703(b) gives only HoH status),
+  # lived apart six months (is_separated default), but has no EITC
+  # qualifying child, so IRC 32(d) denies the federal credit. The NJ
+  # fallback waives only the age limits, so the marital failure denies it
+  # too: federal 0, NJ 0. Before this fix NJ paid 0.4 x 649 = 259.60.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 55
+        employment_income: 12_000
+        is_separated: true
+      adult_child:
+        age: 30
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, adult_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, adult_child]
+        state_code: NJ
+  output:
+    eitc_spouses_lived_apart_last_six_months: true
+    eitc_child_count: 0
+    eitc_marital_eligible: false
+    eitc: 0
+    nj_childless_eitc_age_eligible: false
+    nj_eitc: 0
+
+- name: Unmarried 22-year-old without a qualifying child still gets the NJ age fallback
+  # Below the federal minimum age of 25 but above NJ's minimum of 18.
+  # 2025: NJ match 0.4 x federal zero-child maximum 649 = 259.60.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NJ
+  output:
+    eitc_marital_eligible: true
+    eitc: 0
+    nj_childless_eitc_age_eligible: true
+    nj_eitc: 259.60

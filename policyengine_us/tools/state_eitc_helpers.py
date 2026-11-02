@@ -32,7 +32,8 @@ def eitc_filing_status_eligible(
 
     The switch enables the separated-spouse exception, rather than making
     every separate filer eligible. Once enabled, the exception also governs
-    separated head-of-household filers, who are married under IRC 7703(a).
+    separated head-of-household filers, who are married under IRC 7703(a)
+    unless separated under a decree (IRC 7703(a)(2)).
     Qualifying children are counted before identification requirements:
     IRC 32(c)(3)(D) limits the credit schedule, not the separated-spouse
     exception in IRC 32(d)(2)(B).
@@ -59,7 +60,16 @@ def eitc_filing_status_eligible(
     ) & tax_unit.any(
         person("is_tax_unit_head_or_spouse", period) & person("is_separated", period)
     )
-    needs_exception = separate | separated_head_of_household
+    # IRC 7703(a)(2): "an individual legally separated from his spouse under
+    # a decree of divorce or of separate maintenance shall not be considered
+    # as married." Such a unit is unmarried for IRC 32(d)(2)(A), so neither
+    # the separate-return nor the separated head-of-household branch needs
+    # the exception.
+    separated_under_decree = tax_unit.any(
+        person("is_tax_unit_head_or_spouse", period)
+        & person("is_separated_under_decree", period)
+    )
+    needs_exception = (separate | separated_head_of_household) & ~separated_under_decree
     has_resident_qualifying_child = tax_unit.any(
         person("is_eitc_qualifying_child", period)
         & person("eitc_child_lived_with_taxpayer_more_than_half_year", period)
