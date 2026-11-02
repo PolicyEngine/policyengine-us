@@ -6,10 +6,10 @@ gov.hhs.ccdf.child_care_subsidy_programs is the one list of state programs.
 1. No state's own subsidy appears beside the aggregate in any year, so no
    subsidy counts twice.
 2. A dollar of subsidy adds a dollar to household benefits and to household net
-   income, in every state that has a program that year.
+   income. Each run samples programs and years.
 
 The YAML cases pin single families. These read every dated block of the list and
-draw from every program and year, which YAML can't express.
+generate programs, years and amounts, which YAML can't express.
 """
 
 from pathlib import Path
