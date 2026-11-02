@@ -31,9 +31,11 @@ def eitc_filing_status_eligible(
     """Apply IRC 32(d), optionally using a state's frozen exception switch.
 
     The switch enables the separated-spouse exception, rather than making
-    every separate filer eligible. Qualifying children are counted before
-    identification requirements: IRC 32(c)(3)(D) limits the credit schedule,
-    not the separated-spouse exception in IRC 32(d)(2)(B).
+    every separate filer eligible. Once enabled, the exception also governs
+    separated head-of-household filers, who are married under IRC 7703(a).
+    Qualifying children are counted before identification requirements:
+    IRC 32(c)(3)(D) limits the credit schedule, not the separated-spouse
+    exception in IRC 32(d)(2)(B).
     """
 
     if separate_filer_eligible is None:
@@ -41,11 +43,23 @@ def eitc_filing_status_eligible(
             period
         ).gov.irs.credits.eitc.eligibility.separate_filer
     filing_status = tax_unit("filing_status", period)
-    not_separate = filing_status != filing_status.possible_values.SEPARATE
+    statuses = filing_status.possible_values
+    separate = filing_status == statuses.SEPARATE
     if not separate_filer_eligible:
-        return not_separate
+        return ~separate
 
     person = tax_unit.members
+    # From 2021, IRC 32(d)(2)(A) determines marital status under IRC 7703(a)
+    # only, so a separated filer whom IRC 7703(b) lets file as head of
+    # household is still married for the EITC and needs the same exception.
+    # is_separated on the head or spouse is the model's married-but-apart
+    # indicator; head_of_household_eligible reads it for the 7703(b) route.
+    separated_head_of_household = (
+        filing_status == statuses.HEAD_OF_HOUSEHOLD
+    ) & tax_unit.any(
+        person("is_tax_unit_head_or_spouse", period) & person("is_separated", period)
+    )
+    needs_exception = separate | separated_head_of_household
     has_resident_qualifying_child = tax_unit.any(
         person("is_eitc_qualifying_child", period)
         & person("eitc_child_lived_with_taxpayer_more_than_half_year", period)
@@ -53,7 +67,9 @@ def eitc_filing_status_eligible(
     meets_separation_conditions = tax_unit(
         "eitc_spouses_lived_apart_last_six_months", period
     ) | tax_unit("eitc_legal_separation_and_apart_at_year_end", period)
-    return not_separate | (has_resident_qualifying_child & meets_separation_conditions)
+    return ~needs_exception | (
+        has_resident_qualifying_child & meets_separation_conditions
+    )
 
 
 def calculate_eitc_demographic_eligibility(
@@ -73,7 +89,13 @@ def calculate_eitc_demographic_eligibility(
         eitc_parameters.eligibility.age.min,
     )
     max_age = eitc_parameters.eligibility.age.max
-    return has_child | tax_unit.any((age >= min_age) & (age <= max_age))
+    # IRC 32(c)(1)(A)(ii)(II) applies the childless age test to the filer or,
+    # on a joint return, either spouse, never to a dependent, matching the
+    # federal eitc_demographic_eligible.
+    is_filer_or_spouse = ~person("is_tax_unit_dependent", period)
+    return has_child | tax_unit.any(
+        is_filer_or_spouse & (age >= min_age) & (age <= max_age)
+    )
 
 
 def calculate_eitc_phase_out_start(

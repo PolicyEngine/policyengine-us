@@ -14,8 +14,11 @@ class eitc_marital_eligible(Variable):
     documentation = """
     Married separate filers must have a qualifying child residing with them
     for more than half the year and satisfy either statutory separation
-    route. The exception is enabled from 2021. Child identification rules
-    do not determine whether the marital exception applies.
+    route. The exception is enabled from 2021. From then, IRC 32(d)(2)(A)
+    determines marriage under IRC 7703(a) only, so a separated head of
+    household filer (is_separated on the head or spouse) faces the same
+    test. Child identification rules do not determine whether the marital
+    exception applies.
     """
 
     def formula(tax_unit, period, parameters):

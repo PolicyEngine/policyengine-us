@@ -1657,3 +1657,73 @@
     # ETA 3240.2026 gives the 2025 two-child maximum, $995. Measuring from
     # 62,000 would give 995 - 0.199 x (62,000 - 59,430) = 484.
     wa_working_families_tax_credit: 995
+
+- name: Childless separate filer below the age band gets no credit from a dependent's age
+  # IRC 32(c)(1)(A)(ii)(II), in the frozen 2022 federal rules, applies the
+  # 25-64 age test to the filer, not a dependent. The 22-year-old filer has
+  # no qualifying child, and the 30-year-old qualifying relative does not
+  # satisfy the age test for them.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 10_000
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [head, dependent]
+        state_code: WA
+  output:
+    wa_working_families_tax_credit: 0
+
+- name: Childless single filer below the age band gets no credit from a dependent's age
+  period: 2025
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 10_000
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head, dependent]
+        state_code: WA
+  output:
+    wa_working_families_tax_credit: 0
+
+- name: Childless separate filer in the age band keeps the state-only credit
+  # The filer is 30, so the age test is met. Earnings of 10,000 are below the
+  # childless phase-out start (maximum qualifying income less 2,500), so the
+  # credit is the 2025 no-child amount, $335.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 10_000
+      dependent:
+        age: 22
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [head, dependent]
+        state_code: WA
+  output:
+    wa_working_families_tax_credit: 335

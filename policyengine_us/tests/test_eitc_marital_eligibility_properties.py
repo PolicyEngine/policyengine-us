@@ -47,7 +47,9 @@ def parameters(period):
 
 
 class FilingStatuses(np.ndarray):
-    possible_values = SimpleNamespace(SEPARATE="SEPARATE", JOINT="JOINT")
+    possible_values = SimpleNamespace(
+        SEPARATE="SEPARATE", JOINT="JOINT", HEAD_OF_HOUSEHOLD="HEAD_OF_HOUSEHOLD"
+    )
 
 
 class TaxUnits:
@@ -80,6 +82,11 @@ class TaxUnits:
                 np.asarray(member_values, dtype=bool).T,
             )
         )
+        # The first member of each unit is the filer; nobody is separated, so
+        # the separated head-of-household route is not exercised here.
+        filer = np.r_[True, self.member_groups[1:] != self.member_groups[:-1]]
+        self.person_values["is_tax_unit_head_or_spouse"] = filer
+        self.person_values["is_separated"] = np.zeros_like(filer)
         # Expose the existing SSN-restricted count as well, so accidentally
         # using it instead of pre-identification children fails the properties.
         identified_children = (
