@@ -35,7 +35,7 @@ dollar over, for each combination of age 65 and blindness:
    claimed is under 65 and not blind, the result is the unearned income test
    (over $1,350), whatever the other spouse's age and blindness. (For a
    claimed spouse who is 65 or older or blind, section 6012(f)(2)(D) and
-   Table 2 differ; that is d1395.)
+   Table 2 differ, and the test leaves it out.)
 
 `test_filing_requirement_properties` draws batches of tax units with
 Hypothesis (single, head of household, surviving spouse, separate and joint;
@@ -61,7 +61,7 @@ has rows to check and both answers occur; the test asserts that it does.
     spouse who can be claimed and whose interest and dividends are over
     Table 2's unearned income amount for them always makes the return
     required. Table 2's amount is never below the statute's, so this holds
-    under either reading of d1395.
+    under either reading.
 
 `test_earned_income_sources_are_gross_income_sources`:
 
