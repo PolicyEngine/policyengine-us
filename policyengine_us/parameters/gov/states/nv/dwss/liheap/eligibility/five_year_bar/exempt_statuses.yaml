@@ -1,0 +1,22 @@
+description: Nevada excludes these immigration statuses from the five-year bar on qualified non-citizens under the Low Income Home Energy Assistance Program.
+# Section 302 C VI exempts refugees, asylees, non-citizens whose deportation is
+# being withheld, Amerasians, Cuban and Haitian entrants and victims of a
+# severe form of trafficking. Amerasians and trafficking victims have no
+# immigration_status value. The federal Medicaid list holds the same four
+# statuses, but this list is sourced to the Nevada manual and kept separate.
+values:
+  2025-07-01:
+    - REFUGEE
+    - ASYLEE
+    - DEPORTATION_WITHHELD
+    - CUBAN_HAITIAN_ENTRANT
+
+metadata:
+  unit: list
+  period: year
+  label: Nevada LIHEAP five-year bar exempt immigration statuses
+  reference:
+    - title: Nevada SFY2026 Energy Assistance Program Manual, Section 302 C VI
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=23
+    - title: Nevada SFY2027 Energy Assistance Program Manual, Section 302 C VI
+      href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/2027-eap-state-manual--08.25.26-1.pdf#page=23

@@ -1,5 +1,8 @@
 # VA TANF Countable Earned Income tests
-# Formula: max_(max_(gross - flat_deduction, 0) * 0.8 - childcare, 0)
+# Formula: max_(max_(gross - standard_deduction, 0) * 0.8 - childcare, 0)
+# The standard deduction is SNAP's (TANF Manual 305.1 A.2.b). In 2023 it is
+# $193 (1-4 members), $225 (5) and $258 (6+) from January to September and
+# $198 (1-3), $208 (4), $244 (5) and $279 (6+) from October to December.
 
 - name: Zero earned income returns zero.
   period: 2023
@@ -17,9 +20,8 @@
   output:
     va_tanf_countable_earned_income: 0
 
-- name: Earned income below flat exclusion returns zero.
-  # Flat exclusion for size 1 = $167 * 12 = $2,004/year
-  # Income $1,500 < $2,004, so max_($1,500 - $2,004, 0) = 0
+- name: Earned income below the standard deduction returns zero.
+  # Monthly income $1,500 / 12 = $125 is below the $193 and $198 standard deductions.
   period: 2023
   input:
     people:
@@ -35,9 +37,11 @@
   output:
     va_tanf_countable_earned_income: 0
 
-- name: Earned income $5,004, size 3, $2,400 after deduction.
-  # Flat exclusion for size 3 = $167 * 12 = $2,004/year
-  # ($5,004 - $2,004) * 0.8 = $3,000 * 0.8 = $2,400
+- name: Earned income $5,004, size 3.
+  # Monthly income $5,004 / 12 = $417
+  # January-September: ($417 - $193) * 0.8 = $179.20 * 9 = $1,612.80
+  # October-December: ($417 - $198) * 0.8 = $175.20 * 3 = $525.60
+  # Total: $1,612.80 + $525.60 = $2,138.40
   period: 2023
   input:
     people:
@@ -55,11 +59,13 @@
         members: [person1, person2, person3]
         state_code: VA
   output:
-    va_tanf_countable_earned_income: 2_400
+    va_tanf_countable_earned_income: 2_138.4
 
-- name: Earned income $8,880, size 6, $4,800 after deduction.
-  # Flat exclusion for size 6+ = $240 * 12 = $2,880/year
-  # ($8,880 - $2,880) * 0.8 = $6,000 * 0.8 = $4,800
+- name: Earned income $8,880, size 6.
+  # Monthly income $8,880 / 12 = $740
+  # January-September: ($740 - $258) * 0.8 = $385.60 * 9 = $3,470.40
+  # October-December: ($740 - $279) * 0.8 = $368.80 * 3 = $1,106.40
+  # Total: $3,470.40 + $1,106.40 = $4,576.80
   period: 2023
   input:
     people:
@@ -83,11 +89,13 @@
         members: [person1, person2, person3, person4, person5, person6]
         state_code: VA
   output:
-    va_tanf_countable_earned_income: 4_800
+    va_tanf_countable_earned_income: 4_576.8
 
-- name: Case 5, size 4 uses $178 flat exclusion.
-  # Flat exclusion for size 4 = $178 * 12 = $2,136/year
-  # ($5,136 - $2,136) * 0.8 = $3,000 * 0.8 = $2,400
+- name: Case 5, size 4 uses the four-member standard deduction.
+  # Monthly income $5,136 / 12 = $428
+  # January-September: ($428 - $193) * 0.8 = $188 * 9 = $1,692
+  # October-December: ($428 - $208) * 0.8 = $176 * 3 = $528
+  # Total: $1,692 + $528 = $2,220
   period: 2023
   input:
     people:
@@ -107,11 +115,13 @@
         members: [person1, person2, person3, person4]
         state_code: VA
   output:
-    va_tanf_countable_earned_income: 2_400
+    va_tanf_countable_earned_income: 2_220
 
-- name: Case 6, size 5 uses $209 flat exclusion.
-  # Flat exclusion for size 5 = $209 * 12 = $2,508/year
-  # ($5,508 - $2,508) * 0.8 = $3,000 * 0.8 = $2,400
+- name: Case 6, size 5 uses the five-member standard deduction.
+  # Monthly income $5,508 / 12 = $459
+  # January-September: ($459 - $225) * 0.8 = $187.20 * 9 = $1,684.80
+  # October-December: ($459 - $244) * 0.8 = $172 * 3 = $516
+  # Total: $1,684.80 + $516 = $2,200.80
   period: 2023
   input:
     people:
@@ -133,16 +143,17 @@
         members: [person1, person2, person3, person4, person5]
         state_code: VA
   output:
-    va_tanf_countable_earned_income: 2_400
+    va_tanf_countable_earned_income: 2_200.8
 
-- name: Case 7, earned income exactly at flat exclusion returns zero.
-  # Flat exclusion for size 1 = $167 * 12 = $2,004/year
-  # ($2,004 - $2,004) * 0.8 = 0
+- name: Case 7, earned income exactly at the standard deduction returns zero.
+  # Monthly income $2,316 / 12 = $193
+  # January-September: ($193 - $193) * 0.8 = 0
+  # October-December: $193 is below the $198 standard deduction, so 0
   period: 2023
   input:
     people:
       person1:
-        tanf_gross_earned_income: 2_004
+        tanf_gross_earned_income: 2_316
     spm_units:
       spm_unit:
         members: [person1]
@@ -154,12 +165,10 @@
     va_tanf_countable_earned_income: 0
 
 - name: Case 8, childcare exceeds earnings after 20% disregard.
-  # Flat exclusion for size 2 = $167 * 12 = $2,004/year
-  # Gross: $3,004
-  # After flat: $3,004 - $2,004 = $1,000
-  # After 20%: $1,000 * 0.8 = $800/year
-  # Childcare: $200/month (infant) = $2,400/year
-  # max_($800 - $2,400, 0) = $0
+  # Monthly income $3,004 / 12 = $250.33
+  # January-September: ($250.33 - $193) * 0.8 = $45.87
+  # October-December: ($250.33 - $198) * 0.8 = $41.87
+  # Childcare: $200/month (infant) exceeds both, so 0 each month
   period: 2023
   input:
     people:
@@ -183,10 +192,10 @@
     va_tanf_countable_earned_income: 0
 
 - name: Case 9, multiple earners in unit.
-  # Flat exclusion for size 3 = $167 * 12 = $2,004/year
-  # Total gross: $6,000 + $4,000 = $10,000
-  # After flat: $10,000 - $2,004 = $7,996
-  # After 20%: $7,996 * 0.8 = $6,396.80
+  # Total gross: $6,000 + $4,000 = $10,000, or $833.33 a month
+  # January-September: ($833.33 - $193) * 0.8 = $512.27 * 9 = $4,610.40
+  # October-December: ($833.33 - $198) * 0.8 = $508.27 * 3 = $1,524.80
+  # Total: $4,610.40 + $1,524.80 = $6,135.20
   period: 2023
   input:
     people:
@@ -204,4 +213,121 @@
         members: [person1, person2, person3]
         state_code: VA
   output:
-    va_tanf_countable_earned_income: 6_396.8
+    va_tanf_countable_earned_income: 6_135.2
+
+- name: Case 10, January 2025 uses the FY2025 SNAP standard deduction for three members.
+  # SNAP standard deduction for 1-3 members from October 2024: $204
+  # ($500 - $204) * 0.8 = $236.80
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 500
+      person2:
+        tanf_gross_earned_income: 0
+      person3:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    va_tanf_countable_earned_income: 236.8
+
+- name: Case 11, January 2026 uses the FY2026 SNAP standard deduction for three members.
+  # SNAP standard deduction for 1-3 members from October 2025: $209
+  # ($500 - $209) * 0.8 = $232.80
+  period: 2026-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 500
+      person2:
+        tanf_gross_earned_income: 0
+      person3:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    va_tanf_countable_earned_income: 232.8
+
+- name: Case 12, January 2025 uses the FY2025 SNAP standard deduction for four members.
+  # SNAP standard deduction for 4 members from October 2024: $217
+  # ($500 - $217) * 0.8 = $226.40
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 500
+      person2:
+        tanf_gross_earned_income: 0
+      person3:
+        tanf_gross_earned_income: 0
+      person4:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VA
+  output:
+    va_tanf_countable_earned_income: 226.4
+
+- name: Case 13, a seven-member unit uses the six-or-more SNAP standard deduction.
+  # SNAP standard deduction for 6 or more members from October 2024: $291
+  # ($500 - $291) * 0.8 = $167.20
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 500
+      person2:
+        tanf_gross_earned_income: 0
+      person3:
+        tanf_gross_earned_income: 0
+      person4:
+        tanf_gross_earned_income: 0
+      person5:
+        tanf_gross_earned_income: 0
+      person6:
+        tanf_gross_earned_income: 0
+      person7:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: VA
+  output:
+    va_tanf_countable_earned_income: 167.2
+
+- name: Case 14, January 2025 earnings below the standard deduction return zero.
+  # $150 is below the $204 standard deduction for 1-3 members, so 0
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 150
+      person2:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_tanf_countable_earned_income: 0

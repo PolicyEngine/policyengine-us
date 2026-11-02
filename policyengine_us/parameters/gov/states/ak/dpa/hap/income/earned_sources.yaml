@@ -1,0 +1,28 @@
+description: Alaska uses these sources to compute countable earned income under the Heating Assistance Program.
+# Military basic pay is its own input, outside employment income, and counts
+# once here as earned military pay. Business sources are supplied net amounts,
+# each floored at zero; manual 3003-4 B deducts 50% of gross self-employment
+# income unless actual costs are higher, so these net inputs overstate
+# countable income when actual costs are under half of gross. The
+# partnership/S corporation aggregate includes its components, which are not
+# added separately.
+values:
+  2026-10-01:
+    - employment_income
+    - military_basic_pay
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+
+metadata:
+  unit: list
+  period: year
+  label: Alaska HAP countable earned income sources
+  reference:
+    - title: Alaska HAP Manual 3003-1 A.1, Wages
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-1_countable_income.htm
+    - title: Alaska HAP Manual 3003-4 A-D, Income From Self-Employment
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-4_income_from_self-employment.htm
+    - title: Alaska HAP Manual 3003-5 B.1.a, Military Pay, Countable Income
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-5_military_pay.htm

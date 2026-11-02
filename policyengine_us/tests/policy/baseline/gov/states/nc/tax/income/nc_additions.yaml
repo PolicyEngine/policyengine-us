@@ -1,0 +1,59 @@
+# 2020 D-400 Schedule S, Part A, line 16: above-the-line qualified charitable
+# contribution deduction.
+# https://www.ncdor.gov/documents/files/2020-d-400-schedule-s-web/open#page=2
+
+- name: Case 1, 2020 federal non-itemizer adds back the line 10b deduction.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NC
+  output:
+    nc_additions: 300
+
+- name: Case 2, 2021 deduction for non-itemizers is below the line, so nothing is added back.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NC
+  output:
+    nc_additions: 0
+
+- name: Case 3, 2020 charitable addback combines with other North Carolina additions.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nc_other_additions: 700
+    households:
+      household:
+        members: [person1]
+        state_code: NC
+  output:
+    charitable_contributions_ald: 300
+    nc_additions: 1_000

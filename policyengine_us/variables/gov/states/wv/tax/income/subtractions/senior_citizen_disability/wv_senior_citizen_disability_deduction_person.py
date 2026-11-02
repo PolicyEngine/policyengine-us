@@ -22,9 +22,10 @@ class wv_senior_citizen_disability_deduction_person(Variable):
         ).gov.states.wv.tax.income.subtractions.senior_citizen_disability_deduction
 
         agi_person = person("adjusted_gross_income_person", period)
-        # Box (c) excludes the person's own modified income receipts on
-        # lines 35-46 before applying the cap. The separate section 12a
-        # deduction for 529 contribution payments does not exclude income.
+        # Source conflict us-wv:senior-disability-modification-income-base
+        # Box (c) excludes the person's own amounts on lines 35-46 before
+        # applying the cap. The separate section 12a deduction for 529
+        # contribution payments does not exclude income.
         excluded_amounts = add(person, period, p.excluded_income_sources)
         capped_income = min_(p.cap, agi_person - excluded_amounts)
         # Box (d) then subtracts the person's own lines 29-34 modifications.
