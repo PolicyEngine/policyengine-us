@@ -100,29 +100,92 @@ def get_ar_cpi(parameters: ParameterNode, calendar_year: int) -> float:
     )
 
 
-def extend_ar_income_tax_uprating(parameters: ParameterNode, end_year: int) -> None:
-    """Compound Arkansas's positive annual CPI-U increase, subject to its cap.
+AR_INCOME_TAX_INDEX = "gov.states.ar.tax.income.uprating"
+# Act 1 of 2026 (1st Extraordinary Session) enacts the tax year 2026 tables,
+# and A.C.A. 26-51-201(a)(5) indexes them under (d). DFA indexed each newly
+# enacted table in its first year (the 2022, 2023 and 2024 cards), so the
+# 2026 tables are the base and 2026 is the first indexed year.
+AR_FIRST_INDEXED_YEAR = 2026
 
-    The published 2026 tables anchor projections. For tax year Y,
-    26-51-201(d)(2) compares September Y-2 through August Y-1 with
-    September Y-3 through August Y-2. The statute's increase-if-any
-    language prevents a decrease. Bracket rounding remains in the
-    individual parameters' metadata, and bracket-adjustment amounts
-    remain fixed.
+
+def get_ar_cost_of_living_adjustment(parameters: ParameterNode, year: int) -> float:
+    """Arkansas's cost-of-living adjustment for calendar (tax) year ``year``.
+
+    A.C.A. 26-51-201(d)(2), as amended by Act 1459 of 2013, section 2: the
+    percentage, if any, by which the CPI for the current calendar year
+    exceeds the CPI for the preceding one, capped at the uprating cap. Each
+    calendar year's CPI is the average for the twelve months ending August
+    31 of that year, so tax year Y compares September Y-1 through August Y
+    with September Y-2 through August Y-1. DFA's 2018-2021 cards follow this
+    window (see test_ar_income_tax_indexing.py).
+    """
+    increase = get_ar_cpi(parameters, year) / get_ar_cpi(parameters, year - 1) - 1
+    cap = parameters.gov.states.ar.tax.income.uprating_cap(f"{year}-01-01")
+    return min(cap, max(increase, 0))
+
+
+def round_ar_income_tax_bound(amount: float, interval: float) -> float:
+    """Round to the nearest ``interval``, with an exact half rounded down.
+
+    26-51-201(d)(1) rounds to the nearest $100 and names no rule for an
+    exact $50. DFA rounded both observed ties down: the 2022 card's $5,100
+    ($5,000 x 1.03 = $5,150) and the 2024 card's $25,700 ($25,000 x 1.03 =
+    $25,750). Rounding to 1e-6 units first keeps floating-point error in the
+    product from breaking a tie.
+    """
+    return math.ceil(round(amount / interval - 0.5, 6)) * interval
+
+
+def extend_ar_income_tax_uprating(parameters: ParameterNode, end_year: int) -> None:
+    """Build Arkansas's income tax index and index its bracket bounds.
+
+    The index is 1 before AR_FIRST_INDEXED_YEAR and compounds each year's
+    cost-of-living adjustment from then on. The statute's "if any" language
+    prevents a decrease.
+
+    Each bound whose uprating metadata names this index is then set, for
+    every year from AR_FIRST_INDEXED_YEAR to ``end_year``, to its tax year
+    2026 statutory value times the index, rounded by
+    round_ar_income_tax_bound to its metadata's interval. Core's own
+    rounding would send exact ties to even, so the bounds are written here,
+    and Core's uprating, which starts after a parameter's last value, then
+    adds nothing. Bracket-adjustment amounts are not bounds and stay fixed.
+    Call this once, on a freshly loaded tree: it reads each bound's 2026
+    value as the statutory base.
     """
     income = parameters.gov.states.ar.tax.income
     index = income.uprating
-    for year in range(2027, end_year + 1):
-        current = get_ar_cpi(parameters, year - 1)
-        prior = get_ar_cpi(parameters, year - 2)
-        increase = min(
-            income.uprating_cap(f"{year}-01-01"), max(current / prior - 1, 0)
-        )
+    for year in range(AR_FIRST_INDEXED_YEAR, end_year + 1):
+        increase = get_ar_cost_of_living_adjustment(parameters, year)
         index.update(
             period=f"year:{year}-01-01:1",
             value=index(f"{year - 1}-01-01") * (1 + increase),
         )
     index.update(start=instant(f"{end_year}-01-01"), value=index(f"{end_year}-01-01"))
+
+    base_instant = f"{AR_FIRST_INDEXED_YEAR}-01-01"
+    for parameter in income.rates.main.get_descendants():
+        if not isinstance(parameter, Parameter):
+            continue
+        meta = parameter.metadata.get("uprating")
+        if not isinstance(meta, dict) or meta.get("parameter") != AR_INCOME_TAX_INDEX:
+            continue
+        interval = meta["rounding"]["interval"]
+        base = parameter(base_instant)
+        starts_at_base = parameter.values_list[-1].instant_str >= base_instant
+        for year in range(AR_FIRST_INDEXED_YEAR, end_year + 1):
+            parameter.update(
+                start=instant(f"{year}-01-01"),
+                value=round_ar_income_tax_bound(
+                    base * index(f"{year}-01-01"), interval
+                ),
+            )
+        if starts_at_base:
+            # Backdating copies a parameter's earliest value to earlier
+            # years; keep that the statutory value, not the indexed one.
+            parameter.update(
+                period=f"year:{AR_FIRST_INDEXED_YEAR - 1}-01-01:1", value=base
+            )
 
 
 def get_or_ctc_cola(parameters: ParameterNode, tax_year: int) -> float:

@@ -1,13 +1,22 @@
 description: Arkansas uses this index to adjust its income tax bracket boundaries for annual increases in the Consumer Price Index for All Urban Consumers, capped at three percent.
 values:
-  # Neutral history supports zero and infinite bounds defined before 2026.
+  # 1 through 2025, so the tax year 2026 statutory tables are the base.
+  # extend_ar_income_tax_uprating compounds each year's adjustment from 2026:
+  # A.C.A. 26-51-201(a)(5) indexes the Act 1 of 2026 tables under (d), and
+  # DFA indexed each newly enacted table in its first year (2022-2024 cards).
   2014-01-01: 1
-  # The published 2026 statutory tables anchor subsequent projections.
-  2026-01-01: 1
 metadata:
   unit: /1
   label: Arkansas income tax uprating index
   economy: false
   reference:
-  - title: A.C.A. § 26-51-201(d)(2), Act 1459 of 2013, § 2 (CPI-U average for twelve months ending August 31, positive increase capped at three percent)
+  - title: A.C.A. § 26-51-201(d)(2), Act 1459 of 2013, § 2 (CPI-U average for twelve months ending August 31 of the current calendar year, positive increase capped at three percent)
     href: https://arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2013%2FPublic%2F&file=1459.pdf&ddBienniumSession=2013%2F2013R#page=3
+  - title: A.C.A. § 26-51-201(a)(5), added by Act 1 of 2026 (1st Extraordinary Session), § 1 (the (a)(1)-(4) tables are indexed under (d))
+    href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2026S1%2FPublic%2FACT1.pdf#page=3
+  - title: 2022 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/TaxBrackets_2022.pdf#page=1
+  - title: 2023 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/TaxBrackets_2023.pdf#page=1
+  - title: 2024 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2024_TaxBrackets.pdf#page=1

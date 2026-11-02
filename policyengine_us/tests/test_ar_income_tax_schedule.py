@@ -25,19 +25,21 @@ independent transcription of each year's source:
   Rows from the top of the flat rate bracket upward form a $100 ladder whose
   minus adjustment falls $10 per row. Asterisked rows span $200, so the next
   row's start is skipped.
-- 2026: Act 1 of 2026 (1st Extraordinary Session), A.C.A. 26-51-201(a)(4).
-- 2027-2035: Act 1 of 2026's tables with every bracket bound indexed from
-  2026 by Arkansas's capped CPI-U index and rounded to the nearest $100.
+- 2026-2035: Act 1 of 2026's (1st Extraordinary Session) A.C.A.
+  26-51-201(a)(4) tables with every bracket bound indexed by Arkansas's
+  capped CPI-U index from 2026, the tables' first year (as DFA indexed each
+  new table in its first year), and rounded to the nearest $100 with exact
+  $50 ties down (as DFA's 2022 and 2024 cards did).
 
 Invariants:
 - reduction.yaml rows carry strictly increasing finite thresholds, with every
   .inf row after them (published years).
 - At every integer taxable income, tax is non-negative and never falls as
   income rises (2021-2040, 2050, 2075, 2100), except where the statute's own
-  (A) and (B)-(C) tables meet. In 2026 that seam drops: (a)(4)(A) taxes
-  $94,700 at $3,136.70, while (a)(4)(B) less the $290 (a)(4)(C) adjustment
-  taxes $94,701 at $3,134.04. Once indexing raises the (A) bounds, the seam
-  rises instead.
+  (A) and (B)-(C) tables meet. In Act 1's unindexed tables that seam drops:
+  (a)(4)(A) taxes $94,700 at $3,136.70, while (a)(4)(B) less the $290
+  (a)(4)(C) adjustment taxes $94,701 at $3,134.04. Indexing moves the seam
+  to the indexed threshold, the only place tax may fall.
 - The (C) ladder starts at the high-income threshold, its bounds strictly
   increase, and its amounts stay Act 1's $290-$10 steps; the (B) top rate
   equals the (A) top rate (2026-2040, 2050, 2075, 2100).
@@ -188,14 +190,19 @@ ACT_1_LADDER = [(94_700 + 100 * k, 290 - 10 * k) for k in range(29)] + [(97_600,
 
 def nearest_100(amount):
     # 26-51-201(d)(1): "rounding to the nearest one hundred dollars ($100)".
-    # Preserve Core's existing ties-to-even convention for exact $50 ties;
-    # the statute does not specify a tie-breaking rule.
-    return round(amount / 100) * 100
+    # The statute names no tie rule; DFA rounded both observed exact $50
+    # ties down (2022: $5,150 to $5,100; 2024: $25,750 to $25,700).
+    hundreds = round(amount / 100, 6)
+    return (np.floor(hundreds) + (hundreds - np.floor(hundreds) > 0.5)) * 100
 
 
 def indexed_act_1_of_2026_tax(year, ti):
     """Act 1 of 2026's tables, every bracket bound indexed from 2026."""
-    factor = UPRATING(f"{year}-01-01") / UPRATING("2026-01-01")
+    return act_1_of_2026_tax_at(UPRATING(f"{year}-01-01") / UPRATING("2025-01-01"), ti)
+
+
+def act_1_of_2026_tax_at(factor, ti):
+    """Act 1 of 2026's tables with every bracket bound times ``factor``."""
     starts = [nearest_100(start * factor) for start, _ in ACT_1_TABLE_A]
     ends = starts[1:] + [np.inf]
     rates = [rate for _, rate in ACT_1_TABLE_A]
@@ -223,8 +230,6 @@ def model_tax(year, ti, parameters=P):
 def source_tax(year, ti):
     if year in PUBLISHED_YEARS:
         return card_tax(year, ti)
-    if year == 2026:
-        return act_1_of_2026_tax(ti)
     return indexed_act_1_of_2026_tax(year, ti)
 
 
@@ -238,10 +243,8 @@ def test_ar_schedule_matches_source_at_every_integer_income(year):
     )
 
 
-def test_ar_indexed_reference_is_act_1_of_2026_in_2026():
-    diff = indexed_act_1_of_2026_tax(2026, TAXABLE_INCOME) - act_1_of_2026_tax(
-        TAXABLE_INCOME
-    )
+def test_ar_indexed_reference_with_no_increase_is_act_1_of_2026():
+    diff = act_1_of_2026_tax_at(1, TAXABLE_INCOME) - act_1_of_2026_tax(TAXABLE_INCOME)
     assert np.abs(diff).max() < 1e-6
 
 
@@ -267,7 +270,7 @@ def test_ar_schedule_before_modeled_years_still_computes(year):
 # $100,000 at $3,810.70, and its "$100,001 and over" rule taxes $100,001 at
 # $3,809.04. (The card's table is computed at row midpoints, where the
 # 99,901-100,001 row is $3,809; the model uses exact incomes.)
-STATUTORY_DROPS = {2025: {100_000: -1.66}, 2026: {94_700: -2.66}}
+STATUTORY_DROPS = {2025: {100_000: -1.66}}
 
 
 def invariant_grid(year):
