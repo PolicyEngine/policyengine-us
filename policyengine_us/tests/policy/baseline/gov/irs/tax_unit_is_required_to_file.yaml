@@ -573,3 +573,22 @@
     # is $16,100 + $2,050 = $18,150 and would not require a return under (f).
     standard_deduction: 18_150
     tax_unit_is_required_to_file: true
+
+- name: Disability pay treated as wages is earned income for the filing requirement
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        disability_benefits: 10_000
+        disability_benefits_before_minimum_retirement_age: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+  output:
+    # $10,000 of gross income, all earned, under the $14,600 single
+    # threshold, so no unearned income over the (a)(1)(C) amount either.
+    tax_unit_is_required_to_file: false

@@ -1,0 +1,14 @@
+- name: Case 1, default il_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: IL
+  output:
+    il_other_subtractions: 0.0
+
+- name: Case 2, il_other_subtractions flows into il_base_income_subtractions
+  period: 2024
+  input:
+    state_code: IL
+    il_other_subtractions: 800
+  output:
+    il_base_income_subtractions: 800
