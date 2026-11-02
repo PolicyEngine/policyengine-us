@@ -941,9 +941,9 @@
     is_in_medicaid_medically_needy_category: [true, true]
     is_medically_needy_for_medicaid: [true, true]
 
-# Arkansas' 2,000 individual asset limit: 178.57 + 1,547.79 + 273.64 =
+# Hawaii's 2,000 individual asset limit: 178.57 + 1,547.79 + 273.64 =
 # 2,000.00. The float32 balances add to 2,000.0001 unless rounded to cents.
-- name: Three accounts that total exactly the Arkansas limit pass
+- name: Three accounts that total exactly the Hawaii limit pass
   period: 2026
   input:
     is_disabled: true
@@ -955,12 +955,12 @@
     bank_account_assets: 178.57
     stock_assets: 1_547.79
     bond_assets: 273.64
-    state_code: AR
+    state_code: HI
   output:
     is_medically_needy_for_medicaid: true
 
 # 178.57 + 1,547.79 + 273.65 = 2,000.01, a cent over the limit.
-- name: Three accounts a cent over the Arkansas limit fail
+- name: Three accounts a cent over the Hawaii limit fail
   period: 2026
   input:
     is_disabled: true
@@ -972,6 +972,6 @@
     bank_account_assets: 178.57
     stock_assets: 1_547.79
     bond_assets: 273.65
-    state_code: AR
+    state_code: HI
   output:
     is_medically_needy_for_medicaid: false

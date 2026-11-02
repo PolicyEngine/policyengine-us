@@ -143,3 +143,28 @@
     # Resources: 14,000 + 501 = 14,501 exceeds the lower resource limit
     # but stays within the higher limit for households with an elderly member
     ca_tanf_resources_eligible: true
+
+# 8,441.48 + 8.48 + 3,687.04 = 12,137.00, at the limit.
+# The float32 balances add to a fraction of a cent above 12,137 unless rounded to cents.
+- name: Three accounts that total exactly the resource limit pass
+  period: 2025
+  input:
+    age: 30
+    bank_account_assets: 8_441.48
+    stock_assets: 8.48
+    bond_assets: 3_687.04
+    state_code: CA
+  output:
+    ca_tanf_resources_eligible: true
+
+# 8,441.48 + 8.48 + 3,687.05 = 12,137.01, a cent over the limit.
+- name: Three accounts a cent over the resource limit fail
+  period: 2025
+  input:
+    age: 30
+    bank_account_assets: 8_441.48
+    stock_assets: 8.48
+    bond_assets: 3_687.05
+    state_code: CA
+  output:
+    ca_tanf_resources_eligible: false
