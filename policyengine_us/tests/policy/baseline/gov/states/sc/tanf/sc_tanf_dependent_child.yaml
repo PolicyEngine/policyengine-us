@@ -85,3 +85,24 @@
     # included as a dependent in the TANF BG"; Section 8.16 B likewise.
     sc_tanf_dependent_child: [false, true, true]
     sc_tanf_gross_earned_income: [0, 0, 0]
+
+- name: Case 5, a minor parent who lives with no adult heads the household.
+  period: 2026-01
+  input:
+    people:
+      minor_parent:
+        age: 17
+        employment_income_before_lsr: 6_000
+      baby:
+        age: 0
+    households:
+      household:
+        members: [minor_parent, baby]
+        state_code: SC
+  output:
+    # No tax-unit role is input, and roles are inferred only for adults, so
+    # neither member heads the tax unit. In a group with no adult the oldest
+    # member heads the household, so Section 7.5 counts her earnings.
+    sc_tanf_dependent_child: [false, true]
+    # 6,000 / 12 = 500 a month.
+    sc_tanf_gross_earned_income: [500, 0]

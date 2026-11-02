@@ -776,3 +776,30 @@
     sc_tanf_gross_income: 600
     # floor((1,110 - 100) x 0.4046 = 408.65) = 408.
     sc_tanf: 408
+
+- name: Case 26, a minor parent who lives with no adult heads the household.
+  period: 2026-01
+  input:
+    people:
+      minor_parent:
+        age: 17
+        employment_income_before_lsr: 6_000
+      baby:
+        age: 0
+    households:
+      household:
+        members: [minor_parent, baby]
+        state_code: SC
+  output:
+    # No tax-unit role is input. In a group with no adult the oldest member
+    # heads the household, so Section 7.5 counts her earnings.
+    sc_tanf_dependent_child: [false, true]
+    sc_tanf_gross_earned_income: [500, 0]
+    sc_tanf_gross_income: 500
+    # 6,000 / 12 = 500 a month, less the 50% January disregard: 250.
+    sc_tanf_countable_income: 250
+    # Size 2: floor((15,650 + 5,500) / 12 x 0.5 = 881.25) = 881.
+    sc_tanf_need_standard: 881
+    # floor((881 - 250) x 0.4046 = 255.30) = 255. Treating her as a dependent
+    # child would leave 0 countable and floor(881 x 0.4046 = 356.45) = 356.
+    sc_tanf: 255

@@ -13,8 +13,10 @@ class sc_tanf_dependent_child(Variable):
     )
     documentation = (
         "A member who meets the dependent-child age test, under 18 or under "
-        "19 in secondary school, and is not the head or spouse of the tax "
-        "unit. A minor parent who heads the household counts as a parent."
+        "19 in secondary school, and doesn't head the household. The tax "
+        "unit's head or spouse heads it, and in a group with no adult the "
+        "oldest member does, so a minor parent who heads the household "
+        "counts as a parent."
     )
 
     def formula(person, period, parameters):
@@ -31,4 +33,10 @@ class sc_tanf_dependent_child(Variable):
         # parent is a dependent in the benefit group. The tax unit head or
         # spouse stands in for the head of household.
         head_or_spouse = person("is_tax_unit_head_or_spouse", year)
-        return meets_age_test & ~head_or_spouse
+        # Tax-unit roles are inferred only for adults, so a minor parent who
+        # lives with no adult heads no tax unit unless roles are input. The
+        # oldest member of a group with no adult heads the household.
+        no_adult = ~person.spm_unit.any(~person("is_child", year))
+        oldest = person.get_rank(person.spm_unit, -age) == 0
+        heads_household = head_or_spouse | (no_adult & oldest)
+        return meets_age_test & ~heads_household
