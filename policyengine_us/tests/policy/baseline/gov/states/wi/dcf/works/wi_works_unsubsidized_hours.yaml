@@ -195,3 +195,54 @@
         state_code: WI
   output:
     wi_works_unsubsidized_hours: 12
+
+- name: Case 10, a linked pregnant adult's hours count over their own parent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 55
+        person_id: 1
+      person2:
+        age: 30
+        person_id: 2
+        parent_1_id: 1
+        is_pregnant: true
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 5
+        person_id: 3
+        parent_1_id: 2
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_works_unsubsidized_hours: 40
+
+- name: Case 11, with no parent named, the fewest hours among those who claim the child count.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 60
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_works_unsubsidized_hours: 0

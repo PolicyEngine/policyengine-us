@@ -14,7 +14,11 @@ class wi_works_custodial_parent(Variable):
     defined_for = StateCode.WI
 
     def formula(person, period, parameters):
-        dependent_child = person("is_person_demographic_tanf_eligible", period)
+        # A pregnant adult meets the TANF test in their own right, which doesn't
+        # make their parent a custodial parent.
+        dependent_child = person("is_person_demographic_tanf_eligible", period) & (
+            ~person("is_pregnant", period) | person("is_child", period.this_year)
+        )
         unit = person.spm_unit.reference_entity.members_entity_id
         custodial = np.zeros(person.count, dtype=bool)
         for parent in co_resident_parent_indices(person, period.this_year):
