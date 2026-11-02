@@ -12,7 +12,7 @@ class co_leap_eligible(Variable):
         "https://www.law.cornell.edu/uscode/text/42/8624#b_2_B",
         # PDF pages 5,8
         "https://liheapch.acf.gov/docs/2026/state-plans/CO_Plan_2026.pdf#page=5",
-        # PDF pages 29,31,46,51-53,55
+        # PDF pages 29,31,46,51-53,55,57
         "https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=29",
     )
 
@@ -37,7 +37,9 @@ class co_leap_eligible(Variable):
         federal_floor = np.round(guideline * p.gov.hhs.liheap.fpg_floor, 2)
         cost = spm_unit("co_leap_heating_cost", period)
         included = spm_unit("heat_expense_included_in_rent", period)
-        subsidized = spm_unit("receives_housing_assistance", period)
+        subsidized = spm_unit(
+            "receives_housing_assistance", period
+        ) | spm_unit.household("is_in_public_housing", period)
         fuel = spm_unit("heating_type", period)
         fuels = fuel.possible_values
         dwelling = spm_unit("co_leap_dwelling_type", period)

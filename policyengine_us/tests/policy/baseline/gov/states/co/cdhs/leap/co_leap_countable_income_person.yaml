@@ -50,7 +50,7 @@
         farm_rent_income: 1_800
         taxable_interest_income: 100
         tax_exempt_interest_income: 50
-        dividend_income: 300
+        ordinary_dividend_income: 300
         unemployment_compensation: 400
         strike_benefits: 500
         taxable_pension_income: 1_000
@@ -316,10 +316,10 @@
     co_leap_countable_income: 12_000
     co_leap_household_size: 1
 
-# Review C3: the plan's lottery inclusion and manual prize category are
+# The plan's lottery inclusion and manual prize category are
 # unearned income, including a child's receipts. Foster-member income remains
 # excluded by the separate household rule. No monthly-to-annual double count.
-- name: Lottery annuity receipts count for adults and children but not foster members.
+- name: Case 10, lottery annuity receipts count for adults and children but not foster members.
   period: 2026
   input:
     people:
@@ -353,7 +353,7 @@
     co_leap_countable_income_person: [2_400, 1_200, 0]
 
 
-# Contract control: Colorado has no modeled state UI implementation yet. Supply
+# Colorado has no modeled state UI implementation yet. Supply
 # the existing modeled aggregate to test the shared fallback, not a new income
 # input or an assumed Colorado weekly benefit. Reported UI takes precedence.
 - name: Case 11, modeled unemployment fallback and reported precedence count once.
@@ -370,3 +370,94 @@
     total_unemployment_compensation: [1_200, 400]
     co_leap_countable_income_person: [1_200, 400]
     co_leap_countable_income: [1_200, 400]
+
+# 9 CCR 2503-7 3.752.21(L) counts Aid to the Needy Disabled. SSI reduced to
+# 700/month by in-kind support plus the AND-CS supplement to the 994 grant
+# standard (294/month): 700*12 + 294*12 = 8,400 + 3,528 = 11,928.
+- name: Case 12, the AND state supplement counts with SSI.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        ssi: 8_400
+        co_state_supplement: 3_528
+        co_oap: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_leap_countable_income_person: 11_928
+    co_leap_countable_income: 11_928
+
+# 9 CCR 2503-7 3.752.211 G and K count railroad retirement and trust payments:
+# 4,800 + 1,200 = 6,000.
+- name: Case 13, railroad retirement and trust payments count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        ssi: 0
+        co_oap: 0
+        railroad_benefits: 4_800
+        estate_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_leap_countable_income_person: 6_000
+    co_leap_countable_income: 6_000
+
+# 9 CCR 2503-7 3.752.21 counts payments from any other source that are a gain or
+# benefit to the applicant: 1,200 + 2,400 = 3,600.
+- name: Case 14, miscellaneous income and guaranteed-income cash count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+        co_oap: 0
+        miscellaneous_income: 1_200
+        gi_cash_assistance: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_leap_countable_income_person: 3_600
+    co_leap_countable_income: 3_600

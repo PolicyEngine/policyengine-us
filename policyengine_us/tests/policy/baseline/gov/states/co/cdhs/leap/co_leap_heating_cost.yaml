@@ -132,13 +132,26 @@
   output:
     co_leap_heating_cost: [0, 0, 0]
 
-# The published rent table has no NONE, unspecified, solar or other-fuel column; these zeros describe unsupported input classifications, not sourced legal exclusions.
+# The published rent table has no NONE, unspecified or other-fuel column; these zeros describe unsupported input classifications, not sourced legal exclusions.
 - name: "Case 11, unsupported heat-in-rent fuel classifications do not borrow a table."
   period: 2026
   absolute_error_margin: 0.01
   input:
-    state_code: ["CO", "CO", "CO", "CO"]
-    heating_type: ["NONE", "UNSPECIFIED", "SOLAR", "OTHER"]
-    heat_expense_included_in_rent: [true, true, true, true]
+    state_code: ["CO", "CO", "CO"]
+    heating_type: ["NONE", "UNSPECIFIED", "OTHER"]
+    heat_expense_included_in_rent: [true, true, true]
   output:
-    co_leap_heating_cost: [0, 0, 0, 0]
+    co_leap_heating_cost: [0, 0, 0]
+
+# No source lists solar heat; a solar home is treated as electric. A house's 1,000 direct electric bill takes the 62% share: 620. A house's 472 electric heat-in-rent standard takes it too: 472 x 0.62 = 292.64.
+- name: "Case 12, solar heat takes the electric share and the electric rent standard."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO"]
+    heating_type: ["SOLAR", "SOLAR"]
+    pre_subsidy_electricity_expense: [1_000, 0]
+    heat_expense_included_in_rent: [false, true]
+    co_leap_dwelling_type: ["HOUSE_MODULAR", "HOUSE_MODULAR"]
+  output:
+    co_leap_heating_cost: [620, 292.64]

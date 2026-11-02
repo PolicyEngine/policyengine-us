@@ -8,7 +8,7 @@ class co_leap(Variable):
     unit = USD
     label = "Colorado LEAP regular heating assistance"
     defined_for = "co_leap_eligible"
-    # PDF pages 92-95
+    # PDF pages 90,92-95
     reference = (
         "https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=92"
     )
@@ -27,7 +27,10 @@ class co_leap(Variable):
             * (1 - contribution)
             / max_(shared_households, 1)
         )
-        subsidized = spm_unit("receives_housing_assistance", period)
+        subsidized = spm_unit(
+            "receives_housing_assistance", period
+        ) | spm_unit.household("is_in_public_housing", period)
+        # The allowance comes off last, following the order at manual pp. 90, 94.
         adjusted = shared_cost - subsidized * p.subsidized_housing_deduction
         # FY2026 verified policy; parameter backfilling does not verify prior
         # years. The minimum applies even when adjusted costs are smaller.

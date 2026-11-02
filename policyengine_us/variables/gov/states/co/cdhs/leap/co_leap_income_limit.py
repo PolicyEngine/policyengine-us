@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.hhs_smi import smi
+from policyengine_us.variables.gov.hhs.hhs_smi import liheap_smi_limit
 
 
 class co_leap_income_limit(Variable):
@@ -19,7 +19,8 @@ class co_leap_income_limit(Variable):
         capped_size = min_(size, p.additional_person_threshold)
         state = spm_unit.household("state_code_str", period)
         monthly = np.floor(
-            p.smi_rate * smi(capped_size, state, period, parameters) / MONTHS_IN_YEAR
+            liheap_smi_limit(capped_size, state, p.smi_rate, period, parameters)
+            / MONTHS_IN_YEAR
         )
         extra = max_(size - p.additional_person_threshold, 0)
         # Flooring reproduces all eight FY2026 published SMI rows; the

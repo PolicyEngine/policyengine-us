@@ -20,7 +20,10 @@ class co_leap_countable_income_person(Variable):
             earned = earned + max_(person(source, period), 0)
         age = person("age", period)
         earned = where(age >= p.earned_min_age, earned, 0)
-        unearned = sum(max_(person(source, period), 0) for source in p.sources.unearned)
+        unearned = 0
+        for source in p.sources.unearned:
+            # add() annualizes monthly sources such as the AND state supplement.
+            unearned = unearned + max_(add(person, period, [source]), 0)
         # Annual flows approximate ongoing application-month income. The
         # monthly SSA and SSI amounts lose cents separately for each person.
         # Medicare premiums remain in gross SSA income under Colorado rules.

@@ -170,7 +170,8 @@
     co_leap_eligible: [true, true]
     co_leap: [293.6, 330.3]
 
-# First unit income 1,000/month has 10% contribution. Divide by both units even though second fails income:1,000*0.9/2 -180 =270. Dividing after subsidy or counting only eligible units gives the wrong amount.
+# First unit income 1,000/month has a 10% contribution. Divide by both units even though the second fails
+# income, then take the allowance last, in the manual's order (pp. 90, 94): 1,000 x 0.9 / 2 - 180 = 270.
 - name: "Case 7, an ineligible sharing unit still counts and housing deduction follows division."
   period: 2026
   absolute_error_margin: 0.01
@@ -319,7 +320,7 @@
     co_leap_eligible: true
     co_leap: 1_000
 
-# Review C3: monthly wages 3,500 plus a 200 lottery annuity produce
+# Monthly wages 3,500 plus a 200 lottery annuity produce
 # annual countable income 44,400, above the published 43,284 one-person limit.
 # Accepted plan page6 includes lottery winnings; manual page46 counts prizes.
 - name: Case 11, regular lottery receipts count toward the income eligibility limit.
@@ -401,14 +402,14 @@
     co_leap_eligible: true
     co_leap: 1_000
 
-# Two actual 25-member sharing households retain the ordinary state size cap15
-# and income ceiling132,360. The 2025 FPG for25 is15,650+24*5,500=147,650;
-# its cent-rounded110% protection ends strictly below162,415. At150,000income,
-# the20%contribution applies and the1,000heatingbill produces800. Exact162,415
-# is not protected. Members are actual qualified nonfoster people, not a size
-# override; the state cap does not replace their legal sharing-household size.
-# Manual pages4-5: size15 monthly125%upper=5,641+7*573=9,652;
-#175%upper=7,898+7*802=13,512. Thus12,500/month requires20%, not30%.
+# Two actual 25-member sharing households retain the ordinary state size cap of
+# 15 and income ceiling of 132,360. The 2025 FPG for 25 is 15,650 + 24 x 5,500 =
+# 147,650; its cent-rounded 110% protection ends strictly below 162,415. At 150,000
+# of income the 20% contribution applies and the 1,000 heating bill produces 800.
+# Exactly 162,415 is not protected. Members are actual qualified nonfoster people,
+# not a size override; the state cap does not replace their sharing-household size.
+# Manual pages 4-5: size 15 monthly 125% upper = 5,641 + 7 x 573 = 9,652; 175% upper
+# = 7,898 + 7 x 802 = 13,512. Thus 12,500 a month requires 20%, not 30%.
 - name: Case 14, actual large households retain strict federal income protection.
   period: 2026
   input:
@@ -741,3 +742,69 @@
     co_leap_income_contribution_rate: [0.2, 0.3]
     co_leap_eligible: [true, false]
     co_leap: [800, 0]
+
+# Public housing receives the subsidized-housing treatment without a voucher:
+# clip(600 - 180, 200, 1,000) = 420, and public housing with heat in rent is
+# ineligible, as in Case 5.
+- name: Case 15, public housing receives the subsidized-housing treatment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [CO, CO]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    age: [35, 35]
+    ssi: [0, 0]
+    co_oap: [0, 0]
+    co_tanf: [0, 0]
+    gas_expense: [600, 600]
+    receives_housing_assistance: [false, false]
+    is_in_public_housing: [true, true]
+    heat_expense_included_in_rent: [false, true]
+  output:
+    co_leap_eligible: [true, false]
+    co_leap: [420, 0]
+
+# First unit: 50,000 / 12 = 4,167 a month, above the 3,607 limit and the 17,215
+# floor: ineligible. Second unit: 15,000 / 12 = 1,250 a month, the 10% band
+# (above 978, at most 1,630): 1,000 x 0.9 = 900.
+- name: Case 16, miscellaneous income counts toward the limit and the contribution.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+        co_oap: 0
+        miscellaneous_income: 50_000
+      person2:
+        age: 40
+        ssi: 0
+        co_oap: 0
+        miscellaneous_income: 15_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        co_tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        co_tanf: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household1:
+        members: [person1]
+        state_code: CO
+      household2:
+        members: [person2]
+        state_code: CO
+  output:
+    co_leap_eligible: [false, true]
+    co_leap: [0, 900]

@@ -1052,6 +1052,66 @@ candidates:
   state: ruled
   note: The October 2026 ruling retains the statutory bar; verify the weak literal joint-return interpretation and
     obtain a corresponding 2025 example.
+- id: us-co:leap-subsidized-allowance-order
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Colorado's $180 subsidized-housing allowance come off the heating cost remaining after Step B, before
+    the electric, income and sharing adjustments, or last, after them?
+  sources:
+  - kind: regulation
+    citation: 9 CCR 2503-7 3.758.47 Steps F and G, p.43
+    url: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12221&fileName=9%20CCR%202503-7#page=43
+  - kind: plan
+    citation: Colorado FY2026 LIHEAP plan attachment, benefit methodology, p.2
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heat-Crisis_2026.pdf#page=2
+  - kind: manual
+    citation: 2025-26 LEAP Training and Operations Manual, pp.90, 94
+    url: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=90
+  readings:
+    statute: Step F deducts the allowance from the cost remaining after Step B, and Step G applies Steps B-F. The
+      plan attachment repeats this text.
+    other: The manual applies the adjustments in its listed order, with the allowance last.
+  example: A subsidized household sharing a $1,000 bill with one other household, at a 10% contribution, receives $270
+    with the allowance last (1,000 x 0.9 / 2 - 180) and $369 with it first ((1,000 - 180) x 0.9 / 2).
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/co/cdhs/leap/co_leap.py
+  state: unreviewed
+  note: PE-US takes the allowance last. Step F is lettered after Steps C-E, and the same words sat under the 2017 rule's
+    Step E, after the electric and sharing steps.
+- id: us-co:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can Colorado's LEAP income limit, which stops growing at 15 members, exclude a household of 21 or more whose
+    income is below the federal 110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: manual
+    citation: Colorado 2025-26 LEAP Training Operations Manual, income guidelines and household size, pp.4, 31
+    url: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=4
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The manual caps household size at 15, so the $132,360 limit falls below the floor from 21 actual members.
+  example: Twenty-five people with $150,000 exceed the $132,360 size-15 limit but are below the $162,415 floor (2025
+    guideline, one-year lag), so they keep the 20% contribution and an $800 award on a $1,000 bill.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/co/cdhs/leap/co_leap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/co/cdhs/leap/payment/fpg_year_lag.yaml
+  state: unreviewed
+  note: PE-US applies the floor to the actual qualified household, before the state size cap, rounded to cents with
+    the statute's strict "less than" (co_leap_eligible.py).
 - id: us-co:oap-initial-application-income-test
   program: old-age-pension
   years:
