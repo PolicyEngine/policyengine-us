@@ -80,7 +80,10 @@ class wa_working_families_tax_credit(Variable):
             tax_unit("eitc_relevant_investment_income", period)
             <= eitc.phase_out.max_investment_income
         )
-        earnings = tax_unit("filer_adjusted_earnings", period)
+        # RCW 82.08.0206(2)(b): income is earned income under 26 U.S.C. 32,
+        # both spouses combined on a joint return, net of a self-employment
+        # loss.
+        earnings = tax_unit("eitc_earned_income", period)
         agi = tax_unit("adjusted_gross_income", period)
         higher_income = max_(earnings, agi)
         maximum_qualifying_income = tax_unit(

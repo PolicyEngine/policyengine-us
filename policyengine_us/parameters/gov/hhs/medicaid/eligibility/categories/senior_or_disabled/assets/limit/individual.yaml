@@ -8,22 +8,50 @@ metadata:
   reference:
     - title: "Medicaid Eligibility and Enrollment Policies for Seniors and People with Disabilities (Non-MAGI) During the Unwinding | KFF (June 2024)"
       href: https://www.kff.org/report-section/medicaid-eligibility-and-enrollment-policies-for-seniors-and-people-with-disabilities-non-magi-during-the-unwinding-appendix/
+    - title: "California DHCS All County Welfare Directors Letter 21-31, Increases to the Asset Limits for Non-Modified Adjusted Gross Income Medi-Cal Programs #page 2-4"
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/21-31.pdf#page=2
     - title: "Asset Limit Changes for Non-MAGI Medi-Cal | California DHCS (asset limit reinstated at $130,000 for an individual effective January 1, 2026)"
       href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/Pages/Asset-Limit-Changes-for-Non-MAGI-Medi-Cal.aspx
     - title: "California DHCS All County Welfare Directors Letter 25-14 (reinstatement of the non-MAGI Medi-Cal asset limit)"
       href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/25-14.pdf
+    - title: Missouri DSS MO HealthNet for the Aged, Blind and Disabled Appendix J - Eligibility Standards for Non-MAGI Programs (10/2026 edition; spend down resource maximum effective July 1, 2026)
+      href: https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=1
+    - title: Missouri Revised Statutes 208.010.2(7)
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=208.010
+    - title: 13 Missouri Code of State Regulations 40-8.020(4)(A)-(C)
+      href: https://www.sos.mo.gov/CMSImages/AdRules/csr/current/13csr/13c40-8.pdf#page=2
+    - title: Missouri DSS Family Support Division, IM-70 Annual MO HealthNet for the Aged, Blind, and Disabled (MHABD) Asset Limit Increase (individual $5,035, couple $10,070 effective July 1, 2021)
+      href: https://web.archive.org/web/20210801111201/https://dssmanuals.mo.gov/2021/07/01/im-70-2/
+    - title: Missouri DSS Family Support Division, IM-77 Annual MHABD Asset Limit Increase (individual $5,301.85, couple $10,603.70 effective July 1, 2022)
+      href: https://web.archive.org/web/20220705011659/https://dssmanuals.mo.gov/2022/06/14/im-77-3/
+    - title: Missouri DSS MHABD Appendix J - Eligibility Standards for MHABD (10/2022 edition; spend down resource maximum effective July 1, 2022)
+      href: https://web.archive.org/web/20220927091025/https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=1
+    - title: Missouri DSS Family Support Division, IM-57 July 2023 Annual Non-MAGI Program Adjustments (individual $5,726, couple $11,452 effective July 1, 2023)
+      href: https://web.archive.org/web/20230925041524/https://dssmanuals.mo.gov/2023/06/08/im-57-4/
+    - title: Missouri DSS MHABD Appendix J - Eligibility Standards for Non-MAGI Programs (07/2024 edition; spend down resource maximum effective July 1, 2024)
+      href: https://web.archive.org/web/20240612134513/https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=1
+    - title: Missouri DSS MHABD Appendix J - Eligibility Standards for Non-MAGI Programs (07-2025 edition; spend down resource maximum effective July 1, 2025)
+      href: https://web.archive.org/web/20250831223642/https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=1
+    - title: Missouri DHSS, Medicaid Spend Down Limit Changes (effective July 1, 2023)
+      href: https://health.mo.gov/care-providing/long-term-care/medicaid-spend-down-limit-changes
+    - title: Missouri DHSS, Medicaid Resource Limit/Spenddown Amount (effective July 1, 2024)
+      href: https://health.mo.gov/care-providing/long-term-care/medicaid-resource-limitspenddown-amount
+    - title: Missouri DHSS, Resource Limit/Spenddown Amount (effective July 1, 2025)
+      href: https://health.mo.gov/care-providing/long-term-care/resource-limitspenddown-amount
 
+# AR, OK and SC are omitted: uses_msp_limit sets their limit at the
+# Medicare Savings Program resource limit, so the formula ignores this
+# parameter for them and their keys resolve to 0.
 AL:
   2015-01-01: 2_000
 AK:
   2015-01-01: 2_000
 AZ:
   2015-01-01: .inf
-AR:
-  2015-01-01: 7_560
-  2024-01-01: 9_430
 CA:
   2015-01-01: 2_000
+  # Annual calculations read January 1, so this first applies in 2023.
+  2022-07-01: 130_000
   2024-01-01: .inf
   2026-01-01: 130_000
 CO:
@@ -70,8 +98,21 @@ MN:
 MS:
   2015-01-01: 2_000
 MO:
-  2015-01-01: 3_000
-  2024-01-01: 5_726
+  # Annual calculations read parameters on January 1, so each July 1 value
+  # first applies in the next calendar year.
+  # Before July 1, 2017, the limit for blind applicants was 2,000; this
+  # parameter has no blind split.
+  2015-01-01: 1_000
+  2017-07-01: 2_000
+  2018-07-01: 3_000
+  2019-07-01: 4_000
+  2020-07-01: 5_000
+  2021-07-01: 5_035
+  2022-07-01: 5_301.85
+  2023-07-01: 5_726
+  2024-07-01: 5_909.25
+  2025-07-01: 6_068.8
+  2026-07-01: 6_220.5
 MT:
   2015-01-01: 2_000
 NE:
@@ -93,18 +134,12 @@ ND:
   2015-01-01: 3_000
 OH:
   2015-01-01: 2_000
-OK:
-  2015-01-01: 2_000
-  2024-01-01: 9_430
 OR:
   2015-01-01: 2_000
 PA:
   2015-01-01: 2_000
 RI:
   2015-01-01: 4_000
-SC:
-  2015-01-01: 7_560
-  2024-01-01: 9_430
 SD:
   2015-01-01: 2_000
 TN:

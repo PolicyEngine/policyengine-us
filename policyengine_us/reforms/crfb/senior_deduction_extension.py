@@ -5,13 +5,17 @@ from policyengine_core.periods import instant
 
 def create_senior_deduction_extension() -> Reform:
     def modify_parameters(parameters):
-        # Update deductions_if_itemizing to include additional_senior_deduction after 2028
+        # Update deductions_if_itemizing to include additional_senior_deduction after 2028.
+        # The tips and overtime deductions stay listed, as in the baseline lists;
+        # their own in_effect parameters zero them after 2028.
         parameters.gov.irs.deductions.deductions_if_itemizing.update(
             start=instant("2029-01-01"),
             value=[
                 "qualified_business_income_deduction",
                 "wagering_losses_deduction",
                 "itemized_taxable_income_deductions",
+                "tip_income_deduction",
+                "overtime_income_deduction",
                 "additional_senior_deduction",
             ],
         )
@@ -22,6 +26,8 @@ def create_senior_deduction_extension() -> Reform:
             value=[
                 "standard_deduction",
                 "qualified_business_income_deduction",
+                "tip_income_deduction",
+                "overtime_income_deduction",
                 "additional_senior_deduction",
                 "charitable_deduction_for_non_itemizers",
             ],
