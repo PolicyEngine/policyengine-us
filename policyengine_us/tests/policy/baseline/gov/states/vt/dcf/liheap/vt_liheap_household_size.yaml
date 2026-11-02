@@ -1,0 +1,49 @@
+# Household size counts members who are U.S. citizens, nationals or qualified
+# immigrants (rules 2903(a)(2) and 2907). Gross income counts every member,
+# regardless of immigration status (rule 2910(a)). Rules, "#page 10,16,25":
+# https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=10
+# Guideline for 2026 (P-2913, effective March 1, 2025): the 2025 guideline,
+# 15,650 + 5,500 per additional person. Wages use the 2026 Vermont minimum wage,
+# $14.42 an hour (Vermont Department of Labor, indexed under 21 V.S.A. 384(a)).
+
+- name: Case 1, an undocumented spouse is not counted but the spouse's wages are.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 38
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        # 14.42 x 30 hours x 52 weeks = 22,495.20.
+        employment_income: 22_495.2
+      spouse:
+        age: 36
+        immigration_status: UNDOCUMENTED
+        # 14.42 x 12 hours x 52 weeks = 8,998.08.
+        employment_income: 8_998.08
+      child1:
+        age: 10
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+        # No Reach Up.
+        tanf: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: VT
+  output:
+    # The qualified immigrant head and the citizen child count; the spouse does not.
+    vt_liheap_household_size: 2
+    # Everyone's wages count: 22,495.20 + 8,998.08 = 31,493.28.
+    vt_liheap_income: 31_493.28
+    # P-2913 size 2: 3,262 a month = 39,144. Size 2 guideline 15,650 + 5,500 =
+    # 21,150; 185% = 39,127.50 caps the printed amount; LIHEAP maximum max(150% =
+    # 31,725, 60% SMI floor(floor(131,654 x 0.6) x 0.68) = 53,714) = 53,714.
+    # Limit = min(39,144, 39,127.50, 53,714) = 39,127.50.
+    vt_liheap_income_limit: 39_127.5
+    # 31,493.28 / 12 = 2,624.44 a month, in P-2914A size 2 "145% To 154%"
+    # ($2,540-$2,716): 66%. A size of 3 would be in "115% To 124%" ($2,533-$2,755):
+    # 75%.
+    vt_liheap_heat_cost_percentage: 0.66

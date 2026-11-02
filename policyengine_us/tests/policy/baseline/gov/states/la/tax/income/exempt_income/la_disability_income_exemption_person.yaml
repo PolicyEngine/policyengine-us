@@ -81,3 +81,23 @@
         state_code: LA
   output:
     la_disability_income_exemption_person: [6_000]
+
+- name: Exemption is limited to the disability benefits included in federal AGI.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        disability_benefits: 8_000
+        tax_exempt_disability_benefits: 4_000
+        la_receives_blind_exemption: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # min(8,000 - 4,000, 6,000 cap) = 4,000.
+    la_disability_income_exemption_person: 4_000

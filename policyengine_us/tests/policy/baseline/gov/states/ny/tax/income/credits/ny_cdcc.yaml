@@ -2,17 +2,20 @@
   period: 2022
   input:
     count_cdcc_eligible: 3
-    cdcc_relevant_expenses: 10_000
+    tax_unit_childcare_expenses: 10_000
     state_code: NY
     employment_income: 10_000
   output:
-    ny_cdcc: 3_850 # From the tax form IT-216.
+    # Form IT-216: line 5 = min(10,000, 7,500 for three persons) = 7,500;
+    # line 10 (recomputed FAGI 10,000) = .35; line 13 (NYAGI 10,000) = 1.100.
+    # 7,500 x .35 x 1.1 = 2,887.50
+    ny_cdcc: 2_887.5
 
 - name: Separate filer with qualifying individuals gets no credit, IT-216 applies IRC 21(e)(2).
   period: 2022
   input:
     count_cdcc_eligible: 3
-    cdcc_relevant_expenses: 10_000
+    tax_unit_childcare_expenses: 10_000
     state_code: NY
     employment_income: 10_000
     filing_status: SEPARATE
@@ -35,10 +38,300 @@
         members: [person1, person2]
         filing_status: SEPARATE
         count_cdcc_eligible: 3
-        cdcc_relevant_expenses: 10_000
+        tax_unit_childcare_expenses: 10_000
     households:
       household:
         members: [person1, person2]
         state_code: NY
   output:
-    ny_cdcc: 3_850
+    # Same Form IT-216 computation as above: 7,500 x .35 x 1.1
+    ny_cdcc: 2_887.5
+
+- name: 2021 credit uses the New York limits, not the ARPA federal credit
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 150_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 73_333
+        is_tax_unit_spouse: true
+      child1:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 11_368
+    households:
+      household:
+        members: [person1, person2, child1]
+        state_code: NY
+  output:
+    # NY decoupled from IRC changes after March 1, 2020 (IT-216-I 2021, page 1).
+    # Line 5 = 3,000; line 10 (FAGI 223,333) = .20; line 13 (NYAGI over 150,000) = .200.
+    ny_cdcc: 120
+
+- name: 2021 two children, NY AGI over 150,000
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 60_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 7
+        is_tax_unit_dependent: true
+      child2:
+        age: 9
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        state_code: NY
+  output:
+    # Line 5 = 6,000; line 10 = .20; line 13 (NYAGI 160,000) = .200.
+    ny_cdcc: 240
+
+- name: 2023 three children use the 7,500 New York expense limit
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 60_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 7
+        is_tax_unit_dependent: true
+      child2:
+        age: 9
+        is_tax_unit_dependent: true
+      child3:
+        age: 11
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1, child2, child3]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2, child1, child2, child3]
+        state_code: NY
+  output:
+    # Line 5 = min(9,000, 7,500); line 10 = .20; line 13 (NYAGI 160,000) = .200.
+    ny_cdcc: 300
+
+- name: 2022 one child, NY AGI from 65,000 to 150,000
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2, child1]
+        state_code: NY
+  output:
+    # Line 5 = 3,000; line 10 = .20; line 13 (NYAGI 100,000) = .600.
+    ny_cdcc: 360
+
+# Form IT-216 line 3b: taxpayers who receive employer dependent care benefits
+# complete Worksheet 1 (IT-216-I 2022, page 4); line 5 is the smallest of
+# line 3a, line 3b and the New York cap.
+- name: 2022 employer dependent care benefits reduce the New York cap (Worksheet 1 line 14)
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        dependent_care_employer_benefits: 5_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 7
+        is_tax_unit_dependent: true
+      child2:
+        age: 9
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 8_000
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        state_code: NY
+  output:
+    # Worksheet 1: line 5 = 5,000; line 6 = 8,000; line 7 = 5,000;
+    # lines 8 and 9 = 50,000; line 10 = 5,000; line 11 = 5,000;
+    # line 12 = 6,000 (two persons); line 13 = 5,000;
+    # line 14 = 6,000 - 5,000 = 1,000; line 15 = 8,000 - 5,000 = 3,000;
+    # line 16 = 1,000.
+    # Form IT-216: line 3b = 1,000; line 5 = 1,000; lines 6 and 7 = 50,000;
+    # line 8 = 1,000; line 10 (FAGI 100,000) = .20; line 11 = 200;
+    # line 13 (NYAGI 100,000) = .600; line 14 = 200 x .600 = 120.
+    ny_cdcc_max: 1_000
+    ny_cdcc: 120
+
+- name: 2022 employer dependent care benefits below the cap (Worksheet 1 line 15)
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        dependent_care_employer_benefits: 2_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 7
+        is_tax_unit_dependent: true
+      child2:
+        age: 9
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        state_code: NY
+  output:
+    # Worksheet 1: line 5 = 2,000; line 6 = 5,000; line 7 = 2,000;
+    # lines 8 and 9 = 50,000; line 10 = 2,000; line 11 = 5,000;
+    # line 12 = 6,000; line 13 = 2,000; line 14 = 6,000 - 2,000 = 4,000;
+    # line 15 = 5,000 - 2,000 = 3,000; line 16 = 3,000.
+    # Form IT-216: line 3b = 3,000; line 5 = 3,000; line 8 = 3,000;
+    # line 10 (FAGI 100,000) = .20; line 11 = 600;
+    # line 13 (NYAGI 100,000) = .600; line 14 = 600 x .600 = 360.
+    ny_cdcc_max: 3_000
+    ny_cdcc: 360
+
+- name: 2022 employer dependent care benefits above the one-person cap leave no credit
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        dependent_care_employer_benefits: 5_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 4_000
+    households:
+      household:
+        members: [person1, person2, child1]
+        state_code: NY
+  output:
+    # Worksheet 1: line 5 = 5,000; line 6 = 4,000; line 7 = 4,000;
+    # line 10 = 4,000; line 11 = 5,000; line 12 = 3,000 (one person);
+    # line 13 = 4,000; line 14 = 3,000 - 4,000 < 0: "stop; you cannot
+    # take the credit".
+    ny_cdcc_max: 0
+    ny_cdcc: 0
+
+- name: 2017 three children use the 6,000 cap, before the 2018 New York limits
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 60_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 7
+        is_tax_unit_dependent: true
+      child2:
+        age: 9
+        is_tax_unit_dependent: true
+      child3:
+        age: 11
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1, child2, child3]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2, child1, child2, child3]
+        state_code: NY
+  output:
+    # 2017 Form IT-216 line 5: "Enter the smallest of: line 3a above; or
+    # federal Form 2441, line 3; or 3,000 if one qualifying person, or 6,000
+    # if two or more qualifying persons". 2017 Form 2441 line 3: "Don't enter
+    # more than $3,000 for one qualifying person or $6,000 for two or more
+    # persons".
+    # Line 3a = 9,000; Form 2441 line 3 = 6,000; line 5 = 6,000;
+    # line 6 = 100,000; line 7 = 60,000; line 8 = 6,000;
+    # line 9 (FAGI 160,000): "43,000 - No limit .20", line 10 = .20;
+    # line 11 = 1,200; line 13 (NYAGI 160,000): "65,000 - No Limit 0.200";
+    # line 14 = 1,200 x .200 = 240.
+    ny_cdcc_max: 6_000
+    ny_cdcc: 240

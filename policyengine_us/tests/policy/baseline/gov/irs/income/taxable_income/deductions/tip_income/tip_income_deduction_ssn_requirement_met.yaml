@@ -1,0 +1,107 @@
+- name: Joint return where only the spouse lacks a valid SSN meets the requirement
+  period: 2025
+  input:
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        ssn_card_type: OTHER_NON_CITIZEN
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # 26 U.S.C. 224(e)(1) needs the SSN of the spouse who received the tips;
+    # see tip_income_deduction_eligible_person for whose amounts count.
+    tax_unit_is_joint: true
+    tip_income_deduction_ssn_requirement_met: true
+
+- name: Joint return where neither spouse has a valid SSN
+  period: 2025
+  input:
+    people:
+      person1:
+        ssn_card_type: OTHER_NON_CITIZEN
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        ssn_card_type: NONE
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    tax_unit_is_joint: true
+    tip_income_deduction_ssn_requirement_met: false
+
+- name: Single filer without a valid SSN
+  period: 2025
+  input:
+    people:
+      person1:
+        ssn_card_type: OTHER_NON_CITIZEN
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    tip_income_deduction_ssn_requirement_met: false
+
+- name: Only a dependent has a valid SSN
+  period: 2025
+  input:
+    people:
+      person1:
+        ssn_card_type: NONE
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    tip_income_deduction_ssn_requirement_met: false
+
+- name: Ineligible cardholder present, but not head or spouse
+  period: 2025
+  input:
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        ssn_card_type: OTHER_NON_CITIZEN
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    tip_income_deduction_ssn_requirement_met: true
+
+- name: Ineligible cardholder not present
+  period: 2025
+  input:
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    tip_income_deduction_ssn_requirement_met: true

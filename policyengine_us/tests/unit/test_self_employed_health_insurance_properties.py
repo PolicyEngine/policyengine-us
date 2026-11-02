@@ -15,18 +15,20 @@ the deduction is the smaller of the premiums and that amount (line 14). The
 plan business may be a Schedule C business, a Schedule F farm, a partnership
 (K-1 box 14 code A) or an S corporation. When
 self_employed_health_insurance_plan_business is not supplied, the model uses
-the business with the largest earned income. The model bases the line 16 plan
-deduction on Schedule C income, so only the Schedule C business subtracts it.
+the business with the largest earned income. The model treats a person's
+Schedule C income, SSTB and non-SSTB together, as one business, and bases the
+line 16 plan deduction on Schedule C income, so only the Schedule C business
+subtracts it.
 
 Hypothesis draws batches of self-employed single filers and runs each batch as
 one vectorized baseline simulation. Each drawn filer appears six times: with
 no named plan business, again with higher premiums, and once naming each of
 the four businesses. For every filer and year:
 
-1. Reference: each limit equals a closed-form Form 7206 computation for its
-   plan business that takes lines 15 and 16 from the model, and line 15
-   equals half of the self-employment tax. Without a named business, the
-   limit is the largest of the four.
+1. Reference: Schedule 1 line 15 equals half of the self-employment tax
+   computed here from Schedule SE, and each limit equals a closed-form Form
+   7206 computation for its plan business from that line 15 and the model's
+   line 16. Without a named business, the limit is the largest of the four.
 2. Differential: the limit without a named business equals the largest of the
    limits the model computes when each business is named, so one plan never
    pools the earned income of two businesses.
@@ -41,6 +43,9 @@ the four businesses. For every filer and year:
    Schedule C business's net profit less its share of line 15; otherwise
    adjusted gross income stays at or above zero. Intended: a plan under the
    farm or partnership does not subtract the Schedule C plan deduction.
+
+The model computes in float32, whose spacing passes a cent above $131,072, so
+comparisons allow a relative error of 1e-6 on top of the $0.01 tolerance.
 """
 
 import numpy as np
@@ -54,6 +59,17 @@ TOLERANCE = 0.01
 RTOL = 1e-6
 YEARS = [2022, 2024, 2026]
 PREMIUM_RAISE = 2_500
+
+# Schedule SE, as test data rather than model parameters.
+# 26 U.S.C. 1402(a)(12): net earnings are 92.35% of net profit.
+NET_EARNINGS_SHARE = 0.9235
+# 26 U.S.C. 1402(b)(2): no net earnings below $400.
+NET_EARNINGS_EXEMPTION = 400
+# 26 U.S.C. 1401(a) and (b).
+SOCIAL_SECURITY_RATE = 0.124
+MEDICARE_RATE = 0.029
+# Contribution and benefit bases, https://www.ssa.gov/oact/cola/cbb.html.
+WAGE_BASE = {2022: 147_000, 2024: 168_600, 2026: 184_500}
 BUSINESSES = ["SCHEDULE_C", "SCHEDULE_F", "PARTNERSHIP", "S_CORPORATION"]
 # (name prefix, named plan business, premium raise) for each copy of a filer.
 COPIES = [("u", "UNSPECIFIED", 0), ("r", "UNSPECIFIED", PREMIUM_RAISE)] + [
@@ -75,6 +91,7 @@ def build_situation(filers):
                 "age": every_year(45),
                 "is_self_employed": every_year(True),
                 "self_employment_income": every_year(filer["schedule_c"]),
+                "sstb_self_employment_income": every_year(filer["sstb"]),
                 "farm_operations_income": every_year(filer["farm"]),
                 "partnership_self_employment_net_earnings": every_year(
                     filer["partnership"]
@@ -96,6 +113,17 @@ def build_situation(filers):
             households[name] = {"members": [name], "state_code": every_year("TX")}
     situation = {"people": people, "tax_units": tax_units, "households": households}
     return situation, len(filers)
+
+
+def schedule_se_deduction(year, schedule_c, farm, partnership, wages):
+    """Schedule 1 line 15: half of Schedule SE self-employment tax."""
+    net_earnings = (schedule_c + farm + partnership) * NET_EARNINGS_SHARE
+    net_earnings = np.where(net_earnings < NET_EARNINGS_EXEMPTION, 0, net_earnings)
+    social_security_room = np.maximum(WAGE_BASE[year] - wages, 0)
+    tax = SOCIAL_SECURITY_RATE * np.minimum(
+        net_earnings, social_security_room
+    ) + MEDICARE_RATE * np.maximum(net_earnings, 0)
+    return tax / 2
 
 
 def form_7206_limits(schedule_c, farm, partnership, s_corp, line_15, line_16):
@@ -138,10 +166,13 @@ def check_properties(sim, filers, n):
         index = [p for p, _, _ in COPIES].index(prefix)
         return array[index * n : (index + 1) * n]
 
-    schedule_c = column(filers, "schedule_c")
+    # The model's Schedule C is SSTB and non-SSTB income together.
+    schedule_c = column(filers, "schedule_c") + column(filers, "sstb")
     farm = column(filers, "farm")
     partnership = column(filers, "partnership")
     s_corp = column(filers, "s_corp")
+    # S corporation wages are Social Security wages too.
+    wages = column(filers, "wages") + s_corp
     for year in YEARS:
         premiums = sim.calculate("self_employed_health_insurance_premiums", year)
         limit = sim.calculate(
@@ -150,22 +181,24 @@ def check_properties(sim, filers, n):
         deduction = sim.calculate("self_employed_health_insurance_ald_person", year)
         line_15 = sim.calculate("self_employment_tax_ald_person", year)
         line_16 = sim.calculate("self_employed_pension_contribution_ald_person", year)
-        se_tax = sim.calculate("self_employment_tax", year)
         agi = sim.calculate("adjusted_gross_income", year)
 
-        # Lines 15 and 16 and the deduction for every copy.
-        close(line_15, se_tax / 2)
+        # Line 15 from Schedule SE, line 16, and the deduction for every copy.
+        expected_line_15 = schedule_se_deduction(
+            year, schedule_c, farm, partnership, wages
+        )
+        for prefix, _, _ in COPIES:
+            close(copy(line_15, prefix), expected_line_15)
         close(deduction, np.minimum(premiums, limit))
-        # Lines 15 and 16 do not depend on premiums or the named business.
+        # Line 16 does not depend on premiums or the named business.
         for prefix, _, _ in COPIES[1:]:
-            close(copy(line_15, prefix), copy(line_15, "u"))
             close(copy(line_16, prefix), copy(line_16, "u"))
         line_13, schedule_c_line_10 = form_7206_limits(
             schedule_c,
             farm,
             partnership,
             s_corp,
-            copy(line_15, "u"),
+            expected_line_15,
             copy(line_16, "u"),
         )
         largest = np.max(np.stack(list(line_13.values())), axis=0)
@@ -191,7 +224,12 @@ def check_properties(sim, filers, n):
         close(copy(limit, "u"), copy(limit, "r"))
 
         # 5. Adjusted gross income floor for filers with no business losses.
-        no_losses = (schedule_c >= 0) & (farm >= 0) & (partnership >= 0)
+        no_losses = (
+            (column(filers, "schedule_c") >= 0)
+            & (column(filers, "sstb") >= 0)
+            & (farm >= 0)
+            & (partnership >= 0)
+        )
         floor = np.minimum(0, schedule_c_line_10)
         for prefix, _, _ in COPIES:
             assert at_least(copy(agi, prefix)[no_losses], floor[no_losses])
@@ -204,6 +242,7 @@ filer_strategy = st.fixed_dictionaries(
             st.sampled_from([-5_000, 0, 400, 434, 2_000, 160_000, 250_000]),
             st.integers(-20_000, 300_000),
         ),
+        "sstb": st.one_of(st.just(0), st.integers(-20_000, 100_000)),
         "farm": st.one_of(st.just(0), st.integers(-30_000, 100_000)),
         "partnership": st.one_of(st.just(0), st.integers(-30_000, 100_000)),
         "s_corp": st.one_of(st.just(0), st.integers(0, 150_000)),
@@ -227,9 +266,19 @@ def test_deduction_follows_form_7206(filers):
     check_properties(Simulation(situation=situation), filers, n)
 
 
-def filer(schedule_c=0, farm=0, partnership=0, s_corp=0, wages=0, plan=0, premiums=0):
+def filer(
+    schedule_c=0,
+    sstb=0,
+    farm=0,
+    partnership=0,
+    s_corp=0,
+    wages=0,
+    plan=0,
+    premiums=0,
+):
     return dict(
         schedule_c=schedule_c,
+        sstb=sstb,
         farm=farm,
         partnership=partnership,
         s_corp=s_corp,
@@ -248,6 +297,8 @@ def test_reviewer_example_and_boundaries():
         filer(schedule_c=10_000, wages=250_000, premiums=20_000),
         filer(schedule_c=30_000, farm=10_000, premiums=40_000),
         filer(schedule_c=20_000, plan=20_000, premiums=5_000),
+        # SSTB and non-SSTB Schedule C income netted as one business.
+        filer(schedule_c=30_000, sstb=-10_000, premiums=30_000),
         # A farm or a partnership as the only business.
         filer(farm=2_000, premiums=6_000),
         filer(partnership=2_000, premiums=6_000),
@@ -263,12 +314,16 @@ def test_reviewer_example_and_boundaries():
     deduction = sim.calculate("self_employed_health_insurance_ald_person", 2022)[:n]
     # 2,000 - 2,000 x 0.9235 x 0.153 / 2, for a Schedule C business, a farm and
     # a partnership alike.
-    for i in (0, 6, 7):
+    for i in (0, 7, 8):
         assert abs(deduction[i] - 1_858.7045) < TOLERANCE
     # 434 x 0.9235 = 400.80 owes self-employment tax; 433 x 0.9235 = 399.88 does not.
     assert deduction[1] < 434 - TOLERANCE
     assert abs(deduction[2] - 433) < TOLERANCE
+    # A plan deduction equal to net profit leaves no limit.
+    assert deduction[5] <= TOLERANCE
+    # 20,000 of netted Schedule C profit: 20,000 - 20,000 x 0.9235 x 0.153 / 2.
+    assert abs(deduction[6] - 18_587.045) < TOLERANCE
     # Line 11: the S corporation wages, with no self-employment tax.
-    assert abs(deduction[8] - 5_000) < TOLERANCE
+    assert abs(deduction[9] - 5_000) < TOLERANCE
     # Farm line 13: 50,000 - 50,000 / 70,000 x (70,000 x 0.9235 x 0.153 / 2).
-    assert abs(deduction[9] - (50_000 - 50_000 * 0.9235 * 0.153 / 2)) < TOLERANCE
+    assert abs(deduction[10] - (50_000 - 50_000 * 0.9235 * 0.153 / 2)) < TOLERANCE

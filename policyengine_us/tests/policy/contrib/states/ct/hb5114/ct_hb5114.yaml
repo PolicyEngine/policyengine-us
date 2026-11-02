@@ -427,11 +427,11 @@
         age: 20
         employment_income: 30_000
         rent: 12_000
+        claimed_as_dependent_on_another_return: true
     tax_units:
       tax_unit:
         members: [person1]
         filing_status: SINGLE
-        head_is_dependent_elsewhere: true
     households:
       household:
         members: [person1]

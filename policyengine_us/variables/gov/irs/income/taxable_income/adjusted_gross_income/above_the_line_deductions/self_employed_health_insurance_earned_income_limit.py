@@ -20,12 +20,16 @@ class self_employed_health_insurance_earned_income_limit(Variable):
         "less the self-employed SEP, SIMPLE and qualified plan deduction "
         "attributable to it (lines 9 and 10); the model bases that plan "
         "deduction on Schedule C income, so only the Schedule C business "
-        "subtracts it. For an S corporation it is the shareholder's wages "
-        "from the corporation (line 11). self_employed_health_insurance_plan_"
-        "business names the business; when it is not supplied, the limit uses "
-        "the business with the largest earned income, the most that one plan "
-        "can deduct. Self-employment income inputs are already net of any "
-        "section 911 exclusion (line 12)."
+        "subtracts it. The Schedule C business is all of the person's "
+        "Schedule C income, SSTB and non-SSTB together, so a loss in one "
+        "reduces line 4. Schedule 1 line 15 is read per person: each person's "
+        "own deductible self-employment tax. For an S corporation it is the "
+        "shareholder's wages from the corporation (line 11). "
+        "self_employed_health_insurance_plan_business names the business; "
+        "when it is not supplied, the limit uses the business with the "
+        "largest earned income, the most that one plan can deduct. "
+        "Self-employment income inputs are already net of any section 911 "
+        "exclusion (line 12)."
     )
     definition_period = YEAR
     reference = (

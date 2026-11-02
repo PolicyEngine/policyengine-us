@@ -154,3 +154,53 @@
     # above the Tier I maximum of 1,695: Utility 400 + 35 for a member aged 60
     # or older (Chapter 9 B.3(b)(2), page 49) = 435.
     ny_heap: 435
+
+- name: Case 6, modeled New York unemployment insurance counts as unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    age: 35
+    # NY UI integration inputs: ny_ui = 7,982.
+    ny_ui_high_quarter_wages: 8_000
+    ny_ui_base_period_wages: 28_000
+    ny_ui_quarters_with_wages: 4
+    weeks_unemployed: 26
+    ny_ui_weekly_hours_worked: 0
+    ny_ui_gross_weekly_earnings: 0
+    ssi: 0
+  output:
+    # No reported UC, so total UC falls back to the modeled NY UI.
+    total_unemployment_compensation: 7_982
+    # D.14(c): floor(7,982 / 12) = 665 a month, annualized 7,980.
+    ny_heap_countable_income: 7_980
+
+- name: Case 7, reported unemployment compensation counts as unearned income, as the control for modeled UI.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    age: 35
+    unemployment_compensation: 7_982
+    ssi: 0
+  output:
+    total_unemployment_compensation: 7_982
+    ny_heap_countable_income: 7_980
+
+- name: Case 8, military retirement pay and a Survivor Benefit Plan annuity count as unearned income.
+  # Two one-person households aged 70. Chapter 8 D.12(a)(13) pensions and (14)
+  # payments from annuities (page 38); D.13 excludes neither. Household 1:
+  # 24,000 military retirement pay. Household 2: 9,600 Survivor Benefit Plan
+  # annuity (800 a month).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [NY, NY]
+    age: [70, 70]
+    military_retirement_pay: [24_000, 0]
+    military_retirement_pay_survivors: [0, 9_600]
+    ssi: [0, 0]
+  output:
+    # D.14(c): floor(24,000 / 12) = 2,000 and floor(9,600 / 12) = 800 a month,
+    # annualized 24,000 and 9,600.
+    ny_heap_countable_income: [24_000, 9_600]
