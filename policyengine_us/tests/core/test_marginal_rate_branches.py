@@ -668,6 +668,65 @@ def test_ohio_parent_marginal_tax_rate_matches_fresh_simulations():
     assert list(rate[1:]) == [0, 0]
 
 
+def test_long_term_gains_keep_their_value_in_the_marginal_rate_branch():
+    """Issue 10522: on Core 3.33 the rate read 13.05 with long-term gains.
+
+    The branch erased long_term_capital_gains_before_response, which holds the
+    supplied gains, so they fell to $0 when the branch raised earnings. The
+    filer's $103,900 of ordinary taxable income ($120,000 less the $16,100
+    standard deduction) stays in the 22% bracket after a $1,000 raise, with
+    7.65% of payroll tax, and the gains stack on top in the 15% bracket.
+    """
+    filer = {"age": 40, "employment_income": 120_000}
+    wages_only = Simulation(situation=situation([("TX", {"filer": filer}, [])]))
+    with_gains = Simulation(
+        situation=situation(
+            [("TX", {"filer": {**filer, "long_term_capital_gains": 15_000}}, [])]
+        )
+    )
+
+    assert wages_only.calculate("marginal_tax_rate", YEAR)[0] == pytest.approx(
+        0.2965, abs=TOLERANCE
+    )
+    assert with_gains.calculate("marginal_tax_rate", YEAR)[0] == pytest.approx(
+        0.2965, abs=TOLERANCE
+    )
+    assert with_gains.calculate("long_term_capital_gains", YEAR)[0] == 15_000
+
+
+def test_marginal_rates_along_axes_match_fresh_simulations():
+    """API requests sweep earnings with axes, which repeat each household."""
+    wages = [14_000, 21_000, 28_000]
+    state, _, children = OHIO_PARENT
+    swept = situation([(state, {"parent": {"age": 30}}, children)])
+    swept["axes"] = [
+        [
+            {
+                "name": "employment_income",
+                "count": 3,
+                "min": wages[0],
+                "max": wages[-1],
+                "period": YEAR,
+            }
+        ]
+    ]
+
+    rates = Simulation(situation=swept).calculate("marginal_tax_rate", YEAR)
+
+    def net_income(earnings):
+        household = (
+            state,
+            {"parent": {"age": 30, "employment_income": earnings}},
+            children,
+        )
+        return Simulation(situation=situation([household])).calculate(
+            "household_net_income", YEAR
+        )[0]
+
+    expected = [1 - (net_income(w + DELTA) - net_income(w)) / DELTA for w in wages]
+    np.testing.assert_allclose(rates[::3], expected, atol=TOLERANCE)
+
+
 def test_simulation_lists_the_variables_holding_inputs():
     """Invariant 4 for household simulations, across every moved input."""
     base_situation = situation(
@@ -938,7 +997,7 @@ def test_capital_gains_rate_in_a_dynamic_reform_holds_the_response():
     base_situation = situation([TEXAS_GAINS_FILER])
     simulation = Simulation(situation=base_situation, reform=policy)
     response = simulation.calculate("capital_gains_behavioral_response", YEAR)
-    assert response[0] == pytest.approx(-2_450.4, abs=0.5)
+    assert response[0] == pytest.approx(-2_450.4, abs=0.1)
 
     rate = simulation.calculate("marginal_tax_rate_on_capital_gains", YEAR)
 
