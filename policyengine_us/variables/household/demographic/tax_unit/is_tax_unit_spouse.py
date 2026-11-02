@@ -21,6 +21,14 @@ class is_tax_unit_spouse(Variable):
         candidate = head_or_spouse_candidates(person, period)
         head = person("is_tax_unit_head", period)
         eligible = candidate & ~head & ~is_separated
+        if "marital_unit" in person.simulation.input_group_entities:
+            # Compare the actual population memberships, not the ID variable:
+            # household situations can supply groups without numeric ID inputs.
+            marital_unit = person.simulation.populations[
+                "marital_unit"
+            ].members_entity_id
+            head_marital_unit = tax_unit.max(where(head, marital_unit, -1))
+            eligible = eligible & (marital_unit == head_marital_unit)
         age = person("age", period)
         next_oldest_adult = person.get_rank(tax_unit, -age, eligible) == 0
         # An explicit is_tax_unit_head input still wins over a supplied role,
