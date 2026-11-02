@@ -240,3 +240,134 @@
         state_code: WI
   output:
     wi_works_placement: CMC
+
+- name: Case 16, CSJ below thirty unsubsidized hours.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+        weekly_hours_worked_before_lsr: 29
+      person2:
+        age: 5
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_placement: CSJ
+
+- name: Case 17, no placement at thirty unsubsidized hours.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 5
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_placement: NONE
+
+- name: Case 18, CMC takes priority over full-time unsubsidized work.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_placement: CMC
+
+- name: Case 19, ARP takes priority over full-time unsubsidized work.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+        current_pregnancy_month: 8
+        weekly_hours_worked_before_lsr: 40
+    households:
+      household1:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_works_placement: ARP
+
+- name: Case 20, the parent with fewer hours sets a two-parent placement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_works_placement: CSJ
+
+- name: Case 21, two full-time parents have no placement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 30
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_works_placement: NONE
+
+# 40 hours x 13 weeks / 52 weeks = 10 hours a week.
+- name: Case 22, a summer job averages over the year.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        weeks_worked: 13
+      person2:
+        age: 5
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_placement: CSJ
