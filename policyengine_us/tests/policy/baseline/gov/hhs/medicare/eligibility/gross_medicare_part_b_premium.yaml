@@ -50,6 +50,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: 79 FR 61316, individual-return column.
     # MAGI 85,000, at the threshold: $104.90 a month
     # MAGI 85,001, lowest income in the 35% tier: $146.90 (35%) a month
     # MAGI 107,001, lowest income in the 50% tier: $209.80 (50%) a month
@@ -103,6 +104,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: 79 FR 61316, joint-return column.
     # MAGI 170,000, at the threshold: $104.90 a month
     # MAGI 170,001, lowest income in the 35% tier: $146.90 (35%) a month
     # MAGI 214,001, lowest income in the 50% tier: $209.80 (50%) a month
@@ -150,6 +152,7 @@
       household:
         members: [person1, person2, person3, person4, person5]
   output:
+    # Source: 79 FR 61316, separate-return table.
     # MAGI 85,000, at the threshold: $104.90 a month
     # MAGI 85,001, just above it: $272.70 (65%) a month
     # MAGI 129,000, at the second threshold: $272.70 (65%) a month
@@ -202,6 +205,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: 80 FR 70814, individual-return column.
     # MAGI 85,000, at the threshold: $121.80 a month
     # MAGI 85,001, lowest income in the 35% tier: $170.50 (35%) a month
     # MAGI 107,001, lowest income in the 50% tier: $243.60 (50%) a month
@@ -255,6 +259,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: 80 FR 70814, individual-return column.
     # MAGI 85,000, at the threshold: $121.80 a month
     # MAGI 85,001, lowest income in the 35% tier: $170.50 (35%) a month
     # MAGI 107,001, lowest income in the 50% tier: $243.60 (50%) a month
@@ -308,6 +313,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: 80 FR 70814, individual-return column.
     # MAGI 85,000, at the threshold: $121.80 a month
     # MAGI 85,001, lowest income in the 35% tier: $170.50 (35%) a month
     # MAGI 107,001, lowest income in the 50% tier: $243.60 (50%) a month
@@ -361,6 +367,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: 80 FR 70814, joint-return column.
     # MAGI 170,000, at the threshold: $121.80 a month
     # MAGI 170,001, lowest income in the 35% tier: $170.50 (35%) a month
     # MAGI 214,001, lowest income in the 50% tier: $243.60 (50%) a month
@@ -408,6 +415,7 @@
       household:
         members: [person1, person2, person3, person4, person5]
   output:
+    # Source: 80 FR 70814, separate-return table.
     # MAGI 85,000, at the threshold: $121.80 a month
     # MAGI 85,001, just above it: $316.70 (65%) a month
     # MAGI 129,000, at the second threshold: $316.70 (65%) a month
@@ -460,6 +468,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: 81 FR 80066, individual-return column.
     # MAGI 85,000, at the threshold: $134.00 a month
     # MAGI 85,001, lowest income in the 35% tier: $187.50 (35%) a month
     # MAGI 107,001, lowest income in the 50% tier: $267.90 (50%) a month
@@ -513,6 +522,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: 81 FR 80066, joint-return column.
     # MAGI 170,000, at the threshold: $134.00 a month
     # MAGI 170,001, lowest income in the 35% tier: $187.50 (35%) a month
     # MAGI 214,001, lowest income in the 50% tier: $267.90 (50%) a month
@@ -560,6 +570,7 @@
       household:
         members: [person1, person2, person3, person4, person5]
   output:
+    # Source: 81 FR 80066, separate-return table.
     # MAGI 85,000, at the threshold: $134.00 a month
     # MAGI 85,001, just above it: $348.30 (65%) a month
     # MAGI 129,000, at the second threshold: $348.30 (65%) a month
@@ -612,6 +623,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: 82 FR 55372, individual-return column.
     # MAGI 85,000, at the threshold: $134.00 a month
     # MAGI 85,001, lowest income in the 35% tier: $187.50 (35%) a month
     # MAGI 107,001, lowest income in the 50% tier: $267.90 (50%) a month
@@ -665,6 +677,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: 82 FR 55372, joint-return column.
     # MAGI 170,000, at the threshold: $134.00 a month
     # MAGI 170,001, lowest income in the 35% tier: $187.50 (35%) a month
     # MAGI 214,001, lowest income in the 50% tier: $267.90 (50%) a month
@@ -700,6 +713,7 @@
       household:
         members: [person1, person2, person3]
   output:
+    # Source: 82 FR 55373, separate-return table.
     # MAGI 85,000, at the threshold: $134.00 a month
     # MAGI 85,001, just above it: $428.60 (80%) a month
     # MAGI 2,000,000, far above every threshold: $428.60 (80%) a month
@@ -756,6 +770,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: 83 FR 52465, individual-return column.
     # MAGI 85,000, at the threshold: $135.50 a month
     # MAGI 85,001, lowest income in the 35% tier: $189.60 (35%) a month
     # MAGI 107,001, lowest income in the 50% tier: $270.90 (50%) a month
@@ -816,6 +831,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: 83 FR 52465, individual-return column.
     # MAGI 85,000, at the threshold: $135.50 a month
     # MAGI 85,001, lowest income in the 35% tier: $189.60 (35%) a month
     # MAGI 107,001, lowest income in the 50% tier: $270.90 (50%) a month
@@ -876,6 +892,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: 83 FR 52465, individual-return column.
     # MAGI 85,000, at the threshold: $135.50 a month
     # MAGI 85,001, lowest income in the 35% tier: $189.60 (35%) a month
     # MAGI 107,001, lowest income in the 50% tier: $270.90 (50%) a month
@@ -936,6 +953,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: 83 FR 52465, joint-return column.
     # MAGI 170,000, at the threshold: $135.50 a month
     # MAGI 170,001, lowest income in the 35% tier: $189.60 (35%) a month
     # MAGI 214,001, lowest income in the 50% tier: $270.90 (50%) a month
@@ -984,6 +1002,7 @@
       household:
         members: [person1, person2, person3, person4, person5]
   output:
+    # Source: 83 FR 52465, separate-return table.
     # MAGI 85,000, at the threshold: $135.50 a month
     # MAGI 85,001, just above it: $433.40 (80%) a month
     # MAGI 414,999, just below the top tier: $433.40 (80%) a month
@@ -1042,6 +1061,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: 84 FR 61627, individual-return column.
     # MAGI 87,000, at the threshold: $144.60 a month
     # MAGI 87,001, lowest income in the 35% tier: $202.40 (35%) a month
     # MAGI 109,001, lowest income in the 50% tier: $289.20 (50%) a month
@@ -1102,6 +1122,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: 84 FR 61627, joint-return column.
     # MAGI 174,000, at the threshold: $144.60 a month
     # MAGI 174,001, lowest income in the 35% tier: $202.40 (35%) a month
     # MAGI 218,001, lowest income in the 50% tier: $289.20 (50%) a month
@@ -1150,6 +1171,7 @@
       household:
         members: [person1, person2, person3, person4, person5]
   output:
+    # Source: 84 FR 61628, separate-return table.
     # MAGI 87,000, at the threshold: $144.60 a month
     # MAGI 87,001, just above it: $462.70 (80%) a month
     # MAGI 412,999, just below the top tier: $462.70 (80%) a month
@@ -1208,6 +1230,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: 85 FR 71906-71907, individual-return column.
     # MAGI 88,000, at the threshold: $148.50 a month
     # MAGI 88,001, lowest income in the 35% tier: $207.90 (35%) a month
     # MAGI 111,001, lowest income in the 50% tier: $297.00 (50%) a month
@@ -1268,6 +1291,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: 85 FR 71906-71907, individual-return column.
     # MAGI 88,000, at the threshold: $148.50 a month
     # MAGI 88,001, lowest income in the 35% tier: $207.90 (35%) a month
     # MAGI 111,001, lowest income in the 50% tier: $297.00 (50%) a month
@@ -1328,6 +1352,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: 85 FR 71906-71907, individual-return column.
     # MAGI 88,000, at the threshold: $148.50 a month
     # MAGI 88,001, lowest income in the 35% tier: $207.90 (35%) a month
     # MAGI 111,001, lowest income in the 50% tier: $297.00 (50%) a month
@@ -1388,6 +1413,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: 85 FR 71906-71907, joint-return column.
     # MAGI 176,000, at the threshold: $148.50 a month
     # MAGI 176,001, lowest income in the 35% tier: $207.90 (35%) a month
     # MAGI 222,001, lowest income in the 50% tier: $297.00 (50%) a month
@@ -1436,6 +1462,7 @@
       household:
         members: [person1, person2, person3, person4, person5]
   output:
+    # Source: 85 FR 71907, separate-return table.
     # MAGI 88,000, at the threshold: $148.50 a month
     # MAGI 88,001, just above it: $475.20 (80%) a month
     # MAGI 411,999, just below the top tier: $475.20 (80%) a month
@@ -1494,6 +1521,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: 86 FR 64208, individual-return column.
     # MAGI 91,000, at the threshold: $170.10 a month
     # MAGI 91,001, lowest income in the 35% tier: $238.10 (35%) a month
     # MAGI 114,001, lowest income in the 50% tier: $340.20 (50%) a month
@@ -1554,6 +1582,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: 86 FR 64208, joint-return column.
     # MAGI 182,000, at the threshold: $170.10 a month
     # MAGI 182,001, lowest income in the 35% tier: $238.10 (35%) a month
     # MAGI 228,001, lowest income in the 50% tier: $340.20 (50%) a month
@@ -1602,6 +1631,7 @@
       household:
         members: [person1, person2, person3, person4, person5]
   output:
+    # Source: 86 FR 64208, separate-return table.
     # MAGI 91,000, at the threshold: $170.10 a month
     # MAGI 91,001, just above it: $544.30 (80%) a month
     # MAGI 408,999, just below the top tier: $544.30 (80%) a month
@@ -1660,6 +1690,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: 87 FR 59083, individual-return column.
     # MAGI 97,000, at the threshold: $164.90 a month
     # MAGI 97,001, lowest income in the 35% tier: $230.80 (35%) a month
     # MAGI 123,001, lowest income in the 50% tier: $329.70 (50%) a month
@@ -1720,6 +1751,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: 87 FR 59083, joint-return column.
     # MAGI 194,000, at the threshold: $164.90 a month
     # MAGI 194,001, lowest income in the 35% tier: $230.80 (35%) a month
     # MAGI 246,001, lowest income in the 50% tier: $329.70 (50%) a month
@@ -1768,6 +1800,7 @@
       household:
         members: [person1, person2, person3, person4, person5]
   output:
+    # Source: 87 FR 59084, separate-return table.
     # MAGI 97,000, at the threshold: $164.90 a month
     # MAGI 97,001, just above it: $527.50 (80%) a month
     # MAGI 402,999, just below the top tier: $527.50 (80%) a month

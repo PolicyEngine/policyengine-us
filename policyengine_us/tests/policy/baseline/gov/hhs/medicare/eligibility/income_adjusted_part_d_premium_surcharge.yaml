@@ -223,6 +223,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: CMS, 2015 Part D bid information release (July 31, 2014), file page 4, individual-return column.
     # MAGI 85,000, at the threshold: $0 a month
     # MAGI 85,001, lowest income in the 35% tier: $12.30 (35%) a month
     # MAGI 107,001, lowest income in the 50% tier: $31.80 (50%) a month
@@ -282,6 +283,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: CMS, 2015 Part D bid information release (July 31, 2014), file page 4, joint-return column.
     # MAGI 170,000, at the threshold: $0 a month
     # MAGI 170,001, lowest income in the 35% tier: $12.30 (35%) a month
     # MAGI 214,001, lowest income in the 50% tier: $31.80 (50%) a month
@@ -334,6 +336,7 @@
       household:
         members: [person1, person2, person3, person4, person5]
   output:
+    # Source: CMS, 2015 Part D bid information release (July 31, 2014), file page 4, separate-return table.
     # MAGI 85,000, at the threshold: $0 a month
     # MAGI 85,001, just above it: $51.30 (65%) a month
     # MAGI 129,000, at the second threshold: $51.30 (65%) a month
@@ -392,6 +395,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: CMS, 2016 Part D bid information release (July 29, 2015), file page 4, individual-return column.
     # MAGI 85,000, at the threshold: $0 a month
     # MAGI 85,001, lowest income in the 35% tier: $12.70 (35%) a month
     # MAGI 107,001, lowest income in the 50% tier: $32.80 (50%) a month
@@ -451,6 +455,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: CMS, 2016 Part D bid information release (July 29, 2015), file page 4, individual-return column.
     # MAGI 85,000, at the threshold: $0 a month
     # MAGI 85,001, lowest income in the 35% tier: $12.70 (35%) a month
     # MAGI 107,001, lowest income in the 50% tier: $32.80 (50%) a month
@@ -510,6 +515,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: CMS, 2016 Part D bid information release (July 29, 2015), file page 4, individual-return column.
     # MAGI 85,000, at the threshold: $0 a month
     # MAGI 85,001, lowest income in the 35% tier: $12.70 (35%) a month
     # MAGI 107,001, lowest income in the 50% tier: $32.80 (50%) a month
@@ -569,6 +575,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: CMS, 2016 Part D bid information release (July 29, 2015), file page 4, joint-return column.
     # MAGI 170,000, at the threshold: $0 a month
     # MAGI 170,001, lowest income in the 35% tier: $12.70 (35%) a month
     # MAGI 214,001, lowest income in the 50% tier: $32.80 (50%) a month
@@ -621,6 +628,7 @@
       household:
         members: [person1, person2, person3, person4, person5]
   output:
+    # Source: CMS, 2016 Part D bid information release (July 29, 2015), file page 4, separate-return table.
     # MAGI 85,000, at the threshold: $0 a month
     # MAGI 85,001, just above it: $52.80 (65%) a month
     # MAGI 129,000, at the second threshold: $52.80 (65%) a month
@@ -679,6 +687,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: CMS, 2017 Part D bid information release (July 29, 2016), file page 4, individual-return column.
     # MAGI 85,000, at the threshold: $0 a month
     # MAGI 85,001, lowest income in the 35% tier: $13.30 (35%) a month
     # MAGI 107,001, lowest income in the 50% tier: $34.20 (50%) a month
@@ -738,6 +747,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: CMS, 2017 Part D bid information release (July 29, 2016), file page 4, joint-return column.
     # MAGI 170,000, at the threshold: $0 a month
     # MAGI 170,001, lowest income in the 35% tier: $13.30 (35%) a month
     # MAGI 214,001, lowest income in the 50% tier: $34.20 (50%) a month
@@ -790,6 +800,7 @@
       household:
         members: [person1, person2, person3, person4, person5]
   output:
+    # Source: CMS, 2017 Part D bid information release (July 29, 2016), file page 5, separate-return table.
     # MAGI 85,000, at the threshold: $0 a month
     # MAGI 85,001, just above it: $55.20 (65%) a month
     # MAGI 129,000, at the second threshold: $55.20 (65%) a month
@@ -848,6 +859,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: CMS, 2018 Part D bid information release (July 31, 2017), file page 4, individual-return column.
     # MAGI 85,000, at the threshold: $0 a month
     # MAGI 85,001, lowest income in the 35% tier: $13.00 (35%) a month
     # MAGI 107,001, lowest income in the 50% tier: $33.60 (50%) a month
@@ -907,6 +919,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
   output:
+    # Source: CMS, 2018 Part D bid information release (July 31, 2017), file page 4, joint-return column.
     # MAGI 170,000, at the threshold: $0 a month
     # MAGI 170,001, lowest income in the 35% tier: $13.00 (35%) a month
     # MAGI 214,001, lowest income in the 50% tier: $33.60 (50%) a month
@@ -945,6 +958,7 @@
       household:
         members: [person1, person2, person3]
   output:
+    # Source: CMS, 2018 Part D bid information release (July 31, 2017), file page 5, separate-return table.
     # MAGI 85,000, at the threshold: $0 a month
     # MAGI 85,001, just above it: $74.80 (80%) a month
     # MAGI 2,000,000, far above every threshold: $74.80 (80%) a month
@@ -1008,6 +1022,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: CMS, 2019 Part D bid information release (July 31, 2018), file page 4, individual-return column.
     # MAGI 85,000, at the threshold: $0 a month
     # MAGI 85,001, lowest income in the 35% tier: $12.40 (35%) a month
     # MAGI 107,001, lowest income in the 50% tier: $31.90 (50%) a month
@@ -1075,6 +1090,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: CMS, 2019 Part D bid information release (July 31, 2018), file page 4, individual-return column.
     # MAGI 85,000, at the threshold: $0 a month
     # MAGI 85,001, lowest income in the 35% tier: $12.40 (35%) a month
     # MAGI 107,001, lowest income in the 50% tier: $31.90 (50%) a month
@@ -1142,6 +1158,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: CMS, 2019 Part D bid information release (July 31, 2018), file page 4, individual-return column.
     # MAGI 85,000, at the threshold: $0 a month
     # MAGI 85,001, lowest income in the 35% tier: $12.40 (35%) a month
     # MAGI 107,001, lowest income in the 50% tier: $31.90 (50%) a month
@@ -1209,6 +1226,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: CMS, 2019 Part D bid information release (July 31, 2018), file page 4, joint-return column.
     # MAGI 170,000, at the threshold: $0 a month
     # MAGI 170,001, lowest income in the 35% tier: $12.40 (35%) a month
     # MAGI 214,001, lowest income in the 50% tier: $31.90 (50%) a month
@@ -1262,6 +1280,7 @@
       household:
         members: [person1, person2, person3, person4, person5]
   output:
+    # Source: CMS, 2019 Part D bid information release (July 31, 2018), file page 5, separate-return table.
     # MAGI 85,000, at the threshold: $0 a month
     # MAGI 85,001, just above it: $70.90 (80%) a month
     # MAGI 414,999, just below the top tier: $70.90 (80%) a month
@@ -1327,6 +1346,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: CMS Office of the Actuary, 2020 Part D income-related monthly premium adjustment, file page 2, individual-return column.
     # MAGI 87,000, at the threshold: $0 a month
     # MAGI 87,001, lowest income in the 35% tier: $12.20 (35%) a month
     # MAGI 109,001, lowest income in the 50% tier: $31.50 (50%) a month
@@ -1394,6 +1414,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: CMS Office of the Actuary, 2020 Part D income-related monthly premium adjustment, file page 2, joint-return column.
     # MAGI 174,000, at the threshold: $0 a month
     # MAGI 174,001, lowest income in the 35% tier: $12.20 (35%) a month
     # MAGI 218,001, lowest income in the 50% tier: $31.50 (50%) a month
@@ -1447,6 +1468,7 @@
       household:
         members: [person1, person2, person3, person4, person5]
   output:
+    # Source: CMS Office of the Actuary, 2020 Part D income-related monthly premium adjustment, file page 3, separate-return table.
     # MAGI 87,000, at the threshold: $0 a month
     # MAGI 87,001, just above it: $70.00 (80%) a month
     # MAGI 412,999, just below the top tier: $70.00 (80%) a month
@@ -1512,6 +1534,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: CMS Office of the Actuary, 2021 Part D income-related monthly premium adjustment, file page 2, individual-return column.
     # MAGI 88,000, at the threshold: $0 a month
     # MAGI 88,001, lowest income in the 35% tier: $12.30 (35%) a month
     # MAGI 111,001, lowest income in the 50% tier: $31.80 (50%) a month
@@ -1579,6 +1602,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: CMS Office of the Actuary, 2021 Part D income-related monthly premium adjustment, file page 2, individual-return column.
     # MAGI 88,000, at the threshold: $0 a month
     # MAGI 88,001, lowest income in the 35% tier: $12.30 (35%) a month
     # MAGI 111,001, lowest income in the 50% tier: $31.80 (50%) a month
@@ -1646,6 +1670,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: CMS Office of the Actuary, 2021 Part D income-related monthly premium adjustment, file page 2, individual-return column.
     # MAGI 88,000, at the threshold: $0 a month
     # MAGI 88,001, lowest income in the 35% tier: $12.30 (35%) a month
     # MAGI 111,001, lowest income in the 50% tier: $31.80 (50%) a month
@@ -1713,6 +1738,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: CMS Office of the Actuary, 2021 Part D income-related monthly premium adjustment, file page 2, joint-return column.
     # MAGI 176,000, at the threshold: $0 a month
     # MAGI 176,001, lowest income in the 35% tier: $12.30 (35%) a month
     # MAGI 222,001, lowest income in the 50% tier: $31.80 (50%) a month
@@ -1766,6 +1792,7 @@
       household:
         members: [person1, person2, person3, person4, person5]
   output:
+    # Source: CMS Office of the Actuary, 2021 Part D income-related monthly premium adjustment, file page 3, separate-return table.
     # MAGI 88,000, at the threshold: $0 a month
     # MAGI 88,001, just above it: $70.70 (80%) a month
     # MAGI 411,999, just below the top tier: $70.70 (80%) a month
@@ -1831,6 +1858,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: CMS fact sheet, 2022 Part D income-related monthly adjustment amounts, individual-return column.
     # MAGI 91,000, at the threshold: $0 a month
     # MAGI 91,001, lowest income in the 35% tier: $12.40 (35%) a month
     # MAGI 114,001, lowest income in the 50% tier: $32.10 (50%) a month
@@ -1898,6 +1926,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: CMS fact sheet, 2022 Part D income-related monthly adjustment amounts, joint-return column.
     # MAGI 182,000, at the threshold: $0 a month
     # MAGI 182,001, lowest income in the 35% tier: $12.40 (35%) a month
     # MAGI 228,001, lowest income in the 50% tier: $32.10 (50%) a month
@@ -1951,6 +1980,7 @@
       household:
         members: [person1, person2, person3, person4, person5]
   output:
+    # Source: CMS fact sheet, 2022 Part D income-related monthly adjustment amounts, separate-return table.
     # MAGI 91,000, at the threshold: $0 a month
     # MAGI 91,001, just above it: $71.30 (80%) a month
     # MAGI 408,999, just below the top tier: $71.30 (80%) a month
@@ -2016,6 +2046,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: CMS fact sheet, 2023 Part D income-related monthly adjustment amounts, individual-return column.
     # MAGI 97,000, at the threshold: $0 a month
     # MAGI 97,001, lowest income in the 35% tier: $12.20 (35%) a month
     # MAGI 123,001, lowest income in the 50% tier: $31.50 (50%) a month
@@ -2083,6 +2114,7 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
   output:
+    # Source: CMS fact sheet, 2023 Part D income-related monthly adjustment amounts, joint-return column.
     # MAGI 194,000, at the threshold: $0 a month
     # MAGI 194,001, lowest income in the 35% tier: $12.20 (35%) a month
     # MAGI 246,001, lowest income in the 50% tier: $31.50 (50%) a month
@@ -2136,6 +2168,7 @@
       household:
         members: [person1, person2, person3, person4, person5]
   output:
+    # Source: CMS fact sheet, 2023 Part D income-related monthly adjustment amounts, separate-return table.
     # MAGI 97,000, at the threshold: $0 a month
     # MAGI 97,001, just above it: $70.00 (80%) a month
     # MAGI 402,999, just below the top tier: $70.00 (80%) a month

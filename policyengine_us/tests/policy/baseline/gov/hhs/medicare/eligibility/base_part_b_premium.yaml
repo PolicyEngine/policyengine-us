@@ -44,6 +44,7 @@
     age: 65
     is_medicare_eligible: true
   output:
+    # Source: 79 FR 61314, standard premium.
     base_part_b_premium: 1_258.8  # $104.90 * 12 months
 
 - name: Standard premium in 2016.
@@ -52,6 +53,7 @@
     age: 65
     is_medicare_eligible: true
   output:
+    # Source: 80 FR 70811, standard premium.
     base_part_b_premium: 1_461.6  # $121.80 * 12 months
 
 - name: Standard premium in 2017.
@@ -60,6 +62,7 @@
     age: 65
     is_medicare_eligible: true
   output:
+    # Source: 81 FR 80063, standard premium.
     base_part_b_premium: 1_608  # $134.00 * 12 months
 
 - name: Standard premium in 2018.
@@ -68,6 +71,7 @@
     age: 65
     is_medicare_eligible: true
   output:
+    # Source: 82 FR 55370, standard premium.
     base_part_b_premium: 1_608  # $134.00 * 12 months
 
 - name: Standard premium in 2019.
@@ -76,6 +80,7 @@
     age: 65
     is_medicare_eligible: true
   output:
+    # Source: 83 FR 52463, standard premium.
     base_part_b_premium: 1_626  # $135.50 * 12 months
 
 - name: Standard premium in 2020.
@@ -84,4 +89,5 @@
     age: 65
     is_medicare_eligible: true
   output:
+    # Source: 84 FR 61625, standard premium.
     base_part_b_premium: 1_735.2  # $144.60 * 12 months
