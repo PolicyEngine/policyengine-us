@@ -28,11 +28,15 @@ class msp_part_b_premium_coverage(Variable):
         monthly_standard_premium = (
             person("base_part_b_premium", period) / MONTHS_IN_YEAR
         )
+        # MSP coverage is a Medicaid benefit, so 42 U.S.C. 1396b(v) applies.
+        immigration_eligible = person("is_medicaid_immigration_status_eligible", period)
         monthly_coverage = 0
         for month in period.get_subperiods(MONTH):
             income_eligible = person("msp_income_eligible", month)
             asset_eligible = person("msp_asset_eligible", month)
-            eligible_for_coverage = enrolled & income_eligible & asset_eligible
+            eligible_for_coverage = (
+                enrolled & income_eligible & asset_eligible & immigration_eligible
+            )
             monthly_coverage += where(
                 eligible_for_coverage,
                 monthly_standard_premium,

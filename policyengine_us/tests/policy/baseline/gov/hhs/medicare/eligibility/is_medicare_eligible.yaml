@@ -28,3 +28,92 @@
     months_receiving_social_security_disability: 24
   output:
     is_medicare_eligible: true
+
+# 8 U.S.C. 1611(b)(3) limits Medicare benefits to noncitizens lawfully present.
+- name: is_medicare_eligible unit test 5
+  period: 2026
+  input:
+    age: 70
+    immigration_status: UNDOCUMENTED
+  output:
+    is_medicare_eligible: false
+
+# 42 U.S.C. 1395o(a)(2): a permanent resident of five years may enroll at 65
+# without Part A entitlement, and one of fewer than five years may not.
+- name: is_medicare_eligible unit test 6
+  period: 2026
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 5
+    medicare_quarters_of_coverage: 0
+  output:
+    is_medicare_eligible: true
+
+- name: is_medicare_eligible unit test 7
+  period: 2026
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 4
+    medicare_quarters_of_coverage: 0
+  output:
+    is_medicare_eligible: false
+
+# 42 U.S.C. 1395o(a)(1): entitlement to Part A opens Part B regardless of status.
+- name: is_medicare_eligible unit test 8
+  period: 2026
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 4
+    medicare_quarters_of_coverage: 40
+  output:
+    is_medicare_eligible: true
+
+- name: is_medicare_eligible unit test 9
+  period: 2026
+  input:
+    age: 70
+    immigration_status: TPS
+    medicare_quarters_of_coverage: 40
+  output:
+    is_medicare_eligible: true
+
+- name: is_medicare_eligible unit test 10
+  period: 2026
+  input:
+    age: 70
+    immigration_status: TPS
+    medicare_quarters_of_coverage: 39
+  output:
+    is_medicare_eligible: false
+
+# A citizen without enough quarters can still buy Part A and enroll in Part B.
+- name: is_medicare_eligible unit test 11
+  period: 2026
+  input:
+    age: 70
+    medicare_quarters_of_coverage: 0
+  output:
+    is_medicare_eligible: true
+
+- name: is_medicare_eligible unit test 12
+  period: 2026
+  input:
+    age: 50
+    immigration_status: TPS
+    social_security_disability: 12000
+    months_receiving_social_security_disability: 24
+  output:
+    is_medicare_eligible: true
+
+- name: is_medicare_eligible unit test 13
+  period: 2026
+  input:
+    age: 50
+    immigration_status: UNDOCUMENTED
+    social_security_disability: 12000
+    months_receiving_social_security_disability: 24
+  output:
+    is_medicare_eligible: false

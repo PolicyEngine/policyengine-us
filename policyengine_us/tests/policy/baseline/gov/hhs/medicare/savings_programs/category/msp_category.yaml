@@ -97,3 +97,39 @@
     spm_unit_is_married: false
   output:
     msp_category: NONE
+
+- name: Case 8, undocumented person is not on Medicare and gets no tier.
+  period: 2026
+  input:
+    age: 70
+    immigration_status: UNDOCUMENTED
+    pension_income: 10_000
+    state_code: TX
+  output:
+    msp_category:
+      2026-01: NONE
+
+# Medicare comes through Part A work history, but 42 U.S.C. 1396b(v) bars federal
+# Medicaid payment, which includes Medicare Savings Program benefits.
+- name: Case 9, person with temporary protected status on Medicare gets no tier.
+  period: 2026
+  input:
+    age: 70
+    immigration_status: TPS
+    pension_income: 10_000
+    state_code: TX
+  output:
+    msp_category:
+      2026-01: NONE
+
+- name: Case 10, permanent resident inside the five-year bar on Medicare gets no tier.
+  period: 2026
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    pension_income: 10_000
+    years_since_us_entry: 2
+    state_code: TX
+  output:
+    msp_category:
+      2026-01: NONE

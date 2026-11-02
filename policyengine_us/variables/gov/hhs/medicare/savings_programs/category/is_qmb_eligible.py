@@ -9,6 +9,7 @@ class is_qmb_eligible(Variable):
     reference = (
         "https://www.law.cornell.edu/cfr/text/42/435.123",
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
+        "https://www.law.cornell.edu/uscode/text/42/1396b#v",
     )
 
     def formula(person, period, parameters):
@@ -16,6 +17,10 @@ class is_qmb_eligible(Variable):
         p = parameters(period).gov.hhs.medicare.savings_programs.eligibility.income
 
         medicare_eligible = person("is_medicare_eligible", period.this_year)
+        # QMB, SLMB and QI are Medicaid benefits, so 42 U.S.C. 1396b(v) applies.
+        immigration_eligible = person(
+            "is_medicaid_immigration_status_eligible", period.this_year
+        )
         asset_eligible = person("msp_asset_eligible", period)
 
         fpg = person("msp_fpg", period)
@@ -23,4 +28,6 @@ class is_qmb_eligible(Variable):
         qmb_income_limit = fpg * p.qmb.fpl_limit
         income_eligible = countable_income <= qmb_income_limit
 
-        return medicare_eligible & income_eligible & asset_eligible
+        return (
+            medicare_eligible & immigration_eligible & income_eligible & asset_eligible
+        )
