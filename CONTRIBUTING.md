@@ -103,19 +103,22 @@ When sources conflict, PolicyEngine US follows these principles (2026-10-20):
 - **The agency breaks true ties.** Where the text and the canons don't settle a reading, follow the administering agency's reading, so the model matches what households receive.
 - **Canons:** definitions control; one meaning per section; no double deduction without a clear statement; specific over general; read timing rules so statutory deadlines can be met; and the operative words govern over form shortcuts.
 
-Every such conflict is recorded in the register that PolicyEngine shares with Axiom: `known-source-conflicts.yaml` in [rulespec-us](https://github.com/TheAxiomFoundation/rulespec-us). Its fields are defined in that repository's `tools/README.md`, under "Source-conflict register". When a PR takes such a reading, or finds one already in the code, the conflict goes into the register in three steps, in this order. One PR can't do all three: the guard below rejects a marker whose entry isn't in the pinned copy of the register, the register pins only commits on `main`, and PolicyEngine US squash-merges, so a ruling PR's own commits never reach `main`.
+The register that PolicyEngine shares with Axiom records every such conflict: `known-source-conflicts.yaml` in [rulespec-us](https://github.com/TheAxiomFoundation/rulespec-us). That repository's `tools/README.md` defines its fields, under "Source-conflict register". When a PR takes such a reading, or finds one already in the code, the conflict goes into the register in four steps, in this order. One PR can't do them all: the guard below rejects a marker whose entry isn't in the pinned copy of the register, and the register pins only commits reachable from `main`, which a ruling PR's commits aren't until it merges (and a squash merge never makes its own commits reachable).
 
-1. **The ruling PR records the conflict in `source_conflicts/candidates.yaml`**: its sources, readings, `pe_us.follows`, `code`, `prs` and `state`. It adds no marker. You can also add the entry to rulespec-us now, listing the open PR under `proposed`.
+1. **The ruling PR records the conflict in `source_conflicts/candidates.yaml`**: its `id`, `program`, `question`, years, at least two `sources`, `readings`, `pe_us` (`follows`, `code`, `prs`) and `state`. It adds no marker. You can also add the entry to rulespec-us now, listing the open PR under `proposed`.
 2. **After the ruling PR merges, add or complete the entry in rulespec-us.**
    - Give each source's text and its kind (statute, regulation, form, instructions, manual, guidance, agency practice, ...).
    - Give the alternatives, each with an id, and the years.
-   - Add an implementation for each file here: `repo: PolicyEngine/policyengine-us`, the squash commit on `main`, the path, `follows` (what the code does), and `adopts` with a `basis` (the reading it intends, and why).
+   - Add an implementation for each file here: `repo: PolicyEngine/policyengine-us`, the commit on `main` that merged the ruling PR (its squash commit, when squash-merged), the path, `cites_entry: false` (the file has no marker yet), `follows` (what the code does), and `adopts` with a `basis` (the reading it intends, and why). If step 1 listed the PR under `proposed`, move that row to `implementations`.
    - Add the YAML test cases that pin each reading, by commit, path and case name. Pin only commits on `main`: the register records shipped code.
    - Describe correspondence with an agency in `unpublished_sources`. Never quote it or name the person.
 3. **Once that entry is on rulespec-us `main`, a follow-up PR here marks the deciding line and refreshes the pin.**
    - Mark the deciding line in the variable or parameter file: `# Source conflict <jurisdiction>:<id>`, for example `# Source conflict us-hi:claim-of-right-deduction-floor`.
    - Refresh the pinned copy: `python scripts/update_source_conflicts.py --commit <rulespec-us commit>`.
-   - Delete the item from `source_conflicts/candidates.yaml`. The guard fails a candidate whose id is already in the pinned copy, so the deletion goes in the same PR as the refresh.
+   - Delete the item from `source_conflicts/candidates.yaml` if it was there. The guard fails a candidate whose id is already in the pinned copy, so the deletion goes in the same PR as the refresh.
+4. **After the follow-up merges, finish the entry in rulespec-us**: re-pin each implementation to the follow-up's commit on `main` and set `cites_entry: true`. Then refresh the pin here again, so the guard checks that the marker stays.
+
+For code already on `main` that the PR doesn't change, step 1 is optional: pin the implementation to a current `main` commit, and the follow-up PR is the first PolicyEngine US PR.
 
 The marker comes only in the follow-up PR, because the guard rejects a marker whose entry isn't in the pinned copy, or whose entry doesn't list the marker's file.
 
