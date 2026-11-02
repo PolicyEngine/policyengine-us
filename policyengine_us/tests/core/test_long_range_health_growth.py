@@ -4,8 +4,8 @@ After a series' last projected year, ``extend_parameter_values`` with
 ``long_range_growth`` knots moves each year's growth linearly from the
 measured short-range rate, placed at the last projected year, to the 2026
 Medicare Trustees' 2050 and 2100 rates. The Trustees interpolate years 11
-through 25 of their projection the same way (2026 Medicare Trustees Report,
-file pages 24 and 180).
+through 25 of their projection between the short-range and long-range rates
+(2026 Medicare Trustees Report, file pages 24 and 180); this path is linear.
 
 Invariants:
 
@@ -331,7 +331,7 @@ def test_repeating_the_2035_rate_misses_the_trustees_path():
 
 PARAMETERS = system.parameters
 WIRED_SERIES = [
-    (PARAMETERS.calibration.gov.hhs.cms.moop_per_capita, 2035),
+    (PARAMETERS.calibration.gov.hhs.cms.moop_per_capita, 2034),
     (PARAMETERS.calibration.gov.hhs.cms.esi_premium_per_enrollee, 2034),
 ]
 
