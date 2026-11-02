@@ -364,6 +364,8 @@
 
 # IRC 221(c) bars only the claimed spouse from the student loan interest
 # deduction; Kentucky starts each column from the filer's own federal AGI.
+# Mechanics only: the claim is set as an input on a return that couldn't be
+# refund-only at this income.
 - name: Unclaimed head's student loan interest deduction lowers Kentucky AGI on a joint return with a claimed spouse
   period: 2025
   input:
