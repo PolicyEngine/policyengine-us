@@ -1,9 +1,14 @@
 description: Texas Workforce Boards reduce the parent share of cost by this share under the Child Care Services program when every child in care has a part-time or blended schedule.
 
 # A Board's reduction applies only while its own scale does (applies.yaml).
-# Panhandle grants 25% "for each part-time/blended/part-week referral" to a
-# family whose children are all in part-time care, which the model applies
-# as 25% of the family's parent share of cost.
+# A family that qualifies for both this and a Texas Rising Star reduction
+# receives the greater of the two (40 TAC 809.19 as amended in 2022).
+# Boards could keep part-time reductions under the statewide scale after
+# TX3C (WD 06-24, Change 2); the model does not apply them there yet.
+
+# Panhandle grants 25% "for each part-time/blended/part-week referral". The
+# model applies it as 25% of the parent share of cost for a family whose
+# children are all in part-time care.
 PANHANDLE:
   2023-10-01: 0.25
 SOUTH_PLAINS:
@@ -69,5 +74,9 @@ metadata:
   breakdown:
     - tx_ccs_workforce_board_region
   reference:
+    - title: TWC, Chapter 809 Child Care Services rules adopted September 13, 2022, 40 TAC 809.19(a)(9) and (b)(8)
+      href: https://www.twc.texas.gov/sites/default/files/ogc/mtg22/commission-meeting-materials-09.13.22-item8-fr-ch809-child-care-services-twc.pdf#page=64
+    - title: TWC WD Letter 06-24, Change 2 - Child Care Policy and Operational Changes Due to the Release of TX3C (Statewide Parent Share of Cost Policy)
+      href: https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/06-24-ch2-twc.pdf#page=9
     - title: Panhandle Workforce Development Board Policy CC 3.1 Child Care Services, effective December 6, 2023 (Reductions in PSoC)
       href: https://theprpc.org/Programs/WorkforceDevelopment/documents/12-7-2023%20WFDCGB%20Agenda%20Packet.pdf#page=103

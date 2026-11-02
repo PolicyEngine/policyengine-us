@@ -38,6 +38,7 @@ class tx_ccs_board_copay(Variable):
         "https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-19",
         "https://web.archive.org/web/20240908233001/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/wd-24-23-twc.pdf#page=1",
         "https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/20-24-twc.pdf#page=1",
+        "https://www.twc.texas.gov/sites/default/files/ccel/docs/ccdf-state-plan-2022-2024-twc.pdf#page=97",
     )
 
     def formula(spm_unit, period, parameters):
@@ -87,4 +88,7 @@ class tx_ccs_board_copay(Variable):
             has_texas_rising_star_child * p.reduction.texas_rising_star[region],
             all_part_time * p.reduction.part_time[region],
         )
-        return copay * (1 - reduction)
+        # A Board's lowest range starts at $0, but TWC reads 40 TAC 809.19's bar
+        # on a minimum share of cost to mean a family with no countable income
+        # pays nothing (CCDF State Plan 2022-2024, section 3.2.4).
+        return where(income > 0, copay * (1 - reduction), 0)

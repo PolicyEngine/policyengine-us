@@ -1,8 +1,13 @@
 description: Texas Workforce Boards reduce the parent share of cost by this share under the Child Care Services program when at least one child in care attends a Texas Rising Star provider.
 
 # A Board's reduction applies only while its own scale does (applies.yaml).
-# Where a Board offers both this and the part-time reduction, the family
-# receives the greater of the two.
+# A family that qualifies for both this and a part-time reduction receives
+# the greater of the two (40 TAC 809.19 as amended in 2022).
+# TWC's July 29, 2024 amendments to 809.19 removed this option. WD 06-24,
+# Change 2 had Boards discontinue the discounts with the statewide parent
+# share of cost policy that came with TX3C, while a family already receiving
+# one kept it through its eligibility period. The model ends the reduction
+# with the Board scales.
 PANHANDLE:
   2023-10-01: 0.3
 SOUTH_PLAINS:
@@ -68,5 +73,11 @@ metadata:
   breakdown:
     - tx_ccs_workforce_board_region
   reference:
+    - title: TWC, Chapter 809 Child Care Services rules adopted September 13, 2022, 40 TAC 809.19(a)(9) and (b)(8)
+      href: https://www.twc.texas.gov/sites/default/files/ogc/mtg22/commission-meeting-materials-09.13.22-item8-fr-ch809-child-care-services-twc.pdf#page=64
+    - title: TWC, Chapter 809 Child Care Services rules adopted July 9, 2024 (removal of the Texas Rising Star reduction)
+      href: https://twc.texas.gov/sites/default/files/ogc/docs/fr-809-trs-updates-7-24-twc.pdf#page=4
+    - title: TWC WD Letter 06-24, Change 2 - Child Care Policy and Operational Changes Due to the Release of TX3C (Statewide Parent Share of Cost Policy)
+      href: https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/06-24-ch2-twc.pdf#page=9
     - title: Panhandle Workforce Development Board Policy CC 3.1 Child Care Services, effective December 6, 2023 (Reductions in PSoC)
       href: https://theprpc.org/Programs/WorkforceDevelopment/documents/12-7-2023%20WFDCGB%20Agenda%20Packet.pdf#page=102

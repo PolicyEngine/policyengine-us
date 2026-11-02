@@ -145,7 +145,7 @@
   output:
     tx_ccs: 0  # Not eligible for CCS
 
-- name: Case 6 - Panhandle registered home preschool across the BCY24 to BCY25 boundary, zero income
+- name: Case 6 - Panhandle registered home preschool across the BCY24 to BCY25 boundary, zero copay
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -153,7 +153,7 @@
       parent1:
         age: 30
         weekly_hours_worked_before_lsr: 40
-        employment_income: 0
+        employment_income: 0  # No countable income, so no copay
       child1:
         age: 4
         is_disabled: false
@@ -174,10 +174,8 @@
   output:
     # January to September 2024 (BCY24): $27.33/day * 21 days = $573.93/month
     # October to December 2024 (BCY25): $30.40/day * 21 days = $638.40/month
-    # Panhandle's lowest range starts at $0 income and charges $30 for one
-    # child in both years.
-    # 9 * ($573.93 - $30) + 3 * ($638.40 - $30) = $6,720.57
-    tx_ccs: 6_720.57
+    # 9 * $573.93 + 3 * $638.40 = $7,080.57
+    tx_ccs: 7_080.57
 
 - name: Case 7 - Panhandle registered home preschool with a copay, either side of October 2024
   period: 2024
