@@ -1,3 +1,10 @@
+## [2.90.4] - 2026-11-02
+
+### Changed
+
+- Test and document the contributed Social Security PIA formula paths: worked YAML cases, properties and an end-to-end test, including progressive price indexing's bend-point-fraction threshold, and the inputs a user must supply.
+
+
 ## [2.90.3] - 2026-11-01
 
 ### Changed
