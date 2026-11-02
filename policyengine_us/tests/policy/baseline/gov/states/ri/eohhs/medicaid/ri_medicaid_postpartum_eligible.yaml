@@ -1,0 +1,149 @@
+# R.I. Gen. Laws § 42-12.3-3(g) continues full Medicaid for people eligible
+# for RIte Start, Medicaid or CHIP while pregnant, including retroactively.
+# https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm
+# Coverage runs through the last day of the month in which the 12-month
+# postpartum period, beginning on the last day of pregnancy, ends.
+# https://www.law.cornell.edu/uscode/text/42/1396a#e_16
+# CMS approved continuous postpartum coverage effective October 1, 2022.
+# https://www.medicaid.gov/medicaid/spa/downloads/RI-22-0024.pdf#page=2
+
+# The 12-month period that begins January 1, 2023 ends December 31, 2023.
+# YEAR inputs are keyed for both years because the outputs cross a year end.
+- name: Case 1, a pregnancy ending on the first of a month keeps Rhode Island coverage through the month before its anniversary.
+  period: 2024
+  input:
+    state_code:
+      2023: RI
+      2024: RI
+    ri_pregnancy_coverage:
+      2023: MEDICAID
+      2024: MEDICAID
+    ri_pregnancy_end_date:
+      2023: "2023-01-01"
+      2024: "2023-01-01"
+  output:
+    ri_medicaid_postpartum_eligible:
+      2023-12: true
+      2024-01: false
+
+# The 12-month period that begins January 2, 2024 includes leap day and ends
+# January 1, 2025, so January 2025 is covered. A 365-day count would end the
+# period on December 31, 2024.
+- name: Case 2, Rhode Island continuation spans a leap year without a 365-day cutoff.
+  period: 2025
+  input:
+    state_code: RI
+    ri_pregnancy_coverage: MEDICAID
+    ri_pregnancy_end_date: "2024-01-02"
+  output:
+    ri_medicaid_postpartum_eligible:
+      2025-01: true
+      2025-02: false
+
+- name: Case 3, a pregnancy ending on leap day retains Rhode Island coverage through the following February.
+  period: 2025
+  input:
+    state_code: RI
+    ri_pregnancy_coverage: MEDICAID
+    ri_pregnancy_end_date: "2024-02-29"
+  output:
+    ri_medicaid_postpartum_eligible:
+      2025-02: true
+      2025-03: false
+
+- name: Case 4, Rhode Island extended postpartum coverage begins in October 2022.
+  period: 2022
+  input:
+    state_code: RI
+    ri_pregnancy_coverage: MEDICAID
+    ri_pregnancy_end_date: "2022-03-15"
+  output:
+    ri_medicaid_postpartum_eligible:
+      2022-09: false
+      2022-10: true
+
+# A monthly test explicitly supplies YEAR inputs for the containing year.
+# People 1 and 2 have no qualifying history; person 3 has no end date;
+# person 4 reports a future pregnancy end; person 5 is the positive control;
+# person 6 has the same qualifying facts outside Rhode Island.
+- name: Case 5, continuation requires qualifying history and a completed pregnancy with current Rhode Island residence.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ri_pregnancy_coverage:
+          2024: NONE
+        ri_pregnancy_end_date:
+          2024: "2023-03-07"
+      person2:
+        ri_pregnancy_end_date:
+          2024: "2023-03-07"
+      person3:
+        ri_pregnancy_coverage:
+          2024: MEDICAID
+      person4:
+        ri_pregnancy_coverage:
+          2024: MEDICAID
+        ri_pregnancy_end_date:
+          2024: "2024-02-01"
+      person5:
+        ri_pregnancy_coverage:
+          2024: MEDICAID
+        ri_pregnancy_end_date:
+          2024: "2023-03-07"
+      person6:
+        ri_pregnancy_coverage:
+          2024: MEDICAID
+        ri_pregnancy_end_date:
+          2024: "2023-03-07"
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5]
+        state_code:
+          2024: RI
+      household2:
+        members: [person6]
+        state_code:
+          2024: CO
+  output:
+    ri_medicaid_postpartum_eligible: [false, false, false, false, true, false]
+
+- name: Case 6, each qualifying Rhode Island pregnancy coverage pathway retains postpartum benefits.
+  period: 2024
+  input:
+    people:
+      person1:
+        ri_pregnancy_coverage: MEDICAID
+        ri_pregnancy_end_date: "2023-03-07"
+      person2:
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2023-03-07"
+      person3:
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+      person4:
+        ri_pregnancy_coverage: FCEP
+        ri_pregnancy_end_date: "2023-03-07"
+      person5:
+        ri_pregnancy_coverage: NONE
+        ri_pregnancy_end_date: "2023-03-07"
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: RI
+  output:
+    ri_medicaid_postpartum_eligible:
+      2024-01: [true, true, true, true, false]
+    ri_chip_postpartum_eligible:
+      2024-01: [false, true, false, false, false]
+
+- name: Case 7, a pregnancy ending on the first day of the evaluated month starts the continuation that month.
+  period: 2024
+  input:
+    state_code: RI
+    ri_pregnancy_coverage: MEDICAID
+    ri_pregnancy_end_date: "2024-01-01"
+  output:
+    ri_medicaid_postpartum_eligible:
+      2024-01: true
+      2024-12: true

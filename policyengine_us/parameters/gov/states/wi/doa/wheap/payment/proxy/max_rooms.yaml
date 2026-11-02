@@ -1,0 +1,12 @@
+description: Wisconsin limits the room count used in the heat proxy amount to this number under the Home Energy Assistance Program.
+values:
+  2025-10-01: 9
+metadata:
+  unit: int
+  period: year
+  label: Wisconsin WHEAP heat proxy maximum rooms
+  reference:
+    - title: "Wisconsin PY26 WHEAP Manual, sections 2.3.1 item 7 and 4.4.17 #page 27,79"
+      href: https://web.archive.org/web/20260428215048/https://energyandhousing.wi.gov/Documents/WHEAP/WheapManual_PY26.pdf#page=27
+    - title: Wisconsin HE+ Benefit Calculator FFY2026, Benefits!B27 and D12
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/WI_BenefitMatrix_2026.xlsx

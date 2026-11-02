@@ -11,7 +11,8 @@ class or_standard_deduction(Variable):
     reference = (
         "https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=18",
         "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html",  # ORS 316.695(7)-(8)
-        "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=96",
+        # Earned income definition and dependent worksheets, PDF pages 95-96
+        "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=95",
     )
     defined_for = StateCode.OR
 
@@ -21,13 +22,9 @@ class or_standard_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
         initial_core_deduction = p.amount[filing_status]
         # Replace if claimable as a dependent. Earned income is figured as in
-        # the federal worksheet, net of the deductible part of self-employment
-        # tax (Schedule 1, line 15).
-        earned_income = max_(
-            tax_unit("tax_unit_earned_income", period)
-            - tax_unit("self_employment_tax_ald", period),
-            0,
-        )
+        # the federal worksheet: W-2 box 1 wages, business and farm income,
+        # net of the deductible part of self-employment tax.
+        earned_income = tax_unit("standard_deduction_worksheet_earned_income", period)
         claimable_dep_floor = p.claimable_as_dependent.min
         claimable_dep_earned_amount = (
             earned_income + p.claimable_as_dependent.earned_income_addition

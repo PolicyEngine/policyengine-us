@@ -1,0 +1,14 @@
+- name: Case 1, default ks_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: KS
+  output:
+    ks_other_subtractions: 0.0
+
+- name: Case 2, ks_other_subtractions flows into ks_agi_subtractions
+  period: 2024
+  input:
+    state_code: KS
+    ks_other_subtractions: 1_100
+  output:
+    ks_agi_subtractions: 1_100

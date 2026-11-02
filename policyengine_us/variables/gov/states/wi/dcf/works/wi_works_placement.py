@@ -20,15 +20,19 @@ class wi_works_placement(Variable):
     reference = (
         "https://docs.legis.wisconsin.gov/statutes/statutes/49/iii/148",
         "https://dcf.wisconsin.gov/manuals/w-2-manual/Production/07/7.4.1_Community_Service_Jobs_(CSJ).htm",
+        "https://dcf.wisconsin.gov/manuals/w-2-manual/Production/07/7.4.3_Custodial_Parent_of_an_Infant_CMC_.htm",
     )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.wi.dcf.works.placement
         person = spm_unit.members
 
-        # CMC: Custodial Parent of Infant (child <= 8 weeks ≈ 2 months)
-        child_age_months = person("monthly_age", period)
-        has_infant = spm_unit.any(child_age_months <= p.cmc_infant_age_limit)
+        # CMC: Custodial Parent of Infant (child 8 weeks old or less;
+        # 12 weeks before 2012). The limit is in weeks and age is in years.
+        # With age in whole years (as in the microdata), every child aged 0
+        # counts as at or below the limit, so age 0 always gives CMC.
+        age_in_weeks = person("age", period.this_year) * WEEKS_IN_YEAR
+        has_infant = spm_unit.any(age_in_weeks <= p.cmc_infant_age_limit)
 
         # ARP: At Risk Pregnancy (3rd trimester = month 7+)
         is_pregnant = person("is_pregnant", period)

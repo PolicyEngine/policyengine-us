@@ -1,40 +1,58 @@
-- name: Single eligible person
-  period: 2024
+- name: Case 1, single eligible person.
+  period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
-        ssi_amount_if_eligible: 1_000
-        ca_capi_eligible_person: true
-        ssi_countable_income: 500
-    spm_units:
-      spm_unit:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        # 520 per month foreign pension.
+        pension_income: 6_240
+        # SSI zeroes countable income for people who fail its immigration
+        # test, so the case supplies it: 520 - 20 general exclusion = 500 per
+        # month (6,000 per year).
+        ssi_countable_income: 6_000
+    households:
+      household:
         members: [person1]
-        ca_capi_eligible: true
-        ca_state_supplement: 2_000
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
   output:
-    ca_capi: 2_490
+    # Individual standard 1,233.94 (no offset since June 2019, WIC 18941),
+    # less countable income 500 = 733.94 per month (MPP 49-055.32).
+    # 733.94 x 12 = 8,807.28.
+    ca_capi: 8_807.28
 
-- name: Couple, both people eligible
-  period: 2024
+- name: Case 2, couple, both people eligible.
+  period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
-        ssi_amount_if_eligible: 1_000
-        ca_capi_eligible_person: true
-        ssi_countable_income: 500
+        age: 72
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
       person2:
-        ssi_amount_if_eligible: 1_000
-        ca_capi_eligible_person: true
-        ssi_countable_income: 4_000
-    spm_units:
-      spm_unit:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    marital_units:
+      marital_unit:
         members: [person1, person2]
-        ca_capi_eligible: true
-        ca_state_supplement: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
   output:
-    ca_capi: 1_480
+    # Couple standard 2,098.83 with no offset; each member receives one-half
+    # (MPP 49-055.4): 1,049.415 per month, 12,592.98 per year. The unit
+    # total is 2 x 12,592.98 = 25,185.96.
+    ca_capi_person: [12_592.98, 12_592.98]
+    ca_capi: 25_185.96
 
-- name: Integration test, ineligible
+- name: Case 3, integration test, ineligible.
   period: 2024
   input:
     people:
@@ -51,7 +69,7 @@
   output:
     ca_capi: 0
 
-- name: Integration test, SSI eligible
+- name: Case 4, integration test, SSI eligible.
   period: 2024
   input:
     people:
@@ -73,8 +91,9 @@
     ca_state_supplement: 0
     ca_capi: 0
 
-- name: Integration test, undocumented
-  period: 2024
+- name: Case 5, integration test, permanent resident without 40 SSI quarters.
+  period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -82,7 +101,8 @@
         employment_income: 1_000
         is_disabled: true
         meets_ssi_disability_criteria: true
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
       person2:
         age: 10
         employment_income: 0
@@ -97,4 +117,109 @@
     ca_state_supplement_blind_amount: 0
     ca_state_supplement_aged_blind_disabled_amount: 0
     ca_state_supplement: 0
-    ca_capi: 11_306
+    # Disabled individual standard 1,233.94 per month with no offset. Living
+    # arrangements allow food preparation by default, so no no-cooking food
+    # allowance applies. Earnings of 83.33 per month fall within the
+    # $20 + $65 exclusions, so countable income is 0 (until PR 10240, SSI
+    # also zeroes this income for people who fail its noncitizen test).
+    # 1,233.94 x 12 = 14,807.28.
+    ca_capi: 14_807.28
+
+- name: Case 6, mixed couple, only the noncitizen spouse receives CAPI.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The citizen receives SSI/SSP, which counts as the CAPI member's
+    # unearned income (MPP 49-035.221). The model pays the citizen SSI of
+    # 1,491 / 2 = 745.50 and a state supplement of 1,233.94 - 745.50 =
+    # 488.44 per month; SSA pays 994 + 239.94, the same 1,233.94 total.
+    # CAPI = couple standard 2,098.83 (MPP 49-050.13, no offset) - 0 income
+    # - 745.50 - 488.44 = 864.89 per month; 864.89 x 12 = 10,378.68.
+    ca_capi_person: [0, 10_378.68]
+    ca_capi: 10_378.68
+
+- name: Case 7, two unrelated eligible people in one unit, income is not pooled.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        # 1,520 per month foreign pension.
+        pension_income: 18_240
+        # SSI zeroes countable income for people who fail its immigration
+        # test, so the case supplies it: 1,520 - 20 = 1,500 per month
+        # (18,000 per year).
+        ssi_countable_income: 18_000
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # Each person is assessed on their own income (MPP 49-035.1, 49-055.32).
+    # person1: 1,500 is not lower than the 1,233.94 standard, so 0.
+    # person2: no income, so 1,233.94 per month; x 12 = 14,807.28. Pooling
+    # person1's excess income with person2's standard would lower this.
+    ca_capi_person: [0, 14_807.28]
+    ca_capi: 14_807.28
+
+- name: Case 8, aged person in 2024, the independent-living standard is floored at the federal benefit rate.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The state supplement parameters hold the 1991 aged amount of 630 until
+    # 2025 (issue 7787). CAPI equals SSI/SSP (WIC 18941), so the standard is
+    # floored at the 2024 federal benefit rate: max(630, 943) = 943 per
+    # month with no offset and no income; 943 x 12 = 11,316. This pins a
+    # known-low value from the stopgap floor: the published aged standard was
+    # 1,182.94 (POMS SI 01415.056); issue 10480 removes the floor.
+    ca_capi_person: 11_316
+    ca_capi: 11_316

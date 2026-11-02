@@ -20,7 +20,17 @@ class ca_state_supplement_dependent_amount(Variable):
         # Dependent amount
         dependent = person("is_tax_unit_dependent", period)
         dependent_age_eligible = age < p.dependent.age_limit
+        # The child must meet the SSI/SSP conditions that
+        # ca_state_supplement_eligible_person applies to adults; a child who
+        # fails SSI's noncitizen test gets CAPI instead (WIC 18938, 18941).
+        immigration_status = person("immigration_status", period.this_year)
+        is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
+        is_qualified_noncitizen = person(
+            "is_ssi_qualified_noncitizen", period.this_year
+        )
+        meets_resource_test = person("meets_ssi_resource_test", period)
+        eligible = meets_resource_test & (is_citizen | is_qualified_noncitizen)
         dependent_count = spm_unit.sum(
-            dependent & dependent_age_eligible & (is_ssi_disabled | blind)
+            dependent & dependent_age_eligible & (is_ssi_disabled | blind) & eligible
         )
         return dependent_count * p.dependent.amount
