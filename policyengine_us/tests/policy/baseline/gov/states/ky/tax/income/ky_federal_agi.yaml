@@ -19,7 +19,7 @@
         members: [head, spouse]
         state_code: KY
   output:
-    adjusted_gross_income_person: [25_000, -15_000]
+    adjusted_gross_income_person: [40_000, -30_000]
     adjusted_gross_income: 10_000
     ky_federal_agi: [40_000, -30_000]
     ky_agi: [40_000, -30_000]
@@ -155,6 +155,69 @@
     ky_agi: [40_000, 10_000, 0]
     ky_modified_agi_if_separate: 50_000
 
+- name: Kentucky reverses reconciled federal losses when supplied person amounts are zero
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 40_000
+        loss_ald_person: 0
+      spouse:
+        age: 43
+        self_employment_income: -30_000
+        loss_ald_person: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    # Federal ALD reconciles the supplied zero person amounts to the allowed
+    # 30,000 loss with its equal fallback. Kentucky still assigns the loss
+    # to its owner and preserves the joint federal AGI.
+    loss_ald: 30_000
+    adjusted_gross_income_person: [25_000, -15_000]
+    adjusted_gross_income: 10_000
+    ky_federal_agi: [40_000, -30_000]
+    ky_agi: [40_000, -30_000]
+    ky_modified_agi_if_joint: 10_000
+    ky_modified_agi_if_separate: 40_000
+
+- name: Supplied dependent loss amounts do not enter Kentucky's federal loss reversal
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 40_000
+        loss_ald_person: 0
+      spouse:
+        age: 43
+        self_employment_income: -30_000
+        loss_ald_person: 30_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        loss_ald_person: 50_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: KY
+  output:
+    loss_ald: 30_000
+    adjusted_gross_income_person: [40_000, -30_000, 0]
+    adjusted_gross_income: 10_000
+    ky_federal_agi: [40_000, -30_000, 0]
+    ky_agi: [40_000, -30_000, 0]
+    ky_modified_agi_if_joint: 10_000
+    ky_modified_agi_if_separate: 40_000
+
 - name: A reform removing loss deductions does not restore them through allocation
   period: 2024
   input:
@@ -271,3 +334,30 @@
     ky_agi: [50_000, -13_000]
     ky_modified_agi_if_joint: 37_000
     ky_modified_agi_if_separate: 50_000
+
+- name: A spouse's non-SSTB Schedule C loss offsets the same spouse's SSTB Schedule C profit
+  # 2025 Form 740 instructions, page 13, line 9: "Each spouse must claim his
+  # or her own income and deductions. The total of line 5, Columns A and B,
+  # must equal the combined federal adjusted gross income." The head's two
+  # Schedules C (line 31 of (5,000) and 5,000) net to 0 on Schedule 1 line 3,
+  # so the head's line 5 is 0 and the spouse's is the 40,000 of wages.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        self_employment_income: -5_000
+        sstb_self_employment_income: 5_000
+      spouse:
+        age: 43
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    adjusted_gross_income: 40_000
+    ky_federal_agi: [0, 40_000]

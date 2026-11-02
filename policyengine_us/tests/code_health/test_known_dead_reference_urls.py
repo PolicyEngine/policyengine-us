@@ -100,9 +100,15 @@ def load_known_dead_url_prefixes(data_dir: Path = DATA_DIR) -> tuple:
 
 # (dead URL prefix, date verified dead, where its content lives now)
 KNOWN_DEAD_URL_PREFIXES = load_known_dead_url_prefixes()
-SCANNED_ROOTS = (REPO, REPO.parent / "docs")
+# source_conflicts/ holds the shared register, its backlog and source captures.
+SCANNED_ROOTS = (REPO, REPO.parent / "docs", REPO.parent / "source_conflicts")
 SCANNED_SUFFIXES = {".ipynb", ".md", ".py", ".yaml", ".yml"}
 THIS_FILE = Path(__file__).resolve()
+# A byte-pinned copy of rulespec-us's register: a dead link in it can only be
+# fixed upstream, then re-vendored, so it is not scanned here.
+VENDORED = {
+    (REPO.parent / "source_conflicts" / "known-source-conflicts.yaml").resolve()
+}
 
 
 def url_host(prefix: str) -> str:
@@ -407,10 +413,18 @@ def scanned_files():
                 path.suffix.lower() not in SCANNED_SUFFIXES
                 or not path.is_file()
                 or path.resolve() == THIS_FILE
+                or path.resolve() in VENDORED
                 or DATA_DIR in path.resolve().parents
             ):
                 continue
             yield path
+
+
+def test_the_vendored_register_is_not_scanned():
+    # It is a byte-pinned copy; a dead link in it is fixed in rulespec-us.
+    (vendored,) = VENDORED
+    assert vendored.is_file()
+    assert vendored not in {path.resolve() for path in scanned_files()}
 
 
 def test_package_and_docs_have_no_known_dead_reference_urls():

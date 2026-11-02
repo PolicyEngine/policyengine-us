@@ -18,9 +18,9 @@ class ny_medical_expense_deduction(Variable):
     medical and dental expenses only above 10% of federal AGI; NY does not
     follow the federal 7.5% floor in place since 2017 (Public Law 115-97
     § 11027 for 2017-2018, later law after that). Form IT-196 lines 1-4 apply
-    this floor to federal AGI (Form IT-201 or IT-203 line 19; line 19a,
-    recomputed federal AGI, in 2020-2022, which PolicyEngine does not
-    distinguish from federal AGI). Through 2017, NY took the federal
+    this floor to recomputed federal AGI (Form IT-201 or IT-203 line 19a,
+    ny_recomputed_federal_agi), which differs from federal AGI in 2020 by the
+    federal charitable deduction for non-itemizers. Through 2017, NY took the federal
     Schedule A amount, so the floor parameter follows the federal floor then.
     """
 
@@ -29,5 +29,7 @@ class ny_medical_expense_deduction(Variable):
         # above 10% of AGI, not the federal 7.5% floor in place since 2017
         p = parameters(period).gov.states.ny.tax.income.deductions.itemized.medical
         expenses = tax_unit("itemized_medical_expenses", period)
-        medical_floor = p.floor * tax_unit("positive_agi", period)
+        # IT-196 line 2: recomputed federal AGI (IT-201 line 19a).
+        agi = max_(0, tax_unit("ny_recomputed_federal_agi", period))
+        medical_floor = p.floor * agi
         return max_(0, expenses - medical_floor)

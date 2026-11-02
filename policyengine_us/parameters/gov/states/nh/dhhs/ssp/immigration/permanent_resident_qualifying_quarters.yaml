@@ -1,0 +1,13 @@
+description: New Hampshire treats a lawful permanent resident credited with at least this many qualifying quarters as exempt from the qualified alien waiting period under the adult category financial assistance program.
+values:
+  2026-01-01: 40
+
+metadata:
+  unit: int
+  period: year
+  label: New Hampshire SSP permanent resident qualifying quarters exception
+  reference:
+    - title: 8 U.S.C. 1622(b)(2), Certain permanent resident aliens
+      href: https://www.law.cornell.edu/uscode/text/8/1622#b_2
+    - title: 8 U.S.C. 1645, Qualifying quarters
+      href: https://www.law.cornell.edu/uscode/text/8/1645

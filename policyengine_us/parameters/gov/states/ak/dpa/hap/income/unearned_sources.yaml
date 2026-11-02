@@ -1,0 +1,49 @@
+description: Alaska includes these ordinary unearned cash receipts under the Heating Assistance Program.
+values:
+  2026-10-01:
+    - social_security
+    - ssi
+    - ak_ssp
+    - pension_income
+    - military_retirement_income
+    - retirement_distributions
+    - railroad_benefits
+    - survivor_benefits
+    - veterans_benefits
+    - disability_benefits
+    - total_unemployment_compensation
+    - workers_compensation
+    - strike_benefits
+    - alimony_income
+    - child_support_received
+    - interest_income
+    - ordinary_dividend_income
+    - estate_income
+    - capital_gains
+    - gambling_winnings
+
+# ATAP is added once separately. ak_ssp is Alaska Adult Public Assistance,
+# distinct from exempt Senior Benefits. general_assistance stands for State
+# General Relief Assistance (7 AAC 38.030), which 7 AAC 44.042(18) exempts, so
+# it is not listed. BIA General Assistance paid to the household counts under
+# plan 1.9 and manual 3003-1 B.6.o but has no separate input. PFD, Senior
+# Benefits, SNAP, in-kind/vendor benefits, tax refunds and balances are excluded.
+# Broad VA/compensation inputs lack exempt-subtype detail. Generic dividends
+# cannot identify fully exempt ANCSA payments. Estate income excludes separately
+# reported interest/dividends/capital gains, avoiding component duplication.
+# Education grants, royalties, foster/adoption receipts, excess reimbursements
+# and cash utility reimbursements lack the detail required by the manual.
+# A HUD utility allowance alone does not establish a cash reimbursement.
+# Military basic pay is its own input and counts once, as earned income.
+# Combat/work-study/MASST exceptions are unobserved.
+metadata:
+  unit: list
+  period: year
+  label: Alaska HAP ordinary unearned income sources
+  reference:
+    - title: 7 AAC 44.042
+      href: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+    - title: Alaska HAP Manual 3003-1 B, Countable Unearned Income
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-1_countable_income.htm
+    - title: Alaska HAP Manual 3003-2 A, Non-countable Income
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-2_noncountable_(exempt)_income.htm

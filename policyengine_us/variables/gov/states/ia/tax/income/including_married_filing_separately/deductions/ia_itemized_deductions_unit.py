@@ -12,6 +12,7 @@ class ia_itemized_deductions_unit(Variable):
         "https://revenue.iowa.gov/media/2650/download?inline",
         "https://revenue.iowa.gov/sites/default/files/2023-01/2022IA1040%2841001%29.pdf",
         "https://revenue.iowa.gov/media/2721/download?inline",
+        "https://revenue.iowa.gov/taxes/tax-guidance/individual-income-tax/iowa-nonconformity-taxpayer-certainty-and-disaster-tax-relief-act-2019",
         # 2018 IA Schedule A, lines 19 to 24.
         "https://revenue.iowa.gov/media/2298/download?inline=#page=1",
     )
@@ -35,6 +36,12 @@ class ia_itemized_deductions_unit(Variable):
             period,
             ["itemized_deductions_less_salt", "real_estate_taxes"],
         )
+        # Iowa did not adopt the retroactive extension of the mortgage
+        # insurance premium deduction for 2018 and 2019.
+        if p.disallowed_interest_components:
+            deductions = deductions - add(
+                tax_unit, period, p.disallowed_interest_components
+            )
         if p.misc_deduction_retained:
             # 2018: Iowa did not adopt the federal suspension of miscellaneous
             # deductions above 2% of federal AGI (Schedule A lines 19 to 24),
