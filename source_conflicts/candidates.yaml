@@ -1866,6 +1866,8 @@ candidates:
     - policyengine_us/variables/gov/states/de/dhss/liheap/eligibility/de_liheap_eligible.py
     - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
     - policyengine_us/parameters/gov/states/de/dhss/liheap/eligibility/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10612
   state: unreviewed
   note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (de_liheap_eligible.py).
 - id: us-de:snap-child-support-exclusion
