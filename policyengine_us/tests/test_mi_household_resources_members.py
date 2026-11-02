@@ -9,9 +9,10 @@ adjustments are on the dependent's return, not the claimant's.
 That includes Social Security, SSI and railroad retirement benefits (line
 21). A minor child's or dependent adult's own benefit is received by the
 beneficiary, even when the claimant is the representative payee, so it is
-not household resources. Revenue Administrative Bulletin 2015-18 and the
-line 21 instructions count amounts received for minor children or dependent
-adults; the statute's definition of household governs both.
+not household resources. Revenue Administrative Bulletin 2015-18 counts
+benefits received by minor children, and the line 21 instructions count
+amounts received for minor children or other dependent adults; the statute's
+definition of household governs both.
 
 The claimant receives two kinds of amount for others in the household
 (page 32), which count wherever they are recorded:
@@ -19,8 +20,8 @@ The claimant receives two kinds of amount for others in the household
 - line 22: child support and foster parent payments;
 - line 27: payments to the household by MDHHS and other public assistance.
 
-Line 31 is "insurance premiums you paid for yourself and your family" (MCL
-206.510(1)). health_insurance_premiums records the premiums each person
+Line 31 is "insurance premiums you paid for yourself and your family" (page
+32). health_insurance_premiums records the premiums each person
 paid, so only the head's and spouse's count; theirs may cover the family.
 Line 31 leaves out "any insurance premiums deducted on lines 21 or 30"
 (page 33), so the head's and spouse's self-employed health insurance

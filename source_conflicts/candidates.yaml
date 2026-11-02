@@ -4434,11 +4434,11 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/9796
     - https://github.com/PolicyEngine/policyengine-us/pull/10325
   state: ruled
-  note: 'Ruled to follow MCL 206.508(3): Social Security, SSI and railroad benefits (MI-1040CR line 21) count for
+  note: 'PE-US follows MCL 206.508(3): Social Security, SSI and railroad benefits (MI-1040CR line 21) count for
     the claimant and spouse only, so a dependent''s own benefit stays out even when the claimant receives it as
     representative payee. RAB 2015-18 counts benefits received by minor children, and the line 21 instructions count
     amounts received for minor children or other dependent adults. Line 31 subtracts the premiums the claimant and
-    spouse paid, family coverage included, and not premiums a dependent paid. PE-US treats child support (line 22)
+    spouse paid, including family coverage, and not premiums a dependent paid. PE-US treats child support (line 22)
     and public assistance (line 27) as payments the claimant receives, so they count for every member.'
 - id: us-mi:household-resources-premium-double-deduction
   program: homestead-credit
