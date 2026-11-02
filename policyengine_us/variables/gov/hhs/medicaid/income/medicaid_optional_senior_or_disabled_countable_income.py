@@ -2,6 +2,10 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.hhs.medicaid.income._apply_medicaid_optional_senior_or_disabled_exclusions import (
     _apply_medicaid_optional_senior_or_disabled_exclusions,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+    _ssi_spouse_index,
+)
 
 
 class medicaid_optional_senior_or_disabled_countable_income(Variable):
@@ -91,11 +95,18 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
             max_(paid_premiums - paid_part_b, 0) + full_part_b,
             paid_premiums,
         )
-        premiums = where(
-            couple_computation,
-            person.marital_unit.sum(own_premiums),
-            own_premiums,
+        # 22 CCR 50555.2(a) deducts premiums paid by and purchased for any
+        # person in the family. A couple's budget takes both spouses'
+        # premiums and those of unmarried tax dependents in their marital
+        # unit, but not an unrelated adult's, whose income also stays out of
+        # ssi_marital_unearned_income when a situation omits marital units.
+        dependent_without_spouse = person("is_tax_unit_dependent", period) & (
+            _ssi_spouse_index(person, period) < 0
         )
+        family_premiums = _ssi_couple_total(
+            person, period, own_premiums
+        ) + person.marital_unit.sum(where(dependent_without_spouse, own_premiums, 0))
+        premiums = where(couple_computation, family_premiums, own_premiums)
         deducts_premiums = p.deducts_health_insurance_premiums[state].astype(bool)
         # MC 176 (ACWDL 00-57) lines 16-17 subtract the additional disregard
         # and the premiums from income after the SSI exclusions.
