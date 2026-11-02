@@ -292,10 +292,19 @@ def create_owners_draw():
             if not _enabled(period, parameters):
                 return baseline_sehi_limit.formula(person, period, parameters)
             # Form 7206 as in the baseline formula, except that line 5 also
-            # counts the owners' draw: under this reform its profits bear SE
-            # tax, and line 7's deductible SE tax above includes that tax.
-            # Line 5 sums net profits before the net-earnings factor, so the
-            # draw enters as its gross amount, like line 4's Schedule C profit.
+            # counts the gross owners' profits that bear SECA under this
+            # reform (owners_draw_niit_exclusion: the OASDI base divided by
+            # the net-earnings factor, or the whole gross draw with HI on),
+            # and only when half_seca_deduction puts that SECA into
+            # self_employment_tax_ald_person, which line 7 apportions. Draw
+            # profits above the OASDI room with HI off, or whose SECA is not
+            # deductible, stay out of line 5, as on main.
+            draw = parameters(period).gov.contrib.ssa.owners_draw
+            draw_profits_in_line_7 = where(
+                draw.half_seca_deduction,
+                person("owners_draw_niit_exclusion", period),
+                0,
+            )
             plan_business_profit = max_(
                 0, person("total_self_employment_income", period)
             )
@@ -303,7 +312,7 @@ def create_owners_draw():
                 plan_business_profit
                 + max_(0, person("farm_operations_income", period))
                 + max_(0, person("partnership_self_employment_net_earnings", period))
-                + max_(0, person("owners_draw_gross", period))
+                + draw_profits_in_line_7
             )
             plan_business_share = np.divide(
                 plan_business_profit,

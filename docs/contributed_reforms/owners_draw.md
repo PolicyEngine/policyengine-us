@@ -96,6 +96,19 @@ Outputs include `owners_draw_active_income`, `owners_draw_planned_gross`,
 `owners_draw_net_earnings`, `owners_draw_oasdi_room`,
 `owners_draw_oasdi_base`, `owners_draw_oasdi_tax`, and `owners_draw_hi_tax`.
 
+## Self-employed health insurance limit
+
+The reform also replaces `self_employed_health_insurance_earned_income_limit`
+(Form 7206 line 13). Line 5 sums the profits of businesses subject to SE tax,
+and line 6 apportions the deductible SE tax on line 7 to the plan business by
+its share of line 5. With `half_seca_deduction: true`, line 5 adds
+`owners_draw_niit_exclusion`: `draw_oasdi_base / q` with HI off, or the whole
+actual gross draw D with HI on. These are the draw profits whose SECA the
+deduction includes. Draw profits beyond the OASDI room with HI off stay out of
+line 5. With `half_seca_deduction: false` the draw's SECA is not deductible,
+so line 5 omits the draw and the limit follows the baseline formula. Disabled
+years use the baseline formula.
+
 For the current-law cap basis, the taxed draw is nonnegative and no larger
 than remaining room, adjusted earnings, or actual gross draw. Adding the
 draw cannot push otherwise capped covered earnings beyond C. Increasing the

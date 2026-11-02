@@ -753,15 +753,51 @@ def test_generated_disabled_sehi_limit_equals_baseline(reform_variables, rows, r
     np.testing.assert_array_equal(reformed[SEHI_LIMIT], baseline[SEHI_LIMIT])
 
 
+_SEHI_POLICY = st.fixed_dictionaries(
+    {
+        "include_hi": st.booleans(),
+        "half_seca_deduction": st.booleans(),
+        "room_cap_basis": st.sampled_from([0, 1]),
+        "phase_in_share": st.sampled_from([0, 0.5, 1]),
+        "cap": st.integers(1, 400_000),
+    }
+)
+_SEHI_WITNESS_POLICY = dict(
+    include_hi=False,
+    half_seca_deduction=True,
+    room_cap_basis=0,
+    phase_in_share=1,
+    cap=CAP,
+)
+
+
 @settings(**SETTINGS)
-@given(rows=_SEHI_ROWS, rates=_RATE_POLICY, include_hi=st.booleans())
-@example(rows=SEHI_HAND_CASE, rates=(124, 29, 500), include_hi=False)
-def test_generated_sehi_limit_counts_the_draw_in_line_5(
-    reform_variables, rows, rates, include_hi
+@given(rows=_SEHI_ROWS, rates=_RATE_POLICY, policy=_SEHI_POLICY)
+@example(rows=SEHI_HAND_CASE, rates=(124, 29, 500), policy=_SEHI_WITNESS_POLICY)
+# The draw's SECA is not deductible, so line 7 holds none of it.
+@example(
+    rows=SEHI_HAND_CASE,
+    rates=(124, 29, 500),
+    policy=_SEHI_WITNESS_POLICY | {"half_seca_deduction": False},
+)
+# Wages use the OASDI room, so with HI off the draw bears no SECA.
+@example(
+    rows=[(40_000, 0, 0, 64_970.22, 300_000, 0)],
+    rates=(124, 29, 500),
+    policy=_SEHI_WITNESS_POLICY,
+)
+# 13,060 of the draw's 60,000 net earnings fits in the OASDI room.
+@example(
+    rows=[(40_000, 0, 0, 64_970.22, 150_000, 0)],
+    rates=(124, 29, 500),
+    policy=_SEHI_WITNESS_POLICY,
+)
+def test_generated_sehi_limit_counts_seca_taxed_draw_in_line_5(
+    reform_variables, rows, rates, policy
 ):
-    """Form 7206 lines 4-13 with every SE-taxed business in line 5."""
+    """Form 7206 lines 4-13 with the SECA-taxed draw profits in line 5."""
     inputs = _sehi_inputs(rows)
-    policy = dict(**_policy_rates(rates), include_hi=include_hi)
+    policy = dict(**_policy_rates(rates), **policy)
     enabled = _calculate(reform_variables, _parameters(**policy), inputs)
     # Main's formula on the same reformed SE tax omits the draw from line 5.
     main = _calculate(
@@ -773,28 +809,49 @@ def test_generated_sehi_limit_counts_the_draw_in_line_5(
         },
         [SEHI_LIMIT],
     )
+    # Line 5's draw term from the rule: the gross draw profits that bear
+    # SECA, counted only when that SECA is in line 7's deductible SE tax.
+    # With HI on the whole gross draw bears SECA; with HI off only the part
+    # whose net earnings fit in the OASDI room left by wages and existing SE.
+    gross = enabled["owners_draw_gross"]
+    factor = 1 - policy["employer_share"] * (policy["oasdi_rate"] + policy["hi_rate"])
+    if policy["room_cap_basis"] == 1:
+        room = np.inf
+    else:
+        room = np.maximum(
+            0,
+            policy["cap"]
+            - enabled["taxable_earnings_for_social_security"]
+            - enabled["social_security_taxable_self_employment_income"],
+        )
+    seca_taxed_draw = (
+        gross if policy["include_hi"] else np.minimum(gross * factor, room) / factor
+    )
+    draw_term = seca_taxed_draw if policy["half_seca_deduction"] else 0 * gross
     line_4 = np.maximum(0, inputs["self_employment_income"])
     line_5 = (
         line_4
         + np.maximum(0, inputs["farm_operations_income"])
         + np.maximum(0, inputs["partnership_self_employment_net_earnings"])
-        + np.maximum(0, enabled["owners_draw_gross"])
+        + draw_term
     )
     share = np.divide(line_4, line_5, out=np.zeros_like(line_5), where=line_5 > 0)
     plan_share_of_se_tax = enabled["self_employment_tax_ald_person"] * share
     pension = inputs["self_employed_pension_contribution_ald_person"]
     limit = enabled[SEHI_LIMIT]
     np.testing.assert_allclose(
-        limit, np.maximum(0, line_4 - plan_share_of_se_tax - pension), atol=1e-6
+        limit,
+        np.maximum(0, line_4 - plan_share_of_se_tax - pension),
+        rtol=1e-9,
+        atol=1e-6,
     )
-    # Never above line 4 less the plan business's line 6 share of the
-    # deductible SE tax (line 8), and never below main's draw-free share.
-    assert np.all(limit <= np.maximum(0, line_4 - plan_share_of_se_tax) + 1e-6)
+    # Checks against main's separately computed formula: a draw in line 5
+    # can only lower line 6, and a draw term of zero leaves main's limit.
     assert np.all(limit >= main[SEHI_LIMIT] - 1e-6)
-    assert np.all(limit <= np.maximum(0, line_4 - pension) + 1e-6)
-    # With no draw, the reform's line 5 equals main's.
-    no_draw = enabled["owners_draw_gross"] == 0
-    np.testing.assert_allclose(limit[no_draw], main[SEHI_LIMIT][no_draw], atol=1e-6)
+    no_draw_term = draw_term == 0
+    np.testing.assert_allclose(
+        limit[no_draw_term], main[SEHI_LIMIT][no_draw_term], atol=1e-6
+    )
 
 
 @contextmanager
