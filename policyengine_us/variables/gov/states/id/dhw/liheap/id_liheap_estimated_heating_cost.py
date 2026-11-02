@@ -17,12 +17,16 @@ class id_liheap_estimated_heating_cost(Variable):
         p = parameters(period).gov.states.id.dhw.liheap.payment.estimated_heating_costs
         # PY2007 nine-month cost proxy; FY2026 applicability is unconfirmed.
         # Safe lookup leaves unknown areas unassigned after fuel selection.
+        # No Idaho source names solar or kerosene. As in heating_expense, solar
+        # reads as electric and kerosene as the chart's oil.
         lookup_area = clip(area, 1, 3)
         cost = select(
             [
-                heating == types.ELECTRICITY,
+                (heating == types.ELECTRICITY) | (heating == types.SOLAR),
                 heating == types.NATURAL_GAS,
-                (heating == types.FUEL_OIL) | (heating == types.PROPANE),
+                (heating == types.FUEL_OIL)
+                | (heating == types.KEROSENE)
+                | (heating == types.PROPANE),
                 (heating == types.COAL) | (heating == types.WOOD),
             ],
             [

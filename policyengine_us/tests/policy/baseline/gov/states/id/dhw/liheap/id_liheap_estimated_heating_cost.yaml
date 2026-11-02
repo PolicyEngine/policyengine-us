@@ -1,6 +1,6 @@
 # Historical Idaho LIHEAP Intake Manual, Appendix C, physical page 1.
 # https://web.archive.org/web/20170127123014id_/http://www.healthandwelfare.idaho.gov/Portals/_Rainbow/Manuals/LIHEAP/Appendices/c_htgcost_matrix_PY07.pdf#page=1
-# PY2007 estimated nine-month costs are used provisionally by user approval;
+# PY2007 estimated nine-month costs are used as a modeling assumption;
 # their current FY2026 applicability is unconfirmed. No inflation or 12/9 scaling.
 # Electricity uses Idaho Power & Southern Utilities. Natural gas uses the
 # Intermountain column as a modeling simplification, without a provider input.
@@ -36,13 +36,11 @@
   absolute_error_margin: 0.01
   # Zero denotes an unmodeled cost, not a legal eligibility determination.
   input:
-    state_code: [ID, ID, ID, ID, ID, ID, ID]
-    county: [UNKNOWN, BAKER_COUNTY_OR, ADA_COUNTY_ID, ADA_COUNTY_ID,
-             ADA_COUNTY_ID, ADA_COUNTY_ID, ADA_COUNTY_ID]
-    heating_type: [ELECTRICITY, ELECTRICITY, UNSPECIFIED, NONE,
-                   OTHER, SOLAR, KEROSENE]
+    state_code: [ID, ID, ID, ID, ID]
+    county: [UNKNOWN, BAKER_COUNTY_OR, ADA_COUNTY_ID, ADA_COUNTY_ID, ADA_COUNTY_ID]
+    heating_type: [ELECTRICITY, ELECTRICITY, UNSPECIFIED, NONE, OTHER]
   output:
-    id_liheap_estimated_heating_cost: [0, 0, 0, 0, 0, 0, 0]
+    id_liheap_estimated_heating_cost: [0, 0, 0, 0, 0]
 
 - name: Case 3, omitted county uses the shared Ada fallback and its electric cost.
   period: 2026
@@ -64,3 +62,13 @@
     heating_type: [NATURAL_GAS, NATURAL_GAS, COAL, ELECTRICITY]
   output:
     id_liheap_estimated_heating_cost: [1_207, 0, 1_200, 0]
+
+- name: Case 5, solar uses the electric cost and kerosene the oil cost.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ID, ID]
+    county: [ADA_COUNTY_ID, ADA_COUNTY_ID]
+    heating_type: [SOLAR, KEROSENE]
+  output:
+    id_liheap_estimated_heating_cost: [1_335, 1_625]

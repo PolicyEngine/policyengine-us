@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.hhs_smi import smi
+from policyengine_us.variables.gov.hhs.hhs_smi import liheap_smi_limit
 from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
 
@@ -21,12 +21,11 @@ class id_liheap_income_limit(Variable):
         group = spm_unit.household("state_group_str", period)
         p = parameters(period)
         eligibility = p.gov.states.id.dhw.liheap.eligibility
-        base = p.gov.hhs.smi.amount[state]
-        factor = smi(size, state, period, parameters) / base
-        # Flooring the four-person base before applying the size factor matches
-        # all seven published FY2026 SMI limits. The source specifies the dollar
-        # amounts, not this inferred rounding order. Preserve monthly cents.
-        annual_smi = np.floor(np.floor(base * eligibility.smi_rate) * factor)
+        # The shared helper's flooring order matches all seven published FY2026
+        # SMI limits. Preserve monthly cents.
+        annual_smi = liheap_smi_limit(
+            size, state, eligibility.smi_rate, period, parameters
+        )
         monthly_smi = np.round(annual_smi / MONTHS_IN_YEAR, 2)
         annual_fpg = eligibility.fpg_rate * fpg(
             max_(size, 1),

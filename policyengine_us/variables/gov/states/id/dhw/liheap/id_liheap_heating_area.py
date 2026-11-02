@@ -13,7 +13,7 @@ class id_liheap_heating_area(Variable):
         county = spm_unit.household("county_str", period)
         p = parameters(period).gov.states.id.dhw.liheap.payment.heating_areas
         # Area codes match the benefit matrix; zero leaves unmatched counties
-        # unassigned. The recovered map's continuation is user-approved.
+        # unassigned. The recovered map continues as a modeling assumption.
         return select(
             [
                 np.isin(county, p.area_1),

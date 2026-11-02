@@ -961,11 +961,12 @@ programs:
         parameter_prefix: gov.states.tx.tdhca.ceap
         notes: Models the 150% FPG income limit, the alternative 60% SMI limit from the FY2024 state plan (applied through 2024), benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
       - state: ID
-        status: in_progress
+        status: partial
         name: Idaho LIHEAP
         full_name: Idaho Low Income Home Energy Assistance Program
+        variable: id_liheap
         parameter_prefix: gov.states.id.dhw.liheap
-        notes: FY2026 household size, countable income, income limits, modeled financial eligibility and derived heating area. SNAP during the October-September program year or current SSI receipt bypasses the ordinary income test; annual SSI assumes stable current receipt. Means-tested VA categorical status is unobserved by existing inputs. The electric-benefit parameter table uses Idaho Power & Southern Utilities amounts without distinguishing electric-provider groups. The recovered county map and PY2007 nine-month estimated heating costs are continued by user-approved modeling assumptions; FY2026 cost applicability is unconfirmed. Electric costs use Idaho Power & Southern Utilities and gas costs use one representative Intermountain column, without provider selectors. FY2026 excludes households without a specific heating-cost obligation; the conditional no-obligation rent parameter is $75 in FY2025 and zero from FY2026, following the accepted plans. High energy burden includes exactly 11% under the approved convention. No final eligibility or benefit award; existing inputs do not identify every heating-cost obligation. The PY2008 subsidized low-burden rule remains excluded. Annual flows approximate prior-month income. Earlier backfilled results are unverified historical estimates.
+        notes: FY2026 regular heating; burden bands use the PY2007 heating-cost table, whose FY2026 currency is unconfirmed, so no year is verified. Crisis, cooling, weatherization and equipment assistance are out of scope.
 
   # --- SSA programs ---
   - id: ssi

@@ -23,7 +23,11 @@ class id_liheap_income_eligible(Variable):
         receives_snap = spm_unit("snap", snap_period, options=[ADD]) > 0
         # Annual SSI is a stable-current-receipt proxy because the application
         # month is not an input. Any member may establish categorical eligibility.
-        receives_ssi = spm_unit.any(spm_unit.members("ssi", period, options=[ADD]) > 0)
+        person = spm_unit.members
+        receives_ssi = spm_unit.any(
+            (person("ssi", period, options=[ADD]) > 0)
+            | (add(person, period, ["receives_ssi"]) > 0)
+        )
         # Means-tested VA receipt also qualifies, but veterans_benefits does not
         # identify that category. This unmodeled route is not a legal exclusion.
         return (size > 0) & ((income <= limit) | receives_snap | receives_ssi)

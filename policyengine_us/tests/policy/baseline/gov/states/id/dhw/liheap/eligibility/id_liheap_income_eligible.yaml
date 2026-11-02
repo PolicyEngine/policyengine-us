@@ -1,4 +1,4 @@
-# Source-derived financial-component tests; no final eligibility or award claim.
+# Source-derived financial eligibility tests.
 # Accepted FY2026 plan, categorical rules and income thresholds (pages 5, 8).
 # https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5
 # Pre-consolidation IDAPA 16.04.14 section 151.01 (physical pages 4-5).
@@ -71,8 +71,6 @@
         members:
         - person1
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -107,8 +105,6 @@
         members:
         - person2
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -143,8 +139,6 @@
         members:
         - person3
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -288,8 +282,6 @@
         members:
         - person1
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -324,8 +316,6 @@
         members:
         - person2
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -360,8 +350,6 @@
         members:
         - person3
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -396,8 +384,6 @@
         members:
         - person4
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -562,8 +548,6 @@
         members:
         - person1
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -599,8 +583,6 @@
         - person2
         - person3
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -636,8 +618,6 @@
         - person4
         - person5
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -798,8 +778,6 @@
         members:
         - person1
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -834,8 +812,6 @@
         members:
         - person2
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -870,8 +846,6 @@
         members:
         - person3
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -907,8 +881,6 @@
         - person4
         - person5
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -1021,8 +993,6 @@
         members:
         - person1
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 100
           2026-02: 100
@@ -1057,8 +1027,6 @@
         members:
         - person2
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -1383,8 +1351,6 @@
         - person6
         - person7
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -1426,8 +1392,6 @@
         - person14
         - person15
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -1523,8 +1487,6 @@
         members:
         - person1
         heating_type: NONE
-        gas_expense: 0
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -1632,8 +1594,6 @@
         members:
         - person1
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -1668,8 +1628,6 @@
         members:
         - person2
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -1704,8 +1662,6 @@
         members:
         - person3
         heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         id_tafi:
           2026-01: 0
           2026-02: 0
@@ -1762,3 +1718,45 @@
     - 0
     - 0
     - 0
+
+- name: Case 9, reported SSI receipt establishes the categorical route.
+  # Modeled SSI is zero, but the member reports receiving SSI. Income of 100,000
+  # is far above the size-one ceiling and SNAP is zero across the program year,
+  # so only the SSI route qualifies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        is_citizen_or_legal_immigrant: true
+        employment_income: 100_000
+        ssi: 0
+        receives_ssi:
+          2026-01: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_liheap_income_eligible: true
+
