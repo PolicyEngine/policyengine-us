@@ -12,6 +12,7 @@ class ca_state_supplement_dependent_amount(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.cdss.state_supplement.payment_standard
+        fbr = parameters(period).gov.ssa.ssi.amount
         person = spm_unit.members
         # Blind amount
         blind = person("is_blind", period)
@@ -33,4 +34,4 @@ class ca_state_supplement_dependent_amount(Variable):
         dependent_count = spm_unit.sum(
             dependent & dependent_age_eligible & (is_ssi_disabled | blind) & eligible
         )
-        return dependent_count * p.dependent.amount
+        return dependent_count * (fbr.individual + p.dependent.amount)

@@ -12,10 +12,16 @@ class ca_state_supplement_out_of_home_care_facility_amount(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.cdss.state_supplement.payment_standard
+        fbr = parameters(period).gov.ssa.ssi.amount
         person = spm_unit.members
         eligible = person("ca_state_supplement_eligible_person", period)
         in_out_of_home_care_facility = person("in_out_of_home_care_facility", period)
         out_of_home_care_facility_count = spm_unit.sum(
             in_out_of_home_care_facility * eligible
         )
-        return out_of_home_care_facility_count * p.allowance.out_of_home_care
+        # The couple out-of-home care total is twice the individual total, and
+        # this amount is what it adds to the aged or disabled couple total.
+        individual_total = fbr.individual + p.allowance.out_of_home_care
+        aged_or_disabled_couple_total = fbr.couple + p.aged_or_disabled.amount.married
+        allowance = 2 * individual_total - aged_or_disabled_couple_total
+        return out_of_home_care_facility_count * allowance

@@ -17,7 +17,7 @@
         members: [person1, person2]
         state_code: CA
   output:
-    ca_state_supplement_aged_disabled_amount: 7_560
+    ca_state_supplement_aged_disabled_amount: 13_992 # (943 + 223) * 12
 
 - name: Married couple, aged and disabled
   period: 2024
@@ -44,7 +44,7 @@
         members: [person1, person2, person3]
         state_code: CA
   output:
-    ca_state_supplement_aged_disabled_amount: 14_004
+    ca_state_supplement_aged_disabled_amount: 23_664 # (1,415 + 557) * 12
 
 - name: Married couple, only one aged and disabled
   period: 2024
@@ -68,4 +68,4 @@
         members: [person1, person2, person3]
         state_code: CA
   output:
-    ca_state_supplement_aged_disabled_amount: 7_560
+    ca_state_supplement_aged_disabled_amount: 13_992 # (943 + 223) * 12

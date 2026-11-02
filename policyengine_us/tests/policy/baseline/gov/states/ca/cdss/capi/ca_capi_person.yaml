@@ -350,12 +350,12 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    # Standards max(630, 771) = 771 and max(1,167, 1,157) = 1,167 (known-low,
-    # issue 10480). Federal min(771, 1,157 - 207.50) = 771; state 0.
-    # May: 771 - 10 = 761 (MPP 49-050.11); June: 771 (WIC 18941).
+    # Standards 771 + 223 = 994 and 1,157 + 557 = 1,714, using the 1991 shares
+    # (issue 10480). Federal min(771, 1,157 - 207.50) = 771; state min(223,
+    # 557) = 223. May: 994 - 10 = 984 (MPP 49-050.11); June: 994 (WIC 18941).
     ca_capi_person:
-      2019-05: [761, 0]
-      2019-06: [771, 0]
+      2019-05: [984, 0]
+      2019-06: [994, 0]
 
 - name: Case 11, mixed couple where the SSI/SSP spouse has the income subtracts the couple's income.
   period: 2026-01
