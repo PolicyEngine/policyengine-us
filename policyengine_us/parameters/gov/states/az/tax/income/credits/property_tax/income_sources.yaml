@@ -1,4 +1,4 @@
-description: Arizona accounts for the following income sources when computing household income for the property tax credit.
+description: Arizona accounts for the following income sources of each tax unit's members when computing household income for the property tax credit.
 values:
   2021-01-01:
     # Item (2): All interest income including tax-exempt
@@ -27,6 +27,14 @@ values:
     # (A.A.C. R15-2C-502(A)(2), (B)). This includes each dependent's line D
     # amount, with the same $1,500 loss limit.
     - az_property_tax_credit_dependent_income
+    # ARS 43-1072(I) excludes Arizona unemployment insurance payments, which
+    # the two variables above take out; Form 140PTC line I counts other
+    # states' payments.
+    - az_property_tax_credit_unemployment
+    # Line H counts all alimony received and line I nontaxable strike
+    # benefits (ARS 43-1072(H)(6)(c)); this adds the part federal gross
+    # income leaves out, for every member.
+    - az_property_tax_credit_nontaxable_income
 metadata:
   unit: list
   period: year

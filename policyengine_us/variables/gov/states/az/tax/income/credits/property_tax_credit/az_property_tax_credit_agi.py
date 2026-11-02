@@ -11,9 +11,11 @@ class az_property_tax_credit_agi(Variable):
         "Adjusted gross income as defined for Arizona property tax credit purposes, "
         "for members who are not dependents. Per ARS 43-1072(H)(6) and ITR 12-1, "
         "this starts with federal AGI and subtracts taxable Social Security (ARS "
-        "43-1072(I)). Federal AGI already leaves out most other subsection (I) "
-        "items, but it counts unemployment whichever state paid it, so Arizona "
-        "unemployment is not removed. Unlike regular Arizona income tax, this does "
+        "43-1072(I)) and the unemployment compensation it holds, as (I) excludes "
+        "Arizona unemployment insurance payments; other states' payments are "
+        "added back in az_property_tax_credit_unemployment. Federal AGI already "
+        "leaves out most other subsection (I) items. Unlike regular Arizona "
+        "income tax, this does "
         "NOT exclude pension income, capital gains, or Arizona exemptions. "
         "Capital gains and losses are each member's Form 140PTC line D amount, with "
         "a net loss limited per member, in place of the capital gains and capital "
@@ -37,10 +39,10 @@ class az_property_tax_credit_agi(Variable):
         federal_agi = tax_unit("adjusted_gross_income", period)
 
         # Per ARS 43-1072(I) and ITR 12-1 "Items Excluded from Income",
-        # we ONLY exclude Social Security benefits (and other items like
-        # railroad retirement, workers comp, AZ unemployment, veterans
-        # disability pensions, welfare, and gifts - but these are typically
-        # not in Federal AGI anyway).
+        # we exclude Social Security benefits and Arizona unemployment
+        # compensation (below). Other excluded items, like railroad
+        # retirement, workers comp, veterans disability pensions, welfare and
+        # gifts, are typically not in Federal AGI anyway.
         #
         # Federal AGI only includes the TAXABLE portion of Social Security,
         # but for property tax credit, ALL Social Security should be excluded.
@@ -102,6 +104,19 @@ class az_property_tax_credit_agi(Variable):
             not_dependent * person("az_property_tax_credit_capital_gains", period)
         )
 
+        # ARS 43-1072(I) excludes "payments received under Arizona state
+        # unemployment insurance laws". Federal AGI holds each non-dependent's
+        # taxable_unemployment_compensation; all of it is taken out here, and
+        # az_property_tax_credit_unemployment adds back the part paid under
+        # another state's law (Form 140PTC line I). Only what federal AGI
+        # holds is taken out.
+        if "taxable_unemployment_compensation" in gross_income_sources:
+            federal_unemployment = tax_unit.sum(
+                not_dependent * person("taxable_unemployment_compensation", period)
+            )
+        else:
+            federal_unemployment = 0
+
         # Not floored at zero: household income (Form 140PTC line J) can be
         # negative, and az_property_tax_credit treats it as zero only for the
         # Schedule 1 and 2 lookup.
@@ -111,4 +126,5 @@ class az_property_tax_credit_agi(Variable):
             - federal_capital_gains
             + federal_capital_loss
             + line_d
+            - federal_unemployment
         )
