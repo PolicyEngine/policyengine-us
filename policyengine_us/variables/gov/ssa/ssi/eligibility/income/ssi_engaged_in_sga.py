@@ -29,7 +29,10 @@ class ssi_engaged_in_sga(Variable):
         # POMS DI 10505.015 D.3: a self-employment loss does not reduce total
         # earnings when the individual also has wages. Losses still net
         # between businesses (20 CFR 404.1081(c), POMS DI 10510.012 B), so
-        # only a net business loss is added back.
+        # only a net business loss is added back. This assumes
+        # ssi_earned_income already holds that business net. A situation that
+        # supplies ssi_earned_income directly and also a business source adds
+        # the loss back to an amount that never subtracted it.
         restored_loss = max_(-business_net, 0)
         income = person("ssi_earned_income", period) + restored_loss
         # POMS DI 10505.010A counts payroll insurance premiums for SGA.

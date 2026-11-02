@@ -109,5 +109,10 @@
     # $500 monthly farm loss from reducing them, so the spouse is engaged in
     # SGA and not disabled (20 CFR 416.905(a), 416.971). Netting the loss
     # would leave $1,300, under the SGA amount, and make the spouse disabled.
+    # For the head's payment the loss does net against wages (POMS SI
+    # 00820.210): the spouse's $1,300 is deemed, ($1,300 - $85) / 2 = $607.50,
+    # so the head receives $1,491 - $607.50 = $883.50 a month, or $10,602 a
+    # year. 416.1163(e)(2) cannot bind: $883.50 is below $994.
     is_ssi_disabled: [false, false]
     is_ssi_ineligible_spouse: [false, true]
+    ssi: [10_602, 0]

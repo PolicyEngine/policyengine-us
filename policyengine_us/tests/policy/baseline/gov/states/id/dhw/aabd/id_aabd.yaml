@@ -106,3 +106,81 @@
     # Per 501.02: COUPLE requires both to be AABD participants
     # Person1 gets individual rate ($53), not couple rate ($10)
     id_aabd: [53, 0]
+
+- name: Case 7, wages and Social Security with no business loss.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 6_000
+        employment_income: 1_800
+        id_aabd_living_arrangement: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # Unearned $500 - $20 = $480; earned ($150 - $65) / 2 = $42.50.
+    # Countable $522.50; $545 allowance - $522.50 = $22.50.
+    id_aabd: 22.5
+
+- name: Case 8, a farm loss does not reduce wages (IDAPA 16.03.05.403.06).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 6_000
+        employment_income: 1_800
+        farm_operations_income: -1_200
+        id_aabd_living_arrangement: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # SSI nets the $100 monthly farm loss against $150 wages, but Idaho
+    # counts the farm loss as zero: countable stays $522.50, so $22.50.
+    id_aabd: 22.5
+
+- name: Case 9, a partnership loss still nets against wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 6_000
+        employment_income: 1_800
+        partnership_self_employment_net_earnings: -1_200
+        id_aabd_living_arrangement: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # Only farm losses are barred. Earned $150 - $100 = $50 < $65, so
+    # countable is $480; $545 - $480 = $65, capped at the $53 maximum.
+    id_aabd: 53
+
+- name: Case 10, a Schedule C loss still nets against wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 6_000
+        employment_income: 1_800
+        self_employment_income: -1_200
+        id_aabd_living_arrangement: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # Same as the partnership case: countable $480, payment capped at $53.
+    id_aabd: 53

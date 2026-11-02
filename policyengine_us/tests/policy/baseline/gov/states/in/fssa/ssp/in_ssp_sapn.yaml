@@ -75,3 +75,91 @@
     # person1: individual amount = $22
     # person2: ineligible = $0
     in_ssp_sapn: [22, 0]
+
+- name: Case 5, a farm loss does not reduce wages (IHCPPM 3410.15.00).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 2_400
+        farm_operations_income: -1_200
+        in_ssp_sapn_eligible: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # SSI: earned $200 - $100 = $100; ($100 - $20 - $65) / 2 = $7.50
+    # countable, so the $30 facility SSI is $22.50. SAPN budgets earned
+    # income without the loss: ($200 - $85) / 2 = $57.50.
+    # $52 - $22.50 - $57.50 < 0, so SAPN is $0.
+    ssi: 22.5
+    in_ssp_sapn: 0
+
+- name: Case 6, a Schedule C loss does not reduce wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 2_400
+        self_employment_income: -1_200
+        in_ssp_sapn_eligible: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # Same budget as the farm case: $52 - $22.50 - $57.50 < 0.
+    in_ssp_sapn: 0
+
+- name: Case 7, a partnership loss does not reduce wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 2_400
+        partnership_self_employment_net_earnings: -1_200
+        in_ssp_sapn_eligible: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # Same budget as the farm case: $52 - $22.50 - $57.50 < 0.
+    in_ssp_sapn: 0
+
+- name: Case 8, business losses net against business gains before the floor.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 1_200
+        self_employment_income: 1_200
+        farm_operations_income: -1_200
+        in_ssp_sapn_eligible: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # Business net is $0, so nothing is restored. Earned $100 a month;
+    # ($100 - $85) / 2 = $7.50 countable; SSI $30 - $7.50 = $22.50.
+    # SAPN = $52 - $22.50 - $7.50 = $22.
+    ssi: 22.5
+    in_ssp_sapn: 22

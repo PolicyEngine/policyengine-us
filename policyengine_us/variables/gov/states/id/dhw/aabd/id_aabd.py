@@ -2,6 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.states.id.dhw.aabd.id_aabd_living_arrangement import (
     IDAAbdLivingArrangement,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income._ssi_countable_income_without_loss_offset import (
+    ssi_countable_income_without_loss_offset,
+)
 
 
 class id_aabd(Variable):
@@ -12,7 +15,8 @@ class id_aabd(Variable):
     definition_period = MONTH
     defined_for = "id_aabd_eligible"
     reference = (
-        "https://adminrules.idaho.gov/rules/current/16/160305.pdf#page=41",
+        # PDF pages 34, 41
+        "https://adminrules.idaho.gov/rules/current/16/160305.pdf#page=34",
         "https://www.law.cornell.edu/regulations/idaho/IDAPA-16.03.05.514",
     )
 
@@ -32,6 +36,11 @@ class id_aabd(Variable):
 
         # AABD cash = basic allowance - countable income, capped at max
         # (Section 514). Idaho mirrors SSI disregards (Sections 540-546).
-        countable_income = person("ssi_countable_income", period)
+        # IDAPA 16.03.05.403.06 disallows "Loss of Farm Income Subtracted
+        # From Other Income", so a net farm loss counts as zero. Other
+        # self-employment losses still net against other income as in SSI.
+        countable_income = ssi_countable_income_without_loss_offset(
+            person, period, parameters, ["farm_operations_income"]
+        )
         financial_need = max_(0, per_person_allowance - countable_income)
         return min_(financial_need, per_person_max)
