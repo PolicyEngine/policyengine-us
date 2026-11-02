@@ -4,8 +4,8 @@ Manual MS 400 requires an activity of the applicant and every other required
 adult. MS 420 counts paid work with no minimum hours. MS 470 covers a disabled
 caretaker only when someone else can care for the child.
 
-1. Without the input or another pathway, the result follows the table in
-   expected_activity for every pair of caretakers.
+1. Without another pathway, the result follows the table in expected_activity
+   for every pair of caretakers.
 2. Earnings can only add eligibility for a lone caretaker, at any amount.
 3. An adult in a tax unit that claims no eligible child changes nothing,
    whatever that adult does.

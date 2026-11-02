@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.household.demographic.person._parent_links import (
-    co_resident_parent_indices,
+from policyengine_us.variables.gov.hhs.medicaid.income._medicaid_parents import (
+    medicaid_parent_indices,
 )
 
 
@@ -18,14 +18,16 @@ class nv_ccdp_activity_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # MS 400 series: the applicant, every other required adult and minor
-        # parents must be in an approved Purpose of Care activity. MS 216.1
-        # requires a child's parents, whoever claims the child, and a guardian or
-        # designated relative caregiver and their spouses, not every adult at the
-        # address. parent_1_id and parent_2_id name those parents. A child with
-        # no linked parent in the unit falls to the head and spouse of the tax
-        # unit that claims them. So without ids a parent who doesn't claim the
-        # child isn't checked, and an adult who shares the child's tax unit is,
-        # because that tax unit reads its second adult as a spouse.
+        # parents must be in an approved Purpose of Care activity. MS 216.1 lists
+        # a child's parents and stepparents, a minor parent's major parents, and
+        # a guardian or designated relative caregiver and their spouses, not
+        # every adult at the address. parent_1_id and parent_2_id name parents,
+        # whoever claims the child, and the Medicaid helper adds a lone linked
+        # parent's established spouse as the stepparent. A child or minor parent
+        # with no linked parent in the unit falls to the head and spouse of the
+        # tax unit that claims them. So without ids a parent who doesn't claim
+        # the child isn't checked, and an adult who shares the child's tax unit
+        # is, because that tax unit reads its second adult as a spouse.
         #   - POC 420 (working) needs monetary compensation and sets no minimum
         #     hours, so earnings stand in for it. A self-employment loss still
         #     counts: MS 306.37 asks for an enterprise for gain.
@@ -58,21 +60,21 @@ class nv_ccdp_activity_eligible(Variable):
         # a caretaker as working in every month of the year.
         person = spm_unit.members
         is_eligible_child = person("nv_ccdp_eligible_child", period)
-        unit = spm_unit.members_entity_id
-        is_linked_parent = np.zeros(person.count, dtype=bool)
-        has_linked_parent = np.zeros(person.count, dtype=bool)
-        for parent in co_resident_parent_indices(person, period.this_year):
-            linked = is_eligible_child & (parent >= 0) & (unit[parent] == unit)
-            is_linked_parent[parent[linked]] = True
-            has_linked_parent[linked] = True
-        is_claimant = person.tax_unit.any(is_eligible_child & ~has_linked_parent) & (
-            person("is_tax_unit_head_or_spouse", period.this_year)
-        )
-        is_required_adult = is_linked_parent | is_claimant
         is_minor_parent = person("is_child", period.this_year) & person(
             "is_parent", period.this_year
         )
-        is_caretaker = is_required_adult | is_minor_parent
+        needs_parent = is_eligible_child | is_minor_parent
+        unit = spm_unit.members_entity_id
+        is_linked_parent = np.zeros(person.count, dtype=bool)
+        has_linked_parent = np.zeros(person.count, dtype=bool)
+        for parent in medicaid_parent_indices(person, period.this_year):
+            linked = needs_parent & (parent >= 0) & (unit[parent] == unit)
+            is_linked_parent[parent[linked]] = True
+            has_linked_parent[linked] = True
+        is_claimant = person.tax_unit.any(needs_parent & ~has_linked_parent) & (
+            person("is_tax_unit_head_or_spouse", period.this_year)
+        )
+        is_caretaker = is_linked_parent | is_claimant | is_minor_parent
         is_working = (person("employment_income", period.this_year) > 0) | (
             person("self_employment_income", period.this_year) != 0
         )
