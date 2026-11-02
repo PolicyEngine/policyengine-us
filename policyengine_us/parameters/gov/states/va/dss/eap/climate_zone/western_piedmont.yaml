@@ -1,0 +1,32 @@
+description: Virginia assigns these counties and independent cities to the Western Piedmont climate zone under the Energy Assistance Program.
+# Appendix A (06/17, Transmittal 17-1) lists Bedford County only; the
+# 01/03 page also listed Bedford City, which became a town in Bedford County in
+# 2013.
+values:
+  2017-06-01:
+    - ALBEMARLE_COUNTY_VA
+    - AMHERST_COUNTY_VA
+    - APPOMATTOX_COUNTY_VA
+    - BEDFORD_COUNTY_VA
+    - CAMPBELL_COUNTY_VA
+    - CHARLOTTE_COUNTY_VA
+    - FRANKLIN_COUNTY_VA
+    - HALIFAX_COUNTY_VA
+    - HENRY_COUNTY_VA
+    - NELSON_COUNTY_VA
+    - PATRICK_COUNTY_VA
+    - PITTSYLVANIA_COUNTY_VA
+    - CHARLOTTESVILLE_CITY_VA
+    - DANVILLE_CITY_VA
+    - LYNCHBURG_CITY_VA
+    - MARTINSVILLE_CITY_VA
+
+metadata:
+  unit: list
+  period: year
+  label: Virginia EAP Western Piedmont climate zone localities
+  reference:
+    - title: LIHEAP Clearinghouse Virginia FY2026 benefit matrix, Chapter D, Appendix A Climate Zones, Western Piedmont
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/VA_BenefitMatrix_2026.pdf#page=3
+    - title: Virginia Energy Assistance Manual, Volume IX, Chapter D, Appendix A Climate Zones, Western Piedmont
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=62

@@ -1,0 +1,31 @@
+# AGI on the most recent return: 20 U.S.C. 1087e(q)(4)(A) for the Repayment
+# Assistance Plan; 34 CFR 685.209(b)(10)(i) for the Income-Based Repayment,
+# SAVE, Pay As You Earn and Income-Contingent Repayment plans. Without an input
+# it defaults to the current year's AGI.
+
+- name: Case 1, defaults to the current year's adjusted gross income.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 60_000
+  output:
+    income_driven_repayment_adjusted_gross_income: 60_000
+
+- name: Case 2, an input for the most recent return overrides the current year.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        income_driven_repayment_adjusted_gross_income: 20_000
+        adjusted_gross_income: 60_000
+  output:
+    income_driven_repayment_adjusted_gross_income: 20_000

@@ -9,7 +9,7 @@
     people:
       person1:
         age: 65
-        is_ssi_eligible_individual: true
+        ssi: 9_000
         is_in_adult_residential_care: true
     households:
       household:
@@ -27,7 +27,7 @@
     people:
       person1:
         age: 30
-        is_ssi_eligible_individual: true
+        ssi: 9_000
         is_in_adult_residential_care: true
     households:
       household:
@@ -38,14 +38,14 @@
       person1:
         nm_ssi_state_supplement_eligible: true
 
-- name: Case 3, not SSI-eligible person in ARSCH facility in NM is ineligible.
+- name: Case 3, person in ARSCH facility in NM who receives no SSI is ineligible.
   period: 2025
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 65
-        is_ssi_eligible_individual: false
+        ssi: 0
         is_in_adult_residential_care: true
     households:
       household:
@@ -56,14 +56,14 @@
       person1:
         nm_ssi_state_supplement_eligible: false
 
-- name: Case 4, underage person is ineligible even if SSI-eligible and in ARSCH.
+- name: Case 4, underage person is ineligible even if SSI recipient and in ARSCH.
   period: 2025
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 17
-        is_ssi_eligible_individual: true
+        ssi: 9_000
         is_in_adult_residential_care: true
     households:
       household:
@@ -81,7 +81,7 @@
     people:
       person1:
         age: 18
-        is_ssi_eligible_individual: true
+        ssi: 9_000
         is_in_adult_residential_care: true
     households:
       household:
@@ -92,14 +92,14 @@
       person1:
         nm_ssi_state_supplement_eligible: true
 
-- name: Case 6, SSI-eligible adult NOT in ARSCH facility is ineligible.
+- name: Case 6, SSI recipient adult NOT in ARSCH facility is ineligible.
   period: 2025
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 65
-        is_ssi_eligible_individual: true
+        ssi: 9_000
         is_in_adult_residential_care: false
     households:
       household:
@@ -110,14 +110,14 @@
       person1:
         nm_ssi_state_supplement_eligible: false
 
-- name: Case 7, SSI-eligible adult in ARSCH but wrong state is ineligible.
+- name: Case 7, SSI recipient adult in ARSCH but wrong state is ineligible.
   period: 2025
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 65
-        is_ssi_eligible_individual: true
+        ssi: 9_000
         is_in_adult_residential_care: true
     households:
       household:
@@ -127,3 +127,21 @@
     people:
       person1:
         nm_ssi_state_supplement_eligible: false
+
+- name: Case 8, reported SSI receipt qualifies a resident with zero computed SSI.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 65
+        ssi: 0
+        receives_ssi: true
+        is_in_adult_residential_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    people:
+      person1:
+        nm_ssi_state_supplement_eligible: true

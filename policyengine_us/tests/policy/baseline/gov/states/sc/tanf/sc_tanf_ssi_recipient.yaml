@@ -1,0 +1,33 @@
+# SC DSS TANF Policy Manual (Volume 67), Section 7.7, SSI benefit (page 117).
+
+- name: Case 1, reported SSI receipt.
+  period: 2025-01
+  input:
+    state_code: SC
+    receives_ssi: true
+  output:
+    sc_tanf_ssi_recipient: true
+
+- name: Case 2, an SSI payment.
+  period: 2025-01
+  input:
+    state_code: SC
+    ssi: 500
+  output:
+    sc_tanf_ssi_recipient: true
+
+- name: Case 3, no SSI.
+  period: 2025-01
+  input:
+    state_code: SC
+    age: 35
+  output:
+    sc_tanf_ssi_recipient: false
+
+- name: Case 4, not defined outside South Carolina.
+  period: 2025-01
+  input:
+    state_code: NC
+    receives_ssi: true
+  output:
+    sc_tanf_ssi_recipient: false

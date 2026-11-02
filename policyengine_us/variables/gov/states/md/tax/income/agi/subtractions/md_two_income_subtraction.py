@@ -1,9 +1,11 @@
 from policyengine_us.model_api import *
 
 
-# Person-level sources of the business losses in loss_ald.
+# Person-level sources of the business losses in loss_ald, with each
+# Schedule C category on its own, as loss_ald deducts them.
 BUSINESS_LOSS_SOURCES = [
-    "total_self_employment_income",
+    "self_employment_income",
+    "sstb_self_employment_income",
     "farm_operations_income",
     "rental_income",
     "farm_rent_income",

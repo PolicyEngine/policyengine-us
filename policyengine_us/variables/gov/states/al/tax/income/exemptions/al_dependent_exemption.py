@@ -15,5 +15,7 @@ class al_dependent_exemption(Variable):
         p = parameters(period).gov.states.al.tax.income.exemptions
         al_agi = tax_unit("al_agi", period)
         dependents = tax_unit("tax_unit_dependents", period)
-        exemption_per_dependent = p.dependent.calc(al_agi)
+        # The amount drops only once AGI is over a threshold ("equal to or
+        # less than" $20,000 or $50,000 keeps $1,000).
+        exemption_per_dependent = p.dependent.calc(al_agi, right=True)
         return dependents * exemption_per_dependent

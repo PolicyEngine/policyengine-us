@@ -1,0 +1,153 @@
+# Pre-1993 IRC 86(a)-(c): the lesser of half of benefits and half of
+# provisional income over the statutory base. These amounts are not indexed.
+
+- name: No benefits means no pre-1993 inclusion even at high provisional income
+  period: 2026
+  input:
+    tax_unit_social_security_for_taxability: 0
+    taxable_ss_magi: 100_000
+    filing_status: SINGLE
+  output:
+    tax_unit_taxable_social_security_pre_1993: 0
+
+- name: Provisional income below the base produces zero rather than a loss
+  period: 2026
+  input:
+    tax_unit_social_security_for_taxability: 20_000
+    taxable_ss_magi: 10_000
+    filing_status: SINGLE
+  output:
+    tax_unit_taxable_social_security_pre_1993: 0
+
+- name: Single provisional income exactly at the base produces zero
+  period: 2026
+  input:
+    tax_unit_social_security_for_taxability: 20_000
+    taxable_ss_magi: 15_000
+    filing_status: SINGLE
+  output:
+    tax_unit_taxable_social_security_pre_1993: 0
+
+- name: First tier includes half of the excess over the base
+  period: 2026
+  input:
+    tax_unit_social_security_for_taxability: 20_000
+    taxable_ss_magi: 20_000
+    filing_status: SINGLE
+  output:
+    # 50% * ($30,000 - $25,000).
+    tax_unit_taxable_social_security_pre_1993: 2_500
+
+- name: Second-tier witness is limited by the old-law excess rather than half of benefits
+  period: 2026
+  input:
+    tax_unit_social_security_for_taxability: 20_000
+    taxable_ss_magi: 30_000
+    filing_status: SINGLE
+  output:
+    # min($10,000, 50% * ($40,000 - $25,000)).
+    tax_unit_taxable_social_security_pre_1993: 7_500
+
+- name: High provisional income is limited to half of benefits
+  period: 2026
+  input:
+    tax_unit_social_security_for_taxability: 20_000
+    taxable_ss_magi: 190_000
+    filing_status: SINGLE
+  output:
+    tax_unit_taxable_social_security_pre_1993: 10_000
+
+- name: Joint return has a 32000 base
+  period: 2026
+  input:
+    tax_unit_social_security_for_taxability: 20_000
+    taxable_ss_magi: 30_000
+    filing_status: JOINT
+  output:
+    # 50% * ($40,000 - $32,000).
+    tax_unit_taxable_social_security_pre_1993: 4_000
+
+- name: Separate cohabitating filer has a zero base
+  period: 2026
+  input:
+    tax_unit_social_security_for_taxability: 20_000
+    taxable_ss_magi: 5_000
+    filing_status: SEPARATE
+    cohabitating_spouses: true
+  output:
+    # min($10,000, 50% * ($15,000 - $0)).
+    tax_unit_taxable_social_security_pre_1993: 7_500
+
+- name: Separate filer living apart all year has the single base
+  period: 2026
+  input:
+    tax_unit_social_security_for_taxability: 20_000
+    taxable_ss_magi: 30_000
+    filing_status: SEPARATE
+    cohabitating_spouses: false
+  output:
+    tax_unit_taxable_social_security_pre_1993: 7_500
+
+- name: Head of household uses the single base
+  period: 2026
+  input:
+    tax_unit_social_security_for_taxability: 20_000
+    taxable_ss_magi: 30_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    tax_unit_taxable_social_security_pre_1993: 7_500
+
+- name: A surviving spouse who is not filing jointly uses the single base
+  period: 2026
+  input:
+    tax_unit_social_security_for_taxability: 20_000
+    taxable_ss_magi: 30_000
+    filing_status: SURVIVING_SPOUSE
+  output:
+    tax_unit_taxable_social_security_pre_1993: 7_500
+
+- name: Statutory base remains fixed in a later year
+  period: 2035
+  input:
+    tax_unit_social_security_for_taxability: 20_000
+    taxable_ss_magi: 30_000
+    filing_status: SINGLE
+  output:
+    tax_unit_taxable_social_security_pre_1993: 7_500
+
+- name: Benefits belonging to a dependent are excluded from the filers old-law inclusion
+  period: 2026
+  input:
+    people:
+      head:
+        age: 60
+        social_security: 20_000
+        taxable_interest_income: 30_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        social_security: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head, child]
+  output:
+    tax_unit_social_security_for_taxability: 20_000
+    tax_unit_combined_income_for_social_security_taxability: 40_000
+    tax_unit_taxable_social_security_pre_1993: 7_500
+
+- name: A reform to current-law provisional income does not change the old-law fraction
+  period: 2026
+  input:
+    gov.irs.social_security.taxability.combined_income_ss_fraction: 0.85
+    tax_unit_social_security_for_taxability: 20_000
+    taxable_ss_magi: 30_000
+    filing_status: SINGLE
+  output:
+    # Current-law combined income uses the reformed 85% fraction.
+    tax_unit_combined_income_for_social_security_taxability: 47_000
+    # Pre-1993 section 86 still uses 50%: min($10,000, 50% * ($40,000 - $25,000)).
+    tax_unit_taxable_social_security_pre_1993: 7_500

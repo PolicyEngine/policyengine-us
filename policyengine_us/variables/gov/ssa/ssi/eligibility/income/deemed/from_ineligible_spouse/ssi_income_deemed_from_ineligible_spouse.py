@@ -18,7 +18,7 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
       2) Otherwise, spouse's deemed = (couple combined countable) - (individual alone countable).
          This yields 816 for 1986 Example 3 and 12000 for the 2025 test.
     """
-    defined_for = "is_ssi_eligible_individual"
+    defined_for = "is_ssi_aged_blind_disabled"
     unit = USD
 
     def formula(person, period, parameters):

@@ -1,0 +1,143 @@
+# Heat cost percentage by income as a percentage of poverty (rule 2915(d); P-2915):
+# 0-74% 90; 75-84 87; 85-94 84; 95-104 81; 105-114 78; 115-124 75; 125-134 72;
+# 135-144 69; 145-154 66; 155-164 33; 165-174 30; 175-185 27.
+# https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2915.pdf
+# Percentage of poverty (rule 2914(a)(4); P-2914A, 2025-26 table, "#page 1-3"):
+# https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2914A.pdf#page=1
+# Monthly income (annual / 12) is read against the printed P-2914A monthly dollar bands;
+# income at or below a band's top stays in that band. Size 1 tops: 965, 1,096, 1,226,
+# 1,357, 1,487, 1,617, 1,748, 1,878, 2,009, 2,139, 2,269, 2,412. Size 2 first band:
+# 0 to 1,305; second band: 1,306 to 1,481.
+# Wages use the 2026 Vermont minimum wage, $14.42 an hour (Vermont Department of
+# Labor, indexed under 21 V.S.A. 384(a)).
+
+- name: Case 1, a person with no income gets 90 percent.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VT
+  output:
+    # 0 a month, in "0 To <75%" ($0-$965): 90%.
+    vt_liheap_heat_cost_percentage: 0.9
+
+- name: Case 2, threshold edge, income at the printed top of the first band stays at 90 percent.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 28
+        # Threshold edge: 1,305 a month x 12 = 15,660.
+        employment_income: 15_660
+      child1:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+        # No Reach Up.
+        tanf: 0
+    households:
+      household:
+        members: [head, child1]
+        state_code: VT
+  output:
+    # P-2914A size 2: 1,305 a month is in "0 To <75%" ($0-$1,305): 90%. The top is
+    # ceil(0.74 x 1,763) = ceil(1,304.62), with 21,150 / 12 = 1,762.50 rounded half up;
+    # 15,660 is 74.04% of the annual guideline, but the printed top governs.
+    vt_liheap_heat_cost_percentage: 0.9
+
+- name: Case 3, threshold edge, income $1 a month above the first band's printed top gets 87 percent.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 28
+        # Threshold edge: 1,306 a month x 12 = 15,672.
+        employment_income: 15_672
+      child1:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+        # No Reach Up.
+        tanf: 0
+    households:
+      household:
+        members: [head, child1]
+        state_code: VT
+  output:
+    # P-2914A size 2: 1,306 a month is in "75% To 84%" ($1,306-$1,481): 87%.
+    vt_liheap_heat_cost_percentage: 0.87
+
+- name: Case 4, a retiree at 146 percent of poverty gets 66 percent.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 70
+        # Social Security of 1,900 a month.
+        social_security_retirement: 22_800
+        # Social Security is above the SSI federal benefit rate.
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VT
+  output:
+    # 1,900 a month, in "145% To 154%" ($1,879-$2,009): 66%.
+    vt_liheap_heat_cost_percentage: 0.66
+
+- name: Case 5, a retiree at 157 percent of poverty drops to 33 percent.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 72
+        # Social Security of 2,050 a month.
+        social_security_retirement: 24_600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VT
+  output:
+    # 2,050 a month, in "155% To 164%" ($2,010-$2,139): 33% (down from 66%).
+    vt_liheap_heat_cost_percentage: 0.33
+
+- name: Case 6, a worker at 180 percent of poverty gets 27 percent.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 26
+        # 14.42 x 37.5 hours x 52 weeks = 28,119.
+        employment_income: 28_119
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VT
+  output:
+    # 28,119 / 12 = 2,343.25 a month, in "175% To 185%" ($2,270-$2,412): 27%.
+    vt_liheap_heat_cost_percentage: 0.27

@@ -1,5 +1,6 @@
-# Mixed-state populations: California's pregnancy counting and MCAP insurance
-# exclusion must apply only to California persons within one simulation.
+# Mixed-state populations: California's pregnancy counting must apply only to
+# California persons, and the CHIP no-other-coverage exclusion must apply per
+# person, within one simulation.
 - name: Case 1, California pregnancy counting remains isolated in a mixed-state population.
   period: 2025
   input:
@@ -59,12 +60,12 @@
     medicaid_household_size: [5, 5, 5, 3, 4, 3]
     ca_medicaid_household_pregnancies: [2, 2, 2, 0, 0, 0]
 
-- name: Case 2, California MCAP insurance exclusion is applied per person in a mixed-state population.
+- name: Case 2, CHIP no-other-coverage exclusion is applied per person in a mixed-state population.
   period: 2025
   input:
     people:
-      # person1: insured Californian; person2: insured Texan control;
-      # person3: uninsured Californian.
+      # person1: insured Californian; person2: uninsured Texan above Texas
+      # Medicaid's 203% FPL pregnancy limit; person3: uninsured Californian.
       person1:
         age: 30
         is_pregnant: true
@@ -74,8 +75,7 @@
       person2:
         age: 30
         is_pregnant: true
-        has_esi: true
-        medicaid_income_level: 2
+        medicaid_income_level: 2.05
         is_medicaid_eligible: false
       person3:
         age: 30

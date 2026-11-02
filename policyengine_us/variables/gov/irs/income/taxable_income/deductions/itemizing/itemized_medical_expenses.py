@@ -8,8 +8,9 @@ class itemized_medical_expenses(Variable):
     unit = USD
     definition_period = YEAR
     reference = [
-        "https://www.law.cornell.edu/uscode/text/26/213#a",
-        "https://www.law.cornell.edu/uscode/text/26/213#d_1",
+        "https://www.law.cornell.edu/uscode/text/26/213",
+        "https://www.law.cornell.edu/uscode/text/26/162#l_3",
+        "https://www.irs.gov/instructions/i1040sca",
     ]
     documentation = (
         "Medical expenses counted before applying the itemized medical "
@@ -19,10 +20,35 @@ class itemized_medical_expenses(Variable):
         "medical care; qualified long-term care services; and insurance "
         "premiums covering medical care. Current modeling uses health "
         "insurance premiums and other medical expenses, excluding general "
-        "over-the-counter health expenses."
+        "over-the-counter health expenses. Premiums deducted through the "
+        "filer's self-employed health insurance deduction are excluded under "
+        "IRC Section 162(l)(3) before the medical expense floor is applied. "
+        "Premium inputs use payer attribution: each person reports premiums "
+        "that person paid, including the full cost of family coverage regardless "
+        "of whom it covers. A parent-paid dependent policy belongs on the parent. "
+        "The exclusion is bounded to filer-paid premiums; beneficiary-attributed "
+        "inputs with an ALD exceeding that pool are inconsistent with this contract "
+        "and cannot establish conservation of the supplied ALD. A supplied value "
+        "bypasses this formula and is used as given. By default it is taken as "
+        "medical costs paid before any self-employed exclusion "
+        "(itemized_medical_expenses_applied_exclusion is 0). If it is a Schedule "
+        "A line 1 amount that already leaves out premiums taken as the "
+        "self-employed health insurance deduction, also supply all of those "
+        "premiums, medical and long-term care, as "
+        "itemized_medical_expenses_applied_exclusion; the exclusion is taken "
+        "from the head's and spouse's medical insurance premiums first, as this "
+        "formula does. Report any long-term care premiums still inside the "
+        "supplied value, by that same split, in "
+        "itemized_medical_expenses_long_term_care_premiums."
     )
 
-    adds = [
-        "medical_expense_health_insurance_premiums",
-        "other_medical_expenses",
-    ]
+    def formula(tax_unit, period, parameters):
+        premiums = add(tax_unit, period, ["medical_expense_health_insurance_premiums"])
+        # The federal ALD covers the head and spouse; dependents take their
+        # own SE deductions on their own returns. Bound the exclusion to the
+        # corresponding filer premiums, leaving other medical costs intact.
+        excluded_premiums = tax_unit(
+            "itemized_medical_expenses_excluded_premiums", period
+        )
+        other_expenses = add(tax_unit, period, ["other_medical_expenses"])
+        return premiums - excluded_premiums + other_expenses
