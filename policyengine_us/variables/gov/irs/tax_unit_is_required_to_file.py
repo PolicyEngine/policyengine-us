@@ -127,8 +127,9 @@ class tax_unit_is_required_to_file(Variable):
         # at "the amount in effect under section 63(c)(5)(A)" alone, with no
         # addition for age or blindness, so a claimable spouse aged 65 or
         # blind must file with more than that amount of income other than
-        # earned income. Chart B adds the additional standard deduction
-        # ($2,950 rather than $1,350 for 2025); the model follows the statute.
+        # earned income. Chart B conflicts with the statute: it adds the
+        # additional standard deduction ($2,950 rather than $1,350 for 2025).
+        # The model follows the statute.
         # For an unmarried filer, section 6012(f)(1) has no separate unearned
         # income test, and Table 2's test with the addition is already implied
         # by the gross income test against the limited standard deduction.

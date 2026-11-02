@@ -38,8 +38,9 @@ class eitc_eligible(Variable):
         # more qualifying children if no qualifying child of such individual
         # is taken into account under subsection (b) by reason of paragraph
         # (3)(D)", the identification requirement. The 2018-2020 Form 1040
-        # instructions instead send such a filer to the credit without a
-        # qualifying child; the model follows the statute.
+        # instructions conflict with this: EIC Step 3 sends such a filer to
+        # the credit without a qualifying child. The model follows the
+        # statute.
         if eitc.eligibility.qualifying_child_without_identification_bar:
             person = tax_unit.members
             has_qualifying_child = tax_unit.any(
