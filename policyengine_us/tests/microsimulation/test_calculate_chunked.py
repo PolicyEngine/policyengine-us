@@ -647,7 +647,7 @@ def test_variable_centric_file_is_exact_under_reform(
         lambda path: Microsimulation(dataset=path, reform=reform),
         TOB_VARIABLES,
         YEAR,
-        3,
+        2,
         dataset=variable_centric_path,
     )
     _assert_snapshot_matches(result, chunking_dataset, variable_centric_reference[True])
