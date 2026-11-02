@@ -1,1 +1,1 @@
-Add exact household-chunked microsimulation calculations and share sequential TOB counterfactual tax calculations.
+Add exact household-chunked microsimulation calculations, including variable-centric population files, and share sequential TOB counterfactual tax calculations.
