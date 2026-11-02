@@ -531,7 +531,7 @@ if hypothesis is not None:
         st.integers(min_value=1, max_value=50_000),
     )
     def test_more_received_for_a_dependent(households, source, extra):
-        """4. More of a line 21, 22 or 27 amount for a dependent raises
+        """4. More of a line 22 or 27 amount for a dependent raises
         household resources by between 0 and the increase, and by exactly
         the increase when they were positive."""
         # A household with positive resources, so the exact-increase branch
