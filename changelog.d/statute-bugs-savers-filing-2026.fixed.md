@@ -1,1 +1,1 @@
-Keep ABLE contributions in the saver's credit for 2026, and from 2027 count only ABLE contributions, reduced by relevant ABLE distributions, under a $2,100 cap (Pub. L. 119-21).
+Keep ABLE contributions in the saver's credit for 2026, and from 2027 count only ABLE contributions, reduced by relevant ABLE distributions, under a $2,100 cap (Pub. L. 119-21). From 2026, apply the 26 U.S.C. 6012(a)(1)(A) and (B) filing threshold to every filer, including a married individual filing separately with no gross income and a filer who can be claimed as a dependent.
