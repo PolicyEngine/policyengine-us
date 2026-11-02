@@ -23,7 +23,13 @@
         members: [person1, person2, person3]
         state_fips: 16  # ID
   output:  # expected results from patched TAXSIM35 2024-02-15 version
-    id_income_tax: 8_179.59
+    # TAXSIM35 gives 8_179.59 with a $3,000 child care deduction, the amount
+    # printed in the original 2021 instructions. The Tax Commission's 2021
+    # instruction changes (after H.B. 472) raised the Form 39R Line 6
+    # worksheet limit to $8,000, so the deduction is min($10,000, $8,000,
+    # $24,010) = $8,000, and the extra $5,000 at the 6.5% top rate lowers the
+    # tax by $325.
+    id_income_tax: 7_854.59
 
 - name: Tax unit with taxsimid 78871 in j21.its.csv and j21.ots.csv
   absolute_error_margin: 0.01

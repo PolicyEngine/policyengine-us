@@ -12,4 +12,4 @@ class mt_disability_income_exclusion_person(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.subtractions.disability_income
-        return min_(p.cap, person("disability_benefits", period))
+        return min_(p.cap, person("taxable_disability_benefits", period))

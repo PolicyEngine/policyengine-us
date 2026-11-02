@@ -28,6 +28,9 @@ class eitc_earned_income(Variable):
             "sstb_self_employment_income",
             "farm_operations_income",
             "partnership_self_employment_net_earnings",
+            # Taxable disability pensions before minimum retirement age
+            # (Form 1040 line 1h; Pub. 596).
+            "earned_disability_benefits",
         ]
         gross_earned_income = sum(
             tax_unit_non_dep_sum(source, tax_unit, period)

@@ -1,0 +1,35 @@
+description: Missouri treats a totally and permanently disabled or blind individual as disabled for the medical deduction when the individual receives one of these benefits under the Low Income Home Energy Assistance Program.
+# The medical deduction also requires the member to be disabled or blind. With
+# that requirement, the general veterans and railroad benefit inputs stand in
+# for Veterans Administration and Railroad Retirement disability benefits, and
+# the general Social Security dependents and survivors inputs stand in for
+# disabled adult child and disabled widow(er) benefits. These four inputs also
+# include benefits a disabled member receives for reasons other than
+# disability, such as Social Security spousal, aged survivor or child-in-care
+# benefits or a railroad age-and-service annuity, since no input separates
+# them. Civil Service Disability and Black Lung benefits have no separate
+# inputs.
+values:
+  2017-05-30:
+    - ssi
+    - social_security_disability
+    # General dependents and survivors benefits; see the note above.
+    - social_security_dependents
+    - social_security_survivors
+    - veterans_benefits
+    - railroad_benefits
+    # Medical Assistance (MO HealthNet).
+    - medicaid
+    # State Supplemental Payments, State Aid to the Blind and State Blind
+    # Pension.
+    - mo_ssp
+
+metadata:
+  unit: list
+  period: year
+  label: Missouri LIHEAP disability benefit sources
+  reference:
+    - title: 13 CSR 40-19.020(2)(C)
+      href: https://web.archive.org/web/20250603190025/https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-19.pdf#page=2
+    - title: "Missouri LIHEAP Policy and Procedure Manual (October 2025), Medical Deduction for Elderly-Disabled and Disability #page 36,48"
+      href: https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=36

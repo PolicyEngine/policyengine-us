@@ -11,9 +11,9 @@ wages are on the dependent's own Form W-2 and return. The CRFB AGI surtax's
 expanded base adds amounts to this return's AGI, so it counts the head's and
 spouse's own contributions, exclusions and deductions too.
 
-Each case runs every tax unit twice in one vectorized simulation: once with
-the dependents' amounts as drawn and once with them set to zero. For every
-tax unit:
+Dependent-exclusion cases run every tax unit twice in one vectorized simulation:
+once with the dependents' amounts as drawn and once with them set to zero. For
+every tax unit:
 
 1. A dependent's wages, self-employment income, retirement contributions,
    tax-exempt interest, Social Security benefits and health insurance
@@ -29,6 +29,9 @@ tax unit:
 3. Differential: `ctc_social_security_tax`, the Puerto Rico equivalent,
    `additional_medicare_tax` and the surtax equal an independent numpy
    calculation over the head and spouse.
+4. With AGI held fixed, employer-paid and qualified salary-reduction premiums
+   add the same amount to the surtax base; after-tax premiums add nothing.
+   Generated payment-method cases cover both surtax thresholds.
 
 Invariant 2 leaves out three kinds of dependent amount, which invariant 1
 checks with AGI and its taxable Social Security given as inputs:
@@ -67,12 +70,15 @@ OFF_RETURN_INPUTS = [
     "traditional_403b_contributions_desired",
     "social_security_dependents",
 ]
-# Dependent amounts that reach the filer's return elsewhere: see the module
-# docstring.
+# Additional dependent amounts checked with AGI held fixed, including all
+# three premium payment methods. Some reach the return elsewhere: see the
+# module docstring.
 OTHER_INPUTS = [
     "self_employment_income",
     "tax_exempt_interest_income",
     "health_insurance_premiums",
+    "employer_sponsored_insurance_premiums",
+    "pre_tax_health_insurance_premiums",
 ]
 PERSON_PAYROLL_TAXES = [
     "employee_social_security_tax",
@@ -85,7 +91,8 @@ PERSON_SURTAX_SOURCES = [
     "traditional_403b_contributions",
     "student_loan_interest_ald",
     "tax_exempt_interest_income",
-    "health_insurance_premiums",
+    "employer_sponsored_insurance_premiums",
+    "pre_tax_health_insurance_premiums",
 ]
 
 money = st.integers(0, 60_000).map(float)
@@ -116,6 +123,12 @@ def filer(draw):
         "traditional_401k_contributions_desired": draw(maybe(money)),
         "tax_exempt_interest_income": draw(maybe(money)),
         "health_insurance_premiums": draw(maybe(st.integers(1, 9_000).map(float))),
+        "employer_sponsored_insurance_premiums": draw(
+            maybe(st.integers(1, 9_000).map(float))
+        ),
+        "pre_tax_health_insurance_premiums": draw(
+            maybe(st.integers(1, 9_000).map(float))
+        ),
     }
 
 
@@ -138,6 +151,12 @@ def dependent(draw, *, every_amount):
         )
         person["tax_exempt_interest_income"] = draw(maybe(money))
         person["health_insurance_premiums"] = draw(
+            maybe(st.integers(1, 9_000).map(float))
+        )
+        person["employer_sponsored_insurance_premiums"] = draw(
+            maybe(st.integers(1, 9_000).map(float))
+        )
+        person["pre_tax_health_insurance_premiums"] = draw(
             maybe(st.integers(1, 9_000).map(float))
         )
     return person
@@ -392,6 +411,82 @@ def test_dependents_off_return_amounts_never_change_filer_ctc_tax_or_surtax(
 )
 def test_dependents_amounts_never_change_payroll_taxes_or_surtax_additions(units, year):
     check_every_amount_with_agi_given(units, year)
+
+
+def test_after_tax_premiums_do_not_increase_surtax_with_agi_given():
+    year = 2026
+    unit = {
+        "head": {"age": 40, "health_insurance_premiums": 4_000.0},
+        "spouse": None,
+        "dependents": [{"age": 17, "employment_income": 0.0}],
+        "excess_payroll_tax_withheld": 0.0,
+        "adjusted_gross_income": 150_000.0,
+    }
+    situation, filers, unit_index = build([unit], year)
+    situation["tax_units"]["tax_unit_0"]["filing_status"] = {year: "SINGLE"}
+    simulation = Simulation(situation=situation, tax_benefit_system=surtax_system())
+    # After-tax premiums are already financed from the supplied AGI.
+    # The stale oracle added $4,000 again, incorrectly requiring $540.
+    np.testing.assert_allclose(
+        calculate(simulation, "agi_surtax", year), [500.0], atol=TOLERANCE
+    )
+    assert_surtax_matches_reference(simulation, filers, unit_index, year)
+
+
+@SETTINGS
+@given(
+    amount=st.integers(10, 60_000).map(float),
+    dependent_premiums=st.tuples(
+        st.integers(10, 60_000).map(float),
+        st.integers(10, 60_000).map(float),
+        st.integers(10, 60_000).map(float),
+    ),
+    married=st.booleans(),
+    year=st.sampled_from(YEARS),
+)
+def test_surtax_premium_payment_methods_with_agi_given(
+    amount, dependent_premiums, married, year
+):
+    system = surtax_system()
+    p = system.parameters(year).gov.contrib.crfb.surtax
+    scale = p.rate.joint if married else p.rate.single
+    # Every draw covers a below-threshold base, crossing the first threshold,
+    # the 1% bracket and crossing the top threshold.
+    agi = np.array(
+        [
+            0.0,
+            scale.thresholds[1] - amount / 2,
+            scale.thresholds[1] + amount,
+            scale.thresholds[2] - amount / 2,
+        ]
+    )
+    methods = (
+        "employer_sponsored_insurance_premiums",
+        "pre_tax_health_insurance_premiums",
+        "health_insurance_premiums",
+    )
+    units = [
+        {
+            "head": {"age": 40, method: amount},
+            "spouse": {"age": 40} if married else None,
+            "dependents": [{"age": 17, **dict(zip(methods, dependent_premiums))}],
+            "excess_payroll_tax_withheld": 0.0,
+            "adjusted_gross_income": float(income),
+        }
+        for method in methods
+        for income in agi
+    ]
+    situation, filers, unit_index = build(units, year)
+    simulation = Simulation(situation=situation, tax_benefit_system=system)
+    employer_paid, salary_reduction, after_tax = np.split(
+        calculate(simulation, "agi_surtax", year), 3
+    )
+    np.testing.assert_allclose(employer_paid, salary_reduction, atol=TOLERANCE)
+    # With AGI fixed, switching to after-tax payments lowers the expanded
+    # base by exactly the moved amount. Apply the scale across both brackets.
+    np.testing.assert_allclose(employer_paid, scale.calc(agi + amount), atol=TOLERANCE)
+    np.testing.assert_allclose(after_tax, scale.calc(agi), atol=TOLERANCE)
+    assert_surtax_matches_reference(simulation, filers, unit_index, year)
 
 
 def low_wage_family(married, dependent_wages):

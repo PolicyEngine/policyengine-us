@@ -34,7 +34,7 @@
     #   Step 2: $200 flat = 400 - 200 = 200
     #   Step 3: 55% = 200 × 0.45 = 90
     # Total: 450 + 90 = 540
-    # No childcare expenses, so no dependent care deduction
+    # No care expenses, so no dependent care deduction
     hi_tanf_countable_earned_income: 540
 
 - name: Case 2, earned income with dependent care deduction.
@@ -46,12 +46,13 @@
         tanf_gross_earned_income: 1_000
         weekly_hours_worked_before_lsr: 40
       person2:
-        age: 5
+        age: 40
+        is_disabled: true
+        # $1,200/year = $100/month disabled adult care
+        care_expenses: 1_200
     spm_units:
       spm_unit:
         members: [person1, person2]
-        # $1,200/year = $100/month childcare
-        childcare_expenses: 1_200
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -61,11 +62,11 @@
         state_code: HI
   output:
     # Person1 earned after deductions: 270
-    # Dependent care: min(100, 1 child × $175) = 100
+    # Dependent care: min(100, 1 disabled adult × $175) = 100
     # Final: max(270 - 100, 0) = 170
     hi_tanf_countable_earned_income: 170
 
-- name: Case 3, dependent care deduction capped at per-child max.
+- name: Case 3, dependent care deduction capped at per-adult max.
   period: 2024-01
   input:
     people:
@@ -74,12 +75,13 @@
         tanf_gross_earned_income: 1_500
         weekly_hours_worked_before_lsr: 40
       person2:
-        age: 5
+        age: 40
+        is_disabled: true
+        # $6,000/year = $500/month disabled adult care, exceeds $175 cap
+        care_expenses: 6_000
     spm_units:
       spm_unit:
         members: [person1, person2]
-        # $6,000/year = $500/month childcare, exceeds $175 cap
-        childcare_expenses: 6_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -89,7 +91,7 @@
         state_code: HI
   output:
     # Person1 earned after deductions: 450
-    # Dependent care: min(500, 1 child × $175) = 175
+    # Dependent care: min(500, 1 disabled adult × $175) = 175
     # Final: max(450 - 175, 0) = 275
     hi_tanf_countable_earned_income: 275
 
@@ -103,11 +105,12 @@
         tanf_gross_earned_income: 200
         weekly_hours_worked_before_lsr: 40
       person2:
-        age: 5
+        age: 40
+        is_disabled: true
+        care_expenses: 2_400
     spm_units:
       spm_unit:
         members: [person1, person2]
-        childcare_expenses: 2_400
     tax_units:
       tax_unit:
         members: [person1, person2]

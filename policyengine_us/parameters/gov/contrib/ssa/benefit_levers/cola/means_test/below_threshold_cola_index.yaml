@@ -1,0 +1,9 @@
+description: "COLA index for income at or below the means-test threshold: 0 = statutory pays the full statutory COLA; 1 = chained_cpi_u uses gov.bls.cpi.c_cpi_u with statutory rounding, high-water and no-decrease rules. The A9 preset uses 1. Numeric codes provide compatibility with the parameter engine."
+values:
+  0000-01-01: 0
+metadata:
+  label: Social Security below-threshold COLA index
+  economy: false
+  reference:
+    - title: OACT provision A9, 2026 Trustees Report basis
+      href: https://www.ssa.gov/OACT/solvency/provisions/cola.html

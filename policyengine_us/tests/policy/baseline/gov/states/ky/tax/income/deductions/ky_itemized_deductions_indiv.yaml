@@ -87,3 +87,31 @@
         state_code: KY
   output:
     ky_itemized_deductions_indiv: [0, 0]
+
+- name: From 2026 spouses filing separately share Kentucky itemized deductions without second-residence interest
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        ky_agi: 60_000
+        home_mortgage_interest: 10_000
+      person2:
+        age: 50
+        ky_agi: 40_000
+        second_residence_mortgage_interest: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Federal 15,000 less the 5,000 second-residence excess leaves 10,000,
+    # split by Kentucky AGI: 60% and 40%.
+    ky_itemized_deductions_unit: 10_000
+    ky_itemized_deductions_indiv: [6_000, 4_000]

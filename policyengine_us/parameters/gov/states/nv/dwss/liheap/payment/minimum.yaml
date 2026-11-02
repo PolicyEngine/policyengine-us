@@ -1,0 +1,20 @@
+description: Nevada pays at least this Fixed Annual Credit to eligible households, including those with a negative credit and those with all utilities included in unsubsidized rent, under the Low Income Home Energy Assistance Program.
+# Section 803 V and both plans set a $360 minimum; the SFY2026 manual's
+# sections 504 A, 505 D, F and G and 702 III print $240. The $360 amount is
+# used, as printed throughout the SFY2027 manual.
+values:
+  2025-07-01: 360
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Nevada LIHEAP minimum benefit
+  reference:
+    - title: "Nevada SFY2026 Energy Assistance Program Manual, Sections 504 A, 505 D, F and G, 702 III and 803 V #page 34,36-37,43,60-61"
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=34
+    - title: "Nevada SFY2027 Energy Assistance Program Manual, Sections 504 A, 702 III and 803 V #page 34,43,60-61"
+      href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/2027-eap-state-manual--08.25.26-1.pdf#page=34
+    - title: Nevada FY2026 LIHEAP State Plan, Sections 2.5-2.6
+      href: https://liheapch.acf.gov/docs/2026/state-plans/NV_Plan_2026.pdf#page=9
+    - title: Nevada FY2027 LIHEAP State Plan, Sections 2.5-2.6
+      href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/fy-2027-low-income-home-energy-assistance-program-liheap-state-plan.pdf#page=9

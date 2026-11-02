@@ -1566,3 +1566,94 @@
     # full 2024 one-child maximum ($640). This end-to-end case confirms the
     # WFTC flows through to household_net_income (it is a positive component).
     wa_working_families_tax_credit: 640
+
+- name: Case 37, a spouse's self-employment loss that offsets the wages leaves no earned income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 3_000
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        self_employment_income: -5_000
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_spouse: true
+      child:
+        age: 7
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: WA
+  output:
+    # RCW 82.08.0206(2)(b): income is earned income under 26 U.S.C. 32. On a
+    # joint return, federal EIC Worksheet B combines both spouses' amounts:
+    # line 4b = 3,000 + (-5,000) < 0, so "You can't take the credit", and
+    # (2)(a)(i)(A) requires eligibility for the federal credit. Flooring each
+    # spouse at zero would count 3,000 and pay the one-child $660.
+    wa_working_families_tax_credit: 0
+
+- name: Case 38, a spouse's self-employment loss lowers the phase-out base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 62_000
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        self_employment_income: -10_000
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_spouse: true
+      child1:
+        age: 7
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: WA
+  output:
+    # Earned income (Worksheet B line 4b) = 62,000 + (-10,000) = 52,000, and AGI
+    # is also 52,000. The 2025 joint two-child limit is $64,430 (Form 1040
+    # instructions), so the reduction starts at 59,430 and does not apply.
+    # ETA 3240.2026 gives the 2025 two-child maximum, $995. Measuring from
+    # 62,000 would give 995 - 0.199 x (62,000 - 59,430) = 484.
+    wa_working_families_tax_credit: 995

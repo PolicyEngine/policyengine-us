@@ -1,0 +1,36 @@
+description: New Jersey provides this amount as the monthly couple payment under the State Supplementary Payment program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: New Jersey SSP couple payment rate
+  breakdown:
+    - nj_ssp_living_arrangement
+  reference:
+    - title: POMS SI 01415.058 J.2.b, New Jersey January 2026 couple payment levels
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501415058#j2b
+
+LIVING_ALONE_OR_WITH_OTHERS:
+  2026-01-01: 25.35
+
+# SSA publishes no couple rate for code C (SI 01415.058 J.1). This placeholder
+# repeats the B couple rate and never affects results: a claimant with an
+# ineligible spouse is paid as an individual or, under deeming, at the higher
+# individual rate (SI 01320.430 D.2.c).
+LIVING_ONLY_WITH_INELIGIBLE_SPOUSE:
+  2026-01-01: 25.35
+
+CONGREGATE_CARE:
+  2026-01-01: 618.35
+
+RESIDENTIAL_HEALTH_CARE:
+  2026-01-01: 738.35
+
+HOUSEHOLD_OF_ANOTHER:
+  2026-01-01: 93.08
+
+MEDICAID_INSTITUTION:
+  2026-01-01: 40
+
+NONE:
+  2026-01-01: 0
