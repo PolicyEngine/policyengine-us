@@ -1,0 +1,84 @@
+description: Texas applies the Local Workforce Development Board's own parent share of cost scale under the Child Care Services program for the Boards where this is true.
+
+# Each Board set its own parent share of cost scale until TWC's TX3C case
+# management system launched on January 13, 2025 and brought in the statewide
+# scale. TWC phased the statewide scale in as families enrolled or recertified
+# through February 1, 2026, and a family could ask for the statewide amount
+# sooner if it was lower. The model applies the statewide scale to every family
+# from TX3C's launch, as for a family determined then. Where no Board scale
+# was found for a period, the model applies the statewide scale instead.
+PANHANDLE:
+  2023-10-01: true
+  2024-10-01: true
+  2025-01-01: false  # Actual effective date: 2025-01-13
+SOUTH_PLAINS:
+  2023-10-01: false  # Not yet sourced
+NORTH_TEXAS:
+  2023-10-01: false  # Not yet sourced
+NORTH_CENTRAL:
+  2023-10-01: false  # Not yet sourced
+TARRANT_COUNTY:
+  2023-10-01: false  # Not yet sourced
+DALLAS_COUNTY:
+  2023-10-01: false  # Not yet sourced
+NORTHEAST_TEXAS:
+  2023-10-01: false  # Not yet sourced
+EAST_TEXAS:
+  2023-10-01: false  # Not yet sourced
+WEST_CENTRAL:
+  2023-10-01: false  # Not yet sourced
+BORDERPLEX:
+  2023-10-01: false  # Not yet sourced
+PERMIAN_BASIN:
+  2023-10-01: false  # Not yet sourced
+CONCHO_VALLEY:
+  2023-10-01: false  # Not yet sourced
+HEART_OF_TEXAS:
+  2023-10-01: false  # Not yet sourced
+CAPITAL_AREA:
+  2023-10-01: false  # Not yet sourced
+RURAL_CAPITAL:
+  2023-10-01: false  # Not yet sourced
+BRAZOS_VALLEY:
+  2023-10-01: false  # Not yet sourced
+DEEP_EAST:
+  2023-10-01: false  # Not yet sourced
+SOUTHEAST:
+  2023-10-01: false  # Not yet sourced
+GOLDEN_CRESCENT:
+  2023-10-01: false  # Not yet sourced
+ALAMO:
+  2023-10-01: false  # Not yet sourced
+SOUTH_TEXAS:
+  2023-10-01: false  # Not yet sourced
+COASTAL_BEND:
+  2023-10-01: false  # Not yet sourced
+LOWER_RIO:
+  2023-10-01: false  # Not yet sourced
+CAMERON_COUNTY:
+  2023-10-01: false  # Not yet sourced
+TEXOMA:
+  2023-10-01: false  # Not yet sourced
+CENTRAL_TEXAS:
+  2023-10-01: false  # Not yet sourced
+MIDDLE_RIO:
+  2023-10-01: false  # Not yet sourced
+GULF_COAST:
+  2023-10-01: false  # Not yet sourced
+
+metadata:
+  propagate_metadata_to_children: true
+  unit: bool
+  period: month
+  label: Texas CCS applies the Board parent share of cost scale
+  breakdown:
+    - tx_ccs_workforce_board_region
+  reference:
+    - title: TWC WD Letter 24-23 - BCY 2024 Income Amounts for Determining Parent Share of Cost
+      href: https://web.archive.org/web/20240908233001/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/wd-24-23-twc.pdf#page=1
+    - title: TWC WD Letter 20-24 - BCY 2025 Income Amounts for Determining Parent Share of Cost
+      href: https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/20-24-twc.pdf#page=1
+    - title: TWC WD Letter 06-24, Change 2, Attachment 3 - TX3C notices to parents
+      href: https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/06-24-ch2-att3-twc.pdf#page=4
+    - title: TWC Child Care and Development Fund Waiver Request, December 17, 2024 Commission Meeting
+      href: https://www.twc.texas.gov/sites/default/files/ogc/mtg24/commission-meeting-material-121724-item10-dp-ccdf-waiver-request-twc.pdf#page=2

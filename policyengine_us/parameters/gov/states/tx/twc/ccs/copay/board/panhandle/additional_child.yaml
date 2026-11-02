@@ -1,0 +1,74 @@
+description: Workforce Solutions Panhandle sets this monthly parent share of cost for each additional child in care, by income as a share of state median income, under the Texas Child Care Services program.
+
+# Each bracket covers income more than its threshold share of state median
+# income and not more than the next threshold, with the limits rounded to
+# whole dollars as in TWC's income ranges.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Texas CCS Panhandle Board additional child parent share of cost
+  reference:
+    - title: Workforce Solutions Panhandle, Panhandle Parent Share of Cost, effective 10/01/2023 - 9/30/2024
+      href: https://wspanhandle.com/wp-content/uploads/2023/10/PSoC-2023-2024.png
+    - title: Workforce Solutions Panhandle, Panhandle Parent Share of Cost, effective 10/01/2024 - 09/30/2025
+      href: https://wspanhandle.com/wp-content/uploads/2024/09/PSoC-2024-2025-1.png
+    - title: Workforce Solutions Panhandle, Child Care - For Parents (links both charts)
+      href: https://web.archive.org/web/20241006070549/https://wspanhandle.com/child-care/for-parents/
+
+brackets:
+  - threshold:
+      2023-10-01: -.inf
+      2024-10-01: -.inf
+    amount:
+      2023-10-01: 15
+      2024-10-01: 15
+  - threshold:
+      2023-10-01: 0.2
+      2024-10-01: 0.2
+    amount:
+      2023-10-01: 30
+      2024-10-01: 30
+  - threshold:
+      2023-10-01: 0.3
+      2024-10-01: 0.3
+    amount:
+      2023-10-01: 45
+      2024-10-01: 45
+  - threshold:
+      2023-10-01: 0.4
+      2024-10-01: 0.4
+    amount:
+      2023-10-01: 60
+      2024-10-01: 60
+  - threshold:
+      2023-10-01: 0.5
+      2024-10-01: 0.5
+    amount:
+      2023-10-01: 70
+      2024-10-01: 70
+  - threshold:
+      2023-10-01: 0.6
+      2024-10-01: 0.6
+    amount:
+      2023-10-01: 80
+      2024-10-01: 80
+  - threshold:
+      2023-10-01: 0.7
+      2024-10-01: 0.7
+    amount:
+      2023-10-01: 85
+      2024-10-01: 85
+  - threshold:
+      2023-10-01: 0.75
+      2024-10-01: 0.75
+    amount:
+      2023-10-01: 90
+      2024-10-01: 90
+  - threshold:
+      2023-10-01: 0.8
+      2024-10-01: 0.8
+    amount:
+      2023-10-01: 100
+      2024-10-01: 100

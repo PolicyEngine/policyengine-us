@@ -27,9 +27,10 @@ metadata:
 #
 # Each Board set its own parent share of cost scale until TWC's TX3C case
 # management system launched on January 13, 2025 (WD 24-23 for BCY 2024). TWC
-# then phased in the statewide scale as families enrolled or recertified. No
-# statewide value exists for earlier periods, so the model applies this one to
-# them. Actual effective date of every value below: 2025-01-13.
+# then phased in the statewide scale as families enrolled or recertified.
+# Before then the model applies each Board's scale where one was found
+# (copay/board/applies.yaml) and this one for the other Boards. Actual
+# effective date of every value below: 2025-01-13.
 brackets:
   - threshold:
       2025-01-01: 0.01
