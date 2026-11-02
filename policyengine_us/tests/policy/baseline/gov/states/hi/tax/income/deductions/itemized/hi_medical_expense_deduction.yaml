@@ -73,3 +73,14 @@
         state_code: HI
   output:
     hi_medical_expense_deduction: 0
+
+- name: Hawaii excludes premiums already deducted for self-employed health insurance
+  period: 2025
+  input:
+    state_code: HI
+    health_insurance_premiums: 6_000
+    self_employed_health_insurance_ald: 1_000
+    other_medical_expenses: 500
+    hi_agi: 30_000
+  output:
+    hi_medical_expense_deduction: 3_250

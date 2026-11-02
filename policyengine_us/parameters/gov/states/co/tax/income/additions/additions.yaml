@@ -3,6 +3,7 @@ values:
   2021-01-01: 
     - co_state_addback
     - co_qualified_business_income_deduction_addback 
+    - co_other_additions
     # - Non-Colorado state and local bond interest
     # - Improper distributions from a qualified state tuition program for which tuition program contribution subtraction was previously claimed.
     # - Charitable gross conservation easement
@@ -14,6 +15,7 @@ values:
     - co_state_addback
     - co_qualified_business_income_deduction_addback
     - co_federal_deduction_addback
+    - co_other_additions
     # - Non-qualifying Distribution addback
     # - Non-Colorado state and local bond interest
     # - Improper distributions from a qualified state tuition program for which tuition program contribution subtraction was previously claimed.
@@ -27,6 +29,7 @@ values:
     - co_qualified_business_income_deduction_addback
     - co_federal_deduction_addback
     - co_overtime_income_addback  # Overtime deduction add-back (HB25-1296), TY2026+
+    - co_other_additions
 metadata:
   unit: list
   period: year

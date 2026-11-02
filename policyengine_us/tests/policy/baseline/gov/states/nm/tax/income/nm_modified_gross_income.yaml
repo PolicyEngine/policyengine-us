@@ -90,3 +90,23 @@
     state_code: NM
   output:
     nm_modified_gross_income: 0
+
+- name: NM modified gross income includes income from an estate or trust
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    estate_income: 5_000
+  output:
+    # NMSA 1978 § 7-2-2(L)(15): 20,000 + 5,000.
+    nm_modified_gross_income: 25_000
+
+- name: NM modified gross income is undiminished by an estate or trust loss
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    estate_income: -5_000
+  output:
+    # § 7-2-2(L): "undiminished by losses". max(-5,000, 0) = 0, so 20,000.
+    nm_modified_gross_income: 20_000

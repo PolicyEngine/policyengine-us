@@ -72,7 +72,7 @@
   output:
     id_household_and_dependent_care_expense_deduction: 12_000
 
-- name: In 2021 the federal limit is not applied
+- name: In 2021 Idaho applies the ARPA $16,000 limit
   period: 2021
   input:
     people:
@@ -97,7 +97,8 @@
         members: [person1, person2, person3, person4, person5]
         state_code: ID
   output:
-    id_household_and_dependent_care_expense_deduction: 6_000
+    # min(17_000 expenses, 2 x 8_000 = 16_000, 14_000 lesser earnings).
+    id_household_and_dependent_care_expense_deduction: 14_000
 
 - name: Care expenses for a disabled adult qualifying individual enter the deduction base
   period: 2022
@@ -153,3 +154,72 @@
     dependent_care_assistance_exclusion: 4_000
     # min(10_000 expenses, max(3_000, 12_000) - 4_000 = 8_000, 38_000) = 8_000.
     id_household_and_dependent_care_expense_deduction: 8_000
+# 2021 Form 39R Line 6 worksheet: line 2 is $8,000 ($16,000) under the Tax
+# Commission's 2021 instruction changes, and line 3 enters the excluded
+# benefits from federal Form 2441 Part III, which uses the 2021 $10,500 IRC
+# section 129 cap. H.B. 472 (2022) conformed Idaho to the IRC as in effect on
+# January 1, 2022.
+- name: 2021 worksheet uses the $16,000 limit less the $10,500-capped exclusion
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 60_000
+        dependent_care_employer_benefits: 9_000
+      person2:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 40_000
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ID
+  output:
+    # 2 x $8,000.
+    id_cdcc_limit: 16_000
+    # min($9,000, $10,500, $40,000) = $9,000.
+    dependent_care_assistance_exclusion: 9_000
+    # min($20,000, $16,000 - $9,000, $40,000) = $7,000.
+    id_household_and_dependent_care_expense_deduction: 7_000
+
+- name: 2021 worksheet with one child and benefits above the pre-ARPA cap
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 60_000
+        dependent_care_employer_benefits: 6_000
+      person2:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 40_000
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ID
+  output:
+    # min($12,000, $8,000 - $6,000, $40,000) = $2,000.
+    id_household_and_dependent_care_expense_deduction: 2_000
