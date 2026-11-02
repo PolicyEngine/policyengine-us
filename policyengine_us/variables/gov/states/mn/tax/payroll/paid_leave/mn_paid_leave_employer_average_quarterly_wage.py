@@ -12,14 +12,16 @@ class mn_paid_leave_employer_average_quarterly_wage(Variable):
         "four quarters ending September 30 of the prior year) divided by its "
         "highest quarterly employee count in that period; the two may come "
         "from different quarters (Minn. Stat. 268B.14, subds. 5b(a) and "
-        "5c(a)). An employer not covered for the whole basis period uses its "
-        "own estimates instead (subd. 5c(b)). Enter a quarterly amount, "
-        "wages per employee for one quarter, whichever subdivision applies: "
+        "5c(a)). An employer not covered for the whole basis period instead "
+        "divides its estimated covered wages for the following tax year by "
+        "its estimated employee count (subd. 5c(b)), an annual figure; divide "
+        "that figure by 4 here. Enter a quarterly amount, wages per employee "
+        "for one quarter, whichever subdivision applies: "
         "mn_paid_leave_small_employer compares it with a quarterly limit, "
         "150 percent of the state's average annual wage divided by 4. The "
-        "default of 0 treats the "
-        "employer as meeting the wage test, so employer_headcount alone "
-        "decides whether the small employer rate applies."
+        "default of 0 treats the employer as meeting the wage test, so "
+        "employer_headcount alone decides whether the small employer rate "
+        "applies."
     )
     unit = USD
     definition_period = YEAR
