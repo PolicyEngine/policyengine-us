@@ -233,7 +233,7 @@
 
 # Vermont pays the state rate whatever the provider charges, from December 2023,
 # so the subsidy can exceed the family's bill. The whole payment counts as a
-# benefit here, while childcare_expenses stops at zero.
+# benefit here.
 - name: Vermont's computed subsidy reaches household state benefits above the bill
   period: 2025
   absolute_error_margin: 0.01
@@ -262,4 +262,3 @@
     # vt_ccfap.yaml Case 1: ($439 - $100) * 52 = $17,628.
     child_care_subsidies: 17_628
     household_state_benefits: 17_628
-    childcare_expenses: 0

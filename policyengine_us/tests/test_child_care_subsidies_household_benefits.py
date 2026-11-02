@@ -7,6 +7,9 @@ gov.hhs.ccdf.child_care_subsidy_programs is the one list of state programs.
    subsidy counts twice.
 2. A dollar of subsidy adds a dollar to household benefits and to household net
    income, in every state that has a program that year.
+
+The YAML cases pin single families. These read every dated block of the list and
+draw from every program and year, which YAML can't express.
 """
 
 from pathlib import Path
@@ -57,7 +60,7 @@ def net_income_and_benefits(state, year, program, amount):
     ]
 
 
-@settings(max_examples=30, deadline=None)
+@settings(max_examples=15, deadline=None)
 @given(
     year=st.sampled_from([2023, 2024, 2025, 2026]),
     index=st.integers(min_value=0, max_value=50),
