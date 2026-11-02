@@ -1,1 +1,1 @@
-Vermont and New Hampshire no longer pay a child care subsidy for a child with no care hours and no bill.
+Vermont no longer pays a child care subsidy for a child with no care hours and no bill, and caps it at the bill before December 17, 2023. New Hampshire no longer pays its disability supplement for a child with no charge.
