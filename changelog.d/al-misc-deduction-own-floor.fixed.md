@@ -1,1 +1,1 @@
-Compute Alabama's miscellaneous itemized deduction from unreimbursed employee and other section 212 expenses above 2% of Alabama AGI, which Alabama kept after the federal suspension, instead of from the federal deduction.
+Compute Alabama's miscellaneous itemized deduction from its own list of expenses (unreimbursed employee business expenses and tax preparation fees) above 2% of Alabama AGI, from 2017, instead of applying a second floor to the federal deduction, which is zero from 2018.
