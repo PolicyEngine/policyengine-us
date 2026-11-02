@@ -476,6 +476,33 @@
     # Over $1,350 by a dollar; Chart B would require over $2,950.
     tax_unit_is_required_to_file: true
 
+- name: 2025, a claimable spouse aged 65 and blind must file with $2,000 of interest
+  # Section 6012(f)(2)(D) tests the claimable spouse's income other than
+  # earned income against the section 63(c)(5)(A) amount alone, $1,350 for
+  # 2025, with nothing added for age or blindness. $2,000 is over $1,350, so a
+  # return is required. Chart B would add two additional amounts (over
+  # $4,550) and excuse it. Gross income of $2,000 is under the joint standard
+  # deduction, so only this test makes the return required.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 65
+        is_blind: true
+        claimed_as_dependent_on_another_return: true
+        taxable_interest_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    tax_unit_is_required_to_file: true
+
 - name: 2025, a claimable spouse aged 65 with $1,350 of interest need not file
   period: 2025
   input:

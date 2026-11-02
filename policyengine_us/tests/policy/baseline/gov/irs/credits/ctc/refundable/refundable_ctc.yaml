@@ -223,3 +223,27 @@
     ctc_limiting_tax_liability: 0
   output:
     refundable_ctc: 1_500
+
+- name: A filer claiming only the housing deduction completes Worksheet B with a residential clean energy credit
+  # Not barred by section 24(d)(3), so Credit Limit Worksheet B applies and
+  # the residential clean energy credit uses the liability first.
+  # Worksheet A line 5: max(0, 2,000 - 1,500) = 500.
+  # Increase in the credit: min(4,400, 500 + 3,000) - min(4,400, 500) = 3,000.
+  # Refundable: min(3,400 maximum, 3,000) = 3,000. Under the Schedule 8812
+  # instructions, which bar every Form 2555 filer, it would be 0.
+  period: 2025
+  input:
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 0
+    foreign_housing_deduction: 1_000
+    ctc_qualifying_children: 2
+    ctc: 4_400
+    ctc_refundable_maximum: 3_400
+    ctc_phase_in: 3_000
+    ctc_tax_liability_after_preceding_credits: 2_000
+    residential_clean_energy_credit: 1_500
+  output:
+    refundable_ctc_barred_by_section_911_exclusion: false
+    ctc_credit_limit_worksheet_b_applies: true
+    ctc_limiting_tax_liability: 500
+    refundable_ctc: 3_000
