@@ -1,0 +1,30 @@
+- name: Case 1, default nj_other_subtractions is zero
+  period: 2024
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_other_subtractions: 0
+    nj_agi_subtractions: 0
+    nj_total_income: 50_000
+
+- name: Case 2, nj_other_subtractions increases nj_agi_subtractions
+  period: 2024
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+        nj_other_subtractions: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_other_subtractions: 2_000
+    nj_agi_subtractions: 2_000
+    nj_total_income: 48_000

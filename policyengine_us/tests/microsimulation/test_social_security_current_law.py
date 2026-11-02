@@ -1,0 +1,1178 @@
+"""Compare legacy public ingress with an unmodified main checkout.
+
+The same probe runs in separate Python processes against this checkout and
+main. No variable definitions or input names are substituted in the reference.
+After benefit sources change, both probes discard only formula-derived caches
+to compare freshly calculated current law. Separate intended-difference tests
+check the live head's values before that cleanup at main's eight stale routes.
+An unmodified pre-feature main checkout is required. Set PE_US_MAIN_CHECKOUT
+to that checkout, or make the reviewed main commit or a pre-feature main ref
+available locally (the fixture archives it without changing either checkout).
+"""
+
+import io
+import json
+import os
+import subprocess
+import sys
+import tarfile
+import tempfile
+from pathlib import Path
+
+import numpy as np
+import pytest
+
+COMPONENTS = (
+    "social_security_retirement",
+    "social_security_disability",
+    "social_security_survivors",
+    "social_security_dependents",
+)
+COMPOUND_HELPER_ROUTES = tuple(
+    f"compound_{helper}_{component}_{source}"
+    for component in COMPONENTS
+    for helper in ("divide", "dispatch", "ordinary_month")
+    for source in ("empty", "initial")
+)
+BENEFITS = (*COMPONENTS, "social_security")
+DOWNSTREAM = (
+    "social_security_taxable_self_employment_income",
+    "taxable_social_security",
+    "tax_unit_taxable_social_security",
+    "adjusted_gross_income",
+    "income_tax",
+    "household_net_income",
+    "employee_social_security_tax",
+    "employer_social_security_tax",
+    "self_employment_social_security_tax",
+    "ssi_unearned_income",
+    "ssi",
+    "snap_unearned_income",
+    "snap",
+    "medicare_irmaa_tax_year_magi",
+    "medicare_irmaa_magi_two_years_prior",
+    "medicare_irmaa_magi",
+    "medicare_part_b_premium",
+)
+INGRESS_OUTCOMES = (
+    *COMPONENTS,
+    "income_tax",
+    "household_net_income",
+    "medicare_irmaa_magi_two_years_prior",
+)
+AMOUNTS = ((12_000, 0, 1_800, 600), (0, 6_000, 1_200, 300))
+REVIEWED_MAIN_SHA = "8986e05cab65d56435a23df1910e2d35f2c5f5bf"
+# Hand-computed per-person growth from calibration.gov.cbo.social_security
+# divided by calibration.gov.census.populations.total in each year. The IRS
+# SOI series follows this CBO growth; Core multiplies float32 benefit arrays.
+UPRATING_2023_TO_2026 = np.float32(
+    (1_665_942_000_000 / 352_304_000) / (1_379_268_000_000 / 342_835_000)
+)
+UPRATING_2024_TO_2026 = np.float32(
+    (1_665_942_000_000 / 352_304_000) / (1_454_424_000_000 / 346_588_000)
+)
+
+
+def situation(*, include_benefits=True):
+    """Identical legacy public-name inputs for every checkout and wrapper."""
+    result = {"people": {}}
+    for index, name in enumerate(("retiree", "disabled")):
+        person = {
+            "age": {2024: 70 if index == 0 else 45, 2026: 72 if index == 0 else 47},
+            "employment_income": {2024: 15_000 if index == 0 else 0},
+            "self_employment_income": {2024: 3_000 if index == 0 else 0},
+            "taxable_interest_income": {2024: 50_000 if index == 0 else 10},
+            "is_disabled": {2024: index == 1},
+            "takes_up_ssi_if_eligible": {2024: True},
+        }
+        if include_benefits:
+            for component, amount in zip(COMPONENTS, AMOUNTS[index]):
+                person[component] = {2024: amount}
+        result["people"][name] = person
+    for plural in ("households", "tax_units", "spm_units", "families", "marital_units"):
+        result[plural] = {name: {"members": [name]} for name in result["people"]}
+    for household in result["households"].values():
+        household["state_code"] = {2024: "TX", 2026: "TX"}
+    for spm_unit in result["spm_units"].values():
+        spm_unit["takes_up_snap_if_eligible"] = {2024: True}
+    return result
+
+
+def extraction_situation():
+    """The review's single-person, single-input-period extraction reproducer."""
+    result = {
+        "people": {
+            "retiree": {
+                "age": {2024: 70},
+                "social_security_retirement": {2024: 12_000},
+                "taxable_interest_income": {2024: 40_000},
+                "takes_up_ssi_if_eligible": {2024: True},
+            }
+        }
+    }
+    for plural in ("households", "tax_units", "spm_units", "families", "marital_units"):
+        result[plural] = {"group": {"members": ["retiree"]}}
+    result["households"]["group"]["state_code"] = {2024: "TX"}
+    return result
+
+
+def _snapshot(simulation, periods, variables=BENEFITS):
+    return {
+        f"{variable}@{period}": np.asarray(
+            simulation.calculate(variable, period)
+        ).tolist()
+        for period in periods
+        for variable in variables
+    }
+
+
+def _clear_derived_caches(simulation):
+    """Compare formula results for the same surviving supplied/raw sources.
+
+    Runtime invalidation is checked before any cleanup by the live-value
+    assertions, state machine and input regressions. This differential
+    separately compares the country formulas after source writes, including
+    main's ordinary simulations.
+    """
+    for population in simulation.populations.values():
+        for holder in population._holders.values():
+            memory = holder._memory_storage
+            for branch, period in tuple(memory.get_known_branch_periods()):
+                if memory.is_derived(period, branch):
+                    memory._arrays.pop(f"{branch}:{period}", None)
+            memory._unmark_dropped_keys()
+            memory._stop_sharing_dropped_keys()
+            memory._forget_dropped_numbers()
+            disk = holder._disk_storage
+            if disk is not None:
+                for branch, period in tuple(disk.get_known_branch_periods()):
+                    if disk.is_derived(period, branch):
+                        disk._files.pop(f"{branch}_{period}", None)
+                disk._forget_dropped_keys()
+    simulation._fast_cache = {}
+
+
+def _write_h5(path):
+    """Public-column H5, with source values in its scored year."""
+    import h5py
+
+    ids = np.array([1, 2])
+    columns = {"person_id": ids, "age": [72, 47]}
+    for entity in ("household", "tax_unit", "spm_unit", "family", "marital_unit"):
+        columns[f"person_{entity}_id"] = ids
+        columns[f"{entity}_id"] = ids
+        columns[f"{entity}_weight"] = [1.0, 1.0]
+    columns["state_fips"] = [48, 48]
+    for index, component in enumerate(COMPONENTS):
+        columns[component] = [amounts[index] for amounts in AMOUNTS]
+    with h5py.File(path, "w") as stored:
+        for name, values in columns.items():
+            stored.create_dataset(f"{name}/2026", data=values)
+
+
+def _probe():
+    """Only imports from the checkout selected through the subprocess path."""
+    import gc
+
+    import pandas as pd
+    import yaml
+    from policyengine_core.data import Dataset
+    from policyengine_core.holders.helpers import (
+        set_input_dispatch_by_period,
+        set_input_divide_by_period,
+    )
+    from policyengine_core.periods import period
+    from policyengine_core.reforms import Reform
+    from policyengine_core.simulations import (
+        Simulation as CoreSimulation,
+        SimulationBuilder,
+    )
+
+    # Capture the public API before country import installs compatibility.
+    from policyengine_core.tools.simulation_dumper import (
+        dump_simulation,
+        restore_simulation,
+    )
+    from policyengine_us import Microsimulation, Simulation
+    from policyengine_us.system import system
+
+    def dump_without_empty_holders(simulation, directory):
+        dump_simulation(simulation, directory)
+        # Core can create empty holders for variables removed between schemas.
+        # Preserve entities and every directory containing any array or metadata.
+        for holder_directory in Path(directory).iterdir():
+            if (
+                holder_directory.name != "__entities__"
+                and holder_directory.is_dir()
+                and not any(holder_directory.iterdir())
+            ):
+                holder_directory.rmdir()
+
+    class HouseholdMicrosimulation(Microsimulation):
+        default_dataset = None
+
+    class HolderSetterSimulation(Simulation):
+        def set_input(self, variable, input_period, value):
+            if variable in COMPONENTS and hasattr(self, "input_variables"):
+                return self.get_holder(variable).set_input(
+                    period(input_period), np.asarray(value), self.branch_name
+                )
+            return super().set_input(variable, input_period, value)
+
+    class StoreThenRaiseSimulation(Simulation):
+        def set_input(self, variable, input_period, value):
+            result = super().set_input(variable, input_period, value)
+            error = getattr(self, "store_error", None)
+            if variable in COMPONENTS and error is not None:
+                raise error
+            return result
+
+    has_levers = "social_security_retirement_reported" in system.variables
+    neutral = (
+        Reform.from_dict(
+            {"gov.contrib.ssa.benefit_levers.across_the_board.rate": {"2024": 0}}
+        )
+        if has_levers
+        else None
+    )
+    result = {}
+    intended_differences = {}
+
+    def record_live_value(route, simulation, variable, year):
+        # Capture before normalization so the intended-difference assertions
+        # independently require the live head to invalidate stale values.
+        intended_differences[route] = np.asarray(
+            simulation.calculate(variable, year)
+        ).tolist()
+
+    for label, wrapper in (
+        ("simulation", Simulation),
+        ("microsimulation", HouseholdMicrosimulation),
+    ):
+        simulation = wrapper(situation=situation(), tax_benefit_system=system)
+        result[f"constructor_{label}"] = _snapshot(simulation, (2024, 2026, "2025-07"))
+        if label == "simulation":
+            result["constructor_downstream"] = _snapshot(
+                simulation, (2024, 2026), DOWNSTREAM
+            )
+            assert (
+                result["constructor_downstream"][
+                    "medicare_irmaa_magi_two_years_prior@2026"
+                ]
+                == result["constructor_downstream"]["medicare_irmaa_tax_year_magi@2024"]
+            )
+        del simulation
+        gc.collect()
+
+        # A fresh period has no explicit twin. The later public override
+        # must be final in 2026 and seed main's uprating path into 2027.
+        simulation = wrapper(situation=situation(), tax_benefit_system=system)
+        simulation.set_input("social_security_retirement", 2026, [24_000, 0])
+        result[f"later_override_{label}"] = _snapshot(simulation, (2026, 2027))
+        if label == "simulation":
+            # The complete-history helper is new in this change. On main,
+            # the equivalent reference is the same live source/override state.
+            try:
+                from policyengine_us.tools.social_security_inputs import (
+                    export_source_inputs,
+                    reload_source_inputs,
+                )
+            except ImportError:
+                if has_levers:
+                    raise
+                result["complete_export_reload"] = _snapshot(
+                    simulation, (2024, 2025, 2026, 2027)
+                )
+                simulation.set_input("social_security_retirement", 2026, [36_000, 0])
+                record_live_value(
+                    "complete_export_rewrite", simulation, "social_security", 2026
+                )
+                _clear_derived_caches(simulation)
+                result["complete_export_rewrite"] = _snapshot(simulation, (2026, 2027))
+            else:
+                payload = export_source_inputs(simulation)
+                assert payload["overrides"]["social_security_retirement"]["2026"] == [
+                    24_000,
+                    0,
+                ]
+                reloaded = reload_source_inputs(payload, tax_benefit_system=system)
+                result["complete_export_reload"] = _snapshot(
+                    reloaded, (2024, 2025, 2026, 2027)
+                )
+                assert result["complete_export_reload"] == _snapshot(
+                    simulation, (2024, 2025, 2026, 2027)
+                )
+                reloaded.set_input("social_security_retirement", 2026, [36_000, 0])
+                record_live_value(
+                    "complete_export_rewrite", reloaded, "social_security", 2026
+                )
+                _clear_derived_caches(reloaded)
+                result["complete_export_rewrite"] = _snapshot(reloaded, (2026, 2027))
+                del reloaded
+        del simulation
+        gc.collect()
+
+        # A same-period later public write updates the twin originally moved
+        # from public ingress. An explicitly supplied twin retains priority
+        # in the separate precedence tests. Extraction must preserve this
+        # origin as well as the final override for a subsequent public write.
+        simulation = wrapper(
+            situation=extraction_situation(), tax_benefit_system=system
+        )
+        simulation.set_input("social_security_retirement", 2024, [24_000])
+        # Extract before calculations introduce earlier lookback cache periods
+        # into Core's legacy first-known-period selection.
+        payload = simulation.extract_person(0)
+        extracted_person = next(iter(payload["people"].values()))
+        assert extracted_person["age"] == {"2024": 70}
+        reloaded = Simulation(situation=payload, tax_benefit_system=system)
+        live = _snapshot(simulation, (2024,), (*BENEFITS, *DOWNSTREAM))
+        extracted = _snapshot(reloaded, (2024,), (*BENEFITS, *DOWNSTREAM))
+        expected = {key: values[:1] for key, values in live.items()}
+        assert extracted == expected, {
+            key: {"live": expected[key], "reloaded": extracted[key]}
+            for key in expected
+            if extracted[key] != expected[key]
+        }
+        result[f"extraction_reload_{label}"] = extracted
+        assert live["medicare_irmaa_tax_year_magi@2024"][0] > 0
+        for candidate in (simulation, reloaded):
+            # PE-US carries the supplied age forward. Keep this retired
+            # household eligible for Medicare in the future lookback checks.
+            for year in (2026, 2027):
+                np.testing.assert_array_equal(candidate.calculate("age", year), [70])
+        live_future = _snapshot(simulation, (2026, 2027), (*BENEFITS, *DOWNSTREAM))
+        result[f"same_period_override_{label}"] = live_future
+        assert (
+            live_future["medicare_irmaa_magi_two_years_prior@2026"]
+            == live["medicare_irmaa_tax_year_magi@2024"]
+        )
+        extracted_future = _snapshot(reloaded, (2026, 2027), (*BENEFITS, *DOWNSTREAM))
+        expected_future = {key: values[:1] for key, values in live_future.items()}
+        assert extracted_future == expected_future, {
+            key: {"live": expected_future[key], "reloaded": extracted_future[key]}
+            for key in expected_future
+            if extracted_future[key] != expected_future[key]
+        }
+        result[f"extraction_future_reload_{label}"] = extracted_future
+        reloaded.set_input("social_security_retirement", 2024, [36_000])
+        record_live_value(
+            f"extraction_rewrite_{label}", reloaded, "social_security", 2024
+        )
+        _clear_derived_caches(reloaded)
+        result[f"extraction_rewrite_{label}"] = _snapshot(
+            reloaded, (2024, 2026, 2027), (*BENEFITS, *DOWNSTREAM)
+        )
+        del simulation, reloaded
+        gc.collect()
+
+        # Core constructs a baseline before the US wrapper returns. The
+        # current tree's neutral lever reform must migrate that clone too;
+        # unmodified main supplies the same current-law values directly.
+        inputs = situation()
+        for person in inputs["people"].values():
+            # Existing wage/self-employment constructor migrations run after
+            # Core creates its baseline. Isolate the benefit ingress here.
+            person.pop("employment_income")
+            person.pop("self_employment_income")
+        simulation = wrapper(
+            situation=inputs, tax_benefit_system=system, reform=neutral
+        )
+        baseline = simulation.baseline if has_levers else simulation
+        assert baseline is not None
+        result[f"automatic_baseline_{label}"] = _snapshot(
+            baseline, (2024, 2026, "2025-07")
+        )
+        result[f"neutral_constructor_{label}"] = _snapshot(simulation, (2024, 2026))
+        del baseline, simulation
+        gc.collect()
+
+    # YAML reaches Core's builder directly, bypassing both US constructors.
+    yaml_inputs = yaml.safe_load(yaml.safe_dump(situation()))
+    simulation = SimulationBuilder().build_from_dict(system, yaml_inputs)
+    result["yaml_core_builder"] = _snapshot(simulation, (2024, 2026))
+    result["yaml_core_downstream"] = _snapshot(simulation, (2026,), DOWNSTREAM)
+    del simulation
+    gc.collect()
+
+    # Core's compound helpers retain each existing annual source before
+    # allocating the remainder. Initial ingress must stay visible to that
+    # allocation even when the adapter reserves its physical source slot.
+    # No normalization is used: these are ordinary set-then-calculate routes
+    # and must equal unmodified main without any intended difference.
+    for component in COMPONENTS:
+        for helper_name, helper in (
+            ("divide", set_input_divide_by_period),
+            ("dispatch", set_input_dispatch_by_period),
+            ("ordinary_month", None),
+        ):
+            for source in ("empty", "initial"):
+                inputs = extraction_situation()
+                person_inputs = inputs["people"]["retiree"]
+                del person_inputs["social_security_retirement"]
+                if source == "initial":
+                    person_inputs[component] = {2024: 12_000}
+                simulation = SimulationBuilder().build_from_dict(system, inputs)
+                if helper is None:
+                    simulation.set_input(component, "month:2024-01:24", [36_000])
+                else:
+                    helper(
+                        simulation.get_holder(component),
+                        period("year:2024:2"),
+                        np.array([36_000]),
+                    )
+                result[f"compound_{helper_name}_{component}_{source}"] = _snapshot(
+                    simulation, (2024, 2025, 2026), (component, "social_security")
+                )
+                del simulation
+                gc.collect()
+
+    simulation = SimulationBuilder().build_from_entities(system, situation())
+    result["core_entities_builder"] = _snapshot(simulation, (2024, 2026))
+    del simulation
+    gc.collect()
+
+    for route, method in (
+        ("core_variables_builder", "build_from_variables"),
+        ("core_flat_dict_builder", "build_from_dict"),
+    ):
+        inputs = {"age": {2024: [70, 45]}}
+        for index, component in enumerate(COMPONENTS):
+            inputs[component] = {2024: [amounts[index] for amounts in AMOUNTS]}
+        simulation = getattr(SimulationBuilder(), method)(system, inputs)
+        result[route] = _snapshot(simulation, (2024, 2026))
+        del simulation
+        gc.collect()
+
+    simulation = SimulationBuilder().build_from_dict(
+        system, situation(include_benefits=False)
+    )
+    for index, component in enumerate(COMPONENTS):
+        simulation.set_input(component, 2024, [amounts[index] for amounts in AMOUNTS])
+    result["public_set_input"] = _snapshot(simulation, (2024, 2026))
+    del simulation
+    gc.collect()
+
+    # Both paths bypass CoreSimulation.set_input. The public holder must
+    # still seed future benefits and keep a later write final in its year.
+    for route, wrapper in (
+        ("direct_public_holder", Simulation),
+        ("subclass_public_set_input_holder", HolderSetterSimulation),
+    ):
+        inputs = extraction_situation()
+        del inputs["people"]["retiree"]["social_security_retirement"]
+        simulation = wrapper(situation=inputs, tax_benefit_system=system)
+        if route == "direct_public_holder":
+            simulation.get_holder("social_security_retirement").set_input(
+                period(2024), np.array([12_000]), simulation.branch_name
+            )
+        else:
+            simulation.set_input("social_security_retirement", 2024, [12_000])
+        result[route] = _snapshot(simulation, (2024, 2026), INGRESS_OUTCOMES)
+        del simulation
+        gc.collect()
+
+    # Raw Core dataset construction runs without either US wrapper or the
+    # situation builder's migration path.
+    columns = {"person_id": [1]}
+    for entity in ("household", "tax_unit", "spm_unit", "family", "marital_unit"):
+        columns[f"person_{entity}_id"] = [1]
+        columns[f"{entity}_id"] = [1]
+    columns.update(
+        {
+            "age__2024": [70],
+            "social_security_retirement__2024": [12_000],
+            # Texas in both snapshot years, as in situation(). state_code has
+            # a formula, so a 2024 input alone leaves 2026 on the default
+            # state (CA), where this household's SSI/SSP state supplement
+            # brings unrelated California law into household_net_income.
+            "state_code__2024": ["TX"],
+            "state_code__2026": ["TX"],
+        }
+    )
+    simulation = CoreSimulation(
+        dataset=pd.DataFrame(columns),
+        tax_benefit_system=system,
+        default_input_period=2024,
+        default_calculation_period=2024,
+    )
+    result["raw_core_dataset"] = _snapshot(simulation, (2024, 2026), INGRESS_OUTCOMES)
+    del simulation
+    gc.collect()
+
+    # An existing builder composes initial dataset ingress with a replacement
+    # public source. Copy before any future calculation, so cached uprating
+    # results cannot conceal a stale automatic reported source.
+    simulation = CoreSimulation(
+        dataset=pd.DataFrame(columns),
+        tax_benefit_system=system,
+        default_input_period=2024,
+        default_calculation_period=2024,
+    )
+    # Existing builders must also replace a source after its scored-year
+    # formula (including its base) has already been cached.
+    simulation.calculate("social_security_retirement", 2024)
+    SimulationBuilder().build_from_variables(
+        system,
+        {"social_security_retirement": {2024: [24_000]}},
+        simulation=simulation,
+    )
+    # Combine the builder replacement with extraction before calculations
+    # add lookback caches to Core's first-known-period extraction path.
+    payload = simulation.extract_person(0)
+    reloaded = Simulation(situation=payload, tax_benefit_system=system)
+    result["dataset_builder_extraction_reload"] = _snapshot(
+        reloaded, (2024, 2026), INGRESS_OUTCOMES
+    )
+    reloaded.set_input("social_security_retirement", 2024, [36_000])
+    record_live_value(
+        "dataset_builder_extraction_rewrite",
+        reloaded,
+        "social_security_retirement",
+        2026,
+    )
+    _clear_derived_caches(reloaded)
+    result["dataset_builder_extraction_rewrite"] = _snapshot(
+        reloaded, (2024, 2026), INGRESS_OUTCOMES
+    )
+    del reloaded
+    copied = simulation.clone(clone_tax_benefit_system=False)
+    copied.set_input("social_security_retirement", 2026, [18_000])
+    SimulationBuilder().build_from_variables(
+        system,
+        {"social_security_retirement": {2024: [36_000]}},
+        simulation=copied,
+    )
+    result["dataset_existing_builder_overwrite"] = _snapshot(
+        simulation, (2024, 2026), INGRESS_OUTCOMES
+    )
+    result["dataset_builder_clone_overwrite"] = _snapshot(
+        copied, (2024, 2026, 2027), INGRESS_OUTCOMES
+    )
+    del simulation, copied
+    gc.collect()
+
+    # Successful stores remain effective when a delegating setter raises.
+    # Exercise identical setters inside and outside builder loading and
+    # preserve the exact exception object supplied by the setter.
+    for route in ("builder_failed_initial_loading", "setter_failed_after_loading"):
+        inputs = extraction_situation()
+        del inputs["people"]["retiree"]["social_security_retirement"]
+        simulation = StoreThenRaiseSimulation(
+            situation=inputs, tax_benefit_system=system
+        )
+        simulation.store_error = RuntimeError("setter failed after storing")
+        try:
+            if route == "builder_failed_initial_loading":
+                SimulationBuilder().build_from_variables(
+                    system,
+                    {"social_security_retirement": {2024: [24_000]}},
+                    simulation=simulation,
+                )
+            else:
+                simulation.set_input("social_security_retirement", 2024, [24_000])
+        except RuntimeError as error:
+            assert error is simulation.store_error
+        else:
+            raise AssertionError("The delegating setter did not raise")
+        result[route] = _snapshot(simulation, (2024, 2026), INGRESS_OUTCOMES)
+        del simulation
+        if route == "setter_failed_after_loading":
+            # The machine found a raw annual public seed followed by a
+            # compound public setter that stores and raises. Keep the exact
+            # shrunk zero sequence and a distinct-value variant in the same
+            # route. Both checkouts use the installed Core version's source
+            # cleanup; no reported-name input is substituted on main.
+            for label, raw_amount, compound_amount in (
+                ("zero", 0, 0),
+                ("nonzero", 12_000, 24_000),
+            ):
+                simulation = StoreThenRaiseSimulation(
+                    situation=inputs, tax_benefit_system=system
+                )
+                simulation.get_holder("social_security_retirement").put_in_cache(
+                    np.array([raw_amount]), period(2023), derived=False
+                )
+                before = _snapshot(simulation, (2023, 2024, 2026))
+                simulation.store_error = RuntimeError("compound setter stored input")
+                try:
+                    simulation.set_input(
+                        "social_security_retirement",
+                        "year:2023:2",
+                        [compound_amount],
+                    )
+                except RuntimeError as error:
+                    assert error is simulation.store_error
+                else:
+                    raise AssertionError("The compound setter did not raise")
+                if label == "nonzero":
+                    # Core 3.33.2 retains the exact 2023 raw seed. Both Core
+                    # versions select the replacement compound source in
+                    # 2026; main still retains its cached retirement there.
+                    record_live_value(
+                        route, simulation, "social_security_retirement", 2026
+                    )
+                _clear_derived_caches(simulation)
+                after = _snapshot(simulation, (2023, 2024, 2026))
+                after.update(
+                    _snapshot(
+                        simulation,
+                        ("year:2023:2",),
+                        ("social_security_retirement",),
+                    )
+                )
+                for stage, snapshot in (("before", before), ("after", after)):
+                    result[route].update(
+                        {
+                            f"raw_cache_compound_{label}_{stage}:{request}": values
+                            for request, values in snapshot.items()
+                        }
+                    )
+                del simulation
+        gc.collect()
+
+    # Subsampling rebuilds holder storage from a dataframe. Its new stores
+    # must retain the distinction between automatic and explicit sources.
+    sample_columns = {
+        **columns,
+        "household_weight__2024": [1.0],
+        "taxable_interest_income__2024": [40_000],
+        "state_code__2024": ["TX"],
+    }
+    simulation = CoreSimulation(
+        dataset=pd.DataFrame(sample_columns),
+        tax_benefit_system=system,
+        default_input_period=2024,
+        default_calculation_period=2024,
+    )
+    simulation.set_input("social_security_retirement", 2024, [12_000])
+    simulation.subsample(n=1, seed=0, time_period=2024)
+    simulation.set_input("social_security_retirement", 2024, [24_000])
+    result["subsample_public_override"] = _snapshot(
+        simulation, (2024, 2026), INGRESS_OUTCOMES
+    )
+    del simulation
+    gc.collect()
+
+    # Main writes the legacy dump first. The current checkout restores those
+    # exact public-only files, rather than fabricating a legacy dump with its
+    # own compatibility hooks. A normal later setter supplies both names in
+    # the current checkout's own dump and needs automatic-source provenance.
+    dump_directory = Path(os.environ["PE_US_DIFFERENTIAL_DUMPS"])
+    legacy_dump = dump_directory / "legacy_public"
+    inputs = extraction_situation()
+    del inputs["people"]["retiree"]["social_security_retirement"]
+    simulation = Simulation(situation=inputs, tax_benefit_system=system)
+    for component, amount in zip(COMPONENTS, AMOUNTS[0]):
+        simulation.set_input(component, 2024, [amount])
+    if has_levers:
+        for component in COMPONENTS:
+            for name in (component, f"{component}_reported"):
+                assert (
+                    simulation._get_recorded_input_array(name, period(2024)) is not None
+                )
+        own_dump = dump_directory / "both_names"
+        dump_without_empty_holders(simulation, own_dump)
+    else:
+        own_dump = legacy_dump
+        dump_without_empty_holders(simulation, legacy_dump)
+
+    live = _snapshot(simulation, (2024, 2026), INGRESS_OUTCOMES)
+    restored = restore_simulation(legacy_dump, system)
+    result["dump_restore_legacy_public"] = _snapshot(
+        restored, (2024, 2026), INGRESS_OUTCOMES
+    )
+    assert result["dump_restore_legacy_public"] == live
+    restored.set_input("social_security_retirement", 2024, [24_000])
+    record_live_value(
+        "dump_restore_legacy_public_override",
+        restored,
+        "social_security_retirement",
+        2026,
+    )
+    _clear_derived_caches(restored)
+    result["dump_restore_legacy_public_override"] = _snapshot(
+        restored, (2024, 2026), INGRESS_OUTCOMES
+    )
+    del restored
+    gc.collect()
+
+    restored = restore_simulation(own_dump, system)
+    result["dump_restore_both_names"] = _snapshot(
+        restored, (2024, 2026), INGRESS_OUTCOMES
+    )
+    assert result["dump_restore_both_names"] == live
+    for candidate in (simulation, restored):
+        candidate.set_input("social_security_retirement", 2024, [24_000])
+        if candidate is restored:
+            record_live_value(
+                "dump_restore_both_names_override",
+                restored,
+                "social_security_retirement",
+                2026,
+            )
+        _clear_derived_caches(candidate)
+    result["dump_restore_both_names_override"] = _snapshot(
+        restored, (2024, 2026), INGRESS_OUTCOMES
+    )
+    assert result["dump_restore_both_names_override"] == _snapshot(
+        simulation, (2024, 2026), INGRESS_OUTCOMES
+    )
+    del simulation, restored
+    gc.collect()
+
+    if has_levers:
+        # An explicit twin is intentionally independent of a later final
+        # public override. Restoring must not label every twin automatic.
+        simulation = Simulation(
+            situation=extraction_situation(), tax_benefit_system=system
+        )
+        simulation.set_input("social_security_retirement_reported", 2024, [6_000])
+        simulation.set_input("social_security_retirement", 2024, [12_000])
+        explicit_dump = dump_directory / "explicit_reported"
+        dump_without_empty_holders(simulation, explicit_dump)
+        restored = restore_simulation(explicit_dump, system)
+        expected_future = np.asarray(
+            simulation.calculate("social_security_retirement", 2026)
+        ).copy()
+        for candidate in (simulation, restored):
+            candidate.set_input("social_security_retirement", 2024, [24_000])
+            np.testing.assert_array_equal(
+                candidate.calculate("social_security_retirement", 2024), [24_000]
+            )
+            np.testing.assert_array_equal(
+                candidate.calculate("social_security_retirement", 2026),
+                expected_future,
+            )
+        assert _snapshot(restored, (2024, 2026), INGRESS_OUTCOMES) == _snapshot(
+            simulation, (2024, 2026), INGRESS_OUTCOMES
+        )
+        del simulation, restored
+        gc.collect()
+
+        # Core treats a nonderived raw cache value as an uprating source,
+        # without registering it for input replay. Dump restoration promotes
+        # it to a recorded input and must retain its automatic twin's origin.
+        inputs = extraction_situation()
+        del inputs["people"]["retiree"]["social_security_retirement"]
+        simulation = Simulation(situation=inputs, tax_benefit_system=system)
+        for component, amount in zip(COMPONENTS, AMOUNTS[0]):
+            simulation.get_holder(component).put_in_cache(
+                np.array([amount]), period(2024)
+            )
+            for name in (component, f"{component}_reported"):
+                assert simulation._get_recorded_input_array(name, period(2024)) is None
+        raw_dump = dump_directory / "raw_cache"
+        dump_without_empty_holders(simulation, raw_dump)
+        restored = restore_simulation(raw_dump, system)
+        assert _snapshot(restored, (2024, 2026), INGRESS_OUTCOMES) == _snapshot(
+            simulation, (2024, 2026), INGRESS_OUTCOMES
+        )
+        for candidate in (simulation, restored):
+            candidate.set_input("social_security_retirement", 2024, [24_000])
+        assert _snapshot(restored, (2024, 2026), INGRESS_OUTCOMES) == _snapshot(
+            simulation, (2024, 2026), INGRESS_OUTCOMES
+        )
+        del simulation, restored
+        gc.collect()
+
+    # Preserve Core's exact compound input and its annual/downstream
+    # behavior. This simulation has no US wrapper.
+    inputs = extraction_situation()
+    inputs["people"]["retiree"]["social_security_retirement"] = {"year:2024:2": 24_000}
+    simulation = SimulationBuilder().build_from_dict(system, inputs)
+    result["core_builder_exact_multiyear"] = _snapshot(
+        simulation, ("year:2024:2",), ("social_security_retirement",)
+    )
+    result["core_builder_exact_multiyear"].update(
+        _snapshot(simulation, (2024, 2026), INGRESS_OUTCOMES)
+    )
+    del simulation
+    gc.collect()
+
+    for route in ("clone", "branch"):
+        simulation = Simulation(situation=situation(), tax_benefit_system=system)
+        original_inputs = list(simulation.input_variables)
+        parent = _snapshot(simulation, (2024, 2026))
+        copied = (
+            simulation.clone(clone_tax_benefit_system=False)
+            if route == "clone"
+            else simulation.get_branch("public_override")
+        )
+        copied.set_input("social_security_retirement", 2026, [24_000, 0])
+        if route == "clone":
+            record_live_value(route, copied, "social_security", 2026)
+        _clear_derived_caches(copied)
+        result[route] = _snapshot(copied, (2026, 2027))
+        assert _snapshot(simulation, (2024, 2026)) == parent
+        assert simulation.input_variables == original_inputs
+        if has_levers:
+            assert copied.input_variables is not simulation.input_variables
+        result[f"{route}_parent"] = _snapshot(simulation, (2024, 2026))
+        if route == "branch":
+            reformed = simulation.get_branch("neutral_reform", clone_system=True)
+            if neutral is not None:
+                reformed.apply_reform(neutral)
+            result["neutral_reform_branch"] = _snapshot(reformed, (2024, 2026))
+            del reformed
+        del simulation, copied
+        gc.collect()
+
+    for label, wrapper in (
+        ("simulation", Simulation),
+        ("microsimulation", HouseholdMicrosimulation),
+    ):
+        inputs = situation(include_benefits=False)
+        for person in inputs["people"].values():
+            person["social_security_retirement"] = {2024: 12_000, "2024-07": 500}
+            person["social_security_disability"] = {"2024-07": 300}
+            person["social_security_survivors"] = {"year:2024:2": 2_000}
+        for household in inputs["households"].values():
+            household["household_weight"] = {"year:2024:2": 1}
+        simulation = wrapper(situation=inputs, tax_benefit_system=system)
+        result[f"monthly_{label}"] = _snapshot(
+            simulation,
+            ("2024-07", "year:2024-07", 2024, "2024-06"),
+            COMPONENTS[:2],
+        )
+        result[f"multi_year_{label}"] = _snapshot(
+            simulation, ("year:2024:2",), ("social_security_survivors",)
+        )
+        del simulation
+        gc.collect()
+
+    with tempfile.TemporaryDirectory() as directory:
+        path = Path(directory) / "public_components_2026.h5"
+        _write_h5(path)
+        dataset = Dataset.from_file(path)
+        assert dataset.data_format == Dataset.TIME_PERIOD_ARRAYS
+        simulation = Microsimulation(dataset=dataset, tax_benefit_system=system)
+        result["h5_scored_year"] = _snapshot(
+            simulation, (2026,), (*BENEFITS, *DOWNSTREAM)
+        )
+        for index, component in enumerate(COMPONENTS):
+            np.testing.assert_array_equal(
+                np.asarray(simulation.calculate(component, 2026)),
+                [amounts[index] for amounts in AMOUNTS],
+                err_msg=f"H5 scored-year source was not loaded for {component}",
+            )
+        # Main has no benefit-lever parameter. Its role here is the unchanged
+        # current-law reference; the lever assertion runs in the current tree.
+        if has_levers:
+            reform = Reform.from_dict(
+                {
+                    "gov.contrib.ssa.benefit_levers.across_the_board.start_year": {
+                        "2026": 2026
+                    },
+                    "gov.contrib.ssa.benefit_levers.across_the_board.rate": {
+                        "2026": 0.08
+                    },
+                }
+            )
+            reformed = Microsimulation(
+                dataset=dataset, tax_benefit_system=system, reform=reform
+            )
+            for component in COMPONENTS:
+                expected = np.asarray(simulation.calculate(component, 2026)) * 1.08
+                np.testing.assert_array_equal(
+                    np.asarray(reformed.calculate(component, 2026)), expected
+                )
+            np.testing.assert_allclose(
+                np.asarray(reformed.calculate("social_security", 2026)),
+                np.asarray(simulation.calculate("social_security", 2026)) * 1.08,
+                rtol=1e-7,
+                atol=0,
+            )
+    intended_destination = os.environ.get("PE_US_DIFFERENTIAL_LIVE_VALUES")
+    if intended_destination:
+        Path(intended_destination).write_text(json.dumps(intended_differences))
+    return result
+
+
+def _main_checkout(current, directory):
+    reported_files = {f"{component}_reported.py" for component in COMPONENTS}
+    configured = os.environ.get("PE_US_MAIN_CHECKOUT")
+    if configured:
+        checkout = Path(configured).resolve()
+        assert checkout != current.resolve(), (
+            "PE_US_MAIN_CHECKOUT must be a separate unmodified pre-feature main checkout"
+        )
+        assert (checkout / "policyengine_us").is_dir(), configured
+        if (checkout / ".git").exists():
+            status = subprocess.check_output(
+                ["git", "status", "--porcelain", "--untracked-files=no"],
+                cwd=checkout,
+                text=True,
+            )
+            assert not status, "PE_US_MAIN_CHECKOUT must have no tracked changes"
+            if (current / ".git").exists():
+                current_head = subprocess.check_output(
+                    ["git", "rev-parse", "HEAD"], cwd=current, text=True
+                ).strip()
+                reference_head = subprocess.check_output(
+                    ["git", "rev-parse", "HEAD"], cwd=checkout, text=True
+                ).strip()
+                assert reference_head != current_head, (
+                    "PE_US_MAIN_CHECKOUT must not use the current checkout's HEAD"
+                )
+        assert not any(
+            path.name in reported_files
+            for path in (checkout / "policyengine_us" / "variables").rglob(
+                "*_reported.py"
+            )
+        ), "PE_US_MAIN_CHECKOUT must contain unmodified pre-feature main variables"
+        return checkout
+    for ref in (
+        REVIEWED_MAIN_SHA,
+        "refs/remotes/origin/main",
+        "refs/remotes/gh/main",
+        "refs/heads/main",
+    ):
+        exists = subprocess.run(
+            ["git", "rev-parse", "--verify", f"{ref}^{{commit}}"],
+            cwd=current,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+        if exists.returncode == 0:
+            names = subprocess.check_output(
+                [
+                    "git",
+                    "ls-tree",
+                    "-r",
+                    "--name-only",
+                    ref,
+                    "policyengine_us/variables",
+                ],
+                cwd=current,
+                text=True,
+            )
+            if any(Path(name).name in reported_files for name in names.splitlines()):
+                continue
+            archive = subprocess.check_output(["git", "archive", ref], cwd=current)
+            checkout = directory / "main"
+            checkout.mkdir()
+            with tarfile.open(fileobj=io.BytesIO(archive)) as stored:
+                stored.extractall(checkout, filter="data")
+            return checkout
+    pytest.skip(
+        "Differential needs an unmodified pre-feature main checkout: set "
+        "PE_US_MAIN_CHECKOUT or provide the reviewed main commit or a local "
+        "origin/main, gh/main, or main ref without reported benefit variables"
+    )
+
+
+@pytest.fixture(scope="module")
+def differential(tmp_path_factory):
+    directory = tmp_path_factory.mktemp("social_security_differential")
+    current = Path(__file__).resolve().parents[3]
+    reference = _main_checkout(current, directory)
+    results = {}
+    live_values = {}
+    dump_directory = directory / "dumps"
+    dump_directory.mkdir()
+    # The main probe publishes a real legacy dump for the current probe.
+    for label, checkout in (("main", reference), ("current", current)):
+        destination = directory / f"{label}.json"
+        live_destination = directory / f"{label}-live.json"
+        environment = dict(os.environ)
+        environment["PYTHONPATH"] = str(checkout)
+        environment["PE_US_DIFFERENTIAL_DUMPS"] = str(dump_directory)
+        environment["PE_US_DIFFERENTIAL_LIVE_VALUES"] = str(live_destination)
+        for variable in (
+            "OMP_NUM_THREADS",
+            "OPENBLAS_NUM_THREADS",
+            "MKL_NUM_THREADS",
+            "VECLIB_MAXIMUM_THREADS",
+            "NUMEXPR_NUM_THREADS",
+        ):
+            environment[variable] = "4"
+        environment["OMP_WAIT_POLICY"] = "PASSIVE"
+        completed = subprocess.run(
+            [
+                sys.executable,
+                str(Path(__file__).resolve()),
+                "--probe",
+                str(destination),
+            ],
+            cwd=checkout,
+            env=environment,
+            capture_output=True,
+            text=True,
+            # Each 74-route probe took about 290s in CI run 40318424511.
+            # Allow slower hosts while retaining a bounded hang guard.
+            timeout=900,
+            check=False,
+        )
+        assert completed.returncode == 0, (
+            f"{label} differential probe failed:\n"
+            f"{completed.stdout[-4000:]}\n{completed.stderr[-8000:]}"
+        )
+        results[label] = json.loads(destination.read_text())
+        live_values[label] = json.loads(live_destination.read_text())
+        print(
+            f"Social Security differential ({label}): "
+            f"{len(results[label])} routes, "
+            f"{sum(len(values) for values in results[label].values())} arrays"
+        )
+    return results["current"], results["main"], live_values["current"]
+
+
+@pytest.mark.parametrize(
+    "route",
+    (
+        "constructor_simulation",
+        "constructor_microsimulation",
+        "constructor_downstream",
+        "later_override_simulation",
+        "later_override_microsimulation",
+        "extraction_reload_simulation",
+        "extraction_reload_microsimulation",
+        "same_period_override_simulation",
+        "same_period_override_microsimulation",
+        "extraction_future_reload_simulation",
+        "extraction_future_reload_microsimulation",
+        "extraction_rewrite_simulation",
+        "extraction_rewrite_microsimulation",
+        "automatic_baseline_simulation",
+        "automatic_baseline_microsimulation",
+        "neutral_constructor_simulation",
+        "neutral_constructor_microsimulation",
+        "complete_export_reload",
+        "complete_export_rewrite",
+        "yaml_core_builder",
+        "yaml_core_downstream",
+        "core_entities_builder",
+        "core_variables_builder",
+        "core_flat_dict_builder",
+        "public_set_input",
+        "direct_public_holder",
+        "subclass_public_set_input_holder",
+        "raw_core_dataset",
+        "dataset_builder_extraction_reload",
+        "dataset_builder_extraction_rewrite",
+        "dataset_existing_builder_overwrite",
+        "dataset_builder_clone_overwrite",
+        "builder_failed_initial_loading",
+        "setter_failed_after_loading",
+        "subsample_public_override",
+        "dump_restore_legacy_public",
+        "dump_restore_legacy_public_override",
+        "dump_restore_both_names",
+        "dump_restore_both_names_override",
+        "core_builder_exact_multiyear",
+        "clone",
+        "branch",
+        "clone_parent",
+        "branch_parent",
+        "neutral_reform_branch",
+        "monthly_simulation",
+        "monthly_microsimulation",
+        "multi_year_simulation",
+        "multi_year_microsimulation",
+        "h5_scored_year",
+        *COMPOUND_HELPER_ROUTES,
+    ),
+)
+def test_legacy_public_ingress_matches_unmodified_main(differential, route):
+    current, main, _ = differential
+    for request in main[route]:
+        if request in current[route] and not np.array_equal(
+            current[route][request], main[route][request]
+        ):
+            print(
+                "Social Security differential mismatch: "
+                + json.dumps(
+                    {
+                        "route": route,
+                        "request": request,
+                        "current": current[route][request],
+                        "main": main[route][request],
+                    }
+                )
+            )
+    assert current[route].keys() == main[route].keys()
+    for request in main[route]:
+        np.testing.assert_array_equal(
+            current[route][request],
+            main[route][request],
+            err_msg=f"Legacy public ingress differs on {route}: {request}",
+        )
+
+
+@pytest.mark.parametrize(
+    "route, expected",
+    (
+        # Intended difference from main: its cached total remains 24,000.
+        ("extraction_rewrite_simulation", [36_000 + 0 + 0 + 0]),
+        # Intended difference from main: its cached total remains 24,000.
+        ("extraction_rewrite_microsimulation", [36_000 + 0 + 0 + 0]),
+        # Intended difference from main: its first total remains
+        # 26,704.431640625 after the 24,000 override is replaced by 36,000.
+        (
+            "complete_export_rewrite",
+            [
+                np.float32(36_000)
+                + np.float32(1_800) * UPRATING_2024_TO_2026
+                + np.float32(600) * UPRATING_2024_TO_2026,
+                np.float32(6_000) * UPRATING_2024_TO_2026
+                + np.float32(1_200) * UPRATING_2024_TO_2026
+                + np.float32(300) * UPRATING_2024_TO_2026,
+            ],
+        ),
+        # Intended difference from main: its cached 2026 retirement remains
+        # 27,044.31640625, uprated from the previous 24,000 source.
+        (
+            "dataset_builder_extraction_rewrite",
+            [np.float32(36_000) * UPRATING_2024_TO_2026],
+        ),
+        # Intended difference from main: its cached 2026 retirement remains
+        # 14,104.5751953125, uprated from the previous 12,000 raw source.
+        (
+            "setter_failed_after_loading",
+            [np.float32(24_000) * UPRATING_2023_TO_2026],
+        ),
+        # Intended difference from main: its cached 2026 retirement remains
+        # 13,522.158203125, uprated from the restored 12,000 source.
+        (
+            "dump_restore_legacy_public_override",
+            [np.float32(24_000) * UPRATING_2024_TO_2026],
+        ),
+        # Intended difference from main: its cached 2026 retirement remains
+        # 13,522.158203125, uprated from the restored 12,000 source.
+        (
+            "dump_restore_both_names_override",
+            [np.float32(24_000) * UPRATING_2024_TO_2026],
+        ),
+        # Intended difference from main: its cloned 2026 first total remains
+        # 16,226.58984375 after retirement is overridden to 24,000.
+        (
+            "clone",
+            [
+                np.float32(24_000)
+                + np.float32(1_800) * UPRATING_2024_TO_2026
+                + np.float32(600) * UPRATING_2024_TO_2026,
+                np.float32(6_000) * UPRATING_2024_TO_2026
+                + np.float32(1_200) * UPRATING_2024_TO_2026
+                + np.float32(300) * UPRATING_2024_TO_2026,
+            ],
+        ),
+    ),
+)
+def test_intended_difference_from_main_uses_fresh_live_value(
+    differential, route, expected
+):
+    """A benefit source written after calculation replaces its stale result."""
+    _, _, live_values = differential
+    np.testing.assert_array_equal(
+        live_values[route],
+        expected,
+        err_msg=f"Intended difference from main did not use the latest source: {route}",
+    )
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3 or sys.argv[1] != "--probe":
+        raise SystemExit("Usage: test_social_security_current_law.py --probe OUTPUT")
+    Path(sys.argv[2]).write_text(json.dumps(_probe()))

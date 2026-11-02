@@ -1,0 +1,20 @@
+description: Montana limits the equity value of a household's business assets to this amount under the Low Income Home Energy Assistance Program.
+# ARM 37.70.408(2) and the FY2026 plan set $25,000. The 2025-2026 manual
+# lists $29,290 (section 3.13 and the glossary), and the 2026-2027 manual
+# lists $31,524 in section 3.13 and $29,290 in the glossary. The model
+# applies the administrative rule.
+values:
+  2025-10-01: 25_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Montana LIHEAP business equity limit
+  reference:
+    - title: Admin. R. Mont. 37.70.408(2), effective May 27, 2023 and unchanged on May 23, 2026
+      href: https://rules.mt.gov/policy-library-documents/application/pdf/68a4c23444a94d952bc1fa28f5b3c8f528f075b616525c34295b11b0630e1e4f#page=1
+    - title: Montana LIHEAP FY2026 State Plan, item 2.3
+      href: https://liheapch.acf.gov/docs/2026/state-plans/MT_Plan_2026.pdf#page=9
+    - title: "Montana LIHEAP Policy Manual 2025-2026, sections 3.13 and 8.1 #page 31,110"
+      href: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=31
+    - title: "Montana LIHEAP Policy Manual 2026-2027, sections 3.13 and 8.1 #page 31,111"
+      href: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=31
