@@ -792,6 +792,25 @@ _SEHI_WITNESS_POLICY = dict(
     rates=(124, 29, 500),
     policy=_SEHI_WITNESS_POLICY,
 )
+# HI on with nondeductible draw SECA: line 7 holds none of the draw's HI,
+# so line 5 omits the draw even though the whole draw bears HI.
+@example(
+    rows=[(40_000, 0, 0, 64_970.22, 300_000, 0)],
+    rates=(124, 29, 500),
+    policy=_SEHI_WITNESS_POLICY | {"include_hi": True, "half_seca_deduction": False},
+)
+# HI on with no OASDI room: the whole gross draw bears HI and is in line 5.
+@example(
+    rows=[(40_000, 0, 0, 64_970.22, 300_000, 0)],
+    rates=(124, 29, 500),
+    policy=_SEHI_WITNESS_POLICY | {"include_hi": True},
+)
+# A half phase-in with HI off: line 5 counts the same half line 7 taxes.
+@example(
+    rows=SEHI_HAND_CASE,
+    rates=(124, 29, 500),
+    policy=_SEHI_WITNESS_POLICY | {"phase_in_share": 0.5},
+)
 def test_generated_sehi_limit_counts_seca_taxed_draw_in_line_5(
     reform_variables, rows, rates, policy
 ):
