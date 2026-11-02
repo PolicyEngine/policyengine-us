@@ -1,0 +1,18 @@
+- name: Case 1, default ar_other_additions is zero
+  period: 2024
+  input:
+    state_code: AR
+    employment_income: 50_000
+  output:
+    ar_other_additions: 0
+    ar_agi_indiv: 50_000
+
+- name: Case 2, ar_other_additions increases AR AGI
+  period: 2024
+  input:
+    state_code: AR
+    employment_income: 50_000
+    ar_other_additions: 2_000
+  output:
+    ar_other_additions: 2_000
+    ar_agi_indiv: 52_000

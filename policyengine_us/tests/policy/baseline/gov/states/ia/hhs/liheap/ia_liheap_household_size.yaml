@@ -1,0 +1,126 @@
+# Iowa LIHEAP household size (REQ-004). Each member must verify citizenship or
+# SSN documentation to be counted toward the household size; an ineligible
+# member is excluded from the count but that member's income is counted in
+# full, and a household made up only of ineligible members is ineligible.
+# FY26 LIHEAP Policy and Procedures Manual section 7.00 p. 31 and section 7.30
+# p. 34: https://hhs.iowa.gov/media/17262/download?inline#page=31
+# Approximated with is_citizen_or_legal_immigrant (the Kansas pattern); Iowa's
+# test is documentary (SSN or I-94), not the federal qualified-noncitizen list.
+
+- name: Case 1, single citizen counts as one.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_liheap_household_size: 1
+
+- name: Case 2, family of four citizens counts four.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 42_000
+      person2:
+        age: 36
+        employment_income: 18_000
+      person3:
+        age: 9
+      person4:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_250
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IA
+  output:
+    ia_liheap_household_size: 4
+
+- name: Case 3, mixed-status household excludes the undocumented adult from the count.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        employment_income: 24_000
+      person2:
+        age: 33
+        immigration_status: CITIZEN
+        employment_income: 14_000
+      person3:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Manual section 7.30 p. 34: 3 members - 1 ineligible member = 2; the
+    # ineligible member's 24,000 still counts (see ia_liheap_countable_income).
+    ia_liheap_household_size: 2
+
+- name: Case 4, household of two undocumented adults counts zero.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        employment_income: 22_000
+      person2:
+        age: 28
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Manual section 7.30 p. 34: a household of only ineligible members.
+    ia_liheap_household_size: 0
+
+- name: Case 5, the same single citizen in Illinois is outside the Iowa program.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # defined_for = StateCode.IA returns zero outside Iowa.
+    ia_liheap_household_size: 0
