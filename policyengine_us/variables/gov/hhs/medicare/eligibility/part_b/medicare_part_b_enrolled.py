@@ -1,0 +1,21 @@
+from policyengine_us.model_api import *
+
+
+class medicare_part_b_enrolled(Variable):
+    value_type = bool
+    entity = Person
+    label = "Medicare Part B enrolled"
+    documentation = (
+        "Whether the person is enrolled in Medicare Part B (supplementary "
+        "medical insurance). Part B is a separate enrollment from Part A, so "
+        "a Medicare enrollee can hold Part A only and owe no Part B premium. "
+        "Defaults to true for every Medicare enrollee (medicare_enrolled); "
+        "set it to false for a Part A-only enrollee."
+    )
+    definition_period = YEAR
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/42/1395o",
+        "https://www.law.cornell.edu/cfr/text/42/part-407/subpart-B",
+    )
+    defined_for = "medicare_enrolled"
+    default_value = True
