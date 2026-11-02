@@ -1,19 +1,28 @@
 description: Deductions from taxable income if not itemizing.
 values:
+  # The tips and overtime deductions (26 U.S.C. 224 and 225) are listed in every
+  # year. Their own in_effect parameters zero them outside 2025-2028, so a reform
+  # that switches them on in another year also reaches taxable income.
   2018-01-01:
     - standard_deduction
     - qualified_business_income_deduction
     - tuition_and_fees_deduction
+    - tip_income_deduction
+    - overtime_income_deduction
   # The 2020 charitable deduction for non-itemizers is above the line
   # (charitable_contributions_ald). From 2021 it is taken from adjusted gross
   # income under 26 U.S.C. 170(p) and 63(b)(4).
   2020-01-01:
     - standard_deduction
     - qualified_business_income_deduction
+    - tip_income_deduction
+    - overtime_income_deduction
   2021-01-01:
     - charitable_deduction_for_non_itemizers
     - standard_deduction
     - qualified_business_income_deduction
+    - tip_income_deduction
+    - overtime_income_deduction
   2025-01-01:
     - charitable_deduction_for_non_itemizers
     - standard_deduction
@@ -26,6 +35,8 @@ values:
     - charitable_deduction_for_non_itemizers
     - standard_deduction
     - qualified_business_income_deduction
+    - tip_income_deduction
+    - overtime_income_deduction
 
 metadata:
   unit: list

@@ -71,10 +71,10 @@ def ca_capi_ssi_ssp_standard(person, period, parameters):
     aged_or_disabled = (age >= p.aged_or_disabled.age_threshold) | person(
         "is_ssi_disabled", period.this_year
     )
-    # NOTE: living_arrangements_allow_for_food_preparation has no default
-    # value and the microdata do not set it, so every aged or disabled
-    # person gets the no-cooking allowance (+$128.87 a month in 2026, +$257.74
-    # for a couple) unless it is set (issue 10296).
+    # NOTE: living_arrangements_allow_for_food_preparation defaults to true
+    # and the microdata do not set it, so the no-cooking allowance (+$128.87
+    # a month in 2026, +$257.74 for a couple) applies only when the input is
+    # set to false (issue 10296).
     no_cooking = ~person.household(
         "living_arrangements_allow_for_food_preparation", period.this_year
     )
