@@ -19,10 +19,16 @@ class vt_ccfap(Variable):
         # Vermont paid the lesser of the state rate and the provider's rate.
         # Source: CCFAP Understanding Payments (Q3 and "Jane Smith" example)
         # https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/CCFAP/CCFAP-Understanding-Payments.pdf
+        # The same document pays the state's amount directly to the family's
+        # provider, so a child with no provider draws nothing. Care hours or a bill
+        # stand in for a provider.
         person = spm_unit.members
         eligible_child = person("vt_ccfap_eligible_child", period)
+        in_care = (person("childcare_hours_per_week", period.this_year) > 0) | (
+            person("pre_subsidy_childcare_expenses", period.this_year) > 0
+        )
         weekly_rate = person("vt_ccfap_state_rate", period)
-        total_weekly_rate = spm_unit.sum(weekly_rate * eligible_child)
+        total_weekly_rate = spm_unit.sum(weekly_rate * eligible_child * in_care)
         monthly_rate = total_weekly_rate * WEEKS_IN_YEAR / MONTHS_IN_YEAR
         family_share = spm_unit("vt_ccfap_family_share", period)
         return max_(monthly_rate - family_share, 0)
