@@ -8614,6 +8614,79 @@ candidates:
   state: ruled
   note: 'Ruled 2026-10-23: exclude IRA/401(k) withdrawals as the manual does. Code not yet on main:
     tn_liheap_countable_income, gov.states.tn.thda.liheap.income.sources.unearned.'
+- id: us-tx:ccs-tsr-preschool-rate-missing
+  program: child-care-assistance
+  years:
+    from: 2022
+    to: 2022
+    type: federal-fiscal
+  question: What is Texoma's maximum rate for part-time preschool care at a Texas School Ready registered child care
+    home in BCY 2022, when 40 TAC §809.20(b)(2) requires a TSR preschool rate and TWC's WD 24-21 table prints a dash?
+  sources:
+  - kind: regulation
+    citation: 40 TAC §809.20(b)(2), (c)(1)(B) (41 TexReg 7574, effective October 1, 2016)
+    url: https://web.archive.org/web/20170304015504/https://www.sos.state.tx.us/texreg/archive/September232016/Adopted%20Rules/40.SOCIAL%20SERVICES%20AND%20ASSISTANCE.html
+  - kind: guidance
+    citation: TWC WD Letter 24-21, Attachment 1, FY'22 Child Care Provider Reimbursement Rates (Texoma)
+    url: https://web.archive.org/web/20210930004510/https://www.twc.texas.gov/files/policy_letters/attachments/24-21-att1-twc.pdf#page=27
+  - kind: guidance
+    citation: TWC WD Letter 24-21 (a higher earlier rate stays in effect, and no provider rate falls)
+    url: https://web.archive.org/web/20210930004459/https://www.twc.texas.gov/files/policy_letters/24-21-twc.pdf
+  readings:
+    statute: No statute is supplied; §809.20(b)(2) has each Board set an enhanced rate for preschool children at TSR
+      providers, at least 5 percent above the regular rate under (c)(1)(B), and WD 24-21 keeps a higher earlier rate.
+    other: WD 24-21 Attachment 1 prints a dash for Texoma's RCCH TSR preschool part-time rate.
+  example: In October 2021, Texoma's regular rate for this care is $18.96 a day, so the floor comes to $19.91, while
+    the BCY 2021 TSR rate was $20.07 and WD 24-21's table prints none.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/tx/twc/ccs/payment/rates.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10622
+  state: ruled
+  note: 'Ruled 2026-11-02: $20.07, the higher of the §809.20(c)(1)(B) floor and the BCY 2021 rate. Each of the 167
+    TSR preschool rates WD 24-21 prints follows that rule. Code not yet on main: rates.yaml, TEXOMA RCCH TSR PRESCHOOL
+    PART_TIME at 2021-10-01.'
+- id: us-tx:ccs-tsr-school-age-enhanced-rate
+  program: child-care-assistance
+  years:
+    from: 2024
+    type: federal-fiscal
+  question: Does a Texas School Ready provider get an enhanced rate for school-age children, as TWC's tables from BCY
+    2024 give, although 40 TAC §809.20(b)(2) limits the TSR enhanced rate to infant, toddler and preschool-age children?
+  sources:
+  - kind: regulation
+    citation: 40 TAC §809.20(b)(2) (47 TexReg 6459, effective October 3, 2022; unchanged by 49 TexReg 5545, effective
+      July 29, 2024)
+    url: https://web.archive.org/web/20230126012301/https://www.sos.state.tx.us/texreg/archive/September302022/Adopted%20Rules/40.SOCIAL%20SERVICES%20AND%20ASSISTANCE.html
+  - kind: guidance
+    citation: TWC WD Letter 20-23, Attachment 1, Board Contract Year 2024 Child Care Provider Payment Rates
+    url: https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/20-23-att1-twc.pdf
+  - kind: guidance
+    citation: TWC Board Contract Year 2025 Child Care Provider Payment Rates (four age groups)
+    url: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy25-board-max-provider-payment-rates-4-age-groups-twc.pdf
+  - kind: guidance
+    citation: TWC Board Contract Year 2026 Child Care Provider Payment Rates
+    url: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy26-board-max-provider-payment-rates-twc.pdf
+  readings:
+    statute: No statute is supplied; §809.20(b)(2) has Boards set TSR enhanced rates only for infant, toddler and
+      preschool-age children, so a TSR provider gets the regular rate for school-age children.
+    other: TWC's BCY 2024, 2025 and 2026 tables give TSR school-age care the 2-star Texas Rising Star rate.
+  example: In BCY 2024, Alamo's licensed center rates for full-time school-age care are $36.80 a day regular and
+    $38.64 for both TSR and 2-star providers.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/tx/twc/ccs/payment/rates.yaml
+    - policyengine_us/parameters/gov/states/tx/twc/ccs/payment/rates_expanded_age_groups/bcy2025.csv
+    - policyengine_us/parameters/gov/states/tx/twc/ccs/payment/rates_expanded_age_groups/bcy2026.csv
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10598
+    - https://github.com/PolicyEngine/policyengine-us/pull/10622
+  state: unreviewed
+  note: PE-US follows TWC's tables. Before changing the model, check whether TWC pays TSR providers' school-age care
+    at the 2-star rate because they hold Texas Rising Star certification, which §809.20(b)(1) covers for all ages.
 - id: us-tx:family-planning-unearned-income-exclusions
   program: family-planning-program
   years:
