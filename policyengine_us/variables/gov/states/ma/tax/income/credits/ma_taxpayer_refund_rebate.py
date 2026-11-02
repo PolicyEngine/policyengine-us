@@ -17,7 +17,8 @@ class ma_taxpayer_refund_rebate(Variable):
     definition_period = YEAR
     reference = (
         "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62F/Section6",
-        "https://www.mass.gov/info-details/chapter-62f-taxpayer-refunds",
+        # State Auditor audit of the Chapter 62F excess-revenue determination.
+        "https://www.mass.gov/audit/audit-of-the-determination-of-whether-net-state-tax-revenues-exceeded-allowable-state-tax-revenues-0",
     )
 
     def formula(tax_unit, period, parameters):
