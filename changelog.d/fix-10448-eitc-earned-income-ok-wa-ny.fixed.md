@@ -1,1 +1,0 @@
-Oklahoma's EITC, Washington's Working Families Tax Credit and the New York WFTC contributed reform now net a spouse's self-employment loss against the other spouse's wages when they compute earned income.

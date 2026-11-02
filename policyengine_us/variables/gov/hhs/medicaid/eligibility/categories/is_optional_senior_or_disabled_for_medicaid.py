@@ -28,8 +28,33 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
         in_covered_group = (
             p.covers_non_ssi_recipients[state].astype(bool) | ~immigration_eligible
         )
-        is_senior_or_disabled = person("is_ssi_aged_blind_disabled", period)
-        income_eligible = person(
+        # Arkansas's group (ARSeniors) covers only aged people. A blind or
+        # disabled noncitizen who fails the immigration test would get
+        # emergency Medicaid through the SSI group instead, so they keep this
+        # group only if they meet SSI's income and resource tests. SSI's
+        # income test is countable income "not more than" the benefit rate
+        # (42 U.S.C. 1382(a)(1)(A)); January's rate stands for the year.
+        meets_ssi_income_test = person(
+            "ssi_countable_income", period
+        ) / MONTHS_IN_YEAR <= person("ssi_amount_if_eligible", period.first_month)
+        meets_ssi_resource_test = person("meets_ssi_resource_test", period.first_month)
+        state_covers = p.covers_blind_or_disabled[state].astype(bool)
+        on_exception_path = (
+            ~state_covers
+            & ~immigration_eligible
+            & meets_ssi_income_test
+            & meets_ssi_resource_test
+        )
+        is_senior_or_disabled = where(
+            state_covers | on_exception_path,
+            person("is_ssi_aged_blind_disabled", period),
+            person("is_ssi_aged", period),
+        )
+        # People on the SSI-group exception path pass with its income test:
+        # for a couple, the SSI couple rate is above 80% of the poverty
+        # guideline for two. This holds for aged people too, since 42 U.S.C.
+        # 1396b(v)(2)(B) waives only the receipt of SSI.
+        income_eligible = on_exception_path | person(
             "is_optional_senior_or_disabled_income_eligible", period
         )
         asset_eligible = person("is_optional_senior_or_disabled_asset_eligible", period)

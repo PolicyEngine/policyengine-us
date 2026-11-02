@@ -52,3 +52,24 @@
   output:
     # 1.5 x 15,960 = 23,940 > 20,000.
     income_based_repayment_discretionary_income: 0
+
+- name: Case 4, discretionary income uses the latest return's AGI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # The most recent return shows 40,000; income this year is 80,000.
+        income_driven_repayment_adjusted_gross_income: 40_000
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # (40,000 - 23,940) / 12 = 1,338.33, as in Case 1.
+    income_based_repayment_discretionary_income: 1_338.33

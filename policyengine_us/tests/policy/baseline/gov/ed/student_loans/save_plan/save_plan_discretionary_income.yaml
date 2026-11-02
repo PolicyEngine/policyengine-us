@@ -59,3 +59,24 @@
       2023-07: 1_510.83
       2023-08: 599.58
       2023-12: 599.58
+
+- name: Case 4, discretionary income uses the latest return's AGI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # The most recent return shows 40,000; income this year is 80,000.
+        income_driven_repayment_adjusted_gross_income: 40_000
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # (40,000 - 35,910) / 12 = 340.83, as in Case 1.
+    save_plan_discretionary_income: 340.83

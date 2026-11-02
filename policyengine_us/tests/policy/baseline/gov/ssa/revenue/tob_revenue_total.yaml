@@ -23,3 +23,148 @@
     # Tax without SS = $1,160 + 12% * $21,850 = $3,782.
     # Tax with $25,500 taxable SS = $1,160 + $4,266 + 22% * $11,800 = $8,022.
     tob_revenue_total: 4_240
+
+- name: Chapter 1 TOB excludes benefit-triggered net investment income tax
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      retiree:
+        age: 70
+        social_security: 40_000
+        taxable_interest_income: 190_000
+    tax_units:
+      tax_unit:
+        members: [retiree]
+        filing_status: SINGLE
+        tax_unit_itemizes: false
+    spm_units:
+      spm_unit:
+        members: [retiree]
+        takes_up_tanf_if_eligible: false
+    households:
+      household:
+        members: [retiree]
+        state_name: TX
+  output:
+    tax_unit_taxable_social_security_pre_1993: 20_000
+    tax_unit_taxable_social_security: 34_000
+    # With zero / pre-1993 / current inclusion:
+    # AGI = $190,000 / $210,000 / $224,000; deduction = $18,150.
+    # Chapter 1 tax = $33,842 / $38,642 / $42,328.
+    # NIIT = 3.8% * max(AGI - $200,000, 0) = $0 / $380 / $912.
+    # No refundable credits. The former income_tax differences were
+    # $5,180 OASDI, $4,218 HI and $9,398 total, including $912 NIIT.
+    income_tax_refundable_credits: 0
+    net_investment_income_tax: 912
+    income_tax_chapter_1: 42_328
+    income_tax: 43_240
+    tob_revenue_oasdi: 4_800
+    tob_revenue_medicare_hi: 3_686
+    tob_revenue_total: 8_486
+
+- name: Chapter 1 TOB excludes the EITC loss from benefit inclusion
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_disabled: true
+        tax_unit_role_input: HEAD
+        employment_income: 35_000
+        social_security_disability: 20_000
+      child:
+        age: 17
+        tax_unit_role_input: DEPENDENT
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_itemizes: false
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        takes_up_tanf_if_eligible: false
+    households:
+      household:
+        members: [parent, child]
+        state_name: TX
+  output:
+    # Provisional income = $45,000; inclusions = $0 / $10,000 / $13,850.
+    # HOH deduction = $21,900; tax before credits = $1,310 / $2,441 / $2,903.
+    # The 17-year-old receives a $500 other-dependent credit, not ACTC.
+    # Chapter 1 liability = $810 / $1,941 / $2,403.
+    # EITC = $4,213 - 15.98% * (AGI - $22,720):
+    # $2,250.656 / $652.656 / $37.426.
+    # Total = $2,403 - $810 = $1,593, whereas the old income_tax
+    # differential was $1,593 + ($2,250.656 - $37.426) = $3,806.23.
+    tax_unit_taxable_social_security_pre_1993: 10_000
+    tax_unit_taxable_social_security: 13_850
+    income_tax_before_credits: 2_903
+    income_tax_capped_non_refundable_credits: 500
+    income_tax_chapter_1: 2_403
+    eitc: 37.426
+    refundable_ctc: 0
+    income_tax: 2_365.574
+    tob_revenue_oasdi: 1_131
+    tob_revenue_medicare_hi: 462
+    tob_revenue_total: 1_593
+
+- name: Chapter 1 TOB excludes an ACTC shift into nonrefundable CTC
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_disabled: true
+        tax_unit_role_input: HEAD
+        employment_income: 20_000
+        social_security_disability: 20_000
+        tax_exempt_interest_income: 12_000
+      child:
+        age: 8
+        tax_unit_role_input: DEPENDENT
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_itemizes: false
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        takes_up_tanf_if_eligible: false
+    households:
+      household:
+        members: [parent, child]
+        state_name: TX
+  output:
+    # Provisional income = $42,000; inclusions = $0 / $8,500 / $11,300.
+    # HOH deduction = $21,900; tax before credits = $0 / $660 / $940.
+    # CTC offsets all of that tax; chapter 1 liability is always zero.
+    # ACTC = min($1,700, $2,000 - tax) = $1,700 / $1,340 / $1,060.
+    # EITC is zero: $12,000 investment income exceeds its $11,600 limit.
+    # Total = $0, whereas the old income_tax differential was
+    # -$1,060 - (-$1,700) = $640 ($360 OASDI and $280 HI).
+    tax_unit_taxable_social_security_pre_1993: 8_500
+    tax_unit_taxable_social_security: 11_300
+    income_tax_before_credits: 940
+    income_tax_capped_non_refundable_credits: 940
+    income_tax_chapter_1: 0
+    refundable_ctc: 1_060
+    eitc: 0
+    income_tax: -1_060
+    tob_revenue_oasdi: 0
+    tob_revenue_medicare_hi: 0
+    tob_revenue_total: 0

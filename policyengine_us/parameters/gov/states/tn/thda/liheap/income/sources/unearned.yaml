@@ -1,0 +1,44 @@
+description: Tennessee counts these sources as unearned income of all household members under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - ssi
+    - general_assistance
+    - total_unemployment_compensation
+    # Strike benefits from union funds.
+    - strike_benefits
+    - workers_compensation
+    - child_support_received
+    - alimony_income
+    # Money regularly received from an absent family member or someone not
+    # living in the household.
+    - financial_assistance
+    - survivor_benefits
+    - disability_benefits
+    - ordinary_dividend_income
+    # Net rental income.
+    - rental_income
+    - farm_rent_income
+    # Periodic receipts from estates or trusts.
+    - estate_income
+# Social Security, railroad retirement, pensions, military retirement and VA
+# benefits are counted net of Medicare premiums through net_of_medicare.
+# Interest above the annual threshold, net gambling winnings and TANF
+# (Families First) are counted in tn_liheap_countable_income. Capital gains,
+# bank withdrawals, sale proceeds, tax refunds, gifts, loans, inheritances and
+# SNAP are excluded. Retirement-account (IRA or 401(k)) withdrawals are not
+# counted either: the Section 2.13 income list names pensions, annuities and
+# regular insurance payments but not retirement-account withdrawals, and the
+# exclusions name only bank-account withdrawals, so the model treats
+# retirement-account withdrawals like bank withdrawals. Black Lung benefits
+# with their first $20 monthly disregard, royalties, severance pay, adoption
+# assistance, training stipends, military family allotments and irregular
+# income have no existing input.
+metadata:
+  unit: list
+  period: year
+  label: Tennessee LIHEAP unearned income sources
+  reference:
+    - title: "Tennessee LIHEAP 2026 Policy Manual, Section 2.13 #page 27-28"
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-2026-Policy-Manual-for-Tennessee.pdf#page=27
+    - title: "Tennessee FY2026 LIHEAP State Plan, Sections 1.8-1.9 #page 5-7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/TN_Plan_2026.pdf#page=5

@@ -5,6 +5,13 @@ class repayment_assistance_plan_base_payment(Variable):
     value_type = float
     entity = TaxUnit
     label = "Repayment Assistance Plan base payment"
+    documentation = (
+        "Annual base payment from the bracket rate on the whole adjusted "
+        "gross income of the most recent return "
+        "(income_driven_repayment_adjusted_gross_income), or the low-income "
+        "amount when that income is not more than the rate scale's first "
+        "finite threshold."
+    )
     unit = USD
     definition_period = YEAR
     reference = (
@@ -17,7 +24,7 @@ class repayment_assistance_plan_base_payment(Variable):
         p = parameters(
             period
         ).gov.ed.student_loans.repayment_assistance_plan.base_payment
-        agi = tax_unit("adjusted_gross_income", period)
+        agi = tax_unit("income_driven_repayment_adjusted_gross_income", period)
         # The low-income limit is the first finite threshold of the rate scale.
         low_income = agi <= p.rate.thresholds[1]
         income_based_payment = p.rate.calc(agi, right=True) * agi

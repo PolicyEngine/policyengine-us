@@ -20,8 +20,11 @@ The receipt records the source mapping that the PE-US constructor must implement
 Two names for one component would retain a final public override and are rejected.
 Stored aggregate `social_security`, OASDI payroll-tax outputs, federal NIIT
 liabilities/revenues and TOB revenue outputs are also rejected: these would bypass
-the formulas being scored. This population-data contract permits household
-situations to continue using explicit final benefit overrides.
+the formulas being scored. The preflight also rejects the S.770 section 8 and
+owners' draw tax and OASDI transfer leaves and the
+[OASDI accounting outputs](social-security-oasdi-accounting.md); their
+classification inputs remain valid sources. This population-data contract permits
+household situations to continue using explicit final benefit overrides.
 
 The JSON receipt records the artifact, hash, base year, stored H5 keys, complete
 column inventory by entity, row counts, source mapping and any declared final
