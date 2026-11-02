@@ -6,7 +6,12 @@ class short_term_capital_gains(Variable):
     entity = Person
     label = "short-term capital gains"
     unit = USD
-    documentation = "Net gains made from sales of assets held for one year or less(losses are expressed as negative gains)."
+    documentation = (
+        "Net gains made from sales of assets held for one year or less (losses "
+        "are expressed as negative gains): Schedule D line 7, net of any "
+        "short-term capital loss carryover, which short_term_capital_loss_carryover "
+        "records as a memo."
+    )
     definition_period = YEAR
     reference = dict(
         title="26 U.S. Code § 1222(1)",

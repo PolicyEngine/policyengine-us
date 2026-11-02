@@ -68,6 +68,75 @@
     # 6,000.
     capital_gains_28_percent_rate_gain: 6_000
 
+# Line 5 is "your long-term capital loss carryovers from Schedule D, line 14;
+# and Schedule K-1 (Form 1041), box 11, code D". A carryover from a terminated
+# estate or trust (26 U.S.C. 642(h)(1), Reg. 1.642(h)-1) reduces the gain as
+# the person's own carryover does.
+- name: A terminated estate or trust's long-term carryover reduces it
+  period: 2025
+  input:
+    long_term_capital_gains: 47_000
+    collectibles_gain_or_loss: 10_000
+    estate_or_trust_long_term_capital_loss_carryover: 3_000
+  output:
+    # Line 5 = (3,000), line 7 = 7,000, as with a 3,000 carryover of the
+    # person's own.
+    capital_gains_28_percent_rate_gain: 7_000
+
+- name: Own and estate or trust long-term carryovers combine on line 5
+  period: 2025
+  input:
+    long_term_capital_gains: 47_000
+    collectibles_gain_or_loss: 10_000
+    own_long_term_capital_loss_carryover: 1_000
+    estate_or_trust_long_term_capital_loss_carryover: 2_000
+  output:
+    # Line 5 = (1,000 + 2,000), line 7 = 7,000.
+    capital_gains_28_percent_rate_gain: 7_000
+
+- name: A short-term carryover memo does not reduce it again
+  period: 2025
+  input:
+    long_term_capital_gains: 50_000
+    collectibles_gain_or_loss: 10_000
+    # Schedule D line 7: the year's net short-term loss of 5,000 plus a 3,000
+    # carryover, 2,000 of it the person's own (line 6) and 1,000 from a
+    # terminated trust's Schedule K-1 (Form 1041), box 11, code C (line 5).
+    short_term_capital_gains: -8_000
+    own_short_term_capital_loss_carryover: 2_000
+    estate_or_trust_short_term_capital_loss_carryover: 1_000
+  output:
+    # Line 6 is the Schedule D line 7 loss, which already holds the
+    # carryovers: 10,000 - 8,000 = 2,000.
+    capital_gains_28_percent_rate_gain: 2_000
+
+- name: Each spouse's carryover leaves count on a joint return
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        collectibles_gain_or_loss: 10_000
+        own_long_term_capital_loss_carryover: 1_000
+      spouse:
+        age: 45
+        is_tax_unit_spouse: true
+        estate_or_trust_long_term_capital_loss_carryover: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    marital_units:
+      filers:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    # Line 5 = (1,000 + 2,000), line 7 = 10,000 - 3,000.
+    capital_gains_28_percent_rate_gain: 7_000
+
 - name: A collectibles loss offsets section 1202 gain
   period: 2025
   input:

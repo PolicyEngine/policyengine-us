@@ -16,6 +16,9 @@ from policyengine_us.tools.per_capita_uprating import DERIVED_FROM, per_capita_p
 EMPLOYMENT = per_capita_path("calibration.gov.irs.soi.employment_income")
 SELF_EMPLOYMENT = per_capita_path("calibration.gov.irs.soi.self_employment_income")
 CAPITAL_GAINS = per_capita_path("calibration.gov.irs.soi.long_term_capital_gains")
+SHORT_TERM_CAPITAL_GAINS = per_capita_path(
+    "calibration.gov.irs.soi.short_term_capital_gains"
+)
 ALIMONY = per_capita_path("calibration.gov.irs.soi.alimony_income")
 UNEMPLOYMENT = per_capita_path("calibration.gov.irs.soi.unemployment_compensation")
 DEFAULT = per_capita_path("calibration.gov.cbo.income_by_source.adjusted_gross_income")
@@ -54,7 +57,10 @@ EXPECTED = {
     "self_employed_pension_contributions_desired": SELF_EMPLOYMENT,
     # Components of capital gains.
     "long_term_capital_gains_on_collectibles": CAPITAL_GAINS,
-    "long_term_capital_loss_carryover": CAPITAL_GAINS,
+    "own_long_term_capital_loss_carryover": CAPITAL_GAINS,
+    "estate_or_trust_long_term_capital_loss_carryover": CAPITAL_GAINS,
+    "own_short_term_capital_loss_carryover": SHORT_TERM_CAPITAL_GAINS,
+    "estate_or_trust_short_term_capital_loss_carryover": SHORT_TERM_CAPITAL_GAINS,
     "collectibles_gain_or_loss": CAPITAL_GAINS,
     "section_1202_gain": CAPITAL_GAINS,
     "unrecaptured_section_1250_gain_before_losses": CAPITAL_GAINS,
@@ -177,6 +183,20 @@ def test_alimony_series_is_labelled_as_alimony():
 def test_rent_override_matches_the_rent_input():
     assert MICRODATA_UPRATING_OVERRIDES["rent"] == CPI_U
     assert system.variables["pre_subsidy_rent"].uprating == CPI_U
+
+
+@pytest.mark.parametrize(
+    "total", ["long_term_capital_loss_carryover", "short_term_capital_loss_carryover"]
+)
+def test_carryover_sum_override_matches_its_leaves(total):
+    """A carryover sum adds its leaves, so Core cannot uprate it; a dataset
+    column holding the sum follows the series its leaves follow."""
+    leaves = system.variables[total].adds
+    assert len(leaves) == 2
+    for leaf in leaves:
+        assert system.variables[leaf].uprating == per_capita_path(
+            MICRODATA_UPRATING_OVERRIDES[total]
+        )
 
 
 METHODOLOGY_PAGE = (

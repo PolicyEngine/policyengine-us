@@ -1,0 +1,1 @@
+Split the capital loss carryover memo inputs into the person's own carryover and one from a terminated estate or trust (Schedule K-1 (Form 1041), box 11, codes C and D), add a short-term carryover memo, and add the short-term carryover back in Arizona property tax credit household income (ITR 12-1 item (7)).
