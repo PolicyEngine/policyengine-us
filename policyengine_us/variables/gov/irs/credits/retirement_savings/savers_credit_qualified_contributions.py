@@ -17,7 +17,7 @@ class savers_credit_qualified_contributions(Variable):
         contributions = add(
             person, period, p.qualified_retirement_savings_contributions
         )
-        # 25B(d)(2): from 2027, relevant ABLE distributions rather than
-        # retirement-plan distributions.
+        # 25B(d)(2): relevant ABLE distributions in every year, and
+        # retirement-plan distributions through 2026.
         distributions = add(person, period, p.distributions)
         return max_(contributions - distributions, 0)

@@ -27,8 +27,8 @@ dollar over, for each combination of age 65 and blindness:
 2. Differential: in 2025 it also equals `medicaid_person_is_required_to_file`,
    the other Table 2 implementation, which serves Medicaid and ACA household
    income for dependents inside a tax unit. In 2026 the rule is section
-   6012(a)(1), whose treatment of blindness and the exact dollar is open, so
-   the two are not compared there.
+   6012(a)(1), which leaves out blindness and requires a return at the exact
+   dollar, unlike Table 2, so the two are not compared there.
 3. For a filer nobody can claim, the result depends on gross income alone: it
    is the same however that income is split between wages and interest.
 4. On a 2025 joint return with no other income, where the spouse who can be

@@ -21,10 +21,11 @@ class tax_unit_is_required_to_file(Variable):
     claimed loses the (A)(iv) exception for the other spouse, who must file
     with own gross income at or above the exemption amount, and a filer whose
     standard deduction is zero under section 63(c)(6) loses the (A)
-    exception (section 6012(a)(1)(C)(ii)). Under section 6012(c), both
-    tests count gross section 911 exclusions: Form 2555 line 43 when leaf
-    inputs are supplied, otherwise the nonnegative legacy
-    foreign_earned_income_exclusion amount.
+    exception (section 6012(a)(1)(C)(ii)). Under section 6012(c), the
+    tax-unit tests count gross section 911 exclusions: Form 2555 line 43 when
+    leaf inputs are supplied, otherwise the nonnegative legacy
+    foreign_earned_income_exclusion amount. The (A)(iv) own gross income test
+    doesn't, because PE-US computes the exclusion only per tax unit.
     """
     definition_period = YEAR
     reference = (
@@ -128,8 +129,8 @@ class tax_unit_is_required_to_file(Variable):
         #
         # (iv) also applies only if the spouses "at the close of the taxable
         # year, had the same household as their home". PE-US has no year-end
-        # household input and puts a tax unit in one household, so the spouses
-        # of a joint return are treated as sharing one.
+        # household input and puts a tax unit in one household, so the model
+        # treats the spouses of a joint return as sharing one.
         #
         # The separate-return half of the exclusion needs no code: a married
         # individual filing separately already has no exception.
@@ -154,10 +155,12 @@ class tax_unit_is_required_to_file(Variable):
         # be claimed as a dependent in further cases; it does not replace
         # (A) for that filer. So the (A) and (B) threshold binds every filer,
         # and (C)(i)(II), gross income over the standard deduction, is added
-        # for a tax unit whose head or spouse can be claimed. Before 2018 the
-        # threshold used for (C)(i)(II) adds the exemption amount, which
-        # (C)(i)(II) doesn't, and section 6012(a)(1)(D)(ii) sets the exemption
-        # amount to zero for an individual described in section 151(d)(2).
+        # for a tax unit whose head or spouse can be claimed. Before 2018 this
+        # formula uses the full exemption amount in the (C)(i)(II) threshold,
+        # the (A) threshold and the own gross income test. (C)(i)(II) names no
+        # exemption amount, and section 6012(a)(1)(D)(ii) sets it to zero for
+        # an individual described in section 151(d)(2), so before 2018 the
+        # formula can excuse a claimable filer the statute requires to file.
         # (C)(i)(I), the unearned income test, is below.
         if p.income.filing_requirement.standard_deduction_rule.applies:
             income_over_threshold = income_over_standard_deduction

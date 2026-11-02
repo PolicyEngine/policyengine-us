@@ -691,7 +691,7 @@
         state_code: TX
   output:
     filing_status: JOINT
-    # Roles are set so that the younger, claimable adult heads the unit.
+    # The input roles make the younger, claimable adult the head.
     head_is_dependent_elsewhere: true
     spouse_is_dependent_elsewhere: false
     # The spouse loses (iv): own gross income $0 >= $0 exemption amount.
@@ -719,7 +719,9 @@
     # 2017 exemption amount $4,050 (gov.irs.income.exemption.amount). The head
     # loses (iv), but own gross income $3,000 < $4,050.
     # Limited basic standard deduction: max($1,050, $3,000 + $350) = $3,350.
-    # (A) threshold: 2 x $4,050 + $3,350 = $11,450 > $3,000.
+    # The claimable spouse keeps (iv): $3,000 is under 2 x $0 ((D)(ii)) +
+    # $3,350. The formula's (A) threshold, 2 x $4,050 + $3,350 = $11,450,
+    # gives the same answer.
     # (C)(i)(II): $3,000 does not exceed the $3,350 standard deduction.
     # No unearned income.
     basic_standard_deduction: 3_350
@@ -746,8 +748,10 @@
     filing_status: JOINT
     # The head loses (iv): own gross income $5,000 >= $4,050.
     # Without that: limited basic standard deduction max($1,050, $5,350) =
-    # $5,350; (A) threshold 2 x $4,050 + $5,350 = $13,450 > $5,000; and
-    # (C)(i)(II): $5,000 does not exceed the $5,350 standard deduction.
+    # $5,350. The claimable spouse keeps (iv): $5,000 is under 2 x $0
+    # ((D)(ii)) + $5,350. The formula's (A) threshold, 2 x $4,050 + $5,350 =
+    # $13,450, gives the same answer. And (C)(i)(II): $5,000 does not exceed
+    # the $5,350 standard deduction.
     basic_standard_deduction: 5_350
     tax_unit_is_required_to_file: true
 
@@ -772,16 +776,18 @@
   output:
     filing_status: JOINT
     # The head loses (iv), but the head's own gross income $3,000 < $4,050.
-    # Combined gross income $5,000 would meet $4,050; (iv) compares only the
-    # head's own. The claimable spouse keeps (iv), since the head can't be
-    # claimed. Limited basic standard deduction: max($1,050, $5,000 + $350)
-    # = $5,350. (A) threshold 2 x $4,050 + $5,350 = $13,450 > $5,000.
+    # Combined gross income $5,000 would meet $4,050; once (iv) is gone, (A)
+    # compares only the head's own. The claimable spouse keeps (iv), since
+    # the head can't be claimed. Limited basic standard deduction:
+    # max($1,050, $5,000 + $350) = $5,350. The claimable spouse keeps (iv):
+    # $5,000 is under 2 x $0 ((D)(ii)) + $5,350. The formula's (A)
+    # threshold, 2 x $4,050 + $5,350 = $13,450, gives the same answer.
     # (C)(i)(II): $5,000 does not exceed the $5,350 standard deduction.
     # No unearned income.
     basic_standard_deduction: 5_350
     tax_unit_is_required_to_file: false
 
-- name: 6012(a)(1)(C)(ii), 2026 head of household aged 70 whose spouse files separately and itemizes
+- name: 6012(a)(1)(C)(ii), 2026, separate_filer_itemizes withdraws the exception whatever the filing status
   period: 2026
   input:
     filing_status: HEAD_OF_HOUSEHOLD
@@ -789,9 +795,11 @@
     separate_filer_itemizes: true
     employment_income: 1_000
   output:
-    # Section 63(c)(6) makes the standard deduction zero, so (C)(ii)
-    # withdraws the (A) exception and the threshold is the $0 exemption
-    # amount: $1,000 >= $0. Without (C)(ii) the threshold would be $0 basic
-    # + $2,050 age addition, and $1,000 < $2,050.
+    # The model zeroes the basic standard deduction whenever this input is
+    # true, and the formula then withdraws the (A) exception: $1,000 >= $0.
+    # Without that the threshold would be $0 basic + $2,050 age addition. In
+    # law section 63(c)(6)(A) reaches only a married individual filing a
+    # separate return, and a head of household isn't married (sections 2(b)(1),
+    # 2(c), 63(g), 7703(b)), so this case pins the model's input rule.
     basic_standard_deduction: 0
     tax_unit_is_required_to_file: true

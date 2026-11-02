@@ -7,11 +7,11 @@ class savers_credit_relevant_able_distributions(Variable):
     label = "ABLE distributions that reduce saver's credit contributions"
     documentation = (
         "Distributions from the person's ABLE account that reduce their "
-        "qualified contributions for the saver's credit from 2027 under 26 "
-        "U.S.C. 25B(d)(2): those received in the statutory testing period, "
-        "after the statute's exceptions and including any amount the spouse "
-        "rule attributes to the person. Distributions from retirement plans "
-        "and IRAs do not belong here."
+        "qualified contributions for the saver's credit under 26 U.S.C. "
+        "25B(d)(2): those received in the statutory testing period, after "
+        "the statute's exceptions and including any amount the spouse rule "
+        "attributes to the person. Distributions from retirement plans and "
+        "IRAs do not belong here."
     )
     unit = USD
     definition_period = YEAR
