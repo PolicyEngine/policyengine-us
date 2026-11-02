@@ -1,0 +1,19 @@
+description: The US treats a filer whose qualifying child lacks the required identification as having a qualifying child for EITC eligibility when this is true.
+metadata:
+  unit: bool
+  label: EITC qualifying child without identification establishes eligibility
+  reference:
+    # 32(c)(1)(A)(i) makes "any individual who has a qualifying child" an
+    # eligible individual; 32(c)(3)(D) and (m) exclude a child without a
+    # valid SSN only from the amount under subsection (b).
+    - title: 26 U.S. Code § 32(c)(1)(A), (c)(3)(D) - Earned income credit (2021 edition)
+      href: https://www.govinfo.gov/content/pkg/USCODE-2021-title26/pdf/USCODE-2021-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.pdf#page=2
+    # ARPA section 9622 struck former 32(c)(1)(F) for taxable years
+    # beginning after December 31, 2020.
+    - title: American Rescue Plan Act of 2021, section 9622
+      href: https://www.congress.gov/117/bills/hr1319/BILLS-117hr1319enr.pdf#page=150
+    - title: 2025 Publication 596, Chapter 2 (qualifying child rules apply even if the child doesn't have a valid SSN)
+      href: https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=10
+values:
+  2013-01-01: false
+  2021-01-01: true
