@@ -194,3 +194,12 @@
     vt_aabd_living_arrangement: MEDICAID_INSTITUTION
     # 49.93 rate - 0 excess over the $30 facility FBR = 49.93.
     vt_aabd: 49.93
+
+- name: Case 17, independent individual in 2023 gets the $52.04 supplement.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 65
+  output:
+    vt_aabd: 52.04
