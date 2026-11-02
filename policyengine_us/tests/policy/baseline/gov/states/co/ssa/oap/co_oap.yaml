@@ -552,3 +552,23 @@
   output:
     co_oap_own_countable_income: 8_760.12
     co_oap: 3_612
+
+- name: Case 36, a Railroad Retirement annuity counts as unearned income.
+  # 3.520.785(B)(5) counts Railroad Retirement Board payments. 900/month, near
+  # the RRB's September 2025 average divorced spouse annuity of 893.35, less the
+  # $20 disregard is 880; SSI pays 994 - 880 = 114; 1,032 - 114 - 880 = 38,
+  # raised to 189.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 70
+        railroad_benefits: 10_800
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi: 1_368
+    co_oap_countable_income: 10_560
+    co_oap: 2_268

@@ -6083,6 +6083,43 @@ candidates:
     and from July 2027 only breakfast stays at 224%, under c.336''s breakfast limit, which has no end date (state_free_income_limit.yaml,
     state_free_income_limit_breakfast_only.yaml, school_meal_tier.py). Verify that the appropriations carry the
     lunch limit.'
+- id: us-nj:school-meals-income-limit-rounding
+  program: school-meals
+  years:
+    from: 2026
+    type: program
+    note: program year as the program defines it
+  question: Does New Jersey's free-meal income limit apply at the statutory 224% of the poverty guideline or at Form
+    427's annual dollar limits, which round that product up to the next whole dollar?
+  sources:
+  - kind: statute
+    citation: N.J.S.A. 18A:33-4(a) and 18A:33-14a(a)(3), as amended by P.L.2023, c.336
+    url: https://pub.njleg.state.nj.us/Bills/2022/AL23/336_.HTM
+  - kind: form
+    citation: NJ Department of Agriculture Form 427, Federal & New Jersey Expanded Income Eligibility Guidelines, SY
+      2026-2027
+    url: https://www.nj.gov/agriculture/divisions/fn/pdf/Form%20427%20Federal%20and%20State%20Income%20Eligibility%20Guidelines%20SY%202026-2027.pdf#page=1
+  readings:
+    statute: A student qualifies with annual household income "not more than 224 percent" of the federal poverty level,
+      so the limit is 2.24 times the guideline, unrounded.
+    other: Households qualify "at or below the limits on this chart", whose annual 224% rows are 2.24 times the
+      guideline rounded up to the next whole dollar ($35,751 for one person, $48,474 for two).
+  example: In SY 2026-27, a two-person household with $48,474 of income (224.002% of the $21,640 guideline) pays full
+    price under the statute, which PE-US follows, but has no charge under Form 427.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/usda/school_meals/school_meal_tier.py
+    - policyengine_us/variables/gov/usda/school_meals/school_meal_breakfast_tier.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10384
+  state: ruled
+  note: 'PE-US compares New Jersey''s state limits with the poverty ratio exactly, while the federal 130% and 185% limits
+    use USDA''s whole-dollar values, rounded up in the Federal Register notice that 7 CFR 245.3(a) adopts (school_meal_tier.py,
+    school_meal_breakfast_tier.py). The October 2026 ruling applies the statute-first rule because c.336 sets the percentage
+    and delegates no dollar conversion. Pinning cases: the New Jersey statutory-limit cases in school_meal_tier.yaml
+    (2024 at 199%; 2026 one and two people at 224%) and the 2028 breakfast-only case in school_meal_breakfast_tier.yaml.
+    Form 427s before SY 2026-27 were not checked.'
 - id: us-nm:ccap-income-ceilings
   program: child-care-assistance
   years:
@@ -10215,30 +10252,29 @@ candidates:
   years:
     from: 2018
     type: tax
-  question: Does claiming one spouse as a dependent bar only that spouse's education credits and student loan interest
-    deduction, or the whole joint return?
+  question: Does claiming one spouse as a dependent bar only that spouse's education credits, or the whole joint
+    return?
   sources:
   - kind: statute
-    citation: 26 U.S.C. 25A(g)(3); 26 U.S.C. 221(c)
+    citation: 26 U.S.C. 25A(g)(3)
     url: https://www.law.cornell.edu/uscode/text/26/25A#g_3
   - kind: instructions
-    citation: Form 1040 instructions (education credits and student loan interest)
+    citation: Form 1040 instructions (education credits)
     url: https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=98
   readings:
-    statute: The claimed spouse loses the benefit; the other spouse keeps their own credit or deduction.
+    statute: The claimed spouse loses the credit; the other spouse keeps their own credit.
     other: The whole joint return is barred.
   pe_us:
     follows: conflicting-source
     code:
     - policyengine_us/variables/gov/irs/credits/education/is_barred_from_education_credits_by_dependency.py
-    - policyengine_us/variables/gov/irs/income/taxable_income/adjusted_gross_income/above_the_line_deductions/student_loan_interest/student_loan_interest_ald_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10087
   state: ruled
   note: 'PE-US follows the Form 1040 instructions: a claimed head or spouse bars the whole joint return from the
-    education credits and the student loan interest deduction (is_barred_from_education_credits_by_dependency.py,
-    student_loan_interest_ald_eligible.py). Ruled October 2026; the statute-first rule now requires changing the
-    whole-return bar; verify the education-credit page anchor because the supplied URL is for student loan interest.'
+    education credits (is_barred_from_education_credits_by_dependency.py). Ruled October 2026; the statute-first
+    rule now requires changing the whole-return bar; verify the education-credit page anchor because the supplied
+    URL is for student loan interest.'
 - id: us:eitc-trust-royalties-investment-income
   program: income-tax
   years:
@@ -10787,6 +10823,36 @@ candidates:
     whose Direct Loans are on an income-driven plan repays parent PLUS loans alone on the standard plan;
     combined_standard_repayment_payment applies one minimum for a borrower with both on the standard plan. Issue
     10567 reports the double minimum.
+- id: us:student-loan-interest-joint-claimed-spouse
+  program: income-tax
+  years:
+    from: 2018
+    type: tax
+  question: Does claiming one spouse as a dependent bar only that spouse's student loan interest deduction, or the
+    whole joint return?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 221(c)
+    url: https://www.law.cornell.edu/uscode/text/26/221#c
+  - kind: instructions
+    citation: 2025 Form 1040 instructions, Schedule 1 line 21 (student loan interest deduction)
+    url: https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=98
+  readings:
+    statute: Section 221(c) bars only the individual whom another taxpayer claims; the other spouse keeps the deduction
+      for their own interest.
+    other: The instructions bar the return if the filer, or the spouse on a joint return, is claimed as a dependent.
+  example: On a 2025 refund-only joint return, a head with $2,000 wages and $1,000 interest, beside a spouse claimed
+    elsewhere with $700 interest, deducts $1,000 under the statute and nothing under the instructions.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/irs/income/taxable_income/adjusted_gross_income/above_the_line_deductions/student_loan_interest/student_loan_interest_ald_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10577
+  state: ruled
+  note: 'Ruled 2026-10-20 for the statute by the project lead. PE-US bars only the claimed head or spouse
+    (student_loan_interest_ald_eligible.py); joint MAGI for the section 221(b)(2) phase-out still counts both spouses.
+    Split from us:education-benefits-joint-claimed-spouse, which keeps the education credits.'
 - id: us:surviving-spouse-child-gross-income-test
   program: income-tax
   years:
