@@ -46,3 +46,55 @@
     # AGI 50,000 - 5,000 tips/overtime subtraction - 0 exemptions = 45,000.
     mi_subtractions: 5_000
     mi_taxable_income: 45_000
+
+- name: 2028 the computed federal deductions flow into Michigan subtractions
+  period: 2028
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        tip_income: 2_000
+        treasury_tipped_occupation_code: 102
+        fsla_overtime_premium: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    tip_income_deduction: 2_000
+    overtime_income_deduction: 3_000
+    mi_qualified_tips_deduction: 2_000
+    mi_qualified_overtime_deduction: 3_000
+
+- name: 2029 no federal deduction and no Michigan deduction
+  period: 2029
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        tip_income: 2_000
+        treasury_tipped_occupation_code: 102
+        fsla_overtime_premium: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # MCL 206.30(1)(ee) ends after 2028 and reaches only deductions allowed on
+    # the federal return; 26 U.S.C. 224(h) and 225(g) allow none after 2028.
+    tip_income_deduction: 0
+    overtime_income_deduction: 0
+    mi_qualified_tips_deduction: 0
+    mi_qualified_overtime_deduction: 0

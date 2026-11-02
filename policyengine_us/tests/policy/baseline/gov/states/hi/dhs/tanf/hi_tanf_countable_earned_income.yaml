@@ -34,10 +34,10 @@
     #   Step 2: $200 flat = 400 - 200 = 200
     #   Step 3: 55% = 200 × 0.45 = 90
     # Total: 450 + 90 = 540
-    # No childcare expenses, so no dependent care deduction
+    # No care expenses, so no dependent care deduction
     hi_tanf_countable_earned_income: 540
 
-- name: Case 2, earned income with an incapacitated adult care deduction.
+- name: Case 2, earned income with dependent care deduction.
   period: 2024-01
   input:
     people:
@@ -46,9 +46,10 @@
         tanf_gross_earned_income: 1_000
         weekly_hours_worked_before_lsr: 40
       person2:
-        age: 60
-        # $100/month cost of care for an incapacitated adult
-        hi_tanf_qualifying_incapacitated_adult_care_expenses: 100
+        age: 40
+        is_disabled: true
+        # $1,200/year = $100/month disabled adult care
+        care_expenses: 1_200
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -61,11 +62,11 @@
         state_code: HI
   output:
     # Person1 earned after deductions: 270
-    # Adult care: min(100, $175) = 100 (HAR 17-676-54.1(d)(4))
+    # Dependent care: min(100, 1 disabled adult × $175) = 100
     # Final: max(270 - 100, 0) = 170
     hi_tanf_countable_earned_income: 170
 
-- name: Case 3, incapacitated adult care deduction capped at the per-adult max.
+- name: Case 3, dependent care deduction capped at per-adult max.
   period: 2024-01
   input:
     people:
@@ -74,9 +75,10 @@
         tanf_gross_earned_income: 1_500
         weekly_hours_worked_before_lsr: 40
       person2:
-        age: 60
-        # $500/month adult care, exceeds the $175 cap
-        hi_tanf_qualifying_incapacitated_adult_care_expenses: 500
+        age: 40
+        is_disabled: true
+        # $6,000/year = $500/month disabled adult care, exceeds $175 cap
+        care_expenses: 6_000
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -89,11 +91,11 @@
         state_code: HI
   output:
     # Person1 earned after deductions: 450
-    # Adult care: min(500, $175) = 175
+    # Dependent care: min(500, 1 disabled adult × $175) = 175
     # Final: max(450 - 175, 0) = 275
     hi_tanf_countable_earned_income: 275
 
-- name: Case 4, adult care deduction cannot reduce earned below zero.
+- name: Case 4, dependent care deduction cannot reduce earned below zero.
   period: 2024-01
   input:
     people:
@@ -103,8 +105,9 @@
         tanf_gross_earned_income: 200
         weekly_hours_worked_before_lsr: 40
       person2:
-        age: 60
-        hi_tanf_qualifying_incapacitated_adult_care_expenses: 200
+        age: 40
+        is_disabled: true
+        care_expenses: 2_400
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -117,6 +120,6 @@
         state_code: HI
   output:
     # Person1 earned after deductions: 0 (income too low)
-    # Adult care: min(200, 175) = 175
+    # Dependent care: min(200, 175) = 175
     # Final: max(0 - 175, 0) = 0 (floored at zero)
     hi_tanf_countable_earned_income: 0

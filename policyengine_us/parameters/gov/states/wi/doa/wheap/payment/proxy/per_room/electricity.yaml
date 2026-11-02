@@ -1,0 +1,23 @@
+description: Wisconsin adds this heat proxy amount per room for electricity heat by dwelling type under the Home Energy Assistance Program.
+# The motel or camper row is the rooming house, motel and hotel row of the
+# calculator. Cells the calculator flags as estimated (IsFake) are used as
+# published.
+SINGLE_FAMILY:
+  2025-10-01: 108
+TWO_TO_FOUR_UNITS:
+  2025-10-01: 106
+APARTMENT:
+  2025-10-01: 111
+MOBILE_HOME:
+  2025-10-01: 120
+MOTEL_OR_CAMPER:
+  2025-10-01: 111
+metadata:
+  unit: currency-USD
+  period: year
+  label: Wisconsin WHEAP electricity heat proxy per room
+  breakdown:
+    - wi_wheap_dwelling_type
+  reference:
+    - title: Wisconsin HE+ Benefit Calculator FFY2026, HT_Proxy!E7, E12, E17, E22, E27
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/WI_BenefitMatrix_2026.xlsx

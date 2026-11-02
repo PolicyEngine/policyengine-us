@@ -15,9 +15,10 @@ values:
     - rental_income
     - pension_income
     - veterans_benefits
-    # Military retirement pay maps to HAR 17-798.2-10(b) item (5)
-    # (pensions and annuities), not item (7) (allotments).
-    - military_retirement_pay
+    # Military retirement pay and Survivor Benefit Plan annuities map to
+    # HAR 17-798.2-10(b) item (5) (pensions and annuities), not item (7)
+    # (allotments).
+    - military_retirement_income
     - total_unemployment_compensation
     # Strike benefits (item (3)(B)) are not unemployment compensation.
     - strike_benefits

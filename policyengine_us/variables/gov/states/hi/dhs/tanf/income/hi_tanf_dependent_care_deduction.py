@@ -8,30 +8,35 @@ class hi_tanf_dependent_care_deduction(Variable):
     unit = USD
     definition_period = MONTH
     reference = (
-        # HAR 17-676-54.1(c)(4) and (d)(4), PDF pages 36-37
-        "https://humanservices.hawaii.gov/wp-content/uploads/2019/03/HAR-17-676-INCOME.pdf#page=36",
+        "https://www.law.cornell.edu/regulations/hawaii/Haw-Code-R-SS-17-676-54-1",
+        "https://www.law.cornell.edu/regulations/hawaii/Haw-Code-R-SS-17-676-2",
         "https://humanservices.hawaii.gov/wp-content/uploads/2024/12/Hawaii_TANF_State_Plan_Signed_Certified-Eff_20231001.pdf#page=20",
     )
     defined_for = StateCode.HI
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.hi.dhs.tanf.deductions.dependent_care
-        # HAR 17-676-54.1(c)(4) and (d)(4) deduct "the actual cost for the
-        # care of each incapacitated adult living in the same household and
-        # receiving financial assistance", up to $175 a month if the
-        # applicant is employed full time or $165 if less than full time.
-        # The rule covers incapacitated adults only; child care costs are
-        # not deducted here.
+
+        # Per HAR 17-676-54.1(c)(4) and (d)(4) and the HAR 17-676-2
+        # definition, the deduction covers only the cost of care for each
+        # incapacitated adult in the household (State Plan 10.2.2: "cost of
+        # care for a disabled adult household member"). Child care is not
+        # deducted.
         person = spm_unit.members
         is_adult = ~person("is_child", period.this_year)
-        care_cost = is_adult * person(
-            "hi_tanf_qualifying_incapacitated_adult_care_expenses", period
-        )
-        # The cap follows the working applicant's employment: full time is
-        # 32 or more hours a week (HAR 17-676-2). When several adults work,
-        # the applicant is treated as full time if any of them is.
+        is_disabled_adult = is_adult & person("is_disabled", period.this_year)
+        adult_care_expenses = person("care_expenses", period) * is_disabled_adult
+
+        # Determine rate based on MAX of adult hours
+        # If either parent works full-time, use full-time rate
         hours = person("weekly_hours_worked_before_lsr", period.this_year)
-        max_adult_hours = spm_unit.max(where(is_adult, hours, 0))
-        cap = spm_unit.project(p.amount.calc(max_adult_hours))
-        # Each adult's cost is capped separately.
-        return spm_unit.sum(min_(care_cost, cap))
+        # Only consider adult hours (children get 0)
+        adult_hours = where(is_adult, hours, 0)
+        max_adult_hours = spm_unit.max(adult_hours)
+
+        # Full-time = 32+ hours/week
+        # Rate is $175 (full-time) or $165 (part-time) per person
+        rate = p.amount.calc(max_adult_hours)
+
+        # Deduct each disabled adult's actual cost up to the rate
+        return spm_unit.sum(min_(adult_care_expenses, spm_unit.project(rate)))

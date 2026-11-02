@@ -251,7 +251,7 @@
     # Benefit = 610.56 - 570 = 40.56
     hi_tanf: 40.56
 
-- name: Case 7, child care costs give no dependent care deduction in the full pipeline.
+- name: Case 7, child care expenses do not reduce countable income in full pipeline.
   period: 2024-01
   input:
     people:
@@ -280,13 +280,14 @@
   output:
     hi_tanf_gross_income: 1_500
     hi_tanf_gross_income_eligible: true
-    # HAR 17-676-54.1(d)(4) deducts the care of incapacitated adults only,
-    # so the $150/month child care cost is not deducted.
+    # HAR 17-676-54.1(c)(4) and (d)(4) deduct only the care of an
+    # incapacitated adult, so the child's care is not deducted.
     hi_tanf_dependent_care_deduction: 0
     # Earned deductions for $1,500:
     # Step 1: 20% = 300, After: 1,200
     # Step 2: $200 flat, After: 1,000
     # Step 3: 55% = 550, After: 450
+    # No dependent care deduction: 450
     hi_tanf_countable_earned_income: 450
     hi_tanf_countable_income: 450
     # SOA = 1265 × 0.48 × 0.80 = 485.76 (mandatory-work steady-state)

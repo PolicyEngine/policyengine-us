@@ -3,7 +3,7 @@
   input:
     state_code: ME
     filing_status: SINGLE
-    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 0
    
   output:
     me_property_tax_fairness_credit_benefit_base: 2_100
@@ -13,7 +13,7 @@
   input:
     state_code: ME
     filing_status: SINGLE
-    ctc_qualifying_children: 3
+    me_fairness_credit_qualifying_children: 3
    
   output:
     me_property_tax_fairness_credit_benefit_base: 2_200
@@ -23,7 +23,7 @@
   input:
     state_code: ME
     filing_status: JOINT
-    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 0
    
   output:
     me_property_tax_fairness_credit_benefit_base: 2_750
@@ -33,7 +33,7 @@
   input:
     state_code: ME
     filing_status: JOINT
-    ctc_qualifying_children: 1
+    me_fairness_credit_qualifying_children: 1
    
   output:
     me_property_tax_fairness_credit_benefit_base: 3_450
@@ -43,7 +43,7 @@
   input:
     state_code: ME
     filing_status: HEAD_OF_HOUSEHOLD
-    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 0
 
   output:
     me_property_tax_fairness_credit_benefit_base: 3_000
@@ -54,7 +54,7 @@
   input:
     state_code: ME
     filing_status: SINGLE
-    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 0
   output:
     me_property_tax_fairness_credit_benefit_base: 2_550
 
@@ -63,7 +63,7 @@
   input:
     state_code: ME
     filing_status: JOINT
-    ctc_qualifying_children: 2
+    me_fairness_credit_qualifying_children: 2
   output:
     me_property_tax_fairness_credit_benefit_base: 4_050
 
@@ -72,7 +72,7 @@
   input:
     state_code: ME
     filing_status: HEAD_OF_HOUSEHOLD
-    ctc_qualifying_children: 1
+    me_fairness_credit_qualifying_children: 1
   output:
     me_property_tax_fairness_credit_benefit_base: 3_300
 

@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class CHIPCategory(Enum):
     CHILD = "Child"
-    PREGNANT_STANDARD = "Pregnant - Standard"
+    PREGNANT_STANDARD = "Pregnant or postpartum - Standard"
     PREGNANT_FCEP = "Pregnant - FCEP"
     NONE = "None"
     # Added after NONE so that the existing enum indices (and tests that

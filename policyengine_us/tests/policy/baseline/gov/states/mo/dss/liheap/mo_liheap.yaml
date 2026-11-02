@@ -1,0 +1,251 @@
+# Missouri LIHEAP Energy Assistance: a one-time payment for the fuel the
+# household selects (FFY2026 Appendix K; FFY2027 application MO 886-4576),
+# the largest of the amount for its own heating fuel bill, the renter share
+# and the electric amount. An unsubsidized renter whose heat is included in
+# the rent receives 8% of annual rent, capped at the amount for the
+# household's fuel (13 CSR 40-19.020(13)). A household that heats its home
+# and pays an electric supplier, including a subsidized tenant whose heat is
+# included in the rent, can select the electric amount. No heating (NONE) and
+# an unspecified fuel are not paid. Zero when ineligible.
+
+- name: Case 1, payment for every heating fuel.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MO, MO, MO, MO, MO, MO, MO, MO, MO, MO, MO]
+    heating_type: [NATURAL_GAS, PROPANE, ELECTRICITY, FUEL_OIL, WOOD, KEROSENE, SOLAR, OTHER, UNSPECIFIED, NONE, COAL]
+    has_heating_expense: [true, true, true, true, true, true, true, true, true, false, true]
+    mo_liheap_countable_income: [18_000, 18_000, 18_000, 18_000, 18_000, 18_000, 18_000, 18_000, 18_000, 18_000, 18_000]
+  output:
+    # Natural gas 326, tank propane 495, electric 318, fuel oil 326, wood 219,
+    # kerosene 153; solar is paid on the electric account (318). Other fuels
+    # have no schedule row and an unspecified fuel matches no row, so both are
+    # eligible for 0. A home with no heating has no heating cost, and coal is
+    # denied (manual denial code O).
+    mo_liheap_eligible: [true, true, true, true, true, true, true, true, true, false, false]
+    mo_liheap: [326, 495, 318, 326, 219, 153, 318, 0, 0, 0, 0]
+
+- name: Case 2, renter share of rent split between two partners is below the propane amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 27
+        pre_subsidy_rent: 3_000
+      person2:
+        age: 26
+        pre_subsidy_rent: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: PROPANE
+        heat_expense_included_in_rent: true
+        mo_liheap_countable_income: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Annual rent 3,000 + 3,000 = 6,000 ($500 a month);
+    # 6,000 x 0.08 = 480 < 495 -> 480.
+    mo_liheap: 480
+
+- name: Case 3, renter share of rent above the natural gas amount is capped.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 33
+        pre_subsidy_rent: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        mo_liheap_countable_income: 22_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 750 x 12 = 9,000 x 0.08 = 720 > 326 -> 326.
+    mo_liheap: 326
+
+- name: Case 4, renter with heat in the rent and an unspecified fuel receives nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 33
+        pre_subsidy_rent: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        mo_liheap_countable_income: 22_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Eligible, but the cap is the amount for an unspecified fuel:
+    # min(9,000 x 0.08 = 720, 0) = 0.
+    mo_liheap_eligible: true
+    mo_liheap: 0
+
+- name: Case 5, Kansas household is outside the Missouri program.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_800
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    mo_liheap: 0
+
+- name: Case 6, FFY2027 single parent heating with kerosene, teenager's wages excluded.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 41
+        employment_income_before_lsr: 41_600
+        bank_account_assets: 900
+      person2:
+        age: 16
+        employment_income_before_lsr: 5_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: KEROSENE
+        fuel_oil_expense: 1_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Parent: $20 an hour x 2,080 hours = 41,600 x (1 - 0.2) = 33,280.
+    # The 16-year-old's 5,200 is excluded. Size 2 limit (FFY2027):
+    # 3,847 x 12 = 46,164. Counting the teenager's wages without the 20%
+    # deduction (46,800) would exceed it. Kerosene pays 153.
+    mo_liheap_countable_income: 33_280
+    mo_liheap_income_limit: 46_164
+    mo_liheap_eligible: true
+    mo_liheap: 153
+
+- name: Case 7, a household that heats its home and pays an electric supplier receives the larger of its fuel amount and the electric amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MO, MO, MO, MO, MO, MO]
+    heating_type: [KEROSENE, WOOD, NATURAL_GAS, OTHER, NONE, UNSPECIFIED]
+    fuel_oil_expense: [1_500, 0, 0, 0, 0, 0]
+    wood_expense: [0, 900, 0, 0, 0, 0]
+    gas_expense: [0, 0, 1_100, 0, 0, 0]
+    other_heating_fuel_expense: [0, 0, 0, 600, 0, 0]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    mo_liheap_countable_income: [18_000, 18_000, 18_000, 18_000, 18_000, 18_000]
+  output:
+    # Each pays a 100 a month electric bill (1,200) and 18,000 <= 34,080.
+    # Kerosene: max(153, electric 318) = 318. Wood: max(219, 318) = 318.
+    # Natural gas: max(326, 318) = 326. Other fuel: max(0, 318) = 318.
+    # A home with no heating (NONE) has no heating cost. An unspecified fuel
+    # is not paid (heating_type is a required input; issue 9754), so the
+    # electric bill alone does not make either household eligible.
+    mo_liheap_eligible: [true, true, true, true, false, false]
+    mo_liheap: [318, 318, 326, 318, 0, 0]
+
+- name: Case 8, a housing assistance recipient with heat in the rent who pays an electric supplier receives the electric amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 33
+        pre_subsidy_rent: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 1_080
+        mo_liheap_countable_income: 14_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Subsidized, so no renter share; the household pays an electric supplier
+    # (90 a month = 1,080), which 13 CSR 40-19.020(7)(D) accepts.
+    # max(own fuel 0, renter share 0, electric 318) = 318.
+    mo_liheap_eligible: true
+    mo_liheap: 318
+
+- name: Case 9, a renter with heat in the rent and a small renter share selects the electric amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 33
+        pre_subsidy_rent: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        pre_subsidy_electricity_expense: 900
+        mo_liheap_countable_income: 14_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Renter share: 250 a month = 3,000 x 0.08 = 240 < natural gas 326 -> 240.
+    # Electric bill of 75 a month (900): max(240, 318) = 318.
+    mo_liheap_eligible: true
+    mo_liheap: 318
+
+- name: Case 10, a renter with heat in the rent and an unspecified fuel receives nothing for its electric account.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 33
+        pre_subsidy_rent: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        pre_subsidy_electricity_expense: 1_200
+        mo_liheap_countable_income: 22_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Eligible through unsubsidized rent that includes heat (22,000 <= 34,080).
+    # Own fuel 0 (heat in the rent); renter share min(9,000 x 0.08 = 720,
+    # unspecified fuel 0) = 0. An unspecified fuel is not paid (heating_type
+    # is a required input; issue 9754), so the 100 a month electric bill
+    # (1,200) adds no electric amount: max(0, 0, 0) = 0.
+    mo_liheap_eligible: true
+    mo_liheap: 0
