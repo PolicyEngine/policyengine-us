@@ -873,6 +873,21 @@ def test_spm_and_dataset_suites_run_once_in_separate_steps_with_reports(workflow
     assert uploads[0]["with"]["name"] != "rest-test-timings"
 
 
+@pytest.mark.parametrize("name", ["engine", "differential"])
+def test_calculator_api_files_run_once_in_separate_rest_processes(
+    groups, group_files, name
+):
+    file = f"policyengine_us/tests/unit/test_ss_calculator_{name}.py"
+    group = f"ss-calculator-{name}"
+    assert group_files[group] == [file]
+    assert [owner for owner, files in group_files.items() if file in files] == [group]
+    assert groups[group]["reports"] == [
+        f"{REPORT_DIR}/rest-python-{group}.xml",
+        f"{REPORT_DIR}/rest-python-{group}-resources.txt",
+    ]
+    assert all(file not in command for command in dry_run("test-other-python-spm"))
+
+
 def test_groups_run_as_plain_pytest_without_a_report_dir(groups):
     """Locally the same groups run without GNU time, which macOS lacks."""
     plain = dry_run("test-other-python-rest")
@@ -937,6 +952,80 @@ def stub_environment(tmp_path, outcomes):
     return env, calls
 
 
+@pytest.mark.parametrize("failed_index", [None, 0, 1, 2, 3])
+def test_social_security_processes_keep_reports_and_run_after_failures(
+    tmp_path, groups, failed_index
+):
+    """Keep four isolated processes, including both synthetic input files."""
+    report_option = "--junitxml=simulation-microsimulation.xml"
+    microsimulation_commands = dry_run(
+        "test-microsimulation", f"PYTEST_ADDOPTS={report_option}"
+    )
+    assert len(microsimulation_commands) == 2
+    input_target = "test-other-python-rest-social-security-inputs"
+    input_commands = dry_run(input_target)
+    input_groups = [
+        groups[name]
+        for name in ("social-security-inputs", "social-security-pia-ratio-inputs")
+    ]
+    assert input_commands == [["pytest", *group["args"]] for group in input_groups]
+    commands = [*microsimulation_commands, *input_commands]
+    assert len(commands) == 4
+    reports = []
+    process_files = {}
+    for index, command in enumerate(microsimulation_commands):
+        args = [report_option, *command[1:]]
+        reports.append([a for a in args if a.startswith("--junitxml=")][-1])
+        process_files[str(index)] = collected_files(
+            [a for a in command[1:] if not a.startswith("--junitxml=")]
+        )
+    input_files = [
+        "policyengine_us/tests/core/test_social_security_inputs.py",
+        "policyengine_us/tests/core/test_ss_pia_ratio_inputs.py",
+    ]
+    for index, (command, file) in enumerate(zip(input_commands, input_files)):
+        process_files[f"inputs-{index}"] = collected_files(command[1:])
+        assert process_files[f"inputs-{index}"] == [file]
+    reference = collected_files([str(TESTS / "microsimulation"), *input_files])
+    assert partition_problems(reference, process_files) == []
+    assert all(
+        fnmatch(report.split("=", 1)[1], "simulation-*.xml") for report in reports
+    )
+    for name, group in zip(
+        ("social-security-inputs", "social-security-pia-ratio-inputs"), input_groups
+    ):
+        (input_report,) = [
+            report for report in group["reports"] if report.endswith(".xml")
+        ]
+        assert input_report == f"{REPORT_DIR}/rest-python-{name}.xml"
+        reports.append(f"--junitxml={input_report}")
+    assert len(set(reports)) == 4
+
+    outcomes = ["0"] * 4
+    if failed_index is not None:
+        outcomes[failed_index] = "1"
+    env, calls = stub_environment(tmp_path, outcomes)
+    env["PYTEST_ADDOPTS"] = report_option
+    microsimulation_result = subprocess.run(
+        ["make", "--no-print-directory", "test-microsimulation"],
+        cwd=REPO,
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+    env.pop("PYTEST_ADDOPTS")
+    input_result = subprocess.run(
+        ["make", "--no-print-directory", input_target],
+        cwd=REPO,
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+    assert calls.read_text().splitlines() == ["|".join(c[1:]) for c in commands]
+    assert (microsimulation_result.returncode != 0) == (failed_index in (0, 1))
+    assert (input_result.returncode != 0) == (failed_index in (2, 3))
+
+
 def scenario_outcomes(scenario, count):
     outcomes = ["0"] * count
     if scenario == "one-fails-one-killed":
@@ -965,7 +1054,14 @@ def test_every_group_runs_and_any_failure_fails_the_target(tmp_path, groups, sce
     failed = [group for group, outcome in zip(groups, outcomes) if outcome != "0"]
     assert (result.returncode != 0) == bool(failed), result.stdout + result.stderr
     if failed:
-        assert f"Failed Rest Python groups: {' '.join(failed)}" in result.stdout
+        # Both input report groups run inside the same existing Make target.
+        failed_targets = dict.fromkeys(
+            "social-security-inputs"
+            if group == "social-security-pia-ratio-inputs"
+            else group
+            for group in failed
+        )
+        assert f"Failed Rest Python groups: {' '.join(failed_targets)}" in result.stdout
 
 
 @pytest.mark.parametrize("scenario", ["one-fails-one-killed", "all-fail", "all-pass"])

@@ -1,0 +1,60 @@
+# Income limit = the greater of 150% of the poverty guideline and 60% of state
+# median income, the LIHEAP maximum in 42 U.S.C. 8624(b)(2)(B):
+# https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+# MaineHousing publishes the resulting annual limits for sizes 1-10:
+# - 2025-26 season (period 2026), HEAP page captured 2025-11-01:
+#   https://web.archive.org/web/20251101091454id_/https://www.mainehousing.org/programs-services/energy/energydetails/liheap
+# - 2026-27 season (period 2027): https://www.mainehousing.org/charts/
+# Guidelines lag one year: period 2026 uses the 2025 guideline (15,650 + 5,500 per
+# additional person) and period 2027 the 2026 guideline (15,960 + 5,680).
+# Maine four-person SMI: 118,065 (FFY2026) and 122,022 (FFY2027). 60% SMI is
+# floor(floor(0.6 x SMI) x size factor), where the size factor is 0.52 + 0.16 per
+# person for persons two to six, plus 0.03 per person above six (45 CFR 96.85(b)).
+# 60% of the four-person SMI: floor(70,839.0) = 70,839 (2026); floor(73,213.2) =
+# 73,213 (2027).
+
+- name: Case 1, one person in 2026 is limited by 60 percent of state median income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    # 150% x 15,650 = 23,475. 60% SMI = floor(70,839 x 0.52) = floor(36,836.28)
+    # = 36,836. max(23,475, 36,836) = 36,836, the 2025-26 chart's 12-month figure.
+    me_heap_income_limit: 36_836
+
+- name: Case 2, ten members in 2026 are limited by state median income and eleven by the poverty guideline.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ME, ME]
+    me_heap_household_size: [10, 11]
+  output:
+    # Size 10: guideline 15,650 + 9 x 5,500 = 65,150, 150% = 97,725. Size factor
+    # 0.52 + 5 x 0.16 + 4 x 0.03 = 1.44; floor(70,839 x 1.44) = floor(102,008.16)
+    # = 102,008, the chart figure. max = 102,008.
+    # Size 11: guideline 15,650 + 10 x 5,500 = 70,650, 150% = 105,975. Size factor
+    # 1.47; floor(70,839 x 1.47) = floor(104,133.33) = 104,133. max = 105,975.
+    me_heap_income_limit: [102_008, 105_975]
+
+- name: Case 3, one and four members in 2027 follow the 2026-27 chart.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ME, ME]
+    me_heap_household_size: [1, 4]
+  output:
+    # Size 1: 150% x 15,960 = 23,940; floor(73,213 x 0.52) = floor(38,070.76) =
+    # 38,070. max = 38,070.
+    # Size 4: 150% x (15,960 + 3 x 5,680 = 33,000) = 49,500; 73,213 x 1.00 =
+    # 73,213. max = 73,213. Both match the 2026-27 chart.
+    me_heap_income_limit: [38_070, 73_213]

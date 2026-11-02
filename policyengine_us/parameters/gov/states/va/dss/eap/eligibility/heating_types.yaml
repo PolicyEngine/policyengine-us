@@ -1,0 +1,26 @@
+description: Virginia limits fuel assistance to households whose primary heating fuel is one of these types under the Energy Assistance Program.
+# Manual B.5.c.1.a: "The primary fuel will be one of the following:
+# electricity, oil, kerosene, natural gas, LP gas, wood, or coal." The
+# application lists clear and dyed kerosene and liquid propane (LP) or bottled
+# gas. SOLAR, OTHER and NONE are not eligible primary fuels. UNSPECIFIED is
+# left out, so callers must send heating_type, including households whose heat
+# is included in rent.
+values:
+  2011-06-01:
+    - ELECTRICITY
+    - NATURAL_GAS
+    - FUEL_OIL
+    - KEROSENE
+    - PROPANE
+    - WOOD
+    - COAL
+
+metadata:
+  unit: list
+  period: year
+  label: Virginia EAP eligible primary heating fuels
+  reference:
+    - title: Virginia Energy Assistance Manual, Volume IX, Chapter B.5.c.1.a Types of households
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=26
+    - title: Virginia Fuel Assistance Application, question 12 primary heat fuel
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/403-errors/FUEL-ASSISTANCE-APPLICATION.pdf#page=2

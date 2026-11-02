@@ -1,6 +1,7 @@
 description: Wisconsin provides this amount as the payment per couple under the State Supplementary Payment program.
 values:
-  2026-01-01: 132.05
+  # Unchanged since 1994 (Operations Memo 26-12).
+  2018-01-01: 132.05
   2026-05-01: 145.26
 
 metadata:
@@ -10,3 +11,5 @@ metadata:
   reference:
     - title: Wisconsin DMS Operations Memo 26-12, Increase to SSI State Supplementary Payments
       href: https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2026-12.pdf#page=2
+    - title: Wisconsin Medicaid Eligibility Handbook 39.4.1, Release 18-01 (2018 SSI payment level with the state supplement, $833.78 and $1,257.05)
+      href: https://www.emhandbooks.wisconsin.gov/meh-ebd/history/18-01/18-01_39.4.htm

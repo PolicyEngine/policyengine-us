@@ -270,11 +270,10 @@ def test_premiums_move_to_line_31_without_the_line_30_deduction(michigan_only):
     )
     # The deduction is still computed under either list reform.
     deduction = baseline.calculate("self_employed_health_insurance_ald", YEAR)
-    # These are PolicyEngine's federal amounts: its pre-existing earnings
-    # limit is before deductible self-employment tax. Form 7206 gives
-    # 3,000 - 211.94 = 2,788.06 in the second case. Michigan resources are
-    # unchanged: line 30 is 3,000 and line 31 is 2,211.94, totaling 5,211.94.
-    assert deduction == pytest.approx([5_000, 3_000], abs=TOLERANCE)
+    # Form 7206 lines 7-8 limit the second case to 3,000 - 211.94 = 2,788.06.
+    # Michigan line 30 is then 3,000 and line 31 is 2,211.94, totaling
+    # 5,211.94.
+    assert deduction == pytest.approx([5_000, 2_788.05675], abs=TOLERANCE)
     agi_change = reformed.calculate("adjusted_gross_income", YEAR) - baseline.calculate(
         "adjusted_gross_income", YEAR
     )

@@ -342,3 +342,45 @@
     ia_liheap_points: -3
     # 40 x -3 = -120 -> raised to the 80 minimum
     ia_liheap: 80
+
+- name: Case 9, a blind in-home care recipient's State Supplementary Assistance counts as fixed income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        is_blind: true
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 4_800
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        spm_unit_cash_assets: 1_000
+        ia_liheap_dwelling_type: DETACHED
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # SSI 994 * 12 = 11,928.
+    ssi: 11_928
+    # Blind allowance 22 plus the in-home health-related care payment of
+    # 400 a month (4,800 a year): (22 + 400) * 12 = 5,064, as in the Iowa SSA
+    # integration.yaml Case 9, where SNAP and HUD count only the 264.
+    ia_ssa: 5_064
+    # Appendix C, Social Security Benefits (SSA, SSI, SSDI), counts State
+    # Supplementary Assistance and makes no exception for the in-home care
+    # payment: 11,928 + 5,064 = 16,992.
+    ia_liheap_countable_income: 16_992
+    # SSI and the supplement are both in that fixed income row.
+    ia_liheap_fixed_income_only: true
+    # 16,992 / 15,650 = 1.086 -> 101 to 125 percent band (SSI alone: 0.762 -> 6).
+    ia_liheap_poverty_points: 5
+    # fixed income +1, elderly +1, detached +1
+    ia_liheap_targeting_points: 3
+    ia_liheap_fuel_points: 4
+    # 5 + 3 + 4 = 12; 40 x 12
+    ia_liheap: 480

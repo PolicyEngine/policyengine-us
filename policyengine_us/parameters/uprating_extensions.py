@@ -779,6 +779,8 @@ def extend_social_security_payroll_cap(
     parameters: ParameterNode,
     last_projected_year: int,
     end_year: int,
+    *,
+    cap: Optional[Parameter] = None,
 ) -> None:
     """
     Extend the Social Security contribution and benefit base through `end_year`.
@@ -789,8 +791,14 @@ def extend_social_security_payroll_cap(
     nearest $300 (a multiple of $150 rounds up). 20 CFR 404.1048(b)(2)(i)
     still states the pre-1995 chained formula, which Pub. L. 103-296,
     sec. 321(g)(1), replaced for bases after 1994.
+
+    `cap` defaults to `gov.irs.payroll.social_security.cap`. Pass another
+    parameter that holds the base, such as a copy of it, to extend that
+    parameter instead: the rule then reads its 1994 base and its value for
+    Y - 1, and the NAWI.
     """
-    cap = parameters.gov.irs.payroll.social_security.cap
+    if cap is None:
+        cap = parameters.gov.irs.payroll.social_security.cap
     nawi = parameters.gov.ssa.nawi
     base_1994 = cap("1994-01-01")
     nawi_1992 = nawi("1992-01-01")
@@ -1001,10 +1009,22 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         end_year=END_YEAR,
     )
 
-    # HHS poverty guideline uprating (January values, last projection year 2036)
+    # HHS uprating for Head Start and Early Head Start spending (January
+    # values, last projection year 2036)
     extend_parameter_values(
         parameters.gov.hhs.uprating,
         last_projected_year=2036,
+        end_year=END_YEAR,
+        period_month=1,
+        period_day=1,
+    )
+
+    # HHS poverty guideline uprating (January values). Each guideline year
+    # holds the prior calendar year's CPI-U (42 U.S.C. 9902(2)), so CBO's last
+    # point, calendar 2036, sits at the 2037 instant.
+    extend_parameter_values(
+        parameters.gov.hhs.fpg_uprating,
+        last_projected_year=2037,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,

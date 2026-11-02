@@ -1,0 +1,19 @@
+description: Maine assigns these priority points to a household whose only priority member is a child older than the young child age and younger than the child age limit under the Low Income Home Energy Assistance Program.
+# The 2025 edition awards 3 points for a child aged 7 to 17. The June 29, 2026
+# replacement lists only members aged 60 or older, children aged 6 or younger
+# and disabled members.
+values:
+  2024-07-03: 3
+  2026-06-29: 0
+
+metadata:
+  unit: /1
+  period: year
+  label: Maine HEAP older child priority points
+  reference:
+    - title: Maine FY2026 Benefit Matrix, 99-346 CMR ch. 24, section 4(A) (2025 edition)
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/ME_BenefitMatrix_2026.pdf#page=2
+    - title: 99-346 CMR ch. 24, section 4(A) (2025 edition, SOS filing 2025-135)
+      href: https://www.maine.gov/sos/sites/maine.gov.sos/files/inline-files/346c024.docx
+    - title: 99-346 CMR ch. 24, section 4(A) (effective June 29, 2026)
+      href: https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=16
