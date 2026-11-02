@@ -293,7 +293,7 @@
     taxable_interest_income: 15_750
   output:
     # (f)(1): gross income does not exceed the standard deduction. Chart A of
-    # the 2025 instructions says "at least" $15,750 (decision d1403).
+    # the 2025 instructions says "at least" $15,750.
     tax_unit_is_required_to_file: false
 
 - name: Case 21, 2025, single filer under 65 with gross income of $15,751.
@@ -314,7 +314,7 @@
     employment_income: 17_750
   output:
     # (f)(1): the standard deduction is $15,750 + $2,000 for blindness.
-    # Chart A of the 2025 instructions lists only age (decision d1403).
+    # Chart A of the 2025 instructions lists only age.
     tax_unit_is_required_to_file: false
 
 - name: Case 23, 2025, blind single filer under 65 with gross income of $17,751.
@@ -593,3 +593,205 @@
     # $10,000 of gross income, all earned, under the $14,600 single
     # threshold, so no unearned income over the (a)(1)(C) amount either.
     tax_unit_is_required_to_file: false
+
+# Section 6012(a)(1)(A)(iv), the joint-return exception, "shall not apply if
+# for the taxable year ... any other taxpayer is entitled to an exemption for
+# such spouse under section 151(c)". The spouse of a claimable head or spouse
+# then has no exception and must file when their own gross income equals or
+# exceeds the exemption amount ($0 from 2026, $4,050 in 2017).
+
+- name: 6012(a)(1)(A)(iv), 2026 joint return with a claimable spouse and $10,000 of wages
+  period: 2026
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 10_000
+      spouse:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    # Limited basic standard deduction (section 63(c)(5)):
+    # min($32,200, max($1,350, $10,000 + $450)) = $10,450. The (A) threshold
+    # is 2 x $0 + $10,450 = $10,450, and $10,000 < $10,450, so (iv) alone
+    # would excuse the couple. But the spouse can be claimed, so the head
+    # loses (iv): own gross income $10,000 >= $0 exemption amount.
+    basic_standard_deduction: 10_450
+    tax_unit_is_required_to_file: true
+
+- name: 6012(a)(1)(A)(iv), 2026 joint return with $10,000 of wages and no claimable spouse
+  period: 2026
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 10_000
+      spouse:
+        age: 20
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    # (iv) applies: $10,000 < 2 x $0 + $32,200.
+    tax_unit_is_required_to_file: false
+
+- name: 6012(a)(1)(A)(iv), 2026 joint return with no income and a claimable spouse
+  period: 2026
+  input:
+    people:
+      head:
+        age: 30
+      spouse:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    head_is_dependent_elsewhere: false
+    spouse_is_dependent_elsewhere: true
+    # The head loses (iv): own gross income $0 >= $0 exemption amount.
+    tax_unit_is_required_to_file: true
+
+- name: 6012(a)(1)(A)(iv), 2026 joint return with no income and a claimable head
+  period: 2026
+  input:
+    people:
+      head:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+        tax_unit_role_input: HEAD
+      spouse:
+        age: 30
+        tax_unit_role_input: SPOUSE
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    # Roles are set so that the younger, claimable adult heads the unit.
+    head_is_dependent_elsewhere: true
+    spouse_is_dependent_elsewhere: false
+    # The spouse loses (iv): own gross income $0 >= $0 exemption amount.
+    tax_unit_is_required_to_file: true
+
+- name: 6012(a)(1)(A)(iv), 2017 joint return with a claimable spouse and $3,000 of wages
+  period: 2017
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 3_000
+      spouse:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    # 2017 exemption amount $4,050 (gov.irs.income.exemption.amount). The head
+    # loses (iv), but own gross income $3,000 < $4,050.
+    # Limited basic standard deduction: max($1,050, $3,000 + $350) = $3,350.
+    # (A) threshold: 2 x $4,050 + $3,350 = $11,450 > $3,000.
+    # (C)(i)(II): $3,000 does not exceed $3,350 + $4,050 = $7,400.
+    # No unearned income.
+    basic_standard_deduction: 3_350
+    tax_unit_is_required_to_file: false
+
+- name: 6012(a)(1)(A)(iv), 2017 joint return with a claimable spouse and $5,000 of wages
+  period: 2017
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 5_000
+      spouse:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    # The head loses (iv): own gross income $5,000 >= $4,050.
+    # Without that: limited basic standard deduction max($1,050, $5,350) =
+    # $5,350; (A) threshold 2 x $4,050 + $5,350 = $13,450 > $5,000; and
+    # (C)(i)(II): $5,000 does not exceed $5,350 + $4,050 = $9,400.
+    basic_standard_deduction: 5_350
+    tax_unit_is_required_to_file: true
+
+- name: 6012(a)(1)(A)(iv), 2017, the comparison uses the unclaimable spouse's own gross income
+  period: 2017
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 3_000
+      spouse:
+        age: 20
+        employment_income: 2_000
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    # The head loses (iv), but the head's own gross income $3,000 < $4,050.
+    # Combined gross income $5,000 would meet $4,050; (iv) compares only the
+    # head's own. The claimable spouse keeps (iv), since the head can't be
+    # claimed. Limited basic standard deduction: max($1,050, $5,000 + $350)
+    # = $5,350. (A) threshold 2 x $4,050 + $5,350 = $13,450 > $5,000.
+    # (C)(i)(II): $5,000 does not exceed $5,350 + $4,050 = $9,400.
+    # No unearned income.
+    basic_standard_deduction: 5_350
+    tax_unit_is_required_to_file: false
+
+- name: 6012(a)(1)(C)(ii), 2026 head of household aged 70 whose spouse files separately and itemizes
+  period: 2026
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    age: 70
+    separate_filer_itemizes: true
+    employment_income: 1_000
+  output:
+    # Section 63(c)(6) makes the standard deduction zero, so (C)(ii)
+    # withdraws the (A) exception and the threshold is the $0 exemption
+    # amount: $1,000 >= $0. Without (C)(ii) the threshold would be $0 basic
+    # + $2,050 age addition, and $1,000 < $2,050.
+    basic_standard_deduction: 0
+    tax_unit_is_required_to_file: true

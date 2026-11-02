@@ -17,7 +17,11 @@ class tax_unit_is_required_to_file(Variable):
     That test applies to every filer, including one who can be claimed as a
     dependent (with the section 63(c)(5) limited basic standard deduction),
     and section 6012(a)(1)(C) adds that filer's unearned income and standard
-    deduction tests. Under section 6012(c), both
+    deduction tests. Under (a)(1), a joint return whose head or spouse can be
+    claimed loses the (A)(iv) exception for the other spouse, who must file
+    with own gross income at or above the exemption amount, and a filer whose
+    standard deduction is zero under section 63(c)(6) loses the (A)
+    exception (section 6012(a)(1)(C)(ii)). Under section 6012(c), both
     tests count gross section 911 exclusions: Form 2555 line 43 when leaf
     inputs are supplied, otherwise the nonnegative legacy
     foreign_earned_income_exclusion amount.
@@ -101,8 +105,49 @@ class tax_unit_is_required_to_file(Variable):
             + tax_unit("bonus_guaranteed_deduction", period)
             + aged_count * p.deductions.standard.aged_or_blind.amount[filing_status]
         )
+        # Section 6012(a)(1)(C)(ii): the (A) exception does not apply "to any
+        # individual ... for whom the standard deduction is zero under section
+        # 63(c)(6)". separate_filer_itemizes is PE-US's only 63(c)(6) path, so
+        # the threshold falls to the exemption amount, without the age
+        # addition, whatever the filing status.
+        no_exception = separate | tax_unit("separate_filer_itemizes", period)
         income_at_least_basic_threshold = gross_income >= where(
-            separate, exemption_amount, basic_threshold
+            no_exception, exemption_amount, basic_threshold
+        )
+
+        # Section 6012(a)(1)(A)(iv), the joint-return exception, "shall not
+        # apply if for the taxable year ... any other taxpayer is entitled to
+        # an exemption for such spouse under section 151(c)". So on a joint
+        # return, the spouse of a head or spouse who can be claimed loses
+        # (iv). That spouse then has no exception and must file if their own
+        # gross income equals or exceeds the exemption amount (zero from
+        # 2026). When both can be claimed, both lose (iv). Own gross income is
+        # person-level irs_gross_income alone: the section 911 exclusion is
+        # computed only per tax unit (policyengine_us/tools/section_911.py),
+        # so it can't be split between the spouses here.
+        #
+        # (iv) also applies only if the spouses "at the close of the taxable
+        # year, had the same household as their home". PE-US has no year-end
+        # household input and puts a tax unit in one household, so the spouses
+        # of a joint return are treated as sharing one.
+        #
+        # The separate-return half of the exclusion needs no code: a married
+        # individual filing separately already has no exception.
+        person = tax_unit.members
+        joint = filing_status == filing_status.possible_values.JOINT
+        loses_joint_exception = tax_unit.project(joint) & (
+            (
+                person("is_tax_unit_head", period)
+                & tax_unit.project(spouse_can_be_claimed)
+            )
+            | (
+                person("is_tax_unit_spouse", period)
+                & tax_unit.project(head_can_be_claimed)
+            )
+        )
+        own_gross_income_at_least_exemption = tax_unit.any(
+            loses_joint_exception
+            & (person("irs_gross_income", period) >= exemption_amount)
         )
 
         # Under (a)(1), (C) withdraws the (A) exception from a filer who can
@@ -114,9 +159,13 @@ class tax_unit_is_required_to_file(Variable):
         if p.income.filing_requirement.standard_deduction_rule.applies:
             income_over_threshold = income_over_standard_deduction
         else:
-            income_over_threshold = income_at_least_basic_threshold | (
-                (head_can_be_claimed | spouse_can_be_claimed)
-                & income_over_standard_deduction
+            income_over_threshold = (
+                income_at_least_basic_threshold
+                | own_gross_income_at_least_exemption
+                | (
+                    (head_can_be_claimed | spouse_can_be_claimed)
+                    & income_over_standard_deduction
+                )
             )
 
         # A filer who can be claimed as a dependent on another return (an
@@ -127,8 +176,8 @@ class tax_unit_is_required_to_file(Variable):
         # On a joint return the test applies to each spouse who can be claimed.
         # Section 6012(f)(2)(D), which governs joint returns for 2018 to 2025,
         # names the section 63(c)(5)(A) amount alone; Table 2 adds the
-        # additional standard deduction, and this follows Table 2 (open as
-        # decision d1395). Nobody else has an unearned income test.
+        # additional standard deduction, and this follows Table 2. Nobody else
+        # has an unearned income test.
         #
         # Table 2's other two tests need no code here. The standard deduction
         # in the threshold above is already the limited one for these filers
@@ -137,7 +186,6 @@ class tax_unit_is_required_to_file(Variable):
         # at the regular amount, plus the additional standard deduction. That
         # is Table 2's gross income test, and earned income over the regular
         # amount plus the additional standard deduction always meets it.
-        person = tax_unit.members
         can_be_claimed = (
             person("is_tax_unit_head", period) & tax_unit.project(head_can_be_claimed)
         ) | (
