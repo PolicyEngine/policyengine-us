@@ -1,0 +1,8 @@
+description: "Nonnegative optional symmetric annual dollar rounding or measurement-resolution bound. A supplied reported amount b represents the half-open interval [max(0, b - bound), b + bound) before backward propagation through the baseline claiming, worker-share and COLA divisor. The upper endpoint also allows one dime of initial PIA truncation. Zero leaves only the conditional PIA-rounding interval; it does not assert survey measurement is exact."
+values:
+  1983-01-01: 0
+metadata:
+  unit: currency-USD
+  label: Social Security population PIA-ratio annual rounding bound
+  economy: false
+  period: year

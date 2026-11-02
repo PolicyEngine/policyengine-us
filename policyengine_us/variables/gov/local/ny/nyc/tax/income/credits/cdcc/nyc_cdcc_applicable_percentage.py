@@ -17,7 +17,7 @@ class nyc_cdcc_applicable_percentage(Variable):
         # § 11-1706 Credits against tax (e).
 
         # First get federal AGI.
-        income = tax_unit("adjusted_gross_income", period)
+        income = tax_unit("ny_recomputed_federal_agi", period)
 
         # Then get the CDCC part of the parameter tree.
         p = parameters(period).gov.local.ny.nyc.tax.income.credits.cdcc

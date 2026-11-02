@@ -1,0 +1,37 @@
+description: North Dakota caps annual heat-in-rent assistance at these amounts by primary fuel under the Low Income Home Energy Assistance Program.
+# Unknown building fuel has no supported amount; zero is a calculation
+# limitation, not a legal cap or ineligibility rule for heat-in-rent households.
+UNSPECIFIED:
+  2025-06-01: 0
+ELECTRICITY:
+  2025-06-01: 1_500
+NATURAL_GAS:
+  2025-06-01: 700
+FUEL_OIL:
+  2025-06-01: 2_200
+# Manual 415-30-15-01 assigns kerosene, wood, coal and remaining fuels to Other.
+KEROSENE:
+  2025-06-01: 700
+PROPANE:
+  2025-06-01: 1_750
+WOOD:
+  2025-06-01: 700
+COAL:
+  2025-06-01: 700
+SOLAR:
+  2025-06-01: 700
+OTHER:
+  2025-06-01: 700
+NONE:
+  2025-06-01: 0
+metadata:
+  unit: currency-USD
+  period: year
+  label: North Dakota LIHEAP annual heat-in-rent benefit cap
+  breakdown:
+    - heating_type
+  reference:
+    - title: Energy Assistance Policy Manual 415-30-30, Renter Heating Benefit Table and Yearly Cap
+      href: https://www.nd.gov/dhs/policymanuals/415/415_30_30.htm
+    - title: Energy Assistance Policy Manual 415-30-15-01, Computation
+      href: https://www.nd.gov/dhs/policymanuals/415/415_30_15_01.htm

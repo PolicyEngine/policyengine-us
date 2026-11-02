@@ -1,0 +1,469 @@
+# Iowa LIHEAP "Fixed Income Only (no other sources of income)" targeting flag
+# (REQ-018). Appendix I p. 137 of the FY26 LIHEAP Policy and Procedures Manual
+# awards +1 point; the Definitions (p. 81) limit fixed income to SSA benefits,
+# SSI, SSDI, Veterans' Assistance and pensions and say "Only mark 'fixed
+# income' when that is the ONLY source(s) of income"; Appendix C notes that
+# alimony (p. 90), child support (p. 92) and FIP (p. 98) are not fixed income
+# and labels Form RRB-1099-R "Annuities or Pensions by the Railroad Retirement
+# Board" (p. 110):
+# https://hhs.iowa.gov/media/17262/download?inline#page=137
+# Modeling: true when the household has a fixed source (social_security, ssi,
+# pension_income, railroad_benefits, veterans_benefits) and no other recorded
+# source. Recorded sources are every member's, at any age, including sources
+# Iowa does not count: each earned source and each countable unearned source
+# that is not fixed, floored at zero so a loss cannot cancel another source,
+# child_support_received and FIP (read through tanf). A minor's Social
+# Security is left out of the countable amount but still identifies a fixed
+# source (Appendix C p. 114; section 4.40(3)(a) p. 14). Child support paid is
+# a deduction, not an income source.
+
+- name: Case 1, Social Security alone is fixed income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # fixed 18,000 > 0; no other source.
+    ia_liheap_fixed_income_only: true
+
+- name: Case 2, Social Security plus part-time wages is not fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 18_000
+        employment_income: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # fixed 18,000; the 3,000 of wages is another source.
+    ia_liheap_fixed_income_only: false
+
+- name: Case 3, Social Security, a pension and VA benefits together are fixed income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        social_security: 14_000
+        pension_income: 6_000
+        veterans_benefits: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 2_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # fixed 14,000 + 6,000 + 4,000 = 24,000 > 0; no other source.
+    ia_liheap_fixed_income_only: true
+
+- name: Case 4, SSI and Social Security together are fixed income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 3_000
+        # 764 a month: 994 federal benefit rate - (250 - 20) countable.
+        ssi: 9_168
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # fixed 3,000 + 9,168 = 12,168 > 0; no other source.
+    ia_liheap_fixed_income_only: true
+
+- name: Case 5, alimony is not fixed income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 66
+        social_security: 18_000
+        alimony_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix C p. 90: alimony is not fixed income; fixed 18,000, other 6,000.
+    ia_liheap_fixed_income_only: false
+
+- name: Case 6, a household with no income is not fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 800
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # No fixed source (fixed 0).
+    ia_liheap_fixed_income_only: false
+
+- name: Case 7, child support paid does not change the fixed-income test.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        social_security: 18_000
+        child_support_expense: 2_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Child support paid is a deduction, not a source: fixed 18,000 > 0 and
+    # no other source.
+    ia_liheap_fixed_income_only: true
+
+- name: Case 8, a child's wages are another source of income even though they are not countable.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 18_000
+      person2:
+        age: 16
+        employment_income: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # The source test reads every member's recorded sources regardless of age
+    # (Appendix I p. 137, "no other sources of income"): fixed 18,000, but the
+    # 16-year-old's 4,000 of wages is another source. The wages stay out of the
+    # countable amount (18,000).
+    ia_liheap_countable_income: 18_000
+    ia_liheap_fixed_income_only: false
+
+- name: Case 9, interest income is not fixed income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 18_000
+        interest_income: 200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # fixed 18,000; the 200 of interest is another source.
+    ia_liheap_fixed_income_only: false
+
+- name: Case 10, a retired couple on Social Security and a pension is fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 18_000
+      person2:
+        age: 65
+        pension_income: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_300
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # fixed 18,000 + 9,000 = 27,000 > 0; no other source.
+    ia_liheap_fixed_income_only: true
+
+- name: Case 11, a child's Social Security survivor benefits as the only household source is fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+        social_security: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Appendix C p. 114 margin note: when the only source of household income
+    # is Social Security for members under 18, record the source for the fixed
+    # income criteria but the amount as 0.00 (also section 4.40(3)(a) p. 14).
+    # Fixed 9,000 > 0 and no other recorded source -> true. Computed FIP is 0
+    # (the child's 750 a month of Social Security exceeds the 361 two-person
+    # payment standard), so tanf adds no source. The countable amount excludes
+    # the child's 9,000 -> 0.
+    ia_liheap_countable_income: 0
+    ia_liheap_fixed_income_only: true
+
+- name: Case 12, SSDI plus child support received is not fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        # SSDI of 1,200 a month.
+        social_security: 14_400
+        # 300 a month for the child.
+        child_support_received: 3_600
+      person2:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Appendix C p. 92: child support received is not counted, so the
+    # countable amount is the 14,400 of SSDI, but "Child support is not
+    # considered a fixed income source": fixed 14,400, other 3,600.
+    ia_liheap_countable_income: 14_400
+    ia_liheap_fixed_income_only: false
+
+- name: Case 13, Social Security plus a grandchild's FIP grant is not fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 66
+        social_security: 18_000
+      person2:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        # Child-only FIP grant at the one-person payment standard of 183 a
+        # month; ia_fip is a monthly variable, so the annual input is spread
+        # evenly over the twelve months.
+        ia_fip: 2_196
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # 183 x 12 = 2,196 of FIP, read through tanf.
+    tanf: 2_196
+    # Appendix C p. 98: FIP is not counted (countable 18,000), and "FIP is not
+    # considered fixed income because the household composition is likely to
+    # change": fixed 18,000, other 2,196.
+    ia_liheap_countable_income: 18_000
+    ia_liheap_fixed_income_only: false
+
+- name: Case 14, railroad retirement alone is fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        # Age 62 is below the SSI aged threshold, so the model imputes no SSI.
+        age: 62
+        railroad_benefits: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix C p. 109 defines pensions as payments "at regular intervals ...
+    # in consideration of past services, age" and p. 110 labels RRB-1099-R
+    # "Annuities or Pensions by the Railroad Retirement Board", so the annuity
+    # is a pension in the Definitions' fixed income list (p. 81): fixed 24,000
+    # > 0 and no other source.
+    ia_liheap_countable_income: 24_000
+    ia_liheap_fixed_income_only: true
+
+- name: Case 15, a railroad retiree and a spouse on Social Security are fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        # Both members are under 65 and not disabled, so the model imputes no
+        # SSI.
+        age: 64
+        railroad_benefits: 20_400
+      person2:
+        age: 63
+        social_security: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_300
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Railroad retirement is a pension (Appendix C pp. 109-110) and Social
+    # Security is fixed (Definitions p. 81): fixed 20,400 + 9,600 = 30,000 > 0
+    # and no other source.
+    ia_liheap_countable_income: 30_000
+    ia_liheap_fixed_income_only: true
+
+- name: Case 16, military retirement pay alone is fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        # Age 48 is below the SSI aged threshold, so the model imputes no SSI.
+        age: 48
+        military_retirement_pay: 26_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # A military pension is one of the "pensions" in the Definitions' fixed
+    # income list (p. 81): fixed 26,400 > 0 and no other source.
+    ia_liheap_countable_income: 26_400
+    ia_liheap_fixed_income_only: true
+
+- name: Case 17, military survivor benefit payments alone are fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        # Age 60 is below the SSI aged threshold, so the model imputes no SSI.
+        age: 60
+        military_retirement_pay_survivors: 14_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_400
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # A Survivor Benefit Plan annuity of 1,200 a month is a pension paid in
+    # consideration of past service (Appendix C p. 109): fixed 14,400 > 0 and
+    # no other source.
+    ia_liheap_countable_income: 14_400
+    ia_liheap_fixed_income_only: true
+
+- name: Case 18, Social Security with a rental loss and interest is not fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 18_000
+        rental_income: -500
+        interest_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # fixed 18,000; other sources max(-500, 0) + 500 = 500 > 0, so false. A
+    # signed sum (-500 + 500 = 0) would let the loss cancel the interest.
+    ia_liheap_fixed_income_only: false
+
+- name: Case 19, Social Security plus a self-employment profit is not fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 18_000
+        self_employment_income: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # fixed 18,000; other sources max(3,000, 0) = 3,000 > 0, so false.
+    ia_liheap_fixed_income_only: false
