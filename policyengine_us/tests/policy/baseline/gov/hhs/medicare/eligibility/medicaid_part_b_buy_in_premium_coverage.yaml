@@ -1,0 +1,41 @@
+- name: SSI recipient in a Section 1634 state gets the standard premium paid.
+  period: 2025
+  input:
+    age: 70
+    taxable_interest_income: 30_000
+    receives_ssi: true
+    state_code: CA
+  output:
+    medicaid_part_b_buy_in_premium_coverage: 2_220
+
+- name: A Medicare enrollee without SSI gets no buy-in coverage.
+  period: 2025
+  input:
+    age: 70
+    taxable_interest_income: 30_000
+    state_code: CA
+  output:
+    medicaid_part_b_buy_in_premium_coverage: 0
+
+- name: A Part A-only SSI recipient has no Part B premium to pay.
+  period: 2025
+  input:
+    age: 70
+    taxable_interest_income: 30_000
+    receives_ssi: true
+    medicare_part_b_enrolled: false
+    state_code: CA
+  output:
+    medicaid_part_b_buy_in_premium_coverage: 0
+
+- name: SSI recipients in Section 209(b) states are not covered by this variable.
+  # Connecticut is a 209(b) state; its SSI-recipient Medicaid test deducts
+  # this premium, so reading it here would be circular.
+  period: 2025
+  input:
+    age: 70
+    taxable_interest_income: 30_000
+    receives_ssi: true
+    state_code: CT
+  output:
+    medicaid_part_b_buy_in_premium_coverage: 0

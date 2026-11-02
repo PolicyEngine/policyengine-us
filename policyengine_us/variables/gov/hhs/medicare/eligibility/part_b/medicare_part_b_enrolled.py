@@ -17,5 +17,8 @@ class medicare_part_b_enrolled(Variable):
         "https://www.law.cornell.edu/uscode/text/42/1395o",
         "https://www.law.cornell.edu/cfr/text/42/part-407/subpart-B",
     )
-    defined_for = "medicare_enrolled"
-    default_value = True
+
+    def formula(person, period, parameters):
+        # Every Medicare enrollee is taken to hold Part B unless entered
+        # otherwise.
+        return person("medicare_enrolled", period)
