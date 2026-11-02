@@ -28,10 +28,10 @@ class nv_ccdp_activity_eligible(Variable):
         # tax unit. So without ids a parent who doesn't claim the child isn't
         # checked, and an adult who shares the child's tax unit is, because that
         # tax unit reads its second adult as a spouse. The stepparent step takes
-        # the same reading, so an adult child who shares their parent's tax unit
-        # without being marked a dependent makes that parent required. MS 216.1
-        # also lists a parent's domestic partner, whom this reaches only through
-        # a shared tax unit or the cohabiting spouses flag.
+        # the same reading, so a second adult in a linked parent's tax unit is
+        # required unless marked a dependent or linked to that parent by parent
+        # ids. MS 216.1 also lists a parent's domestic partner, whom this reaches
+        # only through a shared tax unit or the cohabiting spouses flag.
         #   - POC 420 (working) needs monetary compensation and sets no minimum
         #     hours, so earnings stand in for it. A self-employment loss still
         #     counts: MS 306.37 asks for an enterprise for gain.
