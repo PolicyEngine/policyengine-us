@@ -4,9 +4,11 @@ from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusi
 )
 from policyengine_us.variables.gov.states.ca.cdss.capi._ca_capi_ssi_ssp_standard import (
     ca_capi_couple_computation,
-    ca_capi_in_title_xix_facility,
     ca_capi_spouse_ssi_ssp,
     ca_capi_ssi_ssp_standard,
+)
+from policyengine_us.variables.gov.states.ca.cdss.state_supplement._ca_state_supplement_rates import (
+    ca_in_title_xix_facility,
 )
 
 
@@ -53,7 +55,7 @@ class ca_capi_person(Variable):
         # Deeming needs an ineligible spouse living in the same household
         # (20 CFR 416.1160(a)(1)), so a Title XIX facility resident counts
         # only their own income.
-        medical_facility = ca_capi_in_title_xix_facility(person, period)
+        medical_facility = ca_in_title_xix_facility(person, period)
         income = where(medical_facility, own_income, countable_income)
         # NOTE: the reduced-needs standards for another person's household are
         # not modeled (issue 7892), so those recipients get the

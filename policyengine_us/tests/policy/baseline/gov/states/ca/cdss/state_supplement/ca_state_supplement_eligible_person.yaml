@@ -41,3 +41,42 @@
     state_code: CA
   output:
     ca_state_supplement_eligible_person: false
+
+- name: Case 5, disabled dependent under 18 is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_state_supplement_eligible_person: [false, true]
+
+- name: Case 6, disabled dependent aged 18 is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # WIC 12150 follows SSI eligibility, which has no tax-role condition.
+    ca_state_supplement_eligible_person: [false, true]
