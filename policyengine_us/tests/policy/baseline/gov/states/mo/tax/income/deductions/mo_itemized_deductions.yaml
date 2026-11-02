@@ -113,3 +113,35 @@
     state_code: MO
   output:
     mo_itemized_deductions: 10_000
+
+# Single filer, $100,000 of self-employment income and $20,000 of cash
+# charity. Self-employment tax 14,129.55, of which 7,064.77 is deducted in
+# federal AGI, so RSMo 143.141(4)(c) adds back only 7,064.77. Before the fix
+# the full tax was added: 34,129.55.
+- name: 2017 self-employment tax counted net of the federal AGI deduction
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head: {age: 40, self_employment_income: 100_000, charitable_cash_donations: 20_000}
+    tax_units: {tax_unit: {members: [head]}}
+    households: {household: {members: [head], state_code: MO}}
+  output:
+    self_employment_tax: 14_129.55
+    self_employment_tax_ald: 7_064.77
+    mo_self_employment_tax_addback: 7_064.77
+    mo_itemized_deductions: 27_064.78
+
+- name: 2024 self-employment tax counted net of the federal AGI deduction
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head: {age: 40, self_employment_income: 100_000, charitable_cash_donations: 20_000}
+    tax_units: {tax_unit: {members: [head]}}
+    households: {household: {members: [head], state_code: MO}}
+  output:
+    self_employment_tax: 14_129.55
+    self_employment_tax_ald: 7_064.77
+    mo_self_employment_tax_addback: 7_064.77
+    mo_itemized_deductions: 27_064.78
