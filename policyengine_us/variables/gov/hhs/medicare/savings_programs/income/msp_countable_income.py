@@ -12,6 +12,7 @@ class msp_countable_income(Variable):
     definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396d#p",
+        "https://www.law.cornell.edu/cfr/text/20/416.412",
         "https://www.law.cornell.edu/cfr/text/20/416.1163",
         "https://secure.ssa.gov/apps10/poms.nsf/lnx/0501715010",
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
@@ -27,11 +28,13 @@ class msp_countable_income(Variable):
     2. $65 earned income exclusion
     3. 50% of remaining earned income excluded
 
-    For married couples where both spouses are Medicare-eligible, SSI couple
-    rules apply per 20 CFR 416.1160: both spouses' incomes are combined before
-    exclusions are applied, and the $20 exclusion is taken once on the combined
-    income. The combined countable income is then compared against the couple FPL
-    in the eligibility variables (is_qmb_eligible, is_slmb_eligible, is_qi_eligible).
+    For married couples where both spouses are Medicare-eligible, or where SSI
+    computes both as a couple because both are aged, blind or disabled, SSI couple
+    rules apply per 20 CFR 416.412 and 416.1160: both spouses' incomes are combined
+    before exclusions are applied, and the $20 exclusion is taken once on the
+    combined income. The combined countable income is then compared against the
+    couple FPL in the eligibility variables (is_qmb_eligible, is_slmb_eligible,
+    is_qi_eligible).
 
     Under 42 U.S.C. 1396a(r)(2) a state may exclude more than the $20 SSI
     general income exclusion; Illinois and Mississippi use their larger
@@ -91,7 +94,9 @@ class msp_countable_income(Variable):
             per_spouse,
             max_(
                 ssi_general,
-                person.marital_unit.sum(min_(state_exclusion, qualifying_income)),
+                person.marital_unit.sum(
+                    min_(state_exclusion, qualifying_income) * is_medicare_eligible
+                ),
             ),
             general_exclusion,
         )
@@ -134,7 +139,13 @@ class msp_countable_income(Variable):
             deeming_applies, deemed_countable, personal_countable_income
         )
 
+        # A spouse who is aged, blind or disabled but not on Medicare is neither
+        # an applying spouse nor an ineligible spouse whose income is deemed, so
+        # the SSI couple computation is what brings in their income.
+        couple_computation = person("ssi_couple_computation_applies", period)
         annual_countable = where(
-            both_medicare_eligible, couple_countable, single_countable
+            both_medicare_eligible | couple_computation,
+            couple_countable,
+            single_countable,
         )
         return annual_countable / MONTHS_IN_YEAR
