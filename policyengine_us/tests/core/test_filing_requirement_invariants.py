@@ -15,8 +15,9 @@ the model's parameters:
 - 6012(f)(1) and (2)(A): a return is required when gross income exceeds the
   standard deduction, which adds the additional standard deduction for age
   and for blindness.
-- Under both, a married individual filing separately must file with any
-  gross income.
+- A married individual filing separately must file with any gross income
+  under 6012(f), and with any gross income, even none, under 6012(a)(1),
+  whose (A) excuses only gross income "less than" the zero exemption amount.
 
 `test_threshold_grid` runs one simulation over every filing status, every
 combination of age 65 and blindness for the head and spouse, and gross income
@@ -41,13 +42,16 @@ each batch, with two variants of every unit, as one simulation:
    deduction for a reason that has nothing to do with age.
 6. Inclusion: in 2026, the model never excuses a unit nobody can claim that
    6012(f), with the 2026 amounts, would require to file.
-7. Claimable units keep one rule in both years: for a unit whose head or
-   spouse can be claimed, a return is required exactly when gross income is
-   over the unit's standard deduction (any gross income on a separate
-   return), or a claimable adult's interest and dividends are over the
-   section 63(c)(5)(A) amount ($1,350 in 2025 and 2026) plus that adult's
-   own additions for age and blindness. How 6012(a)(1) applies to these
-   filers is decision d1395, so the change leaves them alone.
+7. Claimable units: for a unit whose head or spouse can be claimed, a
+   return is required exactly when gross income is over the unit's standard
+   deduction (6012(f) and (a)(1)(C)(i)(II); for 2025, any gross income on a
+   separate return), or a claimable adult's interest and dividends are over
+   the section 63(c)(5)(A) amount ($1,350 in 2025 and 2026) plus that
+   adult's own additions for age and blindness ((C)(i)(I)). From 2026 the
+   (A) and (B) threshold also binds them: gross income at least the unit's
+   (limited) basic standard deduction plus the age-only additions, or any
+   separate return. (C) adds to (A) for these filers; it does not replace
+   it.
 
 The tests use the default tax-benefit system only. A reform that kept 6012(f)
 for 2026 would compare the two rules directly, but it costs a second
@@ -132,7 +136,8 @@ def reference(unit, year, rule):
     income = gross_income(unit)
     limit = threshold(unit, year, rule)
     if limit is None:
-        return income > 0
+        # (a)(1)(A): no gross income is "less than" a zero exemption amount.
+        return True if rule == "6012(a)(1)" else income > 0
     if rule == "6012(a)(1)":
         return income >= limit
     return income > limit
@@ -391,6 +396,17 @@ def test_filing_requirement_properties(drawn):
             )
         # Property 7.
         standard_deduction = results("standard_deduction", year)["base"]
+        basic_deduction = results("basic_standard_deduction", year)["base"]
+
+        def section_a(unit, basic):
+            if year < 2026:
+                return False
+            if unit["filing_status"] == "SEPARATE":
+                return True
+            aged = sum(adult["age"] >= 65 for adult in unit["adults"])
+            addition = ADDITIONAL[year][unit["filing_status"]]
+            return gross_income(unit) >= basic + aged * addition
+
         expected_claimable = np.array(
             [
                 (
@@ -399,7 +415,10 @@ def test_filing_requirement_properties(drawn):
                     else gross_income(unit) > deduction
                 )
                 or claimable_unearned_test(unit, year)
-                for unit, deduction in zip(by_variant["base"], standard_deduction)
+                or section_a(unit, basic)
+                for unit, deduction, basic in zip(
+                    by_variant["base"], standard_deduction, basic_deduction
+                )
             ]
         )
         np.testing.assert_array_equal(

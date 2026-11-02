@@ -22,7 +22,8 @@ References:
 - 2026 amounts: Rev. Proc. 2025-32, section 4.14:
   https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
 - IRC 6012(f) for 2024-2025, and 6012(a)(1) for 2026. Claimable filers
-  retain the dependent worksheet in every year (decision d1395):
+  keep the dependent worksheet in every year, and from 2026 also meet the
+  (A) and (B) threshold with the worksheet's limited basic deduction:
   https://www.law.cornell.edu/uscode/text/26/6012
 
 The federal deduction worksheet and Medicaid Table 2 reference use W-2 box 1
@@ -223,8 +224,13 @@ def reference(person, year):
     # A claimed dependent keeps the section 63(c)(5) worksheet and Table 2's
     # unearned-income test. Otherwise 6012(f) includes blindness through 2025,
     # and 6012(a)(1) in 2026 permits the age addition only, with >= at equality.
+    # From 2026 that (A) and (B) threshold binds a claimed dependent too, with
+    # the limited basic deduction; (C) adds to it.
+    aged_threshold = basic + addition * int(person["age"] >= 65)
     if claimed:
         required = gross > standard or unearned > floor + extra
+        if year >= 2026:
+            required = required or gross >= aged_threshold
     elif year <= 2025:
         required = gross > standard
     else:

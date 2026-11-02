@@ -547,8 +547,8 @@
 # excess of", as Chart B does. But a filer who meets neither is excused only
 # by (a)(1)(A)(i), whose gross income must be "less than" the basic standard
 # deduction, so on the literal text a return is due at exactly the limited
-# deduction. The 2026 instructions are not yet published, so every 2026 case
-# stays a dollar away from a threshold.
+# deduction. The model follows the statute there; the other 2026 cases stay a
+# dollar away from a threshold.
 
 - name: 2026, single dependent with unearned income under $1,350 need not file
   period: 2026
@@ -579,6 +579,19 @@
     employment_income: 16_099
   output:
     tax_unit_is_required_to_file: false
+
+- name: 2026, single dependent with earned income of exactly $16,100 must file
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    employment_income: 16_100
+  output:
+    # (a)(1)(A) excuses only gross income "less than" the (limited) basic
+    # standard deduction, $16,100; (C) adds requirements, it doesn't replace
+    # (A).
+    tax_unit_is_required_to_file: true
 
 - name: 2026, single dependent with earned income over $16,100 must file
   period: 2026

@@ -280,11 +280,10 @@
     filing_status: SEPARATE
     age: 40
   output:
-    # With a zero exemption amount, (a)(1)(A) read literally reaches even
-    # $0 of gross income; the IRS set $5 for 2018 to 2025. The model, as
-    # before, requires a return only for positive gross income (decision
-    # d1403).
-    tax_unit_is_required_to_file: false
+    # With a zero exemption amount, (a)(1)(A) requires a return unless gross
+    # income is "less than" zero, and a married individual filing separately
+    # has no other exception, so even $0 of gross income meets it.
+    tax_unit_is_required_to_file: true
 
 - name: Case 20, 2025, single filer under 65 with gross income of exactly $15,750.
   period: 2025
@@ -390,14 +389,14 @@
   output:
     tax_unit_is_required_to_file: false
 
-# A tax unit whose head or spouse can be claimed as a dependent keeps the
-# standard deduction test from 2026 too: (a)(1)(C)(i)(II), "total gross income
-# in excess of the standard deduction", which is what Chart B applies.
-# Whether the (A) threshold, which leaves out blindness and requires a return
-# at equality, also binds these filers is decision d1395. These cases pin the
-# model's reading until it is ruled.
+# From 2026 a filer who can be claimed as a dependent meets the same (A) and
+# (B) threshold as anyone else, with the section 63(c)(5) limited basic
+# standard deduction and the age-only addition: (a)(1)(C) withdraws the (A)
+# exception in further cases ((C)(i)(I), unearned income, and (C)(i)(II),
+# gross income over the standard deduction); it does not replace (A) for
+# these filers.
 
-- name: Case 28, 2026, blind single filer who can be claimed keeps the blindness addition.
+- name: Case 28, 2026, blind single filer who can be claimed gets only the age addition.
   period: 2026
   input:
     filing_status: SINGLE
@@ -406,10 +405,12 @@
     claimed_as_dependent_on_another_return: true
     employment_income: 17_000
   output:
-    # Limited standard deduction min($16,100, $17,000 + $450) + $2,050 =
-    # $18,150, over gross income. Nobody can claim the filer in Case 3.
+    # Limited basic standard deduction min($16,100, $17,000 + $450) =
+    # $16,100; blindness doesn't raise the (A) threshold, and $17,000 is
+    # at least $16,100. The standard deduction itself still has the $2,050
+    # blindness addition. Compare Case 3, where nobody can claim the filer.
     standard_deduction: 18_150
-    tax_unit_is_required_to_file: false
+    tax_unit_is_required_to_file: true
 
 - name: Case 29, 2026, joint return whose spouse can be claimed, at exactly the joint amount.
   period: 2026
@@ -429,9 +430,9 @@
         members: [person1, person2]
         state_code: TX
   output:
-    # Gross income does not exceed the $32,200 standard deduction. Compare
-    # Case 9, where nobody can be claimed.
-    tax_unit_is_required_to_file: false
+    # Gross income is not less than the $32,200 basic standard deduction, so
+    # a return is due, as in Case 9, where nobody can be claimed.
+    tax_unit_is_required_to_file: true
 
 # 26 U.S.C. 6012(c): for the filing requirement, gross income is computed
 # without regard to the section 911 exclusion. With Form 2555 leaf inputs,

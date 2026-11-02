@@ -12,9 +12,12 @@ class tax_unit_is_required_to_file(Variable):
     status. For 2018 to 2025, section 6012(f) compares gross income with the
     standard deduction. In other years, section 6012(a)(1) compares it with
     the basic standard deduction plus the additions for age, but not
-    blindness, and gross income equal to that amount requires a return. A
-    tax unit whose head or spouse can be claimed as a dependent keeps the
-    standard deduction test in every year. Under section 6012(c), both
+    blindness, and gross income equal to that amount requires a return; a
+    married individual filing separately must file even with no gross income.
+    That test applies to every filer, including one who can be claimed as a
+    dependent (with the section 63(c)(5) limited basic standard deduction),
+    and section 6012(a)(1)(C) adds that filer's unearned income and standard
+    deduction tests. Under section 6012(c), both
     tests count gross section 911 exclusions: Form 2555 line 43 when leaf
     inputs are supplied, otherwise the nonnegative legacy
     foreign_earned_income_exclusion amount.
@@ -85,11 +88,10 @@ class tax_unit_is_required_to_file(Variable):
         # (zero unless that reform is on).
         #
         # A married individual filing separately has no exception. With an
-        # exemption amount of zero, (A) read literally reaches even an
-        # individual with no gross income; the National Taxpayer Advocate read
-        # the 2018 to 2025 rule that way, and the IRS set $5 as relief. As for
-        # 2018 to 2025, the model requires a return only for positive gross
-        # income (decision d1403).
+        # exemption amount of zero, (A) reaches even an individual with no
+        # gross income, since no gross income is "less than" zero.
+        # For a filer who can be claimed as a dependent, basic_standard_deduction
+        # is already the section 63(c)(5) limited amount.
         aged_count = tax_unit("aged_head", period).astype(int) + tax_unit(
             "aged_spouse", period
         ).astype(int)
@@ -99,22 +101,22 @@ class tax_unit_is_required_to_file(Variable):
             + tax_unit("bonus_guaranteed_deduction", period)
             + aged_count * p.deductions.standard.aged_or_blind.amount[filing_status]
         )
-        income_at_least_basic_threshold = (gross_income > 0) & (
-            gross_income >= where(separate, exemption_amount, basic_threshold)
+        income_at_least_basic_threshold = gross_income >= where(
+            separate, exemption_amount, basic_threshold
         )
 
-        # A tax unit whose head or spouse can be claimed as a dependent keeps
-        # the standard deduction test in every year. From 2026 it is
-        # (a)(1)(C)(i)(II), and it is what Chart B applies under (a)(1); the
-        # (A) threshold, which leaves out blindness and requires a return at
-        # equality, is not applied to these filers (decision d1395).
+        # Under (a)(1), (C) withdraws the (A) exception from a filer who can
+        # be claimed as a dependent in further cases; it does not replace
+        # (A) for that filer. So the (A) and (B) threshold binds every filer,
+        # and (C)(i)(II), gross income over the standard deduction, is added
+        # for a tax unit whose head or spouse can be claimed. (C)(i)(I), the
+        # unearned income test, is below.
         if p.income.filing_requirement.standard_deduction_rule.applies:
             income_over_threshold = income_over_standard_deduction
         else:
-            income_over_threshold = where(
-                head_can_be_claimed | spouse_can_be_claimed,
-                income_over_standard_deduction,
-                income_at_least_basic_threshold,
+            income_over_threshold = income_at_least_basic_threshold | (
+                (head_can_be_claimed | spouse_can_be_claimed)
+                & income_over_standard_deduction
             )
 
         # A filer who can be claimed as a dependent on another return (an
