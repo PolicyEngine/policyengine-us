@@ -353,10 +353,10 @@
     is_veteran: true
     wa_pte_retired_due_to_disability: false
   output:
-    # Before collection year 2016 the veteran pathway was "one hundred percent
-    # service-connected disability as provided in 42 U.S.C. Sec. 423(d)(1)(A)",
-    # which admits more than one reading, so the model keeps generic disability
-    # for veterans in those years.
+    # Before collection year 2016 the veteran pathway was a wholly
+    # service-connected disability under 42 U.S.C. 423(d)(1)(A). The model has
+    # no service-connection input for it, so is_disabled is the default proxy.
+    wa_pte_wholly_service_connected_disability: true
     wa_pte_categorical_eligible: true
 
 - name: Case 21, mixed people are evaluated together.
@@ -382,3 +382,61 @@
         state_code: WA
   output:
     wa_pte_categorical_eligible: [true, false, true, true]
+
+- name: Case 22, by default a person receiving Social Security disability benefits is retired by reason of disability.
+  period: 2024
+  input:
+    state_code: WA
+    age: 45
+    social_security_disability: 12_000
+  output:
+    # RCW 84.36.383(6) uses the Social Security definition, 42 U.S.C.
+    # 423(d)(1)(A); an SSDI award is the Social Security Administration's
+    # finding under it.
+    wa_pte_retired_due_to_disability: true
+    wa_pte_categorical_eligible: true
+
+- name: Case 23, by default a person with no Social Security disability benefits is not retired by reason of disability.
+  period: 2024
+  input:
+    state_code: WA
+    age: 45
+    is_disabled: true
+  output:
+    wa_pte_retired_due_to_disability: false
+    wa_pte_categorical_eligible: false
+
+- name: Case 24, by default a fully disabled service-connected veteran has a compensated total rating.
+  period: 2024
+  input:
+    state_code: WA
+    age: 45
+    is_veteran: true
+    is_fully_disabled_service_connected_veteran: true
+  output:
+    wa_pte_receives_va_disability_compensation: true
+    wa_pte_va_total_disability_rating: true
+    wa_pte_categorical_eligible: true
+
+- name: Case 25, in 2015 a fully disabled service-connected veteran qualifies without generic disability.
+  period: 2015
+  input:
+    state_code: WA
+    age: 45
+    is_veteran: true
+    is_fully_disabled_service_connected_veteran: true
+    is_disabled: false
+  output:
+    wa_pte_wholly_service_connected_disability: true
+    wa_pte_categorical_eligible: true
+
+- name: Case 26, in 2015 the veteran proxy can be overridden for a disability that is not service-connected.
+  period: 2015
+  input:
+    state_code: WA
+    age: 45
+    is_veteran: true
+    is_disabled: true
+    wa_pte_wholly_service_connected_disability: false
+  output:
+    wa_pte_categorical_eligible: false

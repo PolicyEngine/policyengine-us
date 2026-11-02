@@ -32,4 +32,7 @@ class va_529_plan_deduction_person(Variable):
         contributions = person("investment_in_529_plan_indv", period)
         carryforward = person("va_529_plan_carryforward", period)
         age_exempt = person("age", period) >= p.age_threshold
-        return head_or_spouse * where(age_exempt, contributions + carryforward, capped)
+        available = contributions + carryforward
+        # A supplied capped amount can't exceed what is available to deduct.
+        under_70 = min_(capped, available)
+        return head_or_spouse * where(age_exempt, available, under_70)

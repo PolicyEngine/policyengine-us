@@ -23,9 +23,9 @@ class in_supplemental_homestead_credit(Variable):
         # (or the surviving spouse of one who did), against the liability on
         # that same homestead. Subsection (c) sets the credit at the lesser
         # of 10% of that liability or $300, and subsection (d) leaves out
-        # taxes approved by referendum or local public question. Generic
-        # real_estate_taxes neither establish qualification nor measure the
-        # homestead liability, so all three are inputs.
+        # taxes approved by referendum or local public question. The
+        # qualification and the liability default to real_estate_taxes-based
+        # proxies and can be overridden; the referendum tax is an input.
         p = (
             parameters(period)
             .gov.states["in"]

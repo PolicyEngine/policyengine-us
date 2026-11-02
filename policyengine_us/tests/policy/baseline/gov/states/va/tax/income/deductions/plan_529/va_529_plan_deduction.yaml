@@ -173,9 +173,11 @@
 # contributions above that amount "until the purchase price or college savings
 # trust contribution has been fully deducted". Subdivision 7(b) lets an owner
 # aged 70 or older deduct "the full amount ... less any amounts previously
-# deducted". The 2024 Form 760 instructions, code 104, agree: "the lesser of
-# $4,000 or the amount contributed during the taxable year to each
-# Commonwealth Savers account".
+# deducted". On the per-account cap the 2024 Form 760 instructions, code 104,
+# agree: "the lesser of $4,000 or the amount contributed during the taxable
+# year to each Commonwealth Savers account". Their age-70 sentence speaks only
+# of the year's contributions and is silent on a carryforward, so 7(b)'s
+# "less any amounts previously deducted" governs it.
 
 - name: Uneven account contributions receive separate caps
   period: 2024
@@ -282,3 +284,29 @@
     # 500 + 2_500 = 3_000.
     va_529_plan_deduction_person: [7_000, 3_000]
     va_529_plan_deduction: 10_000
+
+- name: Without account-level amounts, a carryforward-only account counts as one account
+  period: 2024
+  input:
+    state_code: VA
+    age: 45
+    investment_in_529_plan_indv: 0
+    va_529_plan_carryforward: 3_000
+  output:
+    # No contribution this year, so count_529_contribution_beneficiaries is
+    # 0; the carryforward's account still counts: min(0 + 3_000, 4_000 x 1).
+    va_529_plan_deduction_capped_amount: 3_000
+    va_529_plan_deduction: 3_000
+
+- name: A supplied capped amount is bounded by contributions plus carryforward
+  period: 2024
+  input:
+    state_code: VA
+    age: 45
+    investment_in_529_plan_indv: 2_000
+    count_529_contribution_beneficiaries: 1
+    va_529_plan_carryforward: 500
+    va_529_plan_deduction_capped_amount: 9_000
+  output:
+    # min(9_000, 2_000 + 500) = 2_500.
+    va_529_plan_deduction: 2_500

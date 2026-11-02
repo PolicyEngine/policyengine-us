@@ -10,7 +10,11 @@ class wa_pte_retired_due_to_disability(Variable):
         "reason of a disability as defined in RCW 84.36.383 (42 U.S.C. "
         "423(d)(1)(A): unable to engage in any substantial gainful activity "
         "because of a medically determinable impairment expected to result in "
-        "death or to last at least 12 months)."
+        "death or to last at least 12 months). By default a person receiving "
+        "Social Security disability insurance benefits qualifies: an award is "
+        "the Social Security Administration's finding of disability under that "
+        "same definition. Set this to override the default, for example for a "
+        "person disabled under the definition who receives no award."
     )
     definition_period = YEAR
     reference = (
@@ -21,3 +25,6 @@ class wa_pte_retired_due_to_disability(Variable):
         # WAC 458-16A-130
         "https://app.leg.wa.gov/WAC/default.aspx?cite=458-16A-130",
     )
+
+    def formula(person, period, parameters):
+        return person("social_security_disability", period) > 0

@@ -10,7 +10,8 @@ class va_529_plan_deduction_capped_amount(Variable):
         "lesser of the per-account cap or the account's contributions for the "
         "year plus its undeducted carryforward. Supply it from account records; "
         "otherwise it is computed as if contributions and carryforwards were "
-        "split evenly across count_529_contribution_beneficiaries accounts."
+        "split evenly across count_529_contribution_beneficiaries accounts, "
+        "or across one account if only a carryforward remains."
     )
     unit = USD
     definition_period = YEAR
@@ -32,4 +33,8 @@ class va_529_plan_deduction_capped_amount(Variable):
         contributions = person("investment_in_529_plan_indv", period)
         carryforward = person("va_529_plan_carryforward", period)
         accounts = person("count_529_contribution_beneficiaries", period)
+        # An account holding only a carryforward has no contribution this
+        # year, so it isn't counted among contribution beneficiaries; count
+        # at least one account whenever a carryforward remains.
+        accounts = where(carryforward > 0, max_(accounts, 1), accounts)
         return min_(contributions + carryforward, p.cap * accounts)

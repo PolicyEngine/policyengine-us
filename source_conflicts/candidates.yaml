@@ -6548,6 +6548,32 @@ candidates:
     can be claimed, reading item C as marked for the whole return (ny_household_credit_potential.py, nyc_household_credit.py).
     An October 2026 ruling accepted the instructions; the statute-first rule requires a model change after resolving
     the statutory allocation.'
+- id: us-ny:nyc-school-tax-credit-fixed-amount-rounding
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: Is the NYC school tax credit fixed amount for unmarried, head of household and separate filers the
+    statutory $62.50 or the $63 that the IT-201 instructions print?
+  sources:
+  - kind: statute
+    citation: N.Y. Tax Law 606(ggg)(4-a)(B)
+    url: https://www.nysenate.gov/legislation/laws/TAX/606
+  - kind: instructions
+    citation: 2025 Instructions for Form IT-201, line 69
+    url: https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=20
+  readings:
+    statute: The statute sets the fixed amount for these filers at $62.50.
+    other: The instructions' table prints $63 and says the statutory amounts have been rounded.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/local/ny/nyc/tax/income/credits/school/fixed/amount.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10330
+  state: unreviewed
+  note: 'Found in review of the rate reduction amount, where the model now follows the statute over the
+    instructions; the fixed amount still follows the instructions'' rounding. The difference is $0.50 per return.'
 - id: us-ny:real-property-credit-claimable-spouse
   program: income-tax
   years:

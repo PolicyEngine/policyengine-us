@@ -35,12 +35,10 @@ class wa_pte_categorical_eligible(Variable):
             rating >= p.veteran.combined_rating_threshold
         )
         rated_veteran = compensated & qualifying_rating
-        # Before collection year 2016 the veteran pathway was "one hundred
-        # percent service-connected disability as provided in 42 U.S.C. Sec.
-        # 423(d)(1)(A)", which can be read as a 100 percent VA rating or as a
-        # wholly service-connected disability meeting the Social Security
-        # definition; is_disabled stands in for it in those years.
-        earlier_veteran = person("is_disabled", period)
+        # Before collection year 2016 the veteran pathway was a disability
+        # wholly service-connected and meeting 42 U.S.C. 423(d)(1)(A); see
+        # wa_pte_wholly_service_connected_disability for its default.
+        earlier_veteran = person("wa_pte_wholly_service_connected_disability", period)
         veteran_pathway = veteran & where(
             p.veteran.rating_requirement_in_effect, rated_veteran, earlier_veteran
         )
