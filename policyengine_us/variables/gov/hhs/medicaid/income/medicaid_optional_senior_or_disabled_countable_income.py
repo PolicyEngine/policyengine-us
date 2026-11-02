@@ -101,8 +101,13 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
         # premiums and those of unmarried tax dependents in their marital
         # unit, but not an unrelated adult's, whose income also stays out of
         # ssi_marital_unearned_income when a situation omits marital units.
-        dependent_without_spouse = person("is_tax_unit_dependent", period) & (
-            _ssi_spouse_index(person, period) < 0
+        # A situation that sets tax roles for the couple only leaves an
+        # unrelated adult with neither role, so also require the dependent
+        # to share a tax unit with a spouse in the couple computation.
+        dependent_without_spouse = (
+            person("is_tax_unit_dependent", period)
+            & (_ssi_spouse_index(person, period) < 0)
+            & person.tax_unit.any(couple_computation)
         )
         family_premiums = _ssi_couple_total(
             person, period, own_premiums
