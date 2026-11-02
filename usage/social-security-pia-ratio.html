@@ -528,7 +528,7 @@ Inspect the flags before interpreting them as zero earnings. The own-record
 indicator describes the modeling classification; it is not evidence of insured
 status or an administrative validation of benefit type. It is independent of
 whether claiming data are missing or the benchmark predates 1983. For an AIME
-distribution or percentile calculation, also exclude <code class="docutils literal notranslate"><span class="pre">_pia_ratio_unmodeled</span></code>,
+distribution computed from these outputs, also exclude <code class="docutils literal notranslate"><span class="pre">_pia_ratio_unmodeled</span></code>,
 <code class="docutils literal notranslate"><span class="pre">_pia_ratio_missing_claim_age</span></code> and <code class="docutils literal notranslate"><span class="pre">_pia_ratio_pre_1983</span></code> records and inspect
 the proxy and measurement-uncertainty flags.
 For identified-only distributions, also exclude <code class="docutils literal notranslate"><span class="pre">_pia_ratio_proxy</span></code> records;
@@ -591,10 +591,98 @@ Person weights within a household, use the Person-indicator formula above.</p>
 <p>This approximation assumes the reported annual amount represents a full-year
 benefit at the stated valuation basis; partial-year entitlement, survey error,
 dual entitlement, withheld checks and binding caps can defeat unique inversion.
-No package-specific parameter values or administrative percentile estimates are
-encoded here. M8 allows progressive price-indexing thresholds from a supplied
-bend-point fraction or dollar path; C’s named outputs remain available for
+Beyond the S.770 preset, this route encodes no package values, and PE-US
+estimates no AIME percentile. The named outputs above remain available for
 population diagnostics and drift checks.</p>
+</section>
+<section id="price-indexing-inputs-you-supply">
+<h2>Price-indexing inputs you supply<a class="headerlink" href="#price-indexing-inputs-you-supply" title="Link to this heading">¶</a></h2>
+<p>Both price-indexing switches default to false, and PE-US ships no fraction,
+dollar threshold, maximum AIME, PIA target or real-wage scale for them. The
+reported-benefit ratio and the
+<a class="reference internal" href="social-security-calculator.html"><span class="std std-doc">supplied-record calculator</span></a> read the same
+parameters through <code class="docutils literal notranslate"><span class="pre">formula_path_at</span></code>. To turn on progressive price indexing,
+set these parameters under <code class="docutils literal notranslate"><span class="pre">gov.contrib.ssa.pia</span></code>:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>What you supply</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">in_effect</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code> for the eligibility cohorts the formula path reaches.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">progressive_price_indexing.in_effect</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">progressive_price_indexing.start_year</span></code></p></td>
+<td><p>The first eligibility cohort indexed. The default is 2032.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">progressive_price_indexing.bend_point_fraction</span></code></p></td>
+<td><p>The fraction f of the way from the first to the second bend point. It has no default.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">progressive_price_indexing.threshold</span></code></p></td>
+<td><p>Optional: a monthly dollar threshold for each cohort. Where you set one, it takes precedence over the fraction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">progressive_price_indexing.maximum_aime</span></code></p></td>
+<td><p>The monthly maximum-career AIME for each cohort.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">progressive_price_indexing.maximum_pia_target</span></code></p></td>
+<td><p>The target initial monthly PIA at that maximum AIME for each cohort.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For eligibility year E, the protected threshold is
+<code class="docutils literal notranslate"><span class="pre">T(E)</span> <span class="pre">=</span> <span class="pre">BP1(E)</span> <span class="pre">+</span> <span class="pre">f</span> <span class="pre">*</span> <span class="pre">(BP2(E)</span> <span class="pre">-</span> <span class="pre">BP1(E))</span></code>, using that cohort’s own bend points,
+so it rises as they do. With f = 0 it equals BP1, and with f = 1 it equals BP2.
+Up to the threshold, the formula without progressive indexing applies
+unchanged; that formula is current law when no other path is on. Above it, the
+model scales the part of the PIA above <code class="docutils literal notranslate"><span class="pre">F(T(E))</span></code> by the single multiplier that
+makes the PIA at the maximum AIME equal the target.</p>
+<p>These gates read the worker’s eligibility cohort. With <code class="docutils literal notranslate"><span class="pre">recompute_existing</span></code>,
+the switches, start year and fraction read the payment year instead, while the
+dollar threshold, maximum AIME and target still come from the worker’s
+eligibility cohort.</p>
+<p>The fraction is an ordinary dated parameter and holds forward like any other.
+The maximum AIME and target, and a dollar threshold where you supply one, need
+an entry dated January 1 of each cohort’s eligibility year; an earlier
+cohort’s entry never serves a later one. A cohort without a dollar threshold
+entry uses the fraction. Full price indexing likewise needs <code class="docutils literal notranslate"><span class="pre">full_price_indexing.in_effect</span></code>,
+its <code class="docutils literal notranslate"><span class="pre">start_year</span></code>, and a <code class="docutils literal notranslate"><span class="pre">real_wage_scale</span></code> dated for each cohort.</p>
+<p>Your reform settings supply the fraction or dollar path and the maximum AIME
+and target paths; PE-US computes none of them. With progressive indexing on,
+a cohort with neither a fraction nor a dollar threshold, or without its
+maximum AIME or target, raises an error rather than falling back to current
+law. On the reported-benefit route, that error covers only supported records:
+the positive reported amounts outside <code class="docutils literal notranslate"><span class="pre">_pia_ratio_unmodeled</span></code>. Under the default
+<code class="docutils literal notranslate"><span class="pre">supplied_claim_age</span></code> scenario, a retirement amount with no claim age counts as
+unmodeled and keeps a factor of one, so without claim ages no retirement amount
+moves and none raises this error. Disability and auxiliary amounts read no
+claim age, so a nonzero total doesn’t show that retirement amounts moved.
+Supply <code class="docutils literal notranslate"><span class="pre">social_security_retirement_claim_age_months</span></code>, or select <code class="docutils literal notranslate"><span class="pre">age_62</span></code>,
+<code class="docutils literal notranslate"><span class="pre">age_65</span></code>, <code class="docutils literal notranslate"><span class="pre">fra</span></code> or <code class="docutils literal notranslate"><span class="pre">age_70</span></code>, first; see “Supplied claim age and explicit
+scenarios” above. The fractions in the PE-US tests are illustrative and make no
+claim about any percentile.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">policyengine_core.reforms</span><span class="w"> </span><span class="kn">import</span> <span class="n">Reform</span>
+
+<span class="c1"># Illustrative values for one 2035 cohort. Add a maximum AIME and target</span>
+<span class="c1"># for every cohort the score reaches.</span>
+<span class="n">reform</span> <span class="o">=</span> <span class="n">Reform</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">"gov.contrib.ssa.pia.in_effect"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"2032-01-01"</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+        <span class="s2">"gov.contrib.ssa.pia.progressive_price_indexing.in_effect"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"2032-01-01"</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+        <span class="s2">"gov.contrib.ssa.pia.progressive_price_indexing.start_year"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"2032-01-01"</span><span class="p">:</span> <span class="mi">2032</span><span class="p">},</span>
+        <span class="s2">"gov.contrib.ssa.pia.progressive_price_indexing.bend_point_fraction"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"2032-01-01"</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">},</span>
+        <span class="s2">"gov.contrib.ssa.pia.progressive_price_indexing.maximum_aime"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"2035-01-01"</span><span class="p">:</span> <span class="mi">17_000</span><span class="p">},</span>
+        <span class="s2">"gov.contrib.ssa.pia.progressive_price_indexing.maximum_pia_target"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"2035-01-01"</span><span class="p">:</span> <span class="mi">5_100</span><span class="p">},</span>
+    <span class="p">},</span>
+    <span class="n">country_id</span><span class="o">=</span><span class="s2">"us"</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -659,6 +747,7 @@ population diagnostics and drift checks.</p>
 <li><a class="reference internal" href="#eligibility-years-and-auxiliary-identification">Eligibility years and auxiliary identification</a></li>
 <li><a class="reference internal" href="#named-annual-outputs">Named annual outputs</a></li>
 <li><a class="reference internal" href="#weighted-counts-and-scoring-limits">Weighted counts and scoring limits</a></li>
+<li><a class="reference internal" href="#price-indexing-inputs-you-supply">Price-indexing inputs you supply</a></li>
 </ul>
 </li>
 </ul>
