@@ -237,12 +237,14 @@ def test_reform_aggregates_keep_baseline_contrib_entries(
 # the simulation, not only the reform's target group.
 SHARED_CASH_PROGRAMS = {
     "spm_unit_benefits": {
+        "ak_energy_relief",
         "ca_capi",
         "ca_la_expectant_parent_payment",
         "ca_la_infant_supplement",
         "co_denver_property_tax_relief",
         "ma_eaedc",
         "nj_property_tax_relief",
+        "ny_drive_clean_rebate",
     },
     "household_benefits": {
         "ak_energy_relief",

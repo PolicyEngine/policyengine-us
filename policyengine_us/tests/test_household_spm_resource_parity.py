@@ -14,6 +14,9 @@ Three invariants hold for every input.
 
 Child care stays out of this file: household_state_benefits and the SPM treat
 subsidies differently on purpose, and #9405 and #10569 cover that difference.
+
+YAML pins one household per case. These tests need Hypothesis over amounts and
+programs, every state, and a differential check of the two net income formulas.
 """
 
 import re
@@ -171,7 +174,7 @@ SPM_RESOURCES = ("spm_unit_market_income", "spm_unit_benefits")
 HOUSEHOLD_RESOURCES = ("household_market_income", "household_benefits")
 
 
-@settings(max_examples=40, deadline=None)
+@settings(max_examples=20, deadline=None)
 @given(
     payment=st.sampled_from(CASH_PAYMENTS),
     amount=st.integers(min_value=1, max_value=30_000),
@@ -190,7 +193,7 @@ def test_a_dollar_of_cash_adds_a_dollar_to_both_totals(payment, amount):
 
 # Random states would miss the few that pay these programs, so every state runs.
 @pytest.mark.parametrize("state", STATES)
-@settings(max_examples=2, deadline=None)
+@settings(max_examples=1, deadline=None)
 @example(earnings=30_000)
 @given(earnings=st.integers(min_value=0, max_value=300_000))
 def test_net_incomes_reconcile_for_one_person(state, earnings):

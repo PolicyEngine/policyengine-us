@@ -139,6 +139,7 @@ def create_boost_middle_class_tax_credit() -> Reform:
                 "ca_la_infant_supplement",  # Los Angeles County.
                 "co_denver_property_tax_relief",  # Denver.
                 "ma_eaedc",  # Massachusetts.
+                "ak_energy_relief",
                 "nj_property_tax_relief",  # ANCHOR, Senior Freeze and Stay NJ.
                 "ny_drive_clean_rebate",
             ]
