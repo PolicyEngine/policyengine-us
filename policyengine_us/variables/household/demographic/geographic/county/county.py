@@ -10,30 +10,26 @@ from policyengine_us.tools.geography.county_helpers import (
 
 
 def latest_readable_county(simulation: Simulation):
-    """The county this simulation can read for its latest known period.
+    """The latest county this simulation was given and can read, if any.
+
+    Only inputs count. A county this simulation calculated belongs to its year:
+    read for a later year, it would keep a household in its old county after
+    ``state_fips`` moves it, and only when the earlier year ran first.
 
     The holder lists the periods of every array in its storage, whichever
     branch stored them. A branch reused for a later year holds its own values
-    for earlier years, which only a read with its branch name finds, so read
-    each period as this simulation would (its own value, then its ancestors',
-    then the default branch's), latest start first. Returns ``None`` when no
-    known period is readable.
+    for earlier years, which only a read with its branch name finds, so ask for
+    the input periods this branch reads and read with its name.
     """
     holder = simulation.get_holder("county")
-    known_periods = sorted(
-        set(holder.get_known_periods()),
-        key=lambda known_period: (
-            known_period.start,
-            known_period.stop,
-            str(known_period),
-        ),
-        reverse=True,
+    input_periods = holder.get_input_periods(simulation.branch_name)
+    if not input_periods:
+        return None
+    latest_period = max(
+        input_periods,
+        key=lambda period: (period.start, period.stop, str(period)),
     )
-    for known_period in known_periods:
-        array = holder.get_array(known_period, simulation.branch_name)
-        if array is not None:
-            return array
-    return None
+    return holder.get_array(latest_period, simulation.branch_name)
 
 
 class county(Variable):

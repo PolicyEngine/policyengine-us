@@ -35,6 +35,7 @@ from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
 from .tools.default_uprating import add_default_uprating
+from .tools.geography.state_assignment import reconcile_geography_with_state
 from .tools.period_branch import delete_input_values
 from .tools.social_security_inputs import (
     install_social_security_input_compatibility,
@@ -54,6 +55,7 @@ from policyengine_us.data.dataset_schema import (
 from typing import Annotated
 from spm_calculator.policyengine_adapter import build_policyengine_variables
 from policyengine_us.spm import (
+    DATASET_SOURCE_INPUTS,
     SPMSimulationMixin,
     clone_spm_system,
     create_spm_provider,
@@ -103,6 +105,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
     variables_dir = COUNTRY_DIR / "variables"
     _social_security_input_compatibility = True
     auto_carry_over_input_variables = True
+    source_input_variables = DATASET_SOURCE_INPUTS
     basic_inputs = [
         "state_name",
         "employment_income",
@@ -321,6 +324,7 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
 
         # Geography backfill: state_code_str-only input -> state_code enum.
         _backfill_state_code_from_str(self)
+        reconcile_geography_with_state(self)
 
 
 def _download_or_explain(dataset_str, download):
@@ -585,6 +589,7 @@ class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
         # Datasets carry state_fips, so this only fires for situations that
         # explicitly supply state_code_str.
         _backfill_state_code_from_str(self)
+        reconcile_geography_with_state(self)
 
         self.input_variables = [
             variable
