@@ -11,14 +11,22 @@ a county-keyed parameter lookup.
 So ``state_fips`` wins. A state label that disagrees takes the value
 ``state_fips`` implies, and local geography that sits outside the state becomes
 unknown for that household, as if the file had never given it. A logged warning
-says so, because the same contradiction can also mean a damaged file.
+says so, because the same contradiction can also mean a damaged file. Each year
+answers for what it reads, including what it carries from another year: a
+county stored for 2024 still sits in 2025 when ``state_fips`` changes between
+them.
 """
 
+from functools import lru_cache
 import logging
 
 import numpy as np
 import pandas as pd
 
+from policyengine_us.model_api import STATES
+from policyengine_us.tools.geography.county_helpers import (
+    load_county_fips_dataset,
+)
 from policyengine_us.variables.household.demographic.geographic.county.county_enum import (
     County,
 )
@@ -38,22 +46,34 @@ STATE_NAMING_GEOGRAPHY = (
     *COUNTY_NAMES,
     "congressional_district_geoid",
 )
-# Local geography that does not name its state, and what the model derives from
-# local geography. These cannot contradict state_fips on their own, and go with
-# the columns above when they do.
+# Values tied to a place that do not name its state. These cannot contradict
+# state_fips on their own, and go with the columns above when they do.
 OTHER_LOCAL_GEOGRAPHY = (
+    "average_home_energy_use_in_state",
     "cbsa_code",
-    "in_ny_mctd_zone_2",
-    "in_nyc",
-    "medicaid_rating_area",
     "place_fips",
     "puma",
     "sldl",
     "sldu",
-    "three_digit_zip_code",
     "vtd",
     "zcta",
     "zip_code",
+)
+# A stored value hides its variable's formula, so a stored copy of what the
+# model derives from local geography goes with that geography, and one of what
+# it derives from the state goes whenever state_fips is in force.
+DERIVED_FROM_LOCAL_GEOGRAPHY = (
+    "in_ny_mctd_zone_2",
+    "in_nyc",
+    "medicaid_rating_area",
+    "three_digit_zip_code",
+)
+DERIVED_FROM_STATE = (
+    *STATES,
+    "spm_unit_state_fips",
+    "state_group",
+    "state_group_str",
+    "tax_unit_state",
 )
 
 NO_STATE = 0
@@ -84,14 +104,32 @@ def _as_text(values):
     )
 
 
-def _state_at(states, period):
-    """The ``state_fips`` array in force at ``period``, carried forward."""
-    if period in states:
-        return states[period]
-    earlier = [known for known in states if known.start <= period.start]
+def _in_force(arrays, period):
+    """The array ``period`` reads from ``arrays``, carried forward."""
+    if period in arrays:
+        return arrays[period]
+    earlier = [known for known in arrays if known.start <= period.start]
     if earlier:
-        return states[max(earlier, key=lambda known: known.start)]
+        return arrays[max(earlier, key=lambda known: known.start)]
     return None
+
+
+def _read_at(name, arrays, period):
+    """The stored array ``period`` reads for the variable ``name``, if any."""
+    if name == "county" and arrays and period not in arrays:
+        # Its formula takes the latest stored county, whichever year that is.
+        return arrays[max(arrays, key=lambda known: known.start)]
+    return _in_force(arrays, period)
+
+
+def _geoid_text(value, length):
+    """``value`` as GEOID text, with the leading zeros a number loses."""
+    if isinstance(value, bytes):
+        value = value.decode()
+    if pd.isna(value):
+        return ""
+    text = str(value).removesuffix(".0")
+    return text.zfill(length) if text.isdigit() else text
 
 
 def _is_geoid(value, length):
@@ -101,16 +139,15 @@ def _is_geoid(value, length):
 
 def _state_named_by(name, value):
     """The state FIPS code a stored value names, or ``NO_STATE`` if none."""
-    if isinstance(value, bytes):
-        value = value.decode()
-    if not isinstance(value, str):
-        return NO_STATE
     if name in COUNTY_NAMES:
+        if isinstance(value, bytes):
+            value = value.decode()
+        if not isinstance(value, str):
+            return NO_STATE
         # "LOS_ANGELES_COUNTY_CA" names California; "UNKNOWN" names nothing.
         return FIPS_BY_STATE_CODE.get(value.rsplit("_", 1)[-1], NO_STATE)
-    if _is_geoid(value, GEOID_LENGTHS[name]):
-        return int(value[:2])
-    return NO_STATE
+    geoid = _geoid_text(value, GEOID_LENGTHS[name])
+    return int(geoid[:2]) if _is_geoid(geoid, GEOID_LENGTHS[name]) else NO_STATE
 
 
 def _outside_state(name, values, state):
@@ -132,7 +169,7 @@ def _align_state_labels(simulation, states):
     corrected = set()
     for name in STATE_LABELS:
         for period, values in _stored(simulation, name).items():
-            state = _state_at(states, period)
+            state = _in_force(states, period)
             if state is None:
                 continue
             expected = STATE_CODE_LOOKUP[state]
@@ -142,11 +179,21 @@ def _align_state_labels(simulation, states):
     return corrected
 
 
+def _drop_stored_state_results(simulation, states):
+    """Remove stored copies of what the model derives from the state."""
+    for name in DERIVED_FROM_STATE:
+        for period in _stored(simulation, name):
+            if _in_force(states, period) is not None:
+                simulation.get_holder(name).delete_arrays(
+                    period, simulation.branch_name
+                )
+
+
 def _forget_local_geography(simulation, period, outside, state):
     """Reset each household's local geography to unknown where ``outside``."""
     first_counties = first_county_by_state()
     for name in (*STATE_NAMING_GEOGRAPHY, *OTHER_LOCAL_GEOGRAPHY):
-        values = _stored(simulation, name).get(period)
+        values = _read_at(name, _stored(simulation, name), period)
         if values is None:
             continue
         if name in COUNTY_NAMES:
@@ -165,28 +212,34 @@ def _forget_local_geography(simulation, period, outside, state):
                 replaced = np.array(values, copy=True)
             replaced[outside] = variable.default_value
         simulation.set_input(name, period, replaced)
+    for name in DERIVED_FROM_LOCAL_GEOGRAPHY:
+        simulation.get_holder(name).delete_arrays(period, simulation.branch_name)
 
 
 def _reconcile(simulation, states):
     """Apply ``state_fips`` to one simulation and report what changed."""
     corrected_labels = _align_state_labels(simulation, states)
+    _drop_stored_state_results(simulation, states)
     forgotten = {}
     conflicting = set()
     periods = sorted(
         {
-            period
-            for name in STATE_NAMING_GEOGRAPHY
-            for period in _stored(simulation, name)
+            *states,
+            *(
+                period
+                for name in STATE_NAMING_GEOGRAPHY
+                for period in _stored(simulation, name)
+            ),
         },
         key=lambda period: period.start,
     )
     for period in periods:
-        state = _state_at(states, period)
+        state = _in_force(states, period)
         if state is None:
             continue
         outside = np.zeros(len(state), dtype=bool)
         for name in STATE_NAMING_GEOGRAPHY:
-            values = _stored(simulation, name).get(period)
+            values = _read_at(name, _stored(simulation, name), period)
             if values is not None:
                 contradicts = _outside_state(name, values, state)
                 if contradicts.any():
@@ -220,22 +273,35 @@ def _warn_if_state_changes_between_years(states):
         )
 
 
-def _warn_if_county_is_malformed(simulation):
-    """Say when ``county_fips`` lost its leading zero, as ``read_csv`` leaves it."""
+@lru_cache(maxsize=1)
+def _known_county_fips():
+    return frozenset(load_county_fips_dataset()["county_fips"])
+
+
+def _warn_about_county_codes(simulation):
+    """Say when ``county_fips`` cannot give a household its county."""
     for values in _stored(simulation, "county_fips").values():
-        distinct = pd.unique(np.asarray(values, dtype=object))
-        decoded = [
-            value.decode() if isinstance(value, bytes) else value for value in distinct
-        ]
-        if not all(
-            value == "" or _is_geoid(value, GEOID_LENGTHS["county_fips"])
-            for value in decoded
-        ):
+        held = {
+            value.decode() if isinstance(value, bytes) else value
+            for value in pd.unique(np.asarray(values, dtype=object))
+            if not pd.isna(value) and value != ""
+        }
+        text = {value for value in held if isinstance(value, str)}
+        if text != held:
             logging.warning(
-                "county_fips holds values other than five-digit text, so "
-                "county-keyed rules use the first county in those states. Read "
-                'the column as text, for example read_csv(..., dtype={"county_fips": '
+                "county_fips holds numbers, not five-digit text. County-keyed "
+                "rules use the first county in the state for any code that lost "
+                "a leading zero, and county SPM thresholds refuse the column. "
+                'Read it as text, for example read_csv(..., dtype={"county_fips": '
                 "str})."
+            )
+            return
+        unknown = text - _known_county_fips() if text else text
+        if unknown:
+            logging.warning(
+                f"county_fips holds {len(unknown):,} code(s) that name no county, "
+                f"such as {min(unknown)}, so those households use the first "
+                "county in their state for county-keyed rules."
             )
             return
 
@@ -244,12 +310,12 @@ def reconcile_geography_with_state(simulation):
     """Make a dataset simulation's geography agree with its ``state_fips``.
 
     Call this once the dataset has loaded, and before anything is calculated.
-    A reform's baseline gets the same treatment. The input stays recorded as an
-    input, so an export of the simulation holds the reconciled geography.
+    A reform's baseline gets the same treatment. Geography the reconciliation
+    rewrites stays recorded as an input, so an export of the simulation holds it.
     """
     if not simulation.is_over_dataset:
         return
-    _warn_if_county_is_malformed(simulation)
+    _warn_about_county_codes(simulation)
     states = _stored(simulation, "state_fips")
     if not states:
         return
@@ -258,8 +324,9 @@ def reconcile_geography_with_state(simulation):
     )
     if unknown:
         raise ValueError(
-            f"state_fips holds code(s) that name no state: "
-            f"{', '.join(str(code) for code in sorted(unknown))}."
+            f"state_fips holds code(s) this model has no state for: "
+            f"{', '.join(str(code) for code in sorted(unknown))}. It covers the "
+            "50 states, DC and Puerto Rico."
         )
     _warn_if_state_changes_between_years(states)
 
@@ -277,7 +344,7 @@ def reconcile_geography_with_state(simulation):
         households = len(next(iter(states.values())))
         logging.warning(
             f"state_fips puts up to {max(forgotten.values()):,} of {households:,} "
-            f"household(s) outside the {', '.join(sorted(conflicting))} stored "
+            f"household(s) outside the {', '.join(sorted(conflicting))} read "
             f"for {_span(forgotten)}. That local geography is unknown for those "
             "households, so county-keyed rules use the first county in the "
             'state, and SPM thresholds need spm={"geography_kind": "national"}.'

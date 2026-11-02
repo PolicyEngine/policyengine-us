@@ -187,7 +187,41 @@ def test_values_derived_from_a_stale_county_leave_with_it(tmp_path):
 
     assert not simulation.calculate("in_nyc", YEAR).any()
     assert set(simulation.calculate("three_digit_zip_code", YEAR).values) == {""}
-    assert set(simulation.calculate("medicaid_rating_area", YEAR).values) == {0}
+    without_them = simulate(with_state(read_survey(tmp_path), MISSISSIPPI))
+    assert np.array_equal(
+        simulation.calculate("medicaid_rating_area", YEAR).values,
+        without_them.calculate("medicaid_rating_area", YEAR).values,
+    )
+
+
+@pytest.mark.parametrize(
+    "stored, value, later",
+    [
+        ("state_group", "CONTIGUOUS_US", ("state_group", "AK")),
+        ("state_group_str", "CONTIGUOUS_US", ("state_group_str", "AK")),
+        ("tax_unit_state", "CA", ("tax_unit_state", "AK")),
+        ("spm_unit_state_fips", 6, ("spm_unit_state_fips", 2)),
+        ("CA", True, ("CA", False)),
+    ],
+)
+def test_what_the_state_decides_follows_state_fips(tmp_path, stored, value, later):
+    people = with_state(read_survey(tmp_path), 2)
+    people[f"{stored}__{YEAR}"] = value
+
+    simulation = simulate(people)
+
+    name, expected = later
+    assert set(simulation.calculate(name, YEAR).values) == {expected}
+
+
+def test_a_stale_state_group_does_not_set_the_poverty_guideline(tmp_path):
+    people = with_state(read_survey(tmp_path), 2)
+    clean = simulate(people).calculate("snap_fpg", f"{YEAR}-01").values
+    people[f"state_group__{YEAR}"] = "CONTIGUOUS_US"
+
+    stale = simulate(people).calculate("snap_fpg", f"{YEAR}-01").values
+
+    assert np.array_equal(stale, clean)
 
 
 def test_only_households_outside_the_state_lose_their_geography(tmp_path):
@@ -278,19 +312,116 @@ def test_every_year_of_a_multiyear_file_changing_stays_quiet(tmp_path, caplog):
     assert not state_warnings(caplog)
 
 
-def test_a_county_read_as_a_number_gets_a_warning(tmp_path, caplog):
+@pytest.mark.parametrize("county", [6037, 6037.0])
+def test_a_county_read_as_a_number_says_what_it_costs(tmp_path, caplog, county):
     people = with_state(read_survey(tmp_path), 6)
-    people[f"county_fips__{YEAR}"] = 6037
+    people[f"county_fips__{YEAR}"] = county
 
     with caplog.at_level(logging.WARNING):
-        simulate(people)
+        simulation = simulate(people)
 
     assert any("five-digit text" in record.getMessage() for record in caplog.records)
+    assert set(simulation.calculate("county", YEAR).values) == {"ALAMEDA_COUNTY_CA"}
+    with pytest.raises(SPMInputError, match="five-digit string"):
+        simulation.calculate("spm_unit_spm_threshold", YEAR)
 
 
-def test_a_state_that_does_not_exist_is_refused(tmp_path):
-    with pytest.raises(ValueError, match="99"):
-        simulate(with_state(read_survey(tmp_path), 99))
+def test_a_county_code_that_is_five_digits_as_a_number_still_resolves(tmp_path, caplog):
+    people = with_state(read_survey(tmp_path), 36)
+    people[f"county_fips__{YEAR}"] = 36061
+
+    with caplog.at_level(logging.WARNING):
+        simulation = simulate(people)
+
+    assert any("five-digit text" in record.getMessage() for record in caplog.records)
+    assert set(simulation.calculate("county", YEAR).values) == {"NEW_YORK_COUNTY_NY"}
+
+
+def test_a_county_read_as_text_stays_quiet(tmp_path, caplog):
+    people = with_state(read_survey(tmp_path), 6)
+    people[f"county_fips__{YEAR}"] = LOS_ANGELES_COUNTY
+
+    with caplog.at_level(logging.WARNING):
+        simulation = simulate(people)
+
+    assert not caplog.records
+    assert set(simulation.calculate("county", YEAR).values) == {"LOS_ANGELES_COUNTY_CA"}
+
+
+@pytest.mark.parametrize("county", [36061, 36061.0, "36061", 6037])
+def test_a_county_read_as_a_number_still_names_its_state(tmp_path, caplog, county):
+    people = with_state(read_survey(tmp_path), 27)
+    people[f"county_fips__{YEAR}"] = county
+
+    with caplog.at_level(logging.WARNING):
+        simulation = simulate(people)
+
+    assert set(simulation.calculate("county", YEAR).values) == {"AITKIN_COUNTY_MN"}
+    assert any("outside the county_fips" in text for text in state_warnings(caplog))
+
+
+def test_a_blank_county_stays_blank_and_quiet(tmp_path, caplog):
+    people = with_state(read_survey(tmp_path), 6)
+    people[f"county_fips__{YEAR}"] = np.nan
+
+    with caplog.at_level(logging.WARNING):
+        simulation = simulate(people)
+
+    assert not caplog.records
+    assert set(simulation.calculate("county", YEAR).values) == {"ALAMEDA_COUNTY_CA"}
+
+
+@pytest.mark.parametrize("county", ["06999", "6037", "6037.0"])
+def test_a_code_that_names_no_county_gets_a_warning(tmp_path, caplog, county):
+    people = with_state(read_survey(tmp_path), 6)
+    people[f"county_fips__{YEAR}"] = county
+
+    with caplog.at_level(logging.WARNING):
+        simulation = simulate(people)
+
+    assert any("name no county" in record.getMessage() for record in caplog.records)
+    assert set(simulation.calculate("county", YEAR).values) == {"ALAMEDA_COUNTY_CA"}
+
+
+@pytest.mark.parametrize("column", ["county_fips", "county"])
+def test_a_county_from_an_earlier_year_yields_to_the_state(tmp_path, column):
+    people = with_state(read_survey(tmp_path), MISSISSIPPI)
+    people[f"{column}__{YEAR - 1}"] = (
+        LOS_ANGELES_COUNTY if column == "county_fips" else "LOS_ANGELES_COUNTY_CA"
+    )
+
+    simulation = simulate(people)
+
+    assert set(simulation.calculate("county", YEAR).values) == {"ADAMS_COUNTY_MS"}
+
+
+def test_a_county_from_a_later_year_yields_to_the_state(tmp_path):
+    people = with_state(read_survey(tmp_path), MISSISSIPPI)
+    people[f"county__{YEAR + 1}"] = "LOS_ANGELES_COUNTY_CA"
+
+    simulation = simulate(people)
+
+    assert set(simulation.calculate("county", YEAR).values) == {"ADAMS_COUNTY_MS"}
+    assert set(simulation.calculate("county", YEAR + 1).values) == {"ADAMS_COUNTY_MS"}
+
+
+def test_a_state_change_between_years_ends_the_county_it_contradicts(tmp_path):
+    people = with_state(read_survey(tmp_path), 6)
+    people[f"state_fips__{YEAR + 1}"] = MISSISSIPPI
+    people[f"county_fips__{YEAR}"] = LOS_ANGELES_COUNTY
+
+    simulation = simulate(people)
+
+    assert set(simulation.calculate("county", YEAR).values) == {"LOS_ANGELES_COUNTY_CA"}
+    assert set(simulation.calculate("county", YEAR + 1).values) == {"ADAMS_COUNTY_MS"}
+    assert set(simulation.calculate("county_fips", YEAR).values) == {LOS_ANGELES_COUNTY}
+    assert set(simulation.calculate("county_fips", YEAR + 1).values) == {""}
+
+
+@pytest.mark.parametrize("fips", [0, 60, 66, 69, 78, 99])
+def test_a_code_with_no_state_in_the_model_is_refused(tmp_path, fips):
+    with pytest.raises(ValueError, match=f"no state for: {fips}"):
+        simulate(with_state(read_survey(tmp_path), fips))
 
 
 def test_a_flat_file_without_state_fips_keeps_the_default(tmp_path, caplog):
@@ -385,3 +516,30 @@ def test_state_fips_always_decides_the_state(tmp_path_factory, fips, stale):
     }
     county = set(simulation.calculate("county", YEAR).values)
     assert all(name.endswith(f"_{STATE_CODE_BY_FIPS[fips]}") for name in county)
+
+
+@settings(
+    max_examples=12,
+    deadline=None,
+    suppress_health_check=[HealthCheck.function_scoped_fixture],
+)
+@given(
+    first=st.sampled_from(sorted(STATE_CODE_BY_FIPS)),
+    second=st.sampled_from(sorted(STATE_CODE_BY_FIPS)),
+    stale=st.sampled_from(sorted(STATE_CODE_BY_FIPS)),
+    county_year=st.sampled_from([YEAR - 1, YEAR, YEAR + 1]),
+)
+def test_every_year_reads_a_county_in_its_own_state(
+    tmp_path_factory, first, second, stale, county_year
+):
+    """Whichever year a county sits in, each year's county follows its state."""
+    people = read_survey(tmp_path_factory.mktemp("survey"))
+    people[f"state_fips__{YEAR}"] = first
+    people[f"state_fips__{YEAR + 1}"] = second
+    people[f"county_fips__{county_year}"] = f"{stale:02d}001"
+
+    simulation = simulate(people)
+
+    for year, fips in ((YEAR, first), (YEAR + 1, second)):
+        county = set(simulation.calculate("county", year).values)
+        assert all(name.endswith(f"_{STATE_CODE_BY_FIPS[fips]}") for name in county)
