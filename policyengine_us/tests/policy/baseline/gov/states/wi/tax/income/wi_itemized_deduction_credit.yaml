@@ -26,6 +26,226 @@
   output:
     wi_itemized_deduction_credit_potential: 0
 
+# 2020 Form 1 instructions, PDF p. 17 (printed p. 15), line 11:
+# https://www.revenue.wi.gov/TaxForms2020/2020-Form1-inst.pdf#page=17
+# Schedule 1, PDF p. 5, lines 3 and 8-9:
+# https://www.revenue.wi.gov/TaxForms2020/2020-Form1.pdf#page=5
+# Eligible charity = 10,000 - 300 = 9,700; credit = 9,700 * .05 = 485.
+- name: Wisconsin 2020 credit excludes gifts already deducted above the line
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    tax_unit_itemizes: false
+    charitable_deduction: 10_000
+    charitable_contributions_ald: 300
+    wi_standard_deduction: 0
+    medical_expense_deduction: 0
+    interest_deduction: 0
+    deductible_mortgage_insurance_premiums: 0
+    casualty_loss_deduction: 0
+  output:
+    wi_itemized_deduction_credit_charitable_deduction: 9_700
+    wi_itemized_deduction_credit_potential: 485
+
+- name: Wisconsin 2020 credit retains gifts for federal itemizers
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    tax_unit_itemizes: true
+    charitable_deduction: 10_000
+    charitable_cash_donations: 10_000
+    wi_standard_deduction: 0
+    medical_expense_deduction: 0
+    interest_deduction: 0
+    deductible_mortgage_insurance_premiums: 0
+    casualty_loss_deduction: 0
+  output:
+    charitable_contributions_ald: 0
+    wi_itemized_deduction_credit_charitable_deduction: 10_000
+    wi_itemized_deduction_credit_potential: 500
+
+# 2020 instructions, PDF p. 37: the standard deduction is zero at 126,499 or over.
+# https://www.revenue.wi.gov/TaxForms2020/2020-Form1-inst.pdf#page=37
+# ALD = min(10,000, 300) = 300; AGI = 150,000 - 300 = 149,700.
+# Eligible charity = 10,000 - 300 = 9,700; potential credit = 9,700 * .05 = 485.
+- name: Wisconsin 2020 non-itemizer credit computes the claimed deduction from gifts
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 150_000
+        charitable_cash_donations: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [person]
+        state_code: WI
+  output:
+    charitable_contributions_ald: 300
+    adjusted_gross_income: 149_700
+    charitable_deduction: 10_000
+    wi_itemized_deduction_credit_charitable_deduction: 9_700
+    wi_standard_deduction: 0
+    wi_itemized_deduction_credit_potential: 485
+
+# Schedule A is at most 10,000 gifts + 10,000 SALT = 20,000, below the
+# 24,800 joint standard deduction, so the computed federal choice is not to itemize.
+# ALD = 300; AGI = 130,000 - 300 = 129,700; WI standard deduction = 0.
+# Eligible charity = 9,700; potential credit = 9,700 * .05 = 485.
+- name: Wisconsin 2020 joint credit computes federal non-itemization and the claimed deduction
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 130_000
+        charitable_cash_donations: 10_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WI
+  output:
+    filing_status: JOINT
+    tax_unit_itemizes: false
+    charitable_contributions_ald: 300
+    adjusted_gross_income: 129_700
+    charitable_deduction: 10_000
+    wi_itemized_deduction_credit_charitable_deduction: 9_700
+    wi_standard_deduction: 0
+    wi_itemized_deduction_credit_potential: 485
+
+# Wis. Stat. 71.07(5)(a)-(c):
+# https://docs.legis.wisconsin.gov/statutes/statutes/71/i/07/5
+# 2021 Schedule 1 instructions (hypothetical Schedule A):
+# https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf#page=16
+# 2021 Form 1, Schedule 1, lines 3 and 5-9:
+# https://www.revenue.wi.gov/TaxForms2021/2021-Form1.pdf#page=4
+# Cash gifts = 10,000; WI standard deduction = 0 at this income.
+# 2021 standard-deduction table, final row: all statuses zero above 128,113.
+# https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf#page=36
+# The same gift is counted once: (10,000 - 0) * .05 = 500.
+# The federal 300 nonitemizer allowance is not an additional contribution.
+- name: Wisconsin 2021 credit counts each charitable gift once
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 150_000
+        charitable_cash_donations: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: WI
+  output:
+    wi_standard_deduction: 0
+    wi_itemized_deduction_credit_potential: 500
+    wi_itemized_deduction_credit: 500
+
+# Before 2020 the base formula applies: the federal charitable deduction, unchanged.
+- name: Wisconsin 2019 credit counts the federal charitable deduction
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 150_000
+        charitable_cash_donations: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: WI
+  output:
+    wi_standard_deduction: 0
+    wi_itemized_deduction_credit_potential: 500
+    wi_itemized_deduction_credit: 500
+
+# 2022 has no federal nonitemizer allowance, and should already pass.
+- name: Wisconsin 2022 charitable credit control
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 150_000
+        charitable_cash_donations: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: WI
+  output:
+    wi_standard_deduction: 0
+    wi_itemized_deduction_credit_potential: 500
+    wi_itemized_deduction_credit: 500
+
+# 2022 Schedule 1, lines 1-9:
+# https://www.revenue.wi.gov/TaxForms2022/2022-Form1.pdf#page=4
+# Medical deduction = 15,000 - (150,000 * .075) = 3,750.
+# Credit = (3,750 + 10,000 interest + 10,000 charity - 0) * .05.
+- name: Wisconsin 2022 medical interest and charitable credit control
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 150_000
+        charitable_cash_donations: 10_000
+        other_medical_expenses: 15_000
+        deductible_interest_expense: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: WI
+  output:
+    medical_expense_deduction: 3_750
+    wi_standard_deduction: 0
+    wi_itemized_deduction_credit_potential: 1_187.50
+    wi_itemized_deduction_credit: 1_187.50
+
+# Wis. Stat. 71.07(5)(a)2 and 7 exclude SALT and miscellaneous deductions.
+- name: Wisconsin credit excludes miscellaneous deductions and SALT
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    wi_standard_deduction: 0
+    misc_deduction: 5_000
+    salt_deduction: 8_000
+  output:
+    wi_itemized_deduction_credit_potential: 0
+
 - name: WI excludes mortgage insurance premiums in 2021.
   period: 2021
   input:
