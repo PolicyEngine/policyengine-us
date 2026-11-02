@@ -1,0 +1,161 @@
+# The income standard is 150% of the poverty guideline as a monthly amount rounded to
+# the nearest dollar (8.150.100.9 D and 8.150.520.15 NMAC; FFY2026 and FFY2027 Point
+# and Income Guides); the annual limit is 12 times that monthly amount. FFY2026 uses
+# the 2025 guidelines (15,650 + 5,500 per added person) and FFY2027 the 2026
+# guidelines (15,960 + 5,680). Household size counts citizens and qualified
+# non-citizens only (8.150.410.13 and 8.150.410.15 NMAC).
+
+- name: Case 1, an undocumented member is excluded from household size so the FFY2026 size-one limit applies.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 42
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_liheap_household_size: 1
+    # round(15,650 x 1.5 / 12) = round(1,956.25) = 1,956; 1,956 x 12
+    nm_liheap_income_limit: 23_472
+
+- name: Case 2, an eight-person household uses the FFY2026 6,769 monthly limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40}
+      person2: {age: 38}
+      person3: {age: 16}
+      person4: {age: 14}
+      person5: {age: 12}
+      person6: {age: 10}
+      person7: {age: 8}
+      person8: {age: 6}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: NM
+  output:
+    # round(54,150 x 1.5 / 12) = round(6,768.75) = 6,769; 6,769 x 12
+    nm_liheap_income_limit: 81_228
+
+- name: Case 3, a nine-person household extends the FFY2026 limit through the poverty guideline formula.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 42}
+      person2: {age: 40}
+      person3: {age: 17}
+      person4: {age: 16}
+      person5: {age: 14}
+      person6: {age: 12}
+      person7: {age: 10}
+      person8: {age: 8}
+      person9: {age: 7}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: NM
+  output:
+    # round((15,650 + 5,500 x 8) x 1.5 / 12) = round(7,456.25) = 7,456; 7,456 x 12
+    nm_liheap_income_limit: 89_472
+
+- name: Case 4, an eight-person household uses the FFY2027 6,965 monthly limit.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40}
+      person2: {age: 38}
+      person3: {age: 16}
+      person4: {age: 14}
+      person5: {age: 12}
+      person6: {age: 10}
+      person7: {age: 8}
+      person8: {age: 6}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: NM
+  output:
+    # 55,720 x 1.5 / 12 = 6,965; 6,965 x 12
+    nm_liheap_income_limit: 83_580
+
+- name: Case 5, a nine-person household extends the FFY2027 limit through the poverty guideline formula.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 42}
+      person2: {age: 40}
+      person3: {age: 17}
+      person4: {age: 16}
+      person5: {age: 14}
+      person6: {age: 12}
+      person7: {age: 10}
+      person8: {age: 8}
+      person9: {age: 7}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: NM
+  output:
+    # (15,960 + 5,680 x 8) x 1.5 / 12 = 7,675; 7,675 x 12
+    nm_liheap_income_limit: 92_100
+
+- name: Case 6, a household with no citizen or qualified non-citizen member has size zero and no limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_liheap_household_size: 0
+    nm_liheap_income_limit: 0

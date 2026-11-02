@@ -15,7 +15,10 @@ class ga_low_income_credit_potential(Variable):
         # "multiplied by the number of dependents which the taxpayer is entitled to claim."
         # The tax form excludes adult dependents:
         # "Exemptions are self, spouse and natural or legally adopted children"
-        exemptions = tax_unit("exemptions_count", period)
+        # Georgia counts its own exemptions (O.C.G.A. 48-7A-3 deems each joint
+        # spouse a dependent), not the federal count, which leaves out a
+        # filer who can be claimed as a dependent.
+        exemptions = tax_unit("tax_unit_size", period)
         p = parameters(period).gov.states.ga.tax.income.credits.low_income
         # age threshold
         age_threshold = p.supplement_age_eligibility

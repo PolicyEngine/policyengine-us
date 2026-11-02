@@ -155,3 +155,33 @@
     co_pension_subtraction_income: 15_000
     co_pension_subtraction_indv: 15_000
 
+- name: Filer under 55 with military retirement survivor benefits subtracts up to $20,000 under Book 104 line 4
+  period: 2025
+  input:
+    state_code: CO
+    age: 45
+    co_social_security_subtraction_indv: 0
+    military_retirement_pay_survivors: 18_000
+    co_pension_subtraction_indv_eligible: true
+  output:
+    co_pension_subtraction_indv: 18_000
+
+- name: Only taxable disability benefits count toward the pension subtraction.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 60
+        is_tax_unit_head: true
+        disability_benefits: 10_000
+        tax_exempt_disability_benefits: 4_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    # 10,000 - 4,000 = 6,000.
+    co_pension_subtraction_income: 6_000

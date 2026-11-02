@@ -1,0 +1,693 @@
+# HUD PIH 2023-27 G.11 and PIH 2024-38 IV.B.1 exclude qualifying assisted-home care.
+# wi_ssi_e_for_home_care is true when the SSI-E pays an assisted-family member's care that enables continued residence.
+# Annual SSI-E = 4*95.99 + 8*105.59 = 1228.68; regular SSI remains counted.
+# https://www.hud.gov/sites/dfiles/OCHCO/documents/2023-27pihn.pdf#page=81
+- name: Case 1, SSI-E paying an adult child in the assisted unit for home care is excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        person_id: 1
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_household_head: true
+        pre_subsidy_rent: 12_000
+        wi_ssi_e_certified: true
+        wi_ssi_e_for_home_care: true
+      person2:
+        age: 30
+        person_id: 2
+        parent_1_id: 1
+        is_household_head: false
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        receives_housing_assistance: true
+    households:
+      home:
+        members: [person1, person2]
+        state_code: WI
+        county_fips: '55079'
+        bedrooms: 2
+        tenant_pays_utilities: false
+  output:
+    wi_ssi_e: [1_228.68, 0]
+    wi_ssp_countable_for_hud: [1_072.4, 0]
+    hud_annual_income: 13_000.4
+    housing_assistance: 8_264.88
+
+- name: Case 2, default unverified home-care qualification keeps SSI-E countable.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        person_id: 1
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_household_head: true
+        pre_subsidy_rent: 12_000
+        wi_ssi_e_certified: true
+        wi_ssi_e_for_home_care: false
+      person2:
+        age: 30
+        person_id: 2
+        parent_1_id: 1
+        is_household_head: false
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        receives_housing_assistance: true
+    households:
+      home:
+        members: [person1, person2]
+        state_code: WI
+        county_fips: '55079'
+        bedrooms: 2
+        tenant_pays_utilities: false
+  output:
+    wi_ssp_countable_for_hud: [2_301.08, 0]
+    hud_annual_income: 14_229.08
+    housing_assistance: 7_896.28
+
+- name: Case 3, blindness establishes the HUD disability for the home-care exclusion.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        person_id: 1
+        is_blind: true
+        is_household_head: true
+        pre_subsidy_rent: 12_000
+        wi_ssi_e_certified: true
+        wi_ssi_e_for_home_care: true
+      person2:
+        age: 30
+        person_id: 2
+        parent_1_id: 1
+        is_household_head: false
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        receives_housing_assistance: true
+    households:
+      home:
+        members: [person1, person2]
+        state_code: WI
+        county_fips: '55079'
+        bedrooms: 2
+        tenant_pays_utilities: false
+  output:
+    # Blindness passes the HUD disability test: 2,301.08 - 1,228.68 SSI-E = 1,072.40.
+    wi_ssp_countable_for_hud: [1_072.4, 0]
+
+- name: Case 4, Social Security disability benefits establish the HUD disability for an aged recipient.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        # Aged SSI recipient still on SSDI before full retirement age.
+        age: 66
+        person_id: 1
+        is_household_head: true
+        pre_subsidy_rent: 12_000
+        # Wisconsin average Social Security benefit of disabled workers who also
+        # receive SSI, $698.90 a month (SSA SSI Annual Statistical Report 2024,
+        # Table 16): 698.90 * 12 = 8,386.80.
+        social_security_disability: 8_386.8
+        wi_ssi_e_certified: true
+        wi_ssi_e_for_home_care: true
+      person2:
+        age: 30
+        person_id: 2
+        parent_1_id: 1
+        is_household_head: false
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        receives_housing_assistance: true
+    households:
+      home:
+        members: [person1, person2]
+        state_code: WI
+        county_fips: '55079'
+        bedrooms: 2
+        tenant_pays_utilities: false
+  output:
+    # SSI = 994 - (698.90 - 20) = 315.10 a month; 315.10 * 12 = 3,781.20.
+    ssi: [3_781.2, 0]
+    # SSDI receipt passes the HUD disability test: 2,301.08 - 1,228.68 = 1,072.40.
+    wi_ssp_countable_for_hud: [1_072.4, 0]
+
+- name: Case 5, age-only eligibility does not establish the HUD disability exclusion.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        person_id: 1
+        is_disabled: false
+        meets_ssi_disability_criteria: false
+        is_household_head: true
+        pre_subsidy_rent: 12_000
+        wi_ssi_e_certified: true
+        wi_ssi_e_for_home_care: true
+      person2:
+        age: 30
+        person_id: 2
+        parent_1_id: 1
+        is_household_head: false
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        receives_housing_assistance: true
+    households:
+      home:
+        members: [person1, person2]
+        state_code: WI
+        county_fips: '55079'
+        bedrooms: 2
+        tenant_pays_utilities: false
+  output:
+    wi_ssp_countable_for_hud: [2_301.08, 0]
+
+- name: Case 6, care by a co-resident outside the assisted SPM unit keeps SSI-E countable.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        person_id: 1
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_household_head: true
+        pre_subsidy_rent: 12_000
+        wi_ssi_e_certified: true
+        # The caregiver is not a member of the assisted family.
+        wi_ssi_e_for_home_care: false
+      person2:
+        age: 30
+        person_id: 2
+        parent_1_id: 1
+        is_household_head: false
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    spm_units:
+      unit1:
+        members: [person1]
+        receives_housing_assistance: true
+      unit2:
+        members: [person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: WI
+        county_fips: '55079'
+        bedrooms: 2
+        tenant_pays_utilities: false
+  output:
+    wi_ssp_countable_for_hud: [2_301.08, 0]
+
+- name: Case 7, care by an adult child living in another household keeps SSI-E countable.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        person_id: 1
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_household_head: true
+        pre_subsidy_rent: 12_000
+        wi_ssi_e_certified: true
+        # The caregiver lives outside the assisted unit.
+        wi_ssi_e_for_home_care: false
+      person2:
+        age: 30
+        person_id: 2
+        parent_1_id: 1
+        is_household_head: false
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1]
+        receives_housing_assistance: true
+      other:
+        members: [person2]
+    households:
+      home:
+        members: [person1]
+        state_code: WI
+        county_fips: '55079'
+        bedrooms: 2
+        tenant_pays_utilities: false
+      other:
+        members: [person2]
+        state_code: WI
+        county_fips: '55079'
+  output:
+    wi_ssp_countable_for_hud: [2_301.08, 0]
+
+- name: Case 8, a medical-facility month keeps continued SSI-E countable.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        person_id: 1
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_household_head: true
+        pre_subsidy_rent: 12_000
+        wi_ssi_e_certified: true
+        wi_ssi_e_for_home_care: true
+        ssi_lives_in_medical_treatment_facility:
+          2026-05: true
+        ssi_medicaid_pays_majority_of_care:
+          2026-05: true
+        wi_ssp_institutional_continuation:
+          2026-05: true
+      person2:
+        age: 30
+        person_id: 2
+        parent_1_id: 1
+        is_household_head: false
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        receives_housing_assistance: true
+    households:
+      home:
+        members: [person1, person2]
+        state_code: WI
+        county_fips: '55079'
+        bedrooms: 2
+        tenant_pays_utilities: false
+  output:
+    wi_ssi_e:
+      2026-05: [105.59, 0]
+    wi_ssp_countable_for_hud:
+      2026-05: [197.75, 0]
+
+- name: Case 9, the home-care exclusion holds across the May rate change.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        person_id: 1
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_household_head: true
+        pre_subsidy_rent: 12_000
+        wi_ssi_e_certified: true
+        wi_ssi_e_for_home_care: true
+      person2:
+        age: 30
+        person_id: 2
+        parent_1_id: 1
+        is_household_head: false
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        receives_housing_assistance: true
+    households:
+      home:
+        members: [person1, person2]
+        state_code: WI
+        county_fips: '55079'
+        bedrooms: 2
+        tenant_pays_utilities: false
+  output:
+    wi_ssp_countable_for_hud:
+      2026-04: [83.78, 0]
+      2026-05: [92.16, 0]
+
+- name: Case 10, home-care inputs cannot exclude regular SSI when no SSI-E is awarded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        person_id: 1
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_household_head: true
+        pre_subsidy_rent: 12_000
+        wi_ssi_e_certified: false
+        wi_ssi_e_for_home_care: true
+      person2:
+        age: 30
+        person_id: 2
+        parent_1_id: 1
+        is_household_head: false
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        receives_housing_assistance: true
+    households:
+      home:
+        members: [person1, person2]
+        state_code: WI
+        county_fips: '55079'
+        bedrooms: 2
+        tenant_pays_utilities: false
+  output:
+    wi_ssi_e: [0, 0]
+    wi_ssp_countable_for_hud: [1_072.4, 0]
+
+- name: Case 11, with two adult children in the assisted unit only the recipient's SSI-E is excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        person_id: 1
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_household_head: true
+        pre_subsidy_rent: 12_000
+        wi_ssi_e_certified: true
+        wi_ssi_e_for_home_care: true
+      person2:
+        age: 30
+        person_id: 2
+        parent_1_id: 1
+        is_household_head: false
+      person3:
+        age: 31
+        person_id: 3
+        parent_1_id: 1
+        is_household_head: false
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+      third:
+        members: [person3]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+      third:
+        members: [person3]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+      third:
+        members: [person3]
+    spm_units:
+      unit:
+        members: [person1, person2, person3]
+        receives_housing_assistance: true
+    households:
+      home:
+        members: [person1, person2, person3]
+        state_code: WI
+        county_fips: '55079'
+        bedrooms: 2
+        tenant_pays_utilities: false
+  output:
+    # 2,301.08 - 1,228.68 SSI-E = 1,072.40; the adult children have no supplement.
+    wi_ssp_countable_for_hud: [1_072.4, 0, 0]
+
+- name: Case 12, qualifying SSI-E exclusion leaves the derived caretaker supplement countable.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        person_id: 1
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_household_head: true
+        pre_subsidy_rent: 12_000
+        wi_ssi_e_certified: true
+        wi_ssi_e_for_home_care: true
+      person2:
+        age: 30
+        person_id: 2
+        parent_1_id: 1
+        is_household_head: false
+      person3:
+        age: 8
+        person_id: 3
+        parent_1_id: 1
+        is_household_head: false
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+      child:
+        members: [person3]
+    families:
+      family1:
+        members: [person1, person3]
+      family2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+      child:
+        members: [person3]
+    spm_units:
+      unit:
+        members: [person1, person2, person3]
+        receives_housing_assistance: true
+    households:
+      home:
+        members: [person1, person2, person3]
+        state_code: WI
+        county_fips: '55079'
+        bedrooms: 2
+        tenant_pays_utilities: false
+  output:
+    wi_cts: [3_300, 0, 0]
+    wi_ssp_countable_for_hud: [4_372.4, 0, 0]
+    hud_unearned_income: [16_300.4, 0, 0]
+
+- name: Case 13, SSI disability criteria alone establish the HUD disability for the home-care exclusion.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        person_id: 1
+        # SSI-disabled through the SSI criteria, with no is_disabled input.
+        meets_ssi_disability_criteria: true
+        is_household_head: true
+        pre_subsidy_rent: 12_000
+        wi_ssi_e_certified: true
+        wi_ssi_e_for_home_care: true
+      person2:
+        age: 30
+        person_id: 2
+        parent_1_id: 1
+        is_household_head: false
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        receives_housing_assistance: true
+    households:
+      home:
+        members: [person1, person2]
+        state_code: WI
+        county_fips: '55079'
+        bedrooms: 2
+        tenant_pays_utilities: false
+  output:
+    # Meets the SSI disability criteria with no earnings, so no SGA.
+    is_ssi_disabled: [true, false]
+    # 4 * 95.99 + 8 * 105.59 = 1,228.68.
+    wi_ssi_e: [1_228.68, 0]
+    # 1,072.40 regular + 1,228.68 SSI-E - 1,228.68 excluded = 1,072.40.
+    wi_ssp_countable_for_hud: [1_072.4, 0]
+    # 994 * 12 = 11,928 SSI + 1,072.40 = 13,000.40.
+    hud_annual_income: 13_000.4
+    # TTP = 0.3 * (13,000.40 - 550 elderly/disabled deduction) = 3,735.12;
+    # assistance = 12,000 rent - 3,735.12 = 8,264.88.
+    housing_assistance: 8_264.88
