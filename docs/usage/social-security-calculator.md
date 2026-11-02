@@ -197,7 +197,10 @@ scales **all** formula factors. Progressive indexing requires a frozen
 maximum-career AIME and PIA target, plus either `bend_point_fraction` or optional
 `threshold` dollar path under `gov.contrib.ssa.pia.progressive_price_indexing`.
 The dollar path overrides the fraction. Otherwise the protected threshold is
-BP1(E) + f * (BP2(E) - BP1(E)). There is no default fraction. Enabling a path
+BP1(E) + f * (BP2(E) - BP1(E)). PE-US ships no default fraction, dollar path,
+maximum AIME or target. The user's reform settings supply them; the
+[PIA-ratio guide](social-security-pia-ratio.md) lists each one under
+"Price-indexing inputs you supply". Enabling a path
 without its required frozen inputs fails. Frozen scales, dollar thresholds,
 maximum AIMEs and targets require explicit January observations for each
 eligibility cohort; they never silently carry a prior cohort's data forward.
@@ -224,28 +227,33 @@ Withholding sets that event's COLA to zero, jointly with any rate change; no
 second COLA factor is applied. Payable shares must lie in [0,1], and rates must
 not imply a negative benefit. A depletion-year midyear blend is supplied in the
 annual payable-share path. E2 and E3 income/threshold computation belong to
-their respective modules; their policies and jointly calculated tax-unit
-outputs can consume this route once public wiring exists.
+their respective modules. The [COLA means test](../social-security-cola-means-test.md)
+now supplies these decisions from prior-tax-year MAGI and filing status.
 
 ## Public source-selector wiring
 
-The reported-benefit route and this household calculator reuse canonical
-COLA history and common lever parameter files. Historical bend
+The source selectors reuse the canonical COLA history and common lever
+parameter files. Historical bend
 points remain in a separate table because copying its legacy scale backfill
-would change existing pre-2015 `ss_pia` outputs with this route disabled. This change adds
-no `_reported` twins and changes no public benefit formula. The public
-calculated-source modes remain reserved; `ss_calculator_source` selects this
-separate opt-in service. `ss_calculated_retirement` and
-`ss_calculated_survivors` return checks that already include their PIA, COLA,
-claiming, payment factors and earnings test.
+would change existing pre-2015 `ss_pia` outputs with this route disabled.
+Select `social_security_retirement_source` as `supplied_aime` or `supplied_pia`
+with matching `ss_calculator_source` of `aime` or `pia`. For the restricted
+survivor route, select `social_security_survivors_source` as
+`supplied_ratio_survivor` with calculator source `survivor`. The public benefit
+then reads the calculated checks, bypassing population PIA, COLA, across-the-board
+and payable factors already applied in this ledger. The earnings test runs
+once. Explicit public final overrides retain their precedence. Calculated
+checks are never written into `_reported` as original data.
 
-For joint household tax calculations, write the calculated annual checks to
-the public component with `set_input` **after** constructing the tax simulation.
-That creates an explicit final output override for the payment year and avoids
-applying benefit factors again. Constructor-supplied public benefits instead
-migrate to the reported source and remain sensitive to those factors. Preserve
-the history source separately; calculated checks are not original reported
-benefit observations.
+The public selectors do not yet accept `history`: a public source of `history`,
+or any pair other than those above, raises an error. With
+`ss_calculator_source` of `history`, read the calculated checks from
+`ss_calculated_retirement` and the other `ss_calculated_*` outputs. To place
+such a check in a public component, call `set_input` on that component
+**after** constructing the simulation. A later public input is an explicit
+final override, so no benefit factor is applied to it again. A public benefit
+supplied when the simulation is constructed is instead treated as a reported
+source, and the benefit factors apply to it.
 
 ## Sources and validation
 
