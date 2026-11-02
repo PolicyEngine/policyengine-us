@@ -1,15 +1,142 @@
-- name: Supplemental EITC is 25% in 2021
+# Tax Law 606(d)(8), added by Ch. 59 L. 2022 Part NN section 2 (S.8009-C,
+# page 88): "For tax year two thousand twenty-one, the commissioner shall
+# issue a payment of a supplemental earned income tax credit to resident
+# taxpayers in the amount of twenty-five percent of the earned income tax
+# credit calculated and allowed pursuant to this subsection. ... Provided,
+# however, that no payment shall be issued if it is less than twenty-five
+# dollars."
+# The NY Tax Department states the same rule as "at least $100" of credit
+# (25% x $100 = $25).
+# The omitted sentence limits the payment to returns filed on time (with
+# extensions). Filing dates are not modeled, so the tests assume it is met.
+
+- name: 2021 payment is 25% of the New York State EIC
+  # Tax Department example: line 65 of $300 x 0.25 = $75.
   period: 2021
   input:
-    eitc: 100
     state_code: NY
+    ny_eitc: 300
+  output:
+    ny_supplemental_eitc: 75
+
+- name: 2021 payment of exactly $25 is issued
+  # 25% x $100 = $25, not "less than twenty-five dollars".
+  period: 2021
+  input:
+    state_code: NY
+    ny_eitc: 100
   output:
     ny_supplemental_eitc: 25
 
-- name: Supplemental EITC is 0% in 2022
+- name: 2021 payment below $25 is not issued
+  # 25% x $99 = $24.75 < $25.
+  period: 2021
+  input:
+    state_code: NY
+    ny_eitc: 99
+  output:
+    ny_supplemental_eitc: 0
+
+- name: 2021 payment ignores the federal EITC
+  # The base is the New York State EIC, not the federal EITC.
+  period: 2021
+  input:
+    state_code: NY
+    eitc: 1_000
+    ny_eitc: 0
+  output:
+    ny_supplemental_eitc: 0
+
+- name: No payment in 2020
+  period: 2020
+  input:
+    state_code: NY
+    ny_eitc: 805.94
+  output:
+    ny_supplemental_eitc: 0
+
+- name: No payment in 2022
   period: 2022
   input:
-    eitc: 100
     state_code: NY
+    ny_eitc: 805.94
   output:
+    ny_supplemental_eitc: 0
+
+- name: No payment in 2018
+  # supplemental_match's first entry (0 in 2019) is backdated to 2015.
+  period: 2018
+  input:
+    state_code: NY
+    ny_eitc: 805.94
+  output:
+    ny_supplemental_eitc: 0
+
+- name: 2021 head of household with one child (taxsim issue 1185)
+  # Federal EITC, one qualifying child, 2021 (Rev. Proc. 2020-45 section
+  # 3.07; ARPA did not change these amounts): max $3,618, phase-out from
+  # $19,520 at 15.98%.
+  #   3,618 - 0.1598 x (24,097.71 - 19,520) = 3,618 - 731.52 = 2,886.48
+  #   (TAXSIM v25: 2,886.48)
+  # NY EIC, Tax Law 606(d)(1): 30% of the federal EITC, reduced by the
+  # household credit. 0.30 x 2,886.48 = 865.94.
+  # Household credit, 606(b)(2)(B), head of household, AGI over $22,000
+  # but not over $25,000: $50 plus $10 x (2 exemptions - 1) = $60. The NY
+  # tax before credits (4% x 11,897.71 = 475.91) exceeds $60.
+  #   865.94 - 60 = 805.94 (TAXSIM v39: 805.94)
+  # Payment: 0.25 x 805.94 = 201.49 (25% of the federal EITC would be
+  # 721.62).
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 24_097.71
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: NY
+  output:
+    eitc: 2_886.48
+    ny_household_credit: 60
+    ny_eitc: 805.94
+    ny_supplemental_eitc: 201.49
+
+- name: 2021 childless filer age 22 gets a federal EITC but no payment
+  # ARPA section 9621 lets a childless filer aged 19 to 24 claim the 2021
+  # federal EITC: 15.3% x 8,000 = 1,224 (below the $9,820 earned income
+  # amount and the $11,610 phase-out start).
+  # New York decoupled from ARPA for 2021 (Tax Law 607(a); 2021 IT-215
+  # instructions), so the pre-ARPA age test (25 to 64) applies and the
+  # NY EIC is 0. The payment is 25% x 0 = 0 (25% of the federal EITC
+  # would be 306).
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 22
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    eitc: 1_224
+    ny_eitc: 0
     ny_supplemental_eitc: 0

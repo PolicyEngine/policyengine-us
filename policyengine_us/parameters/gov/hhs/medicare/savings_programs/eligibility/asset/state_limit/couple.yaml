@@ -1,0 +1,27 @@
+description: States limit resources to this amount for a couple under the Medicare Savings Programs when it is higher than the federal limit.
+metadata:
+  unit: currency-USD
+  period: year
+  label: MSP state couple asset limit
+  breakdown:
+    - state_code
+  reference:
+    - title: "California DHCS All County Welfare Directors Letter 21-31, Increases to the Asset Limits for Non-Modified Adjusted Gross Income Medi-Cal Programs #page 2,4"
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/21-31.pdf#page=2
+    - title: "California DHCS All County Welfare Directors Letter 25-14, Reinstatement of Asset Limits for Non-MAGI Medi-Cal Programs #page 2,8-9"
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/25-14.pdf#page=2
+    - title: California DHCS All County Welfare Directors Letter 25-27, 2026 Medicare Savings Program Property Limits
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/25-27.pdf#page=1
+    - title: California Welfare and Institutions Code 14005.62(a), (c), (d)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=14005.62
+    - title: Minnesota Statutes 256B.057, subdivision 3(a)(3) - Qualified Medicare beneficiaries
+      href: https://www.revisor.mn.gov/statutes/cite/256B.057#stat.256B.057.3
+    - title: Laws of Minnesota 2000, chapter 488, article 9, section 15
+      href: https://www.revisor.mn.gov/laws/2000/0/488/#a9
+
+CA:
+  0000-01-01: 0
+  2022-07-01: 195_000
+MN:
+  0000-01-01: 0
+  2000-10-01: 18_000
