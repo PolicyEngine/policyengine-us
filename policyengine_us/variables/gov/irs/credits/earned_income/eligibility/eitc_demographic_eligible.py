@@ -30,7 +30,8 @@ class eitc_demographic_eligible(Variable):
         # before the close of the taxable year". The parameter is the highest
         # completed age that qualifies, so compare completed years: a filer
         # aged 64.5 has not attained 65. The minimum already works for
-        # fractional ages.
+        # fractional ages. This reads `age` as the age at the close of the
+        # taxable year.
         meets_age_requirements = (age >= min_age) & (np.floor(age) <= max_age)
         # IRC § 32(c)(1)(A)(ii)(II) applies the age test to the filer or,
         # on a joint return, either spouse — never to dependents.

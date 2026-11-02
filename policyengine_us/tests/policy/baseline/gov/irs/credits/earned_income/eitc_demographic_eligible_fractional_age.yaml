@@ -141,3 +141,79 @@
   output:
     # The minimum is unchanged: 24.5 < 25.
     eitc_demographic_eligible: false
+
+- name: Childless filer aged 64.99 has not attained 65 and meets the age test, 2024
+  period: 2024
+  input:
+    people:
+      filer:
+        age: 64.99
+        is_tax_unit_head: true
+        ssn_card_type: CITIZEN
+        employment_income: 8_000
+    tax_units:
+      unit:
+        members: [filer]
+        filing_status: SINGLE
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+  output:
+    # Completed age 64 <= 64; rounding 64.99 to 65 would fail it.
+    eitc_demographic_eligible: true
+    # 7.65% x $8,000 = $612, under the $632 maximum and the $10,330 phase-out start.
+    eitc: 612
+
+- name: Joint filers aged 70 and 64.5 meet the age test through the spouse, 2024
+  period: 2024
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        ssn_card_type: CITIZEN
+        employment_income: 8_000
+      spouse:
+        age: 64.5
+        is_tax_unit_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    marital_units:
+      mu:
+        members: [head, spouse]
+  output:
+    # Either spouse may meet 32(c)(1)(A)(ii)(II); the spouse's completed age is 64.
+    eitc_demographic_eligible: true
+    # 7.65% x $8,000 = $612, under the $632 maximum and the joint phase-out start.
+    eitc: 612
+
+- name: Joint filers aged 70 and 65 don't meet the age test, 2024
+  period: 2024
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        ssn_card_type: CITIZEN
+        employment_income: 8_000
+      spouse:
+        age: 65.0
+        is_tax_unit_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    marital_units:
+      mu:
+        members: [head, spouse]
+  output:
+    # Neither spouse's completed age (70, 65) is at most 64.
+    eitc_demographic_eligible: false
+    eitc: 0
