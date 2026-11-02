@@ -8262,6 +8262,8 @@ candidates:
     - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_eligible.py
     - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
     - policyengine_us/parameters/gov/states/sc/oeo/liheap/eligibility/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10616
   state: unreviewed
   note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (sc_liheap_eligible.py).
 - id: us-sd:liheap-2025-published-income-limit
