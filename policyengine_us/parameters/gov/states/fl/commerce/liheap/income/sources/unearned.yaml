@@ -3,12 +3,14 @@ values:
   2024-10-01:
     - social_security
     - ssi
-    # Military retirement pay is a separate input from the pension inputs that
+    # Military retirement income (retiree pay plus Survivor Benefit Plan
+    # annuities) is a separate input from the pension inputs that
     # pension_income adds, so both are listed; a household reports the amount
-    # in one or the other. Plan Section 1.9 counts retirement and pension
-    # benefits.
+    # in one or the other. A military survivor annuity belongs in
+    # military_retirement_pay_survivors, not survivor_benefits. Plan Section
+    # 1.9 counts retirement and pension benefits.
     - pension_income
-    - military_retirement_pay
+    - military_retirement_income
     - railroad_benefits
     - survivor_benefits
     - veterans_benefits

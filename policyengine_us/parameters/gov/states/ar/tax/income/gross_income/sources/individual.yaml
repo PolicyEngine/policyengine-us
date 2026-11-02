@@ -28,6 +28,7 @@ values:
     # winnings before July 1, 2019. The model has a single gambling_winnings
     # input and does not separate them.
     - gambling_winnings # Line 20, other income (Form AR-OI)
+    - ar_other_additions # Line 20
   # Act 141 of 2017 added unemployment compensation to gross income for tax
   # years beginning on or after January 1, 2018. Act 154 of 2021 then exempted
   # it for calendar years 2020 and 2021, after which it is taxable again.
@@ -51,6 +52,7 @@ values:
     - farm_operations_income # Line 20, Schedule F
     - total_unemployment_compensation # Line 21
     - gambling_winnings # Line 22, other income (Form AR-OI)
+    - ar_other_additions # Line 22
   2020-01-01:
     - irs_employment_income # Line 8
     - self_employment_income # Line 13
@@ -70,6 +72,7 @@ values:
     - farm_rent_income # Line 19, Form 4835 rent is reported on Schedule E
     - farm_operations_income # Line 20, Schedule F
     - gambling_winnings # Line 22, other income (Form AR-OI)
+    - ar_other_additions # Line 22
   2022-01-01:
     - irs_employment_income # Line 8
     - self_employment_income # Line 13
@@ -95,6 +98,7 @@ values:
     - farm_operations_income # Line 20, Schedule F
     - total_unemployment_compensation # Line 21
     - gambling_winnings # Line 22, other income (Form AR-OI)
+    - ar_other_additions # Line 22
 
 metadata:
   unit: list

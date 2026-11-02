@@ -1,0 +1,47 @@
+description: New Hampshire maintains this minimum supplemental payment level for a one-person assistance group in each living arrangement under the adult category financial assistance program.
+
+metadata:
+  propagate_metadata_to_children: true
+  unit: currency-USD
+  period: month
+  label: New Hampshire SSP one-person minimum payment level
+  breakdown:
+    - nh_ssp_living_arrangement
+  reference:
+    - title: He-W 658.03(c) and (e), and He-W 648.04, Adult category standard of need
+      href: https://gc.nh.gov/rules/state_agencies/he-w600.html
+    - title: SSA, State Assistance Programs for SSI Recipients, January 1998, New Hampshire, payment levels
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/1998/nh.pdf#page=3
+    - title: SSA, State Assistance Programs for SSI Recipients, January 2011, New Hampshire, Table 1
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/nh.pdf#page=2
+    - title: NH DHHS Supervisory Release SR 97-44, January 1998 COLA
+      href: https://web.archive.org/web/20210808185249/https://www.dhhs.nh.gov/sr_htm/html/sr_97-44_dated_01_98.htm
+    - title: NH DHHS Supervisory Release SR 26-01, January 2026 COLA
+      href: https://www.dhhs.nh.gov/sr_htm/html/sr_26-01_dated_01_26.htm
+
+# The standard of need is the SSI maximum plus this level less the $13
+# standard disregard, so each level is the grant to an SSI-only recipient.
+# SR 26-01 standards: $1,008, $1,070, $1,130, $1,188 and $1,188 less the
+# $994 SSI maximum plus $13 give 27, 89, 149, 207 and 207. SSA's January 1998
+# and January 2011 tables print the same state supplementation amounts, and
+# NH's January releases give matching standards for every year from 1998
+# (SR 97-44) to 2026. The care levels differed in 1996. SSA's 2004 and 2008 to
+# 2010 tables print other amounts, but NH's releases for those years do not.
+INDEPENDENT:
+  1998-01-01: 27
+
+SUBSIDIZED_COMMUNITY_RESIDENCE:
+  1998-01-01: 89
+
+NONSUBSIDIZED_COMMUNITY_RESIDENCE:
+  1998-01-01: 149
+
+ENHANCED_FAMILY_CARE:
+  1998-01-01: 207
+
+RESIDENTIAL_CARE:
+  1998-01-01: 207
+
+# No adult category grant in excluded arrangements.
+NONE:
+  1998-01-01: 0

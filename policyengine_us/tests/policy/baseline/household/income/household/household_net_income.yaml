@@ -160,3 +160,27 @@
         state_code: WI
   output:
     household_net_income: 41_154
+
+- name: An Alaskan's dividend and energy relief reach both net incomes.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    spm_units:
+      spm_unit:
+        members: [adult]
+        spm_unit_taxes: 0
+        spm_unit_spm_expenses: 0
+    households:
+      household:
+        members: [adult]
+        state_code: AK
+        household_tax_before_refundable_credits: 0
+        household_refundable_tax_credits: 0
+        household_health_costs: 0
+        household_health_benefits: 0
+  output:
+    spm_unit_net_income: 500_000 + 1_000 + 200
+    household_net_income: 500_000 + 1_000 + 200

@@ -1,0 +1,216 @@
+# End-to-end HEAP Fuel Assistance households.
+# Sources for the expected values:
+# - 99-346 CMR ch. 24, 2026 edition (period 2027 matrix, rule "#page 6,11-17"; the
+#   2025 edition's eligibility and income text is the same):
+#   https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=6
+# - 2025 edition points matrix (period 2026), "#page 1-2":
+#   https://liheapch.acf.gov/docs/2026/benefits-matricies/ME_BenefitMatrix_2026.pdf#page=1
+# - Income limits: the 2025-26 HEAP page (captured 2025-11-01) and the 2026-27 chart:
+#   https://web.archive.org/web/20251101091454id_/https://www.mainehousing.org/programs-services/energy/energydetails/liheap
+#   https://www.mainehousing.org/charts/
+# - $22 a point is an estimate from the FFY2026 plan's $1,012 maximum:
+#   https://liheapch.acf.gov/docs/2026/state-plans/ME_Plan_2026.pdf#page=10
+# Guidelines lag one year: 15,650 + 5,500 per additional person (2026) and 15,960 +
+# 5,680 (2027). Incomes: Maine's minimum wage, $14.65 (2025) and $15.10 (2026), an
+# hour (Maine Department of Labor); the 2025 average retired-worker Social Security
+# benefit, $1,976 a month (SSA 2025 COLA fact sheet). SNAP, TANF and SSI are set to 0.
+# Heating bills are EIA's 2025-26 winter household expenditures (Short-Term Energy
+# Outlook, October 2026, Table WF01): heating oil 1,745 (U.S. average) and propane
+# 1,979 (Northeast). Rule 3(A)(4) (page 10) requires a Direct Energy Cost or an
+# Indirect Determinable Energy Cost such as heat included in rent.
+
+- name: Case 1, an older homeowner on Social Security heating with oil in Penobscot County.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 72
+        # 1,976 x 12 = 23,712.
+        social_security_retirement: 23_712
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        snap: 0
+        tanf: 0
+        me_heap_dwelling_type: STICK_BUILT_OR_MODULAR
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 1_745
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head]
+        state_code: ME
+        county: PENOBSCOT_COUNTY_ME
+        is_in_public_housing: false
+  output:
+    me_heap_household_size: 1
+    # Social Security counts in full.
+    me_heap_income: 23_712
+    # 2025-26 chart, one person.
+    me_heap_income_limit: 36_836
+    me_heap_categorically_eligible: false
+    # The oil bill, 1,745 > 0, with heat not in the rent is a direct energy cost.
+    has_heating_expense: true
+    me_heap_eligible: true
+    # 23,712 / 15,650 = 151.51% -> 152, above 150%: 0.70.
+    me_heap_income_multiplier: 0.7
+    # Stick-built 9 + Penobscot 5 + oil 7 + age 60 or over 5 = 26.
+    # 26 x 0.70 = 18.2, rounded up to 19.
+    me_heap_points: 19
+    # 19 x 22 = 418.
+    me_heap: 418
+
+- name: Case 2, a working family renting an apartment with heat in the rent in Cumberland County.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 34
+        # 15.10 x 40 hours x 52 weeks = 31,408.
+        employment_income: 31_408
+        ssi: 0
+      spouse:
+        age: 32
+        # 15.10 x 20 hours x 52 weeks = 15,704.
+        employment_income: 15_704
+        ssi: 0
+      child1:
+        age: 8
+        ssi: 0
+      child2:
+        age: 4
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+        snap: 0
+        tanf: 0
+        me_heap_dwelling_type: CONDO_DUPLEX_OR_APARTMENT
+        # The landlord heats the building with natural gas; the rent includes heat.
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: ME
+        county: CUMBERLAND_COUNTY_ME
+        is_in_public_housing: false
+  output:
+    me_heap_household_size: 4
+    # 31,408 + 15,704 = 47,112.
+    me_heap_income: 47_112
+    # 2026-27 chart, four people.
+    me_heap_income_limit: 73_213
+    me_heap_categorically_eligible: false
+    # Heat in the rent is an indirect energy cost, not a separate heating bill.
+    has_heating_expense: false
+    # An indirect energy cost with a listed fuel qualifies an unsubsidized tenant.
+    me_heap_eligible: true
+    # 47,112 / (15,960 + 3 x 5,680 = 33,000) = 142.76%: 126-150.99% band, 0.9.
+    me_heap_income_multiplier: 0.9
+    # Base 8 + apartment 1 + Cumberland 1 + natural gas 3 + child under 7 5 = 18;
+    # no subsidized-housing adjustment. 18 x 0.9 = 16.2, rounded up to 17.
+    me_heap_points: 17
+    # 17 x 22 = 374.
+    me_heap: 374
+
+- name: Case 3, a subsidized family paying its own propane bill in Aroostook County.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 29
+        # 14.65 x 30 hours x 52 weeks = 22,854.
+        employment_income: 22_854
+        # 200 a month.
+        child_support_received: 2_400
+        ssi: 0
+      child1:
+        age: 9
+        ssi: 0
+      child2:
+        age: 3
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+        snap: 0
+        tanf: 0
+        me_heap_dwelling_type: CONDO_DUPLEX_OR_APARTMENT
+        heating_type: PROPANE
+        bottled_gas_expense: 1_979
+        heat_expense_included_in_rent: false
+        # Housing Choice Voucher.
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: ME
+        county: AROOSTOOK_COUNTY_ME
+        is_in_public_housing: false
+  output:
+    me_heap_household_size: 3
+    # 22,854 + 2,400 = 25,254.
+    me_heap_income: 25_254
+    # 2025-26 chart, three people.
+    me_heap_income_limit: 59_504
+    me_heap_categorically_eligible: false
+    # The propane bill, 1,979 > 0, with heat not in the rent is a direct energy cost.
+    has_heating_expense: true
+    me_heap_eligible: true
+    # 25,254 / (15,650 + 2 x 5,500 = 26,650) = 94.76% -> 95: 1.00.
+    me_heap_income_multiplier: 1
+    # Apartment 6 + Aroostook 7 + LP gas 10 + child under 7 5 - subsidized 9 = 19.
+    # 19 x 1.00 = 19.
+    me_heap_points: 19
+    # 19 x 22 = 418.
+    me_heap: 418
+
+- name: Case 4, the Case 1 homeowner heats with oil but has no oil bill and no heat in the rent, so receives nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 72
+        # 1,976 x 12 = 23,712.
+        social_security_retirement: 23_712
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        snap: 0
+        tanf: 0
+        me_heap_dwelling_type: STICK_BUILT_OR_MODULAR
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head]
+        state_code: ME
+        county: PENOBSCOT_COUNTY_ME
+        is_in_public_housing: false
+  output:
+    me_heap_household_size: 1
+    me_heap_income: 23_712
+    me_heap_income_limit: 36_836
+    me_heap_categorically_eligible: false
+    # FUEL_OIL reads fuel_oil_expense: 0.
+    heating_expense: 0
+    # No bill and heat not in the rent: neither a direct nor an indirect energy cost.
+    has_heating_expense: false
+    # Income 23,712 <= 36,836 and oil is a listed fuel, but rule 3(A)(4) fails.
+    me_heap_eligible: false
+    # The multiplier and points do not depend on eligibility: as in Case 1,
+    # 0.70 and 26 x 0.70 = 18.2, rounded up to 19.
+    me_heap_income_multiplier: 0.7
+    me_heap_points: 19
+    me_heap: 0
