@@ -28,6 +28,9 @@ class mt_itemized_deductions_indiv(Variable):
         # dependent's medical bills is chosen by comparing the couple's tax
         # with every other itemized deduction held fixed
         # (mt_dependent_medical_expense_head_share).
-        return person("mt_non_medical_itemized_deductions_indiv", period) + person(
-            "mt_medical_expense_deduction_indiv", period
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        medical = person("mt_medical_expense_deduction_indiv", period)
+        return (
+            person("mt_non_medical_itemized_deductions_indiv", period)
+            + head_or_spouse * medical
         )
