@@ -1613,7 +1613,7 @@
 # C1: 10 * 13,600 = 136,000 > floor(91,854 * 1.47) = 135,025;
 # categorical level 3 basic 295 + vulnerable 50 = 345 (not FPG level 2).
 # C3: foster SSI/SSP excluded; remaining member income 100,000 > 47,764.
-- name: Above-SMI categorical large household receives level 3
+- name: Case 41, above-SMI categorical large household receives level 3.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -2050,7 +2050,7 @@
     ct_ceap_benefit_level: 3
     ct_ceap: 345
 
-- name: Excluded foster adult SSP cannot establish categorical eligibility
+- name: Case 42, excluded foster adult SSP cannot establish categorical eligibility.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -2173,23 +2173,23 @@
     ct_ceap: 0
 
 # Recurring IRA receipts exceed the published one-person income ceiling.
-- name: Recurring IRA income above the limit prevents regular heating assistance.
+- name: Case 43, recurring IRA income above the limit prevents regular heating assistance.
   period: 2026
   absolute_error_margin: 0.01
   input:
     people:
-      person:
+      person1:
         age: 70
         immigration_status: CITIZEN
         taxable_ira_distributions: 100_000
     spm_units:
       spm_unit:
-        members: [person]
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1_000
     households:
       household:
-        members: [person]
+        members: [person1]
         state_code: CT
   output:
     ct_ceap: 0
@@ -2697,3 +2697,134 @@
     ct_ceap_benefit_level: [1, 1]
     ct_ceap_eligible: [true, false]
     ct_ceap: [655, 0]
+
+# Allocation plans: rental benefits apply when heat is in rent and carry no bill
+# cap, so a $50 gas bill does not limit the Level 1 FY2026 amount of $125.
+- name: Case 51, a rental benefit is not capped by a reported bill.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 50
+        heat_expense_included_in_rent: true
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_benefit_level: 1
+    ct_ceap: 125
+
+# 2025 guideline for 11 members: 15,650 + 10 x 5,500 = 70,650. Income of exactly
+# floor(91,854 x 1.47) = 135,025 is not above the limit, so the ratio sets the
+# level: 135,025 / 70,650 = 1.91, Level 2, $445. Case 41 is above the limit.
+- name: Case 52, a categorical household exactly at the limit keeps its poverty level.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40, immigration_status: CITIZEN, ssi: 0, social_security: 0, employment_income: 135_025}
+      person2: {age: 40, immigration_status: CITIZEN, ssi: 0, social_security: 0}
+      person3: {age: 40, immigration_status: CITIZEN, ssi: 0, social_security: 0}
+      person4: {age: 40, immigration_status: CITIZEN, ssi: 0, social_security: 0}
+      person5: {age: 40, immigration_status: CITIZEN, ssi: 0, social_security: 0}
+      person6: {age: 40, immigration_status: CITIZEN, ssi: 0, social_security: 0}
+      person7: {age: 40, immigration_status: CITIZEN, ssi: 0, social_security: 0}
+      person8: {age: 40, immigration_status: CITIZEN, ssi: 0, social_security: 0}
+      person9: {age: 40, immigration_status: CITIZEN, ssi: 0, social_security: 0}
+      person10: {age: 40, immigration_status: CITIZEN, ssi: 0, social_security: 0}
+      person11: {age: 40, immigration_status: CITIZEN, ssi: 0, social_security: 0}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        snap: 1_200
+        tanf: 0
+        ct_ssp: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        state_code: CT
+  output:
+    ct_ceap_income_limit: 135_025
+    ct_ceap_categorically_eligible: true
+    ct_ceap_benefit_level: 2
+    ct_ceap: 445
+
+# Allocation plans p. 5: households do not include incarcerated individuals.
+# First unit: size 1, 55,000 is above the 47,764 limit and the 17,215 floor, and
+# the incarcerated member's SSI establishes no categorical receipt: $0. Second
+# unit: 25,000 / 15,650 = 1.60, Level 2, $445; the incarcerated member's wages
+# and age 65 count for neither income nor vulnerability.
+- name: Case 53, incarcerated members are outside size income vulnerability and categorical receipt.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 0
+        employment_income: 55_000
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        is_incarcerated:
+          2026-01: true
+        ssi: 1_200
+        social_security: 0
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 0
+        employment_income: 25_000
+      person4:
+        age: 65
+        immigration_status: CITIZEN
+        is_incarcerated:
+          2026-01: true
+        ssi: 0
+        social_security: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: CT
+      household2:
+        members: [person3, person4]
+        state_code: CT
+  output:
+    ct_ceap_household_size: [1, 1]
+    ct_ceap_countable_income: [55_000, 25_000]
+    ct_ceap_categorically_eligible: [false, false]
+    ct_ceap: [0, 445]

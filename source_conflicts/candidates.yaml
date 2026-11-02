@@ -1136,6 +1136,36 @@ candidates:
   state: ruled
   note: 'Ruled in October 2026 to follow the statute; verify the applicable regulation version. Code not yet on
     main: co premium assistance formula, aca_ptc_slcsp.'
+- id: us-ct:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Can Connecticut's 60% SMI CEAP limit exclude a very large household whose income is below the federal 110%
+    poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: Connecticut approved FFY2027 LIHEAP Allocation Plan, section IV.B, p.7
+    url: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=7
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The 60% SMI limit falls below that floor from 29 members in FY2026 and 28 in FY2027.
+  example: Thirty people with $190,000 exceed the $187,382 FY2026 limit but are below the $192,665 floor (2025
+    guideline, one-year lag), so they keep the Level 1 basic benefit of $595.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ct/dss/ceap/eligibility/ct_ceap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/ct/dss/ceap/payment/fpg_year_lag.yaml
+  state: unreviewed
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (ct_ceap_eligible.py). A
+    categorical household above the limit gets Level 3 under the benefit matrix note, so those thirty people get $295
+    with SNAP and $595 without.
 - id: us-dc:eitc-no-tin-child-schedule-before-2023
   program: income-tax
   years:

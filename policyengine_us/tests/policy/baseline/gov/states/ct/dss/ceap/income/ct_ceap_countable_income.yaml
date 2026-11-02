@@ -382,12 +382,12 @@
 
 # Ongoing retirement receipts: pension 1,000 + taxable IRA 12,000 + exempt IRA 3,000.
 # Count the two aggregates once; one-time lump sums are not represented here.
-- name: Recurring taxable and exempt retirement distributions count beside pensions.
+- name: Case 10, recurring taxable and exempt retirement distributions count beside pensions.
   period: 2026
   absolute_error_margin: 0.01
   input:
     people:
-      person:
+      person1:
         age: 70
         immigration_status: CITIZEN
         ssi: 0
@@ -396,7 +396,7 @@
         tax_exempt_ira_distributions: 3_000
     spm_units:
       spm_unit:
-        members: [person]
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1_000
         snap: 0
@@ -404,7 +404,63 @@
         ct_ssp: 0
     households:
       household:
-        members: [person]
+        members: [person1]
         state_code: CT
   output:
     ct_ceap_countable_income: 16_000
+
+# Plan item 1.9 counts retirement and pension benefits: railroad retirement 6,000.
+- name: Case 11, railroad retirement counts as a retirement benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        immigration_status: CITIZEN
+        ssi: 0
+        railroad_benefits: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_countable_income: 6_000
+
+# Plan 1.9 (p. 6) checks one-time lump sums, jury duty, legal settlements and
+# insurance payments, which miscellaneous_income carries: 30,000 + 20,000 =
+# 50,000, above the 47,764 one-person limit and the 17,215 floor.
+- name: Case 12, miscellaneous income counts toward the income limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 30_000
+        miscellaneous_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_countable_income: 50_000
+    ct_ceap: 0

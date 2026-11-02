@@ -5,7 +5,9 @@ values:
     - total_unemployment_compensation
     - strike_benefits
     - pension_income
-    - military_retirement_pay
+    # Military retirement includes Survivor Benefit Plan annuities.
+    - military_retirement_income
+    - railroad_benefits
     # Ongoing IRA/401k distributions are separate from pension_income.
     # Include taxable and exempt account distributions once.
     - retirement_distributions
@@ -21,6 +23,9 @@ values:
     - child_support_received
     - financial_assistance
     - gambling_winnings
+    # The residual input for the plan's one-time lump sums, jury duty, legal
+    # settlements and insurance payments; it may hold other receipts.
+    - miscellaneous_income
     - veterans_benefits
 
 metadata:
@@ -28,7 +33,7 @@ metadata:
   period: year
   label: Connecticut CEAP countable unearned income sources
   reference:
-    - title: "Connecticut FY2026 LIHEAP State Plan, Section 1.8-1.9 #page 6-7"
-      href: https://liheapch.acf.gov/docs/2026/state-plans/CT_Plan_2026.pdf#page=6
+    - title: "Connecticut FY2026 LIHEAP State Plan, Section 1.8-1.9 #page 5-7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/CT_Plan_2026.pdf#page=5
     - title: "Connecticut approved FY2027 LIHEAP Allocation Plan, Sections III-V #page 5-9"
       href: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5

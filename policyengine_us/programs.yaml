@@ -967,7 +967,7 @@ programs:
         variable: ct_ceap
         parameter_prefix: gov.states.ct.dss.ceap
         verified_years: "2026-2027"
-        notes: Regular basic and rental heating assistance, including the federal income floor, Social Security net of Part B premiums and take-up-gated TFA categorical receipt. Annual income and primary-fuel expenses approximate application income and covered-season costs; rental inputs stand in for nonnegative gross receipts. Detailed household exclusions, VA pension subtypes and prior awards are not fully represented. The separate nominal SNAP grant, crisis assistance and equipment are outside this implementation.
+        notes: FY2026-FY2027 basic and rental heating assistance. The SNAP nominal benefit, crisis, weatherization and equipment assistance are out of scope.
 
   # --- SSA programs ---
   - id: ssi

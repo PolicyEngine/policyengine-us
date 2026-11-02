@@ -20,10 +20,14 @@ class ct_ceap_countable_income(Variable):
         person = spm_unit.members
         # Annual inputs approximate the permitted 52-week assessment. Existing
         # net business inputs are used without further business-cost deductions.
-        earned = sum(max_(person(source, period), 0) for source in p.sources.earned)
+        earned = 0
+        for source in p.sources.earned:
+            earned = earned + max_(person(source, period), 0)
         adult = person("age", period) >= p.earned_income_min_age
-        member = ~person("is_in_foster_care", period.first_month)
-        unearned = sum(max_(person(source, period), 0) for source in p.sources.unearned)
+        member = person("ct_ceap_household_member", period)
+        unearned = 0
+        for source in p.sources.unearned:
+            unearned = unearned + max_(person(source, period), 0)
         social_security = max_(
             person("social_security", period)
             - person("medicare_part_b_premium", period),
@@ -32,9 +36,8 @@ class ct_ceap_countable_income(Variable):
         # Nonqualified members' income counts in full. SSI, TFA and general
         # assistance are excluded by the model plan's income checklist.
         # Rental inputs stand in for nonnegative gross receipts. Excluded VA
-        # pension subtypes, gross rental receipts,
-        # in-kind support and separately identified jury/settlement/insurance/
-        # AmeriCorps receipts cannot be resolved by these existing income inputs.
+        # pension subtypes, in-kind support and AmeriCorps payments cannot be
+        # resolved by these existing income inputs.
         return spm_unit.sum(
             member * (where(adult, earned, 0) + unearned + social_security)
         )

@@ -18,8 +18,9 @@ class ct_ceap(Variable):
         level = max_(spm_unit("ct_ceap_benefit_level", period), 1)
         person = spm_unit.members
         age = person("age", period)
-        qualified = person("is_citizen_or_legal_immigrant", period)
-        qualified = qualified & ~person("is_in_foster_care", period.first_month)
+        qualified = person("is_citizen_or_legal_immigrant", period) & person(
+            "ct_ceap_household_member", period
+        )
         vulnerable = spm_unit.any(
             qualified
             & (

@@ -352,3 +352,38 @@
         state_code: CT
   output:
     ct_ceap_categorically_eligible: false
+
+# REQ-006: reported SSI receipt establishes categorical receipt when the
+# modeled SSI amount is zero.
+- name: Case 11, reported SSI receipt with direct heating.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        receives_ssi:
+          2026-01: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 0
+        tanf:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_categorically_eligible: true
+
