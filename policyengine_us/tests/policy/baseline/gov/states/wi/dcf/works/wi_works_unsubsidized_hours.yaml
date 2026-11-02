@@ -226,6 +226,8 @@
   output:
     wi_works_unsubsidized_hours: 40
 
+# A known limit: the inputs name no parent, so the grandparent's zero hours count.
+# With own_children_in_household on the mother, as in Case 6, the answer is 40.
 - name: Case 11, with no parent named, the fewest hours among those who claim the child count.
   period: 2025-01
   input:

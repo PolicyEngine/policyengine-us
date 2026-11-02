@@ -43,8 +43,8 @@ class wi_works_placement(Variable):
 
         # W-2 Manual 7.4.1.5: 30 or more unsubsidized hours rules out a CSJ, from
         # 1999 Wisconsin Act 9. The manual reserves prorated CSJs for participants
-        # who can't add hours or jobs. We don't model that limit, so every unit
-        # under 30 hours gets one.
+        # who can't add hours or jobs. We don't model that limit, so the share
+        # applies to any CSJ placement under 30 hours.
         hours = spm_unit("wi_works_unsubsidized_hours", period)
         no_csj = p.csj_share.calc(hours) == 0
 

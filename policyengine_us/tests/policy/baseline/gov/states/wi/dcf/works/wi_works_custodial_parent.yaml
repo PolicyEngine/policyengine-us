@@ -91,3 +91,26 @@
         state_code: WI
   output:
     wi_works_custodial_parent: [true, false]
+
+- name: Case 5, a pregnant 18-year-old in secondary school makes their own parent custodial.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        person_id: 1
+      person2:
+        age: 18
+        person_id: 2
+        parent_1_id: 1
+        is_in_secondary_school: true
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_custodial_parent: [true, false]

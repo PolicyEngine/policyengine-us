@@ -10,14 +10,20 @@ class wi_works_custodial_parent(Variable):
     entity = Person
     label = "Wisconsin Works custodial parent"
     definition_period = MONTH
-    reference = "https://docs.legis.wisconsin.gov/statutes/statutes/49/iii/145"
+    reference = (
+        "https://docs.legis.wisconsin.gov/statutes/statutes/49/iii/145",
+        "https://docs.legis.wisconsin.gov/statutes/statutes/49/iii/141",
+    )
     defined_for = StateCode.WI
 
     def formula(person, period, parameters):
-        # A pregnant adult meets the TANF test in their own right, which doesn't
-        # make their parent a custodial parent.
-        dependent_child = person("is_person_demographic_tanf_eligible", period) & (
-            ~person("is_pregnant", period) | person("is_child", period.this_year)
+        # Wis. Stat. 49.141(1)(c): under 18, or under 19 in secondary school. This
+        # is the TANF age test without its pregnancy clause, because a pregnant
+        # adult doesn't make their own parent a custodial parent.
+        p = parameters(period).gov.hhs.tanf.cash.eligibility.age_limit
+        in_school = person("is_in_secondary_school", period)
+        dependent_child = person("age", period.this_year) < where(
+            in_school, p.student, p.non_student
         )
         unit = person.spm_unit.reference_entity.members_entity_id
         custodial = np.zeros(person.count, dtype=bool)
