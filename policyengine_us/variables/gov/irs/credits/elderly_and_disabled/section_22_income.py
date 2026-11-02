@@ -8,7 +8,7 @@ class section_22_income(Variable):
     unit = USD
     documentation = "Income upon which the elderly or disabled credit is applied"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/22"
+    reference = "https://www.law.cornell.edu/uscode/text/26/22#c"
 
     def formula(tax_unit, period, parameters):
         elderly_disabled = parameters(period).gov.irs.credits.elderly_or_disabled
@@ -18,16 +18,21 @@ class section_22_income(Variable):
         num_qualifying_individuals = tax_unit.sum(
             person("qualifies_for_elderly_or_disabled_credit", period)
         )
+        separate = filing_status == filing_status.possible_values.SEPARATE
+        # Section 22(c)(2)(A)(iii) sets a separate filer's initial amount,
+        # so the separate-return condition comes first: select takes the
+        # first true condition, and a separate filer has one qualified
+        # individual.
         initial_amount = select(
             [
+                separate & (num_qualifying_individuals >= 1),
                 num_qualifying_individuals == 1,
                 num_qualifying_individuals == 2,
-                filing_status == filing_status.possible_values.SEPARATE,
             ],
             [
+                elderly_disabled.amount.separate,
                 elderly_disabled.amount.one_qualified,
                 elderly_disabled.amount.two_qualified,
-                elderly_disabled.amount.separate,
             ],
             default=0,
         )

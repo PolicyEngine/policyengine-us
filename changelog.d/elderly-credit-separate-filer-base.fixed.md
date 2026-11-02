@@ -1,0 +1,1 @@
+Give a married individual filing separately the $3,750 Schedule R initial amount, and allow the elderly or disabled credit on a separate return only when the spouses lived apart all year (26 U.S.C. 22(c)(2)(A), 22(e)(1)).
