@@ -10,13 +10,20 @@ class nv_ccdp_activity_eligible(Variable):
     reference = "https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/Child_Care_Manual_July_2024.pdf#page=76"
 
     def formula(spm_unit, period, parameters):
-        # MS 400 series: the applicant and every other required adult must be
-        # in an approved Purpose of Care activity.
+        # MS 400 series: the applicant, every other required adult and minor
+        # parents must be in an approved Purpose of Care activity. MS 216.1
+        # requires the child's parents, a guardian or designated relative
+        # caregiver and their spouses, not every adult at the address. Whoever
+        # claims the child stands in for them, so a grandparent or roommate in
+        # their own tax unit isn't checked, and neither is a parent who doesn't
+        # claim the child.
         #   - POC 420 (working) needs monetary compensation and sets no minimum
-        #     hours, so earnings stand in for it.
+        #     hours, so earnings stand in for it. A self-employment loss still
+        #     counts: MS 306.37 asks for an enterprise for gain.
         #   - POC 450 (student) needs six or more credit hours at an accredited
         #     college, which every full-time college student meets. We don't
         #     track credit hours, so part-time students use the input below.
+        #     MS 450.1 has minor parents attend school for a diploma or GED.
         #   - POC 470 (disability) requires someone else to care for the child
         #     outside child care hours. A disabled caretaker is covered only
         #     when another caretaker works or studies, so a lone disabled
@@ -39,12 +46,20 @@ class nv_ccdp_activity_eligible(Variable):
         # student/job-search funding-availability limits. Annual earnings mark
         # a caretaker as working in every month of the year.
         person = spm_unit.members
-        is_caretaker = person("is_tax_unit_head_or_spouse", period.this_year)
+        is_eligible_child = person("nv_ccdp_eligible_child", period)
+        is_required_adult = person.tax_unit.any(is_eligible_child) & person(
+            "is_tax_unit_head_or_spouse", period.this_year
+        )
+        is_minor_parent = person("is_child", period.this_year) & person(
+            "is_parent", period.this_year
+        )
+        is_caretaker = is_required_adult | is_minor_parent
         is_working = (person("employment_income", period.this_year) > 0) | (
-            person("self_employment_income", period.this_year) > 0
+            person("self_employment_income", period.this_year) != 0
         )
         is_student = person("is_full_time_college_student", period.this_year)
-        in_activity = is_working | is_student
+        in_school = is_minor_parent & person("is_in_k12_school", period.this_year)
+        in_activity = is_working | is_student | in_school
         is_covered = in_activity | person("is_disabled", period.this_year)
         has_active_caretaker = spm_unit.any(is_caretaker & in_activity)
         has_uncovered_caretaker = spm_unit.any(is_caretaker & ~is_covered)
@@ -54,7 +69,6 @@ class nv_ccdp_activity_eligible(Variable):
         is_homeless = spm_unit.household("is_homeless", period.this_year)
         # Restrict the protective-care pathway to an nv_ccdp_eligible_child so a
         # non-eligible household member does not confer eligibility.
-        is_eligible_child = person("nv_ccdp_eligible_child", period)
         in_protective_care = is_eligible_child & (
             person("is_in_foster_care", period)
             | person("receives_or_needs_protective_services", period.this_year)

@@ -8,6 +8,11 @@ caretaker only when someone else can care for the child.
    expected_activity for every pair of caretakers.
 2. The input can only add eligibility: setting it never removes it.
 3. Earnings can only add eligibility for a lone caretaker, at any amount.
+4. An adult in a tax unit that claims no eligible child changes nothing,
+   whatever that adult does.
+
+YAML pins single households. These tests need Hypothesis to walk every pair of
+caretakers against a reference written apart from the formula.
 """
 
 from hypothesis import given, settings
@@ -34,7 +39,7 @@ def expected_activity(caretakers):
     return any(active) and all(covered)
 
 
-def activity_eligible(caretakers, meets_test=False):
+def activity_eligible(caretakers, meets_test=False, other_adult=None):
     people = {
         f"caretaker{index}": {
             "age": {YEAR: 30},
@@ -45,10 +50,19 @@ def activity_eligible(caretakers, meets_test=False):
         for index, caretaker in enumerate(caretakers)
     }
     people["child"] = {"age": {YEAR: 4}}
+    tax_units = {"tax_unit": {"members": list(people)}}
+    if other_adult is not None:
+        people["other_adult"] = {
+            "age": {YEAR: 65},
+            "employment_income": {YEAR: other_adult["earnings"]},
+            "is_full_time_college_student": {YEAR: other_adult["student"]},
+            "is_disabled": {YEAR: other_adult["disabled"]},
+        }
+        tax_units["other_tax_unit"] = {"members": ["other_adult"]}
     members = list(people)
     situation = {
         "people": people,
-        "tax_units": {"tax_unit": {"members": members}},
+        "tax_units": tax_units,
         "spm_units": {
             "spm_unit": {
                 "members": members,
@@ -71,7 +85,20 @@ def test_activity_follows_the_manual(caretakers):
 @settings(max_examples=15, deadline=None)
 @given(caretakers=st.lists(CARETAKER, min_size=1, max_size=2))
 def test_the_input_only_adds_eligibility(caretakers):
-    assert activity_eligible(caretakers, meets_test=True)
+    assert activity_eligible(caretakers, meets_test=True) >= activity_eligible(
+        caretakers
+    )
+
+
+@settings(max_examples=15, deadline=None)
+@given(
+    caretakers=st.lists(CARETAKER, min_size=1, max_size=2),
+    other_adult=CARETAKER,
+)
+def test_an_adult_who_claims_no_child_changes_nothing(caretakers, other_adult):
+    assert activity_eligible(caretakers, other_adult=other_adult) == (
+        expected_activity(caretakers)
+    )
 
 
 @settings(max_examples=15, deadline=None)
