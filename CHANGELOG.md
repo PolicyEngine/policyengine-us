@@ -1,3 +1,10 @@
+## [2.91.4] - 2026-11-02
+
+### Fixed
+
+- Count railroad retirement annuities as unearned income for Supplemental Security Income and the Colorado Old Age Pension.
+
+
 ## [2.91.3] - 2026-11-02
 
 ### Fixed
