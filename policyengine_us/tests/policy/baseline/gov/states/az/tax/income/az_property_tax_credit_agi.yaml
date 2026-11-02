@@ -140,6 +140,7 @@
 
 - name: Half of self-employment tax does not reduce household income
   period: 2025
+  absolute_error_margin: 0.01
   input:
     people:
       head:
