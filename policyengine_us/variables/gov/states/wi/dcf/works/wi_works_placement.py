@@ -42,7 +42,7 @@ class wi_works_placement(Variable):
         has_third_trimester = spm_unit.any(is_arp_eligible)
 
         # W-2 Manual 7.4.1.5: 30 or more unsubsidized hours rules out a CSJ.
-        hours = spm_unit("wi_works_unsubsidized_hours", period.this_year)
+        hours = spm_unit("wi_works_unsubsidized_hours", period)
         no_csj = p.csj_share.calc(hours) == 0
 
         # Priority: CMC > ARP > no CSJ > CSJ (W2_T requires agency assessment)

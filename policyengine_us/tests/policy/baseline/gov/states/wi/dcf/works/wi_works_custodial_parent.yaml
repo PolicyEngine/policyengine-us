@@ -1,0 +1,45 @@
+- name: Case 1, a parent id marks the custodial parent and not the grandparent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 60
+        person_id: 1
+      person2:
+        age: 30
+        person_id: 2
+        parent_1_id: 1
+      person3:
+        age: 5
+        person_id: 3
+        parent_1_id: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_works_custodial_parent: [false, true, false]
+
+- name: Case 2, without parent ids every parent counts.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        own_children_in_household: 1
+      person2:
+        age: 60
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_works_custodial_parent: [true, false, false]

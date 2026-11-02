@@ -15,25 +15,30 @@ metadata:
 
 # The statute sets the fractions by hours in the Community Service Job, which fill
 # the 30 hours left after unsubsidized work. This scale runs on unsubsidized hours,
-# so at most 9 unsubsidized hours leaves more than 20 job hours.
+# so at most 9 unsubsidized hours leaves more than 20 job hours. W-2 paid the full
+# amount until 1999 Wisconsin Act 9 added these fractions.
 brackets:
   - threshold:
-      1999-10-29: 0
+      1997-09-01: 0
     amount:
-      1999-10-29: 1
+      1997-09-01: 1
   - threshold:
-      1999-10-29: 10
+      1997-09-01: 10
     amount:
+      1997-09-01: 1
       1999-10-29: 0.666667
   - threshold:
-      1999-10-29: 15
+      1997-09-01: 15
     amount:
+      1997-09-01: 1
       1999-10-29: 0.5
   - threshold:
-      1999-10-29: 20
+      1997-09-01: 20
     amount:
+      1997-09-01: 1
       1999-10-29: 0.333333
   - threshold:
-      1999-10-29: 30
+      1997-09-01: 30
     amount:
+      1997-09-01: 1
       1999-10-29: 0
