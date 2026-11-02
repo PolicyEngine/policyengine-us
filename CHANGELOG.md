@@ -1,3 +1,10 @@
+## [2.91.3] - 2026-11-02
+
+### Fixed
+
+- Add Alaska's 7 AAC 40.310 income eligibility standards to the test list of parameters uprated by the 2026 Trustees assumption.
+
+
 ## [2.91.2] - 2026-11-02
 
 ### Fixed
