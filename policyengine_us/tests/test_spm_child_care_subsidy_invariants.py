@@ -14,8 +14,10 @@ expense, S the subsidy, W work expenses and C the earnings cap:
 
     expense(S) = min(W + max(E - S, 0), C)
 
-A direct childcare_expenses input replaces max(E - S, 0) in a unit with a
-child, so these properties cover units that leave that variable to its formula.
+A unit with a child takes E from its members' pre_subsidy_childcare_expenses,
+which an input can set apart from the unit's amount, and a direct
+childcare_expenses input replaces max(E - S, 0) altogether. These properties
+cover units that leave both to their formulas.
 
 For every SPM unit:
 
@@ -33,7 +35,8 @@ For every SPM unit:
    and no program one of them adds, appears in spm_unit_benefits or in a
    reform's copy of that list, and all of them reach child_care_subsidies.
    Before 2024 the expense has no formula, so Colorado's, Washington's and West
-   Virginia's subsidies stay resources and still count once.
+   Virginia's subsidies stay resources and count once, as on main. The Tlaib
+   reform copies carry only Colorado's in those years, also as on main.
 6. Differential. With real programs turned on and off, the expense falls by
    the amount the reference gives for the subsidy the program paid, and the
    SPM and household measures agree on what else changed: the change in SPM
