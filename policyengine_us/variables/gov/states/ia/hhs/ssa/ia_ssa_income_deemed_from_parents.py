@@ -66,7 +66,7 @@ class ia_ssa_income_deemed_from_parents(Variable):
         # standard less that child's own income.
         sibling_allowance = np.bincount(
             pool,
-            weights=person("ssi_ineligible_child_allocation", period),
+            weights=person("ssi_ineligible_child_allocation_monthly", period),
             minlength=pool_count,
         )[pool]
         exclusions = ssi.income.exclusions
