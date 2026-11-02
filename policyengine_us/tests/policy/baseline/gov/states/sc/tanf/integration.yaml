@@ -803,3 +803,34 @@
     # floor((881 - 250) x 0.4046 = 255.30) = 255. Treating her as a dependent
     # child would leave 0 countable and floor(881 x 0.4046 = 356.45) = 356.
     sc_tanf: 255
+
+- name: Case 27, a married minor input as the tax unit's spouse counts as a parent.
+  period: 2026-01
+  input:
+    people:
+      adult_spouse:
+        age: 20
+      minor_spouse:
+        age: 17
+        is_tax_unit_spouse: true
+        employment_income_before_lsr: 6_000
+      baby:
+        age: 0
+    marital_units:
+      couple:
+        members: [adult_spouse, minor_spouse]
+      baby_unit:
+        members: [baby]
+    households:
+      household:
+        members: [adult_spouse, minor_spouse, baby]
+        state_code: SC
+  output:
+    # Tax-unit roles are inferred only for adults, so with an adult in the
+    # group the 17-year-old counts as a parent through the spouse role input.
+    sc_tanf_dependent_child: [false, false, true]
+    sc_tanf_gross_earned_income: [0, 500, 0]
+    # 6,000 / 12 = 500 a month, less the 50% January disregard: 250.
+    sc_tanf_countable_income: 250
+    # floor((1,110 - 250) x 0.4046 = 347.96) = 347.
+    sc_tanf: 347
