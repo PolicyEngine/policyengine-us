@@ -1,0 +1,17 @@
+description: The IRS subtracts these distributions from qualified contributions under the saver's credit.
+values:
+  2018-01-01:
+    - retirement_distributions
+  # From 2027 the reduction uses relevant distributions from the
+  # beneficiary's ABLE account, not retirement-plan distributions.
+  2027-01-01:
+    - savers_credit_relevant_able_distributions
+metadata:
+  unit: list
+  period: year
+  label: Saver's Credit distributions that reduce qualified contributions
+  reference:
+    - title: 26 U.S. Code § 25B(d)(2)
+      href: https://www.law.cornell.edu/uscode/text/26/25B#d_2
+    - title: Public Law 119-21, ABLE contributions in the saver's credit
+      href: https://www.govinfo.gov/content/pkg/PLAW-119publ21/pdf/PLAW-119publ21.pdf#page=97
