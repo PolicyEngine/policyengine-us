@@ -1,0 +1,1 @@
+Count the same cash payments in the household and SPM income totals: the Alaska Permanent Fund Dividend, New Jersey property tax relief, Massachusetts EAEDC, California CAPI and two Los Angeles County payments in SPM resources, and Alaska energy relief from 2024, New York's Drive Clean rebate and Denver property tax relief in household benefits.
