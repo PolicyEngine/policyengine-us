@@ -103,16 +103,21 @@ When sources conflict, PolicyEngine US follows these principles (2026-10-20):
 - **The agency breaks true ties.** Where the text and the canons don't settle a reading, follow the administering agency's reading, so the model matches what households receive.
 - **Canons:** definitions control; one meaning per section; no double deduction without a clear statement; specific over general; read timing rules so statutory deadlines can be met; and the operative words govern over form shortcuts.
 
-Every such conflict is recorded in the register that PolicyEngine shares with Axiom: `known-source-conflicts.yaml` in [rulespec-us](https://github.com/TheAxiomFoundation/rulespec-us). Its fields are defined in that repository's `tools/README.md`, under "Source-conflict register". A PR that takes such a reading, or finds one already in the code, does three things:
+Every such conflict is recorded in the register that PolicyEngine shares with Axiom: `known-source-conflicts.yaml` in [rulespec-us](https://github.com/TheAxiomFoundation/rulespec-us). Its fields are defined in that repository's `tools/README.md`, under "Source-conflict register". When a PR takes such a reading, or finds one already in the code, the conflict goes into the register in three steps, in this order. One PR can't do all three: the guard below rejects a marker whose entry isn't in the pinned copy of the register, the register pins only commits on `main`, and PolicyEngine US squash-merges, so a ruling PR's own commits never reach `main`.
 
-1. **Add or update the entry in rulespec-us.**
+1. **The ruling PR records the conflict in `source_conflicts/candidates.yaml`**: its sources, readings, `pe_us.follows`, `code`, `prs` and `state`. It adds no marker. You can also add the entry to rulespec-us now, listing the open PR under `proposed`.
+2. **After the ruling PR merges, add or complete the entry in rulespec-us.**
    - Give each source's text and its kind (statute, regulation, form, instructions, manual, guidance, agency practice, ...).
    - Give the alternatives, each with an id, and the years.
-   - Add an implementation for each file here: `repo: PolicyEngine/policyengine-us`, a commit, the path, `follows` (what the code does), and `adopts` with a `basis` (the reading it intends, and why).
-   - Add the YAML test cases that pin each reading, by commit, path and case name. Pin only commits on `main`: the register records shipped code. An open PR goes under `proposed` until it merges.
+   - Add an implementation for each file here: `repo: PolicyEngine/policyengine-us`, the squash commit on `main`, the path, `follows` (what the code does), and `adopts` with a `basis` (the reading it intends, and why).
+   - Add the YAML test cases that pin each reading, by commit, path and case name. Pin only commits on `main`: the register records shipped code.
    - Describe correspondence with an agency in `unpublished_sources`. Never quote it or name the person.
-2. **Mark the deciding line** in the variable or parameter file: `# Source conflict <jurisdiction>:<id>`, for example `# Source conflict us-hi:claim-of-right-deduction-floor`.
-3. **Refresh the pinned copy** once the entry is on rulespec-us `main`: `python scripts/update_source_conflicts.py --commit <rulespec-us commit>`. Delete the item from `source_conflicts/candidates.yaml` if it was there.
+3. **Once that entry is on rulespec-us `main`, a follow-up PR here marks the deciding line and refreshes the pin.**
+   - Mark the deciding line in the variable or parameter file: `# Source conflict <jurisdiction>:<id>`, for example `# Source conflict us-hi:claim-of-right-deduction-floor`.
+   - Refresh the pinned copy: `python scripts/update_source_conflicts.py --commit <rulespec-us commit>`.
+   - Delete the item from `source_conflicts/candidates.yaml`. The guard fails a candidate whose id is already in the pinned copy, so the deletion goes in the same PR as the refresh.
+
+The marker comes only in the follow-up PR, because the guard rejects a marker whose entry isn't in the pinned copy, or whose entry doesn't list the marker's file.
 
 `policyengine_us/tests/code_health/test_source_conflicts.py` checks structure, not whether the code follows a statute. It fails when:
 
@@ -120,7 +125,7 @@ Every such conflict is recorded in the register that PolicyEngine shares with Ax
 - a comment that starts like a marker is not exactly `# Source conflict <jurisdiction>:<id>` alone on its own line. A comment starts like one when it has one or more `#`, then "source conflict" in any case, with any separator or none between the words (a space, hyphen, underscore, dash, dot or zero-width space), followed either by something shaped like a global id (after an optional colon, or after "conflicts") or by no word character and no colon. A file whose comments cannot be read (it doesn't tokenize or parse) fails too;
 - a marker names an entry that isn't in the pinned copy, or whose entry doesn't list the file;
 - an implementation the register marks `cites_entry: true` is missing here or has lost its marker;
-- the count of comments that read like a conflict between sources ("the instructions say", "in practice", "discrepancy", "Source conflict:", ...) changes in a file without a marker. A new file or a higher count means register and mark the conflict, or reword the comment; a lower count means lower `KNOWN_UNMARKED`. A file with any valid marker is exempt, so the count doesn't prove every conflict in it is marked;
+- the count of comments that read like a conflict between sources ("the instructions say", "in practice", "discrepancy", "Source conflict:", ...) changes in a file without a marker. A new file or a higher count means reword the comment, and if it describes a real conflict, record it as a candidate (step 1); the marker follows in step 3. A lower count means lower `KNOWN_UNMARKED`. A file with any valid marker is exempt, so the count doesn't prove every conflict in it is marked;
 - a backlog item (`source_conflicts/candidates.yaml`) is malformed, already registered, cites a code path that isn't a file git tracks here (absolute, with `..`, or under a hidden directory such as `.github`), or contains a decision-queue id, a session id, a local path or an email address anywhere in the file: in its raw text, comments and keys included, and in every parsed value and key (escapes, `!!binary`, sets). Homoglyphs, such as a Cyrillic letter in "Source", are not caught; review catches those.
 
 A model that departs from the statute with no official source behind it is a bug, not a source conflict. Fix it, or open an issue.
