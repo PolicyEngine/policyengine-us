@@ -1,0 +1,156 @@
+# Pay share = pay max - (pay max - pay min) x clip((percentile - slope start) /
+# (slope end - slope start), 0, 1), with percentile = income / income limit
+# (Appendix 4A Calculator!E2:G2). 'Formula Parameters'!C4:C7: FFY26 pay max
+# 0.439, pay min 0.108, slope 0 to 0.896; FFY27 pay max 0.452, pay min 0.113,
+# slope 0 to 0.891. Households whose only income is DWP, General Assistance,
+# MFIP or SSI are placed at the lowest income level (FFY26 EAP Policy Manual,
+# Chapter 3 "Qualified Eligibility").
+
+# Zero income: percentile 0, pay max 0.439.
+- name: Case 1, zero income gets the FFY2026 pay maximum.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 36
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        pre_subsidy_electricity_expense: 900
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_eap_pay_share: 0.439
+
+# Zero income: percentile 0, pay max 0.452.
+- name: Case 2, zero income gets the FFY2027 pay maximum.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 36
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        pre_subsidy_electricity_expense: 900
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_eap_pay_share: 0.452
+
+# FFY26: $35,000 / $37,428 = 0.935, at or above the 0.896 slope end, so the
+# pay minimum 0.108 applies.
+- name: Case 3, a percentile above the FFY2026 slope end gets the pay minimum.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 36
+        employment_income: 35_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        pre_subsidy_electricity_expense: 900
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_eap_pay_share: 0.108
+
+# FFY27: $36,000 / $38,460 = 0.936, above the 0.891 slope end, so the pay
+# minimum 0.113 applies.
+- name: Case 4, a percentile above the FFY2027 slope end gets the pay minimum.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 36
+        employment_income: 36_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        pre_subsidy_electricity_expense: 900
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_eap_pay_share: 0.113
+
+# Qualified Eligibility: SSI of $11,928 ($994 x 12) is the only income, so the
+# household is placed at the lowest income level and gets the pay max 0.439
+# (without it, $11,928 / $37,428 would give 0.321).
+- name: Case 5, an SSI-only household gets the pay maximum under Qualified Eligibility.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 67
+        ssi: 11_928
+        medicare_part_b_premium: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        pre_subsidy_electricity_expense: 800
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_eap_countable_income: 11_928
+    mn_eap_pay_share: 0.439
+
+# Social Security of $6,000 ($500 a month) plus SSI of $6,168 ($994 - ($500 -
+# $20) = $514 a month), with the Part B premium paid by the Medicare Savings
+# Program: income $12,168 is not SSI-only, so the ordinary percentile applies:
+# $12,168 / $37,428 = 0.3251042; 0.439 - 0.331 x 0.3251042 / 0.896 =
+# 0.3189001.
+- name: Case 6, an SSI and Social Security household uses the ordinary percentile.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 6_000
+        ssi: 6_168
+        medicare_part_b_premium: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        pre_subsidy_electricity_expense: 800
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_eap_countable_income: 12_168
+    mn_eap_pay_share: 0.3189001

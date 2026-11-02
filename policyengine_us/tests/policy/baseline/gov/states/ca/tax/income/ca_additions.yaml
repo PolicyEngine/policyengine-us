@@ -1,0 +1,61 @@
+# 2020 Schedule CA (540) instructions, Part I, Section C, line 22, column B:
+# the federal Form 1040 line 10b charitable deduction is added back.
+# https://www.ftb.ca.gov/forms/2020/2020-540-booklet.pdf#page=48
+
+- name: Case 1, 2020 federal non-itemizer adds back the line 10b deduction.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # Federal AGI 40,000 - 300 = 39,700; California adds the 300 back.
+    adjusted_gross_income: 39_700
+    ca_additions: 300
+    ca_agi: 40_000
+
+- name: Case 2, 2020 federal itemizer has no line 10b deduction to add back.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        charitable_cash_donations: 500
+        deductible_mortgage_interest: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_additions: 0
+
+- name: Case 3, 2021 deduction for non-itemizers is below the line, so nothing is added back.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_additions: 0

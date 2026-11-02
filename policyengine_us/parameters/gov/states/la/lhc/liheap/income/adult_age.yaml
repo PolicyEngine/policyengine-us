@@ -1,0 +1,22 @@
+description: Louisiana counts the income of household members at least this age, while members under it count only Social Security and Supplemental Security Income, under the Low Income Home Energy Assistance Program.
+# The guide counts "Any income of a household member age 18 and older".
+# Appendix E counts Social Security benefits, including SSI, "paid to minors",
+# and FAQ A4 counts the Social Security a parent receives for a minor child;
+# no other income of a minor is counted. Appendix E also excludes income earned
+# by members 18 and over still enrolled in high school (is_in_k12_school).
+values:
+  2025-10-01: 18
+
+metadata:
+  unit: year
+  period: year
+  label: Louisiana LIHEAP adult age
+  reference:
+    - title: "Louisiana LIHEAP Service Delivery Guide, revised January 1, 2024, Section 3.6 C.1 and Appendix E #page 29,82,85"
+      href: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20REVISED%20January%201_%202024.pdf#page=29
+    - title: "Louisiana LIHEAP Service Delivery Guide, effective April 1, 2026, Section 3.6 C.1 and Appendix E #page 35,89,92"
+      href: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20FINAL%20-%20Effective%20April%201%2c%202026.pdf#page=35
+    - title: Louisiana LIHEAP Service Delivery Guide FAQs, February 11, 2022, A4
+      href: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20Frequently%20Asked%20Questions%20(FAQs)%20-%202%2011%2022.pdf#page=2
+    - title: Louisiana FY2026 LIHEAP State Plan, Section 1.9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/LA_Plan_2026.pdf#page=6

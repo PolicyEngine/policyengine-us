@@ -1,0 +1,18 @@
+description: Pennsylvania adds this amount to the heating base for each household member after the first under the Low Income Home Energy Assistance Program.
+# Read from the printed tables: within an income bracket, each added member
+# raises the payment by this amount times the bracket multiplier, in every
+# county and for every fuel (for example, $7 per member at $3,000-$3,999,
+# where the multiplier is 1.4).
+values:
+  2024-11-04: 5
+metadata:
+  unit: currency-USD
+  period: year
+  label: Pennsylvania LIHEAP heating base amount per additional household member
+  reference:
+    - title: "Pennsylvania LIHEAP benefit charts, Energy Year 2024-2025 #page 1-469"
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/PA_BenefitMatrix_2025.pdf#page=1
+    - title: "Pennsylvania LIHEAP benefit charts, Energy Year 2025-2026 #page 1-469"
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/PA_BenefitMatrix_2026.pdf#page=1
+    - title: Pennsylvania LIHEAP Benefit Amount Table lookup, retrieved October 3, 2026
+      href: https://www.humanservices.dhs.pa.gov/liheap_benefit_table/

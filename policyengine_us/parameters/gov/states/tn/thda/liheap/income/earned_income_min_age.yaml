@@ -1,0 +1,20 @@
+description: Tennessee counts the earned income of household members at least this age who are not tax-unit dependents under the Low Income Home Energy Assistance Program.
+# The FY2026 plan leaves the earned income of a child under 18 unchecked, and
+# the manual defines a child as any member under 18. The manual also excludes
+# the earned income of a dependent 18 or older and of a dependent in school
+# living with a parent or guardian; tax-unit dependency stands in for both,
+# because no input records the dependency relationship the manual names.
+values:
+  2025-10-01: 18
+
+metadata:
+  unit: year
+  period: year
+  label: Tennessee LIHEAP earned income minimum age
+  reference:
+    - title: "Tennessee LIHEAP 2026 Policy Manual, Sections 1.2 and 2.13 #page 8,28"
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-2026-Policy-Manual-for-Tennessee.pdf#page=8
+    - title: Tennessee FY2026 LIHEAP State Plan, Section 1.9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/TN_Plan_2026.pdf#page=6
+    - title: Tennessee LIHEAP 2027 Policy Manual (draft), Section 2.13 exclusions
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/DRAFT-LIHEAP-2027-Policy-Manual-7-11-2026.pdf#page=30
