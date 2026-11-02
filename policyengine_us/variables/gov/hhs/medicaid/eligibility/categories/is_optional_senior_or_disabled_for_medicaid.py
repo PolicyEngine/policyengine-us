@@ -12,6 +12,8 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
         "https://www.law.cornell.edu/uscode/text/42/1396b#v",
         "https://www.ecfr.gov/current/title-42/section-435.406#p-435.406(b)",
         "https://www.ecfr.gov/current/title-42/section-440.255#p-440.255(c)",
+        "https://www.law.cornell.edu/cfr/text/42/435.121",
+        "https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=1",
     )
 
     def formula(person, period, parameters):
@@ -54,8 +56,22 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
         # for a couple, the SSI couple rate is above 80% of the poverty
         # guideline for two. This holds for aged people too, since 42 U.S.C.
         # 1396b(v)(2)(B) waives only the receipt of SSI.
-        income_eligible = on_exception_path | person(
-            "is_optional_senior_or_disabled_income_eligible", period
+        # A 209(b) state with no medically needy program for aged, blind and
+        # disabled people must let them deduct incurred medical expenses to
+        # reach its income standard, whether or not they receive SSI
+        # (42 CFR 435.121(e)(4)). Only Missouri fits this description; MHABD
+        # Appendix J publishes its spend down standards.
+        classified = person("medicaid_ssi_recipient_state_classification", period)
+        must_allow_spend_down = (
+            classified == classified.possible_values.SECTION_209B
+        ) & ~person("is_in_medicaid_medically_needy_category", period)
+        income_eligible = (
+            on_exception_path
+            | person("is_optional_senior_or_disabled_income_eligible", period)
+            | (
+                must_allow_spend_down
+                & person("is_209b_ssi_recipient_income_eligible_for_medicaid", period)
+            )
         )
         asset_eligible = person("is_optional_senior_or_disabled_asset_eligible", period)
         return (

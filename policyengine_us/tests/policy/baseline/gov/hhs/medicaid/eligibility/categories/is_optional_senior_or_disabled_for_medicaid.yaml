@@ -391,3 +391,103 @@
     is_medicaid_immigration_status_eligible: [false, false]
     is_optional_senior_or_disabled_income_eligible: [false, false]
     is_optional_senior_or_disabled_for_medicaid: [true, true]
+
+# Missouri has no medically needy program, so 42 CFR 435.121(e)(4) requires a
+# spend down to its MHABD standard. Countable income is 16,800 - 240 = 16,560.
+# The aged standard is 12 x 1,131 = 13,572, so 2,988 of expenses reach it.
+- name: Case 21, Missouri aged person not on SSI spends down exactly to the standard.
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement: 16_800
+    other_medical_expenses: 2_988
+    state_code: MO
+  output:
+    is_optional_senior_or_disabled_income_eligible: false
+    is_optional_senior_or_disabled_for_medicaid: true
+    medicaid_category: SENIOR_OR_DISABLED
+
+- name: Case 22, Missouri aged person not on SSI stays a dollar above the standard after expenses.
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement: 16_800
+    other_medical_expenses: 2_987
+    state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE
+
+# Countable income is 18,000 - 240 = 17,760, and 14,760 after expenses. That is
+# above the aged standard of 13,572 and within the blind standard of 15,960.
+- name: Case 23, Missouri blind person spends down to the higher blind standard.
+  period: 2026
+  input:
+    age: 70
+    is_blind: true
+    social_security_retirement: 18_000
+    other_medical_expenses: 3_000
+    state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: true
+
+# Combined countable income is 24,000 - 240 = 23,760. The couple standard is
+# 12 x 1,533 = 18,396, so one spouse's 5,364 of expenses reach it.
+- name: Case 24, Missouri couple spends down together to the couple standard.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        social_security_retirement: 12_000
+        other_medical_expenses: 5_364
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        social_security_retirement: 12_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: [true, true]
+
+# The 2026 resource limit is 6,068.80, the July 2025 value.
+- name: Case 25, Missouri spend down does not waive the resource limit.
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement: 16_800
+    other_medical_expenses: 5_000
+    bank_account_assets: 6_100
+    state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: false
+
+# Illinois is a 209(b) state with a medically needy program, so under
+# 42 CFR 435.121(e)(5) this person spends down through that program.
+- name: Case 26, Illinois person not on SSI spends down through medically needy.
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement: 20_000
+    other_medical_expenses: 10_000
+    state_code: IL
+  output:
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: MEDICALLY_NEEDY
+
+- name: Case 27, Colorado has no medically needy program but is not a 209(b) state.
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement: 16_800
+    other_medical_expenses: 5_000
+    state_code: CO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE

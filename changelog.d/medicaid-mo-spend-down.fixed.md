@@ -1,0 +1,1 @@
+Let aged, blind and disabled people in Missouri who do not receive SSI deduct incurred medical expenses to reach the state's income standard, as 42 CFR 435.121(e)(4) requires in a section 209(b) state with no medically needy program.
