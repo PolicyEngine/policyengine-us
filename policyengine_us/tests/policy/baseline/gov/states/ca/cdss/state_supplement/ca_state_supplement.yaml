@@ -706,5 +706,51 @@
     ssi: [2_820, 2_820, 0] # (1,450 / 2 - 490) * 12
     ca_state_supplement_payment_standard: 27_786.84 # 2,315.57 * 12
     # 2,315.57 - 2 * 235 - 2 * 490 = 865.57 a month, as with explicit marital
-    # units. Pairing either citizen with person3 would make it 885.09.
+    # units. Marital-unit sums read person3 as a CAPI-eligible spouse of both
+    # citizens and added person3's 480 to the couple total, which gave
+    # 2,315.57 - 470 - 2 * 480.24 = 885.09.
     ca_state_supplement: 10_386.84 # 865.57 * 12
+
+- name: Case 18, 2025 mixed couple sharing a default marital unit with an unrelated citizen, marital units omitted, counts only the couple's income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 6_000 # 500 a month
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        pension_income: 6_000 # 500 a month
+      person3:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        pension_income: 12_000 # 1,000 a month
+    tax_units:
+      couple:
+        members: [person1, person2]
+      third:
+        members: [person3]
+    spm_units:
+      couple:
+        members: [person1, person2]
+      third:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # The couple's countable total excludes person3's income, so person1 gets
+    # Case 11's mixed-couple supplement: 620.81 a month. person3 alone gets
+    # 355.81 a month. Summing the whole default marital unit would add
+    # person3's 980 to the couple total: max(480, 1,960 - 979.76) = 980.24,
+    # leaving 120.57 a month for the couple.
+    ca_state_supplement: [7_449.72, 4_269.72]

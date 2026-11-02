@@ -863,7 +863,44 @@
     # (36,000 + 24,000 - 240 - 12,000) / 2, as on main.
     medicaid_optional_senior_or_disabled_countable_income: [23_880, 23_880, 0]
 
-- name: California couple is not made eligible by the premiums of an unrelated adult with no tax role.
+- name: California leaves a dependent child in their own marital unit out of a couple budget.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        pension_income: 36_000
+        medicare_enrolled: false
+      spouse:
+        age: 67
+        is_tax_unit_spouse: true
+        pension_income: 24_000
+        medicare_enrolled: false
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 12_000
+        medicare_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      couple:
+        members: [head, spouse]
+      child:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CA
+  output:
+    # (36,000 + 24,000 - 240) / 2 = 29,880 each, as on main: the child's
+    # explicit marital unit holds no spouse in the couple computation.
+    medicaid_optional_senior_or_disabled_countable_income: [29_880, 29_880, 0]
+
+- name: An unrelated adult with no tax role does not make a California couple eligible through their premiums.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -879,8 +916,8 @@
         pension_income: 12_120
         medicare_enrolled: false
       third:
-        # No tax-role flag: once the couple's roles are set, the third adult
-        # reads as a tax dependent of their own tax unit.
+        # No tax-role flag: once a situation sets the couple's roles, the
+        # third adult reads as a tax dependent of their own tax unit.
         age: 50
         pension_income: 15_000
         health_insurance_premiums: 15_000
@@ -907,9 +944,57 @@
   output:
     is_tax_unit_dependent: [false, false, true]
     # (24,120 + 12,120 - 240) / 2 = 18,000 each. The third adult shares no
-    # tax unit with the couple, so their 15,000 of premiums is not deducted.
+    # tax unit with the couple, so the reader does not deduct their 15,000 of
+    # premiums.
     medicaid_optional_senior_or_disabled_countable_income: [18_000, 18_000, 0]
     is_optional_senior_or_disabled_for_medicaid: [false, false, false]
+    medicaid_category: [NONE, NONE, ADULT]
+
+- name: California leaves another couple's dependent's premiums out of a couple budget.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        pension_income: 24_120
+        medicare_enrolled: false
+      spouse:
+        age: 67
+        is_tax_unit_spouse: true
+        pension_income: 12_120
+        medicare_enrolled: false
+      head2:
+        age: 67
+        is_tax_unit_head: true
+        medicare_enrolled: false
+      spouse2:
+        age: 67
+        is_tax_unit_spouse: true
+        medicare_enrolled: false
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 15_000
+        medicare_enrolled: false
+    tax_units:
+      couple:
+        members: [head, spouse]
+      second:
+        members: [head2, spouse2, child]
+    households:
+      household:
+        members: [head, spouse, head2, spouse2, child]
+        state_code: CA
+  output:
+    # (24,120 + 12,120 - 240) / 2 = 18,000 each. The child shares no tax unit
+    # with the first couple, so the reader does not deduct their 15,000 of
+    # premiums from that couple's budget, and 36,000 exceeds 22,024.80.
+    medicaid_optional_senior_or_disabled_countable_income: [18_000, 18_000, 0, 0, 0]
+    # The second couple stays ineligible because the income reader sums the
+    # whole default unit, as on main.
+    is_optional_senior_or_disabled_for_medicaid: [false, false, false, false, false]
 
 - name: California counts a dependent couple's premiums once.
   period: 2026

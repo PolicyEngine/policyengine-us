@@ -101,10 +101,28 @@ def _ssi_resource_couple(person, period):
 def _ssi_couple_total(person, period, values):
     """Each person's value plus their co-resident spouse's, if they have one.
 
-    This equals the marital-unit sum for units of one or two people, and
-    adds only the spouse when a unit holds more people, as the default unit
-    of a situation that omits marital units can. ``period`` is the year of
-    the spouse test.
+    This equals the marital-unit sum for a one-person unit and for a
+    two-person unit whose members the spouse test pairs, and adds only the
+    spouse when a unit holds more people, as the default unit of a situation
+    that omits marital units can. ``period`` is the year of the spouse test.
     """
     spouse = _ssi_spouse_index(person, period)
     return values + where(spouse >= 0, values[np.maximum(spouse, 0)], 0)
+
+
+def _ssi_couple_budget_total(person, period, values):
+    """A couple's total: both spouses' values plus their dependents'.
+
+    A dependent is an unmarried tax dependent who shares the marital unit of
+    a couple and the tax unit of the person whose total this is. Another
+    couple's dependent and an unrelated member of a default marital unit stay
+    out. ``period`` is the year of the spouse test.
+    """
+    dependent = (
+        person("is_tax_unit_dependent", period)
+        & (_ssi_spouse_index(person, period) < 0)
+        & person.marital_unit.any(person("ssi_couple_computation_applies", period))
+    )
+    return _ssi_couple_total(person, period, values) + person.tax_unit.sum(
+        where(dependent, values, 0)
+    )

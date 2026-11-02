@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_budget_total,
+)
 
 
 class is_medically_needy_for_medicaid(Variable):
@@ -54,8 +57,13 @@ class is_medically_needy_for_medicaid(Variable):
         parental_expense_share = where(
             eligible_child, parental_expenses / max_(eligible_children, 1), 0
         )
-        income = marital_unit.sum(
-            personal_income - medical_expenses - parental_expense_share
+        budget = personal_income - medical_expenses - parental_expense_share
+        # A couple's budget leaves out an unrelated member of a default marital
+        # unit, whose income ssi_countable_income also leaves out.
+        income = where(
+            person("ssi_couple_computation_applies", period),
+            _ssi_couple_budget_total(person, period, budget),
+            marital_unit.sum(budget),
         )
         assets = marital_unit.sum(personal_assets)
         ma = parameters(period).gov.hhs.medicaid
