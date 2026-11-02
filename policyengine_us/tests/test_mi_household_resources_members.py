@@ -4,18 +4,18 @@ MCL 206.508(3): "'Household' means a claimant and spouse." MCL 206.508(4)
 counts "all income received by all persons of a household". The MI-1040CR
 asks for "all taxable and nontaxable income you and your spouse received"
 (2025 MI-1040 book, page 31), so a dependent's own income and Schedule 1
-adjustments are on the dependent's return, not the claimant's.
+adjustments belong on the dependent's return, not the claimant's.
 
 That includes Social Security, SSI and railroad retirement benefits (line
-21). A minor child's or dependent adult's own benefit is received by the
-beneficiary, even when the claimant is the representative payee, so it is
-not household resources. Revenue Administrative Bulletin 2015-18 counts
+21). The beneficiary receives a minor child's or dependent adult's own
+benefit, even when the claimant acts as representative payee, so household
+resources leave it out. Revenue Administrative Bulletin 2015-18 counts
 benefits received by minor children, and the line 21 instructions count
 amounts received for minor children or other dependent adults; the statute's
 definition of household governs both.
 
 The claimant receives two kinds of amount for others in the household
-(page 32), which count wherever they are recorded:
+(page 32), which count on any member's record:
 
 - line 22: child support and foster parent payments;
 - line 27: payments to the household by MDHHS and other public assistance.
@@ -24,8 +24,8 @@ Line 31 is "insurance premiums you paid for yourself and your family" (page
 32). health_insurance_premiums records the premiums each person
 paid, so only the head's and spouse's count; theirs may cover the family.
 Line 31 leaves out "any insurance premiums deducted on lines 21 or 30"
-(page 33), so the head's and spouse's self-employed health insurance
-deduction, which is on line 30, is not subtracted again. Lines 20 and 24
+(page 33): line 30 takes the head's and spouse's self-employed health
+insurance deduction, so line 31 doesn't subtract it again. Lines 20 and 24
 count gambling winnings and gifts "over $300" (MCL 206.510(1)(a) and (b)),
 one amount for the claimant and spouse.
 
@@ -39,9 +39,9 @@ So for every household:
    matter: zeroing them leaves household resources unchanged. In
    particular a dependent's own Social Security, SSI or railroad benefit
    never changes household resources.
-3. Amounts received for the household count wherever they are recorded:
-   moving a dependent's line 22 or 27 amount to the head leaves household
-   resources unchanged.
+3. Amounts the claimant receives for the household count on any member's
+   record: moving a dependent's line 22 or 27 amount to the head leaves
+   household resources unchanged.
 4. Raising a dependent's line 22 or 27 amount by d raises household
    resources by between 0 and d, and by exactly d when they were positive.
 5. Each of the spouse's own sources adds what it adds on the head.
@@ -119,9 +119,9 @@ BENEFITS = [
 ]
 # The claimant's and spouse's own income, for property 8. Not
 # self-employment income: line 16 nets it against other business losses,
-# while its line 30 self-employment tax deduction is on the gross amount, so
-# with an S corporation loss of 404, Schedule C income of 434 adds 30 on
-# line 16 and deducts 30.66 on line 30.
+# while line 30 takes its self-employment tax deduction on the gross
+# amount, so with an S corporation loss of 404, Schedule C income of 434
+# adds 30 on line 16 and deducts 30.66 on line 30.
 INCOME = [
     name
     for name in CLAIMANT_LINES
@@ -443,7 +443,7 @@ def test_reformed_lists():
     p = baseline.tax_benefit_system.parameters.gov.states.mi.tax.income
     sources = list(p.household_resources(f"{YEAR}-01-01"))
     all_members = list(p.household_resources_all_members(f"{YEAR}-01-01"))
-    # The dependent's own pilot payment is not household resources...
+    # Household resources leave out the dependent's own pilot payment...
     assert baseline.calculate("mi_household_resources", YEAR)[0] == pytest.approx(
         40_000, abs=TOLERANCE
     )
@@ -476,8 +476,8 @@ def test_reformed_lists():
 
 
 # ---------------------------------------------------------------------------
-# Hypothesis properties. Hypothesis is a dev extra: without it these tests
-# are not collected and the deterministic tests above still run.
+# Hypothesis properties. Hypothesis is a dev extra: without it the module
+# defines none of these tests, and the deterministic tests above still run.
 # ---------------------------------------------------------------------------
 
 try:
@@ -589,7 +589,7 @@ if hypothesis is not None:
             + _raise(households, "spouse", source, extra)
         )
         for i, h in enumerate(households):
-            # The raised household's scale is at most the base's plus extra.
+            # The raised household's scale can't exceed the base's plus extra.
             tol = tolerance(h) + 8 * float(np.spacing(np.float32(extra)))
             assert result[n + i] == pytest.approx(result[i], abs=tol), (h, source)
             for k in (2, 3):
