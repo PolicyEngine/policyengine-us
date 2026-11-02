@@ -1,9 +1,12 @@
 """Invariants for the employer's deduction of state payroll premiums.
 
-Some state programs put the premium on the employer and let it deduct up to a
-share from wages without requiring it: Colorado FAMLI, Delaware Paid Leave,
-Maine and Massachusetts PFML, Minnesota Paid Leave, New York PFL and DBL, the
-Vermont Child Care Contribution and Washington PFML.
+In some state programs the law caps what the employer may deduct from wages
+and leaves it to decide how much of that to deduct: Colorado FAMLI, Delaware
+Paid Leave, Maine and Massachusetts PFML, Minnesota Paid Leave and the Vermont
+Child Care Contribution, whose premium the statute puts on the employer; New
+York PFL and DBL, which the employer is authorized but not required to
+collect; and Washington PFML, whose employee share the employer may deduct up
+to and may pay in any part.
 `employer_state_payroll_premium_deduction_share` says how much of the
 permitted employee share the employer deducts (default 1); the employer pays
 the rest. Hypothesis draws workers in those states, in states whose

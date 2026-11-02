@@ -188,16 +188,18 @@
   period: 2026
   input:
     employment_income: 100_000
+    # A zero unemployment insurance rate keeps this case independent of the
+    # Minnesota unemployment insurance wage base.
+    employer_state_unemployment_tax_rate_override: 0
     state_code: MN
   output:
     mn_employer_paid_leave_contribution: 440
-    # Unemployment insurance: 0.9% default rate * the 42,000 wage base = 378.
-    employer_state_unemployment_tax: 378
-    # 378 + 440 = 818.
-    employer_state_payroll_tax: 818
+    employer_state_unemployment_tax: 0
+    # 0 + 440 = 440.
+    employer_state_payroll_tax: 440
     # Social Security 6.2% * 100,000 = 6,200; Medicare 1.45% * 100,000 =
-    # 1,450; FUTA 0.6% * 7,000 = 42; 6,200 + 1,450 + 42 + 818 = 8,510.
-    employer_payroll_tax: 8_510
+    # 1,450; FUTA 0.6% * 7,000 = 42; 6,200 + 1,450 + 42 + 440 = 8,132.
+    employer_payroll_tax: 8_132
 
 - name: The 2027 premium rate is unchanged at 0.88%.
   period: 2027
