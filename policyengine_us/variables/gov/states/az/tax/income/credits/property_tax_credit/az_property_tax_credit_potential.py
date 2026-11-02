@@ -51,8 +51,16 @@ class az_property_tax_credit_potential(Variable):
         # property taxes paid. For renters, taxes paid is rent multiplied by
         # the landlord's property tax factor from Form 201 (Form 140PTC line
         # 13); the rent_property_tax_rate parameter approximates this
-        # landlord-specific factor. Each tax unit counts its own property
-        # taxes and rent, as before household income spanned tax units.
+        # landlord-specific factor.
+        # Ruling us-az:ptc-rent-and-taxes-shared-home: each tax unit counts
+        # only its own property taxes and rent, even where household income
+        # spans tax units. ARS 43-1072(A)(2) requires that "such person paid
+        # either property taxes or rent", and (B) caps the credit at "the
+        # amount of property taxes actually paid". The 2025 instructions for
+        # line 12 ask for "property taxes that you actually paid", Form 140PTC
+        # line 13 for "property taxes paid by your landlord on your portion of
+        # rents", and the Form 201 instructions for line 13 say "Enter the
+        # total rents you paid for the taxable year."
         real_estate_taxes = add(tax_unit, period, ["real_estate_taxes"])
         rent = add(tax_unit, period, ["rent"])
         property_taxes_paid = real_estate_taxes + p.rent_property_tax_rate * rent

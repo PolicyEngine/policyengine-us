@@ -33,6 +33,12 @@ and the variants the properties compare them with, so few simulations run:
    never rises with income (checked first).
 6. Arizona unemployment never changes household income; other-state
    unemployment changes it dollar for dollar.
+7. Changing any federal above-the-line deduction other than loss_ald,
+   supplied as an input, never changes az_property_tax_credit_income
+   (ruling us-az:ptc-above-the-line-deductions: A.A.C. R15-2C-502(A)(1)
+   counts "the sum of all income not specifically excluded in A.R.S.
+   § 43-1072", and Form 140PTC lines A to I subtract no adjustment). Federal
+   AGI is checked to move, so the property is not vacuous.
 """
 
 import numpy as np
@@ -303,3 +309,72 @@ def test_household_income_and_one_claimant(homes, raise_by, uc):
     np.testing.assert_allclose(
         household_income[3 * n : 4 * n], household_income[base] + uc, atol=0.01
     )
+
+
+@settings(
+    max_examples=4,
+    deadline=None,
+    derandomize=True,
+    database=None,
+    suppress_health_check=[HealthCheck.too_slow],
+)
+@given(
+    wages=st.floats(0, 30_000),
+    self_employment=st.floats(-5_000, 30_000),
+    social_security=st.sampled_from([0.0, 12_000.0, 30_000.0]),
+    dependent_wages=st.sampled_from([0.0, 3_000.0]),
+    amount=st.floats(1, 5_000),
+)
+def test_above_the_line_deductions_do_not_change_income(
+    wages, self_employment, social_security, dependent_wages, amount
+):
+    from policyengine_us.system import system
+
+    p = system.parameters(YEAR).gov.irs.ald
+    deductions = [d for d in p.deductions if d != "loss_ald"]
+    year = str(YEAR)
+    amount = round(amount, 2)
+    people, tax_units, households = {}, {}, {}
+    # Variant 0 is the base; variant i + 1 supplies deductions[i] as an input.
+    # Every variant supplies every listed deduction, at zero unless varied, so
+    # the base and the variant differ only in that one input.
+    for i in range(len(deductions) + 1):
+        varied = deductions[i - 1] if i else None
+        head = {
+            "age": {year: 70},
+            "employment_income": {year: round(wages, 2)},
+            "self_employment_income": {year: round(self_employment, 2)},
+            "social_security": {year: social_security},
+        }
+        dependent = {
+            "age": {year: 15},
+            "is_tax_unit_dependent": {year: True},
+            "employment_income": {year: dependent_wages},
+        }
+        unit = {"members": [f"head_{i}", f"dependent_{i}"]}
+        for deduction in deductions:
+            value = amount if deduction == varied else 0.0
+            if system.variables[deduction].entity.key == "person":
+                # On the dependent as well: federal AGI subtracts it only
+                # for filer amounts recorded on a dependent, and the add-back
+                # must match either way.
+                head[deduction] = {year: value}
+                dependent[deduction] = {year: value}
+            else:
+                unit[deduction] = {year: value}
+        people[f"head_{i}"] = head
+        people[f"dependent_{i}"] = dependent
+        tax_units[f"tax_unit_{i}"] = unit
+        households[f"household_{i}"] = {
+            "members": [f"head_{i}", f"dependent_{i}"],
+            "state_code": {year: "AZ"},
+        }
+    sim = Simulation(
+        situation={"people": people, "tax_units": tax_units, "households": households}
+    )
+    income = sim.calculate("az_property_tax_credit_income", YEAR)
+    agi = sim.calculate("adjusted_gross_income", YEAR)
+    for i, deduction in enumerate(deductions, start=1):
+        assert abs(income[i] - income[0]) < 0.01, deduction
+        # Federal AGI moves, so the add-back is what keeps income still.
+        assert agi[i] < agi[0] - 0.01, deduction

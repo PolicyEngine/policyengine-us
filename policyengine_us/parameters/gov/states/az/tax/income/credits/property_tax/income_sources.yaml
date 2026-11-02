@@ -7,7 +7,12 @@ values:
     # (taxable pension is already in Federal AGI via az_property_tax_credit_agi)
     - tax_exempt_public_pension_income
     - tax_exempt_private_pension_income
-    # Federal AGI minus Social Security (per ARS 43-1072(I) exclusion).
+    # Federal AGI minus Social Security (per ARS 43-1072(I) exclusion), with
+    # federal above-the-line deductions other than loss_ald added back:
+    # A.A.C. R15-2C-502(A)(1) counts "the sum of all income not specifically
+    # excluded in A.R.S. § 43-1072", and Form 140PTC lines A to I subtract no
+    # adjustment (ruling us-az:ptc-above-the-line-deductions). loss_ald stays
+    # subtracted for its business losses; its capital part is replaced below.
     # Item (7) capital gains and losses (Form 140PTC Part 1 line D) are counted
     # here, once, for members who are not dependents: federal AGI's net capital
     # gain and capital loss deduction (limited to $3,000 per return) are

@@ -250,3 +250,35 @@
     az_property_tax_credit_household_income: 1_500
     # Table 2, 0 - 2,500 -> 502.
     az_property_tax_credit: 502
+
+- name: A co-resident's IRA deduction does not reduce household income
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 70
+        employment_income: 2_000
+        rent: 6_000
+      son:
+        age: 40
+        employment_income: 1_000
+        traditional_ira_contributions: 500
+    tax_units:
+      parent_unit:
+        members: [parent]
+      son_unit:
+        members: [son]
+    households:
+      household:
+        members: [parent, son]
+        state_code: AZ
+  output:
+    traditional_ira_deduction: [0, 500]
+    adjusted_gross_income: [2_000, 500]
+    # Ruling us-az:ptc-above-the-line-deductions: the son's unit adds his
+    # 1,000 of wages, not his federal AGI of 500.
+    az_property_tax_credit_income: [2_000, 1_000]
+    az_property_tax_credit_household_income: 3_000
+    # Table 2, 2,951 - 3,100 -> 412 (at 2,500 it would be 502); property
+    # taxes 0.15 x 6,000 = 900.
+    az_property_tax_credit: [412, 0]
