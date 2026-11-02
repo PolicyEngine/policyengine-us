@@ -188,6 +188,28 @@
     spm_unit_benefits: 1_750
     household_benefits: 1_750
 
+- name: New Jersey property tax relief counts in both benefit totals before 2026.
+  period: 2025
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [adult]
+        nj_property_tax_relief: 1_750
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: NJ
+  output:
+    spm_unit_benefits: 1_750
+    household_benefits: 1_750
+
 - name: Massachusetts EAEDC counts in both benefit totals.
   period: 2026
   input:

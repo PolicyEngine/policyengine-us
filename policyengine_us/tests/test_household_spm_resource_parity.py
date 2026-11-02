@@ -66,10 +66,6 @@ SPM_ONLY = {
     "assigned_aca_ptc": "only under the flat tax reform's deduct_ptc switch",
 }
 
-# nj_property_tax_relief has no formula before 2026, so the household list starts
-# then, while the SPM's undated list carries it in every year.
-NJ_RELIEF_START = 2026
-
 # Sources in the household list that person market_income still lacks.
 # #9919 tracks these.
 MARKET_HOUSEHOLD_ONLY = {
@@ -136,8 +132,6 @@ def test_benefit_lists_differ_only_where_documented(year):
 
     household_extra = household - spm - set(HOUSEHOLD_ONLY)
     spm_extra = spm - household - set(SPM_ONLY)
-    if year < NJ_RELIEF_START:
-        spm_extra.discard("nj_property_tax_relief")
     assert household_extra == set(), f"{year}: only in household: {household_extra}"
     assert spm_extra == set(), f"{year}: only in SPM: {spm_extra}"
 
