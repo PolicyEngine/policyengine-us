@@ -7,7 +7,9 @@ immediately before P.L. 115-97, so from 2018 New York keeps the IRC
 limit ($500,000 married filing separately); acquisition debt above that limit
 and non-acquisition debt count as home equity debt up to $100,000 ($50,000),
 and on each home only up to its fair market value less the debt on it
-treated as acquisition or grandfathered debt.
+treated as acquisition or grandfathered debt. A fair market value of 0 means
+unknown: the home counts as worth at least the debt on it, so only the dollar
+limit applies.
 
 Hypothesis draws two homes, each with an acquisition balance and vintage,
 non-acquisition debt and a fair market value, around every cutoff and limit,
@@ -15,16 +17,29 @@ and checks _ny_qualified_loan_limit:
 
 1. Differential: it equals an independent restatement in the statute's
    order, which places the acquisition limit on each home by a separate loop.
+   The restatement shares the acquisition limit between homes the same way
+   (in proportion to each home's other acquisition debt), so it cannot catch
+   a wrong sharing rule.
 2. Bounds: grandfathered debt <= New York limit <= total debt, and the New
    York limit is at least PE's federal limit for the same acquisition loans.
 3. Defaults: with no fair market value and no non-acquisition debt (the
-   input defaults), no debt counts as home equity debt.
+   input defaults), the limit is line 6 plus the acquisition debt above it,
+   up to the home equity debt limit.
 4. Order: swapping the two homes never changes the limit.
-5. Monotone: a higher fair market value never lowers the limit.
+5. Monotone: a higher positive fair market value never lowers the limit.
+6. Unknown value: setting every fair market value to 0 (unknown) never
+   lowers the limit.
 
-And for _ny_allowed_interest: with no non-acquisition debt the result lies
-between the federal deduction and the interest paid, and equals the federal
-deduction when federal law disallows nothing.
+For _ny_allowed_interest, interest on two homes with no non-acquisition debt
+is split into the federally deductible and non-deductible parts by PE's
+federal share for the same loans. The New York result lies between the
+federal deduction and the interest paid, and equals the federal deduction
+when federal law disallows nothing. The federal bound follows from the
+limits, not from a floor.
+
+For _ny_deductible_share: the share is at least the unrounded ratio and at
+least the ratio rounded half up to three places, at most one, and exceeds the
+unrounded ratio by no more than .0005.
 
 The limits are read from the New York and federal parameters for every
 filing status in 2018, 2025 and 2026. The properties cannot pass trivially:
@@ -35,6 +50,9 @@ home equity limit or the acquisition limit is dropped or reversed.
 These are for-all properties of the helpers, which YAML cannot state. The
 policy outcomes are checked in ny_mortgage_interest_deduction.yaml.
 """
+
+import math
+from fractions import Fraction
 
 import numpy as np
 from hypothesis import given, settings
@@ -145,8 +163,11 @@ def statute(pair, limits):
         else:
             on_home = other_allowed * balance / other if other > 0 else 0.0
             excess = balance - on_home
-        # (C)(i): no more than fair market value less acquisition debt.
-        room = max(0.0, fair_market_value - on_home)
+        # (C)(i): no more than fair market value less acquisition debt. A
+        # value of 0 means unknown and sets no such limit.
+        room = (
+            max(0.0, fair_market_value - on_home) if fair_market_value > 0 else math.inf
+        )
         home_equity += min(excess + non_acquisition, room)
     # (C)(ii): the aggregate home equity limit.
     return old + other_allowed + min(home_equity, home_equity_limit)
@@ -188,30 +209,47 @@ def test_new_york_qualified_loan_limit_properties(first, second, status):
     assert old - TOLERANCE <= limit <= total + TOLERANCE
     assert limit >= federal_limit(pair, federal_limits) - TOLERANCE
     # 3. Defaults: no fair market value and no non-acquisition debt.
+    acquisition_limit, home_equity_limit = ny_limits
     defaults = [(home[0], home[1], 0.0, 0.0) for home in pair]
     acquisition = sum(home[0] for home in pair)
-    assert (
-        abs(model_limit(defaults, ny_limits) - min(max(old, ny_limits[0]), acquisition))
-        <= TOLERANCE
-    )
+    line_6 = min(max(old, acquisition_limit), acquisition)
+    expected = line_6 + min(acquisition - line_6, home_equity_limit)
+    assert abs(model_limit(defaults, ny_limits) - expected) <= TOLERANCE
     # 4. Order.
     assert abs(limit - model_limit([second, first], ny_limits)) <= TOLERANCE
-    # 5. Monotone in fair market value.
-    richer = [(home[0], home[1], home[2], home[3] + 250_000) for home in pair]
+    # 5. Monotone in a positive fair market value.
+    richer = [
+        (home[0], home[1], home[2], home[3] + 250_000 if home[3] > 0 else 0.0)
+        for home in pair
+    ]
     assert model_limit(richer, ny_limits) >= limit - TOLERANCE
+    # 6. An unknown value (0) never lowers the limit.
+    unknown = [(home[0], home[1], home[2], 0.0) for home in pair]
+    assert model_limit(unknown, ny_limits) >= limit - TOLERANCE
 
 
 @settings(**SETTINGS)
 @given(
-    deductible=amounts,
-    non_deductible=amounts,
-    limit=amounts,
-    debt=amounts,
+    interest=amounts,
+    first=homes,
+    second=homes,
+    status=st.sampled_from(sorted(LIMITS)),
 )
 def test_new_york_allowed_interest_without_non_acquisition_debt(
-    deductible, non_deductible, limit, debt
+    interest, first, second, status
 ):
-    share = _ny_deductible_share(np.array([min(limit, debt)]), np.array([debt]))
+    ny_limits, federal_limits = LIMITS[status]
+    pair = [(home[0], home[1], 0.0, home[3]) for home in (first, second)]
+    acquisition = sum(home[0] for home in pair)
+    if acquisition > 0:
+        federal_share = min(1.0, federal_limit(pair, federal_limits) / acquisition)
+    else:
+        federal_share = 1.0
+    deductible = interest * federal_share
+    non_deductible = interest - deductible
+    share = _ny_deductible_share(
+        np.array([model_limit(pair, ny_limits)]), np.array([acquisition])
+    )
     allowed = float(
         _ny_allowed_interest(
             np.array([deductible]),
@@ -220,8 +258,22 @@ def test_new_york_allowed_interest_without_non_acquisition_debt(
             share,
         )[0]
     )
-    assert 0 <= share[0] <= 1
-    assert deductible - TOLERANCE <= allowed
-    assert allowed <= deductible + non_deductible + TOLERANCE
+    assert deductible - TOLERANCE <= allowed <= interest + TOLERANCE
     if non_deductible == 0:
         assert allowed == deductible
+
+
+@settings(**SETTINGS)
+@given(limit=amounts, debt=amounts)
+def test_new_york_deductible_share_is_the_larger_method(limit, debt):
+    debt = max(debt, 1.0)
+    limit = min(limit, debt)
+    share = float(_ny_deductible_share(np.array([limit]), np.array([debt]))[0])
+    ratio = limit / debt
+    # Rounded half up to three places, computed exactly.
+    exact = Fraction(int(limit), int(debt))
+    rounded = math.floor(exact * 1_000 + Fraction(1, 2)) / 1_000
+    assert share >= ratio - 1e-12
+    assert share >= rounded - 1e-12
+    assert share <= 1 + 1e-12
+    assert share - ratio <= 0.0005 + 1e-12

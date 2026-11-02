@@ -19,7 +19,8 @@ def _ny_qualified_loan_limit(
     limit, and debt that was never acquisition debt, may qualify as home
     equity debt (Figure A, note 3). On each home, home equity debt cannot
     exceed the home's fair market value less the debt on it treated as
-    acquisition or grandfathered debt (IRC 163(h)(3)(C)(i)); across homes it
+    acquisition or grandfathered debt (IRC 163(h)(3)(C)(i)); a value of 0
+    means unknown and sets no such limit. Across homes it
     cannot exceed the home equity debt limit (line 7).
 
     The limit on other acquisition debt is shared among homes in proportion
@@ -46,7 +47,11 @@ def _ny_qualified_loan_limit(
         )
         treated = grandfathered + other_debt_treated * other_share
         excess_acquisition = other - other_debt_treated * other_share
-        equity_room = max_(fair_market_value - treated, 0)
+        # 0 means unknown: treat the home as worth at least the debt on it,
+        # as the Hawaii calculation does.
+        equity_room = where(
+            fair_market_value > 0, max_(fair_market_value - treated, 0), np.inf
+        )
         home_equity_debt = home_equity_debt + min_(
             excess_acquisition + non_acquisition, equity_room
         )
@@ -57,41 +62,42 @@ def _ny_qualified_loan_limit(
 
 
 def _ny_deductible_share(qualified_loan_limit, total_debt):
-    """2017 Publication 936, Table 1, line 11.
+    """2017 Publication 936, Table 1, line 11, or the unrounded ratio.
 
-    The worksheet divides the qualified loan limit by total debt, rounded to
-    three places; PE rounds half up. Interest is treated as within the
-    limits, a share of one, when no balance is reported, as in the federal
-    calculation. The ratio is computed in double precision so that single
-    precision cannot move a ratio across a rounding boundary.
+    Until regulations issue, the House report on OBRA 1987 allows any
+    reasonable method of allocating interest on debt above the limits. The
+    IRS accepts the worksheet, which rounds the ratio to three places, and
+    the regulation's simplified method, which uses the unrounded ratio
+    (Treas. Reg. 1.163-10T(d); CCA 201201017). A taxpayer can use either, so
+    the larger share applies; PE rounds half up. The share is one when the
+    household reports no balance, as in the federal calculation. PE computes the
+    ratio in double precision so that single precision cannot move it
+    across a rounding boundary.
     """
     limit = np.asarray(qualified_loan_limit, dtype=np.float64)
     debt = np.asarray(total_debt, dtype=np.float64)
     ratio = np.divide(limit, debt, out=np.ones_like(debt), where=debt > 0)
-    return np.floor(ratio * 1_000 + 0.5) / 1_000
+    worksheet = np.floor(ratio * 1_000 + 0.5) / 1_000
+    return np.maximum(worksheet, ratio)
 
 
 def _ny_allowed_interest(
     deductible, non_deductible, non_acquisition_debt, deductible_share
 ):
-    """Worksheet lines 10 and 12, with PE's federal pass-through and floor.
+    """Worksheet lines 10 and 12, with PE's federal pass-through.
 
     Interest paid (line 10) is the federally deductible and non-deductible
     parts together, the raw interest rather than the federally allowed
-    amount. When federal law disallows none of the interest and no
-    non-acquisition debt is reported, New York's limits are at least as
-    large as the federal ones, so the federal amount passes through; this
-    keeps a deduction supplied directly. Otherwise the worksheet result
-    applies, floored at the federal deduction when no non-acquisition debt
-    is reported so that rounding to three places cannot take New York below
-    PE's unrounded federal amount. The federal calculation does not see
-    non-acquisition debt, so no floor applies when it is reported.
+    amount. When federal law disallows none of the interest and the
+    household reports no non-acquisition debt, the federal amount passes
+    through, which keeps a deduction supplied directly. Otherwise line 12
+    applies. New York's limits never fall below the federal ones for the
+    same loans, so without non-acquisition debt the result never falls
+    below PE's federal amount.
     """
     worksheet = (deductible + non_deductible) * deductible_share
-    has_non_acquisition_debt = non_acquisition_debt > 0
-    floor = where(has_non_acquisition_debt, 0, deductible)
-    uses_worksheet = (non_deductible > 0) | has_non_acquisition_debt
-    return where(uses_worksheet, max_(worksheet, floor), deductible)
+    uses_worksheet = (non_deductible > 0) | (non_acquisition_debt > 0)
+    return where(uses_worksheet, worksheet, deductible)
 
 
 class ny_mortgage_interest_deduction(Variable):
@@ -121,6 +127,12 @@ class ny_mortgage_interest_deduction(Variable):
         # Table 1 and grandfathered debt.
         # PDF pages 3, 10-11, 13
         "https://www.irs.gov/pub/irs-prior/p936--2017.pdf#page=3",
+        # Treasury Regulation 1.163-10T(d) and (g): the unrounded simplified
+        # method and the taxpayer's choice of method. PDF pages 3-4, 6.
+        "https://www.govinfo.gov/content/pkg/CFR-2025-title26-vol3/pdf/CFR-2025-title26-vol3-sec1-163-10T.pdf#page=3",
+        # CCA 201201017 (nonprecedential): any reasonable allocation method.
+        # PDF pages 4-5.
+        "https://www.irs.gov/pub/irs-wd/1201017.pdf#page=4",
     )
     defined_for = StateCode.NY
 

@@ -6,10 +6,12 @@
 #   line 6 = min(max(G, $1,000,000), G + A)
 #   line 7 = min(home equity debt, $100,000), where home equity debt is the
 #            acquisition debt above line 6 plus non-acquisition debt, limited
-#            on each home to its fair market value less the debt on it
-#            counted in line 6
+#            on each home to its room: its fair market value less the debt on
+#            it counted in line 6 (a value of 0 means unknown and sets no
+#            limit)
 #   line 8 = line 6 + line 7
-#   line 11 = line 8 / total debt, rounded to three places
+#   line 11 = the larger of line 8 / total debt rounded to three places and
+#             the unrounded ratio
 #   line 12 = interest x line 11
 # Limits are halved for married filing separately. PolicyEngine's federal
 # deduction uses the $750,000 limit for debt from 2018 or later, no home
@@ -49,8 +51,9 @@
   output:
     # Federal: $40,000 x $750,000 / $1,500,000 = $20,000.
     deductible_mortgage_interest_tax_unit: 20_000
-    # New York: ($1,000,000 + $100,000) / $1,500,000 = .733; $40,000 x .733.
-    ny_mortgage_interest_deduction: 29_320
+    # New York: ($1,000,000 + $100,000) / $1,500,000 = .7333. The worksheet's
+    # .733 rounds down, so the unrounded share applies: $40,000 x 11/15.
+    ny_mortgage_interest_deduction: 29_333.33
 
 - name: Separate returns halve both limits
   period: 2025
@@ -66,10 +69,11 @@
   output:
     # Federal: $20,000 x $375,000 / $600,000 = $12,500.
     deductible_mortgage_interest_tax_unit: 12_500
-    # New York: ($500,000 + $50,000) / $600,000 = .917; $20,000 x .917.
+    # New York: ($500,000 + $50,000) / $600,000 = .9167. The worksheet's .917
+    # is the larger share: $20,000 x .917.
     ny_mortgage_interest_deduction: 18_340
 
-- name: Without a fair market value no debt counts as home equity debt
+- name: Without a fair market value, only the dollar limit caps home equity debt
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -80,8 +84,10 @@
     first_home_mortgage_origination_year: 2020
   output:
     deductible_mortgage_interest_tax_unit: 20_000
-    # New York: $1,000,000 / $1,500,000 = .667; $40,000 x .667.
-    ny_mortgage_interest_deduction: 26_680
+    # New York: a value of 0 means unknown, so the home has no room limit.
+    # Line 7 = min($500,000, $100,000). ($1,000,000 + $100,000) / $1,500,000
+    # = .7333 (worksheet .733); $40,000 x 11/15.
+    ny_mortgage_interest_deduction: 29_333.33
 
 - name: Fair market value limits home equity debt
   period: 2025
@@ -95,8 +101,9 @@
     ny_first_home_fair_market_value: 1_040_000
   output:
     # Room for home equity debt: $1,040,000 - $1,000,000 = $40,000.
-    # New York: $1,040,000 / $1,500,000 = .693; $40,000 x .693.
-    ny_mortgage_interest_deduction: 27_720
+    # New York: $1,040,000 / $1,500,000 = .6933 (worksheet .693);
+    # $40,000 x 1.04 / 1.5.
+    ny_mortgage_interest_deduction: 27_733.33
 
 - name: Non-acquisition debt counts as home equity debt up to the limit
   period: 2025
@@ -112,8 +119,9 @@
   output:
     # PE's federal calculation does not see the non-acquisition debt.
     deductible_mortgage_interest_tax_unit: 35_000
-    # New York: ($500,000 + $100,000) / $700,000 = .857; $35,000 x .857.
-    ny_mortgage_interest_deduction: 29_995
+    # New York: ($500,000 + $100,000) / $700,000 = .8571 (worksheet .857);
+    # $35,000 x 6/7.
+    ny_mortgage_interest_deduction: 30_000
 
 - name: Grandfathered debt reduces the acquisition-debt limit
   period: 2025
@@ -135,7 +143,8 @@
     # New York: line 6 = max($400,000, $1,000,000) = $1,000,000, of which
     # $600,000 is the second home's; its other $200,000 is home equity debt,
     # within its room of $900,000 - $600,000 = $300,000 and limited to
-    # $100,000. ($1,000,000 + $100,000) / $1,200,000 = .917; $50,000 x .917.
+    # $100,000. ($1,000,000 + $100,000) / $1,200,000 = .9167. The worksheet's
+    # .917 is the larger share: $50,000 x .917.
     ny_mortgage_interest_deduction: 45_850
 
 - name: Each home's equity room limits its own excess debt
@@ -156,8 +165,9 @@
     # $400,000 on the second. The first home's other $300,000 fits in its
     # room; the second home has no room, so its other $200,000 does not
     # count. Line 7 = min($300,000, $100,000).
-    # ($1,000,000 + $100,000) / $1,500,000 = .733; $60,000 x .733.
-    ny_mortgage_interest_deduction: 43_980
+    # ($1,000,000 + $100,000) / $1,500,000 = .7333 (worksheet .733);
+    # $60,000 x 11/15.
+    ny_mortgage_interest_deduction: 44_000
 
 - name: A directly supplied deduction passes through when nothing is disallowed
   period: 2025
@@ -166,6 +176,39 @@
     deductible_mortgage_interest: 12_000
   output:
     ny_mortgage_interest_deduction: 12_000
+
+- name: A directly supplied deduction passes through even with balances
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    deductible_mortgage_interest: 12_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # With no home_mortgage_interest, non_deductible_mortgage_interest_tax_unit
+    # reads only home_mortgage_interest_tax_unit and the points, so it is 0
+    # and the supplied $12,000 passes through. Without the pass-through, the
+    # worksheet would limit it again: $12,000 x 11/15 = $8,800.
+    ny_mortgage_interest_deduction: 12_000
+
+- name: Without a fair market value, home equity debt keeps its interest
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    home_mortgage_interest: 20_000
+    first_home_mortgage_balance: 300_000
+    first_home_mortgage_origination_year: 2020
+    ny_first_home_non_acquisition_debt: 50_000
+  output:
+    # PE's federal calculation does not see the $50,000.
+    deductible_mortgage_interest_tax_unit: 20_000
+    # New York: line 8 = $300,000 + min($50,000, $100,000) = $350,000, equal
+    # to line 9, so the share is 1. A value of 0 once gave this home no room
+    # and $17,140.
+    ny_mortgage_interest_deduction: 20_000
 
 - name: Before 2018 New York uses the federal amount
   period: 2017
@@ -182,7 +225,7 @@
     deductible_mortgage_interest_tax_unit: 26_666.67
     ny_mortgage_interest_deduction: 26_666.67
 
-- name: Rounding cannot take New York below the federal amount
+- name: When the worksheet rounds down, New York uses the unrounded share
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -191,9 +234,12 @@
     home_mortgage_interest: 60_000
     first_home_mortgage_balance: 1_200_000
     first_home_mortgage_origination_year: 2015
+    ny_first_home_fair_market_value: 1_000_000
   output:
-    # Federal: $60,000 x $1,000,000 / $1,200,000 = $50,000. The worksheet
-    # gives $60,000 x .833 = $49,980; PE keeps the federal $50,000.
+    # Federal: $60,000 x $1,000,000 / $1,200,000 = $50,000.
+    # New York: room = $1,000,000 - $1,000,000 = $0, so line 7 is 0;
+    # $1,000,000 / $1,200,000 = .8333. The worksheet's .833 gives $49,980,
+    # the unrounded share $50,000, which applies.
     deductible_mortgage_interest_tax_unit: 50_000
     ny_mortgage_interest_deduction: 50_000
 

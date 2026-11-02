@@ -1,13 +1,15 @@
 from policyengine_us.model_api import *
 
 _FAIR_MARKET_VALUE_DEFAULT = (
-    "Leave at 0 if unknown. A value of 0 gives the home no room for home "
-    "equity debt, so New York then allows no home equity debt on it and the "
-    "deduction rests on acquisition and grandfathered debt alone."
+    "Leave at 0 if unknown. New York then counts the home as worth at least "
+    "the debt on it, so only the $100,000 ($50,000 separate) home equity debt "
+    "limit applies, as in PolicyEngine's Hawaii calculation."
 )
 
 _NON_ACQUISITION_DEBT_DEFAULT = (
     "Include the interest on this debt in the home mortgage interest inputs. "
+    "PolicyEngine's federal calculation reads only the acquisition mortgage "
+    "balances, so it does not disallow that interest federally after 2017. "
     "Defaults to 0, which leaves New York's calculation to the acquisition "
     "mortgage balances."
 )
