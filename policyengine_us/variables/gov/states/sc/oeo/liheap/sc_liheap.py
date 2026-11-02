@@ -8,11 +8,13 @@ class sc_liheap(Variable):
     label = "South Carolina LIHEAP regular heating assistance"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.SC
+    defined_for = "sc_liheap_eligible"
     reference = (
         # PDF pages 8-9
         "https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/SC_BenefitMatrix_2026.pdf#page=2",
+        # PDF pages 529,537,546
+        "https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=529",
     )
 
     def formula(spm_unit, period, parameters):
@@ -22,18 +24,23 @@ class sc_liheap(Variable):
         state = spm_unit.household("state_code_str", period)
         # The accepted plan's 30% SMI threshold governs over the older-vintage
         # matrix's conflicting 42% threshold. Keep the percentage boundary exact.
-        low_income = income.astype(np.float64) <= p.low_income_smi_rate * smi(
+        low_income = income <= p.low_income_smi_rate * smi(
             size, state, period, parameters
         )
         person = spm_unit.members
         age = person("age", period)
-        elderly = spm_unit.any(age >= p.ages.elderly_min)
-        child = spm_unit.any(np.floor(age) <= p.ages.child_max)
-        disabled = spm_unit.any(person("is_disabled", period))
-        veteran = spm_unit.any(person("is_veteran", period))
-        # The plan measures home-energy utilities; aggregate existing energy
-        # bills, excluding water/sewer/trash/phone. Annual expenses approximate
-        # current monthly bills, and rent-embedded charges are not available.
+        # OEO's 2024 guide leaves state-placed foster children out of the household
+        # and counts only eligible members for the itemized supplements.
+        member = ~person("is_in_foster_care", period.first_month)
+        eligible = member & person("is_citizen_or_legal_immigrant", period)
+        elderly = spm_unit.any(eligible & (age >= p.ages.elderly_min))
+        child = spm_unit.any(eligible & (np.floor(age) <= p.ages.child_max))
+        disabled = spm_unit.any(eligible & person("is_disabled", period))
+        veteran = spm_unit.any(eligible & person("is_veteran", period))
+        # The plan measures home-energy utilities; aggregate existing heating and
+        # electric bills, excluding water, sewer, trash, phone and separate cooking
+        # fuel. Annual expenses approximate current monthly bills, and rent-embedded
+        # charges are not available.
         cost = add(spm_unit, period, p.energy_cost_sources)
         high_burden = (cost > 0) & (cost >= income * p.burden_rate)
         fuel = spm_unit("heating_type", period)
@@ -49,7 +56,9 @@ class sc_liheap(Variable):
             + a.high_burden * high_burden
             + a.fuel * fuel_supplement
         )
-        eligible = spm_unit("sc_liheap_eligible", period)
         # Local funding and priority decisions are not represented. The state
         # schedule does not impose a general benefit-to-bill cap.
-        return where(eligible, min_(amount, a.maximum), 0)
+        award = min_(amount, a.maximum)
+        # A mixed-status award is the total benefit / all household members x
+        # eligible members; both counts leave out state-placed foster children.
+        return award * size / max_(spm_unit.sum(member), 1)

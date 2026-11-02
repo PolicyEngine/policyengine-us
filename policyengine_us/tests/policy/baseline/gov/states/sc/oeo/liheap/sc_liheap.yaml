@@ -4,8 +4,9 @@
 # https://liheapch.acf.gov/docs/2026/benefits-matricies/SC_BenefitMatrix_2026.pdf#page=2
 # Agency's explicit LIHEAP household rule counts all income but qualified size.
 # https://oeo.sc.gov/managedsites/prd/oeo/documents/WAP%202026%20State%20Plan.pdf#page=23
+# OEO's 2024 guide limits supplements to eligible members and prorates mixed-status awards.
+# https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=537
 # These are annual state-schedule awards, before unmodeled local funding discretion.
-# All intermediate outputs below are calculated from raw facts, never forced inputs.
 
 - name: Case 1, source base and combined low-income high-burden examples.
   period: 2026
@@ -52,12 +53,10 @@
         members: [person1, person2, person3, person4]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 4_000
-        sc_tanf: 0
       spm_unit2:
         members: [person5, person6, person7, person8]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 6_000
-        sc_tanf: 0
     households:
       household1:
         members: [person1, person2, person3, person4]
@@ -75,10 +74,9 @@
 - name: Case 2, accepted thirty-percent SMI boundary governs the supplement.
   period: 2026
   absolute_error_margin: 0.01
-  # Using shared raw four-person SMI 102_542,30%=30_762.60. At or below the
-  # boundary add 175 to base 200; a cent above receives only 200. Income 35_000
-  # rejects the older matrix 42% rule. Raw SMI base is a shared-contract input,
-  # not independently reverified federal data in this test-author role.
+  # Four-person SMI 102_542 x 30% = 30_762.60. At or below the boundary add 175
+  # to base 200; a cent above receives only 200. Income 35_000 rejects the older
+  # matrix 42% rule.
   input:
     people:
       person1:
@@ -154,22 +152,18 @@
         members: [person1, person2, person3, person4]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
       spm_unit2:
         members: [person5, person6, person7, person8]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
       spm_unit3:
         members: [person9, person10, person11, person12]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
       spm_unit4:
         members: [person13, person14, person15, person16]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
     households:
       household1:
         members: [person1, person2, person3, person4]
@@ -212,19 +206,16 @@
         members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 500
-        sc_tanf: 0
         pre_subsidy_electricity_expense: 3_499
       spm_unit2:
         members: [person2]
         heating_type: NATURAL_GAS
         gas_expense: 500
-        sc_tanf: 0
         pre_subsidy_electricity_expense: 3_500
       spm_unit3:
         members: [person3]
         heating_type: NATURAL_GAS
         gas_expense: 500
-        sc_tanf: 0
         pre_subsidy_electricity_expense: 3_501
     households:
       household1:
@@ -254,7 +245,6 @@
         members: [person1]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
         water_expense: 5_000
         trash_expense: 2_000
         phone_expense: 2_000
@@ -267,7 +257,7 @@
 
 - name: Case 5, named supplement fuels and other heating fuels are distinguished.
   period: 2026
-  # Matrixp 2 names gas, oil/kerosene and propane for 75. Every scenario has
+  # Matrix page 2 names gas, oil/kerosene and propane for 75. Every scenario has
   # its actual matching bill 1_000 and income 20_000, so no low-income/burden
   # supplement applies. Other represented heating fuels receive the base 200.
   input:
@@ -322,47 +312,38 @@
         members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1_000
-        sc_tanf: 0
       spm_unit2:
         members: [person2]
         heating_type: FUEL_OIL
         fuel_oil_expense: 1_000
-        sc_tanf: 0
       spm_unit3:
         members: [person3]
         heating_type: KEROSENE
         fuel_oil_expense: 1_000
-        sc_tanf: 0
       spm_unit4:
         members: [person4]
         heating_type: PROPANE
         bottled_gas_expense: 1_000
-        sc_tanf: 0
       spm_unit5:
         members: [person5]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
       spm_unit6:
         members: [person6]
         heating_type: WOOD
         wood_expense: 1_000
-        sc_tanf: 0
       spm_unit7:
         members: [person7]
         heating_type: COAL
         coal_expense: 1_000
-        sc_tanf: 0
       spm_unit8:
         members: [person8]
         heating_type: SOLAR
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
       spm_unit9:
         members: [person9]
         heating_type: OTHER
         other_heating_fuel_expense: 1_000
-        sc_tanf: 0
     households:
       household1:
         members: [person1]
@@ -396,8 +377,8 @@
 
 - name: Case 6, age disability and veteran supplements apply once per category.
   period: 2026
-  # Two-person income 30_000 exceeds its 30%SMI level and is below 41_837.
-  # Base 200 gains 75 at age 60;50 for child<=5, any disabled member, or any
+  # Two-person income 30_000 exceeds its 30% SMI level and is below 41_837.
+  # Base 200 gains 75 at age 60; 50 for child <= 5, any disabled member, or any
   # veteran. Two veterans still earn a single 50 supplement.
   input:
     people:
@@ -483,42 +464,34 @@
         members: [person1, person2]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
       spm_unit2:
         members: [person3, person4]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
       spm_unit3:
         members: [person5, person6]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
       spm_unit4:
         members: [person7, person8]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
       spm_unit5:
         members: [person9, person10]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
       spm_unit6:
         members: [person11, person12]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
       spm_unit7:
         members: [person13, person14]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
       spm_unit8:
         members: [person15, person16]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
     households:
       household1:
         members: [person1, person2]
@@ -626,17 +599,14 @@
         members: [person1, person2, person3, person4]
         heating_type: PROPANE
         bottled_gas_expense: 6_000
-        sc_tanf: 0
       spm_unit2:
         members: [person5, person6, person7, person8, person9, person10]
         heating_type: PROPANE
         bottled_gas_expense: 6_000
-        sc_tanf: 0
       spm_unit3:
         members: [person11, person12, person13, person14]
         heating_type: PROPANE
         bottled_gas_expense: 6_000
-        sc_tanf: 0
     households:
       household1:
         members: [person1, person2, person3, person4]
@@ -650,11 +620,11 @@
   output:
     sc_liheap: [850, 850, 850]
 
-- name: Case 8, nonqualified residents may trigger household demographic supplements.
+- name: Case 8, nonqualified residents earn no supplement and the award is prorated.
   period: 2026
-  # Qualified size is one for each threshold. LIHEAP plan demographics refer
-  # to a household member without a qualified-status restriction: add 75 for
-  # the nonqualified elder or 50 for the child, disabled person or veteran.
+  # Qualified size is one for each threshold. The 2024 guide counts only eligible
+  # members for the supplements, so the nonqualified elder, child, disabled person
+  # and veteran add nothing: base 200 / 2 members x 1 eligible member = 100.
   input:
     people:
       person1:
@@ -700,22 +670,18 @@
         members: [person1, person2]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
       spm_unit2:
         members: [person3, person4]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
       spm_unit3:
         members: [person5, person6]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
       spm_unit4:
         members: [person7, person8]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
     households:
       household1:
         members: [person1, person2]
@@ -733,12 +699,12 @@
     sc_liheap_household_size: [1, 1, 1, 1]
     sc_liheap_countable_income: [20_000, 20_000, 20_000, 20_000]
     sc_liheap_income_limit: [31_993, 31_993, 31_993, 31_993]
-    sc_liheap: [275, 250, 250, 250]
+    sc_liheap: [100, 100, 100, 100]
 
 - name: Case 9, all resident income is compared with qualified-size limits.
   period: 2026
   # Qualified child gives size one and ceiling 31_993. Parent income 30_000
-  # qualifies:200 base+50 child+75 gas=325, without further 1/2 proration.
+  # qualifies: 200 base + 50 child + 75 gas = 325, / 2 members x 1 eligible = 162.50.
   # Parent income 33_000 fails; an all-nonqualified household also receives zero.
   input:
     people:
@@ -769,17 +735,14 @@
         members: [person1, person2]
         heating_type: NATURAL_GAS
         gas_expense: 1_000
-        sc_tanf: 0
       spm_unit2:
         members: [person3, person4]
         heating_type: NATURAL_GAS
         gas_expense: 1_000
-        sc_tanf: 0
       spm_unit3:
         members: [person5]
         heating_type: NATURAL_GAS
         gas_expense: 1_000
-        sc_tanf: 0
     households:
       household1:
         members: [person1, person2]
@@ -794,7 +757,7 @@
     sc_liheap_household_size: [1, 1, 0]
     sc_liheap_countable_income: [30_000, 33_000, 0]
     sc_liheap_eligible: [true, false, false]
-    sc_liheap: [325, 0, 0]
+    sc_liheap: [162.5, 0, 0]
 
 - name: Case 10, housing treatment and low bills do not create an expense cap.
   period: 2026
@@ -833,29 +796,24 @@
         members: [person1]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 100
-        sc_tanf: 0
       spm_unit2:
         members: [person2]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 100
-        sc_tanf: 0
         receives_housing_assistance: true
       spm_unit3:
         members: [person3]
         heating_type: UNSPECIFIED
-        sc_tanf: 0
         heat_expense_included_in_rent: true
         receives_housing_assistance: true
       spm_unit4:
         members: [person4]
         heating_type: NATURAL_GAS
         gas_expense: 0
-        sc_tanf: 0
         heat_expense_included_in_rent: true
       spm_unit5:
         members: [person5]
         heating_type: UNSPECIFIED
-        sc_tanf: 0
         heat_expense_included_in_rent: true
     households:
       household1:
@@ -905,21 +863,17 @@
         members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1_000
-        sc_tanf: 0
       spm_unit2:
         members: [person2]
         heating_type: NATURAL_GAS
         gas_expense: 1_000
-        sc_tanf: 0
       spm_unit3:
         members: [person3]
         heating_type: NONE
-        sc_tanf: 0
       spm_unit4:
         members: [person4]
         heating_type: NATURAL_GAS
         gas_expense: 0
-        sc_tanf: 0
         pre_subsidy_electricity_expense: 1_000
     households:
       household1:
@@ -938,9 +892,8 @@
     sc_liheap: [275, 0, 0, 0]
 
 # Recurring payments are countable; this does not represent a one-time withdrawal.
-# At40,000 income exceeds31,993. At12,000:200base+75elderly+175low-income=450;
-# the1,000 annual bill is below20percent, so no burden supplement applies.
-- name: Recurring IRA payments above the income ceiling.
+# Income 40,000 exceeds the one-person 31,993 ceiling, so the award is 0.
+- name: Case 12, recurring IRA payments above the income ceiling.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -965,9 +918,9 @@
     sc_liheap: 0
 
 # Recurring payments are countable; this does not represent a one-time withdrawal.
-# At40,000 income exceeds31,993. At12,000:200base+75elderly+175low-income=450;
-# the1,000 annual bill is below20percent, so no burden supplement applies.
-- name: Recurring IRA payments without high energy burden.
+# Income 12,000: 200 base + 75 elderly + 175 low income = 450. The 1,000 annual
+# bill is below 20 percent, so no burden supplement applies.
+- name: Case 13, recurring IRA payments without high energy burden.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -991,11 +944,10 @@
     sc_liheap_countable_income: 12000
     sc_liheap: 450
 
-
-# Military retirement is a separate receipt; a rental loss cannot cancel a
-#33,000 pension. The last two rows are existing-aggregate UI controls because
-#there is no SC state UI model. Reported UI replaces the fallback, never adds
-#to it. Every row exceeds the one-person31,993 ordinary income ceiling.
+# Military retirement is a separate receipt; a rental loss cannot cancel a 33,000
+# pension. The last two rows are existing-aggregate unemployment controls because
+# there is no SC state unemployment model. Reported unemployment replaces the
+# fallback, never adds to it. Every row exceeds the one-person 31,993 ceiling.
 - name: Case 14, distinct received income prevents excess regular awards.
   period: 2026
   input:
@@ -1017,10 +969,10 @@
     sc_liheap_eligible: [false, false, false, false]
     sc_liheap: [0, 0, 0, 0]
 
-# Agefiveandunder includes5.5 until the sixthbirthday. With two qualified
-#members,30,000income is above30%SMI but below the41,837 ceiling. Electric
-#1,000 is below20%burden and has no fuel supplement:200base+50child=250;
-#the same household at age6 receives200.
+# Age five and under includes 5.5 until the sixth birthday. With two qualified
+# members, 30,000 income is above 30% SMI but below the 41,837 ceiling. Electric
+# 1,000 is below the 20% burden and has no fuel supplement: 200 base + 50 child =
+# 250; the same household at age 6 receives 200.
 - name: Case 15, the young-child supplement lasts until the sixth birthday.
   period: 2026
   input:
@@ -1051,10 +1003,10 @@
     sc_liheap_eligible: [true, true]
     sc_liheap: [250, 200]
 
-# Actualqualifiedsize25uses2025FPG15,650+24*5,500=147,650;
-#strict110%floor162,415 protects150,000income above ordinarySMI116,282.
-#No vulnerable member, veteran, fuel or burden supplement applies, and income
-#exceeds30%SMI: base200 reaches the final award. Exact162,415 is unprotected.
+# Qualified size 25 uses the 2025 FPG 15,650 + 24 x 5,500 = 147,650. The strict
+# 110% floor of 162,415 protects 150,000 income above the ordinary SMI limit of
+# 116,282. No vulnerable member, veteran, fuel or burden supplement applies, and
+# income exceeds 30% SMI: base 200 is the award. Exactly 162,415 is unprotected.
 - name: Case 16, large households retain strict federal income protection.
   period: 2026
   input:
@@ -1334,3 +1286,171 @@
     sc_liheap_income_limit: [116_282, 116_282]
     sc_liheap_eligible: [true, false]
     sc_liheap: [200, 0]
+
+- name: Case 17, heating fuel bills reach the burden supplement and cooking fuel does not.
+  period: 2026
+  # At income 20_000, 20% = 4_000 and the one-person 30% SMI level is 15_996.55.
+  # Fuel oil: 200 + 75 fuel + 175 burden = 450. Wood, coal and other fuel: 200 + 175
+  # = 375. Electric 3_000 plus cooking fuel 1_000 stays below 4_000: 200.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 4_000
+      spm_unit2:
+        members: [person2]
+        heating_type: WOOD
+        wood_expense: 4_000
+      spm_unit3:
+        members: [person3]
+        heating_type: COAL
+        coal_expense: 4_000
+      spm_unit4:
+        members: [person4]
+        heating_type: OTHER
+        other_heating_fuel_expense: 4_000
+      spm_unit5:
+        members: [person5]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 3_000
+        cooking_fuel_expense: 1_000
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+      household2:
+        members: [person2]
+        state_code: SC
+      household3:
+        members: [person3]
+        state_code: SC
+      household4:
+        members: [person4]
+        state_code: SC
+      household5:
+        members: [person5]
+        state_code: SC
+  output:
+    sc_liheap: [450, 375, 375, 375, 200]
+
+- name: Case 18, state-placed foster children are not household members.
+  period: 2026
+  # Each foster child is left out of size, income and the supplements, so both
+  # adults are one-person households with the 31_993 ceiling. Wages 35_000 fail
+  # the ceiling. Wages 20_000 pass, the disabled child's 10_000 survivor benefits
+  # do not count, and neither child supplement applies: 200 + 75 gas = 275. The
+  # child also leaves the proration count, so one eligible of one member keeps 275.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 35_000
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_in_foster_care:
+          2026-01: true
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person4:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: true
+        social_security_survivors: 10_000
+        is_in_foster_care:
+          2026-01: true
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: SC
+      household2:
+        members: [person3, person4]
+        state_code: SC
+  output:
+    sc_liheap_household_size: [1, 1]
+    sc_liheap_countable_income: [35_000, 20_000]
+    sc_liheap_income_limit: [31_993, 31_993]
+    sc_liheap_eligible: [false, true]
+    sc_liheap: [0, 275]
+
+- name: Case 19, the 2024 guide's prorated example pays eligible members only.
+  period: 2026
+  # Guide page 537: 425 / 4 members = 106.25, x 3 eligible = 318.75. Here 200 base +
+  # 50 child + 175 low income = 425. The nonqualified adult's 20_000 wages count and
+  # stay below the three-person 30% SMI level of 25_840.58; 1_000 is under 20%.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 33
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person4:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household1:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+  output:
+    sc_liheap_household_size: 3
+    sc_liheap_countable_income: 20_000
+    sc_liheap_income_limit: 51_681
+    sc_liheap: 318.75

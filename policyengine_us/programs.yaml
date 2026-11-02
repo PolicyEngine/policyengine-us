@@ -967,7 +967,7 @@ programs:
         variable: sc_liheap
         parameter_prefix: gov.states.sc.oeo.liheap
         verified_years: "2026"
-        notes: FY2026 regular heating statewide schedule, qualified household size and countable income, including strict federal income protection, received UI, separate military pay and per-source unearned floors. Young-child supplements continue until the sixth birthday. Social Security remains gross including Medicare, and TANF remains excluded. Annual inputs approximate application-month income and energy burden; SPM units approximate energy households. Local agency funding and priority decisions and detailed income-source exclusions are not represented. Earlier backfills are unverified historical estimates; crisis, cooling, weatherization and equipment are outside scope.
+        notes: FY2026 regular heating base amount with demographic, fuel, low-income and high-burden supplements. Crisis, cooling, weatherization and equipment assistance are out of scope.
 
   # --- SSA programs ---
   - id: ssi

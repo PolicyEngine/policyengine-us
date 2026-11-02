@@ -4807,6 +4807,34 @@ candidates:
   state: unreviewed
   note: 'PE-US follows the manual; verify whether the unchecked insurance category covers these payments. Code not
     yet on main: ri_liheap countable income.'
+- id: us-sc:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can South Carolina's 60% SMI heating limit exclude a household of 15 or more whose income is below the
+    federal 110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: South Carolina FY2026 LIHEAP State Plan, income eligibility, p.8
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The plan's 60% SMI limit falls below that floor from 15 members.
+  example: Twenty-five people with $150,000 exceed the $116,282 limit but are below the $162,415 floor (2025 guideline,
+    one-year lag), so they keep the $200 base award.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/sc/oeo/liheap/eligibility/fpg_year_lag.yaml
+  state: unreviewed
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (sc_liheap_eligible.py).
 - id: us-sd:liheap-2025-published-income-limit
   program: liheap
   years:

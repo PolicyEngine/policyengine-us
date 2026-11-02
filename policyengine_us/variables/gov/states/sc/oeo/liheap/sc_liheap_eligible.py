@@ -21,7 +21,7 @@ class sc_liheap_eligible(Variable):
         income = spm_unit("sc_liheap_countable_income", period)
         limit = spm_unit("sc_liheap_income_limit", period)
         guideline = fpg(
-            max_(size, 1),
+            size,
             spm_unit.household("state_group_str", period),
             period,
             parameters,

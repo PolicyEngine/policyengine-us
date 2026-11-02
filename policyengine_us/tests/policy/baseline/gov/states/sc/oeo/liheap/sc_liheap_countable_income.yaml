@@ -1,9 +1,10 @@
 # Accepted FY 2026 plan checks selected income streams and excludes minor earnings.
 # https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=5
-# Unearned income of minors counts: only their earned income is expressly excluded.
+# OEO's 2024 guide counts only Social Security or disability income under age 18.
+# https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=529
 # Annual flows approximate application-month income; monthly SSI is summed once.
 
-- name: Case 1, earnings count at eighteen while minor unearned income still counts.
+- name: Case 1, earnings count at eighteen while a minor's Social Security still counts.
   period: 2026
   absolute_error_margin: 0.01
   # Age 17 wages 12_000 are excluded but survivor Social Security 1_000 counts.
@@ -37,12 +38,10 @@
         members: [person1, person2]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
       spm_unit2:
         members: [person3, person4]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
     households:
       household1:
         members: [person1, person2]
@@ -74,7 +73,6 @@
         members: [person1]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
     households:
       household1:
         members: [person1]
@@ -113,7 +111,6 @@
         members: [person1]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
     households:
       household1:
         members: [person1]
@@ -124,7 +121,7 @@
 - name: Case 4, unchecked income types and assets do not inflate countable income.
   period: 2026
   absolute_error_margin: 0.01
-  # Only the 1_000 wages count. Planp 6 leaves interest/dividends, GA, TANF,
+  # Only the 1_000 wages count. Plan page 6 leaves interest/dividends, GA, TANF,
   # strike pay, lottery lump sums, direct insurance and asset balances unchecked.
   # SNAP is not cash income.
   input:
@@ -199,7 +196,6 @@
         members: [person1, person2]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
     households:
       household1:
         members: [person1, person2]
@@ -238,17 +234,14 @@
         members: [person1, person2]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
       spm_unit2:
         members: [person3]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
       spm_unit3:
         members: [person4]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
     households:
       household1:
         members: [person1, person2]
@@ -262,9 +255,9 @@
   output:
     sc_liheap_countable_income: [20_000, 0, 0]
 
-# Pension1,000 + taxable recurring IRA12,000 + exempt recurring IRA3,000 =16,000.
+# Pension 1,000 + taxable recurring IRA 12,000 + exempt recurring IRA 3,000 = 16,000.
 # These disjoint aggregates enter once; no one-time lump sum is supplied.
-- name: Recurring retirement account subtypes count beside pension income.
+- name: Case 7, recurring retirement account subtypes count beside pension income.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -281,10 +274,80 @@
         members: [person]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-        sc_tanf: 0
     households:
       household:
         members: [person]
         state_code: SC
   output:
     sc_liheap_countable_income: 16_000
+
+# Plan item 1.9 counts retirement and pension benefits: railroad retirement 6,000.
+- name: Case 8, railroad retirement counts as a retirement benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 60
+        immigration_status: CITIZEN
+        ssi: 0
+        railroad_benefits: 6_000
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household:
+        members: [person]
+        state_code: SC
+  output:
+    sc_liheap_countable_income: 6_000
+
+# 2024 guide: under 18, only Social Security or disability income counts. The child's
+# 1,000 survivors + 1,200 SSI + 500 disability count with the adult's 10,000 wages:
+# 12,700. The child's pension, child support and other survivor benefits do not. The
+# adult's 500 of disability benefits has no plan 1.9 box, so that unit stays at 10,000.
+- name: Case 9, a minor counts only Social Security SSI and disability income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 10_000
+      person2:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 1_200
+        social_security_survivors: 1_000
+        disability_benefits: 500
+        pension_income: 700
+        child_support_received: 400
+        survivor_benefits: 300
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 10_000
+        disability_benefits: 500
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit2:
+        members: [person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: SC
+      household2:
+        members: [person3]
+        state_code: SC
+  output:
+    sc_liheap_countable_income: [12_700, 10_000]

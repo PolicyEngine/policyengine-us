@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.hhs_smi import smi
+from policyengine_us.variables.gov.hhs.hhs_smi import liheap_smi_limit
 
 
 class sc_liheap_income_limit(Variable):
@@ -15,15 +15,9 @@ class sc_liheap_income_limit(Variable):
     )
 
     def formula(spm_unit, period, parameters):
+        p = parameters(period).gov.states.sc.oeo.liheap.eligibility
         size = spm_unit("sc_liheap_household_size", period)
         state = spm_unit.household("state_code_str", period)
-        p = parameters(period)
-        base = p.gov.hhs.smi.amount[state]
-        factor = smi(size, state, period, parameters) / base
-        # Round the four-person base, then floor after the federal size factor.
-        # This inferred order reproduces all eight agency annual limits, including
-        # the published size-seven/eight values. It is not a legal rounding rule.
-        base_limit = np.floor(
-            base * p.gov.states.sc.oeo.liheap.eligibility.smi_rate + 0.5
-        )
-        return where(size > 0, np.floor(base_limit * factor), 0)
+        # The HHS floor order reproduces all eight OEO annual limits.
+        limit = liheap_smi_limit(size, state, p.smi_rate, period, parameters)
+        return where(size > 0, limit, 0)
