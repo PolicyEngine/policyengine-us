@@ -1,8 +1,9 @@
-description: Largest share of the Massachusetts PFML family leave contribution an employer may deduct from wages.
+description: Massachusetts limits an employer's deduction from wages to this share of the family leave contribution under the Paid Family and Medical Leave program.
 values:
   0000-01-01: 0
   2024-01-01: 1
   # Acts 2026 c. 101 s. 26 strikes "100" in s. 6(c)(2), (d) and (e)(2) and inserts "40".
+  # Dated 2027-01-01, not 2026-01-01: s. 45 applies ss. 25-26 to taxable years from 2026, but s. 43(a) frames the change as calendar year 2027, and the Department of Family and Medical Leave applies it from January 1, 2027.
   2027-01-01: 0.4
 
 metadata:
@@ -10,7 +11,7 @@ metadata:
   unit: /1
   label: Massachusetts PFML family employee share
   reference:
-    - title: Massachusetts General Laws Chapter 175M Section 6
+    - title: Massachusetts General Laws Chapter 175M Section 6(c)-(d)
       href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXXII/Chapter175M/Section6
     - title: Massachusetts Paid Family and Medical Leave employer contribution rates and calculator (2026 and 2027 sections, updated October 1, 2026)
       href: https://www.mass.gov/info-details/paid-family-and-medical-leave-employer-contribution-rates-and-calculator
