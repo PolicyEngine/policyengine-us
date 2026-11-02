@@ -193,3 +193,32 @@
     eitc: 0
     nj_childless_eitc_age_eligible: true
     nj_eitc: 259.60
+
+- name: Separate filer who meets the separated-spouse exception through a child without an SSN gets the NJ age fallback
+  # The child counts for IRC 32(d)(2)(B) but not for the federal schedule
+  # (32(c)(3)(D)), so eitc_child_count is 0. The filer is 22, below the
+  # federal minimum age, and meets the marital test: NJ pays 0.4 x 649 = 259.60.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 8_000
+      child:
+        age: 5
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+        eitc_spouses_lived_apart_last_six_months: true
+    households:
+      household:
+        members: [head, child]
+        state_code: NJ
+  output:
+    eitc_marital_eligible: true
+    eitc_child_count: 0
+    nj_childless_eitc_age_eligible: true
+    nj_eitc: 259.60
