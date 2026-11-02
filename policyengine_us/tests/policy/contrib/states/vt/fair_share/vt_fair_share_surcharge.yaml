@@ -265,7 +265,7 @@
     # (A Vermont resident at this AGI pays 45,000; see case 6.)
     vt_fair_share_surcharge: 0
 
-- name: Case 12, negative AGI owes no surcharge.
+- name: Case 12, regression check that negative AGI owes no surcharge.
   period: 2026
   absolute_error_margin: 1
   reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
@@ -284,7 +284,9 @@
         members: [person1]
         state_code: VT
   output:
-    # Base = max(-100,000, 0) = 0, so the surcharge is 0.
+    # Regression check, not a test of the AGI floor alone: the formula floors
+    # AGI at 0 (max(-100,000, 0) = 0), and MarginalRateTaxScale.calc already
+    # returns 0 for a negative base, so either guard gives a surcharge of 0.
     vt_fair_share_surcharge: 0
 
 - name: Case 13, reform switched off gives no surcharge and leaves the baseline tax unchanged.

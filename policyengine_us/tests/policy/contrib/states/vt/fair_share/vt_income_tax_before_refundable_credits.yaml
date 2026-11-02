@@ -41,7 +41,9 @@
     vt_refundable_credits: 0
     # vt_income_tax = 1,000 + 0 - 0
     vt_income_tax: 1_000
-    # The cross-state totals behind household net income pick it up.
+    # The cross-state totals pick it up. household_net_income reaches the
+    # surcharge separately: it subtracts household_tax_before_refundable_credits,
+    # which lists vt_income_tax_before_refundable_credits once.
     state_income_tax_before_refundable_credits: 1_000
     state_income_tax: 1_000
 

@@ -6,7 +6,7 @@ def create_vt_fair_share() -> Reform:
     class vt_fair_share_surcharge(Variable):
         value_type = float
         entity = TaxUnit
-        label = "Vermont Fair Share income tax surcharge"
+        label = "Vermont H.794 high-income surcharge"
         unit = USD
         definition_period = YEAR
         defined_for = StateCode.VT
@@ -25,6 +25,9 @@ def create_vt_fair_share() -> Reform:
             agi = max_(tax_unit("adjusted_gross_income", period), 0)
             return where(p.in_effect, p.rate.calc(agi), 0)
 
+    # Mirrors policyengine_us/variables/gov/states/vt/tax/income/
+    # vt_income_tax_before_refundable_credits.py plus the surcharge; keep the
+    # two formulas in sync when the baseline changes.
     class vt_income_tax_before_refundable_credits(Variable):
         value_type = float
         entity = TaxUnit
