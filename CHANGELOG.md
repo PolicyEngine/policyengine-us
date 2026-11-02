@@ -1,3 +1,10 @@
+## [2.91.7] - 2026-11-02
+
+### Fixed
+
+- Count the pre-2018 federal miscellaneous deduction once in Mississippi and Missouri itemized deductions.
+
+
 ## [2.91.6] - 2026-11-02
 
 ### Fixed
