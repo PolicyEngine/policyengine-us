@@ -1,0 +1,116 @@
+- name: Case 1, a parent id marks the custodial parent and not the grandparent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 60
+        person_id: 1
+      person2:
+        age: 30
+        person_id: 2
+        parent_1_id: 1
+      person3:
+        age: 5
+        person_id: 3
+        parent_1_id: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_works_custodial_parent: [false, true, false]
+
+- name: Case 2, without parent ids every parent counts.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        own_children_in_household: 1
+      person2:
+        age: 60
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_works_custodial_parent: [true, false, false]
+
+- name: Case 3, a pregnant adult does not make their own parent custodial.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 55
+        person_id: 1
+      person2:
+        age: 30
+        person_id: 2
+        parent_1_id: 1
+        is_pregnant: true
+      person3:
+        age: 5
+        person_id: 3
+        parent_1_id: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_works_custodial_parent: [false, true, false]
+
+- name: Case 4, a pregnant minor still makes their own parent custodial.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+      person2:
+        age: 16
+        person_id: 2
+        parent_1_id: 1
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_custodial_parent: [true, false]
+
+- name: Case 5, a pregnant 18-year-old in secondary school makes their own parent custodial.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        person_id: 1
+      person2:
+        age: 18
+        person_id: 2
+        parent_1_id: 1
+        is_in_secondary_school: true
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_custodial_parent: [true, false]
