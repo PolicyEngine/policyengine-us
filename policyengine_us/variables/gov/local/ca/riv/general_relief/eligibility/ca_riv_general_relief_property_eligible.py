@@ -16,4 +16,5 @@ class ca_riv_general_relief_property_eligible(Variable):
         )
         # The fact sheet's property bullet says the total cannot exceed the
         # limit, so a unit holding exactly the limit is eligible.
-        return total_property_value <= p.limit
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        return np.round(total_property_value, 2) <= p.limit

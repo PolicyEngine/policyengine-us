@@ -197,3 +197,23 @@
     # $500.01 exceeds the $500 limit.
     ca_riv_general_relief_countable_property_value: 500.01
     ca_riv_general_relief_property_eligible: false
+
+- name: Case 12, cash spread over three accounts totalling exactly $500.00.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        bank_account_assets: 265.92
+        stock_assets: 133.82
+        bond_assets: 100.26
+    households:
+      household:
+        members: [person1]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # 265.92 + 133.82 + 100.26 = 500.00, which does not exceed the $500 limit.
+    ca_riv_general_relief_property_eligible: true
