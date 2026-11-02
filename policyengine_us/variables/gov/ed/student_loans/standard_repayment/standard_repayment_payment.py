@@ -17,8 +17,8 @@ class standard_repayment_payment(Variable):
         "on or after July 1, 2026 cannot use this plan and repays under the "
         "tiered standard plan instead (tiered_standard_repayment_payment). "
         "For a borrower with both Direct and parent PLUS loans on the "
-        "standard plan, combined_standard_repayment_payment gives the total, with one "
-        "minimum where both are under 34 CFR 685.208(b)(1)."
+        "standard plan, combined_standard_repayment_payment gives the total, "
+        "with one minimum where both are under 34 CFR 685.208(b)(1)."
     )
     unit = USD
     definition_period = MONTH

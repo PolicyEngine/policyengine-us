@@ -15,6 +15,10 @@ payment, for generated balances, rates and consolidation flags:
 3. One loan type: with one balance zero, C equals the other variable.
 4. Monotonicity: C never falls as either balance rises, while the
    consolidation loan's repayment period holds still.
+5. Differential: where the parent PLUS loan is not consolidated, C equals
+   min(max(Direct level payment + parent PLUS level payment, 50), total
+   balance), written here independently of the model. The first four hold
+   for D + P too, so this one is what catches a minimum on each loan type.
 
 Each generated borrower is simulated in five variants (as drawn, with a larger
 Direct balance, with a larger parent PLUS balance, with no Direct Loans and
@@ -166,6 +170,16 @@ def check(borrowers):
                 c - (d + p)
             ) > TOLERANCE:
                 problems.append(f"{label}: differs from D + P")
+            # 5. Differential: one minimum, written here from the law.
+            if not values["consolidated"]:
+                total = values["direct"] + values["parent_plus"]
+                reference = min(
+                    max(direct_level + parent_plus_level, STANDARD_MINIMUM), total
+                )
+                if values["new_loan"]:
+                    reference = 0
+                if abs(c - reference) > TOLERANCE:
+                    problems.append(f"{label}: differs from one minimum {reference}")
             # 3. One loan type.
             if values["direct"] == 0 and abs(c - p) > TOLERANCE:
                 problems.append(f"{label}: no Direct Loans but C != P")

@@ -10749,7 +10749,8 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/ed/student_loans/standard_repayment/combined_standard_repayment_payment.py
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10599
   state: ruled
   note: combined_standard_repayment_payment adds standard_repayment_payment and parent_plus_standard_repayment_payment
     where federal_parent_plus_loan_is_consolidated is true. This narrows the per-borrower reading in
@@ -10779,7 +10780,8 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/ed/student_loans/standard_repayment/combined_standard_repayment_payment.py
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10599
   state: ruled
   note: standard_repayment_payment and parent_plus_standard_repayment_payment keep their own minimums, since a borrower
     whose Direct Loans are on an income-driven plan repays parent PLUS loans alone on the standard plan;
