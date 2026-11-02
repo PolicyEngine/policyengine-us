@@ -8,12 +8,18 @@ month. The first check runs board_scale_amount over every SMI cell of both
 tables, family sizes 2 to 15, on each side of each limit, so a change to the
 SMI parameter, the size factor or the rounding that moves any limit by a
 dollar fails here. The other checks read the Board parameter files: every
-Board scale must rise with income, and every Board that applies its own scale
-must have one.
+Board scale must rise with income, every reduction must stay between 0 and 1,
+and every Board that applies its own scale must have one. Property tests state
+what board_scale_amount does for any chart, income and SMI: it returns one of
+the chart's amounts, each limit separates its two ranges, the amount never
+falls as income rises, and it never rises as SMI rises.
 """
 
 from pathlib import Path
+from types import SimpleNamespace
 
+from hypothesis import given
+from hypothesis import strategies as st
 import numpy as np
 import pytest
 import yaml
@@ -102,6 +108,62 @@ def test_range_limits_match_twc_tables(month):
         )
 
 
+# A chart: rising SMI shares above a first range that starts at $0, and rising
+# amounts, one per range.
+_charts = st.integers(min_value=1, max_value=9).flatmap(
+    lambda ranges: st.builds(
+        lambda shares, amounts: SimpleNamespace(
+            thresholds=[-np.inf] + sorted(shares),
+            amounts=sorted(amounts),
+        ),
+        st.lists(
+            st.integers(min_value=1, max_value=100).map(lambda pct: pct / 100),
+            min_size=ranges,
+            max_size=ranges,
+            unique=True,
+        ),
+        st.lists(
+            st.integers(min_value=0, max_value=1_000),
+            min_size=ranges + 1,
+            max_size=ranges + 1,
+        ),
+    )
+)
+_incomes = st.floats(min_value=0, max_value=50_000, allow_nan=False)
+_monthly_smis = st.floats(min_value=500, max_value=30_000, allow_nan=False)
+
+
+def _amount(chart, income, monthly_smi):
+    return board_scale_amount(chart, np.array([income]), np.array([monthly_smi]))[0]
+
+
+@given(_charts, _incomes, _monthly_smis)
+def test_amount_comes_from_the_chart(chart, income, monthly_smi):
+    assert _amount(chart, income, monthly_smi) in chart.amounts
+
+
+@given(_charts, _incomes, _incomes, _monthly_smis)
+def test_amount_never_falls_as_income_rises(chart, income_a, income_b, monthly_smi):
+    low, high = sorted([income_a, income_b])
+    assert _amount(chart, low, monthly_smi) <= _amount(chart, high, monthly_smi)
+
+
+@given(_charts, _incomes, _monthly_smis, _monthly_smis)
+def test_amount_never_rises_as_smi_rises(chart, income, smi_a, smi_b):
+    low, high = sorted([smi_a, smi_b])
+    assert _amount(chart, income, high) <= _amount(chart, income, low)
+
+
+@given(_charts, _monthly_smis, st.data())
+def test_each_limit_separates_its_two_ranges(chart, monthly_smi, data):
+    # Limits round to whole dollars, so a family at one limit can also sit at
+    # the next share's limit; these hold either way.
+    i = data.draw(st.integers(min_value=1, max_value=len(chart.amounts) - 1))
+    limit = np.floor(monthly_smi * chart.thresholds[i] + 0.5)
+    assert _amount(chart, limit, monthly_smi) <= chart.amounts[i - 1]
+    assert _amount(chart, limit + 1, monthly_smi) >= chart.amounts[i]
+
+
 def _board_scales():
     for board in TXCCSWorkforceBoardRegion:
         folder = BOARD / board.name.lower()
@@ -121,6 +183,16 @@ def test_board_scales_rise_with_income(path):
         assert thresholds == sorted(thresholds), (date, thresholds)
         assert len(set(thresholds)) == len(thresholds), (date, thresholds)
         assert amounts == sorted(amounts), (date, amounts)
+
+
+@pytest.mark.parametrize("name", ["texas_rising_star", "part_time"])
+def test_reductions_stay_between_zero_and_one(name):
+    reduction = yaml.safe_load((BOARD / f"reduction/{name}.yaml").read_text())
+    for board in TXCCSWorkforceBoardRegion:
+        assert all(0 <= value <= 1 for value in reduction[board.name].values()), (
+            name,
+            board.name,
+        )
 
 
 def test_every_applying_board_has_a_scale():
