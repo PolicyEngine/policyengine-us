@@ -138,3 +138,84 @@
         state_code: NJ
   output:
     nj_eitc: 0
+
+# N.J.S.A. 54A:4-7(a), as amended by P.L. 2021, c.130. Paragraph (1): a
+# resident eligible for the federal credit gets a percentage of "the federal
+# earned income tax credit that would be allowed". Paragraph (4): a resident
+# at least 18 who "cannot claim a qualifying child" and is ineligible for the
+# federal credit "due to age requirements" gets a credit "predicated on the
+# federal maximum amount for taxpayers with no qualifying child".
+
+- name: 2023 NJ parent aged 20 whose only child lacks an SSN gets 40% of the federal credit allowed
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 20
+        is_tax_unit_head: true
+        is_full_time_student: false
+        is_eitc_qualifying_child: false
+        ssn_card_type: CITIZEN
+        employment_income: 3_000
+      child:
+        age: 2
+        is_tax_unit_dependent: true
+        is_eitc_qualifying_child: true
+        ssn_card_type: NONE
+    tax_units:
+      unit:
+        members: [filer, child]
+        filing_status: SINGLE
+        eitc_relevant_investment_income: 0
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    households:
+      household:
+        members: [filer, child]
+        state_code: NJ
+  output:
+    # From 2021 the child without an SSN makes the filer federally eligible
+    # (IRC 32(c)(1)(A)(i)) but is left out of the amount (32(c)(3)(D)), so the
+    # zero-child schedule applies: 7.65% x $3,000 = $229.50, below the $600
+    # maximum.
+    eitc_child_count: 0
+    eitc_eligible: true
+    eitc: 229.50
+    # The filer also meets the age route's terms, but paragraph (1) governs
+    # once the federal credit is allowed: 40% x $229.50 = $91.80
+    # (54A:4-7(a)(1)).
+    nj_childless_eitc_age_eligible: true
+    nj_eitc: 91.80
+
+- name: 2023 NJ childless filer aged 20 gets 40% of the federal zero-child maximum
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 20
+        is_tax_unit_head: true
+        is_full_time_student: false
+        is_eitc_qualifying_child: false
+        ssn_card_type: CITIZEN
+        employment_income: 3_000
+    tax_units:
+      unit:
+        members: [filer]
+        filing_status: SINGLE
+        eitc_relevant_investment_income: 0
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    households:
+      household:
+        members: [filer]
+        state_code: NJ
+  output:
+    # Under the federal childless minimum age of 25, so no federal credit.
+    eitc_eligible: false
+    eitc: 0
+    # Ineligible federally only because of age and without a qualifying
+    # child: 40% x the $600 zero-child maximum = $240 (54A:4-7(a)(4)).
+    nj_childless_eitc_age_eligible: true
+    nj_eitc: 240
