@@ -2,6 +2,10 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+    _ssi_spouse_index,
+)
 from policyengine_us.variables.gov.states.ca.cdss.capi._ca_capi_ssi_ssp_standard import (
     ca_capi_ssi_ssp_standard,
 )
@@ -47,13 +51,14 @@ class ca_state_supplement(Variable):
         # the totals keep CAPI at zero when the spouse's income is deemed.
         # NOTE: SSI couple status ignores SSI's noncitizen test, so the
         # model's SSI is still the couple computation (issue 10481).
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         # The exclusion needs a spouse who can receive CAPI, so key on CAPI
         # eligibility rather than on SSI's noncitizen test alone (issue 10482).
+        # Find the spouse as SSI's couple tests do, so the default marital
+        # unit of a situation that omits marital units does not pair a
+        # recipient with an unrelated member's CAPI eligibility or income.
         capi_eligible = person("ca_capi_eligible_person", period.this_year)
-        spouse_capi_eligible = (
-            person.marital_unit.sum(capi_eligible & head_or_spouse) > 0
-        )
+        spouse = _ssi_spouse_index(person, period.this_year)
+        spouse_capi_eligible = (spouse >= 0) & capi_eligible[np.maximum(spouse, 0)]
         in_mixed_couple = (
             person("ssi_couple_computation_applies", period)
             & meets_ssi_immigration_test
@@ -76,7 +81,9 @@ class ca_state_supplement(Variable):
             _apply_ssi_exclusions(earned, unearned, parameters, period) / MONTHS_IN_YEAR
         )
         ssi_countable_income = person("ssi_countable_income", period)
-        couple_income = person.marital_unit.sum(ssi_countable_income)
+        couple_income = _ssi_couple_total(
+            person, period.this_year, ssi_countable_income
+        )
         individual_standard, couple_standard = ca_capi_ssi_ssp_standard(
             person, period, parameters
         )

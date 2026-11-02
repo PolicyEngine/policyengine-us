@@ -660,3 +660,51 @@
     ssi: [245.50, 0]
     ca_state_supplement: 488.44
     ca_capi_person: [0, 0]
+
+- name: Case 17, 2025 aged couple sharing an SPM unit with an unrelated CAPI-eligible adult, marital units omitted, keeps the couple computation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 6_000 # 500 a month
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        immigration_status: CITIZEN
+        pension_income: 6_000 # 500 a month
+      person3:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 10
+        ssi_qualifying_quarters_earnings: 0
+        pension_income: 6_000 # 500 a month
+    tax_units:
+      couple:
+        members: [person1, person2]
+      third:
+        members: [person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # Omitting marital_units puts all three people in one default marital
+    # unit. person3 is CAPI-eligible but is not a spouse of either citizen,
+    # so the couple is not a mixed couple and keeps SSI's couple computation.
+    ca_capi_eligible_person: [false, false, true]
+    # (500 + 500 - 20) / 2 = 490 a month each; person3 has 500 - 20 = 480.
+    ssi_countable_income: [5_880, 5_880, 5_760]
+    ssi: [2_820, 2_820, 0] # (1,450 / 2 - 490) * 12
+    ca_state_supplement_payment_standard: 27_786.84 # 2,315.57 * 12
+    # 2,315.57 - 2 * 235 - 2 * 490 = 865.57 a month, as with explicit marital
+    # units. Pairing either citizen with person3 would make it 885.09.
+    ca_state_supplement: 10_386.84 # 865.57 * 12
