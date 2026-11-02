@@ -1,0 +1,69 @@
+description: States set the medically needy income limit at this share of the federal poverty guideline for a household of one or two under the Medicaid program.
+# NOTE: States not listed, or with a share of zero, use the dollar limits in individual.yaml and couple.yaml.
+metadata:
+  unit: /1
+  period: year
+  label: Medicaid medically needy income limit as a share of the poverty guideline
+  breakdown:
+    - state_code
+  reference:
+    - title: Illinois Public Aid Code, 305 ILCS 5/5-2(2)(a)(ii) - Classes of persons eligible
+      href: https://www.ilga.gov/Documents/legislation/ilcs/documents/030500050K5-2.htm
+    - title: Illinois Department of Human Services Policy Manual PM 15-06-02-a - Community Standard
+      href: https://www.dhs.state.il.us/page.aspx?item=16507
+    - title: Illinois Department of Human Services Policy Manual PM 15-06-02-c - Standard for a client living with a spouse
+      href: https://www.dhs.state.il.us/page.aspx?item=16512
+    - title: Illinois Department of Human Services Policy Manual PM 15-08-00 - Spenddown
+      href: https://www.dhs.state.il.us/page.aspx?item=16536
+    - title: 89 Illinois Administrative Code 120.20(a) - Need standard, aged, blind, or disabled
+      href: https://www.ilga.gov/ftp/JCAR/AdminCode/089/089001200B00200R.html
+    - title: Minnesota Statutes 256B.056, subdivisions 1c(a), 4(a) and 5c(b)
+      href: https://www.revisor.mn.gov/statutes/cite/256B.056
+    - title: Laws of Minnesota 2017, 1st Special Session, chapter 6, article 4, section 20
+      href: https://www.revisor.mn.gov/laws/2017/1/Session+Law/Chapter/6/
+    - title: Laws of Minnesota 2019, 1st Special Session, chapter 9, article 7, section 21
+      href: https://www.revisor.mn.gov/laws/2019/1/Session+Law/Chapter/9/
+    - title: Minnesota DHS Eligibility Policy Manual 2.3.3.4 - Spenddown standards
+      href: https://hcopub.dhs.state.mn.us/epm/2_3_3_4.htm
+    - title: North Dakota Non-ACA Medicaid Manual 510-05-85-40 - Medically needy income levels
+      href: https://www.nd.gov/dhs/policymanuals/51005/510_05_85_40.htm
+    - title: North Dakota Manual Letter 3702, Federal Poverty Level Updates (April 1, 2023)
+      href: https://www.nd.gov/dhs/policymanuals/51003/Content/ML/2023/ML%203702%20Federal%20Poverty%20Level%20Updates%2004-01-2023.pdf#page=6
+    - title: North Dakota State Plan Amendment ND-23-0034 (effective January 1, 2024)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/ND-23-0034.pdf#page=2
+    - title: North Dakota Manual Letter 3776, ACA Medically Needy (effective January 1, 2024)
+      href: https://www.nd.gov/dhs/policymanuals/51003/Content/ML/2023/ML%203776%20-ACA%20Med%20Needy.pdf#page=1
+    - title: North Dakota Non-ACA Medicaid Manual 510-05-85-40 (archived, ML 3896), 90% of poverty from April 1, 2024
+      href: https://www.nd.gov/dhs/policymanuals/51005/Archived%20Documents/2025/3896/510_05_85_40.htm
+    - title: New York DOH GIS 22 MA/11, Increase of Medicaid Medically Needy Income Level to 138% of the Federal Poverty Level
+      href: https://www.health.ny.gov/health_care/medicaid/publications/docs/gis/22ma11.pdf#page=1
+    - title: New York State Plan Amendment NY-23-0001 (effective January 1, 2023)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/NY-23-0001.pdf#page=5
+    - title: Utah Administrative Code R414-304-9(2) - Income Deductions
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R414-304-9
+    - title: Utah Code 26B-3-108(9)(b)
+      href: https://le.utah.gov/xcode/Title26B/Chapter3/26B-3-S108.html
+    - title: Wisconsin Statutes 49.47(4)(c)1
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/49/iv/47/4/c
+    - title: Wisconsin DHS Operations Memo 19-26, SSI-Related Medicaid Medically Needy Income Limit Increase
+      href: https://web.archive.org/web/20251031224345id_/https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2019-26.pdf#page=2
+    - title: Wisconsin Medicaid Eligibility Handbook (EBD) 39.4.1 - Elderly, Blind, or Disabled Assets and Income Table
+      href: https://www.emhandbooks.wisconsin.gov/meh-ebd/policy_files/39/39.4.htm
+
+IL:
+  2018-01-01: 1
+MN:
+  2018-01-01: 0.8
+  2019-06-01: 0.81
+  2022-07-01: 1
+ND:
+  2018-01-01: 0.83
+  2024-01-01: 0.9
+NY:
+  2018-01-01: 0
+  2023-01-01: 1.38
+UT:
+  2018-01-01: 1
+WI:
+  2018-01-01: 0
+  2019-09-01: 1

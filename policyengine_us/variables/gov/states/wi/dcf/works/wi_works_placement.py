@@ -41,9 +41,16 @@ class wi_works_placement(Variable):
         is_arp_eligible = is_pregnant & in_third_trimester
         has_third_trimester = spm_unit.any(is_arp_eligible)
 
-        # Priority: CMC > ARP > CSJ (W2_T requires agency assessment)
+        # W-2 Manual 7.4.1.5: 30 or more unsubsidized hours rules out a CSJ, from
+        # 1999 Wisconsin Act 9. The manual reserves prorated CSJs for participants
+        # who can't add hours or jobs. We don't model that limit, so the share
+        # applies to any CSJ placement under 30 hours.
+        hours = spm_unit("wi_works_unsubsidized_hours", period)
+        no_csj = p.csj_share.calc(hours) == 0
+
+        # Priority: CMC > ARP > no CSJ > CSJ (W2_T requires agency assessment)
         return select(
-            [has_infant, has_third_trimester],
-            [WIWorksPlacement.CMC, WIWorksPlacement.ARP],
+            [has_infant, has_third_trimester, no_csj],
+            [WIWorksPlacement.CMC, WIWorksPlacement.ARP, WIWorksPlacement.NONE],
             default=WIWorksPlacement.CSJ,
         )
