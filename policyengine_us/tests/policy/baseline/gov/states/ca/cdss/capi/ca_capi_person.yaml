@@ -13,12 +13,12 @@
         # test, so the case supplies it. The couple's countable income is
         # 420 - 20 general exclusion = 400 per month, split equally as SSI
         # does for a couple: 200 per month (2,400 per year) each.
-        ssi_countable_income: 2_400
+        ssi_countable_income: {2026: 2_400}
       person2:
         age: 68
         immigration_status: LEGAL_PERMANENT_RESIDENT
         ssi_qualifying_quarters_earnings: 39
-        ssi_countable_income: 2_400
+        ssi_countable_income: {2026: 2_400}
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -50,7 +50,7 @@
         # deemed because person1 has no income of her own.
         is_ssi_spousal_deeming_applies: true
         ssi_income_deemed_from_ineligible_spouse: 2_490
-        ssi_countable_income: 2_490
+        ssi_countable_income: {2026: 2_490}
       person2:
         age: 50
         employment_income: 6_000
@@ -86,7 +86,7 @@
         # month (22,692 per year), all deemed.
         is_ssi_spousal_deeming_applies: true
         ssi_income_deemed_from_ineligible_spouse: 22_692
-        ssi_countable_income: 22_692
+        ssi_countable_income: {2026: 22_692}
       person2:
         age: 50
         employment_income: 46_404
@@ -122,7 +122,7 @@
         # month (25,092 per year), all deemed.
         is_ssi_spousal_deeming_applies: true
         ssi_income_deemed_from_ineligible_spouse: 25_092
-        ssi_countable_income: 25_092
+        ssi_countable_income: {2026: 25_092}
       person2:
         age: 42
         employment_income: 51_204
@@ -164,7 +164,7 @@
         # (15,210 per year).
         is_ssi_spousal_deeming_applies: true
         ssi_income_deemed_from_ineligible_spouse: 11_610
-        ssi_countable_income: 15_210
+        ssi_countable_income: {2026: 15_210}
       person2:
         age: 50
         employment_income: 24_000
@@ -201,7 +201,7 @@
         # these, since the model's split of the couple's SSI and income is
         # being reworked separately.
         ssi: 994
-        ssi_countable_income: 0
+        ssi_countable_income: {2026: 0}
       person2:
         age: 68
         immigration_status: LEGAL_PERMANENT_RESIDENT
@@ -209,7 +209,7 @@
         # 420 per month foreign pension; countable income is 420 - 20 = 400
         # per month (4,800 per year), supplied as in Case 1.
         pension_income: 5_040
-        ssi_countable_income: 4_800
+        ssi_countable_income: {2026: 4_800}
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -250,7 +250,7 @@
         # 587.50 per month (7,050 per year).
         is_ssi_spousal_deeming_applies: true
         ssi_income_deemed_from_ineligible_spouse: 6_810
-        ssi_countable_income: 7_050
+        ssi_countable_income: {2026: 7_050}
       person2:
         age: 50
         employment_income: 14_400
@@ -376,12 +376,12 @@
         # supplement 239.94.
         pension_income: 5_040
         ssi: 594
-        ssi_countable_income: 4_800
+        ssi_countable_income: {2026: 4_800}
       person2:
         age: 68
         immigration_status: LEGAL_PERMANENT_RESIDENT
         ssi_qualifying_quarters_earnings: 39
-        ssi_countable_income: 0
+        ssi_countable_income: {2026: 0}
     marital_units:
       marital_unit:
         members: [person1, person2]
