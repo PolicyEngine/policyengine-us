@@ -9,8 +9,8 @@ class ny_interest_deduction(Variable):
     definition_period = YEAR
     documentation = (
         "Interest New York allows as an itemized deduction: the federal "
-        "interest_deduction components, with New York's pre-TCJA home "
-        "mortgage interest in place of the federal home mortgage interest."
+        "interest_deduction with New York's pre-TCJA home mortgage interest "
+        "in place of the federal home mortgage interest."
     )
     reference = (
         "https://www.nysenate.gov/legislation/laws/TAX/615",
@@ -18,8 +18,13 @@ class ny_interest_deduction(Variable):
     )
     defined_for = StateCode.NY
 
-    adds = [
-        "ny_mortgage_interest_deduction",
-        "non_mortgage_interest",
-        "deductible_mortgage_insurance_premiums",
-    ]
+    def formula(tax_unit, period, parameters):
+        # Starting from interest_deduction keeps an interest total supplied
+        # directly (deductible_interest_expense); only the federal mortgage
+        # component is swapped for New York's.
+        federal_interest = tax_unit("interest_deduction", period)
+        federal_mortgage_interest = add(
+            tax_unit, period, ["deductible_mortgage_interest"]
+        )
+        ny_mortgage_interest = tax_unit("ny_mortgage_interest_deduction", period)
+        return federal_interest - federal_mortgage_interest + ny_mortgage_interest
