@@ -226,3 +226,53 @@
     adjusted_gross_income: 41_500
     ny_recomputed_federal_agi: 41_800
     ny_eitc: 0
+
+- name: 2021 NY EITC for a parent who takes up the federal EITC
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        takes_up_eitc: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # Tax Law 606(d) and the 2021 IT-215 instructions: 30% of the federal
+    # credit computed without ARPA. One child: 34% phase-in x $10,000 =
+    # $3,400, under the $3,618 maximum. 30% x 3,400 = $1,020, less the
+    # household credit capped at NY tax before credits, which is zero.
+    eitc: 3_400
+    ny_income_tax_before_credits: 0
+    ny_eitc: 1_020
+
+- name: 2021 NY EITC is zero for a parent who does not take up the federal EITC
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        takes_up_eitc: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # The pre-ARPA recomputation reads the same take-up input, so the
+    # recomputed federal credit, and 30% of it, is zero.
+    eitc: 0
+    ny_eitc: 0

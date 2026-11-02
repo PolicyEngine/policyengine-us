@@ -28,7 +28,8 @@ calculates:
 
 ``get_branch_for_period`` is the same with no inputs, for branches that
 change the tax-benefit system rather than inputs: the caller swaps the system
-and deletes the variables it recalculates.
+and drops the values of the variables it recalculates with
+``drop_recomputed_values``, which keeps inputs.
 """
 
 from typing import Dict, Iterable, Optional, Set, Tuple, Union
@@ -176,6 +177,27 @@ def drop_inherited_values(
     branch._fast_cache = {}
 
 
+def drop_recomputed_values(branch: Simulation, name_parts: Iterable[str]) -> None:
+    """Drop formula results for variables a pinned-rules branch recalculates.
+
+    A branch that swaps in a pinned tax-benefit system recalculates every
+    variable whose name contains one of ``name_parts``. Its inherited values
+    for those variables are dropped, but inputs are kept, so the branch reads
+    the same take-up flags and other supplied values as its parent. Deleting
+    with ``Simulation.delete_arrays`` would delete those inputs too, and the
+    branch would fall back to their defaults.
+    """
+    name_parts = tuple(name_parts)
+    drop_inherited_values(
+        branch,
+        [
+            variable
+            for variable in branch.tax_benefit_system.variables
+            if any(part in variable for part in name_parts)
+        ],
+    )
+
+
 def get_override_branch(
     simulation: Simulation,
     name: str,
@@ -239,7 +261,8 @@ def get_branch_for_period(
     """Return ``simulation``'s branch ``name`` for ``period``, created per period.
 
     For branches that change the tax-benefit system rather than inputs: the
-    caller swaps the system and deletes the variables it recalculates. Within
+    caller swaps the system and drops the variables it recalculates with
+    ``drop_recomputed_values``. Within
     a period the branch is shared; a branch left from another period is
     dropped and created again from the parent as it stands now.
     """
