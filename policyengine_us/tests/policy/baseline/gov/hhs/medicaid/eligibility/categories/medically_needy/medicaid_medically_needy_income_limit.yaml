@@ -573,7 +573,7 @@
       2021: [8_709.96, 8_709.96, 8_274.48]
       2022: [9_155.04, 9_155.04, 8_697.24]
 
-- name: Case 23, Illinois rounds to the nearest dollar in 2022 and drops the cents in 2025.
+- name: Case 23, Illinois rounds to the nearest dollar from 2018 to 2024 and drops the cents in 2025.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -590,11 +590,15 @@
     households:
       household:
         members: [person1, person2, person3]
-        state_code: {2022: IL, 2025: IL}
+        state_code: {2018: IL, 2022: IL, 2024: IL, 2025: IL}
   output:
-    # Outputs are [couple, couple, individual]. WAG 25-03-02(2), AABD 100% FPL.
+    # Outputs are [couple, couple, individual]. KFF 2018; WAG 25-03-02(2), AABD 100% FPL.
+    # 2018: 16,460 / 12 = 1,371.67 to 1,372; 12,140 / 12 = 1,011.67 to 1,012.
     # 2022: 18,310 / 12 = 1,525.83 to 1,526; 13,590 / 12 = 1,132.50 to 1,133.
+    # 2024: 20,440 / 12 = 1,703.33 to 1,703; 15,060 / 12 = 1,255 exactly.
     # 2025: 21,150 / 12 = 1,762.50, cents dropped, 1,762; 15,650 / 12 = 1,304.17 to 1,304.
     medicaid_medically_needy_income_limit:
+      2018: [16_464, 16_464, 12_144]
       2022: [18_312, 18_312, 13_596]
+      2024: [20_436, 20_436, 15_060]
       2025: [21_144, 21_144, 15_648]
