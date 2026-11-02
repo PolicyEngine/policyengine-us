@@ -52,10 +52,24 @@ Household net income loses the same benefits but also counts the subsidy, so it
 can rise while SPM income falls. test_subsidy_at_the_cap_can_lower_spm_income
 pins one such case; the fall comes from those programs and not from this rule.
 
-These properties read spm_unit_pre_subsidy_childcare_expenses as a pre-subsidy
-price, which is what it means in a household calculation. Datasets fill it from
-the ASEC's reported spending, so on microdata the rule nets a modeled subsidy
-from a reported payment.
+The properties above read spm_unit_pre_subsidy_childcare_expenses as a
+pre-subsidy price, which is what it means in a household calculation. Datasets
+fill it from the ASEC's reported spending, which is already what parents paid.
+So over a dataset, with E the reported amount, S0 the subsidy baseline policy
+pays and S1 the subsidy the simulated policy pays:
+
+    expense(S1) = min(W + max(E - (S1 - S0), 0), C)
+
+7. Baseline policy over a dataset leaves the expense at min(W + E, C), the
+   amount Census subtracts, whatever subsidy the model pays.
+8. Under any policy over a dataset, the expense equals that reference, with or
+   without a child in the unit. A policy that pays the same subsidy leaves the
+   expense where baseline policy put it.
+9. Differential. Give a dataset the amount the household rule says a unit pays
+   at baseline policy. Then the two rules give the same expense under any
+   policy. With the same input and real programs, repealing a subsidy moves
+   SPM net income by the same amount under both rules, unless the earnings cap
+   binds under either.
 """
 
 from functools import cache
@@ -108,13 +122,15 @@ def build_units(units):
             "is_tax_unit_head": {YEAR: True},
             "is_household_head": {YEAR: True},
         }
-        people[child] = {"age": {YEAR: 4}, "is_tax_unit_dependent": {YEAR: True}}
-        members = [parent, child]
+        members = [parent]
+        marital_units[f"marital_unit_{i}"] = {"members": [parent]}
+        if unit.get("has_child", True):
+            people[child] = {"age": {YEAR: 4}, "is_tax_unit_dependent": {YEAR: True}}
+            members = [parent, child]
+            marital_units[f"child_marital_unit_{i}"] = {"members": [child]}
         state = unit["state"]
         tax_units[f"tax_unit_{i}"] = {"members": members}
         families[f"family_{i}"] = {"members": members}
-        marital_units[f"marital_unit_{i}"] = {"members": [parent]}
-        marital_units[f"child_marital_unit_{i}"] = {"members": [child]}
         spm_units[f"spm_unit_{i}"] = {
             "members": members,
             "spm_unit_pre_subsidy_childcare_expenses": {YEAR: unit["expenses"]},
@@ -379,3 +395,185 @@ def test_subsidy_at_the_cap_can_lower_spm_income():
         change("spm_unit_benefits") - change("spm_unit_taxes"), abs=INCOME_TOLERANCE
     )
     assert change("spm_unit_net_income") < 0
+
+
+def with_baseline_arm(simulation):
+    """A branch named baseline, wired as a reform simulation wires its own. These
+    properties set each arm's subsidy directly, and a real reform builds a whole
+    tax-benefit system; the repeal test below and the microsimulation tests run
+    that path."""
+    simulation.baseline = simulation.get_branch("baseline")
+    return simulation
+
+
+def over_dataset(situation):
+    """A simulation that reads its inputs as a dataset's. Core sets this flag
+    when it loads a file; a situation lets these properties choose the inputs."""
+    simulation = Simulation(situation=situation)
+    simulation.is_over_dataset = True
+    return simulation
+
+
+def set_subsidies(simulation, baseline_subsidies, policy_subsidies):
+    simulation.baseline.set_input("child_care_subsidies", YEAR, baseline_subsidies)
+    simulation.set_input("child_care_subsidies", YEAR, policy_subsidies)
+
+
+def capped_expense(simulation):
+    return np.asarray(
+        simulation.calculate("spm_unit_capped_work_childcare_expenses", YEAR),
+        dtype=float,
+    )
+
+
+dataset_units = st.lists(
+    st.fixed_dictionaries(
+        {
+            "state": st.sampled_from(STATES),
+            "expenses": amounts,
+            "subsidy": amounts,
+            "policy_subsidy": amounts,
+            "work": st.integers(0, 6_000),
+            "cap": st.integers(0, 60_000),
+            "has_child": st.booleans(),
+        }
+    ),
+    min_size=1,
+    max_size=4,
+)
+
+
+@settings(max_examples=25, deadline=None)
+@given(dataset_units)
+def test_baseline_policy_over_a_dataset_keeps_the_reported_amount(units):
+    plain = over_dataset(build_units(units))
+    simulation = with_baseline_arm(over_dataset(build_units(units)))
+    # 7. The subsidy input differs by unit and the expense ignores it. A
+    # simulation with no baseline and a baseline arm both hold baseline policy.
+    for baseline in (plain, simulation.baseline):
+        for unit, expense in zip(units, capped_expense(baseline)):
+            assert expense == pytest.approx(
+                min(unit["work"] + unit["expenses"], unit["cap"]), abs=TOLERANCE
+            )
+    # 8. A policy that pays the same subsidy leaves the expense identical, with
+    # no rounding error from netting.
+    assert (capped_expense(simulation) == capped_expense(simulation.baseline)).all()
+
+
+@settings(max_examples=25, deadline=None)
+@given(dataset_units)
+@example(
+    # A policy that pays more than the unit reported paying, so the floor binds.
+    [
+        {
+            "state": "NY",
+            "expenses": 1_000,
+            "subsidy": 0,
+            "policy_subsidy": 5_000,
+            "work": 100,
+            "cap": 60_000,
+            "has_child": True,
+        }
+    ]
+)
+@example(
+    # A repeal that takes a unit with no child to the earnings cap.
+    [
+        {
+            "state": "TX",
+            "expenses": 5_000,
+            "subsidy": 8_000,
+            "policy_subsidy": 0,
+            "work": 100,
+            "cap": 6_000,
+            "has_child": False,
+        }
+    ]
+)
+def test_policy_over_a_dataset_moves_the_expense_by_the_subsidy_change(units):
+    # 8.
+    simulation = with_baseline_arm(over_dataset(build_units(units)))
+    set_subsidies(
+        simulation,
+        [unit["subsidy"] for unit in units],
+        [unit["policy_subsidy"] for unit in units],
+    )
+    for unit, expense in zip(units, capped_expense(simulation)):
+        assert expense == pytest.approx(
+            reference_expense(
+                unit["expenses"],
+                unit["policy_subsidy"] - unit["subsidy"],
+                unit["work"],
+                unit["cap"],
+            ),
+            abs=TOLERANCE,
+        )
+
+
+@settings(max_examples=25, deadline=None)
+@given(dataset_units)
+def test_dataset_and_household_rules_agree_on_the_expense(units):
+    # 9. A subsidy no larger than the price keeps the floor out of the way at
+    # baseline policy, so the reported amount is the price less the subsidy.
+    baseline_subsidies = [min(u["subsidy"], u["expenses"]) for u in units]
+    policy_subsidies = [unit["policy_subsidy"] for unit in units]
+    reported = [
+        {**unit, "expenses": unit["expenses"] - subsidy}
+        for unit, subsidy in zip(units, baseline_subsidies)
+    ]
+    household = with_baseline_arm(Simulation(situation=build_units(units)))
+    dataset = with_baseline_arm(over_dataset(build_units(reported)))
+    set_subsidies(household, baseline_subsidies, policy_subsidies)
+    set_subsidies(dataset, baseline_subsidies, policy_subsidies)
+    assert capped_expense(dataset) == pytest.approx(
+        capped_expense(household), abs=TOLERANCE
+    )
+    assert capped_expense(dataset.baseline) == pytest.approx(
+        capped_expense(household.baseline), abs=TOLERANCE
+    )
+
+
+@pytest.mark.parametrize("state, county_fips", [("NY", "36061"), ("TX", None)])
+def test_repeal_moves_dataset_and_household_income_by_the_same_amount(
+    state, county_fips
+):
+    # 9. Real programs and a real reform. The dataset reads $14,000 as what
+    # parents paid and the household calculation as the price. Neither rule's
+    # cap binds and both expenses rise by the subsidy, so SPM income falls by
+    # the same amount.
+    situation = family(state, 30_000, 14_000)
+    parent = situation["people"]["parent"]
+    del parent["weeks_worked"]
+    # The columns datasets hold. Simulation moves employment_income to its
+    # pre-response variable after core builds the baseline arm, so the arm would
+    # read no earnings wherever a formula reads that variable.
+    parent["employment_income_before_lsr"] = parent.pop("employment_income")
+    parent["weekly_hours_worked_before_lsr"] = parent.pop("weekly_hours_worked")
+    if county_fips:
+        situation["households"]["household"]["county_fips"] = {YEAR: county_fips}
+    _, household_change = with_and_without_subsidies(situation)
+    dataset = Simulation(situation=situation, reform=NoSubsidies)
+    dataset.is_over_dataset = True
+    dataset.baseline.is_over_dataset = True
+
+    def dataset_change(variable):
+        return float(dataset.baseline.calculate(variable, YEAR).sum()) - float(
+            dataset.calculate(variable, YEAR).sum()
+        )
+
+    subsidy = float(dataset.baseline.calculate("child_care_subsidies", YEAR).sum())
+    assert subsidy > 0
+    assert float(dataset.calculate("child_care_subsidies", YEAR).sum()) == 0
+    assert capped_expense(dataset.baseline).sum() == pytest.approx(
+        14_000, abs=TOLERANCE
+    )
+    assert dataset_change("spm_unit_capped_work_childcare_expenses") == pytest.approx(
+        -subsidy, abs=TOLERANCE
+    )
+    assert household_change("spm_unit_capped_work_childcare_expenses") == pytest.approx(
+        -subsidy, abs=TOLERANCE
+    )
+    assert household_change("spm_unit_net_income") != 0
+    assert dataset_change("spm_unit_net_income") == pytest.approx(
+        household_change("spm_unit_net_income"), abs=INCOME_TOLERANCE
+    )
