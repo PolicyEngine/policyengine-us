@@ -99,6 +99,7 @@ def test_reported_columns_are_not_migrated_again(tmp_path):
         "employer_social_security_tax",
         "self_employment_social_security_tax",
         "employer_total_social_security_tax",
+        "income_tax_chapter_1",
         "net_investment_income_tax",
         "niit_liability",
         "niit_revenue_oasdi",
@@ -106,12 +107,43 @@ def test_reported_columns_are_not_migrated_again(tmp_path):
         "tob_revenue_oasdi",
         "tob_revenue_medicare_hi",
         "tob_revenue_total",
+        "s770_revenue_oasdi",
+        "s770_existing_niit_revenue_oasdi",
+        "s770_nii_addon_tax",
+        "s770_active_business_income_tax",
+        "owners_draw_oasdi_tax",
+        "oasdi_payroll_tax_revenue",
+        "oasdi_benefit_taxation_revenue",
+        "oasdi_income",
+        "oasdi_cost",
+        "oasdi_modeled_balance",
     ],
 )
 def test_stored_outputs_rejected_even_when_zero(tmp_path, column):
     path = make_dataset(tmp_path, tax_unit_extra={column: [0]})
     with pytest.raises(ValueError, match="bypass reform formulas"):
         audit(path)
+
+
+@pytest.mark.parametrize(
+    "entity, column",
+    [
+        ("person", "s770_passive_se_income"),
+        ("person", "s770_active_fica_income"),
+        ("tax_unit", "s770_nii_fica_seca_income"),
+        ("tax_unit", "s770_niit_nol_deduction"),
+        ("person", "s770_draw_gross"),
+        ("person", "s770_draw_oasdi_base"),
+        ("person", "s770_draw_hi_in_effect"),
+        ("person", "owners_draw_subsets_are_disjoint"),
+        ("person", "owners_draw_passive_se_overlap"),
+    ],
+)
+def test_section_8_and_owners_draw_classification_inputs_remain_sources(
+    tmp_path, entity, column
+):
+    path = make_dataset(tmp_path, **{f"{entity}_extra": {column: [0]}})
+    assert column in audit(path)["stored_columns"]
 
 
 def test_both_component_names_would_preserve_a_bypassing_override(tmp_path):
@@ -137,6 +169,7 @@ def test_missing_component_cannot_be_invented_from_aggregate(tmp_path):
         "social_security",
         "social_security_retirement",
         "tob_revenue_oasdi",
+        "income_tax_chapter_1",
         "social_security_payable_factor",
     ],
 )

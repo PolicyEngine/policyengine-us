@@ -119,28 +119,42 @@ def test_contrib_ssa_yaml_has_a_dedicated_single_file_serial_route():
 
     Its large reform combinations need separate files and an effective
     one-worker limit even when CI exports POLICYENGINE_BATCH_WORKERS=2.
+    The route runs in shard 3, not shard 1, which also runs the contrib Python
+    tests: with 12 files SSA took 27 minutes there, and shard 1 hit CI's
+    60-minute timeout (release run 41123038987).
     """
     root = "policyengine_us/tests/policy/contrib"
     ssa = f"{root}/ssa"
+    shared, shard = "test-yaml-structural-other", "test-yaml-structural-other-shard-3"
     assert any((REPO_ROOT / ssa).rglob("*.yaml")), "SSA YAML coverage is absent"
-    commands = make_commands("test-yaml-structural-other")
     batcher = "policyengine_us/tests/test_batched.py"
-    batch_commands = [
-        shlex.split(command) for command in commands if batcher in command
-    ]
-    dedicated = [arguments for arguments in batch_commands if ssa in arguments]
+
+    def batch_commands(target):
+        return [
+            shlex.split(command)
+            for command in make_commands(target)
+            if batcher in command
+        ]
+
+    assert not [
+        arguments for arguments in batch_commands(shared) if ssa in arguments
+    ], "SSA must not share shard 1 with the contrib Python tests"
+    dedicated = [arguments for arguments in batch_commands(shard) if ssa in arguments]
     assert len(dedicated) == 1, "SSA must have one dedicated YAML invocation"
     (arguments,) = dedicated
     assert arguments[arguments.index("--mode") + 1] == "per-file"
     assert arguments[arguments.index("--workers") + 1] == "1"
     assert "POLICYENGINE_BATCH_WORKERS=1" in arguments
 
-    generic = [arguments for arguments in batch_commands if root in arguments]
+    generic = [arguments for arguments in batch_commands(shared) if root in arguments]
     assert len(generic) == 1
     (arguments,) = generic
     excluded = arguments[arguments.index("--exclude") + 1].split(",")
     assert "ssa" in excluded, "SSA YAML must not also enter a shared subdir batch"
-    assert commands <= make_commands("test"), "The full suite must retain SSA's route"
+    assert shard in ci_suites()[0], "CI must run SSA's route"
+    assert make_commands(shard) <= make_commands("test"), (
+        "The full suite must retain SSA's route"
+    )
 
 
 @pytest.mark.parametrize("workflow_name", ("python-tests.yaml", "push.yaml"))

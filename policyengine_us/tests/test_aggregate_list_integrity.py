@@ -111,7 +111,10 @@ def test_members_are_state_gated(list_path, variables):
     )
 
 
-@pytest.mark.parametrize("list_path", AGGREGATE_LISTS)
+# household_benefits needs no state gate, because most members are national.
+@pytest.mark.parametrize(
+    "list_path", [*AGGREGATE_LISTS, "gov/household/household_benefits.yaml"]
+)
 def test_no_silent_removals_between_year_blocks(list_path):
     blocks = blocks_of(list_path)
     for (_, prev), (date, curr) in zip(blocks, blocks[1:]):
@@ -226,4 +229,41 @@ def test_reform_aggregates_keep_baseline_contrib_entries(
         f"{missing}, which the baseline {variable_name} counts. Add the entry "
         "here too, or record a deliberate omission in "
         "ALLOWED_REFORM_OMISSIONS in this test."
+    )
+
+
+# Cash programs that household_benefits and spm_unit_benefits both count. A
+# reform's copy that drops one takes the payment away from every household in
+# the simulation, not only the reform's target group.
+SHARED_CASH_PROGRAMS = {
+    "spm_unit_benefits": {
+        "ak_energy_relief",
+        "ca_capi",
+        "ca_la_expectant_parent_payment",
+        "ca_la_infant_supplement",
+        "co_denver_property_tax_relief",
+        "ma_eaedc",
+        "nj_property_tax_relief",
+        "ny_drive_clean_rebate",
+    },
+    "household_benefits": {
+        "ak_energy_relief",
+        "household_local_benefits",
+        "ny_drive_clean_rebate",
+    },
+}
+
+
+@pytest.mark.parametrize(
+    "source_path,variable_name,members",
+    REFORM_AGGREGATE_OVERRIDES,
+    ids=[f"{path}::{variable}" for path, variable, _ in REFORM_AGGREGATE_OVERRIDES],
+)
+def test_reform_aggregates_keep_shared_cash_programs(
+    source_path, variable_name, members
+):
+    missing = sorted(SHARED_CASH_PROGRAMS[variable_name] - set(members))
+    assert not missing, (
+        f"{source_path} redefines {variable_name} and drops {missing}, which "
+        "both income totals count. Add them to this copy."
     )

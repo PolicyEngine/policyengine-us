@@ -1,3 +1,118 @@
+## [2.91.0] - 2026-11-02
+
+### Added
+
+- Add an opt-in reform that puts Social Security's wage and price paths on the 2026 Trustees Report's intermediate assumptions for long-range scoring: it chains the Trustees' average wage index and CPI growth onto the published NAWI and COLA index, then re-derives the taxable maximum, the wage-indexed amounts and the parameters that uprate by either path. It is off by default, so current-law output doesn't change.
+
+
+## [2.90.5] - 2026-11-02
+
+### Fixed
+
+- Count paid work, full-time college and a disabled caretaker's covered care as Nevada child care activities without the activity input.
+- Count the same cash payments in the household and SPM income totals: the Alaska Permanent Fund Dividend, New Jersey property tax relief, Massachusetts EAEDC, California CAPI and two Los Angeles County payments in SPM resources, and Alaska energy relief from 2024, New York's Drive Clean rebate and Denver property tax relief in household benefits.
+- Vermont no longer pays a child care subsidy for a child with no care hours and no bill, and caps it at any bill before December 17, 2023. New Hampshire no longer pays its disability supplement for a child with no charge.
+- Prorate the Wisconsin Works Community Service Job payment by unsubsidized hours, and end it at 30 hours.
+
+
+## [2.90.4] - 2026-11-02
+
+### Changed
+
+- Test and document the contributed Social Security PIA formula paths: worked YAML cases, properties and an end-to-end test, including progressive price indexing's bend-point-fraction threshold, and the inputs a user must supply.
+
+
+## [2.90.3] - 2026-11-01
+
+### Changed
+
+- Require every S.770 and SSA contributed parameter node to be classified in the household calculator reference test.
+
+
+## [2.90.2] - 2026-11-01
+
+### Fixed
+
+- Measure Social Security benefit-taxation trust-fund revenue using chapter 1 income tax liability after nonrefundable credits and before refundable credits, excluding net investment income tax and unreported payroll tax.
+
+
+## [2.90.1] - 2026-11-01
+
+### Changed
+
+- Speed up the owners' draw reform tests: their full-system tests now pause automatic garbage collection, free each Hypothesis example's released simulations when it ends, and restore the caller's collection setting afterwards, leaving every assertion and example unchanged.
+
+
+## [2.90.0] - 2026-11-01
+
+### Added
+
+- Add modeled OASDI liabilities, benefits and their modeled balance (oasdi_payroll_tax_revenue, oasdi_benefit_taxation_revenue, oasdi_niit_revenue, oasdi_income, oasdi_cost and oasdi_modeled_balance).
+
+
+## [2.89.0] - 2026-11-01
+
+### Added
+
+- Add an opt-in Social Security COLA means test using prior-year MAGI excluding Social Security, configurable indexed thresholds and filing groups, cohort or all-beneficiary scope, statutory or chained CPI-U COLAs, income-history sensitivities, and an A9 preset. Apply each withholding decision jointly with other COLA changes in reported benefits and the household calculator, with independent per-person overrides while preserving current-law defaults and the legacy A5 withholding input channels. Exclude the new controls from Medicare IRMAA income-history inference and expire them in generated dataset years while preserving supplied decisions. Document the latest-authored-value CPI-U lookup used to index projected thresholds.
+
+
+## [2.88.10] - 2026-11-01
+
+### Fixed
+
+- Apply the full-time and hourly tests and the Railway Labor Act rule in Georgia's qualified overtime exclusion, O.C.G.A. 48-7-27(a)(16).
+
+
+## [2.88.9] - 2026-10-31
+
+### Fixed
+
+- Give a qualifying surviving spouse the single ("all other returns") qualified business income deduction threshold and phase-in range instead of the joint amounts, and round projected thresholds as section 1(f)(7) does.
+
+
+## [2.88.8] - 2026-10-31
+
+### Fixed
+
+- Count qualified passenger vehicle loan interest on the return of the taxpayer who incurred the loan (26 U.S.C. 163(h)(4)(B)(i)): add a person-level input for each filer's own loans and give a household-level amount to the household head's tax unit instead of splitting it across the household's tax units by head count.
+
+
+## [2.88.7] - 2026-10-31
+
+### Fixed
+
+- Georgia's HB463 cash tip and overtime exclusions no longer count a dependent's tips or overtime, which are the dependent's own income and not in the filer's federal AGI.
+
+
+## [2.88.6] - 2026-10-31
+
+### Fixed
+
+- Share dated parameter values between a pinned policy and its source, so New York's and Alabama's recomputed federal credits no longer rebuild every parameter value for each simulation.
+
+
+## [2.88.5] - 2026-10-31
+
+### Fixed
+
+- Limit the tips and overtime deductions to 2025-2028, as 26 U.S.C. 224(h) and 225(g) and their effective dates require, with new in_effect parameters; the federal deduction lists now name both deductions in every year so those parameters alone set the years. From 2029 Montana and Arizona no longer subtract them and South Carolina's OBBBA add-back no longer includes them.
+
+
+## [2.88.4] - 2026-10-31
+
+### Changed
+
+- Cut the CI time of the behavioural-response measurement copy tests: collect garbage less often while they copy policy trees, and run the pinned copy cases over three households in one simulation instead of three fixed generated examples.
+
+
+## [2.88.3] - 2026-10-31
+
+### Fixed
+
+- Run the contrib SSA YAML tests in Contrib shard 3 instead of shard 1, which also runs the contrib Python tests and was hitting CI's 60-minute timeout.
+
+
 ## [2.88.2] - 2026-10-30
 
 ### Fixed
