@@ -214,3 +214,27 @@
   output:
     eitc_child_count: 1
     eitc_eligible: true
+
+- name: 2020 filer with no qualifying child at all keeps the childless credit
+  # Control for former section 32(c)(1)(F): the bar needs at least one
+  # qualifying child, so a genuinely childless filer is unaffected.
+  # min(7.65% x $6,000, $538) = $459.
+  period: 2020
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 6_000
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    eitc_child_count: 0
+    eitc_eligible: true
+    eitc: 459
