@@ -45,7 +45,7 @@ TY2015_2017 = {
     "ar_taxable_capital_gains": "14",
     "taxable_ira_distributions": "16",
     "taxable_roth_conversions": "16",
-    "military_retirement_pay": "17A/17B",
+    "military_retirement_income": "17A/17B",
     "taxable_pension_income": "17A/17B",
     "taxable_disability_benefits": "17A/17B",
     "rental_income": "18",
@@ -54,6 +54,7 @@ TY2015_2017 = {
     "farm_rent_income": "18",
     "farm_operations_income": "19",
     "gambling_winnings": "20",
+    "ar_other_additions": "20",
 }
 
 TY2018_ON = {
@@ -66,7 +67,7 @@ TY2018_ON = {
     "ar_taxable_capital_gains": "14",
     "taxable_ira_distributions": "16",
     "taxable_roth_conversions": "16",
-    "military_retirement_pay": "17",
+    "military_retirement_income": "17",
     "taxable_pension_income": "18A/18B",
     "taxable_401k_distributions": "18A/18B",
     "taxable_403b_distributions": "18A/18B",
@@ -81,6 +82,7 @@ TY2018_ON = {
     "unemployment_compensation": "21",
     "total_unemployment_compensation": "21",
     "gambling_winnings": "22",
+    "ar_other_additions": "22",
 }
 
 EXPECTED_LINES = {

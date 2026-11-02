@@ -1,0 +1,55 @@
+description: New Mexico counts these sources as unearned income of all household members under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    # Gross OASDI benefits, including any Medicare premium deducted.
+    - social_security
+    - ssi
+    # New Mexico SSI state supplement (8.106.500 NMAC).
+    - nm_ssi_state_supplement
+    # Retirement, disability and survivor payments.
+    - pension_income
+    # IRA, 401(k) and 403(b) withdrawals; the annual input cannot separate
+    # nonrecurring lump-sum withdrawals, so all are counted as recurring.
+    - retirement_distributions
+    - military_retirement_income
+    - railroad_benefits
+    - survivor_benefits
+    - veterans_benefits
+    - disability_benefits
+    - workers_compensation
+    - total_unemployment_compensation
+    - general_assistance
+    - child_support_received
+    - alimony_income
+    - interest_income
+    - ordinary_dividend_income
+    # Net rental income, including the rent of a landlord working 20 or more
+    # hours a week, which 8.150.520.8 A NMAC counts as earned income.
+    - rental_income
+    - farm_rent_income
+    # Periodic receipts from estates or trusts.
+    - estate_income
+    # Contributions from family or friends.
+    - financial_assistance
+# TANF (New Mexico Works) is counted at the SPM unit level in
+# nm_liheap_countable_income. Lump sums, loans, earned income tax credits,
+# SNAP, in-kind benefits and vendor payments are excluded, and strike pay is
+# not counted. Royalties, tribal benefits, real-estate contract payments,
+# legal settlements, foster-care funds and AmeriCorps payments have no
+# inputs. FY2026 plan Section 1.9 checks one-time lump-sum payments and Social
+# Security "Excluding MediCare deduction" and leaves cash gifts unchecked;
+# 8.150.520.13 NMAC counts gross OASDI including the Medicare premium and
+# contributions from family or friends and excludes lump sums, and the rule
+# is followed for these items, recorded as us-nm:liheap-plan-income-checklist
+# in candidates.yaml.
+metadata:
+  unit: list
+  period: year
+  label: New Mexico LIHEAP unearned income sources
+  reference:
+    - title: 8.150.520.8 B, 8.150.520.12 and 8.150.520.13 NMAC
+      href: https://www.srca.nm.gov/parts/title08/08.150.0520.html
+    - title: "New Mexico FY2026 LIHEAP State Plan, Sections 1.8-1.9 #page 5-6"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/NM_Plan_2026.pdf#page=5
+    - title: "New Mexico FY2027 LIHEAP State Plan, Sections 1.8-1.9 #page 5-6"
+      href: https://www.hca.nm.gov/wp-content/uploads/DETAILED-MODEL-PLAN-LIHEAP_10_01_2026-4.pdf#page=5

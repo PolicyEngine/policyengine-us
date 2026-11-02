@@ -35,3 +35,9 @@ class ny_itemized_deductions_max(Variable):
         # NY-specific addition per Tax Law § 615(d)
         "ny_college_tuition_deduction",
     ]
+
+    # IT-196-I (2021), page 2: New York did not adopt the extension
+    # of the mortgage-insurance deduction beyond 2020.
+    subtracts = (
+        "gov.states.ny.tax.income.deductions.itemized.disallowed_interest_components"
+    )

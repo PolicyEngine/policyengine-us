@@ -1,0 +1,52 @@
+# https://www.nd.gov/dhs/policymanuals/415/415_20_10_50.htm
+- name: Case 1, nonqualified adults contribute income but not household size.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 10000
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 40
+        employment_income: 10000
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_liheap_household_size: 1
+    nd_liheap_countable_income: 17300
+    nd_liheap_share: 0.95
+    nd_liheap: 950
+- name: Case 2, no qualified member yields no benefit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_household_size: 0
+    nd_liheap_eligible: false
+    nd_liheap: 0

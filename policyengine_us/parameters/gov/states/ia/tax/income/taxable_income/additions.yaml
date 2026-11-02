@@ -1,10 +1,12 @@
 description: Iowa adds these sources to taxable income on and after 2023.
 values:
-  2021-01-01: []
+  2021-01-01:
     # Interest from state and municipal securities 
     # Dividends from state and municipal bonds
     # Bonus Depreciation
     # Net operating loss 
+    # Schedule 1, line 11, column A
+    - ia_other_additions 
 
 
 metadata:

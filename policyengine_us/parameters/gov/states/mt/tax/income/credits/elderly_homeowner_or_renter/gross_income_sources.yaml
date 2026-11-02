@@ -60,6 +60,9 @@ values:
     # so the household sum counts the unit's TANF once. LIEAP and SNAP are
     # not cash public assistance (2014-2017 Form 2EC instructions).
     - ssi
+    # § 15-30-2337(9)(a)(vi) – the Montana State Supplementary Payment is
+    # nontaxable cash public assistance paid with SSI; ssi excludes it.
+    - mt_ssp
     - tanf_person
     - workers_compensation
     # Guaranteed income pilot payments are outside federal AGI here, and
@@ -97,6 +100,7 @@ values:
     - strike_benefits
     - general_assistance
     - ssi
+    - mt_ssp
     - tanf_person
     - workers_compensation
     - gi_cash_assistance
@@ -119,6 +123,7 @@ values:
     - strike_benefits
     - general_assistance
     - ssi
+    - mt_ssp
     - tanf_person
     - workers_compensation
     - gi_cash_assistance
