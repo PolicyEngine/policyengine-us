@@ -28,8 +28,8 @@ calculates:
 
 ``get_branch_for_period`` is the same with no inputs, for branches that
 change the tax-benefit system rather than inputs: the caller swaps the system
-and drops the values of the variables it recalculates with
-``drop_recomputed_values``, which keeps inputs.
+and drops the values of the formula variables it recalculates with
+``drop_recomputed_values``, which keeps plain inputs.
 """
 
 from typing import Dict, Iterable, Optional, Set, Tuple, Union
@@ -178,24 +178,20 @@ def drop_inherited_values(
 
 
 def drop_recomputed_values(branch: Simulation, name_parts: Iterable[str]) -> None:
-    """Drop formula results for variables a pinned-rules branch recalculates.
+    """Drop the values of formula variables a pinned-rules branch recalculates.
 
     A branch that swaps in a pinned tax-benefit system recalculates every
-    variable whose name contains one of ``name_parts``. Its inherited values
-    for those variables are dropped, but inputs are kept, so the branch reads
-    the same take-up flags and other supplied values as its parent. Deleting
-    with ``Simulation.delete_arrays`` would delete those inputs too, and the
-    branch would fall back to their defaults.
+    formula variable whose name contains one of ``name_parts``, including one
+    the caller supplied: a supplied value is the current-law amount, which the
+    pinned rules replace. Plain inputs (no formula), such as ``takes_up_eitc``,
+    are facts the pinned rules don't change, so they are kept.
     """
     name_parts = tuple(name_parts)
-    drop_inherited_values(
-        branch,
-        [
-            variable
-            for variable in branch.tax_benefit_system.variables
-            if any(part in variable for part in name_parts)
-        ],
-    )
+    for name, variable in branch.tax_benefit_system.variables.items():
+        if any(part in name for part in name_parts) and (
+            variable.formulas or variable.adds or variable.subtracts
+        ):
+            branch.delete_arrays(name)
 
 
 def get_override_branch(
@@ -261,8 +257,8 @@ def get_branch_for_period(
     """Return ``simulation``'s branch ``name`` for ``period``, created per period.
 
     For branches that change the tax-benefit system rather than inputs: the
-    caller swaps the system and drops the variables it recalculates with
-    ``drop_recomputed_values``. Within
+    caller swaps the system and drops the formula variables it recalculates
+    with ``drop_recomputed_values``. Within
     a period the branch is shared; a branch left from another period is
     dropped and created again from the parent as it stands now.
     """

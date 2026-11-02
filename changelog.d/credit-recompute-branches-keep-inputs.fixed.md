@@ -1,1 +1,1 @@
-Keep inputs such as EITC take-up when New York and Alabama recompute federal credits under pinned rules, so a 2021 New York filer who does not take up the federal EITC no longer gets the New York EITC.
+Keep plain inputs such as EITC take-up when New York and Alabama recompute federal credits under pinned rules, so a 2021 New York filer who does not take up the federal EITC no longer gets the New York EITC.

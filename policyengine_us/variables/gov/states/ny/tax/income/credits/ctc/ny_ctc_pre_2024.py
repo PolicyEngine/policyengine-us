@@ -54,8 +54,8 @@ class ny_ctc_pre_2024(Variable):
                 simulation.tax_benefit_system
             )
             branch_parameters = pre_tcja_ctc.tax_benefit_system.parameters
-            # Recalculate every CTC variable under the pinned rules, but keep
-            # inputs.
+            # Recalculate every CTC formula variable under the pinned rules, a
+            # supplied current-law value included.
             drop_recomputed_values(pre_tcja_ctc, ["ctc", *CREDIT_DEPENDENT_VARIABLES])
             # Calculate pre-TCJA CTC. IT-213 Worksheet A, line 1 counts every
             # child on form line 4, including children under the NY minimum

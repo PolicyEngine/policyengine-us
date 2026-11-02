@@ -34,8 +34,9 @@ class ny_eitc(Variable):
             branch.tax_benefit_system = get_pre_arpa_eitc_tbs(
                 simulation.tax_benefit_system
             )
-            # Recalculate every EITC variable under the pinned rules, but
-            # keep inputs such as takes_up_eitc.
+            # Recalculate every EITC formula variable under the pinned rules,
+            # a supplied current-law eitc included; keep plain inputs such as
+            # takes_up_eitc.
             drop_recomputed_values(branch, ["eitc"])
             federal_eitc = branch.tax_unit("eitc", period)
         else:

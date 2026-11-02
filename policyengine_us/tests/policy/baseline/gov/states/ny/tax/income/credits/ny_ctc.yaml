@@ -319,8 +319,7 @@
       tax_unit:
         members: [parent, child]
         adjusted_gross_income: 50_000
-        # The federal CTC is calculated, not supplied: a supplied ctc
-        # carries into the pre-TCJA recomputation too.
+        ctc: 0
     households:
       household:
         members: [parent, child]

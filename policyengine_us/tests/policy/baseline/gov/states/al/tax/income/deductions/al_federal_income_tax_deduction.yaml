@@ -74,11 +74,10 @@
   #   - Part II line-6 floor applies BEFORE adding NIIT, protecting the $200 NIIT.
   #   - Part II subtracts only the refundable AOC (0.4 * 200 = 80), not the full $200.
   # Childless -> the 2020-IRC branch recomputes CTC/CDCC/EITC to 0 and there are
-  # no non-refundable add-backs. The EITC is calculated, not supplied: a
-  # supplied eitc carries into the 2020-IRC branch too.
+  # no non-refundable add-backs.
   # Hand arithmetic:
   #   federal_tax = 100; niit = 200
-  #   Part I  = max(100 - eitc(0) - full_AOC(200) - refundable_ctc(0), 0) = 0
+  #   Part I  = max(100 - eitc(200) - full_AOC(200) - refundable_ctc(0), 0) = 0
   #   regular_tax_basis = 100 - 200 = -100
   #   line_6  = max(-100, 0) = 0                      <- floor before NIIT
   #   refundable_AOC = 0.4 * 200 = 80
@@ -91,6 +90,7 @@
   input:
     income_tax_before_refundable_credits: 100
     net_investment_income_tax: 200
+    eitc: 200
     american_opportunity_credit: 200
     state_code: AL
   output:

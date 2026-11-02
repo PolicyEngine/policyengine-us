@@ -61,7 +61,8 @@ class al_federal_income_tax_deduction(Variable):
         simulation = tax_unit.simulation
         branch = get_branch_for_period(simulation, "al_2020_irc", period)
         branch.tax_benefit_system = get_2020_irc_tbs(simulation.tax_benefit_system)
-        # Recalculate the credits under the 2020 IRC, but keep inputs such as
+        # Recalculate the credits' formula variables under the 2020 IRC, a
+        # supplied current-law value included; keep plain inputs such as
         # takes_up_eitc.
         drop_recomputed_values(
             branch,

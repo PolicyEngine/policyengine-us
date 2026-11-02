@@ -43,8 +43,8 @@ class ny_ctc_pre_2024_eligible(Variable):
             pre_tcja_ctc.tax_benefit_system = get_pre_tcja_ctc_tbs(
                 simulation.tax_benefit_system
             )
-            # Recalculate every CTC variable under the pinned rules, but keep
-            # inputs.
+            # Recalculate every CTC formula variable under the pinned rules, a
+            # supplied current-law value included.
             drop_recomputed_values(pre_tcja_ctc, ["ctc", *CREDIT_DEPENDENT_VARIABLES])
             qualifies_for_federal_ctc = pre_tcja_ctc.person(
                 "ctc_qualifying_child", period
