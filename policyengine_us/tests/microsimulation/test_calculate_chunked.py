@@ -15,8 +15,12 @@ GC generations and must still pass the weak-reference collection checks.
 """
 
 import gc
+import sys
+import tempfile
 import weakref
+from pathlib import Path
 
+import h5py
 import numpy as np
 import pandas as pd
 import pytest
@@ -29,7 +33,7 @@ from policyengine_us.data.dataset_schema import (
     USSingleYearDataset,
 )
 from policyengine_us.system import system
-from policyengine_us.tools.calculate_chunked import calculate_chunked
+from policyengine_us.tools.calculate_chunked import _guard, calculate_chunked
 
 YEAR = 2026
 HOUSEHOLDS = 32
@@ -530,3 +534,175 @@ def test_entity_hdfstore_paths_match_full_calculation(
             dtype=actual.dtype
         )
         np.testing.assert_array_equal(actual, source_values)
+
+
+# Population projection files store <variable>/<period> arrays, which Core's
+# variable-centric loader reads. The same 32 households are written that way.
+TOB_VARIABLES = ("tob_revenue_oasdi", "tob_revenue_medicare_hi", "tob_revenue_total")
+
+
+def write_variable_centric(dataset, path):
+    with h5py.File(path, "w") as file:
+        for entity in US_ENTITIES:
+            table = getattr(dataset, entity)
+            for column in table.columns:
+                values = table[column].to_numpy()
+                if values.dtype == object:
+                    # Roles are stored as fixed-width byte strings.
+                    values = values.astype("S")
+                file.create_dataset(f"{column}/{YEAR}", data=values)
+        # Core's loader ignores a name that matches no variable, whatever its
+        # length, so the chunked route must too.
+        file.create_dataset(f"not_a_policyengine_variable/{YEAR}", data=np.arange(5))
+    return str(path)
+
+
+@pytest.fixture(scope="module")
+def variable_centric_path(chunking_dataset, tmp_path_factory):
+    return write_variable_centric(
+        chunking_dataset, tmp_path_factory.mktemp("population") / "population.h5"
+    )
+
+
+def _parameter_reform():
+    from policyengine_core.reforms import Reform
+
+    return Reform.from_dict(
+        {
+            # A lower base threshold widens benefit inclusion.
+            "gov.irs.social_security.taxability.threshold.base.main.JOINT": {
+                "2026-01-01.2100-12-31": 20_000
+            },
+        },
+        country_id="us",
+    )
+
+
+@pytest.fixture(scope="module")
+def variable_centric_reference(variable_centric_path, reference):
+    expected = {}
+    for reform in (None, _parameter_reform()):
+        simulation = Microsimulation(dataset=variable_centric_path, reform=reform)
+        expected[reform is not None] = _snapshot_calculations(
+            simulation, TOB_VARIABLES, YEAR
+        )
+        _release_reference_simulation(simulation)
+        del simulation
+        gc.collect()
+    # Both loaders read the same households to the same results.
+    values, weighted_sums, weights = reference
+    for variable, (entity, actual, actual_weights, total) in expected[False].items():
+        np.testing.assert_array_equal(actual, values[variable])
+        np.testing.assert_array_equal(actual_weights, weights[entity])
+        assert total == weighted_sums[variable]
+    assert any(
+        np.any(expected[True][name][1] != expected[False][name][1])
+        for name in TOB_VARIABLES
+    ), "The reform must change TOB on the fixture"
+    return expected
+
+
+def _chunk_directories():
+    return set(Path(tempfile.gettempdir()).glob("policyengine-us-chunk-*"))
+
+
+@pytest.mark.parametrize("n_chunks", [1, 2, 3, 7])
+def test_variable_centric_file_is_elementwise_exact(
+    n_chunks, chunking_dataset, variable_centric_path, variable_centric_reference
+):
+    before = _chunk_directories()
+    paths = []
+    with h5py.File(variable_centric_path, "r") as file:
+        source_roles = file[f"person_household_role/{YEAR}"][()]
+
+    def factory(path):
+        assert isinstance(path, str) and Path(path).name == "population.h5"
+        assert all(not Path(previous).exists() for previous in paths)
+        assert _chunk_directories() - before == {Path(path).parent}
+        with h5py.File(path, "r") as chunk:
+            assert "not_a_policyengine_variable" not in chunk
+            roles = chunk[f"person_household_role/{YEAR}"]
+            assert roles.dtype == source_roles.dtype == np.dtype("S6")
+            people = len(chunk[f"person_id/{YEAR}"])
+            np.testing.assert_array_equal(roles[()], source_roles[:people])
+        paths.append(path)
+        return Microsimulation(dataset=path)
+
+    result = calculate_chunked(
+        factory, TOB_VARIABLES, YEAR, n_chunks, dataset=variable_centric_path
+    )
+    _assert_snapshot_matches(
+        result, chunking_dataset, variable_centric_reference[False]
+    )
+    assert len(paths) == n_chunks
+    assert not any(Path(path).exists() for path in paths)
+    assert _chunk_directories() == before
+
+
+def test_variable_centric_file_is_exact_under_reform(
+    chunking_dataset, variable_centric_path, variable_centric_reference
+):
+    reform = _parameter_reform()
+    result = calculate_chunked(
+        lambda path: Microsimulation(dataset=path, reform=reform),
+        TOB_VARIABLES,
+        YEAR,
+        3,
+        dataset=variable_centric_path,
+    )
+    _assert_snapshot_matches(result, chunking_dataset, variable_centric_reference[True])
+
+
+def _deepest_stack(calculation):
+    depth = 0
+    deepest = 0
+
+    def profile(frame, event, arg):
+        nonlocal depth, deepest
+        if event == "call":
+            depth += 1
+            deepest = max(deepest, depth)
+        elif event == "return":
+            depth -= 1
+
+    sys.setprofile(profile)
+    try:
+        calculation()
+    finally:
+        sys.setprofile(None)
+    return deepest
+
+
+def test_guard_adds_no_frames_per_dependency(chunking_dataset):
+    # One household, as in one chunk. A guard on calculate or _calculate adds
+    # frames to every variable in the chain; the period-check hook adds them
+    # only while it runs, before any dependency starts.
+    households = chunking_dataset.household.household_id.iloc[:1]
+    people = chunking_dataset.person.person_household_id.isin(households)
+    tables = {"person": chunking_dataset.person[people], "household": None}
+    tables["household"] = chunking_dataset.household[
+        chunking_dataset.household.household_id.isin(households)
+    ]
+    for entity in US_ENTITIES:
+        if entity not in tables:
+            table = getattr(chunking_dataset, entity)
+            members = tables["person"][f"person_{entity}_id"]
+            tables[entity] = table[table[f"{entity}_id"].isin(members)]
+    one_household = USSingleYearDataset(**tables, time_period=YEAR)
+    depths = {}
+    for guarded in (False, True):
+        simulation = make_simulation(one_household)
+        if guarded:
+            _guard(simulation)
+        else:
+            simulation.drop_computed_arrays()
+            simulation.macro_cache_read = simulation.macro_cache_write = False
+        depths[guarded] = _deepest_stack(
+            lambda: simulation.calculate("income_tax", YEAR)
+        )
+        _release_reference_simulation(simulation)
+        del simulation
+        gc.collect()
+    # The chain is long: each variable costs several frames.
+    assert depths[False] > 300
+    assert 0 <= depths[True] - depths[False] <= 3, depths

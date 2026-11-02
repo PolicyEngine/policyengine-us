@@ -25,10 +25,25 @@ The factory owns reforms and simulation options. It must return a fresh
 PolicyEngine-US Microsimulation with the supplied population and row order.
 The explicit `dataset=` keyword supplies the source without first constructing
 a full-population simulation. Supported sources are `USSingleYearDataset`,
-`USMultiYearDataset`, and local or Hugging Face entity-table HDFStore files.
-Legacy variable-array and flat-file datasets must first be converted to the US
-entity-table schema. All six entity tables and person membership links are
-required. Input data is not modified.
+`USMultiYearDataset`, local or Hugging Face entity-table HDFStore files, and
+local or Hugging Face variable-centric `.h5` files: top-level groups named for
+variables, each holding one array per period (`<variable>/<period>`), as
+population projection files store them and as `Microsimulation(dataset=path)`
+loads them through Core. Flat files are not supported. All six entity ID
+arrays and person membership links are required. Input data is not modified.
+
+For entity tables the factory receives a dataset object of the source's type.
+For a variable-centric file it receives a `str` path to a temporary `.h5` file
+in the same layout, with the source file's name, every stored period and each
+array's dtype, fixed-width byte strings included, so the factory can call
+`Microsimulation(dataset=path)`. The source arrays stay on disk and are read
+again for each chunk. Each array is assigned to the entity of its variable in
+the country system; arrays whose length differs from that entity's count are
+rejected, and names that match no variable are left out, as Core's loader
+ignores them. Membership role arrays (`person_<group>_role`), which Core also
+reads, are kept with the people. Entity IDs and memberships must be identical
+in every stored period. Only one chunk file exists at once; it is deleted after
+its chunk, also when the factory or a calculation fails.
 
 Each output DataFrame contains `<entity>_id`, `weight`, and requested variable
 columns, with exactly the source entity order. `weight` is the weight used by
@@ -53,22 +68,37 @@ Optional `household_chunks` provides arbitrary integer labels in
 partitions are skipped, including when chunks outnumber households.
 
 Exact calculation additionally requires every dependency to be local to a
-household. The current model has two Medicaid state reductions,
-`medicaid_slcsp_state_average_cost_index` and `medicaid_slcsp_state_denominator`.
-The helper rejects these at calculation time, including indirect dependencies
-and branches. Known Medicaid claiming-tax-unit links crossing households are
-also rejected. The model audit found no other population ranking, quantile or
-stochastic formula reductions. Custom reform formulas remain the caller's
-responsibility: cross-household reductions, order-dependent random draws and
-other global dependencies are unsupported. These are calculation restrictions,
-not an assumption that every model variable can be chunked.
+household. The current model has four formulas that reduce across every unit
+in the simulation: the Medicaid state reductions
+`medicaid_slcsp_state_average_cost_index` and `medicaid_slcsp_state_denominator`,
+and the rankers `household_income_decile` and `spm_unit_income_decile`, which
+call `MicroSeries.decile_rank` and would rank within the chunk. The helper
+rejects these at calculation time, including indirect dependencies such as
+`income_decile`, branches and reform baselines. The check runs in Core's
+period-consistency hook, just before a formula would run, so it adds no frames
+to a dependency chain; a chunked chain reaches the recursion limit when the
+whole-file chain does. A guarded variable with a stored value returns that
+value, because no formula reduces across the chunk. Known Medicaid
+claiming-tax-unit links crossing households are also rejected. The SSI spouse
+pairing also tests whether the whole simulation holds a single marital unit, so
+a chunk with exactly one marital unit can differ from the whole file; this is
+not guarded. Custom reform formulas remain the caller's responsibility:
+cross-household reductions, order-dependent random draws and other global
+dependencies are unsupported. These are calculation restrictions, not an
+assumption that every model variable can be chunked.
 
 The tests compare a full 32-household, five-state fixture with one, two, three
 and seven chunks, plus random household assignments. They compare every entity
 value and weighted sum, check source order and unchanged input frames, and use
 weak references to check simulation release. The fixture includes households
-with multiple tax and SPM units and Social Security recipients. Independent
-pre-change TOB branch calculations protect the statutory signed allocation.
+with multiple tax and SPM units and Social Security recipients. The same
+households written as a variable-centric file are compared with an unchunked
+`Microsimulation` on that file for one, two, three and seven chunks and under a
+parameter reform, and with the entity-table route. Real simulations check the
+guard on direct, dependency, branch, baseline and cross-period routes, and a
+frame-depth test checks that guarding adds at most three frames to the deepest
+stack. Independent pre-change TOB branch calculations protect the statutory
+signed allocation.
 
 ## TOB working memory
 

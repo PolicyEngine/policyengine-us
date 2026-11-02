@@ -5,6 +5,9 @@ from functools import lru_cache
 import gc
 from numbers import Integral
 from pathlib import Path
+import shutil
+import tempfile
+from types import SimpleNamespace
 
 import numpy as np
 import pandas as pd
@@ -16,30 +19,38 @@ from policyengine_us.data.dataset_schema import (
 )
 
 
-# These formulas reduce across the population, rather than within a household.
-# Guard at calculation time so parameter-selected and reform dependencies are
-# covered too, including calculations made in branches.
+# These formulas reduce or rank across every unit in the simulation, rather
+# than within a household: the Medicaid state aggregates sum by state, and the
+# income deciles rank with MicroSeries.decile_rank. Guard at calculation time
+# so parameter-selected and reform dependencies are covered too, including
+# calculations made in branches, and readers such as income_decile.
 _POPULATION_AGGREGATES = frozenset(
-    ("medicaid_slcsp_state_average_cost_index", "medicaid_slcsp_state_denominator")
+    (
+        "medicaid_slcsp_state_average_cost_index",
+        "medicaid_slcsp_state_denominator",
+        "household_income_decile",
+        "spm_unit_income_decile",
+    )
 )
 
 
 class _HouseholdLocalCalculations:
-    @staticmethod
-    def _check_household_local(variable_name):
-        if variable_name in _POPULATION_AGGREGATES:
+    """Reject population aggregates just before their formula would run.
+
+    Core's ``Simulation._calculate`` calls ``_check_period_consistency`` after
+    the stored-value lookups and before the formula, once per formula
+    evaluation, and the check returns before any dependency starts. Hooking it
+    adds no frames to the dependency chain, unlike overriding ``calculate``.
+    A stored value is returned without the check: no formula reduces then.
+    """
+
+    def _check_period_consistency(self, period, variable):
+        if variable.name in _POPULATION_AGGREGATES:
             raise ValueError(
-                f"Cannot calculate {variable_name} in household chunks: "
+                f"Cannot calculate {variable.name} in household chunks: "
                 "it aggregates across households. Calculate it on the full dataset."
             )
-
-    def calculate(self, variable_name, *args, **kwargs):
-        self._check_household_local(variable_name)
-        return super().calculate(variable_name, *args, **kwargs)
-
-    def _calculate(self, variable_name, period=None):
-        self._check_household_local(variable_name)
-        return super()._calculate(variable_name, period)
+        return super()._check_period_consistency(period, variable)
 
 
 @lru_cache(maxsize=None)
@@ -113,10 +124,16 @@ class ChunkedCalculation:
 
 
 def _load_dataset(dataset):
+    """Return an entity-table dataset, or a variable-centric file source."""
     if isinstance(dataset, (str, Path)):
-        from policyengine_us.system import _resolve_dataset_path
+        from policyengine_us.system import (
+            _is_hdfstore_format,
+            _resolve_dataset_path,
+        )
 
         path = _resolve_dataset_path(str(dataset))
+        if not _is_hdfstore_format(path):
+            return _VariableCentricFile(path)
         with pd.HDFStore(path, mode="r") as store:
             multi_year = any(key.startswith("/person/") for key in store.keys())
         dataset = (
@@ -127,7 +144,7 @@ def _load_dataset(dataset):
     if not isinstance(dataset, (USSingleYearDataset, USMultiYearDataset)):
         raise TypeError(
             "dataset must be a USSingleYearDataset, USMultiYearDataset, "
-            "or entity-table HDFStore path/URL."
+            "or an entity-table HDFStore or variable-centric h5 path/URL."
         )
     return dataset
 
@@ -183,6 +200,202 @@ def _household_positions(dataset):
     return positions
 
 
+class _EntityTables:
+    """Entity-table datasets: chunks are dataset objects of the same type."""
+
+    def __init__(self, dataset):
+        self.dataset = dataset
+        self.years = (
+            list(dataset.datasets.values())
+            if isinstance(dataset, USMultiYearDataset)
+            else [dataset]
+        )
+        source = self.years[0]
+        self.positions = _household_positions(source)
+        self.household_count = len(source.household)
+        if not self.household_count:
+            raise ValueError("dataset must contain at least one household.")
+        for year in self.years[1:]:
+            _household_positions(year)
+            for entity in US_ENTITIES:
+                columns = [f"{entity}_id"]
+                if entity == "person":
+                    columns += [
+                        f"person_{group}_id"
+                        for group in US_ENTITIES
+                        if group != "person"
+                    ]
+                if (
+                    not getattr(source, entity)[columns]
+                    .reset_index(drop=True)
+                    .equals(getattr(year, entity)[columns].reset_index(drop=True))
+                ):
+                    raise ValueError(
+                        "Entity IDs and memberships must be identical across years."
+                    )
+
+    def ids(self, entity):
+        return getattr(self.years[0], entity)[f"{entity}_id"].to_numpy()
+
+    def chunk(self, masks):
+        subsets = [
+            USSingleYearDataset(
+                **{
+                    entity: getattr(year, entity)
+                    .iloc[np.flatnonzero(masks[entity])]
+                    .copy()
+                    for entity in US_ENTITIES
+                },
+                time_period=int(year.time_period),
+            )
+            for year in self.years
+        ]
+        return (
+            USMultiYearDataset(datasets=subsets)
+            if isinstance(self.dataset, USMultiYearDataset)
+            else subsets[0]
+        )
+
+    def release(self, chunk):
+        pass
+
+
+_GROUPS = tuple(entity for entity in US_ENTITIES if entity != "person")
+# Core reads these from the first stored period as the population structure.
+_STRUCTURE = tuple(f"{entity}_id" for entity in US_ENTITIES) + tuple(
+    f"person_{group}_id" for group in _GROUPS
+)
+# Core's loader also reads membership roles, which are not variables.
+_ROLES = frozenset(f"person_{group}_role" for group in _GROUPS) | {"role"}
+
+
+class _VariableCentricFile:
+    """An h5py file of ``<variable>/<period>`` arrays, as Core loads it.
+
+    Arrays stay on disk. Each chunk is written to a temporary file in the same
+    layout, under the source file's name, and is deleted after its simulation.
+    """
+
+    def __init__(self, path):
+        import h5py
+
+        from policyengine_us.system import system
+
+        self.path = Path(path)
+        if self.path.suffix != ".h5":
+            # Core loads a file without the .h5 suffix as a CSV flat file.
+            raise ValueError(
+                f"{self.path} is not an entity-table HDFStore or a "
+                "variable-centric .h5 file. Flat-file datasets are not "
+                "supported; convert them to one of those layouts."
+            )
+        self.arrays = {}
+        with h5py.File(self.path, "r") as file:
+            names = list(file.keys())
+            if not names or isinstance(file[names[0]], h5py.Dataset):
+                raise ValueError(
+                    f"{self.path} does not use the variable-centric "
+                    "<variable>/<period> layout; only that layout and entity "
+                    "tables are supported."
+                )
+            for name in names:
+                if name in _ROLES:
+                    entity = "person"
+                elif name in system.variables:
+                    entity = system.variables[name].entity.key
+                else:
+                    # Core's loader ignores names that match no variable.
+                    continue
+                if not isinstance(file[name], h5py.Group):
+                    raise ValueError(f"{name} must be a group of one array per period.")
+                self.arrays[name] = (entity, list(file[name].keys()))
+            # A group with no periods holds no array for Core to read.
+            missing = [
+                name
+                for name in _STRUCTURE
+                if name not in self.arrays or not self.arrays[name][1]
+            ]
+            if missing:
+                raise ValueError(
+                    f"Missing {', '.join(missing)}; every entity ID and person "
+                    "membership array is required."
+                )
+            self.counts = {
+                entity: file[f"{entity}_id"][self.arrays[f"{entity}_id"][1][0]].shape[0]
+                for entity in US_ENTITIES
+            }
+            for name, (entity, stored_periods) in self.arrays.items():
+                for period in stored_periods:
+                    shape = file[name][period].shape
+                    if shape != (self.counts[entity],):
+                        raise ValueError(
+                            f"{name}/{period} has shape {shape}, but {entity} "
+                            f"has {self.counts[entity]} rows."
+                        )
+            structure = {}
+            for name in _STRUCTURE:
+                stored_periods = self.arrays[name][1]
+                first = file[name][stored_periods[0]][()]
+                for period in stored_periods[1:]:
+                    if not np.array_equal(file[name][period][()], first):
+                        raise ValueError(
+                            "Entity IDs and memberships must be identical "
+                            "across stored periods."
+                        )
+                structure[name] = first
+            claimants = [None]
+            if "medicaid_claiming_tax_unit_id" in self.arrays:
+                group = file["medicaid_claiming_tax_unit_id"]
+                claimants = [
+                    group[period][()]
+                    for period in self.arrays["medicaid_claiming_tax_unit_id"][1]
+                ]
+        self.structure = structure
+        for claimant in claimants:
+            self.positions = _household_positions(self._tables(claimant))
+        self.household_count = self.counts["household"]
+        if not self.household_count:
+            raise ValueError("dataset must contain at least one household.")
+
+    def _tables(self, claimant):
+        tables = {
+            entity: pd.DataFrame({f"{entity}_id": self.structure[f"{entity}_id"]})
+            for entity in _GROUPS
+        }
+        person = {"person_id": self.structure["person_id"]}
+        for group in _GROUPS:
+            person[f"person_{group}_id"] = self.structure[f"person_{group}_id"]
+        if claimant is not None:
+            person["medicaid_claiming_tax_unit_id"] = claimant
+        tables["person"] = pd.DataFrame(person)
+        return SimpleNamespace(**tables)
+
+    def ids(self, entity):
+        return self.structure[f"{entity}_id"]
+
+    def chunk(self, masks):
+        import h5py
+
+        directory = Path(tempfile.mkdtemp(prefix="policyengine-us-chunk-"))
+        try:
+            path = directory / self.path.name
+            with h5py.File(self.path, "r") as source, h5py.File(path, "w") as chunk:
+                for name, (entity, stored_periods) in self.arrays.items():
+                    group = chunk.create_group(name)
+                    for period in stored_periods:
+                        array = source[name][period]
+                        group.create_dataset(
+                            period, data=array[()][masks[entity]], dtype=array.dtype
+                        )
+        except BaseException:
+            shutil.rmtree(directory, ignore_errors=True)
+            raise
+        return str(path)
+
+    def release(self, chunk):
+        shutil.rmtree(Path(chunk).parent, ignore_errors=True)
+
+
 def calculate_chunked(
     sim_factory,
     variables,
@@ -196,9 +409,19 @@ def calculate_chunked(
 
     ``sim_factory(dataset)`` must return a fresh PolicyEngine-US Microsimulation
     and preserve its dataset's population/order. It controls reforms and other
-    simulation options. ``dataset`` accepts US entity-table dataset objects or
-    HDFStore paths/URLs. All six entity tables and membership links are required.
-    All years are retained; IDs and memberships must be constant across years.
+    simulation options. ``dataset`` accepts US entity-table dataset objects,
+    entity-table HDFStore paths/URLs, and variable-centric h5 paths/URLs: files
+    of ``<variable>/<period>`` arrays, as population projection files store
+    them. All six entity ID arrays and membership links are required. All years
+    are retained; IDs and memberships must be constant across years.
+
+    For entity tables the factory receives a dataset object of the source's
+    type. For a variable-centric file it receives ``str`` path to a temporary
+    file in the same layout, holding every stored period with its dtype under
+    the source file's name, for ``Microsimulation(dataset=path)``. Names that
+    match no variable are left out, as Core's loader ignores them. Only one
+    chunk file exists at once; it is deleted after its chunk, on failure too.
+    Flat files are not supported.
 
     By default households are split into balanced consecutive chunks. Optional
     ``household_chunks`` supplies one integer in ``[0, n_chunks)`` per source
@@ -211,9 +434,11 @@ def calculate_chunked(
     Input weights are never rescaled. Only one chunk simulation is live at once.
 
     This is exact for household-local calculations. Known Medicaid state
-    aggregates and external claiming-tax-unit links are rejected. Custom reform
-    formulas must also be household-local: population reductions, ranking and
-    random draws depending on population order are not supported.
+    aggregates, the household and SPM unit income deciles, and external
+    claiming-tax-unit links are rejected. A rejected variable with a stored
+    value returns that value, since no formula runs. Custom reform formulas
+    must also be household-local: population reductions, ranking and random
+    draws depending on population order are not supported.
     """
     if isinstance(n_chunks, bool) or not isinstance(n_chunks, Integral) or n_chunks < 1:
         raise ValueError("n_chunks must be a positive integer.")
@@ -223,33 +448,12 @@ def calculate_chunked(
     if "weight" in variables:
         raise ValueError("weight is reserved for the returned simulation weights.")
     dataset = _load_dataset(dataset)
-    years = (
-        list(dataset.datasets.values())
-        if isinstance(dataset, USMultiYearDataset)
-        else [dataset]
+    source = (
+        dataset if isinstance(dataset, _VariableCentricFile) else _EntityTables(dataset)
     )
-    source = years[0]
-    positions = _household_positions(source)
-    if not len(source.household):
-        raise ValueError("dataset must contain at least one household.")
-    for year in years[1:]:
-        _household_positions(year)
-        for entity in US_ENTITIES:
-            columns = [f"{entity}_id"]
-            if entity == "person":
-                columns += [
-                    f"person_{group}_id" for group in US_ENTITIES if group != "person"
-                ]
-            if (
-                not getattr(source, entity)[columns]
-                .reset_index(drop=True)
-                .equals(getattr(year, entity)[columns].reset_index(drop=True))
-            ):
-                raise ValueError(
-                    "Entity IDs and memberships must be identical across years."
-                )
+    positions = source.positions
     if household_chunks is None:
-        assignments = np.empty(len(source.household), dtype=int)
+        assignments = np.empty(source.household_count, dtype=int)
         for chunk, indices in enumerate(
             np.array_split(np.arange(len(assignments)), min(n_chunks, len(assignments)))
         ):
@@ -257,7 +461,7 @@ def calculate_chunked(
     else:
         assignments = np.asarray(household_chunks)
         if (
-            assignments.shape != (len(source.household),)
+            assignments.shape != (source.household_count,)
             or not np.issubdtype(assignments.dtype, np.integer)
             or (assignments < 0).any()
             or (assignments >= n_chunks).any()
@@ -272,25 +476,10 @@ def calculate_chunked(
         masks = {
             entity: assignments[owners] == chunk for entity, owners in positions.items()
         }
-        subsets = [
-            USSingleYearDataset(
-                **{
-                    entity: getattr(year, entity)
-                    .iloc[np.flatnonzero(masks[entity])]
-                    .copy()
-                    for entity in US_ENTITIES
-                },
-                time_period=int(year.time_period),
-            )
-            for year in years
-        ]
-        chunk_dataset = (
-            USMultiYearDataset(datasets=subsets)
-            if isinstance(dataset, USMultiYearDataset)
-            else subsets[0]
-        )
+        chunk_dataset = None
         simulation = None
         try:
+            chunk_dataset = source.chunk(masks)
             simulation = sim_factory(chunk_dataset)
             _guard(simulation)
             for name in variables:
@@ -302,7 +491,7 @@ def calculate_chunked(
                         "sim_factory must use the same variable entities in every chunk."
                     )
                 variable_entities[name] = entity
-                original_ids = getattr(source, entity)[f"{entity}_id"].to_numpy()
+                original_ids = source.ids(entity)
                 if not np.array_equal(
                     simulation.populations[entity].ids, original_ids[masks[entity]]
                 ):
@@ -347,8 +536,11 @@ def calculate_chunked(
             if simulation is not None:
                 _detach_simulation_links(simulation)
             del simulation
-            del chunk_dataset, subsets
             gc.collect()
+            if chunk_dataset is not None:
+                # After collection, so no simulation still reads a chunk file.
+                source.release(chunk_dataset)
+            del chunk_dataset
     sums = {
         name: float((tables[entity][name] * tables[entity]["weight"]).sum())
         for name, entity in variable_entities.items()
