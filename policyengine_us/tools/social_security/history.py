@@ -185,17 +185,33 @@ def _parameter(path, year, name, *, positive=False):
     return value
 
 
+# 42 U.S.C. 415(a)(4)(B)(i) keeps the December 1978 computation, when larger,
+# for a worker with pre-1979 earnings who becomes eligible before 1984. This
+# route computes only the wage-indexed formula of 415(a)(1), so it starts at
+# eligibility year 1984.
+EARLIEST_HISTORY_ELIGIBILITY_YEAR = 1984
+EARLY_BENCHMARK_MESSAGE = (
+    "Computation benchmarks before 1984 are unsupported: 42 U.S.C. "
+    "415(a)(4)(B)(i) keeps the December 1978 computation, when larger, for "
+    "workers eligible before 1984"
+)
+
+
+def _check_supported_eligibility(eligibility_year):
+    if eligibility_year < EARLIEST_HISTORY_ELIGIBILITY_YEAR:
+        raise ValueError(EARLY_BENCHMARK_MESSAGE)
+
+
 def computation_years(eligibility_year):
     """Retirement computation years for age-62 eligibility year E.
 
     42 U.S.C. 415(b)(2): elapsed years run from 1951 (or the year after age
     21, if later) through the year before eligibility, and the computation
     period is elapsed years less five, at least two. For age-62 eligibility
-    from 1983, the supported range, that is min(35, E - 1956): 27 years in
-    1983, 34 in 1990 and 35 from 1991.
+    from 1984, the supported range, that is min(35, E - 1956): 28 years in
+    1984, 34 in 1990 and 35 from 1991.
     """
-    if _year(eligibility_year) < 1983:
-        raise ValueError("Computation benchmarks before 1983 are unsupported")
+    _check_supported_eligibility(_year(eligibility_year))
     return min(35, eligibility_year - 1956)
 
 
@@ -269,8 +285,7 @@ def compute_history(
 ):
     """Compute a complete career, including earnings after 62 through Q-1."""
     eligibility = _year(eligibility_year)
-    if eligibility < 1983:
-        raise ValueError("Computation benchmarks before 1983 are unsupported")
+    _check_supported_eligibility(eligibility)
     if claim_year < eligibility:
         raise ValueError("Claim year cannot precede eligibility")
     records = history.through_claim(claim_year, birth_year)
@@ -431,6 +446,7 @@ def history_pia_details(
     payment_year=None,
     recompute_mode="cohort",
 ):
+    _check_supported_eligibility(_year(calculation.eligibility_year))
     conventional = compute_pia(
         calculation.aime,
         calculation.eligibility_year,

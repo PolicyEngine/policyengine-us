@@ -70,9 +70,21 @@ assertion about this synthetic worker's earlier earnings:
 The calculator also requires the existing own-record fields: worker ID, exact
 birth date, age-62 eligibility year, first entitlement month, insured-status
 assertion, and assertions about unsupported special earnings tests and prior
-withholding adjustments. The supported eligibility benchmark begins in 1983.
+withholding adjustments. The supported eligibility benchmark begins in 1984.
 Earnings can precede that benchmark, beginning in 1951 or the worker's birth
 year, whichever is later; annual inactive-policy defaults cover those years.
+
+The route computes only the wage-indexed formula of
+[42 U.S.C. 415(a)(1)](https://www.law.cornell.edu/uscode/text/42/415). For a
+worker with covered earnings before 1979 who becomes eligible before 1984,
+415(a)(4)(B)(i) keeps the computation under the subsection as in effect in
+December 1978 when that amount is larger. The route cannot compute that
+amount, so it refuses eligibility years before 1984. Section 415(a)(4)(B)(ii)
+likewise keeps the subsection (d) computation when it is larger; subsection (d)
+computes the 1939 Act primary insurance benefit, which counts wages before
+1951. Annual records begin in 1951, so the route cannot take those wages or
+compute that amount, and it assumes the worker had no covered wages before
+1951.
 
 ## Conventional AIME and the shared benefit pipeline
 
@@ -84,10 +96,10 @@ For eligibility year E and initial claim year Q:
 3. For a year y before E−2, multiply by `NAWI(E−2) / NAWI(y)` and round to
    cents, with half cents rounded upward. Earnings in E−2 and later remain at
    face value.
-4. Select the cohort's computation years: `min(35, E − 1956)`, so 27 years
-   for E = 1983, 34 for E = 1990 and 35 from E = 1991. Select that many
+4. Select the cohort's computation years: `min(35, E − 1956)`, so 28 years
+   for E = 1984, 34 for E = 1990 and 35 from E = 1991. Select that many
    highest annual indexed amounts, pad with certified zeros, divide by that
-   count times 12 (324, 408 or 420 months in those examples), and floor to a
+   count times 12 (336, 408 or 420 months in those examples), and floor to a
    whole monthly dollar.
 5. Call the same eligibility-year `compute_pia` service used by supplied AIME.
 
@@ -219,7 +231,7 @@ population payroll-tax variables.
 **Modeling convention: cohort-selected donut coefficient.** For a custom
 changing path, annual tax/coverage settings determine the extra earnings
 stream, and the PIA credit coefficient is read at eligibility E, as benefit
-formulas select by cohort. The named E2.13 and E2.14 variants carry a
+formulas select by cohort. The named E2.13 and E2.14 variants (2025 Trustees Report edition) carry a
 constant 2%, so this only moves a custom path that varies. For example, AIME+
 $240 at 2% against 3% gives $4.80 against $7.20; with a $2,180 baseline PIA
 and claiming at 65, payment is $1,893 against $1,895. Pure callers whose

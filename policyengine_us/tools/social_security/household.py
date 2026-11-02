@@ -14,6 +14,8 @@ from fractions import Fraction
 from typing import Mapping
 
 from .history import (
+    EARLIEST_HISTORY_ELIGIBILITY_YEAR,
+    EARLY_BENCHMARK_MESSAGE,
     EarningsHistory,
     HistoryCalculation,
     HistoryParameters,
@@ -262,6 +264,8 @@ class SuppliedRecord:
             )
         if year < 1983:
             raise ValueError("Computation benchmarks before 1983 are unsupported")
+        if self.source == "history" and year < EARLIEST_HISTORY_ELIGIBILITY_YEAR:
+            raise ValueError(EARLY_BENCHMARK_MESSAGE)
         # RS 00201.001: the worker must be 62 throughout the first reduced
         # entitlement month. Birthdays on day 1 or 2 permit the birth month.
         earliest = year * 12 + self.birth_date.month - 1

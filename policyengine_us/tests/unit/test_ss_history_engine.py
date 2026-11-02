@@ -277,7 +277,8 @@ def test_all_three_reforms_reconcile_hand_computed_history_in_real_engine():
     ] == pytest.approx(float(Decimal("77097.6") / 37))
     ledger = json.loads(simulation.calculate("ss_calculated_history_ledger", 2039)[0])
     assert ledger["eligibility_pia"] == "2088.5"
-    # E2.13's coefficient, selected at eligibility 2036; January 2039 formula.
+    # E2.13's coefficient (2025 Trustees Report edition), selected at
+    # eligibility 2036; January 2039 formula.
     assert ledger["donut_credit_rate"] == "0.02"
     assert ledger["donut_credit_rate_year"] == 2036
     assert ledger["diagnostic_pia_entitlement_month"] == "2039-01"

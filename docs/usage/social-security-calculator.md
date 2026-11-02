@@ -182,6 +182,9 @@ text](https://www.congress.gov/bill/119th-congress/senate-bill/770/text).
 supplied AIME, recovered AIME and annual history callers. Its inputs explicitly
 separate initial eligibility, formula path, scoring/payment year and cohort vs
 retroactive applicability. All computations and inverses require E >= 1983.
+The annual history route requires E >= 1984, because 42 U.S.C.
+415(a)(4)(B)(i) keeps the December 1978 computation, when larger, for workers
+eligible before 1984; see [annual histories](../contributed_reforms/social_security_history.md).
 Historical bends back to 1979 are separate parameters, preserving legacy scale
 values. Future bends use the model's existing wage-indexed projections.
 

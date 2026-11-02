@@ -26,6 +26,7 @@ from policyengine_us.tools.social_security.history import (
     compute_history,
     compute_history_pia,
     computation_years,
+    history_pia_details,
 )
 from policyengine_us.tools.social_security.household import (
     SuppliedRecord,
@@ -119,7 +120,9 @@ def test_top35_padding_and_whole_dollar_truncation():
 # --- Cohort computation years (42 U.S.C. 415(b)(2)) -------------------------
 # Elapsed years run from 1951 through the year before age-62 eligibility E,
 # and the computation period is elapsed years less five (POMS RS 00605.016
-# and RS 00605.017): min(35, E - 1956) for the supported benchmarks from 1983.
+# and RS 00605.017): min(35, E - 1956) for the supported benchmarks from 1984.
+# 42 U.S.C. 415(a)(4)(B)(i) keeps the December 1978 computation, when larger,
+# for workers eligible before 1984, so the history route refuses E <= 1983.
 
 SSA_PARAMETERS = Path(__file__).parents[2] / "parameters" / "gov" / "ssa"
 
@@ -169,12 +172,13 @@ def _flat_career(wages, first=1951, last=None, zeros=()):
 
 
 def test_computation_years_follow_the_elapsed_years_rule():
-    assert computation_years(1983) == 27
+    assert computation_years(1984) == 28
     assert computation_years(1990) == 34
     assert computation_years(1991) == 35
     assert computation_years(2036) == 35
-    with pytest.raises(ValueError, match="before 1983"):
-        computation_years(1982)
+    for year in (1983, 1982):
+        with pytest.raises(ValueError, match=r"before 1984.*415\(a\)\(4\)\(B\)\(i\)"):
+            computation_years(year)
 
 
 def test_1990_witness_selects_34_years_and_divides_by_408(ssa_parameters):
@@ -225,9 +229,10 @@ def test_1990_witness_selects_34_years_and_divides_by_408(ssa_parameters):
 @pytest.mark.parametrize(
     "eligibility,years,top_sum,aime,pia",
     [
-        # 1983: NAWI(1981) 13,773.10; sum/324 = 751.29; bends 254 / 1,528:
-        # 228.60 + .32 x 497 = 387.64 -> $387.60.
-        (1983, 27, "243418.77", 751, "387.6"),
+        # 1984: NAWI(1982) 14,531.34 indexes 1951-1981; the highest 28 are
+        # 1951-1978 (1979-1983 drop). Sum/336 = 776.63; bends 267 / 1,612:
+        # 240.30 + .32 x 509 = 403.18 -> $403.10.
+        (1984, 28, "260949.26", 776, "403.1"),
         # 1990: the witness above.
         (1990, 34, "372486.21", 912, "498.3"),
         # 1991: NAWI(1989) 20,099.55; sum/420 = 930.52; bends 370 / 2,230:
@@ -235,7 +240,7 @@ def test_1990_witness_selects_34_years_and_divides_by_408(ssa_parameters):
         (1991, 35, "390818.79", 930, "512.2"),
     ],
 )
-def test_cohort_boundaries_select_27_34_and_35_years(
+def test_cohort_boundaries_select_28_34_and_35_years(
     ssa_parameters, eligibility, years, top_sum, aime, pia
 ):
     career = _flat_career(3000, last=eligibility - 1)
@@ -400,9 +405,38 @@ def test_duplicate_year_unknown_field_and_missing_se_rejected():
             EarningsHistory.from_json(payload)
 
 
-def test_benchmarks_before1983_and_uninsured_history_rejected():
-    with pytest.raises(ValueError, match="before 1983"):
-        compute_history(fixture(), 1982, 2039, parameters())
+EARLY = r"before 1984.*415\(a\)\(4\)\(B\)\(i\)"
+
+
+@pytest.mark.parametrize("eligibility", [1983, 1982])
+def test_benchmarks_before1984_rejected_at_each_history_entry_point(eligibility):
+    birth = date(eligibility - 62, 1, 2)
+    with pytest.raises(ValueError, match=EARLY):
+        computation_years(eligibility)
+    with pytest.raises(ValueError, match=EARLY):
+        compute_history(fixture(), eligibility, 2039, parameters())
+    record = replace(
+        worker(history=fixture(), history_parameters=parameters()),
+        birth_date=birth,
+        entitlement_month=f"{eligibility}-02",
+        eligibility_year=eligibility,
+    )
+    # E = 1982 meets the shared 1983 refusal first; E = 1983 meets the
+    # history route's own 1984 refusal.
+    with pytest.raises(ValueError, match=EARLY if eligibility == 1983 else "1983"):
+        record.benchmark()
+    if eligibility == 1983:
+        # Supplied AIME and PIA sources keep their own 1983 start.
+        assert replace(record, source="aime", aime=1000).benchmark() == 1983
+    early = replace(
+        compute_history(fixture(), 2036, 2039, parameters()),
+        eligibility_year=eligibility,
+    )
+    with pytest.raises(ValueError, match=EARLY):
+        history_pia_details(early, bend_points=(254, 1528))
+
+
+def test_uninsured_history_rejected():
     with pytest.raises(ValueError, match="insured-status"):
         replace(worker(), insured=False).benchmark()
 
