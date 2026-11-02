@@ -1,3 +1,10 @@
+## [2.91.1] - 2026-11-02
+
+### Fixed
+
+- Count the own income of aged, blind, or disabled people who fail SSI's noncitizen test in SSI-methodology countable income, so Medicaid's optional aged, blind, and disabled and medically needy income tests, CAPI, and other programs no longer treat it as zero; the California state supplement no longer counts the income of a member who fails SSI's noncitizen test unless that member is in an SSI couple computation, and Maryland PAA no longer deems spouse income to people SSI bars by alien status and imputes to them only the SSI that SSA pays when they report SSI receipt, with the one-third reduction on the couple rate under deeming.
+
+
 ## [2.91.0] - 2026-11-02
 
 ### Added
