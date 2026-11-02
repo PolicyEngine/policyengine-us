@@ -353,6 +353,60 @@
     # MAGI = 50_000 + (20_000 - 5_000) = 65_000
     watca_alternative_tax_magi: 65_000
 
+- name: A dependent's Social Security stays out of the alternative tax MAGI
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    people:
+      parent:
+        age: 45
+        employment_income: 50_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        social_security_survivors: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    # Section 1A(d) adds the taxpayer's own nontaxable benefits. The child's
+    # 10_000 is the child's, on the child's own return, so MAGI is the
+    # parent's AGI: 50_000, not 60_000.
+    tax_exempt_social_security: 10_000
+    filer_tax_exempt_social_security: 0
+    watca_alternative_tax_magi: 50_000
+
+- name: A dependent's Social Security does not cost the filer eligibility
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    people:
+      parent:
+        age: 67
+        employment_income: 100_000
+        social_security_retirement: 12_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        social_security_dependents: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    # Combined income 100_000 + 12_000 / 2 = 106_000 is above the $34,000
+    # adjusted base amount, so the taxable part is the 85% cap: 10_200.
+    # AGI = 110_200 and the parent's nontaxable benefits are 1_800.
+    adjusted_gross_income: 110_200
+    filer_tax_exempt_social_security: 1_800
+    # MAGI = 110_200 + 1_800 = 112_000, below the 64_400 * 1.75 = 112_700
+    # head of household limit. Adding the child's 10_000 would give 122_000.
+    watca_alternative_tax_magi: 112_000
+    watca_alternative_tax_eligible: true
+
 - name: Alternative tax MAGI includes specified possession income
   period: 2026
   reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object

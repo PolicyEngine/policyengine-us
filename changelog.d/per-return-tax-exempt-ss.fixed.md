@@ -1,0 +1,1 @@
+Leave a tax unit dependent's Social Security benefits and other nontaxable income out of the income that picks the federal Optional State Sales Tax Table row and out of the Working Americans' Tax Cut Act alternative tax modified AGI; both measure the filers' own return.

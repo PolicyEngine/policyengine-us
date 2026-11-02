@@ -85,3 +85,141 @@
     adjusted_gross_income: 300_000
   output:
     state_sales_tax_income_bracket: 19
+
+# Income is "the amount shown on your Form 1040 or 1040-SR, line 11b, plus any
+# nontaxable items" (2025 Instructions for Schedule A). A tax unit dependent's
+# benefits and nontaxable income are the dependent's own, not the filers'.
+
+- name: A dependent child's Social Security stays out of the filer's income
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 10_000
+        social_security_disability: 18_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        social_security_dependents: 6_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # Combined income of 10_000 + 18_000 / 2 = 19_000 is below the $25,000
+    # head of household base amount, so none of the parent's benefit is
+    # taxable.
+    adjusted_gross_income: 10_000
+    filer_tax_exempt_social_security: 18_000
+    # The household amount carries the child's benefit as well.
+    tax_exempt_social_security: 24_000
+    # 10_000 + 18_000 = 28_000 is in the $20,000-$30,000 row. Counting the
+    # child's 6_000 would give 34_000, the $30,000-$40,000 row.
+    state_sales_tax_income_bracket: 2
+
+- name: A dependent parent's nontaxable income stays out of the filer's income
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 50
+        employment_income: 25_000
+      dependent_parent:
+        age: 80
+        is_tax_unit_dependent: true
+        social_security_retirement: 12_000
+        ssi: 4_800
+        veterans_benefits: 4_000
+        tax_exempt_pension_income: 3_000
+        tax_exempt_retirement_distributions: 2_000
+        workers_compensation: 1_500
+        tax_exempt_interest_income: 500
+    tax_units:
+      tax_unit:
+        members: [filer, dependent_parent]
+    households:
+      household:
+        members: [filer, dependent_parent]
+        state_code: TX
+  output:
+    adjusted_gross_income: 25_000
+    filer_tax_exempt_social_security: 0
+    # 25_000 is in the $20,000-$30,000 row. Counting the parent's 27_800 of
+    # benefits and nontaxable income would give 52_800, the $50,000-$60,000
+    # row.
+    state_sales_tax_income_bracket: 2
+
+- name: The filers' own nontaxable items still count beside a dependent's
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        social_security_retirement: 20_000
+        tax_exempt_interest_income: 4_000
+        veterans_benefits: 3_000
+      spouse:
+        age: 68
+        is_tax_unit_spouse: true
+        employment_income: 15_000
+        ssi: 2_400
+        tax_exempt_pension_income: 6_000
+      grandchild:
+        age: 12
+        is_tax_unit_dependent: true
+        social_security_survivors: 9_000
+        ssi: 7_200
+        tax_exempt_interest_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, grandchild]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, grandchild]
+        state_code: TX
+  output:
+    # Combined income: 15_000 + 4_000 of tax-exempt interest + 20_000 / 2 =
+    # 29_000, below the $32,000 joint base amount, so no benefit is taxable.
+    adjusted_gross_income: 15_000
+    filer_tax_exempt_social_security: 20_000
+    # 15_000 + 4_000 + 3_000 + 20_000 + 2_400 + 6_000 = 50_400 is in the
+    # $50,000-$60,000 row. Counting the grandchild's 17_200 would give
+    # 67_600, the $60,000-$70,000 row.
+    state_sales_tax_income_bracket: 5
+
+- name: A family's TANF counts in full, the children's shares included
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 15_000
+      child_1:
+        age: 6
+        is_tax_unit_dependent: true
+      child_2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child_1, child_2]
+    spm_units:
+      spm_unit:
+        members: [parent, child_1, child_2]
+        tanf: 6_000
+    households:
+      household:
+        members: [parent, child_1, child_2]
+        state_code: TX
+  output:
+    # TANF is paid to the caretaker for the assistance unit, and the tax
+    # unit holds the whole SPM unit, so all 6_000 counts: 15_000 + 6_000 =
+    # 21_000 is in the $20,000-$30,000 row. The parent's per-person share
+    # alone (2_000) would give 17_000, the first row.
+    state_sales_tax_income_bracket: 2
