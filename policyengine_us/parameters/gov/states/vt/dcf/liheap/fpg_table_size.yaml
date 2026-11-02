@@ -1,0 +1,27 @@
+description: Vermont rounds the monthly poverty guideline of each household size up to this size, and adds the rounded monthly additional-person amount for each person above it, under the Low Income Home Energy Assistance Program.
+# HHS lists the guideline for households of up to eight people, plus an amount for
+# each additional person. P-2913 and P-2914A print monthly dollars for sizes 1-15
+# without stating their derivation. Dividing each listed guideline by 12 and rounding
+# half up to the dollar, then adding the additional-person amount divided by 12 and
+# rounded the same way for each person above eight, reproduces all 165 P-2914A band
+# tops, all 15 P-2913 limits and the 15 DCF 2026-27 limits; this is a numerical
+# inference. Rounding each size's own guideline divided by 12 reproduces only 2 of
+# the 55 band tops for sizes 11-15 (the other 53 by $1-$4).
+values:
+  2025-03-01: 8
+
+metadata:
+  unit: person
+  period: year
+  label: Vermont LIHEAP poverty guideline maximum tabulated household size
+  reference:
+    - title: HHS 2025 Poverty Guidelines, 90 FR 5917
+      href: https://www.govinfo.gov/content/pkg/FR-2025-01-17/pdf/2025-01377.pdf#page=1
+    - title: HHS 2026 Poverty Guidelines, 91 FR 1798
+      href: https://www.govinfo.gov/content/pkg/FR-2026-01-15/pdf/2026-00755.pdf#page=2
+    - title: Vermont DCF Procedure P-2913, Income Guidelines (effective March 1, 2025 to February 28, 2026)
+      href: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2913.pdf
+    - title: "Vermont DCF Procedure P-2914A, Percentage of Poverty, 2025-2026 #page 1-3"
+      href: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2914A.pdf#page=1
+    - title: Vermont DCF Fuel Assistance Income Guidelines for 2026-2027
+      href: https://dcf.vermont.gov/esd/fuel/income-guidelines

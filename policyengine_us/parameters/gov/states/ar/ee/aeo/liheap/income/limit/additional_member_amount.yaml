@@ -1,0 +1,17 @@
+description: Arkansas sets this amount as the monthly income limit increase per additional household member under the Low Income Home Energy Assistance Program.
+# The charts print these amounts for each member above the largest published
+# size. Half-up rounding of 150% of the FY2025 guideline increment ($672.50)
+# would give $673, so the printed amounts are stored rather than derived.
+values:
+  2024-10-01: 672
+  2025-10-01: 688
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Arkansas LIHEAP additional member income limit amount
+  reference:
+    - title: Arkansas FY2026 Income Eligibility Chart, additional-person instruction
+      href: https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2026.pdf
+    - title: Arkansas FY2025 Income Eligibility Chart, additional-person instruction
+      href: https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2025.pdf

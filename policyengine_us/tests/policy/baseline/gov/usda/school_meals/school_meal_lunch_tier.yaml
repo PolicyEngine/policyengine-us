@@ -1,0 +1,234 @@
+# school_meal_lunch_tier starts from school_meal_tier (the tier for both
+# meals) and adds coverage of only the reduced-price lunch copay. Annual
+# periods read parameters on January 1, so a start or end between July 1 and
+# December 31 first changes the next calendar year.
+
+# Reduced-price band (180% of FPG) with no categorical eligibility. Every case
+# lists NC, NH, MD, TX, WA, UT and FL.
+# UT: Utah Code section 53F-2-423 (H.B. 100, 2025), lunch only from
+# 2025-07-01; a standing statute, so coverage continues.
+# WA: lunch only from 2027-07-01 (RCW 28A.235.160(7)), after the breakfast
+# copay proviso ends.
+# NC, NH, MD and TX covered only breakfast in some years; their lunch tier
+# follows the tier for both meals.
+
+# NC, NH and WA cover only breakfast in 2020.
+- name: Breakfast-only coverage leaves reduced-price lunch at the reduced price in 2020.
+  period: 2020
+  input:
+    state_code: [NC, NH, MD, TX, WA, UT, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false]
+  output:
+    school_meal_lunch_tier: [REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+
+# NC covers both meals in SY 2020-21 (from 2020-07-01); WA and NH cover only
+# breakfast; MD's breakfast-only coverage starts 2021-07-01.
+- name: Only North Carolina's coverage of both meals makes reduced-price lunch free in 2021.
+  period: 2021
+  input:
+    state_code: [NC, NH, MD, TX, WA, UT, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false]
+  output:
+    school_meal_lunch_tier: [FREE, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+
+# NC and MD cover only breakfast in 2022.
+- name: Washington's coverage of both meals makes reduced-price lunch free in 2022.
+  period: 2022
+  input:
+    state_code: [NC, NH, MD, TX, WA, UT, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false]
+  output:
+    school_meal_lunch_tier: [REDUCED, REDUCED, REDUCED, REDUCED, FREE, REDUCED, REDUCED]
+
+# NC (from 2022-07-01), MD (from 2022-07-01) and WA (from 2021-07-01) cover
+# both meals; TX breakfast-only coverage starts 2023-09-01.
+- name: North Carolina, Maryland and Washington make reduced-price lunch free in 2023.
+  period: 2023
+  input:
+    state_code: [NC, NH, MD, TX, WA, UT, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false]
+  output:
+    school_meal_lunch_tier: [FREE, REDUCED, FREE, REDUCED, FREE, REDUCED, REDUCED]
+
+# UT starts 2025-07-01; TX covers only breakfast until 2025-09-01.
+- name: Utah does not yet cover the reduced-price lunch copay in 2025.
+  period: 2025
+  input:
+    state_code: [NC, NH, MD, TX, WA, UT, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false]
+  output:
+    school_meal_lunch_tier: [FREE, REDUCED, FREE, REDUCED, FREE, REDUCED, REDUCED]
+
+# TX covers both meals from 2025-09-01.
+- name: Utah covers only the reduced-price lunch copay from 2026.
+  period: 2026
+  input:
+    state_code: [NC, NH, MD, TX, WA, UT, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false]
+  output:
+    school_meal_lunch_tier: [FREE, REDUCED, FREE, FREE, FREE, FREE, REDUCED]
+
+# TX coverage ended 2027-08-31.
+- name: Washington covers only the reduced-price lunch copay from 2028.
+  period: 2028
+  input:
+    state_code: [NC, NH, MD, TX, WA, UT, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false]
+  output:
+    school_meal_lunch_tier: [FREE, REDUCED, FREE, REDUCED, FREE, FREE, REDUCED]
+
+# UT and WA lunch-only coverage are standing statutes, so both continue.
+- name: Utah and Washington still cover only the reduced-price lunch copay in 2029.
+  period: 2029
+  input:
+    state_code: [NC, NH, MD, TX, WA, UT, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false]
+  output:
+    school_meal_lunch_tier: [FREE, REDUCED, FREE, REDUCED, FREE, FREE, REDUCED]
+
+# At 300% of FPG, AR, DE, DC, PA, CT and SC give free breakfast to all
+# students, but lunch stays PAID.
+- name: Universal free breakfast states keep the paid lunch tier in 2027.
+  period: 2027
+  input:
+    state_code: [AR, DE, DC, PA, CT, SC, FL]
+    school_meal_fpg_ratio: [3, 3, 3, 3, 3, 3, 3]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false]
+  output:
+    school_meal_lunch_tier: [PAID, PAID, PAID, PAID, PAID, PAID, PAID]
+
+# A school_meal_tier input still flows to lunch. NC and NH have no lunch-only
+# coverage; FL has none; UT covers only reduced-price lunch, so a PAID tier
+# stays PAID; DC's universal free breakfast does not change lunch.
+- name: An input tier for both meals flows to the lunch tier in 2026.
+  period: 2026
+  input:
+    state_code: [NC, FL, UT, UT, NH, DC]
+    school_meal_tier: [REDUCED, FREE, PAID, REDUCED, REDUCED, PAID]
+  output:
+    school_meal_lunch_tier: [REDUCED, FREE, PAID, FREE, REDUCED, PAID]
+
+# Edge case: the same incomes as the breakfast-tier case. UT's lunch-only
+# coverage applies from just above 130% (1.3001) to exactly 185% of FPG and
+# stops just above 185% (1.8501). NH's breakfast-only coverage leaves lunch at
+# the reduced price. No categorical eligibility.
+- name: Utah's lunch-only coverage applies from just above 130% to exactly 185% of FPG, but not above, in 2026.
+  period: 2026
+  input:
+    state_code: [NH, NH, NH, UT, UT, UT]
+    school_meal_fpg_ratio: [1.3001, 1.85, 1.8501, 1.3001, 1.85, 1.8501]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false]
+  output:
+    school_meal_lunch_tier: [REDUCED, REDUCED, PAID, FREE, FREE, PAID]
+
+# Universal free breakfast plus coverage of both reduced-price copays: DC
+# (from 2010-08-01), PA (from 2023-07-01; breakfast from 2022-10-01), AR
+# (copay from 2023-08-01, breakfast from 2025-07-01) and DE (copay from
+# 2024-07-01, breakfast from 2025-07-01). No categorical eligibility. At
+# exactly 185% of FPG the copay coverage makes the tier for both meals FREE,
+# so lunch is free; just above (1.8501) the tier is PAID, universal breakfast
+# keeps breakfast free and lunch is paid.
+- name: Lunch is free at 185% of FPG but paid just above it in universal free breakfast states that cover the reduced-price copay in 2026.
+  period: 2026
+  input:
+    state_code: [DC, PA, AR, DE, DC, PA, AR, DE]
+    school_meal_fpg_ratio: [1.85, 1.85, 1.85, 1.85, 1.8501, 1.8501, 1.8501, 1.8501]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [FREE, FREE, FREE, FREE, PAID, PAID, PAID, PAID]
+    school_meal_breakfast_tier: [FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE]
+    school_meal_lunch_tier: [FREE, FREE, FREE, FREE, PAID, PAID, PAID, PAID]
+
+# Same inputs as the breakfast-tier case: categorical eligibility makes lunch
+# free in UT, NH and AR. Without it, UT lunch is free (lunch-only coverage),
+# NH lunch is reduced price, and AR lunch at 300% of FPG is paid. So only NH
+# and AR lunch changes; the breakfast-tier case tests UT.
+- name: Categorical eligibility makes lunch free in New Hampshire and Arkansas in 2026, while Utah lunch is free with or without it.
+  period: 2026
+  input:
+    state_code: [UT, NH, AR, UT, NH, AR]
+    school_meal_fpg_ratio: [1.8, 1.8, 3, 1.8, 1.8, 3]
+    meets_school_meal_categorical_eligibility: [true, true, true, false, false, false]
+  output:
+    school_meal_lunch_tier: [FREE, FREE, FREE, FREE, REDUCED, PAID]
+
+# Same inputs: at exactly 130% of FPG lunch is free in NH and UT; just above
+# it NH lunch is reduced price and UT lunch stays free (lunch-only coverage).
+# Only NH tests the inclusive 130% limit here: UT lunch would be free at 1.3
+# through its lunch-only coverage even with a REDUCED tier. The
+# breakfast-tier case tests UT.
+- name: Lunch is free at exactly 130% of FPG in New Hampshire and Utah, and just above it only in Utah, in 2026.
+  period: 2026
+  input:
+    state_code: [NH, UT, NH, UT]
+    school_meal_fpg_ratio: [1.3, 1.3, 1.3001, 1.3001]
+    meets_school_meal_categorical_eligibility: [false, false, false, false]
+  output:
+    school_meal_lunch_tier: [FREE, FREE, REDUCED, FREE]
+
+# Connecticut's SMART universal meals (SY 2022-23) make the tier for both
+# meals FREE at any income, so lunch is free at 300% of FPG in 2023. FL has no
+# state policy, so its lunch is PAID.
+- name: Connecticut universal free meals make lunch free at 300% of FPG in 2023.
+  period: 2023
+  input:
+    state_code: [CT, FL]
+    school_meal_fpg_ratio: [3, 3]
+    meets_school_meal_categorical_eligibility: [false, false]
+  output:
+    school_meal_tier: [FREE, PAID]
+    school_meal_lunch_tier: [FREE, PAID]
+
+# Breakfast-only coverage leaves lunch at the reduced price: CO until
+# 2019-08-02 and ME until 2019-07-01. MN (2014) and VT (2013) cover both
+# meals; NY covers neither until 2019-07-01.
+- name: Colorado and Maine reduced-price students still pay for lunch in 2019.
+  period: 2019
+  input:
+    state_code: [NY, CO, MN, ME, VT]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false]
+  output:
+    school_meal_lunch_tier: [REDUCED, REDUCED, FREE, REDUCED, FREE]
+
+# Oregon's lunch copay coverage starts 2015-07-01, so lunch is still reduced
+# price on January 1, 2015, while breakfast is free (breakfast-only coverage
+# from SY 2009-10).
+- name: Oregon reduced-price lunch is not yet free in 2015.
+  period: 2015
+  input:
+    state_code: OR
+    school_meal_fpg_ratio: 1.8
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_lunch_tier: REDUCED
+
+# NJ free lunch above 185% rests on the FY2026 and FY2027 appropriations; on
+# January 1, 2027 the limit for both meals is still 2.24.
+- name: New Jersey free lunch up to 224% of FPG continues in 2027.
+  period: 2027
+  input:
+    state_code: [NJ, NJ]
+    school_meal_fpg_ratio: [2.24, 2.25]
+    meets_school_meal_categorical_eligibility: [false, false]
+  output:
+    school_meal_lunch_tier: [FREE, PAID]
+
+# NJ free lunch above 185% ends after FY2027 (both-meal limit 0 from
+# 2027-07-01); 1.8 stays FREE through reduced-price copay coverage.
+- name: New Jersey free lunch above 185% of FPG ends after FY2027.
+  period: 2028
+  input:
+    state_code: [NJ, NJ, NJ]
+    school_meal_fpg_ratio: [1.8, 2.0, 2.24]
+    meets_school_meal_categorical_eligibility: [false, false, false]
+  output:
+    school_meal_lunch_tier: [FREE, PAID, PAID]

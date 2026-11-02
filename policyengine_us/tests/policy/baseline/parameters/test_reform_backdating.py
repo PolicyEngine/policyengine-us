@@ -52,6 +52,9 @@ RANGE_PARAMETER = "gov.irs.deductions.tip_income.cap"
 RANGE_FILE = "gov/irs/deductions/tip_income/cap.yaml"
 RANGE_START_YEAR = 2025
 RANGE_VALUE = 50_000
+# Section 224 applies only from 2025 (Pub. L. 119-21, sec. 70201(j)), so the
+# deduction is switched on for the year before the cap's first dated value.
+TIP_DEDUCTION_SWITCH = "gov.irs.deductions.tip_income.in_effect"
 
 # App-style reform starting before a breakdown parameter's first dated value.
 BEFORE_PARAMETER = "gov.irs.deductions.overtime_income.cap.SINGLE"
@@ -291,10 +294,13 @@ def test_simulation_reform_leaves_earlier_years():
             }
         },
     }
-    baseline = Simulation(situation=situation)
+    before = RANGE_START_YEAR - 1
+    tip_deduction_before = {TIP_DEDUCTION_SWITCH: {f"year:{before}:1": True}}
+    baseline = Simulation(situation=situation, reform=tip_deduction_before)
     reformed_simulation = Simulation(
         situation=situation,
         reform={
+            **tip_deduction_before,
             RANGE_PARAMETER: {f"{RANGE_START_YEAR}-01-01.2100-12-31": RANGE_VALUE},
             EARLY_SCALAR: {f"year:{EARLY_SCALAR_YEAR}:1": EARLY_SCALAR_VALUE},
         },
@@ -303,7 +309,6 @@ def test_simulation_reform_leaves_earlier_years():
     # The simulation's own tree, independent of how any formula gates by year.
     cap = reformed_simulation.tax_benefit_system.parameters.get_child(RANGE_PARAMETER)
     baseline_cap = system.parameters.get_child(RANGE_PARAMETER)
-    before = RANGE_START_YEAR - 1
     assert cap(f"{before}-01-01") == baseline_cap(f"{before}-01-01")
 
     def tip_deduction(simulation, year):

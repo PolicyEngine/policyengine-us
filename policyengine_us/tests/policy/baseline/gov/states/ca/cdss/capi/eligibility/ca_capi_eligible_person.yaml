@@ -1,30 +1,52 @@
-- name: Eligible person - undocumented
+- name: Case 1, eligible person, undocumented.
   period: 2023
   input:
     is_ssi_aged_blind_disabled: true
-    is_ssi_eligible_spouse: false
     immigration_status: UNDOCUMENTED
     state_code: CA
   output:
     ca_capi_eligible_person: true
 
-- name: Citizens are not eligible
+- name: Case 2, citizens are not eligible.
   period: 2023
   input:
     is_ssi_aged_blind_disabled: true
-    is_ssi_eligible_spouse: false
     immigration_status: CITIZEN
     state_code: CA
   output:
     ca_capi_eligible_person: false
 
-- name: Eligible person - legal permanent resident - not enough qualifying quarters for ssi
+- name: Case 3, eligible person, permanent resident without enough qualifying quarters for SSI.
   period: 2023
   input:
     is_ssi_aged_blind_disabled: true
-    is_ssi_eligible_spouse: false
     immigration_status: LEGAL_PERMANENT_RESIDENT
     ssi_qualifying_quarters_earnings: 39
     state_code: CA
   output:
     ca_capi_eligible_person: true
+
+- name: Case 4, eligible couple, both spouses aged permanent residents without 40 SSI quarters.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # person2 is the tax-unit spouse of an aged couple. Each member of an
+    # eligible couple receives CAPI (MPP 49-055.4), so the spouse is eligible
+    # too.
+    ca_capi_eligible_person: [true, true]

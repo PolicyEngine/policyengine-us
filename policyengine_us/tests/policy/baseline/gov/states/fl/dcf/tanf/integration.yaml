@@ -283,18 +283,18 @@
         members: [person1, person2, person3, person4]
         state_code: FL
   output:
-    fl_tca_countable_earned_income: 5
-    # After $90: 210, after $200: 10, * 0.5 = 5
-    fl_tca_countable_income: 5
+    fl_tca_countable_earned_income: 50
+    # After $90: 210, after the remaining $110 of the $200: 100, * 0.5 = 50
+    fl_tca_countable_income: 50
     fl_tca_gross_income_eligible: true
     # Gross: $300 < 185% FPL for 4 ($4,810) -> Pass
     fl_tca_net_income_eligible: true
-    # 5 < $364 -> Pass
+    # 50 < $364 -> Pass
     fl_tca_eligible: true
     fl_tca_payment_standard: 364
     # Size 4, >$50 shelter
-    fl_tca: 359
-    # 364 - 5 = $359
+    fl_tca: 314
+    # 364 - 50 = $314
 
 - name: Case 10, mixed income sources.
   period: 2024-01
@@ -368,7 +368,7 @@
 # Edge Case Integration Tests
 # ============================================================
 
-- name: Case 12, earned income $200 below $290 threshold.
+- name: Case 12, earned income $200, fully absorbed by the $200 disregard.
   period: 2024-01
   input:
     people:
@@ -387,7 +387,7 @@
         state_code: FL
   output:
     fl_tca_countable_earned_income: 0
-    # After $90: 110, after $200: 0, * 0.5 = 0
+    # After $90: 110, after the remaining $110 of the $200: 0, * 0.5 = 0
     fl_tca_countable_income: 0
     fl_tca_gross_income_eligible: true
     # Gross: $200 < $3,151 -> Pass
@@ -396,7 +396,7 @@
     fl_tca_eligible: true
     fl_tca_payment_standard: 241
     fl_tca: 241
-    # Full benefit when earned income below $290 threshold
+    # Full benefit when earned income is at or below the $200 disregard
 
 - name: Case 13, shelter cost exactly at $50 boundary.
   period: 2024-01
@@ -524,15 +524,17 @@
         members: [person1, person2, person3]
         state_code: FL
   output:
-    fl_tca_countable_earned_income: 410
-    # Combined earnings 300 + 200 = 500. Income after the $90 disregard = $410
-    # >= payment standard $303, so the $200 and 1/2 disregard is denied; only
-    # the $90 is deducted: countable earned = $410.
-    fl_tca_countable_income: 410
+    fl_tca_countable_earned_income: 320
+    # Combined earnings 300 + 200 = 500. fl_tca_200_and_half_disregard_eligible
+    # tests the unit: income after the $90 disregard (500 - 90 = 410, or
+    # 500 - 2 x 90 = 320) is >= payment standard $303, so the $200 and 1/2
+    # disregard is denied. Only the $90 is deducted, from each earner's
+    # earnings (2420.0304): (300 - 90) + (200 - 90) = 320.
+    fl_tca_countable_income: 320
     fl_tca_gross_income_eligible: true
     # Gross: $500 < $3,981 -> Pass
     fl_tca_net_income_eligible: false
-    # 410 > 303 -> Fail
+    # 320 > 303 -> Fail
     fl_tca_eligible: false
     fl_tca_payment_standard: 303
     fl_tca: 0
@@ -557,17 +559,17 @@
         members: [person1, person2]
         state_code: FL
   output:
-    fl_tca_countable_earned_income: 5
-    # After $90: 210, after $200: 10, * 0.5 = 5
-    fl_tca_countable_income: 5
+    fl_tca_countable_earned_income: 50
+    # After $90: 210, after the remaining $110 of the $200: 100, * 0.5 = 50
+    fl_tca_countable_income: 50
     fl_tca_resources_eligible: true
     # 2,000 <= 2,000 -> Pass
     fl_tca_gross_income_eligible: true
     fl_tca_net_income_eligible: true
     fl_tca_eligible: true
     fl_tca_payment_standard: 241
-    fl_tca: 236
-    # 241 - 5 = $236
+    fl_tca: 191
+    # 241 - 50 = $191
 
 - name: Case 19, assets over limit ineligible.
   period: 2024-01
@@ -594,4 +596,102 @@
     fl_tca_net_income_eligible: true
     fl_tca_eligible: false
     # Failed resource test
+    fl_tca: 0
+
+- name: Case 20, current participant keeps the $200 and 1/2 disregard above the payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+        pre_subsidy_rent: 9_600
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_tca_payment_standard: 303
+    # Size 3, >$50 shelter.
+    fl_tca_200_and_half_disregard_eligible: true
+    # Income after $90 = $410 >= $303, but a current participant is eligible
+    # for the disregard (414.095(11)(a)1; 2420.0315 condition 1).
+    fl_tca_countable_earned_income: 150
+    # ($500 - $90 - $110) * 0.5 = $150, that is ($500 - $200) / 2.
+    fl_tca_net_income_eligible: true
+    # 150 <= 303 -> Pass
+    fl_tca_eligible: true
+    fl_tca: 153
+    # 303 - 150 = $153
+
+- name: Case 21, applicant with the same earnings gets only the $90 disregard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+        pre_subsidy_rent: 9_600
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_tca_200_and_half_disregard_eligible: false
+    # Not a current participant, and income after $90 = $410 >= $303.
+    fl_tca_countable_earned_income: 410
+    # $500 - $90 = $410
+    fl_tca_net_income_eligible: false
+    # 410 > 303 -> Fail
+    fl_tca: 0
+
+- name: Case 22, current participant with unearned income above the payment standard keeps the disregard but fails the net test.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 1_200  # $100/month
+        social_security: 4_800  # $400/month
+        pre_subsidy_rent: 9_600
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_tca_payment_standard: 303
+    # Size 3, >$50 shelter.
+    fl_tca_200_and_half_disregard_eligible: true
+    # A current participant keeps the disregard (2420.0315 condition 1).
+    fl_tca_countable_earned_income: 0
+    # 2620.0111.01 steps 2-3: max($100 - $90, 0) = $10, less the $110
+    # remainder, floored at 0.
+    fl_tca_countable_income: 400
+    # Step 4: 0 earned + $400 unearned.
+    fl_tca_net_income_eligible: false
+    # 400 > 303 -> Fail
     fl_tca: 0

@@ -1,0 +1,34 @@
+description: Florida provides this base regular heating payment by income band under the Low Income Home Energy Assistance Program.
+# Source conflict: FY2026 plan item 2.6 (page 9) prints an estimated $400
+# minimum and $1,350 maximum, the FY2025 figures. The October 2025 matrix pays
+# $200 to $700 with all additions, and manual Part 200 Q.4 (page 9) and
+# contract D(10)b (page 9) require the current matrix, so FY2026 follows it.
+# The draft FFY2027 plan (Section 2.6) estimates a $200 minimum and $700
+# maximum, matching these bases with all additions; no FY2027 matrix is
+# published.
+1:
+  2024-10-01: 1_000
+  2025-10-01: 350
+2:
+  2024-10-01: 750
+  2025-10-01: 300
+3:
+  2024-10-01: 550
+  2025-10-01: 250
+4:
+  2024-10-01: 400
+  2025-10-01: 200
+metadata:
+  unit: currency-USD
+  period: year
+  label: Florida LIHEAP base heating payment
+  breakdown:
+    - range(1, 5)
+  propagate_metadata_to_children: true
+  reference:
+    - title: Florida FY2025 LIHEAP Payment Matrix, home energy benefit
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/FL_BenefitMatrix_2025.pdf
+    - title: Florida FY2026 LIHEAP Payment Matrix, home energy benefit
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/FL_BenefitMatrix_Heat-Cool_2026.pdf
+    - title: Florida draft FFY2027 LIHEAP State Plan, Section 2.6 (estimated minimum $200, maximum $700)
+      href: https://www.floridajobs.org/docs/lwdb-resources/lwdb-grants-management/economic-self-sufficiency-organizations/esso-grant-agreements/liheap/2026-liheap/draft-ffy2027_comm_liheap_model-plan-template_watermark.pdf#page=9
