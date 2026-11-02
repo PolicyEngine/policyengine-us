@@ -6,13 +6,16 @@ class student_loan_interest_ald_eligible(Variable):
     entity = Person
     label = "Eligible for the Student loan interest ALD"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/221#c"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/221#c",
+        "https://www.law.cornell.edu/uscode/text/26/221#e_2",
+    )
     documentation = (
         "Eligibility for the student loan interest above-the-line deduction. "
         "Per IRC § 221, the taxpayer must not file as Married Filing Separately "
-        "(§ 221(e)(2)) and must not be an individual whom another taxpayer claims as a dependent "
-        "(§ 221(c)); on a joint return that bar applies to the claimed spouse "
-        "only. "
+        "(§ 221(e)(2)) and must not be an individual whom another taxpayer "
+        "claims as a dependent (§ 221(c)); on a joint return that bar "
+        "applies to the claimed spouse only. "
         "The MAGI phase-out is handled separately in the deduction calculation. "
         "Note: While § 221(d)(3) references § 25A(b)(3) for the definition of "
         "'eligible student', this refers to the student's status when the loan "
