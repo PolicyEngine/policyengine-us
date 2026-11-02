@@ -14,5 +14,6 @@ class nv_tanf_resources_eligible(Variable):
         # Nevada excludes the home and up to two vehicles, so use liquid
         # financial assets explicitly until those vehicle exclusions are
         # modeled separately.
-        assets = spm_unit("spm_unit_cash_assets", period.this_year)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        assets = round_to_cents(spm_unit("spm_unit_cash_assets", period.this_year))
         return assets <= p.amount

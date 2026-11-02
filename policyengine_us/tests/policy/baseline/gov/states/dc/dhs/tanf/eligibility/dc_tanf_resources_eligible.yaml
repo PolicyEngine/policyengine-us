@@ -35,3 +35,28 @@
     bank_account_assets: 2_001
   output:
     dc_tanf_resources_eligible: false
+
+# 798.28 + 2,187.62 + 14.10 = 3,000.00, at the limit.
+# The float32 balances add to a fraction of a cent above 3,000 unless rounded to cents.
+- name: Three accounts that total exactly the resource limit pass
+  period: 2025-01
+  input:
+    age: 30
+    bank_account_assets: 798.28
+    stock_assets: 2_187.62
+    bond_assets: 14.10
+    state_code: DC
+  output:
+    dc_tanf_resources_eligible: true
+
+# 798.28 + 2,187.62 + 14.11 = 3,000.01, a cent over the limit.
+- name: Three accounts a cent over the resource limit fail
+  period: 2025-01
+  input:
+    age: 30
+    bank_account_assets: 798.28
+    stock_assets: 2_187.62
+    bond_assets: 14.11
+    state_code: DC
+  output:
+    dc_tanf_resources_eligible: false

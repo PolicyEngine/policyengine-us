@@ -19,7 +19,8 @@ class nh_fanf_resources_eligible(Variable):
         # NOTE: One vehicle per adult is excluded regardless of value.
         # Resource limits differ for applicants ($1,000) vs recipients ($5,000 as of 07/01/22)
         p = parameters(period).gov.states.nh.dhhs.fanf.resources
-        resources = spm_unit("spm_unit_cash_assets", period)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        resources = round_to_cents(spm_unit("spm_unit_cash_assets", period))
         # He-W 656.06(a)(1) also treats an applicant who received FANF in any
         # one of the previous 6 months as a recipient. The inputs have no
         # 6-month look-back, so current enrollment stands in for it.

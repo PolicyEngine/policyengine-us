@@ -437,3 +437,30 @@
     # July 2027; resources may not exceed it.
     msp_asset_eligible:
       2027-07: [true, true]
+
+# 42 U.S.C. 1396d(p)(1)(C): 2,885.40 + 5,798.41 + 976.19 = 9,660.00, at the
+# 2025 individual limit. The float32 balances add to 9,660.001 unless rounded.
+- name: Three accounts that total exactly the individual limit pass
+  period: 2025-01
+  input:
+    age: 67
+    bank_account_assets: 2_885.40
+    stock_assets: 5_798.41
+    bond_assets: 976.19
+    spm_unit_is_married: false
+    state_code: TX
+  output:
+    msp_asset_eligible: true
+
+# 2,885.40 + 5,798.41 + 976.20 = 9,660.01, a cent over the limit.
+- name: Three accounts a cent over the individual limit fail
+  period: 2025-01
+  input:
+    age: 67
+    bank_account_assets: 2_885.40
+    stock_assets: 5_798.41
+    bond_assets: 976.20
+    spm_unit_is_married: false
+    state_code: TX
+  output:
+    msp_asset_eligible: false

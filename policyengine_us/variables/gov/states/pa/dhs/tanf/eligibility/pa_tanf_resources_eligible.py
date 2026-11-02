@@ -12,6 +12,10 @@ class pa_tanf_resources_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.pa.dhs.tanf
 
-        household_assets = spm_unit("spm_unit_cash_assets", period.this_year)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+
+        household_assets = round_to_cents(
+            spm_unit("spm_unit_cash_assets", period.this_year)
+        )
 
         return household_assets <= p.resource_limit

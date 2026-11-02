@@ -45,3 +45,28 @@
     spm_unit_cash_assets: 10_000
   output:
     mi_fip_resources_eligible: 0
+
+# 8,612.82 + 6,310.95 + 76.23 = 15,000.00, at the limit.
+# The float32 balances add to a fraction of a cent above 15,000 unless rounded to cents.
+- name: Three accounts that total exactly the resource limit pass
+  period: 2025-01
+  input:
+    age: 30
+    bank_account_assets: 8_612.82
+    stock_assets: 6_310.95
+    bond_assets: 76.23
+    state_code: MI
+  output:
+    mi_fip_resources_eligible: true
+
+# 8,612.82 + 6,310.95 + 76.24 = 15,000.01, a cent over the limit.
+- name: Three accounts a cent over the resource limit fail
+  period: 2025-01
+  input:
+    age: 30
+    bank_account_assets: 8_612.82
+    stock_assets: 6_310.95
+    bond_assets: 76.24
+    state_code: MI
+  output:
+    mi_fip_resources_eligible: false

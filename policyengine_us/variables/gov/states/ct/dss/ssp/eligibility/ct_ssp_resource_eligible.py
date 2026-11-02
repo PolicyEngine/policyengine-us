@@ -35,4 +35,5 @@ class ct_ssp_resource_eligible(Variable):
             p.asset_limit.couple,
             p.asset_limit.individual,
         )
-        return resources <= limit
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        return round_to_cents(resources) <= limit

@@ -23,4 +23,5 @@ class ms_hmw_resource_eligible(Variable):
             personal_resources,
         )
         p = parameters(period).gov.states.ms.dom.hmw.resources.limit
-        return resources < where(couple, p.couple, p.individual)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        return round_to_cents(resources) < where(couple, p.couple, p.individual)

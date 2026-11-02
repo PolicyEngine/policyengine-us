@@ -42,6 +42,8 @@ class nh_ssp_eligible(Variable):
         resources = resources + essential * max_(
             essential_resources, spouse_value(essential_resources, spouse)
         )
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        resources = round_to_cents(resources)
         # He-W 616.02(a): qualified aliens under 8 USC 1641(b) are eligible once
         # the waiting period since entry has elapsed, which also covers entry
         # before August 22, 1996. AAM 305.11 exempts the listed statuses, as

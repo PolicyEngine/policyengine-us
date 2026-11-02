@@ -44,6 +44,8 @@ class ia_ssa_eligible(Variable):
         )
         resource = where(couple, person.marital_unit.sum(resource), resource)
         resource = resource + person("ia_ssa_resources_deemed_from_parents", period)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        resource = round_to_cents(resource)
         # 6-B Resources prints "$2,000 for an individual" and "$3,000 for a
         # married couple living together" under 20 CFR 416.1202; these equal
         # the SSI limits of 20 CFR 416.1205, so the federal parameters are used

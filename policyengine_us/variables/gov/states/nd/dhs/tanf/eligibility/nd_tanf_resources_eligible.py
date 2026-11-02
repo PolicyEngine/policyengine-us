@@ -11,7 +11,8 @@ class nd_tanf_resources_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nd.dhs.tanf.resources.limit
-        resources = spm_unit("spm_unit_cash_assets", period.this_year)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        resources = round_to_cents(spm_unit("spm_unit_cash_assets", period.this_year))
         unit_size = spm_unit("spm_unit_size", period.this_year)
         capped_size = min_(unit_size, 2)
         base_limit = p.base[capped_size]

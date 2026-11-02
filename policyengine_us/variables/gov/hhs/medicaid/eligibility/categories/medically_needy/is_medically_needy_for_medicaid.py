@@ -57,7 +57,8 @@ class is_medically_needy_for_medicaid(Variable):
         income = marital_unit.sum(
             personal_income - medical_expenses - parental_expense_share
         )
-        assets = marital_unit.sum(personal_assets)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        assets = round_to_cents(marital_unit.sum(personal_assets))
         ma = parameters(period).gov.hhs.medicaid
         mn = ma.eligibility.categories.medically_needy
         is_joint = marital_unit.nb_persons() == 2

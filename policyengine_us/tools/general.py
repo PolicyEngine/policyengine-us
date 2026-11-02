@@ -14,6 +14,20 @@ from policyengine_us.typing import Formula
 USD = "currency-USD"
 
 
+def round_to_cents(amount):
+    """Round a dollar amount to whole cents, as a float64 array.
+
+    Inputs are stored as float32, which holds most cent amounts only
+    approximately. A sum of several of them can land a fraction of a cent
+    above or below the whole-cent total they represent: three balances
+    entered as 178.57, 1,547.79 and 273.64 add to 2,000.0001 in float32.
+    Rounding the sum before an exact-limit comparison compares the total the
+    inputs represent, so a split of a total among accounts or people passes
+    or fails the limit as the total does.
+    """
+    return np.round(np.asarray(amount, dtype=np.float64), 2)
+
+
 def has_input_for_period(simulation, variable, period):
     """Whether the visible array for this exact period was set as an input.
 

@@ -17,5 +17,8 @@ class me_tanf_resources_eligible(Variable):
         # Resource limit is $10,000 per family
         # One vehicle per licensed driver is exempt
         p = parameters(period).gov.states.me.dhhs.tanf
-        countable_resources = spm_unit("spm_unit_cash_assets", period.this_year)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        countable_resources = round_to_cents(
+            spm_unit("spm_unit_cash_assets", period.this_year)
+        )
         return countable_resources <= p.resource_limit

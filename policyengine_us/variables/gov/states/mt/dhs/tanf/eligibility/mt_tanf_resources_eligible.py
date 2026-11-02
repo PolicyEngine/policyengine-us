@@ -11,5 +11,8 @@ class mt_tanf_resources_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.mt.dhs.tanf.resource_limit
-        countable_resources = spm_unit("mt_tanf_countable_resources", period)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        countable_resources = round_to_cents(
+            spm_unit("mt_tanf_countable_resources", period)
+        )
         return countable_resources <= p.amount

@@ -24,6 +24,7 @@ class meets_tanf_non_cash_asset_test(Variable):
             0,
         )
         tx_vehicle_value = max_(vehicle_value - vehicle_exemption, 0)
-        assets = assets + where(state == "TX", tx_vehicle_value, 0)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        assets = round_to_cents(assets + where(state == "TX", tx_vehicle_value, 0))
         asset_limit = limits.asset_limit[state]
         return assets <= asset_limit

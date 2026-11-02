@@ -11,5 +11,6 @@ class nj_wfnj_resources_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nj.njdhs.wfnj.resources
-        resources = spm_unit("spm_unit_cash_assets", period.this_year)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        resources = round_to_cents(spm_unit("spm_unit_cash_assets", period.this_year))
         return resources <= p.limit

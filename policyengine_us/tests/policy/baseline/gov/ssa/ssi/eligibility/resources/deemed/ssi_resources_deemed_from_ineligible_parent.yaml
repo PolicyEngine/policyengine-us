@@ -397,6 +397,42 @@
     ssi_resources_deemed_from_ineligible_parent: [0, 500, 0, 500, 0, 500]
     meets_ssi_resource_test: [false, true, false, true, false, false]
 
+# 20 CFR 416.1202(b)(1), 416.1205: the child's 575.52 + 570.57 + 353.91 =
+# 1,500.00 plus parental excess 2,500 - 2,000 = 500 is 2,000.00, at the
+# individual limit. The child's float32 balances add to 1,500.0001 unless
+# rounded to cents.
+- name: Child accounts plus parental excess that total exactly the limit pass
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        bank_account_assets: 2_500
+      child:
+        age: 16
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        bank_account_assets: 575.52
+        stock_assets: 570.57
+        bond_assets: 353.91
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    ssi_resources_deemed_from_ineligible_parent: [0, 500]
+    meets_ssi_resource_test: [false, true]
+
 # POMS SI 01330.340 White example: parent pool1200 <=couple limit3000; child deemed0.
 - name: POMS White eligible parent leaves no excess resources to deem
   period: 2024-01

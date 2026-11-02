@@ -25,10 +25,13 @@ class meets_ssi_resource_test(Variable):
                 "ssi_resources_deemed_from_ineligible_parent",
             ],
         )
-        countable_resources = where(
-            joint_claim,
-            person.marital_unit.sum(personal_resources),
-            personal_resources + deemed_resources,
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        countable_resources = round_to_cents(
+            where(
+                joint_claim,
+                person.marital_unit.sum(personal_resources),
+                personal_resources + deemed_resources,
+            )
         )
         # 416.1205(a): an individual living with an ineligible spouse counts
         # 'including the resources of the spouse' against the spouse limit.
