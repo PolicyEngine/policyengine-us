@@ -78,3 +78,36 @@
     is_ssi_disabled: [false, false]
     is_ssi_ineligible_spouse: [false, true]
     ssi: [6_402, 0]
+
+- name: A spouse's farm loss does not take wages above the SGA amount below it.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        meets_ssi_disability_criteria: true
+        employment_income: 21_600
+        farm_operations_income: -6_000
+        is_tax_unit_spouse: true
+    tax_units:
+      couple:
+        members: [head, spouse]
+        tax_unit_is_joint: true
+    marital_units:
+      couple:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # Wages are $1,800 a month, above $1,690. POMS DI 10505.015 D.3 bars the
+    # $500 monthly farm loss from reducing them, so the spouse is engaged in
+    # SGA and not disabled (20 CFR 416.905(a), 416.971). Netting the loss
+    # would leave $1,300, under the SGA amount, and make the spouse disabled.
+    is_ssi_disabled: [false, false]
+    is_ssi_ineligible_spouse: [false, true]

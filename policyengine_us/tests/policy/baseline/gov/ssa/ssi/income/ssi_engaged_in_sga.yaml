@@ -77,3 +77,88 @@
     # (20 CFR 416.1110(b)): 24,000 / 12 = 2,000 monthly, above 1,690.
     ssi_earned_income: 24_000
     ssi_engaged_in_sga: true
+
+# POMS DI 10505.015 D.3: with wages, a self-employment loss does not reduce
+# total earnings. Losses still net between businesses (20 CFR 404.1081(c),
+# POMS DI 10510.012 B). 2026 non-blind SGA amount: $1,690 a month.
+- name: A farm loss does not bring wages above the SGA amount below it.
+  period: 2026
+  input:
+    employment_income: 21_600
+    farm_operations_income: -6_000
+    is_blind: false
+  output:
+    # SSI payment earnings net the loss: 21,600 - 6,000 = 15,600.
+    ssi_earned_income: 15_600
+    # SGA earnings: wages 1,800 a month + max(-500, 0) = 1,800 > 1,690.
+    ssi_engaged_in_sga: true
+
+- name: A Schedule C loss does not bring wages above the SGA amount below it.
+  period: 2026
+  input:
+    employment_income: 21_600
+    self_employment_income: -6_000
+    is_blind: false
+  output:
+    ssi_earned_income: 15_600
+    # 1,800 + max(-500, 0) = 1,800 > 1,690.
+    ssi_engaged_in_sga: true
+
+- name: A partnership loss does not bring wages above the SGA amount below it.
+  period: 2026
+  input:
+    employment_income: 21_600
+    partnership_self_employment_net_earnings: -6_000
+    is_blind: false
+  output:
+    ssi_earned_income: 15_600
+    # 1,800 + max(-500, 0) = 1,800 > 1,690.
+    ssi_engaged_in_sga: true
+
+- name: Farm profit and a partnership loss net above the SGA amount.
+  period: 2026
+  input:
+    farm_operations_income: 30_000
+    partnership_self_employment_net_earnings: -6_000
+    is_blind: false
+  output:
+    # Businesses net: (30,000 - 6,000) / 12 = 2,000 > 1,690.
+    ssi_earned_income: 24_000
+    ssi_engaged_in_sga: true
+
+- name: Farm profit and a partnership loss net below the SGA amount.
+  period: 2026
+  input:
+    farm_operations_income: 24_000
+    partnership_self_employment_net_earnings: -6_000
+    is_blind: false
+  output:
+    # (24,000 - 6,000) / 12 = 1,500, not above 1,690. Flooring each business
+    # separately would give 24,000 / 12 = 2,000 and wrongly find SGA.
+    ssi_earned_income: 18_000
+    ssi_engaged_in_sga: false
+
+- name: A business loss with no wages is not substantial gainful activity.
+  period: 2026
+  input:
+    farm_operations_income: -6_000
+    is_blind: false
+  output:
+    ssi_earned_income: -6_000
+    # 0 + max(-6,000, 0) = 0.
+    ssi_engaged_in_sga: false
+
+- name: Pretax premiums stay in SGA wages when the worker also has a business loss.
+  period: 2026
+  input:
+    employment_income: 21_600
+    pre_tax_health_insurance_premiums: 2_400
+    self_employment_income: -3_000
+    is_blind: false
+  output:
+    # SSI payment earnings: 21,600 - 2,400 - 3,000 = 16,200.
+    ssi_earned_income: 16_200
+    # SGA earnings keep gross wages, premiums included: 21,600 / 12 = 1,800
+    # > 1,690. Dropping the premiums (19,200 / 12 = 1,600) or netting the
+    # loss (18,600 / 12 = 1,550) would each fall below the SGA amount.
+    ssi_engaged_in_sga: true
