@@ -5103,3 +5103,142 @@
         county: ALAMEDA_COUNTY_CA
   output:
     ca_liheap_utility_heating: [484, 484, 484, 0, 484, 0]
+
+# Guide pp. 264-265: a solar customer's energy cost is the electric and gas
+# charges, and an out-of-pocket cost is required. $1,000 a month is group 1 in
+# Alameda: $484. With no bill the home has no energy cost.
+- name: Case 12, a solar home qualifies on a positive utility bill.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: SOLAR
+        pre_subsidy_electricity_expense: 600
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: SOLAR
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_utility_eligible: [true, false]
+    ca_liheap_utility_heating: [484, 0]
+
+# Guide pp. 66, 193, 205: energy costs and electric or gas bills, with no
+# primary-fuel condition. A subsidized tenant with gas heat in rent and an
+# electric bill, and an electric-heated home with only a gas bill, both get the
+# group 1 Alameda $484. A propane home with only an electric bill keeps its own
+# fuel test: not basic eligible, so $0.
+- name: Case 13, gas and electric homes qualify on either utility bill while propane keeps its own bill.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        pre_subsidy_electricity_expense: 1_200
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 0
+        gas_expense: 600
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: PROPANE
+        bottled_gas_expense: 0
+        pre_subsidy_electricity_expense: 1_200
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household3:
+        members: [person3]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+  output:
+    ca_liheap_basic_eligible: [true, true, false]
+    ca_liheap_utility_heating: [484, 484, 0]
+
+# Guide p. 249. Wages 40,500 exceed the 39,979.92 one-person limit (p. 184);
+# after 1,000 of job expenses, 39,500 is 3,291.67 a month, group 4: Alameda $308.
+- name: Case 14, job-related expenses can bring a wage earner under the income limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 40_500
+        unreimbursed_business_employee_expenses: 1_000
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 40_500
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_utility_heating: [308, 0]

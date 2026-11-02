@@ -78,3 +78,38 @@
         county: MULTNOMAH_COUNTY_OR
   output:
     ca_liheap_countable_earned_income: [14_000, 0, 14_000, -1_000, 0]
+
+# Guide p. 249 deducts a paid employee's business expenses: 40,500 - 1,000 = 39,500.
+# A minor's earnings are excluded (p. 247), so the minor's 500 offsets nothing.
+- name: Case 2, unreimbursed employee expenses reduce adult earnings only.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 40_500
+        unreimbursed_business_employee_expenses: 1_000
+      person2:
+        age: 17
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 5_000
+        unreimbursed_business_employee_expenses: 500
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_countable_earned_income: [39_500, 0]

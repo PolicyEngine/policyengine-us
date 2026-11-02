@@ -732,6 +732,34 @@ candidates:
   state: ruled
   note: 'The October 2026 statute-first ruling retains the bar; obtain the statutory URL and verify the instruction
     flow''s joint-return effect. Code not yet on main: ca_eitc_eligible.'
+- id: us-ca:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can California's 60% SMI heating limit exclude a household of 21 or more whose income is below the federal
+    110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: California FY2026 LIHEAP State Plan, income eligibility table, pp.9, 184
+    url: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=9
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The plan's 60% SMI limits fall below that floor for households of 21 to 25 members.
+  example: Twenty-one people with $136,088.28 a year exceed the $136,088.16 limit ($11,340.68 a month) but are below the
+    $138,215 floor (2025 guideline, one-year lag), so they stay income eligible.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ca/csd/liheap/eligibility/ca_liheap_income_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/ca/csd/liheap/income/fpg_year_lag.yaml
+  state: unreviewed
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (ca_liheap_income_eligible.py).
 - id: us-ca:renter-credit-2025-joint-income-limit
   program: income-tax
   years:

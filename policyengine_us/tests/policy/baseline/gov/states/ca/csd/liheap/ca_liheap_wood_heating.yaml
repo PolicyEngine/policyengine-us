@@ -5,7 +5,7 @@
 # and prioritization. These tests supply no provider, agency or cords selector.
 # One ordinary annual award is capped at $1,000; no discretionary supplement.
 
-# REQ-001/002/005: Fresno demonstrates that wood is not limited to Madera.
+# Fresno demonstrates that wood is not limited to Madera.
 # Existing wood spending establishes responsibility for all seven households.
 # Omitted and zero quotes both yield zero modeled benefit, not legal denial.
 - name: Case 1, approved wood delivery is bounded by zero and the ordinary WPO maximum.
@@ -89,7 +89,7 @@
     ca_liheap_wood_heating: [0, 0, 0, 750.25, 999.99, 1_000, 1_000]
     heating_expense: [120, 120, 120, 120, 120, 120, 120]
 
-# REQ-001/003/004: an approved delivery establishes responsibility before any
+# An approved delivery establishes responsibility before any
 # prior wood purchase, including at zero income. Historic spending remains a
 # separate input. At $12,000 income, $1,200 is burden group 1 and $2,400 group 4;
 # adding the $600 quote to the second household's expense would change its band.
@@ -137,7 +137,7 @@
     ca_liheap_liquid_heating_covered: [false, false, false]
     ca_liheap_wood_heating: [600, 600, 600]
 
-# REQ-003/004/005: a quote cannot cause cross-state or cross-fuel payments.
+# A quote cannot cause cross-state or cross-fuel payments.
 # The propane household retains the sourced Madera ordinary amount $411+$105
 # and its original $2,040 bill even when an unrelated wood quote is supplied.
 - name: Case 3, mixed states and primary fuels receive only their applicable component.
@@ -191,7 +191,7 @@
     ca_liheap_wood_heating: [600, 0, 0, 0]
     ca_liheap_covered_liquid_heating: [0, 0, 516, 0]
 
-# REQ-003: approval does not override the modeled income or qualified-adult
+# Approval does not override the modeled income or qualified-adult
 # gates. A nonqualified adult with a qualified child still lacks an applicant;
 # age 17 is not assumed emancipated, whereas age 18 meets the applicant gate.
 # The final household is income eligible through actual SNAP receipt, not its

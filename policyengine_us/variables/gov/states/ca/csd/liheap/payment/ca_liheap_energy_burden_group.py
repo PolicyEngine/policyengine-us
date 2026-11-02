@@ -21,10 +21,10 @@ class ca_liheap_energy_burden_group(Variable):
         cent = p.income.monthly_rounding_increment
         # Annual flows approximate a representative month. Restore each
         # monetary input's cents before truncating the percentage to basis points.
-        cost_cents = sum(
-            np.rint(spm_unit(source, period).astype(float) / cent).astype(np.int64)
-            for source in p.energy_burden.expense_sources
-        )
+        cost_cents = 0
+        for source in p.energy_burden.expense_sources:
+            amount = spm_unit(source, period).astype(float)
+            cost_cents = cost_cents + np.rint(amount / cent).astype(np.int64)
         income = spm_unit("ca_liheap_countable_income", period)
         income_cents = np.rint(income.astype(float) / cent).astype(np.int64)
         scale = int(np.rint(1 / p.energy_burden.rounding_increment))

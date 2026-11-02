@@ -1,6 +1,6 @@
 # PDF pages 9,193,202-203,205,219,279
 # https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=9
-# This gate covers gas/electric utility heating, not unresolved regular WPO.
+# This gate covers gas, electric and solar utility heating.
 
 - name: Case 1, a qualified adult applicant is required by the represented inputs.
   period: 2026
@@ -75,13 +75,14 @@
   output:
     ca_liheap_utility_eligible: [false, true, false, true, false]
 
-- name: Case 2, utility fuel housing and actual matching energy charges determine coverage.
+- name: Case 2, utility fuel housing and energy charges determine coverage.
   period: 2026
-  # Gas/electric utility heat needs its matching charge, or the supported
-  # unsubsidized rent-inclusive proxy. Subsidized housing with a positive
-  # reported charge qualifies. Propane belongs to unresolved WPO; its false
-  # utility gate is not an assertion of no regular WPO entitlement. Unspecified
-  # fuel has no established utility crosswalk.
+  # Gas or electric heat needs a positive gas or electric bill, or the
+  # unsubsidized rent-inclusive proxy. A gas-heated home with only an electric
+  # bill qualifies (guide pp. 66, 193, 205). Subsidized housing with a positive
+  # reported charge qualifies. Propane has its own liquid-fuel component; its
+  # false utility gate is not a denial of that component. Unspecified fuel has
+  # no utility crosswalk.
   input:
     people:
       person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
@@ -203,7 +204,7 @@
     ca_liheap_utility_eligible:
       - true
       - true
-      - false
+      - true
       - true
       - false
       - true
