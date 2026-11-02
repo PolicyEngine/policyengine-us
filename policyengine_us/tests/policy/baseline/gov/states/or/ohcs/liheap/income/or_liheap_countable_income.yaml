@@ -175,3 +175,27 @@
     total_unemployment_compensation: 6_000
     # Unemployment insurance is "Considered Income? Yes" (page 48).
     or_liheap_countable_income: 6_000
+
+- name: Case 8, a military Survivor Benefit Plan annuity counts like the retiree's own pay.
+  # The survivor annuity is recorded in military_retirement_pay_survivors, not
+  # in military_retirement_pay or survivor_benefits.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        military_retirement_pay_survivors: 9_600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    # The pensions row (page 44) counts regular payments to a person's
+    # surviving dependents in consideration of past services, so the $9,600
+    # annuity counts in full.
+    or_liheap_countable_income: 9_600

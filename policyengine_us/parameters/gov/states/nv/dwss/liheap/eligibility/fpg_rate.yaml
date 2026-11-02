@@ -1,0 +1,23 @@
+description: Nevada limits household income to this multiple of the federal poverty guideline under the Low Income Home Energy Assistance Program.
+# Appendix A prints annual limits of $23,475 to $81,225 for household sizes
+# 1-8 in SFY2026 (150% of the 2025 guideline) and $23,940 to $83,580 in
+# SFY2027 (2026 guideline). The 110% floor of 42 U.S.C. 8624(b)(2)(B) lies
+# below this limit for every size.
+values:
+  2025-07-01: 1.5
+
+metadata:
+  unit: /1
+  period: year
+  label: Nevada LIHEAP poverty guideline income limit rate
+  reference:
+    - title: NRS 702.260(3)
+      href: https://www.leg.state.nv.us/nrs/nrs-702.html#NRS702Sec260
+    - title: "Nevada SFY2026 Energy Assistance Program Manual, Sections 701 and 802 and Appendix A #page 43,60,110"
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=43
+    - title: "Nevada SFY2027 Energy Assistance Program Manual, Sections 701 and 802 and Appendix A #page 43,60,110"
+      href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/2027-eap-state-manual--08.25.26-1.pdf#page=43
+    - title: Nevada FY2026 LIHEAP State Plan, Section 2.1
+      href: https://liheapch.acf.gov/docs/2026/state-plans/NV_Plan_2026.pdf#page=8
+    - title: Nevada FY2027 LIHEAP State Plan, Section 2.1
+      href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/fy-2027-low-income-home-energy-assistance-program-liheap-state-plan.pdf#page=8

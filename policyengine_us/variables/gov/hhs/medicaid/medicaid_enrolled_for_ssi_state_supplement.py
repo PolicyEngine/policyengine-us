@@ -14,7 +14,7 @@ class medicaid_enrolled_for_ssi_state_supplement(Variable):
     )
     documentation = (
         "Medicaid enrollment condition for SSI/aged/blind/disabled state "
-        "supplement candidates only (Indiana SAPN/RCAP and Kansas SSPP). "
+        "supplement candidates only (state supplements that require Medicaid enrollment). "
         "SSI recipients and aged, blind, or disabled RCAP candidates do not "
         "need the SNAP/TANF community-engagement exclusion. Other consumers "
         "must use medicaid_enrolled, which retains that exclusion."

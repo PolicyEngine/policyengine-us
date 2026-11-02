@@ -21,6 +21,7 @@ class wv_senior_citizen_disability_deduction_person(Variable):
         ).gov.states.wv.tax.income.subtractions.senior_citizen_disability_deduction
 
         agi_person = person("adjusted_gross_income_person", period)
+        # Source conflict us-wv:senior-disability-modification-income-base
         # Box (c) excludes the person's own amounts on lines 35-46 before
         # applying the cap, including income already deducted on line 39.
         excluded_amounts = add(person, period, p.excluded_income_sources)
