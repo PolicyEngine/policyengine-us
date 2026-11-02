@@ -1,3 +1,67 @@
+## [2.91.10] - 2026-11-02
+
+### Fixed
+
+- Let the unclaimed spouse on a joint return deduct their own student loan interest when the other spouse is claimed as a dependent elsewhere (26 U.S.C. 221(c)), and count both spouses in joint MAGI.
+
+
+## [2.91.9] - 2026-11-02
+
+### Fixed
+
+- Count only wages includible in gross income (after traditional 401(k)/403(b) deferrals and other pre-tax payroll deductions) in `adjusted_earnings`, the earned income limit of the child and dependent care credit, the IRC 129 dependent care exclusion and the state credits that inherit them, per IRC 32(c)(2)(A)(i) and Treas. Reg. 1.21-2(b)(3); California's credit limit, exclusion and AMT child exemption use California wages, which keep the payroll HSA contributions California taxes, net of any business loss, and New York's 2026 credit keeps counting the deferrals under Tax Law 606(c-2)(2)(C), also net of any business loss. California's credit now applies its own FTB 3506 expense, employer benefit and earned income limits in every year, not only 2021, and its AMT child exemption uses California's own minimum ($9,750 for 2025) instead of the federal amount.
+
+
+## [2.91.8] - 2026-11-02
+
+### Changed
+
+- Lock policyengine-core 3.34.2, the version CI's test jobs already resolve, so local `uv sync` environments and the CI jobs that install the committed lock (lint, Rest shard planning and the release build) use it too.
+
+
+## [2.91.7] - 2026-11-02
+
+### Fixed
+
+- Count the pre-2018 federal miscellaneous deduction once in Mississippi and Missouri itemized deductions.
+
+
+## [2.91.6] - 2026-11-02
+
+### Fixed
+
+- Compare the federal free and reduced-price school meal income limits at USDA's published whole-dollar values, rounded up, so a household exactly at a published federal limit gets that tier; state percentage limits are still compared exactly.
+
+
+## [2.91.5] - 2026-11-02
+
+### Fixed
+
+- California's non-MAGI Medi-Cal asset limit falls to $21,000 for one person and $31,000 for two on July 1, 2027 (SB 164) in the aged, blind and disabled, medically needy, Medicare Savings Program and 250% Working Disabled Program limits; the Working Disabled Program also adds $1,550 for each person beyond two.
+
+
+## [2.91.4] - 2026-11-02
+
+### Fixed
+
+- Count railroad retirement annuities as unearned income for Supplemental Security Income and the Colorado Old Age Pension.
+
+
+## [2.91.3] - 2026-11-02
+
+### Fixed
+
+- Add Alaska's 7 AAC 40.310 income eligibility standards to the test list of parameters uprated by the 2026 Trustees assumption.
+
+
+## [2.91.2] - 2026-11-02
+
+### Fixed
+
+- Use state dollar standards, not shares of the poverty guideline, as the Medicaid income limit for aged, blind and disabled people who do not receive SSI in Alaska, Idaho, New Hampshire, Vermont and Wisconsin, require income below Idaho's standard, and add Vermont's 2017-2023 AABD independent-living supplement ($52.04 individual, $98.88 couple).
+- Turned on the Medicaid medically needy pathway for aged, blind and disabled people in Arkansas, Iowa, Illinois, New Jersey and North Dakota, turned it off in Arizona, Idaho, Indiana, New Mexico and Nevada, which have no such program, and updated medically needy income and asset limits in 14 states and DC, including Vermont's protected income level and DC's 2019-2022 levels, tying them to the poverty guideline or the SSI federal benefit rate where state rules do, with New York and North Dakota rounding the monthly level up to the dollar and Illinois rounding it to the nearest dollar through 2024 and dropping the cents from 2025.
+
+
 ## [2.91.1] - 2026-11-02
 
 ### Fixed
