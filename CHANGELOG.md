@@ -1,3 +1,39 @@
+## [2.91.6] - 2026-11-02
+
+### Fixed
+
+- Compare the federal free and reduced-price school meal income limits at USDA's published whole-dollar values, rounded up, so a household exactly at a published federal limit gets that tier; state percentage limits are still compared exactly.
+
+
+## [2.91.5] - 2026-11-02
+
+### Fixed
+
+- California's non-MAGI Medi-Cal asset limit falls to $21,000 for one person and $31,000 for two on July 1, 2027 (SB 164) in the aged, blind and disabled, medically needy, Medicare Savings Program and 250% Working Disabled Program limits; the Working Disabled Program also adds $1,550 for each person beyond two.
+
+
+## [2.91.4] - 2026-11-02
+
+### Fixed
+
+- Count railroad retirement annuities as unearned income for Supplemental Security Income and the Colorado Old Age Pension.
+
+
+## [2.91.3] - 2026-11-02
+
+### Fixed
+
+- Add Alaska's 7 AAC 40.310 income eligibility standards to the test list of parameters uprated by the 2026 Trustees assumption.
+
+
+## [2.91.2] - 2026-11-02
+
+### Fixed
+
+- Use state dollar standards, not shares of the poverty guideline, as the Medicaid income limit for aged, blind and disabled people who do not receive SSI in Alaska, Idaho, New Hampshire, Vermont and Wisconsin, require income below Idaho's standard, and add Vermont's 2017-2023 AABD independent-living supplement ($52.04 individual, $98.88 couple).
+- Turned on the Medicaid medically needy pathway for aged, blind and disabled people in Arkansas, Iowa, Illinois, New Jersey and North Dakota, turned it off in Arizona, Idaho, Indiana, New Mexico and Nevada, which have no such program, and updated medically needy income and asset limits in 14 states and DC, including Vermont's protected income level and DC's 2019-2022 levels, tying them to the poverty guideline or the SSI federal benefit rate where state rules do, with New York and North Dakota rounding the monthly level up to the dollar and Illinois rounding it to the nearest dollar through 2024 and dropping the cents from 2025.
+
+
 ## [2.91.1] - 2026-11-02
 
 ### Fixed

@@ -85,6 +85,8 @@ UPRATING_READERS = (
     "gov.ssa.ssi.amount.individual",
     "gov.ssa.ssi.income.exclusions.blind_or_disabled_working_student.amount",
     "gov.ssa.ssi.income.exclusions.blind_or_disabled_working_student.cap",
+    "gov.states.ak.dpa.ssp.income_eligibility_standard.couple",
+    "gov.states.ak.dpa.ssp.income_eligibility_standard.individual",
     "gov.states.ia.hhs.ssa.rcf_personal_needs",
     "gov.states.md.tax.income.agi.subtractions.pension.max_amount",
     "gov.states.nc.ncdhhs.sa.rate.basic",

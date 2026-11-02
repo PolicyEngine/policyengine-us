@@ -53,9 +53,14 @@ class school_meal_breakfast_tier(Variable):
         ].astype(bool)
         # Some states set a free-breakfast income limit above their limit for
         # both meals (0 means none). Apply it only where it is set, so a
-        # school_meal_tier input still reaches breakfast unchanged elsewhere,
-        # and cast it to the ratio's float32 precision, as school_meal_tier
-        # does, so a ratio exactly at the limit passes.
+        # school_meal_tier input still reaches breakfast unchanged elsewhere.
+        # Like the state limit in school_meal_tier, it is the percentage of
+        # the poverty guideline state law sets, such as New Jersey's 224%
+        # under N.J.S.A. 18A:33-14a(a)(3), compared with the ratio exactly,
+        # not at a dollar amount rounded up from it (backlog id
+        # us-nj:school-meals-income-limit-rounding). Cast it to the ratio's
+        # float32 precision, as school_meal_tier does, so a ratio exactly at
+        # the limit passes.
         fpg_ratio = spm_unit("school_meal_fpg_ratio", period)
         breakfast_income_limit = p.state_free_income_limit_breakfast_only[state].astype(
             fpg_ratio.dtype
