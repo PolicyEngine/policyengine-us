@@ -211,3 +211,253 @@
     md_paa_countable_income: 2_480
     md_paa_imputed_federal_ssi: 0
     md_paa: 0
+
+# SSA cannot pay SSI to an LPR with fewer than 40 quarters, so PAA imputes no
+# federal SSI and counts only her own income (COMAR 07.03.07.07 has no spousal
+# deeming); PAA pays allowable needs less net countable income
+# (COMAR 07.03.07.09A). 2025-01: provider rate $1,376; PNA $102.
+- name: Case 11, aged LPR without 40 quarters in CARE_HOME_LEVEL_D with a working spouse.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 10
+        ssi_qualifying_quarters_earnings: 20
+        social_security_survivors: 6_000 # 500 a month
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_D
+      person2:
+        age: 60
+        employment_income: 12_000 # 1,000 a month
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # person1 qualifies through aged Social Security receipt; person2 is not
+    # in a PAA facility.
+    md_paa_eligible: [true, false]
+    ssi: [0, 0]
+    # SSI would deem person2's wages to person1: couple countable
+    # 480 + (1,000 - 65) * 0.5 = 947.50 less her own 480 = 467.50 a month.
+    ssi_income_deemed_from_ineligible_spouse: [467.50, 0]
+    # PAA counts person1's own 500 - 20 = 480 a month (5,760 a year) without
+    # the deemed amount. person2's own countable wages are
+    # (1,000 - 20 - 65) * 0.5 = 457.50.
+    md_paa_countable_income: [480, 457.50]
+    md_paa_imputed_federal_ssi: [0, 0]
+    # combined_need = 1,376 + 102 = 1,478. PAA = 1,478 - 480 - 0 = 998.
+    md_paa_total_cost_of_care: [1_478, 0]
+    md_paa: [998, 0]
+
+# A person who reports SSI receipt keeps the imputed federal SSI even though
+# the model's alien test bars her, for example someone SSA still pays under 8
+# U.S.C. 1612(a)(2)(E) because she was receiving SSI on August 22, 1996. PAA
+# counts federally funded assistance payments (COMAR 07.03.07.07B(3)) and pays
+# allowable needs less net countable income (COMAR 07.03.07.09A). 2025-01:
+# federal SSI individual rate $967; provider rate $1,376; PNA $102.
+- name: Case 12, aged LPR without 40 quarters who reports SSI receipt keeps the imputed SSI.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 30 # entered in 1995
+        ssi_qualifying_quarters_earnings: 20
+        receives_ssi: true
+        social_security_survivors: 6_000 # 500 a month
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_D
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: true
+    # The model's SSI fails her on the 40-quarter test, so it computes no SSI.
+    ssi: 0
+    # 500 - 20 general exclusion = 480 a month (5,760 a year).
+    md_paa_countable_income: 480
+    # Reported SSI receipt keeps the imputation: 967 - 480 = 487.
+    md_paa_imputed_federal_ssi: 487
+    # combined_need = 1,376 + 102 = 1,478.
+    md_paa_total_cost_of_care: 1_478
+    # PAA = 1,478 - 480 - 487 = 511.
+    md_paa: 511
+
+# Case 11's household when person1 reports SSI receipt. PAA counts only her
+# own income (COMAR 07.03.07.07), and the imputed SSI is what SSA pays her
+# under spouse deeming: the lesser of the couple computation and the
+# individual computation (20 CFR 416.1163(d)-(e); POMS SI 01320.430).
+# 2025-01: federal SSI couple rate $1,450 and individual rate $967; provider
+# rate $1,376; PNA $102.
+- name: Case 13, aged LPR without 40 quarters who reports SSI receipt and has a working spouse.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 30 # entered in 1995
+        ssi_qualifying_quarters_earnings: 20
+        receives_ssi: true
+        social_security_survivors: 6_000 # 500 a month
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_D
+      person2:
+        age: 60
+        employment_income: 12_000 # 1,000 a month
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    md_paa_eligible: [true, false]
+    # The model's SSI fails person1 on the 40-quarter test.
+    ssi: [0, 0]
+    # person2's 12,000 a year exceeds the (1,450 - 967) x 12 = 5,796 gap, so
+    # deeming applies: couple countable 480 + (1,000 - 65) x 0.5 = 947.50
+    # less person1's own 480 = 467.50 a month.
+    ssi_income_deemed_from_ineligible_spouse: [467.50, 0]
+    # PAA counts person1's own income only: 500 - 20 = 480. person2's own
+    # countable wages are (1,000 - 20 - 65) x 0.5 = 457.50.
+    md_paa_countable_income: [480, 457.50]
+    # SSA pays min(1,450 - (480 + 467.50), 967 - 480) = min(502.50, 487) = 487.
+    md_paa_imputed_federal_ssi: [487, 0]
+    # combined_need = 1,376 + 102 = 1,478.
+    md_paa_total_cost_of_care: [1_478, 0]
+    # PAA = 1,478 - 480 - 487 = 511, the same as with no spouse (Case 12).
+    md_paa: [511, 0]
+
+- name: Case 14, SSI reporter without 40 quarters whose deemed spouse wages make the couple computation lower.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 30
+        ssi_qualifying_quarters_earnings: 20
+        receives_ssi: true
+        social_security_survivors: 6_000 # 500 a month
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_D
+      person2:
+        age: 60
+        employment_income: 24_000 # 2,000 a month
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # Couple countable 480 + (2,000 - 65) x 0.5 = 1,447.50; deemed
+    # 1,447.50 - 480 = 967.50 a month.
+    ssi_income_deemed_from_ineligible_spouse: [967.50, 0]
+    md_paa_countable_income: [480, 957.50]
+    # SSA pays min(1,450 - 1,447.50, 967 - 480) = min(2.50, 487) = 2.50
+    # (20 CFR 416.1163(d)-(e)).
+    md_paa_imputed_federal_ssi: [2.50, 0]
+    # PAA = 1,478 - 480 - 2.50 = 995.50.
+    md_paa: [995.50, 0]
+
+- name: Case 15, SSI reporter without 40 quarters under the one-third reduction with a working spouse.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 30
+        ssi_qualifying_quarters_earnings: 20
+        receives_ssi: true
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_D
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 60
+        employment_income: 12_000 # 1,000 a month
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # No own income, so the $20 general exclusion goes to the wages:
+    # (1,000 - 20 - 65) x 0.5 = 457.50 deemed a month.
+    ssi_income_deemed_from_ineligible_spouse: [457.50, 0]
+    md_paa_countable_income: [0, 457.50]
+    # The one-third reduction applies to the couple rate under deeming
+    # (POMS SI 01320.400 B.1.e): min(1,450 x 2/3 - 457.50, 967 x 2/3 - 0) = 509.17.
+    md_paa_imputed_federal_ssi: [509.17, 0]
+    # PAA = 1,478 - 0 - 509.17 = 968.83.
+    md_paa: [968.83, 0]
+
+- name: Case 16, SSI reporter without 40 quarters in an MDH Rehabilitative Residence gets the $30 medical-facility rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 30
+    ssi_qualifying_quarters_earnings: 20
+    receives_ssi: true
+    social_security_survivors: 120 # 10 a month
+    ssi_countable_resources: 1_000
+    md_paa_living_arrangement: REHAB_RESIDENCE
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    state_code: MD
+  output:
+    md_paa_eligible: true
+    # 10 - 20 general exclusion leaves no countable income.
+    md_paa_countable_income: 0
+    # The federal rate in a medical treatment facility is 30 a month
+    # (42 U.S.C. 1382(e)(1)(B)).
+    md_paa_imputed_federal_ssi: 30
+    # PAA = the 102 personal needs allowance less 30 = 72.
+    md_paa: 72
