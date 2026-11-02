@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.household.demographic.person._parent_links import (
+    co_resident_parent_indices,
+)
 
 
 class nv_ccdp_activity_eligible(Variable):
@@ -7,27 +10,35 @@ class nv_ccdp_activity_eligible(Variable):
     label = "Eligible for Nevada CCDP based on Purpose of Care activity"
     definition_period = MONTH
     defined_for = StateCode.NV
-    reference = "https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/Child_Care_Manual_July_2024.pdf#page=76"
+    reference = (
+        "https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/Child_Care_Manual_July_2024.pdf#page=76",
+        "https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/Child_Care_Manual_July_2024.pdf#page=40",
+        "https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/Child_Care_Manual_July_2024.pdf#page=66",
+    )
 
     def formula(spm_unit, period, parameters):
         # MS 400 series: the applicant, every other required adult and minor
         # parents must be in an approved Purpose of Care activity. MS 216.1
-        # requires the child's parents, a guardian or designated relative
-        # caregiver and their spouses, not every adult at the address. Whoever
-        # claims the child stands in for them, so a grandparent or roommate in
-        # their own tax unit isn't checked, and neither is a parent who doesn't
-        # claim the child.
+        # requires a child's parents, whoever claims the child, and a guardian or
+        # designated relative caregiver and their spouses, not every adult at the
+        # address. parent_1_id and parent_2_id name those parents. A child with
+        # no linked parent in the unit falls to the head and spouse of the tax
+        # unit that claims them. So without ids a parent who doesn't claim the
+        # child isn't checked, and an adult who shares the child's tax unit is,
+        # because that tax unit reads its second adult as a spouse.
         #   - POC 420 (working) needs monetary compensation and sets no minimum
         #     hours, so earnings stand in for it. A self-employment loss still
         #     counts: MS 306.37 asks for an enterprise for gain.
         #   - POC 450 (student) needs six or more credit hours at an accredited
         #     college, which every full-time college student meets. We don't
         #     track credit hours, so part-time students use the input below.
-        #     MS 450.1 has minor parents attend school for a diploma or GED.
+        #     MS 450.1 has minor parents attend school for a diploma or GED. We
+        #     don't track diplomas, so a minor parent who works also passes.
         #   - POC 470 (disability) requires someone else to care for the child
-        #     outside child care hours. A disabled caretaker is covered only
-        #     when another caretaker works or studies, so a lone disabled
-        #     caretaker is not.
+        #     outside child care hours. A disabled caretaker is covered when
+        #     another caretaker works or studies. When the someone else is any
+        #     other adult at home, MS 470 still applies, and the input below
+        #     covers that case.
         #   - meets_ccdf_activity_test covers what we don't model individually:
         #     POC 430 (job search), POC 460 (training), and the student and
         #     disability cases above that fall outside these proxies.
@@ -47,9 +58,17 @@ class nv_ccdp_activity_eligible(Variable):
         # a caretaker as working in every month of the year.
         person = spm_unit.members
         is_eligible_child = person("nv_ccdp_eligible_child", period)
-        is_required_adult = person.tax_unit.any(is_eligible_child) & person(
-            "is_tax_unit_head_or_spouse", period.this_year
+        unit = spm_unit.members_entity_id
+        is_linked_parent = np.zeros(person.count, dtype=bool)
+        has_linked_parent = np.zeros(person.count, dtype=bool)
+        for parent in co_resident_parent_indices(person, period.this_year):
+            linked = is_eligible_child & (parent >= 0) & (unit[parent] == unit)
+            is_linked_parent[parent[linked]] = True
+            has_linked_parent[linked] = True
+        is_claimant = person.tax_unit.any(is_eligible_child & ~has_linked_parent) & (
+            person("is_tax_unit_head_or_spouse", period.this_year)
         )
+        is_required_adult = is_linked_parent | is_claimant
         is_minor_parent = person("is_child", period.this_year) & person(
             "is_parent", period.this_year
         )

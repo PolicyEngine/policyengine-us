@@ -439,7 +439,7 @@
     # MS 216.1 doesn't list a grandparent who has no guardianship.
     nv_ccdp_activity_eligible: true
 
-- name: A grandparent who claims the child needs an activity.
+- name: Without parent ids, a grandparent who claims the child stands in for the parent.
   period: 2025-01
   absolute_error_margin: 0.1
   input:
@@ -534,3 +534,128 @@
   output:
     # MS 400 requires minor parents to have a Purpose of Care too.
     nv_ccdp_activity_eligible: false
+
+- name: A linked parent who works satisfies the test when an idle grandparent claims the child.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        person_id: 1
+        employment_income: 30_000
+      person2:
+        age: 4
+        person_id: 2
+        parent_1_id: 1
+      person3:
+        age: 65
+        person_id: 3
+    tax_units:
+      tax_unit:
+        members: [person1]
+      grandparent_tax_unit:
+        members: [person3, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: true
+
+- name: An idle linked parent fails the test when a working grandparent claims the child.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        person_id: 1
+      person2:
+        age: 4
+        person_id: 2
+        parent_1_id: 1
+      person3:
+        age: 65
+        person_id: 3
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+      grandparent_tax_unit:
+        members: [person3, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: false
+
+- name: An idle linked parent who files apart fails the test beside a working parent.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        person_id: 1
+        employment_income: 30_000
+      person2:
+        age: 4
+        person_id: 2
+        parent_1_id: 1
+        parent_2_id: 3
+      person3:
+        age: 32
+        person_id: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+      other_parent_tax_unit:
+        members: [person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: false
+
+- name: A child with no linked parent falls to the working grandparent who claims them.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 65
+        person_id: 1
+        employment_income: 30_000
+      person2:
+        age: 40
+        person_id: 2
+        parent_1_id: 1
+      person3:
+        age: 4
+        person_id: 3
+    tax_units:
+      grandparent_tax_unit:
+        members: [person1, person3]
+      other_tax_unit:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: true

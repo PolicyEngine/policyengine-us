@@ -6,10 +6,11 @@ caretaker only when someone else can care for the child.
 
 1. Without the input or another pathway, the result follows the table in
    expected_activity for every pair of caretakers.
-2. The input can only add eligibility: setting it never removes it.
-3. Earnings can only add eligibility for a lone caretaker, at any amount.
-4. An adult in a tax unit that claims no eligible child changes nothing,
+2. Earnings can only add eligibility for a lone caretaker, at any amount.
+3. An adult in a tax unit that claims no eligible child changes nothing,
    whatever that adult does.
+4. With parent ids, the linked parent's activity decides, whoever claims the
+   child and whatever that claimant does.
 
 YAML pins single households. These tests need Hypothesis to walk every pair of
 caretakers against a reference written apart from the formula.
@@ -39,36 +40,21 @@ def expected_activity(caretakers):
     return any(active) and all(covered)
 
 
-def activity_eligible(caretakers, meets_test=False, other_adult=None):
-    people = {
-        f"caretaker{index}": {
-            "age": {YEAR: 30},
-            "employment_income": {YEAR: caretaker["earnings"]},
-            "is_full_time_college_student": {YEAR: caretaker["student"]},
-            "is_disabled": {YEAR: caretaker["disabled"]},
-        }
-        for index, caretaker in enumerate(caretakers)
+def adult(caretaker, age=30):
+    return {
+        "age": {YEAR: age},
+        "employment_income": {YEAR: caretaker["earnings"]},
+        "is_full_time_college_student": {YEAR: caretaker["student"]},
+        "is_disabled": {YEAR: caretaker["disabled"]},
     }
-    people["child"] = {"age": {YEAR: 4}}
-    tax_units = {"tax_unit": {"members": list(people)}}
-    if other_adult is not None:
-        people["other_adult"] = {
-            "age": {YEAR: 65},
-            "employment_income": {YEAR: other_adult["earnings"]},
-            "is_full_time_college_student": {YEAR: other_adult["student"]},
-            "is_disabled": {YEAR: other_adult["disabled"]},
-        }
-        tax_units["other_tax_unit"] = {"members": ["other_adult"]}
+
+
+def eligible(people, tax_units):
     members = list(people)
     situation = {
         "people": people,
         "tax_units": tax_units,
-        "spm_units": {
-            "spm_unit": {
-                "members": members,
-                "meets_ccdf_activity_test": {YEAR: meets_test},
-            }
-        },
+        "spm_units": {"spm_unit": {"members": members}},
         "families": {"family": {"members": members}},
         "households": {"household": {"members": members, "state_name": {YEAR: "NV"}}},
     }
@@ -76,18 +62,23 @@ def activity_eligible(caretakers, meets_test=False, other_adult=None):
     return bool(simulation.calculate("nv_ccdp_activity_eligible", MONTH)[0])
 
 
+def activity_eligible(caretakers, other_adult=None):
+    people = {
+        f"caretaker{index}": adult(caretaker)
+        for index, caretaker in enumerate(caretakers)
+    }
+    people["child"] = {"age": {YEAR: 4}}
+    tax_units = {"tax_unit": {"members": list(people)}}
+    if other_adult is not None:
+        people["other_adult"] = adult(other_adult, age=65)
+        tax_units["other_tax_unit"] = {"members": ["other_adult"]}
+    return eligible(people, tax_units)
+
+
 @settings(max_examples=30, deadline=None)
 @given(caretakers=st.lists(CARETAKER, min_size=1, max_size=2))
 def test_activity_follows_the_manual(caretakers):
     assert activity_eligible(caretakers) == expected_activity(caretakers)
-
-
-@settings(max_examples=15, deadline=None)
-@given(caretakers=st.lists(CARETAKER, min_size=1, max_size=2))
-def test_the_input_only_adds_eligibility(caretakers):
-    assert activity_eligible(caretakers, meets_test=True) >= activity_eligible(
-        caretakers
-    )
 
 
 @settings(max_examples=15, deadline=None)
@@ -106,3 +97,22 @@ def test_an_adult_who_claims_no_child_changes_nothing(caretakers, other_adult):
 def test_any_paid_work_is_enough_for_a_lone_parent(earnings):
     parent = {"earnings": earnings, "student": False, "disabled": False}
     assert activity_eligible([parent])
+
+
+@settings(max_examples=15, deadline=None)
+@given(parent=CARETAKER, claimant=CARETAKER)
+def test_a_linked_parent_decides_whoever_claims_the_child(parent, claimant):
+    people = {
+        "parent": {**adult(parent), "person_id": {YEAR: 1}},
+        "child": {
+            "age": {YEAR: 4},
+            "person_id": {YEAR: 2},
+            "parent_1_id": {YEAR: 1},
+        },
+        "claimant": {**adult(claimant, age=65), "person_id": {YEAR: 3}},
+    }
+    tax_units = {
+        "parent_tax_unit": {"members": ["parent"]},
+        "claimant_tax_unit": {"members": ["claimant", "child"]},
+    }
+    assert eligible(people, tax_units) == expected_activity([parent])
