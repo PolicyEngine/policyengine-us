@@ -154,8 +154,11 @@ class tax_unit_is_required_to_file(Variable):
         # be claimed as a dependent in further cases; it does not replace
         # (A) for that filer. So the (A) and (B) threshold binds every filer,
         # and (C)(i)(II), gross income over the standard deduction, is added
-        # for a tax unit whose head or spouse can be claimed. (C)(i)(I), the
-        # unearned income test, is below.
+        # for a tax unit whose head or spouse can be claimed. Before 2018 the
+        # threshold used for (C)(i)(II) adds the exemption amount, which
+        # (C)(i)(II) doesn't, and section 6012(a)(1)(D)(ii) sets the exemption
+        # amount to zero for an individual described in section 151(d)(2).
+        # (C)(i)(I), the unearned income test, is below.
         if p.income.filing_requirement.standard_deduction_rule.applies:
             income_over_threshold = income_over_standard_deduction
         else:

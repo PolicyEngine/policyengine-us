@@ -67,7 +67,9 @@ separate_filer_itemizes) and checks section 6012(a)(1)(A)(iv) and (C)(ii):
    joint unit with gross income under the $1,350 section 63(c)(5)(A) floor,
    which the formula before (iv) was coded excused, since both the (A)
    threshold and the limited standard deduction are at least that floor;
-   the test asserts that such a row exists.
+   the test asserts that such a row exists, and that one exists whose
+   claimable adult is the head, so an exclusion applied only when the
+   spouse can be claimed fails it.
 9. No change elsewhere: a joint return nobody can claim, whose
    separate_filer_itemizes is false, gets the result of the formula before
    (iv) and (C)(ii) were coded, frozen in `frozen_joint_reference` from the
@@ -468,10 +470,12 @@ def frozen_joint_reference(unit, year):
     return income > 31_500 + 1_600 * (aged + blind)
 
 
-# A claimable spouse with no income, which the formula before (iv) excused;
-# and joint returns nobody can claim a dollar under and at the 2026 threshold.
+# A claimable spouse with no income, and a claimable head with no income,
+# which the formula before (iv) excused; and joint returns nobody can claim a
+# dollar under and at the 2026 threshold.
 JOINT_ANCHORS = [
     (tax_unit("JOINT", [adult(30, False), adult(20, False, True)]), False),
+    (tax_unit("JOINT", [adult(20, False, True), adult(30, False)]), False),
     (
         tax_unit(
             "JOINT", [adult(40, False, employment_income=32_199), adult(40, False)]
@@ -506,6 +510,9 @@ def test_joint_return_properties(drawn):
     for year in YEARS:
         simulation.set_input("separate_filer_itemizes", year, itemizes)
     claimable = ~np.array([nobody_claimable(unit) for unit in joint])
+    head_claimable = np.array(
+        [unit["adults"][0]["claimed_as_dependent_on_another_return"] for unit in joint]
+    )
     income = np.array([gross_income(unit) for unit in joint])
     for year in YEARS:
         required = np.asarray(
@@ -517,6 +524,7 @@ def test_joint_return_properties(drawn):
                 f"{year}: excused a joint return with a claimable spouse"
             )
             assert (claimable & (income < DEPENDENT_AMOUNT[year])).any()
+            assert (head_claimable & (income < DEPENDENT_AMOUNT[year])).any()
         # Property 9.
         checked = ~claimable & ~itemizes
         expected = np.array([frozen_joint_reference(unit, year) for unit in joint])

@@ -720,7 +720,7 @@
     # loses (iv), but own gross income $3,000 < $4,050.
     # Limited basic standard deduction: max($1,050, $3,000 + $350) = $3,350.
     # (A) threshold: 2 x $4,050 + $3,350 = $11,450 > $3,000.
-    # (C)(i)(II): $3,000 does not exceed $3,350 + $4,050 = $7,400.
+    # (C)(i)(II): $3,000 does not exceed the $3,350 standard deduction.
     # No unearned income.
     basic_standard_deduction: 3_350
     tax_unit_is_required_to_file: false
@@ -747,7 +747,7 @@
     # The head loses (iv): own gross income $5,000 >= $4,050.
     # Without that: limited basic standard deduction max($1,050, $5,350) =
     # $5,350; (A) threshold 2 x $4,050 + $5,350 = $13,450 > $5,000; and
-    # (C)(i)(II): $5,000 does not exceed $5,350 + $4,050 = $9,400.
+    # (C)(i)(II): $5,000 does not exceed the $5,350 standard deduction.
     basic_standard_deduction: 5_350
     tax_unit_is_required_to_file: true
 
@@ -776,7 +776,7 @@
     # head's own. The claimable spouse keeps (iv), since the head can't be
     # claimed. Limited basic standard deduction: max($1,050, $5,000 + $350)
     # = $5,350. (A) threshold 2 x $4,050 + $5,350 = $13,450 > $5,000.
-    # (C)(i)(II): $5,000 does not exceed $5,350 + $4,050 = $9,400.
+    # (C)(i)(II): $5,000 does not exceed the $5,350 standard deduction.
     # No unearned income.
     basic_standard_deduction: 5_350
     tax_unit_is_required_to_file: false
