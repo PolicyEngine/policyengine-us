@@ -808,7 +808,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AL, DC, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX
+    coverage: AL, DC, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX, HI
     state_implementations:
       - state: AL
         status: partial
@@ -961,11 +961,12 @@ programs:
         parameter_prefix: gov.states.tx.tdhca.ceap
         notes: Models the 150% FPG income limit, the alternative 60% SMI limit from the FY2024 state plan (applied through 2024), benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
       - state: HI
-        status: in_progress
-        name: Hawaii LIHEAP components
-        full_name: Hawaii Low Income Home Energy Assistance Program components
+        status: partial
+        name: Hawaii LIHEAP subsidized dwelling benefit
+        full_name: Hawaii Low Income Home Energy Assistance Program subsidized dwelling benefit
+        variable: hi_liheap_subsidized_amount
         parameter_prefix: gov.states.hi.dhs.liheap
-        notes: "Five regular-heating components for household size, countable income, operational income ceiling, points and subsidized schedule amounts. Income limits preserve the published first-ten household amounts and use shared lagged FPG above ten, validated through size twenty. No final eligibility or private-dwelling award: FY2026 statewide value per point and exceptional SSI independent-living certification remain unresolved. Annual inputs and SPM units approximate application circumstances. Earlier backfills and the FPG extension above size twenty are unverified estimates. Crisis, cooling, weatherization and equipment remain outside scope."
+        notes: FY2026 eligibility, the subsidized-dwelling flat benefit and private-dwelling points; no private-dwelling dollar award because its statewide value per point was not located. Crisis, cooling, weatherization and equipment assistance are out of scope.
 
   # --- SSA programs ---
   - id: ssi

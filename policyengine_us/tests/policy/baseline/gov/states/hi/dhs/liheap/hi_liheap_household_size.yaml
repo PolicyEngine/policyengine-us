@@ -93,3 +93,33 @@
         county: LOS_ANGELES_COUNTY_CA
   output:
     hi_liheap_household_size: [1, 2, 0, 0]
+
+- name: Case 2, a member one or older without a Social Security Number leaves the size.
+  period: 2026
+  # 2020 manual 2.4: ages one and older. The adult without a number is removed; the
+  # infant without one stays.
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+      person2:
+        age: 35
+        ssi: 0
+        ssn_card_type: NONE
+      person3:
+        age: 0
+        ssi: 0
+        ssn_card_type: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        hi_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_household_size: 2

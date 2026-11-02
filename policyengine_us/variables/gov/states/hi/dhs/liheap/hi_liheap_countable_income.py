@@ -18,5 +18,7 @@ class hi_liheap_countable_income(Variable):
         # Annual flows approximate prior-month receipts. Minor and nonqualified
         # members' income counts; source losses cannot offset other receipts.
         person = spm_unit.members
-        income = sum(max_(add(person, period, [source]), 0) for source in p.sources)
+        income = 0
+        for source in p.sources:
+            income = income + max_(add(person, period, [source]), 0)
         return spm_unit.sum(income) + max_(spm_unit("tanf", period), 0)

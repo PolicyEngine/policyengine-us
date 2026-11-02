@@ -281,9 +281,8 @@
 - name: Case 8, negative net earnings are floored and other states stay zero.
   period: 2026
   absolute_error_margin: 0.01
-  # Component convention floors negative annual resources at zero; the income
-  # point schedule starts at zero. The same positive income in California is zero
-  # in the Hawaii component.
+  # Negative annual resources floor at zero. The same positive income in California
+  # is zero in the Hawaii component.
   input:
     people:
       person1:
@@ -336,9 +335,11 @@
   output:
     hi_liheap_countable_income: [0, 1_500, 0]
 
-# Gross receipts: military60_000 and wages30_000 each exceed150% of one-person FPG26_985; size+Oahu=2 points. UI18_000 yields income1+size1+region1=3. TANF controls test receipt gating separately from entitlement.
+# Gross receipts: military 60,000 and wages 30,000 each exceed 150% of the one-person
+# guideline of 26,985; size + Oahu = 2 points. UI 18,000 yields income 1 + size 1 + region 1 = 3.
+# TANF controls test receipt gating separately from entitlement.
 - name: Case 9, military retirement and rental losses preserve gross receipts and points.
-  period: 2_026
+  period: 2026
   absolute_error_margin: 0.01
   input:
     people:
@@ -387,7 +388,7 @@
     - 2
     - 2
 - name: Case 10, reported UI overrides modeled receipt and negative UI does not offset wages.
-  period: 2_026
+  period: 2026
   absolute_error_margin: 0.01
   input:
     people:
@@ -464,7 +465,7 @@
     - 4
     - 4
 - name: Case 11, TANF enters once only when the household takes it up.
-  period: 2_026
+  period: 2026
   absolute_error_margin: 0.01
   input:
     people:
@@ -525,3 +526,52 @@
     hi_liheap_countable_income:
     - 12_000
     - 6_000
+
+# The 2020 manual counts "Pensions and annuities such as Railroad Retirement":
+# 6,000 counts.
+- name: Case 12, railroad retirement counts as a pension.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        railroad_benefits: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        hi_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_liheap_countable_income: 6_000
+
+# Plan pages 6-7 check jury pay and legal settlements, and draft manual 5.3 counts
+# contributions: miscellaneous 1,000 + guaranteed-income cash 500.
+- name: Case 13, miscellaneous income and cash assistance count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        miscellaneous_income: 1_000
+        gi_cash_assistance: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        hi_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_liheap_countable_income: 1_500

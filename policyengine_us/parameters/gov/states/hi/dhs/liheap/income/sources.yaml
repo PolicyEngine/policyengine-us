@@ -11,7 +11,8 @@ values:
     - social_security
     - ssi
     - pension_income
-    - military_retirement_pay
+    - military_retirement_income
+    - railroad_benefits
     - retirement_distributions
     - survivor_benefits
     - general_assistance
@@ -20,7 +21,7 @@ values:
     - alimony_income
     - child_support_received
     - interest_income
-    - dividend_income
+    - ordinary_dividend_income
     - veterans_benefits
     - workers_compensation
     - disability_benefits
@@ -28,10 +29,16 @@ values:
     - life_insurance_benefits
     - financial_assistance
     - gambling_winnings
+    - gi_cash_assistance
+    # Jury pay, legal settlements and other receipts the plan checks.
+    - miscellaneous_income
 # Pension, Social Security and retirement-distribution components enter once.
+# Military retirement includes Survivor Benefit Plan annuities.
 # TANF is added once at household level; monthly SSI is annualized by aggregation.
-# No minor-earnings exclusion applies. Missing receipt categories are documented
-# in the accompanying README and are not treated as policy exclusions.
+# No minor-earnings exclusion applies. Receipts without a separate input, such as
+# mortgage principal, are not policy exclusions. Royalties are in rental_income.
+# Military pay is read as part of employment_income, as hi_military_pay_exclusion
+# reads it; housing and subsistence allowances have no input.
 metadata:
   unit: list
   period: year

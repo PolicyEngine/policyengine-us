@@ -1,4 +1,4 @@
-description: Hawaii provides these scheduled subsidized-dwelling amounts by qualified household size under the Low Income Home Energy Assistance Program.
+description: Hawaii provides these flat subsidized-dwelling benefits by qualified household size under the Low Income Home Energy Assistance Program.
 brackets:
   - threshold:
       2025-10-01: 0
@@ -21,7 +21,7 @@ metadata:
   threshold_unit: /1
   amount_unit: currency-USD
   period: year
-  label: Hawaii LIHEAP subsidized dwelling scheduled amount
+  label: Hawaii LIHEAP subsidized dwelling flat benefit
   reference:
-    - title: "Hawaii FY2026 LIHEAP benefit matrix #page 2-3"
+    - title: Hawaii FY2026 LIHEAP benefit matrix
       href: https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=2

@@ -588,6 +588,7 @@
   period: 2026
   # Electricity / income is 29.99%, 30%, 30.01% and 0%. Add burden 0,1,1,0
   # to income two + size one + Oahu one. High gas bills do not earn this point.
+  # The last unit is 3_600 / 12_000, exactly 30%, where a float32 product exceeds 3_600.
   input:
     people:
       person1:
@@ -610,6 +611,11 @@
         is_citizen_or_legal_immigrant: true
         ssi: 0
         employment_income: 10_000
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
     spm_units:
       spm_unit1:
         members: [person1]
@@ -635,6 +641,12 @@
         gas_expense: 6_000
         pre_subsidy_electricity_expense: 0
         hi_tanf: 0
+      spm_unit5:
+        members: [person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 3_600
+        hi_tanf: 0
     households:
       household1:
         members: [person1]
@@ -652,8 +664,12 @@
         members: [person4]
         state_code: HI
         county: HONOLULU_COUNTY_HI
+      household5:
+        members: [person5]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
   output:
-    hi_liheap_points: [4, 5, 5, 4]
+    hi_liheap_points: [4, 5, 5, 4, 5]
 
 - name: Case 8, zero income distinguishes positive electric expense from zero.
   period: 2026
@@ -877,9 +893,10 @@
     hi_liheap_countable_income: 12_000
     hi_liheap_points: 5
 
-# Plan physical10: agefiveandunder includes5.5. Income20_000 / two-person FPG24_320 gives2; size1+Oahu1+child1=5, dropping to4 at6. Electric1_200 is below30%burden.
+# Plan page 10: age five and under includes 5.5. Income 20,000 / two-person guideline 24,320
+# gives 2; size 1 + Oahu 1 + child 1 = 5, dropping to 4 at 6. Electric 1,200 is below the 30% burden.
 - name: Case 12, a child remains age five until the sixth birthday.
-  period: 2_026
+  period: 2026
   input:
     people:
       person1:
@@ -936,3 +953,117 @@
     hi_liheap_points:
     - 5
     - 4
+
+# With no county input, the shared fallback (Hawaii County) earns 2: 3 + 1 + 2.
+- name: Case 13, an omitted county uses the shared fallback.
+  period: 2026
+  input:
+    state_code: HI
+    ssi: 0
+    hi_tanf: 0
+    heating_type: NATURAL_GAS
+  output:
+    hi_liheap_points: 6
+
+# An explicitly unknown county earns no island point: 3 + 1 + 0.
+- name: Case 14, an explicitly unknown county earns no island point.
+  period: 2026
+  input:
+    state_code: HI
+    county: UNKNOWN
+    ssi: 0
+    hi_tanf: 0
+    heating_type: NATURAL_GAS
+  output:
+    hi_liheap_points: 4
+
+# Oahu, 30,000. The 65-year-old without a Social Security Number leaves the size: size
+# 1, 30,000 / 17,990 = 1.67 earns no income point, and they earn no vulnerability point.
+# Size 1 + Oahu 1 = 2.
+- name: Case 15, a member without a Social Security Number adds no size or vulnerability.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        employment_income: 30_000
+      person2:
+        age: 65
+        ssi: 0
+        ssn_card_type: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        hi_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_household_size: 1
+    hi_liheap_income_limit: 41_941
+    hi_liheap_points: 2
+
+# Oahu, 12,000 of income: 12,000 / 17,990 = 0.67 earns 2, plus size 1 and Oahu 1 = 4.
+# Social Security disability, paid SSI and reported SSI each add the vulnerability point
+# for an adult without is_disabled (5). The manuals' definition is by receipt. A 17-year-old
+# with SSI is under the adult age (4).
+- name: Case 16, disability payments add the disabled-adult point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+        social_security_disability: 12_000
+      person2:
+        age: 40
+        ssi: 12_000
+      person3:
+        age: 40
+        ssi: 0
+        employment_income: 12_000
+        receives_ssi:
+          2026-01: true
+      person4:
+        age: 17
+        ssi: 12_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        hi_tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        hi_tanf: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        hi_tanf: 0
+      spm_unit4:
+        members: [person4]
+        heating_type: NATURAL_GAS
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household3:
+        members: [person3]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household4:
+        members: [person4]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_points: [5, 5, 5, 4]

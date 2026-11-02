@@ -19,7 +19,7 @@ class hi_liheap_income_limit(Variable):
         p = parameters(period).gov.states.hi.dhs.liheap
         smi_limit = p.eligibility.smi_amount.calc(size)
         fpg_limit = p.eligibility.fpg_rate * fpg(
-            max_(size, 1),
+            size,
             group,
             period,
             parameters,
@@ -29,7 +29,4 @@ class hi_liheap_income_limit(Variable):
         # from SMI and a consistent rounding rule. Preserve the published dollars.
         # Its sizes 11-20 exactly match the lagged Hawaii FPG calculation;
         # continuing that percentage above size 20 is an unverified extension.
-        limit = where(
-            size <= p.eligibility.smi_max_household_size, smi_limit, fpg_limit
-        )
-        return where(size > 0, limit, 0)
+        return where(size <= p.eligibility.smi_max_household_size, smi_limit, fpg_limit)
