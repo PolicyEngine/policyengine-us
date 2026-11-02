@@ -32,7 +32,7 @@ def _main_counterfactual(simulation, name, taxable_social_security=None):
             branch.populations["tax_unit"].get_holder(
                 "tax_unit_taxable_social_security"
             ).set_input(YEAR, taxable_social_security)
-        return np.asarray(branch.tax_unit("income_tax", YEAR)).copy()
+        return np.asarray(branch.tax_unit("income_tax_chapter_1", YEAR)).copy()
     finally:
         simulation.branches.pop(name)
         _release_reference_simulation(branch)
@@ -43,14 +43,18 @@ def _main_counterfactual(simulation, name, taxable_social_security=None):
 def test_sequential_tob_matches_main_elementwise_and_reuses_states(monkeypatch):
     dataset = build_chunking_dataset()
     baseline = make_simulation(dataset)
-    old_law_inclusion = np.asarray(
-        baseline.calculate("tax_unit_taxable_social_security_pre_1993", YEAR)
+    # Main caps old-law inclusion at actual inclusion, read before any branch.
+    old_law_inclusion = np.minimum(
+        np.asarray(
+            baseline.calculate("tax_unit_taxable_social_security_pre_1993", YEAR)
+        ),
+        np.asarray(baseline.calculate("tax_unit_taxable_social_security", YEAR)),
     ).copy()
     # These are main's OASDI and total algorithms, including separate no-SS
     # branches and the signed differences rather than per-tax-unit floors.
     oasdi_no_ss = _main_counterfactual(baseline, "oasdi_no_ss")
     old_law = _main_counterfactual(baseline, "oasdi_old_law", old_law_inclusion)
-    current = np.asarray(baseline.calculate("income_tax", YEAR)).copy()
+    current = np.asarray(baseline.calculate("income_tax_chapter_1", YEAR)).copy()
     total_no_ss = _main_counterfactual(baseline, "tob_calc")
     expected = {
         "tob_revenue_oasdi": old_law - oasdi_no_ss,
@@ -91,7 +95,7 @@ def test_sequential_tob_matches_main_elementwise_and_reuses_states(monkeypatch):
         assert np.sum(actual * weights) == np.sum(expected[variable] * weights)
         assert all(reference() is None for reference in references)
 
-    assert names == ["_tob_no_social_security", "_tob_pre_1993_social_security"]
+    assert names == ["_tob_pre_1993_social_security", "_tob_no_social_security"]
     assert not any(name.startswith("_tob_") for name in simulation.branches)
     _release_reference_simulation(simulation)
     del simulation

@@ -72,16 +72,23 @@ pre-change TOB branch calculations protect the statutory signed allocation.
 
 ## TOB working memory
 
-Counterfactual income tax without Social Security and under pre-1993 inclusion
-is cached in parent variable holders. A direct TOB calculation prepares those
-holders in separate outer calculations: current Core retains popped branches
-in active calculation frames, so the frames must finish before collection.
-Each temporary branch clones the system, clears non-input arrays, computes and
-copies only income tax, and is removed and collected before the next direct
+The TOB outputs difference `income_tax_chapter_1`, chapter 1 liability after
+nonrefundable and before refundable credits, which leaves out the chapter 2A
+net investment income tax. Counterfactual chapter 1 tax without Social
+Security, and under bounded pre-1993 inclusion, is cached in parent variable
+holders. The bound is the lesser of the pre-1993 section 86 amount and actual
+inclusion, read in the outer simulation before either counterfactual branch
+exists. A direct TOB calculation prepares those holders in separate outer
+calculations, old-law first: current Core retains popped branches in active
+calculation frames, so the frames must finish before collection. Each temporary
+branch clones the system, clears non-input arrays, computes and copies only
+chapter 1 tax, and is removed and collected before the next direct
 counterfactual. A TOB dependency nested inside another formula can retain its
-branch identities until that outer formula returns. OASDI remains old-law tax minus no-inclusion
-tax, total remains current tax minus no-inclusion tax, and HI remains the signed
-residual. No per-unit floor is introduced.
+branch identities until that outer formula returns. OASDI remains bounded
+old-law tax minus no-inclusion tax, total remains current chapter 1 tax minus
+no-inclusion tax, and HI remains the signed residual. No per-unit floor is
+introduced. See [OASDI modeled liabilities and benefits](social-security-oasdi-accounting.md)
+for the accounting these outputs feed.
 
 The hub will add measured full-dataset peak memory and timing after running its
 memory probe. Small-fixture exactness establishes correctness, not a measured

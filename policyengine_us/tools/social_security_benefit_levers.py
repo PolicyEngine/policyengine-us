@@ -72,9 +72,13 @@ def joint_cola_factor(events, first_payment, through_year, pp_changes, withheld)
 
 def cola_event_multiplier(rate, delta, withheld):
     """Shared scalar/vector algebra for an exposed payment event."""
-    if not np.isfinite(rate) or rate < 0 or not np.isfinite(delta):
+    if (
+        not np.all(np.isfinite(rate))
+        or np.any(np.asarray(rate) < 0)
+        or not np.all(np.isfinite(delta))
+    ):
         raise ValueError("COLA rates must be nonnegative and changes finite")
-    numerator = np.where(withheld, 1, 1 + max(0, rate + delta))
+    numerator = np.where(withheld, 1, 1 + np.maximum(0, rate + delta))
     return numerator / (1 + rate)
 
 
@@ -100,7 +104,7 @@ def cola_events(parameters, through_year):
     last_actual = max(e["payment_year"] for e in events)
     if through_year > last_actual:
         indices = {
-            year: parameters(f"{year}-01-01").gov.ssa.uprating
+            year: parameters.gov.ssa.uprating(f"{year}-01-01")
             for year in range(last_actual, through_year + 1)
         }
         for year, rate in projected_cola_rates(indices).items():
@@ -123,12 +127,31 @@ def cola_events(parameters, through_year):
 def selected_reported_benefit(person, period, component):
     prefix = f"social_security_{component}"
     source = person(f"{prefix}_source", period)
-    if np.any(source != SocialSecurityBenefitSource.reported):
+    reported = source == SocialSecurityBenefitSource.reported
+    amount = person(f"{prefix}_reported", period)
+    if np.all(reported):
+        return amount
+    if component not in ("retirement", "survivors"):
         raise NotImplementedError(
-            "Calculated Social Security source modes are reserved; "
-            "this implementation supports the reported route only"
+            "The calculator supports own retirement and restricted survivor records"
         )
-    return person(f"{prefix}_reported", period)
+    calculator_source = person("ss_calculator_source", period)
+    allowed = (
+        ((SocialSecurityBenefitSource.supplied_ratio_survivor, "survivor"),)
+        if component == "survivors"
+        else (
+            (SocialSecurityBenefitSource.supplied_aime, "aime"),
+            (SocialSecurityBenefitSource.supplied_pia, "pia"),
+        )
+    )
+    valid = reported.copy()
+    for selector, calculator_mode in allowed:
+        valid |= (source == selector) & (calculator_source == calculator_mode)
+    if not np.all(valid):
+        raise ValueError(
+            "Public Social Security source must match the supported ss_calculator_source"
+        )
+    return np.where(reported, amount, person(f"ss_calculated_{component}", period))
 
 
 def reported_joint_cola_factor(person, period, parameters, component):
@@ -139,10 +162,10 @@ def reported_joint_cola_factor(person, period, parameters, component):
     if not np.any(reported):
         return 1
     year = period.start.year
-    p = parameters(period).gov.contrib.ssa.benefit_levers.cola
+    raw_policy = parameters.gov.contrib.ssa.benefit_levers.cola
+    p = raw_policy(str(period.start))
     if not 1 <= p.effective_month <= 12:
         raise ValueError("COLA effective month must lie in [1, 12]")
-    raw_policy = parameters.gov.contrib.ssa.benefit_levers.cola
     # An earlier withheld or adjusted COLA remains in the payment level after
     # a policy is switched off. Inspect the parameter history, not just today.
     active = any(
@@ -151,6 +174,11 @@ def reported_joint_cola_factor(person, period, parameters, component):
         for name in ("withholding_enabled", "pp_change", "alternative_rate")
         for entry in getattr(raw_policy, name).values_list
     )
+    means_test_ever_enabled = any(
+        entry.instant_str <= f"{year}-12-31" and bool(entry.value)
+        for entry in raw_policy.means_test.enabled.values_list
+    )
+    active |= means_test_ever_enabled
     if not active:
         return 1
     events = cola_events(parameters, year)
@@ -185,6 +213,21 @@ def reported_joint_cola_factor(person, period, parameters, component):
         elif identifier != "":
             raise ValueError("Social Security worker_id does not identify a person")
     entitlement = person(f"{prefix}_entitlement_year", period)
+    from policyengine_us.tools.social_security.means_test import (
+        component_eligibility_year,
+        component_receipt_month,
+        component_receipt_year,
+        component_withholding,
+        indexed_cola_rate,
+    )
+
+    # A5's manual channel needs no calculator or tax-history inputs. Keep
+    # calculated rows outside population validation when E3 has never applied.
+    means_eligibility = receipt_year = receipt_month = None
+    if means_test_ever_enabled:
+        means_eligibility = component_eligibility_year(person, period, component)
+        receipt_year = component_receipt_year(person, period, component)
+        receipt_month = component_receipt_month(person, period, component)
     age = person("age", period)
     if component == "retirement":
         eligibility = year - age + 62
@@ -221,7 +264,7 @@ def reported_joint_cola_factor(person, period, parameters, component):
         if not np.any(exposed):
             continue
         validate_cola_rounding_rule(event["rounding_rule"])
-        policy = parameters(f"{payment_year}-01-01").gov.contrib.ssa.benefit_levers.cola
+        policy = raw_policy(f"{payment_year}-01-01")
         effective = event["effective_date"]
         applies = (
             (
@@ -242,15 +285,43 @@ def reported_joint_cola_factor(person, period, parameters, component):
             raise ValueError(
                 "COLA change must be finite; alternative rate must be nonnegative or -1"
             )
-        rate = (
-            (alternative if alternative >= 0 else baseline) + policy.pp_change
-            if applies
+        index_rate = (
+            indexed_cola_rate(
+                person,
+                period,
+                parameters,
+                component,
+                payment_year,
+                baseline,
+                eligibility_year=means_eligibility,
+                receipt_year=receipt_year,
+                receipt_month=receipt_month,
+            )
+            if policy.means_test.enabled
             else baseline
         )
+        rate = (
+            (alternative if alternative >= 0 else index_rate) + policy.pp_change
+            if applies
+            else index_rate
+        )
         withheld = (
-            person(f"{prefix}_cola_withheld", payment_year)
-            if policy.withholding_enabled
-            else False
+            component_withholding(
+                person,
+                payment_year,
+                parameters,
+                component,
+                eligibility_year=means_eligibility,
+                receipt_year=receipt_year,
+                receipt_month=receipt_month,
+                use_explicit=True,
+            )
+            if policy.means_test.enabled
+            else (
+                person(f"{prefix}_cola_withheld", payment_year)
+                if policy.withholding_enabled
+                else False
+            )
         )
         multiplier = cola_event_multiplier(baseline, rate - baseline, withheld)
         result *= np.where(exposed, multiplier, 1)

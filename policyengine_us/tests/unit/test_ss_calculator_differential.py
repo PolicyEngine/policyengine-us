@@ -31,6 +31,26 @@ NEW_PARAMETER_NODES = (
     "gov.ssa.social_security.pia.bend_points",
     "gov.ssa.social_security.cola",
 )
+# Contributed namespaces whose every child node must be classified: either
+# calculator-only (listed in NEW_PARAMETER_NODES, so the reference drops it)
+# or kept in the reference (listed below with the code outside the household
+# calculator that reads it).
+CLASSIFIED_CONTRIB_NAMESPACES = ("gov.contrib.congress.s770", "gov.contrib.ssa")
+REFERENCE_PARAMETER_NODES = (
+    # tools/social_security/population.py: reported-benefit PIA ratios.
+    "gov.contrib.congress.s770.section_2",
+    # reforms/congress/s770/section_8.py reads it at simulation start; the
+    # s770 tax variables read it in formulas.
+    "gov.contrib.congress.s770.section_8",
+    # The social_security_*_payable_factor and across-the-board variables,
+    # the COLA means-test reform and the reported-benefit PIA ratios.
+    "gov.contrib.ssa.benefit_levers",
+    # reforms/ssa/owners_draw.py and s770_active_business_income; system.py
+    # writes current_law_cap into it at every system build.
+    "gov.contrib.ssa.owners_draw",
+    # tools/social_security/population.py: reported-benefit PIA ratios.
+    "gov.contrib.ssa.pia",
+)
 YEAR = 2026
 
 
@@ -85,6 +105,48 @@ DOWNSTREAM_OUTPUTS = (
     "ssi",
     "household_net_income",
 )
+
+
+def _node(root, path):
+    node = root
+    for part in path.split("."):
+        node = node.children[part]
+    return node
+
+
+def test_every_contributed_calculator_namespace_child_is_classified():
+    """A new node under these namespaces must be calculator-only or kept.
+
+    If an unlisted calculator-only node stayed in the reference, a legacy
+    formula that read it by accident would compute the same in both models,
+    and the differential below could not detect the dependency.
+    """
+    parameters = Simulation.default_tax_benefit_system_instance.parameters
+    classified = NEW_PARAMETER_NODES + REFERENCE_PARAMETER_NODES
+    problems = [
+        f"{path} is listed {classified.count(path)} times"
+        for path in sorted(set(classified))
+        if classified.count(path) > 1
+    ]
+    children = set()
+    for namespace in CLASSIFIED_CONTRIB_NAMESPACES:
+        for name in _node(parameters, namespace).children:
+            path = f"{namespace}.{name}"
+            children.add(path)
+            if path not in classified:
+                problems.append(
+                    f"{path} is unclassified: add it to NEW_PARAMETER_NODES if "
+                    "only the household calculator reads it, or to "
+                    "REFERENCE_PARAMETER_NODES with a comment naming the "
+                    "legacy formula, reform start-up or system build that "
+                    "reads it"
+                )
+    problems += [
+        f"{path} is listed in REFERENCE_PARAMETER_NODES but does not exist"
+        for path in REFERENCE_PARAMETER_NODES
+        if path not in children
+    ]
+    assert not problems, "\n".join(problems)
 
 
 def _situation(age, benefits, earnings=0, investment_income=0, joint=False):

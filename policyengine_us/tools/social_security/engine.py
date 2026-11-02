@@ -17,6 +17,7 @@ from .household import (
 )
 from .parameters import bend_points_at, formula_path_at
 from .pia import FormulaPath
+from .means_test import cola_override, component_withholding, indexed_cola_rate
 
 
 def calculator_output(person, period, parameters, output):
@@ -168,9 +169,31 @@ def calculator_output(person, period, parameters, output):
             lower[earnings_year] = test.exempt_amount_under_fra
             higher[earnings_year] = test.exempt_amount_year_of_fra
         changes, absolute_rates, withheld_years, across, payable = {}, {}, [], {}, {}
+        # December entitlement is paid the following January. Payment outputs
+        # for y do not need that future event's y-income decision; eagerly
+        # reading it would depend on the very checks being calculated. An
+        # entitlement output can read it through the separate payment route.
+        policy_horizon = year + int(
+            output
+            in (
+                "annual_entitlement",
+                "earnings_test_reduction",
+                "deferred_earnings_test_payment",
+            )
+            or (output == "benefit" and str(period)[5:7] == "12")
+        )
+        component = "survivors" if source == "survivor" else "retirement"
+        eligibility = np.full(len(sources), benchmark)
+        receipt = np.full(
+            len(sources),
+            int(record.entitlement_month[:4]) + (record.entitlement_month[5:7] == "12"),
+        )
+        receipt_month = np.full(
+            len(sources), int(record.entitlement_month[5:7]) % 12 + 1
+        )
         for event in events:
             payment_year = int(event.payment_month[:4])
-            if payment_year < 1983:
+            if payment_year < 1983 or payment_year > policy_horizon:
                 continue
             policy = parameters.gov.contrib.ssa.benefit_levers.cola(
                 f"{payment_year}-01-01"
@@ -196,22 +219,67 @@ def calculator_output(person, period, parameters, output):
             applies = applies and (
                 not policy.end_year or payment_year <= policy.end_year
             )
-            withheld = bool(
-                policy.withholding_enabled
-                and has_input_for_period(
-                    person.simulation,
-                    "ss_calculator_withhold_cola",
-                    str(payment_year),
+            withholding_enabled = (
+                policy.withholding_enabled or policy.means_test.enabled
+            )
+            if policy.means_test.enabled:
+                override = cola_override(
+                    person, "ss_calculator_cola_override", str(payment_year)
+                )[index]
+                withheld = (
+                    bool(override)
+                    if override != -1
+                    else bool(
+                        component_withholding(
+                            person,
+                            payment_year,
+                            parameters,
+                            component,
+                            eligibility_year=eligibility,
+                            receipt_year=receipt,
+                            receipt_month=receipt_month,
+                        )[index]
+                    )
                 )
-                and value("withhold_cola", str(payment_year))
+            elif withholding_enabled and has_input_for_period(
+                person.simulation,
+                "ss_calculator_withhold_cola",
+                str(payment_year),
+            ):
+                withheld = bool(value("withhold_cola", str(payment_year)))
+            else:
+                withheld = False
+            index_rate = indexed_cola_rate(
+                person,
+                period,
+                parameters,
+                component,
+                payment_year,
+                float(event.rate),
+                eligibility_year=eligibility,
+                receipt_year=receipt,
+                receipt_month=receipt_month,
+            )
+            resolved_index = Decimal(
+                str(float(np.broadcast_to(index_rate, len(sources))[index]))
             )
             changes[payment_year] = delta if applies else Decimal(0)
-            if applies and alternative >= 0:
+            if (applies and alternative >= 0) or resolved_index != event.rate:
                 # An absolute alternative replaces both 1999's as-paid rate
                 # and its corrected rate. Ordinary baseline+delta changes
                 # instead retain that historical distinction in adjusted_events.
                 absolute_rates[event.payment_month] = (
-                    Decimal(0) if withheld else max(Decimal(0), alternative + delta)
+                    Decimal(0)
+                    if withheld
+                    else max(
+                        Decimal(0),
+                        (
+                            alternative
+                            if applies and alternative >= 0
+                            else resolved_index
+                        )
+                        + (delta if applies else Decimal(0)),
+                    )
                 )
             if withheld:
                 withheld_years.append(payment_year)

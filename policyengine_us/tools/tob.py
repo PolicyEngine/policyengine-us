@@ -66,10 +66,12 @@ class TobCalculationMixin:
                     )
                 )
                 states = []
-                if needs_total or needs_oasdi:
-                    states.append("income_tax_without_social_security")
+                # Prepare old-law first: its bound reads actual inclusion in
+                # this simulation before either counterfactual branch exists.
                 if needs_oasdi:
                     states.append("income_tax_with_pre_1993_social_security")
+                if needs_total or needs_oasdi:
+                    states.append("income_tax_without_social_security")
                 for state in states:
                     if self.get_array(state, calculation_period) is None:
                         super().calculate(state, calculation_period)
@@ -80,12 +82,15 @@ class TobCalculationMixin:
 def income_tax_with_social_security_override(
     simulation, period, *, taxable_social_security=None
 ):
-    """Return only counterfactual income tax, then release its simulation.
+    """Return only counterfactual chapter 1 tax, then release its simulation.
 
-    ``None`` neutralizes taxable Social Security; an array supplies an
-    alternative inclusion. The caller caches the returned array in an ordinary
-    variable holder, so different TOB variables share the counterfactual without
-    retaining its other calculated arrays or its cloned tax-benefit system.
+    The measure is ``income_tax_chapter_1``: liability after nonrefundable and
+    before refundable credits, without the chapter 2A net investment income
+    tax. ``None`` neutralizes taxable Social Security; an array supplies an
+    alternative inclusion, which the caller has already bounded. The caller
+    caches the returned array in an ordinary variable holder, so different TOB
+    variables share the counterfactual without retaining its other calculated
+    arrays or its cloned tax-benefit system.
     """
     name = (
         "_tob_no_social_security"
@@ -104,7 +109,7 @@ def income_tax_with_social_security_override(
                 period, taxable_social_security
             )
         # The result must not keep a view into a branch's cached storage.
-        return branch.tax_unit("income_tax", period).copy()
+        return branch.tax_unit("income_tax_chapter_1", period).copy()
     finally:
         simulation.branches.pop(name, None)
         del branch

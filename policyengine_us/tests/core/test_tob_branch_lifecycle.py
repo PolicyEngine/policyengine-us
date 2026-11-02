@@ -1,4 +1,4 @@
-"""Counterfactual branches retain only their returned income-tax array."""
+"""Counterfactual branches retain only their returned chapter 1 tax array."""
 
 from types import FunctionType, SimpleNamespace
 import weakref
@@ -72,7 +72,7 @@ def test_counterfactual_releases_branch_and_copies_result(monkeypatch, override)
         if override is None
         else [("drop",), ("input", 2026, tuple(override))]
     )
-    assert simulation.events == setup + [("calculate", "income_tax", 2026)]
+    assert simulation.events == setup + [("calculate", "income_tax_chapter_1", 2026)]
 
 
 def test_counterfactuals_are_released_before_next_branch(monkeypatch):
@@ -141,7 +141,7 @@ def _record_collection(monkeypatch, simulation):
 
 @pytest.mark.parametrize(
     "requested, states",
-    [(OASDI, [NO_SS, OLD_LAW]), (HI, [NO_SS, OLD_LAW]), (TOTAL, [NO_SS])],
+    [(OASDI, [OLD_LAW, NO_SS]), (HI, [OLD_LAW, NO_SS]), (TOTAL, [NO_SS])],
 )
 def test_tob_states_finish_before_requested_calculation(monkeypatch, requested, states):
     simulation = FakeTobCalculation()
@@ -170,7 +170,7 @@ def test_tob_prefetch_preserves_available_or_replaced_target(monkeypatch, availa
 
 @pytest.mark.parametrize(
     "cached, states",
-    [([TOTAL], [NO_SS, OLD_LAW]), ([OASDI], [NO_SS]), ([TOTAL, OASDI], [])],
+    [([TOTAL], [OLD_LAW, NO_SS]), ([OASDI], [NO_SS]), ([TOTAL, OASDI], [])],
 )
 def test_hi_only_prefetches_missing_allocation_dependencies(
     monkeypatch, cached, states
