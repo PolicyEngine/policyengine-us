@@ -63,3 +63,66 @@
     spm_unit_cash_assets: 30_000
   output:
     il_hbwd_eligible: false
+
+# Wages of 18,000 are 113% of the 2026 poverty guideline, within the 138% adult
+# limit, so 89 Ill. Adm. Code 120.510(b) bars this person from the program.
+- name: Case 7, otherwise eligible through the adult group without a spenddown.
+  period: 2026
+  input:
+    state_code: IL
+    age: 40
+    is_disabled: true
+    employment_income: 18_000
+  output:
+    medicaid_category: ADULT
+    il_hbwd_eligible:
+      2026-01: false
+    il_hbwd_premium:
+      2026-01: 0
+    medicaid_premium: 0
+
+- name: Case 8, otherwise eligible through SSI.
+  period: 2026
+  input:
+    state_code: IL
+    age: 40
+    is_disabled: true
+    meets_ssi_disability_criteria: true
+    employment_income: 18_000
+  output:
+    medicaid_category: SSI_RECIPIENT
+    il_hbwd_eligible:
+      2026-01: false
+
+# Wages of 40,000 are 251% of the guideline, above every other group's limit.
+- name: Case 9, qualifies only through the buy-in and pays the premium.
+  period: 2026
+  input:
+    state_code: IL
+    age: 40
+    is_disabled: true
+    employment_income: 40_000
+  output:
+    medicaid_category: WORKING_DISABLED_BUY_IN
+    il_hbwd_eligible:
+      2026-01: true
+    medicaid_premium: 828
+
+# Income of 27,000 is 169% of the guideline, above the adult limit. Countable
+# income for SSI is 1,250 - 20 + (1,000 - 65) / 2 = 1,697.50 a month, above the
+# 1,330 limit, and 5,000 of expenses bring it within that limit through
+# medically needy. 89 Ill. Adm. Code 120.510(c) lets this person choose the buy-in.
+- name: Case 10, a person eligible only with a spenddown keeps the buy-in.
+  period: 2026
+  input:
+    state_code: IL
+    age: 40
+    is_disabled: true
+    meets_ssi_disability_criteria: true
+    employment_income: 12_000
+    taxable_pension_income: 15_000
+    other_medical_expenses: 5_000
+  output:
+    medicaid_category: WORKING_DISABLED_BUY_IN
+    il_hbwd_eligible:
+      2026-01: true
