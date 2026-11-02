@@ -154,7 +154,9 @@ def test_default_series_has_a_value_for_every_year():
     """A year with no value holds the previous one, so the per-capita index
     drifts down with population and then jumps when values resume. CBO AGI
     once had nothing for 2016 to 2018, so inputs dated 2018 came out 29% too
-    high by 2019."""
+    high by 2019, and Medicare IRMAA's lookback, which deflates income by the
+    same index, put a household entered for 2019 alone at 0.765 of its
+    income instead of 0.932."""
     total = get_parameter(system.parameters, _authored_series(DEFAULT))
     years = sorted(
         {
