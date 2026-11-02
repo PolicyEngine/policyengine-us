@@ -33,6 +33,13 @@ class mn_amt_taxable_income(Variable):
             # M1MT line 12 takes the casualty and theft loss from Schedule
             # M1SA line 19, Minnesota's own amount.
             "mn_casualty_loss_deduction",
+            # M1MT line 10 takes investment interest from M1SA line 13.
+            "investment_interest_expense",
+            # M1MT line 14 takes unreimbursed employee expenses from M1SA
+            # line 23, the miscellaneous deductions that mn_itemized_deductions
+            # takes from the federal misc_deduction.
+            # Line 13 (impairment-related work expenses) has no input here.
+            "misc_deduction",
         ]
         some_itm_deds = itemizing * add(tax_unit, period, SOME_DEDUCTIONS)
         AMT_SUBTRACTIONS = [
