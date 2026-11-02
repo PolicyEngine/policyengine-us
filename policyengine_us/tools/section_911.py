@@ -63,22 +63,21 @@ def elects_section_911_exclusion(tax_unit, period):
     exclusion elections, so housing-only filers also elect section 911.
     Positive Form 2555 amounts identify the election even when deductions or
     an explicit aggregate override reduce the federal stacking amount to zero.
-    Schedule 8812 (Line 13 and Part II-A) and Publication 596 (Rule 5) bar
-    Form 2555 filers from Worksheet B, refundable CTC, and EITC.
 
-    A filer who claims only the section 911(c)(4) housing deduction (Form
-    2555 line 50) also claims the benefits of section 911, so section
-    32(c)(1)(C) ("claims the benefits of section 911") bars the EITC, as
-    Publication 596 Rule 5 says ("to deduct or exclude a foreign housing
-    amount"). The refundable child tax credit uses the narrower test in
-    `excludes_amount_under_section_911`.
+    This is the broad test: whether the filer claims the benefits of section
+    911 at all, including a filer who claims only the section 911(c)(4)
+    housing deduction (Form 2555 line 50). Section 32(c)(1)(C) ("claims the
+    benefits of section 911") bars such a filer from the EITC, as Publication
+    596 Rule 5 says ("to deduct or exclude a foreign housing amount"). The
+    EITC, the state EITC helpers, the New Jersey childless EITC and the
+    filing propensity in tax_unit_is_filer read it. The refundable child tax
+    credit and Credit Limit Worksheet B use the narrower section 24(d)(3)
+    test in `excludes_amount_under_section_911`.
 
     References:
     https://www.law.cornell.edu/uscode/text/26/911#a
     https://www.law.cornell.edu/uscode/text/26/911#c_4
-    https://www.law.cornell.edu/uscode/text/26/24#d_3
     https://www.law.cornell.edu/uscode/text/26/32#c_1_C
-    https://www.irs.gov/instructions/i1040s8
     https://www.irs.gov/publications/p596
     """
     return np.logical_or.reduce(

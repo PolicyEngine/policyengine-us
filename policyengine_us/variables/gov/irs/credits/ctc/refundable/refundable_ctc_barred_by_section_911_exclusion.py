@@ -13,7 +13,14 @@ class refundable_ctc_barred_by_section_911_exclusion(Variable):
         "filers also skip Schedule 8812 Credit Limit Worksheet B. Claiming "
         "only the section 911(c)(4) housing deduction is not an exclusion and "
         "does not bar the credit, although the Schedule 8812 instructions bar "
-        "every Form 2555 filer; the model follows the statute."
+        "every Form 2555 filer; the model follows the statute. In 2021 the "
+        "bar is off for every filer: ARPA's section 24(i)(1) switched off "
+        "subsection (d) only for a filer whose principal place of abode was "
+        "in the United States for more than half the year, or a bona fide "
+        "resident of Puerto Rico, and the model has no input for that test, "
+        "so it applies the exemption to everyone. Most section 911 claimants, "
+        "who need a foreign tax home, cannot meet it, so the model can "
+        "overstate their 2021 refundable credit."
     )
     definition_period = YEAR
     reference = (
@@ -31,11 +38,11 @@ class refundable_ctc_barred_by_section_911_exclusion(Variable):
         p = parameters(period).gov.irs.credits.ctc.refundable
         excludes_section_911 = excludes_amount_under_section_911(tax_unit, period)
         # Former section 24(i)(1)(A) (2021, added by ARPA section 9611)
-        # switched off all of subsection (d),
-        # including this bar, for filers whose principal place of abode was in
-        # the United States for more than half the year and for bona fide
-        # residents of Puerto Rico. The model assumes every filer meets that
-        # test in a fully refundable year.
+        # switched off all of subsection (d), including this bar, for filers
+        # whose principal place of abode was in the United States for more
+        # than half the year and for bona fide residents of Puerto Rico. The
+        # model assumes every filer meets that test in a fully refundable
+        # year, although most section 911 claimants cannot.
         bar_in_force = (
             p.foreign_earned_income_exclusion_bar_applies and not p.fully_refundable
         )
