@@ -132,7 +132,12 @@ def _load_dataset(dataset):
         )
 
         path = _resolve_dataset_path(str(dataset))
-        if not _is_hdfstore_format(path):
+        try:
+            entity_tables = _is_hdfstore_format(path)
+        except Exception:
+            # PyTables raises its own error for a file that is not HDF5.
+            entity_tables = False
+        if not entity_tables:
             return _VariableCentricFile(path)
         with pd.HDFStore(path, mode="r") as store:
             multi_year = any(key.startswith("/person/") for key in store.keys())

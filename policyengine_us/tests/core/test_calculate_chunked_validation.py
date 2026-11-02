@@ -239,7 +239,8 @@ def _reader_reform():
     class AddReaders(Reform):
         def apply(self):
             for reader in [*readers.values(), monthly]:
-                self.add_variable(reader)
+                # The country simulation applies a reform more than once.
+                self.update_variable(reader)
 
     return AddReaders
 
