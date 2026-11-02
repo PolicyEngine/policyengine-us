@@ -239,3 +239,122 @@
     # The Board scale no longer applies.
     tx_ccs_board_copay:
       2025-01: 0
+
+- name: Case 9, Panhandle reduces the share of cost 30% when a child attends a Texas Rising Star provider.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 31_740  # $2,645 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_rating: TRS3
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # $155 (Case 1) * (1 - 30%) = $108.50
+    tx_ccs_board_copay:
+      2024-03: 108.5
+
+- name: Case 10, Panhandle reduces the share of cost 25% when every child is in part-time care.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 31_740  # $2,645 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_care_schedule: PART_TIME
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_care_schedule: BLENDED
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # $155 * (1 - 25%) = $116.25
+    tx_ccs_board_copay:
+      2024-03: 116.25
+
+- name: Case 11, Panhandle gives a family that qualifies for both reductions the greater one.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 31_740  # $2,645 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_care_schedule: PART_TIME
+        tx_ccs_provider_rating: TRS4
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_care_schedule: PART_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # The 30% reduction exceeds the 25% one: $155 * 0.7 = $108.50
+    tx_ccs_board_copay:
+      2024-03: 108.5
+
+- name: Case 12, Panhandle gives no part-time reduction when any child is in full-time care.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 31_740  # $2,645 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_care_schedule: PART_TIME
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_care_schedule: FULL_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    tx_ccs_board_copay:
+      2024-03: 155

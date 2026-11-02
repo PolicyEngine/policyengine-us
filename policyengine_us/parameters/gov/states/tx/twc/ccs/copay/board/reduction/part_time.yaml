@@ -1,0 +1,73 @@
+description: Texas Workforce Boards reduce the parent share of cost by this share under the Child Care Services program when every child in care has a part-time or blended schedule.
+
+# A Board's reduction applies only while its own scale does (applies.yaml).
+# Panhandle grants 25% "for each part-time/blended/part-week referral" to a
+# family whose children are all in part-time care, which the model applies
+# as 25% of the family's parent share of cost.
+PANHANDLE:
+  2023-10-01: 0.25
+SOUTH_PLAINS:
+  2023-10-01: 0
+NORTH_TEXAS:
+  2023-10-01: 0
+NORTH_CENTRAL:
+  2023-10-01: 0
+TARRANT_COUNTY:
+  2023-10-01: 0
+DALLAS_COUNTY:
+  2023-10-01: 0
+NORTHEAST_TEXAS:
+  2023-10-01: 0
+EAST_TEXAS:
+  2023-10-01: 0
+WEST_CENTRAL:
+  2023-10-01: 0
+BORDERPLEX:
+  2023-10-01: 0
+PERMIAN_BASIN:
+  2023-10-01: 0
+CONCHO_VALLEY:
+  2023-10-01: 0
+HEART_OF_TEXAS:
+  2023-10-01: 0
+CAPITAL_AREA:
+  2023-10-01: 0
+RURAL_CAPITAL:
+  2023-10-01: 0
+BRAZOS_VALLEY:
+  2023-10-01: 0
+DEEP_EAST:
+  2023-10-01: 0
+SOUTHEAST:
+  2023-10-01: 0
+GOLDEN_CRESCENT:
+  2023-10-01: 0
+ALAMO:
+  2023-10-01: 0
+SOUTH_TEXAS:
+  2023-10-01: 0
+COASTAL_BEND:
+  2023-10-01: 0
+LOWER_RIO:
+  2023-10-01: 0
+CAMERON_COUNTY:
+  2023-10-01: 0
+TEXOMA:
+  2023-10-01: 0
+CENTRAL_TEXAS:
+  2023-10-01: 0
+MIDDLE_RIO:
+  2023-10-01: 0
+GULF_COAST:
+  2023-10-01: 0
+
+metadata:
+  propagate_metadata_to_children: true
+  unit: /1
+  period: month
+  label: Texas CCS Board parent share of cost reduction for part-time care
+  breakdown:
+    - tx_ccs_workforce_board_region
+  reference:
+    - title: Panhandle Workforce Development Board Policy CC 3.1 Child Care Services, effective December 6, 2023 (Reductions in PSoC)
+      href: https://theprpc.org/Programs/WorkforceDevelopment/documents/12-7-2023%20WFDCGB%20Agenda%20Packet.pdf#page=103

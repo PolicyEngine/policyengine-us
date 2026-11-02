@@ -103,7 +103,10 @@ def test_range_limits_match_twc_tables(month):
 
 
 def _board_scales():
-    for folder in sorted(path for path in BOARD.iterdir() if path.is_dir()):
+    for board in TXCCSWorkforceBoardRegion:
+        folder = BOARD / board.name.lower()
+        if not folder.exists():
+            continue
         for name in ("first_child", "additional_child"):
             yield pytest.param(folder / f"{name}.yaml", id=f"{folder.name}-{name}")
 

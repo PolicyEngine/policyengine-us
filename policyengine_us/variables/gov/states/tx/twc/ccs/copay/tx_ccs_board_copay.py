@@ -1,5 +1,11 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.hhs.hhs_smi import smi
+from policyengine_us.variables.gov.states.tx.twc.ccs.payment.tx_ccs_care_schedule import (
+    TXCCSCareSchedule,
+)
+from policyengine_us.variables.gov.states.tx.twc.ccs.payment.tx_ccs_provider_rating import (
+    TXCCSProviderRating,
+)
 from policyengine_us.variables.gov.states.tx.twc.ccs.tx_ccs_workforce_board_region import (
     TXCCSWorkforceBoardRegion,
 )
@@ -42,7 +48,9 @@ class tx_ccs_board_copay(Variable):
         # TWC sets each Board Contract Year's income ranges from the SMI that
         # takes effect on October 1, so read the SMI at this month.
         monthly_smi = smi(size, state, period, parameters) / MONTHS_IN_YEAR
-        children = spm_unit.sum(spm_unit.members("tx_ccs_eligible_child", period))
+        person = spm_unit.members
+        eligible_child = person("tx_ccs_eligible_child", period)
+        children = spm_unit.sum(eligible_child)
         additional_children = max_(children - 1, 0)
         region = spm_unit.household("tx_ccs_workforce_board_region", period)
 
@@ -61,4 +69,22 @@ class tx_ccs_board_copay(Variable):
                 first_child + additional_child * additional_children,
                 copay,
             )
-        return copay
+
+        # Some Boards reduce the share of cost for a child at a Texas Rising
+        # Star provider or for a family whose children are all in part-time
+        # care. A family that qualifies for both gets the greater reduction.
+        rating = person("tx_ccs_provider_rating", period)
+        texas_rising_star = (
+            (rating == TXCCSProviderRating.TRS2)
+            | (rating == TXCCSProviderRating.TRS3)
+            | (rating == TXCCSProviderRating.TRS4)
+        )
+        has_texas_rising_star_child = spm_unit.any(eligible_child & texas_rising_star)
+        schedule = person("tx_ccs_care_schedule", period)
+        full_time = schedule == TXCCSCareSchedule.FULL_TIME
+        all_part_time = spm_unit.sum(eligible_child & full_time) == 0
+        reduction = max_(
+            has_texas_rising_star_child * p.reduction.texas_rising_star[region],
+            all_part_time * p.reduction.part_time[region],
+        )
+        return copay * (1 - reduction)
