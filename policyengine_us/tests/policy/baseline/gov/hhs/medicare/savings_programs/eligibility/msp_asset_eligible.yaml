@@ -349,3 +349,91 @@
     msp_asset_eligible:
       2022-06: [false, false]
       2022-07: [true, true]
+
+- name: Case 22, California's MSP individual asset limit falls to 21,000 in July 2027.
+  period: 2027
+  input:
+    age: 67
+    bank_account_assets: 21_001
+    spm_unit_is_married: false
+    state_code: CA
+  output:
+    # 21,001 is under 130,000 in June and over 21,000 from July; the federal
+    # limit is lower than both.
+    msp_asset_eligible:
+      2027-06: true
+      2027-07: false
+
+- name: Case 23, California's MSP couple asset limit falls to 31,000 in July 2027.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 70
+        bank_account_assets: 15_500
+      person2:
+        age: 68
+        bank_account_assets: 15_501
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Combined 31,001 is under 195,000 in June and over 31,000 from July; the
+    # federal couple limit is lower than both.
+    msp_asset_eligible:
+      2027-06: [true, true]
+      2027-07: [false, false]
+
+- name: Case 24, California's MSP individual asset limit admits assets at 21,000 in July 2027.
+  period: 2027
+  input:
+    age: 67
+    bank_account_assets: 21_000
+    spm_unit_is_married: false
+    state_code: CA
+  output:
+    # 21,000 is at the 21,000 limit that applies from July 2027; resources may
+    # not exceed it.
+    msp_asset_eligible:
+      2027-07: true
+
+- name: Case 25, California's MSP couple asset limit admits combined assets at 31,000 in July 2027.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 70
+        bank_account_assets: 15_500
+      person2:
+        age: 68
+        bank_account_assets: 15_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # 15,500 + 15,500 = 31,000 is at the 31,000 couple limit that applies from
+    # July 2027; resources may not exceed it.
+    msp_asset_eligible:
+      2027-07: [true, true]
