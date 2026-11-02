@@ -477,10 +477,12 @@ def get_la_cpi_u_percentage_increase(cpi: ParameterNode, year: int) -> float:
     ``cpi`` is the ``gov.bls.cpi`` node. BLS reports the change from the not
     seasonally adjusted index, so the published Decembers in
     ``cpi_u_nsa_december`` are used when both years have one. Otherwise
-    both Decembers come from the model's CPI-U series (seasonally adjusted
-    from January 2024), through ``get_projected_cpi_u_for_month``; mixing
-    the two would add December's seasonal factor (about 0.6% in 2025) to
-    the change.
+    both Decembers come from the model's CPI-U series, also not seasonally
+    adjusted, through ``get_projected_cpi_u_for_month``. A projected month
+    follows CBO's calendar-year averages and has no seasonal pattern, so a
+    change from an observed December to a projected one includes the
+    observed December's seasonal shortfall: December 2025 (324.054) was
+    0.6% below its seasonally adjusted value (326.031).
     """
     december = cpi.cpi_u_nsa_december
     published = {int(value.instant_str[:4]) for value in december.values_list}
@@ -593,9 +595,10 @@ def get_cms_cpi_u_percentage_increase(cpi: ParameterNode, year: int) -> float:
 
     ``cpi`` is the ``gov.bls.cpi`` node. The published Septembers in
     ``cpi_u_nsa_september`` are used when both are available. Otherwise both
-    Septembers come from the model's CPI-U series (seasonally adjusted from
-    January 2024) through ``get_projected_cpi_u_for_month``, so the two are
-    never mixed.
+    Septembers come from the model's CPI-U series, also not seasonally
+    adjusted, through ``get_projected_cpi_u_for_month``; a projected
+    September has no seasonal pattern (see
+    ``get_la_cpi_u_percentage_increase``).
     """
     september = cpi.cpi_u_nsa_september
     published = {int(value.instant_str[:4]) for value in september.values_list}

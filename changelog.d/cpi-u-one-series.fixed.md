@@ -1,0 +1,1 @@
+Make the CPI-U series (`gov.bls.cpi.cpi_u`) one consistent BLS series, not seasonally adjusted (CUUR0000SA0). Its January 2024 to June 2026 values had mixed seasonally adjusted values with values matching neither BLS series; the tax year 2026 cost-of-living adjustment for the NYC income tax elimination credit thresholds becomes 2.6531% (was 2.7265%).
