@@ -1,0 +1,1 @@
+Add Texas Child Care Services maximum provider payment rates from TWC's five statewide tables before October 2023: WD Letter 12-18 (from August 2018) and WD Letters 23-19, 25-20, 24-21 and 22-22 (Board Contract Years 2020 to 2023). Subsidies from August 2018 to September 2023 no longer use the October 2023 rates.

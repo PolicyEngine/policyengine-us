@@ -287,7 +287,7 @@
     # No bcy2027.csv exists; falls back to BCY26 rate: 46.00 * 10 = 460.00
     tx_ccs_payment_rate: 460.00
 
-- name: BCY24 start - ALAMO LCCC TRS2 Infant Full Time
+- name: BCY23 to BCY24 - ALAMO LCCC TRS2 Infant Full Time
   period: 2023
   input:
     age: 0
@@ -301,8 +301,10 @@
     state_code: TX
     tx_ccs_workforce_board_region: ALAMO
   output:
+    # WD 22-22 Att. 1 (BCY23) infant FT = 41.37 * 10 = 413.70 through September 2023
     # WD 20-23 Att. 1 (BCY24) infant FT = 46.62 * 10 = 466.20 from October 2023
     tx_ccs_payment_rate:
+      2023-09: 413.70
       2023-10: 466.20
       2023-12: 466.20
 
@@ -485,3 +487,168 @@
     tx_ccs_payment_rate:
       2024-09: 466.00
       2024-11: 466.00
+
+- name: WD 12-18 to BCY20 - SOUTHEAST LCCC TRS2 Infant Part Time
+  period: 2019
+  input:
+    age: 0
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCC
+    tx_ccs_provider_rating: TRS2
+    tx_ccs_care_schedule: PART_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: SOUTHEAST
+  output:
+    # WD 12-18 Att. 1 infant PT = 21.75 * 10 = 217.50, above its 21.11 FT rate as printed
+    # WD 23-19 Att. 1 (BCY20) infant PT = 22.47 * 10 = 224.70 from October 2019
+    tx_ccs_payment_rate:
+      2019-09: 217.50
+      2019-10: 224.70
+
+- name: BCY20 to BCY21 - COASTAL_BEND LCCH REG School Age Blended
+  period: 2020
+  input:
+    age: 8
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCH
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: BLENDED
+    childcare_attending_days_per_month: 15
+    state_code: TX
+    tx_ccs_workforce_board_region: COASTAL_BEND
+  output:
+    # WD 23-19 and WD 25-20 print no blended rate, so it is WD 02-20's school-year
+    # blend, (175 * PT + 30 * FT) / 205, rounded half up to the cent.
+    # BCY20: (175 * 20.35 + 30 * 18.08) / 205 = 20.02 * 15 = 300.30
+    # BCY21: (175 * 20.35 + 30 * 18.61) / 205 = 20.10 * 15 = 301.50
+    tx_ccs_payment_rate:
+      2020-09: 300.30
+      2020-10: 301.50
+
+- name: BCY21 to BCY22 - TEXOMA RCCH TSR Preschool Part Time
+  period: 2021
+  input:
+    age: 4
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RCCH
+    tx_ccs_provider_rating: TSR
+    tx_ccs_care_schedule: PART_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: TEXOMA
+  output:
+    # WD 25-20 Att. 1 (BCY21) preschool PT = 20.07 * 10 = 200.70
+    # WD 24-21 Att. 1 (BCY22) dashes this rate. It keeps the BCY21 rate, which
+    # exceeds the 5 percent floor over the 18.96 regular rate (19.91).
+    tx_ccs_payment_rate:
+      2021-09: 200.70
+      2021-10: 200.70
+
+- name: BCY22 to BCY23 - TEXOMA RCCH TSR Preschool Part Time
+  period: 2022
+  input:
+    age: 4
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RCCH
+    tx_ccs_provider_rating: TSR
+    tx_ccs_care_schedule: PART_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: TEXOMA
+  output:
+    # BCY22 keeps the BCY21 rate: 20.07 * 10 = 200.70
+    # WD 22-22 Att. 1 (BCY23) preschool PT = 22.89 * 10 = 228.90
+    tx_ccs_payment_rate:
+      2022-09: 200.70
+      2022-10: 228.90
+
+- name: BCY21 to BCY22 - PANHANDLE RCCH TRS3 Toddler Full Time
+  period: 2021
+  input:
+    age: 2
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RCCH
+    tx_ccs_provider_rating: TRS3
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 21
+    state_code: TX
+    tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # WD 25-20 Att. 1 (BCY21) toddler FT = 26.51 * 21 = 556.71
+    # WD 24-21 Att. 1 (BCY22) toddler FT = 28.80 * 21 = 604.80
+    tx_ccs_payment_rate:
+      2021-09: 556.71
+      2021-10: 604.80
+
+- name: BCY22 to BCY23 - GULF_COAST LCCC TSR Toddler Full Time
+  period: 2022
+  input:
+    age: 2
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCC
+    tx_ccs_provider_rating: TSR
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: GULF_COAST
+  output:
+    # WD 24-21 Att. 1 (BCY22) prints no TSR toddler rate, so TSR takes the
+    # regular rate: 37.80 * 20 = 756.00
+    # WD 22-22 Att. 1 (BCY23) TSR toddler FT = 42.42 * 20 = 848.40
+    tx_ccs_payment_rate:
+      2022-09: 756.00
+      2022-10: 848.40
+
+- name: BCY22 to BCY23 - HEART_OF_TEXAS Relative None School Age Part Time
+  period: 2022
+  input:
+    age: 8
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RELATIVE
+    tx_ccs_provider_rating: NONE
+    tx_ccs_care_schedule: PART_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: HEART_OF_TEXAS
+  output:
+    # WD 24-21 Att. 1 (BCY22) school-age PT = 5.28 * 10 = 52.80
+    # WD 22-22 Att. 1 (BCY23) school-age PT = 8.00 * 10 = 80.00
+    tx_ccs_payment_rate:
+      2022-09: 52.80
+      2022-10: 80.00
+
+- name: BCY23 to BCY24 - ALAMO LCCC TSR School Age Full Time
+  period: 2023
+  input:
+    age: 8
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCC
+    tx_ccs_provider_rating: TSR
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: ALAMO
+  output:
+    # WD 22-22 Att. 1 (BCY23) prints no TSR school-age rate, so TSR takes the
+    # regular rate: 34.20 * 10 = 342.00
+    # WD 20-23 Att. 1 (BCY24) TSR school-age FT = 38.64 * 10 = 386.40
+    tx_ccs_payment_rate:
+      2023-09: 342.00
+      2023-10: 386.40
