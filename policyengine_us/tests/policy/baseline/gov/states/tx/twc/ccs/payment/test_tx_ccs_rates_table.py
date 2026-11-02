@@ -179,7 +179,9 @@ def test_star_levels_rise(year):
 @pytest.mark.parametrize("year", YEARS)
 def test_texas_school_ready_rates(year):
     # A TSR rate for an age group in §809.20(b)(2) meets the 5 percent floor
-    # of §809.20(c)(1)(B). For other age groups, the tables from WD 12-18 to
+    # of §809.20(c)(1)(B). From the BCY 2023 table on, each also matches or
+    # exceeds the 2-star rate, the minimum TWC set in WD Letter 09-23
+    # (June 12, 2023). For other age groups, the tables from WD 12-18 to
     # BCY 2023 give TSR providers the regular rate, while BCY 2024 and
     # BCY 2025 print the 2-star rate.
     failures = []
@@ -187,12 +189,15 @@ def test_texas_school_ready_rates(year):
         if cell[2] != "TSR":
             continue
         regular = CELLS[_with(cell, rating="REG")][year]
+        two_star = CELLS[_with(cell, rating="TRS2")][year]
         if cell[3] in _tsr_ages(year):
             meets = Decimal(str(values[year])) >= _floor(regular, TSR_MARKUP)
+            if year >= BCY_2023:
+                meets = meets and values[year] >= two_star
         elif year < BCY_2024:
             meets = values[year] == regular
         else:
-            meets = values[year] == CELLS[_with(cell, rating="TRS2")][year]
+            meets = values[year] == two_star
         if not meets:
             failures.append((cell, values[year], regular))
     _assert_none(failures)
