@@ -72,6 +72,7 @@ def reachable_tiers(scale):
 @pytest.mark.parametrize("status", STATUSES)
 @pytest.mark.parametrize("part", PARTS)
 def test_schedule_is_ordered(part, status, year):
+    """Tiers rise with the applicable percentage (1395r(i)(3)(C)); +inf marks a tier not yet in law."""
     scale = schedule(part, status, year)
     thresholds, amounts = list(scale.thresholds), list(scale.amounts)
     assert thresholds[0] == 0 and amounts[0] == 0
@@ -85,6 +86,7 @@ def test_schedule_is_ordered(part, status, year):
 @pytest.mark.parametrize("status", ["head_of_household", "surviving_spouse"])
 @pytest.mark.parametrize("part", PARTS)
 def test_other_unmarried_filers_use_the_single_schedule(part, status, year):
+    """1395r(i)(2)(A) sets one threshold amount for every return but a joint one."""
     scale, single = schedule(part, status, year), schedule(part, "single", year)
     assert list(scale.thresholds) == list(single.thresholds)
     assert list(scale.amounts) == list(single.amounts)
@@ -93,6 +95,7 @@ def test_other_unmarried_filers_use_the_single_schedule(part, status, year):
 @pytest.mark.parametrize("year", ALL_YEARS)
 @pytest.mark.parametrize("status", STATUSES)
 def test_part_d_uses_part_b_thresholds(status, year):
+    """1395w-113(a)(7)(A) and (B) apply the Part B threshold and applicable percentages."""
     part_b = schedule("part_b", status, year)
     part_d = schedule("part_d", status, year)
     assert list(part_d.thresholds) == list(part_b.thresholds)
@@ -101,6 +104,7 @@ def test_part_d_uses_part_b_thresholds(status, year):
 @pytest.mark.parametrize("year", PUBLISHED_YEARS)
 @pytest.mark.parametrize("part", PARTS)
 def test_joint_thresholds_double_the_individual_ones(part, year):
+    """1395r(i)(3)(C)(ii) doubles the dollar amounts, but takes 150 percent of $500,000."""
     # Thresholds are "more than $X" amounts stored as X + 1, except the
     # 85 percent tier's "at least $X", stored as X.
     single, joint = schedule(part, "single", year), schedule(part, "joint", year)
@@ -123,6 +127,7 @@ def separate_from_single(part, year, magi):
 @pytest.mark.parametrize("year", PUBLISHED_YEARS)
 @pytest.mark.parametrize("part", PARTS)
 def test_separate_schedule_at_every_boundary(part, year):
+    """1395r(i)(3)(C)(iii) lowers each dollar amount by the threshold amount; checked at each edge."""
     single = schedule(part, "single", year)
     separate = schedule(part, "separate", year)
     threshold_amount = single.thresholds[1] - 1
@@ -146,6 +151,7 @@ def test_separate_schedule_at_every_boundary(part, year):
     magi=st.integers(min_value=0, max_value=2_000_000),
 )
 def test_separate_schedule_follows_the_single_schedule(year, part, magi):
+    """1395r(i)(3)(C)(iii), checked at drawn MAGIs between the edges."""
     magi = np.array([magi], dtype=float)
     separate = schedule(part, "separate", year)
     np.testing.assert_array_equal(
@@ -156,6 +162,7 @@ def test_separate_schedule_follows_the_single_schedule(year, part, magi):
 @pytest.mark.parametrize("year", PUBLISHED_YEARS)
 @pytest.mark.parametrize("status", STATUSES)
 def test_part_b_adjustments_scale_the_standard_premium(status, year):
+    """1395r(i)(3)(A) with (a)(3) and (a)(6) make each adjustment (p - 25) / 25 of the premium."""
     standard = MEDICARE.part_b.base_premium(f"{year}-01-01")
     scale = schedule("part_b", status, year)
     # The separate schedule skips tiers; match its amounts to the single
@@ -172,6 +179,7 @@ def test_part_b_adjustments_scale_the_standard_premium(status, year):
 
 @pytest.mark.parametrize("year", PUBLISHED_YEARS)
 def test_part_d_adjustments_are_in_proportion(year):
+    """1395w-113(a)(7)(B) scales one base beneficiary premium by (p - 25.5) / 25.5."""
     tiers = reachable_tiers(schedule("part_d", "single", year))
     top_percentage, top_amount = tiers[-1]
     for percentage, amount in tiers:
@@ -183,6 +191,7 @@ def test_part_d_adjustments_are_in_proportion(year):
 @pytest.mark.parametrize("status", STATUSES)
 @pytest.mark.parametrize("part", PARTS)
 def test_no_85_percent_tier_before_2019(part, status, year):
+    """Pub. L. 115-123, section 53114, added the 85 percent tier from 2019."""
     # The Bipartisan Budget Act of 2018 (section 53114) added the tier for
     # 2019; before then the 80 percent tier applied at any higher income.
     scale = schedule(part, status, year)
