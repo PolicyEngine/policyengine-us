@@ -29,13 +29,15 @@ def ok_ssp_income(person, period, parameters, *, combined):
         * ssi.income.exclusions.child_support_share,
         0,
     )
-    # NOTE: the deemed parental income uses the federal ineligible-child
-    # allocation (couple FBR minus individual FBR, 497 in 2026); Appendix C-1
-    # Schedule VIII.C lists 498, so a sibling's allocation can be $1 lower.
-    # It also uses SSI's earned income, which excludes the parents' pre-tax
-    # health premiums that 317:35-5-42(b)(9)(A) counts as wages.
+    # The deemed parental income allocates only for children younger than 18
+    # (OAC 340:15-1-2, 340:15-1-6(b)(1)).
+    # NOTE: it keeps the federal allocation amount (couple FBR minus
+    # individual FBR, 497 in 2026); Appendix C-1 Schedule VIII.C lists 498,
+    # so a sibling's allocation can be $1 lower. It also uses SSI's earned
+    # income, which excludes the parents' pre-tax health premiums that
+    # 317:35-5-42(b)(9)(A) counts as wages.
     unearned = unearned + person(
-        "ssi_unearned_income_deemed_from_ineligible_parent_monthly", period
+        "ok_ssp_unearned_income_deemed_from_ineligible_parent", period
     )
     earned = max_(
         earned

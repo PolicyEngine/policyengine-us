@@ -57,11 +57,12 @@ class nh_ssp_countable_income(Variable):
         unearned = max_(person("ssi_unearned_income", period), 0) + person(
             "ssi", period
         )
-        # Blind children use the parental allocation in He-W 652.03(f)-(g).
+        # Blind children use the parental allocation in He-W 652.03(f)-(g),
+        # with siblings limited to those He-W 652.03(h)(1) allows.
         # NOTE: that term uses SSI's earned income, so the parents' pre-tax
         # health premiums are excluded there; 652.03(f)(2) names no such exclusion.
         unearned = unearned + person(
-            "ssi_unearned_income_deemed_from_ineligible_parent_monthly", period
+            "nh_ssp_unearned_income_deemed_from_ineligible_parent", period
         )
         unearned = unearned + spouse_value(unearned, spouse)
         other = max_(person("nh_ssp_other_income_deductions", period), 0)

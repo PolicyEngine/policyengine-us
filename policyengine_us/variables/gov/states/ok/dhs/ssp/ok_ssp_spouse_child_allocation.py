@@ -7,17 +7,20 @@ class ok_ssp_spouse_child_allocation(Variable):
     label = "Oklahoma SSP ineligible spouse allocation for dependent children"
     definition_period = MONTH
     unit = USD
-    reference = "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-15-1-5"
+    reference = (
+        "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-15-1-5",
+        "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-15-1-2",
+    )
     documentation = (
         "The total allocation for the family's unmarried SSI-ineligible children "
-        "who are not household heads, including full-time students under age 22. "
+        "who are not household heads and are younger than 18 (OAC 340:15-1-2). "
         "Each allocation is reduced by the child's own income. Blended families "
         "and children in a TANF case are not modeled separately."
     )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ok.dhs.ssp
-        child = person("is_ssi_ineligible_child", period.this_year)
+        child = person("ok_ssp_ineligible_child", period)
         child_income = max_(person("ssi_earned_income", period), 0) + max_(
             person("ssi_unearned_income", period), 0
         )
