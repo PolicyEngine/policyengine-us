@@ -12,7 +12,7 @@ class tx_ccs_payment_rate(Variable):
     definition_period = MONTH
     defined_for = "tx_ccs_eligible_child"
     reference = (
-        "https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/20-23-att1-twc.pdf",
+        "https://www.twc.texas.gov/sites/default/files/wf/docs/20-23-att1-twc.pdf",
         "https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy25-board-max-provider-payment-rates-4-age-groups-twc.pdf",
         "https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy26-board-max-provider-payment-rates-twc.pdf",
     )

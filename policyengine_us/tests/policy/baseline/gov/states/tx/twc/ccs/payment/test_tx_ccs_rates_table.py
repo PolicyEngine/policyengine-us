@@ -1,15 +1,21 @@
 """The Texas CCS four-age-group rate table obeys the rules that set it.
 
-40 TAC §809.20(c)-(d) sets Texas Rising Star rates at least 5, 7 and 9
-percent above a provider's regular rate. WD Letter 19-24, Change 1, keeps
-every BCY 2025 rate at or above its BCY 2024 level, except relative care,
-which Boards set locally. Each check runs over all 4,032 cells of both board
-contract years, so a value copied into the wrong cell fails here. The test
-reads the YAML file directly and builds no tax-benefit system.
+40 TAC §809.20(c) sets Texas Rising Star rates at least 5, 7 and 9 percent
+above a provider's regular rate, and (d) lets Boards go higher if each star
+level stays at least 2 percentage points above the one below. WD Letter 20-23
+tiers Texas School Ready rates under the same rule, and the tables set them
+equal to Two-Star rates. TWC's revised BCY 2024 table (October 16, 2023) and
+its BCY 2025 table meet these bounds exactly, with no rounding allowance. The
+August 29, 2023 original misses both by under a cent in some cells, so these
+checks also tell the two versions apart. WD Letter 19-24, Change 1, keeps every
+BCY 2025 rate at or above its BCY 2024 level, except relative care, which
+Boards set locally. Each check runs over all 4,032 cells of both board contract
+years, so a value copied into the wrong cell fails here. The test reads the
+YAML file directly and builds no tax-benefit system.
 """
 
 import datetime
-from decimal import ROUND_HALF_UP, Decimal
+from decimal import Decimal
 from pathlib import Path
 
 import pytest
@@ -26,12 +32,13 @@ BCY_2024 = datetime.date(2023, 10, 1)
 BCY_2025 = datetime.date(2024, 10, 1)
 YEARS = [BCY_2024, BCY_2025]
 
-TRS_MARKUP = {
+MARKUP = {
     "TRS2": Decimal("1.05"),
+    "TSR": Decimal("1.05"),
     "TRS3": Decimal("1.07"),
     "TRS4": Decimal("1.09"),
 }
-CENT = Decimal("0.01")
+STAR_GAP = Decimal("0.02")
 
 
 def _load_cells():
@@ -66,6 +73,10 @@ def _with(cell, **changes):
     return tuple(fields.values())
 
 
+def _rate(cell, year, **changes):
+    return Decimal(str(CELLS[_with(cell, **changes)][year]))
+
+
 def _assert_none(failures):
     assert not failures, f"{len(failures)} cells fail, e.g. {failures[:5]}"
 
@@ -79,28 +90,31 @@ def test_every_cell_has_both_years():
 
 
 @pytest.mark.parametrize("year", YEARS)
-def test_texas_rising_star_rates_meet_markups(year):
+def test_enhanced_rates_meet_markups(year):
     failures = []
-    for cell, values in CELLS.items():
-        markup = TRS_MARKUP.get(cell[2])
+    for cell in CELLS:
+        markup = MARKUP.get(cell[2])
         if markup is None:
             continue
-        regular = Decimal(str(CELLS[_with(cell, rating="REG")][year]))
-        floor = (regular * markup).quantize(CENT, ROUND_HALF_UP) - CENT
-        if Decimal(str(values[year])) < floor:
-            failures.append((cell, values[year], float(floor)))
+        floor = _rate(cell, year, rating="REG") * markup
+        if _rate(cell, year) < floor:
+            failures.append((cell, float(_rate(cell, year)), float(floor)))
     _assert_none(failures)
 
 
 @pytest.mark.parametrize("year", YEARS)
-def test_star_levels_rise(year):
+def test_star_levels_two_points_apart(year):
     failures = []
     for cell in CELLS:
         if cell[2] != "TRS2":
             continue
-        tiers = [CELLS[_with(cell, rating=r)][year] for r in ("TRS2", "TRS3", "TRS4")]
-        if tiers != sorted(tiers):
-            failures.append((cell, tiers))
+        regular = _rate(cell, year, rating="REG")
+        tiers = [_rate(cell, year, rating=r) for r in ("TRS2", "TRS3", "TRS4")]
+        if any(
+            higher - lower < STAR_GAP * regular
+            for lower, higher in zip(tiers, tiers[1:])
+        ):
+            failures.append((cell, float(regular), [float(t) for t in tiers]))
     _assert_none(failures)
 
 
