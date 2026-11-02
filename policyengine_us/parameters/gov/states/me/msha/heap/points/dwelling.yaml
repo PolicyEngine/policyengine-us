@@ -1,0 +1,27 @@
+description: Maine assigns these points by dwelling type under the Low Income Home Energy Assistance Program.
+# Condominiums, duplexes and apartments have separate rows with the same
+# points in both matrices, so they share one dwelling type.
+STICK_BUILT_OR_MODULAR:
+  2024-07-03: 9
+  2026-06-29: 3
+MOBILE_OR_MANUFACTURED:
+  2024-07-03: 8
+  2026-06-29: 2
+CONDO_DUPLEX_OR_APARTMENT:
+  2024-07-03: 6
+  2026-06-29: 1
+
+metadata:
+  unit: /1
+  period: year
+  label: Maine HEAP dwelling points
+  breakdown:
+    - me_heap_dwelling_type
+  propagate_metadata_to_children: true
+  reference:
+    - title: Maine FY2026 Benefit Matrix, 99-346 CMR ch. 24, section 4(A) (2025 edition)
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/ME_BenefitMatrix_2026.pdf#page=1
+    - title: 99-346 CMR ch. 24, section 4(A) (2025 edition, SOS filing 2025-135)
+      href: https://www.maine.gov/sos/sites/maine.gov.sos/files/inline-files/346c024.docx
+    - title: 99-346 CMR ch. 24, section 4(A) (effective June 29, 2026)
+      href: https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=16

@@ -1,1 +1,1 @@
-Excluded qualifying interest and dividend income from current-law SSI calculations.
+Excluded qualifying interest and dividend income from federal SSI and spousal deeming while preserving dependent state supplement income rules.

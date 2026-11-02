@@ -1,0 +1,56 @@
+# A contributed PIA formula path, read through the supplied-AIME calculator's
+# eligibility PIA (monthly dollars, before COLAs). See
+# ss_calculated_eligibility_pia.yaml for the formula and dime truncation, and
+# for why each file builds one reformed system.
+#
+# Bend points after 2026 come from the model's wage-indexed projections. These
+# cases pin them to today's projections so a later projection update does not
+# move the hand-computed values.
+
+- name: Progressive price indexing with the 2035 target at the protected PIA
+  # The 2035 cohort, bend points pinned at $1,756 / $10,588, the illustrative
+  # frozen maximum AIME ($17,000) from frozen_cohort_paths.py, and an
+  # illustrative one-half fraction. Neither makes a claim about any percentile.
+  # Threshold T = 1,756 + .5 * 8,832 = $6,172; F(T) = 1,580.40 + .32 * 4,416
+  # = $2,993.52. The frozen target is that protected PIA, $2,993.52, which the
+  # inclusive lower bound accepts: F(M) = $5,368.44, so
+  # k = (2,993.52 - 2,993.52) / (5,368.44 - 2,993.52) = 0.
+  # G(A) = F(min(A, T)) + 0 * (F(A) - F(T))+ is flat at F(T) above T:
+  #   A = 3,000 (below T): $1,978.40, as under current law.
+  #   A = 6,172 (at T): $2,993.52 -> $2,993.50.
+  #   A = 9,000, 12,000 and 17,000 (maximum): $2,993.52 -> $2,993.50.
+  period: 2035
+  absolute_error_margin: 0.001
+  reforms: policyengine_us.tests.policy.contrib.ssa.pia_formula_paths.frozen_cohort_paths.progressive_2035_target_at_protected_pia
+  input:
+    people:
+      below_threshold: &flat_record
+        ss_calculator_source: aime
+        ss_calculator_worker_id: flat-below
+        ss_calculator_birth_date: '1973-01-02'
+        ss_calculator_eligibility_year: 2035
+        ss_calculator_entitlement_month: '2035-01'
+        ss_calculator_supplied_aime: 3_000
+        ss_calculator_insured: true
+        ss_calculator_no_special_monthly_test: true
+        ss_calculator_no_prior_withholding_adjustment: true
+        ss_calculator_earnings_test_no_trigger: true
+      at_threshold:
+        <<: *flat_record
+        ss_calculator_worker_id: flat-at
+        ss_calculator_supplied_aime: 6_172
+      above_threshold:
+        <<: *flat_record
+        ss_calculator_worker_id: flat-above
+        ss_calculator_supplied_aime: 9_000
+      above_second_bend:
+        <<: *flat_record
+        ss_calculator_worker_id: flat-above-second-bend
+        ss_calculator_supplied_aime: 12_000
+      maximum_aime:
+        <<: *flat_record
+        ss_calculator_worker_id: flat-maximum
+        ss_calculator_supplied_aime: 17_000
+  output:
+    ss_calculated_eligibility_pia:
+      2035-01: [1_978.4, 2_993.5, 2_993.5, 2_993.5, 2_993.5]

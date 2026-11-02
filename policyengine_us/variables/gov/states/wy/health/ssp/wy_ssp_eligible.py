@@ -25,7 +25,13 @@ class wy_ssp_eligible(Variable):
         # couple, are not treated as the person's other income. The statute does
         # not define "income", and EOM M1804 lists child cases in a parent's
         # household (living arrangement C) among its pay-rate codes.
-        sources = list(p.earned) + list(p.unearned)
+        # The sole-income test includes interest and dividends even when
+        # federal SSI excludes them.
+        sources = list(
+            dict.fromkeys(
+                [*p.earned, *p.unearned, "interest_income", "dividend_income"]
+            )
+        )
         has_other_income = np.zeros_like(receives_ssi)
         for source in sources:
             has_other_income = has_other_income | (person(source, period) > 0)

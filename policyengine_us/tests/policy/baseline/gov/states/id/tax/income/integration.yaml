@@ -242,12 +242,18 @@
     people:
       person1:
         age: 70
+        # Explicit savings keep this premium-deduction example above the MSP
+        # asset limit; $2 million earning 5% produces the stated interest.
+        bank_account_assets: 2_000_000
         taxable_interest_income: 100_000
         is_tax_unit_head: true
         is_tax_unit_head_or_spouse: true
         ssn_card_type: CITIZEN
       person2:
         age: 70
+        # Explicit savings keep this premium-deduction example above the MSP
+        # asset limit; $2 million earning 5% produces the stated interest.
+        bank_account_assets: 2_000_000
         taxable_interest_income: 100_000
         is_tax_unit_spouse: true
         is_tax_unit_head_or_spouse: true
@@ -268,6 +274,7 @@
         members: [person1, person2]
         state_fips: 16
   output:
+    msp_part_b_premium_coverage: [0, 0]
     additional_senior_deduction: 6_000
     id_additional_senior_deduction: 6_000
     id_qualified_business_income_and_federal_schedule_1a_deductions: 6_000

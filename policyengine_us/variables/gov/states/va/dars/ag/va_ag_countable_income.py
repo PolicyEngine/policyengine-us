@@ -31,11 +31,13 @@ class va_ag_countable_income(Variable):
             - person("ssi_blind_or_disabled_working_student_exclusion", period),
             0,
         )
-        unearned = max_(
-            person("ssi_unearned_income", period)
-            - add(person, period, p.excluded_unearned_sources),
-            0,
-        )
+        # Remove only sources still included in the annual SSI income total.
+        ssi_sources = parameters(period.this_year).gov.ssa.ssi.income.sources.unearned
+        excluded = [
+            source for source in p.excluded_unearned_sources if source in ssi_sources
+        ]
+        excluded_income = sum(person(source, period) for source in excluded)
+        unearned = max_(person("ssi_unearned_income", period) - excluded_income, 0)
         earned = where(joint, person.marital_unit.sum(earned), earned)
         unearned = where(joint, person.marital_unit.sum(unearned), unearned)
         non_ssi_countable = (

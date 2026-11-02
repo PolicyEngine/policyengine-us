@@ -20,13 +20,12 @@ class nyc_school_credit_income(Variable):
         # The credit uses income as defined in RPTL § 425(4)(b)(ii): federal
         # adjusted gross income reduced by distributions from individual
         # retirement accounts and annuities, to the extent included in
-        # federal adjusted gross income (IT-201 line 19 minus line 9; the
-        # 2022 instructions used recomputed federal AGI, line 19a, which is
-        # not modeled separately).
+        # federal adjusted gross income (IT-201 line 19 minus line 9; line 19a,
+        # recomputed federal AGI, in the 2020 and 2022 instructions).
         # Roth conversions are not identified as IRA-sourced, and individual
         # retirement annuity distributions recorded as pension income are not
         # identified separately, so both stay in income.
-        agi = tax_unit("adjusted_gross_income", period)
+        agi = tax_unit("ny_recomputed_federal_agi", period)
         p = parameters(period).gov.local.ny.nyc.tax.income.credits.school
         person = tax_unit.members
         # Federal gross income excludes dependents' income, so only the

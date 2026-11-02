@@ -1,0 +1,22 @@
+- name: Interest remains other income for the independent living supplement.
+  period: 2026-01
+  input:
+    state_code: SD
+    age: 65
+    taxable_interest_income: 60
+  output:
+    # ARSD 67:12:14:03(2): other income in addition to SSI disqualifies.
+    # The $5 monthly interest does not reduce federal SSI.
+    ssi: 994
+    sd_ssp_independent: 0
+
+- name: Dividends remain other income for the independent living supplement.
+  period: 2026-01
+  input:
+    state_code: SD
+    age: 65
+    qualified_dividend_income: 60
+  output:
+    # The $5 monthly dividend is still positive income apart from SSI.
+    ssi: 994
+    sd_ssp_independent: 0

@@ -11,7 +11,7 @@ class me_property_tax_fairness_credit_benefit_base(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.me.tax.income.credits.fairness.property_tax
-        dependents = tax_unit("ctc_qualifying_children", period)
+        dependents = tax_unit("me_fairness_credit_qualifying_children", period)
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
         single = filing_status == filing_statuses.SINGLE
