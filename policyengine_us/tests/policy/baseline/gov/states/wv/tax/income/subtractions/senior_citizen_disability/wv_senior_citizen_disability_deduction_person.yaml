@@ -336,3 +336,15 @@
     wv_subtractions: 8_000
     wv_agi: 38_000
     wv_taxable_income: 34_000
+
+- name: A 529 contribution no longer lowers a senior modification at the cap.
+  period: 2025
+  input:
+    age: 66
+    adjusted_gross_income_person: 9_000
+    investment_in_529_plan_indv: 2_000
+    state_code: WV
+  output:
+    # min(9,000, 8,000) = 8,000. Excluding the contribution from the base, as
+    # before, gave min(9,000 - 2,000, 8,000) = 7,000.
+    wv_senior_citizen_disability_deduction_person: 8_000
