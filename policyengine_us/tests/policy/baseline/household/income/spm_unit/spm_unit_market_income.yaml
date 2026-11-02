@@ -11,3 +11,38 @@
         members: [p1, p2]
   output:
     spm_unit_market_income: 1 + 2
+
+- name: Each Alaskan's dividend reaches SPM unit market income.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    spm_unit_market_income: 2 * 1_000
+    household_market_income: 2 * 1_000
+
+- name: No dividend reaches SPM unit market income outside Alaska.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: WA
+  output:
+    spm_unit_market_income: 0
