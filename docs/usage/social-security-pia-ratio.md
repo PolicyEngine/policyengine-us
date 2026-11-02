@@ -291,14 +291,16 @@ Your reform settings supply the fraction or dollar path and the maximum AIME
 and target paths; PE-US computes none of them. With progressive indexing on,
 a cohort with neither a fraction nor a dollar threshold, or without its
 maximum AIME or target, raises an error rather than falling back to current
-law. That error covers only supported records: the positive reported amounts
-outside `_pia_ratio_unmodeled`. Under the default `supplied_claim_age`
-scenario, a record with no claim age counts as unmodeled and keeps a factor of
-one, so a dataset without claim ages returns a zero effect and no error. Supply
-`social_security_retirement_claim_age_months` or select a named claiming
-scenario first; see "Supplied claim age and explicit scenarios" above. The
-fractions in the PE-US tests are illustrative and make no claim about any
-percentile.
+law. On the reported-benefit route, that error covers only supported records:
+the positive reported amounts outside `_pia_ratio_unmodeled`. Under the default
+`supplied_claim_age` scenario, a retirement amount with no claim age counts as
+unmodeled and keeps a factor of one, so without claim ages no retirement amount
+moves and none raises this error. Disability and auxiliary amounts read no
+claim age, so a nonzero total doesn't show that retirement amounts moved.
+Supply `social_security_retirement_claim_age_months`, or select `age_62`,
+`age_65`, `fra` or `age_70`, first; see "Supplied claim age and explicit
+scenarios" above. The fractions in the PE-US tests are illustrative and make no
+claim about any percentile.
 
 ```python
 from policyengine_core.reforms import Reform
