@@ -21,6 +21,11 @@ git-base differential is run separately. A seeded, stratified sample of 200
 households supplements the smaller Hypothesis batches, including spouses and
 disabled children.
 
+The SGA properties check that SGA earnings, wages plus the business net
+floored at zero (POMS DI 10505.015 D.3), never fall below wages, rise with
+wages, net losses between businesses, and match the signed sum of earned
+sources when no business source is negative.
+
 All households in a batch share one vectorized simulation. The module reuses
 the read-only country singleton and constructs its parameter-only reference
 reform once, avoiding a country model for every example or household.
@@ -816,3 +821,97 @@ def test_200_households_match_reverted_list_without_farm_or_partnership(policies
     assert len(households) == 200
     assert {household["state"] for household in households} == set(STATES)
     _assert_main_equal(policies, households)
+
+
+SGA_ANNUAL = 1_690 * 12  # 2026 non-blind SGA amount, $1,690 a month.
+
+
+@st.composite
+def sga_workers(draw):
+    return (
+        draw(st.integers(0, 40_000)),
+        draw(st.integers(0, 30_000)),
+        tuple(draw(st.integers(-30_000, 30_000)) for _ in BUSINESS_SOURCES),
+        draw(st.integers(0, 20_000)),
+    )
+
+
+def _unchanged(businesses):
+    return businesses
+
+
+def _nonnegative(businesses):
+    return tuple(abs(b) for b in businesses)
+
+
+def _collapsed(businesses):
+    return (sum(businesses),) + (0,) * (len(businesses) - 1)
+
+
+def _sga_households(batch, transform=_unchanged):
+    households = []
+    for wages, premiums, businesses, raise_ in batch:
+        for pay in (wages, wages + raise_):
+            households.append(
+                {
+                    "state": "TX",
+                    "adults": [
+                        _person(
+                            age=40,
+                            is_blind=False,
+                            employment_income=pay,
+                            pre_tax_health_insurance_premiums=premiums,
+                            **dict(zip(BUSINESS_SOURCES, transform(businesses))),
+                        )
+                    ],
+                }
+            )
+    return households
+
+
+@settings(max_examples=12, deadline=None, suppress_health_check=[HealthCheck.too_slow])
+@example(batch=[(21_600, 2_400, (-3_000, 0, -6_000, 0), 0)])
+@example(batch=[(20_000, 0, (0, 0, 30_000, -12_000), 400)])
+@given(batch=st.lists(sga_workers(), min_size=1, max_size=6))
+def test_sga_earnings_never_fall_below_wages_and_rise_with_wages(policy, batch):
+    # POMS DI 10505.015 D.3: a business loss never reduces wages, so wages
+    # above the SGA amount always establish SGA, whatever the businesses
+    # earn. SGA status is also nondecreasing in wages.
+    simulation = _simulation(policy, _sga_households(batch))
+    engaged = simulation.calculate("ssi_engaged_in_sga", YEAR).reshape(-1, 2)
+    wages = np.array([(w, w + raise_) for w, _, _, raise_ in batch], dtype=float)
+    assert np.all(engaged[wages > SGA_ANNUAL])
+    assert np.all(engaged[:, 1] >= engaged[:, 0])
+
+
+@settings(max_examples=12, deadline=None, suppress_health_check=[HealthCheck.too_slow])
+@example(batch=[(18_000, 2_400, (1_000, 0, 1_281, 0), 0)])
+@given(batch=st.lists(sga_workers(), min_size=1, max_size=6))
+def test_sga_without_business_losses_matches_signed_sum(policy, batch):
+    # With every business source nonnegative, the floor cannot bind, and SGA
+    # earnings equal the prior formula's: the sum of all earned sources, with
+    # payroll premiums kept in wages.
+    simulation = _simulation(policy, _sga_households(batch, _nonnegative))
+    engaged = simulation.calculate("ssi_engaged_in_sga", YEAR)
+    expected = [
+        pay + sum(_nonnegative(businesses)) > SGA_ANNUAL
+        for wages, _, businesses, raise_ in batch
+        for pay in (wages, wages + raise_)
+    ]
+    np.testing.assert_array_equal(engaged, expected)
+
+
+@settings(max_examples=12, deadline=None, suppress_health_check=[HealthCheck.too_slow])
+@example(batch=[(0, 0, (0, 0, 24_000, -6_000), 0)])
+@given(batch=st.lists(sga_workers(), min_size=1, max_size=6))
+def test_sga_nets_losses_between_businesses(policy, batch):
+    # Business losses net against business profits (20 CFR 404.1081(c), POMS
+    # DI 10510.012 B), so moving the whole business net into one source
+    # cannot change SGA status.
+    engaged = [
+        _simulation(policy, _sga_households(batch, transform)).calculate(
+            "ssi_engaged_in_sga", YEAR
+        )
+        for transform in (_unchanged, _collapsed)
+    ]
+    np.testing.assert_array_equal(engaged[0], engaged[1])
