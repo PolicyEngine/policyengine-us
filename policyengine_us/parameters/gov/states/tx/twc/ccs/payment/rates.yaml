@@ -1,10 +1,11 @@
 description: Texas caps Child Care Services reimbursement rates at this daily rate by workforce board region.
-# Each earlier date is one statewide TWC table: WD 12-18 Attachment 1
-# (2018-08-01), WD 23-19 Attachment 1 (BCY 2020), WD 25-20 Attachment 1
-# (BCY 2021), WD 24-21 Attachment 1 (BCY 2022) and WD 22-22 Attachment 1
-# (BCY 2023). WD 12-18 rescinds WD 27-16, which froze rates and has no table.
-# All five use the four age groups of 40 TAC §809.20(a)(2): 0-17 months,
-# 18-35 months, 36-71 months, and 72 months and over. WD 12-18 also prints
+# The values at each earlier date come from one statewide TWC table: WD 12-18
+# Attachment 1 (2018-08-01), WD 23-19 Attachment 1 (BCY 2020), WD 25-20
+# Attachment 1 (BCY 2021), WD 24-21 Attachment 1 (BCY 2022) and WD 22-22
+# Attachment 1 (BCY 2023). WD 12-18 rescinds WD 27-16, which froze rates and has
+# no table. All five use the four age groups that 40 TAC §809.20(a)(2) listed
+# until 2022-10-03: 0-17 months, 18-35 months, 36-71 months, and 72 months and
+# over. WD 12-18 also prints
 # infant, toddler and preschool blended rates, which have no cells here. Some
 # Coastal Bend and Southeast part-time rates in WD 12-18, 23-19 and 25-20 exceed
 # the full-time rate as TWC printed them; test_tx_ccs_rates_table.py lists them.
@@ -14,8 +15,8 @@ description: Texas caps Child Care Services reimbursement rates at this daily ra
 #   2022-10-03, infant through preschool from then), takes the provider type's
 #   regular rate. Every TSR cell TWC did print outside that scope equals it.
 # - WD 23-19, 25-20 and 24-21 print no blended column, so the school-age
-#   blended rate is TWC's school-year blended rate from WD 02-20:
-#   (175 x part-time + 30 x full-time) / 205, rounded half up to the cent.
+#   blended rate follows TWC's school-year formula from WD 02-20:
+#   (175 x part-time + 30 x full-time) / 205, rounding half up to the cent.
 #   That formula reproduces every blended rate WD 12-18 and WD 22-22 print.
 # - WD 24-21 dashes Texoma's RCCH TSR preschool part-time rate, which
 #   §809.20(b)(2) requires. It takes the higher of the §809.20(c)(1)(B) floor,

@@ -245,10 +245,12 @@ def test_blended_rates_follow_school_year_formula(year):
 
 @pytest.mark.parametrize("earlier, later", list(zip(YEARS, YEARS[1:])))
 def test_rates_never_fall(earlier, later):
+    # Boards set BCY 2025 relative care rates locally, so those alone may fall.
     failures = [
         (cell, values[earlier], values[later])
         for cell, values in CELLS.items()
-        if cell[1] != "RELATIVE" and values[later] < values[earlier]
+        if values[later] < values[earlier]
+        and not (cell[1] == "RELATIVE" and later == BCY_2025)
     ]
     _assert_none(failures)
 
