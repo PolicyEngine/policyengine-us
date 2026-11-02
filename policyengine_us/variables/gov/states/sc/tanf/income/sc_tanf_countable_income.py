@@ -24,4 +24,8 @@ class sc_tanf_countable_income(Variable):
         )
         # Section 8.16 H tests and budgets income net of child support paid.
         # Countable income keeps its cents; nothing says to round it.
-        return income - spm_unit("sc_tanf_child_support_deduction", period)
+        deduction = spm_unit("sc_tanf_child_support_deduction", period)
+        # The deduction never takes income below zero (Section 8.11(2)); the
+        # floor only absorbs rounding when it equals the group's income. A
+        # group with no deduction keeps its income unchanged.
+        return where(deduction > 0, max_(income - deduction, 0), income)

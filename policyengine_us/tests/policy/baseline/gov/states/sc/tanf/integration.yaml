@@ -621,7 +621,9 @@
     sc_tanf: 368
 
 - name: Case 21, child support paid comes off earned income after the disregard.
-  period: 2026-05
+  # Annual inputs cover calendar 2026; outputs select May, when the $100
+  # disregard applies.
+  period: 2026
   input:
     people:
       parent:
@@ -641,15 +643,21 @@
         state_code: SC
   output:
     # May uses the $100 disregard: E = 600 - 100 = 500; S = 2,400 / 12 = 200.
-    sc_tanf_child_support_deduction: 200
-    sc_tanf_countable_income: 300
+    sc_tanf_child_support_deduction:
+      2026-05: 200
+    sc_tanf_countable_income:
+      2026-05: 300
     # The Section 8.15 gross income test stays on gross income.
-    sc_tanf_gross_income: 600
+    sc_tanf_gross_income:
+      2026-05: 600
     # floor((1,110 - 300) x 0.4046 = 327.73) = 327.
-    sc_tanf: 327
+    sc_tanf:
+      2026-05: 327
 
 - name: Case 22, one adult's support payment comes off the other adult's earnings.
-  period: 2026-05
+  # Annual inputs cover calendar 2026; outputs select May, when the $100
+  # disregard applies.
+  period: 2026
   input:
     people:
       adult_a:
@@ -675,15 +683,20 @@
   output:
     # Section 8.11 deducts support paid by a benefit group member from the
     # group's income: E = 600 - 100 = 500, S = 200, countable 300.
-    sc_tanf_child_support_deduction: 200
-    sc_tanf_countable_income: 300
+    sc_tanf_child_support_deduction:
+      2026-05: 200
+    sc_tanf_countable_income:
+      2026-05: 300
     # floor((1,110 - 300) x 0.4046) = 327. Limiting the deduction to the
     # payer's own earnings (0) would leave 500 countable and
     # floor(610 x 0.4046 = 246.81) = 246.
-    sc_tanf: 327
+    sc_tanf:
+      2026-05: 327
 
 - name: Case 23, support paid above the group's income stops at zero.
-  period: 2026-05
+  # Annual inputs cover calendar 2026; outputs select May, when the $100
+  # disregard applies.
+  period: 2026
   input:
     people:
       parent:
@@ -705,10 +718,14 @@
   output:
     # E = 250 - 100 = 150, U = 100, S = 300: the deduction takes E, then U,
     # and stops at min(300, 250) = 250, leaving 0.
-    sc_tanf_child_support_deduction: 250
-    sc_tanf_countable_income: 0
-    sc_tanf_gross_income: 350
-    sc_tanf: 449
+    sc_tanf_child_support_deduction:
+      2026-05: 250
+    sc_tanf_countable_income:
+      2026-05: 0
+    sc_tanf_gross_income:
+      2026-05: 350
+    sc_tanf:
+      2026-05: 449
 
 - name: Case 24, a pregnant adult's wages count.
   period: 2026-01
@@ -730,3 +747,32 @@
     sc_tanf_countable_income: 250
     # floor((652 - 250) x 0.4046 = 162.65) = 162.
     sc_tanf: 162
+
+- name: Case 25, in January the deduction follows the 50% disregard.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income_before_lsr: 7_200
+        child_support_expense: 2_400
+      child1:
+        age: 16
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: SC
+  output:
+    # Section 8.16 applies the disregard first: E = 600 x 0.5 = 300, less
+    # S = 200, leaves 100. Deducting support first would leave
+    # (600 - 200) x 0.5 = 200.
+    sc_tanf_child_support_deduction: 200
+    sc_tanf_countable_income: 100
+    sc_tanf_gross_income: 600
+    # floor((1,110 - 100) x 0.4046 = 408.65) = 408.
+    sc_tanf: 408
