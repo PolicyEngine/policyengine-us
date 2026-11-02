@@ -56,3 +56,24 @@
     basic_standard_deduction: 15_750
     additional_standard_deduction: 3_200
     standard_deduction: 18_950
+
+- name: Joint filers keep the whole deduction even if the separate filer flag is set, 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 50_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        separate_filer_itemizes: true
+  output:
+    # IRC 63(c)(6)(A) covers only a married individual filing a separate
+    # return. $31,500 basic (2025, joint) plus $1,600 for the aged head.
+    basic_standard_deduction: 31_500
+    additional_standard_deduction: 1_600
+    standard_deduction: 33_100

@@ -1,1 +1,1 @@
-Zero the whole standard deduction, including the aged and blind amount, for a separate filer whose spouse itemizes (IRC 63(c)(6)), and leave employer dependent care benefits out of income tax, FICA and FUTA wages, adding back any part above the IRC 129 exclusion.
+Zero the whole standard deduction, including the aged and blind amount, for a married separate filer whose spouse itemizes (IRC 63(c)(6)), and leave employer dependent care benefits out of income tax, FICA and FUTA wages, adding back any part above the IRC 129 exclusion and counting it as EITC earned income.

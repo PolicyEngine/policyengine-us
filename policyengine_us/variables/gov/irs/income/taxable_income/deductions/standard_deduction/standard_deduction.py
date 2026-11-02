@@ -27,5 +27,11 @@ class standard_deduction(Variable):
         # deduction is the sum in 63(c)(1), so the additional amount for
         # age or blindness (63(c)(3), (f)) is zeroed as well, not only the
         # basic amount.
+        filing_status = tax_unit("filing_status", period)
         separate_filer_itemizes = tax_unit("separate_filer_itemizes", period)
-        return where(separate_filer_itemizes, 0, total)
+        return where(
+            separate_filer_itemizes
+            & (filing_status == filing_status.possible_values.SEPARATE),
+            0,
+            total,
+        )

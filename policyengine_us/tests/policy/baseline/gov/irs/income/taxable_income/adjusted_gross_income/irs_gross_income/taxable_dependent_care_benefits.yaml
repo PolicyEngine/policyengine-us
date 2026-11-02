@@ -62,6 +62,7 @@
 
 - name: Joint return splits the taxable part by each spouse's benefits, 2024
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -81,13 +82,43 @@
         members: [head, spouse]
         state_code: TX
   output:
-    # Benefits $6,000; exclusion min($6,000, $5,000, lesser earnings $3,000)
-    # = $3,000 on main's earned income measure; taxable $3,000, split 4:2.
-    dependent_care_assistance_exclusion: 3_000
-    taxable_dependent_care_benefits: [2_000, 1_000]
+    # Form 2441 lines 18-19 leave out line 12 benefits: the spouse's earned
+    # income is $3,000 - $2,000 = $1,000. Exclusion min($6,000, $5,000,
+    # $1,000) = $1,000; taxable $5,000, split 4:2.
+    dependent_care_assistance_exclusion: 1_000
+    taxable_dependent_care_benefits: [3_333.33, 1_666.67]
     irs_employment_income: [76_000, 1_000]
-    # Gross income: $77,000 of wages plus $3,000 taxable benefits.
-    adjusted_gross_income: 80_000
+    # $77,000 of box 1 wages plus $5,000 taxable benefits.
+    adjusted_gross_income: 82_000
+
+- name: Part-time worker's exclusion is capped at wages net of benefits, 2024
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 6_000
+        dependent_care_employer_benefits: 5_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Form 2441 line 18 earned income leaves out line 12 benefits:
+    # $6,000 - $5,000 = $1,000. Exclusion min($5,000, $5,000, $1,000) =
+    # $1,000; taxable $4,000 (Form 1040 line 1e).
+    irs_employment_income: [1_000, 0]
+    dependent_care_assistance_exclusion: 1_000
+    taxable_dependent_care_benefits: [4_000, 0]
+    # $1,000 of box 1 wages plus $4,000 taxable benefits.
+    adjusted_gross_income: 5_000
 
 - name: No benefits leaves wages unchanged
   period: 2025

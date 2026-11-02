@@ -8,7 +8,9 @@
    FICA and FUTA wages. The part above the filer's IRC 129 exclusion returns
    to gross income (Form 2441 line 26, Form 1040 line 1e). So for one earner:
      income tax wages + taxable benefits + exclusion = employment income,
-     FICA wages = employment income - benefits.
+     FICA wages = employment income - benefits,
+     exclusion <= employment income - benefits (IRC 129(b), Form 2441
+     line 18 earned income leaves out line 12 benefits).
 
 Each example builds one simulation holding many tax units.
 """
@@ -120,3 +122,7 @@ def test_dependent_care_benefits_leave_wages_once(year, earners):
         assert fica_wages[i] == wages[i] - benefit
         assert 0 <= taxable[i] <= benefit
         assert abs(box_1[i] + taxable[i] + exclusion[i] - wages[i]) < 0.01
+        # IRC 129(b) and Form 2441 line 18: the exclusion cannot exceed
+        # earned income, which leaves out the line 12 benefits. The identity
+        # above holds for any exclusion, so this pins the limit itself.
+        assert exclusion[i] <= max(wages[i] - benefit, 0) + 0.01
