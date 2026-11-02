@@ -1,0 +1,18 @@
+description: Arkansas excludes this monthly amount of each member's interest from countable income under the Low Income Home Energy Assistance Program.
+# Manual Appendix F (page 162) counts interest only as the "amount over
+# $200.00". Unearned income is what is received in the month before application
+# (Section 4.7, page 57; Appendix E, pages 154-155, converts other frequencies
+# to monthly), so the amount is monthly. The manual does not say whose $200 it
+# is; applying it to each recipient is a chosen reading, and a household-wide
+# $200 would count more. Plan Section 1.9 (page 6) counts "Interest, dividends,
+# or royalties" with no threshold; the manual is followed.
+values:
+  2024-10-01: 200
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Arkansas LIHEAP interest income disregard
+  reference:
+    - title: Arkansas FFY 2025 LIHEAP Policy and Procedures Manual, Appendix F, Interest
+      href: https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf#page=162

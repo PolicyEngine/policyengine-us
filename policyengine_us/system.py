@@ -39,6 +39,10 @@ from policyengine_core.parameters.operations.uprate_parameters import (
 )
 from .tools.default_uprating import add_default_uprating
 from .tools.period_branch import delete_input_values
+from .tools.social_security_inputs import (
+    install_social_security_input_compatibility,
+    migrate_social_security_inputs,
+)
 from .tools.section_911 import validate_section_911_batch_inputs
 from .tools.per_capita_uprating import (
     add_per_capita_parameters_for_parameter_uprating,
@@ -57,6 +61,8 @@ from policyengine_us.spm import (
     clone_spm_system,
     create_spm_provider,
 )
+
+install_social_security_input_compatibility()
 
 COUNTRY_DIR = Path(__file__).parent
 
@@ -98,6 +104,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
     """
 
     variables_dir = COUNTRY_DIR / "variables"
+    _social_security_input_compatibility = True
     auto_carry_over_input_variables = True
     basic_inputs = [
         "state_name",
@@ -138,6 +145,19 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         # the two undefined.
         self.parameters = backdate_parameters(
             self.parameters, first_instant=f"{FIRST_MODELED_YEAR}-01-01"
+        )
+
+        # Preserve the processed current-law path before user reforms can
+        # remove/change the payroll cap. Owners' draw can keep this ceiling
+        # independently or explicitly select no ceiling.
+        draw_cap = self.parameters.gov.irs.payroll.social_security.cap.clone()
+        draw_cap.name = "gov.contrib.ssa.owners_draw.current_law_cap"
+        draw_cap.metadata.update(
+            label="Current-law OASDI cap preserved for owners' draw", economy=False
+        )
+        draw_cap.metadata.pop("uprating", None)
+        self.parameters.gov.contrib.ssa.owners_draw.add_child(
+            "current_law_cap", draw_cap
         )
 
         if reform:
@@ -334,6 +354,7 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
         if reform is not None:
             self.apply_reform(reform)
 
+        migrate_social_security_inputs(self)
         _move_inputs_to_pre_response_variables(self)
         # Geography backfill: state_code_str-only input -> state_code enum.
         _backfill_state_code_from_str(self)
@@ -559,6 +580,7 @@ class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
         if reform is not None:
             self.apply_reform(reform)
 
+        migrate_social_security_inputs(self)
         _move_inputs_to_pre_response_variables(self)
         # Geography backfill: state_code_str-only input -> state_code enum.
         # Datasets carry state_fips, so this only fires for situations that

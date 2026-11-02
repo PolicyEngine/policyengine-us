@@ -103,7 +103,7 @@
     gov.contrib.states.mt.ctc.earned_income_requirement.in_effect: true
     tax_unit_earned_income: 1
     adjusted_gross_income: 1
-    ctc_qualifying_children: 1
+    mt_ctc_qualifying_children: 1
     state_code: MT
   output:
     mt_ctc_eligible: true
@@ -116,7 +116,7 @@
     gov.contrib.states.mt.ctc.earned_income_requirement.in_effect: true
     tax_unit_earned_income: 0
     adjusted_gross_income: 50_000
-    ctc_qualifying_children: 1
+    mt_ctc_qualifying_children: 1
     state_code: MT
   output:
     mt_ctc_eligible: false
@@ -129,7 +129,7 @@
     gov.contrib.states.mt.ctc.earned_income_requirement.in_effect: false
     tax_unit_earned_income: 0
     adjusted_gross_income: 50_000
-    ctc_qualifying_children: 1
+    mt_ctc_qualifying_children: 1
     state_code: MT
   output:
     mt_ctc_eligible: true
@@ -290,7 +290,7 @@
     gov.contrib.states.mt.ctc.in_effect: true
     tax_unit_earned_income: 50_000
     adjusted_gross_income: 50_000
-    ctc_qualifying_children: 0
+    mt_ctc_qualifying_children: 0
     state_code: MT
   output:
     mt_ctc_eligible: false
@@ -478,3 +478,66 @@
   output:
     mt_ctc_eligible: true
     mt_ctc: [1_800, 0]
+
+# Both branches of the child test (CTC-age children and 17-year-old dependents)
+# need a filer SSN or ITIN (IRC 24(e)(2)) but not the 2025 filer SSN rule of IRC
+# 24(h)(7)(A)(i), because IRC 24(h)(4)(C) gives the credit for other dependents
+# for a child that rule excludes (issue #9403).
+- name: Filer with an ITIN gets the credit for a child of 3 and a dependent of 17 in 2025
+  period: 2025
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    people:
+      head:
+        age: 34
+        employment_income: 30_000
+        ssn_card_type: OTHER_NON_CITIZEN
+      dep1:
+        age: 3
+        is_tax_unit_dependent: true
+      dep2:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dep1, dep2]
+    households:
+      household:
+        members: [head, dep1, dep2]
+        state_code: MT
+  output:
+    ctc_qualifying_children: 0
+    mt_ctc_qualifying_children: 2
+    mt_ctc_eligible: true
+    # $1,800 for the child of 3 plus $1,500 for the dependent of 17.
+    mt_ctc: [3_300, 0, 0]
+
+- name: Filer without any TIN gets no credit for a child of 3 or a dependent of 17 in 2025
+  period: 2025
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    people:
+      head:
+        age: 34
+        employment_income: 30_000
+        ssn_card_type: NONE
+        has_tin: false
+      dep1:
+        age: 3
+        is_tax_unit_dependent: true
+      dep2:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dep1, dep2]
+    households:
+      household:
+        members: [head, dep1, dep2]
+        state_code: MT
+  output:
+    mt_ctc_qualifying_children: 0
+    mt_ctc_eligible: false
+    mt_ctc: [0, 0, 0]

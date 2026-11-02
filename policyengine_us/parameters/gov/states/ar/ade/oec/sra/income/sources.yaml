@@ -14,7 +14,7 @@ values:
     - interest_income
     - dividend_income
     - rental_income
-    - military_retirement_pay
+    - military_retirement_income
     - veterans_benefits
     # The following are counted per FSU Procedural Manual Section 4.3.1-4.3.2
     # but have no matching variables:
@@ -22,7 +22,9 @@ values:
     # - regular bonuses, commissions
     # - armed forces pay (other than retirement)
     # - piece-rate, in-kind, contractual income
-    # - annuities, regular contributions
+    # - regular contributions
+    # Section 4.3.2 annuities are modeled through pension_income, and military
+    # Survivor Benefit Plan annuities through military_retirement_income.
     # Children's SSI and Social Security are excluded; the formula filters
     # contributions by age before summing.
 

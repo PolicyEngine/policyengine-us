@@ -1,0 +1,118 @@
+# 26 U.S.C. 62(a)(22) and 62(f) (CARES Act sec. 2204), 2020 only: "the
+# amount (not to exceed $300) of qualified charitable contributions made by
+# an eligible individual". $300 for every return, as the 2020 Instructions
+# for Form 1040, line 10b, give for single, head of household, qualifying
+# widow(er) and joint filers. The instructions' $150 for married filing
+# separately has no basis in the statute, which governs.
+
+- name: Case 1, 2020 non-itemizer below the cap deducts all cash gifts.
+  period: 2020
+  input:
+    charitable_cash_donations: 200
+    filing_status: SINGLE
+    tax_unit_itemizes: false
+  output:
+    charitable_contributions_ald: 200
+
+- name: Case 2, 2020 single non-itemizer exactly at the cap.
+  period: 2020
+  input:
+    charitable_cash_donations: 300
+    filing_status: SINGLE
+    tax_unit_itemizes: false
+  output:
+    charitable_contributions_ald: 300
+
+- name: Case 3, 2020 single non-itemizer above the cap.
+  period: 2020
+  input:
+    charitable_cash_donations: 500
+    filing_status: SINGLE
+    tax_unit_itemizes: false
+  output:
+    charitable_contributions_ald: 300
+
+- name: Case 4, 2020 joint return is capped at $300, not $600.
+  period: 2020
+  input:
+    charitable_cash_donations: 700
+    filing_status: JOINT
+    tax_unit_itemizes: false
+  output:
+    charitable_contributions_ald: 300
+
+- name: Case 5, 2020 married filing separately is capped at $300, as the statute reads.
+  period: 2020
+  input:
+    charitable_cash_donations: 400
+    filing_status: SEPARATE
+    tax_unit_itemizes: false
+  output:
+    charitable_contributions_ald: 300
+
+- name: Case 6, 2020 head of household is capped at $300.
+  period: 2020
+  input:
+    charitable_cash_donations: 400
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_itemizes: false
+  output:
+    charitable_contributions_ald: 300
+
+- name: Case 7, 2020 qualifying widow(er) is capped at $300.
+  period: 2020
+  input:
+    charitable_cash_donations: 400
+    filing_status: SURVIVING_SPOUSE
+    tax_unit_itemizes: false
+  output:
+    charitable_contributions_ald: 300
+
+- name: Case 8, 2020 itemizer is not an eligible individual (62(f)(1)).
+  period: 2020
+  input:
+    charitable_cash_donations: 500
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+  output:
+    charitable_contributions_ald: 0
+
+- name: Case 9, noncash gifts do not qualify (62(f)(2)(A)).
+  period: 2020
+  input:
+    charitable_cash_donations: 0
+    charitable_non_cash_donations: 1_000
+    filing_status: SINGLE
+    tax_unit_itemizes: false
+  output:
+    charitable_contributions_ald: 0
+
+- name: Case 10, no deduction in 2019, before 62(a)(22).
+  period: 2019
+  input:
+    charitable_cash_donations: 500
+    filing_status: SINGLE
+    tax_unit_itemizes: false
+  output:
+    charitable_contributions_ald: 0
+
+- name: Case 11, no above-the-line deduction in 2021; 170(p) takes it from AGI instead.
+  period: 2021
+  input:
+    charitable_cash_donations: 500
+    filing_status: SINGLE
+    tax_unit_itemizes: false
+  output:
+    charitable_contributions_ald: 0
+    charitable_deduction_for_non_itemizers: 300
+
+- name: Case 12, gifts to organizations that are not 170(b)(1)(A) organizations do not qualify (62(f)(2)(C)).
+  period: 2020
+  input:
+    charitable_cash_donations: 500
+    charitable_cash_donations_non_50_pct_orgs: 400
+    filing_status: SINGLE
+    tax_unit_itemizes: false
+  output:
+    # 500 - 400 = 100 of cash to 170(b)(1)(A) organizations.
+    charitable_contributions_ald: 100

@@ -57,3 +57,16 @@
     # 18,000 is within the 20,000 limit, so the credit is 40 for one person.
     ok_gross_income: 18_000
     ok_stc: 40
+
+- name: OK gross income counts the state supplement, which can end the property tax credit
+  period: 2026
+  input:
+    age: 70
+    real_estate_taxes: 500
+    state_code: OK
+  output:
+    # Form 538-H line 10 counts public assistance: SSI 994 x 12 = 11,928 plus
+    # the 40 x 12 = 480 state supplement is 12,408, over the 12,000 limit.
+    ok_ssp: 480
+    ok_gross_income: 12_408
+    ok_ptc: 0

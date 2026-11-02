@@ -44,4 +44,5 @@ class min_head_spouse_earned(Variable):
         )
         joint_earnings = max_(no_deem, max_(deem_head, deem_spouse))
 
+        # Source conflict us:dependent-care-exclusion-separate-filer-income
         return where(is_joint, joint_earnings, head_earnings)

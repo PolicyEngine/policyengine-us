@@ -1,0 +1,20 @@
+description: Minnesota uses the poverty guidelines from this many years before the model year for the federal income floor under the Energy Assistance Program.
+# HHS makes each January's guidelines mandatory for LIHEAP from the next
+# October 1. The FFY2026 table prints 110% of the 2025 guidelines for sizes 19
+# and 20 ($10,509 and $11,013 a month), and the FFY2027 table prints 110% of
+# the 2026 guidelines ($10,835 and $11,355).
+values:
+  2025-10-01: 1
+metadata:
+  unit: year
+  period: year
+  label: Minnesota EAP poverty guideline year lag
+  reference:
+    - title: "Minnesota EAP Policy Manual FFY26, Chapter 3, 2026 Maximum EAP Income Guidelines #page 88-89"
+      href: https://mn.gov/commerce-stat/pdfs/ffy26-eap-policy-manual.pdf#page=88
+    - title: Minnesota EAP Policy Manual FFY27, Chapter 3, 2027 Maximum EAP Income Guidelines
+      href: https://mn.gov/commerce-stat/pdfs/ffy27-eap-policy-manual.pdf#page=90
+    - title: LIHEAP IM 2025-02, Attachment 2, poverty guidelines for mandatory use in FY26
+      href: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_FPGSte-Table_Att2.pdf#page=1
+    - title: LIHEAP IM 2026-01, poverty guidelines for optional use in FY26 and mandatory use in FY27
+      href: https://acf.gov/ocs/policy-guidance/liheap-im2026-01-federal-poverty-guidelines-fpg-and-state-median-income-smi

@@ -152,7 +152,15 @@ class tax_unit_is_required_to_file(Variable):
         unearned_income = 0
         for source in parameters(period).gov.irs.gross_income.sources:
             if source not in earned_income_sources:
-                unearned_income += max_(0, add(person, period, [source]))
+                source_income = add(person, period, [source])
+                if source == "taxable_disability_benefits":
+                    # Before minimum retirement age, disability pensions go
+                    # on Form 1040 line 1h (included in worksheet line 1z).
+                    # Only the remaining taxable disability pay is unearned.
+                    source_income = source_income - person(
+                        "earned_disability_benefits", period
+                    )
+                unearned_income += max_(0, source_income)
         p_standard = p.deductions.standard
         aged_or_blind_count = person("is_irs_aged", period).astype(int) + person(
             "is_blind", period

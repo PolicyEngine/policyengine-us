@@ -11,11 +11,15 @@ values:
     - early_withdrawal_penalty # (h)
     - self_employment_tax_ald
     - alimony_income  # is a US ALD only in 2018 through 2025
+    # Massachusetts follows Code 62(a) as in effect on January 1, 2005, so
+    # it does not adopt 62(a)(22) (TIR 20-9, B(6)).
+    - charitable_contributions_ald
   2026-01-01:
     - loss_ald # (c)
     - traditional_ira_deduction # (f)
     - early_withdrawal_penalty # (h)
     - self_employment_tax_ald
+    - charitable_contributions_ald
 metadata:
   unit: list
   period: year
@@ -23,3 +27,5 @@ metadata:
   reference:
     - title: Mass. General Laws c.62 § 2(d)(1)(A)
       href: https://www.mass.gov/info-details/mass-general-laws-c62-ss-2
+    - title: Massachusetts DOR TIR 20-9, Massachusetts tax implications of the CARES Act, B(6)
+      href: https://archives.lib.state.ma.us/server/api/core/bitstreams/84d51bb2-c47f-4aa5-908a-b534fa72cabe/content#page=6
