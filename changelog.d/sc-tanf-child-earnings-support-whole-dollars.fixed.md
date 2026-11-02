@@ -1,0 +1,1 @@
+Exclude dependent children's earned income from South Carolina TANF, deduct child support that benefit group members pay outside the home after the earned income disregards, and round the need standard, gross income limit and payment down to whole dollars (TANF Policy Manual 7.5, 8.11, 8.15, 8.16; S.C. Code Regs. 114-1140(A)(4)).

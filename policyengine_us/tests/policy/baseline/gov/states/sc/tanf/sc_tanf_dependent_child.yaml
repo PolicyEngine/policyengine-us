@@ -1,0 +1,87 @@
+# SC DSS TANF Policy Manual (Volume 67), Section 7.5 (PDF page 105): a
+# dependent child's earned income is excluded; a minor parent's earned income
+# counts "if the minor parent is the head-of-household". The age test reuses
+# the federal TANF minor-child limits: under 18, or under 19 in secondary
+# school.
+
+- name: Case 1, children on both sides of the age and school boundaries.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+      seventeen:
+        age: 17
+        is_tax_unit_dependent: true
+      eighteen_in_school:
+        age: 18
+        is_in_secondary_school: true
+        is_tax_unit_dependent: true
+      eighteen_out_of_school:
+        age: 18
+        is_tax_unit_dependent: true
+      nineteen_in_school:
+        age: 19
+        is_in_secondary_school: true
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members:
+          [parent, seventeen, eighteen_in_school, eighteen_out_of_school, nineteen_in_school]
+        state_code: SC
+  output:
+    sc_tanf_dependent_child: [false, true, true, false, false]
+
+- name: Case 2, a minor parent who heads the tax unit counts as a parent.
+  period: 2026-01
+  input:
+    people:
+      minor_parent:
+        age: 17
+        is_tax_unit_head: true
+        employment_income_before_lsr: 6_000
+      baby:
+        age: 0
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [minor_parent, baby]
+        state_code: SC
+  output:
+    sc_tanf_dependent_child: [false, true]
+    # The minor parent's 6,000 / 12 = 500 a month counts.
+    sc_tanf_gross_earned_income: [500, 0]
+
+- name: Case 3, a pregnant adult is not a dependent child.
+  period: 2026-01
+  input:
+    age: 25
+    is_pregnant: true
+    state_code: SC
+  output:
+    sc_tanf_dependent_child: false
+
+- name: Case 4, a minor parent who is a dependent in the group is a dependent child.
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 45
+        is_tax_unit_head: true
+      minor_parent:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 6_000
+      baby:
+        age: 0
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [grandparent, minor_parent, baby]
+        state_code: SC
+  output:
+    # Section 7.5 excludes a minor parent's earnings "if the minor parent is
+    # included as a dependent in the TANF BG"; Section 8.16 B likewise.
+    sc_tanf_dependent_child: [false, true, true]
+    sc_tanf_gross_earned_income: [0, 0, 0]

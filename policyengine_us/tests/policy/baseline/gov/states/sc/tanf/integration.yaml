@@ -21,10 +21,12 @@
         members: [person1, person2, person3]
         state_code: SC
   output:
-    sc_tanf: 435.28
+    sc_tanf: 434
     # tanf_fpg for size 3 (2025-01, uses 2024-10 FPG) = 2151.67/month
-    # need_standard = 2151.67 * 0.5 = 1075.83
-    # benefit = 1075.83 * 0.4046 = 435.28
+    # 114-1140(A)(4) and the Section 8.15 table drop the cents of the need
+    # standard and the payment.
+    # need_standard = floor(2151.67 * 0.5 = 1075.83) = 1075
+    # benefit = floor(1075 * 0.4046 = 434.95) = 434
 
 - name: Case 2, single parent with earned income.
   absolute_error_margin: 0.1
@@ -49,14 +51,14 @@
         members: [person1, person2, person3]
         state_code: SC
   output:
-    sc_tanf: 334.13
+    sc_tanf: 333
     # monthly earned = 6,000/12 = 500
     # January (month 1) uses 50% disregard
     # countable_earned = 500 * 0.5 = 250
     # countable_income = 250
-    # need_standard = 1075.83
-    # excess = 1075.83 - 250 = 825.83
-    # benefit = 825.83 * 0.4046 = 334.13
+    # need_standard = 1075
+    # excess = 1075 - 250 = 825
+    # benefit = floor(825 * 0.4046 = 333.80) = 333
 
 - name: Case 3, income above gross limit.
   period: 2025-01
@@ -80,9 +82,9 @@
     sc_tanf: 0
     # monthly earned = 24,000/12 = 2,000
     # tanf_fpg for size 2 = 1703.33
-    # need_standard = 851.67
-    # gross_income_limit = 851.67 * 1.85 = 1575.58
-    # 2,000 > 1,575.58 -> not eligible
+    # need_standard = floor(851.67) = 851
+    # gross_income_limit = floor(851 * 1.85 = 1574.35) = 1574
+    # 2,000 > 1,574 -> not eligible
 
 - name: Case 4, single pregnant person with no income.
   period: 2025-01
@@ -102,10 +104,10 @@
         members: [person1]
         state_code: SC
   output:
-    sc_tanf: 253.89
+    sc_tanf: 253
     # tanf_fpg for size 1 (2025-01) = 1255/month
-    # need_standard = 1255 * 0.5 = 627.50
-    # benefit = 627.50 * 0.4046 = 253.89
+    # need_standard = floor(1255 * 0.5 = 627.50) = 627
+    # benefit = floor(627 * 0.4046 = 253.68) = 253
 
 - name: Case 5, unearned income only.
   period: 2025-01
@@ -128,14 +130,14 @@
         members: [person1, person2]
         state_code: SC
   output:
-    sc_tanf: 223.20
+    sc_tanf: 222
     # SSA benefits count at the gross amount (Section 7.7, page 116)
     # monthly unearned = 3,600/12 = 300
     # tanf_fpg for size 2 = 1703.33
-    # need_standard = 1703.33 * 0.5 = 851.67
+    # need_standard = floor(1703.33 * 0.5 = 851.67) = 851
     # countable_income = 0 (earned) + 300 (unearned) = 300
-    # excess = 851.67 - 300 = 551.67
-    # benefit = 551.67 * 0.4046 = 223.20
+    # excess = 851 - 300 = 551
+    # benefit = floor(551 * 0.4046 = 222.93) = 222
 
 - name: Case 6, historical payment rate (pre-Oct 2024).
   period: 2024-01
@@ -157,10 +159,10 @@
         members: [person1, person2]
         state_code: SC
   output:
-    sc_tanf: 277.07
+    sc_tanf: 276
     # tanf_fpg for size 2 (2024-01, uses 2023-10 FPG) = 1643.33/month
-    # need_standard = 1643.33 * 0.5 = 821.67
-    # benefit = 821.67 * 0.3372 = 277.07 (old rate)
+    # need_standard = floor(1643.33 * 0.5 = 821.67) = 821
+    # benefit = floor(821 * 0.3372 = 276.84) = 276 (old rate)
 
 - name: Case 7, two-parent household with 4 children (family of 6).
   period: 2025-01
@@ -195,9 +197,9 @@
         state_code: SC
   output:
     sc_tanf: 707
-    # tanf_fpg for size 6 (2025-01) = 3496/month (from Section 8.15 table)
-    # need_standard = 3496 * 0.5 = 1748
-    # benefit = 1748 * 0.4046 = 707.24
+    # tanf_fpg for size 6 (2025-01) = (15,060 + 5 x 5,380) / 12 = 3,496.67
+    # need_standard = floor(3,496.67 * 0.5 = 1,748.33) = 1,748
+    # benefit = floor(1,748 * 0.4046 = 707.24) = 707
 
 - name: Case 8, ineligible due to immigration status.
   period: 2025-01
@@ -252,13 +254,13 @@
     sc_tanf_gross_unearned_income: [500, 0]
     sc_tanf_countable_income: 500
     # tanf_fpg for size 2 (2020-01, uses 2019 FPG) = 16,910 / 12 = 1,409.17
-    # need_standard = 1,409.17 * 0.5 = 704.58
-    # 500 < 704.58 -> countable income eligible
+    # need_standard = floor(1,409.17 * 0.5 = 704.58) = 704
+    # 500 < 704 -> countable income eligible
     sc_tanf_income_eligible: true
-    # excess = 704.58 - 500 = 204.58
-    # benefit = 204.58 * 0.3372 = 68.99
-    # (Counting taxable UC instead gave 704.58 * 0.3372 = 237.59.)
-    sc_tanf: 68.99
+    # excess = 704 - 500 = 204
+    # benefit = floor(204 * 0.3372 = 68.79) = 68
+    # (Counting taxable UC instead gave floor(704 * 0.3372) = 237.)
+    sc_tanf: 68
 
 - name: Case 10, 2020 unemployment compensation above the federal exclusion counts in full.
   period: 2020-01
@@ -293,13 +295,13 @@
     sc_tanf_gross_unearned_income: [1_000, 0, 0, 0]
     sc_tanf_countable_income: 1_000
     # tanf_fpg for size 4 (2020-01, uses 2019 FPG) = 25,750 / 12 = 2,145.83
-    # need_standard = 2,145.83 * 0.5 = 1,072.92
-    # 1,000 < 1,072.92 -> countable income eligible
+    # need_standard = floor(2,145.83 * 0.5 = 1,072.92) = 1,072
+    # 1,000 < 1,072 -> countable income eligible
     sc_tanf_income_eligible: true
-    # excess = 1,072.92 - 1,000 = 72.92
-    # benefit = 72.92 * 0.3372 = 24.59
-    # (Counting taxable UC instead gave (1,072.92 - 150) * 0.3372 = 311.21.)
-    sc_tanf: 24.59
+    # excess = 1,072 - 1,000 = 72
+    # benefit = floor(72 * 0.3372 = 24.28) = 24
+    # (Counting taxable UC instead gave floor((1,072 - 150) * 0.3372) = 310.)
+    sc_tanf: 24
 
 - name: Case 11, gross Social Security counts when none of it is federally taxable.
   period: 2025-01
@@ -329,13 +331,13 @@
     sc_tanf_gross_unearned_income: [500, 0]
     sc_tanf_countable_income: 500
     # tanf_fpg for size 2 (2025-01) = 1,703.33
-    # need_standard = 1,703.33 * 0.5 = 851.67
-    # 500 < 851.67 -> countable income eligible
+    # need_standard = floor(1,703.33 * 0.5 = 851.67) = 851
+    # 500 < 851 -> countable income eligible
     sc_tanf_income_eligible: true
-    # excess = 851.67 - 500 = 351.67
-    # benefit = 351.67 * 0.4046 = 142.28
-    # (Counting taxable Social Security instead gave 851.67 * 0.4046 = 344.58.)
-    sc_tanf: 142.28
+    # excess = 851 - 500 = 351
+    # benefit = floor(351 * 0.4046 = 142.01) = 142
+    # (Counting taxable Social Security instead gave floor(851 * 0.4046) = 344.)
+    sc_tanf: 142
 
 - name: Case 12, gross Social Security above the need standard makes the family ineligible.
   period: 2025-01
@@ -360,9 +362,9 @@
     taxable_social_security: [0, 0]
     # Gross SSA benefit counts: 12,000 / 12 = 1,000 per month.
     sc_tanf_countable_income: 1_000
-    # need_standard = 851.67; 1,000 >= 851.67 -> not income eligible
+    # need_standard = 851; 1,000 >= 851 -> not income eligible
     sc_tanf_income_eligible: false
-    # (Counting taxable Social Security instead paid 344.58.)
+    # (Counting taxable Social Security instead paid 344.)
     sc_tanf: 0
 
 - name: Case 13, gross Social Security and unemployment compensation both count once.
@@ -397,11 +399,11 @@
     sc_tanf_gross_unearned_income: [500, 0, 0]
     sc_tanf_countable_income: 500
     # tanf_fpg for size 3 (2025-01) = 2,151.67
-    # need_standard = 2,151.67 * 0.5 = 1,075.83
-    # excess = 1,075.83 - 500 = 575.83
-    # benefit = 575.83 * 0.4046 = 232.98
-    # (Counting taxable SS instead gave (1,075.83 - 200) * 0.4046 = 354.36.)
-    sc_tanf: 232.98
+    # need_standard = floor(2,151.67 * 0.5 = 1,075.83) = 1,075
+    # excess = 1,075 - 500 = 575
+    # benefit = floor(575 * 0.4046 = 232.65) = 232
+    # (Counting taxable SS instead gave floor((1,075 - 200) * 0.4046) = 354.)
+    sc_tanf: 232
 
 - name: Case 14, child support, a child's Social Security and interest above the exclusion.
   period: 2025-01
@@ -430,15 +432,15 @@
         state_code: SC
   output:
     sc_tanf_gross_income: 750
-    sc_tanf: 131.83
+    sc_tanf: 131
     # SC DSS TANF Policy Manual (Volume 67), Section 7.7:
     # child support paid directly = 3,600/12 = 300 (page 108)
     # child's SSA benefits, gross = 4,800/12 = 400 (page 116)
     # interest = (1,000 - 400 exclusion)/12 = 50 (page 113)
     # gross income = 300 + 400 + 50 = 750
-    # tanf_fpg for size 3 = 2151.67; need standard = 1075.83
-    # gross income limit = 1075.83 * 1.85 = 1990.29; 750 passes
-    # benefit = (1075.83 - 750) * 0.4046 = 131.83
+    # tanf_fpg for size 3 = 2151.67; need standard = floor(1075.83) = 1075
+    # gross income limit = floor(1075 * 1.85 = 1988.75) = 1988; 750 passes
+    # benefit = floor((1075 - 750) * 0.4046 = 131.50) = 131
 
 - name: Case 15, an SSI child and the child's income are excluded from the benefit group.
   period: 2025-01
@@ -467,13 +469,13 @@
   output:
     sc_tanf_benefit_group_size: 2
     sc_tanf_gross_income: 0
-    sc_tanf_need_standard: 851.67
-    sc_tanf: 344.58
+    sc_tanf_need_standard: 851
+    sc_tanf: 344
     # SC DSS TANF Policy Manual (Volume 67), Section 3.6 (page 56) and
     # Section 7.7 (page 117): exclude the SSI recipient, his/her income and
     # resources. The benefit group is the parent and the other child.
-    # FPG for 2 = 1703.33; need standard = 851.67
-    # benefit = 851.67 * 0.4046 = 344.58
+    # FPG for 2 = 1703.33; need standard = floor(851.67) = 851
+    # benefit = floor(851 * 0.4046 = 344.31) = 344
 
 - name: Case 16, when the only child receives SSI, the parent is the only benefit group member.
   period: 2025-01
@@ -497,11 +499,11 @@
         state_code: SC
   output:
     sc_tanf_benefit_group_size: 1
-    sc_tanf: 253.89
+    sc_tanf: 253
     # Section 3.6 (page 56): "If an SSI child is the only child in the home,
     # include the parent(s) as the only BG member."
-    # FPG for 1 = 1255; need standard = 627.50
-    # benefit = 627.50 * 0.4046 = 253.89
+    # FPG for 1 = 1255; need standard = floor(627.50) = 627
+    # benefit = floor(627 * 0.4046 = 253.68) = 253
 
 - name: Case 17, an SSI child's savings do not count against the resource limit.
   period: 2025-01
@@ -529,7 +531,202 @@
         state_code: SC
   output:
     sc_tanf_countable_resources: 800
-    sc_tanf: 344.58
+    sc_tanf: 344
     # Sections 3.6 (page 56) and 7.7 (page 117) exclude the SSI child's
     # resources: 2,600 - 1,800 = 800, within the $2,500 limit (page 91).
-    # Benefit group of 2: need standard 851.67; benefit = 851.67 * 0.4046
+    # Benefit group of 2: need standard 851; benefit = floor(851 * 0.4046) = 344
+
+# Rules added for dependent children's earnings (Section 7.5, PDF page 105;
+# Section 8.16 B, page 134), child support paid (Section 8.11, page 131;
+# Section 8.16 D and F, page 134) and whole dollars (114-1140(A)(4); the
+# Section 8.15 table notes, page 133). 2026 months use the 2025 guideline:
+# a group of three has a need standard of floor(26,650 / 12 x 0.5) = 1,110.
+
+- name: Case 18, a parent and two children with no income.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+      child1:
+        age: 16
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: SC
+  output:
+    sc_tanf_need_standard: 1_110
+    # floor(1,110 x 0.4046 = 449.11) = 449. Without rounding:
+    # 1,110.42 x 0.4046 = 449.27.
+    sc_tanf: 449
+
+- name: Case 19, a dependent child's earnings are excluded.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+      child1:
+        age: 16
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 6_000
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: SC
+  output:
+    # Section 7.5: "Earned income of a dependent child(ren) is excluded".
+    sc_tanf_dependent_child: [false, true, true]
+    sc_tanf_gross_earned_income: [0, 0, 0]
+    sc_tanf_gross_income: 0
+    sc_tanf_countable_income: 0
+    # Counting the child's 500 a month gave a 50% January disregard, 250
+    # countable, and (1,110.42 - 250) x 0.4046 = 348.12.
+    sc_tanf: 449
+
+- name: Case 20, a dependent child's unearned income still counts.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+      child1:
+        age: 16
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 6_000
+        social_security_survivors: 2_400
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: SC
+  output:
+    # Section 7.5 excludes only the child's earned income: 2,400 / 12 = 200.
+    sc_tanf_gross_unearned_income: [0, 200, 0]
+    sc_tanf_gross_income: 200
+    sc_tanf_countable_income: 200
+    # floor((1,110 - 200) x 0.4046 = 368.19) = 368.
+    sc_tanf: 368
+
+- name: Case 21, child support paid comes off earned income after the disregard.
+  period: 2026-05
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income_before_lsr: 7_200
+        child_support_expense: 2_400
+      child1:
+        age: 16
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: SC
+  output:
+    # May uses the $100 disregard: E = 600 - 100 = 500; S = 2,400 / 12 = 200.
+    sc_tanf_child_support_deduction: 200
+    sc_tanf_countable_income: 300
+    # The Section 8.15 gross income test stays on gross income.
+    sc_tanf_gross_income: 600
+    # floor((1,110 - 300) x 0.4046 = 327.73) = 327.
+    sc_tanf: 327
+
+- name: Case 22, one adult's support payment comes off the other adult's earnings.
+  period: 2026-05
+  input:
+    people:
+      adult_a:
+        age: 40
+        is_tax_unit_head: true
+        child_support_expense: 2_400
+      adult_b:
+        age: 38
+        is_tax_unit_spouse: true
+        employment_income_before_lsr: 7_200
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    marital_units:
+      couple:
+        members: [adult_a, adult_b]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [adult_a, adult_b, child]
+        state_code: SC
+  output:
+    # Section 8.11 deducts support paid by a benefit group member from the
+    # group's income: E = 600 - 100 = 500, S = 200, countable 300.
+    sc_tanf_child_support_deduction: 200
+    sc_tanf_countable_income: 300
+    # floor((1,110 - 300) x 0.4046) = 327. Limiting the deduction to the
+    # payer's own earnings (0) would leave 500 countable and
+    # floor(610 x 0.4046 = 246.81) = 246.
+    sc_tanf: 327
+
+- name: Case 23, support paid above the group's income stops at zero.
+  period: 2026-05
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income_before_lsr: 3_000
+        alimony_income: 1_200
+        child_support_expense: 3_600
+      child1:
+        age: 16
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: SC
+  output:
+    # E = 250 - 100 = 150, U = 100, S = 300: the deduction takes E, then U,
+    # and stops at min(300, 250) = 250, leaving 0.
+    sc_tanf_child_support_deduction: 250
+    sc_tanf_countable_income: 0
+    sc_tanf_gross_income: 350
+    sc_tanf: 449
+
+- name: Case 24, a pregnant adult's wages count.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 25
+        is_pregnant: true
+        is_tax_unit_head: true
+        employment_income_before_lsr: 6_000
+    households:
+      household:
+        members: [parent]
+        state_code: SC
+  output:
+    # Pregnancy does not make an adult a dependent child: 500 x 0.5 = 250
+    # countable in January. Need standard floor(15,650 / 12 x 0.5) = 652.
+    sc_tanf_dependent_child: false
+    sc_tanf_countable_income: 250
+    # floor((652 - 250) x 0.4046 = 162.65) = 162.
+    sc_tanf: 162
