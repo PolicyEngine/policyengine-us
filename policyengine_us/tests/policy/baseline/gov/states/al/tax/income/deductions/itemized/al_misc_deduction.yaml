@@ -100,3 +100,26 @@
     state_code: AL
   output:
     al_misc_deduction: 0
+
+- name: Case 9, 2025 a tax unit dependent's expenses stay off the filer's Alabama return.
+  period: 2025
+  input:
+    people:
+      head:
+        unreimbursed_business_employee_expenses: 1_500
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        unreimbursed_business_employee_expenses: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        al_agi: 50_000
+    households:
+      household:
+        members: [head, child]
+        state_code: AL
+  output:
+    # The child's 2,000 belongs on the child's own return.
+    # 1,500 - 0.02 * 50,000
+    al_misc_deduction: 500

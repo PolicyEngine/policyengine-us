@@ -27,8 +27,10 @@ class al_misc_deduction(Variable):
         # federal misc_deduction: that is already net of the federal 2% floor
         # and is zero once 26 U.S.C. 67(g) suspends it from 2018. Alabama keeps
         # its own list of expenses so that federal categories added later do
-        # not flow in without a reading of the Alabama statute.
+        # not flow in without a reading of the Alabama statute. Like al_agi,
+        # it sums the head's and spouse's expenses only: a tax unit
+        # dependent's expenses belong on the dependent's own Alabama return.
         p = parameters(period).gov.states.al.tax.income.deductions.itemized
-        expenses = add(tax_unit, period, p.misc_sources)
+        expenses = tax_unit_non_dep_add(tax_unit, period, p.misc_sources)
         misc_floor = p.work_related_expense_rate * tax_unit("al_agi", period)
         return max_(0, expenses - misc_floor)

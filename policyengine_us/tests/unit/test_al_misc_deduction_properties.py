@@ -6,14 +6,16 @@ that one floor to the expenses themselves, whether or not the federal
 deduction is suspended. For every generated tax unit (one or two filers):
 
 1. The deduction is never negative, never exceeds the unit's Alabama
-   expenses, and is at least the expenses less 2% of Alabama AGI.
+   expenses, and is at least the expenses less 2% of Alabama AGI. Federal
+   AGI is drawn independently of Alabama AGI, so a floor at federal AGI
+   breaks these bounds whenever the two differ.
 2. It does not fall when expenses rise and does not rise when Alabama AGI
    rises.
 3. It is the same in 2017 and 2025: the federal suspension from 2018
    (26 U.S.C. 67(g)) does not reach it.
 4. In 2017, when Alabama AGI equals federal AGI, it equals the federal
-   miscellaneous deduction, since each applies one 2% floor to the same
-   expenses.
+   miscellaneous deduction for units whose only miscellaneous expenses are
+   on both lists, since each then applies one 2% floor to the same expenses.
 5. A federal total supplied directly, with no Alabama expenses, yields no
    Alabama deduction: Alabama reads its own list of expenses.
 
@@ -37,6 +39,13 @@ EXTRA_EXPENSE = 1_000
 EXTRA_AGI = 10_000
 ARRANGEMENTS = ("base", "more_expenses", "more_agi")
 TOLERANCE = 0.01
+
+
+def federal_agi_of(case):
+    # None draws federal AGI equal to the base Alabama AGI.
+    if case["federal_agi"] is None:
+        return case["al_agi"]
+    return case["federal_agi"]
 
 
 def unit_inputs(case, arrangement):
@@ -84,7 +93,7 @@ def build_situation(cases, arrangements):
             tax_unit = {
                 "members": members,
                 "al_agi": {year: agi for year in YEARS},
-                "positive_agi": {year: agi for year in YEARS},
+                "positive_agi": {year: federal_agi_of(case) for year in YEARS},
             }
             if arrangement == "federal_only":
                 expenses = case["head_employee"] + case["head_prep"]
@@ -148,8 +157,11 @@ def assert_properties(cases):
             assert al[year][i, more_expenses] >= al[year][i, base] - TOLERANCE, case
             assert al[year][i, more_agi] <= al[year][i, base] + TOLERANCE, case
             assert al_federal_only[year][i] == 0, case
-        # One floor each on the same expenses and the same AGI.
-        for j in range(len(ARRANGEMENTS)):
+        # One floor each on the same expenses, where the two AGIs agree.
+        for j, arrangement in enumerate(ARRANGEMENTS):
+            _, _, agi = unit_inputs(case, arrangement)
+            if agi != federal_agi_of(case):
+                continue
             assert al[2017][i, j] == pytest.approx(federal_2017[i, j], abs=TOLERANCE), (
                 case,
                 ARRANGEMENTS[j],
@@ -165,6 +177,7 @@ WORKED_CASES = [
         "spouse_employee": 0,
         "spouse_prep": 0,
         "al_agi": 50_000,
+        "federal_agi": 50_000,
     },
     # 1,500 + 700 - 0.02 * 60,000 = 1,000.
     {
@@ -174,6 +187,7 @@ WORKED_CASES = [
         "spouse_employee": 0,
         "spouse_prep": 700,
         "al_agi": 60_000,
+        "federal_agi": 60_000,
     },
     # Expenses equal to the floor: no deduction.
     {
@@ -183,6 +197,7 @@ WORKED_CASES = [
         "spouse_employee": 0,
         "spouse_prep": 0,
         "al_agi": 50_000,
+        "federal_agi": 50_000,
     },
 ]
 
@@ -213,6 +228,9 @@ AMOUNTS = st.integers(min_value=0, max_value=10_000)
                 "spouse_employee": AMOUNTS,
                 "spouse_prep": AMOUNTS,
                 "al_agi": st.integers(min_value=0, max_value=200_000),
+                "federal_agi": st.one_of(
+                    st.none(), st.integers(min_value=0, max_value=200_000)
+                ),
             }
         ),
         min_size=1,
