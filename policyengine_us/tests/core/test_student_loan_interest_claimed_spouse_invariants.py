@@ -90,8 +90,8 @@ def _situation(units, year):
 
 def _check(units, year):
     sim = Simulation(situation=_situation(units, year))
-    ald = sim.calculate("student_loan_interest_ald", year).values
-    own = sim.calculate("student_loan_interest", year).values
+    ald = sim.calculate("student_loan_interest_ald", year)
+    own = sim.calculate("student_loan_interest", year)
     cap = sim.tax_benefit_system.parameters(
         f"{year}-01-01"
     ).gov.irs.ald.student_loan_interest.cap.JOINT
