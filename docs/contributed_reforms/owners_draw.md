@@ -96,19 +96,6 @@ Outputs include `owners_draw_active_income`, `owners_draw_planned_gross`,
 `owners_draw_net_earnings`, `owners_draw_oasdi_room`,
 `owners_draw_oasdi_base`, `owners_draw_oasdi_tax`, and `owners_draw_hi_tax`.
 
-## Self-employed health insurance limit
-
-The reform also replaces `self_employed_health_insurance_earned_income_limit`
-(Form 7206 line 13). Line 5 sums the profits of businesses subject to SE tax,
-and line 6 apportions the deductible SE tax on line 7 to the plan business by
-its share of line 5. With `half_seca_deduction: true`, line 5 adds
-`owners_draw_niit_exclusion`: `draw_oasdi_base / q` with HI off, or the whole
-actual gross draw D with HI on. These are the draw profits whose SECA the
-deduction includes. Draw profits beyond the OASDI room with HI off stay out of
-line 5. With `half_seca_deduction: false` the draw's SECA is not deductible,
-so line 5 omits the draw and the limit follows the baseline formula. Disabled
-years use the baseline formula.
-
 For the current-law cap basis, the taxed draw is nonnegative and no larger
 than remaining room, adjusted earnings, or actual gross draw. Adding the
 draw cannot push otherwise capped covered earnings beyond C. Increasing the
@@ -116,6 +103,21 @@ phase-in share cannot reduce draw tax when other inputs and settings stay
 fixed. Already-SE income is removed before computing the draw, and disabled
 years retain baseline tax and deduction behavior. The `1` cap option
 intentionally permits earnings above C.
+
+## Self-employed health insurance limit
+
+The reform also replaces
+`self_employed_health_insurance_earned_income_limit` (Form 7206 line 13).
+Line 5 sums the profits of businesses subject to SE tax, and line 6
+apportions the deductible SE tax on line 7 to the plan business by its share
+of line 5. With `half_seca_deduction: true`, line 5 adds
+`owners_draw_niit_exclusion`: `draw_oasdi_base` divided by the net-earnings
+factor (q by default) with HI off, or the whole actual gross draw D with HI
+on. These are the draw profits whose SECA the deduction includes. Draw
+profits beyond the OASDI room with HI off stay out of line 5. With
+`half_seca_deduction: false` the draw's SECA is not deductible, so line 5
+omits the draw and the limit follows the baseline formula. Disabled years
+use the baseline formula.
 
 ## Benefit credit and active NIIT interaction
 
@@ -131,17 +133,18 @@ synchronize that path with the current tax cap. Mini-PIA integration and a
 complete annual-history ledger remain separate future work.
 
 `owners_draw_niit_exclusion` is the matching gross-profit exclusion for a
-S.770 active-business NIIT option. With OASDI only it is
-`draw_oasdi_base / q`: only profits whose adjusted earnings actually face
-SECA are excluded. With HI enabled it is the entire actual gross draw D,
-because N_D faces uncapped HI. Profits beyond OASDI room remain in the active
-base when HI is off. The undrawn share and any floor-rejected planned draw
-also remain. Existing already-SE gross K_active must separately be excluded
-regardless of the OASDI cap because existing SE earnings face uncapped HI.
-When both reforms are active, `s770_active_business_income` consumes this
-calculated exclusion, including an explicit net-factor override. When owners
-draw is disabled, before its start year, or uninstalled, the S.770 manual
-draw hooks retain their original behavior.
+S.770 active-business NIIT option. With OASDI only it is `draw_oasdi_base`
+divided by the net-earnings factor (q by default): only profits whose
+adjusted earnings actually face SECA are excluded. With HI enabled it is the
+entire actual gross draw D, because N_D faces uncapped HI. Profits beyond
+OASDI room remain in the active base when HI is off. The undrawn share and
+any floor-rejected planned draw also remain. Existing already-SE gross
+K_active must separately be excluded regardless of the OASDI cap because
+existing SE earnings face uncapped HI. When both reforms are active,
+`s770_active_business_income` consumes this calculated exclusion, including
+an explicit net-factor override. When owners draw is disabled, before its
+start year, or uninstalled, the S.770 manual draw hooks retain their
+original behavior.
 
 The automatic joint route requires `material_participation_only: true`.
 Passive-inclusive draws remain supported by the standalone owners' draw
