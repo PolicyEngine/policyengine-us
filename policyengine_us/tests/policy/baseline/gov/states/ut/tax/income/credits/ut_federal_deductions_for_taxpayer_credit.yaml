@@ -59,15 +59,123 @@
   output:
     ut_federal_deductions_for_taxpayer_credit: 5_000
 
-- name: "Case 5: Utah subtracts only state income or sales tax from claimed itemized deductions"
+- name: "Case 5: Utah subtracts state income tax from claimed itemized deductions"
+  # An income-tax election: the $9,000 income tax is removed. A sales-tax
+  # election keeps its sales tax in the base (Cases 6, 7 and 10).
   period: 2023
   input:
     filing_status: JOINT
     state_code: UT
     tax_unit_itemizes: true
     itemized_taxable_income_deductions: 15_000
+    state_withheld_income_tax: 9_000
+    local_income_tax: 0
+    state_sales_tax: 0
+    local_sales_tax: 0
     state_and_local_sales_or_income_tax: 9_000
     standard_deduction: 0
   output:
     ut_federal_deductions_for_taxpayer_credit: 6_000
 
+
+- name: "Case 6: allowed sales taxes remain in the Utah credit base"
+  # Utah Code 59-10-1018(1)(f)(i) removes only state or local income tax from
+  # the federal itemized total. $6,000 other deductions + $9,000 sales tax.
+  period: 2025
+  input:
+    state_code: UT
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 15_000
+    charitable_deduction: 6_000
+    real_estate_taxes: 0
+    state_withheld_income_tax: 0
+    local_income_tax: 0
+    state_sales_tax: 9_000
+    local_sales_tax: 0
+    salt_deduction: 9_000
+    ut_personal_exemption: 0
+  output:
+    ut_federal_deductions_for_taxpayer_credit: 15_000
+    # 6% x $15,000
+    ut_taxpayer_credit_max: 900
+
+- name: "Case 7: capped sales taxes still remain in the Utah credit base"
+  # Allowed SALT $10,000 (real estate $4,000 + sales $6,000 under the cap)
+  # + other deductions $6,000 = $16,000.
+  period: 2024
+  input:
+    state_code: UT
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 16_000
+    charitable_deduction: 6_000
+    real_estate_taxes: 4_000
+    state_withheld_income_tax: 0
+    local_income_tax: 0
+    state_sales_tax: 9_000
+    local_sales_tax: 0
+    salt_deduction: 10_000
+    ut_personal_exemption: 0
+  output:
+    ut_federal_deductions_for_taxpayer_credit: 16_000
+    # 6% x $16,000
+    ut_taxpayer_credit_max: 960
+
+- name: "Case 8: income taxes are still removed when they exceed sales taxes"
+  # Income-tax election: $15,000 - $9,000 income tax = $6,000.
+  period: 2025
+  input:
+    state_code: UT
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 15_000
+    charitable_deduction: 6_000
+    real_estate_taxes: 0
+    state_withheld_income_tax: 9_000
+    local_income_tax: 0
+    state_sales_tax: 2_000
+    local_sales_tax: 0
+    salt_deduction: 9_000
+    ut_personal_exemption: 0
+  output:
+    ut_federal_deductions_for_taxpayer_credit: 6_000
+
+- name: "Case 9: equal sales and income taxes follow the income-tax branch"
+  # The federal formula takes max(income, sales); only a strictly larger
+  # sales amount is treated as a sales-tax election.
+  period: 2025
+  input:
+    state_code: UT
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 15_000
+    charitable_deduction: 6_000
+    real_estate_taxes: 0
+    state_withheld_income_tax: 9_000
+    local_income_tax: 0
+    state_sales_tax: 9_000
+    local_sales_tax: 0
+    salt_deduction: 9_000
+    ut_personal_exemption: 0
+  output:
+    ut_federal_deductions_for_taxpayer_credit: 6_000
+
+- name: "Case 10: sales-tax fallback when no federal itemized total is supplied"
+  # Fallback base: non-SALT itemized deductions ($6,000) + allowed SALT ($9,000).
+  period: 2025
+  input:
+    state_code: UT
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 0
+    charitable_deduction: 6_000
+    real_estate_taxes: 0
+    state_withheld_income_tax: 0
+    local_income_tax: 0
+    state_sales_tax: 9_000
+    local_sales_tax: 0
+    salt_deduction: 9_000
+    ut_personal_exemption: 0
+  output:
+    ut_federal_deductions_for_taxpayer_credit: 15_000
