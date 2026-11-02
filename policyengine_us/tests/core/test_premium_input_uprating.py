@@ -55,8 +55,11 @@ Invariants:
 5. Bounds and order: each index is positive in every year, and strictly
    increasing from its last published dip (direct purchase from 2020, Part B
    from 2023, medical care CPI throughout) to 2100.
-6. Extension rule: past its source's last year, each index grows at its last
-   published one-year rate to 2100 and holds its 2100 value after.
+6. Extension rule: past its source's last year, the direct purchase, medical
+   care CPI and Part B indexes grow at their last published one-year rates to
+   2100. The ESI index instead glides to the Medicare Trustees' long-range per
+   capita health spending rates (tested in test_long_range_health_growth.py
+   and test_esi_premium_uprating.py). Every index holds its 2100 value after.
 7. No premium input follows out-of-pocket spending.
 """
 

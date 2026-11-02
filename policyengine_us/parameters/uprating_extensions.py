@@ -30,7 +30,10 @@ LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS = (
 # period and the rate at the start of the last 50 years (file pages 24 and
 # 180), and the long-range rates then decline gradually from 2050 to 2100
 # (file pages 23 and 173). They publish only the 2050 and 2100 rates, so the
-# path between those two knots is linear here.
+# path between those two knots is linear here. That is an approximation: the
+# Trustees' own path is not a straight line, as their income-technology
+# elasticity declines at a slowing pace and their price elasticity follows a
+# non-linear path between 2050 and 2100 (file page 175).
 #
 # Per capita overall health spending grows at GDP plus 0.7 percent (4.3
 # percent) in 2050, declining gradually to GDP plus 0.4 percent (4.1 percent)
@@ -40,7 +43,9 @@ LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS = (
 # the factors model behind it holds insurance coverage unchanged (file page
 # 175), and the Trustees see only a small likelihood that one part of the
 # health sector grows indefinitely at significantly faster rates than the
-# others (file page 177).
+# others (file page 177). The Trustees extend CMS's national health
+# expenditure projections past 2033 by the same long-range methods (Table
+# V.B5, note 1, file page 200).
 HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH = {2050: 0.043, 2100: 0.041}
 
 # The Trustees' Medicare cost growth rates exclude the effects of the aging of
@@ -782,10 +787,9 @@ def long_range_growth_rate(
     that glides from the short-range rate to long-range rates.
 
     The knots are (last_projected_year, short_range_growth) and each
-    (year, rate) in long_range_growth. The rate moves linearly between
-    adjacent knots, as the Medicare Trustees interpolate between their
-    short-range and long-range rates, and holds the last knot's rate after
-    it.
+    (year, rate) in long_range_growth. The Medicare Trustees interpolate
+    between their short-range and long-range rates; this path is linear
+    between adjacent knots, and holds the last knot's rate after it.
     """
     knots = sorted(long_range_growth.items())
     if not knots or knots[0][0] <= last_projected_year:
