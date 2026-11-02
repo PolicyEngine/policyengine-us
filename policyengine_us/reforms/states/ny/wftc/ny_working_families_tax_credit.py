@@ -117,7 +117,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         def formula(tax_unit, period, parameters):
             maximum = tax_unit("eitc_younger_maximum", period)
             phase_in_rate = tax_unit("eitc_younger_phase_in_rate", period)
-            earnings = tax_unit("filer_adjusted_earnings", period)
+            earnings = tax_unit("eitc_earned_income", period)
             phased_in_amount = earnings * phase_in_rate
             return min_(maximum, phased_in_amount)
 
@@ -161,7 +161,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/32#a_2"
 
         def formula(tax_unit, period, parameters):
-            earnings = tax_unit("filer_adjusted_earnings", period)
+            earnings = tax_unit("eitc_earned_income", period)
             agi = tax_unit("adjusted_gross_income", period)
             highest_income_variable = max_(earnings, agi)
             phase_out_start = tax_unit("eitc_younger_phase_out_start", period)
@@ -298,7 +298,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         def formula(tax_unit, period, parameters):
             maximum = tax_unit("eitc_older_maximum", period)
             phase_in_rate = tax_unit("eitc_older_phase_in_rate", period)
-            earnings = tax_unit("filer_adjusted_earnings", period)
+            earnings = tax_unit("eitc_earned_income", period)
             phased_in_amount = earnings * phase_in_rate
             return min_(maximum, phased_in_amount)
 
@@ -346,7 +346,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/32#a_2"
 
         def formula(tax_unit, period, parameters):
-            earnings = tax_unit("filer_adjusted_earnings", period)
+            earnings = tax_unit("eitc_earned_income", period)
             agi = tax_unit("adjusted_gross_income", period)
             highest_income_variable = max_(earnings, agi)
             phase_out_start = tax_unit("eitc_older_phase_out_start", period)

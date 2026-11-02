@@ -1,0 +1,24 @@
+description: North Dakota counts these separate earned income sources under the Low Income Home Energy Assistance Program.
+values:
+  2025-06-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_income
+    - military_basic_pay
+# Report active net business income once, rather than repeating it in wages
+# or self-employment. Gross partnership reporting lacks policy expense detail.
+# Military basic pay is an input separate from wages; the subsistence and
+# housing allowances that 415-25-05-20-05 also counts as military pay have no
+# input. Employer-paid disability is not added separately because employment
+# income can already contain it and the overlap is unobserved.
+metadata:
+  unit: list
+  period: year
+  label: North Dakota LIHEAP earned income sources
+  reference:
+    - title: Energy Assistance Policy Manual 415-25-05-20-05, Earned Income
+      href: https://www.nd.gov/dhs/policymanuals/415/415_25_05_20_05.htm
+    - title: Energy Assistance Policy Manual 415-25-05-27-15, Treatment of Self-Employment Income
+      href: https://www.nd.gov/dhs/policymanuals/415/415_25_05_27_15.htm
