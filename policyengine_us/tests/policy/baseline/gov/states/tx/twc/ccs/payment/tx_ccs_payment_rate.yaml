@@ -286,3 +286,202 @@
   output:
     # No bcy2027.csv exists; falls back to BCY26 rate: 46.00 * 10 = 460.00
     tx_ccs_payment_rate: 460.00
+
+- name: BCY24 start - ALAMO LCCC TRS2 Infant Full Time
+  period: 2023
+  input:
+    age: 0
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCC
+    tx_ccs_provider_rating: TRS2
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: ALAMO
+  output:
+    # WD 20-23 Att. 1 (BCY24) infant FT = 46.62 * 10 = 466.20 from October 2023
+    tx_ccs_payment_rate:
+      2023-10: 466.20
+      2023-12: 466.20
+
+- name: BCY24 to BCY25 - PANHANDLE RCCH REG Preschool Full Time
+  period: 2024
+  input:
+    age: 4
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RCCH
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 21
+    state_code: TX
+    tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # BCY24 (WD 20-23 Att. 1) preschool FT = 27.33 * 21 = 573.93
+    # BCY25 four-age-group preschool FT = 30.40 * 21 = 638.40
+    tx_ccs_payment_rate:
+      2024-01: 573.93
+      2024-09: 573.93
+      2024-10: 638.40
+      2024-12: 638.40
+
+- name: BCY24 to BCY25 - TEXOMA Relative None Toddler Full Time
+  period: 2024
+  input:
+    age: 2
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RELATIVE
+    tx_ccs_provider_rating: NONE
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: TEXOMA
+  output:
+    # BCY24 (WD 20-23 Att. 1) toddler FT = 17.26 * 10 = 172.60
+    # BCY25 four-age-group toddler FT = 16.64 * 10 = 166.40, below BCY24
+    tx_ccs_payment_rate:
+      2024-06: 172.60
+      2024-10: 166.40
+
+- name: BCY24 - TARRANT_COUNTY RCCH TRS4 School Age Blended
+  period: 2024
+  input:
+    age: 8
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RCCH
+    tx_ccs_provider_rating: TRS4
+    tx_ccs_care_schedule: BLENDED
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: TARRANT_COUNTY
+  output:
+    # BCY24 (WD 20-23 Att. 1) school-age BT = 32.91 * 10 = 329.10
+    # BCY25 four-age-group school-age BT = 35.06 * 10 = 350.60
+    tx_ccs_payment_rate:
+      2024-02: 329.10
+      2024-10: 350.60
+
+- name: BCY24 - GULF_COAST LCCH TSR Preschool Part Time
+  period: 2024
+  input:
+    age: 5
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCH
+    tx_ccs_provider_rating: TSR
+    tx_ccs_care_schedule: PART_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: GULF_COAST
+  output:
+    # BCY24 (WD 20-23 Att. 1) preschool PT = 34.02 * 10 = 340.20
+    # BCY25 four-age-group preschool PT = 34.03 * 10 = 340.30
+    tx_ccs_payment_rate:
+      2024-05: 340.20
+      2024-11: 340.30
+
+- name: BCY24 - WEST_CENTRAL LCCC TRS3 Toddler Part Time
+  period: 2024
+  input:
+    age: 2
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCC
+    tx_ccs_provider_rating: TRS3
+    tx_ccs_care_schedule: PART_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: WEST_CENTRAL
+  output:
+    # BCY24 (WD 20-23 Att. 1) toddler PT = 30.26 * 10 = 302.60
+    # BCY25 four-age-group toddler PT = 30.30 * 10 = 303.00
+    tx_ccs_payment_rate:
+      2024-08: 302.60
+      2024-10: 303.00
+
+- name: BCY24 to BCY25 - DALLAS_COUNTY LCCH TRS3 School Age Full Time
+  period: 2024
+  input:
+    age: 8
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCH
+    tx_ccs_provider_rating: TRS3
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    # BCY24 (WD 20-23 Att. 1) school-age FT = 38.10 * 10 = 381.00
+    # BCY25 four-age-group school-age FT = 39.43 * 10 = 394.30
+    tx_ccs_payment_rate:
+      2024-09: 381.00
+      2024-11: 394.30
+
+- name: BCY24 to BCY25 - DALLAS_COUNTY RCCH REG School Age Full Time
+  period: 2024
+  input:
+    age: 8
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RCCH
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    # BCY24 (WD 20-23 Att. 1) school-age FT = 31.00 * 10 = 310.00
+    # BCY25 four-age-group school-age FT = 34.00 * 10 = 340.00
+    tx_ccs_payment_rate:
+      2024-09: 310.00
+      2024-11: 340.00
+
+- name: BCY24 to BCY25 - DALLAS_COUNTY RCCH REG Infant Part Time
+  period: 2024
+  input:
+    age: 1
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RCCH
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: PART_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    # BCY24 and BCY25 four-age-group infant PT = 34.80 * 10 = 348.00
+    tx_ccs_payment_rate:
+      2024-09: 348.00
+      2024-11: 348.00
+
+- name: BCY24 to BCY25 - DALLAS_COUNTY LCCC TRS4 Infant Part Time
+  period: 2024
+  input:
+    age: 1
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCC
+    tx_ccs_provider_rating: TRS4
+    tx_ccs_care_schedule: PART_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    # BCY24 and BCY25 four-age-group infant PT = 46.60 * 10 = 466.00
+    tx_ccs_payment_rate:
+      2024-09: 466.00
+      2024-11: 466.00

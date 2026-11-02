@@ -5,9 +5,15 @@ description: Texas uses this share as the additional child copayment factor unde
 # The BCY2026 chart shows the rate at each bracket explicitly (0.015% at 1% SMI).
 # Both describe the same linear formula: rate = SMI% * 1.5%, so the factor is 0.015.
 # At higher SMI brackets, the 7% total cap reduces the effective rate.
+#
+# Each Board set its own parent share of cost scale until TWC's TX3C case
+# management system launched on January 13, 2025 (WD 24-23 for BCY 2024). TWC
+# then phased in the statewide scale as families enrolled or recertified. No
+# statewide value exists for earlier periods, so the model applies this one to
+# them.
 
 values:
-  2024-10-01: 0.015
+  2025-01-01: 0.015  # Actual effective date: 2025-01-13
 metadata:
   unit: /1
   period: month
@@ -15,6 +21,10 @@ metadata:
   reference:
     - title: 40 TAC §809.19 - Parent Share of Cost
       href: https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-19
+    - title: TWC WD Letter 24-23 - BCY 2024 Income Amounts for Determining Parent Share of Cost
+      href: https://web.archive.org/web/20240908233001/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/wd-24-23-twc.pdf#page=2
+    - title: TWC Child Care and Development Fund Waiver Request, December 17, 2024 Commission Meeting
+      href: https://www.twc.texas.gov/sites/default/files/ogc/mtg24/commission-meeting-material-121724-item10-dp-ccdf-waiver-request-twc.pdf#page=2
     - title: TWC BCY2025 Parent Share of Cost Sliding Fee Scale
       href: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy2025-psoc-chart-twc.pdf
     - title: TWC BCY2026 Parent Share of Cost Sliding Fee Scale
