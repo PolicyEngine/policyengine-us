@@ -38,14 +38,8 @@
   output:
     mn_amt: 675
 
-# 2025 test case
-# Single filer with AMT taxable income at threshold (112_500)
-# fractional_income_threshold = 10% of income_threshold = 0.1 * 112_500 = 11_250
-# AMT income above fractional threshold = 112_500 - 11_250 = 101_250
-# AMT = 6.75% * 101_250 - 0 basic tax = 6,834.375
-# But fractional income (10% threshold) = max(0.1 * 112_500 - AMT_taxable_income, 0) = 0
-# So AMT = max(0.0675 * 112_500, 675) - 0 = 7,593.75
-# Actual computed value is 2764.8
+# 2025 Schedule M1MT, single filer with AMT taxable income at the line 22
+# phase-out threshold of $112,500.
 - name: MN AMT 2025 single at threshold
   absolute_error_margin: 0.01
   period: 2025
@@ -55,4 +49,64 @@
     mn_basic_tax: 0
     state_code: MN
   output:
-    mn_amt: 2764.8
+    # Line 21 exemption 71,470; line 23 excess over 112,500 = 0, so line 25
+    # exemption stays 71,470. Line 26 = 112,500 - 71,470 = 41,030.
+    # Line 27 AMT = 6.75% x 41,030 = 2,769.525.
+    mn_amt: 2_769.525
+
+# Minn. Stat. 290.091, subd. 3(b): the exemption phases out at 25% under
+# IRC 55(d)(2); IRC 55(d)(4), which sets the federal 50% rate from 2026,
+# does not apply. 2026 joint exemption $97,470, threshold $150,000.
+- name: MN AMT 2026 joint exemption phases out at 25%, not the federal 50%
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: JOINT
+    mn_amt_taxable_income: 300_000
+    mn_basic_tax: 0
+    state_code: MN
+  output:
+    # Reduction = 25% x (300,000 - 150,000) = 37,500.
+    # Exemption = 97,470 - 37,500 = 59,970.
+    # AMT = 6.75% x (300,000 - 59,970) = 6.75% x 240,030 = 16,202.03.
+    # (At 50% the exemption would be 22,470 and the AMT 18,733.28.)
+    mn_amt: 16_202.03
+
+- name: MN AMT 2026 joint, no AMT when regular tax exceeds the 25% phase-out AMT
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: JOINT
+    mn_amt_taxable_income: 300_000
+    mn_basic_tax: 17_000
+    state_code: MN
+  output:
+    # max(0, 16,202.03 - 17,000) = 0. (At 50%: 18,733.28 - 17,000 = 1,733.28.)
+    mn_amt: 0
+
+- name: MN AMT 2026 single, exemption fully phased out
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: SINGLE
+    mn_amt_taxable_income: 500_000
+    mn_basic_tax: 0
+    state_code: MN
+  output:
+    # 25% x (500,000 - 112,500) = 96,875 > 73,100 exemption, so exemption = 0.
+    # AMT = 6.75% x 500,000 = 33,750.
+    mn_amt: 33_750
+
+- name: MN AMT 2025 joint control at the 25% phase-out rate
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: JOINT
+    mn_amt_taxable_income: 300_000
+    mn_basic_tax: 0
+    state_code: MN
+  output:
+    # 2025 Schedule M1MT: line 21 joint exemption 95,300; line 24 reduction
+    # 25% x (300,000 - 150,000) = 37,500; line 25 exemption 57,800.
+    # Line 27 AMT = 6.75% x (300,000 - 57,800) = 6.75% x 242,200 = 16,348.50.
+    mn_amt: 16_348.50

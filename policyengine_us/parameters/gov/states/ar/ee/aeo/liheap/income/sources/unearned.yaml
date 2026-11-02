@@ -20,11 +20,15 @@ values:
     - total_unemployment_compensation
     - strike_benefits
     - ssi
-    # Military retirement pay is a separate input from the pension inputs that
+    # Military retirement income (retiree pay plus Survivor Benefit Plan
+    # annuities) is a separate input from the pension inputs that
     # pension_income adds, so both are listed; a household reports the amount
-    # in one or the other (manual Appendix F, page 165).
+    # in one or the other. Manual Appendix F (page 165) counts military
+    # retirement pay and pensions paid to a person's surviving dependents. A
+    # military survivor annuity belongs in military_retirement_pay_survivors,
+    # not survivor_benefits.
     - pension_income
-    - military_retirement_pay
+    - military_retirement_income
     # Non-Social-Security survivor receipts: the Appendix F Pension row covers
     # payments to a person's "surviving dependents" (page 165).
     - survivor_benefits

@@ -37,6 +37,7 @@ class spm_unit_benefits(Variable):
             "ut_ssp",  # Utah benefits
             "sd_ssp",  # South Dakota benefits
             "va_ag",  # Virginia benefits
+            "ia_ssa",  # Iowa benefits
             "ks_sspp",  # Kansas benefits
             "hi_oss",
             "la_oss",  # Louisiana benefits

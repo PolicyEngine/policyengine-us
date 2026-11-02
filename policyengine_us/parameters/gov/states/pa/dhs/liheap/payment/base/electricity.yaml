@@ -1,0 +1,53 @@
+description: Pennsylvania sets this electricity and propane heating base by heating region under the Low Income Home Energy Assistance Program.
+# DHS publishes only the resulting payments. With the income multipliers, the
+# additional member amount, half-up rounding to whole dollars and the payment
+# minimum and maximum, these bases reproduce every printed electricity and
+# propane cell in the Energy Year 2024-2025 and 2025-2026 charts and the current
+# lookup. Each season starts on its Cash opening date: November 4, 2024,
+# November 3, 2025 and November 2, 2026. The lookup has no season label; it is
+# dated to the FY2027 season. The adopted FY2027 plan points to it through the
+# DHS LIHEAP page. Propane shares the electricity row in every county and
+# season.
+1:
+  2024-11-04: 580.15
+  2025-11-03: 642.1
+  2026-11-02: 670
+2:
+  2024-11-04: 550.15
+  2025-11-03: 612.1
+  2026-11-02: 640
+3:
+  2024-11-04: 520.15
+  2025-11-03: 582.1
+  2026-11-02: 610
+4:
+  2024-11-04: 490.15
+  2025-11-03: 552.1
+  2026-11-02: 580
+5:
+  2024-11-04: 460.15
+  2025-11-03: 522.1
+  2026-11-02: 550
+metadata:
+  unit: currency-USD
+  period: year
+  label: Pennsylvania LIHEAP electricity and propane heating base
+  breakdown:
+    - range(1, 6)
+  breakdown_labels:
+    - Heating region
+  reference:
+    - title: Pennsylvania LIHEAP Handbook 638.3, benefit calculation
+      href: http://services.dpw.state.pa.us/oimpolicymanuals/liheap/638_LIHEAP_Program_Benefits/638.3_Benefit_Calculation.htm
+    - title: "Pennsylvania LIHEAP benefit charts, Energy Year 2024-2025, electricity and propane rows #page 1-469"
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/PA_BenefitMatrix_2025.pdf#page=1
+    - title: "Pennsylvania LIHEAP benefit charts, Energy Year 2025-2026, electricity and propane rows #page 1-469"
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/PA_BenefitMatrix_2026.pdf#page=1
+    - title: Pennsylvania LIHEAP Benefit Amount Table lookup, electricity and propane rows, retrieved October 3, 2026
+      href: https://www.humanservices.dhs.pa.gov/liheap_benefit_table/
+    - title: Pennsylvania FY2025 LIHEAP State Plan, heating assistance dates of operation
+      href: https://liheapch.acf.gov/docs/2025/state-plans/PA_Plan_2025.pdf#page=4
+    - title: Pennsylvania FY2026 final LIHEAP State Plan, Cash opening date
+      href: https://web.archive.org/web/20251016232745/https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=5
+    - title: Pennsylvania FY2027 final LIHEAP State Plan, Cash opening date
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf#page=5

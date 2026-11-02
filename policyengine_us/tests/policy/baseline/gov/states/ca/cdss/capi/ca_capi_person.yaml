@@ -1,0 +1,518 @@
+- name: Case 1, aged noncitizen couple splits the couple's countable income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        # 420 per month foreign pension.
+        pension_income: 5_040
+        # SSI zeroes countable income for people who fail its immigration
+        # test, so the case supplies it. The couple's countable income is
+        # 420 - 20 general exclusion = 400 per month, split equally as SSI
+        # does for a couple: 200 per month (2,400 per year) each.
+        ssi_countable_income: 2_400
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        ssi_countable_income: 2_400
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # Couple standard 2,098.83 (no offset since June 2019, WIC 18941), less
+    # the couple's countable income 400 = 1,698.83 (MPP 49-055.32); each
+    # member receives one-half (MPP 49-055.4): 849.415.
+    ca_capi_person: [849.415, 849.415]
+
+- name: Case 2, deemed income from an ineligible spouse below the couple FBR.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        # SSI does not compute these for people who fail its immigration
+        # test, so the case supplies them. The spouse earns 500 per month,
+        # above the 497 gap between the couple and individual FBRs
+        # (1,491 - 994), so deeming applies. Couple countable income is
+        # (500 - 20 - 65) / 2 = 207.50 per month (2,490 per year), all of it
+        # deemed because person1 has no income of her own.
+        is_ssi_spousal_deeming_applies: true
+        ssi_income_deemed_from_ineligible_spouse: 2_490
+        ssi_countable_income: 2_490
+      person2:
+        age: 50
+        employment_income: 6_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # POMS SI 01320.430 D.
+    # As an individual: federal 994 - 0 = 994; a federal benefit is due, so
+    # the state supplement is the full individual OSS 1,233.94 - 994 = 239.94.
+    # Under deeming: federal 1,491 - 207.50 = 1,283.50; a federal benefit is
+    # due, so the state supplement is the couple OSS 2,098.83 - 1,491 = 607.83.
+    # Federal = min(994, 1,283.50) = 994; state = min(239.94, 607.83) = 239.94.
+    # CAPI = 994 + 239.94 = 1,233.94 (no offset since June 2019).
+    ca_capi_person: [1_233.94, 0]
+
+- name: Case 3, deemed income above the couple FBR reduces the couple state supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        # Supplied for the reason in Case 2. The spouse earns 3,867 per
+        # month; couple countable income is (3,867 - 85) / 2 = 1,891 per
+        # month (22,692 per year), all deemed.
+        is_ssi_spousal_deeming_applies: true
+        ssi_income_deemed_from_ineligible_spouse: 22_692
+        ssi_countable_income: 22_692
+      person2:
+        age: 50
+        employment_income: 46_404
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # POMS SI 01320.430 D.
+    # As an individual: federal 994; state supplement 239.94.
+    # Under deeming: 1,891 exceeds the couple FBR 1,491 by 400, so no federal
+    # benefit; state supplement = couple OSS 607.83 - 400 = 207.83.
+    # Federal = min(994, 0) = 0; state = min(239.94, 207.83) = 207.83.
+    # CAPI = 0 + 207.83 = 207.83.
+    ca_capi_person: [207.83, 0]
+
+- name: Case 4, blind noncitizen with an ineligible spouse uses the two-blind couple rate under deeming.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_blind: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        # Supplied for the reason in Case 2. The spouse earns 4,267 per
+        # month; couple countable income is (4,267 - 85) / 2 = 2,091 per
+        # month (25,092 per year), all deemed.
+        is_ssi_spousal_deeming_applies: true
+        ssi_income_deemed_from_ineligible_spouse: 25_092
+        ssi_countable_income: 25_092
+      person2:
+        age: 42
+        employment_income: 51_204
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # POMS SI 01320.430 C.7 and D.
+    # As an individual: federal 994; state supplement = blind individual
+    # OSS 1,318.32 - 994 = 324.32.
+    # Under deeming the ineligible spouse is treated as blind too, so the
+    # couple OSS is the two-blind rate 2,324.35 - 1,491 = 833.35. 2,091
+    # exceeds the couple FBR by 600, so no federal benefit; state supplement
+    # = 833.35 - 600 = 233.35.
+    # Federal = 0; state = min(324.32, 233.35) = 233.35.
+    # CAPI = 0 + 233.35 = 233.35.
+    ca_capi_person: [233.35, 0]
+
+- name: Case 5, deeming with the CAPI person's own income uses the couple federal amount.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        # 320 per month foreign pension; own countable income is 320 - 20 =
+        # 300 per month.
+        pension_income: 3_840
+        # Supplied for the reason in Case 2. The spouse earns 2,000 per
+        # month, so (2,000 - 65) / 2 = 967.50 per month (11,610 per year) is
+        # deemed, and countable income is 300 + 967.50 = 1,267.50 per month
+        # (15,210 per year).
+        is_ssi_spousal_deeming_applies: true
+        ssi_income_deemed_from_ineligible_spouse: 11_610
+        ssi_countable_income: 15_210
+      person2:
+        age: 50
+        employment_income: 24_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # POMS SI 01320.430 D.
+    # As an individual: federal 994 - 300 = 694; a federal benefit is due,
+    # so the state supplement is the full individual OSS 239.94.
+    # Under deeming: federal 1,491 - 1,267.50 = 223.50; a federal benefit is
+    # due, so the state supplement is the couple OSS 607.83.
+    # Federal = min(694, 223.50) = 223.50; state = min(239.94, 607.83) =
+    # 239.94. CAPI = 223.50 + 239.94 = 463.44.
+    ca_capi_person: [463.44, 0]
+
+- name: Case 6, mixed couple subtracts the couple's income and the spouse's SSI/SSP from the couple standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+        # SSA treats the noncitizen as an ineligible spouse whose 420 pension
+        # is below the 497 deeming threshold (1,491 - 994), so the citizen
+        # receives the individual rate with no countable income: SSI 994
+        # plus state supplement 239.94 (POMS SI 01415.058). The case supplies
+        # these, since the model's split of the couple's SSI and income is
+        # being reworked separately.
+        ssi: 994
+        ssi_countable_income: 0
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        # 420 per month foreign pension; countable income is 420 - 20 = 400
+        # per month (4,800 per year), supplied as in Case 1.
+        pension_income: 5_040
+        ssi_countable_income: 4_800
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_state_supplement: 239.94
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The CAPI member takes the couple standard 2,098.83 (MPP 49-050.13, no
+    # offset since June 2019). The couple's countable income 0 + 400 (MPP
+    # 49-055.32) and the citizen's SSI/SSP 994 + 239.94, counted as unearned
+    # income based on need (MPP 49-035.221), are subtracted:
+    # 2,098.83 - 400 - 994 - 239.94 = 464.89.
+    ca_capi_payment_standard: [0, 2_098.83]
+    ca_capi_person: [0, 464.89]
+
+- name: Case 7, Title XIX facility resident is paid on own income without deeming.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        ca_in_medical_care_facility: true
+        # 40 per month foreign pension; own countable income is 40 - 20 = 20
+        # per month.
+        pension_income: 480
+        # Supplied as SSI deeming would compute them at home. The spouse
+        # earns 1,200 per month, so (1,200 - 65) / 2 = 567.50 per month
+        # (6,810 per year) is deemed, and countable income is 20 + 567.50 =
+        # 587.50 per month (7,050 per year).
+        is_ssi_spousal_deeming_applies: true
+        ssi_income_deemed_from_ineligible_spouse: 6_810
+        ssi_countable_income: 7_050
+      person2:
+        age: 50
+        employment_income: 14_400
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # Deeming needs an ineligible spouse living in the same household (20
+    # CFR 416.1160(a)(1)), so the resident is paid the Title XIX standard 62
+    # less own income 20 = 42. Deeming would give
+    # max(min(994 - 20, 1,491 - 587.50) + (62 - 994), 0) = 0, and subtracting
+    # the deemed income would give max(62 - 587.50, 0) = 0.
+    ca_capi_payment_standard: [62, 0]
+    ca_capi_person: [42, 0]
+
+- name: Case 8, aged citizen spouse with income too high for SSI/SSP is an ineligible spouse, so CAPI deems the spouse's income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+        # 1,600 a month; countable 1,580 after the $20 exclusion.
+        social_security: 19_200
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The spouse is paid no SSI/SSP, so is an ineligible spouse (MPP
+    # 49-005(i)(2)). POMS SI 01320.430 D: federal min(994, 1,491 - 1,580) -> 0;
+    # state min(239.94, 607.83 - (1,580 - 1,491)) = 239.94.
+    ssi: [0, 0]
+    ca_state_supplement: 0
+    # The CAPI member is an eligible individual, so the individual standard.
+    ca_capi_payment_standard: [0, 1_233.94]
+    ca_capi_person: [0, 239.94]
+
+- name: Case 9, spouse income above the couple state supplement leaves the couple state part.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+        # 2,000 a month; countable 1,980 after the $20 exclusion.
+        social_security: 24_000
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # POMS SI 01320.430 D: federal 0; state min(239.94, 607.83 - (1,980 -
+    # 1,491)) = min(239.94, 118.83) = 118.83.
+    ca_capi_person: [0, 118.83]
+
+- name: Case 10, deeming keeps the 10 individual offset through May 2019.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        # Supplied as in Case 2. The spouse earns 500 per month; couple
+        # countable income (500 - 20 - 65) / 2 = 207.50 per month, all deemed.
+        is_ssi_spousal_deeming_applies: true
+        ssi_income_deemed_from_ineligible_spouse: 2_490
+        ssi_countable_income: 2_490
+      person2:
+        age: 50
+        employment_income: 6_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # Standards max(630, 771) = 771 and max(1,167, 1,157) = 1,167 (known-low,
+    # issue 10480). Federal min(771, 1,157 - 207.50) = 771; state 0.
+    # May: 771 - 10 = 761 (MPP 49-050.11); June: 771 (WIC 18941).
+    ca_capi_person:
+      2019-05: [761, 0]
+      2019-06: [771, 0]
+
+- name: Case 11, mixed couple where the SSI/SSP spouse has the income subtracts the couple's income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+        # 420 per month pension; countable 400 per month (4,800 per year).
+        # Supplied as SSA would pay: SSI 994 - 400 = 594 and the state
+        # supplement 239.94.
+        pension_income: 5_040
+        ssi: 594
+        ssi_countable_income: 4_800
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        ssi_countable_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_state_supplement: 239.94
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The couple's countable income counts, whichever spouse has it (MPP
+    # 49-055.32): 2,098.83 - 400 - 594 - 239.94 = 864.89.
+    ca_capi_person: [0, 864.89]
+
+- name: Case 12, mixed couple with a disabled noncitizen child, the child's standard does not reduce the CAPI spouse.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+      person3:
+        age: 10
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The child fails SSI's noncitizen test, so the state supplement leaves
+    # out the child's standard and CAPI pays it: 994 + 97.27 = 1,091.27. The
+    # citizen gets 745.50 SSI and 1,233.94 - 745.50 = 488.44 supplement, so
+    # the CAPI spouse gets 2,098.83 - 745.50 - 488.44 = 864.89.
+    ca_capi_person: [0, 864.89, 1_091.27]
+
+- name: Case 13, one CAPI person with a spouse who is not aged, blind or disabled and earns below the deeming threshold.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+      person2:
+        age: 50
+        employment_income: 3_600 # 300 a month
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # 300 a month is below the 1,491 - 994 = 497 deeming threshold, so
+    # nothing is deemed and the individual standard applies: 1,233.94.
+    ca_capi_payment_standard: [1_233.94, 0]
+    ca_capi_person: [1_233.94, 0]
+
+- name: Case 14, couple with one spouse in a Title XIX facility, each spouse's own income counts.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        ca_in_medical_care_facility: true
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        # 1,000 a month; countable 980 after the $20 exclusion.
+        social_security: 12_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # 20 CFR 416.414(b)(3): each spouse's own countable income comes off
+    # that spouse's standard: 62 - 0 = 62 and 1,233.94 - 980 = 253.94.
+    ca_capi_person: [62, 253.94]
+
+- name: Case 15, couple with one spouse in a Title XIX facility, the facility resident's income stays with that spouse.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        ca_in_medical_care_facility: true
+        # 1,000 a month; countable 980 after the $20 exclusion.
+        social_security: 12_000
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # 20 CFR 416.414(b)(3): max(62 - 980, 0) = 0 and 1,233.94 - 0 = 1,233.94.
+    ca_capi_person: [0, 1_233.94]

@@ -96,7 +96,14 @@ Every policy change here must also be correct in [rulespec-us](https://github.co
 
 ## Source conflicts
 
-When a statute conflicts with a regulation, form, instructions, manual or stated agency practice, PolicyEngine US's rule is to follow the statute. Forms and instructions fill gaps where the statute is silent. Every such conflict is recorded in the register that PolicyEngine shares with Axiom: `known-source-conflicts.yaml` in [rulespec-us](https://github.com/TheAxiomFoundation/rulespec-us). Its fields are defined in that repository's `tools/README.md`, under "Source-conflict register". A PR that takes such a reading, or finds one already in the code, does three things:
+When sources conflict, PolicyEngine US follows these principles (2026-10-20):
+
+- **Statute first.** When a statute conflicts with a form, instructions, a manual or stated agency practice, follow the statute. Forms and instructions fill gaps where the statute is silent.
+- **Regulations are law.** A Treasury regulation binds until a court sets it aside, so the statute-first rule doesn't override it. A regulation that flatly contradicts its statute isn't followed automatically: it goes to the project lead, who decides it case by case, and the ruling is recorded in the register.
+- **The agency breaks true ties.** Where the text and the canons don't settle a reading, follow the administering agency's reading, so the model matches what households receive.
+- **Canons:** definitions control; one meaning per section; no double deduction without a clear statement; specific over general; read timing rules so statutory deadlines can be met; and the operative words govern over form shortcuts.
+
+Every such conflict is recorded in the register that PolicyEngine shares with Axiom: `known-source-conflicts.yaml` in [rulespec-us](https://github.com/TheAxiomFoundation/rulespec-us). Its fields are defined in that repository's `tools/README.md`, under "Source-conflict register". A PR that takes such a reading, or finds one already in the code, does three things:
 
 1. **Add or update the entry in rulespec-us.**
    - Give each source's text and its kind (statute, regulation, form, instructions, manual, guidance, agency practice, ...).

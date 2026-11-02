@@ -1,0 +1,50 @@
+description: Wyoming uses these seasonal primary fuel cost standards under the Low Income Energy Assistance Program.
+# Exact source cells retain electricity and natural-gas decimals.
+# KEROSENE takes the heating oil standard: rule 3(hh) lists diesel and oil
+# fuel types, the oil worksheet is "Diesel Heating Oil", and heating_expense
+# reads a kerosene bill as fuel_oil_expense.
+# SOLAR takes the electricity standard because heating_expense reads a solar
+# home's bill as its grid electricity bill.
+# OTHER takes the wood standard as the closest published worksheet. DFS pays
+# unregulated and other fuel types (plan section 2.3; DFS LIEAP page) but
+# publishes standards only for the six worksheets.
+UNSPECIFIED:
+  2025-10-01: 0
+ELECTRICITY:
+  2025-10-01: 1_712.997
+NATURAL_GAS:
+  2025-10-01: 1_550.85
+FUEL_OIL:
+  2025-10-01: 2_640
+KEROSENE:
+  2025-10-01: 2_640
+PROPANE:
+  2025-10-01: 1_300
+WOOD:
+  2025-10-01: 1_225
+COAL:
+  2025-10-01: 525
+SOLAR:
+  2025-10-01: 1_712.997
+OTHER:
+  2025-10-01: 1_225
+NONE:
+  2025-10-01: 0
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Wyoming LIEAP seasonal fuel cost standard
+  breakdown:
+    - heating_type
+  reference:
+    - title: FY2026 Benefit Matrix, Coal H10, Heating Oil H10, Electric H10, Natural Gas H10, Propane F9, Wood H9
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/WY_BenefitMatrix_2026.xlsx
+    - title: 049-1 Wyo. Code R. § 1-3(hh)
+      href: https://www.law.cornell.edu/regulations/wyoming/agency-049/subagency-0024/chapter-1/049-1-Wyo-Code-R-SSSS-1-3
+    - title: FY2026 State Plan, section 2.3
+      href: https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=9
+    - title: Wyoming DFS, Low Income Energy Assistance Program (LIEAP)
+      href: https://dfs.wyo.gov/assistance-programs/home-utilities-energy-assistance/low-income-energy-assistance-program-lieap/
+    - title: Wyoming DFS, About LIEAP handout (September 24, 2026)
+      href: https://dfs.wyo.gov/wp-content/uploads/2026/09/2026-0924-LIEAP-About-handout.pdf#page=1
