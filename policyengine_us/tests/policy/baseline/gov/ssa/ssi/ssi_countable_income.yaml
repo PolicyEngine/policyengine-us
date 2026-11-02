@@ -147,3 +147,47 @@
     # No earned income, so earned exclusions don't apply
     # Countable = 3_868
     ssi_countable_income: 3_868
+
+- name: An aged permanent resident without 40 SSI quarters has their pension counted.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 10
+    ssi_qualifying_quarters_earnings: 20
+    pension_income: 60_000
+  output:
+    # The noncitizen test bars SSI itself but does not zero the income
+    # that Medicaid and state programs count: 60,000 - 20 x 12 = 59,760.
+    ssi_countable_income: 59_760
+    ssi: 0
+
+- name: Spouse income is deemed to an aged permanent resident without 40 SSI quarters.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 10
+        ssi_qualifying_quarters_earnings: 20
+        pension_income: 6_000
+      person2:
+        age: 55
+        is_tax_unit_spouse: true
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    # Own: (500 - 20) x 12 = 5,760. Deemed from the spouse who is not aged,
+    # blind, or disabled: 19,610 (20 CFR 416.1163). The spouse's own
+    # countable income stays 0.
+    ssi_countable_income: [25_370, 0]
+    ssi: [0, 0]
