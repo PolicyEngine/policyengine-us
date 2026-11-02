@@ -328,6 +328,8 @@
     va_income_tax: 1_000
 
 # The pre-program zero must backdate to 2015 for every filing-status branch.
+# Each unit has $1,000 of liability, so a nonzero amount schedule would show
+# up as a positive rebate rather than being cut to zero by the liability cap.
 - name: Virginia rebates are zero in 2015 for every filing status
   period: 2015
   absolute_error_margin: 0
@@ -342,18 +344,38 @@
       single_unit:
         members: [single]
         filing_status: SINGLE
+        va_income_tax_before_non_refundable_credits: 1_000
+        va_non_refundable_eitc: 0
+        va_spouse_tax_adjustment: 0
+        va_refundable_eitc: 0
       joint_unit:
         members: [joint]
         filing_status: JOINT
+        va_income_tax_before_non_refundable_credits: 1_000
+        va_non_refundable_eitc: 0
+        va_spouse_tax_adjustment: 0
+        va_refundable_eitc: 0
       separate_unit:
         members: [separate]
         filing_status: SEPARATE
+        va_income_tax_before_non_refundable_credits: 1_000
+        va_non_refundable_eitc: 0
+        va_spouse_tax_adjustment: 0
+        va_refundable_eitc: 0
       head_of_household_unit:
         members: [head_of_household]
         filing_status: HEAD_OF_HOUSEHOLD
+        va_income_tax_before_non_refundable_credits: 1_000
+        va_non_refundable_eitc: 0
+        va_spouse_tax_adjustment: 0
+        va_refundable_eitc: 0
       surviving_spouse_unit:
         members: [surviving_spouse]
         filing_status: SURVIVING_SPOUSE
+        va_income_tax_before_non_refundable_credits: 1_000
+        va_non_refundable_eitc: 0
+        va_spouse_tax_adjustment: 0
+        va_refundable_eitc: 0
     households:
       single_household:
         members: [single]

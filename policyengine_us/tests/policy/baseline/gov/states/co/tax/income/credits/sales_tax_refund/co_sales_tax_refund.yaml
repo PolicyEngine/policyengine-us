@@ -726,6 +726,7 @@
     age: 40
     co_modified_agi: 36_000
     co_sales_tax_refund_eligible: true
+    co_income_tax_before_non_refundable_credits: 0
     filing_status: SINGLE
   output:
     co_sales_tax_refund: 13
@@ -739,6 +740,7 @@
     age: 40
     co_modified_agi: 36_001
     co_sales_tax_refund_eligible: true
+    co_income_tax_before_non_refundable_credits: 0
     filing_status: SINGLE
   output:
     co_sales_tax_refund: 18
@@ -752,6 +754,7 @@
     age: 40
     co_modified_agi: 100_000
     co_sales_tax_refund_eligible: true
+    co_income_tax_before_non_refundable_credits: 0
     filing_status: SINGLE
   output:
     co_sales_tax_refund: 21
@@ -765,6 +768,7 @@
     age: 40
     co_modified_agi: 150_000
     co_sales_tax_refund_eligible: true
+    co_income_tax_before_non_refundable_credits: 0
     filing_status: SINGLE
   output:
     co_sales_tax_refund: 23
@@ -778,6 +782,7 @@
     age: 40
     co_modified_agi: 204_000
     co_sales_tax_refund_eligible: true
+    co_income_tax_before_non_refundable_credits: 0
     filing_status: SINGLE
   output:
     co_sales_tax_refund: 24
@@ -791,6 +796,7 @@
     age: 40
     co_modified_agi: 204_001
     co_sales_tax_refund_eligible: true
+    co_income_tax_before_non_refundable_credits: 0
     filing_status: SINGLE
   output:
     co_sales_tax_refund: 41

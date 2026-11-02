@@ -141,8 +141,8 @@ def test_colorado_historical_availability_preserves_2015():
     in_effect = system.parameters.get_child(
         "gov.states.co.tax.income.credits.sales_tax_refund.in_effect"
     )
-    # This asserts availability only: the backdated 2015 amount table is outside
-    # the guard fix's scope and is not represented as a verified 2015 schedule.
+    # This asserts availability only; co_sales_tax_refund.yaml checks the
+    # 2015 DR 0104 amounts and the zero 2016-2020 years.
     assert in_effect("2015-01-01") is True
     for year in range(2016, 2021):
         assert in_effect(f"{year}-01-01") is False

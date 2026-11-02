@@ -49,11 +49,11 @@ nonrefundable totals reduce tax before refundable credits.
 | South Carolina rebate: `sc_2022_rebate` | 2021 only | 2022 | N: `sc_non_refundable_credits`. The rebate is capped at $800 and eligible liability; the amount is zero outside 2021. |
 | Massachusetts essential employee premium pay: `ma_covid_19_essential_employee_premium_pay_program` (person level); input `claimed_ma_covid_19_essential_employee_premium_pay_program_2020` | 2020 and 2021 only | Both modeled rounds paid in 2022 | R: `ma_refundable_credits`. The two $500 rounds use 2020 and 2021 earnings, respectively. The amount is zero before 2020 and from 2022. Set the prior-recipient input in 2021 to exclude a first-round recipient from the second round. The later $250 third round is outside this inventory's coverage. |
 
-The model's first modeled year is 2015. Colorado's 2015 entry preserves the
-refund's availability; its amount schedule has not been audited as a 2015
-schedule. Future carried-forward Colorado coverage describes current model
-parameters rather than verified future payments. Its parameter comments label
-post-2026 table amounts as placeholders.
+The model's first modeled year is 2015. Colorado's 2015 amounts follow the
+2015 DR 0104 table (Form 104, line 46); the refund is zero in 2016–2020, when it
+was not in effect. Colorado's 2027–2029 tiers are the LCS September 2026
+forecast's projections, not published DR 0104 tables, and they stand in until
+the State Controller certifies each year's surplus.
 
 ## Standalone amounts and comparison measures
 
