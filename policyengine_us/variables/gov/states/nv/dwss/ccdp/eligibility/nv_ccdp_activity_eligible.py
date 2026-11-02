@@ -24,10 +24,14 @@ class nv_ccdp_activity_eligible(Variable):
         # every adult at the address. parent_1_id and parent_2_id name parents,
         # whoever claims the child, and the Medicaid helper adds a lone linked
         # parent's established spouse as the stepparent. A child or minor parent
-        # with no linked parent in the unit falls to the head and spouse of the
-        # tax unit that claims them. So without ids a parent who doesn't claim
-        # the child isn't checked, and an adult who shares the child's tax unit
-        # is, because that tax unit reads its second adult as a spouse.
+        # with no linked parent in the unit falls to the head and spouse of their
+        # tax unit. So without ids a parent who doesn't claim the child isn't
+        # checked, and an adult who shares the child's tax unit is, because that
+        # tax unit reads its second adult as a spouse. The stepparent step takes
+        # the same reading, so an adult child who shares their parent's tax unit
+        # without being marked a dependent makes that parent required. MS 216.1
+        # also lists a parent's domestic partner, whom this reaches only through
+        # a shared tax unit or the cohabiting spouses flag.
         #   - POC 420 (working) needs monetary compensation and sets no minimum
         #     hours, so earnings stand in for it. A self-employment loss still
         #     counts: MS 306.37 asks for an enterprise for gain.
