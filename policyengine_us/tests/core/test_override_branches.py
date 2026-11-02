@@ -35,7 +35,9 @@ A seeded sample of households shares one simulation; the tests check:
 5. When the branch drops what it copied, it keeps exactly the values set as
    inputs, each for the period it was set for: a variable that is an input in
    one year is calculated again in the others (Hypothesis, over random mixes
-   of input years and formula years).
+   of input years and formula years). Limited to some variables, it leaves
+   every other array as it was, and ``has_input`` reports the periods
+   ``set_input`` stored, from the situation or later.
 """
 
 import numpy as np
@@ -49,6 +51,7 @@ from policyengine_us.tools.period_branch import (
     drop_inherited_values,
     get_branch_for_period,
     get_override_branch,
+    has_input,
 )
 
 YEAR = 2026
@@ -539,6 +542,44 @@ def test_drop_inherited_values_keeps_exactly_the_input_keys(
             assert head is None
         else:
             np.testing.assert_array_equal(head, heads)
+
+
+def test_drop_inherited_values_limited_to_variables(households):
+    # Adjusted gross income is an input for 2025 only, and a later set_input
+    # gives taxable income for 2026; both are calculated in the other year.
+    situation = _with_tax_unit_inputs(
+        _situation(households[:4], years=YEARS),
+        {"adjusted_gross_income": (2025, 1_000)},
+    )
+    n = len(situation["tax_units"])
+    simulation = Simulation(situation=situation)
+    simulation.set_input("taxable_income", YEAR, np.full(n, 2_000.0))
+    for year in YEARS:
+        simulation.calculate("income_tax", year)
+    assert has_input(simulation, "adjusted_gross_income", 2025)
+    assert not has_input(simulation, "adjusted_gross_income", YEAR)
+    assert has_input(simulation, "taxable_income", YEAR)
+    assert not has_input(simulation, "taxable_income", 2025)
+    branch = simulation.get_branch("limited")
+    assert has_input(branch, "taxable_income", YEAR)
+
+    drop_inherited_values(branch, ["adjusted_gross_income"])
+
+    np.testing.assert_array_equal(
+        branch.get_array("adjusted_gross_income", 2025), np.full(n, 1_000.0)
+    )
+    assert branch.get_array("adjusted_gross_income", YEAR) is None
+    # Variables outside the list keep what the branch copied, calculated
+    # values included.
+    for year in YEARS:
+        np.testing.assert_array_equal(
+            branch.get_array("income_tax", year),
+            simulation.calculate("income_tax", year),
+        )
+    np.testing.assert_array_equal(
+        branch.get_array("taxable_income", YEAR), np.full(n, 2_000.0)
+    )
+    assert branch.get_array("taxable_income", 2025) is not None
 
 
 def test_later_year_branches_match_single_year_simulation(households):

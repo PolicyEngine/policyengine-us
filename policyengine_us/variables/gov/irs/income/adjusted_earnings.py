@@ -15,4 +15,7 @@ class adjusted_earnings(Variable):
             * p.employer_share
             * person("self_employment_tax", period)
         )
-        return max_(0, person("earned_income", period) - adjustment)
+        # Disability pay reported as wages is earned income (Pub. 503 (2024),
+        # file page 4).
+        earnings = add(person, period, ["earned_income", "earned_disability_benefits"])
+        return max_(0, earnings - adjustment)

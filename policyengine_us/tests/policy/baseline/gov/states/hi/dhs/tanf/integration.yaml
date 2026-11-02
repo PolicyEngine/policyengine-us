@@ -251,7 +251,7 @@
     # Benefit = 610.56 - 570 = 40.56
     hi_tanf: 40.56
 
-- name: Case 7, family with dependent care deduction in full pipeline.
+- name: Case 7, child care expenses do not reduce countable income in full pipeline.
   period: 2024-01
   input:
     people:
@@ -280,20 +280,21 @@
   output:
     hi_tanf_gross_income: 1_500
     hi_tanf_gross_income_eligible: true
-    # Dependent care: min(150, 1 child × $175) = 150
-    hi_tanf_dependent_care_deduction: 150
+    # HAR 17-676-54.1(c)(4) and (d)(4) deduct only the care of an
+    # incapacitated adult, so the child's care is not deducted.
+    hi_tanf_dependent_care_deduction: 0
     # Earned deductions for $1,500:
     # Step 1: 20% = 300, After: 1,200
     # Step 2: $200 flat, After: 1,000
     # Step 3: 55% = 550, After: 450
-    # After dependent care: max(450 - 150, 0) = 300
-    hi_tanf_countable_earned_income: 300
-    hi_tanf_countable_income: 300
+    # No dependent care deduction: 450
+    hi_tanf_countable_earned_income: 450
+    hi_tanf_countable_income: 450
     # SOA = 1265 × 0.48 × 0.80 = 485.76 (mandatory-work steady-state)
     hi_tanf_maximum_benefit: 485.76
     hi_tanf_eligible: true
-    # Benefit = 485.76 - 300 = 185.76
-    hi_tanf: 185.76
+    # Benefit = 485.76 - 450 = 35.76
+    hi_tanf: 35.76
 
 - name: Case 8, single person with no income.
   period: 2024-01

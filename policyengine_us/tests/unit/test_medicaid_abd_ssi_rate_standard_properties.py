@@ -1,13 +1,17 @@
 """Properties of the Medicaid income standard for aged, blind, and disabled
 people who do not receive SSI, in states that set it at the SSI rate.
 
-Seven states set that standard at the SSI federal benefit rate, a monthly
+Nine states set that standard at the SSI federal benefit rate, a monthly
 dollar amount for an individual or a couple, not a share of the poverty
 guideline. They are flagged in the parameter
 `gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.limit.uses_ssi_federal_benefit_rate`.
-Six of them have not elected the poverty-level group of 42 U.S.C. 1396a(m)
+Eight of them have not elected the poverty-level group of 42 U.S.C. 1396a(m)
 (Montana's state plan marks the group of 42 CFR 435.210 instead); Louisiana
-has elected that group and pegs its level to the same rate. Montana's manual
+has elected that group and pegs its level to the same rate. North Dakota, a
+section 209(b) state, sets the level for its categorically needy aged,
+blind, or disabled recipients at "that which establishes supplemental
+security income eligibility" (N.D.A.C. 75-02-02.1-40(1)(a)(2)), and the
+model's 209(b) SSI-recipient income test reads the same limit. Montana's manual
 (ABD 008) is the model case: its standards "are the benefit amounts paid by
 the Social Security Administration to Supplemental Security Income (SSI)
 cash recipients", applicants "with monthly countable income equal to or
@@ -18,13 +22,13 @@ categorically needy eligible".
 The states' rules differ on income exactly at the standard. Oregon's
 excludes it: an individual "must have adjusted income (see OAR
 461-001-0000) below the standard in this section" (OAR 461-155-0250(3)).
-The other six include it. Oregon is flagged in
+The other eight include it. Oregon is flagged in
 `gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.limit.requires_income_below_limit`.
 
 The state sets and comparisons below are written from those rules, not
 read from the parameters, so the first two tests check the parameters
 against them. Each later test evaluates a grid of households in one
-vectorized simulation and checks, for every one of the seven states and
+vectorized simulation and checks, for every one of the nine states and
 every year from 2018 to 2026:
 
 - the limit equals twelve times the rate SSA published for that year, for an
@@ -71,11 +75,11 @@ STATES = [
 ]
 # States whose own rules set the standard at the SSI rate (cited in
 # uses_ssi_federal_benefit_rate.yaml).
-SSI_RATE_STATES = sorted(["CO", "IA", "LA", "MT", "OH", "OR", "WA"])
+SSI_RATE_STATES = sorted(["CO", "IA", "LA", "MT", "ND", "OH", "OR", "WA", "WV"])
 # States whose rules require income below the standard rather than at or
 # below it. Oregon: "must have adjusted income (see OAR 461-001-0000) below
 # the standard in this section" (OAR 461-155-0250(3); every version since
-# 1-01-14 says "below", in section (4) until April 2017). The other six
+# 1-01-14 says "below", in section (4) until April 2017). The other eight
 # include the standard: Montana "equal to or less than these income
 # standards" (ABD 008); Louisiana "income equal to or less than the federal
 # benefit rate (FBR)" (LAC 50:III.2305(B)); Ohio "countable income ... which
@@ -86,7 +90,14 @@ SSI_RATE_STATES = sorted(["CO", "IA", "LA", "MT", "OH", "OR", "WA"])
 # and SSI covers income "at a rate of not more than" the benefit rate (42
 # U.S.C. 1382(a)(1)(A) and (2)(A)): "If the CI is equal to or less than the
 # FBR ... the individual, based on income, is eligible" (POMS SI
-# 02005.001.C.3).
+# 02005.001.C.3); West Virginia's group (IMM § 23.11.4, "under" the SSI
+# Maximum Payment level) applies the § 4.14 method, whose Step 5 reads "If
+# the net countable monthly income is equal to or less than the appropriate
+# SSI Maximum Payment Level, the assistance group (AG) is eligible" (IMM
+# § 4.14.3); North Dakota uses the level "which establishes supplemental
+# security income eligibility" and counts as recipient liability only net
+# income "remaining after" that level (N.D.A.C. 75-02-02.1-40(1)(a)(2),
+# 75-02-02.1-41.1).
 BELOW_ONLY_STATES = ["OR"]
 # Annual dollars around the standard: far below, one month's dollar below,
 # exactly at, one dollar above, and well above.
@@ -189,10 +200,20 @@ def test_no_medicaid_without_ssi_above_the_ssi_rate(year):
     standard = 12 * individual
     # Section 209(b) states test SSI recipients against their own criteria,
     # so the SSI-receipt half of this property is stated for the others.
-    classification = SYSTEM.parameters(
+    categories = SYSTEM.parameters(
         f"{year}-01-01"
-    ).gov.hhs.medicaid.eligibility.categories.ssi_recipient.classification
+    ).gov.hhs.medicaid.eligibility.categories
+    classification = categories.ssi_recipient.classification
     states = [state for state in SSI_RATE_STATES for _ in OFFSETS]
+    # States without a group for people who do not receive SSI give the
+    # pathway to nobody in this citizen grid. All seven states here have the
+    # group; the mask matters once North Dakota joins the grid (#10373).
+    covers = np.array(
+        [
+            bool(categories.senior_or_disabled.covers_non_ssi_recipients[state])
+            for state in states
+        ]
+    )
     countable = np.array(
         [standard + offset for _ in SSI_RATE_STATES for offset in OFFSETS]
     )
@@ -219,12 +240,14 @@ def test_no_medicaid_without_ssi_above_the_ssi_rate(year):
     # Under the rate the pathway's own tests pass, and at it they pass
     # except where the state requires income below the standard.
     covered = (countable < standard) | (at_rate & ~below_only)
-    assert optional[covered].all()
-    assert not optional[~covered].any()
+    assert optional[covered & covers].all()
+    assert not optional[~covered | ~covers].any()
     not_209b = np.array([not classification.section_209b[state] for state in states])
     receives = (countable < standard) & not_209b
     assert (category[receives] == "SSI_RECIPIENT").all()
-    assert (category[at_rate & ~below_only & not_209b] == "SENIOR_OR_DISABLED").all()
+    assert (
+        category[at_rate & ~below_only & not_209b & covers] == "SENIOR_OR_DISABLED"
+    ).all()
     # In Oregon a person exactly at the rate gets neither SSI nor the pathway.
     assert not (category[at_rate & below_only] == "SENIOR_OR_DISABLED").any()
 
@@ -238,6 +261,12 @@ def test_unflagged_states_keep_their_share_of_the_poverty_guideline(year, couple
     states = [
         state for state in STATES if state not in SSI_RATE_STATES and state != "MO"
     ]
+    # States without a group for people who do not receive SSI use the SSI
+    # rate for the noncitizens their pathway still reaches.
+    covers = SYSTEM.parameters(
+        f"{year}-01-01"
+    ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.covers_non_ssi_recipients
+    states = [state for state in states if covers[state]]
     simulation = unit_simulation(year, states, couple)
     limit = simulation.calculate(
         "medicaid_optional_senior_or_disabled_income_limit", year
@@ -255,3 +284,29 @@ def test_unflagged_states_keep_their_share_of_the_poverty_guideline(year, couple
         ]
     )
     np.testing.assert_allclose(limit, expected, rtol=1e-6)
+
+
+# States whose rules cover aged, blind, or disabled people as categorically
+# needy only if they receive SSI (cited in covers_non_ssi_recipients.yaml).
+SSI_ONLY_STATES = sorted(
+    ["AL", "DE", "GA", "KS", "KY", "MD", "MS", "ND", "NM", "NV", "SD", "TN", "TX", "WY"]
+)
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_ssi_only_states_match_their_rules(year):
+    flags = SYSTEM.parameters(
+        f"{year}-01-01"
+    ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.covers_non_ssi_recipients
+    assert sorted(state for state in STATES if not flags[state]) == SSI_ONLY_STATES
+
+
+@pytest.mark.parametrize("couple", [False, True])
+@pytest.mark.parametrize("year", YEARS)
+def test_ssi_only_states_use_the_ssi_rate(year, couple):
+    simulation = unit_simulation(year, SSI_ONLY_STATES, couple)
+    limit = simulation.calculate(
+        "medicaid_optional_senior_or_disabled_income_limit", year
+    )
+    individual, couple_rate = SSA_MONTHLY_RATES[year]
+    np.testing.assert_array_equal(limit, 12 * (couple_rate if couple else individual))

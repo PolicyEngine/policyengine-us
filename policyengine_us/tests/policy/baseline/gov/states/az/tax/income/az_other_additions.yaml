@@ -1,0 +1,20 @@
+- name: Case 1, default az_other_additions is zero
+  period: 2024
+  input:
+    state_code: AZ
+    employment_income: 50_000
+  output:
+    az_other_additions: 0
+    az_additions: 0
+    az_agi: 50_000
+
+- name: Case 2, az_other_additions increases AZ AGI
+  period: 2024
+  input:
+    state_code: AZ
+    employment_income: 50_000
+    az_other_additions: 2_000
+  output:
+    az_other_additions: 2_000
+    az_additions: 2_000
+    az_agi: 52_000

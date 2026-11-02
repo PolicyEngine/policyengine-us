@@ -13,3 +13,13 @@
     state_code: MT
   output:
     mt_capital_gain_credit: 60
+
+- name: A net capital loss produces no credit rather than a negative one
+  period: 2022
+  input:
+    capital_gains: -5_000
+    state_code: MT
+  output:
+    # 2% of net capital gains (Form 2 instructions, Line 1); a net loss is not
+    # a net capital gain, so the credit is 0, not -100.
+    mt_capital_gain_credit: 0

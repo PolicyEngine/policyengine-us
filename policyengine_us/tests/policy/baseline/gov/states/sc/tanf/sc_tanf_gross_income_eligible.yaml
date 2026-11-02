@@ -2,7 +2,7 @@
   period: 2025-01
   input:
     state_code: SC
-    spm_unit_size: 2
+    sc_tanf_benefit_group_size: 2
   output:
     sc_tanf_gross_income_eligible: true
 
@@ -10,12 +10,12 @@
   period: 2025-01
   input:
     state_code: SC
-    spm_unit_size: 2
+    sc_tanf_benefit_group_size: 2
     employment_income_before_lsr: 18_000
   output:
     sc_tanf_gross_income_eligible: true
     # monthly earned = 18,000 / 12 = 1,500
-    # tanf_fpg for size 2 (2025-01) = 1703.33/month
+    # FPG for a benefit group of 2 (2025-01) = 1703.33/month
     # need_standard = 1703.33 * 0.5 = 851.67
     # gross_income_limit = 851.67 * 1.85 = 1575.58
     # 1,500 <= 1,575.58 -> eligible
@@ -24,7 +24,7 @@
   period: 2025-01
   input:
     state_code: SC
-    spm_unit_size: 2
+    sc_tanf_benefit_group_size: 2
     employment_income_before_lsr: 24_000
   output:
     sc_tanf_gross_income_eligible: false
@@ -37,11 +37,11 @@
   absolute_error_margin: 0.1
   input:
     state_code: SC
-    spm_unit_size: 2
+    sc_tanf_benefit_group_size: 2
     sc_tanf_gross_income: 1_575.58
   output:
     sc_tanf_gross_income_eligible: true
-    # tanf_fpg for size 2 = 1703.33
+    # FPG for a benefit group of 2 = 1703.33
     # need_standard = 1703.33 * 0.5 = 851.665
     # gross_income_limit = 851.665 * 1.85 = 1575.58
     # 1575.58 <= 1575.58 -> eligible (uses <=)

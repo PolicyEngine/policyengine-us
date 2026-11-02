@@ -45,3 +45,37 @@
     state_code: MN
   output:
     mn_amt_taxable_income: 200_000
+
+- name: MN AMT taxable income subtracts military pension subtraction
+  period: 2024
+  input:
+    state_code: MN
+    adjusted_gross_income: 200_000
+    military_retirement_pay: 50_000
+  output:
+    mn_military_pension_subtraction: 50_000
+    mn_amt_taxable_income: 200_000 - 50_000
+
+- name: MN AMT taxable income adds back the 2020 federal charitable deduction for non-itemizers
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Federal AGI (M1MT line 1) = 40,000 - 300 (Form 1040 line 10b). Line 4
+    # includes Schedule M1NC line 6, the 300 added back (2020 M1MT
+    # instructions, file page 2). No itemizing, no subtractions.
+    adjusted_gross_income: 39_700
+    charitable_contributions_ald: 300
+    mn_itemizing: false
+    mn_amt_taxable_income: 40_000

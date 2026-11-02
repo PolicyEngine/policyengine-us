@@ -74,6 +74,7 @@ values:
     - or_ctc
     - ut_ctc
     - vt_ctc
+  # Idaho's child tax credit ends after 2025 (Idaho Code 63-3029L(1)).
   2026-01-01:
     - az_dependent_tax_credit
     - ca_yctc
@@ -81,7 +82,6 @@ values:
     - co_family_affordability_credit
     - dc_ctc
     - ga_ctc
-    - id_ctc
     - il_ctc
     - ma_child_and_family_credit_or_dependent_care_credit
     - md_ctc
@@ -103,7 +103,6 @@ values:
     - co_family_affordability_credit
     - dc_ctc
     - ga_ctc
-    - id_ctc
     - il_ctc
     - ma_child_and_family_credit_or_dependent_care_credit
     - md_ctc

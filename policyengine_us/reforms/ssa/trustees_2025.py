@@ -6,6 +6,7 @@ from policyengine_core.periods import instant
 
 from policyengine_us.parameters.uprating_extensions import (
     extend_social_security_payroll_cap,
+    extend_social_security_wage_indexed_parameters,
 )
 
 
@@ -200,3 +201,6 @@ def apply_trustees_2025_economic_assumptions(
         last_projected_year=2035,
         end_year=end_year,
     )
+    # The wage base and the other wage-indexed amounts follow the cap and the
+    # NAWI, so re-derive them from the Trustees path as well (#10452).
+    extend_social_security_wage_indexed_parameters(parameters, end_year=end_year)
