@@ -46,13 +46,13 @@
       person2:
         age: 70
         ssi: 0
-        is_citizen_or_legal_immigrant: false
+        immigration_status: UNDOCUMENTED
         receives_ssi:
           2026-01: true
       person3:
         age: 70
         ssi: 0
-        is_citizen_or_legal_immigrant: false
+        immigration_status: UNDOCUMENTED
     spm_units:
       spm_unit1:
         members: [person1]
