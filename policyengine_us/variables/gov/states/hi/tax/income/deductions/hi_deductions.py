@@ -7,8 +7,11 @@ class hi_deductions(Variable):
     label = "Hawaii deductions"
     unit = USD
     reference = (
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=15",  # Itemized Deduction
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20",  # Standard Deduction
+        "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=11",
+        # PDF pages 15 (itemized deduction), 20 (standard deduction)
+        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=15",
+        # PDF pages 15, 20
+        "https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=15",
     )
     definition_period = YEAR
     defined_for = StateCode.HI
@@ -18,21 +21,38 @@ class hi_deductions(Variable):
 
         standard_deduction = tax_unit("hi_standard_deduction", period)
         total_itemized_deduction = tax_unit("hi_itemized_deductions", period)
-        tax_unit_earned_income = tax_unit("tax_unit_earned_income", period)
         filing_status = tax_unit("filing_status", period)
 
         # check itemized deduction eligibility
         filing_status_eligible = (
             total_itemized_deduction > p.threshold.deductions[filing_status]
         )
-        is_dependent_on_another_return = tax_unit("head_is_dependent_elsewhere", period)
-        standard_cap = min_(tax_unit_earned_income, standard_deduction)
-        dependent_floor = max_(p.threshold.dependent, standard_cap)
+        # HRS 235-2.4(a)(3) applies IRC 63(c)(5): the standard deduction of a
+        # filer who can be claimed as a dependent is the greater of $500 or
+        # earned income, up to the regular amount. As federally, a joint
+        # return is limited when either spouse can be claimed.
+        is_dependent_on_another_return = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere", period
+        )
+        # Worksheet earned income: federal Form 1040 line 1 wages and Schedule
+        # 1 lines 3 (business) and 6 (farming), minus line 15 (N-11
+        # instructions, PDF page 20).
+        worksheet_earned_income = tax_unit(
+            "standard_deduction_worksheet_earned_income", period
+        )
+        dependent_standard_deduction = min_(
+            max_(p.threshold.dependent, worksheet_earned_income), standard_deduction
+        )
+        applicable_standard_deduction = where(
+            is_dependent_on_another_return,
+            dependent_standard_deduction,
+            standard_deduction,
+        )
         dependent_eligible = is_dependent_on_another_return & (
-            total_itemized_deduction > dependent_floor
+            total_itemized_deduction > dependent_standard_deduction
         )
         itemized_deductions_eligible = filing_status_eligible | dependent_eligible
         itemized_deduction = where(
             itemized_deductions_eligible, total_itemized_deduction, 0
         )
-        return max_(itemized_deduction, standard_deduction)
+        return max_(itemized_deduction, applicable_standard_deduction)

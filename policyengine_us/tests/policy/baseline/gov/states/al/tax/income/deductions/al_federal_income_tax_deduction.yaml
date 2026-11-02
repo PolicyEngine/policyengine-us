@@ -238,3 +238,51 @@
         state_code: AL
   output:
     al_federal_income_tax_deduction: 0
+
+- name: 2021 MFJ, two children, $9,000 employer dependent care benefits - the 2020-rule CDCC uses the $5,000 section 129 cap
+  # Act 2022-37 section 1; 2021 worksheet Part II line 4 enters the CDCC
+  # "based on 2020 Form 2441 Line 11". Line 21 of the 2020 form caps excluded
+  # benefits at $5,000; ARPA section 9632's $10,500 came after 2020-12-31.
+  # Actual 2021: AGI 100,000; taxable income 100,000 - 25,100 = 74,900;
+  #   tax 1,990 + 12% x 55,000 = 8,590. CTC 3,600 + 3,000 = 6,600, all
+  #   refundable. Exclusion min(9,000, 10,500, 40,000) = 9,000; limit
+  #   16,000 - 9,000 = 7,000; CDCC 50% x 7,000 = 3,500, refundable.
+  # Part I = 8,590 - 6,600 = 1,990.
+  # Part II, 2020 rules: exclusion min(9,000, 5,000) = 5,000; limit
+  #   6,000 - 5,000 = 1,000; rate 20%; CDCC 200. CTC 4,000, all
+  #   non-refundable (limit 8,590 - 200 = 8,390). Line 6 = 8,590 - 4,000 -
+  #   200 = 4,390.
+  # Deduction = max(1,990, 4,390) = 4,390. Recomputing with the $10,500 cap
+  # would give a CDCC of 0 and a deduction of 4,590.
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        dependent_care_employer_benefits: 9_000
+      spouse:
+        age: 40
+        employment_income: 40_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        tax_unit_childcare_expenses: 20_000
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: AL
+  output:
+    dependent_care_assistance_exclusion: 9_000
+    cdcc: 3_500
+    al_federal_income_tax_deduction: 4_390

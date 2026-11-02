@@ -1,0 +1,24 @@
+# Published LIHEAP upper income limits: LIHEAP Manual 2025-2026 Appendix A 9.3
+# (FFY2026) and LIHEAP Manual 2026-2027 Appendix A 9.3 (FFY2027). The limit is
+# the greater of 60% of state median income and 150% of the prior-year federal
+# poverty guideline (user decision; reproduces every published cell). Sizes 1,
+# 8 and 9 come from the SMI side; size 10 from the guideline side.
+# FFY2026 size 10: 150% x ($15,650 + 9 x $5,500) = $97,725.
+- name: Case 1, FFY2026 published limits at sizes 1, 8, 9 and 10 and zero for no eligible member.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MT, MT, MT, MT, MT]
+    mt_liheap_household_size: [1, 8, 9, 10, 0]
+  output:
+    mt_liheap_income_limit: [33_719, 89_487, 91_432, 97_725, 0]
+
+# FFY2027 size 10: 150% x ($15,960 + 9 x $5,680) = $100,620.
+- name: Case 2, FFY2027 published limits at sizes 1, 8, 9 and 10 and zero for no eligible member.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MT, MT, MT, MT, MT]
+    mt_liheap_household_size: [1, 8, 9, 10, 0]
+  output:
+    mt_liheap_income_limit: [36_120, 95_858, 97_942, 100_620, 0]
