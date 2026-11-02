@@ -10398,6 +10398,43 @@ candidates:
     limit/self_only.yaml, limit/family.yaml). The statute-first rule requires changing conflicting projections;
     verify the statutory window substitution first, and preserve the distinction from published limits fixed through
     2027.'
+- id: us:idr-10-year-cap-before-spousal-proration
+  program: student-loans
+  years:
+    from: 2026
+    type: calendar
+  question: For a married borrower who files jointly and whose spouse has eligible loans, is the Income-Based Repayment
+    or Pay As You Earn payment capped at the borrower's 10-year standard payment before or after it is prorated by
+    the borrower's share of the couple's loans?
+  sources:
+  - kind: statute
+    citation: 20 U.S.C. 1098e(b)(6)(A)
+    url: https://www.law.cornell.edu/uscode/text/20/1098e#b_6_A
+  - kind: regulation
+    citation: 34 CFR 685.209(e)(2)(i), (f)(2), (f)(3) and (g)(1)
+    url: https://www.ecfr.gov/current/title-34/section-685.209
+  readings:
+    statute: Section 1098e(b)(6)(A) sets a maximum, the 10-year standard payment on all the borrower's loans, and says
+      nothing of proration between spouses.
+    other: 'Regulation order: (f)(2) and (f)(3) make the payment the lesser of the income-based amount and the 10-year
+      standard payment, and (g)(1) multiplies "the borrower''s payment amount as calculated in accordance with paragraphs
+      (f)(1) through (3)" by the balance share, so the share applies to the capped amount. The other reading prorates
+      the income-based amount first and caps each spouse''s share at their own standard payment.'
+  example: Spouses with $30,000 each at 0% and 12% and a $600 income-based amount have standard payments of $250.00
+    and $430.41. In the regulation's order each pays half of min($600, own standard payment), $125.00 and $215.21;
+    capping after proration gives min($300, $250) = $250 and min($300, $430.41) = $300.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/ed/student_loans/income_based_repayment/income_based_repayment_payment.py
+    - policyengine_us/variables/gov/ed/student_loans/pay_as_you_earn/pay_as_you_earn_payment.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10570
+  state: ruled
+  note: The model follows the regulation's order, which stays under the statute's maximum. Each borrower's standard
+    payment covers only their own Direct and FFEL loans; (e)(2)(i) brings the spouse's loans in only for (g). A couple
+    whose income-based amount exceeds both standard payments pays each standard payment times the balance share,
+    so at equal balances and rates half their combined standard amount.
 - id: us:mortgage-interest-limit-ratio-rounding
   program: income-tax
   years:

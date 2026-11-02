@@ -249,6 +249,13 @@ def check(couples):
 @hypothesis.settings(
     max_examples=10,
     deadline=None,
+    # Each example is a simulation of up to 40 people. Shrinking a failure
+    # would run hundreds more, so a failing example is reported as drawn.
+    phases=[
+        hypothesis.Phase.explicit,
+        hypothesis.Phase.reuse,
+        hypothesis.Phase.generate,
+    ],
     suppress_health_check=[
         hypothesis.HealthCheck.too_slow,
         hypothesis.HealthCheck.data_too_large,
