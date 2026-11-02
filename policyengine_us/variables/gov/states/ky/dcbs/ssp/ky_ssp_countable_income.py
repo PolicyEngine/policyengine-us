@@ -85,6 +85,9 @@ class ky_ssp_countable_income(Variable):
         # SSI-based approximation. The ordering of Kentucky's separate
         # §8(3) conservation and §8(6) earnings rules needs a fuller state
         # methodology review; this loss correction does not decide it.
+        # NOTE: ssi_countable_income now zeroes only people who are not aged,
+        # blind or disabled. This keeps SSI's eligibility gate, which changes
+        # nothing because KY SSP requires is_ssi_eligible.
         is_eligible = person("is_ssi_eligible_individual", period.this_year) | person(
             "is_ssi_eligible_spouse", period.this_year
         )

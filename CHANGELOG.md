@@ -1,3 +1,214 @@
+## [2.91.6] - 2026-11-02
+
+### Fixed
+
+- Compare the federal free and reduced-price school meal income limits at USDA's published whole-dollar values, rounded up, so a household exactly at a published federal limit gets that tier; state percentage limits are still compared exactly.
+
+
+## [2.91.5] - 2026-11-02
+
+### Fixed
+
+- California's non-MAGI Medi-Cal asset limit falls to $21,000 for one person and $31,000 for two on July 1, 2027 (SB 164) in the aged, blind and disabled, medically needy, Medicare Savings Program and 250% Working Disabled Program limits; the Working Disabled Program also adds $1,550 for each person beyond two.
+
+
+## [2.91.4] - 2026-11-02
+
+### Fixed
+
+- Count railroad retirement annuities as unearned income for Supplemental Security Income and the Colorado Old Age Pension.
+
+
+## [2.91.3] - 2026-11-02
+
+### Fixed
+
+- Add Alaska's 7 AAC 40.310 income eligibility standards to the test list of parameters uprated by the 2026 Trustees assumption.
+
+
+## [2.91.2] - 2026-11-02
+
+### Fixed
+
+- Use state dollar standards, not shares of the poverty guideline, as the Medicaid income limit for aged, blind and disabled people who do not receive SSI in Alaska, Idaho, New Hampshire, Vermont and Wisconsin, require income below Idaho's standard, and add Vermont's 2017-2023 AABD independent-living supplement ($52.04 individual, $98.88 couple).
+- Turned on the Medicaid medically needy pathway for aged, blind and disabled people in Arkansas, Iowa, Illinois, New Jersey and North Dakota, turned it off in Arizona, Idaho, Indiana, New Mexico and Nevada, which have no such program, and updated medically needy income and asset limits in 14 states and DC, including Vermont's protected income level and DC's 2019-2022 levels, tying them to the poverty guideline or the SSI federal benefit rate where state rules do, with New York and North Dakota rounding the monthly level up to the dollar and Illinois rounding it to the nearest dollar through 2024 and dropping the cents from 2025.
+
+
+## [2.91.1] - 2026-11-02
+
+### Fixed
+
+- Count the own income of aged, blind, or disabled people who fail SSI's noncitizen test in SSI-methodology countable income, so Medicaid's optional aged, blind, and disabled and medically needy income tests, CAPI, and other programs no longer treat it as zero; the California state supplement no longer counts the income of a member who fails SSI's noncitizen test unless that member is in an SSI couple computation, and Maryland PAA no longer deems spouse income to people SSI bars by alien status and imputes to them only the SSI that SSA pays when they report SSI receipt, with the one-third reduction on the couple rate under deeming.
+
+
+## [2.91.0] - 2026-11-02
+
+### Added
+
+- Add an opt-in reform that puts Social Security's wage and price paths on the 2026 Trustees Report's intermediate assumptions for long-range scoring: it chains the Trustees' average wage index and CPI growth onto the published NAWI and COLA index, then re-derives the taxable maximum, the wage-indexed amounts and the parameters that uprate by either path. It is off by default, so current-law output doesn't change.
+
+
+## [2.90.5] - 2026-11-02
+
+### Fixed
+
+- Count paid work, full-time college and a disabled caretaker's covered care as Nevada child care activities without the activity input.
+- Count the same cash payments in the household and SPM income totals: the Alaska Permanent Fund Dividend, New Jersey property tax relief, Massachusetts EAEDC, California CAPI and two Los Angeles County payments in SPM resources, and Alaska energy relief from 2024, New York's Drive Clean rebate and Denver property tax relief in household benefits.
+- Vermont no longer pays a child care subsidy for a child with no care hours and no bill, and caps it at any bill before December 17, 2023. New Hampshire no longer pays its disability supplement for a child with no charge.
+- Prorate the Wisconsin Works Community Service Job payment by unsubsidized hours, and end it at 30 hours.
+
+
+## [2.90.4] - 2026-11-02
+
+### Changed
+
+- Test and document the contributed Social Security PIA formula paths: worked YAML cases, properties and an end-to-end test, including progressive price indexing's bend-point-fraction threshold, and the inputs a user must supply.
+
+
+## [2.90.3] - 2026-11-01
+
+### Changed
+
+- Require every S.770 and SSA contributed parameter node to be classified in the household calculator reference test.
+
+
+## [2.90.2] - 2026-11-01
+
+### Fixed
+
+- Measure Social Security benefit-taxation trust-fund revenue using chapter 1 income tax liability after nonrefundable credits and before refundable credits, excluding net investment income tax and unreported payroll tax.
+
+
+## [2.90.1] - 2026-11-01
+
+### Changed
+
+- Speed up the owners' draw reform tests: their full-system tests now pause automatic garbage collection, free each Hypothesis example's released simulations when it ends, and restore the caller's collection setting afterwards, leaving every assertion and example unchanged.
+
+
+## [2.90.0] - 2026-11-01
+
+### Added
+
+- Add modeled OASDI liabilities, benefits and their modeled balance (oasdi_payroll_tax_revenue, oasdi_benefit_taxation_revenue, oasdi_niit_revenue, oasdi_income, oasdi_cost and oasdi_modeled_balance).
+
+
+## [2.89.0] - 2026-11-01
+
+### Added
+
+- Add an opt-in Social Security COLA means test using prior-year MAGI excluding Social Security, configurable indexed thresholds and filing groups, cohort or all-beneficiary scope, statutory or chained CPI-U COLAs, income-history sensitivities, and an A9 preset. Apply each withholding decision jointly with other COLA changes in reported benefits and the household calculator, with independent per-person overrides while preserving current-law defaults and the legacy A5 withholding input channels. Exclude the new controls from Medicare IRMAA income-history inference and expire them in generated dataset years while preserving supplied decisions. Document the latest-authored-value CPI-U lookup used to index projected thresholds.
+
+
+## [2.88.10] - 2026-11-01
+
+### Fixed
+
+- Apply the full-time and hourly tests and the Railway Labor Act rule in Georgia's qualified overtime exclusion, O.C.G.A. 48-7-27(a)(16).
+
+
+## [2.88.9] - 2026-10-31
+
+### Fixed
+
+- Give a qualifying surviving spouse the single ("all other returns") qualified business income deduction threshold and phase-in range instead of the joint amounts, and round projected thresholds as section 1(f)(7) does.
+
+
+## [2.88.8] - 2026-10-31
+
+### Fixed
+
+- Count qualified passenger vehicle loan interest on the return of the taxpayer who incurred the loan (26 U.S.C. 163(h)(4)(B)(i)): add a person-level input for each filer's own loans and give a household-level amount to the household head's tax unit instead of splitting it across the household's tax units by head count.
+
+
+## [2.88.7] - 2026-10-31
+
+### Fixed
+
+- Georgia's HB463 cash tip and overtime exclusions no longer count a dependent's tips or overtime, which are the dependent's own income and not in the filer's federal AGI.
+
+
+## [2.88.6] - 2026-10-31
+
+### Fixed
+
+- Share dated parameter values between a pinned policy and its source, so New York's and Alabama's recomputed federal credits no longer rebuild every parameter value for each simulation.
+
+
+## [2.88.5] - 2026-10-31
+
+### Fixed
+
+- Limit the tips and overtime deductions to 2025-2028, as 26 U.S.C. 224(h) and 225(g) and their effective dates require, with new in_effect parameters; the federal deduction lists now name both deductions in every year so those parameters alone set the years. From 2029 Montana and Arizona no longer subtract them and South Carolina's OBBBA add-back no longer includes them.
+
+
+## [2.88.4] - 2026-10-31
+
+### Changed
+
+- Cut the CI time of the behavioural-response measurement copy tests: collect garbage less often while they copy policy trees, and run the pinned copy cases over three households in one simulation instead of three fixed generated examples.
+
+
+## [2.88.3] - 2026-10-31
+
+### Fixed
+
+- Run the contrib SSA YAML tests in Contrib shard 3 instead of shard 1, which also runs the contrib Python tests and was hitting CI's 60-minute timeout.
+
+
+## [2.88.2] - 2026-10-30
+
+### Fixed
+
+- Stop the California state supplement from adding the no-cooking food allowance to the blind rates: a couple of an aged or disabled person and a blind person who is neither aged nor disabled gets the one-blind couple rate alone, and the allowance counts only where the aged or disabled amount with it is higher (WIC 12200(e)).
+
+
+## [2.88.1] - 2026-10-30
+
+### Fixed
+
+- Default living_arrangements_allow_for_food_preparation to true, so California pays the SSI/SSP restaurant meals allowance only when the input says the living arrangement prevents meal preparation at home (WIC 12200(e)), not to every aged or disabled recipient.
+
+
+## [2.88.0] - 2026-10-30
+
+### Added
+
+- Add Pennsylvania LIHEAP regular heating eligibility, county and fuel payment schedules, and the FY2025 and FY2026 vulnerable-household supplements.
+- Add Louisiana LIHEAP regular heating assistance.
+- Add Maine HEAP Fuel Assistance (LIHEAP regular heating) for the 2025-26 and 2026-27 heating seasons, including the June 29, 2026 points matrix.
+- Add Missouri LIHEAP Energy Assistance for regular heating (FY2026-FY2027).
+- Add the Montana LIHEAP regular heating benefit.
+
+
+## [2.87.1] - 2026-10-30
+
+### Fixed
+
+- Pay California CAPI at the SSI/SSP payment standard (with no offset since June 2019) using one standard per living arrangement, compute each eligible person's benefit on their own income, count the SSI/SSP of a spouse who receives it, apply spouse-to-spouse deeming, and stop the state supplement's dependent amount for a disabled or blind child who fails SSI's noncitizen or resource test.
+
+
+## [2.87.0] - 2026-10-30
+
+### Added
+
+- Count FFEL debt in the student loan plans' spousal proration and in each borrower's own Income-Based Repayment and Pay As You Earn standard payment cap, and use the latest return's adjusted gross income. Add the standard payment on parent PLUS loans, with the 10- to 30-year term for consolidated parent PLUS loans, and hold federal student loan balances at their dataset value in later years instead of uprating them.
+
+
+## [2.86.0] - 2026-10-30
+
+### Added
+
+- Add Vermont Seasonal Fuel Assistance (LIHEAP regular heating) for the 2025-26 and 2026-27 heating seasons.
+
+
+## [2.85.0] - 2026-10-30
+
+### Added
+
+- Add Wisconsin Home Energy Assistance Program regular heating benefit.
+
+
 ## [2.84.0] - 2026-10-30
 
 ### Added

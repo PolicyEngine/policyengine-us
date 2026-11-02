@@ -15,7 +15,7 @@ class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse(
         "https://www.law.cornell.edu/cfr/text/20/416.1163",
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/0805-015-05/",
     )
-    defined_for = "is_ssi_eligible_individual"
+    defined_for = "is_ssi_aged_blind_disabled"
     unit = USD
 
     def formula(person, period, parameters):

@@ -68,7 +68,8 @@ REST_HEAVY_B_TESTS := $(TESTS)/core/test_marginal_tax_rate_coverage.py \
 # CTC and Medicaid systems below, which stay resident after their files end.
 REST_CORE_HEAVY_TESTS := $(TESTS)/core/test_ssi_resource_deeming_invariants.py \
 	$(TESTS)/test_federal_credit_limit_order.py \
-	$(TESTS)/test_pinned_branch_credit_dependents.py
+	$(TESTS)/test_pinned_branch_credit_dependents.py \
+	$(TESTS)/test_pinned_tbs_sharing.py
 # Supplied-record calculator API checks load no national dataset. Keep each
 # file in a separate process so retained reform trees are released on exit.
 # Local macOS/Python 3.13.9, four numeric threads: peak RSS 2.98 GiB
@@ -175,12 +176,9 @@ test-yaml-structural-heavy-shard-4:
 test-yaml-structural-other:
 	# Per-subdir so every remaining contrib folder runs in its own subprocess,
 	# instead of stacking ~20 light files into one ~13-min catch-all batch that
-	# risked the 30-min per-batch timeout on slow runners. SSA runs separately
-	# per-file below because its reform combinations retain large model copies.
+	# risked the 30-min per-batch timeout on slow runners. SSA runs per-file in
+	# shard 3 because its reform combinations retain large model copies.
 	$(BATCH) $(TESTS)/policy/contrib --exclude states,ctc,ubi_center,federal,harris,treasury,crfb,congress,refundable_credit_conversion,ssa --mode per-subdir --workers 1
-	# SSA's COLA file measured about 11 GB locally. Override CI's worker setting
-	# as well as the CLI default so each file exits before the next one starts.
-	POLICYENGINE_BATCH_WORKERS=1 $(BATCH) $(TESTS)/policy/contrib/ssa --mode per-file --workers 1
 test-yaml-structural-other-shard-2a:
 	# ctc is microsim-heavy: per-file isolation frees each ~5 GB peak between
 	# files, and --workers 1 keeps only one peak resident at a time.
@@ -201,6 +199,12 @@ test-yaml-structural-other-shard-3:
 	# file). Per-file isolation frees each peak between files; --workers 1 keeps
 	# one peak resident at a time.
 	$(BATCH) $(TESTS)/policy/contrib/refundable_credit_conversion --mode per-file --workers 1
+	# SSA's COLA file measured about 11 GB locally. Override CI's worker setting
+	# as well as the CLI default so each file exits before the next one starts.
+	# SSA moved here from shard 1, which also runs the contrib Python tests:
+	# with 12 files it took 27 min there, and the shard hit CI's 60-min timeout
+	# (release run 41123038987).
+	POLICYENGINE_BATCH_WORKERS=1 $(BATCH) $(TESTS)/policy/contrib/ssa --mode per-file --workers 1
 test-yaml-structural-congress:
 	# One subprocess per congress proposal, split when a proposal's reform
 	# combos exceed the batcher's budget; new proposals auto-route.
