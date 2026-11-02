@@ -66,3 +66,55 @@
   output:
     # Only the $1,500 standard deduction increase remains.
     sc_obbba_addback: 1_500
+
+- name: 2028 itemizer — the computed federal tips and overtime deductions are added back
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 40
+        tip_income: 10_000
+        treasury_tipped_occupation_code: 102
+        fsla_overtime_premium: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+        # Itemizing removes the standard deduction add-back, isolating
+        # the Schedule 1-A deductions.
+        tax_unit_itemizes: true
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    tip_income_deduction: 10_000
+    overtime_income_deduction: 5_000
+    sc_obbba_addback: 15_000
+
+- name: 2029 itemizer — no tips or overtime add-back after the federal deductions end
+  period: 2029
+  input:
+    people:
+      person1:
+        age: 40
+        tip_income: 10_000
+        treasury_tipped_occupation_code: 102
+        fsla_overtime_premium: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+        tax_unit_itemizes: true
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # 26 U.S.C. 224(h) and 225(g) allow no deduction after 2028, so there
+    # is nothing claimed on the federal return for South Carolina to add back.
+    tip_income_deduction: 0
+    overtime_income_deduction: 0
+    sc_obbba_addback: 0

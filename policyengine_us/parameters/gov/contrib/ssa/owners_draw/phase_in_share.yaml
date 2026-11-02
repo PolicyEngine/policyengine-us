@@ -1,0 +1,7 @@
+description: An annual owners' draw share override in [0, 1]; -1 uses the linear schedule from start_year and phase_in_years.
+values:
+  0000-01-01: -1
+metadata:
+  unit: /1
+  label: Owners' draw phase-in share override
+  economy: false

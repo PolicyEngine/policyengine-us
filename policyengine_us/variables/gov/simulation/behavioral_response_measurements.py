@@ -11,6 +11,11 @@ NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES = (
     "self_employment_income_behavioral_response",
     "sstb_self_employment_income_behavioral_response",
     "capital_gains_behavioral_response",
+    # Hours read the labor supply response. A branch measured while that
+    # response is being calculated returns zero for it (its re-entry guard),
+    # but one measured first for the capital gains response would calculate
+    # it, and its measurements, again, wherever a program reads hours.
+    "weekly_hours_worked_behavioural_response",
 )
 BEHAVIORAL_RESPONSE_INPUT_VARIABLES = (
     "employment_income_before_lsr",

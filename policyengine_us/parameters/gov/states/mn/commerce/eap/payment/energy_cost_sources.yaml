@@ -1,0 +1,22 @@
+description: Minnesota counts these home energy expenses as annual energy cost under the Energy Assistance Program.
+values:
+  2025-10-01:
+    # Primary Heat is based on all home energy costs, including non-heating
+    # electricity. Current-year expenses stand in for up to 12 months of
+    # prior-year consumption inside the 16-month window.
+    - pre_subsidy_electricity_expense
+    - gas_expense
+    - fuel_oil_expense
+    - bottled_gas_expense
+    - wood_expense
+    - coal_expense
+    - other_heating_fuel_expense
+metadata:
+  unit: list
+  period: year
+  label: Minnesota EAP energy cost sources
+  reference:
+    - title: "Minnesota EAP Policy Manual FFY26, Chapter 4, What is Primary Heat and Measuring Energy Costs #page 117-119"
+      href: https://mn.gov/commerce-stat/pdfs/ffy26-eap-policy-manual.pdf#page=117
+    - title: "Minnesota EAP Policy Manual FFY27, Chapter 4, What is Primary Heat and Measuring Energy Costs #page 119-121"
+      href: https://mn.gov/commerce-stat/pdfs/ffy27-eap-policy-manual.pdf#page=119
