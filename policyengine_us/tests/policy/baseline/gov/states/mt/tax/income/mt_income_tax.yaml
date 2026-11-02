@@ -37,3 +37,66 @@
         state_code: MT
   output:
     mt_income_tax: 4_000
+
+- name: A dependent's medical bills lower a couple's tax when spouses file separately on the same form
+  # TY2022. The head has 60,000 of Montana AGI and 3,000 of other itemized
+  # deductions, the spouse 15,000 and 700, and their child 10,250 of medical
+  # bills. The couple may divide the bills in any proportion and elect the
+  # standard deduction, so the model takes the lowest tax over the candidate
+  # shares and the two elections. Exemptions are 2,710 each, and the child's
+  # goes to the head. 2022 rates: 734 at 19,800 and 6.75% above; 300 at
+  # 12,000 and 5% to 15,400; 176 at 8,900 and 4% to 12,000; 83 at 5,800 and
+  # 3% to 8,900; 33 at 3,300 and 2% to 5,800; 1% below 3,300.
+  # Combined tax by share of the bills to the head, itemizing (floors 4,500
+  # and 1,125):
+  #   all to the head: medical 5,750 and 0. Head 60,000 - 8,750 - 5,420 =
+  #     45,830: 734 + 26,030 x 6.75% = 2,491.025. Spouse 15,000 - 700 -
+  #     2,710 = 11,590: 176 + 2,690 x 4% = 283.60. Total 2,774.625.
+  #   all to the spouse: medical 0 and 9,125. Head 51,580: 2,879.15. Spouse
+  #     2,465: 24.65. Total 2,903.80.
+  #   equal split: medical 625 and 4,000. Total 2,973.66.
+  #   the head's floor kink (head 4,500, spouse 5,750): 2,879.15 + 117.95 =
+  #     2,997.10; the spouse's (head 9,125, spouse 1,125): 2,566.9625 +
+  #     283.60 = 2,850.5625.
+  # Standard deductions (5,090 and 3,000): 2,738.075 + 191.60 = 2,929.675.
+  # The joint return (AGI 75,000, standard deduction 10,180 over itemized
+  # 10,250 - 5,625 = 4,625, three exemptions): 75,000 - 10,180 - 8,130 =
+  # 56,690 gives 734 + 36,890 x 6.75% = 3,224.075.
+  # Before this change the bills were left out and the couple took the
+  # standard deduction (2,929.675). Splitting them equally with the election
+  # by deduction sums (8,325 > 8,090) would give 2,973.66.
+  period: 2022
+  absolute_error_margin: 0.05
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        mt_agi_indiv: 60_000
+        mt_non_medical_itemized_deductions_indiv: 3_000
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        mt_agi_indiv: 15_000
+        mt_non_medical_itemized_deductions_indiv: 700
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        other_medical_expenses: 10_250
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        mt_agi_joint: 75_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    mt_dependent_medical_expense_head_share: 1
+    mt_medical_and_dental_expenses_indiv: [10_250, 0, 0]
+    mt_itemized_deductions_indiv: [8_750, 700, 0]
+    mt_tax_unit_itemizes: true
+    mt_income_tax_before_refundable_credits_indiv: [2_491.03, 283.60, 0]
+    mt_income_tax_joint: 3_224.08
+    mt_files_separately: true
+    mt_income_tax: 2_774.63
