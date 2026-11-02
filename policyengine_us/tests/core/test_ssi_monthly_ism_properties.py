@@ -15,6 +15,8 @@ shelter or food support; each check says which months it compares:
    December match one another and count no ISM, and dropping the food ISM
    never lowers SSI.
 3. An annual countable income input reaches every month as one-twelfth.
+4. For an eligible individual with no other income, a month's countable
+   income is that month's ISM less the $20 general exclusion.
 
 Comparisons against the pre-monthly model on randomized households are
 reported on the pull request; they cannot run here, where only one version
@@ -44,7 +46,7 @@ N = 60
 
 def _households(seed=2024):
     rng = np.random.default_rng(seed)
-    people, households, food_only = {}, {}, []
+    people, households, food_only, no_income = {}, {}, [], []
     for i in range(N):
         food = bool(rng.random() < 0.5)
         shelter = bool(rng.random() < 0.4)
@@ -66,15 +68,22 @@ def _households(seed=2024):
             "state_code": {str(year): STATES[i % len(STATES)] for year in YEARS},
         }
         food_only.append(food and not shelter)
-    # One more person supplies countable income directly, for invariant 3.
-    people["direct"] = {"age": {"2025": 70}, "ssi_countable_income": {"2025": 6_000}}
-    households["direct"] = {"members": ["direct"], "state_code": {"2025": "FL"}}
-    return {"people": people, "households": households}, np.array(food_only)
+        no_income.append(
+            person["employment_income"] == 0 and person["social_security"] == 0
+        )
+    # Give each person their own unit of every group entity, as the
+    # households are, so no income is shared between people.
+    groups = {
+        group: {f"{group}_{name}": {"members": [name]} for name in people}
+        for group in ("tax_units", "spm_units", "families", "marital_units")
+    }
+    situation = {"people": people, "households": households, **groups}
+    return situation, np.array(food_only), np.array(no_income)
 
 
 @pytest.fixture(scope="module")
 def results():
-    situation, food_only = _households()
+    situation, food_only, no_income = _households()
     sim = Simulation(situation=situation)
     out = {}
     for year in YEARS:
@@ -87,12 +96,13 @@ def results():
                     "ssi_in_kind_support_and_maintenance",
                     "ssi_pmv_amount",
                     "ssi",
+                    "is_ssi_eligible_individual",
                 )
             }
             values["supplement"] = sum(sim.calculate(s, period) for s in SUPPLEMENTS)
             out[period] = values
         out[year] = sim.calculate("ssi_countable_income", year)
-    return out, food_only
+    return out, food_only, no_income
 
 
 def _assert_constant(values):
@@ -107,7 +117,7 @@ def _months(out, year, name, months=range(1, 13)):
 
 @pytest.mark.parametrize("year", [2023, 2025])
 def test_months_match_when_nothing_changes_within_the_year(results, year):
-    out, _ = results
+    out, _, _ = results
     for name in ("ssi_countable_income", "ssi_in_kind_support_and_maintenance"):
         values = _months(out, year, name)
         _assert_constant(values)
@@ -126,7 +136,7 @@ def test_months_match_when_nothing_changes_within_the_year(results, year):
 
 
 def test_2024_changes_only_food_only_support_from_october(results):
-    out, food_only = results
+    out, food_only, _ = results
     before = range(1, 10)
     after = range(10, 13)
     for name in ("ssi_countable_income", "ssi", "supplement"):
@@ -144,9 +154,35 @@ def test_2024_changes_only_food_only_support_from_october(results):
     assert np.all(ssi_oct >= ssi_sep - 1e-6)
 
 
-def test_annual_countable_income_input_reaches_each_month(results):
-    out, _ = results
+def test_annual_countable_income_input_reaches_each_month():
+    # A separate simulation: an input sets the variable for every person.
+    sim = Simulation(
+        situation={
+            "people": {
+                "p": {"age": {"2025": 70}, "ssi_countable_income": {"2025": 6_000}}
+            },
+            "households": {"h": {"members": ["p"], "state_code": {"2025": "FL"}}},
+        }
+    )
     for month in range(1, 13):
-        assert out[f"2025-{month:02d}"]["ssi_countable_income"][-1] == pytest.approx(
-            500
-        )
+        assert sim.calculate("ssi_countable_income", f"2025-{month:02d}")[
+            0
+        ] == pytest.approx(500)
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_month_countable_income_is_that_months_ism_without_other_income(results, year):
+    # The $20 general exclusion applies first to unearned income, which ISM
+    # is (20 CFR 416.1124, as _apply_ssi_exclusions_monthly applies it). With
+    # no other income, each month's countable income is its ISM less $20.
+    out, _, no_income = results
+    ism = _months(out, year, "ssi_in_kind_support_and_maintenance")
+    countable = _months(out, year, "ssi_countable_income")
+    # Countable income is computed only for an eligible individual or spouse;
+    # these units are single people.
+    eligible = _months(out, year, "is_ssi_eligible_individual").astype(bool)
+    checked = eligible & no_income
+    assert (ism[checked] > 20).any()
+    np.testing.assert_allclose(
+        countable[checked], np.maximum(ism[checked] - 20, 0), atol=1e-4
+    )
