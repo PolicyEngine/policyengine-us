@@ -1,3 +1,27 @@
+## [2.90.5] - 2026-11-02
+
+### Fixed
+
+- Count paid work, full-time college and a disabled caretaker's covered care as Nevada child care activities without the activity input.
+- Count the same cash payments in the household and SPM income totals: the Alaska Permanent Fund Dividend, New Jersey property tax relief, Massachusetts EAEDC, California CAPI and two Los Angeles County payments in SPM resources, and Alaska energy relief from 2024, New York's Drive Clean rebate and Denver property tax relief in household benefits.
+- Vermont no longer pays a child care subsidy for a child with no care hours and no bill, and caps it at any bill before December 17, 2023. New Hampshire no longer pays its disability supplement for a child with no charge.
+- Prorate the Wisconsin Works Community Service Job payment by unsubsidized hours, and end it at 30 hours.
+
+
+## [2.90.4] - 2026-11-02
+
+### Changed
+
+- Test and document the contributed Social Security PIA formula paths: worked YAML cases, properties and an end-to-end test, including progressive price indexing's bend-point-fraction threshold, and the inputs a user must supply.
+
+
+## [2.90.3] - 2026-11-01
+
+### Changed
+
+- Require every S.770 and SSA contributed parameter node to be classified in the household calculator reference test.
+
+
 ## [2.90.2] - 2026-11-01
 
 ### Fixed

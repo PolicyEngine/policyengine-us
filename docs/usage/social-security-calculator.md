@@ -193,7 +193,10 @@ scales **all** formula factors. Progressive indexing requires a frozen
 maximum-career AIME and PIA target, plus either `bend_point_fraction` or optional
 `threshold` dollar path under `gov.contrib.ssa.pia.progressive_price_indexing`.
 The dollar path overrides the fraction. Otherwise the protected threshold is
-BP1(E) + f * (BP2(E) - BP1(E)). There is no default fraction. Enabling a path
+BP1(E) + f * (BP2(E) - BP1(E)). PE-US ships no default fraction, dollar path,
+maximum AIME or target. The user's reform settings supply them; the
+[PIA-ratio guide](social-security-pia-ratio.md) lists each one under
+"Price-indexing inputs you supply". Enabling a path
 without its required frozen inputs fails. Frozen scales, dollar thresholds,
 maximum AIMEs and targets require explicit January observations for each
 eligibility cohort; they never silently carry a prior cohort's data forward.
