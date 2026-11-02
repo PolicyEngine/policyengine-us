@@ -33,4 +33,13 @@ class mn_k12_education_subtraction(Variable):
             p.cap.higher,
             p.cap.lower,
         )
-        return tax_unit.sum(where(qualifying, min_(expenses, cap), 0))
+        child_expenses = where(qualifying, expenses, 0)
+        child_caps = where(qualifying, cap, 0)
+        per_child = tax_unit.sum(min_(child_expenses, child_caps))
+        # A household may hold only the tax unit's total, which the K-12
+        # credit also reads. That total can't be split by child, so it meets
+        # the sum of the children's caps.
+        unit_total = max_(tax_unit("k12_tuition_and_fees", period), 0)
+        pooled = min_(unit_total, tax_unit.sum(child_caps))
+        has_child_records = tax_unit.sum(child_expenses) > 0
+        return where(has_child_records, per_child, pooled)
