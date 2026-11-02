@@ -21,7 +21,7 @@ class ira_219g_magi(Variable):
         ]
         if "taxable_unemployment_compensation" in irs.gross_income.sources:
             # 219(g)(3)(A)(ii): without regard to 85(c).
-            sources.append("unemployment_compensation")
+            sources.append("total_unemployment_compensation")
         person = tax_unit.members
         not_dependent = ~person("is_tax_unit_dependent", period)
         gross = 0

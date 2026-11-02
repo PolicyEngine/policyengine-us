@@ -1,0 +1,12 @@
+description: Wyoming does not authorize payments below this amount under the Low Income Energy Assistance Program.
+# This is a payment cutoff, not an amount to raise a smaller award to.
+values:
+  2025-10-01: 10
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Wyoming LIEAP minimum authorized payment
+  reference:
+    - title: 049-1 Wyo. Code R. § 1-10(d)
+      href: https://www.law.cornell.edu/regulations/wyoming/agency-049/subagency-0024/chapter-1/049-1-Wyo-Code-R-SSSS-1-10

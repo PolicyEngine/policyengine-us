@@ -9,10 +9,12 @@ metadata:
   - Household size
   label: Vermont fair market rent amount
   reference:
-    # The values are derived from the renter credit computation tables which represent 10% of the 
+    # The values are derived from the renter credit computation tables which represent 10% of the
     # yearly fair market rent
   - title: 32 V.S.A. §6066. Homestead Property Tax Credit and Renter Credit (b)(A)
     href: https://law.justia.com/codes/vermont/2022/title-32/chapter-154/section-6066/
+  - title: 32 V.S.A. § 6061(7)(C)
+    href: https://legislature.vermont.gov/statutes/section/32/154/06061
   - title: Vermont Credit Amounts Based on HUD Data Based on Number of Bedrooms Website
     href: https://tax.vermont.gov/individuals/renter-credit/calculator-and-credit-amounts
   - title: 2025 Renter Credit Website Calculator
@@ -21,10 +23,47 @@ metadata:
     href: https://tax.vermont.gov/sites/tax/files/documents/2024%20Renter%20Credit%20Website%20Calculator.xlsx
   - title: 2023 Renter Credit Website Calculator
     href: https://web.archive.org/web/20250526044955/https://tax.vermont.gov/document/2023-renter-credit-website-calculator
+  - title: 2023 Vermont Renter Credit Report, 2023 Credit Amounts (Based on HUD Fair Market Rents)
+    href: https://tax.vermont.gov/sites/tax/files/documents/renter_credit_2023.pdf#page=10
   - title: 2022 Renter Credit Website Calculator
-    href: https://tax.vermont.gov/document/2022-property-tax-credit-calculator
+    href: https://tax.vermont.gov/sites/tax/files/documents/2022%20Renter%20Credit%20Website%20Calculator_1.xlsx
+  - title: 2022 Vermont Renter Credit Report, 2022 Credit Amounts (Based on HUD Fair Market Rents)
+    href: https://tax.vermont.gov/sites/tax/files/documents/renter_credit_2022.pdf#page=10
+  - title: 2021 Renter Credit Website Calculator
+    href: https://tax.vermont.gov/sites/tax/files/documents/2021%20Renter%20Credit%20Website%20Calculator_8.xlsx
   - title: 2021 Vermont Credit Amounts Based on HUD Data Based on Number of Bedrooms
     href: https://tax.vermont.gov/sites/tax/files/documents/renter_credit_2021.pdf#page=10
+  - title: HUD FY2025 Fair Market Rents
+    href: https://www.huduser.gov/portal/datasets/fmr/fmr2025/FY25_FMRs.xlsx
+  - title: HUD FY2024 Fair Market Rents
+    href: https://www.huduser.gov/portal/datasets/fmr/fmr2024/FY24_FMRs.xlsx
+  - title: HUD FY2023 Fair Market Rents
+    href: https://www.huduser.gov/portal/datasets/fmr/fmr2023/FY23_FMRs.xlsx
+  - title: HUD FY2022 Fair Market Rents
+    href: https://www.huduser.gov/portal/datasets/fmr/fmr2022/FY22_FMRs.xlsx
+  - title: HUD FY2021 Fair Market Rents
+    href: https://www.huduser.gov/portal/datasets/fmr/fmr2021/FY21_4050_FMRs_rev.xlsx
+# Each county's value is HUD's fair market rent for the fiscal year that includes
+# June 30 of the taxable year (FY2025 for 2025), for the county's HUD area, with
+# household size n using the min(n, 4)-bedroom rent. Chittenden's 2,083 is the
+# rent at which 10% x 12 reaches the $2,500 maximum the department applies to
+# the credit amount (2,500 / 1.2 = 2,083.33).
+#
+# Franklin and Grand Isle use the average of the fair market rents for the State
+# (32 V.S.A. § 6061(7)(C)). The following historical reconstructions use Vermont's
+# 12 HUD fair market rent areas (the 11 nonmetropolitan counties and the
+# Burlington-South Burlington MSA, which also holds Franklin and Grand Isle).
+# They reproduce the published credit amounts; they are not department rules.
+# The 2022-2025 calculators hard-code their credit tables, so they do not establish
+# the averaging methods used to obtain those amounts:
+# - 2021 and 2024: the average rounded to whole dollars (the 2021 calculator's
+#   fair market rent table holds 810, 1,000, 1,291 and 1,419).
+# - 2022 reconstruction: the average of 11 areas, without Addison County
+#   (all 12 give 1,010, 1,251, 1,611 and 1,777, not the published 1,006,
+#   1,242, 1,602 and 1,773).
+# - 2023 reconstruction: the average with the Burlington four-bedroom rent
+#   (2,170) held to 2,083.33 (all 12 unadjusted give 1,913, not the published 1,904).
+# - 2025: the unrounded average (1,057.75 x 1.2 = 1,269.3, published 1,269).
 1:
   ADDISON_COUNTY_VT:
     2021-01-01: 846
@@ -58,16 +97,16 @@ metadata:
     2025-01-01: 854
   FRANKLIN_COUNTY_VT:
     2021-01-01: 810
-    2022-01-01: 838
-    2023-01-01: 919
+    2022-01-01: 838.36
+    2023-01-01: 919.5
     2024-01-01: 1_045
-    2025-01-01: 1_058
+    2025-01-01: 1_057.75
   GRAND_ISLE_COUNTY_VT:
     2021-01-01: 810
-    2022-01-01: 838
-    2023-01-01: 919
+    2022-01-01: 838.36
+    2023-01-01: 919.5
     2024-01-01: 1_045
-    2025-01-01: 1_058
+    2025-01-01: 1_057.75
   LAMOILLE_COUNTY_VT:
     2021-01-01: 793
     2022-01-01: 806
@@ -143,14 +182,14 @@ metadata:
     2025-01-01: 946
   FRANKLIN_COUNTY_VT:
     2021-01-01: 1_000
-    2022-01-01: 1_035
-    2023-01-01: 1_132
+    2022-01-01: 1_035.36
+    2023-01-01: 1_131.83
     2024-01-01: 1_283
     2025-01-01: 1_298
   GRAND_ISLE_COUNTY_VT:
     2021-01-01: 1_000
-    2022-01-01: 1_035
-    2023-01-01: 1_132
+    2022-01-01: 1_035.36
+    2023-01-01: 1_131.83
     2024-01-01: 1_283
     2025-01-01: 1_298
   LAMOILLE_COUNTY_VT:
@@ -228,16 +267,16 @@ metadata:
     2025-01-01: 1_326
   FRANKLIN_COUNTY_VT:
     2021-01-01: 1_291
-    2022-01-01: 1_335
-    2023-01-01: 1_458
+    2022-01-01: 1_334.91
+    2023-01-01: 1_457.83
     2024-01-01: 1_663
-    2025-01-01: 1_688
+    2025-01-01: 1_687.17
   GRAND_ISLE_COUNTY_VT:
     2021-01-01: 1_291
-    2022-01-01: 1_335
-    2023-01-01: 1_458
+    2022-01-01: 1_334.91
+    2023-01-01: 1_457.83
     2024-01-01: 1_663
-    2025-01-01: 1_688
+    2025-01-01: 1_687.17
   LAMOILLE_COUNTY_VT:
     2021-01-01: 1_264
     2022-01-01: 1_343
@@ -313,16 +352,16 @@ metadata:
     2025-01-01: 1_351
   FRANKLIN_COUNTY_VT:
     2021-01-01: 1_419
-    2022-01-01: 1_478
-    2023-01-01: 1_587
+    2022-01-01: 1_477.91
+    2023-01-01: 1_586.94
     2024-01-01: 1_800
-    2025-01-01: 1_829
+    2025-01-01: 1_828.75
   GRAND_ISLE_COUNTY_VT:
     2021-01-01: 1_419
-    2022-01-01: 1_478
-    2023-01-01: 1_587
+    2022-01-01: 1_477.91
+    2023-01-01: 1_586.94
     2024-01-01: 1_800
-    2025-01-01: 1_829
+    2025-01-01: 1_828.75
   LAMOILLE_COUNTY_VT:
     2021-01-01: 1_378
     2022-01-01: 1_439
@@ -398,16 +437,16 @@ metadata:
     2025-01-01: 1_351
   FRANKLIN_COUNTY_VT:
     2021-01-01: 1_419
-    2022-01-01: 1_478
-    2023-01-01: 1_587
+    2022-01-01: 1_477.91
+    2023-01-01: 1_586.94
     2024-01-01: 1_800
-    2025-01-01: 1_829
+    2025-01-01: 1_828.75
   GRAND_ISLE_COUNTY_VT:
     2021-01-01: 1_419
-    2022-01-01: 1_478
-    2023-01-01: 1_587
+    2022-01-01: 1_477.91
+    2023-01-01: 1_586.94
     2024-01-01: 1_800
-    2025-01-01: 1_829
+    2025-01-01: 1_828.75
   LAMOILLE_COUNTY_VT:
     2021-01-01: 1_378
     2022-01-01: 1_439
@@ -483,16 +522,16 @@ metadata:
     2025-01-01: 1_351
   FRANKLIN_COUNTY_VT:
     2021-01-01: 1_419
-    2022-01-01: 1_478
-    2023-01-01: 1_587
+    2022-01-01: 1_477.91
+    2023-01-01: 1_586.94
     2024-01-01: 1_800
-    2025-01-01: 1_829
+    2025-01-01: 1_828.75
   GRAND_ISLE_COUNTY_VT:
     2021-01-01: 1_419
-    2022-01-01: 1_478
-    2023-01-01: 1_587
+    2022-01-01: 1_477.91
+    2023-01-01: 1_586.94
     2024-01-01: 1_800
-    2025-01-01: 1_829
+    2025-01-01: 1_828.75
   LAMOILLE_COUNTY_VT:
     2021-01-01: 1_378
     2022-01-01: 1_439
@@ -568,16 +607,16 @@ metadata:
     2025-01-01: 1_351
   FRANKLIN_COUNTY_VT:
     2021-01-01: 1_419
-    2022-01-01: 1_478
-    2023-01-01: 1_587
+    2022-01-01: 1_477.91
+    2023-01-01: 1_586.94
     2024-01-01: 1_800
-    2025-01-01: 1_829
+    2025-01-01: 1_828.75
   GRAND_ISLE_COUNTY_VT:
     2021-01-01: 1_419
-    2022-01-01: 1_478
-    2023-01-01: 1_587
+    2022-01-01: 1_477.91
+    2023-01-01: 1_586.94
     2024-01-01: 1_800
-    2025-01-01: 1_829
+    2025-01-01: 1_828.75
   LAMOILLE_COUNTY_VT:
     2021-01-01: 1_378
     2022-01-01: 1_439
@@ -653,16 +692,16 @@ metadata:
     2025-01-01: 1_351
   FRANKLIN_COUNTY_VT:
     2021-01-01: 1_419
-    2022-01-01: 1_478
-    2023-01-01: 1_587
+    2022-01-01: 1_477.91
+    2023-01-01: 1_586.94
     2024-01-01: 1_800
-    2025-01-01: 1_829
+    2025-01-01: 1_828.75
   GRAND_ISLE_COUNTY_VT:
     2021-01-01: 1_419
-    2022-01-01: 1_478
-    2023-01-01: 1_587
+    2022-01-01: 1_477.91
+    2023-01-01: 1_586.94
     2024-01-01: 1_800
-    2025-01-01: 1_829
+    2025-01-01: 1_828.75
   LAMOILLE_COUNTY_VT:
     2021-01-01: 1_378
     2022-01-01: 1_439

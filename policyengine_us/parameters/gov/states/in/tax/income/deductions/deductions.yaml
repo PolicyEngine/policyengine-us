@@ -10,8 +10,10 @@ values:
     - in_nonpublic_school_deduction
     - in_nol
     - in_unemployment_compensation_deduction
-    - in_other_deductions
+    - in_other_subtractions
+    - in_disability_retirement_deduction # IC 6-3-2-9 (code 602)
     - in_civil_service_annuity_deduction
+    - in_military_retirement_deduction
 
   2023-01-01:
     # IC 6-3-2-6
@@ -33,11 +35,15 @@ values:
     # IC 6-3-2-10
     - in_unemployment_compensation_deduction
     # IC 6-3-2
-    - in_other_deductions
+    - in_other_subtractions
+    # IC 6-3-2-9 (code 602)
+    - in_disability_retirement_deduction
     # IC 6-3-2-4 (b)
     - military_basic_pay
     # IC 6-3-2-3.7
     - in_civil_service_annuity_deduction
+    # IC 6-3-2-4(a)
+    - in_military_retirement_deduction
 
   2024-01-01:
     # IC 6-3-2-6
@@ -59,13 +65,17 @@ values:
     # IC 6-3-2-10
     - in_unemployment_compensation_deduction
     # IC 6-3-2
-    - in_other_deductions
+    - in_other_subtractions
+    # IC 6-3-2-9 (code 602)
+    - in_disability_retirement_deduction
     # IC 6-3-2-4 (b)
     - military_basic_pay
     # IC 6-3-2-28
     - in_healthcare_sharing_deduction
     # IC 6-3-2-3.7
     - in_civil_service_annuity_deduction
+    # IC 6-3-2-4(a)
+    - in_military_retirement_deduction
 
   2026-01-01:
     # IC 6-3-2-6
@@ -87,7 +97,9 @@ values:
     # IC 6-3-2-10
     - in_unemployment_compensation_deduction
     # IC 6-3-2
-    - in_other_deductions
+    - in_other_subtractions
+    # IC 6-3-2-9 (code 602)
+    - in_disability_retirement_deduction
     # IC 6-3-2-4 (b)
     - military_basic_pay
     # IC 6-3-2-28
@@ -100,6 +112,8 @@ values:
     - in_auto_loan_interest_deduction
     # IC 6-3-2-3.7
     - in_civil_service_annuity_deduction
+    # IC 6-3-2-4(a)
+    - in_military_retirement_deduction
 
   2027-01-01:
     # IC 6-3-2-6
@@ -121,13 +135,17 @@ values:
     # IC 6-3-2-10
     - in_unemployment_compensation_deduction
     # IC 6-3-2
-    - in_other_deductions
+    - in_other_subtractions
+    # IC 6-3-2-9 (code 602)
+    - in_disability_retirement_deduction
     # IC 6-3-2-4 (b)
     - military_basic_pay
     # IC 6-3-2-28
     - in_healthcare_sharing_deduction
     # IC 6-3-2-3.7
     - in_civil_service_annuity_deduction
+    # IC 6-3-2-4(a)
+    - in_military_retirement_deduction
 
 metadata:
   unit: list

@@ -19,7 +19,7 @@ for state_code, state_name in [
         # Skip variables that already exist or aren't needed
         if (
             # Skip existing AGI variables
-            (state_code in ["ky", "ms", "mt"] and var_code == "agi")
+            (state_code in ["ky", "ms"] and var_code == "agi")
             or
             # Skip all DC variables except taxable income
             (state_code == "dc" and var_code != "taxable_income")
@@ -119,6 +119,9 @@ for state_code, state_name in [
                     "mt_taxable_income_indiv",
                     "mt_taxable_income_joint",
                 ),
+                # 2021-2023 Form 2 line 14: one column on a joint return,
+                # a column per spouse under status 2a.
+                "agi": ("mt_agi_indiv", "mt_agi_joint"),
             },
         }[state_code][var_code]
 
