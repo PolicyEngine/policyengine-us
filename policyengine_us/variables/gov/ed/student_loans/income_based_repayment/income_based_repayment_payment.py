@@ -8,18 +8,24 @@ class income_based_repayment_payment(Variable):
     documentation = (
         "Monthly payment owed by a borrower under the Income-Based Repayment "
         "plan, assuming the borrower is enrolled in the plan and in active "
-        "repayment, not in deferment, forbearance or default. The borrower's "
-        "plan rate times discretionary income is prorated to their Direct "
-        "Loans (income_driven_repayment_balance_share, which for joint filers "
-        "divides by both spouses' Direct and FFEL loans) and capped at the "
-        "Direct Loan part of the borrower's own 10-year standard payment "
+        "repayment, not in deferment, forbearance or default. The payment is "
+        "the lesser of the borrower's plan rate times discretionary income "
+        "and the borrower's own 10-year standard payment "
         "(income_driven_repayment_standard_payment on their Direct and FFEL "
-        "loans, times their Direct share of those loans). The result is "
-        "rounded to the cent, given the small payment adjustment and capped "
-        "at the borrower's Direct Loan balance. Spouses keep their own rates, "
-        "so a new borrower pays 10 percent and the other spouse 15 percent of "
-        "the same discretionary income before proration, and each spouse's "
-        "cap covers only their own loans. The cap uses the current balance, "
+        "loans at their own interest rate), prorated to their Direct Loans "
+        "(income_driven_repayment_balance_share, which for joint filers "
+        "divides by both spouses' Direct and FFEL loans). The cap applies "
+        "before the proration (34 CFR 685.209(f)(2)-(3), (g)(1)(i)-(ii)), so "
+        "joint filers with equal balances and interest rates whose "
+        "income-based amount exceeds their standard payments together pay "
+        "half their combined standard payment, whatever their income. The "
+        "result is rounded to the cent, given the small payment adjustment "
+        "and capped at the borrower's Direct Loan balance. Spouses keep their "
+        "own rates, so a new borrower pays 10 percent and the other spouse 15 "
+        "percent of the same discretionary income before the cap and "
+        "proration, and each spouse's cap covers only their own loans. A "
+        "single filer, or a joint filer whose spouse has no eligible loans, "
+        "pays the same under either order. The cap uses the current balance, "
         "not the balance when the borrower entered the plan. The prorated "
         "payment is rounded to the cent before the small payment adjustment, "
         "a modeling choice: a calculated payment just under $5, such as "
@@ -53,43 +59,28 @@ class income_based_repayment_payment(Variable):
         discretionary_income = person.tax_unit(
             "income_based_repayment_discretionary_income", period
         )
-        # 685.209(g)(1)(i)-(ii) prorate the income-based amount to the
-        # borrower's Direct Loans. 20 U.S.C. 1098e(b)(6)(A) and 685.209(f)(2)(ii),
-        # (f)(3)(ii) cap the payment on all of the borrower's eligible loans at
-        # their own 10-year standard payment; the Direct Loans carry the
-        # (g)(1)(ii) part of that cap.
+        # 685.209(f)(2)(ii) and (f)(3)(ii) take the lesser of the income-based
+        # amount and the borrower's own 10-year standard payment on their
+        # Direct and FFEL loans (20 U.S.C. 1098e(b)(6)(A)). 685.209(g)(1)(i)-(ii)
+        # then prorate that lesser amount to the borrower's Direct Loans.
+        standard_payment = person("income_driven_repayment_standard_payment", period)
+        capped_amount = min_(rate * discretionary_income, standard_payment)
         balance_share = person(
             "income_driven_repayment_balance_share", period.this_year
         )
-        balance = person("federal_student_loan_balance", period.this_year)
-        eligible_balance = balance + person(
-            "federal_ffel_loan_balance", period.this_year
-        )
-        direct_fraction = np.divide(
-            balance,
-            eligible_balance,
-            out=np.zeros_like(balance),
-            where=eligible_balance > 0,
-        )
-        standard_payment = person("income_driven_repayment_standard_payment", period)
         # Payments are set in whole cents. Rounding before the small payment
         # test keeps an exact $5.00 from falling below the threshold through
         # floating-point error (e.g. 15% x $400 / 12). It also lifts an amount
         # within half a cent below $5 to $5.00, a modeling choice described in
         # the documentation.
-        prorated_payment = np.round(
-            min_(
-                rate * discretionary_income * balance_share,
-                standard_payment * direct_fraction,
-            ),
-            2,
-        )
+        prorated_payment = np.round(capped_amount * balance_share, 2)
         small_payment = p.income_driven_repayment.small_payment
         adjusted_payment = where(
             prorated_payment < small_payment.threshold,
             0,
             max_(prorated_payment, small_payment.minimum),
         )
+        balance = person("federal_student_loan_balance", period.this_year)
         payment = min_(adjusted_payment, balance)
         # 20 U.S.C. 1087e(d)(1) and (d)(7)(A) and 34 CFR 685.209(d)(5) limit
         # the plan to borrowers with no Direct Loan made on or after July 1,

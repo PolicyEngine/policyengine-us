@@ -1,15 +1,19 @@
 # Monthly payment under 20 U.S.C. 1098e and 34 CFR 685.209(f)(2)-(3), (g)(1):
 #   discretionary income = max(AGI - 1.5 x poverty guideline, 0)
 #   payment = lesser of
-#     15% (new borrowers 10%) x discretionary income / 12
-#       x own Direct balance / couple's Direct and FFEL balance ((g)(1)(i)-(ii))
-#     and the borrower's own 10-year standard payment on their Direct and FFEL
-#       loans (1098e(b)(6)(A); (f)(2)(ii), (f)(3)(ii))
-#       x own Direct balance / own Direct and FFEL balance ((g)(1)(ii))
+#       15% (new borrowers 10%) x discretionary income / 12
+#       and the borrower's own 10-year standard payment on their Direct and
+#       FFEL loans ((f)(2)(ii), (f)(3)(ii); 1098e(b)(6)(A))
+#     x own Direct balance / couple's Direct and FFEL balance ((g)(1)(i)-(ii)),
 #   rounded to the cent; under 5 -> 0; 5 to under 10 -> 10; at most the
 #   borrower's Direct balance.
+# The cap applies before the proration (#10411, ruled 2026-10-31). For a single
+# filer, or a joint filer whose spouse has no eligible loans, the order makes
+# no difference.
 # 2026 guideline in the 48 states: 15,960 + 5,680 per additional person.
-# Standard payment on 30,000 at 6 percent: 333.06.
+# Standard payment at 6 percent: 30,000 -> 333.06; 20,000 -> 222.04;
+# 10,000 -> 111.02. At 0 percent, 30,000 / 120 = 250; at 12 percent,
+# 30,000 x 0.01 / (1 - 1.01 ^ -120) = 430.41.
 
 - name: Case 1, single filer who is not a new borrower pays 15 percent.
   period: 2026-01
@@ -193,10 +197,11 @@
         members: [person1, person2]
         state_code: TX
   output:
-    # 1.5 x 21,640 = 32,460; 15% x 47,540 / 12 = 594.25.
-    # Shares 75% and 25%: 445.69 and 148.56, below the caps of 666.12 and
-    # 222.04.
-    income_based_repayment_payment: [445.69, 148.56]
+    # 1.5 x 21,640 = 32,460; 15% x 47,540 / 12 = 594.25. Own standard
+    # payments 666.12 and 222.04; shares 75% and 25%.
+    # min(594.25, 666.12) x 75% = 445.69.
+    # min(594.25, 222.04) x 25% = 55.51.
+    income_based_repayment_payment: [445.69, 55.51]
 
 - name: Case 9, married filing separately excludes the spouse's income.
   period: 2026-01
@@ -445,11 +450,12 @@
         members: [person1, person2]
         state_code: TX
   output:
-    # Issue #10411 example. 1.5 x 21,640 = 32,460; 15% x 48,000 / 12 = 600,
-    # split 50/50: 300 each. Standard payments: 30,000 / 120 = 250 and
-    # 30,000 x 0.01 / (1 - 1.01 ^ -120) = 430.41. min(300, 250) = 250 and
-    # min(300, 430.41) = 300 (20 U.S.C. 1098e(b)(6)(A)).
-    income_based_repayment_payment: [250, 300]
+    # Issue #10411 example (ruling table, row 1). 1.5 x 21,640 = 32,460;
+    # 15% x 48,000 / 12 = 600. Standard payments 250 and 430.41; shares 50%.
+    # min(600, 250) x 50% = 125.
+    # min(600, 430.41) x 50% = 215.21.
+    # Together 340.21.
+    income_based_repayment_payment: [125, 215.21]
 
 - name: Case 19, each spouse's own standard payment caps a high income.
   period: 2026-01
@@ -474,9 +480,11 @@
         members: [person1, person2]
         state_code: TX
   output:
-    # 15% x (96,460 - 32,460) / 12 = 800, split 50/50: 400 each.
-    # min(400, 250) = 250 and min(400, 430.41) = 400.
-    income_based_repayment_payment: [250, 400]
+    # Ruling table, row 2. 15% x (96,460 - 32,460) / 12 = 800.
+    # min(800, 250) x 50% = 125.
+    # min(800, 430.41) x 50% = 215.21.
+    # Together 340.21, as at an income-based amount of 600.
+    income_based_repayment_payment: [125, 215.21]
 
 - name: Case 20, spouses keep their own new-borrower and other-borrower rates.
   period: 2026-01
@@ -496,16 +504,20 @@
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
-        adjusted_gross_income: 92_460
+        adjusted_gross_income: 66_060
     households:
       household:
         members: [person1, person2]
         state_code: TX
   output:
-    # Discretionary income (92,460 - 32,460) / 12 = 5,000. Each spouse's own
-    # standard payment is 333.06. New borrower: min(10% x 5,000 x 50%,
-    # 333.06) = 250. Other borrower: min(15% x 5,000 x 50%, 333.06) = 333.06.
-    income_based_repayment_payment: [250, 333.06]
+    # Discretionary income (66,060 - 32,460) / 12 = 2,800. Each spouse's own
+    # standard payment is 333.06. The rates differ, and only the 15 percent
+    # amount reaches the cap.
+    # New borrower: min(10% x 2,800, 333.06) x 50% = min(280, 333.06) x 50%
+    # = 140.
+    # Other borrower: min(15% x 2,800, 333.06) x 50% = min(420, 333.06) x 50%
+    # = 166.53.
+    income_based_repayment_payment: [140, 166.53]
 
 - name: Case 21, a spouse's FFEL debt counts in the joint proration.
   period: 2026-01
@@ -532,10 +544,11 @@
         state_code: TX
   output:
     # IBR analogue of rulespec-us#1455 C16. 15% x (60,000 - 32,460) / 12 =
-    # 344.25. The borrower pays 344.25 x 10,000 / 40,000 = 86.06
-    # (685.209(g)(1)(i)-(ii)), under their own standard payment of 111.02; the
-    # spouse has no Direct Loans and owes nothing under the plan.
-    income_based_repayment_payment: [86.06, 0]
+    # 344.25, above the borrower's own standard payment of 111.02 on their
+    # 10,000. The borrower pays min(344.25, 111.02) x 10,000 / 40,000 = 27.76
+    # (685.209(g)(1)(i)-(ii)); the spouse has no Direct Loans and owes nothing
+    # under the plan.
+    income_based_repayment_payment: [27.76, 0]
 
 - name: Case 22, a borrower's own FFEL loans reduce the Direct Loan payment.
   period: 2026-01
@@ -574,10 +587,10 @@
         members: [person2]
         state_code: TX
   output:
-    # 685.209(g)(1)(ii): x 10,000 / 40,000 = 25%. Cap on all 40,000 of
-    # eligible loans: 444.08, of which the Direct Loans carry 25% = 111.02.
-    # person1: min(200.75 x 25%, 111.02) = 50.19.
-    # person2: min(950.75 x 25%, 111.02) = 111.02.
+    # Standard payment on all 40,000 of eligible loans: 444.08.
+    # 685.209(g)(1)(ii): x 10,000 / 40,000 = 25%.
+    # person1: min(200.75, 444.08) x 25% = 50.19.
+    # person2: min(950.75, 444.08) x 25% = 111.02.
     income_based_repayment_payment: [50.19, 111.02]
 
 - name: Case 23, a Direct Loan balance under 10 dollars caps the 10 dollar minimum payment.
@@ -634,8 +647,67 @@
   output:
     # The spouse's Direct Loans stay eligible loans (685.209(b)(5)); (d)(5)
     # only stops the plan from repaying them. (60,000 - 1.5 x 20,000) / 12 =
-    # 2,500. Income-Based Repayment 15% = 375 and Pay As You Earn 10% = 250,
-    # each x 30,000 / 60,000 = 187.50 and 125, under the 333.06 standard
-    # payment; the spouse owes 0.
-    income_based_repayment_payment: [187.5, 0]
+    # 2,500. Income-Based Repayment 15% = 375 and Pay As You Earn 10% = 250.
+    # IBR: min(375, 333.06) x 30,000 / 60,000 = 166.53.
+    # PAYE: min(250, 333.06) x 30,000 / 60,000 = 125.
+    # The spouse owes 0.
+    income_based_repayment_payment: [166.53, 0]
     pay_as_you_earn_payment: [125, 0]
+
+- name: Case 25, joint filers with equal balances and rates under both standard payments.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 38
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 80_460
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Ruling table, row 3. 15% x (80,460 - 32,460) / 12 = 600, above each
+    # spouse's own standard payment of 333.06.
+    # min(600, 333.06) x 50% = 166.53 each, together 333.06. Prorating first
+    # would give min(300, 333.06) = 300 each.
+    income_based_repayment_payment: [166.53, 166.53]
+
+- name: Case 26, a higher income does not raise the payment of joint filers capped by both standard payments.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 38
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 96_460
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Ruling table, row 4. 15% x (96,460 - 32,460) / 12 = 800.
+    # min(800, 333.06) x 50% = 166.53 each, together 333.06, half the
+    # couple's combined standard payment of 666.12. Prorating first would give
+    # min(400, 333.06) = 333.06 each.
+    income_based_repayment_payment: [166.53, 166.53]

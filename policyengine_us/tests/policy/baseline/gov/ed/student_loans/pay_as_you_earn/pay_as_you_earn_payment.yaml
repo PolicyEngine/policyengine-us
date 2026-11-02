@@ -1,16 +1,19 @@
 # Monthly payment under 34 CFR 685.209(b)(4)(ii), (f)(2), (g)(1):
 #   discretionary income = max(AGI - 1.5 x poverty guideline, 0)
 #   payment = lesser of
-#     10% x discretionary income / 12
-#       x own Direct balance / couple's Direct and FFEL balance ((g)(1)(i)-(ii))
-#     and the borrower's own 10-year standard payment on their Direct and FFEL
-#       loans ((f)(2)(ii))
-#       x own Direct balance / own Direct and FFEL balance ((g)(1)(ii))
+#       10% x discretionary income / 12
+#       and the borrower's own 10-year standard payment on their Direct and
+#       FFEL loans ((f)(2)(ii))
+#     x own Direct balance / couple's Direct and FFEL balance ((g)(1)(i)-(ii)),
 #   rounded to the cent; under 5 -> 0; 5 to under 10 -> 10; at most the
 #   borrower's Direct balance.
+# The cap applies before the proration (#10411, ruled 2026-10-31). For a single
+# filer, or a joint filer whose spouse has no eligible loans, the order makes
+# no difference.
 # 2026 guideline in the 48 states: 15,960 + 5,680 per additional person.
 # Standard payment at 6 percent: 30,000 -> 333.06; 40,000 -> 444.08;
-# 20,000 -> 222.04; 10,000 -> 111.02.
+# 20,000 -> 222.04; 10,000 -> 111.02. At 0 percent, 30,000 / 120 = 250; at
+# 12 percent, 30,000 x 0.01 / (1 - 1.01 ^ -120) = 430.41.
 
 - name: Case 1, single filer pays 10 percent of discretionary income.
   period: 2026-01
@@ -79,10 +82,11 @@
         members: [person1, person2]
         state_code: TX
   output:
-    # 1.5 x 21,640 = 32,460; 10% x 47,540 / 12 = 396.17.
-    # Shares 2/3 and 1/3: 264.11 and 132.06, below the caps of 444.08 and
-    # 222.04.
-    pay_as_you_earn_payment: [264.11, 132.06]
+    # 1.5 x 21,640 = 32,460; 10% x 47,540 / 12 = 396.17. Own standard
+    # payments 444.08 and 222.04; shares 2/3 and 1/3.
+    # min(396.17, 444.08) x 2/3 = 264.11.
+    # min(396.17, 222.04) x 1/3 = 74.01.
+    pay_as_you_earn_payment: [264.11, 74.01]
 
 - name: Case 4, each spouse's own standard payment caps joint filers who both borrowed.
   period: 2026-01
@@ -107,9 +111,11 @@
         members: [person1, person2]
         state_code: TX
   output:
-    # 10% x (150,000 - 32,460) / 12 = 979.50; shares 80% and 20%: 783.60 and
-    # 195.90, above each spouse's own standard payment of 444.08 and 111.02.
-    pay_as_you_earn_payment: [444.08, 111.02]
+    # 10% x (150,000 - 32,460) / 12 = 979.50, above each spouse's own
+    # standard payment of 444.08 and 111.02; shares 80% and 20%.
+    # min(979.50, 444.08) x 80% = 355.27.
+    # min(979.50, 111.02) x 20% = 22.20.
+    pay_as_you_earn_payment: [355.27, 22.2]
 
 - name: Case 5, a payment under 5 dollars becomes zero.
   period: 2026-01
@@ -255,11 +261,12 @@
         members: [person1, person2]
         state_code: TX
   output:
-    # Issue #10411 example. 1.5 x 21,640 = 32,460; 10% x 72,000 / 12 = 600,
-    # split 50/50: 300 each. Standard payments: 30,000 / 120 = 250 and
-    # 30,000 x 0.01 / (1 - 1.01 ^ -120) = 430.41. min(300, 250) = 250 and
-    # min(300, 430.41) = 300.
-    pay_as_you_earn_payment: [250, 300]
+    # Issue #10411 example (ruling table, row 1). 1.5 x 21,640 = 32,460;
+    # 10% x 72,000 / 12 = 600. Standard payments 250 and 430.41; shares 50%.
+    # min(600, 250) x 50% = 125.
+    # min(600, 430.41) x 50% = 215.21.
+    # Together 340.21.
+    pay_as_you_earn_payment: [125, 215.21]
 
 - name: Case 11, each spouse's own standard payment caps a high income.
   period: 2026-01
@@ -284,9 +291,11 @@
         members: [person1, person2]
         state_code: TX
   output:
-    # 10% x (128,460 - 32,460) / 12 = 800, split 50/50: 400 each.
-    # min(400, 250) = 250 and min(400, 430.41) = 400.
-    pay_as_you_earn_payment: [250, 400]
+    # Ruling table, row 2. 10% x (128,460 - 32,460) / 12 = 800.
+    # min(800, 250) x 50% = 125.
+    # min(800, 430.41) x 50% = 215.21.
+    # Together 340.21, as at an income-based amount of 600.
+    pay_as_you_earn_payment: [125, 215.21]
 
 - name: Case 12, a spouse's FFEL debt counts in the joint proration.
   period: 2026-01
@@ -312,10 +321,11 @@
         members: [person1, person2]
         state_code: TX
   output:
-    # 10% x (61,000 - 32,460) / 12 = 237.83. The borrower pays
-    # 237.83 x 10,000 / 40,000 = 59.46 (685.209(g)(1)(i)-(ii)), under their own
-    # standard payment of 111.02; the spouse owes nothing.
-    pay_as_you_earn_payment: [59.46, 0]
+    # 10% x (61,000 - 32,460) / 12 = 237.83, above the borrower's own
+    # standard payment of 111.02 on their 10,000. The borrower pays
+    # min(237.83, 111.02) x 10,000 / 40,000 = 27.76 (685.209(g)(1)(i)-(ii));
+    # the spouse owes nothing.
+    pay_as_you_earn_payment: [27.76, 0]
 
 - name: Case 13, a payment within half a cent below 5 dollars rounds to 5 and rises to 10.
   period: 2026-01
@@ -339,3 +349,61 @@
     # 24,539.52 - 23,940 = 599.52; 10% x 599.52 / 12 = 4.996, which rounds to
     # 5.00 and rises to 10 (the modeling choice in the documentation).
     pay_as_you_earn_payment: 10
+
+- name: Case 14, joint filers with equal balances and rates under both standard payments.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 38
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 104_460
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Ruling table, row 3. 10% x (104,460 - 32,460) / 12 = 600, above each
+    # spouse's own standard payment of 333.06.
+    # min(600, 333.06) x 50% = 166.53 each, together 333.06. Prorating first
+    # would give min(300, 333.06) = 300 each.
+    pay_as_you_earn_payment: [166.53, 166.53]
+
+- name: Case 15, a higher income does not raise the payment of joint filers capped by both standard payments.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 38
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 128_460
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Ruling table, row 4. 10% x (128,460 - 32,460) / 12 = 800.
+    # min(800, 333.06) x 50% = 166.53 each, together 333.06, half the
+    # couple's combined standard payment of 666.12. Prorating first would give
+    # min(400, 333.06) = 333.06 each.
+    pay_as_you_earn_payment: [166.53, 166.53]

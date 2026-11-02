@@ -13,7 +13,10 @@ class income_driven_repayment_standard_payment(Variable):
         "on their own eligible loans, the most the borrower pays under the "
         "Income-Based Repayment and Pay As You Earn plans (20 U.S.C. "
         "1098e(b)(6)(A): 'for all loans made to the borrower under part B or "
-        "D'). Eligible loans are Direct and FFEL loans other than parent PLUS "
+        "D'). 34 CFR 685.209(f)(2)(ii) and (f)(3)(ii) compare it with the "
+        "income-based amount, and (g)(1) then prorates the lesser of the two "
+        "(income_driven_repayment_balance_share). Eligible loans are Direct "
+        "and FFEL loans other than parent PLUS "
         "loans and excepted consolidation loans, so this is the 10-year "
         "standard payment on the person's federal_student_loan_balance plus "
         "federal_ffel_loan_balance at their federal_student_loan_interest_rate. "
@@ -30,6 +33,7 @@ class income_driven_repayment_standard_payment(Variable):
         "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(b)(5)",
         "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(f)(2)(ii)",
         "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(f)(3)(ii)",
+        "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(g)(1)",
         "https://www.ecfr.gov/current/title-34/section-685.208#p-685.208(b)(1)",
     )
 
