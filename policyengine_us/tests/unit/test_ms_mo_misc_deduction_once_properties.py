@@ -129,6 +129,7 @@ AMOUNTS = st.integers(min_value=0, max_value=50_000)
 @hypothesis.settings(
     max_examples=10,
     deadline=None,
+    derandomize=True,
     suppress_health_check=[hypothesis.HealthCheck.too_slow],
 )
 @hypothesis.given(
