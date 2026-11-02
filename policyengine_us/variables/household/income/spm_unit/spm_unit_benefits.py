@@ -98,6 +98,13 @@ class spm_unit_benefits(Variable):
             # Contributed.
             "basic_income",
             "trump_dividend",
+            # Cash programs that household_benefits also counts.
+            "ca_capi",  # California Cash Assistance Program for Immigrants.
+            "ca_la_expectant_parent_payment",  # Los Angeles County.
+            "ca_la_infant_supplement",  # Los Angeles County.
+            "co_denver_property_tax_relief",  # Denver.
+            "ma_eaedc",  # Massachusetts.
+            "nj_property_tax_relief",  # ANCHOR, Senior Freeze and Stay NJ.
             "ny_drive_clean_rebate",
         ]
         if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
