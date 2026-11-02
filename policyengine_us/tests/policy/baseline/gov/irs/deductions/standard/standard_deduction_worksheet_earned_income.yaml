@@ -1,0 +1,182 @@
+- name: Wages count as reported in W-2 box 1, after a 401(k) deferral
+  # Form 1040 instructions (2025): line 1a is W-2 box 1, and an elective
+  # deferral is not included in box 1. $10,000 - $6,000 = $4,000.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 10_000
+        traditional_401k_contributions: 6_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+  output:
+    standard_deduction_worksheet_earned_income: 4_000
+
+- name: Pretax health premiums and HSA payroll contributions are also left out of box 1 wages
+  # $10,000 - $1,000 - $500 = $8,500.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 10_000
+        pre_tax_health_insurance_premiums: 1_000
+        health_savings_account_payroll_contributions: 500
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+  output:
+    standard_deduction_worksheet_earned_income: 8_500
+
+- name: Designated Roth 401(k) contributions stay in box 1 wages
+  # 2025 Form 1040 instructions, IRA deduction worksheet, note 3: "Except for
+  # designated Roth contributions, these amounts aren't included as income
+  # in box 1 of your Form W-2."
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 10_000
+        roth_401k_contributions: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+  output:
+    standard_deduction_worksheet_earned_income: 10_000
+
+- name: Self-employment income is net of the deductible part of self-employment tax
+  # $3,000 - $3,000 x 0.9235 x 15.3% / 2 = $2,788.06.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 20
+        self_employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+  output:
+    standard_deduction_worksheet_earned_income: 2788.06
+
+- name: Farm income (Schedule 1 line 6) counts, net of the deductible part of self-employment tax
+  # $3,000 - $3,000 x 0.9235 x 15.3% / 2 = $2,788.06.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 20
+        farm_operations_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+  output:
+    standard_deduction_worksheet_earned_income: 2788.06
+
+- name: A farm loss reduces earned income
+  # $5,000 of wages less a $2,000 farm loss is $3,000; a loss owes no
+  # self-employment tax.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 5_000
+        farm_operations_income: -2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+  output:
+    standard_deduction_worksheet_earned_income: 3_000
+
+- name: Earned income is not negative
+  # $1,000 of wages less a $5,000 business loss is floored at $0.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 1_000
+        self_employment_income: -5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+  output:
+    standard_deduction_worksheet_earned_income: 0
+
+- name: A joint return sums both spouses' box 1 wages and leaves out a dependent's wages
+  # Head $8,000 - $3,000 = $5,000; spouse $8,000; the dependent child's
+  # $2,000 belongs on the child's own return. $5,000 + $8,000 = $13,000.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 8_000
+        traditional_401k_contributions: 3_000
+        is_tax_unit_head: true
+      spouse:
+        age: 30
+        employment_income: 8_000
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        employment_income: 2_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+  output:
+    standard_deduction_worksheet_earned_income: 13_000
+
+- name: On a joint return one spouse's business loss offsets the other spouse's wages before the zero floor
+  # $5,000 of wages less the spouse's $3,000 loss is $2,000.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+      spouse:
+        age: 30
+        self_employment_income: -3_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    standard_deduction_worksheet_earned_income: 2_000

@@ -21,7 +21,6 @@ class hi_deductions(Variable):
 
         standard_deduction = tax_unit("hi_standard_deduction", period)
         total_itemized_deduction = tax_unit("hi_itemized_deductions", period)
-        tax_unit_earned_income = tax_unit("tax_unit_earned_income", period)
         filing_status = tax_unit("filing_status", period)
 
         # check itemized deduction eligibility
@@ -35,10 +34,11 @@ class hi_deductions(Variable):
         is_dependent_on_another_return = tax_unit(
             "head_or_spouse_is_dependent_elsewhere", period
         )
-        # Worksheet earned income: wages and self-employment income minus the
-        # deductible part of self-employment tax (Schedule 1, line 15).
-        worksheet_earned_income = max_(
-            tax_unit_earned_income - tax_unit("self_employment_tax_ald", period), 0
+        # Worksheet earned income: federal Form 1040 line 1 wages and Schedule
+        # 1 lines 3 (business) and 6 (farming), minus line 15 (N-11
+        # instructions, PDF page 20).
+        worksheet_earned_income = tax_unit(
+            "standard_deduction_worksheet_earned_income", period
         )
         dependent_standard_deduction = min_(
             max_(p.threshold.dependent, worksheet_earned_income), standard_deduction
