@@ -85,6 +85,10 @@ values:
     # Refundable credits received (2023 schedule line 7, Schedule 2EC line 8
     # from 2024): Montana's refundable credits other than this credit,
     # and this credit as received during the year (ARM 42.4.301(2)(c)).
+    # Known gap: mt_refundable_credits_before_renter_credit is the Montana
+    # refundable credits on this year's return, which are paid after the
+    # year ends, not the Montana credits received during the year (MCA
+    # 15-30-2337(4)). Federal credits use receipts from 2017.
     - mt_refundable_credits_before_renter_credit
     - mt_elderly_homeowner_or_renter_credit_received
   # ARM 42.4.301(2)(b), amended effective 11/10/2017, counts "federal

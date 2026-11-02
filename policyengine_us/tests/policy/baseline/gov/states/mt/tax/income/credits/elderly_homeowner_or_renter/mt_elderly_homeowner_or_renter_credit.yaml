@@ -216,8 +216,6 @@
         age: 63
         employment_income: 20_892.60
         real_estate_taxes: 863.08
-        # The third Economic Impact Payment, received during 2021.
-        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 1_400
     tax_units:
       tax_unit:
         members: [person1]
@@ -230,7 +228,8 @@
     # 2021 instructions, line 7: "Refundable credits include the federal and
     # Montana Earned Income Tax Credit, the federal Child Tax Credits,
     # Economic Impact Payments". Received in 2021: the 1_400 Economic Impact
-    # Payment. The 2021 federal EITC (ARPA, no qualifying child), 1_502 -
+    # Payment (the 2021 recovery rebate credit, which the model counts by
+    # default). The 2021 federal EITC (ARPA, no qualifying child), 1_502 -
     # 15.3% x (20_892.60 - 11_610) = 81.76, is paid in 2022, so it is not;
     # the Montana EITC on the 2021 return, 3% = 2.45, counts as the model's
     # Montana refundable credits. Line 10 = 20_892.60 + 1_400 + 2.45 =
@@ -1362,14 +1361,13 @@
         rent: 0
         ssi: 0
         # A documented lessee for the whole year.
-        mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 12
+        mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months: 12
       person2:
         age: 45
         taxable_interest_income: 6_000
         rent: 0
         real_estate_taxes: 4_000
         ssi: 0
-        mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 12
     tax_units:
       tax_unit1:
         members: [person1]
@@ -1395,6 +1393,10 @@
     # line 25 = 600; line 26 = 600; line 27 = 600 - 259 = 341; line 28 =
     # 341; line 29 = 100% (under 35_000); line 30 = 341.
     # The child is 45, so not a claimant (§ 15-30-2338(1)(a)).
+    # Not modelled: § 15-30-2337(7)(b) leaves "bona fide lessees, tenants,
+    # or roomers and boarders on contract" out of the household. The model
+    # counts every member's income in line 18, so this case reads the parent
+    # as a member of the child's household rather than a lessee on contract.
     mt_elderly_homeowner_or_renter_credit_net_household_income: [259, 0]
     mt_elderly_homeowner_or_renter_credit_gross_rent: [4_000, 0]
     mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [341, 0]
@@ -1521,6 +1523,53 @@
     mt_elderly_homeowner_or_renter_credit_selected_claimant: [false, true]
     mt_elderly_homeowner_or_renter_credit: [0, 1_150]
 
+- name: 2024 Schedule 2EC, two elderly siblings, one a rent-free lessee recorded by input; the owner still claims
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 10_000
+        rent: 0
+        ssi: 0
+        # The only occupancy input in the household.
+        mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months: 12
+      person2:
+        age: 70
+        taxable_pension_income: 10_000
+        rent: 0
+        real_estate_taxes: 2_000
+        ssi: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Recording person1's lessee months leaves person2's months to follow
+    # person2's own bill (MCA 15-30-2338(1)(c)): both qualify.
+    # Line 18 = 20_000; line 20 = 7_400; line 21 = 0.035; line 22 = 259.
+    # person1: line 24 = the household's bill, 2_000; line 25 = 300; line
+    # 27 = 300 - 259 = 41.
+    # person2: line 23 = 2_000; line 27 = 2_000 - 259 = 1_741; line 28 =
+    # 1_150 cap.
+    # One claimant per household (§ 15-30-2341(1)): person2's 1_150.
+    mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: [12, 12]
+    mt_elderly_homeowner_or_renter_credit_eligible: [true, true]
+    mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [41, 1_150]
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: [false, true]
+    mt_elderly_homeowner_or_renter_credit: [0, 1_150]
+
 - name: 2024 Schedule 2EC, a dependent's bill stays on the claimant's line 23
   period: 2024
   absolute_error_margin: 0.01
@@ -1644,20 +1693,17 @@
         taxable_pension_income: 14_000
         rent: 0
         ssi: 0
-        # A rent-free lessee. An input for one person gives the others the
-        # input default, not the formula, so record everyone's months.
-        mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 12
+        # A rent-free lessee.
+        mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months: 12
       person2:
         age: 45
         rent: 0
         ssi: 0
-        mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 12
       person3:
         age: 43
         rent: 0
         real_estate_taxes: 4_000
         ssi: 0
-        mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 12
     tax_units:
       tax_unit1:
         members: [person1]

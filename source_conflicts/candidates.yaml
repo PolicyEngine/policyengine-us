@@ -5151,40 +5151,6 @@ candidates:
     non-loss adjustments, and adds back only the business and capital losses (mt_elderly_homeowner_or_renter_credit_gross_household_income.py,
     elderly_homeowner_or_renter/gross_income_sources.yaml). Identify the omitted adjustments and verify applicability
     in both years.'
-- id: us-mt:elderly-credit-refundable-credit-timing
-  program: elderly-homeowner-renter-credit
-  years:
-    from: 2021
-    to: 2023
-    type: tax
-  question: Do refundable credits enter elderly-credit income when received under the regulation or as reported
-    on the current return under the schedule?
-  sources:
-  - kind: regulation
-    citation: ARM 42.4.301(2)(b)-(c)
-    url: null
-  - kind: form
-    citation: 2021-2023 Elderly Homeowner/Renter Credit Schedule
-    url: https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2023_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=10
-  readings:
-    statute: The cited regulation counts refundable credits actually received; no statute is supplied.
-    other: The schedule directs use of amounts reported on the current Form 2.
-  pe_us:
-    follows: unknown
-    code:
-    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py
-    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_received.py
-    - policyengine_us/parameters/gov/states/mt/tax/income/credits/elderly_homeowner_or_renter/gross_income_sources.yaml
-    - policyengine_us/variables/gov/states/mt/tax/income/tax_calculation/mt_refundable_credits_before_renter_credit.py
-    - policyengine_us/parameters/gov/states/mt/tax/income/credits/refundable.yaml
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/9915
-  state: unreviewed
-  note: PE-US uses the current return's federal and other Montana refundable credits (the Montana EITC from 2019)
-    as a proxy for credits received, while the elderly credit itself enters as an input for the amount received
-    during the year (mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py, mt_refundable_credits_before_renter_credit.py,
-    credits/refundable.yaml, mt_elderly_homeowner_or_renter_credit_received.py, elderly_homeowner_or_renter/gross_income_sources.yaml).
-    Resolve the regulation/form timing difference, noting that the 2024 caption uses received amounts.
 - id: us-mt:elderly-credit-rent-free-occupants
   program: income-tax
   years:
@@ -5195,7 +5161,7 @@ candidates:
   sources:
   - kind: statute
     citation: MCA 15-30-2338(1)(c)
-    url: null
+    url: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0380/0150-0300-0230-0380.html
   - kind: regulation
     citation: ARM 42.4.302(2)(b)
     url: https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-42.4.302
@@ -5203,22 +5169,67 @@ candidates:
     citation: 2025 Form 2 instructions, Schedule 2EC line 23, PDF page 47
     url: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=47
   readings:
-    statute: The owner, renter or lessee condition potentially excludes a rent-free occupant.
+    statute: The owner, renter or lessee condition excludes a rent-free occupant who holds none of those statuses.
     other: Another person's property tax bill qualifies as the claimant's rent.
   example: An 80-year-old parent with a $14,000 pension living rent-free in a child's home with $4,000 property
-    tax receives a 2024 credit of $341 versus $0 before.
+    tax and no lessee status receives a 2024 credit of $0 under the statute, against $341 under the other reading.
+    Recorded as a lessee, the parent receives $341.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_eligible.py
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months.py
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months.py
     - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_gross_rent.py
     - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_property_tax_billed.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9945
+    - https://github.com/PolicyEngine/policyengine-us/pull/10331
+  state: ruled
+  note: 'PE-US follows the statute from #10331: a head or spouse must have occupied a Montana dwelling as an owner,
+    renter or lessee for 6 months (mt_elderly_homeowner_or_renter_credit_eligible.py). Rent paid or property tax
+    billed to the tax unit shows that status (mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months.py);
+    a rent-free lessee is recorded through mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months.py.
+    The household''s bill still counts as rent for an eligible claimant whose tax unit is billed nothing, which
+    ARM 42.4.302(2)(b) allows "an eligible claimant" (mt_elderly_homeowner_or_renter_credit_gross_rent.py), so
+    the regulation is read as measuring rent, not as conferring eligibility. Move to the register once its sources
+    are captured.'
+- id: us-mt:elderly-credit-federal-refundable-credits-before-2017
+  program: elderly-homeowner-renter-credit
+  years:
+    from: 2009
+    to: 2016
+    type: tax
+  question: Before ARM 42.4.301(2)(b) was amended on November 10, 2017, did gross household income count federal
+    refundable credits received, as nontaxable income under the statute, or only federal refunds that recovered
+    a prior-year Montana tax benefit, under the regulation and the form?
+  sources:
+  - kind: statute
+    citation: MCA 15-30-2337(9)(a) (2009)
+    url: https://archive.legmt.gov/bills/2009/mca/15/30/15-30-2337.htm
+  - kind: regulation
+    citation: ARM 42.4.301(2)(b) as in effect 8/20/2004 to 11/9/2017
+    url: https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/c90ea93a-03a2-4605-a0f8-f2f3760198bf/document/788508cc-8418-41c8-926d-3dfb11af3fd6
+  - kind: form
+    citation: 2016 Montana Form 2EC Gross Household Income Worksheet, PDF pages 74-75
+    url: https://taxsim.nber.org/historical_state_tax_forms/MT/2016/Form_2_booklet_2016.pdf#page=74
+  readings:
+    statute: A refundable credit received is nontaxable income under (9)(a), so it counts from 2009.
+    other: A refundable credit paid in excess of tax is a federal refund, which the pre-2017 regulation counts only
+      to the extent it recovered a prior-year Montana tax benefit, and the 2016 worksheet lists only federal income
+      tax refunds taxable in Montana; so it does not count before 2017.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/mt/tax/income/credits/elderly_homeowner_or_renter/gross_income_sources.yaml
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10331
   state: open
-  note: 'PE-US follows the regulation and instructions: when no one in the claimant''s tax unit is billed property
-    tax, the household''s property tax counts as rent, taking the larger of that and rent paid, so a rent-free occupant
-    can qualify (mt_elderly_homeowner_or_renter_credit_gross_rent.py). The source-choice question remains open;
-    the statute-first rule requires a model change if the regulation expands rather than interprets statutory eligibility.'
+  note: PE-US follows the regulation and the form before 2017. The federal refundable credits received
+    (mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py) enter the source list only from 2017
+    (elderly_homeowner_or_renter/gross_income_sources.yaml). Whether the pre-2017 regulation narrows the statute's
+    "all nontaxable income", and how far a Montana rule binds against its statute, is open for the project lead.
 - id: us-mt:liheap-business-equity-limit
   program: liheap
   years:

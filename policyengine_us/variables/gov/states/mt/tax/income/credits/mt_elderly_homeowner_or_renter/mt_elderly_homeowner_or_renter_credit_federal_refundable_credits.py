@@ -8,9 +8,12 @@ class mt_elderly_homeowner_or_renter_credit_federal_refundable_credits(Variable)
     documentation = (
         "Federal refundable tax credit cash this person received during the "
         "year, such as an earned income or child tax credit refund from the "
-        "prior year's return or an Economic Impact Payment. Defaults to zero: "
-        "the credits claimed on this year's return are paid after the year "
-        "ends, so they do not establish a receipt."
+        "prior year's return or an Economic Impact Payment. Defaults to the "
+        "return's recovery rebate credits (the 2020 and 2021 Economic Impact "
+        "Payments, advanced during the same year), on the tax unit head, and "
+        "to zero in other years: the other credits claimed on this year's "
+        "return are paid after the year ends, so they do not establish a "
+        "receipt. A supplied amount replaces the default."
     )
     unit = USD
     definition_period = YEAR
@@ -31,9 +34,24 @@ class mt_elderly_homeowner_or_renter_credit_federal_refundable_credits(Variable)
         "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=47",
     )
 
-    # An actual-receipt input, like mt_elderly_homeowner_or_renter_credit_received.
+    # An actual-receipt amount, like mt_elderly_homeowner_or_renter_credit_received.
     # The refundable credits on this year's return, income_tax_refundable_credits,
     # are an entitlement paid in a later year, not a receipt during this one.
     # Reading last year's return instead would rerun the whole prior-year
     # federal tax computation for each record, and it reads 0 whenever the
     # inputs cover only one year.
+    #
+    # The recovery rebate credits are the exception. IRC 6428(f), 6428A(f)
+    # and 6428B(g) paid them in advance as Economic Impact Payments, by
+    # December 31, 2020 (CARES), January 15, 2021 (CAA) and December 31,
+    # 2021 (ARPA), so each year's credit was received in that year. The
+    # CAA credit is a 2020 credit whose advance could run to January 15,
+    # 2021; it is counted in 2020 with the CARES payment. The return's
+    # credit stands in for the advance payment; any amount reconciled on the
+    # return is paid the next year and is not separated here. The credit
+    # parameters are zero outside 2020 and 2021, so so is this default.
+    def formula(person, period, parameters):
+        # Gross household income sums this person-level amount over the
+        # household, so count each return's payments once, on its head.
+        head = person("is_tax_unit_head", period)
+        return head * person.tax_unit("recovery_rebate_credit", period)

@@ -16,7 +16,7 @@ household's other members. That bill does not make it eligible: its head or
 spouse must have occupied the home as an owner, renter, or lessee (MCA
 15-30-2338(1)(c)). By default a tax unit that pays rent or is billed property
 tax meets that test and one with neither does not; a tax unit marked as a
-lessee here meets it through the qualifying-occupancy input. The model pays
+lessee here meets it through the unbilled-occupancy input. The model pays
 the tax unit whose credit is largest.
 
 A reference written here from the schedule's lines is compared with the
@@ -63,7 +63,7 @@ from policyengine_us.system import system
 YEAR = 2024
 TOLERANCE = 0.01
 P = system.parameters(YEAR).gov.states.mt.tax.income.credits.elderly_homeowner_or_renter
-OCCUPANCY = "mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months"
+LESSEE_MONTHS = "mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months"
 
 
 def occupies(unit):
@@ -84,13 +84,10 @@ def build_situation(households):
     """Each household is a list of tax units; each tax unit is a dict with
     "adults" (a list of dicts with age, pension, interest and social
     security) and the head's property tax and rent. Every household is built
-    twice: as given, and with its tax units in reverse order. When any tax
-    unit is marked as a lessee, every adult's qualifying occupancy is an
-    input: an input for some people gives the others its default, not its
-    formula."""
-    any_lessee = any(
-        unit.get("lessee", False) for units in households for unit in units
-    )
+    twice: as given, and with its tax units in reverse order. A tax unit
+    marked as a lessee records 12 unbilled occupancy months for its adults;
+    every other adult's occupancy follows the model's own rent and property
+    tax rule."""
     people, tax_units, marital_units, spm_units, families, situation_households = (
         {},
         {},
@@ -125,10 +122,9 @@ def build_situation(households):
                 head = unit_members[0]
                 people[head]["real_estate_taxes"] = {YEAR: unit["property_tax"]}
                 people[head]["rent"] = {YEAR: unit["rent"]}
-                if any_lessee:
-                    months = 12 if occupies(unit) else 0
+                if unit.get("lessee", False):
                     for person in unit_members:
-                        people[person][OCCUPANCY] = {YEAR: months}
+                        people[person][LESSEE_MONTHS] = {YEAR: 12}
                 tax_units[unit_key] = {"members": unit_members}
                 marital_units[unit_key] = {"members": unit_members}
                 members += unit_members

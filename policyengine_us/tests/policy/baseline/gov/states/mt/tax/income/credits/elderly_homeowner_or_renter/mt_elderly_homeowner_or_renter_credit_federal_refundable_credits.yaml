@@ -72,7 +72,7 @@
     # members. The son received a 632 federal EITC refund during 2024.
     mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 632]
 
-- name: Case 4, the 2021 Economic Impact Payment received in 2021 counts.
+- name: Case 4, the 2021 Economic Impact Payment received in 2021 counts by default.
   period: 2021
   absolute_error_margin: 0.01
   input:
@@ -80,7 +80,6 @@
       person1:
         age: 63
         taxable_pension_income: 20_000
-        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 1_400
     tax_units:
       tax_unit:
         members: [person1]
@@ -91,9 +90,98 @@
   output:
     # 2021 Elderly Homeowner/Renter Credit Schedule instructions, line 7:
     # "Refundable credits include the federal and Montana Earned Income Tax
-    # Credit, the federal Child Tax Credits, Economic Impact Payments". The
-    # third-round payment of 1_400 was received in 2021: 20_000 + 1_400.
+    # Credit, the federal Child Tax Credits, Economic Impact Payments". IRC
+    # 6428B(g) advanced the third-round payment during 2021: 1_400 for one
+    # adult with AGI 20_000, under the 75_000 single threshold. Gross
+    # household income is 20_000 + 1_400.
+    mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 1_400
     mt_elderly_homeowner_or_renter_credit_gross_household_income: 21_400
+
+- name: Case 4a, the 2020 Economic Impact Payments received in 2020 count by default.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # IRC 6428(f) and 6428A(f) advanced the 2020 credits: 1_200 (CARES) and
+    # 600 (CAA) for one adult with AGI 20_000, under the 75_000 single
+    # threshold. Gross household income is 20_000 + 1_800.
+    mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 1_800
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 21_800
+
+- name: Case 4b, a joint return's 2020 payments are counted once, on the head.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 30_000
+      person2:
+        age: 68
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Two adults, AGI 30_000 under the 150_000 joint threshold: 1_200 x 2 +
+    # 600 x 2 = 3_600, on the head. Each person's share of gross household
+    # income: the head 30_000 + 3_600 = 33_600, the spouse 0.
+    mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: [3_600, 0]
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [33_600, 0]
+
+- name: Case 4c, a supplied receipt replaces the 2021 default.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 63
+        taxable_pension_income: 20_000
+        # A claimant who received no payment during 2021.
+        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 20_000
+
+- name: Case 4d, no default receipt in 2022, when no payment was made.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 63
+        taxable_pension_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 0
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 20_000
 
 - name: Case 5, zero by default outside Montana.
   period: 2024

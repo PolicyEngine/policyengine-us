@@ -8,7 +8,9 @@ refundable tax credits received", and the 2024 Schedule 2EC line 8 combines
 claimed on a return are paid after its year ends, so the model takes the
 federal refundable credits each person received during the year as an input
 (mt_elderly_homeowner_or_renter_credit_federal_refundable_credits), not the
-current return's entitlement. These tests check that input for households of
+current return's entitlement; its default counts only the 2020 and 2021
+Economic Impact Payments, which are zero in 2024. These tests check that
+input for households of
 a claimant aged 62 or older and a younger member who files their own return
 with up to two children, so that the member's return has a federal EITC and
 a refundable child tax credit.

@@ -8,9 +8,13 @@ class mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months(Variable
     documentation = (
         "Months of the year, from 0 to 12, this person occupied one or more "
         "Montana dwellings as an owner, renter, or lessee. Another household "
-        "member's property tax bill does not establish that status. Defaults "
-        "to 12 for the head and spouse of a tax unit that pays rent or is "
-        "billed property tax, and to 0 otherwise."
+        "member's property tax bill does not establish that status. 12 for "
+        "the head and spouse of a tax unit that pays rent or is billed "
+        "property tax; otherwise the months recorded in "
+        "mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months, "
+        "which defaults to 0. Record a rent-free lessee or owner there, not "
+        "here: an input to this variable for one person sets everyone "
+        "else's months to 0."
     )
     unit = "month"
     definition_period = YEAR
@@ -35,12 +39,19 @@ class mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months(Variable
         # A tax unit with neither shows no such status: the household's bill
         # in another member's name can count as rent only for a claimant
         # who is otherwise eligible (ARM 42.4.302(2)(b)), so it cannot
-        # establish the status here. Supply this input for an occupant who
-        # holds the home as a lessee or owner without either amount.
+        # establish the status here. An occupant who holds the home as a
+        # lessee or owner without either amount is recorded through a
+        # separate input, so recording one person leaves everyone else's
+        # months to follow their own rent and bill.
         rent = add(person.tax_unit, period, ["rent"])
         property_tax = person.tax_unit(
             "mt_elderly_homeowner_or_renter_credit_property_tax_billed", period
         )
         documented = (rent > 0) | (property_tax > 0)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        return where(head_or_spouse & documented, MONTHS_IN_YEAR, 0)
+        documented_months = where(head_or_spouse & documented, MONTHS_IN_YEAR, 0)
+        unbilled_months = person(
+            "mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months",
+            period,
+        )
+        return min_(max_(documented_months, unbilled_months), MONTHS_IN_YEAR)
