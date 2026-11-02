@@ -233,3 +233,102 @@
         state_code: MN
   output:
     mn_k12_education_subtraction: 0
+
+# Without a grade input, the grade at the end of the tax year is imputed from
+# age as is_in_k12_school does (grade = age - 5), so a child aged 12 or older
+# is in grades 7 to 12.
+- name: A tax-unit total with no grade input caps by imputed grade
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+      younger:
+        age: 9
+        is_in_k12_school: true
+      older:
+        age: 15
+        is_in_k12_school: true
+    tax_units:
+      tax_unit:
+        members: [parent, younger, older]
+        k12_tuition_and_fees: 5_000
+    households:
+      household:
+        members: [parent, younger, older]
+        state_code: MN
+  output:
+    # Age 9 is grade 4 and age 15 is grade 10:
+    # min(5,000, 1,625 + 2,500) = 4,125.
+    mn_k12_education_subtraction: 4_125
+
+- name: Age 12 is the first age imputed to grades 7 to 12
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+      younger:
+        age: 11
+        is_in_k12_school: true
+        mn_k12_education_subtraction_qualifying_expenses_person: 2_000
+      older:
+        age: 12
+        is_in_k12_school: true
+        mn_k12_education_subtraction_qualifying_expenses_person: 2_000
+    tax_units:
+      tax_unit:
+        members: [parent, younger, older]
+    households:
+      household:
+        members: [parent, younger, older]
+        state_code: MN
+  output:
+    # Age 11 is grade 6 and age 12 is grade 7:
+    # min(2,000, 1,625) + min(2,000, 2,500) = 1,625 + 2,000 = 3,625.
+    mn_k12_education_subtraction: 3_625
+
+- name: A grade input overrides the age imputation
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+      child:
+        age: 15
+        is_in_k12_school: true
+        mn_k12_education_subtraction_qualifying_expenses_person: 2_000
+        mn_k12_education_subtraction_higher_cap_eligible: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
+  output:
+    # min(2,000, 1,625) = 1,625.
+    mn_k12_education_subtraction: 1_625
+
+- name: A K-12 student who is not a dependent is not a qualifying child
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+      child:
+        age: 16
+        is_in_k12_school: true
+        is_tax_unit_dependent: false
+        mn_k12_education_subtraction_qualifying_expenses_person: 1_000
+        mn_k12_education_subtraction_higher_cap_eligible: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        k12_tuition_and_fees: 1_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
+  output:
+    mn_k12_education_subtraction: 0

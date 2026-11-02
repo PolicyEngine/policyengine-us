@@ -333,6 +333,7 @@
         members: [person1]
         state_code: MN
   output:
-    # Minn. Stat. 256D.44 subd. 2 and 3(a): $1,055, not the $755.33
-    # living-with-others standard.
+    # Subd. 2 places the person in the subd. 3(a) individual living-alone
+    # standard; CM 0020.21 (01/2026) publishes it as $1,055, not the
+    # $755.33 living-with-others standard.
     mn_msa_assistance_standard: 1_055

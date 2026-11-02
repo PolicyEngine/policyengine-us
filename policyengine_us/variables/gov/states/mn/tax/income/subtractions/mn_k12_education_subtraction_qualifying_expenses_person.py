@@ -8,7 +8,10 @@ class mn_k12_education_subtraction_qualifying_expenses_person(Variable):
     documentation = (
         "Expenses for this qualifying child that otherwise qualify for the "
         "Minnesota K-12 Education Subtraction, after excluding expenses used "
-        "for the K-12 Education Credit."
+        "for the K-12 Education Credit. Once any qualifying child in the tax "
+        "unit has a positive record, the subtraction uses only these records "
+        "and ignores the tax unit's k12_tuition_and_fees, so the records must "
+        "then cover every child."
     )
     unit = USD
     definition_period = YEAR
