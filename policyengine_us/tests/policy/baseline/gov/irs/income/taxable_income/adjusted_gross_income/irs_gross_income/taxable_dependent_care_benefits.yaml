@@ -1,0 +1,99 @@
+# Employer dependent care benefits (W-2 box 10, Form 2441 line 12) are left
+# out of box 1 wages and of FICA and FUTA wages (IRC 129(a)(1), 3121(a)(18),
+# 3306(b)(13)). The part above the filer's own IRC 129 exclusion is taxable
+# (Form 2441 line 26, Form 1040 line 1e).
+
+- name: Benefits within the exclusion leave income tax and FICA wages, 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 60_000
+        dependent_care_employer_benefits: 5_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # $60,000 - $5,000 = $55,000.
+    irs_employment_income: [55_000, 0]
+    payroll_tax_gross_wages: [55_000, 0]
+    dependent_care_assistance_exclusion: 5_000
+    taxable_dependent_care_benefits: [0, 0]
+    adjusted_gross_income: 55_000
+    # 6.2% and 1.45% of $55,000.
+    employee_social_security_tax: [3_410, 0]
+    employee_medicare_tax: [797.5, 0]
+
+- name: Separate filer's benefits above the $2,500 cap return to gross income, 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 60_000
+        dependent_care_employer_benefits: 5_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    irs_employment_income: [55_000, 0]
+    # FICA follows the employer's exclusion, not the filer's MFS cap.
+    payroll_tax_gross_wages: [55_000, 0]
+    # min($5,000, $2,500 MFS cap, earnings) = $2,500.
+    dependent_care_assistance_exclusion: 2_500
+    taxable_dependent_care_benefits: [2_500, 0]
+    # $55,000 + $2,500.
+    adjusted_gross_income: 57_500
+
+- name: Joint return splits the taxable part by each spouse's benefits, 2024
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 80_000
+        dependent_care_employer_benefits: 4_000
+      spouse:
+        age: 40
+        employment_income: 3_000
+        dependent_care_employer_benefits: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # Benefits $6,000; exclusion min($6,000, $5,000, lesser earnings $3,000)
+    # = $3,000 on main's earned income measure; taxable $3,000, split 4:2.
+    dependent_care_assistance_exclusion: 3_000
+    taxable_dependent_care_benefits: [2_000, 1_000]
+    irs_employment_income: [76_000, 1_000]
+    # Gross income: $77,000 of wages plus $3,000 taxable benefits.
+    adjusted_gross_income: 80_000
+
+- name: No benefits leaves wages unchanged
+  period: 2025
+  input:
+    employment_income: 30_000
+  output:
+    irs_employment_income: 30_000
+    payroll_tax_gross_wages: 30_000
+    taxable_dependent_care_benefits: 0
