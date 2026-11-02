@@ -19,8 +19,8 @@ class wv_lieap(Variable):
         p = parameters(period).gov.states.wv.dhhr.lieap.payment
         size = spm_unit("wv_lieap_household_size", period)
         income = spm_unit("wv_lieap_countable_income", period) / MONTHS_IN_YEAR
-        # Approved convention: use the printed upper bounds continuously,
-        # including cents, rather than the overlapping integer lower bounds.
+        # Use the printed upper bounds continuously, including cents: the printed
+        # integer lower bounds overlap and leave cent gaps.
         band = p.income_band.calc(income, right=True)
         # Exact compression of every occupied published cell, not extrapolation.
         # Income eligibility confines sizes 1-20 to occupied table cells.

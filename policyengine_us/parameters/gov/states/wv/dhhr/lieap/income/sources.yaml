@@ -1,11 +1,20 @@
-description: West Virginia counts these represented recurring income sources, in addition to net business and estate income, under the Low Income Energy Assistance Program.
+description: West Virginia counts these represented recurring income sources under the Low Income Energy Assistance Program.
 values:
   2025-10-01:
     - employment_income
+    # The source deducts 20% from gross receipts. Existing inputs are already net;
+    # using them without another deduction is an explicit modeling approximation.
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+    - estate_income
     - total_unemployment_compensation
     - strike_benefits
     - pension_income
-    - military_retirement_pay
+    - military_retirement_income
+    # Railroad retirement is paid by the Railroad Retirement Board, not SSA.
+    - railroad_benefits
     - retirement_distributions
     - survivor_benefits
     - general_assistance
@@ -19,11 +28,15 @@ values:
     - workers_compensation
     - disability_benefits
     - financial_assistance
+    # The only input able to carry contract, mineral-rights, jury-duty or settlement
+    # receipts, which the manual's all-source rule counts.
+    - miscellaneous_income
 # All members' income counts, regardless of age or immigration qualification.
 # Take-up-gated TANF is counted separately once at the household level.
+# Military retirement includes Survivor Benefit Plan annuities.
 # RSDI, SSI and nonrecurring lump sums are excluded. Aggregate annual receipts
 # are treated as recurring; VA Aid and Attendance cannot be separated from
-# veterans_benefits. These input limitations are documented in the README.
+# veterans_benefits.
 metadata:
   unit: list
   period: year

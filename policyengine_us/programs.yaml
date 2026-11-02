@@ -808,7 +808,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AL, DC, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX
+    coverage: AL, DC, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX, WV
     state_implementations:
       - state: AL
         status: partial
@@ -962,11 +962,12 @@ programs:
         notes: Models the 150% FPG income limit, the alternative 60% SMI limit from the FY2024 state plan (applied through 2024), benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
       - state: WV
         status: partial
-        name: West Virginia LIEAP modeled regular heating
-        full_name: West Virginia Low Income Energy Assistance Program modeled regular heating
+        name: West Virginia LIEAP
+        full_name: West Virginia Low Income Energy Assistance Program
         variable: wv_lieap
         parameter_prefix: gov.states.wv.dhhr.lieap
-        notes: "Modeled FY2026-FY2027 regular heating payments for one through twenty qualified members. The operational manual's inclusive income ceiling applies without an unconditional SNAP, TANF or SSI bypass; RSDI and SSI income remain excluded. Published upper payment-band bounds are used continuously without observed-income rounding under the user-approved convention; other printed bounds remain literal. Exact grid compression and fuel multipliers reproduce occupied table amounts with half-up cent rounding. Shared heating-cost facts represent responsibility, including explicit known-obligation overrides; no blanket subsidy exclusion or actual-bill cap. Designated rent charges, dwelling/alternate-fuel approval, billholder and prior-assistance facts remain partly unobserved. Above twenty members and unsupported fuels return an unmodeled zero, not a definitive legal denial. Annual flows approximate application-month income and aggregate inputs cannot separate all excluded receipts. No fully verified year; earlier backfills are unverified historical estimates. Crisis, cooling, weatherization, equipment and the separate utility discount remain outside scope."
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular heating payments for households of one to twenty qualified members. Crisis, cooling, weatherization, equipment and the utility discount are out of scope.
 
   # --- SSA programs ---
   - id: ssi

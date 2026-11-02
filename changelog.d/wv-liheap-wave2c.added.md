@@ -1,1 +1,1 @@
-Add West Virginia modeled regular heating LIEAP payments for one through twenty qualified members, with source-specific income handling, the operational income ceiling, approved continuous published upper bands and half-up cent rounding. Reuse existing heating-responsibility facts; larger households, unsupported fuels and administrative housing details remain partial coverage.
+Add West Virginia LIEAP regular heating payments for FY2026 and FY2027 for one through twenty qualified members, with the manual's income rules, income ceiling and payment chart.

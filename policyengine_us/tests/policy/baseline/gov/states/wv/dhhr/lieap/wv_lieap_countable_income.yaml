@@ -51,29 +51,17 @@
         members:
           - person1
           - person2
-        heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         wv_works: 0
-        snap: 0
       spm_unit2:
         members:
           - person3
           - person4
-        heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         wv_works: 0
-        snap: 0
       spm_unit3:
         members:
           - person5
           - person6
-        heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         wv_works: 0
-        snap: 0
     households:
       household1:
         members:
@@ -130,11 +118,7 @@
       spm_unit1:
         members:
           - person1
-        heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         wv_works: 0
-        snap: 0
     households:
       household1:
         members:
@@ -179,11 +163,7 @@
       spm_unit1:
         members:
           - person1
-        heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         wv_works: 0
-        snap: 0
     households:
       household1:
         members:
@@ -221,9 +201,6 @@
         members:
           - person1
           - person2
-        heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         wv_works:
           2026-01: 100
           2026-02: 200
@@ -237,13 +214,9 @@
           2026-10: 0
           2026-11: 0
           2026-12: 0
-        snap: 0
       spm_unit2:
         members:
           - person3
-        heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         wv_works:
           2026-01: 25
           2026-02: 25
@@ -257,7 +230,6 @@
           2026-10: 25
           2026-11: 25
           2026-12: 25
-        snap: 0
     households:
       household1:
         members:
@@ -274,7 +246,7 @@
       - 350
 
 - name: Case 5, existing net businesses are not discounted again and losses do not offset earnings.
-  # Authorized net-business approximation: do not apply the manual gross-receipts 20% deduction twice.
+  # Net-business approximation: do not apply the manual gross-receipts 20% deduction twice.
   # First unit sums 1_000 + 2_000 + 3_000 + 4_000 = 10_000.
   # Second counts wages 10_000 + positive business 2_000 + 3_000 = 15_000.
   # Negative business streams contribute zero; the all-loss unit has zero income.
@@ -311,27 +283,15 @@
       spm_unit1:
         members:
           - person1
-        heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         wv_works: 0
-        snap: 0
       spm_unit2:
         members:
           - person2
-        heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         wv_works: 0
-        snap: 0
       spm_unit3:
         members:
           - person3
-        heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         wv_works: 0
-        snap: 0
     households:
       household1:
         members:
@@ -371,9 +331,6 @@
       spm_unit1:
         members:
           - person1
-        heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         wv_works: 0
         snap: 6000
     households:
@@ -405,11 +362,7 @@
       spm_unit1:
         members:
           - person1
-        heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         wv_works: 0
-        snap: 0
     households:
       household1:
         members:
@@ -452,27 +405,15 @@
         members:
           - person1
           - person2
-        heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         wv_works: 0
-        snap: 0
       spm_unit2:
         members:
           - person3
-        heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         wv_works: 0
-        snap: 0
       spm_unit3:
         members:
           - person4
-        heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         wv_works: 0
-        snap: 0
     households:
       household1:
         members:
@@ -523,9 +464,6 @@
         members:
           - person1
           - person2
-        heating_type: NATURAL_GAS
-        gas_expense: 1200
-        pre_subsidy_electricity_expense: 0
         wv_works:
           2027-01: 100
           2027-02: 100
@@ -539,7 +477,6 @@
           2027-10: 100
           2027-11: 100
           2027-12: 100
-        snap: 0
     households:
       household1:
         members:
@@ -573,11 +510,7 @@
     spm_units:
       spm_unit1:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        pre_subsidy_electricity_expense: 0
         wv_works: 0
-        snap: 0
     households:
       household1:
         members: [person1, person2]
@@ -588,7 +521,7 @@
 # Military pay is separate from pension_income. Rental losses cannot erase pensions or a different member's positive rent.
 # Expected [60_000, 30_000, 12_000 + 1_000] are supported countable-income outputs only.
 - name: Case 11, military retirement and positive receipts survive rental losses.
-  period: 2_026
+  period: 2026
   absolute_error_margin: 0.01
   input:
     people:
@@ -622,27 +555,15 @@
       spm_unit1:
         members:
         - person1_1
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        pre_subsidy_electricity_expense: 0
-        snap: 0
         wv_works: 0
       spm_unit2:
         members:
         - person2_1
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        pre_subsidy_electricity_expense: 0
-        snap: 0
         wv_works: 0
       spm_unit3:
         members:
         - person3_1
         - person3_2
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        pre_subsidy_electricity_expense: 0
-        snap: 0
         wv_works: 0
     tax_units:
       tax_unit1:
@@ -678,7 +599,7 @@
 # Reported zero falls back to modeled UI; nonzero reported values override it.
 # Negative reported UI is zero for LIEAP, retaining the 12_000 wages.
 - name: Case 12, shared unemployment receipts retain overrides and floor negative amounts.
-  period: 2_026
+  period: 2026
   absolute_error_margin: 0.01
   input:
     people:
@@ -710,26 +631,14 @@
       spm_unit1:
         members:
         - person1_1
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        pre_subsidy_electricity_expense: 0
-        snap: 0
         wv_works: 0
       spm_unit2:
         members:
         - person2_1
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        pre_subsidy_electricity_expense: 0
-        snap: 0
         wv_works: 0
       spm_unit3:
         members:
         - person3_1
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        pre_subsidy_electricity_expense: 0
-        snap: 0
         wv_works: 0
     tax_units:
       tax_unit1:
@@ -767,7 +676,7 @@
 # Component receipt control: the supplied annual WV WORKS 6_000 represents 500/month.
 # Generic TANF annualizes once and suppresses the benefit for the nonparticipant.
 - name: Case 13, monthly TANF receipt counts once only for participants.
-  period: 2_026
+  period: 2026
   absolute_error_margin: 0.01
   input:
     people:
@@ -798,20 +707,12 @@
         members:
         - person1_1
         - person1_2
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        pre_subsidy_electricity_expense: 0
-        snap: 0
         wv_works: 6_000
         takes_up_tanf_if_eligible: true
       spm_unit2:
         members:
         - person2_1
         - person2_2
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        pre_subsidy_electricity_expense: 0
-        snap: 0
         wv_works: 6_000
         takes_up_tanf_if_eligible: false
     tax_units:
@@ -844,10 +745,9 @@
 
 # No WV WORKS or TANF entitlement override. A zero-income parent and child have a
 # modeled size-two payment standard of 480/month, hence 5_760 annually.
-# The eligible nonparticipant receives zero. This tests income receipt handling,
-# with no assertion about an unimplemented final LIEAP eligibility or award.
+# The eligible nonparticipant receives zero. This tests income receipt handling.
 - name: Case 14, actual modeled WV WORKS flows into income only when received.
-  period: 2_027
+  period: 2027
   absolute_error_margin: 0.01
   input:
     people:
@@ -882,18 +782,12 @@
         members:
         - person1_1
         - person1_2
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        pre_subsidy_electricity_expense: 0
         snap: 0
         takes_up_tanf_if_eligible: true
       spm_unit2:
         members:
         - person2_1
         - person2_2
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        pre_subsidy_electricity_expense: 0
         snap: 0
         takes_up_tanf_if_eligible: false
     tax_units:
@@ -923,3 +817,51 @@
     wv_lieap_countable_income:
     - 5_760
     - 0
+
+# Manual 21.3.1.A.3 counts all sources; 21.3.1.A.5 excludes only SSA's RSDI and
+# SSI, so Railroad Retirement Board payments of 20,000 count and RSDI of 6,000
+# does not.
+- name: Case 15, railroad retirement counts although RSDI does not.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security_retirement: 6_000
+        railroad_benefits: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        wv_works: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    wv_lieap_countable_income: 20_000
+
+# Manual 21.3.1.A.3 counts all sources and prorates recurring receipts such as a
+# yearly mineral-rights check, so 3,000 of recurring miscellaneous income counts.
+- name: Case 16, recurring miscellaneous receipts count under the all-source rule.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        miscellaneous_income: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        wv_works: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    wv_lieap_countable_income: 3_000

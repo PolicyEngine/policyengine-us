@@ -18,15 +18,12 @@ class wv_lieap_countable_income(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.wv.dhhr.lieap.income
         person = spm_unit.members
-        # Existing net business inputs receive no second expense deduction;
-        # business and estate losses do not offset other income.
-        net_income = sum(
-            max_(add(person, period, [source]), 0) for source in p.nonnegative_sources
-        )
         # Floor each member/source before aggregation so losses cannot erase
         # another receipt. The operative manual counts minor and nonqualified members' income,
         # TANF and general assistance. RSDI and SSI are expressly excluded.
         # Annual flows approximate recurring application-month receipts. Generic
-        # VA cannot identify excluded Aid and Attendance; see README limitations.
-        receipts = sum(max_(add(person, period, [source]), 0) for source in p.sources)
-        return spm_unit.sum(net_income + receipts) + max_(spm_unit("tanf", period), 0)
+        # VA cannot identify excluded Aid and Attendance.
+        income = 0
+        for source in p.sources:
+            income = income + max_(add(person, period, [source]), 0)
+        return spm_unit.sum(income) + spm_unit("tanf", period)

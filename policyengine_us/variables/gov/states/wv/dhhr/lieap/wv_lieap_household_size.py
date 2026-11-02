@@ -13,7 +13,9 @@ class wv_lieap_household_size(Variable):
         # PDF pages 1729,1734
         "https://bfa.wv.gov/media/40005/download?inline=#page=1729",
     )
-    # SPMUnit approximates the co-resident energy-sharing assistance group.
-    # Prior-season benefit recipients are excluded by policy, but that receipt
-    # history is unavailable. Nonqualified members' income remains countable.
+    # The manual treats everyone living in the home as one assistance group, whether
+    # or not they share heating costs. The SPM unit stands in for that group, so a
+    # household with more than one SPM unit is split. Anyone already paid as part of
+    # another group leaves the size and income, but that receipt history is
+    # unavailable. Nonqualified members' income remains countable.
     adds = ["is_citizen_or_legal_immigrant"]

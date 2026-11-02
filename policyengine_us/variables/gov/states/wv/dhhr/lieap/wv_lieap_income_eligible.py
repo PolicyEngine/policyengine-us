@@ -7,8 +7,12 @@ class wv_lieap_income_eligible(Variable):
     label = "West Virginia LIEAP income eligible"
     definition_period = YEAR
     defined_for = StateCode.WV
-    # PDF pages 1726,1745,1752
-    reference = "https://bfa.wv.gov/media/40005/download?inline=#page=1726"
+    reference = (
+        # PDF pages 1725,1749
+        "https://bfa.wv.gov/media/39948/download?inline=#page=1725",
+        # PDF pages 1726,1752
+        "https://bfa.wv.gov/media/40005/download?inline=#page=1726",
+    )
 
     def formula(spm_unit, period, parameters):
         size = spm_unit("wv_lieap_household_size", period)
