@@ -1,0 +1,113 @@
+# 12 x 1,836 = 22,032 for one and 12 x 2,489 = 29,868 for two.
+- name: Case 1, New York follows SSI's rule, so a spouse with no income leaves the applicant alone.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    medicaid_medically_needy_uses_couple_standard: [false, true]
+    medicaid_medically_needy_income_limit: [22_032, 29_868]
+
+
+# 12 x 650 = 7,800 for two.
+- name: Case 2, Massachusetts budgets a couple together.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    medicaid_medically_needy_uses_couple_standard: [true, true]
+    medicaid_medically_needy_income_limit: [7_800, 7_800]
+
+
+# 12 x 1,242 = 14,904 for two.
+- name: Case 3, Rhode Island keeps the couple limit when nothing is deemed.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    medicaid_medically_needy_uses_couple_standard: [true, true]
+    medicaid_medically_needy_income_limit: [14_904, 14_904]
+
+
+# N.J.A.C. 10:70-3.5(c)2: 12 x 434 = 5,208 for two.
+- name: Case 4, New Jersey keeps the couple limit when nothing is deemed.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    medicaid_medically_needy_uses_couple_standard: [true, true]
+    medicaid_medically_needy_income_limit: [5_208, 5_208]
+
+
+- name: Case 5, both spouses aged use the couple limit under SSI's rule.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+      person2:
+        is_tax_unit_spouse: true
+        age: 68
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    medicaid_medically_needy_uses_couple_standard: [true, true]
+    medicaid_medically_needy_income_limit: [29_868, 29_868]
+

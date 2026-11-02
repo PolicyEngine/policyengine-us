@@ -30,7 +30,11 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
         )
         # SSI financial responsibility rules (42 CFR 435.602): the unit is
         # the individual or the married couple, not the tax filing unit.
-        income = person.marital_unit.sum(personal_income)
+        income = where(
+            person("medicaid_optional_senior_or_disabled_uses_couple_standard", period),
+            person.marital_unit.sum(personal_income),
+            personal_income,
+        )
         income_limit = person(
             "medicaid_optional_senior_or_disabled_income_limit", period
         )

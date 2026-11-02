@@ -940,3 +940,111 @@
     # 2027 still reads the 195,000 couple limit; 31,000 first applies in 2028.
     is_in_medicaid_medically_needy_category: [true, true]
     is_medically_needy_for_medicaid: [true, true]
+
+# New York's limit is $1,836 for one person and $2,489 for two. Countable income is
+# 28,000 - 240 = 27,760. After 5,000 of expenses, 22,760 is above 12 x 1,836 = 22,032
+# and within 12 x 2,489 = 29,868.
+- name: Case 37, applicant with an ineligible spouse and nothing deemed uses the individual limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 28000
+        other_medical_expenses: 5000
+        takes_up_medicare_if_eligible: false
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    medicaid_medically_needy_income_limit: [22_032, 29_868]
+    is_medically_needy_for_medicaid: [false, false]
+
+
+# 42 CFR 435.831(d) deducts the expenses of a financially responsible relative:
+# 27,760 - 5,000 - 1,000 = 21,760, within 22,032.
+- name: Case 38, the expenses of a spouse whose income is not counted still reduce income.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 28000
+        other_medical_expenses: 5000
+        takes_up_medicare_if_eligible: false
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+        other_medical_expenses: 1000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    is_medically_needy_for_medicaid: [true, false]
+
+# 130 CMR 520.002(A)(1). Applicant: 20,000 - 240 = 19,760. Spouse: (4,800 - 780) / 2 = 2,010.
+# 21,770 - 14,000 = 7,770 is within 12 x 650 = 7,800.
+- name: Case 39, Massachusetts counts spouse wages below SSI's deeming threshold.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 20000
+        other_medical_expenses: 14000
+        takes_up_medicare_if_eligible: false
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+        employment_income: 4800
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    is_ssi_spousal_deeming_applies: [false, false]
+    medicaid_medically_needy_income_from_spouse: [2_010, 0]
+    is_medically_needy_for_medicaid: [true, false]
+
+
+# 21,770 - 13,000 = 8,770 is above 7,800.
+- name: Case 40, Massachusetts applicant stays above the couple limit with less in expenses.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 20000
+        other_medical_expenses: 13000
+        takes_up_medicare_if_eligible: false
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+        employment_income: 4800
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    is_medically_needy_for_medicaid: [false, false]

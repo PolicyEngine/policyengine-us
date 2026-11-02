@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.medicaid.income._couple_standard import (
+    spouses_split_by_facility,
+)
 
 
 class is_medically_needy_for_medicaid(Variable):
@@ -54,8 +57,27 @@ class is_medically_needy_for_medicaid(Variable):
         parental_expense_share = where(
             eligible_child, parental_expenses / max_(eligible_children, 1), 0
         )
-        income = marital_unit.sum(
-            personal_income - medical_expenses - parental_expense_share
+        uses_couple_standard = person(
+            "medicaid_medically_needy_uses_couple_standard", period
+        )
+        # 42 CFR 435.831(d) also deducts a spouse's expenses when the spouse's
+        # income is not counted, unless a facility splits the couple.
+        expenses = where(
+            spouses_split_by_facility(person, period),
+            medical_expenses,
+            marital_unit.sum(medical_expenses),
+        )
+        unit_income = personal_income + person(
+            "medicaid_medically_needy_income_from_spouse", period
+        )
+        income = (
+            where(uses_couple_standard, marital_unit.sum(unit_income), unit_income)
+            - expenses
+            - where(
+                uses_couple_standard,
+                marital_unit.sum(parental_expense_share),
+                parental_expense_share,
+            )
         )
         assets = marital_unit.sum(personal_assets)
         ma = parameters(period).gov.hhs.medicaid

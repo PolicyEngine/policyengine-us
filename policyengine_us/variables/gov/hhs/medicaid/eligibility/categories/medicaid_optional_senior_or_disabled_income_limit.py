@@ -31,7 +31,9 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
         # Non-MAGI Medicaid follows the SSI financial responsibility rules
         # (42 CFR 435.602): the unit is the individual, or the married
         # couple living together, whatever their filing status.
-        is_couple = person.marital_unit.nb_persons() == 2
+        is_couple = person(
+            "medicaid_optional_senior_or_disabled_uses_couple_standard", period
+        )
         state = person.household("state_code_str", period)
         p = parameters(
             period

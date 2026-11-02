@@ -34,11 +34,18 @@ class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse(
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.disregard
         state = person.household("state_code_str", period)
 
-        # Missouri MHABD considers the gross income of a married couple
-        # living together (DSS Manual § 0805.015.05) rather than the SSI
-        # deeming methodology: the spouse's income counts without the
-        # FBR-differential threshold or ineligible-child allocations.
-        is_mo = state == "MO"
+        # Some states budget a married couple living together rather than
+        # following the SSI deeming methodology. Missouri MHABD considers the
+        # couple's gross income (DSS Manual § 0805.015.05): the spouse's income
+        # counts without the FBR-differential threshold or ineligible-child
+        # allocations.
+        budgets_together = (
+            parameters(period)
+            .gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.budgets_couple_together[
+                state
+            ]
+            .astype(bool)
+        )
         marital_unit = person.marital_unit
         ineligible_spouse = person("is_ssi_ineligible_spouse", period)
         spouse_gross_earned = (
@@ -49,10 +56,12 @@ class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse(
             marital_unit.sum(ineligible_spouse * individual_unearned)
             - ineligible_spouse * individual_unearned
         )
-        spouse_earned = where(is_mo, spouse_gross_earned, spouse_earned)
-        spouse_unearned = where(is_mo, spouse_gross_unearned, spouse_unearned)
+        spouse_earned = where(budgets_together, spouse_gross_earned, spouse_earned)
+        spouse_unearned = where(
+            budgets_together, spouse_gross_unearned, spouse_unearned
+        )
         has_ineligible_spouse = marital_unit.sum(ineligible_spouse) > 0
-        deeming_applies = deeming_applies | (is_mo & has_ineligible_spouse)
+        deeming_applies = deeming_applies | (budgets_together & has_ineligible_spouse)
 
         alone_countable = _apply_medicaid_optional_senior_or_disabled_exclusions(
             individual_earned,

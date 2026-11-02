@@ -1459,6 +1459,24 @@ candidates:
   note: 'PE-US follows the statute: the 2026 allowance is $1,153.31, from a $3,252.14 couple standard, twice the
     $1,626.07 individual rate (allowance/out_of_home_care.yaml), and the file''s comment lists the sources on each
     side. Verify the per-recipient calculation and document the inconsistent 2026 summary tables.'
+- id: us-co:abd-spouse-income-ssi-defined-group
+  program: medicaid
+  years:
+    from: 2026
+    to: 2026
+    type: program
+    note: program year as the program defines it
+  question: "Does Colorado's SSI-related group count a non-applying spouse's income in every case, as its income rule says, or follow SSI's deeming threshold, because the group is defined by SSI eligibility?"
+  sources:
+  - kind: regulation
+    citation: 10 CCR 2505-10 8.100.7.C.2
+    url: https://www.law.cornell.edu/regulations/colorado/10-CCR-2505-10-8.100_v2
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/hhs/medicaid/income/_couple_standard.py
+  state: ruled
+  note: "Counts both spouses' income under the express rule. Ruled by the project lead, 2026-11-02."
 - id: us-co:claim-of-right-subtraction-practice
   program: income-tax
   years:
@@ -1656,6 +1674,27 @@ candidates:
   state: ruled
   note: 'Ruled in October 2026 to follow the statute; verify the applicable regulation version. Code not yet on
     main: co premium assistance formula, aca_ptc_slcsp.'
+- id: us-ct:abd-spouse-income-hearing-decision
+  program: medicaid
+  years:
+    from: 2026
+    to: 2026
+    type: program
+    note: program year as the program defines it
+  question: "Does Connecticut count a spouse's income as its Uniform Policy Manual says, or apply SSI's rule, as a 2023 hearing decision on a Medicare Savings Program case did?"
+  sources:
+  - kind: manual
+    citation: UPM 5020.75 and 5515.05
+    url: https://portal.ct.gov/-/media/Departments-and-Agencies/DSS/UPMs/UPM5---Treatment-of-Income-Income-Eligibility/5020_75.doc
+  - kind: agency-practice
+    citation: DSS hearing decision, Request 203652
+    url: https://portal.ct.gov/-/media/departments-and-agencies/dss/fair-hearings/other-medicaid-eligibility/other-medicaid-eligibility-2023/omel_2023_203652.pdf#page=6
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/hhs/medicaid/income/_couple_standard.py
+  state: ruled
+  note: "Follows the manual: Connecticut is a 209(b) state. Ruled by the project lead, 2026-11-02."
 - id: us-dc:eitc-no-tin-child-schedule-before-2023
   program: income-tax
   years:
@@ -3513,6 +3552,24 @@ candidates:
     prs: []
   state: unreviewed
   note: PE-US follows the regulation from October 1, 2023; verify contemporaneous source versions.
+- id: us-ma:abd-couple-income-standard
+  program: medicaid
+  years:
+    from: 2026
+    to: 2026
+    type: program
+    note: program year as the program defines it
+  question: "Does Massachusetts test a couple's income against the couple standard? 130 CMR 520.002(A)(1) says 'an income standard', and only 520.003(A)(2) names the couple limit, for assets."
+  sources:
+  - kind: regulation
+    citation: 130 CMR 520.002(A)(1), 520.003(A)(2), 519.005(A)(1)
+    url: https://www.law.cornell.edu/regulations/massachusetts/130-CMR-519-005
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/hhs/medicaid/income/_couple_standard.py
+  state: ruled
+  note: "Uses the couple standard for income. Ruled by the project lead, 2026-11-02."
 - id: us-ma:circuit-breaker-snap-income
   program: income-tax
   years:
@@ -4017,6 +4074,27 @@ candidates:
   note: 'PE-US follows COMAR: strike_benefits count, assumed not employee-funded, and the documentation records
     that manual Attachment B excludes funds without employee contributions (income/sources/unearned.yaml, md_meap_countable_income.py).
     Verify the conflicting manual provision and applicable versions.'
+- id: us-md:medically-needy-non-abd-spouse-unit
+  program: medicaid
+  years:
+    from: 2026
+    to: 2026
+    type: program
+    note: program year as the program defines it
+  question: "Is a Maryland medically needy applicant with a spouse who is not aged, blind or disabled a unit of two, as the manual says, when COMAR 10.09.24.06 names only an aged, blind or disabled spouse as a unit member?"
+  sources:
+  - kind: regulation
+    citation: COMAR 10.09.24.06
+    url: https://www.law.cornell.edu/regulations/maryland/COMAR-10-09-24-06
+  - kind: manual
+    citation: Medical Assistance Manual Section 600
+    url: https://health.maryland.gov/mmcp/Medicaid%20Manual/Section%20600-%20The%20Assistance%20Unit.pdf#page=8
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/hhs/medicaid/income/_couple_standard.py
+  state: ruled
+  note: "Uses a unit of two: COMAR counts the income and does not name the standard. Ruled by the project lead, 2026-11-02."
 - id: us-md:pension-exclusion-maximum
   program: income-tax
   years:
@@ -5086,6 +5164,27 @@ candidates:
   state: unreviewed
   note: PE-US follows the manual from October 1, 2025; verify the checklist's meaning and the manual's administrative-code
     status.
+- id: us-mt:abd-spouse-deeming-threshold
+  program: medicaid
+  years:
+    from: 2026
+    to: 2026
+    type: program
+    note: program year as the program defines it
+  question: "Does Montana apply SSI's deeming threshold, as ARM 37.82.903(2) and 37.82.1107(1)(b) adopt, or consider both spouses' income, as manual CMA 603-1 says?"
+  sources:
+  - kind: regulation
+    citation: ARM 37.82.903(2)
+    url: https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.82.903
+  - kind: manual
+    citation: CMA 603-1
+    url: https://dphhs.mt.gov/assets/hcsd/fmamanual/cma603.1.pdf#page=2
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/hhs/medicaid/income/_couple_standard.py
+  state: ruled
+  note: "Follows the regulation. Ruled by the project lead, 2026-11-02."
 - id: us-mt:elderly-credit-homestead-costs
   program: income-tax
   years:
@@ -5825,6 +5924,24 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify whether the still-listed ruling applies during these years despite its obsolete tax base.
+- id: us-ne:medically-needy-unit-size
+  program: medicaid
+  years:
+    from: 2026
+    to: 2026
+    type: program
+    note: program year as the program defines it
+  question: "Does Nebraska's medically needy program size the unit under 477 NAC 24, counting both spouses, or follow the general SSI methodology clause in 477 NAC 25-002.03(B)?"
+  sources:
+  - kind: regulation
+    citation: 477 NAC 25-002
+    url: https://www.law.cornell.edu/regulations/nebraska/477-Neb-Admin-Code-ch-25-SS-002
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/hhs/medicaid/income/_couple_standard.py
+  state: ruled
+  note: "Follows the specific unit-size rule. Ruled by the project lead, 2026-11-02."
 - id: us-nh:fanf-resource-limit-equality
   program: tanf
   years:
