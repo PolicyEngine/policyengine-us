@@ -1476,7 +1476,7 @@ candidates:
     code:
     - policyengine_us/variables/gov/hhs/medicaid/income/_couple_standard.py
   state: ruled
-  note: "Counts both spouses' income under the express rule. Ruled by the project lead, 2026-11-02."
+  note: "Counts both spouses' income under the express rule. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
 - id: us-co:claim-of-right-subtraction-practice
   program: income-tax
   years:
@@ -1694,7 +1694,7 @@ candidates:
     code:
     - policyengine_us/variables/gov/hhs/medicaid/income/_couple_standard.py
   state: ruled
-  note: "Follows the manual: Connecticut is a 209(b) state. Ruled by the project lead, 2026-11-02."
+  note: "Follows the manual: Connecticut is a 209(b) state. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
 - id: us-dc:eitc-no-tin-child-schedule-before-2023
   program: income-tax
   years:
@@ -3569,7 +3569,7 @@ candidates:
     code:
     - policyengine_us/variables/gov/hhs/medicaid/income/_couple_standard.py
   state: ruled
-  note: "Uses the couple standard for income. Ruled by the project lead, 2026-11-02."
+  note: "Uses the couple standard for income. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
 - id: us-ma:circuit-breaker-snap-income
   program: income-tax
   years:
@@ -4094,7 +4094,7 @@ candidates:
     code:
     - policyengine_us/variables/gov/hhs/medicaid/income/_couple_standard.py
   state: ruled
-  note: "Uses a unit of two: COMAR counts the income and does not name the standard. Ruled by the project lead, 2026-11-02."
+  note: "Uses a unit of two: COMAR counts the income and does not name the standard. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
 - id: us-md:pension-exclusion-maximum
   program: income-tax
   years:
@@ -5184,7 +5184,7 @@ candidates:
     code:
     - policyengine_us/variables/gov/hhs/medicaid/income/_couple_standard.py
   state: ruled
-  note: "Follows the regulation. Ruled by the project lead, 2026-11-02."
+  note: "Follows the regulation. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
 - id: us-mt:elderly-credit-homestead-costs
   program: income-tax
   years:
@@ -5941,7 +5941,7 @@ candidates:
     code:
     - policyengine_us/variables/gov/hhs/medicaid/income/_couple_standard.py
   state: ruled
-  note: "Follows the specific unit-size rule. Ruled by the project lead, 2026-11-02."
+  note: "Follows the specific unit-size rule. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
 - id: us-nh:fanf-resource-limit-equality
   program: tanf
   years:
