@@ -13,6 +13,7 @@ from functools import lru_cache
 from inspect import ismethod, signature
 
 from policyengine_core import periods as periods_
+from policyengine_core.parameters import Parameter, ParameterScale
 from policyengine_core.simulations import Simulation as CoreSimulation
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 from spm_calculator.errors import SPMInputError
@@ -639,17 +640,33 @@ def share_spm_policy(system):
     return policy
 
 
-def clone_spm_system(system, *, copy_receipts=True):
+class LentParameters:
+    """Stands in for a tree that core's system clone should not rebuild."""
+
+    def __init__(self, tree):
+        self.tree = tree
+
+    def clone(self):
+        return self.tree
+
+
+def clone_spm_system(system, *, copy_receipts=True, parameters=None):
     """Clone policy state without reconstructing partially defined reforms.
 
     Core's Variable.clone() calls the variable class with no baseline metadata,
     losing instance changes such as neutralization and inherited reform fields.
     Let core clone parameters/entities, then copy the actual variable state.
+
+    Pass ``parameters`` to give the clone that tree instead of a clone of
+    ``system``'s own.
     """
     policy = plain_policy_copy(system)
     policy.variables = {}
+    if parameters is not None:
+        policy.parameters = LentParameters(parameters)
     cloned = TaxBenefitSystem.clone(policy)
-    unmark_tree_shared(cloned.parameters)
+    if parameters is None:
+        unmark_tree_shared(cloned.parameters)
     # Core copies ``entities``, ``person_entity`` and ``group_entities``
     # separately, leaving two objects per group entity key; keep one, so a
     # rebind reaches every reader of that entity.
@@ -676,6 +693,76 @@ def clone_spm_system(system, *, copy_receipts=True):
     # policy, which is the defect this class exists to prevent.
     with_parameter_barrier(cloned)
     return cloned
+
+
+def copy_metadata(value):
+    """Copy the dictionaries in ``value``, the only part of it core writes to.
+
+    Its lists, and whatever they hold, stay shared. They are three quarters of
+    its memory.
+    """
+    if isinstance(value, dict):
+        return {key: copy_metadata(item) for key, item in value.items()}
+    return value
+
+
+def copy_parameter_nodes(node, parent=None):
+    """Copy a parameter tree, sharing only its dated entries and metadata lists.
+
+    Everything else matches a clone: each node, history, at-instant cache and
+    metadata dictionary outside those lists is the copy's own, so the copy builds
+    every view from its histories, and an update, interpolation or added child on
+    either tree leaves the other's numbers alone. Only a reform modifier assigns
+    an entry's value after core builds the entry, and it runs on a private tree
+    (see :class:`SharedParameterPolicy`). The 1.3 million entries are what a
+    clone spends most of its time rebuilding.
+    """
+    copied = object.__new__(type(node))
+    copied.__dict__.update(node.__dict__)
+    copied.metadata = copy_metadata(node.metadata)
+    if isinstance(node, Parameter):
+        copied.values_list = list(node.values_list)
+    elif isinstance(node, ParameterScale):
+        copied.brackets = [
+            copy_parameter_nodes(bracket, copied) for bracket in node.brackets
+        ]
+    else:
+        copied.children = {
+            name: copy_parameter_nodes(child, copied)
+            for name, child in node.children.items()
+        }
+        for name, child in copied.children.items():
+            setattr(copied, name, child)
+        copied._at_instant_cache = {}
+    # After the children, as in a clone, because each child sets an attribute of
+    # its own name: Medicaid's categories have a child named ``parent``.
+    copied.parent = parent
+    return copied
+
+
+def pin_spm_policy(system):
+    """Clone ``system`` for a pin to edit, rebuilding no dated values if it can.
+
+    A pin edits a few hundred of the tree's 143,000 nodes through
+    ``Parameter.update``, which never touches an entry it replaces. So the result
+    differs from a clone only in sharing what :func:`copy_parameter_nodes`
+    shares, which makes both trees count as shared: a reform of either system
+    takes a full clone before it writes. A system with no barrier cannot do that,
+    and marking a tree while a reform writes to it would detach the system from
+    that tree, so both of those get an ordinary clone. Assigning an entry's value
+    still reaches the other tree outside a reform method, as it reaches every
+    reader of any shared tree, and in a reform that builds this pin once its
+    barrier has fired.
+    """
+    if (
+        not isinstance(system, SharedParameterPolicy)
+        or system.detaching_shared_parameters
+    ):
+        return system.clone()
+    tree = mark_tree_shared(system.parameters)
+    return clone_spm_system(
+        system, parameters=mark_tree_shared(copy_parameter_nodes(tree))
+    )
 
 
 class SPMSimulationMixin:

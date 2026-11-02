@@ -65,6 +65,6 @@ class ssi_amount_if_eligible(Variable):
             base_amount,
         )
 
-        # 42 USC § 1382(e)(1)(A), 20 CFR § 416.414: Medical treatment
+        # 42 USC § 1382(e)(1)(B), 20 CFR § 416.414: Medical treatment
         # facility, $30/month per person.
         return where(is_medical_facility, p.medical_facility, base_amount)

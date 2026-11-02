@@ -1,0 +1,89 @@
+# Virginia EAP maximum countable income: monthly limit = floor(150% of the
+# prior-year HHS poverty guideline / 12) for sizes 1-20, plus a floored
+# additional-person increment ($687 for FFY2026) for each member over 20,
+# annualized x 12 (Complete EAP Manual B.6.a, Transmittal 25-1; EAP
+# Information Sheet 032-03-0661-26). Published FFY2026 monthly limits: 1
+# $1,956; 2 $2,643; 3 $3,331; 4 $4,018; 5 $4,706; 8 $6,768; 20 $15,018.
+
+- name: Case 1, FFY2026 published limits annualized for sizes 1 to 22, and zero outside Virginia.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [VA, VA, VA, VA, VA, VA, VA, VA, VA, MD]
+    va_eap_household_size: [1, 2, 3, 4, 5, 8, 20, 21, 22, 1]
+  output:
+    # Monthly 1,956 / 2,643 / 3,331 / 4,018 / 4,706 / 6,768 / 15,018;
+    # size 21 = 15,018 + 687 = 15,705; size 22 = 15,018 + 2 x 687 = 16,392.
+    va_eap_income_limit: [23_472, 31_716, 39_972, 48_216, 56_472, 81_216, 180_216, 188_460, 196_704, 0]
+
+- name: Case 2, household size of zero is clipped to the one-person limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    va_eap_household_size: 0
+  output:
+    # floor(15,650 x 1.5 / 12) = floor(1,956.25) = 1,956; x 12 = 23,472.
+    va_eap_income_limit: 23_472
+
+- name: Case 3, limit follows the computed size of a mixed-status household.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        employment_income: 26_000
+      child1:
+        age: 6
+      child2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+        tanf: 0
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: VA
+  output:
+    # Two qualified members: floor((15,650 + 5,500) x 1.5 / 12) = 2,643;
+    # x 12 = 31,716.
+    va_eap_household_size: 2
+    va_eap_income_limit: 31_716
+
+- name: Case 4, FFY2025 period uses the 2024 guideline (historical estimate, not checked against a FFY2025 table).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [VA, VA, VA, VA, VA, VA]
+    va_eap_household_size: [1, 2, 3, 4, 20, 21]
+  output:
+    # 2024 guideline 15,060 + 5,380 per person: monthly floor(x 1.5 / 12) =
+    # 1,882 / 2,555 / 3,227 / 3,900 / 14,660; size 21 adds
+    # floor(5,380 x 1.5 / 12) = 672 -> 15,332.
+    va_eap_income_limit: [22_584, 30_660, 38_724, 46_800, 175_920, 183_984]
+
+- name: Case 5, a poverty-guideline rate reform changes the derived limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.states.va.dss.eap.eligibility.fpg_rate: 2
+    state_code: VA
+    va_eap_household_size: 1
+  output:
+    # floor(15,650 x 2 / 12) = floor(2,608.33) = 2,608; x 12 = 31,296.
+    va_eap_income_limit: 31_296
+
+- name: Case 6, a guideline-year lag reform selects an earlier guideline.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.states.va.dss.eap.eligibility.fpg_year_lag: 2
+    state_code: VA
+    va_eap_household_size: 1
+  output:
+    # 2024 guideline: floor(15,060 x 1.5 / 12) = floor(1,882.50) = 1,882;
+    # x 12 = 22,584.
+    va_eap_income_limit: 22_584

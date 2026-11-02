@@ -1,0 +1,21 @@
+description: Alaska limits a household sharing its dwelling to this share of its heating points under the Heating Assistance Program.
+# 7 AAC 44.080(h) reduces a sharing household's points to its proportionate
+# share of the dwelling's home heating expenses, which include heat paid
+# through rent (7 AAC 44.900(11)). The heat portion of rent cannot be
+# measured, so manual 3002-1 A.5 fills the gap: each eligible household paying
+# heat through rent gets an equal share among the dwelling's eligible
+# households, at most this share, and households reporting heating bills split
+# the remainder in proportion to their bills. When no household reports a
+# bill, each household gets the equal share.
+values:
+  2026-10-01: 0.5
+
+metadata:
+  unit: /1
+  period: year
+  label: Alaska HAP maximum shared household share
+  reference:
+    - title: Alaska HAP Manual 3002-1 A.5, Housing Percent Share
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm
+    - title: 7 AAC 44.080(h) and 44.900(11)
+      href: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
