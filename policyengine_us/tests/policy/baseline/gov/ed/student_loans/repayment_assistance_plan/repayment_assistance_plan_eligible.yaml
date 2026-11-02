@@ -1,8 +1,9 @@
 # 20 U.S.C. 1087e(q)(1) and (d)(1)(F): the plan runs "beginning on July 1, 2026"
 # and excludes excepted (Parent PLUS) loans. 34 CFR 685.209(c)(6), (d)(4): a
-# Direct Loan borrower with eligible loans may repay under the plan. Only tax
-# unit heads and spouses are borrowers here (a tax dependent's unit AGI is the
-# parents' income).
+# Direct Loan borrower with eligible loans may repay under the plan. As a
+# modeling restriction, only tax unit heads and spouses are borrowers here (a
+# tax dependent's unit AGI is the parents' income); the law does not exclude
+# tax dependents (rulespec-us#1455 C17).
 
 - name: Case 1, head of tax unit with an eligible loan balance is eligible.
   period: 2027-01
@@ -48,7 +49,7 @@
   output:
     repayment_assistance_plan_eligible: false
 
-- name: Case 4, a tax dependent with a loan balance is not eligible.
+- name: Case 4, a tax dependent with a loan balance is not eligible (modeling restriction).
   period: 2027-01
   input:
     people:
@@ -85,3 +86,19 @@
         members: [person1, person2]
   output:
     repayment_assistance_plan_eligible: [true, true]
+
+- name: Case 6, a borrower with only FFEL loans is not eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_ffel_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # The plan repays only Direct Loans (685.209(c)(6), (d)(4); 20 U.S.C.
+    # 1087e(d)(1)(F), (q)(1)). FFEL loans count only in the spousal proration
+    # (685.209(b)(5)(ii), (g)(3)(i)).
+    repayment_assistance_plan_eligible: false

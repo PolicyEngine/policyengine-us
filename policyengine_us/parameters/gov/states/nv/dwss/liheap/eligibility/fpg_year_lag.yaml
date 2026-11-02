@@ -1,0 +1,20 @@
+description: Nevada uses the federal poverty guidelines from this many years before the model year for the income limit and the benefit cap income bands under the Low Income Home Energy Assistance Program.
+# The program year is the state fiscal year (July-June). Model period 2026
+# (SFY2026) uses the 2025 guidelines ($15,650 plus $5,500 per added person)
+# and 2027 (SFY2027) the 2026 guidelines ($15,960 plus $5,680), which
+# reproduces both Appendix A income tables. HHS made the 2025 guidelines
+# mandatory for LIHEAP from October 1, 2025.
+values:
+  2025-07-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: Nevada LIHEAP poverty guideline year lag
+  reference:
+    - title: LIHEAP IM 2025-02, Attachment 2, poverty guidelines for mandatory use in FY26
+      href: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_FPGSte-Table_Att2.pdf#page=1
+    - title: Nevada SFY2026 Energy Assistance Program Manual, Appendix A
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=110
+    - title: Nevada SFY2027 Energy Assistance Program Manual, Appendix A
+      href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/2027-eap-state-manual--08.25.26-1.pdf#page=110

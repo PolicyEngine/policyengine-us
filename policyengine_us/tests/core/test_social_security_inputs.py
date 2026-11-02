@@ -1130,12 +1130,14 @@ def test_reported_twins_are_pure_and_original_dataset_names_keep_their_uprater()
 @pytest.mark.parametrize(
     "source", ["supplied_aime", "supplied_pia", "supplied_ratio_survivor", "history"]
 )
-def test_reserved_sources_fail_explicitly_instead_of_using_reported_fallback(source):
+def test_unmatched_sources_fail_explicitly_instead_of_using_reported_fallback(source):
     public = SOCIAL_SECURITY_COMPONENTS[0]
     simulation = make_simulation(
         inputs={f"{public}_source": {2024: source}, f"{public}_reported": {2024: 0}}
     )
-    with pytest.raises(NotImplementedError, match="reserved"):
+    with pytest.raises(
+        ValueError, match="must match the supported ss_calculator_source"
+    ):
         simulation.calculate(public, 2024)
 
 

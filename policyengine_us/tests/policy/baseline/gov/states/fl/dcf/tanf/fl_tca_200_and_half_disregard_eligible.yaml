@@ -107,3 +107,55 @@
   output:
     # Income after $90 = $393 - $90 = $303, which is not less than $303.
     fl_tca_200_and_half_disregard_eligible: false
+
+- name: Case 5, two applicant earners pass condition 2 only with the $90 of each earner.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 2_760  # $230/month
+        pre_subsidy_rent: 9_600
+      person2:
+        age: 28
+        employment_income_before_lsr: 2_760  # $230/month
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_tca_payment_standard: 303
+    # 2420.0304 budgets the $90 for each earner: (230 - 90) + (230 - 90) = 280
+    # < $303 (condition 2). One $90 from the $460 total would give 370.
+    fl_tca_200_and_half_disregard_eligible: true
+
+- name: Case 6, two applicant earners above the payment standard after the $90 of each earner.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 3_000  # $250/month
+        pre_subsidy_rent: 9_600
+      person2:
+        age: 28
+        employment_income_before_lsr: 3_000  # $250/month
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # (250 - 90) + (250 - 90) = 320 >= $303, so condition 2 fails.
+    fl_tca_200_and_half_disregard_eligible: false

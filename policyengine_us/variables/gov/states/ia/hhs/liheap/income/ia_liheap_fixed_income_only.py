@@ -8,7 +8,7 @@ class ia_liheap_fixed_income_only(Variable):
     label = "Iowa LIHEAP household has fixed income only"
     documentation = (
         "Whether the household has a fixed income source (Social Security, SSI, "
-        "pensions including railroad retirement, or veterans' benefits) and no "
+        "Iowa State Supplementary Assistance, pensions including railroad retirement, or veterans' benefits) and no "
         "other recorded income source, across all members regardless of age. "
         'Definitions, Fixed Income Household: \'Only mark "fixed income" when '
         "that is the ONLY source(s) of income.' Recorded sources include the "

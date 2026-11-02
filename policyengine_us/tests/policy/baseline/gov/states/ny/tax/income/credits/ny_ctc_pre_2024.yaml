@@ -98,6 +98,145 @@
     ny_ctc: 330
     ny_ctc_pre_2024: 330
 
+# IT-213 (2018-2022): Worksheet A line 1 multiplies every child on form line 4
+# (children who qualify for the federal credit) by $1,000; the phase-out and
+# the tax limit apply to that total, and form lines 9-12 then multiply the
+# credit by line 5 (children aged at least four but less than 17) / line 4.
+- name: 2022 mixed-age children in the phase-out range prorate the credit
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 85_000
+      child1:
+        age: 2
+      child2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: NY
+  output:
+    # Head of household: taxable income 85,000 - 19,400 = 65,600; tax
+    # 1,465 + 4,950 + 22% x 9,700 = 8,549.
+    income_tax_before_credits: 8_549
+    # Worksheet A: line 1 = 2 x 1,000 = 2,000; 85,000 - 75,000 = 10,000;
+    # 5% = 500; line 6 = 1,500; tax 8,549 does not limit it (line 10 =
+    # 1,500); Worksheet C gives 0. Form: line 8 = 1,500; line 10 =
+    # 1,500 / 2 = 750; line 12 = 750 x 1 = 750; line 13 = 33% = 247.50.
+    # AGI is over 75,000, so no $100 minimum (lines 14-15 skipped).
+    ny_ctc_pre_2024: 247.5
+
+- name: 2022 mixed-age children below the phase-out threshold
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child1:
+        age: 2
+      child2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: NY
+  output:
+    # Taxable income 40,000 - 19,400 = 20,600; tax 1,465 + 12% x 5,950 = 2,179.
+    income_tax_before_credits: 2_179
+    # Worksheet A: line 1 = 2,000; no phase-out; tax 2,179 does not limit
+    # it; Worksheet C gives 0. Form: line 8 = 2,000; line 10 = 1,000;
+    # line 12 = 1,000; line 13 = 330; line 15 = 1 x 100; line 16 = 330.
+    ny_ctc_pre_2024: 330
+
+- name: 2022 mixed-age children whose federal tax limits the credit
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        taxable_pension_income: 26_000
+      child1:
+        age: 2
+      child2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: NY
+  output:
+    # Taxable income 26,000 - 19,400 = 6,600; tax 10% = 660.
+    income_tax_before_credits: 660
+    # Worksheet A: line 6 = 2,000; line 9 = 660, so line 10 = 660. Worksheet
+    # C: no earned income, so 0. Form: line 8 = 660; line 10 = 330;
+    # line 12 = 330; line 13 = 108.90; line 15 = 100; line 16 = 108.90.
+    ny_ctc_pre_2024: 108.9
+
+- name: 2021 mixed-age children of a joint filer in the phase-out range
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 120_500
+      parent2:
+        age: 40
+      child1:
+        age: 3
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: NY
+  output:
+    # Taxable income 120,500 - 25,100 = 95,400; tax 1,990 + 7,338 +
+    # 22% x 14,350 = 12,485.
+    income_tax_before_credits: 12_485
+    # Worksheet A: line 1 = 2,000; 120,500 - 110,000 = 10,500, increased to
+    # 11,000; 5% = 550; line 6 = 1,450; tax does not limit it. Form:
+    # line 8 = 1,450; line 10 = 725; line 12 = 725; line 13 = 239.25.
+    ny_ctc_pre_2024: 239.25
+
+- name: 2022 children who are all under four get no credit
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # Form line 5 is 0, so the filer does not qualify.
+    ny_ctc_pre_2024_eligible: false
+    ny_ctc_pre_2024: 0
+
 - name: 2020 Empire State child credit recomputes the federal credit with line 19a
   period: 2020
   absolute_error_margin: 0.01
