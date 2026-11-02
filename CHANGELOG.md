@@ -1,3 +1,10 @@
+## [2.91.0] - 2026-11-02
+
+### Added
+
+- Add an opt-in reform that puts Social Security's wage and price paths on the 2026 Trustees Report's intermediate assumptions for long-range scoring: it chains the Trustees' average wage index and CPI growth onto the published NAWI and COLA index, then re-derives the taxable maximum, the wage-indexed amounts and the parameters that uprate by either path. It is off by default, so current-law output doesn't change.
+
+
 ## [2.90.5] - 2026-11-02
 
 ### Fixed
