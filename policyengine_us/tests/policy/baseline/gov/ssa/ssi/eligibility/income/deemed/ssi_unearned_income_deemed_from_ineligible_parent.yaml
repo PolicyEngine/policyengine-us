@@ -146,9 +146,11 @@
     people:
       claimant:
         ssi_unearned_income_deemed_from_ineligible_parent: 5_868
-        # (24,000 - 230 * 12 - 11,928 parent allocation) / 2.
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 4_656
+        # California's disregard is the $20 any-income deduction since #10364
+        # (its other $210 comes off countable income after the exclusions):
+        # (24,000 - 20 * 12 - 11,928 parent allocation) / 2 = 5,916.
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5_916
       sibling:
         is_medicaid_immigration_status_eligible: true
         ssi_unearned_income_deemed_from_ineligible_parent: 0
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 4_656
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5_916

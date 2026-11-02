@@ -243,7 +243,7 @@
     # applies in 2021 annual calculations. (1,000 - 20) x 12 = 11,760.
     medicaid_optional_senior_or_disabled_countable_income: 11_760
 
-- name: California subtracts the 20-dollar deduction and then the 230-dollar disregard in 2020.
+- name: California subtracts the 20-dollar deduction and then the 230-dollar disregard until December 2020.
   period: 2020
   absolute_error_margin: 0.01
   input:
@@ -252,11 +252,14 @@
     ssi_marital_unearned_income: 12_000
     state_code: CA
   output:
-    # ACWDL 00-57 MC 176 lines 8 and 16. 2020 reads January 1, 2020: the 230
-    # disregard applies, the Part B disregard does not, and the MSP pays Part
-    # B, so no person-paid premium is deducted.
-    # (1,000 - 20 - 230) x 12 = 9,000.
-    medicaid_optional_senior_or_disabled_countable_income: 9_000
+    # ACWDL 00-57 MC 176 lines 8 and 16. The annual amount sums monthly
+    # budgets. January-November: the 230 disregard applies, the Part B
+    # disregard does not, and the MSP pays Part B, so no person-paid premium
+    # is deducted: (1,000 - 20 - 230) x 11 = 8,250. ACWDL 20-24 takes effect
+    # December 1, 2020: no 230 disregard, and the full Part B premium is
+    # disregarded (the 2021 premium, 148.50, as the base premium starts in
+    # 2021): 1,000 - 20 - 148.50 = 831.50. Total 9,081.50.
+    medicaid_optional_senior_or_disabled_countable_income: 9_081.5
 
 - name: California deducts both spouses' Part B premiums and other health insurance premiums from a couple's combined income.
   period: 2026
@@ -298,8 +301,9 @@
   output:
     # ACWDL 00-57 MC 176 lines 10-16: the unused 20-dollar deduction joins the
     # 65-dollar deduction, then half the rest counts, then the disregard.
-    # ((1,000 - 65 - 20) / 2 - 230) x 12 = 2,730.
-    medicaid_optional_senior_or_disabled_countable_income: 2_730
+    # ((1,000 - 65 - 20) / 2 - 230) x 11 = 2,502.50 for January-November;
+    # December 2020 has no disregard (ACWDL 20-24): 457.50. Total 2,960.
+    medicaid_optional_senior_or_disabled_countable_income: 2_960
 
 - name: California subtracts the 310-dollar couple disregard in 2020.
   period: 2020
@@ -324,8 +328,10 @@
         members: [person1, person2]
         state_code: CA
   output:
-    # ACWDL 00-57 MC 176 lines 8 and 16: (1,950 - 20 - 310) x 12 / 2 = 9,720 each.
-    medicaid_optional_senior_or_disabled_countable_income: [9_720, 9_720]
+    # ACWDL 00-57 MC 176 lines 8 and 16: (1,950 - 20 - 310) x 11 = 17,820 for
+    # January-November; December 2020 has no disregard (ACWDL 20-24):
+    # 1,930. (17,820 + 1,930) / 2 = 9,875 each.
+    medicaid_optional_senior_or_disabled_countable_income: [9_875, 9_875]
 
 - name: California deducted other health insurance premiums before 12/2020.
   period: 2019
