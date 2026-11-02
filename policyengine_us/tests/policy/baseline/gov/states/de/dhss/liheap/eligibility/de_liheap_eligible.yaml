@@ -4,7 +4,8 @@
 # - https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=5
 # - https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=35
 
-# REQ-004: first12 rows at published60% SMI ceiling; next12 one dollar above. No categorical income bypass.
+# The first 12 rows sit at the published 60% SMI ceiling; the next 12 are one dollar above.
+# No categorical income bypass.
 - name: Case 1, all twelve published limits are inclusive and next dollar is ineligible.
   period: 2026
   input:
@@ -28,7 +29,7 @@
     de_liheap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, false,
       false, false, false, false, false, false, false, false, false, false, false]
 
-# REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
+# Membership, heating responsibility and housing gates; no asset test.
 - name: Case 2, direct gas with positive matching bill.
   period: 2026
   input:
@@ -41,7 +42,7 @@
   output:
     de_liheap_eligible: true
 
-# REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
+# Membership, heating responsibility and housing gates; no asset test.
 - name: Case 3, known direct fuel with no bill.
   period: 2026
   input:
@@ -54,7 +55,7 @@
   output:
     de_liheap_eligible: false
 
-# REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
+# Membership, heating responsibility and housing gates; no asset test.
 - name: Case 4, no heating despite reported fuel bills.
   period: 2026
   input:
@@ -67,7 +68,7 @@
   output:
     de_liheap_eligible: false
 
-# REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
+# Membership, heating responsibility and housing gates; no asset test.
 - name: Case 5, unspecified direct fuel has no supported matrix column.
   period: 2026
   input:
@@ -80,8 +81,8 @@
   output:
     de_liheap_eligible: false
 
-# REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
-- name: Case 6, solar heating responsibility does not invent a matrix price.
+# Membership, heating responsibility and housing gates; no asset test.
+- name: Case 6, solar heat with an electric bill qualifies.
   period: 2026
   input:
     state_code: DE
@@ -94,7 +95,7 @@
   output:
     de_liheap_eligible: true
 
-# REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
+# Membership, heating responsibility and housing gates; no asset test.
 - name: Case 7, ordinary heat in rent with unknown building fuel.
   period: 2026
   input:
@@ -108,7 +109,7 @@
   output:
     de_liheap_eligible: true
 
-# REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
+# Membership, heating responsibility and housing gates; no asset test.
 - name: Case 8, subsidized heat in rent is excluded.
   period: 2026
   input:
@@ -123,7 +124,7 @@
   output:
     de_liheap_eligible: false
 
-# REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
+# Membership, heating responsibility and housing gates; no asset test.
 - name: Case 9, no qualified household member.
   period: 2026
   input:
@@ -136,7 +137,7 @@
   output:
     de_liheap_eligible: false
 
-# REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
+# Membership, heating responsibility and housing gates; no asset test.
 - name: Case 10, assets do not create an eligibility test.
   period: 2026
   input:
@@ -149,3 +150,18 @@
     spm_unit_assets: 1_000_000
   output:
     de_liheap_eligible: true
+
+# A subsidized gate also reads public housing, which ends bundled-heat eligibility
+# without a voucher flag.
+- name: Case 11, public housing with heat in rent is excluded.
+  period: 2026
+  input:
+    state_code: DE
+    heating_type: NATURAL_GAS
+    de_liheap_household_size: 1
+    de_liheap_countable_income: 0
+    de_liheap_income_limit: 39_342
+    heat_expense_included_in_rent: true
+    is_in_public_housing: true
+  output:
+    de_liheap_eligible: false

@@ -29,15 +29,16 @@ class de_liheap_eligible(Variable):
         )
         federal_floor = np.round(guideline * p.gov.hhs.liheap.fpg_floor, 2)
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
-        subsidized = spm_unit("receives_housing_assistance", period)
+        subsidized = spm_unit(
+            "receives_housing_assistance", period
+        ) | spm_unit.household("is_in_public_housing", period)
         pays_for_heat = spm_unit("has_heating_expense", period)
         fuel = spm_unit("heating_type", period)
         types = fuel.possible_values
         known_fuel = (fuel != types.NONE) & (fuel != types.UNSPECIFIED)
         # Full-rent households use the electric column even if the building's
-        # fuel is unknown. Solar with a matching supplemental-electric bill may
-        # reach the fuel-independent subsidized flat award; its ordinary matrix
-        # price remains unsupported.
+        # fuel is unknown. Solar qualifies with an electric bill, which
+        # has_heating_expense reads for it.
         heating_responsibility = where(
             heat_in_rent,
             ~subsidized & (fuel != types.NONE),

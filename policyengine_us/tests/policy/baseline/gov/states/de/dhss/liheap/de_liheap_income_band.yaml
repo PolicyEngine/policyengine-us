@@ -2,7 +2,7 @@
 # Sources:
 # - https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heating_2026.pdf
 
-# REQ-012: first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
+# The first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
 - name: Case 1, published band 1 maxima for all twelve sizes and next dollar.
   period: 2026
   input:
@@ -23,7 +23,7 @@
   output:
     de_liheap_income_band: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
 
-# REQ-012: first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
+# The first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
 - name: Case 2, published band 2 maxima for all twelve sizes and next dollar.
   period: 2026
   input:
@@ -44,7 +44,7 @@
   output:
     de_liheap_income_band: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
 
-# REQ-012: first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
+# The first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
 - name: Case 3, published band 3 maxima for all twelve sizes and next dollar.
   period: 2026
   input:
@@ -65,7 +65,7 @@
   output:
     de_liheap_income_band: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
 
-# REQ-012: first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
+# The first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
 - name: Case 4, published band 4 maxima for all twelve sizes and next dollar.
   period: 2026
   input:
@@ -86,7 +86,7 @@
   output:
     de_liheap_income_band: [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
 
-# REQ-012: first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
+# The first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
 - name: Case 5, published band 5 maxima for all twelve sizes and next dollar.
   period: 2026
   input:
@@ -107,7 +107,7 @@
   output:
     de_liheap_income_band: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
 
-# REQ-012: first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
+# The first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
 - name: Case 6, published band 6 maxima for all twelve sizes and next dollar.
   period: 2026
   input:
@@ -128,7 +128,7 @@
   output:
     de_liheap_income_band: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
 
-# REQ-012: first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
+# The first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
 - name: Case 7, published band 7 maxima for all twelve sizes and next dollar.
   period: 2026
   input:
@@ -149,7 +149,7 @@
   output:
     de_liheap_income_band: [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
 
-# REQ-012: first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
+# The first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
 - name: Case 8, published band 8 maxima for all twelve sizes.
   period: 2026
   input:
@@ -164,7 +164,7 @@
   output:
     de_liheap_income_band: [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
 
-# REQ-012: three-person printed example assigns 31,936 to band 5. Cent case follows the approved whole-dollar maximum convention; source income rounding is unspecified.
+# The three-person printed example assigns 31,936 to band 5. Cent case follows the approved whole-dollar maximum convention; source income rounding is unspecified.
 - name: Case 9, printed example crosses whole dollar boundary.
   period: 2026
   input:

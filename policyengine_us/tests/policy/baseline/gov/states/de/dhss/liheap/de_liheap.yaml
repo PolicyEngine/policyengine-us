@@ -4,7 +4,8 @@
 # - https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=5
 # - https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=35
 
-# REQ-011/012: all eight literal source amounts; matching bill100 does not cap the regular matrix award. Eligibility and band supplied only in this final-variable unit test.
+# All eight literal source amounts; a matching 100 bill does not cap the regular matrix
+# award. Eligibility and band are supplied only in this final-variable unit test.
 - name: Case 1, complete published propane schedule.
   period: 2026
   absolute_error_margin: 0.01
@@ -21,7 +22,8 @@
   output:
     de_liheap: [2_464, 2_108, 1_751, 1_043, 697, 502, 380, 339]
 
-# REQ-011/012: all eight literal source amounts; matching bill100 does not cap the regular matrix award. Eligibility and band supplied only in this final-variable unit test.
+# All eight literal source amounts; a matching 100 bill does not cap the regular matrix
+# award. Eligibility and band are supplied only in this final-variable unit test.
 - name: Case 2, complete published fuel_oil schedule.
   period: 2026
   absolute_error_margin: 0.01
@@ -38,7 +40,8 @@
   output:
     de_liheap: [2_016, 1_724, 1_432, 853, 570, 411, 311, 278]
 
-# REQ-011/012: all eight literal source amounts; matching bill100 does not cap the regular matrix award. Eligibility and band supplied only in this final-variable unit test.
+# All eight literal source amounts; a matching 100 bill does not cap the regular matrix
+# award. Eligibility and band are supplied only in this final-variable unit test.
 - name: Case 3, complete published electricity schedule.
   period: 2026
   absolute_error_margin: 0.01
@@ -56,7 +59,8 @@
   output:
     de_liheap: [1_391, 1_190, 988, 588, 394, 283, 215, 192]
 
-# REQ-011/012: all eight literal source amounts; matching bill100 does not cap the regular matrix award. Eligibility and band supplied only in this final-variable unit test.
+# All eight literal source amounts; a matching 100 bill does not cap the regular matrix
+# award. Eligibility and band are supplied only in this final-variable unit test.
 - name: Case 4, complete published natural_gas schedule.
   period: 2026
   absolute_error_margin: 0.01
@@ -73,7 +77,8 @@
   output:
     de_liheap: [1_126, 963, 800, 476, 318, 229, 174, 155]
 
-# REQ-011/012: all eight literal source amounts; matching bill100 does not cap the regular matrix award. Eligibility and band supplied only in this final-variable unit test.
+# All eight literal source amounts; a matching 100 bill does not cap the regular matrix
+# award. Eligibility and band are supplied only in this final-variable unit test.
 - name: Case 5, complete published other schedule.
   period: 2026
   absolute_error_margin: 0.01
@@ -90,7 +95,8 @@
   output:
     de_liheap: [726, 621, 516, 307, 205, 148, 112, 100]
 
-# REQ-011/012: oil/kerosene share a column; wood and coal use OTHER. Bill100 establishes responsibility without capping payment.
+# Oil and kerosene share a column; wood and coal use OTHER. A 100 bill establishes
+# responsibility without capping payment.
 - name: Case 6, kerosene fuel uses its published shared schedule.
   period: 2026
   absolute_error_margin: 0.01
@@ -128,7 +134,8 @@
     de_liheap_income_band: 1
     de_liheap: 2_016
 
-# REQ-011/012: oil/kerosene share a column; wood and coal use OTHER. Bill100 establishes responsibility without capping payment.
+# Oil and kerosene share a column; wood and coal use OTHER. A 100 bill establishes
+# responsibility without capping payment.
 - name: Case 7, wood fuel uses its published shared schedule.
   period: 2026
   absolute_error_margin: 0.01
@@ -166,7 +173,8 @@
     de_liheap_income_band: 1
     de_liheap: 726
 
-# REQ-011/012: oil/kerosene share a column; wood and coal use OTHER. Bill100 establishes responsibility without capping payment.
+# Oil and kerosene share a column; wood and coal use OTHER. A 100 bill establishes
+# responsibility without capping payment.
 - name: Case 8, coal fuel uses its published shared schedule.
   period: 2026
   absolute_error_margin: 0.01
@@ -204,7 +212,8 @@
     de_liheap_income_band: 1
     de_liheap: 726
 
-# REQ-012: tax-free annual child support supplies adjusted source example income; published whole-dollar boundary31,935/31,936 separates588/394 electric benefits.
+# Tax-free annual child support supplies the source example's adjusted income; the
+# published whole-dollar boundary 31,935/31,936 separates the 588 and 394 electric benefits.
 - name: Case 9, three person source example at income 31935.
   period: 2026
   absolute_error_margin: 0.01
@@ -259,7 +268,8 @@
     de_liheap_income_band: 4
     de_liheap: 588
 
-# REQ-012: tax-free annual child support supplies adjusted source example income; published whole-dollar boundary31,935/31,936 separates588/394 electric benefits.
+# Tax-free annual child support supplies the source example's adjusted income; the
+# published whole-dollar boundary 31,935/31,936 separates the 588 and 394 electric benefits.
 - name: Case 10, three person source example at income 31936.
   period: 2026
   absolute_error_margin: 0.01
@@ -314,7 +324,7 @@
     de_liheap_income_band: 5
     de_liheap: 394
 
-# REQ-009/011: full-rent household with bundled heat uses ELECTRIC band5 independent of building fuel.
+# A full-rent household with bundled heat uses ELECTRIC band 5, independent of building fuel.
 - name: Case 11, ordinary heat in rent selects electricity even with natural_gas fuel.
   period: 2026
   absolute_error_margin: 0.01
@@ -365,7 +375,7 @@
     de_liheap_income_band: 5
     de_liheap: 394
 
-# REQ-009/011: full-rent household with bundled heat uses ELECTRIC band5 independent of building fuel.
+# A full-rent household with bundled heat uses ELECTRIC band 5, independent of building fuel.
 - name: Case 12, ordinary heat in rent selects electricity even with unspecified fuel.
   period: 2026
   absolute_error_margin: 0.01
@@ -416,7 +426,8 @@
     de_liheap_income_band: 5
     de_liheap: 394
 
-# REQ-010: monthly rent679 exactly is flat236; above679 goes to ordinary gas band1 amount1,126. Annual rent is tenant share.
+# Monthly rent of exactly 679 gets the flat 236; above 679 goes to the ordinary gas band 1
+# amount of 1,126. Annual rent is the tenant share.
 - name: Case 13, subsidized separate heat with annual tenant rent 8148.
   period: 2026
   absolute_error_margin: 0.01
@@ -451,7 +462,8 @@
   output:
     de_liheap: 236
 
-# REQ-010: monthly rent679 exactly is flat236; above679 goes to ordinary gas band1 amount1,126. Annual rent is tenant share.
+# Monthly rent of exactly 679 gets the flat 236; above 679 goes to the ordinary gas band 1
+# amount of 1,126. Annual rent is the tenant share.
 - name: Case 14, subsidized separate heat with annual tenant rent 8148.12.
   period: 2026
   absolute_error_margin: 0.01
@@ -486,7 +498,8 @@
   output:
     de_liheap: 1_126
 
-# REQ-010: monthly rent679 exactly is flat236; above679 goes to ordinary gas band1 amount1,126. Annual rent is tenant share.
+# Monthly rent of exactly 679 gets the flat 236; above 679 goes to the ordinary gas band 1
+# amount of 1,126. Annual rent is the tenant share.
 - name: Case 15, subsidized separate heat with annual tenant rent 8160.
   period: 2026
   absolute_error_margin: 0.01
@@ -521,7 +534,8 @@
   output:
     de_liheap: 1_126
 
-# REQ-010: pre-subsidy12,000 minus housing assistance3,852=tenant rent8,148=679/month; apply flat236.
+# Pre-subsidy 12,000 minus housing assistance 3,852 = tenant rent 8,148 = 679 a month; the
+# flat 236 applies.
 - name: Case 16, rent ceiling uses tenant share after housing assistance.
   period: 2026
   absolute_error_margin: 0.01
@@ -557,7 +571,7 @@
     rent: 8_148
     de_liheap: 236
 
-# REQ-004/009: subsidized heat-in-rent excluded; current plan has no nominal SNAP payment.
+# Subsidized heat in rent is excluded; the current plan has no nominal SNAP payment.
 - name: Case 17, subsidized bundled heat has no regular or nominal SNAP award.
   period: 2026
   absolute_error_margin: 0.01
@@ -595,7 +609,8 @@
     de_liheap_eligible: false
     de_liheap: 0
 
-# REQ-004/012: tax-free VA represents countable income; inclusive size1 ceiling39,342 pays OTHER band8 amount100. SNAP never bypasses income ceiling.
+# Tax-free VA benefits represent countable income; the inclusive size 1 ceiling of 39,342
+# pays the OTHER band 8 amount of 100. SNAP never bypasses the income ceiling.
 - name: Case 18, other fuel at annual adjusted income 39342.
   period: 2026
   absolute_error_margin: 0.01
@@ -635,7 +650,8 @@
     de_liheap_countable_income: 39_342
     de_liheap: 100
 
-# REQ-004/012: tax-free VA represents countable income; inclusive size1 ceiling39,342 pays OTHER band8 amount100. SNAP never bypasses income ceiling.
+# Tax-free VA benefits represent countable income; the inclusive size 1 ceiling of 39,342
+# pays the OTHER band 8 amount of 100. SNAP never bypasses the income ceiling.
 - name: Case 19, other fuel at annual adjusted income 39343.
   period: 2026
   absolute_error_margin: 0.01
@@ -675,7 +691,8 @@
     de_liheap_countable_income: 39_343
     de_liheap: 0
 
-# REQ-003/014: gross21,000 minus supplied payroll1,000=20,000. Use qualified size1 and full ELECTRIC band5 amount394; no additional one-third reduction.
+# Gross 21,000 minus supplied payroll 1,000 = 20,000. Qualified size 1 takes the full
+# ELECTRIC band 5 amount of 394, with no additional one-third reduction.
 - name: Case 20, two nonqualified parents and citizen child retain all income without share reduction.
   period: 2026
   absolute_error_margin: 0.01
@@ -729,7 +746,8 @@
     de_liheap_income_band: 5
     de_liheap: 394
 
-# REQ-007: student25,000 excluded; size2 income16,000 exceeds band2 maximum12,990 but is within band3 maximum19,421; gas800.
+# The student's 25,000 is excluded; size 2 income of 16,000 exceeds the band 2 maximum of
+# 12,990 but is within the band 3 maximum of 19,421; gas pays 800.
 - name: Case 21, dependent student exclusion affects income but not benefit household size.
   period: 2026
   absolute_error_margin: 0.01
@@ -779,7 +797,8 @@
     de_liheap_income_band: 3
     de_liheap: 800
 
-# REQ-006/012: gross10,000 minus existing withholding helper1,000=9,000; size1 band2 gas963. Helper is estimated withholding, not observed payroll data.
+# Gross 10,000 minus the withholding helper's 1,000 = 9,000; size 1 band 2 gas pays 963.
+# The helper is estimated withholding, not observed payroll data.
 - name: Case 22, given payroll deductions change income interval.
   period: 2026
   absolute_error_margin: 0.01
@@ -817,7 +836,8 @@
     de_liheap_income_band: 2
     de_liheap: 963
 
-# REQ-013: both households have zero income and gas heat; elder/disability/young-child priority creates no payment supplement.
+# Both households have zero income and gas heat; elder, disability and young-child
+# priority creates no payment supplement.
 - name: Case 23, priority household characteristics do not add benefit dollars.
   period: 2026
   absolute_error_margin: 0.01
@@ -892,7 +912,8 @@
     de_liheap_income_band: [1, 1]
     de_liheap: [1_126, 1_126]
 
-# REQ-001: separate household/SPM/tax entities for DE/CT/MD; CT and MD rows have no Delaware award or unguarded matrix lookup.
+# Separate household, SPM and tax entities for DE, CT and MD; CT and MD rows have no
+# Delaware award or unguarded matrix lookup.
 - name: Case 24, mixed state batch isolates Delaware variables.
   period: 2026
   absolute_error_margin: 0.01
@@ -979,7 +1000,7 @@
     de_liheap_eligible: [true, false, false]
     de_liheap: [1_126, 0, 0]
 
-# REQ-012: the published size-six band-seven maximum is $87,634.
+# The published size-six band-seven maximum is $87,634.
 # A post-2018 alimony recipient with no employment has no payroll withholding.
 # At the boundary natural gas pays $174; the next dollar moves to $155.
 - name: Case 25, size six natural gas payment at adjusted income 87,634.
@@ -1023,7 +1044,7 @@
     de_liheap_eligible: true
     de_liheap: 174
 
-# REQ-012: the published size-six band-seven maximum is $87,634.
+# The published size-six band-seven maximum is $87,634.
 # A post-2018 alimony recipient with no employment has no payroll withholding.
 # At the boundary natural gas pays $174; the next dollar moves to $155.
 - name: Case 26, size six natural gas payment at adjusted income 87,635.
@@ -1067,9 +1088,9 @@
     de_liheap_eligible: true
     de_liheap: 155
 
-# Plan excludes the earner's income; source matrix size2 band5 pays gas318.
-# The parent's26,000 support stays countable despite taxes on20,000 excluded wages.
-- name: Excluded minor payroll does not lower support income, Wilmington false.
+# The plan excludes the earner's income; source matrix size 2 band 5 pays gas 318.
+# The parent's 26,000 support stays countable despite taxes on 20,000 of excluded wages.
+- name: Case 27, excluded minor payroll does not lower support income, Wilmington false.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -1081,7 +1102,7 @@
       child:
         age: 17
         immigration_status: CITIZEN
-        employment_income: 20_000
+        employment_income_before_lsr: 20_000
         is_full_time_college_student: false
         is_tax_unit_dependent: true
     tax_units:
@@ -1107,9 +1128,9 @@
     de_liheap_income_band: 5
     de_liheap: 318
 
-# Plan excludes the earner's income; source matrix size2 band5 pays gas318.
-# The parent's26,000 support stays countable despite taxes on20,000 excluded wages.
-- name: Excluded minor payroll does not lower support income, Wilmington true.
+# The plan excludes the earner's income; source matrix size 2 band 5 pays gas 318.
+# The parent's 26,000 support stays countable despite taxes on 20,000 of excluded wages.
+- name: Case 28, excluded minor payroll does not lower support income, Wilmington true.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -1121,7 +1142,7 @@
       child:
         age: 17
         immigration_status: CITIZEN
-        employment_income: 20_000
+        employment_income_before_lsr: 20_000
         is_full_time_college_student: false
         is_tax_unit_dependent: true
     tax_units:
@@ -1147,9 +1168,9 @@
     de_liheap_income_band: 5
     de_liheap: 318
 
-# Plan excludes the earner's income; source matrix size2 band5 pays gas318.
-# The parent's26,000 support stays countable despite taxes on20,000 excluded wages.
-- name: Excluded dependent full-time college student payroll does not lower support income, Wilmington false.
+# The plan excludes the earner's income; source matrix size 2 band 5 pays gas 318.
+# The parent's 26,000 support stays countable despite taxes on 20,000 of excluded wages.
+- name: Case 29, excluded dependent full-time college student payroll does not lower support income, Wilmington false.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -1161,7 +1182,7 @@
       child:
         age: 21
         immigration_status: CITIZEN
-        employment_income: 20_000
+        employment_income_before_lsr: 20_000
         is_full_time_college_student: true
         is_tax_unit_dependent: true
     tax_units:
@@ -1187,9 +1208,9 @@
     de_liheap_income_band: 5
     de_liheap: 318
 
-# Plan excludes the earner's income; source matrix size2 band5 pays gas318.
-# The parent's26,000 support stays countable despite taxes on20,000 excluded wages.
-- name: Excluded dependent full-time college student payroll does not lower support income, Wilmington true.
+# The plan excludes the earner's income; source matrix size 2 band 5 pays gas 318.
+# The parent's 26,000 support stays countable despite taxes on 20,000 of excluded wages.
+- name: Case 30, excluded dependent full-time college student payroll does not lower support income, Wilmington true.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -1201,7 +1222,7 @@
       child:
         age: 21
         immigration_status: CITIZEN
-        employment_income: 20_000
+        employment_income_before_lsr: 20_000
         is_full_time_college_student: true
         is_tax_unit_dependent: true
     tax_units:
@@ -1228,7 +1249,7 @@
     de_liheap: 318
 
 # Recurring IRA receipts exceed the published one-person income ceiling.
-- name: Recurring IRA income above the limit prevents regular heating assistance.
+- name: Case 31, recurring IRA income above the limit prevents regular heating assistance.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -1250,9 +1271,9 @@
     de_liheap: 0
 
 # Separate-filer minor wages are excluded by the plan, regardless of dependency.
-# The published two-person band5 starts above25,852 and pays natural gas318.
+# The published two-person band 5 starts above 25,852 and pays natural gas 318.
 # No tax, receipt or LIHEAP intermediate overrides are supplied.
-- name: Excluded wages of a minor filing separately do not reduce countable support.
+- name: Case 32, excluded wages of a minor filing separately do not reduce countable support.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -1265,7 +1286,7 @@
         age: 17
         immigration_status: CITIZEN
         is_tax_unit_dependent: false
-        employment_income: 10000
+        employment_income_before_lsr: 10000
     tax_units:
       parent_tax:
         members:
@@ -1300,8 +1321,8 @@
     de_liheap: 318
 
 
-# Military retirement is separate from pension_income. The state ceiling is
-#39,342. Net SSA40,000-PartB2,400=37,600 reaches the final gas-band amount155.
+# Military retirement is separate from pension_income. The state ceiling is 39,342.
+# Net Social Security 40,000 - Part B 2,400 = 37,600 reaches the final gas-band amount of 155.
 # Supplied zero paycheck withholding isolates these income rules; this is an
 # existing proxy input, not an added deduction or a new medical-premium input.
 - name: Case 33, military retirement and net Social Security reach the final award.
@@ -1326,12 +1347,12 @@
     de_liheap_eligible: [false, true]
     de_liheap: [0, 155]
 
-# Tenant rent is annual. The flat236 applies at/below679/month when heat is
-# separately paid, including solar-primary households with an electric bill.
-# Unsubsidized or over-rent-ceiling solar has no invented matrix price, but its
-# supported heating responsibility remains eligible. No bill/NONE/bundled
-# subsidized heat still fails the independent responsibility/housing gates.
-- name: Case 34, solar supplemental heat reaches only the supported flat award.
+# No Delaware source lists solar heat; it is read as electric. Tenant rent is
+# annual. The flat 236 applies at or below 679 a month when heat is separately
+# paid. Unsubsidized and over-ceiling solar households with an electric bill take
+# the Electric band 1 amount of 1,391. No bill, NONE and bundled subsidized heat
+# still fail the responsibility and housing gates.
+- name: Case 34, solar with an electric bill takes the electric column or the flat award.
   period: 2026
   input:
     state_code: [DE, DE, DE, DE, DE, DE, DE]
@@ -1348,7 +1369,7 @@
     de_liheap_household_size: [1, 1, 1, 1, 1, 1, 1]
     de_liheap_countable_income: [0, 0, 0, 0, 0, 0, 0]
     de_liheap_eligible: [true, true, false, false, false, true, true]
-    de_liheap: [236, 0, 0, 0, 0, 0, 236]
+    de_liheap: [236, 1_391, 0, 0, 0, 1_391, 236]
 
 # The family's potential DE TANF entitlement is not received when take-up is
 # false. No categorical bypass is added; the ordinary income test still applies.
@@ -1378,11 +1399,11 @@
     de_liheap_eligible: true
     de_liheap: 1_126
 
-# Actual25qualified members use2025FPG15,650+24*5,500=147,650 and strict
-#110%floor162,415. The ordinary state limit remains142,995. Nontaxable support
-#150,000 is above that ceiling but below federal protection, reaching the
-#supported last-band gas award155. Exact162,415 is unprotected. Each adult has
-#their own tax unit; no household-size or eligibility intermediate is forced.
+# The 25 qualified members use the 2025 guideline 15,650 + 24 x 5,500 = 147,650 and the
+# strict 110% floor of 162,415. The ordinary state limit remains 142,995. Nontaxable
+# support of 150,000 is above that ceiling but below federal protection, reaching the
+# last-band gas award of 155. Exactly 162,415 is unprotected. Each adult has their own
+# tax unit; no household-size or eligibility intermediate is forced.
 - name: Case 36, large households retain the strict federal income protection.
   period: 2026
   input:
@@ -1665,3 +1686,43 @@
     de_liheap_income_band: [8, 8]
     de_liheap_eligible: [true, false]
     de_liheap: [155, 0]
+
+# Public housing without a voucher is subsidized housing. Tenant rent of
+# 600/month (7,200/year) is within the 679 ceiling, so separate gas heat gets the
+# flat 236 instead of the ordinary gas matrix amount.
+- name: Case 37, public housing with separate heat receives the subsidized flat award.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 7_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+        is_in_public_housing: true
+  output:
+    de_liheap_eligible: true
+    de_liheap: 236
+

@@ -1,0 +1,16 @@
+description: Delaware counts these unearned income sources of household members younger than the earned income age under the Low Income Home Energy Assistance Program.
+# Manual 418 excludes minors' income except child support and Social Security;
+# 419.1 includes SSI and railroad retirement among Social Security benefits.
+values:
+  2025-10-01:
+    - child_support_received
+    - social_security
+    - ssi
+    - railroad_benefits
+metadata:
+  unit: list
+  period: year
+  label: Delaware LIHEAP minor unearned income sources
+  reference:
+    - title: "Historical Delaware Energy Assistance Program Manual, sections 418-419 #page 35,37"
+      href: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=35

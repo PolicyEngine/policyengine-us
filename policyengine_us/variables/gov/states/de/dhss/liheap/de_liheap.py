@@ -9,7 +9,7 @@ class de_liheap(Variable):
     label = "Delaware LIHEAP regular heating assistance"
     defined_for = "de_liheap_eligible"
     reference = (
-        "https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heating_2026.pdf",
+        "https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heating_2026.pdf#page=1",
         "https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=9",
     )
 
@@ -22,7 +22,9 @@ class de_liheap(Variable):
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         matrix_amount = select(
             [
-                heat_in_rent | (fuel == types.ELECTRICITY),
+                # No Delaware source lists solar heat. Solar is read as electric,
+                # as heating_expense reads its electric bill.
+                heat_in_rent | (fuel == types.ELECTRICITY) | (fuel == types.SOLAR),
                 fuel == types.PROPANE,
                 (fuel == types.FUEL_OIL) | (fuel == types.KEROSENE),
                 fuel == types.NATURAL_GAS,
@@ -37,7 +39,9 @@ class de_liheap(Variable):
             ],
             default=0,
         )
-        subsidized = spm_unit("receives_housing_assistance", period)
+        subsidized = spm_unit(
+            "receives_housing_assistance", period
+        ) | spm_unit.household("is_in_public_housing", period)
         # rent is the tenant's share after housing assistance, in annual units.
         rent = add(spm_unit, period, ["rent"])
         flat_benefit = (

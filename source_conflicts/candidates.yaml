@@ -1277,6 +1277,34 @@ candidates:
   note: 'The statute-first rule requires replacing age-60 eligibility if the literal boundary is confirmed; verify
     individual-return scope and intervening editions. Code not yet on main: de_elderly_or_disabled_income_exclusion_joint,
     de_elderly_or_disabled_income_exclusion_indiv.'
+- id: us-de:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can Delaware's 60% SMI heating limit exclude a household of 20 or more whose income is below the federal
+    110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: Delaware FY2026 LIHEAP State Plan, section 2.1, p.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=9
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The plan's 60% SMI limit falls below that floor from 20 members.
+  example: Twenty-five people with $150,000 exceed the $142,995 limit but are below the $162,415 floor (2025 guideline,
+    one-year lag), so they keep the last-band gas award of $155.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/de/dhss/liheap/eligibility/de_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/de/dhss/liheap/eligibility/fpg_year_lag.yaml
+  state: unreviewed
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (de_liheap_eligible.py).
 - id: us-de:snap-child-support-exclusion
   program: snap
   years:

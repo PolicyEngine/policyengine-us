@@ -10,6 +10,8 @@ values:
     # Existing net business income is used without another expense deduction.
     - rental_income
     - farm_rent_income
+    # Manual 416.1 counts other taxable income as earned income.
+    - miscellaneous_income
 metadata:
   unit: list
   period: year
@@ -17,5 +19,5 @@ metadata:
   reference:
     - title: "Delaware FY2026 LIHEAP State Plan, sections 1.8-1.9 #page 5-7"
       href: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=5
-    - title: "Historical Delaware Energy Assistance Program Manual, section 418 #page 35-36"
-      href: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=35
+    - title: "Historical Delaware Energy Assistance Program Manual, sections 416 and 418 #page 33,35-36"
+      href: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=33
