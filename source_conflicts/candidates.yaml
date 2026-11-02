@@ -8236,6 +8236,37 @@ candidates:
   note: The model computes the couple jointly at $90, which the couple.yaml comment derives from the per-individual
     allowance in §40-6-27(a)(3); ri_ssp.yaml Case 18 pins [45, 45] for a couple with no income. SSA administered
     Category E only through December 31, 2010.
+- id: us-sc:tanf-need-standard-above-eight
+  program: tanf
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: For a benefit group of more than eight, is South Carolina's TANF need standard fifty percent of the poverty
+    guideline rounded down to a whole dollar, or the Policy Manual's eight-person amount plus $229 for each added person?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1140(A)(2) and (A)(4)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=210
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 section 8.15
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=133
+  readings:
+    statute: No statute is supplied; 114-1140(A)(2) sets the need standard "at fifty percent of the current year's" poverty
+      guidelines, and (A)(4) rounds it "down to the next lower whole dollar".
+    other: The section 8.15 table stops at eight persons, and its note says "For family sizes over 8, $229 is added to the
+      need standard for each additional person."
+  example: Under the 2025 guidelines a group of 13 has a need standard of floor($81,650 / 12 x 0.5) = $3,402 under
+    114-1140(A)(2) and (A)(4), and $2,256 + 5 x $229 = $3,401 under the manual note. The two agree through 12 persons.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/sc_tanf_need_standard.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+  state: ruled
+  note: The regulation governs, and the manual's $229 restates the 2025 added-person guideline ($5,500 / 12 x 0.5 =
+    $229.17) without its cents. The regulation gives $1 more for 13 to 18 persons and $2 more for 19 to 24.
 - id: us-sd:liheap-2025-published-income-limit
   program: liheap
   years:
