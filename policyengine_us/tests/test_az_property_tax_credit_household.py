@@ -17,7 +17,9 @@ property tax. Each example builds one simulation that holds the drawn homes
 and the variants the properties compare them with, so few simulations run:
 
 1. Every tax unit in a home sees the same household income, the sum of the
-   tax units' own amounts.
+   tax units' own amounts, and each eligible unit's claim is the schedule
+   amount at that income (Table 2 in a home of two or more), limited to the
+   unit's own property taxes paid.
 2. At most one tax unit per home has a positive credit.
 3. The claimant's credit is at least what any other eligible tax unit in the
    home would get as claimant.
@@ -224,6 +226,33 @@ def test_household_income_and_one_claimant(homes, raise_by, uc):
         atol=0.01,
     )
     np.testing.assert_allclose(seen_income, household_income[unit_home], atol=0.01)
+    # Each eligible tax unit's claim is the lesser of its property taxes paid
+    # and the schedule amount at the home's income, floored at zero: Table 2
+    # for every unit in a home of two or more people, Table 1 otherwise.
+    from policyengine_us.system import system
+
+    p = system.parameters(YEAR).gov.states.az.tax.income.credits.property_tax
+    all_units = [unit for v in variants for home in v for unit in home]
+    home_size = np.bincount(
+        unit_home,
+        weights=[len(unit["members"]) for unit in all_units],
+        minlength=4 * n,
+    )[unit_home]
+    schedule_income = np.maximum(household_income[unit_home], 0)
+    table = np.where(
+        home_size > 1,
+        p.amount.cohabitating.calc(schedule_income),
+        p.amount.living_alone.calc(schedule_income),
+    )
+    taxes_paid = np.array(
+        [
+            unit["real_estate_taxes"] + RENT_PROPERTY_TAX_RATE * unit["rent"]
+            for unit in all_units
+        ]
+    )
+    np.testing.assert_allclose(
+        potential[eligible], np.minimum(table, taxes_paid)[eligible], atol=0.01
+    )
 
     for h in range(4 * n):
         in_home = unit_home == h
