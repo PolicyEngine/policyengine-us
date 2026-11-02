@@ -1,0 +1,1 @@
+Reduce each child's Vermont child tax credit by $20 for each $1,000 of AGI over $125,000, as 32 V.S.A. 5830f(b) requires, instead of taking one reduction off the total, so the credit ends above $174,000 of AGI for any number of children.
