@@ -1,0 +1,24 @@
+- name: Case 1, default sc_other_additions is zero
+  period: 2024
+  input:
+    state_code: SC
+  output:
+    sc_other_additions: 0.0
+
+- name: Case 2, sc_other_additions flows into sc_additions
+  period: 2024
+  input:
+    state_code: SC
+    sc_other_additions: 1_200
+  output:
+    sc_additions: 1_200
+
+- name: Case 3, sc_other_additions still raises taxable income from 2026
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: SC
+    employment_income: 60_000
+    sc_other_additions: 5_000
+  output:
+    sc_taxable_income: 55_450

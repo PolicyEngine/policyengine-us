@@ -66,3 +66,35 @@
     general_assistance: 0
   output:
     dc_tanf_countable_unearned_income: 1_200
+
+
+- name: $500 a month of child support in September 2025, first $150 disregarded.
+  period: 2025-09
+  input:
+    state_code:
+      2025: DC
+    child_support_received:
+      2025: 6_000
+  output:
+    dc_tanf_countable_unearned_income: 350 # 6_000 / 12 - 150 = 500 - 150
+
+
+- name: $500 a month of child support in October 2025, all of it disregarded.
+  period: 2025-10
+  input:
+    state_code:
+      2025: DC
+    child_support_received:
+      2025: 6_000
+  output:
+    dc_tanf_countable_unearned_income: 0 # D.C. Code 4-205.11(a)(8): full child support disregarded from October 1, 2025
+
+
+- name: Child support is disregarded in full from October 2025, other unearned income still counts.
+  period: 2026-01
+  input:
+    state_code: DC
+    child_support_received: 6_000
+    pension_income: 1_200
+  output:
+    dc_tanf_countable_unearned_income: 100 # 1_200 / 12; the $500 of child support is disregarded

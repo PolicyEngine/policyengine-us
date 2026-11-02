@@ -14,10 +14,11 @@ class me_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         # 36 M.R.S. § 5219-S(5)-(6): childless filers aged 18-24 who fail the
-        # federal EITC only on the minimum-age floor are treated as eligible,
-        # with the credit computed as if they qualified federally. Take the
-        # larger of the actual federal EITC and the pro forma amount for that
-        # cohort; the pro forma is zero for tax units outside the expansion.
+        # federal age test are treated as eligible, with the credit computed
+        # as if they qualified federally. The pro forma is zero outside that
+        # cohort, and the federal EITC is zero inside it, since a childless
+        # filer who fails the federal age test is not federally eligible. The
+        # max therefore picks whichever applies, and no filer gets both.
         federal_eitc = max_(
             tax_unit("eitc", period),
             tax_unit("me_pro_forma_childless_eitc", period),

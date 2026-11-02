@@ -97,10 +97,14 @@
     eitc: 0
     filing_status: HEAD_OF_HOUSEHOLD
     eitc_child_count: 1
-    filer_adjusted_earnings: 10_000
+    eitc_earned_income: 10_000
     adjusted_gross_income: 10_000
     filer_meets_eitc_identification_requirements: true
     would_file_taxes_voluntarily: true
     takes_up_eitc: true
   output:
-    in_eitc_eligible: true
+    # No federal EITC means no Indiana EITC: IC 6-3.1-21-6(a)(2) bases the
+    # credit on the federal credit "claimed for the taxable year", and the
+    # 2025 IT-40 booklet (Schedule 5, line 6) requires that the filer "be
+    # eligible for and have claimed an EIC on your federal tax return".
+    in_eitc_eligible: false

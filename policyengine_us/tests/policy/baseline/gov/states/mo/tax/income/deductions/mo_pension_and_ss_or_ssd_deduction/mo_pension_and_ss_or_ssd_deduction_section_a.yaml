@@ -364,3 +364,16 @@
     mo_pension_and_ss_or_ssd_deduction_section_a: [15_000, 0]
     # Section D: 15,000 (A) + 0 (B) + 5,000 (C).
     mo_pension_and_ss_or_ssd_deduction: 20_000
+
+- name: Military retirement pay survivors is included in public pension amount in Section A
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 30_000
+    taxable_social_security: 0
+    military_retirement_pay_survivors: 8_000
+    filing_status: SINGLE
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_a: 8_000

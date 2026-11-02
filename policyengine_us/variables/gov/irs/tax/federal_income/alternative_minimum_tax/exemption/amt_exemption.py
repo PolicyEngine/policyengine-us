@@ -8,7 +8,8 @@ class amt_exemption(Variable):
     label = "Alternative Minimum Tax exemption"
     unit = USD
     documentation = (
-        "AMT exemption amount after phase-out and kiddie tax adjustments. "
+        "AMT exemption amount after phase-out and, before 2018, the kiddie "
+        "tax limitation. "
         "Form 6251, Line 5."
     )
     reference = [
@@ -16,6 +17,7 @@ class amt_exemption(Variable):
         "https://www.law.cornell.edu/uscode/text/26/59#j",
         "https://www.law.cornell.edu/uscode/text/26/911#d_2",
         "https://www.irs.gov/instructions/i6251",
+        "https://www.law.cornell.edu/uscode/text/26/55#d_4_A_iii",
     ]
 
     def formula(tax_unit, period, parameters):
@@ -34,6 +36,12 @@ class amt_exemption(Variable):
             0,
             base_exemption_amount - exemption_phase_out,
         )
+
+        # IRC 55(d)(4)(A)(iii) turns off the IRC 59(j) child limitation for
+        # taxable years beginning after 2017, so every filer gets the
+        # phased-out exemption.
+        if not p.exemption.child.in_effect:
+            return reduced_exemption_amount
 
         # A reduced exemption amount is applied to kiddie tax filers
         kiddie_tax_applies = tax_unit("amt_kiddie_tax_applies", period)

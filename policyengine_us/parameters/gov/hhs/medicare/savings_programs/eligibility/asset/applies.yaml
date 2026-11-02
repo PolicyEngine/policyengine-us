@@ -14,8 +14,25 @@ metadata:
       href: https://legislature.maine.gov/statutes/22/title22sec3174-LLL.html
     - title: MassHealth EOM 24-03, Medicare Savings Programs
       href: https://www.mass.gov/doc/eom-24-03-medicare-savings-programs-formerly-known-as-masshealth-senior-buy-in-and-masshealth-buy-in-programs-0/download
-# Federal MSP rules apply the asset test by default; states that have
-# eliminated it in current law are set to false from 2024.
+    - title: California DHCS All County Welfare Directors Letter 22-25, Elimination of Asset Limits for Non-MAGI Medi-Cal Programs
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/22-25.pdf#page=2
+    - title: California DHCS All County Welfare Directors Letter 25-14, Reinstatement of Asset Limits for Non-MAGI Medi-Cal Programs
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/25-14.pdf#page=2
+    - title: "Washington State Register 22-21-043, amending WAC 182-517-0100 to remove Medicare Savings Program resource limits #page 1-2"
+      href: https://lawfilesext.leg.wa.gov/law/wsrpdf/2022/21/22-21-043.pdf#page=1
+    - title: Washington Administrative Code 182-517-0100(2)(d) - Federal Medicare savings programs
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=182-517-0100
+    - title: Mississippi Division of Medicaid Eligibility Manual Volume III, page 7220, Qualified Medicare Beneficiaries (revised July 1, 1999)
+      href: https://web.archive.org/web/20140514180548id_/https://www.medicaid.ms.gov/wp-content/uploads/2014/03/Pages-7220-7223-Qualified-Medicare-Beneficiaries.pdf#page=1
+    - title: 23 Mississippi Administrative Code Part 103, Rule 1.8(A)(1) - Reduced Coverage Groups
+      href: https://www.law.cornell.edu/regulations/mississippi/23-Miss-Code-R-SS-103-1-8
+    - title: "Laws of Washington 2022, chapter 297, sections 205(26) and 211(79) #page 274,312"
+      href: https://lawfilesext.leg.wa.gov/biennium/2021-22/Pdf/Bills/Session%20Laws/Senate/5693-S.SL.pdf#page=274
+    - title: California Welfare and Institutions Code 14005.62(a), (c), (d)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=14005.62
+# Federal MSP rules apply the asset test by default. States that have
+# eliminated it are set to false from 2024 where no state source dates the
+# change; WA, CA and MS follow their own sources.
 AL:
   0000-01-01: true
   2024-01-01: false
@@ -31,6 +48,7 @@ AR:
 CA:
   0000-01-01: true
   2024-01-01: false
+  2026-01-01: true
 CO:
   0000-01-01: true
   2024-01-01: true
@@ -90,7 +108,8 @@ MN:
   2024-01-01: true
 MS:
   0000-01-01: true
-  2024-01-01: false
+  # Eligibility Manual page 7220 (revised 07-01-99); 23 Miss. Code R. 103-1.8(A)(1).
+  1999-07-01: false
 MO:
   0000-01-01: true
   2024-01-01: true
@@ -159,7 +178,7 @@ VA:
   2024-01-01: true
 WA:
   0000-01-01: true
-  2024-01-01: true
+  2023-01-01: false
 WV:
   0000-01-01: true
   2024-01-01: true

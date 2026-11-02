@@ -55,6 +55,132 @@
   output:
     tax_unit_itemizes: False
 
+- name: 2021 without branching - compare itemized deductions with standard plus cash gifts
+  period: 2021
+  input:
+    gov.simulation.branch_to_determine_itemization: false
+    # Each triple is below, equal to, and above the 2021 Form 1040 line 12c
+    # total: standard deduction plus the cash gift allowed by 26 U.S.C. 170(p).
+    # Singles have full, partial, then zero gifts; joint filers repeat these.
+    filing_status: [SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT]
+    standard_deduction: [12_550, 12_550, 12_550, 12_550, 12_550, 12_550, 12_550, 12_550, 12_550, 25_100, 25_100, 25_100, 25_100, 25_100, 25_100, 25_100, 25_100, 25_100]
+    charitable_cash_donations: [400, 400, 400, 150, 150, 150, 0, 0, 0, 700, 700, 700, 250, 250, 250, 0, 0, 0]
+    itemized_taxable_income_deductions: [12_849, 12_850, 12_851, 12_699, 12_700, 12_701, 12_549, 12_550, 12_551, 25_699, 25_700, 25_701, 25_349, 25_350, 25_351, 25_099, 25_100, 25_101]
+  output:
+    # Section 170(p): $300 per single return and $600 per joint return,
+    # limited to the eligible cash actually given.
+    charitable_deduction_for_non_itemizers: [300, 300, 300, 150, 150, 150, 0, 0, 0, 600, 600, 600, 250, 250, 250, 0, 0, 0]
+    tax_unit_itemizes: [false, false, true, false, false, true, false, false, true, false, false, true, false, false, true, false, false, true]
+
+- name: 2021 equal federal tax - deduction comparison includes the non-itemizer cash deduction
+  period: 2021
+  input:
+    gov.simulation.branch_to_determine_itemization: true
+    filing_status: SINGLE
+    standard_deduction: 12_550
+    charitable_cash_donations: 300
+    itemized_taxable_income_deductions: 12_699
+    tax_liability_if_itemizing: 0
+    tax_liability_if_not_itemizing: 0
+  output:
+    # 2021 Form 1040 line 12c: 12_550 + 300 under section 170(p) = 12_850.
+    tax_unit_itemizes: false
+
+- name: 2026 without branching - the cash deduction makes not itemizing preferable
+  period: 2026
+  input:
+    gov.simulation.branch_to_determine_itemization: false
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        charitable_cash_donations: 1_000
+        deductible_mortgage_interest: 15_800
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NH
+  output:
+    # Section 170(b)(1)(I): 1_000 - 0.005 * 60_000 = 700 itemized gifts.
+    charitable_deduction: 700
+    itemized_taxable_income_deductions: 16_500
+    standard_deduction: 16_100
+    # Section 170(p): the non-itemizer instead deducts the full 1_000.
+    charitable_deduction_for_non_itemizers: 1_000
+    tax_unit_itemizes: false
+    taxable_income: 42_900
+
+- name: 2026 - the itemization choice uses the section 68 limitation net of the QBI deduction
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 400_000
+        non_qualified_dividend_income: 300_000
+        qualified_reit_and_ptp_income: 300_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        charitable_deduction: 16_500
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # QBI deduction: 20 percent of the 300_000 of qualified REIT dividends,
+    # 60_000, under 20 percent of taxable income either way (199A(a)).
+    qualified_business_income_deduction: 60_000
+    # Section 68(a)(2): 700_000 - 60_000 = 640_000 does not exceed the
+    # 640_600 single 37 percent bracket start (Rev. Proc. 2025-32, sec.
+    # 4.01, Table 3), so the 16_500 of itemized deductions is not reduced and
+    # exceeds the 16_100 standard deduction (sec. 4.14).
+    itemized_taxable_income_deductions: 16_500
+    standard_deduction: 16_100
+    tax_unit_itemizes: true
+    # 700_000 - 16_500 - 60_000
+    taxable_income: 623_500
+
+- name: 2026 without branching - the deduction comparison uses the section 68 limitation net of the QBI deduction
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.branch_to_determine_itemization: false
+    people:
+      head:
+        age: 50
+        employment_income: 400_000
+        non_qualified_dividend_income: 300_000
+        qualified_reit_and_ptp_income: 300_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        charitable_deduction: 16_500
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # As in the case above: leg (2) is 700_000 - 60_000 = 640_000, so the
+    # 16_500 of itemized deductions is not reduced and exceeds 16_100.
+    qualified_business_income_deduction: 60_000
+    itemized_taxable_income_deductions: 16_500
+    tax_unit_itemizes: true
+
 - name: Integration test which fails without tolerance in the itemization choice
   period: 2024
   absolute_error_margin: 0.1

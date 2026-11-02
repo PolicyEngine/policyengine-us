@@ -1,7 +1,8 @@
 # VA TANF Income Eligibility Tests
 # Two-step test:
 #   Step 1: va_tanf_gross_income <= need_standard
-#   Step 2: countable_income <= grant_standard (or up_grant_standard if UP eligible)
+#   Step 2: countable_income <= grant_standard (also for UP eligible units,
+#   unless the separate TANF-UP standards are in effect)
 
 - name: Case 1, no income is eligible.
   period: 2023
@@ -58,23 +59,8 @@
     # Step 2: 7,000 <= 6,000? NO (fails step 2)
     va_tanf_income_eligibility: false
 
-- name: Case 5, UP eligible uses UP grant standard.
-  period: 2023
-  input:
-    state_code: VA
-    va_tanf_gross_income: 8_000
-    va_tanf_need_standard: 12_000
-    va_tanf_countable_income: 4_500
-    va_up_tanf_eligibility: true
-    va_tanf_grant_standard: 6_000
-    va_tanf_up_grant_standard: 5_000
-  output:
-    # Step 1: 8,000 <= 12,000? YES
-    # Step 2 (UP): 4,500 <= 5,000? YES
-    va_tanf_income_eligibility: true
-
-- name: Case 6, UP eligible but countable exceeds UP grant - not eligible.
-  period: 2023
+- name: Case 5, in 2021 UP eligible units use the TANF grant standard.
+  period: 2021
   input:
     state_code: VA
     va_tanf_gross_income: 8_000
@@ -85,7 +71,23 @@
     va_tanf_up_grant_standard: 5_000
   output:
     # Step 1: 8,000 <= 12,000? YES
-    # Step 2 (UP): 5,500 <= 5,000? NO (fails step 2)
+    # Step 2 (TANF standard): 5,500 <= 6,000? YES
+    # (5,500 is above the TANF-UP standard of 5,000)
+    va_tanf_income_eligibility: true
+
+- name: Case 6, in 2021 UP eligible units above the TANF grant standard are not eligible.
+  period: 2021
+  input:
+    state_code: VA
+    va_tanf_gross_income: 8_000
+    va_tanf_need_standard: 12_000
+    va_tanf_countable_income: 6_500
+    va_up_tanf_eligibility: true
+    va_tanf_grant_standard: 6_000
+    va_tanf_up_grant_standard: 7_000
+  output:
+    # Step 1: 8,000 <= 12,000? YES
+    # Step 2 (TANF standard): 6,500 <= 6,000? NO (fails step 2)
     va_tanf_income_eligibility: false
 
 - name: Case 7, only calculate for VA.
@@ -142,32 +144,62 @@
     # Step 2: 6,001 <= 6,000? NO (just above boundary)
     va_tanf_income_eligibility: false
 
-- name: Case 11, UP eligible with countable exactly at UP grant standard.
-  period: 2023
+- name: Case 11, before July 2020 UP eligible units with countable at the TANF grant standard are eligible.
+  period: 2019
   input:
     state_code: VA
     va_tanf_gross_income: 8_000
     va_tanf_need_standard: 12_000
-    va_tanf_countable_income: 5_000
+    va_tanf_countable_income: 6_000
     va_up_tanf_eligibility: true
     va_tanf_grant_standard: 6_000
     va_tanf_up_grant_standard: 5_000
   output:
     # Step 1: 8,000 <= 12,000? YES
-    # Step 2 (UP): 5,000 <= 5,000? YES (at boundary)
+    # Step 2 (TANF standard): 6,000 <= 6,000? YES (at boundary)
     va_tanf_income_eligibility: true
 
-- name: Case 12, UP eligible with countable $1 above UP grant standard.
+- name: Case 12, before July 2020 UP eligible units $1 above the TANF grant standard are not eligible.
+  period: 2019
+  input:
+    state_code: VA
+    va_tanf_gross_income: 8_000
+    va_tanf_need_standard: 12_000
+    va_tanf_countable_income: 6_001
+    va_up_tanf_eligibility: true
+    va_tanf_grant_standard: 6_000
+    va_tanf_up_grant_standard: 7_000
+  output:
+    # Step 1: 8,000 <= 12,000? YES
+    # Step 2 (TANF standard): 6,001 <= 6,000? NO (just above boundary)
+    va_tanf_income_eligibility: false
+
+- name: Case 13, in 2023 UP eligible units use the TANF grant standard.
   period: 2023
   input:
     state_code: VA
     va_tanf_gross_income: 8_000
     va_tanf_need_standard: 12_000
-    va_tanf_countable_income: 5_001
+    va_tanf_countable_income: 5_500
     va_up_tanf_eligibility: true
     va_tanf_grant_standard: 6_000
     va_tanf_up_grant_standard: 5_000
   output:
     # Step 1: 8,000 <= 12,000? YES
-    # Step 2 (UP): 5,001 <= 5,000? NO (just above boundary)
+    # Step 2 (TANF standard): 5,500 <= 6,000? YES
+    va_tanf_income_eligibility: true
+
+- name: Case 14, in 2023 UP eligible units above the TANF grant standard are not eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_tanf_gross_income: 8_000
+    va_tanf_need_standard: 12_000
+    va_tanf_countable_income: 6_001
+    va_up_tanf_eligibility: true
+    va_tanf_grant_standard: 6_000
+    va_tanf_up_grant_standard: 7_000
+  output:
+    # Step 1: 8,000 <= 12,000? YES
+    # Step 2 (TANF standard): 6,001 <= 6,000? NO
     va_tanf_income_eligibility: false

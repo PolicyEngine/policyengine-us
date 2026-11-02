@@ -1,3 +1,5 @@
+# Updated from the TAXSIM-derived values: the Iowa federal tax deduction no longer
+# subtracts the Additional Medicare tax ($18.18) a second time (IA 1040 line 28; taxsim #1436).
 - name: Tax unit with taxsimid 4506 in p21.its.csv and p21.ots.csv
   absolute_error_margin: 0.01
   period: 2021
@@ -59,27 +61,27 @@
     ia_standard_deduction_indiv: [2130, 2130, 0, 0, 0, 0]
     ia_standard_deduction_joint: [5240,    0, 0, 0, 0, 0]
     # aggregate IA fedtax is 46_502.80 + -4_000.00 - 18.18 = 42_484.62
-    ia_fedtax_deduction: [17_533.63, 24_950.99, 0, 0, 0, 0]
-    ia_taxable_income_indiv: [84_346.37, 120_929.01, 0, 0, 0, 0]
-    ia_taxable_income_joint: [204_295.38,      0.00, 0, 0, 0, 0]
-    ia_regular_tax_indiv: [ 5_184.05, 8_304.55, 0, 0, 0, 0]
-    ia_regular_tax_joint: [15_415.70,     0.00, 0, 0, 0, 0]
+    ia_fedtax_deduction: [17541.13, 24961.67, 0, 0, 0, 0]
+    ia_taxable_income_indiv: [84338.87, 120918.33, 0, 0, 0, 0]
+    ia_taxable_income_joint: [204277.20, 0, 0, 0, 0, 0]
+    ia_regular_tax_indiv: [5183.41, 8303.64, 0, 0, 0, 0]
+    ia_regular_tax_joint: [15414.15, 0, 0, 0, 0, 0]
     ia_alternate_tax_indiv: [ 8_396.80, 11_948.95, 0, 0, 0, 0]
     ia_alternate_tax_joint: [20_345.76,      0.00, 0, 0, 0, 0]
     # base tax is minimum of regular tax and alternate tax:
-    ia_base_tax_indiv: [ 5_184.05, 8_304.55, 0, 0, 0, 0]
-    ia_base_tax_joint: [15_415.70,     0.00, 0, 0, 0, 0]
+    ia_base_tax_indiv: [5183.41, 8303.64, 0, 0, 0, 0]
+    ia_base_tax_joint: [15414.15, 0, 0, 0, 0, 0]
     # Iowa alternative minimum tax:
     ia_amt_indiv: [0, 0, 0, 0, 0, 0]
     ia_amt_joint: [0, 0, 0, 0, 0, 0]
     # Iowa income tax is sum of base tax and alternative minimum tax:
-    ia_income_tax_indiv: 13_488.60  # person amounts aggregated for tax unit
-    ia_income_tax_joint: 15_415.70  # person amounts aggregated for tax unit
+    ia_income_tax_indiv: 13487.04  # person amounts aggregated for tax unit
+    ia_income_tax_joint: 15414.15  # person amounts aggregated for tax unit
     # decide whether or not to file separately on Iowa return:
     ia_files_separately: true
-    ia_income_tax_before_credits: 13_488.60
+    ia_income_tax_before_credits: 13487.04
     ia_exemption_credit: 240  # = 6 * 40
-    ia_income_tax: 13_248.60
+    ia_income_tax: 13247.04
 
 - name: Tax unit with taxsimid 37860 in p21.its.csv and p21.ots.csv
   absolute_error_margin: 0.01
@@ -183,6 +185,8 @@
     ia_exemption_credit: 120
     ia_income_tax: 478.81  # the incorrect TAXSIM35 result is 430.85
 
+# Updated from the TAXSIM-derived values: the Iowa federal tax deduction no longer
+# subtracts the self-employment tax a second time (IA 1040 line 28; taxsim #1436).
 - name: Tax unit with taxsimid 4731 in j21.its.csv and j21.ots.csv
   absolute_error_margin: 0.01
   period: 2021
@@ -236,8 +240,10 @@
         members: [person1, person2]
         state_code: IA
   output:  # expected ia_income_tax from patched TAXSIM35 2023-06-22 version
-    ia_income_tax: 5_620.59
+    ia_income_tax: 4965.75
 
+# Updated from the TAXSIM-derived values: the Iowa federal tax deduction no longer
+# subtracts the self-employment tax a second time (IA 1040 line 28; taxsim #1436).
 - name: Tax unit with taxsimid 2782 in j21.its.csv and j21.ots.csv
   absolute_error_margin: 0.01
   period: 2021
@@ -305,8 +311,10 @@
     qbid_amount: [8_551.90, 0, 0, 0, 0]
     qualified_business_income_deduction: 6_395.90
     ia_qbi_deduction: [3_197.95, 0, 0, 0, 0]
-    ia_income_tax: 2_648.36
+    ia_income_tax: 2484.28
 
+# Updated from the TAXSIM-derived values: the Iowa federal tax deduction no longer
+# subtracts the Additional Medicare tax a second time (IA 1040 line 28; taxsim #1436).
 - name: Tax unit with taxsimid 64550 in q21.its.csv and q21.ots.csv
   absolute_error_margin: 0.01
   period: 2021
@@ -345,7 +353,7 @@
         members: [person1, person2]
         state_code: IA
   output:  # expected ia_income_tax from patched TAXSIM35 2023-06-23 version
-    ia_income_tax: 14_590.43
+    ia_income_tax: 14553.70
 
 - name: Single person with $40,000 of employment income
   absolute_error_margin: 1

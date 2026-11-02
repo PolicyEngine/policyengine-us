@@ -35,3 +35,77 @@
   output:
     # 2025: 20% of federal EITC
     va_non_refundable_eitc_if_claimed: 800
+
+
+- name: 2025 joint return with one claimable spouse gets no nonrefundable Virginia EITC (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        eitc: 1000
+        va_low_income_tax_credit: 0
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: VA
+  output:
+    va_non_refundable_eitc_if_claimed: 0
+
+- name: 2025 joint return with one claimable spouse gets no nonrefundable Virginia EITC (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        eitc: 1000
+        va_low_income_tax_credit: 0
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: VA
+  output:
+    va_non_refundable_eitc_if_claimed: 0
+
+- name: 2025 joint return with neither spouse claimable gets the nonrefundable Virginia EITC
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+      person_b:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        eitc: 1000
+        va_low_income_tax_credit: 0
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: VA
+  output:
+    va_non_refundable_eitc_if_claimed: 200

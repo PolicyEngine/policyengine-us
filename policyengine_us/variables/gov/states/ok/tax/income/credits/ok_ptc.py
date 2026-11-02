@@ -10,6 +10,9 @@ class ok_ptc(Variable):
     reference = (
         # 2025 Form 538-H (Property Tax Credit form)
         "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/538-H.pdf",
+        # 68 O.S. 2906: a person 65 or older or totally disabled who heads
+        # the household
+        "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=93068",
     )
     defined_for = StateCode.OK
     documentation = """
@@ -21,7 +24,7 @@ class ok_ptc(Variable):
 
     Eligibility requirements (must meet ALL):
     1. Age requirement: Head OR spouse must be age 65 or older, OR
-       head must be totally disabled
+       head OR spouse must be totally disabled
     2. Income requirement: Gross household income must be $12,000 or less
     3. Must have paid real estate taxes on Oklahoma homestead
 
@@ -58,8 +61,12 @@ class ok_ptc(Variable):
         # Step 1: Check age/disability eligibility
         elderly_head = tax_unit("age_head", period) >= p.age_minimum
         elderly_spouse = tax_unit("age_spouse", period) >= p.age_minimum
+        # The claimant is a totally disabled head of household: a person who
+        # owns or jointly owns and maintains the home. On a joint return
+        # either spouse can be that claimant, as either spouse's age counts.
         disabled_head = tax_unit("head_is_disabled", period)
-        unit_eligible = elderly_head | elderly_spouse | disabled_head
+        disabled_spouse = tax_unit("spouse_is_disabled", period)
+        unit_eligible = elderly_head | elderly_spouse | disabled_head | disabled_spouse
         # Step 2: Check income eligibility (gross income <= $12,000)
         income = tax_unit("ok_gross_income", period)
         income_eligible = income <= p.income_limit
