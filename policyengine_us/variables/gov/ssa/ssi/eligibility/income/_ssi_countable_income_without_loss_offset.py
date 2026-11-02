@@ -35,9 +35,8 @@ def ssi_countable_income_without_loss_offset(person, period, parameters, sources
     without_offset = _apply_ssi_exclusions(
         earned + restored_loss, unearned, parameters, year
     )
-    # ssi_countable_income is zero for a person who is not SSI eligible.
-    is_eligible = person("is_ssi_eligible_individual", year) | person(
-        "is_ssi_eligible_spouse", year
-    )
-    adjustment = where(is_eligible, without_offset - with_offset, 0)
+    # Same gate as ssi_countable_income, which is zero for a person who is
+    # not aged, blind or disabled.
+    is_aged_blind_disabled = person("is_ssi_aged_blind_disabled", year)
+    adjustment = where(is_aged_blind_disabled, without_offset - with_offset, 0)
     return countable_income + adjustment / MONTHS_IN_YEAR
