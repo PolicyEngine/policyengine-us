@@ -68,8 +68,11 @@ independently. For every tax unit:
 10. Line 1a on separate returns (2021-2023): other medical expenses sit on
    the person cared for, so a dependent's are not clearly attributable to
    one spouse. Each spouse's column holds their own other expenses plus
-   half of the dependents' (the model's equal division; the form allows any
-   proportion); an unmarried head's column holds all of the dependents'.
+   their share of the dependents': the head's share is
+   mt_dependent_medical_expense_head_share (between 0 and 1, chosen to
+   minimize the couple's tax; its own invariants are in
+   test_mt_dependent_medical_split_invariants.py) and the spouse's the rest;
+   an unmarried head's column holds all of the dependents'.
    Conservation: the head's and spouse's columns sum to every member's
    other medical expenses, the joint return's line 1 base. Dependents hold
    nothing.
@@ -90,9 +93,6 @@ TOLERANCE = 0.05
 FORM_FLOOR = 0.075  # Itemized Deductions Schedule line 1c
 STATE_YEARS = [2021, 2022, 2023]
 FEDERAL_YEAR = 2024
-# Each spouse's share of a dependent's other medical expenses on separate
-# returns: the model's equal division (property 10).
-SPOUSE_SHARE = 0.5
 YEARS = STATE_YEARS + [FEDERAL_YEAR]
 MODES = ["derived", "person", "unit"]
 VARIANTS = ["base", "raised", "no_pre_tax"]
@@ -326,6 +326,7 @@ PERSON_VARIABLES = [
 ]
 UNIT_VARIABLES = [
     "mt_agi_joint",
+    "mt_dependent_medical_expense_head_share",
     "self_employed_health_insurance_ald",
     "mt_premium_deduction_joint",
     "itemized_medical_expenses",
@@ -428,7 +429,16 @@ def _check(units, year, mode):
     # 10. Line 1a in each separate column, from the inputs' roles.
     unit = run["unit"]
     married = _unit_sum(run, role == "spouse") > 0
-    share = np.where(married[unit], filer * SPOUSE_SHARE, role == "head")
+    head_share = run["mt_dependent_medical_expense_head_share"][unit]
+    assert ((head_share >= 0) & (head_share <= 1)).all()
+    spouse_share = 1 - head_share
+    share = np.where(
+        married[unit],
+        np.where(
+            role == "head", head_share, np.where(role == "spouse", spouse_share, 0)
+        ),
+        role == "head",
+    )
     dependent_other = _unit_sum(run, ~filer * other)
     expected_line_1a = filer * other + share * dependent_other[unit]
     line_1a = run["mt_medical_and_dental_expenses_indiv"]

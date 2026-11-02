@@ -1,6 +1,8 @@
-- name: Spouses filing separately on the same form each take half of every dependent's expenses
+- name: With no income, every split gives the same tax, so the tie goes to the equal split
   # Two tax units with the same people label the first adult head and then
-  # spouse; the columns do not depend on the label.
+  # spouse; the columns do not depend on the label. The couple has no income,
+  # so the combined tax is zero at every candidate share and the tie goes to
+  # the share closest to the equal split.
   period: 2021
   absolute_error_margin: 0.01
   input:
@@ -48,6 +50,7 @@
         members: [b_second, b_first, b_child1, b_child2]
         state_code: MT
   output:
+    mt_dependent_medical_expense_head_share: [0.5, 0.5]
     # The dependents' 4,000 is divided equally: 2,000 to each column. The
     # columns hold 2,000 + 2,700 = 4,700, every member's expenses.
     mt_medical_and_dental_expenses_indiv: [2_000, 2_700, 0, 0, 2_000, 2_700, 0, 0]
