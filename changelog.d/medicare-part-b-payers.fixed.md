@@ -1,1 +1,1 @@
-Stop charging the Medicare Part B premium to Part A-only enrollees (new medicare_part_b_enrolled input) and to SSI recipients whose Part B premium a state Medicaid buy-in pays.
+Stop charging the Medicare Part B premium to Part A-only enrollees (new medicare_part_b_enrolled input) and to SSI recipients whose Part B premium a state Medicaid buy-in pays, counted month by month and including 209(b) SSI recipients on Medicaid; Medicaid eligibility counts the premium before the buy-in.
