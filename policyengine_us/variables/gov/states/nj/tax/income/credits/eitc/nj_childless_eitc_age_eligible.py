@@ -20,8 +20,10 @@ class nj_childless_eitc_age_eligible(Variable):
         # Return True if all federal EITC conditions are met, except with modified age paramaters and household has no children.
         # P.L.2021, c.130 waives only the federal minimum and maximum ages,
         # so the unit must still meet the federal marital condition in
-        # IRC 32(d), whatever its filing status.
+        # IRC 32(d), and New Jersey's own bar on married separate filers in
+        # section 1a.(3).
         marital_eligible = tax_unit("eitc_marital_eligible", period)
+        nj_separate_filer_eligible = tax_unit("nj_eitc_separate_filer_eligible", period)
         # Check if tax unit has any EITC qualifying children.
         person = tax_unit.members
         no_qualifying_children = tax_unit("eitc_child_count", period) == 0
@@ -39,6 +41,7 @@ class nj_childless_eitc_age_eligible(Variable):
 
         return (
             marital_eligible
+            & nj_separate_filer_eligible
             & no_qualifying_children
             & tax_unit.any(age_eligible)
             & tax_unit("nj_eitc_income_eligible", period)

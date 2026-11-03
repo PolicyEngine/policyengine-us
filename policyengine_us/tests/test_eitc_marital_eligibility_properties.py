@@ -1,11 +1,9 @@
-"""IRC 32(d) invariants over vectorized tax units and member populations.
+"""IRC 32(d) and New Jersey invariants over vectorized tax units.
 
-Invoke the production marital-eligibility formula with small entity proxies
-and the actual exception parameter. Hypothesis varies qualifying-child,
-residence and identification facts, while each unit is evaluated with all
-four separation-fact combinations as both a separate and a joint filer.
-YAML tests cover model integration; these generated populations check
-monotonicity and aggregation without constructing or copying full models.
+The tests call the production formulas on small entity proxies with the
+real parameters, so they build no model. Each invariant can fail on its
+own and carries its reason. The tests compare results across inputs and
+do not restate a formula. YAML tests pin the dollar amounts.
 """
 
 from itertools import product
@@ -29,330 +27,20 @@ from policyengine_us.variables.gov.states.nj.tax.income.credits.eitc.nj_childles
 from policyengine_us.variables.gov.states.nj.tax.income.credits.eitc.nj_eitc import (
     nj_eitc,
 )
-
-
-ELIGIBILITY = ParameterNode(
-    "eligibility",
-    directory_path=str(
-        Path(__file__).resolve().parents[1]
-        / "parameters/gov/irs/credits/eitc/eligibility"
-    ),
+from policyengine_us.variables.gov.states.nj.tax.income.credits.eitc.nj_eitc_separate_filer_eligible import (
+    nj_eitc_separate_filer_eligible,
 )
-SEPARATION_FACTS = list(product((False, True), repeat=2))
+
+PARAMETERS = Path(__file__).resolve().parents[1] / "parameters/gov"
+FEDERAL_EITC = ParameterNode(
+    "eitc", directory_path=str(PARAMETERS / "irs/credits/eitc")
+)
+NJ_EITC = ParameterNode(
+    "eitc", directory_path=str(PARAMETERS / "states/nj/tax/income/credits/eitc")
+)
 
 
 def parameters(period):
-    return SimpleNamespace(
-        gov=SimpleNamespace(
-            irs=SimpleNamespace(
-                credits=SimpleNamespace(
-                    eitc=SimpleNamespace(eligibility=ELIGIBILITY(period))
-                )
-            )
-        )
-    )
-
-
-class FilingStatuses(np.ndarray):
-    possible_values = SimpleNamespace(
-        SEPARATE="SEPARATE", JOINT="JOINT", HEAD_OF_HOUSEHOLD="HEAD_OF_HOUSEHOLD"
-    )
-
-
-class TaxUnits:
-    """Provide entity access and group aggregation, without policy logic."""
-
-    def __init__(self, cases):
-        self.member_groups = []
-        member_values = []
-        statuses, six_months, legal_separation = [], [], []
-        for case in cases:
-            for status in ("SEPARATE", "JOINT"):
-                for apart, legal in SEPARATION_FACTS:
-                    unit_index = len(statuses)
-                    statuses.append(status)
-                    six_months.append(apart)
-                    legal_separation.append(legal)
-                    # Every unit has an adult as well as its generated members.
-                    members = [(False, True, True), *case]
-                    self.member_groups.extend([unit_index] * len(members))
-                    member_values.extend(members)
-        self.member_groups = np.asarray(self.member_groups, dtype=int)
-        self.count = len(statuses)
-        self.person_values = dict(
-            zip(
-                (
-                    "is_eitc_qualifying_child",
-                    "eitc_child_lived_with_taxpayer_more_than_half_year",
-                    "meets_eitc_identification_requirements",
-                ),
-                np.asarray(member_values, dtype=bool).T,
-            )
-        )
-        # The first member of each unit is the filer; nobody is separated, so
-        # the separated head-of-household route is not exercised here.
-        filer = np.r_[True, self.member_groups[1:] != self.member_groups[:-1]]
-        self.person_values["is_tax_unit_head_or_spouse"] = filer
-        self.person_values["is_separated"] = np.zeros_like(filer)
-        self.person_values["is_separated_under_decree"] = np.zeros_like(filer)
-        # Expose the existing SSN-restricted count as well, so accidentally
-        # using it instead of pre-identification children fails the properties.
-        identified_children = (
-            self.person_values["is_eitc_qualifying_child"]
-            & self.person_values["meets_eitc_identification_requirements"]
-        )
-        self.values = {
-            "filing_status": np.asarray(statuses).view(FilingStatuses),
-            "eitc_spouses_lived_apart_last_six_months": np.asarray(six_months),
-            "eitc_legal_separation_and_apart_at_year_end": np.asarray(legal_separation),
-            "eitc_child_count": np.bincount(
-                self.member_groups,
-                weights=identified_children,
-                minlength=self.count,
-            ),
-        }
-
-    def __call__(self, variable, period):
-        return self.values[variable]
-
-    def members(self, variable, period):
-        return self.person_values[variable]
-
-    def any(self, values):
-        result = np.zeros(self.count, dtype=bool)
-        np.logical_or.at(result, self.member_groups, values)
-        return result
-
-
-member_facts = st.tuples(st.booleans(), st.booleans(), st.booleans())
-
-
-@settings(max_examples=50, deadline=None, derandomize=True)
-@given(cases=st.lists(st.lists(member_facts, max_size=5), min_size=1, max_size=12))
-@example(
-    cases=[
-        [],
-        [(True, True, False)],
-        [(True, False, True), (False, True, True)],
-    ]
-)
-def test_marital_eligibility_invariants(cases):
-    tax_units = TaxUnits(cases)
-    has_resident_child = np.asarray(
-        [
-            any(qualifies and resident for qualifies, resident, _ in case)
-            for case in cases
-        ]
-    )
-    for year in (2020, 2021, 2025):
-        actual = eitc_marital_eligible.formula(
-            tax_units, f"{year}-01-01", parameters
-        ).reshape(len(cases), 2, len(SEPARATION_FACTS))
-        separate, joint = actual[:, 0], actual[:, 1]
-
-        # Joint filers satisfy the marital test for every child/separation fact.
-        assert joint.all()
-        # No child, or only a nonresident child, can never enable the exception.
-        assert not separate[~has_resident_child].any()
-        # Adding either true separation fact cannot remove eligibility.
-        assert np.all(separate[:, 0] <= separate[:, 1])
-        assert np.all(separate[:, 0] <= separate[:, 2])
-        assert np.all(separate[:, 1] <= separate[:, 3])
-        assert np.all(separate[:, 2] <= separate[:, 3])
-
-        if year < 2021:
-            assert not separate.any()
-        else:
-            assert not separate[:, 0].any()
-            # Both legal routes work with a resident qualifying child, even
-            # when that child's identification fails the federal credit test.
-            assert separate[has_resident_child, 1:].all()
-
-
-@pytest.mark.parametrize("year,frozen_switch", [(2025, False), (2020, True)])
-def test_state_frozen_exception_switch_overrides_current_year(year, frozen_switch):
-    period = f"{year}-01-01"
-    assert ELIGIBILITY(period).separate_filer != frozen_switch
-    tax_units = TaxUnits(
-        [
-            [(True, True, False)],
-            [],
-            [(True, False, True)],
-        ]
-    )
-    actual = eitc_filing_status_eligible(
-        tax_units,
-        period,
-        parameters,
-        separate_filer_eligible=frozen_switch,
-    ).reshape(3, 2, len(SEPARATION_FACTS))
-
-    # A frozen switch controls when the exception is available, while the
-    # resident-child and separation requirements still apply to both routes.
-    np.testing.assert_array_equal(
-        actual[0, 0], [False, frozen_switch, frozen_switch, frozen_switch]
-    )
-    assert not actual[1:, 0].any()
-    assert actual[:, 1].all()
-
-
-# IRC 7703(a)(2): a filer legally separated under a decree of separate
-# maintenance is not married, so IRC 32(d) needs no exception for the unit.
-DECREE_STATUSES = ("SEPARATE", "HEAD_OF_HOUSEHOLD", "JOINT", "SINGLE")
-DECREE_HOLDERS = ("nobody", "head", "dependent")
-
-
-class DecreeUnits:
-    """Units over status, head separation, separation facts and decree holder.
-
-    Each generated child list is crossed with every status, head is_separated
-    value, separation-fact pair and decree holder. Members are the head, then
-    one dependent who never counts as a qualifying child, then the children.
-    """
-
-    def __init__(self, cases):
-        member_groups, person_rows, unit_rows = [], [], []
-        for case_index, case in enumerate(cases):
-            for status, separated, (apart, legal), holder in product(
-                DECREE_STATUSES, (False, True), SEPARATION_FACTS, DECREE_HOLDERS
-            ):
-                unit_index = len(unit_rows)
-                unit_rows.append(
-                    (
-                        case_index,
-                        status,
-                        separated,
-                        apart,
-                        legal,
-                        DECREE_HOLDERS.index(holder),
-                    )
-                )
-                # (head_or_spouse, separated, decree, qualifies, resident)
-                members = [
-                    (True, separated, holder == "head", False, True),
-                    (False, False, holder == "dependent", False, True),
-                    *[(False, False, False, q, r) for q, r in case],
-                ]
-                member_groups.extend([unit_index] * len(members))
-                person_rows.extend(members)
-        self.member_groups = np.asarray(member_groups, dtype=int)
-        self.count = len(unit_rows)
-        columns = np.asarray(person_rows, dtype=bool).T
-        self.person_values = dict(
-            zip(
-                (
-                    "is_tax_unit_head_or_spouse",
-                    "is_separated",
-                    "is_separated_under_decree",
-                    "is_eitc_qualifying_child",
-                    "eitc_child_lived_with_taxpayer_more_than_half_year",
-                ),
-                columns,
-            )
-        )
-        case_index, status, separated, apart, legal, holder = zip(*unit_rows)
-        self.case_index = np.asarray(case_index)
-        self.status = np.asarray(status)
-        self.separated = np.asarray(separated)
-        self.holder = np.asarray(holder)
-        self.values = {
-            "filing_status": np.asarray(status).view(FilingStatuses),
-            "eitc_spouses_lived_apart_last_six_months": np.asarray(apart),
-            "eitc_legal_separation_and_apart_at_year_end": np.asarray(legal),
-        }
-
-    def __call__(self, variable, period):
-        return self.values[variable]
-
-    def members(self, variable, period):
-        return self.person_values[variable]
-
-    def any(self, values):
-        result = np.zeros(self.count, dtype=bool)
-        np.logical_or.at(result, self.member_groups, values)
-        return result
-
-
-def head_rule_without_decree(units, has_resident_child, year):
-    """IRC 32(d) as this PR read it before the decree input existed.
-
-    Written from the statute rather than copied from the formula: before 2021
-    a separate return is barred; from 2021 a separate filer, or a separated
-    head of household, needs a resident qualifying child and either route.
-    """
-    separate = units.status == "SEPARATE"
-    if year < 2021:
-        return ~separate
-    needs_exception = separate | (
-        (units.status == "HEAD_OF_HOUSEHOLD") & units.separated
-    )
-    routes = (
-        units.values["eitc_spouses_lived_apart_last_six_months"]
-        | units.values["eitc_legal_separation_and_apart_at_year_end"]
-    )
-    return ~needs_exception | (has_resident_child[units.case_index] & routes)
-
-
-@settings(max_examples=50, deadline=None, derandomize=True)
-@given(
-    cases=st.lists(
-        st.lists(st.tuples(st.booleans(), st.booleans()), max_size=3),
-        min_size=1,
-        max_size=6,
-    )
-)
-@example(cases=[[], [(True, True)], [(True, False)]])
-def test_decree_of_separate_maintenance_invariants(cases):
-    units = DecreeUnits(cases)
-    has_resident_child = np.asarray([any(q and r for q, r in case) for case in cases])
-    nobody, head, dependent = (
-        units.holder == DECREE_HOLDERS.index(h) for h in DECREE_HOLDERS
-    )
-    for year in (2020, 2021, 2025):
-        actual = eitc_marital_eligible.formula(units, f"{year}-01-01", parameters)
-        expected = head_rule_without_decree(units, has_resident_child, year)
-
-        # With the decree input false everywhere, results equal the rule
-        # before the input existed, and a decree on a dependent changes
-        # nothing: only the head or spouse can be separated under a decree.
-        np.testing.assert_array_equal(actual[nobody], expected[nobody])
-        np.testing.assert_array_equal(actual[dependent], expected[dependent])
-        # Turning the decree input on never removes marital eligibility.
-        assert np.all(actual[nobody] <= actual[head])
-        if year < 2021:
-            # The frozen pre-ARPA path ignores the input.
-            np.testing.assert_array_equal(actual[head], actual[nobody])
-        else:
-            # A decree makes the head unmarried, whatever the other facts.
-            assert actual[head].all()
-            # Not vacuous: every case has a separate filer with no separation
-            # route who fails without the decree and passes with it.
-            gained = actual[head] & ~actual[nobody]
-            assert set(units.case_index[head][gained]) == set(range(len(cases)))
-
-    # States that freeze the exception off keep barring separate returns.
-    frozen = eitc_filing_status_eligible(
-        units, "2025-01-01", parameters, separate_filer_eligible=False
-    )
-    np.testing.assert_array_equal(frozen, units.status != "SEPARATE")
-
-
-NJ_EITC = ParameterNode(
-    "eitc",
-    directory_path=str(
-        Path(__file__).resolve().parents[1]
-        / "parameters/gov/states/nj/tax/income/credits/eitc"
-    ),
-)
-FEDERAL_EITC = ParameterNode(
-    "eitc",
-    directory_path=str(
-        Path(__file__).resolve().parents[1] / "parameters/gov/irs/credits/eitc"
-    ),
-)
-
-
-def nj_parameters(period):
     return SimpleNamespace(
         gov=SimpleNamespace(
             irs=SimpleNamespace(credits=SimpleNamespace(eitc=FEDERAL_EITC(period))),
@@ -369,39 +57,23 @@ def nj_parameters(period):
     )
 
 
-class NewJerseyUnits:
-    """One-person New Jersey units with federal EITC results as inputs."""
+class FilingStatuses(np.ndarray):
+    possible_values = SimpleNamespace(
+        SEPARATE="SEPARATE",
+        JOINT="JOINT",
+        HEAD_OF_HOUSEHOLD="HEAD_OF_HOUSEHOLD",
+        SINGLE="SINGLE",
+    )
 
-    def __init__(self, rows, marital):
-        (
-            age,
-            child_count,
-            income_eligible,
-            other_federal_eligible,
-            phased_in,
-            reduction,
-            takes_up,
-        ) = (np.asarray(column) for column in zip(*rows))
-        marital = np.asarray(marital, dtype=bool)
-        # eitc_eligible includes the marital condition.
-        eligible = np.asarray(other_federal_eligible, dtype=bool) & marital
-        self.count = len(rows)
-        self.person_values = {"age": age}
-        zeros = np.zeros(self.count)
-        self.values = {
-            "eitc_marital_eligible": marital,
-            "eitc_child_count": child_count,
-            "nj_eitc_income_eligible": np.asarray(income_eligible, dtype=bool),
-            "eitc_eligible": eligible,
-            "eitc_phased_in": phased_in,
-            "eitc_reduction": reduction,
-            "takes_up_eitc": np.asarray(takes_up, dtype=bool),
-            "eitc": np.maximum(phased_in - reduction, 0) * eligible * takes_up,
-            "foreign_earned_income_exclusion": zeros,
-            "section_911_excluded_income": zeros,
-        }
-        for variable in SECTION_911_LEAF_INPUTS:
-            self.values[variable] = zeros
+
+class Units:
+    """Entity access and group aggregation, with no policy logic."""
+
+    def __init__(self, member_groups, person_values, values):
+        self.member_groups = np.asarray(member_groups, dtype=int)
+        self.count = int(self.member_groups.max()) + 1
+        self.person_values = person_values
+        self.values = values
 
     def __call__(self, variable, period):
         return self.values[variable]
@@ -410,19 +82,207 @@ class NewJerseyUnits:
         return self.person_values[variable]
 
     def any(self, values):
-        return np.asarray(values, dtype=bool)
+        result = np.zeros(self.count, dtype=bool)
+        np.logical_or.at(result, self.member_groups, values)
+        return result
 
 
-def nj_eitc_for(rows, marital, year):
-    units = NewJerseyUnits(rows, marital)
-    period = f"{year}-01-01"
-    units.values["nj_childless_eitc_age_eligible"] = (
-        nj_childless_eitc_age_eligible.formula(units, period, nj_parameters)
+STATUSES = ("SEPARATE", "HEAD_OF_HOUSEHOLD", "JOINT", "SINGLE")
+HOLDERS = ("nobody", "head", "dependent")
+GRID = list(product(STATUSES, (False, True), (False, True), (False, True), HOLDERS))
+# Child facts: (qualifying child, resident more than half the year, identified).
+child = st.tuples(st.booleans(), st.booleans(), st.booleans())
+
+
+def federal_units(cases):
+    """Cross each child list with every status, head is_separated value,
+    separation-fact pair and decree holder. Members are the head, a
+    dependent who is never a qualifying child, then the children."""
+    groups, people, units = [], [], []
+    for case_index, case in enumerate(cases):
+        for status, separated, apart, legal, holder in GRID:
+            members = [
+                (True, separated, holder == "head", False, True, True),
+                (False, False, holder == "dependent", False, True, True),
+                *[(False, False, False, *facts) for facts in case],
+            ]
+            groups += [len(units)] * len(members)
+            people += members
+            units.append((case_index, status, separated, apart, legal, holder))
+    names = (
+        "is_tax_unit_head_or_spouse",
+        "is_separated",
+        "is_separated_under_decree",
+        "is_eitc_qualifying_child",
+        "eitc_child_lived_with_taxpayer_more_than_half_year",
+        "meets_eitc_identification_requirements",
     )
-    return nj_eitc.formula(units, period, nj_parameters)
+    person_values = dict(zip(names, np.asarray(people, dtype=bool).T))
+    case_index, status, separated, apart, legal, holder = map(np.asarray, zip(*units))
+    identified = (
+        person_values["is_eitc_qualifying_child"]
+        & person_values["meets_eitc_identification_requirements"]
+    )
+    values = {
+        "filing_status": status.view(FilingStatuses),
+        "eitc_spouses_lived_apart_last_six_months": apart,
+        "eitc_legal_separation_and_apart_at_year_end": legal,
+        # The identification-restricted count, exposed so that reading it in
+        # place of pre-identification children fails an invariant below.
+        "eitc_child_count": np.bincount(groups, weights=identified),
+    }
+    facts = SimpleNamespace(
+        case=case_index,
+        status=status,
+        separated=separated,
+        apart=apart,
+        legal=legal,
+        holder=holder,
+        resident_child=np.asarray([any(q and r for q, r, _ in case) for case in cases])[
+            case_index
+        ],
+    )
+    return Units(groups, person_values, values), facts
 
 
-nj_rows = st.tuples(
+def counterpart(facts, field, old, new):
+    """Return (i, j) index arrays pairing units that differ only in field."""
+    keys = np.rec.fromarrays(
+        [
+            facts.case,
+            facts.status,
+            facts.separated,
+            facts.apart,
+            facts.legal,
+            facts.holder,
+        ],
+        names="case,status,separated,apart,legal,holder",
+    )
+    lookup = {tuple(k): n for n, k in enumerate(keys.tolist())}
+    position = keys.dtype.names.index(field)
+    i, j = [], []
+    for n, key in enumerate(keys.tolist()):
+        if key[position] == old:
+            other = list(key)
+            other[position] = new
+            i.append(n)
+            j.append(lookup[tuple(other)])
+    return np.asarray(i), np.asarray(j)
+
+
+@settings(max_examples=40, deadline=None, derandomize=True)
+@given(cases=st.lists(st.lists(child, max_size=3), min_size=1, max_size=5))
+@example(cases=[[], [(True, True, False)], [(True, False, True)]])
+def test_federal_marital_invariants(cases):
+    units, f = federal_units(cases)
+    separate = f.status == "SEPARATE"
+    no_decree = f.holder != "head"
+    for year in (2020, 2021, 2025):
+        ok = eitc_marital_eligible.formula(units, f"{year}-01-01", parameters)
+
+        # 32(d) reaches only married filers who do not file jointly.
+        assert ok[(f.status == "JOINT") | (f.status == "SINGLE")].all()
+        # 32(d)(2)(B)(i) needs a qualifying child resident over half the year.
+        assert not ok[separate & no_decree & ~f.resident_child].any()
+        # 7703(a)(2) reaches the taxpayer only, so a dependent's decree is inert.
+        i, j = counterpart(f, "holder", "nobody", "dependent")
+        np.testing.assert_array_equal(ok[i], ok[j])
+        # Each separation route and the head's decree only relieve the test.
+        for field, old, new in (
+            ("apart", False, True),
+            ("legal", False, True),
+            ("holder", "nobody", "head"),
+        ):
+            i, j = counterpart(f, field, old, new)
+            assert np.all(ok[i] <= ok[j])
+
+        if year < 2021:
+            # Before ARPA 2021, 32(d) barred every separate return.
+            np.testing.assert_array_equal(ok, ~separate)
+            continue
+        # The exception needs one of the two separation routes.
+        assert not ok[separate & no_decree & ~f.apart & ~f.legal].any()
+        # Either route passes with a resident child, identified or not:
+        # 32(c)(3)(D) limits the credit schedule, not 32(d)(2)(B).
+        assert ok[separate & f.resident_child & (f.apart | f.legal)].all()
+        # 7703(a)(2): a head separated under a decree is not married.
+        assert ok[f.holder == "head"].all()
+        # 32(d)(2)(A) uses 7703(a) only, so a separated head of household
+        # faces the separate filer's test.
+        i, j = counterpart(f, "status", "HEAD_OF_HOUSEHOLD", "SEPARATE")
+        hoh_separated = f.separated[i]
+        np.testing.assert_array_equal(ok[i][hoh_separated], ok[j][hoh_separated])
+        # An unseparated head of household is unmarried and passes.
+        assert ok[i][~hoh_separated].all()
+
+
+@pytest.mark.parametrize("year", [2020, 2025])
+def test_state_frozen_switch_sets_only_when_the_exception_applies(year):
+    units, f = federal_units([[(True, True, False)], [], [(True, False, True)]])
+    period = f"{year}-01-01"
+    off = eitc_filing_status_eligible(
+        units, period, parameters, separate_filer_eligible=False
+    )
+    on = eitc_filing_status_eligible(
+        units, period, parameters, separate_filer_eligible=True
+    )
+    # A state that freezes the exception off bars every separate return.
+    np.testing.assert_array_equal(off, f.status != "SEPARATE")
+    # Switching it on gives the current federal test, whatever the year.
+    np.testing.assert_array_equal(
+        on, eitc_marital_eligible.formula(units, "2025-01-01", parameters)
+    )
+
+
+def nj_units(rows, marital_eligible):
+    """One-person New Jersey units with federal EITC results as inputs."""
+    (
+        status,
+        decree,
+        age,
+        child_count,
+        income_eligible,
+        other_federal,
+        phased_in,
+        reduction,
+        takes_up,
+    ) = map(np.asarray, zip(*rows))
+    marital = np.asarray(marital_eligible, dtype=bool)
+    eligible = other_federal.astype(bool) & marital
+    zeros = np.zeros(len(rows))
+    values = {
+        "filing_status": status.view(FilingStatuses),
+        "eitc_marital_eligible": marital,
+        "eitc_child_count": child_count,
+        "nj_eitc_income_eligible": income_eligible.astype(bool),
+        "eitc_eligible": eligible,
+        "eitc_phased_in": phased_in,
+        "eitc_reduction": reduction,
+        "takes_up_eitc": takes_up.astype(bool),
+        "eitc": np.maximum(phased_in - reduction, 0) * eligible * takes_up,
+        "foreign_earned_income_exclusion": zeros,
+        "section_911_excluded_income": zeros,
+        **{variable: zeros for variable in SECTION_911_LEAF_INPUTS},
+    }
+    person_values = {
+        "age": age,
+        "is_tax_unit_head_or_spouse": np.ones(len(rows), dtype=bool),
+        "is_separated_under_decree": decree.astype(bool),
+    }
+    return Units(np.arange(len(rows)), person_values, values)
+
+
+def nj_eitc_for(rows, marital_eligible, year):
+    units = nj_units(rows, marital_eligible)
+    period = f"{year}-01-01"
+    for variable in (nj_eitc_separate_filer_eligible, nj_childless_eitc_age_eligible):
+        units.values[variable.__name__] = variable.formula(units, period, parameters)
+    return nj_eitc.formula(units, period, parameters)
+
+
+nj_row = st.tuples(
+    st.sampled_from(STATUSES),
+    st.booleans(),
     st.integers(15, 80),
     st.integers(0, 2),
     st.booleans(),
@@ -433,27 +293,31 @@ nj_rows = st.tuples(
 )
 
 
-@settings(max_examples=50, deadline=None, derandomize=True)
+@settings(max_examples=40, deadline=None, derandomize=True)
 @given(
-    rows=st.lists(nj_rows, min_size=1, max_size=20),
+    rows=st.lists(nj_row, min_size=1, max_size=20),
     marital=st.lists(st.booleans(), min_size=20, max_size=20),
 )
 @example(
-    rows=[(22, 0, True, False, 612.0, 0.0, True)] * 2,
-    marital=[False, True] + [False] * 18,
+    rows=[
+        ("SEPARATE", False, 22, 0, True, False, 612.0, 0.0, True),
+        ("SEPARATE", True, 22, 0, True, False, 612.0, 0.0, True),
+    ],
+    marital=[True] * 20,
 )
-def test_nj_eitc_requires_federal_marital_eligibility(rows, marital):
-    marital = marital[: len(rows)]
+def test_nj_eitc_marital_invariants(rows, marital):
+    marital = np.asarray(marital[: len(rows)])
+    status = np.asarray([row[0] for row in rows])
+    decree = np.asarray([row[1] for row in rows])
+    relaxed_rows = [("JOINT", *row[1:]) for row in rows]
     for year in (2021, 2025):
         actual = nj_eitc_for(rows, marital, year)
-        # A unit that fails the federal marital test gets no NJ EITC, either
-        # through the federal match or the age fallback.
-        assert np.all(actual[~np.asarray(marital)] == 0)
-        # Not vacuous: with the marital test passed, the age fallback pays a
-        # childless filer aged 18 or more who meets the income tests.
-        passed = nj_eitc_for(rows, [True] * len(rows), year)
-        age, children, income_ok, _, phased_in, reduction, _ = (
-            np.asarray(column) for column in zip(*rows)
-        )
-        fallback = (age >= 18) & (children == 0) & income_ok & (phased_in > reduction)
-        assert np.all(passed[fallback] > 0)
+        # P.L.2021, c.130 waives only the federal ages, so a unit that fails
+        # 32(d) gets nothing through the match or the age fallback.
+        assert np.all(actual[~marital] == 0)
+        # N.J.S.A. 54A:4-7a.(3) bars a married separate filer, even one the
+        # federal exception admits; a decree makes the filer unmarried.
+        assert np.all(actual[(status == "SEPARATE") & ~decree] == 0)
+        # Neither rule can raise the credit when it applies.
+        relaxed = nj_eitc_for(relaxed_rows, np.ones(len(rows), dtype=bool), year)
+        assert np.all(actual <= relaxed)
