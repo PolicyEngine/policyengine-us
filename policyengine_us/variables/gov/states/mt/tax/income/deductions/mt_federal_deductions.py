@@ -4,12 +4,14 @@ from policyengine_us.model_api import *
 class mt_federal_deductions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Federal standard or adjusted itemized deduction for Montana"
+    label = "Federal standard or itemized deduction for Montana"
     unit = USD
     definition_period = YEAR
     reference = (
         "https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0200/0150-0300-0210-0200.html",
         "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=15",
+        # PDF pages 5, 13
+        "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=5",
     )
     defined_for = StateCode.MT
 
@@ -32,5 +34,11 @@ class mt_federal_deductions(Variable):
         # income formula reads the actual federal base, adds QBI back, and
         # keeps Schedule 1-A deductions in that base without deducting them twice.
         federal_deduction = where(itemizes, itemized, standard + non_itemizer_charity)
+        # In 2024 Worksheet A reduces the line 2 deduction by the addback.
+        # From 2025 line 2 takes the federal deduction unreduced, and the
+        # addback is a Schedule I addition after the line 3 floor.
+        p = parameters(period).gov.states.mt.tax.income.deductions.itemized
         add_back = tax_unit("mt_state_income_tax_itemized_add_back", period)
-        return max_(0, federal_deduction - add_back)
+        return max_(
+            0, federal_deduction - add_back * p.state_income_tax_add_back_before_floor
+        )

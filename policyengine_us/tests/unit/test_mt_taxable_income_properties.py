@@ -1,17 +1,21 @@
-"""Montana's capped state-tax adjustment precedes the taxable-income floor.
+"""In 2024 Montana's capped state-tax adjustment precedes the taxable-income floor.
 
 MCA 15-30-2101(7) incorporates the subtraction-based federal definition of
-taxable income. Form 2 Worksheet A reduces the deduction by the capped
-state-income-tax adjustment before taxable income is floored at zero:
+taxable income. The 2024 Form 2 Worksheet A reduces the deduction by the
+capped state-income-tax adjustment before taxable income is floored at zero:
 https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0010/0150-0300-0210-0010.html
 https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=15
 
+From 2025 the addback is a Schedule I addition after the floor; YAML cases in
+mt_claim_of_right_deduction.yaml cover 2025 and 2026, so this file checks
+2024 only.
+
 Generated batches exercise both federal deduction elections and excess
-deductions, including Schedule 1-A from 2025. They check the ordering against
-an independent reference and the former floor-then-add upper bound. Each
-batch also includes the review's floor-binding witness and its higher-income
-twin, where changing the order has no effect. Other Montana adjustments and
-QBI are held at zero to isolate the state-tax adjustment.
+deductions. They check the ordering against an independent reference and the
+former floor-then-add upper bound. Each batch also includes the review's
+floor-binding witness and its higher-income twin, where changing the order
+has no effect. Other Montana adjustments and QBI are held at zero to isolate
+the state-tax adjustment.
 """
 
 import numpy as np
@@ -21,7 +25,7 @@ from hypothesis import given, settings, strategies as st
 from policyengine_us import Simulation
 from policyengine_us.system import system
 
-YEARS = (2024, 2025, 2026)
+YEARS = (2024,)
 
 
 @pytest.fixture(scope="module")

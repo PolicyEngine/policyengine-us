@@ -1,0 +1,21 @@
+description: Montana adds back the state income tax included in federal itemized deductions before flooring federal taxable income at zero if this is true; otherwise it adds it back after the floor, with the other Montana additions.
+# 2024: Worksheet A reduces the federal deduction on Form 2 line 2, before the
+# line 3 zero floor. 2025: line 2 is the unadjusted federal deduction and the
+# addback is reported on Schedule I, line 4 (from Worksheet B line 11), after
+# the floor. By convention, 2026 follows the 2025 form until a 2026 form exists.
+values:
+  2024-01-01: true
+  2025-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Montana state income tax addback precedes the taxable income floor
+  reference:
+    - title: MCA 15-30-2120(1), (2)(j)
+      href: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0200/0150-0300-0210-0200.html
+    - title: 2024 Montana Form 2 instructions, line 2 and Worksheet A
+      href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=15
+    - title: "2025 Montana Form 2 instructions, what's new, line 2 and Worksheet B #page 5,13,22"
+      href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=5
+    - title: 2025 Montana Form 2, lines 2-4
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2025_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=1

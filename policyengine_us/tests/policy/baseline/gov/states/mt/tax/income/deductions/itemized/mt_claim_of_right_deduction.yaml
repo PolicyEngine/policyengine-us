@@ -368,7 +368,8 @@
   output:
     # 10,000 - 1,000 - 5,000 - 2,000 = 2,000 of deducted state income tax.
     mt_state_income_tax_itemized_add_back: 2_000
-    mt_federal_deductions: 28_000
+    # From 2025 Form 2 line 2 is not reduced by the addback.
+    mt_federal_deductions: 30_000
 
 - name: The 2024 addback is zero when sales tax was deducted instead of income tax.
   period: 2024
@@ -452,7 +453,7 @@
     mt_federal_deductions: 14_600
     mt_taxable_income_joint: 6_000
 
-- name: Excess deductions absorb the state-income-tax addback before the zero floor.
+- name: In 2024 excess deductions absorb the state-income-tax addback before the zero floor.
   period: 2024
   input:
     state_code: MT
@@ -470,7 +471,7 @@
     # max(10,000 - 20,000 + 5,400, 0) = 0.
     mt_taxable_income_joint: 0
 
-- name: State-income-tax addback ordering is unchanged when the federal floor does not bind.
+- name: The 2024 addback ordering is unchanged when the federal floor does not bind.
   period: 2024
   input:
     state_code: MT
@@ -487,6 +488,75 @@
     mt_federal_deductions: 14_600
     # Both orderings give 50,000 - 20,000 + 5,400 = 35,400.
     mt_taxable_income_joint: 35_400
+
+- name: From 2025 the state-income-tax addback follows the zero floor.
+  # 2025 Form 2 line 2 is the unreduced federal deduction; Worksheet B line 11
+  # goes to Schedule I line 4, a Montana addition after the line 3 floor.
+  period: 2025
+  input:
+    state_code: MT
+    adjusted_gross_income: 10_000
+    mt_additions: 0
+    mt_subtractions: 0
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 20_000
+    standard_deduction: 15_750
+    salt_deduction: 6_000
+    state_withheld_income_tax: 6_000
+    local_income_tax: 0
+    state_sales_tax: 0
+    local_sales_tax: 0
+    real_estate_taxes: 0
+  output:
+    # min(6,000, 20,000 - 15,750) = 4,250.
+    mt_state_income_tax_itemized_add_back: 4_250
+    mt_federal_deductions: 20_000
+    # Line 3: max(10,000 - 20,000, 0) = 0; line 4 adds 4,250.
+    mt_taxable_income_joint: 4_250
+
+- name: The 2025 addback ordering is unchanged when the federal floor does not bind.
+  period: 2025
+  input:
+    state_code: MT
+    adjusted_gross_income: 50_000
+    mt_additions: 0
+    mt_subtractions: 0
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 20_000
+    standard_deduction: 15_750
+    salt_deduction: 6_000
+    state_withheld_income_tax: 6_000
+    local_income_tax: 0
+    state_sales_tax: 0
+    local_sales_tax: 0
+    real_estate_taxes: 0
+  output:
+    mt_state_income_tax_itemized_add_back: 4_250
+    mt_federal_deductions: 20_000
+    # Both orderings give 50,000 - 20,000 + 4,250 = 34,250.
+    mt_taxable_income_joint: 34_250
+
+- name: 2026 follows the 2025 form, adding the state-income-tax addback after the floor.
+  period: 2026
+  input:
+    state_code: MT
+    adjusted_gross_income: 10_000
+    mt_additions: 0
+    mt_subtractions: 0
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 20_000
+    standard_deduction: 16_100
+    salt_deduction: 6_000
+    state_withheld_income_tax: 6_000
+    local_income_tax: 0
+    state_sales_tax: 0
+    local_sales_tax: 0
+    real_estate_taxes: 0
+  output:
+    # min(6,000, 20,000 - 16,100) = 3,900; max(10,000 - 20,000, 0) + 3,900.
+    mt_state_income_tax_itemized_add_back: 3_900
+    mt_federal_deductions: 20_000
+    mt_taxable_income_joint: 3_900
 
 - name: Small and large income classes enter separate Montana pools once in 2017.
   period: 2017

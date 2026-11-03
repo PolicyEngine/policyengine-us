@@ -8,7 +8,8 @@ values:
     - casualty_loss_deduction
     # Form 2 itemized deductions line 18 follows federal Schedule A line 16.
     - mt_claim_of_right_deduction
-  # From 2024 mt_federal_deductions takes the full federal deduction.
+  # From 2024 mt_taxable_income_joint starts from federal taxable income,
+  # which already reflects the full federal deduction.
   2024-01-01: []
 
 metadata:
