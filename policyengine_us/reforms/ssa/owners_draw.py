@@ -18,6 +18,10 @@ from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_inco
 from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.above_the_line_deductions.self_employed_health_insurance_earned_income_limit import (
     self_employed_health_insurance_earned_income_limit as baseline_sehi_limit,
 )
+from policyengine_us.variables.household.expense.retirement.self_employed_pension_earned_income import (
+    self_employed_pension_earned_income as baseline_pension_earned_income,
+    pension_plan_earned_income,
+)
 from policyengine_us.variables.gov.ssa.social_security.ss_aime import (
     ss_aime as baseline_aime,
     _compute_aime,
@@ -333,6 +337,25 @@ def create_owners_draw():
                 - retirement_plan_deduction,
             )
 
+    class self_employed_pension_earned_income(baseline_pension_earned_income):
+        def formula(person, period, parameters):
+            if not _enabled(period, parameters):
+                return baseline_pension_earned_income.formula(
+                    person, period, parameters
+                )
+            # Pub. 560 step 2 takes the Schedule C business's share of
+            # Schedule 1 line 15, split by net profit as on Form 7206 lines 5
+            # to 8. As in the health insurance limit above, the draw profits
+            # whose SECA is in line 15 join the profits it is split over.
+            draw_profits_in_line_15 = where(
+                parameters(period).gov.contrib.ssa.owners_draw.half_seca_deduction,
+                person("owners_draw_niit_exclusion", period),
+                0,
+            )
+            return pension_plan_earned_income(
+                person, period, other_line_5_profits=draw_profits_in_line_15
+            )
+
     class ss_aime(baseline_aime):
         def formula(person, period, parameters):
             supplied = person("ss_aime_input", period)
@@ -366,6 +389,7 @@ def create_owners_draw():
             self.update_variable(self_employment_medicare_tax)
             self.update_variable(self_employment_tax_ald_person)
             self.update_variable(self_employed_health_insurance_earned_income_limit)
+            self.update_variable(self_employed_pension_earned_income)
             self.update_variable(ss_aime)
 
     return reform

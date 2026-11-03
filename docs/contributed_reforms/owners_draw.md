@@ -119,6 +119,11 @@ profits beyond the OASDI room with HI off stay out of line 5. With
 omits the draw and the limit follows the baseline formula. Disabled years
 use the baseline formula.
 
+The reform also replaces `self_employed_pension_earned_income` (Pub. 560
+Deduction Worksheet for Self-Employed, step 3). Step 2 takes the Schedule C
+business's share of the deductible SE tax, split by net profit as above, and
+the same draw profits join the split.
+
 ## Benefit credit and active NIIT interaction
 
 `owners_draw_credited_earnings` exposes N_D when benefit credit is enabled,

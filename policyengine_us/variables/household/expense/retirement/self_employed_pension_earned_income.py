@@ -31,24 +31,36 @@ class self_employed_pension_earned_income(Variable):
     )
 
     def formula(person, period, parameters):
-        # Step 1: net profit from the business with the plan.
-        plan_business_profit = max_(0, person("total_self_employment_income", period))
-        # Net profits of every business whose earnings are subject to
-        # self-employment tax, leaving out net losses.
-        other_business_profits = max_(
-            0, person("farm_operations_income", period)
-        ) + max_(0, person("partnership_self_employment_net_earnings", period))
-        all_business_profits = plan_business_profit + other_business_profits
-        plan_business_share = np.divide(
-            plan_business_profit,
-            all_business_profits,
-            out=np.zeros_like(all_business_profits),
-            where=all_business_profits > 0,
-        )
-        # Step 2: the deductible part of self-employment tax (Schedule 1
-        # line 15) attributable to the plan's business.
-        self_employment_tax_deduction = (
-            person("self_employment_tax_ald_person", period) * plan_business_share
-        )
-        # Step 3.
-        return max_(0, plan_business_profit - self_employment_tax_deduction)
+        return pension_plan_earned_income(person, period)
+
+
+def pension_plan_earned_income(person, period, other_line_5_profits=0):
+    """Pub. 560 step 3 for the Schedule C plan business.
+
+    other_line_5_profits adds the profits of other businesses whose
+    self-employment tax is in Schedule 1 line 15, such as the owners' draw
+    reform's draw profits, so the plan business takes only its share.
+    """
+    # Step 1: net profit from the business with the plan.
+    plan_business_profit = max_(0, person("total_self_employment_income", period))
+    # Net profits of every business whose earnings are subject to
+    # self-employment tax, leaving out net losses.
+    other_business_profits = max_(0, person("farm_operations_income", period)) + max_(
+        0, person("partnership_self_employment_net_earnings", period)
+    )
+    all_business_profits = (
+        plan_business_profit + other_business_profits + other_line_5_profits
+    )
+    plan_business_share = np.divide(
+        plan_business_profit,
+        all_business_profits,
+        out=np.zeros_like(all_business_profits),
+        where=all_business_profits > 0,
+    )
+    # Step 2: the deductible part of self-employment tax (Schedule 1
+    # line 15) attributable to the plan's business.
+    self_employment_tax_deduction = (
+        person("self_employment_tax_ald_person", period) * plan_business_share
+    )
+    # Step 3.
+    return max_(0, plan_business_profit - self_employment_tax_deduction)
