@@ -21,6 +21,7 @@ class vt_low_income_cdcc_eligible(Variable):
         federal_agi = tax_unit("adjusted_gross_income", period)
         # 32 V.S.A. 5828c (as in effect through 2021) requires federal adjusted
         # gross income "less than $30,000.00 (or $40,000.00 for married,
-        # filing jointly)"; the 2021 Schedule IN-112 says "$30,000 (or $40,000
-        # for Married Filing Jointly) or less". The model follows the statute.
+        # filing jointly)", but the 2021 Schedule IN-112 form says "$30,000 (or
+        # $40,000 for Married Filing Jointly) or less". The model follows the
+        # statute.
         return federal_agi < federal_agi_threshold

@@ -29,9 +29,10 @@ class nyc_household_credit(Variable):
         # Tax Law 1310(d) counts the exemptions each household is entitled to
         # and excludes, among unmarried individuals, one whom another taxpayer
         # can claim; a husband and wife, a head of household and a surviving
-        # spouse are households in their own right. IT-201 line 48 says "If
-        # you marked the Yes box at item C ... you do not qualify for this
-        # credit" for every return; the model follows the statute.
+        # spouse are households in their own right. At line 48 the IT-201
+        # instructions say "If you marked the Yes box at item C ... you do not
+        # qualify for this credit" for every return; the model follows the
+        # statute.
         dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
         single = filing_status == filing_statuses.SINGLE
         exemptions = tax_unit("exemptions_count", period)

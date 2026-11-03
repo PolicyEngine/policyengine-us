@@ -55,8 +55,8 @@ class ny_household_credit_potential(Variable):
         # for whom a deduction under IRC 151(c) is not "allowable to another
         # taxpayer". Only a single filer is excluded for being claimable; the
         # other households count only the exemptions they are entitled to.
-        # IT-201 line 40 says "If you marked the Yes box at item C ... you do
-        # not qualify for this credit" for every return; the model follows the
-        # statute.
+        # The IT-201 instructions say at line 40, "If you marked the Yes box at
+        # item C ... you do not qualify for this credit", for every return; the
+        # model follows the statute.
         dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
         return where(dependent_filer & single, 0, single_amount + non_single_amount)
