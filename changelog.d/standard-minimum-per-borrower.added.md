@@ -1,1 +1,0 @@
-Apply the standard repayment plan's $50 minimum once across a borrower's Direct and parent PLUS loans in a new combined_standard_repayment_payment, as 34 CFR 685.208(b)(1)(ii) sets it, while a consolidated parent PLUS loan under 685.208(b)(2) keeps its own minimum.
