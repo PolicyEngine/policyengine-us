@@ -23,7 +23,7 @@ from pathlib import Path
 
 import pytest
 import yaml
-from hypothesis import HealthCheck, given, settings
+from hypothesis import HealthCheck, example, given, settings
 from hypothesis import strategies as st
 from policyengine_core.parameters import Parameter, ParameterNode
 from policyengine_core.parameters.operations.get_parameter import get_parameter
@@ -908,14 +908,24 @@ def test_applying_twice_equals_applying_once(path, year):
 
 def _cap_policies():
     """A start year from 2027 to 2100 and a cap from the assumption's cap in
-    that year up to no cap."""
-    return st.integers(2027, LAST_TABLE_YEAR).flatmap(
+    that year up to no cap.
+
+    The assumption re-extends the cap from 2028 on the no-decrease rule, so
+    its second pass overwrites a policy cap that starts in 2028 or later. A
+    policy from 2027 is the one that reaches the wage base through the
+    second pass, so 2027 and no cap are drawn often.
+    """
+    years = st.one_of(st.just(2027), st.integers(2027, LAST_TABLE_YEAR))
+    return years.flatmap(
         lambda year: st.tuples(
             st.just(year),
-            st.floats(
-                min_value=_statutory_path(CAP)[year],
-                allow_nan=False,
-                allow_infinity=True,
+            st.one_of(
+                st.just(math.inf),
+                st.floats(
+                    min_value=_statutory_path(CAP)[year],
+                    allow_nan=False,
+                    allow_infinity=True,
+                ),
             ),
         )
     )
@@ -923,6 +933,8 @@ def _cap_policies():
 
 @PROPERTIES
 @given(_cap_policies(), st.booleans())
+@example(policy=(2027, math.inf), first=False)
+@example(policy=(2027, math.inf), first=True)
 def test_any_cap_only_policy_leaves_the_wage_base_and_the_copy(policy, first):
     """Replay both passes of the assumption and any cap-only policy, in
     either order: the wage base and the owners' draw copy keep the values

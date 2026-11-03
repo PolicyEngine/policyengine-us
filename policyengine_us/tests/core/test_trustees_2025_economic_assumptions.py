@@ -266,15 +266,18 @@ PROPERTIES = settings(
 
 def _cap_policies():
     """A start year from 2027 to 2100 and a cap from the assumption's cap in
-    that year up to no cap."""
+    that year up to no cap. No cap is drawn often."""
     baseline, _ = _run(False)
     return st.integers(2027, END_YEAR).flatmap(
         lambda year: st.tuples(
             st.just(year),
-            st.floats(
-                min_value=_value_of(baseline, CAP, year),
-                allow_nan=False,
-                allow_infinity=True,
+            st.one_of(
+                st.just(math.inf),
+                st.floats(
+                    min_value=_value_of(baseline, CAP, year),
+                    allow_nan=False,
+                    allow_infinity=True,
+                ),
             ),
         )
     )
