@@ -12,8 +12,9 @@ class tax_unit_is_required_to_file(Variable):
     status. For 2018 to 2025, section 6012(f) compares gross income with the
     standard deduction. In other years, section 6012(a)(1) compares it with
     the basic standard deduction plus the additions for age, but not
-    blindness, and gross income equal to that amount requires a return; a
-    married individual filing separately must file even with no gross income.
+    blindness, and gross income equal to that amount requires a return. From
+    2026, with a zero exemption amount, a married individual filing separately
+    must file even with no gross income.
     That test applies to every filer, including one who can be claimed as a
     dependent (with the section 63(c)(5) limited basic standard deduction),
     and section 6012(a)(1)(C) adds that filer's unearned income and standard
@@ -231,7 +232,6 @@ class tax_unit_is_required_to_file(Variable):
         additional_standard_deduction = aged_or_blind_count * tax_unit.project(
             p_standard.aged_or_blind.amount[filing_status]
         )
-        joint = filing_status == filing_status.possible_values.JOINT
         statutory_joint_test = (
             joint & p.income.filing_requirement.standard_deduction_rule.applies
         )

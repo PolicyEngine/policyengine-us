@@ -10689,7 +10689,7 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10137
     - https://github.com/PolicyEngine/policyengine-us/pull/10590
   state: open
-  note: 'From 2026 PE-US requires a separate filer to file even with no gross income, since $0 equals the zero exemption amount in section 6012(a)(1)(A). For 2018 to 2025 it requires a return only with positive gross income, since section 6012(f) reaches "every individual who has gross income". It applies the IRS $5 relief in neither period (tax_unit_is_required_to_file.py). No completed ruling date is recorded.'
+  note: 'Ruled 2026-11-03 for the statute from 2026. Congress limited section 6012(f) to 2018 through 2025, so under section 6012(a)(1)(A) a married individual filing separately must file even with no gross income: $0 equals the exemption amount, zero under section 151(d)(5)(A). The spouse who loses (A)(iv) and a filer whose standard deduction is zero under section 63(c)(6) face the same test, and PE-US applies it to all three (tax_unit_is_required_to_file.py). For 2018 to 2025 PE-US requires a return only with positive gross income, reading section 6012(f)''s "every individual who has gross income" to leave out $0; that half stays open. PE-US applies the IRS $5 relief in neither period.'
 - id: us:snap-bbce-income-chart-rounding
   program: snap
   years:
