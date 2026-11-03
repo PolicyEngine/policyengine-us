@@ -204,17 +204,19 @@
         state_code: TX
         county: POTTER_COUNTY_TX
   output:
-    # SMI (2 people) = $94,466 * 0.68 / 12 = $5,353.07/month; $2,000 is 37.3617% of SMI.
-    # Copay rate = 2% + (37.3617% - 1%) * (6.93% - 2%) / (75% - 1%) = 4.422476%,
-    # so the copay is 4.422476% * $2,000 = $88.4495 in both months.
-    # September (BCY24): $27.33 * 21 = $573.93 - $88.4495 = $485.48
-    # October (BCY25): $30.40 * 21 = $638.40 - $88.4495 = $549.95
+    # Panhandle's scale charges $110 for one child from more than 30% to 40% of
+    # SMI. September uses FY 2024 SMI for 2 people, $94,466 * 0.68 / 12 =
+    # $5,353.07 a month, so that range runs from $1,607 to $2,141. October
+    # uses FY 2025 SMI, $103,213 * 0.68 / 12 = $5,848.74, so it runs from
+    # $1,756 to $2,339. $2,000 falls in it both months.
+    # September (BCY24): $27.33 * 21 = $573.93 - $110 = $463.93
+    # October (BCY25): $30.40 * 21 = $638.40 - $110 = $528.40
     tx_ccs_copay:
-      2024-09: 88.45
-      2024-10: 88.45
+      2024-09: 110
+      2024-10: 110
     tx_ccs:
-      2024-09: 485.48
-      2024-10: 549.95
+      2024-09: 463.93
+      2024-10: 528.40
 
 - name: Case 8 - Panhandle registered home preschool with a copay, 2024 annual
   period: 2024
@@ -243,5 +245,5 @@
         state_code: TX
         county: POTTER_COUNTY_TX
   output:
-    # 9 months at $485.4805 + 3 months at $549.9505 (Case 7, unrounded) = $6,019.18
-    tx_ccs: 6_019.18
+    # 9 months at $463.93 + 3 months at $528.40 (Case 7) = $5,760.57
+    tx_ccs: 5_760.57
