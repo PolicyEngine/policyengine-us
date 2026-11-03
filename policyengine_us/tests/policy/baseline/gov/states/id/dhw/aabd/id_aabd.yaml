@@ -184,3 +184,28 @@
   output:
     # Same as the partnership case: countable $480, payment capped at $53.
     id_aabd: 53
+
+- name: Case 11, a working student's restored farm earnings stay inside the student exclusion.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 19
+        meets_ssi_disability_criteria: true
+        is_full_time_student: true
+        social_security: 6_000
+        employment_income: 1_800
+        farm_operations_income: -1_200
+        id_aabd_living_arrangement: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # The 2026 blind or disabled working student exclusion (20 CFR
+    # 416.1112(c)(3)) is up to $2,410 a month. It takes all $50 of
+    # earnings after the loss, and all $150 with the farm loss counted as
+    # zero, so countable income is $500 - $20 = $480 either way.
+    # $545 - $480 = $65, capped at the $53 maximum.
+    id_aabd: 53

@@ -163,3 +163,78 @@
     # SAPN = $52 - $22.50 - $7.50 = $22.
     ssi: 22.5
     in_ssp_sapn: 22
+
+- name: Case 9, a working student's restored Schedule C earnings stay inside the student exclusion.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 19
+        meets_ssi_disability_criteria: true
+        is_full_time_student: true
+        employment_income: 2_400
+        self_employment_income: -1_200
+        in_ssp_sapn_eligible: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # The 2026 blind or disabled working student exclusion (20 CFR
+    # 416.1112(c)(3)) is up to $2,410 a month. SSI earnings after the loss
+    # are $100 a month and the exclusion takes all of it, so SSI pays the
+    # full $30. With the loss counted as zero, earnings are $200 and the
+    # exclusion still takes all of it, so the budget is $0.
+    # SAPN = $52 - $30 - $0 = $22.
+    in_ssp_sapn: 22
+
+- name: Case 10, a positive SAPN pins the restored farm loss.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 1_200
+        farm_operations_income: -1_200
+        in_ssp_sapn_eligible: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # SSI: earnings $100 - $100 = $0 a month, so SSI pays the full $30.
+    # SAPN budgets earnings without the loss: ($100 - $20 - $65) / 2 =
+    # $7.50. SAPN = $52 - $30 - $7.50 = $14.50, below the $22 maximum.
+    ssi: 30
+    in_ssp_sapn: 14.5
+
+- name: Case 11, no adjustment for a person who is not aged, blind or disabled.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        receives_ssi: true
+        employment_income: 2_400
+        farm_operations_income: -1_200
+        in_ssp_sapn_eligible: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # SSI countable income is zero for a person who is not aged, blind or
+    # disabled, and the loss-offset adjustment takes the same gate, so the
+    # budget stays $0. SAPN = min($52 - $0 - $0, $22) = $22. Restoring the
+    # $100 loss regardless of the gate would budget ($200 - $85) / 2 -
+    # ($100 - $85) / 2 = $50, leaving $2.
+    in_ssp_sapn: 22

@@ -15,8 +15,12 @@ def ssi_countable_income_without_loss_offset(person, period, parameters, sources
     difference to ssi_countable_income for the month.
 
     The adjustment works person by person on own earned and unearned income,
-    so couple computations, spousal deeming and the blind or disabled
-    working student exclusion are approximate.
+    so couple computations and spousal deeming are approximate. It restores
+    only the person's own barred loss: an ineligible spouse's barred loss
+    still reduces the spouse's earnings before they are deemed, and the
+    person's own leftover loss can still reduce the spouse's deemed
+    earnings. Either can lower countable income below what the state rule
+    gives.
     """
     year = period.this_year
     countable_income = person("ssi_countable_income", period)
@@ -31,9 +35,24 @@ def ssi_countable_income_without_loss_offset(person, period, parameters, sources
         + person("ssi_unearned_income_deemed_from_ineligible_parent", year)
         + person("ssi_in_kind_support_and_maintenance", year)
     )
-    with_offset = _apply_ssi_exclusions(earned, unearned, parameters, year)
+    # ssi_countable_income takes the blind or disabled working student
+    # exclusion (20 CFR 416.1112(c)(3)) off earned income before the other
+    # exclusions, so take it again from the restored earnings.
+    p = parameters(year).gov.ssa.ssi.income.exclusions.blind_or_disabled_working_student
+    is_student = (
+        person("is_ssi_blind_or_disabled_working_student_exclusion_eligible", year) > 0
+    )
+
+    def after_student_exclusion(amount):
+        monthly = max_(amount, 0) / MONTHS_IN_YEAR
+        exclusion = min_(min_(p.amount, monthly) * MONTHS_IN_YEAR, p.cap)
+        return max_(amount - where(is_student, exclusion, 0), 0)
+
+    with_offset = _apply_ssi_exclusions(
+        after_student_exclusion(earned), unearned, parameters, year
+    )
     without_offset = _apply_ssi_exclusions(
-        earned + restored_loss, unearned, parameters, year
+        after_student_exclusion(earned + restored_loss), unearned, parameters, year
     )
     # Same gate as ssi_countable_income, which is zero for a person who is
     # not aged, blind or disabled.
