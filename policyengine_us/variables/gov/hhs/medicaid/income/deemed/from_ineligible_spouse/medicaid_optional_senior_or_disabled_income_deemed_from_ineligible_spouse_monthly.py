@@ -89,7 +89,7 @@ class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse_
 
         deemed_amount = max_(0, couple_countable - alone_countable)
         return where(
-            person("is_ssi_eligible_individual", period),
+            person("is_ssi_aged_blind_disabled", period),
             deeming_applies * deemed_amount,
             0,
         )

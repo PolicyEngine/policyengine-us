@@ -9,6 +9,7 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396a#m",
+        "https://www.law.cornell.edu/cfr/text/42/435.601",
         "https://www.kff.org/medicaid/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey/",
         # Missouri MHABD budgeting order and rounding
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/",

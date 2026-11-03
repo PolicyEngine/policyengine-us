@@ -14,7 +14,9 @@ class is_ssi_spousal_deeming_applies_monthly(Variable):
     Returns True when spousal deeming applies according to 20 CFR §416.1163.
 
     Spousal deeming applies when:
-    1. Person is an eligible individual (not part of an eligible couple)
+    1. Person is aged, blind, or disabled (not part of an eligible couple).
+       SSI's noncitizen test is applied in is_ssi_eligible, so programs that
+       use SSI methodology also deem spouse income to noncitizens.
     2. Spouse is ineligible (not aged/blind/disabled)
     3. Spouse's leftover income (after child allocations) exceeds the difference
        between couple FBR and individual FBR
@@ -44,6 +46,6 @@ class is_ssi_spousal_deeming_applies_monthly(Variable):
 
         # Deeming applies when spouse's deemed income exceeds the differential
         # Note: regulation says "not more than" means ≤, so we use > for deeming
-        return person("is_ssi_eligible_individual", period) & (
+        return person("is_ssi_aged_blind_disabled", period) & (
             spouse_deemed_income > diff
         )

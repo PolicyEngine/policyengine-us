@@ -13,7 +13,7 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
       2) Otherwise, spouse's deemed = (couple combined countable) - (individual alone countable).
       Each month is calculated before annual amounts are summed.
     """
-    defined_for = "is_ssi_eligible_individual"
+    defined_for = "is_ssi_aged_blind_disabled"
     unit = USD
 
     def formula(person, period, parameters):

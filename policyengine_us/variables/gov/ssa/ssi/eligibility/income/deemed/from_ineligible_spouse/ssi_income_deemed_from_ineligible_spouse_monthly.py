@@ -65,4 +65,4 @@ class ssi_income_deemed_from_ineligible_spouse_monthly(Variable):
         # Deemed amount is the difference (only when deeming applies)
         deemed_amount = max_(0, couple_countable - alone_countable)
         result = deeming_applies * deemed_amount
-        return where(person("is_ssi_eligible_individual", period), result, 0)
+        return where(person("is_ssi_aged_blind_disabled", period), result, 0)
