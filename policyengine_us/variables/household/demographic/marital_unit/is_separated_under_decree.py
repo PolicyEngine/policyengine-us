@@ -11,9 +11,10 @@ class is_separated_under_decree(Variable):
     person as not married. A written separation agreement without a decree
     does not count.
     Defaults to false because survey data cannot tell a decree from an
-    informal separation, so is_separated alone keeps the married reading.
-    Only the EITC marital test (IRC 32(d)) reads this input; filing status
-    and other credits do not yet apply IRC 7703(a)(2).
+    informal separation, so is_separated alone keeps the married reading
+    for the EITC. Only the EITC marital test (IRC 32(d)) and New Jersey's
+    separate-filer rule read this input, and the federal test reads it only
+    from 2021. Filing status and other rules do not read it yet.
     """
     definition_period = YEAR
     default_value = False

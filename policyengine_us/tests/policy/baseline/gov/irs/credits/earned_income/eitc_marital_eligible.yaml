@@ -231,7 +231,7 @@
     eitc_spouses_lived_apart_last_six_months: true
     eitc_marital_eligible: true
 
-- name: Separated head of household who did not live apart for six months fails from 2021
+- name: Separated filer who did not live apart for six months files separately and fails from 2021
   period: 2025
   input:
     people:
@@ -250,7 +250,7 @@
         members: [head, child]
         state_code: TX
   output:
-    filing_status: HEAD_OF_HOUSEHOLD
+    filing_status: SEPARATE
     eitc_marital_eligible: false
     eitc: 0
 
@@ -269,7 +269,6 @@
     tax_units:
       tax_unit:
         members: [head, child]
-        eitc_spouses_lived_apart_last_six_months: false
     households:
       household:
         members: [head, child]
@@ -396,8 +395,9 @@
     eitc: 3_450.62
 
 - name: Decree on the spouse alone makes a separate filer unmarried for the EITC
-  # IRC 7703(a)(2) reads the decree from either spouse, so the marital test
-  # passes with both separation routes false. 2026, one child:
+  # The predicate reads the decree from the head or the spouse: IRC 7703(a)(2)
+  # treats an individual legally separated under a decree as not married, so
+  # the marital test passes with both separation routes false. 2026, one child:
   # 4_427 - 0.1598 x (30_000 - 23_890) = 3_450.62. Without the decree the
   # filer needs the IRC 32(d)(2)(B) exception and gets 0.
   period: 2026

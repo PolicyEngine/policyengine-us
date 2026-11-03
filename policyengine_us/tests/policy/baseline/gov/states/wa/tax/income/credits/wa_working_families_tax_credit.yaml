@@ -1755,3 +1755,31 @@
     # income $17,600: 325 - 0.13 x 1,509 = 128.83, rounded to 129. Measuring
     # from AGI ($17,618.27) would give 127.
     wa_working_families_tax_credit: 129
+
+- name: Separated filer who did not live apart for six months files separately and keeps the state-only credit
+  # IRC 7703(b)(3) needs the spouse out of the household for the last six
+  # months, so the filer cannot file as head of household and files
+  # separately. The federal EITC is 0 (IRC 32(d)), and Washington's
+  # state-only path pays the 2025 one-child amount, $660, with no phase-out
+  # at $10,000 of earnings.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 10_000
+        is_separated: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        eitc_spouses_lived_apart_last_six_months: false
+    households:
+      household:
+        members: [head, child]
+        state_code: WA
+  output:
+    filing_status: SEPARATE
+    eitc: 0
+    wa_working_families_tax_credit: 660

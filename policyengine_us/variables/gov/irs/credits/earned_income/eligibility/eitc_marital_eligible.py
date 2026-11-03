@@ -18,7 +18,9 @@ class eitc_marital_eligible(Variable):
     determines marriage under IRC 7703(a) only, so a separated head of
     household filer (is_separated on the head or spouse) faces the same
     test. Child identification rules do not determine whether the marital
-    exception applies.
+    exception applies. A head or spouse separated under a decree
+    (is_separated_under_decree) is not married under IRC 7703(a)(2) and
+    needs no exception.
     """
 
     def formula(tax_unit, period, parameters):
