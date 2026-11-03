@@ -40,7 +40,7 @@ Invariants:
    1395w-113(a)(7)(B) applied to the base beneficiary premium. The reduced
    Part A premium stays at 55% of the full premium (1395i-2(d)(4)), to
    within 0.1% plus $1. CMS rounded 2026's $310.75 to $311, and uprating
-   from 2026 keeps that 0.04% excess, as it keeps the IRMAA amounts'.
+   from 2026 keeps that 0.08% excess, as it keeps the IRMAA amounts'.
 5. Monotonicity: the Part B premium rises every year from 2023, and the Part
    A premiums and deductible never fall from 2024. IRMAA thresholds never
    fall from one year to the next and rise from tier to tier. Intended
@@ -165,9 +165,10 @@ TRUSTEES_PART_D_IRMAA = {
     2034: (56.60, 113.20, 169.80, 226.40, 245.30),
     2035: (58.40, 116.70, 175.10, 233.40, 252.90),
 }
-# 42 U.S.C. 1395r(i)(3)(A): (applicable percentage - 25 points) x 200% of the
-# aged actuarial rate, which is 4 x (applicable percentage - 25 points) times
-# the standard premium of 50% of that rate.
+# 42 U.S.C. 1395r(i)(3)(A): (applicable percentage - 25 points) x (200% of the
+# aged actuarial rate + 4 x the (a)(6) premium increase). The standard premium
+# is 50% of that rate plus the (a)(6) increase, so before rounding each amount
+# is 4 x (applicable percentage - 25 points) times the standard premium.
 PART_B_IRMAA_MULTIPLES = (0.4, 1.0, 1.6, 2.2, 2.4)
 # CMS fact sheets "2020/2021/2022/2023 Medicare Parts A & B Premiums and
 # Deductibles": the unmarried amounts above which the 35, 50, 65 and 80
