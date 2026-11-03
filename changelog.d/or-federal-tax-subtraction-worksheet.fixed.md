@@ -1,1 +1,1 @@
-Reduce Oregon's federal tax liability subtraction by the premium tax credit and only the other refundable credits on the Publication OR-17 federal tax worksheet, and leave out the net investment income tax.
+Reduce Oregon's federal tax liability subtraction by every federal refundable credit except the EITC, plus the premium tax credit, and stop counting the employee payroll tax on unreported tips and wages.
