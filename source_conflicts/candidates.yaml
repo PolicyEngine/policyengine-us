@@ -8621,8 +8621,9 @@ candidates:
     to: 2018
     type: federal-fiscal
   question: What are South Texas's TSR rates for preschool care at registered child care homes from October 2016 to
-    July 2018, when TWC's October 2016 table prints $12.84 a day full-time and $8.93 part-time, below the regular rates
-    of $14.40 and $10.52, although 40 TAC §809.20(c)(1)(B) puts TSR preschool rates at least 5 percent above them?
+    July 2018, when TWC printed $12.84 a day full-time and $8.93 part-time in its October 2016 table, below the regular
+    rates of $14.40 and $10.52, although 40 TAC §809.20(c)(1)(B) has Boards set TSR preschool rates at least 5 percent
+    above them?
   sources:
   - kind: regulation
     citation: 40 TAC §809.20(b)(2), (c)(1)(B) (41 TexReg 7574, effective October 1, 2016)
@@ -8643,12 +8644,12 @@ candidates:
       (South Texas)
     url: https://web.archive.org/web/20180904071531/https://twc.texas.gov/files/partners/12-18att1-twc.pdf#page=24
   readings:
-    statute: No statute is supplied; §809.20(c)(1)(B) sets each TSR preschool rate at least 5 percent above the
-      Board's regular rate, which comes to $15.12 full-time and $11.05 part-time, rounded to the cent.
-    other: TWC's October 2016 table prints $12.84 and $8.93 in a TSR row it dates April 1, 2016, below a regular row
-      it dates October 1, 2016.
-  example: In October 2016, South Texas's regular rate for full-time preschool care at a registered home is $14.40 a
-    day, so the floor comes to $15.12, while the table's TSR rate is $12.84.
+    statute: No statute is supplied; §809.20(c)(1)(B) has each Board set its TSR preschool rate at least 5 percent
+      above its regular rate, which comes to $15.12 full-time and $11.05 part-time, rounded to the cent.
+    other: TWC printed $12.84 and $8.93 in a TSR row it dated April 1, 2016, below a regular row it dated October 1,
+      2016.
+  example: In its October 2016 table, TWC printed South Texas's regular rate for full-time preschool care at a
+    registered home as $14.40 a day, which puts the floor at $15.12, and its TSR rate as $12.84.
   pe_us:
     follows: statute
     code:
@@ -8657,8 +8658,8 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10622
   state: ruled
   note: 'Ruled 2026-11-03: the §809.20(c)(1)(B) floor, $15.12 and $11.05, the statute-first reading also taken for
-    Texoma in BCY 2022. From August 2018, WD 12-18 Attachment 1 prints both at 105 percent of the new regular rate,
-    rounded up. Code not yet on main: rates.yaml, SOUTH_TEXAS RCCH TSR PRESCHOOL FULL_TIME and PART_TIME at
+    Texoma in BCY 2022. From August 2018, TWC set both at 105 percent of the new regular rate, rounded up, in WD 12-18
+    Attachment 1. Code not yet on main: rates.yaml, SOUTH_TEXAS RCCH TSR PRESCHOOL FULL_TIME and PART_TIME at
     2016-10-01.'
 - id: us-tx:ccs-tsr-preschool-rate-cut-2018
   program: child-care-assistance
@@ -8666,9 +8667,9 @@ candidates:
     from: 2017
     to: 2019
     type: federal-fiscal
-  question: Did three Lower Rio Grande Valley TSR preschool rates fall in August 2018, when WD 12-18 Attachment 1
-    prints them below TWC's October 2016 table, although WD 12-18 sets each TSR rate at the greater of 105 percent of
-    the new regular rate and the Board's current TSR rate and says no provider rate shall fall?
+  question: Did three Lower Rio Grande Valley TSR preschool rates fall in August 2018, when TWC printed them in
+    WD 12-18 Attachment 1 below its October 2016 rates, although in WD 12-18 TWC set each TSR rate at the greater of
+    105 percent of the new regular rate and the Board's current TSR rate and said no provider rate shall fall?
   sources:
   - kind: guidance
     citation: TWC WD Letter 12-18, Increasing Child Care Provider Reimbursement Rates (the TSR rule on page 2; higher
@@ -8690,15 +8691,15 @@ candidates:
     citation: TWC WD Letter 27-16 (Boards must suspend reimbursement rate increases)
     url: https://web.archive.org/web/20170109002403/https://twc.texas.gov/files/partners/27-16-twc.pdf#page=4
   readings:
-    statute: No statute is supplied; 40 TAC §809.20(c)(1)(B) sets only a floor 5 percent above the regular rate,
-      which the October 2016 rates and WD 12-18's rates both clear. WD 12-18 keeps in effect any local rate above its
-      calculated rate and says no provider rate shall fall, so October 2016 rates still in effect in July 2018 would
-      continue.
-    other: WD 12-18 Attachment 1, whose rates TWC entered into TWIST, prints Lower Rio's licensed home TSR preschool
-      rates and its registered home TSR preschool part-time rate at 105 percent of the new regular rate, rounded up,
-      below the October 2016 rates of $17.46, $16.79 and $12.76.
-  example: Lower Rio's licensed home TSR rate for full-time preschool care is $17.46 a day in TWC's October 2016 table
-    and $15.99 in WD 12-18 Attachment 1, which is 105 percent of the new $15.22 regular rate, rounded up.
+    statute: No statute is supplied; 40 TAC §809.20(c)(1)(B) has Boards set TSR preschool rates at least 5 percent
+      above the regular rate, and the October 2016 and August 2018 rates both clear that floor. In WD 12-18, TWC kept
+      in effect any local rate above its calculated rate and said no provider rate shall fall, so October 2016 rates
+      still in effect in July 2018 would continue.
+    other: In WD 12-18 Attachment 1, whose rates TWC entered into TWIST, TWC printed Lower Rio's licensed home TSR
+      preschool rates and its registered home TSR preschool part-time rate at 105 percent of the new regular rate,
+      rounded up, below the October 2016 rates of $17.46, $16.79 and $12.76.
+  example: Lower Rio's licensed home TSR rate for full-time preschool care falls from $17.46 a day in TWC's October
+    2016 table to $15.99 in WD 12-18 Attachment 1, 105 percent of the new $15.22 regular rate, rounded up.
   pe_us:
     follows: gap-fill
     code:
@@ -8708,10 +8709,10 @@ candidates:
   state: ruled
   note: 'Ruled 2026-11-03: the October 2016 rates through July 2018 and Attachment 1''s from August 2018 (the agency
     breaks true ties). Of the 168 TSR preschool rates in Attachment 1, the other 165 equal the greater of 105 percent
-    of the new regular rate, rounded up, and the October 2016 rate. WD 27-16 suspended rate increases from December 2016 and said
-    nothing of cuts, so the Board may have lowered these three before August 2018. Code not yet on main: rates.yaml,
-    LOWER_RIO LCCH TSR PRESCHOOL FULL_TIME and PART_TIME and RCCH TSR PRESCHOOL PART_TIME at 2016-10-01 and
-    2018-08-01.'
+    of the new regular rate, rounded up, and the October 2016 rate. In WD 27-16, TWC had Boards suspend rate increases
+    from December 2016 and said nothing of cuts, so the Board may have lowered these three before August 2018. Code
+    not yet on main: rates.yaml, LOWER_RIO LCCH TSR PRESCHOOL FULL_TIME and PART_TIME and RCCH TSR PRESCHOOL PART_TIME
+    at 2016-10-01 and 2018-08-01.'
 - id: us-tx:ccs-tsr-preschool-rate-missing
   program: child-care-assistance
   years:
@@ -8719,7 +8720,8 @@ candidates:
     to: 2022
     type: federal-fiscal
   question: What is Texoma's maximum rate for part-time preschool care at a Texas School Ready registered child care
-    home in BCY 2022, when 40 TAC §809.20(b)(2) requires a TSR preschool rate and TWC's WD 24-21 table prints a dash?
+    home in BCY 2022, when 40 TAC §809.20(b)(2) has Boards set a TSR preschool rate and TWC printed a dash in its
+    WD 24-21 table?
   sources:
   - kind: regulation
     citation: 40 TAC §809.20(b)(2), (c)(1)(B) (41 TexReg 7574, effective October 1, 2016)
@@ -8732,10 +8734,11 @@ candidates:
     url: https://web.archive.org/web/20210930004459/https://www.twc.texas.gov/files/policy_letters/24-21-twc.pdf
   readings:
     statute: No statute is supplied; §809.20(b)(2) has each Board set an enhanced rate for preschool children at TSR
-      providers, at least 5 percent above the regular rate under (c)(1)(B), and WD 24-21 keeps a higher earlier rate.
-    other: WD 24-21 Attachment 1 prints a dash for Texoma's RCCH TSR preschool part-time rate.
-  example: In October 2021, Texoma's regular rate for this care is $18.96 a day, so the floor comes to $19.91, while
-    the BCY 2021 TSR rate was $20.07 and WD 24-21's table prints none.
+      providers, at least 5 percent above the regular rate under (c)(1)(B), and in WD 24-21 TWC kept any higher
+      earlier rate in effect.
+    other: TWC printed a dash for Texoma's RCCH TSR preschool part-time rate in WD 24-21 Attachment 1.
+  example: In WD 24-21, TWC printed Texoma's regular rate for this care as $18.96 a day, which puts the floor at
+    $19.91, and no TSR rate; the BCY 2021 TSR rate was $20.07.
   pe_us:
     follows: statute
     code:
@@ -8744,8 +8747,8 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10622
   state: ruled
   note: 'Ruled 2026-11-02: $20.07, the higher of the §809.20(c)(1)(B) floor and the BCY 2021 rate. Each of the 167
-    TSR preschool rates WD 24-21 prints follows that rule. Code not yet on main: rates.yaml, TEXOMA RCCH TSR PRESCHOOL
-    PART_TIME at 2021-10-01.'
+    TSR preschool rates TWC printed in WD 24-21 follows that rule. Code not yet on main: rates.yaml, TEXOMA RCCH TSR
+    PRESCHOOL PART_TIME at 2021-10-01.'
 - id: us-tx:ccs-tsr-school-age-enhanced-rate
   program: child-care-assistance
   years:

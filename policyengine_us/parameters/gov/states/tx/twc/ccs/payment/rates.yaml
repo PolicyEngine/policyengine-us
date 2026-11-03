@@ -3,60 +3,62 @@ description: Texas caps Child Care Services reimbursement rates at this daily ra
 # Maximum Daily Rates as of October 1, 2016 (2016-10-01), WD 12-18
 # Attachment 1 (2018-08-01), WD 23-19 Attachment 1 (BCY 2020), WD 25-20
 # Attachment 1 (BCY 2021), WD 24-21 Attachment 1 (BCY 2022) and WD 22-22
-# Attachment 1 (BCY 2023). The October 2016 table is the earliest statewide
-# table we found. Each of its 448 Board rows carries the date its rates took
+# Attachment 1 (BCY 2023). We found no earlier statewide table. In the October
+# 2016 table, TWC dated each of the 448 Board rows by when its rates took
 # effect, from September 1, 2010 to October 1, 2016. We date every value
 # October 1, 2016, and PolicyEngine carries each cell's earliest value back to
 # January 2015, so a row that took effect in 2015 or 2016 also applies in the
-# months before it did. In December 2016, WD 27-16 had Boards suspend rate
-# increases. WD 12-18 rescinded it and set the August 1, 2018 rates: regular
-# rates rise 2 percent, rounded up to the cent; each TSR rate becomes the
+# months before it did.
+# In WD 27-16 (December 2016), TWC had Boards suspend rate increases. In
+# WD 12-18, TWC rescinded WD 27-16 and set the August 1, 2018 rates. It raised
+# regular rates 2 percent, rounded up to the cent, and set each TSR rate at the
 # greater of 105 percent of the new regular rate, rounded up, and the Board's
-# current TSR rate; Texas Rising Star rates become the greater of the Board's
-# current rate and a rate set from the 2017 Market Rate Survey; relative care
-# rates, which WD 12-18 does not cover, stay the same. WD 12-18 prints three
-# Lower Rio Grande Valley TSR preschool rates at 105 percent of the new
-# regular rate, below the October 2016 table's, and we keep both tables'
-# rates as TWC printed them.
+# current TSR rate. It set Texas Rising Star rates at the greater of the
+# Board's current rate and a rate based on the 2017 Market Rate Survey. TWC
+# left relative care out of WD 12-18, and relative care rates stayed the same.
+# TWC printed three Lower Rio Grande Valley TSR preschool rates in WD 12-18 at
+# 105 percent of the new regular rate, below its October 2016 rates, and we
+# keep both tables' rates as TWC printed them.
 # TWC printed all six tables in the four age groups of 40 TAC §809.20(a)(2),
 # which applied until December 1, 2023: 0-17 months, 18-35 months,
 # 36-71 months, and 72 months and over. TWC also printed infant, toddler and
 # preschool blended rates in WD 12-18 and in its BCY 2021 workbook, and in
 # WD 02-20 it says it calculates a blended rate for full-day pre-K children.
-# This table has no cells for them, so PolicyEngine gives a child under school
-# age on a blended schedule a rate of zero. Some Coastal Bend and Southeast
+# We store no cells for them, so PolicyEngine gives a child under school age
+# on a blended schedule a rate of zero. Some Coastal Bend and Southeast
 # part-time rates in the October 2016 table, WD 12-18, 23-19 and 25-20 exceed
 # the full-time rate as TWC printed them, and under the TSR rule below we copy
 # six more from Coastal Bend and Southeast regular rates;
 # test_tx_ccs_rates_table.py lists all 37.
 # We fill the cells TWC did not print with three rules, and raise two rates
 # TWC printed below the §809.20(c)(1)(B) floor:
-# - A Texas School Ready (TSR) cell TWC left blank or dashed, or did not
-#   print, for an age group outside the TSR enhanced rate in §809.20(b)(2),
-#   takes the provider type's regular rate. That enhanced rate covers
-#   preschool children in the tables through WD 24-21 (the October 2016 table
-#   prints TSR rates for preschool children only), and infants, toddlers and
-#   preschoolers from WD 22-22's table on. That table took effect
-#   October 1, 2022, two days before the §809.20(b)(2) amendment that added
-#   infants and toddlers. Every TSR cell TWC did print outside that scope
-#   equals the regular rate.
+# - We give a Texas School Ready (TSR) cell that TWC left blank, dashed or
+#   unprinted the provider type's regular rate when its age group falls
+#   outside the TSR enhanced rate of §809.20(b)(2). Boards set that enhanced
+#   rate for preschool children through WD 24-21's table, and for infants,
+#   toddlers and preschoolers from WD 22-22's table on. TWC's WD 22-22 table
+#   took effect October 1, 2022, and its amendment adding infants and toddlers
+#   to §809.20(b)(2) took effect two days later. In the October 2016 table,
+#   TWC printed TSR rates for preschool children only. Every TSR rate TWC
+#   printed in these six tables outside the enhanced ages equals the regular
+#   rate.
 # - TWC printed no blended column in the October 2016 table or in the
-#   WD 23-19, 25-20 and 24-21 attachments, so the school-age blended rate
-#   follows TWC's school-year formula from WD 02-20:
+#   WD 23-19, 25-20 and 24-21 attachments, so we compute the school-age
+#   blended rate with TWC's school-year formula from WD 02-20:
 #   (175 x part-time + 30 x full-time) / 205, rounding half up to the cent.
 #   Every blended rate TWC printed in WD 12-18 and WD 22-22 matches it.
 # - TWC dashed Texoma's RCCH TSR preschool part-time rate in WD 24-21, although
-#   Boards must set it under §809.20(b)(2). It takes the higher of the
+#   Boards must set it under §809.20(b)(2). We set it at the higher of the
 #   §809.20(c)(1)(B) floor, 5 percent above the regular rate, and its BCY 2021
 #   rate ($20.07), since TWC kept any higher earlier rate in effect in
 #   WD 24-21. All 167 TSR preschool rates TWC printed in WD 24-21 follow that
 #   rule, Texoma's LCCC and LCCH part-time rates among them.
-# - The October 2016 table prints South Texas's RCCH TSR preschool rates,
-#   $12.84 full-time and $8.93 part-time, below its regular rates of $14.40
-#   and $10.52. They take the §809.20(c)(1)(B) floor, rounded half up to the
-#   cent: $15.12 and $11.05.
-# TWC's BCY 2021 workbook prints all 4,032 cells, the TSR and school-age
-# blended cells these rules fill among them, and matches every 2020-10-01
+# - In the October 2016 table, TWC printed South Texas's RCCH TSR preschool
+#   rates, $12.84 full-time and $8.93 part-time, below the Board's regular
+#   rates of $14.40 and $10.52. We raise them to the §809.20(c)(1)(B) floor,
+#   rounded half up to the cent: $15.12 and $11.05.
+# TWC printed all 4,032 cells in its BCY 2021 workbook, including the TSR and
+# school-age blended cells we fill by rule, and each equals the 2020-10-01
 # value here.
 # The 2023-10-01 values come from WD 20-23 Attachment 1 (BCY 2024) as TWC
 # revised it on October 16, 2023, the version TWC links from its WD 20-23 page.

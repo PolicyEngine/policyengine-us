@@ -10,7 +10,7 @@ the one below by at least 2 percentage points. Every full-time and part-time
 rate in the eight tables clears these floors with no rounding allowance, and
 so does every school-age blended rate in BCY 2020, BCY 2021, revised BCY 2024
 and BCY 2025. In the October 2016 table, two South Texas TSR rates clear their
-floor only because rates.yaml raises them to it. Every blended rate but one
+floor only because we raise them to it in rates.yaml. Every blended rate but one
 follows the school-year formula in WD Letter 02-20 from its own part-time and
 full-time rates, so in the October 2016 table, WD 12-18, BCY 2022 and
 BCY 2023, rounding leaves blended rates under a cent short of a floor or star
@@ -203,14 +203,14 @@ BLENDED_OFF_FORMULA = {
     BCY_2024: {("EAST_TEXAS", "RELATIVE", "NONE", "SCHOOL_AGE")},
 }
 
-# Rates below the previous table's rate. WD 12-18 sets each TSR rate at the
-# greater of 105 percent of the new regular rate and the Board's current TSR
-# rate. It prints these three Lower Rio Grande Valley rates at 105 percent,
-# rounded up to the cent, below the October 2016 table's. WD 27-16 suspended
-# rate increases and said nothing of cuts, so the Board may have lowered them
-# after October 2016. The relative care blended rate drops when TWC printed
-# the formula's $12.12 for BCY 2025. In WD Letter 19-24, Change 1, TWC set no
-# minimum for relative care rates.
+# Rates below the previous table's rate. In WD 12-18, TWC set each TSR rate at
+# the greater of 105 percent of the new regular rate and the Board's current
+# TSR rate, and printed these three Lower Rio Grande Valley rates at 105
+# percent, rounded up to the cent, below its October 2016 rates. In WD 27-16,
+# TWC had Boards suspend rate increases and said nothing of cuts, so the Board
+# may have lowered them after October 2016. The relative care blended rate
+# drops when TWC printed the formula's $12.12 for BCY 2025. In WD Letter 19-24,
+# Change 1, TWC set no minimum for relative care rates.
 FALLS = {
     WD_12_18: {
         ("LOWER_RIO", "LCCH", "TSR", "PRESCHOOL", "FULL_TIME"),
