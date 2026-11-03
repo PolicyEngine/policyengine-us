@@ -1035,26 +1035,39 @@ candidates:
     the candidate runs from 2018; verify worksheet editions and affected years.'
 - id: us-ca:itemized-limit-investment-interest-exclusion
   program: income-tax
+  years:
+    from: 2021
+    type: tax
   question: Does the itemized-deduction limitation exclude California investment interest or the federal Schedule
     A line 9 amount?
   sources:
   - kind: statute
-    citation: R&TC 17077, incorporating IRC 68(c)(2)
-    url: null
+    citation: R&TC §17077, adopting 26 U.S.C. 68(c)(2)
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17077
   - kind: worksheet
-    citation: 540 Schedule CA itemized limitation worksheet, FTB Line 29 worksheet
-    url: null
+    citation: 2024 Schedule CA line 29 worksheet, line 2, Form 540 booklet PDF p.68
+    url: https://www.ftb.ca.gov/forms/2024/2024-540-booklet.pdf#page=68
   readings:
-    statute: Exclude California's investment-interest deduction from FTB 3526 line 10.
+    statute: Exclude California's investment interest expense deduction (FTB 3526 line 8), the amount the itemized
+      total holds.
     other: Exclude federal Schedule A line 9.
+  example: A 2024 single filer with AGI of $444,857 (6% of the excess over the threshold is $12,000), $10,000 of charity,
+    a $6,000 FTB 3526 deduction and $10,000 on federal Schedule A line 9 deducts $8,000 under the statute, which PE-US
+    follows, and $11,200 through line 9.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ca/tax/income/deductions/itemized/limit/excluded_deductions.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9977
+    - https://github.com/PolicyEngine/policyengine-us/pull/10645
   state: ruled
-  note: An October 2026 ruling followed the worksheet; the later statute-first rule requires changing to the California
-    deduction, with years and citations verified.
+  note: 'Ruled 2026-11-02 for the statute. R&TC 17077 applies IRC 68 without changing 68(c), and 68(c)(2) leaves out
+    "any deduction for investment interest". The worksheet names federal Schedule A line 9, which gives the same result
+    when FTB 3526 and federal Form 4952 agree. ca_itemized_deductions_pre_limitation holds
+    ca_investment_interest_expense_deduction, so the exclusion list names that variable. An October 2026 ruling followed
+    the worksheet; the statute-first rule replaced it, and the open PR that still lists the federal amount must take
+    this reading.'
 - id: us-ca:joint-childless-eitc-claimable-spouse
   program: income-tax
   years:
@@ -10651,10 +10664,9 @@ candidates:
     - policyengine_us/variables/gov/irs/tax_unit_is_required_to_file.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10135
+    - https://github.com/PolicyEngine/policyengine-us/pull/10590
   state: open
-  note: 'PE-US follows the statute: a married individual filing separately, claimable or not, must file with any
-    positive gross income, since the separate threshold is the exemption amount, zero while it is suspended (tax_unit_is_required_to_file.py).
-    Verify the married-dependent Chart B conditions and applicable years; the decision remains open.'
+  note: 'PE-US follows the statute: a married individual filing separately, claimable or not, must file with any positive gross income through 2025 and even with no gross income from 2026, since the separate threshold is the exemption amount, zero while it is suspended (tax_unit_is_required_to_file.py). Verify the married-dependent Chart B conditions and applicable years; the decision remains open.'
 - id: us:filing-claimable-spouse-unearned-income-additions
   program: income-tax
   years:
@@ -10689,6 +10701,31 @@ candidates:
     the section 63(c)(5)(A) amount alone, with no addition for age or blindness (tax_unit_is_required_to_file.py,
     statutory_joint_test). Other filing statuses, and every return from 2026, keep Table 2's addition. Register the
     entry and add the marker once #10297 is on main.
+- id: us:filing-requirement-2026-statute-over-chart-b
+  program: income-tax
+  years:
+    from: 2026
+    type: tax
+  question: Does a claimable filer's section 6012(a)(1) threshold leave out blindness and require a return at equality, or does it add blindness and require a return only above the amount, as Chart B did under the same text?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 6012(a)(1)(A)(i) and (B)
+    url: https://www.law.cornell.edu/uscode/text/26/6012#a_1
+  - kind: instructions
+    citation: 2017 Form 1040 instructions, Chart B
+    url: null
+  readings:
+    statute: Only gross income less than the limited basic standard deduction plus the age addition excuses a return, so income equal to that amount requires one and blindness doesn't count.
+    other: Chart B adds blindness and requires a return only when gross income exceeds the amount.
+  example: A 2026 blind single filer who can be claimed and has $17,000 of wages must file under the statute, since $17,000 reaches the limited $16,100, and not under Chart B's method, since $17,000 doesn't exceed $18,150.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/irs/tax_unit_is_required_to_file.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10590
+  state: ruled
+  note: 'Ruled 2026-11-02 for the statute; PolicyEngine/policyengine-us#10590 holds the record. The (C)(i)(I) unearned income test keeps the additional standard deduction, which its text names (tax_unit_is_required_to_file.py).'
 - id: us:hsa-limit-indexing-windows
   program: income-tax
   years:
@@ -10875,17 +10912,16 @@ candidates:
   readings:
     statute: With a zero exemption amount, the literal filing rule includes a separate filer with no gross income.
     other: IRS relief requires filing only at $5 or more of gross income.
-  example: The supplied 2026-or-later case for a separate filer aged 40 with no income returns false in the model.
+  example: In the model a separate filer aged 40 with no income must file in 2026 under section 6012(a)(1)(A) and need not file in 2025 under section 6012(f).
   pe_us:
-    follows: unknown
+    follows: statute
     code:
     - policyengine_us/variables/gov/irs/tax_unit_is_required_to_file.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10137
+    - https://github.com/PolicyEngine/policyengine-us/pull/10590
   state: open
-  note: PE-US requires a separate filer to file only with positive gross income, matching neither the literal statute,
-    which reaches a separate filer with none, nor the IRS's $5 relief (tax_unit_is_required_to_file.py). The statute-first
-    rule requires a model change, and no completed ruling date is recorded.
+  note: 'Ruled 2026-11-03 for the statute from 2026. Congress limited section 6012(f) to 2018 through 2025, so under section 6012(a)(1)(A) a married individual filing separately must file even with no gross income: $0 equals the exemption amount, zero under section 151(d)(5)(A). The spouse who loses (A)(iv) and a filer whose standard deduction is zero under section 63(c)(6) face the same test, and PE-US applies it to all three (tax_unit_is_required_to_file.py). For 2018 to 2025 PE-US requires a return only with positive gross income, reading section 6012(f)''s "every individual who has gross income" to leave out $0; that half stays open. PE-US applies the IRS $5 relief in neither period.'
 - id: us:snap-bbce-income-chart-rounding
   program: snap
   years:
