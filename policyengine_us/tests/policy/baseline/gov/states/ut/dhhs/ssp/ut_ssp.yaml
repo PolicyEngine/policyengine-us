@@ -1,0 +1,296 @@
+# Utah Medicaid Manual 661: $15 when institutional SSI is $1 through $30.
+- name: Case 1, Medicaid institutional recipient receives the fixed supplement.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ssi: 30
+    ut_ssp: 15
+
+- name: Case 2, one dollar institutional SSI still qualifies for the full payment.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    ssi: 1
+  output:
+    # $1 SSI >= $1 minimum federal SSI payment, so the $15 payment applies.
+    ut_dhhs_ssp_eligible: true
+    ut_ssp: 15
+
+- name: Case 3, institutional SSI below one dollar does not qualify.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    ssi: 0.50
+  output:
+    # $0.50 SSI < $1 minimum federal SSI payment and no reported receipt.
+    ut_dhhs_ssp_eligible: false
+    ut_ssp: 0
+
+- name: Case 4, Medicaid approval is required.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: false
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ut_ssp: 0
+
+- name: Case 5, independent living does not receive an institutional supplement.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: true
+  output:
+    ssi: 994
+    ut_ssp: 0
+
+- name: Case 6, Utah supplement is not payable outside Utah.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 65
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ut_ssp: 0
+
+- name: Case 7, medical care without majority Medicaid funding does not qualify.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: false
+  output:
+    ut_ssp: 0
+
+- name: Case 8, declining SSI leaves no qualifying receipt.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    takes_up_ssi_if_eligible: false
+  output:
+    ut_ssp: 0
+
+- name: Case 9, negative earnings cannot increase the fixed supplement.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    self_employment_income: -12_000
+  output:
+    ut_ssp: 15
+
+- name: Case 10, year total includes twelve monthly payments.
+  period: 2026
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ut_ssp: 180
+
+- name: Case 11, reported SSI receipt qualifies without a computed SSI payment.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 50
+    receives_ssi: true
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    # Age 50 with no disability inputs is not aged, blind or disabled: SSI $0.
+    ssi: 0
+    # Reported SSI receipt meets the SSI condition: $15.
+    ut_ssp: 15
+
+- name: Case 12, couple both in a Medicaid facility each receive the supplement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        medicaid_enrolled: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        medicaid_enrolled: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Both in a facility: couple computation, $60 / 2 = $30 each with
+    # no income (20 CFR 416.414(b)(2)).
+    ssi: [30, 30]
+    # $30 SSI >= $1 minimum for each spouse: $15 each.
+    ut_ssp: [15, 15]
+
+- name: Case 13, couple with one spouse in a Medicaid facility pays only that spouse.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        medicaid_enrolled: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        medicaid_enrolled: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # One spouse in a facility: separate computation (20 CFR 416.414(b)(3)).
+    # person1 gets the $30 facility rate; person2 at home gets the $994
+    # individual FBR. Both are eligible, so no deeming; no income.
+    ssi: [30, 994]
+    # Only person1 lives in a medical treatment facility: [$15, $0].
+    ut_ssp: [15, 0]
+
+- name: Case 14, Medicaid facility spouse receives the DHHS payment and the spouse at home with a son receives the DWS supplement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 80
+        is_tax_unit_head: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 78
+        is_tax_unit_spouse: true
+      person3:
+        age: 50
+        # Utah minimum wage (the federal $7.25, Utah Code 34-40-103) full time:
+        # 7.25 * 2,080 = 15,080.
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    # One spouse in a facility: separate computation, $30 and $994.
+    ssi: [30, 994, 0]
+    # person1: $30 SSI >= $1 in a Medicaid facility: $15.
+    ut_dhhs_ssp: [15, 0, 0]
+    # person2 is a single individual living with person3: $3.91.
+    ut_dws_ssp: [0, 3.91, 0]
+    ut_ssp: [15, 3.91, 0]
+
+- name: Case 15, Utah recipient is paid beside a Massachusetts recipient in the same simulation.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+      person2:
+        age: 45
+        employment_income: 15_080
+      person3:
+        age: 72
+      person4:
+        age: 45
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+      tax_unit4:
+        members: [person4]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+      marital_unit4:
+        members: [person4]
+    families:
+      family1:
+        members: [person1, person2]
+      family2:
+        members: [person3, person4]
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: UT
+      household2:
+        members: [person3, person4]
+        state_code: MA
+  output:
+    ssi: [994, 0, 994, 0]
+    # Only the Utah recipient, who lives with others, receives $3.91.
+    ut_dws_ssp_eligible: [true, false, false, false]
+    ut_ssp: [3.91, 0, 0, 0]

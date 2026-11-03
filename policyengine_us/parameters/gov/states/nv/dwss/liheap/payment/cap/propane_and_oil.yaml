@@ -1,0 +1,98 @@
+description: Nevada caps the Fixed Annual Credit at this amount by household size and income band for households whose primary heating fuel is propane, fuel oil or kerosene under the Low Income Home Energy Assistance Program.
+# "IF ENERGY SOURCE INCLUDES PROPANE AND OIL", the same in SFY2026 and
+# SFY2027. Kerosene uses the oil table. Every cell is $200 above the
+# standard table and is stored as published. The plans' $3,136 maximum
+# benefit is the size 8+ band 1 cell plus the $100 targeted household
+# supplement.
+1:
+  1:
+    2025-07-01: 2_200
+  2:
+    2025-07-01: 1_800
+  3:
+    2025-07-01: 1_480
+  4:
+    2025-07-01: 1_352
+2:
+  1:
+    2025-07-01: 2_306
+  2:
+    2025-07-01: 1_884
+  3:
+    2025-07-01: 1_548
+  4:
+    2025-07-01: 1_413
+3:
+  1:
+    2025-07-01: 2_416
+  2:
+    2025-07-01: 1_973
+  3:
+    2025-07-01: 1_618
+  4:
+    2025-07-01: 1_477
+4:
+  1:
+    2025-07-01: 2_533
+  2:
+    2025-07-01: 2_066
+  3:
+    2025-07-01: 1_693
+  4:
+    2025-07-01: 1_544
+5:
+  1:
+    2025-07-01: 2_650
+  2:
+    2025-07-01: 2_160
+  3:
+    2025-07-01: 1_768
+  4:
+    2025-07-01: 1_611
+6:
+  1:
+    2025-07-01: 2_772
+  2:
+    2025-07-01: 2_258
+  3:
+    2025-07-01: 1_846
+  4:
+    2025-07-01: 1_682
+7:
+  1:
+    2025-07-01: 2_901
+  2:
+    2025-07-01: 2_361
+  3:
+    2025-07-01: 1_928
+  4:
+    2025-07-01: 1_756
+8:
+  1:
+    2025-07-01: 3_036
+  2:
+    2025-07-01: 2_469
+  3:
+    2025-07-01: 2_015
+  4:
+    2025-07-01: 1_833
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Nevada LIHEAP propane and oil benefit cap
+  breakdown:
+    - range(1, 9) # household size
+    - range(1, 5) # income band
+  breakdown_labels:
+    - Household size
+    - Income band
+  reference:
+    - title: Nevada SFY2026 Energy Assistance Program Manual, Appendix A benefit cap tables
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=111
+    - title: Nevada SFY2027 Energy Assistance Program Manual, Appendix A benefit cap tables
+      href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/2027-eap-state-manual--08.25.26-1.pdf#page=111
+    - title: Nevada FY2026 LIHEAP State Plan, Section 2.6
+      href: https://liheapch.acf.gov/docs/2026/state-plans/NV_Plan_2026.pdf#page=9
+    - title: Nevada FY2027 LIHEAP State Plan, Section 2.6
+      href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/fy-2027-low-income-home-energy-assistance-program-liheap-state-plan.pdf#page=9

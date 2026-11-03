@@ -54,6 +54,7 @@ TY2015_2017 = {
     "farm_rent_income": "18",
     "farm_operations_income": "19",
     "gambling_winnings": "20",
+    "ar_other_additions": "20",
 }
 
 TY2018_ON = {
@@ -81,6 +82,7 @@ TY2018_ON = {
     "unemployment_compensation": "21",
     "total_unemployment_compensation": "21",
     "gambling_winnings": "22",
+    "ar_other_additions": "22",
 }
 
 EXPECTED_LINES = {

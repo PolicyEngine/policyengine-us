@@ -11,9 +11,14 @@ class az_property_tax_credit_agi(Variable):
         "Adjusted gross income as defined for Arizona property tax credit purposes, "
         "for members who are not dependents. Per ARS 43-1072(H)(6) and ITR 12-1, "
         "this starts with federal AGI and subtracts taxable Social Security (ARS "
-        "43-1072(I)). Federal AGI already leaves out most other subsection (I) "
-        "items, but it counts unemployment whichever state paid it, so Arizona "
-        "unemployment is not removed. Unlike regular Arizona income tax, this does "
+        "43-1072(I)) and the unemployment compensation it holds, as (I) excludes "
+        "Arizona unemployment insurance payments; other states' payments are "
+        "added back in az_property_tax_credit_unemployment. Federal AGI already "
+        "leaves out most other subsection (I) items. Federal above-the-line "
+        "deductions other than the business and capital loss deduction are "
+        "added back, as A.A.C. R15-2C-502(A)(1) counts all income not excluded "
+        "by ARS 43-1072 and Form 140PTC lines A to I subtract no adjustment. "
+        "Unlike regular Arizona income tax, this does "
         "NOT exclude pension income, capital gains, or Arizona exemptions. "
         "Capital gains and losses are each member's Form 140PTC line D amount, with "
         "a net loss limited per member, in place of the capital gains and capital "
@@ -37,10 +42,10 @@ class az_property_tax_credit_agi(Variable):
         federal_agi = tax_unit("adjusted_gross_income", period)
 
         # Per ARS 43-1072(I) and ITR 12-1 "Items Excluded from Income",
-        # we ONLY exclude Social Security benefits (and other items like
-        # railroad retirement, workers comp, AZ unemployment, veterans
-        # disability pensions, welfare, and gifts - but these are typically
-        # not in Federal AGI anyway).
+        # we exclude Social Security benefits and Arizona unemployment
+        # compensation (below). Other excluded items, like railroad
+        # retirement, workers comp, veterans disability pensions, welfare and
+        # gifts, are typically not in Federal AGI anyway.
         #
         # Federal AGI only includes the TAXABLE portion of Social Security,
         # but for property tax credit, ALL Social Security should be excluded.
@@ -102,6 +107,49 @@ class az_property_tax_credit_agi(Variable):
             not_dependent * person("az_property_tax_credit_capital_gains", period)
         )
 
+        # ARS 43-1072(I) excludes "payments received under Arizona state
+        # unemployment insurance laws". Federal AGI holds each non-dependent's
+        # taxable_unemployment_compensation; all of it is taken out here, and
+        # az_property_tax_credit_unemployment adds back the part paid under
+        # another state's law (Form 140PTC line I). Only what federal AGI
+        # holds is taken out.
+        if "taxable_unemployment_compensation" in gross_income_sources:
+            federal_unemployment = tax_unit.sum(
+                not_dependent * person("taxable_unemployment_compensation", period)
+            )
+        else:
+            federal_unemployment = 0
+
+        # Ruling us-az:ptc-above-the-line-deductions: household income does not
+        # subtract federal above-the-line deductions. ARS 43-1072(H)(6)(a)
+        # makes income "Adjusted gross income as defined by the department",
+        # and A.A.C. R15-2C-502(A)(1) defines it as "the sum of all income not
+        # specifically excluded in A.R.S. § 43-1072". R15-2C-502(C) nets only
+        # "net income or loss from business or farm activities" ((C)(1)),
+        # "gross income from rent or royalty activities less deductions"
+        # ((C)(2)) and capital gains ((C)(3)). ITR 12-1 items (1) to (11) and
+        # Form 140PTC Part 1 lines A to I subtract no adjustment. So every
+        # deduction federal AGI takes off a non-dependent's income (IRA,
+        # student loan interest, educator, HSA, half of self-employment tax,
+        # self-employed health insurance and pension, alimony paid, and the
+        # rest of the list) is added back. Income counts "whether or not
+        # subject to Arizona income tax", so the Puerto Rico, possession and
+        # savings bond exclusions come back too.
+        # loss_ald is left out: it carries the business losses that ITR 12-1
+        # items (3) to (5) count, and its capital part is handled above. The
+        # sum mirrors above_the_line_deductions, so only what federal AGI
+        # holds comes back: a reform that drops a deduction from the list
+        # adds nothing back. Dependents' income never had them subtracted.
+        added_back_deductions = [
+            deduction for deduction in p.ald.deductions if deduction != "loss_ald"
+        ]
+        federal_deductions = tax_unit_non_dep_add(
+            tax_unit,
+            period,
+            added_back_deductions,
+            include_dependents=p.ald.filer_amounts_recorded_on_dependents,
+        )
+
         # Not floored at zero: household income (Form 140PTC line J) can be
         # negative, and az_property_tax_credit treats it as zero only for the
         # Schedule 1 and 2 lookup.
@@ -111,4 +159,6 @@ class az_property_tax_credit_agi(Variable):
             - federal_capital_gains
             + federal_capital_loss
             + line_d
+            - federal_unemployment
+            + federal_deductions
         )

@@ -45,3 +45,47 @@
     nc_demographic_tanf_eligible: true
   output:
     nc_tanf_income_eligible: false
+
+- name: Six-person household with a $50 payment is eligible; the $25 minimum is not divided by household size.
+  period: 2024
+  input:
+    state_code: NC
+    nc_tanf_reduced_need_standard: 100 * 12
+    nc_tanf_household_size: 6
+    nc_demographic_tanf_eligible: true
+  output:
+    # Payment: 0.5 * 100 = 50 a month >= 25
+    nc_tanf_income_eligible: true
+
+- name: One-person household with a $20 payment is ineligible.
+  period: 2024
+  input:
+    state_code: NC
+    nc_tanf_reduced_need_standard: 40 * 12
+    nc_tanf_household_size: 1
+    nc_demographic_tanf_eligible: true
+  output:
+    # Payment: 0.5 * 40 = 20 a month < 25
+    nc_tanf_income_eligible: false
+
+- name: Payment of exactly $25 is eligible.
+  period: 2024
+  input:
+    state_code: NC
+    nc_tanf_reduced_need_standard: 50 * 12
+    nc_tanf_household_size: 2
+    nc_demographic_tanf_eligible: true
+  output:
+    # Payment: 0.5 * 50 = 25 a month >= 25
+    nc_tanf_income_eligible: true
+
+- name: Payment of $24.50 is ineligible.
+  period: 2024
+  input:
+    state_code: NC
+    nc_tanf_reduced_need_standard: 49 * 12
+    nc_tanf_household_size: 2
+    nc_demographic_tanf_eligible: true
+  output:
+    # Payment: 0.5 * 49 = 24.50 a month < 25
+    nc_tanf_income_eligible: false

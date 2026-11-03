@@ -96,3 +96,343 @@
     # Tax on 50,000: 952.50 + 3,501 + 2,486 = 6,939.50. Tax on 30,000:
     # 952.50 + 2,457 = 3,409.50. Difference: 3,530.
     income_tax_main_rates: 3_530
+
+# Tax at the main rates on ordinary taxable income before 2018, from each
+# year's section 1 rate schedule (26 U.S.C. 1(a)-(d) as modified by 1(i)).
+# Each case's comment lists the amount in each bracket times its rate, so the
+# expected tax is computed by hand from the thresholds, not by the model.
+
+- name: 2017 single filer with 100,000 of taxable income (Rev. Proc. 2016-55)
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    filing_status: SINGLE
+    taxable_income: 100_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 9,325 = 932.5; 15% x 28,625 = 4,293.75; 25% x 53,950 = 13,487.5;
+    # 28% x 8,100 = 2,268.
+    income_tax_main_rates: 20_981.75
+
+- name: 2017 single filer with 500,000 of taxable income (Rev. Proc. 2016-55)
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    filing_status: SINGLE
+    taxable_income: 500_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 9,325 = 932.5; 15% x 28,625 = 4,293.75; 25% x 53,950 = 13,487.5;
+    # 28% x 99,750 = 27,930; 33% x 225,050 = 74,266.5; 35% x 1,700 = 595;
+    # 39.6% x 81,600 = 32,313.6.
+    income_tax_main_rates: 153_818.85
+
+- name: 2017 joint filer with 100,000 of taxable income (Rev. Proc. 2016-55)
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    filing_status: JOINT
+    taxable_income: 100_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 18,650 = 1,865; 15% x 57,250 = 8,587.5; 25% x 24,100 = 6,025.
+    income_tax_main_rates: 16_477.50
+
+- name: 2017 joint filer with 500,000 of taxable income (Rev. Proc. 2016-55)
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    filing_status: JOINT
+    taxable_income: 500_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 18,650 = 1,865; 15% x 57,250 = 8,587.5; 25% x 77,200 = 19,300;
+    # 28% x 80,250 = 22,470; 33% x 183,350 = 60,505.5; 35% x 54,000 = 18,900;
+    # 39.6% x 29,300 = 11,602.8.
+    income_tax_main_rates: 143_230.80
+
+- name: 2017 separate filer with 100,000 of taxable income (Rev. Proc. 2016-55)
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    filing_status: SEPARATE
+    taxable_income: 100_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 9,325 = 932.5; 15% x 28,625 = 4,293.75; 25% x 38,600 = 9,650;
+    # 28% x 23,450 = 6,566.
+    income_tax_main_rates: 21_442.25
+
+- name: 2017 separate filer with 500,000 of taxable income (Rev. Proc. 2016-55)
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    filing_status: SEPARATE
+    taxable_income: 500_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 9,325 = 932.5; 15% x 28,625 = 4,293.75; 25% x 38,600 = 9,650;
+    # 28% x 40,125 = 11,235; 33% x 91,675 = 30,252.75; 35% x 27,000 = 9,450;
+    # 39.6% x 264,650 = 104,801.4.
+    income_tax_main_rates: 170_615.40
+
+- name: 2017 head of household filer with 100,000 of taxable income (Rev. Proc. 2016-55)
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    taxable_income: 100_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 13,350 = 1,335; 15% x 37,450 = 5,617.5; 25% x 49,200 = 12,300.
+    income_tax_main_rates: 19_252.50
+
+- name: 2017 head of household filer with 500,000 of taxable income (Rev. Proc. 2016-55)
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    taxable_income: 500_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 13,350 = 1,335; 15% x 37,450 = 5,617.5; 25% x 80,400 = 20,100;
+    # 28% x 81,300 = 22,764; 33% x 204,200 = 67,386; 35% x 27,850 = 9,747.5;
+    # 39.6% x 55,450 = 21,958.2.
+    income_tax_main_rates: 148_908.20
+
+- name: 2017 surviving spouse filer with 100,000 of taxable income (Rev. Proc. 2016-55)
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    filing_status: SURVIVING_SPOUSE
+    taxable_income: 100_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 18,650 = 1,865; 15% x 57,250 = 8,587.5; 25% x 24,100 = 6,025.
+    income_tax_main_rates: 16_477.50
+
+- name: 2017 surviving spouse filer with 500,000 of taxable income (Rev. Proc. 2016-55)
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    filing_status: SURVIVING_SPOUSE
+    taxable_income: 500_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 18,650 = 1,865; 15% x 57,250 = 8,587.5; 25% x 77,200 = 19,300;
+    # 28% x 80,250 = 22,470; 33% x 183,350 = 60,505.5; 35% x 54,000 = 18,900;
+    # 39.6% x 29,300 = 11,602.8.
+    income_tax_main_rates: 143_230.80
+
+- name: 2016 single filer with 500,000 of taxable income (Rev. Proc. 2015-53)
+  absolute_error_margin: 0.01
+  period: 2016
+  input:
+    filing_status: SINGLE
+    taxable_income: 500_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 9,275 = 927.5; 15% x 28,375 = 4,256.25; 25% x 53,500 = 13,375;
+    # 28% x 99,000 = 27,720; 33% x 223,200 = 73,656; 35% x 1,700 = 595;
+    # 39.6% x 84,950 = 33,640.2.
+    income_tax_main_rates: 154_169.95
+
+- name: 2016 joint filer with 500,000 of taxable income (Rev. Proc. 2015-53)
+  absolute_error_margin: 0.01
+  period: 2016
+  input:
+    filing_status: JOINT
+    taxable_income: 500_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 18,550 = 1,855; 15% x 56,750 = 8,512.5; 25% x 76,600 = 19,150;
+    # 28% x 79,550 = 22,274; 33% x 181,900 = 60,027; 35% x 53,600 = 18,760;
+    # 39.6% x 33,050 = 13,087.8.
+    income_tax_main_rates: 143_666.30
+
+- name: 2016 separate filer with 500,000 of taxable income (Rev. Proc. 2015-53)
+  absolute_error_margin: 0.01
+  period: 2016
+  input:
+    filing_status: SEPARATE
+    taxable_income: 500_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 9,275 = 927.5; 15% x 28,375 = 4,256.25; 25% x 38,300 = 9,575;
+    # 28% x 39,775 = 11,137; 33% x 90,950 = 30,013.5; 35% x 26,800 = 9,380;
+    # 39.6% x 266,525 = 105,543.9.
+    income_tax_main_rates: 170_833.15
+
+- name: 2016 head of household filer with 500,000 of taxable income (Rev. Proc. 2015-53)
+  absolute_error_margin: 0.01
+  period: 2016
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    taxable_income: 500_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 13,250 = 1,325; 15% x 37,150 = 5,572.5; 25% x 79,750 = 19,937.5;
+    # 28% x 80,650 = 22,582; 33% x 202,550 = 66,841.5; 35% x 27,650 = 9,677.5;
+    # 39.6% x 59,000 = 23,364.
+    income_tax_main_rates: 149_300
+
+- name: 2016 surviving spouse filer with 500,000 of taxable income (Rev. Proc. 2015-53)
+  absolute_error_margin: 0.01
+  period: 2016
+  input:
+    filing_status: SURVIVING_SPOUSE
+    taxable_income: 500_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 18,550 = 1,855; 15% x 56,750 = 8,512.5; 25% x 76,600 = 19,150;
+    # 28% x 79,550 = 22,274; 33% x 181,900 = 60,027; 35% x 53,600 = 18,760;
+    # 39.6% x 33,050 = 13,087.8.
+    income_tax_main_rates: 143_666.30
+
+- name: 2015 single filer with 100,000 of taxable income (Rev. Proc. 2014-61)
+  absolute_error_margin: 0.01
+  period: 2015
+  input:
+    filing_status: SINGLE
+    taxable_income: 100_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 9,225 = 922.5; 15% x 28,225 = 4,233.75; 25% x 53,300 = 13,325;
+    # 28% x 9,250 = 2,590.
+    income_tax_main_rates: 21_071.25
+
+- name: 2015 single filer with 500,000 of taxable income (Rev. Proc. 2014-61)
+  absolute_error_margin: 0.01
+  period: 2015
+  input:
+    filing_status: SINGLE
+    taxable_income: 500_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 9,225 = 922.5; 15% x 28,225 = 4,233.75; 25% x 53,300 = 13,325;
+    # 28% x 98,550 = 27,594; 33% x 222,200 = 73,326; 35% x 1,700 = 595;
+    # 39.6% x 86,800 = 34,372.8.
+    income_tax_main_rates: 154_369.05
+
+- name: 2015 joint filer with 100,000 of taxable income (Rev. Proc. 2014-61)
+  absolute_error_margin: 0.01
+  period: 2015
+  input:
+    filing_status: JOINT
+    taxable_income: 100_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 18,450 = 1,845; 15% x 56,450 = 8,467.5; 25% x 25,100 = 6,275.
+    income_tax_main_rates: 16_587.50
+
+- name: 2015 joint filer with 500,000 of taxable income (Rev. Proc. 2014-61)
+  absolute_error_margin: 0.01
+  period: 2015
+  input:
+    filing_status: JOINT
+    taxable_income: 500_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 18,450 = 1,845; 15% x 56,450 = 8,467.5; 25% x 76,300 = 19,075;
+    # 28% x 79,250 = 22,190; 33% x 181,050 = 59,746.5; 35% x 53,350 = 18,672.5;
+    # 39.6% x 35,150 = 13,919.4.
+    income_tax_main_rates: 143_915.90
+
+- name: 2015 separate filer with 100,000 of taxable income (Rev. Proc. 2014-61)
+  absolute_error_margin: 0.01
+  period: 2015
+  input:
+    filing_status: SEPARATE
+    taxable_income: 100_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 9,225 = 922.5; 15% x 28,225 = 4,233.75; 25% x 38,150 = 9,537.5;
+    # 28% x 24,400 = 6,832.
+    income_tax_main_rates: 21_525.75
+
+- name: 2015 separate filer with 500,000 of taxable income (Rev. Proc. 2014-61)
+  absolute_error_margin: 0.01
+  period: 2015
+  input:
+    filing_status: SEPARATE
+    taxable_income: 500_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 9,225 = 922.5; 15% x 28,225 = 4,233.75; 25% x 38,150 = 9,537.5;
+    # 28% x 39,625 = 11,095; 33% x 90,525 = 29,873.25; 35% x 26,675 = 9,336.25;
+    # 39.6% x 267,575 = 105,959.7.
+    income_tax_main_rates: 170_957.95
+
+- name: 2015 head of household filer with 100,000 of taxable income (Rev. Proc. 2014-61)
+  absolute_error_margin: 0.01
+  period: 2015
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    taxable_income: 100_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 13,150 = 1,315; 15% x 37,050 = 5,557.5; 25% x 49,800 = 12,450.
+    income_tax_main_rates: 19_322.50
+
+- name: 2015 head of household filer with 500,000 of taxable income (Rev. Proc. 2014-61)
+  absolute_error_margin: 0.01
+  period: 2015
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    taxable_income: 500_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 13,150 = 1,315; 15% x 37,050 = 5,557.5; 25% x 79,400 = 19,850;
+    # 28% x 80,250 = 22,470; 33% x 201,650 = 66,544.5; 35% x 27,500 = 9,625;
+    # 39.6% x 61,000 = 24,156.
+    income_tax_main_rates: 149_518
+
+- name: 2015 surviving spouse filer with 100,000 of taxable income (Rev. Proc. 2014-61)
+  absolute_error_margin: 0.01
+  period: 2015
+  input:
+    filing_status: SURVIVING_SPOUSE
+    taxable_income: 100_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 18,450 = 1,845; 15% x 56,450 = 8,467.5; 25% x 25,100 = 6,275.
+    income_tax_main_rates: 16_587.50
+
+- name: 2015 surviving spouse filer with 500,000 of taxable income (Rev. Proc. 2014-61)
+  absolute_error_margin: 0.01
+  period: 2015
+  input:
+    filing_status: SURVIVING_SPOUSE
+    taxable_income: 500_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 10% x 18,450 = 1,845; 15% x 56,450 = 8,467.5; 25% x 76,300 = 19,075;
+    # 28% x 79,250 = 22,190; 33% x 181,050 = 59,746.5; 35% x 53,350 = 18,672.5;
+    # 39.6% x 35,150 = 13,919.4.
+    income_tax_main_rates: 143_915.90
+

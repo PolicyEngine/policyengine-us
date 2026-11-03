@@ -1,0 +1,15 @@
+description: Social Security applies a historical annual COLA in this calendar month of its effective year.
+values:
+  1975-06-01: 6
+  1983-12-01: 12
+metadata:
+  unit: int
+  label: Social Security historical COLA effective month
+  economy: false
+  reference:
+    - title: Social Security Cost-Of-Living Adjustments
+      href: https://www.ssa.gov/OACT/COLA/colaseries.html
+documentation: |
+  Read this month at an event date in cola_history.rate. June-effective
+  events apply in 1975-1982, and December-effective events apply from 1983.
+  No COLA occurred in December 1982 or June 1983.
