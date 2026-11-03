@@ -1,3 +1,10 @@
+## [2.94.1] - 2026-11-03
+
+### Fixed
+
+- Count every state child care subsidy in the CCDF program list in household benefits, up to the family's child care and after-school bill.
+
+
 ## [2.94.0] - 2026-11-03
 
 ### Added
