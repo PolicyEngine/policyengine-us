@@ -1,0 +1,1 @@
+California's high-income itemized limitation now leaves out the FTB 3526 investment interest deduction instead of the interest paid; Minnesota leaves investment interest out of its itemized deduction reduction, and its AMT subtracts investment interest and miscellaneous deductions.
