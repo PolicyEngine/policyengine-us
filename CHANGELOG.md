@@ -1,3 +1,10 @@
+## [2.92.2] - 2026-11-03
+
+### Fixed
+
+- Keep plain inputs such as EITC take-up when New York and Alabama recompute federal credits under pinned rules, so a 2021 New York filer who does not take up the federal EITC no longer gets the New York EITC.
+
+
 ## [2.92.1] - 2026-11-03
 
 ### Fixed
