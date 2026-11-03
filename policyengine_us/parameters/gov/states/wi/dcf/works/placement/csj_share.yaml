@@ -1,0 +1,44 @@
+description: Wisconsin pays this share of the Community Service Job amount, based on a participant's weekly hours of unsubsidized work, under the Wisconsin Works program.
+
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: /1
+  label: Wisconsin Works Community Service Job share by unsubsidized hours
+  reference:
+    - title: Wisconsin Statutes 49.148(1)(b)1 and 1m
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/49/iii/148/1/b
+    - title: 1999 Wisconsin Act 9, section 1236c
+      href: https://docs.legis.wisconsin.gov/1999/related/acts/9/1236c
+    - title: W-2 Manual 7.4.1.5 - Prorated CSJs
+      href: https://dcf.wisconsin.gov/manuals/w-2-manual/Production/07/7.4.1_Community_Service_Jobs_(CSJ).htm
+
+# The statute sets the fractions by hours in the Community Service Job, which fill
+# the 30 hours left after unsubsidized work. This scale runs on unsubsidized hours,
+# so at most 9 unsubsidized hours leaves more than 20 job hours. W-2 paid the full
+# amount until 1999 Wisconsin Act 9 added these fractions.
+brackets:
+  - threshold:
+      1997-09-01: 0
+    amount:
+      1997-09-01: 1
+  - threshold:
+      1997-09-01: 10
+    amount:
+      1997-09-01: 1
+      1999-10-29: 0.666667
+  - threshold:
+      1997-09-01: 15
+    amount:
+      1997-09-01: 1
+      1999-10-29: 0.5
+  - threshold:
+      1997-09-01: 20
+    amount:
+      1997-09-01: 1
+      1999-10-29: 0.333333
+  - threshold:
+      1997-09-01: 30
+    amount:
+      1997-09-01: 1
+      1999-10-29: 0
