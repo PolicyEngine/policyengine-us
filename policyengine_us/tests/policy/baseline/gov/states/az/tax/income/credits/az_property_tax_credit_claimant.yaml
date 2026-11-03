@@ -56,7 +56,7 @@
     az_property_tax_credit_potential: [300, 502]
     az_property_tax_credit: [0, 502]
 
-- name: A tie goes to the first tax unit in household order
+- name: A tie goes to the tax unit whose head comes first in the person order
   period: 2025
   input:
     people:

@@ -19,8 +19,8 @@ class az_property_tax_credit_claimant(Variable):
         # to whom the claimant shall be". As a modeling convention, the
         # household picks the eligible tax unit whose claim
         # (az_property_tax_credit_potential) is largest. A tie goes to the tax
-        # unit holding the household head, and otherwise to the first such
-        # tax unit in household member order.
+        # unit holding the household head, and otherwise to the tax unit whose
+        # head comes first in the simulation's person order.
         person = tax_unit.members
         candidate = person("is_tax_unit_head", period) & person.tax_unit(
             "az_property_tax_credit_eligible", period
@@ -29,9 +29,9 @@ class az_property_tax_credit_claimant(Variable):
         largest = person.household.max(where(candidate, claim, -np.inf))
         tied = candidate & (claim >= largest)
         holds_household_head = person.tax_unit.any(person("is_household_head", period))
-        # get_rank's stable sort gives rank 0 to the first tied tax unit
-        # holding the household head, or, if none does, to the first tied
-        # tax unit in household member order.
+        # get_rank sorts by members_position, so rank 0 goes to the first tied
+        # tax unit holding the household head, or, if none does, to the tied
+        # tax unit whose head comes first in the simulation's person order.
         rank = person.get_rank(
             person.household, where(holds_household_head, 0, 1), condition=tied
         )
