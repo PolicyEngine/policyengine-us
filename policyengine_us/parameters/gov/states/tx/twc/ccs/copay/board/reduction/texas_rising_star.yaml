@@ -56,11 +56,10 @@ GOLDEN_CRESCENT:
   2023-10-01: 0
 
 # Alamo's policy CCS 12, Change 2 gives a family that enrolls in a Texas
-# Rising Star provider "a 10% discount on their assigned PSOC". Alamo's
-# charts print the discounted amounts rounded to the dollar; the model
-# applies the 10% without rounding. The Board approved removing the
-# discount on July 19, 2024, and its charts from October 1, 2024 print no
-# discounted amounts.
+# Rising Star provider "a 10% discount on their assigned PSOC", and its
+# charts print the discounted amounts rounded to the dollar
+# (rounds_to_dollar.yaml). The Board approved removing the discount on July
+# 19, 2024, and its charts from October 1, 2024 print no discounted amounts.
 ALAMO:
   2023-10-01: 0.1
   2024-10-01: 0
@@ -89,7 +88,9 @@ metadata:
   breakdown:
     - tx_ccs_workforce_board_region
   reference:
-    - title: TWC, Chapter 809 Child Care Services rules adopted September 13, 2022, 40 TAC 809.19(b)(7), effective October 1, 2023
+    - title: TWC, Chapter 809 Child Care Services rules adopted September 13, 2022, 40 TAC 809.19(a)(8), effective before December 1, 2023
+      href: https://www.twc.texas.gov/sites/default/files/ogc/mtg22/commission-meeting-materials-09.13.22-item8-fr-ch809-child-care-services-twc.pdf#page=63
+    - title: TWC, Chapter 809 Child Care Services rules adopted September 13, 2022, 40 TAC 809.19(b)(7), effective December 1, 2023
       href: https://www.twc.texas.gov/sites/default/files/ogc/mtg22/commission-meeting-materials-09.13.22-item8-fr-ch809-child-care-services-twc.pdf#page=66
     - title: TWC, Chapter 809 Child Care Services rules adopted July 9, 2024 (removal of the Texas Rising Star reduction)
       href: https://twc.texas.gov/sites/default/files/ogc/docs/fr-809-trs-updates-7-24-twc.pdf#page=4

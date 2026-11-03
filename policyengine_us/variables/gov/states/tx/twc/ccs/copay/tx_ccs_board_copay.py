@@ -67,6 +67,8 @@ class tx_ccs_board_copay(Variable):
         fpg_size = clip(size, min(fpg_sizes), max(fpg_sizes))
         fpg_limit = fpg_range_limit(p.fpg_income_limits[fpg_size], fpg_size)
         person = spm_unit.members
+        # Board charts charge by children in care; like the statewide branch of
+        # tx_ccs_copay, the model counts each eligible child as in care.
         eligible_child = person("tx_ccs_eligible_child", period)
         children = spm_unit.sum(eligible_child)
         additional_children = max_(children - 1, 0)
@@ -107,6 +109,11 @@ class tx_ccs_board_copay(Variable):
             all_part_time * p.reduction.part_time[region],
         )
         share = copay * (1 - reduction)
+        # Some Boards' charts print the reduced share of cost rounded to the
+        # nearest dollar.
+        share = where(
+            p.reduction.rounds_to_dollar[region], np.floor(share + 0.5), share
+        )
         # Some Boards cap the share of cost at the family's monthly income.
         share = where(p.caps_at_income[region], min_(share, income), share)
         # A Board's lowest range starts at $0, but TWC reads 40 TAC 809.19's bar

@@ -8741,7 +8741,7 @@ candidates:
     which TWC had Boards keep setting until it launched TX3C on January 13, 2025?
   sources:
   - kind: regulation
-    citation: 40 TAC §809.19(b), adopted September 13, 2022 (47 TexReg 6459, effective October 3, 2022)
+    citation: 40 TAC §809.19(b), adopted September 13, 2022 (47 TexReg 6437, effective October 3, 2022)
     url: https://web.archive.org/web/20231103125253/https://www.twc.texas.gov/sites/default/files/ogc/docs/fr-809-ch-rev-09-22-twc.pdf#page=62
   - kind: regulation
     citation: 40 TAC §809.19(a)(1)(B) and (a)(2), as amended effective July 29, 2024 (p. 18)
@@ -8792,11 +8792,12 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10623
   state: ruled
   note: 'On 2026-11-02, PolicyEngine picked each Board''s own scale where it has the Board''s chart for the period, and
-    TWC''s statewide scale for a Board without one and for every family from TX3C''s launch. No Commission scale took
-    effect before TX3C, the approved State Plan describes local scales until then, and PolicyEngine has not settled
-    whether a state rule binds like a Treasury regulation, so the model follows what TWC applied (the agency breaks
-    true ties). It moves every family to the statewide scale at launch, not at each family''s recertification through
-    February 1, 2026.'
+    TWC''s statewide scale for a Board without one and for every family from TX3C''s launch. From October 2024 to TX3C,
+    it also continues a Board''s BCY 2024 chart where WD 20-24 let the Board keep it without a vote and no later chart
+    or Board action was found (Brazos Valley and South Texas). No Commission scale took effect before TX3C, the
+    approved State Plan describes local scales until then, and PolicyEngine has not settled whether a state rule binds
+    like a Treasury regulation, so the model follows what TWC applied (the agency breaks true ties). It moves every
+    family to the statewide scale at launch, not at each family''s recertification through February 1, 2026.'
 - id: us-tx:ccs-board-psoc-zero-income
   program: child-care-assistance
   years:
@@ -8860,9 +8861,10 @@ candidates:
     statute: This entry cites no statute. From July 29, 2024, §809.19(a)(1)(C) has the parent share of cost "not exceed
       7 percent of the family income, regardless of the number of children receiving child care services."
     other: WD 20-24 says the methodology capping the share at 7 percent "will go into effect with the launch of TX3C".
-      The State Plan says TWC "is not able to implement this change with the current case management system" and would
-      request a temporary federal waiver. TWC's waiver request phases the cap in as families enroll or recertify from
-      January 13, 2025, with every family under it by February 1, 2026.
+      The State Plan says TWC "will implement a new policy on September 1, 2024, that caps co-payments at 7 percent",
+      but that it "is not able to implement this change with the current case management system" and would request a
+      temporary federal waiver. TWC's waiver request phases the cap in as families enroll or recertify from January 13,
+      2025, with every family under it by February 1, 2026.
   example: A Panhandle family of three with $500 a month and two children in care in November 2024 pays the Board's $45,
     9% of income; a 7% cap would hold it to $35.
   pe_us:
@@ -8900,8 +8902,10 @@ candidates:
     statute: This entry cites no statute. The amendments "remove the option for Boards to reduce the PSoC based on the
       parent selection of Texas Rising Star program providers", and §809.19(a)(2)(B) keeps an assessed share from rising
       before the 12-month redetermination unless a child joins care.
-    other: WD 06-24, Change 2 has Boards "discontinue discounts for parent-selected Texas Rising Star certified care"
-      with the statewide policy at TX3C, and keep a current discount "through the end of the eligibility period."
+    other: WD 06-24, Change 2, dated October 10, 2024 and effective immediately, has Boards "discontinue discounts for
+      parent-selected Texas Rising Star certified care" and keep a current discount "through the end of the eligibility
+      period." The order gives no date of its own; it sits under the statewide policy TWC planned to bring in with TX3C
+      on December 9, 2024, so it can be read to start then or on October 10, 2024.
   example: A Panhandle family of three with $5,419 a month and one child at a Texas Rising Star provider pays $189 in
     November 2024 with the Board's 30% reduction, and $270 without it.
   pe_us:
@@ -8932,7 +8936,7 @@ candidates:
     citation: Acts 2021, 87th Leg., R.S., ch. 59 (S.B. 1555), §2
     url: https://capitol.texas.gov/tlodocs/87R/billtext/html/SB01555F.htm
   - kind: regulation
-    citation: 40 TAC §809.20(a)(2) and (a)(3), adopted September 13, 2022 (47 TexReg 6459, effective October 3, 2022)
+    citation: 40 TAC §809.20(a)(2) and (a)(3), adopted September 13, 2022 (47 TexReg 6437, effective October 3, 2022)
     url: https://web.archive.org/web/20231103125253/https://www.twc.texas.gov/sites/default/files/ogc/docs/fr-809-ch-rev-09-22-twc.pdf#page=65
   - kind: rulemaking
     citation: TWC, amendments to 40 TAC Chapter 809 adopted September 13, 2022, preamble on Senate Bill 1555 (pp. 7-8)
