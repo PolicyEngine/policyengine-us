@@ -1,3 +1,10 @@
+## [2.94.3] - 2026-11-03
+
+### Fixed
+
+- Keep the Social Security wage base on each Trustees assumption's path when a reform changes only the payroll cap.
+
+
 ## [2.94.2] - 2026-11-03
 
 ### Fixed
