@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.period_branch import drop_recomputed_values
 from policyengine_us.tools.pinned_tbs import (
     CREDIT_DEPENDENT_VARIABLES,
     get_pre_tcja_ctc_tbs,
@@ -42,12 +43,9 @@ class ny_ctc_pre_2024_eligible(Variable):
             pre_tcja_ctc.tax_benefit_system = get_pre_tcja_ctc_tbs(
                 simulation.tax_benefit_system
             )
-            # Delete all arrays from pre-TCJA CTC branch.
-            for variable in pre_tcja_ctc.tax_benefit_system.variables:
-                if "ctc" in variable or any(
-                    name in variable for name in CREDIT_DEPENDENT_VARIABLES
-                ):
-                    pre_tcja_ctc.delete_arrays(variable)
+            # Recalculate every CTC formula variable under the pinned rules, a
+            # supplied current-law value included.
+            drop_recomputed_values(pre_tcja_ctc, ["ctc", *CREDIT_DEPENDENT_VARIABLES])
             qualifies_for_federal_ctc = pre_tcja_ctc.person(
                 "ctc_qualifying_child", period
             )

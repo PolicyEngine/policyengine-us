@@ -5,6 +5,12 @@ class ri_child_tax_rebate_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Rhode Island Child Tax Rebate"
+    documentation = (
+        "Eligibility for Rhode Island's one-time child tax rebate paid in 2022 and "
+        "determined from the 2021 return. PolicyEngine attributes the payment to "
+        "eligibility tax year 2021. A true eligibility indicator in another year does "
+        "not imply a payment; ri_child_tax_rebate is zero outside 2021."
+    )
     definition_period = YEAR
     reference = (
         "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-08/H7123Aaa_CTR_0.pdf"
