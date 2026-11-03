@@ -544,8 +544,9 @@
     state_code: TX
     tx_ccs_workforce_board_region: PANHANDLE
   output:
-    # TWC's October 2016 table dates this rate June 1, 2014: infant FT = 22.00 * 10
-    # = 220.00. PolicyEngine applies the table's values back to January 2015.
+    # TWC dated this rate June 1, 2014 in its October 2016 table: infant FT =
+    # 22.00 * 10 = 220.00. PolicyEngine applies the table's values back to
+    # January 2015.
     tx_ccs_payment_rate:
       2015-01: 220.00
       2015-12: 220.00
@@ -565,7 +566,7 @@
     tx_ccs_workforce_board_region: ALAMO
   output:
     # October 2016 table infant FT = 34.25 * 10 = 342.50 through July 2018
-    # WD 12-18 Att. 1 raises it 2 percent, rounded up: 34.94 * 10 = 349.40
+    # In WD 12-18 Att. 1, TWC raised it 2 percent, rounded up: 34.94 * 10 = 349.40
     tx_ccs_payment_rate:
       2018-07: 342.50
       2018-08: 349.40
@@ -585,8 +586,8 @@
     tx_ccs_workforce_board_region: LOWER_RIO
   output:
     # October 2016 table TSR preschool FT = 17.46 * 10 = 174.60
-    # WD 12-18 Att. 1 prints 105 percent of its new 15.22 regular rate, rounded
-    # up: 15.99 * 10 = 159.90, below the October 2016 rate.
+    # In WD 12-18 Att. 1, TWC printed 105 percent of the new 15.22 regular rate,
+    # rounded up: 15.99 * 10 = 159.90, below the October 2016 rate.
     tx_ccs_payment_rate:
       2018-07: 174.60
       2018-08: 159.90
@@ -605,8 +606,9 @@
     state_code: TX
     tx_ccs_workforce_board_region: SOUTH_TEXAS
   output:
-    # The October 2016 table prints 12.84, below the 14.40 regular rate, so the
-    # rate takes the 809.20(c)(1)(B) floor: 14.40 * 1.05 = 15.12 * 10 = 151.20
+    # TWC printed 12.84 in its October 2016 table, below the 14.40 regular rate,
+    # so we raise it to the 809.20(c)(1)(B) floor: 14.40 * 1.05 = 15.12 * 10
+    # = 151.20
     # WD 12-18 Att. 1: 105 percent of the new 14.69 regular rate, rounded up:
     # 15.43 * 10 = 154.30
     tx_ccs_payment_rate:
@@ -627,8 +629,8 @@
     state_code: TX
     tx_ccs_workforce_board_region: GULF_COAST
   output:
-    # The October 2016 table prints TSR rates for preschool only, so TSR takes
-    # the regular rate: 28.31 * 20 = 566.20
+    # TWC printed TSR rates for preschool alone in its October 2016 table, so we
+    # give TSR the regular rate: 28.31 * 20 = 566.20
     # WD 12-18 Att. 1 TSR toddler FT = 28.88 * 20 = 577.60
     tx_ccs_payment_rate:
       2018-07: 566.20
@@ -648,8 +650,9 @@
     state_code: TX
     tx_ccs_workforce_board_region: COASTAL_BEND
   output:
-    # The October 2016 table prints no blended rate, so it is WD 02-20's
-    # school-year blend: (175 * 19.95 + 30 * 16.62) / 205 = 19.46 * 15 = 291.90
+    # TWC printed no blended rate in its October 2016 table, so we compute
+    # WD 02-20's school-year blend: (175 * 19.95 + 30 * 16.62) / 205 = 19.46 * 15
+    # = 291.90
     # WD 12-18 Att. 1 school-age BT = 19.85 * 15 = 297.75
     tx_ccs_payment_rate:
       2018-07: 291.90
@@ -689,8 +692,8 @@
     state_code: TX
     tx_ccs_workforce_board_region: COASTAL_BEND
   output:
-    # WD 23-19 and WD 25-20 print no blended rate, so it is WD 02-20's school-year
-    # blend, (175 * PT + 30 * FT) / 205, rounded half up to the cent.
+    # TWC printed no blended rate in WD 23-19 or WD 25-20, so we compute WD 02-20's
+    # school-year blend, (175 * PT + 30 * FT) / 205, rounded half up to the cent.
     # BCY20: (175 * 20.35 + 30 * 18.08) / 205 = 20.02 * 15 = 300.30
     # BCY21: (175 * 20.35 + 30 * 18.61) / 205 = 20.10 * 15 = 301.50
     tx_ccs_payment_rate:
@@ -712,8 +715,8 @@
     tx_ccs_workforce_board_region: TEXOMA
   output:
     # WD 25-20 Att. 1 (BCY21) preschool PT = 20.07 * 10 = 200.70
-    # WD 24-21 Att. 1 (BCY22) dashes this rate. It keeps the BCY21 rate, which
-    # exceeds the 5 percent floor over the 18.96 regular rate (19.91).
+    # TWC dashed this rate in WD 24-21 Att. 1 (BCY22). We keep the BCY21 rate,
+    # which exceeds the 5 percent floor over the 18.96 regular rate (19.91).
     tx_ccs_payment_rate:
       2021-09: 200.70
       2021-10: 200.70
@@ -732,7 +735,7 @@
     state_code: TX
     tx_ccs_workforce_board_region: TEXOMA
   output:
-    # BCY22 keeps the BCY21 rate: 20.07 * 10 = 200.70
+    # We keep the BCY21 rate in BCY22: 20.07 * 10 = 200.70
     # WD 22-22 Att. 1 (BCY23) preschool PT = 22.89 * 10 = 228.90
     tx_ccs_payment_rate:
       2022-09: 200.70
@@ -772,8 +775,8 @@
     state_code: TX
     tx_ccs_workforce_board_region: GULF_COAST
   output:
-    # WD 24-21 Att. 1 (BCY22) prints no TSR toddler rate, so TSR takes the
-    # regular rate: 37.80 * 20 = 756.00
+    # TWC printed no TSR toddler rate in WD 24-21 Att. 1 (BCY22), so we give TSR
+    # the regular rate: 37.80 * 20 = 756.00
     # WD 22-22 Att. 1 (BCY23) TSR toddler FT = 42.42 * 20 = 848.40
     tx_ccs_payment_rate:
       2022-09: 756.00
@@ -813,8 +816,8 @@
     state_code: TX
     tx_ccs_workforce_board_region: ALAMO
   output:
-    # WD 22-22 Att. 1 (BCY23) prints no TSR school-age rate, so TSR takes the
-    # regular rate: 34.20 * 10 = 342.00
+    # TWC printed no TSR school-age rate in WD 22-22 Att. 1 (BCY23), so we give
+    # TSR the regular rate: 34.20 * 10 = 342.00
     # WD 20-23 Att. 1 as revised (BCY24) TSR school-age FT = 38.65 * 10 = 386.50
     tx_ccs_payment_rate:
       2023-09: 342.00
