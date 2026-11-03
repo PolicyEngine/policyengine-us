@@ -1,13 +1,17 @@
 # Idaho FY2026 LIHEAP plan, 60% of SMI for sizes 1-7 and 150% of the guideline for 8 and up (page 8).
 # https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=8
 # DHW published monthly limits effective 2025-10-01; retrieved 2026-10-03.
+# 42 U.S.C. 8624(b)(2)(B) and HHS Attachment 4 set the federal maximum.
+# https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=1
 # https://healthandwelfare.idaho.gov/services-programs/financial-assistance/home-heating-and-utility-assistance/apply-heating-assistance
 
-- name: Case 1, all published monthly limits and additional person amounts annualize exactly.
+- name: Case 1, published monthly limits annualize under the federal maximum.
   period: 2026
   absolute_error_margin: 0.01
   # Sizes 1-10 use published monthly [2736.25,3578.17,4420.08,5262.08,
   # 6104,6945.92,7103.75,6768.75,7456.25,8143.75] times 12.
+  # Sizes 2 and 6 would be 42,938.04 and 83,351.04, so they cap at HHS's 42,938 and 83,351.
+  # Sizes 3 and 4 stay at DHW's lower 53,040.96 and 63,144.96.
   # Size 11 = (8,143.75 + 687.50) x 12 = 105,975; size 15 = (8,143.75 + 5 x 687.50) x 12 = 138,975.
   # Size 7 annual 85,245 exceeds size 8 annual 81,225: the explicit SMI-to-FPG switch is not max().
   input:
@@ -120,7 +124,7 @@
       household11: {members: [person56, person57, person58, person59, person60, person61, person62, person63, person64, person65, person66], state_code: ID}
       household12: {members: [person67, person68, person69, person70, person71, person72, person73, person74, person75, person76, person77, person78, person79, person80, person81], state_code: ID}
   output:
-    id_liheap_income_limit: [32_835.0, 42_938.04, 53_040.96, 63_144.96, 73_248.0, 83_351.04, 85_245.0, 81_225.0, 89_475.0, 97_725.0, 105_975.0, 138_975.0]
+    id_liheap_income_limit: [32_835.0, 42_938.0, 53_040.96, 63_144.96, 73_248.0, 83_351.0, 85_245.0, 81_225.0, 89_475.0, 97_725.0, 105_975.0, 138_975.0]
 
 - name: Case 2, no qualified member has zero income limit.
   period: 2026

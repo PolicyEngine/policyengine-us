@@ -27,7 +27,7 @@ class id_liheap_countable_income(Variable):
             unearned = unearned + max_(add(person, period, [source]), 0)
         social_security = max_(
             person("social_security", period)
-            - max_(person("medicare_part_b_premium", period), 0),
+            - person("medicare_part_b_premium", period),
             0,
         )
         # Nonqualified members' income counts. Child support, VA and general
@@ -36,4 +36,4 @@ class id_liheap_countable_income(Variable):
         # earnings, and the plan is followed.
         return spm_unit.sum(
             where(adult, earned, 0) + unearned + social_security
-        ) + max_(spm_unit("tanf", period), 0)
+        ) + spm_unit("tanf", period)

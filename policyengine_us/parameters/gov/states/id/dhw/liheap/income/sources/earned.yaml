@@ -2,6 +2,9 @@ description: Idaho counts these earned income sources under the Low Income Home 
 values:
   2025-10-01:
     - employment_income
+    # Plan 1.9 checks "Wages". Basic pay is an input apart from employment_income;
+    # enter it in one of the two.
+    - military_basic_pay
     - self_employment_income
     - sstb_self_employment_income
     - farm_operations_income

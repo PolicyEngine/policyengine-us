@@ -678,7 +678,7 @@
     - 41200
     id_liheap_income_limit:
     - 32835
-    - 42938.04
+    - 42938
     - 32835
 
 - name: Case 4, qualified size is required with zero income or categorical receipt.
@@ -1760,3 +1760,38 @@
   output:
     id_liheap_income_eligible: true
 
+- name: Case 10, two cents over the federal maximum for two fails.
+  # HHS's mandatory FY2026 amount for two people is 42,938. DHW's monthly $3,578.17 would annualize to 42,938.04.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        id_liheap_countable_income: 42_938.02
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    households:
+      household: {members: [person1, person2], state_code: ID}
+  output:
+    id_liheap_income_limit: 42_938
+    id_liheap_income_eligible: false

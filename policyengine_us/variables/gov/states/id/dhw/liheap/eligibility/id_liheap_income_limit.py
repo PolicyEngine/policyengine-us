@@ -11,7 +11,9 @@ class id_liheap_income_limit(Variable):
     definition_period = YEAR
     defined_for = StateCode.ID
     reference = (
+        "https://www.law.cornell.edu/uscode/text/42/8624#b_2_B",
         "https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=8",
+        "https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=1",
         "https://healthandwelfare.idaho.gov/services-programs/financial-assistance/home-heating-and-utility-assistance/apply-heating-assistance",
     )
 
@@ -21,14 +23,15 @@ class id_liheap_income_limit(Variable):
         group = spm_unit.household("state_group_str", period)
         p = parameters(period)
         eligibility = p.gov.states.id.dhw.liheap.eligibility
-        # The shared helper's flooring order matches all seven published FY2026
-        # SMI limits. Preserve monthly cents.
+        # The shared helper's flooring order matches all seven HHS FY2026 amounts.
+        # DHW prints monthly limits in cents. At sizes 2 and 6 they annualize 4 cents
+        # above those amounts, the federal maximum, so the cap applies there.
         annual_smi = liheap_smi_limit(
             size, state, eligibility.smi_rate, period, parameters
         )
         monthly_smi = np.round(annual_smi / MONTHS_IN_YEAR, 2)
         annual_fpg = eligibility.fpg_rate * fpg(
-            max_(size, 1),
+            size,
             group,
             period,
             parameters,
@@ -38,7 +41,7 @@ class id_liheap_income_limit(Variable):
         # lowers the limit; using max(SMI, FPG) would contradict its table.
         annual_limit = where(
             size <= eligibility.smi_max_household_size,
-            monthly_smi * MONTHS_IN_YEAR,
+            min_(monthly_smi * MONTHS_IN_YEAR, annual_smi),
             annual_fpg,
         )
         return where(size > 0, annual_limit, 0)

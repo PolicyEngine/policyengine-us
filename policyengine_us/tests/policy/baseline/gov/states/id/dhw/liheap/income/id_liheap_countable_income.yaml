@@ -70,16 +70,16 @@
 - name: Case 5, all supported earned business streams count.
   period: 2026
   absolute_error_margin: 0.01
-  # Gross wages 10,000 + net business streams 2,000 + 3,000 + 4,000 + 5,000 = 24,000.
+  # Gross wages 10,000 + basic pay 500 + net business streams 2,000 + 3,000 + 4,000 + 5,000 = 24,500.
   input:
     people:
-      person1: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 10_000, self_employment_income: 2_000, sstb_self_employment_income: 3_000, farm_operations_income: 4_000, partnership_s_corp_income: 5_000}
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 10_000, military_basic_pay: 500, self_employment_income: 2_000, sstb_self_employment_income: 3_000, farm_operations_income: 4_000, partnership_s_corp_income: 5_000}
     spm_units:
       spm_unit: {members: [person1], heating_type: NATURAL_GAS, id_tafi: 0}
     households:
       household: {members: [person1], state_code: ID}
   output:
-    id_liheap_countable_income: 24_000
+    id_liheap_countable_income: 24_500
 
 - name: Case 6, negative business sources do not offset positive earnings.
   period: 2026
@@ -178,7 +178,7 @@
 # FY2026 one-person limit 32,835. Gross Social Security 34,000 minus actual Part B 2,400 = 31,600.
 # Military 40,000 and pension 34,000 exceed the limit. Rental losses are not deductions.
 # UI 36,000 fails; reported UI gives 31,200; a negative receipt leaves 30,000.
-# TANF receipt controls use the two-person limit 42,938.04, with no TANF categorical bypass.
+# TANF receipt controls use the two-person limit 42,938, with no TANF categorical bypass.
 - name: Case 11, military retirement net Social Security and rental loss affect financial
     eligibility.
   period: 2026
