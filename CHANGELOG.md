@@ -1,3 +1,10 @@
+## [2.92.17] - 2026-11-03
+
+### Fixed
+
+- Limit Missouri's itemized deduction for self-employment tax to the part the filer didn't deduct in computing federal adjusted gross income (RSMo 143.141(4)(c)).
+
+
 ## [2.92.16] - 2026-11-03
 
 ### Fixed
