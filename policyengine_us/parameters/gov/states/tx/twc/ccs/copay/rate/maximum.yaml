@@ -3,10 +3,10 @@ description: Texas limits the total copayment to this share of family income und
 # In September 2022, TWC's Commission amended 40 TAC §809.19 so that from
 # December 1, 2023, it would establish the parent share of cost on a statewide
 # sliding fee scale. In July 2024, it adopted this 7% cap in §809.19, effective
-# July 29, 2024. TWC put the statewide scale off until its TX3C case management
-# system launched (WD 06-24, Change 2), and the cap with it (WD 20-24), so each
-# Board kept setting its own scale. TX3C launched on January 13, 2025, and TWC
-# then phased in the statewide scale and this cap as families enrolled or
+# July 29, 2024. TWC put the statewide scale off until it launched its TX3C
+# case management system (WD 06-24, Change 2), and the cap with it (WD 20-24),
+# so each Board kept setting its own scale. From TX3C's launch on January 13,
+# 2025, TWC phased in the statewide scale and this cap as families enrolled or
 # recertified. PolicyEngine applies the cap to every earlier month back to 2015.
 values:
   2025-01-01: 0.07  # Actual effective date: 2025-01-13

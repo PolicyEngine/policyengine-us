@@ -20,11 +20,12 @@ some rates that fall less than a cent short of a markup floor or star gap, and
 these checks fail on them.
 
 In each rate letter from WD 12-18 to WD 20-23, TWC said it would cut no
-provider's rate in setting the new rates. In its BCY 2025 table, TWC set no
-rate below its BCY 2024 level outside relative care, where TWC sets no minimum
-and Boards may set rates locally (WD Letter 19-24, Change 1). Across the eight
-tables, TWC printed a rate below the previous table's only in the four cells
-FALLS lists.
+provider's rate in setting the new rates. Outside relative care, TWC kept each
+BCY 2025 rate at or above its BCY 2024 level, under the method its Commission
+approved on September 10, 2024 (WD Letter 19-24, Change 1, pp. 1-2). TWC sets
+no minimum for relative care rates, and Boards may set them locally (p. 3).
+Across the eight tables, TWC printed a rate below the previous table's only in
+the four cells FALLS lists.
 
 TWC also followed two patterns that no rule requires. It printed each TSR rate
 for the §809.20(b)(2) age groups equal to the Two-Star rate from BCY 2023 on,
@@ -36,15 +37,16 @@ full-time rate except in the cells PART_TIME_ABOVE_FULL_TIME and
 EQUAL_PART_AND_FULL_TIME list. The tests check both patterns.
 
 Each check runs over all 4,032 cells of the eight tables. A test fails when
-someone types a value into the wrong cell and it breaks one of these bounds.
-Outside relative care, copying a part-time rate into a full-time cell breaks
-one whenever the copy changes the value. The checks can still pass if someone
-types a regular rate too low or a Three- or Four-Star rate too high, or copies
-a rate from another age group. They check relative care rates only for schedule
-order, the school-age blended formula and falls from one table to the next, so
-a typo in one can pass. So can a part-time rate copied into the full-time cell
-for a younger child in the October 2016 table, where the tests have no earlier
-rate to compare it with. The YAML tests pin single cells to TWC's tables.
+someone types a value into the wrong cell and the value breaks one of these
+bounds. Outside relative care, copying a part-time rate into a full-time cell
+breaks one whenever the copy changes the value. The checks can still pass if
+someone types a regular rate too low or a Three- or Four-Star rate too high, or
+copies a rate from another age group. They check relative care rates only for
+schedule order, the school-age blended formula and falls from one table to the
+next, so a typo in one can pass. So can a part-time rate copied into the
+full-time cell for a younger child in the October 2016 table, where the tests
+have no earlier rate to compare it with. The YAML tests pin single cells to
+TWC's tables.
 """
 
 import datetime
