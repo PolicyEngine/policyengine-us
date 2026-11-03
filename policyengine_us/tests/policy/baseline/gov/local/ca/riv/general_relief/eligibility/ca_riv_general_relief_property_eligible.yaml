@@ -6,13 +6,14 @@
   output:
     ca_riv_general_relief_property_eligible: true
 
-- name: Case 2, ineligible.
+- name: Case 2, exactly the $500 limit is eligible.
   period: 2024
   input:
     ca_riv_general_relief_countable_property_value: 500
     in_riv: true
   output:
-    ca_riv_general_relief_property_eligible: false
+    # Total combined property cannot exceed $500; $500 does not exceed it.
+    ca_riv_general_relief_property_eligible: true
 
 - name: Case 3, cash held by one member of a two-person unit counts once.
   period: 2024
@@ -75,4 +76,144 @@
         members: [person1, person2, person3]
   output:
     # Countable property is 4,850 - 4,650 = $200, below the $500 limit.
+    ca_riv_general_relief_property_eligible: true
+
+- name: Case 6, a single adult with $499.99 of cash.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        bank_account_assets: 499.99
+    households:
+      household:
+        members: [person1]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # $499.99 is under the $500 limit.
+    ca_riv_general_relief_countable_property_value: 499.99
+    ca_riv_general_relief_property_eligible: true
+
+- name: Case 7, a single adult with exactly $500 of cash.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        bank_account_assets: 500
+    households:
+      household:
+        members: [person1]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # $500 does not exceed the $500 limit.
+    ca_riv_general_relief_countable_property_value: 500
+    ca_riv_general_relief_property_eligible: true
+
+- name: Case 8, a single adult with $500.01 of cash.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        bank_account_assets: 500.01
+    households:
+      household:
+        members: [person1]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # $500.01 exceeds the $500 limit.
+    ca_riv_general_relief_countable_property_value: 500.01
+    ca_riv_general_relief_property_eligible: false
+
+- name: Case 9, a two-adult unit with $499.99 of cash.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        bank_account_assets: 499.99
+      person2:
+        age: 65
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # $499.99 is under the $500 limit.
+    ca_riv_general_relief_countable_property_value: 499.99
+    ca_riv_general_relief_property_eligible: true
+
+- name: Case 10, a two-adult unit with exactly $500 of cash.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        bank_account_assets: 500
+      person2:
+        age: 65
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # $500 does not exceed the $500 limit.
+    ca_riv_general_relief_countable_property_value: 500
+    ca_riv_general_relief_property_eligible: true
+
+- name: Case 11, a two-adult unit with $500.01 of cash.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        bank_account_assets: 500.01
+      person2:
+        age: 65
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # $500.01 exceeds the $500 limit.
+    ca_riv_general_relief_countable_property_value: 500.01
+    ca_riv_general_relief_property_eligible: false
+
+- name: Case 12, cash spread over three accounts totalling exactly $500.00.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        bank_account_assets: 265.92
+        stock_assets: 133.82
+        bond_assets: 100.26
+    households:
+      household:
+        members: [person1]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # 265.92 + 133.82 + 100.26 = 500.00, which does not exceed the $500 limit.
     ca_riv_general_relief_property_eligible: true
