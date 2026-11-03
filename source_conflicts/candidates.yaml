@@ -6083,6 +6083,43 @@ candidates:
     and from July 2027 only breakfast stays at 224%, under c.336''s breakfast limit, which has no end date (state_free_income_limit.yaml,
     state_free_income_limit_breakfast_only.yaml, school_meal_tier.py). Verify that the appropriations carry the
     lunch limit.'
+- id: us-nj:school-meals-income-limit-rounding
+  program: school-meals
+  years:
+    from: 2026
+    type: program
+    note: program year as the program defines it
+  question: Does New Jersey's free-meal income limit apply at the statutory 224% of the poverty guideline or at Form
+    427's annual dollar limits, which round that product up to the next whole dollar?
+  sources:
+  - kind: statute
+    citation: N.J.S.A. 18A:33-4(a) and 18A:33-14a(a)(3), as amended by P.L.2023, c.336
+    url: https://pub.njleg.state.nj.us/Bills/2022/AL23/336_.HTM
+  - kind: form
+    citation: NJ Department of Agriculture Form 427, Federal & New Jersey Expanded Income Eligibility Guidelines, SY
+      2026-2027
+    url: https://www.nj.gov/agriculture/divisions/fn/pdf/Form%20427%20Federal%20and%20State%20Income%20Eligibility%20Guidelines%20SY%202026-2027.pdf#page=1
+  readings:
+    statute: A student qualifies with annual household income "not more than 224 percent" of the federal poverty level,
+      so the limit is 2.24 times the guideline, unrounded.
+    other: Households qualify "at or below the limits on this chart", whose annual 224% rows are 2.24 times the
+      guideline rounded up to the next whole dollar ($35,751 for one person, $48,474 for two).
+  example: In SY 2026-27, a two-person household with $48,474 of income (224.002% of the $21,640 guideline) pays full
+    price under the statute, which PE-US follows, but has no charge under Form 427.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/usda/school_meals/school_meal_tier.py
+    - policyengine_us/variables/gov/usda/school_meals/school_meal_breakfast_tier.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10384
+  state: ruled
+  note: 'PE-US compares New Jersey''s state limits with the poverty ratio exactly, while the federal 130% and 185% limits
+    use USDA''s whole-dollar values, rounded up in the Federal Register notice that 7 CFR 245.3(a) adopts (school_meal_tier.py,
+    school_meal_breakfast_tier.py). The October 2026 ruling applies the statute-first rule because c.336 sets the percentage
+    and delegates no dollar conversion. Pinning cases: the New Jersey statutory-limit cases in school_meal_tier.yaml
+    (2024 at 199%; 2026 one and two people at 224%) and the 2028 breakfast-only case in school_meal_breakfast_tier.yaml.
+    Form 427s before SY 2026-27 were not checked.'
 - id: us-nm:ccap-income-ceilings
   program: child-care-assistance
   years:
@@ -10088,6 +10125,40 @@ candidates:
     unearned_sources.yaml) and for categorical eligibility (wy_lieap_eligible.py). It follows rule 8(a)(ii)(L) over
     the plan in excluding lump sums and has no lottery-winnings input. It deducts child support paid only from the
     payer's own earnings (wy_lieap_countable_income.py), since rule 8(a)(iii) does not say whose earnings.
+- id: us:additional-child-credit-2021-abode-section-911
+  program: income-tax
+  years:
+    from: 2021
+    to: 2021
+    type: tax
+  question: In 2021, does a section 911 exclusion claimant who fails ARPA's United States abode test lose the refundable
+    child tax credit under section 24(d)(3), when the model applies the 2021 exemption from subsection (d) to every
+    filer?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 24(i)(1) as added by P.L. 117-2 section 9611; 24(d)(3)
+    url: https://www.congress.gov/117/plaws/publ2/PLAW-117publ2.pdf
+  - kind: form
+    citation: 2021 Schedule 8812, Part I-B
+    url: https://www.irs.gov/pub/irs-prior/f1040s8--2021.pdf#page=1
+  readings:
+    statute: Subsection (d), including the (d)(3) bar, is switched off in 2021 only for a taxpayer whose principal
+      place of abode was in the United States for more than half the year, or a bona fide resident of Puerto Rico.
+    other: The model has no abode input and treats every 2021 filer as meeting the test, so no section 911 claimant
+      is barred.
+  example: In 2021, a filer abroad all year with $30,000 of wages, all excluded under section 911(a), and two
+    qualifying children aged 7 and 9 gets $6,000 of refundable child tax credit in the model; under the statute
+    subsection (d) applies, and the (d)(3) bar denies the refundable part.
+  pe_us:
+    follows: not-modelled
+    code:
+    - policyengine_us/variables/gov/irs/credits/ctc/refundable/refundable_ctc_barred_by_section_911_exclusion.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10297
+  state: unreviewed
+  note: The variable's documentation states the assumption. Most section 911 claimants need a foreign tax home and
+    cannot meet the abode test. A fix needs an abode input, defaulting to the current behavior for filers without
+    a section 911 exclusion. The model gives the $6,000 figure.
 - id: us:additional-child-credit-housing-deduction-bar
   program: income-tax
   years:
@@ -10103,25 +10174,28 @@ candidates:
     citation: Schedule 8812 Part II-A; Credit Limit Worksheet B; Pub. 596 Rule 5
     url: null
   readings:
-    statute: A housing deduction alone arguably does not trigger the section 24(d)(3) exclusion bar.
+    statute: Section 24(d)(3) bars only a taxpayer who elects to exclude an amount under section 911; the section
+      911(c)(4)(A) housing deduction is a deduction, claimed without an election (Treas. Reg. 1.911-7(a)(3)), so it
+      alone does not trigger the bar.
     other: The instructions bar a Form 2555 filer even when the form claims only the housing deduction.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/tools/section_911.py
     - policyengine_us/variables/gov/irs/credits/ctc/refundable/refundable_ctc_barred_by_section_911_exclusion.py
+    - policyengine_us/variables/gov/irs/credits/ctc/refundable/ctc_credit_limit_worksheet_b_applies.py
     - policyengine_us/parameters/gov/irs/credits/ctc/refundable/fully_refundable.yaml
     - policyengine_us/parameters/gov/irs/credits/ctc/refundable/foreign_earned_income_exclusion_bar_applies.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10022
+    - https://github.com/PolicyEngine/policyengine-us/pull/10297
   state: unreviewed
-  note: 'PE-US follows the instructions: elects_section_911_exclusion treats a filer who claims only the section
-    911(c)(4) housing deduction as electing section 911, so refundable_ctc_barred_by_section_911_exclusion denies
-    the additional child tax credit from 2015 except in 2021, when the credit is fully refundable and the bar does
-    not apply; the helper''s docstring says this case rests on the IRS instructions, not the statute (tools/section_911.py,
-    refundable/fully_refundable.yaml, refundable/foreign_earned_income_exclusion_bar_applies.yaml). The statute-first
-    rule requires revising the deduction-only ACTC bar; verify that interpretation separately from EITC, whose statutory
-    wording differs.'
+  note: PE-US follows the statute. refundable_ctc_barred_by_section_911_exclusion reads excludes_amount_under_section_911
+    (tools/section_911.py), which tests only the Form 2555 line 42 and line 36 exclusions when leaf inputs are supplied,
+    so a filer who claims only the section 911(c)(4) housing deduction (line 50) keeps the refundable credit and completes
+    Credit Limit Worksheet B (ctc_credit_limit_worksheet_b_applies.py). The legacy aggregates still count as an exclusion.
+    The EITC keeps the broader section 32(c)(1)(C) test in elects_section_911_exclusion. Register the entry and add
+    the marker once #10297 is on main.
 - id: us:charitable-non-itemizer-2020-separate-cap
   program: income-tax
   years:
@@ -10215,30 +10289,97 @@ candidates:
   years:
     from: 2018
     type: tax
-  question: Does claiming one spouse as a dependent bar only that spouse's education credits and student loan interest
-    deduction, or the whole joint return?
+  question: Does claiming one spouse as a dependent bar only that spouse's education credits, or the whole joint
+    return?
   sources:
   - kind: statute
-    citation: 26 U.S.C. 25A(g)(3); 26 U.S.C. 221(c)
+    citation: 26 U.S.C. 25A(g)(3)
     url: https://www.law.cornell.edu/uscode/text/26/25A#g_3
   - kind: instructions
-    citation: Form 1040 instructions (education credits and student loan interest)
+    citation: Form 1040 instructions (education credits)
     url: https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=98
   readings:
-    statute: The claimed spouse loses the benefit; the other spouse keeps their own credit or deduction.
+    statute: The claimed spouse loses the credit; the other spouse keeps their own credit.
     other: The whole joint return is barred.
   pe_us:
     follows: conflicting-source
     code:
     - policyengine_us/variables/gov/irs/credits/education/is_barred_from_education_credits_by_dependency.py
-    - policyengine_us/variables/gov/irs/income/taxable_income/adjusted_gross_income/above_the_line_deductions/student_loan_interest/student_loan_interest_ald_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10087
   state: ruled
   note: 'PE-US follows the Form 1040 instructions: a claimed head or spouse bars the whole joint return from the
-    education credits and the student loan interest deduction (is_barred_from_education_credits_by_dependency.py,
-    student_loan_interest_ald_eligible.py). Ruled October 2026; the statute-first rule now requires changing the
-    whole-return bar; verify the education-credit page anchor because the supplied URL is for student loan interest.'
+    education credits (is_barred_from_education_credits_by_dependency.py). Ruled October 2026; the statute-first
+    rule now requires changing the whole-return bar; verify the education-credit page anchor because the supplied
+    URL is for student loan interest.'
+- id: us:eitc-qualifying-child-identification-bar
+  program: income-tax
+  years:
+    from: 2018
+    to: 2020
+    type: tax
+  question: Before 2021, does a filer whose qualifying children all fail the identification requirement get no EITC,
+    or the credit for a filer without a qualifying child?
+  sources:
+  - kind: statute
+    citation: Former 26 U.S.C. 32(c)(1)(F); P.L. 117-2 section 9622
+    url: https://www.govinfo.gov/content/pkg/USCODE-2015-title26/html/USCODE-2015-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm
+  - kind: instructions
+    citation: 2018-2020 Form 1040 instructions, EIC Step 3, question 1
+    url: https://www.irs.gov/pub/irs-prior/i1040gi--2020.pdf#page=42
+  readings:
+    statute: No credit is allowed to a filer with one or more qualifying children if no qualifying child is taken into
+      account because of the identification requirement.
+    other: The instructions send such a filer to Step 4, the credit for a filer without a qualifying child.
+  example: 'In 2020, a filer with $6,000 of wages and one qualifying child without an SSN gets $0 under the statute
+    and $459 (7.65% of $6,000, under the $538 maximum) under the instructions; the model gives these with the bar on
+    and off.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/irs/credits/earned_income/eligibility/eitc_eligible.py
+    - policyengine_us/parameters/gov/irs/credits/eitc/eligibility/qualifying_child_without_identification_bar.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10297
+  state: unreviewed
+  note: PE-US follows the statute through 2020; the parameter turns the bar off from 2021, when ARPA section 9622 struck
+    the subparagraph. P.L. 105-206 section 6021(b)(2) added the bar as (c)(1)(G), effective as if included in section
+    11111 of the Revenue Reconciliation Act of 1990, and P.L. 108-311 redesignated it (F). Register the entry and add
+    the marker once #10297 is on main.
+- id: us:eitc-rental-real-estate-basket
+  program: income-tax
+  years:
+    from: 2018
+    type: tax
+  question: Is rental real estate a section 32(i)(2)(C) rent, netted with nonbusiness royalties, or a section 32(i)(2)(E)
+    passive activity for the EITC investment income limit?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 32(i)(2)(C) and (E); 469(c)(2)
+    url: https://www.law.cornell.edu/uscode/text/26/32#i_2
+  - kind: worksheet
+    citation: Publication 596 (2025) Worksheet 1, lines 8-13
+    url: https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=7
+  readings:
+    statute: Section 32(i)(2)(C) counts rents and royalties not derived in the ordinary course of a trade or business,
+      net of their allocable deductions; (E) counts passive activity income, without amounts described in (C). The
+      text does not say which basket rental real estate is in.
+    other: Worksheet 1 puts Schedule E line 23b royalties and Schedule 1 line 8l personal property rents on lines 8-10,
+      and Schedule E line 26 rental real estate on the passive lines 11-12; nonpassive rental real estate is left out.
+  example: In 2025, $12,000 of trust royalties and a $5,000 rental real estate loss give $12,000 of investment income
+    with rentals in the passive basket (over the $11,950 limit, so a joint couple with one child and $15,000 of wages
+    gets no EITC) and $7,000 if the rental is a (C) rent (the couple gets $4,328); the model gives these figures.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/irs/credits/earned_income/eitc_relevant_investment_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10297
+  state: ruled
+  note: Where the text and the canons do not settle a reading, the model follows the administering agency's reading,
+    here Worksheet 1. rental_income, read as Schedule E rental real estate, stays in the passive basket, so a rental
+    real estate loss offsets other passive income but not trust royalties. The model has no input for personal property
+    rents ((C) basket) or nonpassive rental real estate (not investment income).
 - id: us:eitc-trust-royalties-investment-income
   program: income-tax
   years:
@@ -10257,17 +10398,20 @@ candidates:
     statute: Box 5 royalties count toward the investment-income limit.
     other: Only Schedule E Part I royalties enter line 8.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/variables/gov/irs/credits/earned_income/eitc_relevant_investment_income.py
+    - policyengine_us/variables/household/income/person/estate/estate_royalty_income.py
     - policyengine_us/variables/household/income/person/estate/passive_estate_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10194
+    - https://github.com/PolicyEngine/policyengine-us/pull/10297
   state: unreviewed
-  note: 'PE-US follows the worksheet: the passive basket counts passive_estate_income, Schedule E Part III column
-    (d), and leaves out the box 5 royalties, annuities and income in respect of a decedent that go in nonpassive
-    column (f) (eitc_relevant_investment_income.py, passive_estate_income.py). The statute-first rule requires including
-    qualifying Part III royalties; obtain the worksheet version and verify the omitted income basket.'
+  note: PE-US follows the statute. The estate_royalty_income input (Schedule K-1 (Form 1041) box 5 royalties, net of
+    their allocable deductions) forms the section 32(i)(2)(C) basket in eitc_relevant_investment_income, floored at
+    zero and kept apart from the passive basket, so these royalties count although Worksheet 1 line 8 reads only Schedule
+    E line 23b. Where rental real estate goes is a separate reading (us:eitc-rental-real-estate-basket). Register the
+    entry and add the marker once #10297 is on main.
 - id: us:filing-chart-a-blindness-and-equality
   program: income-tax
   years:
@@ -10352,18 +10496,18 @@ candidates:
     other: Chart B and Publication 501 add age or blindness amounts, giving $2,950 or $4,550 in the supplied 2025
       reading.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/variables/gov/irs/tax_unit_is_required_to_file.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10135
     - https://github.com/PolicyEngine/policyengine-us/pull/10137
+    - https://github.com/PolicyEngine/policyengine-us/pull/10297
   state: open
-  note: 'PE-US follows Chart B and Publication 501 Table 2: the unearned income threshold for a filer who can be
-    claimed is the section 63(c)(5)(A) amount plus their own additional standard deduction for age or blindness,
-    on joint returns too, and the comment records that section 6012(f)(2)(D) names the 63(c)(5)(A) amount alone
-    (tax_unit_is_required_to_file.py). The statute-first rule requires removing the extra amounts from this statutory
-    test.'
+  note: PE-US follows the statute. For 2018 to 2025, a joint return's unearned income test for a claimable spouse is
+    the section 63(c)(5)(A) amount alone, with no addition for age or blindness (tax_unit_is_required_to_file.py,
+    statutory_joint_test). Other filing statuses, and every return from 2026, keep Table 2's addition. Register the
+    entry and add the marker once #10297 is on main.
 - id: us:hsa-limit-indexing-windows
   program: income-tax
   years:
@@ -10723,6 +10867,103 @@ candidates:
   state: unreviewed
   note: 'The open PR follows POMS rather than the broader regulatory reading; no statutory comparison or specific
     ruling is supplied. Code not yet on main: ssi_spousal_deeming_child_allocations, ssi_ineligible_child_allocation.'
+- id: us:standard-plan-minimum-consolidated
+  program: student-loans
+  years:
+    from: 2006
+    type: calendar
+  question: Does a borrower with Direct Loans on the 10-year standard plan and a Direct Consolidation Loan that repaid
+    parent PLUS loans owe one $50 minimum across both, or a minimum on each?
+  sources:
+  - kind: statute
+    citation: 20 U.S.C. 1087e(d)(1)(A)
+    url: https://www.law.cornell.edu/uscode/text/20/1087e#d_1_A
+  - kind: regulation
+    citation: 34 CFR 685.208(b)(1)(ii) and (b)(2)(ii)
+    url: https://www.ecfr.gov/current/title-34/section-685.208#p-685.208(b)(2)
+  readings:
+    statute: The statute provides a standard repayment plan and sets no minimum payment.
+    other: 'Per plan: a consolidation loan that entered repayment on or after July 1, 2006 repays under (b)(2), a separate
+      plan with its own (b)(2)(ii) minimum, so the borrower owes a minimum on each plan. Per borrower: one minimum
+      across all of the borrower''s standard plan payments.'
+  example: A borrower at 6% with $1,000 of Direct Loans and a $20,000 consolidated parent PLUS loan repaid over 20
+    years pays $50.00 + $143.29 = $193.29 with a minimum on each plan, against max($11.10 + $143.29, $50) = $154.39
+    with one minimum.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/ed/student_loans/standard_repayment/combined_standard_repayment_payment.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10599
+  state: ruled
+  note: combined_standard_repayment_payment adds standard_repayment_payment and parent_plus_standard_repayment_payment
+    where federal_parent_plus_loan_is_consolidated is true. This narrows the per-borrower reading in
+    us:standard-plan-minimum-per-borrower to borrowers whose loans are all under (b)(1). The 2017 and 2025 CFR editions
+    hold these two plans at 685.208(b) and (c).
+- id: us:standard-plan-minimum-per-borrower
+  program: student-loans
+  years:
+    from: 2016
+    type: calendar
+  question: Does a borrower with both Direct Loans and unconsolidated parent PLUS loans on the 10-year standard plan
+    owe one $50 minimum on all of those payments, or a minimum on each loan type?
+  sources:
+  - kind: statute
+    citation: 20 U.S.C. 1087e(d)(1)(A)
+    url: https://www.law.cornell.edu/uscode/text/20/1087e#d_1_A
+  - kind: regulation
+    citation: 34 CFR 685.208(b)(1) and (b)(1)(ii)
+    url: https://www.ecfr.gov/current/title-34/section-685.208#p-685.208(b)(1)
+  readings:
+    statute: The statute provides a standard repayment plan and sets no minimum payment.
+    other: '(b)(1) gives Direct Subsidized, Unsubsidized and PLUS borrowers one plan, and (b)(1)(ii) says "A borrower''s
+      payments under this repayment plan are at least $50 per month", so one minimum covers all of them. The other
+      reading applies the minimum to each loan type''s payment.'
+  example: A borrower at 6% with $1,000 of Direct Loans and $20,000 of parent PLUS loans pays max($11.10 + $222.04,
+    $50) = $233.14 with one minimum, against $50.00 + $222.04 = $272.04 with a minimum on each.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/ed/student_loans/standard_repayment/combined_standard_repayment_payment.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10599
+  state: ruled
+  note: standard_repayment_payment and parent_plus_standard_repayment_payment keep their own minimums, since a borrower
+    whose Direct Loans are on an income-driven plan repays parent PLUS loans alone on the standard plan;
+    combined_standard_repayment_payment applies one minimum for a borrower with both on the standard plan. The 2017 and
+    2025 CFR editions carry the same sentence at 685.208(b)(2), so the question runs from the model's first
+    minimum_payment value in 2016. Issue
+    10567 reports the double minimum.
+- id: us:student-loan-interest-joint-claimed-spouse
+  program: income-tax
+  years:
+    from: 2018
+    type: tax
+  question: Does claiming one spouse as a dependent bar only that spouse's student loan interest deduction, or the
+    whole joint return?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 221(c)
+    url: https://www.law.cornell.edu/uscode/text/26/221#c
+  - kind: instructions
+    citation: 2025 Form 1040 instructions, Schedule 1 line 21 (student loan interest deduction)
+    url: https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=98
+  readings:
+    statute: Section 221(c) bars only the individual whom another taxpayer claims; the other spouse keeps the deduction
+      for their own interest.
+    other: The instructions bar the return if the filer, or the spouse on a joint return, is claimed as a dependent.
+  example: On a 2025 refund-only joint return, a head with $2,000 wages and $1,000 interest, beside a spouse claimed
+    elsewhere with $700 interest, deducts $1,000 under the statute and nothing under the instructions.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/irs/income/taxable_income/adjusted_gross_income/above_the_line_deductions/student_loan_interest/student_loan_interest_ald_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10577
+  state: ruled
+  note: 'Ruled 2026-10-20 for the statute by the project lead. PE-US bars only the claimed head or spouse
+    (student_loan_interest_ald_eligible.py); joint MAGI for the section 221(b)(2) phase-out still counts both spouses.
+    Split from us:education-benefits-joint-claimed-spouse, which keeps the education credits.'
 - id: us:surviving-spouse-child-gross-income-test
   program: income-tax
   years:
