@@ -12,7 +12,10 @@ class mt_elderly_homeowner_or_renter_credit_state_refundable_credits(Variable):
         "return. Defaults to zero: the Montana credits claimed on this year's "
         "return are paid after the year ends, so they do not establish a "
         "receipt. The elderly homeowner/renter credit received enters "
-        "separately through mt_elderly_homeowner_or_renter_credit_received."
+        "separately through mt_elderly_homeowner_or_renter_credit_received, "
+        "and the Montana property tax rebate received through "
+        "mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received, "
+        "so leave both out of this amount."
     )
     unit = USD
     definition_period = YEAR
