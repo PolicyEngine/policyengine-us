@@ -1,0 +1,61 @@
+# $100/month * 12 months = $1,200/year, counted once.
+- name: Illinois AABD remains in SPM resources under Tlaib ECPA
+  period: 2024
+  absolute_error_margin: 0.02
+  input:
+    age: 30
+    state_code: IL
+    il_aabd_person:
+      2024-01: 100
+      2024-02: 100
+      2024-03: 100
+      2024-04: 100
+      2024-05: 100
+      2024-06: 100
+      2024-07: 100
+      2024-08: 100
+      2024-09: 100
+      2024-10: 100
+      2024-11: 100
+      2024-12: 100
+    social_security: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    acp: 0
+    ebb: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    child_support_received: 0
+    workers_compensation: 0
+    educational_assistance: 0
+    financial_assistance: 0
+    survivor_benefits: 0
+    household_head_start_benefits: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 0
+    household_health_benefits: 0
+    commodity_supplemental_food_program: 0
+    spm_unit_energy_subsidy: 0
+    household_market_income: 0
+    household_refundable_tax_credits: 0
+    household_tax_before_refundable_credits: 0
+    household_health_costs: 0
+    spm_unit_market_income: 0
+    spm_unit_taxes: 0
+    spm_unit_spm_expenses: 0
+    ecpa_child_benefit: 0
+    trump_dividend: 0
+    housing_assistance: 0
+  output:
+    il_aabd: 1200
+    household_state_benefits: 1200
+    household_benefits: 1200
+    household_net_income: 1200
+    spm_unit_benefits: 1200
+    spm_unit_net_income: 1200
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act

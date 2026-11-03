@@ -117,6 +117,8 @@ def create_ecpa_only() -> Reform:
             BENEFITS = [
                 "social_security",
                 "ssi",
+                # Illinois benefits
+                "il_aabd",  # AABD cash grant, 89 Ill. Adm. Code Part 113.
                 "ma_state_supplement",
                 "ca_cvrp",
                 "co_ccap_subsidy",

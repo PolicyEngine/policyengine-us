@@ -12,6 +12,8 @@ class spm_unit_benefits(Variable):
         BENEFITS = [
             "social_security",
             "ssi",
+            # Illinois benefits
+            "il_aabd",  # AABD cash grant, 89 Ill. Adm. Code Part 113.
             "in_ssp",
             "ct_ssp",
             "ga_ssp",
