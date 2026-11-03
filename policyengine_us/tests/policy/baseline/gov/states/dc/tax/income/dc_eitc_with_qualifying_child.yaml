@@ -125,3 +125,88 @@
     # wages, so federal earned income is $6,000 (Form 1040 EIC Worksheet B,
     # line 4b, combines both spouses' amounts on a joint return).
     dc_eitc_with_qualifying_child: 1_428
+
+- name: DC EITC with a qualifying child is 85% of the federal credit in 2026 (permanent (B-2))
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: DC
+  output:
+    # Federal EITC: 34% phase-in x $10,000 = $3,400, below the one-child
+    # maximum. DC: 85% x $3,400 = $2,890.
+    eitc: 3_400
+    dc_eitc_with_qualifying_child: 2_890
+
+- name: DC EITC with a qualifying child is still 85% in 2028
+  period: 2028
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: DC
+  output:
+    # 85% x (34% x $10,000) = $2,890.
+    eitc: 3_400
+    dc_eitc_with_qualifying_child: 2_890
+
+- name: DC EITC with a qualifying child returns to 100% in 2029 ((B-3))
+  period: 2029
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: DC
+  output:
+    # 100% x (34% x $10,000) = $3,400.
+    eitc: 3_400
+    dc_eitc_with_qualifying_child: 3_400
