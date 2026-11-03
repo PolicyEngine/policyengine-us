@@ -422,3 +422,302 @@
     ia_ssa_resources_deemed_from_parents: [0, 200]
     ia_ssa_eligible: [false, true]
     ia_ssa: [0, 400]
+
+# The parent's 1,805.81 + 244.12 + 50.07 = 2,100.00 is 100 over the one-parent
+# allowance; the float32 balances add to 2,100.0002 unless rounded to cents.
+# The child's 1,900 plus 100 is exactly the 2,000 limit.
+- name: Case 8, a parent's three accounts at the allowance plus 100 deem exactly 100.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        bank_account_assets:
+          2026: 1_805.81
+        stock_assets:
+          2026: 244.12
+        bond_assets:
+          2026: 50.07
+      person2:
+        age:
+          2026: 10
+        person_id:
+          2026: 2
+        parent_1_id:
+          2026: 1
+        bank_account_assets:
+          2026: 1_900
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+    marital_units:
+      person1_unit:
+        members: [person1]
+      person2_unit:
+        members: [person2]
+    families:
+      family:
+        members: [person1, person2]
+    tax_units:
+      family:
+        members: [person1, person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    ia_ssa_resources_deemed_from_parents: [0, 100]
+    ia_ssa_eligible: [false, true]
+
+# The parent's 2,100.01 is 100.01 over the allowance, all deemed to the only
+# child, whose 1,899.99 brings the total to exactly 2,000.00. Stored as the
+# nearest float32, the share would read back as 100.010002.
+- name: Case 9, a whole-cent share that brings a child exactly to the limit leaves them eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        bank_account_assets:
+          2026: 2_100.01
+      person2:
+        age:
+          2026: 10
+        person_id:
+          2026: 2
+        parent_1_id:
+          2026: 1
+        bank_account_assets:
+          2026: 1_899.99
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+    marital_units:
+      person1_unit:
+        members: [person1]
+      person2_unit:
+        members: [person2]
+    families:
+      family:
+        members: [person1, person2]
+    tax_units:
+      family:
+        members: [person1, person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    ia_ssa_resources_deemed_from_parents: [0, 100.01]
+    ia_ssa_eligible: [false, true]
+
+# The parent's 100 of excess divides among four children as 25 each. The
+# first child's 178.57 + 1,522.79 + 273.64 = 1,975.00 plus 25 is 2,000.00, at
+# the limit; the float32 balances add to 1,975.0001 unless rounded to cents,
+# which would leave the child out and deem every child 33.33.
+- name: Case 10, a child whose three accounts and share total exactly the limit stays in the division.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        bank_account_assets:
+          2026: 2_100
+      person2:
+        age:
+          2026: 8
+        person_id:
+          2026: 2
+        parent_1_id:
+          2026: 1
+        bank_account_assets:
+          2026: 178.57
+        stock_assets:
+          2026: 1_522.79
+        bond_assets:
+          2026: 273.64
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+      person3:
+        age:
+          2026: 10
+        person_id:
+          2026: 3
+        parent_1_id:
+          2026: 1
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+      person4:
+        age:
+          2026: 12
+        person_id:
+          2026: 4
+        parent_1_id:
+          2026: 1
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+      person5:
+        age:
+          2026: 14
+        person_id:
+          2026: 5
+        parent_1_id:
+          2026: 1
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+    marital_units:
+      person1_unit:
+        members: [person1]
+      person2_unit:
+        members: [person2]
+      person3_unit:
+        members: [person3]
+      person4_unit:
+        members: [person4]
+      person5_unit:
+        members: [person5]
+    families:
+      family:
+        members: [person1, person2, person3, person4, person5]
+    tax_units:
+      family:
+        members: [person1, person2, person3, person4, person5]
+    spm_units:
+      unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      home:
+        members: [person1, person2, person3, person4, person5]
+        state_code:
+          2026: IA
+  output:
+    ia_ssa_resources_deemed_from_parents: [0, 25, 25, 25, 25]
+    ia_ssa_eligible: [false, true, true, true, true]
+
+# The parent's 48.30 of excess divides among three children as 16.10 each.
+# The first child's 1,983.90 plus 16.10 is exactly 2,000.00. In float64,
+# 1,983.90 + 48.30 / 3 is 2,000.0000000000002, which would leave the first
+# child out of the division.
+- name: Case 11, a child whom a share reaches exactly to the limit stays in the division.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        bank_account_assets:
+          2026: 2_048.30
+      person2:
+        age:
+          2026: 8
+        person_id:
+          2026: 2
+        parent_1_id:
+          2026: 1
+        bank_account_assets:
+          2026: 1_983.90
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+      person3:
+        age:
+          2026: 10
+        person_id:
+          2026: 3
+        parent_1_id:
+          2026: 1
+        bank_account_assets:
+          2026: 1_980
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+      person4:
+        age:
+          2026: 12
+        person_id:
+          2026: 4
+        parent_1_id:
+          2026: 1
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+    marital_units:
+      person1_unit:
+        members: [person1]
+      person2_unit:
+        members: [person2]
+      person3_unit:
+        members: [person3]
+      person4_unit:
+        members: [person4]
+    families:
+      family:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      family:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      unit:
+        members: [person1, person2, person3, person4]
+    households:
+      home:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: IA
+  output:
+    ia_ssa_resources_deemed_from_parents: [0, 16.10, 16.10, 16.10]
+    ia_ssa_eligible: [false, true, true, true]

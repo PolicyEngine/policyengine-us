@@ -28,6 +28,40 @@ def round_to_cents(amount):
     return np.round(np.asarray(amount, dtype=np.float64), 2)
 
 
+def meets_limit_with_share(own, excess, divisor, limit):
+    """Whether own + excess / divisor <= limit, computed exactly.
+
+    own, excess and limit are whole-cent amounts (round summed balances
+    first); the share excess / divisor need not be. Float64 addition can put
+    a total at the limit a hair above it (1,983.90 + 48.30 / 3 gives
+    2,000.0000000000002), so compare whole cents instead:
+    divisor x own + excess <= divisor x limit.
+    """
+    own_cents = np.rint(np.asarray(own, dtype=np.float64) * 100).astype(np.int64)
+    excess_cents = np.rint(np.asarray(excess, dtype=np.float64) * 100).astype(np.int64)
+    limit_cents = np.rint(np.asarray(limit, dtype=np.float64) * 100).astype(np.int64)
+    divisor = np.asarray(divisor).astype(np.int64)
+    return excess_cents <= divisor * (limit_cents - own_cents)
+
+
+def float32_at_most(amount):
+    """The largest float32 at or below each amount.
+
+    Float variables are stored as float32, and the nearest float32 can lie
+    above the amount: a share of 100.01 is stored as 100.010002, so own
+    resources of 1,899.99 plus that share exceed a 2,000 limit that the
+    exact total meets. Storing the float32 at or below the amount never
+    fails a total that meets the limit. A total over a whole-cent limit
+    exceeds it by at least a cent divided by the share's divisor, which is
+    more than float32's step for any share below 2**11 dollars and divisor
+    below 80, so there the comparison stays exact both ways.
+    """
+    amount = np.asarray(amount, dtype=np.float64)
+    nearest = amount.astype(np.float32)
+    below = np.nextafter(nearest, np.float32(-np.inf))
+    return np.where(nearest.astype(np.float64) > amount, below, nearest)
+
+
 def has_input_for_period(simulation, variable, period):
     """Whether the visible array for this exact period was set as an input.
 

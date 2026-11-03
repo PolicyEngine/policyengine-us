@@ -152,16 +152,22 @@ class ssi_resources_deemed_from_ineligible_parent(Variable):
         pool_count = int(np.max(pool, initial=-1)) + 1
         for _ in range(rounds):
             count = np.bincount(pool[active & income_eligible], minlength=pool_count)
+            divisor = max_(1, count[pool])
             # The share is a division, not a sum of balances, so it stays
             # exact: SI 01330.200 B says to 'equally divide the value of the
             # deemed resources among those children', and 416.1202(b)(1) sets
-            # no rule for rounding a child's share.
+            # no rule for rounding a child's share. Own resources and the
+            # excess are whole cents, so test own + share in whole cents.
             # https://secure.ssa.gov/poms.nsf/lnx/0501330200
             # https://www.law.cornell.edu/cfr/text/20/416.1202
-            share = excess / max_(1, count[pool])
+            share = excess / divisor
             deemed = where(active, share, deemed)
-            remaining = active & (own_resources + share <= p.individual)
+            remaining = active & meets_limit_with_share(
+                own_resources, excess, divisor, p.individual
+            )
             if np.array_equal(active, remaining):
                 break
             active = remaining
-        return deemed
+        # Stored as float32, a share must not round up: own resources plus
+        # the share read back would then exceed a limit the exact total meets.
+        return float32_at_most(deemed)

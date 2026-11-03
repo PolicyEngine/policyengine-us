@@ -1118,3 +1118,41 @@
     ssi_resources_deemed_from_ineligible_parent:
       2026-01: [0, 25, 25, 25, 25, 25]
     is_medically_needy_for_medicaid: [false, true, false, false, false, false]
+
+# The parent's 2,100.01 is 100.01 over the SSI individual allowance, all
+# deemed to the only child, whose own income is too high for SSI. The
+# child's 1,899.99 plus 100.01 is exactly 2,000.00, at the limit.
+- name: Case 39, a disabled child's whole-cent parental share that reaches the asset limit exactly qualifies.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        is_parent: true
+        employment_income_before_lsr: 80_000
+        bank_account_assets: 2_100.01
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        ssi_countable_income: 21_358
+        medicaid_medically_needy_medical_expenses: 16_000
+        is_optional_senior_or_disabled_for_medicaid: false
+        bank_account_assets: 1_899.99
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child1_unit:
+        members: [child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: MA
+  output:
+    ssi_resources_deemed_from_ineligible_parent:
+      2026-01: [0, 100.01]
+    is_medically_needy_for_medicaid: [false, true]
