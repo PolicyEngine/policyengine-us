@@ -1,0 +1,80 @@
+# SA-5400 III: SAIH payments are excluded as income in HUD housing programs
+# (24 CFR 5.609(b)(12)(ii)); facility Special Assistance remains countable.
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-In-Home-Program-Manual-Rev-June-2026.pdf#page=47
+- name: Case 1, basic adult care home payment counts for HUD.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 70
+    nc_sa_care_setting: ADULT_CARE_HOME
+  output:
+    # 1,397 + 70 - 994 = 473.
+    nc_sa: 473
+    nc_sa_countable_for_hud: 473
+
+- name: Case 2, special care unit payment counts for HUD.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 70
+    nc_sa_care_setting: SPECIAL_CARE_UNIT
+  output:
+    # 1,792 + 70 - 994 = 868.
+    nc_sa: 868
+    nc_sa_countable_for_hud: 868
+
+- name: Case 3, basic in-home payment is excluded for HUD.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 70
+    nc_sa_care_setting: IN_HOME
+  output:
+    nc_sa: 473
+    nc_sa_countable_for_hud: 0
+
+- name: Case 4, enhanced in-home payment is excluded for HUD.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 70
+    nc_sa_care_setting: IN_HOME_ENHANCED
+  output:
+    nc_sa: 868
+    nc_sa_countable_for_hud: 0
+
+# Disabled-worker benefit of $711 a month, the December 2024 North Carolina
+# average for disabled workers who also receive SSI ($710.97, SSA SSI Annual
+# Statistical Report 2024, Table 16).
+# https://www.ssa.gov/policy/docs/statcomps/ssi_asr/2024/sect03.html
+- name: Case 5, annual HUD unearned income includes facility Special Assistance.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 55
+    meets_ssi_disability_criteria: true
+    social_security_disability: 8_532
+    nc_sa_care_setting: ADULT_CARE_HOME
+  output:
+    # SSI 994 - (711 - 20) = 303 a month; 303 * 12 = 3,636.
+    ssi: 3_636
+    # TCMI 691 + 303 = 994; (1,397 + 70 - 994) * 12 = 473 * 12 = 5,676.
+    nc_sa: 5_676
+    nc_sa_countable_for_hud: 5_676
+    # Social Security 8,532 + SSI 3,636 + SA 5,676 = 17,844.
+    hud_unearned_income: 17_844
+
+- name: Case 6, outside North Carolina.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 70
+    nc_sa_care_setting: ADULT_CARE_HOME
+  output:
+    nc_sa_countable_for_hud: 0

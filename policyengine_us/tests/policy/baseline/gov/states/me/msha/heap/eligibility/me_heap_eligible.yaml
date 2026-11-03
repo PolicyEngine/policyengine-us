@@ -1,0 +1,128 @@
+# Eligibility for HEAP Fuel Assistance, 99-346 CMR ch. 24 (2026 edition; the 2025
+# edition has the same tests):
+# https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=6
+# - Size counts citizens, nationals and qualified aliens (3(A)(1), page 6).
+# - Income at or below the limit, or categorical eligibility through SNAP or TANF
+#   (3(C), pages 11-15).
+# - A direct or indirect energy cost for heat and a functioning heating system
+#   (3(A)(4) and 3(B)(1), pages 10-11). A fuel without a heating_type value
+#   (OTHER) qualifies with its bill; an unspecified fuel qualifies only for
+#   subsidized tenants with heat in their rent, who receive the nominal benefit
+#   (3(B)(3) and 4(B), pages 11 and 17).
+# Wages use Maine's 2025 minimum wage, $14.65 an hour (Maine Department of Labor):
+# 14.65 x 40 hours x 52 weeks = 30,472. The 2026 one-person limit is 36,836.
+# Heating bills: EIA's 2025-26 winter household expenditures (Short-Term Energy
+# Outlook, October 2026, Table WF01): Northeast electricity 1,685, propane 1,979 and
+# natural gas 1,023; U.S. average heating oil 1,745, also used for kerosene (the
+# same input) and for coal, which neither EIA nor Maine prices. Maine Department of
+# Energy Resources survey of January 5, 2026: cordwood 355 a cord, two cords (the
+# survey's minimum purchase) = 710; wood pellets 357 for a one-ton purchase.
+
+- name: Case 1, threshold edge at the one-person limit, and SNAP passes the income test above it.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ME, ME, ME]
+    age: [40, 40, 40]
+    employment_income: [36_836, 36_837, 36_837]
+    ssi: [0, 0, 0]
+    medical_expense_health_insurance_premiums: [0, 0, 0]
+    other_medical_expenses: [0, 0, 0]
+    tanf: [0, 0, 0]
+    # The third household receives SNAP of 100 a month.
+    snap: [0, 0, 1_200]
+    heating_type: [FUEL_OIL, FUEL_OIL, FUEL_OIL]
+    fuel_oil_expense: [1_745, 1_745, 1_745]
+    heat_expense_included_in_rent: [false, false, false]
+    receives_housing_assistance: [false, false, false]
+    is_in_public_housing: [false, false, false]
+  output:
+    # No medical expenses, so income stays gross.
+    me_heap_income: [36_836, 36_837, 36_837]
+    # 36,836 <= 36,836: eligible. 36,837 > 36,836: not eligible unless categorical.
+    me_heap_eligible: [true, false, true]
+
+- name: Case 2, every fuel with a bill qualifies, including other fuels, while no heat, unspecified fuel and other states do not.
+  period: 2026
+  input:
+    state_code: [ME, ME, ME, ME, ME, ME, ME, ME, ME, ME, ME, NH]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    employment_income: [30_472, 30_472, 30_472, 30_472, 30_472, 30_472, 30_472, 30_472, 30_472, 30_472, 30_472, 30_472]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [NONE, OTHER, UNSPECIFIED, ELECTRICITY, SOLAR, PROPANE, KEROSENE, FUEL_OIL, COAL, NATURAL_GAS, WOOD, FUEL_OIL]
+    # Each household with a fuel pays that fuel's bill; OTHER is a pellet stove.
+    other_heating_fuel_expense: [0, 357, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    pre_subsidy_electricity_expense: [0, 0, 0, 1_685, 1_685, 0, 0, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 0, 1_979, 0, 0, 0, 0, 0, 0]
+    fuel_oil_expense: [0, 0, 0, 0, 0, 0, 1_745, 1_745, 0, 0, 0, 1_745]
+    coal_expense: [0, 0, 0, 0, 0, 0, 0, 0, 1_745, 0, 0, 0]
+    gas_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1_023, 0, 0]
+    wood_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 710, 0]
+    heat_expense_included_in_rent: [false, false, false, false, false, false, false, false, false, false, false, false]
+    receives_housing_assistance: [false, false, false, false, false, false, false, false, false, false, false, false]
+    is_in_public_housing: [false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    # Income 30,472 <= 36,836 throughout. NONE means no heating system
+    # (3(B)(1)(a)); OTHER qualifies with its pellet bill; UNSPECIFIED fails
+    # because heating_type is a required input; the eight listed fuels with a
+    # bill qualify; New Hampshire does not.
+    me_heap_eligible: [false, true, false, true, true, true, true, true, true, true, true, false]
+
+- name: Case 3, heat in rent qualifies subsidized tenants with an unspecified fuel but not unsubsidized ones.
+  period: 2026
+  input:
+    state_code: [ME, ME, ME, ME, ME]
+    age: [40, 40, 40, 40, 40]
+    employment_income: [30_472, 30_472, 30_472, 30_472, 30_472]
+    ssi: [0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0]
+    heating_type: [UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, NATURAL_GAS, NONE]
+    heat_expense_included_in_rent: [true, true, true, true, true]
+    # Housing Choice Voucher, public housing, private rental, private rental,
+    # voucher.
+    receives_housing_assistance: [true, false, false, false, true]
+    is_in_public_housing: [false, true, false, false, false]
+  output:
+    # 1-2: subsidized with heat in rent qualify without a fuel.
+    # 3: an unsubsidized tenant needs a known fuel; UNSPECIFIED is not one.
+    # 4: an unsubsidized tenant whose building burns natural gas qualifies.
+    # 5: NONE means the home has no heating system, which 3(B)(1)(a) requires.
+    me_heap_eligible: [true, true, false, true, false]
+
+- name: Case 4, a household whose members are all ineligible noncitizens is not eligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 38
+        immigration_status: TPS
+        ssi: 0
+      spouse:
+        age: 31
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+        snap: 0
+        tanf: 0
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 1_745
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ME
+        is_in_public_housing: false
+  output:
+    # Neither status is a qualified alien, so the size is 0 and the limit is 0.
+    # The household has no income, so 0 <= 0 and only the size gate fails.
+    me_heap_household_size: 0
+    me_heap_income_limit: 0
+    me_heap_income: 0
+    me_heap_eligible: false

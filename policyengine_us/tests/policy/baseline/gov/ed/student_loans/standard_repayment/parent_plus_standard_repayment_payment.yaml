@@ -1,0 +1,252 @@
+# Level payment on parent PLUS loans under the standard repayment plan:
+# balance x i / (1 - (1 + i) ^ -n), i = rate / 12, at least 50 dollars and no
+# more than the balance. n = 120 under 34 CFR 685.208(b)(1). For a Direct
+# Consolidation Loan that entered repayment on or after July 1, 2006,
+# 685.208(b)(2)(iii) sets 10 to 30 years by the consolidation loan plus the
+# borrower's other education loans, counted up to the consolidation loan's
+# amount (685.220(i)(2)(ii), (i)(3)(i)).
+
+- name: Case 1, 30,000 dollars of parent PLUS loans at 6 percent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_parent_plus_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # Issue #10411 item 6: 30,000 x 0.005 / (1 - 1.005 ^ -120) = 333.06. The
+    # parent has no loans the income-driven plans or the Direct Loan standard
+    # payment cover.
+    parent_plus_standard_repayment_payment: 333.06
+    standard_repayment_payment: 0
+    income_driven_repayment_standard_payment: 0
+
+- name: Case 2, a small parent PLUS balance pays the 50 dollar minimum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_parent_plus_loan_balance: 3_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # 3,000 x 0.005 / (1 - 1.005 ^ -120) = 33.31, below the 50 minimum.
+    parent_plus_standard_repayment_payment: 50
+
+- name: Case 3, a parent PLUS balance below the minimum is the final payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_parent_plus_loan_balance: 30
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    parent_plus_standard_repayment_payment: 30
+
+- name: Case 4, parent PLUS and Direct Loans keep separate standard payments.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_student_loan_balance: 12_000
+        federal_parent_plus_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # Parent PLUS: 333.06. Direct Loans: 12,000 x 0.005 / (1 - 1.005 ^ -120) =
+    # 133.22, which alone sets the income-driven repayment cap.
+    parent_plus_standard_repayment_payment: 333.06
+    standard_repayment_payment: 133.22
+    income_driven_repayment_standard_payment: 133.22
+
+- name: Case 5, no parent PLUS balance means no payment.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    parent_plus_standard_repayment_payment: 0
+
+- name: Case 6, a parent PLUS balance given for 2024 reads unchanged in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_parent_plus_loan_balance:
+          2024: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # Held at 30,000 with no uprating; the payment amortizes it as in Case 1.
+    federal_parent_plus_loan_balance:
+      2025: 30_000
+      2026: 30_000
+    parent_plus_standard_repayment_payment:
+      2026-01: 333.06
+
+- name: Case 7, a borrower with a loan made on or after July 1, 2026 repays parent PLUS loans under the tiered plan.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_parent_plus_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # The 10-year plan is closed to this borrower (685.208(b)(1)); the tiered
+    # plan repays the 30,000 over 15 years: 30,000 x 0.005 /
+    # (1 - 1.005 ^ -180) = 253.16.
+    parent_plus_standard_repayment_payment: 0
+    tiered_standard_repayment_payment: 253.16
+
+- name: Case 8, a consolidated parent PLUS loan repays over 15 to 30 years by amount.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_parent_plus_loan_balance: 30_000
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 50
+        federal_parent_plus_loan_balance: 19_999.99
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_interest_rate: 0.06
+      person3:
+        age: 50
+        federal_parent_plus_loan_balance: 20_000
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_interest_rate: 0.06
+      person4:
+        age: 50
+        federal_parent_plus_loan_balance: 59_999.99
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_interest_rate: 0.06
+      person5:
+        age: 50
+        federal_parent_plus_loan_balance: 60_000
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+      tax_unit4:
+        members: [person4]
+      tax_unit5:
+        members: [person5]
+  output:
+    # No other education loans, so the term follows the consolidation loan:
+    # 30,000 -> 20 years: 30,000 x 0.005 / (1 - 1.005 ^ -240) = 214.93, not the
+    # 10-year 333.06. 19,999.99 -> 15 years (n = 180): 168.77. 20,000 -> 20
+    # years: 143.29. 59,999.99 -> 25 years (n = 300): 386.58. 60,000 -> 30
+    # years (n = 360): 359.73.
+    parent_plus_standard_repayment_payment: [214.93, 168.77, 143.29, 386.58, 359.73]
+
+- name: Case 9, other education loans set a consolidated loan's term up to its own amount.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_parent_plus_loan_balance: 15_000
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_balance: 50_000
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 50
+        federal_parent_plus_loan_balance: 15_000
+        federal_parent_plus_loan_is_consolidated: true
+        federal_ffel_loan_balance: 5_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+  output:
+    # person1: the 50,000 of Direct Loans counts only up to the 15,000
+    # consolidation loan (685.220(i)(3)(i)): 15,000 + 15,000 = 30,000 -> 20
+    # years, 15,000 x 0.005 / (1 - 1.005 ^ -240) = 107.46 (30 years and 89.93
+    # if the cap were ignored). person2: 15,000 + 5,000 of FFEL = 20,000 -> 20
+    # years: 107.46 (15 years and 126.58 without the FFEL loans).
+    parent_plus_standard_repayment_payment: [107.46, 107.46]
+
+- name: Case 10, small consolidated parent PLUS loans repay over 10 or 12 years.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_parent_plus_loan_balance: 7_499.99
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 50
+        federal_parent_plus_loan_balance: 7_500
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_interest_rate: 0.06
+      person3:
+        age: 50
+        federal_parent_plus_loan_balance: 9_999.99
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_interest_rate: 0.06
+      person4:
+        age: 50
+        federal_parent_plus_loan_balance: 10_000
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+      tax_unit4:
+        members: [person4]
+  output:
+    # No other education loans. 7,499.99 -> 10 years (n = 120): 7,499.99 x
+    # 0.005 / (1 - 1.005 ^ -120) = 83.27. 7,500 -> 12 years (n = 144): 73.19.
+    # 9,999.99 -> 12 years: 97.58. 10,000 -> 15 years (n = 180): 84.39.
+    parent_plus_standard_repayment_payment: [83.27, 73.19, 97.58, 84.39]

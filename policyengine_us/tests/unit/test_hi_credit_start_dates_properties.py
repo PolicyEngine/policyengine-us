@@ -17,8 +17,10 @@ dated. The law:
 
 For every grid point, and for Hypothesis-generated batches, in 2015-2026:
 
-- ``hi_act_115_rebate`` is zero outside 2021 and equals the announcement's
-  table times the number of people on the return in 2021;
+- ``hi_act_115_rebate`` is zero before 2021 and equals the announcement's
+  table times the number of people on the return in 2021. Its amount
+  schedule persists after 2021 for standalone calculations, so later years
+  are checked through the refundable credit total instead;
 - ``hi_eitc_potential`` is the year's match rate times the federal EITC, so
   it is zero before 2018;
 - ``hi_non_refundable_credits`` is zero before 2018 and from 2023, and never
@@ -118,8 +120,9 @@ def act_115_reference(sim, year):
 def check_invariants(sim, year):
     calc = lambda variable: sim.calculate(variable, year)  # noqa: E731
 
-    rebate = calc("hi_act_115_rebate")
-    np.testing.assert_allclose(rebate, act_115_reference(sim, year), atol=0.01)
+    act_115 = act_115_reference(sim, year)
+    if year <= ACT_115_YEAR:
+        np.testing.assert_allclose(calc("hi_act_115_rebate"), act_115, atol=0.01)
 
     eitc_potential = calc("hi_eitc_potential")
     np.testing.assert_allclose(
@@ -141,7 +144,8 @@ def check_invariants(sim, year):
         + calc("hi_cdcc")
         + calc("hi_tax_credit_for_low_income_household_renters")
     )
-    expected_extra = rebate if year == ACT_115_YEAR else 0
+    # act_115 is zero outside 2021, so the refund enters the total only then.
+    expected_extra = act_115
     if year >= 2023:
         expected_extra = expected_extra + calc("hi_eitc")
     np.testing.assert_allclose(
@@ -178,9 +182,21 @@ def test_grid_invariants(grid_sim, year):
 
 
 def test_act_115_refund_is_paid_only_for_2021(grid_sim):
-    paid = {year: grid_sim.calculate("hi_act_115_rebate", year).sum() for year in YEARS}
+    # The refund reaches income tax only through the refundable credit total.
+    def paid_in(year):
+        calc = lambda variable: grid_sim.calculate(variable, year)  # noqa: E731
+        extra = calc("hi_refundable_credits") - (
+            calc("hi_food_excise_credit")
+            + calc("hi_cdcc")
+            + calc("hi_tax_credit_for_low_income_household_renters")
+        )
+        if year >= 2023:
+            extra = extra - calc("hi_eitc")
+        return extra.sum()
+
+    paid = {year: paid_in(year) for year in YEARS}
     assert paid[ACT_115_YEAR] > 0
-    assert all(paid[year] == 0 for year in YEARS if year != ACT_115_YEAR)
+    assert all(abs(paid[year]) < 0.01 for year in YEARS if year != ACT_115_YEAR)
 
 
 def test_hawaii_eitc_starts_in_2018(grid_sim):

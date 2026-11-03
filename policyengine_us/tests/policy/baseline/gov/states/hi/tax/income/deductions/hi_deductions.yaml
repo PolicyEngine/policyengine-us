@@ -3,11 +3,11 @@
   input:
     state_code: HI
     filing_status: JOINT
-    tax_unit_earned_income: 1_000
+    standard_deduction_worksheet_earned_income: 1_000
     hi_agi: 1_000
     hi_total_itemized_deductions: 5_000
     hi_reduced_itemized_deductions: 1_000
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     hi_deductions: 5_000
     
@@ -16,11 +16,11 @@
   input:
     state_code: HI
     filing_status: JOINT
-    tax_unit_earned_income: 1_000_000
+    standard_deduction_worksheet_earned_income: 1_000_000
     hi_agi: 1_000_000
     hi_total_itemized_deductions: 5_000
     hi_reduced_itemized_deductions: 1_000
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     hi_deductions: 4_400
 
@@ -29,11 +29,11 @@
   input:
     state_code: HI
     filing_status: JOINT
-    tax_unit_earned_income: 1_000
+    standard_deduction_worksheet_earned_income: 1_000
     hi_agi: 1_000
     hi_total_itemized_deductions: 1_000
     hi_reduced_itemized_deductions: 1_000
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     hi_deductions: 4_400
 
@@ -42,11 +42,11 @@
   input:
     state_code: HI
     filing_status: SEPARATE
-    tax_unit_earned_income: 1_000_000
+    standard_deduction_worksheet_earned_income: 1_000_000
     hi_agi: 1_000_000
     hi_total_itemized_deductions: 5_000
     hi_reduced_itemized_deductions: 1_000
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     hi_deductions: 2_200
 
@@ -55,11 +55,11 @@
   input:
     state_code: HI
     filing_status: JOINT
-    tax_unit_earned_income: 1_000_000
+    standard_deduction_worksheet_earned_income: 1_000_000
     hi_agi: 1_000_000
     hi_total_itemized_deductions: 5_000
     hi_reduced_itemized_deductions: 4_500
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     hi_deductions: 4_500
 
@@ -71,3 +71,253 @@
     employment_income: 62_000
   output:
     hi_deductions: 8_800
+
+- name: 2025 joint standard deduction limited when either spouse can be claimed (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        standard_deduction_worksheet_earned_income: 3_000
+        hi_itemized_deductions: 0
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: HI
+  output:
+    # HRS 235-2.4(a)(3): greater of $500 or earned income ($3,000), up to $8,800.
+    hi_deductions: 3_000
+
+- name: 2025 joint standard deduction limited when either spouse can be claimed (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        standard_deduction_worksheet_earned_income: 3_000
+        hi_itemized_deductions: 0
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: HI
+  output:
+    # HRS 235-2.4(a)(3): greater of $500 or earned income ($3,000), up to $8,800.
+    hi_deductions: 3_000
+
+- name: 2025 joint filers with a claimable spouse itemize above the limited standard deduction (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        standard_deduction_worksheet_earned_income: 3_000
+        hi_itemized_deductions: 4_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: HI
+  output:
+    # Itemized deductions of $4,000 exceed the limited $3,000 standard deduction.
+    hi_deductions: 4_000
+
+- name: 2025 joint filers with a claimable spouse itemize above the limited standard deduction (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        standard_deduction_worksheet_earned_income: 3_000
+        hi_itemized_deductions: 4_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: HI
+  output:
+    # Itemized deductions of $4,000 exceed the limited $3,000 standard deduction.
+    hi_deductions: 4_000
+
+- name: 2025 single dependent filer with little earned income gets the $500 minimum
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    claimed_as_dependent_on_another_return: true
+    standard_deduction_worksheet_earned_income: 300
+    hi_itemized_deductions: 0
+  output:
+    # HRS 235-2.4(a)(3): greater of $500 or earned income ($300).
+    hi_deductions: 500
+
+- name: 2025 single dependent filer with self-employment income uses earned income net of the self-employment tax deduction
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 20
+        self_employment_income: 3_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        hi_itemized_deductions: 0
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    # N-11 worksheet earned income subtracts Schedule 1 line 15:
+    # $3,000 x 0.9235 x 15.3% / 2 = $211.94, so $3,000 - $211.94 = $2,788.06.
+    hi_deductions: 2_788.06
+
+- name: 2025 joint return with a claimable self-employed spouse uses earned income net of the self-employment tax deduction (the claimable spouse is the head)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 20
+        self_employment_income: 3_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        hi_itemized_deductions: 0
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: HI
+  output:
+    # $3,000 - $3,000 x 0.9235 x 15.3% / 2 = $2,788.06, below the $8,800 joint amount.
+    hi_deductions: 2788.06
+
+- name: 2025 joint return with a claimable self-employed spouse uses earned income net of the self-employment tax deduction (the claimable spouse is the spouse)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        self_employment_income: 3_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        hi_itemized_deductions: 0
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: HI
+  output:
+    # $3,000 - $3,000 x 0.9235 x 15.3% / 2 = $2,788.06, below the $8,800 joint amount.
+    hi_deductions: 2788.06
+
+- name: 2025 single dependent filer with a 401(k) deferral uses W-2 box 1 wages
+  # N-11 instructions (2025), PDF page 20: earned income is federal Form 1040
+  # line 1 wages, which are W-2 box 1 and leave out the $2,000 elective
+  # deferral. Greater of $500 or $3,000 - $2,000 = $1,000.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 3_000
+        traditional_401k_contributions: 2_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        hi_itemized_deductions: 0
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_deductions: 1_000
+
+- name: 2025 single dependent filer with the same box 1 wages and no deferral gets the same deduction
+  # Control for the case above: greater of $500 or $1,000 of wages.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        hi_itemized_deductions: 0
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_deductions: 1_000
