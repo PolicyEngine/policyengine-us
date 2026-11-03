@@ -1,3 +1,70 @@
+## [2.94.3] - 2026-11-03
+
+### Fixed
+
+- Keep the Social Security wage base on each Trustees assumption's path when a reform changes only the payroll cap.
+
+
+## [2.94.2] - 2026-11-03
+
+### Fixed
+
+- Measure the Washington Working Families Tax Credit reduction on earned income, as RCW 82.08.0206(2)(b) and WAC 458-20-285 Answer 10C require, instead of the greater of earned income and AGI.
+
+
+## [2.94.1] - 2026-11-03
+
+### Fixed
+
+- Count every state child care subsidy in the CCDF program list in household benefits, up to the family's child care and after-school bill.
+
+
+## [2.94.0] - 2026-11-03
+
+### Added
+
+- Added the Vermont Fair Share high-income surcharge proposals as a contributed reform.
+
+### Changed
+
+- Require spm-calculator 1.1, whose canonical forecast covers 2022–2036, so SPM thresholds and SPM resources calculate for 2036.
+
+
+## [2.93.3] - 2026-11-03
+
+### Fixed
+
+- Apply each Texas Local Workforce Development Board's own Child Care Services parent share of cost scale, where the Board's chart was found, to October 2023 through December 2024, continuing a Board's BCY 2024 chart where no later one was found, instead of the statewide scale that TWC brought in with TX3C on January 13, 2025.
+
+
+## [2.93.2] - 2026-11-03
+
+### Fixed
+
+- Add Texas Child Care Services maximum provider payment rates from six tables the Texas Workforce Commission published: its maximum daily rates as of October 1, 2016 and the rate tables it attached to WD Letters 12-18 (August 2018), 23-19, 25-20, 24-21 and 22-22 (Board Contract Years 2020 to 2023). PolicyEngine had applied the October 2023 rates to every month before October 2023. It now applies the October 2016 rates from January 2015 to July 2018 and each later table from its effective date.
+
+
+## [2.93.1] - 2026-11-03
+
+### Fixed
+
+- Set the DC EITC match for filers with qualifying children to 85% for 2026 through 2028 and 100% from 2029, after the temporary 100% match for 2025 expired.
+
+
+## [2.93.0] - 2026-11-03
+
+### Added
+
+- Add exact household-chunked microsimulation calculations, including variable-centric population files, and share sequential TOB counterfactual tax calculations.
+
+
+## [2.92.18] - 2026-11-03
+
+### Fixed
+
+- Add Texas Child Care Services provider payment rates for Board Contract Year 2024 (October 2023 to September 2024) from TWC WD Letter 20-23, Attachment 1, as TWC revised it on October 16, 2023. PolicyEngine had applied October 2024 rates to every month from January 2015 through September 2024. Correct four Dallas County BCY 2025 rates to match TWC's table. Date the statewide parent share of cost scale from January 13, 2025, when TWC launched TX3C and began phasing the scale in. TWC's Commission amended its rules in 2022 to set the parent share of cost statewide from December 1, 2023. TWC put the statewide scale off until TX3C, and each Board set its own scale until then. PolicyEngine still applies the scale to earlier months, so no copay changes.
+
+
 ## [2.92.17] - 2026-11-03
 
 ### Fixed
