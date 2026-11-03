@@ -1706,6 +1706,51 @@ candidates:
     no DC source settles years before 2023 and that setting it to false applies the DC-law reading. The October
     2026 ruling chose the childless schedule; verify ARPA's effect before identifying a statutory departure and
     establish any pre-2021 conflict separately.
+- id: us-dc:eitc-with-children-2025-rate
+  program: income-tax
+  years:
+    from: 2025
+    to: 2025
+    type: tax
+  question: Does the TY2025 DC EITC for filers with qualifying children match 100% of the federal credit under the
+    emergency and temporary acts in force through the filing season, or 85% under the permanent (B-2) as codified
+    after the temporary law expired?
+  sources:
+  - kind: statute
+    citation: D.C. Code §47-1806.04(f)(1)(B-2), permanent text, 85% for taxable years beginning after December 31,
+      2024
+    url: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04#(f)(1)
+  - kind: statute
+    citation: D.C. Act 26-214 §2(i) (emergency, December 3, 2025 to March 3, 2026)
+    url: https://code.dccouncil.gov/us/dc/council/acts/26-214
+  - kind: statute
+    citation: D.C. Law 26-89 §2(i) (temporary, February 12 to September 25, 2026)
+    url: https://code.dccouncil.gov/us/dc/council/laws/26-89
+  - kind: guidance
+    citation: D.C. Attorney General opinion on decoupling, retroactivity and validity, February 24, 2026
+    url: https://oag.dc.gov/sites/default/files/2026-02/AG-Opinion-Decoupling-Retroactivity-and-Validity-.pdf
+  - kind: guidance
+    citation: OTR EITC FAQs, percent of federal EIC by tax year
+    url: https://otr.cfo.dc.gov/page/eitc-faqs
+  - kind: instructions
+    citation: 2025 D-40 booklet, line 27d, PDF p.43
+    url: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D40_Book_082026_v1.pdf#page=43
+  readings:
+    statute: The emergency act applied as of January 1, 2025, and held at the close of 2025, and the temporary law
+      held through the filing season, so TY2025 is 100%.
+    other: The permanent text, once the temporary law expired, gives 85% for every year after 2024.
+  example: Head of household, $10,000 wages, one child, TY2025, federal EITC $3,400. `dc_eitc` is $3,400 at 100%
+    and $2,890 at 85%.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/dc/tax/income/credits/eitc/with_children/match.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10638
+  state: ruled
+  note: PE-US applies 100% for 2025, 85% for 2026 to 2028 and 100% from 2029. The Attorney General concluded that
+    H.J.Res. 142 did not repeal the temporary act, and OTR's FAQ and the 2025 D-40 booklet both use 100% for 2025.
+    A later FY2027 Budget Support Act could change 2026 onward.
 - id: us-dc:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
