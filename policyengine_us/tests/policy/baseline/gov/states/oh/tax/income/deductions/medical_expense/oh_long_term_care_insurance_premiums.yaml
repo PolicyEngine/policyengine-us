@@ -43,6 +43,9 @@
     # Long-term care part = 4,800 - 3,000 = 1,800; Ohio = 2,500 - 1,800 = 700.
     self_employed_health_insurance_ald_person: 4_800
     oh_long_term_care_insurance_premiums: 700
+    # Medical premiums: max(3,000 - 4,800, 0) = 0, and no other expenses, so
+    # the worksheet takes only the 700.
+    oh_unreimbursed_medical_care_expense_deduction_person: 700
 
 - name: When the earned income limit binds, medical premiums take the deduction first
   period: 2025
