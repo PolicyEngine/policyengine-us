@@ -300,6 +300,9 @@
 # https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/52/6
 # 2024 Schedule H instructions, page 12, Repaid amounts:
 # https://www.revenue.wi.gov/TaxForms2024/2024-ScheduleH-inst.pdf#page=12
+# Net benefits are supplied as social_security: the component inputs
+# (social_security_retirement and the like) are reported benefit amounts,
+# which must be nonnegative.
 
 - name: Case 12, qualifying Social Security repayments reduce a single claimant's household income.
   period: 2024
@@ -310,7 +313,7 @@
         age: 70
         is_tax_unit_head: true
         taxable_pension_income: 6_000
-        social_security_retirement: -1_000
+        social_security: -1_000
         ssi: 0
     tax_units:
       tax_unit:
@@ -337,12 +340,12 @@
         age: 70
         is_tax_unit_head: true
         taxable_pension_income: 6_000
-        social_security_retirement: 1_000
+        social_security: 1_000
         ssi: 0
       person2:
         age: 64
         is_tax_unit_spouse: true
-        social_security_retirement: -2_000
+        social_security: -2_000
         ssi: 0
     tax_units:
       tax_unit:
@@ -369,12 +372,12 @@
         age: 70
         is_tax_unit_head: true
         taxable_pension_income: 6_000
-        social_security_retirement: -1_000
+        social_security: -1_000
         ssi: 0
       person2:
         age: 64
         is_tax_unit_spouse: true
-        social_security_retirement: 4_000
+        social_security: 4_000
         ssi: 0
     tax_units:
       tax_unit:
@@ -401,12 +404,12 @@
         age: 70
         is_tax_unit_spouse: true
         taxable_pension_income: 6_000
-        social_security_retirement: -1_000
+        social_security: -1_000
         ssi: 0
       person2:
         age: 64
         is_tax_unit_head: true
-        social_security_retirement: 4_000
+        social_security: 4_000
         ssi: 0
     tax_units:
       tax_unit:
@@ -432,12 +435,12 @@
         age: 70
         is_tax_unit_head: true
         taxable_pension_income: 6_000
-        social_security_retirement: -1_000
+        social_security: -1_000
         ssi: 0
       person2:
         age: 17
         is_tax_unit_dependent: true
-        social_security_survivors: 3_000
+        social_security: 3_000
         ssi: 0
     tax_units:
       tax_unit:
