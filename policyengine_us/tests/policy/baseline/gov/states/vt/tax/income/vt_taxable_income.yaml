@@ -109,6 +109,20 @@
   output:
     vt_taxable_income: 30_000
 
+- name: 2016 keeps the Vermont-base formula.
+  period: 2016
+  input:
+    state_code: VT
+    adjusted_gross_income: 50_000
+    exemptions: 0
+    taxable_income_deductions: 20_000
+    vt_agi: 40_000
+    vt_standard_deduction: 6_000
+    vt_personal_exemptions: 4_000
+  output:
+    # 40,000 - 6,000 - 4,000. Without a formula before 2017 this is 0.
+    vt_taxable_income: 30_000
+
 - name: 2017 starts from the federal base, not Vermont AGI less Vermont deductions.
   period: 2017
   input:
