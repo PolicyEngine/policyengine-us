@@ -423,6 +423,33 @@ def test_wage_base_survives_both_passes_of_a_2027_cap_policy(policy_cap, order):
             assert _value(tree, WAGE_BASE, year) == _statutory_path(CAP)[year], year
 
 
+COPY_POLICY_CAP = 10_000_000
+
+
+@pytest.mark.parametrize("order", ["assumption_first", "policy_first"])
+def test_wage_base_survives_both_passes_of_a_2027_owners_draw_copy_policy(order):
+    """A policy that sets only the owners' draw copy from 2027 leaves the
+    benefit wage base equal to the assumption baseline's, entry for entry,
+    after both passes, in either order."""
+
+    def policy(parameters):
+        get_parameter(parameters, OWNERS_DRAW_CAP).update(
+            start="2027-01-01", value=COPY_POLICY_CAP
+        )
+
+    reform_set = (apply_trustees_2026_economic_assumptions, policy)
+    if order == "policy_first":
+        reform_set = reform_set[::-1]
+    baseline = _entries(_reformed(), WAGE_BASE)
+    tree = _applied_once()
+    with _on_default_values(tree):
+        for apply in reform_set * 2:
+            apply(tree)
+        assert _entries(tree, WAGE_BASE) == baseline
+        for year in range(2027, LAST_TABLE_YEAR + 1):
+            assert _value(tree, OWNERS_DRAW_CAP, year) == COPY_POLICY_CAP, year
+
+
 def test_a_policy_after_the_assumption_keeps_the_wage_base_it_sets():
     """A policy that means to credit the newly taxed earnings sets the wage
     base itself. After the assumption in the tuple, it applies last in both

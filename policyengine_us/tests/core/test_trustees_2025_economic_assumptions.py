@@ -1,10 +1,11 @@
 """Under the 2025 Trustees economic assumptions, a reform that changes only
-the payroll cap leaves the benefit wage base, and every other parameter, on
-the assumption's path.
+the payroll cap, or only its owners' draw copy, leaves the benefit wage base
+on the assumption's path.
 
 A built system applies its reform set twice, so the assumption's second pass
-runs after a policy's first. The assumption reads the wage base from the
-owners' draw copy of the cap, which it extends from its own values.
+runs after a policy's first. The assumption extends the wage base from the
+wage base's own values and the copy from the copy's own values, so the wage
+base reads neither the cap nor the copy.
 
 Cost: the module builds two systems, the assumption alone and the assumption
 plus a cap-only policy, keeping only the values its tests compare, and copies
@@ -241,6 +242,30 @@ def test_wage_base_survives_both_passes_of_a_2027_cap_policy(policy_cap, order):
     assert replayed[OWNERS_DRAW_CAP] == baseline[OWNERS_DRAW_CAP]
     for year in range(2027, END_YEAR + 1):
         assert _value_of(replayed, CAP, year) == policy_cap, year
+
+
+COPY_POLICY_CAP = 10_000_000
+
+
+@pytest.mark.parametrize("order", ["assumption_first", "policy_first"])
+def test_wage_base_survives_both_passes_of_a_2027_owners_draw_copy_policy(order):
+    """A policy that sets only the owners' draw copy from 2027 leaves the
+    benefit wage base equal to the assumption baseline's, entry for entry,
+    after both passes, in either order."""
+
+    def policy(parameters):
+        get_parameter(parameters, OWNERS_DRAW_CAP).update(
+            start="2027-01-01", value=COPY_POLICY_CAP
+        )
+
+    reform_set = (apply_trustees_2025_economic_assumptions, policy)
+    if order == "policy_first":
+        reform_set = reform_set[::-1]
+    replayed = _replay(reform_set)
+    baseline, _ = _run(False)
+    assert replayed[WAGE_BASE] == baseline[WAGE_BASE]
+    for year in range(2027, END_YEAR + 1):
+        assert _value_of(replayed, OWNERS_DRAW_CAP, year) == COPY_POLICY_CAP, year
 
 
 def test_a_policy_after_the_assumption_keeps_the_wage_base_it_sets():
