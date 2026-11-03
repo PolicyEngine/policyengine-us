@@ -1,3 +1,10 @@
+## [2.93.2] - 2026-11-03
+
+### Fixed
+
+- Add Texas Child Care Services maximum provider payment rates from six tables the Texas Workforce Commission published: its maximum daily rates as of October 1, 2016 and the rate tables it attached to WD Letters 12-18 (August 2018), 23-19, 25-20, 24-21 and 22-22 (Board Contract Years 2020 to 2023). PolicyEngine had applied the October 2023 rates to every month before October 2023. It now applies the October 2016 rates from January 2015 to July 2018 and each later table from its effective date.
+
+
 ## [2.93.1] - 2026-11-03
 
 ### Fixed
