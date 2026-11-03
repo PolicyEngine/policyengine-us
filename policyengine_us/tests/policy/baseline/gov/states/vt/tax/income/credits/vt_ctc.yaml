@@ -206,6 +206,30 @@
     # total would leave $1,500.
     vt_ctc: 1_000
 
+- name: A married filer filing separately with two children at $130,000 of AGI gets $900 each, the same as any other status.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 3
+      child2:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        adjusted_gross_income: 130_000
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: VT
+  output:
+    # 5830f(b) applies the $125,000 start "irrespective of the individual's
+    # filing status": 2 x ($1,000 - 5 x $20) = $1,800.
+    vt_ctc: 1_800
+
 - name: Five qualifying children.
   period: 2023
   input:
