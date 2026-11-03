@@ -207,6 +207,8 @@
         employment_income: 10_000
         # Federal EITC refund received during 2024.
         mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 632
+        # Montana EITC refund received during 2024.
+        mt_elderly_homeowner_or_renter_credit_state_refundable_credits: 63.20
     tax_units:
       tax_unit1:
         members: [person1]
@@ -240,6 +242,8 @@
         employment_income: 10_000
         # Federal EITC and refundable CTC received during 2024.
         mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 4_525
+        # Montana EITC refund received during 2024.
+        mt_elderly_homeowner_or_renter_credit_state_refundable_credits: 340
       person3:
         age: 5
     tax_units:
@@ -531,6 +535,8 @@
         employment_income: 25_000
         # Federal EITC and refundable CTC received during 2024.
         mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 9_854.83
+        # Montana EITC refund received during 2024.
+        mt_elderly_homeowner_or_renter_credit_state_refundable_credits: 647.98
       person3:
         age: 5
       person4:

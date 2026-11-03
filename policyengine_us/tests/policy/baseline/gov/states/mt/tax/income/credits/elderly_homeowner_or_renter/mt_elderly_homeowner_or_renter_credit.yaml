@@ -230,12 +230,11 @@
     # Economic Impact Payments". Received in 2021: the 1_400 Economic Impact
     # Payment (the 2021 recovery rebate credit, which the model counts by
     # default). The 2021 federal EITC (ARPA, no qualifying child), 1_502 -
-    # 15.3% x (20_892.60 - 11_610) = 81.76, is paid in 2022, so it is not;
-    # the Montana EITC on the 2021 return, 3% = 2.45, counts as the model's
-    # Montana refundable credits. Line 10 = 20_892.60 + 1_400 + 2.45 =
-    # 22_295.05; line 12 = 15_995.05; line 14 = 799.75; line 19 = 863.08 -
-    # 799.75 = 63.33.
-    mt_elderly_homeowner_or_renter_credit: 63.33
+    # 15.3% x (20_892.60 - 11_610) = 81.76, is paid in 2022, so it is not,
+    # and nor is the Montana EITC on the 2021 return, 3% = 2.45. Line 10 =
+    # 20_892.60 + 1_400 = 22_292.60; line 12 = 15_992.60; line 14 = 799.63;
+    # line 19 = 863.08 - 799.63 = 63.45.
+    mt_elderly_homeowner_or_renter_credit: 63.45
 
 - name: MT EHRC uses the $12,600 exclusion from 2022 (HB 191)
   period: 2022
@@ -941,6 +940,8 @@
         employment_income: 10_000
         # Federal EITC refund received during 2024.
         mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 632
+        # Montana EITC refund received during 2024.
+        mt_elderly_homeowner_or_renter_credit_state_refundable_credits: 63.20
     tax_units:
       tax_unit1:
         members: [person1]
@@ -977,6 +978,8 @@
         employment_income: 10_000
         # Federal EITC and refundable CTC received during 2024.
         mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 4_525
+        # Montana EITC refund received during 2024.
+        mt_elderly_homeowner_or_renter_credit_state_refundable_credits: 340
       person3:
         age: 5
     tax_units:
@@ -1016,6 +1019,8 @@
         employment_income: 12_000
         # Federal EITC and refundable CTC received during 2024.
         mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 5_505
+        # Montana EITC refund received during 2024.
+        mt_elderly_homeowner_or_renter_credit_state_refundable_credits: 408
       person3:
         age: 5
     tax_units:
@@ -1086,6 +1091,8 @@
         employment_income: 10_000
         # Federal EITC refund received during 2023.
         mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 584.70
+        # Montana EITC refund received during 2023.
+        mt_elderly_homeowner_or_renter_credit_state_refundable_credits: 17.54
     tax_units:
       tax_unit1:
         members: [person1]
@@ -1724,3 +1731,42 @@
     # child's spouse; line 25 = 600; line 27 = 600; line 30 = 600.
     mt_elderly_homeowner_or_renter_credit_gross_rent: [4_000, 0]
     mt_elderly_homeowner_or_renter_credit: [600, 0, 0]
+
+- name: 2024 Schedule 2EC, this return's federal and Montana EITC are not refundable credits received in 2024 (taxsim 1492)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 63
+        employment_income: 10_057.14
+        social_security_retirement: 11_043.82
+        rent: 3_795.12
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # TaxAct Schedule 2EC line 18: 21,100. The 2024 federal EITC (632) and
+    # Montana EITC (63.20) are paid in 2025, so line 8 is 0.
+    mt_elderly_homeowner_or_renter_credit_state_refundable_credits: 0
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 21_100.96
+    mt_elderly_homeowner_or_renter_credit: 237.73  # TaxAct line 30: 237
+
+- name: 2024 Schedule 2EC, a Montana EITC refund received in 2024 from the 2023 return counts on line 8
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 63
+        employment_income: 10_057.14
+        social_security_retirement: 11_043.82
+        rent: 3_795.12
+        mt_elderly_homeowner_or_renter_credit_state_refundable_credits: 60
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 21_160.96
