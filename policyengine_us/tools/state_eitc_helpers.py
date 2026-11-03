@@ -83,7 +83,7 @@ def calculate_eitc_amount_from_parameters(
 ):
     """Calculate the uncapped EITC amount under a chosen parameter set."""
 
-    earnings = tax_unit("filer_adjusted_earnings", period)
+    earnings = tax_unit("eitc_earned_income", period)
     agi = tax_unit("adjusted_gross_income", period)
     maximum = eitc_parameters.max.calc(child_count)
     phase_in_rate = eitc_parameters.phase_in_rate.calc(child_count)

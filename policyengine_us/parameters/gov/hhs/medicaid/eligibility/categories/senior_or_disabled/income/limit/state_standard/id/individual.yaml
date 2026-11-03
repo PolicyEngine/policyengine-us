@@ -1,0 +1,19 @@
+description: Idaho adds this monthly amount to the SSI federal benefit rate for an individual to set its Medicaid income standard for aged, blind, or disabled people who do not receive SSI.
+# Idaho: the AABD basic allowance, $33 above the SSI rate.
+# NOTE: gov.states.id.dhw.aabd.payment.basic_allowance holds the same
+# allowance for Idaho's AABD cash program, still at the 2000 base amounts
+# without the 501 increases (PolicyEngine/policyengine-us#10462). Once that
+# is fixed, Idaho's Medicaid standard can read from it.
+values:
+  2018-01-01: 33
+metadata:
+  unit: currency-USD
+  period: month
+  label: Idaho Medicaid senior or disabled amount above the SSI individual rate
+  reference:
+    - title: IDAPA 16.03.05.501 - Basic Allowance ($545 single and $768 couple, each raised by the dollar amount of each SSI cost-of-living increase since January 1, 2001)
+      href: https://adminrules.idaho.gov/rules/current/16/160305.pdf#page=39
+    - title: "Idaho Medicaid State Plan TN 18-0002, Supplement 6 to Attachment 2.6-A, Income Limits by Living Situation ($783 single and $1,125 couple from April 1, 2018) #page 5-6"
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/ID/ID-18-0002.pdf#page=5
+    - title: Idaho Department of Health and Welfare, Medicaid Program Income Limits, AABD Cash and AABD Medicaid (January 2026, $1,047 and $1,511 gross; $1,027 and $1,491 after the IDAPA 16.03.05.540 $20 disregard)
+      href: https://web.archive.org/web/20261023233805/https://healthandwelfare.idaho.gov/medicaid-program-income-limits

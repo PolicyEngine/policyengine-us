@@ -10,7 +10,8 @@
     tax_exempt_interest_income:
       2023: 0
   output:
-    medicare_gross_cost: 14_500
+    # CMS Medicare spending per enrollee, 2025.
+    medicare_gross_cost: 17_751
 
 - name: unit test 2 - premiums do not reduce gross Medicare value
   period: 2025
@@ -25,4 +26,5 @@
       2023: 0
     filing_status: SINGLE
   output:
-    medicare_gross_cost: 14_500
+    # CMS Medicare spending per enrollee, 2025.
+    medicare_gross_cost: 17_751

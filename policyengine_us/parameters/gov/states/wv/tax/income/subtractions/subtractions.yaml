@@ -2,13 +2,15 @@ description: West Virginia subtracts these sources from adjusted gross income.
 values:
   2021-01-01:
     - us_govt_interest # Line 27
-    - military_retirement_pay # Line 30
+    - military_retirement_income # Line 30
     - wv_public_pension_subtraction # Line 31
+
     - wv_social_security_benefits_subtraction # Line 32
     - military_service_income # Line 34
     - salt_refund_income # Line 36
     - wv_529_plan_deduction
     - wv_senior_citizen_disability_deduction # Line 47
+    - wv_other_subtractions
 
 metadata:
   unit: list

@@ -1,0 +1,10 @@
+description: Whether owners' draw eligibility is restricted to nonpassive income, used as the material-participation proxy.
+values:
+  0000-01-01: true
+metadata:
+  unit: bool
+  label: Owners' draw material-participation restriction
+  economy: false
+  reference:
+    - title: SSA OACT pass-through business distributions provision F12
+      href: https://www.ssa.gov/OACT/solvency/provisions/coverage.html

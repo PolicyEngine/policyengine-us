@@ -1,0 +1,29 @@
+- name: SNAP medical expenses include disjoint non-pretax and payroll premiums.
+  period: 2026
+  input:
+    health_insurance_premiums: 1_800
+    pre_tax_health_insurance_premiums: 2_400
+    other_medical_expenses: 300
+    over_the_counter_health_expenses: 900
+    medicare_enrolled: false
+  output:
+    snap_allowable_medical_expenses: 4_500
+
+- name: SNAP adds payroll premiums to decomposed non-pretax Medicare premiums.
+  period: 2026
+  input:
+    health_insurance_premiums_without_medicare_part_b: 600
+    medicare_part_b_premium: 1_200
+    medicare_enrolled: true
+    pre_tax_health_insurance_premiums: 2_400
+    other_medical_expenses: 300
+  output:
+    snap_allowable_medical_expenses: 4_500
+
+- name: SNAP medical expenses include premiums paid entirely through payroll.
+  period: 2026
+  input:
+    pre_tax_health_insurance_premiums: 2_400
+    medicare_enrolled: false
+  output:
+    snap_allowable_medical_expenses: 2_400

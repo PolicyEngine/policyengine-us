@@ -6,6 +6,7 @@ values:
     - az_income_tax_before_refundable_credits
     - ca_income_tax_before_refundable_credits
     - co_income_tax_before_refundable_credits
+    - co_amt  # DR 0104 line 14 alternative minimum tax, added before refundable credits
     - ct_income_tax_before_refundable_credits
     - dc_income_tax_before_refundable_credits
     - de_income_tax_before_refundable_credits
@@ -23,9 +24,10 @@ values:
     - ma_income_tax_before_refundable_credits
     - md_income_tax_before_refundable_credits
     - mi_income_tax_before_refundable_credits
+    - mi_surtax  # contributed surtax, zero unless gov.contrib.states.mi.surtax.in_effect
     - mn_income_tax_before_refundable_credits
     - mo_income_tax_before_refundable_credits
-    - ms_income_tax_before_credits_unit
+    - ms_income_tax_before_refundable_credits
     - mt_income_tax_before_refundable_credits_unit
     - nc_income_tax
     - nd_income_tax_before_refundable_credits
@@ -44,6 +46,7 @@ values:
     - ut_income_tax_before_refundable_credits
     - va_income_tax_before_refundable_credits
     - vt_income_tax_before_refundable_credits
+    - vt_child_care_contributions  # Form IN-111 line 21 child care contribution, added before refundable credits
     - wi_income_tax_before_refundable_credits
     - wv_income_tax_before_refundable_credits
 
