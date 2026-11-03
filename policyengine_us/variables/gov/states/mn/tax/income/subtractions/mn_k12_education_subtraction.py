@@ -21,6 +21,9 @@ class mn_k12_education_subtraction(Variable):
         # kindergarten to grade 6 and the higher amount for a child in grades
         # 7 to 12. Each child's expenses are capped on their own, so one
         # child's unused cap does not carry to another.
+        # A proxy, as in mn_k12_qualifying_children: 290.0674 subd. 1a(d) gives
+        # "qualifying child" its IRC 32(c)(3) meaning, which doesn't turn on
+        # dependency for an unmarried child.
         qualifying = person("is_in_k12_school", period) & person(
             "is_tax_unit_dependent", period
         )

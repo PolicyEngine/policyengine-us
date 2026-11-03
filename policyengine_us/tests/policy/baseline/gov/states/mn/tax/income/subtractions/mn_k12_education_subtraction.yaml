@@ -234,9 +234,10 @@
   output:
     mn_k12_education_subtraction: 0
 
-# Without a grade input, the grade at the end of the tax year is imputed from
-# age as is_in_k12_school does (grade = age - 5), so a child aged 12 or older
-# is in grades 7 to 12.
+# Without a grade input, the formula imputes the grade at the end of the tax
+# year from age. It reads is_in_k12_school's ages 5 to 17 as kindergarten to
+# grade 12 (grade = age - 5), so a child aged 12 or older falls in grades 7 to
+# 12.
 - name: A tax-unit total with no grade input caps by imputed grade
   period: 2025
   input:
@@ -310,7 +311,7 @@
     # min(2,000, 1,625) = 1,625.
     mn_k12_education_subtraction: 1_625
 
-- name: A K-12 student who is not a dependent is not a qualifying child
+- name: The K-12 dependent proxy leaves out a student who is not a tax-unit dependent
   period: 2025
   input:
     people:
