@@ -1,0 +1,424 @@
+# Resource balances and certified budgets are stocks. Annual demographic and asset inputs are explicit.
+- name: Case 1, Annual asset balances remain undivided in January and July.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        bank_account_assets:
+          2026: 10_000
+      person2:
+        age:
+          2026: 10
+        person_id:
+          2026: 3
+        parent_1_id:
+          2026: 1
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost:
+          2026-01: 400
+          2026-07: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+    marital_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
+    families:
+      family:
+        members: [person1, person2]
+    tax_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    ia_ssa_resources_deemed_from_parents:
+      2026-01: [0, 8_000]
+      2026-07: [0, 8_000]
+
+- name: Case 2, Annual agency-certified resource budget remains a monthly stock.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: IA
+    ia_ssa_resources_deemed_from_parents: 2_500
+  output:
+    ia_ssa_resources_deemed_from_parents:
+      2026-01: 2_500
+      2026-07: 2_500
+
+- name: Case 3, Minor household head is excluded from parental deeming and the sibling allocation pool.
+  period: 2026-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        bank_account_assets:
+          2026: 5_500
+      person2:
+        age:
+          2026: 40
+        person_id:
+          2026: 2
+      person3:
+        age:
+          2026: 10
+        person_id:
+          2026: 3
+        parent_1_id:
+          2026: 1
+        parent_2_id:
+          2026: 2
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_household_head:
+          2026: true
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+      person4:
+        age:
+          2026: 10
+        person_id:
+          2026: 4
+        parent_1_id:
+          2026: 1
+        parent_2_id:
+          2026: 2
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+    marital_units:
+      parent1:
+        members: [person1]
+      parent2:
+        members: [person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+    families:
+      family:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      parent1:
+        members: [person1]
+      parent2:
+        members: [person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+    spm_units:
+      unit:
+        members: [person1, person2, person3, person4]
+    households:
+      home:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: IA
+  output:
+    ia_ssa_resources_deemed_from_parents: [0, 0, 0, 2_500]
+    ia_ssa: [0, 0, 400, 0]
+
+- name: Case 4, Married minor is excluded from parental deeming and the sibling allocation pool.
+  period: 2026-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        bank_account_assets:
+          2026: 5_500
+      person2:
+        age:
+          2026: 40
+        person_id:
+          2026: 2
+      person3:
+        age:
+          2026: 10
+        person_id:
+          2026: 3
+        parent_1_id:
+          2026: 1
+        parent_2_id:
+          2026: 2
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+      person4:
+        age:
+          2026: 10
+        person_id:
+          2026: 4
+        parent_1_id:
+          2026: 1
+        parent_2_id:
+          2026: 2
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+      person5:
+        age:
+          2026: 17
+        person_id:
+          2026: 5
+    marital_units:
+      parent1:
+        members: [person1]
+      parent2:
+        members: [person2]
+      child1:
+        members: [person3, person5]
+      child2:
+        members: [person4]
+    families:
+      family:
+        members: [person1, person2, person3, person4, person5]
+    tax_units:
+      parent1:
+        members: [person1]
+      parent2:
+        members: [person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+      spouse:
+        members: [person5]
+    spm_units:
+      unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      home:
+        members: [person1, person2, person3, person4, person5]
+        state_code:
+          2026: IA
+  output:
+    ia_ssa_resources_deemed_from_parents: [0, 0, 0, 2_500, 0]
+    ia_ssa: [0, 0, 400, 0, 0]
+
+# Child-specific parental budgets and sibling allocation: SI 01330.200/.280.
+
+- name: Case 5, Children with different linked parent sets do not share a resource allocation.
+  period: 2026-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        bank_account_assets:
+          2026: 5_500
+      person2:
+        age:
+          2026: 40
+        person_id:
+          2026: 2
+      person3:
+        age:
+          2026: 10
+        person_id:
+          2026: 3
+        parent_1_id:
+          2026: 1
+        parent_2_id:
+          2026: 2
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+      person4:
+        age:
+          2026: 10
+        person_id:
+          2026: 4
+        parent_1_id:
+          2026: 1
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+    marital_units:
+      parent1:
+        members: [person1]
+      parent2:
+        members: [person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+    families:
+      family:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      parent1:
+        members: [person1]
+      parent2:
+        members: [person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+    spm_units:
+      unit:
+        members: [person1, person2, person3, person4]
+    households:
+      home:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: IA
+  output:
+    ia_ssa_resources_deemed_from_parents: [0, 0, 2_500, 3_500]
+    ia_ssa: [0, 0, 0, 0]
+
+- name: Case 6, a co-resident stepparent's resources are deemed with the parent's.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 38
+        person_id:
+          2026: 1
+      person2:
+        age:
+          2026: 40
+        person_id:
+          2026: 2
+        bank_account_assets:
+          2026: 5_600
+      person3:
+        age:
+          2026: 10
+        person_id:
+          2026: 3
+        parent_1_id:
+          2026: 1
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+    marital_units:
+      parents:
+        members: [person1, person2]
+      child:
+        members: [person3]
+    families:
+      family:
+        members: [person1, person2, person3]
+    tax_units:
+      family:
+        members: [person1, person2, person3]
+    spm_units:
+      unit:
+        members: [person1, person2, person3]
+    households:
+      home:
+        members: [person1, person2, person3]
+        state_code:
+          2026: IA
+  output:
+    # person2 is the mother's spouse but not a named parent. 20 CFR 416.1202(b)(1)
+    # deems a stepparent's resources and allows 3,000 for a parent and spouse:
+    # 5,600 - 3,000 = 2,600, above the child's 2,000 limit.
+    ia_ssa_resources_deemed_from_parents: [0, 0, 2_600]
+    ia_ssa_eligible: [false, false, false]
+    ia_ssa: [0, 0, 0]
+
+- name: Case 7, manual Child A example deems one parent's bonds above the one-parent allowance.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        # 6-B example: the parent has $2,200 in government bonds.
+        bond_assets:
+          2026: 2_200
+      person2:
+        age:
+          2026: 10
+        person_id:
+          2026: 2
+        parent_1_id:
+          2026: 1
+        # 6-B example: Child A has $900 in a savings account.
+        bank_account_assets:
+          2026: 900
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    families:
+      family:
+        members: [person1, person2]
+    tax_units:
+      family:
+        members: [person1, person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # 2,200 - 2,000 = 200 deemed; 900 + 200 = 1,100 is within the 2,000 limit.
+    ia_ssa_resources_deemed_from_parents: [0, 200]
+    ia_ssa_eligible: [false, true]
+    ia_ssa: [0, 400]

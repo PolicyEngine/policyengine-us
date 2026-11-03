@@ -16,6 +16,9 @@ from policyengine_us.data.economic_assumptions import (
     _resolve_uprating_parameter,
     extend_single_year_dataset,
 )
+from policyengine_us.parameters.uprating_extensions import (
+    round_social_security_amount,
+)
 from policyengine_us.reforms.ssa import apply_trustees_2025_economic_assumptions
 from policyengine_us.system import system
 from policyengine_us.tests.microsimulation.data.fixtures.test_extend_single_year_dataset import (  # noqa: E501
@@ -304,6 +307,48 @@ def test_trustees_long_run_holds_after_the_population_series_ends():
         / _value(POPULATION_PATH, 2060, parameters),
         rel=1e-12,
     )
+
+
+def _wage_indexed_amounts(parameters):
+    social_security = parameters.gov.ssa.social_security
+    bend_points = social_security.pia.formula_factors.brackets
+    return {
+        "wage_base": social_security.wage_base,
+        "quarters_of_coverage_threshold": social_security.quarters_of_coverage_threshold,
+        "exempt_amount_under_fra": social_security.earnings_test.exempt_amount_under_fra,
+        "exempt_amount_year_of_fra": social_security.earnings_test.exempt_amount_year_of_fra,
+        "bend_point_1": bend_points[1].threshold,
+        "bend_point_2": bend_points[2].threshold,
+        "sga_non_blind": parameters.gov.ssa.sga.non_blind,
+        "sga_blind": parameters.gov.ssa.sga.blind,
+    }
+
+
+def test_trustees_wage_indexed_amounts_follow_the_trustees_nawi():
+    """The scenario re-derives the wage base and the other wage-indexed
+    amounts from its own cap and NAWI (#10452). The Trustees NAWI first
+    differs from CBO's in 2034, which sets the 2036 amounts, so earlier years
+    match the baseline."""
+    parameters = _trustees_parameters()
+    cap = parameters.gov.irs.payroll.social_security.cap
+    trustees = _wage_indexed_amounts(parameters)
+    baseline = _wage_indexed_amounts(system.parameters)
+    for year in range(2027, 2101):
+        assert trustees["wage_base"](f"{year}-01-01") == cap(f"{year}-01-01")
+    for name, parameter in trustees.items():
+        for year in range(2027, 2036):
+            assert parameter(f"{year}-01-01") == baseline[name](f"{year}-01-01"), (
+                name,
+                year,
+            )
+    nawi = parameters.gov.ssa.nawi
+    for year in (2036, 2040, 2100):
+        assert trustees["bend_point_1"](f"{year}-01-01") == (
+            round_social_security_amount(
+                180 * nawi(f"{year - 2}-01-01") / nawi("1977-01-01"), 1
+            )
+        )
+    assert trustees["wage_base"]("2036-01-01") != baseline["wage_base"]("2036-01-01")
 
 
 def test_smi_threshold_keeps_pace_with_default_incomes():
