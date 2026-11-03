@@ -8,7 +8,11 @@ class nj_taking_property_tax_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-3a-17/"
+        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-3a-17/",
+        # The NJ child tax credit and the NJ child and dependent care credit
+        # are refundable and both depend on NJ taxable income.
+        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-17-1/",
+        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=46",
     )
     defined_for = "nj_property_tax_deduction_eligible"
 
@@ -70,5 +74,25 @@ class nj_taking_property_tax_deduction(Variable):
         cohabitating = tax_unit("cohabitating_spouses", period)
         credit_amount = credit_amount / (1 + separate * cohabitating)
 
+        # The deduction also lowers NJ taxable income for the refundable NJ
+        # child tax credit and NJ child and dependent care credit, whose
+        # amounts depend on it, so its benefit includes their change.
+        p_credits = parameters(period).gov.states.nj.tax.income.credits
+        ctc_children = tax_unit("nj_ctc_qualifying_children", period) * tax_unit(
+            "nj_ctc_eligible", period
+        )
+        ctc_gain = ctc_children * (
+            p_credits.ctc.amount.calc(taxable_income_after_deduction)
+            - p_credits.ctc.amount.calc(taxable_income_before_deduction)
+        )
+        federal_cdcc = tax_unit("cdcc", period)
+        cdcc_gain = federal_cdcc * (
+            p_credits.cdcc.rate.calc(taxable_income_after_deduction, right=True)
+            - p_credits.cdcc.rate.calc(taxable_income_before_deduction, right=True)
+        )
+        deduction_benefit = (
+            taxes_without_deduction - taxes_with_deduction + ctc_gain + cdcc_gain
+        )
+
         # choose between taxable income deduction and refundable credit
-        return (taxes_without_deduction - taxes_with_deduction) > credit_amount
+        return deduction_benefit > credit_amount

@@ -1,0 +1,1 @@
+New Jersey now weighs the change in its refundable child tax credit and child and dependent care credit when choosing between the property tax deduction and the $50 credit, and Nebraska itemized deductions now start from the federal SALT deduction as claimed, removing only the income taxes in it.

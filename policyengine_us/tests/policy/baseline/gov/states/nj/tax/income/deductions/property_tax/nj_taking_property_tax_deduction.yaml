@@ -33,3 +33,112 @@
     state_code: NJ
   output:
     nj_taking_property_tax_deduction: false
+
+- name: Deduction that moves taxable income into a higher NJ child tax credit bracket beats the $50 credit
+  # 2023 single rates: 1.4% to $20,000, 1.75% from $20,000 to $35,000.
+  # Tax on $30,500 = 280 + 10,500 x 1.75% = 463.75; on $27,800 = 280 +
+  # 7,800 x 1.75% = 416.50; saving 47.25 is below the $50 credit.
+  # The NJ child tax credit rises from $800 (over $30,000) to $1,000 (up to
+  # $30,000) for the one child: 47.25 + 200 = 247.25 > 50.
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 35
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        nj_property_tax_deduction_eligible: true
+        nj_potential_property_tax_deduction: 2_700
+        nj_taxable_income_before_property_tax_deduction: 30_500
+        cdcc: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    nj_ctc_qualifying_children: 1
+    nj_taking_property_tax_deduction: true
+
+- name: Same tax saving without a qualifying child keeps the $50 credit
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_eligible: true
+    nj_potential_property_tax_deduction: 2_700
+    nj_taxable_income_before_property_tax_deduction: 30_500
+    filing_status: SINGLE
+    cdcc: 0
+    state_code: NJ
+  output:
+    nj_taking_property_tax_deduction: false
+
+- name: Deduction that raises the NJ child and dependent care credit rate beats the $50 credit
+  # Tax saving: (30,500 - 28,500) x 1.75% = 35. The NJ CDCC match rate rises
+  # from 40% (over $30,000) to 50% (up to $30,000) of the $600 federal
+  # credit: 35 + 60 = 95 > 50.
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_eligible: true
+    nj_potential_property_tax_deduction: 2_000
+    nj_taxable_income_before_property_tax_deduction: 30_500
+    filing_status: SINGLE
+    cdcc: 600
+    state_code: NJ
+  output:
+    nj_taking_property_tax_deduction: true
+
+- name: A small NJ child and dependent care credit gain does not beat the $50 credit
+  # 35 tax saving + 10% x $100 federal credit = 45 < 50.
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_eligible: true
+    nj_potential_property_tax_deduction: 2_000
+    nj_taxable_income_before_property_tax_deduction: 30_500
+    filing_status: SINGLE
+    cdcc: 100
+    state_code: NJ
+  output:
+    nj_taking_property_tax_deduction: false
+
+- name: Renter with one child takes the deduction and gets the higher NJ child tax credit
+  # Wages $33,000 less $2,500 exemptions (1,000 personal + 1,500 dependent)
+  # = $30,500. Property tax: 18% x $15,000 rent = $2,700. Taking the
+  # deduction gives $27,800 taxable income, $416.50 tax and a $1,000 NJ
+  # child tax credit; the credit route gives $463.75 tax, an $800 child tax
+  # credit and the $50 property tax credit.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 33_000
+        rent: 15_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    nj_taxable_income_before_property_tax_deduction: 30_500
+    nj_potential_property_tax_deduction: 2_700
+    nj_taking_property_tax_deduction: true
+    nj_taxable_income: 27_800
+    nj_main_income_tax: 416.50
+    nj_ctc: 1_000
+    nj_property_tax_credit: 0
