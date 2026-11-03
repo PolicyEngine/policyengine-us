@@ -1,3 +1,10 @@
+## [2.93.1] - 2026-11-03
+
+### Fixed
+
+- Set the DC EITC match for filers with qualifying children to 85% for 2026 through 2028 and 100% from 2029, after the temporary 100% match for 2025 expired.
+
+
 ## [2.93.0] - 2026-11-03
 
 ### Added
