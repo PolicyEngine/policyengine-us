@@ -660,3 +660,30 @@
     ssi: 12_348 # 1,029 * 12
     # CDSS projects the 239.94 share for January 2027 (2026 May Revision, page 27).
     ca_state_supplement: 2_879.28 # 239.94 * 12
+
+- name: Case 18, 2026 mixed couple's supplement rounds up to the next cent like other federal payments.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+        social_security_retirement: 9_601 # 800.0833 a month
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        pension_income: 9_600 # 800 a month
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # 1,233.94 - 0 - (800.0833 - 20) = 453.8567, which rounds up to 453.86
+    # (POMS SI 02001.010 A.2).
+    ca_state_supplement_person: [453.86, 0]

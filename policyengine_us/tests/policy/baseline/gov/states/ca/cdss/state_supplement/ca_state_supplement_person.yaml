@@ -657,7 +657,7 @@
         living_arrangements_allow_for_food_preparation: true
   output:
     # SSA pays the supplement with SSI (POMS SI 01415.058 A).
-    ca_state_supplement_eligible_person: true
+    ca_state_supplement_eligible_person: false
     ssi: 0
     ca_state_supplement_person: 0
 
@@ -744,7 +744,123 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    # WIC 12200(i) reduces the grant by the federal reduction, which leaves the 239.94 share.
-    # POMS SI 01415.058 code D lists 245.20; those shares are not modeled (issue 7892).
+    # The household-of-another shares are not modeled, so the regular 239.94 share
+    # stays on the reduced federal amount. POMS SI 01415.058 code D lists 245.20
+    # (issue 7892; us-ca:ssp-household-of-another-share in the source-conflict candidates).
     ssi: 662.67
     ca_state_supplement_person: 239.94
+
+- name: Case 30, aged person outside California gets no supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    ssi: 994
+    ca_state_supplement_person: 0
+    ca_state_supplement_eligible_person: false
+
+- name: Case 31, couple both in a Title XIX facility in 2023 takes the published couple level, not twice the individual level.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        ca_in_medical_care_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        ca_in_medical_care_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # POMS SI 01415.055 B.2.b: 57 for the couple, or a 117 total with the 60
+    # federal amount. The individual share is 29.
+    ssi: [30, 30]
+    ca_state_supplement_person: [28.5, 28.5]
+
+- name: Case 32, couple with only the California input marking one spouse in a Title XIX facility is computed as two individuals.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        ca_in_medical_care_facility: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # 20 CFR 416.414(b)(3): the facility share for the resident and the
+    # independent-living share for the other spouse, not an average of the two
+    # couple levels.
+    # NOTE: SSI stays joint without the federal facility inputs.
+    ssi: [745.5, 745.5]
+    ca_state_supplement_person: [32, 239.94]
+
+- name: Case 33, married parents who are their child's tax dependents take the individual share.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 100_000
+      person2:
+        age: 70
+        is_tax_unit_dependent: true
+      person3:
+        age: 68
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # NOTE: a known limitation. The couple level is 607.83, or 303.92 each, but
+    # SSI's couple test excludes tax dependents, so SSI and the supplement both
+    # treat the parents as individuals. When SSI identifies couples by marriage
+    # (PR 10141), the head-or-spouse guard in the rates must go too, or these
+    # parents would get no supplement.
+    ssi: [0, 994, 994]
+    ca_state_supplement_person: [0, 239.94, 239.94]

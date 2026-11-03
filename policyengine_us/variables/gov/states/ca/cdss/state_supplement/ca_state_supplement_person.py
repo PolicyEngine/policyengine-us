@@ -1,11 +1,13 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi._ssi_state_supplement import (
+    federal_supplement_payment,
     ssi_state_supplement,
 )
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
 from policyengine_us.variables.gov.states.ca.cdss.capi._ca_capi_ssi_ssp_standard import (
+    ca_capi_couple_computation,
     ca_capi_ssi_ssp_standard,
 )
 from policyengine_us.variables.gov.states.ca.cdss.state_supplement._ca_state_supplement_rates import (
@@ -19,8 +21,9 @@ class ca_state_supplement_person(Variable):
     label = "California state supplement per person"
     unit = USD
     definition_period = MONTH
-    defined_for = "ca_state_supplement_eligible_person"
+    defined_for = StateCode.CA
     reference = (
+        "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12150",
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200",
         "https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058",
         "https://www.law.cornell.edu/cfr/text/20/416.1160",
@@ -30,14 +33,17 @@ class ca_state_supplement_person(Variable):
     )
 
     def formula(person, period, parameters):
-        joint = person("ssi_couple_computation_applies", period)
+        # A couple with one spouse in a Title XIX facility is computed
+        # separately, including when only the California input marks it (20 CFR
+        # 416.414(b)(3)).
+        joint = ca_capi_couple_computation(person, period)
         individual_rate, couple_rate = ca_state_supplement_rates(
             person, period, parameters, joint
         )
         # SSA administers the supplement, so the federal income, couple,
         # deeming and rounding rules apply (POMS SI 01415.058 A).
         payment = ssi_state_supplement(
-            person, period, parameters, individual_rate, couple_rate
+            person, period, parameters, individual_rate, couple_rate, joint=joint
         )
 
         # SSA treats a spouse who fails SSI's citizen or qualified-noncitizen
@@ -96,7 +102,13 @@ class ca_state_supplement_person(Variable):
         countable_income = where(
             spouse_capi_eligible, mixed_countable_income, ssi_countable_income
         )
-        split_payment = max_(
+        split_amount = max_(
             individual_standard - person("ssi", period) - countable_income, 0
+        )
+        split_payment = federal_supplement_payment(
+            split_amount, parameters, period
         ) * person("takes_up_ssi_if_eligible", period.this_year)
-        return where(split_couple, split_payment, payment)
+        # WIC 12150 entitles people who receive SSI or "who but for their
+        # income" could, which is SSI eligibility without its income test.
+        eligible = person("is_ssi_eligible", period)
+        return eligible * where(split_couple, split_payment, payment)

@@ -97,7 +97,7 @@ def ca_state_supplement_rates(person, period, parameters, joint):
     )
     couple = select(
         [medical_facility, out_of_home_care],
-        [2 * p.allowance.medical_care_facility, out_of_home_care_couple],
+        [p.allowance.medical_care_facility_couple, out_of_home_care_couple],
         default=community_couple,
     )
     return individual, couple * head_or_spouse

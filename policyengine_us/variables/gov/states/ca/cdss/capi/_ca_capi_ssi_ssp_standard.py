@@ -6,7 +6,7 @@ from policyengine_us.variables.gov.states.ca.cdss.state_supplement._ca_state_sup
 
 
 def ca_capi_couple_computation(person, period):
-    """Whether CAPI computes the person with their spouse as a couple.
+    """Whether CAPI and SSP compute the person with their spouse as a couple.
 
     SSI's couple computation, except that a couple with exactly one spouse in
     a Title XIX facility is computed separately (20 CFR 416.414(b)(3)), when
