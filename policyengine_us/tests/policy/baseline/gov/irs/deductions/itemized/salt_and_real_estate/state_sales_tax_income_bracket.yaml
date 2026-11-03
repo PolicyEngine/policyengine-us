@@ -168,11 +168,11 @@
         is_tax_unit_spouse: true
         employment_income: 15_000
         ssi: 2_400
-        tax_exempt_pension_income: 6_000
+        tax_exempt_pension_income: 11_000
       grandchild:
         age: 12
         is_tax_unit_dependent: true
-        social_security_survivors: 9_000
+        social_security_survivors: 10_000
         ssi: 7_200
         tax_exempt_interest_income: 1_000
     tax_units:
@@ -188,9 +188,10 @@
     # 29_000, below the $32,000 joint base amount, so no benefit is taxable.
     adjusted_gross_income: 15_000
     filer_tax_exempt_social_security: 20_000
-    # 15_000 + 4_000 + 3_000 + 20_000 + 2_400 + 6_000 = 50_400 is in the
-    # $50,000-$60,000 row. Counting the grandchild's 17_200 would give
-    # 67_600, the $60,000-$70,000 row.
+    # 15_000 + 4_000 + 3_000 + 20_000 + 2_400 + 11_000 = 55_400 is in the
+    # $50,000-$60,000 row. The grandchild's 10_000 of benefits alone would
+    # give 65_400, and the grandchild's 7_200 of SSI and 1_000 of interest
+    # alone 63_600, both in the $60,000-$70,000 row.
     state_sales_tax_income_bracket: 5
 
 - name: A family's TANF counts in full, the children's shares included

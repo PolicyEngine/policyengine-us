@@ -407,6 +407,41 @@
     watca_alternative_tax_magi: 112_000
     watca_alternative_tax_eligible: true
 
+- name: A dependent's Social Security from $0 to $1,000,000 leaves the MAGI unchanged
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    people:
+      parent:
+        age: 45
+        employment_income: 100_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    axes:
+      - - name: social_security_survivors
+          # The child, the second person in each copy.
+          index: 1
+          min: 0
+          max: 1_000_000
+          count: 11
+          period: 2026
+  output:
+    # The household amount carries the child's benefit in every copy.
+    tax_exempt_social_security:
+      [0, 100_000, 200_000, 300_000, 400_000, 500_000, 600_000, 700_000, 800_000, 900_000, 1_000_000]
+    # MAGI is the parent's AGI at every benefit amount, so the parent stays
+    # below the 64_400 * 1.75 = 112_700 limit, and the alternative maximum
+    # tax is (100_000 - 64_400) * 0.255 = 9_078.
+    watca_alternative_tax_magi: 100_000
+    watca_alternative_tax_eligible: true
+    watca_alternative_max_tax: 9_078
+
 - name: Alternative tax MAGI includes specified possession income
   period: 2026
   reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
