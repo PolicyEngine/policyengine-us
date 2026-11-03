@@ -27,8 +27,9 @@ class vt_cdcc(Variable):
             federal_cdcc = tax_unit("pre_obbba_capped_cdcc", period)
         else:
             federal_cdcc = tax_unit("capped_cdcc", period)
-        # 2022 Act 138 raised the 5828c match to 72 percent from 2022, and the
-        # 2022 Schedule IN-112 applies it with no income test (see
+        # 2022 Act 138, Sec. 3 raised the 5828c match to 72 percent and struck
+        # the low-income AGI cap, retroactive to January 1, 2022 under Sec.
+        # 13(b), so from 2022 there is no income test (see
         # income_limit_in_effect). We do not track facility certification or
         # in-state care at the moment.
         if p.income_limit_in_effect:

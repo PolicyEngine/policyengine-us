@@ -279,3 +279,27 @@
   output:
     # One exemption: $60 base + $15 x (1 - 1).
     ny_household_credit_potential: 60
+
+- name: 2025 surviving spouse who can be claimed counts the dependent's exemption
+  # Tax Law 606(b)(3)(B): a surviving spouse is a household in its own right.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 22
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SURVIVING_SPOUSE
+        head_or_spouse_is_dependent_elsewhere_without_filing_exception: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # One exemption (the child): $60 base + $15 x (1 - 1).
+    ny_household_credit_potential: 60
