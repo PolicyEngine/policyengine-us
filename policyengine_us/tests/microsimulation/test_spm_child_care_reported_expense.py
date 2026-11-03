@@ -1,8 +1,9 @@
 """Over a dataset, the SPM subtracts what parents reported paying for child care.
 
 Datasets fill spm_unit_pre_subsidy_childcare_expenses from the ASEC's
-SPM_CHILDCAREXPNS, which holds what parents paid after any subsidy. So baseline
-policy keeps that amount, and a reform moves it by the change in subsidy. These
+SPM_CHILDCAREXPNS, what parents reported spending on child care, which the
+rule reads as what they paid after any subsidy. So baseline policy keeps that
+amount, and a reform moves it by the change in subsidy. These
 tests run the rule over the shipped population rather than the situations in
 test_spm_child_care_subsidy_invariants.py, so the dataset flag and the reform's
 baseline arm come from loading a real file.

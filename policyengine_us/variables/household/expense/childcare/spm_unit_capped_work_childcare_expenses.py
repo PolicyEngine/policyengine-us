@@ -7,6 +7,14 @@ class spm_unit_capped_work_childcare_expenses(Variable):
     label = "SPM unit work and childcare expenses"
     definition_period = YEAR
     unit = USD
+    documentation = (
+        "Over a dataset, the child care part keeps the reported amount under "
+        "baseline policy and moves by the change in subsidy under a reform, "
+        "which it reads from the reform's baseline arm. Core builds that arm "
+        "only for a reform passed as reform=. A reformed system passed as "
+        "tax_benefit_system=, or a reform applied with apply_reform after "
+        "construction, gets no arm, so the expense keeps the reported amount."
+    )
     reference = "https://www2.census.gov/programs-surveys/supplemental-poverty-measure/datasets/spm/spm_techdoc.pdf#page=17"
 
     def formula_2024(spm_unit, period, parameters):
@@ -19,11 +27,13 @@ class spm_unit_capped_work_childcare_expenses(Variable):
         # rather than adding to resources.
         simulation = spm_unit.simulation
         if simulation.is_over_dataset:
-            # Datasets fill the pre-subsidy input from the ASEC's reported
-            # spending, which is already what parents paid. Baseline policy
-            # keeps that amount, and a reform moves it by the change in subsidy.
+            # Datasets fill the pre-subsidy input from the ASEC, which asks
+            # parents how much they spent on child care, and this rule reads
+            # that as what they paid after any subsidy. Baseline policy keeps
+            # that amount, and a reform moves it by the change in subsidy. A
+            # baseline arm has no baseline of its own, so it keeps the amount.
             out_of_pocket_expenses = pre_subsidy_expenses
-            if simulation.baseline is not None and simulation.branch_name != "baseline":
+            if simulation.baseline is not None:
                 baseline_spm_unit = simulation.baseline.populations["spm_unit"]
                 subsidy_change = spm_unit(
                     "child_care_subsidies", period

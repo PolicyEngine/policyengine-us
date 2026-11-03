@@ -54,7 +54,8 @@ pins one such case; the fall comes from those programs and not from this rule.
 
 The properties above read spm_unit_pre_subsidy_childcare_expenses as a
 pre-subsidy price, which is what it means in a household calculation. Datasets
-fill it from the ASEC's reported spending, which is already what parents paid.
+fill it from the ASEC, which asks parents how much they spent on child care,
+and these properties read that amount as what parents paid after any subsidy.
 So over a dataset, with E the reported amount, S0 the subsidy baseline policy
 pays and S1 the subsidy the simulated policy pays:
 
@@ -63,7 +64,8 @@ pays and S1 the subsidy the simulated policy pays:
 7. Baseline policy over a dataset leaves the expense at min(W + E, C), the
    amount Census subtracts, whatever subsidy the model pays.
 8. Under any policy over a dataset, the expense equals that reference, with or
-   without a child in the unit. A policy that pays the same subsidy leaves the
+   without a child in the unit, and W and C come from the policy simulated. A
+   policy that pays the same subsidy and leaves W and C alone leaves the
    expense where baseline policy put it.
 9. Differential. Give a dataset the amount the household rule says a unit pays
    at baseline policy. Then the two rules give the same expense under any
@@ -435,6 +437,8 @@ dataset_units = st.lists(
             "policy_subsidy": amounts,
             "work": st.integers(0, 6_000),
             "cap": st.integers(0, 60_000),
+            "policy_work": st.integers(0, 6_000),
+            "policy_cap": st.integers(0, 60_000),
             "has_child": st.booleans(),
         }
     ),
@@ -472,6 +476,8 @@ def test_baseline_policy_over_a_dataset_keeps_the_reported_amount(units):
             "policy_subsidy": 5_000,
             "work": 100,
             "cap": 60_000,
+            "policy_work": 100,
+            "policy_cap": 60_000,
             "has_child": True,
         }
     ]
@@ -486,25 +492,54 @@ def test_baseline_policy_over_a_dataset_keeps_the_reported_amount(units):
             "policy_subsidy": 0,
             "work": 100,
             "cap": 6_000,
+            "policy_work": 100,
+            "policy_cap": 6_000,
             "has_child": False,
         }
     ]
 )
+@example(
+    # A policy that pays the same subsidy but moves work expenses and the cap:
+    # 3,500 reads both from the policy, 3,100 would read W and 3,900 would read
+    # C from baseline policy.
+    [
+        {
+            "state": "NY",
+            "expenses": 3_000,
+            "subsidy": 500,
+            "policy_subsidy": 500,
+            "work": 100,
+            "cap": 60_000,
+            "policy_work": 900,
+            "policy_cap": 3_500,
+            "has_child": True,
+        }
+    ]
+)
 def test_policy_over_a_dataset_moves_the_expense_by_the_subsidy_change(units):
-    # 8.
+    # 8. Work expenses and the cap change on the policy's side only, which
+    # stores them after the baseline arm branches off.
     simulation = with_baseline_arm(over_dataset(build_units(units)))
     set_subsidies(
         simulation,
         [unit["subsidy"] for unit in units],
         [unit["policy_subsidy"] for unit in units],
     )
+    simulation.set_input(
+        "spm_unit_work_expenses", YEAR, [unit["policy_work"] for unit in units]
+    )
+    simulation.set_input(
+        "spm_unit_head_spouse_earned_cap",
+        YEAR,
+        [unit["policy_cap"] for unit in units],
+    )
     for unit, expense in zip(units, capped_expense(simulation)):
         assert expense == pytest.approx(
             reference_expense(
                 unit["expenses"],
                 unit["policy_subsidy"] - unit["subsidy"],
-                unit["work"],
-                unit["cap"],
+                unit["policy_work"],
+                unit["policy_cap"],
             ),
             abs=TOLERANCE,
         )
@@ -540,15 +575,11 @@ def test_repeal_moves_dataset_and_household_income_by_the_same_amount(
     # 9. Real programs and a real reform. The dataset reads $14,000 as what
     # parents paid and the household calculation as the price. Neither rule's
     # cap binds and both expenses rise by the subsidy, so SPM income falls by
-    # the same amount.
+    # the same amount. The parent's earnings and hours stay raw inputs, which
+    # the simulation moves to their pre-response variables: the baseline arm
+    # has to read the moved values, or New York's arm sees no hours worked.
     situation = family(state, 30_000, 14_000)
-    parent = situation["people"]["parent"]
-    del parent["weeks_worked"]
-    # The columns datasets hold. Simulation moves employment_income to its
-    # pre-response variable after core builds the baseline arm, so the arm would
-    # read no earnings wherever a formula reads that variable.
-    parent["employment_income_before_lsr"] = parent.pop("employment_income")
-    parent["weekly_hours_worked_before_lsr"] = parent.pop("weekly_hours_worked")
+    del situation["people"]["parent"]["weeks_worked"]
     if county_fips:
         situation["households"]["household"]["county_fips"] = {YEAR: county_fips}
     _, household_change = with_and_without_subsidies(situation)
