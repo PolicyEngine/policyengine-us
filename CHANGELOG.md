@@ -1,3 +1,46 @@
+## [2.91.13] - 2026-11-03
+
+### Fixed
+
+- Make branch-measured marginal tax rates match fresh re-simulation: household simulations now list the inputs they move onto pre-response variables, so rate branches keep them (`marginal_tax_rate` with `long_term_capital_gains` read about 13 on Core 3.33), and branches raise those inputs, so programs that read pre-response income, such as TANF, see the raise.
+
+
+## [2.91.12] - 2026-11-03
+
+### Fixed
+
+- Deny the DC standard deduction, basic and additional amounts, to a separate filer whose spouse itemizes (D.C. Code 47-1803.03(c)).
+- Follow the statute where IRS forms differ: the refundable child tax credit bar applies only to a section 911 exclusion, not the housing deduction alone (with Form 2555 leaf inputs; a positive legacy aggregate still counts as an exclusion); a claimable spouse aged 65 or blind on a 2018-2025 joint return must file with income other than earned income over the section 63(c)(5)(A) amount; estate and trust royalties count as EITC investment income; and through 2020 former section 32(c)(1)(F) denies the EITC to a filer whose qualifying children all lack identification.
+
+
+## [2.91.11] - 2026-11-03
+
+### Changed
+
+- Describe the source-conflict steps in CONTRIBUTING.md in the order the guard enforces: candidate in the ruling PR, register entry after it merges, marker and pin refresh in a follow-up PR, then `cites_entry: true` in the register and a second pin refresh.
+
+
+## [2.91.10] - 2026-11-02
+
+### Fixed
+
+- Let the unclaimed spouse on a joint return deduct their own student loan interest when the other spouse is claimed as a dependent elsewhere (26 U.S.C. 221(c)), and count both spouses in joint MAGI.
+
+
+## [2.91.9] - 2026-11-02
+
+### Fixed
+
+- Count only wages includible in gross income (after traditional 401(k)/403(b) deferrals and other pre-tax payroll deductions) in `adjusted_earnings`, the earned income limit of the child and dependent care credit, the IRC 129 dependent care exclusion and the state credits that inherit them, per IRC 32(c)(2)(A)(i) and Treas. Reg. 1.21-2(b)(3); California's credit limit, exclusion and AMT child exemption use California wages, which keep the payroll HSA contributions California taxes, net of any business loss, and New York's 2026 credit keeps counting the deferrals under Tax Law 606(c-2)(2)(C), also net of any business loss. California's credit now applies its own FTB 3506 expense, employer benefit and earned income limits in every year, not only 2021, and its AMT child exemption uses California's own minimum ($9,750 for 2025) instead of the federal amount.
+
+
+## [2.91.8] - 2026-11-02
+
+### Changed
+
+- Lock policyengine-core 3.34.2, the version CI's test jobs already resolve, so local `uv sync` environments and the CI jobs that install the committed lock (lint, Rest shard planning and the release build) use it too.
+
+
 ## [2.91.7] - 2026-11-02
 
 ### Fixed
