@@ -110,7 +110,7 @@ def ca_capi_ssi_ssp_standard(person, period, parameters):
         max_(two_blind, one_blind), aged_or_disabled_couple
     )
 
-    # NOTE: the state shares before 2025 are the 1991 totals in WIC 12200 less
+    # NOTE: the state shares before 2013 are the 1991 totals in WIC 12200 less
     # the 1991 federal rates (issue 10480).
     individual = select(
         [medical_facility, out_of_home_care],
