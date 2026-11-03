@@ -13,24 +13,28 @@ class self_employed_pension_contribution_limit(Variable):
         "compensation for a self-employed person is earned income net of "
         "the plan deduction itself, so the 25% employer rate becomes 20% of "
         "earned income before that deduction, and the 100%-of-compensation "
-        "limit becomes half of it less elective deferrals. The modeled input "
+        "limit caps employer contributions at half of earned income less "
+        "elective deferrals (step 12). The modeled input "
         "does not say which kind of plan the person has, so the limit is the "
-        "most any of them allows: a profit-sharing plan with a 401(k) "
-        "arrangement into which the person defers all of the elective "
-        "deferral room that deferrals to other employers' plans leave. With "
-        "no room left, it is the SEP and profit-sharing limit. Catch-up "
-        "contributions sit outside the dollar limit, and the total never "
-        "exceeds earned income. Defined benefit plans are not modeled."
+        "most any defined contribution plan allows: a profit-sharing plan "
+        "with a 401(k) arrangement into which the person defers, before tax, "
+        "all of the elective deferral room that deferrals to other employers' "
+        "401(k) and 403(b) plans leave. With no room left, it is the SEP and "
+        "profit-sharing limit. Catch-up contributions sit outside the dollar "
+        "limit, and the total never exceeds earned income. A SEP or a SIMPLE "
+        "IRA allows less, so the limit overstates their deductions. Defined "
+        "benefit plans are not modeled, so contributions to them above this "
+        "limit are cut."
     )
     definition_period = YEAR
     reference = (
-        "https://www.law.cornell.edu/uscode/text/26/404#a_3_A_i_I",
-        "https://www.law.cornell.edu/uscode/text/26/404#a_8_C",
-        "https://www.law.cornell.edu/uscode/text/26/404#n",
-        "https://www.law.cornell.edu/uscode/text/26/415#c_1",
-        "https://www.law.cornell.edu/uscode/text/26/415#c_3_B",
-        "https://www.law.cornell.edu/uscode/text/26/414#v_3_A",
-        "https://www.irs.gov/pub/irs-pdf/p560.pdf#page=39",
+        # Subsections (a)(3)(A)(i)(I), (a)(8)(C) and (D), (h)(1)(C) and (n).
+        "https://www.law.cornell.edu/uscode/text/26/404",
+        # Subsections (c)(1) and (c)(3)(B) and (D).
+        "https://www.law.cornell.edu/uscode/text/26/415#c",
+        # Subsections (v)(2)(A) and (v)(3)(A).
+        "https://www.law.cornell.edu/uscode/text/26/414#v",
+        "https://www.irs.gov/pub/irs-prior/p560--2025.pdf#page=39",
         "https://www.irs.gov/pub/irs-prior/p560--2022.pdf#page=34",
     )
 
@@ -39,9 +43,12 @@ class self_employed_pension_contribution_limit(Variable):
         # Step 3: earned income before the plan deduction.
         earned_income = person("self_employed_pension_earned_income", period)
         # Steps 4 and 5: the employer contribution rate, reduced because
-        # compensation is net of the contribution. Steps 6 and 7 cap the rate
-        # at the section 401(a)(17) compensation limit, which never binds:
-        # 25% of it has exceeded the step 8 dollar limit in every year.
+        # compensation is net of the contribution. Steps 6 and 7 cap the
+        # employer contribution at the plan rate times the section
+        # 401(a)(17) compensation limit. At current law that never binds the
+        # result, because 25% of the compensation limit is 1.25 times the
+        # step 8 dollar limit, so the model leaves it out; a reform that set
+        # the rate times that limit below the dollar limit would need it.
         rate = p.profit_sharing_deduction_rate
         employer_limit = earned_income * rate / (1 + rate)
         # Step 9: elective deferrals, up to the section 402(g) room left

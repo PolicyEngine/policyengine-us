@@ -15,7 +15,7 @@ class self_employed_pension_contribution_ald_person(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/62#a_6",
         "https://www.law.cornell.edu/uscode/text/26/404#a_8_C",
-        "https://www.irs.gov/pub/irs-pdf/p560.pdf#page=39",
+        "https://www.irs.gov/pub/irs-prior/p560--2025.pdf#page=39",
     )
 
     def formula(person, period, parameters):

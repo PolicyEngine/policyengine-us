@@ -15,13 +15,17 @@ class self_employed_pension_earned_income(Variable):
         "person's Schedule C business as the plan's business. When the person "
         "also has farm or partnership self-employment earnings, the deductible "
         "part of self-employment tax is split by each business's share of the "
-        "net profits, as on Form 7206 lines 5 to 8."
+        "net profits, as on Form 7206 lines 5 to 8; the worksheet's step 2 "
+        "enters all of Schedule 1 line 15. All Schedule C profit counts as "
+        "earned income: the model assumes the personal-services test of "
+        "section 401(c)(2)(A)(i) is met."
     )
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/401#c_2_A",
         "https://www.law.cornell.edu/uscode/text/26/404#a_8_C",
-        "https://www.irs.gov/pub/irs-pdf/p560.pdf#page=39",
+        # PDF pages 7, 39
+        "https://www.irs.gov/pub/irs-prior/p560--2025.pdf#page=7",
         "https://www.irs.gov/pub/irs-prior/p560--2022.pdf#page=34",
         "https://www.irs.gov/pub/irs-prior/f7206--2023.pdf#page=1",
     )
