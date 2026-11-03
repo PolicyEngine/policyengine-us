@@ -8,5 +8,11 @@ class sc_tanf_gross_earned_income(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.SC
-    reference = "https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=100"  # Section 7.1
-    adds = "gov.states.sc.tanf.income.earned.earned"
+    # PDF pages 102, 112, 117
+    reference = "https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=102"  # Sections 7.1 and 7.7
+
+    def formula(person, period, parameters):
+        p = parameters(period).gov.states.sc.tanf.income.earned
+        earned = add(person, period, p.earned)
+        # Section 7.7 excludes the income of SSI recipients.
+        return earned * ~person("sc_tanf_ssi_recipient", period)

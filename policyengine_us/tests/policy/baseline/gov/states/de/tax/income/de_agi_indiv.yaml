@@ -19,7 +19,7 @@
   output:
     de_agi_indiv: [900, 1_800]
 
-- name: Dependent AGI gets attributed to the head, AGI capped at 0
+- name: Dependent AGI goes to the spouse with the greater AGI, AGI capped at 0
   period: 2022
   input:
     people:
@@ -44,3 +44,68 @@
         state_code: DE
   output:
     de_agi_indiv: [1_200, 0, 0]
+
+- name: Dependent AGI goes to the spouse with the greater AGI when that spouse is not the head
+  period: 2022
+  input:
+    people:
+      person1:
+        de_pre_exclusions_agi: 1_000
+        de_elderly_or_disabled_income_exclusion_indiv: 100
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person2:
+        de_pre_exclusions_agi: 100
+        de_elderly_or_disabled_income_exclusion_indiv: 200
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person3:
+        de_pre_exclusions_agi: 500
+        de_elderly_or_disabled_income_exclusion_indiv: 200
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # The same couple as above with the head and spouse labels exchanged.
+    de_agi_indiv: [1_200, 0, 0]
+
+- name: Spouses with equal AGI split the dependent AGI equally
+  period: 2022
+  input:
+    people:
+      person1:
+        de_pre_exclusions_agi: 1_000
+        de_elderly_or_disabled_income_exclusion_indiv: 0
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        de_pre_exclusions_agi: 1_000
+        de_elderly_or_disabled_income_exclusion_indiv: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person3:
+        de_pre_exclusions_agi: 300
+        de_elderly_or_disabled_income_exclusion_indiv: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    de_agi_indiv: [1_150, 1_150, 0]

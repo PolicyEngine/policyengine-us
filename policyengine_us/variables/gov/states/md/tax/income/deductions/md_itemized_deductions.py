@@ -12,6 +12,13 @@ class md_itemized_deductions(Variable):
         "https://interactive.marylandtaxes.gov/Individuals/iFile_ChooseForm/PriorYearForms/Resident_Booklet_2021.pdf#page=5",
         "https://interactive.marylandtaxes.gov/Individuals/iFile_ChooseForm/PriorYearForms/Resident_Booklet_2022.pdf#page=5",
         "https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=167",  # Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025
+        # Tax-General 10-218(b)(1) and (b)(3): federal itemized deductions,
+        # less income taxes net of their pro rata share of the section 68
+        # reduction.
+        "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-218&enactments=false",
+        # Section 68 as amended by P.L. 119-21, sec. 70111, from 2026.
+        # PDF pages 94-95
+        "https://www.govinfo.gov/content/pkg/PLAW-119publ21/pdf/PLAW-119publ21.pdf#page=94",
     ]
     defined_for = StateCode.MD
 
@@ -22,6 +29,18 @@ class md_itemized_deductions(Variable):
             period,
             ["itemized_deductions_less_salt", "capped_property_taxes"],
         )
+        if parameters(period).gov.irs.deductions.itemized.limitation.obbb.applies:
+            # Tax-General 10-218(b)(1) starts from federal itemized deductions
+            # after the section 68 reduction R, and 10-218(b)(3) subtracts
+            # the income taxes I net of their pro rata share of R:
+            # T - R - I + R * I / T, where T is the pre-reduction total.
+            # With I = T - base this equals base * (1 - R / T).
+            total = tax_unit("total_itemized_taxable_income_deductions", period)
+            reduction = tax_unit("itemized_taxable_income_deductions_reduction", period)
+            mask = total > 0
+            reduction_share = np.zeros_like(total)
+            reduction_share[mask] = reduction[mask] / total[mask]
+            base_itemized = base_itemized * (1 - reduction_share)
 
         # Apply income-based phase-out if applicable
         p = parameters(period).gov.states.md.tax.income.deductions.itemized

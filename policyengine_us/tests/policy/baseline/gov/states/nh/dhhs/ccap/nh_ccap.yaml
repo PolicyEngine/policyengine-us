@@ -334,3 +334,59 @@
     # Monthly = 288.46 * 52/12 = $1,250
     # Benefit capped at actual expenses, NOT inflated by negative income
     nh_ccap: 1_250
+
+- name: Case 12, disabled child with no charge draws no supplement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_disabled: true
+        nh_ccap_eligible_child: true
+        nh_ccap_payment_rate: 280
+        nh_ccap_disability_supplement: 100
+        pre_subsidy_childcare_expenses: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nh_ccap_eligible: true
+        nh_ccap_cost_share: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap: 0
+
+- name: Case 13, supplement stays outside the cap when the cost share covers the charge.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_disabled: true
+        nh_ccap_eligible_child: true
+        nh_ccap_payment_rate: 280
+        nh_ccap_disability_supplement: 100
+        pre_subsidy_childcare_expenses: 5_200
+        # $5,200/yr = $100/week
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nh_ccap_eligible: true
+        nh_ccap_cost_share: 150
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # base_payment = max(min($100, $280) - $150, 0) = $0
+    # Weekly: $0 + $100 disability supplement = $100
+    # Monthly: $100 * (52/12) = $433.33
+    nh_ccap: 433.33

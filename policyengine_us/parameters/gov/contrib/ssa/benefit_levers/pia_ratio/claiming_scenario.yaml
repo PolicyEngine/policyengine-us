@@ -1,0 +1,7 @@
+description: "Explicit claiming-adjustment source: supplied_claim_age, entitlement_dates, age_62, age_65, fra, or age_70. supplied_claim_age reads the pure claim-age-months input and leaves missing or unusable records unreformed; there is no automatic fallback."
+values:
+  1983-01-01: [supplied_claim_age]
+metadata:
+  unit: str
+  label: Social Security population PIA-ratio claiming scenario
+  economy: false
