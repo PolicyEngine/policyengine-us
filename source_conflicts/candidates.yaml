@@ -10931,6 +10931,73 @@ candidates:
   state: unreviewed
   note: 'The open PR follows POMS rather than the broader regulatory reading; no statutory comparison or specific
     ruling is supplied. Code not yet on main: ssi_spousal_deeming_child_allocations, ssi_ineligible_child_allocation.'
+- id: us:standard-plan-minimum-consolidated
+  program: student-loans
+  years:
+    from: 2006
+    type: calendar
+  question: Does a borrower with Direct Loans on the 10-year standard plan and a Direct Consolidation Loan that repaid
+    parent PLUS loans owe one $50 minimum across both, or a minimum on each?
+  sources:
+  - kind: statute
+    citation: 20 U.S.C. 1087e(d)(1)(A)
+    url: https://www.law.cornell.edu/uscode/text/20/1087e#d_1_A
+  - kind: regulation
+    citation: 34 CFR 685.208(b)(1)(ii) and (b)(2)(ii)
+    url: https://www.ecfr.gov/current/title-34/section-685.208#p-685.208(b)(2)
+  readings:
+    statute: The statute provides a standard repayment plan and sets no minimum payment.
+    other: 'Per plan: a consolidation loan that entered repayment on or after July 1, 2006 repays under (b)(2), a separate
+      plan with its own (b)(2)(ii) minimum, so the borrower owes a minimum on each plan. Per borrower: one minimum
+      across all of the borrower''s standard plan payments.'
+  example: A borrower at 6% with $1,000 of Direct Loans and a $20,000 consolidated parent PLUS loan repaid over 20
+    years pays $50.00 + $143.29 = $193.29 with a minimum on each plan, against max($11.10 + $143.29, $50) = $154.39
+    with one minimum.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/ed/student_loans/standard_repayment/combined_standard_repayment_payment.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10599
+  state: ruled
+  note: combined_standard_repayment_payment adds standard_repayment_payment and parent_plus_standard_repayment_payment
+    where federal_parent_plus_loan_is_consolidated is true. This narrows the per-borrower reading in
+    us:standard-plan-minimum-per-borrower to borrowers whose loans are all under (b)(1). The 2017 and 2025 CFR editions
+    hold these two plans at 685.208(b) and (c).
+- id: us:standard-plan-minimum-per-borrower
+  program: student-loans
+  years:
+    from: 2016
+    type: calendar
+  question: Does a borrower with both Direct Loans and unconsolidated parent PLUS loans on the 10-year standard plan
+    owe one $50 minimum on all of those payments, or a minimum on each loan type?
+  sources:
+  - kind: statute
+    citation: 20 U.S.C. 1087e(d)(1)(A)
+    url: https://www.law.cornell.edu/uscode/text/20/1087e#d_1_A
+  - kind: regulation
+    citation: 34 CFR 685.208(b)(1) and (b)(1)(ii)
+    url: https://www.ecfr.gov/current/title-34/section-685.208#p-685.208(b)(1)
+  readings:
+    statute: The statute provides a standard repayment plan and sets no minimum payment.
+    other: '(b)(1) gives Direct Subsidized, Unsubsidized and PLUS borrowers one plan, and (b)(1)(ii) says "A borrower''s
+      payments under this repayment plan are at least $50 per month", so one minimum covers all of them. The other
+      reading applies the minimum to each loan type''s payment.'
+  example: A borrower at 6% with $1,000 of Direct Loans and $20,000 of parent PLUS loans pays max($11.10 + $222.04,
+    $50) = $233.14 with one minimum, against $50.00 + $222.04 = $272.04 with a minimum on each.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/ed/student_loans/standard_repayment/combined_standard_repayment_payment.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10599
+  state: ruled
+  note: standard_repayment_payment and parent_plus_standard_repayment_payment keep their own minimums, since a borrower
+    whose Direct Loans are on an income-driven plan repays parent PLUS loans alone on the standard plan;
+    combined_standard_repayment_payment applies one minimum for a borrower with both on the standard plan. The 2017 and
+    2025 CFR editions carry the same sentence at 685.208(b)(2), so the question runs from the model's first
+    minimum_payment value in 2016. Issue
+    10567 reports the double minimum.
 - id: us:student-loan-interest-joint-claimed-spouse
   program: income-tax
   years:
