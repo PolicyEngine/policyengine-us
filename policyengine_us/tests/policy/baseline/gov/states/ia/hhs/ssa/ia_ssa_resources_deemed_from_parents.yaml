@@ -638,8 +638,9 @@
 
 # The parent's 48.30 of excess divides among three children as 16.10 each.
 # The first child's 1,983.90 plus 16.10 is exactly 2,000.00. In float64,
-# 1,983.90 + 48.30 / 3 is 2,000.0000000000002, which would leave the first
-# child out of the division.
+# 2,048.30 - 2,000 gives an excess of 48.30000000000018, and 1,983.90 plus a
+# third of it gives 2,000.0000000000002, which would leave the first child
+# out of the division.
 - name: Case 11, a child whom a share reaches exactly to the limit stays in the division.
   period: 2026-01
   absolute_error_margin: 0.01

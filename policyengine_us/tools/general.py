@@ -32,8 +32,9 @@ def meets_limit_with_share(own, excess, divisor, limit):
     """Whether own + excess / divisor <= limit, computed exactly.
 
     own, excess and limit are whole-cent amounts (round summed balances
-    first); the share excess / divisor need not be. Float64 addition can put
-    a total at the limit a hair above it (1,983.90 + 48.30 / 3 gives
+    first); the share excess / divisor need not be. Float64 arithmetic can
+    put a total at the limit a hair above it (2,048.30 - 2,000 gives an
+    excess of 48.30000000000018, and 1,983.90 plus a third of it gives
     2,000.0000000000002), so compare whole cents instead:
     divisor x own + excess <= divisor x limit.
     """

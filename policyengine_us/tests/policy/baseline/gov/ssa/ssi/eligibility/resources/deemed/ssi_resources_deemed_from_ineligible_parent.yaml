@@ -654,8 +654,9 @@
 # SI 01330.200 B: the parent's 2,048.30 is 48.30 over the individual limit,
 # which divides among three children as 16.10 each. The first child's
 # 1,983.90 plus 16.10 is exactly 2,000.00, so all three stay in the division
-# and pass. In float64, 1,983.90 + 48.30 / 3 is 2,000.0000000000002, which
-# would remove the first child and raise the others' shares.
+# and pass. In float64, 2,048.30 - 2,000 gives an excess of 48.30000000000018,
+# and 1,983.90 plus a third of it gives 2,000.0000000000002, which would
+# remove the first child and raise the others' shares.
 - name: A child whom a share reaches exactly to the limit stays in the division
   period: 2026-01
   input:
