@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Microsimulation" href="../usage/microsimulation.html"><link rel="prev" title="WIC" href="../gov/usda/wic.html">
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="State rebate attribution" href="state-rebates.html"><link rel="prev" title="WIC" href="../gov/usda/wic.html">
 
     <!-- Generated with Sphinx 7.4.7 and Furo 2025.12.19 -->
         <title>Validation against TAXSIM - PolicyEngine US documentation</title>
@@ -267,6 +267,7 @@
 <p class="caption" role="heading"><span class="caption-text">Validation</span></p>
 <ul class="current">
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Validation against TAXSIM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="state-rebates.html">State rebate attribution</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Usage</span></p>
 <ul>
@@ -526,7 +527,7 @@
 <p>Each test compares PolicyEngine with TAXSIM for one record at a time, separately for federal income tax and state income tax. A cell in the table is the share of records that pass.</p>
 <ul class="simple">
 <li><p><strong>Within 1% of income</strong> (the dashboard’s default view): the two amounts differ by less than 1% of the record’s gross income. Gross income here is wages, self-employment income, interest, dividends, other property income, non-property income, pensions and unemployment compensation, plus short- and long-term capital gains when positive and 85% of Social Security benefits. Records with zero or negative gross income use the $15 test instead.</p></li>
-<li><p><strong>Within 1%, net of rebates</strong> (state only): the same test applied to state income tax plus one-time state rebates on both sides. It is meant to remove a timing difference: TAXSIM counts a rebate in the year it is paid and PolicyEngine in the tax year it relates to. It is not exact, because TAXSIM also reports some rebates that its state tax does not reflect (Virginia’s in 2022 and 2025, for example), so this column can be lower than the plain 1% column.</p></li>
+<li><p><strong>Within 1%, net of rebates</strong> (state only): the same test applied to state income tax plus one-time state rebates on both sides. It is meant to remove a timing difference: TAXSIM counts a rebate in the year it is paid and PolicyEngine in the tax year it relates to. It is not exact, because TAXSIM also reports some rebates that its state tax does not reflect (Virginia’s in 2022 and 2025, for example), so this column can be lower than the plain 1% column. See <a class="reference internal" href="state-rebates.html"><span class="std std-doc">state rebate attribution</span></a> for the eligibility-year convention, inventory, and guidance on restoring only rebates that actually reduced the reported tax.</p></li>
 <li><p><strong>Within $15</strong>: the two amounts differ by $15 or less.</p></li>
 </ul>
 <p>These rules are implemented in <code class="docutils literal notranslate"><span class="pre">match_flags</span></code> in <a class="reference external" href="https://github.com/PolicyEngine/policyengine-taxsim/blob/main/scripts/refresh_dashboard.py"><code class="docutils literal notranslate"><span class="pre">scripts/refresh_dashboard.py</span></code></a>. Each year’s published summary records the commit and script hash that produced it.</p>
@@ -557,12 +558,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../usage/microsimulation.html">
+          <a class="next-page" href="state-rebates.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Microsimulation</div>
+                <div class="title">State rebate attribution</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
