@@ -1,11 +1,24 @@
-# The rebate is keyed to the 2021 tax year (MCA 15-30-2191(1)); it was paid out
-# in 2023 but is booked in the eligibility year. All active-year cases therefore
-# run at period 2021. Cases at 2022 and 2023 guard the year-scoping added by
-# amount.yaml's `2022-01-01: 0` entries: without them, backdating fills the 2021
-# amounts forward and the variable reports a phantom rebate.
+# Montana's 2021 income tax rebate (MCA 15-30-2191; HB 192, Ch. 44, L. 2023).
+# It was paid in 2023 but is booked to tax year 2021 as a Montana refundable
+# payment (mt_refundable_credits). It is the lesser of the 2021 income tax
+# liability (Form 2 line 20, tax after nonrefundable credits) and a per-return
+# cap. MCA 15-30-2191(1)(b) sets that cap at $1,250 for a single,
+# head-of-household or separate return and $2,500 for a joint return, split
+# $1,250 per spouse column. The Montana Department of Revenue (May 2024 rebate
+# report, printed pp. 6 and 11) treated a married couple filing separately
+# (status 2a) as separate individuals, so each column is capped at
+# min($1,250, its own line 20). The model reproduces the 2021 return as
+# originally filed: by assumption the separate-vs-joint election excludes the
+# rebate, so it is made on rebate-free liabilities. Amended returns filed by
+# May 1, 2023 (HB 816 Sec. 4) are not modeled. So mt_income_tax = elected
+# line 20 - rebate - other Montana refundable credits (none in these cases).
+# 2021 uses one rate table for every filing status: above $18,800 of taxable
+# income, tax = 6.9% x TI - 599.20 (= 698 + 6.9% x (TI - 18,800)). Amounts
+# are zero in every year other than 2021 (amount.yaml).
 
-- name: Single filer receives the full single rebate
+- name: Single filer above the cap receives the full single rebate
   period: 2021
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -19,55 +32,38 @@
         members: [person1]
         state_code: MT
   output:
-    mt_income_tax_rebate: [1_250]
+    # Line 20 = $2,339.51 exceeds the $1,250 single cap, so the rebate is the
+    # $1,250 cap: min(1_250, 2_339.51) = 1_250.
+    mt_income_tax_rebate: 1_250
+    mt_income_tax_before_2021_rebate: 2_339.51
+    # Line 20 less the refundable rebate: 2_339.51 - 1_250 = 1_089.51.
+    mt_income_tax: 1_089.51
 
-- name: Head of household receives the single-status rebate amount
+- name: Single filer below the cap is limited to her liability
   period: 2021
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 45
-        employment_income: 50_000
-      child:
-        age: 10
+        employment_income: 25_000
     tax_units:
       tax_unit:
-        members: [person1, child]
+        members: [person1]
     households:
       household:
-        members: [person1, child]
+        members: [person1]
         state_code: MT
   output:
-    # MCA 15-30-2191(1)(b)(i): $1,250 for a head of household. Dependents get
-    # nothing, since the amount is gated on is_tax_unit_head_or_spouse.
-    filing_status: HEAD_OF_HOUSEHOLD
-    mt_income_tax_rebate: [1_250, 0]
+    # Line 20 = $625.40 is below the $1,250 cap, so MCA 15-30-2191(2) limits the
+    # rebate to min(1_250, 625.40) = 625.40.
+    mt_income_tax_rebate: 625.40
+    mt_income_tax_before_2021_rebate: 625.40
+    # Line 20 less the refundable rebate: 625.40 - 625.40 = 0 (mt_eitc is 0 at
+    # this income).
+    mt_income_tax: 0
 
-- name: Surviving spouse receives the joint rebate amount
-  period: 2021
-  input:
-    people:
-      person1:
-        age: 45
-        employment_income: 50_000
-      child:
-        age: 10
-    tax_units:
-      tax_unit:
-        members: [person1, child]
-        filing_status: SURVIVING_SPOUSE
-    households:
-      household:
-        members: [person1, child]
-        state_code: MT
-  output:
-    # The statute does not name a surviving spouse. Montana derives filing
-    # status from the federal return, where a qualifying surviving spouse uses
-    # the joint rate schedule, so the $2,500 joint maximum is the consistent
-    # reading. Only one filer claims it here, so it is not split.
-    mt_income_tax_rebate: [2_500, 0]
-
-- name: Joint filers split the per-return rebate across each spouse's column
+- name: Joint filers each capped at their column's half of the joint line 20
   period: 2021
   absolute_error_margin: 0.01
   input:
@@ -88,14 +84,57 @@
         members: [person1, person2]
         state_code: MT
   output:
-    # $2,500 per-return cap split $1,250 per spouse (sums to $2,500, not $5,000)
+    # Joint line 20 = $2,518.22. This couple files jointly (one earner, so joint
+    # is cheaper), so each column's cap base is 2_518.22 / 2 = 1_259.11, just
+    # above the $1,250 half-cap. Per column: min(1_250, 1_259.11) = 1_250;
+    # head + spouse = 2,500 total (equals the joint cap).
     mt_income_tax_rebate: [1_250, 1_250]
-    # End to end: 2,518.22 pre-credit - 2,500 pooled rebate = 18.22.
-    # The 2022 clone of this household below is the year boundary.
-    mt_income_tax_before_non_refundable_credits_joint: 2_518.22
+    mt_income_tax_before_2021_rebate: [1_259.11, 1_259.11]
+    # Joint line 20 less the refundable rebate: 2_518.22 - 2_500 = 18.22.
     mt_income_tax: 18.22
 
-- name: The same joint household owes more in 2022, when no rebate applies
+- name: Unequal separate filers - each column capped at its own line 20 per the DOR treatment
+  # Regression test for taxsim #1189 / issue 9012, with the per-column DOR
+  # treatment. On rebate-free liabilities, separate tax 5,099.51 + 206.80 =
+  # 5,306.31 is cheaper than joint 5,623.22, so the couple files separately
+  # (status 2a). By assumption the election excludes the rebate (the 2021
+  # return as originally filed). A joint amendment filed by May 1, 2023 would
+  # give $2,500 and $3,123.22 of MT tax; not modeled. Per the DOR treatment
+  # each column is capped at min($1,250, its own line 20): person1's line 20
+  # ($5,099.51) exceeds the cap -> $1,250; person2's line 20 ($206.80) is
+  # below the cap -> its own line 20.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 90_000
+      person2:
+        age: 45
+        employment_income: 15_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Separate filing is cheaper before the rebate (5,306.31 < 5,623.22).
+    mt_files_separately: true
+    # Each column's own line 20 (before the rebate) under separate filing.
+    mt_income_tax_before_2021_rebate: [5_099.51, 206.80]
+    # min(1_250, own line 20): person1 -> 1_250; person2 -> 206.80.
+    mt_income_tax_rebate: [1_250, 206.80]
+    # Separate line 20 less each column's rebate:
+    # (5_099.51 - 1_250) + (206.80 - 206.80) = 3_849.51.
+    mt_income_tax: 3_849.51
+
+- name: No rebate in 2022
   period: 2022
   absolute_error_margin: 0.01
   input:
@@ -116,75 +155,8 @@
         members: [person1, person2]
         state_code: MT
   output:
-    # Boundary pair with the 2021 case above. The pre-credit joint base is
-    # lower in 2022 than in 2021 (2,394.50 against 2,518.22), yet net tax is
-    # far higher (2,394.50 against 18.22), because the $2,500 rebate applies
-    # only in 2021. Nothing else offsets the base here.
-    mt_income_tax_rebate: [0, 0]
-    mt_income_tax_before_non_refundable_credits_joint: 2_394.50
-    mt_non_refundable_credits: [0, 0]
+    mt_income_tax_rebate: 0
     mt_income_tax: 2_394.50
-
-- name: Single filer below the cap keeps only the liability she owes
-  period: 2021
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 45
-        employment_income: 25_000
-    tax_units:
-      tax_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: MT
-  output:
-    # 2021 liability of $625.40 sits strictly between zero and the $1,250
-    # statutory maximum, so MCA 15-30-2191(2) limits the rebate to $625.40.
-    # The variable still reports the uncapped $1,250. Both credit paths
-    # floor at zero, so the cap is realized downstream:
-    # mt_income_tax_before_refundable_credits_indiv is 0, and because
-    # mt_files_separately is False here the delivered mt_income_tax comes
-    # from the joint path, also floored to 0. No refundable credit is in
-    # play (mt_eitc is 0 at this income).
-    mt_income_tax_rebate: [1_250]
-    mt_income_tax_before_non_refundable_credits_indiv: [625.40]
-    mt_income_tax_before_refundable_credits_indiv: [0]
-    mt_eitc: [0]
-    mt_income_tax: 0
-
-- name: Rebate cannot drive liability below zero (MCA 15-30-2191(2))
-  period: 2021
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 45
-        employment_income: 20_000
-      person2:
-        age: 45
-    marital_units:
-      marital_unit:
-        members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: MT
-  output:
-    # The statutory "lesser of the amount or the liability" cap is enforced by
-    # the ordered credit application, not by the rebate variable: the full
-    # $2,500 is reported, but the joint path floors at zero, so a household
-    # whose pre-credit liability is only $252.40 keeps $252.40 of benefit and
-    # no more. (mt_income_tax itself goes to -33.81 here from the refundable
-    # Montana EITC, which is unrelated to the rebate.)
-    mt_income_tax_rebate: [1_250, 1_250]
-    mt_income_tax_before_non_refundable_credits_joint: 252.40
-    mt_income_tax_before_refundable_credits_joint: 0
 
 - name: No rebate outside Montana
   period: 2021
@@ -201,10 +173,156 @@
         members: [person1]
         state_code: AR
   output:
-    mt_income_tax_rebate: [0]
+    mt_income_tax_rebate: 0
 
-- name: No phantom rebate value in 2022
-  period: 2022
+- name: Head of household above the cap receives the full $1,250 rebate
+  # A single adult with a qualifying child files as HEAD_OF_HOUSEHOLD, whose
+  # 2021 rebate cap is $1,250 (amount.yaml). Only the head is head_or_spouse,
+  # so the child column is 0.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+      person2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Head's line 20: HOH standard deduction min(max(20% x 60,000, 4,280),
+    # 9,660) = 9,660; exemptions 2 x 2,580 = 5,160; TI = 60,000 - 9,660 -
+    # 5,160 = 45,180; tax = 6.9% x 45,180 - 599.20 = 3,117.42 - 599.20 =
+    # 2,518.22. The child is not head_or_spouse, so its column is 0.
+    mt_income_tax_before_2021_rebate: [2_518.22, 0]
+    # HOH cap = $1,250; min(1_250, 2_518.22) = 1_250 for the head; 0 for the
+    # child.
+    mt_income_tax_rebate: [1_250, 0]
+    # 2_518.22 - 1_250 = 1_268.22.
+    mt_income_tax: 1_268.22
+
+- name: Surviving spouse above the cap receives the $1,250 rebate
+  # HB 192 Sec. 2(1)(b) gives $2,500 only to "a married couple filing a joint
+  # return". The 2021 Form 2 has no qualifying surviving spouse status and its
+  # instructions send a federal qualifying widow(er) to head of household, so
+  # the SURVIVING_SPOUSE cap is $1,250 (amount.yaml).
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 120_000
+      person2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Surviving spouse's line 20: the federal income tax deduction is capped
+    # at 5,000, above the 4,830 standard deduction (20% x 120,000 capped at
+    # 4,830), so the deduction is 5,000; exemptions 2 x 2,580 = 5,160;
+    # TI = 120,000 - 5,000 - 5,160 = 109,840;
+    # tax = 6.9% x 109,840 - 599.20 = 7,578.96 - 599.20 = 6,979.76.
+    mt_income_tax_before_2021_rebate: [6_979.76, 0]
+    # min(1_250, 6_979.76) = 1_250 for the surviving spouse; 0 for the child.
+    mt_income_tax_rebate: [1_250, 0]
+    # 6_979.76 - 1_250 = 5_729.76.
+    mt_income_tax: 5_729.76
+
+- name: Separate filers - one column just below the $1,250 cap
+  # Cap boundary for a couple that files separately (status 2a). 2021
+  # per-column arithmetic: standard deduction = min(max(20% x AGI, 2,140),
+  # 4,830); exemption 2,580; tax = 698 + 6.9% x (taxable income - 18,800).
+  # person1 $90,000: TI = 90,000 - 4,830 - 2,580 = 82,590;
+  #   tax = 698 + 6.9% x 63,790 = 698 + 4,401.51 = 5,099.51.
+  # person2 $34,000: 20% x 34,000 = 6,800, capped at 4,830;
+  #   TI = 34,000 - 4,830 - 2,580 = 26,590;
+  #   tax = 698 + 6.9% x 7,790 = 698 + 537.51 = 1,235.51, just below $1,250.
+  # Separate 5,099.51 + 1,235.51 = 6,335.02 < joint 6,910.76, so the couple
+  # files separately and person2's column keeps its own line 20.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 90_000
+      person2:
+        age: 45
+        employment_income: 34_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_files_separately: true
+    mt_income_tax_before_2021_rebate: [5_099.51, 1_235.51]
+    # min(1_250, 5_099.51) = 1_250; min(1_250, 1_235.51) = 1_235.51.
+    mt_income_tax_rebate: [1_250, 1_235.51]
+    # (5_099.51 - 1_250) + (1_235.51 - 1_235.51) = 3_849.51.
+    mt_income_tax: 3_849.51
+
+- name: Separate filers - one column just above the $1,250 cap
+  # Cap boundary companion: person2 earns $500 more, so its separate-column
+  # line 20 crosses above $1,250 and that column is clipped to the cap.
+  # person1 $90,000: line 20 = 5,099.51 (as in the case above).
+  # person2 $34,500: 20% x 34,500 = 6,900, capped at 4,830;
+  #   TI = 34,500 - 4,830 - 2,580 = 27,090;
+  #   tax = 698 + 6.9% x 8,290 = 698 + 572.01 = 1,270.01, just above $1,250.
+  # Separate 5,099.51 + 1,270.01 = 6,369.52 < joint 6,945.26, so the couple
+  # still files separately.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 90_000
+      person2:
+        age: 45
+        employment_income: 34_500
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_files_separately: true
+    mt_income_tax_before_2021_rebate: [5_099.51, 1_270.01]
+    # min(1_250, 5_099.51) = 1_250; min(1_250, 1_270.01) = 1_250.
+    mt_income_tax_rebate: [1_250, 1_250]
+    # (5_099.51 - 1_250) + (1_270.01 - 1_250) = 3_849.51 + 20.01 = 3_869.52.
+    mt_income_tax: 3_869.52
+
+- name: No rebate before 2021
+  # Guards amount.yaml's 0000-01-01 entries: without them, parameter
+  # backdating extends the 2021 amounts to earlier years and this household
+  # would receive a $1,250 refundable payment in 2020.
+  period: 2020
   absolute_error_margin: 0.01
   input:
     people:
@@ -219,25 +337,53 @@
         members: [person1]
         state_code: MT
   output:
-    # This is the discriminating assertion: without amount.yaml's 2022
-    # zeroing, backdating fills the 2021 amount forward and this reads
-    # 1_250. Montana tax is NOT affected either way, because
-    # credits/non_refundable.yaml already drops mt_income_tax_rebate from
-    # the list at 2022-01-01 - so the defect is the variable's reported
-    # value, which mis-feeds consumers such as the TAXSIM srebate
-    # comparison, not the tax outcome. mt_income_tax and
-    # mt_non_refundable_credits are pinned here as unchanged controls.
-    mt_income_tax_rebate: [0]
-    mt_non_refundable_credits: [0]
-    mt_income_tax: 2_246.00
+    mt_income_tax_rebate: 0
+    mt_refundable_credits: 0
 
-- name: No rebate in 2023, the year the rebate was actually paid out
-  period: 2023
+- name: Joint filers with a child - the dependent's column carries no line 20
+  # The joint line 20 is shared only across the head and spouse columns, so
+  # the child's column is 0 and the columns sum to the return's line 20.
+  period: 2021
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 45
-        employment_income: 50_000
+        employment_income: 60_000
+      person2:
+        age: 45
+      person3:
+        age: 10
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # Joint line 20: standard deduction min(max(20% x 60,000, 4,280), 9,660) =
+    # 9,660; exemptions 3 x 2,580 = 7,740; TI = 60,000 - 9,660 - 7,740 =
+    # 42,600; tax = 6.9% x 42,600 - 599.20 = 2,939.40 - 599.20 = 2,340.20.
+    # Head and spouse columns: 2,340.20 / 2 = 1,170.10 each; child 0.
+    mt_income_tax_before_2021_rebate: [1_170.10, 1_170.10, 0]
+    # min(1_250, 1_170.10) = 1_170.10 per spouse column; 0 for the child.
+    mt_income_tax_rebate: [1_170.10, 1_170.10, 0]
+    # 2_340.20 - 2 x 1_170.10 = 0 (mt_eitc is 0 at this income).
+    mt_income_tax: 0
+
+- name: Single filer with long-term capital gains - line 20 is after the capital gain credit
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 20_000
+        long_term_capital_gains: 10_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -246,4 +392,174 @@
         members: [person1]
         state_code: MT
   output:
-    mt_income_tax_rebate: [0]
+    # Line 18: AGI 30,000; standard deduction 20% x 30,000 = 6,000, capped at
+    # 4,830; exemption 2,580; TI = 30,000 - 4,830 - 2,580 = 22,590;
+    # tax = 6.9% x 22,590 - 599.20 = 1,558.71 - 599.20 = 959.51.
+    # Line 19: capital gain credit 2% x 10,000 = 200.
+    # Line 20: 959.51 - 200 = 759.51.
+    mt_income_tax_before_2021_rebate: 759.51
+    # min(1_250, 759.51) = 759.51.
+    mt_income_tax_rebate: 759.51
+    # 759.51 - 759.51 = 0.
+    mt_income_tax: 0
+
+- name: Single filer with a non-capital-gain line 19 credit - the cap base subtracts all line 19 credits
+  # Form 2 line 20 is line 18 less every line 19 nonrefundable credit, not only
+  # the capital gain credit. A $300 line 19 credit is supplied as an input.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 24_000
+        mt_non_refundable_credits: 300
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Line 18: standard deduction 20% x 24,000 = 4,800 (between 2,140 and
+    # 4,830); exemption 2,580; TI = 24,000 - 4,800 - 2,580 = 16,620;
+    # 6% bracket: tax = 6% x 16,620 - 430 = 997.20 - 430 = 567.20.
+    # Line 20: 567.20 - 300 = 267.20.
+    mt_income_tax_before_2021_rebate: 267.20
+    # min(1_250, 267.20) = 267.20.
+    mt_income_tax_rebate: 267.20
+    # 267.20 - 267.20 = 0 (mt_eitc is 0 at this income).
+    mt_income_tax: 0
+
+- name: Joint filers below the $2,500 cap - each column capped at half the joint line 20
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 59_000
+      person2:
+        age: 45
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Joint line 20: standard deduction min(max(20% x 59,000, 4,280), 9,660) =
+    # 9,660; exemptions 2 x 2,580 = 5,160; TI = 59,000 - 9,660 - 5,160 =
+    # 44,180; tax = 6.9% x 44,180 - 599.20 = 3,048.42 - 599.20 = 2,449.22.
+    # Each column: 2,449.22 / 2 = 1,224.61.
+    mt_income_tax_before_2021_rebate: [1_224.61, 1_224.61]
+    # min(1_250, 1_224.61) = 1_224.61 per column; 2,449.22 for the return.
+    mt_income_tax_rebate: [1_224.61, 1_224.61]
+    # 2_449.22 - 2_449.22 = 0.
+    mt_income_tax: 0
+
+- name: Married filing separately on separate forms is capped at $1,250 and its line 20
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Line 20: standard deduction 20% x 25,000 = 5,000, capped at 4,830;
+    # exemption 2,580; TI = 25,000 - 4,830 - 2,580 = 17,590;
+    # 6% bracket: tax = 6% x 17,590 - 430 = 1,055.40 - 430 = 625.40.
+    mt_income_tax_before_2021_rebate: 625.40
+    # SEPARATE cap = 1,250; min(1_250, 625.40) = 625.40.
+    mt_income_tax_rebate: 625.40
+    # 625.40 - 625.40 = 0.
+    mt_income_tax: 0
+
+- name: Negative income - no 2021 liability and no rebate
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        self_employment_income: -10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Negative AGI gives zero taxable income, so line 20 is 0 and
+    # min(1_250, 0) = 0.
+    mt_income_tax_before_2021_rebate: 0
+    mt_income_tax_rebate: 0
+    mt_income_tax: 0
+
+- name: Single filer exactly at the $1,250 cap
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 34_210
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Line 20: standard deduction 20% x 34,210 = 6,842, capped at 4,830;
+    # exemption 2,580; TI = 34,210 - 4,830 - 2,580 = 26,800;
+    # tax = 6.9% x 26,800 - 599.20 = 1,849.20 - 599.20 = 1,250.00.
+    mt_income_tax_before_2021_rebate: 1_250
+    # min(1_250, 1_250) = 1_250.
+    mt_income_tax_rebate: 1_250
+    # 1_250 - 1_250 = 0.
+    mt_income_tax: 0
+
+- name: Filer claimed as a dependent on another return receives no rebate
+  # HB 192 Sec. 2(5)(b)(ii): a qualified taxpayer does not include an
+  # individual claimed as a dependent by another taxpayer for 2021.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 30_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Line 20: standard deduction 20% x 30,000 = 6,000, capped at 4,830;
+    # exemption 2,580; TI = 30,000 - 4,830 - 2,580 = 22,590;
+    # tax = 6.9% x 22,590 - 599.20 = 1,558.71 - 599.20 = 959.51.
+    mt_income_tax_before_2021_rebate: 959.51
+    # Not a qualified taxpayer, so the rebate is 0.
+    mt_income_tax_rebate: 0
+    # 959.51 - 0 = 959.51.
+    mt_income_tax: 959.51

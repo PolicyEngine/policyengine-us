@@ -23,9 +23,17 @@ class rrc_cares(Variable):
             "rrc_qualifies_for_armed_forces_exception", period
         )
         is_joint = tax_unit("tax_unit_is_joint", period)
+        # The exception waives the identification rule, not the exclusion of
+        # a spouse who is another taxpayer's dependent.
+        person = tax_unit.members
+        dependent_filers = tax_unit.sum(
+            person("is_tax_unit_head_or_spouse", period)
+            & person("claimable_as_dependent_on_another_return", period)
+        )
         count_adults = where(
             armed_forces_exception,
-            2,  # Joint filers always have 2 adults (structural constant)
+            # Joint filers always have 2 adults (structural constant)
+            max_(2 - dependent_filers, 0),
             where(is_joint, adults_with_ssn, min_(adults_with_ssn, 1)),
         )
         # Per 26 USC 6428(g)(1)(C), children count only if:
@@ -34,7 +42,15 @@ class rrc_cares(Variable):
         children_with_ssn = tax_unit(
             "rrc_cares_qualifying_children_with_valid_ssn", period
         )
-        count_children = where(adults_with_ssn > 0, children_with_ssn, 0)
+        # This prerequisite is a spouse with a valid SSN, whether or not that
+        # spouse is an eligible individual; the credit itself needs a filer
+        # who is not a dependent of another taxpayer.
+        filer_has_ssn = tax_unit.any(
+            person("is_tax_unit_head_or_spouse", period)
+            & person("meets_eitc_identification_requirements", period)
+        )
+        no_eligible_filer = tax_unit("every_filer_is_dependent_elsewhere", period)
+        count_children = where(filer_has_ssn & ~no_eligible_filer, children_with_ssn, 0)
         max_payment = (
             rrc.cares.max.adult * count_adults + rrc.cares.max.child * count_children
         )

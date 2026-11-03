@@ -686,3 +686,42 @@
     # § 0410.015.10 lists other need-based assistance programs.
     # $1,000 Social Security + $500 = $1,500, above the $1,073 standard.
     mo_sab_countable_income: 1_500
+
+- name: Case 38, reported unemployment compensation is unearned income.
+  # The unearned source list reads total_unemployment_compensation. Missouri
+  # has no modeled unemployment insurance program, so the total is the
+  # reported amount and this control shows reported UC still counts.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        unemployment_compensation: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 12,000 / 12 = 1,000 a month, counted in full.
+    total_unemployment_compensation: 1_000
+    mo_sab_countable_income: 1_000
+
+- name: Case 39, a military survivor annuity is unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        social_security: 12_000
+        military_retirement_pay_survivors: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # § 0410.015.10 lists annuities. A military Survivor Benefit Plan annuity
+    # is entered in military_retirement_pay_survivors.
+    # $1,000 Social Security + $500 = $1,500, above the $1,073 standard.
+    mo_sab_countable_income: 1_500

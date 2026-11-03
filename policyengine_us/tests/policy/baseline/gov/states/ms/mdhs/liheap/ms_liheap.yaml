@@ -379,3 +379,22 @@
     # Household 2 pays its own electric bill of 45 a month. Matrix page 1,
     # household size 1, first band, Electric 700: min(700, 540) = 540.
     ms_liheap: [0, 540]
+- name: Case 20, a household that qualifies only through the federal 110% poverty floor is paid from the last income band.
+  period: 2026
+  input:
+    state_code: [MS, MS]
+    age: [40, 40]
+    ms_liheap_household_size: [11, 11]
+    ms_liheap_income: [77_000, 77_715]
+    heating_type: [PROPANE, PROPANE]
+    heating_expense: [2_000, 2_000]
+  output:
+    # Both incomes exceed the 75,593 size-11 limit (manual PDF page 58).
+    # Household 1 is below the 77,715 floor (110% of the 2025 guideline of
+    # 70,650) and qualifies under 42 U.S.C. 8624(b)(2)(B). Household 2 is at
+    # the floor and does not qualify.
+    ms_liheap_eligible: [true, false]
+    # The size-11 matrix (manual PDF pages 59-64) has an open fourth band
+    # above 52,988. Propane column: 800 - 3 x 50 = 650. A 2,000 bill exceeds
+    # the cap, and no electric bill is reported.
+    ms_liheap: [650, 0]

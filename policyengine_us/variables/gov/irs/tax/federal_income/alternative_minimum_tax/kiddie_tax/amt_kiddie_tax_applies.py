@@ -6,7 +6,11 @@ class amt_kiddie_tax_applies(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Alternative Minimum Tax kiddie tax applies"
-    documentation = "Whether the kiddie tax applies to the tax unit"
+    documentation = (
+        "Whether the kiddie tax applies to the tax unit. Used only for the "
+        "IRC 59(j) AMT child exemption limitation, which IRC 55(d)(4)(A)(iii) "
+        "turns off for taxable years beginning after 2017."
+    )
     reference = [
         "https://www.law.cornell.edu/uscode/text/26/1#g_2_A",
         "https://www.irs.gov/pub/irs-prior/p929--2021.pdf",

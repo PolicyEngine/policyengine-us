@@ -9,7 +9,7 @@ class gross_medicare_part_b_premium(Variable):
     definition_period = YEAR
     defined_for = "is_medicare_eligible"
     reference = "https://www.medicare.gov/basics/costs/medicare-costs#partB"
-    documentation = "Annual Medicare Part B premium before Medicare Savings Program coverage, including any income-related monthly adjustment amount. Based on modified adjusted gross income from 2 years prior."
+    documentation = "Annual Medicare Part B premium before Medicare Savings Program coverage, including any income-related monthly adjustment amount. Based on modified adjusted gross income from 2 years prior, or from the benefit year when gov.simulation.medicare_irmaa_uses_current_year_income is true (medicare_irmaa_magi)."
 
     def formula(person, period, parameters):
         tax_unit = person.tax_unit
@@ -21,7 +21,7 @@ class gross_medicare_part_b_premium(Variable):
         is_head_of_household = filing_status == status.HEAD_OF_HOUSEHOLD
         is_surviving_spouse = filing_status == status.SURVIVING_SPOUSE
         is_separated = filing_status == status.SEPARATE
-        magi = tax_unit("medicare_irmaa_magi_two_years_prior", period)
+        magi = tax_unit("medicare_irmaa_magi", period)
         base = person("base_part_b_premium", period)
 
         p = parameters(period).gov.hhs.medicare.part_b.irmaa

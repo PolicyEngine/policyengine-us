@@ -71,3 +71,87 @@
     dependent_care_assistance_exclusion: 4_000
     # $6,000 - $4,000 = $2,000.
     cdcc_limit: 2_000
+
+# Federal Form 2441 line 27 minus line 28, with employer benefits derived
+# through section 129 rather than supplied as an already excluded amount.
+- name: Two children with $12,000 benefits keep a $1,000 limit in 2020
+  period: 2020
+  input:
+    filing_status: JOINT
+    capped_count_cdcc_eligible: 2
+    dependent_care_employer_benefits: 12_000
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 5_000
+    # $6,000 - $5,000 = $1,000.
+    cdcc_limit: 1_000
+
+- name: Two children with $12,000 benefits keep a $5,500 limit in 2021
+  period: 2021
+  input:
+    filing_status: JOINT
+    capped_count_cdcc_eligible: 2
+    dependent_care_employer_benefits: 12_000
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 10_500
+    # $16,000 - $10,500 = $5,500.
+    cdcc_limit: 5_500
+
+- name: Two children with $12,000 benefits return to a $1,000 limit in 2022
+  period: 2022
+  input:
+    filing_status: JOINT
+    capped_count_cdcc_eligible: 2
+    dependent_care_employer_benefits: 12_000
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 5_000
+    # $6,000 - $5,000 = $1,000.
+    cdcc_limit: 1_000
+
+- name: Two children with $7,000 benefits have no remaining limit in 2026
+  period: 2026
+  input:
+    filing_status: JOINT
+    capped_count_cdcc_eligible: 2
+    dependent_care_employer_benefits: 7_000
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 7_000
+    # max($6,000 - $7,000, 0) = $0.
+    cdcc_limit: 0
+
+- name: Separate filer treated as unmarried reduces the 2021 limit by $10,500
+  period: 2021
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 38_000
+        dependent_care_employer_benefits: 12_000
+        is_separated: true
+      child1:
+        age: 5
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+        filing_status: SEPARATE
+  output:
+    cdcc_treated_as_unmarried: true
+    dependent_care_assistance_exclusion: 10_500
+    cdcc_limit: 5_500
+
+- name: The 2021 earned-income limit also controls the CDCC limit reduction
+  period: 2021
+  input:
+    filing_status: JOINT
+    capped_count_cdcc_eligible: 2
+    dependent_care_employer_benefits: 12_000
+    min_head_spouse_earned: 6_000
+  output:
+    dependent_care_assistance_exclusion: 6_000
+    # $16,000 - $6,000 = $10,000.
+    cdcc_limit: 10_000
