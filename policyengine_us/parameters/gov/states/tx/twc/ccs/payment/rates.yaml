@@ -3,18 +3,27 @@ description: Texas caps Child Care Services reimbursement rates at this daily ra
 # Attachment 1 (2018-08-01), WD 23-19 Attachment 1 (BCY 2020), WD 25-20
 # Attachment 1 (BCY 2021), WD 24-21 Attachment 1 (BCY 2022) and WD 22-22
 # Attachment 1 (BCY 2023). In WD 12-18, TWC rescinded WD 27-16, which froze
-# rates and has no table. TWC printed all five in the four age groups of
-# 40 TAC §809.20(a)(2) before its 2022-10-03 amendment: 0-17 months,
-# 18-35 months, 36-71 months, and 72 months and over. TWC also printed infant,
-# toddler and preschool blended rates in WD 12-18; this table has no cells for
-# them. Some Coastal Bend and Southeast part-time rates in WD 12-18, 23-19 and
-# 25-20 exceed the full-time rate as TWC printed them;
-# test_tx_ccs_rates_table.py lists them.
+# rates and has no table, and we found no earlier statewide table.
+# PolicyEngine carries the 2018-08-01 values back to 2015, although from that
+# date TWC raised regular rates 2 percent and reset Texas Rising Star rates.
+# TWC printed all five tables in the four age groups of 40 TAC §809.20(a)(2),
+# which applied until December 1, 2023: 0-17 months, 18-35 months,
+# 36-71 months, and 72 months and over. TWC also printed infant, toddler and
+# preschool blended rates in WD 12-18, and in WD 02-20 it says it calculates a
+# blended rate for full-day pre-K children. This table has no cells for them,
+# so PolicyEngine gives a child under school age on a blended schedule a rate
+# of zero. Some Coastal Bend and Southeast part-time rates in WD 12-18, 23-19
+# and 25-20 exceed the full-time rate as TWC printed them, and under the TSR
+# rule below we copy two more from Coastal Bend's licensed child care home
+# regular rates; test_tx_ccs_rates_table.py lists all 17.
 # Three rules fill the cells these tables do not print:
 # - A Texas School Ready (TSR) cell TWC left blank or dashed, for an age group
-#   outside the TSR enhanced rate in §809.20(b)(2) (preschool only before
-#   2022-10-03, infant through preschool from then), takes the provider type's
-#   regular rate. Every TSR cell TWC did print outside that scope equals it.
+#   outside the TSR enhanced rate in §809.20(b)(2), takes the provider type's
+#   regular rate. That enhanced rate covers preschool children in the tables
+#   through WD 24-21, and infants, toddlers and preschoolers from WD 22-22's
+#   table on. That table took effect October 1, 2022, two days before the
+#   §809.20(b)(2) amendment that added infants and toddlers. Every TSR cell TWC
+#   did print outside that scope equals the regular rate.
 # - TWC printed no blended column in WD 23-19, 25-20 and 24-21, so the
 #   school-age blended rate follows TWC's school-year formula from WD 02-20:
 #   (175 x part-time + 30 x full-time) / 205, rounding half up to the cent.

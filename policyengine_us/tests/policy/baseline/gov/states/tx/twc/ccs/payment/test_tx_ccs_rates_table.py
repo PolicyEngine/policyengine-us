@@ -9,20 +9,21 @@ level stays at least 2 percentage points above the one below. Every full-time
 and part-time rate meets these bounds exactly, and so does every school-age
 blended rate for BCY 2020, BCY 2021, revised BCY 2024 and BCY 2025. Each
 blended rate follows WD 02-20's formula from its own part-time and full-time
-rates, so in WD 12-18, BCY 2022 and BCY 2023 rounding leaves some enhanced
-blended rates under a cent short. In the August 29, 2023 original of the
-BCY 2024 table, hundreds of rates miss the bounds by under a cent, so these
-checks also tell its two versions apart. In each rate letter from WD 12-18 to
-WD 20-23, TWC says it will reduce no provider rate, and in WD Letter 19-24,
-Change 1, TWC keeps every BCY 2025 rate at or above its BCY 2024 level, except
-relative care, which Boards set locally. Each check runs over all 4,032 cells
-of every table, so a value copied into the wrong cell fails here. The test
-reads the YAML file directly and builds no tax-benefit system.
+rates, so in WD 12-18, BCY 2022 and BCY 2023 rounding leaves enhanced blended
+rates under a cent short of a bound 4, 56 and 63 times. In the August 29, 2023
+original of the BCY 2024 table, hundreds of rates miss the bounds by under a
+cent, so these checks also tell its two versions apart. In each rate letter
+from WD 12-18 to WD 20-23, TWC says it will reduce no provider rate, and in WD
+Letter 19-24, Change 1, TWC keeps every BCY 2025 rate at or above its BCY 2024
+level, except relative care, which Boards set locally. Each check runs over all
+4,032 cells of every table, so a value copied into the wrong cell fails here.
+The test reads the YAML file directly and builds no tax-benefit system.
 """
 
 import datetime
 from decimal import ROUND_HALF_UP, Decimal
 from functools import reduce
+from itertools import chain
 from pathlib import Path
 
 import pytest
@@ -56,11 +57,16 @@ MARKUP = {
 STAR_GAP = Decimal("0.02")
 CENT = Decimal("0.01")
 
-# Tables whose enhanced blended rates may fall under a cent short of a bound.
-BLENDED_SHORT = {WD_12_18, BCY_2022, BCY_2023}
+# How many times rounding leaves an enhanced school-age blended rate under a
+# cent short of a floor or star gap, by table. The formula test pins every
+# blended rate to its own part-time and full-time rates, so the shortfalls hide
+# no other error.
+BLENDED_SHORT = {WD_12_18: 4, BCY_2022: 56, BCY_2023: 63}
 
-# TWC printed these part-time rates above the full-time rate, as
-# (region, provider type, rating, age). No other table has one.
+# Part-time rates above the full-time rate, as (region, provider type, rating,
+# age). TWC printed all but the Coastal Bend LCCH TSR school-age rates in
+# BCY 2020 and BCY 2021, which we copy from the regular rates under the TSR
+# rule. No other table has one.
 PART_TIME_ABOVE_FULL_TIME = {
     WD_12_18: {
         ("COASTAL_BEND", "LCCH", "REG", "INFANT"),
@@ -131,7 +137,7 @@ def _rate(cell, year, **changes):
     return Decimal(str(CELLS[_with(cell, **changes)][year]))
 
 
-def _meets(amount, bound, cell, year):
+def _meets(cell, amount, bound, year):
     if cell[4] == "BLENDED" and year in BLENDED_SHORT:
         return amount > bound - CENT
     return amount >= bound
@@ -173,34 +179,44 @@ def test_every_cell_has_every_year():
     )
 
 
-@pytest.mark.parametrize("year", YEARS)
-def test_enhanced_rates_meet_markups(year):
-    # A TSR rate has a floor only for the age groups in §809.20(b)(2).
-    failures = []
+def _floors(year):
+    # Each enhanced rate and its §809.20(c) floor. A TSR rate has a floor only
+    # for the age groups in §809.20(b)(2).
     for cell in CELLS:
         markup = MARKUP.get(cell[2])
         if markup is None or (cell[2] == "TSR" and cell[3] not in _tsr_ages(year)):
             continue
-        floor = _rate(cell, year, rating="REG") * markup
-        if not _meets(_rate(cell, year), floor, cell, year):
-            failures.append((cell, float(_rate(cell, year)), float(floor)))
-    _assert_none(failures)
+        yield cell, _rate(cell, year), _rate(cell, year, rating="REG") * markup
 
 
-@pytest.mark.parametrize("year", YEARS)
-def test_star_levels_two_points_apart(year):
-    failures = []
+def _star_gaps(year):
+    # Each star level's rise over the level below it and the §809.20(d) gap,
+    # 2 percent of the regular rate, under the higher level's cell.
     for cell in CELLS:
         if cell[2] != "TRS2":
             continue
         gap = STAR_GAP * _rate(cell, year, rating="REG")
-        tiers = [_rate(cell, year, rating=r) for r in ("TRS2", "TRS3", "TRS4")]
-        if not all(
-            _meets(higher - lower, gap, cell, year)
-            for lower, higher in zip(tiers, tiers[1:])
-        ):
-            failures.append((cell, float(gap), [float(t) for t in tiers]))
-    _assert_none(failures)
+        for lower, higher in (("TRS2", "TRS3"), ("TRS3", "TRS4")):
+            rise = _rate(cell, year, rating=higher) - _rate(cell, year, rating=lower)
+            yield _with(cell, rating=higher), rise, gap
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_enhanced_rates_meet_markups(year):
+    _assert_none([check for check in _floors(year) if not _meets(*check, year)])
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_star_levels_two_points_apart(year):
+    _assert_none([check for check in _star_gaps(year) if not _meets(*check, year)])
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_blended_shortfalls_match_their_count(year):
+    short = [
+        check for check in chain(_floors(year), _star_gaps(year)) if check[1] < check[2]
+    ]
+    assert len(short) == BLENDED_SHORT.get(year, 0)
 
 
 @pytest.mark.parametrize("year", YEARS)
