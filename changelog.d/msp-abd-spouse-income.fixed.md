@@ -1,1 +1,1 @@
-Count the income of an aged, blind or disabled spouse who is not on Medicare in Medicare Savings Program countable income.
+Apply SSI's eligible-couple and spouse deeming rules to Medicare Savings Program countable income and the poverty guideline when only one spouse is on Medicare, including a spouse who is aged, blind or disabled.
