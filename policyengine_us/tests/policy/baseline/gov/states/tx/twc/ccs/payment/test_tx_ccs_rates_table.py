@@ -3,18 +3,30 @@
 40 TAC §809.20(c) sets Texas Rising Star rates at least 5, 7 and 9 percent
 above a provider's regular rate, and (d) lets Boards go higher if each star
 level stays at least 2 percentage points above the one below. WD Letter 20-23
-tiers Texas School Ready rates under the same rule, and the tables set them
-equal to Two-Star rates. TWC's revised BCY 2024 table (October 16, 2023) and
-its BCY 2025 table meet these bounds exactly, with no rounding allowance. The
-August 29, 2023 original misses both by under a cent in some cells, so these
-checks also tell the two versions apart. WD Letter 19-24, Change 1, keeps every
-BCY 2025 rate at or above its BCY 2024 level, except relative care, which
-Boards set locally. Each check runs over all 4,032 cells of both board contract
-years, so a value copied into the wrong cell fails here. The test reads the
-YAML file directly and builds no tax-benefit system.
+tiers Texas School Ready rates under the same rule. TWC's revised BCY 2024
+table (October 16, 2023) and its BCY 2025 table meet these bounds exactly, with
+no rounding allowance. The August 29, 2023 original misses both by under a cent
+in some cells, so these checks also tell the two versions apart. WD Letter
+19-24, Change 1, keeps every BCY 2025 rate at or above its BCY 2024 level,
+except relative care, which Boards set locally.
+
+Two more patterns hold in both tables, though the rules above don't require
+them. Each Texas School Ready rate equals the Two-Star rate. Outside relative
+care, each part-time rate falls below the full-time rate and each blended rate
+falls between the two, except in the cells EQUAL_PART_AND_FULL_TIME lists. The
+tests check both patterns.
+
+Each check runs over all 4,032 cells of both board contract years. A value
+typed into the wrong cell fails when it breaks one of these bounds, as a
+part-time rate copied into a full-time cell does. Bounds can't catch every
+error, though: a regular rate typed too low, or a Three- or Four-Star rate
+typed too high, can still pass. The YAML tests pin single cells to TWC's
+tables. This test reads the YAML file directly and builds no tax-benefit
+system.
 """
 
 import datetime
+import operator
 from decimal import Decimal
 from pathlib import Path
 
@@ -39,6 +51,14 @@ MARKUP = {
     "TRS4": Decimal("1.09"),
 }
 STAR_GAP = Decimal("0.02")
+
+# TWC's BCY 2024 table prints the same part-time and full-time rate for
+# home-based infant care in Concho Valley, at every rating, as
+# (year, region, provider type, age).
+EQUAL_PART_AND_FULL_TIME = {
+    (BCY_2024, "CONCHO_VALLEY", provider_type, "INFANT")
+    for provider_type in ("LCCH", "RCCH")
+}
 
 
 def _load_cells():
@@ -120,17 +140,36 @@ def test_star_levels_two_points_apart(year):
 
 @pytest.mark.parametrize("year", YEARS)
 def test_part_time_and_blended_rates_within_full_time(year):
-    # Not a rule, but true of every TWC table: a part-time rate above the
-    # full-time rate means a value landed in the wrong column.
+    # Not a rule, but true of both tables: a part-time rate at or above the
+    # full-time rate means a value landed in the wrong column. Relative care
+    # and the cells in EQUAL_PART_AND_FULL_TIME may pay part time the same as
+    # full time, so they get the non-strict check.
     failures = []
     for cell, values in CELLS.items():
+        region, provider_type, _, age, schedule = cell
+        tied = (year, region, provider_type, age) in EQUAL_PART_AND_FULL_TIME
+        below = operator.le if tied or provider_type == "RELATIVE" else operator.lt
         full_time = CELLS[_with(cell, schedule="FULL_TIME")][year]
-        if cell[4] == "PART_TIME" and values[year] > full_time:
+        if schedule == "PART_TIME" and not below(values[year], full_time):
             failures.append((cell, values[year], full_time))
-        if cell[4] == "BLENDED":
+        if schedule == "PART_TIME" and tied and values[year] != full_time:
+            failures.append(("listed as equal", cell, values[year], full_time))
+        if schedule == "BLENDED":
             part_time = CELLS[_with(cell, schedule="PART_TIME")][year]
-            if not part_time <= values[year] <= full_time:
+            if not (below(part_time, values[year]) and below(values[year], full_time)):
                 failures.append((cell, part_time, values[year], full_time))
+    _assert_none(failures)
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_school_ready_rates_equal_two_star_rates(year):
+    # Not a rule either: §809.20(c) sets only a floor for Texas School Ready
+    # rates, but both tables print each one equal to the Two-Star rate.
+    failures = [
+        (cell, values[year], CELLS[_with(cell, rating="TRS2")][year])
+        for cell, values in CELLS.items()
+        if cell[2] == "TSR" and values[year] != CELLS[_with(cell, rating="TRS2")][year]
+    ]
     _assert_none(failures)
 
 
