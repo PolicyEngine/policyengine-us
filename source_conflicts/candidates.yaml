@@ -8786,8 +8786,11 @@ candidates:
     which TWC had Boards keep setting until it launched TX3C on January 13, 2025?
   sources:
   - kind: regulation
-    citation: 40 TAC §809.19(b), adopted September 13, 2022 (47 TexReg 6459, effective October 3, 2022)
+    citation: 40 TAC §809.19(b), adopted September 13, 2022 (47 TexReg 6437, effective October 3, 2022)
     url: https://web.archive.org/web/20231103125253/https://www.twc.texas.gov/sites/default/files/ogc/docs/fr-809-ch-rev-09-22-twc.pdf#page=62
+  - kind: regulation
+    citation: 40 TAC §809.19(a)(1)(B) and (a)(2), as amended effective July 29, 2024 (p. 18)
+    url: https://twc.texas.gov/sites/default/files/ogc/docs/fr-809-trs-updates-7-24-twc.pdf#page=18
   - kind: guidance
     citation: TWC WD Letter 06-24, Change 2, p. 2
     url: https://web.archive.org/web/20250309110529/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/06-24-ch2-twc.pdf#page=2
@@ -8795,8 +8798,11 @@ candidates:
     citation: TWC WD Letter 24-23, p. 2
     url: https://web.archive.org/web/20240908233001/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/wd-24-23-twc.pdf#page=2
   - kind: guidance
-    citation: TWC WD Letter 20-24, p. 1
+    citation: TWC WD Letter 20-24, pp. 1-2
     url: https://web.archive.org/web/20250314070109/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/20-24-twc.pdf#page=1
+  - kind: plan
+    citation: Texas CCDF State Plan FFY 2025-2027, 3.1.2 (p. 48)
+    url: https://www.twc.texas.gov/sites/default/files/ccel/docs/tx-ccdf-state-plan-ffy2025-2027-approved.pdf#page=48
   - kind: agency-practice
     citation: 'TWC Commission meeting, December 17, 2024, item 10: CCDF waiver request, Waiver 2 (p. 2)'
     url: https://www.twc.texas.gov/sites/default/files/ogc/mtg24/commission-meeting-material-121724-item10-dp-ccdf-waiver-request-twc.pdf#page=2
@@ -8806,27 +8812,158 @@ candidates:
   readings:
     statute: No statute supplied; in 2022, TWC's Commission added §809.19(b), "effective on December 1, 2023", under
       which the parent share of cost "shall be ... established by the Commission and determined by a sliding fee scale
-      based on the family's size and gross monthly income".
+      based on the family's size and gross monthly income". The July 29, 2024 amendments keep this as (a)(1)(B), and
+      (a)(2) has Boards assess the share under it.
     other: In WD 06-24, Change 2, TWC tied the statewide parent share of cost, and the method its Commission adopted on
       November 7, 2022, to TX3C. Until then, TWC had each Board set its own amounts on TWC's income ranges (WD 24-23 and
-      WD 20-24). In its waiver request, TWC said it would phase the statewide scale in from January 13, 2025, as
-      families enroll or recertify.
+      WD 20-24), and the FFY 2025-2027 State Plan says the 28 Boards set copayments locally until the statewide
+      policy. In its waiver request, TWC said it would phase the statewide scale in from January 13, 2025, as families
+      enroll or recertify.
   example: A single parent in the Panhandle with $2,000 a month of income has one child, whose care the Board
     subsidizes. On the Board's chart, the parent pays $110 a month in September 2024; on TWC's statewide scale,
     PolicyEngine computes $88.45 for the same month.
   pe_us:
-    follows: statute
+    follows: conflicting-source
     code:
+    - policyengine_us/parameters/gov/states/tx/twc/ccs/copay/board/applies.yaml
+    - policyengine_us/parameters/gov/states/tx/twc/ccs/copay/board/uses_fpg_ranges.yaml
     - policyengine_us/parameters/gov/states/tx/twc/ccs/copay/rate/first_child.yaml
     - policyengine_us/parameters/gov/states/tx/twc/ccs/copay/rate/additional_child.yaml
     - policyengine_us/parameters/gov/states/tx/twc/ccs/copay/rate/maximum.yaml
+    - policyengine_us/variables/gov/states/tx/twc/ccs/copay/tx_ccs_board_copay.py
+    - policyengine_us/variables/gov/states/tx/twc/ccs/copay/tx_ccs_copay.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10598
+    - https://github.com/PolicyEngine/policyengine-us/pull/10623
   state: ruled
   note: 'On 2026-11-02, PolicyEngine picked each Board''s own scale where it has the Board''s chart for the period, and
-    TWC''s statewide scale for a Board without one and for every family from TX3C''s launch. Draft #10623 adds those
-    Board scales. Until #10623 merges, PE-US models no Board scale. It dates TWC''s statewide scale from January 2025,
-    when TWC began phasing it in, and applies that scale to every earlier month too.'
+    TWC''s statewide scale for a Board without one and for every family from TX3C''s launch. From October 2024 to TX3C,
+    it also continues a Board''s BCY 2024 chart where WD 20-24 let the Board keep it without a vote and no later chart
+    or Board action was found (Brazos Valley and South Texas). No Commission scale took effect before TX3C, the
+    approved State Plan describes local scales until then, and PolicyEngine has not settled whether a state rule binds
+    like a Treasury regulation, so the model follows what TWC applied (the agency breaks true ties). It moves every
+    family to the statewide scale at launch, not at each family''s recertification through February 1, 2026.'
+- id: us-tx:ccs-board-psoc-zero-income
+  program: child-care-assistance
+  years:
+    from: 2024
+    to: 2025
+    type: federal-fiscal
+  question: Does a Texas family with no countable income pay the amount a Workforce Board's chart prints for its lowest
+    income range, which starts at $0?
+  sources:
+  - kind: regulation
+    citation: 40 TAC §809.19(a)(7) (p. 63) and (b)(6) (p. 66), adopted September 13, 2022
+    url: https://www.twc.texas.gov/sites/default/files/ogc/mtg22/commission-meeting-materials-09.13.22-item8-fr-ch809-child-care-services-twc.pdf#page=63
+  - kind: regulation
+    citation: 40 TAC §809.19(f), as amended effective July 29, 2024 (p. 20)
+    url: https://twc.texas.gov/sites/default/files/ogc/docs/fr-809-trs-updates-7-24-twc.pdf#page=20
+  - kind: plan
+    citation: Texas CCDF State Plan FFY 2022-2024, 3.2.4 (p. 97)
+    url: https://www.twc.texas.gov/sites/default/files/ccel/docs/ccdf-state-plan-2022-2024-twc.pdf#page=97
+  - kind: policy
+    citation: Workforce Solutions Panhandle, Parent Share of Cost, effective 10/01/2023 - 9/30/2024
+    url: https://wspanhandle.com/wp-content/uploads/2023/10/PSoC-2023-2024.png
+  readings:
+    statute: This entry cites no statute. §809.19 bars a "minimum share of cost amount" when the parent share of cost
+      "is calculated to be zero", and the State Plan reads the rule as barring any co-payment for parents with zero countable
+      income.
+    other: 'Board charts start their lowest range at $0 income and print an amount for it: Panhandle''s charges $30 for
+      one child from 0% to 20% of SMI.'
+  example: A Panhandle family of three with no countable income and one child in care pays nothing under the rule as
+    the State Plan reads it, and $30 under the chart.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/tx/twc/ccs/copay/tx_ccs_board_copay.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10623
+  state: ruled
+  note: 'Ruled for the rule as the State Plan reads it: a family with no countable income pays nothing under a Board
+    scale. A family with any income in the lowest range pays the chart''s amount.'
+- id: us-tx:ccs-psoc-7pct-cap-timing
+  program: child-care-assistance
+  years:
+    from: 2024
+    to: 2025
+    type: federal-fiscal
+  question: Does 40 TAC §809.19(a)(1)(C), which from July 29, 2024 caps the parent share of cost at 7% of family income,
+    reach Workforce Board scales, or only TWC's statewide scale from TX3C's launch?
+  sources:
+  - kind: regulation
+    citation: 40 TAC §809.19(a)(1)(C), as amended effective July 29, 2024 (p. 18)
+    url: https://twc.texas.gov/sites/default/files/ogc/docs/fr-809-trs-updates-7-24-twc.pdf#page=18
+  - kind: guidance
+    citation: TWC WD Letter 20-24, p. 2
+    url: https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/20-24-twc.pdf#page=2
+  - kind: plan
+    citation: Texas CCDF State Plan FFY 2025-2027, 3.1.1 (p. 48)
+    url: https://www.twc.texas.gov/sites/default/files/ccel/docs/tx-ccdf-state-plan-ffy2025-2027-approved.pdf#page=48
+  - kind: agency-practice
+    citation: 'TWC Commission meeting, December 17, 2024, item 10: CCDF waiver request, Waiver 2'
+    url: https://www.twc.texas.gov/sites/default/files/ogc/mtg24/commission-meeting-material-121724-item10-dp-ccdf-waiver-request-twc.pdf
+  readings:
+    statute: This entry cites no statute. From July 29, 2024, §809.19(a)(1)(C) has the parent share of cost "not exceed
+      7 percent of the family income, regardless of the number of children receiving child care services."
+    other: WD 20-24 says the methodology capping the share at 7 percent "will go into effect with the launch of TX3C".
+      The State Plan says TWC "will implement a new policy on September 1, 2024, that caps co-payments at 7 percent",
+      but that it "is not able to implement this change with the current case management system" and would request a
+      temporary federal waiver. TWC's waiver request phases the cap in as families enroll or recertify from January 13,
+      2025, with every family under it by February 1, 2026.
+  example: A Panhandle family of three with $500 a month and two children in care in November 2024 pays the Board's $45,
+    9% of income; a 7% cap would hold it to $35.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/tx/twc/ccs/copay/rate/maximum.yaml
+    - policyengine_us/variables/gov/states/tx/twc/ccs/copay/tx_ccs_board_copay.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10623
+  state: ruled
+  note: 'Ruled for TWC''s practice: the cap comes with the statewide scale at TX3C''s launch, and Board scales carry
+    none. Paragraph (a)(1) sets the Commission scale (B) and the cap (C) for one share of cost, and the model applies
+    the Commission scale only from TX3C. If a state rule binds like a Treasury regulation and (C) reaches Board scales
+    by its text, the cap applies to them from July 29, 2024.'
+- id: us-tx:ccs-psoc-trs-reduction-end
+  program: child-care-assistance
+  years:
+    from: 2024
+    to: 2025
+    type: federal-fiscal
+  question: Does a Texas Workforce Board's parent share of cost reduction for choosing a Texas Rising Star provider end
+    with the July 29, 2024 amendments to 40 TAC §809.19, which removed the option, or with the Board's own scale at TX3C's
+    launch?
+  sources:
+  - kind: rulemaking
+    citation: TWC, amendments to 40 TAC Chapter 809 effective July 29, 2024, preamble (p. 4)
+    url: https://twc.texas.gov/sites/default/files/ogc/docs/fr-809-trs-updates-7-24-twc.pdf#page=4
+  - kind: regulation
+    citation: 40 TAC §809.19(a)(2)(B), as amended effective July 29, 2024 (p. 18)
+    url: https://twc.texas.gov/sites/default/files/ogc/docs/fr-809-trs-updates-7-24-twc.pdf#page=18
+  - kind: guidance
+    citation: TWC WD Letter 06-24, Change 2, p. 9
+    url: https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/06-24-ch2-twc.pdf#page=9
+  readings:
+    statute: This entry cites no statute. The amendments "remove the option for Boards to reduce the PSoC based on the
+      parent selection of Texas Rising Star program providers", and §809.19(a)(2)(B) keeps an assessed share from rising
+      before the 12-month redetermination unless a child joins care.
+    other: WD 06-24, Change 2, dated October 10, 2024 and effective immediately, has Boards "discontinue discounts for
+      parent-selected Texas Rising Star certified care" and keep a current discount "through the end of the eligibility
+      period." The order gives no date of its own; it sits under the statewide policy TWC planned to bring in with TX3C
+      on December 9, 2024, so it can be read to start then or on October 10, 2024.
+  example: A Panhandle family of three with $5,419 a month and one child at a Texas Rising Star provider pays $189 in
+    November 2024 with the Board's 30% reduction, and $270 without it.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/tx/twc/ccs/copay/board/reduction/texas_rising_star.yaml
+    - policyengine_us/variables/gov/states/tx/twc/ccs/copay/tx_ccs_board_copay.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10623
+  state: ruled
+  note: 'Ruled for TWC''s practice: a Board''s reduction ends with its scale at TX3C, or earlier where the Board ended
+    it (Alamo, September 30, 2024). The model has no assessment dates, so it keeps the reduction for families first assessed
+    between July 29, 2024 and TX3C, and drops current discounts at TX3C rather than at each family''s redetermination.'
 - id: us-tx:ccs-rate-age-groups-before-tx3c
   program: child-care-assistance
   years:
@@ -8844,7 +8981,7 @@ candidates:
     citation: Acts 2021, 87th Leg., R.S., ch. 59 (S.B. 1555), §2
     url: https://capitol.texas.gov/tlodocs/87R/billtext/html/SB01555F.htm
   - kind: regulation
-    citation: 40 TAC §809.20(a)(2) and (a)(3), adopted September 13, 2022 (47 TexReg 6459, effective October 3, 2022)
+    citation: 40 TAC §809.20(a)(2) and (a)(3), adopted September 13, 2022 (47 TexReg 6437, effective October 3, 2022)
     url: https://web.archive.org/web/20231103125253/https://www.twc.texas.gov/sites/default/files/ogc/docs/fr-809-ch-rev-09-22-twc.pdf#page=65
   - kind: rulemaking
     citation: TWC, amendments to 40 TAC Chapter 809 adopted September 13, 2022, preamble on Senate Bill 1555 (pp. 7-8)

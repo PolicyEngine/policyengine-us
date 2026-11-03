@@ -74,7 +74,7 @@ def canonical(forecast, year, tenure, *, adults=2, children=2, county=None):
 )
 def test_every_amount_uses_canonical_final_value_for_every_supported_year(tenure):
     forecast = load_forecast()
-    assert list(forecast.years) == list(range(2022, 2036))
+    assert list(forecast.years) == list(range(2022, 2037))
     # Explicit period inputs cover the artifact, including its historical years.
     situation = household(county="06037", tenure=tenure)
     for person in situation["people"].values():
@@ -164,10 +164,11 @@ def test_unavailable_selection_or_consumer_extrapolation_rejected(config):
         create_spm_provider(config)
 
 
-def test_unknown_year_has_no_country_cpi_extrapolation():
+@pytest.mark.parametrize("year", [2037, 2099])
+def test_unknown_year_has_no_country_cpi_extrapolation(year):
     simulation = Simulation(situation=household(county="06037"))
     with pytest.raises(ValueError, match="no entry"):
-        simulation.calculate("spm_unit_spm_threshold", 2099)
+        simulation.calculate("spm_unit_spm_threshold", year)
 
 
 @pytest.mark.parametrize(

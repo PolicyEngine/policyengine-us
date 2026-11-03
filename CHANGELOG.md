@@ -1,3 +1,35 @@
+## [2.94.2] - 2026-11-03
+
+### Fixed
+
+- Measure the Washington Working Families Tax Credit reduction on earned income, as RCW 82.08.0206(2)(b) and WAC 458-20-285 Answer 10C require, instead of the greater of earned income and AGI.
+
+
+## [2.94.1] - 2026-11-03
+
+### Fixed
+
+- Count every state child care subsidy in the CCDF program list in household benefits, up to the family's child care and after-school bill.
+
+
+## [2.94.0] - 2026-11-03
+
+### Added
+
+- Added the Vermont Fair Share high-income surcharge proposals as a contributed reform.
+
+### Changed
+
+- Require spm-calculator 1.1, whose canonical forecast covers 2022–2036, so SPM thresholds and SPM resources calculate for 2036.
+
+
+## [2.93.3] - 2026-11-03
+
+### Fixed
+
+- Apply each Texas Local Workforce Development Board's own Child Care Services parent share of cost scale, where the Board's chart was found, to October 2023 through December 2024, continuing a Board's BCY 2024 chart where no later one was found, instead of the statewide scale that TWC brought in with TX3C on January 13, 2025.
+
+
 ## [2.93.2] - 2026-11-03
 
 ### Fixed
