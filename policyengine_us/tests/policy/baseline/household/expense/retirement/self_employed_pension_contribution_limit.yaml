@@ -4,8 +4,9 @@
 # rate (step 4 rate 0.2) and, unless the case says otherwise, elective
 # deferrals (step 9) and catch-up contributions (step 17) equal to the
 # person's remaining section 402(g) room. Step 3 is Schedule C net profit less
-# half of self-employment tax: 92.35% of profit at 15.3% (12.4% up to the
-# Social Security wage base), halved.
+# its share of the deductible part of self-employment tax: half of 15.3% (12.4%
+# only up to the Social Security wage base less wages) of 92.35% of all net
+# profit, split by each business's share of the positive net profits.
 
 - name: Self-employed pension contributions are limited by the 2026 annual additions dollar limit.
   period: 2026
@@ -17,8 +18,8 @@
         self_employed_pension_contributions_desired: 100_000
   output:
     # Step 3: 500,000 - (184,500 x 12.4% + 461,750 x 2.9%) / 2 = 481,865.63.
-    # Step 7: 20% x 481,865.63 = 96,373.13; steps 13 + 15 stop at the $72,000
-    # dollar limit.
+    # Step 5: 20% x 481,865.63 = 96,373.13; step 6 caps it at 360,000 x 25% =
+    # 90,000 (step 7). Steps 13 + 15 stop at the $72,000 dollar limit.
     self_employed_pension_contribution_limit: 72_000
     self_employed_pension_contributions: 72_000
     self_employed_pension_contribution_ald_person: 72_000
@@ -164,6 +165,24 @@
         self_employed_pension_contributions_desired: 100_000
   output:
     self_employed_pension_contribution_limit: 80_000
+
+- name: Catch-up contributions can't take the limit above earned income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        self_employment_income: 20_000
+        self_employed_pension_contributions_desired: 30_000
+  output:
+    # Step 3: 20,000 - 18,470 x 15.3% / 2 = 18,587.05. Step 9 at 18,587.05
+    # leaves steps 11 to 13 at zero, and step 16 is 18,587.05 - 18,587.05 = 0,
+    # so step 18 adds none of the 7,500 catch-up: step 19 is 18,587.05
+    # (sections 404(a)(8)(C) and 414(v)(2)(A)(ii)).
+    self_employed_pension_earned_income: 18_587.05
+    self_employed_pension_contribution_limit: 18_587.05
+    self_employed_pension_contributions: 18_587.05
 
 - name: With low profit, deferrals can reach all of earned income but no more.
   period: 2025
