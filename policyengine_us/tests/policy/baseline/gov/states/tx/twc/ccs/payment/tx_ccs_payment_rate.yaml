@@ -312,6 +312,41 @@
     tx_ccs_payment_rate:
       2024-11: 288.8
 
+- name: Four-age table - Capital Area Relative None reads the rate TWC labels None
+  period: 2024
+  input:
+    age: 0.5
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RELATIVE
+    tx_ccs_provider_rating: NONE
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: CAPITAL_AREA
+  output:
+    # 14.44 * 20
+    tx_ccs_payment_rate:
+      2024-11: 288.8
+
+- name: Four-age table - Capital Area Relative TRS2 6 months Full Time, no such rating
+  period: 2024
+  input:
+    age: 0.5
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RELATIVE
+    tx_ccs_provider_rating: TRS2
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: CAPITAL_AREA
+  output:
+    tx_ccs_payment_rate:
+      2024-11: 0
+
 - name: BCY25 - North Texas Relative 3yr Full Time, as the Board's January 13, 2025 sheet prints
   period: 2025
   input:

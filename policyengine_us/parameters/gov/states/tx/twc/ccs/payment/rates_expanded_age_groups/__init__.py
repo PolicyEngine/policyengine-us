@@ -9,9 +9,10 @@
 #   https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy25-board-max-provider-payment-rates-4-age-groups-twc.pdf
 #   Infant covers 0-17 months, Toddler 18 months to 2 years, Preschool 3-5 years,
 #   and School Age 6-13 years. 40 TAC 809.20(a)(1)(D) has Boards set relative rates,
-#   and WD Letter 19-24, Change 1, leaves them to Boards and lowers no rate at the
-#   move to eight age groups:
+#   and WD Letter 19-24, Change 1, leaves them to Boards and ends the four-age rates
+#   on January 12, 2025:
 #   https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/19-24-ch1-twc.pdf#page=3
+#   TWC's BCY26 table prints the same relative rates in 447 of 448 cells.
 # - The *_bt columns hold TWC's blended rate, (175 x part-time + 30 x full-time) / 205,
 #   rounded half up to the cent, for the ages BCY26 prints:
 #   https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/02-20-twc.pdf#page=2
