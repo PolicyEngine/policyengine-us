@@ -205,8 +205,8 @@
         county: POTTER_COUNTY_TX
   output:
     # SMI (2 people) = $94,466 * 0.68 / 12 = $5,353.07/month; $2,000 is 37.3617% of SMI.
-    # Copay rate = 2% + (37.3617% - 1%) * (6.93% - 2%) / (75% - 1%) = 4.42248%,
-    # so the copay is 4.42248% * $2,000 = $88.4495 in both months.
+    # Copay rate = 2% + (37.3617% - 1%) * (6.93% - 2%) / (75% - 1%) = 4.422476%,
+    # so the copay is 4.422476% * $2,000 = $88.4495 in both months.
     # September (BCY24): $27.33 * 21 = $573.93 - $88.4495 = $485.48
     # October (BCY25): $30.40 * 21 = $638.40 - $88.4495 = $549.95
     tx_ccs_copay:

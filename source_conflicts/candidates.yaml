@@ -8622,7 +8622,7 @@ candidates:
     type: federal-fiscal
   question: Does a Texas Child Care Services family pay on the statewide parent share of cost scale, which TWC's
     Commission had to establish from December 1, 2023 under 40 TAC §809.19(b), or on its Workforce Board's own scale,
-    which TWC had Boards keep setting until TX3C launched on January 13, 2025?
+    which TWC had Boards keep setting until it launched TX3C on January 13, 2025?
   sources:
   - kind: regulation
     citation: 40 TAC §809.19(b), adopted September 13, 2022 (47 TexReg 6459, effective October 3, 2022)
@@ -8650,8 +8650,8 @@ candidates:
       November 7, 2022, to TX3C. Until then, TWC had each Board set its own amounts on TWC's income ranges (WD 24-23 and
       WD 20-24). In its waiver request, TWC said it would phase the statewide scale in from January 13, 2025, as
       families enroll or recertify.
-  example: A Panhandle parent with one child in care and $2,000 a month of income pays $110 a month in September 2024
-    on the Board's chart, and $88.45 on TWC's statewide scale.
+  example: A single parent in the Panhandle with one child in care and $2,000 a month of income pays $110 a month in
+    September 2024 on the Board's chart. On TWC's statewide scale, PolicyEngine computes $88.45 for the same month.
   pe_us:
     follows: statute
     code:
@@ -8660,9 +8660,11 @@ candidates:
     - policyengine_us/parameters/gov/states/tx/twc/ccs/copay/rate/maximum.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10598
-  state: unreviewed
-  note: PE-US models no Board scale. It dates TWC's statewide scale from January 13, 2025, when TWC began phasing it in,
-    and applies it to every earlier month too. Draft #10623 adds Board scales.
+  state: ruled
+  note: 'On 2026-11-02, PolicyEngine picked each Board''s own scale where it has the Board''s chart for the period, and
+    TWC''s statewide scale for a Board without one and for every family from TX3C''s launch. Draft #10623 adds those
+    Board scales. At this PR, PE-US models no Board scale: it dates TWC''s statewide scale from January 2025, when TWC
+    began phasing it in, and applies it to every earlier month too.'
 - id: us-tx:ccs-rate-age-groups-before-tx3c
   program: child-care-assistance
   years:
@@ -8670,15 +8672,21 @@ candidates:
     to: 2025
     type: federal-fiscal
   question: From December 1, 2023 to January 12, 2025, do Workforce Boards set Texas Child Care Services provider payment
-    rates for the eight age groups that TWC's Commission set in 40 TAC §809.20(a)(3), or for the four groups that TWC
-    kept in its rate tables until TX3C launched?
+    rates for the eight age groups that TWC's Commission set in 40 TAC §809.20(a)(3) to meet S.B. 1555's deadline, or
+    for the four groups that TWC kept in its rate tables until it launched TX3C?
   sources:
   - kind: statute
     citation: Texas Government Code §2308.315
     url: https://web.archive.org/web/20241213092751/https://statutes.capitol.texas.gov/Docs/GV/htm/GV.2308.htm#2308.315
+  - kind: statute
+    citation: Acts 2021, 87th Leg., R.S., ch. 59 (S.B. 1555), §2
+    url: https://capitol.texas.gov/tlodocs/87R/billtext/html/SB01555F.htm
   - kind: regulation
     citation: 40 TAC §809.20(a)(2) and (a)(3), adopted September 13, 2022 (47 TexReg 6459, effective October 3, 2022)
     url: https://web.archive.org/web/20231103125253/https://www.twc.texas.gov/sites/default/files/ogc/docs/fr-809-ch-rev-09-22-twc.pdf#page=65
+  - kind: rulemaking
+    citation: TWC, amendments to 40 TAC Chapter 809 adopted September 13, 2022, preamble on Senate Bill 1555 (pp. 7-8)
+    url: https://web.archive.org/web/20231103125253/https://www.twc.texas.gov/sites/default/files/ogc/docs/fr-809-ch-rev-09-22-twc.pdf#page=7
   - kind: rulemaking
     citation: TWC, amendments to 40 TAC Chapter 809 effective July 29, 2024 (49 TexReg 5545), preamble on §809.20 (p. 5)
     url: https://web.archive.org/web/20250307095110/https://www.twc.texas.gov/sites/default/files/ogc/docs/fr-809-trs-updates-7-24-twc.pdf#page=5
@@ -8695,10 +8703,12 @@ candidates:
   readings:
     statute: Under Government Code §2308.315, each Board "shall establish and implement graduated reimbursement rates
       for child-care providers ... that align the commission's age groupings with the child-to-caregiver ratios and
-      group sizes adopted by the Health and Human Services Commission". To match Child Care Regulation's age groups,
-      TWC's Commission set eight in §809.20(a)(3), "effective December 1, 2023", from infants ages 0 through 11 months
-      to school-age children 6 years and older, in place of the four in (a)(2). In amendments effective July 29, 2024,
-      it removed the four groups from the rule.
+      group sizes adopted by the Health and Human Services Commission". In §2 of S.B. 1555, which amended §2308.315 in
+      2021, the Legislature added a deadline, "Not later than December 1, 2023, each local workforce development board
+      shall establish the child-care reimbursement rates required under Section 2308.315". To meet it, TWC's Commission
+      set eight age groups in §809.20(a)(3), "effective December 1, 2023", in place of the four in (a)(2). It matched
+      them to Child Care Regulation's groups, from infants ages 0 through 11 months to school-age children 6 years and
+      older. In amendments effective July 29, 2024, it removed the four groups from the rule.
     other: TWC set rates for the four groups in its BCY 2024 table and its BCY 2025 four-age-group table. In WD 06-24,
       Change 2, TWC tied the expanded age groups to TX3C. In WD 19-24, Change 1, it kept rates on the four age ranges
       until TX3C's launch and started its eight-group rates on January 13, 2025.
@@ -8713,8 +8723,11 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10598
   state: unreviewed
-  note: PE-US follows TWC's tables and keeps the four groups until January 13, 2025, when TWC started its eight-group
-    rates.
+  note: PE-US follows TWC's tables. It keeps the four groups through December 2024 and switches to TWC's eight-group
+    rates in January 2025 (uses_expanded_age_groups starts on 2025-01-01 for TWC's January 13 start). TWC set
+    eight-group rates only from January 13, 2025, and entered every Board's BCY 2025 rates on the four age ranges until
+    then (WD 19-24, Change 1, p. 3). PE-US has no published eight-group rates to apply to earlier months under the
+    statute reading.
 - id: us-tx:family-planning-unearned-income-exclusions
   program: family-planning-program
   years:
