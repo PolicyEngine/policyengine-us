@@ -50,9 +50,11 @@ class tax_unit_is_filer(Variable):
         files_voluntarily = tax_unit("would_file_taxes_voluntarily", period)
 
         # A section 911 exclusion is claimed on Form 2555 attached to a
-        # return (Treas. Reg. 1.911-7(a)(1) and 1.6012-1(a)(3)). Sections
-        # 24(d)(3) and 32(c)(1)(C) deny the claimant the refundable credits,
-        # so those credits cannot be its reason to file. A claimant under the
+        # return (Treas. Reg. 1.911-7(a)(1) and 1.6012-1(a)(3)). Section
+        # 32(c)(1)(C) denies every claimant the EITC, and section 24(d)(3)
+        # denies the refundable CTC to one who elects an exclusion (not one
+        # who claims only the housing deduction); eligible_for_refundable_credits
+        # handles which credit can be a reason to file. A claimant under the
         # filing threshold need not file in a later year of a continuing
         # election, so the propensity to file for a tax benefit decides.
         claims_section_911 = elects_section_911_exclusion(tax_unit, period)

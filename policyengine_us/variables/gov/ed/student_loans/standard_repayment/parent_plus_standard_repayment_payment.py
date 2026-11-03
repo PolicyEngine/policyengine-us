@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ed.student_loans.student_loan_amortization_helpers import (
-    amortized_monthly_payment,
+    parent_plus_standard_amortized_payment,
 )
 
 
@@ -32,7 +32,10 @@ class parent_plus_standard_repayment_payment(Variable):
         "so this is zero for them. The flag is yearly, so a loan made in the "
         "second half of 2026 moves all of 2026 to the tiered plan. Repayment "
         "of consolidated parent PLUS loans under the Income-Contingent "
-        "Repayment plan is not modeled."
+        "Repayment plan is not modeled. For a borrower with both Direct and "
+        "parent PLUS loans on the standard plan, "
+        "combined_standard_repayment_payment gives the total, with one "
+        "minimum where both are under 34 CFR 685.208(b)(1)."
     )
     unit = USD
     definition_period = MONTH
@@ -46,27 +49,8 @@ class parent_plus_standard_repayment_payment(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.ed.student_loans.standard_repayment
         balance = person("federal_parent_plus_loan_balance", period.this_year)
-        annual_rate = person("federal_student_loan_interest_rate", period.this_year)
-        # 685.208(b)(2)(iii) and 685.220(i)(2)(ii), (i)(3)(i): a consolidation
-        # loan's term follows its amount plus the borrower's other education
-        # loans, counted up to the consolidation loan's amount.
-        other_loans = add(
-            person,
-            period.this_year,
-            ["federal_student_loan_balance", "federal_ffel_loan_balance"],
-        )
-        consolidation_total = balance + min_(other_loans, balance)
-        is_consolidated = person(
-            "federal_parent_plus_loan_is_consolidated", period.this_year
-        )
-        repayment_period = where(
-            is_consolidated,
-            p.consolidation_repayment_period.calc(consolidation_total),
-            p.repayment_period,
-        )
-        number_of_payments = repayment_period * MONTHS_IN_YEAR
-        amortized_payment = amortized_monthly_payment(
-            balance, annual_rate, number_of_payments
+        amortized_payment = parent_plus_standard_amortized_payment(
+            person, period, parameters
         )
         # As in standard_repayment_payment, the minimum does not apply to a
         # final payment below it.
