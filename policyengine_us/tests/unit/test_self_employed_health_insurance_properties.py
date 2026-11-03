@@ -29,9 +29,11 @@ the four businesses. For every filer and year:
    computed here from Schedule SE, and each limit equals a closed-form Form
    7206 computation for its plan business from that line 15 and the model's
    line 16. Without a named business, the limit is the largest of the four.
+   The deduction is the smaller of the premiums and that reference limit.
 2. Differential: the limit without a named business equals the largest of the
-   limits the model computes when each business is named, so one plan never
-   pools the earned income of two businesses.
+   limits the model computes when each business is named. With property 1,
+   which ties each named limit to that business's own Form 7206, one plan
+   never pools the earned income of two businesses.
 3. Bounds: 0 <= deduction <= premiums, and the limit is at least the Schedule
    C limit (widening the base never lowers the deduction).
 4. Monotone in premiums: raising premiums by d raises the deduction by at
@@ -183,13 +185,12 @@ def check_properties(sim, filers, n):
         line_16 = sim.calculate("self_employed_pension_contribution_ald_person", year)
         agi = sim.calculate("adjusted_gross_income", year)
 
-        # Line 15 from Schedule SE, line 16, and the deduction for every copy.
+        # Line 15 from Schedule SE, and line 16, for every copy.
         expected_line_15 = schedule_se_deduction(
             year, schedule_c, farm, partnership, wages
         )
         for prefix, _, _ in COPIES:
             close(copy(line_15, prefix), expected_line_15)
-        close(deduction, np.minimum(premiums, limit))
         # Line 16 does not depend on premiums or the named business.
         for prefix, _, _ in COPIES[1:]:
             close(copy(line_16, prefix), copy(line_16, "u"))
@@ -202,8 +203,16 @@ def check_properties(sim, filers, n):
             copy(line_16, "u"),
         )
         largest = np.max(np.stack(list(line_13.values())), axis=0)
+        # The reference limit for every copy, in the simulation's order.
+        reference_limit = np.concatenate(
+            [
+                largest if business == "UNSPECIFIED" else line_13[business]
+                for _, business, _ in COPIES
+            ]
+        )
 
         # 1. Reference.
+        close(deduction, np.minimum(premiums, reference_limit))
         close(copy(limit, "u"), largest)
         for business in BUSINESSES:
             close(copy(limit, business.lower()), line_13[business])

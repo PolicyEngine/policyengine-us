@@ -179,6 +179,7 @@
     farm_operations_income: 40_000
     self_employed_health_insurance_plan_business: SCHEDULE_C
   output:
+    # Schedule C line 13, as in Case 14: 5,000 - 5,000 / 45,000 x 3,179.14875.
     self_employed_health_insurance_earned_income_limit: 4_646.76125
 
 - name: Case 16, a named farm business takes its own share of the self-employment tax deduction.
@@ -229,6 +230,8 @@
     self_employment_income: 10_000
     self_employed_health_insurance_plan_business: SCHEDULE_C
   output:
+    # Schedule 1 line 15: 10,000 x 0.9235 x 0.153 / 2 = 706.4775. Schedule C
+    # line 13: 10,000 - 706.4775; line 11 does not apply.
     self_employment_tax_ald_person: 706.4775
     self_employed_health_insurance_earned_income_limit: 9_293.5225
 
