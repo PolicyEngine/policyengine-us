@@ -25,13 +25,19 @@ class mt_dependent_medical_expense_head_share(Variable):
         "share that gives the lowest combined tax before refundable credits "
         "(Form 2 line 20 in both columns), holding every other itemized "
         "deduction fixed. It compares a small candidate set: the equal split "
-        "(spouse_allocation_rate), all to the head, all to the spouse, and "
-        "the two shares at which the head's or the spouse's 7.5% floor "
-        "starts to bind. Ties go to the share closest to the equal split, so "
-        "the result does not depend on which spouse is labelled head. A full "
-        "search over every share, which could find a lower tax where a "
-        "bracket boundary falls between candidates, is left as a later "
-        "optimization. The tax is evaluated in closed form with the column "
+        "(spouse_allocation_rate), all to the head, all to the spouse, the "
+        "two shares at which the head's or the spouse's 7.5% floor starts to "
+        "bind, and the share at which the two columns' incomes before the "
+        "dependent exemptions are equal. Between the floor kinks the total "
+        "deduction does not depend on the share and the couple's tax is "
+        "convex in it, lowest where the columns balance; outside them the "
+        "tax is monotone in the share. So the set reaches the minimum unless "
+        "a column's non-refundable credits (the capital gain credit) hold its "
+        "line 20 at zero, which can move the minimum away from the balance "
+        "point. Ties go to the "
+        "share closest to the equal split, so the result does not depend on "
+        "which spouse is labelled head. The tax is evaluated in closed form "
+        "with the column "
         "variables' own formulas (policyengine_us.tools.mt_separate_return), "
         "not with simulation branches. Unmarried filers and couples without "
         "dependents' expenses get the equal split, which has no effect."
@@ -78,11 +84,31 @@ class mt_dependent_medical_expense_head_share(Variable):
         safe_pool = where(pool > 0, pool, 1)
         head_kink = np.clip(tax_unit.sum(room * head) / safe_pool, 0, 1)
         spouse_kink = np.clip(1 - tax_unit.sum(room * spouse) / safe_pool, 0, 1)
+        # The share at which the two columns' incomes before the dependent
+        # exemptions are equal. While both columns are above their floors,
+        # each extra dollar of bills is deductible in either column, so the
+        # total deduction is fixed and the couple's tax is convex in the
+        # share, lowest where the columns balance. There a column's income is
+        # level - share x pool, where level is its income with line 1a at its
+        # floor; the spouse's uses 1 - share.
+        kink_deduction = mt_medical_deduction(
+            person, period, parameters, own_expense + room
+        )
+        level = (
+            person("mt_agi_indiv", period)
+            - person("mt_personal_exemptions_indiv", period)
+            - other_itemized
+            - kink_deduction
+            + room
+        )
+        gap = tax_unit.sum(level * head) - tax_unit.sum(level * spouse)
+        balance = np.clip(0.5 + gap / (2 * safe_pool), 0, 1)
         candidates = [
             np.full(tax_unit.count, 0.0),
             np.full(tax_unit.count, 1.0),
             head_kink,
             spouse_kink,
+            balance,
         ]
         best_share = default
         best_tax = couple_tax(default)

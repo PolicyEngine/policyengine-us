@@ -42,7 +42,12 @@ import pytest
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 
+from policyengine_core.periods import period
+
 from policyengine_us import Simulation
+from policyengine_us.tools.mt_separate_return import (
+    mt_separate_tax_before_refundable_credits,
+)
 
 # Dollars; the model computes in float32 and incomes reach $150,000.
 TOLERANCE = 0.05
@@ -255,3 +260,70 @@ def test_seeded_population(year):
             }
         )
     _check(drawn, year)
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_closed_form_matches_columns(year):
+    """The closed form the choices compare equals the columns' line 20.
+
+    Couples with wages and long-term capital gains, so the 2021-2023 capital
+    gain credit (Montana's non-refundable credit) is non-zero, and the federal
+    return feeds Montana AGI. A closed form that drifts from the column
+    variables would make the choices minimize a tax the columns don't owe.
+    """
+    rng = np.random.default_rng(SEED + 10 * year)
+    people, tax_units, households, marital_units = {}, {}, {}, {}
+    for i in range(30):
+        members = []
+        for role in ("head", "spouse"):
+            name = f"u{i}_{role}"
+            people[name] = {
+                "age": {year: 45},
+                "employment_income": {year: float(rng.integers(0, 120_001))},
+                "long_term_capital_gains": {year: float(rng.integers(0, 40_001))},
+                "other_medical_expenses": {
+                    year: float(rng.choice([0, rng.integers(1, 8_001)]))
+                },
+            }
+            members.append(name)
+        marital_units[f"u{i}_couple"] = {"members": list(members)}
+        child = f"u{i}_child"
+        people[child] = {
+            "age": {year: 10},
+            "is_tax_unit_dependent": {year: True},
+            "other_medical_expenses": {year: float(rng.integers(0, 30_001))},
+        }
+        marital_units[f"u{i}_child_alone"] = {"members": [child]}
+        members.append(child)
+        tax_units[f"u{i}"] = {"members": members}
+        households[f"u{i}"] = {"members": members, "state_code": {year: "MT"}}
+    situation = {
+        "people": people,
+        "tax_units": tax_units,
+        "marital_units": marital_units,
+        "households": households,
+    }
+    sim = Simulation(situation=situation)
+    tax_unit = sim.populations["tax_unit"]
+    unit = tax_unit.members_entity_id
+    n = tax_unit.count
+    columns = np.bincount(
+        unit,
+        weights=np.asarray(
+            sim.calculate("mt_income_tax_before_refundable_credits_indiv", year),
+            dtype=float,
+        ),
+        minlength=n,
+    )
+    credits = np.bincount(
+        unit,
+        weights=np.asarray(sim.calculate("mt_non_refundable_credits", year), float),
+        minlength=n,
+    )
+    # The guard is only meaningful if the credit is in play for most couples.
+    assert (credits > 0).sum() >= n // 2
+    deductions = sim.calculate("mt_deductions_indiv", year)
+    closed_form = mt_separate_tax_before_refundable_credits(
+        tax_unit, period(year), sim.tax_benefit_system.parameters, deductions
+    )
+    np.testing.assert_allclose(closed_form, columns, atol=0.01)
