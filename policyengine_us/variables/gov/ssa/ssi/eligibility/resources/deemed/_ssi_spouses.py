@@ -105,7 +105,10 @@ def _ssi_couple_total(person, period, values):
     two-person unit whose members the spouse test pairs, and adds only the
     spouse when a unit holds more people, as the default unit of a situation
     that omits marital units can. ``period`` is the year of the spouse test.
+    The sum is float64, as the marital-unit sum is, so float32 input rounds
+    the same way.
     """
+    values = np.asarray(values, dtype=float)
     spouse = _ssi_spouse_index(person, period)
     return values + where(spouse >= 0, values[np.maximum(spouse, 0)], 0)
 

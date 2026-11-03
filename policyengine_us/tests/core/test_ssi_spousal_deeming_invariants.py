@@ -54,6 +54,10 @@ from hypothesis import strategies as st
 from policyengine_core.periods import period as make_period
 
 from policyengine_us import Simulation
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+    _ssi_spouse_index,
+)
 from policyengine_us.variables.gov.states._spouses import (
     state_couple_total,
     state_is_married,
@@ -803,6 +807,22 @@ def test_retained_state_spouse_helpers_keep_separated_marriage():
     np.testing.assert_array_equal(
         state_couple_total(person, year, np.array([175, 100])), [275, 275]
     )
+
+
+def test_ssi_couple_total_sums_float32_input_in_float64():
+    """A paired couple's total equals the marital-unit sum, dtype included.
+
+    A YAML case cannot see dtype, and a float32 sum can move an exact-limit
+    comparison by a rounding step that the marital-unit sum does not take.
+    """
+    simulation = Simulation(situation=_income_situation([(0, 0, 0)]))
+    person = simulation.get_population("people")
+    year = make_period(YEAR)
+    np.testing.assert_array_equal(_ssi_spouse_index(person, year), [1, 0])
+    values = np.array([0.1, 0.2], dtype=np.float32)
+    total = _ssi_couple_total(person, year, values)
+    assert total.dtype == np.float64
+    np.testing.assert_array_equal(total, person.marital_unit.sum(values))
 
 
 def test_retained_state_spouse_helpers_exclude_cross_household_parent():
