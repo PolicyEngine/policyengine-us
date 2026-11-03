@@ -15,7 +15,7 @@ class mt_taxable_social_security_joint(Variable):
         # Joint filers run the Taxable Social Security Benefits Schedule once
         # in a single column, combining both spouses' lines 1-9 and applying
         # the joint base amounts once (Form 2, page 6).
-        # The worksheet uses the head's and spouse's amounts from their federal
+        # The worksheet takes the head's and spouse's amounts from their federal
         # return; a tax unit dependent's benefits, interest and adjustments are
         # on the dependent's own return.
         # line 1 total net SS amount

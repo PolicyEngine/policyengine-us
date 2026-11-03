@@ -14,7 +14,7 @@ class ia_reportable_social_security(Variable):
     defined_for = StateCode.IA
 
     def formula(tax_unit, period, parameters):
-        # The worksheet uses the head's and spouse's amounts from their federal
+        # The worksheet takes the head's and spouse's amounts from their federal
         # return; a tax unit dependent's benefits and interest are on the
         # dependent's own return.
         benefits = tax_unit_non_dep_add(tax_unit, period, ["social_security"])

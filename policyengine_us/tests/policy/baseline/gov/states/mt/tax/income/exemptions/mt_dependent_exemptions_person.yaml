@@ -521,8 +521,10 @@
     # (the net gain is only 1,000), so not a Montana dependent.
     mt_dependent_exemptions_person: [0, 0]
     # With the exemption on the net 1,000 the tax was 1,711.65;
-    # 1,711.65 + 182.92 = 1,894.57.
-    mt_income_tax: 1_894.57
+    # 1,711.65 + 182.92 = 1,894.57. The dependent's net 1,000 gain is on the
+    # dependent's own return, so it no longer gives the filers the 2% capital
+    # gain credit: 1,894.57 + 20 = 1,914.57.
+    mt_income_tax: 1_914.57
 
 - name: Adult dependent whose short-term gain exceeds the exemption amount is not eligible despite a long-term loss
   period: 2022

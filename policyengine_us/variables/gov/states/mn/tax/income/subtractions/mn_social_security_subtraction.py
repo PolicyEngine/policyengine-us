@@ -44,7 +44,7 @@ class mn_social_security_subtraction(Variable):
         # ... alternative benefit subtraction amount
         us_gross_income = add(tax_unit, period, ["irs_gross_income"])
         adj_income = us_gross_income - us_taxable_oasdi
-        # The worksheet uses the head's and spouse's amounts from their federal
+        # The worksheet takes the head's and spouse's amounts from their federal
         # return; a tax unit dependent's benefits, interest and student loan
         # interest are on the dependent's own return.
         total_oasdi = tax_unit_non_dep_add(tax_unit, period, ["social_security"])
