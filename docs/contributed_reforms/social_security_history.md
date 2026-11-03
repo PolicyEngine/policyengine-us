@@ -75,16 +75,22 @@ Earnings can precede that benchmark, beginning in 1951 or the worker's birth
 year, whichever is later; annual inactive-policy defaults cover those years.
 
 The route computes only the wage-indexed formula of
-[42 U.S.C. 415(a)(1)](https://www.law.cornell.edu/uscode/text/42/415). For a
-worker with covered earnings before 1979 who becomes eligible before 1984,
-415(a)(4)(B)(i) keeps the computation under the subsection as in effect in
-December 1978 when that amount is larger. The route cannot compute that
-amount, so it refuses eligibility years before 1984. Section 415(a)(4)(B)(ii)
-likewise keeps the subsection (d) computation when it is larger; subsection (d)
-computes the 1939 Act primary insurance benefit, which counts wages before
-1951. Annual records begin in 1951, so the route cannot take those wages or
-compute that amount, and it assumes the worker had no covered wages before
-1951.
+[42 U.S.C. 415(a)(1)](https://www.law.cornell.edu/uscode/text/42/415).
+Section 415(a)(4)(B) applies to a worker with covered earnings before 1979 who
+was not eligible for old-age or disability benefits before 1979. If that worker
+becomes eligible for old-age benefits from 1979 through 1983, 415(a)(4)(B)(i)
+keeps the computation under subsection (a) as in effect in December 1978 when
+that amount is larger. The route cannot compute that amount, so it refuses
+eligibility years before 1984. At any eligibility year, 415(a)(4)(B)(ii) also
+keeps the subsection (d) computation when it is larger. Subsection (d) computes
+the 1939 Act primary insurance benefit, which counts wages before 1951, and
+415(d)(2)(A) limits it to a worker with a quarter of coverage before 1951.
+Annual records begin in 1951, so the route cannot take those wages or compute
+that amount, and it assumes the worker had no covered wages before 1951. It
+also assumes the worker had no disability-benefit eligibility before
+January 1979. Section 415(a)(4)(A) takes that case outside the wage-indexed
+formula unless at least 12 consecutive months without disability-benefit
+entitlement precede the worker's later eligibility or death.
 
 ## Conventional AIME and the shared benefit pipeline
 
@@ -231,12 +237,12 @@ population payroll-tax variables.
 **Modeling convention: cohort-selected donut coefficient.** For a custom
 changing path, annual tax/coverage settings determine the extra earnings
 stream, and the PIA credit coefficient is read at eligibility E, as benefit
-formulas select by cohort. The named E2.13 and E2.14 variants (2025 Trustees Report edition) carry a
-constant 2%, so this only moves a custom path that varies. For example, AIME+
-$240 at 2% against 3% gives $4.80 against $7.20; with a $2,180 baseline PIA
-and claiming at 65, payment is $1,893 against $1,895. Pure callers whose
-credited annual streams use different coefficients must supply the
-eligibility coefficient explicitly.
+formulas select by cohort. The named E2.13 and E2.14 variants (2025 Trustees
+Report edition) carry a constant 2%, so this only moves a custom path that
+varies. For example, AIME+ $240 at 2% against 3% gives $4.80 against $7.20;
+with a $2,180 baseline PIA and claiming at 65, payment is $1,893 against
+$1,895. Pure callers whose credited annual streams use different coefficients
+must supply the eligibility coefficient explicitly.
 
 ## Annual earnings ledger
 
