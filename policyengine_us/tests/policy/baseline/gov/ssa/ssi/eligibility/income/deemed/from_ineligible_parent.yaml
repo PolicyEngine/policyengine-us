@@ -116,3 +116,261 @@
     is_ssi_spousal_deeming_applies: [false, false, false]
     ssi_income_deemed_from_ineligible_spouse: [0, 0, 0]
     ssi_countable_income: [1_548, 0, 0]
+
+# POMS SI 01320.620 D.2 and 20 CFR 416.1166(f) Example 2, 2025 rates: a disabled
+# parent with no income, a spouse earning 3,350 a month and a disabled child.
+# (3,350 - 20 - 65) / 2 = 1,632.50 is above the 1,450 couple rate, so the parent is
+# ineligible and 182.50 is deemed, 2,190 a year. The child's countable income is
+# (182.50 - 20) x 12 = 1,950 and SSI is (967 - 162.50) x 12 = 9,654.
+- name: Ineligible parent and spouse deem only the excess over the couple rate.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 40_200
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    is_ssi_ineligible_parent: [true, true, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 2_190]
+    ssi_countable_income: [19_590, 0, 1_950]
+    ssi: [0, 0, 9_654]
+
+# 20 CFR 416.1166(f) Example 1, 2026 rates: a disabled parent with no income, a
+# spouse earning 3,000 a month and a disabled child. (3,000 - 20 - 65) / 2 =
+# 1,457.50 is within the 1,491 couple rate, so the parent stays eligible with SSI
+# of (1,491 - 1,457.50) x 12 = 402, and 416.1166(e)(1) deems nothing to the child.
+- name: Eligible parent's spouse with earnings deems nothing to the child.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 36_000
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    is_ssi_ineligible_parent: [false, true, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0]
+    ssi_countable_income: [17_490, 0, 0]
+    ssi: [402, 0, 11_928]
+
+# A disabled permanent resident with 8 of 40 quarters and a 1,400 monthly pension
+# fails the noncitizen test. The citizen spouse stays eligible, since 1,400 - 20 =
+# 1,380 is within the 1,491 couple rate. 20 CFR 416.1165(d)(3)(i) subtracts the
+# couple rate because both parents live with the child: 16,560 - 17,892 leaves
+# nothing, as 416.1166(e)(1) requires. The child's SSI is 994 x 12 = 11,928.
+- name: Noncitizen parent with an eligible spouse deems nothing to the child.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 8
+        taxable_pension_income: 16_800
+      person2:
+        age: 55
+        is_tax_unit_spouse: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    is_ssi_ineligible_parent: [true, false, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0]
+    people:
+      person3:
+        ssi: 11_928
+
+# Same household at the boundary: 1,511 - 20 = 1,491 equals the couple rate, so the
+# citizen spouse stays eligible, with no benefit left, and nothing is deemed.
+- name: Noncitizen parent with income at the couple rate leaves the spouse eligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 8
+        taxable_pension_income: 18_132
+      person2:
+        age: 55
+        is_tax_unit_spouse: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    is_ssi_ineligible_parent: [true, false, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0]
+    ssi: [0, 0, 11_928]
+
+# One dollar more: 1,512 - 20 = 1,492 is over the couple rate, so both parents are
+# ineligible and (1,492 - 1,491) x 12 = 12 is deemed. The child's 240 general
+# exclusion covers it, so SSI stays 994 x 12 = 11,928 with no cliff.
+- name: Noncitizen parent with income one dollar over the couple rate makes both parents ineligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 8
+        taxable_pension_income: 18_144
+      person2:
+        age: 55
+        is_tax_unit_spouse: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    is_ssi_ineligible_parent: [true, true, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 12]
+    ssi: [0, 0, 11_928]
+
+# Married parents in separate tax units, with parent ids naming the mother. Both
+# live with the child, so 20 CFR 416.1165(d)(3)(i) subtracts the whole couple rate
+# from the mother's wages: (48,000 - 240 - 780) / 2 = 23,490, less 1,491 x 12 =
+# 17,892, deems 5,598. The child's countable income is 5,598 - 240 = 5,358 and SSI
+# is 994 x 12 - 5,358 = 6,570.
+- name: Married parents in separate tax units subtract the whole couple rate from the mother's wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 10
+        person_id: 1
+        parent_1_id: 2
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 35
+        person_id: 2
+        is_tax_unit_head: true
+        employment_income_before_lsr: 48_000
+      person3:
+        age: 38
+        person_id: 3
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person2, person3]
+      marital_unit2:
+        members: [person1]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    is_ssi_ineligible_parent: [false, true, true]
+    ssi_ineligible_parent_allocation: [0, 17_892, 17_892]
+    ssi_unearned_income_deemed_from_ineligible_parent: [5_598, 0, 0]
+    ssi_countable_income: [5_358, 0, 0]
+    ssi: [6_570, 0, 0]

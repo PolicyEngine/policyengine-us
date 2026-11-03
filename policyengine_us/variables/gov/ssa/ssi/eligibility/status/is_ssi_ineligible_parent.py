@@ -2,6 +2,14 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_established_spouse_indices,
+)
+from policyengine_us.variables.household.demographic.person._parent_links import (
+    co_resident_parent_indices,
+    is_parent_of_any,
+    linked_child_count,
+)
 
 
 class is_ssi_ineligible_parent(Variable):
@@ -9,12 +17,14 @@ class is_ssi_ineligible_parent(Variable):
     entity = Person
     label = "Is an SSI-ineligible parent in respect of a child"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/cfr/text/20/416.1160#d"
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/20/416.1160#d",
+        "https://www.law.cornell.edu/cfr/text/20/416.1163#d",
+    )
 
     def formula(person, period, parameters):
         aged_blind_disabled = person("is_ssi_aged_blind_disabled", period)
         child = person("is_child", period)
-        is_parent = person("is_parent", period)
         # 20 CFR 416.1160(d): an ineligible parent "is not eligible for SSI
         # benefits", which includes an aged, blind or disabled parent whose own
         # income, resources or noncitizen status rule out SSI. is_ssi_eligible has
@@ -22,25 +32,32 @@ class is_ssi_ineligible_parent(Variable):
         # variables, depends on this variable, so the parent's tests are read
         # from their own inputs.
         joint_claim = person("ssi_claim_is_joint", period)
-        spouse_deeming = person("is_ssi_spousal_deeming_applies", period)
-        as_couple = joint_claim | spouse_deeming
         earned = person("ssi_earned_income", period)
         unearned = person("ssi_unearned_income", period)
+        # A joint claim tests the couple's income. Otherwise 416.1163(d)(2) adds
+        # what remains of an ineligible spouse's income after the allocations
+        # for ineligible children in 416.1163(b).
         countable_income = _apply_ssi_exclusions(
-            where(as_couple, person.marital_unit.sum(earned), earned),
-            where(as_couple, person.marital_unit.sum(unearned), unearned),
+            where(joint_claim, person.marital_unit.sum(earned), earned),
+            where(joint_claim, person.marital_unit.sum(unearned), unearned),
             parameters,
             period,
-        )
+        ) + person("ssi_income_deemed_from_ineligible_spouse", period)
         p = parameters(period).gov.ssa.ssi
-        benefit_rate = where(as_couple, p.amount.couple, p.amount.individual)
+        benefit_rate = where(
+            joint_claim | person("is_ssi_spousal_deeming_applies", period),
+            p.amount.couple,
+            p.amount.individual,
+        )
         meets_income_test = countable_income <= benefit_rate * MONTHS_IN_YEAR
         resources = person("ssi_countable_resources", period)
         limit = p.eligibility.resources.limit
+        first, second = co_resident_parent_indices(person, period)
+        spouse = _ssi_established_spouse_indices(person, period, first, second)
         # 20 CFR 416.1205(a) tests a married person against the couple limit,
         # including the resources of an ineligible spouse.
         meets_resource_test = where(
-            person.marital_unit.nb_persons() == 2,
+            spouse >= 0,
             person.marital_unit.sum(resources) <= limit.couple,
             resources <= limit.individual,
         )
@@ -54,5 +71,12 @@ class is_ssi_ineligible_parent(Variable):
             & meets_resource_test
             & meets_noncitizen_test
         )
-        has_child_to_deem_to = person.tax_unit.sum(aged_blind_disabled & child) > 0
-        return ~eligible_parent & ~child & is_parent & has_child_to_deem_to
+        # 416.1160(d) limits an ineligible parent to a natural or adoptive parent
+        # who lives with the child, or that parent's spouse. Parent ids settle who
+        # they are. With no ids, the tax-unit proxy cannot tell a grandparent or
+        # an unrelated parent from the child's parent: this is a data limitation.
+        eligible_child = aged_blind_disabled & child
+        has_own_child = is_parent_of_any(person, period, eligible_child)
+        named_parent = linked_child_count(person, period, eligible_child) > 0
+        spouse_of_named_parent = (spouse >= 0) & named_parent[spouse]
+        return ~eligible_parent & ~child & (has_own_child | spouse_of_named_parent)

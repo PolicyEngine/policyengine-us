@@ -10733,6 +10733,37 @@ candidates:
     which counts any SSI receipt among the benefits in gov.usda.disabled_programs (is_snap_alien_waiting_period_exempt.py,
     is_usda_disabled.py, disabled_programs.yaml). The statute-first rule requires revising the any-SSI exemption
     if the narrower reading holds; first check the cross-referenced disability definition and the preamble''s scope.'
+- id: us:ssi-parental-child-allocation-order
+  program: ssi
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: For a parent ineligible because of excess income, does the ineligible-child allocation come off the parent's
+    income before the income exclusions and the parent allocation, or off the excess over the parent's benefit rate?
+  sources:
+  - kind: regulation
+    citation: 20 CFR 416.1165(b), (d)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1165
+  - kind: manual
+    citation: POMS SI 01320.630 B.1-2
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501320630
+  readings:
+    statute: 416.1165(b) says "We next deduct an allocation for each ineligible child in the household", and only then
+      does 416.1165(d) apply the $20, the $65 plus one-half and the benefit rate.
+    other: 'SI 01320.630 B.2 says "From the amount in excess of what is required to reduce the individual''s (parent)
+      or couple''s (both parents) payment to zero, subtract an allocation for each ineligible child."'
+  example: In 2026 an aged parent with $4,000 of monthly wages, a disabled child and a non-disabled child deems $8,580
+    a year under the regulation and $5,598 under the POMS order. The orders differ only when the allocation falls on
+    earned income.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/from_ineligible_parent/ssi_unearned_income_deemed_from_ineligible_parent.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10630
+  state: ruled
+  note: "Keeps the regulation's order. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10630"
 - id: us:ssi-spousal-deeming-child-scope
   program: ssi
   years:
