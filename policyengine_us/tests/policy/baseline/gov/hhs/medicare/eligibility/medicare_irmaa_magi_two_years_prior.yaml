@@ -30,7 +30,8 @@
 
 - name: Case 2, 2016 benefit year with only 2016 inputs uses 2016 income.
   period: 2016
-  absolute_error_margin: 0.01
+  # MAGI is stored as float32, so allow for its rounding.
+  absolute_error_margin: 0.1
   input:
     age: 66
     employment_income: 500_000
