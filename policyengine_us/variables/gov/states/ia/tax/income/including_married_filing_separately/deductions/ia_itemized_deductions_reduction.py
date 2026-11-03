@@ -12,8 +12,8 @@ class ia_itemized_deductions_reduction(Variable):
         "https://revenue.iowa.gov/media/2335/download?inline=#page=1",
         # 701 IAC 41.11 (IAC 2/28/18), PDF pages 9-10.
         "https://www.legis.iowa.gov/docs/iac/chapter/03-28-2018.701.41.pdf#page=9",
-        # Iowa Code 422.9(2) (2019).
-        "https://www.legis.iowa.gov/docs/code/2019/422.9.pdf#page=1",
+        # Iowa Code 422.9(2) (2018).
+        "https://www.legis.iowa.gov/docs/code/2018/422.9.pdf#page=1",
     )
     defined_for = StateCode.IA
 
