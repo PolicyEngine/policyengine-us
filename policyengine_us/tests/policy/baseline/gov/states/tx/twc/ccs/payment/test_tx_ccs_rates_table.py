@@ -1,28 +1,34 @@
 """Check the Texas CCS four-age-group rates against TWC's rate rules.
 
-Under 40 TAC §809.20(c), Boards must set Texas Rising Star rates at least 5, 7
-and 9 percent above the regular rate. Under (d), they may set them higher if
-each star level exceeds the one below by at least 2 percentage points. TWC
-tiers Texas School Ready rates under the same rule (WD Letter 20-23). Every
-rate in TWC's revised BCY 2024 table (October 16, 2023) and its BCY 2025 table
-clears these floors with no rounding allowance. The August 29, 2023 original
-misses both floors by under a cent in some cells, and these checks fail on its
-values. For BCY 2025, TWC's Commission kept every rate at or above its BCY 2024
-level, except relative care rates, which Boards set locally (WD Letter 19-24,
-Change 1).
+Under 40 TAC §809.20(b) and (c), Boards must set Two-, Three- and Four-Star
+Texas Rising Star rates at least 5, 7 and 9 percent above the regular rate.
+They must set Texas School Ready rates for infants, toddlers and preschoolers
+at least 5 percent above it. Under (d), they may set Texas Rising Star rates
+higher if each star level exceeds the one below by at least 2 percentage
+points. Every rate in TWC's revised BCY 2024 table (October 16, 2023) and its
+BCY 2025 table clears these floors with no rounding allowance. The August 29,
+2023 original misses both floors by under a cent in some cells, and these
+checks fail on its values. For BCY 2025, TWC's Commission kept every rate at
+or above its BCY 2024 level, except relative care rates, which Boards set
+locally (WD Letter 19-24, Change 1).
 
 In both tables, TWC also followed two patterns that no rule requires. It
-printed each Texas School Ready rate equal to the Two-Star rate. Outside
-relative care, it printed each part-time rate below the full-time rate and each
-blended rate between the two, except in the cells EQUAL_PART_AND_FULL_TIME
-lists. The tests check both patterns.
+printed each Texas School Ready rate equal to the Two-Star rate, school age
+included, although under §809.20(b)(2), Boards set Texas School Ready rates
+only for infants, toddlers and preschoolers. Outside relative care, it printed
+each part-time rate below the full-time rate and each blended rate between the
+two, except in the cells EQUAL_PART_AND_FULL_TIME lists. The tests check both
+patterns, and they hold school-age Texas School Ready rates to the 5 percent
+floor too.
 
 Each check runs over all 4,032 cells of both board contract years. A test fails
 when a value typed into the wrong cell breaks one of these bounds, as a
-part-time rate copied into a full-time cell does. The checks can still pass a
-regular rate typed too low, or a Three- or Four-Star rate typed too high. The
-YAML tests pin single cells to TWC's tables. This test reads the YAML file
-directly and builds no tax-benefit system.
+part-time rate copied into a full-time cell does outside relative care. The
+checks can still pass a regular rate typed too low, a Three- or Four-Star rate
+typed too high, a rate copied from another age group, or a relative care
+part-time rate copied into a full-time cell. The YAML tests pin single cells to
+TWC's tables. This test reads the YAML file directly and builds no tax-benefit
+system.
 """
 
 import datetime
@@ -144,7 +150,7 @@ def test_part_time_and_blended_rates_within_full_time(year):
     # a part-time rate at or above the full-time rate points to a value in the
     # wrong column. Some Boards pay relative care the same for both schedules,
     # and TWC printed equal rates for the cells in EQUAL_PART_AND_FULL_TIME, so
-    # those get the non-strict check.
+    # for relative care and those cells, the test allows equal rates.
     failures = []
     for cell, values in CELLS.items():
         region, provider_type, _, age, schedule = cell
@@ -164,9 +170,10 @@ def test_part_time_and_blended_rates_within_full_time(year):
 
 @pytest.mark.parametrize("year", YEARS)
 def test_school_ready_rates_equal_two_star_rates(year):
-    # Under §809.20(c), Boards need only set Texas School Ready rates at least
-    # 5 percent above the regular rate, but TWC printed each one equal to the
-    # Two-Star rate in both tables.
+    # Under §809.20(b)(2) and (c)(1)(B), Boards must set Texas School Ready
+    # rates for infants, toddlers and preschoolers at least 5 percent above the
+    # regular rate. TWC printed every Texas School Ready rate, school age
+    # included, equal to the Two-Star rate in both tables.
     failures = [
         (cell, values[year], CELLS[_with(cell, rating="TRS2")][year])
         for cell, values in CELLS.items()
