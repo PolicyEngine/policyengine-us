@@ -73,3 +73,21 @@
     # (1,460 - (23,500 - 8,060) x 8.785%) x 80% = (1,460 - 1,356.40) x 80%.
     # Schedule H's Tables A and B round to bands and give 84.
     wi_homestead_credit: 82.88
+
+- name: Case 6, the claimant's state supplement reduces the credit through household income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    age: 70
+    wi_ssi_e_certified: true
+    takes_up_snap_if_eligible: false
+    wi_homestead_eligible: true
+    wi_homestead_property_tax: 1_460
+  output:
+    # 11,928 SSI + 2,301.08 state supplement.
+    wi_homestead_income: 14_229.08
+    # (14,229.08 - 8,060) * 0.08785 = 541.95 phase-out;
+    # (1,460 - 541.95) * 0.8 = 734.44. Without the supplement:
+    # (11,928 - 8,060) * 0.08785 = 339.80; (1,460 - 339.80) * 0.8 = 896.16.
+    wi_homestead_credit: 734.44

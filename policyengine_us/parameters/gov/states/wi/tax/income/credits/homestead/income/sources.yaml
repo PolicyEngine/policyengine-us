@@ -7,6 +7,10 @@ metadata:
       href: https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2021/0013_homestead_tax_credit_informational_paper_13.pdf#page=14
     - title: 2025 Wisconsin Schedule H instructions
       href: https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleH-inst.pdf#page=6
+    - title: Wis. Stat. 71.52(4)-(6)
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/52
+    - title: Wisconsin DOR Publication 127, Homestead Credit Situations and Solutions
+      href: https://www.revenue.wi.gov/DOR%20Publications/pb127.pdf#page=9
 values:
   2021-01-01:
     - adjusted_gross_income
@@ -19,5 +23,8 @@ values:
     - tax_exempt_unemployment_compensation
     # cash transfer income sources:
     - ssi
-    # wi_state_supplement
+    # State SSI, SSI-E and Caretaker Supplement payments (Wis. Stat.
+    # 71.52(5); Publication 127, page 9). Like ssi, a dependent child's own
+    # supplement stays out of household income.
+    - wi_ssp
     - tanf

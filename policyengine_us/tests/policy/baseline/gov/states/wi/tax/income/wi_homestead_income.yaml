@@ -256,9 +256,11 @@
         state_code: WI
   output:
     # No Social Security is taxable: 6,000 + 5,000 is below the joint
-    # 32,000 base. Household income = 6,000 + 10,000 + 1,000 = 17,000.
+    # 32,000 base. The spouse's SSI brings the regular state supplement,
+    # 83.78 * 12 = 1,005.36. Household income =
+    # 6,000 + 10,000 + 1,000 + 1,005.36 = 18,005.36.
     adjusted_gross_income: 6_000
-    wi_homestead_income: 17_000
+    wi_homestead_income: 18_005.36
 
 - name: Case 11, spouses' household income is unchanged when their roles are swapped.
   period: 2024
@@ -288,8 +290,9 @@
         members: [person1, person2]
         state_code: WI
   output:
+    # Same as Case 10, including the head's 1,005.36 state supplement.
     adjusted_gross_income: 6_000
-    wi_homestead_income: 17_000
+    wi_homestead_income: 18_005.36
 
 # Negative Social Security represents required repayments of nontaxable
 # benefits included in household income on a prior homestead claim.
@@ -451,3 +454,83 @@
     # Leave out the child's benefits: 6,000 - 1,000 - 500 = 4,500.
     adjusted_gross_income: 6_000
     wi_homestead_income: 4_500
+
+- name: Case 17, the claimant's state supplement and SSI-E count as household income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    age: 70
+    wi_ssi_e_certified: true
+    takes_up_snap_if_eligible: false
+  output:
+    # 994 * 12 = 11,928.
+    ssi: 11_928
+    # Regular 1,072.40 + SSI-E 1,228.68 = 2,301.08.
+    wi_ssp: 2_301.08
+    # 11,928 + 2,301.08 = 14,229.08.
+    wi_homestead_income: 14_229.08
+
+- name: Case 18, a dependent child's own state supplement is not household income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 20_000
+        ssi: 0
+        wi_ssp: 0
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        ssi: 6_000
+        wi_ssp: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    adjusted_gross_income: 20_000
+    # Leave out the child's SSI and supplement: 20,000 - 500 = 19,500.
+    wi_homestead_income: 19_500
+
+- name: Case 19, a parent's Caretaker Supplement counts as household income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        ssi: 9_000
+        wi_ssp_regular: 0
+        wi_ssi_e: 0
+        wi_cts: 3_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_ssp: [3_000, 0]
+    # 9,000 SSI + 3,000 Caretaker Supplement - 500 dependent exemption.
+    wi_homestead_income: 11_500
