@@ -38,55 +38,14 @@ class tob_revenue_oasdi(Variable):
         nothing, so OASDI takes the whole increase and HI none.
 
         Method:
-        1. Calculate tax with NO taxable SS
-        2. Calculate tax with the lesser of the pre-1993 section 86 includible
-           amount and actual inclusion
+        1. Calculate chapter 1 tax with NO taxable SS
+        2. Calculate chapter 1 tax with the lesser of the pre-1993 section 86
+           includible amount and actual inclusion
         3. Signed OASDI revenue = (2) - (1), without a per-unit floor
         """
-        sim = tax_unit.simulation
-        # Read actual inclusion here, before any branch neutralizes it.
-        taxable_ss = tax_unit("tax_unit_taxable_social_security", period)
-        old_law_taxable_ss = min_(
-            tax_unit("tax_unit_taxable_social_security_pre_1993", period),
-            taxable_ss,
-        )
-
-        # === Branch 1: Tax with NO taxable SS ===
-        branch_no_ss = sim.get_branch("oasdi_no_ss", clone_system=True)
-        branch_no_ss.tax_benefit_system.neutralize_variable(
-            "tax_unit_taxable_social_security"
-        )
-
-        # Clear only non-input cached calculations
-        input_vars = set(branch_no_ss.input_variables)
-        for var_name in list(branch_no_ss.tax_benefit_system.variables.keys()):
-            if var_name not in input_vars:
-                try:
-                    branch_no_ss.delete_arrays(var_name)
-                except:
-                    pass
-
-        tax_no_ss = branch_no_ss.tax_unit("income_tax_chapter_1", period)
-        del sim.branches["oasdi_no_ss"]
-
-        # === Branch 2: Tax with the capped pre-1993 includible amount ===
-        branch_old_law = sim.get_branch("oasdi_old_law", clone_system=True)
-
-        # Clear only non-input cached calculations before setting new value
-        input_vars = set(branch_old_law.input_variables)
-        for var_name in list(branch_old_law.tax_benefit_system.variables.keys()):
-            if var_name not in input_vars:
-                try:
-                    branch_old_law.delete_arrays(var_name)
-                except:
-                    pass
-
-        # Override taxable SS after clearing computed arrays, preserving inputs.
-        tax_unit_pop = branch_old_law.populations["tax_unit"]
-        holder = tax_unit_pop.get_holder("tax_unit_taxable_social_security")
-        holder.set_input(period, old_law_taxable_ss)
-
-        tax_old_law_ss = branch_old_law.tax_unit("income_tax_chapter_1", period)
-        del sim.branches["oasdi_old_law"]
+        # Each state is cached on the parent after its branch is released.
+        # The capped old-law state reads actual inclusion in this simulation.
+        tax_old_law_ss = tax_unit("income_tax_with_pre_1993_social_security", period)
+        tax_no_ss = tax_unit("income_tax_without_social_security", period)
 
         return tax_old_law_ss - tax_no_ss
