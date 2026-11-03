@@ -606,3 +606,31 @@
     eitc: 0
     me_pro_forma_childless_eitc: 765
     me_eitc: 153
+
+- name: 2024 federally eligible couple aged 23 and 64.5 that does not take up the federal EITC gets no Maine credit
+  # The 64.5-year-old has not attained 65, so the couple fails the Maine cohort
+  # and takes the federal path. If the federal test goes back to the exact age,
+  # the cohort flag and the pro forma credit return, and me_eitc pays 306.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 64.5
+      spouse:
+        age: 23
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        takes_up_eitc: false
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false
+    eitc: 0
+    me_pro_forma_childless_eitc: 0
+    me_eitc: 0
