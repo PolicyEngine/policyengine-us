@@ -9,8 +9,8 @@ class vt_student_loan_interest_subtraction(Variable):
     definition_period = YEAR
     reference = (
         "https://legislature.vermont.gov/statutes/section/32/151/05811",
-        # 2022 Act 138, Sec. 5 (the subtraction) and Sec. 13 (effective date)
-        # PDF pages 4-5, 15
+        # 2021, No. 138 (Adj. Sess.), §§ 5, 6, eff. Jan. 1, 2022 (the history
+        # note to § 5811)
         "https://legislature.vermont.gov/Documents/2022/Docs/ACTS/ACT138/ACT138%20As%20Enacted.pdf#page=4",
         # Schedule IN-112 lines 16a-16c, form and instructions
         # PDF pages 23, 33
@@ -33,10 +33,13 @@ class vt_student_loan_interest_subtraction(Variable):
         federal_deduction = add(tax_unit, period, ["student_loan_interest_ald"])
         remaining_interest = max_(interest_paid - federal_deduction, 0)
         # 5811(29)(B): a qualified resident taxpayer's adjusted gross income is
-        # at most $200,000 if married filing jointly and $120,000 otherwise.
+        # at most $120,000 if single, head of household or married filing
+        # separately, and $200,000 if married filing jointly. It sets no limit
+        # for a qualifying surviving spouse, who doesn't qualify;
+        # income_limit.yaml records that.
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         income_eligible = agi <= p.income_limit[filing_status]
-        # 2022 Act 138 took effect on January 1, 2022; Vermont had no such
-        # subtraction before.
+        # The history note to § 5811 dates 2021, No. 138 (Adj. Sess.), §§ 5
+        # and 6 to Jan. 1, 2022; the subtraction applies from that date.
         return p.in_effect * income_eligible * remaining_interest
