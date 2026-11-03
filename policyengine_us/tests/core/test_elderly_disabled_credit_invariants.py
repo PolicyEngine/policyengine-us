@@ -5,11 +5,12 @@
    amount for a separate filer never exceeds $3,750.
 2. For every status but separate, the section 22 amount equals the formula
    before the separate-filer change, frozen below as a reference function.
-3. For a separate filer it equals the statute's closed form: zero if the
-   spouses lived together at any time in the year (22(e)(1)); otherwise
-   min($3,750 if anyone qualifies, the 22(c)(2)(B) cap), less nontaxable
-   pensions and social security (22(c)(3)), less half of AGI over $5,000
-   (22(d)), floored at zero.
+3. For a separate filer it equals the closed form of 22(c)-(e) with the
+   model's count of qualifying members (which, like the model, includes
+   dependents): zero if the spouses lived together at any time in the
+   year (22(e)(1)); otherwise min($3,750 if any member qualifies, the
+   22(c)(2)(B) cap), less nontaxable pensions and social security
+   (22(c)(3)), less half of AGI over $5,000 (22(d)), floored at zero.
 
 Units may carry a dependent, who can qualify by age, so a separate filer
 can count two qualified individuals.
@@ -138,7 +139,8 @@ def pre_change_section_22(n, filing_status, cap, nontaxable, agi):
 
 
 def statute_separate_section_22(n, lived_together, cap, nontaxable, agi):
-    """26 U.S.C. 22(c)-(e) for a married individual filing separately."""
+    """26 U.S.C. 22(c)-(e) for a married individual filing separately, counting
+    qualifying members as the model does (dependents included)."""
     initial = np.where(n >= 1, SEPARATE_INITIAL_AMOUNT, 0)
     reduction = PHASE_OUT_RATE * np.maximum(0, agi - PHASE_OUT_THRESHOLD["SEPARATE"])
     amount = np.maximum(0, np.minimum(initial, cap) - nontaxable - reduction)

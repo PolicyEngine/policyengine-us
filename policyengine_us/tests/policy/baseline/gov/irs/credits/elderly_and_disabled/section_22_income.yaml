@@ -218,3 +218,26 @@
     section_22_income: 5_000
     # 15% x 5,000 = 750.
     elderly_disabled_credit_potential: 750
+
+- name: A separate filer with no qualifying member has no initial amount.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 60
+        employment_income: 2_000
+        total_disability_payments: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+        cohabitating_spouses: false
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # Under 65 and not retired on total disability, so 22(b) doesn't reach
+    # this filer: no initial amount, whatever the disability pay.
+    section_22_income: 0
+    elderly_disabled_credit_potential: 0
