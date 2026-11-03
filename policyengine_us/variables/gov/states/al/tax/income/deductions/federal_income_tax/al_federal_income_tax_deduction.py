@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.period_branch import drop_recomputed_values
 from policyengine_us.tools.pinned_tbs import (
     CREDIT_DEPENDENT_VARIABLES,
     IRC_2020_RECOMPUTED_VARIABLES,
@@ -60,18 +61,19 @@ class al_federal_income_tax_deduction(Variable):
         simulation = tax_unit.simulation
         branch = get_branch_for_period(simulation, "al_2020_irc", period)
         branch.tax_benefit_system = get_2020_irc_tbs(simulation.tax_benefit_system)
-        for variable in branch.tax_benefit_system.variables:
-            if any(
-                key in variable
-                for key in (
-                    "ctc",
-                    "cdcc",
-                    "eitc",
-                    *CREDIT_DEPENDENT_VARIABLES,
-                    *IRC_2020_RECOMPUTED_VARIABLES,
-                )
-            ):
-                branch.delete_arrays(variable)
+        # Recalculate the credits' formula variables under the 2020 IRC, a
+        # supplied current-law value included; keep plain inputs such as
+        # takes_up_eitc.
+        drop_recomputed_values(
+            branch,
+            [
+                "ctc",
+                "cdcc",
+                "eitc",
+                *CREDIT_DEPENDENT_VARIABLES,
+                *IRC_2020_RECOMPUTED_VARIABLES,
+            ],
+        )
         recomputed_ctc = branch.tax_unit("ctc", period)
         recomputed_refundable_ctc = branch.tax_unit("refundable_ctc", period)
         # Under the 2020 IRC the CDCC is non-refundable (limited by tax), so the

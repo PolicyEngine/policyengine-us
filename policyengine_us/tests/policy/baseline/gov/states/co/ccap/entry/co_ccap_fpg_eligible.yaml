@@ -37,3 +37,16 @@
     spm_unit_fpg: [12, 12]
   output:
     co_ccap_fpg_eligible: [false, true]
+
+# Before October 2015, the parameters are read at 2015-01-01, the date they
+# are backdated to, rather than the October before, where none exist.
+- name: In January 2015, Adams County limit is 235% of FPL.
+  period: 2015-01
+  input:
+    state_code_str: [CO, CO]
+    co_ccap_countable_income: [28.1, 28.3]
+    county_str: [ADAMS_COUNTY_CO, ADAMS_COUNTY_CO]
+    spm_unit_fpg: [144, 144]
+  output:
+    # 144 / 12 x 2.35 = 28.20.
+    co_ccap_fpg_eligible: [true, false]
