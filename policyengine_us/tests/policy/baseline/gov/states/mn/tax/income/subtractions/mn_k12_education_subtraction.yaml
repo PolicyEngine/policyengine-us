@@ -1,41 +1,335 @@
-- name: Minnesota K-12 Education Subtraction - single child
+# Minn. Stat. 290.0132 subd. 4 caps the subtraction separately for each
+# qualifying child: $1,625 in kindergarten to grade 6 and $2,500 in grades 7
+# to 12.
+- name: One child in grades 7 to 12 with expenses under the higher cap
   period: 2025
   input:
-    state_code: MN
-    k12_tuition_and_fees: 2_000
-    mn_k12_qualifying_children: 1
+    people:
+      parent:
+        age: 40
+      child:
+        age: 14
+        is_in_k12_school: true
+        mn_k12_education_subtraction_qualifying_expenses_person: 2_000
+        mn_k12_education_subtraction_higher_cap_eligible: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
   output:
-    # Max subtraction = 1 * $2,500 = $2,500
-    # Subtraction = min(2,000, 2,500) = 2,000
+    # min(2,000, 2,500) = 2,000.
     mn_k12_education_subtraction: 2_000
 
-- name: Minnesota K-12 Education Subtraction - expenses over maximum
+- name: One child in grades 7 to 12 with expenses over the higher cap
   period: 2025
   input:
-    state_code: MN
-    k12_tuition_and_fees: 5_000
-    mn_k12_qualifying_children: 1
+    people:
+      parent:
+        age: 40
+      child:
+        age: 15
+        is_in_k12_school: true
+        mn_k12_education_subtraction_qualifying_expenses_person: 5_000
+        mn_k12_education_subtraction_higher_cap_eligible: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
   output:
-    # Max subtraction = 1 * $2,500 = $2,500
-    # Subtraction = min(5,000, 2,500) = 2,500
+    # min(5,000, 2,500) = 2,500.
     mn_k12_education_subtraction: 2_500
 
-- name: Minnesota K-12 Education Subtraction - two children
+- name: A child in kindergarten to grade 6 is capped at the lower amount
   period: 2025
   input:
-    state_code: MN
-    k12_tuition_and_fees: 4_000
-    mn_k12_qualifying_children: 2
+    people:
+      parent:
+        age: 40
+      child:
+        age: 9
+        is_in_k12_school: true
+        mn_k12_education_subtraction_qualifying_expenses_person: 2_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
   output:
-    # Max subtraction = 2 * $2,500 = $5,000
-    # Subtraction = min(4,000, 5,000) = 4,000
-    mn_k12_education_subtraction: 4_000
+    # min(2,000, 1,625) = 1,625. Main applied 2,500 to every child: 2,000.
+    mn_k12_education_subtraction: 1_625
 
-- name: Minnesota K-12 Education Subtraction - no qualifying children
+- name: Each child is capped separately and one child's unused cap does not carry over
   period: 2025
   input:
-    state_code: MN
-    k12_tuition_and_fees: 2_000
-    mn_k12_qualifying_children: 0
+    people:
+      parent:
+        age: 40
+      younger:
+        age: 11
+        is_in_k12_school: true
+        mn_k12_education_subtraction_qualifying_expenses_person: 2_000
+      older:
+        age: 15
+        is_in_k12_school: true
+        mn_k12_education_subtraction_qualifying_expenses_person: 1_000
+        mn_k12_education_subtraction_higher_cap_eligible: true
+    tax_units:
+      tax_unit:
+        members: [parent, younger, older]
+    households:
+      household:
+        members: [parent, younger, older]
+        state_code: MN
+  output:
+    # min(2,000, 1,625) + min(1,000, 2,500) = 1,625 + 1,000 = 2,625.
+    # Main: min(3,000, 2 x 2,500) = 3,000.
+    mn_k12_education_subtraction: 2_625
+
+- name: Expenses for a person who is not a qualifying child are not subtracted
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        mn_k12_education_subtraction_qualifying_expenses_person: 2_000
+      child:
+        age: 4
+        is_in_k12_school: false
+        mn_k12_education_subtraction_qualifying_expenses_person: 2_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
+  output:
+    mn_k12_education_subtraction: 0
+
+- name: Negative expenses do not reduce another child's subtraction
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 40
+      younger:
+        age: 7
+        is_in_k12_school: true
+        mn_k12_education_subtraction_qualifying_expenses_person: -500
+      older:
+        age: 13
+        is_in_k12_school: true
+        mn_k12_education_subtraction_qualifying_expenses_person: 3_000
+        mn_k12_education_subtraction_higher_cap_eligible: true
+    tax_units:
+      tax_unit:
+        members: [parent, younger, older]
+    households:
+      household:
+        members: [parent, younger, older]
+        state_code: MN
+  output:
+    # max(-500, 0) + min(3,000, 2,500) = 2,500.
+    mn_k12_education_subtraction: 2_500
+
+# A household with only the tax-unit total: that total meets the sum of the
+# children's caps, because it can't be split by child.
+- name: A tax-unit total over the sum of the caps stops at that sum
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+      younger:
+        age: 9
+        is_in_k12_school: true
+      older:
+        age: 15
+        is_in_k12_school: true
+        mn_k12_education_subtraction_higher_cap_eligible: true
+    tax_units:
+      tax_unit:
+        members: [parent, younger, older]
+        k12_tuition_and_fees: 5_000
+    households:
+      household:
+        members: [parent, younger, older]
+        state_code: MN
+  output:
+    # min(5,000, 1,625 + 2,500) = 4,125.
+    mn_k12_education_subtraction: 4_125
+
+- name: A tax-unit total under the sum of the caps counts in full
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+      younger:
+        age: 9
+        is_in_k12_school: true
+      older:
+        age: 15
+        is_in_k12_school: true
+        mn_k12_education_subtraction_higher_cap_eligible: true
+    tax_units:
+      tax_unit:
+        members: [parent, younger, older]
+        k12_tuition_and_fees: 3_000
+    households:
+      household:
+        members: [parent, younger, older]
+        state_code: MN
+  output:
+    # min(3,000, 4,125) = 3,000.
+    mn_k12_education_subtraction: 3_000
+
+- name: Per-child records govern over a tax-unit total
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+      child:
+        age: 15
+        is_in_k12_school: true
+        mn_k12_education_subtraction_qualifying_expenses_person: 1_000
+        mn_k12_education_subtraction_higher_cap_eligible: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        k12_tuition_and_fees: 5_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
+  output:
+    mn_k12_education_subtraction: 1_000
+
+- name: A tax-unit total with no K-12 child gives no subtraction
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+      child:
+        age: 4
+        is_in_k12_school: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        k12_tuition_and_fees: 5_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
+  output:
+    mn_k12_education_subtraction: 0
+
+# Without a grade input, the formula imputes the grade at the end of the tax
+# year from age. It reads is_in_k12_school's ages 5 to 17 as kindergarten to
+# grade 12 (grade = age - 5), so a child aged 12 or older falls in grades 7 to
+# 12.
+- name: A tax-unit total with no grade input caps by imputed grade
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+      younger:
+        age: 9
+        is_in_k12_school: true
+      older:
+        age: 15
+        is_in_k12_school: true
+    tax_units:
+      tax_unit:
+        members: [parent, younger, older]
+        k12_tuition_and_fees: 5_000
+    households:
+      household:
+        members: [parent, younger, older]
+        state_code: MN
+  output:
+    # Age 9 is grade 4 and age 15 is grade 10:
+    # min(5,000, 1,625 + 2,500) = 4,125.
+    mn_k12_education_subtraction: 4_125
+
+- name: Age 12 is the first age imputed to grades 7 to 12
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+      younger:
+        age: 11
+        is_in_k12_school: true
+        mn_k12_education_subtraction_qualifying_expenses_person: 2_000
+      older:
+        age: 12
+        is_in_k12_school: true
+        mn_k12_education_subtraction_qualifying_expenses_person: 2_000
+    tax_units:
+      tax_unit:
+        members: [parent, younger, older]
+    households:
+      household:
+        members: [parent, younger, older]
+        state_code: MN
+  output:
+    # Age 11 is grade 6 and age 12 is grade 7:
+    # min(2,000, 1,625) + min(2,000, 2,500) = 1,625 + 2,000 = 3,625.
+    mn_k12_education_subtraction: 3_625
+
+- name: A grade input overrides the age imputation
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+      child:
+        age: 15
+        is_in_k12_school: true
+        mn_k12_education_subtraction_qualifying_expenses_person: 2_000
+        mn_k12_education_subtraction_higher_cap_eligible: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
+  output:
+    # min(2,000, 1,625) = 1,625.
+    mn_k12_education_subtraction: 1_625
+
+- name: The K-12 dependent proxy leaves out a student who is not a tax-unit dependent
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+      child:
+        age: 16
+        is_in_k12_school: true
+        is_tax_unit_dependent: false
+        mn_k12_education_subtraction_qualifying_expenses_person: 1_000
+        mn_k12_education_subtraction_higher_cap_eligible: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        k12_tuition_and_fees: 1_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
   output:
     mn_k12_education_subtraction: 0
