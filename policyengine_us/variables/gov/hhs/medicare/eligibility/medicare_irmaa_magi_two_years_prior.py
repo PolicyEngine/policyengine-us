@@ -1,25 +1,27 @@
+from functools import reduce
+
 from policyengine_us.model_api import *
 from policyengine_us.tools.parameters import FIRST_MODELED_YEAR
+from policyengine_us.variables.gov.hhs.medicare.eligibility.medicare_irmaa_tax_year_magi import (
+    PERSON_ADDITIONS,
+    TAX_UNIT_ADDITIONS,
+)
 
-# 42 U.S.C. 1395r(i)(4)(A): adjusted gross income (i) determined without
-# regard to sections 135, 911, 931 and 933 of the Internal Revenue Code and
-# (ii) increased by tax-exempt interest. Income inputs are net of the section
-# 911 amounts (Form 2555 lines 45 and 50); sections 135, 931 and 933 are
-# above-the-line deductions in this model. Adding each amount back undoes it.
-TAX_UNIT_ADDITIONS = [
-    "section_911_excluded_income",
-    "specified_possession_income",
-    "puerto_rico_income",
-]
-# Person-level amounts on the filer's return, summed over the members whose
-# amounts adjusted gross income counts: the head and spouse, and every member
-# for amounts listed in gov.irs.ald.filer_amounts_recorded_on_dependents. A
-# dependent's own tax-exempt interest is on the dependent's return. The
-# section 135 exclusion is listed: only a bond issued to an owner aged 24 or
-# older qualifies (26 U.S.C. 135(c)(1)(B); Form 8815), so an amount recorded
-# on a dependent is the filer's exclusion for the dependent's tuition, which
-# adjusted gross income deducts and this adds back.
-PERSON_ADDITIONS = ["tax_exempt_interest_income", "us_bonds_for_higher_ed"]
+# Per-capita CBO AGI: the series that extends a single-year dataset's dollar
+# inputs to later years when they have no series of their own
+# (DEFAULT_MICRODATA_UPRATING, divided by population). Deflating by it runs
+# that projection backward.
+LOOKBACK_DEFLATOR = (
+    "calibration.gov.cbo.income_by_source.adjusted_gross_income_per_capita"
+)
+
+
+def index_at(index, instant):
+    """The index at ``instant``, held at its first value before the series
+    begins, as policyengine-core holds an uprating index."""
+    value = index(instant)
+    # ``values_list`` runs from the latest instant to the earliest.
+    return index.values_list[-1].value if value is None else value
 
 
 class medicare_irmaa_magi_two_years_prior(Variable):
@@ -34,40 +36,65 @@ class medicare_irmaa_magi_two_years_prior(Variable):
         "https://www.irs.gov/pub/irs-prior/f8815--2025.pdf#page=3",
     )
     documentation = (
-        "Modified adjusted gross income used to determine Medicare IRMAA "
-        "charges. Callers may provide this value directly for the current "
-        "benefit year. When it is not provided, PolicyEngine computes it from "
-        "two years prior as adjusted gross income plus the head's and "
-        "spouse's tax-exempt interest and the amounts excluded or deducted "
-        "under IRC sections 135, 911, 931 and 933. "
-        "Single-year datasets without lagged income inputs therefore default "
-        "to the modeled prior-year values, which may be zero. When the year "
-        "two years prior precedes the first year PolicyEngine models (2015), "
-        "only income provided for that year counts, and the rest is zero."
+        "Modified adjusted gross income from two years before the benefit "
+        "year, which sets Medicare IRMAA charges "
+        "(medicare_irmaa_tax_year_magi for that year). Callers may provide "
+        "this value directly for the benefit year. "
+        "When the simulation holds no input for the year two years prior or "
+        "any earlier year, every input would read as its default there, so "
+        "PolicyEngine instead uses the IRMAA MAGI of the earliest year it "
+        "holds inputs for (no earlier than 2015, the first year it models), "
+        "deflated to the year two years prior by "
+        "calibration.gov.cbo.income_by_source.adjusted_gross_income_per_capita, "
+        "the index that extends single-year datasets to later years. A "
+        "single-year dataset thus supplies its own year's income to the two "
+        "benefit years whose income year precedes it. Any input supplied for "
+        "the year two years prior, or earlier, turns this off: the year's "
+        "inputs are then taken as given. "
+        "When the earliest input year is the benefit year itself, as for a "
+        "household entered for one year or a dataset's own year, the income "
+        "two years prior is imputed from the benefit year's income, so the "
+        "charges then move with that income in reforms and counterfactual "
+        "branches, as they do under "
+        "gov.simulation.medicare_irmaa_uses_current_year_income but "
+        "deflated. Provide this value, or inputs for the year two years "
+        "prior, to hold it fixed. "
+        "CBO AGI has no values for 2016 to 2018 and is held at its 2015 "
+        "value, so the index drifts down through 2018 and then rises 31% "
+        "from 2017 to 2019 and 39% from 2018 to 2020: a household entered "
+        "for 2016, 2017 or 2018 alone gets slightly more than that year's "
+        "income, and one entered for 2019 or 2020 alone gets that year's "
+        "income times 0.765 or 0.721. "
+        "When inputs reach back to 2013 or 2014 and the year two years prior "
+        "is one of those years, its income cannot be computed: only income "
+        "provided for it counts, and the rest is zero."
     )
 
     def formula(tax_unit, period, parameters):
         prior_period = period.offset(-2, "year")
-        if prior_period.start.year >= FIRST_MODELED_YEAR:
-            filer_amounts = parameters(
-                prior_period
-            ).gov.irs.ald.filer_amounts_recorded_on_dependents
-            return add(
-                tax_unit,
-                prior_period,
-                ["adjusted_gross_income", *TAX_UNIT_ADDITIONS],
-            ) + tax_unit_non_dep_add(
-                tax_unit,
-                prior_period,
-                PERSON_ADDITIONS,
-                include_dependents=filer_amounts,
+        first_input_year = earliest_input_year(tax_unit.simulation)
+        if first_input_year is None or prior_period.start.year < first_input_year:
+            # Inputs start after the year two years prior. Use the earliest
+            # year that has them, which may be the benefit year itself.
+            source_year = max(
+                (period.start.year if first_input_year is None else first_input_year),
+                FIRST_MODELED_YEAR,
             )
-        # Benefit years 2015 and 2016 look back to 2013 and 2014, before the
-        # parameters begin, so income for those years cannot be computed. Use
-        # income provided for them and treat the rest as zero, the value the
-        # formula yields in later years when no prior-year income is provided.
-        # Reading stored values computes and caches nothing for those years;
-        # tax unit roles are the benefit year's.
+            source_period = period.offset(source_year - period.start.year, "year")
+            magi = tax_unit("medicare_irmaa_tax_year_magi", source_period)
+            index = reduce(getattr, LOOKBACK_DEFLATOR.split("."), parameters)
+            return (
+                magi
+                * index_at(index, prior_period.start)
+                / index_at(index, source_period.start)
+            )
+        if prior_period.start.year >= FIRST_MODELED_YEAR:
+            return tax_unit("medicare_irmaa_tax_year_magi", prior_period)
+        # Inputs reach back to 2013 or 2014, before the parameters begin, so
+        # income for those years cannot be computed. Use income provided for
+        # them and treat the rest as zero. Reading stored values computes and
+        # caches nothing for those years; tax unit roles are the benefit
+        # year's.
         simulation = tax_unit.simulation
         filer_amounts = parameters(
             period

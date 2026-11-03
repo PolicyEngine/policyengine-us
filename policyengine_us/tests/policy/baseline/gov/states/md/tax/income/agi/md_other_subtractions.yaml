@@ -1,0 +1,14 @@
+- name: Case 1, default md_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: MD
+  output:
+    md_other_subtractions: 0.0
+
+- name: Case 2, md_other_subtractions flows into md_total_subtractions
+  period: 2024
+  input:
+    state_code: MD
+    md_other_subtractions: 1_400
+  output:
+    md_total_subtractions: 1_400

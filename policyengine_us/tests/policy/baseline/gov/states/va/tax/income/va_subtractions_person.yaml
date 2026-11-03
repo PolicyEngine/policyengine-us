@@ -58,3 +58,23 @@
         state_code: VA
   output:
     va_subtractions_person: [15_000, 0]
+
+- name: Tax-unit other subtractions are split by each spouse's share of federal AGI
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 60_000
+      person2:
+        adjusted_gross_income_person: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        va_other_subtractions: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_subtractions_person: [750, 250]

@@ -24,6 +24,7 @@ from policyengine_us import Microsimulation, Simulation
 from policyengine_us.data.dataset_schema import USMultiYearDataset, USSingleYearDataset
 from policyengine_us.entities import Person
 from policyengine_us.spm import (
+    BEHAVIORAL_RESPONSE_CACHE_ATTR,
     DERIVED_POVERTY_OUTPUTS,
     REJECTED_DATASET_INPUTS,
     create_spm_provider,
@@ -134,6 +135,26 @@ def test_reform_baseline_and_clones_calculate_original_tax(simulation_type):
                 assert holder.variable is clone.tax_benefit_system.variables[name]
                 assert holder.simulation is clone
         assert clone.tax_benefit_system.simulation is clone
+
+
+def test_rebuilt_baseline_preserves_tracing_isolation():
+    situation = single_person_situation()
+    situation["people"]["person"]["employment_income"] = {2024: 50_000}
+    changed = Simulation(situation=situation, reform=UserReform, trace=True)
+    baseline = changed.baseline
+    policy = baseline.tax_benefit_system
+
+    assert policy.simulation is baseline
+    assert baseline.trace
+    assert baseline.tracer is changed.tracer
+    assert policy.parameters is not changed.tax_benefit_system.parameters
+    assert policy.parameters.trace
+    assert policy.parameters.tracer is baseline.tracer
+    assert policy.parameters.branch_name == "baseline"
+    assert system.parameters.trace is False
+    assert system.parameters.tracer is None
+    np.testing.assert_array_equal(baseline.calculate("income_tax", 2024), 4_016)
+    np.testing.assert_array_equal(changed.calculate("income_tax", 2024), 0)
 
 
 def _parameter_fingerprint(system):
@@ -861,9 +882,14 @@ def test_subsampling_never_changes_which_policy_a_holder_belongs_to(
             simulation.calculate(variable, 2024)
 
     for n, seed, quantize_weights in draws:
+        previous_baseline = changed.baseline
+        for simulation in (changed, previous_baseline):
+            simulation.__dict__[BEHAVIORAL_RESPONSE_CACHE_ATTR] = {"2024": "stale"}
         changed.subsample(n, seed=seed, quantize_weights=quantize_weights)
 
         baseline = changed.branches["baseline"]
+        for simulation in (changed, previous_baseline, baseline):
+            assert BEHAVIORAL_RESPONSE_CACHE_ATTR not in simulation.__dict__
         assert changed.baseline is baseline
         assert baseline.baseline is None
         assert changed.tax_benefit_system is policies["reform"]

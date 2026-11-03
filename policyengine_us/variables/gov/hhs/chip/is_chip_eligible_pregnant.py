@@ -4,8 +4,8 @@ from policyengine_us.model_api import *
 class is_chip_eligible_pregnant(Variable):
     value_type = bool
     entity = Person
-    label = "Pregnant person eligible for CHIP"
-    documentation = "Determines if a pregnant person is eligible for the Children's Health Insurance Program through either the standard pregnant pathway or FCEP"
+    label = "Pregnant or postpartum person eligible for CHIP"
+    documentation = "Determines if a pregnant or postpartum person is eligible for the Children's Health Insurance Program through either the standard pregnant pathway or FCEP"
     definition_period = YEAR
     reference = (
         "https://www.ssa.gov/OP_Home/ssact/title21/2110.htm",

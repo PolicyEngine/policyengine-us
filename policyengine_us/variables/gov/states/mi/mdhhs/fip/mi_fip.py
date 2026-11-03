@@ -23,7 +23,8 @@ class mi_fip(Variable):
         payment_standard = spm_unit("mi_fip_payment_standard", period)
         countable_income = spm_unit("mi_fip_countable_income_for_benefit", period)
 
-        # BEM 518: Minimum benefit requirement is $10 deficit
+        # BEM 518: a deficit under $10 fails the Issuance Deficit Test,
+        # so such groups are not eligible (mi_fip_income_eligible).
         # Negative benefits are set to 0
         benefit = max_(payment_standard - countable_income, 0)
         return min_(benefit, payment_standard)

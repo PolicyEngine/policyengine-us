@@ -1,5 +1,10 @@
-description: Illinois provides an income tax rebate of this amount for each dependent.
+description: >-
+  Illinois provides an income tax rebate of this amount for each dependent. PolicyEngine
+  attributes this one-time rebate to eligibility tax year 2021, determined from that
+  year's return, although it was paid in 2022. Later-year standalone calculations do not
+  establish inclusion in credit totals.
 values:
+  2020-01-01: 0
   2021-01-01: 100
 metadata:
   unit: int

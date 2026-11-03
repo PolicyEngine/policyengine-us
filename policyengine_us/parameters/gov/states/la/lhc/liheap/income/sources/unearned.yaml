@@ -1,0 +1,42 @@
+description: Louisiana counts these sources as unearned income of adult members under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    # Government and private pensions, annuities and insurance payments.
+    - pension_income
+    # Includes survivor benefit plan annuities.
+    - military_retirement_income
+    - railroad_benefits
+    - survivor_benefits
+    - veterans_benefits
+    - workers_compensation
+    - disability_benefits
+    - total_unemployment_compensation
+    - strike_benefits
+    - alimony_income
+    - interest_income
+    - ordinary_dividend_income
+    # The guide counts net rental income.
+    - rental_income
+    - farm_rent_income
+    # Periodic receipts from estates or trusts.
+    - estate_income
+    # Regular contributions that are not loans; existing inputs do not
+    # separate regular from irregular gifts.
+    - financial_assistance
+# Social Security net of the Medicare Part B premium and SSI count for every
+# member, and net gambling winnings and FITAP are added, in
+# la_liheap_countable_income. The guide excludes child support, capital gains,
+# bank and retirement-account withdrawals, tax refunds and SNAP. Royalties,
+# jury duty pay, military family allotments, training stipends and informal
+# income have no existing input.
+metadata:
+  unit: list
+  period: year
+  label: Louisiana LIHEAP unearned income sources
+  reference:
+    - title: "Louisiana LIHEAP Service Delivery Guide, revised January 1, 2024, Section 3.6 C.1 and Appendix E #page 29-30,81,83-86"
+      href: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20REVISED%20January%201_%202024.pdf#page=29
+    - title: "Louisiana LIHEAP Service Delivery Guide, effective April 1, 2026, Section 3.6 C.1 and Appendix E #page 34-36,88,90-93"
+      href: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20FINAL%20-%20Effective%20April%201%2c%202026.pdf#page=34
+    - title: "Louisiana FY2026 LIHEAP State Plan, Sections 1.8-1.9 #page 5-7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/LA_Plan_2026.pdf#page=5
