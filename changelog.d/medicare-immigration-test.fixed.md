@@ -1,1 +1,1 @@
-Apply immigration tests to Medicare (42 U.S.C. 1395o(a)(2) and 8 U.S.C. 1611(b)(3)) and to Medicare Savings Programs (42 U.S.C. 1396b(v)), so undocumented people no longer get either.
+Apply immigration tests to Medicare (42 U.S.C. 1395o(a)(2), 42 U.S.C. 1395mmm and 8 U.S.C. 1611(b)(3)) and to Medicare Savings Programs (42 U.S.C. 1396b(v), 8 U.S.C. 1611(a) and 1613(a)), so undocumented people no longer get either and, from 2027, only citizens, permanent residents and Cuban and Haitian entrants can get Medicare.
