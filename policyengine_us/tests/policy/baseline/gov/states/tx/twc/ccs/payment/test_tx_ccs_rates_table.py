@@ -19,10 +19,10 @@ misses both floors by under a cent in some cells, and these checks fail on its
 values.
 
 In each rate letter from WD 12-18 to WD 20-23, TWC said it would reduce no
-provider's rate. For BCY 2025, TWC's Commission kept every rate at or above
-its BCY 2024 level, except relative care rates, which Boards set locally (WD
-Letter 19-24, Change 1). Across the eight tables, only the four rates in FALLS
-drop.
+provider's rate. In its BCY 2025 table, TWC set no rate below its BCY 2024
+level outside relative care, where TWC sets no minimum and Boards may set rates
+locally (WD Letter 19-24, Change 1). Across the eight tables, only the four
+rates in FALLS drop.
 
 TWC also followed two patterns that no rule requires. It printed each TSR rate
 for the §809.20(b)(2) age groups equal to the Two-Star rate from BCY 2023 on,
@@ -33,13 +33,16 @@ full-time rate and each blended rate between the two, except in the cells
 PART_TIME_ABOVE_FULL_TIME and EQUAL_PART_AND_FULL_TIME list. The tests check
 both patterns.
 
-Each check runs over all 4,032 cells of the eight tables. A test fails when a
-value typed into the wrong cell breaks one of these bounds, as a part-time rate
-copied into a full-time cell does outside relative care. The checks can still
-pass a regular rate typed too low, a Three- or Four-Star rate typed too high, a
-rate copied from another age group, or a relative care part-time rate copied
-into a full-time cell. The YAML tests pin single cells to TWC's tables. This
-test reads the YAML file directly and builds no tax-benefit system.
+Each check runs over all 4,032 cells of the eight tables. A test fails when
+someone types a value into the wrong cell and it breaks one of these bounds.
+Outside relative care, copying a part-time rate into a full-time cell breaks
+one whenever the copy changes the value. The checks can still pass if someone
+types a regular rate too low or a Three- or Four-Star rate too high, or copies
+a rate from another age group. They check relative care rates only for schedule
+order, the school-age blended formula and falls from one table to the next, so
+a typo in one can pass. So can a part-time rate copied into the full-time cell
+for a younger child in the October 2016 table, where the tests have no earlier
+rate to compare it with. The YAML tests pin single cells to TWC's tables.
 """
 
 import datetime
@@ -378,9 +381,12 @@ def _expand(groups):
 @pytest.mark.parametrize("year", YEARS)
 def test_part_time_rates_below_full_time(year):
     # No rule requires this ordering, but outside relative care each part-time
-    # rate falls below the full-time rate except in the cells listed above, so
-    # a part-time rate at or above the full-time rate points to a value in the
-    # wrong column. Some Boards pay relative care the same for both schedules.
+    # rate lies below the full-time rate except in the cells listed above, so a
+    # part-time rate at or above the full-time rate points to a value in the
+    # wrong column. Some Boards pay relative care the same for both schedules,
+    # so the test allows equal rates there. Outside relative care, the test
+    # requires a part-time rate at or above the full-time rate in each listed
+    # cell and in no other.
     above, equal, relative = set(), set(), []
     for cell in CELLS:
         if cell[4] != "PART_TIME":

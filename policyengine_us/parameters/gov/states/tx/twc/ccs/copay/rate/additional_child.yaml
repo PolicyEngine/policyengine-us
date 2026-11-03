@@ -6,11 +6,15 @@ description: Texas uses this share as the additional child copayment factor unde
 # Both describe the same linear formula: rate = SMI% * 1.5%, so the factor is 0.015.
 # At higher SMI brackets, the 7% total cap reduces the effective rate.
 #
-# Each Board set its own parent share of cost scale until TWC launched its TX3C
-# case management system on January 13, 2025 (WD 24-23 for BCY 2024, WD 20-24
-# for BCY 2025). TWC then phased in the statewide scale as families enrolled or
-# recertified. TWC set no statewide scale for earlier periods, so PolicyEngine
-# applies this one back to 2015.
+# In September 2022, TWC's Commission amended 40 TAC §809.19 so that from
+# December 1, 2023, it would establish the parent share of cost on a statewide
+# sliding fee scale. On November 7, 2022, it adopted a statewide method to
+# assess each family's share. TWC put both off until its TX3C case management
+# system launched (WD 06-24, Change 2), so each Board kept setting its own
+# scale (WD 24-23 for BCY 2024, WD 20-24 for BCY 2025). TX3C launched on
+# January 13, 2025, and TWC then phased in this statewide scale as families
+# enrolled or recertified. PolicyEngine applies it to every earlier month back
+# to 2015.
 
 values:
   2025-01-01: 0.015  # Actual effective date: 2025-01-13
@@ -29,6 +33,10 @@ metadata:
       href: https://web.archive.org/web/20250314070109/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/20-24-twc.pdf#page=1
     - title: TWC Regulated Child Care Providers Update, January 27, 2025 (TX3C launch)
       href: https://content.govdelivery.com/accounts/TXWC/bulletins/3cf24fc
+    - title: TWC Chapter 809 Rule Amendments Adopted September 13, 2022 - §809.19(b)
+      href: https://web.archive.org/web/20231103125253/https://www.twc.texas.gov/sites/default/files/ogc/docs/fr-809-ch-rev-09-22-twc.pdf#page=62
+    - title: TWC WD Letter 06-24, Change 2 - Child Care Policy and Operational Changes Due to the Release of TX3C
+      href: https://web.archive.org/web/20250309110529/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/06-24-ch2-twc.pdf#page=2
     - title: TWC BCY2025 Parent Share of Cost Sliding Fee Scale
       href: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy2025-psoc-chart-twc.pdf
     - title: TWC BCY2026 Parent Share of Cost Sliding Fee Scale
