@@ -10474,8 +10474,8 @@ candidates:
     amount. Hawaii (hi_mortgage_interest_deduction) follows the 2017 worksheet as a gap-fill, rounding line 11 to
     three places, and floors the result at the federal deduction, a PE safeguard that binds only when the rounded
     share falls below the exact federal share. Settling the federal reading (rulespec-us#1413) and using it for
-    both would make that floor unnecessary. New York (ny_mortgage_interest_deduction) allows the larger of the
-    three-place share and the exact ratio.'
+    Hawaii too would make that floor unnecessary. New York (ny_mortgage_interest_deduction) allows the larger of
+    the three-place share and the exact ratio.'
 - id: us:niit-excess-business-loss-addback
   program: income-tax
   years:

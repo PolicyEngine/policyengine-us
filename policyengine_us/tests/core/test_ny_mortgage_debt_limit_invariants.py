@@ -24,8 +24,8 @@ and checks _ny_qualified_loan_limit:
    York limit is at least PE's federal limit for the same acquisition loans.
 3. Defaults: with no fair market value and no non-acquisition debt (the
    input defaults), the limit is line 6 plus the acquisition debt above it,
-   up to the home equity debt limit, which is also what the Hawaii helper
-   gives.
+   up to the home equity debt limit. The Hawaii helper gives the same
+   limit.
 4. Order: swapping the two homes never changes the limit.
 5. Monotone: a higher positive fair market value never lowers the limit.
 6. Unknown value: setting every fair market value to 0 (unknown) never
