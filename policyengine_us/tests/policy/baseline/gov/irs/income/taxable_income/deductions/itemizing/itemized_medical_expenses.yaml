@@ -278,15 +278,18 @@
     health_insurance_premiums: 3_000
     long_term_health_insurance_premiums: 2_000
   output:
-    # min(4,000, 3,000 + 1,800).
-    self_employed_health_insurance_ald: 4_000
-    # The deduction is taken from medical premiums first: 3,000, then 1,000
+    # Form 7206 line 13: 4,000 less half of self-employment tax,
+    # 4,000 x 0.9235 x 0.153 / 2 = 282.59, so 3,717.41.
+    # min(3,717.41, 3,000 + 1,800).
+    self_employed_health_insurance_ald: 3_717.41
+    # The deduction is taken from medical premiums first: 3,000, then 717.41
     # of the 1,800 eligible long-term care premiums.
     itemized_medical_expenses_excluded_premiums: 3_000
-    itemized_medical_expenses_excluded_long_term_care_premiums: 1_000
-    itemized_medical_expenses_applied_exclusion: 4_000
-    itemized_medical_expenses_long_term_care_premiums: 800
-    itemized_medical_expenses: 800
+    itemized_medical_expenses_excluded_long_term_care_premiums: 717.41
+    itemized_medical_expenses_applied_exclusion: 3_717.41
+    # 1,800 - 717.41.
+    itemized_medical_expenses_long_term_care_premiums: 1_082.59
+    itemized_medical_expenses: 1_082.59
 
 - name: A supplied deduction cannot exclude more long-term care premiums than are eligible.
   period: 2025

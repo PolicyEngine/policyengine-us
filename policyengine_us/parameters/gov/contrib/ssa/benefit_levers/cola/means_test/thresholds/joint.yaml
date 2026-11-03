@@ -1,0 +1,10 @@
+description: Joint-group COLA means-test income threshold in base-year dollars. Zero is an unset sentinel; a positive scenario value is required when a prior_year income decision is evaluated. The never_withheld and always_withheld sensitivities and pre-receipt index-only events do not read this threshold. The documented A9 example is 170000 in 2018 dollars, not a default package value.
+values:
+  0000-01-01: 0
+metadata:
+  unit: currency-USD
+  label: Social Security COLA means-test joint income threshold
+  economy: false
+  reference:
+    - title: OACT provision A9, 2026 Trustees Report basis
+      href: https://www.ssa.gov/OACT/solvency/provisions/cola.html

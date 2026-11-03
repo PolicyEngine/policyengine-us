@@ -2,7 +2,7 @@
   period: 2023
   input:
     state_code: NM
-    eitc_child_count: 0
+    nm_ctc_qualifying_children: 0
     adjusted_gross_income: 10_000
     filing_status: JOINT
   output:
@@ -12,7 +12,7 @@
   period: 2023
   input:
     state_code: NM
-    eitc_child_count: 2
+    nm_ctc_qualifying_children: 2
     adjusted_gross_income: 50_000
     filing_status: JOINT
   output:
@@ -22,7 +22,7 @@
   period: 2023
   input:
     state_code: NM
-    eitc_child_count: 2
+    nm_ctc_qualifying_children: 2
     adjusted_gross_income: 50_000
     filing_status: SEPARATE
   output:
@@ -32,7 +32,7 @@
   period: 2023
   input:
     state_code: NM
-    eitc_child_count: 3
+    nm_ctc_qualifying_children: 3
     adjusted_gross_income: 350_001
     filing_status: SINGLE
   output:
@@ -141,3 +141,74 @@
         state_code: NM
   output:
     nm_ctc: 0
+
+- name: 2025 independent filer with an otherwise qualifying child who has an ITIN gets the child income tax credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 5
+        # An ITIN holder has no valid Social Security number.
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NM
+  output:
+    # The federal EITC needs a Social Security number (IRC 32(c)(3)(D)).
+    eitc_child_count: 0
+    # NMSA 7-2-18.34(J)(2) adopts the IRC 152(c) definition, which has no
+    # identification number requirement.
+    nm_ctc_qualifying_children: 1
+    # AGI $20,000 is in the first 2025 row (PIT-RC Table 4): $637 per child.
+    nm_ctc: 637
+
+- name: 2025 independent filer with a qualifying child who has a Social Security number gets the same credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 5
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NM
+  output:
+    eitc_child_count: 1
+    nm_ctc_qualifying_children: 1
+    nm_ctc: 637
+
+- name: 2025 married couple filing separately with an ITIN child gets half the credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 5
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NM
+  output:
+    # NMSA 7-2-18.34(G): each may claim "only one-half"; 637 / 2.
+    nm_ctc: 318.5

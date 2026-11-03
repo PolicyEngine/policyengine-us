@@ -49,6 +49,8 @@ EXPECTED = {
     # Wage-replacement benefits.
     "workers_compensation": EMPLOYMENT,
     "disability_benefits": EMPLOYMENT,
+    "tax_exempt_disability_benefits": EMPLOYMENT,
+    "disability_benefits_before_minimum_retirement_age": EMPLOYMENT,
     "self_employed_pension_contributions_desired": SELF_EMPLOYMENT,
     # Components of capital gains.
     "long_term_capital_gains_on_collectibles": CAPITAL_GAINS,
@@ -120,6 +122,11 @@ EXPECTED = {
     "homeowners_association_fees": CPI_U,
     "pre_subsidy_transportation_expense": CPI_U,
     "home_mortgage_interest": CPI_U,
+    "home_mortgage_points": CPI_U,
+    "mortgage_insurance_premiums": CPI_U,
+    "second_residence_mortgage_interest": CPI_U,
+    "second_residence_mortgage_points": CPI_U,
+    "second_residence_mortgage_insurance_premiums": CPI_U,
     "student_loan_interest": CPI_U,
     "investment_interest_expense": CPI_U,
     # Still on the default.

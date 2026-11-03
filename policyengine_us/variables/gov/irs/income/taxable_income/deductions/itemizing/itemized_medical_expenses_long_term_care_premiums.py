@@ -20,9 +20,14 @@ class itemized_medical_expenses_long_term_care_premiums(Variable):
         "The computed subtotal adds this amount, so supplying it sets the "
         "long-term care premiums the subtotal counts. A supplied subtotal "
         "bypasses this formula, and the amount is 0 unless it is supplied "
-        "too: the long-term care premiums inside the supplied subtotal. "
-        "States that deduct long-term care premiums separately take this "
-        "amount out of the subtotal first."
+        "too: the long-term care premiums inside the supplied subtotal. With "
+        "a supplied subtotal that leaves out premiums taken as the "
+        "self-employed deduction, follow the split "
+        "itemized_medical_expenses_applied_exclusion uses, whatever the return "
+        "itself did: the eligible long-term care premiums less any part of "
+        "that exclusion above the head's and spouse's medical insurance "
+        "premiums. States that deduct long-term care premiums separately take "
+        "this amount out of the subtotal first."
     )
 
     def formula(tax_unit, period, parameters):

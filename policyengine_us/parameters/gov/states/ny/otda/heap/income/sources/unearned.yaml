@@ -14,6 +14,13 @@ values:
   # insurance and annuities; veterans' survivor benefits under D.12(a)(12).
   - survivor_benefits
   - pension_income
+  # Military retirement income (retiree pay plus Survivor Benefit Plan
+  # annuities) is a separate input from the pension inputs that pension_income
+  # adds; a household reports the amount in one or the other. D.12(a)(13)
+  # counts pensions and (14) annuities, and D.13 excludes neither. A military
+  # survivor annuity belongs in military_retirement_pay_survivors, not
+  # survivor_benefits.
+  - military_retirement_income
   - retirement_distributions
   - alimony_income
   - child_support_received

@@ -29,8 +29,11 @@ every tax unit:
    premiums and all members' eligible premiums.
 4. Conservation (derived deduction): every eligible premium is deducted once,
    on Schedule A or as the self-employed deduction, never both.
-5. The derived person deduction is min(max(0, earnings), health premiums +
-   eligible long-term care premiums) for the self-employed, else 0.
+5. The derived person deduction is min(earned income limit, health premiums
+   + eligible long-term care premiums) for the self-employed, else 0. The
+   limit (Form 7206 line 13: net profit less the deductible part of
+   self-employment tax and plan contributions) is the model's own
+   self_employed_health_insurance_earned_income_limit, tested on its own.
 6. Monotonicity: raising long-term care premiums never lowers the subtotal
    and raises it by at most the rise in eligible premiums; for units with no
    deduction it raises it by exactly that amount.
@@ -199,6 +202,7 @@ def _situation(units, year, supplied_deduction, supplied_subtotal=False):
 PERSON_VARIABLES = [
     "eligible_long_term_care_premiums",
     "self_employed_health_insurance_ald_person",
+    "self_employed_health_insurance_earned_income_limit",
     "is_tax_unit_dependent",
 ]
 UNIT_VARIABLES = [
@@ -319,7 +323,11 @@ def _check(units, year, supplied_deduction):
         # 5. The derived person deduction (Form 7206 lines 1-3).
         np.testing.assert_allclose(
             run["self_employed_health_insurance_ald_person"],
-            self_employed * np.minimum(np.maximum(earnings, 0), health + eligible),
+            self_employed
+            * np.minimum(
+                run["self_employed_health_insurance_earned_income_limit"],
+                health + eligible,
+            ),
             atol=TOLERANCE,
         )
 
