@@ -19,4 +19,5 @@ class ca_additions(Variable):
         "ca_educator_expense_addition",
         "ca_other_additions",
         "charitable_contributions_ald",
+        "ca_dependent_care_assistance_addition",
     ]
