@@ -1,3 +1,54 @@
+## [2.92.13] - 2026-11-03
+
+### Fixed
+
+- Count the income of everyone living in an Arizona property tax credit claimant's home, allow one claimant per household, exclude Arizona unemployment, count other states' unemployment, nontaxable strike benefits and nontaxable alimony, and stop subtracting federal above-the-line deductions other than business and capital losses.
+- Stop Colorado CCAP from reading parameters before 2015, which made every 2015 Colorado income tax calculation raise ParameterNotFoundError. Measure the Colorado sales tax refund's age test as of December 31 of the preceding year, per C.R.S. 39-22-2003(1)(a)(II).
+- Keep ABLE contributions in the saver's credit for 2026, reduce qualified contributions by relevant ABLE distributions through a new input, and from 2027 count only ABLE contributions, reduced only by those distributions, under a $2,100 cap (Pub. L. 119-21). From 2026, apply the 26 U.S.C. 6012(a)(1)(A) and (B) filing threshold to every filer, including a married individual filing separately with no gross income and a filer who can be claimed as a dependent. Under section 6012(a)(1), require a joint return when either spouse can be claimed as a dependent and the other spouse's own gross income is at least the exemption amount ((A)(iv)), and withdraw the (A) exception when the standard deduction is zero under section 63(c)(6) ((C)(ii)).
+
+
+## [2.92.12] - 2026-11-03
+
+### Fixed
+
+- Correct 128 Texas Child Care Services expanded-age rate cells to the Texas Workforce Commission's published tables. Pay relative care and blended schedules from January to September 2025, and pay relative care entered with either the Reg or None rating.
+
+
+## [2.92.11] - 2026-11-03
+
+### Fixed
+
+- Compute Alabama's miscellaneous itemized deduction from its own list of expenses (unreimbursed employee business expenses and tax preparation fees) above 2% of Alabama AGI in every modeled year, counting only the head's and spouse's expenses, instead of applying a second floor to the federal deduction, which is zero from 2018.
+
+
+## [2.92.10] - 2026-11-03
+
+### Fixed
+
+- Cap Minnesota's K-12 education subtraction per qualifying child by grade (Minn. Stat. 290.0132 subd. 4), and give Minnesota Supplemental Aid's living-alone standard to people eligible for an HCBS waiver or with a Housing Support placement determination (Minn. Stat. 256D.44 subd. 2).
+
+
+## [2.92.9] - 2026-11-03
+
+### Fixed
+
+- Cite the enacted appropriations and Department of Revenue announcements for the 2025 and 2026 Alaska Permanent Fund Dividend amounts, in place of a news report on the 2026 budget bill.
+
+
+## [2.92.8] - 2026-11-03
+
+### Fixed
+
+- Apply the 2026 federal section 68 itemized deduction reduction in Maryland, Maine and New Mexico itemized deductions.
+
+
+## [2.92.7] - 2026-11-03
+
+### Fixed
+
+- Count Michigan household resources' Social Security, SSI and railroad retirement benefits, and deduct health insurance premiums, only for the claimant and spouse (MCL 206.508(3) and 206.510), so a dependent's own benefits and premiums no longer change the homestead property tax and home heating credits.
+
+
 ## [2.92.6] - 2026-11-03
 
 ### Fixed

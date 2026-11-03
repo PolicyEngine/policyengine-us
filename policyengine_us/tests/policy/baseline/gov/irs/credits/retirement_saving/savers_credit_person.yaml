@@ -317,3 +317,36 @@
     # 48,000 on the joint schedule (divided by 0.5), so the rate is 20%,
     # not the 50% that 22,000 (44,000) would give.
     savers_credit_person: 400
+
+# Pub. L. 119-21 raises the contribution cap to $2,100 from 2027.
+- name: 2027 cap of $2,100 on ABLE contributions
+  period: 2027
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        able_contributions_person: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+  output:
+    # 50% x min(3,000, 2,100) = 1,050.
+    savers_credit_person: 1_050
+
+- name: 2026 cap stays $2,000
+  period: 2026
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        able_contributions_person: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+  output:
+    # 50% x min(3,000, 2,000) = 1,000.
+    savers_credit_person: 1_000

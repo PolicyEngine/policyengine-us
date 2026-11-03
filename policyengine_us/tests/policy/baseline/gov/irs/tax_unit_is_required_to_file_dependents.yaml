@@ -9,9 +9,10 @@
 # the unearned income test of a claimable spouse aged 65 or blind: section
 # 6012(f)(2)(D) names the section 63(c)(5)(A) amount alone, Chart B adds the
 # additional standard deduction, and the model follows the statute (cases
-# below). Where they differ otherwise (a dependent filing separately, and in
-# 2026 blindness and the exact dollar), the cases stay clear of the
-# difference.
+# below). Where they differ otherwise for 2018 to 2025 (a dependent filing
+# separately), the cases stay clear of the difference. From 2026 the model
+# follows section 6012(a)(1), and the 2026 section below pins the exact
+# dollar.
 # 2025 amounts (Chart B, page 10 of
 # https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf):
 #   Single dependents, under 65 and not blind, must file if
@@ -524,12 +525,15 @@
     # "In excess of" $1,350: equal is not over.
     tax_unit_is_required_to_file: false
 
-- name: 2026, section 6012(a)(1)(C)(i)(I) adds the additional standard deduction
-  # From 2026 the test is income other than earned income "in excess of the
-  # sum of the amount in effect under section 63(c)(5)(A) plus the additional
-  # standard deduction (if any) to which the individual is entitled", so the
-  # same $2,000 of interest does not require a return for the aged spouse.
-  period: 2026
+- name: 2017, an aged claimable spouse with $2,000 of interest need not file
+  # Under section 6012(a)(1)(C)(i)(I), a dependent must file when income other
+  # than earned income exceeds "the sum of the amount in effect under section
+  # 63(c)(5)(A) plus the additional standard deduction (if any) to which the
+  # individual is entitled". The spouse's $2,000 of interest doesn't exceed
+  # $1,050 plus the aged addition. The head loses (iv) but has $0, short of the
+  # $4,050 exemption amount. With a zero exemption amount in 2026, the head
+  # must file (next case).
+  period: 2017
   input:
     people:
       head:
@@ -547,6 +551,29 @@
         state_code: TX
   output:
     tax_unit_is_required_to_file: false
+
+- name: 2026, the same couple must file because the head loses (iv)
+  # The spouse's $2,000 of interest still doesn't exceed $1,350 plus the aged
+  # addition. But with a zero exemption amount, the head must file on $0 of
+  # own gross income.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 65
+        claimed_as_dependent_on_another_return: true
+        taxable_interest_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    tax_unit_is_required_to_file: true
 
 - name: 2025, a claimed spouse's farm profit is earned income, not unearned income
   # Farm income (Schedule 1 line 6) is earned income on the IRS dependent
@@ -673,8 +700,8 @@
 # excess of", as Chart B does. But a filer who meets neither is excused only
 # by (a)(1)(A)(i), whose gross income must be "less than" the basic standard
 # deduction, so on the literal text a return is due at exactly the limited
-# deduction. The 2026 instructions are not yet published, so every 2026 case
-# stays a dollar away from a threshold.
+# deduction. The model follows the statute there; the other 2026 cases stay a
+# dollar away from a threshold.
 
 - name: 2026, single dependent with unearned income under $1,350 need not file
   period: 2026
@@ -705,6 +732,19 @@
     employment_income: 16_099
   output:
     tax_unit_is_required_to_file: false
+
+- name: 2026, single dependent with earned income of exactly $16,100 must file
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    employment_income: 16_100
+  output:
+    # (a)(1)(A) excuses only gross income "less than" the (limited) basic
+    # standard deduction, $16,100; (C) adds requirements, it doesn't replace
+    # (A).
+    tax_unit_is_required_to_file: true
 
 - name: 2026, single dependent with earned income over $16,100 must file
   period: 2026
