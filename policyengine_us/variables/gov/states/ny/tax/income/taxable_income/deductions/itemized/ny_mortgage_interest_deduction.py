@@ -20,10 +20,10 @@ def _ny_qualified_loan_limit(
     equity debt (Figure A, note 3). On each home, home equity debt cannot
     exceed the home's fair market value less the debt on it treated as
     acquisition or grandfathered debt (IRC 163(h)(3)(C)(i)); a value of 0
-    means unknown and sets no such limit. Across homes it
+    means unknown and sets no such limit. Across homes, home equity debt
     cannot exceed the home equity debt limit (line 7).
 
-    The limit on other acquisition debt is shared among homes in proportion
+    PE shares the limit on other acquisition debt among homes in proportion
     to each home's other acquisition debt; the statute's aggregate limit does
     not say how to place it on a particular home.
     """
@@ -77,7 +77,9 @@ def _ny_deductible_share(qualified_loan_limit, total_debt):
     limit = np.asarray(qualified_loan_limit, dtype=np.float64)
     debt = np.asarray(total_debt, dtype=np.float64)
     ratio = np.divide(limit, debt, out=np.ones_like(debt), where=debt > 0)
-    worksheet = np.floor(ratio * 1_000 + 0.5) / 1_000
+    # Round the scaled ratio first. In binary, 1,001,000 / 2,000,000 x 1,000
+    # comes to 500.49999999999994, so the floor alone rounds this exact tie down.
+    worksheet = np.floor(np.round(ratio * 1_000, 9) + 0.5) / 1_000
     return np.maximum(worksheet, ratio)
 
 
@@ -123,9 +125,10 @@ class ny_mortgage_interest_deduction(Variable):
         "https://www.tax.ny.gov/pit/file/itemized-deductions-2025.htm#interest",
         # 26 U.S.C. 163(h)(3)(B)-(D), 2017 edition.
         "https://www.govinfo.gov/content/pkg/USCODE-2017-title26/html/USCODE-2017-title26-subtitleA-chap1-subchapB-partVI-sec163.htm",
-        # 2017 Publication 936: debt definitions, home equity debt limit,
-        # Table 1 and grandfathered debt.
-        # PDF pages 3, 10-11, 13
+        # 2017 Publication 936: Figure A note 3, home acquisition debt, home
+        # equity debt and its limit, grandfathered debt, and Table 1 with its
+        # line 7 instructions.
+        # PDF pages 3, 9-11, 13
         "https://www.irs.gov/pub/irs-prior/p936--2017.pdf#page=3",
         # Treasury Regulation 1.163-10T(d) and (g): the unrounded simplified
         # method and the taxpayer's choice of method. PDF pages 3-4, 6.

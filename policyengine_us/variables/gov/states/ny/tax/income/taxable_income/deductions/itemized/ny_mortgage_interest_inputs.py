@@ -1,17 +1,18 @@
 from policyengine_us.model_api import *
 
 _FAIR_MARKET_VALUE_DEFAULT = (
-    "Leave at 0 if unknown. New York then counts the home as worth at least "
+    "Leave at 0 if unknown. PolicyEngine then counts the home as worth at least "
     "the debt on it, so only the $100,000 ($50,000 separate) home equity debt "
-    "limit applies, as in PolicyEngine's Hawaii calculation."
+    "limit applies, as in its Hawaii calculation."
 )
 
 _NON_ACQUISITION_DEBT_DEFAULT = (
     "Include the interest on this debt in the home mortgage interest inputs. "
     "PolicyEngine's federal calculation reads only the acquisition mortgage "
-    "balances, so it does not disallow that interest federally after 2017. "
-    "Defaults to 0, which leaves New York's calculation to the acquisition "
-    "mortgage balances."
+    "balances, so after 2017 it treats that interest like interest on those "
+    "balances: fully deductible when they fit the federal limit, and deductible "
+    "at the same share when they don't. Defaults to 0, which leaves New York's "
+    "calculation to the acquisition mortgage balances."
 )
 
 

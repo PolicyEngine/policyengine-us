@@ -24,15 +24,16 @@ and checks _ny_qualified_loan_limit:
    York limit is at least PE's federal limit for the same acquisition loans.
 3. Defaults: with no fair market value and no non-acquisition debt (the
    input defaults), the limit is line 6 plus the acquisition debt above it,
-   up to the home equity debt limit.
+   up to the home equity debt limit, which is also what the Hawaii helper
+   gives.
 4. Order: swapping the two homes never changes the limit.
 5. Monotone: a higher positive fair market value never lowers the limit.
 6. Unknown value: setting every fair market value to 0 (unknown) never
    lowers the limit.
 
-For _ny_allowed_interest, interest on two homes with no non-acquisition debt
-is split into the federally deductible and non-deductible parts by PE's
-federal share for the same loans. The New York result lies between the
+For _ny_allowed_interest, PE's federal share for the same loans splits
+interest on two homes with no non-acquisition debt into the federally
+deductible and non-deductible parts. The New York result lies between the
 federal deduction and the interest paid, and equals the federal deduction
 when federal law disallows nothing. The federal bound follows from the
 limits, not from a floor.
@@ -41,11 +42,11 @@ For _ny_deductible_share: the share is at least the unrounded ratio and at
 least the ratio rounded half up to three places, at most one, and exceeds the
 unrounded ratio by no more than .0005.
 
-The limits are read from the New York and federal parameters for every
-filing status in 2018, 2025 and 2026. The properties cannot pass trivially:
-the differential compares against a separately written per-home calculation,
-and the default and bound checks fail if the fair market value test, the
-home equity limit or the acquisition limit is dropped or reversed.
+The test reads the limits from the New York and federal parameters for
+every filing status in 2018, 2025 and 2026. The properties cannot pass
+trivially: the differential compares against a separately written per-home
+calculation, and the default and bound checks fail if the fair market value
+test, the home equity limit or the acquisition limit is dropped or reversed.
 
 These are for-all properties of the helpers, which YAML cannot state. The
 policy outcomes are checked in ny_mortgage_interest_deduction.yaml.
@@ -55,10 +56,13 @@ import math
 from fractions import Fraction
 
 import numpy as np
-from hypothesis import given, settings
+from hypothesis import example, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us.system import system
+from policyengine_us.variables.gov.states.hi.tax.income.deductions.itemized.hi_mortgage_interest_deduction import (
+    _hi_qualified_loan_limit,
+)
 from policyengine_us.variables.gov.states.ny.tax.income.taxable_income.deductions.itemized.ny_mortgage_interest_deduction import (
     _ny_allowed_interest,
     _ny_deductible_share,
@@ -215,6 +219,12 @@ def test_new_york_qualified_loan_limit_properties(first, second, status):
     line_6 = min(max(old, acquisition_limit), acquisition)
     expected = line_6 + min(acquisition - line_6, home_equity_limit)
     assert abs(model_limit(defaults, ny_limits) - expected) <= TOLERANCE
+    hawaii = float(
+        _hi_qualified_loan_limit(
+            np.array([old]), np.array([acquisition - old]), *ny_limits
+        )[0]
+    )
+    assert abs(expected - hawaii) <= TOLERANCE
     # 4. Order.
     assert abs(limit - model_limit([second, first], ny_limits)) <= TOLERANCE
     # 5. Monotone in a positive fair market value.
@@ -265,6 +275,7 @@ def test_new_york_allowed_interest_without_non_acquisition_debt(
 
 @settings(**SETTINGS)
 @given(limit=amounts, debt=amounts)
+@example(limit=1_001.0, debt=2_000.0)
 def test_new_york_deductible_share_is_the_larger_method(limit, debt):
     debt = max(debt, 1.0)
     limit = min(limit, debt)

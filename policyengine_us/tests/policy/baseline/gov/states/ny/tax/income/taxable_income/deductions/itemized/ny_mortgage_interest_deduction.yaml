@@ -13,7 +13,7 @@
 #   line 11 = the larger of line 8 / total debt rounded to three places and
 #             the unrounded ratio
 #   line 12 = interest x line 11
-# Limits are halved for married filing separately. PolicyEngine's federal
+# Married filing separately halves the limits. PolicyEngine's federal
 # deduction uses the $750,000 limit for debt from 2018 or later, no home
 # equity debt and the exact ratio.
 
@@ -123,6 +123,23 @@
     # $35,000 x 6/7.
     ny_mortgage_interest_deduction: 30_000
 
+- name: Non-acquisition debt on the second home counts as home equity debt
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    filing_status: JOINT
+    home_mortgage_interest: 30_000
+    first_home_mortgage_balance: 400_000
+    first_home_mortgage_origination_year: 2015
+    ny_second_home_non_acquisition_debt: 200_000
+  output:
+    # PE's federal calculation does not see the non-acquisition debt.
+    deductible_mortgage_interest_tax_unit: 30_000
+    # New York: ($400,000 + $100,000) / $600,000 = .8333 (worksheet .833);
+    # $30,000 x 5/6.
+    ny_mortgage_interest_deduction: 25_000
+
 - name: Grandfathered debt reduces the acquisition-debt limit
   period: 2025
   absolute_error_margin: 0.01
@@ -187,9 +204,10 @@
     first_home_mortgage_origination_year: 2020
   output:
     # With no home_mortgage_interest, non_deductible_mortgage_interest_tax_unit
-    # reads only home_mortgage_interest_tax_unit and the points, so it is 0
-    # and the supplied $12,000 passes through. Without the pass-through, the
-    # worksheet would limit it again: $12,000 x 11/15 = $8,800.
+    # is 0: it takes home_mortgage_interest_tax_unit plus the points, less
+    # deductible_mortgage_interest_tax_unit, and does not read the supplied
+    # person-level amount. So the supplied $12,000 passes through. Without the
+    # pass-through, the worksheet would limit it again: $12,000 x 11/15 = $8,800.
     ny_mortgage_interest_deduction: 12_000
 
 - name: Without a fair market value, home equity debt keeps its interest
@@ -242,6 +260,23 @@
     # the unrounded share $50,000, which applies.
     deductible_mortgage_interest_tax_unit: 50_000
     ny_mortgage_interest_deduction: 50_000
+
+- name: An exact tie in the worksheet's share rounds up
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    home_mortgage_interest: 80_000
+    first_home_mortgage_balance: 2_000_000
+    first_home_mortgage_origination_year: 2020
+    ny_first_home_fair_market_value: 1_001_000
+  output:
+    # Federal: $80,000 x $750,000 / $2,000,000 = $30,000.
+    deductible_mortgage_interest_tax_unit: 30_000
+    # New York: room = $1,001,000 - $1,000,000 = $1,000. $1,001,000 /
+    # $2,000,000 = .5005, an exact tie, so the worksheet's share is .501.
+    ny_mortgage_interest_deduction: 40_080
 
 - name: Mortgage interest outside New York is zero
   period: 2025
