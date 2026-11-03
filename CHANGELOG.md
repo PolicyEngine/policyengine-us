@@ -1,3 +1,46 @@
+## [2.92.6] - 2026-11-03
+
+### Fixed
+
+- Prevent Colorado sales tax refunds and Illinois, New Mexico, Virginia, Hawaii, and Massachusetts rebates from applying before their eligibility years, while preserving eligibility-year amounts. Document eligibility-year attribution for state rebates.
+
+
+## [2.92.5] - 2026-11-03
+
+### Fixed
+
+- Give a married individual filing separately the $3,750 Schedule R initial amount, and set the section 22 amount to zero for a separate filer who lived with their spouse at any time in the year, so the elderly or disabled credit and Michigan's section 22 subtraction both follow 26 U.S.C. 22(c)(2)(A) and 22(e)(1).
+
+
+## [2.92.4] - 2026-11-03
+
+### Fixed
+
+- Apply the Income-Based Repayment and Pay As You Earn 10-year standard payment cap before the spousal balance proration, as 34 CFR 685.209(f)(2)-(3) and (g)(1) order them.
+
+
+## [2.92.3] - 2026-11-03
+
+### Fixed
+
+- Count the owners' draw profits whose SECA is in the deductible self-employment tax in Form 7206 line 5 when the owners' draw reform computes the self-employed health insurance earned income limit.
+
+
+## [2.92.2] - 2026-11-03
+
+### Fixed
+
+- Keep plain inputs such as EITC take-up when New York and Alabama recompute federal credits under pinned rules, so a 2021 New York filer who does not take up the federal EITC no longer gets the New York EITC.
+
+
+## [2.92.1] - 2026-11-03
+
+### Fixed
+
+- Fix the documentation helper's chart import for current Core, list the PIA-ratio guide in the docs table of contents, update stale interpolation comments in the pinned-system test, and make the calculator reference test classify every leaf under kept parameter nodes and flag missing calculator-only paths.
+- Add the 2015-2017 federal income tax rates and bracket thresholds (10% to 39.6%), which had fallen back to the 2018 schedule.
+
+
 ## [2.92.0] - 2026-11-03
 
 ### Added
