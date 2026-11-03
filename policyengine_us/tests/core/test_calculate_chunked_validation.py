@@ -1,6 +1,7 @@
 """Reject invalid household partitions before constructing a simulation."""
 
 import re
+import tempfile
 import weakref
 from pathlib import Path
 from types import SimpleNamespace
@@ -24,6 +25,15 @@ from policyengine_us.tools.calculate_chunked import (
 
 YEAR = 2026
 MARITAL_UNIT_IDS = [91, 92, 37, 38]
+
+
+@pytest.fixture(autouse=True)
+def private_tempdir(tmp_path, monkeypatch):
+    # calculate_chunked's mkdtemp and _chunk_directories then see only this
+    # test's chunk folders, not another process's in the shared temp folder.
+    directory = tmp_path / "tmp"
+    directory.mkdir()
+    monkeypatch.setattr(tempfile, "tempdir", str(directory))
 
 
 @pytest.fixture
@@ -537,8 +547,6 @@ def variable_centric(tmp_path, dataset):
 
 
 def _chunk_directories():
-    import tempfile
-
     return set(Path(tempfile.gettempdir()).glob("policyengine-us-chunk-*"))
 
 
@@ -761,6 +769,49 @@ def test_rejects_chunk_holding_one_of_several_marital_units():
     assert result.weighted_sums == {"household_weight": 2.0}
 
 
+def test_rejects_one_marital_unit_chunk_before_building_any_chunk(dataset):
+    # Household 37's two people now share one marital unit. The first default
+    # chunk (household 91, two marital units) is valid, so the guard must run
+    # for every chunk before the first is built: never_build fails otherwise.
+    dataset.person["person_marital_unit_id"] = [91, 92, 37, 37]
+    dataset.marital_unit.drop(index=dataset.marital_unit.index[3], inplace=True)
+    with pytest.raises(ValueError, match="exactly one marital unit"):
+        calculate(dataset)
+
+
+def test_accepts_file_holding_a_single_marital_unit():
+    # The whole file is one marital unit, so the chunk pairs SSI spouses
+    # exactly as the unchunked simulation does.
+    person = pd.DataFrame({"person_id": [1, 2]})
+    tables = {"person": person}
+    for entity in US_ENTITIES:
+        if entity != "person":
+            person[f"person_{entity}_id"] = [1, 1]
+            tables[entity] = pd.DataFrame({f"{entity}_id": [1]})
+    tables["household"]["household_weight"] = [1.0]
+    one = USSingleYearDataset(**tables, time_period=YEAR)
+    result = calculate_chunked(
+        InputSimulation, ["household_weight"], YEAR, 1, dataset=one
+    )
+    assert result.weighted_sums == {"household_weight": 1.0}
+
+
+def test_marital_unit_check_counts_only_chunks_that_hold_households(dataset):
+    # Labels need only be integers below n_chunks. Counting units per possible
+    # label (np.bincount with minlength=n_chunks) would try to allocate 8 TiB.
+    result = calculate_chunked(
+        InputSimulation,
+        ["household_weight"],
+        YEAR,
+        2**40 + 1,
+        dataset=dataset,
+        household_chunks=[2**40, 0],
+    )
+    np.testing.assert_array_equal(
+        result.entities["household"].household_weight, [1.5, 2.25]
+    )
+
+
 def test_non_hdf5_file_with_h5_suffix_gets_flat_file_error(tmp_path, dataset):
     path = tmp_path / "population.h5"
     dataset.person.to_csv(path, index=False)
@@ -813,13 +864,19 @@ def test_rejects_stored_names_only_the_factory_system_defines(tmp_path, dataset)
     np.testing.assert_array_equal(
         whole.calculate("reform_only_output", YEAR, use_weights=False), 2 * stored
     )
-    whole.tax_benefit_system.simulation = None
-    del whole
+    reformed = whole.tax_benefit_system
+
+    def factory(chunk):
+        # Only the chunk system matters; reuse the unchunked reformed one.
+        simulation = FileSimulation(chunk)
+        simulation.tax_benefit_system = reformed
+        return simulation
+
     before = _chunk_directories()
     with pytest.raises(ValueError, match="reform_only_input are stored in the file"):
         calculate_chunked(
-            lambda chunk: Microsimulation(dataset=chunk, reform=reform),
-            ["reform_only_output"],
+            factory,
+            ["household_weight"],
             YEAR,
             2,
             dataset=str(path),

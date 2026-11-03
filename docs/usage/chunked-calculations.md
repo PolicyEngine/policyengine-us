@@ -83,11 +83,13 @@ whole-file chain does. A guarded variable with a stored value returns that
 value, because no formula reduces across the chunk. Known Medicaid
 claiming-tax-unit links crossing households are also rejected. The SSI spouse
 pairing also tests whether the whole simulation holds a single marital unit, so
-a chunk with exactly one marital unit can differ from the whole file; such
-chunks are rejected. Custom reform formulas remain the caller's responsibility:
-cross-household reductions, order-dependent random draws and other global
-dependencies are unsupported. These are calculation restrictions, not an
-assumption that every model variable can be chunked.
+a chunk holding exactly one of several marital units can pair spouses
+differently from the whole file; such partitions are rejected before any chunk
+is built. A file that is a single marital unit is accepted. Custom reform
+formulas remain the caller's responsibility: cross-household reductions,
+order-dependent random draws and other global dependencies are unsupported.
+These are calculation restrictions, not an assumption that every model variable
+can be chunked.
 
 The tests compare a full 32-household, five-state fixture with one, two, three
 and seven chunks, plus random household assignments. They compare every entity

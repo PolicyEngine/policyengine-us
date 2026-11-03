@@ -458,12 +458,14 @@ def calculate_chunked(
     Input weights are never rescaled. Only one chunk simulation is live at once.
 
     This is exact for household-local calculations. Known Medicaid state
-    aggregates, the household and SPM unit income deciles, external
-    claiming-tax-unit links, and a chunk holding exactly one of several
-    marital units (which pairs SSI spouses differently) are rejected. A rejected variable with a stored
-    value returns that value, since no formula runs. Custom reform formulas
-    must also be household-local: population reductions, ranking and random
-    draws depending on population order are not supported.
+    aggregates and the household and SPM unit income deciles are rejected
+    when their formulas would run; a rejected variable with a stored value
+    returns that value, since no formula runs. External claiming-tax-unit
+    links, and a chunk holding exactly one of several marital units (which
+    can pair SSI spouses differently), are rejected before any chunk is built.
+    Custom reform formulas must also be household-local: population
+    reductions, ranking and random draws depending on population order are
+    not supported.
     """
     if isinstance(n_chunks, bool) or not isinstance(n_chunks, Integral) or n_chunks < 1:
         raise ValueError("n_chunks must be a positive integer.")
@@ -495,18 +497,24 @@ def calculate_chunked(
                 "household_chunks must assign each household an integer in [0, n_chunks)."
             )
 
+    # _ssi_spouses.py tests whether the simulation holds one marital unit.
+    # Count each nonempty chunk's units before any chunk is built; empty
+    # chunks are skipped, and labels can be any integers below n_chunks.
+    _, marital_units = np.unique(
+        assignments[positions["marital_unit"]], return_counts=True
+    )
+    if len(positions["marital_unit"]) > 1 and (marital_units == 1).any():
+        raise ValueError(
+            "A chunk holding exactly one marital unit can pair SSI spouses "
+            "differently from the whole file (_ssi_spouses.py); use fewer "
+            "chunks or different household_chunks."
+        )
     tables = {}
     variable_entities = {}
     for chunk in np.unique(assignments):
         masks = {
             entity: assignments[owners] == chunk for entity, owners in positions.items()
         }
-        if masks["marital_unit"].sum() == 1 < len(masks["marital_unit"]):
-            raise ValueError(
-                "A chunk holding exactly one marital unit can pair SSI spouses "
-                "differently from the whole file (_ssi_spouses.py); use fewer "
-                "chunks or different household_chunks."
-            )
         chunk_dataset = None
         simulation = None
         try:
