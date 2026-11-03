@@ -201,3 +201,36 @@
     deductible_mortgage_insurance_premiums: 1_800
     interest_deduction: 11_800
     mn_itemized_deductions: 10_000
+
+# Minn. Stat. 290.0122, subd. 2(d), and the 2024 M1SA line 26 worksheets
+# (step 2 takes out lines 4, 13 and 19) leave investment interest (line 13)
+# out of the reduction.
+- name: 2024 MN investment interest is exempt from the 80% reduction
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 2_000_000
+    investment_interest_expense: 10_000
+    charitable_deduction: 5_000
+    state_code: MN
+  output:
+    # AGI is over $1,053,750, so the reduction is 80% of the deductions
+    # other than investment interest: 0.8 x 5,000 = 4,000.
+    # 15,000 - 4,000. Were the interest reduced too: 15,000 - 12,000 = 3,000.
+    mn_itemized_deductions: 11_000
+
+- name: 2024 MN investment interest is left out of the 80% cap on the 3% reduction
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 300_000
+    investment_interest_expense: 10_000
+    charitable_deduction: 1_000
+    state_code: MN
+  output:
+    # 3% x (300,000 - 232,500) = 2,025; the cap is 80% x 1,000 = 800, so the
+    # reduction is 800 and the deduction 11,000 - 800. Were the interest in
+    # the cap base, the cap would be 8,800 and the deduction 11,000 - 2,025.
+    mn_itemized_deductions: 10_200
