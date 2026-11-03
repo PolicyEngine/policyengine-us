@@ -1,11 +1,11 @@
 from policyengine_us.model_api import *
-from policyengine_us.tools.period_branch import drop_inherited_values, has_input
-from policyengine_us.variables.household.marginal_tax_rate_helpers import (
-    user_set_variables,
-)
+from policyengine_us.tools.period_branch import has_input
 from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
     calculate_relative_capital_gains_mtr_change,
     get_behavioral_response_measurements,
+)
+from policyengine_us.variables.household.marginal_tax_rate_helpers import (
+    create_perturbed_branch,
 )
 from policyengine_us.variables.gov.simulation.capital_gains_response_forms import (
     CAPITAL_GAINS_RESPONSE_FORM_VARIABLES,
@@ -181,7 +181,6 @@ class marginal_tax_rate_on_capital_gains(Variable):
         simulation = person.simulation
         adult_index_values = person("adult_index_cg", period)
         long_term_capital_gains = person("long_term_capital_gains", period)
-        capital_gains = person("capital_gains", period)
         # capital_gains adds short- and long-term gains, and adjusted gross
         # income reads it. A total given as an input, at construction or
         # later, is stored as given rather than added up again.
@@ -191,38 +190,21 @@ class marginal_tax_rate_on_capital_gains(Variable):
         # marginal_tax_rate's do; a branch made first measured its own.
         household_net_income = person.household("household_net_income", period)
         rise = capital_gains_mtr_rise(household_net_income, long_term_capital_gains)
-        variables = simulation.tax_benefit_system.variables
-        inputs = user_set_variables(simulation)
-        inputs_with_formulas = [
-            variable
-            for variable in inputs
-            if variable in variables and not variables[variable].is_input_variable()
-        ]
         for adult_index in [1, 2]:
-            alt_simulation = simulation.get_branch(f"adult_{adult_index}_cg_rise")
+            branch_name = f"adult_{adult_index}_cg_rise"
             mask = adult_index_values == adult_index
-            for variable, variable_data in variables.items():
-                if variable not in inputs and not variable_data.is_input_variable():
-                    alt_simulation.delete_arrays(variable)
-            # A variable given as an input for one period keeps only the
-            # periods it was given for; what was calculated for the others,
-            # this one included, is calculated again.
-            drop_inherited_values(alt_simulation, inputs_with_formulas)
             # Raise long-term gains, which net capital gain and so the
             # preferential rates read. Raising capital_gains instead reached
             # adjusted gross income but not net capital gain, so it measured
             # the rate on ordinary income except where taxable income was
-            # below net capital gain. The override holds any behavioral
+            # below net capital gain. The branch holds any behavioral
             # response at its value here.
-            alt_simulation.set_input(
-                "long_term_capital_gains",
-                period,
-                long_term_capital_gains + mask * rise,
-            )
+            increments = {"long_term_capital_gains": mask * rise}
             if capital_gains_is_input:
-                alt_simulation.set_input(
-                    "capital_gains", period, capital_gains + mask * rise
-                )
+                increments["capital_gains"] = mask * rise
+            alt_simulation = create_perturbed_branch(
+                simulation, period, branch_name, increments
+            )
             alt_person = alt_simulation.person
             # Divide by the rise as stored, after rounding to float32.
             stored_rise = (
@@ -234,5 +216,5 @@ class marginal_tax_rate_on_capital_gains(Variable):
             increase = household_net_income_higher_gains - household_net_income
             mtr_values += where(mask, 1 - increase / where(mask, stored_rise, 1), 0)
 
-            del simulation.branches[f"adult_{adult_index}_cg_rise"]
+            del simulation.branches[branch_name]
         return mtr_values

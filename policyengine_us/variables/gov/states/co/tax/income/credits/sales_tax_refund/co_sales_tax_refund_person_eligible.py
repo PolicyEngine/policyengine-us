@@ -5,6 +5,12 @@ class co_sales_tax_refund_person_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Eligible individual for the Colorado sales tax refund"
+    documentation = (
+        "Individual eligibility for Colorado's residual TABOR sales tax refund in the "
+        "modeled eligibility tax year. Returns and payments may occur later. Eligible "
+        "filers contribute to co_sales_tax_refund, whose amount and in_effect "
+        "parameter determine the payment included in that year's credit total."
+    )
     definition_period = YEAR
     reference = (
         # C.R.S. 39-22-2003(1)(a) defines a "qualified individual" via a

@@ -286,3 +286,56 @@
     dependent_care_assistance_exclusion: 9_000
     cdcc: 3_500
     al_federal_income_tax_deduction: 4_390
+
+- name: 2021 head of household, one child - Part II recomputes the EITC only for a taker
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 41_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        takes_up_eitc: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: AL
+  output:
+    # Federal tax: $41,000 - $18,800 standard deduction = $22,200 taxable;
+    # 10% x 14,200 + 12% x 8,000 = $2,380.
+    income_tax_before_refundable_credits: 2_380
+    # Part I: 2,380 - 3,600 refundable CTC - 185.50 EITC < 0, so 0.
+    # Part II (2020 IRC): 2,380 - 2,000 nonrefundable 2020 CTC = 380 (line 6);
+    # 2020 EITC 3,584 - 15.98% x (41,000 - 19,330) = 121.13; the 2020 CTC is
+    # all nonrefundable here, so 380 - 121.13 = 258.87.
+    al_federal_income_tax_deduction: 258.87
+
+- name: 2021 head of household, one child, no EITC take-up - Part II recomputes no EITC
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 41_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        takes_up_eitc: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: AL
+  output:
+    eitc: 0
+    # Part I: 2,380 - 3,600 refundable CTC < 0, so 0. Part II: line 6 is
+    # 380 and the 2020-rule EITC is zero for a filer who does not take it
+    # up, so 380.
+    al_federal_income_tax_deduction: 380
