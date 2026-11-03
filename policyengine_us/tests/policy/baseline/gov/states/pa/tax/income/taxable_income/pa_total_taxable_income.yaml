@@ -111,11 +111,14 @@
         gambling_winnings: 10_000
         gambling_losses: 8_000
         ssi: 0
+        # Rebate income counts half of computed pa_ssp; pin it to zero.
+        pa_ssp: 0
       spouse:
         age: 65
         gambling_winnings: 2_000
         gambling_losses: 5_000
         ssi: 0
+        pa_ssp: 0
     tax_units:
       tax_unit:
         members: [head, spouse]
