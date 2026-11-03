@@ -40,8 +40,6 @@ class co_leap_eligible(Variable):
         subsidized = spm_unit(
             "receives_housing_assistance", period
         ) | spm_unit.household("is_in_public_housing", period)
-        fuel = spm_unit("heating_type", period)
-        fuels = fuel.possible_values
         dwelling = spm_unit("co_leap_dwelling_type", period)
         hotel = dwelling == dwelling.possible_values.HOTEL_MOTEL
         # Subsidized rent-included heat can qualify with a separate surcharge;
@@ -53,8 +51,6 @@ class co_leap_eligible(Variable):
             (size > 0)
             & ((income <= limit) | (income < federal_floor))
             & (cost > 0)
-            & (fuel != fuels.NONE)
-            & (fuel != fuels.UNSPECIFIED)
             & ~(included & subsidized)
             & (~hotel | included)
         )

@@ -10,7 +10,7 @@ class co_leap(Variable):
     defined_for = "co_leap_eligible"
     # PDF pages 90,92-95
     reference = (
-        "https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=92"
+        "https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=90"
     )
 
     def formula(spm_unit, period, parameters):

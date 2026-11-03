@@ -34,4 +34,4 @@ class co_leap_countable_income_person(Variable):
         # Known foster individuals are outside the LEAP household; income of
         # nonqualified immigrants remains included. Each received income source
         # is nonnegative, and existing business inputs are already net of costs.
-        return where(foster, 0, max_(income, 0))
+        return where(foster, 0, income)
