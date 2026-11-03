@@ -34,7 +34,8 @@ For every SPM unit:
 5. No program is counted twice. From 2024, no *_child_care_subsidies variable,
    and no program one of them adds, appears in spm_unit_benefits or in a
    reform's copy of that list, and all of them reach child_care_subsidies.
-   Before 2024 the expense has no formula, so Colorado's, Washington's and West
+   household_state_benefits counts them only through
+   household_child_care_subsidies. Before 2024 the expense has no formula, so Colorado's, Washington's and West
    Virginia's subsidies stay resources and count once, as on main. The Tlaib
    reform copies carry only Colorado's in those years, also as on main.
 6. Differential. With real programs turned on and off, the expense falls by
@@ -225,10 +226,19 @@ def state_subsidy_adds():
     return {name: list(system.variables[name].adds) for name in STATE_SUBSIDIES}
 
 
-def test_no_subsidy_is_a_spm_resource():
-    subsidy_variables = set(STATE_SUBSIDIES) | {"child_care_subsidies"}
+def all_subsidy_variables():
+    """Every variable that pays a state subsidy or sums them."""
+    variables = set(STATE_SUBSIDIES) | {
+        "child_care_subsidies",
+        "household_child_care_subsidies",
+    }
     for programs in state_subsidy_adds().values():
-        subsidy_variables.update(programs)
+        variables.update(programs)
+    return variables
+
+
+def test_no_subsidy_is_a_spm_resource():
+    subsidy_variables = all_subsidy_variables()
     lists = {
         "baseline spm_unit_benefits": benefits_lists_in(BASELINE_SPM_BENEFITS_SOURCE)[
             0
@@ -247,6 +257,23 @@ def test_no_subsidy_is_a_spm_resource():
         "Child care subsidies reach the SPM by lowering "
         f"spm_unit_capped_work_childcare_expenses, not as resources: {counted_twice}"
     )
+
+
+def test_household_measure_counts_each_subsidy_once():
+    # Property 6 subtracts what household net income counts, so the household
+    # list has to count each subsidy once too.
+    others = all_subsidy_variables() - {"household_child_care_subsidies"}
+    blocks = yaml.load(
+        (
+            PACKAGE / "parameters/gov/household/household_state_benefits.yaml"
+        ).read_text(),
+        yaml.BaseLoader,
+    )["values"]
+    assert "2024-01-01" in blocks
+    for start, members in blocks.items():
+        if start >= "2024":
+            assert members.count("household_child_care_subsidies") == 1, start
+            assert not others & set(members), (start, sorted(others & set(members)))
 
 
 def test_every_state_subsidy_is_in_the_programs_list():
@@ -324,15 +351,23 @@ def with_and_without_subsidies(situation):
 
 
 def subsidy_counted_by_household_measure(simulation, state):
-    """The subsidy household_state_benefits sums, whether it lists the state's
-    variable or the national aggregate."""
+    """The subsidy household_state_benefits sums, through whichever variable it
+    lists: household_child_care_subsidies, the aggregate, the state's own
+    variable or a program that variable adds."""
     listed = simulation.tax_benefit_system.parameters(
         f"{YEAR}-01-01"
     ).gov.household.household_state_benefits
     state_variable = f"{state.lower()}_child_care_subsidies"
-    if "child_care_subsidies" in listed or state_variable in listed:
-        return float(simulation.calculate("child_care_subsidies", YEAR).sum())
-    return 0.0
+    candidates = {
+        "household_child_care_subsidies",
+        "child_care_subsidies",
+        state_variable,
+        *state_subsidy_adds()[state_variable],
+    }
+    counted = sorted(candidates & set(listed))
+    # Listing two of them would count the subsidy twice.
+    assert len(counted) <= 1, counted
+    return sum(float(simulation.calculate(name, YEAR).sum()) for name in counted)
 
 
 @settings(max_examples=12, deadline=None)
