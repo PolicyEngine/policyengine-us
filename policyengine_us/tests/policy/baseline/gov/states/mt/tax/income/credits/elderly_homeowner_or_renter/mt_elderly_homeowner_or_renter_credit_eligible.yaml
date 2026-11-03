@@ -147,6 +147,18 @@
   output:
     mt_elderly_homeowner_or_renter_credit_eligible: false
 
+- name: An unbilled occupancy input above 12 months is capped at 12
+  period: 2024
+  input:
+    age: 80
+    rent: 0
+    state_code: MT
+    mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months: 13
+  output:
+    # A claim period has 12 months, so qualifying occupancy is at most 12.
+    mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 12
+    mt_elderly_homeowner_or_renter_credit_eligible: true
+
 - name: The occupancy test applies from 2009
   period: 2009
   input:

@@ -86,6 +86,10 @@
     # person2: line 23 = 900; line 27 = 900 - 259 = 641.
     # person3 is billed nothing either, so their line 24 is also 900, but
     # they are under 62 and not a claimant.
+    # Not modelled: § 15-30-2337(7)(b) leaves "bona fide lessees, tenants,
+    # or roomers and boarders on contract" out of the household. The model
+    # counts every member's income in line 18, so this case reads person1 as
+    # a member of person2's household rather than a lessee on contract.
     mt_elderly_homeowner_or_renter_credit_gross_rent: [900, 0, 900]
     mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [0, 641, 0]
 
@@ -126,6 +130,9 @@
     # 0) = 0; line 22 = 0.
     # person1: line 24 = 2_500; line 25 = 375; line 27 = 375.
     # person2 is 60, so not a claimant, though the home is in their name.
+    # Not modelled: § 15-30-2337(7)(b), as in Case 2. Line 18 pools both
+    # members' income; a lessee on contract would be outside person2's
+    # household.
     mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [375, 0]
     mt_elderly_homeowner_or_renter_credit: [375, 0]
 

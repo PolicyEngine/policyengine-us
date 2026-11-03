@@ -7,13 +7,18 @@ class mt_elderly_homeowner_or_renter_credit_federal_refundable_credits(Variable)
     label = "Federal refundable credits received, in Montana elderly homeowner/renter credit gross household income"
     documentation = (
         "Federal refundable tax credit cash this person received during the "
-        "year, such as an earned income or child tax credit refund from the "
-        "prior year's return or an Economic Impact Payment. Defaults to the "
-        "return's recovery rebate credits (the 2020 and 2021 Economic Impact "
-        "Payments, advanced during the same year), on the tax unit head, and "
-        "to zero in other years: the other credits claimed on this year's "
-        "return are paid after the year ends, so they do not establish a "
-        "receipt. A supplied amount replaces the default."
+        "year: the return's recovery rebate credits (the 2020 and 2021 "
+        "Economic Impact Payments, advanced during the same year) on the tax "
+        "unit head, plus "
+        "mt_elderly_homeowner_or_renter_credit_other_federal_refundable_credits, "
+        "the other federal refundable credits received, such as an earned "
+        "income or child tax credit refund from the prior year's return. The "
+        "other credits claimed on this year's return are paid after the year "
+        "ends, so they do not establish a receipt. Record other receipts in "
+        "that input. An input to this variable replaces the computed amount "
+        "for everyone and sets anyone not given a value to 0, so supply it "
+        "for every household member, for example to record that a return "
+        "received no payment."
     )
     unit = USD
     definition_period = YEAR
@@ -24,6 +29,10 @@ class mt_elderly_homeowner_or_renter_credit_federal_refundable_credits(Variable)
         "https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0370/0150-0300-0230-0370.html",
         # ARM 42.4.301(2)(b): "federal refundable tax credits received"
         "https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/c90ea93a-03a2-4605-a0f8-f2f3760198bf/document/768c8344-24ee-4950-9d5e-9d8fc97ec0f7",
+        # 2021 instructions, line 7: "Combine all the refundable credits
+        # received by the members of the household in 2021", including "the
+        # federal Child Tax Credits, Economic Impact Payments"
+        "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2021_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=49",
         # 2023 instructions, line 7: "Combine all the refundable credits
         # received by the members of the household in 2023", including "the
         # federal and Montana Earned Income Tax Credit, the federal Child Tax
@@ -50,8 +59,24 @@ class mt_elderly_homeowner_or_renter_credit_federal_refundable_credits(Variable)
     # credit stands in for the advance payment; any amount reconciled on the
     # return is paid the next year and is not separated here. The credit
     # parameters are zero outside 2020 and 2021, so so is this default.
+    #
+    # Not counted by default: the 2021 advance child tax credit. IRC 7527A
+    # advanced half of the estimated 2021 child tax credit in monthly
+    # payments from July to December 2021, and the 2021 instructions list
+    # "the federal Child Tax Credits" among the credits received. The model
+    # does not compute the advance payments, so a household that received
+    # them records them in
+    # mt_elderly_homeowner_or_renter_credit_other_federal_refundable_credits.
+    #
+    # Other receipts come from that separate input, so supplying one
+    # person's leaves every other return's default payments in place.
     def formula(person, period, parameters):
         # Gross household income sums this person-level amount over the
         # household, so count each return's payments once, on its head.
         head = person("is_tax_unit_head", period)
-        return head * person.tax_unit("recovery_rebate_credit", period)
+        payments = head * person.tax_unit("recovery_rebate_credit", period)
+        other = person(
+            "mt_elderly_homeowner_or_renter_credit_other_federal_refundable_credits",
+            period,
+        )
+        return payments + other

@@ -26,6 +26,9 @@ class mt_elderly_homeowner_or_renter_credit_state_refundable_credits(Variable):
         "https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0370/0150-0300-0230-0370.html",
         # ARM 42.4.301(2)(c): "any state refundable tax credits received"
         "https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/c90ea93a-03a2-4605-a0f8-f2f3760198bf/document/768c8344-24ee-4950-9d5e-9d8fc97ec0f7",
+        # ARM 42.4.301(2)(c) before 11/10/2017: "Montana state income tax and
+        # elderly homeowner/renter credit refunds received"
+        "https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/c90ea93a-03a2-4605-a0f8-f2f3760198bf/document/788508cc-8418-41c8-926d-3dfb11af3fd6",
         # 2024 Schedule 2EC, line 8: "Combine all the refundable credits
         # received by all household members in 2024", including "the federal
         # and Montana earned income tax credits"

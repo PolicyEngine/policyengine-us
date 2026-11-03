@@ -938,9 +938,9 @@
       person2:
         age: 40
         employment_income: 10_000
-        # Federal EITC refund received during 2024.
-        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 632
-        # Montana EITC refund received during 2024.
+        # Supplied receipts: federal and Montana EITC refunds received during
+        # 2024.
+        mt_elderly_homeowner_or_renter_credit_other_federal_refundable_credits: 632
         mt_elderly_homeowner_or_renter_credit_state_refundable_credits: 63.20
     tax_units:
       tax_unit1:
@@ -954,13 +954,12 @@
   output:
     # The claimant's adult son lives in the household and files his own
     # return. Line 5 pensions 20_000. Line 8, refundable credits received by
-    # all household members: the 632 federal EITC refund he received in 2024
-    # and Montana EITC 10% x 632 = 63.20 (Rev. Proc. 2023-34, no qualifying
-    # child, wages between 8_260 and 10_330), 695.20 in all. Line 17 his wages 10_000. Line 18
-    # gross household income 30_695.20; line 20 = 30_695.20 - 12_600 =
-    # 18_095.20; line 21 = 0.05; line 22 = 904.76; line 27 = 2_000 - 904.76
-    # = 1_095.24; line 28 = 1_095.24 (under 1_150); line 29 = 100%; line 30 =
-    # 1_095.24. Counting only his Montana EITC gave 1_126.84.
+    # all household members: the supplied receipts, a 632 federal and a 63.20
+    # Montana EITC refund he received in 2024, 695.20 in all. Line 17 his
+    # wages 10_000. Line 18 gross household income 30_695.20; line 20 =
+    # 30_695.20 - 12_600 = 18_095.20; line 21 = 0.05; line 22 = 904.76; line
+    # 27 = 2_000 - 904.76 = 1_095.24; line 28 = 1_095.24 (under 1_150); line
+    # 29 = 100%; line 30 = 1_095.24.
     mt_elderly_homeowner_or_renter_credit_net_household_income: [904.76, 0]
     mt_elderly_homeowner_or_renter_credit: [1_095.24, 0]
 
@@ -976,9 +975,9 @@
       person2:
         age: 30
         employment_income: 10_000
-        # Federal EITC and refundable CTC received during 2024.
-        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 4_525
-        # Montana EITC refund received during 2024.
+        # Supplied receipts: federal EITC and refundable CTC, and a Montana
+        # EITC refund, received during 2024.
+        mt_elderly_homeowner_or_renter_credit_other_federal_refundable_credits: 4_525
         mt_elderly_homeowner_or_renter_credit_state_refundable_credits: 340
       person3:
         age: 5
@@ -993,12 +992,11 @@
         state_name: MT
   output:
     # The claimant's daughter and grandchild live in the household; the
-    # daughter files her own return. Line 8, received during 2024: federal
-    # EITC 34% x 10_000 = 3_400, refundable part of the federal child tax
-    # credit
-    # min(1_700, 15% x (10_000 - 2_500)) = 1_125, Montana EITC 340; 4_865 in
-    # all. Line 17 her wages 10_000. Line 18 = 20_000 + 4_865 + 10_000 =
-    # 34_865; line 20 = 22_265; line 22 = 22_265 x 0.05 = 1_113.25; line 27 =
+    # daughter files her own return. Line 8, the supplied receipts during
+    # 2024: 4_525 of federal EITC and refundable child tax credit and a 340
+    # Montana EITC refund; 4_865 in all. Line 17 her wages 10_000. Line 18 =
+    # 20_000 + 4_865 + 10_000 = 34_865; line 20 = 22_265; line 22 = 22_265 x
+    # 0.05 = 1_113.25; line 27 =
     # 2_000 - 1_113.25 = 886.75; line 29 = 100% (under 35_000); line 30 =
     # 886.75.
     mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 14_865, 0]
@@ -1017,9 +1015,9 @@
       person2:
         age: 30
         employment_income: 12_000
-        # Federal EITC and refundable CTC received during 2024.
-        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 5_505
-        # Montana EITC refund received during 2024.
+        # Supplied receipts: federal EITC and refundable CTC, and a Montana
+        # EITC refund, received during 2024.
+        mt_elderly_homeowner_or_renter_credit_other_federal_refundable_credits: 5_505
         mt_elderly_homeowner_or_renter_credit_state_refundable_credits: 408
       person3:
         age: 5
@@ -1033,13 +1031,11 @@
         members: [person1, person2, person3]
         state_name: MT
   output:
-    # Line 8, received during 2024: federal EITC 34% x 12_000 = 4_080 (under the 12_390 earned
-    # income amount), refundable child tax credit
-    # min(1_700, 15% x 9_500) = 1_425, Montana EITC 408; 5_913 in all.
-    # Line 18 = 20_000 + 5_913 + 12_000 = 37_913; line 20 = 25_313;
+    # Line 8, the supplied receipts during 2024: 5_505 of federal EITC and
+    # refundable child tax credit and a 408 Montana EITC refund; 5_913 in
+    # all. Line 18 = 20_000 + 5_913 + 12_000 = 37_913; line 20 = 25_313;
     # line 22 = 1_265.65; line 27 = 734.35; line 29 = 30% (37_501 to 40_000);
-    # line 30 = 734.35 x 0.3 = 220.31. Counting only the Montana EITC, line
-    # 18 was 32_408 and the credit 1_009.60.
+    # line 30 = 734.35 x 0.3 = 220.31.
     mt_elderly_homeowner_or_renter_credit: [220.31, 0, 0]
 
 - name: 2025 Schedule 2EC worked case, the credit and the property tax rebate received in 2025 count
@@ -1089,9 +1085,9 @@
       person2:
         age: 40
         employment_income: 10_000
-        # Federal EITC refund received during 2023.
-        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 584.70
-        # Montana EITC refund received during 2023.
+        # Supplied receipts: federal and Montana EITC refunds received during
+        # 2023.
+        mt_elderly_homeowner_or_renter_credit_other_federal_refundable_credits: 584.70
         mt_elderly_homeowner_or_renter_credit_state_refundable_credits: 17.54
     tax_units:
       tax_unit1:
@@ -1107,9 +1103,8 @@
   output:
     # Line 1 federal AGI of all household members 30_000. Line 7, the
     # refundable credits received by the members of the household: the
-    # son's federal EITC, Rev. Proc. 2022-38, no qualifying child,
-    # 600 - 7.65% x (10_000 - 9_800) = 584.70, and Montana EITC 3%, 17.54;
-    # 602.24 in all. No actual property-rebate receipt is supplied, so
+    # supplied receipts, the son's 584.70 federal and 17.54 Montana EITC
+    # refunds; 602.24 in all. No actual property-rebate receipt is supplied, so
     # none counts. Line 10 = 30_602.24; line 12 = 18_002.24; line 13 =
     # 0.05; line 14 = 900.11; line 19 = 2_000 - 900.11 = 1_099.89; line 20
     # = 1_099.89; line 21 = 100%; line 22 = 1_099.89.
@@ -1127,14 +1122,14 @@
         rent: 4_800
         mt_elderly_homeowner_or_renter_credit_received: 60
         mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 20
-        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 500
+        mt_elderly_homeowner_or_renter_credit_other_federal_refundable_credits: 500
       person2:
         age: 70
         taxable_pension_income: 15_000
         rent: 7_200
         mt_elderly_homeowner_or_renter_credit_received: 40
         mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 80
-        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 300
+        mt_elderly_homeowner_or_renter_credit_other_federal_refundable_credits: 300
     tax_units:
       tax_unit1:
         members: [person1]

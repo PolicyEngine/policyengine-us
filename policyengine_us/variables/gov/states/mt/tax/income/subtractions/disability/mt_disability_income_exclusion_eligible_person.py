@@ -27,9 +27,7 @@ class mt_disability_income_exclusion_eligible_person(Variable):
         is_retired_on_disability = person("retired_on_total_disability", period)
         eligible_retiree = age_eligible & is_retired_on_disability
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        return eligible_retiree & head_or_spouse
-
-    def formula_2024(person, period, parameters):
-        # The exclusion is repealed for tax years beginning after December 31,
-        # 2023 (2021 Mont. Laws ch. 503, sections 65 and 70(1)).
-        return False
+        # in_effect is false from 2024: the exclusion is repealed for tax
+        # years beginning after December 31, 2023 (2021 Mont. Laws ch. 503,
+        # sections 65 and 70(1)).
+        return p.in_effect & eligible_retiree & head_or_spouse

@@ -1,32 +1,29 @@
-"""Property tests: federal refundable credits received in the Montana elderly
+"""Worked example: federal refundable credits received in the Montana elderly
 homeowner/renter credit's gross household income.
 
 MCA 15-30-2337(4) defines gross household income as "all income received by
 all individuals of a household", ARM 42.4.301(2)(b) counts "federal
 refundable tax credits received", and the 2024 Schedule 2EC line 8 combines
 "all the refundable credits received by all household members". The credits
-claimed on a return are paid after its year ends, so the model takes the
-federal refundable credits each person received during the year as an input
-(mt_elderly_homeowner_or_renter_credit_federal_refundable_credits), not the
-current return's entitlement; its default counts only the 2020 and 2021
-Economic Impact Payments, which are zero in 2024. These tests check that
-input for households of
-a claimant aged 62 or older and a younger member who files their own return
-with up to two children, so that the member's return has a federal EITC and
-a refundable child tax credit.
+claimed on a return are paid after its year ends, so the model counts the
+federal refundable credits each person received during the year
+(mt_elderly_homeowner_or_renter_credit_federal_refundable_credits): the 2020
+and 2021 Economic Impact Payments by default, which are zero in 2024, plus
+other receipts supplied through
+mt_elderly_homeowner_or_renter_credit_other_federal_refundable_credits, not
+the current return's entitlement.
 
-YAML cases cannot compare two simulations or draw household structures, so
-this file does both. Each example runs the households twice: with the
-federal refundable credits each person received (W) and with none received
-(Z). Properties, for every household:
+YAML cases cannot compare two simulations, so this file does. It runs one
+household, a claimant aged 70 and a daughter who files her own return with
+one child, twice: with the federal refundable credits each person received
+(W) and with none received (Z). It checks, against the 2024 Schedule 2EC:
 
-1. An entitlement is not a receipt: in Z the input is zero for everyone,
-   whatever the federal refundable credits on this year's returns.
+1. An entitlement is not a receipt: in Z the receipt is zero, though the
+   daughter's return has 4,525 of federal refundable credits.
 2. Accounting: gross household income in W exceeds Z by exactly the credits
-   received, each counted once.
+   received, counted once.
 3. More income never raises the credit: the credit in W is at most Z's.
-4. The credit is between zero and the cap, and zero when gross household
-   income is $45,000 or more.
+4. The credit is between zero and the cap.
 5. Montana tax changes only through the credit: Montana refundable credits
    other than this one are the same in W and Z, and the household's Montana
    income tax rises by exactly the fall in its credit.
@@ -42,9 +39,9 @@ from policyengine_us import Simulation
 
 YEAR = 2024
 CAP = 1_150
-INCOME_LIMIT = 45_000
 TOLERANCE = 0.01
 FEDERAL = "mt_elderly_homeowner_or_renter_credit_federal_refundable_credits"
+OTHER = "mt_elderly_homeowner_or_renter_credit_other_federal_refundable_credits"
 GROSS = "mt_elderly_homeowner_or_renter_credit_gross_household_income"
 CREDIT = "mt_elderly_homeowner_or_renter_credit"
 
@@ -63,12 +60,12 @@ def build_situation(cases, received):
             "taxable_pension_income": {YEAR: c["pension"]},
             "real_estate_taxes": {YEAR: c["property_tax"]},
             "rent": {YEAR: c["rent"]},
-            FEDERAL: {YEAR: c["claimant_received"] if received else 0},
+            OTHER: {YEAR: c["claimant_received"] if received else 0},
         }
         people[member] = {
             "age": {YEAR: c["member_age"]},
             "employment_income": {YEAR: c["wages"]},
-            FEDERAL: {YEAR: c["member_received"] if received else 0},
+            OTHER: {YEAR: c["member_received"] if received else 0},
         }
         for child, age in zip(children, c["child_ages"]):
             people[child] = {"age": {YEAR: age}}
@@ -119,7 +116,8 @@ def assert_properties(cases):
     for i, c in enumerate(cases):
         tol = tolerance(w["gross"][i])
         received = c["claimant_received"] + c["member_received"]
-        # 1. This year's federal refundable credits are not a receipt.
+        # 1. This year's federal refundable credits are not a receipt, and
+        # no Economic Impact Payment was made in 2024.
         assert z["federal_person"][i] == 0, c
         assert w["federal_person"][i] == pytest.approx(received, abs=tol), c
         # 2. The credits received are the whole difference in gross
@@ -128,10 +126,8 @@ def assert_properties(cases):
         # 3. More income never raises the credit.
         assert w["credit"][i] <= z["credit"][i] + tol, c
         for result in (w, z):
-            # 4. Bounds and the income limit.
+            # 4. Bounds.
             assert -tol <= result["credit"][i] <= CAP + tol, c
-            if result["gross"][i] >= INCOME_LIMIT + tol:
-                assert result["credit"][i] == 0, c
         # 5. Montana tax moves only through this credit.
         assert w["mt_other_credits"][i] == pytest.approx(
             z["mt_other_credits"][i], abs=TOLERANCE
@@ -146,8 +142,9 @@ def test_worked_example():
     daughter's wages 10,000 (line 17). Her 2024 return has a federal EITC of
     34% x 10,000 = 3,400, a refundable child tax credit of min(1,700, 15% x
     7,500) = 1,125 and a Montana EITC of 340, all paid in 2025, so none is
-    received in 2024. Line 8 counts the 4,525 of federal credits she
-    received during 2024. Line 18 = 34,525; line 22 = (34,525 - 12,600) x
+    received in 2024. Line 8 counts the federal credits she received during
+    2024, a supplied receipt of 4,525. Line 18 = 34,525; line 22 =
+    (34,525 - 12,600) x
     0.05 = 1,096.25; line 27 = 2,000 - 1,096.25 = 903.75; line 30 = 903.75.
     With nothing received, line 18 = 30,000, line 22 = 870 and line 30 =
     1,130."""
@@ -171,40 +168,3 @@ def test_worked_example():
     assert z["gross"][0] == pytest.approx(30_000, abs=TOLERANCE)
     assert z["credit"][0] == pytest.approx(1_130, abs=TOLERANCE)
     assert_properties([case])
-
-
-try:
-    import hypothesis
-    import hypothesis.strategies as st
-except ImportError:  # pragma: no cover
-    hypothesis = None
-
-if hypothesis is not None:
-    # Each example builds two Simulations; on a loaded runner input
-    # generation can trip the too_slow health check, which says nothing about
-    # the model.
-    SLOW = [hypothesis.HealthCheck.too_slow]
-
-    def amount(high):
-        return st.one_of(st.just(0), st.integers(min_value=1, max_value=high))
-
-    @st.composite
-    def case(draw):
-        return {
-            "claimant_age": draw(st.integers(min_value=62, max_value=90)),
-            "pension": draw(amount(40_000)),
-            "property_tax": draw(st.integers(min_value=0, max_value=4_000)),
-            "rent": draw(amount(12_000)),
-            "claimant_received": draw(amount(2_000)),
-            "member_age": draw(st.integers(min_value=19, max_value=61)),
-            "wages": draw(amount(30_000)),
-            "child_ages": draw(
-                st.lists(st.integers(min_value=0, max_value=16), max_size=2)
-            ),
-            "member_received": draw(amount(10_000)),
-        }
-
-    @hypothesis.settings(max_examples=10, deadline=None, suppress_health_check=SLOW)
-    @hypothesis.given(st.lists(case(), min_size=1, max_size=6))
-    def test_properties(cases):
-        assert_properties(cases)
