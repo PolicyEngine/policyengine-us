@@ -767,3 +767,29 @@
   output:
     ssi: 7_736
     co_state_supplement: 240
+
+- name: Case 38, before 2007 the presumed maximum value is counted.
+  # A single disabled renter with no income and outside shelter support in
+  # January 2004. SSI counts its presumed maximum value, 564 / 3 + 20 = 208
+  # (20 CFR 416.1140), less the $20 general exclusion, and pays
+  # 564 - 188 = 376. 9 CCR 2503-1 3.250.22 counted ISM then; the base of its
+  # shelter component is unsettled before 2007, so the model counts the
+  # presumed maximum value, 208, less the $20 disregard: 188. Grant
+  # 601 - 376 - 188 = 37.
+  period: 2004-01
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_outside_shelter_support: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi: 376
+    co_ssa_in_kind_support_and_maintenance: 208
+    co_state_supplement_countable_income: 188
+    co_state_supplement: 37

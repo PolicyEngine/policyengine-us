@@ -77,7 +77,10 @@ class co_ssa_in_kind_support_and_maintenance(Variable):
     documentation = "In-kind support and maintenance that Colorado counts as unearned income of an Old Age Pension or Aid to the Needy Disabled-Colorado Supplement client."
     unit = USD
     definition_period = MONTH
-    defined_for = StateCode.CO
+    # Not restricted to Colorado: Old Age Pension deems the unearned income
+    # of a client's spouse, matching ISM included, and the spouse may live
+    # elsewhere (3.534(B)(1), (C)). The programs that read it are defined
+    # only for Colorado residents.
     reference = (
         # 3.520.71(E), PDF page 44; 3.520.79, PDF pages 72-74
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=12428#page=72",
@@ -89,16 +92,32 @@ class co_ssa_in_kind_support_and_maintenance(Variable):
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-4&ruleVersionId=4795#page=13",
     )
 
+    def formula_2002(person, period, parameters):
+        # 9 CCR 2503-1 3.250.22 and 3.250.221(C) counted ISM from at least
+        # 2003: the maximum ISM amount then in effect when others supply all
+        # shelter costs, capped at the shelter and utility component of the
+        # grant standard. The table effective January 1, 2004 prints a $513
+        # AND/SSI-CS maximum grant where the grant standard is $601, so that
+        # component's base for 2002-2006 is unsettled. Until it is, these
+        # years count SSI's presumed maximum value ISM, halved for a couple as
+        # SSI splits it. For a single client in 2004 that is 564 / 3 + 20 =
+        # $208, between the two bases' 37% shelter components ($189.81 and
+        # $222.37).
+        ism = (
+            person("ssi_in_kind_support_and_maintenance", period.this_year)
+            / MONTHS_IN_YEAR
+        )
+        couple_computation = person("ssi_couple_computation_applies", period)
+        return where(couple_computation, ism / 2, ism)
+
     def formula_2007(person, period, parameters):
         # 9 CCR 2503-1 3.250.22 (9 CCR 2503-2 from September 2012): ISM for
         # shelter is capped at the shelter and utility component of the
         # grant standard, and 3.250.222 counts food supplied in full at its
         # component (3.460.43, 3.460.45). PolicyEngine models OAP only from
-        # 2023, so the AND-CS standard's components are used. The rule
-        # counted ISM before 2007 too, but the table effective January 1,
-        # 2004 prints a $513 AND/SSI-CS maximum grant where the grant
-        # standard is $601, so the base for 2002-2006 is unsettled and those
-        # years are not modeled.
+        # 2023, so the AND-CS standard's components are used. 2007 is the
+        # first table whose base is the grant standard without a conflicting
+        # figure (see formula_2002).
         p = parameters(period).gov.states.co.ssa
         standard = p.state_supplement.grant_standard
         share = p.ism.component_share
@@ -124,8 +143,12 @@ class co_ssa_in_kind_support_and_maintenance(Variable):
         # charged "a matching ISM" ("an identical ISM amount"). With
         # PolicyEngine's inputs SSA charges ISM whenever 3.520.79(C) would,
         # except to a child in the parental household (whom SSI deems
-        # instead) or a medical facility resident, so SSI recipients are
-        # charged SSA's ISM. Other clients' ISM follows 3.520.79(C).
+        # instead), so SSI recipients are charged SSA's ISM. That includes a
+        # medical facility resident on SSI with outside shelter support whose
+        # care Medicaid does not mostly pay: PolicyEngine's inputs cannot
+        # separate room and board furnished during medical confinement
+        # (3.520.786(B)) from separate shelter support. Other clients' ISM
+        # follows 3.520.79(C), with no ISM during medical confinement.
         maximum = parameters(period).gov.states.co.ssa.ism.maximum
         colorado = _colorado_shelter_ism(person, period, maximum)
         receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)

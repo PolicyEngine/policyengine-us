@@ -149,8 +149,11 @@ def assert_properties(cases, values):
             assert ism[s] == pytest.approx(expected, abs=TOLERANCE), c
             # 3. No backfill.
             share = disregard / 2 if c["married"] else disregard
+            # The floor top-up comes from the rule, not from the supplement
+            # under test, so an excessive grant cannot widen the allowance.
             grant = max(0, and_cs.grant_standard - ssi[s] - countable[s])
-            floor_top_up = supplement[s] - grant if supplement[s] > 0 else 0
+            positive = round(grant, 2) > 0
+            floor_top_up = max(0, and_cs.payment_floor - grant) if positive else 0
             drop = ssi[n] + supplement[n] - ssi[s] - supplement[s]
             assert drop >= ism[s] - share - floor_top_up - TOLERANCE, c
     for j, value in enumerate(values):
