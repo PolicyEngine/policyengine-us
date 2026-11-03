@@ -94,15 +94,16 @@ def test_a_dollar_of_subsidy_adds_a_dollar(year, index, amount):
         assert after - before == pytest.approx(amount, abs=TOLERANCE)
 
 
-def counted_subsidy(state, year, program, amount, bill):
+def counted_subsidy(state, year, program, amount, bill, after_school=0):
     members = ["parent", "child"]
     spm_unit = {
         "members": members,
         program: {year: amount},
-        "spm_unit_pre_subsidy_childcare_expenses": {year: bill},
+        "spm_unit_pre_subsidy_childcare_expenses": {year: bill - after_school},
     }
+    child = {"age": {year: 3}, "after_school_expenses": {year: after_school}}
     situation = {
-        "people": {"parent": {"age": {year: 30}}, "child": {"age": {year: 3}}},
+        "people": {"parent": {"age": {year: 30}}, "child": child},
         "tax_units": {"tax_unit": {"members": members}},
         "spm_units": {"spm_unit": spm_unit},
         "families": {"family": {"members": members}},
@@ -116,28 +117,35 @@ def counted_subsidy(state, year, program, amount, bill):
 @settings(max_examples=15, deadline=None)
 # Pin the boundaries the random draws may miss: no bill, a subsidy equal to
 # the bill, and a subsidy a dollar above it.
-@example(year=2025, index=0, amount=5_000, bill=0, extra=1)
-@example(year=2025, index=0, amount=5_000, bill=5_000, extra=1)
-@example(year=2025, index=0, amount=5_001, bill=5_000, extra=1)
+@example(year=2025, index=0, amount=5_000, bill=0, extra=1, after_school_share=0)
+@example(year=2025, index=0, amount=5_000, bill=5_000, extra=1, after_school_share=0)
+@example(year=2025, index=0, amount=5_001, bill=5_000, extra=1, after_school_share=0)
+# After-school care makes up half the bill, and then all of it.
+@example(year=2025, index=0, amount=5_000, bill=5_000, extra=1, after_school_share=50)
+@example(year=2025, index=0, amount=5_001, bill=5_000, extra=1, after_school_share=100)
 @given(
     year=st.sampled_from([2023, 2024, 2025, 2026]),
     index=st.integers(min_value=0, max_value=50),
     amount=st.integers(min_value=0, max_value=30_000),
     bill=st.integers(min_value=0, max_value=30_000),
     extra=st.integers(min_value=1, max_value=30_000),
+    after_school_share=st.integers(min_value=0, max_value=100),
 )
 def test_household_benefits_count_the_subsidy_up_to_the_bill(
-    year, index, amount, bill, extra
+    year, index, amount, bill, extra, after_school_share
 ):
     programs = programs_in(year)
     program = programs[index % len(programs)]
     state = program[:2].upper()
-    counted = counted_subsidy(state, year, program, amount, bill)
+    after_school = bill * after_school_share // 100
+    counted = counted_subsidy(state, year, program, amount, bill, after_school)
     assert counted <= amount + TOLERANCE
     if bill > 0:
         assert counted <= bill + TOLERANCE
     if bill == 0 or amount <= bill:
         assert counted == pytest.approx(amount, abs=TOLERANCE)
     if bill > 0:
-        bigger = counted_subsidy(state, year, program, amount, bill + extra)
+        bigger = counted_subsidy(
+            state, year, program, amount, bill + extra, after_school
+        )
         assert bigger >= counted - TOLERANCE
