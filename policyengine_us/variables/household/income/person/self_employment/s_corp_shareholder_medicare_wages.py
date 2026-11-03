@@ -14,13 +14,22 @@ class s_corp_shareholder_medicare_wages(Variable):
         "Like the other income inputs, enter the amount left after any "
         "section 911 foreign earned income exclusion attributable to these "
         "wages (line 12). They are part of employment_income, not in addition "
-        "to it. As for other self-employed people, the deduction counts "
-        "health_insurance_premiums only when is_self_employed is true."
+        "to it. Premiums the corporation pays or reimburses for the "
+        "shareholder and reports in box 1 as wages count as the "
+        "shareholder's own: include them in employment_income and in "
+        "health_insurance_premiums, but not here, because box 5 leaves out "
+        "premiums paid under a plan for employees generally (section "
+        "3121(a)(2)(B)). The model has no wage input that is in box 1 but "
+        "not box 5, so those premiums also count as payroll tax wages. The "
+        "deduction counts health_insurance_premiums only when "
+        "is_self_employed is true, so set it for a shareholder even when "
+        "these wages are their only earned income."
     )
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/162#l_5",
         "https://www.law.cornell.edu/uscode/text/26/1372",
+        "https://www.law.cornell.edu/uscode/text/26/3121#a_2",
         "https://www.irs.gov/pub/irs-prior/f7206--2023.pdf#page=1",
     )
     uprating = "calibration.gov.irs.soi.employment_income"
