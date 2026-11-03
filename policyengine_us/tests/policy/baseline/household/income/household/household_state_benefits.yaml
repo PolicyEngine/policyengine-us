@@ -400,3 +400,25 @@
   output:
     child_care_subsidies: 5_000
     household_child_care_subsidies: 5_000
+
+# Colorado's subsidy pays for after-school care too, so the cap counts that bill.
+- name: Colorado's subsidy for child care and after-school care counts in full
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        after_school_expenses: 6_000
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        co_child_care_subsidies: 12_000
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    household_child_care_subsidies: 12_000

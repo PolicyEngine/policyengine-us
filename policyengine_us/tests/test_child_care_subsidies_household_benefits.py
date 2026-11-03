@@ -8,8 +8,9 @@ the one list of state programs.
    household_child_care_subsidies in any year, so no subsidy counts twice.
 2. With no bill recorded, a dollar of subsidy adds a dollar to household
    benefits and to household net income. Each run samples programs and years.
-3. Household benefits count the subsidy up to the family's pre-subsidy bill. A
-   payment above the bill goes to the provider, not the family.
+3. Household benefits count the subsidy up to the family's pre-subsidy bill for
+   child care and after-school care. A payment above the bill goes to the
+   provider, not the family.
 
 The YAML cases pin single families. These read every dated block of the list and
 generate programs, years and amounts, which YAML can't express.
@@ -19,7 +20,7 @@ from pathlib import Path
 
 import pytest
 import yaml
-from hypothesis import given, settings
+from hypothesis import example, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us import Simulation
@@ -113,6 +114,11 @@ def counted_subsidy(state, year, program, amount, bill):
 
 
 @settings(max_examples=15, deadline=None)
+# Pin the boundaries the random draws may miss: no bill, a subsidy equal to
+# the bill, and a subsidy a dollar above it.
+@example(year=2025, index=0, amount=5_000, bill=0, extra=1)
+@example(year=2025, index=0, amount=5_000, bill=5_000, extra=1)
+@example(year=2025, index=0, amount=5_001, bill=5_000, extra=1)
 @given(
     year=st.sampled_from([2023, 2024, 2025, 2026]),
     index=st.integers(min_value=0, max_value=50),
