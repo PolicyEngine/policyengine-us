@@ -2,9 +2,11 @@ description: Wisconsin adds back the losses from these person-level income sourc
 values:
   2021-01-01:
     # Schedule 4, line 2: net business loss from a sole proprietorship
-    # (Schedule C). SSTB and non-SSTB income are combined, as loss_ald
-    # deducts the loss of their total.
-    - total_self_employment_income
+    # (Schedule C). The line 11j instructions say to consider each business
+    # individually, so the SSTB and non-SSTB losses are added back
+    # separately, as loss_ald deducts them.
+    - self_employment_income
+    - sstb_self_employment_income
     - rental_income # line 4: net rental real estate and royalty loss
     # Form 4835 farm rental loss: rental real estate (71.52(1e)(d)) or net
     # farm loss (71.52(1e)(e)).

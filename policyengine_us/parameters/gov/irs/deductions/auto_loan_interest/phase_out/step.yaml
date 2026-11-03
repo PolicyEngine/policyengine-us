@@ -1,12 +1,13 @@
-description: The IRS reduces the auto loan interest deduction at the following rate for each increment in of adjusted gross income above the threshold.
+description: The IRS reduces the auto loan interest deduction by this amount for each increment of modified adjusted gross income above the threshold.
 metadata:
   unit: currency-USD
   period: year
   label: Auto loan interest deduction reduction step
   reference:
-    - title: H.R.1 - One Big Beautiful Bill Act
-      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    - title: 26 U.S.C. § 163(h)(4)(C)(ii)(I)
+      href: https://www.law.cornell.edu/uscode/text/26/163#h_4_C_ii_I
+    - title: 2025 Schedule 1-A (Form 1040), line 29
+      href: https://www.irs.gov/pub/irs-pdf/f1040s1a.pdf#page=2
 
 values:
   2025-01-01: 200
-  

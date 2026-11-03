@@ -1,0 +1,439 @@
+# Missouri LIHEAP countable income per member: earned income less the 20%
+# earned income deduction (none for members under 18), plus unearned income
+# (without short- and long-term disability payments for members under 18)
+# and Social Security, each source floored at zero, less the full Medicare
+# Part B premium of a member receiving Social Security or railroad
+# retirement, with the member's total floored at zero. Members left out of
+# the household size as non-citizens have their income counted.
+
+- name: Case 1, full-time minimum wage earnings after the 20 percent deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 31_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # $15.00 an hour x 2,080 hours = 31,200 x (1 - 0.2) = 24,960.
+    mo_liheap_countable_income_person: [24_960]
+
+- name: Case 2, a seventeen-year-old's wages are excluded but survivor benefits count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 31_200
+      person2:
+        age: 17
+        employment_income: 6_000
+        social_security_survivors: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Parent: 31,200 x 0.8 = 24,960. Teenager: wages excluded under age 18;
+    # survivor benefits of 800 a month = 9,600 count (no Part B premium).
+    mo_liheap_countable_income_person: [24_960, 9_600]
+
+- name: Case 3, an eighteen-year-old in high school has wages counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 46
+      person2:
+        age: 18
+        is_in_secondary_school: true
+        is_tax_unit_dependent: true
+        employment_income: 7_800
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # A high school senior and tax dependent working 10 hours a week at
+    # $15.00: 7,800. The 2025 manual excludes earnings only under age 18
+    # (boundary case: 18 is not under 18) and no longer excludes students:
+    # 7,800 x 0.8 = 6,240.
+    mo_liheap_countable_income_person: [0, 6_240]
+
+- name: Case 4, self-employment counts after the deduction and a farm loss is floored at zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        self_employment_income: 24_000
+        farm_operations_income: -3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Each earned source is floored: max(24,000, 0) + max(-3,000, 0) = 24,000;
+    # 24,000 x 0.8 = 19,200. Netting the loss would give 21,000 x 0.8 = 16,800.
+    mo_liheap_countable_income_person: [19_200]
+
+- name: Case 5, the full Medicare Part B premium is deducted for members receiving Social Security.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        social_security_retirement: 23_400
+        medicare_part_b_premium: 2_434.80
+      person2:
+        age: 66
+        social_security_retirement: 1_800
+        medicare_part_b_premium: 2_434.80
+        taxable_pension_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # 2026 Part B premium 202.90 x 12 = 2,434.80.
+    # Person 1: 1,950 a month = 23,400 - 2,434.80 = 20,965.20.
+    # Person 2: Social Security of 150 a month (1,800) plus a 500 a month
+    # pension of 6,000 = 7,800; the full premium is deducted from the
+    # member's total: 7,800 - 2,434.80 = 5,365.20.
+    mo_liheap_countable_income_person: [20_965.20, 5_365.20]
+
+- name: Case 6, unearned sources count in full and interest is excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        unemployment_compensation: 6_000
+        child_support_received: 4_800
+        financial_assistance: 1_200
+        taxable_interest_income: 300
+      person2:
+        age: 41
+        military_retirement_pay: 24_000
+        veterans_benefits: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Person 1: unemployment 6,000 + child support 4,800 + money from family
+    # 1,200 = 12,000; interest of 300 is not counted.
+    # Person 2: military retirement 24,000 + VA benefits 6,000 = 30,000.
+    mo_liheap_countable_income_person: [12_000, 30_000]
+
+- name: Case 7, monthly SSI payments count as their annual total.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        ssi: 11_928
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 994 a month x 12 = 11,928.
+    mo_liheap_countable_income_person: [11_928]
+
+- name: Case 8, an undocumented member's earnings count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        immigration_status: CITIZEN
+        employment_income: 31_200
+      person2:
+        age: 32
+        immigration_status: UNDOCUMENTED
+        employment_income: 31_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Both: 31,200 x 0.8 = 24,960. The 2025 manual counts the income of a
+    # member left out of the household as a non-citizen.
+    mo_liheap_countable_income_person: [24_960, 24_960]
+
+- name: Case 9, earnings of a parent attending GED classes count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 25
+        is_in_secondary_school: true
+        employment_income_before_lsr: 58_240
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # The parent is 25, so the earnings count whether or not the parent
+    # attends GED classes.
+    # $28.00 an hour x 2,080 hours = 58,240 x (1 - 0.2) = 46,592.
+    # Missouri TANF: 58,240 / 12 = 4,853.33 a month, above the gross limit
+    # of 678 x 1.85 = 1,254.30 for two, so TANF is 0.
+    # Size 2 limit (FFY2026): 3,714 x 12 = 44,568. 46,592 > 44,568, and the
+    # 110% poverty floor 1.1 x (15,650 + 5,500) = 23,265 does not bind.
+    mo_liheap_countable_income_person: [46_592, 0]
+    mo_tanf: 0
+    mo_liheap_countable_income: 46_592
+    mo_liheap_income_limit: 44_568
+    mo_liheap_eligible: false
+    mo_liheap: 0
+
+- name: Case 10, a minor's disability payments are excluded while the minor's Social Security counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 44
+        disability_benefits: 18_000
+      person2:
+        age: 17
+        disability_benefits: 1_440
+        social_security_survivors: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Parent: private long-term disability of 1,500 a month = 18,000 counts.
+    # Teenager: short-term disability from a part-time job (60% of 300 a week
+    # for 8 weeks = 1,440) is excluded under age 18; the Social Security
+    # child's survivor benefit of 800 a month = 9,600 counts as SSA income
+    # (no Part B premium).
+    mo_liheap_countable_income_person: [18_000, 9_600]
+
+- name: Case 11, a rental loss does not offset wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 45_000
+        rental_income: -5_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Wages 45,000 x 0.8 = 36,000; the rental loss is floored:
+    # max(-5,000, 0) = 0, so 36,000. No children, so no TANF; no medical
+    # deduction. 36,000 > the size 1 limit of 2,840 x 12 = 34,080 and the
+    # 110% poverty floor of 1.1 x 15,650 = 17,215 -> ineligible. Netting the
+    # loss (31,000) would make the household eligible for 326.
+    mo_liheap_countable_income_person: [36_000]
+    mo_liheap_countable_income: 36_000
+    mo_liheap_income_limit: 34_080
+    mo_liheap_eligible: false
+    mo_liheap: 0
+
+- name: Case 12, every earned income source counts after the deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 52
+        employment_income: 16_000
+        self_employment_income: 1_000
+        sstb_self_employment_income: 2_000
+        farm_operations_income: 4_000
+        partnership_s_corp_income: 8_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Wages 16,000 + self-employment 1,000 + professional-service
+    # self-employment 2,000 + farm 4,000 + partnership or S corporation
+    # 8,000 = 31,000; dropping any source changes the total.
+    # 31,000 x (1 - 0.2) = 24,800.
+    mo_liheap_countable_income_person: [24_800]
+
+- name: Case 13, remaining unearned income sources count in full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 52
+        strike_benefits: 1_200
+        rental_income: 1_800
+        farm_rent_income: 2_400
+        alimony_income: 3_600
+      person2:
+        age: 60
+        railroad_benefits: 9_600
+        workers_compensation: 4_800
+        military_retirement_pay_survivors: 2_400
+        mo_ssp: 1_080
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Person 1: strike benefits 1,200 + rent from a building 1,800 + farm
+    # rent 2,400 + alimony 3,600 = 9,000.
+    # Person 2: railroad retirement 800 a month (9,600) + workers'
+    # compensation 4,800 + military survivor benefit 2,400 + a Missouri state
+    # supplementary payment of 90 a month (1,080, a monthly input summed over
+    # the year) = 17,880. At 60 the member is not on Medicare, so no Part B
+    # premium is deducted. Dropping any source changes a member's total.
+    mo_liheap_countable_income_person: [9_000, 17_880]
+
+- name: Case 14, the Medicare Part B premium is not deducted for a member without Social Security or railroad benefits.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        # A retired public employee whose job was not covered by Social
+        # Security pays the 2026 Part B premium of 202.90 x 12 directly.
+        taxable_pension_income: 36_500
+        medicare_part_b_premium: 2_434.80
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # The pension of 36,500 counts. With no Social Security or railroad
+    # benefits, the 2,434.80 premium is not deducted: 36,500. SSI is 0
+    # (36,500 / 12 - 20 = 3,021.67 a month > 994), and no state supplement.
+    # Medical deduction for an applicant 65 or older: 100 x 12 = 1,200.
+    # 36,500 - 1,200 = 35,300 > the size 1 limit of 2,840 x 12 = 34,080 and
+    # the 110% poverty floor of 1.1 x 15,650 = 17,215 -> ineligible.
+    # Deducting the premium would give 36,500 - 2,434.80 = 34,065.20 and
+    # 34,065.20 - 1,200 = 32,865.20 <= 34,080, eligible for natural gas 326.
+    # The railroad retiree of mo_liheap_countable_income Case 6 has the
+    # premium deducted.
+    mo_liheap_countable_income_person: [36_500]
+    mo_liheap_medical_deduction: 1_200
+    mo_liheap_countable_income: 35_300
+    mo_liheap_income_limit: 34_080
+    mo_liheap_eligible: false
+    mo_liheap: 0
+
+- name: Case 15, a member's countable income is floored at zero when the Medicare Part B premium exceeds that member's income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 52_000
+      person2:
+        # A parent who takes up neither SSI nor the Medicare Savings Program
+        # and pays the full premium. As an input dependent, the parent does
+        # not become the tax-unit head (which would add a 1,200 medical
+        # deduction); with SSI taken up, the model would pay about
+        # (994 - 130) x 12 = 10,368, more than the premium.
+        age: 66
+        is_tax_unit_dependent: true
+        social_security_retirement: 1_800
+        medicare_part_b_premium: 2_434.80
+        takes_up_ssi_if_eligible: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Person 1: $25.00 an hour x 2,080 hours = 52,000 x (1 - 0.2) = 41,600.
+    # Person 2: Social Security of 150 a month (1,800) less the 2026 Part B
+    # premium of 202.90 x 12 = 2,434.80, floored: max(-634.80, 0) = 0.
+    # No medical deduction: the head is 40 and the parent is a dependent.
+    # No child under 18, so no TANF: 41,600 + 0 = 41,600.
+    # Without the floor, person 2 would count -634.80 and the household
+    # 41,600 - 634.80 = 40,965.20.
+    mo_liheap_countable_income_person: [41_600, 0]
+    mo_liheap_medical_deduction: 0
+    mo_liheap_countable_income: 41_600

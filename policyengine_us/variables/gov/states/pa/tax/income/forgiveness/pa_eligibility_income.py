@@ -16,9 +16,10 @@ class pa_eligibility_income(Variable):
     defined_for = StateCode.PA
 
     def formula(tax_unit, period, parameters):
-        # Eligibility income is the claimant's, and the spouse's for a married
-        # claimant; a dependent child claims forgiveness on their own return
-        # (PA Personal Income Tax Guide, Tax Forgiveness). So only the head's
-        # and spouse's amounts count.
-        p = parameters(period).gov.states.pa.tax.income.forgiveness
-        return tax_unit_non_dep_add(tax_unit, period, p.eligibility_income_sources)
+        sources = parameters(
+            period
+        ).gov.states.pa.tax.income.forgiveness.eligibility_income_sources
+        # The sources are amounts of the claimant and spouse; dependents file
+        # their own PA return and their income is not part of the filer's
+        # eligibility income.
+        return tax_unit_non_dep_add(tax_unit, period, sources)

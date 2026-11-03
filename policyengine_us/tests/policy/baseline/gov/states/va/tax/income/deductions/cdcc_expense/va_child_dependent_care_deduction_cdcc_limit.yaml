@@ -6,13 +6,16 @@
   output:
     va_child_dependent_care_deduction_cdcc_limit: 3_000
 
-- name: Federal cdcc limit is not applied in 2021
+# 2022 Va. Acts ch. 3 conformed Virginia to the IRC as of December 31, 2021
+# for 2021 returns; the revised 2021 Form 760 code 101 allows "up to $8,000
+# for one dependent and $16,000 for two or more".
+- name: ARPA's $8,000 one-person limit applies in 2021
   period: 2021
   input:
     capped_count_cdcc_eligible: 1
     state_code: VA
   output:
-    va_child_dependent_care_deduction_cdcc_limit: 3_000
+    va_child_dependent_care_deduction_cdcc_limit: 8_000
 
 # Va. Code § 58.1-322.03(3) deducts the amount on which the federal credit is
 # based (Form 2441 line 31), which IRC § 21(c) reduces by § 129 employer

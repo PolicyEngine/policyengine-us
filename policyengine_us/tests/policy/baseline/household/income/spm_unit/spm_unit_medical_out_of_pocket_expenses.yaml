@@ -100,3 +100,37 @@
     marketplace_net_premium: 5_000
     spm_unit_health_insurance_premiums: 5_000
     spm_unit_medical_out_of_pocket_expenses: 5_100
+
+- name: SPM medical expenses include disjoint payroll and non-pretax premiums.
+  period: 2026
+  input:
+    pre_tax_health_insurance_premiums: 2_400
+    other_health_insurance_premiums: 600
+    chip_premium: 0
+    medicaid_premium: 0
+    marketplace_net_premium: 0
+    medicare_part_a_premium: 0
+    medicare_part_b_premium: 0
+    income_adjusted_part_d_premium_surcharge: 0
+    other_medical_expenses: 300
+    over_the_counter_health_expenses: 100
+  output:
+    spm_unit_health_insurance_premiums: 3_000
+    spm_unit_medical_out_of_pocket_expenses: 3_400
+
+- name: Moving all premiums to pretax payroll leaves SPM medical expenses unchanged.
+  period: 2026
+  input:
+    pre_tax_health_insurance_premiums: 3_000
+    other_health_insurance_premiums: 0
+    chip_premium: 0
+    medicaid_premium: 0
+    marketplace_net_premium: 0
+    medicare_part_a_premium: 0
+    medicare_part_b_premium: 0
+    income_adjusted_part_d_premium_surcharge: 0
+    other_medical_expenses: 300
+    over_the_counter_health_expenses: 100
+  output:
+    spm_unit_health_insurance_premiums: 3_000
+    spm_unit_medical_out_of_pocket_expenses: 3_400

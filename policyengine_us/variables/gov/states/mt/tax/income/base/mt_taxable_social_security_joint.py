@@ -41,7 +41,12 @@ class mt_taxable_social_security_joint(Variable):
             tax_unit, period, ["mt_applicable_ald_deductions"]
         ) - tax_unit_non_dep_add(tax_unit, period, ["student_loan_interest_ald"])
         # line 8: Montana subtractions + ald
-        subtractions = tax_unit_non_dep_add(tax_unit, period, ["mt_subtractions"])
+        # Subtractions Schedule line 35 includes the partial pension, annuity,
+        # and IRA income exemption (line 34). A tax unit dependent's
+        # subtractions are on the dependent's own return.
+        subtractions = tax_unit_non_dep_add(
+            tax_unit, period, ["mt_subtractions"]
+        ) + tax_unit("mt_pension_exemption_joint", period)
         increased_subtractions = subtractions + ald_less_student_loan
         # line 9: line 6 - line 8, if line 8 >= line 6, return 0
         income_reduced_by_subtractions = max_(

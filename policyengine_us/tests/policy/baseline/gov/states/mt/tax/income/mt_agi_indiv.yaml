@@ -103,3 +103,88 @@
         state_code: MT
   output:
     mt_agi_indiv: [50_000, 50_000, 0]
+
+- name: A dependent's amounts stay off both spouses' separate AGIs when the higher earner is not the head
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        adjusted_gross_income_person: 10_000
+        mt_additions: 500
+        mt_subtractions: 3_000
+        mt_taxable_social_security: 0
+        taxable_social_security: 0
+        is_tax_unit_dependent: false
+      person2:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        adjusted_gross_income_person: 2_000
+        mt_additions: 300
+        mt_subtractions: 700
+        mt_taxable_social_security: 0
+        taxable_social_security: 0
+        is_tax_unit_dependent: false
+      person3:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        adjusted_gross_income_person: 2_000
+        mt_additions: 300
+        mt_subtractions: 700
+        mt_taxable_social_security: 0
+        taxable_social_security: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # The head and spouse labels exchanged: the spouse's own 10,000 + 500 -
+    # 3,000 and the head's own 2,000 + 300 - 700, whichever is labelled head.
+    mt_agi_indiv: [7_500, 1_600, 0]
+
+- name: Spouses with equal income keep their own amounts, and the dependent's stay off
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        adjusted_gross_income_person: 5_000
+        mt_additions: 0
+        mt_subtractions: 0
+        mt_taxable_social_security: 0
+        taxable_social_security: 0
+        is_tax_unit_dependent: false
+      person2:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        adjusted_gross_income_person: 5_000
+        mt_additions: 0
+        mt_subtractions: 0
+        mt_taxable_social_security: 0
+        taxable_social_security: 0
+        is_tax_unit_dependent: false
+      person3:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        adjusted_gross_income_person: 0
+        mt_additions: 1_000
+        mt_subtractions: 0
+        mt_taxable_social_security: 0
+        taxable_social_security: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # The dependent's 1,000 of additions is on the dependent's own return.
+    mt_agi_indiv: [5_000, 5_000, 0]

@@ -57,3 +57,32 @@
     # Factor: 1 + 0.133 = 1.133
     ss_retirement_age_adjustment_factor: 1.133
 
+
+- name: Delayed retirement at 69 for someone born 1916 earns 1 percent a year
+  period: 2026
+  input:
+    age: 110  # Born 1916, first eligible (age 62) in 1978
+    ss_claiming_age: 69
+  output:
+    ss_full_retirement_age_months: 780  # 65 years
+    # 69 years = 828 months, so 48 months delayed = 4 years
+    # 42 USC 402(w)(6)(A) and POMS RS 00615.692D: births before
+    # 01/02/1917 get 1/12 of 1 percent a month, 1 percent a year
+    # 4 * 0.01 = 0.04
+    # Factor: 1 + 0.04 = 1.04
+    ss_retirement_age_adjustment_factor: 1.04
+
+- name: Delayed retirement at 69 for someone born 1917 earns 3 percent a year
+  period: 2026
+  input:
+    age: 109  # Born 1917, first eligible (age 62) in 1979
+    ss_claiming_age: 69
+  output:
+    ss_full_retirement_age_months: 780  # 65 years
+    # 69 years = 828 months, so 48 months delayed = 4 years
+    # 42 USC 402(w)(6)(B) and POMS RS 00615.692D: births from
+    # 01/02/1917 through 01/01/1925 get 1/4 of 1 percent a month,
+    # 3 percent a year
+    # 4 * 0.03 = 0.12
+    # Factor: 1 + 0.12 = 1.12
+    ss_retirement_age_adjustment_factor: 1.12
