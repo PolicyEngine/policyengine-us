@@ -716,6 +716,63 @@ def extend_wa_millionaires_standard_deduction(
     )
 
 
+# 42 U.S.C. 1395i-2(d)(4): an individual with 30 to 39 quarters of coverage
+# pays the Part A premium reduced by 45 percent.
+MEDICARE_PART_A_REDUCED_PREMIUM_SHARE = 0.55
+
+
+def round_half_up(value: float, interval: float) -> float:
+    """Round ``value`` to the nearest multiple of ``interval``, sending an
+    amount midway between two multiples to the higher one, as 42 U.S.C.
+    1395i-2(d)(2) does for the Part A premium."""
+    step = Decimal(repr(interval))
+    return float(
+        (Decimal(repr(value)) / step).quantize(Decimal(1), rounding=ROUND_HALF_UP)
+        * step
+    )
+
+
+def extend_medicare_part_a_premiums(parameters: ParameterNode, end_year: int) -> None:
+    """Project the Medicare Part A full and reduced monthly premiums.
+
+    Each year after the last CMS-published one, the full premium is the last
+    published premium grown with the Medicare Trustees' projected standard
+    premium, rounded to the nearest dollar with 50-cent amounts rounded up
+    (42 U.S.C. 1395i-2(d)(2)). The reduced premium is the full premium less
+    45 percent (1395i-2(d)(4)), rounded the same way; CMS's published
+    reduced premiums follow that rule in every year from 2015 to 2026. CMS
+    values encoded in the YAML take precedence for their own years.
+    """
+    part_a = parameters.gov.hhs.medicare.part_a
+    series = parameters.calibration.gov.hhs.cms.medicare_part_a_premium_per_enrollee
+    full, reduced = part_a.full_premium, part_a.reduced_premium
+
+    def last_published_year(parameter: Parameter) -> int:
+        return max(int(value.instant_str[:4]) for value in parameter.values_list)
+
+    last_full_year = last_published_year(full)
+    last_reduced_year = last_published_year(reduced)
+    base_period = f"{last_full_year}-01-01"
+    scale = full(base_period) / series(base_period)
+    for year in range(last_full_year + 1, end_year + 1):
+        period = f"{year}-01-01"
+        full_premium = round_half_up(scale * series(period), 1)
+        full.update(period=f"year:{period}:1", value=full_premium)
+    for year in range(last_reduced_year + 1, end_year + 1):
+        period = f"{year}-01-01"
+        reduced.update(
+            period=f"year:{period}:1",
+            value=round_half_up(
+                MEDICARE_PART_A_REDUCED_PREMIUM_SHARE * full(period), 1
+            ),
+        )
+    for parameter in (full, reduced):
+        parameter.update(
+            start=instant(f"{end_year}-01-01"),
+            value=parameter(f"{end_year}-01-01"),
+        )
+
+
 # 42 U.S.C. 1395r(i)(3)(C)(i)(III): the dollar amounts of the applicable
 # percentage table for an unmarried individual, before the (5) inflation
 # adjustment. The first is also the (2)(A) threshold amount.
@@ -823,11 +880,11 @@ def get_medicare_irmaa_thresholds(
 def extend_medicare_irmaa_thresholds(parameters: ParameterNode, end_year: int) -> None:
     """Project the Medicare Part B and Part D IRMAA income thresholds.
 
-    Part D uses the Part B thresholds (42 U.S.C. 1395w-113(a)(7)(A)). Each
-    year after the last CMS-published one is computed from the statutory
-    amounts (see ``get_medicare_irmaa_unmarried_amounts``) rather than
-    chained from the prior year's rounded values. CMS values encoded in the
-    YAML take precedence for their own years.
+    Part D uses the Part B thresholds (42 U.S.C. 1395w-113(a)(7)(A) and
+    (B)(i)(I)). Each year after the last CMS-published one is computed from
+    the statutory amounts (see ``get_medicare_irmaa_unmarried_amounts``)
+    rather than chained from the prior year's rounded values. CMS values
+    encoded in the YAML take precedence for their own years.
     """
     medicare = parameters.gov.hhs.medicare
     thresholds_by_year = {}
@@ -1345,9 +1402,9 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
 
     # Medicare Part A standard premium and inpatient hospital deductible, and
     # Part D base beneficiary premium (January values, last Trustees
-    # projection year 2035). The Part A premiums and deductible use the first
-    # two as their upraters; the Part D income-related adjustment amounts are
-    # computed from the third below.
+    # projection year 2035). The Part A premiums and the Part D
+    # income-related adjustment amounts are computed from the first and third
+    # below; the deductible uses the second as its uprater.
     for medicare_series in (
         parameters.calibration.gov.hhs.cms.medicare_part_a_premium_per_enrollee,
         parameters.calibration.gov.hhs.cms.medicare_part_a_deductible,
@@ -1360,6 +1417,11 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
             period_month=1,
             period_day=1,
         )
+
+    # Medicare Part A full and reduced premiums follow the Trustees' projected
+    # standard premium extended above, with the reduced premium 45 percent
+    # below the full one (42 U.S.C. 1395i-2(d)).
+    extend_medicare_part_a_premiums(parameters, end_year=END_YEAR)
 
     # Medicare IRMAA income thresholds follow 42 U.S.C. 1395r(i)(5)'s CPI-U
     # schedule (12 months ending August), computed from the statutory

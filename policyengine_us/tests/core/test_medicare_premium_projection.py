@@ -6,13 +6,15 @@ later years the model projects them:
 
 - The Part B standard premium and Part B IRMAA amounts uprate by the
   Medicare Trustees' projected standard premium, rounded to 10 cents.
-- The Part A premiums and deductible uprate by the Trustees' projections,
-  rounded to $1 and $4.
+- The Part A full premium grows with the Trustees' projected standard
+  premium, rounded to $1 with 50-cent amounts rounded up; the reduced premium
+  is the full premium less 45 percent, rounded the same way. The deductible
+  uprates by the Trustees' projection, rounded to $4.
 - The IRMAA income thresholds follow 42 U.S.C. 1395r(i)(5)'s CPI-U schedule.
 - The Part D IRMAA amounts apply 42 U.S.C. 1395w-113(a)(7)(B) to the
   Trustees' projected base beneficiary premium.
 
-These tests read the parameter tree, plus one small parameter tree built for
+These tests read the parameter tree, plus small parameter trees built for
 the precedence tests. Household calculations are in the YAML tests under
 ``tests/policy/baseline/gov/hhs/medicare``.
 
@@ -37,10 +39,12 @@ Invariants:
 4. Proportionality: each Part B IRMAA amount stays at its 42 U.S.C.
    1395r(i)(3)(A) multiple of the standard premium, to within 0.1% plus
    rounding, as in CMS's 2026 amounts. Each Part D amount equals
-   1395w-113(a)(7)(B) applied to the base beneficiary premium. The reduced
-   Part A premium stays at 55% of the full premium (1395i-2(d)(4)), to
-   within 0.1% plus $1. CMS rounded 2026's $310.75 to $311, and uprating
-   from 2026 keeps that 0.08% excess, as it keeps the IRMAA amounts'.
+   1395w-113(a)(7)(B) applied to the base beneficiary premium. In every
+   year from 2015, published or projected, the reduced Part A premium is the
+   full premium less 45 percent (1395i-2(d)(4)), rounded to the nearest
+   dollar with 50-cent amounts rounded up, and each projected full premium
+   is the Trustees series scaled to the last published premium, rounded the
+   same way (1395i-2(d)(2)).
 5. Monotonicity: the Part B premium rises every year from 2023, and the Part
    A premiums and deductible never fall from 2024. IRMAA thresholds never
    fall from one year to the next and rise from tier to tier. Intended
@@ -56,8 +60,9 @@ Invariants:
    the published not seasonally adjusted index, and within one $1,000 step
    for 2025-2026, where it is seasonally adjusted.
 8. Precedence: a CMS amount added to the YAML for a year replaces the
-   projection for that year only; later years are still computed from the
-   statute rather than chained from it.
+   projection for that year only. Later IRMAA thresholds and Part D amounts
+   are still computed from the statute rather than chained from it; later
+   Part A premiums grow from it.
 9. Extension: the new Trustees series grow at their last one-year rate past
    2035 and hold their 2100 value after 2100.
 """
@@ -74,10 +79,12 @@ from policyengine_us.parameters.uprating_extensions import (
     MEDICARE_IRMAA_APPLICABLE_PERCENTAGES,
     MEDICARE_IRMAA_TOP_FIRST_INDEXED_YEAR,
     extend_medicare_irmaa_thresholds,
+    extend_medicare_part_a_premiums,
     extend_medicare_part_d_irmaa_amounts,
     get_medicare_irmaa_thresholds,
     get_medicare_irmaa_unmarried_amounts,
     get_medicare_part_d_irmaa_amount,
+    round_half_up,
 )
 from policyengine_us.system import system
 
@@ -341,11 +348,30 @@ def test_part_d_base_percent_resets_in_2030():
     assert _at(percent, 2030) == 0.2
 
 
-@given(st.integers(2024, END_YEAR + 20))
+@given(st.integers(2015, END_YEAR + 20))
 def test_reduced_part_a_premium_is_55_percent_of_the_full_premium(year):
-    expected = 0.55 * _at(MEDICARE.part_a.full_premium, year)
-    reduced = _at(MEDICARE.part_a.reduced_premium, year)
-    assert abs(reduced - expected) <= 0.001 * expected + 1
+    """1395i-2(d)(4) reduces the premium by 45 percent. CMS's published
+    amounts follow it with ties rounded up, for example $310.75 to $311 in
+    2026, and the projection must keep following it."""
+    expected = round_half_up(0.55 * _at(MEDICARE.part_a.full_premium, year), 1)
+    assert _at(MEDICARE.part_a.reduced_premium, year) == expected
+
+
+@given(PROJECTED_YEARS)
+def test_full_part_a_premium_is_the_series_rounded_half_up(year):
+    """Projected full premiums are the Trustees series scaled to the last
+    published premium, rounded as 1395i-2(d)(2) requires."""
+    scale = _at(MEDICARE.part_a.full_premium, LAST_ANNOUNCED_YEAR) / _series(
+        PART_A_SERIES, LAST_ANNOUNCED_YEAR
+    )
+    expected = round_half_up(scale * _series(PART_A_SERIES, year), 1)
+    assert _at(MEDICARE.part_a.full_premium, year) == expected
+
+
+def test_round_half_up_sends_ties_up():
+    assert round_half_up(566.5, 1) == 567
+    assert round_half_up(310.75, 1) == 311
+    assert round_half_up(563.2, 1) == 563
 
 
 # 5. Monotonicity.
@@ -557,6 +583,45 @@ def test_published_values_take_precedence_and_later_years_follow_the_statute():
                         assert _at(bracket.amount, year) == _at(
                             system_bracket.amount, year
                         )
+
+
+def _part_a_tree_with_2027_values():
+    """The Part A premiums as loaded from YAML through the last announced
+    year, plus a stand-in CMS announcement for 2027 that no projection
+    produces, under a root that shares the system's Trustees series."""
+    data = {}
+    for name in ("full_premium", "reduced_premium"):
+        parameter = getattr(MEDICARE.part_a, name)
+        values = {
+            v.instant_str: v.value
+            for v in parameter.values_list
+            if v.instant_str <= f"{LAST_ANNOUNCED_YEAR}-12-31"
+        }
+        data[name] = {"values": values}
+    data["full_premium"]["values"]["2027-01-01"] = 611
+    data["reduced_premium"]["values"]["2027-01-01"] = 337
+    part_a = ParameterNode("gov.hhs.medicare.part_a", data=data)
+    root = SimpleNamespace(
+        gov=SimpleNamespace(
+            hhs=SimpleNamespace(medicare=SimpleNamespace(part_a=part_a))
+        ),
+        calibration=PARAMETERS.calibration,
+    )
+    return root, part_a
+
+
+def test_published_part_a_premiums_take_precedence_and_later_years_grow_from_them():
+    root, part_a = _part_a_tree_with_2027_values()
+    extend_medicare_part_a_premiums(root, end_year=2030)
+    assert _at(part_a.full_premium, 2027) == 611
+    assert _at(part_a.reduced_premium, 2027) == 337
+    for year in (2028, 2030):
+        full = round_half_up(
+            611 / _series(PART_A_SERIES, 2027) * _series(PART_A_SERIES, year), 1
+        )
+        assert _at(part_a.full_premium, year) == full
+        assert _at(part_a.reduced_premium, year) == round_half_up(0.55 * full, 1)
+    assert _at(part_a.full_premium, 2100) == _at(part_a.full_premium, 2030)
 
 
 # 9. Extension of the new series.
