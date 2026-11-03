@@ -1,0 +1,43 @@
+# 2017 Form 80-108 lines 7a to 7d take miscellaneous expenses above 2% of
+# federal AGI once; itemized_deductions_less_salt already includes them.
+- name: 2017 miscellaneous deduction counted once
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    charitable_deduction: 2_000
+    misc_deduction: 1_000
+    state_code: MS
+  output:
+    ms_itemized_deductions_unit: 3_000
+
+- name: 2025 no miscellaneous deduction subject to the 2% floor
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    charitable_deduction: 2_000
+    state_code: MS
+  output:
+    ms_itemized_deductions_unit: 2_000
+
+# Miss. Code Ann. 27-7-17(4) bars deducting the same item more than once.
+- name: 2017 non-SALT total that includes miscellaneous deductions counted once
+  period: 2017
+  input:
+    itemized_deductions_less_salt: 10_000
+    misc_deduction: 1_000
+    ms_real_estate_tax_deduction: 0
+    state_code: MS
+  output:
+    # The 10,000 already includes the 1,000; before the fix 11,000.
+    ms_itemized_deductions_unit: 10_000
+
+- name: 2017 real estate taxes added without duplicating miscellaneous deductions
+  period: 2017
+  input:
+    itemized_deductions_less_salt: 10_000
+    misc_deduction: 1_000
+    ms_real_estate_tax_deduction: 2_000
+    state_code: MS
+  output:
+    # 10,000 + 2,000; before the fix 13,000.
+    ms_itemized_deductions_unit: 12_000
