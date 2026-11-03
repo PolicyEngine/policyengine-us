@@ -126,3 +126,6 @@ def test_dependent_care_benefits_leave_wages_once(year, earners):
         # earned income, which leaves out the line 12 benefits. The identity
         # above holds for any exclusion, so this pins the limit itself.
         assert exclusion[i] <= max(wages[i] - benefit, 0) + 0.01
+        # The exclusion reaches the smallest cap drawn ($2,500 on a separate
+        # return) unless the benefits or net wages are smaller.
+        assert exclusion[i] >= min(benefit, 2_500, max(wages[i] - benefit, 0)) - 0.01

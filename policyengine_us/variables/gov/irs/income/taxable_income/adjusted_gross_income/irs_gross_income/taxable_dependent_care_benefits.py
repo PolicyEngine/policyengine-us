@@ -15,8 +15,9 @@ class taxable_dependent_care_benefits(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.law.cornell.edu/uscode/text/26/129#a_1",
-        "https://www.law.cornell.edu/uscode/text/26/129#a_2_B",
+        # IRC 129(a)(1) (the exclusion) and 129(a)(2)(B) (the excess is
+        # gross income).
+        "https://www.law.cornell.edu/uscode/text/26/129#a",
         # Form 2441 Part III, line 26: taxable benefits, to Form 1040 line 1e.
         "https://www.irs.gov/pub/irs-prior/f2441--2025.pdf#page=2",
     )

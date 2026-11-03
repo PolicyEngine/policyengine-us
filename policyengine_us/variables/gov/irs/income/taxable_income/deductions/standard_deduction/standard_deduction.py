@@ -8,8 +8,9 @@ class standard_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.law.cornell.edu/uscode/text/26/63#c_1",
-        "https://www.law.cornell.edu/uscode/text/26/63#c_6",
+        # IRC 63(c)(1) (the sum) and 63(c)(6)(A) (zero for a separate filer
+        # whose spouse itemizes).
+        "https://www.law.cornell.edu/uscode/text/26/63#c",
     )
 
     def formula(tax_unit, period, parameters):
