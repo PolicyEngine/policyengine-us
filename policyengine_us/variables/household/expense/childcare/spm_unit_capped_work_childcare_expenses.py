@@ -11,9 +11,11 @@ class spm_unit_capped_work_childcare_expenses(Variable):
         "Over a dataset, the child care part keeps the reported amount under "
         "baseline policy and moves by the change in subsidy under a reform, "
         "which it reads from the reform's baseline arm. Core builds that arm "
-        "only for a reform passed as reform=. A reformed system passed as "
-        "tax_benefit_system=, or a reform applied with apply_reform after "
-        "construction, gets no arm, so the expense keeps the reported amount."
+        "only for a reform passed as reform=, and apply_reform builds none. A "
+        "simulation built with reform= keeps its arm, under baseline policy, "
+        "through any reform applied later. A reformed system passed as "
+        "tax_benefit_system=, or apply_reform on a simulation built without "
+        "reform=, leaves no arm, so the expense keeps the reported amount."
     )
     reference = "https://www2.census.gov/programs-surveys/supplemental-poverty-measure/datasets/spm/spm_techdoc.pdf#page=17"
 

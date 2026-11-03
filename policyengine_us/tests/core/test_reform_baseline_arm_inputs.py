@@ -10,11 +10,14 @@ worked and paid no New York child care subsidy to a family that a simulation
 with no reform paid one. Over a dataset the SPM expense moves by the change in
 subsidy it reads from that arm, so the gap became a double count.
 ``system._rebuild_baseline_branch`` now branches the arm again after the
-moves.
+moves. Like core's branch, it drops each holder the reform built in another
+entity or with other ``ETERNITY`` storage than the baseline's variable has.
+A kept holder hands the arm the reform's input in place of its formula.
 
-Invariant: under a reform that changes nothing, the reform and its baseline
+Invariants: under a reform that changes nothing, the reform and its baseline
 arm compute what a simulation with no reform computes, for every household,
-whether a situation or a dataset of raw columns supplies the inputs.
+whether a situation or a dataset of raw columns supplies the inputs. Under any
+reform, each holder in either arm suits that arm's definition of its variable.
 """
 
 from itertools import product
@@ -22,9 +25,12 @@ from itertools import product
 import numpy as np
 import pandas as pd
 from policyengine_core.data import Dataset
+from policyengine_core.periods import ETERNITY
 from policyengine_core.reforms import Reform
+from policyengine_core.variables import Variable
 
 from policyengine_us import Microsimulation, Simulation
+from policyengine_us.entities import SPMUnit
 
 YEAR = 2026
 TOLERANCE = 0.01
@@ -64,13 +70,26 @@ class NoChange(Reform):
         pass
 
 
-def dataset():
+class child_care_subsidies(Variable):
+    # Stored for all time, where baseline policy calculates it each year.
+    value_type = float
+    entity = SPMUnit
+    label = "Child care subsidies"
+    definition_period = ETERNITY
+
+
+class StoreSubsidiesForAllTime(Reform):
+    def apply(self):
+        self.update_variable(child_care_subsidies)
+
+
+def dataset(states=STATE_FIPS, families=FAMILIES, eternal_subsidy=None):
     columns = {}
 
     def add(name, parent, child):
         columns.setdefault(name, []).extend([parent, child])
 
-    for unit, (fips, family) in enumerate(product(STATE_FIPS, FAMILIES)):
+    for unit, (fips, family) in enumerate(product(states, families)):
         wages, self_employment, gains, hours, retirement, expenses = family
         add("person_id", 2 * unit, 2 * unit + 1)
         for entity in ("household", "tax_unit", "spm_unit", "family"):
@@ -91,6 +110,8 @@ def dataset():
         add(f"spm_unit_pre_subsidy_childcare_expenses__{YEAR}", expenses, expenses)
         add(f"state_fips__{YEAR}", fips, fips)
         add(f"household_weight__{YEAR}", 1, 1)
+        if eternal_subsidy is not None:
+            add("child_care_subsidies__eternity", eternal_subsidy, eternal_subsidy)
     return Dataset.from_dataframe(pd.DataFrame(columns), time_period=YEAR)
 
 
@@ -143,6 +164,20 @@ def values(simulation):
     }
 
 
+def assert_holders_suit_their_variables(simulation):
+    """Each holder sits in its variable's entity, with ``ETERNITY`` storage
+    exactly when the simulation's own definition of the variable has it."""
+    variables = simulation.tax_benefit_system.variables
+    for population in simulation.populations.values():
+        for name, holder in population._holders.items():
+            variable = variables.get(name)
+            assert holder.variable is variable, name
+            assert variable.entity.key == population.entity.key, name
+            assert holder._memory_storage.is_eternal == (
+                variable.definition_period == ETERNITY
+            ), name
+
+
 def assert_both_arms_match(plain, reformed):
     arm = reformed.baseline
     assert reformed.branches["baseline"] is arm
@@ -155,6 +190,8 @@ def assert_both_arms_match(plain, reformed):
     # No calculation has run yet, so the arm holds only inputs, and no value
     # the reform's policy produced.
     assert arm.drop_computed_arrays() == 0
+    for simulation in (reformed, arm):
+        assert_holders_suit_their_variables(simulation)
     expected = values(plain)
     for name, simulation in (("reform", reformed), ("baseline arm", arm)):
         for variable, array in values(simulation).items():
@@ -190,3 +227,44 @@ def test_situation_arms_match_a_simulation_with_no_reform():
     for simulation in (plain, reformed, reformed.baseline):
         state = simulation.calculate("state_code", YEAR).decode_to_str()
         assert state.tolist() == ["NY"]
+
+
+def test_the_arm_calculates_what_the_reform_stores_for_all_time():
+    """New York's first family enters with a $500 subsidy that the reform
+    stores for all time. The baseline's yearly ``child_care_subsidies`` cannot
+    use that storage, so the arm drops the input and pays what a simulation
+    with no reform pays. Keeping it gave the arm $500 as S0 where baseline
+    policy pays $13,916.40, and left the reform's expense $13,416.40 low."""
+    plain = Microsimulation(dataset=dataset((NEW_YORK,), FAMILIES[:1]))
+    reformed = Microsimulation(
+        dataset=dataset((NEW_YORK,), FAMILIES[:1], eternal_subsidy=500),
+        reform=StoreSubsidiesForAllTime,
+    )
+    arm = reformed.baseline
+    for simulation in (reformed, arm):
+        assert_holders_suit_their_variables(simulation)
+
+    def value(simulation, variable):
+        return np.asarray(simulation.calculate(variable, YEAR), dtype=float)
+
+    baseline_subsidy = value(plain, "child_care_subsidies")
+    assert baseline_subsidy[0] > 500
+    np.testing.assert_allclose(
+        value(arm, "child_care_subsidies"), baseline_subsidy, atol=TOLERANCE
+    )
+    np.testing.assert_allclose(value(reformed, "child_care_subsidies"), 500)
+    expense = "spm_unit_capped_work_childcare_expenses"
+    np.testing.assert_allclose(
+        value(arm, expense), value(plain, expense), atol=TOLERANCE
+    )
+    # The dataset rule moves the reported amount by the change in subsidy.
+    expected = np.minimum(
+        value(reformed, "spm_unit_work_expenses")
+        + np.maximum(
+            value(reformed, "spm_unit_pre_subsidy_childcare_expenses")
+            - (500 - baseline_subsidy),
+            0,
+        ),
+        value(reformed, "spm_unit_head_spouse_earned_cap"),
+    )
+    np.testing.assert_allclose(value(reformed, expense), expected, atol=TOLERANCE)
