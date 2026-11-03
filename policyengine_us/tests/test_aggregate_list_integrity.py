@@ -38,6 +38,9 @@ AGGREGATE_LISTS = [
 # defined_for (locality booleans).
 GEOGRAPHIC_GATES = {"in_la", "in_nyc", "in_riv"}
 
+# Variables that cap an aggregate and add nothing of their own.
+CAPPED_AGGREGATES = {"household_child_care_subsidies": {"child_care_subsidies"}}
+
 # Members intentionally removed in a year block, keyed by (list, block date).
 # Add an entry here when a credit genuinely ends; do not silently drop
 # members when copying a block forward.
@@ -106,8 +109,11 @@ def aggregate_members(variables, member):
     """The variables an aggregate member sums, or None if it is not an aggregate.
 
     `adds` is either a list of variable names or a dotted parameter path
-    (e.g. gov.hhs.ccdf.child_care_subsidy_programs).
+    (e.g. gov.hhs.ccdf.child_care_subsidy_programs). A variable in
+    CAPPED_AGGREGATES caps the aggregates it names, so those are its members.
     """
+    if member in CAPPED_AGGREGATES:
+        return CAPPED_AGGREGATES[member]
     adds = getattr(variables[member], "adds", None)
     if not adds:
         return None

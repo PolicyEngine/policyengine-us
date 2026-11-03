@@ -231,11 +231,14 @@
     child_care_subsidies: 3_600
     household_state_benefits: 3_600
 
-# Vermont pays the state rate whatever the provider charges, from December 2023,
-# so the subsidy can exceed the family's bill. The whole payment counts as a
-# benefit here. childcare_expenses can't show the family's own share in this
-# case, because it subtracts the subsidy from the bill and stops at zero.
-- name: Vermont's computed subsidy reaches household state benefits above the bill
+# Vermont pays the state rate to the provider whatever the provider charges,
+# from December 2023, so the payment can exceed the family's bill. Household
+# benefits count it up to the bill. childcare_expenses can't show the family's
+# own share in this case, because it subtracts the subsidy from the bill and
+# stops at zero.
+# In each case the subsidy is the $439 weekly state rate less the $100 weekly
+# family share, as in vt_ccfap.yaml Case 1: ($439 - $100) * 52 = $17,628.
+- name: Vermont's subsidy above a 10,000 bill counts up to the bill
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -259,7 +262,141 @@
         members: [parent, child]
         state_code: VT
   output:
-    # $439 weekly state rate less the $100 weekly family share, as in
-    # vt_ccfap.yaml Case 1: ($439 - $100) * 52 = $17,628.
     child_care_subsidies: 17_628
+    household_child_care_subsidies: 10_000
+    household_state_benefits: 10_000
+
+- name: Vermont's subsidy above a 1,000 bill counts up to the bill
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 52_875
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 1_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: VT
+  output:
+    child_care_subsidies: 17_628
+    household_child_care_subsidies: 1_000
+    household_state_benefits: 1_000
+
+- name: Vermont's subsidy below a 20,000 bill counts in full
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 52_875
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: VT
+  output:
+    child_care_subsidies: 17_628
+    household_child_care_subsidies: 17_628
     household_state_benefits: 17_628
+
+- name: Vermont's subsidy counts in full with no bill recorded
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 52_875
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: VT
+  output:
+    child_care_subsidies: 17_628
+    household_child_care_subsidies: 17_628
+    household_state_benefits: 17_628
+
+# The bill reads the person-level input the way childcare_expenses does, so a
+# bill set on the child caps the subsidy just as the SPM unit input does.
+- name: Vermont's subsidy counts up to a bill set on the child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 52_875
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        pre_subsidy_childcare_expenses: 10_000
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: VT
+  output:
+    child_care_subsidies: 17_628
+    household_child_care_subsidies: 10_000
+    household_state_benefits: 10_000
+
+# A subsidy below the bill counts in full in any state.
+- name: Connecticut's subsidy below the bill counts in full
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ct_child_care_subsidies: 5_000
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    child_care_subsidies: 5_000
+    household_child_care_subsidies: 5_000
