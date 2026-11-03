@@ -18,9 +18,10 @@ from policyengine_us.tests.microsimulation.test_calculate_chunked import (
 
 @pytest.fixture(autouse=True)
 def frozen_unchanged_heap():
-    # CI runs this file last of the microsimulation folder's base group, in
-    # one pytest process. Collections then scan only what this test creates,
-    # including every simulation and branch the weak-reference checks follow.
+    # In CI this file shares the microsimulation base group's single pytest
+    # process, and it currently sorts last. With the heap frozen, collections
+    # scan only what this test creates, including every simulation and branch
+    # the weak-reference checks follow.
     with frozen_heap():
         yield
 

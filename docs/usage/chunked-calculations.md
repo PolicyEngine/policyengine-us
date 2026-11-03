@@ -97,11 +97,14 @@ include every household in one chunk and seven uneven, interleaved chunks of 1
 to 11 households. They compare every entity value and weighted sum, check
 source order and unchanged input frames, and use weak references to check
 simulation release. The fixture includes households with multiple tax and SPM
-units and Social Security recipients. The same households written as a
-variable-centric file are compared with an unchunked `Microsimulation` on that
-file for one, two and three chunks and under a parameter reform, and with the
-entity-table route, checking each chunk file's contents and its deletion. Real
-simulations check the guard on direct, dependency, branch, baseline and
+units and Social Security recipients. The tests also write the same households
+as a variable-centric file and compare the chunked results with an unchunked
+`Microsimulation` on that file, for one, two and three chunks and under a
+parameter reform, and with the entity-table route. For each chunk file, they
+check its name and the dtype of its role array, and that no other chunk file
+exists beside it. They also check that the helper leaves an unknown variable
+name out of the file and deletes the file afterwards. Real simulations check
+the guard on direct, dependency, branch, baseline and
 cross-period routes, and a frame-depth test checks that guarding adds at most
 three frames to the deepest stack. Independent pre-change TOB branch
 calculations protect the statutory signed allocation.
