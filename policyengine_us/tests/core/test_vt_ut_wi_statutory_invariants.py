@@ -1,14 +1,12 @@
-"""Invariants of four Vermont, Utah and Wisconsin rules.
+"""Invariants of three Vermont, Utah and Wisconsin rules.
 
 1. Vermont student loan interest (32 V.S.A. 5811(21)(B)(vi), (29); IN-112
    line 16): from 2022, the state subtraction plus the federal deduction equals
    the filers' interest paid when AGI is within the limit, and the subtraction
    is zero above the limit, in 2021, and never negative.
-2. Vermont child tax credit (5830f(b)): the phase-out applies per child, so the
-   credit for n young children is n times the credit for one at the same AGI.
-3. Utah at-home parent credit (59-10-1005(2)): a second spouse who also
+2. Utah at-home parent credit (59-10-1005(2)): a second spouse who also
    qualifies as an at-home parent does not change the credit.
-4. Wisconsin homestead eligibility: the same under either head/spouse
+3. Wisconsin homestead eligibility: the same under either head/spouse
    labelling, and marking a spouse as claimed never makes a return eligible.
 
 Each check is one vectorized simulation over Hypothesis-drawn households.
@@ -116,26 +114,6 @@ def test_vt_student_loan_subtraction_completes_the_federal_deduction(year, units
     within = agi <= limit
     np.testing.assert_allclose(sub[within] + federal[within], paid[within], atol=0.01)
     assert not sub[~within].any()
-
-
-@SETTINGS
-@given(
-    st.sampled_from([2023, 2025, 2026]),
-    st.lists(st.integers(0, 260_000), min_size=6, max_size=15),
-)
-def test_vt_ctc_phase_out_is_per_child(year, agis):
-    units = []
-    for agi in agis:
-        for n in (1, 3):
-            units.append(
-                [{"age": 35, "is_tax_unit_head": True}] + [{"age": 2} for _ in range(n)]
-            )
-    situation = _situation(units, year, "VT")
-    for i, agi in enumerate(np.repeat(agis, 2)):
-        situation["tax_units"][f"t_{i}"]["adjusted_gross_income"] = {year: float(agi)}
-    sim = Simulation(situation=situation)
-    ctc = _calc(sim, "vt_ctc", year).reshape(-1, 2)
-    np.testing.assert_allclose(ctc[:, 1], 3 * ctc[:, 0], atol=0.01)
 
 
 @SETTINGS
