@@ -1,1 +1,1 @@
-Round summed resources to whole cents before SSI, SNAP, Medicaid, Medicare Savings Program and state asset tests compare them with their dollar limits, so balances that add to exactly a limit pass or fail as the total does.
+Round summed resources to whole cents before SSI, SNAP, Medicaid, Medicare Savings Program and state asset tests compare them with their dollar limits, so balances that add to exactly a limit pass or fail as the total does. A child's share of parental resources stays unrounded and is compared exactly.
