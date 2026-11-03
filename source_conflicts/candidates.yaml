@@ -4814,34 +4814,41 @@ candidates:
 - id: us-mo:mhabd-nonblind-disabled-children
   program: medicaid
   years:
-    from: 2026
-    to: 2026
+    from: 2024
     type: program
     note: program year as the program defines it
-  question: Does Missouri's aged, blind and disabled Medicaid group cover nonblind disabled children under 18, as
-    the spend down heading in MHABD Appendix J says, or leave them out, as POMS SI 01715.010 says of Missouri's
-    definition of disability?
+  question: Do Missouri's aged, blind and disabled Medicaid groups cover nonblind disabled children under 18, as
+    MHABD 0805.020.00 and Appendix K say, or leave them out, as POMS SI 01715.010 says of Missouri's definition of
+    disability?
   sources:
   - kind: guidance
     citation: POMS SI 01715.010 A.1, note on Connecticut, Missouri and New Hampshire
     url: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501715010
   - kind: manual
-    citation: MHABD Appendix J, "Spend Down (includes disabled child) - MHNS, MHSD, MHDC"
-    url: https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=1
+    citation: MHABD 0805.020.00, MO HealthNet for Disabled Children (MHDC)
+    url: https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-020-00/
+  - kind: manual
+    citation: MHABD Appendix K (07/2026), MO HealthNet for Disabled Children (MHDC) row
+    url: https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=2
   readings:
-    guidance: Missouri does not include nonblind individuals under 18 in its definition of disability.
-    other: Missouri's spend down standards include a disabled child.
-  example: A nonblind disabled eight-year-old in Missouri whose parent earns $40,000 falls outside the 209(b) SSI
-    route but inside the optional aged, blind and disabled pathway, which reads no such exclusion.
+    guidance: These States "do not include nonblind individuals under the age of 18 in their definition of disability."
+    other: '"[D]isabled children (under age 18) may receive MO HealthNet as spend down, non-spend down or vendor", and
+      the MHDC row covers a child who is "permanently and totally disabled, or blind".'
+  example: A nonblind disabled eight-year-old in Missouri whose parent earns $70,000, with $9,000 of the child's own
+    medical expenses, spends down to Medicaid under the Missouri manual and has no such route under POMS.
   pe_us:
-    follows: unknown
+    follows: gap-fill
     code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/ssi_recipient/section_209b/excludes_nonblind_disabled_children.yaml
     - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/is_209b_ssi_recipient_for_medicaid.py
     - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/is_optional_senior_or_disabled_for_medicaid.py
-  state: unreviewed
-  note: is_209b_ssi_recipient_for_medicaid excludes these children through excludes_nonblind_disabled_children,
-    and is_optional_senior_or_disabled_for_medicaid does not. Neither source has been checked against the Missouri
-    state plan.
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10629
+  state: ruled
+  note: 'PE-US covers these children on both the 209(b) SSI route and the optional aged, blind and disabled pathway,
+    following Missouri''s own manual and Appendix K. POMS is secondhand on a state''s Medicaid rules, and 42 CFR
+    435.121(d) lets a state take either position. The Missouri state plan was not read. Ruled by the project lead,
+    2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10629'
 - id: us-mo:mhabd-resource-limit-boundary
   program: medicaid
   years:
@@ -4881,6 +4888,37 @@ candidates:
     536.014(2) makes a rule that is in conflict with state law not valid. Missouri fiscal year 2018 began July 1,
     2017. Before then, RSMo 208.010.2(4) (before August 28, 2016) and 13 CSR 40-2.030(12) set a strict single-person
     test and an inclusive couple test, and the sources did not disagree.
+- id: us-mo:mhdc-child-resource-limit
+  program: medicaid
+  years:
+    from: 2026
+    type: program
+    note: program year as the program defines it
+  question: Is a Missouri disabled child who lives with two parents tested against the individual resource limit, as
+    MHABD 0805.020.10 says, or the limit Appendix K lists for a child living with two parents?
+  sources:
+  - kind: manual
+    citation: MHABD 0805.020.10, Deeming Parental Resources
+    url: https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-020-00/0805-020-10/
+  - kind: manual
+    citation: MHABD Appendix K (07/2026), MO HealthNet for Disabled Children (MHDC) row
+    url: https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=2
+  readings:
+    manual: '"If the total exceeds the individual resource limit, the child is ineligible."'
+    other: '"Child living with 1 parent: $6,220.50"; "Child living with 2 parents: $12,441.00".'
+  example: Under the July 2026 amounts, a child whose two parents hold $10,000 in a bank account fails the $6,220.50
+    individual limit and passes the $12,441 limit for a child living with two parents.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/is_optional_senior_or_disabled_asset_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10629
+  state: ruled
+  note: 'PE-US uses Appendix K''s limit, which is specific to this case and dated 07/2026, and reads it from the couple
+    limit, which holds the same amount. Both texts deem the parents'' entire resources, so PE-US does not use SSI''s
+    allocation in ssi_resources_deemed_from_ineligible_parent here. Ruled by the project lead, 2026-11-02:
+    https://github.com/PolicyEngine/policyengine-us/pull/10629'
 - id: us-mo:negative-federal-agi-combined-return
   program: income-tax
   years:

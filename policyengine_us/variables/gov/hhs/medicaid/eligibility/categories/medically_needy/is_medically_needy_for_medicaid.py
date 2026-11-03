@@ -40,19 +40,8 @@ class is_medically_needy_for_medicaid(Variable):
         # the individual or the married couple, plus parents for a child,
         # not the tax filing unit.
         marital_unit = person.marital_unit
-        # 42 CFR 435.831(d) deducts expenses of financially responsible
-        # relatives. For a child these are the ineligible parents whose
-        # income SSI deems (20 CFR 416.1165); split their expenses among the
-        # eligible children as the deemed income is split, so that an
-        # expense is deducted once.
-        tax_unit = person.tax_unit
-        eligible_child = is_aged_blind_or_disabled & person("is_child", period)
-        parental_expenses = tax_unit.sum(
-            medical_expenses * person("is_ssi_ineligible_parent", period)
-        )
-        eligible_children = tax_unit.sum(eligible_child)
-        parental_expense_share = where(
-            eligible_child, parental_expenses / max_(eligible_children, 1), 0
+        parental_expense_share = person(
+            "medicaid_parental_medical_expense_share", period
         )
         income = marital_unit.sum(
             personal_income - medical_expenses - parental_expense_share

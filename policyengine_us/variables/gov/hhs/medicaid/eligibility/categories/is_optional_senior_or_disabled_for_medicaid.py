@@ -14,6 +14,8 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
         "https://www.ecfr.gov/current/title-42/section-440.255#p-440.255(c)",
         "https://www.law.cornell.edu/cfr/text/42/435.121",
         "https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=1",
+        "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0810-000-00/0810-010-00/",
+        "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0810-000-00/0810-010-00/0810-010-15/",
     )
 
     def formula(person, period, parameters):
@@ -52,19 +54,22 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
             person("is_ssi_aged_blind_disabled", period),
             person("is_ssi_aged", period),
         )
-        # People on the SSI-group exception path pass with its income test:
-        # for a couple, the SSI couple rate is above 80% of the poverty
-        # guideline for two. This holds for aged people too, since 42 U.S.C.
-        # 1396b(v)(2)(B) waives only the receipt of SSI.
         # A 209(b) state with no medically needy program for aged, blind and
         # disabled people must let them deduct incurred medical expenses to
         # reach its income standard, whether or not they receive SSI
         # (42 CFR 435.121(e)(4)). Only Missouri fits this description; MHABD
         # Appendix J publishes its spend down standards.
+        # NOTE: The model tests annual expenses. Missouri tests monthly, with
+        # three-month carryover (MHABD 0810.010.15) and a pay-in option (MHABD
+        # 0810.010.00) that the model does not represent.
         classified = person("medicaid_ssi_recipient_state_classification", period)
         must_allow_spend_down = (
             classified == classified.possible_values.SECTION_209B
         ) & ~person("is_in_medicaid_medically_needy_category", period)
+        # People on the SSI-group exception path pass with its income test:
+        # for a couple, the SSI couple rate is above 80% of the poverty
+        # guideline for two. This holds for aged people too, since 42 U.S.C.
+        # 1396b(v)(2)(B) waives only the receipt of SSI.
         income_eligible = (
             on_exception_path
             | person("is_optional_senior_or_disabled_income_eligible", period)
