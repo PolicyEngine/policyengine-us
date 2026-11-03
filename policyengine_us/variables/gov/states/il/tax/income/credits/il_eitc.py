@@ -23,6 +23,12 @@ class il_eitc(Variable):
     defined_for = StateCode.IL
 
     def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.il.tax.income.credits.eitc
+        if not p.expansion_in_effect:
+            # Before 2023 the IL EIC is a percentage of the federal credit
+            # allowed, with no age or ITIN route (35 ILCS 5/212(a); Schedule
+            # IL-E/EIC Step 4, lines 5 and 6).
+            return tax_unit("eitc", period) * p.match
         person = tax_unit.members
         age = person("age", period)
         has_tin = person("has_tin", period)
@@ -32,7 +38,6 @@ class il_eitc(Variable):
         qualifying_child = person("is_eitc_qualifying_child", period) & has_tin
         child_count = tax_unit.sum(qualifying_child)
         filer_has_tin = tax_unit.sum(is_head_or_spouse & ~has_tin) == 0
-        p = parameters(period).gov.states.il.tax.income.credits.eitc
         # The state extension waives only the identification and age rules. A
         # filer without a qualifying child still must not be a dependent of
         # another taxpayer (IRC 32(c)(1)(A)(ii)(III)); on a joint return
@@ -52,5 +57,4 @@ class il_eitc(Variable):
             demographic_eligible,
             filer_has_tin,
         )
-        match = parameters(period).gov.states.il.tax.income.credits.eitc.match
-        return state_eitc * match
+        return state_eitc * p.match

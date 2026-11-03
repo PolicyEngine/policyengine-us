@@ -157,7 +157,7 @@
   output:
     wa_working_families_tax_credit: 640
 
-- name: Case 6b, phase-out keys off federal phase-out income (max of earned income and AGI), not earnings alone.
+- name: Case 6b, unemployment compensation raises AGI but not the earned income the reduction is measured on.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -204,15 +204,11 @@
         state_code: WA
   output:
     # Earned income ($40,000) is below the 2025 three-child phase-out start
-    # ($63,675 = limit $68,675 less the $5,000 band), but AGI ($65,000, incl.
-    # $25,000 unemployment) lands inside the phase-out band. As a modeling
-    # choice (not a statutory base -- RCW 82.08.0206(2)(b) defines "income" as
-    # earned income), the reduction is measured against max(earned income, AGI)
-    # = $65,000, matching the maximum-qualifying-income ceiling. The $1,330
-    # maximum tapers at 1,330 / 5,000 = 26.6% (WAC 458-20-285(10)(d)) over the
-    # $1,325 of excess to 977.55, which the RCW 82.08.0206(3)(b) nearest-dollar
-    # rounding lifts to 978. See policyengine-taxsim#986.
-    wa_working_families_tax_credit: 978
+    # ($63,675 = limit $68,675 less the $5,000 band). AGI ($65,000, incl.
+    # $25,000 unemployment) is below the $68,675 limit, so the household is
+    # eligible, and the reduction is measured on earned income (RCW
+    # 82.08.0206(2)(b), WAC 458-20-285 Answer 10C), so there is none.
+    wa_working_families_tax_credit: 1_330
 
 # ESSB 6346 Sec. 901 - WFTC Age Expansion tests (effective 2028)
 
@@ -1566,3 +1562,126 @@
     # full 2024 one-child maximum ($640). This end-to-end case confirms the
     # WFTC flows through to household_net_income (it is a positive component).
     wa_working_families_tax_credit: 640
+
+- name: Case 37, a spouse's self-employment loss that offsets the wages leaves no earned income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 3_000
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        self_employment_income: -5_000
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_spouse: true
+      child:
+        age: 7
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: WA
+  output:
+    # RCW 82.08.0206(2)(b): income is earned income under 26 U.S.C. 32. On a
+    # joint return, federal EIC Worksheet B combines both spouses' amounts:
+    # line 4b = 3,000 + (-5,000) < 0, so "You can't take the credit", and
+    # (2)(a)(i)(A) requires eligibility for the federal credit. Flooring each
+    # spouse at zero would count 3,000 and pay the one-child $660.
+    wa_working_families_tax_credit: 0
+
+- name: Case 38, a spouse's self-employment loss lowers the phase-out base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 62_000
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        self_employment_income: -10_000
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_spouse: true
+      child1:
+        age: 7
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: WA
+  output:
+    # Earned income (Worksheet B line 4b) = 62,000 + (-10,000) = 52,000, and AGI
+    # is also 52,000. The 2025 joint two-child limit is $64,430 (Form 1040
+    # instructions), so the reduction starts at 59,430 and does not apply.
+    # ETA 3240.2026 gives the 2025 two-child maximum, $995. Measuring from
+    # 62,000 would give 995 - 0.199 x (62,000 - 59,430) = 484.
+    wa_working_families_tax_credit: 995
+
+- name: Case 39, interest raises AGI but not the earned income the reduction is measured on (taxsim 1489).
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 33
+        employment_income: 17_600
+        taxable_interest_income: 18.27
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WA
+  output:
+    # 2024 single, no children: limit $18,591 (Rev. Proc. 2023-34), reduction
+    # from $16,091, $325 maximum, $0.13 per dollar (ETA 3240.2026). Earned
+    # income $17,600: 325 - 0.13 x 1,509 = 128.83, rounded to 129. Measuring
+    # from AGI ($17,618.27) would give 127.
+    wa_working_families_tax_credit: 129

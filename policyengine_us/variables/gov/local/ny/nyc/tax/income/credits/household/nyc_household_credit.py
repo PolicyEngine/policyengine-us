@@ -10,9 +10,9 @@ class nyc_household_credit(Variable):
     defined_for = "in_nyc"
 
     def formula(tax_unit, period, parameters):
-        # First get their federal AGI.
-        # Technically based on recomputed AGI, which deviates slightly from federal AGI.
-        federal_agi = tax_unit("adjusted_gross_income", period)
+        # Recomputed federal AGI (IT-201 line 19a), which differs from
+        # federal AGI in 2020 by the charitable deduction for non-itemizers.
+        federal_agi = tax_unit("ny_recomputed_federal_agi", period)
 
         # Then get their filing status.
         filing_status = tax_unit("filing_status", period)

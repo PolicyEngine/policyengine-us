@@ -5,6 +5,12 @@ class ct_child_tax_rebate(Variable):
     value_type = float
     entity = TaxUnit
     label = "Connecticut child tax rebate"
+    documentation = (
+        "One-time Connecticut child tax rebate paid in 2022 and determined from the "
+        "2021 return. PolicyEngine attributes it to eligibility tax year 2021 through "
+        "ct_refundable_credits. This variable is zero in other years. It assumes full "
+        "take-up and uses 2021 residence as a proxy for 2022 domicile at application."
+    )
     unit = USD
     definition_period = YEAR
     # Assumes 100% take-up: PA 22-118 Sec. 411(b)(3) required an electronic

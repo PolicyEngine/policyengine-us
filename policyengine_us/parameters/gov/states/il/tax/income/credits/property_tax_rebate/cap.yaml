@@ -1,5 +1,10 @@
-description: Illinois caps the 2022 property tax rebate at this amount.
+description: >-
+  Illinois caps the 2022 property tax rebate at this amount. PolicyEngine attributes
+  this one-time rebate to eligibility tax year 2021, determined from that year's return,
+  although it was paid in 2022. Later-year standalone calculations do not establish
+  inclusion in credit totals.
 values:
+  2020-01-01: 0
   2021-01-01: 300
 metadata:
   unit: currency-USD
