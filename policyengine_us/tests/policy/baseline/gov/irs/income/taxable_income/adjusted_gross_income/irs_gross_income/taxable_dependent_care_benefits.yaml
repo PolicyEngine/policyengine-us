@@ -17,6 +17,8 @@
       tax_unit:
         members: [head, child]
         filing_status: HEAD_OF_HOUSEHOLD
+        # Qualified expenses at least equal to the benefits (Form 2441 line 16).
+        tax_unit_childcare_expenses: 5_000
     households:
       household:
         members: [head, child]
@@ -46,6 +48,7 @@
       tax_unit:
         members: [head, child]
         filing_status: SEPARATE
+        tax_unit_childcare_expenses: 5_000
     households:
       household:
         members: [head, child]
@@ -73,21 +76,24 @@
         age: 40
         employment_income: 3_000
         dependent_care_employer_benefits: 2_000
+      child:
+        age: 4
     tax_units:
       tax_unit:
-        members: [head, spouse]
+        members: [head, spouse, child]
         filing_status: JOINT
+        tax_unit_childcare_expenses: 6_000
     households:
       household:
-        members: [head, spouse]
+        members: [head, spouse, child]
         state_code: TX
   output:
     # Form 2441 lines 18-19 leave out line 12 benefits: the spouse's earned
     # income is $3,000 - $2,000 = $1,000. Exclusion min($6,000, $5,000,
     # $1,000) = $1,000; taxable $5,000, split 4:2.
     dependent_care_assistance_exclusion: 1_000
-    taxable_dependent_care_benefits: [3_333.33, 1_666.67]
-    irs_employment_income: [76_000, 1_000]
+    taxable_dependent_care_benefits: [3_333.33, 1_666.67, 0]
+    irs_employment_income: [76_000, 1_000, 0]
     # $77,000 of box 1 wages plus $5,000 taxable benefits.
     adjusted_gross_income: 82_000
 
@@ -106,6 +112,7 @@
       tax_unit:
         members: [head, child]
         filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_childcare_expenses: 5_000
     households:
       household:
         members: [head, child]
@@ -119,6 +126,38 @@
     taxable_dependent_care_benefits: [4_000, 0]
     # $1,000 of box 1 wages plus $4,000 taxable benefits.
     adjusted_gross_income: 5_000
+
+- name: Claimable filer's taxable dependent care benefits are earned income, 2024
+  period: 2024
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 6_000
+        dependent_care_employer_benefits: 5_000
+        claimable_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SINGLE
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Box 1 $1,000; exclusion min($5,000, $5,000, $1,000) = $1,000; line 1e
+    # $4,000. Earned income is line 1z, $5,000; unearned income is $0.
+    standard_deduction_worksheet_earned_income_person: [5_000, 0]
+    # max($1,300, $5,000 + $450) = $5,450 (Rev. Proc. 2023-34).
+    basic_standard_deduction: 5_450
+    # Taxable income $5,000 - $5,450 < 0. Refundable credits are left out:
+    # the model's EITC doesn't test whether the filer is claimable.
+    income_tax_before_refundable_credits: 0
+    tax_unit_is_required_to_file: false
+    medicaid_person_is_required_to_file: [false, false]
 
 - name: No benefits leaves wages unchanged
   period: 2025
