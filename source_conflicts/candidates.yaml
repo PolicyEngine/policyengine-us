@@ -5047,6 +5047,65 @@ candidates:
   state: unreviewed
   note: 'PE-US follows the manual; verify whether the unchecked insurance category covers these payments. Code not
     yet on main: ri_liheap countable income.'
+- id: us-ri:pension-modification-agi-threshold-strict
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does a filer whose federal AGI equals the threshold qualify for the pension and annuity modification?
+  sources:
+  - kind: statute
+    citation: R.I. Gen. Laws § 44-30-12(c), income test for the taxable retirement income modification
+    url: https://webserver.rilegislature.gov/Statutes/TITLE44/44-30/44-II/44-30-12.htm
+  - kind: worksheet
+    citation: RI-1040 instructions, line 1t worksheet
+    url: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-12/2025%201040R%20Instructions%20122025.pdf#page=10
+  readings:
+    statute: Federal AGI must be less than the threshold; AGI equal to it does not qualify.
+    other: The worksheet allows AGI less than or equal to the threshold.
+  example: A 2025 single filer born in 1950 with AGI of exactly $107,000 gets no modification under the statute and
+    qualifies under the worksheet.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ri/tax/income/agi/subtractions/taxable_retirement_income/ri_retirement_income_subtraction_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10398
+  state: ruled
+  note: The code already uses a strict comparison and the eligibility tests pin AGI equal to the threshold as
+    ineligible. Verify the statute's and the worksheet's wording before registering.
+- id: us-sc:2021-survivor-offset-surviving-spouse
+  program: income-tax
+  years:
+    from: 2021
+    to: 2021
+    type: tax
+  question: Is a surviving spouse's 2021 retirement deduction maximum reduced by the military retirement deduction
+    attributable to the deceased spouse?
+  sources:
+  - kind: statute
+    citation: S.C. Code § 12-6-1170(C)(1)
+    url: https://www.scstatehouse.gov/code/t12c006.php
+  - kind: guidance
+    citation: SCDOR Revenue Ruling 22-11
+    url: https://dor.sc.gov/sites/dor/files/policies/RR22-11.pdf#page=39
+  - kind: worksheet
+    citation: 2021 SC1040 retirement deduction worksheet, line p-3, line 2
+    url: https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=17
+  readings:
+    statute: The reduction for military retirement does not apply to a military retiree's surviving spouse.
+    other: The 2021 worksheet subtracts the surviving spouse's military retirement deduction from the survivor
+      retirement deduction maximum.
+  example: A 2021 surviving spouse whose deceased spouse would be 64, with $4,000 of survivor pension and $6,000 of
+    military survivor benefits, deducts $3,000 under the statute and $0 under the worksheet.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tax/income/subtractions/retirement/sc_retirement_deduction_survivors.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10398
+  state: ruled
+  note: RR22-11 agrees with the statute. PR 10398 removes the 2021 reduction and the parameter that toggled it.
 - id: us-sd:liheap-2025-published-income-limit
   program: liheap
   years:
