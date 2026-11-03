@@ -15,7 +15,7 @@ would count non-enrollment twice. The two series are under
 Report:
 
 - ``premiums_per_enrollee``: Table III.D3 premium income (footnote 6's
-  December 31 credits moved back a year) less Table V.E4's aggregate
+  December 31 credits moved to the following year) less Table V.E4's aggregate
   income-related premiums, over Table V.B3's Part D enrollment.
 - ``enrollment_share``: Table V.B3's Part D enrollment over its total, people
   with Part A and/or Part B coverage.
