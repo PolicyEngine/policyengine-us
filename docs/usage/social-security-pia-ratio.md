@@ -310,21 +310,11 @@ from policyengine_core.reforms import Reform
 reform = Reform.from_dict(
     {
         "gov.contrib.ssa.pia.in_effect": {"2032-01-01": True},
-        "gov.contrib.ssa.pia.progressive_price_indexing.in_effect": {
-            "2032-01-01": True
-        },
-        "gov.contrib.ssa.pia.progressive_price_indexing.start_year": {
-            "2032-01-01": 2032
-        },
-        "gov.contrib.ssa.pia.progressive_price_indexing.bend_point_fraction": {
-            "2032-01-01": 0.25
-        },
-        "gov.contrib.ssa.pia.progressive_price_indexing.maximum_aime": {
-            "2035-01-01": 17_000
-        },
-        "gov.contrib.ssa.pia.progressive_price_indexing.maximum_pia_target": {
-            "2035-01-01": 5_100
-        },
+        "gov.contrib.ssa.pia.progressive_price_indexing.in_effect": {"2032-01-01": True},
+        "gov.contrib.ssa.pia.progressive_price_indexing.start_year": {"2032-01-01": 2032},
+        "gov.contrib.ssa.pia.progressive_price_indexing.bend_point_fraction": {"2032-01-01": 0.25},
+        "gov.contrib.ssa.pia.progressive_price_indexing.maximum_aime": {"2035-01-01": 17_000},
+        "gov.contrib.ssa.pia.progressive_price_indexing.maximum_pia_target": {"2035-01-01": 5_100},
     },
     country_id="us",
 )
