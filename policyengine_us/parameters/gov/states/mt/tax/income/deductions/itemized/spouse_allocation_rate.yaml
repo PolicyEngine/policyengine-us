@@ -1,14 +1,21 @@
-description: Montana allocates this share of jointly paid itemized deductions to each spouse when married couples file separately on the same form.
+description: Montana itemized deductions paid jointly are split by this share between the spouses' columns when married couples file separately on the same form; this is a modeling convention, not a rate in law.
 values:
   # A modeling convention, not a rate in the law. On the same form (status
   # 2a), ARM 42.15.524(3)(b) defers to the form, which lets the couple
   # allocate payments from accounts both spouses own "in any proportional
   # amount"; an equal division is required only on separate forms, absent a
-  # written agreement (ARM 42.15.524(3)(c)). The model splits the charitable
-  # deduction equally by this rate, and uses it as the tie-break and starting
-  # candidate for the tax-minimizing split of dependents' medical bills
-  # (mt_dependent_medical_expense_head_share). The federal rule for separate
-  # returns also treats payments from a joint account as paid equally.
+  # written agreement (ARM 42.15.524(3)(c)). Readers:
+  # - mt_non_medical_itemized_deductions_indiv and
+  #   mt_itemized_deductions_for_federal_itemization_indiv split the
+  #   charitable deduction equally by this rate;
+  # - mt_dependent_medical_expense_head_share uses it as the tie-break and
+  #   starting candidate for the tax-minimizing split of dependents' medical
+  #   bills;
+  # - mt_child_dependent_care_expense_deduction gives each spouse this share
+  #   of the deduction. There the equal split is the law's rule, not a
+  #   convention: each spouse enters one-half of Form 2441-M line 7.
+  # The federal rule for separate returns also treats payments from a joint
+  # account as paid equally.
   2021-01-01: 0.5
 metadata:
   label: Montana itemized deductions spouse allocation rate
