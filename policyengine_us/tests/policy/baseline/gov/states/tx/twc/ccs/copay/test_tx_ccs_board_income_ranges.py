@@ -1,18 +1,22 @@
 """Board parent share of cost scales meet TWC's income ranges and stay ordered.
 
 Before TX3C, Texas Workforce Boards set parent share of cost amounts for the
-SMI income ranges TWC published each Board Contract Year (WD 24-23 Attachment
-2 for BCY 2024; the BCY 2025 ranges WD 20-24 sent for October 1 to December 8,
-2024). tx_ccs_board_copay rebuilds each range limit from the SMI in force that
-month. The first check runs board_scale_amount over every SMI cell of both
-tables, family sizes 2 to 15, on each side of each limit, so a change to the
-SMI parameter, the size factor or the rounding that moves any limit by a
-dollar fails here. The other checks read the Board parameter files: every
-Board scale must rise with income, every reduction must stay between 0 and 1,
-and every Board that applies its own scale must have one. Property tests state
-what board_scale_amount does for any chart, income and SMI: it returns one of
-the chart's amounts, each limit separates its two ranges, the amount never
-falls as income rises, and it never rises as SMI rises.
+SMI or FPG income ranges TWC published each Board Contract Year (WD 24-23
+Attachment 2 for BCY 2024; the BCY 2025 ranges WD 20-24 sent for October 1 to
+December 8, 2024). tx_ccs_board_copay rebuilds each SMI range limit from the
+SMI in force that month. The first check runs board_scale_amount over every
+SMI cell of both tables, family sizes 2 to 15, on each side of each limit, so
+a change to the SMI parameter, the size factor or the rounding that moves any
+limit by a dollar fails here. TWC's FPG limits follow no single rounding rule,
+so the model reads them from fpg_income_limits.yaml; the FPG checks hold each
+of those limits to the poverty guidelines and to TWC's 85% SMI limit, and run
+the lookup over every cell. The other checks read the Board parameter files:
+every Board scale must rise with income, every reduction must stay between 0
+and 1, every Board that applies its own scale must have one, and every FPG
+threshold must name one of TWC's FPG ranges. Property tests state what
+board_scale_amount does for any chart, income and SMI: it returns one of the
+chart's amounts, each limit separates its two ranges, the amount never falls
+as income rises, and it never rises as SMI rises.
 """
 
 from pathlib import Path
@@ -24,10 +28,15 @@ import numpy as np
 import pytest
 import yaml
 
+from policyengine_core.reforms import Reform
+
+from policyengine_us import Simulation
 from policyengine_us.system import system
 from policyengine_us.variables.gov.hhs.hhs_smi import smi
 from policyengine_us.variables.gov.states.tx.twc.ccs.copay.tx_ccs_board_copay import (
     board_scale_amount,
+    fpg_range_limit,
+    smi_range_limit,
 )
 from policyengine_us.variables.gov.states.tx.twc.ccs.tx_ccs_workforce_board_region import (
     TXCCSWorkforceBoardRegion,
@@ -98,8 +107,9 @@ def test_range_limits_match_twc_tables(month):
     )
     limits = np.array([table[size] for size in sizes], dtype=float)
     for i in range(len(SHARES)):
-        at_limit = board_scale_amount(_Scale, limits[:, i], monthly_smi)
-        above_limit = board_scale_amount(_Scale, limits[:, i] + 1, monthly_smi)
+        limit = smi_range_limit(monthly_smi)
+        at_limit = board_scale_amount(_Scale, limits[:, i], limit)
+        above_limit = board_scale_amount(_Scale, limits[:, i] + 1, limit)
         assert (at_limit == i).all(), (month, SHARES[i], sizes[at_limit != i])
         assert (above_limit == i + 1).all(), (
             month,
@@ -134,7 +144,8 @@ _monthly_smis = st.floats(min_value=500, max_value=30_000, allow_nan=False)
 
 
 def _amount(chart, income, monthly_smi):
-    return board_scale_amount(chart, np.array([income]), np.array([monthly_smi]))[0]
+    limit = smi_range_limit(np.array([monthly_smi]))
+    return board_scale_amount(chart, np.array([income]), limit)[0]
 
 
 @given(_charts, _incomes, _monthly_smis)
@@ -216,3 +227,151 @@ def test_every_applying_board_has_a_scale():
                     name,
                     date,
                 )
+
+
+FPG_PERCENTS = [50, 75, 100, 125, 150, 175, 185, 200]
+FPG_TABLE_STARTS = ["2023-10-01", "2024-10-01"]
+
+
+def _fpg_table(instant):
+    return system.parameters(
+        instant
+    ).gov.states.tx.twc.ccs.copay.board.fpg_income_limits
+
+
+def _twc_annual_guideline(instant, size):
+    fpg = system.parameters(instant).gov.hhs.fpg
+    first = fpg.first_person.CONTIGUOUS_US
+    additional = fpg.additional_person.CONTIGUOUS_US
+    if instant == "2024-10-01" and size > 8:
+        # Intended exception: TWC's October 2024 table follows HHS's 2024
+        # guidelines through family size 8, then adds Hawaii's amount for
+        # each additional person ($6,190) instead of the contiguous states'
+        # ($5,380). Boards assessed families against the printed table, so
+        # the model keeps it.
+        return first + 7 * additional + fpg.additional_person.HI * (size - 8)
+    return first + additional * (size - 1)
+
+
+@pytest.mark.parametrize("instant", FPG_TABLE_STARTS)
+def test_fpg_limits_follow_the_poverty_guidelines(instant):
+    # Each printed limit lies within a dollar of its share of the annual
+    # guideline over 12 months. TWC prints * instead of any limit that would
+    # pass 85% of SMI, the eligibility limit, and the model reads those as
+    # never exceeded.
+    table = _fpg_table(instant)
+    for size in range(2, 16):
+        annual = _twc_annual_guideline(instant, size)
+        monthly_smi = smi(
+            np.array([size]), np.array(["TX"]), instant, system.parameters
+        )
+        eligibility_limit = np.floor(0.85 * monthly_smi[0] / 12 + 0.5)
+        for percent in FPG_PERCENTS:
+            limit = table[str(size)][str(percent)]
+            exact = percent / 100 * annual / 12
+            if np.floor(exact + 0.5) > eligibility_limit:
+                assert limit == np.inf, (instant, size, percent, limit)
+            else:
+                assert abs(limit - exact) < 1, (instant, size, percent, limit, exact)
+
+
+class _FPGScale:
+    """A scale whose amount is the index of the FPG range the income falls in."""
+
+    thresholds = [-np.inf] + [percent / 100 for percent in FPG_PERCENTS]
+    amounts = list(range(len(FPG_PERCENTS) + 1))
+
+
+@pytest.mark.parametrize("instant", FPG_TABLE_STARTS)
+def test_fpg_range_lookup_matches_the_table(instant):
+    table = _fpg_table(instant)
+    sizes = np.arange(1, 18)
+    capped = np.clip(sizes, 2, 15)
+    limit = fpg_range_limit(table[capped], capped)
+    limits = np.array(
+        [
+            [table[str(size)][str(percent)] for percent in FPG_PERCENTS]
+            for size in capped
+        ]
+    )
+    for i in range(len(FPG_PERCENTS)):
+        printed = np.isfinite(limits[:, i])
+        income = np.where(printed, limits[:, i], 0)
+        at_limit = board_scale_amount(_FPGScale, income, limit)
+        above_limit = board_scale_amount(_FPGScale, income + 1, limit)
+        assert (at_limit[printed] == i).all(), (instant, i, sizes[printed])
+        assert (above_limit[printed] == i + 1).all(), (instant, i, sizes[printed])
+    # Above the last printed limit, a family stays in the range that runs to
+    # 85% of SMI.
+    highest = board_scale_amount(_FPGScale, np.full(len(sizes), 1e9), limit)
+    assert (highest == np.isfinite(limits).sum(axis=1)).all(), (instant, highest)
+
+
+def test_fpg_board_thresholds_name_twc_ranges():
+    flags = yaml.safe_load((BOARD / "uses_fpg_ranges.yaml").read_text())
+    for board in TXCCSWorkforceBoardRegion:
+        dates = [date for date, value in flags[board.name].items() if value is True]
+        if not dates:
+            continue
+        for name in ("first_child", "additional_child"):
+            brackets = yaml.safe_load(
+                (BOARD / board.name.lower() / f"{name}.yaml").read_text()
+            )["brackets"]
+            for date in dates:
+                for bracket in brackets:
+                    threshold = bracket["threshold"][date]
+                    if threshold == -np.inf:
+                        continue
+                    assert round(threshold * 100) in FPG_PERCENTS, (
+                        board.name,
+                        name,
+                        date,
+                        threshold,
+                    )
+
+
+def test_formula_reads_fpg_ranges_for_a_board_that_uses_them():
+    # No sourced Board uses FPG ranges yet, so this moves Panhandle's
+    # November 2024 scale onto TWC's FPG ranges and checks a family of one
+    # adult and two children on each side of each printed limit.
+    board = "gov.states.tx.twc.ccs.copay.board"
+    when = "2024-10-01.2024-12-31"
+    changes = {f"{board}.uses_fpg_ranges.PANHANDLE": {when: True}}
+    for name in ("first_child", "additional_child"):
+        for i, percent in enumerate(FPG_PERCENTS, start=1):
+            changes[f"{board}.panhandle.{name}[{i}].threshold"] = {when: percent / 100}
+    limits = [_fpg_table("2024-10-01")["3"][str(percent)] for percent in FPG_PERCENTS]
+    incomes = [income for limit in limits for income in (limit, limit + 1)]
+    people, spm_units, households = {}, {}, {}
+    for n, income in enumerate(incomes):
+        members = [f"adult_{n}", f"child_{n}_1", f"child_{n}_2"]
+        people[members[0]] = {
+            "age": {"2024": 30},
+            "weekly_hours_worked_before_lsr": {"2024": 40},
+            "employment_income": {"2024": income * 12},
+        }
+        for child, age in zip(members[1:], (3, 5)):
+            people[child] = {
+                "age": {"2024": age},
+                "is_citizen_or_legal_immigrant": {"2024": True},
+            }
+        spm_units[f"spm_unit_{n}"] = {
+            "members": members,
+            "spm_unit_size": {"2024": 3},
+        }
+        households[f"household_{n}"] = {
+            "members": members,
+            "state_code": {"2024": "TX"},
+            "tx_ccs_workforce_board_region": {"2024": "PANHANDLE"},
+        }
+    simulation = Simulation(
+        situation={"people": people, "spm_units": spm_units, "households": households},
+        reform=Reform.from_dict(changes, country_id="us"),
+    )
+    scales = simulation.tax_benefit_system.parameters(
+        "2024-11-01"
+    ).gov.states.tx.twc.ccs.copay.board.panhandle
+    amounts = np.add(scales.first_child.amounts, scales.additional_child.amounts)
+    expected = [amounts[i + side] for i in range(len(limits)) for side in (0, 1)]
+    copay = simulation.calculate("tx_ccs_board_copay", "2024-11")
+    assert list(copay) == expected, list(zip(incomes, copay, expected))

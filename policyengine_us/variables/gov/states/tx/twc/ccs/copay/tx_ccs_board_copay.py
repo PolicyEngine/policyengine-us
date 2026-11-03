@@ -11,19 +11,30 @@ from policyengine_us.variables.gov.states.tx.twc.ccs.tx_ccs_workforce_board_regi
 )
 
 
-def board_scale_amount(scale, income, monthly_smi):
-    # Each bracket covers income more than its threshold share of SMI and not
-    # more than the next one. TWC publishes these limits as whole-dollar
-    # monthly incomes, the SMI share rounded to the nearest dollar (WD 24-23
-    # Attachment 2; WD 20-24 income ranges).
+def board_scale_amount(scale, income, limit):
+    # Each bracket covers income more than its threshold's monthly limit and
+    # not more than the next threshold's.
     amount = np.zeros_like(income)
     for threshold, bracket_amount in zip(scale.thresholds, scale.amounts):
         if np.isneginf(threshold):
             in_bracket = np.ones_like(income, dtype=bool)
         else:
-            in_bracket = income > np.floor(monthly_smi * threshold + 0.5)
+            in_bracket = income > limit(threshold)
         amount = where(in_bracket, bracket_amount, amount)
     return amount
+
+
+def smi_range_limit(monthly_smi):
+    # TWC publishes these limits as whole-dollar monthly incomes, the SMI
+    # share rounded to the nearest dollar (WD 24-23 Attachment 2; WD 20-24
+    # income ranges).
+    return lambda share: np.floor(monthly_smi * share + 0.5)
+
+
+def fpg_range_limit(limits, size):
+    # TWC prints these limits by family size, and its table is keyed by the
+    # percent of the federal poverty guidelines where each range ends.
+    return lambda share: limits[np.full_like(size, round(share * 100))]
 
 
 class tx_ccs_board_copay(Variable):
@@ -49,6 +60,11 @@ class tx_ccs_board_copay(Variable):
         # TWC sets each Board Contract Year's income ranges from the SMI that
         # takes effect on October 1, so read the SMI at this month.
         monthly_smi = smi(size, state, period, parameters) / MONTHS_IN_YEAR
+        smi_limit = smi_range_limit(monthly_smi)
+        # TWC's FPG table covers family sizes 2 to 15.
+        fpg_sizes = [int(key) for key in p.fpg_income_limits]
+        fpg_size = clip(size, min(fpg_sizes), max(fpg_sizes))
+        fpg_limit = fpg_range_limit(p.fpg_income_limits[fpg_size], fpg_size)
         person = spm_unit.members
         eligible_child = person("tx_ccs_eligible_child", period)
         children = spm_unit.sum(eligible_child)
@@ -61,9 +77,10 @@ class tx_ccs_board_copay(Variable):
             if not p.applies[board.name]:
                 continue
             board_p = p[board.name.lower()]
-            first_child = board_scale_amount(board_p.first_child, income, monthly_smi)
+            limit = fpg_limit if p.uses_fpg_ranges[board.name] else smi_limit
+            first_child = board_scale_amount(board_p.first_child, income, limit)
             additional_child = board_scale_amount(
-                board_p.additional_child, income, monthly_smi
+                board_p.additional_child, income, limit
             )
             copay = where(
                 region == board,
