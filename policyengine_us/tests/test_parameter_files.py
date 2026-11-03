@@ -64,6 +64,17 @@ SOI_CORRECTED_VALUES = {
     # number of returns with a loss (72_972).
     "farm_rent_income.yaml": {date(2021, 1, 1): 5_555_955_000},
 }
+# The latest tax year with Publication 1304 Tables 1.4 and 1.4A. Raise it
+# when the next year is added to every series.
+SOI_LATEST_TAX_YEAR = 2023
+# From tax year 2022 Table 1.4 labels the wage total "total wages, total"
+# (Form 1040 line 1z) and shows its parts in the columns after it. The series
+# takes the total, not the Form W-2 column beside it (22in14ar: 9_360_356_986;
+# 23in14ar: 10_046_008_299).
+SOI_LINE_1Z_WAGES = {
+    date(2022, 1, 1): 9_738_950_972_000,
+    date(2023, 1, 1): 10_204_095_705_000,
+}
 PARAMETER_SCHEMA_KEYS = {
     "brackets",
     "description",
@@ -224,6 +235,24 @@ def test_soi_corrected_values_hold_their_table_1_4_totals():
         values = yaml.safe_load((SOI_DIR / filename).read_text())["values"]
         for period, value in anchors.items():
             assert values[period] == value, (filename, period)
+
+
+def test_soi_series_run_to_the_latest_published_tax_year():
+    """Parameter uprating grows a series from its last value, so a series that
+    stops early projects every later year from an older tax year, and adding
+    the missing years later moves all of them. Every SOI income series ends at
+    the same, latest published tax year."""
+    for path in sorted(SOI_DIR.glob("*.yaml")):
+        parameter = yaml.safe_load(path.read_text())
+        if "values" not in parameter:
+            continue
+        assert max(parameter["values"]).year == SOI_LATEST_TAX_YEAR, path.name
+
+
+def test_soi_wages_use_the_line_1z_total():
+    values = yaml.safe_load((SOI_DIR / "employment_income.yaml").read_text())["values"]
+    for period, value in SOI_LINE_1Z_WAGES.items():
+        assert values[period] == value, period
 
 
 def test_soi_agi_bands_are_keyed_to_their_table_1_1_tax_year():
