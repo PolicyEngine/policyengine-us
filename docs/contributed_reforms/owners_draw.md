@@ -117,7 +117,11 @@ on. These are the draw profits whose SECA the deduction includes. Draw
 profits beyond the OASDI room with HI off stay out of line 5. With
 `half_seca_deduction: false` the draw's SECA is not deductible, so line 5
 omits the draw and the limit follows the baseline formula. Disabled years
-use the baseline formula.
+use the baseline formula. The draw enters line 5 only: the plan business is
+chosen as in the baseline, from the Schedule C business, the farm, the
+partnership or the S corporation named by
+`self_employed_health_insurance_plan_business`, or the one with the largest
+line 13 when none is named.
 
 ## Benefit credit and active NIIT interaction
 
