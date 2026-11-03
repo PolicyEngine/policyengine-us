@@ -4,13 +4,25 @@ import gc
 import weakref
 
 import numpy as np
+import pytest
 
 from policyengine_us.tests.microsimulation.test_calculate_chunked import (
     YEAR,
     _release_reference_simulation,
     build_chunking_dataset,
+    frozen_heap,
+    lent_parameter_history,
     make_simulation,
 )
+
+
+@pytest.fixture(autouse=True)
+def frozen_unchanged_heap():
+    # CI runs this file last of the microsimulation folder's base group, in
+    # one pytest process. Collections then scan only what this test creates,
+    # including every simulation and branch the weak-reference checks follow.
+    with frozen_heap():
+        yield
 
 
 def _main_counterfactual(simulation, name, taxable_social_security=None):
@@ -42,20 +54,28 @@ def _main_counterfactual(simulation, name, taxable_social_security=None):
 
 def test_sequential_tob_matches_main_elementwise_and_reuses_states(monkeypatch):
     dataset = build_chunking_dataset()
-    baseline = make_simulation(dataset)
-    # Main caps old-law inclusion at actual inclusion, read before any branch.
-    old_law_inclusion = np.minimum(
-        np.asarray(
-            baseline.calculate("tax_unit_taxable_social_security_pre_1993", YEAR)
-        ),
-        np.asarray(baseline.calculate("tax_unit_taxable_social_security", YEAR)),
-    ).copy()
-    # These are main's OASDI and total algorithms, including separate no-SS
-    # branches and the signed differences rather than per-tax-unit floors.
-    oasdi_no_ss = _main_counterfactual(baseline, "oasdi_no_ss")
-    old_law = _main_counterfactual(baseline, "oasdi_old_law", old_law_inclusion)
-    current = np.asarray(baseline.calculate("income_tax_chapter_1", YEAR)).copy()
-    total_no_ss = _main_counterfactual(baseline, "tob_calc")
+    # Main's algorithm is the reference. Its branches change no parameter, so
+    # they lend the unchanged tree instead of copying it; the helper's branches
+    # below, which this test checks, keep ordinary clones.
+    with lent_parameter_history():
+        baseline = make_simulation(dataset)
+        # Main caps old-law inclusion at actual inclusion, read before any branch.
+        old_law_inclusion = np.minimum(
+            np.asarray(
+                baseline.calculate("tax_unit_taxable_social_security_pre_1993", YEAR)
+            ),
+            np.asarray(baseline.calculate("tax_unit_taxable_social_security", YEAR)),
+        ).copy()
+        # These are main's OASDI and total algorithms, including separate no-SS
+        # branches and the signed differences rather than per-tax-unit floors.
+        oasdi_no_ss = _main_counterfactual(baseline, "oasdi_no_ss")
+        old_law = _main_counterfactual(baseline, "oasdi_old_law", old_law_inclusion)
+        current = np.asarray(baseline.calculate("income_tax_chapter_1", YEAR)).copy()
+        total_no_ss = _main_counterfactual(baseline, "tob_calc")
+        weights = np.asarray(baseline.calculate("tax_unit_weight", YEAR)).copy()
+        _release_reference_simulation(baseline)
+        del baseline
+        gc.collect()
     expected = {
         "tob_revenue_oasdi": old_law - oasdi_no_ss,
         "tob_revenue_total": current - total_no_ss,
@@ -63,10 +83,6 @@ def test_sequential_tob_matches_main_elementwise_and_reuses_states(monkeypatch):
     expected["tob_revenue_medicare_hi"] = (
         expected["tob_revenue_total"] - expected["tob_revenue_oasdi"]
     )
-    weights = np.asarray(baseline.calculate("tax_unit_weight", YEAR)).copy()
-    _release_reference_simulation(baseline)
-    del baseline
-    gc.collect()
 
     simulation = make_simulation(dataset)
     simulation_type = type(simulation)

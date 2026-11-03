@@ -8,7 +8,8 @@ Partition cases use the country's parameter-lending clone route: branches keep
 the complete, unchanged parameter tree and history, with copy-on-write for
 reforms, while entities, variable metadata and provider receipts remain private.
 Rebuilding the same history for every equivalent partition would dominate this
-API test's runtime. The separate TOB sequencing test uses ordinary clones.
+API test's runtime. The separate TOB sequencing test lends the tree only to its
+reference, main's algorithm; the helper's branches there use ordinary clones.
 The retained default policy graph is frozen before any simulation is built,
 avoiding repeated GC scans of it. New simulation/branch cycles remain in normal
 GC generations and must still pass the weak-reference collection checks.
@@ -18,13 +19,14 @@ import gc
 import sys
 import tempfile
 import weakref
+from contextlib import contextmanager
 from pathlib import Path
 
 import h5py
 import numpy as np
 import pandas as pd
 import pytest
-from hypothesis import given, settings, strategies as st
+from hypothesis import example, given, settings, strategies as st
 
 from policyengine_us import Microsimulation
 from policyengine_us.data.dataset_schema import (
@@ -51,14 +53,29 @@ VARIABLES = (
 )
 
 
-@pytest.fixture(scope="module", autouse=True)
-def lend_unchanged_parameter_history():
-    import policyengine_us.spm as spm
+@contextmanager
+def frozen_heap():
+    """Leave what is alive now out of later collections.
 
+    Collections inside the block then scan only objects created inside it,
+    which include every simulation and branch the weak-reference checks follow.
+    """
     owns_freeze = gc.get_freeze_count() == 0
     if owns_freeze:
         gc.collect()
         gc.freeze()
+    try:
+        yield
+    finally:
+        if owns_freeze:
+            gc.unfreeze()
+
+
+@contextmanager
+def lent_parameter_history():
+    """Give cloned systems the unchanged parameter tree instead of a copy."""
+    import policyengine_us.spm as spm
+
     original = spm.clone_spm_system
 
     def clone(source, *, copy_receipts=True, parameters=None):
@@ -69,15 +86,26 @@ def lend_unchanged_parameter_history():
         spm.mark_tree_shared(tree)
         return original(source, copy_receipts=copy_receipts, parameters=tree)
 
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setattr(spm, "clone_spm_system", clone)
+        yield
+
+
+@pytest.fixture(scope="module", autouse=True)
+def lend_unchanged_parameter_history():
     # Scope the optimization to this module. In particular, importing fixture
     # builders from test_tob_sequencing does not apply it to that test module.
-    try:
-        with pytest.MonkeyPatch.context() as patch:
-            patch.setattr(spm, "clone_spm_system", clone)
-            yield
-    finally:
-        if owns_freeze:
-            gc.unfreeze()
+    with frozen_heap(), lent_parameter_history():
+        yield
+
+
+@pytest.fixture(autouse=True)
+def private_tempdir(tmp_path, monkeypatch):
+    # calculate_chunked's mkdtemp and _chunk_directories then see only this
+    # test's chunk folders, not another process's in the shared temp folder.
+    directory = tmp_path / "tmp"
+    directory.mkdir()
+    monkeypatch.setattr(tempfile, "tempdir", str(directory))
 
 
 def build_chunking_dataset() -> USSingleYearDataset:
@@ -244,10 +272,14 @@ def assert_matches_reference(result, dataset, reference):
         assert result.weighted_sums[variable] == weighted_sums[variable]
 
 
-@pytest.mark.parametrize("n_chunks", [1, 2, 3, 7])
-def test_chunked_real_model_is_elementwise_exact(n_chunks, chunking_dataset, reference):
-    # Weak references detect retained simulations and cycles before the next
-    # chunk, including branch-to-parent references created by TOB calculations.
+def calculate_with_checked_chunks(chunking_dataset, n_chunks, household_chunks=None):
+    """Calculate VARIABLES with a factory that checks every chunk it receives.
+
+    Each chunk's person and group tables must equal its households' source
+    rows, in source order. Weak references detect retained simulations and
+    cycles before the next chunk, including branch-to-parent references
+    created by TOB calculations. Returns the result and the chunks built.
+    """
     simulations = []
     seen = {entity: [] for entity in US_ENTITIES}
 
@@ -275,20 +307,42 @@ def test_chunked_real_model_is_elementwise_exact(n_chunks, chunking_dataset, ref
         return simulation
 
     result = calculate_chunked(
-        factory, VARIABLES, YEAR, n_chunks, dataset=chunking_dataset
+        factory,
+        VARIABLES,
+        YEAR,
+        n_chunks,
+        dataset=chunking_dataset,
+        household_chunks=household_chunks,
     )
-    assert_matches_reference(result, chunking_dataset, reference)
-    assert len(simulations) == n_chunks
     assert all(simulation() is None for simulation in simulations)
     for entity, ids in seen.items():
         expected_ids = getattr(chunking_dataset, entity)[f"{entity}_id"]
         assert len(ids) == len(expected_ids)
         assert set(ids) == set(expected_ids)
+    return result, len(simulations)
+
+
+# Three chunks catch order errors that two cannot; the smallest of the three
+# default chunks still holds 10 households. The partition property below runs
+# the same chunk checks on smaller, uneven and interleaved chunks.
+@pytest.mark.parametrize("n_chunks", [1, 2, 3])
+def test_chunked_real_model_is_elementwise_exact(n_chunks, chunking_dataset, reference):
+    result, built = calculate_with_checked_chunks(chunking_dataset, n_chunks)
+    assert_matches_reference(result, chunking_dataset, reference)
+    assert built == n_chunks
+
+
+MAX_PARTITION_CHUNKS = 7
+# Seven chunks of 1 to 11 households. 7 is coprime with 32, so multiplying row
+# numbers by it permutes the households and interleaves the chunks.
+UNEVEN_LABELS = np.repeat(np.arange(MAX_PARTITION_CHUNKS), [1, 2, 3, 4, 5, 6, 11])[
+    np.arange(HOUSEHOLDS) * 7 % HOUSEHOLDS
+]
 
 
 @st.composite
 def household_partitions(draw):
-    n_chunks = draw(st.integers(min_value=1, max_value=7))
+    n_chunks = draw(st.integers(min_value=1, max_value=MAX_PARTITION_CHUNKS))
     # Every partition is nonempty, while all remaining household assignments
     # vary independently. Chunk labels are intentionally not contiguous rows.
     tail = draw(
@@ -303,19 +357,23 @@ def household_partitions(draw):
     return n_chunks, np.roll(labels, offset)
 
 
-@settings(max_examples=4, deadline=None)
+# Hypothesis generates the simplest partition, one chunk labelled 0, first. In
+# CI its ci profile derandomizes, so the second generated example is one fixed
+# pseudo-random partition; elsewhere it is random. The strategy uses every
+# label it draws, so it never leaves a chunk empty. The explicit examples pin
+# both ends of its range: every household in one chunk, labelled 3 so that the
+# other six labels are empty and skipped; and seven uneven, interleaved chunks.
+@example(partition=(MAX_PARTITION_CHUNKS, np.full(HOUSEHOLDS, 3)))
+@example(partition=(MAX_PARTITION_CHUNKS, UNEVEN_LABELS))
+@settings(max_examples=2, deadline=None)
 @given(partition=household_partitions())
 def test_random_household_partitions_are_exact(partition, chunking_dataset, reference):
     n_chunks, household_chunks = partition
-    result = calculate_chunked(
-        make_simulation,
-        VARIABLES,
-        YEAR,
-        n_chunks,
-        dataset=chunking_dataset,
-        household_chunks=household_chunks,
+    result, built = calculate_with_checked_chunks(
+        chunking_dataset, n_chunks, household_chunks
     )
     assert_matches_reference(result, chunking_dataset, reference)
+    assert built == len(np.unique(household_chunks))
 
 
 def test_multi_year_dataset_preserves_every_year_and_original_input(
@@ -436,7 +494,7 @@ def test_single_year_factory_automatically_projects_future_inputs(chunking_datas
     _assert_snapshot_matches(result, chunking_dataset, expected)
 
 
-def test_reform_factory_is_exact_and_releases_its_baseline(chunking_dataset):
+def test_reform_factory_is_exact_and_releases_its_baseline(chunking_dataset, reference):
     from policyengine_core.reforms import Reform
     from policyengine_us.spm import clone_spm_system
 
@@ -464,11 +522,9 @@ def test_reform_factory_is_exact_and_releases_its_baseline(chunking_dataset):
             reform=reform,
         )
 
-    baseline = make_simulation(chunking_dataset)
-    baseline_tax = np.asarray(baseline.calculate("income_tax", YEAR)).copy()
-    _release_reference_simulation(baseline)
-    del baseline
-    gc.collect()
+    # The module reference calculated unreformed income_tax on this dataset
+    # with make_simulation, as a separate baseline simulation would.
+    baseline_tax = reference[0]["income_tax"]
 
     simulation = build(chunking_dataset)
     expected = _snapshot_calculations(simulation, variables, YEAR)
@@ -580,25 +636,17 @@ def _parameter_reform():
 
 @pytest.fixture(scope="module")
 def variable_centric_reference(variable_centric_path, reference):
-    expected = {}
-    for reform in (None, _parameter_reform()):
-        simulation = Microsimulation(dataset=variable_centric_path, reform=reform)
-        expected[reform is not None] = _snapshot_calculations(
-            simulation, TOB_VARIABLES, YEAR
-        )
-        _release_reference_simulation(simulation)
-        del simulation
-        gc.collect()
+    simulation = Microsimulation(dataset=variable_centric_path)
+    expected = _snapshot_calculations(simulation, TOB_VARIABLES, YEAR)
+    _release_reference_simulation(simulation)
+    del simulation
+    gc.collect()
     # Both loaders read the same households to the same results.
     values, weighted_sums, weights = reference
-    for variable, (entity, actual, actual_weights, total) in expected[False].items():
+    for variable, (entity, actual, actual_weights, total) in expected.items():
         np.testing.assert_array_equal(actual, values[variable])
         np.testing.assert_array_equal(actual_weights, weights[entity])
         assert total == weighted_sums[variable]
-    assert any(
-        np.any(expected[True][name][1] != expected[False][name][1])
-        for name in TOB_VARIABLES
-    ), "The reform must change TOB on the fixture"
     return expected
 
 
@@ -606,7 +654,7 @@ def _chunk_directories():
     return set(Path(tempfile.gettempdir()).glob("policyengine-us-chunk-*"))
 
 
-@pytest.mark.parametrize("n_chunks", [1, 2, 3, 7])
+@pytest.mark.parametrize("n_chunks", [1, 2, 3])
 def test_variable_centric_file_is_elementwise_exact(
     n_chunks, chunking_dataset, variable_centric_path, variable_centric_reference
 ):
@@ -631,9 +679,7 @@ def test_variable_centric_file_is_elementwise_exact(
     result = calculate_chunked(
         factory, TOB_VARIABLES, YEAR, n_chunks, dataset=variable_centric_path
     )
-    _assert_snapshot_matches(
-        result, chunking_dataset, variable_centric_reference[False]
-    )
+    _assert_snapshot_matches(result, chunking_dataset, variable_centric_reference)
     assert len(paths) == n_chunks
     assert not any(Path(path).exists() for path in paths)
     assert _chunk_directories() == before
@@ -642,15 +688,32 @@ def test_variable_centric_file_is_elementwise_exact(
 def test_variable_centric_file_is_exact_under_reform(
     chunking_dataset, variable_centric_path, variable_centric_reference
 ):
-    reform = _parameter_reform()
+    simulation = Microsimulation(
+        dataset=variable_centric_path, reform=_parameter_reform()
+    )
+    expected = _snapshot_calculations(simulation, TOB_VARIABLES, YEAR)
+    assert any(
+        np.any(expected[name][1] != variable_centric_reference[name][1])
+        for name in TOB_VARIABLES
+    ), "The reform must change TOB on the fixture"
+    # The chunks share this run's reformed system instead of each loading the
+    # country system again with the reform. The reform-factory test above
+    # still builds a reformed simulation, with its baseline, for every chunk.
+    policy = simulation.tax_benefit_system
+    _release_reference_simulation(simulation)
+    del simulation
+    gc.collect()
     result = calculate_chunked(
-        lambda path: Microsimulation(dataset=path, reform=reform),
+        lambda path: Microsimulation(dataset=path, tax_benefit_system=policy),
         TOB_VARIABLES,
         YEAR,
         2,
         dataset=variable_centric_path,
     )
-    _assert_snapshot_matches(result, chunking_dataset, variable_centric_reference[True])
+    # Collect the reformed parameter tree here, not in the next test.
+    del policy
+    gc.collect()
+    _assert_snapshot_matches(result, chunking_dataset, expected)
 
 
 def _deepest_stack(calculation):
