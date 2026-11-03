@@ -16,6 +16,8 @@ class ia_is_tax_exempt(Variable):
         "https://revenue.iowa.gov/media/4435/download?inline#page=11",
         # PDF pages 7-8: Iowa Code 422.5(2)(a) and (3)(a).
         "https://www.legis.iowa.gov/docs/code/2026/422.pdf#page=7",
+        # 422.5(3)(a) before the 2023 renumbering.
+        "https://www.legis.iowa.gov/docs/code/2022/422.5.pdf#page=3",
     )
     defined_for = StateCode.IA
 
@@ -33,20 +35,10 @@ class ia_is_tax_exempt(Variable):
             where(is_elderly, pil.other_elderly, pil.other_nonelderly),
         )
         exempt = tax_unit("ia_modified_income", period) <= modified_income_limit
-        # The instructions limit the ordinary exemption to filers who are "not
-        # claimed as a dependent on another person's Iowa return". A single
-        # filer who is claimed is instead exempt when income, without adding
-        # back deductions, is "less than $5,000"; every non-single status
-        # (joint, head of household, surviving spouse or married filing
-        # separately) is not exempt if any filer is claimed.
-        # Iowa Code 422.5(2)-(3) denies the exemption only when the
-        # claimer's own net income exceeds the limit; the model has no input
-        # for the claimer's income, so it follows the instructions. Both turn
-        # on being claimed, not on being claimable, so this reads the claim.
-        person = tax_unit.members
-        filer = person("is_tax_unit_head_or_spouse", period)
-        claimed = person("claimed_as_dependent_on_another_return", period)
-        filer_is_dependent = tax_unit.any(filer & claimed)
-        dependent_income = add(tax_unit, period, p.dependent.income_sources)
-        dependent_exempt = is_single & (dependent_income < p.dependent.income_limit)
-        return where(filer_is_dependent, dependent_exempt, exempt)
+        # Iowa Code 422.5 denies the exemption to a claimed dependent only
+        # when the person claiming them has net income over the limit. The
+        # instructions instead test the dependent's own income against
+        # $5,000 and limit the exemption to filers not claimed on another
+        # Iowa return; the statute governs.
+        disqualified = tax_unit("ia_claimed_filer_income_disqualified", period)
+        return exempt & ~disqualified

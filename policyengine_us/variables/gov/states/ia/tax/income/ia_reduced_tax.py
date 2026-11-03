@@ -14,6 +14,9 @@ class ia_reduced_tax(Variable):
         "https://revenue.iowa.gov/media/2721/download?inline#page=60",
         "https://revenue.iowa.gov/media/4152/download?inline#page=18",
         "https://revenue.iowa.gov/media/4435/download?inline#page=18",
+        "https://www.legis.iowa.gov/docs/code/2022/422.5.pdf#page=3",
+        # PDF pages 1-2
+        "https://www.legis.iowa.gov/docs/code/2024/422.5.pdf#page=1",
     )
     defined_for = StateCode.IA
 
@@ -26,14 +29,13 @@ class ia_reduced_tax(Variable):
             is_elderly, p.threshold.elderly, p.threshold.nonelderly
         )
         amount = max_(0, modified_income - modified_income_threshold)  # Line 3
-        # reduced tax available only to single tax units "not claimed as a
-        # dependent on another person's Iowa return" (Tax Reduction Worksheet)
+        # The reduction is for single tax units. Iowa Code 422.5 withholds it
+        # from a claimed dependent only when the claiming person's net income
+        # is over the limit; the worksheet's wider bar on any filer "claimed
+        # as a dependent on another person's Iowa return" gives way to it.
+        # Otherwise the cap is infinite, so it cannot erase tax.
         filing_status = tax_unit("filing_status", period)
         is_single = filing_status == filing_status.possible_values.SINGLE
-        # The worksheet turns on being claimed, not on being claimable.
-        person = tax_unit.members
-        filer = person("is_tax_unit_head_or_spouse", period)
-        claimed = person("claimed_as_dependent_on_another_return", period)
-        filer_claimed = tax_unit.any(filer & claimed)
-        return where(is_single & ~filer_claimed, amount, np.inf)
+        disqualified = tax_unit("ia_claimed_filer_income_disqualified", period)
+        return where(is_single & ~disqualified, amount, np.inf)
         # see ia_income_tax_before_refundable_credits formula for variable use
