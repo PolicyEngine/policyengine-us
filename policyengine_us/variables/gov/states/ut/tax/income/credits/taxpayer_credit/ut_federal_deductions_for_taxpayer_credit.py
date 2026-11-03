@@ -12,8 +12,12 @@ class ut_federal_deductions_for_taxpayer_credit(Variable):
     reference = (
         "https://le.utah.gov/xcode/Title59/Chapter10/59-10-S114.html?v=C59-10-S114_2022032320220323",
         # Utah Code 59-10-1018(1)(f)(i): only state or local income tax is
-        # removed from the federal itemized total.
+        # removed from the federal itemized total. This edition covers tax
+        # years from 2026.
         "https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_2026050620260506.pdf#page=1",
+        # Utah Code 59-10-1018, 2023 edition: the text in force from May 8,
+        # 2018 through tax year 2025.
+        "https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_2023050320230503.html",
         # 2025 TC-40 instructions, line 14: do not remove itemized sales tax.
         "https://files.tax.utah.gov/tax/forms/2025/tc-40inst.pdf#page=10",
     )
@@ -34,7 +38,12 @@ class ut_federal_deductions_for_taxpayer_credit(Variable):
             tax_unit, period, ["state_withheld_income_tax", "local_income_tax"]
         )
         sales_tax = add(tax_unit, period, ["state_sales_tax", "local_sales_tax"])
-        sales_tax_elected = sales_tax > income_tax
+        # Sales-tax election only where the SALT amount the federal side used
+        # is the sales tax; a supplied amount that matches neither keeps the
+        # income-tax treatment.
+        sales_tax_elected = (sales_tax > income_tax) & np.isclose(
+            raw_state_income_or_sales_tax, sales_tax
+        )
         deductions = [
             deduction
             for deduction in p.itemized_deductions
@@ -62,7 +71,9 @@ class ut_federal_deductions_for_taxpayer_credit(Variable):
         # Sales-tax election: 59-10-1018(1)(f)(i) removes no sales tax, so
         # the whole allowed SALT deduction stays in the base.
         sales_fallback_base = fallback_itemized + salt_deduction
-        sales_claimed_base = max_(itemized, sales_fallback_base)
+        # Sales-tax election: nothing is removed from the federal itemized
+        # deductions (after section 68); itemized_base falls back when zero.
+        sales_claimed_base = itemized
         fallback_base = where(
             sales_tax_elected, sales_fallback_base, income_fallback_base
         )
