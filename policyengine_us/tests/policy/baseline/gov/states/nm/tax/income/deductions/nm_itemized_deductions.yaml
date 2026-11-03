@@ -45,3 +45,40 @@
     total_itemized_taxable_income_deductions: 19_500
     nm_itemized_deductions: 19_500
     state_itemized_deductions: 19_500
+
+- name: NM uses deductions after the full 2026 federal section 68 limitation.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NM
+    filing_status: SINGLE
+    adjusted_gross_income: 2_000_000
+    taxable_income_before_itemized_deductions: 2_000_000
+    total_itemized_taxable_income_deductions: 37_000
+    tax_unit_itemizes: true
+    state_and_local_sales_or_income_tax: 0
+    real_estate_taxes: 0
+  output:
+    # NMSA 7-2-2(N)(2): itemized deductions allowed under the IRC.
+    # $37,000 * 2/37 = $2,000 section 68 reduction, leaving $35,000.
+    itemized_taxable_income_deductions_reduction: 2_000
+    itemized_taxable_income_deductions: 35_000
+    nm_itemized_deductions: 35_000
+    nm_salt_add_back: 0
+
+- name: NM keeps the full deduction when the 2026 federal limitation is zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NM
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    taxable_income_before_itemized_deductions: 100_000
+    total_itemized_taxable_income_deductions: 37_000
+    tax_unit_itemizes: true
+    state_and_local_sales_or_income_tax: 0
+    real_estate_taxes: 0
+  output:
+    itemized_taxable_income_deductions_reduction: 0
+    nm_itemized_deductions: 37_000
+    nm_salt_add_back: 0

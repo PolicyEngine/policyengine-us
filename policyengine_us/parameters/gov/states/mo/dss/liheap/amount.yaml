@@ -1,0 +1,56 @@
+description: Missouri provides this Energy Assistance amount for the selected fuel under the Low Income Home Energy Assistance Program.
+# The same amounts appear in the October 2025 manual (its Appendix K), the
+# FFY2026 Appendix K matrix and the FFY2027 application. 13 CSR 40-19.020(14)
+# bases payments on household size, income range and fuel source, using
+# metrics established by the division, and prints a 2017 table of payments
+# that decline across income ranges from 0 to 135 percent of the poverty level.
+# The FFY2026 plan, the Appendix K matrix, the October 2025 manual and the
+# 8-2026 application set one amount per fuel for incomes up to 60 percent of
+# state median income; the model applies those amounts. The household selects
+# the fuel to be paid, which may be its electric account (mo_liheap).
+NATURAL_GAS:
+  2023-10-01: 326
+# Tank propane. The schedule also pays $177 for cylinder propane, which is not
+# reachable because heating_type has a single propane value.
+PROPANE:
+  2023-10-01: 495
+ELECTRICITY:
+  2023-10-01: 318
+FUEL_OIL:
+  2023-10-01: 326
+WOOD:
+  2023-10-01: 219
+KEROSENE:
+  2023-10-01: 153
+# Solar-heated homes are paid on their electric account at the electric amount.
+SOLAR:
+  2023-10-01: 318
+# Households that heat with coal are denied (October 2025 manual Appendix E,
+# denial code O); mo_liheap_eligible applies that denial.
+COAL:
+  2023-10-01: 0
+# The schedule has no row for other fuels.
+OTHER:
+  2023-10-01: 0
+NONE:
+  2023-10-01: 0
+UNSPECIFIED:
+  2023-10-01: 0
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Missouri LIHEAP Energy Assistance amount by fuel
+  breakdown:
+    - heating_type
+  reference:
+    - title: "13 CSR 40-19.020(3)(A) and (4) #page 2-3"
+      href: https://web.archive.org/web/20250603190025/https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-19.pdf#page=2
+    - title: Missouri LIHEAP FFY2026 State Plan, Sections 2.5 and 2.6
+      href: https://liheapch.acf.gov/docs/2026/state-plans/MO_Plan_2026.pdf#page=9
+    - title: Missouri LIHEAP FFY2026 Appendix K, Income Ranges and Benefit Amounts
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/MO_BenefitMatrix_2026.docx
+    - title: Missouri LIHEAP application MO 886-4576 (8-2026), Program Description
+      href: https://dssmanuals.mo.gov/wp-content/uploads/2022/02/liheap-application.pdf#page=1
+    - title: "Missouri LIHEAP Policy and Procedure Manual (October 2025), Appendix E and Appendix K #page 122,129"
+      href: https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=122

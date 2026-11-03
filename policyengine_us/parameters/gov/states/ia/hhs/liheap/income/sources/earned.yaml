@@ -1,0 +1,34 @@
+description: Iowa counts these earned income sources toward gross household income under the Low Income Home Energy Assistance Program.
+# Appendix C counts wages, salaries, tips, commissions, bonuses, severance, PTO
+# and per diem (Employment Income), military pay excluding the housing
+# allowance, self-employment and contract income, and farm income. Appendix C
+# Self-Employment Income has two routes: "Income from a business, less
+# business expenses. Filed Federal tax return required if deducting business
+# expense, otherwise gross income is used. The LIHEAP program does NOT deduct
+# business expenses." Filers are assessed on the return's net business income
+# and non-filers on gross income. The model's net business inputs follow the
+# filer route; the approximations are the per-source zero floor applied in
+# the countable earned income formula (a loss does not offset other income)
+# and the absence of the non-filer gross route.
+values:
+  2025-10-01:
+    - employment_income
+    # Appendix C Military Pay: counted, "excluding housing allowance".
+    - military_basic_pay
+    - self_employment_income
+    - sstb_self_employment_income
+    - partnership_s_corp_income
+    # Appendix C Farm Income: sale of crops, livestock and land rental is
+    # counted (the X is in the Yes column although the code column reads NA).
+    - farm_operations_income
+    - farm_rent_income
+
+metadata:
+  unit: list
+  period: year
+  label: Iowa LIHEAP countable earned income sources
+  reference:
+    - title: "Iowa LIHEAP FY26 Policy and Procedures Manual, Appendix C Income Source Guide, Employment Income, Farm Income, Military Pay and Self-Employment Income rows #page 97-98,108,113"
+      href: https://hhs.iowa.gov/media/17262/download?inline#page=97
+    - title: "Iowa LIHEAP FFY2026 Detailed Model Plan, Sections 1.8-1.9 (gross income; wages, self-employment income, contract income and commissions counted) #page 5-6"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/IA_Plan_2026.pdf#page=5

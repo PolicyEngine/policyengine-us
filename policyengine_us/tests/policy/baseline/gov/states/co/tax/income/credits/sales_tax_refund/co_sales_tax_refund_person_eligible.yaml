@@ -128,14 +128,74 @@
   output:
     co_sales_tax_refund_person_eligible: [true, true]
 
-# Age boundary: a filer exactly at the age threshold (18) qualifies via
-# C.R.S. 39-22-2003(1)(a)(II).
-- name: Head exactly age 18 -> eligible
+# Age boundary: C.R.S. 39-22-2003(1)(a)(II) requires age 18 as of December 31
+# of the preceding taxable year. Born in 2004, this filer reaches 18 in 2022, the
+# taxable year, and was 17 on December 31, 2021.
+- name: Head turning 18 during the year -> ineligible
   period: 2022
   input:
     people:
       head:
         age: 18
+        is_tax_unit_head: true
+        irs_employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+        co_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    co_sales_tax_refund_person_eligible: false
+
+# Born in 2003, this filer was 18 on December 31, 2021.
+- name: Head 18 at the end of the preceding year -> eligible
+  period: 2022
+  input:
+    people:
+      head:
+        age: 19
+        is_tax_unit_head: true
+        irs_employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+        co_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    co_sales_tax_refund_person_eligible: true
+
+# The 2015 Form 104 line 46 test: "born before 1997".
+- name: 2015 head born in 1997 -> ineligible
+  period: 2015
+  input:
+    people:
+      head:
+        age: 18
+        is_tax_unit_head: true
+        irs_employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+        co_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    co_sales_tax_refund_person_eligible: false
+
+- name: 2015 head born in 1996 -> eligible
+  period: 2015
+  input:
+    people:
+      head:
+        age: 19
         is_tax_unit_head: true
         irs_employment_income: 0
     tax_units:

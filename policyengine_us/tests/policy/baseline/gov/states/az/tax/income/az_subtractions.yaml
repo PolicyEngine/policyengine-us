@@ -1,0 +1,50 @@
+# A.R.S. 43-1022(31) and (32) subtract the qualified tips and overtime
+# compensation "deducted under section 224" and "section 225" of the Internal
+# Revenue Code. Sections 224(h) and 225(g) allow no deduction for any taxable
+# year beginning after December 31, 2028, so nothing is subtracted from 2029.
+
+- name: 2028 Arizona subtracts the computed federal tips and overtime deductions.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 40
+        tip_income: 10_000
+        treasury_tipped_occupation_code: 102
+        fsla_overtime_premium: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    tip_income_deduction: 10_000
+    overtime_income_deduction: 5_000
+    az_subtractions: 15_000
+
+- name: 2029 Arizona subtracts nothing after the federal deductions end.
+  period: 2029
+  input:
+    people:
+      person1:
+        age: 40
+        tip_income: 10_000
+        treasury_tipped_occupation_code: 102
+        fsla_overtime_premium: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    tip_income_deduction: 0
+    overtime_income_deduction: 0
+    az_subtractions: 0
