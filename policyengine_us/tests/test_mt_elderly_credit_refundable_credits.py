@@ -144,13 +144,13 @@ def assert_properties(cases):
 def test_worked_example():
     """2024 Schedule 2EC: the claimant's line 5 pension 20,000; the
     daughter's wages 10,000 (line 17). Her 2024 return has a federal EITC of
-    34% x 10,000 = 3,400 and a refundable child tax credit of min(1,700, 15%
-    x 7,500) = 1,125, paid in 2025, so they are not received in 2024. Line 8
-    counts the 4,525 of federal credits she received during 2024 and her
-    Montana EITC of 340. Line 18 = 34,865; line 22 = (34,865 - 12,600) x
-    0.05 = 1,113.25; line 27 = 2,000 - 1,113.25 = 886.75; line 30 = 886.75.
-    With nothing received, line 18 = 30,340, line 22 = 887 and line 30 =
-    1,113."""
+    34% x 10,000 = 3,400, a refundable child tax credit of min(1,700, 15% x
+    7,500) = 1,125 and a Montana EITC of 340, all paid in 2025, so none is
+    received in 2024. Line 8 counts the 4,525 of federal credits she
+    received during 2024. Line 18 = 34,525; line 22 = (34,525 - 12,600) x
+    0.05 = 1,096.25; line 27 = 2,000 - 1,096.25 = 903.75; line 30 = 903.75.
+    With nothing received, line 18 = 30,000, line 22 = 870 and line 30 =
+    1,130."""
     case = {
         "claimant_age": 70,
         "pension": 20_000,
@@ -166,10 +166,10 @@ def test_worked_example():
     z = calculate([case], received=False)
     assert z["federal_tax_unit"][0] == pytest.approx(4_525, abs=TOLERANCE)
     assert z["federal_person"][0] == 0
-    assert w["gross"][0] == pytest.approx(34_865, abs=TOLERANCE)
-    assert w["credit"][0] == pytest.approx(886.75, abs=TOLERANCE)
-    assert z["gross"][0] == pytest.approx(30_340, abs=TOLERANCE)
-    assert z["credit"][0] == pytest.approx(1_113, abs=TOLERANCE)
+    assert w["gross"][0] == pytest.approx(34_525, abs=TOLERANCE)
+    assert w["credit"][0] == pytest.approx(903.75, abs=TOLERANCE)
+    assert z["gross"][0] == pytest.approx(30_000, abs=TOLERANCE)
+    assert z["credit"][0] == pytest.approx(1_130, abs=TOLERANCE)
     assert_properties([case])
 
 

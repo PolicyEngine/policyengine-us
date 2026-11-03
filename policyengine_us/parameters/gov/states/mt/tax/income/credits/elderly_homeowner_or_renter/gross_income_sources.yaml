@@ -83,17 +83,15 @@ values:
     # unemployment"; Schedule 2EC line 14 from 2024, the total received).
     - mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback
     # Refundable credits received (2023 schedule line 7, Schedule 2EC line 8
-    # from 2024): Montana's refundable credits other than this credit,
-    # and this credit as received during the year (ARM 42.4.301(2)(c)).
-    # Known gap: mt_refundable_credits_before_renter_credit is the Montana
-    # refundable credits on this year's return, which are paid after the
-    # year ends, not the Montana credits received during the year (MCA
-    # 15-30-2337(4)). Federal credits use receipts from 2017.
-    - mt_refundable_credits_before_renter_credit
+    # from 2024): this credit as received during the year (ARM
+    # 42.4.301(2)(c)). Before 2019 Montana had no other refundable credit;
+    # Montana credits received count from 2017, with the federal ones.
     - mt_elderly_homeowner_or_renter_credit_received
-  # ARM 42.4.301(2)(b), amended effective 11/10/2017, counts "federal
-  # refundable credits received"; the 2017 Form 2EC worksheet counts "any
-  # federal or state refundable credits".
+  # ARM 42.4.301(2)(b)-(c), amended effective 11/10/2017, counts "federal
+  # refundable credits received" and "any state refundable credits
+  # received"; the 2017 Form 2EC worksheet counts "any federal or state
+  # refundable credits". Both are receipts during the year, not the credits
+  # on this year's return (MCA 15-30-2337(4)).
   2017-01-01:
     - adjusted_gross_income_person
     - tax_exempt_interest_income
@@ -110,7 +108,7 @@ values:
     - gi_cash_assistance
     - tax_exempt_disability_benefits
     - mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback
-    - mt_refundable_credits_before_renter_credit
+    - mt_elderly_homeowner_or_renter_credit_state_refundable_credits
     - mt_elderly_homeowner_or_renter_credit_received
     - mt_elderly_homeowner_or_renter_credit_federal_refundable_credits
   # Actual rebate receipts count under the statutory nontaxable-income
@@ -133,7 +131,7 @@ values:
     - gi_cash_assistance
     - tax_exempt_disability_benefits
     - mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback
-    - mt_refundable_credits_before_renter_credit
+    - mt_elderly_homeowner_or_renter_credit_state_refundable_credits
     - mt_elderly_homeowner_or_renter_credit_received
     - mt_elderly_homeowner_or_renter_credit_federal_refundable_credits
     - mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received
