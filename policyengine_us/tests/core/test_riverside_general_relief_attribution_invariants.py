@@ -15,7 +15,7 @@ again with the first member's assets and wages raised. For every unit:
 1. Property differential: countable property equals an independent numpy sum
    of the members' bank, stock and bond assets, vehicle value above the
    $4,650 exemption and the members' personal property. Property eligibility
-   is that sum below $500.
+   is that sum at or below $500.
 2. Property monotone: raising one member's assets never lowers countable
    property.
 3. Withholding bounds and differential: 0 <= additional_medicare_tax_withheld
@@ -236,7 +236,7 @@ def _check(batch):
     np.testing.assert_allclose(countable, property_value, atol=TOLERANCE)
     np.testing.assert_array_equal(
         base["ca_riv_general_relief_property_eligible"].astype(bool),
-        property_value < PROPERTY_LIMIT,
+        property_value <= PROPERTY_LIMIT,
     )
 
     # 3. Withholding bounds and differential.
