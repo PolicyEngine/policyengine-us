@@ -333,6 +333,7 @@ PARAMETERS = system.parameters
 WIRED_SERIES = [
     (PARAMETERS.calibration.gov.hhs.cms.moop_per_capita, 2034),
     (PARAMETERS.calibration.gov.hhs.cms.esi_premium_per_enrollee, 2034),
+    (PARAMETERS.calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee, 2034),
 ]
 
 

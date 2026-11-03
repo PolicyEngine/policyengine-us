@@ -45,6 +45,7 @@ values:
   2032-01-01: 8_743
   2033-01-01: 9_158
   2034-01-01: 9_589
-  # 2035 to 2100 grow at the 2033-2034 rate (9_589 / 9_158, 4.7% a year)
-  # and later years hold the 2100 value; see set_all_uprating_parameters in
-  # uprating_extensions.py.
+  # From 2035, growth glides from the 2033-2034 rate (9_589 / 9_158, 4.7% a
+  # year) to the Medicare Trustees' long-range per capita health spending
+  # rates (4.3% in 2050, 4.1% in 2100), and later years hold the 2100 value;
+  # see set_all_uprating_parameters in uprating_extensions.py.

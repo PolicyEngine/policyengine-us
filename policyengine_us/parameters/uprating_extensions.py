@@ -1236,13 +1236,16 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
 
     # CMS direct purchase insurance premium per enrollee (January values, last
     # projection year 2034). Premiums for plans bought directly use this as
-    # their uprater.
+    # their uprater. Like the ESI premium, growth glides from CMS's 2033-2034
+    # rate to the Medicare Trustees' long-range per capita health spending
+    # rates, and later years hold the 2100 value.
     extend_parameter_values(
         parameters.calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee,
         last_projected_year=2034,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
+        long_range_growth=HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH,
     )
 
     # Medicare Part B standard monthly premium (January values, last Trustees
