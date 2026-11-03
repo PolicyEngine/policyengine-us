@@ -120,11 +120,14 @@ class ssi_resources_deemed_from_ineligible_parent(Variable):
         # 'only to the extent that those resources exceed the resource limits
         # described in § 416.1205': use the reformable individual/couple limits.
         allowance = where(parent_count > 1, p.couple, p.individual)
-        # Inputs are stored as float32, so compare whole cents with the limits.
+        # Balances are float32 inputs. Each deemor's are added together, then
+        # the deemors' totals, so the sum can land a fraction of a cent off
+        # the total it represents: round it to cents before the limit comes off.
         excess = max_(0, round_to_cents(parental_resources) - allowance)
         # Do not discard ABD parents. SI 01330.310 B-C says zero if parent(s)
         # meets resource eligibility, usual deeming if not. The Ryder example
         # (.340) has an ABD mother failing the couple limit: 3100-3000=100.
+        # The child's own float32 balances are added together: round to cents.
         own_resources = round_to_cents(person("ssi_countable_resources", period))
         active = person("is_ssi_resource_deeming_child", period) & (
             own_resources <= p.individual
@@ -149,9 +152,15 @@ class ssi_resources_deemed_from_ineligible_parent(Variable):
         pool_count = int(np.max(pool, initial=-1)) + 1
         for _ in range(rounds):
             count = np.bincount(pool[active & income_eligible], minlength=pool_count)
+            # The share is a division, not a sum of balances, so it stays
+            # exact: SI 01330.200 B says to 'equally divide the value of the
+            # deemed resources among those children', and 416.1202(b)(1) sets
+            # no rule for rounding a child's share.
+            # https://secure.ssa.gov/poms.nsf/lnx/0501330200
+            # https://www.law.cornell.edu/cfr/text/20/416.1202
             share = excess / max_(1, count[pool])
             deemed = where(active, share, deemed)
-            remaining = active & (round_to_cents(own_resources + share) <= p.individual)
+            remaining = active & (own_resources + share <= p.individual)
             if np.array_equal(active, remaining):
                 break
             active = remaining

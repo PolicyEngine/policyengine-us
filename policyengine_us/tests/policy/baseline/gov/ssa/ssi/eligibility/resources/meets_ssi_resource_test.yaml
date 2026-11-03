@@ -351,3 +351,134 @@
     bond_assets: 273.65
   output:
     meets_ssi_resource_test: false
+
+# 20 CFR 416.1202(a), 416.1205: the claimant's and the ineligible spouse's
+# 575.52 + 570.57 + 353.91 = 1,500.00 each add to 3,000.00, at the couple
+# limit. The float32 balances add to 3,000.0002 unless rounded to cents.
+- name: Spousal accounts that total exactly the couple limit pass
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        bank_account_assets: 575.52
+        stock_assets: 570.57
+        bond_assets: 353.91
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        bank_account_assets: 575.52
+        stock_assets: 570.57
+        bond_assets: 353.91
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+  output:
+    ssi_claim_is_joint: [false, false]
+    meets_ssi_resource_test: [true, true]
+
+# The spouse's 575.52 + 570.57 + 353.92 = 1,500.01 makes 3,000.01, a cent
+# over the couple limit. The spouse, who isn't aged, blind or disabled, is
+# tested alone against the individual limit and passes.
+- name: Spousal accounts a cent over the couple limit fail
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        bank_account_assets: 575.52
+        stock_assets: 570.57
+        bond_assets: 353.91
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        bank_account_assets: 575.52
+        stock_assets: 570.57
+        bond_assets: 353.92
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+  output:
+    ssi_claim_is_joint: [false, false]
+    meets_ssi_resource_test: [false, true]
+
+# 20 CFR 416.1205: a jointly eligible couple's 1,500.00 in one account and
+# 575.52 + 570.57 + 353.91 = 1,500.00 add to 3,000.00, at the couple limit.
+# The float32 balances add to 3,000.0001 unless rounded to cents.
+- name: Joint claim accounts that total exactly the couple limit pass
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        bank_account_assets: 1_500
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_spouse: true
+        bank_account_assets: 575.52
+        stock_assets: 570.57
+        bond_assets: 353.91
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+  output:
+    ssi_claim_is_joint: [true, true]
+    meets_ssi_resource_test: [true, true]
+
+# The spouse's 575.52 + 570.57 + 353.92 = 1,500.01 makes 3,000.01, a cent
+# over the couple limit.
+- name: Joint claim accounts a cent over the couple limit fail
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        bank_account_assets: 1_500
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_spouse: true
+        bank_account_assets: 575.52
+        stock_assets: 570.57
+        bond_assets: 353.92
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+  output:
+    ssi_claim_is_joint: [true, true]
+    meets_ssi_resource_test: [false, false]
