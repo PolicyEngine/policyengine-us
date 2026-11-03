@@ -7,67 +7,72 @@ description: Texas applies the Local Workforce Development Board's own parent sh
 # sooner if it was lower. The model applies the statewide scale to every family
 # from TX3C's launch, as for a family determined then. Where no Board scale
 # was found for a period, the model applies the statewide scale instead.
+# Board scales here start with BCY 2024 (October 1, 2023), so every Board
+# starts false and earlier periods keep the statewide scale. Without that
+# first false, the model's backdating of each parameter's earliest value
+# to 2015 would switch a Board's scale on from 2015.
 # TWC applied the 7 percent of income cap from its July 2024 rule amendments
 # with the statewide scale (CCDF State Plan FFY 2025-2027, section 3.1.1), so
 # Board scales carry no such cap.
 PANHANDLE:
+  0000-01-01: false
   2023-10-01: true
   2024-10-01: true
   2025-01-01: false  # Actual effective date: 2025-01-13
 SOUTH_PLAINS:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 NORTH_TEXAS:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 NORTH_CENTRAL:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 TARRANT_COUNTY:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 DALLAS_COUNTY:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 NORTHEAST_TEXAS:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 EAST_TEXAS:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 WEST_CENTRAL:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 BORDERPLEX:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 PERMIAN_BASIN:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 CONCHO_VALLEY:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 HEART_OF_TEXAS:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 CAPITAL_AREA:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 RURAL_CAPITAL:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 BRAZOS_VALLEY:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 DEEP_EAST:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 SOUTHEAST:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 GOLDEN_CRESCENT:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 ALAMO:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 SOUTH_TEXAS:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 COASTAL_BEND:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 LOWER_RIO:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 CAMERON_COUNTY:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 TEXOMA:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 CENTRAL_TEXAS:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 MIDDLE_RIO:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 GULF_COAST:
-  2023-10-01: false  # Not yet sourced
+  0000-01-01: false  # Not yet sourced
 
 metadata:
   propagate_metadata_to_children: true

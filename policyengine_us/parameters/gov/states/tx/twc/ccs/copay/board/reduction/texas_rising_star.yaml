@@ -8,6 +8,10 @@ description: Texas Workforce Boards reduce the parent share of cost by this shar
 # share of cost policy that came with TX3C, while a family already receiving
 # one kept it through its eligibility period. The model ends the reduction
 # with the Board scales.
+
+# Panhandle's policy CC 3.1 took effect December 6, 2023 and prints its new
+# text in bold. Its reduction text isn't bold, so it predates that update, and
+# the model applies the reduction from October 1, 2023.
 PANHANDLE:
   2023-10-01: 0.3
 SOUTH_PLAINS:
@@ -73,8 +77,8 @@ metadata:
   breakdown:
     - tx_ccs_workforce_board_region
   reference:
-    - title: TWC, Chapter 809 Child Care Services rules adopted September 13, 2022, 40 TAC 809.19(a)(9) and (b)(8)
-      href: https://www.twc.texas.gov/sites/default/files/ogc/mtg22/commission-meeting-materials-09.13.22-item8-fr-ch809-child-care-services-twc.pdf#page=64
+    - title: TWC, Chapter 809 Child Care Services rules adopted September 13, 2022, 40 TAC 809.19(b)(7), effective October 1, 2023
+      href: https://www.twc.texas.gov/sites/default/files/ogc/mtg22/commission-meeting-materials-09.13.22-item8-fr-ch809-child-care-services-twc.pdf#page=66
     - title: TWC, Chapter 809 Child Care Services rules adopted July 9, 2024 (removal of the Texas Rising Star reduction)
       href: https://twc.texas.gov/sites/default/files/ogc/docs/fr-809-trs-updates-7-24-twc.pdf#page=4
     - title: TWC WD Letter 06-24, Change 2 - Child Care Policy and Operational Changes Due to the Release of TX3C (Statewide Parent Share of Cost Policy)

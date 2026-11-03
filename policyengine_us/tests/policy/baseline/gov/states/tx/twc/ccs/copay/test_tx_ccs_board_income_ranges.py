@@ -12,8 +12,9 @@ so the model reads them from fpg_income_limits.yaml; the FPG checks hold each
 of those limits to the poverty guidelines and to TWC's 85% SMI limit, and run
 the lookup over every cell. The other checks read the Board parameter files:
 every Board scale must rise with income, every reduction must stay between 0
-and 1, every Board that applies its own scale must have one, and every FPG
-threshold must name one of TWC's FPG ranges. Property tests state what
+and 1, every Board that applies its own scale must have one, no Board's scale
+may apply before BCY 2024, and every FPG threshold must name one of TWC's FPG
+ranges. Property tests state what
 board_scale_amount does for any chart, income and SMI: it returns one of the
 chart's amounts, each limit separates its two ranges, the amount never falls
 as income rises, and it never rises as SMI rises.
@@ -207,14 +208,14 @@ def test_reductions_stay_between_zero_and_one(name):
 
 
 def test_every_applying_board_has_a_scale():
-    applies = yaml.safe_load((BOARD / "applies.yaml").read_text())
-    assert set(applies) - {"description", "metadata"} == {
-        board.name for board in TXCCSWorkforceBoardRegion
-    }
+    applies = system.parameters.gov.states.tx.twc.ccs.copay.board.applies
+    assert set(applies.children) == {board.name for board in TXCCSWorkforceBoardRegion}
     for board in TXCCSWorkforceBoardRegion:
-        start_dates = [
-            date for date, value in applies[board.name].items() if value is True
-        ]
+        values = applies.children[board.name].values_list
+        # The model copies each parameter's earliest value back to 2015, so a
+        # Board whose switch started true would apply its scale from 2015.
+        assert not values[-1].value, board.name
+        start_dates = [value.instant_str for value in values if value.value]
         folder = BOARD / board.name.lower()
         if not start_dates:
             assert not folder.exists(), board.name
@@ -222,11 +223,15 @@ def test_every_applying_board_has_a_scale():
         for name in ("first_child", "additional_child"):
             brackets = yaml.safe_load((folder / f"{name}.yaml").read_text())["brackets"]
             for date in start_dates:
-                assert all(date in bracket["amount"] for bracket in brackets), (
-                    board.name,
-                    name,
-                    date,
-                )
+                assert all(
+                    date in map(str, bracket["amount"]) for bracket in brackets
+                ), (board.name, name, date)
+
+
+@pytest.mark.parametrize("instant", ["2015-01-01", "2023-09-30"])
+def test_no_board_scale_applies_before_bcy_2024(instant):
+    applies = system.parameters(instant).gov.states.tx.twc.ccs.copay.board.applies
+    assert not any(applies[board.name] for board in TXCCSWorkforceBoardRegion)
 
 
 FPG_PERCENTS = [50, 75, 100, 125, 150, 175, 185, 200]
@@ -285,6 +290,8 @@ class _FPGScale:
 @pytest.mark.parametrize("instant", FPG_TABLE_STARTS)
 def test_fpg_range_lookup_matches_the_table(instant):
     table = _fpg_table(instant)
+    # TWC prints sizes 2 to 15. Sizes 1, 16 and 17 check that the formula
+    # reads the nearest printed size, which is the model's choice, not TWC's.
     sizes = np.arange(1, 18)
     capped = np.clip(sizes, 2, 15)
     limit = fpg_range_limit(table[capped], capped)

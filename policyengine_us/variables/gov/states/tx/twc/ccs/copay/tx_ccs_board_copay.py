@@ -61,7 +61,8 @@ class tx_ccs_board_copay(Variable):
         # takes effect on October 1, so read the SMI at this month.
         monthly_smi = smi(size, state, period, parameters) / MONTHS_IN_YEAR
         smi_limit = smi_range_limit(monthly_smi)
-        # TWC's FPG table covers family sizes 2 to 15.
+        # TWC's FPG table covers family sizes 2 to 15, so other sizes read the
+        # nearest printed size.
         fpg_sizes = [int(key) for key in p.fpg_income_limits]
         fpg_size = clip(size, min(fpg_sizes), max(fpg_sizes))
         fpg_limit = fpg_range_limit(p.fpg_income_limits[fpg_size], fpg_size)

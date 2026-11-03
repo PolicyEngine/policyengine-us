@@ -237,9 +237,14 @@
         state_code: TX
         tx_ccs_workforce_board_region: PANHANDLE
   output:
-    # The Board scale no longer applies.
+    # The Board scale no longer applies, so the statewide scale does. FY 2025
+    # SMI for 3 people: 103,213 * 0.84 / 12 = $7,224.91 a month, so $4,000 is
+    # 55.364% of SMI. First child: 2% + (55.364% - 1%) * (6.93% - 2%) /
+    # (75% - 1%) = 5.6218%, and 5.6218% * $4,000 = $224.87.
     tx_ccs_board_copay:
       2025-01: 0
+    tx_ccs_copay:
+      2025-01: 224.87
 
 - name: Case 9, Panhandle reduces the share of cost 30% when a child attends a Texas Rising Star provider.
   period: 2024
@@ -421,3 +426,77 @@
     # it with the statewide scale. $270 (Case 6) * (1 - 30%) = $189
     tx_ccs_board_copay:
       2024-11: 189
+
+- name: Case 15, Panhandle before BCY 2024 keeps the statewide scale.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 24_000  # $2,000 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # The model has Board scales from October 2023 only, so September 2023
+    # uses the statewide scale. FY 2023 SMI for 3 people: 88,783 * 0.84 / 12 =
+    # $6,214.81 a month, so $2,000 is 32.181% of SMI. First child: 2% +
+    # (32.181% - 1%) * (6.93% - 2%) / (75% - 1%) = 4.0773%; second child:
+    # 32.181% * 1.5% = 0.4827%. (4.0773% + 0.4827%) * $2,000 = $91.20.
+    tx_ccs_board_copay:
+      2023-09: 0
+    tx_ccs_copay:
+      2023-09: 91.20
+
+- name: Case 16, a Board without its own scale keeps the statewide scale in BCY 2024.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    # Switch Alamo's own scale off, so this case keeps testing the statewide
+    # fallback whichever Boards the model sources later.
+    gov.states.tx.twc.ccs.copay.board.applies.ALAMO: false
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 24_000  # $2,000 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: ALAMO
+  output:
+    # FY 2024 SMI for 3 people: 94,466 * 0.84 / 12 = $6,612.62 a month, so
+    # $2,000 is 30.245% of SMI. First child: 2% + (30.245% - 1%) * (6.93% -
+    # 2%) / (75% - 1%) = 3.9484%; second child: 30.245% * 1.5% = 0.4537%.
+    # (3.9484% + 0.4537%) * $2,000 = $88.04. Panhandle's own scale applies in
+    # the same month (Case 2), so this case fails if the switch ignores the
+    # family's region.
+    tx_ccs_board_copay:
+      2024-03: 0
+    tx_ccs_copay:
+      2024-03: 88.04

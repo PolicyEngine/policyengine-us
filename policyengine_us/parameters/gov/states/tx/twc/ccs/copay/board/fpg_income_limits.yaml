@@ -6,7 +6,8 @@ description: Texas sets these monthly income limits for the federal poverty guid
 # these are the limits as printed. Where a limit would exceed 85 percent of
 # state median income, the eligibility limit, TWC prints * instead; the
 # range that starts below the first * runs to that income, so the limits
-# TWC replaced with * are .inf here. The tables cover family sizes 2 to 15.
+# TWC replaced with * are .inf here. The tables cover family sizes 2 to 15,
+# and the model reads size 15's limits for a larger family.
 # TWC's BCY 2025 table ran from October 1 to December 8, 2024, when TX3C was
 # due to launch. TX3C launched on January 13, 2025, and the model keeps this
 # table for as long as Board scales apply (applies.yaml).

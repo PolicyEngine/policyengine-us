@@ -1,1 +1,1 @@
-Apply each Texas Local Workforce Development Board's own Child Care Services parent share of cost scale from October 2023 until TWC's statewide scale took effect with TX3C on January 13, 2025, where the Board's chart was found, instead of applying the statewide scale to those months.
+Apply each Texas Local Workforce Development Board's own Child Care Services parent share of cost scale, where the Board's chart was found, to October 2023 through December 2024, instead of the statewide scale that TWC brought in with TX3C on January 13, 2025.

@@ -6,6 +6,9 @@ description: Texas Workforce Boards reduce the parent share of cost by this shar
 # Boards could keep part-time reductions under the statewide scale after
 # TX3C (WD 06-24, Change 2); the model does not apply them there yet.
 
+# Panhandle's policy CC 3.1 took effect December 6, 2023 and prints its new
+# text in bold. Its reduction text isn't bold, so it predates that update, and
+# the model applies the reduction from October 1, 2023.
 # Panhandle grants 25% "for each part-time/blended/part-week referral". The
 # model applies it as 25% of the parent share of cost for a family whose
 # children are all in part-time care.
@@ -74,8 +77,8 @@ metadata:
   breakdown:
     - tx_ccs_workforce_board_region
   reference:
-    - title: TWC, Chapter 809 Child Care Services rules adopted September 13, 2022, 40 TAC 809.19(a)(9) and (b)(8)
-      href: https://www.twc.texas.gov/sites/default/files/ogc/mtg22/commission-meeting-materials-09.13.22-item8-fr-ch809-child-care-services-twc.pdf#page=64
+    - title: TWC, Chapter 809 Child Care Services rules adopted September 13, 2022, 40 TAC 809.19(b)(8), effective October 1, 2023
+      href: https://www.twc.texas.gov/sites/default/files/ogc/mtg22/commission-meeting-materials-09.13.22-item8-fr-ch809-child-care-services-twc.pdf#page=67
     - title: TWC WD Letter 06-24, Change 2 - Child Care Policy and Operational Changes Due to the Release of TX3C (Statewide Parent Share of Cost Policy)
       href: https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/06-24-ch2-twc.pdf#page=9
     - title: Panhandle Workforce Development Board Policy CC 3.1 Child Care Services, effective December 6, 2023 (Reductions in PSoC)
