@@ -15,9 +15,11 @@ class ca_state_supplement_out_of_home_care_facility_amount(Variable):
         fbr = parameters(period).gov.ssa.ssi.amount
         person = spm_unit.members
         eligible = person("ca_state_supplement_eligible_person", period)
+        # The model pays dependent children the dependent amount instead.
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         in_out_of_home_care_facility = person("in_out_of_home_care_facility", period)
         out_of_home_care_facility_count = spm_unit.sum(
-            in_out_of_home_care_facility * eligible
+            in_out_of_home_care_facility * eligible * head_or_spouse
         )
         # The couple out-of-home care total is twice the individual total, and
         # this amount is what it adds to the aged or disabled couple total.

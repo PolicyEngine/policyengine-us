@@ -32,12 +32,14 @@ def ca_capi_spouse_ssi_ssp(person, period):
 
     Only a spouse who is not CAPI-eligible counts. ca_state_supplement is an
     SPM-unit amount, so as a simplification the spouse's share is pro rata
-    among the unit's members eligible for it; a citizen disabled child's
-    supplement in the unit is then attributed to the spouse.
+    among the unit's heads and spouses eligible for it; a citizen disabled
+    child's supplement in the unit is then attributed to the spouse.
     """
     spouse = ~person("ca_capi_eligible_person", period.this_year)
     spouse_ssi = person.marital_unit.sum(person("ssi", period) * spouse)
-    ssp_eligible = person("ca_state_supplement_eligible_person", period)
+    ssp_eligible = person("ca_state_supplement_eligible_person", period) & person(
+        "is_tax_unit_head_or_spouse", period
+    )
     spouse_ssp_share = person.marital_unit.sum(ssp_eligible * spouse) / max_(
         person.spm_unit.sum(ssp_eligible), 1
     )
