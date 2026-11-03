@@ -1,0 +1,219 @@
+# IRC 32(c)(1)(A)(ii)(II): a filer without a qualifying child must have
+# "attained age 25 but not attained age 65 before the close of the taxable
+# year". gov.irs.credits.eitc.eligibility.age.max is the highest completed age
+# that qualifies (64; no limit in 2021 under ARPA's 32(n)(2)), so the test
+# compares completed years.
+
+- name: Childless filer aged 64.0 meets the age test, 2024
+  period: 2024
+  input:
+    people:
+      filer:
+        age: 64.0
+        is_tax_unit_head: true
+        ssn_card_type: CITIZEN
+        employment_income: 8_000
+    tax_units:
+      unit:
+        members: [filer]
+        filing_status: SINGLE
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+  output:
+    # Completed age 64 <= 64.
+    eitc_demographic_eligible: true
+    # 7.65% x $8,000 = $612, under the $632 maximum and the $10,330 phase-out start.
+    eitc: 612
+
+- name: Childless filer aged 64.5 has not attained 65 and meets the age test, 2024
+  period: 2024
+  input:
+    people:
+      filer:
+        age: 64.5
+        is_tax_unit_head: true
+        ssn_card_type: CITIZEN
+        employment_income: 8_000
+    tax_units:
+      unit:
+        members: [filer]
+        filing_status: SINGLE
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+  output:
+    # Completed age 64 <= 64; main tested 64.5 <= 64 and failed.
+    eitc_demographic_eligible: true
+    # 7.65% x $8,000 = $612, under the $632 maximum and the $10,330 phase-out start.
+    eitc: 612
+
+- name: Childless filer aged 65.0 has attained 65 and fails the age test, 2024
+  period: 2024
+  input:
+    people:
+      filer:
+        age: 65.0
+        is_tax_unit_head: true
+        ssn_card_type: CITIZEN
+        employment_income: 8_000
+    tax_units:
+      unit:
+        members: [filer]
+        filing_status: SINGLE
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+  output:
+    # Completed age 65 > 64.
+    eitc_demographic_eligible: false
+    eitc: 0
+
+- name: Childless filer aged 64.5 meets the age test, 2026
+  period: 2026
+  input:
+    people:
+      filer:
+        age: 64.5
+        is_tax_unit_head: true
+        ssn_card_type: CITIZEN
+        employment_income: 8_000
+    tax_units:
+      unit:
+        members: [filer]
+        filing_status: SINGLE
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+  output:
+    # Completed age 64 <= 64.
+    eitc_demographic_eligible: true
+
+- name: Childless filer aged 64.5 meets the age test in 2021, with no upper limit
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 64.5
+        is_tax_unit_head: true
+        ssn_card_type: CITIZEN
+        employment_income: 8_000
+    tax_units:
+      unit:
+        members: [filer]
+        filing_status: SINGLE
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+  output:
+    # ARPA 32(n)(2) removed the upper limit for 2021.
+    eitc_demographic_eligible: true
+
+- name: Childless filer aged 80.5 meets the age test in 2021, with no upper limit
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 80.5
+        is_tax_unit_head: true
+        ssn_card_type: CITIZEN
+        employment_income: 8_000
+    tax_units:
+      unit:
+        members: [filer]
+        filing_status: SINGLE
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+  output:
+    # ARPA 32(n)(2) removed the upper limit for 2021.
+    eitc_demographic_eligible: true
+
+- name: Childless filer aged 24.5 has not attained 25 and fails the age test, 2024
+  period: 2024
+  input:
+    people:
+      filer:
+        age: 24.5
+        is_tax_unit_head: true
+        ssn_card_type: CITIZEN
+        employment_income: 8_000
+    tax_units:
+      unit:
+        members: [filer]
+        filing_status: SINGLE
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+  output:
+    # The minimum is unchanged: 24.5 < 25.
+    eitc_demographic_eligible: false
+
+- name: Childless filer aged 64.99 has not attained 65 and meets the age test, 2024
+  period: 2024
+  input:
+    people:
+      filer:
+        age: 64.99
+        is_tax_unit_head: true
+        ssn_card_type: CITIZEN
+        employment_income: 8_000
+    tax_units:
+      unit:
+        members: [filer]
+        filing_status: SINGLE
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+  output:
+    # Completed age 64 <= 64; rounding 64.99 to 65 would fail it.
+    eitc_demographic_eligible: true
+    # 7.65% x $8,000 = $612, under the $632 maximum and the $10,330 phase-out start.
+    eitc: 612
+
+- name: Joint filers aged 70 and 64.5 meet the age test through the spouse, 2024
+  period: 2024
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        ssn_card_type: CITIZEN
+        employment_income: 8_000
+      spouse:
+        age: 64.5
+        is_tax_unit_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    marital_units:
+      mu:
+        members: [head, spouse]
+  output:
+    # Either spouse may meet 32(c)(1)(A)(ii)(II); the spouse's completed age is 64.
+    eitc_demographic_eligible: true
+    # 7.65% x $8,000 = $612, under the $632 maximum and the joint phase-out start.
+    eitc: 612
+
+- name: Joint filers aged 70 and 65 don't meet the age test, 2024
+  period: 2024
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        ssn_card_type: CITIZEN
+        employment_income: 8_000
+      spouse:
+        age: 65.0
+        is_tax_unit_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    marital_units:
+      mu:
+        members: [head, spouse]
+  output:
+    # Neither spouse's completed age (70, 65) is at most 64.
+    eitc_demographic_eligible: false
+    eitc: 0

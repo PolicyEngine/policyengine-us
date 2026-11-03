@@ -9,13 +9,16 @@ the limited section 63(c)(5) deduction for these filers. Nobody else has an
 unearned income test. YAML cases pin the published amounts one case at a time;
 these tests check what must hold for every input, which YAML cannot state.
 
-Where the statute and the IRS charts differ for 2018-2025 (the age and
-blindness addition in the joint test, a dependent filing separately), the
-tests below assert nothing that depends on the difference. From 2026 the
-model follows section 6012(a)(1): its (A) and (B) threshold, with the limited
-basic standard deduction and the addition for age only, binds a filer who
-can be claimed too, and (C)(i) adds that filer's unearned income and
-standard deduction tests.
+On a 2018-2025 joint return, section 6012(f)(2)(D) tests a claimable
+spouse's income other than earned income against the section 63(c)(5)(A)
+amount alone, while Table 2 adds the additional standard deduction for age or
+blindness; the model follows the statute, and property 10 states it. Where
+the statute and the IRS charts differ otherwise for 2018-2025 (a dependent
+filing separately), the tests below assert nothing that depends on the
+difference. From 2026 the model follows section 6012(a)(1): its (A) and (B)
+threshold, with the limited basic standard deduction and the addition for
+age only, binds a filer who can be claimed too, and (C)(i) adds that filer's
+unearned income and standard deduction tests.
 
 `test_table_2_boundary_grid` runs one simulation of single filers on a grid of
 earned and unearned income at every Table 2 threshold, a dollar under and a
@@ -32,10 +35,11 @@ dollar over, for each combination of age 65 and blindness:
 3. For a filer nobody can claim, the result depends on gross income alone: it
    is the same however that income is split between wages and interest.
 4. On a 2025 joint return with no other income, where the spouse who can be
-   claimed is under 65 and not blind, the result is the unearned income test
-   (over $1,350), whatever the other spouse's age and blindness. (For a
-   claimed spouse who is 65 or older or blind, section 6012(f)(2)(D) and
-   Table 2 differ, and the test leaves it out.)
+   claimed has only interest, the result is section 6012(f)(2)(D)'s unearned
+   income test (over $1,350), whatever either spouse's age and blindness.
+   Table 2 would add $1,600 for each of the claimed spouse's age 65 and
+   blindness; the grid's amounts between $1,350 and those sums tell the two
+   apart.
 
 `test_filing_requirement_properties` draws batches of tax units with
 Hypothesis (single, head of household, surviving spouse, separate and joint;
@@ -57,11 +61,11 @@ has rows to check and both answers occur; the test asserts that it does.
    income belongs on the dependent's own return.
 9. Table 2 and the Medicaid implementation, as in 1 and 2, on the drawn
    single filers who can be claimed and have no self-employment income.
-10. Lower bound (2025): on a single, separate or joint return, a head or
-    spouse who can be claimed and whose interest and dividends are over
-    Table 2's unearned income amount for them always makes the return
-    required. Table 2's amount is never below the statute's, so this holds
-    under either reading.
+10. Lower bound (2025): on a single or separate return, a head or spouse
+    who can be claimed and whose interest and dividends are over Table 2's
+    unearned income amount for them always makes the return required. On a
+    joint return the amount is section 6012(f)(2)(D)'s: the section
+    63(c)(5)(A) amount, $1,350, with no addition for age or blindness.
 
 `test_earned_income_sources_are_gross_income_sources`:
 
@@ -210,16 +214,18 @@ def head_medicaid_requirement(simulation, units, year):
 
 
 def unearned_test_met(units):
-    """Whether Table 2's unearned income test is met by a head or spouse who
-    can be claimed, for single, separate and joint returns (2025 amounts)."""
+    """Whether the unearned income test is met by a head or spouse who can be
+    claimed (2025 amounts): Table 2's for single and separate returns, and
+    section 6012(f)(2)(D)'s, with no addition for age or blindness, for joint
+    returns."""
     met = []
     for unit in units:
-        married = unit["filing_status"] in ("SEPARATE", "JOINT")
-        per_condition = (
-            TABLE_2_MARRIED_AGED_OR_BLIND_ADDITION
-            if married
-            else TABLE_2_AGED_OR_BLIND_ADDITION
-        )
+        if unit["filing_status"] == "JOINT":
+            per_condition = 0
+        elif unit["filing_status"] == "SEPARATE":
+            per_condition = TABLE_2_MARRIED_AGED_OR_BLIND_ADDITION
+        else:
+            per_condition = TABLE_2_AGED_OR_BLIND_ADDITION
         met.append(
             unit["filing_status"] in ("SINGLE", "SEPARATE", "JOINT")
             and any(
@@ -287,8 +293,9 @@ def test_table_2_boundary_grid():
         single_filer(age, blind, False, wages, gross - wages)
         for age, blind, gross, wages in splits
     ]
-    # Joint returns whose younger spouse, under 65 and not blind, can be
-    # claimed and has only interest.
+    # Joint returns whose spouse can be claimed and has only interest, with
+    # and without age 65 and blindness: section 6012(f)(2)(D) tests every
+    # such spouse at the section 63(c)(5)(A) amount alone.
     joint = [
         {
             "filing_status": "JOINT",
@@ -300,8 +307,8 @@ def test_table_2_boundary_grid():
                     "taxable_interest_income": 0,
                 },
                 {
-                    "age": 40,
-                    "is_blind": False,
+                    "age": spouse_age,
+                    "is_blind": spouse_blind,
                     "claimed_as_dependent_on_another_return": True,
                     "taxable_interest_income": interest,
                 },
@@ -310,6 +317,8 @@ def test_table_2_boundary_grid():
         }
         for head_age in (45, 70, 80)
         for head_blind in (False, True)
+        for spouse_age in (40, 65)
+        for spouse_blind in (False, True)
         for interest in UNEARNED_GRID
     ]
     units = claimable + unclaimable + joint
