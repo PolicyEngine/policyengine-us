@@ -1,4 +1,8 @@
-description: Colorado limits its sales tax refund to filers this age or older.
+description: >-
+  Colorado limits its sales tax refund to filers this age or older. The refund is
+  attributed to the modeled eligibility tax year, even when the return and payment occur
+  later. This is the residual sales tax refund mechanism, separate from Colorado Cash
+  Back; in_effect controls whether the refund is available.
 values:
   2021-01-01: 18
 
