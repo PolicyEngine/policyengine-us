@@ -1,3 +1,10 @@
+## [2.92.5] - 2026-11-03
+
+### Fixed
+
+- Give a married individual filing separately the $3,750 Schedule R initial amount, and set the section 22 amount to zero for a separate filer who lived with their spouse at any time in the year, so the elderly or disabled credit and Michigan's section 22 subtraction both follow 26 U.S.C. 22(c)(2)(A) and 22(e)(1).
+
+
 ## [2.92.4] - 2026-11-03
 
 ### Fixed
