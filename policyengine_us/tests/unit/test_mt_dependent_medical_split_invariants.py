@@ -14,7 +14,9 @@ For every generated couple:
 1. The chosen tax is at most the tax at every candidate share when itemizing:
    all to the head, all to the spouse, the equal split, and the shares at
    which each column's 7.5% floor starts to bind (computed here from the
-   inputs, not read from the model).
+   inputs, not read from the model), and the shares 0.1 to 0.9. With no
+   capital gain credit the minimum over all shares is at a candidate, so the
+   interior shares catch a chooser that misses where the columns balance.
 2. The chosen tax is at most the tax with the standard deduction in both
    columns.
 3. The couple's Montana tax (mt_income_tax) is at most its tax before this
@@ -176,7 +178,7 @@ def _check(couples_drawn, year):
             ("spouse", 0.0),
             ("head_kink", head_kink),
             ("spouse_kink", spouse_kink),
-        ]:
+        ] + [(f"grid{k}", k / 10) for k in range(1, 10)]:
             inputs = {
                 "mt_dependent_medical_expense_head_share": s,
                 "mt_tax_unit_itemizes": True,
