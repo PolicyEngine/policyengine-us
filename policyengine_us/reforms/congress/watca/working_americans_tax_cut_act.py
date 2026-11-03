@@ -6,6 +6,10 @@ WATCA_REFERENCES = [
         "title": "Working Americans' Tax Cut Act",
         "href": "https://www.vanhollen.senate.gov/imo/media/doc/working_americans_tax_cut_act_bill_text.pdf",
     },
+    {
+        "title": "S. 4083 (119th Congress), Working Americans' Tax Cut Act, as introduced",
+        "href": "https://www.govinfo.gov/content/pkg/BILLS-119s4083is/html/BILLS-119s4083is.htm",
+    },
 ]
 
 
@@ -16,15 +20,7 @@ def create_watca() -> Reform:
         label = "WATCA alternative tax modified AGI"
         definition_period = YEAR
         unit = USD
-        reference = WATCA_REFERENCES + [
-            {
-                # Section 1A(d)(2): "the portion of the taxpayer's social
-                # security benefits (as defined in section 86(d)) which is
-                # not included in gross income under section 86".
-                "title": "S. 4083 (119th Congress), section 2(a), new section 1A(d)",
-                "href": "https://www.govinfo.gov/content/pkg/BILLS-119s4083is/html/BILLS-119s4083is.htm",
-            },
-        ]
+        reference = WATCA_REFERENCES
         documentation = (
             "Section 1A(d): AGI + foreign income exclusions (sec 911, 931, 933) "
             "+ the filers' non-taxable Social Security. A tax unit dependent's "
@@ -36,6 +32,9 @@ def create_watca() -> Reform:
             "foreign_earned_income_exclusion",
             "specified_possession_income",
             "puerto_rico_income",
+            # Section 1A(d)(2): "the portion of the taxpayer's social security
+            # benefits (as defined in section 86(d)) which is not included in
+            # gross income under section 86".
             "filer_tax_exempt_social_security",
         ]
 

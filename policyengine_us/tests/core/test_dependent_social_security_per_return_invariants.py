@@ -4,42 +4,53 @@ Social Security benefits are income of "the person who has the legal right to
 receive the benefits" (IRS Pub. 915, 2025, "Who is taxed"), so a tax unit
 dependent's benefits belong on the dependent's own return.
 `filer_tax_exempt_social_security` is the nontaxable part of the head's and
-spouse's benefits, and the readers in READERS measure the filers' own return:
+spouse's benefits. These measures count the filers' own return:
 
-- `state_sales_tax_income_bracket` and `state_sales_tax`: the Optional State
-  Sales Tax Table row is read at "the amount shown on your Form 1040 or
+- the Optional State Sales Tax Table income row,
+  `state_sales_tax_income_bracket`: "the amount shown on your Form 1040 or
   1040-SR, line 11b, plus any nontaxable items" (2025 Schedule A
   instructions). A dependent's other nontaxable items (SSI, tax-exempt
   interest, veterans' benefits, workers' compensation, nontaxable pensions
-  and retirement distributions) are the dependent's own too.
-- `co_modified_agi` and `co_sales_tax_refund`: C.R.S. 39-22-2003(1.5)(b)
-  adds the "Social security benefits excluded from federal adjusted gross
-  income", and subsection (3) measures the qualified individuals' own income.
-- `me_sales_and_property_tax_fairness_credit_income` and the two credits
-  that read it: 36 M.R.S. 5213-A(1)(B) and 5219-KK(1)(D) add interest and
-  Social Security left out of federal adjusted gross income, and Rule 813
-  .03 makes the income "the taxpayer's".
+  and retirement distributions) are the dependent's own too;
+- Colorado's sales tax refund income, `co_modified_agi`: C.R.S.
+  39-22-2003(1.5)(b) adds the "Social security benefits excluded from
+  federal adjusted gross income", and subsection (3) measures the qualified
+  individuals' own income;
+- Maine's fairness credit income,
+  `me_sales_and_property_tax_fairness_credit_income`: 36 M.R.S. 5213-A(1)(B)
+  and 5219-KK(1)(D) add interest and Social Security left out of federal
+  adjusted gross income, and Rule 813 .03 makes the income "the
+  taxpayer's";
+- Washington's combined disposable income,
+  `wa_pte_combined_disposable_income`: RCW 84.36.383(2) combines the
+  claimant's, spouse's and cotenants' disposable income, and WAC
+  458-16A-120(2)(b) adds each item left out of AGI to the AGI of "the person
+  receiving these benefits". The measure also subtracts members' medical
+  costs, and a member's net Medicare premium can turn on another member's
+  income through the Medicare Savings Program, so the population's Medicare
+  premiums are zero.
+
+READERS holds the income measures. AMOUNTS holds what they feed: the table
+amount, the refund and the credits. These also read the filing status and
+who counts as a dependent, which an aged parent's own income can move: a
+parent must pass a gross income test to be a dependent, and a filer heads a
+household for a parent only if the parent is the filer's dependent. So
+AMOUNTS are checked for the units whose dependents are all children.
 
 `tax_exempt_social_security`, the household amount, still carries a
 dependent's whole benefit for the readers whose law counts a household's
 income.
 
-AMOUNTS are what those readers feed: the table amount, the refund and the
-two credits. They also read the filing status and who counts as a
-dependent, and a parent's or other relative's own income can decide that:
-such a dependent must pass a gross income test, and a filer heads a
-household for a parent only if the parent is the filer's dependent. So the
-amounts are checked for the units whose dependents are all children.
-
 The tests draw a seeded random population of tax units: a single filer or a
 married couple filing jointly, whose head and spouse have wages, Social
 Security and the nontaxable items above, and whose head may pay rent, with
-one to three dependents, each a child or an aged parent. A dependent draws benefits of $1 to $1,000,000,
-log-uniformly, and the other nontaxable items, each of them zero about half
-the time. Amounts are whole dollars and stay below 2**24, so their float32
-sums, and the subtraction that takes dependents' benefits out of the tax
-unit's, are exact. Every unit is placed in each state in READERS, and each
-scenario runs as one vectorized simulation.
+one to three dependents, each a child or an aged parent. A dependent draws
+benefits of $1 to $1,000,000, log-uniformly, and the other nontaxable items,
+each of them zero about half the time. Amounts are whole dollars and stay
+below 2**24, so their float32 sums, and the subtraction that takes
+dependents' benefits out of the tax unit's, are exact. Every unit is placed
+in each state in READERS, and each scenario runs as one vectorized
+simulation.
 
 1. Each reader is the same whether the dependents' benefits and nontaxable
    items are zero, as drawn, or doubled, and so is each amount for the units
@@ -65,12 +76,14 @@ READERS = {
     "TX": ["filer_tax_exempt_social_security", "state_sales_tax_income_bracket"],
     "CO": ["co_modified_agi"],
     "ME": ["me_sales_and_property_tax_fairness_credit_income"],
+    "WA": ["wa_pte_combined_disposable_income"],
 }
 # What the readers feed, checked for units whose dependents are all children.
 AMOUNTS = {
     "TX": ["state_sales_tax"],
     "CO": ["co_sales_tax_refund"],
     "ME": ["me_sales_tax_fairness_credit", "me_property_tax_fairness_credit"],
+    "WA": [],
 }
 STATES = list(READERS)
 CHILD_AGE_LIMIT = 18
@@ -142,7 +155,10 @@ def _draw_units(n, rng):
 
 def _amounts(person, scale=1):
     """A person's benefit and nontaxable items, each multiplied by scale."""
-    amounts = {person["benefit"]: {YEAR: scale * person["social_security"]}}
+    amounts = {
+        person["benefit"]: {YEAR: scale * person["social_security"]},
+        "medicare_part_b_premium": {YEAR: 0},
+    }
     for item, value in person["items"].items():
         amounts[item] = {YEAR: scale * value}
     return amounts
