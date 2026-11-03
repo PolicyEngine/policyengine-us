@@ -67,6 +67,7 @@ Invariants:
    2035 and hold their 2100 value after 2100.
 """
 
+import math
 from types import SimpleNamespace
 
 import pytest
@@ -81,6 +82,7 @@ from policyengine_us.parameters.uprating_extensions import (
     extend_medicare_irmaa_thresholds,
     extend_medicare_part_a_premiums,
     extend_medicare_part_d_irmaa_amounts,
+    get_cpi_u_average_for_12_months_ending_august,
     get_medicare_irmaa_thresholds,
     get_medicare_irmaa_unmarried_amounts,
     get_medicare_part_d_irmaa_amount,
@@ -475,6 +477,29 @@ def test_top_tier_is_not_indexed_before_2028(year):
 
 def test_top_tier_is_indexed_from_2028():
     assert _thresholds(MEDICARE.part_b, "single", 2028)[5] > 500_000
+
+
+@given(st.integers(MEDICARE_IRMAA_TOP_FIRST_INDEXED_YEAR, END_YEAR))
+def test_projected_unmarried_thresholds_use_their_statutory_base_years(year):
+    """Each projected unmarried threshold is its statutory dollar amount
+    times CPI-U for the 12 months ending August of the prior year over the
+    base period's, rounded to the nearest $1,000: August 2018 for the four
+    lower amounts and August 2026 for the $500,000 amount (42 U.S.C.
+    1395r(i)(5)). The amounts and base years are written out here rather
+    than read from the module, so a wrong base year there fails."""
+
+    def adjusted(amount, base_year):
+        ratio = get_cpi_u_average_for_12_months_ending_august(
+            PARAMETERS, year - 1
+        ) / get_cpi_u_average_for_12_months_ending_august(PARAMETERS, base_year)
+        return math.floor(amount * max(ratio, 1) / 1_000 + 0.5) * 1_000
+
+    expected = [
+        0,
+        *(adjusted(a, 2018) + 1 for a in (85_000, 107_000, 133_500, 160_000)),
+        adjusted(500_000, 2026),
+    ]
+    assert _thresholds(MEDICARE.part_b, "single", year) == expected
 
 
 @pytest.mark.parametrize("year", range(2024, LAST_ANNOUNCED_YEAR + 1))
