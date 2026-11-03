@@ -1,15 +1,16 @@
 """A reform's baseline arm reads the inputs a simulation with no reform reads.
 
 Core builds the arm inside its ``__init__``. The country simulations then move
-``employment_income``, ``self_employment_income``, ``weekly_hours_worked`` and
-``long_term_capital_gains`` to their pre-response variables and fill
+the aggregates in ``PRE_RESPONSE_INPUTS``, such as ``employment_income`` and
+``weekly_hours_worked``, to their pre-response variables and fill
 ``state_code`` from ``state_code_str``, and a branch keeps none of what its
-parent stores later. So the arm read 0 from the pre-response variables: under
-any reform it saw no hours worked and paid no New York child care subsidy to a
-family a simulation with no reform paid one. Over a dataset the SPM expense
-moves by the change in subsidy it reads from that arm, so the gap became a
-double count. ``system._rebuild_baseline_arm`` rebuilds the arm from the final
-inputs.
+parent stores later. Before PolicyEngine/policyengine-us#9698 the arm therefore
+read 0 from the pre-response variables: under any reform it saw no hours
+worked and paid no New York child care subsidy to a family that a simulation
+with no reform paid one. Over a dataset the SPM expense moves by the change in
+subsidy it reads from that arm, so the gap became a double count.
+``system._rebuild_baseline_branch`` now branches the arm again after the
+moves.
 
 Invariant: under a reform that changes nothing, the reform and its baseline
 arm compute what a simulation with no reform computes, for every household,
