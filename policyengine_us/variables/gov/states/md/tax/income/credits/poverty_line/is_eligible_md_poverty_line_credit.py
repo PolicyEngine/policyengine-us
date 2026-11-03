@@ -37,21 +37,21 @@ class is_eligible_md_poverty_line_credit(Variable):
         # eitc_earned_income is PolicyEngine's § 32(c)(2) measure, the one the
         # federal EITC uses: wages plus net earnings from self-employment
         # (including farm and partnership earnings) after the § 164(f)
-        # deduction, netted across the filers and floored at zero. When a
-        # filer can be claimed, only the other filer's earnings count (see
-        # md_poverty_line_credit_earned_income).
-        earnings = tax_unit("md_poverty_line_credit_earned_income", period)
+        # deduction, netted across the filers and floored at zero.
+        earnings = tax_unit("eitc_earned_income", period)
         earnings_below_fpg = earnings <= fpg
         # (iii)    who is not claimed as an exemption on another individual’s
         #  tax return under § 10–211 of this title;
-        # The instructions bar filing status 6, "Any person who can be claimed
-        # as a dependent". A married person who can be claimed files a
-        # separate Maryland return, so a joint federal return keeps the credit
-        # only for a spouse who cannot be claimed, on that spouse's earnings.
-        # The AGI test and the tax limit still use the joint return.
-        every_filer_is_dependent = tax_unit(
-            "every_filer_is_dependent_elsewhere", period
-        )
+        # This takes an actual claim under § 10-211 on another Maryland
+        # return; being claimable is not enough. The instructions' filing
+        # status 6 chart also bars a claimable but unclaimed filer; the
+        # statute governs. Any filer's claim bars the return, since the
+        # eligible taxpayer is "an individual, or an individual and the
+        # individual's spouse if they file a joint income tax return".
+        person = tax_unit.members
+        filer = person("is_tax_unit_head_or_spouse", period)
+        md_claimed = person("md_claimed_as_exemption_on_another_return", period)
+        claimed_elsewhere = tax_unit.any(filer & md_claimed)
         # (iv)    for whom the credit allowed under § 10–704(a)(1) of this
         # subtitle is less than the State income tax.
         # This appears to refer to the MD total EITC per
@@ -64,6 +64,6 @@ class is_eligible_md_poverty_line_credit(Variable):
         return (
             agi_below_fpg
             & earnings_below_fpg
-            & ~every_filer_is_dependent
+            & ~claimed_elsewhere
             & eitc_less_than_income_tax
         )

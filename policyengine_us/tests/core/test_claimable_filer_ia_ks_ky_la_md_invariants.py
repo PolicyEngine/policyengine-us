@@ -5,9 +5,13 @@ A return on which the filer (or, if joint, either spouse) can be claimed has no
 dependents unless the would-be claimant meets the filing exception (IRC
 152(b)(1), Publication 501), so these states' dependent exemptions and credits,
 Kansas's food sales tax credit child route, Maryland's child tax credit and the
-childless pro forma EITC follow that test. Iowa's low-income exemption and tax
-reduction and Kansas's 2021-2023 exemptions turn on an actual claim; Maryland's
-own exemption and poverty line credit turn on claimability (filing status 6).
+childless pro forma EITC follow that test. Kansas's 2021-2023 exemptions and
+its food sales tax credit count each filer whom no one else may claim (IRC
+151(d)(2)). Iowa's low-income exemption, tax reduction and alternate tax turn on
+an actual claim and the claiming person's income, whose inputs default to no
+disqualification; Maryland's poverty line credit turns on an actual claim on
+another Maryland return, a separate input; Maryland's own exemption turns on
+claimability.
 
 For couples drawn by Hypothesis (claimable, claimed and filing-exception
 patterns) and a seeded population in these states:
@@ -20,15 +24,13 @@ patterns) and a seeded population in these states:
    offsets the other spouse's earnings, which is intended.
 3. Identities: with a filer claimable outside the filing exception there is no
    Louisiana dependent exemption, Maryland aged dependent exemption or child
-   tax credit, and no pro forma federal EITC without a child; with every filer
-   claimable, no poverty line credit.
+   tax credit, and no pro forma federal EITC without a child.
 4. Differential: wherever the federal EITC's eligibility holds, Maryland's
    pro forma federal EITC without the minimum age equals the federal credit
    before take-up and filing.
 5. Unchanged when nobody can be claimed: Maryland's exemption count is the tax
-   unit's size, the poverty line credit's earned income and poverty level are
-   `eitc_earned_income` and `tax_unit_fpg`, and Louisiana's dependent
-   exemption is $1,000 per dependent.
+   unit's size, the poverty line credit's poverty level is `tax_unit_fpg`, and
+   Louisiana's dependent exemption is $1,000 per dependent.
 6. Filing exception scope: the exception never lowers the 152(b)(1) amounts in
    EXCEPTION_RESTORES and does not change the claimability and actual-claim
    rules in EXCEPTION_NEUTRAL.
@@ -72,7 +74,6 @@ MONOTONE = [
     "md_aged_dependent_exemption",
     "federal_eitc_without_age_minimum",
     "md_ctc",
-    "md_poverty_line_credit_earned_income",
 ]
 OUTPUTS = MONOTONE + [
     "ia_is_tax_exempt",
@@ -100,7 +101,6 @@ EXCEPTION_RESTORES = [
 # Rules on claimability or an actual claim, which the exception leaves alone.
 EXCEPTION_NEUTRAL = [
     "ia_is_tax_exempt",
-    "md_poverty_line_credit_earned_income",
 ]
 
 
@@ -126,13 +126,11 @@ def _identities(sim, year):
         )
         > 0
     )
-    every = _calc(sim, "every_filer_is_dependent_elsewhere", year) > 0
     childless = _calc(sim, "eitc_child_count", year) == 0
     for name in ["la_dependents_exemption", "md_aged_dependent_exemption", "md_ctc"]:
         assert not _calc(sim, name, year)[no_dependents].any(), name
     pro_forma = _calc(sim, "federal_eitc_without_age_minimum", year)
     assert not pro_forma[no_dependents & childless].any()
-    assert not _calc(sim, "is_eligible_md_poverty_line_credit", year)[every].any()
     # Each tax unit has its own household, in the same order.
     state = np.asarray(sim.calculate("state_code_str", year))
     md, la = state == "MD", state == "LA"
@@ -141,11 +139,6 @@ def _identities(sim, year):
     np.testing.assert_array_equal(
         _calc(sim, "md_personal_exemptions_count", year)[md & nobody],
         _calc(sim, "tax_unit_size", year)[md & nobody],
-    )
-    np.testing.assert_allclose(
-        _calc(sim, "md_poverty_line_credit_earned_income", year)[md & nobody],
-        _calc(sim, "eitc_earned_income", year)[md & nobody],
-        atol=TOLERANCE,
     )
     np.testing.assert_allclose(
         _calc(sim, "md_poverty_line_credit_income_level", year)[md & nobody],
