@@ -4,8 +4,8 @@ income source.
 az_property_tax_credit_agi takes taxable_unemployment_compensation out of
 federal AGI, and az_property_tax_credit_nontaxable_income adds the alimony
 that federal gross income leaves out, only as far as
-gov.irs.gross_income.sources lists the source. These tests drop each source
-in turn and check that the amount is still counted exactly once.
+gov.irs.gross_income.sources lists the source. These tests drop both sources
+and check that each amount is still counted exactly once.
 
 Two Arizona single filers, one per household, aged 40, with no other income
 or deductions:
@@ -27,19 +27,22 @@ from policyengine_us import Simulation
 YEAR = 2025
 
 
-def _drop_gross_income_source(source: str) -> type:
-    class drop_source(Reform):
-        def apply(self):
-            def modify(parameters):
-                node = parameters.gov.irs.gross_income.sources
-                start = instant(f"{YEAR}-01-01")
-                kept = [s for s in node(start) if s != source]
-                node.update(start=start, stop=instant(f"{YEAR}-12-31"), value=kept)
-                return parameters
+DROPPED = ["taxable_unemployment_compensation", "taxable_alimony_income"]
 
-            self.modify_parameters(modify)
 
-    return drop_source
+class drop_sources(Reform):
+    # One reform drops both sources: neither filer has the other's income, so
+    # each branch is checked on its own household, and only one reformed
+    # system is built.
+    def apply(self):
+        def modify(parameters):
+            node = parameters.gov.irs.gross_income.sources
+            start = instant(f"{YEAR}-01-01")
+            kept = [s for s in node(start) if s not in DROPPED]
+            node.update(start=start, stop=instant(f"{YEAR}-12-31"), value=kept)
+            return parameters
+
+        self.modify_parameters(modify)
 
 
 def _situation() -> dict:
@@ -76,11 +79,12 @@ def baseline():
     return Simulation(situation=_situation())
 
 
-def test_unemployment_left_out_of_gross_income_is_not_subtracted(baseline):
-    reformed = Simulation(
-        situation=_situation(),
-        reform=_drop_gross_income_source("taxable_unemployment_compensation"),
-    )
+@pytest.fixture(scope="module")
+def reformed():
+    return Simulation(situation=_situation(), reform=drop_sources)
+
+
+def test_unemployment_left_out_of_gross_income_is_not_subtracted(baseline, reformed):
     # Federal AGI: $30,000 wages + $5,000 unemployment at baseline; the
     # reform leaves the unemployment out, so $30,000.
     assert baseline.calculate("adjusted_gross_income", YEAR)[UC] == 35_000
@@ -99,11 +103,7 @@ def test_unemployment_left_out_of_gross_income_is_not_subtracted(baseline):
         )
 
 
-def test_alimony_left_out_of_gross_income_is_added_in_full(baseline):
-    reformed = Simulation(
-        situation=_situation(),
-        reform=_drop_gross_income_source("taxable_alimony_income"),
-    )
+def test_alimony_left_out_of_gross_income_is_added_in_full(baseline, reformed):
     # Pre-2019 divorce: all $4,000 is taxable_alimony_income at baseline.
     assert baseline.calculate("taxable_alimony_income", YEAR)[ALIMONY] == 4_000
     # Federal AGI: 20,000 + 4,000 = 24,000 at baseline, 20,000 under the reform.
