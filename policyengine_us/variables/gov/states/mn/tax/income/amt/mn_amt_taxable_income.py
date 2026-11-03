@@ -35,9 +35,11 @@ class mn_amt_taxable_income(Variable):
             "mn_casualty_loss_deduction",
             # M1MT line 10 takes investment interest from M1SA line 13.
             "investment_interest_expense",
-            # M1MT line 14 takes unreimbursed employee expenses from M1SA
-            # line 23, the miscellaneous deductions that mn_itemized_deductions
-            # takes from the federal misc_deduction.
+            # M1MT line 14 takes unreimbursed employee expenses above 2% of
+            # AGI from M1SA line 23. The model has no M1SA line 20-23 amount
+            # yet, so the federal misc_deduction stands in. Its switch turns
+            # it off from 2018, and a reform that turns it back on also adds
+            # the tax preparation fees that line 23 leaves out.
             # Line 13 (impairment-related work expenses) has no input here.
             "misc_deduction",
         ]
