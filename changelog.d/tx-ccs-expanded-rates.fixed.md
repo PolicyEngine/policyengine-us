@@ -1,1 +1,1 @@
-Correct 128 Texas Child Care Services expanded-age rate cells to the Texas Workforce Commission's published tables, and pay relative care and blended schedules from January to September 2025.
+Correct 128 Texas Child Care Services expanded-age rate cells to the Texas Workforce Commission's published tables. Pay relative care and blended schedules from January to September 2025, and pay relative care entered with either the Reg or None rating.
