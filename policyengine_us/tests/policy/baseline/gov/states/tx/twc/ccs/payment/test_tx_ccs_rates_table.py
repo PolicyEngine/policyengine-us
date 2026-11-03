@@ -1,28 +1,28 @@
-"""The Texas CCS four-age-group rate table obeys the rules that set it.
+"""Check the Texas CCS four-age-group rates against TWC's rate rules.
 
-40 TAC §809.20(c) sets Texas Rising Star rates at least 5, 7 and 9 percent
-above a provider's regular rate, and (d) lets Boards go higher if each star
-level stays at least 2 percentage points above the one below. WD Letter 20-23
-tiers Texas School Ready rates under the same rule. TWC's revised BCY 2024
-table (October 16, 2023) and its BCY 2025 table meet these bounds exactly, with
-no rounding allowance. The August 29, 2023 original misses both by under a cent
-in some cells, so these checks also tell the two versions apart. WD Letter
-19-24, Change 1, keeps every BCY 2025 rate at or above its BCY 2024 level,
-except relative care, which Boards set locally.
+Under 40 TAC §809.20(c), Boards must set Texas Rising Star rates at least 5, 7
+and 9 percent above the regular rate. Under (d), they may set them higher if
+each star level exceeds the one below by at least 2 percentage points. TWC
+tiers Texas School Ready rates under the same rule (WD Letter 20-23). Every
+rate in TWC's revised BCY 2024 table (October 16, 2023) and its BCY 2025 table
+clears these floors with no rounding allowance. The August 29, 2023 original
+misses both floors by under a cent in some cells, and these checks fail on its
+values. For BCY 2025, TWC's Commission kept every rate at or above its BCY 2024
+level, except relative care rates, which Boards set locally (WD Letter 19-24,
+Change 1).
 
-Two more patterns hold in both tables, though the rules above don't require
-them. Each Texas School Ready rate equals the Two-Star rate. Outside relative
-care, each part-time rate falls below the full-time rate and each blended rate
-falls between the two, except in the cells EQUAL_PART_AND_FULL_TIME lists. The
-tests check both patterns.
+In both tables, TWC also followed two patterns that no rule requires. It
+printed each Texas School Ready rate equal to the Two-Star rate. Outside
+relative care, it printed each part-time rate below the full-time rate and each
+blended rate between the two, except in the cells EQUAL_PART_AND_FULL_TIME
+lists. The tests check both patterns.
 
-Each check runs over all 4,032 cells of both board contract years. A value
-typed into the wrong cell fails when it breaks one of these bounds, as a
-part-time rate copied into a full-time cell does. Bounds can't catch every
-error, though: a regular rate typed too low, or a Three- or Four-Star rate
-typed too high, can still pass. The YAML tests pin single cells to TWC's
-tables. This test reads the YAML file directly and builds no tax-benefit
-system.
+Each check runs over all 4,032 cells of both board contract years. A test fails
+when a value typed into the wrong cell breaks one of these bounds, as a
+part-time rate copied into a full-time cell does. The checks can still pass a
+regular rate typed too low, or a Three- or Four-Star rate typed too high. The
+YAML tests pin single cells to TWC's tables. This test reads the YAML file
+directly and builds no tax-benefit system.
 """
 
 import datetime
@@ -52,8 +52,8 @@ MARKUP = {
 }
 STAR_GAP = Decimal("0.02")
 
-# TWC's BCY 2024 table prints the same part-time and full-time rate for
-# home-based infant care in Concho Valley, at every rating, as
+# In its BCY 2024 table, TWC printed the same part-time and full-time rate for
+# Concho Valley's home-based infant care at every rating. Each key is
 # (year, region, provider type, age).
 EQUAL_PART_AND_FULL_TIME = {
     (BCY_2024, "CONCHO_VALLEY", provider_type, "INFANT")
@@ -140,10 +140,11 @@ def test_star_levels_two_points_apart(year):
 
 @pytest.mark.parametrize("year", YEARS)
 def test_part_time_and_blended_rates_within_full_time(year):
-    # Not a rule, but true of both tables: a part-time rate at or above the
-    # full-time rate means a value landed in the wrong column. Relative care
-    # and the cells in EQUAL_PART_AND_FULL_TIME may pay part time the same as
-    # full time, so they get the non-strict check.
+    # No rule requires this ordering, but TWC printed both tables this way, so
+    # a part-time rate at or above the full-time rate points to a value in the
+    # wrong column. Some Boards pay relative care the same for both schedules,
+    # and TWC printed equal rates for the cells in EQUAL_PART_AND_FULL_TIME, so
+    # those get the non-strict check.
     failures = []
     for cell, values in CELLS.items():
         region, provider_type, _, age, schedule = cell
@@ -163,8 +164,9 @@ def test_part_time_and_blended_rates_within_full_time(year):
 
 @pytest.mark.parametrize("year", YEARS)
 def test_school_ready_rates_equal_two_star_rates(year):
-    # Not a rule either: §809.20(c) sets only a floor for Texas School Ready
-    # rates, but both tables print each one equal to the Two-Star rate.
+    # Under §809.20(c), Boards need only set Texas School Ready rates at least
+    # 5 percent above the regular rate, but TWC printed each one equal to the
+    # Two-Star rate in both tables.
     failures = [
         (cell, values[year], CELLS[_with(cell, rating="TRS2")][year])
         for cell, values in CELLS.items()

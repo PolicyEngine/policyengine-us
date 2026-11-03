@@ -6,11 +6,10 @@ description: Texas uses this share as the additional child copayment factor unde
 # Both describe the same linear formula: rate = SMI% * 1.5%, so the factor is 0.015.
 # At higher SMI brackets, the 7% total cap reduces the effective rate.
 #
-# Each Board set its own parent share of cost scale until TWC's TX3C case
-# management system launched on January 13, 2025 (WD 24-23 for BCY 2024). TWC
-# then phased in the statewide scale as families enrolled or recertified. No
-# statewide value exists for earlier periods, so the model applies this one to
-# them.
+# Each Board set its own parent share of cost scale until TWC launched its TX3C
+# case management system on January 13, 2025 (WD 24-23 for BCY 2024). TWC then
+# phased in the statewide scale as families enrolled or recertified. TWC set no
+# statewide scale for earlier periods, so the model applies this one to them.
 
 values:
   2025-01-01: 0.015  # Actual effective date: 2025-01-13
