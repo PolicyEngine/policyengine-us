@@ -353,3 +353,58 @@
   output:
     # Claimability, regardless of whether anyone actually claims the filer.
     wi_standard_deduction: 1_450
+
+- name: Wisconsin counts a claimable filer's taxable disability wages as earned income
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        disability_benefits: 10_000
+        disability_benefits_before_minimum_retirement_age: 10_000
+        taxable_interest_income: 20_000
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    spm_units:
+      spm_unit:
+        members: [filer]
+        tanf: 0
+    households:
+      household:
+        members: [filer]
+        state_code: WI
+  output:
+    adjusted_gross_income: 30_000
+    wi_agi: 30_000
+    earned_disability_benefits: 10_000
+    basic_standard_deduction: 10_450
+    # Ordinary: 13,560 - 0.12 * (30,000 - 19,550) = 12,306.
+    # Dependent limit: max(1,350, 10,000 + 450) = 10,450.
+    wi_standard_deduction: 10_450
+
+- name: Without disability wages, the same claimable filer's interest earns only the minimum
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        taxable_interest_income: 20_000
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    spm_units:
+      spm_unit:
+        members: [filer]
+        tanf: 0
+    households:
+      household:
+        members: [filer]
+        state_code: WI
+  output:
+    wi_agi: 20_000
+    # Ordinary: 13,560 - 0.12 * (20,000 - 19,550) = 13,506.
+    # Dependent limit: max(1,350, 0 + 450) = 1,350.
+    wi_standard_deduction: 1_350
