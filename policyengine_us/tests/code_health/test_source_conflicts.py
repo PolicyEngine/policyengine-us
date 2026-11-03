@@ -445,8 +445,9 @@ def test_conflict_sounding_comments_do_not_grow():
     assert not grown, (
         "These files gained comments that read like a conflict between sources, with no "
         "`# Source conflict <jurisdiction>:<id>` marker. If a statute and a form, instructions, manual or "
-        "agency practice disagree, record it in source_conflicts/candidates.yaml and add or raise "
-        "the file's KNOWN_UNMARKED line in this PR; the register entry and the marker come after "
+        "agency practice disagree, record it in source_conflicts/candidates.yaml (unless the "
+        "pinned register already lists it) and add or raise the file's KNOWN_UNMARKED line in "
+        "this PR; the register entry and the marker come after "
         'it merges (CONTRIBUTING.md, "Source conflicts"). '
         f"Otherwise reword the comment. Files and counts: {grown}"
     )

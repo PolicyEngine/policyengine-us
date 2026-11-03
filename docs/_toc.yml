@@ -69,7 +69,12 @@ parts:
         sections:
           - file: usage/social-security/RULINGS
           - file: usage/social-security-pia-ratio
+      - file: social-security-benefit-levers
+        sections:
+          - file: social-security-cola-means-test
       - file: usage/social-security-oasdi-accounting
+        sections:
+          - file: usage/social-security-scoring-preflight
       - file: usage/speed
   - caption: Examples
     chapters:
