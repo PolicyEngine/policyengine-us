@@ -47,8 +47,8 @@
 - name: Case 2, net business receipts and wages enter once.
   period: 2026
   absolute_error_margin: 0.01
-  # Wages plus separate net business receipts = 12_000 + 2_000 + 300
-  # + 700 + 1_000 = 16_000; no second business-expense deduction.
+  # Wages, basic pay and separate net business receipts = 12_000 + 500 + 2_000
+  # + 300 + 700 + 1_000 = 16_500; no second business-expense deduction.
   input:
     people:
       person1:
@@ -56,6 +56,7 @@
         is_citizen_or_legal_immigrant: true
         ssi: 0
         employment_income: 12_000
+        military_basic_pay: 500
         self_employment_income: 2_000
         sstb_self_employment_income: 300
         farm_operations_income: 700
@@ -73,7 +74,7 @@
         state_code: HI
         county: HONOLULU_COUNTY_HI
   output:
-    hi_liheap_countable_income: 16_000
+    hi_liheap_countable_income: 16_500
 
 - name: Case 3, pensions survivor benefits and rent remain disjoint.
   period: 2026

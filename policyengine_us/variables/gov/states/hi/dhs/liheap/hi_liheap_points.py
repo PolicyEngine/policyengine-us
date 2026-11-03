@@ -22,7 +22,7 @@ class hi_liheap_points(Variable):
         income = spm_unit("hi_liheap_countable_income", period)
         group = spm_unit.household("state_group_str", period)
         poverty = fpg(
-            max_(size, 1),
+            size,
             group,
             period,
             parameters,
@@ -53,7 +53,8 @@ class hi_liheap_points(Variable):
         qualified = person("hi_liheap_qualified_member", period)
         # The manuals define a disabled individual by receipt of SSI or Social
         # Security disability payments. Veterans' 100% ratings, governmental
-        # disability retirement and railroad disability have no separate input.
+        # disability retirement and railroad disability have no separate input,
+        # so is_disabled stands in for them. This affects points only.
         disabled = (
             person("is_disabled", period)
             | (person("ssi", period, options=[ADD]) > 0)

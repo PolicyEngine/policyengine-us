@@ -12,8 +12,9 @@ class hi_liheap_eligible(Variable):
         "https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=5",
         # PDF pages 1, 3
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=1",
-        # Draft FY2026 manual sections 2.1, 2.8, 4.2 and 5.5. PDF pages 58, 60, 65, 67
-        "https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=58",
+        # Draft FY2026 manual sections 1.4, 2.1, 2.8, 2.12, 4.2 and 5.5.
+        # PDF pages 57-58, 60-61, 65, 67
+        "https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=57",
     )
 
     def formula(spm_unit, period, parameters):
@@ -36,13 +37,19 @@ class hi_liheap_eligible(Variable):
         categorical = receives_ssi | (
             add(spm_unit, period, ["snap", "tanf", "general_assistance"]) > 0
         )
-        # Both manuals pay gas as heating and electricity as cooling. Bottled gas
-        # does not show the active utility account that draft 2.1 requires.
+        # Both manuals pay gas as heating and electricity as cooling, and a household
+        # asks to have one utility credited (2.12; application Q17). So any home's
+        # gas bill qualifies, whatever heats it. Bottled gas does not show the active
+        # utility account that draft 2.1 requires. Callers must send heating_type.
         fuel = spm_unit("heating_type", period)
-        gas = fuel == fuel.possible_values.NATURAL_GAS
+        types = fuel.possible_values
+        heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
+        gas_bill = spm_unit("gas_expense", period) > 0
         # Draft 2.1 and 4.2 and application Q23-24 accept a share of utilities in
         # rent, which has no input; plan 2.3 and the 2020 manual do not.
-        responsible = spm_unit("has_heating_expense", period) | spm_unit(
-            "heat_expense_included_in_rent", period
+        responsible = where(
+            heat_in_rent,
+            fuel == types.NATURAL_GAS,
+            gas_bill & (fuel != types.UNSPECIFIED),
         )
-        return (size > 0) & (income_eligible | categorical) & gas & responsible
+        return (size > 0) & (income_eligible | categorical) & responsible

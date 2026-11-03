@@ -91,18 +91,19 @@
 
 - name: Case 4, heating assistance needs gas paid by bill or through rent.
   period: 2026
-  # A gas bill and gas in rent qualify; a known fuel with no bill does not. Electricity is
-  # the cooling credit, bottled gas shows no utility account, and UNSPECIFIED pays nothing.
+  # Any home's gas bill and gas in rent qualify, whatever heats the home (rows 1, 3, 7, 8).
+  # A home with no gas bill does not: the electric bill is the cooling credit and bottled
+  # gas shows no utility account. Electricity in rent is not gas, and UNSPECIFIED pays nothing.
   input:
-    state_code: [HI, HI, HI, HI, HI, HI, HI]
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, ELECTRICITY, PROPANE, UNSPECIFIED, NONE]
-    gas_expense: [900, 0, 0, 0, 0, 900, 900]
-    pre_subsidy_electricity_expense: [0, 0, 0, 900, 0, 0, 0]
-    bottled_gas_expense: [0, 0, 0, 0, 900, 0, 0]
-    heat_expense_included_in_rent: [false, false, true, false, false, false, false]
-    ssi: [0, 0, 0, 0, 0, 0, 0]
-    snap: [0, 0, 0, 0, 0, 0, 0]
-    tanf: [0, 0, 0, 0, 0, 0, 0]
-    hi_liheap_countable_income: [20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000]
+    state_code: [HI, HI, HI, HI, HI, HI, HI, HI, HI]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, ELECTRICITY, PROPANE, UNSPECIFIED, NONE, ELECTRICITY, ELECTRICITY]
+    gas_expense: [900, 0, 0, 0, 0, 900, 900, 900, 0]
+    pre_subsidy_electricity_expense: [0, 0, 0, 900, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 900, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [false, false, true, false, false, false, false, false, true]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    hi_liheap_countable_income: [20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000]
   output:
-    hi_liheap_eligible: [true, false, true, false, false, false, false]
+    hi_liheap_eligible: [true, false, true, false, false, false, true, true, false]

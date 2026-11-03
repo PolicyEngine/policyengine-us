@@ -21,4 +21,4 @@ class hi_liheap_countable_income(Variable):
         income = 0
         for source in p.sources:
             income = income + max_(add(person, period, [source]), 0)
-        return spm_unit.sum(income) + max_(spm_unit("tanf", period), 0)
+        return spm_unit.sum(income) + spm_unit("tanf", period)

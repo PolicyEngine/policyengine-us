@@ -2,6 +2,9 @@ description: Hawaii counts these represented income sources under the Low Income
 values:
   2025-10-01:
     - employment_income
+    # Draft 5.2 counts military base pay, an input apart from employment_income;
+    # enter it in one of the two.
+    - military_basic_pay
     - self_employment_income
     - sstb_self_employment_income
     - farm_operations_income
@@ -37,8 +40,7 @@ values:
 # TANF is added once at household level; monthly SSI is annualized by aggregation.
 # No minor-earnings exclusion applies. Receipts without a separate input, such as
 # mortgage principal, are not policy exclusions. Royalties are in rental_income.
-# Military pay is read as part of employment_income, as hi_military_pay_exclusion
-# reads it; housing and subsistence allowances have no input.
+# Military housing and subsistence allowances have no input.
 metadata:
   unit: list
   period: year
