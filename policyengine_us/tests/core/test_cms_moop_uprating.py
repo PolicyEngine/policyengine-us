@@ -29,11 +29,11 @@ Invariants:
 4. Bounds and order: the series is positive in every year. It is strictly
    increasing over 2015-2019 and 2020-2100; its one decline, 2019 to 2020
    (1,269 to 1,239), is CMS's and is intended.
-5. Extension rule: with g = 2,512 / 2,412 - 1, the 2034-2035 growth rate,
+5. Extension rule: with g = 2,512 / 2,412 - 1, the 2033-2034 growth rate,
    growth moves in a straight line from g at 2034 to 4.3 percent in 2050, then
    to 4.1 percent in 2100, so 2035 grows by g + (0.043 - g) / 16. Each value
    is 2,512 times the product of one plus each year's rate since 2034, checked
-   against an independent np.interp and np.cumprod. Later years hold the 2100
+   against an independent np.interp and np.prod. Later years hold the 2100
    value.
 """
 
