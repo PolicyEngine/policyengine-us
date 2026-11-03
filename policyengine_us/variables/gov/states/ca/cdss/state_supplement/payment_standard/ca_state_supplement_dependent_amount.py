@@ -12,6 +12,7 @@ class ca_state_supplement_dependent_amount(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.cdss.state_supplement.payment_standard
+        fbr = parameters(period).gov.ssa.ssi.amount
         person = spm_unit.members
         age = person("monthly_age", period)
         dependent = person("is_tax_unit_dependent", period)
@@ -21,4 +22,4 @@ class ca_state_supplement_dependent_amount(Variable):
         # gets CAPI instead (WIC 18938, 18941).
         eligible = person("ca_state_supplement_eligible_person", period)
         dependent_count = spm_unit.sum(dependent & dependent_age_eligible & eligible)
-        return dependent_count * p.dependent.amount
+        return dependent_count * (fbr.individual + p.dependent.amount)

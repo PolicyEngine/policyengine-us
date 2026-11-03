@@ -1,8 +1,8 @@
-description: California provides the following state supplement amount to married filers with one blind member who are both eligible.
+description: California adds this state share to the federal couple benefit rate for married couples who both qualify and have one blind member under the State Supplementary Payment program.
 metadata:
   unit: currency-USD
   period: month
-  label: California state supplement blind allowance married one blind amount
+  label: California state supplement blind married one blind state share
   reference:
     - title: California Welfare and Institutions Code Division 9, Part 3, Chapter 3, Article 5, Section 12200 (b)
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200
@@ -12,7 +12,26 @@ metadata:
       href: https://cdss.ca.gov/Portals/13/SHD/ParaRegIndex/SSI%20Monthly%20Payment%20Amounts%202026.pdf
     - title: SSA POMS SI 01415.058 - Federally Administered Optional Supplementary Payment Programs for January 2026, California couple payment levels
       href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058#b2b
+    - title: SSA POMS SI 01415.057 - Federally Administered Optional Supplementary Payment Programs for January 2025, California couple payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415057#b2b
+    - title: SSA POMS SI 01415.056 - Federally Administered Optional Supplementary Payment Programs for January 2024, California couple payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415056#b2b
+    - title: SSA POMS SI 01415.045 - Federally Administered Optional Supplementary Payment Programs for January 2013, California couple payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415045#b2b
+    - title: SSA POMS SI 01415.049 - Federally Administered Optional Supplementary Payment Programs for January 2017, California couple payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415049#b2b
+    - title: SSA POMS SI 01415.054 - Federally Administered Optional Supplementary Payment Programs for January 2022, California couple payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415054#b2b
+    - title: SSA POMS SI 01415.055 - Federally Administered Optional Supplementary Payment Programs for January 2023, California couple payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415055#b2b
+    - title: "California Department of Social Services, Local Assistance Estimates, 2026 May Revision reference documents, SSI/SSP Payment Standards #page 26-27"
+      href: https://cdss.ca.gov/Portals/9/Additional-Resources/Fiscal-and-Financial-Information/LOcal-Assistance-Estimates/2026-27/Revisions/2026-may-revision-reference-documents.pdf#page=26
 values:
-  1991-01-01: 1_295
-  2025-01-01: 2_197.44
-  2026-01-01: 2_238.44
+  1991-01-01: 685 # $1,295 - $610
+  # Shares for 1992 through 2012 are not added yet, so the 1991 share carries forward (issue 10480).
+  2013-01-01: 487.2
+  2017-01-01: 500.65
+  2022-01-01: 620.55
+  2023-01-01: 684.47
+  # The share holds for January 2024 through 2026, and CDSS projects it for January 2027.
+  2024-01-01: 747.44
