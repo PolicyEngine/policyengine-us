@@ -17,7 +17,10 @@ class dependent_care_assistance_exclusion(Variable):
         "https://www.law.cornell.edu/uscode/text/26/129#a_2",  # Dollar cap.
         "https://www.law.cornell.edu/uscode/text/26/129#a_2_C",  # Marital status.
         "https://www.law.cornell.edu/uscode/text/26/129#b",  # Earned income limit.
+        # ARPA section 9632 temporarily increased the cap for 2021.
+        "https://www.govinfo.gov/content/pkg/PLAW-117publ2/pdf/PLAW-117publ2.pdf#page=158",
         # Form 2441 Part III lines 12-26 compute the excluded benefit.
+        "https://www.irs.gov/pub/irs-prior/f2441--2021.pdf#page=2",
         "https://www.irs.gov/instructions/i2441",
     )
 
@@ -27,7 +30,8 @@ class dependent_care_assistance_exclusion(Variable):
         benefits = add(tax_unit, period, ["dependent_care_employer_benefits"])
         p = parameters(period).gov.irs.gross_income.dependent_care_assistance_programs
         # Section 129(a)(2)(A) dollar cap by filing status (Form 2441 line 21;
-        # $5,000, $2,500 MFS, raised to $7,500 / $3,750 after 2025 by OBBBA).
+        # $5,000, $2,500 MFS; $10,500 / $5,250 for 2021 under section
+        # 129(a)(2)(D); raised to $7,500 / $3,750 after 2025 by OBBBA).
         # Section 129(a)(2)(C) determines marital status under section
         # 21(e)(3) and (4), so a separate filer treated as unmarried under
         # 21(e)(4) takes the unmarried cap, not the MFS half.

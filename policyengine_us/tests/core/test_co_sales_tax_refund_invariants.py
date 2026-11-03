@@ -5,7 +5,9 @@ state revenues for the fiscal year ending in that tax year". FY 2025-26 ended
 below the Referendum C cap (State Controller certification of 2026-09-08), so
 no tax year 2026 refund is paid. Tax year 2025 refunds come from the FY 2024-25
 surplus, at the per-person tier amounts in the Legislative Council Staff March
-2026 forecast, Table 8.
+2026 forecast, Table 8. Tax year 2027 refunds use the tier amounts that the LCS
+September 2026 forecast projects (Table 9) until the State Controller certifies
+the surplus and CDOR publishes the tiers.
 
 Hypothesis draws batches of tax units (single, joint, or head of household
 with a dependent), each with a modified AGI, filer ages and wages; a seeded
@@ -14,13 +16,11 @@ simulation covering all three years. For every tax unit:
 
 1. Gate: in 2026 the refund is zero, whatever the income, filing status or
    eligibility.
-2. Differential: in 2025 the refund equals the number of eligible filers
-   times the published tier amount for the unit's modified AGI, with the
-   tiers taken from the forecast table rather than from the parameters.
-3. Bounds: 0 <= refund <= 2 x the top tier amount, and the refund is
-   positive exactly when a filer is eligible (2025).
-The tax year 2027 amounts are placeholders (the 2025 tier amounts stand in
-until CDOR publishes the 2027 table), so no invariant pins them.
+2. Differential: in 2025 and 2027 the refund equals the number of eligible
+   filers times that year's tier amount for the unit's modified AGI, with the
+   tiers taken from the forecast tables rather than from the parameters.
+3. Bounds: 0 <= refund <= 2 x the year's top tier amount, and the refund is
+   positive exactly when a filer is eligible (2025 and 2027).
 """
 
 import numpy as np
@@ -37,11 +37,33 @@ TOLERANCE = 0.01  # dollars
 # "$233,001 to $299,000" $37, "$299,001 and up" $59.
 PUBLISHED_2025_STARTS = np.array([52_001, 105_001, 168_001, 233_001, 299_001])
 PUBLISHED_2025_AMOUNTS = np.array([19, 25, 29, 35, 37, 59])
+# LCS September 2026 forecast, Table 9, "Tax Year 2027 Refunds from FY 2026-27
+# TABOR Refund Obligation" (projected), single filers: "up to $57,000" $43,
+# "$57,001 to $117,000" $58, "$117,001 to $187,000" $67, "$187,001 to
+# $265,000" $79, "$265,001 to $349,000" $85, "$349,001 and up" $137.
+PROJECTED_2027_STARTS = np.array([57_001, 117_001, 187_001, 265_001, 349_001])
+PROJECTED_2027_AMOUNTS = np.array([43, 58, 67, 79, 85, 137])
+TIERS = {
+    2025: (PUBLISHED_2025_STARTS, PUBLISHED_2025_AMOUNTS),
+    2027: (PROJECTED_2027_STARTS, PROJECTED_2027_AMOUNTS),
+}
 
 agis = st.one_of(
     st.integers(-50_000, 0).map(float),
     st.integers(0, 400_000).map(float),
-    st.sampled_from([52_000.0, 52_001.0, 105_000.0, 299_000.0, 299_001.0]),
+    st.sampled_from(
+        [
+            52_000.0,
+            52_001.0,
+            57_000.0,
+            57_001.0,
+            105_000.0,
+            299_000.0,
+            299_001.0,
+            349_000.0,
+            349_001.0,
+        ]
+    ),
 )
 ages = st.one_of(st.integers(14, 17), st.integers(18, 90))
 wages = st.one_of(st.just(0.0), st.integers(1, 100_000).map(float))
@@ -147,24 +169,23 @@ def _run(units):
 
 def _check(units):
     by_year = _run(units)
-    published = PUBLISHED_2025_AMOUNTS[
-        np.searchsorted(PUBLISHED_2025_STARTS, by_year[2025]["agi"], side="right")
-    ]
 
     # 1. Gate: no tax year 2026 refund.
     np.testing.assert_array_equal(by_year[2026]["refund"], 0)
 
-    # 2. Differential against the published tax year 2025 table.
-    base = by_year[2025]
-    np.testing.assert_allclose(
-        base["refund"], base["count"] * published, atol=TOLERANCE
-    )
+    for year, (starts, amounts) in TIERS.items():
+        run = by_year[year]
+        tier_amount = amounts[np.searchsorted(starts, run["agi"], side="right")]
 
-    # 3. Bounds.
-    for run in by_year.values():
+        # 2. Differential against the forecast table for the year.
+        np.testing.assert_allclose(
+            run["refund"], run["count"] * tier_amount, atol=TOLERANCE
+        )
+
+        # 3. Bounds.
         assert (run["refund"] >= 0).all()
-        assert (run["refund"] <= 2 * PUBLISHED_2025_AMOUNTS.max()).all()
-    np.testing.assert_array_equal(base["refund"] > 0, base["count"] > 0)
+        assert (run["refund"] <= 2 * amounts.max()).all()
+        np.testing.assert_array_equal(run["refund"] > 0, run["count"] > 0)
 
 
 @settings(

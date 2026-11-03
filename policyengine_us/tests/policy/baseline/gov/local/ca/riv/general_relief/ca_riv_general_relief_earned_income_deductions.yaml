@@ -1,0 +1,76 @@
+- name: Case 1, a member deducts only their own state income tax withholding.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 30_000
+      person2:
+        age: 30
+        employment_income: 4_800
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # person1's CA withholding on a $30,000 pension:
+    # (107.56 + 2% * (30,000 - 5,540 - 10,756)) / 12 = 31.80.
+    ca_withheld_income_tax: [31.80, 0]
+    # person2: 400 * (6.2% + 1.45%) = 30.60, with no withholding of their own.
+    ca_riv_general_relief_earned_income_deductions: [31.80, 30.60]
+    ca_riv_general_relief_net_earned_income: [0, 369.40]
+
+- name: Case 2, two earners each deduct their own payroll taxes and withholding.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 6_720
+      person2:
+        age: 30
+        employment_income: 360
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # person1: 560 * 7.65% = 42.84, plus CA withholding of
+    # 1% * (6,720 - 5,540) / 12 = 0.98.
+    # person2: 30 * 7.65% = 2.30; their AGI is below the CA standard deduction.
+    ca_riv_general_relief_earned_income_deductions: [43.82, 2.30]
+
+- name: Case 3, Additional Medicare Tax withholding stays with the high earner.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 300_000
+      person2:
+        age: 40
+        employment_income: 4_800
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # Withheld from person1's wages: 0.9% * (300,000 - 200,000) / 12 = 75.
+    additional_medicare_tax_withheld: [75, 0]
+    # person1: 871.10 Social Security (6.2% of the 168,600 wage base / 12)
+    # + 362.50 Medicare + 75 Additional Medicare + 1,993.93 of their own CA
+    # withholding (CA single schedule on 300,000 - 5,540).
+    # person2: 400 * 7.65% = 30.60, with nothing of person1's.
+    ca_riv_general_relief_earned_income_deductions: [3_302.53, 30.60]

@@ -20,3 +20,12 @@
     estate_income: -300
   output:
     market_income: 700
+
+- name: The Alaska Permanent Fund Dividend is market income, as in the household list.
+  period: 2026
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_000
+    market_income: 1_000
+    household_market_income: 1_000
