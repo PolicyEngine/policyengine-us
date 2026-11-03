@@ -109,3 +109,119 @@
     # phase-out start (Rev. Proc. 2024-40).
     eitc: 649
     federal_eitc_without_age_minimum: 649
+
+# 26 U.S.C. 32(c)(1)(C): no EITC for an individual who claims the benefits of
+# section 911. Md. Code Tax-Gen. 10-704(c)(3)(i) waives only the minimum age
+# and section 32(m), and the 2025 Resident Booklet (Instruction 18) requires a
+# filer "otherwise eligible for the federal credit". Maryland computes every
+# childless filer's credit from this pro forma, not from the federal EITC.
+- name: Section 911 claimant below the federal minimum age gets no pro forma federal EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 21
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    federal_eitc_without_age_minimum: 0
+    md_eitc: 0
+
+- name: The same filer without a section 911 exclusion gets the pro forma federal EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 21
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # 7.65% x $5,000 = $382.50, below the $649 maximum and the phase-out.
+    # Maryland allows 100% of it to a childless filer, refundable.
+    federal_eitc_without_age_minimum: 382.5
+    md_eitc: 382.5
+
+- name: Section 911 claimant in the federal age range gets no pro forma federal EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # The federal EITC is already $0 (32(c)(1)(C)); before this rule the
+    # pro forma still paid Maryland's childless credit.
+    eitc: 0
+    federal_eitc_without_age_minimum: 0
+    md_eitc: 0
+
+- name: Married section 911 claimants without children get no pro forma federal EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 2_500
+      person2:
+        age: 30
+        employment_income: 2_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        foreign_earned_income_exclusion: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    federal_eitc_without_age_minimum: 0
+    md_eitc: 0
+
+- name: A filer who claims only the section 911 housing exclusion gets no pro forma federal EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 21
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_housing_exclusion: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Section 911(a)(2) is a separate election; the filer still claims the
+    # benefits of section 911.
+    federal_eitc_without_age_minimum: 0
+    md_eitc: 0

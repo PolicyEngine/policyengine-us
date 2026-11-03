@@ -1,4 +1,4 @@
-- name: Individual without child that is still eligible for federal eitc based on age.
+- name: A childless filer who meets the federal age test takes the federal path, not the age path.
   period: 2022
   absolute_error_margin: 0
   input:
@@ -14,7 +14,10 @@
         members: [person1]
         nj_eitc_income_eligible: true
   output:
-    nj_childless_eitc_age_eligible: true
+    # P.L. 2021, c.130, section 1a(4) reaches a filer "ineligible to claim
+    # the federal earned income tax credit due to age requirements"; at 30
+    # the filer meets the federal 25-64 range.
+    nj_childless_eitc_age_eligible: false
 
 - name: Individual without child that is age eligible but not income eligible.
   period: 2022
@@ -60,7 +63,7 @@
   input:
     people:
       person1:
-        age: 30
+        age: 20
       person2:
         age: 15
         is_qualifying_child_dependent: false
@@ -155,4 +158,171 @@
   output:
     foreign_earned_income_exclusion: 0
     section_911_excluded_income: 0
+    nj_childless_eitc_age_eligible: false
+
+# P.L. 2021, c.130, section 1a(4) and the 2025 NJ-1040 line 58 instructions:
+# the age path is for a filer ineligible for the federal credit "due to age
+# requirements" who meets "all federal EIC requirements except the age
+# requirement". The federal age test looks at the filer and spouse only.
+- name: A dependent's age does not make the filer meet the federal age test.
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+      person2:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nj_eitc_income_eligible: true
+  output:
+    # The 30-year-old dependent is not an EITC qualifying child, and the
+    # 20-year-old filer fails the federal minimum age of 25.
+    nj_childless_eitc_age_eligible: true
+
+- name: A spouse who meets the federal age test takes the couple off the age path.
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 20
+      person2:
+        age: 30
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        nj_eitc_income_eligible: true
+  output:
+    nj_childless_eitc_age_eligible: false
+
+- name: A filer without an SSN valid for the EITC fails a non-age federal qualification.
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 20
+        ssn_card_type: OTHER_NON_CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_eitc_income_eligible: true
+  output:
+    # IRC 32(c)(1)(E) and 32(m); New Jersey waives only the age requirements.
+    nj_childless_eitc_age_eligible: false
+
+- name: A joint return fails the SSN requirement when either spouse lacks one.
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 20
+      person2:
+        age: 20
+        ssn_card_type: NONE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        nj_eitc_income_eligible: true
+  output:
+    nj_childless_eitc_age_eligible: false
+
+- name: In 2021 an 18-year-old fails the federal minimum age of 19.
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 18
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_eitc_income_eligible: true
+  output:
+    nj_childless_eitc_age_eligible: true
+
+- name: In 2021 a 19-year-old who is not a student meets the federal age test.
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 19
+        is_full_time_student: false
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_eitc_income_eligible: true
+  output:
+    nj_childless_eitc_age_eligible: false
+
+- name: In 2021 a 23-year-old full-time student fails the federal student minimum age of 24.
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 23
+        is_full_time_student: true
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_eitc_income_eligible: true
+  output:
+    nj_childless_eitc_age_eligible: true
+
+- name: In 2021 a 70-year-old meets the federal age test, which had no maximum.
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_eitc_income_eligible: true
+  output:
     nj_childless_eitc_age_eligible: false

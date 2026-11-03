@@ -138,3 +138,183 @@
         state_code: NJ
   output:
     nj_eitc: 0
+
+# P.L. 2021, c.130, section 1a(4): the age path pays 40% of the federal
+# childless maximum only to a filer "ineligible to claim the federal earned
+# income tax credit due to age requirements" who meets "all qualifications,
+# except for the minimum or maximum age". 2025 childless figures: maximum
+# $649, phase-in 7.65%, phase-out from $10,620 at 7.65% (Rev. Proc. 2024-40).
+- name: A childless filer in the federal age range who does not take up the federal EITC gets no New Jersey EITC.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        takes_up_eitc: false
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # The filer meets the federal age test, so the age path does not apply;
+    # New Jersey matches the federal credit allowed, $0.
+    eitc: 0
+    nj_childless_eitc_age_eligible: false
+    nj_eitc: 0
+
+- name: A childless filer in the federal age range without an SSN gets no New Jersey EITC.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 5_000
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    eitc: 0
+    nj_childless_eitc_age_eligible: false
+    nj_eitc: 0
+
+- name: A childless filer below the federal minimum age without an SSN gets no New Jersey EITC.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 20
+        employment_income: 5_000
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_childless_eitc_age_eligible: false
+    nj_eitc: 0
+
+- name: A childless filer below the federal minimum age with unearned income under the federal AGI limit gets the age-path amount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 20
+        employment_income: 1_000
+        unemployment_compensation: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # AGI $13,000 is below the $19,104 limit. The reduction, 7.65% x
+    # ($13,000 - $10,620) = $182.07, exceeds the $76.50 phase-in amount but
+    # not the $649 maximum, so the recomputed federal credit is $76.50 > 0.
+    # 40% of $649.
+    eitc: 0
+    nj_eitc: 259.6
+
+- name: A childless filer in the federal age range with the same income gets 40% of the federal EITC.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 1_000
+        unemployment_compensation: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # min($76.50, $649 - $182.07) = $76.50; 40% = $30.60.
+    eitc: 76.5
+    nj_eitc: 30.6
+
+- name: A childless filer below the federal minimum age with AGI over the federal limit gets no New Jersey EITC.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 20
+        employment_income: 1_000
+        unemployment_compensation: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # AGI $21,000 exceeds the $19,104 limit.
+    nj_eitc: 0
+
+- name: A childless filer above the federal maximum age gets the age-path amount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # New Jersey has no maximum age; 40% of $649.
+    eitc: 0
+    nj_childless_eitc_age_eligible: true
+    nj_eitc: 259.6
+
+- name: A parent whose federal EITC phase-out reduction exceeds the phase-in amount gets 40% of the federal EITC.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 3_000
+        unemployment_compensation: 30_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    # One child: phase-in 34% x $3,000 = $1,020; reduction 15.98% x ($33,000
+    # - $23,350) = $1,542.07, below the $4,328 maximum, so the federal EITC is
+    # $1,020. New Jersey matches 40% of it.
+    eitc: 1_020
+    nj_eitc: 408
