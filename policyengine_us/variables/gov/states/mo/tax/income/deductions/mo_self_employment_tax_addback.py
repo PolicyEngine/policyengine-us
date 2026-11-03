@@ -19,8 +19,8 @@ class mo_self_employment_tax_addback(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-        # RSMo 143.141 allows the tax only to the extent it was not
-        # deducted in computing federal AGI (Schedule 1 deductible part).
+        # RSMo 143.141(4)(c): Missouri allows the tax only to the extent the
+        # filer didn't deduct it in computing federal AGI.
         self_employment_tax = add(tax_unit, period, ["self_employment_tax"])
         deducted = tax_unit("self_employment_tax_ald", period)
         return max_(0, self_employment_tax - deducted)

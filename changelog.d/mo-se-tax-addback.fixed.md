@@ -1,1 +1,1 @@
-Count Missouri's self-employment tax itemized deduction net of the part already deducted in federal adjusted gross income (RSMo 143.141(4)(c)).
+Limit Missouri's itemized deduction for self-employment tax to the part the filer didn't deduct in computing federal adjusted gross income (RSMo 143.141(4)(c)).

@@ -115,9 +115,11 @@
     mo_itemized_deductions: 10_000
 
 # Single filer, $100,000 of self-employment income and $20,000 of cash
-# charity. Self-employment tax 14,129.55, of which 7,064.77 is deducted in
-# federal AGI, so RSMo 143.141(4)(c) adds back only 7,064.77. Before the fix
-# the full tax was added: 34,129.55.
+# charity. The filer owes 14,129.55 of self-employment tax and deducts half
+# (7,064.775) in computing federal AGI, so Missouri allows the other half as
+# an itemized deduction (RSMo 143.141(4)(c)). With the charity, itemized
+# deductions total 27,064.775, and the 0.01 margin covers either rounding of
+# the half cent. If the model counted the full tax, they would total 34,129.55.
 - name: 2017 self-employment tax counted net of the federal AGI deduction
   period: 2017
   absolute_error_margin: 0.01

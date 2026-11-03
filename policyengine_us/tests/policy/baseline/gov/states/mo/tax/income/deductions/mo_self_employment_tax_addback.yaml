@@ -1,6 +1,7 @@
-# RSMo 143.141(4)(c) and the 2017 MO-1040 instructions (Form MO-A Part 2
-# line 7: federal Form 1040 line 57 minus line 27) allow the self-employment
-# tax only net of the deductible part taken in federal AGI.
+# Missouri allows the self-employment tax as an itemized deduction only to the
+# extent the filer didn't deduct it in computing federal AGI (RSMo
+# 143.141(4)(c)). For 2017, filers include federal Form 1040 line 57 less
+# line 27 on Form MO-A Part 2 line 7 (MO-1040 instructions, page 42).
 - name: Half of the tax was deducted in federal AGI, so half is added
   period: 2024
   input:
