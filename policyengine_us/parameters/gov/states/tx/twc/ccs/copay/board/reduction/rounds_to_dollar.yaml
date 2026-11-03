@@ -1,0 +1,79 @@
+description: Texas rounds the reduced parent share of cost to the nearest dollar under the Child Care Services program for the Local Workforce Development Boards where this is true.
+
+# A Board's rounding applies only while its own scale does (applies.yaml).
+PANHANDLE:
+  2023-10-01: false
+SOUTH_PLAINS:
+  2023-10-01: false
+NORTH_TEXAS:
+  2023-10-01: false
+NORTH_CENTRAL:
+  2023-10-01: false
+TARRANT_COUNTY:
+  2023-10-01: false
+DALLAS_COUNTY:
+  2023-10-01: false
+NORTHEAST_TEXAS:
+  2023-10-01: false
+EAST_TEXAS:
+  2023-10-01: false
+WEST_CENTRAL:
+  2023-10-01: false
+BORDERPLEX:
+  2023-10-01: false
+PERMIAN_BASIN:
+  2023-10-01: false
+CONCHO_VALLEY:
+  2023-10-01: false
+HEART_OF_TEXAS:
+  2023-10-01: false
+CAPITAL_AREA:
+  2023-10-01: false
+RURAL_CAPITAL:
+  2023-10-01: false
+BRAZOS_VALLEY:
+  2023-10-01: false
+DEEP_EAST:
+  2023-10-01: false
+SOUTHEAST:
+  2023-10-01: false
+GOLDEN_CRESCENT:
+  2023-10-01: false
+
+# Alamo's BCY 2024 chart for Texas Rising Star providers, by family size,
+# prints each discounted share of cost as 90% of the regular total for that
+# number of children, rounded to the nearest dollar with halves up: $68 for
+# a regular $75 and $432 for $480. Its chart by child rounds each child's
+# amount instead, which comes to up to $3 more for a family with three or
+# more children; the model follows the chart by family size, as the policy
+# takes the discount off the family's assigned share of cost.
+ALAMO:
+  2023-10-01: true
+  2024-10-01: false
+SOUTH_TEXAS:
+  2023-10-01: false
+COASTAL_BEND:
+  2023-10-01: false
+LOWER_RIO:
+  2023-10-01: false
+CAMERON_COUNTY:
+  2023-10-01: false
+TEXOMA:
+  2023-10-01: false
+CENTRAL_TEXAS:
+  2023-10-01: false
+MIDDLE_RIO:
+  2023-10-01: false
+GULF_COAST:
+  2023-10-01: false
+
+metadata:
+  propagate_metadata_to_children: true
+  unit: bool
+  period: month
+  label: Texas CCS Board rounds the reduced parent share of cost to the dollar
+  breakdown:
+    - tx_ccs_workforce_board_region
+  reference:
+    - title: Workforce Solutions Alamo, Child Care Services Sliding Fee Scale at Texas Rising Star providers, by family size, BCY 2024 (posted August 28, 2024)
+      href: https://www.workforcesolutionsalamo.org/wp-content/uploads/Sliding-Fee-Scale-BCY24-Website-2-TRS.docx
