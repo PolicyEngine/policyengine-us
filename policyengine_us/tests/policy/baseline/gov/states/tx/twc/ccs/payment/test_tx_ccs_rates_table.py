@@ -1,37 +1,38 @@
 """Check the Texas CCS four-age-group rates against TWC's rate rules.
 
-rates.yaml holds eight TWC tables of Board maximum rates, from TWC's table of
-rates as of October 1, 2016 to BCY 2025. Under 40 TAC §809.20(b) and (c),
-Boards must set Two-, Three- and Four-Star Texas Rising Star rates at least 5,
-7 and 9 percent above the regular rate. They must set Texas School Ready (TSR)
-rates at least 5 percent above it for the age groups in §809.20(b)(2). Under
-(d), they may set Texas Rising Star rates higher if each star level exceeds
-the one below by at least 2 percentage points. Every full-time and part-time
-rate in the eight tables clears these floors with no rounding allowance, and
-so does every school-age blended rate in BCY 2020, BCY 2021, revised BCY 2024
-and BCY 2025. In the October 2016 table, two South Texas TSR rates clear their
-floor only because we raise them to it in rates.yaml. Every blended rate but one
-follows the school-year formula in WD Letter 02-20 from its own part-time and
-full-time rates, so in the October 2016 table, WD 12-18, BCY 2022 and
-BCY 2023, rounding leaves blended rates under a cent short of a floor or star
-gap 30, 4, 56 and 63 times. The August 29, 2023 original of the BCY 2024 table
-misses both floors by under a cent in some cells, and these checks fail on its
-values.
+We store eight TWC tables of Board maximum rates in rates.yaml, from TWC's
+table of rates as of October 1, 2016 to BCY 2025. Under 40 TAC §809.20(b) and
+(c), Boards must set Two-, Three- and Four-Star Texas Rising Star rates at
+least 5, 7 and 9 percent above the regular rate. They must set Texas School
+Ready (TSR) rates at least 5 percent above it for the age groups in
+§809.20(b)(2). Under (d), they may set Texas Rising Star rates higher if each
+star level exceeds the one below by at least 2 percentage points. Every
+full-time and part-time rate in the eight tables clears these floors with no
+rounding allowance, and so does every school-age blended rate in BCY 2020,
+BCY 2021, revised BCY 2024 and BCY 2025. In the October 2016 table, two South
+Texas TSR rates clear their floor only because we raise them to it in
+rates.yaml. Every blended rate but one follows the school-year formula in
+WD Letter 02-20 from its own part-time and full-time rates, so after rounding
+to the cent some fall under a cent short of a floor or star gap. We count 30
+such shortfalls in the October 2016 table, 4 in WD 12-18, 56 in BCY 2022 and 63
+in BCY 2023. In the August 29, 2023 original of the BCY 2024 table, TWC printed
+some rates that fall less than a cent short of a markup floor or star gap, and
+these checks fail on them.
 
-In each rate letter from WD 12-18 to WD 20-23, TWC said it would reduce no
-provider's rate. In its BCY 2025 table, TWC set no rate below its BCY 2024
-level outside relative care, where TWC sets no minimum and Boards may set rates
-locally (WD Letter 19-24, Change 1). Across the eight tables, only the four
-rates in FALLS drop.
+In each rate letter from WD 12-18 to WD 20-23, TWC said it would cut no
+provider's rate in setting the new rates. In its BCY 2025 table, TWC set no
+rate below its BCY 2024 level outside relative care, where TWC sets no minimum
+and Boards may set rates locally (WD Letter 19-24, Change 1). Across the eight
+tables, only the four rates in FALLS drop from one table to the next.
 
 TWC also followed two patterns that no rule requires. It printed each TSR rate
 for the §809.20(b)(2) age groups equal to the Two-Star rate from BCY 2023 on,
 and every TSR rate from BCY 2024 on, school age included, although under
 §809.20(b)(2), Boards set TSR rates only for infants, toddlers and
-preschoolers. Outside relative care, each part-time rate falls below the
-full-time rate and each blended rate between the two, except in the cells
-PART_TIME_ABOVE_FULL_TIME and EQUAL_PART_AND_FULL_TIME list. The tests check
-both patterns.
+preschoolers. Outside relative care, each blended rate lies strictly between
+its part-time and full-time rates, and each part-time rate lies below its
+full-time rate except in the cells PART_TIME_ABOVE_FULL_TIME and
+EQUAL_PART_AND_FULL_TIME list. The tests check both patterns.
 
 Each check runs over all 4,032 cells of the eight tables. A test fails when
 someone types a value into the wrong cell and it breaks one of these bounds.
@@ -93,8 +94,8 @@ MARKUP = {
 STAR_GAP = Decimal("0.02")
 CENT = Decimal("0.01")
 
-# How many times rounding leaves an enhanced school-age blended rate under a
-# cent short of a floor or star gap, by table. The formula test pins every
+# How many times an enhanced school-age blended rate falls under a cent short
+# of a floor or star gap after rounding, by table. The formula test pins every
 # blended rate to its own part-time and full-time rates, so the shortfalls hide
 # no other error.
 BLENDED_SHORT = {OCT_2016: 30, WD_12_18: 4, BCY_2022: 56, BCY_2023: 63}
@@ -206,14 +207,15 @@ BLENDED_OFF_FORMULA = {
     BCY_2024: {("EAST_TEXAS", "RELATIVE", "NONE", "SCHOOL_AGE")},
 }
 
-# Rates below the previous table's rate. In WD 12-18, TWC set each TSR rate at
-# the greater of 105 percent of the new regular rate and the Board's current
-# TSR rate, and printed these three Lower Rio Grande Valley rates at 105
-# percent, rounded up to the cent, below its October 2016 rates. In WD 27-16,
-# TWC had Boards suspend rate increases and said nothing of cuts, so the Board
-# may have lowered them after October 2016. The relative care blended rate
-# drops when TWC printed the formula's $12.12 for BCY 2025. In WD Letter 19-24,
-# Change 1, TWC set no minimum for relative care rates.
+# Rates below the previous table's rate. In WD 12-18, TWC set each TSR
+# preschool rate at the greater of 105 percent of the new regular rate and the
+# Board's current TSR rate. It printed these three Lower Rio Grande Valley
+# rates at 105 percent, rounded up to the cent, below its October 2016 rates.
+# In WD 27-16, TWC had Boards suspend rate increases and said nothing of cuts,
+# so the Board may have lowered them after October 2016. In BCY 2025, TWC
+# printed the formula's $12.12 for the East Texas relative care blended rate,
+# below the $12.21 it printed for BCY 2024. In WD Letter 19-24, Change 1, TWC
+# set no minimum for relative care rates.
 FALLS = {
     WD_12_18: {
         ("LOWER_RIO", "LCCH", "TSR", "PRESCHOOL", "FULL_TIME"),
@@ -272,10 +274,10 @@ def _assert_none(failures):
 
 
 def _tsr_ages(year):
-    # §809.20(b)(2) limits the TSR rate to preschool children until the
-    # amendment effective October 3, 2022, which adds infants and toddlers.
-    # TWC already printed their TSR rates in WD 22-22's table, effective
-    # October 1, 2022.
+    # Under §809.20(b)(2), Boards set TSR rates for preschool children alone
+    # until TWC added infants and toddlers in an amendment effective
+    # October 3, 2022. TWC already printed their TSR rates in WD 22-22's table,
+    # effective October 1, 2022.
     if year < BCY_2023:
         return {"PRESCHOOL"}
     return {"INFANT", "TODDLER", "PRESCHOOL"}
@@ -297,9 +299,9 @@ def _tree_value(cell, day):
 
 
 def test_every_cell_has_every_year():
-    # 28 boards x 16 provider type and rating rows x 9 age and schedule columns,
-    # each dated exactly at the eight tables. An extra date would change the
-    # rate for the months until the next table.
+    # 28 Boards x 16 provider type and rating rows x 9 age and schedule
+    # columns, each with values on the eight table dates and no others. An
+    # extra date would change the rate for the months until the next table.
     assert len(CELLS) == 28 * 16 * 9
     _assert_none([cell for cell, values in CELLS.items() if set(values) != set(YEARS)])
 
@@ -355,10 +357,10 @@ def test_texas_school_ready_rates(year):
     # minimum for those age groups. Through BCY 2023, TSR providers get the
     # regular rate for other age groups. TWC printed it in every such cell of
     # WD 12-18 and in eight later ones, six in WD 25-20 and two in WD 24-21.
-    # For the rest, the TSR fill rule in rates.yaml supplies it: TWC left them
-    # blank or dashed, or, in the October 2016 table, printed TSR rates for
-    # preschool only. Before BCY 2023, the markup test checks the preschool TSR
-    # floor.
+    # For the rest, we supply it in rates.yaml under the TSR fill rule, since
+    # TWC left them blank or dashed or, in the October 2016 table, printed TSR
+    # rates for preschool only. Before BCY 2023, the markup test checks the
+    # preschool TSR floor.
     failures = []
     for cell in CELLS:
         if cell[2] != "TSR" or (year < BCY_2023 and cell[3] in _tsr_ages(year)):
@@ -447,7 +449,8 @@ def test_rates_never_fall(earlier, later):
 
 def test_parameter_tree_matches_table_around_each_change():
     # PolicyEngine's parameter loader against the plain YAML read, for every
-    # cell on the first day of each table and the day before.
+    # cell on the first day of each table and, after the first table, the day
+    # before.
     days = [YEARS[0]] + [
         year + offset
         for year in YEARS[1:]
