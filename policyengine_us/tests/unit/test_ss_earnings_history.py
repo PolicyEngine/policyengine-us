@@ -421,19 +421,38 @@ def test_benchmarks_before1984_rejected_at_each_history_entry_point(eligibility)
         entitlement_month=f"{eligibility}-02",
         eligibility_year=eligibility,
     )
-    # E = 1982 meets the shared 1983 refusal first; E = 1983 meets the
-    # history route's own 1984 refusal.
-    with pytest.raises(ValueError, match=EARLY if eligibility == 1983 else "1983"):
+    with pytest.raises(ValueError, match=EARLY):
         record.benchmark()
     if eligibility == 1983:
         # Supplied AIME and PIA sources keep their own 1983 start.
         assert replace(record, source="aime", aime=1000).benchmark() == 1983
+        assert replace(record, source="pia", pia=500).benchmark() == 1983
     early = replace(
         compute_history(fixture(), 2036, 2039, parameters()),
         eligibility_year=eligibility,
     )
     with pytest.raises(ValueError, match=EARLY):
         history_pia_details(early, bend_points=(254, 1528))
+
+
+def test_history_benchmark_boundary_follows_age_62_attainment():
+    # GN 00302.400: a January 1, 1922 birth attains 62 on December 31, 1983.
+    record = replace(
+        worker(history=fixture(), history_parameters=parameters()),
+        entitlement_month="1984-02",
+    )
+    with pytest.raises(ValueError, match=EARLY):
+        replace(record, birth_date=date(1922, 1, 1), eligibility_year=1983).benchmark()
+    assert (
+        replace(record, birth_date=date(1922, 1, 2), eligibility_year=1984).benchmark()
+        == 1984
+    )
+
+
+def test_annual_records_cannot_begin_before_1951():
+    early = EarningsHistory(1950, (EarningsRecord(1950, 3000, 0),))
+    with pytest.raises(ValueError, match="base years"):
+        early.through_claim(1984)
 
 
 def test_uninsured_history_rejected():
