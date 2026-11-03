@@ -7614,19 +7614,21 @@ candidates:
     citation: 2025 OR-17 federal tax subtraction worksheet, PDF pp.71-72 (also 2017, 2018 and 2021)
     url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71
   readings:
-    statute: The statute refers to federal income taxes accrued; how it treats the section 1341 credit is unresolved.
+    statute: ORS 316.685(1)(b) leaves out only the earned income credit, so the section 1341 credit reduces the
+      subtraction.
     other: The prose says credits except EITC reduce the subtraction, but the worksheet does not subtract the section
       1341 credit.
   pe_us:
-    follows: unknown
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/or/tax/income/subtractions/or_federal_tax_liability_subtraction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10038
     - https://github.com/PolicyEngine/policyengine-us/pull/10093
   state: ruled
-  note: 'Ruled in October 2026 to follow the worksheet; establish the statutory treatment before determining whether
-    a model change is required. Code not yet on main: or_federal_tax_liability_subtraction.'
+  note: Ruled for the statute on 2026-10-20. The formula subtracts every federal refundable credit except the EITC,
+    so the section 1341 credit reduces the subtraction once it is in gov.irs.credits.refundable. The worksheet's
+    list conflicts with the statute.
 - id: us-or:federal-tax-subtraction-niit
   program: income-tax
   years:
@@ -7643,18 +7645,19 @@ candidates:
     citation: 2025 OR-17 federal tax worksheet, Part A, PDF pp.71-72 (each year 2017-2025)
     url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71
   readings:
-    statute: The statute allows federal income taxes accrued and names only the EITC and payroll and self-employment
-      taxes as left out, so it does not settle whether the section 1411 tax counts.
+    statute: 26 U.S.C. 1411(a)(1) imposes the net investment income tax under Subtitle A, and the closed list in ORS
+      316.685(3) excludes only payroll taxes and the self-employment tax (chapter 2), not chapter 2A, so the net
+      investment income tax counts.
     other: The worksheet's other-taxes line does not include the net investment income tax.
   pe_us:
-    follows: gap-fill
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/or/tax/income/subtractions/or_federal_tax_liability_subtraction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10093
-  state: unreviewed
-  note: 'Code not yet on main: the subtraction nets the net investment income tax out of the federal tax, following
-    the worksheet as the administering agency''s reading where the text is open.'
+  state: ruled
+  note: The code follows the statute and keeps the net investment income tax in the federal tax it subtracts; the
+    worksheet's other-taxes line leaves it out.
 - id: us-or:federal-tax-subtraction-unlisted-refundable-credits
   program: income-tax
   years:
@@ -7674,20 +7677,19 @@ candidates:
     citation: 2025 OR-17 federal tax worksheet, Part A, PDF pp.71-72 (each year 2017-2025)
     url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71
   readings:
-    statute: The statute allows federal income taxes accrued and leaves out only the EITC; it does not say how other
-      refundable credits count.
+    statute: ORS 316.685(1)(b) leaves out only the earned income credit, so every other refundable credit reduces the
+      subtraction.
     other: The publication's prose says credits other than the EITC reduce the subtraction, but the worksheet subtracts
       only the credits it lists for each year.
   pe_us:
-    follows: gap-fill
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/or/tax/income/subtractions/or_federal_tax_liability_subtraction.py
-    - policyengine_us/parameters/gov/states/or/tax/income/subtractions/federal_tax_liability/refundable_credits.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10093
-  state: unreviewed
-  note: 'Code not yet on main: refundable_credits.yaml lists only the worksheet''s credits, the same
-    prose-against-worksheet question as us-or:claim-of-right-federal-tax-subtraction.'
+  state: ruled
+  note: The code follows the statute and subtracts every federal refundable credit except the EITC, plus the premium
+    tax credit, including credits the worksheet does not list, such as the additional child tax credit outside 2021.
 - id: us-or:liheap-final-payment-band-bound
   program: liheap
   years:
