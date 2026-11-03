@@ -1,0 +1,10 @@
+description: Dollar base year for supplied single and joint COLA means-test thresholds. Scenario values are supplied at scoring time; the A9 example is 85000 single and 170000 joint in 2018 dollars.
+values:
+  0000-01-01: 2026
+metadata:
+  unit: year
+  label: Social Security COLA means-test threshold dollar base year
+  economy: false
+  reference:
+    - title: OACT provision A9, 2026 Trustees Report basis
+      href: https://www.ssa.gov/OACT/solvency/provisions/cola.html

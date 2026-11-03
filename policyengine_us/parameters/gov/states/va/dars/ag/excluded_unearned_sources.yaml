@@ -1,0 +1,15 @@
+description: Virginia excludes these sources from countable unearned income under the Auxiliary Grant program.
+values:
+  # Section 24.1.1 excludes interest and dividends earned on countable resources.
+  # Section 24.1.2 counts interest on some excluded resources, which the inputs
+  # do not identify, so all interest and dividends are excluded.
+  2019-07-01:
+    - dividend_income
+    - interest_income
+
+metadata:
+  unit: list
+  label: Virginia Auxiliary Grant non-SSI excluded unearned income sources
+  reference:
+    - title: Virginia Auxiliary Grant Manual, Chapter I section 24.1
+      href: https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf#page=439

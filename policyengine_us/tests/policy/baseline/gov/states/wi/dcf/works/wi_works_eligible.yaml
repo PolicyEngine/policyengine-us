@@ -59,3 +59,233 @@
     state_code: CA
   output:
     wi_works_eligible: false
+
+- name: Case 7, SSI parent cannot receive W-2 for the same month.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 994
+        person_id: 1
+      person2:
+        age: 8
+        ssi: 0
+        person_id: 2
+        parent_1_id: 1
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        wi_works_income_eligible: true
+        wi_works_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_eligible: false
+
+- name: Case 8, Child SSI does not exclude a non-SSI W-2 parent.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        person_id: 1
+      person2:
+        age: 8
+        ssi: 994
+        person_id: 2
+        parent_1_id: 1
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        wi_works_income_eligible: true
+        wi_works_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_eligible: true
+
+- name: Case 9, SSI parent does not exclude a non-SSI co-parent from W-2.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 994
+        person_id: 1
+      person2:
+        age: 8
+        ssi: 0
+        person_id: 2
+        parent_1_id: 1
+        parent_2_id: 3
+      person3:
+        person_id: 3
+        age: 35
+        ssi: 0
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+      coparent:
+        members: [person3]
+    spm_units:
+      unit:
+        members: [person1, person2, person3]
+        wi_works_income_eligible: true
+        wi_works_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_works_eligible: true
+
+- name: Case 10, Parent reported to receive SSI cannot receive W-2 even when modeled SSI is zero.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        receives_ssi: true
+        person_id: 1
+      person2:
+        age: 8
+        ssi: 0
+        person_id: 2
+        parent_1_id: 1
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        wi_works_income_eligible: true
+        wi_works_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # The only custodial parent receives SSI through receives_ssi.
+    wi_works_eligible: false
+
+- name: Case 11, Non-SSI grandparent is not a custodial parent of the SSI mother's child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 994
+        person_id: 1
+        parent_1_id: 3
+      person2:
+        age: 8
+        ssi: 0
+        person_id: 2
+        parent_1_id: 1
+      person3:
+        age: 58
+        ssi: 0
+        person_id: 3
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+      grandparent:
+        members: [person3]
+    spm_units:
+      unit:
+        members: [person1, person2, person3]
+        wi_works_income_eligible: true
+        wi_works_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    # The grandmother is the parent of an adult, not a custodial parent of
+    # a dependent child; the only custodial parent receives SSI.
+    wi_works_eligible: false
+
+- name: Case 12, Without parent IDs a parent on SSI cannot receive W-2.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+        ssi: 994
+        own_children_in_household: 1
+      person2:
+        age: 3
+        ssi: 0
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        wi_works_income_eligible: true
+        wi_works_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # No member has a parent ID, as in microsimulation, so every parent
+    # (own_children_in_household > 0) counts as custodial. The only
+    # custodial parent receives SSI (Wis. Stat. 49.145(2)(i)).
+    wi_works_eligible: false
+
+- name: Case 13, Without parent IDs a parent not on SSI remains W-2 eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+        own_children_in_household: 1
+      person2:
+        age: 3
+        ssi: 0
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        wi_works_income_eligible: true
+        wi_works_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # The same fallback parent does not receive SSI, so the exclusion
+    # does not apply.
+    wi_works_eligible: true

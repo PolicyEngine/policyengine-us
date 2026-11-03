@@ -6,3 +6,143 @@
     in_unified_elderly_tax_credit: 200
   output:
     in_refundable_credits: 500
+
+- name: 2020 couple receives the automatic taxpayer refund as a refundable credit
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+      person2:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    # (125 base + 200 additional) * 2 = 650
+    in_automatic_refund_rebate: 650
+    # No Indiana earned income credit or elderly credit at this income and age.
+    # 0 in_eitc + 0 in_unified_elderly_tax_credit + 650 rebate = 650
+    in_refundable_credits: 650
+    # (40,000 wages - 2 * 1,000 base exemptions) * 3.23% = 1,227.40
+    in_income_tax_before_refundable_credits: 1_227.4
+    # 1,227.40 - 650 = 577.40
+    in_income_tax: 577.4
+    state_income_tax: 577.4
+
+- name: 2020 single filer receives the automatic taxpayer refund as a refundable credit
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # (125 base + 200 additional) * 1 = 325
+    in_automatic_refund_rebate: 325
+    # 0 in_eitc + 0 in_unified_elderly_tax_credit + 325 rebate = 325
+    in_refundable_credits: 325
+    # (20,000 wages - 1,000 base exemption) * 3.23% = 613.70
+    in_income_tax_before_refundable_credits: 613.7
+    # 613.70 - 325 = 288.70
+    in_income_tax: 288.7
+
+- name: 2019 couple gets no automatic taxpayer refund credit
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+      person2:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_automatic_refund_rebate: 0
+    in_refundable_credits: 0
+    # (40,000 wages - 2 * 1,000 base exemptions) * 3.23% = 1,227.40, with no
+    # refundable credits subtracted.
+    in_income_tax: 1_227.4
+
+- name: 2021 couple gets no automatic taxpayer refund credit
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+      person2:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_automatic_refund_rebate: 0
+    in_refundable_credits: 0
+    # (40,000 wages - 2 * 1,000 base exemptions) * 3.23% = 1,227.40, with no
+    # refundable credits subtracted.
+    in_income_tax: 1_227.4
+
+- name: 2020 list keeps the earned income and elderly credits alongside the rebate
+  period: 2020
+  input:
+    state_code: IN
+    in_eitc: 300
+    in_unified_elderly_tax_credit: 200
+  output:
+    # 300 in_eitc + 200 in_unified_elderly_tax_credit + (125 + 200) * 1 rebate
+    # = 825
+    in_refundable_credits: 825
+
+- name: 2021 list counts the earned income and elderly credits
+  period: 2021
+  input:
+    state_code: IN
+    in_eitc: 300
+    in_unified_elderly_tax_credit: 200
+  output:
+    # 300 in_eitc + 200 in_unified_elderly_tax_credit = 500
+    in_refundable_credits: 500
+
+- name: 2019 list counts the earned income and elderly credits
+  period: 2019
+  input:
+    state_code: IN
+    in_eitc: 300
+    in_unified_elderly_tax_credit: 200
+  output:
+    # 300 in_eitc + 200 in_unified_elderly_tax_credit = 500
+    in_refundable_credits: 500
+
+- name: Backdated 2015 list counts the earned income and elderly credits
+  period: 2015
+  input:
+    state_code: IN
+    in_eitc: 300
+    in_unified_elderly_tax_credit: 200
+  output:
+    # The 2019 list is backdated to 2015, so no rebate is added.
+    # 300 in_eitc + 200 in_unified_elderly_tax_credit = 500
+    in_refundable_credits: 500

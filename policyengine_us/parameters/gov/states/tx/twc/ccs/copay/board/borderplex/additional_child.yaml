@@ -1,0 +1,88 @@
+description: Workforce Solutions Borderplex sets this monthly parent share of cost for each additional child in care, by income as a share of state median income, under the Texas Child Care Services program.
+
+# Each bracket covers income more than its threshold share of state median
+# income and not more than the next threshold, with the limits rounded to
+# whole dollars as in TWC's income ranges.
+# Borderplex's chart and the Board's September 21, 2023 approval date the BCY
+# 2024 amounts October 1, 2023, and the model follows them; a CEO slide of
+# October 17, 2023 lists the increase as effective November 1.
+# On November 21, 2024 the Board voted to rescind its local parent share of
+# cost policy with TX3C's implementation, then due December 9, 2024. TX3C
+# launched January 13, 2025, and the Board's child care page linked the
+# October 2024 chart through January 21, 2025, so the model keeps that chart
+# until TX3C.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Texas CCS Borderplex Board additional child parent share of cost
+  reference:
+    - title: Workforce Solutions Borderplex, Parent Share of Cost Rates, effective 10/1/2023, with the Child Care Services Parent Share of Cost Methodology
+      href: https://web.archive.org/web/20240715105359/https://workforce-solutions-production.s3.amazonaws.com/static_documents/files/000/000/003/original/Parent_Share_of_Cost_Methodology_FY2024.pdf?1707155541#page=1
+    - title: Workforce Solutions Borderplex, General Board meeting, September 21, 2023, item 5E, Parent Share of Cost (PSoC) Methodology
+      href: https://web.archive.org/web/20250726191653/https://workforce-solutions-production.s3.amazonaws.com/documents/files/000/000/077/original/General_Board_Meeting_9-21-23.pdf?1716927226#page=27
+    - title: Workforce Solutions Borderplex, Parent Share of Cost Rates, effective 10/1/2024, with the Child Care Services Parent Share of Cost Methodology
+      href: https://web.archive.org/web/20250726182733/https://workforce-solutions-production.s3.amazonaws.com/static_documents/files/000/000/003/original/Parent_Share_of_Cost_Methodology_FY2025.pdf?1729275160#page=1
+    - title: Workforce Solutions Borderplex, General Board meeting minutes, September 19, 2024, item 6B iv, Parent Share of Cost New Rates
+      href: https://web.archive.org/web/20250726194907/https://workforce-solutions-production.s3.amazonaws.com/documents/files/000/000/244/original/GB_Minutes_9-19-2024.pdf#page=2
+    - title: Workforce Solutions Borderplex, General Board meeting, November 21, 2024, Changes to Child Care Board Policy (rescission with TX3C)
+      href: https://web.archive.org/web/20250726193949/https://workforce-solutions-production.s3.amazonaws.com/documents/files/000/000/228/original/GB_PPT_112124.pdf#page=6
+    - title: Workforce Solutions Borderplex, CareForce, January 21, 2025 capture (still links the 10/1/2024 chart)
+      href: https://web.archive.org/web/20250121125812/https://borderplexjobs.com/care-force
+
+brackets:
+  - threshold:
+      2023-10-01: -.inf
+      2024-10-01: -.inf
+    amount:
+      2023-10-01: 10
+      2024-10-01: 10
+  - threshold:
+      2023-10-01: 0.2
+      2024-10-01: 0.2
+    amount:
+      2023-10-01: 19
+      2024-10-01: 27
+  - threshold:
+      2023-10-01: 0.3
+      2024-10-01: 0.3
+    amount:
+      2023-10-01: 29
+      2024-10-01: 49
+  - threshold:
+      2023-10-01: 0.4
+      2024-10-01: 0.4
+    amount:
+      2023-10-01: 38
+      2024-10-01: 77
+  - threshold:
+      2023-10-01: 0.5
+      2024-10-01: 0.5
+    amount:
+      2023-10-01: 48
+      2024-10-01: 104
+  - threshold:
+      2023-10-01: 0.6
+      2024-10-01: 0.6
+    amount:
+      2023-10-01: 57
+      2024-10-01: 124
+  - threshold:
+      2023-10-01: 0.7
+      2024-10-01: 0.7
+    amount:
+      2023-10-01: 67
+      2024-10-01: 145
+  - threshold:
+      2023-10-01: 0.75
+      2024-10-01: 0.75
+    amount:
+      2023-10-01: 71
+      2024-10-01: 155
+  - threshold:
+      2023-10-01: 0.8
+      2024-10-01: 0.8
+    amount:
+      2023-10-01: 76
+      2024-10-01: 166

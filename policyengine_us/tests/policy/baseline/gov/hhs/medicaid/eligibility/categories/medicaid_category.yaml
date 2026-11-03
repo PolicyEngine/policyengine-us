@@ -161,3 +161,35 @@
     is_optional_senior_or_disabled_for_medicaid: [true, true]
     medicaid_category: [SENIOR_OR_DISABLED, SENIOR_OR_DISABLED]
     is_medicaid_eligible: [true, true]
+
+# 2026: an aged person with $900 a month of Social Security receives SSI of
+# $994 - ($900 - $20) = $114 a month.
+- name: Case 13, aged Alabaman who receives SSI is an SSI recipient.
+  period: 2026
+  input:
+    age: 70
+    state_code: AL
+    social_security_retirement: 10_800
+  output:
+    ssi: 1_368
+    medicaid_category: SSI_RECIPIENT
+    is_medicaid_eligible: true
+
+# Maryland covers aged, blind, or disabled people who do not receive SSI as
+# medically needy, not as categorically needy. Countable income of $10,560 a
+# year less $7,200 of other medical expenses (and any modeled Medicare Part B
+# premium) is at most $3,360, under the medically needy limit of $350 a month
+# ($4,200 a year).
+- name: Case 14, aged Marylander who does not take up SSI spends down to medically needy coverage.
+  period: 2026
+  input:
+    age: 70
+    state_code: MD
+    social_security_retirement: 10_800
+    takes_up_ssi_if_eligible: false
+    other_medical_expenses: 7_200
+  output:
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_medically_needy_for_medicaid: true
+    medicaid_category: MEDICALLY_NEEDY
+    is_medicaid_eligible: true
