@@ -1,1 +1,0 @@
-Count the income of everyone living in an Arizona property tax credit claimant's home, allow one claimant per household, exclude Arizona unemployment, count other states' unemployment, nontaxable strike benefits and nontaxable alimony, and stop subtracting federal above-the-line deductions other than business and capital losses.

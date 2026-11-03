@@ -1,1 +1,0 @@
-Stop Colorado CCAP from reading parameters before 2015, which made every 2015 Colorado income tax calculation raise ParameterNotFoundError. Measure the Colorado sales tax refund's age test as of December 31 of the preceding year, per C.R.S. 39-22-2003(1)(a)(II).
