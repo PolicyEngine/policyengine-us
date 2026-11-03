@@ -4,13 +4,13 @@ on the assumption's path.
 
 A built system applies its reform set twice, so the assumption's second pass
 runs after a policy's first. The assumption extends the wage base from the
-wage base's own values and the copy from the copy's own values, so the wage
-base reads neither the cap nor the copy.
+wage base's own values, and the owners' draw copy from the draw copy's own
+values, so the wage base reads neither the payroll cap nor the draw copy.
 
 Cost: the module builds two systems, the assumption alone and the assumption
 plus a cap-only policy, keeping only the values its tests compare, and copies
-the default tree once, cached. Replays restore the copy's values after each
-case.
+the default tree once, cached. Replays restore the cached tree's values after
+each case.
 """
 
 import math
