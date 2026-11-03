@@ -17,7 +17,10 @@ class income_driven_repayment_balance_share(Variable):
         "plans do not repay FFEL loans. The product is the person's Direct "
         "Loan balance divided by the couple's combined Direct and FFEL "
         "balance. Married people filing separately are in separate tax units, "
-        "so only their own loans count."
+        "so only their own loans count. Under the Income-Based Repayment and "
+        "Pay As You Earn plans the share multiplies the lesser of the "
+        "income-based amount and the borrower's own 10-year standard payment, "
+        "since (g)(1) adjusts the amount calculated under (f)(2) and (f)(3)."
     )
     unit = "/1"
     definition_period = YEAR
