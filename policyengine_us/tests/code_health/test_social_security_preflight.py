@@ -100,6 +100,9 @@ def test_reported_columns_are_not_migrated_again(tmp_path):
         "self_employment_social_security_tax",
         "employer_total_social_security_tax",
         "income_tax_chapter_1",
+        # TOB counterfactual holders: a stored zero sets TOB to chapter 1 tax.
+        "income_tax_without_social_security",
+        "income_tax_with_pre_1993_social_security",
         "net_investment_income_tax",
         "niit_liability",
         "niit_revenue_oasdi",

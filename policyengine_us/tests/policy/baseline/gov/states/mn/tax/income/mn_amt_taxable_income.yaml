@@ -79,3 +79,36 @@
     charitable_contributions_ald: 300
     mn_itemizing: false
     mn_amt_taxable_income: 40_000
+
+# 2024 Schedule M1MT line 10 subtracts investment interest (Schedule M1SA
+# line 13) and line 14 unreimbursed employee expenses (Schedule M1SA line 23).
+- name: MN AMT taxable income subtracts investment interest
+  period: 2024
+  input:
+    adjusted_gross_income: 200_000
+    mn_itemizing: true
+    investment_interest_expense: 10_000
+    state_code: MN
+  output:
+    mn_amt_taxable_income: 200_000 - 10_000
+
+- name: MN AMT taxable income subtracts the miscellaneous deduction
+  period: 2024
+  input:
+    adjusted_gross_income: 200_000
+    mn_itemizing: true
+    misc_deduction: 3_000
+    state_code: MN
+  output:
+    mn_amt_taxable_income: 200_000 - 3_000
+
+- name: MN AMT taxable income keeps investment interest for a non-itemizer
+  period: 2024
+  input:
+    adjusted_gross_income: 200_000
+    mn_itemizing: false
+    investment_interest_expense: 10_000
+    misc_deduction: 3_000
+    state_code: MN
+  output:
+    mn_amt_taxable_income: 200_000

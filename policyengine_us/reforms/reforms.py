@@ -155,6 +155,9 @@ from .states.ok.dependent_exemption.ok_dependent_exemption_reform import (
 from .states.vt.dependent_exemption.vt_dependent_exemption_reform import (
     create_vt_dependent_exemption_reform_fn,
 )
+from .states.vt.fair_share.vt_fair_share_reform import (
+    create_vt_fair_share_reform,
+)
 from .states.mi.dependent_exemption.mi_dependent_exemption_reform import (
     create_mi_dependent_exemption_reform_fn,
 )
@@ -510,6 +513,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     ri_exemption = create_ri_exemption_reform_fn(parameters, period)
     ok_dependent_exemption = create_ok_dependent_exemption_reform_fn(parameters, period)
     vt_dependent_exemption = create_vt_dependent_exemption_reform_fn(parameters, period)
+    vt_fair_share = create_vt_fair_share_reform(parameters, period)
     in_dependent_exemption = create_in_dependent_exemption_reform_fn(parameters, period)
     mi_dependent_exemption = create_mi_dependent_exemption_reform_fn(parameters, period)
     ne_dependent_exemption = create_ne_dependent_exemption_reform_fn(parameters, period)
@@ -677,6 +681,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ri_exemption,
         ok_dependent_exemption,
         vt_dependent_exemption,
+        vt_fair_share,
         in_dependent_exemption,
         mi_dependent_exemption,
         ne_dependent_exemption,
