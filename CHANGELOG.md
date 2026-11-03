@@ -1,3 +1,10 @@
+## [2.92.8] - 2026-11-03
+
+### Fixed
+
+- Apply the 2026 federal section 68 itemized deduction reduction in Maryland, Maine and New Mexico itemized deductions.
+
+
 ## [2.92.7] - 2026-11-03
 
 ### Fixed
