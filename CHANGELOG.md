@@ -1,3 +1,10 @@
+## [2.92.16] - 2026-11-03
+
+### Fixed
+
+- Make Riverside County General Relief eligible at exactly $500 of total combined countable property, since the DPSS fact sheet says the total cannot exceed $500.
+
+
 ## [2.92.15] - 2026-11-03
 
 ### Fixed
