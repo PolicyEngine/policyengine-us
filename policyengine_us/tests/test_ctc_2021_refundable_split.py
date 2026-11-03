@@ -57,7 +57,8 @@ def split_grid():
         base_children = children * base_per_child
         other_credit = other_dependents * p.amount.adult_dependent
         if year == 2021:
-            child_credit = young * 3_600 + older * 3_000
+            young_amount, older_amount = p.amount.arpa.calc(np.array([5, 6]))
+            child_credit = young * young_amount + older * older_amount
             addition = child_credit - base_children
             first = addition * first_share
             maximum = np.where(baseline, child_credit, child_credit / 2)
