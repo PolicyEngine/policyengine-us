@@ -1,0 +1,277 @@
+# Virginia EAP Fuel Assistance benefit: household points x the statewide value
+# per point (22VAC40-680-30; Complete EAP Manual D.5). Period 2026 uses the
+# latest published value, FFY2025 $4.531665 (FY2026 LIHEAP plan item 2.5). No
+# minimum, maximum or bill cap. Points add 43 for every eligible household:
+# living arrangement 20, primary fuel 10 (placeholder) and energy burden 13
+# (placeholder). End-to-end eligible households are in integration.yaml.
+# Annual limits: FFY2026 size 1 23,472 and size 3 39,972; FFY2025 size 1
+# 22,584.
+
+- name: Case 1, unspecified heating type receives nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 65
+        social_security_retirement: 11_736
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: UNSPECIFIED
+        gas_expense: 1_200
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        county: FAIRFAX_COUNTY_VA
+  output:
+    va_eap_income_eligible: true
+    va_eap_eligible: false
+    va_eap: 0
+
+- name: Case 2, solar heat receives nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 65
+        social_security_retirement: 11_736
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: SOLAR
+        pre_subsidy_electricity_expense: 900
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        county: FAIRFAX_COUNTY_VA
+  output:
+    va_eap_eligible: false
+    va_eap: 0
+
+- name: Case 3, public housing tenant with heat included in rent receives nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 65
+        social_security_retirement: 11_736
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        county: NORFOLK_CITY_VA
+        is_in_public_housing: true
+  output:
+    va_eap_eligible: false
+    va_eap: 0
+
+- name: Case 4, family of three one dollar over the limit receives nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 34
+        employment_income: 39_973
+      child1:
+        age: 9
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+        tanf: 0
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: VA
+        county: HENRICO_COUNTY_VA
+  output:
+    va_eap_income_eligible: false
+    va_eap_eligible: false
+    va_eap: 0
+
+- name: Case 5, FFY2025 period retiree in Henrico County with propane heat receives 439.57 (historical estimate).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        social_security_retirement: 13_200
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_500
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        county: HENRICO_COUNTY_VA
+  output:
+    # 2024 guideline: floor(15,060 x 1.5 / 12) = 1,882; x 12 = 22,584.
+    va_eap_income_limit: 22_584
+    va_eap_countable_income: 12_600
+    # floor(100 x 12,600 / 22,584) = 55 -> 13.
+    va_eap_income_points: 13
+    # 9 + 13 + 12 + 20 + 43 = 97.
+    va_eap_points: 97
+    # 97 x 4.531665 (FFY2025 value, in effect from 2024-10-01) = 439.571505.
+    va_eap: 439.57
+
+- name: Case 6, household outside Virginia receives nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 65
+        social_security_retirement: 11_736
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [head]
+        state_code: MD
+  output:
+    va_eap: 0
+
+- name: Case 7, a large self-employment loss does not inflate the benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 15_000
+        self_employment_income: -60_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        county: HENRICO_COUNTY_VA
+  output:
+    # The loss is floored at zero, so countable income stays 15,000.
+    va_eap_countable_income: 15_000
+    # floor(100 x 15,000 / 23,472) = 63 -> 10.
+    va_eap_income_points: 10
+    # 9 + 10 + 12 + 0 + 43 = 74.
+    va_eap_points: 74
+    # 74 x 4.531665 = 335.34321.
+    va_eap: 335.34
+
+- name: Case 8, military retiree in Fairfax County with natural gas heat receives 344.41.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 55
+        military_retirement_pay: 18_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        county: FAIRFAX_COUNTY_VA
+  output:
+    va_eap_countable_income: 18_000
+    va_eap_eligible: true
+    # floor(100 x 18,000 / 23,472) = 76 -> 8.
+    va_eap_income_points: 8
+    # 9 + 8 + 16 + 0 + 43 = 76.
+    va_eap_points: 76
+    # 76 x 4.531665 = 344.40654.
+    va_eap: 344.41
+
+- name: Case 9, a retiree's out-of-pocket Medicare Part B premium is deducted from Social Security.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 66
+        social_security_retirement: 25_000
+        # 2026 standard Part B premium 202.90 x 12 = 2,434.80. Income is above
+        # the Medicare Savings Program limits, so the enrollee pays it.
+        medicare_part_b_premium: 2_434.80
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        county: FAIRFAX_COUNTY_VA
+  output:
+    # Manual B.6.b.15: 25,000 - 2,434.80 - 600 elderly deduction = 21,965.20
+    # <= 23,472. Counted gross, 25,000 - 600 = 24,400 > 23,472 and pays 0.
+    va_eap_countable_income: 21_965.20
+    va_eap_income_eligible: true
+    va_eap_eligible: true
+    # floor(100 x 21,965.20 / 23,472) = floor(93.58) = 93 -> 3.
+    va_eap_income_points: 3
+    # 9 + 3 + 16 + 20 + 43 = 91.
+    va_eap_points: 91
+    # 91 x 4.531665 = 412.381515.
+    va_eap: 412.38
+
+- name: Case 10, a rental loss does not offset wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+        rental_income: -8_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        county: HENRICO_COUNTY_VA
+  output:
+    # 30,000 + max(-8,000, 0) = 30,000 > 23,472. Netting the loss would give
+    # 22,000 (93%, 3 income points, 67 points, 303.62).
+    va_eap_countable_income: 30_000
+    va_eap_income_eligible: false
+    va_eap: 0

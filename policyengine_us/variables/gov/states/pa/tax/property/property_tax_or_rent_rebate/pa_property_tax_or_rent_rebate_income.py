@@ -8,15 +8,10 @@ class pa_property_tax_or_rent_rebate_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        # PDF pages 3, 7-9
         "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/"
         "formsandpublications/formsforindividuals/ptrr/documents/"
-        "2025_pa-1000_inst.pdf#page=7",
-        "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/"
-        "formsandpublications/formsforindividuals/ptrr/documents/"
-        "2025_pa-1000_inst.pdf#page=8",
-        "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/"
-        "formsandpublications/formsforindividuals/ptrr/documents/"
-        "2025_pa-1000_inst.pdf#page=9",
+        "2025_pa-1000_inst.pdf#page=3",
         # PA-1000 booklet, line 11b: net gambling and lottery winnings
         "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/"
         "formsandpublications/formsforindividuals/ptrr/documents/"
@@ -39,6 +34,10 @@ class pa_property_tax_or_rent_rebate_income(Variable):
                 [
                     "social_security",
                     "ssi",
+                    # pa_ssp includes the Supplement for Personal Needs for
+                    # Medicaid facility residents; the PA-1000 does not say
+                    # whether the Department of Revenue treats it as SSP.
+                    "pa_ssp",
                     "railroad_benefits",
                 ],
             )
@@ -63,7 +62,8 @@ class pa_property_tax_or_rent_rebate_income(Variable):
                 [
                     "alimony_income",
                     "workers_compensation",
-                    "disability_benefits",
+                    # The taxable part is already in adjusted_gross_income.
+                    "tax_exempt_disability_benefits",
                 ],
             )
         )

@@ -1,0 +1,210 @@
+# Massachusetts adds the federal excess business loss (Schedule 1, line 8p)
+# back to 5.0% income from 2022 (Schedule X, line 6). From 2026 the loss is
+# measured against the Massachusetts threshold, not the OBBBA-reset federal
+# one, and the add-back ends after 2028. The interest is Massachusetts bank
+# interest, so it is 5.0% income.
+
+- name: 2022 joint return adds back the loss above $540,000
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        taxable_interest_income: 2_000_000
+        partnership_s_corp_income: -1_000_000
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MA
+  output:
+    ma_excess_business_loss_adjustment: 460_000
+    # 2,000,000 - 1,000,000 + 460,000
+    ma_gross_income: 1_460_000
+    # 1,460,000 - 200 bank interest exemption - 8,800 exemption
+    ma_part_b_taxable_income: 1_451_000
+    ma_income_tax_before_credits: 72_550
+
+- name: 2022 single return adds back the loss above $270,000
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        taxable_interest_income: 2_000_000
+        partnership_s_corp_income: -1_000_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MA
+  output:
+    ma_excess_business_loss_adjustment: 730_000
+    # 2,000,000 - 270,000 - 100 bank interest exemption - 4,400 exemption
+    ma_part_b_taxable_income: 1_725_500
+
+- name: 2024 joint return uses the $610,000 threshold
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        taxable_interest_income: 2_000_000
+        partnership_s_corp_income: -1_000_000
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MA
+  output:
+    ma_excess_business_loss_adjustment: 390_000
+    # 2,000,000 - 610,000 - 8,800 exemption (no bank interest exemption from 2024)
+    ma_part_b_taxable_income: 1_381_200
+
+- name: No add-back in 2021, before the Code Update
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        taxable_interest_income: 2_000_000
+        partnership_s_corp_income: -1_000_000
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MA
+  output:
+    ma_excess_business_loss_adjustment: 0
+    # 2,000,000 - 1,000,000 - 200 - 8,800
+    ma_part_b_taxable_income: 991_000
+
+- name: 2023 single return with a loss equal to the $289,000 threshold adds back nothing
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        self_employment_income: -289_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MA
+  output:
+    # 289,000 - 289,000 (Rev. Proc. 2022-38, section 3.32) = 0. Schedule X,
+    # line 6 is the line 8p amount, although the 2023 instructions print
+    # $270,000, which would give 19,000.
+    excess_business_loss: 0
+    ma_excess_business_loss_adjustment: 0
+
+- name: 2026 single return with a loss equal to the $320,000 Massachusetts threshold adds back nothing
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        self_employment_income: -320_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MA
+  output:
+    # Federal: 320,000 - 256,000 (Rev. Proc. 2025-32, section 4.31)
+    excess_business_loss: 64_000
+    # Massachusetts: 320,000 - 320,000 = 0 (no OBBBA reset, TIR 26-4)
+    ma_excess_business_loss_adjustment: 0
+
+- name: 2026 single return with wages and a Schedule C loss below the Massachusetts threshold
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 500_000
+        self_employment_income: -300_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MA
+  output:
+    # Federal: 300,000 - 256,000
+    excess_business_loss: 44_000
+    # Massachusetts: 300,000 is below 320,000.
+    ma_excess_business_loss_adjustment: 0
+    # 500,000 wages - 300,000 Form 1, line 6a loss + 0
+    ma_gross_income: 200_000
+
+- name: 2026 joint return adds back the loss above $640,000
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        partnership_s_corp_income: -1_000_000
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MA
+  output:
+    # Federal: 1,000,000 - 512,000
+    excess_business_loss: 488_000
+    # Massachusetts: 1,000,000 - 640,000
+    ma_excess_business_loss_adjustment: 360_000
+
+- name: No add-back from 2029, after the limitation ends
+  period: 2029
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        partnership_s_corp_income: -1_000_000
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MA
+  output:
+    # The Code as amended on January 1, 2024 limits excess business losses
+    # through the 2028 taxable year (TIR 24-14).
+    ma_excess_business_loss_adjustment: 0

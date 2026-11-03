@@ -1,0 +1,14 @@
+- name: Case 1, default ne_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: NE
+  output:
+    ne_other_subtractions: 0.0
+
+- name: Case 2, ne_other_subtractions flows into ne_agi_subtractions
+  period: 2024
+  input:
+    state_code: NE
+    ne_other_subtractions: 1_300
+  output:
+    ne_agi_subtractions: 1_300

@@ -250,3 +250,61 @@
   output:
     # Pub. 970 Worksheet 4-1 lines 5 and 6 take Form 2555 lines 45 and 50.
     student_loan_interest_ald_magi: 85_000
+
+- name: Modeled state unemployment compensation counts in full
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 85_000
+        student_loan_interest: 2_500
+        student_loan_interest_ald_eligible: true
+        # PA UC integration inputs: pa_uc = 10,218.
+        pa_uc_highest_quarter_wages: 10_000
+        pa_uc_base_year_wages: 28_000
+        pa_uc_credit_weeks: 26
+        weeks_unemployed: 26
+        pa_uc_gross_weekly_earnings: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # No reported UC, so total UC falls back to the modeled PA UC.
+    total_unemployment_compensation: 10_218
+    # 85,000 + 10,218 = 95,218.
+    student_loan_interest_ald_magi: 95_218
+    # 2025 single phase-out from 85,000 over 15,000:
+    # 2,500 - 2,500 * (95,218 - 85,000) / 15,000 = 2,500 - 1,703 = 797.
+    student_loan_interest_ald: 797
+
+- name: Reported unemployment compensation counts in full, as the control for modeled UC
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 85_000
+        unemployment_compensation: 10_218
+        student_loan_interest: 2_500
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # Reported UC overrides modeled UC and gives the same MAGI and deduction.
+    total_unemployment_compensation: 10_218
+    student_loan_interest_ald_magi: 95_218
+    student_loan_interest_ald: 797

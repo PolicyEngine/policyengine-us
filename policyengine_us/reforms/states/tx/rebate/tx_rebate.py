@@ -109,7 +109,7 @@ def create_tx_rebate() -> Reform:
                 "wa_rca",
                 "high_efficiency_electric_home_rebate",
                 "residential_efficiency_electrification_rebate",
-                "unemployment_compensation",
+                "total_unemployment_compensation",
                 # One-time energy relief payments.
                 # Paid at the same time as the Alaska Permanent Fund Dividend,
                 # which is part of IRS gross income.
@@ -117,6 +117,13 @@ def create_tx_rebate() -> Reform:
                 # Contributed.
                 "basic_income",
                 "trump_dividend",
+                # Cash programs that household_benefits also counts.
+                "ca_capi",  # California Cash Assistance Program for Immigrants.
+                "ca_la_expectant_parent_payment",  # Los Angeles County.
+                "ca_la_infant_supplement",  # Los Angeles County.
+                "co_denver_property_tax_relief",  # Denver.
+                "ma_eaedc",  # Massachusetts.
+                "nj_property_tax_relief",  # ANCHOR, Senior Freeze and Stay NJ.
                 "ny_drive_clean_rebate",
                 "tx_rebate",
             ]

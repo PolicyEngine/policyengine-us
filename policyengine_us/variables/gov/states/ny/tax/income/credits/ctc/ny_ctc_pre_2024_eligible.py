@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.period_branch import drop_recomputed_values
 from policyengine_us.tools.pinned_tbs import (
     CREDIT_DEPENDENT_VARIABLES,
     get_pre_tcja_ctc_tbs,
@@ -11,7 +12,10 @@ class ny_ctc_pre_2024_eligible(Variable):
     label = "NY CTC pre-2024 eligibility"
     documentation = "Whether the tax unit is eligible for NY CTC under pre-2024 rules"
     definition_period = YEAR
-    reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-1)
+    reference = (
+        "https://www.nysenate.gov/legislation/laws/TAX/606",  # (c-1)
+        "https://www.tax.ny.gov/forms/html-instructions/2023/it/it213i-2023.htm",
+    )
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
@@ -24,7 +28,11 @@ class ny_ctc_pre_2024_eligible(Variable):
         person = tax_unit.members
         age = person("age", period)
 
-        # Check if we have qualifying children
+        # Check if we have qualifying children. ctc_qualifying_child includes
+        # the filer identification test, which under the pre-TCJA rules is an
+        # SSN or ITIN for each filer (IRC 24(e)); the IT-213 instructions
+        # likewise require "a valid Social Security number (SSN) or IRS
+        # individual taxpayer identification number (ITIN)" for the filer.
         if not p.pre_tcja:
             qualifies_for_federal_ctc = person("ctc_qualifying_child", period)
         else:
@@ -35,12 +43,9 @@ class ny_ctc_pre_2024_eligible(Variable):
             pre_tcja_ctc.tax_benefit_system = get_pre_tcja_ctc_tbs(
                 simulation.tax_benefit_system
             )
-            # Delete all arrays from pre-TCJA CTC branch.
-            for variable in pre_tcja_ctc.tax_benefit_system.variables:
-                if "ctc" in variable or any(
-                    name in variable for name in CREDIT_DEPENDENT_VARIABLES
-                ):
-                    pre_tcja_ctc.delete_arrays(variable)
+            # Recalculate every CTC formula variable under the pinned rules, a
+            # supplied current-law value included.
+            drop_recomputed_values(pre_tcja_ctc, ["ctc", *CREDIT_DEPENDENT_VARIABLES])
             qualifies_for_federal_ctc = pre_tcja_ctc.person(
                 "ctc_qualifying_child", period
             )

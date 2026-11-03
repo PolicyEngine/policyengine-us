@@ -1,0 +1,21 @@
+description: Maine rounds the poverty level, as a share of the federal poverty guideline, to this increment under the Low Income Home Energy Assistance Program.
+# The 2025 edition rounds to the whole percent ("income at 75.1% will be
+# rounded to 75%; income at 100.6% will be rounded to 101%"), an increment of
+# 0.01. The June 29, 2026 replacement prints bands such as 0-10.99% and
+# 11-33.99%, so the poverty level is kept to hundredths of a percent, an
+# increment of 0.0001. Rounding is half up.
+values:
+  2024-07-03: 0.01
+  2026-06-29: 0.0001
+
+metadata:
+  unit: /1
+  period: year
+  label: Maine HEAP poverty level rounding increment
+  reference:
+    - title: Maine FY2026 Benefit Matrix, 99-346 CMR ch. 24, section 4(A) (2025 edition)
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/ME_BenefitMatrix_2026.pdf#page=2
+    - title: 99-346 CMR ch. 24, section 4(A) (2025 edition, SOS filing 2025-135)
+      href: https://www.maine.gov/sos/sites/maine.gov.sos/files/inline-files/346c024.docx
+    - title: 99-346 CMR ch. 24, section 4(A) (effective June 29, 2026)
+      href: https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=17

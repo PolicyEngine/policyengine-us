@@ -15,6 +15,8 @@ class capped_qualified_tuition_expenses_ald(Variable):
     )
     reference = (
         "https://www.irs.gov/pub/irs-pdf/f8917.pdf#page=2",
+        # 2020 Pub. 970, Worksheet 6-1, MAGI for the Tuition and Fees Deduction.
+        "https://www.irs.gov/pub/irs-prior/p970--2020.pdf#page=46",
         # Law was repealed starting tax year 2021.
         "https://irc.bloombergtax.com/public/uscode/doc/irc/section_222",
     )
@@ -34,21 +36,29 @@ class capped_qualified_tuition_expenses_ald(Variable):
         )
         # Build a simple MAGI from non-dependent person-level income sources,
         # excluding sources that depend on MAGI themselves (taxable SS, UI).
+        # Total UI stands in for taxable UI, so reforms that drop taxable UI
+        # from gross income drop it here too.
         irs = parameters(period).gov.irs
         gross_income_sources = irs.gross_income.sources
         person = tax_unit.members
         not_dependent = ~person("is_tax_unit_dependent", period)
-        cycle_sources = {
-            "taxable_social_security",
-            "taxable_unemployment_compensation",
-        }
-        safe_sources = [src for src in gross_income_sources if src not in cycle_sources]
-        if "taxable_unemployment_compensation" in gross_income_sources:
-            safe_sources.append("unemployment_compensation")
+        safe_sources = [
+            (
+                "total_unemployment_compensation"
+                if src == "taxable_unemployment_compensation"
+                else src
+            )
+            for src in gross_income_sources
+            if src != "taxable_social_security"
+        ]
         magi = 0
         for source in safe_sources:
             magi += not_dependent * max_(0, add(person, period, [source]))
         magi = tax_unit.sum(magi)
+        # 2020 Pub. 970 Worksheet 6-1 line 2 subtracts Form 1040 line 10b,
+        # the charitable deduction for non-itemizers, with the Schedule 1
+        # adjustments (which this simplified MAGI leaves out).
+        magi = magi - tax_unit("charitable_contributions_ald", period)
         p = parameters(period).gov.irs.deductions.tuition_and_fees
         joint = filing_status == filing_status.possible_values.JOINT
         cap = where(joint, p.joint.calc(magi), p.non_joint.calc(magi))

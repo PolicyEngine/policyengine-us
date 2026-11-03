@@ -19,21 +19,58 @@ class eitc_relevant_investment_income(Variable):
         "short_term_capital_gains; a net_capital_gains amount supplied for "
         "the tax unit, or a capital_gains amount set directly on a person, "
         "is not read. The passive basket (lines 11-13) nets rental income, "
-        "farm rental income and passive partnership and S corporation income, "
-        "less eitc_passive_income_also_in_earned_income, then floors the "
-        "result at zero. All rental and farm rental income is treated as "
-        "passive: the model has no input for a real estate professional's "
-        "nonpassive farm rental, whose loss Form 4835 says is not subject to "
-        "the passive activity loss limitations."
+        "farm rental income, passive partnership and S corporation income "
+        "and passive estate and trust income (Schedule E line 34a column (d) "
+        "less line 34b column (c)), less "
+        "eitc_passive_income_also_in_earned_income, then floors the result at "
+        "zero. All rental and farm rental income is treated as passive: the "
+        "model has no input for a real estate professional's nonpassive farm "
+        "rental, whose loss Form 4835 says is not subject to the passive "
+        "activity loss limitations. The estate and trust amount is "
+        "passive_estate_income, the passive subset of estate_income, which "
+        "defaults to zero; nonpassive estate and trust income (Schedule E "
+        "Part III columns (e) and (f), such as Schedule K-1 (Form 1041) box 5 "
+        "annuities and income in respect of a decedent) is not on lines 11 "
+        "and 12. Box 5 royalties not derived in the ordinary course of a trade "
+        "or business (estate_royalty_income) go in the 26 USC 32(i)(2)(C) "
+        "basket, net of their allocable deductions and floored at zero, "
+        "because sections 652(b) and 662(b) keep their character as "
+        "royalties. Worksheet 1 line 8 takes royalties only from Schedule E "
+        "line 23b, so it leaves these out; here the model follows the "
+        "statute. Section 32(i)(2)(C) also counts rents not derived in the "
+        "ordinary course of a trade or business, and the statute does not say "
+        "whether rental real estate belongs there or, as a passive activity, "
+        "in 32(i)(2)(E). The model follows the IRS's reading in Worksheet 1 "
+        "(lines 8-13): the (C) basket on lines 8-10 takes Schedule E line 23b "
+        "royalties and the personal property rents on Schedule 1 line 8l, "
+        "and the (E) basket on lines 11-12 takes the rental real estate on "
+        "Schedule E line 26, which section 469(c)(2) treats as a passive "
+        "activity. The model reads rental_income as that Schedule E rental "
+        "real estate, so it is in the passive basket: a rental real estate "
+        "loss offsets other passive income but not estate and trust "
+        "royalties. The model has no input for personal property rents, "
+        "which belong in the (C) basket, or for rental real estate that is "
+        "not a passive activity (marked NPA on Worksheet 1), which is not "
+        "investment income at all. The model has no input for royalties "
+        "received directly (Schedule E Part I), so the (C) basket holds only "
+        "estate and trust royalties."
     )
     unit = USD
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/32#i_2",
+        "https://www.law.cornell.edu/uscode/text/26/652#b",
+        "https://www.law.cornell.edu/uscode/text/26/662#b",
+        # Rental activity is a passive activity.
+        "https://www.law.cornell.edu/uscode/text/26/469#c_2",
+        # Publication 596 (2025) Worksheet 1, lines 8-13.
         "https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=7",
         "https://www.irs.gov/pub/irs-prior/f8814--2025.pdf#page=1",
         "https://www.irs.gov/pub/irs-prior/i8814--2025.pdf#page=4",
         "https://www.irs.gov/pub/irs-prior/f4835--2025.pdf#page=2",
+        "https://www.irs.gov/pub/irs-prior/f1040se--2024.pdf#page=2",
+        "https://www.irs.gov/pub/irs-prior/f1041sk1--2024.pdf#page=2",
+        "https://www.irs.gov/pub/irs-pdf/p4801.pdf#page=50",
     )
 
     def formula(tax_unit, period, parameters):
@@ -75,11 +112,23 @@ class eitc_relevant_investment_income(Variable):
         # lines 11 and 12 name) is treated as passive in the same way; Form
         # 4835 is for rental activities under the passive activity rules,
         # and the model has no input for a real estate professional's
-        # nonpassive farm rental. 32(i)(2)(E) determines passive income and
-        # losses without regard to amounts included in earned income, so the
-        # signed part of passive income also in earned income is removed. Net
-        # the passive amounts across the head and spouse before applying the
-        # zero floor.
+        # nonpassive farm rental. Lines 11 and 12 also name Schedule E line
+        # 34a column (d) and line 34b column (c), the passive income and loss
+        # from estates and trusts (Schedule K-1 (Form 1041) boxes 6 through 8
+        # when passive to the beneficiary, less their box 9 deductions), not
+        # the nonpassive columns (e) and (f); box 5 annuities and income in
+        # respect of a decedent go in column (f).
+        # estate_income is the Part III total, so the passive part is the
+        # separate passive_estate_income input. It defaults to zero, like
+        # passive_partnership_s_corp_income, rather than to all of
+        # estate_income as rental income is treated: most Part III income is
+        # nonpassive (38% of positive Part III income was passive in tax year
+        # 2023, SOI Publication 4801). 32(i)(2)(E) determines passive income
+        # and losses without regard to amounts included in earned income, so
+        # the signed part of passive income also in earned income is removed.
+        # Net the passive amounts across the head and spouse before applying
+        # the zero floor, so a passive estate or trust loss offsets other
+        # passive income but never interest, dividends or capital gains.
         passive_income = tax_unit_non_dep_add(
             tax_unit,
             period,
@@ -87,8 +136,32 @@ class eitc_relevant_investment_income(Variable):
                 "rental_income",
                 "farm_rent_income",
                 "passive_partnership_s_corp_income",
+                "passive_estate_income",
             ],
         ) - tax_unit_non_dep_add(
             tax_unit, period, ["eitc_passive_income_also_in_earned_income"]
         )
-        return portfolio_income + max_(0, capital_gains) + max_(0, passive_income)
+        # Section 32(i)(2)(C): rents and royalties not derived in the ordinary
+        # course of a trade or business, net of their allocable deductions.
+        # A beneficiary's box 5 royalties keep that character (sections
+        # 652(b) and 662(b)) and are nonpassive, so they go here and not in
+        # the passive basket. Worksheet 1 line 8 conflicts with the statute
+        # by taking royalties only from Schedule E line 23b; the model follows
+        # the statute. Rents: the statute does not settle whether rental real
+        # estate is a (C) rent or an (E) passive activity, so the model takes
+        # the IRS's reading. Worksheet 1 puts personal property rents
+        # (Schedule 1 line 8l) on lines 8-10 with royalties, and Schedule E
+        # line 26 rental real estate on the passive lines 11-12 (section
+        # 469(c)(2)). rental_income is that rental real estate and stays in
+        # the passive basket above. The model has no input for personal
+        # property rents or for nonpassive (NPA) rental real estate, which
+        # Worksheet 1 leaves out, or for royalties received directly.
+        nonbusiness_royalties = tax_unit_non_dep_add(
+            tax_unit, period, ["estate_royalty_income"]
+        )
+        return (
+            portfolio_income
+            + max_(0, capital_gains)
+            + max_(0, nonbusiness_royalties)
+            + max_(0, passive_income)
+        )

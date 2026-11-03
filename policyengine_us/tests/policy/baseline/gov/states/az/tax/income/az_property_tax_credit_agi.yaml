@@ -104,3 +104,85 @@
     # Only the head's line A wages. The dependent's line D (1,500) is in
     # az_property_tax_credit_dependent_income.
     az_property_tax_credit_agi: 3_000
+
+# Ruling us-az:ptc-above-the-line-deductions: household income does not
+# subtract federal above-the-line deductions other than the business and
+# capital loss deduction. A.A.C. R15-2C-502(A)(1) counts "the sum of all
+# income not specifically excluded in A.R.S. § 43-1072", and Form 140PTC
+# Part 1 lines A to I subtract no adjustment. 2025 Table 1 (ARS
+# 43-1072(B)(1)): 2,951 - 3,050 -> 212; property taxes 0.15 x 6,000 = 900.
+
+- name: A student loan interest deduction does not reduce household income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 3_000
+        student_loan_interest: 1_000
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    student_loan_interest_ald: 1_000
+    # Federal AGI: 3,000 - 1,000.
+    adjusted_gross_income: 2_000
+    # 2,000 + 1,000 added back. Without the add-back, 2,000 -> Table 1
+    # 1,951 - 2,050 -> 435.
+    az_property_tax_credit_agi: 3_000
+    az_property_tax_credit_household_income: 3_000
+    az_property_tax_credit: 212
+
+- name: Half of self-employment tax does not reduce household income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        self_employment_income: 3_000
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # 3,000 x 0.9235 = 2,770.50; x 0.153 = 423.89; half = 211.94.
+    self_employment_tax_ald: 211.94
+    adjusted_gross_income: 2_788.06
+    az_property_tax_credit_agi: 3_000
+    az_property_tax_credit_household_income: 3_000
+    az_property_tax_credit: 212
+
+- name: A Schedule C loss still reduces household income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 4_000
+        self_employment_income: -1_000
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # loss_ald carries the business loss, which ITR 12-1 items (3) to (5)
+    # count; it is not added back.
+    loss_ald: 1_000
+    adjusted_gross_income: 3_000
+    az_property_tax_credit_agi: 3_000
+    az_property_tax_credit_household_income: 3_000
+    az_property_tax_credit: 212

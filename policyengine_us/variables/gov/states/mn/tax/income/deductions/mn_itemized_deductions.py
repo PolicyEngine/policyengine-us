@@ -27,7 +27,17 @@ class mn_itemized_deductions(Variable):
         #   pay less Minnesota income tax if you take the larger of your
         #   itemized or standard deduction.
         # ... calculate pre-limitation itemized deductions
+        # Minn. Stat. 290.0122, subd. 5(3), excludes mortgage insurance
+        # premiums from interest even when deductible federally. Remove
+        # only the federal amount included, after its AGI phase-out.
+        disallowed_interest = parameters(
+            period
+        ).gov.states.mn.tax.income.deductions.itemized.disallowed_interest_components
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
+        if disallowed_interest:
+            itm_deds_less_salt = itm_deds_less_salt - add(
+                tax_unit, period, disallowed_interest
+            )
         capped_property_taxes = tax_unit("capped_property_taxes", period)
         # Schedule M1SA line 19 takes Minnesota's own casualty and theft loss
         # (Schedule M1CAT) in place of the federal one, which is limited to
@@ -43,13 +53,17 @@ class mn_itemized_deductions(Variable):
         # ... calculate itemized deductions offset
         p = parameters(period).gov.states.mn.tax.income.deductions.itemized
         # Minn. Stat. 290.0122, subd. 2(d), and the M1SA line 26 worksheets
-        # leave medical expenses and the subd. 8 casualty, theft and wagering
-        # losses out of the reduction. The casualty amount is Minnesota's own.
+        # (step 2: lines 4, 13 and 19) leave medical expenses, investment
+        # interest and casualty and theft losses out of the reduction. M1SA
+        # line 13 is the investment interest that interest_deduction holds.
+        # Subd. 8 also leaves wagering losses out. The casualty amount is
+        # Minnesota's own.
         exempt_deds = add(
             tax_unit,
             period,
             [
                 "medical_expense_deduction",
+                "investment_interest_expense",
                 "mn_casualty_loss_deduction",
                 "wagering_losses_deduction",
             ],

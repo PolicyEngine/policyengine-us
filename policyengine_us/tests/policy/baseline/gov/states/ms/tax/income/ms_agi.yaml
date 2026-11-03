@@ -1,4 +1,4 @@
-- name: The dependent income is allocated to the head
+- name: The dependent income goes to the spouse with the greater income, here not the head
   period: 2021
   input:
     people:
@@ -22,7 +22,104 @@
         members: [person1, person2, person3]
         state_code: MS
   output:
-    ms_agi: [12_000, 10_000, 0]
+    # The spouse's $10,000 is greater than the head's $9,000.
+    ms_agi: [9_000, 13_000, 0]
+
+- name: The dependent income stays with the same spouse when the head and spouse labels are exchanged
+  period: 2021
+  input:
+    people:
+      person1:
+        employment_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        ms_agi_adjustments: 1_000
+      person2:
+        employment_income: 12_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        ms_agi_adjustments: 2_000
+      person3:
+        employment_income: 3_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ms_agi_adjustments: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+  output:
+    ms_agi: [9_000, 13_000, 0]
+
+- name: Spouses with equal income split the dependent income equally
+  period: 2021
+  input:
+    people:
+      person1:
+        employment_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        ms_agi_adjustments: 0
+      person2:
+        employment_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        ms_agi_adjustments: 0
+      person3:
+        employment_income: 3_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ms_agi_adjustments: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+  output:
+    ms_agi: [11_500, 11_500, 0]
+
+- name: A dependent's negative income is not moved to a spouse
+  period: 2021
+  input:
+    people:
+      person1:
+        employment_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        ms_agi_adjustments: 0
+      person2:
+        employment_income: 4_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        ms_agi_adjustments: 0
+      person3:
+        employment_income: 1_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ms_agi_adjustments: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+  output:
+    ms_agi: [10_000, 4_000, 0]
 
 - name: A negative amount is kept, so a joint return can combine it with the other column
   period: 2021
