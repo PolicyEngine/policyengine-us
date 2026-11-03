@@ -154,6 +154,7 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/variables/gov/states/hi/tax/income/subtractions/hi_student_loan_interest_adjustment.py": 1,
     "policyengine_us/variables/gov/states/ks/tax/income/deductions/ks_itemized_deductions.py": 1,
     "policyengine_us/variables/gov/states/ky/dcbs/liheap/ky_liheap.py": 1,
+    "policyengine_us/variables/gov/states/md/tax/income/capital_gains/md_net_capital_gain.py": 1,
     "policyengine_us/variables/gov/states/mn/dcyf/mfip/income/earned/mn_mfip_dependent_care_deduction.py": 1,
     "policyengine_us/variables/gov/states/mn/tax/income/deductions/mn_itemized_deductions.py": 1,
     "policyengine_us/variables/gov/states/mn/tax/income/subtractions/mn_k12_education_subtraction.py": 1,

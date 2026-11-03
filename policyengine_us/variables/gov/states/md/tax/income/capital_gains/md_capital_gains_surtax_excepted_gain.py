@@ -29,16 +29,8 @@ class md_capital_gains_surtax_excepted_gain(Variable):
             href="https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-105&enactments=false",
         ),
         dict(
-            title="Maryland Comptroller Technical Bulletin No. 58 (Dec. 29, 2025), section II",
+            title="Maryland Comptroller Technical Bulletin No. 58 (Dec. 29, 2025), section II exceptions A through F and section III.A example #page 1-3",
             href="https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/legal-publications/technical-bulletins/tb-58.pdf#page=1",
-        ),
-        dict(
-            title="Maryland Comptroller Technical Bulletin No. 58 (Dec. 29, 2025), section II, exceptions A through F",
-            href="https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/legal-publications/technical-bulletins/tb-58.pdf#page=2",
-        ),
-        dict(
-            title="Maryland Comptroller Technical Bulletin No. 58 (Dec. 29, 2025), section III.A example",
-            href="https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/legal-publications/technical-bulletins/tb-58.pdf#page=3",
         ),
         dict(
             title="2025 Maryland Form 502CG, lines 2 through 8",

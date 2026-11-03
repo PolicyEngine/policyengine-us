@@ -28,12 +28,8 @@ class md_capital_gains_surtax(Variable):
             href="https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/forms/2025/502cg.pdf#page=1",
         ),
         dict(
-            title="2025 Maryland Resident Income Tax Instructions, line 20a",
+            title="2025 Maryland Resident Income Tax Instructions, lines 20a and 21b #page 21-22",
             href="https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=21",
-        ),
-        dict(
-            title="2025 Maryland Resident Income Tax Instructions, line 21b",
-            href="https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=22",
         ),
     ]
     defined_for = "md_capital_gains_surtax_applies"
