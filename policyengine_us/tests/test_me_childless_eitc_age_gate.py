@@ -125,7 +125,7 @@ def filers(h):
 def meets_federal_age(h, year):
     minimum, student_minimum, maximum = federal_age_limits(year)
     return any(
-        (student_minimum if student else minimum) <= age <= maximum
+        (student_minimum if student else minimum) <= age < maximum + 1
         for age, student in filers(h)
     )
 
