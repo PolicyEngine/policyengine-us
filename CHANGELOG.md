@@ -1,3 +1,11 @@
+## [2.92.1] - 2026-11-03
+
+### Fixed
+
+- Fix the documentation helper's chart import for current Core, list the PIA-ratio guide in the docs table of contents, update stale interpolation comments in the pinned-system test, and make the calculator reference test classify every leaf under kept parameter nodes and flag missing calculator-only paths.
+- Add the 2015-2017 federal income tax rates and bracket thresholds (10% to 39.6%), which had fallen back to the 2018 schedule.
+
+
 ## [2.92.0] - 2026-11-03
 
 ### Added
