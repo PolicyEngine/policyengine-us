@@ -107,25 +107,25 @@
   output:
     meets_tanf_non_cash_asset_test: true
 
-# Idaho's 5,000 BBCE asset limit: 3,247.08 + 1,316.70 + 436.22 = 5,000.00.
+# Idaho's 5,000 BBCE asset limit: 4,338.99 + 609.03 + 51.98 = 5,000.00.
 # The float32 balances add to 5,000.0005 unless rounded to cents.
 - name: Three accounts that total exactly the Idaho limit pass
   period: 2026
   input:
     state_code_str: ID
-    bank_account_assets: 3_247.08
-    stock_assets: 1_316.70
-    bond_assets: 436.22
+    bank_account_assets: 4_338.99
+    stock_assets: 609.03
+    bond_assets: 51.98
   output:
     meets_tanf_non_cash_asset_test: true
 
-# 3,247.08 + 1,316.70 + 436.23 = 5,000.01, a cent over the limit.
+# 4,338.99 + 609.03 + 51.99 = 5,000.01, a cent over the limit.
 - name: Three accounts a cent over the Idaho limit fail
   period: 2026
   input:
     state_code_str: ID
-    bank_account_assets: 3_247.08
-    stock_assets: 1_316.70
-    bond_assets: 436.23
+    bank_account_assets: 4_338.99
+    stock_assets: 609.03
+    bond_assets: 51.99
   output:
     meets_tanf_non_cash_asset_test: false

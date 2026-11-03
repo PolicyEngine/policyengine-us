@@ -111,6 +111,15 @@ def build_situation(households):
     ],
 )
 @hypothesis.given(st.lists(household(), min_size=1, max_size=20))
+# Hypothesis favours splits at the edges, which don't drift, so these pin
+# splits whose float32 sums land above the limit: 2,000.0001 for SSI and
+# 4,500.0005 for SNAP.
+@hypothesis.example(
+    [
+        ("meets_ssi_resource_test", (17_857, 154_779, 27_364)),
+        ("meets_snap_asset_test", (418_399, 3_831, 27_770)),
+    ]
+)
 def test_split_accounts_match_one_account(households):
     simulation = Simulation(situation=build_situation(households))
     period = f"{YEAR}-01"
