@@ -1,3 +1,17 @@
+## [2.94.4] - 2026-11-03
+
+### Fixed
+
+- Make ca_state_supplement_eligible_person true for blind or disabled dependents under 18, whom the model pays California's dependent supplement amount.
+
+
+## [2.94.3] - 2026-11-03
+
+### Fixed
+
+- Keep the Social Security wage base on each Trustees assumption's path when a reform changes only the payroll cap.
+
+
 ## [2.94.2] - 2026-11-03
 
 ### Fixed
