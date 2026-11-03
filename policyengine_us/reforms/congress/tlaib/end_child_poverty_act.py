@@ -111,7 +111,10 @@ def create_end_child_poverty_act() -> Reform:
                 "trump_dividend",
                 "housing_assistance",
                 "household_state_benefits",
+                "household_local_benefits",
                 "household_head_start_benefits",
+                "ak_energy_relief",
+                "ny_drive_clean_rebate",
                 "ecpa_child_benefit",
             ]
             if parameters(period).gov.hud.abolition:
@@ -158,6 +161,14 @@ def create_end_child_poverty_act() -> Reform:
                 # Contributed.
                 "basic_income",
                 "trump_dividend",
+                # Cash programs that household_benefits also counts.
+                "ca_capi",  # California Cash Assistance Program for Immigrants.
+                "ca_la_expectant_parent_payment",  # Los Angeles County.
+                "ca_la_infant_supplement",  # Los Angeles County.
+                "co_denver_property_tax_relief",  # Denver.
+                "ma_eaedc",  # Massachusetts.
+                "ak_energy_relief",
+                "nj_property_tax_relief",  # ANCHOR, Senior Freeze and Stay NJ.
                 "ny_drive_clean_rebate",
                 "ecpa_child_benefit",
             ]

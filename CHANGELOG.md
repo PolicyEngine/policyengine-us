@@ -1,3 +1,146 @@
+## [2.92.3] - 2026-11-03
+
+### Fixed
+
+- Count the owners' draw profits whose SECA is in the deductible self-employment tax in Form 7206 line 5 when the owners' draw reform computes the self-employed health insurance earned income limit.
+
+
+## [2.92.2] - 2026-11-03
+
+### Fixed
+
+- Keep plain inputs such as EITC take-up when New York and Alabama recompute federal credits under pinned rules, so a 2021 New York filer who does not take up the federal EITC no longer gets the New York EITC.
+
+
+## [2.92.1] - 2026-11-03
+
+### Fixed
+
+- Fix the documentation helper's chart import for current Core, list the PIA-ratio guide in the docs table of contents, update stale interpolation comments in the pinned-system test, and make the calculator reference test classify every leaf under kept parameter nodes and flag missing calculator-only paths.
+- Add the 2015-2017 federal income tax rates and bracket thresholds (10% to 39.6%), which had fallen back to the 2018 schedule.
+
+
+## [2.92.0] - 2026-11-03
+
+### Added
+
+- Apply the standard repayment plan's $50 minimum once across a borrower's Direct and parent PLUS loans in a new combined_standard_repayment_payment, as 34 CFR 685.208(b)(1)(ii) sets it, while a consolidated parent PLUS loan under 685.208(b)(2) keeps its own minimum.
+
+### Fixed
+
+- Compare completed years in the childless EITC age ceiling, so a filer aged 64.5, who has not attained 65, meets IRC 32(c)(1)(A)(ii)(II).
+
+
+## [2.91.13] - 2026-11-03
+
+### Fixed
+
+- Make branch-measured marginal tax rates match fresh re-simulation: household simulations now list the inputs they move onto pre-response variables, so rate branches keep them (`marginal_tax_rate` with `long_term_capital_gains` read about 13 on Core 3.33), and branches raise those inputs, so programs that read pre-response income, such as TANF, see the raise.
+
+
+## [2.91.12] - 2026-11-03
+
+### Fixed
+
+- Deny the DC standard deduction, basic and additional amounts, to a separate filer whose spouse itemizes (D.C. Code 47-1803.03(c)).
+- Follow the statute where IRS forms differ: the refundable child tax credit bar applies only to a section 911 exclusion, not the housing deduction alone (with Form 2555 leaf inputs; a positive legacy aggregate still counts as an exclusion); a claimable spouse aged 65 or blind on a 2018-2025 joint return must file with income other than earned income over the section 63(c)(5)(A) amount; estate and trust royalties count as EITC investment income; and through 2020 former section 32(c)(1)(F) denies the EITC to a filer whose qualifying children all lack identification.
+
+
+## [2.91.11] - 2026-11-03
+
+### Changed
+
+- Describe the source-conflict steps in CONTRIBUTING.md in the order the guard enforces: candidate in the ruling PR, register entry after it merges, marker and pin refresh in a follow-up PR, then `cites_entry: true` in the register and a second pin refresh.
+
+
+## [2.91.10] - 2026-11-02
+
+### Fixed
+
+- Let the unclaimed spouse on a joint return deduct their own student loan interest when the other spouse is claimed as a dependent elsewhere (26 U.S.C. 221(c)), and count both spouses in joint MAGI.
+
+
+## [2.91.9] - 2026-11-02
+
+### Fixed
+
+- Count only wages includible in gross income (after traditional 401(k)/403(b) deferrals and other pre-tax payroll deductions) in `adjusted_earnings`, the earned income limit of the child and dependent care credit, the IRC 129 dependent care exclusion and the state credits that inherit them, per IRC 32(c)(2)(A)(i) and Treas. Reg. 1.21-2(b)(3); California's credit limit, exclusion and AMT child exemption use California wages, which keep the payroll HSA contributions California taxes, net of any business loss, and New York's 2026 credit keeps counting the deferrals under Tax Law 606(c-2)(2)(C), also net of any business loss. California's credit now applies its own FTB 3506 expense, employer benefit and earned income limits in every year, not only 2021, and its AMT child exemption uses California's own minimum ($9,750 for 2025) instead of the federal amount.
+
+
+## [2.91.8] - 2026-11-02
+
+### Changed
+
+- Lock policyengine-core 3.34.2, the version CI's test jobs already resolve, so local `uv sync` environments and the CI jobs that install the committed lock (lint, Rest shard planning and the release build) use it too.
+
+
+## [2.91.7] - 2026-11-02
+
+### Fixed
+
+- Count the pre-2018 federal miscellaneous deduction once in Mississippi and Missouri itemized deductions.
+
+
+## [2.91.6] - 2026-11-02
+
+### Fixed
+
+- Compare the federal free and reduced-price school meal income limits at USDA's published whole-dollar values, rounded up, so a household exactly at a published federal limit gets that tier; state percentage limits are still compared exactly.
+
+
+## [2.91.5] - 2026-11-02
+
+### Fixed
+
+- California's non-MAGI Medi-Cal asset limit falls to $21,000 for one person and $31,000 for two on July 1, 2027 (SB 164) in the aged, blind and disabled, medically needy, Medicare Savings Program and 250% Working Disabled Program limits; the Working Disabled Program also adds $1,550 for each person beyond two.
+
+
+## [2.91.4] - 2026-11-02
+
+### Fixed
+
+- Count railroad retirement annuities as unearned income for Supplemental Security Income and the Colorado Old Age Pension.
+
+
+## [2.91.3] - 2026-11-02
+
+### Fixed
+
+- Add Alaska's 7 AAC 40.310 income eligibility standards to the test list of parameters uprated by the 2026 Trustees assumption.
+
+
+## [2.91.2] - 2026-11-02
+
+### Fixed
+
+- Use state dollar standards, not shares of the poverty guideline, as the Medicaid income limit for aged, blind and disabled people who do not receive SSI in Alaska, Idaho, New Hampshire, Vermont and Wisconsin, require income below Idaho's standard, and add Vermont's 2017-2023 AABD independent-living supplement ($52.04 individual, $98.88 couple).
+- Turned on the Medicaid medically needy pathway for aged, blind and disabled people in Arkansas, Iowa, Illinois, New Jersey and North Dakota, turned it off in Arizona, Idaho, Indiana, New Mexico and Nevada, which have no such program, and updated medically needy income and asset limits in 14 states and DC, including Vermont's protected income level and DC's 2019-2022 levels, tying them to the poverty guideline or the SSI federal benefit rate where state rules do, with New York and North Dakota rounding the monthly level up to the dollar and Illinois rounding it to the nearest dollar through 2024 and dropping the cents from 2025.
+
+
+## [2.91.1] - 2026-11-02
+
+### Fixed
+
+- Count the own income of aged, blind, or disabled people who fail SSI's noncitizen test in SSI-methodology countable income, so Medicaid's optional aged, blind, and disabled and medically needy income tests, CAPI, and other programs no longer treat it as zero; the California state supplement no longer counts the income of a member who fails SSI's noncitizen test unless that member is in an SSI couple computation, and Maryland PAA no longer deems spouse income to people SSI bars by alien status and imputes to them only the SSI that SSA pays when they report SSI receipt, with the one-third reduction on the couple rate under deeming.
+
+
+## [2.91.0] - 2026-11-02
+
+### Added
+
+- Add an opt-in reform that puts Social Security's wage and price paths on the 2026 Trustees Report's intermediate assumptions for long-range scoring: it chains the Trustees' average wage index and CPI growth onto the published NAWI and COLA index, then re-derives the taxable maximum, the wage-indexed amounts and the parameters that uprate by either path. It is off by default, so current-law output doesn't change.
+
+
+## [2.90.5] - 2026-11-02
+
+### Fixed
+
+- Count paid work, full-time college and a disabled caretaker's covered care as Nevada child care activities without the activity input.
+- Count the same cash payments in the household and SPM income totals: the Alaska Permanent Fund Dividend, New Jersey property tax relief, Massachusetts EAEDC, California CAPI and two Los Angeles County payments in SPM resources, and Alaska energy relief from 2024, New York's Drive Clean rebate and Denver property tax relief in household benefits.
+- Vermont no longer pays a child care subsidy for a child with no care hours and no bill, and caps it at any bill before December 17, 2023. New Hampshire no longer pays its disability supplement for a child with no charge.
+- Prorate the Wisconsin Works Community Service Job payment by unsubsidized hours, and end it at 30 hours.
+
+
 ## [2.90.4] - 2026-11-02
 
 ### Changed
