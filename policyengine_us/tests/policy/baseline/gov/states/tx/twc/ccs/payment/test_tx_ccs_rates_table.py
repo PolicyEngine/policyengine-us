@@ -1,26 +1,44 @@
-"""The Texas CCS four-age-group rate table obeys the rules that set it.
+"""Check the Texas CCS four-age-group rates against TWC's rate rules.
 
-The table holds seven statewide TWC tables, from WD Letter 12-18 (effective
-August 1, 2018) to BCY 2025. Under 40 TAC §809.20(c), Texas Rising Star rates
-must exceed a provider's regular rate by at least 5, 7 and 9 percent, and a
-Texas School Ready (TSR) rate must exceed it by at least 5 percent for the age
-groups in §809.20(b)(2). Under §809.20(d), Boards may go higher if each star
-level stays at least 2 percentage points above the one below. Every full-time
-and part-time rate meets these bounds exactly, and so does every school-age
-blended rate for BCY 2020, BCY 2021, revised BCY 2024 and BCY 2025. Each
-blended rate follows WD 02-20's formula from its own part-time and full-time
-rates, so in WD 12-18, BCY 2022 and BCY 2023 rounding leaves enhanced blended
-rates under a cent short of a bound 4, 56 and 63 times. In the August 29, 2023
-original of the BCY 2024 table, hundreds of rates miss the bounds by under a
-cent, so these checks also tell its two versions apart. In each rate letter
-from WD 12-18 to WD 20-23, TWC says it will reduce no provider rate, and in WD
-Letter 19-24, Change 1, TWC keeps every BCY 2025 rate at or above its BCY 2024
-level, except relative care, which Boards set locally. Each check runs over all
-4,032 cells of every table, so a value copied into the wrong cell fails here.
-The test reads the YAML file directly and builds no tax-benefit system.
+rates.yaml holds seven statewide TWC tables, from WD Letter 12-18 (effective
+August 1, 2018) to BCY 2025. Under 40 TAC §809.20(b) and (c), Boards must set
+Two-, Three- and Four-Star Texas Rising Star rates at least 5, 7 and 9 percent
+above the regular rate. They must set Texas School Ready (TSR) rates at least
+5 percent above it for the age groups in §809.20(b)(2). Under (d), they may
+set Texas Rising Star rates higher if each star level exceeds the one below by
+at least 2 percentage points. Every full-time and part-time rate in the seven
+tables clears these floors with no rounding allowance, and so does every
+school-age blended rate in BCY 2020, BCY 2021, revised BCY 2024 and BCY 2025.
+Every blended rate but one follows the school-year formula in WD Letter 02-20
+from its own part-time and full-time rates, so in WD 12-18, BCY 2022 and
+BCY 2023, rounding leaves blended rates under a cent short of a floor or star
+gap 4, 56 and 63 times. The August 29, 2023 original of the BCY 2024 table
+misses both floors by under a cent in some cells, and these checks fail on its
+values. In each rate letter from WD 12-18 to WD 20-23, TWC said it would
+reduce no provider's rate. For BCY 2025, TWC's Commission kept every rate at
+or above its BCY 2024 level, except relative care rates, which
+Boards set locally (WD Letter 19-24, Change 1).
+
+TWC also followed two patterns that no rule requires. It printed each TSR rate
+for the §809.20(b)(2) age groups equal to the Two-Star rate from BCY 2023 on,
+and every TSR rate from BCY 2024 on, school age included, although under
+§809.20(b)(2), Boards set TSR rates only for infants, toddlers and
+preschoolers. Outside relative care, it printed each part-time rate below the
+full-time rate and each blended rate between the two, except in the cells
+PART_TIME_ABOVE_FULL_TIME and EQUAL_PART_AND_FULL_TIME list. The tests check
+both patterns.
+
+Each check runs over all 4,032 cells of the seven tables. A test fails when a
+value typed into the wrong cell breaks one of these bounds, as a part-time rate
+copied into a full-time cell does outside relative care. The checks can still
+pass a regular rate typed too low, a Three- or Four-Star rate typed too high, a
+rate copied from another age group, or a relative care part-time rate copied
+into a full-time cell. The YAML tests pin single cells to TWC's tables. This
+test reads the YAML file directly and builds no tax-benefit system.
 """
 
 import datetime
+import operator
 from decimal import ROUND_HALF_UP, Decimal
 from functools import reduce
 from itertools import chain
@@ -93,8 +111,46 @@ PART_TIME_ABOVE_FULL_TIME = {
     },
 }
 
-# TWC printed this blended rate at $12.21, where the school-year formula and
-# the BCY 2025 table give $12.12. No other printed blended rate misses it.
+# Part-time rates equal to the full-time rate, as (region, provider type, age)
+# and the ratings that tie. TWC printed each tie, except the TSR ties we copy
+# from a tied regular rate under the TSR rule. No other table has one.
+EVERY_RATING = {"REG", "TRS2", "TRS3", "TRS4", "TSR"}
+CONCHO_VALLEY_HOME_INFANTS = {
+    ("CONCHO_VALLEY", provider_type, "INFANT"): EVERY_RATING
+    for provider_type in ("LCCH", "RCCH")
+}
+EQUAL_PART_AND_FULL_TIME = {
+    WD_12_18: {
+        ("CAMERON_COUNTY", "LCCH", "INFANT"): {"REG", "TSR"},
+        ("CAMERON_COUNTY", "LCCH", "TODDLER"): {"REG", "TSR"},
+        ("CAMERON_COUNTY", "LCCH", "PRESCHOOL"): {"REG", "TSR"},
+        ("CONCHO_VALLEY", "LCCC", "INFANT"): EVERY_RATING,
+        ("CONCHO_VALLEY", "LCCH", "INFANT"): EVERY_RATING,
+        ("CONCHO_VALLEY", "RCCH", "INFANT"): EVERY_RATING,
+        ("DEEP_EAST", "LCCC", "INFANT"): {"REG", "TRS2", "TSR"},
+        ("DEEP_EAST", "RCCH", "INFANT"): {"REG", "TSR"},
+        ("DEEP_EAST", "RCCH", "TODDLER"): {"REG", "TSR"},
+        ("HEART_OF_TEXAS", "LCCH", "INFANT"): {"REG", "TSR"},
+        ("HEART_OF_TEXAS", "LCCH", "TODDLER"): {"REG", "TRS2", "TSR"},
+        ("HEART_OF_TEXAS", "RCCH", "INFANT"): {"REG", "TRS2", "TSR"},
+        ("SOUTHEAST", "LCCH", "INFANT"): {"REG", "TSR"},
+    },
+    BCY_2020: {
+        ("CONCHO_VALLEY", provider_type, "INFANT"): EVERY_RATING
+        for provider_type in ("LCCC", "LCCH", "RCCH")
+    },
+    BCY_2021: {
+        ("CONCHO_VALLEY", "LCCC", "INFANT"): {"REG", "TRS2", "TRS3", "TSR"},
+        **CONCHO_VALLEY_HOME_INFANTS,
+    },
+    BCY_2022: CONCHO_VALLEY_HOME_INFANTS,
+    BCY_2023: CONCHO_VALLEY_HOME_INFANTS,
+    BCY_2024: CONCHO_VALLEY_HOME_INFANTS,
+}
+
+# TWC printed this blended rate at $12.21, where the school-year formula gives
+# $12.12, the rate TWC printed for BCY 2025. No other printed blended rate
+# misses the formula.
 BLENDED_OFF_FORMULA = {
     BCY_2024: {("EAST_TEXAS", "RELATIVE", "NONE", "SCHOOL_AGE")},
 }
@@ -150,7 +206,8 @@ def _assert_none(failures):
 def _tsr_ages(year):
     # §809.20(b)(2) limits the TSR rate to preschool children until the
     # amendment effective October 3, 2022, which adds infants and toddlers.
-    # WD 22-22's table, effective October 1, 2022, already prints them.
+    # TWC already printed their TSR rates in WD 22-22's table, effective
+    # October 1, 2022.
     if year < BCY_2023:
         return {"PRESCHOOL"}
     return {"INFANT", "TODDLER", "PRESCHOOL"}
@@ -221,55 +278,75 @@ def test_blended_shortfalls_match_their_count(year):
 
 @pytest.mark.parametrize("year", YEARS)
 def test_texas_school_ready_rates(year):
-    # From the BCY 2023 table on, a TSR rate for an age group in §809.20(b)(2)
-    # matches or exceeds the 2-star rate, the minimum TWC set in WD Letter
-    # 09-23 (June 12, 2023). For other age groups, the tables from WD 12-18 to
-    # BCY 2023 give TSR providers the regular rate, while BCY 2024 and
-    # BCY 2025 print the 2-star rate.
+    # TWC printed each TSR rate for an age group in §809.20(b)(2) equal to the
+    # Two-Star rate from BCY 2023, and every TSR rate from BCY 2024. No rule
+    # requires equality: in WD Letter 09-23 (June 12, 2023), TWC set the
+    # Two-Star rate as the minimum for those age groups. Through BCY 2023, TSR
+    # providers get the regular rate for other age groups. Before BCY 2023, the
+    # markup test checks the preschool TSR floor.
     failures = []
     for cell in CELLS:
-        if cell[2] != "TSR":
+        if cell[2] != "TSR" or (year < BCY_2023 and cell[3] in _tsr_ages(year)):
             continue
-        rate = _rate(cell, year)
-        if cell[3] in _tsr_ages(year):
-            meets = year < BCY_2023 or rate >= _rate(cell, year, rating="TRS2")
-        elif year < BCY_2024:
-            meets = rate == _rate(cell, year, rating="REG")
-        else:
-            meets = rate == _rate(cell, year, rating="TRS2")
-        if not meets:
-            failures.append((cell, float(rate)))
+        two_star = year >= BCY_2024 or cell[3] in _tsr_ages(year)
+        expected = _rate(cell, year, rating="TRS2" if two_star else "REG")
+        if _rate(cell, year) != expected:
+            failures.append((cell, _rate(cell, year), expected))
     _assert_none(failures)
 
 
-@pytest.mark.parametrize("year", YEARS)
-def test_part_time_rates_within_full_time(year):
-    # A part-time rate above the full-time rate usually means a value landed
-    # in the wrong column, so only the rates TWC printed that way pass.
-    above = {
-        cell[:4]
-        for cell in CELLS
-        if cell[4] == "PART_TIME"
-        and _rate(cell, year) > _rate(cell, year, schedule="FULL_TIME")
+def _expand(groups):
+    return {
+        (region, provider_type, rating, age)
+        for (region, provider_type, age), ratings in groups.items()
+        for rating in ratings
     }
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_part_time_rates_below_full_time(year):
+    # No rule requires this ordering, but outside relative care each part-time
+    # rate falls below the full-time rate except in the cells listed above, so
+    # a part-time rate at or above the full-time rate points to a value in the
+    # wrong column. Some Boards pay relative care the same for both schedules.
+    above, equal, relative = set(), set(), []
+    for cell in CELLS:
+        if cell[4] != "PART_TIME":
+            continue
+        part_time = _rate(cell, year)
+        full_time = _rate(cell, year, schedule="FULL_TIME")
+        if cell[1] == "RELATIVE":
+            if part_time > full_time:
+                relative.append((cell, part_time, full_time))
+        elif part_time > full_time:
+            above.add(cell[:4])
+        elif part_time == full_time:
+            equal.add(cell[:4])
+    _assert_none(relative)
     assert above == PART_TIME_ABOVE_FULL_TIME.get(year, set())
+    assert equal == _expand(EQUAL_PART_AND_FULL_TIME.get(year, {}))
 
 
 @pytest.mark.parametrize("year", YEARS)
 def test_blended_rates_between_part_time_and_full_time(year):
+    # Outside relative care, each blended rate falls strictly between its
+    # part-time and full-time rates.
     failures = []
     for cell in CELLS:
         if cell[4] != "BLENDED":
             continue
-        rates = [_rate(cell, year, schedule=s) for s in ("PART_TIME", "FULL_TIME")]
-        if not min(rates) <= _rate(cell, year) <= max(rates):
-            failures.append((cell, float(_rate(cell, year)), rates))
+        low, high = sorted(
+            _rate(cell, year, schedule=s) for s in ("PART_TIME", "FULL_TIME")
+        )
+        below = operator.le if cell[1] == "RELATIVE" else operator.lt
+        if not (below(low, _rate(cell, year)) and below(_rate(cell, year), high)):
+            failures.append((cell, low, _rate(cell, year), high))
     _assert_none(failures)
 
 
 @pytest.mark.parametrize("year", YEARS)
 def test_blended_rates_follow_school_year_formula(year):
-    # WD 23-19, 25-20 and 24-21 print no blended rates, so the table computes
+    # TWC printed no blended rates in WD 23-19, 25-20 and 24-21, so we compute
     # them this way.
     off = {
         cell[:4]

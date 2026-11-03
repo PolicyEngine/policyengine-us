@@ -1,10 +1,11 @@
 description: Texas limits the total copayment to this share of family income under the Child Care Services program.
 
-# Each Board set its own parent share of cost scale until TWC's TX3C case
-# management system launched on January 13, 2025 (WD 24-23 for BCY 2024). TWC
-# then phased in the statewide scale and this cap as families enrolled or
-# recertified. No statewide value exists for earlier periods, so the model
-# applies this one to them.
+# Each Board set its own parent share of cost scale until TWC launched its TX3C
+# case management system on January 13, 2025 (WD 24-23 for BCY 2024, WD 20-24
+# for BCY 2025). In July 2024, TWC's Commission adopted this 7% cap in §809.19,
+# and TWC said it would apply the cap with TX3C, phasing it in with the
+# statewide scale as families enrolled or recertified. PolicyEngine applies the
+# cap to every earlier month back to 2015.
 values:
   2025-01-01: 0.07  # Actual effective date: 2025-01-13
 metadata:
@@ -18,3 +19,7 @@ metadata:
       href: https://web.archive.org/web/20240908233001/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/wd-24-23-twc.pdf#page=2
     - title: TWC Child Care and Development Fund Waiver Request, December 17, 2024 Commission Meeting
       href: https://www.twc.texas.gov/sites/default/files/ogc/mtg24/commission-meeting-material-121724-item10-dp-ccdf-waiver-request-twc.pdf#page=2
+    - title: TWC WD Letter 20-24 - BCY 2025 Income Amounts for Determining Eligibility and Parent Share of Cost
+      href: https://web.archive.org/web/20250314070109/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/20-24-twc.pdf#page=1
+    - title: TWC Regulated Child Care Providers Update, January 27, 2025 (TX3C launch)
+      href: https://content.govdelivery.com/accounts/TXWC/bulletins/3cf24fc
