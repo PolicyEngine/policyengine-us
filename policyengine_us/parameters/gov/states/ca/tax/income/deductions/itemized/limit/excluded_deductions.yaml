@@ -5,7 +5,11 @@ values:
     # California's own casualty and theft loss (Schedule CA line 15), which
     # replaces the federal one in the pre-limitation total.
     - ca_casualty_loss_deduction
-    - non_mortgage_interest
+    # California's FTB 3526 investment interest, the amount that
+    # ca_itemized_deductions_pre_limitation holds in place of the federal one.
+    # 26 U.S.C. 68(c)(2), adopted by R&TC 17077, leaves out the deduction
+    # allowed for investment interest.
+    - ca_investment_interest_expense_deduction
 
 metadata:
   unit: list
