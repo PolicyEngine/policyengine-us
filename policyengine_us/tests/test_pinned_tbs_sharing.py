@@ -183,7 +183,9 @@ def change_small_tree(tree, change, index, value):
         )
         parameter.values_list.sort(key=lambda item: item.instant_str, reverse=True)
     elif change == "change metadata":
-        # What interpolation does to a parameter's metadata.
+        # What interpolation did to a parameter's metadata in core before
+        # 3.34.1, which recorded it there; core now sets the parameter's
+        # `interpolated` attribute instead.
         parameter.metadata.setdefault("interpolation", {})["completed"] = value
     elif f"added_{value}" not in tree.tax.children:
         added = Parameter(f"added_{value}", {"values": {AT: value}})
@@ -302,7 +304,8 @@ def test_a_copy_of_the_nodes_reads_what_a_clone_reads(changes, later_changes):
 
 
 def test_each_tree_interpolates_for_itself():
-    """Core records in a parameter's metadata that it interpolated the parameter.
+    """Core records on each parameter that it interpolated it, and core before
+    3.34.1 recorded it in the parameter's `interpolation` metadata.
 
     A record shared with the source would stop the copy interpolating at all.
     """
