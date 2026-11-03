@@ -32,9 +32,13 @@ from policyengine_us import Simulation
 
 FILER = st.fixed_dictionaries(
     {
-        "age": st.integers(min_value=16, max_value=80),
+        "age": st.one_of(
+            st.sampled_from([17, 18, 19, 23, 24, 25, 64, 65]),
+            st.integers(min_value=16, max_value=80),
+        ),
         "student": st.booleans(),
         "earnings": st.integers(min_value=0, max_value=30_000),
+        "child_has_tin": st.booleans(),
     }
 )
 
@@ -59,6 +63,7 @@ def _simulate(year, filers):
                     "age": {year: 2},
                     "is_tax_unit_dependent": {year: True},
                     "ssn_card_type": {year: "NONE"},
+                    "has_tin": {year: filer["child_has_tin"]},
                 }
             tax_units[name] = {
                 "members": members,

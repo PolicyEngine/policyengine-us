@@ -182,10 +182,9 @@
     eitc_child_count: 0
     eitc_eligible: true
     eitc: 229.50
-    # The filer also meets the age route's terms, but paragraph (1) governs
-    # once the federal credit is allowed: 40% x $229.50 = $91.80
-    # (54A:4-7(a)(1)).
-    nj_childless_eitc_age_eligible: true
+    # Paragraph (4) reaches only a resident ineligible for the federal credit
+    # "due to age requirements". This filer is federally eligible, so
+    # paragraph (1) governs: 40% x $229.50 = $91.80 (54A:4-7(a)(1)).
     nj_eitc: 91.80
 
 - name: 2023 NJ childless filer aged 20 gets 40% of the federal zero-child maximum
