@@ -25,12 +25,12 @@ metadata:
 # the formula derives slope = (0.0693 - 0.02) / (0.75 - 0.01) at runtime.
 # The 85% bracket (7.00%) is the cap, handled separately by maximum.yaml.
 #
-# Each Board set its own parent share of cost scale until TWC's TX3C case
-# management system launched on January 13, 2025 (WD 24-23 for BCY 2024). TWC
-# then phased in the statewide scale as families enrolled or recertified.
-# Before then the model applies each Board's scale where one was found
-# (copay/board/applies.yaml) and this one for the other Boards. Actual
-# effective date of every value below: 2025-01-13.
+# Each Board set its own parent share of cost scale until TWC launched its TX3C
+# case management system on January 13, 2025 (WD 24-23 for BCY 2024). TWC then
+# phased in the statewide scale as families enrolled or recertified. TWC set no
+# statewide scale for earlier periods, so for them the model applies a Board's
+# own scale where copay/board/applies.yaml marks one and this one elsewhere.
+# Actual effective date of every value below: 2025-01-13.
 brackets:
   - threshold:
       2025-01-01: 0.01

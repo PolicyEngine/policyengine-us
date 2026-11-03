@@ -1,10 +1,11 @@
 description: Texas limits the total copayment to this share of family income under the Child Care Services program.
 
-# Each Board set its own parent share of cost scale until TWC's TX3C case
-# management system launched on January 13, 2025 (WD 24-23 for BCY 2024). TWC
-# then phased in the statewide scale and this cap as families enrolled or
-# recertified. Before then the model applies each Board's scale where one was
-# found (copay/board/applies.yaml) and this one for the other Boards.
+# Each Board set its own parent share of cost scale until TWC launched its TX3C
+# case management system on January 13, 2025 (WD 24-23 for BCY 2024). TWC then
+# phased in the statewide scale and this cap as families enrolled or
+# recertified. TWC set no statewide scale or cap for earlier periods, so for
+# them the model applies a Board's own scale where copay/board/applies.yaml
+# marks one and this cap elsewhere.
 values:
   2025-01-01: 0.07  # Actual effective date: 2025-01-13
 metadata:
