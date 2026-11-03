@@ -95,8 +95,10 @@ def _baseline_measurement_branch(simulation):
     branch.baseline = None
     # The copied holders were built for reform policy; its entities or
     # ETERNITY storage may differ from the baseline's, as after subsampling.
+    # Dropping one drops its inputs, so set again those baseline policy holds.
     branch._drop_holders_built_for_another_policy()
     branch._rebind_holders()
+    branch._set_inputs_kept_for_baseline_policy(simulation)
     drop_inherited_values(branch)
     branch._isolate_parameter_tracing()
     # The policy copy's receipts list the counties the baseline read; record

@@ -68,11 +68,13 @@ pays and S1 the subsidy the simulated policy pays:
    without a child in the unit, and W and C come from the policy simulated. A
    policy that pays the same subsidy and leaves W and C alone leaves the
    expense where baseline policy put it.
-9. Differential. Give a dataset the amount the household rule says a unit pays
-   at baseline policy. Then the two rules give the same expense under any
-   policy. With the same input and real programs, repealing a subsidy moves
-   SPM net income by the same amount under both rules, unless the earnings cap
-   binds under either.
+9. Differential. Where the subsidy baseline policy pays does not exceed the
+   price, give a dataset the amount the household rule says a unit pays at
+   baseline policy. Then the two rules give the same expense under any
+   policy. A larger subsidy leaves the unit paying nothing, which hides the
+   price from the dataset rule. With the same input and real programs,
+   repealing a subsidy moves SPM net income by the same amount under both
+   rules, unless the earnings cap binds under either.
 """
 
 from functools import cache
