@@ -533,11 +533,9 @@
     tax_units:
       tax_unit:
         income_tax_before_refundable_credits: 10711.484375
-        # Raw CA target: evidence also applies frozen CA parameter conventions
-        # and the separate r11 California itemized-deduction conformity fix.
-        # Also includes #10034's California itemized conformity (merged), since
-        # this is a two-cause IRA + CA cell.
-        state_income_tax_before_refundable_credits: 4441.45
+        # Also includes #10034's California itemized conformity.
+        # FTB Schedule CA (540), Section C, line 11: $337.50 educator addback x 8% = $27 (R&TC 17072(b)).
+        state_income_tax_before_refundable_credits: 4468.45
 - name: PolicyBench scenario 110 IRA deduction regression
   period: 2026
   absolute_error_margin: 0.02

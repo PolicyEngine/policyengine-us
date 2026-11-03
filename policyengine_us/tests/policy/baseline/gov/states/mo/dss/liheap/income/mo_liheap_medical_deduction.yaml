@@ -1,0 +1,260 @@
+# Missouri LIHEAP medical deduction: $100 a month ($1,200 a year), once per
+# household, when the applicant or spouse (modeled as a tax-unit head or
+# spouse who is a citizen or qualified noncitizen) is 65 or older, or is
+# disabled or blind and receives SSI, Social Security disability, dependent
+# or survivor benefits, veterans or railroad benefits, Medicaid or a Missouri
+# state supplementary payment.
+
+- name: Case 1, applicant who just turned 65 qualifies.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Boundary case: 65 >= 65 -> 100 x 12 = 1,200.
+    mo_liheap_medical_deduction: 1_200
+
+- name: Case 2, applicant aged 64 without a disability does not qualify.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 64
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_liheap_medical_deduction: 0
+
+- name: Case 3, disabled spouse receiving SSI qualifies the household.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 52
+      person2:
+        age: 48
+        is_disabled: true
+        ssi: 11_928
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_liheap_medical_deduction: 1_200
+
+- name: Case 4, disabled applicant with only private disability insurance does not qualify.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: true
+        disability_benefits: 18_000
+        ssi: 0
+        social_security_disability: 0
+        medicaid: 0
+        mo_ssp: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Private long-term disability is not a listed benefit, and no listed
+    # benefit is received.
+    mo_liheap_medical_deduction: 0
+
+- name: Case 5, blind applicant receiving Social Security disability qualifies.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 52
+        is_blind: true
+        social_security_disability: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_liheap_medical_deduction: 1_200
+
+- name: Case 6, elderly grandparent who is a dependent does not qualify the household.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 43
+      person3:
+        age: 74
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # The 74-year-old is neither the applicant nor the spouse.
+    mo_liheap_medical_deduction: 0
+
+- name: Case 7, elderly couple receives a single deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 67
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: PROPANE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # One deduction per household: 1,200, not 2,400.
+    mo_liheap_medical_deduction: 1_200
+
+- name: Case 8, elderly undocumented spouse does not qualify the household.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        immigration_status: CITIZEN
+      person2:
+        age: 67
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # The 67-year-old is undocumented and left out of the household count;
+    # the 2025 manual does not say that such a spouse qualifies the
+    # household, and the 60-year-old citizen is neither elderly nor disabled.
+    mo_liheap_medical_deduction: 0
+
+- name: Case 9, disabled applicant whose only listed benefit is Medicaid qualifies.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        medicaid: 21_297
+        ssi: 0
+        social_security_disability: 0
+        mo_ssp: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # MO HealthNet coverage valued at the model's per-capita Medicaid cost
+    # for the aged and disabled group (21,297); no SSI, Social Security
+    # disability or state supplementary payment. Medicaid is a listed
+    # benefit: 100 x 12 = 1,200.
+    mo_liheap_medical_deduction: 1_200
+
+- name: Case 10, each remaining listed benefit qualifies a disabled applicant.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MO, MO, MO, MO, MO]
+    age: [50, 50, 50, 50, 50]
+    is_disabled: [true, true, true, true, true]
+    ssi: [0, 0, 0, 0, 0]
+    social_security_disability: [0, 0, 0, 0, 0]
+    medicaid: [0, 0, 0, 0, 0]
+    social_security_dependents: [7_200, 0, 0, 0, 0]
+    social_security_survivors: [0, 9_000, 0, 0, 0]
+    veterans_benefits: [0, 0, 12_000, 0, 0]
+    railroad_benefits: [0, 0, 0, 10_800, 0]
+    mo_ssp: [0, 0, 0, 0, 1_200]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+  output:
+    # Five disabled applicants under 65, each with one listed benefit and no
+    # other: disabled adult child benefit 600 a month (7,200), disabled
+    # widow(er) benefit 750 a month (9,000), VA disability compensation 1,000
+    # a month (12,000), railroad disability annuity 900 a month (10,800) and
+    # a Missouri state supplementary payment of 100 a month (1,200, a monthly
+    # input summed over the year). Each qualifies: 100 x 12 = 1,200.
+    mo_liheap_medical_deduction: [1_200, 1_200, 1_200, 1_200, 1_200]

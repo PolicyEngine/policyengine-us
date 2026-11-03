@@ -18,7 +18,11 @@ State-specific eligibility is driven by `parameters/gov/hhs/chip/child/income_li
 
 ## Benefit value
 
-`per_capita_chip` is the state's net-of-cost-sharing spending per CHIP enrollee, from MACPAC Exhibit 33. `per_capita_chip_gross` adds back the state's CMS-21 cost-sharing offsets to recover the gross service value. `chip_gross` is the person-level analog summed within the household.
+`per_capita_chip` generally divides the state's separate-CHIP net spending from MACPAC Exhibit 33 by enrollment from Exhibit 32. `per_capita_chip_gross` adds back the state's CMS-21 cost-sharing offsets to recover the gross service value. `chip` applies the net value to enrolled people; `chip_gross` applies the gross value to eligible people, including those who do not take up coverage.
+
+From model year 2026, California's `CHILD_CCHIP` category uses a child-specific proxy instead of the pooled separate-CHIP average. The [DHCS November 2025 Medi-Cal Estimate, Title 21 annual cost per eligible #page 66,106](https://www.dhcs.ca.gov/hm/wp-content/uploads/2026/05/N25-Medi-Cal-Local-Assistance-Estimate.pdf#page=66) supplies $4,128 for FY2025-26 and $4,637 for FY2026-27. The model assigns these estimates to the calendar year in which the state fiscal year ends: $4,128 in 2026 and $4,637 in 2027. This is an annual valuation convention, not a statutory change effective on January 1. The broader Title 21 child estimate is a proxy, not a measured CCHIP-only cost.
+
+The CCHIP proxy applies to both net and gross values; California currently has no modeled CHIP premium or cost-sharing offset. MCAP (`PREGNANT_FCEP`) retains the existing pooled calculation, approximately $13,119.89 with the current calibration inputs. Other CHIP categories, other states, and pre-2026 valuations retain their existing calculations. The reported spending and enrollment calibration parameters are unchanged.
 
 ## Premiums
 

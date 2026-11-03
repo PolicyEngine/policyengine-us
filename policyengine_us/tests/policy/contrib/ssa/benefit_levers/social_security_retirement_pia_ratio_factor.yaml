@@ -1,0 +1,120 @@
+# Each distinct parameter override combination retains a full model in Core's cache.
+# Group these cases to limit each file to at most five combinations.
+
+- name: Inactive population PIA reform preserves a reported record without ages
+  period: 2026
+  input:
+    social_security_retirement_reported: 12000
+  output:
+    social_security_retirement_pia_ratio_factor: 1
+    social_security_retirement: 12000
+
+- name: Missing or out of range supplied claim ages do not fall back
+  period: 2026
+  input:
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+    people:
+      missing:
+        age: 62
+        social_security_retirement_reported: 12000
+      before_62:
+        age: 62
+        social_security_retirement_claim_age_months: 743
+        social_security_retirement_reported: 12000
+      after_70:
+        age: 72
+        social_security_retirement_claim_age_months: 841
+        social_security_retirement_reported: 12000
+  output:
+    social_security_retirement_pia_ratio_factor: [1, 1, 1]
+    social_security_retirement_pia_ratio_claiming_adjustment: [0, 0, 0]
+    social_security_retirement_pia_ratio_missing_claim_age: [true, true, true]
+    social_security_retirement: [12000, 12000, 12000]
+
+- name: Zero benefit stays zero without a supplied claiming divisor
+  period: 2026
+  input:
+    age: 62
+    social_security_retirement_reported: 0
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+  output:
+    social_security_retirement_pia_ratio_factor: 1
+    social_security_retirement: 0
+    social_security_retirement_inferred_aime: 0
+    social_security_retirement_pia_ratio_missing_claim_age: false
+
+- name: Pre 1983 record remains unreformed and exposes its indicator
+  period: 2026
+  input:
+    age: 106
+    social_security_retirement_worker_eligibility_year: 1982
+    social_security_retirement_claim_age_months: 744
+    social_security_retirement_reported: 12000
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.recompute_existing: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+  output:
+    social_security_retirement_pia_ratio_eligibility_year: 1982
+    social_security_retirement_pia_ratio_factor: 1
+    social_security_retirement_pia_ratio_pre_1983: true
+    social_security_retirement_pia_ratio_pre_1983_count: 1
+    social_security_retirement: 12000
+
+- name: Cohort gate leaves an existing beneficiary unchanged
+  period: 2026
+  input:
+    age: 68
+    social_security_retirement_worker_eligibility_year: 2020
+    social_security_retirement_claim_age_months: 744
+    social_security_retirement_reported: 24000
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+    gov.contrib.ssa.pia.factors.start_year: 2026
+  output:
+    social_security_retirement_pia_ratio_factor: 1
+    social_security_retirement: 24000
+
+- name: The same factor change recomputes an old cohort only when selected
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 68
+    social_security_retirement_worker_eligibility_year: 2020
+    social_security_retirement_claim_age_months: 744
+    social_security_retirement_reported: 24000
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.recompute_existing: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+    gov.contrib.ssa.pia.factors.start_year: 2026
+  output:
+    social_security_retirement_pia_ratio_eligibility_year: 2020
+    social_security_retirement_pia_ratio_claiming_adjustment: 0.7166666666666667
+
+- name: Calculated sources bypass the population inverse under an active reform
+  period: 2026
+  input:
+    social_security_retirement_source: supplied_pia
+    social_security_retirement_base: 10000
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+  output:
+    social_security_retirement_pia_ratio_factor: 1
+    social_security_retirement_pia_ratio_missing_claim_age: false
+    social_security_retirement: 10000
+
+- name: Introduced S770 retains its distinct 18 percent first bend increase
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 62
+    social_security_retirement_claim_age_months: 744
+    social_security_retirement_reported: 18117.12
+    gov.ssa.social_security.pia.bend_points.first: 960
+    gov.ssa.social_security.pia.bend_points.second: 5785
+    gov.contrib.congress.s770.section_2.in_effect: true
+  output:
+    social_security_retirement_inferred_aime: 5000
+    social_security_retirement_pia_ratio_factor: 1.0727002967
+    social_security_retirement: 19434.24

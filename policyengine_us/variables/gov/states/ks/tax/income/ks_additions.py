@@ -12,3 +12,5 @@ class ks_additions(Variable):
         "https://www.ksrevenue.gov/pdf/ip22.pdf",
     )
     defined_for = StateCode.KS
+
+    adds = ["ks_other_additions"]

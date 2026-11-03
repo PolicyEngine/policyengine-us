@@ -1,0 +1,234 @@
+# Source: ADECA FY2026 LIHEAP Policy Manual (page numbers below) and its Appendix D Payment
+# Assistance Chart (page 57), and the FY2026 State Plan, section 2.5 (pages 9-10). Limits are
+# 150% of the 2025 guideline ($15,650 plus $5,500 per added person) divided by 12, rounded
+# half up to the printed dollar. Full-time wages use the $7.25 federal minimum wage (29
+# U.S.C. 206(a)(1)(C); Alabama has no state minimum wage) for 2,080 hours: 15,080.
+
+- name: Case 1, a five-person family on one full-time minimum wage receives the four-person amount.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+        employment_income: 15_080
+        ssi: 0
+      person2:
+        age: 33
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 0
+      person4:
+        age: 7
+        immigration_status: CITIZEN
+        ssi: 0
+      person5:
+        age: 4
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        heating_type: NATURAL_GAS
+        # About $100 a month for a gas-heated home.
+        gas_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    # Five citizens (manual pages 6-7).
+    al_liheap_household_size: 5
+    # Wages count from age 18 (page 17): 15,080.
+    al_liheap_countable_income: 15_080
+    # (15,650 + 4 x 5,500) x 1.5 / 12 = 4,706.25, printed $4,706 (page 57); x 12 = 56,472.
+    al_liheap_income_limit: 56_472
+    # 15,080 / 12 = 1,256.67 is at most floor(4,706 / 3 + 0.5) = 1,569 (plan page 9).
+    al_liheap_income_band: 1
+    # A gas bill and income within the limit (pages 13, 21).
+    al_liheap_eligible: true
+    # More than four persons receive the four-person amount (page 57 note):
+    # Natural Gas, size 4, first level = 510.
+    al_liheap_base_payment: 510
+    # 510 plus the $100 IIJA supplement (plan page 10).
+    al_liheap: 610
+
+# Manual page 22 example: an electric household of four with income of $1,000 a month and a
+# $100 monthly HUD utility allowance. The example's $410 is not the chart amount; the chart
+# pays $470.
+- name: Case 2, a voucher household of four has its monthly utility allowance deducted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        immigration_status: CITIZEN
+        employment_income: 12_000
+        ssi: 0
+      person2:
+        age: 13
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 9
+        immigration_status: CITIZEN
+        ssi: 0
+      person4:
+        age: 4
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: ELECTRICITY
+        # An out-of-pocket electric bill of about $100 a month (page 21).
+        pre_subsidy_electricity_expense: 1_200
+        receives_housing_assistance: true
+        al_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+        # $100 a month, as in the manual example.
+        hud_utility_allowance: 1_200
+  output:
+    al_liheap_household_size: 4
+    al_liheap_countable_income: 12_000
+    # (15,650 + 3 x 5,500) x 1.5 / 12 = 4,018.75, printed $4,019; x 12 = 48,228.
+    al_liheap_income_limit: 48_228
+    # $1,000 a month is within "$0 - $1,340" (page 57).
+    al_liheap_income_band: 1
+    # Subsidized, but pays its electric bill out of pocket (page 21).
+    al_liheap_eligible: true
+    # Electric, size 4, first level (page 57).
+    al_liheap_base_payment: 470
+    # 470 - 1,200 / 12 = 370 after the allowance (page 22), plus the $100 supplement = 470.
+    al_liheap: 470
+
+- name: Case 3, an aged SSI recipient heating with wood has the computed SSI counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: WOOD
+        # About $50 a month of firewood over the year.
+        wood_expense: 600
+        al_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    # No other income: the full 2026 federal benefit rate, $994 a month (90 FR 49047).
+    ssi: 11_928
+    # SSI counts (pages 17-18): 994 x 12 = 11,928.
+    al_liheap_countable_income: 11_928
+    # 15,650 x 1.5 / 12 = 1,956.25, printed $1,956; x 12 = 23,472.
+    al_liheap_income_limit: 23_472
+    # $994 a month is within "$653 - $1,305" (page 57).
+    al_liheap_income_band: 2
+    al_liheap_eligible: true
+    # Wood/Coal/Kerosene, size 1, second level (pages 9, 57).
+    al_liheap_base_payment: 370
+    # 370 plus the $100 supplement.
+    al_liheap: 470
+
+# SSA Monthly Statistical Snapshot, September 2026, Table 2: the average retired-worker
+# benefit is $2,088.79 a month and the average benefit of a retired worker's spouse $986.68.
+- name: Case 4, a retired couple with average Social Security benefits is over the income limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        social_security_retirement: 25_065.48
+        ssi: 0
+      person2:
+        age: 68
+        immigration_status: CITIZEN
+        social_security_dependents: 11_840.16
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        al_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_household_size: 2
+    # 2,088.79 x 12 = 25,065.48 and 986.68 x 12 = 11,840.16, both counted gross (pages 17-18).
+    al_liheap_countable_income: 36_905.64
+    # (15,650 + 5,500) x 1.5 / 12 = 2,643.75, printed $2,644; x 12 = 31,728.
+    al_liheap_income_limit: 31_728
+    # 3,075.47 a month is above the size-two second-level top of 1,763.
+    al_liheap_income_band: 3
+    # Heat in unsubsidized rent meets the responsibility test (page 22), but
+    # 3,075.47 a month exceeds the $2,644 limit (page 13).
+    al_liheap_eligible: false
+    al_liheap: 0
+
+# A single parent working full time at the minimum wage with two young children, heating
+# with propane: the second income level for three people.
+- name: Case 5, a single parent of two with propane heat is in the second income level.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 29
+        immigration_status: CITIZEN
+        employment_income: 15_080
+        ssi: 0
+      person2:
+        age: 6
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: PROPANE
+        # About $100 a month of propane over the year.
+        bottled_gas_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_household_size: 3
+    # Wages count from age 18 (page 17): 15,080.
+    al_liheap_countable_income: 15_080
+    # (15,650 + 2 x 5,500) x 1.5 / 12 = 3,331.25, printed $3,331 (page 57); x 12 = 39,972.
+    al_liheap_income_limit: 39_972
+    # 15,080 / 12 = 1,256.67 is within "$1,111 - $2,221" (page 57): floor(3,331 / 3 + 0.5)
+    # = 1,110 and 2 x 1,110 + 1 = 2,221 (plan page 9).
+    al_liheap_income_band: 2
+    # A propane bill and income within the limit (pages 13, 21).
+    al_liheap_eligible: true
+    # Liquid Propane, size 3, second level (page 57).
+    al_liheap_base_payment: 490
+    # 490 plus the $100 IIJA supplement (plan page 10).
+    al_liheap: 590

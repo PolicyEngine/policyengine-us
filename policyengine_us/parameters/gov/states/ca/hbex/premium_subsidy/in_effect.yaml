@@ -1,13 +1,15 @@
 description: California provides state premium subsidies when this is true under the California Premium Subsidy program.
 values:
   # The provision runs from PY2026, matching the New Mexico and Maryland approach
-  # (ending 2028-01-01). PY2026 and PY2027 both have board-adopted, verified
-  # program designs: the PY2027 Program Design V4 (adopted Board Resolution
-  # 2026-22, June 18 2026; funded by the 2026 Budget Act $300M HCARF) changes the
-  # schedule, so PY2027 is NOT a carry-forward of PY2026 (see the applicable
-  # percentage and fpl_limit files). Section 100800(c) has the Exchange adopt the
-  # design annually upon appropriation and Section 100825 creates no entitlement,
-  # so the provision ends 2028-01-01 absent a verified PY2028 design.
+  # (ending 2028-01-01). PY2026 and PY2027 both have adopted, verified program
+  # designs: the Final 2027 Program Design (adopted under item 4800-101-3381 of
+  # the Budget Act of 2026; the 2027 Insight reports $300M appropriated from
+  # the Health Care Affordability Reserve Fund) changes the schedule, so PY2027
+  # is NOT a carry-forward of PY2026 (see the applicable percentage and
+  # fpl_limit files).
+  # Section 100800(c) has the Exchange adopt the design annually upon
+  # appropriation and Section 100825 creates no entitlement, so the provision
+  # ends 2028-01-01 absent a verified PY2028 design.
   #
   # The Program Design's enhanced-PTC trigger ("state subsidy applies if the
   # federal enhanced PTC is not extended by Sept 30 2025") fired, so the residual
@@ -25,6 +27,10 @@ metadata:
   reference:
     - title: 2026 California Premium Subsidy Program Design, preamble
       href: https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=1
+    - title: Final 2027 California Premium Subsidy Program Design, preamble
+      href: https://hbex.coveredca.com/data-research/Final-2027-California-Premium-Subsidy-Program-Design.pdf#page=1
+    - title: 2027 California State Premium Subsidy Program Insight, background
+      href: https://hbex.coveredca.com/stakeholders/PDFs/2026-03_StatePremiumSub2027_Insight_Final.pdf#page=1
     - title: CA Gov. Code Section 100800(c) (Exchange adopts annual program design upon appropriation)
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=100800.
     - title: CA Gov. Code Section 100825

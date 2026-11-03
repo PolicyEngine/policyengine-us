@@ -36,9 +36,12 @@ class ut_homeowner_renter_relief_pre_one_claimant_eligible(Variable):
         claimant_is_tax_unit_dependent = tax_unit.any(
             claimants & tax_unit.members("is_tax_unit_dependent", period)
         )
-        claimant_is_dependent_elsewhere = tax_unit(
-            "head_is_dependent_elsewhere", period
-        ) | tax_unit("spouse_is_dependent_elsewhere", period)
+        # Utah Code 59-2a-205(4) and 59-2a-305(2)(a) turn on another
+        # taxpayer actually claiming the exemption or dependent credit.
+        claimant_is_dependent_elsewhere = tax_unit.any(
+            claimants
+            & tax_unit.members("claimed_as_dependent_on_another_return", period)
+        )
         claimant_is_dependent = (
             claimant_is_tax_unit_dependent | claimant_is_dependent_elsewhere
         )
