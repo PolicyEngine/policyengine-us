@@ -18,29 +18,20 @@ class ca_liheap_basic_eligible(Variable):
         )
         expense = spm_unit("heating_expense", period)
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
-        subsidized = spm_unit(
-            "receives_housing_assistance", period
-        ) | spm_unit.household("is_in_public_housing", period)
         heating_type = spm_unit("heating_type", period)
-        # The guide asks for energy costs and pays electric or gas accounts, and
-        # no source requires a bill for the primary fuel. A gas, electric or
-        # solar home therefore qualifies on either utility bill. Other fuels
-        # keep their own bill: no source says whether a propane home may take
-        # the utility benefit on its electric account.
-        utility_heat = np.isin(heating_type.decode_to_str(), p.utility_heating_fuels)
+        # The guide asks for energy costs and pays electric or gas accounts, so
+        # a bill on either account is an energy cost whatever the heating fuel.
         utility_bills = add(
             spm_unit, period, ["pre_subsidy_electricity_expense", "gas_expense"]
         )
         approved_wood_cost = (heating_type == heating_type.possible_values.WOOD) & (
             spm_unit("ca_liheap_approved_wood_delivery_cost", period) > 0
         )
-        # Unsubsidized heat-in-rent is an energy-responsibility proxy; a
-        # separately reported charge also permits subsidized households.
+        # Heat in rent stands in for the documented charge of guide 3.3, for
+        # subsidized tenants too. A subsidized household with neither a bill nor
+        # heat in rent has no energy cost (guide 1.6).
         energy_cost = (
-            (expense > 0)
-            | (utility_heat & (utility_bills > 0))
-            | (heat_in_rent & ~subsidized)
-            | approved_wood_cost
+            (expense > 0) | (utility_bills > 0) | heat_in_rent | approved_wood_cost
         )
         return (
             energy_cost

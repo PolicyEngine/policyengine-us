@@ -30,4 +30,13 @@ class ca_liheap_countable_income(Variable):
                 "pre_tax_health_insurance_premiums",
             ],
         )
-        return max_(gross - support_paid - medical_premiums, 0)
+        # The guide deducts Medicare premiums generally. That aggregate omits
+        # Part A, and a supplied direct total already includes Medicare.
+        person = spm_unit.members
+        part_a_premium = where(
+            person("health_insurance_premiums", period) != 0,
+            0,
+            person("medicare_part_a_premium", period),
+        )
+        deductions = support_paid + medical_premiums + spm_unit.sum(part_a_premium)
+        return max_(gross - deductions, 0)

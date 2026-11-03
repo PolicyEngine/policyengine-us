@@ -1020,6 +1020,14 @@ programs:
         parameter_prefix: gov.states.az.des.liheap
         verified_years: "2026"
         notes: FY2026 Standard benefit covering heating and cooling bills from the point-based benefit matrix. Crisis assistance, water for evaporative cooling and weatherization are out of scope.
+      - state: CA
+        status: partial
+        name: California utility HEAP
+        full_name: California Home Energy Assistance Program utility heating component
+        variable: ca_liheap_utility_heating
+        parameter_prefix: gov.states.ca.csd.liheap
+        verified_years: "2026"
+        notes: FY2026 regular utility heating on gas and electric accounts, Madera propane and fuel-oil heating, and statewide wood heating from an approved delivery cost; other liquid-fuel service areas and vendor-service supplements are not modeled. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: GA
         status: partial
         name: Georgia LIHEAP
@@ -1314,14 +1322,6 @@ programs:
         parameter_prefix: gov.states.wy.dfs.lieap
         verified_years: "2026"
         notes: FY2026 regular heating from the published fuel cost standards. Crisis, cooling, weatherization and equipment assistance are out of scope.
-      - state: CA
-        status: partial
-        name: California utility HEAP
-        full_name: California Home Energy Assistance Program utility heating component
-        variable: ca_liheap_utility_heating
-        parameter_prefix: gov.states.ca.csd.liheap
-        verified_years: "2026"
-        notes: FY2026 regular gas, electric and solar utility heating, Madera propane and fuel-oil heating, and statewide wood heating from an approved delivery cost; other liquid-fuel service areas and vendor-service supplements are not modeled. Crisis, cooling, weatherization and equipment assistance are out of scope.
 
   # --- SSA programs ---
   - id: ssi

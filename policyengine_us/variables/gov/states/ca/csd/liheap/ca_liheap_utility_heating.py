@@ -22,6 +22,4 @@ class ca_liheap_utility_heating(Variable):
         base = p.utility_base_amount[safe_county][group]
         size = spm_unit("ca_liheap_household_size", period)
         extra_people = clip(size - 1, 0, p.maximum_payment_household_size - 1)
-        return where(
-            supported_county, base + p.additional_person_amount * extra_people, 0
-        )
+        return base + p.additional_person_amount * extra_people

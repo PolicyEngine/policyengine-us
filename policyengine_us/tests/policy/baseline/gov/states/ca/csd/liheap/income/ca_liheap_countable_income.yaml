@@ -503,3 +503,54 @@
         county: ALAMEDA_COUNTY_CA
   output:
     ca_liheap_countable_income: 6_000
+
+# Guide pp. 233, 235 deduct Medicare premiums generally. With 20 quarters the 2026
+# Part A premium is 565 x 12 = 6,780 and Part B is 202.90 x 12 = 2,434.80, so
+# 44,000 - 2,434.80 - 6,780 = 34,785.20, group 4, Fresno $434. Without the Part A
+# deduction, 41,565.20 is above the $39,979.92 limit. A supplied direct total
+# already includes Medicare: 44,000 - 1,200 = 42,800.
+- name: Case 10, Part A premiums are deducted unless a direct total includes them.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security_retirement: 44_000
+        medicare_quarters_of_coverage: 20
+      person2:
+        age: 70
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security_retirement: 44_000
+        medicare_quarters_of_coverage: 20
+        health_insurance_premiums: 1_200
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+  output:
+    ca_liheap_countable_income: [34_785.20, 42_800]
+    ca_liheap_utility_heating: [434, 0]

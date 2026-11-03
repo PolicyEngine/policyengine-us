@@ -11,7 +11,7 @@ class ca_liheap_covered_liquid_heating(Variable):
     )
     defined_for = "ca_liheap_liquid_heating_covered"
     reference = (
-        # PDF pages 10,185-188
+        # PDF pages 10,185-188,364
         "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=10",
         # PDF pages 191,233-234
         "https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191",
@@ -43,14 +43,18 @@ class ca_liheap_covered_liquid_heating(Variable):
             + p.payment.liquid_burden_addition[burden_group]
             + p.payment.liquid_vulnerable_amount * vulnerable
         )
-        eligible = spm_unit("ca_liheap_basic_eligible", period) & (
-            spm_unit("ca_liheap_liquid_priority_points", period)
-            >= p.local.madera.minimum_points
+        # WPO pays the fuel vendor, so a utility bill alone does not qualify.
+        own_fuel_cost = (spm_unit("heating_expense", period) > 0) | spm_unit(
+            "heat_expense_included_in_rent", period
+        )
+        eligible = (
+            spm_unit("ca_liheap_basic_eligible", period)
+            & own_fuel_cost
+            & (
+                spm_unit("ca_liheap_madera_priority_points", period)
+                >= p.local.madera.minimum_points
+            )
         )
         # Ordinary schedule only: no discretionary vendor-service supplement.
         # A zero with coverage=False is unsupported, not an entitlement denial.
-        return where(
-            eligible & supported_county,
-            min_(amount, p.payment.wpo_maximum),
-            0,
-        )
+        return where(eligible, min_(amount, p.payment.wpo_maximum), 0)

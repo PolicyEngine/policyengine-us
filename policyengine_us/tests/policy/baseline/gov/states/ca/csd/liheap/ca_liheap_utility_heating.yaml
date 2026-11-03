@@ -1,7 +1,8 @@
 # PDF pages 182-184,202-203,217-219,246-247,279
 # https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=182
 # Utility component only; unresolved regular WPO awards are not tested or denied.
-# Every integrated award is calculated from raw facts, with no forced intermediates.
+# Integrated awards are calculated from raw facts. The county-table cases supply
+# Madera's priority points; Case 16 calculates them.
 
 - name: Case 1, every county utility table amount in poverty group 1.
   period: 2026
@@ -437,6 +438,7 @@
       spm_unit20:
         members: [person20]
         heating_type: NATURAL_GAS
+        ca_liheap_madera_priority_points: 20
         gas_expense: 100
         snap: 0
         tanf: 0
@@ -1494,6 +1496,7 @@
       spm_unit20:
         members: [person20]
         heating_type: NATURAL_GAS
+        ca_liheap_madera_priority_points: 20
         gas_expense: 100
         snap: 0
         tanf: 0
@@ -2551,6 +2554,7 @@
       spm_unit20:
         members: [person20]
         heating_type: NATURAL_GAS
+        ca_liheap_madera_priority_points: 20
         gas_expense: 100
         snap: 0
         tanf: 0
@@ -3608,6 +3612,7 @@
       spm_unit20:
         members: [person20]
         heating_type: NATURAL_GAS
+        ca_liheap_madera_priority_points: 20
         gas_expense: 100
         snap: 0
         tanf: 0
@@ -5014,8 +5019,8 @@
 - name: Case 11, housing small bills and vulnerability do not add unsupported limits.
   period: 2026
   # Alameda base 484 can exceed a 100 bill. Utility matrix has no separate
-  # vulnerability addition. Unsubsidized heat-in-rent is supported by proxy;
-  # subsidized rent needs a reported positive energy charge. NONE has no heat.
+  # vulnerability addition. Heat-in-rent is supported by proxy, subsidized or
+  # not (plan 2.3, guide 3.3). NONE has no heat.
   input:
     people:
       person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
@@ -5102,7 +5107,7 @@
         state_code: CA
         county: ALAMEDA_COUNTY_CA
   output:
-    ca_liheap_utility_heating: [484, 484, 484, 0, 484, 0]
+    ca_liheap_utility_heating: [484, 484, 484, 484, 484, 0]
 
 # Guide pp. 264-265: a solar customer's energy cost is the electric and gas
 # charges, and an out-of-pocket cost is required. $1,000 a month is group 1 in
@@ -5141,12 +5146,12 @@
     ca_liheap_utility_eligible: [true, false]
     ca_liheap_utility_heating: [484, 0]
 
-# Guide pp. 66, 193, 205: energy costs and electric or gas bills, with no
+# Guide pp. 66, 193, 205, 221: energy costs and electric or gas bills, with no
 # primary-fuel condition. A subsidized tenant with gas heat in rent and an
 # electric bill, and an electric-heated home with only a gas bill, both get the
-# group 1 Alameda $484. A propane home with only an electric bill keeps its own
-# fuel test: not basic eligible, so $0.
-- name: Case 13, gas and electric homes qualify on either utility bill while propane keeps its own bill.
+# group 1 Alameda $484. A propane home with only an electric bill gets the
+# group 1 Fresno $716 on that account.
+- name: Case 13, every known fuel qualifies on either utility bill.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -5195,8 +5200,8 @@
         state_code: CA
         county: FRESNO_COUNTY_CA
   output:
-    ca_liheap_basic_eligible: [true, true, false]
-    ca_liheap_utility_heating: [484, 484, 0]
+    ca_liheap_basic_eligible: [true, true, true]
+    ca_liheap_utility_heating: [484, 484, 716]
 
 # Guide p. 249. Wages 40,500 exceed the 39,979.92 one-person limit (p. 184);
 # after 1,000 of job expenses, 39,500 is 3,291.67 a month, group 4: Alameda $308.
@@ -5242,3 +5247,186 @@
         county: ALAMEDA_COUNTY_CA
   output:
     ca_liheap_utility_heating: [308, 0]
+
+# Contract 8.1.2 (p. 363) allows one HEAP or WPO payment, so HEAP pays only where
+# the liquid and wood components are $0. Wages of $12,000 are group 1 throughout.
+# Fresno has no liquid coverage, so the propane home takes HEAP on its electric
+# bill. A wood home with an approved delivery takes that instead. Madera burden is
+# 2,040 / 12,000 = 17%, for 10 + 10 = 20 points: with a $12 propane bill WPO pays
+# 411 + 105 = 516; with no propane bill WPO pays nothing (contract 8.1.5.2, p. 364)
+# and HEAP pays 702. NONE and UNSPECIFIED get $0 even with a utility bill.
+- name: Case 15, another fuel takes the utility benefit only where no other component pays.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+      person4: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+      person5: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+      person6: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+      person7: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: PROPANE
+        bottled_gas_expense: 600
+        pre_subsidy_electricity_expense: 1_200
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: WOOD
+        pre_subsidy_electricity_expense: 1_200
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: WOOD
+        pre_subsidy_electricity_expense: 1_200
+        ca_liheap_approved_wood_delivery_cost: 600
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person4]
+        heating_type: PROPANE
+        bottled_gas_expense: 12
+        pre_subsidy_electricity_expense: 2_028
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit5:
+        members: [person5]
+        heating_type: PROPANE
+        pre_subsidy_electricity_expense: 2_040
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit6:
+        members: [person6]
+        heating_type: NONE
+        pre_subsidy_electricity_expense: 1_200
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit7:
+        members: [person7]
+        heating_type: UNSPECIFIED
+        pre_subsidy_electricity_expense: 1_200
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+      household3:
+        members: [person3]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+      household4:
+        members: [person4]
+        state_code: CA
+        county: MADERA_COUNTY_CA
+      household5:
+        members: [person5]
+        state_code: CA
+        county: MADERA_COUNTY_CA
+      household6:
+        members: [person6]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household7:
+        members: [person7]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_utility_heating: [716, 716, 0, 0, 702, 0, 0]
+    ca_liheap_wood_heating: [0, 0, 600, 0, 0, 0, 0]
+    ca_liheap_covered_liquid_heating: [0, 0, 0, 516, 0, 0, 0]
+
+# Madera packet pp. 189, 233-234 apply the 20-point minimum to HEAP. $2,500 a month
+# is group 4 (4 points) and a 2% burden adds 4, so 8 points pay $0. At $1,000 a
+# month, group 1 (10 points): a 17% burden adds 10, so 20 points pay 702; a 15%
+# burden adds 8, so 18 points pay $0. A zero-income home has no burden group or
+# points and stays at 702. Fresno has no recovered minimum: group 4, 434.
+- name: Case 16, Madera's priority minimum applies to the utility benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 30_000}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+      person4: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 0}
+      person5: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 30_000}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 2_040
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_800
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit5:
+        members: [person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: MADERA_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: MADERA_COUNTY_CA
+      household3:
+        members: [person3]
+        state_code: CA
+        county: MADERA_COUNTY_CA
+      household4:
+        members: [person4]
+        state_code: CA
+        county: MADERA_COUNTY_CA
+      household5:
+        members: [person5]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+  output:
+    ca_liheap_energy_burden_group: [1, 4, 3, 0, 0]
+    ca_liheap_madera_priority_points: [8, 20, 18, 0, 0]
+    ca_liheap_utility_heating: [0, 702, 0, 702, 434]

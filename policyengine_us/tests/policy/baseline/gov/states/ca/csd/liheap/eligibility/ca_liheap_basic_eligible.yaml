@@ -8,8 +8,8 @@
 
 # State-plan pp193/205/279: qualified adult, countable-income limit and
 # energy responsibility. Heat-in-rent without a separately supplied bill
-# retains the existing unsubsidized-housing proxy; subsidized housing needs
-# a positive reported charge. The 17-year-old is assumed not emancipated.
+# qualifies, for subsidized tenants too (plan 2.3, guide 3.3). The 17-year-old
+# is assumed not emancipated.
 # No fixture supplies a calculated CA LIHEAP intermediate.
 - name: "Case 1, shared income adult and energy responsibility requirements preserve utility behavior."
   period: 2026
@@ -168,7 +168,7 @@
         state_code: "OR"
         county: "MULTNOMAH_COUNTY_OR"
   output:
-    ca_liheap_basic_eligible: [true, true, true, true, true, false, true, false, true, false, false, false]
+    ca_liheap_basic_eligible: [true, true, true, true, true, true, true, false, true, false, false, false]
     ca_liheap_utility_eligible: [false, false, true, true, false, false, false, false, false, false, false, false]
 
 # Only a positive approved WOOD delivery creates responsibility
@@ -252,8 +252,8 @@
     ca_liheap_wood_heating: [600, 0, 0, 0, 0, 0, 0]
 
 # Public housing is subsidized housing: heat in rent without a separate charge
-# does not establish energy responsibility, while a positive reported propane
-# charge does, as for voucher holders in Case 1 (s6 and s7).
+# establishes energy responsibility, and so does a positive reported propane
+# charge, as for voucher holders in Case 1 (s6 and s7).
 - name: Case 3, public housing follows the subsidized heat-in-rent rule.
   period: 2026
   input:
@@ -291,5 +291,5 @@
         county: MADERA_COUNTY_CA
         is_in_public_housing: true
   output:
-    ca_liheap_basic_eligible: [false, true]
+    ca_liheap_basic_eligible: [true, true]
 

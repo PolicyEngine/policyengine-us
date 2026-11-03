@@ -67,7 +67,7 @@
   output:
     ca_liheap_income_group: [1, 2, 3, 4]
     ca_liheap_energy_burden_group: [2, 2, 2, 2]
-    ca_liheap_liquid_priority_points: [16, 14, 12, 10]
+    ca_liheap_madera_priority_points: [16, 14, 12, 10]
 
 # Income group 1 gives 10 points. The first six households have 10% burden
 # (1_200 / 12_000), group 1, adding 4. Under 3 adds 15, under 6 adds 10;
@@ -188,7 +188,7 @@
     ca_liheap_countable_income: [12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 9_565.20, 9_565.20]
     ca_liheap_income_group: [1, 1, 1, 1, 1, 1, 1, 1]
     ca_liheap_energy_burden_group: [1, 1, 1, 1, 1, 1, 2, 2]
-    ca_liheap_liquid_priority_points: [29, 24, 24, 14, 14, 24, 26, 31]
+    ca_liheap_madera_priority_points: [29, 24, 24, 14, 14, 24, 26, 31]
 
 # Income10+burden4+young-child10+under3child5+elderly10+age70plus5
 # +disability10=54. Two elders, two young children and two disabled people
@@ -215,7 +215,7 @@
         state_code: "CA"
         county: "MADERA_COUNTY_CA"
   output:
-    ca_liheap_liquid_priority_points: [54]
+    ca_liheap_madera_priority_points: [54]
 
 # Madera p191 awards disability points for a household member without an
 # adult or citizenship restriction; the size rule separately excludes the
@@ -254,4 +254,4 @@
         county: "MADERA_COUNTY_CA"
   output:
     ca_liheap_household_size: [2, 1]
-    ca_liheap_liquid_priority_points: [24, 24]
+    ca_liheap_madera_priority_points: [24, 24]
