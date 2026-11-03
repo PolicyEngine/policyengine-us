@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
     _ssi_couple_budget_total,
+    _ssi_couple_total,
 )
 
 
@@ -35,7 +36,7 @@ class is_209b_ssi_recipient_income_eligible_for_medicaid(Variable):
         income_after_spenddown = where(
             person("ssi_couple_computation_applies", period),
             _ssi_couple_budget_total(person, period, budget),
-            person.marital_unit.sum(budget),
+            _ssi_couple_total(person, period, budget),
         )
 
         # The limit is per person (Missouri's blind standard can differ
