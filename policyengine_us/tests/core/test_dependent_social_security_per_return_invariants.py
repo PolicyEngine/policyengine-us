@@ -1,8 +1,9 @@
 """Invariants for a tax unit dependent's Social Security in per-return readers.
 
-Social Security benefits are income of "the person who has the legal right to
-receive the benefits" (IRS Pub. 915, 2025, "Who is taxed"), so a tax unit
-dependent's benefits belong on the dependent's own return.
+Social Security benefits are included in the taxable income of "the person
+who has the legal right to receive the benefits" (IRS Pub. 915, 2025, "Who is
+taxed"), so a tax unit dependent's benefits are the dependent's, not the
+filers'.
 `filer_tax_exempt_social_security` is the nontaxable part of the head's and
 spouse's benefits. These measures count the filers' own return:
 
@@ -11,7 +12,10 @@ spouse's benefits. These measures count the filers' own return:
   1040-SR, line 11b, plus any nontaxable items" (2025 Schedule A
   instructions). A dependent's other nontaxable items (SSI, tax-exempt
   interest, veterans' benefits, workers' compensation, nontaxable pensions
-  and retirement distributions) are the dependent's own too;
+  and retirement distributions) are the dependent's own too. The table also
+  counts the family's TANF, which a dependent's own benefits can lower
+  (Texas counts a child's Social Security as unearned income), so the
+  population's TANF is zero;
 - Colorado's sales tax refund income, `co_modified_agi`: C.R.S.
   39-22-2003(1.5)(b) adds the "Social security benefits excluded from
   federal adjusted gross income", and subsection (3) measures the qualified
@@ -218,7 +222,8 @@ def _situation(units, scale=1, moved_to_head=False):
                     **_amounts(dependent, scale=0 if moved_to_head else scale),
                 }
             tax_units[f"tu_{key}"] = {"members": members}
-            spm_units[f"spm_{key}"] = {"members": members}
+            # TANF is a family amount that a dependent's benefits can move.
+            spm_units[f"spm_{key}"] = {"members": members, "tanf": {YEAR: 0}}
             families[f"fam_{key}"] = {"members": members}
             households[f"hh_{key}"] = {
                 "members": members,

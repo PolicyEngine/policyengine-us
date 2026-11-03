@@ -127,7 +127,7 @@
     people:
       filer:
         age: 50
-        employment_income: 25_000
+        employment_income: 29_600
       dependent_parent:
         age: 80
         is_tax_unit_dependent: true
@@ -146,11 +146,11 @@
         members: [filer, dependent_parent]
         state_code: TX
   output:
-    adjusted_gross_income: 25_000
+    adjusted_gross_income: 29_600
     filer_tax_exempt_social_security: 0
-    # 25_000 is in the $20,000-$30,000 row. Counting the parent's 27_800 of
-    # benefits and nontaxable income would give 52_800, the $50,000-$60,000
-    # row.
+    # 29_600 is in the $20,000-$30,000 row. Any one of the parent's items
+    # would lift it out of that row, even the 500 of interest (30_100), and
+    # all 27_800 together would give 57_400, the $50,000-$60,000 row.
     state_sales_tax_income_bracket: 2
 
 - name: The filers' own nontaxable items still count beside a dependent's

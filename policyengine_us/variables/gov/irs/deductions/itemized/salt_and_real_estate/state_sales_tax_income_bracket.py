@@ -18,8 +18,9 @@ class state_sales_tax_income_bracket(Variable):
         # "Your 2025 income is the amount shown on your Form 1040 or 1040-SR,
         # line 11b, plus any nontaxable items".
         "https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=5",
-        # IRS Pub. 915 (2025), "Who is taxed": benefits are income of "the
-        # person who has the legal right to receive the benefits".
+        # IRS Pub. 915 (2025), "Who is taxed": benefits are included in the
+        # taxable income of "the person who has the legal right to receive
+        # the benefits".
         "https://www.irs.gov/pub/irs-prior/p915--2025.pdf#page=5",
     )
 
