@@ -668,13 +668,10 @@
         members: [claimed_head, unclaimed_spouse, unclaimed_head, claimed_spouse, neither_claimed_head, neither_claimed_spouse]
         state_code: IL
   output:
-    tax_units:
-      head_claimed:
-        il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
-      spouse_claimed:
-        il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
-      neither_claimed:
-        il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
+    # One value per tax unit, in input order: head_claimed, spouse_claimed,
+    # neither_claimed.
+    il_personal_exemption_eligibility_status:
+      [PARTIALLY_ELIGIBLE, PARTIALLY_ELIGIBLE, BOTH_ELIGIBLE]
 
 - name: An actual claim of a child does not exclude the unclaimed filer's exemption
   period: 2025
