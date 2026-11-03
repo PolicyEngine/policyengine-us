@@ -421,9 +421,7 @@ def test_benchmarks_before1984_rejected_at_each_history_entry_point(eligibility)
         entitlement_month=f"{eligibility}-02",
         eligibility_year=eligibility,
     )
-    # E = 1982 meets the shared 1983 refusal first; E = 1983 meets the
-    # history route's own 1984 refusal.
-    with pytest.raises(ValueError, match=EARLY if eligibility == 1983 else "1983"):
+    with pytest.raises(ValueError, match=EARLY):
         record.benchmark()
     if eligibility == 1983:
         # Supplied AIME and PIA sources keep their own 1983 start.

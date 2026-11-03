@@ -262,10 +262,10 @@ class SuppliedRecord:
             raise ValueError(
                 "Own-retirement eligibility year must equal age-62 attainment year"
             )
-        if year < 1983:
-            raise ValueError("Computation benchmarks before 1983 are unsupported")
         if self.source == "history" and year < EARLIEST_HISTORY_ELIGIBILITY_YEAR:
             raise ValueError(EARLY_BENCHMARK_MESSAGE)
+        if year < 1983:
+            raise ValueError("Computation benchmarks before 1983 are unsupported")
         # RS 00201.001: the worker must be 62 throughout the first reduced
         # entitlement month. Birthdays on day 1 or 2 permit the birth month.
         earliest = year * 12 + self.birth_date.month - 1
