@@ -1790,7 +1790,7 @@ programs:
     variable: income_based_repayment_payment
     parameter_prefix: gov.ed.student_loans.income_based_repayment
     verified_start_year: 2026
-    notes: Monthly payment (15% or 10% for new borrowers of income above 150% of the poverty guideline on the latest return's AGI, spousal and FFEL proration, cap at the borrower's own 10-year standard payment on their current Direct and FFEL balances, small payment adjustment); zero for borrowers with a Direct Loan made on or after July 1, 2026; tax-dependent borrowers treated as ineligible; interest and forgiveness not modeled; not subtracted from household net income
+    notes: Monthly payment (15% or 10% for new borrowers of income above 150% of the poverty guideline on the latest return's AGI, cap at the borrower's own 10-year standard payment on their current Direct and FFEL balances, then spousal and FFEL proration, small payment adjustment); zero for borrowers with a Direct Loan made on or after July 1, 2026; tax-dependent borrowers treated as ineligible; interest and forgiveness not modeled; not subtracted from household net income
 
   - id: save_plan
     name: SAVE plan (counterfactual)
@@ -1814,7 +1814,7 @@ programs:
     variable: pay_as_you_earn_payment
     parameter_prefix: gov.ed.student_loans.pay_as_you_earn
     verified_start_year: 2026
-    notes: Monthly payment (10% of income above 150% of the poverty guideline on the latest return's AGI, spousal and FFEL proration, cap at the borrower's own 10-year standard payment on their current Direct and FFEL balances, small payment adjustment); tax-dependent borrowers treated as ineligible; zero for borrowers with a Direct Loan made on or after July 1, 2026; enrollment limits (new borrower, repaying under PAYE on July 1, 2024) and the June 30, 2028 end not modeled; interest and forgiveness not modeled; not subtracted from household net income
+    notes: Monthly payment (10% of income above 150% of the poverty guideline on the latest return's AGI, cap at the borrower's own 10-year standard payment on their current Direct and FFEL balances, then spousal and FFEL proration, small payment adjustment); tax-dependent borrowers treated as ineligible; zero for borrowers with a Direct Loan made on or after July 1, 2026; enrollment limits (new borrower, repaying under PAYE on July 1, 2024) and the June 30, 2028 end not modeled; interest and forgiveness not modeled; not subtracted from household net income
 
   - id: income_contingent_repayment
     name: Income-Contingent Repayment
