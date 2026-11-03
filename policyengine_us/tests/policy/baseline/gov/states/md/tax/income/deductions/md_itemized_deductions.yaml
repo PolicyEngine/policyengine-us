@@ -129,3 +129,91 @@
     # Phase-out reduction: $150,000 * 7.5% = $11,250
     # Final deductions: $38,000 - $11,250 = $26,750
     md_itemized_deductions: 26_750
+
+- name: Maryland applies the 2026 federal section 68 reduction before its own phaseout.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    filing_status: SINGLE
+    adjusted_gross_income: 1_000_000
+    total_itemized_taxable_income_deductions: 100_000
+    itemized_deductions_less_salt: 100_000
+    itemized_taxable_income_deductions_reduction: 5_405.405405
+    salt_deduction: 0
+    capped_property_taxes: 0
+  output:
+    # Tax-General 10-218(b)(1): federal itemized deductions after section 68.
+    # No income taxes to remove, so the whole reduction stays.
+    # $100,000 - $5,405.41 = $94,594.59.
+    # Maryland phaseout: ($1,000,000 - $200,000) * 7.5% = $60,000.
+    # $94,594.59 - $60,000 = $34,594.59.
+    md_itemized_deductions: 34_594.594595
+
+- name: Maryland restores the income-tax share of the 2026 section 68 reduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    filing_status: SINGLE
+    adjusted_gross_income: 1_000_000
+    total_itemized_taxable_income_deductions: 110_000
+    itemized_deductions_less_salt: 100_000
+    itemized_taxable_income_deductions_reduction: 5_945.945946
+    salt_deduction: 10_000
+    capped_property_taxes: 0
+  output:
+    # Tax-General 10-218(b)(3): the $10,000 of SALT is all income tax.
+    # Pro rata restoration: $5,945.95 * $10,000 / $110,000 = $540.54.
+    # $110,000 - $5,945.95 - $10,000 + $540.54 = $94,594.59.
+    # Less the $60,000 Maryland phaseout = $34,594.59.
+    md_itemized_deductions: 34_594.594595
+
+- name: Maryland deduction is unchanged in 2026 when the section 68 reduction is zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    filing_status: SINGLE
+    adjusted_gross_income: 150_000
+    total_itemized_taxable_income_deductions: 40_000
+    itemized_deductions_less_salt: 30_000
+    itemized_taxable_income_deductions_reduction: 0
+    salt_deduction: 10_000
+    capped_property_taxes: 4_000
+  output:
+    # $30,000 + $4,000 property taxes; AGI is below the $200,000 phaseout.
+    md_itemized_deductions: 34_000
+
+- name: Maryland keeps property taxes but scales them by the 2026 section 68 reduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    filing_status: JOINT
+    adjusted_gross_income: 400_000
+    total_itemized_taxable_income_deductions: 74_000
+    itemized_deductions_less_salt: 34_000
+    itemized_taxable_income_deductions_reduction: 3_700
+    salt_deduction: 40_000
+    capped_property_taxes: 15_000
+  output:
+    # Income-tax component: $74,000 - $34,000 - $15,000 = $25,000.
+    # $74,000 - $3,700 - $25,000 + $3,700 * $25,000 / $74,000 = $46,550.
+    # Equivalently $49,000 * (1 - $3,700 / $74,000) = $46,550.
+    # Phaseout: ($400,000 - $200,000) * 7.5% = $15,000; $46,550 - $15,000.
+    md_itemized_deductions: 31_550
+
+- name: Maryland 2026 deduction is zero when there are no itemized deductions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    filing_status: SINGLE
+    adjusted_gross_income: 1_000_000
+    total_itemized_taxable_income_deductions: 0
+    itemized_deductions_less_salt: 0
+    itemized_taxable_income_deductions_reduction: 0
+    capped_property_taxes: 0
+  output:
+    md_itemized_deductions: 0

@@ -1,0 +1,255 @@
+# Form 7206 lines 4-13 with the owners' draw reform on. Line 5 counts the
+# net profits of every business subject to SE tax. The reform adds the gross
+# draw profits that bear SECA (owners_draw_niit_exclusion), and only when
+# half_seca_deduction puts that SECA into line 7's deductible SE tax.
+# Synthetic caps follow owners_draw.yaml; q = 1 - 0.5 * (0.124 + 0.029) =
+# 0.9235, and HI on the draw defaults off. Expected values are hand-computed.
+
+- name: Schedule C plan business with an owners' draw counts the draw in line 5
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    self_employment_income: 40_000
+    # 64,970.22 x 0.9235 = 59,999.998 of draw net earnings.
+    s_corp_income: 64_970.22
+    self_employed_health_insurance_premiums: 8_000
+  output:
+    owners_draw_gross: 64_970.22
+    owners_draw_net_earnings: 59_999.998
+    # Schedule C SE tax: 40,000 x 0.9235 x 15.3% = 5,651.82. Draw OASDI:
+    # 59,999.998 x 12.4% = 7,440.00. Half of 13,091.82 = 6,545.91.
+    self_employment_tax_ald_person: 6_545.91
+    # Line 5: 40,000 + 64,970.22 = 104,970.22. Line 6: 0.3810605.
+    # Line 7: 6,545.91 x 0.3810605 = 2,494.39. Line 13: 40,000 - 2,494.39.
+    # Without the draw in line 5 the share would be 1: 40,000 - 6,545.91 =
+    # 33,454.09.
+    self_employed_health_insurance_earned_income_limit: 37_505.61
+    # The $8,000 of premiums is below either limit.
+    self_employed_health_insurance_ald_person: 8_000
+
+- name: Premiums above the old limit show the deduction effect
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    self_employment_income: 40_000
+    s_corp_income: 64_970.22
+    self_employed_health_insurance_premiums: 36_000
+  output:
+    self_employed_health_insurance_earned_income_limit: 37_505.61
+    # Below 37,505.61 but above the 33,454.09 that omitting the draw gives.
+    self_employed_health_insurance_ald_person: 36_000
+
+- name: Without a draw the reform leaves the limit unchanged
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    self_employment_income: 40_000
+    farm_operations_income: 10_000
+  output:
+    owners_draw_gross: 0
+    # 50,000 x 0.9235 x 15.3% / 2 = 3,532.39.
+    self_employment_tax_ald_person: 3_532.39
+    # 40,000 / 50,000 = 0.8; 40,000 - 0.8 x 3,532.39 = 37,174.09, as at
+    # baseline.
+    self_employed_health_insurance_earned_income_limit: 37_174.09
+
+- name: Without a Schedule C business the limit stays zero
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    s_corp_income: 64_970.22
+    self_employed_health_insurance_premiums: 8_000
+  output:
+    self_employment_tax_ald_person: 3_720
+    # Line 4 is zero, so line 13 and the deduction are zero.
+    self_employed_health_insurance_earned_income_limit: 0
+    self_employed_health_insurance_ald_person: 0
+
+- name: Nondeductible draw SECA keeps the draw out of line 5
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.contrib.ssa.owners_draw.half_seca_deduction: false
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    self_employment_income: 40_000
+    s_corp_income: 64_970.22
+  output:
+    owners_draw_oasdi_tax: 7_440
+    # Only the Schedule C SE tax is deductible: 5,651.82 / 2 = 2,825.91.
+    self_employment_tax_ald_person: 2_825.91
+    # Line 5 is 40,000, as on main, so line 6 is 1: 40,000 - 2,825.91.
+    # Counting the draw would give 40,000 - 0.3810605 x 2,825.91 = 38,923.16.
+    self_employed_health_insurance_earned_income_limit: 37_174.09
+
+- name: A draw above the OASDI cap with HI off stays out of line 5
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    payroll_tax_gross_wages: 300_000
+    self_employment_income: 40_000
+    s_corp_income: 64_970.22
+  output:
+    owners_draw_oasdi_base: 0
+    owners_draw_oasdi_tax: 0
+    owners_draw_niit_exclusion: 0
+    # Wages use the OASDI cap, so Schedule C pays HI only:
+    # 36,940 x 2.9% / 2 = 535.63.
+    self_employment_tax_ald_person: 535.63
+    # Line 5 is 40,000: 40,000 - 535.63. Counting the gross draw would give
+    # 40,000 - 0.3810605 x 535.63 = 39,795.89.
+    self_employed_health_insurance_earned_income_limit: 39_464.37
+
+- name: A draw partly within the OASDI cap counts only its taxed profits
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    payroll_tax_gross_wages: 150_000
+    self_employment_income: 40_000
+    s_corp_income: 64_970.22
+  output:
+    # Room: 200,000 - 150,000 - 36,940 = 13,060 of the 60,000 net earnings.
+    owners_draw_oasdi_base: 13_060
+    owners_draw_oasdi_tax: 1_619.44
+    # 13,060 / 0.9235 = 14,141.85 of gross draw profits bear SECA.
+    owners_draw_niit_exclusion: 14_141.85
+    # (5,651.82 + 1,619.44) / 2 = 3,635.63.
+    self_employment_tax_ald_person: 3_635.63
+    # Line 5: 40,000 + 14,141.85 = 54,141.85; line 6: 0.7387999.
+    # Line 7: 3,635.63 x 0.7387999 = 2,686.00; line 13: 40,000 - 2,686.00.
+    # Main gives 36,364.37 and the whole gross draw 38,614.61.
+    self_employed_health_insurance_earned_income_limit: 37_314.00
+
+- name: With HI on, nondeductible draw SECA still keeps the draw out of line 5
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.contrib.ssa.owners_draw.include_hi: true
+    gov.contrib.ssa.owners_draw.half_seca_deduction: false
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    payroll_tax_gross_wages: 300_000
+    self_employment_income: 40_000
+    s_corp_income: 64_970.22
+  output:
+    # 59,999.998 x 2.9% = 1,740.00 of draw HI, none of it deductible.
+    owners_draw_hi_tax: 1_740
+    # Schedule C HI only: 36,940 x 2.9% / 2 = 535.63.
+    self_employment_tax_ald_person: 535.63
+    # Line 5 is 40,000: 40,000 - 535.63. Counting the draw would give 39,795.89.
+    self_employed_health_insurance_earned_income_limit: 39_464.37
+
+- name: With HI on and no OASDI room, the whole gross draw is in line 5
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.contrib.ssa.owners_draw.include_hi: true
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    payroll_tax_gross_wages: 300_000
+    self_employment_income: 40_000
+    s_corp_income: 64_970.22
+  output:
+    owners_draw_oasdi_base: 0
+    owners_draw_hi_tax: 1_740
+    owners_draw_niit_exclusion: 64_970.22
+    # (1,071.26 + 1,740.00) / 2 = 1,405.63.
+    self_employment_tax_ald_person: 1_405.63
+    # Line 6: 40,000 / 104,970.22 = 0.3810605; 40,000 - 535.63 = 39,464.37.
+    # Main (draw left out of line 5) gives 38,594.37.
+    self_employed_health_insurance_earned_income_limit: 39_464.37
+
+- name: With HI on and part of the draw in the OASDI room, the whole gross draw is in line 5
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.contrib.ssa.owners_draw.include_hi: true
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    payroll_tax_gross_wages: 150_000
+    self_employment_income: 40_000
+    s_corp_income: 64_970.22
+  output:
+    # Room 200,000 - 150,000 - 36,940 = 13,060 of the draw's 59,999.998.
+    owners_draw_oasdi_base: 13_060
+    owners_draw_hi_tax: 1_740
+    owners_draw_niit_exclusion: 64_970.22
+    # (4,580.56 + 1,071.26 + 1,619.44 + 1,740.00) / 2 = 4,505.63.
+    self_employment_tax_ald_person: 4_505.63
+    # Line 5: 104,970.22; line 6: 0.3810605; 40,000 - 1,716.92 = 38,283.08.
+    # Counting only the OASDI-taxed 14,141.85 would give 36,671.24; main 35,494.37.
+    self_employed_health_insurance_earned_income_limit: 38_283.08
+
+- name: A half phase-in counts the same half in line 5 as line 7 taxes
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 0.5
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    self_employment_income: 40_000
+    s_corp_income: 64_970.22
+  output:
+    owners_draw_gross: 32_485.11
+    owners_draw_oasdi_base: 30_000
+    owners_draw_niit_exclusion: 32_485.11
+    # (5,651.82 + 30,000 x 12.4%) / 2 = 4,685.91.
+    self_employment_tax_ald_person: 4_685.91
+    # Line 5: 72,485.11; line 6: 0.5518375; 40,000 - 2,585.86 = 37,414.14.
+    # Main gives 35,314.09; the whole S-corp profit in line 5 would give 38,214.38.
+    self_employed_health_insurance_earned_income_limit: 37_414.14
