@@ -1,3 +1,10 @@
+## [2.92.3] - 2026-11-03
+
+### Fixed
+
+- Count the owners' draw profits whose SECA is in the deductible self-employment tax in Form 7206 line 5 when the owners' draw reform computes the self-employed health insurance earned income limit.
+
+
 ## [2.92.2] - 2026-11-03
 
 ### Fixed
