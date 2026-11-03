@@ -440,3 +440,35 @@
     wa_pte_wholly_service_connected_disability: false
   output:
     wa_pte_categorical_eligible: false
+
+- name: Case 27, in 2016 a disabled veteran without a qualifying VA rating no longer qualifies.
+  period: 2016
+  input:
+    state_code: WA
+    age: 45
+    is_disabled: true
+    is_veteran: true
+  output:
+    wa_pte_categorical_eligible: false
+
+- name: Case 28, in 2020 a compensated veteran rated 80 percent qualifies.
+  period: 2020
+  input:
+    state_code: WA
+    age: 45
+    is_veteran: true
+    wa_pte_receives_va_disability_compensation: true
+    wa_pte_va_service_connected_rating: 0.8
+  output:
+    wa_pte_categorical_eligible: true
+
+- name: Case 29, by default a veteran who is not a fully disabled service-connected veteran is not taken to receive VA compensation.
+  period: 2024
+  input:
+    state_code: WA
+    age: 45
+    is_veteran: true
+    wa_pte_va_service_connected_rating: 0.8
+  output:
+    wa_pte_receives_va_disability_compensation: false
+    wa_pte_categorical_eligible: false
