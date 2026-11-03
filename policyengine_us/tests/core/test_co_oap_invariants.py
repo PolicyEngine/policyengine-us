@@ -89,7 +89,7 @@ def build_situation(cases):
                 "ssi_receives_outside_shelter_support": {YEAR: c["shelter_support"]},
                 # Set for everyone: an input for some people gives the others
                 # its default (false), not its formula.
-                "co_oap_medicaid_enrolled": {YEAR: True},
+                "co_adult_financial_medicaid_enrolled": {YEAR: True},
             }
             members = [client]
             if c["married"]:
@@ -101,7 +101,7 @@ def build_situation(cases):
                     "ssi_receives_outside_shelter_support": {
                         YEAR: c["spouse_shelter_support"]
                     },
-                    "co_oap_medicaid_enrolled": {YEAR: arrangement == "A"},
+                    "co_adult_financial_medicaid_enrolled": {YEAR: arrangement == "A"},
                 }
                 members = [spouse, client] if arrangement == "D" else [client, spouse]
                 head, partner = members

@@ -94,7 +94,7 @@
         members: [head, spouse]
         state_code: CO
   output:
-    co_state_supplement_medicaid_enrolled: [true, true]
+    co_adult_financial_medicaid_enrolled: [true, true]
     co_state_supplement_deeming_exempt: [true, true]
     co_state_supplement_deemed_income: [0, 0]
 
@@ -183,7 +183,7 @@
         age: 40
         employment_income: 24_000
         own_children_in_household: 1
-        co_state_supplement_medicaid_enrolled: true
+        co_adult_financial_medicaid_enrolled: true
         is_tax_unit_head: true
       parent2:
         age: 38
@@ -245,13 +245,13 @@
   output:
     co_state_supplement_deemed_income: [0, 5_760]
 
-- name: Case 8, the couple's combined $20 is not offered again after the client applies it to earnings.
+- name: Case 8, a married client's unused $20 share goes to the spouse, not to the client's earnings.
   # The married client reports SSI receipt with no payment this month and has
-  # $10 of interest and $200 of earnings. Their $10 share covers the interest
-  # (3.549(A)(2)(c)(1)); gross unearned income is under $20, so the other $10
-  # reduces their earnings (3.549(A)(2)(f)): (200 - 65 - 10) / 2 = 62.50.
-  # That leaves none of the couple's combined $20 for the spouse's $50
-  # pension (3.549(D)(2)), so all $50 is deemed.
+  # $10 of interest and $200 of earnings. Their $10 share of the $20
+  # (3.549(A)(2)(c)(1)) covers the interest exactly, so none of their share
+  # is left to reduce earnings (3.549(A)(2)(f)): (200 - 65) / 2 = 67.50.
+  # The couple's other $10 reduces the spouse's $50 pension (3.549(D)(2)),
+  # so 50 - 10 = 40 is deemed. No more than $20 applies to the couple.
   period: 2026-01
   input:
     people:
@@ -266,7 +266,7 @@
       spouse:
         age: 45
         pension_income: 600
-        co_state_supplement_medicaid_enrolled: false
+        co_adult_financial_medicaid_enrolled: false
         is_tax_unit_spouse: true
     tax_units:
       tax_unit:
@@ -279,8 +279,8 @@
         members: [head, spouse]
         state_code: CO
   output:
-    co_state_supplement_own_countable_income: [62.5, 0]
-    co_state_supplement_deemed_income: [50, 0]
+    co_state_supplement_own_countable_income: [67.5, 0]
+    co_state_supplement_deemed_income: [40, 0]
 
 - name: Case 9, a grandparent's income is not deemed to a grandchild.
   # The infant's parent id names the mother, who has no income; the

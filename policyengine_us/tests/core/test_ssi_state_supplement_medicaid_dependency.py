@@ -110,7 +110,7 @@ def test_co_and_cs_spouse_medicaid_through_snap(snap_input):
         )
         results.append(result)
         assert not any(
-            "co_state_supplement_medicaid" in name for name in simulation.branches
+            "co_adult_financial_medicaid" in name for name in simulation.branches
         )
     for name in results[0]:
         np.testing.assert_array_equal(results[0][name], results[1][name])
@@ -172,7 +172,7 @@ def test_co_oap_medicaid_without_a_consistent_outcome():
     $31,250/year pension. With the spouse's income deemed, OAP is lower and
     the unit gets SNAP, which enrolls the spouse in Medicaid through the
     pass-through; with the spouse exempt, OAP is higher and the unit gets no
-    SNAP. co_oap_medicaid_enrolled decides enrollment on the SNAP received
+    SNAP. co_adult_financial_medicaid_enrolled decides enrollment on the SNAP received
     while the spouse's income is still deemed, so the spouse is exempt and
     the client gets the full 1,032/month."""
     year = 2027
