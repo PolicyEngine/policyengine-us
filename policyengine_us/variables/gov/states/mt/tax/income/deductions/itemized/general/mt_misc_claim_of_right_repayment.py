@@ -9,7 +9,7 @@ class mt_misc_claim_of_right_repayment(Variable):
     definition_period = YEAR
     reference = (
         "https://www.ecfr.gov/current/title-26/section-1.1341-1#p-1.1341-1(a)(3)",
-        "https://mtrevenue.gov/wp-content/uploads/2018/02/2017-Form2-with-Legal-References.pdf#page=6",
+        "https://web.archive.org/web/20240107204047/https://mtrevenue.gov/wp-content/uploads/2018/02/2017-Form2-with-Legal-References.pdf#page=6",
     )
     defined_for = StateCode.MT
 

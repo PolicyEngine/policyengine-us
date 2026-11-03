@@ -7,7 +7,7 @@ class mt_misc_deductions_subject_to_floor_joint(Variable):
     label = "Montana miscellaneous deductions after the joint return AGI floor"
     unit = USD
     definition_period = YEAR
-    reference = "https://mtrevenue.gov/wp-content/uploads/2018/02/2017-Form2-with-Legal-References.pdf#page=6"
+    reference = "https://web.archive.org/web/20240107204047/https://mtrevenue.gov/wp-content/uploads/2018/02/2017-Form2-with-Legal-References.pdf#page=6"
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):

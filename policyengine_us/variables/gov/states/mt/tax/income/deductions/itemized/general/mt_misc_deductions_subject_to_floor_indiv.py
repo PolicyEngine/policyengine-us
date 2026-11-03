@@ -7,7 +7,7 @@ class mt_misc_deductions_subject_to_floor_indiv(Variable):
     label = "Montana miscellaneous deductions after the separate return AGI floor"
     unit = USD
     definition_period = YEAR
-    reference = "https://mtrevenue.gov/wp-content/uploads/2018/02/2017-Form2-with-Legal-References.pdf#page=6"
+    reference = "https://web.archive.org/web/20240107204047/https://mtrevenue.gov/wp-content/uploads/2018/02/2017-Form2-with-Legal-References.pdf#page=6"
     defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
