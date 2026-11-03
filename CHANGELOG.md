@@ -1,3 +1,131 @@
+## [2.93.0] - 2026-11-03
+
+### Added
+
+- Add exact household-chunked microsimulation calculations, including variable-centric population files, and share sequential TOB counterfactual tax calculations.
+
+
+## [2.92.18] - 2026-11-03
+
+### Fixed
+
+- Add Texas Child Care Services provider payment rates for Board Contract Year 2024 (October 2023 to September 2024) from TWC WD Letter 20-23, Attachment 1, as TWC revised it on October 16, 2023. PolicyEngine had applied October 2024 rates to every month from January 2015 through September 2024. Correct four Dallas County BCY 2025 rates to match TWC's table. Date the statewide parent share of cost scale from January 13, 2025, when TWC launched TX3C and began phasing the scale in. TWC's Commission amended its rules in 2022 to set the parent share of cost statewide from December 1, 2023. TWC put the statewide scale off until TX3C, and each Board set its own scale until then. PolicyEngine still applies the scale to earlier months, so no copay changes.
+
+
+## [2.92.17] - 2026-11-03
+
+### Fixed
+
+- Limit Missouri's itemized deduction for self-employment tax to the part the filer didn't deduct in computing federal adjusted gross income (RSMo 143.141(4)(c)).
+
+
+## [2.92.16] - 2026-11-03
+
+### Fixed
+
+- Make Riverside County General Relief eligible at exactly $500 of total combined countable property, since the DPSS fact sheet says the total cannot exceed $500.
+
+
+## [2.92.15] - 2026-11-03
+
+### Fixed
+
+- California's high-income itemized limitation now leaves out the FTB 3526 investment interest deduction instead of the interest paid; Minnesota leaves investment interest out of its itemized deduction reduction, and its AMT subtracts investment interest and miscellaneous deductions.
+
+
+## [2.92.14] - 2026-11-03
+
+### Fixed
+
+- Cite M.G.L. c.62 s.6(x) and Acts 2023 c.50 for the Massachusetts child and family tax credit's amount, dependent cap and child age limit. For 2021 and 2022, cite an archived copy of s.6(y) and Acts 2021 c.24.
+
+
+## [2.92.13] - 2026-11-03
+
+### Fixed
+
+- Count the income of everyone living in an Arizona property tax credit claimant's home, allow one claimant per household, exclude Arizona unemployment, count other states' unemployment, nontaxable strike benefits and nontaxable alimony, and stop subtracting federal above-the-line deductions other than business and capital losses.
+- Stop Colorado CCAP from reading parameters before 2015, which made every 2015 Colorado income tax calculation raise ParameterNotFoundError. Measure the Colorado sales tax refund's age test as of December 31 of the preceding year, per C.R.S. 39-22-2003(1)(a)(II).
+- Keep ABLE contributions in the saver's credit for 2026, reduce qualified contributions by relevant ABLE distributions through a new input, and from 2027 count only ABLE contributions, reduced only by those distributions, under a $2,100 cap (Pub. L. 119-21). From 2026, apply the 26 U.S.C. 6012(a)(1)(A) and (B) filing threshold to every filer, including a married individual filing separately with no gross income and a filer who can be claimed as a dependent. Under section 6012(a)(1), require a joint return when either spouse can be claimed as a dependent and the other spouse's own gross income is at least the exemption amount ((A)(iv)), and withdraw the (A) exception when the standard deduction is zero under section 63(c)(6) ((C)(ii)).
+
+
+## [2.92.12] - 2026-11-03
+
+### Fixed
+
+- Correct 128 Texas Child Care Services expanded-age rate cells to the Texas Workforce Commission's published tables. Pay relative care and blended schedules from January to September 2025, and pay relative care entered with either the Reg or None rating.
+
+
+## [2.92.11] - 2026-11-03
+
+### Fixed
+
+- Compute Alabama's miscellaneous itemized deduction from its own list of expenses (unreimbursed employee business expenses and tax preparation fees) above 2% of Alabama AGI in every modeled year, counting only the head's and spouse's expenses, instead of applying a second floor to the federal deduction, which is zero from 2018.
+
+
+## [2.92.10] - 2026-11-03
+
+### Fixed
+
+- Cap Minnesota's K-12 education subtraction per qualifying child by grade (Minn. Stat. 290.0132 subd. 4), and give Minnesota Supplemental Aid's living-alone standard to people eligible for an HCBS waiver or with a Housing Support placement determination (Minn. Stat. 256D.44 subd. 2).
+
+
+## [2.92.9] - 2026-11-03
+
+### Fixed
+
+- Cite the enacted appropriations and Department of Revenue announcements for the 2025 and 2026 Alaska Permanent Fund Dividend amounts, in place of a news report on the 2026 budget bill.
+
+
+## [2.92.8] - 2026-11-03
+
+### Fixed
+
+- Apply the 2026 federal section 68 itemized deduction reduction in Maryland, Maine and New Mexico itemized deductions.
+
+
+## [2.92.7] - 2026-11-03
+
+### Fixed
+
+- Count Michigan household resources' Social Security, SSI and railroad retirement benefits, and deduct health insurance premiums, only for the claimant and spouse (MCL 206.508(3) and 206.510), so a dependent's own benefits and premiums no longer change the homestead property tax and home heating credits.
+
+
+## [2.92.6] - 2026-11-03
+
+### Fixed
+
+- Prevent Colorado sales tax refunds and Illinois, New Mexico, Virginia, Hawaii, and Massachusetts rebates from applying before their eligibility years, while preserving eligibility-year amounts. Document eligibility-year attribution for state rebates.
+
+
+## [2.92.5] - 2026-11-03
+
+### Fixed
+
+- Give a married individual filing separately the $3,750 Schedule R initial amount, and set the section 22 amount to zero for a separate filer who lived with their spouse at any time in the year, so the elderly or disabled credit and Michigan's section 22 subtraction both follow 26 U.S.C. 22(c)(2)(A) and 22(e)(1).
+
+
+## [2.92.4] - 2026-11-03
+
+### Fixed
+
+- Apply the Income-Based Repayment and Pay As You Earn 10-year standard payment cap before the spousal balance proration, as 34 CFR 685.209(f)(2)-(3) and (g)(1) order them.
+
+
+## [2.92.3] - 2026-11-03
+
+### Fixed
+
+- Count the owners' draw profits whose SECA is in the deductible self-employment tax in Form 7206 line 5 when the owners' draw reform computes the self-employed health insurance earned income limit.
+
+
+## [2.92.2] - 2026-11-03
+
+### Fixed
+
+- Keep plain inputs such as EITC take-up when New York and Alabama recompute federal credits under pinned rules, so a 2021 New York filer who does not take up the federal EITC no longer gets the New York EITC.
+
+
 ## [2.92.1] - 2026-11-03
 
 ### Fixed

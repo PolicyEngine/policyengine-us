@@ -8,27 +8,31 @@ class pay_as_you_earn_payment(Variable):
     documentation = (
         "Monthly payment owed by a borrower under the Pay As You Earn plan, "
         "assuming the borrower is enrolled in the plan and in active "
-        "repayment, not in deferment, forbearance or default. The plan rate "
-        "times discretionary income is prorated to the borrower's Direct "
-        "Loans (income_driven_repayment_balance_share, which for joint filers "
-        "divides by both spouses' Direct and FFEL loans) and capped at the "
-        "Direct Loan part of the borrower's own 10-year standard payment "
-        "(income_driven_repayment_standard_payment on their Direct and FFEL "
-        "loans at their own interest rate, times their Direct share of those "
-        "loans). The result is rounded to the cent, given the small payment "
+        "repayment, not in deferment, forbearance or default. The payment is "
+        "the lesser of the plan rate times discretionary income and the "
+        "borrower's own 10-year standard payment "
+        "(income_driven_repayment_standard_payment, on their own Direct and "
+        "FFEL loans at their own interest rate), under 34 CFR 685.209(f)(2). "
+        "That lesser amount is then prorated to the borrower's Direct Loans "
+        "under 685.209(g)(1) (income_driven_repayment_balance_share, which "
+        "for joint filers divides by both spouses' Direct and FFEL loans). "
+        "The result is rounded to the cent, given the small payment "
         "adjustment and capped at the borrower's Direct Loan balance. Each "
-        "spouse's cap covers only their own loans. As with the Income-Based "
-        "Repayment plan, the cap uses the current balance, not the balance "
-        "when the borrower entered the plan. A borrower with a Direct Loan "
-        "made on or after July 1, 2026 cannot use the plan and owes nothing "
-        "under it. The other limits on who can repay under the plan are not "
-        "modeled: being a new borrower under 34 CFR 685.209(b)(13)(i), "
-        "repaying under the plan on July 1, 2024, and the plan's end on June "
-        "30, 2028 (685.209(c)(4)). The prorated payment is rounded to the "
-        "cent before the small payment adjustment, a modeling choice: a "
-        "calculated payment just under $5, such as $4.996, rounds to $5.00 "
-        "and becomes $10 rather than $0 under 685.209(g)(1)(iii), which sets "
-        "a payment of less than $5 to $0."
+        "spouse's standard payment covers only their own loans. Because the "
+        "proration applies after the cap, a joint filer whose income-based "
+        "amount exceeds their standard payment pays that standard payment "
+        "times their balance share. As with the Income-Based Repayment plan, "
+        "the cap uses the current balance, not the balance when the borrower "
+        "entered the plan. A borrower with a Direct Loan made on or after "
+        "July 1, 2026 cannot use the plan and owes nothing under it. The "
+        "other limits on who can repay under the plan are not modeled: being "
+        "a new borrower under 34 CFR 685.209(b)(13)(i), repaying under the "
+        "plan on July 1, 2024, and the plan's end on June 30, 2028 "
+        "(685.209(c)(4)). The payment is rounded to the cent before the small "
+        "payment adjustment, a modeling choice: a calculated payment just "
+        "under $5, such as $4.996, rounds to $5.00 and becomes $10 rather "
+        "than $0 under 685.209(g)(1)(iii), which sets a payment of less than "
+        "$5 to $0."
     )
     unit = USD
     definition_period = MONTH
@@ -48,24 +52,17 @@ class pay_as_you_earn_payment(Variable):
         discretionary_income = person.tax_unit(
             "pay_as_you_earn_discretionary_income", period
         )
-        # 685.209(g)(1)(i)-(ii) prorate the income-based amount to the
-        # borrower's Direct Loans. 685.209(f)(2)(ii), as in 20 U.S.C.
-        # 1098e(b)(6)(A) for the Income-Based Repayment plan, caps the payment
-        # on all of the borrower's eligible loans at their own 10-year standard
-        # payment; the Direct Loans carry the (g)(1)(ii) part of that cap.
+        # 685.209(f)(2)(ii), as 20 U.S.C. 1098e(b)(6)(A) does for the
+        # Income-Based Repayment plan, makes the payment the lesser of the
+        # income-based amount and the borrower's own 10-year standard payment
+        # on their eligible loans. 685.209(g)(1) adjusts the payment amounts
+        # calculated under (f)(1) through (3): (g)(1)(i)(B) and (g)(1)(ii)
+        # multiply that lesser amount by the balance shares, so the proration
+        # follows the cap.
         balance_share = person(
             "income_driven_repayment_balance_share", period.this_year
         )
         balance = person("federal_student_loan_balance", period.this_year)
-        eligible_balance = balance + person(
-            "federal_ffel_loan_balance", period.this_year
-        )
-        direct_fraction = np.divide(
-            balance,
-            eligible_balance,
-            out=np.zeros_like(balance),
-            where=eligible_balance > 0,
-        )
         standard_payment = person("income_driven_repayment_standard_payment", period)
         # Payments are set in whole cents. Rounding before the small payment
         # test keeps an exact $5.00 from falling below the threshold through
@@ -73,9 +70,10 @@ class pay_as_you_earn_payment(Variable):
         # below $5 to $5.00, a modeling choice described in the documentation.
         prorated_payment = np.round(
             min_(
-                p.pay_as_you_earn.rate * discretionary_income * balance_share,
-                standard_payment * direct_fraction,
-            ),
+                p.pay_as_you_earn.rate * discretionary_income,
+                standard_payment,
+            )
+            * balance_share,
             2,
         )
         small_payment = p.income_driven_repayment.small_payment

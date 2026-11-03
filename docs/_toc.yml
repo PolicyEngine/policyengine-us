@@ -61,9 +61,11 @@ parts:
   - caption: Validation
     chapters:
       - file: validation/taxsim
+      - file: validation/state-rebates
   - caption: Usage
     chapters:
       - file: usage/microsimulation
+      - file: usage/chunked-calculations
       - file: usage/parameter-discovery
       - file: usage/social-security-calculator
         sections:
