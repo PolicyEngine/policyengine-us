@@ -516,6 +516,53 @@
     ssi_resources_deemed_from_ineligible_parent: [0, 33.3333, 33.3333, 33.3333]
     meets_ssi_resource_test: [false, false, false, false]
 
+# SI 01330.200 B: when a child is ineligible, 'divide the value of the deemed
+# resources among the remaining eligible children'. The first child's
+# 1,966.67 plus the exact share of 33.3333 is over the limit, so that child
+# leaves the division and keeps the share last tested; the other two
+# children, who hold nothing, divide the 100 as 50 each.
+- name: A child whom an unrounded share takes over the limit leaves the division
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        bank_account_assets: 2_100
+      child1:
+        age: 8
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        bank_account_assets: 1_966.67
+      child2:
+        age: 10
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+      child3:
+        age: 12
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child1_unit:
+        members: [child1]
+      child2_unit:
+        members: [child2]
+      child3_unit:
+        members: [child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+  output:
+    ssi_resources_deemed_from_ineligible_parent: [0, 33.3333, 50, 50]
+    meets_ssi_resource_test: [false, false, true, true]
+
 # The parent's 2,100 is 100 over the individual limit, which divides among
 # four children as 25 each. The first child's 178.57 + 1,522.79 + 273.64 =
 # 1,975.00 plus 25 is 2,000.00, at the limit. That child's float32 balances
