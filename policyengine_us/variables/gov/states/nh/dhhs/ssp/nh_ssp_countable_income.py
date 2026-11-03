@@ -28,8 +28,11 @@ class nh_ssp_countable_income(Variable):
         # deductions", and He-W 600 excludes no cafeteria-plan salary reduction,
         # so pre-tax health premiums stay in the state's wage count. Federal SSI
         # excludes them (POMS SI 00820.102 C.2), and the ssi term keeps that.
-        sources = parameters(period).gov.ssa.ssi.income.sources.earned
-        earned = max_(add(person, period, sources), 0)
+        # He-W 654.01(b)-(c) floors self-employment income at zero before
+        # adding wages: business losses cannot offset other income. Keep a
+        # state source list because SSI permits that earned-income offset.
+        self_employment = max_(add(person, period, p.earned.self_employment_sources), 0)
+        earned = max_(person("employment_income", period), 0) + self_employment
         expenses = max_(person("nh_ssp_employment_expenses", period), 0)
         # With a nonapplicant spouse, combine earnings before the applicant's
         # category disregard under He-W 654.02(d)-(e).

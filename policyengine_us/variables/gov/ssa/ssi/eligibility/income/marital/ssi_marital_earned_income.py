@@ -9,7 +9,7 @@ class ssi_marital_earned_income(Variable):
 
     def formula(person, period, parameters):
         couple_computation = person("ssi_couple_computation_applies", period)
-        earned_income = person("ssi_earned_income", period)
+        earned_income = person("ssi_earned_income_after_spousal_loss", period)
 
         return where(
             couple_computation,

@@ -11467,6 +11467,43 @@ candidates:
     which counts any SSI receipt among the benefits in gov.usda.disabled_programs (is_snap_alien_waiting_period_exempt.py,
     is_usda_disabled.py, disabled_programs.yaml). The statute-first rule requires revising the any-SSI exemption
     if the narrower reading holds; first check the cross-referenced disability definition and the preamble''s scope.'
+- id: us:ssi-sga-self-employment-loss
+  program: ssi
+  years:
+    from: 1975
+    type: calendar
+  question: In the SSI substantial gainful activity test, does a self-employment loss reduce the wages of a person
+    who has both wages and a business?
+  sources:
+  - kind: regulation
+    citation: 20 CFR 416.971 to 416.975
+    url: https://www.ecfr.gov/current/title-20/chapter-III/part-416/subpart-I
+  - kind: regulation
+    citation: 20 CFR 404.1081(c)
+    url: https://www.ssa.gov/OP_Home/cfr20/404/404-1081.htm
+  - kind: manual
+    citation: POMS DI 10505.015 D.3
+    url: https://secure.ssa.gov/poms.nsf/lnx/0410505015
+  - kind: manual
+    citation: POMS DI 10510.012 B
+    url: https://secure.ssa.gov/poms.nsf/lnx/0410510012
+  readings:
+    statute: No statute or regulation settles it. One reading sums wages and net self-employment earnings, so a
+      business loss reduces wages.
+    other: 'POMS DI 10505.015 D.3: "When an individual has wages and has a loss from self-employment, do not use the
+      loss to reduce total earnings." Losses still net between businesses (20 CFR 404.1081(c), POMS DI 10510.012 B).'
+  example: With $21,600 of 2026 wages ($1,800 a month) and a $6,000 farm loss, SGA earnings stay $1,800 a month,
+    above the $1,690 SGA amount, so the person is engaged in SGA; netting the loss would leave $1,300 and no SGA.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/ssa/ssi/eligibility/income/ssi_engaged_in_sga.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10532
+  state: ruled
+  note: 'The regulations do not settle the question, so the administering agency''s reading governs. SGA earnings are
+    wages plus the net of the business earned-income sources floored at zero; ssi_earned_income keeps the signed
+    amount for SSI payment income. Code not yet on main: the floor in ssi_engaged_in_sga.py.'
 - id: us:ssi-spousal-deeming-child-scope
   program: ssi
   years:

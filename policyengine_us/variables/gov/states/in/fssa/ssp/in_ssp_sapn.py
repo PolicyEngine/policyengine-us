@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income._ssi_countable_income_without_loss_offset import (
+    ssi_countable_income_without_loss_offset,
+)
 
 
 class in_ssp_sapn(Variable):
@@ -11,6 +14,7 @@ class in_ssp_sapn(Variable):
     reference = (
         "https://www.in.gov/fssa/ompp/files/Medicaid_PM_5000.pdf",
         "https://secure.ssa.gov/poms.nsf/lnx/0501401001CHI",
+        "https://www.in.gov/fssa/ompp/files/Medicaid_PM_3400.pdf#page=12",
     )
 
     def formula(person, period, parameters):
@@ -24,7 +28,16 @@ class in_ssp_sapn(Variable):
         both_eligible = person.marital_unit.sum(eligible) == 2
         is_couple = joint_claim & both_eligible
         ssi_monthly = person("ssi", period)
-        countable_income = person("ssi_countable_income", period)
+        # IHCPPM 3410.15.00: self-employment business losses cannot offset
+        # or reduce non-self-employment income such as wages. Businesses
+        # net against each other, and a net loss counts as zero.
+        earned_sources = parameters(period).gov.ssa.ssi.income.sources.earned
+        business_sources = [
+            source for source in earned_sources if source != "employment_income"
+        ]
+        countable_income = ssi_countable_income_without_loss_offset(
+            person, period, parameters, business_sources
+        )
         max_individual = p.sapn.amount.individual
         max_couple = p.sapn.amount.couple
         pna = p.personal_needs_allowance

@@ -116,3 +116,82 @@
     is_ssi_spousal_deeming_applies: [false, false, false]
     ssi_income_deemed_from_ineligible_spouse: [0, 0, 0]
     ssi_countable_income: [1_548, 0, 0]
+
+- name: A disabled child's business loss neither raises parental earned income nor gives the child an allocation.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        age: 10
+        meets_ssi_disability_criteria: true
+        takes_up_ssi_if_eligible: true
+        employment_income: 1_000
+        self_employment_income: -4_000
+      parent:
+        age: 45
+        is_parent: true
+        employment_income: 30_000
+        taxable_private_pension_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [child, parent]
+    marital_units:
+      child_unit:
+        members: [child]
+      parent_unit:
+        members: [parent]
+    households:
+      household:
+        members: [child, parent]
+        state_code: TX
+  output:
+    # 20 CFR 416.1111(b): the child's $3,000 net loss offsets only earned
+    # income, so the child has no countable earnings and nothing for the
+    # student exclusion (416.1112(c)(3)) to exclude. An eligible child gets
+    # no allocation (416.1165(b)), and 416.1163(b)(2) only reduces one.
+    ssi_blind_or_disabled_working_student_exclusion: [0, 0]
+    ssi_ineligible_child_allocation: [0, 0]
+    # 416.1121(a) counts the pension as unearned income. 416.1165(d):
+    # (6,000 - 240) + (30,000 - 780) / 2 - 11,928 = 8,442 deemed.
+    ssi_unearned_income_deemed_from_ineligible_parent: [8_442, 0]
+    # 416.1165(e)(1): 11,928 - (8,442 - 240) = 3,726.
+    ssi: [3_726, 0]
+
+- name: Without unearned parental income, a child's loss leaves the same deemed amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        age: 10
+        meets_ssi_disability_criteria: true
+        takes_up_ssi_if_eligible: true
+        employment_income: 1_000
+        self_employment_income: -4_000
+      parent:
+        age: 45
+        is_parent: true
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [child, parent]
+    marital_units:
+      child_unit:
+        members: [child]
+      parent_unit:
+        members: [parent]
+    households:
+      household:
+        members: [child, parent]
+        state_code: TX
+  output:
+    # (30,000 - 240 - 780) / 2 - 11,928 = 2,562 deemed, and
+    # 11,928 - (2,562 - 240) = 9,606. A negative student exclusion
+    # (+3,000 to parental earnings) and a 3,000 allocation for the eligible
+    # child (taken from earned income once unearned income is exhausted)
+    # would cancel here, so this case guards against a fix to only one.
+    ssi_blind_or_disabled_working_student_exclusion: [0, 0]
+    ssi_ineligible_child_allocation: [0, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [2_562, 0]
+    ssi: [9_606, 0]

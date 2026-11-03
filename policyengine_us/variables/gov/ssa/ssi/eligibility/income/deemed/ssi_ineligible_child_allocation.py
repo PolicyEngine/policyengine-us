@@ -11,7 +11,11 @@ class ssi_ineligible_child_allocation(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/20/416.1163"
 
     def formula(person, period, parameters):
-        income = add(person, period, ["ssi_earned_income", "ssi_unearned_income"])
+        # 416.1111(b) permits net losses to offset only earned income;
+        # 416.1163(b) reduces the allocation by the child's own income.
+        income = max_(person("ssi_earned_income", period), 0) + person(
+            "ssi_unearned_income", period
+        )
         ssi = parameters(period).gov.ssa.ssi.amount
         allocation = (
             person("is_ssi_ineligible_child", period)

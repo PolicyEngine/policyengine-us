@@ -26,7 +26,7 @@ class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse(
         spouse_unearned = person(
             "ssi_unearned_income_deemed_from_ineligible_spouse", period
         )
-        individual_earned = person("ssi_earned_income", period)
+        individual_earned = person("ssi_earned_income_after_spousal_loss", period)
         individual_unearned = person("ssi_unearned_income", period)
 
         p = parameters(

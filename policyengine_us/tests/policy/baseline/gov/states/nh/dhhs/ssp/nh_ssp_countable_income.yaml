@@ -1,0 +1,70 @@
+# He-W 601.04(n), 654.01(b)-(c), 654.15(b), 654.16(b): business profits
+# are earned income; a net self-employment loss cannot reduce wages.
+# https://gc.nh.gov/rules/state_agencies/he-w600.html
+- name: Farm profit counts as New Hampshire earned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 40
+    is_blind: true
+    farm_operations_income: 12_000
+    ssi: 0
+  output:
+    # (12,000 / 12 - 85) * 0.5 - 13 = 444.50.
+    nh_ssp_countable_income: 444.5
+
+- name: Partnership self-employment profit counts as New Hampshire earned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 40
+    is_blind: true
+    partnership_self_employment_net_earnings: 12_000
+    ssi: 0
+  output:
+    nh_ssp_countable_income: 444.5
+
+- name: A farm loss cannot reduce New Hampshire wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 40
+    is_blind: true
+    employment_income: 12_000
+    farm_operations_income: -6_000
+    ssi: 0
+  output:
+    # New Hampshire floors the net business loss before adding wages.
+    nh_ssp_countable_income: 444.5
+
+- name: A Schedule C loss cannot reduce New Hampshire wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 40
+    is_blind: true
+    employment_income: 12_000
+    self_employment_income: -6_000
+    ssi: 0
+  output:
+    # He-W 654.01 applies equally to the existing Schedule C source.
+    nh_ssp_countable_income: 444.5
+
+- name: New Hampshire floors aggregate self-employment before adding wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 40
+    is_blind: true
+    employment_income: 12_000
+    farm_operations_income: -6_000
+    partnership_self_employment_net_earnings: 12_000
+    ssi: 0
+  output:
+    # (1,000 wages + 500 net business profit - 85) * 0.5 - 13 = 694.50.
+    nh_ssp_countable_income: 694.5

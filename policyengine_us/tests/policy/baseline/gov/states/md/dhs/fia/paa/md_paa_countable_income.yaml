@@ -45,3 +45,104 @@
     # $2,500 monthly SSDI - $20 general exclusion.
     ssi_countable_income: 0
     md_paa_countable_income: 2_480
+
+- name: An ineligible spouse's business loss does not reduce the applicant's PAA earnings.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      applicant:
+        age: 67
+        employment_income: 12_000
+        is_tax_unit_head: true
+      spouse:
+        age: 60
+        employment_income: 2_000
+        self_employment_income: -7_000
+        is_tax_unit_spouse: true
+    tax_units:
+      couple:
+        members: [applicant, spouse]
+        tax_unit_is_joint: true
+    marital_units:
+      couple:
+        members: [applicant, spouse]
+    households:
+      household:
+        members: [applicant, spouse]
+        state_code: MD
+  output:
+    # SSI applies the spouse's $5,000 residual loss to the applicant's wages
+    # (POMS SI 00820.210 B.2.c), but COMAR 07.03.07.08 sets deductions for
+    # the individual and no Maryland text adopts that offset. PAA counts the
+    # applicant's own $12,000: (12,000 - 240 - 780) / 2 = $5,490. The spouse's
+    # after-loss earnings are 0, so no income is deemed.
+    ssi_income_deemed_from_ineligible_spouse: [0, 0]
+    md_paa_countable_income: [5_490, 0]
+
+- name: An applicant's own loss can bring the spouse's deemed earnings under the SSI threshold.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      applicant:
+        age: 67
+        self_employment_income: -5_000
+        is_tax_unit_head: true
+      spouse:
+        age: 60
+        employment_income: 10_000
+        is_tax_unit_spouse: true
+    tax_units:
+      couple:
+        members: [applicant, spouse]
+        tax_unit_is_joint: true
+    marital_units:
+      couple:
+        members: [applicant, spouse]
+    households:
+      household:
+        members: [applicant, spouse]
+        state_code: MD
+  output:
+    # The applicant's own earnings floor at 0. POMS SI 00820.210 B.2.c applies
+    # the applicant's residual loss to the ineligible spouse's earnings,
+    # leaving 10,000 - 5,000 = 5,000, which does not exceed the
+    # (1,491 - 994) * 12 = 5,964 deeming threshold (20 CFR 416.1163(d)(1)).
+    # SSI deems nothing, so PAA counts 0, as on main. The spouse's own PAA
+    # figure counts the spouse's 10,000: (10,000 - 240 - 780) / 2 = 4,490.
+    ssi_income_deemed_from_ineligible_spouse: [0, 0]
+    md_paa_countable_income: [0, 4_490]
+
+- name: An applicant's own loss reduces deemed spouse earnings once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      applicant:
+        age: 67
+        self_employment_income: -5_000
+        is_tax_unit_head: true
+      spouse:
+        age: 60
+        employment_income: 15_000
+        is_tax_unit_spouse: true
+    tax_units:
+      couple:
+        members: [applicant, spouse]
+        tax_unit_is_joint: true
+    marital_units:
+      couple:
+        members: [applicant, spouse]
+    households:
+      household:
+        members: [applicant, spouse]
+        state_code: MD
+  output:
+    # SSI deems the spouse's 15,000 - 5,000 = 10,000 after-loss earnings,
+    # above the 5,964 threshold. Countable alone is 0; combined is
+    # (10,000 - 240 - 780) / 2 = 4,490, all deemed, and the applicant's own
+    # earnings floor at 0. The spouse's own figure is
+    # (15,000 - 240 - 780) / 2 = 6,990.
+    ssi_income_deemed_from_ineligible_spouse: [4_490, 0]
+    md_paa_countable_income: [4_490, 6_990]
