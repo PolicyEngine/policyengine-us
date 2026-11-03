@@ -8722,9 +8722,9 @@ candidates:
     to: 2018
     type: federal-fiscal
   question: What are South Texas's TSR rates for preschool care at registered child care homes from October 2016 to
-    July 2018, when TWC printed $12.84 a day full-time and $8.93 part-time in its October 2016 table, below the regular
-    rates of $14.40 and $10.52, although under 40 TAC §809.20(c)(1)(B), Boards must set TSR preschool rates at least 5
-    percent above them?
+    July 2018? TWC printed $12.84 full-time and $8.93 part-time in its October 2016 table, below the regular rates of
+    $14.40 and $10.52, although under 40 TAC §809.20(c)(1)(B), Boards must set TSR preschool rates at least 5 percent
+    above them.
   sources:
   - kind: regulation
     citation: 40 TAC §809.20(b)(2), (c)(1)(B) (41 TexReg 7574, effective October 1, 2016)
@@ -8746,7 +8746,7 @@ candidates:
     url: https://web.archive.org/web/20180904071531/https://twc.texas.gov/files/partners/12-18att1-twc.pdf#page=24
   readings:
     statute: No statute is supplied; under §809.20(c)(1)(B), each Board must set its TSR preschool rate at least 5
-      percent above its regular rate, which comes to $15.12 full-time and $11.05 part-time, rounded up to the cent.
+      percent above its regular rate, a floor of $15.12 full-time and $11.05 part-time, rounded up to the cent.
     other: TWC printed $12.84 and $8.93 in a TSR row it dated April 1, 2016, below a regular row it dated October 1,
       2016.
   example: In its October 2016 table, TWC printed South Texas's regular rate for full-time preschool care at a
@@ -8769,9 +8769,9 @@ candidates:
     to: 2021
     type: federal-fiscal
   question: Did three Lower Rio Grande Valley TSR preschool rates fall in August 2018, when TWC printed them in WD 12-18
-    Attachment 1 below its October 2016 rates, although in WD 12-18, TWC set each TSR preschool rate at the greater of
-    105 percent of the new regular rate and the Board's current TSR rate and said it would cut no provider's rate in
-    setting the new rates?
+    Attachment 1 below its October 2016 rates? In WD 12-18, TWC said it would set each full-time and part-time TSR
+    preschool rate at the greater of 105 percent of the new regular rate and the Board's current TSR rate. It also said
+    it would cut no provider's rate in setting the new rates.
   sources:
   - kind: guidance
     citation: TWC WD Letter 12-18, Increasing Child Care Provider Reimbursement Rates (the TSR rule on page 2; higher
@@ -8796,17 +8796,17 @@ candidates:
     statute: No statute is supplied; under 40 TAC §809.20(c)(1)(B), Boards must set TSR preschool rates at least 5
       percent above the regular rate, and the October 2016 and August 2018 rates both clear that floor. In WD 12-18, TWC
       kept in effect any local rate above its calculated rate and said it would cut no provider's rate in setting the
-      new rates. Under this reading, the Lower Rio Grande Valley Board kept its three October 2016 rates from
-      August 2018. TWC again let higher local rates stand in WD 23-19 and WD 25-20, so on this reading the Board kept
-      its $16.79 licensed home part-time rate through BCY 2021 and its $12.76 registered home part-time rate through
+      new rates. Under this reading, the Lower Rio Grande Valley Board kept its three October 2016 rates in effect after
+      July 2018. TWC again let higher local rates stand in WD 23-19 and WD 25-20, so the Board would have kept its
+      $16.79 licensed home part-time rate through BCY 2021 and its $12.76 registered home part-time rate through
       BCY 2020.
-    other: TWC said it would enter the rates in WD 12-18 Attachment 1 into TWIST. In that attachment, TWC printed Lower
-      Rio's licensed home TSR preschool rates and its registered home TSR preschool part-time rate at 105 percent of the
-      new regular rate, rounded up, below the October 2016 rates of $17.46, $16.79 and $12.76. TWC printed both
-      part-time rates below their October 2016 levels again in WD 23-19, and the licensed home part-time rate in
-      WD 25-20.
-  example: Lower Rio's licensed home TSR rate for full-time preschool care falls from $17.46 a day in TWC's October
-    2016 table to $15.99 in WD 12-18 Attachment 1, 105 percent of the new $15.22 regular rate, rounded up.
+    other: TWC said it would enter the rates in WD 12-18 Attachment 1 into The Workforce Information System of Texas. In
+      that attachment, TWC printed Lower Rio's licensed home TSR preschool rates and its registered home TSR preschool
+      part-time rate at 105 percent of the new regular rate, rounded up, below the October 2016 rates of $17.46, $16.79
+      and $12.76. TWC printed both part-time rates below their October 2016 levels again in WD 23-19, and the licensed
+      home part-time rate in WD 25-20.
+  example: TWC printed Lower Rio's licensed home TSR rate for full-time preschool care at $17.46 a day in its
+    October 2016 table and at $15.99 in WD 12-18 Attachment 1, 105 percent of the new $15.22 regular rate, rounded up.
   pe_us:
     follows: gap-fill
     code:
@@ -8815,12 +8815,12 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10622
   state: ruled
   note: 'Ruled 2026-11-03: the October 2016 rates through July 2018 and TWC''s printed rates from August 2018 (the
-    agency breaks true ties). Of the 168 TSR preschool rates in Attachment 1, the other 165 equal the greater of 105
-    percent of the new regular rate, rounded up, and the October 2016 rate. In WD 27-16, TWC had Boards suspend rate
-    increases from December 2016 and said nothing of cuts, so the Board may have lowered these three before August 2018.
-    Code not yet on main: rates.yaml, LOWER_RIO LCCH TSR PRESCHOOL FULL_TIME at 2016-10-01 and 2018-08-01, LCCH TSR
-    PRESCHOOL PART_TIME at 2016-10-01 through 2020-10-01, and RCCH TSR PRESCHOOL PART_TIME at 2016-10-01 through
-    2019-10-01.'
+    agency breaks true ties). Of the 168 full-time and part-time TSR preschool rates in Attachment 1, the other 165
+    equal the greater of 105 percent of the new regular rate, rounded up, and the October 2016 rate. In WD 27-16, TWC
+    had Boards suspend rate increases from December 2016 and said nothing of cuts, so the Board may have lowered these
+    three before August 2018. Code not yet on main: rates.yaml, LOWER_RIO LCCH TSR PRESCHOOL FULL_TIME at 2016-10-01 and
+    2018-08-01, LCCH TSR PRESCHOOL PART_TIME at 2016-10-01 through 2020-10-01, and RCCH TSR PRESCHOOL PART_TIME at
+    2016-10-01 through 2019-10-01.'
 - id: us-tx:ccs-tsr-preschool-rate-missing
   program: child-care-assistance
   years:
@@ -8901,9 +8901,9 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10598
     - https://github.com/PolicyEngine/policyengine-us/pull/10622
   state: unreviewed
-  note: PE-US follows TWC's tables. Before changing the model, check whether TWC pays TSR providers' school-age care at
-    the 2-star rate because they hold Texas Rising Star certification, for which Boards set enhanced rates at all ages
-    under §809.20(b)(1).
+  note: PE-US follows TWC's tables. Before changing the model, check whether Boards pay TSR providers the 2-star rate
+    for school-age care because those providers hold Texas Rising Star certification, for which Boards set enhanced
+    rates at all ages under §809.20(b)(1).
 - id: us-tx:family-planning-unearned-income-exclusions
   program: family-planning-program
   years:

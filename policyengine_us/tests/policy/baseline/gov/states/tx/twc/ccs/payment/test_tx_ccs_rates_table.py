@@ -23,7 +23,8 @@ In each rate letter from WD 12-18 to WD 20-23, TWC said it would cut no
 provider's rate in setting the new rates. In its BCY 2025 table, TWC set no
 rate below its BCY 2024 level outside relative care, where TWC sets no minimum
 and Boards may set rates locally (WD Letter 19-24, Change 1). Across the eight
-tables, only the four rates in FALLS drop from one table to the next.
+tables, TWC printed a rate below the previous table's only in the four cells
+FALLS lists.
 
 TWC also followed two patterns that no rule requires. It printed each TSR rate
 for the §809.20(b)(2) age groups equal to the Two-Star rate from BCY 2023 on,
@@ -207,15 +208,15 @@ BLENDED_OFF_FORMULA = {
     BCY_2024: {("EAST_TEXAS", "RELATIVE", "NONE", "SCHOOL_AGE")},
 }
 
-# Rates below the previous table's rate. In WD 12-18, TWC set each TSR
-# preschool rate at the greater of 105 percent of the new regular rate and the
-# Board's current TSR rate. It printed these three Lower Rio Grande Valley
-# rates at 105 percent, rounded up to the cent, below its October 2016 rates.
-# In WD 27-16, TWC had Boards suspend rate increases and said nothing of cuts,
-# so the Board may have lowered them after October 2016. In BCY 2025, TWC
-# printed the formula's $12.12 for the East Texas relative care blended rate,
-# below the $12.21 it printed for BCY 2024. In WD Letter 19-24, Change 1, TWC
-# set no minimum for relative care rates.
+# Rates below the previous table's rate. In WD 12-18, TWC set each full-time
+# and part-time TSR preschool rate at the greater of 105 percent of the new
+# regular rate and the Board's current TSR rate. It printed these three Lower
+# Rio Grande Valley rates at 105 percent, rounded up to the cent, below its
+# October 2016 rates. In WD 27-16, TWC had Boards suspend rate increases and
+# said nothing of cuts, so the Board may have lowered them after October 2016.
+# In BCY 2025, TWC printed the formula's $12.12 for the East Texas relative
+# care blended rate, below the $12.21 it printed for BCY 2024. In
+# WD Letter 19-24, Change 1, TWC set no minimum for relative care rates.
 FALLS = {
     WD_12_18: {
         ("LOWER_RIO", "LCCH", "TSR", "PRESCHOOL", "FULL_TIME"),
