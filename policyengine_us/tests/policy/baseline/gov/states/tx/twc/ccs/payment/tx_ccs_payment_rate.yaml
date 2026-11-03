@@ -530,6 +530,131 @@
       2024-06: 122.10
       2024-10: 121.20
 
+- name: Oct 2016 table back to 2015 - PANHANDLE LCCC REG Infant Full Time
+  period: 2015
+  input:
+    age: 0
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCC
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # TWC's October 2016 table dates this rate June 1, 2014: infant FT = 22.00 * 10
+    # = 220.00. PolicyEngine applies the table's values back to January 2015.
+    tx_ccs_payment_rate:
+      2015-01: 220.00
+      2015-12: 220.00
+
+- name: Oct 2016 table to WD 12-18 - ALAMO LCCC REG Infant Full Time
+  period: 2018
+  input:
+    age: 0
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCC
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: ALAMO
+  output:
+    # October 2016 table infant FT = 34.25 * 10 = 342.50 through July 2018
+    # WD 12-18 Att. 1 raises it 2 percent, rounded up: 34.94 * 10 = 349.40
+    tx_ccs_payment_rate:
+      2018-07: 342.50
+      2018-08: 349.40
+
+- name: Oct 2016 table to WD 12-18 - LOWER_RIO LCCH TSR Preschool Full Time
+  period: 2018
+  input:
+    age: 4
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCH
+    tx_ccs_provider_rating: TSR
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: LOWER_RIO
+  output:
+    # October 2016 table TSR preschool FT = 17.46 * 10 = 174.60
+    # WD 12-18 Att. 1 prints 105 percent of its new 15.22 regular rate, rounded
+    # up: 15.99 * 10 = 159.90, below the October 2016 rate.
+    tx_ccs_payment_rate:
+      2018-07: 174.60
+      2018-08: 159.90
+
+- name: Oct 2016 table to WD 12-18 - SOUTH_TEXAS RCCH TSR Preschool Full Time
+  period: 2018
+  input:
+    age: 4
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RCCH
+    tx_ccs_provider_rating: TSR
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: SOUTH_TEXAS
+  output:
+    # The October 2016 table prints 12.84, below the 14.40 regular rate, so the
+    # rate takes the 809.20(c)(1)(B) floor: 14.40 * 1.05 = 15.12 * 10 = 151.20
+    # WD 12-18 Att. 1: 105 percent of the new 14.69 regular rate, rounded up:
+    # 15.43 * 10 = 154.30
+    tx_ccs_payment_rate:
+      2018-07: 151.20
+      2018-08: 154.30
+
+- name: Oct 2016 table to WD 12-18 - GULF_COAST LCCC TSR Toddler Full Time
+  period: 2018
+  input:
+    age: 2
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCC
+    tx_ccs_provider_rating: TSR
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: GULF_COAST
+  output:
+    # The October 2016 table prints TSR rates for preschool only, so TSR takes
+    # the regular rate: 28.31 * 20 = 566.20
+    # WD 12-18 Att. 1 TSR toddler FT = 28.88 * 20 = 577.60
+    tx_ccs_payment_rate:
+      2018-07: 566.20
+      2018-08: 577.60
+
+- name: Oct 2016 table to WD 12-18 - COASTAL_BEND LCCH REG School Age Blended
+  period: 2018
+  input:
+    age: 8
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCH
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: BLENDED
+    childcare_attending_days_per_month: 15
+    state_code: TX
+    tx_ccs_workforce_board_region: COASTAL_BEND
+  output:
+    # The October 2016 table prints no blended rate, so it is WD 02-20's
+    # school-year blend: (175 * 19.95 + 30 * 16.62) / 205 = 19.46 * 15 = 291.90
+    # WD 12-18 Att. 1 school-age BT = 19.85 * 15 = 297.75
+    tx_ccs_payment_rate:
+      2018-07: 291.90
+      2018-08: 297.75
+
 - name: WD 12-18 to BCY20 - SOUTHEAST LCCC TRS2 Infant Part Time
   period: 2019
   input:
