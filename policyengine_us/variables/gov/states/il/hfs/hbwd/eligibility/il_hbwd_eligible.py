@@ -10,6 +10,7 @@ class il_hbwd_eligible(Variable):
         "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.510",
         "https://hfs.illinois.gov/medicalprograms/hbwd/eligibility.html",
         "https://hfs.illinois.gov/medicalprograms/hbwd.html",
+        "https://www.law.cornell.edu/cfr/text/42/435.121",
     )
     defined_for = StateCode.IL
 
@@ -23,21 +24,30 @@ class il_hbwd_eligible(Variable):
         # 89 Ill. Adm. Code 120.510(b) bars a person who is otherwise eligible for
         # medical assistance without a spenddown. Under 120.510(c) a person
         # eligible only with a spenddown may still choose this program, so
-        # medically needy coverage does not count.
+        # medically needy coverage does not count. Nor does the SSI recipient
+        # group for a person it covers only after a spenddown (42 CFR
+        # 435.121(e)(5)), so an SSI recipient counts only with income within
+        # the limit before any spenddown.
         year = period.this_year
-        categories = parameters(year).gov.hhs.medicaid.eligibility.categories.covered
+        categories = parameters(period).gov.hhs.medicaid.eligibility.categories.covered
         without_spenddown = [
             category
             for category in categories
             if category
             not in (
                 "is_medically_needy_for_medicaid",
+                "is_ssi_recipient_for_medicaid",
                 "is_working_disabled_buy_in_for_medicaid",
             )
         ]
-        otherwise_eligible = (add(person, year, without_spenddown) > 0) & person(
-            "is_medicaid_immigration_status_eligible", year
+        ssi_recipient_without_spenddown = (
+            ("is_ssi_recipient_for_medicaid" in categories)
+            & person("is_ssi_recipient_for_medicaid", year)
+            & person("is_optional_senior_or_disabled_income_eligible", year)
         )
+        otherwise_eligible = (
+            (add(person, year, without_spenddown) > 0) | ssi_recipient_without_spenddown
+        ) & person("is_medicaid_immigration_status_eligible", year)
 
         return (
             age_eligible

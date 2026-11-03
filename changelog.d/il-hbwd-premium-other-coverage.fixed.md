@@ -1,1 +1,1 @@
-Exclude people otherwise eligible for Medicaid without a spenddown from Illinois Health Benefits for Workers with Disabilities, so they no longer pay its premium.
+Exclude people otherwise eligible for Medicaid without a spenddown from Illinois Health Benefits for Workers with Disabilities, so they no longer pay its premium, and count income for Illinois's aged, blind and disabled Medicaid coverage under Illinois's own income rules.

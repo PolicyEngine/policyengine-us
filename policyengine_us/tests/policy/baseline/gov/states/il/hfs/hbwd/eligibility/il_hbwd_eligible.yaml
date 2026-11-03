@@ -126,3 +126,154 @@
     medicaid_category: WORKING_DISABLED_BUY_IN
     il_hbwd_eligible:
       2026-01: true
+
+# Income of 18,000 (wages of 9,000 and SSDI of 9,000) is 120% of the 2024 guideline
+# of 15,060, within the 138% adult limit. With 30 months of SSDI this person has
+# Medicare, which closes the adult group (42 CFR 435.119(b)(3)), so 89 Ill. Adm.
+# Code 120.510(b) does not bar the program.
+- name: Case 11, a person on Medicare within the adult income limit keeps the buy-in.
+  period: 2024
+  input:
+    state_code: IL
+    age: 55
+    is_disabled: true
+    social_security_disability: 9_000
+    months_receiving_social_security_disability: 30
+    employment_income: 9_000
+  output:
+    medicaid_category: WORKING_DISABLED_BUY_IN
+    il_hbwd_eligible:
+      2024-01: true
+
+# Wages of 18,000 are 113% of the 2026 guideline, within the adult limit, but a
+# permanent resident inside the five-year bar (8 USC 1613(a)) is not otherwise
+# eligible for medical assistance, so 120.510(b) does not bar the program.
+- name: Case 12, a permanent resident inside the five-year bar is not otherwise eligible.
+  period: 2026
+  input:
+    state_code: IL
+    age: 40
+    is_disabled: true
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    employment_income: 18_000
+  output:
+    is_medicaid_immigration_status_eligible: false
+    il_hbwd_eligible:
+      2026-01: true
+
+# Illinois's count, monthly (89 Ill. Adm. Code 120.335(a)(1), 120.362(b)(1), 120.370(a)):
+# Wages: 1,100 - 68.20 Social Security tax - 42.38 Illinois withholding - 50 = 939.42.
+# SSDI: 800 - 25 = 775.
+# The count of 1,714.42 is above the 1,330 limit, so the person is not otherwise
+# eligible. Income of 22,800 is 143% of the guideline, above the adult limit.
+# Premium under 120.510(n)(3): earned 939.42 and unearned 800 give 75.
+- name: Case 13, Illinois's count leaves a worker on SSDI and Medicare in the buy-in.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    age: 40
+    is_disabled: true
+    meets_ssi_disability_criteria: true
+    social_security_disability: 9_600
+    months_receiving_social_security_disability: 30
+    employment_income: 13_200
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: 20_572.99
+    medicaid_category: WORKING_DISABLED_BUY_IN
+    il_hbwd_eligible:
+      2026-01: true
+    il_hbwd_premium:
+      2026-01: 75
+    medicaid_premium: 900
+
+# Illinois's count, monthly, with Illinois withholding the only withholding modeled:
+# Wages: 1,500 - 93 Social Security tax - 62.18 Illinois withholding - 50 = 1,294.82.
+# SSDI: 600 - 25 = 575.
+# The count of 1,869.82 is above the 1,330 limit. Income of 25,200 is 158% of the
+# guideline, above the adult limit. The premium is left out: earned 1,294.82 and
+# unearned 600 fall on the 120.510(n)(3) cell in issue 10471.
+- name: Case 14, Illinois's count leaves a worker on SSDI without Medicare in the buy-in.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    age: 40
+    is_disabled: true
+    meets_ssi_disability_criteria: true
+    social_security_disability: 7_200
+    months_receiving_social_security_disability: 12
+    employment_income: 18_000
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: 22_437.79
+    medicaid_category: WORKING_DISABLED_BUY_IN
+    il_hbwd_eligible:
+      2026-01: true
+
+# Threshold edge for Cases 15 and 16: a dollar of SSDI either side of the 1,330 limit.
+# Wages: 800 - 49.60 Social Security tax - 27.53 Illinois withholding - 50 = 672.87.
+# SSDI: 682 - 25 = 657, for a count of 1,329.87, so 120.510(b) bars the program.
+# Income of 17,784 is 111% of the guideline, within the adult limit, but this person
+# has Medicare.
+- name: Case 15, a count just within the limit bars the program.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    age: 40
+    is_disabled: true
+    meets_ssi_disability_criteria: true
+    social_security_disability: 8_184
+    months_receiving_social_security_disability: 30
+    employment_income: 9_600
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: 15_958.39
+    medicaid_category: SENIOR_OR_DISABLED
+    il_hbwd_eligible:
+      2026-01: false
+
+# SSDI: 683 - 25 = 658, for a count of 1,330.87, above the limit.
+- name: Case 16, a count just above the limit keeps the buy-in.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    age: 40
+    is_disabled: true
+    meets_ssi_disability_criteria: true
+    social_security_disability: 8_196
+    months_receiving_social_security_disability: 30
+    employment_income: 9_600
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: 15_970.39
+    medicaid_category: WORKING_DISABLED_BUY_IN
+    il_hbwd_eligible:
+      2026-01: true
+
+# SSI: 994 - (500 - 20 + (1,060 - 65) / 2) = 16.50 a month.
+# Illinois's count, monthly, deducts SSI (42 CFR 435.121(f)(1)(i)):
+# Wages: 1,060 - 65.72 Social Security tax - 40.40 Illinois withholding - 50 = 903.88.
+# SSDI: 500 - 25 = 475.
+# The count of 1,378.88 is above the 1,330 limit, and 100 a month of expenses bring
+# it to 1,278.88 (435.121(e)(5)). Covered only after that spenddown, this SSI
+# recipient may choose the program under 89 Ill. Adm. Code 120.510(c).
+- name: Case 17, an SSI recipient who needs a spenddown keeps the buy-in.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    age: 40
+    is_disabled: true
+    meets_ssi_disability_criteria: true
+    social_security_disability: 6_000
+    employment_income: 12_720
+    other_medical_expenses: 1_200
+  output:
+    ssi:
+      2026-01: 16.50
+    medicaid_optional_senior_or_disabled_countable_income: 16_546.51
+    is_optional_senior_or_disabled_income_eligible: false
+    medicaid_category: SSI_RECIPIENT
+    il_hbwd_eligible:
+      2026-01: true

@@ -141,7 +141,12 @@
     # Blind worker is disability eligible and gets more generous exemptions
     il_hbwd_disability_eligible: [true]
     il_hbwd_income_eligible: [true]
-    il_hbwd_eligible: [true]
+    # Regular coverage's own count puts this worker within its limit, which bars
+    # the program under 89 Ill. Adm. Code 120.510(b):
+    # ($3,000 wages - $85) / 2 = $1,457.50 after the blind exemption
+    # $1,457.50 - $322.74 employment expenses - $25 exemption = $1,109.76,
+    # within 100% of poverty, $1,304.17.
+    il_hbwd_eligible: [false]
 
 # Test 7: Married couple - both disabled - both get exemptions
 - name: Case 7, married couple both disabled.

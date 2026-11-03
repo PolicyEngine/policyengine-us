@@ -26,6 +26,15 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
         "https://www.law.cornell.edu/regulations/california/22-CCR-50555.2",
         "https://www.law.cornell.edu/uscode/text/42/1395r#i",
         "https://www.law.cornell.edu/cfr/text/20/416.1163",
+        # Illinois MANG(AABD) unearned income, exemptions and employment expenses
+        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.330",
+        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.335",
+        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.340",
+        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.360",
+        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.362",
+        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.370",
+        # Section 209(b) states deduct SSI payments from income
+        "https://www.law.cornell.edu/cfr/text/42/435.121",
     )
 
     def formula(person, period, parameters):
@@ -66,6 +75,79 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
             parameters,
             period,
         )
+        # Illinois budgets MANG(AABD) income by its own rules (89 Ill. Adm. Code
+        # 120). 120.330(a) counts all unearned income not specified as exempt, so
+        # sources on SSI's list that AABD's list leaves out, such as pensions,
+        # count too. Rent counts as unearned: 120.360(b) limits earned income to
+        # wages and self-employment profits. A loss on one source is not income
+        # and does not reduce another. In-kind income does not count: "Unearned
+        # income in-kind shall be exempt" (120.340(b)). AABD's list includes SSI,
+        # which 42 CFR 435.121(f)(1)(i) deducts.
+        # NOTE: There is no input for actively managing a property, so a
+        # self-employed landlord's rent also counts as unearned.
+        gov = parameters(period).gov
+        il_aabd = gov.states.il.dhs.aabd.income
+        il_other_sources = [
+            source
+            for source in gov.ssa.ssi.income.sources.unearned
+            if source not in il_aabd.sources.earned
+            and source not in il_aabd.sources.unearned
+        ]
+        il_unearned = (
+            max_(
+                sum(
+                    max_(add(person, period, [source]), 0)
+                    for source in [
+                        *il_aabd.sources.unearned,
+                        *il_other_sources,
+                        "rental_income",
+                    ]
+                )
+                - person("ssi", period),
+                0,
+            )
+            / MONTHS_IN_YEAR
+        )
+        # A client has "only one $25.00 exemption" (120.335(a)(1)). It comes off
+        # income other than SSI, unearned first and then earnings.
+        il_flat = il_aabd.exemption.flat
+        il_flat_on_earnings = max_(il_flat - il_unearned, 0)
+        il_earnings = (
+            max_(
+                add(person, period, ["il_aabd_gross_earned_income"])
+                - person("rental_income", period),
+                0,
+            )
+            / MONTHS_IN_YEAR
+        )
+        # 120.370(a) exempts employment expenses.
+        il_expenses = (
+            add(person, period, ["il_aabd_expense_exemption_person"]) / MONTHS_IN_YEAR
+        )
+        # 120.362(b) exempts "the first $20.00 of gross earned income and one-half
+        # of the next $60.00" or, for blind people, "The first $85.00 of the gross
+        # earned income and one-half of the amount in excess of $85.00".
+        il_earned_exemption = where(
+            person("is_blind", period),
+            il_aabd.exemption.blind.calc(il_earnings),
+            il_aabd.exemption.elderly_or_disabled.calc(il_earnings),
+        )
+        il_own_countable = (
+            max_(il_unearned - il_flat, 0)
+            + max_(
+                il_earnings - il_earned_exemption - il_expenses - il_flat_on_earnings,
+                0,
+            )
+        ) * MONTHS_IN_YEAR
+        il_countable = where(
+            couple_computation,
+            person.marital_unit.sum(il_own_countable),
+            il_own_countable,
+        ) + person(
+            "medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent",
+            period,
+        )
+        personal_countable = where(state == "IL", il_countable, personal_countable)
 
         # 22 CCR 50555.2 deducts person-paid premiums, Part B only when the
         # person pays it. From 12/2020 (ACWDL 20-18, 20-24) CA disregards Part B
