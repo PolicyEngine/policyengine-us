@@ -1035,26 +1035,39 @@ candidates:
     the candidate runs from 2018; verify worksheet editions and affected years.'
 - id: us-ca:itemized-limit-investment-interest-exclusion
   program: income-tax
+  years:
+    from: 2021
+    type: tax
   question: Does the itemized-deduction limitation exclude California investment interest or the federal Schedule
     A line 9 amount?
   sources:
   - kind: statute
-    citation: R&TC 17077, incorporating IRC 68(c)(2)
-    url: null
+    citation: R&TC §17077, adopting 26 U.S.C. 68(c)(2)
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17077
   - kind: worksheet
-    citation: 540 Schedule CA itemized limitation worksheet, FTB Line 29 worksheet
-    url: null
+    citation: 2024 Schedule CA line 29 worksheet, line 2, Form 540 booklet PDF p.68
+    url: https://www.ftb.ca.gov/forms/2024/2024-540-booklet.pdf#page=68
   readings:
-    statute: Exclude California's investment-interest deduction from FTB 3526 line 10.
+    statute: Exclude California's investment interest expense deduction (FTB 3526 line 8), the amount the itemized
+      total holds.
     other: Exclude federal Schedule A line 9.
+  example: A 2024 single filer with AGI of $444,857 (6% of the excess over the threshold is $12,000), $10,000 of charity,
+    a $6,000 FTB 3526 deduction and $10,000 on federal Schedule A line 9 deducts $8,000 under the statute, which PE-US
+    follows, and $11,200 through line 9.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ca/tax/income/deductions/itemized/limit/excluded_deductions.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9977
+    - https://github.com/PolicyEngine/policyengine-us/pull/10645
   state: ruled
-  note: An October 2026 ruling followed the worksheet; the later statute-first rule requires changing to the California
-    deduction, with years and citations verified.
+  note: 'Ruled 2026-11-02 for the statute. R&TC 17077 applies IRC 68 without changing 68(c), and 68(c)(2) leaves out
+    "any deduction for investment interest". The worksheet names federal Schedule A line 9, which gives the same result
+    when FTB 3526 and federal Form 4952 agree. ca_itemized_deductions_pre_limitation holds
+    ca_investment_interest_expense_deduction, so the exclusion list names that variable. An October 2026 ruling followed
+    the worksheet; the statute-first rule replaced it, and the open PR that still lists the federal amount must take
+    this reading.'
 - id: us-ca:joint-childless-eitc-claimable-spouse
   program: income-tax
   years:
@@ -4453,7 +4466,7 @@ candidates:
 - id: us-mi:household-resources-dependent-amounts
   program: income-tax
   years:
-    from: 2024
+    from: 2021
     type: tax
   question: Do total household resources include the instructions' amounts for dependents and other family members
     when the statute defines household as claimant and spouse?
@@ -4467,22 +4480,24 @@ candidates:
   readings:
     statute: Count the claimant and spouse's income.
     other: Count the specified income and premiums for all members, including amounts received for dependent adults.
-  example: A dependent adult's $2,400 pension changes SSI from $11,604 to $9,444, household resources from $21,604
-    to $19,444, and heating credit from $35.316 to $80.676.
+  example: A minor child's $9,000 of Social Security survivors benefits, received with the claimant as
+    representative payee, stays out of household resources; the line 21 instructions would count it.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/mi/tax/income/mi_household_resources.py
+    - policyengine_us/parameters/gov/states/mi/tax/income/household_resources.yaml
     - policyengine_us/parameters/gov/states/mi/tax/income/household_resources_all_members.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9796
+    - https://github.com/PolicyEngine/policyengine-us/pull/10325
   state: ruled
-  note: 'Partly changed by #9796: PE-US now counts only the claimant''s and spouse''s own income, as the statute
-    does, except the sources on MI-1040CR lines 21, 22 and 27 (Social Security, SSI, railroad benefits, child support,
-    TANF and general assistance), which it counts for every member as amounts received for others, as the form does
-    (mi_household_resources.py, household_resources_all_members.yaml). Ruled in October 2026 to follow the form;
-    the statute-first rule still requires deciding whether a dependent''s own benefits on those lines are received
-    for others.'
+  note: 'PE-US follows MCL 206.508(3): Social Security, SSI and railroad benefits (MI-1040CR line 21) count for
+    the claimant and spouse only, so a dependent''s own benefit stays out even when the claimant receives it as
+    representative payee. RAB 2015-18 counts benefits received by minor children, and the line 21 instructions count
+    amounts received for minor children or other dependent adults. Line 31 subtracts the premiums the claimant and
+    spouse paid, including family coverage, and not premiums a dependent paid. PE-US treats child support (line 22)
+    and public assistance (line 27) as payments the claimant receives, so they count for every member.'
 - id: us-mi:household-resources-premium-double-deduction
   program: homestead-credit
   years:
@@ -4539,6 +4554,39 @@ candidates:
   state: unreviewed
   note: PE-US follows the manual and surrounding report editions; obtain contemporaneous BEM 556 for October 2022-September
     2023.
+- id: us-mn:k12-subtraction-grade-cap-default
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Minn. Stat. 290.0132 subd. 4(b) caps the K-12 subtraction by grade and doesn't say when the grade counts.
+    Does the grade at the end of the tax year set the cap, or the grade when the expenses were paid?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 290.0132 subd. 4(b)
+    url: https://www.revisor.mn.gov/statutes/cite/290.0132#stat.290.0132.4
+  - kind: guidance
+    citation: Minnesota Department of Revenue, K-12 Education Subtraction and Credit
+    url: https://www.revenue.state.mn.us/k-12-education-subtraction-and-credit
+  - kind: instructions
+    citation: 2025 Schedule M1M instructions, line 13
+    url: https://www.revenue.state.mn.us/sites/default/files/2026-07/m1m-25.pdf#page=5
+  readings:
+    statute: Sets the caps by grade and is silent on when the grade counts.
+    other: The department's page caps by grade "at the end of the tax year" and gives $2,500 to a 12th grader who started
+      college during the year. The M1M line asks for each child's "grade at the time the expenses were paid".
+  example: A child who moves from grade 6 to grade 7 in September 2025, with $2,000 of expenses paid that spring, has a
+    $2,500 cap at the end of the year, which PE-US follows, and a $1,625 cap by the grade when the expenses were paid.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/mn/tax/income/subtractions/mn_k12_education_subtraction_higher_cap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10586
+  state: ruled
+  note: Ruled 2026-11-02 for the department's page. The statute leaves the date open, the page answers it directly, and
+    the M1M line only tells filers what to enter. PE-US data hold no grade, so the formula imputes it from age and keeps
+    an override.
 - id: us-mn:liheap-plan-income-checklist
   program: liheap
   years:
@@ -4568,6 +4616,37 @@ candidates:
   state: ruled
   note: 'Ruled 2026-10-06: follow the manual over the plan. Code not yet on main: mn_eap_countable_income,
     gov.states.mn.commerce.eap.income.sources.'
+- id: us-mn:msa-couple-arrangement-b-pathways
+  program: msa
+  years:
+    from: 2011
+    type: calendar
+  question: Minn. Stat. 256D.44 subd. 2 gives the living-alone standards to a person eligible for a waiver or a housing
+    support placement. Does a couple on SSI Federal Living Arrangement B get the upgrade, although the manual's couple
+    lists leave it out?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 256D.44 subd. 2
+    url: https://www.revisor.mn.gov/statutes/cite/256D.44
+  - kind: manual
+    citation: DHS Combined Manual 0020.21, married couple lists
+    url: https://www.dhs.state.mn.us/main/groups/county_access/documents/pub/mndhs-073585.pdf#page=5
+  readings:
+    statute: A person who meets a pathway gets the standard in subd. 3(a) or (b), with no limit on SSI living arrangement.
+    other: The couple lists give the upgrade to a couple on arrangement A or ineligible for SSI through excess income, and
+      apply the married couple living with others standard to a couple on arrangement B.
+  example: In January 2026 a couple on arrangement B, living with others, with one spouse eligible for a waiver, gets
+    $1,582 under the statute, which PE-US follows, and $1,058 under the manual's list.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mn/dhs/msa/payment/mn_msa_payment_category.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10586
+  state: ruled
+  note: Ruled 2026-11-02 for the statute. Subd. 2 sends the person to subd. 3(b) with no arrangement test, and the
+    manual's single-person lists do give the upgrade on arrangement B. mn_msa_payment_category reads the federal
+    arrangement only for the facility test.
 - id: us-mn:small-claim-of-right-repayment-deduction
   program: income-tax
   years:
@@ -8696,6 +8775,121 @@ candidates:
   state: ruled
   note: 'Ruled 2026-10-23: exclude IRA/401(k) withdrawals as the manual does. Code not yet on main:
     tn_liheap_countable_income, gov.states.tn.thda.liheap.income.sources.unearned.'
+- id: us-tx:ccs-board-psoc-before-tx3c
+  program: child-care-assistance
+  years:
+    from: 2024
+    to: 2025
+    type: federal-fiscal
+  question: Does a Texas Child Care Services family pay on the statewide parent share of cost scale, which TWC's
+    Commission had to establish from December 1, 2023 under 40 TAC §809.19(b), or on its Workforce Board's own scale,
+    which TWC had Boards keep setting until it launched TX3C on January 13, 2025?
+  sources:
+  - kind: regulation
+    citation: 40 TAC §809.19(b), adopted September 13, 2022 (47 TexReg 6459, effective October 3, 2022)
+    url: https://web.archive.org/web/20231103125253/https://www.twc.texas.gov/sites/default/files/ogc/docs/fr-809-ch-rev-09-22-twc.pdf#page=62
+  - kind: guidance
+    citation: TWC WD Letter 06-24, Change 2, p. 2
+    url: https://web.archive.org/web/20250309110529/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/06-24-ch2-twc.pdf#page=2
+  - kind: guidance
+    citation: TWC WD Letter 24-23, p. 2
+    url: https://web.archive.org/web/20240908233001/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/wd-24-23-twc.pdf#page=2
+  - kind: guidance
+    citation: TWC WD Letter 20-24, p. 1
+    url: https://web.archive.org/web/20250314070109/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/20-24-twc.pdf#page=1
+  - kind: agency-practice
+    citation: 'TWC Commission meeting, December 17, 2024, item 10: CCDF waiver request, Waiver 2 (p. 2)'
+    url: https://www.twc.texas.gov/sites/default/files/ogc/mtg24/commission-meeting-material-121724-item10-dp-ccdf-waiver-request-twc.pdf#page=2
+  - kind: policy
+    citation: Workforce Solutions Panhandle, Parent Share of Cost, effective 10/01/2023 - 9/30/2024
+    url: https://wspanhandle.com/wp-content/uploads/2023/10/PSoC-2023-2024.png
+  readings:
+    statute: No statute supplied; in 2022, TWC's Commission added §809.19(b), "effective on December 1, 2023", under
+      which the parent share of cost "shall be ... established by the Commission and determined by a sliding fee scale
+      based on the family's size and gross monthly income".
+    other: In WD 06-24, Change 2, TWC tied the statewide parent share of cost, and the method its Commission adopted on
+      November 7, 2022, to TX3C. Until then, TWC had each Board set its own amounts on TWC's income ranges (WD 24-23 and
+      WD 20-24). In its waiver request, TWC said it would phase the statewide scale in from January 13, 2025, as
+      families enroll or recertify.
+  example: A single parent in the Panhandle with $2,000 a month of income has one child, whose care the Board
+    subsidizes. On the Board's chart, the parent pays $110 a month in September 2024; on TWC's statewide scale,
+    PolicyEngine computes $88.45 for the same month.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/tx/twc/ccs/copay/rate/first_child.yaml
+    - policyengine_us/parameters/gov/states/tx/twc/ccs/copay/rate/additional_child.yaml
+    - policyengine_us/parameters/gov/states/tx/twc/ccs/copay/rate/maximum.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10598
+  state: ruled
+  note: 'On 2026-11-02, PolicyEngine picked each Board''s own scale where it has the Board''s chart for the period, and
+    TWC''s statewide scale for a Board without one and for every family from TX3C''s launch. Draft #10623 adds those
+    Board scales. Until #10623 merges, PE-US models no Board scale. It dates TWC''s statewide scale from January 2025,
+    when TWC began phasing it in, and applies that scale to every earlier month too.'
+- id: us-tx:ccs-rate-age-groups-before-tx3c
+  program: child-care-assistance
+  years:
+    from: 2024
+    to: 2025
+    type: federal-fiscal
+  question: From December 1, 2023 to January 12, 2025, do Workforce Boards set rates for the eight age groups that TWC's
+    Commission defined in 40 TAC §809.20(a)(3) to meet S.B. 1555's deadline, or for the four groups that TWC kept in its
+    rate tables until it launched TX3C?
+  sources:
+  - kind: statute
+    citation: Texas Government Code §2308.315
+    url: https://web.archive.org/web/20241213092751/https://statutes.capitol.texas.gov/Docs/GV/htm/GV.2308.htm#2308.315
+  - kind: statute
+    citation: Acts 2021, 87th Leg., R.S., ch. 59 (S.B. 1555), §2
+    url: https://capitol.texas.gov/tlodocs/87R/billtext/html/SB01555F.htm
+  - kind: regulation
+    citation: 40 TAC §809.20(a)(2) and (a)(3), adopted September 13, 2022 (47 TexReg 6459, effective October 3, 2022)
+    url: https://web.archive.org/web/20231103125253/https://www.twc.texas.gov/sites/default/files/ogc/docs/fr-809-ch-rev-09-22-twc.pdf#page=65
+  - kind: rulemaking
+    citation: TWC, amendments to 40 TAC Chapter 809 adopted September 13, 2022, preamble on Senate Bill 1555 (pp. 7-8)
+    url: https://web.archive.org/web/20231103125253/https://www.twc.texas.gov/sites/default/files/ogc/docs/fr-809-ch-rev-09-22-twc.pdf#page=7
+  - kind: rulemaking
+    citation: TWC, amendments to 40 TAC Chapter 809 effective July 29, 2024 (49 TexReg 5545), preamble on §809.20 (p. 5)
+    url: https://web.archive.org/web/20250307095110/https://www.twc.texas.gov/sites/default/files/ogc/docs/fr-809-trs-updates-7-24-twc.pdf#page=5
+  - kind: guidance
+    citation: TWC WD Letter 06-24, Change 2, pp. 2 and 7
+    url: https://web.archive.org/web/20250309110529/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/06-24-ch2-twc.pdf#page=2
+  - kind: guidance
+    citation: TWC WD Letter 19-24, Change 1, p. 3
+    url: https://web.archive.org/web/20250307074656/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/19-24-ch1-twc.pdf#page=3
+  - kind: guidance
+    citation: TWC WD Letter 20-23, Attachment 1, Board Contract Year 2024 Child Care Provider Payment Rates (revised
+      October 16, 2023)
+    url: https://www.twc.texas.gov/sites/default/files/wf/docs/20-23-att1-twc.pdf
+  readings:
+    statute: Under Government Code §2308.315, each Board "shall establish and implement graduated reimbursement rates
+      for child-care providers ... that align the commission's age groupings with the child-to-caregiver ratios and
+      group sizes adopted by the Health and Human Services Commission". In §2 of S.B. 1555, which amended §2308.315 in
+      2021, the Legislature added a deadline, "Not later than December 1, 2023, each local workforce development board
+      shall establish the child-care reimbursement rates required under Section 2308.315". To meet it, TWC's Commission
+      set eight age groups in §809.20(a)(3), "effective December 1, 2023", in place of the four in (a)(2). It matched
+      them to Child Care Regulation's groups, from infants ages 0 through 11 months to school-age children 6 years and
+      older. In amendments effective July 29, 2024, it removed the four groups from the rule.
+    other: TWC set rates for the four groups in its BCY 2024 table and its BCY 2025 four-age-group table. In WD 06-24,
+      Change 2, TWC tied the expanded age groups to TX3C. In WD 19-24, Change 1, it kept rates on the four age ranges
+      until TX3C's launch and started its eight-group rates on January 13, 2025.
+  example: In its BCY 2024 table, TWC listed Panhandle's rate for a four-year-old in a registered home's regular
+    full-time care as the preschool rate, $27.33 a day. Under §809.20(a)(3), the Board would set a rate for
+    four-year-olds alone.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/tx/twc/ccs/payment/uses_expanded_age_groups.yaml
+    - policyengine_us/parameters/gov/states/tx/twc/ccs/payment/rates.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10598
+  state: unreviewed
+  note: PE-US follows TWC's tables. It keeps the four groups through December 2024 and switches to TWC's eight-group
+    rates in January 2025 (uses_expanded_age_groups starts on 2025-01-01 for TWC's January 13 start). TWC set
+    eight-group rates only from January 13, 2025, and entered every Board's BCY 2025 rates on the four age ranges until
+    then (WD 19-24, Change 1, p. 3). PE-US has no published eight-group rates to apply to earlier months under the
+    statute reading.
 - id: us-tx:family-planning-unearned-income-exclusions
   program: family-planning-program
   years:
@@ -10170,6 +10364,40 @@ candidates:
     unearned_sources.yaml) and for categorical eligibility (wy_lieap_eligible.py). It follows rule 8(a)(ii)(L) over
     the plan in excluding lump sums and has no lottery-winnings input. It deducts child support paid only from the
     payer's own earnings (wy_lieap_countable_income.py), since rule 8(a)(iii) does not say whose earnings.
+- id: us:additional-child-credit-2021-abode-section-911
+  program: income-tax
+  years:
+    from: 2021
+    to: 2021
+    type: tax
+  question: In 2021, does a section 911 exclusion claimant who fails ARPA's United States abode test lose the refundable
+    child tax credit under section 24(d)(3), when the model applies the 2021 exemption from subsection (d) to every
+    filer?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 24(i)(1) as added by P.L. 117-2 section 9611; 24(d)(3)
+    url: https://www.congress.gov/117/plaws/publ2/PLAW-117publ2.pdf
+  - kind: form
+    citation: 2021 Schedule 8812, Part I-B
+    url: https://www.irs.gov/pub/irs-prior/f1040s8--2021.pdf#page=1
+  readings:
+    statute: Subsection (d), including the (d)(3) bar, is switched off in 2021 only for a taxpayer whose principal
+      place of abode was in the United States for more than half the year, or a bona fide resident of Puerto Rico.
+    other: The model has no abode input and treats every 2021 filer as meeting the test, so no section 911 claimant
+      is barred.
+  example: In 2021, a filer abroad all year with $30,000 of wages, all excluded under section 911(a), and two
+    qualifying children aged 7 and 9 gets $6,000 of refundable child tax credit in the model; under the statute
+    subsection (d) applies, and the (d)(3) bar denies the refundable part.
+  pe_us:
+    follows: not-modelled
+    code:
+    - policyengine_us/variables/gov/irs/credits/ctc/refundable/refundable_ctc_barred_by_section_911_exclusion.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10297
+  state: unreviewed
+  note: The variable's documentation states the assumption. Most section 911 claimants need a foreign tax home and
+    cannot meet the abode test. A fix needs an abode input, defaulting to the current behavior for filers without
+    a section 911 exclusion. The model gives the $6,000 figure.
 - id: us:additional-child-credit-housing-deduction-bar
   program: income-tax
   years:
@@ -10185,25 +10413,28 @@ candidates:
     citation: Schedule 8812 Part II-A; Credit Limit Worksheet B; Pub. 596 Rule 5
     url: null
   readings:
-    statute: A housing deduction alone arguably does not trigger the section 24(d)(3) exclusion bar.
+    statute: Section 24(d)(3) bars only a taxpayer who elects to exclude an amount under section 911; the section
+      911(c)(4)(A) housing deduction is a deduction, claimed without an election (Treas. Reg. 1.911-7(a)(3)), so it
+      alone does not trigger the bar.
     other: The instructions bar a Form 2555 filer even when the form claims only the housing deduction.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/tools/section_911.py
     - policyengine_us/variables/gov/irs/credits/ctc/refundable/refundable_ctc_barred_by_section_911_exclusion.py
+    - policyengine_us/variables/gov/irs/credits/ctc/refundable/ctc_credit_limit_worksheet_b_applies.py
     - policyengine_us/parameters/gov/irs/credits/ctc/refundable/fully_refundable.yaml
     - policyengine_us/parameters/gov/irs/credits/ctc/refundable/foreign_earned_income_exclusion_bar_applies.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10022
+    - https://github.com/PolicyEngine/policyengine-us/pull/10297
   state: unreviewed
-  note: 'PE-US follows the instructions: elects_section_911_exclusion treats a filer who claims only the section
-    911(c)(4) housing deduction as electing section 911, so refundable_ctc_barred_by_section_911_exclusion denies
-    the additional child tax credit from 2015 except in 2021, when the credit is fully refundable and the bar does
-    not apply; the helper''s docstring says this case rests on the IRS instructions, not the statute (tools/section_911.py,
-    refundable/fully_refundable.yaml, refundable/foreign_earned_income_exclusion_bar_applies.yaml). The statute-first
-    rule requires revising the deduction-only ACTC bar; verify that interpretation separately from EITC, whose statutory
-    wording differs.'
+  note: PE-US follows the statute. refundable_ctc_barred_by_section_911_exclusion reads excludes_amount_under_section_911
+    (tools/section_911.py), which tests only the Form 2555 line 42 and line 36 exclusions when leaf inputs are supplied,
+    so a filer who claims only the section 911(c)(4) housing deduction (line 50) keeps the refundable credit and completes
+    Credit Limit Worksheet B (ctc_credit_limit_worksheet_b_applies.py). The legacy aggregates still count as an exclusion.
+    The EITC keeps the broader section 32(c)(1)(C) test in elects_section_911_exclusion. Register the entry and add
+    the marker once #10297 is on main.
 - id: us:charitable-non-itemizer-2020-separate-cap
   program: income-tax
   years:
@@ -10297,30 +10528,97 @@ candidates:
   years:
     from: 2018
     type: tax
-  question: Does claiming one spouse as a dependent bar only that spouse's education credits and student loan interest
-    deduction, or the whole joint return?
+  question: Does claiming one spouse as a dependent bar only that spouse's education credits, or the whole joint
+    return?
   sources:
   - kind: statute
-    citation: 26 U.S.C. 25A(g)(3); 26 U.S.C. 221(c)
+    citation: 26 U.S.C. 25A(g)(3)
     url: https://www.law.cornell.edu/uscode/text/26/25A#g_3
   - kind: instructions
-    citation: Form 1040 instructions (education credits and student loan interest)
+    citation: Form 1040 instructions (education credits)
     url: https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=98
   readings:
-    statute: The claimed spouse loses the benefit; the other spouse keeps their own credit or deduction.
+    statute: The claimed spouse loses the credit; the other spouse keeps their own credit.
     other: The whole joint return is barred.
   pe_us:
     follows: conflicting-source
     code:
     - policyengine_us/variables/gov/irs/credits/education/is_barred_from_education_credits_by_dependency.py
-    - policyengine_us/variables/gov/irs/income/taxable_income/adjusted_gross_income/above_the_line_deductions/student_loan_interest/student_loan_interest_ald_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10087
   state: ruled
   note: 'PE-US follows the Form 1040 instructions: a claimed head or spouse bars the whole joint return from the
-    education credits and the student loan interest deduction (is_barred_from_education_credits_by_dependency.py,
-    student_loan_interest_ald_eligible.py). Ruled October 2026; the statute-first rule now requires changing the
-    whole-return bar; verify the education-credit page anchor because the supplied URL is for student loan interest.'
+    education credits (is_barred_from_education_credits_by_dependency.py). Ruled October 2026; the statute-first
+    rule now requires changing the whole-return bar; verify the education-credit page anchor because the supplied
+    URL is for student loan interest.'
+- id: us:eitc-qualifying-child-identification-bar
+  program: income-tax
+  years:
+    from: 2018
+    to: 2020
+    type: tax
+  question: Before 2021, does a filer whose qualifying children all fail the identification requirement get no EITC,
+    or the credit for a filer without a qualifying child?
+  sources:
+  - kind: statute
+    citation: Former 26 U.S.C. 32(c)(1)(F); P.L. 117-2 section 9622
+    url: https://www.govinfo.gov/content/pkg/USCODE-2015-title26/html/USCODE-2015-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm
+  - kind: instructions
+    citation: 2018-2020 Form 1040 instructions, EIC Step 3, question 1
+    url: https://www.irs.gov/pub/irs-prior/i1040gi--2020.pdf#page=42
+  readings:
+    statute: No credit is allowed to a filer with one or more qualifying children if no qualifying child is taken into
+      account because of the identification requirement.
+    other: The instructions send such a filer to Step 4, the credit for a filer without a qualifying child.
+  example: 'In 2020, a filer with $6,000 of wages and one qualifying child without an SSN gets $0 under the statute
+    and $459 (7.65% of $6,000, under the $538 maximum) under the instructions; the model gives these with the bar on
+    and off.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/irs/credits/earned_income/eligibility/eitc_eligible.py
+    - policyengine_us/parameters/gov/irs/credits/eitc/eligibility/qualifying_child_without_identification_bar.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10297
+  state: unreviewed
+  note: PE-US follows the statute through 2020; the parameter turns the bar off from 2021, when ARPA section 9622 struck
+    the subparagraph. P.L. 105-206 section 6021(b)(2) added the bar as (c)(1)(G), effective as if included in section
+    11111 of the Revenue Reconciliation Act of 1990, and P.L. 108-311 redesignated it (F). Register the entry and add
+    the marker once #10297 is on main.
+- id: us:eitc-rental-real-estate-basket
+  program: income-tax
+  years:
+    from: 2018
+    type: tax
+  question: Is rental real estate a section 32(i)(2)(C) rent, netted with nonbusiness royalties, or a section 32(i)(2)(E)
+    passive activity for the EITC investment income limit?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 32(i)(2)(C) and (E); 469(c)(2)
+    url: https://www.law.cornell.edu/uscode/text/26/32#i_2
+  - kind: worksheet
+    citation: Publication 596 (2025) Worksheet 1, lines 8-13
+    url: https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=7
+  readings:
+    statute: Section 32(i)(2)(C) counts rents and royalties not derived in the ordinary course of a trade or business,
+      net of their allocable deductions; (E) counts passive activity income, without amounts described in (C). The
+      text does not say which basket rental real estate is in.
+    other: Worksheet 1 puts Schedule E line 23b royalties and Schedule 1 line 8l personal property rents on lines 8-10,
+      and Schedule E line 26 rental real estate on the passive lines 11-12; nonpassive rental real estate is left out.
+  example: In 2025, $12,000 of trust royalties and a $5,000 rental real estate loss give $12,000 of investment income
+    with rentals in the passive basket (over the $11,950 limit, so a joint couple with one child and $15,000 of wages
+    gets no EITC) and $7,000 if the rental is a (C) rent (the couple gets $4,328); the model gives these figures.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/irs/credits/earned_income/eitc_relevant_investment_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10297
+  state: ruled
+  note: Where the text and the canons do not settle a reading, the model follows the administering agency's reading,
+    here Worksheet 1. rental_income, read as Schedule E rental real estate, stays in the passive basket, so a rental
+    real estate loss offsets other passive income but not trust royalties. The model has no input for personal property
+    rents ((C) basket) or nonpassive rental real estate (not investment income).
 - id: us:eitc-trust-royalties-investment-income
   program: income-tax
   years:
@@ -10339,17 +10637,20 @@ candidates:
     statute: Box 5 royalties count toward the investment-income limit.
     other: Only Schedule E Part I royalties enter line 8.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/variables/gov/irs/credits/earned_income/eitc_relevant_investment_income.py
+    - policyengine_us/variables/household/income/person/estate/estate_royalty_income.py
     - policyengine_us/variables/household/income/person/estate/passive_estate_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10194
+    - https://github.com/PolicyEngine/policyengine-us/pull/10297
   state: unreviewed
-  note: 'PE-US follows the worksheet: the passive basket counts passive_estate_income, Schedule E Part III column
-    (d), and leaves out the box 5 royalties, annuities and income in respect of a decedent that go in nonpassive
-    column (f) (eitc_relevant_investment_income.py, passive_estate_income.py). The statute-first rule requires including
-    qualifying Part III royalties; obtain the worksheet version and verify the omitted income basket.'
+  note: PE-US follows the statute. The estate_royalty_income input (Schedule K-1 (Form 1041) box 5 royalties, net of
+    their allocable deductions) forms the section 32(i)(2)(C) basket in eitc_relevant_investment_income, floored at
+    zero and kept apart from the passive basket, so these royalties count although Worksheet 1 line 8 reads only Schedule
+    E line 23b. Where rental real estate goes is a separate reading (us:eitc-rental-real-estate-basket). Register the
+    entry and add the marker once #10297 is on main.
 - id: us:filing-chart-a-blindness-and-equality
   program: income-tax
   years:
@@ -10408,10 +10709,9 @@ candidates:
     - policyengine_us/variables/gov/irs/tax_unit_is_required_to_file.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10135
+    - https://github.com/PolicyEngine/policyengine-us/pull/10590
   state: open
-  note: 'PE-US follows the statute: a married individual filing separately, claimable or not, must file with any
-    positive gross income, since the separate threshold is the exemption amount, zero while it is suspended (tax_unit_is_required_to_file.py).
-    Verify the married-dependent Chart B conditions and applicable years; the decision remains open.'
+  note: 'PE-US follows the statute: a married individual filing separately, claimable or not, must file with any positive gross income through 2025 and even with no gross income from 2026, since the separate threshold is the exemption amount, zero while it is suspended (tax_unit_is_required_to_file.py). Verify the married-dependent Chart B conditions and applicable years; the decision remains open.'
 - id: us:filing-claimable-spouse-unearned-income-additions
   program: income-tax
   years:
@@ -10434,18 +10734,43 @@ candidates:
     other: Chart B and Publication 501 add age or blindness amounts, giving $2,950 or $4,550 in the supplied 2025
       reading.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/variables/gov/irs/tax_unit_is_required_to_file.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10135
     - https://github.com/PolicyEngine/policyengine-us/pull/10137
+    - https://github.com/PolicyEngine/policyengine-us/pull/10297
   state: open
-  note: 'PE-US follows Chart B and Publication 501 Table 2: the unearned income threshold for a filer who can be
-    claimed is the section 63(c)(5)(A) amount plus their own additional standard deduction for age or blindness,
-    on joint returns too, and the comment records that section 6012(f)(2)(D) names the 63(c)(5)(A) amount alone
-    (tax_unit_is_required_to_file.py). The statute-first rule requires removing the extra amounts from this statutory
-    test.'
+  note: PE-US follows the statute. For 2018 to 2025, a joint return's unearned income test for a claimable spouse is
+    the section 63(c)(5)(A) amount alone, with no addition for age or blindness (tax_unit_is_required_to_file.py,
+    statutory_joint_test). Other filing statuses, and every return from 2026, keep Table 2's addition. Register the
+    entry and add the marker once #10297 is on main.
+- id: us:filing-requirement-2026-statute-over-chart-b
+  program: income-tax
+  years:
+    from: 2026
+    type: tax
+  question: Does a claimable filer's section 6012(a)(1) threshold leave out blindness and require a return at equality, or does it add blindness and require a return only above the amount, as Chart B did under the same text?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 6012(a)(1)(A)(i) and (B)
+    url: https://www.law.cornell.edu/uscode/text/26/6012#a_1
+  - kind: instructions
+    citation: 2017 Form 1040 instructions, Chart B
+    url: null
+  readings:
+    statute: Only gross income less than the limited basic standard deduction plus the age addition excuses a return, so income equal to that amount requires one and blindness doesn't count.
+    other: Chart B adds blindness and requires a return only when gross income exceeds the amount.
+  example: A 2026 blind single filer who can be claimed and has $17,000 of wages must file under the statute, since $17,000 reaches the limited $16,100, and not under Chart B's method, since $17,000 doesn't exceed $18,150.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/irs/tax_unit_is_required_to_file.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10590
+  state: ruled
+  note: 'Ruled 2026-11-02 for the statute; PolicyEngine/policyengine-us#10590 holds the record. The (C)(i)(I) unearned income test keeps the additional standard deduction, which its text names (tax_unit_is_required_to_file.py).'
 - id: us:hsa-limit-indexing-windows
   program: income-tax
   years:
@@ -10480,6 +10805,44 @@ candidates:
     limit/self_only.yaml, limit/family.yaml). The statute-first rule requires changing conflicting projections;
     verify the statutory window substitution first, and preserve the distinction from published limits fixed through
     2027.'
+- id: us:idr-10-year-cap-before-spousal-proration
+  program: student-loans
+  years:
+    from: 2026
+    type: calendar
+  question: For a married borrower who files jointly and whose spouse has eligible loans, is the Income-Based Repayment
+    or Pay As You Earn payment capped at the borrower's 10-year standard payment before or after it is prorated by
+    the borrower's share of the couple's loans?
+  sources:
+  - kind: statute
+    citation: 20 U.S.C. 1098e(b)(6)(A)
+    url: https://www.law.cornell.edu/uscode/text/20/1098e#b_6_A
+  - kind: regulation
+    citation: 34 CFR 685.209(e)(2)(i), (f)(2), (f)(3) and (g)(1)
+    url: https://www.ecfr.gov/current/title-34/section-685.209
+  readings:
+    statute: Section 1098e(b)(6)(A) sets a maximum, the 10-year standard payment on all the borrower's loans, and says
+      nothing of proration between spouses.
+    other: 'Regulation order: (f)(2) and (f)(3) make the payment the lesser of the income-based amount and the 10-year
+      standard payment, and (g)(1) multiplies "the borrower''s payment amount as calculated in accordance with paragraphs
+      (f)(1) through (3)" by the balance share, so the share applies to the capped amount. The other reading prorates
+      the income-based amount first and caps each spouse''s share at their own standard payment.'
+  example: Spouses with $30,000 each at 0% and 12% and a $600 income-based amount have standard payments of $250.00
+    and $430.41. In the regulation's order each pays half of min($600, own standard payment), $125.00 and $215.21;
+    capping after proration gives min($300, $250) = $250 and min($300, $430.41) = $300.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/ed/student_loans/income_based_repayment/income_based_repayment_payment.py
+    - policyengine_us/variables/gov/ed/student_loans/pay_as_you_earn/pay_as_you_earn_payment.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10570
+  state: ruled
+  note: The model follows the regulation's order for both plans. For Income-Based Repayment it stays under the
+    statute's maximum; Pay As You Earn has no statutory cap. Each borrower's standard
+    payment covers only their own Direct and FFEL loans; (e)(2)(i) brings the spouse's loans in only for (g). A couple
+    whose income-based amount exceeds both standard payments pays each standard payment times the balance share,
+    so at equal balances and rates half their combined standard amount.
 - id: us:mortgage-interest-limit-ratio-rounding
   program: income-tax
   years:
@@ -10594,17 +10957,16 @@ candidates:
   readings:
     statute: With a zero exemption amount, the literal filing rule includes a separate filer with no gross income.
     other: IRS relief requires filing only at $5 or more of gross income.
-  example: The supplied 2026-or-later case for a separate filer aged 40 with no income returns false in the model.
+  example: In the model a separate filer aged 40 with no income must file in 2026 under section 6012(a)(1)(A) and need not file in 2025 under section 6012(f).
   pe_us:
-    follows: unknown
+    follows: statute
     code:
     - policyengine_us/variables/gov/irs/tax_unit_is_required_to_file.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10137
+    - https://github.com/PolicyEngine/policyengine-us/pull/10590
   state: open
-  note: PE-US requires a separate filer to file only with positive gross income, matching neither the literal statute,
-    which reaches a separate filer with none, nor the IRS's $5 relief (tax_unit_is_required_to_file.py). The statute-first
-    rule requires a model change, and no completed ruling date is recorded.
+  note: 'Ruled 2026-11-03 for the statute from 2026. Congress limited section 6012(f) to 2018 through 2025, so under section 6012(a)(1)(A) a married individual filing separately must file even with no gross income: $0 equals the exemption amount, zero under section 151(d)(5)(A). The spouse who loses (A)(iv) and a filer whose standard deduction is zero under section 63(c)(6) face the same test, and PE-US applies it to all three (tax_unit_is_required_to_file.py). For 2018 to 2025 PE-US requires a return only with positive gross income, reading section 6012(f)''s "every individual who has gross income" to leave out $0; that half stays open. PE-US applies the IRS $5 relief in neither period.'
 - id: us:snap-bbce-income-chart-rounding
   program: snap
   years:
@@ -10805,6 +11167,103 @@ candidates:
   state: unreviewed
   note: 'The open PR follows POMS rather than the broader regulatory reading; no statutory comparison or specific
     ruling is supplied. Code not yet on main: ssi_spousal_deeming_child_allocations, ssi_ineligible_child_allocation.'
+- id: us:standard-plan-minimum-consolidated
+  program: student-loans
+  years:
+    from: 2006
+    type: calendar
+  question: Does a borrower with Direct Loans on the 10-year standard plan and a Direct Consolidation Loan that repaid
+    parent PLUS loans owe one $50 minimum across both, or a minimum on each?
+  sources:
+  - kind: statute
+    citation: 20 U.S.C. 1087e(d)(1)(A)
+    url: https://www.law.cornell.edu/uscode/text/20/1087e#d_1_A
+  - kind: regulation
+    citation: 34 CFR 685.208(b)(1)(ii) and (b)(2)(ii)
+    url: https://www.ecfr.gov/current/title-34/section-685.208#p-685.208(b)(2)
+  readings:
+    statute: The statute provides a standard repayment plan and sets no minimum payment.
+    other: 'Per plan: a consolidation loan that entered repayment on or after July 1, 2006 repays under (b)(2), a separate
+      plan with its own (b)(2)(ii) minimum, so the borrower owes a minimum on each plan. Per borrower: one minimum
+      across all of the borrower''s standard plan payments.'
+  example: A borrower at 6% with $1,000 of Direct Loans and a $20,000 consolidated parent PLUS loan repaid over 20
+    years pays $50.00 + $143.29 = $193.29 with a minimum on each plan, against max($11.10 + $143.29, $50) = $154.39
+    with one minimum.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/ed/student_loans/standard_repayment/combined_standard_repayment_payment.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10599
+  state: ruled
+  note: combined_standard_repayment_payment adds standard_repayment_payment and parent_plus_standard_repayment_payment
+    where federal_parent_plus_loan_is_consolidated is true. This narrows the per-borrower reading in
+    us:standard-plan-minimum-per-borrower to borrowers whose loans are all under (b)(1). The 2017 and 2025 CFR editions
+    hold these two plans at 685.208(b) and (c).
+- id: us:standard-plan-minimum-per-borrower
+  program: student-loans
+  years:
+    from: 2016
+    type: calendar
+  question: Does a borrower with both Direct Loans and unconsolidated parent PLUS loans on the 10-year standard plan
+    owe one $50 minimum on all of those payments, or a minimum on each loan type?
+  sources:
+  - kind: statute
+    citation: 20 U.S.C. 1087e(d)(1)(A)
+    url: https://www.law.cornell.edu/uscode/text/20/1087e#d_1_A
+  - kind: regulation
+    citation: 34 CFR 685.208(b)(1) and (b)(1)(ii)
+    url: https://www.ecfr.gov/current/title-34/section-685.208#p-685.208(b)(1)
+  readings:
+    statute: The statute provides a standard repayment plan and sets no minimum payment.
+    other: '(b)(1) gives Direct Subsidized, Unsubsidized and PLUS borrowers one plan, and (b)(1)(ii) says "A borrower''s
+      payments under this repayment plan are at least $50 per month", so one minimum covers all of them. The other
+      reading applies the minimum to each loan type''s payment.'
+  example: A borrower at 6% with $1,000 of Direct Loans and $20,000 of parent PLUS loans pays max($11.10 + $222.04,
+    $50) = $233.14 with one minimum, against $50.00 + $222.04 = $272.04 with a minimum on each.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/ed/student_loans/standard_repayment/combined_standard_repayment_payment.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10599
+  state: ruled
+  note: standard_repayment_payment and parent_plus_standard_repayment_payment keep their own minimums, since a borrower
+    whose Direct Loans are on an income-driven plan repays parent PLUS loans alone on the standard plan;
+    combined_standard_repayment_payment applies one minimum for a borrower with both on the standard plan. The 2017 and
+    2025 CFR editions carry the same sentence at 685.208(b)(2), so the question runs from the model's first
+    minimum_payment value in 2016. Issue
+    10567 reports the double minimum.
+- id: us:student-loan-interest-joint-claimed-spouse
+  program: income-tax
+  years:
+    from: 2018
+    type: tax
+  question: Does claiming one spouse as a dependent bar only that spouse's student loan interest deduction, or the
+    whole joint return?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 221(c)
+    url: https://www.law.cornell.edu/uscode/text/26/221#c
+  - kind: instructions
+    citation: 2025 Form 1040 instructions, Schedule 1 line 21 (student loan interest deduction)
+    url: https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=98
+  readings:
+    statute: Section 221(c) bars only the individual whom another taxpayer claims; the other spouse keeps the deduction
+      for their own interest.
+    other: The instructions bar the return if the filer, or the spouse on a joint return, is claimed as a dependent.
+  example: On a 2025 refund-only joint return, a head with $2,000 wages and $1,000 interest, beside a spouse claimed
+    elsewhere with $700 interest, deducts $1,000 under the statute and nothing under the instructions.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/irs/income/taxable_income/adjusted_gross_income/above_the_line_deductions/student_loan_interest/student_loan_interest_ald_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10577
+  state: ruled
+  note: 'Ruled 2026-10-20 for the statute by the project lead. PE-US bars only the claimed head or spouse
+    (student_loan_interest_ald_eligible.py); joint MAGI for the section 221(b)(2) phase-out still counts both spouses.
+    Split from us:education-benefits-joint-claimed-spouse, which keeps the education credits.'
 - id: us:surviving-spouse-child-gross-income-test
   program: income-tax
   years:
