@@ -26,7 +26,7 @@ The other eight include it. Oregon is flagged in
 `gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.limit.requires_income_below_limit`.
 
 The state sets and comparisons below are written from those rules, not
-read from the parameters, so the first two tests check the parameters
+read from the parameters, so the first three tests check the parameters
 against them. Each later test evaluates a grid of households in one
 vectorized simulation and checks, for every one of the nine states and
 every year from 2018 to 2026:
@@ -42,7 +42,9 @@ every year from 2018 to 2026:
   of income gets Medicaid without SSI at or above the rate.
 
 A last test checks that states which are not flagged keep the share of the
-poverty guideline that their parameter gives.
+poverty guideline that their parameter gives. States with a dollar standard
+of their own (`uses_state_standard`) are tested in
+medicaid_optional_senior_or_disabled_income_limit.yaml.
 """
 
 import numpy as np
@@ -102,6 +104,14 @@ BELOW_ONLY_STATES = ["OR"]
 # Annual dollars around the standard: far below, one month's dollar below,
 # exactly at, one dollar above, and well above.
 OFFSETS = [-6_000, -12, -1, 0, 1, 12, 42, 600, 6_000]
+# States with a dollar standard of their own (uses_state_standard.yaml) in
+# every year. Before August 2020 Wisconsin's standard was a base amount plus
+# shelter costs up to a cap; the model uses the base plus the cap, the SSI
+# rate plus the state supplement (DHS Operations Memo 20-13). Of these, Idaho
+# also requires income below the standard: a person has financial need if
+# "their allowances ... are more than their income" (IDAPA 16.03.05.500).
+STATE_STANDARD_STATES = ["AK", "ID", "NH", "VT", "WI"]
+STATE_STANDARD_BELOW_ONLY_STATES = ["ID"]
 
 SYSTEM = CountryTaxBenefitSystem()
 
@@ -151,7 +161,15 @@ def test_ssi_rate_states_match_their_rules(year):
 @pytest.mark.parametrize("year", YEARS)
 def test_below_only_states_match_their_rules(year):
     flags = limit_parameters(year).requires_income_below_limit
-    assert states_where(flags) == BELOW_ONLY_STATES
+    assert states_where(flags) == sorted(
+        BELOW_ONLY_STATES + STATE_STANDARD_BELOW_ONLY_STATES
+    )
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_state_standard_states_match_their_rules(year):
+    flags = limit_parameters(year).uses_state_standard
+    assert states_where(flags) == STATE_STANDARD_STATES
 
 
 @pytest.mark.parametrize("couple", [False, True])
@@ -259,7 +277,9 @@ def test_unflagged_states_keep_their_share_of_the_poverty_guideline(year, couple
     # Missouri publishes whole-dollar monthly standards and is tested in
     # medicaid_optional_senior_or_disabled_income_limit.yaml.
     states = [
-        state for state in STATES if state not in SSI_RATE_STATES and state != "MO"
+        state
+        for state in STATES
+        if state not in SSI_RATE_STATES + STATE_STANDARD_STATES and state != "MO"
     ]
     # States without a group for people who do not receive SSI use the SSI
     # rate for the noncitizens their pathway still reaches.

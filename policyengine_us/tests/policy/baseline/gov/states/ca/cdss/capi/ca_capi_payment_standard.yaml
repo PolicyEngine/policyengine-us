@@ -335,12 +335,9 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    # The state share holds its 1991 value of 630 - 407 = 223 until 2025. CAPI
-    # equals SSI/SSP (WIC 18941), so the standard is 943 + 223 = 1,166. This
-    # pins a known-low value: the published January 2024 aged standard is
-    # 943 + 239.94 = 1,182.94 (POMS SI 01415.056); issue 10480 backfills the
-    # shares.
-    ca_capi_payment_standard: 1_166
+    # CAPI equals SSI/SSP (WIC 18941), so the standard is 943 + 239.94 =
+    # 1,182.94, the published January 2024 aged standard (POMS SI 01415.056).
+    ca_capi_payment_standard: 1_182.94
 
 - name: Case 15, the 10 individual offset applies through May 2019 and ends in June 2019.
   period: 2019
@@ -357,14 +354,12 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    # The state share holds its 1991 value of 223 until 2025, so the standard
-    # is 771 + 223 = 994. The actual 2019 SSI/SSP standard was 931.72 (ACIN
-    # I-23-19), so these are known-high values (issue 10480). This case pins
-    # only the offset boundary: 994 - 10 = 984 through May 2019 (MPP 49-050.11)
-    # and 994 - 0 = 994 from June 1, 2019 (WIC 18941).
+    # The 2019 standard is 771 + 160.72 = 931.72 (POMS SI 01415.051; ACIN
+    # I-23-19): 931.72 - 10 = 921.72 through May 2019 (MPP 49-050.11) and
+    # 931.72 from June 1, 2019 (WIC 18941).
     ca_capi_payment_standard:
-      2019-05: 984
-      2019-06: 994
+      2019-05: 921.72
+      2019-06: 931.72
 
 - name: Case 16, CAPI couple, the 20 couple offset applies through May 2019 and ends in June 2019.
   period: 2019
@@ -388,12 +383,12 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    # Couple standard 1,157 + 557 = 1,714, using the 1991 share (issue 10480).
-    # May: (1,714 - 20) / 2 = 847 each (MPP 49-050.12).
-    # June: 1,714 / 2 = 857 each (WIC 18941).
+    # Couple standard 1,157 + 407.14 = 1,564.14 (POMS SI 01415.051).
+    # May: (1,564.14 - 20) / 2 = 772.07 each (MPP 49-050.12).
+    # June: 1,564.14 / 2 = 782.07 each (WIC 18941).
     ca_capi_payment_standard:
-      2019-05: [847, 847]
-      2019-06: [857, 857]
+      2019-05: [772.07, 772.07]
+      2019-06: [782.07, 782.07]
 
 - name: Case 17, mixed couple, the 10 mixed-couple offset applies through May 2019 and ends in June 2019.
   period: 2019
@@ -417,11 +412,11 @@
         living_arrangements_allow_for_food_preparation: true
   output:
     # The citizen is paid SSI, so the CAPI member takes the couple standard
-    # 1,157 + 557 = 1,714, using the 1991 share (issue 10480). May: 1,714 - 10
-    # = 1,704 (MPP 49-050.13). June: 1,714 (WIC 18941).
+    # 1,157 + 407.14 = 1,564.14 (POMS SI 01415.051). May: 1,564.14 - 10 =
+    # 1,554.14 (MPP 49-050.13). June: 1,564.14 (WIC 18941).
     ca_capi_payment_standard:
-      2019-05: [0, 1_704]
-      2019-06: [0, 1_714]
+      2019-05: [0, 1_554.14]
+      2019-06: [0, 1_564.14]
 
 - name: Case 18, 2024 CAPI couple standard adds the state share to the couple federal benefit rate.
   period: 2024-01
@@ -445,9 +440,9 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    # (1,415 + 557) / 2 = 986 each, using the 1991 share. A known-low value:
-    # the published 2024 couple standard is higher (issue 10480).
-    ca_capi_payment_standard: [986, 986]
+    # (1,415 + 607.83) / 2 = 1,011.415 each; the published January 2024 couple
+    # standard is 2,022.83 (POMS SI 01415.056).
+    ca_capi_payment_standard: [1_011.415, 1_011.415]
 
 - name: Case 19, 2024 out-of-home care standard adds the state share to the federal benefit rate.
   period: 2024-01
@@ -465,9 +460,8 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    # 943 + 302 = 1,245, using the 1991 share of 709 - 407. A known-low value:
-    # POMS SI 01415.056 gives 1,575.07 (issue 10480).
-    ca_capi_payment_standard: 1_245
+    # 943 + 632.07 = 1,575.07 (POMS SI 01415.056).
+    ca_capi_payment_standard: 1_575.07
 
 - name: Case 20, CAPI couple with one spouse in a Title XIX facility is computed as two individuals.
   period: 2026-01

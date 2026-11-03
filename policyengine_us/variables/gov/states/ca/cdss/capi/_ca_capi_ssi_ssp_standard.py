@@ -41,6 +41,8 @@ def ca_capi_ssi_ssp_standard(person, period, parameters):
         person, period, parameters, joint
     )
     medical_facility = ca_in_title_xix_facility(person, period)
+    # NOTE: the state shares before 2013 are the 1991 totals in WIC 12200 less
+    # the 1991 federal rates (issue 10480).
     individual = individual_rate + where(
         medical_facility, fbr.medical_facility, fbr.individual
     )

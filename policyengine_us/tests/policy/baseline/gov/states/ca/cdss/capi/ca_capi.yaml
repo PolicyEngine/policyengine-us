@@ -69,6 +69,7 @@
 
 - name: Case 4, integration test, SSI eligible.
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -85,8 +86,8 @@
         state_code: CA
   output:
     ssi: [11_316, 0]
-    # 223 * 12, using the 1991 share (issue 10480).
-    ca_state_supplement: 2_676
+    # 239.94 * 12.
+    ca_state_supplement: 2_879.28
     ca_capi: 0
 
 - name: Case 5, integration test, permanent resident without 40 SSI quarters.
@@ -207,13 +208,11 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    # The state share holds its 1991 value of 630 - 407 = 223 until 2025. CAPI
-    # equals SSI/SSP (WIC 18941), so the standard is 943 + 223 = 1,166 per
-    # month with no offset and no income; 1,166 x 12 = 13,992. This pins a
-    # known-low value: the published aged standard was 1,182.94 (POMS SI
-    # 01415.056); issue 10480 backfills the shares.
-    ca_capi_person: 13_992
-    ca_capi: 13_992
+    # CAPI equals SSI/SSP (WIC 18941), so the standard is 943 + 239.94 =
+    # 1,182.94 per month (POMS SI 01415.056) with no offset and no income;
+    # 1,182.94 x 12 = 14,195.28.
+    ca_capi_person: 14_195.28
+    ca_capi: 14_195.28
 
 - name: Case 9, integration test, aged permanent resident without 40 SSI quarters whose pension exceeds the CAPI standard.
   period: 2025
