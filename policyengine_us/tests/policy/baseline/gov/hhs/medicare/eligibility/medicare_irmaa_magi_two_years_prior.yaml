@@ -106,8 +106,10 @@
     employment_income: 500_000
   output:
     # 500,000 x 31,085.28 (2016) / 34,910.24 (2018). Both years are IRS SOI
-    # totals; with 2016-2018 missing, the index was held at its 2015 value and
-    # this came to 506,932.37.
+    # totals. When total AGI had no 2016-2018 values, its 2015 value (tax-year
+    # 2013 AGI excluding dependent filers) was held, so the index fell with
+    # population (27,461.49 in 2016, 27,085.95 in 2018) and this came to
+    # 506,932.37.
     medicare_irmaa_magi_two_years_prior: 445_217.19
 
 - name: Case 9, 2019 benefit year with only 2019 inputs deflates 2019 income to 2017.
@@ -118,9 +120,9 @@
     age: 66
     employment_income: 500_000
   output:
-    # 500,000 x 33,241.35 (2017, IRS SOI) / 35,672.43 (2019, CBO). With
-    # 2016-2018 missing, 2017 was held at the 2015 value and this came to
-    # 382,300.59.
+    # 500,000 x 33,241.35 (2017, IRS SOI) / 35,672.43 (2019, CBO). When total
+    # AGI for 2017 held the old 2015 value, the index was 27,275.18 and this
+    # came to 382,300.59.
     medicare_irmaa_magi_two_years_prior: 465_924.93
 
 - name: A 2025 household with only 2024 inputs has IRMAA set on deflated 2024 income.

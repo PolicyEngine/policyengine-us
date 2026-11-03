@@ -7,10 +7,10 @@ from policyengine_us.variables.gov.hhs.medicare.eligibility.medicare_irmaa_tax_y
     TAX_UNIT_ADDITIONS,
 )
 
-# Per-capita CBO AGI: the series that extends a single-year dataset's dollar
-# inputs to later years when they have no series of their own
-# (DEFAULT_MICRODATA_UPRATING, divided by population). Deflating by it runs
-# that projection backward.
+# Per-capita total AGI (IRS SOI for 2015-2018, CBO from 2019): the series that
+# extends a single-year dataset's dollar inputs to later years when they have
+# no series of their own (DEFAULT_MICRODATA_UPRATING, divided by population).
+# Deflating by it runs that projection backward.
 LOOKBACK_DEFLATOR = (
     "calibration.gov.cbo.income_by_source.adjusted_gross_income_per_capita"
 )

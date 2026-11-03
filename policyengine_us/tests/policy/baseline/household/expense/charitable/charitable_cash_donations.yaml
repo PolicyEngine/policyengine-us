@@ -17,8 +17,8 @@
     charitable_cash_donations:
       2018: 10_000
   output:
-    # 10,000 x 35,672.43 / 34,910.24. When 2016-2018 had no values and 2018
-    # held the 2015 value, this came to 13,170.09.
+    # 10,000 x 35,672.43 / 34,910.24. When total AGI for 2018 held the old 2015
+    # value, the index was 27,085.95 and this came to 13,170.09.
     charitable_cash_donations: 10_218.33
 
 - name: A 2015 donation read in 2018 grows with per-capita AGI within the SOI years.
@@ -28,6 +28,7 @@
     charitable_cash_donations:
       2015: 10_000
   output:
-    # 10,000 x 34,910.24 / 31,312.48. When 2018 held the 2015 value, this
-    # came to 9,776.72.
+    # 10,000 x 34,910.24 / 31,312.48. When total AGI held the old 2015 value
+    # through 2018, the index was 27,704.54 in 2015 and 27,085.95 in 2018, and
+    # this came to 9,776.72.
     charitable_cash_donations: 11_148.99
