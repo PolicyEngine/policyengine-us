@@ -11,6 +11,9 @@ class wi_homestead_eligible(Variable):
         # Schedule H instructions, Steps 1 and 2 and questions 1c-1d
         # PDF pages 4, 10
         "https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleH-inst.pdf#page=4",
+        "https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/53/2/c",
+        "https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/54",
+        "https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/52/1g",
     )
     defined_for = StateCode.WI
 
@@ -20,10 +23,10 @@ class wi_homestead_eligible(Variable):
         filer = person("is_tax_unit_head_or_spouse", period)
         age = person("age", period)
         elderly = age >= p.min_elderly_age
-        # The claimant must be 18 or older and must be 62 or older, disabled
-        # or have earned income; the Schedule H instructions add, for a
-        # married couple, "The spouse that meets this definition must be the
-        # claimant."
+        # Wis. Stat. 71.53(2)(c), 71.54(1)(gm): the claimant must be 18 or older
+        # and must be 62 or older, disabled or have earned income; the
+        # Schedule H instructions add, for a married couple, "The spouse that
+        # meets this definition must be the claimant."
         earnings = add(person, period, p.earnings_sources)
         disabled = person("is_disabled", period)
         qualifies = (age >= p.min_age) & (elderly | disabled | (earnings > 0))
