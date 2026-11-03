@@ -7,8 +7,8 @@ class wa_pte_wholly_service_connected_disability(Variable):
     label = "Wholly service-connected disability for the Washington senior and disabled persons property tax exemption veteran pathway before 2016"
     documentation = (
         "For taxes levied for collection before 2016, RCW 84.36.381(3)(b) "
-        "admitted veterans with a total service-connected disability under "
-        "the Social Security definition, 42 U.S.C. 423(d)(1)(A). PolicyEngine reads "
+        'admitted a veteran with "one hundred percent service-connected '
+        'disability as provided in 42 U.S.C. Sec. 423 (d)(1)(A)". PolicyEngine reads '
         "that as a disability meeting the Social Security definition that is "
         "wholly service-connected. The model has no service-connection input "
         "for that definition, so by default is_disabled stands in for it, and "
