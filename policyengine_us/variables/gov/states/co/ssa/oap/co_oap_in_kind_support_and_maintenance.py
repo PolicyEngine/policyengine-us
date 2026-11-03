@@ -21,7 +21,7 @@ class co_oap_in_kind_support_and_maintenance(Variable):
         # couple, which SSI splits equally between the spouses. ISM through
         # SSA's one-third reduction, and Colorado's own ISM for a client not
         # on SSI (3.520.79(C)), are not modeled.
-        ism = person("ssi_in_kind_support_and_maintenance", period)
+        ism = person("ssi_in_kind_support_and_maintenance_monthly", period)
         couple_computation = person("ssi_couple_computation_applies", period)
         ssi = ssi_paid(person("ssi", period))
         receives_ssi = (ssi > 0) | person("receives_ssi", period)

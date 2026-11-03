@@ -53,7 +53,9 @@ class va_ag_countable_income(Variable):
         # although Chapter B section 6 makes the assistance unit the applicant
         # only.
         countable = where(
-            ssi > 0, person("ssi_countable_income", period) + ssi, non_ssi_countable
+            ssi > 0,
+            person("ssi_countable_income_monthly", period) + ssi,
+            non_ssi_countable,
         )
         exclusions = max_(person("va_ag_allowable_income_exclusions", period), 0)
         return max_(countable - exclusions, 0)

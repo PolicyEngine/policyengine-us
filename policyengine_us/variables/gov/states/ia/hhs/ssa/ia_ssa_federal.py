@@ -34,7 +34,7 @@ class ia_ssa_federal(Variable):
         blind_count = person.marital_unit.sum(blind)
         dependent = person("ia_ssa_dependent_countable_income", period)
         dependent = where(joint, person.marital_unit.max(dependent), dependent)
-        recipient_income = person("ssi_countable_income", period) + person(
+        recipient_income = person("ssi_countable_income_monthly", period) + person(
             "ssi", period
         )
         group_income = (

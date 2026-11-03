@@ -28,15 +28,19 @@ class ky_ssp_countable_income(Variable):
         )
         unearned = (
             person("ssi_marital_unearned_income", period)
-            + person("ssi_unearned_income_deemed_from_ineligible_parent", period)
-            + person("ssi_in_kind_support_and_maintenance", period)
+            + person(
+                "ssi_unearned_income_deemed_from_ineligible_parent_monthly", period
+            )
+            + person("ssi_in_kind_support_and_maintenance_monthly", period)
         )
         p = parameters(period).gov.ssa.ssi.income.exclusions
         countable_earned = max_(earned - p.earned, 0) * (1 - p.earned_share)
         personal_countable = unearned + countable_earned
 
         both_eligible = person("ssi_couple_computation_applies", period)
-        spousal_deemed = person("ssi_income_deemed_from_ineligible_spouse", period)
+        spousal_deemed = person(
+            "ssi_income_deemed_from_ineligible_spouse_monthly", period
+        )
         # NOTE: ssi_countable_income now zeroes only people who are not aged,
         # blind or disabled. This keeps SSI's eligibility gate, which changes
         # nothing because KY SSP requires is_ssi_eligible.

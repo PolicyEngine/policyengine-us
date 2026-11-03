@@ -38,7 +38,7 @@ class ia_ssa_smme_countable_income(Variable):
         # nothing, 8-E p.12 says to "Process as a one-person household"
         # (Cases 83-84).
         # NOTE: Group-specific Medicaid budgeting is not modeled.
-        income = person("ssi_countable_income", period) + person("ssi", period)
+        income = person("ssi_countable_income_monthly", period) + person("ssi", period)
         # SSI counts income only for people it treats as aged, blind or
         # disabled, so ssi_countable_income is 0 for a disabled person working
         # above the SGA level, whom SMME still covers (Iowa Code
@@ -69,7 +69,7 @@ class ia_ssa_smme_countable_income(Variable):
             0,
         )
         unearned = person("ssi_unearned_income", period) + person(
-            "ssi_in_kind_support_and_maintenance", period
+            "ssi_in_kind_support_and_maintenance_monthly", period
         )
         deemed = person("ia_ssa_smme_spousal_deeming_applies", period)
         spouse_earned, spouse_unearned = ia_ssa_smme_spouse_income(person, period)

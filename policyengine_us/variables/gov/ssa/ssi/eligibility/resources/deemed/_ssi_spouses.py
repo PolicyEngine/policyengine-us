@@ -1,6 +1,9 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.household.demographic.person._parent_links import (
+    _parent_indices,
     co_resident_parent_indices,
+    group_member_indices,
+    tax_unit_parent_indices,
 )
 
 
@@ -8,8 +11,8 @@ def _ssi_established_spouse_indices(person, period, first, second):
     """Rows of each person's co-resident spouse, or -1.
 
     SSI resource deeming uses this one test for a claimant's spouse
-    (416.1202(a)), a parent's spouse (416.1202(b)) and whether a child is
-    married (416.1856). A marital unit holds an unmarried person or a married,
+    (416.1202(a)) and a parent's spouse (416.1202(b)). A marital unit holds
+    an unmarried person or a married,
     cohabiting couple, so the members of a two-person marital unit who live in
     the same household are spouses. So are the head and spouse of one tax
     unit who share a marital unit, which covers situations that omit marital
@@ -64,6 +67,64 @@ def _ssi_established_spouse_indices(person, period, first, second):
 
 
 def _ssi_spouse_index(person, period):
-    """The row of each person's co-resident spouse, or -1."""
+    """The row of each person's co-resident spouse, or -1.
+
+    New York's SSP minor test also uses this co-resident spouse proxy.
+    SSI's 416.1856 marriage classification uses _ssi_is_married instead,
+    including legal spouses living apart.
+    """
     first, second = co_resident_parent_indices(person, period)
     return _ssi_established_spouse_indices(person, period, first, second)
+
+
+def _ssi_is_married(person, period):
+    """Marriage classification without a co-residence requirement.
+
+    Legal spouses can live apart (416.1806(a)(1)). A two-person marital
+    unit establishes marriage, as does a tax unit's head/spouse pair, even
+    when they have separate marital units. Apply the spouse lookup's
+    parent-link and default-marital-unit safeguards to both sources;
+    ambiguous candidates do not establish marriage.
+    """
+    period = period.this_year
+    head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+    dependent = person("is_tax_unit_dependent", period)
+    joint = head_or_spouse & person.tax_unit("tax_unit_married", period)
+    tax_unit = person.tax_unit.reference_entity.members_entity_id
+    couple = person.marital_unit.nb_persons() == 2
+    possible_default = person.marital_unit.count == 1
+    own_index = np.arange(person.count)
+    married = np.zeros(person.count, dtype=bool)
+
+    for group, marital_couple in (
+        (person.marital_unit, True),
+        (person.tax_unit, False),
+    ):
+        first, second = (
+            _parent_indices(person, period, group)
+            if marital_couple
+            else tax_unit_parent_indices(person, period)
+        )
+        candidates = np.zeros(person.count, dtype=int)
+        for member in group_member_indices(group):
+            safe = np.maximum(member, 0)
+            same_tax_unit = tax_unit[safe] == tax_unit
+            names_applicant = (first[safe] == own_index) | (second[safe] == own_index)
+            named_by_applicant = (first == member) | (second == member)
+            claims = possible_default & same_tax_unit & (dependent != dependent[safe])
+            established = (
+                couple
+                if marital_couple
+                else joint & head_or_spouse[safe] & same_tax_unit
+            )
+            shown = (
+                (member >= 0)
+                & (member != own_index)
+                & established
+                & ~claims
+                & ~names_applicant
+                & ~named_by_applicant
+            )
+            candidates += shown
+        married |= candidates == 1
+    return married

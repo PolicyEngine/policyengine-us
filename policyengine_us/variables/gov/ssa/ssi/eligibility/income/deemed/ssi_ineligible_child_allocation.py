@@ -6,16 +6,19 @@ class ssi_ineligible_child_allocation(Variable):
     entity = Person
     label = "SSI ineligible child allocation"
     unit = USD
-    documentation = "The amount of income that SSI deems ought to be spent on this child, and therefore is not deemed to SSI claimants."
+    documentation = (
+        "The allocation SSI deducts for this child from an ineligible "
+        "spouse's or parent's income before deeming it. Which claimants it "
+        "applies to is decided where the allocations are summed."
+    )
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/cfr/text/20/416.1163"
+    reference = (
+        "https://www.ecfr.gov/current/title-20/section-416.1163#p-416.1163(b)",
+        "https://www.ecfr.gov/current/title-20/section-416.1161#p-416.1161(c)",
+        "https://www.ecfr.gov/current/title-20/section-416.1165#p-416.1165(b)",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501320185",
+    )
 
     def formula(person, period, parameters):
-        income = add(person, period, ["ssi_earned_income", "ssi_unearned_income"])
-        ssi = parameters(period).gov.ssa.ssi.amount
-        allocation = (
-            person("is_ssi_ineligible_child", period)
-            * (ssi.couple - ssi.individual)
-            * MONTHS_IN_YEAR
-        )
-        return max_(0, allocation - income)
+        # Sum completed monthly budgets; supplied amounts retain their annual basis.
+        return person("ssi_ineligible_child_allocation_monthly", period)

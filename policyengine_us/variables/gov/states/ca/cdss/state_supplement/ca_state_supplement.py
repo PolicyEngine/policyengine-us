@@ -75,7 +75,7 @@ class ca_state_supplement(Variable):
         own_countable_income = (
             _apply_ssi_exclusions(earned, unearned, parameters, period) / MONTHS_IN_YEAR
         )
-        ssi_countable_income = person("ssi_countable_income", period)
+        ssi_countable_income = person("ssi_countable_income_monthly", period)
         couple_income = person.marital_unit.sum(ssi_countable_income)
         individual_standard, couple_standard = ca_capi_ssi_ssp_standard(
             person, period, parameters

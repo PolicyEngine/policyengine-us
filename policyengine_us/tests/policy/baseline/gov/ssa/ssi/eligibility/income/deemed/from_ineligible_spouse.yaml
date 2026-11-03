@@ -73,6 +73,8 @@
         pre_tax_health_insurance_premiums: 2_400
       child:
         age: 14
+        # Isolate pretax premiums from the student earned-income exclusion.
+        is_in_k12_school: false
         employment_income: 2_400
         pre_tax_health_insurance_premiums: 1_200
     tax_units:
@@ -93,3 +95,51 @@
     is_ssi_spousal_deeming_applies: [true, false, false]
     ssi_income_deemed_from_ineligible_spouse: [7_992, 0, 0]
     ssi_countable_income: [7_992, 0, 0]
+
+- name: Monthly child allocations floor each spouse income pool before annual aggregation
+  # With $1,000 monthly student wages, the allocations are $497 in
+  # January-September, $227 in October, then zero. The spouse has $100
+  # unearned and $300 earned a month: both pools are exhausted in the
+  # first nine months; October leaves $173 earned; November-December
+  # leave $100 unearned and $300 earned each. An annual floor would
+  # incorrectly leave only $100 earned and no unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 50
+        person_id: 1
+        is_tax_unit_head: true
+        is_ssi_disabled: true
+      spouse:
+        age: 48
+        person_id: 2
+        is_tax_unit_spouse: true
+        employment_income: 300 * 12
+        ssi_unearned_income: 100 * 12
+      student:
+        age: 16
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_dependent: true
+        employment_income: 1_000 * 12
+    tax_units:
+      family:
+        members: [claimant, spouse, student]
+    marital_units:
+      parents:
+        members: [claimant, spouse]
+      student_unit:
+        members: [student]
+    households:
+      home:
+        members: [claimant, spouse, student]
+        state_code: TX
+  output:
+    people:
+      claimant:
+        ssi_earned_income_deemed_from_ineligible_spouse: 773
+        ssi_unearned_income_deemed_from_ineligible_spouse: 200
+        ssi: 11_928

@@ -28,7 +28,7 @@ class ssi_if_takes_up(Variable):
         # - Deeming applies (uses couple FBR)
         # - After exclusions, countable may be low
         # - Benefit could exceed individual FBR without this cap
-        deeming_applies = person("is_ssi_spousal_deeming_applies", period.this_year)
+        deeming_applies = person("is_ssi_spousal_deeming_applies_monthly", period)
         p = parameters(period).gov.ssa.ssi.amount
         capped_benefit = min_(benefit, p.individual)
 

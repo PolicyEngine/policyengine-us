@@ -23,7 +23,7 @@ class ct_ssp_gross_income(Variable):
                 "ssi_earned_income",
                 "ssi_unearned_income",
                 "ssi",
-                "ssi_earned_income_deemed_from_ineligible_spouse",
-                "ssi_unearned_income_deemed_from_ineligible_spouse",
+                "ssi_earned_income_deemed_from_ineligible_spouse_monthly",
+                "ssi_unearned_income_deemed_from_ineligible_spouse_monthly",
             ],
         )

@@ -24,7 +24,7 @@ class in_ssp_sapn(Variable):
         both_eligible = person.marital_unit.sum(eligible) == 2
         is_couple = joint_claim & both_eligible
         ssi_monthly = person("ssi", period)
-        countable_income = person("ssi_countable_income", period)
+        countable_income = person("ssi_countable_income_monthly", period)
         max_individual = p.sapn.amount.individual
         max_couple = p.sapn.amount.couple
         pna = p.personal_needs_allowance

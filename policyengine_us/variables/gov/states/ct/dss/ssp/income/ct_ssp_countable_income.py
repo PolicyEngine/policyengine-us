@@ -23,7 +23,7 @@ class ct_ssp_countable_income(Variable):
             [
                 "ssi_unearned_income",
                 "ssi",
-                "ssi_unearned_income_deemed_from_ineligible_spouse",
+                "ssi_unearned_income_deemed_from_ineligible_spouse_monthly",
             ],
         )
         unearned_disregard = person("ct_ssp_unearned_income_disregard", period)
@@ -34,7 +34,7 @@ class ct_ssp_countable_income(Variable):
             period,
             [
                 "ssi_earned_income",
-                "ssi_earned_income_deemed_from_ineligible_spouse",
+                "ssi_earned_income_deemed_from_ineligible_spouse_monthly",
             ],
         )
         earned_disregard = person("ct_ssp_earned_income_disregard", period)

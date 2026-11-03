@@ -21,3 +21,22 @@
     ssi_couple_computation_applies: true
   output:
     co_oap_in_kind_support_and_maintenance: 150
+
+- name: Matching SSI ISM follows each month's amount rather than the annual average.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ssi: 0
+    receives_ssi: true
+    ssi_in_kind_support_and_maintenance_monthly:
+      2026-01: 300
+      2026-02: 120
+    ssi_couple_computation_applies: true
+  output:
+    # Other months have no ISM, so the annual total is 300 + 120 = 420.
+    ssi_in_kind_support_and_maintenance: 420
+    # The recipient's share is January's 300 / 2 = 150 and February's
+    # 120 / 2 = 60. Averaging the year would give 420 / 12 / 2 = 17.50.
+    co_oap_in_kind_support_and_maintenance:
+      2026-01: 150
+      2026-02: 60

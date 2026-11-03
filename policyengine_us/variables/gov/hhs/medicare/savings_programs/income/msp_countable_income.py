@@ -43,20 +43,19 @@ class msp_countable_income(Variable):
     """
 
     def formula(person, period, parameters):
-        year = period.this_year
-        earned_income = person("ssi_earned_income", year)
-        unearned_income = person("ssi_unearned_income", year)
-        is_medicare_eligible = person("is_medicare_eligible", year)
+        earned_income = person("ssi_earned_income", period)
+        unearned_income = person("ssi_unearned_income", period)
+        is_medicare_eligible = person("is_medicare_eligible", period)
         both_medicare_eligible = person.marital_unit.sum(is_medicare_eligible) == 2
 
         blind_or_disabled_working_student_exclusion = person(
-            "ssi_blind_or_disabled_working_student_exclusion", year
+            "ssi_blind_or_disabled_working_student_exclusion", period
         )
         personal_earned_income = max_(
             earned_income - blind_or_disabled_working_student_exclusion,
             0,
         )
-        deeming_applies = person("is_ssi_spousal_deeming_applies", year)
+        deeming_applies = person("is_ssi_spousal_deeming_applies_monthly", period)
         state = person.household("state_code_str", period)
         p = parameters(period).gov.hhs.medicare.savings_programs.eligibility.income
         ssi_general = parameters(period).gov.ssa.ssi.income.exclusions.general
@@ -97,16 +96,17 @@ class msp_countable_income(Variable):
         )
 
         spouse_earned_income = person(
-            "ssi_earned_income_deemed_from_ineligible_spouse", year
+            "ssi_earned_income_deemed_from_ineligible_spouse_monthly", period
         )
         spouse_unearned_income = person(
-            "ssi_unearned_income_deemed_from_ineligible_spouse", year
+            "ssi_unearned_income_deemed_from_ineligible_spouse_monthly", period
         )
         personal_countable_income = _apply_ssi_exclusions(
             personal_earned_income,
             unearned_income,
             parameters,
-            year,
+            period,
+            monthly=True,
             general_exclusion=own_general_exclusion,
         )
 
@@ -118,7 +118,8 @@ class msp_countable_income(Variable):
             ),
             person.marital_unit.sum(unearned_income),
             parameters,
-            year,
+            period,
+            monthly=True,
             general_exclusion=couple_general_exclusion,
         )
 
@@ -126,7 +127,8 @@ class msp_countable_income(Variable):
             personal_earned_income + spouse_earned_income,
             unearned_income + spouse_unearned_income,
             parameters,
-            year,
+            period,
+            monthly=True,
             general_exclusion=general_exclusion,
         )
 
@@ -134,7 +136,4 @@ class msp_countable_income(Variable):
             deeming_applies, deemed_countable, personal_countable_income
         )
 
-        annual_countable = where(
-            both_medicare_eligible, couple_countable, single_countable
-        )
-        return annual_countable / MONTHS_IN_YEAR
+        return where(both_medicare_eligible, couple_countable, single_countable)
