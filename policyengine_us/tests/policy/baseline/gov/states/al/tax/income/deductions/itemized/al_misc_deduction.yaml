@@ -123,3 +123,16 @@
     # The child's 2,000 belongs on the child's own return.
     # 1,500 - 0.02 * 50,000
     al_misc_deduction: 500
+
+- name: Case 10, 2017 Alabama floors on Alabama AGI even when federal AGI is lower.
+  period: 2017
+  input:
+    unreimbursed_business_employee_expenses: 5_000
+    positive_agi: 40_000
+    al_agi: 50_000
+    state_code: AL
+  output:
+    # Federal: 5,000 - 0.02 * 40,000
+    misc_deduction: 4_200
+    # Alabama: 5,000 - 0.02 * 50,000
+    al_misc_deduction: 4_000

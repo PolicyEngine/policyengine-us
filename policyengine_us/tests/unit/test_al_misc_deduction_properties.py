@@ -5,10 +5,11 @@ the subdivision (14) deduction only above 2% of Alabama AGI. Alabama applies
 that one floor to the expenses themselves, whether or not the federal
 deduction is suspended. For every generated tax unit (one or two filers):
 
-1. The deduction is never negative, never exceeds the unit's Alabama
-   expenses, and is at least the expenses less 2% of Alabama AGI. Federal
-   AGI is drawn independently of Alabama AGI, so a floor at federal AGI
-   breaks these bounds whenever the two differ.
+1. For Alabama AGI of zero or more, the deduction is never negative, never
+   exceeds the unit's Alabama expenses, and is at least the expenses less 2%
+   of Alabama AGI. Federal AGI is drawn independently of Alabama AGI, so a
+   floor at federal AGI breaks the lower bound whenever federal AGI exceeds
+   Alabama AGI and the expenses exceed 2% of Alabama AGI.
 2. It does not fall when expenses rise and does not rise when Alabama AGI
    rises.
 3. It is the same in 2017 and 2025: the federal suspension from 2018
@@ -19,11 +20,18 @@ deduction is suspended. For every generated tax unit (one or two filers):
 5. A federal total supplied directly, with no Alabama expenses, yields no
    Alabama deduction: Alabama reads its own list of expenses.
 
-Properties 3 and 4 fail whenever expenses exceed the floor if the deduction
-starts from the federal misc_deduction (zero in 2025, already floored in
-2017); the strategy draws expenses up to $40,000 against floors of at most
-$4,000, so most generated units have a positive deduction, and
-test_strategy_reaches_positive_deductions checks that the worked cases do.
+A deduction that starts from the federal misc_deduction fails property 1 in
+2025 whenever the expenses exceed the Alabama floor, because the federal
+deduction is zero. In 2017 it also fails property 4 wherever the two AGIs
+agree and the expenses exceed the floor, and property 3 wherever the expenses
+exceed the two floors combined.
+
+The strategy draws Alabama AGI from 0 to $200,000, so floors of up to $4,000
+($4,200 in the arrangement with $10,000 more AGI). It draws expenses of up to
+$20,000 for single filers ($21,000 with the extra $1,000) and up to $40,000
+for couples ($41,000), so most generated units have a positive deduction.
+test_worked_cases checks the exact values of three worked cases and runs the
+properties on them; it does not draw from the strategy.
 """
 
 import hypothesis
@@ -202,7 +210,7 @@ WORKED_CASES = [
 ]
 
 
-def test_strategy_reaches_positive_deductions():
+def test_worked_cases():
     al, federal_2017, _ = calculate(WORKED_CASES)
     assert federal_2017[:, 0] == pytest.approx([4_000, 1_000, 0], abs=TOLERANCE)
     assert al[2025][:, 0] == pytest.approx([4_000, 1_000, 0], abs=TOLERANCE)
