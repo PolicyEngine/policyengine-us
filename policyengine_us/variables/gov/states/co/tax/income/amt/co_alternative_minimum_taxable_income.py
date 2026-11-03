@@ -11,7 +11,11 @@ class co_alternative_minimum_taxable_income(Variable):
     reference = [
         "https://tax.colorado.gov/DR0104AMT",
         "https://law.justia.com/codes/colorado/2022/title-39/article-22/part-1/section-39-22-105/",
+        # 2025 DR 0104AMT instructions and computation schedule
+        # PDF pages 1, 3
         "https://tax.colorado.gov/sites/tax/files/documents/DR0104AMT_2025.pdf#page=1",
+        # 2025 DR 0104 lines 2 through 9
+        "https://tax.colorado.gov/sites/tax/files/documents/DR0104_2025.pdf#page=3",
     ]
 
     def formula(tax_unit, period, parameters):

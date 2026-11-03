@@ -13,8 +13,9 @@ class amt_income(Variable):
         "https://www.irs.gov/pub/irs-prior/f6251--2024.pdf#page=1",
         "https://www.irs.gov/pub/irs-prior/f6251--2025.pdf#page=1",
         "https://www.irs.gov/pub/irs-prior/i6251--2025.pdf#page=2",
-        # 2017 Form 6251 lines 6 and 7, and instructions (PDF pages 2-3).
+        # 2017 Form 6251 lines 6 and 7, and their instructions.
         "https://www.irs.gov/pub/irs-prior/f6251--2017.pdf#page=1",
+        # PDF pages 2-3
         "https://www.irs.gov/pub/irs-prior/i6251--2017.pdf#page=2",
     )
 
