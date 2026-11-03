@@ -53,7 +53,8 @@ The model's first modeled year is 2015. Colorado's 2015 amounts follow the
 2015 DR 0104 table (Form 104, line 46); the refund is zero in 2016–2020, when it
 was not in effect. Colorado's 2027–2029 tiers are the LCS September 2026
 forecast's projections, not published DR 0104 tables, and they stand in until
-the State Controller certifies each year's surplus.
+the State Controller certifies each fiscal year's surplus and CDOR publishes
+that year's tiers in the DR 0104.
 
 ## Standalone amounts and comparison measures
 
