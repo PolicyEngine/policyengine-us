@@ -38,6 +38,19 @@
   output:
     additional_standard_deduction: 1_250
 
+- name: 2016 single filer aged 65 adds $1,550
+  period: 2016
+  input:
+    people:
+      head:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    additional_standard_deduction: 1_550
+
 - name: 2018 aged single filer adds $1,600, unchanged
   period: 2018
   input:

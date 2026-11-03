@@ -609,3 +609,24 @@
     filing_status: SURVIVING_SPOUSE
   output:
     basic_standard_deduction: 12_700
+
+- name: 2015 head of household standard deduction is $9,250
+  period: 2015
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    basic_standard_deduction: 9_250
+
+- name: 2016 head of household standard deduction is $9,300
+  period: 2016
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    basic_standard_deduction: 9_300
+
+- name: 2016 joint filer standard deduction is $12,600
+  period: 2016
+  input:
+    filing_status: JOINT
+  output:
+    basic_standard_deduction: 12_600
