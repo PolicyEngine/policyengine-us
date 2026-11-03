@@ -462,6 +462,21 @@ fixed. Already-SE income is removed before computing the draw, and disabled
 years retain baseline tax and deduction behavior. The <code class="docutils literal notranslate"><span class="pre">1</span></code> cap option
 intentionally permits earnings above C.</p>
 </section>
+<section id="self-employed-health-insurance-limit">
+<h2>Self-employed health insurance limit<a class="headerlink" href="#self-employed-health-insurance-limit" title="Link to this heading">¶</a></h2>
+<p>The reform also replaces
+<code class="docutils literal notranslate"><span class="pre">self_employed_health_insurance_earned_income_limit</span></code> (Form 7206 line 13).
+Line 5 sums the profits of businesses subject to SE tax, and line 6
+apportions the deductible SE tax on line 7 to the plan business by its share
+of line 5. With <code class="docutils literal notranslate"><span class="pre">half_seca_deduction:</span> <span class="pre">true</span></code>, line 5 adds
+<code class="docutils literal notranslate"><span class="pre">owners_draw_niit_exclusion</span></code>: <code class="docutils literal notranslate"><span class="pre">draw_oasdi_base</span></code> divided by the net-earnings
+factor (q by default) with HI off, or the whole actual gross draw D with HI
+on. These are the draw profits whose SECA the deduction includes. Draw
+profits beyond the OASDI room with HI off stay out of line 5. With
+<code class="docutils literal notranslate"><span class="pre">half_seca_deduction:</span> <span class="pre">false</span></code> the draw’s SECA is not deductible, so line 5
+omits the draw and the limit follows the baseline formula. Disabled years
+use the baseline formula.</p>
+</section>
 <section id="benefit-credit-and-active-niit-interaction">
 <h2>Benefit credit and active NIIT interaction<a class="headerlink" href="#benefit-credit-and-active-niit-interaction" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">owners_draw_credited_earnings</span></code> exposes N_D when benefit credit is enabled,
@@ -475,17 +490,18 @@ main’s AIME lookback and age rules and its separate
 synchronize that path with the current tax cap. Mini-PIA integration and a
 complete annual-history ledger remain separate future work.</p>
 <p><code class="docutils literal notranslate"><span class="pre">owners_draw_niit_exclusion</span></code> is the matching gross-profit exclusion for a
-S.770 active-business NIIT option. With OASDI only it is
-<code class="docutils literal notranslate"><span class="pre">draw_oasdi_base</span> <span class="pre">/</span> <span class="pre">q</span></code>: only profits whose adjusted earnings actually face
-SECA are excluded. With HI enabled it is the entire actual gross draw D,
-because N_D faces uncapped HI. Profits beyond OASDI room remain in the active
-base when HI is off. The undrawn share and any floor-rejected planned draw
-also remain. Existing already-SE gross K_active must separately be excluded
-regardless of the OASDI cap because existing SE earnings face uncapped HI.
-When both reforms are active, <code class="docutils literal notranslate"><span class="pre">s770_active_business_income</span></code> consumes this
-calculated exclusion, including an explicit net-factor override. When owners
-draw is disabled, before its start year, or uninstalled, the S.770 manual
-draw hooks retain their original behavior.</p>
+S.770 active-business NIIT option. With OASDI only it is <code class="docutils literal notranslate"><span class="pre">draw_oasdi_base</span></code>
+divided by the net-earnings factor (q by default): only profits whose
+adjusted earnings actually face SECA are excluded. With HI enabled it is the
+entire actual gross draw D, because N_D faces uncapped HI. Profits beyond
+OASDI room remain in the active base when HI is off. The undrawn share and
+any floor-rejected planned draw also remain. Existing already-SE gross
+K_active must separately be excluded regardless of the OASDI cap because
+existing SE earnings face uncapped HI. When both reforms are active,
+<code class="docutils literal notranslate"><span class="pre">s770_active_business_income</span></code> consumes this calculated exclusion, including
+an explicit net-factor override. When owners draw is disabled, before its
+start year, or uninstalled, the S.770 manual draw hooks retain their
+original behavior.</p>
 <p>The automatic joint route requires <code class="docutils literal notranslate"><span class="pre">material_participation_only:</span> <span class="pre">true</span></code>.
 Passive-inclusive draws remain supported by the standalone owners’ draw
 reform, but the joint active-business calculation raises an explicit error
@@ -593,6 +609,7 @@ are distinct from expanding the owners’ draw base.</p>
 <li><a class="reference internal" href="#parameters">Parameters</a></li>
 <li><a class="reference internal" href="#input-contract-and-signed-losses">Input contract and signed losses</a></li>
 <li><a class="reference internal" href="#gross-draw-adjusted-earnings-and-cap-priority">Gross draw, adjusted earnings, and cap priority</a></li>
+<li><a class="reference internal" href="#self-employed-health-insurance-limit">Self-employed health insurance limit</a></li>
 <li><a class="reference internal" href="#benefit-credit-and-active-niit-interaction">Benefit credit and active NIIT interaction</a></li>
 <li><a class="reference internal" href="#data-limitations">Data limitations</a></li>
 <li><a class="reference internal" href="#comparable-oact-provisions">Comparable OACT provisions</a></li>
