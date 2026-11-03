@@ -275,8 +275,8 @@
 
 # Edge cases.
 # Negative self-employment income floors at zero per person in countable
-# income (5180:2-16-03(D)(4)(a)), so the family is income-eligible, owes no
-# copay, and receives the full reimbursement.
+# income (5180:2-16-03(D)(4)(a), now 5180:6-1-03(D)(4)(a)), so the family is
+# income-eligible, owes no copay, and receives the full reimbursement.
 - name: Case 8, self-employment loss yields full subsidy with no negative copay.
   period: 2026-01
   absolute_error_margin: 0.01

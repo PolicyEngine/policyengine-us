@@ -16,6 +16,9 @@ class amt_exemption(Variable):
         "https://www.law.cornell.edu/uscode/text/26/55#d",  # 26 U.S.C. § 55(d)
         "https://www.law.cornell.edu/uscode/text/26/59#j",
         "https://www.law.cornell.edu/uscode/text/26/911#d_2",
+        "https://www.law.cornell.edu/uscode/text/26/402#e_3",
+        "https://www.irs.gov/pub/irs-prior/i6251--2017.pdf#page=11",
+        "https://www.irs.gov/pub/irs-prior/i8615--2017.pdf#page=2",
         "https://www.irs.gov/instructions/i6251",
         "https://www.law.cornell.edu/uscode/text/26/55#d_4_A_iii",
     ]
@@ -45,9 +48,13 @@ class amt_exemption(Variable):
 
         # A reduced exemption amount is applied to kiddie tax filers
         kiddie_tax_applies = tax_unit("amt_kiddie_tax_applies", period)
-        # IRC 59(j) uses earned income under IRC 911(d)(2), rather than
-        # the EITC gross-income inclusion rule. Preserve the existing gross
-        # earnings cap independently of EITC payroll exclusions.
+        # IRC 59(j) uses earned income under IRC 911(d)(2): "amounts
+        # received as compensation for personal services". Traditional
+        # elective deferrals are not treated as made available to the
+        # employee (IRC 402(e)(3)). The 2017 Form 8615 instructions, for the
+        # same children and the same 911(d)(2) definition, generally take
+        # earned income from Form 1040 line 7 (taxable wages), so the cap
+        # uses adjusted_earnings, which leaves out pre-tax payroll deductions.
         adj_earnings = tax_unit_non_dep_sum("adjusted_earnings", tax_unit, period)
         child_amount = p.exemption.child.amount
 

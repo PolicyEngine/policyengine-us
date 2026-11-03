@@ -417,3 +417,32 @@
   output:
     hi_cdcc_qualifying_individuals: 1
     hi_cdcc_eligible: true
+
+- name: 2025 claimable but unclaimed single filer cannot claim the care credit
+  # HRS 235-55.6(a)(1) against Form N-11 line 30: following N-11, a filer
+  # eligible to be claimed is excluded whether or not anyone claims them.
+  period: 2025
+  input:
+    people:
+      taxpayer:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: true
+      child:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [taxpayer, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [taxpayer, child]
+        state_code: HI
+  output:
+    hi_cdcc_qualifying_individuals: 1
+    hi_cdcc_eligible: false
