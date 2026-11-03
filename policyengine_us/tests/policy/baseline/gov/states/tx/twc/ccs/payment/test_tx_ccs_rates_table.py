@@ -17,7 +17,8 @@ misses both floors by under a cent in some cells, and these checks fail on its
 values. In each rate letter from WD 12-18 to WD 20-23, TWC said it would
 reduce no provider's rate. For BCY 2025, TWC's Commission kept every rate at
 or above its BCY 2024 level, except relative care rates, which
-Boards set locally (WD Letter 19-24, Change 1).
+Boards set locally (WD Letter 19-24, Change 1). Across the seven tables, only
+the one relative care rate in FALLS drops.
 
 TWC also followed two patterns that no rule requires. It printed each TSR rate
 for the §809.20(b)(2) age groups equal to the Two-Star rate from BCY 2023 on,
@@ -155,6 +156,13 @@ BLENDED_OFF_FORMULA = {
     BCY_2024: {("EAST_TEXAS", "RELATIVE", "NONE", "SCHOOL_AGE")},
 }
 
+# Rates below the previous table's rate. Only the blended rate above drops,
+# when TWC printed the formula's $12.12 for BCY 2025. In WD Letter 19-24,
+# Change 1, TWC set no minimum for relative care rates.
+FALLS = {
+    BCY_2025: {("EAST_TEXAS", "RELATIVE", "NONE", "SCHOOL_AGE", "BLENDED")},
+}
+
 
 def _load_cells():
     with open(RATES) as file:
@@ -229,11 +237,11 @@ def _tree_value(cell, day):
 
 
 def test_every_cell_has_every_year():
-    # 28 boards x 16 provider type and rating rows x 9 age and schedule columns.
+    # 28 boards x 16 provider type and rating rows x 9 age and schedule columns,
+    # each dated exactly at the seven tables. An extra date would change the
+    # rate for the months until the next table.
     assert len(CELLS) == 28 * 16 * 9
-    _assert_none(
-        [cell for cell, values in CELLS.items() if not set(YEARS) <= set(values)]
-    )
+    _assert_none([cell for cell, values in CELLS.items() if set(values) != set(YEARS)])
 
 
 def _floors(year):
@@ -280,10 +288,14 @@ def test_blended_shortfalls_match_their_count(year):
 def test_texas_school_ready_rates(year):
     # TWC printed each TSR rate for an age group in §809.20(b)(2) equal to the
     # Two-Star rate from BCY 2023, and every TSR rate from BCY 2024. No rule
-    # requires equality: in WD Letter 09-23 (June 12, 2023), TWC set the
-    # Two-Star rate as the minimum for those age groups. Through BCY 2023, TSR
-    # providers get the regular rate for other age groups. Before BCY 2023, the
-    # markup test checks the preschool TSR floor.
+    # requires equality: in WD Letter 09-23, effective June 12, 2023, partway
+    # through the BCY 2023 table's year, TWC set the Two-Star rate as the
+    # minimum for those age groups. Through BCY 2023, TSR providers get the
+    # regular rate for other age groups. TWC printed it in every such cell of
+    # WD 12-18 and in eight later ones, six in WD 25-20 and two in WD 24-21.
+    # For the rest, which TWC left blank or dashed, the TSR fill rule in
+    # rates.yaml supplies it. Before BCY 2023, the markup test checks the
+    # preschool TSR floor.
     failures = []
     for cell in CELLS:
         if cell[2] != "TSR" or (year < BCY_2023 and cell[3] in _tsr_ages(year)):
@@ -363,14 +375,8 @@ def test_blended_rates_follow_school_year_formula(year):
 
 @pytest.mark.parametrize("earlier, later", list(zip(YEARS, YEARS[1:])))
 def test_rates_never_fall(earlier, later):
-    # Boards set BCY 2025 relative care rates locally, so those alone may fall.
-    failures = [
-        (cell, values[earlier], values[later])
-        for cell, values in CELLS.items()
-        if values[later] < values[earlier]
-        and not (cell[1] == "RELATIVE" and later == BCY_2025)
-    ]
-    _assert_none(failures)
+    falls = {cell for cell, values in CELLS.items() if values[later] < values[earlier]}
+    assert falls == FALLS.get(later, set())
 
 
 def test_parameter_tree_matches_table_around_each_change():
