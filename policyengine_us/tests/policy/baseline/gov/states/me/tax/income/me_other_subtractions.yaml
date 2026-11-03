@@ -1,0 +1,14 @@
+- name: Case 1, default me_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: ME
+  output:
+    me_other_subtractions: 0.0
+
+- name: Case 2, me_other_subtractions flows into me_agi_subtractions
+  period: 2024
+  input:
+    state_code: ME
+    me_other_subtractions: 1_200
+  output:
+    me_agi_subtractions: 1_200

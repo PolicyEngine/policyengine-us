@@ -1,0 +1,21 @@
+description: Alaska excludes all residents of these tribe-served Census places under the Heating Assistance Program.
+# Places whose every Addendum A row is marked 0 (the tribe serves all
+# residents), matched by Census place name. The 0/USA military bases are in
+# military_base_places instead. Approximated places inherit the all-resident
+# tribal routing of the community whose oil points they take: the community
+# that is the main listing for their ZIP code, or else the nearest listed
+# community.
+values:
+  2026-10-01: ["00760", "00870", "01200", "01305", "01390", "01420", "01860", "03440", "03550", "03880", "03990", "04430", "05750", "06520", "06630", "07620", "11690", "11800", "12680", "13230", "13450", "13550", "13670", "13780", "14330", "14880", "15430", "16630", "17740", "18950", "19720", "19750", "20020", "20380", "20600", "21040", "21150", "21810", "22910", "23790", "26760", "26835", "27530", "27700", "29290", "30060", "32310", "32550", "33030", "33360", "33470", "33910", "34350", "34460", "34790", "35120", "35890", "36770", "37430", "37650", "37975", "39630", "39740", "40400", "40510", "41280", "41500", "41610", "41720", "42050", "42380", "42490", "42820", "43810", "44030", "45460", "45700", "46010", "46780", "46890", "47000", "47990", "48590", "48870", "49530", "51180", "52060", "52390", "52720", "53050", "53270", "53710", "53820", "53930", "54150", "55030", "56220", "56350", "56600", "56680", "58330", "60640", "60750", "60860", "61080", "62125", "62285", "63390", "64600", "64820", "64930", "65590", "65700", "66140", "67570", "67680", "68670", "71090", "72190", "73290", "74610", "75050", "75160", "76590", "77690", "78240", "78790", "79120", "79230", "79780", "80100", "81320", "82420", "84200", "85610", "86490"]
+
+metadata:
+  unit: list
+  period: year
+  label: Alaska HAP all resident tribal service places
+  reference:
+    - title: Alaska HAP Manual Addendum A, FFY2027 Community Listing and symbol key
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm
+    - title: Alaska HAP Manual 3002-1 A.2, Ineligible Household
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm
+    - title: Census 2025 Alaska Places Gazetteer
+      href: https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2025_Gazetteer/2025_gaz_place_02.txt

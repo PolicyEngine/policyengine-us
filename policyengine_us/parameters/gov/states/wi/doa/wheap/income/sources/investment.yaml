@@ -1,0 +1,12 @@
+description: Wisconsin combines these interest and dividend sources for each household member under the Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - interest_income
+    - ordinary_dividend_income
+metadata:
+  unit: list
+  period: year
+  label: Wisconsin WHEAP interest and dividend sources
+  reference:
+    - title: "Wisconsin PY26 WHEAP Manual, section 3.3.2 item 3 and Table 3.4 #page 47,55"
+      href: https://web.archive.org/web/20260428215048/https://energyandhousing.wi.gov/Documents/WHEAP/WheapManual_PY26.pdf#page=47
