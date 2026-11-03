@@ -27,6 +27,8 @@ and compare them:
 - a later year calculated on the same simulation equals a simulation of that
   year alone, and an itemizing branch of a simulation whose itemizing input
   changed after its tax was calculated does not reuse that tax;
+- the grid runs in 2025 and 2026, and in 2020, where the itemization choice
+  compares branches with different AGI;
 - relations between cases over a grid: tax never rises with the repayment
   (also across the $3,000 threshold) or with the prior-year decrease, and a
   repayment of $3,000 or less changes nothing (section 67(h), formerly 67(g)).
@@ -71,7 +73,11 @@ REPAYMENT, DECREASE, WAGE, CHARITABLE = (
 NC_INCREASE = 0.05 * REPAYMENT
 ZEROS = np.zeros_like(REPAYMENT)
 THRESHOLD = 3_000
-YEARS = [2025, 2026]
+# 2020 exercises the itemization choice between two branches with different
+# AGI (the 2020 above-the-line charitable deduction). It comes last so the
+# tests that use YEARS[0] and YEARS[1] keep 2025 and 2026.
+YEARS = [2025, 2026, 2020]
+ITEMIZATION_AGI_YEAR = 2020
 TOLERANCE = 0.01
 # The 50 states and the District of Columbia.
 STATES = [
@@ -203,14 +209,14 @@ def test_branches_match_independent_simulations(results, year):
     )
 
 
+@pytest.mark.parametrize("year", [YEARS[0], ITEMIZATION_AGI_YEAR])
 @pytest.mark.parametrize(
     "first", ["tax_liability_if_itemizing", "tax_liability_if_not_itemizing"] + BRANCHES
 )
-def test_results_do_not_depend_on_calculation_order(results, first):
+def test_results_do_not_depend_on_calculation_order(results, first, year):
     # A tax liability under one itemizing choice is calculated in a branch.
     # Asked for before the method is known, it must not leave a value behind
     # that a later method branch reuses.
-    year = YEARS[0]
     simulation = grid_simulation([year])
     simulation.calculate(first, year)
     for variable in VARIABLES:
