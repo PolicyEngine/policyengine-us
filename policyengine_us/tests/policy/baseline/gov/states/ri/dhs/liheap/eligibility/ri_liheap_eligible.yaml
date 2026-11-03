@@ -1,0 +1,89 @@
+# DHS manual physical pages 5-6 and 12 allows heat included in rent and excludes
+# subsidized renters without any utility burden. These are eligibility checks;
+# they do not choose among the separate direct and secondary-electric awards.
+- name: Case 1, heating and rental arrangements establish the required energy burden.
+  period: 2026
+  input:
+    state_code: [RI, RI, RI, RI, RI, RI, RI, RI]
+    age: [40, 40, 40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0]
+    childcare_expenses: [0, 0, 0, 0, 0, 0, 0, 0]
+    child_care_subsidies: [0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 0, 0, 0, 0, 1_200, 0, 0]
+    pre_subsidy_electricity_expense: [0, 0, 0, 120, 0, 0, 120, 0]
+    heat_expense_included_in_rent: [false, false, true, true, true, false, true, true]
+    receives_housing_assistance: [false, false, false, true, true, true, false, false]
+    is_in_public_housing: [false, false, false, false, false, false, true, true]
+  output:
+    ri_liheap_eligible: [true, false, true, true, false, true, true, false]
+
+# FY2026 matrix's size-1 annual ceiling is 42,252, inclusive. The ordinary
+# income/member requirements still apply when a positive heating bill exists;
+# explicit NONE and a household outside Rhode Island cannot qualify.
+- name: Case 2, income and qualified membership remain necessary for heating assistance.
+  period: 2026
+  input:
+    state_code: [RI, RI, RI, RI, MA]
+    age: [40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, UNDOCUMENTED, CITIZEN, CITIZEN]
+    employment_income: [42_252, 42252.01, 12_000, 12_000, 12_000]
+    ssi: [0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0]
+    childcare_expenses: [0, 0, 0, 0, 0]
+    child_care_subsidies: [0, 0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NONE, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200]
+  output:
+    ri_liheap_eligible: [true, false, false, false, false]
+
+# Manual page 12 counts only citizens, permanent residents and qualified aliens, so the
+# size is 0 and the limit is 0. Income 0 <= 0 passes, the gas bill meets the energy
+# burden and the fuel is not NONE, so only the size gate (size > 0) makes the household
+# ineligible.
+- name: Case 3, a household with no qualified member and no income is ineligible.
+  period: 2026
+  input:
+    state_code: RI
+    age: 40
+    immigration_status: UNDOCUMENTED
+    employment_income: 0
+    ssi: 0
+    tanf: 0
+    childcare_expenses: 0
+    child_care_subsidies: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+  output:
+    ri_liheap_household_size: 0
+    ri_liheap_income: 0
+    ri_liheap_income_limit: 0
+    ri_liheap_eligible: false
+
+# Threshold edge for the federal floor, 42 U.S.C. 8624(b)(2)(B): income "less than
+# 110 percent of the poverty level" cannot be excluded. Size and income are forced
+# because the floor binds only from 23 qualified members in 2026. The 60% SMI limit
+# is floor(floor(0.6 x 135,424) x 1.83) = floor(81,254 x 1.83) = floor(148,694.82)
+# = 148,694, where 1.83 = 0.52 + 5 x 0.16 + 17 x 0.03. The floor uses the 2025
+# guideline (one-year lag): 15,650 + 22 x 5,500 = 136,650, and 1.1 x 136,650 =
+# 150,315.00. All three incomes exceed the limit; 150,314.99 is below the floor
+# (eligible) and 150,315 and 150,315.01 are not. A zero-year lag (2026 guideline,
+# 1.1 x 140,920 = 155,012) would make 150,315 eligible, and a two-year lag (2024
+# guideline, 1.1 x 133,420 = 146,762) would make 150,314.99 ineligible.
+- name: Case 4, threshold edge at the federal 110 percent poverty floor for twenty three members.
+  period: 2026
+  input:
+    state_code: [RI, RI, RI]
+    ri_liheap_household_size: [23, 23, 23]
+    ri_liheap_income: [150_314.99, 150_315, 150_315.01]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200]
+    heat_expense_included_in_rent: [false, false, false]
+    receives_housing_assistance: [false, false, false]
+    is_in_public_housing: [false, false, false]
+  output:
+    ri_liheap_income_limit: [148_694, 148_694, 148_694]
+    ri_liheap_eligible: [true, false, false]

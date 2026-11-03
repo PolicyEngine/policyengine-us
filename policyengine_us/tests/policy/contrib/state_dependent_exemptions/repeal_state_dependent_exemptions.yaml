@@ -80,6 +80,349 @@
   output:
     vt_personal_exemptions: 15_300
 
+# HRS 235-54(a): the exemption of an individual whom another taxpayer can claim
+# is zero, including the additional exemption for age 65 or over. The repeal
+# removes dependents only, so it never gives such a filer an exemption.
+- name: HI repeal - unclaimed but claimable single filer - baseline
+  period: 2025
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: false
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_code: HI}}
+  output:
+    hi_regular_exemptions: 0
+    hi_exemptions: 0
+
+- name: HI repeal - unclaimed but claimable single filer - reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_code: HI}}
+  output:
+    hi_regular_exemptions: 0
+    hi_exemptions: 0
+
+- name: HI repeal - joint return with one claimable spouse and two children keeps only the other spouse's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      spouse:
+        age: 22
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: HI
+  output:
+    # Baseline is also 1 x 1,144: the return has no dependents (IRC 152(b)(1)).
+    hi_regular_exemptions: 1_144
+
+- name: HI repeal - joint return whose claimable spouse is within the filing exception loses only the dependents
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 22
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: HI
+  output:
+    # Baseline: (1 own + 2 dependents) x 1,144 = 3,432.
+    hi_regular_exemptions: 1_144
+
+- name: HI repeal - joint return with both spouses claimable
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 22
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+      spouse:
+        age: 21
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+    tax_units: {tax_unit: {members: [head, spouse], filing_status: JOINT}}
+    households: {household: {members: [head, spouse], state_code: HI}}
+  output:
+    hi_regular_exemptions: 0
+    hi_exemptions: 0
+
+- name: HI repeal - aged claimable single filer gets neither the regular nor the aged exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 66
+        claimable_as_dependent_on_another_return: true
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_code: HI}}
+  output:
+    hi_regular_exemptions: 0
+
+- name: HI repeal - aged couple with one claimable spouse keeps the other spouse's regular and aged exemptions
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+      spouse:
+        age: 70
+        is_tax_unit_spouse: true
+    tax_units: {tax_unit: {members: [head, spouse], filing_status: JOINT}}
+    households: {household: {members: [head, spouse], state_code: HI}}
+  output:
+    # Baseline is also (1 + 1 aged) x 1,144.
+    hi_regular_exemptions: 2_288
+
+- name: HI repeal - aged couple with a child keeps both regular and aged exemptions and loses the dependent
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+      spouse:
+        age: 68
+        is_tax_unit_spouse: true
+      child:
+        age: 15
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: HI
+  output:
+    # (2 + 2 aged) x 1,144; the baseline adds the child for 5,720.
+    hi_regular_exemptions: 4_576
+
+# Va. Code 58.1-322.03(2)(a) allows $930 for each personal exemption allowable
+# federally, and a filer whom another taxpayer can claim has none
+# (IRC 151(d)(2)). The $800 aged or blind exemption in (2)(b) has no such bar.
+- name: VA repeal - unclaimed but claimable single filer - baseline
+  period: 2025
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: false
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_code: VA}}
+  output:
+    va_personal_exemption: 0
+    va_total_exemptions: 0
+
+- name: VA repeal - unclaimed but claimable single filer - reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_code: VA}}
+  output:
+    va_personal_exemption: 0
+    va_total_exemptions: 0
+
+- name: VA repeal - joint return with one claimable spouse and two children keeps only the other spouse's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      spouse:
+        age: 22
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: VA
+  output:
+    # Baseline is also 930: the return has no dependents (IRC 152(b)(1)).
+    va_personal_exemption: 930
+    va_personal_exemption_person: [930, 0, 0, 0]
+
+- name: VA repeal - joint return whose claimable spouse is within the filing exception loses only the dependents
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 22
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: VA
+  output:
+    # Baseline: 3 x 930 = 2,790.
+    va_personal_exemption: 930
+    va_personal_exemption_person: [0, 930, 0, 0]
+
+- name: VA repeal - joint return with both spouses claimable
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 22
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+      spouse:
+        age: 21
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+    tax_units: {tax_unit: {members: [head, spouse], filing_status: JOINT}}
+    households: {household: {members: [head, spouse], state_code: VA}}
+  output:
+    va_personal_exemption: 0
+    va_total_exemptions: 0
+
+- name: VA repeal - aged claimable single filer keeps only the aged exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 66
+        claimable_as_dependent_on_another_return: true
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_code: VA}}
+  output:
+    va_personal_exemption: 0
+    va_aged_blind_exemption: 800
+    va_total_exemptions: 800
+
+- name: VA repeal - joint filers with two children keep their own exemptions and lose the dependents
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      spouse:
+        age: 38
+        is_tax_unit_spouse: true
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: VA
+  output:
+    # 2 x 930; the baseline adds the children for 3,720.
+    va_personal_exemption: 1_860
+    va_personal_exemption_person: [930, 930, 0, 0]
+
 # Test for KY family size tax credit rate - verifies state_group_str is used correctly
 # This test ensures state_group is derived from state_code, not set explicitly
 - name: Kentucky family size tax credit with reform - state_group derived from state_code

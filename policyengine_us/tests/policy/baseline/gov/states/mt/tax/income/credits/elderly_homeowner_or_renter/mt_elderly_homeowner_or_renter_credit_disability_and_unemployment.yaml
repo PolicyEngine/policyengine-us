@@ -1,4 +1,4 @@
-# Employment disability benefits and unemployment compensation outside
+# Nontaxable employment disability benefits and unemployment compensation outside
 # federal AGI in gross household income. § 15-30-2337(9)(a) counts federal
 # AGI "plus all nontaxable income". The 2014-2023 instructions list
 # "Disability benefits including, but not limited to, veteran's disability,
@@ -16,6 +16,7 @@
         age: 80
         taxable_pension_income: 12_000
         disability_benefits: 2_500
+        tax_exempt_disability_benefits: 2_500
         rent: 6_000
         ssi: 0
     tax_units:
@@ -50,6 +51,7 @@
       person2:
         age: 45
         disability_benefits: 5_000
+        tax_exempt_disability_benefits: 5_000
         ssi: 0
     tax_units:
       tax_unit1:
@@ -85,6 +87,7 @@
       person2:
         age: 64
         disability_benefits: 4_000
+        tax_exempt_disability_benefits: 4_000
         ssi: 0
     tax_units:
       tax_unit:
@@ -118,6 +121,7 @@
       person2:
         age: 45
         disability_benefits: 7_000
+        tax_exempt_disability_benefits: 7_000
         ssi: 0
     tax_units:
       tax_unit1:
@@ -150,6 +154,7 @@
         age: 64
         taxable_pension_income: 16_000
         disability_benefits: 6_000
+        tax_exempt_disability_benefits: 6_000
         real_estate_taxes: 1_300
         ssi: 0
     tax_units:
@@ -334,3 +339,93 @@
     mt_elderly_homeowner_or_renter_credit_net_household_income: 327.60
     # Line 27 = 1_200 - 327.60 = 872.40; line 28 = 872.40; line 30 = 872.40.
     mt_elderly_homeowner_or_renter_credit: 872.40
+
+# The following cases preserve Cases 1-3's total disability income while
+# changing its tax treatment. Each parameter period must add only the
+# nontaxable portion to federal AGI, so the credit remains unchanged.
+- name: Case 11, 2016 fully taxable disability benefits count once through federal AGI.
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        taxable_pension_income: 12_000
+        disability_benefits: 2_500
+        tax_exempt_disability_benefits: 0
+        rent: 6_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Federal AGI already includes all 2_500 of disability benefits.
+    adjusted_gross_income_person: 14_500
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 14_500
+    mt_elderly_homeowner_or_renter_credit_net_household_income: 319.80
+    mt_elderly_homeowner_or_renter_credit: 580.20
+
+- name: Case 12, 2017 mixed disability benefits count each portion once for another household member.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        taxable_pension_income: 15_000
+        real_estate_taxes: 1_200
+        ssi: 0
+      person2:
+        age: 45
+        disability_benefits: 5_000
+        tax_exempt_disability_benefits: 2_000
+        ssi: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # The adult son's own federal AGI holds 3_000; only 2_000 is added.
+    adjusted_gross_income_person: [15_000, 3_000]
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [15_000, 5_000]
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [685, 0]
+    mt_elderly_homeowner_or_renter_credit: [515, 0]
+
+- name: Case 13, 2023 mixed disability benefits count each portion once for a spouse.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 18_000
+        real_estate_taxes: 1_000
+        ssi: 0
+      person2:
+        age: 64
+        disability_benefits: 4_000
+        tax_exempt_disability_benefits: 1_500
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 1 federal AGI 20_500; line 8 nontaxable disability 1_500;
+    # line 10 gross household income 22_000, as in Case 3.
+    adjusted_gross_income_person: [18_000, 2_500]
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [18_000, 4_000]
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [394.80, 0]
+    mt_elderly_homeowner_or_renter_credit: [605.20, 0]

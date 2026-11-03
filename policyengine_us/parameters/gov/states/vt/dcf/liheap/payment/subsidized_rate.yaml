@@ -1,0 +1,18 @@
+description: Vermont pays this share of the calculated benefit to households in Section 8 or other public housing that pay a fuel supplier directly under the Low Income Home Energy Assistance Program.
+# 33 V.S.A. 2604(c)(1) deems residents of subsidized units to have no heating
+# cost except to the extent federal law requires when federal funds are used,
+# and 33 V.S.A. 2605(f) sets $21 for subsidized heat in rent. Rule 2914(c)(3)-(4)
+# carries these out: 55% for subsidized households paying a supplier and the $21
+# nominal benefit for subsidized heat in rent.
+values:
+  2024-06-22: 0.55
+
+metadata:
+  unit: /1
+  period: year
+  label: Vermont LIHEAP subsidized housing benefit rate
+  reference:
+    - title: Vermont Seasonal Fuel Assistance Rule 2914(c)(3)
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=41
+    - title: 33 V.S.A. § 2604(c)(1)
+      href: https://legislature.vermont.gov/statutes/section/33/026/02604
