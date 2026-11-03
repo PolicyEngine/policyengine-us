@@ -1,11 +1,11 @@
-- name: Case 1, Panhandle BCY 2024, two children at the top of the 30% to 40% SMI range.
+- name: Case 1, Panhandle BCY 2024, two children at the top of the 0% to 20% SMI range.
   period: 2024
   input:
     people:
       person1:
         age: 30
         weekly_hours_worked_before_lsr: 40
-        employment_income: 31_740  # $2,645 a month
+        employment_income: 15_876  # $1,323 a month
       person2:
         age: 3
         is_citizen_or_legal_immigrant: true
@@ -22,22 +22,22 @@
         state_code: TX
         tx_ccs_workforce_board_region: PANHANDLE
   output:
-    # 40% of FY 2024 SMI for 3 people: 0.4 * 94,466 * 0.84 / 12 = $2,645.05,
-    # which TWC rounds to $2,645. The 30% to 40% range charges $110 for the
-    # first child and $45 for the second.
+    # 20% of FY 2024 SMI for 3 people: 0.2 * 94,466 * 0.84 / 12 = $1,322.52,
+    # which TWC rounds to $1,323. The 0% to 20% range charges $30 for the
+    # first child and $15 for the second.
     tx_ccs_board_copay:
-      2024-03: 155
+      2024-03: 45
     tx_ccs_copay:
-      2024-03: 155
+      2024-03: 45
 
-- name: Case 2, Panhandle BCY 2024, two children one dollar into the 40% to 50% SMI range.
+- name: Case 2, Panhandle BCY 2024, two children one dollar into the 20% to 30% SMI range.
   period: 2024
   input:
     people:
       person1:
         age: 30
         weekly_hours_worked_before_lsr: 40
-        employment_income: 31_752  # $2,646 a month
+        employment_income: 15_888  # $1,324 a month
       person2:
         age: 3
         is_citizen_or_legal_immigrant: true
@@ -54,11 +54,11 @@
         state_code: TX
         tx_ccs_workforce_board_region: PANHANDLE
   output:
-    # $150 for the first child and $60 for the second.
+    # $65 for the first child and $30 for the second.
     tx_ccs_board_copay:
-      2024-03: 210
+      2024-03: 95
     tx_ccs_copay:
-      2024-03: 210
+      2024-03: 95
 
 - name: Case 3, Panhandle BCY 2024, a family with no countable income pays nothing.
   period: 2024
@@ -266,7 +266,7 @@
         state_code: TX
         tx_ccs_workforce_board_region: PANHANDLE
   output:
-    # $155 (Case 1) * (1 - 30%) = $108.50
+    # $155 ($110 + $45 in the 30% to 40% range) * (1 - 30%) = $108.50
     tx_ccs_board_copay:
       2024-03: 108.5
 
