@@ -25,7 +25,7 @@ class ca_cdcc_relevant_expenses(Variable):
         # Qualifying expenses cover childcare plus care for a disabled
         # qualifying individual of any age (FTB 3506 instructions,
         # Section D).
-        childcare = tax_unit("tax_unit_childcare_expenses", period)
+        childcare = tax_unit("cdcc_qualifying_childcare_expenses", period)
         adult_care = add(tax_unit, period, ["care_expenses"])
         expenses = childcare + adult_care
         # First, cap based on the number of eligible care receivers
@@ -49,8 +49,9 @@ class ca_cdcc_relevant_expenses(Variable):
         eligible_capped_expenses = min_(
             expenses, min_(dollar_limit_after_exclusion, federal_line_31)
         )
-        # Then, cap further to the lowest earnings between the taxpayer and spouse
+        # Then, cap further to the lowest earnings between the taxpayer and
+        # spouse, measured as California earned income (R&TC 17052.6(d)(2)).
         return min_(
             eligible_capped_expenses,
-            tax_unit("min_head_spouse_earned", period),
+            tax_unit("ca_cdcc_min_head_spouse_earned", period),
         )

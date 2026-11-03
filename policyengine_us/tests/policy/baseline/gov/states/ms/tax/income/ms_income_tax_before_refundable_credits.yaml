@@ -1,0 +1,17 @@
+- name: Nonrefundable credits reduce Mississippi income tax
+  period: 2025
+  input:
+    state_code: MS
+    ms_income_tax_before_credits_unit: 500
+    ms_non_refundable_credits: 300
+  output:
+    ms_income_tax_before_refundable_credits: 200
+
+- name: Nonrefundable credits cannot reduce Mississippi income tax below zero
+  period: 2025
+  input:
+    state_code: MS
+    ms_income_tax_before_credits_unit: 200
+    ms_non_refundable_credits: 300
+  output:
+    ms_income_tax_before_refundable_credits: 0

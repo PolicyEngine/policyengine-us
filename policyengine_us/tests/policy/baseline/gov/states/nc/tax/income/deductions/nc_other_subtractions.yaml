@@ -1,0 +1,17 @@
+- name: Case 1, default nc_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: NC
+  output:
+    nc_other_subtractions: 0.0
+
+- name: Case 2, nc_other_subtractions flows into nc_deductions
+  period: 2024
+  input:
+    state_code: NC
+    nc_other_subtractions: 1_000
+    filing_status: SINGLE
+    nc_standard_or_itemized_deductions: 0
+    nc_child_deduction: 0
+  output:
+    nc_deductions: 1_000

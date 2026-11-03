@@ -32,6 +32,7 @@ PERIOD = "2025"
 
 @pytest.fixture(scope="module")
 def reference_system():
+    # "Main" below is a handwritten paid-cost oracle, not a second model.
     return system
 
 
@@ -141,10 +142,14 @@ def _assert_conservation(members, simulation):
     # non-premium expenses. Check the bound separately from conservation.
     assert (schedule_a_premium_use >= 0).all()
     assert (schedule_a_premium_use >= dependent_premiums).all()
-    assert (schedule_a_premium_use + se_deduction <= paid).all()
+    # The Form 7206 earnings limit leaves cents in the derived deduction, so
+    # the sums carry float32 rounding: allow a cent.
+    assert (schedule_a_premium_use + se_deduction <= paid + 0.01).all()
     # All premiums here are otherwise eligible: unused premiums remain in
     # Schedule A's base, even when earnings cap the SE deduction.
-    np.testing.assert_array_equal(schedule_a_premium_use + se_deduction, paid)
+    np.testing.assert_allclose(
+        schedule_a_premium_use + se_deduction, paid, rtol=0, atol=0.01
+    )
 
 
 EXAMPLE_UNITS = [
@@ -351,6 +356,19 @@ def _state_case(**values):
     }
 
 
+DEPENDENT_ELSEWHERE_STATE_CASES = [
+    _state_case(age=64, income=0, deduction=0, direct=(False, False, False)),
+    _state_case(
+        age=65,
+        income=0,
+        deduction=0,
+        direct=(False, False, False),
+        dependent_elsewhere=True,
+        other=(0, 0, 28_000),
+    ),
+]
+
+
 def _state_simulation(cases, reference_system, with_se_deduction):
     people, tax_units, households, marital_units = {}, {}, {}, {}
     expectations = {
@@ -404,6 +422,11 @@ def _state_simulation(cases, reference_system, with_se_deduction):
                     "is_tax_unit_head": person_index == 0,
                     "is_tax_unit_spouse": person_index == 1,
                     "is_tax_unit_dependent": person_index == 2,
+                    # Person facts let both the legacy head helper and #10024's
+                    # spouse-independent claimability helpers derive consistently.
+                    "claimed_as_dependent_on_another_return": (
+                        case["dependent_elsewhere"] if person_index == 0 else False
+                    ),
                     "employment_income": case["income"] if person_index == 0 else 0,
                     "medicare_enrolled": False,
                     premium_variable: premiums[position],
@@ -421,7 +444,6 @@ def _state_simulation(cases, reference_system, with_se_deduction):
                 "members": names,
                 "self_employed_health_insurance_ald": {PERIOD: deduction},
                 "filing_status": {PERIOD: case["filing_status"]},
-                "head_is_dependent_elsewhere": {PERIOD: case["dependent_elsewhere"]},
             }
             if supplied:
                 tax_unit["itemized_medical_expenses"] = {PERIOD: case["subtotal"]}
@@ -444,8 +466,9 @@ def _state_simulation(cases, reference_system, with_se_deduction):
                 if state == "NM" and senior_eligible and not case["dependent_elsewhere"]
                 else 0
             )
+            # NMSA 7-2-5.9 and PIT-ADJ line 18 allow the full exemption.
             expectations["nm_medical_expense_exemption"].append(
-                3_000 / denominator if state == "NM" and senior_eligible else 0
+                3_000 if state == "NM" and senior_eligible else 0
             )
     simulation = Simulation(
         tax_benefit_system=reference_system,
@@ -501,6 +524,7 @@ def _assert_state_outputs(cases, reference_system, with_se_deduction):
 
 
 @settings(max_examples=12, deadline=None, derandomize=True)
+@example(cases=DEPENDENT_ELSEWHERE_STATE_CASES)
 @example(
     cases=[
         _state_case(subtotal_mode="subtotal_only", subtotal=6_500),
@@ -521,6 +545,7 @@ def test_state_paid_cost_bases_match_main_without_se_deduction(reference_system,
 
 
 @settings(max_examples=12, deadline=None, derandomize=True)
+@example(cases=DEPENDENT_ELSEWHERE_STATE_CASES)
 @example(
     cases=[
         _state_case(premiums=(6_000, 0, 0), other=(500, 0, 0)),

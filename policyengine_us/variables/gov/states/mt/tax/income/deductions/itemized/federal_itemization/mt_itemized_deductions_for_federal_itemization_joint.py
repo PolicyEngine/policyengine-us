@@ -8,6 +8,9 @@ class mt_itemized_deductions_for_federal_itemization_joint(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        "https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2021_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=33",
+        # 2021 Form 2 line 9 includes qualified mortgage insurance premiums
+        # allowed on the federal return, after the federal AGI phase-out.
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7",
         "https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-21/section-15-30-2131/",
         # MT Code § 15-30-2131 (2022) (1)
@@ -35,11 +38,23 @@ class mt_itemized_deductions_for_federal_itemization_joint(Variable):
             return is_head * adjusted_federal_itemized_deductions
         charitable_deduction = person.tax_unit("charitable_deduction", period)
         investment_interest = person("investment_interest_expense", period)
-        # Montana allows the mortgage interest federal law allows, so interest
-        # on acquisition debt above the IRC 163(h)(3) caps is not deductible
-        # (MCA 15-30-2131(1)(a); Form 2 instructions, itemized line 9).
-        mortgage_interest = person("deductible_mortgage_interest", period)
-        interest_ded = investment_interest + mortgage_interest
+        # A joint return deducts the interest either spouse paid, excluding
+        # dependents. Montana allows only mortgage interest federal law
+        # allows (MCA 15-30-2131(1)(a); Form 2 itemized deductions line 9).
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        mortgage_interest = person.tax_unit.sum(
+            head_or_spouse * person("deductible_mortgage_interest", period)
+        )
+        # The joint return includes the federal premium deduction for both
+        # spouses, once, in the head's itemized deduction total.
+        mortgage_insurance = person.tax_unit(
+            "deductible_mortgage_insurance_premiums", period
+        )
+        interest_ded = (
+            person.tax_unit.sum(head_or_spouse * investment_interest)
+            + mortgage_interest
+            + mortgage_insurance
+        )
         other_deductions = add(
             person.tax_unit,
             period,
