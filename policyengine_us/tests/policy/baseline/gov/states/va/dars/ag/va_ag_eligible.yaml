@@ -1,0 +1,35 @@
+# An applicant who doesn't receive SSI is tested against the SSI resource
+# limits. 178.57 + 1,547.79 + 273.64 = 2,000.00, at the $2,000 individual
+# limit. The three float32 balances add to 2,000.0001 unless rounded to cents.
+- name: Three accounts that total exactly the individual resource limit are eligible
+  period: 2026-01
+  input:
+    state_code: VA
+    age: 70
+    is_disabled: true
+    is_ssi_aged_blind_disabled: true
+    va_ag_certified: true
+    ssi: 0
+    social_security: 30_000
+    bank_account_assets: 178.57
+    stock_assets: 1_547.79
+    bond_assets: 273.64
+  output:
+    va_ag_eligible: true
+
+# 178.57 + 1,547.79 + 273.65 = 2,000.01, a cent over the limit.
+- name: Three accounts a cent over the individual resource limit are ineligible
+  period: 2026-01
+  input:
+    state_code: VA
+    age: 70
+    is_disabled: true
+    is_ssi_aged_blind_disabled: true
+    va_ag_certified: true
+    ssi: 0
+    social_security: 30_000
+    bank_account_assets: 178.57
+    stock_assets: 1_547.79
+    bond_assets: 273.65
+  output:
+    va_ag_eligible: false

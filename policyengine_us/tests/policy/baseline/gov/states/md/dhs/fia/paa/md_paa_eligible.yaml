@@ -386,3 +386,45 @@
         state_code: MD
   output:
     md_paa_eligible: true
+
+# PAA Manual §500's $2,000 limit: 178.57 + 1,547.79 + 273.64 = 2,000.00, at
+# the limit. The three float32 balances add to 2,000.0001 unless rounded to
+# cents.
+- name: Case 19, three accounts that total exactly the resource limit are eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_disabled: true
+        ssi: 800
+        bank_account_assets: 178.57
+        stock_assets: 1_547.79
+        bond_assets: 273.64
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: true
+
+# 178.57 + 1,547.79 + 273.65 = 2,000.01, a cent over the limit.
+- name: Case 20, three accounts a cent over the resource limit are ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_disabled: true
+        ssi: 800
+        bank_account_assets: 178.57
+        stock_assets: 1_547.79
+        bond_assets: 273.65
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: false
