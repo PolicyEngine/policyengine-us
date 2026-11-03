@@ -1,4 +1,4 @@
-description: The Medicare Trustees report and project these Part D premiums from enrollees per Part D enrollee, excluding the income-related monthly adjustment amount.
+description: The Medicare Trustees' reported and projected Part D premium income and enrollment give these Part D premiums from enrollees per Part D enrollee, excluding the income-related monthly adjustment amount.
 metadata:
   unit: currency-USD
   period: year
@@ -15,7 +15,7 @@ metadata:
   #   footnote 6 (file page 117) credits one January's withheld premiums on
   #   December 31 of the year before: about $0.2 billion in 2015, $0.1 billion
   #   in 2020 and an estimated $0.2 billion in 2026. Those amounts are moved
-  #   back to 2016, 2021 and 2027.
+  #   to the following year: 2016, 2021 and 2027.
   # - Income-related premiums, Table V.E4 (file page 218), "Aggregate
   #   premiums", the amount paid "in excess of the Part D plan premium". They
   #   are part of premium income: they are withheld from benefits (42 U.S.C.
@@ -25,17 +25,12 @@ metadata:
   # - Part D enrollment, Table V.B3 (file page 196), in thousands. It equals
   #   the total of Table IV.B7 (file page 153), which includes retiree drug
   #   subsidy beneficiaries.
-  # Low-income subsidy enrollees pay reduced premiums or none (file page 219);
+  # Low-income subsidy enrollees pay substantially reduced premiums (file
+  # page 219);
   # Medicare's low-income subsidy payments are expenditures of the Part D
   # account, not enrollee premiums (file page 114). So the average is below
   # the base beneficiary premium.
-  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table III.D3
-    href: https://www.cms.gov/oact/tr/2026#page=116
-  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table V.E4
-    href: https://www.cms.gov/oact/tr/2026#page=218
-  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table V.B3
-    href: https://www.cms.gov/oact/tr/2026#page=196
-  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Part D revenue and expenditures
+  - title: "2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Tables III.D1, III.D3, V.B3, V.D1 and V.E4 #page 109,114,116-117,151,154,196,210,218-219"
     href: https://www.cms.gov/oact/tr/2026#page=109
   - title: 42 U.S.C. § 1395w-113(c)(4) - Collection of monthly adjustment amount
     href: https://www.law.cornell.edu/uscode/text/42/1395w-113#c_4
@@ -56,7 +51,7 @@ values:
   2025-01-01: 220.25
   # Trustees' intermediate estimates. The 2030 jump is the Inflation
   # Reduction Act's reset of the base beneficiary premium percentage
-  # (file page 152).
+  # (file page 154).
   2026-01-01: 289.79
   2027-01-01: 373.53
   2028-01-01: 403.59

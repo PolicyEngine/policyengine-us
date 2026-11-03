@@ -1,0 +1,216 @@
+# Sources: POMS SI 01415.058 J and SI NY01415.025.
+- name: Case 1, independent individual.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 65
+  output:
+    nj_ssp: 31.25
+
+- name: Case 2, certified congregate care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 65
+    nj_ssp_care_setting: CONGREGATE_CARE
+  output:
+    nj_ssp: 150.05
+
+- name: Case 3, certified residential health care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 65
+    nj_ssp_care_setting: RESIDENTIAL_HEALTH_CARE
+  output:
+    nj_ssp: 210.05
+
+- name: Case 4, excluded setting.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 65
+    nj_ssp_care_setting: EXCLUDED
+  output:
+    nj_ssp: 0
+
+- name: Case 5, Medicaid institutional payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ssi: 30
+    nj_ssp: 20
+
+- name: Case 6, non Medicaid medical institution.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+  output:
+    nj_ssp: 0
+
+- name: Case 7, household of another.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 65
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    nj_ssp: 44.31
+
+- name: Case 8, state only payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 65
+    social_security_retirement: 12_360
+  output:
+    ssi: 0
+    nj_ssp: 15.25
+
+- name: Case 9, positive sub dollar amount receives minimum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 65
+    social_security_retirement: 12_540
+  output:
+    # 12_540 / 12 = 1_045 - 20 = 1_025 countable, 31 above the 994 FBR.
+    # 31.25 - 31 = 0.25, raised to the 1 dollar minimum.
+    nj_ssp: 1
+
+- name: Case 10, combined income cutoff.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 65
+    social_security_retirement: 12_543
+  output:
+    nj_ssp: 0
+
+- name: Case 11, resource cutoff.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 65
+    ssi_countable_resources: 2_001
+  output:
+    nj_ssp: 0
+
+- name: Case 12, no aged blind or disabled category.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 30
+  output:
+    nj_ssp: 0
+
+- name: Case 13, disabled child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 12
+    meets_ssi_disability_criteria: true
+  output:
+    nj_ssp: 31.25
+
+- name: Case 14, out of state.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    age: 65
+  output:
+    nj_ssp: 0
+
+- name: Case 15, declining SSI application.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 65
+    takes_up_ssi_if_eligible: false
+  output:
+    nj_ssp: 0
+
+- name: Case 16, couple with Social Security receives a state only payment.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        social_security_retirement: 18_240
+      person2:
+        age: 65
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # 18_240 / 12 = 1_520 - 20 = 1_500 couple countable, 750 per spouse.
+    ssi_countable_income: [750, 750]
+    # 750 - 1_491 / 2 = 4.50 above each spouse's federal amount, so no SSI.
+    ssi: [0, 0]
+    # 25.35 / 2 = 12.675 - 4.50 = 8.175, rounded up to 8.18 per spouse.
+    nj_ssp: [8.18, 8.18]
+
+- name: Case 17, disabled child living with parents receives the living alone or with others rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        own_children_in_household: 1
+      person2:
+        age: 40
+        own_children_in_household: 1
+      person3:
+        age: 10
+        meets_ssi_disability_criteria: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    # The parents are not aged, blind or disabled, so the child is in federal
+    # code C, which New Jersey pays as code B (SI 01415.058 J.1).
+    ssi_federal_living_arrangement: [OWN_HOUSEHOLD, OWN_HOUSEHOLD, CHILD_IN_PARENTAL_HOUSEHOLD]
+    nj_ssp_living_arrangement: [LIVING_ALONE_OR_WITH_OTHERS, LIVING_ALONE_OR_WITH_OTHERS, LIVING_ALONE_OR_WITH_OTHERS]
+    # The parents have no income, so nothing is deemed.
+    ssi: [0, 0, 994]
+    # J.2.a row C/B: 31.25.
+    nj_ssp: [0, 0, 31.25]

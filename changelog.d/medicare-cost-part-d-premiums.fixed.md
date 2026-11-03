@@ -1,1 +1,1 @@
-Subtract the expected Medicare Part D premium, the Part D enrollment share times Part D premiums per Part D enrollee plus the person's Part D IRMAA, from `medicare_cost`, whose CMS spending per enrollee includes Part D.
+Subtract Medicare Part D premiums from `medicare_cost`, whose CMS spending per enrollee includes Part D: the average Part D premium per Medicare enrollee from the 2026 Medicare Trustees Report, plus the person's own Part D income-related monthly adjustment amount.

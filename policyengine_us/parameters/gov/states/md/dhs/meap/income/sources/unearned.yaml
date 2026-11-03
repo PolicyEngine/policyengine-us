@@ -9,16 +9,18 @@ values:
   - interest_income
   - estate_income
   - pension_income
-  # Military retirement pay is a separate input from the pension inputs that
-  # pension_income adds, so both are listed. Its survivor payments are not
-  # separable from survivor_benefits, so a survivor annuity could count twice.
-  - military_retirement_pay
+  # Military retirement income (retiree pay plus Survivor Benefit Plan
+  # annuities) is a separate input from the pension inputs that
+  # pension_income adds, so both are listed. A military survivor annuity
+  # belongs in military_retirement_pay_survivors, not survivor_benefits, so it
+  # counts once.
+  - military_retirement_income
   - survivor_benefits
   - retirement_distributions
   - child_support_received
   - alimony_income
   - workers_compensation
-  - unemployment_compensation
+  - total_unemployment_compensation
   - veterans_benefits
   - strike_benefits
   - rental_income

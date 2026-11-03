@@ -1,0 +1,22 @@
+description: Louisiana assigns this benefit matrix household size group from the number of counted household members under the Low Income Home Energy Assistance Program.
+brackets:
+  # Household size 1-3.
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 1
+  # Household size 4 and over.
+  - threshold:
+      2025-10-01: 4
+    amount:
+      2025-10-01: 2
+
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: /1
+  period: year
+  label: Louisiana LIHEAP household size group
+  reference:
+    - title: Louisiana FFY2026 Heating and Cooling Benefit Matrix, household size
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/LA_BenefitMatrix_Heat-Cool_2026.pdf

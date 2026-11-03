@@ -266,3 +266,13 @@
     - 0
     - 0
     - 0
+
+- name: New Jersey 2027 TDI and FLI worker contributions stop at the 177,100 taxable wage base.
+  period: 2027
+  input:
+    employment_income: 200_000
+    state_code: NJ
+  output:
+    # NJDOL's 2027 TDI and FLI taxable wage base for workers is $177,100.
+    nj_temporary_disability_insurance_taxable_wages: 177_100
+    nj_family_leave_insurance_taxable_wages: 177_100

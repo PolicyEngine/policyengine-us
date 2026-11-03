@@ -16,11 +16,18 @@
         state_name: CA
   output:
     ssi: 994
-    ca_state_supplement: 341.81
+    # Independent-living standard $1,233.94 - $994 federal SSI. The household
+    # does not report that its living arrangement prevents meal preparation, so
+    # it gets no restaurant meals allowance (WIC 12200(e)).
+    ca_state_supplement: 239.94
     # Without the supplement the household's SNAP unearned income would be the
     # $994 federal SSI benefit alone, and SNAP would be $143.
-    snap_unearned_income: 1_335.81
-    snap: 24
+    snap_unearned_income: 1_233.94 # 994 + 239.94
+    # 1,233.94 - 209 standard deduction = 1,024.94; excess shelter deduction
+    # 663 utility allowance - 50% x 1,024.94 = 150.53; net income
+    # 1,024.94 - 150.53 = 874.41, rounded to 874; 30% x 874 = 262.20, rounded
+    # up to 263; 298 maximum allotment - 263 = 35.
+    snap: 35
 
 - name: Massachusetts state supplement counts as SNAP unearned income.
   period: 2026-01
@@ -62,8 +69,9 @@
         members: [person1, person2]
         state_name: CA
   output:
-    ca_state_supplement: 341.81
-    snap_unearned_income: 1_335.81
+    # $1,233.94 - $994, with no restaurant meals allowance (WIC 12200(e)).
+    ca_state_supplement: 239.94
+    snap_unearned_income: 1_233.94 # 994 + 239.94
 
 # Indiana pays its Residential Care Assistance Program supplement to the
 # facility as a per diem. 273.9(b)(2)(i) counts assistance "even if provided in

@@ -6,8 +6,40 @@ metadata:
   unit: currency-USD
   period: month
   reference:
+    - title: Iowa Administrative Code 441-75.8(5)"a" - Medically needy resource limit
+      href: https://www.legis.iowa.gov/docs/iac/chapter/441.75.pdf#page=22
+    - title: New Jersey DMAHS, Medically Needy Segment fact sheet
+      href: https://web.archive.org/web/20260514003440id_/https://www.nj.gov/humanservices/dmahs/clients/medicaid/medically_needy_fact_sheet.pdf#page=1
+    - title: N.J.A.C. 10:70-1.2 - Purpose of the Medically Needy Manual
+      href: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-70-1-2
+    - title: N.J.A.C. 10:70-5.1 - Resource eligibility limits
+      href: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-70-5-1
     - title: "Medicaid Financial Eligibility for Seniors and People with Disabilities: Findings from a 50-State Survey | KFF"
       href: https://www.kff.org/report-section/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey-appendix-tables/
+    - title: California Welfare and Institutions Code 14005.62(a), (c), (d)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=14005.62
+    - title: "California DHCS All County Welfare Directors Letter 21-31, Asset Limit Changes for Non-MAGI Medi-Cal (Phase I) #page 2-4"
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/21-31.pdf#page=2
+    - title: "California DHCS All County Welfare Directors Letter 22-25, Elimination of Asset Limits for Non-MAGI Medi-Cal Programs #page 1-2"
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/22-25.pdf#page=1
+    - title: "California DHCS All County Welfare Directors Letter 25-14, Reinstatement of Asset Limits for Non-MAGI Medi-Cal Programs #page 1,8-9"
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/25-14.pdf#page=1
+    - title: California Senate Bill 164 (Statutes of 2026, Chapter 27), Section 69 - Welfare and Institutions Code 14005.62(a), operative July 1, 2027
+      href: https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260SB164
+    - title: Illinois Department of Human Services Policy Manual PM 07-02-01 - Asset Limits
+      href: https://www.dhs.state.il.us/page.aspx?Item=14876
+    - title: New York DOH GIS 22 MA/01, Attachment I, 2022 SSI-Related Medicaid Income and Resource Levels
+      href: https://www.health.ny.gov/health_care/medicaid/publications/docs/gis/22ma01_att1.pdf#page=2
+    - title: New York DOH GIS 22 MA/11, Increase of Medicaid Medically Needy Income Level to 138% of the Federal Poverty Level
+      href: https://www.health.ny.gov/health_care/medicaid/publications/docs/gis/22ma11.pdf#page=2
+    - title: New York DOH GIS 23 MA/02, Attachment 1, 2023 Income and Resource Standards
+      href: https://www.health.ny.gov/health_care/medicaid/publications/docs/gis/23ma02_att1.pdf#page=2
+    - title: New York DOH GIS 24 MA/01, Attachment 1, 2024 Income and Resource Standards
+      href: https://www.health.ny.gov/health_care/medicaid/publications/docs/gis/24ma01_att1.pdf#page=2
+    - title: New York DOH GIS 25 MA/03, Attachment 1, 2025 Income and Resource Standards
+      href: https://www.health.ny.gov/health_care/medicaid/publications/docs/gis/25ma03_att1.pdf#page=2
+    - title: New York DOH GIS 26 MA/05, Attachment 1, 2026 Income and Resource Standards
+      href: https://www.health.ny.gov/health_care/medicaid/publications/docs/gis/26ma05_att1.pdf#page=2
 
 AK:
   2018-01-01: -.inf
@@ -19,6 +51,11 @@ AZ:
   2018-01-01: -.inf
 CA:
   2018-01-01: 2_000
+  2022-07-01: 130_000
+  2024-01-01: .inf
+  2026-01-01: 130_000
+  # Annual calculations read parameters on January 1, so the July 1, 2027 value first applies in 2028.
+  2027-07-01: 21_000
 CO:
   2018-01-01: -.inf
 CT:
@@ -39,6 +76,7 @@ ID:
   2018-01-01: -.inf
 IL:
   2018-01-01: 2_000
+  2023-05-12: 17_500
 IN:
   2018-01-01: -.inf
 KS:
@@ -79,6 +117,11 @@ NV:
   2018-01-01: -.inf
 NY:
   2018-01-01: 15_150
+  2022-01-01: 16_800
+  2023-01-01: 30_182
+  2024-01-01: 31_175
+  2025-01-01: 32_396
+  2026-01-01: 33_038
 OH:
   2018-01-01: -.inf
 OK:
