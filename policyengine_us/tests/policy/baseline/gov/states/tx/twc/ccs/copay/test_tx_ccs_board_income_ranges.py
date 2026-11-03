@@ -338,7 +338,7 @@ def test_fpg_board_thresholds_name_twc_ranges():
 
 
 def test_formula_reads_fpg_ranges_for_a_board_that_uses_them():
-    # Greater Dallas's chart tests check one FPG limit. This moves Panhandle's
+    # Greater Dallas's chart tests check two FPG limits. This moves Panhandle's
     # November 2024 scale onto TWC's FPG ranges and checks a family of one
     # adult and two children on each side of each printed limit.
     board = "gov.states.tx.twc.ccs.copay.board"

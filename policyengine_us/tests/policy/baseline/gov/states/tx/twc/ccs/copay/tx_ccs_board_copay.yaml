@@ -703,9 +703,11 @@
       person3:
         age: 5
         is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_rating: TRS3
       person4:
         age: 7
         is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_rating: TRS3
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
@@ -756,3 +758,36 @@
     # wasn't found, so the model applies none.
     tx_ccs_board_copay:
       2024-03: 105
+
+- name: Case 25, Alamo rounds a discounted share that ends in 50 cents up.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 57_600  # $4,800 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_rating: TRS3
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_rating: TRS3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: ALAMO
+  output:
+    # $4,800 falls in the more than 70% to 75% SMI range ($4,630 to $4,959 for
+    # 3 people), which charges $250 + $115 = $365. Alamo's chart by family
+    # size prints $329 for two children at a Texas Rising Star provider:
+    # $365 * (1 - 10%) = $328.50, rounded up.
+    tx_ccs_board_copay:
+      2024-03: 329
