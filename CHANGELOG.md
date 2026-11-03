@@ -1,3 +1,10 @@
+## [2.93.3] - 2026-11-03
+
+### Fixed
+
+- Apply each Texas Local Workforce Development Board's own Child Care Services parent share of cost scale, where the Board's chart was found, to October 2023 through December 2024, continuing a Board's BCY 2024 chart where no later one was found, instead of the statewide scale that TWC brought in with TX3C on January 13, 2025.
+
+
 ## [2.93.2] - 2026-11-03
 
 ### Fixed
