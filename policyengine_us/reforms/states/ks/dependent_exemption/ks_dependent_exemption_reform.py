@@ -21,15 +21,6 @@ def create_ks_dependent_exemption() -> Reform:
             no_dependents = tax_unit(
                 "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
             )
-            state_exemptions = parameters(period).gov.states.ks.tax.income.exemptions
-            if not state_exemptions.by_filing_status.in_effect:
-                # The consolidated regime's Total Kansas exemptions are zero
-                # when a filer is actually claimed, even with the federal
-                # filing exception. Match ks_count_exemptions so subtracting
-                # this count cannot leave negative personal exemptions.
-                filer = person("is_tax_unit_head_or_spouse", period)
-                claimed = person("claimed_as_dependent_on_another_return", period)
-                no_dependents = no_dependents | tax_unit.any(filer & claimed)
             is_dependent = person("is_tax_unit_dependent", period)
 
             # Apply age limit if in effect.
