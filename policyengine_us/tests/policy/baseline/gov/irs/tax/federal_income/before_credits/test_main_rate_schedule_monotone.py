@@ -77,3 +77,17 @@ def test_pre_2018_schedule_is_the_seven_pre_tcja_rates():
             0.396,
         ], year
     assert rates(bracket_node(2018)) == [0.10, 0.12, 0.22, 0.24, 0.32, 0.35, 0.37]
+
+
+@pytest.mark.parametrize("year", YEARS)
+@pytest.mark.parametrize("status", FILING_STATUSES)
+def test_thresholds_and_rates_strictly_rise(year, status):
+    """The clamp in amounts_in_brackets keeps the tax monotone whatever the
+    thresholds are, so the property above can't catch a threshold typo. This
+    checks the data: each threshold and each rate exceeds the one before."""
+    bracket = bracket_node(year)
+    keys = list(bracket.rates.__iter__())
+    t = [float(bracket.thresholds[b][status]) for b in keys]
+    r = rates(bracket)
+    assert all(a < b for a, b in zip(t, t[1:])), (year, status, t)
+    assert all(a < b for a, b in zip(r, r[1:])), (year, r)
