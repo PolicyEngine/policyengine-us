@@ -46,6 +46,7 @@ EXPECTED = {
     "military_basic_pay": EMPLOYMENT,
     "military_service_income": EMPLOYMENT,
     "state_or_federal_salary": EMPLOYMENT,
+    "pa_philadelphia_wage_tax_taxable_wages": EMPLOYMENT,
     # Wage-replacement benefits.
     "workers_compensation": EMPLOYMENT,
     "disability_benefits": EMPLOYMENT,
