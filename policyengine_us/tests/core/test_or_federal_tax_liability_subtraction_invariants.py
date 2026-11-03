@@ -1,18 +1,24 @@
-"""Oregon's federal tax liability subtraction follows the OR-17 worksheet.
+"""Oregon's federal tax liability subtraction follows ORS 316.685.
 
-ORS 316.680(1)(b) and 316.685; Publication OR-17, federal tax worksheet,
-Part A. The subtraction is federal tax after nonrefundable credits plus other
-income taxes, less only the refundable credits the worksheet lists, floored at
+ORS 316.680(1)(b) and 316.685. The subtraction is federal tax after
+nonrefundable credits plus other income taxes, including the net investment
+income tax (26 U.S.C. 1411(a)(1)), less the employee payroll tax on unreported
+tips and wages (316.685(3)(a)), less every federal refundable credit except the
+earned income credit (316.685(1)(b)) and less the premium tax credit, floored at
 zero and capped by a schedule that falls with federal AGI. With T the federal
-tax before refundable credits, these properties hold for every input:
+tax before refundable credits and U the unreported payroll tax, these
+properties hold for every input:
 
-1. 0 <= subtraction <= min(max(0, T - NIIT - unreported payroll tax), cap(AGI)): the
-   worksheet leaves out those two taxes, and the cap binds at the unit's AGI.
-2. The earned income credit never changes it (ORS 316.685(1)(b)), and outside
-   2021 neither does the additional child tax credit.
-3. While the cap does not bind, raising a listed credit by d lowers it to
-   exactly max(0, subtraction - d): the premium tax credit every year, and the
-   refundable child tax credit and child care credit in 2021.
+1. 0 <= subtraction <= min(max(0, T - U), cap(AGI)).
+2. The earned income credit never changes it, and neither does the net
+   investment income tax beyond its share of T. Outside 2021 neither does the
+   child and dependent care credit, which is refundable only in 2021.
+3. While the cap does not bind, raising a reducing credit or U by d lowers it
+   by exactly min(d, slack), where slack is how far the uncapped amount sits
+   above zero; where the cap binds, it never rises. The reducing credits are
+   the premium tax credit, the additional child tax credit and the refundable
+   payroll tax credit every year, and the child and dependent care credit in
+   2021.
 4. Raising T by d raises it by at most d, and never lowers it.
 
 Each Hypothesis example evaluates a batch of tax units and their variants in
@@ -32,11 +38,25 @@ CREDITS = (
     "eitc",
     "refundable_ctc",
     "refundable_american_opportunity_credit",
+    "refundable_payroll_tax_credit",
     "assigned_aca_ptc",
     "recovery_rebate_credit",
     "cdcc",
 )
-VARIANTS = ("base", "eitc", "refundable_ctc", "assigned_aca_ptc", "cdcc", "tax")
+REDUCING = (
+    "assigned_aca_ptc",
+    "refundable_ctc",
+    "refundable_payroll_tax_credit",
+    "unreported_payroll_tax",
+)
+VARIANTS = (
+    "base",
+    "eitc",
+    "net_investment_income_tax",
+    "cdcc",
+    *REDUCING,
+    "tax",
+)
 
 
 @st.composite
@@ -114,27 +134,29 @@ def test_or_federal_tax_liability_subtraction_invariants(year, units):
     for i, unit in enumerate(units):
         r = result[i]
         base, delta, cap = r["base"], unit["delta"], caps[i]
+        # Below the cap the subtraction is the uncapped amount itself, so its
+        # slack above zero is the subtraction.
         uncapped = cap - base > TOLERANCE
         # 1. Bounds.
         assert -TOLERANCE <= base
         assert base <= TOLERANCE + max(
             0,
             unit["income_tax_before_refundable_credits"]
-            - unit["net_investment_income_tax"]
             - unit["unreported_payroll_tax"],
         )
         assert base <= cap + TOLERANCE
-        # 2. Credits the worksheet never lists.
+        # 2. Amounts that never change it.
         assert r["eitc"] == pytest.approx(base, abs=TOLERANCE)
-        if year != 2021:
-            assert r["refundable_ctc"] == pytest.approx(base, abs=TOLERANCE)
-        # 3. A listed credit lowers the subtraction dollar for dollar to zero.
-        listed = ["assigned_aca_ptc"]
+        assert r["net_investment_income_tax"] == pytest.approx(base, abs=TOLERANCE)
+        reducing = list(REDUCING)
         if year == 2021:
-            listed += ["refundable_ctc", "cdcc"]
-        for credit in listed:
-            assert r[credit] <= base + TOLERANCE
+            reducing.append("cdcc")
+        else:
+            assert r["cdcc"] == pytest.approx(base, abs=TOLERANCE)
+        # 3. A reducing amount lowers it dollar for dollar to zero.
+        for name in reducing:
+            assert -TOLERANCE <= r[name] <= base + TOLERANCE
             if uncapped:
-                assert r[credit] == pytest.approx(max(0.0, base - delta), abs=TOLERANCE)
+                assert r[name] == pytest.approx(base - min(delta, base), abs=TOLERANCE)
         # 4. More federal tax raises it by at most the increase.
         assert base - TOLERANCE <= r["tax"] <= base + delta + TOLERANCE
