@@ -3,7 +3,7 @@
 # - https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=5
 # - https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=35
 
-# 1,000 + 2,000 + 3,000 + 4,000 + 5,000 + 6,000 + 7,000 = 28,000. Historical section 418 classifies property rent as earned.
+# 1,000 + 500 + 2,000 + 3,000 + 4,000 + 5,000 + 6,000 + 7,000 = 28,500. Historical section 418 classifies property rent as earned.
 - name: Case 1, adult earned sources including rents count.
   period: 2026
   absolute_error_margin: 0.01
@@ -17,6 +17,7 @@
         is_full_time_college_student: false
         rent: 0
         employment_income: 1_000
+        military_basic_pay: 500
         self_employment_income: 2_000
         sstb_self_employment_income: 3_000
         farm_operations_income: 4_000
@@ -43,7 +44,7 @@
         members: [person1]
         state_code: DE
   output:
-    de_liheap_countable_income_person: 28_000
+    de_liheap_countable_income_person: 28_500
 
 # 100 + 200 + ... + 1,200 = 7,800; SSI is an annual total for a monthly variable.
 - name: Case 2, disjoint unearned income sources count.
@@ -552,8 +553,8 @@
 
 # Manual 419.1 and 419.3: an adult's railroad retirement 6,000 and insurance
 # disability payments 2,400 count (8,400). Manual 418: a minor keeps only child
-# support 1,800, SSI 2,400 and Social Security survivors 3,000 (7,200); the
-# minor's 500 of interest is excluded.
+# support 1,800, SSI 2,400, Social Security survivors 3,000 and railroad retirement
+# 1,500 (8,700); the minor's 500 of interest is excluded.
 - name: Case 14, railroad and disability payments count; a minor keeps only support and Social Security benefits.
   period: 2026
   absolute_error_margin: 0.01
@@ -575,6 +576,7 @@
         is_full_time_college_student: false
         child_support_received: 1_800
         social_security_survivors: 3_000
+        railroad_benefits: 1_500
         taxable_interest_income: 500
     tax_units:
       tax_unit:
@@ -593,7 +595,7 @@
         members: [person1, person2]
         state_code: DE
   output:
-    de_liheap_countable_income_person: [8_400, 7_200]
+    de_liheap_countable_income_person: [8_400, 8_700]
 
 # Manual 416.2 counts trusts and 416.1 counts other taxable income: 2,000 + 1,000.
 # A minor's trust income stays out under manual 418.

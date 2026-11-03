@@ -1065,6 +1065,14 @@ programs:
         full_name: DC Low Income Home Energy Assistance Program
         variable: dc_liheap_payment
         parameter_prefix: gov.states.dc.doee.liheap
+      - state: DE
+        status: partial
+        name: Delaware LIHEAP
+        full_name: Delaware Low Income Home Energy Assistance Program
+        variable: de_liheap
+        parameter_prefix: gov.states.de.dhss.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating matrix and the subsidized-housing flat award. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: MA
         status: complete
         name: Massachusetts LIHEAP
@@ -1314,14 +1322,6 @@ programs:
         parameter_prefix: gov.states.wy.dfs.lieap
         verified_years: "2026"
         notes: FY2026 regular heating from the published fuel cost standards. Crisis, cooling, weatherization and equipment assistance are out of scope.
-      - state: DE
-        status: partial
-        name: Delaware LIHEAP
-        full_name: Delaware Low Income Home Energy Assistance Program
-        variable: de_liheap
-        parameter_prefix: gov.states.de.dhss.liheap
-        verified_years: "2026"
-        notes: FY2026 regular heating matrix and the subsidized-housing flat award. Crisis, cooling, weatherization and equipment assistance are out of scope.
 
   # --- SSA programs ---
   - id: ssi

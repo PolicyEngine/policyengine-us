@@ -2,6 +2,10 @@ description: Delaware counts these earned income sources for adults under the Lo
 values:
   2025-10-01:
     - employment_income
+    # Plan 1.9 checks "Wages" and manual 418.1 counts all gross wages and salaries.
+    # Basic pay is an input apart from employment_income; enter it in one of the
+    # two. The estimated taxes deduct nothing on it.
+    - military_basic_pay
     - self_employment_income
     - sstb_self_employment_income
     - farm_operations_income

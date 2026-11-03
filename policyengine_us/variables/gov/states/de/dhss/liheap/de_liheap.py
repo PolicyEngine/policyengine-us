@@ -44,11 +44,8 @@ class de_liheap(Variable):
         ) | spm_unit.household("is_in_public_housing", period)
         # rent is the tenant's share after housing assistance, in annual units.
         rent = add(spm_unit, period, ["rent"])
-        flat_benefit = (
-            subsidized
-            & ~heat_in_rent
-            & (rent <= p.subsidized_rent_ceiling * MONTHS_IN_YEAR)
-        )
+        # Eligibility already bars subsidized heat in rent.
+        flat_benefit = subsidized & (rent <= p.subsidized_rent_ceiling * MONTHS_IN_YEAR)
         # Published matrix amounts already incorporate statewide heating-cost
         # evidence. No additional household bill cap or priority supplement
         # is imposed on the regular heating award in the verified sources.

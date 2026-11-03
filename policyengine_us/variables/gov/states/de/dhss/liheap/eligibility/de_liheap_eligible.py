@@ -35,6 +35,8 @@ class de_liheap_eligible(Variable):
         pays_for_heat = spm_unit("has_heating_expense", period)
         fuel = spm_unit("heating_type", period)
         types = fuel.possible_values
+        # has_heating_expense can be set directly; a fuel the matrix cannot read
+        # must not reach the flat subsidized amount in de_liheap.
         known_fuel = (fuel != types.NONE) & (fuel != types.UNSPECIFIED)
         # Full-rent households use the electric column even if the building's
         # fuel is unknown. Solar qualifies with an electric bill, which
