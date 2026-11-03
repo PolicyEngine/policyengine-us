@@ -4408,7 +4408,7 @@ candidates:
 - id: us-mi:household-resources-dependent-amounts
   program: income-tax
   years:
-    from: 2024
+    from: 2021
     type: tax
   question: Do total household resources include the instructions' amounts for dependents and other family members
     when the statute defines household as claimant and spouse?
@@ -4422,22 +4422,24 @@ candidates:
   readings:
     statute: Count the claimant and spouse's income.
     other: Count the specified income and premiums for all members, including amounts received for dependent adults.
-  example: A dependent adult's $2,400 pension changes SSI from $11,604 to $9,444, household resources from $21,604
-    to $19,444, and heating credit from $35.316 to $80.676.
+  example: A minor child's $9,000 of Social Security survivors benefits, received with the claimant as
+    representative payee, stays out of household resources; the line 21 instructions would count it.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/mi/tax/income/mi_household_resources.py
+    - policyengine_us/parameters/gov/states/mi/tax/income/household_resources.yaml
     - policyengine_us/parameters/gov/states/mi/tax/income/household_resources_all_members.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9796
+    - https://github.com/PolicyEngine/policyengine-us/pull/10325
   state: ruled
-  note: 'Partly changed by #9796: PE-US now counts only the claimant''s and spouse''s own income, as the statute
-    does, except the sources on MI-1040CR lines 21, 22 and 27 (Social Security, SSI, railroad benefits, child support,
-    TANF and general assistance), which it counts for every member as amounts received for others, as the form does
-    (mi_household_resources.py, household_resources_all_members.yaml). Ruled in October 2026 to follow the form;
-    the statute-first rule still requires deciding whether a dependent''s own benefits on those lines are received
-    for others.'
+  note: 'PE-US follows MCL 206.508(3): Social Security, SSI and railroad benefits (MI-1040CR line 21) count for
+    the claimant and spouse only, so a dependent''s own benefit stays out even when the claimant receives it as
+    representative payee. RAB 2015-18 counts benefits received by minor children, and the line 21 instructions count
+    amounts received for minor children or other dependent adults. Line 31 subtracts the premiums the claimant and
+    spouse paid, including family coverage, and not premiums a dependent paid. PE-US treats child support (line 22)
+    and public assistance (line 27) as payments the claimant receives, so they count for every member.'
 - id: us-mi:household-resources-premium-double-deduction
   program: homestead-credit
   years:
