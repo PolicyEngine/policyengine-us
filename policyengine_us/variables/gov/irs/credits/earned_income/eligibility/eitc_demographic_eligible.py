@@ -26,7 +26,13 @@ class eitc_demographic_eligible(Variable):
         student = person("is_full_time_student", period)
         min_age = where(student, min_age_student, min_age_non_student)
         max_age = parameters.gov.irs.credits.eitc.eligibility.age.max(period)
-        meets_age_requirements = (age >= min_age) & (age <= max_age)
+        # IRC 32(c)(1)(A)(ii)(II): "attained age 25 but not attained age 65
+        # before the close of the taxable year". The parameter is the highest
+        # completed age that qualifies, so compare completed years: a filer
+        # aged 64.5 has not attained 65. The minimum already works for
+        # fractional ages. This reads `age` as the age at the close of the
+        # taxable year.
+        meets_age_requirements = (age >= min_age) & (np.floor(age) <= max_age)
         # IRC § 32(c)(1)(A)(ii)(II) applies the age test to the filer or,
         # on a joint return, either spouse — never to dependents.
         is_filer_or_spouse = ~person("is_tax_unit_dependent", period)

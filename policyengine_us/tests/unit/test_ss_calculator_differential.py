@@ -15,6 +15,7 @@ from copy import deepcopy
 
 import numpy as np
 import pytest
+from policyengine_core.parameters import ParameterNode
 from policyengine_core.reforms import Reform
 
 from policyengine_us import Simulation
@@ -31,26 +32,110 @@ NEW_PARAMETER_NODES = (
     "gov.ssa.social_security.pia.bend_points",
     "gov.ssa.social_security.cola",
 )
-# Contributed namespaces whose every child node must be classified: either
-# calculator-only (listed in NEW_PARAMETER_NODES, so the reference drops it)
-# or kept in the reference (listed below with the code outside the household
-# calculator that reads it).
+# Contributed namespaces whose every leaf must be classified: either
+# calculator-only (at or under a path in NEW_PARAMETER_NODES, so the reference
+# drops it) or kept in the reference (listed below under its kept node, whose
+# comment names the code outside the household calculator that reads it).
 CLASSIFIED_CONTRIB_NAMESPACES = ("gov.contrib.congress.s770", "gov.contrib.ssa")
-REFERENCE_PARAMETER_NODES = (
+# Each kept node maps to every leaf beneath it, so a calculator-only leaf added
+# under a kept node fails the classification test until someone lists it here
+# or in NEW_PARAMETER_NODES.
+REFERENCE_PARAMETER_NODES = {
     # tools/social_security/population.py: reported-benefit PIA ratios.
-    "gov.contrib.congress.s770.section_2",
+    "gov.contrib.congress.s770.section_2": (
+        "in_effect",
+        "recompute_pre2026_death_before_eligibility",
+    ),
     # reforms/congress/s770/section_8.py reads it at simulation start; the
     # s770 tax variables read it in formulas.
-    "gov.contrib.congress.s770.section_8",
+    "gov.contrib.congress.s770.section_8": (
+        "active_business.deny_nol",
+        "active_business.in_effect",
+        "active_business.oasdi_share",
+        "active_business.rate",
+        "active_business.start_year",
+        "nii_addon.in_effect",
+        "nii_addon.oasdi_share",
+        "nii_addon.rate",
+        "nii_addon.start_year",
+        "transfer.bill_share",
+        "transfer.mode",
+        "transfer.oasdi_rate",
+        "transfer.start_year",
+    ),
     # The social_security_*_payable_factor and across-the-board variables,
     # the COLA means-test reform and the reported-benefit PIA ratios.
-    "gov.contrib.ssa.benefit_levers",
+    "gov.contrib.ssa.benefit_levers": (
+        "across_the_board.rate",
+        "across_the_board.start_year",
+        "cola.alternative_rate",
+        "cola.effective_month",
+        "cola.effective_year",
+        "cola.end_year",
+        "cola.means_test.below_threshold_cola_index",
+        "cola.means_test.effective_month",
+        "cola.means_test.effective_year",
+        "cola.means_test.enabled",
+        "cola.means_test.filing_groups.HEAD_OF_HOUSEHOLD",
+        "cola.means_test.filing_groups.JOINT",
+        "cola.means_test.filing_groups.SEPARATE",
+        "cola.means_test.filing_groups.SINGLE",
+        "cola.means_test.filing_groups.SURVIVING_SPOUSE",
+        "cola.means_test.first_eligible_year",
+        "cola.means_test.income_sensitivity",
+        "cola.means_test.pre_receipt_cola_index",
+        "cola.means_test.scope",
+        "cola.means_test.thresholds.base_year",
+        "cola.means_test.thresholds.index_lag",
+        "cola.means_test.thresholds.joint",
+        "cola.means_test.thresholds.rounding",
+        "cola.means_test.thresholds.single",
+        "cola.pp_change",
+        "cola.start_year",
+        "cola.withholding_enabled",
+        "payable.oasi_only",
+        "payable.share",
+        "pia_ratio.annual_rounding_bound",
+        "pia_ratio.claiming_scenario",
+        "pia_ratio.disability_eligibility_proxy",
+    ),
     # reforms/ssa/owners_draw.py and s770_active_business_income; system.py
     # writes current_law_cap into it at every system build.
-    "gov.contrib.ssa.owners_draw",
+    "gov.contrib.ssa.owners_draw": (
+        "benefit_credit",
+        "current_law_cap",
+        "half_seca_deduction",
+        "in_effect",
+        "include_hi",
+        "material_participation_only",
+        "net_earnings_factor",
+        "phase_in_share",
+        "phase_in_years",
+        "room_cap_basis",
+        "start_year",
+    ),
     # tools/social_security/population.py: reported-benefit PIA ratios.
-    "gov.contrib.ssa.pia",
-)
+    "gov.contrib.ssa.pia": (
+        "bend_point_multipliers.first",
+        "bend_point_multipliers.second",
+        "effective_year",
+        "factors.first",
+        "factors.second",
+        "factors.start_year",
+        "factors.third",
+        "full_price_indexing.in_effect",
+        "full_price_indexing.real_wage_scale",
+        "full_price_indexing.start_year",
+        "in_effect",
+        "progressive_price_indexing.bend_point_fraction",
+        "progressive_price_indexing.in_effect",
+        "progressive_price_indexing.maximum_aime",
+        "progressive_price_indexing.maximum_pia_target",
+        "progressive_price_indexing.start_year",
+        "progressive_price_indexing.threshold",
+        "recompute_existing",
+    ),
+}
 YEAR = 2026
 
 
@@ -108,44 +193,86 @@ DOWNSTREAM_OUTPUTS = (
 
 
 def _node(root, path):
+    """Return the node at ``path``, or None if any part of it is missing."""
     node = root
     for part in path.split("."):
-        node = node.children[part]
+        children = getattr(node, "children", None)
+        if children is None or part not in children:
+            return None
+        node = children[part]
     return node
 
 
-def test_every_contributed_calculator_namespace_child_is_classified():
-    """A new node under these namespaces must be calculator-only or kept.
+def _leaves(node, prefix):
+    """Yield the path of every leaf parameter under ``node``, at any depth."""
+    for name, child in node.children.items():
+        path = f"{prefix}.{name}"
+        if isinstance(child, ParameterNode):
+            yield from _leaves(child, path)
+        else:
+            yield path
 
-    If an unlisted calculator-only node stayed in the reference, a legacy
+
+def _under(path, ancestor):
+    return path == ancestor or path.startswith(f"{ancestor}.")
+
+
+def test_every_contributed_calculator_namespace_leaf_is_classified():
+    """A new leaf under these namespaces must be calculator-only or kept.
+
+    If an unlisted calculator-only leaf stayed in the reference, a legacy
     formula that read it by accident would compute the same in both models,
-    and the differential below could not detect the dependency.
+    and the differential below could not detect the dependency. The walk goes
+    to every depth, so a calculator-only leaf added under a kept node fails
+    here too. Every listed path must also exist, because
+    ``WithoutHouseholdCalculator.apply`` silently skips a missing one.
     """
     parameters = Simulation.default_tax_benefit_system_instance.parameters
-    classified = NEW_PARAMETER_NODES + REFERENCE_PARAMETER_NODES
+    classified = NEW_PARAMETER_NODES + tuple(REFERENCE_PARAMETER_NODES)
     problems = [
         f"{path} is listed {classified.count(path)} times"
         for path in sorted(set(classified))
         if classified.count(path) > 1
     ]
-    children = set()
-    for namespace in CLASSIFIED_CONTRIB_NAMESPACES:
-        for name in _node(parameters, namespace).children:
-            path = f"{namespace}.{name}"
-            children.add(path)
-            if path not in classified:
-                problems.append(
-                    f"{path} is unclassified: add it to NEW_PARAMETER_NODES if "
-                    "only the household calculator reads it, or to "
-                    "REFERENCE_PARAMETER_NODES with a comment naming the "
-                    "legacy formula, reform start-up or system build that "
-                    "reads it"
-                )
     problems += [
-        f"{path} is listed in REFERENCE_PARAMETER_NODES but does not exist"
-        for path in REFERENCE_PARAMETER_NODES
-        if path not in children
+        f"{path} is listed in NEW_PARAMETER_NODES but does not exist"
+        for path in NEW_PARAMETER_NODES
+        if _node(parameters, path) is None
     ]
+    kept_leaves = set()
+    for kept, leaves in REFERENCE_PARAMETER_NODES.items():
+        if _node(parameters, kept) is None:
+            problems.append(
+                f"{kept} is listed in REFERENCE_PARAMETER_NODES but does not exist"
+            )
+        for leaf in leaves:
+            path = f"{kept}.{leaf}"
+            if path in kept_leaves:
+                problems.append(f"{path} is listed more than once")
+            kept_leaves.add(path)
+            if _node(parameters, path) is None:
+                problems.append(
+                    f"{path} is listed under {kept} in "
+                    "REFERENCE_PARAMETER_NODES but does not exist"
+                )
+    for namespace in CLASSIFIED_CONTRIB_NAMESPACES:
+        for path in _leaves(_node(parameters, namespace), namespace):
+            if any(_under(path, new) for new in NEW_PARAMETER_NODES):
+                continue
+            if path in kept_leaves:
+                continue
+            kept = [node for node in REFERENCE_PARAMETER_NODES if _under(path, node)]
+            where = (
+                f"under {kept[0]} in REFERENCE_PARAMETER_NODES if the code "
+                "named in that node's comment reads it"
+                if kept
+                else "to REFERENCE_PARAMETER_NODES with a comment naming the "
+                "legacy formula, reform start-up or system build that reads it"
+            )
+            problems.append(
+                f"{path} is unclassified: add it to NEW_PARAMETER_NODES if "
+                f"only the household calculator reads it, or list it {where}"
+            )
     assert not problems, "\n".join(problems)
 
 
