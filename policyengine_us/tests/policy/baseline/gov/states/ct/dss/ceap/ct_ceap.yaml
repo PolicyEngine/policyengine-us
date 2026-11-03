@@ -1,4 +1,4 @@
-# REQ-001-011. Independent end-to-end source scenarios; no CEAP intermediates supplied as inputs.
+# Independent end-to-end source scenarios; no CEAP intermediates supplied as inputs.
 # Sources:
 # - https://liheapch.acf.gov/docs/2026/benefits-matricies/CT_BenefitMatrix_Heat-Crisis_2026.pdf
 # PDF pages 5-7
@@ -6,7 +6,7 @@
 # PDF pages 5-7,9-11,15
 # - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5
 # - https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
-# REQ-007/008/011: published basic or rental amount; direct annual expense 1,000 exceeds schedule.
+# Published basic or rental amount; direct annual expense 1,000 exceeds schedule.
 - name: Case 1, FY2026 level 1 direct heating grant.
   period: 2026
   absolute_error_margin: 0.01
@@ -45,7 +45,7 @@
     ct_ceap_eligible: true
     ct_ceap: 595
 
-# REQ-007/008/011: published basic or rental amount; direct annual expense 1,000 exceeds schedule.
+# Published basic or rental amount; direct annual expense 1,000 exceeds schedule.
 - name: Case 2, FY2026 level 1 rental grant.
   period: 2026
   absolute_error_margin: 0.01
@@ -84,7 +84,7 @@
     ct_ceap_eligible: true
     ct_ceap: 125
 
-# REQ-007/008/011: published basic or rental amount; direct annual expense 1,000 exceeds schedule.
+# Published basic or rental amount; direct annual expense 1,000 exceeds schedule.
 - name: Case 3, FY2026 level 2 direct heating grant.
   period: 2026
   absolute_error_margin: 0.01
@@ -123,7 +123,7 @@
     ct_ceap_eligible: true
     ct_ceap: 445
 
-# REQ-007/008/011: published basic or rental amount; direct annual expense 1,000 exceeds schedule.
+# Published basic or rental amount; direct annual expense 1,000 exceeds schedule.
 - name: Case 4, FY2026 level 2 rental grant.
   period: 2026
   absolute_error_margin: 0.01
@@ -162,7 +162,7 @@
     ct_ceap_eligible: true
     ct_ceap: 100
 
-# REQ-007/008/011: published basic or rental amount; direct annual expense 1,000 exceeds schedule.
+# Published basic or rental amount; direct annual expense 1,000 exceeds schedule.
 - name: Case 5, FY2026 level 3 direct heating grant.
   period: 2026
   absolute_error_margin: 0.01
@@ -201,7 +201,7 @@
     ct_ceap_eligible: true
     ct_ceap: 295
 
-# REQ-007/008/011: published basic or rental amount; direct annual expense 1,000 exceeds schedule.
+# Published basic or rental amount; direct annual expense 1,000 exceeds schedule.
 - name: Case 6, FY2026 level 3 rental grant.
   period: 2026
   absolute_error_margin: 0.01
@@ -240,7 +240,7 @@
     ct_ceap_eligible: true
     ct_ceap: 75
 
-# REQ-007/008/011: published basic or rental amount; direct annual expense 1,000 exceeds schedule.
+# Published basic or rental amount; direct annual expense 1,000 exceeds schedule.
 - name: Case 7, FY2027 level 1 direct heating grant.
   period: 2027
   absolute_error_margin: 0.01
@@ -279,7 +279,7 @@
     ct_ceap_eligible: true
     ct_ceap: 655
 
-# REQ-007/008/011: published basic or rental amount; direct annual expense 1,000 exceeds schedule.
+# Published basic or rental amount; direct annual expense 1,000 exceeds schedule.
 - name: Case 8, FY2027 level 1 rental grant.
   period: 2027
   absolute_error_margin: 0.01
@@ -318,7 +318,7 @@
     ct_ceap_eligible: true
     ct_ceap: 140
 
-# REQ-007/008/011: published basic or rental amount; direct annual expense 1,000 exceeds schedule.
+# Published basic or rental amount; direct annual expense 1,000 exceeds schedule.
 - name: Case 9, FY2027 level 2 direct heating grant.
   period: 2027
   absolute_error_margin: 0.01
@@ -357,7 +357,7 @@
     ct_ceap_eligible: true
     ct_ceap: 505
 
-# REQ-007/008/011: published basic or rental amount; direct annual expense 1,000 exceeds schedule.
+# Published basic or rental amount; direct annual expense 1,000 exceeds schedule.
 - name: Case 10, FY2027 level 2 rental grant.
   period: 2027
   absolute_error_margin: 0.01
@@ -396,7 +396,7 @@
     ct_ceap_eligible: true
     ct_ceap: 115
 
-# REQ-007/008/011: published basic or rental amount; direct annual expense 1,000 exceeds schedule.
+# Published basic or rental amount; direct annual expense 1,000 exceeds schedule.
 - name: Case 11, FY2027 level 3 direct heating grant.
   period: 2027
   absolute_error_margin: 0.01
@@ -435,7 +435,7 @@
     ct_ceap_eligible: true
     ct_ceap: 355
 
-# REQ-007/008/011: published basic or rental amount; direct annual expense 1,000 exceeds schedule.
+# Published basic or rental amount; direct annual expense 1,000 exceeds schedule.
 - name: Case 12, FY2027 level 3 rental grant.
   period: 2027
   absolute_error_margin: 0.01
@@ -474,7 +474,7 @@
     ct_ceap_eligible: true
     ct_ceap: 90
 
-# REQ-007: age 60 meets elderly boundary; Level 1 basic plus 50.
+# Age 60 meets elderly boundary; Level 1 basic plus 50.
 - name: Case 13, FY2026 elderly member receives fifty dollar supplement.
   period: 2026
   absolute_error_margin: 0.01
@@ -508,7 +508,7 @@
   output:
     ct_ceap: 645
 
-# REQ-007: age 60 meets elderly boundary; Level 1 basic plus 50.
+# Age 60 meets elderly boundary; Level 1 basic plus 50.
 - name: Case 14, FY2027 elderly member receives fifty dollar supplement.
   period: 2027
   absolute_error_margin: 0.01
@@ -542,7 +542,7 @@
   output:
     ct_ceap: 705
 
-# REQ-007: vulnerability is a household condition, with one 50 dollar add-on.
+# Vulnerability is a household condition, with one 50 dollar add-on.
 - name: Case 15, age just below sixty is not elderly.
   period: 2026
   absolute_error_margin: 0.01
@@ -576,7 +576,7 @@
   output:
     ct_ceap: 595
 
-# REQ-007: vulnerability is a household condition, with one 50 dollar add-on.
+# Vulnerability is a household condition, with one 50 dollar add-on.
 - name: Case 16, disabled adult receives vulnerability supplement.
   period: 2026
   absolute_error_margin: 0.01
@@ -610,7 +610,7 @@
   output:
     ct_ceap: 645
 
-# REQ-007: vulnerability is a household condition, with one 50 dollar add-on.
+# Vulnerability is a household condition, with one 50 dollar add-on.
 - name: Case 17, child just below six receives vulnerability supplement.
   period: 2026
   absolute_error_margin: 0.01
@@ -653,7 +653,7 @@
   output:
     ct_ceap: 645
 
-# REQ-007: vulnerability is a household condition, with one 50 dollar add-on.
+# Vulnerability is a household condition, with one 50 dollar add-on.
 - name: Case 18, child at six no longer supplies young child supplement.
   period: 2026
   absolute_error_margin: 0.01
@@ -696,7 +696,7 @@
   output:
     ct_ceap: 595
 
-# REQ-007: vulnerability is a household condition, with one 50 dollar add-on.
+# Vulnerability is a household condition, with one 50 dollar add-on.
 - name: Case 19, multiple vulnerable members receive one supplement.
   period: 2026
   absolute_error_margin: 0.01
@@ -739,7 +739,7 @@
   output:
     ct_ceap: 645
 
-# REQ-008: rental Level 1 is 125, no 50 dollar supplement and no exclusion based only on housing assistance.
+# Rental Level 1 is 125, no 50 dollar supplement and no exclusion based only on housing assistance.
 - name: Case 20, vulnerable subsidized rental household receives rental amount only.
   period: 2026
   absolute_error_margin: 0.01
@@ -774,7 +774,7 @@
   output:
     ct_ceap: 125
 
-# REQ-009: retained direct award = smaller of regular schedule and nonnegative primary-fuel cost.
+# Retained direct award = smaller of regular schedule and nonnegative primary-fuel cost.
 - name: Case 21, gas bill below schedule caps retained grant.
   period: 2026
   absolute_error_margin: 0.01
@@ -808,7 +808,7 @@
   output:
     ct_ceap: 100
 
-# REQ-009: retained direct award = smaller of regular schedule and nonnegative primary-fuel cost.
+# Retained direct award = smaller of regular schedule and nonnegative primary-fuel cost.
 - name: Case 22, gas bill exactly at schedule pays full amount.
   period: 2026
   absolute_error_margin: 0.01
@@ -842,7 +842,7 @@
   output:
     ct_ceap: 595
 
-# REQ-009: retained direct award = smaller of regular schedule and nonnegative primary-fuel cost.
+# Retained direct award = smaller of regular schedule and nonnegative primary-fuel cost.
 - name: Case 23, gas bill above schedule does not increase grant.
   period: 2026
   absolute_error_margin: 0.01
@@ -876,7 +876,7 @@
   output:
     ct_ceap: 595
 
-# REQ-009: retained direct award = smaller of regular schedule and nonnegative primary-fuel cost.
+# Retained direct award = smaller of regular schedule and nonnegative primary-fuel cost.
 - name: Case 24, fuel oil selects oil expense not larger gas bill.
   period: 2026
   absolute_error_margin: 0.01
@@ -911,7 +911,7 @@
   output:
     ct_ceap: 100
 
-# REQ-009: retained direct award = smaller of regular schedule and nonnegative primary-fuel cost.
+# Retained direct award = smaller of regular schedule and nonnegative primary-fuel cost.
 - name: Case 25, electric heating uses pre subsidy electricity expense.
   period: 2026
   absolute_error_margin: 0.01
@@ -946,7 +946,7 @@
   output:
     ct_ceap: 200
 
-# REQ-009: retained direct award = smaller of regular schedule and nonnegative primary-fuel cost.
+# Retained direct award = smaller of regular schedule and nonnegative primary-fuel cost.
 - name: Case 26, wood heating uses wood expense.
   period: 2026
   absolute_error_margin: 0.01
@@ -981,7 +981,7 @@
   output:
     ct_ceap: 300
 
-# REQ-009: retained direct award = smaller of regular schedule and nonnegative primary-fuel cost.
+# Retained direct award = smaller of regular schedule and nonnegative primary-fuel cost.
 - name: Case 27, no direct heating expense yields no benefit.
   period: 2026
   absolute_error_margin: 0.01
@@ -1015,7 +1015,7 @@
   output:
     ct_ceap: 0
 
-# REQ-006/007: positive receipt represents application receipt; above-limit income still sets Level 3, with vulnerability where applicable.
+# Positive receipt represents application receipt; above-limit income still sets Level 3, with vulnerability where applicable.
 - name: Case 28, snap receipt bypasses income ceiling but retains level three.
   period: 2026
   absolute_error_margin: 0.01
@@ -1053,7 +1053,7 @@
     ct_ceap_benefit_level: 3
     ct_ceap: 295
 
-# REQ-006/008: rental aid keeps the 60% SMI ceiling; separate 20.01 SNAP nominal payment is outside scope.
+# Rental aid keeps the 60% SMI ceiling; separate 20.01 SNAP nominal payment is outside scope.
 - name: Case 29, snap does not bypass rental income ceiling.
   period: 2026
   absolute_error_margin: 0.01
@@ -1090,7 +1090,7 @@
     ct_ceap_eligible: false
     ct_ceap: 0
 
-# REQ-006/007: positive receipt represents application receipt; above-limit income still sets Level 3, with vulnerability where applicable.
+# Positive receipt represents application receipt; above-limit income still sets Level 3, with vulnerability where applicable.
 - name: Case 30, TFA receipt bypasses income ceiling but retains level three.
   period: 2026
   absolute_error_margin: 0.01
@@ -1137,7 +1137,7 @@
     ct_ceap_benefit_level: 3
     ct_ceap: 295
 
-# REQ-006/008: rental aid keeps the 60% SMI ceiling; separate 20.01 SNAP nominal payment is outside scope.
+# Rental aid keeps the 60% SMI ceiling; separate 20.01 SNAP nominal payment is outside scope.
 - name: Case 31, TFA does not bypass rental income ceiling.
   period: 2026
   absolute_error_margin: 0.01
@@ -1183,7 +1183,7 @@
     ct_ceap_eligible: false
     ct_ceap: 0
 
-# REQ-006/007: positive receipt represents application receipt; above-limit income still sets Level 3, with vulnerability where applicable.
+# Positive receipt represents application receipt; above-limit income still sets Level 3, with vulnerability where applicable.
 - name: Case 32, ssi receipt bypasses income ceiling but retains level three.
   period: 2026
   absolute_error_margin: 0.01
@@ -1221,7 +1221,7 @@
     ct_ceap_benefit_level: 3
     ct_ceap: 345
 
-# REQ-006/008: rental aid keeps the 60% SMI ceiling; separate 20.01 SNAP nominal payment is outside scope.
+# Rental aid keeps the 60% SMI ceiling; separate 20.01 SNAP nominal payment is outside scope.
 - name: Case 33, ssi does not bypass rental income ceiling.
   period: 2026
   absolute_error_margin: 0.01
@@ -1258,7 +1258,7 @@
     ct_ceap_eligible: false
     ct_ceap: 0
 
-# REQ-006/007: positive receipt represents application receipt; above-limit income still sets Level 3, with vulnerability where applicable.
+# Positive receipt represents application receipt; above-limit income still sets Level 3, with vulnerability where applicable.
 - name: Case 34, ct_ssp receipt bypasses income ceiling but retains level three.
   period: 2026
   absolute_error_margin: 0.01
@@ -1296,7 +1296,7 @@
     ct_ceap_benefit_level: 3
     ct_ceap: 345
 
-# REQ-006/008: rental aid keeps the 60% SMI ceiling; separate 20.01 SNAP nominal payment is outside scope.
+# Rental aid keeps the 60% SMI ceiling; separate 20.01 SNAP nominal payment is outside scope.
 - name: Case 35, ct_ssp does not bypass rental income ceiling.
   period: 2026
   absolute_error_margin: 0.01
@@ -1333,7 +1333,7 @@
     ct_ceap_eligible: false
     ct_ceap: 0
 
-# REQ-001/007: size 1, income 20,000 gives Level 2; qualified young child adds 50 to 445.
+# Size 1, income 20,000 gives Level 2; qualified young child adds 50 to 445.
 - name: Case 36, citizen child with nonqualified parent uses child size and all income.
   period: 2026
   absolute_error_margin: 0.01
@@ -1381,7 +1381,7 @@
     ct_ceap_benefit_level: 2
     ct_ceap: 495
 
-# REQ-001/007: excluded elder is not a member for vulnerability.
+# Excluded elder is not a member for vulnerability.
 - name: Case 37, nonqualified elder does not establish vulnerability.
   period: 2026
   absolute_error_margin: 0.01
@@ -1425,7 +1425,7 @@
     ct_ceap_household_size: 1
     ct_ceap: 595
 
-# REQ-001: removing foster child excludes 30,000 unearned income and young-child supplement; remaining adult gets Level 2 basic 445.
+# Removing foster child excludes 30,000 unearned income and young-child supplement; remaining adult gets Level 2 basic 445.
 - name: Case 38, represented foster child excluded from income size and vulnerability.
   period: 2026
   absolute_error_margin: 0.01
@@ -1472,7 +1472,7 @@
     ct_ceap_benefit_level: 2
     ct_ceap: 445
 
-# REQ-001/011: each SPM unit belongs to its own state household; all CT variables are state-guarded.
+# Each SPM unit belongs to its own state household; all CT variables are state-guarded.
 - name: Case 39, mixed state batch isolates Connecticut calculation.
   period: 2026
   absolute_error_margin: 0.01
@@ -1558,7 +1558,7 @@
     ct_ceap_benefit_level: [1, 0, 0]
     ct_ceap: [595, 0, 0]
 
-# REQ-001/006: represented foster members are outside the energy household.
+# Represented foster members are outside the energy household.
 # The adult has 100,000 countable income and no qualifying receipt of their own.
 - name: Case 40, represented foster SSI does not establish categorical receipt.
   period: 2026
@@ -2828,3 +2828,117 @@
     ct_ceap_countable_income: [55_000, 25_000]
     ct_ceap_categorically_eligible: [false, false]
     ct_ceap: [0, 445]
+
+- name: Case 54, a categorical household the federal floor admits keeps its FY2026 income level.
+  period: 2026
+  absolute_error_margin: 0.01
+  # 2025 FPG for 30 = 175_150; 110% = 192_665; SMI limit = 187_382 (Case 44).
+  # The floor admits 190_000 without SNAP, so 42 U.S.C. 8624(b)(5) bars paying
+  # less because of SNAP: 190_000 / 175_150 = 1.08, Level 1, min(595, 1_000) = 595.
+  input:
+    people:
+      person1: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0, employment_income: 190_000}
+      person2: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person3: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person4: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person5: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person6: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person7: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person8: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person9: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person10: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person11: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person12: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person13: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person14: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person15: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person16: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person17: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person18: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person19: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person20: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person21: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person22: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person23: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person24: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person25: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person26: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person27: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person28: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person29: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person30: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25, person26, person27, person28, person29, person30]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap: 1_200
+        tanf: 0
+        ct_ssp: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25, person26, person27, person28, person29, person30]
+        state_code: CT
+  output:
+    ct_ceap_household_size: 30
+    ct_ceap_categorically_eligible: true
+    ct_ceap_income_eligible: true
+    ct_ceap_benefit_level: 1
+    ct_ceap: 595
+
+- name: Case 55, a categorical household the federal floor admits keeps its FY2027 income level.
+  period: 2027
+  absolute_error_margin: 0.01
+  # 2026 FPG for 28 = 15_960 + 27 x 5_680 = 169_320; 110% = 186_252; SMI limit =
+  # floor(93_681 x 1.98) = 185_488. 186_000 / 169_320 = 1.10, Level 1,
+  # min(655, 1_000) = 655.
+  input:
+    people:
+      person1: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0, employment_income: 186_000}
+      person2: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person3: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person4: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person5: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person6: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person7: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person8: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person9: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person10: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person11: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person12: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person13: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person14: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person15: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person16: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person17: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person18: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person19: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person20: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person21: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person22: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person23: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person24: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person25: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person26: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person27: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person28: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25, person26, person27, person28]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap: 1_200
+        tanf: 0
+        ct_ssp: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25, person26, person27, person28]
+        state_code: CT
+  output:
+    ct_ceap_household_size: 28
+    ct_ceap_categorically_eligible: true
+    ct_ceap_income_eligible: true
+    ct_ceap_benefit_level: 1
+    ct_ceap: 655

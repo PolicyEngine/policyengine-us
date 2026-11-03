@@ -1,9 +1,9 @@
-# REQ-001/005/006/008/009. State, membership, income and heating responsibility.
+# State, membership, income and heating responsibility.
 # Sources:
 # - https://liheapch.acf.gov/docs/2026/benefits-matricies/CT_BenefitMatrix_Heat-Crisis_2026.pdf
 # PDF pages 5-7,9-11,15
 # - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5
-# REQ-005: published one-person SMI ceiling is inclusive.
+# Published one-person SMI ceiling is inclusive.
 - name: Case 1, FY2026 income at ceiling eligible.
   period: 2026
   input:
@@ -37,7 +37,7 @@
   output:
     ct_ceap_eligible: true
 
-# REQ-005: published one-person SMI ceiling is inclusive.
+# Published one-person SMI ceiling is inclusive.
 - name: Case 2, FY2026 income one cent over ceiling ineligible.
   period: 2026
   input:
@@ -71,7 +71,7 @@
   output:
     ct_ceap_eligible: false
 
-# REQ-005: published one-person SMI ceiling is inclusive.
+# Published one-person SMI ceiling is inclusive.
 - name: Case 3, FY2027 income at ceiling eligible.
   period: 2027
   input:
@@ -105,7 +105,7 @@
   output:
     ct_ceap_eligible: true
 
-# REQ-005: published one-person SMI ceiling is inclusive.
+# Published one-person SMI ceiling is inclusive.
 - name: Case 4, FY2027 income one cent over ceiling ineligible.
   period: 2027
   input:
@@ -139,7 +139,7 @@
   output:
     ct_ceap_eligible: false
 
-# REQ-008/009: heating responsibility gate, with heat-in-rent exception to direct expense evidence.
+# Heating responsibility gate, with heat-in-rent exception to direct expense evidence.
 - name: Case 5, known direct fuel with positive matching cost.
   period: 2026
   input:
@@ -172,7 +172,7 @@
   output:
     ct_ceap_eligible: true
 
-# REQ-008/009: heating responsibility gate, with heat-in-rent exception to direct expense evidence.
+# Heating responsibility gate, with heat-in-rent exception to direct expense evidence.
 - name: Case 6, direct fuel with zero matching cost.
   period: 2026
   input:
@@ -205,7 +205,7 @@
   output:
     ct_ceap_eligible: false
 
-# REQ-008/009: heating responsibility gate, with heat-in-rent exception to direct expense evidence.
+# Heating responsibility gate, with heat-in-rent exception to direct expense evidence.
 - name: Case 7, direct fuel with negative matching cost.
   period: 2026
   input:
@@ -238,7 +238,7 @@
   output:
     ct_ceap_eligible: false
 
-# REQ-008/009: heating responsibility gate, with heat-in-rent exception to direct expense evidence.
+# Heating responsibility gate, with heat-in-rent exception to direct expense evidence.
 - name: Case 8, affirmative no heating despite reported bills.
   period: 2026
   input:
@@ -271,7 +271,7 @@
   output:
     ct_ceap_eligible: false
 
-# REQ-008/009: heating responsibility gate, with heat-in-rent exception to direct expense evidence.
+# Heating responsibility gate, with heat-in-rent exception to direct expense evidence.
 - name: Case 9, unknown direct fuel does not establish a heating bill.
   period: 2026
   input:
@@ -304,7 +304,7 @@
   output:
     ct_ceap_eligible: false
 
-# REQ-008/009: heating responsibility gate, with heat-in-rent exception to direct expense evidence.
+# Heating responsibility gate, with heat-in-rent exception to direct expense evidence.
 - name: Case 10, rental with unknown fuel and no separate cost.
   period: 2026
   input:
@@ -337,7 +337,7 @@
   output:
     ct_ceap_eligible: true
 
-# REQ-008/009: heating responsibility gate, with heat-in-rent exception to direct expense evidence.
+# Heating responsibility gate, with heat-in-rent exception to direct expense evidence.
 - name: Case 11, rental with affirmative no heat.
   period: 2026
   input:
@@ -370,7 +370,7 @@
   output:
     ct_ceap_eligible: false
 
-# REQ-001/006: categorical receipt does not waive qualified membership.
+# Categorical receipt does not waive qualified membership.
 - name: Case 12, no qualified members ineligible despite SNAP receipt.
   period: 2026
   input:
@@ -403,7 +403,6 @@
   output:
     ct_ceap_eligible: false
 
-# REQ-006/009.
 - name: Case 13, categorical receipt does not waive heating responsibility.
   period: 2026
   input:

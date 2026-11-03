@@ -1,10 +1,10 @@
-# REQ-006. P26 physical p5; A26/A27 IV and IX direct-vendor exception.
+# FY2026 plan page 5; FY2026 and FY2027 allocation plans, sections IV and IX; direct-vendor exception.
 # Sources:
 # PDF pages 5-7
 # - https://liheapch.acf.gov/docs/2026/state-plans/CT_Plan_2026.pdf#page=5
 # PDF pages 5-7,9-11,15
 # - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5
-# REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
+# Direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
 - name: Case 1, snap receipt with direct heating.
   period: 2026
   input:
@@ -37,7 +37,7 @@
   output:
     ct_ceap_categorically_eligible: true
 
-# REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
+# Direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
 - name: Case 2, snap receipt with heat included in rent.
   period: 2026
   input:
@@ -70,7 +70,7 @@
   output:
     ct_ceap_categorically_eligible: false
 
-# REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
+# Direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
 - name: Case 3, TFA receipt with direct heating.
   period: 2026
   input:
@@ -112,7 +112,7 @@
   output:
     ct_ceap_categorically_eligible: true
 
-# REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
+# Direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
 - name: Case 4, TFA receipt with heat included in rent.
   period: 2026
   input:
@@ -154,7 +154,7 @@
   output:
     ct_ceap_categorically_eligible: false
 
-# REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
+# Direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
 - name: Case 5, ssi receipt with direct heating.
   period: 2026
   input:
@@ -187,7 +187,7 @@
   output:
     ct_ceap_categorically_eligible: true
 
-# REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
+# Direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
 - name: Case 6, ssi receipt with heat included in rent.
   period: 2026
   input:
@@ -220,7 +220,7 @@
   output:
     ct_ceap_categorically_eligible: false
 
-# REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
+# Direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
 - name: Case 7, ct_ssp receipt with direct heating.
   period: 2026
   input:
@@ -253,7 +253,7 @@
   output:
     ct_ceap_categorically_eligible: true
 
-# REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
+# Direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
 - name: Case 8, ct_ssp receipt with heat included in rent.
   period: 2026
   input:
@@ -286,7 +286,6 @@
   output:
     ct_ceap_categorically_eligible: false
 
-# REQ-006.
 - name: Case 9, no qualifying receipt has no categorical exception.
   period: 2026
   input:
@@ -319,7 +318,7 @@
   output:
     ct_ceap_categorically_eligible: false
 
-# REQ-004/006: generic VA does not identify the required means-tested program.
+# Generic VA does not identify the required means-tested program.
 - name: Case 10, generic veterans benefits do not establish categorical receipt.
   period: 2026
   input:
@@ -353,7 +352,7 @@
   output:
     ct_ceap_categorically_eligible: false
 
-# REQ-006: reported SSI receipt establishes categorical receipt when the
+# Reported SSI receipt establishes categorical receipt when the
 # modeled SSI amount is zero.
 - name: Case 11, reported SSI receipt with direct heating.
   period: 2026

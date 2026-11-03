@@ -18,7 +18,9 @@ class ct_ceap_categorically_eligible(Variable):
         member = person("ct_ceap_household_member", period)
         ssi = spm_unit.sum(member * person("ssi", period, options=[ADD]))
         # Remove SSP attributable to members outside the household from the
-        # household receipt, preserving a supplied household SSP total.
+        # household receipt, preserving a supplied household SSP total. The
+        # floor stops a supplied total below the excluded members' SSP from
+        # cancelling other receipt.
         excluded_ssp = spm_unit.sum(
             ~member * person("ct_ssp_person", period, options=[ADD])
         )

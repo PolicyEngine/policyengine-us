@@ -1,4 +1,4 @@
-# REQ-001-004. P26 physical pp6-7 checkbox source list; A26/A27 III.
+# FY2026 plan pages 6-7 check-box source list; FY2026 and FY2027 allocation plans, section III.
 # Sources:
 # PDF pages 5-7
 # - https://liheapch.acf.gov/docs/2026/state-plans/CT_Plan_2026.pdf#page=5
@@ -6,7 +6,7 @@
 # - https://www.cga.ct.gov/app/related/20250616_2025%20Block%20Grants%20and%20Waiver%20Applications/FFY%202026%20LIHEAP%20Allocation%20Plan.pdf#page=5
 # PDF pages 5-7,9-11,15
 # - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5
-# REQ-002: 1,000 + 2,000 + 3,000 + 4,000 + 5,000 = 15,000.
+# 1,000 + 6,000 + 2,000 + 3,000 + 4,000 + 5,000 = 21,000.
 - name: Case 1, adult earned sources all count.
   period: 2026
   absolute_error_margin: 0.01
@@ -22,6 +22,7 @@
           '2026': 0
         social_security: 0
         employment_income: 1_000
+        military_basic_pay: 6_000
         self_employment_income: 2_000
         sstb_self_employment_income: 3_000
         farm_operations_income: 4_000
@@ -43,9 +44,9 @@
         members: [person1]
         state_code: CT
   output:
-    ct_ceap_countable_income: 15_000
+    ct_ceap_countable_income: 21_000
 
-# REQ-003/004: 100 + 200 + ... + 1,700 = 15,300. Generic VA is countable under the documented input limitation.
+# 100 + 200 + ... + 1,700 = 15,300. Generic VA is countable under the documented input limitation.
 - name: Case 2, supported disjoint unearned sources count once.
   period: 2026
   absolute_error_margin: 0.01
@@ -95,7 +96,7 @@
   output:
     ct_ceap_countable_income: 15_300
 
-# REQ-003: 1,200 taxable + 300 exempt pension = 1,500, without counting the aggregate twice.
+# 1,200 taxable + 300 exempt pension = 1,500, without counting the aggregate twice.
 - name: Case 3, pension components aggregate once.
   period: 2026
   absolute_error_margin: 0.01
@@ -131,7 +132,7 @@
   output:
     ct_ceap_countable_income: 1_500
 
-# REQ-002/003: 10,000 adult wages + 1,000 child Social Security + 2,000 child support = 13,000.
+# 10,000 adult wages + 1,000 child Social Security + 2,000 child support = 13,000.
 - name: Case 4, child earned income excluded but unearned retained.
   period: 2026
   absolute_error_margin: 0.01
@@ -178,7 +179,7 @@
   output:
     ct_ceap_countable_income: 13_000
 
-# REQ-002: 20,000 + 1,000 earned and 3,000 unearned = 24,000 at age 18.
+# 20,000 + 1,000 earned and 3,000 unearned = 24,000 at age 18.
 - name: Case 5, earned income counts at age eighteen.
   period: 2026
   absolute_error_margin: 0.01
@@ -215,7 +216,7 @@
   output:
     ct_ceap_countable_income: 24_000
 
-# REQ-002: 10,000 wages + 2,000 SSTB + 1,000 partnership = 13,000; losses contribute zero.
+# 10,000 wages + 2,000 SSTB + 1,000 partnership = 13,000; losses contribute zero.
 - name: Case 6, business losses do not offset other earnings.
   period: 2026
   absolute_error_margin: 0.01
@@ -254,7 +255,7 @@
   output:
     ct_ceap_countable_income: 13_000
 
-# REQ-003: P26 countable-income checklist leaves SSI, TANF and general assistance unchecked.
+# The FY2026 plan's countable-income checklist leaves SSI, TANF and general assistance unchecked.
 - name: Case 7, SSI TFA and general assistance excluded.
   period: 2026
   absolute_error_margin: 0.01
@@ -290,7 +291,7 @@
   output:
     ct_ceap_countable_income: 1_000
 
-# REQ-001: all 20,000 of excluded-from-size parent wages plus 1,000 child support counts.
+# All 20,000 of excluded-from-size parent wages plus 1,000 child support counts.
 - name: Case 8, nonqualified members income fully counts.
   period: 2026
   absolute_error_margin: 0.01
@@ -335,7 +336,7 @@
   output:
     ct_ceap_countable_income: 21_000
 
-# REQ-001: foster member is outside the energy household, including the members 8,000 unearned income.
+# Foster member is outside the energy household, including the members 8,000 unearned income.
 - name: Case 9, represented foster income excluded.
   period: 2026
   absolute_error_margin: 0.01

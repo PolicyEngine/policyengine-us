@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
 
 class ct_ceap_eligible(Variable):
@@ -16,17 +15,9 @@ class ct_ceap_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         size = spm_unit("ct_ceap_household_size", period)
-        income = spm_unit("ct_ceap_countable_income", period)
-        limit = spm_unit("ct_ceap_income_limit", period)
-        categorical = spm_unit("ct_ceap_categorically_eligible", period)
-        p = parameters(period).gov.states.ct.dss.ceap.payment
-        p_hhs = parameters(period).gov.hhs.liheap
-        state_group = spm_unit.household("state_group_str", period)
-        guideline = fpg(size, state_group, period, parameters, year_lag=p.fpg_year_lag)
-        # Preserve the published ceiling and the strict federal protection
-        # where the SMI limit is lower for large households.
-        floor = np.round(guideline * p_hhs.fpg_floor, 2)
-        income_eligible = (income <= limit) | (income < floor) | categorical
+        income_eligible = spm_unit("ct_ceap_income_eligible", period) | spm_unit(
+            "ct_ceap_categorically_eligible", period
+        )
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         expense = spm_unit("heating_expense", period)
         heating_type = spm_unit("heating_type", period)

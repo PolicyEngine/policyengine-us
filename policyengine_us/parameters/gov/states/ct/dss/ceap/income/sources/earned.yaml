@@ -2,6 +2,8 @@ description: Connecticut counts these earned income sources under the Connecticu
 values:
   2025-10-01:
     - employment_income
+    # Enter basic pay here or in employment_income, not both.
+    - military_basic_pay
     - self_employment_income
     - sstb_self_employment_income
     - farm_operations_income

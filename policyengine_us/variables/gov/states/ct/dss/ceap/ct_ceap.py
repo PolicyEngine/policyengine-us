@@ -33,7 +33,7 @@ class ct_ceap(Variable):
         # Utility credits exceeding covered-season charges must be returned;
         # delivered-fuel payments cover actual deliveries. Annual primary-fuel
         # expense approximates covered-season cost and oil vendor pricing.
-        direct_payment = min_(basic, max_(spm_unit("heating_expense", period), 0))
+        direct_payment = min_(basic, spm_unit("heating_expense", period))
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         # Rental cash grants have no bill cap. Prior awards/moves, the separate
         # SNAP nominal payment, crisis, weatherization and equipment are excluded.
