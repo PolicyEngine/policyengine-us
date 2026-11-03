@@ -11,4 +11,4 @@ class ut_subtractions(Variable):
     defined_for = StateCode.UT
     reference = "https://le.utah.gov/xcode/Title59/Chapter10/59-10-S114.html?v=C59-10-S114_2022032320220323"
 
-    adds = ["us_govt_interest"]
+    adds = ["us_govt_interest", "ut_other_subtractions"]

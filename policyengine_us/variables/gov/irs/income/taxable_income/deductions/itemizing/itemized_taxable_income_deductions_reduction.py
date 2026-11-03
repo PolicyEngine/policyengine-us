@@ -31,8 +31,13 @@ class itemized_taxable_income_deductions_reduction(Variable):
                 top_rate_threshold = parameters(
                     period
                 ).gov.irs.income.bracket.thresholds["6"][filing_status]
-                exemptions = tax_unit("exemptions", period)
-                taxable_income = max_(0, agi - exemptions)
+                # Section 68(a)(2): taxable income determined without regard
+                # to section 68 and increased by the itemized deductions, that
+                # is, net of every other deduction, such as the qualified
+                # business income deduction.
+                taxable_income = tax_unit(
+                    "taxable_income_before_itemized_deductions", period
+                )
                 taxable_income_excess = max_(0, taxable_income - top_rate_threshold)
                 total_itemized_deductions = tax_unit(
                     "total_itemized_taxable_income_deductions", period

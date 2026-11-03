@@ -8,7 +8,11 @@ class self_employed_health_insurance_premiums(Variable):
     unit = USD
     documentation = (
         "Health insurance premiums that count toward the self-employed health "
-        "insurance deduction (Form 7206 line 1). Premiums are left out when "
+        "insurance deduction (Form 7206 line 1), from the person-paid, "
+        "non-pretax health_insurance_premiums input. Excludes pretax payroll "
+        "deductions and employer-paid premiums; pretax payroll payments belong "
+        "only in pre_tax_health_insurance_premiums. The pretax and non-pretax "
+        "sets are disjoint. Premiums are left out when "
         "the person, or their spouse on a joint return, is eligible for a "
         "subsidized employer plan (26 U.S.C. 162(l)(2)(B)). Premiums are "
         "taken as supplied: for a Marketplace plan, 26 U.S.C. 280C(g) allows "

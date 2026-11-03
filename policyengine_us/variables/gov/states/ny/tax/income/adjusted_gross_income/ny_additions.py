@@ -14,4 +14,4 @@ class ny_additions(Variable):
     )
     defined_for = StateCode.NY
 
-    # No additions modeled in PolicyEngine US.
+    adds = ["ny_other_additions"]

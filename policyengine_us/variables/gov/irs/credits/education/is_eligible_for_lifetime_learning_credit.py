@@ -19,6 +19,12 @@ class is_eligible_for_lifetime_learning_credit(Variable):
         filing_status = tax_unit("filing_status", period)
         filing_status_values = filing_status.possible_values
         filing_status_eligible = filing_status != filing_status_values.SEPARATE
+        # The dependency rules of IRC 25A(g)(3) and 25A(f)(1)(A)(iii): a
+        # claimed filer bars the return, and a dependent student needs the
+        # return to have dependents.
+        barred_by_dependency = person(
+            "is_barred_from_education_credits_by_dependency", period
+        )
         requires_1098_t = llc.eligibility.requires_1098_t_or_exception
         has_1098_t_or_exception = (
             person("has_lifetime_learning_credit_1098_t_or_exception", period)
@@ -45,4 +51,5 @@ class is_eligible_for_lifetime_learning_credit(Variable):
                 period,
             )
             & filing_status_eligible
+            & ~barred_by_dependency
         )

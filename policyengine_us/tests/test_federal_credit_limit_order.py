@@ -336,3 +336,17 @@ def test_grid_applies_credits_in_worksheet_order(year):
 )
 def test_random_households_apply_credits_in_worksheet_order(households, year):
     check_households(households, year)
+
+
+def test_2020_irc_pin_keeps_the_2020_section_129_cap(baseline_system):
+    # Alabama's 2021 recompute follows the 2020 Form 2441, whose line 21 caps
+    # excluded benefits at $5,000 ($2,500), not the 2021 $10,500 ($5,250).
+    date = "2021-06-01"
+    pinned = get_2020_irc_tbs(baseline_system).parameters
+    cap = pinned.gov.irs.gross_income.dependent_care_assistance_programs
+    assert cap.reduction_amount.JOINT(date) == 5_000
+    assert cap.reduction_amount.SEPARATE(date) == 2_500
+    live = baseline_system.parameters.gov.irs.gross_income
+    assert live.dependent_care_assistance_programs.reduction_amount.JOINT(date) == (
+        10_500
+    )
