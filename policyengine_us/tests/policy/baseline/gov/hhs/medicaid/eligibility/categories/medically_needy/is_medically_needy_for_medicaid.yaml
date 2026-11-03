@@ -1377,3 +1377,33 @@
     medicaid_medically_needy_income_limit: [22_032, 22_032]
     is_medically_needy_for_medicaid: [false, true]
     medicaid_category: [NONE, MEDICALLY_NEEDY]
+
+# HAR 17-1724.1-16(1) counts the spouse's income with no threshold: 3,000 is below
+# SSI's 5,964. 20,000 - 240 + 3,000 - 13,000 = 9,760 against the couple limit, 12 x 632.
+- name: Case 50, Hawaii's medically needy test counts a low-income spouse's income against the couple limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 20_000
+        other_medical_expenses: 13_000
+        takes_up_medicare_if_eligible: false
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+        taxable_interest_income: 3_000
+        takes_up_medicare_if_eligible: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    medicaid_medically_needy_uses_couple_standard: [true, true]
+    medicaid_medically_needy_income_limit: [7_584, 7_584]
+    medicaid_medically_needy_income_from_spouse: [3_000, 0]
