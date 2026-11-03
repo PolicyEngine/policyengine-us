@@ -106,7 +106,10 @@ class tx_ccs_board_copay(Variable):
             has_texas_rising_star_child * p.reduction.texas_rising_star[region],
             all_part_time * p.reduction.part_time[region],
         )
+        share = copay * (1 - reduction)
+        # Some Boards cap the share of cost at the family's monthly income.
+        share = where(p.caps_at_income[region], min_(share, income), share)
         # A Board's lowest range starts at $0, but TWC reads 40 TAC 809.19's bar
         # on a minimum share of cost to mean a family with no countable income
         # pays nothing (CCDF State Plan 2022-2024, section 3.2.4).
-        return where(income > 0, copay * (1 - reduction), 0)
+        return where(income > 0, share, 0)

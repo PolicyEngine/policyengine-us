@@ -30,6 +30,10 @@ EAST_TEXAS:
   2023-10-01: 0
 WEST_CENTRAL:
   2023-10-01: 0
+
+# On September 21, 2023 Borderplex's Board removed its discounts of 45% for
+# a Texas Rising Star provider and 35% for part-time care, with its BCY 2024
+# scale.
 BORDERPLEX:
   2023-10-01: 0
 PERMIAN_BASIN:
@@ -50,8 +54,16 @@ SOUTHEAST:
   2023-10-01: 0
 GOLDEN_CRESCENT:
   2023-10-01: 0
+
+# Alamo's policy CCS 12, Change 2 gives a family that enrolls in a Texas
+# Rising Star provider "a 10% discount on their assigned PSOC". Alamo's
+# charts print the discounted amounts rounded to the dollar; the model
+# applies the 10% without rounding. The Board approved removing the
+# discount on July 19, 2024, and its charts from October 1, 2024 print no
+# discounted amounts.
 ALAMO:
-  2023-10-01: 0
+  2023-10-01: 0.1
+  2024-10-01: 0
 SOUTH_TEXAS:
   2023-10-01: 0
 COASTAL_BEND:
@@ -85,3 +97,7 @@ metadata:
       href: https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/06-24-ch2-twc.pdf#page=9
     - title: Panhandle Workforce Development Board Policy CC 3.1 Child Care Services, effective December 6, 2023 (Reductions in PSoC)
       href: https://theprpc.org/Programs/WorkforceDevelopment/documents/12-7-2023%20WFDCGB%20Agenda%20Packet.pdf#page=102
+    - title: Workforce Solutions Borderplex, General Board meeting, September 21, 2023, item 5E, Childcare Program Discounts (removal)
+      href: https://web.archive.org/web/20250726191653/https://workforce-solutions-production.s3.amazonaws.com/documents/files/000/000/077/original/General_Board_Meeting_9-21-23.pdf?1716927226#page=30
+    - title: Workforce Solutions Alamo Policy Letter CCS 12, Change 2, Parent Share of Cost, issued January 22, 2021 (Texas Rising Star discount)
+      href: https://www.workforcesolutionsalamo.org/wp-content/uploads/FINAL-Agenda-Packet-Child-Care-Committee-01.11.21-v3.pdf#page=72

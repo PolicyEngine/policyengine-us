@@ -22,7 +22,7 @@ PANHANDLE:
 SOUTH_PLAINS:
   0000-01-01: false  # Not yet sourced
 NORTH_TEXAS:
-  0000-01-01: false  # Not yet sourced
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
 NORTH_CENTRAL:
   0000-01-01: false  # Not yet sourced
 TARRANT_COUNTY:
@@ -36,11 +36,14 @@ EAST_TEXAS:
 WEST_CENTRAL:
   0000-01-01: false  # Not yet sourced
 BORDERPLEX:
-  0000-01-01: false  # Not yet sourced
+  0000-01-01: false
+  2023-10-01: true
+  2024-10-01: true
+  2025-01-01: false  # Actual effective date: 2025-01-13
 PERMIAN_BASIN:
   0000-01-01: false  # Not yet sourced
 CONCHO_VALLEY:
-  0000-01-01: false  # Not yet sourced
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
 HEART_OF_TEXAS:
   0000-01-01: false  # Not yet sourced
 CAPITAL_AREA:
@@ -48,7 +51,10 @@ CAPITAL_AREA:
 RURAL_CAPITAL:
   0000-01-01: false  # Not yet sourced
 BRAZOS_VALLEY:
-  0000-01-01: false  # Not yet sourced
+  0000-01-01: false
+  2023-10-01: true
+  2024-10-01: true  # BCY 2024 amounts continued (WD 20-24)
+  2025-01-01: false  # Actual effective date: 2025-01-13
 DEEP_EAST:
   0000-01-01: false  # Not yet sourced
 SOUTHEAST:
@@ -56,7 +62,10 @@ SOUTHEAST:
 GOLDEN_CRESCENT:
   0000-01-01: false  # Not yet sourced
 ALAMO:
-  0000-01-01: false  # Not yet sourced
+  0000-01-01: false
+  2023-10-01: true
+  2024-10-01: true
+  2025-01-01: false  # Actual effective date: 2025-01-13
 SOUTH_TEXAS:
   0000-01-01: false  # Not yet sourced
 COASTAL_BEND:
@@ -72,7 +81,7 @@ CENTRAL_TEXAS:
 MIDDLE_RIO:
   0000-01-01: false  # Not yet sourced
 GULF_COAST:
-  0000-01-01: false  # Not yet sourced
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
 
 metadata:
   propagate_metadata_to_children: true
