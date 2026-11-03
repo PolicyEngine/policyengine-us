@@ -183,7 +183,9 @@ The `room_cap_basis` parameter preserves the current-law cap or explicitly
 removes the draw ceiling. It changes the tax-side room; ordinary benefit
 credit still follows the annual benefit cap and any separately enabled
 above-threshold credit. The existing reform's active NIIT exclusion remains
-`draw_oasdi_base / q` with OASDI only and the full actual gross draw with HI.
+`draw_oasdi_base` divided by the net-earnings factor (the default netting
+expression above unless `net_earnings_factor` overrides it) with OASDI only,
+and the full actual gross draw with HI.
 
 ## Mini-PIA
 
