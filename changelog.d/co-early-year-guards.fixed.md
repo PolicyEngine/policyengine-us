@@ -1,1 +1,1 @@
-Stop Colorado CCAP from reading parameters before 2015, which raised ParameterNotFoundError for January to September 2015 under itemization branching.
+Stop Colorado CCAP from reading parameters before 2015, which raised ParameterNotFoundError for January to September 2015 under itemization branching. Measure the Colorado sales tax refund's age test as of December 31 of the preceding year, as C.R.S. 39-22-2003(1)(a)(II) says.
