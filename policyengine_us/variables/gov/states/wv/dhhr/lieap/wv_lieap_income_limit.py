@@ -11,8 +11,15 @@ class wv_lieap_income_limit(Variable):
     definition_period = YEAR
     defined_for = StateCode.WV
     reference = (
+        "https://www.law.cornell.edu/uscode/text/42/8624#b_2_B",
+        # FY2026 federal amounts, PDF pages 3,6
+        "https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=3",
+        # FY2027 federal amounts, PDF pages 3,6
+        "https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_Att4SMITable_States_FY2027.pdf#page=3",
         # PDF pages 9,11
         "https://liheapch.acf.gov/docs/2026/state-plans/WV_Plan_2026.pdf#page=9",
+        # PDF pages 9,12
+        "https://bfa.wv.gov/media/39990/download?inline=#page=9",
         # FY2026 chart, PDF pages 406,1777
         "https://bfa.wv.gov/media/39948/download?inline=#page=406",
         # FY2027 chart, PDF pages 405,1779
@@ -30,7 +37,11 @@ class wv_lieap_income_limit(Variable):
         )
         annual = where(size <= p.smi_max_household_size, annual_smi, annual_fpg)
         # Nearest-dollar monthly rounding matches all ten published agency rows.
-        # Apply the actual guideline to additional members, rather than repeatedly
-        # adding a rounded increment; the latter diverges from the manual at 11.
+        # Apply the actual guideline to additional members: the chart's rounded
+        # add-on for each member above ten overshoots 150% of the guideline.
         monthly = np.floor(annual / MONTHS_IN_YEAR + 0.5)
-        return where(size > 0, monthly * MONTHS_IN_YEAR, 0)
+        # 42 U.S.C. 8624(b)(2)(B) pays no household above the greater of 60% of SMI
+        # and 150% of the guideline, which is annual at every size. A published
+        # monthly amount that rounds up therefore stops there.
+        limit = min_(monthly * MONTHS_IN_YEAR, annual)
+        return where(size > 0, limit, 0)

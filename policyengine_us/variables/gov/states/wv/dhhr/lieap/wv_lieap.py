@@ -23,7 +23,8 @@ class wv_lieap(Variable):
         # integer lower bounds overlap and leave cent gaps.
         band = p.income_band.calc(income, right=True)
         # Exact compression of every occupied published cell, not extrapolation.
-        # Income eligibility confines sizes 1-20 to occupied table cells.
+        # In both verified years, income eligibility confines sizes 1-20 to occupied
+        # table cells.
         base = p.base_amount + p.amount_step * (size - 1 - band)
         heating = spm_unit("heating_type", period)
         types = heating.possible_values

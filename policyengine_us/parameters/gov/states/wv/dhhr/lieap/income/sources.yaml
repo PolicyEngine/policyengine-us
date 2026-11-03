@@ -2,6 +2,9 @@ description: West Virginia counts these represented recurring income sources und
 values:
   2025-10-01:
     - employment_income
+    # Active-duty basic pay, entered apart from employment_income; enter it in one
+    # of the two.
+    - military_basic_pay
     # The source deducts 20% from gross receipts. Existing inputs are already net;
     # using them without another deduction is an explicit modeling approximation.
     - self_employment_income

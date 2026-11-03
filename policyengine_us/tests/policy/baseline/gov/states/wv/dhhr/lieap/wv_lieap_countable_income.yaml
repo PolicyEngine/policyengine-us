@@ -85,8 +85,8 @@
       - 18000
 
 - name: Case 2, recurring represented income sources include assistance and ordinary VA.
-  # 2_400 + 300 + 600 + 700 + 400 + 900 + (200 + 100)
-  # + (250 + 50) + 800 + 1_000 + 900 + 1_100 + 1_200 + 1_300 = 12_200.
+  # 500 + 2_400 + 300 + 600 + 700 + 400 + 900 + (200 + 100)
+  # + (250 + 50) + 800 + 1_000 + 900 + 1_100 + 1_200 + 1_300 = 12_700.
   # VA here is ordinary recurring benefits, not excluded Aid and Attendance.
   # Estate income and child support here are recurring, not inheritance or arrears.
   # Outside-household cash assistance and GA count under the all-source rule.
@@ -98,6 +98,7 @@
         age: 40
         is_citizen_or_legal_immigrant: true
         ssi: 0
+        military_basic_pay: 500
         unemployment_compensation: 2400
         strike_benefits: 300
         rental_income: 600
@@ -126,7 +127,7 @@
         state_code: WV
   output:
     wv_lieap_countable_income:
-      - 12200
+      - 12700
 
 - name: Case 3, pensions account distributions and non-SSA survivor benefits count once.
   # Recurring pensions: 1_000 + 2_000 + 300 + 400 = 3_700.

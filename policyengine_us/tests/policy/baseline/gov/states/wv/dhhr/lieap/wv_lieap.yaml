@@ -164,13 +164,14 @@
 - name: Case 7, twenty people reach base 65 while twenty-one remains unmodeled.
   period: 2026
   absolute_error_margin: 0.001
-  # Twenty people at the 15019 monthly ceiling use band 38 and base 65.
+  # Twenty people at the 180_225 federal ceiling (15_018.75 monthly, below the
+  # chart's 15_019) use band 38 and base 65.
   # 65 x 1.089 = 70.785 rounds to 70.79. Twenty-one with zero income is
   # within the ordinary income limit but outside modeled payment-table coverage;
   # zero for that row is not a legal ineligibility determination.
   input:
     people:
-      person1: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 180_228}
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 180_225}
       person2: {age: 40, is_citizen_or_legal_immigrant: true}
       person3: {age: 40, is_citizen_or_legal_immigrant: true}
       person4: {age: 40, is_citizen_or_legal_immigrant: true}
@@ -332,3 +333,87 @@
     wv_lieap_household_size: 1
     wv_lieap_income_limit: 29_448
     wv_lieap: 280
+
+- name: Case 11, FY2026 income above the federal ceiling pays nothing within a rounded chart limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Three people: HHS's 60% SMI amount 47_575 is below the chart's 3_965 x 12 = 47_580.
+  # 47_575 is 3_964.58 monthly, row 5, base 145, x 1.75 = 253.75; 47_578 is over the ceiling.
+  # Eight people: 150% of the 2025 guideline 81_225 is below the chart's 6_769 x 12 = 81_228.
+  # 81_225 is 6_768.75 monthly, row 15, base 120, x 1.75 = 210; 81_227 is over the ceiling.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 47_575}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true}
+      person4: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 47_578}
+      person5: {age: 40, is_citizen_or_legal_immigrant: true}
+      person6: {age: 40, is_citizen_or_legal_immigrant: true}
+      person7: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 81_225}
+      person8: {age: 40, is_citizen_or_legal_immigrant: true}
+      person9: {age: 40, is_citizen_or_legal_immigrant: true}
+      person10: {age: 40, is_citizen_or_legal_immigrant: true}
+      person11: {age: 40, is_citizen_or_legal_immigrant: true}
+      person12: {age: 40, is_citizen_or_legal_immigrant: true}
+      person13: {age: 40, is_citizen_or_legal_immigrant: true}
+      person14: {age: 40, is_citizen_or_legal_immigrant: true}
+      person15: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 81_227}
+      person16: {age: 40, is_citizen_or_legal_immigrant: true}
+      person17: {age: 40, is_citizen_or_legal_immigrant: true}
+      person18: {age: 40, is_citizen_or_legal_immigrant: true}
+      person19: {age: 40, is_citizen_or_legal_immigrant: true}
+      person20: {age: 40, is_citizen_or_legal_immigrant: true}
+      person21: {age: 40, is_citizen_or_legal_immigrant: true}
+      person22: {age: 40, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+      spm_unit2:
+        members: [person4, person5, person6]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+      spm_unit3:
+        members: [person7, person8, person9, person10, person11, person12, person13, person14]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+      spm_unit4:
+        members: [person15, person16, person17, person18, person19, person20, person21, person22]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household1: {members: [person1, person2, person3], state_code: WV}
+      household2: {members: [person4, person5, person6], state_code: WV}
+      household3: {members: [person7, person8, person9, person10, person11, person12, person13, person14], state_code: WV}
+      household4: {members: [person15, person16, person17, person18, person19, person20, person21, person22], state_code: WV}
+  output:
+    wv_lieap: [253.75, 0, 210, 0]
+
+- name: Case 12, FY2027 income above the federal ceiling pays nothing within a rounded chart limit.
+  period: 2027
+  absolute_error_margin: 0.01
+  # HHS's 60% SMI amount for three, 49_435, is below the chart's 4_120 x 12 = 49_440.
+  # 49_435 is 4_119.58 monthly, row 5, base 145, x 1.75 = 253.75; 49_438 is over the ceiling.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 49_435}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true}
+      person4: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 49_438}
+      person5: {age: 40, is_citizen_or_legal_immigrant: true}
+      person6: {age: 40, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+      spm_unit2:
+        members: [person4, person5, person6]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household1: {members: [person1, person2, person3], state_code: WV}
+      household2: {members: [person4, person5, person6], state_code: WV}
+  output:
+    wv_lieap: [253.75, 0]

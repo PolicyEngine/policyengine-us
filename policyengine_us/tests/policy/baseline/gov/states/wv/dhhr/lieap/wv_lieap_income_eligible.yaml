@@ -12,6 +12,7 @@
     is_citizen_or_legal_immigrant: [true, true, false, true]
     employment_income: [29_448, 29_448.12, 0, 0]
   output:
+    wv_lieap_income_limit: [29_448, 29_448, 0, 0]
     wv_lieap_income_eligible: [true, false, false, false]
 
 - name: Case 2, the FY2027 ceiling remains inclusive without changing the formula.

@@ -1,28 +1,33 @@
-# Sources: FY2026 agency table gives sizes 1-10; earlier IMM gives size 11.
+# Sources: the FY2026 chart prints sizes 1-10 and adds $688 for each further person.
 # https://bfa.wv.gov/utility-assistancelieap
 # https://bfa.wv.gov/media/39948/download?inline=#page=1772
 # FY2027 adopted operational IMM gives separately verified sizes 1-11.
 # https://bfa.wv.gov/media/40005/download?inline=#page=1775
 # The 60% SMI through 7 and 150% FPG from 8 split is explicit in the accepted FY2026 plan.
 # https://liheapch.acf.gov/docs/2026/state-plans/WV_Plan_2026.pdf#page=11
-# Expected limits are published monthly amounts multiplied by 12, independently
-# checked with Decimal arithmetic; no model formula was used to generate them.
-# FY2026 size 11 is 8831/month, not the agency shorthand 8144 + 688 = 8832.
+# Expected limits are the published monthly amounts x 12, stopped at the ceiling of
+# 42 U.S.C. 8624(b)(2)(B): HHS's 60% SMI amounts through 7, 150% of the guideline from 8.
+# https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+# https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=3
+# https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_Att4SMITable_States_FY2027.pdf#page=3
+# Both were checked independently by hand; no model formula was used.
+# FY2026 size 11 is 8831/month: the chart's 8144 + 688 = 8832 is above 150% of the
+# guideline, 8831.25.
 # Payment-grid overlaps and larger-family defects are outside this component.
 
-- name: Case 1, FY2026 published limits for 1 through 11 qualified members.
+- name: Case 1, FY2026 limits for 1 through 11 qualified members stop at the federal ceiling.
   period: 2026
   absolute_error_margin: 0.01
   # Size 1: 60% of requested-year SMI; published $2,454/month x 12 = $29,448/year.
   # Size 2: 60% of requested-year SMI; published $3,209/month x 12 = $38,508/year.
-  # Size 3: 60% of requested-year SMI; published $3,965/month x 12 = $47,580/year.
-  # Size 4: 60% of requested-year SMI; published $4,720/month x 12 = $56,640/year.
-  # Size 5: 60% of requested-year SMI; published $5,475/month x 12 = $65,700/year.
+  # Size 3: published $3,965/month x 12 = $47,580/year, above HHS's $47,575.
+  # Size 4: published $4,720/month x 12 = $56,640/year, above HHS's $56,637.
+  # Size 5: published $5,475/month x 12 = $65,700/year, above HHS's $65,698.
   # Size 6: 60% of requested-year SMI; published $6,230/month x 12 = $74,760/year.
-  # Size 7: 60% of requested-year SMI; published $6,372/month x 12 = $76,464/year.
-  # Size 8: 150% of prior-year FPG; published $6,769/month x 12 = $81,228/year.
+  # Size 7: published $6,372/month x 12 = $76,464/year, above HHS's $76,459.
+  # Size 8: published $6,769/month x 12 = $81,228/year, above 1.5 x $54,150 = $81,225.
   # Size 9: 150% of prior-year FPG; published $7,456/month x 12 = $89,472/year.
-  # Size 10: 150% of prior-year FPG; published $8,144/month x 12 = $97,728/year.
+  # Size 10: published $8,144/month x 12 = $97,728/year, above 1.5 x $65,150 = $97,725.
   # Size 11: 150% of prior-year FPG; published $8,831/month x 12 = $105,972/year.
   input:
     people:
@@ -120,26 +125,26 @@
     wv_lieap_income_limit:
       - 29_448
       - 38_508
-      - 47_580
-      - 56_640
-      - 65_700
+      - 47_575
+      - 56_637
+      - 65_698
       - 74_760
-      - 76_464
-      - 81_228
+      - 76_459
+      - 81_225
       - 89_472
-      - 97_728
+      - 97_725
       - 105_972
 
-- name: Case 2, FY2027 published limits for 1 through 11 qualified members.
+- name: Case 2, FY2027 limits for 1 through 11 qualified members stop at the federal ceiling.
   period: 2027
   absolute_error_margin: 0.01
   # Size 1: 60% of requested-year SMI; published $2,550/month x 12 = $30,600/year.
-  # Size 2: 60% of requested-year SMI; published $3,335/month x 12 = $40,020/year.
-  # Size 3: 60% of requested-year SMI; published $4,120/month x 12 = $49,440/year.
+  # Size 2: published $3,335/month x 12 = $40,020/year, above HHS's $40,019.
+  # Size 3: published $4,120/month x 12 = $49,440/year, above HHS's $49,435.
   # Size 4: 60% of requested-year SMI; published $4,904/month x 12 = $58,848/year.
   # Size 5: 60% of requested-year SMI; published $5,689/month x 12 = $68,268/year.
-  # Size 6: 60% of requested-year SMI; published $6,474/month x 12 = $77,688/year.
-  # Size 7: 60% of requested-year SMI; published $6,621/month x 12 = $79,452/year.
+  # Size 6: published $6,474/month x 12 = $77,688/year, above HHS's $77,684.
+  # Size 7: published $6,621/month x 12 = $79,452/year, above HHS's $79,450.
   # Size 8: 150% of prior-year FPG; published $6,965/month x 12 = $83,580/year.
   # Size 9: 150% of prior-year FPG; published $7,675/month x 12 = $92,100/year.
   # Size 10: 150% of prior-year FPG; published $8,385/month x 12 = $100,620/year.
@@ -239,12 +244,12 @@
   output:
     wv_lieap_income_limit:
       - 30_600
-      - 40_020
-      - 49_440
+      - 40_019
+      - 49_435
       - 58_848
       - 68_268
-      - 77_688
-      - 79_452
+      - 77_684
+      - 79_450
       - 83_580
       - 92_100
       - 100_620
@@ -253,7 +258,7 @@
 - name: Case 3, eight residents with seven qualified members stay on the SMI branch.
   period: 2026
   absolute_error_margin: 0.01
-  # Qualified size 7: FY2026 monthly 6372 x 12 = 76464.
+  # Qualified size 7: HHS's FY2026 amount 76459, below the chart's 6372 x 12 = 76464.
   input:
     people:
       person1: {age: 70, is_citizen_or_legal_immigrant: true}
@@ -272,12 +277,12 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8]
         state_code: WV
   output:
-    wv_lieap_income_limit: 76_464
+    wv_lieap_income_limit: 76_459
 
 - name: Case 4, nine residents with eight qualified members use the FPG branch.
   period: 2026
   absolute_error_margin: 0.01
-  # Qualified size 8: FY2026 monthly 6769 x 12 = 81228.
+  # Qualified size 8: 1.5 x 54150 = 81225, below the chart's 6769 x 12 = 81228.
   input:
     people:
       person1: {age: 70, is_citizen_or_legal_immigrant: true}
@@ -297,12 +302,12 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
         state_code: WV
   output:
-    wv_lieap_income_limit: 81_228
+    wv_lieap_income_limit: 81_225
 
 - name: Case 5, mixed WV and neighboring-state households retain independent limits.
   period: 2026
   absolute_error_margin: 0.01
-  # WV sizes 1 and 8 use 2454 and 6769 monthly; the WV variable is zero in Ohio.
+  # WV size 1 uses 2454 monthly and size 8 stops at 81225; the WV variable is zero in Ohio.
   input:
     people:
       person1: {age: 40, is_citizen_or_legal_immigrant: true}
@@ -340,4 +345,4 @@
         members: [person10, person11, person12, person13, person14, person15, person16, person17]
         state_code: WV
   output:
-    wv_lieap_income_limit: [29448, 0, 81228]
+    wv_lieap_income_limit: [29448, 0, 81225]

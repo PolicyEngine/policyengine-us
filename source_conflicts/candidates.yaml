@@ -9735,6 +9735,162 @@ candidates:
     threshold and federal-method conditions by year. Code not yet on main: gov/states/wv/tax/income/subtractions/wv_claim_of_right_subtraction.yaml,
     policyengine_us/variables/gov/states/wv/tax/income/subtractions/wv_subtractions.py, wv_claim_of_right_subtraction,
     gov.states.wv.tax.income.subtractions.claim_of_right.threshold.'
+- id: us-wv:liheap-income-limit-above-federal-ceiling
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Can West Virginia's whole-dollar monthly LIEAP limits pay a household whose income exceeds both 150% of the
+    poverty guideline and HHS's 60% state median income amount?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: guidance
+    citation: HHS LIHEAP IM 2025-02 Attachment 4, Mandatory Use in LIHEAP for FY26, West Virginia, pages 3 and 6
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=3
+  - kind: guidance
+    citation: HHS LIHEAP FY2027 Attachment 4, Mandatory Use in LIHEAP for FY27, West Virginia, pages 3 and 6
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_Att4SMITable_States_FY2027.pdf#page=3
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual, Chapter 4 Appendix A, PDF page 406 (FY2026 chart)
+    url: https://bfa.wv.gov/media/39948/download?inline=#page=406
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual, update 881, Chapter 4 Appendix A, PDF page 405 (FY2027 chart)
+    url: https://bfa.wv.gov/media/40005/download?inline=#page=405
+  readings:
+    statute: Payments go only to households whose income does not exceed the greater of 150% of the poverty guideline
+      and 60% of the state median income that HHS publishes and adjusts for household size.
+    other: The charts round each monthly limit to the nearest dollar, and the FY2026 chart adds a rounded $688 for each
+      member above ten, which puts the limits above the federal maximum at several sizes.
+  example: In FY2026, three people with $47,578 of countable income and electric heat are within the printed $47,580
+    limit ($3,965 a month), which would pay $253.75, but exceed the $47,575 federal maximum and receive $0 in the PR.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wv/dhhr/lieap/wv_lieap_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10618
+  state: ruled
+  note: 'Ruled under the 2026-10-19 statute-first rule. The PR stops each limit at the federal maximum. Printed and capped
+    annual limits: FY2026 size 3, $47,580 and $47,575; 4, $56,640 and $56,637; 5, $65,700 and $65,698; 7, $76,464 and
+    $76,459; even sizes from 8, $3 lower ($81,228 and $81,225 at 8). FY2027 size 2, $40,020 and $40,019; 3, $49,440 and
+    $49,435; 6, $77,688 and $77,684; 7, $79,452 and $79,450. Other sizes keep the printed amount, which rounds down or
+    equals the maximum. Verify each later fiscal-year chart.'
+
+- id: us-wv:liheap-plan-categorical-eligibility
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do West Virginia households receiving TANF, SSI or SNAP bypass the LIEAP income test, as FY2026 plan item 1.4
+    answers, or does the manual's income test apply to every assistance group?
+  sources:
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual, 21.3.1.A and 21.4.9.A, PDF pages 1725 and 1749
+    url: https://bfa.wv.gov/media/39948/download?inline=#page=1725
+  - kind: plan
+    citation: West Virginia FY2026 LIHEAP State Plan, item 1.4, page 5
+    url: https://liheapch.acf.gov/docs/2026/state-plans/WV_Plan_2026.pdf#page=5
+  - kind: plan
+    citation: West Virginia submitted FY2027 LIHEAP State Plan, item 1.4, page 5
+    url: https://bfa.wv.gov/media/39990/download?inline=#page=5
+  readings:
+    statute: No statute is supplied; the manual denies a group above the ceiling, and its 21.4.9.A example verifies a
+      working member's income when another member receives SSI.
+    other: FY2026 plan item 1.4 answers Yes for TANF, SSI and SNAP in heating. The FY2027 plan answers No for all of them.
+  example: In FY2026, a two-person SNAP household with $40,000 of wages is above the $38,508 limit and ineligible under
+    the manual, and categorically eligible under plan item 1.4.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/wv/dhhr/lieap/wv_lieap_income_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10618
+  state: ruled
+  note: 'Ruled 2026-10-06: follow the manual over the plan.'
+
+- id: us-wv:liheap-plan-income-and-benefit-items
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Do income sources and benefit factors follow West Virginia's manual or the check boxes in plan items 1.9 and
+    2.5?
+  sources:
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual, 21.3.1.A and 21.4.11.B, PDF pages 1725-1728 and 1754-1755
+    url: https://bfa.wv.gov/media/39948/download?inline=#page=1725
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual, update 881, 21.3.1.A and 21.4.11.B, PDF pages 1726-1729 and
+      1757-1758
+    url: https://bfa.wv.gov/media/40005/download?inline=#page=1726
+  - kind: plan
+    citation: West Virginia FY2026 LIHEAP State Plan, items 1.9 and 2.5, pages 6-7 and 11
+    url: https://liheapch.acf.gov/docs/2026/state-plans/WV_Plan_2026.pdf#page=6
+  - kind: plan
+    citation: West Virginia submitted FY2027 LIHEAP State Plan, items 1.9 and 2.5, pages 6-7 and 12
+    url: https://bfa.wv.gov/media/39990/download?inline=#page=6
+  readings:
+    statute: No statute is supplied; the manual considers all sources of income, excludes nonrecurring lump sums and sets
+      the payment by income, group size and energy type.
+    other: Plan item 1.9 leaves general assistance, TANF, cash gifts and (in FY2026 only) a child's earnings unchecked and
+      checks one-time lump sums. Plan item 2.5 also checks individual bill, energy burden and energy need.
+  example: In FY2026, a parent's $12,000 of wages and a 17-year-old's $6,000 of wages count $18,000 under the manual and
+    $12,000 under the plan.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/wv/dhhr/lieap/wv_lieap_countable_income.py
+    - policyengine_us/variables/gov/states/wv/dhhr/lieap/wv_lieap.py
+    - policyengine_us/parameters/gov/states/wv/dhhr/lieap/income/sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10618
+  state: ruled
+  note: 'Ruled 2026-10-06: follow the manual over the plan. Veterans benefits have their own item,
+    us-wv:liheap-veterans-benefits.'
+
+- id: us-wv:liheap-veterans-benefits
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does West Virginia LIEAP exclude all veterans benefits, as the agency's December 2025 announcement and the
+    plan's unchecked box read, or only VA Aid and Attendance payments, as both manual editions read?
+  sources:
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual, 21.3.1.A.5, PDF page 1728
+    url: https://bfa.wv.gov/media/39948/download?inline=#page=1728
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual, update 881, 21.3.1.A.5, PDF page 1729
+    url: https://bfa.wv.gov/media/40005/download?inline=#page=1729
+  - kind: agency-practice
+    citation: West Virginia Department of Human Services announcement, December 18, 2025
+    url: https://dohs.wv.gov/article/west-virginia-department-human-services-announces-automatic-lieap-application-mailing-low
+  - kind: plan
+    citation: West Virginia FY2026 LIHEAP State Plan, item 1.9, page 7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/WV_Plan_2026.pdf#page=7
+  readings:
+    statute: No statute is supplied; both manual editions list only "Veterans Affairs (VA) Aid and Attendance payments"
+      among the exclusions.
+    other: The announcement's income table says "Social Security & Veterans Benefits Excluded", and plan item 1.9 leaves
+      "Veterans Administration (VA) benefits" unchecked.
+  example: In FY2026, one person with electric heat, $20,000 of wages and $12,000 of VA compensation counts $32,000 and
+    receives $0 under the manual, and counts $20,000 and receives $280 under the announcement.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/wv/dhhr/lieap/income/sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10618
+  state: unreviewed
+  note: PE-US follows the manual, whose two editions are both later than the announcement, and counts veterans_benefits in
+    full because the input cannot separate Aid and Attendance.
+
 - id: us-wv:medicaid-ssi-related-non-cash-income-at-standard
   program: medicaid
   years:
