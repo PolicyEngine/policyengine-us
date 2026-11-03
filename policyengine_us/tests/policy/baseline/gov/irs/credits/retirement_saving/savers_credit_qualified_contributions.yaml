@@ -33,11 +33,70 @@
   output:
     savers_credit_qualified_contributions: 0
 
-- name: Self-employed pension contributions count after applying the annual additions cap
+# 26 U.S.C. 25B(d)(1)(B) counts elective deferrals (402(g)(3)), not SEP,
+# profit-sharing or matching contributions a self-employed person makes for
+# themself. Self-employed plan contributions count only up to the elective
+# deferral room the person's other deferrals leave
+# (self_employed_pension_elective_deferrals).
+- name: Self-employed plan contributions count only up to the elective deferral limit.
   period: 2026
   input:
+    age: 40
     self_employment_income: 100_000
     self_employed_pension_contributions_desired: 100_000
   output:
-    self_employed_pension_contributions: 72_000
-    savers_credit_qualified_contributions: 72_000
+    # The 2026 limit is $24,500.
+    self_employed_pension_elective_deferrals: 24_500
+    savers_credit_qualified_contributions: 24_500
+
+- name: Self-employed plan contributions beyond the room left by employer-plan deferrals do not count.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 60_000
+    traditional_401k_contributions_desired: 23_500
+    self_employment_income: 100_000
+    self_employed_pension_contributions_desired: 5_000
+  output:
+    # The 401(k) deferrals use all $23,500 of room.
+    savers_credit_qualified_contributions: 23_500
+
+- name: Self-employed plan contributions count up to the room left by employer-plan deferrals.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 60_000
+    ira_compensation: 10_000
+    roth_ira_contributions_desired: 2_000
+    traditional_403b_contributions_desired: 21_000
+    self_employment_income: 100_000
+    self_employed_pension_contributions_desired: 4_000
+  output:
+    # 21,000 + (23,500 - 21,000) + 2,000 of IRA contributions.
+    self_employed_pension_elective_deferrals: 2_500
+    savers_credit_qualified_contributions: 25_500
+
+- name: Self-employed plan contributions count up to the catch-up room at age 55.
+  period: 2025
+  input:
+    age: 55
+    employment_income: 60_000
+    traditional_401k_contributions_desired: 23_500
+    self_employment_income: 100_000
+    self_employed_pension_contributions_desired: 10_000
+  output:
+    # 23,500 + 7,500 of catch-up room.
+    savers_credit_qualified_contributions: 31_000
+
+- name: Self-employed employer contributions do not offset distributions.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 60_000
+    traditional_401k_contributions_desired: 23_500
+    self_employment_income: 100_000
+    self_employed_pension_contributions_desired: 5_000
+    retirement_distributions: 25_000
+  output:
+    # 23,500 + 0 - 25,000, floored at 0.
+    savers_credit_qualified_contributions: 0

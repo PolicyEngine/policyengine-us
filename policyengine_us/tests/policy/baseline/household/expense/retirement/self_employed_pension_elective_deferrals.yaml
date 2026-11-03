@@ -1,0 +1,113 @@
+# The part of the person's own self-employed plan contributions that can be
+# elective deferrals (26 U.S.C. 402(g)(3)): contributions count as deferrals
+# first, up to the section 402(g) limit plus the catch-up amount less the
+# person's deferrals to other employers' 401(k) and 403(b) plans. Published
+# limits: $20,500 + $6,500 (2022), $23,500 + $7,500 or $11,250 at ages 60 to
+# 63 (2025), $24,500 + $8,000 (2026). Each case's contributions are within the
+# self-employed plan contribution limit, so they equal the desired amount.
+
+- name: Case 1, no other deferrals, so all contributions can be deferrals.
+  period: 2025
+  input:
+    age: 40
+    self_employment_income: 100_000
+    self_employed_pension_contributions_desired: 5_000
+  output:
+    self_employed_pension_contributions: 5_000
+    self_employed_pension_elective_deferrals: 5_000
+
+- name: Case 2, deferrals to an employer's plan fill the limit, so none can be deferrals.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 60_000
+    traditional_401k_contributions_desired: 23_500
+    self_employment_income: 100_000
+    self_employed_pension_contributions_desired: 5_000
+  output:
+    self_employed_pension_contributions: 5_000
+    # 23,500 - 23,500 = 0 of room.
+    self_employed_pension_elective_deferrals: 0
+
+- name: Case 3, partial room after deferrals to an employer's plan.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 60_000
+    traditional_401k_contributions_desired: 22_000
+    self_employment_income: 100_000
+    self_employed_pension_contributions_desired: 3_000
+  output:
+    # 23,500 - 22,000 = 1,500 of room.
+    self_employed_pension_elective_deferrals: 1_500
+
+- name: Case 4, catch-up room at age 55.
+  period: 2025
+  input:
+    age: 55
+    employment_income: 60_000
+    traditional_401k_contributions_desired: 23_500
+    self_employment_income: 100_000
+    self_employed_pension_contributions_desired: 10_000
+  output:
+    # 23,500 + 7,500 - 23,500 = 7,500 of room.
+    self_employed_pension_elective_deferrals: 7_500
+
+- name: Case 5, the higher catch-up at age 61.
+  period: 2025
+  input:
+    age: 61
+    employment_income: 60_000
+    traditional_401k_contributions_desired: 23_500
+    self_employment_income: 100_000
+    self_employed_pension_contributions_desired: 15_000
+  output:
+    # 23,500 + 11,250 - 23,500 = 11,250 of room.
+    self_employed_pension_elective_deferrals: 11_250
+
+- name: Case 6, Roth 403(b) and traditional 401(k) deferrals share the room.
+  period: 2026
+  input:
+    age: 40
+    employment_income: 60_000
+    traditional_401k_contributions_desired: 10_000
+    roth_403b_contributions_desired: 10_000
+    self_employment_income: 100_000
+    self_employed_pension_contributions_desired: 8_000
+  output:
+    # 24,500 - 20,000 = 4,500 of room.
+    self_employed_pension_elective_deferrals: 4_500
+
+- name: Case 7, desired employer-plan deferrals above the limit still leave no room.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 60_000
+    traditional_401k_contributions_desired: 30_000
+    self_employment_income: 100_000
+    self_employed_pension_contributions_desired: 5_000
+  output:
+    # Deferrals are scaled to 23,500, leaving no room.
+    traditional_401k_contributions: 23_500
+    self_employed_pension_elective_deferrals: 0
+
+- name: Case 8, 2022 room.
+  period: 2022
+  input:
+    age: 40
+    employment_income: 60_000
+    roth_401k_contributions_desired: 20_000
+    self_employment_income: 100_000
+    self_employed_pension_contributions_desired: 2_000
+  output:
+    # 20,500 - 20,000 = 500 of room.
+    self_employed_pension_elective_deferrals: 500
+
+- name: Case 9, no self-employed plan contributions.
+  period: 2025
+  input:
+    age: 40
+    self_employment_income: 100_000
+    self_employed_pension_contributions_desired: 0
+  output:
+    self_employed_pension_elective_deferrals: 0

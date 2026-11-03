@@ -1,0 +1,1 @@
+Count only the elective deferral part of a self-employed person's own plan contributions toward the saver's credit (26 U.S.C. 25B(d)(1)(B)): contributions beyond the section 402(g) and catch-up room left by deferrals to other employers' plans are SEP, profit-sharing or matching contributions.
