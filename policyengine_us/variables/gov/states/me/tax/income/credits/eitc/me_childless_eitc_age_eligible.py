@@ -52,7 +52,7 @@ class me_childless_eitc_age_eligible(Variable):
         )
         meets_federal_age = (
             (age >= federal_min_age)
-            & (age <= federal_age.max(period))
+            & (np.floor(age) <= federal_age.max(period))
             & is_head_or_spouse
         )
 

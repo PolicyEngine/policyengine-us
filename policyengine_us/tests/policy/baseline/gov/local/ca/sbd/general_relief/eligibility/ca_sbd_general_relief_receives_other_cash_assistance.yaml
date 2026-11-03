@@ -177,3 +177,31 @@
     # ca_state_supplement is an ungated computed entitlement; with take-up
     # declined no SSP check arrives, so the bar lifts like the ssi arm.
     ca_sbd_general_relief_receives_other_cash_assistance: false
+
+- name: Case 9, a disabled child with an SSP-only payment is barred, but the parent is not.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+      person2:
+        age: 10
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # An SSP-only case: a positive state supplement with no federal SSI.
+        ca_state_supplement: 200
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+        state_code: CA
+  output:
+    # The child is eligible for the state supplement as a disabled dependent
+    # under 18; the parent is not aged, blind or disabled.
+    ca_sbd_general_relief_receives_other_cash_assistance: [false, true]

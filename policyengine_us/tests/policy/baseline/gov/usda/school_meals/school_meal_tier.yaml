@@ -473,8 +473,11 @@
     school_meal_tier: PAID
 
 # 2024 guideline for two people: 15,060 + 5,380 = 20,440.
-# NJ limit: 1.99 * 20,440 = 40,675.60, so 40,675 / 20,440 = 1.98997 is free.
-- name: New Jersey household just under 199% of FPG is free in 2024.
+# NJ limit: 1.99 * 20,440 = 40,675.60. N.J.S.A. 18A:33-4(a) sets the limit as
+# a percentage, compared exactly, not rounded up to a whole dollar (see the
+# whole-dollar cases at the end of this file), so 40,675 / 20,440 = 1.98997
+# is free.
+- name: New Jersey household just under its 199% statutory limit is free in 2024.
   period: 2024
   input:
     people:
@@ -491,8 +494,10 @@
   output:
     school_meal_tier: FREE
 
-# 40,676 / 20,440 = 1.99002, above 1.99.
-- name: New Jersey household just over 199% of FPG pays full price in 2024.
+# 40,676 / 20,440 = 1.99002, above 1.99, although 40,676 is 40,675.60
+# rounded up to the next whole dollar. It is also above the federal 185%
+# limit, 1.85 * 20,440 = 37,814.
+- name: New Jersey household just over its 199% statutory limit pays full price in 2024.
   period: 2024
   input:
     people:
@@ -753,7 +758,8 @@
 
 # Calendar 2027 uses a projected guideline, so these cases set the ratio
 # within 0.0001 of each limit: NJ 2.24; ND 2.25 (the last calendar year of its
-# 2025-27 biennium); HI 3.00 (its first calendar year).
+# 2025-27 biennium); HI 3.00 (its first calendar year). State limits are
+# compared with the ratio exactly, so 0.0001 above each limit is PAID.
 - name: Ratios just below, at and just above the New Jersey, North Dakota and Hawaii limits in 2027.
   period: 2027
   input:
@@ -1030,3 +1036,154 @@
     school_meal_tier: [PAID, REDUCED]
     school_meal_breakfast_tier: [PAID, REDUCED]
     school_meal_lunch_tier: [PAID, REDUCED]
+
+# Whole-dollar income limits. USDA sets its free (130%) and reduced-price
+# (185%) limits by multiplying the poverty guideline by 1.30 and 1.85 and
+# rounding the result up to the next whole dollar (91 FR 17932, 17933). A
+# household exactly at a published federal limit gets that tier; one dollar
+# above does not. State limits are percentages of the poverty guideline set in
+# state law and are compared with the ratio exactly, without rounding.
+
+# Federal limits in Alaska, which has no state school meal policy, from
+# USDA's SY 2026-27 table (91 FR 17932, 17934), for two-person SPM units of
+# one adult and one child. 2026 Alaska guideline for two people:
+# 19,950 + 7,100 = 27,050.
+#   Free: 1.30 * 27,050 = 35,165, published as 35,165. 35,165 is FREE;
+#     35,166 is REDUCED.
+#   Reduced price: 1.85 * 27,050 = 50,042.50, published as 50,043. 50,043 is
+#     REDUCED; 50,044 is PAID.
+- name: Alaska households of two at and one dollar above the published 130% and 185% limits in 2026.
+  period: 2026
+  input:
+    people:
+      person1: {age: 35}
+      person2: {age: 10}
+      person3: {age: 35}
+      person4: {age: 10}
+      person5: {age: 35}
+      person6: {age: 10}
+      person7: {age: 35}
+      person8: {age: 10}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        school_meal_countable_income: 35_165
+        meets_school_meal_categorical_eligibility: false
+      spm_unit2:
+        members: [person3, person4]
+        school_meal_countable_income: 35_166
+        meets_school_meal_categorical_eligibility: false
+      spm_unit3:
+        members: [person5, person6]
+        school_meal_countable_income: 50_043
+        meets_school_meal_categorical_eligibility: false
+      spm_unit4:
+        members: [person7, person8]
+        school_meal_countable_income: 50_044
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: AK
+      household2:
+        members: [person3, person4]
+        state_code: AK
+      household3:
+        members: [person5, person6]
+        state_code: AK
+      household4:
+        members: [person7, person8]
+        state_code: AK
+  output:
+    spm_unit_fpg: [27_050, 27_050, 27_050, 27_050]
+    school_meal_tier: [FREE, REDUCED, REDUCED, PAID]
+
+# Contiguous states in calendar 2025, from USDA's SY 2025-26 table
+# (90 FR 11938, 11939). One person: 1.85 * 15,650 = 28,952.50, published as
+# 28,953. Florida has no state policy, so 28,953 is REDUCED and 28,954 is
+# PAID.
+- name: Florida one-person households at and one dollar above the published 185% limit of $28,953 in 2025.
+  period: 2025
+  input:
+    state_code: [FL, FL]
+    school_meal_countable_income: [28_953, 28_954]
+    meets_school_meal_categorical_eligibility: [false, false]
+  output:
+    spm_unit_fpg: [15_650, 15_650]
+    school_meal_tier: [REDUCED, PAID]
+
+# Projected guidelines carry fractions of a dollar, so the product can land a
+# fraction of a cent above a whole dollar; it still rounds up. With a
+# guideline of 73,654.6171875 (set as an input, a value float32 stores
+# exactly), 1.30 * 73,654.6171875 = 95,751.00234375, which rounds up to
+# 95,752. 95,752 is FREE; 95,753 is REDUCED, below the 185% limit of 136,262.
+# Florida has no state policy.
+- name: The federal free limit rounds up a product a fraction of a cent above a whole dollar, to $95,752, in 2030.
+  period: 2030
+  input:
+    state_code: [FL, FL]
+    spm_unit_fpg: [73_654.6171875, 73_654.6171875]
+    school_meal_countable_income: [95_752, 95_753]
+    meets_school_meal_categorical_eligibility: [false, false]
+  output:
+    school_meal_tier: [FREE, REDUCED]
+
+# New Jersey's statutory 224% limit in SY 2026-27 (N.J.S.A. 18A:33-4(a)), for
+# two-person SPM units of one adult and one child. 2026 guideline for two
+# people: 15,960 + 5,680 = 21,640; 2.24 * 21,640 = 48,473.60. The limit is
+# the percentage itself, so 48,473 / 21,640 = 2.23997 is FREE and
+# 48,474 / 21,640 = 2.24002 is PAID, although New Jersey's Form 427 lists
+# 48,474, the product rounded up. 48,474 is also above the federal 185% limit,
+# 1.85 * 21,640 = 40,034.
+- name: New Jersey households of two just under and just over the statutory 224% limit of $48,473.60 in 2026.
+  period: 2026
+  input:
+    people:
+      person1: {age: 35}
+      person2: {age: 10}
+      person3: {age: 35}
+      person4: {age: 10}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        school_meal_countable_income: 48_473
+        meets_school_meal_categorical_eligibility: false
+      spm_unit2:
+        members: [person3, person4]
+        school_meal_countable_income: 48_474
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: NJ
+      household2:
+        members: [person3, person4]
+        state_code: NJ
+  output:
+    spm_unit_fpg: [21_640, 21_640]
+    school_meal_tier: [FREE, PAID]
+
+# One person: 2.24 * 15,960 = 35,750.40. 35,750 / 15,960 = 2.23997 is FREE;
+# 35,751 / 15,960 = 2.24004 is PAID, although Form 427 lists 35,751.
+- name: New Jersey one-person households just under and just over the statutory 224% limit of $35,750.40 in 2026.
+  period: 2026
+  input:
+    state_code: [NJ, NJ]
+    school_meal_countable_income: [35_750, 35_751]
+    meets_school_meal_categorical_eligibility: [false, false]
+  output:
+    spm_unit_fpg: [15_960, 15_960]
+    school_meal_tier: [FREE, PAID]
+
+# The territories have a $0 guideline in the model, so the federal limits fall
+# back to the unrounded ratios: 1.3 is FREE, 1.85 is REDUCED and 1.8501 is
+# PAID.
+- name: Puerto Rico's zero guideline keeps the unrounded federal ratio limits in 2026.
+  period: 2026
+  input:
+    state_code: [PR, PR, PR]
+    school_meal_fpg_ratio: [1.3, 1.85, 1.8501]
+    meets_school_meal_categorical_eligibility: [false, false, false]
+  output:
+    spm_unit_fpg: [0, 0, 0]
+    school_meal_tier: [FREE, REDUCED, PAID]
