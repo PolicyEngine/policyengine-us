@@ -41,3 +41,72 @@
   output:
     self_employed_pension_contributions: 72_000
     savers_credit_qualified_contributions: 72_000
+
+# Pub. L. 119-21 keeps ABLE contributions by the designated beneficiary in
+# the saver's credit after 2025.
+- name: ABLE contributions still count in 2026
+  period: 2026
+  input:
+    ira_compensation: 10_000
+    traditional_ira_contributions_desired: 1_000
+    able_contributions_person: 500
+  output:
+    savers_credit_qualified_contributions: 1_500
+
+# From 2027 the credit covers ABLE contributions only, reduced by relevant
+# ABLE distributions rather than retirement-plan distributions.
+- name: From 2027 only ABLE contributions count
+  period: 2027
+  input:
+    ira_compensation: 10_000
+    traditional_ira_contributions_desired: 1_000
+    traditional_401k_contributions_desired: 3_000
+    able_contributions_person: 800
+    retirement_distributions: 5_000
+  output:
+    # 800 of ABLE contributions; IRA and 401(k) contributions no longer
+    # count, and retirement-plan distributions don't reduce them.
+    savers_credit_qualified_contributions: 800
+
+- name: From 2027 relevant ABLE distributions reduce ABLE contributions
+  period: 2027
+  input:
+    able_contributions_person: 800
+    savers_credit_relevant_able_distributions: 300
+  output:
+    savers_credit_qualified_contributions: 500
+
+- name: In 2026 relevant ABLE distributions reduce ABLE contributions too
+  period: 2026
+  input:
+    able_contributions_person: 800
+    savers_credit_relevant_able_distributions: 300
+  output:
+    savers_credit_qualified_contributions: 500
+
+# These cases pin the distribution list on each side of the 2027 change.
+# Through 2026 retirement-plan and relevant ABLE distributions both reduce
+# qualified contributions.
+- name: In 2023 retirement-plan and relevant ABLE distributions both reduce contributions
+  period: 2023
+  input:
+    ira_compensation: 10_000
+    traditional_ira_contributions_desired: 1_000
+    able_contributions_person: 500
+    retirement_distributions: 400
+    savers_credit_relevant_able_distributions: 300
+  output:
+    # 1,000 + 500 - 400 - 300 = 800.
+    savers_credit_qualified_contributions: 800
+
+# From 2027 relevant ABLE distributions reduce contributions, and
+# retirement-plan distributions don't.
+- name: In 2027 only relevant ABLE distributions reduce contributions
+  period: 2027
+  input:
+    able_contributions_person: 800
+    retirement_distributions: 400
+    savers_credit_relevant_able_distributions: 300
+  output:
+    # 800 - 300 = 500; the 400 of retirement-plan distributions doesn't count.
+    savers_credit_qualified_contributions: 500
