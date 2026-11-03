@@ -4,7 +4,10 @@ MI-1040CR line 30 subtracts "total adjustments from your U.S. Form 1040,
 Schedule 1", which include the self-employed health insurance deduction
 (Schedule 1 line 17). Line 31 subtracts "insurance premiums you paid for
 yourself and your family", but "Do not include any insurance premiums deducted
-on lines 21 or 30" (2025 MI-1040 book, page 33).
+on lines 21 or 30" (2025 MI-1040 book, page 33). health_insurance_premiums
+records the premiums each person paid, so only the head's and spouse's count
+(MCL 206.510(1)); theirs may cover the family, and a dependent's own premium
+is not one the claimant or spouse paid.
 
 MCL 206.510(1) excludes from income "(a) The first $300.00 of gifts in cash or
 kind from nongovernmental sources" and "(b) The first $300.00 received from
@@ -16,8 +19,9 @@ household.
 
 So for every household:
 
-1. Each premium dollar is subtracted once. Zeroing every member's premiums
-   raises household resources by between 0 and the household's total
+1. Each premium dollar the head or spouse paid is subtracted once, and a
+   dependent's is not subtracted. Zeroing every member's premiums raises
+   household resources by between 0 and the head's and spouse's total
    premiums, and by exactly that total when household resources were
    positive.
 2. Household resources are non-decreasing in the head's gambling winnings.
@@ -155,7 +159,7 @@ def assert_premiums_subtracted_once(households):
     n = len(households)
     for i, h in enumerate(households):
         tol = tolerance(h)
-        premiums = total(members(h), PREMIUMS)
+        premiums = total(filers(h), PREMIUMS)
         subtracted = float(result[n + i]) - float(result[i])
         assert -tol <= subtracted <= premiums + tol, h
         if result[i] > tol:
@@ -193,7 +197,7 @@ def test_self_employed_premiums_subtracted_once():
     """The self-employed health insurance deduction (line 30) and line 31
     together subtract each premium once: for a self-employed claimant, a
     self-employed couple, premiums above the deduction's earnings limit, and
-    a self-employed dependent whose premium the claimant is read to pay."""
+    a self-employed dependent whose own premium is not subtracted."""
     households = [
         {"head": person(self_employment_income=50_000, **{PREMIUMS: 5_000})},
         {
