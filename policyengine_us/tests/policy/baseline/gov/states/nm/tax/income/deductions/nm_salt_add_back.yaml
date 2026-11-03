@@ -62,3 +62,24 @@
     state_code: NM
   output:
     nm_salt_add_back: 0
+
+- name: NM SALT addback compares the federally allowed 2026 total with the standard deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NM
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    adjusted_gross_income: 2_000_000
+    taxable_income_before_itemized_deductions: 2_000_000
+    total_itemized_taxable_income_deductions: 17_000
+    itemized_deductions_less_salt: 7_000
+    state_and_local_sales_or_income_tax: 10_000
+    real_estate_taxes: 0
+    standard_deduction: 16_000
+  output:
+    # Section 68: $17,000 * 2/37 = $918.92; allowed total $16,081.08.
+    # Excess over the standard deduction: $16,081.08 - $16,000 = $81.08.
+    # SALT is all income tax ($10,000), so the addback is the lesser: $81.08.
+    itemized_taxable_income_deductions: 16_081.081081
+    nm_salt_add_back: 81.081081
