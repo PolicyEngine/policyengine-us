@@ -39,6 +39,9 @@
     state_code: VT
     adjusted_net_capital_gain: 12_600
     taxable_income: 12_700
+    # The VT-eligible gains are part of the filer's long-term gains
+    # (Schedule IN-153 line 15 is no more than net capital gain).
+    long_term_capital_gains: 12_600
     long_term_capital_gains_on_assets_eligible_for_vt_exclusion: 12_600
   output:
     # Flat: min(12600, 5000) = 5000
@@ -54,6 +57,9 @@
     state_code: VT
     adjusted_net_capital_gain: 12_600
     taxable_income: 12_500
+    # The VT-eligible gains are part of the filer's long-term gains
+    # (Schedule IN-153 line 15 is no more than net capital gain).
+    long_term_capital_gains: 12_600
     long_term_capital_gains_on_assets_eligible_for_vt_exclusion: 12_600
   output:
     # Flat: 5000, Percentage: 5040, Chosen: 5040
