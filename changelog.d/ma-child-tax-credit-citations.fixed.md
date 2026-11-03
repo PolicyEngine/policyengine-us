@@ -1,1 +1,0 @@
-Cite M.G.L. c.62 s.6(x) and Acts 2023 c.50 for the Massachusetts child and family tax credit's amount, dependent cap and child age limit. For 2021 and 2022, cite an archived copy of s.6(y) and Acts 2021 c.24.
