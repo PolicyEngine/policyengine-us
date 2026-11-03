@@ -10,17 +10,20 @@ charitable gifts. From 2026 the 0.5% floor of 26 U.S.C. 170(b)(1)(I) ties the
 charitable deduction to AGI, so a refund rightly raises AMTI by 0.5% of it.
 
 Two properties, for 2017 (the old section 68), 2025 (no section 68) and 2026
-(the P.L. 119-21 section 68), single and joint, itemizing or not:
+(the P.L. 119-21 section 68), single, joint and married filing separately,
+itemizing or not:
 
 1. Refund invariance: adding a filer's state tax refund leaves AMTI unchanged.
    The refund enters AGI and comes back out, and any change it causes in the
    section 68 reduction or the capped SALT deduction cancels, because AMTI
-   reverses the first and adds back the second.
-2. Statutory identity: AMTI is AGI, less the refund, less the itemized
-   deductions the AMT allows. Those are all itemized deductions before section
-   68 except taxes and miscellaneous deductions (56(b)(1)(A)), and none for a
-   filer who takes the standard deduction (56(b)(1)(D)). This checks the
-   formula's route through taxable income against the statute's definition.
+   reverses the first and adds back the second. For a separate filer, the
+   55(d)(2) increase is figured on AMTI without the refund, so it holds too.
+2. Statutory identity: AMTI before that separate filer increase is AGI, less
+   the refund, less the itemized deductions the AMT allows. Those are all
+   itemized deductions before section 68 except taxes and miscellaneous
+   deductions (56(b)(1)(A)), and none for a filer who takes the standard
+   deduction (56(b)(1)(D)). This checks the formula's route through taxable
+   income against the statute's definition.
 """
 
 import numpy as np
@@ -37,7 +40,7 @@ TOLERANCE = dict(atol=0.01, rtol=2.5e-7)
 @st.composite
 def tax_unit(draw):
     return {
-        "joint": draw(st.booleans()),
+        "status": draw(st.sampled_from(["SINGLE", "JOINT", "SEPARATE"])),
         "itemizes": draw(st.booleans()),
         "employment_income": draw(st.integers(20_000, 3_000_000)),
         "salt_refund_income": draw(st.integers(1, 20_000)),
@@ -61,12 +64,13 @@ def _simulate(units, year):
                 "real_estate_taxes": {year: unit["real_estate_taxes"]},
                 "home_mortgage_interest": {year: unit["home_mortgage_interest"]},
             }
-            if unit["joint"]:
+            if unit["status"] == "JOINT":
                 spouse = f"spouse_{twin}_{i}"
                 situation["people"][spouse] = {"age": {year: 45}}
                 members.append(spouse)
             situation["tax_units"][f"unit_{twin}_{i}"] = {
                 "members": members,
+                "filing_status": {year: unit["status"]},
                 "tax_unit_itemizes": {year: unit["itemizes"]},
             }
             situation["households"][f"household_{twin}_{i}"] = {
@@ -96,8 +100,9 @@ def test_amt_income_leaves_out_refunds_and_section_68(year, units):
     # 1. Refund invariance: each unit matches its twin without the refund.
     np.testing.assert_allclose(amti[:n], amti[n:], **TOLERANCE)
 
-    # 2. Statutory identity: AGI less the refund less the AMT's itemized
-    # deductions (before section 68, without taxes and miscellaneous ones).
+    # 2. Statutory identity, before the separate filer increase: AGI less the
+    # refund less the AMT's itemized deductions (before section 68, without
+    # taxes and miscellaneous ones).
     refunds = np.array([unit["salt_refund_income"] for unit in units] + [0] * n)
     allowed_itemized = np.where(
         calc("tax_unit_itemizes").astype(bool),
@@ -107,5 +112,7 @@ def test_amt_income_leaves_out_refunds_and_section_68(year, units):
         0,
     )
     np.testing.assert_allclose(
-        amti, calc("adjusted_gross_income") - refunds - allowed_itemized, **TOLERANCE
+        calc("amt_income_before_separate_addition"),
+        calc("adjusted_gross_income") - refunds - allowed_itemized,
+        **TOLERANCE,
     )
