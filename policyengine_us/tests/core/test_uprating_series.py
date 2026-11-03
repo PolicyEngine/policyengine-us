@@ -249,6 +249,23 @@ def test_series_has_a_january_value_for_every_year(series):
     assert missing == [], f"{series} has no January 1 value for {missing}"
 
 
+@pytest.mark.parametrize("series", _series_that_inputs_follow())
+def test_series_keeps_one_sign(series):
+    """An uprating factor is a ratio of the series, so a series that crossed
+    zero would turn every input projected across it from an income into a
+    loss. Farm income is a net loss in every year; short-term capital gains
+    held negative placeholders until it took SOI's net short-term capital
+    gain."""
+    parameter = get_parameter(system.parameters, series)
+    years = _january_years(parameter)
+    signs = {
+        (value > 0) - (value < 0)
+        for year in range(years[0], years[-1] + 1)
+        if (value := parameter(f"{year}-01-01")) is not None
+    }
+    assert len(signs) == 1 and 0 not in signs, f"{series}: signs {sorted(signs)}"
+
+
 SOI_SERIES_UPRATED_BY_CBO = sorted(
     series
     for series in _series_that_inputs_follow()
