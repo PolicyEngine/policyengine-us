@@ -860,7 +860,34 @@
     # NOTE: a known limitation. The couple level is 607.83, or 303.92 each, but
     # SSI's couple test excludes tax dependents, so SSI and the supplement both
     # treat the parents as individuals. When SSI identifies couples by marriage
-    # (PR 10141), the head-or-spouse guard in the rates must go too, or these
-    # parents would get no supplement.
+    # (PR 10141), the head-or-spouse guards in the supplement and its rates must
+    # go too, or these parents would get no supplement.
     ssi: [0, 994, 994]
     ca_state_supplement_person: [0, 239.94, 239.94]
+
+- name: Case 34, dependent child of an aged couple with no marital units takes their own level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # With no marital units everyone shares one unit, but the child is not part
+    # of the couple: half of 607.83 rounded up for each spouse, 97.27 for the child.
+    ca_state_supplement_person: [303.92, 303.92, 97.27]
+    ca_state_supplement: 705.11

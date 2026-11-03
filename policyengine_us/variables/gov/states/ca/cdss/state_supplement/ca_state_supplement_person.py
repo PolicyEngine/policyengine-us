@@ -35,8 +35,10 @@ class ca_state_supplement_person(Variable):
     def formula(person, period, parameters):
         # A couple with one spouse in a Title XIX facility is computed
         # separately, including when only the California input marks it (20 CFR
-        # 416.414(b)(3)).
-        joint = ca_capi_couple_computation(person, period)
+        # 416.414(b)(3)). Only a head or spouse is in a couple, because a situation
+        # with no marital units puts a dependent in the couple's unit.
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
+        joint = ca_capi_couple_computation(person, period) & head_or_spouse
         individual_rate, couple_rate = ca_state_supplement_rates(
             person, period, parameters, joint
         )
@@ -63,7 +65,6 @@ class ca_state_supplement_person(Variable):
         is_qualified_noncitizen = person(
             "is_ssi_qualified_noncitizen", period.this_year
         )
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         fails_test = ~(is_citizen | is_qualified_noncitizen) & head_or_spouse
         # The exclusion needs a spouse who can receive CAPI, so key on CAPI
         # eligibility rather than on SSI's noncitizen test alone (issue 10482).
