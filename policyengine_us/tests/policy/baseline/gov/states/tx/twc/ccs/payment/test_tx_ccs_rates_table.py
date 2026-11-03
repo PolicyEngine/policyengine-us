@@ -8,9 +8,10 @@ higher if each star level exceeds the one below by at least 2 percentage
 points. Every rate in TWC's revised BCY 2024 table (October 16, 2023) and its
 BCY 2025 table clears these floors with no rounding allowance. The August 29,
 2023 original misses both floors by under a cent in some cells, and these
-checks fail on its values. In its BCY 2025 table, TWC set no rate below its
-BCY 2024 level outside relative care, where TWC sets no minimum and Boards may
-set rates locally (WD Letter 19-24, Change 1).
+checks fail on its values. Outside relative care, TWC kept each BCY 2025 rate
+at or above its BCY 2024 level, under the method its Commission approved on
+September 10, 2024 (WD Letter 19-24, Change 1, pp. 1-2). TWC sets no minimum
+for relative care rates, and Boards may set them locally (p. 3).
 
 In both tables, TWC also followed two patterns that no rule requires. It
 printed each Texas School Ready rate equal to the Two-Star rate, school age
@@ -22,12 +23,12 @@ patterns, and they hold school-age Texas School Ready rates to the 5 percent
 floor too.
 
 Each check runs over all 4,032 cells of both board contract years. A test fails
-when someone types a value into the wrong cell and it breaks one of these
-bounds. Outside relative care, copying a part-time rate into a full-time cell
-breaks one whenever the copy changes the value. The checks can still pass if
-someone types a regular rate too low or a Three- or Four-Star rate too high, or
-copies a rate from another age group. They check relative care rates only for
-schedule order, so a typo in one passes unless it breaks that order, and
+when someone types a value into the wrong cell and the value breaks one of
+these bounds. Outside relative care, copying a part-time rate into a full-time
+cell breaks one whenever the copy changes the value. The checks can still pass
+if someone types a regular rate too low or a Three- or Four-Star rate too high,
+or copies a rate from another age group. They check relative care rates only
+for schedule order, so a typo in one passes unless it breaks that order, and
 copying a part-time rate into the full-time cell often doesn't. The YAML tests
 pin single cells to TWC's tables.
 """
