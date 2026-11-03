@@ -11,6 +11,8 @@ class va_subtractions(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.va.tax.income.subtractions
-        total_subtractions = add(tax_unit, period, p.subtractions)
+        total_subtractions = add(tax_unit, period, p.subtractions) + tax_unit(
+            "va_other_subtractions", period
+        )
         # Prevent negative subtractions from acting as additions
         return max_(0, total_subtractions)

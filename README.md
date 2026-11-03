@@ -12,7 +12,7 @@ PolicyEngine US is a microsimulation model of the US state and federal tax and b
 PolicyEngine US supports Python 3.11 through 3.14 and requires pandas 3 or
 later. To install, run `pip install policyengine-us`.
 
-This release requires `spm-calculator>=1.0.0,<=1.0.0.post1` (the canonical SPM threshold API).
+This release requires `spm-calculator>=1.1.0,<1.2` (the canonical SPM threshold API, covering 2022–2036).
 Previously published country versions retain their original dependency metadata;
 when reproducing one of those versions, include the compatible calculator
 explicitly, for example:
@@ -27,3 +27,17 @@ bundle installer published by `policyengine`, for example:
 ```bash
 uvx --from policyengine policyengine bundle install --country us --venv .venv
 ```
+
+## Statutes, forms and agency practice
+
+When a statute conflicts with a regulation, form, instructions, manual or
+stated agency practice, PolicyEngine US's rule is to follow the statute.
+Forms and instructions fill gaps where the statute is silent. Each such
+conflict is recorded in the source-conflict register that PolicyEngine shares
+with the Axiom Foundation, including any code that does not follow the rule
+yet: `known-source-conflicts.yaml` in
+[TheAxiomFoundation/rulespec-us](https://github.com/TheAxiomFoundation/rulespec-us).
+For each conflict it gives what each source says, a worked example, the
+reading this model takes and why, and the code and tests that implement it.
+The code marks the deciding line with `# Source conflict <jurisdiction>:<id>`. See
+[CONTRIBUTING.md](CONTRIBUTING.md#source-conflicts).
