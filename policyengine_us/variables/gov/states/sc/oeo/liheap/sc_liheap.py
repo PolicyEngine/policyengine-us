@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.hhs_smi import smi
 
 
 class sc_liheap(Variable):
@@ -13,20 +12,19 @@ class sc_liheap(Variable):
         # PDF pages 8-9
         "https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/SC_BenefitMatrix_2026.pdf#page=2",
-        # PDF pages 529,537,546
-        "https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=529",
+        # PDF pages 311-312,338,529,537,546
+        "https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=311",
     )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.sc.oeo.liheap.payment
         income = spm_unit("sc_liheap_countable_income", period)
         size = spm_unit("sc_liheap_household_size", period)
-        state = spm_unit.household("state_code_str", period)
-        # The accepted plan's 30% SMI threshold governs over the older-vintage
-        # matrix's conflicting 42% threshold. Keep the percentage boundary exact.
-        low_income = income <= p.low_income_smi_rate * smi(
-            size, state, period, parameters
-        )
+        # The accepted plan's 30% governs over the older matrix's 70%. Both are shares
+        # of the income limit: OEO's draft guide writes "30 of 60 percent of the SMI"
+        # and "SMI is 60% of the State's Median Income".
+        limit = spm_unit("sc_liheap_income_limit", period)
+        low_income = income <= p.low_income_limit_rate * limit
         person = spm_unit.members
         age = person("age", period)
         # OEO's 2024 guide leaves state-placed foster children out of the household
@@ -58,7 +56,9 @@ class sc_liheap(Variable):
         )
         # Local funding and priority decisions are not represented. The state
         # schedule does not impose a general benefit-to-bill cap.
+        # The plan states this maximum; the eight FY2026 amounts sum to exactly it.
         award = min_(amount, a.maximum)
         # A mixed-status award is the total benefit / all household members x
         # eligible members; both counts leave out state-placed foster children.
+        # An eligible unit always has a member, so the floor only avoids dividing by zero.
         return award * size / max_(spm_unit.sum(member), 1)

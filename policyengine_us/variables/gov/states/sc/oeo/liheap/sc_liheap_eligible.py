@@ -13,10 +13,12 @@ class sc_liheap_eligible(Variable):
         # PDF pages 8-9
         "https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8",
         "https://oeo.sc.gov/managedsites/prd/oeo/liheap.html",
+        # PDF pages 526,536-537
+        "https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=526",
     )
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period)
+        p = parameters(period).gov.states.sc.oeo.liheap
         size = spm_unit("sc_liheap_household_size", period)
         income = spm_unit("sc_liheap_countable_income", period)
         limit = spm_unit("sc_liheap_income_limit", period)
@@ -25,16 +27,21 @@ class sc_liheap_eligible(Variable):
             spm_unit.household("state_group_str", period),
             period,
             parameters,
-            year_lag=p.gov.states.sc.oeo.liheap.eligibility.fpg_year_lag,
+            year_lag=p.eligibility.fpg_year_lag,
         )
-        federal_floor = np.round(guideline * p.gov.hhs.liheap.fpg_floor, 2)
+        federal_floor = np.round(
+            guideline * parameters(period).gov.hhs.liheap.fpg_floor, 2
+        )
+        # OEO asks for an obligation to pay a home energy bill, and the one regular
+        # award pays heating or cooling costs, so any counted bill qualifies, including
+        # in a home without heating. heating_type is a required input, so an unspecified
+        # fuel qualifies only through heat in the rent.
+        has_energy_cost = add(spm_unit, period, p.payment.energy_cost_sources) > 0
         fuel = spm_unit("heating_type", period)
-        heating_responsibility = spm_unit("has_heating_expense", period) | spm_unit(
-            "heat_expense_included_in_rent", period
-        )
+        known_fuel = fuel != fuel.possible_values.UNSPECIFIED
+        heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         return (
             (size > 0)
             & ((income <= limit) | (income < federal_floor))
-            & (fuel != fuel.possible_values.NONE)
-            & heating_responsibility
+            & ((has_energy_cost & known_fuel) | heat_in_rent)
         )

@@ -4,6 +4,8 @@ values:
     - total_unemployment_compensation
     - social_security
     - ssi
+    # Optional State Supplementation, paid with SSI to care-facility residents.
+    - sc_ssi_state_supplement
     - pension_income
     # Military retirement includes Survivor Benefit Plan annuities.
     - military_retirement_income

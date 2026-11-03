@@ -6,12 +6,13 @@
 # https://oeo.sc.gov/managedsites/prd/oeo/documents/WAP%202026%20State%20Plan.pdf#page=23
 # OEO's 2024 guide limits supplements to eligible members and prorates mixed-status awards.
 # https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=537
+# Its draft 2026 guide measures the plan's 30% low-income tier against the 60% limit.
 # These are annual state-schedule awards, before unmodeled local funding discretion.
 
 - name: Case 1, source base and combined low-income high-burden examples.
   period: 2026
-  # 40_000 income and 4_000 electric cost give only base 200. At 30_000 income,
-  # low-income 175 applies and 6_000/30_000=20% adds burden 175: total 550.
+  # 40_000 income and 4_000 electric cost give only base 200. At 15_000 income,
+  # low-income 175 applies and 3_000/15_000=20% adds burden 175: total 550.
   input:
     people:
       person1:
@@ -35,7 +36,7 @@
         age: 35
         is_citizen_or_legal_immigrant: true
         ssi: 0
-        employment_income: 30_000
+        employment_income: 15_000
       person6:
         age: 33
         is_citizen_or_legal_immigrant: true
@@ -56,7 +57,7 @@
       spm_unit2:
         members: [person5, person6, person7, person8]
         heating_type: ELECTRICITY
-        pre_subsidy_electricity_expense: 6_000
+        pre_subsidy_electricity_expense: 3_000
     households:
       household1:
         members: [person1, person2, person3, person4]
@@ -66,24 +67,24 @@
         state_code: SC
   output:
     sc_liheap_household_size: [4, 4]
-    sc_liheap_countable_income: [40_000, 30_000]
+    sc_liheap_countable_income: [40_000, 15_000]
     sc_liheap_income_limit: [61_525, 61_525]
     sc_liheap_eligible: [true, true]
     sc_liheap: [200, 550]
 
-- name: Case 2, accepted thirty-percent SMI boundary governs the supplement.
+- name: Case 2, thirty percent of the income limit is the supplement boundary.
   period: 2026
   absolute_error_margin: 0.01
-  # Four-person SMI 102_542 x 30% = 30_762.60. At or below the boundary add 175
-  # to base 200; a cent above receives only 200. Income 35_000 rejects the older
-  # matrix 42% rule.
+  # Four-person limit 61_525 x 30% = 18_457.50. At or below the boundary add 175
+  # to base 200; a cent above receives only 200, which rejects both 30% of the full
+  # SMI (30_762.60) and the older matrix's 70% of the limit (43_067.50).
   input:
     people:
       person1:
         age: 35
         is_citizen_or_legal_immigrant: true
         ssi: 0
-        employment_income: 30_762.59
+        employment_income: 18_457.49
       person2:
         age: 33
         is_citizen_or_legal_immigrant: true
@@ -100,7 +101,7 @@
         age: 35
         is_citizen_or_legal_immigrant: true
         ssi: 0
-        employment_income: 30_762.6
+        employment_income: 18_457.5
       person6:
         age: 33
         is_citizen_or_legal_immigrant: true
@@ -117,7 +118,7 @@
         age: 35
         is_citizen_or_legal_immigrant: true
         ssi: 0
-        employment_income: 30_762.61
+        employment_income: 18_457.51
       person10:
         age: 33
         is_citizen_or_legal_immigrant: true
@@ -127,23 +128,6 @@
         is_citizen_or_legal_immigrant: true
         ssi: 0
       person12:
-        age: 12
-        is_citizen_or_legal_immigrant: true
-        ssi: 0
-      person13:
-        age: 35
-        is_citizen_or_legal_immigrant: true
-        ssi: 0
-        employment_income: 35_000
-      person14:
-        age: 33
-        is_citizen_or_legal_immigrant: true
-        ssi: 0
-      person15:
-        age: 10
-        is_citizen_or_legal_immigrant: true
-        ssi: 0
-      person16:
         age: 12
         is_citizen_or_legal_immigrant: true
         ssi: 0
@@ -160,10 +144,6 @@
         members: [person9, person10, person11, person12]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_000
-      spm_unit4:
-        members: [person13, person14, person15, person16]
-        heating_type: ELECTRICITY
-        pre_subsidy_electricity_expense: 1_000
     households:
       household1:
         members: [person1, person2, person3, person4]
@@ -174,11 +154,8 @@
       household3:
         members: [person9, person10, person11, person12]
         state_code: SC
-      household4:
-        members: [person13, person14, person15, person16]
-        state_code: SC
   output:
-    sc_liheap: [375, 375, 200, 200]
+    sc_liheap: [375, 375, 200]
 
 - name: Case 3, twenty-percent burden sums energy bills and includes equality.
   period: 2026
@@ -377,7 +354,8 @@
 
 - name: Case 6, age disability and veteran supplements apply once per category.
   period: 2026
-  # Two-person income 30_000 exceeds its 30% SMI level and is below 41_837.
+  # Two-person income 30_000 exceeds its 12_551.10 low-income level and is below
+  # 41_837.
   # Base 200 gains 75 at age 60; 50 for child <= 5, any disabled member, or any
   # veteran. Two veterans still earn a single 50 supplement.
   input:
@@ -531,7 +509,7 @@
         age: 65
         is_citizen_or_legal_immigrant: true
         ssi: 0
-        employment_income: 24_000
+        employment_income: 18_000
       person2:
         age: 40
         is_citizen_or_legal_immigrant: true
@@ -550,7 +528,7 @@
         age: 65
         is_citizen_or_legal_immigrant: true
         ssi: 0
-        employment_income: 24_000
+        employment_income: 18_000
       person6:
         age: 60
         is_citizen_or_legal_immigrant: true
@@ -834,10 +812,11 @@
   output:
     sc_liheap: [200, 200, 200, 275, 375]
 
-- name: Case 11, no heating missing matching bills and other states receive zero.
+- name: Case 11, a home with no energy bill and other states receive zero.
   period: 2026
   # Eligible SC gas heating earns 200+75; the same NC unit is state-guarded.
-  # NONE has no heat. An electric bill does not supply the missing gas bill.
+  # NONE with no bill has no obligation to pay. An electric bill qualifies a gas-heated
+  # home with no gas bill: 200 + 175 low income + 175 burden on no income + 75 fuel = 625.
   input:
     people:
       person1:
@@ -889,7 +868,7 @@
         members: [person4]
         state_code: SC
   output:
-    sc_liheap: [275, 0, 0, 0]
+    sc_liheap: [275, 0, 0, 625]
 
 # Recurring payments are countable; this does not represent a one-time withdrawal.
 # Income 40,000 exceeds the one-person 31,993 ceiling, so the award is 0.
@@ -918,8 +897,9 @@
     sc_liheap: 0
 
 # Recurring payments are countable; this does not represent a one-time withdrawal.
-# Income 12,000: 200 base + 75 elderly + 175 low income = 450. The 1,000 annual
-# bill is below 20 percent, so no burden supplement applies.
+# Income 12,000 exceeds the one-person 9,597.90 low-income level: 200 base + 75
+# elderly = 275. The 1,000 annual bill is below 20 percent, so no burden supplement
+# applies.
 - name: Case 13, recurring IRA payments without high energy burden.
   period: 2026
   absolute_error_margin: 0.01
@@ -942,7 +922,7 @@
         state_code: SC
   output:
     sc_liheap_countable_income: 12000
-    sc_liheap: 450
+    sc_liheap: 275
 
 # Military retirement is a separate receipt; a rental loss cannot cancel a 33,000
 # pension. The last two rows are existing-aggregate unemployment controls because
@@ -970,8 +950,9 @@
     sc_liheap: [0, 0, 0, 0]
 
 # Age five and under includes 5.5 until the sixth birthday. With two qualified
-# members, 30,000 income is above 30% SMI but below the 41,837 ceiling. Electric
-# 1,000 is below the 20% burden and has no fuel supplement: 200 base + 50 child =
+# members, 30,000 income is above the 12,551.10 low-income level but below the
+# 41,837 ceiling. Electric 1,000 is below the 20% burden and has no fuel supplement:
+# 200 base + 50 child =
 # 250; the same household at age 6 receives 200.
 - name: Case 15, the young-child supplement lasts until the sixth birthday.
   period: 2026
@@ -1006,7 +987,8 @@
 # Qualified size 25 uses the 2025 FPG 15,650 + 24 x 5,500 = 147,650. The strict
 # 110% floor of 162,415 protects 150,000 income above the ordinary SMI limit of
 # 116,282. No vulnerable member, veteran, fuel or burden supplement applies, and
-# income exceeds 30% SMI: base 200 is the award. Exactly 162,415 is unprotected.
+# income exceeds 34,884.60, 30% of the limit: base 200 is the award. Exactly 162,415
+# is unprotected.
 - name: Case 16, large households retain strict federal income protection.
   period: 2026
   input:
@@ -1289,7 +1271,7 @@
 
 - name: Case 17, heating fuel bills reach the burden supplement and cooking fuel does not.
   period: 2026
-  # At income 20_000, 20% = 4_000 and the one-person 30% SMI level is 15_996.55.
+  # At income 20_000, 20% = 4_000 and the one-person low-income level is 9_597.90.
   # Fuel oil: 200 + 75 fuel + 175 burden = 450. Wood, coal and other fuel: 200 + 175
   # = 375. Electric 3_000 plus cooking fuel 1_000 stays below 4_000: 200.
   input:
@@ -1419,15 +1401,15 @@
 - name: Case 19, the 2024 guide's prorated example pays eligible members only.
   period: 2026
   # Guide page 537: 425 / 4 members = 106.25, x 3 eligible = 318.75. Here 200 base +
-  # 50 child + 175 low income = 425. The nonqualified adult's 20_000 wages count and
-  # stay below the three-person 30% SMI level of 25_840.58; 1_000 is under 20%.
+  # 50 child + 175 low income = 425. The nonqualified adult's 15_000 wages count and
+  # stay below the three-person low-income level of 15_504.30; 1_000 is under 20%.
   input:
     people:
       person1:
         age: 35
         is_citizen_or_legal_immigrant: false
         ssi: 0
-        employment_income: 20_000
+        employment_income: 15_000
       person2:
         age: 33
         is_citizen_or_legal_immigrant: true
@@ -1451,6 +1433,42 @@
         state_code: SC
   output:
     sc_liheap_household_size: 3
-    sc_liheap_countable_income: 20_000
+    sc_liheap_countable_income: 15_000
     sc_liheap_income_limit: 51_681
     sc_liheap: 318.75
+
+- name: Case 20, an electric bill pays a home without heating or with gathered wood.
+  period: 2026
+  # OEO asks for an obligation to pay a home energy bill. 20_000 is above the low-income
+  # tier, 1_000 is under 20% of it, and neither fuel earns the supplement: base 200.
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NONE
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit2:
+        members: [person2]
+        heating_type: WOOD
+        wood_expense: 0
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+      household2:
+        members: [person2]
+        state_code: SC
+  output:
+    sc_liheap: [200, 200]

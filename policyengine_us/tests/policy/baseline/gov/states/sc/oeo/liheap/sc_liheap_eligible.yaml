@@ -2,6 +2,8 @@
 # https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=5
 # Current agency annual limits and demonstrated energy-need requirement.
 # https://oeo.sc.gov/managedsites/prd/oeo/liheap.html
+# OEO's 2024 guide asks for an obligation to pay a home energy bill.
+# https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=536
 # These exact Boolean cases intentionally have no absolute_error_margin.
 
 - name: Case 1, annual published income ceiling is inclusive.
@@ -111,12 +113,13 @@
   output:
     sc_liheap_eligible: [true, true, false, false]
 
-- name: Case 2, known fuel requires its matching bill unless heat is included in rent.
+- name: Case 2, any counted energy bill or heat in rent shows the obligation to pay.
   period: 2026
-  # An electricity bill alone does not establish a gas-heating expense. NONE
-  # is an affirmative no-heating fact. Heat-in-rent establishes responsibility
-  # without a separately measured fuel bill; housing subsidy does not exclude.
-  # UNSPECIFIED with a bill and no heat in rent has no heating responsibility.
+  # An electric bill qualifies a gas-heated home with no gas bill, a home without
+  # heating and a home heating with gathered wood. NONE with no bill has no obligation.
+  # Heat in rent qualifies without a separately measured bill; housing subsidy does not
+  # exclude. UNSPECIFIED with a bill and no heat in rent gets nothing: heating_type is
+  # a required input.
   input:
     people:
       person1:
@@ -154,6 +157,16 @@
         is_citizen_or_legal_immigrant: true
         ssi: 0
         employment_income: 20_000
+      person8:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person9:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
     spm_units:
       spm_unit1:
         members: [person1]
@@ -185,6 +198,15 @@
         members: [person7]
         heating_type: UNSPECIFIED
         pre_subsidy_electricity_expense: 1_000
+      spm_unit8:
+        members: [person8]
+        heating_type: NONE
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit9:
+        members: [person9]
+        heating_type: WOOD
+        wood_expense: 0
+        pre_subsidy_electricity_expense: 1_000
     households:
       household1:
         members: [person1]
@@ -207,8 +229,14 @@
       household7:
         members: [person7]
         state_code: SC
+      household8:
+        members: [person8]
+        state_code: SC
+      household9:
+        members: [person9]
+        state_code: SC
   output:
-    sc_liheap_eligible: [false, true, false, false, true, true, false]
+    sc_liheap_eligible: [true, true, false, true, true, true, false, true, true]
 
 - name: Case 3, cash program receipt does not override income and assets do not bar aid.
   period: 2026

@@ -1244,6 +1244,14 @@ programs:
         parameter_prefix: gov.states.or.ohcs.liheap
         verified_years: "2025-2027"
         notes: PY2025-PY2027 regular heating only, with the two county regions, five fuel columns and the roomer half payment. Crisis, cooling, Fuel Payment, equipment and OEAP assistance are out of scope.
+      - state: SC
+        status: partial
+        name: South Carolina LIHEAP
+        full_name: South Carolina Low Income Home Energy Assistance Program
+        variable: sc_liheap
+        parameter_prefix: gov.states.sc.oeo.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating base amount with demographic, fuel, low-income and high-burden supplements. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: SD
         status: partial
         name: South Dakota LIEAP
@@ -1266,14 +1274,6 @@ programs:
         variable: tx_ceap
         parameter_prefix: gov.states.tx.tdhca.ceap
         notes: Models the 150% FPG income limit, the alternative 60% SMI limit from the FY2024 state plan (applied through 2024), benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
-      - state: SC
-        status: partial
-        name: South Carolina LIHEAP
-        full_name: South Carolina Low Income Home Energy Assistance Program
-        variable: sc_liheap
-        parameter_prefix: gov.states.sc.oeo.liheap
-        verified_years: "2026"
-        notes: FY2026 regular heating base amount with demographic, fuel, low-income and high-burden supplements. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: UT
         status: partial
         name: Utah HEAT

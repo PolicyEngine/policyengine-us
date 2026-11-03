@@ -55,8 +55,8 @@
 - name: Case 2, adult net business receipts and wages remain disjoint.
   period: 2026
   absolute_error_margin: 0.01
-  # 12_000 wages +2_000 net business +300 SSTB +700 farm +1_000 partnership
-  # =16_000. Existing business receipts are already net of expenses.
+  # 12_000 wages +500 military basic pay +2_000 net business +300 SSTB +700 farm
+  # +1_000 partnership =16_500. Existing business receipts are already net of expenses.
   input:
     people:
       person1:
@@ -64,6 +64,7 @@
         is_citizen_or_legal_immigrant: true
         ssi: 0
         employment_income: 12_000
+        military_basic_pay: 500
         self_employment_income: 2_000
         sstb_self_employment_income: 300
         farm_operations_income: 700
@@ -78,13 +79,14 @@
         members: [person1]
         state_code: SC
   output:
-    sc_liheap_countable_income: 16_000
+    sc_liheap_countable_income: 16_500
 
 - name: Case 3, pension Social Security survivor rental and gift receipts enter once.
   period: 2026
   absolute_error_margin: 0.01
   # Pension 3_000 + Social Security 2_000 + other survivor 700 + rent 3_000
-  # + unemployment 1_000 + alimony 400 + support 500 + VA 800 + gifts 600 =12_000.
+  # + unemployment 1_000 + alimony 400 + support 500 + VA 800 + gifts 600
+  # + Optional State Supplementation 1_200 =13_200.
   # Neither pension nor Social Security subcomponents are counted twice.
   input:
     people:
@@ -106,6 +108,7 @@
         child_support_received: 500
         veterans_benefits: 800
         financial_assistance: 600
+        sc_ssi_state_supplement: 1_200
     spm_units:
       spm_unit1:
         members: [person1]
@@ -116,7 +119,7 @@
         members: [person1]
         state_code: SC
   output:
-    sc_liheap_countable_income: 12_000
+    sc_liheap_countable_income: 13_200
 
 - name: Case 4, unchecked income types and assets do not inflate countable income.
   period: 2026
