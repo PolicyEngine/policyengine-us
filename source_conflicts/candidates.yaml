@@ -3715,13 +3715,17 @@ candidates:
   example: At $100,000 of 2026 wages, literal §45 gives a $772 employee contribution versus $460.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ma/tax/payroll/paid_leave/family_employee_share.yaml
+    - policyengine_us/parameters/gov/states/ma/tax/payroll/paid_leave/medical_employee_share.yaml
+    - policyengine_us/parameters/gov/states/ma/tax/payroll/paid_leave/family_rate.yaml
+    - policyengine_us/parameters/gov/states/ma/tax/payroll/paid_leave/medical_rate.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10285
   state: open
-  note: 'A rule-required model change depends on resolving the two statutes; the open PR follows the 2027 reading,
-    while main has no cap swap. Code not yet on main: policyengine_us/variables/.../employee_state_payroll_tax,
-    ma_employee_paid_leave_contribution (YAML).'
+  note: The code follows DFML's January 1, 2027 date for the cap and rate swap and keeps 2026 on the old split, as
+    main does. Whether §45's 2026 date governs stays open. At $100,000 of 2026 wages the code gives a $460
+    employee contribution; applying the swap in 2026 under §45 would give $772.
 - id: us-ma:snap-child-support-exclusion
   program: snap
   years:
