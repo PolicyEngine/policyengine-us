@@ -1471,6 +1471,9 @@ candidates:
   - kind: regulation
     citation: 10 CCR 2505-10 8.100.7.C.2
     url: https://www.law.cornell.edu/regulations/colorado/10-CCR-2505-10-8.100_v2
+  - kind: regulation
+    citation: 10 CCR 2505-10 8.100.6.C.1.b
+    url: https://www.law.cornell.edu/regulations/colorado/10-CCR-2505-10-8.100_v2
   pe_us:
     follows: statute
     code:
@@ -2301,6 +2304,28 @@ candidates:
     rent shows through a heating bill or a direct electric bill, and the comment records that FY2026 plan item 2.3
     answers No to differing policies for subsidized renters (ga_liheap_eligible.py, eligibility/_ga_liheap_housing.py).
     Verify that the plan addresses the same circumstances.'
+- id: us-hi:abd-spouse-income-household-size
+  program: medicaid
+  years:
+    from: 2026
+    to: 2026
+    type: program
+    note: program year as the program defines it
+  question: "Does Hawaii test a married couple living together on combined income against the two-person standard, because HAR 17-1724.1-16(1) makes spouses' income available to each other, or apply SSI's deeming threshold, because HAR 17-1719-11.1(a)(3) says only 'a household of applicable size'?"
+  sources:
+  - kind: regulation
+    citation: HAR 17-1724.1-16(1)
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2016/12/HAR-17-1724.1-INCOME-FOR-MAGI-EXCEPTED-Final-10-31-16-1.pdf#page=5
+  - kind: regulation
+    citation: HAR 17-1719-11.1(a)(3)
+    url: https://www.law.cornell.edu/regulations/hawaii/Haw-Code-R-SS-17-1719-11-1
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/budgets_couple_together.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/medically_needy/limit/income/budgets_couple_together.yaml
+  state: ruled
+  note: "Budgets the couple together, in the aged, blind and disabled pathway and in medically needy. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640"
 - id: us-hi:claim-of-right-credit-agi-addback
   program: income-tax
   years:
@@ -3562,7 +3587,13 @@ candidates:
   question: "Does Massachusetts test a couple's income against the couple standard? 130 CMR 520.002(A)(1) says 'an income standard', and only 520.003(A)(2) names the couple limit, for assets."
   sources:
   - kind: regulation
-    citation: 130 CMR 520.002(A)(1), 520.003(A)(2), 519.005(A)(1)
+    citation: 130 CMR 520.002(A)(1)
+    url: https://web.archive.org/web/20260711022327id_/https://www.mass.gov/doc/130-cmr-520000-masshealth-financial-eligibility-0/download#page=2
+  - kind: regulation
+    citation: 130 CMR 520.003(A)(2)
+    url: https://web.archive.org/web/20260711022327id_/https://www.mass.gov/doc/130-cmr-520000-masshealth-financial-eligibility-0/download#page=3
+  - kind: regulation
+    citation: 130 CMR 519.005(A)(1)
     url: https://www.law.cornell.edu/regulations/massachusetts/130-CMR-519-005
   pe_us:
     follows: gap-fill
@@ -5933,6 +5964,9 @@ candidates:
     note: program year as the program defines it
   question: "Does Nebraska's medically needy program size the unit under 477 NAC 24, counting both spouses, or follow the general SSI methodology clause in 477 NAC 25-002.03(B)?"
   sources:
+  - kind: regulation
+    citation: 477 NAC 24-001.02B1
+    url: https://www.law.cornell.edu/regulations/nebraska/477-Neb-Admin-Code-ch-24-SS-001
   - kind: regulation
     citation: 477 NAC 25-002
     url: https://www.law.cornell.edu/regulations/nebraska/477-Neb-Admin-Code-ch-25-SS-002

@@ -32,7 +32,7 @@ class is_209b_ssi_recipient_income_eligible_for_medicaid(Variable):
         # SSI financial responsibility rules (42 CFR 435.602): the unit is
         # the individual or the married couple, not the tax filing unit.
         # 42 CFR 435.831(d) also deducts a spouse's expenses when the spouse's
-        # income is not counted.
+        # income is not counted, unless a facility splits the couple.
         income = where(
             person("medicaid_optional_senior_or_disabled_uses_couple_standard", period),
             person.marital_unit.sum(personal_income),
@@ -46,7 +46,8 @@ class is_209b_ssi_recipient_income_eligible_for_medicaid(Variable):
         income_after_spenddown = income - expenses
 
         # The limit is per person (Missouri's blind standard can differ
-        # within a couple) while the income is the couple's combined total.
+        # within a couple). The income is the couple's combined total only
+        # under the couple standard.
         income_limit = person(
             "medicaid_optional_senior_or_disabled_income_limit", period
         )

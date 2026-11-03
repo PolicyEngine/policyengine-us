@@ -22,6 +22,8 @@ metadata:
       href: https://portal.ct.gov/-/media/Departments-and-Agencies/DSS/UPMs/UPM5---Treatment-of-Income-Income-Eligibility/5020_75.doc
     - title: Connecticut Uniform Policy Manual 5515.05
       href: https://portal.ct.gov/-/media/Departments-and-Agencies/DSS/UPMs/UPM5---Treatment-of-Income-Income-Eligibility/5515_05.doc
+    - title: HAR 17-1724.1-16(1) (Hawaii)
+      href: https://humanservices.hawaii.gov/wp-content/uploads/2016/12/HAR-17-1724.1-INCOME-FOR-MAGI-EXCEPTED-Final-10-31-16-1.pdf#page=5
     - title: Illinois Policy Manual PM 15-06-02-c
       href: https://www.dhs.state.il.us/page.aspx?item=16512
     - title: 405 IAC 2-3-4 (Indiana)
@@ -75,9 +77,11 @@ FL:
 GA:
   2015-01-01: false
 HI:
-  2015-01-01: false
+  2015-01-01: true
 IA:
   2015-01-01: false
+# IDAPA 16.03.05 sections 761-766 allow a community property method in some cases;
+# the model has no input for separate or community income.
 ID:
   2015-01-01: false
 IL:

@@ -951,8 +951,8 @@
       person1:
         is_tax_unit_head: true
         age: 70
-        social_security_retirement: 28000
-        other_medical_expenses: 5000
+        social_security_retirement: 28_000
+        other_medical_expenses: 5_000
         takes_up_medicare_if_eligible: false
       person2:
         is_tax_unit_spouse: true
@@ -978,13 +978,13 @@
       person1:
         is_tax_unit_head: true
         age: 70
-        social_security_retirement: 28000
-        other_medical_expenses: 5000
+        social_security_retirement: 28_000
+        other_medical_expenses: 5_000
         takes_up_medicare_if_eligible: false
       person2:
         is_tax_unit_spouse: true
         age: 50
-        other_medical_expenses: 1000
+        other_medical_expenses: 1_000
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -1004,13 +1004,13 @@
       person1:
         is_tax_unit_head: true
         age: 70
-        social_security_retirement: 20000
-        other_medical_expenses: 14000
+        social_security_retirement: 20_000
+        other_medical_expenses: 14_000
         takes_up_medicare_if_eligible: false
       person2:
         is_tax_unit_spouse: true
         age: 50
-        employment_income: 4800
+        employment_income: 4_800
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -1032,13 +1032,13 @@
       person1:
         is_tax_unit_head: true
         age: 70
-        social_security_retirement: 20000
-        other_medical_expenses: 13000
+        social_security_retirement: 20_000
+        other_medical_expenses: 13_000
         takes_up_medicare_if_eligible: false
       person2:
         is_tax_unit_spouse: true
         age: 50
-        employment_income: 4800
+        employment_income: 4_800
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -1048,3 +1048,332 @@
         state_code: MA
   output:
     is_medically_needy_for_medicaid: [false, false]
+
+# A year reads this month-defined status in December, when the couple is home:
+# 8,000 + 34,000 - 240 = 41,760, or 20,880 each, is above 12 x 2,489 = 29,868. Tested
+# alone for the stay, person2's 33,760 is also above 12 x 1,836 = 22,032.
+- name: Case 41, a facility stay that ends within the year tests the couple on its December status.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 72
+        social_security_retirement: 8_000
+        takes_up_medicare_if_eligible: false
+        ssi_lives_in_medical_treatment_facility:
+          2026-01: true
+          2026-02: true
+          2026-03: true
+          2026-04: true
+          2026-05: true
+          2026-06: true
+          2026-07: false
+          2026-08: false
+          2026-09: false
+          2026-10: false
+          2026-11: false
+          2026-12: false
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+        social_security_retirement: 34_000
+        takes_up_medicare_if_eligible: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ssi_couple_computation_applies:
+      2026-01: [false, false]
+      2026-12: [true, true]
+    medicaid_medically_needy_uses_couple_standard: [true, true]
+    medicaid_medically_needy_income_limit: [29_868, 29_868]
+    ssi_countable_income: [20_880, 20_880]
+    is_medically_needy_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+
+# 130 CMR 520.002(A)(1) compares the spouses' total countable income to the standard.
+# SSI allocates 12 x 497 = 5,964 to the child, and 11,900 - 5,964 = 5,936 is within
+# SSI's 5,964 threshold, so nothing is deemed. The spouse counts (11,900 - 780) / 2 =
+# 5,560: 40,000 - 240 + 5,560 - 35,000 = 10,320, above 12 x 650 = 7,800.
+- name: Case 42, Massachusetts counts spouse wages with no child allocation below SSI's threshold.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 40_000
+        other_medical_expenses: 35_000
+        takes_up_medicare_if_eligible: false
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+        employment_income_before_lsr: 11_900
+        takes_up_medicare_if_eligible: false
+      person3:
+        is_tax_unit_dependent: true
+        age: 10
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      child_marital_unit:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    is_ssi_spousal_deeming_applies: [false, false, false]
+    ssi_countable_income: [39_760, 0, 0]
+    medicaid_medically_needy_income_from_spouse: [5_560, 0, 0]
+    medicaid_medically_needy_income_limit: [7_800, 7_800, 6_264]
+    is_medically_needy_for_medicaid: [false, false, false]
+    medicaid_category: [NONE, NONE, NONE]
+
+# 12,100 - 5,964 = 6,136 is above 5,964, so SSI deems (6,136 - 780) / 2 = 2,678 and
+# countable income is 39,760 + 2,678 = 42,438. Budgeted together the spouse counts
+# (12,100 - 780) / 2 = 5,660, so the adjustment is 5,660 - 2,678 = 2,982:
+# 42,438 + 2,982 - 35,000 = 10,420, above 7,800. Counted income does not fall when
+# wages cross SSI's threshold.
+- name: Case 43, Massachusetts counts spouse wages with no child allocation above SSI's threshold.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 40_000
+        other_medical_expenses: 35_000
+        takes_up_medicare_if_eligible: false
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+        employment_income_before_lsr: 12_100
+        takes_up_medicare_if_eligible: false
+      person3:
+        is_tax_unit_dependent: true
+        age: 10
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      child_marital_unit:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    is_ssi_spousal_deeming_applies: [true, false, false]
+    ssi_countable_income: [42_438, 0, 0]
+    medicaid_medically_needy_income_from_spouse: [2_982, 0, 0]
+    medicaid_medically_needy_income_limit: [7_800, 7_800, 6_264]
+    is_medically_needy_for_medicaid: [false, false, false]
+    medicaid_category: [NONE, NONE, NONE]
+
+# MKEESM 4312 considers the total income of both spouses living together. SSI allocates
+# 2 x 5,964 = 11,928 to the children, and 17,000 - 11,928 = 5,072 is within 5,964, so
+# nothing is deemed. The spouse counts (17,000 - 780) / 2 = 8,110:
+# 20,000 - 240 + 8,110 - 6,000 = 21,870, above 12 x 1,491 = 17,892.
+- name: Case 44, Kansas counts spouse wages with no child allocation below SSI's threshold.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 45
+        is_blind: true
+        social_security_disability: 20_000
+        other_medical_expenses: 6_000
+        takes_up_medicare_if_eligible: false
+      person2:
+        is_tax_unit_spouse: true
+        age: 44
+        employment_income_before_lsr: 17_000
+        takes_up_medicare_if_eligible: false
+      person3:
+        is_tax_unit_dependent: true
+        age: 8
+      person4:
+        is_tax_unit_dependent: true
+        age: 10
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      child1_marital_unit:
+        members: [person3]
+      child2_marital_unit:
+        members: [person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: KS
+  output:
+    is_ssi_spousal_deeming_applies: [false, false, false, false]
+    ssi_countable_income: [19_760, 0, 0, 0]
+    medicaid_medically_needy_income_from_spouse: [8_110, 0, 0, 0]
+    medicaid_medically_needy_income_limit: [17_892, 17_892, 11_928, 11_928]
+    is_medically_needy_for_medicaid: [false, false, false, false]
+    medicaid_category: [NONE, NONE, OLDER_CHILD, OLDER_CHILD]
+
+# 18,000 - 11,928 = 6,072 is above 5,964, so SSI deems (6,072 - 780) / 2 = 2,646 and
+# countable income is 19,760 + 2,646 = 22,406. Budgeted together the spouse counts
+# (18,000 - 780) / 2 = 8,610, so the adjustment is 8,610 - 2,646 = 5,964:
+# 22,406 + 5,964 - 6,000 = 22,370, above 17,892.
+- name: Case 45, Kansas counts spouse wages with no child allocation above SSI's threshold.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 45
+        is_blind: true
+        social_security_disability: 20_000
+        other_medical_expenses: 6_000
+        takes_up_medicare_if_eligible: false
+      person2:
+        is_tax_unit_spouse: true
+        age: 44
+        employment_income_before_lsr: 18_000
+        takes_up_medicare_if_eligible: false
+      person3:
+        is_tax_unit_dependent: true
+        age: 8
+      person4:
+        is_tax_unit_dependent: true
+        age: 10
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      child1_marital_unit:
+        members: [person3]
+      child2_marital_unit:
+        members: [person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: KS
+  output:
+    is_ssi_spousal_deeming_applies: [true, false, false, false]
+    ssi_countable_income: [22_406, 0, 0, 0]
+    medicaid_medically_needy_income_from_spouse: [5_964, 0, 0, 0]
+    medicaid_medically_needy_income_limit: [17_892, 17_892, 11_928, 11_928]
+    is_medically_needy_for_medicaid: [false, false, false, false]
+    medicaid_category: [NONE, NONE, OLDER_CHILD, OLDER_CHILD]
+
+# 130 CMR 520.002(B)(2)(a): "the community spouse's income is not counted in the
+# determination of eligibility for the institutionalized spouse". The spouse's 5,900
+# is below SSI's 5,964 and stays out: 20,000 - 240 - 14,000 = 5,760, within the
+# one-person 12 x 522 = 6,264.
+- name: Case 46, a facility resident with a spouse who is not aged, blind or disabled is tested alone.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 72
+        social_security_retirement: 20_000
+        other_medical_expenses: 14_000
+        takes_up_medicare_if_eligible: false
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+        employment_income_before_lsr: 5_900
+        takes_up_medicare_if_eligible: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    is_ssi_spousal_deeming_applies: [false, false]
+    medicaid_medically_needy_uses_couple_standard: [false, false]
+    medicaid_medically_needy_income_limit: [6_264, 6_264]
+    medicaid_medically_needy_income_from_spouse: [0, 0]
+    is_medically_needy_for_medicaid: [true, false]
+    medicaid_category: [MEDICALLY_NEEDY, ADULT]
+
+# SSI deems (20,000 - 780) / 2 = 9,610 and the adjustment removes it, so the result
+# matches Case 46: 19,760 + 9,610 - 9,610 - 14,000 = 5,760, within 6,264.
+- name: Case 47, a facility resident has no spouse income counted above SSI's threshold.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 72
+        social_security_retirement: 20_000
+        other_medical_expenses: 14_000
+        takes_up_medicare_if_eligible: false
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+        employment_income_before_lsr: 20_000
+        takes_up_medicare_if_eligible: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    is_ssi_spousal_deeming_applies: [true, false]
+    medicaid_medically_needy_uses_couple_standard: [false, false]
+    medicaid_medically_needy_income_limit: [6_264, 6_264]
+    medicaid_medically_needy_income_from_spouse: [-9_610, 0]
+    is_medically_needy_for_medicaid: [true, false]
+    medicaid_category: [MEDICALLY_NEEDY, NONE]
+
+# Each spouse deducts only their own expenses. person1: 23,000 - 240 - 100 = 22,660 is
+# above 12 x 1,836 = 22,032, though the spouse's 8,000 would bring it within.
+# person2: 30,000 - 240 - 8,000 = 21,760 is within 22,032.
+- name: Case 48, spouses split by a facility each deduct only their own medical expenses.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 72
+        social_security_retirement: 23_000
+        other_medical_expenses: 100
+        takes_up_medicare_if_eligible: false
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+        social_security_retirement: 30_000
+        other_medical_expenses: 8_000
+        takes_up_medicare_if_eligible: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    medicaid_medically_needy_uses_couple_standard: [false, false]
+    medicaid_medically_needy_income_limit: [22_032, 22_032]
+    is_medically_needy_for_medicaid: [false, true]
+    medicaid_category: [NONE, MEDICALLY_NEEDY]

@@ -2,6 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.hhs.medicaid.income._apply_medicaid_optional_senior_or_disabled_exclusions import (
     _apply_medicaid_optional_senior_or_disabled_exclusions,
 )
+from policyengine_us.variables.gov.hhs.medicaid.income._couple_standard import (
+    spouses_split_by_facility,
+)
 
 
 class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse(
@@ -14,6 +17,7 @@ class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse(
     reference = (
         "https://www.law.cornell.edu/cfr/text/20/416.1163",
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/0805-015-05/",
+        "https://www.law.cornell.edu/uscode/text/42/1396r-5",
     )
     defined_for = "is_ssi_aged_blind_disabled"
     unit = USD
@@ -61,7 +65,11 @@ class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse(
             budgets_together, spouse_gross_unearned, spouse_unearned
         )
         has_ineligible_spouse = marital_unit.sum(ineligible_spouse) > 0
-        deeming_applies = deeming_applies | (budgets_together & has_ineligible_spouse)
+        # A couple split by a facility counts no spouse income under either method
+        # (42 USC 1396r-5(b)(1)).
+        deeming_applies = (
+            deeming_applies | (budgets_together & has_ineligible_spouse)
+        ) & ~spouses_split_by_facility(person, period)
 
         alone_countable = _apply_medicaid_optional_senior_or_disabled_exclusions(
             individual_earned,

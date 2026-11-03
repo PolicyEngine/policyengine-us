@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.medicaid.income._couple_standard import (
+    spouses_split_by_facility,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
@@ -7,14 +10,25 @@ from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusi
 class medicaid_medically_needy_income_from_spouse(Variable):
     value_type = float
     entity = Person
-    label = "Spouse income counted by a state that budgets a couple together"
+    label = (
+        "Adjustment to SSI countable income for a spouse's income in Medicaid's "
+        "medically needy program"
+    )
     unit = USD
     documentation = (
-        "Countable income added for an ineligible spouse in a state that budgets "
-        "a couple together, when SSI deeming has not already counted it."
+        "Amount added to ssi_countable_income so that the medically needy test "
+        "counts a spouse's income by the state's method. A state that budgets a "
+        "couple together counts the spouse's income with no deeming threshold or "
+        "ineligible-child allocation, in place of SSI's deemed amount. A couple "
+        "split by a facility counts no spouse income, so the amount removes SSI's "
+        "deemed amount and can be negative. It is zero otherwise."
     )
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/cfr/text/42/435.602"
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/42/435.602",
+        "https://www.law.cornell.edu/cfr/text/20/416.1163",
+        "https://www.law.cornell.edu/uscode/text/42/1396r-5",
+    )
 
     def formula(person, period, parameters):
         state = person.household("state_code_str", period)
@@ -37,9 +51,13 @@ class medicaid_medically_needy_income_from_spouse(Variable):
         combined = _apply_ssi_exclusions(
             earned + spouse_earned, unearned + spouse_unearned, parameters, period
         )
-        applies = (
-            budgets_together
-            & person("is_ssi_aged_blind_disabled", period)
-            & ~person("is_ssi_spousal_deeming_applies", period)
+        split = spouses_split_by_facility(person, period)
+        budgeted_together = budgets_together & person(
+            "is_ssi_aged_blind_disabled", period
         )
-        return where(applies, max_(combined - alone, 0), 0)
+        counted = where(budgeted_together & ~split, max_(combined - alone, 0), 0)
+        # ssi_countable_income already holds SSI's deemed amount, which starts at
+        # SSI's threshold and is net of child allocations. Subtracting it leaves one
+        # method at every income, with no jump at that threshold.
+        deemed = person("ssi_income_deemed_from_ineligible_spouse", period)
+        return where(budgeted_together | split, counted - deemed, 0)
