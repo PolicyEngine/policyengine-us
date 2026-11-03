@@ -9,8 +9,10 @@ def co_ccap_parameter_instant(period) -> str:
     of the first modeled year, that October falls before the date to which
     CountryTaxBenefitSystem backdates parameters, where the CCAP parameters
     have no value. Those months read the parameters at the start of the
-    first modeled year instead: the same backdated values the model applies
-    from that October, with no value added before it.
+    first modeled year instead. There the CCAP parameters hold their
+    backdated values, and `gov.hhs.smi` still holds HHS's values for the
+    fiscal year that began the previous October. The helper backdates
+    nothing further.
     """
     year = period.start.year
     if period.start.month >= 10:
