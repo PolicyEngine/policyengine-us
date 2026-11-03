@@ -19,11 +19,12 @@ class sc_retirement_deduction_indv(Variable):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # line 1
         max_deduction_allowed = p.cap.calc(age)
-        # line 2
-        military_retirement_pay = person("military_retirement_pay", period)
+        # line 2: the military retirement deduction claimed, which covers
+        # armed forces retirement pay only.
+        military_retirement_deduction = person("sc_military_deduction_indv", period)
         # line 3
         retirement_deduction_available = max_(
-            max_deduction_allowed - military_retirement_pay, 0
+            max_deduction_allowed - military_retirement_deduction, 0
         )
         # line 4
         retirement_income = add(person, period, p.sources) * head_or_spouse

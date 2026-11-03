@@ -65,3 +65,17 @@
   output:
     sc_retirement_deduction_indv: 5_000
 
+
+- name: South Carolina line 2 subtracts only the military deduction claimed, so retirement pay outside the armed forces does not reduce the cap.
+  period: 2022
+  input:
+    taxable_pension_income: 1_000
+    military_retirement_pay: 11_000
+    military_retirement_pay_is_armed_forces: false
+    age: 70
+    is_tax_unit_head_or_spouse: true
+    state_code: SC
+  output:
+    sc_military_deduction_indv: 0
+    # Line 3: the cap less 0; line 5: min(cap, 1,000) = 1,000.
+    sc_retirement_deduction_indv: 1_000

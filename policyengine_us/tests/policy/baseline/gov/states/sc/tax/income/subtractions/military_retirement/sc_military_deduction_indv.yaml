@@ -15,3 +15,13 @@
     state_code: SC
   output:
     sc_military_deduction_indv: 0
+
+- name: South Carolina does not deduct retirement pay from a uniformed service outside the armed forces.
+  period: 2022
+  input:
+    state_code: SC
+    military_retirement_pay: 11_000
+    military_retirement_pay_is_armed_forces: false
+    is_tax_unit_head_or_spouse: true
+  output:
+    sc_military_deduction_indv: 0

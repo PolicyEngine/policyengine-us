@@ -100,3 +100,14 @@
     sc_military_deduction_indv: 20_000
     sc_military_deduction_survivors: 0
     sc_military_deduction: 20_000
+
+- name: South Carolina does not deduct a surviving spouse's annuity from a uniformed service outside the armed forces.
+  period: 2022
+  input:
+    state_code: SC
+    military_retirement_pay_survivors: 5_000
+    military_retirement_pay_is_armed_forces: false
+    is_surviving_spouse: true
+    is_tax_unit_head_or_spouse: true
+  output:
+    sc_military_deduction_survivors: 0

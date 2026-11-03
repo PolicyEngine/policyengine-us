@@ -18,7 +18,7 @@ class ri_military_retirement_subtraction(Variable):
     )
 
     def formula_2023_01_01(person, period, parameters):
-        retirement_pay = person("military_retirement_pay", period)
-        survivor_pay = person("military_retirement_pay_survivors", period)
+        retirement_pay = person("armed_forces_retirement_pay", period)
+        survivor_pay = person("armed_forces_retirement_pay_survivors", period)
         surviving_spouse = person("is_surviving_spouse", period)
         return retirement_pay + survivor_pay * surviving_spouse
