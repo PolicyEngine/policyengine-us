@@ -805,6 +805,13 @@ _SEHI_WITNESS_POLICY = dict(
     rates=(124, 29, 500),
     policy=_SEHI_WITNESS_POLICY | {"include_hi": True},
 )
+# HI on with 13,060 of OASDI room: line 5 still holds the whole gross draw,
+# not just the 14,141.85 the OASDI tax reaches.
+@example(
+    rows=[(40_000, 0, 0, 64_970.22, 150_000, 0)],
+    rates=(124, 29, 500),
+    policy=_SEHI_WITNESS_POLICY | {"include_hi": True},
+)
 # A half phase-in with HI off: line 5 counts the same half line 7 taxes.
 @example(
     rows=SEHI_HAND_CASE,

@@ -207,6 +207,31 @@
     # Main (draw left out of line 5) gives 38,594.37.
     self_employed_health_insurance_earned_income_limit: 39_464.37
 
+- name: With HI on and part of the draw in the OASDI room, the whole gross draw is in line 5
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.contrib.ssa.owners_draw.include_hi: true
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    payroll_tax_gross_wages: 150_000
+    self_employment_income: 40_000
+    s_corp_income: 64_970.22
+  output:
+    # Room 200,000 - 150,000 - 36,940 = 13,060 of the draw's 59,999.998.
+    owners_draw_oasdi_base: 13_060
+    owners_draw_hi_tax: 1_740
+    owners_draw_niit_exclusion: 64_970.22
+    # (4,580.56 + 1,071.26 + 1,619.44 + 1,740.00) / 2 = 4,505.63.
+    self_employment_tax_ald_person: 4_505.63
+    # Line 5: 104,970.22; line 6: 0.3810605; 40,000 - 1,716.92 = 38,283.08.
+    # Counting only the OASDI-taxed 14,141.85 would give 36,671.24; main 35,494.37.
+    self_employed_health_insurance_earned_income_limit: 38_283.08
+
 - name: A half phase-in counts the same half in line 5 as line 7 taxes
   period: 2027
   absolute_error_margin: 0.02
