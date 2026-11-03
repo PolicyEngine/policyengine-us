@@ -5,10 +5,9 @@ description: Texas limits the total copayment to this share of family income und
 # sliding fee scale. In July 2024, it adopted this 7% cap in §809.19, effective
 # July 29, 2024. TWC put the statewide scale off until it launched its TX3C
 # case management system (WD 06-24, Change 2), and the cap with it (WD 20-24),
-# so each Board kept setting its own scale. TWC launched TX3C on January 13,
-# 2025, and then phased in the statewide scale and this cap as families
-# enrolled or recertified. PolicyEngine applies the cap to every earlier month
-# back to 2015.
+# so each Board kept setting its own scale. From TX3C's launch on January 13,
+# 2025, TWC phased in the statewide scale and this cap as families enrolled or
+# recertified. PolicyEngine applies the cap to every earlier month back to 2015.
 values:
   2025-01-01: 0.07  # Actual effective date: 2025-01-13
 metadata:

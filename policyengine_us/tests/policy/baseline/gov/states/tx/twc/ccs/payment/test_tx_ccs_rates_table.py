@@ -23,12 +23,12 @@ patterns, and they hold school-age Texas School Ready rates to the 5 percent
 floor too.
 
 Each check runs over all 4,032 cells of both board contract years. A test fails
-when someone types a value into the wrong cell and it breaks one of these
-bounds. Outside relative care, copying a part-time rate into a full-time cell
-breaks one whenever the copy changes the value. The checks can still pass if
-someone types a regular rate too low or a Three- or Four-Star rate too high, or
-copies a rate from another age group. They check relative care rates only for
-schedule order, so a typo in one passes unless it breaks that order, and
+when someone types a value into the wrong cell and the value breaks one of
+these bounds. Outside relative care, copying a part-time rate into a full-time
+cell breaks one whenever the copy changes the value. The checks can still pass
+if someone types a regular rate too low or a Three- or Four-Star rate too high,
+or copies a rate from another age group. They check relative care rates only
+for schedule order, so a typo in one passes unless it breaks that order, and
 copying a part-time rate into the full-time cell often doesn't. The YAML tests
 pin single cells to TWC's tables.
 """

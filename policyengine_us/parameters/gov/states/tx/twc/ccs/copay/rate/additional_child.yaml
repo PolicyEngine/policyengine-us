@@ -11,10 +11,9 @@ description: Texas uses this share as the additional child copayment factor unde
 # sliding fee scale. On November 7, 2022, it adopted a statewide method to
 # assess each family's share. TWC put both off until it launched its TX3C case
 # management system (WD 06-24, Change 2), so each Board kept setting its own
-# scale (WD 24-23 for BCY 2024, WD 20-24 for BCY 2025). TWC launched TX3C on
-# January 13, 2025, and then phased in this statewide scale as families
-# enrolled or recertified. PolicyEngine applies it to every earlier month back
-# to 2015.
+# scale (WD 24-23 for BCY 2024, WD 20-24 for BCY 2025). From TX3C's launch on
+# January 13, 2025, TWC phased in this statewide scale as families enrolled or
+# recertified. PolicyEngine applies it to every earlier month back to 2015.
 
 values:
   2025-01-01: 0.015  # Actual effective date: 2025-01-13

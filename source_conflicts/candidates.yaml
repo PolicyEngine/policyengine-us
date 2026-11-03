@@ -8650,8 +8650,9 @@ candidates:
       November 7, 2022, to TX3C. Until then, TWC had each Board set its own amounts on TWC's income ranges (WD 24-23 and
       WD 20-24). In its waiver request, TWC said it would phase the statewide scale in from January 13, 2025, as
       families enroll or recertify.
-  example: A single parent in the Panhandle with one child in care and $2,000 a month of income pays $110 a month in
-    September 2024 on the Board's chart. On TWC's statewide scale, PolicyEngine computes $88.45 for the same month.
+  example: A single parent in the Panhandle with $2,000 a month of income has one child, whose care the Board
+    subsidizes. On the Board's chart, the parent pays $110 a month in September 2024; on TWC's statewide scale,
+    PolicyEngine computes $88.45 for the same month.
   pe_us:
     follows: statute
     code:
@@ -8663,17 +8664,17 @@ candidates:
   state: ruled
   note: 'On 2026-11-02, PolicyEngine picked each Board''s own scale where it has the Board''s chart for the period, and
     TWC''s statewide scale for a Board without one and for every family from TX3C''s launch. Draft #10623 adds those
-    Board scales. At this PR, PE-US models no Board scale: it dates TWC''s statewide scale from January 2025, when TWC
-    began phasing it in, and applies it to every earlier month too.'
+    Board scales. Until #10623 merges, PE-US models no Board scale. It dates TWC''s statewide scale from January 2025,
+    when TWC began phasing it in, and applies that scale to every earlier month too.'
 - id: us-tx:ccs-rate-age-groups-before-tx3c
   program: child-care-assistance
   years:
     from: 2024
     to: 2025
     type: federal-fiscal
-  question: From December 1, 2023 to January 12, 2025, do Workforce Boards set Texas Child Care Services provider payment
-    rates for the eight age groups that TWC's Commission set in 40 TAC §809.20(a)(3) to meet S.B. 1555's deadline, or
-    for the four groups that TWC kept in its rate tables until it launched TX3C?
+  question: From December 1, 2023 to January 12, 2025, do Workforce Boards set rates for the eight age groups that TWC's
+    Commission defined in 40 TAC §809.20(a)(3) to meet S.B. 1555's deadline, or for the four groups that TWC kept in its
+    rate tables until it launched TX3C?
   sources:
   - kind: statute
     citation: Texas Government Code §2308.315
