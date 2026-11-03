@@ -480,7 +480,15 @@ def apply_trustees_2026_economic_assumptions(
         end_year=end_year,
         cap=parameters.gov.contrib.ssa.owners_draw.current_law_cap,
     )
-    extend_social_security_wage_indexed_parameters(parameters, end_year=end_year)
+    # Read the wage base from that copy, not the live cap, for the same
+    # reason: a reform that changes only the payroll cap must not move the
+    # benefit wage base when the reform set runs again. A reform that means
+    # to move it sets the wage base itself.
+    extend_social_security_wage_indexed_parameters(
+        parameters,
+        end_year=end_year,
+        cap=parameters.gov.contrib.ssa.owners_draw.current_law_cap,
+    )
     apply_trustees_2026_path_readers(parameters, end_year=end_year)
 
 
