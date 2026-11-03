@@ -791,7 +791,7 @@
     # Line 33: 50,500.
     mi_household_resources: 50_500
 
-- name: Social Security survivors benefits paid for a child count on line 21
+- name: Social Security survivors benefits paid for a child are the child's, not the claimant's
   period: 2025
   input:
     people:
@@ -812,12 +812,14 @@
   output:
     # Line 14: 30,000. Line 15: 0; the child's 400 of interest is the
     # child's own income.
-    # Line 21: "Include death benefits and amounts received for minor
-    # children or other dependent adults who live with you": 9,000.
-    # Line 33: 30,000 + 9,000 = 39,000.
-    mi_household_resources: 39_000
+    # Line 21: 0. MCL 206.508(3) defines the household as "a claimant and
+    # spouse"; the child's benefit is received by the child, even with the
+    # claimant as representative payee. The statute governs RAB 2015-18 and
+    # the line 21 instructions, which count benefits for minor children.
+    # Line 33: 30,000.
+    mi_household_resources: 30_000
 
-- name: SSI and child support received for a child count on lines 21 and 22
+- name: Child support received for a child counts on line 22 but the child's SSI does not
   period: 2025
   input:
     people:
@@ -836,13 +838,13 @@
         members: [person1, person2]
         state_code: MI
   output:
-    # Line 14: 20,000. Line 21: SSI received for a minor child, 6,000.
-    # Line 22: "child support and all payments received as a foster
-    # parent", 4,800.
-    # Line 33: 20,000 + 6,000 + 4,800 = 30,800.
-    mi_household_resources: 30_800
+    # Line 14: 20,000. Line 21: 0; the child's SSI is the child's own
+    # (MCL 206.508(3)). Line 22: "child support and all payments received
+    # as a foster parent", paid to the claimant, 4,800.
+    # Line 33: 20,000 + 4,800 = 24,800.
+    mi_household_resources: 24_800
 
-- name: A dependent adult's Social Security counts but the dependent's pension does not
+- name: Neither a dependent adult's Social Security nor the dependent's pension counts
   period: 2025
   input:
     people:
@@ -874,10 +876,10 @@
   output:
     # Line 14: 50,000. Line 18: 0; the dependent parent's pension is the
     # parent's own income.
-    # Line 21: amounts received for "other dependent adults who live with
-    # you", 15,000.
-    # Line 33: 50,000 + 15,000 = 65,000.
-    mi_household_resources: 65_000
+    # Line 21: 0; the dependent parent's Social Security is the parent's
+    # own (MCL 206.508(3)).
+    # Line 33: 50,000.
+    mi_household_resources: 50_000
 
 - name: A dependent's capital loss does not reduce the claimant's line 19
   period: 2025
@@ -956,14 +958,14 @@
     # Line 33: 10,000 + 6,000 = 16,000.
     mi_household_resources: 16_000
 
-- name: Premiums paid for a child's coverage reduce household resources on line 31
+- name: Premiums the claimant paid for family coverage reduce line 31 but a child's own premium does not
   period: 2025
   input:
     people:
       person1:
         age: 40
         employment_income_before_lsr: 40_000
-        health_insurance_premiums: 2_400
+        health_insurance_premiums: 3_600
       person2:
         age: 9
         health_insurance_premiums: 1_200
@@ -975,9 +977,9 @@
         members: [person1, person2]
         state_code: MI
   output:
-    # Line 31: "insurance premiums you paid for yourself and your family",
-    # 2,400 + 1,200 = 3,600, reading the child's premium as one the claimant
-    # paid for the child's coverage.
+    # Line 31: "insurance premiums you paid for yourself and your family":
+    # the claimant's 3,600, which covers the child (MCL 206.510(1)). The
+    # 1,200 on the child's record is a premium the child paid.
     # Line 33: 40,000 - 3,600 = 36,400.
     mi_household_resources: 36_400
 
@@ -1473,3 +1475,102 @@
   output:
     charitable_deduction_for_non_itemizers: 300
     mi_household_resources: 40_000
+
+- name: A dependent adult's own SSI and personally paid premiums are excluded
+  period: 2025
+  input:
+    people:
+      claimant:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income: 10_000
+      dependent:
+        age: 75
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ssi: 9_444
+        health_insurance_premiums: 1_000
+    tax_units:
+      tax_unit:
+        members: [claimant, dependent]
+    spm_units:
+      spm_unit:
+        members: [claimant, dependent]
+        tanf: 0
+    households:
+      household:
+        members: [claimant, dependent]
+        state_code: MI
+  output:
+    # MCL 206.508(3)-(4) and 206.510(1): the claimant's 10,000 of earnings;
+    # the dependent's own 9,444 SSI and the 1,000 of premiums the dependent
+    # paid are not the claimant's.
+    mi_household_resources: 10_000
+
+- name: Claimant-paid family premiums come off once while a dependent adult's SSI is excluded
+  period: 2025
+  input:
+    people:
+      claimant:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income: 10_000
+        health_insurance_premiums: 1_000
+      dependent:
+        age: 75
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ssi: 9_444
+    tax_units:
+      tax_unit:
+        members: [claimant, dependent]
+    spm_units:
+      spm_unit:
+        members: [claimant, dependent]
+        tanf: 0
+    households:
+      household:
+        members: [claimant, dependent]
+        state_code: MI
+  output:
+    # 10,000 earnings - 1,000 claimant-paid family premiums (MCL 206.510(1))
+    # = 9,000. The dependent's 9,444 SSI is the dependent's own.
+    mi_household_resources: 9_000
+
+- name: A spouse's own Social Security and SSI count in full
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 12_000
+      spouse:
+        age: 68
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        ssi: 3_000
+        social_security_retirement: 6_000
+      child:
+        age: 15
+        is_tax_unit_dependent: true
+        social_security_survivors: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MI
+  output:
+    # Line 21: the claimant's and spouse's own benefits, 12,000 + 6,000 +
+    # 3,000 = 21,000. The child's 5,000 is the child's own.
+    mi_household_resources: 21_000

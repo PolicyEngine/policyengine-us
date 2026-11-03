@@ -237,8 +237,8 @@
   output:
     tx_ccs_payment_rate: 0
 
-- name: BCY25 - Capital Area Relative Reg 6 months Full Time, no such rating.
-  period: 2025-01
+- name: BCY25 - Capital Area Relative Reg 6 months Full Time, from the four-age table
+  period: 2025
   input:
     age: 0.5
     is_disabled: false
@@ -249,9 +249,325 @@
     tx_ccs_care_schedule: FULL_TIME
     childcare_attending_days_per_month: 20
     state_code: TX
-    county: TRAVIS_COUNTY_TX
+    tx_ccs_workforce_board_region: CAPITAL_AREA
   output:
-    tx_ccs_payment_rate: 0
+    # Four-age Infant full-time rate 14.44 * 20 in January to September 2025.
+    # BCY 2026 prints the same rate from October.
+    tx_ccs_payment_rate:
+      2025-01: 288.8
+      2025-09: 288.8
+      2025-10: 288.8
+
+- name: BCY25 - Capital Area Relative None reads the same rate as Reg
+  period: 2025
+  input:
+    age: 0.5
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RELATIVE
+    tx_ccs_provider_rating: NONE
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: CAPITAL_AREA
+  output:
+    # 14.44 * 20
+    tx_ccs_payment_rate:
+      2025-06: 288.8
+      2025-10: 288.8
+
+- name: BCY25 - Capital Area Relative TSR 6 months Full Time, no such rating
+  period: 2025
+  input:
+    age: 0.5
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RELATIVE
+    tx_ccs_provider_rating: TSR
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: CAPITAL_AREA
+  output:
+    tx_ccs_payment_rate:
+      2025-06: 0
+
+- name: Four-age table - Capital Area Relative Reg reads the rate TWC labels None
+  period: 2024
+  input:
+    age: 0.5
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RELATIVE
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: CAPITAL_AREA
+  output:
+    # 14.44 * 20
+    tx_ccs_payment_rate:
+      2024-11: 288.8
+
+- name: Four-age table - Capital Area Relative None reads the rate TWC labels None
+  period: 2024
+  input:
+    age: 0.5
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RELATIVE
+    tx_ccs_provider_rating: NONE
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: CAPITAL_AREA
+  output:
+    # 14.44 * 20
+    tx_ccs_payment_rate:
+      2024-11: 288.8
+
+- name: Four-age table - Capital Area Relative TRS2 6 months Full Time, no such rating
+  period: 2024
+  input:
+    age: 0.5
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RELATIVE
+    tx_ccs_provider_rating: TRS2
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: CAPITAL_AREA
+  output:
+    tx_ccs_payment_rate:
+      2024-11: 0
+
+- name: BCY25 - North Texas Relative 3yr Full Time, as the Board's January 13, 2025 sheet prints
+  period: 2025
+  input:
+    age: 3
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RELATIVE
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: NORTH_TEXAS
+  output:
+    # 8.42 * 20
+    tx_ccs_payment_rate:
+      2025-02: 168.4
+
+- name: BCY25 - North Texas Relative 2yr Part Time, as the Board's January 13, 2025 sheet prints
+  period: 2025
+  input:
+    age: 2
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RELATIVE
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: PART_TIME
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: NORTH_TEXAS
+  output:
+    # 7.68 * 20
+    tx_ccs_payment_rate:
+      2025-02: 153.6
+
+- name: BCY25 to BCY26 - Brazos Valley Relative 8yr Part Time falls with TWC's October table
+  period: 2025
+  input:
+    age: 8
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RELATIVE
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: PART_TIME
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: BRAZOS_VALLEY
+  output:
+    # Four-age school-age part-time rate 5.35 * 20 through September 2025.
+    # BCY 2026 prints 5.23, so 5.23 * 20 from October.
+    tx_ccs_payment_rate:
+      2025-09: 107
+      2025-10: 104.6
+
+- name: BCY25 to BCY26 - Capital Area LCCC Reg 8yr Blended
+  period: 2025
+  input:
+    age: 8
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCC
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: BLENDED
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: CAPITAL_AREA
+  output:
+    # (175 * 42.20 + 30 * 52.60) / 205 = 43.72, the rate TWC's four-age table prints; 43.72 * 20.
+    # BCY 2026 prints 45.26, so 45.26 * 20 from October.
+    tx_ccs_payment_rate:
+      2025-01: 874.4
+      2025-09: 874.4
+      2025-10: 905.2
+
+- name: BCY25 to BCY26 - Capital Area LCCC Reg 4yr Blended
+  period: 2025
+  input:
+    age: 4
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCC
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: BLENDED
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: CAPITAL_AREA
+  output:
+    # (175 * 44.20 + 30 * 55.40) / 205 = 45.84; 45.84 * 20.
+    # BCY 2026 prints 47.03, so 47.03 * 20 from October.
+    tx_ccs_payment_rate:
+      2025-06: 916.8
+      2025-10: 940.6
+
+- name: BCY25 - Capital Area Relative 8yr Blended
+  period: 2025
+  input:
+    age: 8
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RELATIVE
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: BLENDED
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: CAPITAL_AREA
+  output:
+    # (175 * 6.08 + 30 * 12.00) / 205 = 6.95, the rate TWC's four-age table prints; 6.95 * 20.
+    tx_ccs_payment_rate:
+      2025-06: 139
+
+- name: BCY25 - Capital Area LCCC Reg 3yr Blended, no such rate
+  period: 2025
+  input:
+    age: 3
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCC
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: BLENDED
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: CAPITAL_AREA
+  output:
+    tx_ccs_payment_rate:
+      2025-06: 0
+
+- name: BCY25 - Golden Crescent LCCH Reg 6-13yr Part Time, corrected to TWC's table
+  period: 2025
+  input:
+    age: 8
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCH
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: PART_TIME
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: GOLDEN_CRESCENT
+  output:
+    # 22.80 * 20; TWC's TRS2 rate of 23.95 is 5 percent above it.
+    tx_ccs_payment_rate:
+      2025-03: 456
+
+- name: BCY26 - Permian Basin LCCC TRS4 12-17 months Full Time, corrected to TWC's table
+  period: 2026
+  input:
+    age: 1.25
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCC
+    tx_ccs_provider_rating: TRS4
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: PERMIAN_BASIN
+  output:
+    # 42.80 * 20
+    tx_ccs_payment_rate:
+      2026-01: 856
+
+- name: BCY26 - Permian Basin LCCH Reg 3yr Full Time, corrected to TWC's table
+  period: 2026
+  input:
+    age: 3
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCH
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: PERMIAN_BASIN
+  output:
+    # 31.80 * 20
+    tx_ccs_payment_rate:
+      2026-01: 636
+
+- name: BCY26 - Permian Basin LCCH Reg 4yr Blended, corrected to TWC's table
+  period: 2026
+  input:
+    age: 4
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCH
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: BLENDED
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: PERMIAN_BASIN
+  output:
+    # 28.67 * 20
+    tx_ccs_payment_rate:
+      2026-01: 573.4
+
+- name: BCY26 - Rural Capital LCCH Reg 4yr Blended, corrected to TWC's table
+  period: 2026
+  input:
+    age: 4
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCH
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: BLENDED
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    tx_ccs_workforce_board_region: RURAL_CAPITAL
+  output:
+    # 39.39 * 20
+    tx_ccs_payment_rate:
+      2026-01: 787.8
 
 - name: BCY26 - ALAMO LCCC REG 4yr Blended Time
   period: 2026-01
