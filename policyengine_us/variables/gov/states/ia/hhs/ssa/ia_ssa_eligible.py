@@ -43,9 +43,13 @@ class ia_ssa_eligible(Variable):
             community | person("ia_ssa_rcf_couple_budget", period)
         )
         resource = where(couple, person.marital_unit.sum(resource), resource)
-        resource = resource + person("ia_ssa_resources_deemed_from_parents", period)
-        # Inputs are stored as float32, so compare whole cents with the limit.
-        resource = round_to_cents(resource)
+        # Balances are float32 inputs, so round their sum to cents. The
+        # parental share divides the excess as SSI does, and SSI sets no rule
+        # for rounding a share (SI 01330.200 B, 416.1202(b)(1)), so it is
+        # added unrounded.
+        resource = round_to_cents(resource) + person(
+            "ia_ssa_resources_deemed_from_parents", period
+        )
         # 6-B Resources prints "$2,000 for an individual" and "$3,000 for a
         # married couple living together" under 20 CFR 416.1202; these equal
         # the SSI limits of 20 CFR 416.1205, so the federal parameters are used

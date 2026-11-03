@@ -33,7 +33,8 @@ class is_medically_needy_for_medicaid(Variable):
         # includes their deemed income. SSI's allocation gates apply: a child
         # whose own resources exceed the SSI individual limit, or who fails
         # SSI's immigration test, is deemed nothing.
-        personal_assets = person("ssi_countable_resources", period) + person(
+        personal_assets = person("ssi_countable_resources", period)
+        deemed_assets = person(
             "ssi_resources_deemed_from_ineligible_parent", period.first_month
         )
         # SSI financial responsibility rules (42 CFR 435.602): the unit is
@@ -57,8 +58,11 @@ class is_medically_needy_for_medicaid(Variable):
         income = marital_unit.sum(
             personal_income - medical_expenses - parental_expense_share
         )
-        # Inputs are stored as float32, so compare whole cents with the limit.
-        assets = round_to_cents(marital_unit.sum(personal_assets))
+        # Balances are float32 inputs, so round their sum to cents. The SSI
+        # parental share is an equal division with no rounding rule (SI
+        # 01330.200 B, 416.1202(b)(1)), so it is added unrounded.
+        own_assets = round_to_cents(marital_unit.sum(personal_assets))
+        assets = own_assets + marital_unit.sum(deemed_assets)
         ma = parameters(period).gov.hhs.medicaid
         mn = ma.eligibility.categories.medically_needy
         is_joint = marital_unit.nb_persons() == 2

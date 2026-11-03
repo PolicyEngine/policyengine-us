@@ -26,3 +26,71 @@
     state_code: IA
   output:
     ia_ssa_eligible: false
+
+# ia_ssa_resources_deemed_from_parents divides the parental excess among the
+# children as SSI does, and a certified share can be entered instead. A share
+# of 33.3333 (100 divided among three children) plus the child's 1,966.67 in
+# one account is 2,000.0033, over the limit: the share isn't rounded to
+# cents, as SSI sets no rounding rule for it (SI 01330.200 B).
+- name: A fractional share of parental excess counts against the resource limit
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+      child:
+        age: 10
+        bank_account_assets: 1_966.67
+        ia_ssa_resources_deemed_from_parents: 33.3333
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    tax_units:
+      family:
+        members: [parent, child]
+    households:
+      home:
+        members: [parent, child]
+        state_code: IA
+  output:
+    ia_ssa_eligible: [false, false]
+
+# A share of 25 (100 divided among four children) plus the child's 178.57 +
+# 1,522.79 + 273.64 = 1,975.00 is 2,000.00, at the limit. The child's float32
+# balances add to 1,975.0001 unless rounded to cents.
+- name: Three accounts plus a whole-cent share of parental excess at the limit pass
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+      child:
+        age: 10
+        bank_account_assets: 178.57
+        stock_assets: 1_522.79
+        bond_assets: 273.64
+        ia_ssa_resources_deemed_from_parents: 25
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    tax_units:
+      family:
+        members: [parent, child]
+    households:
+      home:
+        members: [parent, child]
+        state_code: IA
+  output:
+    ia_ssa_eligible: [false, true]
