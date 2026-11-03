@@ -232,8 +232,8 @@ def test_blended_rates_follow_the_formula(year):
 
 @pytest.mark.parametrize("year", YEARS)
 def test_part_time_and_blended_rates_within_full_time(year):
-    # Not a rule, but true of every TWC table: a part-time rate above the
-    # full-time rate means a value landed in the wrong column.
+    # Not a rule, but true of both tables: a part-time rate above the full-time
+    # rate means a value landed in the wrong column.
     failures = []
     for key, row in TABLES[year].items():
         for age in AGES:
