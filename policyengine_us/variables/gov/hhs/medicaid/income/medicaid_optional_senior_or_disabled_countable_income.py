@@ -80,9 +80,13 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
         # premiums. Spousal income here follows SSI deeming (20 CFR 416.1163),
         # so that premium is not modeled, nor is MC 176's maintenance need
         # deduction for the spouse (lines 19 and 21; issue 10543).
+        # Premiums are counted before the Medicaid Part B buy-in, which starts
+        # only once Medicaid finds the person eligible (42 USC 1395v(d)(2)(C)).
         part_b_enrolled = person("medicare_part_b_enrolled", period)
-        paid_premiums = person("medical_expense_health_insurance_premiums", period)
-        paid_part_b = person("medicare_part_b_premium", period) * part_b_enrolled
+        paid_premiums = person("medicaid_eligibility_health_insurance_premiums", period)
+        paid_part_b = (
+            person("medicare_part_b_premium_before_buy_in", period) * part_b_enrolled
+        )
         full_part_b = person("gross_medicare_part_b_premium", period) * part_b_enrolled
         disregards_part_b = p.disregards_medicare_part_b_premium[state].astype(bool)
         own_premiums = where(

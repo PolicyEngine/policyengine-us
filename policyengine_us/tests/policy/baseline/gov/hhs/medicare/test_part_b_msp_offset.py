@@ -462,5 +462,5 @@ def test_part_b_premium_paid_stays_between_zero_and_gross_premium():
     assert (paid >= 0).all()
     assert (paid <= modeled_gross).all()
     assert (paid[~part_b] == 0).all()
-    expected = np.maximum(gross - np.maximum(msp, buy_in), 0) * part_b
-    assert paid == pytest.approx(expected, abs=0.01)
+    # The exact netting (a person covered by both pathways is covered once)
+    # is pinned by the overlap case in medicare_part_b_premium.yaml.

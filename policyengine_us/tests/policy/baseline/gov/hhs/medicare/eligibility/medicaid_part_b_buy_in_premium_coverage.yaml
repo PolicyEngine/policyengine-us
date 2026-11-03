@@ -28,14 +28,99 @@
   output:
     medicaid_part_b_buy_in_premium_coverage: 0
 
-- name: SSI recipients in Section 209(b) states are not covered by this variable.
-  # Connecticut is a 209(b) state; its SSI-recipient Medicaid test deducts
-  # this premium, so reading it here would be circular.
+- name: A 209(b) SSI recipient who spends down to Medicaid gets the standard premium paid.
+  # Connecticut is a 209(b) state. Medical expenses of 40,000 plus the 2,220
+  # premium before the buy-in exceed countable income (at most
+  # 30,000 - 240 = 29,760), so the 42 CFR 435.121 spend-down makes the
+  # person categorically needy and in buy-in group 1 (42 CFR 407.42(b)(1)(i)).
   period: 2025
   input:
     age: 70
     taxable_interest_income: 30_000
+    other_medical_expenses: 40_000
     receives_ssi: true
     state_code: CT
   output:
-    medicaid_part_b_buy_in_premium_coverage: 0
+    is_209b_ssi_recipient_for_medicaid: true
+    medicaid_enrolled: true
+    medicaid_part_b_buy_in_premium_coverage: 2_220
+    medicare_part_b_premium: 0
+
+- name: A 209(b) SSI recipient with SSI in December only gets one month of buy-in.
+  # 185 x 12 = 2,220 base premium; one month of SSI buys in 185, leaving
+  # 2,035. is_209b_ssi_recipient_for_medicaid reads December's SSI.
+  period: 2025
+  input:
+    age: 70
+    taxable_interest_income: 30_000
+    other_medical_expenses: 40_000
+    receives_ssi:
+      2025-01: false
+      2025-02: false
+      2025-03: false
+      2025-04: false
+      2025-05: false
+      2025-06: false
+      2025-07: false
+      2025-08: false
+      2025-09: false
+      2025-10: false
+      2025-11: false
+      2025-12: true
+    state_code: CT
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+    medicaid_part_b_buy_in_premium_coverage: 185
+    medicare_part_b_premium: 2_035
+
+- name: SSI in December only buys in one month, not the whole year.
+  # 2026 base premium 202.90 x 12 = 2,434.80. The buy-in runs month by month
+  # (42 USC 1395v(d)(2)(C)): 202.90, leaving 2,231.90 for the enrollee.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    taxable_interest_income: 30_000
+    receives_ssi:
+      2026-01: false
+      2026-02: false
+      2026-03: false
+      2026-04: false
+      2026-05: false
+      2026-06: false
+      2026-07: false
+      2026-08: false
+      2026-09: false
+      2026-10: false
+      2026-11: false
+      2026-12: true
+    state_code: TX
+  output:
+    medicaid_part_b_buy_in_premium_coverage: 202.9
+    medicare_part_b_premium: 2_231.9
+
+- name: SSI in January only still buys in that month.
+  # 42 USC 1395v(d)(3)(A): coverage ends after SSI ends, so January's month
+  # counts: 202.90 buy-in, 2,231.90 for the enrollee.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    taxable_interest_income: 30_000
+    receives_ssi:
+      2026-01: true
+      2026-02: false
+      2026-03: false
+      2026-04: false
+      2026-05: false
+      2026-06: false
+      2026-07: false
+      2026-08: false
+      2026-09: false
+      2026-10: false
+      2026-11: false
+      2026-12: false
+    state_code: TX
+  output:
+    medicaid_part_b_buy_in_premium_coverage: 202.9
+    medicare_part_b_premium: 2_231.9

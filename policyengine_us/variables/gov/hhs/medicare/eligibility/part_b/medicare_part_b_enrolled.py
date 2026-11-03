@@ -14,8 +14,8 @@ class medicare_part_b_enrolled(Variable):
     )
     definition_period = YEAR
     reference = (
-        "https://www.law.cornell.edu/uscode/text/42/1395o",
-        "https://www.law.cornell.edu/cfr/text/42/part-407/subpart-B",
+        "https://www.law.cornell.edu/uscode/text/42/1395o#a",
+        "https://www.ecfr.gov/current/title-42/section-407.10",
     )
 
     def formula(person, period, parameters):
