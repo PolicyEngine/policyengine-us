@@ -7623,9 +7623,71 @@ candidates:
     - policyengine_us/variables/gov/states/or/tax/income/subtractions/or_federal_tax_liability_subtraction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10038
+    - https://github.com/PolicyEngine/policyengine-us/pull/10093
   state: ruled
   note: 'Ruled in October 2026 to follow the worksheet; establish the statutory treatment before determining whether
     a model change is required. Code not yet on main: or_federal_tax_liability_subtraction.'
+- id: us-or:federal-tax-subtraction-niit
+  program: income-tax
+  years:
+    from: 2017
+    to: 2025
+    type: tax
+  question: Is the net investment income tax among the federal income taxes accrued that Oregon's federal-tax
+    subtraction allows, though the OR-17 worksheet's other-taxes line leaves it out?
+  sources:
+  - kind: statute
+    citation: ORS 316.680(1)(b) and 316.685
+    url: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html
+  - kind: worksheet
+    citation: 2025 OR-17 federal tax worksheet, Part A, PDF pp.71-72 (each year 2017-2025)
+    url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71
+  readings:
+    statute: The statute allows federal income taxes accrued and names only the EITC and payroll and self-employment
+      taxes as left out, so it does not settle whether the section 1411 tax counts.
+    other: The worksheet's other-taxes line does not include the net investment income tax.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/or/tax/income/subtractions/or_federal_tax_liability_subtraction.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10093
+  state: unreviewed
+  note: 'Code not yet on main: the subtraction nets the net investment income tax out of the federal tax, following
+    the worksheet as the administering agency''s reading where the text is open.'
+- id: us-or:federal-tax-subtraction-unlisted-refundable-credits
+  program: income-tax
+  years:
+    from: 2017
+    to: 2025
+    type: tax
+  question: Do refundable credits the OR-17 worksheet does not list, such as the additional child tax credit outside
+    2021 and the refundable payroll tax credit, reduce Oregon's federal-tax subtraction?
+  sources:
+  - kind: statute
+    citation: ORS 316.680(1)(b) and 316.685(1)(b)
+    url: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html
+  - kind: guidance
+    citation: 2025 Publication OR-17, PDF p.71
+    url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71
+  - kind: worksheet
+    citation: 2025 OR-17 federal tax worksheet, Part A, PDF pp.71-72 (each year 2017-2025)
+    url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71
+  readings:
+    statute: The statute allows federal income taxes accrued and leaves out only the EITC; it does not say how other
+      refundable credits count.
+    other: The publication's prose says credits other than the EITC reduce the subtraction, but the worksheet subtracts
+      only the credits it lists for each year.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/or/tax/income/subtractions/or_federal_tax_liability_subtraction.py
+    - policyengine_us/parameters/gov/states/or/tax/income/subtractions/federal_tax_liability/refundable_credits.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10093
+  state: unreviewed
+  note: 'Code not yet on main: refundable_credits.yaml lists only the worksheet''s credits, the same
+    prose-against-worksheet question as us-or:claim-of-right-federal-tax-subtraction.'
 - id: us-or:liheap-final-payment-band-bound
   program: liheap
   years:

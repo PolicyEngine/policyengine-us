@@ -23,11 +23,12 @@ class or_federal_tax_liability_subtraction(Variable):
             .gov.states["or"]
             .tax.income.subtractions.federal_tax_liability
         )
-        # Federal tax worksheet, line 5: federal income tax after nonrefundable
-        # credits plus the other taxes on Schedule 2, lines 8, 16 and 17. The
-        # worksheet leaves out the net investment income tax (Schedule 2, line
-        # 12) and Social Security and Medicare taxes on unreported tips and
-        # wages (lines 5 and 6; ORS 316.685(3)(a)).
+        # Federal tax worksheet, Part A: federal tax after nonrefundable
+        # credits plus the other income taxes the worksheet lists for the year
+        # (from 2021, Schedule 2, lines 8, 16 and 17, and some line 10
+        # homebuyer repayments). Every year leaves out the net investment
+        # income tax and the Social Security and Medicare tax on unreported
+        # tips and wages (ORS 316.685(3)).
         tax_before_refundable_credits = tax_unit(
             "income_tax_before_refundable_credits", period
         ) - add(
