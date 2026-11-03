@@ -820,14 +820,24 @@ def extend_social_security_payroll_cap(
 def extend_social_security_wage_indexed_parameters(
     parameters: ParameterNode,
     end_year: int,
+    *,
+    cap: Optional[Parameter] = None,
 ) -> None:
-    """Extend SSA wage-indexed benefit parameters with statutory lag and rounding."""
+    """Extend SSA wage-indexed benefit parameters with statutory lag and rounding.
+
+    The wage base for each year from 2027 is set to the contribution and
+    benefit base. `cap` defaults to `gov.irs.payroll.social_security.cap`.
+    Pass another parameter that holds the base, such as a copy of it, to read
+    the wage base from that parameter instead, so a reform that changes only
+    the payroll cap doesn't move the wage base when this runs after it.
+    """
     ssa = parameters.gov.ssa
     social_security = ssa.social_security
     nawi = ssa.nawi
 
     wage_base = social_security.wage_base
-    payroll_cap = parameters.gov.irs.payroll.social_security.cap
+    if cap is None:
+        cap = parameters.gov.irs.payroll.social_security.cap
     qc_threshold = social_security.quarters_of_coverage_threshold
     earnings_test = social_security.earnings_test
     pia = social_security.pia.formula_factors
@@ -839,7 +849,7 @@ def extend_social_security_wage_indexed_parameters(
 
         wage_base.update(
             period=period,
-            value=payroll_cap(f"{year}-01-01"),
+            value=cap(f"{year}-01-01"),
         )
 
         qc_threshold.update(

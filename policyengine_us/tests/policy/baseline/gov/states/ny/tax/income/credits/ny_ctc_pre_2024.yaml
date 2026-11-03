@@ -405,3 +405,58 @@
   output:
     ny_ctc_pre_2024_eligible: false
     ny_ctc_pre_2024: 0
+
+# The pre-TCJA branch copies the parent's cache, so this case lists the
+# current-law federal credit first: the branch must recompute it, not read it.
+- name: 2023 pre-TCJA credit recomputes the federal CTC after the current-law CTC
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # Current law: $2,000 per child.
+    ctc: 2_000
+    # Pre-TCJA: $1,000 per child, under the $75,000 head-of-household
+    # phase-out threshold. Federal tax is (30,000 - 20,800) x 10% = 920, so
+    # 920 is nonrefundable and the other 80 refundable (15% x (30,000 -
+    # 3,000) = 4,050 exceeds it): 1,000. 33% x 1,000 = 330, above the $100
+    # minimum. The 2023 minimum age is zero, so the child aged 3 counts.
+    ny_ctc_pre_2024: 330
+
+# A supplied ctc_qualifying_child is the current-law determination; the
+# pre-TCJA branch recomputes it under the pinned rules.
+- name: 2023 pre-TCJA eligibility recomputes a supplied federal qualifying-child flag
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+      child:
+        age: 6
+        ctc_qualifying_child: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # The child qualifies under the pre-TCJA rules, so the credit is the
+    # same 33% x 1,000 = 330 as above.
+    ny_ctc_pre_2024_eligible: true
+    ny_ctc_pre_2024: 330
