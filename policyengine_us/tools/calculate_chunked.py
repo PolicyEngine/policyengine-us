@@ -208,6 +208,9 @@ def _household_positions(dataset):
 class _EntityTables:
     """Entity-table datasets: chunks are dataset objects of the same type."""
 
+    # Chunks copy every column, so no stored name is left out.
+    unmatched = ()
+
     def __init__(self, dataset):
         self.dataset = dataset
         self.years = (
@@ -295,7 +298,19 @@ class _VariableCentricFile:
                 "supported; convert them to one of those layouts."
             )
         self.arrays = {}
-        with h5py.File(self.path, "r") as file:
+        # Stored names that match no country-system variable, left out of
+        # chunk files; calculate_chunked checks them against the factory's.
+        self.unmatched = []
+        try:
+            file = h5py.File(self.path, "r")
+        except OSError as error:
+            # h5py raises OSError for a file with an .h5 suffix that is not HDF5.
+            raise ValueError(
+                f"{self.path} is not an entity-table HDFStore or a "
+                "variable-centric .h5 file. Flat-file datasets are not "
+                "supported; convert them to one of those layouts."
+            ) from error
+        with file:
             names = list(file.keys())
             if not names or isinstance(file[names[0]], h5py.Dataset):
                 raise ValueError(
@@ -309,7 +324,9 @@ class _VariableCentricFile:
                 elif name in system.variables:
                     entity = system.variables[name].entity.key
                 else:
-                    # Core's loader ignores names that match no variable.
+                    # Core's loader ignores names that match no variable in
+                    # the simulation's system; a reform can add one.
+                    self.unmatched.append(name)
                     continue
                 if not isinstance(file[name], h5py.Group):
                     raise ValueError(f"{name} must be a group of one array per period.")
@@ -424,7 +441,9 @@ def calculate_chunked(
     type. For a variable-centric file it receives ``str`` path to a temporary
     file in the same layout, holding every stored period with its dtype under
     the source file's name, for ``Microsimulation(dataset=path)``. Names that
-    match no variable are left out, as Core's loader ignores them. Only one
+    match no country-system variable are left out, as Core's loader ignores
+    them; the helper raises if the factory's system (a reform, say) defines
+    one. Only one
     chunk file exists at once; it is deleted after its chunk, on failure too.
     Flat files are not supported.
 
@@ -439,8 +458,9 @@ def calculate_chunked(
     Input weights are never rescaled. Only one chunk simulation is live at once.
 
     This is exact for household-local calculations. Known Medicaid state
-    aggregates, the household and SPM unit income deciles, and external
-    claiming-tax-unit links are rejected. A rejected variable with a stored
+    aggregates, the household and SPM unit income deciles, external
+    claiming-tax-unit links, and a chunk holding exactly one of several
+    marital units (which pairs SSI spouses differently) are rejected. A rejected variable with a stored
     value returns that value, since no formula runs. Custom reform formulas
     must also be household-local: population reductions, ranking and random
     draws depending on population order are not supported.
@@ -481,12 +501,32 @@ def calculate_chunked(
         masks = {
             entity: assignments[owners] == chunk for entity, owners in positions.items()
         }
+        if masks["marital_unit"].sum() == 1 < len(masks["marital_unit"]):
+            raise ValueError(
+                "A chunk holding exactly one marital unit can pair SSI spouses "
+                "differently from the whole file (_ssi_spouses.py); use fewer "
+                "chunks or different household_chunks."
+            )
         chunk_dataset = None
         simulation = None
         try:
             chunk_dataset = source.chunk(masks)
             simulation = sim_factory(chunk_dataset)
             _guard(simulation)
+            dropped = (
+                sorted(
+                    set(source.unmatched) & set(simulation.tax_benefit_system.variables)
+                )
+                if source.unmatched
+                else []
+            )
+            if dropped:
+                raise ValueError(
+                    f"{', '.join(dropped)} are stored in the file and defined by "
+                    "the factory's system but not the country system, so chunk "
+                    "files cannot carry them. Store them in an entity-table "
+                    "dataset or add the variables to the country system."
+                )
             for name in variables:
                 entity = simulation.tax_benefit_system.get_variable(
                     name, check_existence=True

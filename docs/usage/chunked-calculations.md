@@ -39,8 +39,10 @@ array's dtype, fixed-width byte strings included, so the factory can call
 `Microsimulation(dataset=path)`. The source arrays stay on disk and are read
 again for each chunk. Each array is assigned to the entity of its variable in
 the country system; arrays whose length differs from that entity's count are
-rejected, and names that match no variable are left out, as Core's loader
-ignores them. Membership role arrays (`person_<group>_role`), which Core also
+rejected, and names that match no country-system variable are left out, as
+Core's loader ignores them. The helper raises when the factory's system (a
+reform, say) defines a name it left out, since Core would load that name in an
+unchunked simulation. Membership role arrays (`person_<group>_role`), which Core also
 reads, are kept with the people. Entity IDs and memberships must be identical
 in every stored period. Only one chunk file exists at once; it is deleted after
 its chunk, also when the factory or a calculation fails.
@@ -81,8 +83,8 @@ whole-file chain does. A guarded variable with a stored value returns that
 value, because no formula reduces across the chunk. Known Medicaid
 claiming-tax-unit links crossing households are also rejected. The SSI spouse
 pairing also tests whether the whole simulation holds a single marital unit, so
-a chunk with exactly one marital unit can differ from the whole file; this is
-not guarded. Custom reform formulas remain the caller's responsibility:
+a chunk with exactly one marital unit can differ from the whole file; such
+chunks are rejected. Custom reform formulas remain the caller's responsibility:
 cross-household reductions, order-dependent random draws and other global
 dependencies are unsupported. These are calculation restrictions, not an
 assumption that every model variable can be chunked.
@@ -120,6 +122,5 @@ no-inclusion tax, and HI remains the signed residual. No per-unit floor is
 introduced. See [OASDI modeled liabilities and benefits](social-security-oasdi-accounting.md)
 for the accounting these outputs feed.
 
-The hub will add measured full-dataset peak memory and timing after running its
-memory probe. Small-fixture exactness establishes correctness, not a measured
-full-population RSS reduction.
+The PR records measured full-dataset peak memory and timing; small-fixture
+exactness establishes correctness, not an RSS bound.

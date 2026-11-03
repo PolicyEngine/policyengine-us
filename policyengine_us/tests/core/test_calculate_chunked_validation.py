@@ -23,19 +23,25 @@ from policyengine_us.tools.calculate_chunked import (
 )
 
 YEAR = 2026
+MARITAL_UNIT_IDS = [91, 92, 37, 38]
 
 
 @pytest.fixture
 def dataset():
+    # Two households of two people. Each person is their own marital unit, so
+    # a one-household chunk holds two marital units and passes the SSI-spouse
+    # guard; every other entity has one row per household.
     ids = np.asarray([91, 37])
-    person = pd.DataFrame({"person_id": [503, 101]})
+    person = pd.DataFrame({"person_id": [503, 504, 101, 102]})
     for entity in US_ENTITIES:
-        if entity != "person":
-            person[f"person_{entity}_id"] = ids
+        if entity not in ("person", "marital_unit"):
+            person[f"person_{entity}_id"] = np.repeat(ids, 2)
+    person["person_marital_unit_id"] = MARITAL_UNIT_IDS
     tables = {"person": person}
     for entity in US_ENTITIES:
-        if entity != "person":
+        if entity not in ("person", "marital_unit"):
             tables[entity] = pd.DataFrame({f"{entity}_id": ids})
+    tables["marital_unit"] = pd.DataFrame({"marital_unit_id": MARITAL_UNIT_IDS})
     tables["household"]["household_weight"] = [1.5, 2.25]
     return USSingleYearDataset(**tables, time_period=YEAR)
 
@@ -88,7 +94,7 @@ def test_rejects_duplicate_entity_ids(dataset, entity):
 
 @pytest.mark.parametrize("entity", ["tax_unit", "spm_unit", "family", "marital_unit"])
 def test_rejects_entity_spanning_households(dataset, entity):
-    dataset.person[f"person_{entity}_id"] = [91, 91]
+    dataset.person[f"person_{entity}_id"] = 91
     with pytest.raises(ValueError, match=f"{entity} spans multiple households"):
         calculate(dataset)
 
@@ -113,7 +119,7 @@ def test_rejects_unreferenced_group_entity(dataset, entity):
 
 
 def test_rejects_external_claiming_tax_unit(dataset):
-    dataset.person["medicaid_claiming_tax_unit_id"] = [37, 91]
+    dataset.person["medicaid_claiming_tax_unit_id"] = [37, 37, 91, 91]
     with pytest.raises(ValueError, match="claiming_tax_unit_id crosses households"):
         calculate(dataset)
 
@@ -121,7 +127,7 @@ def test_rejects_external_claiming_tax_unit(dataset):
 def test_rejects_changed_multi_year_memberships(dataset):
     other = dataset.copy()
     other.time_period = str(YEAR + 1)
-    other.person["person_tax_unit_id"] = [37, 91]
+    other.person["person_tax_unit_id"] = [37, 37, 91, 91]
     multi = USMultiYearDataset(datasets=[dataset, other])
     with pytest.raises(ValueError, match="memberships must be identical"):
         calculate(multi)
@@ -361,9 +367,9 @@ class InputSimulation:
 
 
 def test_skips_empty_chunks_and_preserves_native_and_projected_weights(dataset):
-    dataset.person["employment_income"] = [10_000.0, 25_000.0]
+    dataset.person["employment_income"] = [10_000.0, 0.0, 25_000.0, 0.0]
     # Core uses projected household weights; native input columns still survive.
-    dataset.person["person_weight"] = [999.0, 888.0]
+    dataset.person["person_weight"] = [999.0, 998.0, 888.0, 887.0]
     snapshots = []
 
     def factory(chunk):
@@ -381,7 +387,9 @@ def test_skips_empty_chunks_and_preserves_native_and_projected_weights(dataset):
     np.testing.assert_array_equal(
         result.entities["person"].person_id, dataset.person.person_id
     )
-    np.testing.assert_array_equal(result.entities["person"].weight, [1.5, 2.25])
+    np.testing.assert_array_equal(
+        result.entities["person"].weight, [1.5, 1.5, 2.25, 2.25]
+    )
     np.testing.assert_array_equal(
         result.entities["household"].household_weight, [1.5, 2.25]
     )
@@ -389,7 +397,9 @@ def test_skips_empty_chunks_and_preserves_native_and_projected_weights(dataset):
     np.testing.assert_array_equal(
         pd.concat(snapshots).person_weight, dataset.person.person_weight
     )
-    np.testing.assert_array_equal(dataset.person.person_weight, [999.0, 888.0])
+    np.testing.assert_array_equal(
+        dataset.person.person_weight, [999.0, 998.0, 888.0, 887.0]
+    )
 
 
 @pytest.mark.parametrize("route", ["baseline", "branch", "popped_branch"])
@@ -511,13 +521,17 @@ class FileSimulation:
 
 @pytest.fixture
 def variable_centric(tmp_path, dataset):
-    dataset.person["person_household_role"] = ["member", "member"]
-    dataset.person["employment_income"] = [10_000.0, 25_000.0]
+    dataset.person["person_household_role"] = ["member"] * 4
+    dataset.person["employment_income"] = [10_000.0, 0.0, 25_000.0, 0.0]
     extra = [
         # Core ignores names that match no variable, whatever their length.
         ("not_a_policyengine_variable", PERIODS[1], np.arange(5)),
         # A period stored for one variable only must survive too.
-        ("employment_income", "2024", np.asarray([1.0, 2.0], dtype=np.float32)),
+        (
+            "employment_income",
+            "2024",
+            np.asarray([1.0, 2.0, 3.0, 4.0], dtype=np.float32),
+        ),
     ]
     return write_variable_centric(tmp_path / "population_2026.h5", dataset, extra=extra)
 
@@ -561,10 +575,19 @@ def test_variable_centric_chunks_keep_periods_dtypes_and_name(variable_centric):
                 for period, (dtype, values) in simulation.contents[name].items():
                     stored = source[name][period]
                     assert dtype == stored.dtype
-                    np.testing.assert_array_equal(values, stored[()][[row]])
+                    # People and marital units: two rows per household.
+                    entity = (
+                        "person"
+                        if name.endswith("_role")
+                        else system.variables[name].entity.key
+                    )
+                    per = 2 if entity in ("person", "marital_unit") else 1
+                    np.testing.assert_array_equal(
+                        values, stored[()][row * per : (row + 1) * per]
+                    )
         assert source["person_household_role/2026"].dtype == np.dtype("S6")
     roles = [s.contents["person_household_role"]["2026"][1] for s in simulations]
-    np.testing.assert_array_equal(np.concatenate(roles), [b"member", b"member"])
+    np.testing.assert_array_equal(np.concatenate(roles), [b"member"] * 4)
 
 
 def test_variable_centric_chunk_file_is_deleted_after_factory_error(variable_centric):
@@ -594,11 +617,11 @@ def _rewrite(path, name, periods, values):
 @pytest.mark.parametrize(
     "name, values, match",
     [
-        ("employment_income", [1.0, 2.0, 3.0], r"employment_income/2025.*person has 2"),
+        ("employment_income", [1.0, 2.0, 3.0], r"employment_income/2025.*person has 4"),
         ("household_weight", [1.0], r"household_weight/2025.*household has 2"),
-        ("person_tax_unit_id", [91, 91], "tax_unit spans multiple households"),
+        ("person_tax_unit_id", [91] * 4, "tax_unit spans multiple households"),
         ("household_id", [91, 91], "household_id must be unique"),
-        ("person_household_id", [91, 999], "existing household"),
+        ("person_household_id", [91, 91, 999, 999], "existing household"),
     ],
 )
 def test_variable_centric_rejects_invalid_arrays(variable_centric, name, values, match):
@@ -612,7 +635,8 @@ def test_variable_centric_rejects_invalid_arrays(variable_centric, name, values,
 def test_variable_centric_rejects_ids_that_change_across_periods(
     variable_centric, name
 ):
-    _rewrite(variable_centric, name, PERIODS[:1], np.asarray([37, 91]))
+    count = 2 if name == "household_id" else 4
+    _rewrite(variable_centric, name, PERIODS[:1], np.repeat([37, 91], count // 2))
     with pytest.raises(ValueError, match="identical across stored periods"):
         calculate(str(variable_centric))
 
@@ -627,7 +651,7 @@ def test_variable_centric_rejects_missing_membership(variable_centric):
 def test_variable_centric_rejects_external_claiming_tax_unit(variable_centric):
     with h5py.File(variable_centric, "a") as file:
         file.create_dataset(
-            f"medicaid_claiming_tax_unit_id/{PERIODS[0]}", data=[37, 91]
+            f"medicaid_claiming_tax_unit_id/{PERIODS[0]}", data=[37, 37, 91, 91]
         )
     with pytest.raises(ValueError, match="claiming_tax_unit_id crosses households"):
         calculate(str(variable_centric))
@@ -648,16 +672,31 @@ def test_rejects_flat_and_periodless_array_files(tmp_path, dataset):
         calculate(str(arrays))
 
 
-# Formulas that read a weight or build a MicroSeries can reduce across the
-# simulation. Each must be a weight variable's own definition, listed here
-# with the reason it stays household-local, or guarded in chunks.
+# Formulas that read a weight, build a MicroSeries, test an entity count or
+# draw random numbers can depend on the whole simulation. Each must be a weight
+# variable's own definition, listed here with the reason it is safe in chunks,
+# or guarded in chunks.
 _HOUSEHOLD_LOCAL_WEIGHT_READERS = {}
+_CHUNK_SAFE_POPULATION_READERS = {
+    # Tests whether the simulation holds one marital unit. calculate_chunked
+    # rejects a chunk holding exactly one of several marital units.
+    "gov/ssa/ssi/eligibility/resources/deemed/_ssi_spouses.py": "chunk guard",
+}
 _POPULATION_SIGNAL = re.compile(
-    r"MicroSeries|[\"'](?:" + "|".join(US_ENTITIES) + r")_weight[\"']|\.weights\b"
+    r"MicroSeries|[\"'](?:"
+    + "|".join(US_ENTITIES)
+    + r")_weight[\"']|\.weights\b|\.count\s*==|np\.random|default_rng"
 )
 
 
 def test_population_formulas_are_guarded_or_listed():
+    """Scan variable sources for population signals.
+
+    The scan sees weight reads, MicroSeries, ``.count ==`` tests of entity
+    sizes and NumPy random draws. It cannot see other whole-array reductions
+    (``np.sum``, ``np.unique``, sorting) or branches on ``.any()``/``.all()``,
+    and it does not read ``reforms/``; those still need review by hand.
+    """
     root = Path(__file__).resolve().parents[2] / "variables"
     unguarded = []
     for path in sorted(root.rglob("*.py")):
@@ -670,6 +709,7 @@ def test_population_formulas_are_guarded_or_listed():
             defined & {f"{entity}_weight" for entity in US_ENTITIES}
             or defined & _POPULATION_AGGREGATES
             or relative in _HOUSEHOLD_LOCAL_WEIGHT_READERS
+            or relative in _CHUNK_SAFE_POPULATION_READERS
         ):
             continue
         unguarded.append(relative)
@@ -677,3 +717,111 @@ def test_population_formulas_are_guarded_or_listed():
         "Guard these in calculate_chunked._POPULATION_AGGREGATES or list them "
         f"with a reason: {unguarded}"
     )
+
+
+def _spouse_and_dependent_households():
+    """Household 1: a 70-year-old and a 40-year-old dependent in one marital
+    and tax unit, the dependent holding $100,000 of countable resources.
+    Household 2: one 30-year-old.
+
+    Unchunked, ssi is [0, 0, 0] and spousal resource deeming applies to the
+    first person. Household 1 alone holds one marital unit, so _ssi_spouses
+    rules the pair out as a couple and the first person's ssi is $11,928.
+    """
+    person = pd.DataFrame(
+        {
+            "person_id": [1, 2, 3],
+            "age": [70, 40, 30],
+            "is_tax_unit_dependent": [False, True, False],
+            "ssi_countable_resources": [0.0, 100_000.0, 0.0],
+        }
+    )
+    tables = {"person": person}
+    for entity in US_ENTITIES:
+        if entity != "person":
+            person[f"person_{entity}_id"] = [1, 1, 2]
+            tables[entity] = pd.DataFrame({f"{entity}_id": [1, 2]})
+    tables["household"]["household_weight"] = [1.0, 1.0]
+    return USSingleYearDataset(**tables, time_period=YEAR)
+
+
+def test_rejects_chunk_holding_one_of_several_marital_units():
+    households = _spouse_and_dependent_households()
+    with pytest.raises(ValueError, match="exactly one marital unit"):
+        calculate(households, household_chunks=[0, 1])
+    # The whole file in one chunk holds both marital units and is accepted.
+    result = calculate_chunked(
+        InputSimulation,
+        ["household_weight"],
+        YEAR,
+        2,
+        dataset=households,
+        household_chunks=[0, 0],
+    )
+    assert result.weighted_sums == {"household_weight": 2.0}
+
+
+def test_non_hdf5_file_with_h5_suffix_gets_flat_file_error(tmp_path, dataset):
+    path = tmp_path / "population.h5"
+    dataset.person.to_csv(path, index=False)
+    with pytest.raises(ValueError, match="Flat-file datasets are not supported"):
+        calculate(str(path))
+
+
+def _reform_adding_an_input():
+    from policyengine_core.reforms import Reform
+    from policyengine_core.variables import Variable
+
+    from policyengine_us.entities import Person
+
+    class reform_only_input(Variable):
+        value_type = float
+        entity = Person
+        definition_period = "year"
+        label = "Input only a reform defines"
+
+    class reform_only_output(Variable):
+        value_type = float
+        entity = Person
+        definition_period = "year"
+        label = "Twice the reform-only input"
+
+        def formula(person, period, parameters):
+            return 2 * person("reform_only_input", period)
+
+    class AddInput(Reform):
+        def apply(self):
+            self.update_variable(reform_only_input)
+            self.update_variable(reform_only_output)
+
+    return AddInput
+
+
+def test_rejects_stored_names_only_the_factory_system_defines(tmp_path, dataset):
+    from policyengine_us import Microsimulation
+
+    stored = np.asarray([200.0, 400.0, 600.0, 800.0])
+    path = write_variable_centric(
+        tmp_path / "population.h5",
+        dataset,
+        extra=[("reform_only_input", str(YEAR), stored)],
+    )
+    reform = _reform_adding_an_input()
+    # Unchunked, Core loads the stored input through the reformed system; a
+    # chunk file, built against the country system, would leave it out.
+    whole = Microsimulation(dataset=str(path), reform=reform)
+    np.testing.assert_array_equal(
+        whole.calculate("reform_only_output", YEAR, use_weights=False), 2 * stored
+    )
+    whole.tax_benefit_system.simulation = None
+    del whole
+    before = _chunk_directories()
+    with pytest.raises(ValueError, match="reform_only_input are stored in the file"):
+        calculate_chunked(
+            lambda chunk: Microsimulation(dataset=chunk, reform=reform),
+            ["reform_only_output"],
+            YEAR,
+            2,
+            dataset=str(path),
+        )
+    assert _chunk_directories() == before
