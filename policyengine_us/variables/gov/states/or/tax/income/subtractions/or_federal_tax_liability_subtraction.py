@@ -10,10 +10,24 @@ class or_federal_tax_liability_subtraction(Variable):
     reference = (
         # ORS 316.680(1)(b), 316.685 and 316.695(3).
         "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html",
-        # Publication OR-17, federal tax worksheet, Part A: PDF pages 71-72
-        # in 2025 and 72-73 in 2021.
-        "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71",
+        # 26 U.S.C. 1411(a)(1): the net investment income tax is imposed
+        # under Subtitle A.
+        "https://www.law.cornell.edu/uscode/text/26/1411#a_1",
+        # Publication OR-17, federal tax worksheet, Part A, the premium tax
+        # credit line (line 7, from 2025 line 8; 2021 line 11) and the 2021
+        # credit lines 2 and 8 to 13.
+        "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2017.pdf#page=63",
+        "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2018.pdf#page=68",
+        "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2019.pdf#page=63",
+        # PDF pages 65-66
+        "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2020.pdf#page=65",
+        # PDF pages 72-73
         "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2021.pdf#page=72",
+        "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2022.pdf#page=73",
+        "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2023.pdf#page=73",
+        "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2024.pdf#page=71",
+        # PDF pages 71-72
+        "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71",
     )
     defined_for = StateCode.OR
 
@@ -23,23 +37,24 @@ class or_federal_tax_liability_subtraction(Variable):
             .gov.states["or"]
             .tax.income.subtractions.federal_tax_liability
         )
-        # Federal tax worksheet, Part A: federal tax after nonrefundable
-        # credits plus the other income taxes the worksheet lists for the year
-        # (from 2021, Schedule 2, lines 8, 16 and 17, and some line 10
-        # homebuyer repayments). Every year leaves out the net investment
-        # income tax and the Social Security and Medicare tax on unreported
-        # tips and wages (ORS 316.685(3)).
-        tax_before_refundable_credits = tax_unit(
+        # Federal tax after nonrefundable credits plus the other taxes in
+        # income_tax_before_refundable_credits. The net investment income tax
+        # stays in: it is imposed under Subtitle A (26 U.S.C. 1411(a)(1)), and
+        # ORS 316.685(3) does not exclude it. The employee Social Security and
+        # Medicare tax on unreported tips and wages comes out (ORS
+        # 316.685(3)(a)).
+        federal_tax = tax_unit(
             "income_tax_before_refundable_credits", period
-        ) - add(
-            tax_unit, period, ["net_investment_income_tax", "unreported_payroll_tax"]
-        )
-        # Only the refundable credits the worksheet lists reduce the liability.
-        # The earned income credit never does (ORS 316.685(1)(b)).
-        refundable_credits = add(tax_unit, period, p.refundable_credits)
-        or_federal_income_tax = max_(
-            0, tax_before_refundable_credits - refundable_credits
-        )
+        ) - tax_unit("unreported_payroll_tax", period)
+        # Every federal refundable credit except the earned income credit
+        # reduces the liability (ORS 316.685(1)(b)), and so does the premium
+        # tax credit (Form 8962, line 24), which the federal list omits.
+        federal_refundable_credits = parameters(period).gov.irs.credits.refundable
+        reducing_credits = [
+            credit for credit in federal_refundable_credits if credit != "eitc"
+        ] + ["assigned_aca_ptc"]
+        refundable_credits = add(tax_unit, period, reducing_credits)
+        or_federal_income_tax = max_(0, federal_tax - refundable_credits)
         # limit subtraction based on caps scaled to federal AGI
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
