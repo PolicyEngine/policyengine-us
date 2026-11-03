@@ -201,6 +201,22 @@ def apply_trustees_2025_economic_assumptions(
         last_projected_year=2035,
         end_year=end_year,
     )
+    # Extend the owners' draw copy on the same rule from its own values, not
+    # from the live cap, so a policy reform's cap can't become the copy's
+    # no-decrease floor when the reform set runs again.
+    current_law_cap = parameters.gov.contrib.ssa.owners_draw.current_law_cap
+    extend_social_security_payroll_cap(
+        parameters,
+        last_projected_year=2035,
+        end_year=end_year,
+        cap=current_law_cap,
+    )
     # The wage base and the other wage-indexed amounts follow the cap and the
-    # NAWI, so re-derive them from the Trustees path as well (#10452).
-    extend_social_security_wage_indexed_parameters(parameters, end_year=end_year)
+    # NAWI, so re-derive them from the Trustees path as well (#10452). Read
+    # the wage base from the copy, so a reform that changes only the payroll
+    # cap doesn't move it. A reform that means to move it sets it itself.
+    extend_social_security_wage_indexed_parameters(
+        parameters,
+        end_year=end_year,
+        cap=current_law_cap,
+    )
