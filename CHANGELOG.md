@@ -1,3 +1,10 @@
+## [2.93.0] - 2026-11-03
+
+### Added
+
+- Add exact household-chunked microsimulation calculations, including variable-centric population files, and share sequential TOB counterfactual tax calculations.
+
+
 ## [2.92.18] - 2026-11-03
 
 ### Fixed
