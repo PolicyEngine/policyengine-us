@@ -1,3 +1,24 @@
+## [2.94.6] - 2026-11-03
+
+### Fixed
+
+- Require a resident qualifying child and the statutory separation conditions for married separate filers, and for separated head-of-household filers from 2021, to receive the federal EITC, CalEITC, and credits that follow the federal marital rule. A head or spouse marked as separated meets the six-month living-apart condition by default. A new `is_separated_under_decree` input (default false) treats a head or spouse separated under a decree of divorce or separate maintenance as unmarried for the EITC, under IRC 7703(a)(2). New Jersey's EITC, including its childless age fallback, now follows the federal marital condition and, under N.J.S.A. 54A:4-7a.(3), bars every married separate filer unless a decree applies. Head-of-household status for a separated filer now requires a child resident for more than half the year and six months apart from the spouse (IRC 7703(b)). Washington's Working Families Tax Credit no longer meets the childless age test through a dependent's age.
+
+
+## [2.94.5] - 2026-11-03
+
+### Changed
+
+- Store California's state supplement payment standards as state shares on top of the federal benefit rate, so the standards follow each federal cost-of-living adjustment, and date the shares and food allowances from January 2013 using the levels SSA POMS lists for each year.
+
+
+## [2.94.4] - 2026-11-03
+
+### Fixed
+
+- Make ca_state_supplement_eligible_person true for blind or disabled dependents under 18, whom the model pays California's dependent supplement amount.
+
+
 ## [2.94.3] - 2026-11-03
 
 ### Fixed
