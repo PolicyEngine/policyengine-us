@@ -19,7 +19,7 @@ class nj_taking_property_tax_deduction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nj.tax.income.main
 
-        # follows NJ-1040 form Worksheet H
+        # Worksheet H compares the tax saving with the credit; this also counts the change in the refundable NJ CTC and CDCC (below).
         deduction = tax_unit("nj_potential_property_tax_deduction", period)
 
         # calculate taxes without deduction

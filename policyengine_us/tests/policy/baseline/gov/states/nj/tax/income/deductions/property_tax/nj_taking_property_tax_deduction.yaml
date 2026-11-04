@@ -78,6 +78,36 @@
   output:
     nj_taking_property_tax_deduction: false
 
+- name: Separate filer with a child gets no NJ child tax credit gain, so keeps the $50 credit
+  # Tax saving 463.75 - 416.50 = 47.25 < 50; a separate filer cannot claim the
+  # NJ child tax credit, so its bracket change adds nothing.
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 35
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SEPARATE
+        cohabitating_spouses: false
+        nj_property_tax_deduction_eligible: true
+        nj_potential_property_tax_deduction: 2_700
+        nj_taxable_income_before_property_tax_deduction: 30_500
+        cdcc: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    nj_ctc_qualifying_children: 1
+    nj_ctc_eligible: false
+    nj_taking_property_tax_deduction: false
+
 - name: Deduction that raises the NJ child and dependent care credit rate beats the $50 credit
   # Tax saving: (30,500 - 28,500) x 1.75% = 35. The NJ CDCC match rate rises
   # from 40% (over $30,000) to 50% (up to $30,000) of the $600 federal
@@ -107,6 +137,21 @@
     state_code: NJ
   output:
     nj_taking_property_tax_deduction: false
+
+- name: Deduction that lands NJ taxable income exactly on $30,000 gets the 50% NJ CDCC rate
+  # Tax saving: 500 x 1.75% = 8.75. At $30,000 the NJ CDCC rate is 50%, not
+  # 40%: 8.75 + 10% x $600 = 68.75 > 50.
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_eligible: true
+    nj_potential_property_tax_deduction: 500
+    nj_taxable_income_before_property_tax_deduction: 30_500
+    filing_status: SINGLE
+    cdcc: 600
+    state_code: NJ
+  output:
+    nj_taking_property_tax_deduction: true
 
 - name: Renter with one child takes the deduction and gets the higher NJ child tax credit
   # Wages $33,000 less $2,500 exemptions (1,000 personal + 1,500 dependent)
