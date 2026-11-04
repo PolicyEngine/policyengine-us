@@ -160,3 +160,26 @@
   output:
     ssi_countable_income: 0
     co_state_supplement_own_countable_income: 2_610
+
+- name: Case 8, SSI under $20 reduces the disregard that reaches earnings.
+  # A single client with $5 of SSI, $3/month of interest and $300/month of
+  # earnings. The $20 disregard covers the $3 of interest (3.549(A)(2)(c)).
+  # Under 3.549(A)(2)(f) the client's $20 share less gross unearned income,
+  # SSI included, reaches earnings: 20 - 3 - 5 = 12. Countable earned income
+  # is (300 - 12 - 65) / 2 = 111.50; countable unearned income is 0.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 40
+        is_ssi_disabled: true
+        interest_income: 36
+        employment_income: 3_600
+        ssi:
+          2026-01: 5
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_state_supplement_own_countable_income: 111.5

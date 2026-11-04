@@ -633,7 +633,118 @@
   output:
     co_state_supplement: 0
 
-- name: Case 33, in another person's household with other unearned income.
+- name: Case 33, a disabled SSI couple whose spouse draws a $1,014 pension keeps the head's grant.
+  # Both spouses are disabled and under 60; the spouse has a $1,014/month
+  # pension and the head has no income. SSI: couple payment
+  # 1,491 - (1,014 - 20) = 497, or 248.50 each. The spouse receives SSI, so
+  # 3.549(F) deems nothing to the head, whose AND-CS is the $994 standard less
+  # SSI: 994 - 248.50 = 745.50. The spouse counts 1,014 - 10 = 1,004
+  # of their own plus SSI, above $994, so gets 0.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_head: true
+      spouse:
+        age: 45
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 12_168
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [248.50, 248.50]
+    co_state_supplement_deemed_income: [0, 0]
+    co_state_supplement: [745.50, 0]
+
+- name: Case 34, a $1 higher pension doesn't end the head's grant.
+  # Both spouses are disabled and under 60; the spouse has a $1,015/month
+  # pension and the head has no income. SSI: couple payment
+  # 1,491 - (1,015 - 20) = 496, or 248 each. The spouse receives SSI, so
+  # 3.549(F) deems nothing to the head, whose AND-CS is the $994 standard less
+  # SSI: 994 - 248 = 746. The spouse counts 1,015 - 10 = 1,005
+  # of their own plus SSI, above $994, so gets 0.
+  # The spouse's own countable income, 995, exceeds the $994 individual
+  # rate, but 3.549(F)'s SSI limit is the one SSI applies to the person,
+  # and SSI's own test held the spouse within the couple rate.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_head: true
+      spouse:
+        age: 45
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 12_180
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [248, 248]
+    co_state_supplement_deemed_income: [0, 0]
+    co_state_supplement: [746, 0]
+
+- name: Case 35, an SSI couple's spouse with a $1,200 pension still has nothing deemed.
+  # Both spouses are disabled and under 60; the spouse has a $1,200/month
+  # pension and the head has no income. SSI: couple payment
+  # 1,491 - (1,200 - 20) = 311, or 155.50 each. The spouse receives SSI, so
+  # 3.549(F) deems nothing to the head, whose AND-CS is the $994 standard less
+  # SSI: 994 - 155.50 = 838.50. The spouse counts 1,200 - 10 = 1,190
+  # of their own plus SSI, above $994, so gets 0.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_head: true
+      spouse:
+        age: 45
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 14_400
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [155.50, 155.50]
+    co_state_supplement_deemed_income: [0, 0]
+    co_state_supplement: [838.50, 0]
+
+- name: Case 36, in another person's household with other unearned income.
   # $100/month of SSDI: SSI 662.67 - (100 - 20) = 582.67. Colorado counts
   # 100 + 331.33 - 20 = 411.33, so total countable income is
   # 582.67 + 411.33 = 994, the grant standard: not eligible (3.520.781(A)).
@@ -658,7 +769,7 @@
     co_state_supplement_countable_income: 4_936
     co_state_supplement: 0
 
-- name: Case 34, an SSI couple in another person's household.
+- name: Case 37, an SSI couple in another person's household.
   # SSI counts one-third of the $1,491 couple rate, 497, and pays 497 to each
   # spouse. Each spouse matches half the couple's ISM, 248.50, less their $10
   # share of the disregard: 238.50. Grant 994 - 497 - 238.50 = 258.50/month
@@ -698,7 +809,7 @@
     co_state_supplement_countable_income: [2_862, 2_862]
     co_state_supplement: [3_102, 3_102]
 
-- name: Case 35, before 2014 free shelter and food leave no grant.
+- name: Case 38, before 2014 free shelter and food leave no grant.
   # 2012: SSI pays two-thirds of $698, 465.33. 9 CCR 2503-2 3.250.22,
   # 3.250.222 count shelter and utilities (36.6%) and food (20.5%) of the
   # $698 standard, 398.56, less $20: 378.56. 698 - 465.33 - 378.56 < 0.
@@ -722,7 +833,7 @@
     co_ssa_in_kind_support_and_maintenance: 4_782.7
     co_state_supplement: 0
 
-- name: Case 36, 2014 changes from Colorado's maximum ISM to SSA's in March.
+- name: Case 39, 2014 changes from Colorado's maximum ISM to SSA's in March.
   # SSI pays two-thirds of $721, 480.67. January and February count the $260
   # maximum, less $20: grant 721 - 480.67 - 240 = 0.33. From March the
   # matching ISM is 240.33, less $20: grant 721 - 480.67 - 220.33 = 20.
@@ -746,7 +857,7 @@
   output:
     co_state_supplement: 200.67
 
-- name: Case 37, 2025 in another person's household.
+- name: Case 40, 2025 in another person's household.
   # SSI pays two-thirds of $967, 644.67; the matching ISM 322.33 less $20 is
   # 302.33. Grant 967 - 644.67 - 302.33 = 20/month, or 240/year.
   absolute_error_margin: 0.1
@@ -768,7 +879,7 @@
     ssi: 7_736
     co_state_supplement: 240
 
-- name: Case 38, before 2007 the presumed maximum value is counted.
+- name: Case 41, before 2007 the presumed maximum value is counted.
   # A single disabled renter with no income and outside shelter support in
   # January 2004. SSI counts its presumed maximum value, 564 / 3 + 20 = 208
   # (20 CFR 416.1140), less the $20 general exclusion, and pays

@@ -363,3 +363,70 @@
   output:
     co_state_supplement_deemed_income: [0, 4_800]
     co_state_supplement: [0, 1_128]
+
+- name: Case 11, a parent's income is not deemed to a client aged 18.
+  # A disabled SSI client aged 18 lives with a parent who earns $2,000/month
+  # and does not take up Medicaid. 3.549(E) deems a parent's income only to an
+  # unemancipated child under 18, so nothing is deemed.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 24_000
+        own_children_in_household: 1
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_head: true
+      client:
+        age: 18
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi: 500
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, client]
+    marital_units:
+      parent:
+        members: [parent]
+      client:
+        members: [client]
+    households:
+      household:
+        members: [parent, client]
+        state_code: CO
+  output:
+    co_state_supplement_deemed_income: [0, 0]
+
+- name: Case 12, a parent's income is deemed to a client aged 17.
+  # Case 11's household with the client aged 17. 3.549(E) deems the parent's
+  # income using the spouse calculation: (2,000 - 65) / 2 = 967.50/month.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 24_000
+        own_children_in_household: 1
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_head: true
+      client:
+        age: 17
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi: 500
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, client]
+    marital_units:
+      parent:
+        members: [parent]
+      client:
+        members: [client]
+    households:
+      household:
+        members: [parent, client]
+        state_code: CO
+  output:
+    co_state_supplement_deemed_income: [0, 967.5]

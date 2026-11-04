@@ -287,3 +287,10 @@ if hypothesis is not None:
     @hypothesis.given(st.lists(case(), min_size=1, max_size=8))
     def test_properties(cases):
         assert_properties(cases)
+
+else:  # pragma: no cover
+    # Report the property test as skipped, not absent, when hypothesis (in
+    # the dev extra) isn't installed.
+    @pytest.mark.skip(reason="hypothesis is not installed")
+    def test_properties():
+        pass

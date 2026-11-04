@@ -1,5 +1,6 @@
 - name: Single blind parent with non eligible dependent child
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -17,10 +18,12 @@
         members: [person1, person2]
         state_code: CA
   output:
-    ca_state_supplement_payment_standard: 8_448
+    # (943 + 324.32) * 12.
+    ca_state_supplement_payment_standard: 15_207.84
 
 - name: Married household with one blind and one disabled person, with a disabled dependent child, no food preparation and spouse in out of home care
   period: 2024-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -49,10 +52,12 @@
         living_arrangements_allow_for_food_preparation: false
   output:
     # Both spouses are aged, so the couple takes the higher of the one-blind
-    # rate, 1,295, and the aged couple amount with the food allowance, 1,167
-    # + 136 = 1,303 (WIC 12200(b), (d), (e)). With the 499 dependent amount
-    # and the 709 out-of-home care amount: 1,303 + 499 + 709 = 2,511.
-    ca_state_supplement_payment_standard: 2_511
+    # rate, 1,415 + 747.44 = 2,162.44, and the aged couple amount with the food
+    # allowance, 1,415 + 607.83 + 257.74 = 2,280.57 (WIC 12200(b), (d), (e)). The
+    # dependent amount is 943 + 97.27 = 1,040.27 and the out-of-home care amount
+    # is 2 * (943 + 632.07) - (1,415 + 607.83) = 1,127.31:
+    # 2,280.57 + 1,040.27 + 1,127.31 = 4,448.15.
+    ca_state_supplement_payment_standard: 4_448.15
 
 - name: Case A ,single disabled parent with non eligible dependent child.
   period: 2025-01
