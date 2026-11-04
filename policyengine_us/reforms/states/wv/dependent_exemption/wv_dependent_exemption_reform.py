@@ -84,8 +84,9 @@ def create_wv_dependent_exemption() -> Reform:
             # Add separated dependent exemption.
             dependent_exemption_amount = tax_unit("wv_dependent_exemption", period)
 
-            # Section 11-21-16(d) gives each claimable filer $500 in units
-            # without dependent members. Preserve existing allocation otherwise.
+            # Section 11-21-16(d) gives each claimable filer $500 on returns
+            # without lawful dependent exemptions; a child who adds no
+            # exemption leaves it alone. Preserve existing allocation otherwise.
             person = tax_unit.members
             claimable_filers = tax_unit.sum(
                 person("is_tax_unit_head_or_spouse", period)
@@ -95,10 +96,11 @@ def create_wv_dependent_exemption() -> Reform:
                 p_base.personal * own_exemptions
                 + p_base.base_personal * claimable_filers
             )
-            childless_claimable = (tax_unit("tax_unit_dependents", period) == 0) & (
+            exemptions = tax_unit("exemptions_count", period)
+            lawful_dependent_exemptions = exemptions - own_exemptions
+            childless_claimable = (lawful_dependent_exemptions == 0) & (
                 claimable_filers > 0
             )
-            exemptions = tax_unit("exemptions_count", period)
             ordinary_amount = where(
                 exemptions == 0,
                 p_base.base_personal,

@@ -238,8 +238,10 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             own_exemptions = tax_unit(
                 "head_spouse_count_not_dependent_elsewhere", period
             )
-            # Repeal preserves each childless claimable filer's statutory $500.
-            # Leave dependent-present allocation unchanged pending resolution.
+            # Repeal preserves each claimable filer's statutory $500. The
+            # ordinary amount counts only own exemptions, so dependents add
+            # nothing here and the per-filer amount applies whenever a filer
+            # can be claimed.
             person = tax_unit.members
             claimable_filers = tax_unit.sum(
                 person("is_tax_unit_head_or_spouse", period)
@@ -248,13 +250,10 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             filer_allowances = (
                 p.personal * own_exemptions + p.base_personal * claimable_filers
             )
-            childless_claimable = (tax_unit("tax_unit_dependents", period) == 0) & (
-                claimable_filers > 0
-            )
             ordinary_amount = where(
                 own_exemptions == 0, p.base_personal, p.personal * own_exemptions
             )
-            return where(childless_claimable, filer_allowances, ordinary_amount)
+            return where(claimable_filers > 0, filer_allowances, ordinary_amount)
 
     class ca_exemptions(Variable):
         value_type = float

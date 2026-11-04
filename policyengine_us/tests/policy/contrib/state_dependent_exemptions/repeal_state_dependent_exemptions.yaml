@@ -510,6 +510,26 @@
     households: {household: {members: [parent, child], state_name: WV}}
   output: {wv_personal_exemption: 500}
 
+- name: WV dependent exemption repeal - joint return with one claimable spouse and two children keeps the per-filer amount
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      parent1: {age: 40, employment_income: 60_000}
+      parent2:
+        age: 38
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent1, parent2, child1, child2], filing_status: JOINT}}
+    households: {household: {members: [parent1, parent2, child1, child2], state_name: WV}}
+  output:
+    # Repeal counts only own exemptions: $2,000 for parent1 plus $500 for
+    # the claimable spouse; the children add nothing.
+    wv_personal_exemption: 2_500
+
 - name: WV dependent exemption repeal - claimed childless filer keeps the zero-exemption amount
   period: 2025
   reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions

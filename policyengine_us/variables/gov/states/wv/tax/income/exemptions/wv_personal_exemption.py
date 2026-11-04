@@ -18,8 +18,10 @@ class wv_personal_exemption(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.wv.tax.income.exemptions
         # Section 11-21-16(d) grants each claimable individual $500.
-        # Limit this correction to units without dependent members: applying
-        # the single-exemption limit with dependents requires attribution.
+        # Limit this correction to returns without lawful dependent
+        # exemptions: applying the single-exemption limit when dependents
+        # add exemptions requires attribution. A child who adds no exemption
+        # (IRC 152(b)(1)) leaves the per-filer amount alone.
         person = tax_unit.members
         claimable_filers = tax_unit.sum(
             person("is_tax_unit_head_or_spouse", period)
@@ -29,11 +31,12 @@ class wv_personal_exemption(Variable):
         filer_allowances = (
             p.personal * own_exemptions + p.base_personal * claimable_filers
         )
-        childless_claimable = (tax_unit("tax_unit_dependents", period) == 0) & (
+        exemptions = tax_unit("exemptions_count", period)
+        lawful_dependent_exemptions = exemptions - own_exemptions
+        childless_claimable = (lawful_dependent_exemptions == 0) & (
             claimable_filers > 0
         )
         # Preserve the existing dependent allocation pending resolution.
-        exemptions = tax_unit("exemptions_count", period)
         ordinary_amount = where(
             exemptions == 0, p.base_personal, p.personal * exemptions
         )

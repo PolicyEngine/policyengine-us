@@ -229,7 +229,8 @@
     households: {household: {members: [parent1, parent2, child1, child2], state_name: WV}}
   output:
     exemptions_count: 1
-    wv_personal_exemption: 2_000
+    # The children add no exemption: $2,000 + $500 for the claimable spouse.
+    wv_personal_exemption: 2_500
 
 - name: WV dependent exemption reform - joint return with one claimable spouse and two children
   period: 2025
@@ -248,7 +249,8 @@
     households: {household: {members: [parent1, parent2, child1, child2], state_name: WV}}
   output:
     exemptions_count: 1
-    wv_personal_exemption: 2_000
+    # The children add no exemption: $2,000 + $500 for the claimable spouse.
+    wv_personal_exemption: 2_500
     wv_eligible_dependents_count: 0
     wv_older_dependents_count: 0
 
@@ -271,7 +273,8 @@
     households: {household: {members: [parent1, parent2, child1, child2], state_name: WV}}
   output:
     exemptions_count: 0
-    wv_personal_exemption: 500
+    # The children add no exemption: $500 for each claimable spouse.
+    wv_personal_exemption: 1_000
 
 - name: WV dependent exemption reform - joint return with both spouses claimable and two children
   period: 2025
@@ -294,7 +297,8 @@
     households: {household: {members: [parent1, parent2, child1, child2], state_name: WV}}
   output:
     exemptions_count: 0
-    wv_personal_exemption: 500
+    # The children add no exemption: $500 for each claimable spouse.
+    wv_personal_exemption: 1_000
     wv_eligible_dependents_count: 0
     wv_older_dependents_count: 0
 

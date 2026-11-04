@@ -183,8 +183,10 @@
         state_code: WV
   output:
     # IRC 152(b)(1): either spouse being claimable leaves the return no
-    # dependents; one exemption x $2,000 (the control below gets $6,000).
-    wv_personal_exemption: 2000
+    # dependents, so the child adds no exemption. One exemption x $2,000
+    # plus $500 for the claimable spouse (Section 11-21-16(d)); the control
+    # below gets $6,000.
+    wv_personal_exemption: 2500
 
 - name: "2025 joint return with one claimable spouse and a child: West Virginia personal exemption has no dependent exemption (the claimable spouse is the spouse)"
   period: 2025
@@ -212,7 +214,8 @@
         members: [person_b, person_a, child]
         state_code: WV
   output:
-    wv_personal_exemption: 2000
+    # The child adds no exemption: $2,000 + $500 for the claimable spouse.
+    wv_personal_exemption: 2500
 
 - name: "2025 joint return with neither spouse claimable and a child: West Virginia personal exemption"
   period: 2025
@@ -240,6 +243,41 @@
         state_code: WV
   output:
     wv_personal_exemption: 6000
+
+- name: "2025 joint return with both spouses claimable and two children: West Virginia personal exemption gives each claimable spouse $500"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 8000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 8000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child1:
+        age: 4
+      child2:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child1, child2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child1, child2]
+        state_code: WV
+  output:
+    # IRC 151(d)(2) and 152(b)(1): no own or dependent exemptions, so the
+    # children add nothing. Section 11-21-16(d): $500 for each claimable
+    # spouse, $1,000 in all.
+    exemptions_count: 0
+    wv_personal_exemption: 1000
 
 - name: 2025 single filer who can be claimed but whose would-be claimant meets the filing exception gets a West Virginia dependent exemption
   period: 2025
