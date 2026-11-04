@@ -143,12 +143,14 @@
     # Federal tax after nonrefundable credits is 0; a 1,000 additional tax on
     # an early retirement plan distribution remains.
     income_tax_before_refundable_credits: 1_000
-    refundable_ctc: 3_000
+    refundable_ctc: 600
     assigned_aca_ptc: 0
     eitc: 500
   output:
-    # max(0, 1,000 - 3,000); the 500 EITC does not reduce it.
-    or_federal_tax_liability_subtraction: 0
+    # 1,000 - 600 = 400. Counting the 500 EITC would give
+    # max(0, 1,000 - 600 - 500) = 0, and leaving out the additional child tax
+    # credit would give 1,000.
+    or_federal_tax_liability_subtraction: 400
 
 - name: Case 13, 2025 credits above the liability floor the subtraction at zero.
   period: 2025
