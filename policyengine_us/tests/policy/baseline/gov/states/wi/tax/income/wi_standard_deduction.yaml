@@ -408,3 +408,36 @@
     # Ordinary: 13,560 - 0.12 * (20,000 - 19,550) = 13,506.
     # Dependent limit: max(1,350, 0 + 450) = 1,350.
     wi_standard_deduction: 1_350
+
+- name: Wisconsin counts a claimable filer's farm income less the self-employment tax deduction as earned income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 22
+        farm_operations_income: 10_000
+        taxable_interest_income: 20_000
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    spm_units:
+      spm_unit:
+        members: [filer]
+        tanf: 0
+    households:
+      household:
+        members: [filer]
+        state_code: WI
+  output:
+    # SE tax deduction: 10,000 * 0.9235 * 0.153 / 2 = 706.48.
+    self_employment_tax_ald: 706.48
+    # AGI: 10,000 + 20,000 - 706.48 = 29,293.52.
+    wi_agi: 29_293.52
+    # Earned income: 10,000 - 706.48 = 9,293.52.
+    standard_deduction_worksheet_earned_income: 9_293.52
+    basic_standard_deduction: 9_743.52
+    # Ordinary: 13,560 - 0.12 * (29,293.52 - 19,550) = 12,390.78.
+    # Dependent limit: max(1,350, 9,293.52 + 450) = 9,743.52.
+    wi_standard_deduction: 9_743.52

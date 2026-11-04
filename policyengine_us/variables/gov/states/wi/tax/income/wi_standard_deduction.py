@@ -40,24 +40,14 @@ def wi_dependent_standard_deduction_limit(tax_unit, period, parameters):
     # joint return) can be claimed", using the return's earned income.
     # Returns infinity when no filer can be claimed.
     p = parameters(period).gov.irs.deductions.standard.dependent
-    # Worksheet line 1 uses earnings included in Wisconsin income: wages
-    # after pretax payroll deductions, plus net self-employment income.
-    # Taxable disability benefits received before the plan's minimum
-    # retirement age are wages for federal purposes (IRS Publication 907),
-    # so they count as earned income here as on the federal worksheet.
-    # Non-W-2 scholarship/grant income is excluded from these sources.
-    earned_income = add(
-        tax_unit.members,
-        period,
-        [
-            "irs_employment_income",
-            "self_employment_income",
-            "sstb_self_employment_income",
-            "earned_disability_benefits",
-        ],
-    )
-    is_filer = ~tax_unit.members("is_tax_unit_dependent", period)
-    earned_income = max_(tax_unit.sum(earned_income * is_filer), 0)
+    # Worksheet line 1 reuses the federal Standard Deduction Worksheet for
+    # Dependents' earned income: the head's and spouse's wages after pretax
+    # payroll deductions, taxable disability benefits received before the
+    # plan's minimum retirement age (wages for federal purposes, IRS
+    # Publication 907), and business and farm income, minus the deductible
+    # part of self-employment tax, summed on a joint return and floored at
+    # zero. Non-W-2 scholarship/grant income is not among these sources.
+    earned_income = tax_unit("standard_deduction_worksheet_earned_income", period)
     limit = max_(p.amount, earned_income + p.additional_earned_income)
     filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
     return where(filer_is_dependent, limit, np.inf)
