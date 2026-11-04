@@ -195,3 +195,30 @@
     ny_itemizes: false
     ny_deductions: 8_000
     ny_income_tax: 1_595
+
+- name: Case 9, a 2017 New York City resident whose federal choice is calculated, not given.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        real_estate_taxes: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+        in_nyc: true
+  output:
+    # Federal SALT adds New York City tax, which follows this election, so
+    # the federal choice must come from a branch (else CycleError).
+    # New York itemized 4,000 < standard 8,000: taxable income 42,000.
+    # City: 369.36 + 489.06 + 3.819% x 17,000 = 1,507.65, less
+    #   63 + 20.52 + 0.228% x 30,000 = 151.92: 1,355.73.
+    ny_itemizes: false
+    ny_deductions: 8_000
+    nyc_income_tax: 1_355.73
