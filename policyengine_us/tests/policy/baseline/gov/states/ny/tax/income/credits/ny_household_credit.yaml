@@ -31,9 +31,10 @@
     ny_income_tax_before_credits: 1000000
   output:
     ny_household_credit: 35
-- name: 2-person married filing separately tax unit with $16,000 income receives half
-    of a 4-person's with $32,000 income (above), rounded up.
+- name: 2-person married filing separately tax unit with $16,000 income receives exactly
+    half of a 4-person's with $32,000 income (above).
   period: 2021
+  absolute_error_margin: 0
   input:
     state_code: NY
     adjusted_gross_income: 16000
@@ -43,7 +44,10 @@
     spouse_separate_tax_unit_size: 2
     ny_income_tax_before_credits: 1000000
   output:
-    ny_household_credit: 18
+    # Combined AGI $32,000 is "not over $32,000": $20 base + $5 x (4 - 1) =
+    # $35. Tax Law 606(b)(3)(C) gives one-half, $17.50; IT-201 Table 3 rounds
+    # it up to $18. The model follows the statute.
+    ny_household_credit: 17.5
 - name: Simple ny_household_credit test
   absolute_error_margin: 0.01
   period: 2021
@@ -303,3 +307,26 @@
   output:
     # One exemption (the child): $60 base + $15 x (1 - 1).
     ny_household_credit_potential: 60
+
+- name: 2025 separate filer gets exactly one-half of the household credit, not Table 3's rounded amount
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person_a:
+        age: 40
+        employment_income: 2_500
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person_a]
+        state_code: NY
+  output:
+    # Combined AGI $2,500 + $2,500 = $5,000 (the spouse's separate return is
+    # assumed alike), which is "not over $5,000"; exemptions 1 + 1 = 2.
+    # Household amount: $90 base + $15 x (2 - 1) = $105. Tax Law 606(b)(3)(C)
+    # gives one-half, $52.50; IT-201 Table 3 prints $53 for two exemptions.
+    ny_household_credit_potential: 52.5

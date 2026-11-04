@@ -46,9 +46,12 @@ class ny_household_credit_potential(Variable):
         total_amount_if_not_single = max_(
             non_single_base + non_single_additional * (size - 1), 0
         )
-        amount_if_not_single = np.ceil(
-            total_amount_if_not_single / where(separate, 2, 1)
-        )
+        # Tax Law 606(b)(3)(C) permits a husband or wife filing a separate
+        # return "one-half the credit otherwise allowed his or her household".
+        # The IT-201 instructions say under Table 3 that "The credit amounts
+        # have been rounded", and the table rounds each half up to a whole
+        # dollar; the model follows the statute.
+        amount_if_not_single = total_amount_if_not_single / where(separate, 2, 1)
         non_single_amount = amount_if_not_single * ~single
         # Tax Law 606(b)(3)(B) defines a household as a husband and wife, a
         # head of household, a surviving spouse, or an unmarried individual

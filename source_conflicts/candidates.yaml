@@ -6468,7 +6468,7 @@ candidates:
 - id: us-nm:medical-expense-exemption-28000-boundary
   program: income-tax
   years:
-    from: 2023
+    from: 2021
     type: tax
   question: Must medical expenses exceed $28,000, or does exactly $28,000 qualify for the exemption?
   sources:
@@ -6496,8 +6496,10 @@ candidates:
   state: ruled
   note: 'An October 2026 ruling accepted the instructions; under the later statute-first rule PE-US follows the statute
     (#10300): expenses must exceed $28,000, so exactly $28,000 gives no exemption (nm_medical_expense_exemption.py).
-    The companion 65+ medical care credit (7-2-18.13) keeps its own "$28,000 or more" test. TRD processes returns
-    under the instructions, so results differ from the agency''s at exactly $28,000.'
+    The companion 65+ medical care credit (7-2-18.13) keeps its own "$28,000 or more" test. The instructions direct
+    filers to claim the exemption at $28,000 of expenses or more, so a return filed as instructed differs from the
+    model at exactly $28,000. The years start at 2021, the first year the model computes nm_medical_expense_exemption; the
+    statute''s text dates from Laws 2005, ch. 104, § 6.'
 - id: us-nm:mixed-spouse-dependent-credit-tests
   program: income-tax
   years:
@@ -6746,7 +6748,38 @@ candidates:
   note: 'An October 2026 ruling accepted the instructions; under the later statute-first rule PE-US follows Tax Law
     606(b)(3)(B) and 1310(d)(3)(B) (#10300): only claimable single filers are zeroed, other households count their
     federal exemptions (exemptions_count), and NYC separate filers get half the married credit on the couple''s AGI
-    and exemptions. DTF processes returns under item C, so results differ from the agency''s for these households.'
+    and exemptions. The instructions direct filers who mark item C Yes not to claim the credit, so a return filed as
+    instructed differs from the model for these households.'
+- id: us-ny:household-credit-separate-return-halving
+  program: income-tax
+  years:
+    from: 2015
+    type: tax
+  question: Does a married individual filing a separate return get exactly one-half of the household credit, or the
+    half amounts that IT-201 Tables 3 and 6 round up to whole dollars?
+  sources:
+  - kind: statute
+    citation: N.Y. Tax Law 606(b)(3)(C); 1310(d)(3)(C)
+    url: https://www.nysenate.gov/legislation/laws/TAX/606
+  - kind: instructions
+    citation: IT-201 instructions, 2025, household credit Tables 3 and 6 and their Note 5 ("The credit amounts have
+      been rounded"), under lines 40 and 48
+    url: https://www.tax.ny.gov/forms/html-instructions/2025/it/it201i-2025.htm#line-40
+  readings:
+    statute: Each spouse gets one-half the credit otherwise allowed the household, unrounded.
+    other: Tables 3 and 6 round each half amount up to a whole dollar.
+  example: New York City, combined AGI $16,000 and three exemptions, gives $37.50 by the statute and $38 by Table 6;
+    New York State, combined AGI $5,000 and two exemptions, gives $52.50 by the statute and $53 by Table 3.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ny/tax/income/credits/ny_household_credit_potential.py
+    - policyengine_us/variables/gov/local/ny/nyc/tax/income/credits/household/nyc_household_credit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10300
+  state: ruled
+  note: Both credits halve exactly, as the statute says; the tables round for the form. Section 606 authorizes
+    nearest-dollar tables only for the real property tax credit.
 - id: us-ny:real-property-credit-claimable-spouse
   program: income-tax
   years:
@@ -9779,8 +9812,8 @@ candidates:
   state: ruled
   note: Under the statute-first rule PE-US applies the strict below-threshold test (#10300). Act 138 struck the income
     test from 2022, so 2021 is the only affected year in the model; a 2021 filer at exactly the threshold takes the
-    24% nonrefundable credit instead. Vermont processed 2021 returns under the form, so results differ from the
-    agency's at exactly $30,000 or $40,000.
+    24% nonrefundable credit instead. The 2021 form directs filers whose AGI equals the threshold to treat it as
+    qualifying, so a return filed as instructed differs from the model at exactly $30,000 or $40,000.
 - id: us-vt:medical-deduction-without-federal-itemizing
   program: income-tax
   years:
