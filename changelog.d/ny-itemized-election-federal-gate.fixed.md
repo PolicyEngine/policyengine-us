@@ -1,1 +1,1 @@
-Require federal itemizing for New York itemized deductions only before 2018, and apply it to the deduction New York uses.
+Choose New York's itemized-or-standard deduction election by comparing New York State plus New York City income tax, so filers who pay college tuition keep the standard deduction and tuition credit when that costs less, and require federal itemizing for the New York itemized deduction only before 2018.

@@ -14,9 +14,9 @@ class ny_deductions(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
-        # ny_itemizes picks the larger deduction among those the filer may
-        # take: before 2018 a federal standard deduction filer must take the
-        # New York standard deduction (N.Y. Tax Law 615(a)).
+        # ny_itemizes makes the election: it itemizes when that gives less
+        # New York State plus City tax, and before 2018 only for a federal
+        # itemizer (N.Y. Tax Law 615(a)).
         return where(
             tax_unit("ny_itemizes", period),
             tax_unit("ny_itemized_deductions", period),
