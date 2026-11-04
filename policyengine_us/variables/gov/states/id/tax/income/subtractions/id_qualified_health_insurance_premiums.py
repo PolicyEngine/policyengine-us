@@ -31,5 +31,20 @@ class id_qualified_health_insurance_premiums(Variable):
         )
         # Dependents' federal deductions concern their excluded payments,
         # so they must not reduce the filers' qualifying premiums again.
-        deducted_elsewhere = tax_unit("self_employed_health_insurance_ald", period)
+        # The deduction's long-term care part (Form 7206 line 2) took no
+        # medical insurance premiums, so it does not reduce them.
+        person = tax_unit.members
+        person_deduction = max_(
+            0, person("self_employed_health_insurance_ald_person", period)
+        )
+        long_term_care_part = person_deduction - min_(
+            person("self_employed_health_insurance_premiums", period),
+            person_deduction,
+        )
+        filer = not_(person("is_tax_unit_dependent", period))
+        deducted_elsewhere = max_(
+            0,
+            tax_unit("self_employed_health_insurance_ald", period)
+            - tax_unit.sum(long_term_care_part * filer),
+        )
         return max_(0, premiums - deducted_elsewhere)
