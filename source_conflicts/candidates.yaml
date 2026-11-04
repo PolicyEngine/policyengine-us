@@ -303,7 +303,7 @@ candidates:
 - id: us-al:federal-tax-deduction-credit-list
   program: income-tax
   years:
-    from: 2015
+    from: 2018
     to: 2025
     type: tax
   question: Do all federal credits shown as payments reduce Alabama's federal income tax deduction, including net
@@ -331,9 +331,10 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10038
   state: ruled
-  note: Under the statute-first rule the code subtracts all federal payment credits (refundable AOC only, net premium
-    tax credit, section 1341 credit and a residual input) from 2015, the first year the parameter covers, because the
-    regulation's current text dates from a 2010 amendment. Worksheets before 2018 were not checked.
+  note: Under the statute-first rule the code applies the regulation's list, subtracting all federal payment credits
+    (refundable AOC only, net premium tax credit, section 1341 credit and a residual input), from 2015, the first year
+    the parameter covers, because the regulation's current text dates from a 2010 amendment. The item starts in 2018,
+    the first year whose worksheet PolicyEngine compared; worksheets before 2018 were not checked.
 - id: us-al:irrevocable-trust-loss-deduction
   program: income-tax
   years:
