@@ -24,7 +24,8 @@ patterns) and a seeded population in these states:
    offsets the other spouse's earnings, which is intended.
 3. Identities: with a filer claimable outside the filing exception there is no
    Louisiana dependent exemption, Maryland aged dependent exemption or child
-   tax credit, and no pro forma federal EITC without a child.
+   tax credit, and no pro forma federal EITC without a child. With every
+   filer claimable and no exemption allowed: no poverty line credit.
 4. Differential: wherever the federal EITC's eligibility holds, Maryland's
    pro forma federal EITC without the minimum age equals the federal credit
    before take-up and filing.
@@ -126,11 +127,20 @@ def _identities(sim, year):
         )
         > 0
     )
+    every = _calc(sim, "every_filer_is_dependent_elsewhere", year) > 0
+    no_exemption = _calc(sim, "md_personal_exemptions_count", year) == 0
     childless = _calc(sim, "eitc_child_count", year) == 0
     for name in ["la_dependents_exemption", "md_aged_dependent_exemption", "md_ctc"]:
         assert not _calc(sim, name, year)[no_dependents].any(), name
     pro_forma = _calc(sim, "federal_eitc_without_age_minimum", year)
     assert not pro_forma[no_dependents & childless].any()
+    unallowed = every & no_exemption
+    for name in [
+        "is_eligible_md_poverty_line_credit",
+        "md_poverty_line_credit",
+        "md_local_poverty_line_credit",
+    ]:
+        assert not _calc(sim, name, year)[unallowed].any(), name
     # Each tax unit has its own household, in the same order.
     state = np.asarray(sim.calculate("state_code_str", year))
     md, la = state == "MD", state == "LA"

@@ -29,6 +29,11 @@ class is_eligible_md_poverty_line_credit(Variable):
             "md_total_additions",
         ]
         agi_plus_md_additions = add(tax_unit, period, AGI_COMPONENTS)
+        # (2) keys the applicable poverty income level to the exemptions the
+        # individual "is allowed and claims under § 10-211(b)(1)". With no
+        # allowed exemption no guideline amount applies, so the filer cannot
+        # meet (i) or (ii).
+        has_exemption = tax_unit("md_personal_exemptions_count", period) > 0
         fpg = tax_unit("md_poverty_line_credit_income_level", period)
         agi_below_fpg = agi_plus_md_additions <= fpg
         # (ii)    whose earned income as defined under § 32(c)(2) of the
@@ -45,7 +50,10 @@ class is_eligible_md_poverty_line_credit(Variable):
         # This takes an actual claim under § 10-211 on another Maryland
         # return; being claimable is not enough. The instructions' filing
         # status 6 chart also bars a claimable but unclaimed filer; the
-        # statute governs. Any filer's claim bars the return, since the
+        # statute governs. (A claimable filer with no allowed exemption still
+        # gets no credit, through the poverty level above; one whose
+        # dependent the claimant filing exception allows faces only this
+        # test.) Any filer's claim bars the return, since the
         # eligible taxpayer is "an individual, or an individual and the
         # individual's spouse if they file a joint income tax return".
         person = tax_unit.members
@@ -62,7 +70,8 @@ class is_eligible_md_poverty_line_credit(Variable):
         md_income_tax_before_credits = tax_unit("md_income_tax_before_credits", period)
         eitc_less_than_income_tax = md_eitc < md_income_tax_before_credits
         return (
-            agi_below_fpg
+            has_exemption
+            & agi_below_fpg
             & earnings_below_fpg
             & ~claimed_elsewhere
             & eitc_less_than_income_tax
