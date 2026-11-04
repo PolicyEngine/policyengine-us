@@ -522,6 +522,7 @@
         age: 8
         is_tax_unit_dependent: true
         ssi: 0
+        wi_ssp_regular: 1_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -534,6 +535,7 @@
         members: [person1, person2]
         state_code: WI
   output:
-    wi_ssp: [3_000, 0]
-    # 9,000 SSI + 3,000 Caretaker Supplement - 500 dependent exemption.
+    wi_ssp: [3_000, 1_000]
+    # 9,000 SSI + 3,000 Caretaker Supplement - 500 dependent exemption. The
+    # child's own 1,000 supplement stays out of household income.
     wi_homestead_income: 11_500
