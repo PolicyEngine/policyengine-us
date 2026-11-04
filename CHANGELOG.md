@@ -1,3 +1,10 @@
+## [2.94.7] - 2026-11-04
+
+### Fixed
+
+- Compute the California state supplement per person with one standard for each living arrangement, which stops facility residents getting stacked amounts and pays blind children, adult dependents, children in facilities and unrelated people sharing an SPM unit the right levels. `ca_state_supplement_eligible_person` now shows whether a person is paid a supplement, so it is false when income leaves none.
+
+
 ## [2.94.6] - 2026-11-03
 
 ### Fixed
