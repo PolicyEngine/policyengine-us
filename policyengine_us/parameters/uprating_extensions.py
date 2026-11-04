@@ -819,8 +819,11 @@ def extend_parameter_values(
     long_range_growth: Optional[Dict[int, float]] = None,
 ) -> None:
     """
-    Extend a parameter's values from last_projected_year to end_year using
-    the growth rate from the last two years of projections.
+    Extend a parameter's values from last_projected_year to end_year. The
+    short-range rate is the growth between growth_years (by default the last
+    two projected years). It repeats in every year or, given
+    long_range_growth, glides through the knots. Years after end_year hold
+    its value.
 
     Args:
         parameter: The parameter to extend
@@ -838,7 +841,7 @@ def extend_parameter_values(
             long_range_growth_rate) instead of repeating the short-range
             rate in every year.
     """
-    # Calculate the growth rate from the last two years of projections
+    # Measure the short-range growth rate between growth_years
     date_format = f"-{period_month:02d}-{period_day:02d}"
     if growth_years is None:
         growth_years = (last_projected_year - 1, last_projected_year)
