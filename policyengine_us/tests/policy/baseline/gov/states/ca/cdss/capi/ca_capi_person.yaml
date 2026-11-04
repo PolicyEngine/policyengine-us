@@ -350,12 +350,13 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    # Standards max(630, 771) = 771 and max(1,167, 1,157) = 1,167 (known-low,
-    # issue 10480). Federal min(771, 1,157 - 207.50) = 771; state 0.
-    # May: 771 - 10 = 761 (MPP 49-050.11); June: 771 (WIC 18941).
+    # Standards 771 + 160.72 = 931.72 and 1,157 + 407.14 = 1,564.14 (POMS SI
+    # 01415.051). Federal min(771, 1,157 - 207.50) = 771; state min(160.72,
+    # 407.14) = 160.72. May: 931.72 - 10 = 921.72 (MPP 49-050.11); June: 931.72
+    # (WIC 18941).
     ca_capi_person:
-      2019-05: [761, 0]
-      2019-06: [771, 0]
+      2019-05: [921.72, 0]
+      2019-06: [931.72, 0]
 
 - name: Case 11, mixed couple where the SSI/SSP spouse has the income subtracts the couple's income.
   period: 2026-01
@@ -603,3 +604,31 @@
     # state min(239.94, 607.83) = 239.94; 533.50 + 239.94 = 773.44.
     ca_capi_payment_standard: [1_233.94, 0]
     ca_capi_person: [773.44, 0]
+
+- name: Case 19, June 2019 pension income above the 931.72 standard leaves no CAPI.
+  period: 2019-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2019: 70
+        immigration_status:
+          2019: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings:
+          2019: 39
+        taxable_private_pension_income:
+          2019: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2019: CA
+        living_arrangements_allow_for_food_preparation:
+          2019: true
+  output:
+    # Countable income is 1,000 - 20 = 980, above the 2019 standard of
+    # 771 + 160.72 = 931.72 (POMS SI 01415.051).
+    ssi_countable_income: 980
+    ca_capi_payment_standard: 931.72
+    ca_capi_person: 0
