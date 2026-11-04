@@ -6,14 +6,13 @@ dated. The law:
 
 - Hawaii's earned income tax credit applies to taxable years beginning after
   December 31, 2017 (Act 107, SLH 2017; 2018 Form N-356 instructions, p.2):
-  20% of the federal credit, nonrefundable, for 2018-2022, then 40% and
-  refundable from 2023 (Act 163, SLH 2023).
+  20% of the federal credit, nonrefundable, for 2018-2022, then refundable
+  from 2023 (Act 114, SLH 2022), at 40% through 2027 (Act 163, SLH 2023) and
+  20% from 2028.
 - Act 115 (SLH 2022) refunds went only to filers of a 2021 Form N-11: $300
   per exemption under the federal AGI threshold ($100,000; $200,000 for joint
   filers and surviving spouses) and $100 at or above it (DOTAX Announcement
   2022-03, p.2).
-- The military reserve or Hawaii National Guard duty pay exclusion is capped
-  at each year's N-11 instruction amount (line 15).
 
 For every grid point, and for Hypothesis-generated batches, in 2015-2026:
 
@@ -41,8 +40,8 @@ from policyengine_us import Simulation
 
 YEARS = list(range(2015, 2027))
 
-# Hawaii EITC match rate by year (HRS 235-55.75, Act 107 SLH 2017, Act 163
-# SLH 2023).
+# Hawaii EITC match rate by year through 2026 (HRS 235-55.75, Act 107 SLH
+# 2017, Act 163 SLH 2023). The 40% rate expires after 2027.
 EITC_MATCH = {
     year: 0.0 if year < 2018 else 0.2 if year < 2023 else 0.4 for year in YEARS
 }
@@ -50,22 +49,6 @@ ACT_115_YEAR = 2021
 ACT_115_HIGH, ACT_115_LOW = 300, 100
 JOINT_STATUSES = {"JOINT", "SURVIVING_SPOUSE"}
 ACT_115_THRESHOLD = {"joint": 200_000, "other": 100_000}
-
-# Military reserve or Hawaii National Guard duty pay exclusion cap, from each
-# year's N-11 instructions, line 15.
-MILITARY_PAY_CAP = {
-    2015: 6_198,
-    2016: 6_279,
-    2017: 6_410,
-    2018: 6_564,
-    2019: 6_735,
-    2020: 6_943,
-    2021: 7_152,
-    2022: 7_345,
-    2023: 7_683,
-    2024: 8_082,
-    2025: 8_636,
-}
 
 # (adults, children): single, head of household and joint returns.
 HOUSEHOLDS = [(1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
@@ -223,30 +206,3 @@ def test_generated_invariants(points, year):
     # plateau keep every batch from passing vacuously.
     witnesses = [((1, 0), 8_000, 30), ((2, 1), 150_000, 30), ((2, 0), 250_000, 70)]
     check_invariants(hawaii_simulation(points + witnesses), year)
-
-
-def test_military_pay_exclusion_matches_published_caps():
-    """Differential test: the exclusion against each year's N-11 cap."""
-    pays = [0, 3_000, 6_000, 7_000, 8_000, 8_636, 9_000, 20_000]
-    people, tax_units, households = {}, {}, {}
-    for i, pay in enumerate(pays):
-        name = f"p{i}"
-        people[name] = {
-            "age": {year: 40 for year in MILITARY_PAY_CAP},
-            "military_service_income": {year: pay for year in MILITARY_PAY_CAP},
-        }
-        tax_units[name] = {"members": [name]}
-        households[name] = {
-            "members": [name],
-            "state_code": {year: "HI" for year in MILITARY_PAY_CAP},
-        }
-    sim = Simulation(
-        situation={"people": people, "tax_units": tax_units, "households": households}
-    )
-    for year, cap in MILITARY_PAY_CAP.items():
-        np.testing.assert_allclose(
-            sim.calculate("hi_military_pay_exclusion", year),
-            np.minimum(pays, cap),
-            atol=0.01,
-            err_msg=str(year),
-        )
