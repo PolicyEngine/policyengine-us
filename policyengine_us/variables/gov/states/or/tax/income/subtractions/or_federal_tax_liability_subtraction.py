@@ -48,12 +48,17 @@ class or_federal_tax_liability_subtraction(Variable):
         ) - tax_unit("unreported_payroll_tax", period)
         # Every federal refundable credit except the earned income credit
         # reduces the liability (ORS 316.685(1)(b)), and so does the premium
-        # tax credit (Form 8962, line 24), which the federal list omits.
-        federal_refundable_credits = parameters(period).gov.irs.credits.refundable
-        reducing_credits = [
-            credit for credit in federal_refundable_credits if credit != "eitc"
-        ] + ["assigned_aca_ptc"]
-        refundable_credits = add(tax_unit, period, reducing_credits)
+        # tax credit (Form 8962, line 24), which the federal list omits. Read
+        # the federal total, income_tax_refundable_credits, rather than the
+        # list, so credits that structural reforms add to that variable count
+        # too; back out the EITC only when the list carries it.
+        refundable = parameters(period).gov.irs.credits.refundable
+        eitc = tax_unit("eitc", period) if "eitc" in refundable else 0
+        refundable_credits = (
+            tax_unit("income_tax_refundable_credits", period)
+            - eitc
+            + tax_unit("assigned_aca_ptc", period)
+        )
         or_federal_income_tax = max_(0, federal_tax - refundable_credits)
         # limit subtraction based on caps scaled to federal AGI
         filing_status = tax_unit("filing_status", period)
