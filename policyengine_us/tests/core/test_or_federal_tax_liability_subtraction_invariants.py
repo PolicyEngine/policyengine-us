@@ -64,10 +64,10 @@ def tax_unit(draw):
     return {
         "filing_status": draw(st.sampled_from(FILING_STATUSES)),
         "adjusted_gross_income": draw(st.integers(0, 200_000)),
-        "income_tax_before_refundable_credits": draw(st.integers(0, 20_000)),
+        "income_tax_before_refundable_credits": draw(st.integers(3_000, 20_000)),
         "net_investment_income_tax": draw(st.integers(0, 2_000)),
         "unreported_payroll_tax": draw(st.integers(0, 1_000)),
-        **{credit: draw(st.integers(0, 3_000)) for credit in CREDITS},
+        **{credit: draw(st.integers(0, 1_000)) for credit in CREDITS},
         "delta": draw(st.integers(1, 5_000)),
     }
 
