@@ -49,7 +49,6 @@
         age: 70
         taxable_pension_income: 20_000
         long_term_capital_gains: -3_000
-        mt_refundable_credits_before_renter_credit: 0
     tax_units:
       tax_unit:
         members: [person1]
@@ -71,13 +70,11 @@
       person1:
         age: 70
         taxable_pension_income: 20_000
-        mt_refundable_credits_before_renter_credit: 0
         # Net household income is computed for eligible claimants.
         mt_elderly_homeowner_or_renter_credit_eligible: true
       person2:
         age: 68
         self_employment_income: -5_000
-        mt_refundable_credits_before_renter_credit: 0
         mt_elderly_homeowner_or_renter_credit_eligible: true
     tax_units:
       tax_unit:
@@ -340,7 +337,6 @@
       person1:
         age: 40
         employment_income: 10_000
-        mt_refundable_credits_before_renter_credit: 0
         # A supplied receipt: a federal EITC refund received during 2017.
         mt_elderly_homeowner_or_renter_credit_other_federal_refundable_credits: 383.01
     tax_units:
@@ -363,7 +359,6 @@
       person1:
         age: 40
         employment_income: 10_000
-        mt_refundable_credits_before_renter_credit: 0
         # A supplied receipt: a federal EITC refund received during 2016.
         mt_elderly_homeowner_or_renter_credit_other_federal_refundable_credits: 383.01
     tax_units:

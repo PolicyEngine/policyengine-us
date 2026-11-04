@@ -207,6 +207,33 @@
     # recorded as not renting, owning or leasing the home.
     mt_elderly_homeowner_or_renter_credit_eligible: [false, false]
 
+- name: A dependent who meets the tests does not qualify the return
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        rent: 6_000
+      dependent:
+        age: 70
+        is_tax_unit_dependent: true
+        mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months: 12
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+        state_code: MT
+  output:
+    # § 15-30-2338(1) sets the tests for the individual who claims. The
+    # model computes the claim on the return of the tax unit head and
+    # spouse, so only they can qualify it. The 70-year-old dependent has
+    # 12 recorded lessee months and 12 residence months (the default) but
+    # is not the head or spouse; the head is 40 (§ 15-30-2338(1)(a)).
+    mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: [12, 12]
+    mt_elderly_homeowner_or_renter_credit_eligible: [false, false]
+
 - name: The spouse alone can qualify, and one person's residence input leaves the other's at 12
   period: 2024
   input:

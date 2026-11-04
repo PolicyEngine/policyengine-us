@@ -14,7 +14,9 @@ class mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months(Variable
         "mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months, "
         "which defaults to 0. Record a rent-free lessee or owner there, not "
         "here: an input to this variable for one person sets everyone "
-        "else's months to 0."
+        "else's months to 0. The microdata put a household's rent and "
+        "property tax on the household reference person, so by default a "
+        "co-resident owner or renter in another tax unit fails this test."
     )
     unit = "month"
     definition_period = YEAR
@@ -43,6 +45,12 @@ class mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months(Variable
         # lessee or owner without either amount is recorded through a
         # separate input, so recording one person leaves everyone else's
         # months to follow their own rent and bill.
+        # The microdata put a household's rent and property tax on its
+        # reference person, so an older co-owner or co-renter filing in
+        # another tax unit (a partner, sibling or parent) gets 0 months
+        # unless the input is supplied, and the credit is understated.
+        # Tenure facts for other adults are tracked in
+        # https://github.com/PolicyEngine/microcosm/issues/1514
         rent = add(person.tax_unit, period, ["rent"])
         property_tax = person.tax_unit(
             "mt_elderly_homeowner_or_renter_credit_property_tax_billed", period
