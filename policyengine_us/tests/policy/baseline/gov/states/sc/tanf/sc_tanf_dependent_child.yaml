@@ -106,3 +106,45 @@
     sc_tanf_dependent_child: [false, true]
     # 6,000 / 12 = 500 a month.
     sc_tanf_gross_earned_income: [500, 0]
+
+- name: Case 6, members who tie for oldest in a group with no adult all head it.
+  period: 2026-01
+  input:
+    people:
+      sibling:
+        age: 17
+      minor_parent:
+        age: 17
+        employment_income_before_lsr: 6_000
+      baby:
+        age: 0
+    households:
+      household:
+        members: [sibling, minor_parent, baby]
+        state_code: SC
+  output:
+    # No tax-unit role is input. The two 17-year-olds tie for oldest in a
+    # group with no adult, so both head the household and neither is a
+    # dependent child, whatever order they're listed in.
+    sc_tanf_dependent_child: [false, false, true]
+    # 6,000 / 12 = 500 a month.
+    sc_tanf_gross_earned_income: [0, 500, 0]
+
+- name: Case 7, Case 6 with the earner listed first gives the same result.
+  period: 2026-01
+  input:
+    people:
+      minor_parent:
+        age: 17
+        employment_income_before_lsr: 6_000
+      sibling:
+        age: 17
+      baby:
+        age: 0
+    households:
+      household:
+        members: [minor_parent, sibling, baby]
+        state_code: SC
+  output:
+    sc_tanf_dependent_child: [false, false, true]
+    sc_tanf_gross_earned_income: [500, 0, 0]
