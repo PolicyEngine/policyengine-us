@@ -3,7 +3,8 @@
 1. Vermont student loan interest (32 V.S.A. 5811(21)(B)(vi), (29); IN-112
    line 16): from 2022, the state subtraction plus the federal deduction equals
    the filers' interest paid when AGI is within the limit, and the subtraction
-   is zero above the limit, in 2021, and never negative.
+   is zero above the limit, in 2021, for every surviving spouse
+   (5811(29)(B) sets no limit for that status), and never negative.
 2. Utah at-home parent credit (59-10-1005(2)): a second spouse who also
    qualifies as an at-home parent does not change the credit.
 3. Wisconsin homestead eligibility: the same under either head/spouse
@@ -26,9 +27,10 @@ SETTINGS = settings(
 )
 
 
-def _situation(units, year, state):
+def _situation(units, year, state, filing_statuses=None):
     """units: list of lists of person dicts; the first person is the head,
-    the second (if flagged) the spouse, the rest dependents."""
+    the second (if flagged) the spouse, the rest dependents. filing_statuses,
+    if given, sets each tax unit's filing status."""
     people, groups = (
         {},
         {
@@ -59,6 +61,8 @@ def _situation(units, year, state):
                 groups["marital_units"][f"m_{i}_{j}"] = {"members": [m]}
         for key, prefix in (("tax_units", "t"), ("spm_units", "s"), ("families", "f")):
             groups[key][f"{prefix}_{i}"] = {"members": members}
+        if filing_statuses is not None:
+            groups["tax_units"][f"t_{i}"]["filing_status"] = {year: filing_statuses[i]}
         groups["households"][f"h_{i}"] = {
             "members": members,
             "state_code": {year: state},
@@ -72,7 +76,7 @@ def _calc(sim, name, year):
 
 @st.composite
 def borrowers(draw):
-    joint = draw(st.booleans())
+    status = draw(st.sampled_from(["SINGLE", "JOINT", "SURVIVING_SPOUSE"]))
     head = {
         "age": 30,
         "is_tax_unit_head": True,
@@ -80,7 +84,9 @@ def borrowers(draw):
         "student_loan_interest": float(draw(st.integers(0, 6_000))),
     }
     unit = [head]
-    if joint:
+    if status == "SURVIVING_SPOUSE":
+        unit.append({"age": 10})
+    if status == "JOINT":
         unit.append(
             {
                 "age": 30,
@@ -89,7 +95,7 @@ def borrowers(draw):
                 "student_loan_interest": float(draw(st.integers(0, 3_000))),
             }
         )
-    return unit
+    return status, unit
 
 
 @SETTINGS
@@ -97,17 +103,24 @@ def borrowers(draw):
     st.sampled_from([2021, 2022, 2024, 2026]),
     st.lists(borrowers(), min_size=8, max_size=20),
 )
-def test_vt_student_loan_subtraction_completes_the_federal_deduction(year, units):
-    sim = Simulation(situation=_situation(units, year, "VT"))
-    paid = np.array([sum(p["student_loan_interest"] for p in u) for u in units])
+def test_vt_student_loan_subtraction_completes_the_federal_deduction(year, draws):
+    statuses = np.array([status for status, _ in draws])
+    units = [unit for _, unit in draws]
+    sim = Simulation(situation=_situation(units, year, "VT", list(statuses)))
+    paid = np.array([sum(p.get("student_loan_interest", 0) for p in u) for u in units])
     federal = np.asarray(
         sim.calculate("student_loan_interest_ald", year, map_to="tax_unit")
     )
     sub = _calc(sim, "vt_student_loan_interest_subtraction", year)
     agi = _calc(sim, "adjusted_gross_income", year)
-    joint = np.array([len(u) == 2 for u in units])
-    limit = np.where(joint, 200_000, 120_000)
+    surviving = statuses == "SURVIVING_SPOUSE"
+    # 5811(29)(B): $200,000 if joint, $120,000 if single; no surviving spouse
+    # qualifies.
+    limit = np.where(
+        statuses == "JOINT", 200_000, np.where(surviving, -np.inf, 120_000)
+    )
     assert (sub >= 0).all()
+    assert not sub[surviving].any()
     if year < 2022:
         assert not sub.any()
         return
