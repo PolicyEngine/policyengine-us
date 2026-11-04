@@ -10,19 +10,27 @@ def ca_capi_couple_computation(person, period):
 
     SSI's couple computation, except that a couple with exactly one spouse in
     a Title XIX facility is computed separately (20 CFR 416.414(b)(3)), when
-    only the California facility input marks it.
+    only the California facility input marks it. Only a head or spouse is in a
+    couple, because a situation with no marital units puts a dependent in the
+    couple's unit.
     """
+    head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
     in_facility = ca_in_title_xix_facility(person, period)
-    one_in_facility = person.marital_unit.sum(in_facility) == 1
-    return person("ssi_couple_computation_applies", period) & ~one_in_facility
+    one_in_facility = person.marital_unit.sum(in_facility & head_or_spouse) == 1
+    return (
+        person("ssi_couple_computation_applies", period)
+        & ~one_in_facility
+        & head_or_spouse
+    )
 
 
 def ca_capi_spouse_ssi_ssp(person, period):
     """Return the SSI and state supplement paid to the person's spouse.
 
-    Only a spouse who is not CAPI-eligible counts.
+    Only a head or spouse who is not CAPI-eligible counts.
     """
-    spouse = ~person("ca_capi_eligible_person", period.this_year)
+    head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
+    spouse = ~person("ca_capi_eligible_person", period.this_year) & head_or_spouse
     payment = add(person, period, ["ssi", "ca_state_supplement_person"])
     return person.marital_unit.sum(payment * spouse)
 

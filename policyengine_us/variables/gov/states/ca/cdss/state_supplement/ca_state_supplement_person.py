@@ -35,10 +35,8 @@ class ca_state_supplement_person(Variable):
     def formula(person, period, parameters):
         # A couple with one spouse in a Title XIX facility is computed
         # separately, including when only the California input marks it (20 CFR
-        # 416.414(b)(3)). Only a head or spouse is in a couple, because a situation
-        # with no marital units puts a dependent in the couple's unit.
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
-        joint = ca_capi_couple_computation(person, period) & head_or_spouse
+        # 416.414(b)(3)).
+        joint = ca_capi_couple_computation(person, period)
         individual_rate, couple_rate = ca_state_supplement_rates(
             person, period, parameters, joint
         )
@@ -60,6 +58,7 @@ class ca_state_supplement_person(Variable):
         # it equals own income whenever the spouse would receive CAPI.
         # NOTE: POMS SI 01320.430 D takes the lesser of each part separately;
         # the totals keep CAPI at zero when the spouse's income is deemed.
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         immigration_status = person("immigration_status", period.this_year)
         is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
         is_qualified_noncitizen = person(
@@ -92,7 +91,7 @@ class ca_state_supplement_person(Variable):
             _apply_ssi_exclusions(earned, unearned, parameters, period) / MONTHS_IN_YEAR
         )
         ssi_countable_income = person("ssi_countable_income", period)
-        couple_income = person.marital_unit.sum(ssi_countable_income)
+        couple_income = person.marital_unit.sum(ssi_countable_income * head_or_spouse)
         individual_standard, couple_standard = ca_capi_ssi_ssp_standard(
             person, period, parameters
         )
