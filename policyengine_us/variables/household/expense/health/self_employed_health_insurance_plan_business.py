@@ -41,7 +41,8 @@ class self_employed_health_insurance_plan_business(Variable):
         "business was not supplied, and the limit uses the person's business "
         "with the largest earned income; name the business when a partnership "
         "or S corporation with the largest earned income does not pay or "
-        "reimburse the premiums."
+        "reimburse the premiums, or when the plan is established under a "
+        "business other than the one with the largest earned income."
     )
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/162#l_2_A",
