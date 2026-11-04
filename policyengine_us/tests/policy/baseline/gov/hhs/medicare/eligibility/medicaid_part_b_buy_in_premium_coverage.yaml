@@ -46,6 +46,23 @@
     medicaid_part_b_buy_in_premium_coverage: 2_220
     medicare_part_b_premium: 0
 
+- name: The Part B premium before the buy-in decides a 209(b) spend-down.
+  # Countable income 23,580 and limit 10,016. 23,580 - 12,000 = 11,580 is over
+  # the limit; 23,580 - 12,000 - 2,220 = 9,360 is under it.
+  period: 2025
+  input:
+    age: 70
+    taxable_interest_income: 30_000
+    other_medical_expenses: 12_000
+    receives_ssi: true
+    state_code: CT
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: 23_580
+    medicaid_medically_needy_medical_expenses: 14_220
+    is_209b_ssi_recipient_for_medicaid: true
+    medicaid_part_b_buy_in_premium_coverage: 2_220
+    medicare_part_b_premium: 0
+
 - name: A 209(b) SSI recipient with SSI in December only gets one month of buy-in.
   # 185 x 12 = 2,220 base premium; one month of SSI buys in 185, leaving
   # 2,035. is_209b_ssi_recipient_for_medicaid reads December's SSI.
