@@ -24,20 +24,20 @@ class mt_dependent_medical_expense_head_share(Variable):
         "the couple divide them in any proportion, so the model picks the "
         "share that gives the lowest combined tax before refundable credits "
         "(Form 2 line 20 in both columns), holding every other itemized "
-        "deduction fixed. It compares a small candidate set: the equal split "
-        "(spouse_allocation_rate), all to the head, all to the spouse, the "
-        "two shares at which the head's or the spouse's 7.5% floor starts to "
-        "bind, and the share at which the two columns' incomes before the "
-        "dependent exemptions are equal. Between the floor kinks the total "
-        "deduction does not depend on the share and the couple's tax is "
-        "convex in it, lowest where the columns balance; outside them the "
-        "tax is monotone in the share. So the set reaches the minimum unless "
-        "a column's non-refundable credits (the capital gain credit) hold its "
-        "line 20 at zero, which can move the minimum away from the balance "
-        "point. Ties go to the "
-        "share closest to the equal split, so the result does not depend on "
-        "which spouse is labelled head. The tax is evaluated in closed form "
-        "with the column "
+        "deduction fixed. It compares four candidates: the equal split "
+        "(spouse_allocation_rate), all to the head, all to the spouse, and "
+        "the share at which the two columns' incomes before the dependent "
+        "exemptions are equal. While both columns are above their 7.5% "
+        "floors, the total deduction does not depend on the share and the "
+        "couple's tax is convex in it, lowest where the columns balance. "
+        "Where a column is below its floor, bills moved into it are wasted "
+        "and the tax is monotone in the share, so the shares at which a "
+        "floor starts to bind never beat all to one spouse. The set reaches "
+        "the minimum unless a column's non-refundable credit (the capital "
+        "gain credit) holds its line 20 at zero, which can move the minimum "
+        "away from the balance point. Ties go to the share closest to the "
+        "equal split, so the result does not depend on which spouse is "
+        "labelled head. The tax is evaluated in closed form with the column "
         "variables' own formulas (policyengine_us.tools.mt_separate_return), "
         "not with simulation branches. Unmarried filers and couples without "
         "dependents' expenses get the equal split, which has no effect."
@@ -77,20 +77,18 @@ class mt_dependent_medical_expense_head_share(Variable):
                 tax_unit, period, parameters, itemized
             )
 
-        # The shares at which each column's floor starts to bind: the head's
-        # column reaches its floor at head share room / pool, and the
-        # spouse's at 1 - room / pool.
+        # The share at which the two columns' incomes before the dependent
+        # exemptions are equal. While both columns are above their 7.5%
+        # floors, each extra dollar of bills is deductible in either column,
+        # so the total deduction is fixed and the couple's tax is convex in
+        # the share, lowest where the columns balance. There a column's
+        # income is level - share x pool, where level is its income with line
+        # 1a at its floor (room is how far line 1a is below the floor); the
+        # spouse's uses 1 - share. Where a column is below its floor, bills
+        # moved into it are wasted, so the tax is monotone there and the
+        # shares at which a floor starts to bind never beat 0 or 1.
         room = mt_medical_floor_room(person, period, parameters)
         safe_pool = where(pool > 0, pool, 1)
-        head_kink = np.clip(tax_unit.sum(room * head) / safe_pool, 0, 1)
-        spouse_kink = np.clip(1 - tax_unit.sum(room * spouse) / safe_pool, 0, 1)
-        # The share at which the two columns' incomes before the dependent
-        # exemptions are equal. While both columns are above their floors,
-        # each extra dollar of bills is deductible in either column, so the
-        # total deduction is fixed and the couple's tax is convex in the
-        # share, lowest where the columns balance. There a column's income is
-        # level - share x pool, where level is its income with line 1a at its
-        # floor; the spouse's uses 1 - share.
         kink_deduction = mt_medical_deduction(
             person, period, parameters, own_expense + room
         )
@@ -106,8 +104,6 @@ class mt_dependent_medical_expense_head_share(Variable):
         candidates = [
             np.full(tax_unit.count, 0.0),
             np.full(tax_unit.count, 1.0),
-            head_kink,
-            spouse_kink,
             balance,
         ]
         best_share = default

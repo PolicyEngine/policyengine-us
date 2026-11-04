@@ -5,18 +5,18 @@ On a 2021-2023 return where spouses file separately on the same form (status
 attributable to one spouse in any proportion, and may elect the standard
 deduction (both spouses or neither). The model treats every dependent's bill
 as jointly paid, takes the head's share of those bills
-(mt_dependent_medical_expense_head_share) from a candidate set to minimize the
-couple's combined tax before refundable credits (Form 2 line 20 in both
+(mt_dependent_medical_expense_head_share) from a closed-form candidate set to
+minimize the couple's combined tax before refundable credits (Form 2 line 20 in both
 columns), and picks the election (mt_tax_unit_itemizes) by the same tax.
 
-For every generated couple:
+For each couple in a seeded population of 40 per year:
 
-1. The chosen tax is at most the tax at every candidate share when itemizing:
-   all to the head, all to the spouse, the equal split, and the shares at
-   which each column's 7.5% floor starts to bind (computed here from the
-   inputs, not read from the model), and the shares 0.1 to 0.9. With no
-   capital gain credit the minimum over all shares is at a candidate, so the
-   interior shares catch a chooser that misses where the columns balance.
+1. The chosen tax is at most the tax at each of these shares when itemizing:
+   all to the head, all to the spouse, the equal split, the shares at which
+   each column's 7.5% floor starts to bind (computed here from the inputs,
+   not read from the model), and 0.1 to 0.9. With no capital gain credit the
+   minimum over all shares is at 0, 1 or where the columns' incomes balance,
+   so the interior shares catch a chooser that misses the balance point.
 2. The chosen tax is at most the tax with the standard deduction in both
    columns.
 3. The couple's Montana tax (mt_income_tax) is at most its tax before this
@@ -41,8 +41,6 @@ a second simulation in which every tax unit has them.
 
 import numpy as np
 import pytest
-from hypothesis import HealthCheck, given, settings
-from hypothesis import strategies as st
 
 from policyengine_core.periods import period
 
@@ -56,21 +54,6 @@ TOLERANCE = 0.05
 FORM_FLOOR = 0.075  # Itemized Deductions Schedule line 1c
 YEARS = [2021, 2022, 2023]
 EQUAL_SPLIT = 0.5
-
-money = st.integers(0, 150_000).map(float)
-bills = st.one_of(st.just(0.0), st.integers(1, 40_000).map(float))
-small = st.one_of(st.just(0.0), st.integers(1, 12_000).map(float))
-
-
-@st.composite
-def couples(draw):
-    return {
-        "agi": [draw(money), draw(money)],
-        "own_medical": [draw(small), draw(small)],
-        "other_itemized": [draw(small), draw(small)],
-        "dependent_bills": [draw(bills) for _ in range(draw(st.integers(1, 2)))],
-        "more_bills": draw(st.integers(1, 10_000).map(float)),
-    }
 
 
 def _kinks(couple, pool):
@@ -218,23 +201,6 @@ def _check(couples_drawn, year):
     assert (more_bills <= as_drawn + TOLERANCE).all()
     # The free choice with no dependent bills is the old return's tax or less.
     assert (no_bills <= fixed_tax[:, labels == "old"][:, 0] + TOLERANCE).all()
-
-
-SETTINGS = dict(
-    max_examples=6,
-    deadline=None,
-    derandomize=True,
-    suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
-)
-
-
-@settings(**SETTINGS)
-@given(
-    year=st.sampled_from(YEARS),
-    couples_drawn=st.lists(couples(), min_size=1, max_size=6),
-)
-def test_mt_dependent_medical_split_invariants(year, couples_drawn):
-    _check(couples_drawn, year)
 
 
 SEED = 20261102
