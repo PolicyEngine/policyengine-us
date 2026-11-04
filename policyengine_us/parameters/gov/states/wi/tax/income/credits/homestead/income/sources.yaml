@@ -23,8 +23,10 @@ values:
     - tax_exempt_unemployment_compensation
     # cash transfer income sources:
     - ssi
-    # State SSI, SSI-E and Caretaker Supplement payments (Wis. Stat.
-    # 71.52(5); Publication 127, page 9). Like ssi, a dependent child's own
-    # supplement stays out of household income.
+    # Wisconsin counts state SSI, SSI-E and Caretaker Supplement payments as
+    # income: cash public assistance under Wis. Stat. 71.52(6), which DOR has
+    # claimants report with SSI (Publication 127, page 9). Like ssi, a
+    # dependent child's own supplement stays out of household income
+    # (71.52(4)-(5)).
     - wi_ssp
     - tanf
