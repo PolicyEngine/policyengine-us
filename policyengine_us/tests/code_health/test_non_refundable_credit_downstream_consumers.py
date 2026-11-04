@@ -38,6 +38,10 @@ REVIEWED_APPLIED_CREDIT_EXTERNAL_REFERENCES = {
     "ny_household_credit": {
         "reforms/states/ny/wftc/ny_working_families_tax_credit.py",
         "variables/gov/states/ny/tax/income/credits/ny_eitc.py",
+        # ny_itemizes compares the applied credit across its two branches:
+        # ny_eitc subtracts the applied credit, so the New York EITC can
+        # differ between the choices only where the applied credit does.
+        "variables/gov/states/ny/tax/income/taxable_income/deductions/itemized/ny_itemizes.py",
     },
     "oh_eitc": {
         "reforms/states/oh/eitc/oh_refundable_eitc_reform.py",
