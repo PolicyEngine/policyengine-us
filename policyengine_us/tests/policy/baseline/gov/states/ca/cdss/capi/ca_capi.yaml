@@ -86,7 +86,6 @@
         state_code: CA
   output:
     ssi: [11_316, 0]
-    ca_state_supplement_dependent_amount: 0
     # 239.94 * 12.
     ca_state_supplement: 2_879.28
     ca_capi: 0
@@ -113,9 +112,6 @@
   output:
     ssi: [0, 0]
     ca_state_supplement_eligible_person: [false, false]
-    ca_state_supplement_aged_disabled_count: 0
-    ca_state_supplement_blind_amount: 0
-    ca_state_supplement_aged_blind_disabled_amount: 0
     ca_state_supplement: 0
     # Disabled individual standard 1,233.94 per month with no offset. Living
     # arrangements allow food preparation by default, so no no-cooking food
