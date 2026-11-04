@@ -18,7 +18,9 @@ class ca_is_qualifying_child_for_caleitc(Variable):
         # RTC 17052 conforms CalEITC to the IRC 32 qualifying-child definition;
         # 17052(p) modifies the IRC 32(m) identification rule from 2020.
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052.",
-        # RTC 17052.1(c): the YCTC qualifying child has the 17052 meaning.
+        # RTC 17052.1(c): "'Qualifying child' shall have the same meaning as
+        # under Section 17052, except that the child shall be younger than six
+        # years of age as of the last day of the taxable year."
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052.1.",
         # IRC 32(c)(3)(A) applies the IRC 152(c) qualifying-child definition.
         "https://www.law.cornell.edu/uscode/text/26/32#c_3_A",
