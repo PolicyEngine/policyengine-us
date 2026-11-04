@@ -158,3 +158,46 @@
     mt_income_tax_joint: 214.80
     mt_files_separately: true
     mt_income_tax: 131.40
+
+- name: The balancing share counts the head's medical insurance premiums
+  # TY2022. The case above, with 3,000 of medical insurance premiums on the
+  # head. The premiums lower the head's level by 3,000:
+  #   head 25,000 - 2,710 - 3,000 + 1,875 = 21,165; spouse 13,415.
+  #   s = 0.5 + (21,165 - 13,415) / 50,000 = 0.5 + 7,750 / 50,000 = 0.655.
+  #   Head line 1a 16,375, deduction 14,500 + 3,000 = 17,500;
+  #   25,000 - 2,710 - 17,500 = 4,790.
+  #   Spouse line 1a 8,625, deduction 7,500; 15,000 - 2,710 - 7,500 = 4,790.
+  #   The child's 2,710 is halved: 3,435 each, taxed 33 + 135 x 2% = 35.70.
+  # Leaving the premiums out of the level would keep s at 0.715, giving
+  # line 20 of 32.90 and 38.60 (71.50 in total).
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        mt_agi_indiv: 25_000
+        mt_non_medical_itemized_deductions_indiv: 0
+        mt_eligible_medical_insurance_premiums: 3_000
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        mt_agi_indiv: 15_000
+        mt_non_medical_itemized_deductions_indiv: 0
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        other_medical_expenses: 25_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    mt_dependent_medical_expense_head_share: 0.655
+    mt_medical_and_dental_expenses_indiv: [16_375, 8_625, 0]
+    mt_income_tax_before_refundable_credits_indiv: [35.70, 35.70, 0]
