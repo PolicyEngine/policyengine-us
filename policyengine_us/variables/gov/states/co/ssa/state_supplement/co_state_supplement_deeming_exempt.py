@@ -27,14 +27,15 @@ class co_state_supplement_deeming_exempt(Variable):
             # income was deemed.
             return np.zeros(person.count, dtype=bool)
         # 9 CCR 2503-5 3.549(F): a spouse or parent who receives Adult
-        # Financial grant payments, SSI or Medicaid "and has income no greater
-        # than the SSI limit" has no income deemed to the AND-CS client. The
-        # income condition applies to each program, as OAP's 3.534(C) does.
-        # The rule does not define the SSI limit. We read it as SSI's income
-        # test for an individual: the person's own monthly countable income,
-        # after SSI's exclusions, no greater than the individual federal
-        # benefit rate. A member of an SSI couple whose own income exceeds it
-        # therefore has that income deemed to the other spouse.
+        # Financial grant payments, SSI or Medicaid "and has income no
+        # greater than the SSI limit" has no income deemed to the AND-CS
+        # client. The rule doesn't define the SSI limit. We read it as the
+        # limit SSI applies to the person, as 3.570.43 uses the phrase:
+        # someone who receives SSI meets it, since SSI's own test held
+        # their countable income within it (the couple rate in an eligible
+        # couple). Someone on Old Age Pension or Medicaid without SSI meets
+        # it when their own monthly countable income, after SSI's
+        # exclusions, doesn't exceed the individual federal benefit rate.
         countable = _apply_ssi_exclusions(
             person("ssi_earned_income", period) * MONTHS_IN_YEAR,
             person("ssi_unearned_income", period) * MONTHS_IN_YEAR,
@@ -54,7 +55,7 @@ class co_state_supplement_deeming_exempt(Variable):
         receives_oap = person("co_oap_eligible", period.this_year) & (
             p_oap.grant_standard - oap_income > PRECISION
         )
-        exempt = within_limit & (receives_ssi | receives_oap)
+        exempt = receives_ssi | (within_limit & receives_oap)
         # Medicaid decides only for someone within the limit, not exempt
         # otherwise, who shares a marital unit, tax unit or household with
         # another person who is an AND-CS client: only a spouse or parent can

@@ -123,8 +123,10 @@
   output:
     co_state_supplement_deeming_exempt: [true, true]
 
-- name: Case 6, a Medicaid spouse above the SSI limit is not exempt.
-  # Earnings of $2,074/month: (2,074 - 85) / 2 = 994.50 exceeds $994.
+- name: Case 6, a Medicaid spouse without SSI above the SSI limit is not exempt.
+  # Earnings of $2,074/month: (2,074 - 85) / 2 = 994.50 exceeds the $994
+  # individual rate. Without SSI the spouse must meet that limit on their own
+  # income; Case 7's SSI spouse with the same earnings is exempt.
   period: 2026-01
   input:
     people:
@@ -147,11 +149,11 @@
   output:
     co_state_supplement_deeming_exempt: [true, false]
 
-- name: Case 7, an SSI spouse above the SSI limit is not exempt.
-  # The income condition applies to SSI recipients too, as 3.534(C) applies
-  # it in OAP. Earnings of $2,074/month give countable income of 994.50, above
-  # $994, so the spouse's income is deemed even with SSI paid as a member of
-  # an SSI couple.
+- name: Case 7, an SSI spouse with own income above the individual rate is exempt.
+  # Earnings of $2,074/month give own countable income of 994.50, above the
+  # $994 individual rate. 3.549(F)'s SSI limit is the one SSI applies to the
+  # person, and SSI's own test held this spouse within the couple rate, so
+  # receiving SSI meets the income condition.
   period: 2026-01
   input:
     people:
@@ -172,7 +174,7 @@
         members: [head, spouse]
         state_code: CO
   output:
-    co_state_supplement_deeming_exempt: [true, false]
+    co_state_supplement_deeming_exempt: [true, true]
 
 - name: Case 8, a spouse on none of the programs is not exempt.
   # The spouse is 45, too young for OAP.

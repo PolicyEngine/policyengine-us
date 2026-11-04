@@ -33,12 +33,10 @@ def and_cs_client_income(person, period, parameters):
     # unearned income disregard; min_ gives 0 when there is no other
     # unearned income.
     unearned_disregard = min_(disregard, unearned)
-    # 3.549(A)(2)(f): only when the client's gross unearned income, SSI
-    # included, is under $20 does the rest of the disregard reduce earned
-    # income. As in OAP's 3.533(A)(2)(f), the rest is of the client's own
-    # disregard, half of the $20 when married, so that no more than $20
-    # applies to the couple ((A)(2)(c)(1)). A client whose only unearned
-    # income is SSI has no disregard to pass on.
+    # 3.549(A)(2)(f): the client's own share of the disregard (half of the
+    # $20 when married, as in OAP's 3.533(A)(2)(f)) less gross unearned
+    # income, SSI included, reduces earned income when positive. A client
+    # whose only unearned income is SSI has no disregard to pass on.
     receives_ssi = (ssi > 0) | person("receives_ssi", period)
     ssi_only = receives_ssi & (unearned == 0)
     earned_disregard = where(ssi_only, 0, max_(0, disregard - unearned - ssi))

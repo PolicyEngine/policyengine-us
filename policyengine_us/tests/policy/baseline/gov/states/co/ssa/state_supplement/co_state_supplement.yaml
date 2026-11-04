@@ -630,3 +630,114 @@
         state_code: CO
   output:
     co_state_supplement: 0
+
+- name: Case 33, a disabled SSI couple whose spouse draws a $1,014 pension keeps the head's grant.
+  # Both spouses are disabled and under 60; the spouse has a $1,014/month
+  # pension and the head has no income. SSI: couple payment
+  # 1,491 - (1,014 - 20) = 497, or 248.50 each. The spouse receives SSI, so
+  # 3.549(F) deems nothing to the head, whose AND-CS is the $994 standard less
+  # SSI: 994 - 248.50 = 745.50. The spouse counts 1,014 - 10 = 1,004
+  # of their own plus SSI, above $994, so gets 0.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_head: true
+      spouse:
+        age: 45
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 12_168
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [248.50, 248.50]
+    co_state_supplement_deemed_income: [0, 0]
+    co_state_supplement: [745.50, 0]
+
+- name: Case 34, a $1 higher pension doesn't end the head's grant.
+  # Both spouses are disabled and under 60; the spouse has a $1,015/month
+  # pension and the head has no income. SSI: couple payment
+  # 1,491 - (1,015 - 20) = 496, or 248 each. The spouse receives SSI, so
+  # 3.549(F) deems nothing to the head, whose AND-CS is the $994 standard less
+  # SSI: 994 - 248 = 746. The spouse counts 1,015 - 10 = 1,005
+  # of their own plus SSI, above $994, so gets 0.
+  # The spouse's own countable income, 995, exceeds the $994 individual
+  # rate, but 3.549(F)'s SSI limit is the one SSI applies to the person,
+  # and SSI's own test held the spouse within the couple rate.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_head: true
+      spouse:
+        age: 45
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 12_180
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [248, 248]
+    co_state_supplement_deemed_income: [0, 0]
+    co_state_supplement: [746, 0]
+
+- name: Case 35, an SSI couple's spouse with a $1,200 pension still has nothing deemed.
+  # Both spouses are disabled and under 60; the spouse has a $1,200/month
+  # pension and the head has no income. SSI: couple payment
+  # 1,491 - (1,200 - 20) = 311, or 155.50 each. The spouse receives SSI, so
+  # 3.549(F) deems nothing to the head, whose AND-CS is the $994 standard less
+  # SSI: 994 - 155.50 = 838.50. The spouse counts 1,200 - 10 = 1,190
+  # of their own plus SSI, above $994, so gets 0.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_head: true
+      spouse:
+        age: 45
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 14_400
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [155.50, 155.50]
+    co_state_supplement_deemed_income: [0, 0]
+    co_state_supplement: [838.50, 0]
