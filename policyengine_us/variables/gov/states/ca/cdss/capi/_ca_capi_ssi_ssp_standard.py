@@ -32,12 +32,14 @@ def ca_capi_spouse_ssi_ssp(person, period):
 
     Only a spouse who is not CAPI-eligible counts. ca_state_supplement is an
     SPM-unit amount, so as a simplification the spouse's share is pro rata
-    among the unit's members eligible for it; a citizen disabled child's
-    supplement in the unit is then attributed to the spouse.
+    among the unit's heads and spouses eligible for it; a citizen disabled
+    child's supplement in the unit is then attributed to the spouse.
     """
     spouse = ~person("ca_capi_eligible_person", period.this_year)
     spouse_ssi = person.marital_unit.sum(person("ssi", period) * spouse)
-    ssp_eligible = person("ca_state_supplement_eligible_person", period)
+    ssp_eligible = person("ca_state_supplement_eligible_person", period) & person(
+        "is_tax_unit_head_or_spouse", period
+    )
     spouse_ssp_share = person.marital_unit.sum(ssp_eligible * spouse) / max_(
         person.spm_unit.sum(ssp_eligible), 1
     )
@@ -80,11 +82,11 @@ def ca_capi_ssi_ssp_standard(person, period, parameters):
     )
     medical_facility = ca_capi_in_title_xix_facility(person, period)
     out_of_home_care = person("in_out_of_home_care_facility", period.this_year)
-    out_of_home_care_share = (
-        p.aged_or_disabled.amount.married + p.allowance.out_of_home_care
-    ) / 2
+    # The parameters hold California's share on top of the federal amount.
+    medical_facility_total = fbr.medical_facility + p.allowance.medical_care_facility
+    out_of_home_care_total = fbr.individual + p.allowance.out_of_home_care
 
-    community_individual = max_(
+    community_individual = fbr.individual + max_(
         blind * p.blind.single,
         aged_or_disabled
         * where(
@@ -102,38 +104,25 @@ def ca_capi_ssi_ssp_standard(person, period, parameters):
     two_blind = (blind_count > 1) * p.blind.married.two_blind
     one_blind = (blind_count == 1) * p.blind.married.one_blind
     # NOTE: a couple with one aged or disabled member always has a blind
-    # member, whose rate is higher, so the second branch is only a guard.
-    aged_or_disabled_couple = select(
-        [aged_or_disabled_count > 1, aged_or_disabled_count == 1],
-        [
-            p.aged_or_disabled.amount.married + no_cooking * p.allowance.food.married,
-            p.aged_or_disabled.amount.single + no_cooking * p.allowance.food.single,
-        ],
-        default=0,
+    # member, whose rate is higher, so only two count here.
+    aged_or_disabled_couple = (aged_or_disabled_count > 1) * (
+        p.aged_or_disabled.amount.married + no_cooking * p.allowance.food.married
     )
-    community_couple = max_(max_(two_blind, one_blind), aged_or_disabled_couple)
+    community_couple = fbr.couple + max_(
+        max_(two_blind, one_blind), aged_or_disabled_couple
+    )
 
-    # Stopgap: the state supplement amounts hold 1991 totals until 2025,
-    # below the federal benefit rate from 2008, so the independent-living and
-    # out-of-home care standards are floored at that rate (SSI alone pays at
-    # least it, and CAPI equals SSI/SSP under WIC 18941). This still leaves
-    # out the whole state supplement before 2025; issue 10480 backfills the
-    # totals and removes the floor.
+    # NOTE: the state shares before 2013 are the 1991 totals in WIC 12200 less
+    # the 1991 federal rates (issue 10480).
     individual = select(
         [medical_facility, out_of_home_care],
-        [
-            p.allowance.medical_care_facility,
-            max_(out_of_home_care_share, fbr.individual),
-        ],
-        default=max_(community_individual, fbr.individual),
+        [medical_facility_total, out_of_home_care_total],
+        default=community_individual,
     )
     couple_share = select(
         [medical_facility, out_of_home_care],
-        [
-            p.allowance.medical_care_facility,
-            max_(out_of_home_care_share, fbr.couple / 2),
-        ],
-        default=max_(community_couple / 2, fbr.couple / 2),
+        [medical_facility_total, out_of_home_care_total],
+        default=community_couple / 2,
     )
     couple = where(joint, person.marital_unit.sum(couple_share), 2 * couple_share)
     return individual, couple

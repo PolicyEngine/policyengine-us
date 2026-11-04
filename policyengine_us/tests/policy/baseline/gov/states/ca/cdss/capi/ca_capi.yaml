@@ -69,6 +69,7 @@
 
 - name: Case 4, integration test, SSI eligible.
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -86,7 +87,8 @@
   output:
     ssi: [11_316, 0]
     ca_state_supplement_dependent_amount: 0
-    ca_state_supplement: 0
+    # 239.94 * 12.
+    ca_state_supplement: 2_879.28
     ca_capi: 0
 
 - name: Case 5, integration test, permanent resident without 40 SSI quarters.
@@ -195,7 +197,7 @@
     ca_capi_person: [0, 14_807.28]
     ca_capi: 14_807.28
 
-- name: Case 8, aged person in 2024, the independent-living standard is floored at the federal benefit rate.
+- name: Case 8, aged person in 2024, the independent-living standard adds the state share to the federal benefit rate.
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -210,14 +212,11 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    # The state supplement parameters hold the 1991 aged amount of 630 until
-    # 2025 (issue 7787). CAPI equals SSI/SSP (WIC 18941), so the standard is
-    # floored at the 2024 federal benefit rate: max(630, 943) = 943 per
-    # month with no offset and no income; 943 x 12 = 11,316. This pins a
-    # known-low value from the stopgap floor: the published aged standard was
-    # 1,182.94 (POMS SI 01415.056); issue 10480 removes the floor.
-    ca_capi_person: 11_316
-    ca_capi: 11_316
+    # CAPI equals SSI/SSP (WIC 18941), so the standard is 943 + 239.94 =
+    # 1,182.94 per month (POMS SI 01415.056) with no offset and no income;
+    # 1,182.94 x 12 = 14,195.28.
+    ca_capi_person: 14_195.28
+    ca_capi: 14_195.28
 
 - name: Case 9, integration test, aged permanent resident without 40 SSI quarters whose pension exceeds the CAPI standard.
   period: 2025

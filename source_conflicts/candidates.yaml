@@ -6089,6 +6089,39 @@ candidates:
   note: 'Retain as a disputable gap-fill; verify whether repayments are statutory losses and separate this issue
     from unsupported spouse attribution. Code not yet on main: policyengine_us/variables/gov/states/nj/tax/income/adjusted_gross_income/claim_of_right/nj_claim_of_right_repayment_category.py,
     gov/states/nj/tax/income/adjusted_gross_income/nj_claim_of_right_offset.yaml, nj_claim_of_right_offset, nj_claim_of_right_repayment_category.'
+- id: us-nj:eitc-married-separate-filer
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Can a married New Jersey resident who files a separate return claim the NJEITC when the federal
+    separated-spouse exception applies?
+  sources:
+  - kind: statute
+    citation: N.J.S.A. 54A:4-7a.(3), as amended by P.L.2021, c.130
+    url: https://pub.njleg.state.nj.us/Bills/2020/PL21/130_.HTM
+  - kind: regulation
+    citation: N.J.A.C. 18:35-4.3(g)(3)
+    url: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-18-35-4-3
+  - kind: instructions
+    citation: 2025 Form NJ-1040 instructions, line 58
+    url: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=44
+  readings:
+    statute: A married claimant who does not file federally as a head of household or surviving spouse must file
+      jointly, with no exception for a separated filer. N.J.A.C. 18:35-4.3(g)(3) says the same.
+    other: A married filer not filing jointly can claim the credit with a qualifying child who lived with the filer
+      for more than half the year and six months apart from the spouse.
+  example: In 2026, a separate filer with a child, $30,000 of wages and six months apart gets $1,380.25 under the
+    instructions and $0 under the statute.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nj/tax/income/credits/eitc/nj_eitc_separate_filer_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10307
+  state: ruled
+  note: A filer separated under a decree of divorce or separate maintenance is not married (IRC 7703(a)(2)) and can
+    claim the credit on a separate return.
 - id: us-nj:liheap-income-ceiling
   program: liheap
   years:
