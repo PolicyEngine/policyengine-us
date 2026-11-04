@@ -14,12 +14,13 @@ class ca_state_supplement_aged_disabled_amount(Variable):
         p = parameters(
             period
         ).gov.states.ca.cdss.state_supplement.payment_standard.aged_or_disabled.amount
+        fbr = parameters(period).gov.ssa.ssi.amount
         # Aged or disabled amount
         aged_disabled_count = spm_unit(
             "ca_state_supplement_aged_disabled_count", period
         )
         return select(
             [aged_disabled_count > 1, aged_disabled_count == 1],
-            [p.married, p.single],
+            [fbr.couple + p.married, fbr.individual + p.single],
             default=0,
         )

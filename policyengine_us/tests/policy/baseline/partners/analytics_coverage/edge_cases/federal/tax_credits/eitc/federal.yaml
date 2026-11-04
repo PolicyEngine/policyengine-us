@@ -869,7 +869,7 @@
         cdcc: 0.0
         adjusted_gross_income: 10_000.0
         income_tax: -664.0
-- name: eitc_married_filing_separately_eligible_post_arpa (federal)
+- name: eitc_married_filing_separately_same_household_ineligible (federal)
   period: 2026
   absolute_error_margin: 0.1
   input:
@@ -931,22 +931,24 @@
   output:
     tax_units:
       tax_unit:
-        # ARPA Sec. 9623 permanently amended 26 USC § 32(d): separate filers
-        # ARE eligible from 2021 on (eitc.eligibility.separate_filer: true),
-        # so this pins eligible/positive — NOT the pre-2021 exclusion.
-        # Non-joint phase-out start = 23_890 (no joint bonus); earnings
-        # 20_000 < 23_890 -> plateau eitc = 4_427.
+        # ARPA Sec. 9623 opened 26 USC § 32(d) from 2021 only to "certain
+        # separated spouses": a separate filer needs a qualifying child
+        # living with them for over half the year and one 32(d)(2)(B)
+        # condition. This couple shares a household with no separation
+        # facts, so neither condition holds (no six months apart, no
+        # separation instrument with separate households at year end):
+        # eitc = 0, eitc_eligible = false.
         # income_tax: taxable = 20_000 - 16_100 MFS standard deduction =
         # 3_900 -> 390 tax, absorbed by non-refundable CTC; net =
-        # -(4_427 + 1_700) = -6_127.
-        eitc: 4_427.0
-        eitc_eligible: true
+        # -1_700 refundable CTC.
+        eitc: 0.0
+        eitc_eligible: false
         ctc: 2_200.0
         ctc_value: 2_090.0
         refundable_ctc: 1_700.0
         cdcc: 0.0
         adjusted_gross_income: 20_000.0
-        income_tax: -6_127.0
+        income_tax: -1_700.0
 - name: eitc_negative_self_employment_income_offsets_wages (federal)
   period: 2026
   absolute_error_margin: 0.1
