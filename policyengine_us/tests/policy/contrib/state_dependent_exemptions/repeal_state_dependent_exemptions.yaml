@@ -524,7 +524,7 @@
   output: {md_total_personal_exemptions: 3_200}
 
 
-- name: Joint filers with a claimable spouse in Kansas have no exemptions in 2022 (the claimable spouse is the head)
+- name: Joint filers with a claimable spouse in Kansas keep the other spouse's exemption in 2022 (the claimable spouse is the head)
   period: 2022
   reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
   input:
@@ -535,10 +535,11 @@
       child: {age: 5, is_tax_unit_dependent: true}
     tax_units: {tax_unit: {members: [person_a, person_b, child], filing_status: JOINT}}
     households: {household: {members: [person_a, person_b, child], state_name: KS}}
-  # 2022 K-40: a claimed filer enters 0 in the Total Kansas exemptions box.
-  output: {ks_exemptions: 0}
+  # K.S.A. 79-32,121(a) with IRC 151(d)(2): only the unclaimable spouse has
+  # an exemption, and the repeal drops the child: 1 x $2,250.
+  output: {ks_exemptions: 2_250}
 
-- name: Joint filers with a claimable spouse in Kansas have no exemptions in 2022 (the claimable spouse is the spouse)
+- name: Joint filers with a claimable spouse in Kansas keep the other spouse's exemption in 2022 (the claimable spouse is the spouse)
   period: 2022
   reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
   input:
@@ -549,4 +550,4 @@
       child: {age: 5, is_tax_unit_dependent: true}
     tax_units: {tax_unit: {members: [person_b, person_a, child], filing_status: JOINT}}
     households: {household: {members: [person_b, person_a, child], state_name: KS}}
-  output: {ks_exemptions: 0}
+  output: {ks_exemptions: 2_250}

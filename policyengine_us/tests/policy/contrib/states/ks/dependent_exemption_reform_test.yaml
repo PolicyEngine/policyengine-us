@@ -134,7 +134,7 @@
     households: {household: {members: [person_b, person_a, child], state_name: KS}}
   output: {ks_exemptions: 18_320}
 
-- name: KS dependent exemption reform - actually claimed filer with filing exception and child stays at zero with amount zero
+- name: KS dependent exemption reform - actually claimed filer with filing exception keeps only the repriced child exemption with amount zero
   period: 2022
   reforms: policyengine_us.reforms.states.ks.dependent_exemption.ks_dependent_exemption_reform.ks_dependent_exemption_reform
   input:
@@ -159,15 +159,15 @@
         members: [parent, child]
         state_name: KS
   output:
-    # The filing exception preserves federal dependents, but an actual claim
-    # still makes Total Kansas exemptions zero in the consolidated regime.
-    # Before the actual-claim gate: (0 - 1) * $2,250 + 1 * $0 = -$2,250.
+    # The claimed parent has no exemption of their own (IRC 151(d)(2)); the
+    # filing exception keeps the child (IRC 152(b)(1)). Count 0 + 1 = 1, all
+    # of it the repriced child: (1 - 1) * $2,250 + 1 * $0 = $0.
     ks_exemptions: 0
     head_or_spouse_is_dependent_elsewhere_without_filing_exception: false
-    ks_count_exemptions: 0
-    ks_eligible_dependents_count: 0
+    ks_count_exemptions: 1
+    ks_eligible_dependents_count: 1
 
-- name: KS dependent exemption reform - actually claimed filer with filing exception and child stays at zero with amount 4,000 dollars
+- name: KS dependent exemption reform - actually claimed filer with filing exception keeps only the repriced child exemption with amount 4,000 dollars
   period: 2022
   reforms: policyengine_us.reforms.states.ks.dependent_exemption.ks_dependent_exemption_reform.ks_dependent_exemption_reform
   input:
@@ -192,13 +192,12 @@
         members: [parent, child]
         state_name: KS
   output:
-    # The filing exception preserves federal dependents, but an actual claim
-    # still makes Total Kansas exemptions zero in the consolidated regime.
-    # Before the actual-claim gate: (0 - 1) * $2,250 + 1 * $4,000 = $1,750.
-    ks_exemptions: 0
+    # The claimed parent has no exemption of their own (IRC 151(d)(2)); the
+    # filing exception keeps the child. (1 - 1) * $2,250 + 1 * $4,000.
+    ks_exemptions: 4_000
     head_or_spouse_is_dependent_elsewhere_without_filing_exception: false
-    ks_count_exemptions: 0
-    ks_eligible_dependents_count: 0
+    ks_count_exemptions: 1
+    ks_eligible_dependents_count: 1
 
 - name: KS dependent exemption reform - 2024 actually claimed filer with filing exception retains repriced child exemption
   period: 2024
