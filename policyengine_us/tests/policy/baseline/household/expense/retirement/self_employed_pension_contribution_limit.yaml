@@ -255,6 +255,31 @@
     self_employed_pension_earned_income: 92_935.23
     self_employed_pension_contribution_limit: 23_087.05
 
+- name: With deferral room close to earned income, the limit is step 12, which a SIMPLE IRA can exceed.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        traditional_401k_contributions_desired: 17_500
+        self_employment_income: 5_600
+        self_employed_pension_contributions_desired: 10_000
+  output:
+    # 402(g) limit 22,500 less 17,500 deferred leaves 5,000 of room. Schedule
+    # SE line 4: 5,600 x 0.9235 = 5,171.60. Line 15: 5,171.60 x 15.3% / 2 =
+    # 395.63. Step 3: 5,600 - 395.63 = 5,204.37. Step 7: 867.40. Step 12:
+    # (5,204.37 - 5,000) / 2 = 102.19, the smallest, so steps 13 + 15 are
+    # (5,204.37 + 5,000) / 2 = 5,102.19.
+    # A SIMPLE IRA would allow more (Pub. 560 (2025), page 15; section
+    # 415(a)(2)): the 5,000 deferral, under its 15,500 limit for 2023, plus a
+    # 3% match of Schedule SE line 4 before the contributions (0.03 x
+    # 5,171.60 = 155.15), 5,155.15 in all. This limit cuts that by 52.96.
+    self_employed_pension_earned_income: 5_204.37
+    self_employed_pension_contribution_limit: 5_102.19
+    self_employed_pension_contributions: 5_102.19
+
 - name: Farm earnings take part of the self-employment tax deduction, which is split by net profit.
   period: 2025
   absolute_error_margin: 0.01

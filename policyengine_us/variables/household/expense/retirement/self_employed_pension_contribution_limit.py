@@ -13,28 +13,37 @@ class self_employed_pension_contribution_limit(Variable):
         "compensation for a self-employed person is earned income net of "
         "the plan deduction itself, so the 25% employer rate becomes 20% of "
         "earned income before that deduction, and the 100%-of-compensation "
-        "limit caps employer contributions at half of earned income less "
-        "elective deferrals (step 12). The modeled input "
+        "limit caps employer contributions at half of what is left of "
+        "earned income after elective deferrals (step 12). The modeled input "
         "does not say which kind of plan the person has, so the limit is the "
-        "most any defined contribution plan allows: a profit-sharing plan "
-        "with a 401(k) arrangement into which the person defers, before tax, "
-        "all of the elective deferral room that deferrals to other employers' "
-        "401(k) and 403(b) plans leave. With no room left, it is the SEP and "
-        "profit-sharing limit. Catch-up contributions sit outside the dollar "
-        "limit, and the total never exceeds earned income. A SEP or a SIMPLE "
-        "IRA allows less, so the limit overstates their deductions. Defined "
+        "most a SEP or a qualified defined contribution plan allows: a "
+        "profit-sharing plan with a 401(k) arrangement into which the person "
+        "defers, before tax, all of the elective deferral room that "
+        "deferrals to other employers' 401(k) and 403(b) plans leave. With no "
+        "room left, it is the SEP and profit-sharing limit. Catch-up "
+        "contributions sit outside the dollar limit, and the total never "
+        "exceeds earned income. A SEP allows less, so the limit overstates "
+        "its deductions. A SIMPLE IRA usually allows less too, but the "
+        "contributions don't reduce its compensation, and section 415 "
+        "doesn't apply to it. So when deferrals to other employers' plans "
+        "leave elective deferral room close to earned income, a SIMPLE IRA "
+        "can allow slightly more. A self-employed minister's section "
+        "403(b)(9) account can also allow more, since section 404(a)(10) "
+        "limits it only by the section 402(g) or 415 limit. Defined "
         "benefit plans are not modeled, so contributions to them above this "
         "limit are cut."
     )
     definition_period = YEAR
     reference = (
-        # Subsections (a)(3)(A)(i)(I), (a)(8)(C) and (D), (h)(1)(C) and (n).
+        # Subsections (a)(3)(A)(i)(I), (a)(8)(C) and (D), (a)(10), (h)(1)(C)
+        # and (n).
         "https://www.law.cornell.edu/uscode/text/26/404",
-        # Subsections (c)(1) and (c)(3)(B) and (D).
-        "https://www.law.cornell.edu/uscode/text/26/415#c",
+        # Subsections (a)(2), (c)(1) and (c)(3)(B) and (D).
+        "https://www.law.cornell.edu/uscode/text/26/415",
         # Subsections (v)(2)(A) and (v)(3)(A).
         "https://www.law.cornell.edu/uscode/text/26/414#v",
-        "https://www.irs.gov/pub/irs-prior/p560--2025.pdf#page=39",
+        # PDF pages 15, 39: SIMPLE IRA compensation and the worksheet.
+        "https://www.irs.gov/pub/irs-prior/p560--2025.pdf#page=15",
         "https://www.irs.gov/pub/irs-prior/p560--2022.pdf#page=34",
     )
 
@@ -69,10 +78,11 @@ class self_employed_pension_contribution_limit(Variable):
         )
         catch_up_room = min_(deferral_room, person("k401_catch_up_limit", period))
         regular_deferral_room = deferral_room - catch_up_room
-        # Steps 10 to 15: employer contributions and regular deferrals
-        # together stay within the dollar limit (step 8) and within
-        # compensation, which also excludes the employer contribution
-        # (step 12).
+        # Steps 10 to 15: employer contributions stay within step 7 and
+        # within half of what is left of earned income after the regular
+        # deferrals (step 12), because compensation also excludes the
+        # employer contribution. With the regular deferrals, they stay
+        # within the dollar limit (step 8).
         annual_additions = min_(
             min_(p.annual_additions, employer_limit + regular_deferral_room),
             (earned_income + regular_deferral_room) / 2,
