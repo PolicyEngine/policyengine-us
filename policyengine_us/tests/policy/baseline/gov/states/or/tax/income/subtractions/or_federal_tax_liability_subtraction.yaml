@@ -121,6 +121,9 @@
   # under the credit method: 471.50. No EITC at this income.
   # Oregon: min(max(0, 471.50 + 0), 8,500 cap) = 471.50.
   # (Adding the credit back would give 2,671.50.)
+  # aca_ptc is pinned at 0 so the case isolates the section 1341 credit: an
+  # Oregon formula that also nets the premium tax credit would otherwise
+  # subtract this household's modeled credit.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -133,6 +136,7 @@
       tax_unit:
         members: [person]
         claim_of_right_prior_year_tax_decrease: 2_200
+        aca_ptc: 0
     households:
       household:
         members: [person]
