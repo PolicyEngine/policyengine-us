@@ -90,3 +90,51 @@
     real_estate_taxes: 4_000
   output:
     ks_itemized_deductions: 6_000
+
+# K.S.A. 79-32,120(a)(4) counts qualified residence interest under section
+# 163(h), and 163(h)(3)(E) treats mortgage insurance premiums as such interest
+# (2019 Schedule S, line C4).
+- name: Case 8, 2019 mortgage insurance premiums count at the 75% share.
+  period: 2019
+  input:
+    state_code: KS
+    employment_income: 40_000
+    home_mortgage_interest: 8_000
+    mortgage_insurance_premiums: 1_000
+  output:
+    # AGI of 40,000 is below the 100,000 premium phase-out start.
+    # 0.75 * (8,000 + 1,000)
+    ks_itemized_deductions: 6_750
+
+- name: Case 9, 2025 a direct deductible mortgage interest input counts.
+  period: 2025
+  input:
+    state_code: KS
+    deductible_mortgage_interest: 9_000
+  output:
+    # 1 * 9,000
+    ks_itemized_deductions: 9_000
+
+# K.S.A. 79-32,120(a)(5) and 163(h)(3)(E): P.L. 119-21 sec. 70108 restores the
+# federal premium deduction from 2026, and Kansas counts it at 100%.
+- name: Case 10, 2026 mortgage insurance premiums count at 100%.
+  period: 2026
+  input:
+    state_code: KS
+    home_mortgage_interest: 8_000
+    mortgage_insurance_premiums: 1_000
+  output:
+    # AGI of 0 is below the premium phase-out start.
+    # 1 * (8,000 + 1,000)
+    ks_itemized_deductions: 9_000
+
+# 163(h)(3)(E)(iv) allows premiums through 2021, so premiums alone count.
+- name: Case 11, 2021 mortgage insurance premiums alone count.
+  period: 2021
+  input:
+    state_code: KS
+    mortgage_insurance_premiums: 1_000
+  output:
+    # AGI of 0 is below the premium phase-out start.
+    # 1 * 1,000
+    ks_itemized_deductions: 1_000

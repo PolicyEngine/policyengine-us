@@ -23,8 +23,12 @@ class ks_itemized_deductions(Variable):
         p = parameters(period).gov.states.ks.tax.income.deductions.itemized.rate
         charitable = tax_unit("charitable_deduction", period)
         medical = tax_unit("medical_expense_deduction", period)
-        qualified_residence_interest = tax_unit(
-            "deductible_mortgage_interest_tax_unit", period
+        # 26 U.S.C. 163(h)(3)(E) treats deductible mortgage insurance premiums
+        # as qualified residence interest.
+        qualified_residence_interest = add(
+            tax_unit,
+            period,
+            ["deductible_mortgage_interest", "deductible_mortgage_insurance_premiums"],
         )
         property_taxes = add(tax_unit, period, ["real_estate_taxes"])
         return (
