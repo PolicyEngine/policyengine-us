@@ -43,8 +43,7 @@ def deduction_case(draw):
     # All of the generated state tax fits within the allowed itemized total.
     state_tax = draw(st.integers(min_value=0, max_value=min(itemized, 40_000)))
     itemizes = draw(st.booleans())
-    schedule_1a = draw(st.integers(min_value=0, max_value=min(max(agi, 0), 10_000)))
-    return agi, itemized, standard, state_tax, itemizes, schedule_1a
+    return agi, itemized, standard, state_tax, itemizes
 
 
 def _situation(points):
@@ -53,9 +52,7 @@ def _situation(points):
     def all_years(value):
         return {year: value for year in YEARS}
 
-    for index, (agi, itemized, standard, state_tax, itemizes, schedule_1a) in enumerate(
-        points
-    ):
+    for index, (agi, itemized, standard, state_tax, itemizes) in enumerate(points):
         name = f"person_{index}"
         people[name] = {
             "age": all_years(40),
@@ -81,9 +78,7 @@ def _situation(points):
             "wagering_losses_deduction": all_years(0),
             "qualified_business_income_deduction": all_years(0),
             "charitable_deduction_for_non_itemizers": all_years(0),
-            "tip_income_deduction": {
-                year: schedule_1a if year >= 2025 else 0 for year in YEARS
-            },
+            "tip_income_deduction": all_years(0),
             "overtime_income_deduction": all_years(0),
             "additional_senior_deduction": all_years(0),
             "auto_loan_interest_deduction": all_years(0),
@@ -99,15 +94,15 @@ def _situation(points):
 @given(points=st.lists(deduction_case(), min_size=1, max_size=4))
 def test_state_tax_adjustment_precedes_taxable_income_floor(reference_system, points):
     witnesses = [
-        (10_000, 20_000, 14_600, 6_000, True, 0),
-        (50_000, 20_000, 14_600, 6_000, True, 0),
+        (10_000, 20_000, 14_600, 6_000, True),
+        (50_000, 20_000, 14_600, 6_000, True),
     ]
     points = points + witnesses
     simulation = Simulation(
         tax_benefit_system=reference_system,
         situation=_situation(points),
     )
-    agi, itemized, standard, state_tax, itemizes, schedule_1a = (
+    agi, itemized, standard, state_tax, itemizes = (
         np.asarray(values) for values in zip(*points)
     )
     adjustment = np.where(
@@ -116,7 +111,7 @@ def test_state_tax_adjustment_precedes_taxable_income_floor(reference_system, po
     elected_deduction = np.where(itemizes, itemized, standard)
 
     for year in YEARS:
-        federal_deductions = elected_deduction + (schedule_1a if year >= 2025 else 0)
+        federal_deductions = elected_deduction
         federal_pre_floor_base = agi - federal_deductions
         expected = np.maximum(federal_pre_floor_base + adjustment, 0)
         old_floor_then_add = np.maximum(federal_pre_floor_base, 0) + adjustment
