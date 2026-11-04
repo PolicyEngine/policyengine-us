@@ -16,9 +16,6 @@ jobs:
       POLICYENGINE_BATCH_WORKERS: 2
     strategy:
       fail-fast: false
-      # Contrib starts after Baseline finishes, so its 6 lanes take the place of
-      # Baseline's 6.
-      max-parallel: 6
       matrix:
         include:
           - group: states-shard-1
@@ -42,6 +39,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -49,7 +49,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies

@@ -1,0 +1,122 @@
+description: The state subtracts this disregard from countable income after the SSI income exclusions for individuals applying for the optional pathway to Medicaid eligibility for seniors or people with disabilities.
+metadata:
+  unit: currency-USD
+  period: month
+  label: Medicaid senior or disabled additional income disregard (individual)
+  breakdown:
+  - state_code
+  reference:
+    - title: California Welfare and Institutions Code 14005.40(c)(2)(A)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=14005.40
+    - title: "California DHCS All County Welfare Directors Letter 00-57, Aged and Disabled Federal Poverty Level program, MC 176 financial eligibility form, line 16 #page 1,3"
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/c00-57.pdf#page=1
+    - title: California DHCS All County Welfare Directors Letter 20-24, Aged and Disabled Federal Poverty Level program
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/20-24.pdf#page=2
+
+AK:
+  2015-01-01: 0
+AL:
+  2015-01-01: 0
+AR:
+  2015-01-01: 0
+AZ:
+  2015-01-01: 0
+CA:
+  # MC 176 subtracts this disregard (line 16) after the 20-dollar any-income
+  # deduction and the earned income deductions (lines 8-14). ACWDL 20-24
+  # ended it on December 1, 2020; that date first applies in 2021 annual
+  # calculations.
+  2015-01-01: 230
+  2020-12-01: 0
+CO:
+  2015-01-01: 0
+CT:
+  2015-01-01: 0
+DC:
+  2015-01-01: 0
+DE:
+  2015-01-01: 0
+FL:
+  2015-01-01: 0
+GA:
+  2015-01-01: 0
+HI:
+  2015-01-01: 0
+IA:
+  2015-01-01: 0
+ID:
+  2015-01-01: 0
+IL:
+  2015-01-01: 0
+IN:
+  2015-01-01: 0
+KS:
+  2015-01-01: 0
+KY:
+  2015-01-01: 0
+LA:
+  2015-01-01: 0
+MA:
+  2015-01-01: 0
+MD:
+  2015-01-01: 0
+ME:
+  2015-01-01: 0
+MI:
+  2015-01-01: 0
+MN:
+  2015-01-01: 0
+MO:
+  2015-01-01: 0
+MS:
+  2015-01-01: 0
+MT:
+  2015-01-01: 0
+NC:
+  2015-01-01: 0
+ND:
+  2015-01-01: 0
+NE:
+  2015-01-01: 0
+NH:
+  2015-01-01: 0
+NJ:
+  2015-01-01: 0
+NM:
+  2015-01-01: 0
+NV:
+  2015-01-01: 0
+NY:
+  2015-01-01: 0
+OH:
+  2015-01-01: 0
+OK:
+  2015-01-01: 0
+OR:
+  2015-01-01: 0
+PA:
+  2015-01-01: 0
+RI:
+  2015-01-01: 0
+SC:
+  2015-01-01: 0
+SD:
+  2015-01-01: 0
+TN:
+  2015-01-01: 0
+TX:
+  2015-01-01: 0
+UT:
+  2015-01-01: 0
+VA:
+  2015-01-01: 0
+VT:
+  2015-01-01: 0
+WA:
+  2015-01-01: 0
+WI:
+  2015-01-01: 0
+WV:
+  2015-01-01: 0
+WY:
+  2015-01-01: 0

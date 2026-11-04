@@ -15,8 +15,9 @@ the model's parameters:
 - 6012(f)(1) and (2)(A): a return is required when gross income exceeds the
   standard deduction, which adds the additional standard deduction for age
   and for blindness.
-- Under both, a married individual filing separately must file with any
-  gross income.
+- A married individual filing separately must file with any gross income
+  under 6012(f), and with any gross income, even none, under 6012(a)(1),
+  whose (A) excuses only gross income "less than" the zero exemption amount.
 
 `test_threshold_grid` runs one simulation over every filing status, every
 combination of age 65 and blindness for the head and spouse, and gross income
@@ -41,13 +42,41 @@ each batch, with two variants of every unit, as one simulation:
    deduction for a reason that has nothing to do with age.
 6. Inclusion: in 2026, the model never excuses a unit nobody can claim that
    6012(f), with the 2026 amounts, would require to file.
-7. Claimable units keep one rule in both years: for a unit whose head or
-   spouse can be claimed, a return is required exactly when gross income is
-   over the unit's standard deduction (any gross income on a separate
-   return), or a claimable adult's interest and dividends are over the
-   section 63(c)(5)(A) amount ($1,350 in 2025 and 2026) plus that adult's
-   own additions for age and blindness. How 6012(a)(1) applies to these
-   filers is decision d1395, so the change leaves them alone.
+7. Claimable units: for a unit whose head or spouse can be claimed, a
+   return is required exactly when gross income is over the unit's standard
+   deduction (6012(f) and (a)(1)(C)(i)(II); for 2025, any gross income on a
+   separate return), or a claimable adult's interest and dividends are over
+   the section 63(c)(5)(A) amount ($1,350 in 2025 and 2026) plus that
+   adult's own additions for age and blindness ((C)(i)(I)). From 2026 the
+   (A) and (B) threshold also binds them: gross income at least the unit's
+   (limited) basic standard deduction plus the age-only additions, or any
+   separate return. (C) adds to (A) for these filers; it does not replace
+   it. And from 2026 every joint return among them is required: the spouse
+   of a claimable adult loses the (A)(iv) exception, and any own gross
+   income, even none, meets the zero exemption amount.
+
+`test_joint_return_properties` draws batches of joint returns (any mix of
+age, blindness, claimability of each spouse, income and
+separate_filer_itemizes) and checks section 6012(a)(1)(A)(iv) and (C)(ii):
+
+8. Claimable spouse: in 2026, every joint return whose head or spouse can be
+   claimed is required. (iv) "shall not apply if ... any other taxpayer is
+   entitled to an exemption for such spouse under section 151(c)", so the
+   other spouse has no exception, and own gross income of $0 meets the $0
+   exemption amount. It can't pass trivially: every batch holds a claimable
+   joint unit with gross income under the $1,350 section 63(c)(5)(A) floor,
+   which the formula before (iv) was coded excused, since both the (A)
+   threshold and the limited standard deduction are at least that floor;
+   the test asserts that such a row exists, and that one exists whose
+   claimable adult is the head, so an exclusion applied only when the
+   spouse can be claimed fails it.
+9. No change elsewhere: a joint return nobody can claim, whose
+   separate_filer_itemizes is false, gets the result of the formula before
+   (iv) and (C)(ii) were coded, frozen in `frozen_joint_reference` from the
+   published amounts. It can't pass trivially: incomes are often a dollar
+   under, at or over a threshold, and the test asserts that both answers
+   occur among the checked rows. Coding (iv) or (C)(ii) too broadly (for a
+   unit nobody can claim, or ignoring separate_filer_itemizes) fails it.
 
 The tests use the default tax-benefit system only. A reform that kept 6012(f)
 for 2026 would compare the two rules directly, but it costs a second
@@ -132,7 +161,8 @@ def reference(unit, year, rule):
     income = gross_income(unit)
     limit = threshold(unit, year, rule)
     if limit is None:
-        return income > 0
+        # (a)(1)(A): no gross income is "less than" a zero exemption amount.
+        return True if rule == "6012(a)(1)" else income > 0
     if rule == "6012(a)(1)":
         return income >= limit
     return income > limit
@@ -236,8 +266,8 @@ BOUNDARIES = sorted(
 
 
 @st.composite
-def units(draw):
-    status = draw(st.sampled_from(STATUSES))
+def units(draw, status=None):
+    status = status or draw(st.sampled_from(STATUSES))
     size = 2 if status == "JOINT" else 1
     claimable = draw(st.booleans())
     adults = [
@@ -391,6 +421,17 @@ def test_filing_requirement_properties(drawn):
             )
         # Property 7.
         standard_deduction = results("standard_deduction", year)["base"]
+        basic_deduction = results("basic_standard_deduction", year)["base"]
+
+        def section_a(unit, basic):
+            if year < 2026:
+                return False
+            if unit["filing_status"] == "SEPARATE":
+                return True
+            aged = sum(adult["age"] >= 65 for adult in unit["adults"])
+            addition = ADDITIONAL[year][unit["filing_status"]]
+            return gross_income(unit) >= basic + aged * addition
+
         expected_claimable = np.array(
             [
                 (
@@ -399,7 +440,12 @@ def test_filing_requirement_properties(drawn):
                     else gross_income(unit) > deduction
                 )
                 or claimable_unearned_test(unit, year)
-                for unit, deduction in zip(by_variant["base"], standard_deduction)
+                or section_a(unit, basic)
+                # Section 6012(a)(1)(A)(iv)'s claimable-spouse exclusion.
+                or (year >= 2026 and unit["filing_status"] == "JOINT")
+                for unit, deduction, basic in zip(
+                    by_variant["base"], standard_deduction, basic_deduction
+                )
             ]
         )
         np.testing.assert_array_equal(
@@ -407,3 +453,84 @@ def test_filing_requirement_properties(drawn):
             expected_claimable[~unclaimable],
             err_msg=f"{year}: the rule for claimable units changed",
         )
+
+
+def frozen_joint_reference(unit, year):
+    """The filing requirement of a joint return nobody can claim, as the
+    formula gave it before 6012(a)(1)(A)(iv)'s exclusion and (C)(ii) were
+    coded, from the published amounts: (a)(1)(A) and (B) for 2026, gross
+    income at least $32,200 plus $1,650 for each spouse aged 65 or older;
+    (f) for 2025, gross income over $31,500 plus $1,600 for each spouse aged
+    65 or older and each blind spouse."""
+    income = gross_income(unit)
+    aged = sum(adult["age"] >= 65 for adult in unit["adults"])
+    if year >= 2026:
+        return income >= 32_200 + 1_650 * aged
+    blind = sum(adult["is_blind"] for adult in unit["adults"])
+    return income > 31_500 + 1_600 * (aged + blind)
+
+
+# A claimable spouse with no income, and a claimable head with no income,
+# which the formula before (iv) excused; and joint returns nobody can claim a
+# dollar under and at the 2026 threshold.
+JOINT_ANCHORS = [
+    (tax_unit("JOINT", [adult(30, False), adult(20, False, True)]), False),
+    (tax_unit("JOINT", [adult(20, False, True), adult(30, False)]), False),
+    (
+        tax_unit(
+            "JOINT", [adult(40, False, employment_income=32_199), adult(40, False)]
+        ),
+        False,
+    ),
+    (
+        tax_unit(
+            "JOINT", [adult(40, False, employment_income=32_200), adult(40, False)]
+        ),
+        False,
+    ),
+]
+
+
+@settings(
+    max_examples=6,
+    deadline=None,
+    derandomize=True,
+    suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
+)
+@given(
+    drawn=st.lists(
+        st.tuples(units(status="JOINT"), st.booleans()), min_size=8, max_size=24
+    )
+)
+def test_joint_return_properties(drawn):
+    drawn = JOINT_ANCHORS + drawn
+    joint = [unit for unit, _ in drawn]
+    itemizes = np.array([flag for _, flag in drawn])
+    simulation = simulate(joint)
+    for year in YEARS:
+        simulation.set_input("separate_filer_itemizes", year, itemizes)
+    claimable = ~np.array([nobody_claimable(unit) for unit in joint])
+    head_claimable = np.array(
+        [unit["adults"][0]["claimed_as_dependent_on_another_return"] for unit in joint]
+    )
+    income = np.array([gross_income(unit) for unit in joint])
+    for year in YEARS:
+        required = np.asarray(
+            simulation.calculate("tax_unit_is_required_to_file", year)
+        )
+        # Property 8.
+        if year >= 2026:
+            assert required[claimable].all(), (
+                f"{year}: excused a joint return with a claimable spouse"
+            )
+            assert (claimable & (income < DEPENDENT_AMOUNT[year])).any()
+            assert (head_claimable & (income < DEPENDENT_AMOUNT[year])).any()
+        # Property 9.
+        checked = ~claimable & ~itemizes
+        expected = np.array([frozen_joint_reference(unit, year) for unit in joint])
+        np.testing.assert_array_equal(
+            required[checked],
+            expected[checked],
+            err_msg=f"{year}: changed a joint return nobody can claim",
+        )
+        assert required[checked].any() and not required[checked].all()

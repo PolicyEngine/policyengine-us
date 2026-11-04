@@ -197,3 +197,133 @@
     aca_magi_fraction: 4.01
   output:
     aca_required_contribution_percentage: 0
+
+# 2027: Rev. Proc. 2026-26 section 3.01 table (initial -> final percentage):
+# under 133% 2.15 -> 2.15; 133-150% 3.23 -> 4.3; 150-200% 4.3 -> 6.78;
+# 200-250% 6.78 -> 8.66; 250-300% 8.66 -> 10.22; 300-400% 10.22 -> 10.22.
+- name: 2027 ACA contribution percentage is flat 2.15 percent at 100 percent FPL.
+  period: 2027
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 1.0
+  output:
+    aca_required_contribution_percentage: 0.0215
+
+- name: 2027 ACA contribution percentage is still 2.15 percent at 132 percent FPL.
+  period: 2027
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 1.32
+  output:
+    aca_required_contribution_percentage: 0.0215
+
+- name: 2027 ACA contribution percentage jumps to 3.23 percent at 133 percent FPL.
+  period: 2027
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 1.33
+  output:
+    aca_required_contribution_percentage: 0.0323
+
+- name: 2027 ACA contribution percentage interpolates within the 133-150 percent band.
+  # 3.23 + (1.40 - 1.33) / (1.50 - 1.33) * (4.3 - 3.23) = 3.6706%, which
+  # 26 CFR 1.36B-3(g)(1) rounds to 3.67%.
+  period: 2027
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 1.40
+  output:
+    aca_required_contribution_percentage: 0.0367
+
+- name: 2027 ACA contribution percentage is 4.3 percent at 150 percent FPL.
+  period: 2027
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 1.50
+  output:
+    aca_required_contribution_percentage: 0.043
+
+- name: 2027 ACA contribution percentage at the midpoint of the 150-200 percent band.
+  # 4.3 + 0.5 * (6.78 - 4.3) = 5.54%.
+  period: 2027
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 1.75
+  output:
+    aca_required_contribution_percentage: 0.0554
+
+- name: 2027 ACA contribution percentage at 199 percent FPL, the top of the 150-200 percent band.
+  # 4.3 + (1.99 - 1.50) / (2.00 - 1.50) * (6.78 - 4.3) = 6.7304%, which
+  # 26 CFR 1.36B-3(g)(1) rounds to 6.73%.
+  period: 2027
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 1.99
+  output:
+    aca_required_contribution_percentage: 0.0673
+
+- name: 2027 ACA contribution percentage is 6.78 percent at 200 percent FPL.
+  period: 2027
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 2.00
+  output:
+    aca_required_contribution_percentage: 0.0678
+
+- name: 2027 ACA contribution percentage at the midpoint of the 200-250 percent band.
+  # 6.78 + 0.5 * (8.66 - 6.78) = 7.72%.
+  period: 2027
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 2.25
+  output:
+    aca_required_contribution_percentage: 0.0772
+
+- name: 2027 ACA contribution percentage is 8.66 percent at 250 percent FPL.
+  period: 2027
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 2.50
+  output:
+    aca_required_contribution_percentage: 0.0866
+
+- name: 2027 ACA contribution percentage at the midpoint of the 250-300 percent band.
+  # 8.66 + 0.5 * (10.22 - 8.66) = 9.44%.
+  period: 2027
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 2.75
+  output:
+    aca_required_contribution_percentage: 0.0944
+
+- name: 2027 ACA contribution percentage is 10.22 percent at 300 percent FPL.
+  period: 2027
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 3.00
+  output:
+    aca_required_contribution_percentage: 0.1022
+
+- name: 2027 ACA contribution percentage is flat 10.22 percent at 350 percent FPL.
+  period: 2027
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 3.50
+  output:
+    aca_required_contribution_percentage: 0.1022
+
+- name: 2027 ACA contribution percentage is 10.22 percent at 400 percent FPL.
+  period: 2027
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 4.0
+  output:
+    aca_required_contribution_percentage: 0.1022
+
+- name: 2027 ACA contribution percentage is zero above 400 percent FPL.
+  period: 2027
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 4.01
+  output:
+    aca_required_contribution_percentage: 0

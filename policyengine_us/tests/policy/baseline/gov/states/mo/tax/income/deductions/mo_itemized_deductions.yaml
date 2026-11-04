@@ -5,33 +5,32 @@
     itemized_taxable_income_deductions: 0
     employee_social_security_tax: 0
     employee_medicare_tax: 0
-    misc_deduction: 0
     mo_net_state_income_taxes: 0
     state_code: MO
   output:
     mo_itemized_deductions: 0.0
 
-- name: 60 in Federal itemizations, 10 in net_state_income_taxes
+- name: 20 in Federal itemizations, 10 in net_state_income_taxes
   period: 2021
   absolute_error_margin: 0.01
   input:
-    itemized_taxable_income_deductions: 10
+    # Form MO-A Part 2 line 1 is the federal total, which already includes
+    # any miscellaneous deduction.
+    itemized_taxable_income_deductions: 20
     employee_social_security_tax: 0
     employee_medicare_tax: 0
-    misc_deduction: 10
     mo_net_state_income_taxes: 10
     state_code: MO
   output:
     mo_itemized_deductions: 10.00
 
-- name:  6000 in Federal itemizations, 1000 in net_state_income_taxes
+- name: 2000 in Federal itemizations, 1000 in net_state_income_taxes
   period: 2021
   absolute_error_margin: 0.01
   input:
-    itemized_taxable_income_deductions: 1000
+    itemized_taxable_income_deductions: 2000
     employee_social_security_tax: 0
     employee_medicare_tax: 0
-    misc_deduction: 1000
     mo_net_state_income_taxes: 1000
     state_code: MO
   output:
@@ -51,3 +50,100 @@
     households: {household: {members: [head, spouse], state_code: MO}}
   output:
     mo_itemized_deductions: 50_000
+
+# 2017 Form MO-A Part 2 line 1 is total federal itemized deductions from Form
+# 1040 line 40, which already includes the miscellaneous deduction above the
+# 2% floor; Part 2 has no separate line for it.
+- name: 2017 miscellaneous deduction counted once
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    charitable_deduction: 9_000
+    misc_deduction: 1_000
+    employee_social_security_tax: 0
+    employee_medicare_tax: 0
+    mo_net_state_income_taxes: 0
+    state_code: MO
+  output:
+    itemized_taxable_income_deductions: 10_000
+    mo_itemized_deductions: 10_000
+
+# RSMo 143.141 starts from the allowable federal itemized deductions, and the
+# 2017 instructions (MO-A Part 2 line 1) take the federal total once.
+- name: 2017 federal total that includes miscellaneous deductions counted once
+  period: 2017
+  input:
+    itemized_taxable_income_deductions: 10_000
+    misc_deduction: 1_000
+    employee_social_security_tax: 0
+    employee_medicare_tax: 0
+    additional_medicare_tax: 0
+    self_employment_tax: 0
+    mo_net_state_income_taxes: 0
+    state_code: MO
+  output:
+    # The 10,000 already includes the 1,000; before the fix 11,000.
+    mo_itemized_deductions: 10_000
+
+- name: 2017 state income tax adjustment without duplicating miscellaneous deductions
+  period: 2017
+  input:
+    itemized_taxable_income_deductions: 10_000
+    misc_deduction: 1_000
+    employee_social_security_tax: 0
+    employee_medicare_tax: 0
+    additional_medicare_tax: 0
+    self_employment_tax: 0
+    mo_net_state_income_taxes: 2_000
+    state_code: MO
+  output:
+    # 10,000 - 2,000; before the fix 9,000.
+    mo_itemized_deductions: 8_000
+
+- name: 2016 miscellaneous deduction counted once
+  period: 2016
+  input:
+    charitable_deduction: 9_000
+    misc_deduction: 1_000
+    employee_social_security_tax: 0
+    employee_medicare_tax: 0
+    additional_medicare_tax: 0
+    self_employment_tax: 0
+    mo_net_state_income_taxes: 0
+    state_code: MO
+  output:
+    mo_itemized_deductions: 10_000
+
+# Single filer, $100,000 of self-employment income and $20,000 of cash
+# charity. The filer owes 14,129.55 of self-employment tax and deducts half
+# (7,064.775) in computing federal AGI, so Missouri allows the other half as
+# an itemized deduction (RSMo 143.141(4)(c)). With the charity, itemized
+# deductions total 27,064.775, and the 0.01 margin covers either rounding of
+# the half cent. If the model counted the full tax, they would total 34,129.55.
+- name: 2017 self-employment tax counted net of the federal AGI deduction
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head: {age: 40, self_employment_income: 100_000, charitable_cash_donations: 20_000}
+    tax_units: {tax_unit: {members: [head]}}
+    households: {household: {members: [head], state_code: MO}}
+  output:
+    self_employment_tax: 14_129.55
+    self_employment_tax_ald: 7_064.77
+    mo_self_employment_tax_addback: 7_064.77
+    mo_itemized_deductions: 27_064.78
+
+- name: 2024 self-employment tax counted net of the federal AGI deduction
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head: {age: 40, self_employment_income: 100_000, charitable_cash_donations: 20_000}
+    tax_units: {tax_unit: {members: [head]}}
+    households: {household: {members: [head], state_code: MO}}
+  output:
+    self_employment_tax: 14_129.55
+    self_employment_tax_ald: 7_064.77
+    mo_self_employment_tax_addback: 7_064.77
+    mo_itemized_deductions: 27_064.78

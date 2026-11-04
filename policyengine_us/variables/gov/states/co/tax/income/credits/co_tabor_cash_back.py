@@ -5,6 +5,12 @@ class co_tabor_cash_back(Variable):
     value_type = float
     entity = TaxUnit
     label = "Colorado TABOR cash back"
+    documentation = (
+        "One-time Colorado Cash Back payment under SB 22-233, paid in 2022 and based "
+        "on the 2021 return. PolicyEngine attributes it to the 2021 eligibility year "
+        "through co_refundable_credits. The amount is zero outside 2021. It is "
+        "separate from co_sales_tax_refund."
+    )
     defined_for = StateCode.CO
     unit = USD
     definition_period = YEAR

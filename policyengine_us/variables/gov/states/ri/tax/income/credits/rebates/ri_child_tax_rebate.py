@@ -5,6 +5,12 @@ class ri_child_tax_rebate(Variable):
     value_type = float
     entity = TaxUnit
     label = "Rhode Island Child Tax Rebate"
+    documentation = (
+        "One-time Rhode Island child tax rebate enacted and paid in 2022 and "
+        "determined from the 2021 return. PolicyEngine attributes it to eligibility "
+        "tax year 2021 through ri_refundable_credits. This variable is zero in other "
+        "years."
+    )
     unit = USD
     definition_period = YEAR
     reference = (
