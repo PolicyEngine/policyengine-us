@@ -58,7 +58,10 @@ values:
   2032-01-01: 26_552
   2033-01-01: 28_277
   2034-01-01: 30_129
-  # 2035 to 2100 grow at the 2031-2032 rate (26_552 / 25_185, 5.4% a year),
+  # After 2034, growth glides from the 2031-2032 rate (26_552 / 25_185, 5.4%),
   # not the 2033-2034 rate, which carries the end of Medicare sequestration
-  # on August 31, 2033; later years hold the 2100 value. See
+  # on August 31, 2033, to the 2026 Medicare Trustees' long-range growth in
+  # Medicare spending per enrollee: 3.7% in 2050, declining to 3.6% by 2100
+  # (cost growth of 3.8% and 3.7% compounded with a -0.1% demographic mix,
+  # file pages 29 and 180). Later years hold the 2100 value. See
   # set_all_uprating_parameters in uprating_extensions.py.

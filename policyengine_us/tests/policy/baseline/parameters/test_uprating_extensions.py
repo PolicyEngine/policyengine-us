@@ -43,11 +43,6 @@ def test_all_uprating_factors_extend_to_2100():
         ("CPI-U", parameters.gov.bls.cpi.cpi_u, "-02-01"),
         ("Chained CPI-U", parameters.gov.bls.cpi.c_cpi_u, "-02-01"),
         ("CPI-W", parameters.gov.bls.cpi.cpi_w, "-02-01"),
-        (
-            "CMS Medicare spending per enrollee",
-            parameters.calibration.gov.hhs.medicare.per_capita_cost,
-            "-01-01",
-        ),
     ]
 
     for name, param, date_suffix in uprating_params:
@@ -207,16 +202,58 @@ def test_cms_direct_purchase_premium_per_enrollee_glides_to_long_range_growth():
     assert parameter("2150-01-01") == parameter("2100-01-01")
 
 
-def test_medicare_part_b_premium_holds_last_projected_growth_rate():
+def test_medicare_part_b_premium_glides_to_long_range_part_b_growth():
     """Reported Part B premium inputs keep growing after the Trustees' 2035
-    projection, at the 2034-2035 growth rate."""
+    projection, gliding from the 2034-2035 growth rate to the Trustees'
+    long-range growth in Part B spending per enrollee: Part B cost growth of
+    3.8% in 2050 and 2100, compounded with a -0.1% demographic mix."""
     parameter = PARAMETERS.calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee
-    last_growth = parameter("2035-01-01") / parameter("2034-01-01")
+    last_growth = parameter("2035-01-01") / parameter("2034-01-01") - 1
+    long_range = 1.038 * 0.999 - 1
+
+    def growth(year):
+        return parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01") - 1
 
     assert parameter("2035-01-01") == 360.6
-    for year in [2036, 2037, 2050, 2100]:
-        growth = parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01")
-        assert growth == pytest.approx(last_growth, rel=1e-12)
+    assert last_growth == pytest.approx(360.6 / 338.5 - 1, rel=1e-12)
+    # 2036 is one fifteenth of the way from the 2035 rate to 3.6962% in 2050:
+    # 0.0652880 + (0.036962 - 0.0652880) / 15 = 0.0633996, so 2036 is
+    # 360.6 * 1.0633996 = 383.46 (hand computed).
+    assert growth(2036) == pytest.approx(
+        last_growth + (long_range - last_growth) / 15, rel=1e-12
+    )
+    assert parameter("2036-01-01") == pytest.approx(383.46, abs=0.01)
+    for year in [2050, 2051, 2075, 2100]:
+        assert growth(year) == pytest.approx(long_range, rel=1e-12)
+    # The 2034-2035 rate every year gave $931 in 2050 and $21,998 in 2100.
+    assert parameter("2050-01-01") == pytest.approx(751.26, abs=0.01)
+    assert parameter("2100-01-01") == pytest.approx(4_612.46, abs=0.01)
+    assert parameter("2150-01-01") == parameter("2100-01-01")
+
+
+def test_medicare_per_capita_cost_glides_to_long_range_growth():
+    """Medicare spending per enrollee keeps growing after CMS's 2034
+    projection, gliding from the 2031-2032 growth rate, which skips the end
+    of sequestration in 2033, to the Medicare Trustees' long-range growth in
+    Medicare spending per enrollee: cost growth of 3.8% in 2050 and 3.7% in
+    2100, compounded with a -0.1% demographic mix."""
+    parameter = PARAMETERS.calibration.gov.hhs.medicare.per_capita_cost
+    short_range = parameter("2032-01-01") / parameter("2031-01-01") - 1
+
+    def growth(year):
+        return parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01") - 1
+
+    assert parameter("2034-01-01") == 30_129
+    assert short_range == pytest.approx(26_552 / 25_185 - 1, rel=1e-12)
+    # 2035 is one sixteenth of the way from the 2031-2032 rate to 3.6962% in
+    # 2050: 0.0542783 + (0.036962 - 0.0542783) / 16 = 0.0531961, so 2035 is
+    # 30,129 * 1.0531961 = 31,731.74 (hand computed).
+    assert growth(2035) == pytest.approx(
+        short_range + (1.038 * 0.999 - 1 - short_range) / 16, rel=1e-12
+    )
+    assert parameter("2035-01-01") == pytest.approx(31_731.74, abs=0.01)
+    assert growth(2050) == pytest.approx(1.038 * 0.999 - 1, rel=1e-12)
+    assert growth(2100) == pytest.approx(1.037 * 0.999 - 1, rel=1e-12)
     assert parameter("2150-01-01") == parameter("2100-01-01")
 
 

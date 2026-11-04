@@ -1253,13 +1253,19 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
 
     # Medicare Part B standard monthly premium (January values, last Trustees
     # projection year 2035). Reported Part B premium inputs use this as their
-    # uprater.
+    # uprater. The Secretary of Health and Human Services sets the standard
+    # premium to cover about 25 percent of average expenditures for
+    # beneficiaries aged 65 and over (42 U.S.C. 1395r(a); 2026 Medicare
+    # Trustees Report, file page 97), so growth glides from the 2034-2035 rate
+    # to the Trustees' long-range growth in Part B spending per enrollee, and
+    # later years hold the 2100 value.
     extend_parameter_values(
         parameters.calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee,
         last_projected_year=2035,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
+        long_range_growth=MEDICARE_PART_B_PER_ENROLLEE_LONG_RANGE_GROWTH,
     )
 
     # Gross Social Security benefit inputs should age with gross Social
@@ -1288,8 +1294,9 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     # Medicare Trustees Report, file page 209); its end lifts 2033 and 2034
     # growth, and the Trustees' per-beneficiary growth falls from 6.6
     # percent in 2034 to 5.4 percent in 2035 (Table V.D1, file page 210).
-    # So each year from 2035 to 2100 grows at the 2031-2032 rate, and later
-    # years hold the 2100 value.
+    # So growth glides from the 2031-2032 rate in 2034 to the Trustees'
+    # long-range growth in Medicare spending per enrollee, and later years hold
+    # the 2100 value.
     extend_parameter_values(
         parameters.calibration.gov.hhs.medicare.per_capita_cost,
         last_projected_year=2034,
@@ -1297,6 +1304,7 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_month=1,
         period_day=1,
         growth_years=(2031, 2032),
+        long_range_growth=MEDICARE_PER_ENROLLEE_LONG_RANGE_GROWTH,
     )
 
     # CBO income-by-source aggregates are used directly and as anchors for
