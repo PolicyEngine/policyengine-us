@@ -1,0 +1,1 @@
+NJ Health Plan Savings: cite the DOBI FY2026-2027 budget response for the program's continuation to 600% FPL in plan year 2026 after the enhanced federal credits lapsed, and the Department's 2026-08-18 letter for the 2025 poverty-guideline vintage; correct the Treasury addendum page anchor.
