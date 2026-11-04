@@ -161,17 +161,31 @@ class mi_household_resources(Variable):
         premiums = tax_unit_non_dep_add(tax_unit, period, ["health_insurance_premiums"])
         # "Do not include any insurance premiums deducted on lines 21 or 30"
         # (2025 MI-1040 book, page 33). Line 30 includes the self-employed
-        # health insurance deduction (Schedule 1 line 17), so those premiums
-        # leave line 31 and each premium dollar is subtracted once.
+        # health insurance deduction (Schedule 1 line 17). Its medical part
+        # (Form 7206 line 1) took premiums that are in
+        # health_insurance_premiums, so those leave line 31 and each premium
+        # dollar is subtracted once. Its long-term care part (line 2) took
+        # long-term care premiums, which line 31 does not hold, so it takes
+        # nothing off line 31: the head's and spouse's deduction less the
+        # long-term care parts of their own deductions comes off.
         # A supplied tax-unit deduction is assumed to cover premiums also
-        # represented in health_insurance_premiums. The aggregate inputs do
-        # not identify the overlap if the deducted plan's premiums are omitted.
+        # represented in health_insurance_premiums, apart from any long-term
+        # care part the person amounts show. The aggregate inputs do not
+        # identify the overlap if the deducted plan's premiums are omitted.
         # Line 21 nets out Medicare premiums withheld from Social Security or
         # railroad retirement benefits (MCL 206.510(1)(h)). Here line 21 has
         # gross benefits and line 31 the premiums, which subtracts them once
         # as well.
         premiums_on_line_30 = (
-            tax_unit("self_employed_health_insurance_ald", period)
+            max_(
+                0,
+                tax_unit("self_employed_health_insurance_ald", period)
+                - tax_unit_non_dep_sum(
+                    "self_employed_health_insurance_ald_long_term_care_part",
+                    tax_unit,
+                    period,
+                ),
+            )
             if "self_employed_health_insurance_ald" in deductions
             else 0
         )
