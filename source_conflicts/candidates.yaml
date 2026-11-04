@@ -10140,8 +10140,7 @@ candidates:
   note: PolicyEngine ruled on 2026-10-21 for the Social Security reading. The model has no service-connection input,
     so wa_pte_wholly_service_connected_disability defaults to is_disabled (or is_fully_disabled_service_connected_veteran)
     as an overridable proxy, read together with is_veteran in wa_pte_categorical_eligible; it over-includes a veteran
-    whose disability is not service-connected. WA DOR's pre-2016 practice has not been found; if it turns up, the
-    agency-reading rule applies.
+    whose disability is not service-connected.
 - id: us-wi:claim-of-right-itemized-deduction-credit
   program: income-tax
   years:
