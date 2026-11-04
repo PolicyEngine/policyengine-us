@@ -136,9 +136,10 @@ def assert_properties(cases, values):
             n, s = f"{role}_N{i}", f"{role}_S{i}"
             # 2. Bounds.
             assert ism[n] == 0, c
-            assert -TOLERANCE <= ism[s] <= individual_pmv + TOLERANCE, c
+            assert ism[s] >= -TOLERANCE, c
             if ssi[s] <= 0:
                 continue
+            assert ism[s] <= individual_pmv + TOLERANCE, c
             # 1. Matching.
             if c["arrangement"] == "another_household":
                 expected = rate[n] - rate[s]

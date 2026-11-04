@@ -103,6 +103,10 @@ class co_ssa_in_kind_support_and_maintenance(Variable):
         # SSI splits it. For a single client in 2004 that is 564 / 3 + 20 =
         # $208, between the two bases' 37% shelter components ($189.81 and
         # $222.37).
+        # Under the one-third reduction SSI counts no presumed maximum
+        # value, so in these years AND-CS counts no ISM for a client in
+        # another person's household and still offsets that reduction in
+        # full.
         ism = (
             person("ssi_in_kind_support_and_maintenance", period.this_year)
             / MONTHS_IN_YEAR
