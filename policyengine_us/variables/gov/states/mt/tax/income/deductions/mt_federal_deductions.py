@@ -5,6 +5,14 @@ class mt_federal_deductions(Variable):
     value_type = float
     entity = TaxUnit
     label = "Federal standard or itemized deduction for Montana"
+    documentation = (
+        "For display only: the federal standard or itemized deduction as "
+        "Montana's return reports it. mt_taxable_income_joint does not read "
+        "this variable. It computes its own deduction term from "
+        "taxable_income_deductions, which also keeps the qualified business "
+        "income deduction (added back) and the Schedule 1-A deductions in the "
+        "federal base."
+    )
     unit = USD
     definition_period = YEAR
     reference = (
