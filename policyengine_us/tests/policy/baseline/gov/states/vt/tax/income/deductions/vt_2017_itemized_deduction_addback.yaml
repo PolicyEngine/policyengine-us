@@ -184,3 +184,49 @@
     itemized_taxable_income_deductions_reduction: 7_155
     itemized_taxable_income_deductions: 66_845
     vt_2017_itemized_deduction_addback: 37_992.14
+
+- name: 2017 separate filer whose spouse doesn't itemize measures the addback against the standard deduction.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    filing_status: SEPARATE
+    tax_unit_itemizes: true
+    separate_filer_itemizes: false
+    employment_income: 100_000
+    real_estate_taxes: 8_000
+  output:
+    # Vermont withholding, deducted as income tax: 3.35% x 40,950 +
+    # 6.6% x (100,000 - 6,350 - 40,950) = 4,850.025. Schedule A line 29:
+    # 4,850.025 + 8,000 real estate tax = 12,850.025, with no section 68 cut.
+    # Line 1 12,850.025; line 2 6,350; line 3 12,850.025 - 6,350 = 6,500.025.
+    # Line 4 4,850.025; lines 5 and 6 0; line 7 4,850.025.
+    # Line 8 12,850.025 - 4,850.025 = 8,000; line 9 2.5 x 6,350 = 15,875;
+    # line 10 max(8,000 - 15,875, 0) = 0.
+    # Line 11 min(6,500.025, 4,850.025) + 0 = 4,850.025.
+    standard_deduction: 6_350
+    vt_2017_itemized_deduction_addback: 4_850.02
+    # 100,000 - 4,050 exemption - 12,850.025 itemized + 4,850.025 addback
+    vt_taxable_income: 87_950
+
+- name: 2017 separate filer whose spouse itemizes has no standard deduction on line 2.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    filing_status: SEPARATE
+    tax_unit_itemizes: true
+    separate_filer_itemizes: true
+    employment_income: 100_000
+    real_estate_taxes: 8_000
+  output:
+    # Once either spouse itemizes, the standard deduction is 0 (26 U.S.C.
+    # 63(c)(6)(A)). Schedule A line 29 is 12,850.025, as in the case above.
+    # Line 1 12,850.025; line 2 0; line 3 12,850.025.
+    # Line 4 4,850.025; lines 5 and 6 0; line 7 4,850.025.
+    # Line 8 12,850.025 - 4,850.025 = 8,000; line 9 0; line 10 8,000.
+    # Line 11 min(12,850.025, 4,850.025) + 8,000 = 12,850.025.
+    standard_deduction: 0
+    vt_2017_itemized_deduction_addback: 12_850.03
+    # 100,000 - 4,050 exemption - 12,850.025 itemized + 12,850.025 addback
+    vt_taxable_income: 95_950
