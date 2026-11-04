@@ -126,3 +126,34 @@
     ar_agi_joint: 70_000
     ar_itemized_deductions_joint: 8_000
     ar_taxable_income_joint: 62_000
+
+- name: Married filing separately on the same return prorates pooled itemized deductions, gambling losses included, by AGI
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 200_000
+        real_estate_taxes: 20_000
+      spouse:
+        age: 40
+        employment_income: 10_000
+        gambling_winnings: 50_000
+        gambling_losses: 50_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: AR
+  output:
+    ar_files_separately: true
+    ar_agi_indiv: [200_000, 60_000]
+    ar_gambling_loss_deduction: 50_000
+    # AR3 lines 31-35: the 70,000 of pooled itemized deductions is split by AGI
+    # share rounded to the nearest percent, 77% / 23%. The winnings raise the
+    # spouse's share, so part of the head's real estate tax moves to the spouse,
+    # which is how the form works. Total taxable income is unchanged at 190,000.
+    ar_itemized_deductions_indiv: [53_900, 16_100]
+    ar_taxable_income_indiv: [146_100, 43_900]
