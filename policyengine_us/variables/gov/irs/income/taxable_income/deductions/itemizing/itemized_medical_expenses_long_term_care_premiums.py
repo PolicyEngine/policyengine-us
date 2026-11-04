@@ -16,7 +16,9 @@ class itemized_medical_expenses_long_term_care_premiums(Variable):
         "The eligible long-term care insurance premiums inside the Schedule A "
         "medical subtotal (itemized_medical_expenses): every member's "
         "premiums up to the 26 U.S.C. 213(d)(10) limit for that member's age, "
-        "less the part the self-employed health insurance deduction took. "
+        "less the part the head's and spouse's self-employed health insurance "
+        "deduction took and the long-term care part of each dependent's own "
+        "deduction. "
         "The computed subtotal adds this amount, so supplying it sets the "
         "long-term care premiums the subtotal counts. A supplied subtotal "
         "bypasses this formula, and the amount is 0 unless it is supplied "
@@ -39,4 +41,12 @@ class itemized_medical_expenses_long_term_care_premiums(Variable):
         excluded = tax_unit(
             "itemized_medical_expenses_excluded_long_term_care_premiums", period
         )
-        return premiums - excluded
+        # A dependent's own deduction, on the dependent's own return, took
+        # its long-term care part (Form 7206 line 2) out of the dependent's
+        # premiums (26 U.S.C. 162(l)(3)).
+        person = tax_unit.members
+        dependents_part = tax_unit.sum(
+            person("self_employed_health_insurance_ald_long_term_care_part", period)
+            * person("is_tax_unit_dependent", period)
+        )
+        return premiums - excluded - dependents_part

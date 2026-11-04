@@ -246,6 +246,9 @@
         state_code: ID
   output:
     self_employed_health_insurance_ald: 1_800
+    self_employed_health_insurance_ald_long_term_care_part: [1_800, 0]
+    # Schedule A: the spouse's 3,000 plus 1,800 - 1,800 of long-term care.
+    itemized_medical_expenses: 3_000
     id_qualified_health_insurance_premiums: 3_000
 
 - name: Dependent-paid premiums cannot reduce the parent's itemized subtraction

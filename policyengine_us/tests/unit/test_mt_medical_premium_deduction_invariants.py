@@ -56,8 +56,9 @@ independently. For every tax unit:
 5. Pre-tax premiums never change lines 2 or 3.
 6. Line 1 base: other expenses equal federal itemized medical expenses plus
    the self-employed premiums those exclude, less the medical and eligible
-   long-term care premiums. Line 1 therefore tracks the federal definition
-   apart from the premiums.
+   long-term care premiums (a dependent's less the long-term care part of the
+   dependent's own deduction). Line 1 therefore tracks the federal
+   definition apart from the premiums.
 7. Differential (2021-2023): for single filers whose deduction is recorded
    per person, the joint and separate variants agree.
 8. From 2024 the joint deduction is the federal medical expense deduction and
@@ -303,6 +304,7 @@ PERSON_VARIABLES = [
     "other_medical_expenses",
     "long_term_health_insurance_premiums",
     "eligible_long_term_care_premiums",
+    "self_employed_health_insurance_ald_long_term_care_part",
     "medical_expense_health_insurance_premiums",
     "self_employed_health_insurance_ald_person",
     "mt_eligible_medical_insurance_premiums",
@@ -445,8 +447,12 @@ def _check(units, year, mode):
     # 6. Line 1 base tracks the federal definition apart from the premiums.
     # The computed subtotal holds the members' eligible long-term care
     # premiums less the part the self-employed deduction took, and the
-    # applied exclusion restores that part.
-    eligible_long_term_care = run["eligible_long_term_care_premiums"]
+    # applied exclusion restores that part. A dependent's own deduction
+    # took the dependent's long-term care part, which stays out.
+    eligible_long_term_care = (
+        run["eligible_long_term_care_premiums"]
+        - ~filer * run["self_employed_health_insurance_ald_long_term_care_part"]
+    )
     np.testing.assert_allclose(
         _unit_sum(run, other),
         run["itemized_medical_expenses"]

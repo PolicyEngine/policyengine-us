@@ -17,10 +17,15 @@ class itemized_medical_expenses_excluded_long_term_care_premiums(Variable):
         "left after the head's and spouse's medical insurance premiums "
         "(itemized_medical_expenses_excluded_premiums), limited to their "
         "eligible long-term care premiums. 26 U.S.C. 162(l)(3) keeps premiums "
-        "taken as that deduction off Schedule A. Taking the deduction from "
-        "medical insurance premiums first leaves the Schedule A subtotal "
-        "unchanged; it fixes which premiums a state that treats long-term "
-        "care premiums separately sees as already deducted."
+        "taken as that deduction off Schedule A. The split is for the return "
+        "as a whole: it takes the deduction from the head's and spouse's "
+        "pooled medical insurance premiums first, so it can book one filer's "
+        "long-term care deduction against the other filer's medical premiums. "
+        "Any split leaves the Schedule A subtotal unchanged. A supplied "
+        "subtotal carries only the total exclusion, and Montana's 2021-2023 "
+        "schedule recovers its medical part by this same pooled rule, so the "
+        "computed and supplied paths agree. Each person's own long-term care "
+        "part is self_employed_health_insurance_ald_long_term_care_part."
     )
 
     def formula(tax_unit, period, parameters):

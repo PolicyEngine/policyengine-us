@@ -24,19 +24,24 @@ every tax unit:
    they equal min(filers' medical + eligible premiums, deduction), and the
    applied exclusion of a computed subtotal is their sum.
 3. Accounting: the subtotal is members' medical premiums - medical part +
-   members' eligible premiums - long-term care part + other expenses, and the
-   long-term care premiums inside it lie between the dependents' eligible
-   premiums and all members' eligible premiums.
+   members' eligible premiums - long-term care part - dependents' own
+   long-term care parts + other expenses. A person's own long-term care part
+   is what that person's deduction leaves after their medical premiums,
+   limited to their eligible premiums. The long-term care premiums
+   inside it lie between what the dependents' own deductions left of their
+   eligible premiums and all members' eligible premiums.
 4. Conservation (derived deduction): every eligible premium is deducted once,
-   on Schedule A or as the self-employed deduction, never both.
+   on Schedule A, as the return's self-employed deduction or as a
+   dependent's own, never twice.
 5. The derived person deduction is min(earned income limit, health premiums
    + eligible long-term care premiums) for the self-employed, else 0. The
    limit (Form 7206 line 13: net profit less the deductible part of
    self-employment tax and plan contributions) is the model's own
    self_employed_health_insurance_earned_income_limit, tested on its own.
 6. Monotonicity: raising long-term care premiums never lowers the subtotal
-   and raises it by at most the rise in eligible premiums; for units with no
-   deduction it raises it by exactly that amount.
+   and raises it by at most the rise in eligible premiums; for units where
+   neither the return nor a dependent has a deduction it raises it by
+   exactly that amount.
 7. A supplied subtotal holds no computed long-term care premiums and no
    applied exclusion.
 8. Years after the last published table: every amount is a multiple of $10,
@@ -277,6 +282,13 @@ def _check(units, year, supplied_deduction):
     filer_eligible = unit_sum(eligible * filer)
     medical_part = np.minimum(filer_health, deduction)
     long_term_care_part = np.minimum(filer_eligible, deduction - medical_part)
+    # Each person's own deduction takes that person's medical premiums (Form
+    # 7206 line 1) first; the rest, up to the eligible premiums, is line 2.
+    person_deduction = np.maximum(run["self_employed_health_insurance_ald_person"], 0)
+    own_long_term_care_part = np.minimum(
+        eligible * self_employed,
+        person_deduction - np.minimum(health * self_employed, person_deduction),
+    )
     np.testing.assert_allclose(
         run["itemized_medical_expenses_excluded_premiums"],
         medical_part,
@@ -298,13 +310,20 @@ def _check(units, year, supplied_deduction):
         atol=TOLERANCE,
     )
 
-    # 3. Accounting identity for the subtotal, from the raw inputs.
+    # 3. Accounting identity for the subtotal, from the raw inputs. Each
+    # dependent's own deduction took that dependent's long-term care part.
     inside = run["itemized_medical_expenses_long_term_care_premiums"]
     all_eligible = unit_sum(eligible)
+    dependent = ~filer.astype(bool)
+    dependents_part = unit_sum(own_long_term_care_part * dependent)
     np.testing.assert_allclose(
-        inside, all_eligible - long_term_care_part, atol=TOLERANCE
+        inside,
+        all_eligible - long_term_care_part - dependents_part,
+        atol=TOLERANCE,
     )
-    assert (inside >= unit_sum(eligible * ~filer.astype(bool)) - TOLERANCE).all()
+    assert (
+        inside >= unit_sum((eligible - own_long_term_care_part) * dependent) - TOLERANCE
+    ).all()
     assert (inside <= all_eligible + TOLERANCE).all()
     subtotal = run["itemized_medical_expenses"]
     np.testing.assert_allclose(
@@ -314,9 +333,13 @@ def _check(units, year, supplied_deduction):
     )
 
     if not supplied_deduction:
-        # 4. Each eligible premium is deducted once.
+        # 4. Each eligible premium is deducted once, on the return or on a
+        # dependent's own return.
         np.testing.assert_allclose(
-            subtotal - unit_sum(other) + run["self_employed_health_insurance_ald"],
+            subtotal
+            - unit_sum(other)
+            + run["self_employed_health_insurance_ald"]
+            + dependents_part,
             unit_sum(health) + all_eligible,
             atol=TOLERANCE,
         )
@@ -338,7 +361,9 @@ def _check(units, year, supplied_deduction):
     rise_in_subtotal = subtotal[raised] - subtotal[base]
     assert (rise_in_subtotal >= -TOLERANCE).all()
     assert (rise_in_subtotal <= rise_in_eligible + TOLERANCE).all()
-    no_deduction = (deduction[base] == 0) & (deduction[raised] == 0)
+    # Neither the return's deduction nor a dependent's own takes any premium.
+    any_deduction = deduction + unit_sum(person_deduction * dependent)
+    no_deduction = (any_deduction[base] == 0) & (any_deduction[raised] == 0)
     np.testing.assert_allclose(
         rise_in_subtotal[no_deduction],
         rise_in_eligible[no_deduction],
