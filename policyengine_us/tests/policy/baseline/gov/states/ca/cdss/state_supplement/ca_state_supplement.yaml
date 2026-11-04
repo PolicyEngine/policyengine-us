@@ -38,7 +38,8 @@
         living_arrangements_allow_for_food_preparation: true
   output:
     ca_state_supplement_eligible_person: true
-    ca_state_supplement: 4_101.72
+    # (943 + 239.94) * 12 - 3,458.28.
+    ca_state_supplement: 10_737
 
 # 2026: federal SSI is $994 (individual) and $1,491 (couple); the California
 # payment standard is $1,233.94 (individual) and $2,098.83 (couple), per CDSS,
@@ -660,3 +661,26 @@
     ssi: [245.50, 0]
     ca_state_supplement: 488.44
     ca_capi_person: [0, 0]
+
+- name: Case 17, 2027 aged individual keeps the state share when the federal benefit rate rises.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ssi: 12_348 # 1,029 * 12
+    ca_state_supplement_payment_standard: 15_227.28 # (1,029 + 239.94) * 12
+    # CDSS projects the 239.94 share for January 2027 (2026 May Revision, page 27).
+    ca_state_supplement: 2_879.28 # 239.94 * 12
