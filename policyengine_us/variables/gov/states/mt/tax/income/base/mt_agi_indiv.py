@@ -10,10 +10,7 @@ class mt_agi_indiv(Variable):
     reference = (
         # Filing separately: each column is its own return
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=12",
-        # Borrowed for dependents' income: parents filing separately report a
-        # child's income on the return of the parent with the greater
-        # taxable income
-        "https://www.law.cornell.edu/uscode/text/26/1#g_5_B",
+        # Form 8814 election (not modeled): otherwise a dependent reports their income on their own return.
         "https://www.irs.gov/instructions/i8814",
     )
     defined_for = "mt_married_filing_separately_on_same_return_eligible"
