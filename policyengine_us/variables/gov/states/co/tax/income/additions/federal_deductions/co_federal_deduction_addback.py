@@ -19,7 +19,9 @@ class co_federal_deduction_addback(Variable):
         "https://tax.colorado.gov/individual-income-tax-guide",
         # 1 CCR 201-2, Rule 39-22-104(3)(p), paragraph (3) (2022), and
         # Rule 39-22-104(3)(p.5), paragraph (3)(a)(i) (2023 to 2025):
-        # coordination with other addbacks. Cited without a link.
+        # coordination with other addbacks.
+        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12424&fileName=1%20CCR%20201-2#page=12",
+        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12424&fileName=1%20CCR%20201-2#page=13",
         # DR 0104 line 4 instructions, 2023 to 2025.
         "https://tax.colorado.gov/sites/tax/files/documents/Book0104_2023.pdf#page=6",
         "https://tax.colorado.gov/sites/tax/files/documents/DR0104_book_2024.pdf#page=9",
