@@ -33,3 +33,33 @@
     state_code: NY
   output:
     ny_itemized_deductions_lower_incremental_reduction: 25
+
+- name: Case 4, the line 46 share uses line 45, after the line 40 limitation.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    ny_agi: 360_200
+    ny_itemized_deductions_max: 50_000
+    ny_itemized_deductions_phase_out: 640.50
+    charitable_deduction: 0
+    filing_status: JOINT
+    state_code: NY
+  output:
+    # IT-196 (2021) line 46 Worksheet 3: line 45 = 50,000 - 640.50 = 49,359.50.
+    # Line 4 = min(360,200 - 200,000, 50,000) = 50,000; line 5 = 1.
+    # Line 6 = 0.25 * 49,359.50 = 12,339.875.
+    ny_itemized_deductions_lower_incremental_reduction: 12_339.875
+
+- name: Case 5, the college tuition deduction (line 48) is not part of line 45.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    ny_agi: 360_200
+    ny_itemized_deductions_max: 60_000
+    ny_college_tuition_deduction: 10_000
+    charitable_deduction: 0
+    filing_status: JOINT
+    state_code: NY
+  output:
+    # Line 45 = 60,000 - 10,000 = 50,000; line 6 = 0.25 * 50,000.
+    ny_itemized_deductions_lower_incremental_reduction: 12_500
