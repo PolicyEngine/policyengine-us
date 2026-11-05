@@ -40,13 +40,10 @@ class ca_eitc_eligible(Variable):
         federal_agi = tax_unit("adjusted_gross_income", period)
         meets_agi_requirements = federal_agi < p.phase_out.final.end
 
-        # RTC 17052 keeps the IRC 32(c)(1)(A)(ii)(III) rule: without a
-        # qualifying child, the filer must not be another taxpayer's
-        # dependent (FTB 3514, Step 4, question f). FTB 3514 skips that
-        # question on a joint return because a married filer can be claimed
-        # only when the joint return seeks just a refund of withholding; as
-        # for the federal credit, a joint return on which either spouse can
-        # be claimed gets no credit without a qualifying child.
+        # RTC 17052 adopts IRC 32(c)(1)(A)(ii)(III): without a qualifying
+        # child, neither joint filer may be another taxpayer's dependent.
+        # The instructions skip the dependency question for joint filers
+        # (FTB 3514, Step 4(d)); apply the statutory dependency restriction.
         has_qualifying_child = tax_unit.any(
             person("ca_is_qualifying_child_for_caleitc", period)
         )

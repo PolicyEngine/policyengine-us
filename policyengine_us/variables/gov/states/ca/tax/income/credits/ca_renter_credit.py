@@ -22,13 +22,13 @@ class ca_renter_credit(Variable):
         filing_status = tax_unit("filing_status", period)
         income_cap = p.income_cap[filing_status]
         income_eligible = agi <= income_cap
-        # RTC 17053.5(d)(2): a qualified renter does not include "an
-        # individual whose principal place of residence for more than 50
-        # percent of the taxable year is with another person who claimed that
-        # individual as a dependent", read as actually claimed (the
-        # qualification record words it as "can claim you"). Being claimable
-        # alone does not bar the credit, and on a joint return a spouse who is
-        # a qualified renter still gets the joint amount (17053.5(a)(1)(A)).
+        # RTC 17053.5(d)(2) excludes an individual only after an actual claim
+        # and residence with that claimant for more than half the year.
+        # The form uses claimability; follow the actual-claim statute.
+        # The form's stopping questions also omit the individual scope of
+        # (d)(2). An eligible joint filer keeps $120 under (a)(1)(A).
+        # Subsection (d)(3) expressly extends the homeowner exclusion to a
+        # spouse; subsection (d)(2) does not extend the dependent exclusion.
         person = tax_unit.members
         filer = person("is_tax_unit_head_or_spouse", period)
         excluded = person("claimed_as_dependent_on_another_return", period) & person(

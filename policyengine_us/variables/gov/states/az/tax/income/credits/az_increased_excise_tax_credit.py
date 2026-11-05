@@ -11,25 +11,23 @@ class az_increased_excise_tax_credit(Variable):
     reference = (
         "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01072-01.htm",
         "https://www.azleg.gov/ars/43/01072-02.htm",
+        "https://www.azleg.gov/ars/43/01001.htm",
+        "https://www.azleg.gov/ars/42/02201.htm",
         # Form 140 line 56 instructions and worksheet.
         "https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf#page=25",
     )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.az.tax.income.credits.increased_excise
-        # The increased excise tax credit is allowed for each person that a
-        # personal or dependent exemption can be claimed for
-        # (A.R.S. 43-1072.01(C)); from 2021, 43-1072.02(C) allows $25 for each
-        # person "who is either the taxpayer, the taxpayer's spouse who does
-        # not file a return or a dependent". Both sections allow it only "for
-        # a taxpayer who is not claimed as a dependent by any other
-        # taxpayer", and the Form 140 instructions let a joint filer claim the
-        # credit but not for a spouse who is barred, so a filer whom another
-        # taxpayer claims is not counted. The worksheet counts dependents
-        # "provided that person(s) qualifies as a dependent for federal
-        # purposes": none on a return on which the filer (or, if joint,
-        # either spouse) can be claimed (IRC 152(b)(1)), unless the would-be
-        # claimant files only for a refund (Publication 501).
+        # A.R.S. 43-1072.01(C) counts personal and dependent exemptions;
+        # 43-1072.02(C) counts taxpayers, nonfiling spouses and dependents.
+        # Each joint filer remains a taxpayer (43-1001; 42-2201(A)(1)).
+        # A claimed joint filer fails 43-1072.02(A) and cannot count as a
+        # nonfiling spouse. The other filer still counts once.
+        # The instructions enter two for a joint return without adjusting
+        # for a claimed spouse; follow the individual statutory exclusion.
+        # IRC 152(b)(1) bars dependents when either filer can be claimed,
+        # unless the claimant's refund-only filing exception applies.
         person = tax_unit.members
         filer = person("is_tax_unit_head_or_spouse", period)
         claimed = person("claimed_as_dependent_on_another_return", period)
