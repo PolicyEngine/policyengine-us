@@ -9,7 +9,8 @@
 # figure (spread across 12 months and re-summed by add()), matching the NM
 # convention. aca_magi, aca_magi_fraction, slcsp, aca_ptc and is_aca_ptc_eligible
 # are supplied directly so each expectation is exactly hand-verifiable.
-# Prior-year tax_unit_fpg is pinned so supplied MAGI and FPL fractions agree.
+# aca_fpg (the prior-year guideline for the tax family) is pinned so supplied
+# MAGI and FPL fractions agree.
 # The negative-MAGI clamp case supplies eligibility and a positive rate to
 # isolate the amount formula; its income fraction is correctly zero.
 #   CA schedule: threshold [1.0, 1.5, 1.65], initial [0, 0.0319], final [0, 0.0391]
@@ -31,8 +32,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_000
+        aca_fpg:
+          2026: 15_000
         aca_magi: 21_000
         aca_magi_fraction: 1.40
         slcsp: 6_000
@@ -56,8 +57,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_000
+        aca_fpg:
+          2026: 15_000
         aca_magi: 21_000
         aca_magi_fraction: 1.40
         slcsp: 6_000
@@ -85,8 +86,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_873.015873015873
+        aca_fpg:
+          2026: 15_873.015873015873
         aca_magi: 25_000
         aca_magi_fraction: 1.575
         slcsp: 6_000
@@ -113,8 +114,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_650
+        aca_fpg:
+          2026: 15_650
         aca_magi: 25_822.50
         aca_magi_fraction: 1.65
         slcsp: 7_000
@@ -141,8 +142,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_000
+        aca_fpg:
+          2026: 15_000
         aca_magi: 24_000
         aca_magi_fraction: 1.60
         slcsp: 3_000
@@ -174,8 +175,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg:
+          2026: 10_000
         aca_magi: -10_000
         aca_magi_fraction: 0
         ca_premium_subsidy_eligible: true
@@ -204,8 +205,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_873.015873015873
+        aca_fpg:
+          2026: 15_873.015873015873
         aca_magi: 25_000
         aca_magi_fraction: 1.575
         slcsp: 6_000
@@ -230,8 +231,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2024: 15_873.015873015873
+        aca_fpg:
+          2025: 15_873.015873015873
         aca_magi: 25_000
         aca_magi_fraction: 1.575
         slcsp: 6_000
@@ -256,8 +257,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 16_265.060240963856
+        aca_fpg:
+          2026: 16_265.060240963856
         aca_magi: 27_000
         aca_magi_fraction: 1.66
         slcsp: 6_000
@@ -283,8 +284,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_000
+        aca_fpg:
+          2026: 15_000
         aca_magi: 21_000
         aca_magi_fraction: 1.40
         slcsp: 0
@@ -314,8 +315,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_650
+        aca_fpg:
+          2026: 15_650
         aca_magi: 15_650
         aca_magi_fraction: 1.00
         slcsp: 6_000
@@ -347,8 +348,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_000
+        aca_fpg:
+          2026: 15_000
         aca_magi: 24_000
         aca_magi_fraction: 1.60
         slcsp: 6_000
@@ -377,8 +378,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2027: 15_873.015873015873
+        aca_fpg:
+          2028: 15_873.015873015873
         aca_magi: 25_000
         aca_magi_fraction: 1.575
         slcsp: 6_000
@@ -409,8 +410,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 16_265.060240963856
+        aca_fpg:
+          2026: 16_265.060240963856
         aca_magi: 27_000
         aca_magi_fraction: 1.66
         slcsp: 6_000
@@ -440,8 +441,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_000
+        aca_fpg:
+          2026: 15_000
         aca_magi: 14_850
         aca_magi_fraction: 0.99
         slcsp: 6_000
@@ -475,8 +476,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2026: 15_873.015873015873
+        aca_fpg:
+          2027: 15_873.015873015873
         aca_magi: 25_000
         aca_magi_fraction: 1.575
         slcsp: 6_000
@@ -508,8 +509,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_873.015873015873
+        aca_fpg:
+          2026: 15_873.015873015873
         aca_magi: 25_000
         aca_magi_fraction: 1.575
         slcsp: 6_000
@@ -528,7 +529,7 @@
   # add(is_aca_ptc_eligible) > 0, which fires on any eligible member, so the tax
   # unit is eligible. The amount uses tax-unit slcsp/aca_ptc (not per-member), so
   # the asymmetry does NOT halve or zero the payout. magi_frac 1.575 -> pct 0.0355.
-  # Pin prior-year FPG to 20_000: income 31_500 / 20_000 = 1.575.
+  # Pin aca_fpg (prior-year FPG) to 20_000: income 31_500 / 20_000 = 1.575.
   # amount = max(0, 8_000 - 3_000 - 0.0355*31_500) = 5_000 - 1_118.25 = 3_881.75.
   # Confirms the add()>0 gate + defined_for + person->tax_unit aggregation produce
   # the full subsidy rather than a per-eligible-member proration.
@@ -545,8 +546,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        tax_unit_fpg:
-          2025: 20_000
+        aca_fpg:
+          2026: 20_000
         aca_magi: 31_500
         aca_magi_fraction: 1.575
         slcsp: 8_000
@@ -585,8 +586,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2026: 15_960
+        aca_fpg:
+          2027: 15_960
         aca_magi: 31_920
         aca_magi_fraction: 2.00
         slcsp: 8_256

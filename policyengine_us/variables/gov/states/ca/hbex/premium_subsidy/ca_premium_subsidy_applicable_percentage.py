@@ -25,9 +25,10 @@ class ca_premium_subsidy_applicable_percentage(Variable):
         magi = max_(tax_unit("aca_magi", period), 0)
         # Divide in float64: a float32 quotient can round a ratio just above
         # 150% down onto it, which side="left" would put in the 0% band.
-        exact_magi_frac = magi.astype(np.float64) / tax_unit(
-            "tax_unit_fpg", period.last_year
-        )
+        # Both ratios divide by aca_fpg, the prior-year guideline for the
+        # section 36B tax family (Program Design (d)(10); Form 8962 line 4),
+        # so the band and the place within it use one poverty line.
+        exact_magi_frac = magi.astype(np.float64) / tax_unit("aca_fpg", period)
         p = parameters(period).gov.states.ca.hbex.premium_subsidy.applicable_percentage
 
         thresholds = np.array(p.threshold)
