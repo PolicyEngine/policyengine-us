@@ -883,6 +883,49 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify the legal basis for the amended-return remedy and treatment of exactly $3,000.
+- id: us-az:military-survivor-benefit-recipient
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does Arizona subtract Survivor Benefit Plan (SBP) payments under 43-1022(2)'s $2,500 subtraction for
+    federal plans or in full on line 29b under 43-1022(26), and does the answer differ for a deceased veteran's
+    surviving spouse and for other recipients?
+  sources:
+  - kind: statute
+    citation: A.R.S. 43-1022(2)(a) and (26)
+    url: https://www.azleg.gov/ars/43/01022.htm
+  - kind: guidance
+    citation: Arizona Individual Income Tax Ruling ITR 11-3
+    url: https://azdor.gov/sites/default/files/2023-03/RULINGS_INDV_2011_itr11-3.pdf#page=2
+  - kind: instructions
+    citation: 2025 Arizona Form 140 instructions, line 29b
+    url: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf
+  readings:
+    statute: Paragraph (2)(a) allows up to $2,500 of benefits from "any other retirement system or plan established
+      by federal law", except "retired or retainer pay of the uniformed services of the United States that qualifies
+      for a subtraction under paragraph 26". Paragraph (26) covers "annuities and pensions received as retired or
+      retainer pay" and names no survivors.
+    other: ITR 11-3 says "Arizona allows a subtraction of up to $2,500 for uniformed services retired pay and SBP
+      benefits." From 2023, the Form 140 instructions put the payments of "the surviving spouse of a deceased military
+      veteran" on line 29b, which has no cap from 2021.
+  example: A 2021 surviving spouse with $6,000 of SBP payments and no other income subtracts $2,500 under (2) and
+    $0 on line 29b. In 2023 the same filer subtracts $6,000 on line 29b and $0 under (2). A non-spouse recipient
+    subtracts $2,500 under (2) in both years.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/az/tax/income/subtractions/az_military_retirement_subtraction.py
+    - policyengine_us/variables/gov/states/az/tax/income/subtractions/az_public_pension_exclusion.py
+    - policyengine_us/parameters/gov/states/az/tax/income/subtractions/military_retirement/surviving_spouse_eligible.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10398
+  state: ruled
+  note: Neither paragraph says whether a survivor's SBP payments count as annuities "received as retired or retainer
+    pay", and (2)(a)'s exception turns on that question, so PolicyEngine follows ADOR's reading for each year. A
+    surviving spouse's payments stay under (2) through 2022, as ITR 11-3 provides, and move to line 29b from 2023, as
+    the Form 140 instructions provide. ADOR has moved no other recipient's payments, so those stay under (2) in every
+    year.
 - id: us-ca:capi-payment-standard-offset
   program: capi
   years:
@@ -8334,6 +8377,33 @@ candidates:
     use the same wording. The RI-22-0024 state plan groups, RIte Start and FCEP have no conflicting text, and CHIP
     (RI-22-0025 CS27) ends the period "on the last day of the 12th month consistent with paragraphs (5) and (16) of
     section 1902(e)". R.I. Gen. Laws 42-12.3-3(g) does not say when the 12-month period begins.
+- id: us-ri:pension-modification-agi-threshold-strict
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does a filer whose federal AGI equals the threshold qualify for the pension and annuity modification?
+  sources:
+  - kind: statute
+    citation: R.I. Gen. Laws § 44-30-12(c), income test for the taxable retirement income modification
+    url: https://webserver.rilegislature.gov/Statutes/TITLE44/44-30/44-II/44-30-12.htm
+  - kind: worksheet
+    citation: RI-1040 instructions, line 1t worksheet
+    url: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-12/2025%201040R%20Instructions%20122025.pdf#page=10
+  readings:
+    statute: Federal AGI must be less than the threshold; AGI equal to it does not qualify.
+    other: The worksheet allows AGI less than or equal to the threshold.
+  example: A 2025 single filer born in 1950 with AGI of exactly $107,000 gets no modification under the statute and
+    qualifies under the worksheet.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ri/tax/income/agi/subtractions/taxable_retirement_income/ri_retirement_income_subtraction_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10398
+  state: ruled
+  note: The code already uses a strict comparison and the eligibility tests pin AGI equal to the threshold as
+    ineligible. Verify the statute's and the worksheet's wording before registering.
 - id: us-ri:ssp-category-d-without-federal-ssi
   program: ssi-state-supplement
   years:
@@ -8469,6 +8539,38 @@ candidates:
   note: The model computes the couple jointly at $90, which the couple.yaml comment derives from the per-individual
     allowance in §40-6-27(a)(3); ri_ssp.yaml Case 18 pins [45, 45] for a couple with no income. SSA administered
     Category E only through December 31, 2010.
+- id: us-sc:2021-survivor-offset-surviving-spouse
+  program: income-tax
+  years:
+    from: 2021
+    to: 2021
+    type: tax
+  question: Is a surviving spouse's 2021 retirement deduction maximum reduced by the military retirement deduction
+    attributable to the deceased spouse?
+  sources:
+  - kind: statute
+    citation: S.C. Code § 12-6-1170(C)(1)
+    url: https://www.scstatehouse.gov/code/t12c006.php
+  - kind: guidance
+    citation: SCDOR Revenue Ruling 22-11
+    url: https://dor.sc.gov/sites/dor/files/policies/RR22-11.pdf#page=39
+  - kind: worksheet
+    citation: 2021 SC1040 retirement deduction worksheet, line p-3, line 2
+    url: https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=17
+  readings:
+    statute: The reduction for military retirement does not apply to a military retiree's surviving spouse.
+    other: The 2021 worksheet subtracts the surviving spouse's military retirement deduction from the survivor
+      retirement deduction maximum.
+  example: A 2021 surviving spouse whose deceased spouse would be 64, with $4,000 of survivor pension and $6,000 of
+    military survivor benefits, deducts $3,000 under the statute and $0 under the worksheet.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tax/income/subtractions/retirement/sc_retirement_deduction_survivors.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10398
+  state: ruled
+  note: RR22-11 agrees with the statute. PR 10398 removes the 2021 reduction and the parameter that toggled it.
 - id: us-sd:liheap-2025-published-income-limit
   program: liheap
   years:
