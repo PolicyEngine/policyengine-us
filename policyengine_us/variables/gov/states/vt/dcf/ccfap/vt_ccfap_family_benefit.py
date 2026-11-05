@@ -36,6 +36,12 @@ class vt_ccfap_family_benefit(Variable):
         # the family share.
         "https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/CCFAP/CCFAP-Regulations.pdf#page=13",
         "https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/Act76/Memo-Act-76-CCFAP-Rule-Revision.pdf#page=10",
+        # Section I B 20 of the same revision: the sliding fee scale, set by income
+        # and family size, provides the parent co-pay.
+        "https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/Act76/Memo-Act-76-CCFAP-Rule-Revision.pdf#page=7",
+        # The revision removes the bar on charging subsidy families more than
+        # private pay families.
+        "https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/Act76/Memo-Act-76-CCFAP-Rule-Revision.pdf#page=4",
     )
 
     def formula(spm_unit, period, parameters):
