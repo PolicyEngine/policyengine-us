@@ -20,9 +20,10 @@ formula:
 - A column stored for some people but not others (as zeros or as missing
   values), or stored as all zeros, raises an error that names it. Presence follows the simulation's inputs,
   not the values, so this holds for a column set after construction and for
-  one set on a branch too. A reform that neutralizes the column when the
-  simulation is built leaves it unsupplied; neutralizing it on a live
-  simulation raises.
+  one set on a branch too. A column deleted from a simulation counts as
+  unsupplied there, and one written through its holder counts as supplied. A
+  reform that neutralizes the column when the simulation is built leaves it
+  unsupplied; neutralizing it on a live simulation raises.
 - Subsampling, on the default branch or a branch whose parent has calculated
   receipt, keeps a missing column missing and a stored one stored.
 - A simulation built the way policyengine.py's input-table adapter builds one
@@ -331,12 +332,39 @@ def test_start_month_set_after_construction_is_used(people):
 
 
 def test_start_month_of_zeros_set_after_construction_raises(people):
-    # Core lists input_variables when the simulation is built, so presence
-    # comes from the inputs the simulation holds, not from that list.
+    # Presence comes from the inputs the simulation holds, so zeros set after
+    # construction count as a supplied column.
     simulation = Microsimulation(dataset=_dataset(people))
     simulation.set_input(COLUMN, YEAR, np.zeros(len(people), dtype=int))
     with pytest.raises(ValueError, match=COLUMN):
         simulation.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
+
+
+def test_presence_reads_the_inputs_held_not_input_variables(people):
+    # pe-us's set_input records a later input in input_variables, but that
+    # list keeps a deleted input's name and misses a write through the holder.
+    deleted = Microsimulation(dataset=_dataset(people.assign(**{COLUMN: 1})))
+    deleted.delete_arrays(COLUMN)
+    np.testing.assert_array_equal(
+        _receipt_by_month(deleted, YEAR), _retired_by_month(deleted, YEAR)
+    )
+    written = Microsimulation(dataset=_dataset(people))
+    written.get_holder(COLUMN).set_input(YEAR, np.ones(len(people), dtype=int))
+    receipt = _receipt_by_month(written, YEAR)
+    np.testing.assert_array_equal(receipt, _january_start_by_month(written, YEAR))
+    assert (receipt != _retired_by_month(written, YEAR)).any()
+
+
+def test_start_month_deleted_on_a_branch_stays_with_the_parent(people):
+    parent = Microsimulation(dataset=_dataset(people.assign(**{COLUMN: 1})))
+    branch = parent.get_branch("deleted")
+    branch.delete_arrays(COLUMN)
+    np.testing.assert_array_equal(
+        _receipt_by_month(branch, YEAR), _retired_by_month(branch, YEAR)
+    )
+    np.testing.assert_array_equal(
+        _receipt_by_month(parent, YEAR), _january_start_by_month(parent, YEAR)
+    )
 
 
 def test_start_month_applies_forward_from_the_year_it_is_set(people):

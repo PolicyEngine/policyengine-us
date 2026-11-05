@@ -241,8 +241,8 @@
 
 # --- (v) Unemployment compensation only in the months of receipt ---
 # months = ceil(weeks unemployed x 12 / 52), placed as one block from the
-# start month splitmix64(key) mod 12, where the key is a supplied person_id or
-# else the position in the household (key 0 -> Jan, 1 -> Feb).
+# supplied unemployment_compensation_start_month, or else from the start month
+# of the person's position in the household (position 0 -> Jan, 1 -> Feb).
 
 - name: Case 19, UI recipient with 13 weeks unemployed from a January start is exempt in January.
   period: 2026-01
@@ -256,7 +256,7 @@
     weeks_unemployed:
       2026: 13
   output:
-    # months = ceil(13 x 12 / 52) = 3; household position 0 (no person_id input) -> Jan, Feb, Mar
+    # months = ceil(13 x 12 / 52) = 3; household position 0 (no start month input) -> Jan, Feb, Mar
     is_snap_work_registration_exempt_non_age: true
 
 - name: Case 20, UI recipient whose 13-week block starts in February is not exempt in January.
@@ -270,8 +270,8 @@
       2026: 12_000
     weeks_unemployed:
       2026: 13
-    person_id:
-      2026: 1
+    unemployment_compensation_start_month:
+      2026: 2
   output:
     # 3 months from February -> Feb, Mar, Apr; January is outside the block.
     is_snap_work_registration_exempt_non_age: false
@@ -317,8 +317,8 @@
       2026: 12_000
     weeks_unemployed:
       2026: 13
-    person_id:
-      2026: 1
+    unemployment_compensation_start_month:
+      2026: 2
     has_applied_for_unemployment_compensation: true
   output:
     # The receipt block (Feb-Apr) excludes January, but the applicant prong
