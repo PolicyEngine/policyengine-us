@@ -2040,6 +2040,7 @@ candidates:
   pe_us:
     follows: gap-fill
     code:
+    - policyengine_us/parameters/gov/states/de/dhss/liheap/income/sources/earned.yaml
     - policyengine_us/parameters/gov/states/de/dhss/liheap/income/sources/unearned.yaml
     - policyengine_us/parameters/gov/states/de/dhss/liheap/income/sources/minor_unearned.yaml
     - policyengine_us/variables/gov/states/de/dhss/liheap/income/de_liheap_countable_income_person.py
@@ -2047,8 +2048,10 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10612
   state: ruled
   note: 'Ruled 2026-11-02 for strike pay and disability payments, and 2026-11-03 for minors: follow the manual over the
-    plan. The manual also fills what the plan does not list: trusts (estate_income, 416.2) and other
-    taxable income (miscellaneous_income, 416.1). Its sections carry 2011-2015 dates.'
+    plan. Neither text is a statute. The statement of work lists the manual as an applicable document, and plan 1.9 is a
+    checkbox summary. On minors, manual 418 is the specific rule, and the statement of work asks for income documentation
+    from members aged 18 and over not attending school. The manual also fills what the plan does not list: trusts
+    (estate_income, 416.2) and other taxable income (miscellaneous_income, 416.1). Its sections carry 2011-2015 dates.'
 - id: us-de:snap-child-support-exclusion
   program: snap
   years:
