@@ -1,0 +1,284 @@
+# ARS 43-1072(H)(4)-(5) and A.A.C. R15-2C-502(A)(2), (B): household income is
+# the income of everyone living in the claimant's home, including co-residents
+# who file their own returns. The 2025 schedules are in ARS 43-1072(B)(1)
+# (Table 1, living alone) and (B)(2) (Table 2, living with others).
+
+- name: A son filing his own return with $30,000 of wages ends his parent's credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 70
+        rent: 6_000
+      son:
+        age: 40
+        employment_income: 30_000
+    tax_units:
+      parent_unit:
+        members: [parent]
+      son_unit:
+        members: [son]
+    households:
+      household:
+        members: [parent, son]
+        state_code: AZ
+  output:
+    # Each tax unit's own amount: the parent has none; the son's is his AGI.
+    az_property_tax_credit_income: [0, 30_000]
+    # Line J: 0 + 30,000.
+    az_property_tax_credit_household_income: 30_000
+    az_property_tax_credit_eligible: [true, false]
+    # Table 2 ends at $5,500: 0. Without the son's wages the parent would get
+    # min(502, 0.15 x 6,000 = 900) = 502.
+    az_property_tax_credit: [0, 0]
+
+- name: A son filing his own return with $3,000 of wages reduces his parent's credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 70
+        rent: 6_000
+      son:
+        age: 40
+        employment_income: 3_000
+    tax_units:
+      parent_unit:
+        members: [parent]
+      son_unit:
+        members: [son]
+    households:
+      household:
+        members: [parent, son]
+        state_code: AZ
+  output:
+    az_property_tax_credit_income: [0, 3_000]
+    az_property_tax_credit_household_income: 3_000
+    # Table 2, 2,951 - 3,100 -> 412; property taxes 0.15 x 6,000 = 900.
+    az_property_tax_credit: [412, 0]
+
+- name: Arizona unemployment compensation is not household income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        unemployment_compensation: 2_000
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Federal AGI holds the 2,000; ARS 43-1072(I) excludes it.
+    adjusted_gross_income: 2_000
+    az_property_tax_credit_unemployment: 0
+    az_property_tax_credit_household_income: 0
+    # Table 1, 0 - 1,750 -> 502; property taxes 900.
+    az_property_tax_credit: 502
+
+- name: Another state's unemployment compensation is household income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        unemployment_compensation: 2_000
+        az_other_state_unemployment_compensation: 2_000
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    adjusted_gross_income: 2_000
+    # Form 140PTC line I: other states' unemployment insurance payments.
+    az_property_tax_credit_unemployment: 2_000
+    az_property_tax_credit_household_income: 2_000
+    # Table 1, 1,951 - 2,050 -> 435.
+    az_property_tax_credit: 435
+
+- name: Only the other-state part of unemployment counts, for a dependent too
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        unemployment_compensation: 1_500
+        az_other_state_unemployment_compensation: 500
+        rent: 6_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        unemployment_compensation: 1_000
+        az_other_state_unemployment_compensation: 400
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: AZ
+  output:
+    az_property_tax_credit_unemployment: [500, 400]
+    # The child's 1,000 of unemployment is left out of dependent income;
+    # the 400 paid by another state comes back through the line above.
+    az_property_tax_credit_dependent_income: 0
+    # Arizona's 1,000 + 600 is left out; 500 + 400 counts.
+    az_property_tax_credit_household_income: 900
+    # Table 2, 0 - 2,500 -> 502.
+    az_property_tax_credit: 502
+
+- name: The other-state amount is limited to the unemployment compensation received
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        unemployment_compensation: 1_000
+        az_other_state_unemployment_compensation: 3_000
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    az_property_tax_credit_unemployment: 1_000
+    az_property_tax_credit_household_income: 1_000
+
+- name: Strike benefits left out of federal gross income are household income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        strike_benefits: 2_000
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    adjusted_gross_income: 0
+    # ARS 43-1072(H)(6)(c); Form 140PTC line I.
+    az_property_tax_credit_nontaxable_income: 2_000
+    az_property_tax_credit_household_income: 2_000
+    # Table 1, 1,951 - 2,050 -> 435.
+    az_property_tax_credit: 435
+
+- name: Alimony that is not federally taxable is household income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        alimony_income: 3_000
+        divorce_year: 2020
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # A post-2018 divorce: no alimony in federal AGI.
+    adjusted_gross_income: 0
+    # Form 140PTC line H: all alimony received.
+    az_property_tax_credit_nontaxable_income: 3_000
+    az_property_tax_credit_household_income: 3_000
+    # Table 1, 2,951 - 3,050 -> 212.
+    az_property_tax_credit: 212
+
+- name: Federally taxable alimony counts once
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        alimony_income: 3_000
+        divorce_year: 2015
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    adjusted_gross_income: 3_000
+    az_property_tax_credit_nontaxable_income: 0
+    az_property_tax_credit_household_income: 3_000
+    az_property_tax_credit: 212
+
+- name: A dependent's nontaxable alimony and strike benefits count
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        rent: 6_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        strike_benefits: 1_000
+        alimony_income: 500
+        divorce_year: 2020
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: AZ
+  output:
+    az_property_tax_credit_nontaxable_income: [0, 1_500]
+    az_property_tax_credit_household_income: 1_500
+    # Table 2, 0 - 2,500 -> 502.
+    az_property_tax_credit: 502
+
+- name: A co-resident's IRA deduction does not reduce household income
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 70
+        employment_income: 2_000
+        rent: 6_000
+      son:
+        age: 40
+        employment_income: 1_000
+        traditional_ira_contributions: 500
+    tax_units:
+      parent_unit:
+        members: [parent]
+      son_unit:
+        members: [son]
+    households:
+      household:
+        members: [parent, son]
+        state_code: AZ
+  output:
+    traditional_ira_deduction: [0, 500]
+    adjusted_gross_income: [2_000, 500]
+    # Ruling us-az:ptc-above-the-line-deductions: the son's unit adds his
+    # 1,000 of wages, not his federal AGI of 500.
+    az_property_tax_credit_income: [2_000, 1_000]
+    az_property_tax_credit_household_income: 3_000
+    # Table 2, 2,951 - 3,100 -> 412 (at 2,500 it would be 502); property
+    # taxes 0.15 x 6,000 = 900.
+    az_property_tax_credit: [412, 0]

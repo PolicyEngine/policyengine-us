@@ -361,3 +361,41 @@
   output:
     adjusted_gross_income: 40_000
     ky_federal_agi: [0, 40_000]
+
+# IRC 221(c) bars only the claimed spouse from the student loan interest
+# deduction; Kentucky starts each column from the filer's own federal AGI.
+# Mechanics only: the claim is set as an input on a return that couldn't be
+# refund-only at this income.
+- name: Unclaimed head's student loan interest deduction lowers Kentucky AGI on a joint return with a claimed spouse
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 50_000
+        student_loan_interest: 2_000
+        is_tax_unit_head: true
+      spouse:
+        age: 22
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+        student_loan_interest: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    # Federal: only the head's 2,000 is eligible; joint MAGI 50,000 is below
+    # the 170,000 phase-out start. Head AGI 50,000 - 2,000 = 48,000.
+    student_loan_interest_ald: [2_000, 0]
+    ky_federal_agi: [48_000, 0]
+    ky_agi: [48_000, 0]
+    # Joint: (48,000 - 3,270 standard deduction) x 4% = 1,789.20. The
+    # separate path gives the same (the spouse's column is 0), so the joint
+    # path stands. Family size credit: Kentucky modified AGI 48,000 is above
+    # its range for two; no personal or refundable credits apply.
+    ky_income_tax: 1_789.20

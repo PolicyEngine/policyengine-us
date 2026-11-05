@@ -1,0 +1,72 @@
+description: Vermont sets these marginal surcharge rates on federal adjusted gross income under the Fair Share for Vermont proposals.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: Fair Share for Vermont surcharge options (H.794) rates
+  documentation: >-
+    Defaults to the Fair Share for Vermont "Original Proposal + Clawback
+    Proposal" option, which is 32 V.S.A. § 5822a as drafted in H.794 and S.282:
+    2% of federal AGI over $250,000 plus an additional 6% over $500,000, an 8%
+    total marginal rate above $500,000. Original Proposal (3% over $500,000):
+    set rate[1] to 0 and rate[2] to 0.03. Federal Tax Cut Clawback Proposal (2%
+    over $250,000 and 5% over $500,000; in bill terms 2% plus an additional 3%):
+    keep rate[1] at 0.02 and set rate[2] to 0.05. Each rate is a total marginal
+    rate, so the rate above $500,000 replaces the rate above $250,000 instead of
+    adding to it. The Fair Share for Vermont page gives no base, filing-status
+    treatment or indexing for these two options; this reform assumes they use
+    the base, thresholds, filing-status treatment and indexing of H.794. The
+    Original Proposal taxes only AGI over $500,000, as Fair Share for Vermont
+    and the H.794 testimony describe it; its predecessor, H.828 (2024), was
+    drafted as 3% of all federal AGI once AGI reaches $500,000. H.794
+    § 5822a(d) indexes "the minimum amount of federal adjusted gross income
+    necessary to incur a surcharge," singular wording carried over from the
+    single-threshold H.828; that amount is each tier's "equal to or greater
+    than" trigger. This reform indexes both thresholds, and with them the
+    "exceeding" base amounts, so each tier's trigger stays equal to its base
+    and no cliff arises. Both thresholds rise from 2027 with the uprating that
+    Vermont's income tax brackets use in PolicyEngine (gov.irs.uprating,
+    chained CPI-U); § 5822(b)(2) names CPI-U. The surcharge applies to the full
+    federal AGI of the return with no part-year or nonresident proration, as
+    with the baseline Vermont income tax in PolicyEngine.
+  reference:
+    - title: "Vermont H.794 (2026) as introduced, Sec. 2 (32 V.S.A. § 5822a) and Sec. 11(b) #page 2-3,14"
+      href: https://legislature.vermont.gov/Documents/2026/Docs/BILLS/H-0794/H-0794%20As%20Introduced.pdf#page=2
+    - title: "Vermont S.282 (2026) as introduced, Sec. 2 (32 V.S.A. § 5822a) and Sec. 11(b) #page 2,14"
+      href: https://legislature.vermont.gov/Documents/2026/Docs/BILLS/S-0282/S-0282%20As%20Introduced.pdf#page=2
+    - title: Rep. Kate Logan, H.794 testimony to House Ways and Means (February 13, 2026)
+      href: https://legislature.vermont.gov/Documents/2026/Workgroups/House%20Ways%20and%20Means/Bills/H.794/W~Kate%20Logan~H.794%20Testimony%20to%20House%20Ways%20and%20Means~2-13-2026.pdf#page=1
+    - title: Fair Share for Vermont, Recovering Federal Tax Cuts for the Wealthiest Vermonters
+      href: https://fairsharevt.org/revenue-proposals-tax-cuts
+    - title: 32 V.S.A. § 5822(b)(2), annual inflation adjustment of income tax brackets
+      href: https://legislature.vermont.gov/statutes/section/32/151/05822
+brackets:
+  - threshold:
+      2026-01-01: 0
+    rate:
+      2026-01-01: 0
+  - threshold:
+      values:
+        2026-01-01: 250_000
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 50
+    rate:
+      2025-01-01: 0
+      2026-01-01: 0.02
+  - threshold:
+      values:
+        2026-01-01: 500_000
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 50
+    rate:
+      2025-01-01: 0
+      2026-01-01: 0.08
