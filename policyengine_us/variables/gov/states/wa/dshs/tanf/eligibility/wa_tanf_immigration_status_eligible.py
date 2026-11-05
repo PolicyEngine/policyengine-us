@@ -16,11 +16,12 @@ class wa_tanf_immigration_status_eligible(Variable):
     )
     # KNOWN LIMITATION (WAC 388-424-0006): qualified aliens who entered the
     # US before Aug 22, 1996 and continuously resided are NOT subject to the
-    # 5-year bar. PolicyEngine's default years_since_us_entry of 5 makes
-    # most pre-1996 entrants pass the past_bar check trivially, but a
-    # household-calculator user who supplies a low years_since_us_entry for
-    # a pre-1996 LPR would be incorrectly classified as still within the
     # 5-year bar. This pre-1996 grandfather is not separately modeled.
+    # years_since_us_entry defaults to 0, so a pre-1996 entrant is treated as
+    # within the 5-year bar unless the input is supplied. Supplying years
+    # since entry passes the past_bar check, but supplying years since a
+    # recent status grant for a pre-1996 LPR would incorrectly classify them
+    # as still within the bar.
 
     def formula(person, period, parameters):
         status = person("immigration_status", period.this_year)

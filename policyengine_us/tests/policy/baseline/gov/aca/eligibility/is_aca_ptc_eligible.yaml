@@ -76,6 +76,9 @@
       person1:
         age: 40
         immigration_status: LEGAL_PERMANENT_RESIDENT
+        # Past the five-year bar, so Medicaid immigration-eligible; previously
+        # relied on the removed default of 5.
+        years_since_us_entry: 5
         is_medicaid_eligible: false
         is_chip_eligible: false
         is_basic_health_program_eligible: false

@@ -41,6 +41,8 @@
   period: 2024
   input:
     immigration_status: LEGAL_PERMANENT_RESIDENT
+    # Past the five-year bar, so federal Medicaid covers this LPR.
+    years_since_us_entry: 5
     state_code: OR
   output:
     or_healthier_oregon_immigration_status_eligible: false

@@ -830,6 +830,9 @@
         is_disabled: false
         is_pregnant: false
         immigration_status_str: LEGAL_PERMANENT_RESIDENT
+        # Past the Medicaid five-year bar; the input no longer defaults to 5
+        # (#9732).
+        years_since_us_entry: 5
         employment_income_before_lsr: 0
         is_medicare_eligible: false
         ssi_countable_resources: 0
