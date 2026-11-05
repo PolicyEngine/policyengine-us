@@ -78,9 +78,9 @@ STATUTORY_THRESHOLDS = {
     "head_of_household": SINGLE_SEPARATE_OR_HEAD_THRESHOLDS,
 }
 
-# Monthly CPI-U values transcribed by hand from
-# parameters/gov/bls/cpi/cpi_u.yaml, independent of any model helper. If that
-# series is revised, update these lists and FACTOR_2026 together.
+# BLS CUUR0000SA0 monthly values (not seasonally adjusted), retrieved
+# November 5, 2026: https://data.bls.gov/timeseries/CUUR0000SA0.
+# Compute the factor independently of the model's averaging helper.
 # Calendar year 2024 index (§ 1310(h)(3)(A)): September 2023 - August 2024.
 CPI_U_SEPTEMBER_2023_TO_AUGUST_2024 = (
     ("2023-09-01", "307.789"),
@@ -456,8 +456,8 @@ def test_extension_keeps_published_values_and_projects_after_them():
 # helper. test_or_ctc_sunset.py pins the 2026 dollar amounts, but those floor
 # to $50 steps and cannot detect a small window change, so pin the adjustment.
 
-# ORS 315.273(5)(c) base: CPI-U for the second quarter of 2022, transcribed by
-# hand from parameters/gov/bls/cpi/cpi_u.yaml (sum 877.716, average 292.572).
+# ORS 315.273(5)(c) base: BLS CUUR0000SA0 for the second quarter of 2022,
+# retrieved November 5, 2026 (sum 877.716, average 292.572).
 CPI_U_2022_Q2 = (
     ("2022-04-01", "289.109"),
     ("2022-05-01", "292.296"),

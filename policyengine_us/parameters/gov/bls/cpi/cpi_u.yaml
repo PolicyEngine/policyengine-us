@@ -1366,6 +1366,9 @@ values:
   2026-04-01: 333.020
   2026-05-01: 335.123
   2026-06-01: 333.952
+  2026-07-01: 333.918
+  2026-08-01: 334.980
+  2026-09-01: 336.940
   # CBO projections from CBO Feb 2026 forecast for future periods.
   2027-02-01: 340.3 # 2028 value.
   2028-02-01: 348.3 # 2029 value.
@@ -1383,7 +1386,7 @@ metadata:
   label: CPI-U
   economy: false
   reference:
-    - title: BLS | CPI-U, U.S. city average, all items, not seasonally adjusted (CUUR0000SA0), monthly values through June 2026
+    - title: BLS | CPI-U, U.S. city average, all items, not seasonally adjusted (CUUR0000SA0), monthly values through September 2026
       href: https://data.bls.gov/timeseries/CUUR0000SA0
     - title: CBO | Tax Parameters and Effective Marginal Tax Rates | June 2024
       # Source: https://www.cbo.gov/data/budget-economic-data#10
