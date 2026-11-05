@@ -27,6 +27,11 @@ class nm_premium_assistance_eligible(Variable):
         # (IRC 36B(a); aca_ptc does), so gate it explicitly here, as aca_ptc
         # does.
         is_filer = tax_unit("files_return_for_aca_ptc", period)
-        magi_frac = tax_unit("aca_magi_fraction", period)
-        income_eligible = magi_frac <= p.fpl_limit
+        # The PY2026 manual excludes "consumers with household income over
+        # 400% of the FPL". Test the exact ratio, not the truncated
+        # aca_magi_fraction: truncation maps 400.00%-400.99% to 4.00, which
+        # would admit incomes above 400%.
+        magi = max_(tax_unit("aca_magi", period), 0)
+        exact_magi_frac = magi / tax_unit("tax_unit_fpg", period.last_year)
+        income_eligible = exact_magi_frac <= p.fpl_limit
         return in_effect & aptc_eligible & is_filer & income_eligible
