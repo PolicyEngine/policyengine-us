@@ -70,8 +70,13 @@ class ny_itemizes(Variable):
     defined_for = StateCode.NY
     reference = (
         "https://www.nysenate.gov/legislation/laws/TAX/613",
-        # N.Y. Tax Law 615(a), current text (supports the 2018 rule).
+        # N.Y. Tax Law 615(a), current text (supports the 2018 rule), and
+        # 615(d)(4), where the Legislature allows no college tuition itemized
+        # deduction to a filer who claims the college tuition credit.
         "https://legislation.nysenate.gov/pdf/laws/TAX615",
+        # L.2018 ch. 59, Part JJ, sections 3 and 7: the Legislature amends
+        # 615(a) for taxable years from 2018 (supports both rules).
+        "https://legislation.nysenate.gov/pdf/bills/2017/S7509C#page=42",
         # 2017 Form IT-201 instructions, line 34 (supports the 2017 rule).
         "https://www.tax.ny.gov/pdf/2017/inc/it201i_2017.pdf#page=20",
         # 2018 Form IT-196 instructions, New for 2018.
