@@ -12,9 +12,7 @@ class armed_forces_retirement_pay_survivors(Variable):
         "armed forces, excluding survivor annuities from the NOAA and Public "
         "Health Service commissioned corps."
     )
-    reference = (
-        "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title10-section101",
-    )
+    reference = ("https://uscode.house.gov/us/usc/t10/s101/",)
 
     def formula(person, period, parameters):
         armed_forces = person("military_retirement_pay_is_armed_forces", period)

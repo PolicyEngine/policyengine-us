@@ -18,6 +18,4 @@ class military_retirement_pay_is_armed_forces(Variable):
         "but not armed forces. Some state exclusions cover the armed forces "
         "only."
     )
-    reference = (
-        "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title10-section101",
-    )
+    reference = ("https://uscode.house.gov/us/usc/t10/s101/",)

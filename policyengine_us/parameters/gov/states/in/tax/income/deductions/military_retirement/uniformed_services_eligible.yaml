@@ -1,13 +1,13 @@
 description: Indiana extends the military retirement deduction to retirement pay and survivor benefits from all uniformed services, not only the armed forces, if this is true.
 values:
   2021-01-01: false
-  # Unverified: the start year of the extension to all uniformed services
-  # has not been checked against the enacted text.
   2025-01-01: true
 metadata:
   unit: bool
   period: year
   label: Indiana military retirement deduction covers all uniformed services
   reference:
+    - title: P.L.58-2025, SECTIONS 2-3 (IC 6-3-2-4(a)(2)), 2025 Acts pp. 573-575
+      href: https://iga.in.gov/ic/2025/2025%20Acts.pdf
     - title: IC 6-3-2-4
       href: http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-4

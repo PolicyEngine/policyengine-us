@@ -169,3 +169,20 @@
   output:
     # min(12_000, 10_000)
     sc_retirement_deduction_survivors: 10_000
+
+- name: A surviving spouse deducts a NOAA or PHS survivor annuity, which gets no military deduction.
+  period: 2022
+  input:
+    pension_survivors: 1_000
+    military_retirement_pay_survivors: 4_000
+    military_retirement_pay_is_armed_forces: false
+    is_surviving_spouse: true
+    age: 70
+    deceased_spouse_age: 72
+    state_code: SC
+  output:
+    # The annuity is not armed forces pay, so 12-6-1171 deducts nothing.
+    sc_military_deduction_survivors: 0
+    # Line 1: 10,000, as the deceased spouse would be 72.
+    # Line 4: 1,000 + 4,000 - 0 = 5,000. min(5,000, 10,000) = 5,000.
+    sc_retirement_deduction_survivors: 5_000

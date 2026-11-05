@@ -1,1 +1,1 @@
-Apply Rhode Island's retirement income modification age test to each spouse, and add an armed forces share of military retirement pay for states whose exclusions cover the armed forces only.
+Apply Rhode Island's retirement income modification age test to each spouse, and add an input that marks military retirement pay as armed forces pay, for states whose exclusions cover the armed forces only.

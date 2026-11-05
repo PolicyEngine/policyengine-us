@@ -249,6 +249,8 @@
     ri_retirement_income_subtraction: 0
 
 - name: 2025 - Joint, both spouses qualify by age
+  # The form's cutoff falls on March 1, 1959, and the model reads birth year
+  # only, so it counts a head born in 1959 as qualifying.
   period: 2025
   absolute_error_margin: 1
   input:

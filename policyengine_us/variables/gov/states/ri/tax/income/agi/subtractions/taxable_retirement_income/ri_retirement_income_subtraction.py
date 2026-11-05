@@ -27,7 +27,7 @@ class ri_retirement_income_subtraction(Variable):
         # The RI-1040 worksheet has Primary and Spouse columns, and only the
         # retirement income of a taxpayer born on or before the threshold
         # date qualifies, so the age test applies to each person.
-        birth_year = period.start.year - person("age", period)
+        birth_year = person("birth_year", period)
         age_eligible = birth_year <= p.birth_year
         # Cap applies per person, not per tax unit
         capped_per_person = (

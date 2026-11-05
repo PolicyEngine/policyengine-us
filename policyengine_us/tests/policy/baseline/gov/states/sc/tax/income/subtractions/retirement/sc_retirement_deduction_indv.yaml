@@ -66,7 +66,7 @@
     sc_retirement_deduction_indv: 5_000
 
 
-- name: South Carolina line 2 subtracts only the military deduction claimed, so retirement pay outside the armed forces does not reduce the cap.
+- name: South Carolina counts NOAA or PHS retired pay, which gets no military deduction, toward the general deduction.
   period: 2022
   input:
     taxable_pension_income: 1_000
@@ -76,6 +76,42 @@
     is_tax_unit_head_or_spouse: true
     state_code: SC
   output:
+    # The pay is not armed forces pay, so 12-6-1171 deducts nothing.
     sc_military_deduction_indv: 0
-    # Line 3: the cap less 0; line 5: min(cap, 1,000) = 1,000.
+    # Line 1: 10,000 at 65 or older. Line 2: 0. Line 3: 10,000 - 0 = 10,000.
+    # Line 4: 1,000 + 11,000 - 0 = 12,000. Line 5: min(10,000, 12,000).
+    sc_retirement_deduction_indv: 10_000
+    # 15,000 - (10,000 + 0) = 5,000.
+    sc_senior_exemption_person: 5_000
+
+- name: A filer under 65 deducts the entire $750 of civilian retirement income (Revenue Ruling 22-11, Example 1).
+  period: 2022
+  input:
+    taxable_pension_income: 750
+    military_retirement_pay: 2_000
+    military_retirement_pay_is_armed_forces: true
+    age: 60
+    is_tax_unit_head_or_spouse: true
+    state_code: SC
+  output:
+    # 12-6-1171 deducts all 2,000 of armed forces retired pay.
+    sc_military_deduction_indv: 2_000
+    # Line 1: 3,000 under 65. Line 2: 2,000. Line 3: 3,000 - 2,000 = 1,000.
+    # Line 4: 750 + 2,000 - 2,000 = 750. Line 5: min(1,000, 750) = 750.
+    sc_retirement_deduction_indv: 750
+
+- name: South Carolina keeps armed forces retired pay, which gets the military deduction, off line 4.
+  period: 2022
+  input:
+    taxable_pension_income: 1_000
+    military_retirement_pay: 5_000
+    military_retirement_pay_is_armed_forces: true
+    age: 70
+    is_tax_unit_head_or_spouse: true
+    state_code: SC
+  output:
+    # 12-6-1171 deducts all 5,000 of armed forces retired pay.
+    sc_military_deduction_indv: 5_000
+    # Line 1: 10,000. Line 2: 5,000. Line 3: 10,000 - 5,000 = 5,000.
+    # Line 4: 1,000 + 5,000 - 5,000 = 1,000. Line 5: min(5,000, 1,000) = 1,000.
     sc_retirement_deduction_indv: 1_000
