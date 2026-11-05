@@ -1,0 +1,1 @@
+Decide Vermont Premium Assistance eligibility on the exact ratio of ACA MAGI to the prior-year poverty guideline instead of the truncated `aca_magi_fraction`, so incomes from 300.003% to 300.994% of the poverty line are no longer eligible (33 V.S.A. § 1812(a)(1): "less than or equal to 300 percent of federal poverty level").

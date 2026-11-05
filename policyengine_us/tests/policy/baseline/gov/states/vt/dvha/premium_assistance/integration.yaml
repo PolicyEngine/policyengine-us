@@ -56,16 +56,43 @@
     vt_premium_assistance: 585.00
 
 # ---- Scenario 2: full federal derivation, exactly 300% FPL boundary ----
-- name: Scenario 2, single Vermont enrollee at 47k derives exactly 300% FPL and stays eligible.
-  # Raw input: employment_income 47_000. Note the exact 300%/size-1 MAGI is 46_950
-  #   (see vt_premium_assistance.yaml Case 4); 47_000 sits just above it but the
-  #   model still rounds aca_magi_fraction to 3.00, so the inclusive ceiling holds.
-  # Derived: aca_magi = 47_000;
-  #   aca_magi_fraction = 3.00 exactly (the 300% ceiling is inclusive -> eligible);
-  #   fed_pct = 9.96% (start of the 300-400% flat bracket); slcsp = 15_588.
-  # Federal APTC = 15_588 - 47_000*0.0996 = 15_588 - 4_681.20 = 10_906.80.
-  # VPA: fed_pct 9.96% > 1.5% -> gap = 47_000*0.015 = 705.00.
-  #   residual = 15_588 - 10_906.80 = 4_681.20 > gap -> VPA = 705.00.
+- name: Scenario 2, single Vermont enrollee at exactly 300% FPL stays eligible.
+  # Raw input: employment_income 46_950 = 3 x $15,650 (2025 one-person FPG).
+  # Derived: aca_magi = 46_950; aca_magi_fraction = 3.00 exactly (the 300%
+  #   ceiling is inclusive -> eligible); fed_pct = 9.96% (start of the 300-400%
+  #   flat bracket); slcsp = 15_588.
+  # Federal APTC = 15_588 - 46_950*0.0996 = 15_588 - 4_676.22 = 10_911.78.
+  # VPA: fed_pct 9.96% > 1.5% -> gap = 46_950*0.015 = 704.25.
+  #   residual = 15_588 - 10_911.78 = 4_676.22 > gap -> VPA = 704.25.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 46_950
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    aca_magi: 46_950
+    aca_magi_fraction: 3.00
+    is_aca_ptc_eligible: true
+    aca_required_contribution_percentage: 0.0996
+    slcsp: 15_588
+    aca_ptc: 10_911.78
+    vt_premium_assistance_eligible: true
+    vt_premium_assistance: 704.25
+
+- name: Scenario 2b, single Vermont enrollee at 47k (300.32% FPL) is above the ceiling.
+  # Raw input: employment_income 47_000, which is 300.32% of $15,650. Truncation
+  #   makes aca_magi_fraction 3.00, but 33 V.S.A. 1812(a)(1) covers only income
+  #   "less than or equal to 300 percent", so Vermont Premium Assistance is $0.
+  #   The federal APTC is unaffected: 15_588 - 47_000*0.0996 = 10_906.80.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -84,11 +111,9 @@
     aca_magi: 47_000
     aca_magi_fraction: 3.00
     is_aca_ptc_eligible: true
-    aca_required_contribution_percentage: 0.0996
-    slcsp: 15_588
     aca_ptc: 10_906.80
-    vt_premium_assistance_eligible: true
-    vt_premium_assistance: 705.00
+    vt_premium_assistance_eligible: false
+    vt_premium_assistance: 0
 
 # ---- Scenario 3: injected, 250% FPL, gap-binding ----
 - name: Scenario 3, 250% FPL injected inputs give a gap-binding VPA of income times 1.5%.
@@ -251,11 +276,11 @@
 # ---- Scenario 8: multi-member household at 300% FPL, gap-binding ----
 - name: Scenario 8, three-person Vermont household at 300% FPL gets a gap-binding VPA scaling with MAGI.
   # A larger family reaches the 300% ceiling at a higher aca_magi, so the gap
-  #   (income * 0.015) scales up. fed_pct at 300% FPL = 9.96% (start of the
-  #   300-400% flat bracket, derived from the injected aca_magi_fraction 3.00).
-  #   income = 100_000 -> gap = 100_000 * 0.015 = 1_500.
+  #   (income * 0.015) scales up. 300% of the 2025 three-person FPG ($26,650) is
+  #   79_950, so aca_magi_fraction = 3.00 and fed_pct = 9.96% (start of the
+  #   300-400% flat bracket). gap = 79_950 * 0.015 = 1_199.25.
   #   residual = slcsp - aca_ptc = 20_000 - 8_000 = 12_000 > gap ->
-  #   VPA = min(1_500, 12_000) = 1_500 (gap binds). Only one member need be
+  #   VPA = min(1_199.25, 12_000) = 1_199.25 (gap binds). Only one member need be
   #   APTC-eligible for the tax unit to qualify at the inclusive 300% ceiling.
   period: 2026
   absolute_error_margin: 0.01
@@ -273,8 +298,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        aca_magi: 100_000
-        aca_magi_fraction: 3.00
+        aca_magi: 79_950
         slcsp: 20_000
         aca_ptc: 8_000
     households:
@@ -282,13 +306,13 @@
         members: [person1, person2, person3]
         state_code: VT
   output:
-    aca_magi: 100_000
+    aca_magi: 79_950
     aca_magi_fraction: 3.00
     aca_required_contribution_percentage: 0.0996
     slcsp: 20_000
     aca_ptc: 8_000
     vt_premium_assistance_eligible: true
-    vt_premium_assistance: 1_500
+    vt_premium_assistance: 1_199.25
 
 # ---- Scenario 9: full federal derivation, exactly 180% FPL, gap-binding ----
 - name: Scenario 9, single Vermont enrollee at 28.2k derives 180% FPL and gets a gap-binding VPA.
