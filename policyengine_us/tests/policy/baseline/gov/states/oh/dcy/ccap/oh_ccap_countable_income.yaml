@@ -1,10 +1,10 @@
 # Tests for oh_ccap_countable_income (SPMUnit, MONTH).
-# 5180:2-16-03: countable income is gross earned plus gross unearned income,
-# minus the enumerated exclusions. SSI is excluded (omitted from the sources
-# list), and the earned income of any person receiving SSI is also excluded
-# (subtracted person-level, since a list omission cannot zero one earner's
-# wages). Income variables are YEAR-defined (input annual, output monthly);
-# ssi is MONTH-defined (input monthly).
+# 5180:2-16-03, now 5180:6-1-03: countable income is gross earned plus gross
+# unearned income, minus the enumerated exclusions. SSI is excluded (omitted
+# from the sources list), and the earned income of any person receiving SSI
+# is also excluded (subtracted person-level, since a list omission cannot
+# zero one earner's wages). Income variables are YEAR-defined (input annual,
+# output monthly); ssi is MONTH-defined (input monthly).
 - name: Case 1, earned plus unearned income with no SSI.
   period: 2026-01
   input:
@@ -91,10 +91,10 @@
   output:
     oh_ccap_countable_income: 0
 
-# 5180:2-16-03(D)(1) counts self-employment as the total profit from a
-# business enterprise and (D)(4)(a) disallows net losses, so a loss is floored
-# at zero per person and per source instead of flowing through as negative
-# countable income.
+# 5180:2-16-03(D)(1), now 5180:6-1-03(D)(1), counts self-employment as the
+# total profit from a business enterprise and (D)(4)(a) disallows net losses,
+# so a loss is floored at zero per person and per source instead of flowing
+# through as negative countable income.
 - name: Case 5, a self-employment loss floors at zero.
   period: 2026-01
   input:

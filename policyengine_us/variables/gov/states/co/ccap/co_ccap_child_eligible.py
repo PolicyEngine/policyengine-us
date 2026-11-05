@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.co.ccap.co_ccap_parameter_instant import (
+    co_ccap_parameter_instant,
+)
 
 
 class co_ccap_child_eligible(Variable):
@@ -14,11 +17,7 @@ class co_ccap_child_eligible(Variable):
     defined_for = StateCode.CO
 
     def formula(person, period, parameters):
-        year = period.start.year
-        if period.start.month >= 10:
-            instant_str = f"{year}-10-01"
-        else:
-            instant_str = f"{year - 1}-10-01"
+        instant_str = co_ccap_parameter_instant(period)
         p = parameters(instant_str).gov.states.co.ccap
         # Section 3.105.1(F) (now 3.111(F)) extends the under-19 limit to
         # children under court supervision; the required documentation of care

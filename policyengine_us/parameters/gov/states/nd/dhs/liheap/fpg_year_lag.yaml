@@ -1,0 +1,13 @@
+description: North Dakota uses the poverty guidelines from this many years before the model year for the federal income floor under the Low Income Home Energy Assistance Program.
+# Annual FY2026 uses the guidelines mandatory at its October 2025 season start.
+# Optional adoption of revised guidelines within the season is not modeled.
+# Backfilled and future seasons remain unverified estimates.
+values:
+  2025-10-01: 1
+metadata:
+  unit: year
+  period: year
+  label: North Dakota LIHEAP poverty guideline year lag
+  reference:
+    - title: 45 CFR 96.85(a), Application of poverty income guidelines
+      href: https://www.law.cornell.edu/cfr/text/45/96.85#a

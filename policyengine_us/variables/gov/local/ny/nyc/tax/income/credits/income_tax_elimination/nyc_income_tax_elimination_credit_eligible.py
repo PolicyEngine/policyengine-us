@@ -28,7 +28,7 @@ class nyc_income_tax_elimination_credit_eligible(Variable):
         # § 1310(h)(1)(B) and (h)(2); line C: federal adjusted gross income
         # (§ 1310(h)(3)(B)) is no more than the phase-out width above the
         # threshold.
-        agi = tax_unit("adjusted_gross_income", period)
+        agi = tax_unit("ny_recomputed_federal_agi", period)
         threshold = tax_unit(
             "nyc_income_tax_elimination_credit_income_threshold", period
         )

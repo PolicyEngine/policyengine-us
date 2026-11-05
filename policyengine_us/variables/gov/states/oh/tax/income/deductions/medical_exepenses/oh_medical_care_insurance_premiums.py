@@ -21,7 +21,13 @@ class oh_medical_care_insurance_premiums(Variable):
         premiums = person("medical_expense_health_insurance_premiums", period)
         # Premiums already deducted in computing federal AGI are not deducted
         # again (worksheet line 1 note).
-        self_employed_deduction = person(
-            "self_employed_health_insurance_ald_person", period
+        # Only the medical insurance part (Form 7206 line 1) of the
+        # deduction: the deduction less its long-term care part (line 2),
+        # which comes off oh_long_term_care_insurance_premiums.
+        self_employed_deduction = max_(
+            0, person("self_employed_health_insurance_ald_person", period)
         )
-        return max_(premiums - self_employed_deduction, 0)
+        medical_part = self_employed_deduction - person(
+            "self_employed_health_insurance_ald_long_term_care_part", period
+        )
+        return max_(premiums - medical_part, 0)

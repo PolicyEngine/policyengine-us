@@ -5,19 +5,11 @@ class overtime_income_deduction_ssn_requirement_met(Variable):
     value_type = bool
     entity = TaxUnit
     label = "SSN requirement met for the overtime income deduction"
+    documentation = "Whether a filer (a tax unit member who is not a dependent) has a Social Security number valid for the overtime income deduction. Only overtime received by such a filer counts; see overtime_income_deduction_eligible_person."
     definition_period = YEAR
+    reference = "https://www.law.cornell.edu/uscode/text/26/225#d_1"
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        ssn_card_type = person("ssn_card_type", period)
-        ssn_card_str = ssn_card_type.decode_to_str()
-        p = parameters(period).gov.irs.deductions.overtime_income
-        eligible_ssn_card_type = np.isin(ssn_card_str, p.eligible_ssn_card_type)
-        joint = tax_unit("tax_unit_is_joint", period)
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        eligible_head_or_spouse = eligible_ssn_card_type & head_or_spouse
-        return where(
-            joint,
-            tax_unit.sum(eligible_head_or_spouse) == 2,
-            tax_unit.any(eligible_head_or_spouse),
-        )
+        eligible = person("overtime_income_deduction_eligible_person", period)
+        return tax_unit.any(eligible)

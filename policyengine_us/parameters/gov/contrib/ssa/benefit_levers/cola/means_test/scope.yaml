@@ -1,0 +1,9 @@
+description: "COLA means-test scope: 0 = first_eligible_cohorts limits the reform to the configured first eligibility cohort and later; 1 = all_beneficiaries applies to every beneficiary. The A9 preset uses 1. Numeric codes provide compatibility with the parameter engine."
+values:
+  0000-01-01: 0
+metadata:
+  label: Social Security COLA means-test scope
+  economy: false
+  reference:
+    - title: OACT provision A9, 2026 Trustees Report basis
+      href: https://www.ssa.gov/OACT/solvency/provisions/cola.html
