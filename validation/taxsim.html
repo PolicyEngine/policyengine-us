@@ -268,6 +268,7 @@
 <ul class="current">
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Validation against TAXSIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="state-rebates.html">State rebate attribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alaska-pfd.html">Alaska Permanent Fund Dividend in model comparisons</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Usage</span></p>
 <ul>
@@ -528,10 +529,26 @@
 <p>Each test compares PolicyEngine with TAXSIM for one record at a time, separately for federal income tax and state income tax. A cell in the table is the share of records that pass.</p>
 <ul class="simple">
 <li><p><strong>Within 1% of income</strong> (the dashboard’s default view): the two amounts differ by less than 1% of the record’s gross income. Gross income here is wages, self-employment income, interest, dividends, other property income, non-property income, pensions and unemployment compensation, plus short- and long-term capital gains when positive and 85% of Social Security benefits. Records with zero or negative gross income use the $15 test instead.</p></li>
-<li><p><strong>Within 1%, net of rebates</strong> (state only): the same test applied to state income tax plus one-time state rebates on both sides. It is meant to remove a timing difference: TAXSIM counts a rebate in the year it is paid and PolicyEngine in the tax year it relates to. It is not exact, because TAXSIM also reports some rebates that its state tax does not reflect (Virginia’s in 2022 and 2025, for example), so this column can be lower than the plain 1% column. See <a class="reference internal" href="state-rebates.html"><span class="std std-doc">state rebate attribution</span></a> for the eligibility-year convention, inventory, and guidance on restoring only rebates that actually reduced the reported tax.</p></li>
+<li><p><strong>Within 1%, net of rebates</strong> (state only): the same test applied to state income tax plus one-time state rebates on both sides. It is meant to remove a timing difference: TAXSIM counts a rebate in the year it is paid and PolicyEngine in the tax year it relates to. It is not exact, because TAXSIM also reports some rebates that its state tax does not reflect (Virginia’s in 2022 and 2025, for example), so this column can be lower than the plain 1% column. See <a class="reference internal" href="state-rebates.html"><span class="std std-doc">state rebate attribution</span></a> for the eligibility-year convention, inventory, and guidance on restoring only rebates that actually reduced the reported tax. The column’s PolicyEngine rebate amount comes from policyengine-taxsim’s own rebate list, not from the model’s <code class="docutils literal notranslate"><span class="pre">state_income_tax_before_one_time_rebates</span></code> output; the <a class="reference internal" href="state-rebates.html#differences-from-the-taxsim-dashboard"><span class="std std-ref">state rebate page</span></a> lists where the two differ.</p></li>
 <li><p><strong>Within $15</strong>: the two amounts differ by $15 or less.</p></li>
 </ul>
 <p>These rules are implemented in <code class="docutils literal notranslate"><span class="pre">match_flags</span></code> in <a class="reference external" href="https://github.com/PolicyEngine/policyengine-taxsim/blob/main/scripts/refresh_dashboard.py"><code class="docutils literal notranslate"><span class="pre">scripts/refresh_dashboard.py</span></code></a>. Each year’s published summary records the commit and script hash that produced it.</p>
+</section>
+<section id="constructing-comparison-inputs">
+<h2>Constructing comparison inputs<a class="headerlink" href="#constructing-comparison-inputs" title="Link to this heading">¶</a></h2>
+<p>Supply <code class="docutils literal notranslate"><span class="pre">is_tax_unit_dependent</span></code> for dependents or complete <code class="docutils literal notranslate"><span class="pre">tax_unit_role_input</span></code>
+roles for all members. Tax-unit membership and a <code class="docutils literal notranslate"><span class="pre">filing_status</span></code> input alone do
+not prevent an adult member from being inferred as a spouse.</p>
+<p>For California, <code class="docutils literal notranslate"><span class="pre">tax_exempt_interest_income</span></code> has no issuer-state split by
+itself. The default treats it all as California-source for the state addback.
+Supply the other-state portion as <code class="docutils literal notranslate"><span class="pre">ca_out_of_state_municipal_bond_interest</span></code>
+on each person, and include that portion in <code class="docutils literal notranslate"><span class="pre">tax_exempt_interest_income</span></code> too.
+Only nondependent members’ amounts enter the filer’s California AGI; a parent
+election to report a dependent’s interest is not inferred. The new input
+defaults to zero and does not change federal AGI.</p>
+<p>Alaska residence automatically calculates the regular PFD and any energy relief,
+even when other income is supplied. See <a class="reference internal" href="alaska-pfd.html"><span class="std std-doc">Alaska PFD comparisons</span></a>
+for per-person overrides and the separate 2022 taxable and energy components.</p>
 </section>
 </section>
 
@@ -612,6 +629,7 @@
 <li><a class="reference internal" href="#">Validation against TAXSIM</a><ul>
 <li><a class="reference internal" href="#results">Results</a></li>
 <li><a class="reference internal" href="#how-agreement-is-measured">How agreement is measured</a></li>
+<li><a class="reference internal" href="#constructing-comparison-inputs">Constructing comparison inputs</a></li>
 </ul>
 </li>
 </ul>

@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Microsimulation" href="../usage/microsimulation.html"><link rel="prev" title="Validation against TAXSIM" href="taxsim.html">
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Alaska Permanent Fund Dividend in model comparisons" href="alaska-pfd.html"><link rel="prev" title="Validation against TAXSIM" href="taxsim.html">
 
     <!-- Generated with Sphinx 7.4.7 and Furo 2025.12.19 -->
         <title>State rebate attribution - PolicyEngine US documentation</title>
@@ -268,6 +268,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="taxsim.html">Validation against TAXSIM</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">State rebate attribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alaska-pfd.html">Alaska Permanent Fund Dividend in model comparisons</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Usage</span></p>
 <ul>
@@ -475,6 +476,129 @@ for checking the dated aggregation path and applied liability cap.</p>
 a rebate-adjusted metric. Its limitations and each program’s aggregation path
 matter when reconciling that metric with the reported state income tax.</p>
 </section>
+<section id="pre-rebate-comparison-output">
+<h2>Pre-rebate comparison output<a class="headerlink" href="#pre-rebate-comparison-output" title="Link to this heading">¶</a></h2>
+<p>Two tax-unit outputs restore one-time rebates to state income tax for
+comparison with models that report them separately:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>state_income_tax_before_one_time_rebates
+    = state_income_tax + state_income_tax_rebate_adjustment
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">state_income_tax_rebate_adjustment</span></code> sums the state variables in the
+<a class="reference external" href="https://github.com/PolicyEngine/policyengine-us/blob/main/policyengine_us/parameters/gov/states/household/state_income_tax_rebate_adjustments.yaml">rebate registry</a>.
+Each restores only the registered rebate amounts that actually reduced that
+year’s modeled state tax. The comparison liability keeps ordinary credits,
+including refundable credits such as state EITCs, so it can be negative.
+Neither output changes <code class="docutils literal notranslate"><span class="pre">state_income_tax</span></code>, existing credit totals, or
+household net income.</p>
+<section id="scope-rule">
+<h3>Scope rule<a class="headerlink" href="#scope-rule" title="Link to this heading">¶</a></h3>
+<p>The registry lists a payment when both of these hold:</p>
+<ol class="arabic simple">
+<li><p><strong>The model treats it as one-time.</strong> The state’s dated credit list or the
+payment’s amount gate limits it to named eligibility years. Standing
+statutes set up some of these payments, such as Massachusetts Chapter 62F
+and Indiana’s $125 automatic taxpayer refund, and each paid out in one
+modeled year. Temporary credits that aren’t rebate or refund payments, such
+as Arkansas’s 2022–2023 inflationary relief credit, stay in liability.</p></li>
+<li><p><strong>The model credits it against that year’s state income tax,</strong> through
+the state’s dated credit list or, for Montana, directly in
+<code class="docutils literal notranslate"><span class="pre">mt_refundable_credits</span></code>.</p></li>
+</ol>
+<p>Payments with no end year in the model stay in the comparison liability, even
+when they return surplus revenue. That covers Colorado’s residual TABOR sales
+tax refund (<code class="docutils literal notranslate"><span class="pre">co_sales_tax_refund</span></code>) and Oregon’s kicker (<code class="docutils literal notranslate"><span class="pre">or_kicker</span></code>), so the
+output restores neither. Only the 2021 list includes Colorado Cash Back
+(<code class="docutils literal notranslate"><span class="pre">co_tabor_cash_back</span></code>), so the output restores it. Ordinary recurring credits
+also stay in liability.</p>
+<p>Under this rule the registry covers every payment in the inventory above
+except Colorado’s sales tax refund, plus these payments modeled through
+refundable credits that the inventory does not list:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Payment and raw variable(s)</p></th>
+<th class="head"><p>Eligibility year in the dated credit list</p></th>
+<th class="head"><p>Aggregation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Maine affordability payment: <code class="docutils literal notranslate"><span class="pre">me_affordability_payment</span></code></p></td>
+<td><p>2025 only</p></td>
+<td><p>R: <code class="docutils literal notranslate"><span class="pre">me_refundable_credits</span></code>, per eligible head or spouse. Legally a direct payment; the model assumes full-year residence and doesn’t model the filing deadline.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Delaware relief rebate: <code class="docutils literal notranslate"><span class="pre">de_relief_rebate</span></code></p></td>
+<td><p>2020 only</p></td>
+<td><p>R: <code class="docutils literal notranslate"><span class="pre">de_refundable_credits</span></code>, per modeled head or spouse.</p></td>
+</tr>
+<tr class="row-even"><td><p>Idaho rebates: <code class="docutils literal notranslate"><span class="pre">id_2022_rebate</span></code>, <code class="docutils literal notranslate"><span class="pre">id_special_season_rebate</span></code></p></td>
+<td><p>2020 only in the current model</p></td>
+<td><p>R: the 2020 list includes both and the 2021 list removes them. Their standalone formulas persist.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Indiana automatic refund: <code class="docutils literal notranslate"><span class="pre">in_automatic_refund_rebate</span></code></p></td>
+<td><p>2020 only</p></td>
+<td><p>R: <code class="docutils literal notranslate"><span class="pre">in_refundable_credits</span></code>. The model leaves out the separate $200 credit on the 2022 return for certain Social Security recipients.</p></td>
+</tr>
+<tr class="row-even"><td><p>New York supplemental EITC payment: <code class="docutils literal notranslate"><span class="pre">ny_supplemental_eitc</span></code></p></td>
+<td><p>2021 only, through its amount gate</p></td>
+<td><p>R: <code class="docutils literal notranslate"><span class="pre">ny_refundable_credits</span></code>. The dated list includes it from 2019, and its match is zero outside 2021.</p></td>
+</tr>
+<tr class="row-odd"><td><p>New York additional Empire State child credit payment: <code class="docutils literal notranslate"><span class="pre">ny_additional_ctc</span></code></p></td>
+<td><p>2021 and 2023</p></td>
+<td><p>R: <code class="docutils literal notranslate"><span class="pre">ny_refundable_credits</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A raw rebate amount enters the adjustment only in years when the state’s
+dated credit list includes it, so a positive standalone amount in another
+year contributes zero.</p>
+</section>
+<section id="how-the-adjustment-is-computed">
+<h3>How the adjustment is computed<a class="headerlink" href="#how-the-adjustment-is-computed" title="Link to this heading">¶</a></h3>
+<p>This is an additive reconciliation with filing choices and other credit
+bases held fixed. It does not rerun taxes with the rebates removed.</p>
+<ul class="simple">
+<li><p><strong>Refundable rebates</strong> restore the registered amounts in the year’s
+refundable-credit list.</p></li>
+<li><p><strong>Massachusetts</strong> Chapter 62F uses liability after other refundable
+credits, including premium pay, as its base. The adjustment restores the
+included amounts and keeps that calculated 62F base.</p></li>
+<li><p><strong>Montana’s</strong> separate-versus-joint filing election is determined before
+its 2021 rebate, by model assumption, and the comparison keeps it.</p></li>
+<li><p><strong>Virginia’s</strong> rebate is nonrefundable. With before-credit tax <code class="docutils literal notranslate"><span class="pre">T</span></code>, other
+applied nonrefundable credits <code class="docutils literal notranslate"><span class="pre">C</span></code>, rebate <code class="docutils literal notranslate"><span class="pre">R</span></code> and spouse adjustment <code class="docutils literal notranslate"><span class="pre">S</span></code>,
+the adjustment is <code class="docutils literal notranslate"><span class="pre">max(T</span> <span class="pre">-</span> <span class="pre">C</span> <span class="pre">-</span> <span class="pre">S,</span> <span class="pre">0)</span> <span class="pre">-</span> <span class="pre">max(T</span> <span class="pre">-</span> <span class="pre">C</span> <span class="pre">-</span> <span class="pre">R</span> <span class="pre">-</span> <span class="pre">S,</span> <span class="pre">0)</span></code>. A calculated
+<code class="docutils literal notranslate"><span class="pre">va_rebate</span></code> is already limited to tax after the spouse adjustment and
+refundable credits, including the refundable EITC, so the adjustment equals
+it. The formula differs only when a caller supplies a larger <code class="docutils literal notranslate"><span class="pre">va_rebate</span></code>.</p></li>
+<li><p><strong>South Carolina’s</strong> rebate is already limited to liability remaining
+after other credits.</p></li>
+</ul>
+<p>If a caller overrides an aggregate credit total or final tax directly, it must
+also supply a consistent adjustment; the model cannot infer the rebate share
+of an arbitrary total.</p>
+</section>
+<section id="differences-from-the-taxsim-dashboard">
+<h3>Differences from the TAXSIM dashboard<a class="headerlink" href="#differences-from-the-taxsim-dashboard" title="Link to this heading">¶</a></h3>
+<p>The dashboard’s “Within 1%, net of rebates” column adds a PolicyEngine rebate
+amount computed by policyengine-taxsim from its own rebate list. That list is
+not this registry, so the column is not a test of
+<code class="docutils literal notranslate"><span class="pre">state_income_tax_before_one_time_rebates</span></code>. At the time of writing they differ
+for:</p>
+<ul class="simple">
+<li><p><strong>Oregon:</strong> policyengine-taxsim includes <code class="docutils literal notranslate"><span class="pre">or_kicker</span></code>, because PolicyEngine
+credits the kicker on the return year while TAXSIM reports it for the base
+year. This output leaves the kicker in liability under the scope rule.</p></li>
+<li><p><strong>Massachusetts premium pay</strong> and the <strong>Maine affordability payment:</strong> this
+registry includes them; policyengine-taxsim’s list does not.</p></li>
+</ul>
+<p>Both measures restore Colorado Cash Back and leave out Colorado’s sales tax
+refund. Both also keep New York’s inflation refund, supplemental EITC payment
+and additional Empire State child credit payment out of the comparison
+liability.</p>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -501,12 +625,12 @@ matter when reconciling that metric with the reported state income tax.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../usage/microsimulation.html">
+          <a class="next-page" href="alaska-pfd.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Microsimulation</div>
+                <div class="title">Alaska Permanent Fund Dividend in model comparisons</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -554,6 +678,12 @@ matter when reconciling that metric with the reported state income tax.</p>
 <li><a class="reference internal" href="#">State rebate attribution</a><ul>
 <li><a class="reference internal" href="#inventory">Inventory</a></li>
 <li><a class="reference internal" href="#standalone-amounts-and-comparison-measures">Standalone amounts and comparison measures</a></li>
+<li><a class="reference internal" href="#pre-rebate-comparison-output">Pre-rebate comparison output</a><ul>
+<li><a class="reference internal" href="#scope-rule">Scope rule</a></li>
+<li><a class="reference internal" href="#how-the-adjustment-is-computed">How the adjustment is computed</a></li>
+<li><a class="reference internal" href="#differences-from-the-taxsim-dashboard">Differences from the TAXSIM dashboard</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
