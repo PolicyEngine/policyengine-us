@@ -2,11 +2,14 @@
 # https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5
 # IDAPA 16.03.08 section 202 includes income of nonqualified household members (page 6).
 # https://adminrules.idaho.gov/rules/current/16/160308.pdf#page=6
+# IDAPA 16.04.14.010.06 and 151.02 define income for FY2026 heating (pages 3, 5).
+# https://web.archive.org/web/20250910171431id_/https://adminrules.idaho.gov/rules/current/16/160414.pdf#page=3
 
-- name: Case 1, minor earnings are excluded but child SSI is included.
+- name: Case 1, a minor's earnings, VA benefits and general assistance count and child support does not.
   period: 2026
   absolute_error_margin: 0.01
-  # Adult 12,000 + child SSI (100 a month x 12) = 13,200; child wages, support, VA and GA are excluded.
+  # Adult 12,000 + child wages 6,000 + SSI (100 a month x 12) 1,200 + VA 3,000 + GA 900 = 23,100.
+  # IDAPA 16.04.14.151.02.t excludes the child support.
   # The SSI input of 1,200 is the annual amount for a MONTH variable in a YEAR test.
   input:
     people:
@@ -17,12 +20,12 @@
     households:
       household: {members: [person1, person2], state_code: ID}
   output:
-    id_liheap_countable_income: 13_200
+    id_liheap_countable_income: 23_100
 
-- name: Case 2, earnings count at the eighteenth birthday.
+- name: Case 2, an eighteen-year-old's earnings count.
   period: 2026
   absolute_error_margin: 0.01
-  # The child is now 18, so both the 12,000 of adult wages and the 6,000 of earnings count.
+  # The 12,000 of adult wages and the 18-year-old's 6,000 of earnings both count.
   input:
     people:
       person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
@@ -111,10 +114,10 @@
   output:
     id_liheap_countable_income: 900
 
-- name: Case 8, child support veterans benefits and general assistance are excluded.
+- name: Case 8, child support is excluded and VA benefits and general assistance count.
   period: 2026
   absolute_error_margin: 0.01
-  # Unchecked source boxes: child support 9,000, VA 5,000 and GA 2,000 do not count.
+  # IDAPA 16.04.14.151.02.t excludes child support 9,000; VA 5,000 + GA 2,000 = 7,000 count.
   input:
     people:
       person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0, child_support_received: 9_000, veterans_benefits: 5_000, general_assistance: 2_000}
@@ -124,13 +127,13 @@
     households:
       household: {members: [person1, person2], state_code: ID}
   output:
-    id_liheap_countable_income: 0
+    id_liheap_countable_income: 7_000
 
 - name: Case 9, mixed states and unequal memberships retain separate income totals.
   period: 2026
   absolute_error_margin: 0.01
   # First Idaho unit 6,000 + 6,000 = 12,000; Colorado 0;
-  # second Idaho unit adult 1,800 + child SSI 1,800 = 3,600; minor wages of 10,000 are excluded.
+  # second Idaho unit adult 1,800 + minor wages 10,000 + child SSI 1,800 = 13,600.
   input:
     people:
       person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 6_000}
@@ -147,7 +150,7 @@
       household2: {members: [person3], state_code: CO}
       household3: {members: [person4, person5], state_code: ID}
   output:
-    id_liheap_countable_income: [12_000, 0, 3_600]
+    id_liheap_countable_income: [12_000, 0, 13_600]
 
 # Ongoing retirement receipts: pension 1,000 + taxable IRA 12,000 + exempt IRA 3,000.
 # Count the two aggregates once; one-time lump sums are not represented here.

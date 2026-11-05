@@ -11,6 +11,9 @@ class id_liheap_eligible(Variable):
         # PDF pages 8-9
         "https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=8",
         "https://adminrules.idaho.gov/rules/current/16/160308.pdf#page=5",
+        # IDAPA 16.04.14.001.02 and 152.02, in force for all of FY2026 heating.
+        # PDF pages 3, 6
+        "https://web.archive.org/web/20250910171431id_/https://adminrules.idaho.gov/rules/current/16/160414.pdf#page=3",
     )
 
     def formula(spm_unit, period, parameters):

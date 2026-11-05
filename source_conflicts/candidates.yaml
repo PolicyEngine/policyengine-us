@@ -3272,7 +3272,9 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10613
   state: ruled
   note: 'Ruled 2026-11-02 and confirmed 2026-11-03: heat in rent is read as no specific obligation and is ineligible from
-    FY2026, although plan 1.1 runs heating assistance from October 2025 to March 2026, all under 16.04.14. A designated heat charge within rent has no
+    FY2026, although plan 1.1 runs heating assistance from October 2025 to March 2026, all under 16.04.14. Basis: 16.04.14
+    sets no amount (001.02: "does not entitle any household to a certain amount or form of assistance"), and the PY26
+    chart, the only FY2026 amount instrument, drops the Rent column PY25 had. A designated heat charge within rent has no
     input.'
 - id: us-id:liheap-monthly-limit-above-federal-ceiling
   program: liheap
@@ -3313,8 +3315,8 @@ candidates:
     from: 2026
     to: 2026
     type: federal-fiscal
-  question: Do VA benefits, general assistance and minors' earnings count for Idaho LIHEAP under the income rule in force
-    until June 2026, or stay out under the FY2026 plan checklist?
+  question: Do VA benefits, general assistance and minors' earnings count for Idaho LIHEAP in FY2026, as IDAPA 16.04.14
+    provides, or stay out under the FY2026 plan checklist?
   sources:
   - kind: regulation
     citation: IDAPA 16.04.14.010.06 and 16.04.14.151.02, effective April 6, 2023
@@ -3330,11 +3332,10 @@ candidates:
       151.02 names only GI Bill education money among VA payments and no general assistance or minors' earnings.
     other: Plan 1.9 leaves "General Assistance benefits", "Veterans Administration (VA) benefits" and "Earned income of a
       child under the age of 18" unchecked. From July 1, 2026, 16.03.08.202 counts gross income as the Department determines.
-  example: A veteran aged 45 with $35,000 of VA disability compensation and natural gas heat in Ada County counts $0 and
-    receives $132 under the plan. Under 16.04.14.010.06 the $35,000 is above the $32,835 limit and the household receives
-    $0.
+  example: A veteran aged 45 with $35,000 of VA disability compensation and natural gas heat in Ada County counts $35,000
+    under the rule, above the $32,835 limit, and receives $0. Under the plan the household counts $0 and receives $132.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/parameters/gov/states/id/dhw/liheap/income/sources/earned.yaml
     - policyengine_us/parameters/gov/states/id/dhw/liheap/income/sources/unearned.yaml
@@ -3342,8 +3343,14 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10613
   state: ruled
-  note: 'Ruled 2026-11-02: follow the plan over IDAPA 16.04.14. The Idaho AABD supplement (id_aabd) is also not counted,
-    as plan 1.9 does not name it, although 151.02 does not exclude it; it can only move an SSI recipient''s burden band.'
+  note: 'Ruled 2026-11-05 for the regulation by the project lead; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10613#issuecomment-6665844738. 16.04.14.010.06 defines income as moneys "from all sources", the
+    151.02 exclusion list is closed, and 16.04.14 does not delegate countable income to the department or adopt the state
+    plan. The rule was in force April 6, 2023 to June 30, 2026, and plan 1.1 runs FY2026 heating October 1, 2025 to March
+    31, 2026, so it governed every heating determination. us-nm:liheap-plan-income-checklist followed its regulation over
+    the same checklist. The ruling covers VA benefits, general assistance, minors'' earnings and id_aabd; Part B netting
+    under plan 1.9 and miscellaneous_income, pfml_benefits, life_insurance_benefits, gi_cash_assistance and capital_gains,
+    which stay uncounted, are unchanged and outside it.'
 - id: us-il:2022-rebate-claimed-vs-claimable
   program: income-tax
   years:

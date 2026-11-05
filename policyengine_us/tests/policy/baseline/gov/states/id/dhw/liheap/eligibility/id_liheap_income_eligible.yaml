@@ -450,8 +450,8 @@
 
 - name: Case 3, one member receiving SSI establishes the modeled categorical route.
   # Positive requested-year SSI is the documented stable-receipt approximation.
-  # Income: 40_000 + 1 * 12; 60_000 + 100 * 12; 40_000 + 100 * 12.
-  # Child earnings are excluded; SSI is counted once.
+  # Income: 40_000 + 1 * 12; 60_000 + 6_000 + 100 * 12; 40_000 + 100 * 12.
+  # Child earnings count; SSI is counted once.
   # The third unit has a nonqualified SSI recipient and a qualified child.
   # The parent income counts; SSI is not restricted to qualified members.
   period: 2026
@@ -674,7 +674,7 @@
     - 1
     id_liheap_countable_income:
     - 40012
-    - 61200
+    - 67200
     - 41200
     id_liheap_income_limit:
     - 32835

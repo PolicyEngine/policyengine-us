@@ -1,4 +1,7 @@
 description: Idaho counts these earned income sources under the Low Income Home Energy Assistance Program.
+# Every member's earnings count: IDAPA 16.04.14.010.06 counts moneys "from all
+# sources" and 151.02 does not exclude a minor's, although plan 1.9 leaves them
+# unchecked.
 values:
   2025-10-01:
     - employment_income
@@ -17,3 +20,5 @@ metadata:
   reference:
     - title: "Idaho FY2026 LIHEAP State Plan #page 5-7"
       href: https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5
+    - title: IDAPA 16.04.14.010.06 as of September 10, 2025
+      href: https://web.archive.org/web/20250910171431id_/https://adminrules.idaho.gov/rules/current/16/160414.pdf#page=3

@@ -10,7 +10,9 @@ class id_liheap_countable_income(Variable):
     defined_for = StateCode.ID
     reference = (
         # PDF pages 5-7
-        "https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5"
+        "https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5",
+        # IDAPA 16.04.14.010.06 and 151.02. PDF pages 3, 5
+        "https://web.archive.org/web/20250910171431id_/https://adminrules.idaho.gov/rules/current/16/160414.pdf#page=3",
     )
 
     def formula(spm_unit, period, parameters):
@@ -21,7 +23,6 @@ class id_liheap_countable_income(Variable):
         earned = 0
         for source in p.sources.earned:
             earned = earned + max_(add(person, period, [source]), 0)
-        adult = person("age", period) >= p.earned_income_min_age
         unearned = 0
         for source in p.sources.unearned:
             unearned = unearned + max_(add(person, period, [source]), 0)
@@ -30,10 +31,8 @@ class id_liheap_countable_income(Variable):
             - person("medicare_part_b_premium", period),
             0,
         )
-        # Nonqualified members' income counts. Child support, VA and general
-        # assistance remain excluded under the accepted plan's checklist; IDAPA
-        # 16.04.14.151.02 lists no exclusion for VA, general assistance or minors'
-        # earnings, and the plan is followed.
-        return spm_unit.sum(
-            where(adult, earned, 0) + unearned + social_security
-        ) + spm_unit("tanf", period)
+        # Every member's income counts, nonqualified members' and minors' included.
+        # IDAPA 16.04.14.151.02.t leaves out child support, which is in neither list.
+        return spm_unit.sum(earned + unearned + social_security) + spm_unit(
+            "tanf", period
+        )

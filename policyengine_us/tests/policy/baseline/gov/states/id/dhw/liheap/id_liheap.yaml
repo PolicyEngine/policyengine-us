@@ -252,3 +252,74 @@
     id_liheap_income_eligible: [true, true]
   output:
     id_liheap: [342, 808]
+
+- name: Case 13, VA benefits and a minor's earnings can put a household over the limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  # IDAPA 16.04.14.010.06 counts them. Ada County, gas with a bill, SNAP zero over the program year.
+  # VA 35_000 is over the one-person 32_835. Wages 36_000 + 8_000 = 44_000 are over the two-person 42_938.
+  input:
+    people:
+      person1:
+        age: 45
+        veterans_benefits: 35_000
+      person2:
+        age: 40
+        employment_income_before_lsr: 36_000
+      person3:
+        age: 17
+        employment_income_before_lsr: 8_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        takes_up_tanf_if_eligible: false
+        snap: {2025-10: 0, 2025-11: 0, 2025-12: 0, 2026-01: 0, 2026-02: 0, 2026-03: 0, 2026-04: 0, 2026-05: 0, 2026-06: 0, 2026-07: 0, 2026-08: 0, 2026-09: 0}
+      spm_unit2:
+        members: [person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        takes_up_tanf_if_eligible: false
+        snap: {2025-10: 0, 2025-11: 0, 2025-12: 0, 2026-01: 0, 2026-02: 0, 2026-03: 0, 2026-04: 0, 2026-05: 0, 2026-06: 0, 2026-07: 0, 2026-08: 0, 2026-09: 0}
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+        county: ADA_COUNTY_ID
+      household2:
+        members: [person2, person3]
+        state_code: ID
+        county: ADA_COUNTY_ID
+  output:
+    id_liheap_countable_income: [35_000, 44_000]
+    id_liheap_income_limit: [32_835, 42_938]
+    id_liheap_eligible: [false, false]
+    id_liheap: [0, 0]
+
+- name: Case 14, the Idaho AABD supplement counts and can move the burden band.
+  period: 2026
+  absolute_error_margin: 0.01
+  # SSI (994 a month x 12) 11_928 + AABD (53 a month x 12) 636 = 12_564. Ada County electric 1_335 / 12_564
+  # = 10.63% is medium, 342, plus the 25 bonus at age 65. Without AABD, 1_335 / 11_928 = 11.19% would be high.
+  input:
+    people:
+      person1:
+        age: 65
+        ssi: 11_928
+        id_aabd_living_arrangement: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        takes_up_tanf_if_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+        county: ADA_COUNTY_ID
+  output:
+    id_aabd: 636
+    id_liheap_countable_income: 12_564
+    id_liheap: 367
