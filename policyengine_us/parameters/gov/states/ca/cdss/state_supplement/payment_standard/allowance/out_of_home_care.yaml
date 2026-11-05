@@ -1,8 +1,8 @@
-description: California provides the following state supplement allowance for filers in a nonmedical out-of-home care facility.
+description: California adds this state share to the federal benefit rate for individuals in nonmedical out-of-home care under the State Supplementary Payment program.
 metadata:
   unit: currency-USD
   period: month
-  label: California state supplement out-of-home care allowance amount
+  label: California state supplement out-of-home care state share
   reference:
     - title: California Welfare and Institutions Code Division 9, Part 3, Chapter 3, Article 5, Section 12200 (g)
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200
@@ -10,16 +10,33 @@ metadata:
       href: https://www.ssa.gov/pubs/EN-05-11125.pdf#page=2
     - title: California Department of Social Services, SSI Total Monthly Payment Amounts 2026
       href: https://cdss.ca.gov/Portals/13/SHD/ParaRegIndex/SSI%20Monthly%20Payment%20Amounts%202026.pdf
-    - title: SSA POMS SI 01415.058 - Federally Administered Optional Supplementary Payment Programs for January 2026, California couple payment levels
-      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058#b2b
-    - title: California Department of Social Services, Local Assistance Estimates, 2026 May Revision reference documents, SSI/SSP Payment Standards
-      href: https://cdss.ca.gov/Portals/9/Additional-Resources/Fiscal-and-Financial-Information/LOcal-Assistance-Estimates/2026-27/Revisions/2026-may-revision-reference-documents.pdf#page=26
+    - title: SSA POMS SI 01415.058 - Federally Administered Optional Supplementary Payment Programs for January 2026, California recipient payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058#b2a
     - title: California Department of Social Services, All County Information Notice I-59-25, CAPI payment standards for January 2026
       href: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACINs/2025/I-59_25.pdf#page=5
+    - title: SSA POMS SI 01415.057 - Federally Administered Optional Supplementary Payment Programs for January 2025, California recipient payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415057#b2a
+    - title: SSA POMS SI 01415.056 - Federally Administered Optional Supplementary Payment Programs for January 2024, California recipient payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415056#b2a
+    - title: SSA POMS SI 01415.045 - Federally Administered Optional Supplementary Payment Programs for January 2013, California recipient payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415045#b2a
+    - title: SSA POMS SI 01415.049 - Federally Administered Optional Supplementary Payment Programs for January 2017, California recipient payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415049#b2a
+    - title: SSA POMS SI 01415.054 - Federally Administered Optional Supplementary Payment Programs for January 2022, California recipient payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415054#b2a
+    - title: SSA POMS SI 01415.055 - Federally Administered Optional Supplementary Payment Programs for January 2023, California recipient payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415055#b2a
+    - title: "California Department of Social Services, Local Assistance Estimates, 2026 May Revision reference documents, SSI/SSP Payment Standards #page 26-27"
+      href: https://cdss.ca.gov/Portals/9/Additional-Resources/Fiscal-and-Financial-Information/LOcal-Assistance-Estimates/2026-27/Revisions/2026-may-revision-reference-documents.pdf#page=26
 values:
-  1991-01-01: 709
-  2025-01-01: 1_140.31 # $3,198.14 - $2,057.83
+  1991-01-01: 302 # $709 - $407
+  # Shares for 1992 through 2012 are not added yet, so the 1991 share carries forward (issue 10480).
+  2013-01-01: 412
+  2017-01-01: 423.37
+  2022-01-01: 524.77
+  2023-01-01: 578.82
   # SSA POMS, the CDSS 2026 May Revision and ACIN I-59-25 list $3,252.14 for couples,
   # twice the $1,626.07 individual rate (WIC 12200(g) sets the amount per recipient).
   # The CDSS monthly payment table and SSA pamphlet EN-05-11125 list $3,239.14.
-  2026-01-01: 1_153.31 # $3,252.14 - $2,098.83
+  # The share holds for January 2024 through 2026, and CDSS projects it for January 2027.
+  2024-01-01: 632.07

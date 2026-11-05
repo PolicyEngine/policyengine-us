@@ -89,5 +89,6 @@
         members: [person1, person2]
   output:
     # Cash 300 + 100, countable vehicles 25, member property 50 + 25.
-    # Assert the stock amount without choosing eligibility at exactly $500.
+    # The total doesn't exceed the $500 limit, so the unit is property-eligible.
     ca_riv_general_relief_countable_property_value: 500
+    ca_riv_general_relief_property_eligible: true

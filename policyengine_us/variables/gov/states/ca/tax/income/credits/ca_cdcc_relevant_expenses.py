@@ -49,8 +49,9 @@ class ca_cdcc_relevant_expenses(Variable):
         eligible_capped_expenses = min_(
             expenses, min_(dollar_limit_after_exclusion, federal_line_31)
         )
-        # Then, cap further to the lowest earnings between the taxpayer and spouse
+        # Then, cap further to the lowest earnings between the taxpayer and
+        # spouse, measured as California earned income (R&TC 17052.6(d)(2)).
         return min_(
             eligible_capped_expenses,
-            tax_unit("min_head_spouse_earned", period),
+            tax_unit("ca_cdcc_min_head_spouse_earned", period),
         )

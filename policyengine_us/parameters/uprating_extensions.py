@@ -881,6 +881,8 @@ def extend_social_security_payroll_cap(
     parameters: ParameterNode,
     last_projected_year: int,
     end_year: int,
+    *,
+    cap: Optional[Parameter] = None,
 ) -> None:
     """
     Extend the Social Security contribution and benefit base through `end_year`.
@@ -891,8 +893,14 @@ def extend_social_security_payroll_cap(
     nearest $300 (a multiple of $150 rounds up). 20 CFR 404.1048(b)(2)(i)
     still states the pre-1995 chained formula, which Pub. L. 103-296,
     sec. 321(g)(1), replaced for bases after 1994.
+
+    `cap` defaults to `gov.irs.payroll.social_security.cap`. Pass another
+    parameter that holds the base, such as a copy of it, to extend that
+    parameter instead: the rule then reads its 1994 base and its value for
+    Y - 1, and the NAWI.
     """
-    cap = parameters.gov.irs.payroll.social_security.cap
+    if cap is None:
+        cap = parameters.gov.irs.payroll.social_security.cap
     nawi = parameters.gov.ssa.nawi
     base_1994 = cap("1994-01-01")
     nawi_1992 = nawi("1992-01-01")
@@ -914,14 +922,24 @@ def extend_social_security_payroll_cap(
 def extend_social_security_wage_indexed_parameters(
     parameters: ParameterNode,
     end_year: int,
+    *,
+    cap: Optional[Parameter] = None,
 ) -> None:
-    """Extend SSA wage-indexed benefit parameters with statutory lag and rounding."""
+    """Extend SSA wage-indexed benefit parameters with statutory lag and rounding.
+
+    The wage base for each year from 2027 is set to the contribution and
+    benefit base. `cap` defaults to `gov.irs.payroll.social_security.cap`.
+    Pass another parameter that holds the base, such as a copy of it, to read
+    the wage base from that parameter instead, so a reform that changes only
+    the payroll cap doesn't move the wage base when this runs after it.
+    """
     ssa = parameters.gov.ssa
     social_security = ssa.social_security
     nawi = ssa.nawi
 
     wage_base = social_security.wage_base
-    payroll_cap = parameters.gov.irs.payroll.social_security.cap
+    if cap is None:
+        cap = parameters.gov.irs.payroll.social_security.cap
     qc_threshold = social_security.quarters_of_coverage_threshold
     earnings_test = social_security.earnings_test
     pia = social_security.pia.formula_factors
@@ -933,7 +951,7 @@ def extend_social_security_wage_indexed_parameters(
 
         wage_base.update(
             period=period,
-            value=payroll_cap(f"{year}-01-01"),
+            value=cap(f"{year}-01-01"),
         )
 
         qc_threshold.update(

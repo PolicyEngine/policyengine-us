@@ -14,6 +14,11 @@ reforms replace household_benefits or spm_unit_benefits with their own
 hardcoded list, so a contributed program added to the baseline aggregates is
 silently dropped under those reforms unless it is added to every copy. That
 shipped with the Trump dividend, which #9430 added to the baseline lists only.
+
+The last test keeps reforms from copying the household tax totals at all. The
+abolish-federal-income-tax and abolish-payroll-tax reforms once did, from a
+separate list that lost the Idaho permanent building fund tax, five states'
+use taxes and every local tax except New York City's.
 """
 
 import ast
@@ -37,6 +42,9 @@ AGGREGATE_LISTS = [
 # Gates that restrict a variable geographically without a StateCode
 # defined_for (locality booleans).
 GEOGRAPHIC_GATES = {"in_la", "in_nyc", "in_riv"}
+
+# Variables that cap an aggregate and add nothing of their own.
+CAPPED_AGGREGATES = {"household_child_care_subsidies": {"child_care_subsidies"}}
 
 # Members intentionally removed in a year block, keyed by (list, block date).
 # Add an entry here when a credit genuinely ends; do not silently drop
@@ -88,30 +96,69 @@ def test_members_are_defined_variables(list_path, variables):
     )
 
 
+def has_state_gate(variables, member):
+    """True when a StateCode (or locality) gate appears in the defined_for chain."""
+    gate = variables[member].defined_for
+    for _ in range(10):
+        if gate is None:
+            return False
+        if re.fullmatch(r"[A-Z]{2}", str(gate)):
+            return True  # StateCode gate found
+        if gate in GEOGRAPHIC_GATES:
+            return True
+        gate = variables[gate].defined_for if gate in variables else None
+    return False
+
+
+def aggregate_members(variables, member):
+    """The variables an aggregate member sums, or None if it is not an aggregate.
+
+    `adds` is either a list of variable names or a dotted parameter path
+    (e.g. gov.hhs.ccdf.child_care_subsidy_programs). A variable in
+    CAPPED_AGGREGATES caps the aggregates it names, so those are its members.
+    """
+    if member in CAPPED_AGGREGATES:
+        return CAPPED_AGGREGATES[member]
+    adds = getattr(variables[member], "adds", None)
+    if not adds:
+        return None
+    if isinstance(adds, str):
+        list_path = adds.replace(".", "/") + ".yaml"
+        if not (PARAMETERS / list_path).exists():
+            return None
+        return members_of(list_path)
+    return set(adds)
+
+
+def is_state_gated(variables, member, depth=0):
+    if has_state_gate(variables, member):
+        return True
+    # An aggregate whose every summed member is state-gated cannot leak one
+    # state's program into other states: each addend is zero outside its gate.
+    if depth < 3:
+        members = aggregate_members(variables, member)
+        if members is not None:
+            return all(is_state_gated(variables, m, depth + 1) for m in members)
+    return False
+
+
 @pytest.mark.parametrize("list_path", AGGREGATE_LISTS)
 def test_members_are_state_gated(list_path, variables):
-    ungated = []
-    for member in sorted(members_of(list_path)):
-        gate = variables[member].defined_for
-        for _ in range(10):
-            if gate is None:
-                break
-            if re.fullmatch(r"[A-Z]{2}", str(gate)):
-                break  # StateCode gate found
-            if gate in GEOGRAPHIC_GATES:
-                break
-            gate = variables[gate].defined_for if gate in variables else None
-        else:
-            gate = None
-        if gate is None:
-            ungated.append(member)
+    ungated = [
+        member
+        for member in sorted(members_of(list_path))
+        if not is_state_gated(variables, member)
+    ]
     assert not ungated, (
         f"{list_path} members without a StateCode gate in their "
         f"defined_for chain (dc_ctc-style leak risk): {ungated}"
     )
 
 
-@pytest.mark.parametrize("list_path", AGGREGATE_LISTS)
+# household_benefits needs no state gate, because most members are national.
+@pytest.mark.parametrize(
+    "list_path", [*AGGREGATE_LISTS, "gov/household/household_benefits.yaml"]
+)
 def test_no_silent_removals_between_year_blocks(list_path):
     blocks = blocks_of(list_path)
     for (_, prev), (date, curr) in zip(blocks, blocks[1:]):
@@ -226,4 +273,114 @@ def test_reform_aggregates_keep_baseline_contrib_entries(
         f"{missing}, which the baseline {variable_name} counts. Add the entry "
         "here too, or record a deliberate omission in "
         "ALLOWED_REFORM_OMISSIONS in this test."
+    )
+
+
+# Cash programs that household_benefits and spm_unit_benefits both count. A
+# reform's copy that drops one takes the payment away from every household in
+# the simulation, not only the reform's target group.
+SHARED_CASH_PROGRAMS = {
+    "spm_unit_benefits": {
+        "ak_energy_relief",
+        "ca_capi",
+        "ca_la_expectant_parent_payment",
+        "ca_la_infant_supplement",
+        "co_denver_property_tax_relief",
+        "ma_eaedc",
+        "nj_property_tax_relief",
+        "ny_drive_clean_rebate",
+    },
+    "household_benefits": {
+        "ak_energy_relief",
+        "household_local_benefits",
+        "ny_drive_clean_rebate",
+    },
+}
+
+
+@pytest.mark.parametrize(
+    "source_path,variable_name,members",
+    REFORM_AGGREGATE_OVERRIDES,
+    ids=[f"{path}::{variable}" for path, variable, _ in REFORM_AGGREGATE_OVERRIDES],
+)
+def test_reform_aggregates_keep_shared_cash_programs(
+    source_path, variable_name, members
+):
+    missing = sorted(SHARED_CASH_PROGRAMS[variable_name] - set(members))
+    assert not missing, (
+        f"{source_path} redefines {variable_name} and drops {missing}, which "
+        "both income totals count. Add them to this copy."
+    )
+
+
+# --- Household tax totals -------------------------------------------------
+
+HOUSEHOLD_TAX_TOTALS = {
+    "household_tax_before_refundable_credits",
+    "household_state_tax_before_refundable_credits",
+    "state_income_tax_before_refundable_credits",
+    "state_use_tax",
+    "local_income_tax_before_refundable_credits",
+    "local_occupational_tax",
+    "household_refundable_tax_credits",
+    "income_tax_refundable_credits_in_force",
+    "federal_income_tax_in_force",
+    "household_refundable_state_tax_credits",
+    "household_refundable_local_tax_credits",
+    "household_tax",
+    "household_net_income",
+}
+
+
+def test_no_reform_redefines_a_household_tax_total():
+    """Change a component or the baseline formula instead of copying a total.
+
+    A copy keeps the components it was written with, so it misses any that
+    the baseline total gains later.
+    """
+    redefinitions = []
+    for source in sorted((PACKAGE / "reforms").rglob("*.py")):
+        tree = ast.parse(source.read_text())
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ClassDef) and node.name in HOUSEHOLD_TAX_TOTALS:
+                redefinitions.append(f"{source.relative_to(PACKAGE)}::{node.name}")
+    assert not redefinitions, (
+        "Reforms redefine household tax totals, which then drift from the "
+        f"baseline: {redefinitions}"
+    )
+
+
+# Components that the abolish parameters zero in their own formulas. The
+# household totals rely on those checks, so a reform that replaces one of
+# these variables must keep reading the parameter.
+ABOLITION_CHECKS = {
+    "income_tax": "abolish_federal_income_tax",
+    "income_tax_before_refundable_credits": "abolish_federal_income_tax",
+    "income_tax_chapter_1": "abolish_federal_income_tax",
+    "employee_payroll_tax": "abolish_payroll_tax",
+}
+
+
+def test_reforms_replacing_an_abolished_tax_keep_the_abolition_check():
+    """A replacement without the check would charge the tax again.
+
+    Before the abolish parameters relied on the baseline formulas alone, the
+    structural reforms dropped the abolished tax from the household total by
+    name. Now only the check inside each formula drops it.
+    """
+    missing = []
+    for source in sorted((PACKAGE / "reforms").rglob("*.py")):
+        tree = ast.parse(source.read_text())
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ClassDef) and node.name in ABOLITION_CHECKS:
+                reads_parameter = any(
+                    isinstance(child, ast.Attribute)
+                    and child.attr == ABOLITION_CHECKS[node.name]
+                    for child in ast.walk(node)
+                )
+                if not reads_parameter:
+                    missing.append(f"{source.relative_to(PACKAGE)}::{node.name}")
+    assert not missing, (
+        "Reforms replace a tax the abolish parameters zero without reading "
+        f"the parameter: {missing}"
     )
