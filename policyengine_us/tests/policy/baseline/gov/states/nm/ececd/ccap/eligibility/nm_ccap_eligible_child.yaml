@@ -1,8 +1,10 @@
-# NM CCAP eligible child: age 6 weeks to under 13 (8.15.2.11.F NMAC), or
-# with a developmental delay or under court supervision, under 18 through May
-# 2026 (special-supervision extension, 8.9.3.11.G, formerly 8.15.2.11.G) and
-# under 19 from June 2026 (2026 Laws, Ch. 63, section 4(B)), AND a US citizen
-# or qualified immigrant before Universal Child Care (8.15.2.11.E, reusing
+# NM CCAP eligible child: age 6 weeks to under 13 (8.15.2.11.F NMAC, then
+# 8.9.3.11.F and, from 2026-09-09, 8.9.3.10.F), or with a developmental delay
+# or under court supervision, under 18 through November 2025
+# (special-supervision extension, 8.9.3.11.G, formerly 8.15.2.11.G) and under
+# 19 from December 2025 (8.9.3.11.G as amended 2025-11-04; 2026 Laws, Ch. 63,
+# section 4(B) from May 20, 2026), AND a US citizen or qualified immigrant
+# before Universal Child Care (8.15.2.11.E, then 8.9.3.11.E; reusing
 # is_ccdf_immigration_eligible_child). Court-supervision cases are in
 # ../court_supervision.yaml.
 
@@ -79,7 +81,7 @@
   output:
     nm_ccap_eligible_child: [false, true]
 
-- name: Case 5, special needs child at exactly eighteen is ineligible before the June 2026 age-19 limit.
+- name: Case 5, special needs child at exactly eighteen is ineligible before the December 2025 age-19 limit.
   period: 2025-01
   input:
     people:
@@ -87,8 +89,9 @@
         age: 45
         immigration_status: CITIZEN
       person2:
-        # Developmental delay, age 18 is NOT < 18 in 2025 -> ineligible. The
-        # age-19 limit that starts in June 2026 would make this child eligible.
+        # Developmental delay, age 18 is NOT < 18 in January 2025 ->
+        # ineligible. The age-19 limit that starts in December 2025 would make
+        # this child eligible.
         age: 18
         has_developmental_delay: true
         immigration_status: CITIZEN
@@ -119,8 +122,9 @@
 
 # ============================================================
 # Edge cases: age-limit boundaries.
-# Regular limit is < 13 (8.15.2.11.F); the special-supervision
-# extension raises it to < 18 (8.15.2.11.G) for children with a
+# Regular limit is < 13 (8.15.2.11.F, then 8.9.3.11.F); the
+# special-supervision extension raises it to < 18 (8.15.2.11.G, then
+# 8.9.3.11.G until the 2025-11-04 amendment) for children with a
 # developmental delay.
 # ============================================================
 
@@ -204,8 +208,9 @@
 
 # ============================================================
 # Universal Child Care (from 2025-11-01) removes the child-level
-# citizenship/qualified-immigrant test (8.15.2.11.E NMAC pre-UCC;
-# ECECD Universal Child Care post-UCC). Before UCC the test bars
+# citizenship/qualified-immigrant test (8.15.2.11.E, then 8.9.3.11.E NMAC
+# pre-UCC; ECECD Universal Child Care and 8.9.3.11.E as amended 2025-11-04
+# post-UCC). Before UCC the test bars
 # non-qualified-immigrant children; after UCC they are eligible.
 # ============================================================
 

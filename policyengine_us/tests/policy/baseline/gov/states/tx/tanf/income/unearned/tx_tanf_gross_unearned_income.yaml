@@ -92,3 +92,14 @@
     strike_benefits: 600
   output:
     tx_tanf_gross_unearned_income: 200
+
+- name: A military Survivor Benefit Plan annuity counts with military retirement pay.
+  period: 2026-01
+  input:
+    state_code: TX
+    military_retirement_pay: 3_600
+    military_retirement_pay_survivors: 2_400
+  output:
+    # A-1324.20 counts gross military retirement pay and "the gross amount of
+    # any SBP payment": (3,600 + 2,400) / 12 = 500 per month.
+    tx_tanf_gross_unearned_income: 500

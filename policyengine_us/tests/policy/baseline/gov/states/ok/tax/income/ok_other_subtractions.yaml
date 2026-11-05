@@ -1,0 +1,14 @@
+- name: Case 1, default ok_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: OK
+  output:
+    ok_other_subtractions: 0.0
+
+- name: Case 2, ok_other_subtractions flows into ok_agi_subtractions
+  period: 2024
+  input:
+    state_code: OK
+    ok_other_subtractions: 1_100
+  output:
+    ok_agi_subtractions: 1_100

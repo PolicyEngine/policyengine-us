@@ -1,0 +1,107 @@
+# Annual wage bases from Minnesota DEED's History of tax rate factors:
+# https://www.uimn.org/employers/wages-taxes/tax-rates/index.jsp#toggle-4
+- name: Minnesota UI taxable earnings are capped at 29,000 in 2014.
+  period: 2014
+  input:
+    state_code: MN
+    payroll_tax_gross_wages: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 29_000
+
+- name: Minnesota UI taxable earnings are capped at 30,000 in 2015.
+  period: 2015
+  input:
+    state_code: MN
+    payroll_tax_gross_wages: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 30_000
+
+- name: Minnesota UI taxable earnings are capped at 31,000 in 2016.
+  period: 2016
+  input:
+    state_code: MN
+    payroll_tax_gross_wages: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 31_000
+
+- name: Minnesota UI taxable earnings are capped at 32,000 in 2017.
+  period: 2017
+  input:
+    state_code: MN
+    payroll_tax_gross_wages: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 32_000
+
+- name: Minnesota UI taxable earnings remain capped at 32,000 in 2018.
+  period: 2018
+  input:
+    state_code: MN
+    payroll_tax_gross_wages: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 32_000
+
+- name: Minnesota UI taxable earnings are capped at 34,000 in 2019.
+  period: 2019
+  input:
+    state_code: MN
+    payroll_tax_gross_wages: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 34_000
+
+- name: Minnesota UI taxable earnings are capped at 35,000 in 2020.
+  period: 2020
+  input:
+    state_code: MN
+    payroll_tax_gross_wages: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 35_000
+
+- name: Minnesota UI taxable earnings remain capped at 35,000 in 2021.
+  period: 2021
+  input:
+    state_code: MN
+    payroll_tax_gross_wages: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 35_000
+
+- name: Minnesota UI taxable earnings are capped at 38,000 in 2022.
+  period: 2022
+  input:
+    state_code: MN
+    payroll_tax_gross_wages: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 38_000
+
+- name: Minnesota UI taxable earnings are capped at 40,000 in 2023.
+  period: 2023
+  input:
+    state_code: MN
+    payroll_tax_gross_wages: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 40_000
+
+- name: Minnesota UI taxable earnings are capped at 42,000 in 2024.
+  period: 2024
+  input:
+    state_code: MN
+    payroll_tax_gross_wages: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 42_000
+
+- name: Minnesota UI caps each employee's 2025 wages at 43,000.
+  period: 2025
+  input:
+    state_code: [MN, MN, MN, MN]
+    payroll_tax_gross_wages: [0, 42_000, 43_000, 44_000]
+  output:
+    taxable_earnings_for_state_unemployment_tax: [0, 42_000, 43_000, 43_000]
+    mn_employer_state_unemployment_tax: [0, 378, 387, 387]
+
+- name: Minnesota UI caps each employee's 2026 wages at 44,000.
+  period: 2026
+  input:
+    state_code: [MN, MN, MN, MN]
+    payroll_tax_gross_wages: [0, 43_000, 44_000, 45_000]
+  output:
+    taxable_earnings_for_state_unemployment_tax: [0, 43_000, 44_000, 44_000]
+    mn_employer_state_unemployment_tax: [0, 387, 396, 396]

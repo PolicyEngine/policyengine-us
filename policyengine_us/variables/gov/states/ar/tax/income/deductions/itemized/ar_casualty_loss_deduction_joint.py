@@ -24,7 +24,10 @@ class ar_casualty_loss_deduction_joint(Variable):
         # The model records one loss amount per person, not separate
         # casualty events, so the tax unit's losses are treated as one
         # casualty and the per-loss exclusion applies once.
-        loss = add(tax_unit, period, ["casualty_loss"])
+        # A dependent's loss belongs on the dependent's own return under
+        # 26 U.S.C. § 165(h) as adopted by § 26-51-424(b), even though
+        # ar_agi_joint moves the dependent's net income to the head.
+        loss = tax_unit_non_dep_add(tax_unit, period, ["casualty_loss"])
         loss_after_exclusion = max_(0, loss - p.exclusion)
         # A spouse's loss can make the joint AGI total negative; floor it at
         # zero so a negative AGI cannot enlarge the deduction.

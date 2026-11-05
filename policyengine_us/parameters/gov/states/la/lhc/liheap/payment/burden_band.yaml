@@ -1,0 +1,42 @@
+description: Louisiana assigns this benefit matrix energy burden band from total energy cost as a share of countable income under the Low Income Home Energy Assistance Program.
+# The matrix prints the bands as "9.9% and Less", "10% to 17.9%", "18% to
+# 24.9%" and "25% and Greater". The unrounded burden uses lower-inclusive
+# cutoffs at 10%, 18% and 25%, which equals truncating the percent to one
+# decimal. Households with zero income receive band 4 in la_liheap.
+brackets:
+  # 9.9% and less.
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 1
+  # 10% to 17.9%.
+  - threshold:
+      2025-10-01: 0.1
+    amount:
+      2025-10-01: 2
+  # 18% to 24.9%.
+  - threshold:
+      2025-10-01: 0.18
+    amount:
+      2025-10-01: 3
+  # 25% and greater.
+  - threshold:
+      2025-10-01: 0.25
+    amount:
+      2025-10-01: 4
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Louisiana LIHEAP energy burden band
+  reference:
+    - title: Louisiana FFY2026 Heating and Cooling Benefit Matrix, energy burden percent
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/LA_BenefitMatrix_Heat-Cool_2026.pdf
+    - title: Louisiana LIHEAP Service Delivery Guide, revised January 1, 2024, Section 4.2
+      href: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20REVISED%20January%201_%202024.pdf#page=41
+    - title: Louisiana LIHEAP Service Delivery Guide, effective April 1, 2026, Section 4.2
+      href: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20FINAL%20-%20Effective%20April%201%2c%202026.pdf#page=48
+    - title: Louisiana FY2026 LIHEAP State Plan, Section 2.4
+      href: https://liheapch.acf.gov/docs/2026/state-plans/LA_Plan_2026.pdf#page=10

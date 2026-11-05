@@ -349,3 +349,25 @@
   output:
     # $30 x 2.
     nyc_household_credit: 60
+
+- name: 2020 NYC household credit uses recomputed federal AGI
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_600
+        charitable_cash_donations: 300
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+        in_nyc: true
+  output:
+    # Federal AGI 12,300 is under the $12,500 single limit, but recomputed
+    # federal AGI (IT-201 line 19a) is 12,600, over it.
+    adjusted_gross_income: 12_300
+    nyc_household_credit: 0
