@@ -1,11 +1,31 @@
 description: Total farm rental income.
 values:
-  2015-01-01: 4_494_377_000 # Net income subtract net loss
-  2021-01-01: 6_114_025_000 # Net income subtract net loss
+  # IRS SOI Publication 1304 Table 1.4, all returns: farm rental net income
+  # less farm rental net loss. Amounts are published in thousands of dollars.
+  # Each value is for the tax year of its date.
+  2015-01-01: 4_494_377_000
+  2016-01-01: 4_146_658_000
+  2017-01-01: 3_850_104_000
+  2018-01-01: 4_354_843_000
+  2019-01-01: 4_494_333_000
+  2020-01-01: 4_893_181_000
+  2021-01-01: 5_555_955_000
 metadata:
   unit: currency-USD
   label: SOI farm rental income
   uprating: calibration.gov.cbo.income_by_source.adjusted_gross_income
   reference:
-    - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
-      href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2015, farm rental net income and net loss
+      href: https://www.irs.gov/pub/irs-soi/15in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2016, farm rental net income and net loss
+      href: https://www.irs.gov/pub/irs-soi/16in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2017, farm rental net income and net loss
+      href: https://www.irs.gov/pub/irs-soi/17in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2018, farm rental net income and net loss
+      href: https://www.irs.gov/pub/irs-soi/18in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2019, farm rental net income and net loss
+      href: https://www.irs.gov/pub/irs-soi/19in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2020, farm rental net income and net loss
+      href: https://www.irs.gov/pub/irs-soi/20in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2021, farm rental net income and net loss
+      href: https://www.irs.gov/pub/irs-soi/21in14ar.xls

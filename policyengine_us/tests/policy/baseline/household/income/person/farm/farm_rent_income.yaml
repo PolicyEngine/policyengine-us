@@ -1,0 +1,21 @@
+# farm_rent_income follows calibration.gov.irs.soi.farm_rent_income_per_capita,
+# the IRS SOI total divided by population. An input dated in one year and read
+# in a later year is multiplied by the ratio of that index between the two
+# years.
+
+- name: A 2020 input read in 2021 grows with SOI farm rental net income less net loss per capita, into the corrected 2021 total.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    farm_rent_income:
+      2020: 10_000
+  output:
+    # IRS SOI Publication 1304 Table 1.4, all returns, farm rental net income
+    # less net loss, over calibration.gov.census.populations.total:
+    #   2020: 4,893,181,000 / 336,810,000 = 14.52802
+    #         (https://www.irs.gov/pub/irs-soi/20in14ar.xls)
+    #   2021: 5,555,955,000 / 338,039,000 = 16.43584
+    #         (https://www.irs.gov/pub/irs-soi/21in14ar.xls)
+    # 10,000 x 16.43584 / 14.52802 = 11,313.20. With the old values this came to
+    # 13,554.26.
+    farm_rent_income: 11_313.20

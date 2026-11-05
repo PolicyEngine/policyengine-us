@@ -1,0 +1,20 @@
+# alimony_income follows calibration.gov.irs.soi.alimony_income_per_capita, the
+# IRS SOI total divided by population. An input dated in one year and read in a
+# later year is multiplied by the ratio of that index between the two years.
+
+- name: A 2019 input read in 2021 grows with SOI alimony received per capita, a filled year to the next authored one.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    alimony_income:
+      2019: 10_000
+  output:
+    # IRS SOI Publication 1304 Table 1.4, all returns, alimony received, over
+    # calibration.gov.census.populations.total:
+    #   2019: 10,810,673,000 / 335,329,000 = 32.23900
+    #         (https://www.irs.gov/pub/irs-soi/19in14ar.xls)
+    #   2021: 8,507,104,000 / 338,039,000 = 25.16604
+    #         (https://www.irs.gov/pub/irs-soi/21in14ar.xls)
+    # 10,000 x 25.16604 / 32.23900 = 7,806.09. With the old values this came to
+    # 8,374.35.
+    alimony_income: 7_806.09

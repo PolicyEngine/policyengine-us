@@ -1,8 +1,35 @@
-description: Total short-term capital gains. Taken from the IRS PUF in the absence of a SOI target.
+description: Total short-term capital gains, summed over returns with a net short-term capital gain on Form 1040 Schedule D line 7.
 values:
-  2015-01-01: -45_000_000_000 # -72 * 63% (same uprating as long-term capital gains)
-  2022-01-01: -72_000_000_000
+  # IRS SOI Publication 1304 Table 1.4A, all returns: net short-term capital
+  # gain, which like the long-term series counts returns with a gain and leaves
+  # out net losses. Amounts are published in thousands of dollars. Each value
+  # is for the tax year of its date.
+  2015-01-01: 38_164_189_000
+  2016-01-01: 38_950_727_000
+  2017-01-01: 56_760_447_000
+  2018-01-01: 50_073_309_000
+  2019-01-01: 58_699_967_000
+  2020-01-01: 150_302_155_000
+  2021-01-01: 208_522_006_000
+  2022-01-01: 77_731_595_000
 metadata:
   unit: currency-USD
   label: SOI short-term capital gains
   uprating: calibration.gov.cbo.income_by_source.net_capital_gain
+  reference:
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A, tax year 2015, net short-term capital gain
+      href: https://www.irs.gov/pub/irs-soi/15in14acg.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A, tax year 2016, net short-term capital gain
+      href: https://www.irs.gov/pub/irs-soi/16in14acg.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A, tax year 2017, net short-term capital gain
+      href: https://www.irs.gov/pub/irs-soi/17in14acg.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A, tax year 2018, net short-term capital gain
+      href: https://www.irs.gov/pub/irs-soi/18in14acg.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A, tax year 2019, net short-term capital gain
+      href: https://www.irs.gov/pub/irs-soi/19in14acg.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A, tax year 2020, net short-term capital gain
+      href: https://www.irs.gov/pub/irs-soi/20in14acg.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A, tax year 2021, net short-term capital gain
+      href: https://www.irs.gov/pub/irs-soi/21in14acg.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A, tax year 2022, net short-term capital gain
+      href: https://www.irs.gov/pub/irs-soi/22in14acg.xls
