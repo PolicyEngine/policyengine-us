@@ -152,6 +152,23 @@
   output:
     medicare_gross_cost: 17_751
 
+# From 2036 the premium grows at its 2034-2035 rate, and the share holds its
+# 2035 value until 2040.
+- name: unit test 13 - the premium extension starts after 2035
+  period: 2036
+  absolute_error_margin: 0.01
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 40
+    gross_medicare_part_b_premium: 3_000
+    income_adjusted_part_d_premium_surcharge: 0
+  output:
+    # Premium 722.05 x 722.05 / 699.07 = 745.79, times the 2035 share 0.8485
+    # gives 632.80. 33,488.47 gross - 3,000 Part B - 632.80 Part D = 29,855.67.
+    medicare_gross_cost: 33_488.47
+    medicare_cost: 29_855.67
+
 # A Medicare enrollee whose drug coverage is not Part D owes no Part D IRMAA
 # (income_adjusted_part_d_premium_surcharge is defined for
 # medicare_part_d_enrolled), but still has the average Part D premium
