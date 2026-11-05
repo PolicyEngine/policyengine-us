@@ -18,13 +18,24 @@ class vt_ccfap_family_benefit(Variable):
         "amount Vermont paid before that date."
     )
     reference = (
-        # Question 1: the family pays the family share to the provider.
-        # Questions 3 and 6 and the "Jane Smith" and "Honey Child Care"
-        # examples: the state pays the state rate less the family share, and
-        # the family owes any charge above the state rate.
+        # Question 1: the family pays the family share to the provider. Question
+        # 8: the provider may waive or collect it. Questions 3 and 6 and the
+        # "Jane Smith" and "Honey Child Care" examples: the state pays the state
+        # rate less the family share, and the family owes any charge above the
+        # state rate.
         "https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/CCFAP/CCFAP-Understanding-Payments.pdf#page=1",
         "https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/CCFAP/CCFAP-Understanding-Payments.pdf#page=2",
+        # Section 3512(a)(2): the Commissioner sets the family contribution by
+        # income and family size and assigns it to the whole family.
+        "https://legislature.vermont.gov/statutes/section/33/035/03512",
+        # The family's contribution doesn't depend on what providers charge.
+        "https://legislature.vermont.gov/assets/Legislative-Reports/Act-76-CCFAP-Rates-Jan-2024.pdf#page=15",
+        # Section IV A, Co-Payments, which the June 28, 2024 memo restates: the
+        # family pays the provider's fees above the assistance. Vermont wrote
+        # this when it paid the lesser of the two rates, so that remainder held
+        # the family share.
         "https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/CCFAP/CCFAP-Regulations.pdf#page=13",
+        "https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/Act76/Memo-Act-76-CCFAP-Rule-Revision.pdf#page=10",
     )
 
     def formula(spm_unit, period, parameters):
@@ -43,6 +54,8 @@ class vt_ccfap_family_benefit(Variable):
         total_weekly_saving = spm_unit.sum(weekly_saving * eligible_child * in_care)
         monthly_saving = total_weekly_saving * WEEKS_IN_YEAR / MONTHS_IN_YEAR
         family_share = spm_unit("vt_ccfap_family_share", period)
-        # A family whose share exceeds the care CCFAP covers saves nothing: it
-        # does better paying the provider's charge itself.
+        # A provider may waive the family share. No input records a waiver, so
+        # the model assumes the provider collects it. A family whose share exceeds
+        # the care CCFAP covers saves nothing: it does better paying the provider's
+        # charge itself.
         return max_(monthly_saving - family_share, 0)
