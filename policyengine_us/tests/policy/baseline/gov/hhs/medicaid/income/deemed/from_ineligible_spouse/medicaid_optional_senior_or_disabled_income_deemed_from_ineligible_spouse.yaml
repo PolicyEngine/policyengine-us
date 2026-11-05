@@ -120,3 +120,36 @@
     # (17,004 - 20 * 12 - 65 * 12) / 2 = 7,992 deemed and countable.
     medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [7_992, 0, 0]
     medicaid_optional_senior_or_disabled_countable_income: [7_992, 0, 0]
+
+- name: Spouse income is deemed to an aged permanent resident without 40 SSI quarters.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 10
+        ssi_qualifying_quarters_earnings: 20
+        pension_income: 6_000
+      person2:
+        age: 55
+        is_tax_unit_spouse: true
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    # SSI's noncitizen test does not stop deeming (42 CFR 435.601).
+    # Spouse wages 40,000 > (1,450 - 967) x 12 = 5,796.
+    # Couple: (500 - 20) x 12 + (40,000 - 65 x 12) / 2 = 25,370.
+    # Alone: (500 - 20) x 12 = 5,760. Deemed: 25,370 - 5,760 = 19,610.
+    medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [19_610, 0]
