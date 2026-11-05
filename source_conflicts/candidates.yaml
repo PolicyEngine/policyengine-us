@@ -11019,6 +11019,44 @@ candidates:
     Credit Limit Worksheet B (ctc_credit_limit_worksheet_b_applies.py). The legacy aggregates still count as an exclusion.
     The EITC keeps the broader section 32(c)(1)(C) test in elects_section_911_exclusion. Register the entry and add
     the marker once #10297 is on main.
+- id: us:ak-energy-relief-2022-gross-income
+  program: income-tax
+  years:
+    from: 2022
+    to: 2022
+    type: tax
+  question: Does Alaska's 2022 supplemental energy relief payment count as federal gross income, when the IRS said
+    it would not challenge a taxpayer who leaves it out?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 61(a) and 139(a), (b)(4)
+    url: https://www.law.cornell.edu/uscode/text/26/139
+  - kind: guidance
+    citation: IRS News Release IR-2023-23, footnote 1
+    url: https://www.irs.gov/newsroom/irs-issues-guidance-on-state-tax-payments-to-help-taxpayers
+  - kind: guidance
+    citation: IRS Notice 2023-56, sections 2, 3.03 and 3.04
+    url: https://www.irs.gov/pub/irs-drop/n-23-56.pdf#page=2
+  readings:
+    statute: Section 61(a) counts all income unless another section excludes it. Section 139 excludes a government
+      payment only in connection with a qualified disaster, and the general welfare exclusion requires a payment
+      based on individual or family need.
+    other: IR-2023-23 says that if a taxpayer leaves the payment out of 2022 income, the IRS will not challenge that
+      treatment, and its footnote limits the Alaska item to the supplemental energy relief payment.
+  example: An Alaskan adult with $50,000 of wages has 2022 gross income of $52,622 with the $662 payment left out,
+    and $53,284 with it counted.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/irs/gross_income/ak_energy_relief_excluded.yaml
+    - policyengine_us/variables/gov/irs/income/taxable_income/adjusted_gross_income/irs_gross_income/taxable_ak_energy_relief.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10669
+  state: ruled
+  note: Whether the 2022 payment qualifies under either exclusion is a fact-intensive question, by the IRS's own
+    account, so the model takes the agency's position and the taxpayer's cheaper choice. Later payments count, since
+    Notice 2023-56 limits the news release to payments made in 2022 and Publication 525 for 2024 taxes the entire
+    dividend.
 - id: us:charitable-non-itemizer-2020-separate-cap
   program: income-tax
   years:
