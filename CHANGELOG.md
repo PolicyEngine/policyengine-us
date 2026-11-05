@@ -1,3 +1,10 @@
+## [2.100.0] - 2026-11-05
+
+### Added
+
+- Add South Carolina LIHEAP regular heating assistance for FY2026, with countable income, the federal 110% poverty floor and statewide supplements.
+
+
 ## [2.99.0] - 2026-11-05
 
 ### Added
