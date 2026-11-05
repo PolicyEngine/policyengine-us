@@ -23,12 +23,11 @@ class eitc_demographic_eligible(Variable):
         # so the filer gets the zero-child amount without the childless age
         # test. Years before 2021 keep the identification-filtered count.
         p = parameters(period).gov.irs.credits.eitc.eligibility
-        counted_child = tax_unit("eitc_child_count", period) > 0
-        any_qualifying_child = tax_unit.any(person("is_eitc_qualifying_child", period))
-        has_child = counted_child | (
-            p.child_without_identification_establishes_eligibility
-            & any_qualifying_child
-        )
+        has_child = tax_unit("eitc_child_count", period) > 0
+        if not p.qualifying_child_without_identification_bar:
+            has_child = has_child | tax_unit.any(
+                person("is_eitc_qualifying_child", period)
+            )
         age = person("age", period)
         # Relative parameter reference break branching in some states that
         # modify EITC age limits.
