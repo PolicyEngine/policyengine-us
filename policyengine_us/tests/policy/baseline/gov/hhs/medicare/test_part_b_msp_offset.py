@@ -1,3 +1,6 @@
+"""Random draws check the paid premium's bounds across premium, coverage and
+enrollment values together; the YAML cases pin single points."""
+
 import pytest
 
 from policyengine_us import CountryTaxBenefitSystem, Simulation

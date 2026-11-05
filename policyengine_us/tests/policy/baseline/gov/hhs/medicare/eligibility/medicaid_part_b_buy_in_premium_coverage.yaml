@@ -63,13 +63,29 @@
     medicaid_part_b_buy_in_premium_coverage: 2_220
     medicare_part_b_premium: 0
 
+- name: A 209(b) spend-down that lands on the limit qualifies.
+  # Countable income 23,580 and limit 0.64 x 15,650 = 10,016.
+  # 23,580 - 11,344 - 2,220 = 10,016, at the limit; 11,343 would leave 10,017.
+  period: 2025
+  input:
+    age: 70
+    taxable_interest_income: 30_000
+    other_medical_expenses: 11_344
+    receives_ssi: true
+    state_code: CT
+  output:
+    medicaid_medically_needy_medical_expenses: 13_564
+    is_209b_ssi_recipient_for_medicaid: true
+    medicaid_part_b_buy_in_premium_coverage: 2_220
+    medicare_part_b_premium: 0
+
 - name: A 209(b) SSI recipient with SSI in December only gets one month of buy-in.
   # 185 x 12 = 2,220 base premium; one month of SSI buys in 185, leaving
   # 2,035. is_209b_ssi_recipient_for_medicaid reads December's SSI.
   period: 2025
   input:
     age: 70
-    taxable_interest_income: 30_000
+    taxable_interest_income: 40_000
     other_medical_expenses: 40_000
     receives_ssi:
       2025-01: false
@@ -141,3 +157,17 @@
   output:
     medicaid_part_b_buy_in_premium_coverage: 202.9
     medicare_part_b_premium: 2_231.9
+
+- name: A modeled SSI recipient gets the buy-in without reported SSI.
+  # No income, so SSI pays the 2025 federal benefit rate: 967 x 12 = 11,604.
+  # Switching MSP off isolates the buy-in: 185 x 12 = 2,220.
+  period: 2025
+  input:
+    age: 70
+    msp_income_eligible: false
+    msp_asset_eligible: false
+    state_code: CA
+  output:
+    ssi: 11_604
+    medicaid_part_b_buy_in_premium_coverage: 2_220
+    medicare_part_b_premium: 0

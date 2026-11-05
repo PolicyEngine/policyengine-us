@@ -13,6 +13,7 @@ class medicaid_part_b_buy_in_premium_coverage(Variable):
         "https://www.ecfr.gov/current/title-42/section-407.40#p-407.40(c)(5)",
         "https://www.ecfr.gov/current/title-42/section-407.42#p-407.42(b)(1)(i)",
         "https://www.ecfr.gov/current/title-42/section-408.28",
+        "https://secure.ssa.gov/poms.nsf/lnx/0600815001",
     )
     documentation = (
         "Annual standard Part B premium a state pays under its Part B buy-in "
@@ -43,6 +44,7 @@ class medicaid_part_b_buy_in_premium_coverage(Variable):
         # The Section 209(b) test reads Medicaid countable income and
         # medically needy expenses, which count the premium before this
         # buy-in (medicare_part_b_premium_before_buy_in), so there is no cycle.
+        # It tests eligibility, with no take-up step.
         ssi_medicaid_state = (is_covered & covered_classification) | person(
             "is_209b_ssi_recipient_for_medicaid", period
         )
