@@ -1,0 +1,1 @@
+Remove Louisiana's extra $1,000 exemption for a widowed tax unit member, since the $9,000 combined personal exemption for a qualifying surviving spouse already covers the surviving spouse exemption (former La. R.S. 47:294).
