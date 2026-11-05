@@ -130,7 +130,7 @@
     weeks_unemployed:
       2026: 13
   output:
-    # months = ceil(13 x 12 / 52) = 3; household position 0 (no person_id input) starts in January -> Jan-Mar
+    # months = ceil(13 x 12 / 52) = 3; household position 0 (no start month input) starts in January -> Jan-Mar
     is_receiving_unemployment_compensation: true
     is_snap_work_registration_exempt_non_age: true
     is_subject_to_snap_abawd: false
@@ -442,7 +442,7 @@
         state_code:
           2026: TX
   output:
-    # No person_id input -> key = household position [0, 1] -> starts Jan
+    # No start month input -> household positions [0, 1] -> starts Jan
     # and Feb; 3 months each.
     # person1: Jan-Mar covers January; person2: Feb-Apr does not.
     # (A January-anchored block would give [true, true].)

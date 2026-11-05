@@ -178,7 +178,7 @@
     # months = 0 -> position 0, not < 0
     is_receiving_unemployment_compensation: false
 
-- name: Case 14, without supplied person IDs the household position rotates the block start between members.
+- name: Case 14, the household position rotates the block start between members.
   period: 2026-01
   input:
     people:
@@ -202,7 +202,7 @@
       household:
         members: [person1, person2]
   output:
-    # No person_id input -> key = position in the household [0, 1] -> starts
+    # No start month input -> positions in the household [0, 1] -> starts
     # Jan and Feb; 3 months each.
     # person1: Jan-Mar covers January; person2: Feb-Apr does not.
     is_receiving_unemployment_compensation: [true, false]
@@ -237,10 +237,10 @@
           count: 3
           period: 2026
   output:
-    # The default person_id runs 0-5 across the three copies, but the key is
-    # the position in the household, so every copy matches Case 14:
+    # The default person_id runs 0-5 across the three copies, but the start
+    # follows the position in the household, so every copy matches Case 14:
     # person1 starts in January (covered) and person2 in February (not).
-    # Keying on the default IDs would give starts Jan, Feb, Nov, Sep, Sep, Jan
+    # Following the default IDs would give starts Jan, Feb, Nov, Sep, Sep, Jan
     # -> [true, false, true, false, false, true].
     is_receiving_unemployment_compensation: [true, false, true, false, true, false]
 
