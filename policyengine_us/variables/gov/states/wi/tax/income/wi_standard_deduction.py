@@ -69,7 +69,7 @@ class wi_standard_deduction(Variable):
         # Dependent worksheet and standard deduction table, PDF pages 15, 35-37
         "https://www.revenue.wi.gov/TaxForms2025/2025-Form1-Inst.pdf#page=15",
         # Disability pensions before minimum retirement age are wages.
-        "https://www.irs.gov/publications/p907",
+        "https://www.irs.gov/pub/irs-prior/p907--2025.pdf#page=3",
     )
     defined_for = StateCode.WI
 
