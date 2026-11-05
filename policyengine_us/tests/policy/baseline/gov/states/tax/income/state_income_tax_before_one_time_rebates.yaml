@@ -75,15 +75,13 @@
   # Colorado: 4.4% * 87,050 = 3,830.20, less the 234 sales tax refund
   #   = 3,596.20. The refund recurs, so nothing is restored.
   # FAMLI: C.R.S. 8-13.3-507 starts premiums on January 1, 2023, so there is
-  #   no 2022 premium. The model's rate file starts in 2023 and is otherwise
-  #   carried back, so the case sets the 2022 contribution to zero.
+  #   no 2022 premium (the rate file is zero before 2023).
   # Net income: 100,000 - 14,768 - 7,650 - 3,596.20 = 73,985.80.
   period: 2022
   absolute_error_margin: 0.01
   input:
     age: 40
     employment_income: 100000
-    co_employee_famli_contribution: 0
     state_code: CO
   output:
     co_sales_tax_refund: 234
@@ -91,4 +89,5 @@
     state_income_tax: 3596.20
     state_income_tax_rebate_adjustment: 0
     state_income_tax_before_one_time_rebates: 3596.20
+    co_employee_famli_contribution: 0
     household_net_income: 73985.80
