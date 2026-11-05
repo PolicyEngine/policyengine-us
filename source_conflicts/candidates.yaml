@@ -1697,6 +1697,157 @@ candidates:
   state: ruled
   note: The October 2026 ruling retains the statutory bar; verify the weak literal joint-return interpretation and
     obtain a corresponding 2025 example.
+- id: us-co:leap-catch-all-income
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Colorado LEAP count miscellaneous receipts and guaranteed-income cash under the rule's catch-all,
+    although the FY2026 plan's section 1.9 leaves Other unchecked?
+  sources:
+  - kind: regulation
+    citation: 9 CCR 2503-7 3.752.21, p.20
+    url: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12221&fileName=9%20CCR%202503-7#page=20
+  - kind: plan
+    citation: Colorado FY2026 LIHEAP State Plan, section 1.9, pp.5-7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/CO_Plan_2026.pdf#page=5
+  readings:
+    statute: Countable unearned income includes "payments from any other source, which is considered to be a gain or
+      benefit to the applicant or recipient".
+    other: Plan 1.9 leaves Other unchecked.
+  example: One adult with $50,000 of miscellaneous_income and a $1,000 gas bill receives $0 under the rule and $1,000
+    if the receipt stays out.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/co/cdhs/leap/income/sources/unearned.yaml
+  state: ruled
+  note: 'Ruled 2026-11-02: follow the rule over the plan.'
+- id: us-co:leap-prizes-lump-sums
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do gambling winnings count as prizes under the rule, or does the manual's exemption for one-time lump sums
+    reach them?
+  sources:
+  - kind: regulation
+    citation: 9 CCR 2503-7 3.752.21 A, p.20
+    url: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12221&fileName=9%20CCR%202503-7#page=20
+  - kind: manual
+    citation: 2025-26 LEAP Training and Operations Manual, p.82
+    url: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=82
+  readings:
+    statute: Countable unearned income includes "Inheritance, gifts, and prizes".
+    other: The manual exempts "All one-time non-recurring lump sum benefits received", citing 3.752.23 EE.
+  example: One adult with $50,000 of gambling winnings and a $1,000 gas bill receives $0 under the rule and $1,000 if
+    the winnings are an exempt lump sum.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/co/cdhs/leap/income/sources/unearned.yaml
+  state: unreviewed
+  note: PE-US counts gambling_winnings as prizes. The regulation's own exemption, 3.752.23 EE, lists lump sums for income
+    tax refunds, rebates or credits and retroactive Social Security, SSI and public assistance payments.
+- id: us-co:leap-subsidized-allowance-order
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Colorado's $180 subsidized-housing allowance come off the heating cost remaining after Step B, before
+    the electric, income and sharing adjustments, or last, after them?
+  sources:
+  - kind: regulation
+    citation: 9 CCR 2503-7 3.758.47 Steps F and G, p.43
+    url: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12221&fileName=9%20CCR%202503-7#page=43
+  - kind: plan
+    citation: Colorado FY2026 LIHEAP plan attachment, benefit methodology, p.2
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heat-Crisis_2026.pdf#page=2
+  - kind: manual
+    citation: 2025-26 LEAP Training and Operations Manual, pp.90, 94
+    url: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=90
+  readings:
+    statute: Step F deducts the allowance from the cost remaining after Step B, and Step G applies Steps B-F. The
+      plan attachment repeats this text.
+    other: The manual applies the adjustments in its listed order, with the allowance last.
+  example: A subsidized household sharing a $1,000 bill with one other household, at a 10% contribution, receives $270
+    with the allowance last (1,000 x 0.9 / 2 - 180) and $369 with it first ((1,000 - 180) x 0.9 / 2).
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/co/cdhs/leap/co_leap.py
+  state: ruled
+  note: 'Ruled 2026-11-02: take the allowance last, in the manual''s order. The rule''s text does not settle the order:
+    Step F is lettered after Steps C-E, Step G subtracts "Steps B-F", and the same words sat under the 2017 rule''s Step
+    E, after the electric and sharing steps.'
+- id: us-co:leap-whole-dollar-income-tables
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do Colorado's LEAP contribution bands and income limits use exact percentages of the poverty guideline and
+    state median income, or the whole-dollar monthly tables the plan attachment and manual print?
+  sources:
+  - kind: regulation
+    citation: 9 CCR 2503-7 3.752.22 D, p.23, and 3.758.47 Step D, p.43
+    url: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12221&fileName=9%20CCR%202503-7#page=23
+  - kind: plan
+    citation: Colorado FY2026 LIHEAP plan attachment, rates tables, p.5
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heat-Crisis_2026.pdf#page=5
+  - kind: manual
+    citation: 2025-26 LEAP Training and Operations Manual, rates handout, p.4
+    url: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=4
+  readings:
+    statute: No statute is supplied; Step D sets the contribution by "0 – 75% FPL", "75.01 – 125% FPL", "125.01 – 175% FPL"
+      and "175.01% +", and 3.752.22 D sets the limit at 60 percent of state median income.
+    other: The plan attachment and manual print whole-dollar monthly amounts, $978 at 75% FPL and $3,607 at 60% of state
+      median income for one person, and the attachment says Colorado "uses the FPL chart".
+  example: One adult with wages of $11,737.20 ($978.10 a month, 74.998% of the guideline) and a $1,000 gas bill receives
+    $900 under the printed $978 and $1,000 under Step D's 75%. One adult with $43,290 and the same bill receives $0
+    under the printed $3,607 and $700 within 60% of state median income ($43,293).
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/co/cdhs/leap/co_leap_income_contribution_rate.py
+    - policyengine_us/variables/gov/states/co/cdhs/leap/co_leap_income_limit.py
+  state: ruled
+  note: 'Ruled 2026-11-03: keep the printed tables. The rule states no dollar conversion, and PE-US reproduces the tables
+    by rounding the monthly guideline and each percentage half up and flooring 60% of state median income to the month.
+    The rule''s next sentence lets the department "adjust the income limits annually based on funds available and the
+    state median income guidelines".'
+- id: us-co:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can Colorado's LEAP income limit, which stops growing at 15 members, exclude a household of 21 or more whose
+    income is below the federal 110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: manual
+    citation: Colorado 2025-26 LEAP Training Operations Manual, income guidelines and household size, pp.4, 31
+    url: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=4
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The manual caps household size at 15, so the $132,360 limit falls below the floor from 21 actual members.
+  example: Twenty-five people with $150,000 exceed the $132,360 size-15 limit but are below the $162,415 floor (2025
+    guideline, one-year lag), so they keep the 20% contribution and an $800 award on a $1,000 bill.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/co/cdhs/leap/co_leap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/co/cdhs/leap/payment/fpg_year_lag.yaml
+  state: unreviewed
+  note: PE-US applies the floor to the actual qualified household, before the state size cap, rounded to cents with
+    the statute's strict "less than" (co_leap_eligible.py).
 - id: us-co:oap-initial-application-income-test
   program: old-age-pension
   years:
@@ -1980,6 +2131,78 @@ candidates:
     on joint returns (de_elderly_or_disabled_income_exclusion_joint.py) and on other returns (de_elderly_or_disabled_income_exclusion_eligible_person.py).
     The statute-first rule requires replacing age-60 eligibility if the literal boundary is confirmed; verify individual-return
     scope and intervening editions.'
+- id: us-de:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can Delaware's 60% SMI heating limit exclude a household of 20 or more whose income is below the federal
+    110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: Delaware FY2026 LIHEAP State Plan, section 2.1, p.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=9
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The plan's 60% SMI limit falls below that floor from 20 members.
+  example: Twenty-five people with $150,000 exceed the $142,995 limit but are below the $162,415 floor (2025 guideline,
+    one-year lag), so they keep the last-band gas award of $155.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/de/dhss/liheap/eligibility/de_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/de/dhss/liheap/eligibility/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10612
+  state: unreviewed
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (de_liheap_eligible.py).
+- id: us-de:liheap-plan-income-checklist
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do strike benefits, insurance disability payments and minors' unearned income count for Delaware LIHEAP as
+    the manual provides or as the FY2026 plan checklist marks them?
+  sources:
+  - kind: manual
+    citation: DEAP Policies and Procedures Manual, sections 416, 416.2, 418 and 419.3, PDF pages 33, 35 and 37
+    url: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=33
+  - kind: plan
+    citation: Delaware FY2026 LIHEAP State Plan, section 1.9, PDF pages 6-7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=6
+  - kind: guidance
+    citation: Delaware LIHEAP RFP HSS-20-036 statement of work, which lists the manual as an applicable document and asks
+      for income documentation from members aged 18 and over not attending school, PDF pages 69 and 73
+    url: https://bidcondocs.delaware.gov/HSS/HSS_20036Liheap_RFP.pdf#page=69
+  readings:
+    statute: No statute is supplied; the manual counts strike benefits and disability payments made by an insurance
+      company to the individual, and excludes the income of members under 18 except child support and Social Security.
+    other: Plan 1.9 leaves "Strike Pay" and "Insurance payments made directly to the insured" unchecked. Its only
+      person-based exclusion, "Earned income of a child under the age of 18", is also unchecked, so a child's unearned
+      income of a checked type would count.
+  example: One adult with $20,000 of insurance disability payments and natural gas heat counts $20,000 and receives $318
+    under the manual, and counts $0 and receives $1,126 under the plan.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/de/dhss/liheap/income/sources/earned.yaml
+    - policyengine_us/parameters/gov/states/de/dhss/liheap/income/sources/unearned.yaml
+    - policyengine_us/parameters/gov/states/de/dhss/liheap/income/sources/minor_unearned.yaml
+    - policyengine_us/variables/gov/states/de/dhss/liheap/income/de_liheap_countable_income_person.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10612
+  state: ruled
+  note: 'Ruled 2026-11-02 for strike pay and disability payments, and 2026-11-03 for minors: follow the manual over the
+    plan. Neither text is a statute. The statement of work lists the manual as an applicable document, and plan 1.9 is a
+    checkbox summary. On minors, manual 418 is the specific rule, and the statement of work asks for income documentation
+    from members aged 18 and over not attending school. The manual also fills what the plan does not list: trusts
+    (estate_income, 416.2) and other taxable income (miscellaneous_income, 416.1). Its sections carry 2011-2015 dates.'
 - id: us-de:snap-child-support-exclusion
   program: snap
   years:
