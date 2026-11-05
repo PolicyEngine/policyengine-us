@@ -7,8 +7,9 @@ metadata:
   # spending per enrollee, so premiums keep their 2035 share of spending.
   uprating: calibration.gov.hhs.medicare.per_capita_cost
   reference:
-  # Each value is premium income over Table V.B3's total enrollment (file
-  # page 196, thousands), people with Part A and/or Part B coverage.
+  # From 2015, each value is premium income over Table V.B3's total
+  # enrollment (file page 196, thousands), people with Part A and/or Part B
+  # coverage.
   # - 2015 to 2026: Table III.C7 (file page 102), "Premium income", $
   #   millions, incurred basis.
   # - 2027 to 2035: Table III.C4 (file page 96), "Premium income", $
@@ -29,8 +30,17 @@ metadata:
   # ffa56b9137006872300b0346149eae1613d09a172b6ba118aad48e66dfc48fa8.
   - title: "2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Tables III.C2, III.C4, III.C7, V.B3 and V.E3 #page 88-89,96,102,196,215"
     href: https://www.cms.gov/oact/tr/2026#page=88
+  # 2013 and 2014: the 2021 report's Table III.C7 (file page 104),
+  # "Premium income", $ millions, incurred basis, over its Table V.B3
+  # total enrollment (file page 199, thousands). Incurred premium income
+  # needs no cash timing adjustment. 2021 report retrieved 2026-11-04,
+  # sha256 ef3d1fa77e99362c460f45b3d0ff0734181340e617675e21fde99276a520fc8e.
+  - title: "2021 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Tables III.C7 and V.B3 #page 104,199"
+    href: https://www.cms.gov/files/document/2021-medicare-trustees-report.pdf#page=104
 values:
   # Historical.
+  2013-01-01: 1_201.53
+  2014-01-01: 1_213.05
   2015-01-01: 1_214.54
   2016-01-01: 1_296.34
   2017-01-01: 1_389.19
