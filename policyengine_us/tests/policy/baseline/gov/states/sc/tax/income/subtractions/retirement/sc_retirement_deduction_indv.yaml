@@ -115,3 +115,24 @@
     # Line 1: 10,000. Line 2: 5,000. Line 3: 10,000 - 5,000 = 5,000.
     # Line 4: 1,000 + 5,000 - 5,000 = 1,000. Line 5: min(5,000, 1,000) = 1,000.
     sc_retirement_deduction_indv: 1_000
+
+- name: A dependent's NOAA or PHS retired pay is not on the filer's line 4.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 70
+      dependent:
+        age: 70
+        military_retirement_pay: 11_000
+        military_retirement_pay_is_armed_forces: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+        state_code: SC
+  output:
+    sc_retirement_deduction_indv: [0, 0]
