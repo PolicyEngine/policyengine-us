@@ -7,9 +7,11 @@ from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spo
 )
 from policyengine_us.variables.gov.states.ca.cdss.capi._ca_capi_ssi_ssp_standard import (
     ca_capi_couple_computation,
-    ca_capi_in_title_xix_facility,
     ca_capi_spouse_ssi_ssp,
     ca_capi_ssi_ssp_standard,
+)
+from policyengine_us.variables.gov.states.ca.cdss.state_supplement._ca_state_supplement_rates import (
+    ca_in_title_xix_facility,
 )
 
 
@@ -32,7 +34,9 @@ class ca_capi_person(Variable):
     def formula(person, period, parameters):
         # When only the California facility input separates a couple that SSI
         # computes jointly, ssi_countable_income holds half the couple's
-        # income; each spouse's own income counts (20 CFR 416.414(b)(3)).
+        # income; each spouse's own income counts (20 CFR 416.414(b)(3)). The
+        # same goes for a dependent who shares the couple's unit because the
+        # situation has no marital units.
         # NOTE: this own income leaves out in-kind support and the student
         # earned income exclusion, which SSI's joint computation would apply.
         separated = person(
@@ -56,7 +60,7 @@ class ca_capi_person(Variable):
         # Deeming needs an ineligible spouse living in the same household
         # (20 CFR 416.1160(a)(1)), so a Title XIX facility resident counts
         # only their own income.
-        medical_facility = ca_capi_in_title_xix_facility(person, period)
+        medical_facility = ca_in_title_xix_facility(person, period)
         income = where(medical_facility, own_income, countable_income)
         # NOTE: the reduced-needs standards for another person's household are
         # not modeled (issue 7892), so those recipients get the

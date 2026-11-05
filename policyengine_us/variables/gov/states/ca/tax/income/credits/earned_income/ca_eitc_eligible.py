@@ -11,6 +11,7 @@ class ca_eitc_eligible(Variable):
     reference = (
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052.",
         "https://www.ftb.ca.gov/forms/2024/2024-3514-booklet.html",
+        "https://www.ftb.ca.gov/forms/2023/2023-3514-booklet.pdf#page=4",
     )
 
     def formula(tax_unit, period, parameters):
@@ -41,4 +42,5 @@ class ca_eitc_eligible(Variable):
             meets_age_requirements
             & meets_investment_income_requirements
             & meets_agi_requirements
+            & tax_unit("eitc_marital_eligible", period)
         )
