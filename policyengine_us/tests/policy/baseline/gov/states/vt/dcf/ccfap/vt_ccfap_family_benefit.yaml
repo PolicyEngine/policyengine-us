@@ -310,8 +310,10 @@
         age: 1
         vt_ccfap_eligible_child: true
         vt_ccfap_state_rate: 387
-        # A $250 weekly rate.
-        pre_subsidy_childcare_expenses: 13_000
+        # A $250 weekly rate. The bill is annual, so it needs its own year in a
+        # test that starts in July.
+        pre_subsidy_childcare_expenses:
+          2024: 13_000
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -340,7 +342,8 @@
         vt_ccfap_eligible_child: true
         vt_ccfap_state_rate: 243
         # A $260 weekly rate.
-        pre_subsidy_childcare_expenses: 13_520
+        pre_subsidy_childcare_expenses:
+          2024: 13_520
     spm_units:
       spm_unit:
         members: [person1, person2]
