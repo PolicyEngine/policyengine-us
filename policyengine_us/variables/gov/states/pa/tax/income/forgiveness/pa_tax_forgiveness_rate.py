@@ -15,13 +15,17 @@ class pa_tax_forgiveness_rate(Variable):
         person = tax_unit.members
         is_child_dependent = person("is_qualifying_child_dependent", period)
         child_dependents = tax_unit.sum(is_child_dependent)
-        # filing status affects the base, where it doubles for married claimants
+        # The base doubles for a married claimant, whose eligibility income
+        # includes the spouse's. A separate filer who lives apart from the
+        # spouse for the last six months of the year (or under a written
+        # separation agreement) is not considered married, so a separate
+        # filer gets the doubled base only when the tax unit holds a spouse.
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
-        joint_separate = (filing_status == filing_statuses.JOINT) | (
-            filing_status == filing_statuses.SEPARATE
-        )
-        base_multiplier = where(joint_separate, 2, 1)
+        joint = filing_status == filing_statuses.JOINT
+        separate = filing_status == filing_statuses.SEPARATE
+        married_separate = separate & tax_unit("tax_unit_married", period)
+        base_multiplier = where(joint | married_separate, 2, 1)
         p = parameters(period).gov.states.pa.tax.income.forgiveness
         base = p.base * base_multiplier
         rate_per_dependent = p.dependent_rate

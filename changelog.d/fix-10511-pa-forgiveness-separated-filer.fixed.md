@@ -1,0 +1,1 @@
+Give a Pennsylvania separate filer who is separated and alone in the tax unit the unmarried $6,500 tax forgiveness base instead of the married $13,000 base, which applies only to joint eligibility income of both spouses (72 P.S. 7304(d)(1)).
