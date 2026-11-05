@@ -9,18 +9,25 @@ Invariants:
 1. Transcription: the parameters hold the self-only and family limits the IRS
    published for each year.
 2. Differential: an independent implementation of 223(g), written here from
-   the monthly BLS values in ``gov.bls.cpi``, reproduces every published limit
-   for 2019 to 2027. It also reproduces the 2018 limits of Rev. Proc. 2018-18;
-   the family parameter instead holds the $6,900 that Rev. Proc. 2018-27 let
-   taxpayers use (an intended difference). The model's ``get_hsa_cola``
-   agrees with the independent implementation in every year whose window is
-   observed.
+   the monthly BLS values in ``gov.bls.cpi`` with every index averaged over
+   the 12 months ending March 31 (223(g)(1) applies 1(f)(4) "by substituting
+   'March 31' for 'August 31'"), reproduces 15 of the 18 limits published
+   for 2019 to 2027: the 2019 and 2023 family limits and the 2025 self-only
+   limit come out $50 lower. Taking only the 1(f)(3)(B) ratio for 2016 over
+   the 12 months ending August 31 reproduces all 18. The published limits
+   are encoded for their own years either way, so the window choice only
+   moves the projections. Both reproduce the 2018 limits of Rev. Proc.
+   2018-18; the family parameter instead holds the $6,900 that Rev. Proc.
+   2018-27 let taxpayers use (an intended difference). The model's
+   ``get_hsa_cola`` agrees with the March implementation in every year whose
+   window is observed.
 3. Extension rule: every year after the last IRS publication equals the
    statutory base plus the adjustment applied to it, rounded to the nearest
    $50.
 4. Bounds and order (Hypothesis): both limits are positive multiples of $50,
-   never fall from one year to a later one, and the family limit is within
-   $50 of twice the self-only limit. The March-window price index the
+   never fall from one year to a later one, a projected limit never falls
+   while the index it reads doesn't, the family limit is at least the
+   self-only limit and within $50 of twice it. The March-window price index the
    projection reads is positive and rises in every projected year.
 """
 
@@ -100,11 +107,23 @@ def _window_average(path, year, last_month):
     return sum(_monthly(path, y, m) for y, m in months) / 12
 
 
-def _independent_cola(tax_year):
+def _independent_cola(tax_year, ratio_window_end=3):
+    """223(g)(1) adjustment; ``ratio_window_end`` is the last month of the
+    windows for the 2016 C-CPI-U/CPI ratio (3 for March, 8 for August)."""
     cpi_u, c_cpi_u = "gov.bls.cpi.cpi_u", "gov.bls.cpi.c_cpi_u"
-    ratio_2016 = _window_average(c_cpi_u, 2016, 8) / _window_average(cpi_u, 2016, 8)
+    ratio_2016 = _window_average(c_cpi_u, 2016, ratio_window_end) / _window_average(
+        cpi_u, 2016, ratio_window_end
+    )
     denominator = _window_average(cpi_u, 1997, 3) * ratio_2016
     return _window_average(c_cpi_u, tax_year - 1, 3) / denominator - 1
+
+
+# Published limits the March recipe misses, each by $50: (year, coverage).
+MARCH_RECIPE_MISSES = {
+    (2019, "family"): 6_950,
+    (2023, "family"): 7_700,
+    (2025, "self_only"): 4_250,
+}
 
 
 def _statutory_limit(base, cola):
@@ -117,8 +136,20 @@ def test_parameters_hold_the_published_limits(year):
 
 
 @pytest.mark.parametrize("year", CHAINED_YEARS)
-def test_independent_223g_reproduces_the_published_limits(year):
+def test_march_recipe_against_the_published_limits(year):
     cola = _independent_cola(year)
+    expected = REV_PROC_2018_18 if year == 2018 else PUBLISHED[year]
+    for (name, base), published in zip(BASES.items(), expected):
+        computed = _statutory_limit(base, cola)
+        assert computed == MARCH_RECIPE_MISSES.get((year, name), published)
+        assert published - computed in (0, 50)
+
+
+@pytest.mark.parametrize("year", CHAINED_YEARS)
+def test_august_ratio_variant_reproduces_the_published_limits(year):
+    # Not the model's recipe: recorded so a change in either variant's fit
+    # shows up.
+    cola = _independent_cola(year, ratio_window_end=8)
     computed = tuple(_statutory_limit(BASES[name], cola) for name in BASES)
     expected = REV_PROC_2018_18 if year == 2018 else PUBLISHED[year]
     assert computed == expected
@@ -151,7 +182,22 @@ def test_limits_are_positive_multiples_of_50_that_never_fall(name, year, gap):
 
 @given(st.integers(min(PUBLISHED), END_YEAR))
 def test_family_limit_is_within_50_of_twice_the_self_only_limit(year):
+    assert _limit("family", year) >= _limit("self_only", year)
     assert abs(_limit("family", year) - 2 * _limit("self_only", year)) <= 50
+
+
+@given(
+    st.sampled_from(sorted(BASES)),
+    st.integers(LAST_PUBLISHED_YEAR + 1, END_YEAR),
+    st.integers(0, END_YEAR - LAST_PUBLISHED_YEAR - 1),
+)
+def test_projected_limit_never_falls_while_the_index_does_not(name, year, gap):
+    later = min(year + gap, END_YEAR)
+    c_cpi_u = system.parameters.gov.bls.cpi.c_cpi_u
+    if get_average_for_12_months_ending_march(
+        c_cpi_u, later - 1
+    ) >= get_average_for_12_months_ending_march(c_cpi_u, year - 1):
+        assert _limit(name, year) <= _limit(name, later)
 
 
 @given(
