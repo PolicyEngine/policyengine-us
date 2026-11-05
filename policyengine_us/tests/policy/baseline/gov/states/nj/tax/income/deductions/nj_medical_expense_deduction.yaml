@@ -260,3 +260,18 @@
     # 3,000 + max(0, 2,220 - 0.02 x 104,000) = 3,000 + 140 = 3,140. The
     # deduction took none of the Part B premiums.
     nj_medical_expense_deduction: 3_140
+
+- name: A filer's own deduction is not removed again from the federal base
+  period: 2025
+  input:
+    state_code: NJ
+    age: 45
+    is_self_employed: true
+    self_employment_income: 50_000
+    health_insurance_premiums: 5_000
+    other_medical_expenses: 10_000
+  output:
+    # The federal subtotal already leaves out the 5,000 deducted; New Jersey
+    # deducts it separately: 5,000 + (10,000 - 0.02 x 50,000).
+    itemized_medical_expenses: 10_000
+    nj_medical_expense_deduction: 14_000

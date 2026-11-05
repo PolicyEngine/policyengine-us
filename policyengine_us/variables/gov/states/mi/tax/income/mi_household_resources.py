@@ -169,23 +169,32 @@ class mi_household_resources(Variable):
         # nothing off line 31: the head's and spouse's deduction less the
         # long-term care parts of their own deductions comes off.
         # A supplied tax-unit deduction is assumed to cover premiums also
-        # represented in health_insurance_premiums, apart from any long-term
-        # care part the person amounts show. The aggregate inputs do not
+        # represented in health_insurance_premiums, apart from the long-term
+        # care part the person amounts show it reached after their medical
+        # parts. The aggregate inputs do not
         # identify the overlap if the deducted plan's premiums are omitted.
         # Line 21 nets out Medicare premiums withheld from Social Security or
         # railroad retirement benefits (MCL 206.510(1)(h)). Here line 21 has
         # gross benefits and line 31 the premiums, which subtracts them once
         # as well.
+        person = tax_unit.members
+        filer = not_(person("is_tax_unit_dependent", period))
+        own_deduction = max_(
+            0, person("self_employed_health_insurance_ald_person", period)
+        )
+        own_long_term_care_part = person(
+            "self_employed_health_insurance_ald_long_term_care_part", period
+        )
+        medical_parts = tax_unit.sum((own_deduction - own_long_term_care_part) * filer)
+        return_deduction = max_(
+            0, tax_unit("self_employed_health_insurance_ald", period)
+        )
+        long_term_care_taken = min_(
+            tax_unit.sum(own_long_term_care_part * filer),
+            max_(0, return_deduction - medical_parts),
+        )
         premiums_on_line_30 = (
-            max_(
-                0,
-                tax_unit("self_employed_health_insurance_ald", period)
-                - tax_unit_non_dep_sum(
-                    "self_employed_health_insurance_ald_long_term_care_part",
-                    tax_unit,
-                    period,
-                ),
-            )
+            return_deduction - long_term_care_taken
             if "self_employed_health_insurance_ald" in deductions
             else 0
         )

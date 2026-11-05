@@ -24,14 +24,19 @@ class oh_long_term_care_insurance_premiums(Variable):
 
     def formula(person, period, parameters):
         premiums = person("long_term_health_insurance_premiums", period)
-        self_employed_deduction = max_(
-            0, person("self_employed_health_insurance_ald_person", period)
+        # The long-term care part (Form 7206 line 2) of the person's
+        # deduction, the same part oh_medical_care_insurance_premiums leaves
+        # out. Any rest of a supplied deduction that the medical premiums
+        # cannot absorb also comes off here, so the two variables together
+        # remove the deduction once.
+        deduction = max_(0, person("self_employed_health_insurance_ald_person", period))
+        long_term_care_part = person(
+            "self_employed_health_insurance_ald_long_term_care_part", period
         )
-        # The part of the deduction left after the person's medical insurance
-        # premiums (Form 7206 line 1) took long-term care premiums (line 2).
-        medical_part = min_(
-            person("self_employed_health_insurance_premiums", period),
-            self_employed_deduction,
+        unabsorbed = max_(
+            0,
+            deduction
+            - long_term_care_part
+            - person("medical_expense_health_insurance_premiums", period),
         )
-        long_term_care_part = self_employed_deduction - medical_part
-        return max_(premiums - long_term_care_part, 0)
+        return max_(premiums - long_term_care_part - unabsorbed, 0)

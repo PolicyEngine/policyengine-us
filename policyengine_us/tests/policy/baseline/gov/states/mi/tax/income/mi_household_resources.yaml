@@ -1609,3 +1609,33 @@
     # them, so none leave line 31.
     # 100,000 - 5,332.39 - 3,000 = 91,667.61.
     mi_household_resources: 91_667.61
+
+- name: A supplied deduction below the person amounts takes medical premiums first
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        age: 55
+        self_employment_income: 50_000
+        is_self_employed: true
+        health_insurance_premiums: 3_000
+        long_term_health_insurance_premiums: 1_800
+        is_tax_unit_head: true
+      spouse:
+        age: 55
+        employment_income: 50_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        self_employed_health_insurance_ald: 3_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MI
+  output:
+    itemized_medical_expenses_excluded_premiums: 3_000
+    # Line 30: 3,532.39 + 3,000 = 6,532.39. The 3,000 took all the head's
+    # medical premiums, so line 31 is 0: 100,000 - 6,532.39 = 93,467.61.
+    mi_household_resources: 93_467.61

@@ -528,3 +528,30 @@
     id_health_insurance_premiums_subtraction: [1_750, 1_750]
     id_deductions: [20_000, 20_000]
     id_taxable_income: [8_250, 8_250]
+
+- name: A supplied deduction below the person amounts takes medical premiums first
+  period: 2025
+  input:
+    people:
+      head:
+        age: 55
+        self_employment_income: 50_000
+        is_self_employed: true
+        health_insurance_premiums: 3_000
+        long_term_health_insurance_premiums: 1_800
+        is_tax_unit_head: true
+      spouse:
+        age: 55
+        employment_income: 50_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        self_employed_health_insurance_ald: 3_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ID
+  output:
+    itemized_medical_expenses_excluded_premiums: 3_000
+    id_qualified_health_insurance_premiums: 0

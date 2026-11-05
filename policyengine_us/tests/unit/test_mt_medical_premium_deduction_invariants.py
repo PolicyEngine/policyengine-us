@@ -589,8 +589,8 @@ def _check_net_subtotal(run, units, year, mode):
     )
     # Non-vacuity: with supplied deductions, some exclusions cover long-term
     # care premiums on returns with dependents' premiums, where taking the
-    # exclusion from every member's premiums would differ. A derived
-    # deduction never exceeds the filers' own medical premiums.
+    # exclusion from every member's premiums would differ. The derived mode
+    # is left out here; the supplied modes reach these returns.
     if mode != "derived":
         dependent_premiums = _unit_sum(
             run, ~filer * run["medical_expense_health_insurance_premiums"]
