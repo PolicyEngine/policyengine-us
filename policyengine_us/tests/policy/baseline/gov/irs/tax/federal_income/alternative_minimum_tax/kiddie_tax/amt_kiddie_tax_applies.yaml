@@ -92,7 +92,7 @@
   output:
     amt_kiddie_tax_applies: false
 
-- name: Kiddie tax does not apply when student spouse is 24+
+- name: Kiddie tax does not apply to a joint return with a student spouse aged 24
   period: 2022
   input:
     people:
@@ -107,6 +107,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        filing_status: JOINT
   output:
     amt_kiddie_tax_applies: false
 
@@ -210,7 +211,7 @@
     # IRC 1(g)(2)(A)(i): under 18, so no support test.
     amt_kiddie_tax_applies: true
 
-- name: An 18-year-old with earnings and no reported support is not covered
+- name: An 18-year-old with earnings and no reported support is covered
   period: 2017
   input:
     people:
@@ -223,5 +224,6 @@
         members: [head]
         filing_status: SINGLE
   output:
-    # care_and_support_costs defaults to 0: 10,000 > 0.5 * 0.
-    amt_kiddie_tax_applies: false
+    # care_and_support_costs is 0, so nobody reported support, and the model
+    # treats the test as met.
+    amt_kiddie_tax_applies: true

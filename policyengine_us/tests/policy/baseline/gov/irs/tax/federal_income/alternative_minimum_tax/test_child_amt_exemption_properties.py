@@ -40,7 +40,12 @@ FIXED_CASES = (
         amti=60_000,
     ),
     dict(
-        status="SINGLE", age=18, student=False, earnings=10_000, support=0, amti=60_000
+        status="SINGLE",
+        age=18,
+        student=False,
+        earnings=10_000,
+        support=15_000,
+        amti=60_000,
     ),
     dict(
         status="JOINT", age=17, student=False, earnings=29_000, support=0, amti=150_000

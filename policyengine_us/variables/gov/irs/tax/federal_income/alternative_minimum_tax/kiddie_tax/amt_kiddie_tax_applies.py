@@ -11,10 +11,10 @@ class amt_kiddie_tax_applies(Variable):
         "exemption limitation, which IRC 55(d)(4)(A)(iii) turns off for "
         "taxable years beginning after 2017. The filer must be under 18, or "
         "meet the IRC 152(c)(3) age test with earned income no more than "
-        "half of their support (care_and_support_costs, which defaults to "
-        "zero), and must not file a joint return. The model has no input for "
-        "whether a parent is alive at year end (IRC 1(g)(2)(B)), so it "
-        "assumes one is."
+        "half of their support (care_and_support_costs; the model treats the "
+        "support test as met when nobody reports support), and must not file "
+        "a joint return. The model has no input for whether a parent is alive "
+        "at year end (IRC 1(g)(2)(B)), so it assumes one is."
     )
     reference = [
         "https://www.govinfo.gov/content/pkg/USCODE-2016-title26/html/USCODE-2016-title26-subtitleA-chap1-subchapA-partI-sec1.htm",
@@ -44,16 +44,21 @@ class amt_kiddie_tax_applies(Variable):
             age_head < where(head_is_student, age_limit.student, age_limit.non_student)
         )
         # IRC 1(g)(2)(A)(ii)(II): earned income (IRC 911(d)(2)) no more than
-        # half of the child's support.
+        # half of the child's support. Every living person has some support,
+        # so zero means nobody reported it, and the model treats the test as
+        # met.
         earned_income = tax_unit.sum(person("adjusted_earnings", period) * is_head)
         support = tax_unit.sum(person("care_and_support_costs", period) * is_head)
-        meets_support_test = earned_income <= support_test.rate * support
+        support_reported = support > 0
+        meets_support_test = ~support_reported | (
+            earned_income <= support_test.rate * support
+        )
         meets_age_test = under_support_test_age | (
             meets_dependent_age_test & meets_support_test
         )
 
-        # IRC 1(g)(2)(B), a living parent, is assumed: the model has no
-        # input for it. IRC 1(g)(2)(C) excludes joint returns.
+        # The model assumes a living parent (IRC 1(g)(2)(B)), because no input
+        # links the filer to a parent. IRC 1(g)(2)(C) excludes joint returns.
         filing_status = tax_unit("filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
         return meets_age_test & ~joint
