@@ -35,6 +35,7 @@ for every input:
 """
 
 import gc
+from datetime import date, timedelta
 
 import pytest
 from hypothesis import example, given, settings
@@ -113,15 +114,20 @@ def benefit_list(tax_benefit_system, list_name, year):
 # --- 1. add_to_list_parameter --------------------------------------------
 
 NAMES = st.sampled_from("abcdefgh")
+DAYS = st.dates(date(2000, 1, 1), date(2040, 12, 31))
 
 
 @st.composite
 def dated_lists(draw):
-    """A list parameter's dated values: {date: members}."""
-    years = draw(st.lists(st.integers(2000, 2040), min_size=1, max_size=4, unique=True))
+    """A list parameter's dated values: {date: members}.
+
+    A value can start on any day. None marks a gap, as a null does in a
+    parameter file.
+    """
+    starts = draw(st.lists(DAYS, min_size=1, max_size=4, unique=True))
     return {
-        f"{year}-01-01": draw(st.lists(NAMES, max_size=5, unique=True))
-        for year in sorted(years)
+        start.isoformat(): draw(st.none() | st.lists(NAMES, max_size=5, unique=True))
+        for start in sorted(starts)
     }
 
 
@@ -132,9 +138,9 @@ def list_parameter(values):
     return node.members
 
 
-def value_on(values, date):
-    """The members a dated list holds on a date, or None before its first."""
-    starts = [start for start in sorted(values) if start <= date]
+def value_on(values, day):
+    """The members a dated list holds on a day, or None before its first."""
+    starts = [start for start in sorted(values) if start <= day]
     return values[starts[-1]] if starts else None
 
 
@@ -142,27 +148,35 @@ def value_on(values, date):
 @given(
     values=dated_lists(),
     names=st.lists(NAMES, min_size=1, max_size=4),
-    dates=st.lists(st.integers(1999, 2042), min_size=1, max_size=6),
+    days=st.lists(DAYS, max_size=6),
 )
-def test_add_to_list_parameter_appends_only_missing_names(values, names, dates):
+def test_add_to_list_parameter_appends_only_missing_names(values, names, days):
     parameter = list_parameter(values)
     add_to_list_parameter(parameter, names)
 
     unique_names = list(dict.fromkeys(names))
     expected = {
-        start: members + [name for name in unique_names if name not in members]
+        start: (
+            None
+            if members is None
+            else members + [name for name in unique_names if name not in members]
+        )
         for start, members in values.items()
     }
     starts = sorted(value.instant_str for value in parameter.values_list)
     assert starts == sorted(values)
-    for year in dates:
-        date = f"{year}-07-01"
-        assert parameter(instant(date)) == value_on(expected, date)
+    # Each value's first day and the day before it hold the stop dates the
+    # helper computes, so check them along with the drawn days.
+    checked = [day.isoformat() for day in days]
+    for start in values:
+        first_day = date.fromisoformat(start)
+        checked += [first_day.isoformat(), (first_day - timedelta(days=1)).isoformat()]
+    for day in checked:
+        assert parameter(instant(day)) == value_on(expected, day)
 
     add_to_list_parameter(parameter, names)
-    for year in dates:
-        date = f"{year}-07-01"
-        assert parameter(instant(date)) == value_on(expected, date)
+    for day in checked:
+        assert parameter(instant(day)) == value_on(expected, day)
 
 
 def test_add_to_list_parameter_keeps_dates_from_year_zero():
