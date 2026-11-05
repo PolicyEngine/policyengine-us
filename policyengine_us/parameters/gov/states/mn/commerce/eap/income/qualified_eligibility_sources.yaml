@@ -1,0 +1,18 @@
+description: Minnesota places households whose only income comes from these sources at the lowest income level under the Energy Assistance Program.
+values:
+  2025-10-01:
+    # MFIP is part of tanf. The Diversionary Work Program has no input. The
+    # lowest income level is read as an income percentile of zero for the pay
+    # share; the income limit still applies.
+    - tanf
+    - general_assistance
+    - ssi
+metadata:
+  unit: list
+  period: year
+  label: Minnesota EAP qualified eligibility income sources
+  reference:
+    - title: Minnesota EAP Policy Manual FFY26, Chapter 3, Qualified Eligibility
+      href: https://mn.gov/commerce-stat/pdfs/ffy26-eap-policy-manual.pdf#page=102
+    - title: Minnesota EAP Policy Manual FFY27, Chapter 3, Qualified Eligibility
+      href: https://mn.gov/commerce-stat/pdfs/ffy27-eap-policy-manual.pdf#page=103

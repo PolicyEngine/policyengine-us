@@ -1,0 +1,72 @@
+from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.status.ssi_federal_living_arrangement import (
+    SSIFederalLivingArrangement,
+)
+
+
+class VTAABDLivingArrangement(Enum):
+    INDEPENDENT = "Independent living"
+    HOUSEHOLD_OF_ANOTHER = "Living in another household"
+    RESIDENTIAL_CARE_LEVEL_III = (
+        "Level III residential care with assistive community care (PNMI, code C)"
+    )
+    RESIDENTIAL_CARE_LEVEL_IV = (
+        "State-identified Level IV residential or therapeutic care"
+    )
+    CUSTODIAL_CARE = "Qualifying custodial family home"
+    MEDICAID_INSTITUTION = "Title XIX medical institution"
+    NONE = "No supplement"
+
+
+class vt_aabd_living_arrangement(Variable):
+    value_type = Enum
+    entity = Person
+    label = "Vermont AABD living arrangement"
+    definition_period = MONTH
+    defined_for = StateCode.VT
+    possible_values = VTAABDLivingArrangement
+    default_value = VTAABDLivingArrangement.NONE
+    reference = (
+        "https://secure.ssa.gov/poms.nsf/lnx/0501415058#m1",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501415970BOS",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501415013BOS",
+        # PDF pages 28, 31
+        "https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2700-AABD.pdf#page=28",
+    )
+    documentation = """
+    Defaults follow federal SSI living arrangements. Residential and custodial
+    care settings come from vt_aabd_care_setting; those residents are in
+    federal arrangement A, so do not also set the household-of-another SSI
+    inputs for them. Independent rates are identical inside and outside
+    Chittenden County in 2026. Children under 18 in a facility paid by private
+    health insurance map to independent living (SI BOS01415.970). The
+    state-administered Level III residential care home with limited nursing
+    care (rule 2764.2) is not modeled; SI BOS01415.013 reports that all such
+    homes converted to code C.
+    NOTE: OS code Y (optional supplementation waived) records a recipient's
+    choice and is not modeled.
+    """
+
+    def formula(person, period, parameters):
+        federal = person("ssi_federal_living_arrangement", period)
+        setting = person("vt_aabd_care_setting", period)
+        settings = setting.possible_values
+        # POMS SI 01415.058 M.2.a pairs codes C, G and H only with federal
+        # arrangement A, and code I only with federal arrangement D.
+        return select(
+            [
+                federal == SSIFederalLivingArrangement.MEDICAL_TREATMENT_FACILITY,
+                setting == settings.RESIDENTIAL_CARE_LEVEL_III,
+                setting == settings.RESIDENTIAL_CARE_LEVEL_IV,
+                setting == settings.CUSTODIAL_CARE,
+                federal == SSIFederalLivingArrangement.ANOTHER_PERSONS_HOUSEHOLD,
+            ],
+            [
+                VTAABDLivingArrangement.MEDICAID_INSTITUTION,
+                VTAABDLivingArrangement.RESIDENTIAL_CARE_LEVEL_III,
+                VTAABDLivingArrangement.RESIDENTIAL_CARE_LEVEL_IV,
+                VTAABDLivingArrangement.CUSTODIAL_CARE,
+                VTAABDLivingArrangement.HOUSEHOLD_OF_ANOTHER,
+            ],
+            default=VTAABDLivingArrangement.INDEPENDENT,
+        )

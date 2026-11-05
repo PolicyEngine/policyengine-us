@@ -37,7 +37,7 @@ class me_pension_income_deduction(Variable):
         ss_reduced_cap = max_(p.cap - gross_ss, 0)
         non_military_deduction = min_(pension_income, ss_reduced_cap)
 
-        military_retirement_pay = person("military_retirement_pay", period)
+        military_retirement = person("military_retirement_income", period)
 
         # Restrict to the head (and spouse if filing jointly) per Schedule 1S
         # line 4.
@@ -52,9 +52,9 @@ class me_pension_income_deduction(Variable):
         total_non_military = where(
             is_joint, non_military_with_spouse, non_military_head_only
         )
-        military_head_only = tax_unit.sum(where(is_head, military_retirement_pay, 0))
+        military_head_only = tax_unit.sum(where(is_head, military_retirement, 0))
         military_with_spouse = tax_unit.sum(
-            where(is_head | is_spouse, military_retirement_pay, 0)
+            where(is_head | is_spouse, military_retirement, 0)
         )
         total_military = where(is_joint, military_with_spouse, military_head_only)
 

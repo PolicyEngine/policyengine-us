@@ -33,14 +33,16 @@
 
 - name: Premiums deducted as self-employed health insurance are left out
   period: 2025
+  absolute_error_margin: 0.01
   input:
     state_code: OH
     is_self_employed: true
     self_employment_income: 3_000
     health_insurance_premiums: 5_000
   output:
-    # 5,000 - min(3,000, 5,000).
-    oh_medical_care_insurance_premiums: 2_000
+    # The federal deduction is min(5,000, 3,000 - 3,000 x 0.9235 x 0.153 / 2)
+    # = 2,788.05675 (Form 7206 line 14), so 5,000 - 2,788.05675 remain.
+    oh_medical_care_insurance_premiums: 2_211.94325
 
 - name: The self-employed deduction cannot make premiums negative
   period: 2025

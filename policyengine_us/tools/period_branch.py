@@ -28,10 +28,11 @@ calculates:
 
 ``get_branch_for_period`` is the same with no inputs, for branches that
 change the tax-benefit system rather than inputs: the caller swaps the system
-and deletes the variables it recalculates.
+and drops the values of the formula variables it recalculates with
+``drop_recomputed_values``, which keeps plain inputs.
 """
 
-from typing import Dict, Set, Tuple, Union
+from typing import Dict, Iterable, Optional, Set, Tuple, Union
 
 import numpy as np
 from policyengine_core.periods import ETERNITY, Period
@@ -65,10 +66,30 @@ def _input_keys(branch: Simulation) -> Set[Tuple[str, str, Period]]:
     keys and its ancestors'.
     """
     visible_branches = set(branch._get_visible_branch_names())
+    source_branches = set()
+    source_names = ()
+    if getattr(
+        branch.tax_benefit_system, "_social_security_input_compatibility", False
+    ):
+        # Initial public benefit sources are genuine Core inputs stored on
+        # reserved branches, so public formulas can apply same-year levers.
+        # Keep them when clearing a branch's inherited formula results.
+        from policyengine_us.tools.social_security_inputs import (
+            SOCIAL_SECURITY_COMPONENTS,
+            _SOURCE_BRANCH,
+        )
+
+        source_names = SOCIAL_SECURITY_COMPONENTS
+        source_branches = {f"{_SOURCE_BRANCH}{name}" for name in visible_branches}
     return {
         key
         for key in getattr(branch, "_user_input_keys", set())
         if key[1] in visible_branches
+        or (
+            key[0] in source_names
+            and key[1] in source_branches
+            and branch.get_holder(key[0])._stores_user_input(key[2], key[1])
+        )
     }
 
 
@@ -102,19 +123,41 @@ def delete_input_values(holder, period=None, branch_name="default") -> None:
     simulation._user_input_keys = {key for key in input_keys if still_stored(key)}
 
 
-def drop_inherited_values(branch: Simulation) -> None:
+def has_input(simulation: Simulation, variable: str, period: Period) -> bool:
+    """Whether ``set_input`` stored ``variable`` for ``period``.
+
+    That is, on ``simulation`` or a branch it reads, whether from the dataset,
+    the situation or a later call. An eternal variable matches any period.
+    """
+    period = to_period(period)
+    eternal = (
+        simulation.tax_benefit_system.variables[variable].definition_period == ETERNITY
+    )
+    return any(
+        name == variable and (eternal or input_period == period)
+        for name, _, input_period in _input_keys(simulation)
+    )
+
+
+def drop_inherited_values(
+    branch: Simulation, variables: Optional[Iterable[str]] = None
+) -> None:
     """Delete every array ``branch`` holds except inputs.
 
     An array is kept only if ``set_input`` stored it, on this branch or one it
     reads, for that variable and period. A value calculated for one period is
     dropped even when the same variable is an input for another period.
+    ``variables``, if given, limits this to those variables.
     """
     input_keys = _input_keys(branch)
+    only = None if variables is None else set(variables)
     # An eternal variable stores every period under one key, while the input
     # key records the period it was set for, so match it by branch only.
     eternal_inputs = {(name, branch_name) for name, branch_name, _ in input_keys}
     for population in branch.populations.values():
         for name, holder in population._holders.items():
+            if only is not None and name not in only:
+                continue
             eternal = holder.variable.definition_period == ETERNITY
             for branch_name, known_period in holder.get_known_branch_periods():
                 if (
@@ -132,6 +175,23 @@ def drop_inherited_values(branch: Simulation) -> None:
                         f"{branch_name}_{known_period}", None
                     )
     branch._fast_cache = {}
+
+
+def drop_recomputed_values(branch: Simulation, name_parts: Iterable[str]) -> None:
+    """Drop the values of formula variables a pinned-rules branch recalculates.
+
+    A branch that swaps in a pinned tax-benefit system recalculates every
+    formula variable whose name contains one of ``name_parts``, including one
+    the caller supplied: a supplied value is the current-law amount, which the
+    pinned rules replace. Plain inputs (no formula), such as ``takes_up_eitc``,
+    are facts the pinned rules don't change, so they are kept.
+    """
+    name_parts = tuple(name_parts)
+    for name, variable in branch.tax_benefit_system.variables.items():
+        if any(part in name for part in name_parts) and (
+            variable.formulas or variable.adds or variable.subtracts
+        ):
+            branch.delete_arrays(name)
 
 
 def get_override_branch(
@@ -197,7 +257,8 @@ def get_branch_for_period(
     """Return ``simulation``'s branch ``name`` for ``period``, created per period.
 
     For branches that change the tax-benefit system rather than inputs: the
-    caller swaps the system and deletes the variables it recalculates. Within
+    caller swaps the system and drops the formula variables it recalculates
+    with ``drop_recomputed_values``. Within
     a period the branch is shared; a branch left from another period is
     dropped and created again from the parent as it stands now.
     """
