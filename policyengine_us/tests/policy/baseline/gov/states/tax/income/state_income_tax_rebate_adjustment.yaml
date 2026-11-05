@@ -109,6 +109,26 @@
   output:
     state_income_tax_rebate_adjustment: 200
 
+- name: New York 2021 supplemental EITC and additional Empire State child credit payments
+  # Both are in the 2021 refundable list: 100 + 200 = 300.
+  period: 2021
+  input:
+    state_code: NY
+    ny_supplemental_eitc: 100
+    ny_additional_ctc: 200
+  output:
+    state_income_tax_rebate_adjustment: 300
+
+- name: New York 2022 restores neither payment
+  # The 2022 list holds ny_supplemental_eitc, whose match falls to 0 from 2022,
+  # and leaves out ny_additional_ctc, so the supplied 200 adds 0.
+  period: 2022
+  input:
+    state_code: NY
+    ny_additional_ctc: 200
+  output:
+    state_income_tax_rebate_adjustment: 0
+
 - name: Rhode Island child rebate
   period: 2021
   input:
@@ -151,10 +171,10 @@
     state_income_tax_rebate_adjustment: 200
 
 - name: Virginia calculated rebate equals its effect on final tax
-  # va_rebate is limited to tax after the spouse adjustment and refundable
-  # credits, so the max - max form returns the rebate itself.
-  # 2024 single: rebate = min(200, 1,000) = 200;
-  # adjustment = max(1,000, 0) - max(1,000 - 200, 0) = 200.
+  # Other credits, the spouse adjustment and refundable credits limit
+  # va_rebate. With no income, va_non_refundable_eitc is 300.
+  # 2024 single: rebate = min(200, max(1,000 - 300 - 0 - 0, 0)) = 200;
+  # adjustment = max(1,000 - 300, 0) - max(1,000 - 500, 0) = 200.
   period: 2024
   input:
     state_code: VA
@@ -165,6 +185,21 @@
   output:
     va_rebate: 200
     state_income_tax_rebate_adjustment: 200
+
+- name: Refundable credits limit Virginia's calculated rebate
+  # 2024 single; va_non_refundable_eitc is 300 (no income).
+  # rebate = min(200, max(1,000 - 300 - 0 - 600, 0)) = 100;
+  # adjustment = max(1,000 - 300, 0) - max(1,000 - 400, 0) = 100.
+  period: 2024
+  input:
+    state_code: VA
+    filing_status: SINGLE
+    va_income_tax_before_non_refundable_credits: 1_000
+    va_spouse_tax_adjustment: 0
+    va_refundable_credits: 600
+  output:
+    va_rebate: 100
+    state_income_tax_rebate_adjustment: 100
 
 - name: Virginia inactive rebate list
   period: 2023
@@ -220,6 +255,16 @@
     state_code: CO
     age: 40
     adjusted_gross_income: 100000
+  output:
+    state_income_tax_rebate_adjustment: 0
+
+- name: Colorado 2022 leaves Cash Back out of the adjustment
+  # The 2022 refundable list no longer holds co_tabor_cash_back, so a
+  # supplied 750 adds 0.
+  period: 2022
+  input:
+    state_code: CO
+    co_tabor_cash_back: 750
   output:
     state_income_tax_rebate_adjustment: 0
 

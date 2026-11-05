@@ -16,6 +16,10 @@ class ny_income_tax_rebate_adjustment(Variable):
 
     def formula(tax_unit, period, parameters):
         credits = parameters(period).gov.states.ny.tax.income.credits.refundable
-        rebates = ["ny_inflation_refund_credit"]
+        rebates = [
+            "ny_inflation_refund_credit",
+            "ny_supplemental_eitc",
+            "ny_additional_ctc",
+        ]
         included = [rebate for rebate in rebates if rebate in credits]
         return add(tax_unit, period, included) if included else 0

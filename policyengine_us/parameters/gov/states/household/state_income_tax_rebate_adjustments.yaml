@@ -1,11 +1,13 @@
 description: >-
   The pre-rebate state income tax comparison output restores these state
-  adjustments. Each covers payments that state law provides for named tax
-  years only and that the model credits against that year's state income tax.
-  Standing refund mechanisms, such as Colorado's residual TABOR sales tax
-  refund and Oregon's kicker, and ordinary credits stay in liability. Dated
-  credit lists and amount gates decide whether a registered payment counts in
-  a given year.
+  adjustments. Each covers a rebate or refund payment that the model credits
+  against state income tax only in named eligibility years. Payments with no
+  end year in the model, such as Colorado's residual TABOR sales tax refund and
+  Oregon's kicker, stay in liability, as do ordinary credits, including
+  temporary ones. Standing statutes set up some registered payments, such as
+  the Massachusetts Chapter 62F refund and Indiana's $125 automatic taxpayer
+  refund, and each paid out in one modeled year. Dated credit lists and amount
+  gates decide whether a registered payment counts in a given year.
 values:
   0000-01-01:
     - az_income_tax_rebate_adjustment

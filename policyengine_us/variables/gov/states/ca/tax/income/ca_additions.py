@@ -27,5 +27,6 @@ class ca_additions(Variable):
                 "ca_other_additions",
                 "charitable_contributions_ald",
                 "ca_out_of_state_municipal_bond_interest",
+                "ca_dependent_care_assistance_addition",
             ],
         )

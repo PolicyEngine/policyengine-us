@@ -94,31 +94,37 @@ household net income.
 
 ### Scope rule
 
-A payment is in the registry when both of these hold:
+The registry lists a payment when both of these hold:
 
-1. **It is one-time.** State law provides it for named tax years only, not
-   as a standing mechanism that recurs under permanent law.
+1. **The model treats it as one-time.** The state's dated credit list or the
+   payment's amount gate limits it to named eligibility years. Standing
+   statutes set up some of these payments, such as Massachusetts Chapter 62F
+   and Indiana's $125 automatic taxpayer refund, and each paid out in one
+   modeled year. Temporary credits that aren't rebate or refund payments, such
+   as Arkansas's 2022–2023 inflationary relief credit, stay in liability.
 2. **The model credits it against that year's state income tax,** through
    the state's dated credit list or, for Montana, directly in
    `mt_refundable_credits`.
 
-Standing refund mechanisms stay in the comparison liability, even when they
-return surplus revenue. Colorado's residual TABOR sales tax refund
-(`co_sales_tax_refund`) and Oregon's kicker (`or_kicker`) are both recurring,
-so the output restores neither. Colorado Cash Back (`co_tabor_cash_back`) is a
-2021-only payment and is restored. Ordinary recurring credits also stay in
-liability.
+Payments with no end year in the model stay in the comparison liability, even
+when they return surplus revenue. That covers Colorado's residual TABOR sales
+tax refund (`co_sales_tax_refund`) and Oregon's kicker (`or_kicker`), so the
+output restores neither. Only the 2021 list includes Colorado Cash Back
+(`co_tabor_cash_back`), so the output restores it. Ordinary recurring credits
+also stay in liability.
 
 Under this rule the registry covers every payment in the inventory above
-except Colorado's sales tax refund, plus four payments modeled through
+except Colorado's sales tax refund, plus these payments modeled through
 refundable credits that the inventory does not list:
 
 | Payment and raw variable(s) | Eligibility year in the dated credit list | Aggregation |
 |---|---|---|
-| Maine affordability payment: `me_affordability_payment` | 2025 only | R: `me_refundable_credits`, per eligible head or spouse. |
+| Maine affordability payment: `me_affordability_payment` | 2025 only | R: `me_refundable_credits`, per eligible head or spouse. Legally a direct payment; the model assumes full-year residence and doesn't model the filing deadline. |
 | Delaware relief rebate: `de_relief_rebate` | 2020 only | R: `de_refundable_credits`, per modeled head or spouse. |
 | Idaho rebates: `id_2022_rebate`, `id_special_season_rebate` | 2020 only in the current model | R: the 2020 list includes both and the 2021 list removes them. Their standalone formulas persist. |
-| Indiana automatic refund: `in_automatic_refund_rebate` | 2020 only | R: `in_refundable_credits`. |
+| Indiana automatic refund: `in_automatic_refund_rebate` | 2020 only | R: `in_refundable_credits`. The model leaves out the separate $200 credit on the 2022 return for certain Social Security recipients. |
+| New York supplemental EITC payment: `ny_supplemental_eitc` | 2021 only, through its amount gate | R: `ny_refundable_credits`. The dated list includes it from 2019, and its match is zero outside 2021. |
+| New York additional Empire State child credit payment: `ny_additional_ctc` | 2021 and 2023 | R: `ny_refundable_credits`. |
 
 A raw rebate amount enters the adjustment only in years when the state's
 dated credit list includes it, so a positive standalone amount in another
@@ -164,4 +170,6 @@ for:
   registry includes them; policyengine-taxsim's list does not.
 
 Both measures restore Colorado Cash Back and leave out Colorado's sales tax
-refund.
+refund. Both also keep New York's inflation refund, supplemental EITC payment
+and additional Empire State child credit payment out of the comparison
+liability.
