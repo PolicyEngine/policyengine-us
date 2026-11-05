@@ -5,8 +5,9 @@ per enrollee, net of premiums paid by enrollees, and counts the Part D
 low-income subsidy separately. ``cbo_medicare_benefit`` takes CMS Medicare
 spending per enrollee (``calibration.gov.hhs.medicare.per_capita_cost``) and
 subtracts four series under ``calibration.gov.hhs.medicare``, each an
-aggregate from the 2026 Medicare Trustees Report over Table V.B3's total
-enrollment (people with Part A and/or Part B):
+aggregate from the Medicare Trustees Reports over Table V.B3's total
+enrollment (people with Part A and/or Part B). From 2015 they come from the
+2026 report:
 
 - ``premium_income_per_enrollee.part_a``: Table III.B4 premiums from
   voluntary enrollees.
@@ -17,6 +18,11 @@ enrollment (people with Part A and/or Part B):
   footnote 6's December 31 credits moved back a year.
 - ``part_d_low_income_subsidy_per_enrollee``: Table IV.B10 low-income
   subsidy (the 2025 report for 2015).
+
+2013 and 2014 take enrollment from the 2021 report and each numerator from
+the newest report that still shows both years: the 2021 report for Parts A
+and B, the 2026 report for Part D and the 2023 report for the low-income
+subsidy.
 
 These tests read parameters only; the YAML tests cover the variable.
 
@@ -35,7 +41,7 @@ Invariants:
    income-related premiums reproduces it within 0.5 percent, while the
    standard premium alone falls more than 5 percent short.
 5. Bounds: every series is positive, and net Medicare spending per enrollee
-   stays between 0 and gross spending, in every year from 2015 to 2200.
+   stays between 0 and gross spending, in every year from 2013 to 2200.
 6. Extension: from 2036 to 2100 each series grows with Medicare spending
    per enrollee, so each keeps its 2035 share of spending; later years hold
    the 2100 value.
@@ -43,7 +49,7 @@ Invariants:
 """
 
 import pytest
-from hypothesis import given
+from hypothesis import example, given
 from hypothesis import strategies as st
 from policyengine_core.parameters.operations.get_parameter import get_parameter
 
@@ -117,6 +123,23 @@ STANDARD_PART_B_PREMIUM_2019 = 135.50
 PART_B_ENROLLMENT_2019 = 56_019
 PART_B_IRMAA_2019 = 8.4
 
+# 2013 and 2014: Table V.B3 of the 2021 report (page 199) for enrollment,
+# and each numerator from the newest report that still shows both years.
+# Footnote 6 to Table III.D3 (2026 report, page 117) lists no December 31
+# credit in either year.
+BACKFILL_YEARS = (2013, 2014)
+BACKFILL_ENROLLMENT = {2013: 52_504, 2014: 54_115}
+BACKFILL_BILLIONS = {
+    # 2021 report, Table III.B4 (page 62), cash basis.
+    "part_a": {2013: 3.4, 2014: 3.3},
+    # 2021 report, Table III.C7 (page 104), incurred basis, $ millions.
+    "part_b": {2013: 63_085 / 1e3, 2014: 65_644 / 1e3},
+    # 2026 report, Table III.D3 (page 116), cash basis.
+    "part_d": {2013: 9.9, 2014: 11.4},
+    # 2023 report, Table IV.B10 (page 159), incurred basis.
+    "lis": {2013: 23.2, 2014: 24.3},
+}
+
 
 def _part_b_billions(year):
     if year in PART_B_INCURRED:
@@ -174,6 +197,14 @@ def test_series_times_enrollment_returns_the_aggregate(series, year):
     assert rebuilt == pytest.approx(AGGREGATES[series](year), abs=1e-3)
 
 
+@pytest.mark.parametrize("series", SERIES)
+@pytest.mark.parametrize("year", BACKFILL_YEARS)
+def test_2013_and_2014_are_the_trustees_aggregate_per_medicare_enrollee(series, year):
+    billions = BACKFILL_BILLIONS[series][year]
+    expected = billions * 1e9 / (BACKFILL_ENROLLMENT[year] * 1e3)
+    assert _value(series, year) == round(expected, 2)
+
+
 @pytest.mark.parametrize("year", YEARS)
 def test_part_d_series_matches_share_times_premium_plus_irmaa(year):
     share = _read(f"{MEDICARE}.part_d.enrollment_share", f"{year}-01-01")
@@ -191,7 +222,8 @@ def test_part_b_premium_income_includes_income_related_premiums():
     assert standard < published * 0.95
 
 
-@given(st.integers(FIRST_YEAR, END_YEAR + 100))
+@given(st.integers(BACKFILL_YEARS[0], END_YEAR + 100))
+@example(BACKFILL_YEARS[0])
 def test_series_are_positive_and_net_spending_is_between_zero_and_gross(year):
     deductions = sum(_value(series, year) for series in SERIES)
     assert all(_value(series, year) > 0 for series in SERIES)

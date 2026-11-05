@@ -78,7 +78,7 @@
   output:
     cbo_medicare_benefit: [15_033.14, 15_033.14, 15_033.14, 15_033.14, 0]
 
-- name: Case 3, first year of the series.
+- name: Case 3, first year with enrollment from the 2026 Trustees Report.
   period: 2015
   absolute_error_margin: 0.01
   input:
@@ -109,3 +109,25 @@
     medicare_enrolled: false
   output:
     cbo_medicare_benefit: 0
+
+- name: Case 6, first year of CMS spending per enrollee.
+  period: 2013
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    is_medicare_eligible: true
+    medicare_enrolled: true
+  output:
+    # $11,483 - $64.76 - $1,201.53 - $188.56 - $441.87.
+    cbo_medicare_benefit: 9_586.28
+
+- name: Case 7, second year of CMS spending per enrollee.
+  period: 2014
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    is_medicare_eligible: true
+    medicare_enrolled: true
+  output:
+    # $11,683 - $60.98 - $1,213.05 - $210.66 - $449.04.
+    cbo_medicare_benefit: 9_749.27
