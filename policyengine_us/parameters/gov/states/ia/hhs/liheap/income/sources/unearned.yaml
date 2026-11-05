@@ -17,8 +17,16 @@ values:
     # repaid to SSA)", Section 6.10 and Appendix C use the amount "paid by
     # check or direct deposit", and plan Section 1.9 checks "Excluding MediCare
     # deduction". SSA repayments and Part D premiums have no input.
-    # ssi is a monthly variable; the formula sums the twelve months.
+    # ssi and ia_ssa are monthly variables; the formula sums the twelve months.
     - ssi
+    # Appendix C, Social Security Benefits (SSA, SSI, SSDI) (page 114), also
+    # counts "SSA (State Supplementary Assistance) - Fully state-funded".
+    # ia_ssa includes the in-home health-related care payment, which is made
+    # to the recipient (6-B PDF page 50). SNAP and HUD exclude that payment as
+    # a reimbursement, but Appendix C has no such exception: the reimbursement
+    # rows it excludes (pages 97, 103, 116 and 118) are executor fees, job
+    # costs, TAA payments and VA mileage.
+    - ia_ssa
     - pension_income
     # Appendix C Pensions and Retirement Income rows: military retirement pay
     # and survivor benefit payments are pension income.

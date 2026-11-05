@@ -1,0 +1,23 @@
+# SC DSS TANF Policy Manual (Volume 67), Sections 7.1 and 7.7.
+
+- name: Case 1, wages and farm income are earned income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: SC
+    employment_income_before_lsr: 12_000
+    farm_operations_income: 2_400
+  output:
+    # Wages (page 102) and farm income (self-employment, page 112) are earned.
+    # (12,000 + 2,400) / 12 = 1,200.
+    sc_tanf_gross_earned_income: 1_200
+
+- name: Case 2, an SSI recipient's earnings are excluded.
+  period: 2025-01
+  input:
+    state_code: SC
+    receives_ssi: true
+    employment_income_before_lsr: 6_000
+  output:
+    # SSI benefit: exclude the SSI recipient and his or her income (page 117).
+    sc_tanf_gross_earned_income: 0

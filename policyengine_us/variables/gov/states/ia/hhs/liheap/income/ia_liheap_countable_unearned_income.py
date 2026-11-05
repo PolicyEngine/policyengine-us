@@ -9,7 +9,8 @@ class ia_liheap_countable_unearned_income(Variable):
     label = "Iowa LIHEAP countable unearned income"
     documentation = (
         "Unearned income of household members aged 18 and over counted under "
-        "Appendix C: Social Security, SSI, pensions and retirement "
+        "Appendix C: Social Security, SSI, Iowa State Supplementary "
+        "Assistance, pensions and retirement "
         "distributions, railroad retirement, unemployment and workers' "
         "compensation, strike benefits, disability and veterans' benefits, "
         "alimony, rental income, interest, dividends and gambling winnings. "

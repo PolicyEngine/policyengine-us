@@ -1,0 +1,15 @@
+description: Minnesota counts these sources as dividend and interest income under the Energy Assistance Program.
+values:
+  2025-10-01:
+    - interest_income
+    # Only ordinary dividends (Form 1040 line 3b) count.
+    - ordinary_dividend_income
+metadata:
+  unit: list
+  period: year
+  label: Minnesota EAP dividend and interest income sources
+  reference:
+    - title: Minnesota EAP Policy Manual FFY26, Chapter 3, Dividends, Interest and Royalties
+      href: https://mn.gov/commerce-stat/pdfs/ffy26-eap-policy-manual.pdf#page=90
+    - title: Minnesota EAP Policy Manual FFY27, Chapter 3, Dividends, Interest and Royalties
+      href: https://mn.gov/commerce-stat/pdfs/ffy27-eap-policy-manual.pdf#page=92

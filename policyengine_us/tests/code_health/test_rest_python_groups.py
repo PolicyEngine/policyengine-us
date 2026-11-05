@@ -952,22 +952,25 @@ def stub_environment(tmp_path, outcomes):
     return env, calls
 
 
-@pytest.mark.parametrize("failed_index", [None, 0, 1, 2])
+@pytest.mark.parametrize("failed_index", [None, 0, 1, 2, 3])
 def test_social_security_processes_keep_reports_and_run_after_failures(
     tmp_path, groups, failed_index
 ):
-    """Keep three isolated processes after moving synthetic inputs to Rest."""
+    """Keep four isolated processes, including both synthetic input files."""
     report_option = "--junitxml=simulation-microsimulation.xml"
     microsimulation_commands = dry_run(
         "test-microsimulation", f"PYTEST_ADDOPTS={report_option}"
     )
     assert len(microsimulation_commands) == 2
     input_target = "test-other-python-rest-social-security-inputs"
-    (input_command,) = dry_run(input_target)
-    input_group = groups["social-security-inputs"]
-    assert input_command == ["pytest", *input_group["args"]]
-    commands = [*microsimulation_commands, input_command]
-    assert len(commands) == 3
+    input_commands = dry_run(input_target)
+    input_groups = [
+        groups[name]
+        for name in ("social-security-inputs", "social-security-pia-ratio-inputs")
+    ]
+    assert input_commands == [["pytest", *group["args"]] for group in input_groups]
+    commands = [*microsimulation_commands, *input_commands]
+    assert len(commands) == 4
     reports = []
     process_files = {}
     for index, command in enumerate(microsimulation_commands):
@@ -976,22 +979,29 @@ def test_social_security_processes_keep_reports_and_run_after_failures(
         process_files[str(index)] = collected_files(
             [a for a in command[1:] if not a.startswith("--junitxml=")]
         )
-    input_file = "policyengine_us/tests/core/test_social_security_inputs.py"
-    process_files["inputs"] = collected_files(input_command[1:])
-    assert process_files["inputs"] == [input_file]
-    reference = collected_files([str(TESTS / "microsimulation"), input_file])
+    input_files = [
+        "policyengine_us/tests/core/test_social_security_inputs.py",
+        "policyengine_us/tests/core/test_ss_pia_ratio_inputs.py",
+    ]
+    for index, (command, file) in enumerate(zip(input_commands, input_files)):
+        process_files[f"inputs-{index}"] = collected_files(command[1:])
+        assert process_files[f"inputs-{index}"] == [file]
+    reference = collected_files([str(TESTS / "microsimulation"), *input_files])
     assert partition_problems(reference, process_files) == []
     assert all(
         fnmatch(report.split("=", 1)[1], "simulation-*.xml") for report in reports
     )
-    (input_report,) = [
-        report for report in input_group["reports"] if report.endswith(".xml")
-    ]
-    assert input_report == f"{REPORT_DIR}/rest-python-social-security-inputs.xml"
-    reports.append(f"--junitxml={input_report}")
-    assert len(set(reports)) == 3
+    for name, group in zip(
+        ("social-security-inputs", "social-security-pia-ratio-inputs"), input_groups
+    ):
+        (input_report,) = [
+            report for report in group["reports"] if report.endswith(".xml")
+        ]
+        assert input_report == f"{REPORT_DIR}/rest-python-{name}.xml"
+        reports.append(f"--junitxml={input_report}")
+    assert len(set(reports)) == 4
 
-    outcomes = ["0"] * 3
+    outcomes = ["0"] * 4
     if failed_index is not None:
         outcomes[failed_index] = "1"
     env, calls = stub_environment(tmp_path, outcomes)
@@ -1013,7 +1023,7 @@ def test_social_security_processes_keep_reports_and_run_after_failures(
     )
     assert calls.read_text().splitlines() == ["|".join(c[1:]) for c in commands]
     assert (microsimulation_result.returncode != 0) == (failed_index in (0, 1))
-    assert (input_result.returncode != 0) == (failed_index == 2)
+    assert (input_result.returncode != 0) == (failed_index in (2, 3))
 
 
 def scenario_outcomes(scenario, count):
@@ -1044,7 +1054,14 @@ def test_every_group_runs_and_any_failure_fails_the_target(tmp_path, groups, sce
     failed = [group for group, outcome in zip(groups, outcomes) if outcome != "0"]
     assert (result.returncode != 0) == bool(failed), result.stdout + result.stderr
     if failed:
-        assert f"Failed Rest Python groups: {' '.join(failed)}" in result.stdout
+        # Both input report groups run inside the same existing Make target.
+        failed_targets = dict.fromkeys(
+            "social-security-inputs"
+            if group == "social-security-pia-ratio-inputs"
+            else group
+            for group in failed
+        )
+        assert f"Failed Rest Python groups: {' '.join(failed_targets)}" in result.stdout
 
 
 @pytest.mark.parametrize("scenario", ["one-fails-one-killed", "all-fail", "all-pass"])

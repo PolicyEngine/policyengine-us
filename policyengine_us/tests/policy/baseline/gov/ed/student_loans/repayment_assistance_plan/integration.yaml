@@ -39,7 +39,7 @@
 # Same preamble passage: "While these borrowers could file separate Federal
 # income tax returns to address this issue, and each pay $46 per month ($92
 # combined), they could then face higher taxes as a result."
-- name: Case 2, RISE preamble married couple filing separately pays 46 dollars each.
+- name: Case 2, rulespec-us#1455 C18, RISE preamble married couple filing separately pays 46 dollars each.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -99,7 +99,7 @@
       2027-12: 150
       2027: 1_800
 
-- name: Case 4, ED fact sheet borrower pays from July 2026 only.
+- name: Case 4, rulespec-us#1455 C15, ED fact sheet borrower pays from July 2026 only.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -113,8 +113,10 @@
         filing_status: SINGLE
         adjusted_gross_income: 45_000
   output:
-    # Nothing before July 2026; 150 a month for July-December: 6 x 150 = 900.
+    # 4% x 45,000 = 1,800 / 12 = 150. Nothing before July 2026; 150 a month for
+    # July-December: 6 x 150 = 900.
     repayment_assistance_plan_payment:
+      2026-01: 0
       2026-06: 0
       2026-07: 150
       2026: 900
