@@ -67,7 +67,9 @@ def test_alabama_recomputes_dependent_care_exclusion_in_any_order():
         "people": {
             "head": {
                 "age": {YEAR: 40},
-                "employment_income": {YEAR: 60_000},
+                # employment_income includes the $9,000 of dependent care
+                # benefits; box 1 wages are $60,000 ($69,000 - $9,000).
+                "employment_income": {YEAR: 69_000},
                 "dependent_care_employer_benefits": {YEAR: 9_000},
             },
             "spouse": {

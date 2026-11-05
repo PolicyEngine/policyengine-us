@@ -1,0 +1,79 @@
+# IRC 63(c)(6)(A): a married individual filing separately whose spouse
+# itemizes has a standard deduction of zero. The standard deduction is the
+# sum of the basic and additional amounts (63(c)(1)), so the additional
+# amount for age or blindness (63(f)) is zeroed too.
+
+- name: Aged and blind separate filer whose spouse itemizes has no standard deduction, 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        is_blind: true
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+        separate_filer_itemizes: true
+  output:
+    basic_standard_deduction: 0
+    # The 63(f) amount itself is unchanged: two $1,600 MFS amounts.
+    additional_standard_deduction: 3_200
+    standard_deduction: 0
+
+- name: Aged separate filer whose spouse itemizes has no standard deduction, 2024
+  period: 2024
+  input:
+    people:
+      head:
+        age: 66
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+        separate_filer_itemizes: true
+  output:
+    additional_standard_deduction: 1_550
+    standard_deduction: 0
+
+- name: Aged and blind separate filer whose spouse does not itemize keeps both amounts, 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        is_blind: true
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+        separate_filer_itemizes: false
+  output:
+    # $15,750 basic (2025, MFS) plus 2 x $1,600.
+    basic_standard_deduction: 15_750
+    additional_standard_deduction: 3_200
+    standard_deduction: 18_950
+
+- name: Joint filers keep the whole deduction even if the separate filer flag is set, 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 50_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        separate_filer_itemizes: true
+  output:
+    # IRC 63(c)(6)(A) covers only a married individual filing a separate
+    # return. $31,500 basic (2025, joint) plus $1,600 for the aged head.
+    basic_standard_deduction: 31_500
+    additional_standard_deduction: 1_600
+    standard_deduction: 33_100

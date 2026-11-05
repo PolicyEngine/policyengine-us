@@ -7,8 +7,10 @@ from the Trustees' workbook. No expectation calls the extension functions the
 module reuses.
 
 Cost: the module builds one reformed system and copies the default tree once,
-both cached. The two composition tests, last, free them and each build one
-more system, keeping only the values they compare.
+both cached. It builds one more system, the assumption plus a cap-only policy,
+and keeps only the values its tests compare. The two composition tests, last,
+free them and each build one more system, keeping only the values they
+compare.
 """
 
 import hashlib
@@ -21,10 +23,11 @@ from pathlib import Path
 
 import pytest
 import yaml
-from hypothesis import HealthCheck, given, settings
+from hypothesis import HealthCheck, example, given, settings
 from hypothesis import strategies as st
 from policyengine_core.parameters import Parameter, ParameterNode
 from policyengine_core.parameters.operations.get_parameter import get_parameter
+from policyengine_core.reforms import Reform
 
 from policyengine_us import CountryTaxBenefitSystem, Simulation
 from policyengine_us.reforms.ssa import (
@@ -159,7 +162,7 @@ DEFAULT_BEFORE = _snapshot(system.parameters)
 def _release_cached_systems():
     """Free the systems this module builds before later modules run."""
     yield
-    for cached in (_reformed_system, _applied_once, _end_to_end):
+    for cached in (_reformed_system, _applied_once, _end_to_end, _cap_policy_run):
         cached.cache_clear()
 
 
@@ -397,6 +400,140 @@ def test_owners_draw_current_law_cap_survives_both_passes_of_a_2027_cap_policy(
         )
         for year in range(2027, LAST_TABLE_YEAR + 1):
             assert _value(tree, CAP, year) == policy_cap, year
+
+
+@pytest.mark.parametrize("order", ["assumption_first", "policy_first"])
+@pytest.mark.parametrize("policy_cap", CAP_POLICIES.values(), ids=CAP_POLICIES)
+def test_wage_base_survives_both_passes_of_a_2027_cap_policy(policy_cap, order):
+    """A policy that sets only the payroll cap from 2027 leaves the benefit
+    wage base on the assumption's path after both passes, in either order."""
+
+    def policy(parameters):
+        get_parameter(parameters, CAP).update(start="2027-01-01", value=policy_cap)
+
+    reform_set = (apply_trustees_2026_economic_assumptions, policy)
+    if order == "policy_first":
+        reform_set = reform_set[::-1]
+    tree = _applied_once()
+    with _on_default_values(tree):
+        for apply in reform_set * 2:
+            apply(tree)
+        for year in range(2027, LAST_TABLE_YEAR + 1):
+            assert _value(tree, CAP, year) == policy_cap, year
+            assert _value(tree, WAGE_BASE, year) == _statutory_path(CAP)[year], year
+
+
+COPY_POLICY_CAP = 10_000_000
+
+
+@pytest.mark.parametrize("order", ["assumption_first", "policy_first"])
+def test_wage_base_survives_both_passes_of_a_2027_owners_draw_copy_policy(order):
+    """A policy that sets only the owners' draw copy from 2027 leaves the
+    benefit wage base equal to the assumption baseline's, entry for entry,
+    after both passes, in either order."""
+
+    def policy(parameters):
+        get_parameter(parameters, OWNERS_DRAW_CAP).update(
+            start="2027-01-01", value=COPY_POLICY_CAP
+        )
+
+    reform_set = (apply_trustees_2026_economic_assumptions, policy)
+    if order == "policy_first":
+        reform_set = reform_set[::-1]
+    baseline = _entries(_reformed(), WAGE_BASE)
+    tree = _applied_once()
+    with _on_default_values(tree):
+        for apply in reform_set * 2:
+            apply(tree)
+        assert _entries(tree, WAGE_BASE) == baseline
+        for year in range(2027, LAST_TABLE_YEAR + 1):
+            assert _value(tree, OWNERS_DRAW_CAP, year) == COPY_POLICY_CAP, year
+
+
+def test_a_policy_after_the_assumption_keeps_the_wage_base_it_sets():
+    """A policy that means to credit the newly taxed earnings sets the wage
+    base itself. After the assumption in the tuple, it applies last in both
+    passes, so its wage base stands."""
+
+    def policy(parameters):
+        for path in (CAP, WAGE_BASE):
+            get_parameter(parameters, path).update(start="2027-01-01", value=math.inf)
+
+    tree = _applied_once()
+    with _on_default_values(tree):
+        for apply in (apply_trustees_2026_economic_assumptions, policy) * 2:
+            apply(tree)
+        for year in range(2027, LAST_TABLE_YEAR + 1):
+            assert _value(tree, WAGE_BASE, year) == math.inf, year
+        assert _entries(tree, WAGE_BASE, "2026-12-31") == _entries(
+            system.parameters, WAGE_BASE, "2026-12-31"
+        )
+
+
+def _cap_policy(value, start_year=2027):
+    def modify_parameters(parameters):
+        get_parameter(parameters, CAP).update(start=f"{start_year}-01-01", value=value)
+        return parameters
+
+    class reform(Reform):
+        def apply(self):
+            self.modify_parameters(modify_parameters)
+
+    return reform
+
+
+def _leaves(tree):
+    return {
+        parameter.name: _entries(tree, parameter.name)
+        for parameter in tree.get_descendants()
+        if isinstance(parameter, Parameter)
+    }
+
+
+HOUSEHOLD_YEAR = 2027
+HOUSEHOLD_WAGES = 500_000
+
+
+@lru_cache(maxsize=1)
+def _cap_policy_run():
+    """Build the assumption plus a policy that removes the payroll cap from
+    2027, and keep only every parameter's values and one worker's covered
+    earnings, so the system itself is freed."""
+    built = CountryTaxBenefitSystem(
+        reform=(trustees_2026_economic_assumptions_reform, _cap_policy(math.inf))
+    )
+    situation = {
+        "people": {
+            "worker": {
+                "age": {HOUSEHOLD_YEAR: 40},
+                "employment_income": {HOUSEHOLD_YEAR: HOUSEHOLD_WAGES},
+            }
+        }
+    }
+    simulation = Simulation(situation=situation, tax_benefit_system=built)
+    covered = simulation.calculate("ss_covered_earnings_this_year", HOUSEHOLD_YEAR)
+    return _leaves(built.parameters), float(covered[0])
+
+
+def test_a_cap_only_policy_moves_no_other_parameter():
+    """In a built system, a policy that changes only the payroll cap leaves
+    every other parameter equal to the assumption baseline's, entry for
+    entry. The replayed passes stand for this build."""
+    with_policy, _ = _cap_policy_run()
+    baseline = _leaves(_reformed())
+    assert with_policy.keys() == baseline.keys()
+    differ = sorted(name for name in baseline if with_policy[name] != baseline[name])
+    assert differ == [CAP]
+    for year in range(2027, LAST_TABLE_YEAR + 1):
+        assert _value(_reformed(), WAGE_BASE, year) == _statutory_path(CAP)[year]
+
+
+def test_covered_earnings_stop_at_the_wage_base_under_a_cap_only_policy():
+    """A worker earning $500,000 in 2027, with the payroll cap removed from
+    2027 under the assumption, is credited only up to the assumption's 2027
+    wage base."""
+    _, covered = _cap_policy_run()
+    assert covered == _statutory_path(CAP)[HOUSEHOLD_YEAR] == 192_300
 
 
 @pytest.mark.parametrize("end_year", [2028, 2030, 2036])
@@ -796,6 +933,58 @@ def test_applying_twice_equals_applying_once(path, year):
     assert _value(_reformed(), path, year) == _value(_applied_once(), path, year)
 
 
+def _cap_policies():
+    """A start year from 2027 to 2100 and a cap from the assumption's cap in
+    that year up to no cap.
+
+    The assumption re-extends the cap from 2028 on the no-decrease rule, so
+    its second pass overwrites a policy cap that starts in 2028 or later. A
+    policy from 2027 is the one that reaches the wage base through the
+    second pass, so 2027 and no cap are drawn often.
+    """
+    years = st.one_of(st.just(2027), st.integers(2027, LAST_TABLE_YEAR))
+    return years.flatmap(
+        lambda year: st.tuples(
+            st.just(year),
+            st.one_of(
+                st.just(math.inf),
+                st.floats(
+                    min_value=_statutory_path(CAP)[year],
+                    allow_nan=False,
+                    allow_infinity=True,
+                ),
+            ),
+        )
+    )
+
+
+@PROPERTIES
+@given(_cap_policies(), st.booleans())
+@example(policy=(2027, math.inf), first=False)
+@example(policy=(2027, math.inf), first=True)
+def test_any_cap_only_policy_leaves_the_wage_base_and_the_copy(policy, first):
+    """Replay both passes of the assumption and any cap-only policy, in
+    either order: the wage base and the owners' draw copy keep the values
+    the assumption alone gives them."""
+    start_year, policy_cap = policy
+
+    def apply_policy(parameters):
+        get_parameter(parameters, CAP).update(
+            start=f"{start_year}-01-01", value=policy_cap
+        )
+
+    reform_set = (apply_trustees_2026_economic_assumptions, apply_policy)
+    if first:
+        reform_set = reform_set[::-1]
+    tree = _applied_once()
+    expected = {path: _entries(tree, path) for path in (WAGE_BASE, OWNERS_DRAW_CAP)}
+    with _on_default_values(tree):
+        for apply in reform_set * 2:
+            apply(tree)
+        for path, entries in expected.items():
+            assert _entries(tree, path) == entries, path
+
+
 def test_real_wage_growth_matches_the_trustees_long_run():
     tree = _reformed()
     wages = _value(tree, NAWI, 2100) / _value(tree, NAWI, 2050)
@@ -846,7 +1035,7 @@ def test_core_thresholds_follow_the_trustees_2026_nawi(order):
 
     Last in the module: it frees the cached trees before building its own.
     """
-    for cached in (_reformed_system, _applied_once, _end_to_end):
+    for cached in (_reformed_system, _applied_once, _end_to_end, _cap_policy_run):
         cached.cache_clear()
     nawi, thresholds = _core_thresholds_under(COMPOSITIONS[order])
     for year in range(2026, 2101):

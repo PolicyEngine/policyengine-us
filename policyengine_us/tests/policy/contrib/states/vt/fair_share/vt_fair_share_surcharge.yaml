@@ -1,0 +1,540 @@
+# Vermont Fair Share surcharge (H.794 / S.282, 32 V.S.A. § 5822a).
+# Default schedule from 2026, on federal AGI floored at 0, one schedule for
+# every filing status:
+#   0% up to $250,000; 2% from $250,000 to $500,000; 8% above $500,000.
+# These cases use three reform combos, always with the overrides in this order:
+#   base      {in_effect: true}
+#   Clawback  {in_effect: true, rate[2].rate: 0.05}
+#   Original  {in_effect: true, rate[1].rate: 0, rate[2].rate: 0.03}
+# plus one in_effect-false case.
+
+- name: Case 1, single filer with AGI of $200,000 owes no surcharge.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 200_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 200,000 < 250,000, so only the 0% bracket applies.
+    vt_fair_share_surcharge: 0
+
+- name: Case 2, single filer with AGI of exactly $250,000 owes no surcharge.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 250_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 0.02 * (250,000 - 250,000) = 0
+    vt_fair_share_surcharge: 0
+
+- name: Case 3, single filer with AGI of $300,000 pays 2% above $250,000.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 300_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 0.02 * (300,000 - 250,000) = 0.02 * 50,000 = 1,000
+    vt_fair_share_surcharge: 1_000
+
+- name: Case 4, single filer with AGI of exactly $500,000 pays only the first tier.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 500_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Tier 1: 0.02 * (500,000 - 250,000) = 5,000
+    # Tier 2: 0.08 * (500,000 - 500,000) = 0
+    vt_fair_share_surcharge: 5_000
+
+- name: Case 5, single filer with AGI of $600,000 pays both tiers.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 600_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 0.02 * (500,000 - 250,000) + 0.08 * (600,000 - 500,000)
+    # = 5,000 + 8,000 = 13,000
+    vt_fair_share_surcharge: 13_000
+
+- name: Case 6, single filer with AGI of $1,000,000 pays both tiers.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 1_000_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 0.02 * (500,000 - 250,000) + 0.08 * (1,000,000 - 500,000)
+    # = 5,000 + 40,000 = 45,000
+    vt_fair_share_surcharge: 45_000
+
+- name: Case 7, joint filers with AGI of $600,000 use the same schedule as single filers.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 600_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # § 5822a(c): applied without regard for filing status, so joint AGI
+    # faces the same thresholds as case 5.
+    # 0.02 * 250,000 + 0.08 * 100,000 = 5,000 + 8,000 = 13,000
+    vt_fair_share_surcharge: 13_000
+
+- name: Case 8, head of household with AGI of $600,000 uses the same schedule as single filers.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 600_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Same thresholds as case 5 (§ 5822a(c)).
+    # 0.02 * 250,000 + 0.08 * 100,000 = 5,000 + 8,000 = 13,000
+    vt_fair_share_surcharge: 13_000
+
+- name: Case 9, married filing separately with AGI of $300,000 uses the same thresholds.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 300_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # No halved thresholds for separate filers (§ 5822a(c)).
+    # 0.02 * (300,000 - 250,000) = 1,000
+    vt_fair_share_surcharge: 1_000
+
+- name: Case 10, surcharge uses AGI computed from wages.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    people:
+      person1:
+        age: 45
+        employment_income: 300_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Wages only, no above-the-line deductions, so AGI = 300,000.
+    adjusted_gross_income: 300_000
+    # 0.02 * (300,000 - 250,000) = 1,000
+    vt_fair_share_surcharge: 1_000
+
+- name: Case 11, New Hampshire resident with AGI of $1,000,000 owes no Vermont surcharge.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 1_000_000
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    # defined_for = StateCode.VT, so a non-Vermont tax unit gets 0.
+    # (A Vermont resident at this AGI pays 45,000; see case 6.)
+    vt_fair_share_surcharge: 0
+
+- name: Case 12, regression check that negative AGI owes no surcharge.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: -100_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Regression check, not a test of the AGI floor alone: the formula floors
+    # AGI at 0 (max(-100,000, 0) = 0), and MarginalRateTaxScale.calc already
+    # returns 0 for a negative base, so either guard gives a surcharge of 0.
+    vt_fair_share_surcharge: 0
+
+- name: Case 13, reform switched off gives no surcharge and leaves the baseline tax unchanged.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: false
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 1_000_000
+        vt_income_tax_before_non_refundable_credits: 20_000
+        vt_non_refundable_credits: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # in_effect is false, so the in-formula guard returns 0
+    # (it would be 45,000 with the reform on; see case 6).
+    vt_fair_share_surcharge: 0
+    # Baseline formula only: max(0, 20,000 - 3,000) + 0 = 17,000
+    vt_income_tax_before_refundable_credits: 17_000
+
+- name: Case 14, no surcharge in 2025 because the rates start in 2026.
+  period: 2025
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 600_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # H.794 Sec. 11(b): taxable years beginning on or after 2026-01-01.
+    # The 2025 rates are 0 in every bracket, so the surcharge is 0 even with
+    # in_effect true (it would be 13,000 in 2026; see case 5).
+    vt_fair_share_surcharge: 0
+
+- name: Case 15, 2027 indexed first threshold exempts AGI of $255,000.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 255_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # The 2027 thresholds are gov.irs.uprating projections from the 2026 base,
+    # rounded down to $50:
+    #   tier 1 = floor(250,000 * 181.979583 / 176.713083 / 50) * 50 = 257,450
+    # 255,000 < 257,450, so the surcharge is 0. An unindexed threshold would
+    # give 0.02 * (255,000 - 250,000) = 100.
+    vt_fair_share_surcharge: 0
+
+- name: Case 16, 2027 indexed thresholds apply to AGI of $600,000.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 600_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # The 2027 thresholds are gov.irs.uprating projections from the 2026 base,
+    # rounded down to $50 (ratio 181.979583 / 176.713083 = 1.0298025):
+    #   tier 1 = floor(257,450.64 / 50) * 50 = 257,450
+    #   tier 2 = floor(514,901.27 / 50) * 50 = 514,900
+    # 0.02 * (514,900 - 257,450) + 0.08 * (600,000 - 514,900)
+    # = 0.02 * 257,450 + 0.08 * 85,100 = 5,149 + 6,808 = 11,957
+    # Recompute if gov.bls.cpi.c_cpi_u is refreshed.
+    vt_fair_share_surcharge: 11_957
+
+- name: Case 17, Clawback option leaves the 2% band below $500,000 unchanged.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    gov.contrib.states.vt.fair_share.rate[2].rate: 0.05
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 400_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 0.02 * (400,000 - 250,000) = 0.02 * 150,000 = 3,000
+    vt_fair_share_surcharge: 3_000
+
+- name: Case 18, Clawback option taxes AGI of $600,000 at 5% above $500,000.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    gov.contrib.states.vt.fair_share.rate[2].rate: 0.05
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 600_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 0.02 * (500,000 - 250,000) + 0.05 * (600,000 - 500,000)
+    # = 5,000 + 5,000 = 10,000
+    vt_fair_share_surcharge: 10_000
+
+- name: Case 19, Clawback option taxes AGI of $1,000,000 at 5% above $500,000.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    gov.contrib.states.vt.fair_share.rate[2].rate: 0.05
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 1_000_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 0.02 * (500,000 - 250,000) + 0.05 * (1,000,000 - 500,000)
+    # = 5,000 + 25,000 = 30,000
+    vt_fair_share_surcharge: 30_000
+
+- name: Case 20, Original option owes nothing below $500,000.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    gov.contrib.states.vt.fair_share.rate[1].rate: 0
+    gov.contrib.states.vt.fair_share.rate[2].rate: 0.03
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 400_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # The $250,000-$500,000 band is 0% under the Original option.
+    # 0 * (400,000 - 250,000) = 0
+    vt_fair_share_surcharge: 0
+
+- name: Case 21, Original option taxes AGI of $600,000 at 3% above $500,000.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    gov.contrib.states.vt.fair_share.rate[1].rate: 0
+    gov.contrib.states.vt.fair_share.rate[2].rate: 0.03
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 600_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 0 * (500,000 - 250,000) + 0.03 * (600,000 - 500,000)
+    # = 0 + 3,000 = 3,000
+    vt_fair_share_surcharge: 3_000
+
+- name: Case 22, Original option taxes AGI of $1,000,000 at 3% above $500,000.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    gov.contrib.states.vt.fair_share.rate[1].rate: 0
+    gov.contrib.states.vt.fair_share.rate[2].rate: 0.03
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 1_000_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 0.03 * (1,000,000 - 500,000) = 15,000
+    vt_fair_share_surcharge: 15_000
