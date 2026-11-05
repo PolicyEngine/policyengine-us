@@ -179,7 +179,7 @@
         is_tax_unit_head: true
         mt_agi_indiv: 25_000
         mt_non_medical_itemized_deductions_indiv: 0
-        mt_eligible_medical_insurance_premiums: 3_000
+        medical_expense_health_insurance_premiums: 3_000
       spouse:
         age: 40
         is_tax_unit_spouse: true
@@ -201,3 +201,8 @@
     mt_dependent_medical_expense_head_share: 0.655
     mt_medical_and_dental_expenses_indiv: [16_375, 8_625, 0]
     mt_income_tax_before_refundable_credits_indiv: [35.70, 35.70, 0]
+    # Joint: 40,000 - 3 x 2,710 - (22,000 + 3,000) = 6,870 taxable,
+    # tax 33 + 50 + 1,070 x 3% = 115.10.
+    mt_income_tax_joint: 115.10
+    mt_files_separately: true
+    mt_income_tax: 71.40
