@@ -42,7 +42,7 @@ class ca_eitc_eligible(Variable):
 
         # RTC 17052 adopts IRC 32(c)(1)(A)(ii)(III): without a qualifying
         # child, neither joint filer may be another taxpayer's dependent.
-        # The instructions skip the dependency question for joint filers
+        # The instructions say to skip the dependency question for joint filers
         # (FTB 3514, Step 4(d)); apply the statutory dependency restriction.
         has_qualifying_child = tax_unit.any(
             person("ca_is_qualifying_child_for_caleitc", period)

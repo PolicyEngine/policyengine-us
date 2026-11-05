@@ -24,7 +24,7 @@ class az_increased_excise_tax_credit(Variable):
         # Each joint filer remains a taxpayer (43-1001; 42-2201(A)(1)).
         # A claimed joint filer fails 43-1072.02(A) and cannot count as a
         # nonfiling spouse. The other filer still counts once.
-        # The instructions enter two for a joint return without adjusting
+        # The instructions say to enter two for a joint return without adjusting
         # for a claimed spouse; follow the individual statutory exclusion.
         # IRC 152(b)(1) bars dependents when either filer can be claimed,
         # unless the claimant's refund-only filing exception applies.

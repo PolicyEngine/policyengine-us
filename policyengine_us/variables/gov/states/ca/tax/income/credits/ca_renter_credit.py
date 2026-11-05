@@ -26,7 +26,7 @@ class ca_renter_credit(Variable):
         # and residence with that claimant for more than half the year.
         # The form uses claimability; follow the actual-claim statute.
         # The form's stopping questions also omit the individual scope of
-        # (d)(2). An eligible joint filer keeps $120 under (a)(1)(A).
+        # (d)(2). An eligible joint filer keeps $120 for 2025 under (a)(1)(A).
         # Subsection (d)(3) expressly extends the homeowner exclusion to a
         # spouse; subsection (d)(2) does not extend the dependent exclusion.
         person = tax_unit.members
