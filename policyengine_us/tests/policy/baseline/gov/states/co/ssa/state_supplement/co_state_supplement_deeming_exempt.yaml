@@ -288,3 +288,31 @@
   output:
     co_adult_financial_medicaid_enrolled: [false, true]
     co_state_supplement_deeming_exempt: [true, true]
+
+- name: Case 12, an Old Age Pension spouse above the individual rate fails the exemption's income test.
+  # The spouse, 65, receives OAP but not SSI or Medicaid, and has a $1,030
+  # monthly pension. OAP: own countable 1,030 - 10 = 1,020, below the $1,032
+  # standard, so Colorado pays OAP. SSI countable income 1,030 - 20 = 1,010
+  # exceeds the $994 individual rate, so the spouse fails 3.549(F)'s income
+  # condition.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        is_ssi_disabled: true
+        ssi: 500
+      spouse:
+        age: 65
+        ssi: 0
+        pension_income: 12_360
+        co_adult_financial_medicaid_enrolled: false
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: [true, false]
