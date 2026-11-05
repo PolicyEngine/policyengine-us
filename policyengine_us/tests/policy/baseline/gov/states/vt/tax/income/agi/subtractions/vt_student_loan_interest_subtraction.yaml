@@ -286,3 +286,75 @@
     # dependent is not the taxpayer on this return.
     student_loan_interest_ald: [0, 0]
     vt_student_loan_interest_subtraction: 0
+
+- name: 2025 head of household with $120,000 of adjusted gross income, the limit, keeps the Vermont student loan interest subtraction
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 120_000
+        student_loan_interest: 3_000
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child]
+        state_code: VT
+  output:
+    # 5811(29)(B)(i): $120,000 if head of household. The federal deduction
+    # phases out fully above $100,000 of MAGI, so 16a $3,000 - 16b $0 =
+    # $3,000.
+    adjusted_gross_income: 120_000
+    student_loan_interest_ald: [0, 0]
+    vt_student_loan_interest_subtraction: 3_000
+
+- name: 2025 head of household above $120,000 of adjusted gross income gets no Vermont student loan interest subtraction
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 125_000
+        student_loan_interest: 3_000
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child]
+        state_code: VT
+  output:
+    # 5811(29)(B)(i): $125,000 exceeds the $120,000 head of household limit.
+    vt_student_loan_interest_subtraction: 0
+
+- name: 2025 married filing separately filer with $120,000 of adjusted gross income, the limit, keeps the Vermont student loan interest subtraction
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 120_000
+        student_loan_interest: 3_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [head]
+        state_code: VT
+  output:
+    # 5811(29)(B)(i): $120,000 if married filing separately. Married filing
+    # separately filers can't take the federal deduction, so 16a $3,000 -
+    # 16b $0 = $3,000.
+    adjusted_gross_income: 120_000
+    student_loan_interest_ald: 0
+    vt_student_loan_interest_subtraction: 3_000
