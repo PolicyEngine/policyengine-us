@@ -2512,6 +2512,44 @@ candidates:
     theirs (hi_disabled_exemptions.py, compared with hi_regular_exemptions in hi_exemptions.py). The October 2026
     ruling retained the regulation and instruction reading; verify the statute and whether the guidance describes
     only the disabled spouse''s exemption.'
+- id: us-hi:liheap-bottled-gas-accounts
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does a Hawaii gas company's bottled gas customer qualify for LIHEAP on that bill, as the plan's fraud section
+    and the manuals' bill definition suggest, or does the active utility account requirement leave bottled gas out?
+  sources:
+  - kind: manual
+    citation: Hawaii draft FY2026 Policies and Procedures, definitions and sections 2.1 and 4.2, model plan packet PDF pages
+      55, 57, 58 and 65
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=55
+  - kind: manual
+    citation: Hawaii 2020 Policies and Procedures, definitions, PDF page 2
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2019/07/Policies-and-Procedures-2020.pdf#page=2
+  - kind: plan
+    citation: Hawaii FY2026 LIHEAP State Plan, item 17.9, PDF page 41
+    url: https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=41
+  readings:
+    statute: No statute is supplied; draft 2.1 requires "a place of residence with an active utility account", and draft
+      4.2 item 9 requires "an active account number for residential energy service with the specified island utility
+      company".
+    other: Plan 17.9 says "natural gas or propane is delivered but is handled by the utility company". Both manuals'
+      Current Utility Expense includes "kilowatt/therms/tank/ cylinder charges", and the draft defines Utility by the
+      company, "electricity or gas provided by a company subject to regulation by the Public Utilities Commission".
+  example: One person aged 70 in public housing with $18,000 of Social Security, propane heat and a $480 bottled gas bill
+    receives $0 under the account reading and $375 if a tank account is credited.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/hi/dhs/liheap/hi_liheap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10614
+  state: unreviewed
+  note: PE-US reads a positive gas_expense as the bill and does not read bottled_gas_expense, so a bottled gas customer is
+    not eligible. No source says outright that tank accounts are credited.
+
 - id: us-hi:liheap-categorical-routes
   program: liheap
   years:

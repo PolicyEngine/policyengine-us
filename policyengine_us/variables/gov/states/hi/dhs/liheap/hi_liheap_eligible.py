@@ -39,17 +39,16 @@ class hi_liheap_eligible(Variable):
         )
         # Both manuals pay gas as heating and electricity as cooling, and a household
         # asks to have one utility credited (2.12; application Q17). So any home's
-        # gas bill qualifies, whatever heats it. Bottled gas does not show the active
-        # utility account that draft 2.1 requires. Callers must send heating_type.
+        # gas bill qualifies, whatever heats it or the rent includes. Bottled gas does
+        # not show the active utility account that draft 2.1 requires. Callers must
+        # send heating_type.
         fuel = spm_unit("heating_type", period)
         types = fuel.possible_values
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         gas_bill = spm_unit("gas_expense", period) > 0
         # Draft 2.1 and 4.2 and application Q23-24 accept a share of utilities in
         # rent, which has no input; plan 2.3 and the 2020 manual do not.
-        responsible = where(
-            heat_in_rent,
-            fuel == types.NATURAL_GAS,
-            gas_bill & (fuel != types.UNSPECIFIED),
+        responsible = (gas_bill & (fuel != types.UNSPECIFIED)) | (
+            heat_in_rent & (fuel == types.NATURAL_GAS)
         )
         return (size > 0) & (income_eligible | categorical) & responsible
