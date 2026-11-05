@@ -56,6 +56,7 @@ SUPPLEMENTS = {
     "HI": "hi_oss",
     "IA": "ia_ssa",
     "ID": "id_aabd",
+    "IL": "il_aabd",
     "IN": "in_ssp",
     "KS": "ks_sspp",
     "KY": "ky_ssp",
