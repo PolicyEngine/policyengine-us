@@ -1,0 +1,62 @@
+- name: Federal exemption repeal preserves Maryland poverty level with filing exception (claimable head)
+  period: 2025
+  reforms: policyengine_us.reforms.treasury.repeal_dependent_exemptions.repeal_dependent_exemptions
+  input:
+    gov.contrib.treasury.repeal_dependent_exemptions: true
+    people:
+      claimable:
+        age: 23
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      independent:
+        age: 23
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child: {age: 4, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit:
+        members: [claimable, independent, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [claimable, independent, child]
+        state_code: MD
+  output:
+    exemptions_count: 1
+    md_personal_exemptions_count: 2
+    # Tax-General 10-709(a)(2) uses the state exemptions under 10-211(b)(1).
+    # The claimant filing exception preserves the child: one independent
+    # filer + one child, so 2025 contiguous FPG = $15,650 + $5,500.
+    md_poverty_line_credit_income_level: 21_150
+
+- name: Federal exemption repeal preserves Maryland poverty level with filing exception (claimable spouse)
+  period: 2025
+  reforms: policyengine_us.reforms.treasury.repeal_dependent_exemptions.repeal_dependent_exemptions
+  input:
+    gov.contrib.treasury.repeal_dependent_exemptions: true
+    people:
+      independent:
+        age: 23
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      claimable:
+        age: 23
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      child: {age: 4, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit:
+        members: [independent, claimable, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [independent, claimable, child]
+        state_code: MD
+  output:
+    exemptions_count: 1
+    md_personal_exemptions_count: 2
+    md_poverty_line_credit_income_level: 21_150
