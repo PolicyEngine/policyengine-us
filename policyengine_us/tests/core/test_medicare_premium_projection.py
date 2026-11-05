@@ -414,7 +414,7 @@ def test_irmaa_thresholds_never_fall(year, gap):
                 )
 
 
-@pytest.mark.parametrize("year", range(2025, MEDICARE_IRMAA_TOP_FIRST_INDEXED_YEAR))
+@pytest.mark.parametrize("year", range(2025, 2028))
 def test_separate_top_threshold_falls_until_2028(year):
     """$500,000 less the unmarried threshold: $397,000 in 2024, $394,000 in
     2025 and $391,000 in 2026 as CMS published, then lower until 2028."""

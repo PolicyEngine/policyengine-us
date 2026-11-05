@@ -868,8 +868,10 @@ def get_medicare_irmaa_thresholds(
         "single": unmarried,
         "head_of_household": unmarried,
         "surviving_spouse": unmarried,
-        # (C)(ii): twice the unmarried amounts, but 150 percent of the
-        # $500,000 amount.
+        # (C)(ii): twice the unmarried amounts for the calendar year, but 150 percent
+        # of the unmarried top amount for the calendar year (the $500,000 amount as
+        # adjusted under (5)(C)). Under (5)(B), the Secretary rounds only amounts
+        # increased under (A) or (C).
         "joint": (0, *(2 * amount + 1 for amount in lower), 1.5 * top),
         # (C)(iii): each amount less the unmarried threshold amount, with no
         # adjustment at or below that threshold ((i)(1)).
