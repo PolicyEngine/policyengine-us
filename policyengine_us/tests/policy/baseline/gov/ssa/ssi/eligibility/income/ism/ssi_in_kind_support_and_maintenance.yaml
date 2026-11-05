@@ -70,8 +70,8 @@
   output:
     ssi_in_kind_support_and_maintenance: 0
 
-- name: Case 6, food-only support does not trigger PMV in October 2024.
-  period: 2024-10
+- name: Case 6, food-only support does not trigger PMV in December 2024.
+  period: 2024-12
   absolute_error_margin: 0.01
   input:
     people:
@@ -82,7 +82,7 @@
         ssi_receives_outside_shelter_support: false
         ssi_receives_shelter_from_others_in_household: false
   output:
-    # Food stopped counting as ISM on September 30, 2024 (89 FR 21199).
+    # December pays on October income, which excludes food (416.420(a)).
     ssi_pmv_applies: false
     ssi_in_kind_support_and_maintenance: 0
 

@@ -1,10 +1,9 @@
 description: SSA uses this indicator to determine whether food counts in SSI in-kind support and maintenance calculations.
 
-# The final rule removing food from in-kind support and maintenance took
-# effect September 30, 2024 (89 FR 21199, DATES). The consuming variables
-# are MONTH-defined and read this value at the start of each month;
-# ssi_pmv_applies also reads it at the end of the month to find the month in
-# which food stops counting.
+# SSA excludes food received on or after September 30, 2024 (89 FR 21199).
+# This parameter dates the income month. Under 20 CFR 416.420(a),
+# ssi_pmv_applies reads the start and end of the second prior income month.
+# SSA values that support using the payment month's benefit rate.
 values:
   1975-01-01: true
   2024-09-30: false

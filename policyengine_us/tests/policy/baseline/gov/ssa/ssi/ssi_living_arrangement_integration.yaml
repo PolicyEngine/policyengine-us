@@ -234,7 +234,7 @@
         members: [person1]
   output:
     ssi_federal_living_arrangement: OWN_HOUSEHOLD
-    # food_counts = true in 2024-01 → PMV applies
+    # January 2024 uses November 2023 food_counts and the January FBR.
     ssi_pmv_applies: true
     # PMV monthly = (1/3 x 943) + 20 = 334.33
     ssi_in_kind_support_and_maintenance: 334.33
@@ -244,14 +244,12 @@
     uncapped_ssi: 628.67
     ssi: 628.67
 
-- name: Case 9b, food-only support in October 2024 no longer triggers PMV.
+- name: Case 9b, a continuing recipient counts August food for the October 2024 payment.
   period: 2024-10
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        # Year-defined inputs are keyed to the calendar year so that a
-        # non-January test month still reads them.
         age:
           2024: 40
         is_disabled:
@@ -266,23 +264,80 @@
       household:
         members: [person1]
   output:
+    # 20 CFR 416.420(a) uses the second prior income month.
+    # $943 / 3 + $20 = $334.33 PMV; less $20 leaves $314.33 countable.
+    # $943 - $314.33 = $628.67 for a continuing recipient.
     ssi_federal_living_arrangement: OWN_HOUSEHOLD
-    # Food stopped counting as ISM on September 30, 2024 (89 FR 21199).
-    # Before this change the 2024 exclusion waited until January 2025.
+    ssi_pmv_applies: true
+    ssi_in_kind_support_and_maintenance: 334.33
+    ssi_countable_income: 314.33
+    uncapped_ssi: 628.67
+    ssi: 628.67
+
+- name: Case 9b2, a continuing recipient counts September food for the November 2024 payment.
+  period: 2024-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 40
+        is_disabled:
+          2024: true
+        meets_ssi_disability_criteria:
+          2024: true
+        ssi_receives_food_from_others: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # September food counts unless all food came on or after September 30.
+    # $943 / 3 + $20 = $334.33 PMV; less $20 leaves $314.33 countable.
+    # $943 - $314.33 = $628.67 for a continuing recipient.
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    ssi_pmv_applies: true
+    ssi_in_kind_support_and_maintenance: 334.33
+    ssi_countable_income: 314.33
+    uncapped_ssi: 628.67
+    ssi: 628.67
+
+- name: Case 9b3, a continuing recipient excludes October food for the December 2024 payment.
+  period: 2024-12
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 40
+        is_disabled:
+          2024: true
+        meets_ssi_disability_criteria:
+          2024: true
+        ssi_receives_food_from_others: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # October income excludes food, so December pays the full $943 FBR.
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
     ssi_pmv_applies: false
     ssi_in_kind_support_and_maintenance: 0
     ssi_countable_income: 0
     uncapped_ssi: 943
     ssi: 943
 
-- name: Case 9c, food-only support in September 2024 still triggers PMV.
+- name: Case 9c, the September 2024 payment still counts July food.
   period: 2024-09
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        # Year-defined inputs are keyed to the calendar year so that a
-        # non-January test month still reads them.
         age:
           2024: 40
         is_disabled:
@@ -297,21 +352,21 @@
       household:
         members: [person1]
   output:
-    # Food received from September 1 to 29 still counts; the PMV is not
-    # prorated by day.
+    # $943 / 3 + $20 = $334.33 PMV; less $20 leaves $314.33 countable.
+    # $943 - $314.33 = $628.67 for a continuing recipient.
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
     ssi_pmv_applies: true
     ssi_in_kind_support_and_maintenance: 334.33
     ssi_countable_income: 314.33
+    uncapped_ssi: 628.67
     ssi: 628.67
 
-- name: Case 9d, September 2024 food received only on or after September 30 does not trigger PMV.
+- name: Case 9d, a September food date flag does not change the September 2024 payment.
   period: 2024-09
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        # Year-defined inputs are keyed to the calendar year so that a
-        # non-January test month still reads them.
         age:
           2024: 40
         is_disabled:
@@ -319,7 +374,8 @@
         meets_ssi_disability_criteria:
           2024: true
         ssi_receives_food_from_others: true
-        ssi_food_from_others_only_on_or_after_food_exclusion: true
+        ssi_food_from_others_only_on_or_after_food_exclusion:
+          2024-09: true
     spm_units:
       spm_unit:
         members: [person1]
@@ -327,19 +383,52 @@
       household:
         members: [person1]
   output:
+    # September pays on July income, before the September 30 exclusion.
+    # $943 / 3 + $20 = $334.33 PMV; less $20 leaves $314.33 countable.
+    # $943 - $314.33 = $628.67 for a continuing recipient.
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    ssi_pmv_applies: true
+    ssi_in_kind_support_and_maintenance: 334.33
+    ssi_countable_income: 314.33
+    uncapped_ssi: 628.67
+    ssi: 628.67
+
+- name: Case 9d2, food received only on September 30 does not reduce the November 2024 payment.
+  period: 2024-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 40
+        is_disabled:
+          2024: true
+        meets_ssi_disability_criteria:
+          2024: true
+        ssi_receives_food_from_others: true
+        ssi_food_from_others_only_on_or_after_food_exclusion:
+          2024-09: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # November reads the September income-month flag under 416.420(a).
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
     ssi_pmv_applies: false
     ssi_in_kind_support_and_maintenance: 0
     ssi_countable_income: 0
+    uncapped_ssi: 943
     ssi: 943
 
-- name: Case 9e, the September 30 flag does not affect a month after the exclusion starts.
+- name: Case 9e, a date flag before the exclusion month leaves food countable.
   period: 2024-08
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        # Year-defined inputs are keyed to the calendar year so that a
-        # non-January test month still reads them.
         age:
           2024: 40
         is_disabled:
@@ -347,7 +436,8 @@
         meets_ssi_disability_criteria:
           2024: true
         ssi_receives_food_from_others: true
-        ssi_food_from_others_only_on_or_after_food_exclusion: true
+        ssi_food_from_others_only_on_or_after_food_exclusion:
+          2024-06: true
     spm_units:
       spm_unit:
         members: [person1]
@@ -355,11 +445,47 @@
       household:
         members: [person1]
   output:
-    # August 2024 ends before September 30, so its food counts.
+    # August pays on June income, which predates September 30.
+    # $943 / 3 + $20 = $334.33 PMV; less $20 leaves $314.33 countable.
+    # $943 - $314.33 = $628.67 for a continuing recipient.
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
     ssi_pmv_applies: true
     ssi_in_kind_support_and_maintenance: 334.33
+    ssi_countable_income: 314.33
+    uncapped_ssi: 628.67
+    ssi: 628.67
 
-- name: Case 9f, a year of food-only support counts ISM for January through September 2024.
+- name: Case 9e2, the February 2024 payment reads December 2023 food policy.
+  period: 2024-02
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 40
+        is_disabled:
+          2024: true
+        meets_ssi_disability_criteria:
+          2024: true
+        ssi_receives_food_from_others: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # Current-year support inputs still apply when the income month crosses years.
+    # $943 / 3 + $20 = $334.33 PMV; less $20 leaves $314.33 countable.
+    # $943 - $314.33 = $628.67 for a continuing recipient.
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    ssi_pmv_applies: true
+    ssi_in_kind_support_and_maintenance: 334.33
+    ssi_countable_income: 314.33
+    uncapped_ssi: 628.67
+    ssi: 628.67
+
+- name: Case 9f, a year of food-only support reduces payments through November 2024.
   period: 2024
   absolute_error_margin: 0.1
   input:
@@ -376,13 +502,12 @@
       household:
         members: [person1]
   output:
-    # 9 x ($943 / 3 + $20) = 9 x 334.333 = 3,009; before this change the
-    # model counted all 12 months ($4,012).
-    ssi_in_kind_support_and_maintenance: 3_009
-    # 9 x 314.333 = 2,829
-    ssi_countable_income: 2_829
-    # 9 x 628.667 + 3 x 943 = 5,658 + 2,829 = 8,487
-    ssi: 8_487
+    # 11 x ($943 / 3 + $20) = $3,677.6667 annual ISM.
+    ssi_in_kind_support_and_maintenance: 3_677.67
+    # 11 x ($943 / 3) = $3,457.6667 annual countable income.
+    ssi_countable_income: 3_457.67
+    # 11 x ($943 - $943 / 3) + $943 = $7,858.3333 annual SSI.
+    ssi: 7_858.33
 
 - name: Case 10, food-only support after 9/30/2024 does not trigger PMV.
   period: 2025-01
@@ -402,11 +527,31 @@
         members: [person1]
   output:
     ssi_federal_living_arrangement: OWN_HOUSEHOLD
-    # food_counts = false in 2025-01 → PMV does not apply
+    # January 2025 reads November 2024 food policy and uses its current FBR.
     ssi_pmv_applies: false
     ssi_in_kind_support_and_maintenance: 0
     ssi_countable_income: 0
     uncapped_ssi: 967
+    ssi: 967
+
+- name: Case 10b, February 2025 excludes food using December 2024 policy.
+  period: 2025-02
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2025: 40
+        is_disabled:
+          2025: true
+        meets_ssi_disability_criteria:
+          2025: true
+        ssi_receives_food_from_others: true
+  output:
+    # February reads December 2024 policy; current-year inputs need no history.
+    ssi_pmv_applies: false
+    ssi_in_kind_support_and_maintenance: 0
+    ssi_countable_income: 0
     ssi: 967
 
 - name: Case 11, couple both eligible with PMV shelter support.

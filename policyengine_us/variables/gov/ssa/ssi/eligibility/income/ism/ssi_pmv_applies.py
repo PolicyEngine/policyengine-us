@@ -12,6 +12,7 @@ class ssi_pmv_applies(Variable):
     reference = (
         "https://www.law.cornell.edu/cfr/text/20/416.1140",
         "https://www.law.cornell.edu/cfr/text/20/416.1141",
+        "https://www.law.cornell.edu/cfr/text/20/416.420",
         "https://www.govinfo.gov/content/pkg/FR-2024-03-27/pdf/2024-06464.pdf#page=1",
     )
 
@@ -21,17 +22,18 @@ class ssi_pmv_applies(Variable):
         receives_shelter = person(
             "ssi_receives_outside_shelter_support", period
         ) | person("ssi_receives_shelter_from_others_in_household", period)
-        # Food stopped counting as ISM on September 30, 2024 (89 FR 21199).
-        # Food still counts in a month that starts before that date, except
-        # when all of the month's food from others was received or paid for
-        # on or after it. The PMV is not prorated by day.
-        food_counts = bool(parameters(period).gov.ssa.ssi.income.ism.food_counts)
+        # Under 20 CFR 416.420(a), SSA budgets the second prior income
+        # month. food_counts dates that income month (89 FR 21199).
+        # Food received only on or after September 30, 2024 is excluded;
+        # otherwise SSA applies the monthly PMV without daily proration.
+        income_period = period.offset(-2, "month")
+        food_counts = bool(parameters(income_period).gov.ssa.ssi.income.ism.food_counts)
         food_counts_at_month_end = bool(
-            parameters(period.stop).gov.ssa.ssi.income.ism.food_counts
+            parameters(income_period.stop).gov.ssa.ssi.income.ism.food_counts
         )
         exclusion_starts_this_month = food_counts and not food_counts_at_month_end
         food_only_after_exclusion = person(
-            "ssi_food_from_others_only_on_or_after_food_exclusion", period
+            "ssi_food_from_others_only_on_or_after_food_exclusion", income_period
         )
         late_food_excluded = exclusion_starts_this_month & food_only_after_exclusion
         receives_food = person("ssi_receives_food_from_others", period)
