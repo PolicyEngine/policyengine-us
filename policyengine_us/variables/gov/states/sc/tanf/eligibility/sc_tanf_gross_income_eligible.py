@@ -8,12 +8,14 @@ class sc_tanf_gross_income_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.SC
     reference = (
-        "https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=131"
+        "https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=133",
     )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.sc.tanf.income
         need_standard = spm_unit("sc_tanf_need_standard", period)
-        gross_income_limit = need_standard * p.gross_income_limit
+        # The Section 8.15 table notes: "multiply the Need Standard by 1.85
+        # and drop the cents".
+        gross_income_limit = np.floor(need_standard * p.gross_income_limit)
         gross_income = spm_unit("sc_tanf_gross_income", period)
         return gross_income <= gross_income_limit
