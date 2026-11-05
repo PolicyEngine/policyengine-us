@@ -74,3 +74,45 @@
         members: [jacks_mother, jacks_father]
   output:
     ssi_countable_income: [372, 0, 0, 0, 0] # 31 * 12
+
+- name: Parental deeming excludes parent's and sibling's pretax premiums before allocations.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      recipient:
+        age: 12
+        is_ssi_disabled: true
+      sibling:
+        age: 14
+        employment_income: 2_400
+        pre_tax_health_insurance_premiums: 1_200
+      parent:
+        age: 40
+        is_parent: true
+        employment_income: 36_000
+        pre_tax_health_insurance_premiums: 3_600
+    tax_units:
+      tax_unit:
+        members: [recipient, sibling, parent]
+    # A parent and children are not a married couple. Explicit singleton
+    # units prevent default grouping from also applying spousal deeming.
+    marital_units:
+      recipient_unit:
+        members: [recipient]
+      sibling_unit:
+        members: [sibling]
+      parent_unit:
+        members: [parent]
+  output:
+    # POMS SI 00820.102C.2: parent wages 32,400; sibling wages 1,200.
+    # 20 CFR 416.1165(b): sibling allocation = (1,450 - 967) * 12
+    # - 1,200 = 4,596, leaving parent wages of 27,804.
+    # Under (d), (27,804 - 20 * 12 - 65 * 12) / 2 - 967 * 12 = 1,788.
+    # Under (e)(1), child's countable unearned income = 1,788 - 20 * 12 = 1,548.
+    ssi_earned_income: [0, 1_200, 32_400]
+    ssi_ineligible_child_allocation: [0, 4_596, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [1_788, 0, 0]
+    is_ssi_spousal_deeming_applies: [false, false, false]
+    ssi_income_deemed_from_ineligible_spouse: [0, 0, 0]
+    ssi_countable_income: [1_548, 0, 0]

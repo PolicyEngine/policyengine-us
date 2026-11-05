@@ -1,0 +1,195 @@
+- name: Dependent Schedule C income keeps the dependent's half-SE-tax deduction
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        is_tax_unit_dependent: false
+        taxable_pension_income: 20_000
+        real_estate_taxes: 2_000
+      dependent:
+        age: 16
+        is_tax_unit_dependent: true
+        self_employment_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [claimant, dependent]
+    households:
+      household:
+        members: [claimant, dependent]
+        state_name: MT
+  output:
+    # 2023 Schedule SE p.1: 15,000 * .9235 * .153 / 2 = 1,059.71625.
+    # 2023 MT instructions p.51, line 1: include each member's federal AGI.
+    # Dependent AGI without losses = 15,000 - 1,059.71625 = 13,940.28375;
+    # GHI = 20,000 + 13,940.28375 = 33,940.28375.
+    self_employment_tax_ald_person: [0, 1_059.71625]
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 13_940.28375]
+    # 2,000 - (33,940.28375 - 12,600) * .05 = 932.9858125.
+    # GHI is below 35,000, so the credit multiplier is 100%.
+    mt_elderly_homeowner_or_renter_credit: [932.9858125, 0]
+
+- name: The statutory AGI definition also preserves dependent deductions in 2024
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        is_tax_unit_dependent: false
+        taxable_pension_income: 20_000
+        real_estate_taxes: 2_000
+      dependent:
+        age: 16
+        is_tax_unit_dependent: true
+        self_employment_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [claimant, dependent]
+    households:
+      household:
+        members: [claimant, dependent]
+        state_name: MT
+  output:
+    # HB191 section 1(9), PDF p.2: federal AGI without losses remains the
+    # income definition. 15,000 - 15,000 * .9235 * .153 / 2 = 13,940.28375.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 13_940.28375]
+    # 2,000 - (20,000 + 13,940.28375 - 12,600) * .05 = 932.9858125.
+    mt_elderly_homeowner_or_renter_credit: [932.9858125, 0]
+
+- name: Own personal deductions count once and parental HSA deductions stay with the parent
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        is_tax_unit_dependent: false
+        taxable_pension_income: 20_000
+        mt_refundable_credits_before_renter_credit: 0
+      dependent:
+        age: 16
+        is_tax_unit_dependent: true
+        employment_income: 10_000
+        self_employment_income: 15_000
+        traditional_ira_contributions: 1_000
+        early_withdrawal_penalty: 200
+        self_employed_health_insurance_premiums: 500
+        self_employed_pension_contributions: 600
+        long_term_capital_gains: -3_000
+        rental_income: -2_000
+        mt_refundable_credits_before_renter_credit: 0
+    tax_units:
+      tax_unit:
+        members: [claimant, dependent]
+        health_savings_account_ald: 1_000
+        income_tax_refundable_credits: 0
+    households:
+      household:
+        members: [claimant, dependent]
+        state_name: MT
+  output:
+    # Parent AGI: 20,000 - own HSA deduction 1,000 = 19,000.
+    # Dependent: 10,000 + 15,000 - 1,059.71625 - 1,000 - 200 - 500 - 600
+    # = 21,640.28375. Capital/rental losses do not reduce MT income.
+    # The parent's HSA deduction must not be subtracted from the child again.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [19_000, 21_640.28375]
+
+- name: Parent-owned exclusions recorded on a dependent are not deducted twice
+  period: 2024
+  input:
+    people:
+      claimant:
+        age: 70
+        is_tax_unit_dependent: false
+        taxable_pension_income: 20_000
+        mt_refundable_credits_before_renter_credit: 0
+      dependent:
+        age: 16
+        is_tax_unit_dependent: true
+        employment_income: 10_000
+        qualified_adoption_assistance_expense: 500
+        us_bonds_for_higher_ed: 700
+        mt_refundable_credits_before_renter_credit: 0
+    tax_units:
+      tax_unit:
+        members: [claimant, dependent]
+        income_tax_refundable_credits: 0
+    households:
+      household:
+        members: [claimant, dependent]
+        state_name: MT
+  output:
+    # The established filer_amounts_recorded_on_dependents convention puts
+    # 500 + 700 = 1,200 on the parent's return: 20,000 - 1,200 = 18,800.
+    # Neither is the dependent's own deduction: their income stays 10,000.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [18_800, 10_000]
+
+- name: Dependent educator and IRA deductions retain their statutory annual caps
+  period: 2023
+  input:
+    people:
+      claimant:
+        age: 70
+        is_tax_unit_dependent: false
+        taxable_pension_income: 20_000
+        mt_refundable_credits_before_renter_credit: 0
+      dependent:
+        age: 19
+        is_tax_unit_dependent: true
+        employment_income: 10_000
+        traditional_ira_contributions: 10_000
+        educator_expense: 1_000
+        mt_refundable_credits_before_renter_credit: 0
+    tax_units:
+      tax_unit:
+        members: [claimant, dependent]
+        income_tax_refundable_credits: 0
+    households:
+      household:
+        members: [claimant, dependent]
+        state_name: MT
+  output:
+    # https://www.irs.gov/pub/irs-prior/p590a--2023.pdf#page=11:
+    # IRA deduction = min(10,000 contributions, 10,000 compensation,
+    # 6,500 annual limit) = 6,500; supplied actual excess is not deductible.
+    traditional_ira_deduction: [0, 6_500]
+    # https://www.irs.gov/pub/irs-prior/i1040gi--2023.pdf#page=89:
+    # Eligible educator deduction = min(1,000 expenses, 300 cap) = 300.
+    educator_expense_ald_person: [0, 300]
+    # Dependent AGI without losses = 10,000 - 6,500 - 300 = 3,200.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 3_200]
+
+- name: Own compensation caps the IRA deduction without flooring valid negative AGI
+  period: 2024
+  input:
+    people:
+      claimant:
+        age: 70
+        is_tax_unit_dependent: false
+        taxable_pension_income: 20_000
+        mt_refundable_credits_before_renter_credit: 0
+      dependent:
+        age: 19
+        is_tax_unit_dependent: true
+        employment_income: 2_000
+        traditional_ira_contributions: 10_000
+        educator_expense: 1_000
+        mt_refundable_credits_before_renter_credit: 0
+    tax_units:
+      tax_unit:
+        members: [claimant, dependent]
+        income_tax_refundable_credits: 0
+    households:
+      household:
+        members: [claimant, dependent]
+        state_name: MT
+  output:
+    # Pub.590-A (2023) pp.2,11: 2024 annual limit is 7,000; compensation
+    # is only 2,000, so min(10,000, 2,000, 7,000) = 2,000 is deductible.
+    traditional_ira_deduction: [0, 2_000]
+    # The $300 educator deduction is valid separately from compensation:
+    # 2,000 - 2,000 - 300 = -300. This is an adjustment, not a loss.
+    educator_expense_ald_person: [0, 300]
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, -300]

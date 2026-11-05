@@ -21,3 +21,53 @@
     state_code: MT
   output:
     mt_property_tax_rebate: 675
+
+- name: No property tax rebate before the 2022-2023 program
+  period: 2021
+  input:
+    real_estate_taxes: 5_000
+    state_code: MT
+  output:
+    mt_property_tax_rebate: 0
+
+- name: Property tax above rebate amount in the first program year
+  period: 2022
+  input:
+    real_estate_taxes: 700
+    state_code: MT
+  output:
+    mt_property_tax_rebate: 675  # min(675, 700)
+
+- name: Property tax below rebate amount in the first program year
+  period: 2022
+  input:
+    real_estate_taxes: 600
+    state_code: MT
+  output:
+    mt_property_tax_rebate: 600  # min(675, 600)
+
+- name: The tax year 2024 rebate is 400
+  period: 2024
+  input:
+    real_estate_taxes: 2_000
+    state_code: MT
+  output:
+    # Ch. 767, L. 2025 (SB 542), sec. 3(1): "$400 or the amount of total
+    # property taxes paid, whichever is less, for tax year 2024".
+    mt_property_tax_rebate: 400
+
+- name: The tax year 2024 rebate is the property tax when that is less than 400
+  period: 2024
+  input:
+    real_estate_taxes: 300
+    state_code: MT
+  output:
+    mt_property_tax_rebate: 300
+
+- name: No rebate for tax year 2025
+  period: 2025
+  input:
+    real_estate_taxes: 2_000
+    state_code: MT
+  output:
+    mt_property_tax_rebate: 0

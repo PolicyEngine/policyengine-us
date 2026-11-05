@@ -193,3 +193,42 @@
     # Federal AGI 50,000 is below the 125,000 full-exemption threshold, so the
     # head's 6,000 is fully exempt; the child's 10,000 is not counted.
     vt_military_retirement_pay_exclusion: 6_000
+
+- name: VT 2024 military retirement survivor benefits are not eligible for exclusion under pre-2025 law
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        military_retirement_pay_survivors: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_military_retirement_pay_exclusion: 0
+
+- name: VT 2025 military retirement survivor benefits are eligible for exclusion under Act 71 (S.51)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 30_000
+        military_retirement_pay_survivors: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_military_retirement_pay_exclusion: 10_000

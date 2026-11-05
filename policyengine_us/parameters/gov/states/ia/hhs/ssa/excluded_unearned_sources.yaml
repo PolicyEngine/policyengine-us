@@ -1,0 +1,18 @@
+description: Iowa excludes these unearned income sources from countable income under the State Supplementary Assistance program.
+values:
+  2026-01-01:
+    - interest_income
+    - dividend_income
+
+metadata:
+  unit: list
+  period: year
+  label: Iowa SSA excluded unearned income sources
+  # NOTE: 20 CFR 416.1124(c)(22) excludes interest and dividends from a
+  # countable resource, but federal SSI in the model still counts them (issue
+  # 10079). Remove this list once SSI excludes them, or they are excluded twice.
+  reference:
+    - title: 20 CFR 416.1124(c)(22)
+      href: https://www.ecfr.gov/current/title-20/section-416.1124#p-416.1124(c)(22)
+    - title: "Iowa HHS Employees' Manual 8-E (revised April 11, 2025), Dividends and Interest Income #page 23,36"
+      href: https://hhs.iowa.gov/media/4011/download?inline#page=23

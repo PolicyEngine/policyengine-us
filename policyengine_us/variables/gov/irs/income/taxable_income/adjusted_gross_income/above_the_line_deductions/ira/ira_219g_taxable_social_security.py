@@ -29,7 +29,7 @@ class ira_219g_taxable_social_security(Variable):
             if s not in ["taxable_social_security", "taxable_unemployment_compensation"]
         ]
         if "taxable_unemployment_compensation" in irs.gross_income.sources:
-            sources.append("unemployment_compensation")
+            sources.append("total_unemployment_compensation")
         sources.append("tax_exempt_interest_income")
         person = tax_unit.members
         not_dependent = ~person("is_tax_unit_dependent", period)

@@ -1,0 +1,382 @@
+# Arizona LIHEAP energy need points: one point each, and only one point per
+# category, when any member is elderly (60 and over), disabled, a veteran, or
+# a child aged 6 or younger (LIHEAP Eligibility Worksheet, $640 Limit, eff.
+# 2024-10-12, section 3,
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/AZ_BenefitMatrix_Heating_2026.pdf#page=1;
+# DES LIHEAP Policy rev. 16A, p. 10 VI.B.1.d "Aged six (6) and under; Aged 60
+# and over; A veteran; A person with a disability",
+# https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=10).
+# Disability (policy p. 4): an ADA impairment, or categorically a recipient of
+# Title II or XVI benefits "or other State-administered disability benefits",
+# read as disability benefits: SSDI, or SSI paid on the basis of blindness or
+# disability (aged-only SSI does not qualify). 2026 SSI rate 994 x 12 =
+# 11,928. Base household: a 40-year-old earning 30,000 with electric heat.
+
+- name: Case 1, a working-age adult with no need factor has 0 points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_energy_need_points: 0
+
+- name: Case 2, a member aged 60 is elderly and adds 1 point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 60
+        employment_income: 30_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_energy_need_points: 1
+
+- name: Case 3, a member aged 59 is not elderly.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 59
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_energy_need_points: 0
+
+- name: Case 4, a disabled member adds 1 point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        employment_income: 30_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_energy_need_points: 1
+
+- name: Case 5, an SSI recipient paid on the basis of disability is categorically disabled and adds 1 point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+        is_ssi_disabled: true
+        ssi: 11_928
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_600
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Policy p. 4: a recipient of Title XVI disability benefits meets the
+    # disability definition: elderly 0 + disabled 1 = 1.
+    az_liheap_energy_need_points: 1
+
+- name: Case 6, an SSDI recipient is categorically disabled and adds 1 point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 48
+        is_disabled: false
+        social_security_disability: 18_960
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_600
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Policy p. 4: a Title II recipient meets the disability definition.
+    az_liheap_energy_need_points: 1
+
+- name: Case 7, a veteran adds 1 point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_veteran: true
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_energy_need_points: 1
+
+- name: Case 8, VA benefit receipt identifies a veteran and adds 1 point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        veterans_benefits: 9_600
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_energy_need_points: 1
+
+- name: Case 9, a child aged 6 adds 1 point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_900
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # "Aged six (6) and under".
+    az_liheap_energy_need_points: 1
+
+- name: Case 10, a child aged 7 does not add a point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+      person2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_900
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_liheap_energy_need_points: 0
+
+- name: Case 11, all four categories together add 4 points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 20_000
+        ssi: 0
+      person2:
+        age: 45
+        is_disabled: true
+        employment_income: 15_000
+        ssi: 0
+      person3:
+        age: 50
+        is_veteran: true
+        employment_income: 18_000
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        pre_subsidy_electricity_expense: 2_400
+        gas_expense: 700
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AZ
+  output:
+    # Elderly 1 + disabled 1 + veteran 1 + child aged 6 or under 1.
+    az_liheap_energy_need_points: 4
+
+- name: Case 12, two elderly members and two young children count one point per category.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 68
+        social_security: 18_000
+        ssi: 0
+      person2:
+        age: 66
+        social_security: 12_000
+        ssi: 0
+      person3:
+        age: 4
+      person4:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_600
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AZ
+  output:
+    # "Only one point per category allowed": elderly 1 + child 1 = 2.
+    az_liheap_energy_need_points: 2
+
+- name: Case 13, one member who is elderly, disabled and a veteran earns 3 category points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        is_disabled: true
+        is_veteran: true
+        social_security: 16_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_700
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Points attach to categories, not persons: elderly + disabled + veteran.
+    az_liheap_energy_need_points: 3
+
+- name: Case 14, an aged SSI recipient without a disability gets the elderly point only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        is_disabled: false
+        is_blind: false
+        ssi: 11_928
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_600
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Aged 70 >= 60: elderly 1. SSI paid on the basis of age alone is not a
+    # disability benefit under policy p. 4, and there is no impairment or
+    # SSDI: disabled 0. Total 1 + 0 = 1.
+    az_liheap_energy_need_points: 1
+
+- name: Case 15, a blind SSI recipient aged 40 is categorically disabled and adds 1 point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+        is_blind: true
+        ssi: 11_928
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_600
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # SSI paid on the basis of blindness is a Title XVI disability benefit
+    # (policy p. 4): disabled 1; aged 40, so elderly 0. Total 0 + 1 = 1.
+    az_liheap_energy_need_points: 1
