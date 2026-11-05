@@ -8,7 +8,7 @@ class ga_ctc_eligible_child(Variable):
     definition_period = YEAR
     defined_for = StateCode.GA
     reference = (
-        "https://legiscan.com/GA/text/HB136/id/3204611/Georgia-2025-HB136-Enrolled.pdf#page=3",
+        "https://gov.georgia.gov/document/2025-signed-legislation/hb-136/download#page=3",
         "https://www.law.cornell.edu/uscode/text/26/24#c",
         # Georgia Department of Revenue, Qualifying Child Credit (tax years
         # beginning on or after January 1, 2026).
@@ -18,20 +18,13 @@ class ga_ctc_eligible_child(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ga.tax.income.credits.ctc
         age = person("age", period)
-        # For the dependency question, Georgia's incorporation of IRC 24(c)
-        # is modeled without the federal credit's IRC 24(a), 152(b)(1) bar:
-        # a filer who can be claimed as a dependent keeps the credit for
-        # their own qualifying child. O.C.G.A. 48-7-29.27 has its own
-        # one-claimant rule, and the Department's guidance adds no dependency
-        # requirement. Separately, the inherited identification helper
-        # retains IRC 24(h)(7)'s SSN restriction, so an otherwise qualifying
-        # resident child under six with an ITIN receives no credit. Whether
-        # HB 136's 24(c) incorporation permits that separate restriction
-        # remains an open reading.
+        # Georgia lawmakers adopted IRC 24(c) in O.C.G.A. 48-7-29.27, without
+        # 24(a)'s dependent deduction condition or 24(h)(7)'s SSN requirement.
+        # We retain the reading that 24(c)(2) changes only the citizenship
+        # condition; a broader reading would import 152(b)(1)'s
+        # no-dependents condition.
         p_federal = parameters(period).gov.irs.credits.ctc
-        ctc_eligible_child = (
-            person("is_tax_unit_dependent", period)
-            & (age < p_federal.amount.base.thresholds[-1])
-            & person("meets_ctc_child_identification_requirements", period)
+        ctc_eligible_child = person("is_tax_unit_dependent", period) & (
+            age < p_federal.amount.base.thresholds[-1]
         )
         return ctc_eligible_child & (age < p.age_threshold)

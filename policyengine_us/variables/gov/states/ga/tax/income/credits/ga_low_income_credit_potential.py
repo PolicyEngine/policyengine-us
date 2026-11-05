@@ -9,9 +9,7 @@ class ga_low_income_credit_potential(Variable):
     definition_period = YEAR
     reference = (
         "https://dor.georgia.gov/document/document/2022-it-511-individual-income-tax-booklet/download",
-        # 2025 IT-511, Line 17: only if "you are not claimed or eligible to be
-        # claimed as a dependent on another taxpayer's Federal or Georgia
-        # income tax return".
+        # 2025 IT-511, Line 17 excludes claimed and claimable filers.
         "https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=17",
         "https://dor.georgia.gov/low-income-tax-credit",
         # O.C.G.A. 48-7A-3(a) as amended by HB 1069 (2010), section 5, printed
@@ -22,18 +20,14 @@ class ga_low_income_credit_potential(Variable):
     defined_for = StateCode.GA
 
     def formula(tax_unit, period, parameters):
-        # We follow the legal code, which says (in addition to head and spouse):
-        # "multiplied by the number of dependents which the taxpayer is entitled to claim."
-        # The tax form excludes adult dependents:
-        # "Exemptions are self, spouse and natural or legally adopted children"
-        # O.C.G.A. 48-7A-3(a): "each resident taxpayer ... who is not claimed
-        # or is not otherwise eligible to be claimed as a dependent" may claim
-        # the credit, and "A husband and wife filing a joint return shall each
-        # be deemed a dependent for purposes of such joint return". So Georgia
-        # counts its own units rather than federal exemptions, and a joint
-        # return keeps both spouses' units while either spouse can claim. A
-        # return on which a filer can be claimed has no dependents (Georgia
-        # follows the federal rules, IRC 152(b)(1)).
+        # The instructions say to count only self, spouse and children.
+        # Georgia lawmakers count all entitled dependents in O.C.G.A.
+        # 48-7A-3(a), and expressly count both spouses on a joint return.
+        # Either eligible spouse can claim for both spouse units. IRC
+        # 152(b)(1) bars child units when either filer is a dependent outside
+        # the filing exception. The statutory claimed-or-otherwise-eligible
+        # disjunction remains open; the model keeps the claimed-or-claimable
+        # exclusion for the taxpayer's own eligibility.
         size = tax_unit("tax_unit_size", period)
         dependents = tax_unit("tax_unit_dependents", period)
         filer_is_dependent = tax_unit(

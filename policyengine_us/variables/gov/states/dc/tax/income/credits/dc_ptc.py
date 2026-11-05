@@ -17,31 +17,33 @@ class dc_ptc(Variable):
     defined_for = StateCode.DC
 
     def formula(tax_unit, period, parameters):
-        rent = add(tax_unit, period, ["rent"])
-        retax = add(tax_unit, period, ["real_estate_taxes"])
+        person = tax_unit.members
+        rent = person("rent", period)
+        retax = person("real_estate_taxes", period)
         p_dc = parameters(period).gov.states.dc.tax.income.credits
         ptax = retax + rent * p_dc.ptc.rent_ratio
 
         elderly_age = p_dc.ptc.min_elderly_age
-        head_age = tax_unit("age_head", period)
-        spouse_age = tax_unit("age_spouse", period)
-        is_elderly = (head_age >= elderly_age) | (spouse_age >= elderly_age)
+        age = person("age", period)
+        is_elderly = age >= elderly_age
 
         # Only positive AGI creates an offset (negative AGI should not reduce offset)
         us_agi = tax_unit("adjusted_gross_income", period)
-        positive_agi = max_(0, us_agi)
+        positive_agi = tax_unit.project(max_(0, us_agi))
         ptax_offset = positive_agi * where(
             is_elderly,
             p_dc.ptc.fraction_elderly.calc(positive_agi, right=True),
             p_dc.ptc.fraction_nonelderly.calc(positive_agi, right=True),
         )
         uncapped_ptc = max_(0, ptax - ptax_offset)
-        # D.C. Code 47-1806.06(k): no credit for a claimant who was a dependent
-        # under any income tax law that year, unless 65 or older; a couple can
-        # claim it through a spouse who is not such a dependent ((b)(4)).
-        has_claimant = tax_unit("dc_ptc_has_eligible_claimant", period)
-        return (
-            min_(p_dc.ptc.max, uncapped_ptc)
-            * tax_unit("takes_up_dc_ptc", period)
-            * has_claimant
+        # Sections (b)(4) and (b)(8) allow one claimant's own payments.
+        # Each eligible spouse can claim using their own age and payments.
+        filer = person("is_tax_unit_head_or_spouse", period)
+        dependent = person("claimable_as_dependent_on_another_return", period)
+        eligible_claimant = filer & (
+            ~dependent | (age >= p_dc.ptc.dependent_claimant_min_age)
+        )
+        claimant_ptc = where(eligible_claimant, uncapped_ptc, 0)
+        return min_(p_dc.ptc.max, tax_unit.max(claimant_ptc)) * tax_unit(
+            "takes_up_dc_ptc", period
         )

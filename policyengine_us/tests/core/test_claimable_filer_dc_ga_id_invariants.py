@@ -86,6 +86,9 @@ def _identities(sim, year):
             f"{name} in {year} is positive on a return with a claimable filer "
             "outside the filing exception"
         )
+    # The expired aggregate amount must not make the child predicate vacuous.
+    blocked_people = sim.populations["tax_unit"].project(blocked_filer)
+    assert not _calc(sim, "dc_ctc_eligible_child", year)[blocked_people].any()
     # Georgia's low income credit needs one filer who cannot be claimed.
     every_filer = _calc(sim, "every_filer_is_dependent_elsewhere", year) > 0
     assert not _calc(sim, "ga_low_income_credit_potential", year)[every_filer].any()
@@ -128,15 +131,16 @@ def _with_independent_claim_inputs(units):
     "year,state,expected",
     [
         (2025, "ID", {"id_grocery_credit": 310}),
-        (2026, "DC", {"dc_kccatc": 1_000, "dc_ctc": 1_000}),
+        (2026, "DC", {"dc_kccatc": 1_000, "dc_ctc": 0}),
     ],
 )
 def test_dc_id_filing_exception_restores_children_under_both_labels(
     year, state, expected
 ):
     # The claimable adult keeps the exception and the independent spouse and
-    # child keep their credits when either adult is labelled head. Idaho still
-    # excludes the claimable adult's own $155 food tax credit.
+    # child keep their eligibility when either adult is labelled head. Idaho still
+    # excludes the claimable adult's own $155 food tax credit. DC has no
+    # 2026 child tax credit after the temporary revival expires.
     units = [
         {
             "state": state,
@@ -155,6 +159,11 @@ def test_dc_id_filing_exception_restores_children_under_both_labels(
     def exception_identities(sim, year):
         for name, amount in expected.items():
             np.testing.assert_allclose(_calc(sim, name, year), [amount, amount])
+        if state == "DC":
+            children = sim.populations["tax_unit"].sum(
+                _calc(sim, "dc_ctc_eligible_child", year)
+            )
+            np.testing.assert_array_equal(children, [1, 1])
         _identities(sim, year)
 
     check_swap(units, year, OUTPUTS, exception_identities)
