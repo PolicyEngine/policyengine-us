@@ -84,6 +84,9 @@ GROSS_INCOME_SOURCES = PACKAGE / "parameters/gov/irs/gross_income/sources.yaml"
 # spm_unit_benefits member that counts its cash in SPM resources.
 GROSS_INCOME_IN_RESOURCES = {
     "irs_employment_income": "employment_income",
+    # employment_income holds these benefits: irs_employment_income subtracts
+    # them, and the part above the IRC 129 exclusion returns here.
+    "taxable_dependent_care_benefits": "employment_income",
     "self_employment_income": "self_employment_income",
     "sstb_self_employment_income": "sstb_self_employment_income",
     "partnership_s_corp_income": "partnership_s_corp_income",
