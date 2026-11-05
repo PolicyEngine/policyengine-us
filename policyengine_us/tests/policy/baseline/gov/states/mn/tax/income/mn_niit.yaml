@@ -39,3 +39,30 @@
   output:
     net_investment_income: 1_100_000
     mn_niit: 1_000
+
+- name: Minnesota net investment income takes the section 461(l) add-back
+  # Minn. Stat. 290.033(a) uses the section 1411(c) definition with two
+  # exceptions, and neither reaches section 461(l). Interest 2,000,000 and a
+  # Form 4835 loss of 600,000 give an excess of 600,000 - 313,000 = 287,000 and
+  # NII of 2,000,000 - 600,000 + 287,000 = 1,687,000;
+  # 1% x (1,687,000 - 1,000,000) = 6,870. Without the add-back the tax would
+  # read 4,000.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+        taxable_interest_income: 2_000_000
+        farm_rent_income: -600_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    net_investment_income: 1_687_000
+    mn_niit: 6_870
