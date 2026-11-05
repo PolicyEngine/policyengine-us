@@ -3676,6 +3676,9 @@ def test_a_computed_all_may_name_any_module_below_its_package():
         ("import pkg\ng = getattr(pkg, 'a')\n", {"pkg.a"}, set()),
         ("import sys\nsys.modules['pkg.a'].f()\n", {"pkg.a"}, set()),
         ("from sys import modules\nmodules.get('pkg.a').f()\n", {"pkg.a"}, set()),
+        # sys.modules holds the module itself, not its top package.
+        ("import sys\nsys.modules['pkg.sub'].a.f()\n", {"pkg.sub.a"}, set()),
+        ("import sys\nsys.modules.get('pkg.sub').a.f()\n", {"pkg.sub.a"}, set()),
         ("f = lambda: __import__('pkg').a.f()\n", set(), {"pkg.a"}),
         # __import__ returns the top package; import_module the module.
         ("__import__('pkg.sub').a.f()\n", {"pkg.a", "pkg.sub.a"}, set()),
