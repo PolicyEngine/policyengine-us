@@ -34,9 +34,7 @@ class ca_capi_person(Variable):
     def formula(person, period, parameters):
         # When only the California facility input separates a couple that SSI
         # computes jointly, ssi_countable_income holds half the couple's
-        # income; each spouse's own income counts (20 CFR 416.414(b)(3)). The
-        # same goes for a dependent who shares the couple's unit because the
-        # situation has no marital units.
+        # income; each spouse's own income counts (20 CFR 416.414(b)(3)).
         # NOTE: this own income leaves out in-kind support and the student
         # earned income exclusion, which SSI's joint computation would apply.
         separated = person(

@@ -682,12 +682,12 @@
     # (500 + 500 - 20) / 2 = 490 a month each; person3 has 500 - 20 = 480.
     ssi_countable_income: [5_880, 5_880, 5_760]
     ssi: [2_820, 2_820, 0] # (1,450 / 2 - 490) * 12
-    ca_state_supplement_payment_standard: 27_786.84 # 2,315.57 * 12
-    # 2,315.57 - 2 * 235 - 2 * 490 = 865.57 a month, as with explicit marital
-    # units. Marital-unit sums read person3 as a CAPI-eligible spouse of both
-    # citizens and added person3's 480 to the couple total, which gave
-    # 2,315.57 - 470 - 2 * 480.24 = 885.09.
-    ca_state_supplement: 10_386.84 # 865.57 * 12
+    # Each spouse takes half the couple share, (2,315.57 - 1,450) / 2 =
+    # 432.785, with no income above the federal amount; SSA rounds it up to
+    # 432.79 a month, as with explicit marital units. Marital-unit sums read
+    # person3 as a CAPI-eligible spouse of both citizens and added person3's
+    # 480 to the couple total.
+    ca_state_supplement: 10_386.96 # 2 * 432.79 * 12
 
 - name: Case 18, 2025 mixed couple sharing a default marital unit with an unrelated citizen, marital units omitted, counts only the couple's income.
   period: 2025
@@ -807,7 +807,7 @@
     # CDSS projects the 239.94 share for January 2027 (2026 May Revision, page 27).
     ca_state_supplement: 2_879.28 # 239.94 * 12
 
-- name: Case 18, 2026 mixed couple's supplement rounds up to the next cent like other federal payments.
+- name: Case 21, 2026 mixed couple's supplement rounds up to the next cent like other federal payments.
   period: 2026-01
   absolute_error_margin: 0.001
   input:

@@ -491,3 +491,42 @@
     # the aged individual standard 994 + 239.94 = 1,233.94.
     ca_capi_payment_standard: [62, 1_233.94]
     ca_capi_person: [62, 1_233.94]
+
+- name: Case 21, CAPI spouses who are both a third adult's tax dependents take half the couple standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 100_000
+      person2:
+        age: 70
+        is_tax_unit_dependent: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 10
+        ssi_qualifying_quarters_earnings: 0
+      person3:
+        age: 68
+        is_tax_unit_dependent: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 10
+        ssi_qualifying_quarters_earnings: 0
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ca_capi_eligible_person: [false, true, true]
+    # The couple computation applies: (1,491 + 607.83) / 2 = 1,049.415 each.
+    # As individuals each would take 994 + 239.94 = 1,233.94.
+    ca_capi_payment_standard: [0, 1_049.415, 1_049.415]
