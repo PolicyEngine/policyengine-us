@@ -2735,6 +2735,146 @@ candidates:
     theirs (hi_disabled_exemptions.py, compared with hi_regular_exemptions in hi_exemptions.py). The October 2026
     ruling retained the regulation and instruction reading; verify the statute and whether the guidance describes
     only the disabled spouse''s exemption.'
+- id: us-hi:liheap-bottled-gas-accounts
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does a Hawaii gas company's bottled gas customer qualify for LIHEAP on that bill, as the plan's fraud section
+    and the manuals' bill definition suggest, or does the active utility account requirement leave bottled gas out?
+  sources:
+  - kind: manual
+    citation: Hawaii draft FY2026 Policies and Procedures, definitions and sections 2.1 and 4.2, model plan packet PDF pages
+      55, 57, 58 and 65
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=55
+  - kind: manual
+    citation: Hawaii 2020 Policies and Procedures, definitions, PDF page 2
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2019/07/Policies-and-Procedures-2020.pdf#page=2
+  - kind: plan
+    citation: Hawaii FY2026 LIHEAP State Plan, item 17.9, PDF page 41
+    url: https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=41
+  readings:
+    statute: No statute is supplied; draft 2.1 requires "a place of residence with an active utility account", and draft
+      4.2 item 9 requires "an active account number for residential energy service with the specified island utility
+      company".
+    other: Plan 17.9 says "natural gas or propane is delivered but is handled by the utility company". Both manuals'
+      Current Utility Expense includes "kilowatt/therms/tank/ cylinder charges", and the draft defines Utility by the
+      company, "electricity or gas provided by a company subject to regulation by the Public Utilities Commission".
+  example: One person aged 70 in public housing with $18,000 of Social Security, propane heat and a $480 bottled gas bill
+    receives $0 under the account reading and $375 if a tank account is credited.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/hi/dhs/liheap/hi_liheap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10614
+  state: unreviewed
+  note: PE-US reads a positive gas_expense as the bill and does not read bottled_gas_expense, so a bottled gas customer is
+    not eligible. No source says outright that tank accounts are credited.
+
+- id: us-hi:liheap-categorical-routes
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does general assistance receipt waive Hawaii's LIHEAP income test, as the draft manual and matrix provide, or
+    only SNAP, SSI and TANF, as the plan and application list?
+  sources:
+  - kind: manual
+    citation: Hawaii draft FY2026 Policies and Procedures, section 2.8, model plan packet PDF page 60
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=60
+  - kind: guidance
+    citation: Hawaii FY2026 H-HEAP benefit matrix, PDF page 1
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=1
+  - kind: plan
+    citation: Hawaii FY2026 LIHEAP State Plan, item 1.4, PDF page 5
+    url: https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=5
+  - kind: form
+    citation: 2026 H-HEAP application, question 12, PDF page 3
+    url: https://humanservices.hawaii.gov/bessd/files/2026/06/2026-Application-Packet.pdf#page=3
+  readings:
+    statute: No statute is supplied; draft 2.8 and the matrix treat receipt of SNAP, TANF, general assistance, AABD or SSI
+      as categorical.
+    other: Plan 1.4 and application question 12 name only SNAP, SSI and TANF.
+  example: One person in public housing with $100,000 of countable income, $1,200 of general assistance and a gas bill
+    receives $375 under the manual and $0 under the plan.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/hi/dhs/liheap/hi_liheap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10614
+  state: ruled
+  note: 'Ruled 2026-11-02: follow the manual and matrix. AABD has no input. Income points for a categorical household follow
+    matrix page 3 and draft page 69 (actual total income) over the categorical chart on matrix page 1.'
+- id: us-hi:liheap-income-limit-comparison
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Hawaii LIHEAP income exactly at the limit qualify?
+  sources:
+  - kind: manual
+    citation: Hawaii draft FY2026 Policies and Procedures, section 5.5, model plan packet PDF page 67
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=67
+  - kind: manual
+    citation: Hawaii draft FY2026 Policies and Procedures, section 2.9, model plan packet PDF page 60
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=60
+  - kind: guidance
+    citation: Hawaii FY2026 H-HEAP benefit matrix, PDF page 3
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=3
+  readings:
+    statute: No statute is supplied; draft 5.5 reads "equal to or less than".
+    other: Draft 2.9 reads "less than" and the matrix reads "below".
+  example: One person in public housing with $41,941 of countable income and a gas bill receives $375 under draft 5.5 and
+    $0 under draft 2.9.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/hi/dhs/liheap/hi_liheap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10614
+  state: ruled
+  note: 'Ruled 2026-11-02: the comparison is inclusive, following the calculation section.'
+- id: us-hi:liheap-utilities-in-rent
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is a Hawaii household whose gas is included in its rent eligible for LIHEAP, as the draft manual and application
+    provide, or ineligible, as the 2020 manual provides?
+  sources:
+  - kind: manual
+    citation: Hawaii draft FY2026 Policies and Procedures, sections 2.1 and 4.2, model plan packet PDF pages 58 and 65
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=58
+  - kind: form
+    citation: 2026 H-HEAP application, questions 23 and 24, PDF page 4
+    url: https://humanservices.hawaii.gov/bessd/files/2026/06/2026-Application-Packet.pdf#page=4
+  - kind: manual
+    citation: Hawaii 2020 Policies and Procedures, ineligible households, PDF page 9
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2019/07/Policies-and-Procedures-2020.pdf#page=9
+  - kind: plan
+    citation: Hawaii FY2026 LIHEAP State Plan, item 2.3, PDF page 9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=9
+  readings:
+    statute: No statute is supplied; draft 2.1 accepts "the household's prorated share of the utility bill if rent includes
+      utilities", and application questions 23 and 24 ask for that share.
+    other: The 2020 manual lists "Households where all utilities are included in the rent" as ineligible, and plan 2.3
+      answers No for differing policies for renters with utilities in the rent.
+  example: One person aged 70 in public housing with $18,000 of Social Security and gas in the rent receives $375 under the
+    draft manual and $0 under the 2020 manual.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/hi/dhs/liheap/hi_liheap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10614
+  state: ruled
+  note: 'Ruled 2026-11-02: follow the draft manual and application. The size of the share has no input.'
 - id: us-hi:snap-abawd-implementation-date
   program: snap
   years:
