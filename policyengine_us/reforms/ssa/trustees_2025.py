@@ -6,6 +6,7 @@ from policyengine_core.periods import instant
 
 from policyengine_us.parameters.uprating_extensions import (
     extend_social_security_payroll_cap,
+    extend_social_security_wage_indexed_parameters,
 )
 
 
@@ -199,4 +200,35 @@ def apply_trustees_2025_economic_assumptions(
         parameters,
         last_projected_year=2035,
         end_year=end_year,
+    )
+    # Extend the owners' draw copy on the same rule from its own values, not
+    # from the live cap, so a policy reform's cap can't become the copy's
+    # no-decrease floor when the reform set runs again.
+    current_law_cap = parameters.gov.contrib.ssa.owners_draw.current_law_cap
+    extend_social_security_payroll_cap(
+        parameters,
+        last_projected_year=2035,
+        end_year=end_year,
+        cap=current_law_cap,
+    )
+    # Extend the benefit wage base on the same rule from its own values
+    # through 2035. The rule reads the wage base's 1994 base, its value for
+    # the year before and the NAWI, but neither the live cap nor the copy, so
+    # a reform that changes only one of those doesn't move the wage base when
+    # the reform set runs again. A reform that means to move it sets the wage
+    # base itself.
+    wage_base = parameters.gov.ssa.social_security.wage_base
+    extend_social_security_payroll_cap(
+        parameters,
+        last_projected_year=2035,
+        end_year=end_year,
+        cap=wage_base,
+    )
+    # The other wage-indexed amounts follow the NAWI, so re-derive them from
+    # the Trustees path as well (#10452). This reads the wage base from
+    # itself, so it rewrites the wage base with its own values.
+    extend_social_security_wage_indexed_parameters(
+        parameters,
+        end_year=end_year,
+        cap=wage_base,
     )

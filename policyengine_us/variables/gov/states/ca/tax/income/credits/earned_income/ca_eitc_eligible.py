@@ -13,6 +13,7 @@ class ca_eitc_eligible(Variable):
         "https://www.ftb.ca.gov/forms/2024/2024-3514-booklet.html",
         "https://www.ftb.ca.gov/forms/2025/2025-3514-booklet.pdf#page=6",
         "https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii",
+        "https://www.ftb.ca.gov/forms/2023/2023-3514-booklet.pdf#page=4",
     )
 
     def formula(tax_unit, period, parameters):
@@ -61,4 +62,5 @@ class ca_eitc_eligible(Variable):
             & meets_investment_income_requirements
             & meets_agi_requirements
             & meets_dependency_requirements
+            & tax_unit("eitc_marital_eligible", period)
         )

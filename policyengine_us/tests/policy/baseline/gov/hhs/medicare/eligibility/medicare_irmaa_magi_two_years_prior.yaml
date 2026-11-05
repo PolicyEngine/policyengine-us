@@ -2,11 +2,17 @@
 # holds no input for that year or any earlier one, the MAGI of the earliest
 # year with inputs (no earlier than 2015, the first modeled year) stands in,
 # deflated to the year two years prior by
-# calibration.gov.cbo.income_by_source.adjusted_gross_income_per_capita (CBO
+# calibration.gov.cbo.income_by_source.adjusted_gross_income_per_capita (total
 # AGI divided by population). That index starts in 2015 and is held at its
-# 2015 value before then:
-#   2015: 9,033,840,000,000 / 326,078,000 = 27,704.54
-#   2016: 9,033,840,000,000 / 328,964,000 = 27,461.49
+# 2015 value before then. Total AGI is IRS SOI Publication 1304 Table 1.1, all
+# returns, adjusted gross income less deficit, for 2015 to 2018
+# (https://www.irs.gov/pub/irs-soi/15in11si.xls to 18in11si.xls), and CBO's
+# series from 2019:
+#   2015: 10,210,310,102,000 / 326,078,000 = 31,312.48
+#   2016: 10,225,938,479,000 / 328,964,000 = 31,085.28
+#   2017: 11,009,900,155,000 / 331,211,000 = 33,241.35
+#   2018: 11,643,439,106,000 / 333,525,000 = 34,910.24
+#   2019: 11,962,000,000,000 / 335,329,000 = 35,672.43
 #   2022: 14,821,800,000,000 / 339,654,000 = 43,637.94
 #   2023: 15,347,400,000,000 / 342,835,000 = 44,766.14
 #   2024: 16,685,900,000,000 / 346,588,000 = 48,143.33
@@ -19,7 +25,7 @@
     age: 66
     employment_income: 500_000
   output:
-    # 500,000 x 27,704.54 (2013, held at 2015) / 27,704.54 (2015).
+    # 500,000 x 31,312.48 (2013, held at 2015) / 31,312.48 (2015).
     medicare_irmaa_magi_two_years_prior: 500_000
 
 - name: Case 2, 2016 benefit year with only 2016 inputs uses 2016 income.
@@ -29,8 +35,8 @@
     age: 66
     employment_income: 500_000
   output:
-    # 500,000 x 27,704.54 (2014, held at 2015) / 27,461.49 (2016).
-    medicare_irmaa_magi_two_years_prior: 504_425.34
+    # 500,000 x 31,312.48 (2014, held at 2015) / 31,085.28 (2016).
+    medicare_irmaa_magi_two_years_prior: 503_654.40
 
 - name: Case 3, 2015 benefit year counts 2013 income that is provided.
   period: 2015
@@ -69,13 +75,15 @@
   period: 2015
   input:
     age: 66
-    employment_income: 100_000
+    employment_income: 80_000
     is_medicare_eligible: true
     # 2015 standard Part B premium of $104.90 per month, supplied directly so
     # the case tests only the IRMAA amount.
     base_part_b_premium: 1_258.8
   output:
-    medicare_irmaa_magi_two_years_prior: 100_000
+    # 2015's first threshold is MAGI above $85,000, held at its 2010 level by
+    # 42 U.S.C. 1395r(i)(6); 80,000 is below it.
+    medicare_irmaa_magi_two_years_prior: 80_000
     gross_medicare_part_b_premium: 1_258.8
 
 - name: Case 7, 2016 Part D IRMAA is zero for an enrolled earner below the first threshold.
@@ -83,13 +91,43 @@
   absolute_error_margin: 0.01
   input:
     age: 66
-    employment_income: 100_000
+    employment_income: 80_000
     is_medicare_eligible: true
     medicare_enrolled: true
   output:
-    # 100,000 x 27,704.54 / 27,461.49, under the first threshold of 103,001.
-    medicare_irmaa_magi_two_years_prior: 100_885.07
+    # 80,000 x 31,312.48 / 31,085.28, under 2016's first threshold of MAGI
+    # above $85,000 (42 U.S.C. 1395r(i)(6), applied to Part D by
+    # 1395w-113(a)(7)).
+    medicare_irmaa_magi_two_years_prior: 80_584.71
     income_adjusted_part_d_premium_surcharge: 0
+
+- name: Case 8, 2018 benefit year with only 2018 inputs deflates 2018 income to 2016.
+  period: 2018
+  # MAGI is stored as float32, so allow for its rounding.
+  absolute_error_margin: 0.1
+  input:
+    age: 66
+    employment_income: 500_000
+  output:
+    # 500,000 x 31,085.28 (2016) / 34,910.24 (2018). Both years are IRS SOI
+    # totals. When total AGI had no 2016-2018 values, its 2015 value (tax-year
+    # 2013 AGI excluding dependent filers) was held, so the index fell with
+    # population (27,461.49 in 2016, 27,085.95 in 2018) and this came to
+    # 506,932.37.
+    medicare_irmaa_magi_two_years_prior: 445_217.19
+
+- name: Case 9, 2019 benefit year with only 2019 inputs deflates 2019 income to 2017.
+  period: 2019
+  # MAGI is stored as float32, so allow for its rounding.
+  absolute_error_margin: 0.1
+  input:
+    age: 66
+    employment_income: 500_000
+  output:
+    # 500,000 x 33,241.35 (2017, IRS SOI) / 35,672.43 (2019, CBO). When total
+    # AGI for 2017 held the old 2015 value, the index was 27,275.18 and this
+    # came to 382,300.59.
+    medicare_irmaa_magi_two_years_prior: 465_924.93
 
 - name: A 2025 household with only 2024 inputs has IRMAA set on deflated 2024 income.
   period: 2025

@@ -1,0 +1,76 @@
+description: Workforce Solutions Alamo sets this monthly parent share of cost for the first child in care, by income as a share of state median income, under the Texas Child Care Services program.
+
+# Each bracket covers income more than its threshold share of state median
+# income and not more than the next threshold, with the limits rounded to
+# whole dollars as in TWC's income ranges.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Texas CCS Alamo Board first child parent share of cost
+  reference:
+    - title: Workforce Solutions Alamo, Child Care Services (CCS) Sliding Fee Scale, effective October 1, 2023 through September 30, 2024
+      href: https://www.workforcesolutionsalamo.org/wp-content/uploads/Sliding-Fee-Scale-BCY24-Website.png
+    - title: Workforce Solutions Alamo, Child Care Services (CCS) Sliding Fee Scale, for care authorized October 1, 2024 - January 12, 2025
+      href: https://www.workforcesolutionsalamo.org/wp-content/uploads/ChildCare.png
+    - title: Workforce Solutions Alamo, Apply For Child Care, April 19, 2024 capture (shows the BCY 2024 chart)
+      href: https://web.archive.org/web/20240419150417/https://www.workforcesolutionsalamo.org/apply-for-child-care/
+    - title: Workforce Solutions Alamo, Apply For Child Care, February 19, 2025 capture (shows the October 1, 2024 - January 12, 2025 chart)
+      href: https://web.archive.org/web/20250219044915/https://www.workforcesolutionsalamo.org/apply-for-child-care/
+
+brackets:
+  - threshold:
+      2023-10-01: -.inf
+      2024-10-01: -.inf
+    amount:
+      2023-10-01: 30
+      2024-10-01: 30
+  - threshold:
+      2023-10-01: 0.2
+      2024-10-01: 0.2
+    amount:
+      2023-10-01: 50
+      2024-10-01: 50
+  - threshold:
+      2023-10-01: 0.3
+      2024-10-01: 0.3
+    amount:
+      2023-10-01: 75
+      2024-10-01: 75
+  - threshold:
+      2023-10-01: 0.4
+      2024-10-01: 0.4
+    amount:
+      2023-10-01: 100
+      2024-10-01: 100
+  - threshold:
+      2023-10-01: 0.5
+      2024-10-01: 0.5
+    amount:
+      2023-10-01: 170
+      2024-10-01: 170
+  - threshold:
+      2023-10-01: 0.6
+      2024-10-01: 0.6
+    amount:
+      2023-10-01: 210
+      2024-10-01: 210
+  - threshold:
+      2023-10-01: 0.7
+      2024-10-01: 0.7
+    amount:
+      2023-10-01: 250
+      2024-10-01: 250
+  - threshold:
+      2023-10-01: 0.75
+      2024-10-01: 0.75
+    amount:
+      2023-10-01: 270
+      2024-10-01: 270
+  - threshold:
+      2023-10-01: 0.8
+      2024-10-01: 0.8
+    amount:
+      2023-10-01: 290
+      2024-10-01: 290

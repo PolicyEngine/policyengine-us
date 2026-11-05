@@ -156,6 +156,7 @@
         age: 35
         is_tax_unit_head: true
         is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
         employment_income: 50_000
         fsla_overtime_premium: 3_000
     tax_units:
@@ -178,6 +179,7 @@
         age: 35
         is_tax_unit_head: true
         is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
         employment_income: 40_000
         fsla_overtime_premium: 1_000
     tax_units:
@@ -198,6 +200,8 @@
       head:
         age: 35
         is_tax_unit_head: true
+        is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
         employment_income: 40_000
         fsla_overtime_premium: 0
     tax_units:
@@ -222,12 +226,14 @@
         age: 38
         is_tax_unit_head: true
         is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
         employment_income: 50_000
         fsla_overtime_premium: 3_000
       spouse:
         age: 36
         is_tax_unit_spouse: true
         is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
         employment_income: 50_000
         fsla_overtime_premium: 3_000
     tax_units:
@@ -254,6 +260,7 @@
         age: 35
         is_tax_unit_head: true
         is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
         employment_income: 50_000
         fsla_overtime_premium: 3_000
         tip_income: 4_000
@@ -269,6 +276,7 @@
   output:
     ga_qualified_overtime_exclusion: 1_750
     ga_cash_tip_exclusion: 1_750
+    ga_subtractions: 3_500
 
 - name: GA HB463 - TY 2029 overtime/tips exclusions self-repealed; no subtraction flows
   # Both paragraphs stand repealed 12/31/2028; subtractions list drops both
@@ -281,6 +289,8 @@
       head:
         age: 35
         is_tax_unit_head: true
+        is_paid_hourly: true
+        weekly_hours_worked_before_lsr: 40
         employment_income: 50_000
         fsla_overtime_premium: 3_000
         tip_income: 4_000
@@ -298,6 +308,8 @@
     # and reserved on December 31, 2028. The subtractions list drops
     # ga_qualified_overtime_exclusion and ga_cash_tip_exclusion from
     # 2029-01-01, so neither flows through ga_subtractions.
+    ga_qualified_overtime_exclusion: 1_750
+    ga_cash_tip_exclusion: 1_750
     ga_subtractions: 0
 
 - name: GA HB463 - TY 2026 cash tip exclusion caps at $1,750 for tipped occupations

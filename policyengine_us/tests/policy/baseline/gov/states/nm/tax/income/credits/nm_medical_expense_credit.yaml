@@ -501,3 +501,17 @@
         state_code: NM
   output:
     nm_medical_expense_credit: 2800
+
+- name: New Mexico credit restores the exclusion supplied with a net Schedule A subtotal
+  period: 2025
+  input:
+    state_code: NM
+    age: 65
+    medicare_enrolled: false
+    claimed_as_dependent_on_another_return: false
+    # Schedule A line 1 of 25,000 leaves out 6,400 of premiums taken as the
+    # self-employed deduction; costs paid are 31,400, above the 28,000 floor.
+    itemized_medical_expenses: 25_000
+    itemized_medical_expenses_applied_exclusion: 6_400
+  output:
+    nm_medical_expense_credit: 2_800

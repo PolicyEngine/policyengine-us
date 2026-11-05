@@ -1,3 +1,18 @@
+# IRC 32(d)(2)(B) requires a resident qualifying child for the separated
+# spouse exception. Without one, the filer receives $0, despite a potential
+# $1,000 x 7.65% x 0.85 = $65.025 before the marital eligibility test.
+- name: 2025 married separate filer without a qualifying child receives no CalEITC
+  period: 2025
+  input:
+    state_code: CA
+    age: 25
+    employment_income: 1_000
+    filing_status: SEPARATE
+  output:
+    eitc_marital_eligible: false
+    ca_eitc_eligible: false
+    ca_eitc: 0
+
 - name: Eligible for the EITC in 2021
   period: 2021
   input:

@@ -1,6 +1,7 @@
 description: The IRS caps the qualifying contributions at the following amount under the saver's credit.
 values:
   2018-01-01: 2_000
+  2027-01-01: 2_100
 metadata:
   unit: currency-USD
   period: year
@@ -8,6 +9,8 @@ metadata:
   reference:
     - title: 26 U.S. Code § 25B(a)
       href: https://www.law.cornell.edu/uscode/text/26/25B
+    - title: Public Law 119-21, saver's credit contribution cap from 2027
+      href: https://www.govinfo.gov/content/pkg/PLAW-119publ21/pdf/PLAW-119publ21.pdf#page=97
     - title: IRS | Retirement Savings Contributions Credit (Saver's Credit)
       href: https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit
     - title: Publication 590-A

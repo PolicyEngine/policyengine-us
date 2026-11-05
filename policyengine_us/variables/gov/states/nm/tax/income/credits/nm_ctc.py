@@ -17,10 +17,9 @@ class nm_ctc(Variable):
         # Legal code refers to "adjusted gross income",
         # Tax form does not specify if federal or state AGI
         agi = tax_unit("adjusted_gross_income", period)
-        # The law 7-2-18.34(J)(2) defines qualifying children as those from IRC 152(c).
-        # IRC 152(c) refers to the EITC qualifying children.
-        # https://www.law.cornell.edu/uscode/text/26/152#c
-        children = tax_unit("eitc_child_count", period)
+        # NMSA 7-2-18.34(J)(2) defines qualifying children by IRC 152(c),
+        # without the Social Security number requirement of the federal EITC.
+        children = tax_unit("nm_ctc_qualifying_children", period)
         p = parameters(period).gov.states.nm.tax.income.credits.ctc
         amount_per_child = p.amount.calc(agi, right=True)
         amount = amount_per_child * children

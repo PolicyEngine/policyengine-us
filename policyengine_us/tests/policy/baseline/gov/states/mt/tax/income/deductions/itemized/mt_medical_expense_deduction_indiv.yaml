@@ -22,9 +22,10 @@
   period: 2021
   input:
      other_medical_expenses: 1_000
-     mt_agi_indiv: 20_000
+     health_insurance_premiums: 2_000
+     mt_agi_indiv: 10_000
      state_code: MT
-     is_tax_unit_head_or_spouse: true
+     is_tax_unit_head_or_spouse: false
   output:
      mt_medical_expense_deduction_indiv: 0
 
@@ -58,4 +59,114 @@
         members: [head, spouse]
         state_code: MT
   output:
-    mt_medical_expense_deduction_indiv: [3_250, 750]
+    # Line 1 floors only the other expenses; line 2 adds the premiums net of
+    # each spouse's own self-employed health insurance deduction, in full.
+    # Head: max(0, 500 - 7.5% x 30,000) + (6,000 - 1,000) = 0 + 5,000.
+    # Spouse: max(0, 500 - 7.5% x 10,000) + (3,000 - 2,000) = 0 + 1,000.
+    mt_medical_expense_deduction_indiv: [5_000, 1_000]
+
+- name: Medical insurance premiums are deducted in full on line 2, not under the floor
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+     other_medical_expenses: 1_000
+     health_insurance_premiums: 2_000
+     mt_agi_indiv: 20_000
+     state_code: MT
+     is_tax_unit_head_or_spouse: true
+  output:
+     # Line 1: max(0, 1,000 - 7.5% x 20,000) = max(0, 1,000 - 1,500) = 0.
+     # Line 2: 2,000 in full.
+     # Flooring the premiums with the other expenses would give
+     # 3,000 - 1,500 = 1,500.
+     mt_medical_expense_deduction_indiv: 2_000
+
+- name: Long-term care insurance premiums are deducted in full on line 3
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+     long_term_health_insurance_premiums: 1_500
+     mt_agi_indiv: 50_000
+     state_code: MT
+     is_tax_unit_head_or_spouse: true
+  output:
+     mt_medical_expense_deduction_indiv: 1_500
+
+- name: Premiums taken as the self-employed health insurance deduction are not deducted again
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+     is_self_employed: true
+     self_employment_income: 30_000
+     health_insurance_premiums: 5_000
+     other_medical_expenses: 4_000
+     mt_agi_indiv: 25_000
+     state_code: MT
+     is_tax_unit_head_or_spouse: true
+  output:
+     self_employed_health_insurance_ald_person: 5_000
+     # Line 1: 4,000 - 7.5% x 25,000 = 2,125. Line 2: 0.
+     mt_medical_expense_deduction_indiv: 2_125
+
+- name: Each spouse filing separately on the same form deducts their own premiums
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        health_insurance_premiums: 3_000
+        other_medical_expenses: 2_000
+        mt_agi_indiv: 20_000
+      person2:
+        is_tax_unit_spouse: true
+        health_insurance_premiums: 1_000
+        long_term_health_insurance_premiums: 800
+        mt_agi_indiv: 10_000
+      person3:
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 600
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # Head: line 1 max(0, 2,000 - 7.5% x 20,000) = 500, line 2 3,000.
+    # Spouse: line 2 1,000, line 3 800.
+    mt_medical_expense_deduction_indiv: [3_500, 1_800, 0]
+
+- name: Long-term care premiums taken as the self-employed health insurance deduction are not deducted again
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+     long_term_health_insurance_premiums: 400
+     self_employed_health_insurance_ald_person: 400
+     other_medical_expenses: 1_000
+     mt_agi_indiv: 10_000
+     state_code: MT
+     is_tax_unit_head_or_spouse: true
+  output:
+     # The deduction took all 400 of the long-term care premiums in Montana
+     # AGI, so line 3 is 0. Line 1: 1,000 - 7.5% x 10,000 = 250.
+     mt_medical_expense_deduction_indiv: 250
+
+- name: A reform that allows separate filing in 2024 keeps premiums under the floor
+  period: 2024
+  reforms: policyengine_us.tests.policy.baseline.gov.states.mt.tax.income.enable_mt_mfss_2024_reform.enable_mt_mfss_2024_reform
+  absolute_error_margin: 0.01
+  input:
+     health_insurance_premiums: 4_000
+     long_term_health_insurance_premiums: 1_000
+     other_medical_expenses: 2_000
+     mt_agi_indiv: 60_000
+     state_code: MT
+     is_tax_unit_head_or_spouse: true
+  output:
+     # The Itemized Deductions Schedule ended after 2023, so lines 2 and 3 do
+     # not apply: (4,000 + 2,000) - 7.5% x 60,000 = 1,500. Applying them would
+     # give 0 + 4,000 + 1,000 = 5,000.
+     mt_married_filing_separately_on_same_return_eligible: true
+     mt_medical_expense_deduction_indiv: 1_500

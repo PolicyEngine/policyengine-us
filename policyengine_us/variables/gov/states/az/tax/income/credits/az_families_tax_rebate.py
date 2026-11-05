@@ -5,6 +5,12 @@ class az_families_tax_rebate(Variable):
     value_type = float
     entity = TaxUnit
     label = "Arizona Families Tax Rebate"
+    documentation = (
+        "One-time Arizona Families Tax Rebate paid in 2023 and determined from the "
+        "2021 return. PolicyEngine attributes it to eligibility tax year 2021 through "
+        "az_refundable_credits. Its standalone formula can calculate an amount in "
+        "other years; it enters the refundable-credit total only in 2021."
+    )
     unit = USD
     reference = (
         "https://www.azleg.gov/legtext/56leg/1R/laws/0147.pdf#page=6",
