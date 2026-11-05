@@ -1,0 +1,28 @@
+description: Virginia awards these benefit points by household size under the Energy Assistance Program.
+# Appendix B: 1 to 2 persons 9 points, 3 to 5 persons 12, 6 or more 15. The
+# size counts only citizens and qualified aliens.
+brackets:
+  - threshold:
+      2003-01-01: 1
+    amount:
+      2003-01-01: 9
+  - threshold:
+      2003-01-01: 3
+    amount:
+      2003-01-01: 12
+  - threshold:
+      2003-01-01: 6
+    amount:
+      2003-01-01: 15
+
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: /1
+  period: year
+  label: Virginia EAP household size points
+  reference:
+    - title: LIHEAP Clearinghouse Virginia FY2026 benefit matrix, Appendix B (05/21, Transmittal 21-1), household size
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/VA_BenefitMatrix_2026.pdf#page=6
+    - title: Virginia Energy Assistance Manual, Volume IX, Chapter D, Appendix B (01/03, Transmittal 03-1), household size
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=65

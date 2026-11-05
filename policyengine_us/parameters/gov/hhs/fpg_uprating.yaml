@@ -1,0 +1,47 @@
+description: The US updates each year's federal poverty guidelines by the change in calendar-year average CPI-U over the two preceding calendar years; this index holds, at each guideline year, the average for the year before it.
+values:
+  # Guideline year Y holds the calendar-year average CPI-U for Y - 1. Uprating
+  # guideline year Y from Y - 1 therefore applies CY(Y-1)/CY(Y-2), the interval
+  # in 42 U.S.C. 9902(2) and the HHS notices (2026: +2.63%, calendar 2024 to
+  # calendar 2025). With this lag the index reproduces the published 2023-2026
+  # four-person guideline increases within 0.12%.
+  # Actuals: BLS calendar-year average CPI-U (CUUR0000SA0) for Y - 1.
+  2022-01-01: 270.970 # CY2021
+  2023-01-01: 292.655 # CY2022
+  2024-01-01: 304.702 # CY2023
+  2025-01-01: 313.689 # CY2024
+  2026-01-01: 321.943 # CY2025 (BLS averages 11 months; October 2025 was not collected)
+  # CBO forecasts: CY2025 grown at CBO's February 2026 calendar-year CPI-U
+  # growth: 321.943 * CBO CPI-U (Y - 1) / CBO CPI-U (2025).
+  2027-01-01: 331.359 # CY2026: 321.943 * 331.807 / 322.378
+  2028-01-01: 339.801 # CY2027: 321.943 * 340.260 / 322.378
+  2029-01-01: 347.825 # CY2028: 321.943 * 348.295 / 322.378
+  2030-01-01: 355.783 # CY2029: 321.943 * 356.264 / 322.378
+  2031-01-01: 363.836 # CY2030: 321.943 * 364.328 / 322.378
+  2032-01-01: 372.054 # CY2031: 321.943 * 372.557 / 322.378
+  2033-01-01: 380.453 # CY2032: 321.943 * 380.967 / 322.378
+  2034-01-01: 389.038 # CY2033: 321.943 * 389.564 / 322.378
+  2035-01-01: 397.817 # CY2034: 321.943 * 398.355 / 322.378
+  2036-01-01: 406.796 # CY2035: 321.943 * 407.346 / 322.378
+  2037-01-01: 415.980 # CY2036: 321.943 * 416.542 / 322.378
+  # Values for 2038-2100 are set programmatically in uprating_extensions.py
+metadata:
+  economy: false
+  unit: currency-USD
+  label: HHS poverty guideline uprating
+  reference:
+    - title: 42 U.S. Code § 9902(2)
+      href: https://www.law.cornell.edu/uscode/text/42/9902#2
+    - title: 2026 Annual Update of the HHS Poverty Guidelines
+      href: https://www.federalregister.gov/documents/2026/01/15/2026-00755/annual-update-of-the-hhs-poverty-guidelines
+    - title: 2025 Annual Update of the HHS Poverty Guidelines
+      href: https://www.govinfo.gov/app/details/FR-2025-01-17/2025-01377
+    - title: 2024 Annual Update of the HHS Poverty Guidelines
+      href: https://www.federalregister.gov/documents/2024/01/17/2024-00796/annual-update-of-the-hhs-poverty-guidelines
+    - title: BLS | CPI-U annual averages (CUUR0000SA0)
+      href: https://data.bls.gov/timeseries/CUUR0000SA0
+    - title: CBO | Economic Projections | February 2026
+      # Sheet: 2. Calendar Year, Row 53: CPI-U
+      href: https://www.cbo.gov/system/files/2026-02/51135-2026-02-Economic-Projections.xlsx
+    - title: CBO | Economic Projections | February 2026, calendar-year CSV (variable cpiu)
+      href: https://github.com/US-CBO/cbo-data/blob/284a95665f9f2f74ed1f482feb629b43fce323da/data/economic/economic_projections/calendar_2026-02.csv

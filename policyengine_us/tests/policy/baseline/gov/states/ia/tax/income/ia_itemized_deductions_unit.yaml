@@ -39,3 +39,59 @@
     filing_status: JOINT
   output:
     ia_itemized_deductions_unit: 11_000
+
+- name: Iowa mortgage insurance premium conformity in 2018.
+  period: 2018
+  input:
+    state_code: IA
+    adjusted_gross_income: 80_000
+    salt_deduction: 0
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    interest_deduction: 12_000
+    ia_itemized_deductions_unit: 10_000
+
+- name: Iowa mortgage insurance premium conformity in 2019.
+  period: 2019
+  input:
+    state_code: IA
+    adjusted_gross_income: 80_000
+    salt_deduction: 0
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    interest_deduction: 12_000
+    ia_itemized_deductions_unit: 10_000
+
+- name: Iowa mortgage insurance premium conformity in 2020.
+  period: 2020
+  input:
+    state_code: IA
+    adjusted_gross_income: 80_000
+    salt_deduction: 0
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    interest_deduction: 12_000
+    ia_itemized_deductions_unit: 12_000
+
+- name: Iowa mortgage insurance premium conformity in 2026.
+  period: 2026
+  input:
+    state_code: IA
+    adjusted_gross_income: 80_000
+    salt_deduction: 0
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    interest_deduction: 12_000
+    ia_itemized_deductions_unit: 12_000

@@ -1,7 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.above_the_line_deductions.limited_business_loss import (
-    section_461l_business_income_and_loss,
-)
 
 
 class net_investment_income_excess_business_loss(Variable):
@@ -49,7 +46,11 @@ class net_investment_income_excess_business_loss(Variable):
         investment_loss = tax_unit.sum(
             not_dependent * (rental_loss + farm_rent_loss + estate_loss + passive_loss)
         )
-        _, business_loss = section_461l_business_income_and_loss(tax_unit, period)
+        excess = tax_unit("excess_business_loss", period)
+        # Allowed plus disallowed losses give the gross business losses that
+        # section 461(l) compares with business income, each Schedule C
+        # category on its own (limited_business_loss).
+        business_loss = tax_unit("limited_business_loss", period) + excess
         # Provisional proportional split; see the documentation.
         investment_share = np.divide(
             investment_loss,
@@ -57,4 +58,4 @@ class net_investment_income_excess_business_loss(Variable):
             out=np.zeros_like(investment_loss),
             where=business_loss > 0,
         )
-        return tax_unit("excess_business_loss", period) * investment_share
+        return excess * investment_share

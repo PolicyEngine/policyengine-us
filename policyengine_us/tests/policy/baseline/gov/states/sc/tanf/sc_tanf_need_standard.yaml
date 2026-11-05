@@ -1,0 +1,32 @@
+# SC DSS TANF Policy Manual (Volume 67), Section 8.15 (page 133): the need
+# standard is 50% of the federal poverty guideline for the number of persons
+# in the benefit group, revised each October 1.
+
+- name: Case 1, benefit group of three in January 2025 uses the October 2024 guideline.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: SC
+    sc_tanf_benefit_group_size: 3
+  output:
+    # (15,060 + 2 x 5,380) / 12 = 2,151.67; x 0.5 = 1,075.83
+    sc_tanf_need_standard: 1_075.83
+
+- name: Case 2, benefit group of three in October 2025 uses the October 2025 guideline.
+  period: 2025-10
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2025: SC
+    sc_tanf_benefit_group_size: 3
+  output:
+    # (15,650 + 2 x 5,500) / 12 = 2,220.83; x 0.5 = 1,110.42
+    sc_tanf_need_standard: 1_110.42
+
+- name: Case 3, an empty benefit group has no need standard.
+  period: 2025-01
+  input:
+    state_code: SC
+    sc_tanf_benefit_group_size: 0
+  output:
+    sc_tanf_need_standard: 0

@@ -28,6 +28,7 @@ class niit_magi(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         not_dependent = ~person("is_tax_unit_dependent", period)
+        # Source conflict us:niit-magi-trust-code-h-adjustment
         estate_magi_adjustment = tax_unit.sum(
             not_dependent * person("estate_income_niit_magi_adjustment", period)
         )

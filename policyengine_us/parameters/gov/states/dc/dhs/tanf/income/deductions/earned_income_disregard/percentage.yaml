@@ -1,16 +1,22 @@
 description: The District of Columbia excludes this share of earnings from the Temporary Assistance for Needy Families program countable income, when computing the benefit value.
 
 values:
-  2001-10-01: 0.67
+  2001-10-01: 0.6666666666666666 # two thirds
 
 metadata:
   unit: /1
   period: month
   label: DC TANF earned income percentage disregard
   reference:
-    - title: Code of the District of Columbia § 4-205.11 (a)(1)
-      href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.11#(a)(1)
-    - title: DC TANF State Plan 2021 | Section 4 (4)(a) 
-      href: https://dhs.dc.gov/sites/default/files/dc/sites/dhs/service_content/attachments/TANF_Announcement_StatePlan_ForComment_01072020.pdf#page=22
-    - title: DC TANF State Plan 2024 | Section 4 (4)(a) 
-      href: https://dhs.dc.gov/sites/default/files/dc/sites/dhs/service_content/attachments/DC%20TANF%20State%20Plan_Oct-2023.pdf#page=22
+    - title: 29 DCMR § 5814.7(c) - Two-thirds (2/3) of remaining earned income
+      href: https://dcregs.dc.gov/Common/DCMR/SectionList.aspx?SectionNumber=29-5814
+    - title: Code of the District of Columbia § 4-205.11 (a)(4A)(A)
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.11#(a)(4A)(A)
+    - title: DC TANF State Plan 2021 | Section 4 (4)(a)
+      href: https://dhs.dc.gov/sites/default/files/dc/sites/dhs/service_content/attachments/TANF_Announcement_StatePlan_ForComment_01072020.pdf#page=23
+    - title: DC TANF State Plan 2024 | Section 4 (4)(a)
+      href: https://dhs.dc.gov/sites/default/files/dc/sites/dhs/service_content/attachments/DC%20TANF%20State%20Plan_Oct-2023.pdf#page=23
+    - title: DC TANF State Plan 2026 | Section 4 (4)(a)
+      href: https://dhs.dc.gov/sites/default/files/2026-09/DC%20TANF%20State%20Plan_October%202026_Final.pdf#page=22
+    - title: DC ESA Policy Manual, Part VI, Chapter 6, § 6.3 - Recipient disregards
+      href: https://dhs.dc.gov/sites/default/files/dc/sites/dhs/page_content/attachments/ESA_Policy_Manual_Combined.pdf#page=298

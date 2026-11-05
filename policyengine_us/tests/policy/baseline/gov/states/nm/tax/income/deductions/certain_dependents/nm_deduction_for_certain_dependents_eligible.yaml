@@ -3,7 +3,7 @@
   input:
     exemptions: 0
     state_code: NM
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_deduction_for_certain_dependents_eligible: true
 
@@ -12,7 +12,7 @@
   input:
     exemptions: 1
     state_code: NM
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_deduction_for_certain_dependents_eligible: false
 
@@ -22,6 +22,86 @@
   input:
     exemptions: 0
     state_code: NM
-    head_is_dependent_elsewhere: true
+    claimed_as_dependent_on_another_return: true
+  output:
+    nm_deduction_for_certain_dependents_eligible: false
+
+- name: Joint return where only one spouse is a dependent of another taxpayer (the claimable spouse is the head)
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        exemptions: 0
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    # A spouse who is not a dependent may still qualify (PIT-RC instructions).
+    nm_deduction_for_certain_dependents_eligible: true
+
+- name: Joint return where only one spouse is a dependent of another taxpayer (the claimable spouse is the spouse)
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        exemptions: 0
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NM
+  output:
+    # A spouse who is not a dependent may still qualify (PIT-RC instructions).
+    nm_deduction_for_certain_dependents_eligible: true
+
+- name: Joint return where both spouses are a dependent of another taxpayer
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        exemptions: 0
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
   output:
     nm_deduction_for_certain_dependents_eligible: false

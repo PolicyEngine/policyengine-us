@@ -7,15 +7,23 @@ class ar_agi_indiv(Variable):
     label = "Arkansas adjusted gross income for each individual"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=14"
+    reference = (
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=14",
+        # Filing Status 4: the primary's income in column A, the spouse's in B
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=12",
+        # Borrowed for dependents' income: parents filing separately report a
+        # child's income on the return of the parent with the greater
+        # taxable income
+        "https://www.law.cornell.edu/uscode/text/26/1#g_5_B",
+        "https://www.irs.gov/instructions/i8814",
+    )
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
         gross_income = person("ar_gross_income_indiv", period)
         income_exemptions = person("ar_exemptions", period)
         net_income = max_(gross_income - income_exemptions, 0)
-        # allocate any dependent gross income to tax unit head
-        is_dependent = person("is_tax_unit_dependent", period)
-        sum_dep_net_income = person.tax_unit.sum(is_dependent * net_income)
-        is_head = person("is_tax_unit_head", period)
-        return ~is_dependent * net_income + is_head * sum_dep_net_income
+        # Each spouse's column holds their own income. The dependents' income
+        # the model counts here goes on the column of the spouse with the
+        # greater income (a modelling convention; see the helper).
+        return move_dependent_amounts_to_filer(person, period, net_income)

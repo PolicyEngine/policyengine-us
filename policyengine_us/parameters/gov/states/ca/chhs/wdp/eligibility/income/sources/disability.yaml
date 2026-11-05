@@ -4,6 +4,11 @@ values:
     - social_security_disability
     - disability_benefits
     - workers_compensation
+    # NOTE: railroad_benefits is not listed. The exemption covers Railroad
+    # Retirement disability annuities until they convert to age annuities at
+    # full retirement age, but the input does not separate disability annuities
+    # from age, spouse or survivor annuities, so every railroad payment counts.
+    # https://github.com/PolicyEngine/policyengine-us/issues/10540
 
 metadata:
   unit: list
