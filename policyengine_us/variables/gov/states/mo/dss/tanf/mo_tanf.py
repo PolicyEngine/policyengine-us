@@ -25,5 +25,16 @@ class mo_tanf(Variable):
         # 13 CSR 40-2.310(14): "In the payment of TA benefits, the amount
         # shall always be lowered to the nearest dollar interval", and a
         # grant below $10 is not paid.
-        payment = np.floor(capped_benefit)
+        # Snap float32 subtraction within $0.00001 of a whole dollar before
+        # flooring. Published maxima minus cents-valued countable income
+        # stay at least $0.00004 below the next dollar when fractional.
+        # This tolerance preserves those deficits; float32 cannot preserve
+        # arbitrary inputs below the tolerance.
+        whole_dollars = np.rint(capped_benefit)
+        precise_benefit = where(
+            np.isclose(capped_benefit, whole_dollars, atol=0.00001, rtol=0),
+            whole_dollars,
+            capped_benefit,
+        )
+        payment = np.floor(precise_benefit)
         return where(payment >= p.minimum_payment, payment, 0)

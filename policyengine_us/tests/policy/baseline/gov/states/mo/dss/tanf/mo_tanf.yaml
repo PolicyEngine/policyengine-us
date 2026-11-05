@@ -106,3 +106,27 @@
   output:
     # 234 - 224 = 10, not less than the $10 minimum.
     mo_tanf: 10
+
+- name: A whole-dollar deficit survives float32 subtraction.
+  period: 2026-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_maximum_benefit: 234.08628
+    mo_tanf_countable_income: 127.08628
+  output:
+    # 234.08628 - 127.08628 = 107. Float32 stores the subtraction as
+    # 106.99999237060547; normalize its precision before lowering to dollars.
+    mo_tanf: 107
+
+- name: A fractional deficit below the next dollar stays below it.
+  period: 2026-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_standard_of_need: 846
+    mo_tanf_countable_income: 185.09
+  output:
+    # 846 x 0.34526 - 185.09 = 106.99996, lowered to 106.
+    # Rounding to $0.001 would change this fractional deficit to $107.
+    mo_tanf: 106
