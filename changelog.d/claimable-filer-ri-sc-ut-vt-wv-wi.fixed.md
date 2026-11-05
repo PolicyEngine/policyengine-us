@@ -1,0 +1,7 @@
+Apply the Rhode Island, South Carolina, Utah, Vermont, West Virginia and Wisconsin rules for a filer who can be claimed as a dependent: dependent exemptions, deductions and child credits on such a return, the Wisconsin dependent standard deduction and $250 exemption, the West Virginia exemptions and family credit, the Rhode Island and Vermont claimant tests for property tax relief and the renter credit, and Wisconsin's care subtraction and credit expenses.
+
+Preserve claimable-filer counts and the dependent-claimant filing exception in the contributed Rhode Island, South Carolina, Utah, Vermont and West Virginia exemption reforms. Preserve the Rhode Island and Wisconsin filer counts under the state dependent exemption repeal. For West Virginia returns on which no dependent adds an exemption, preserve the statutory $500 allowance per claimable filer in the baseline and contributed reform, and apply it to every claimable filer under the repeal override; retain existing dependent allocation when dependents add exemptions, pending resolution.
+
+Measure Wisconsin dependent standard deduction earnings on both tax paths with the federal worksheet's earned income: wages after pretax payroll deductions, taxable disability wages, and business and farm income, less the self-employment tax deduction.
+
+Use HUD zero-bedroom rents for zero-exemption Vermont renters in every stored fair market rent year (2021–2025).
