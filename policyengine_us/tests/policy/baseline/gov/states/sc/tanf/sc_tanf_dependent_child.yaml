@@ -174,3 +174,38 @@
     sc_tanf_countable_income: 0
     # floor(1,110 x 0.4046 = 449.11) = 449.
     sc_tanf: 449
+
+- name: Case 9, in a group with no adult the oldest member heads it even when a younger member is input as the tax unit head.
+  period: 2026-01
+  input:
+    people:
+      minor_parent:
+        age: 16
+        is_tax_unit_head: true
+      sibling:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 6_000
+      baby:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [minor_parent, sibling, baby]
+    spm_units:
+      spm_unit:
+        members: [minor_parent, sibling, baby]
+    households:
+      household:
+        members: [minor_parent, sibling, baby]
+        state_code: SC
+  output:
+    # The 16-year-old heads as the tax unit head, and the 17-year-old heads
+    # as the oldest member of a group with no adult, so the 17-year-old's
+    # earnings count.
+    sc_tanf_dependent_child: [false, false, true]
+    sc_tanf_gross_earned_income: [0, 500, 0]
+    # 6,000 / 12 = 500 a month, less the 50% January disregard: 250.
+    sc_tanf_countable_income: 250
+    # floor((1,110 - 250) x 0.4046 = 347.96) = 347.
+    sc_tanf: 347
