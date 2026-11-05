@@ -1,19 +1,23 @@
 # Unit tests for Washington Cascade Care Savings tax-unit eligibility.
 #
 # wa_cascade_care_savings_eligible (TaxUnit, bool) is true when:
-#   in_effect (2026+) AND aca_magi_fraction <= 2.5 (fpl_limit) AND the tax unit
-#   has at least one member in Group 1 or Group 3.
+#   in_effect (2026+) AND aca_magi / prior-year FPG <= 2.5 (fpl_limit; Section
+#   4(1)(c): "up to 250%") AND the tax unit has at least one member in Group 1
+#   or Group 3. The income test uses the exact ratio, not the truncated
+#   aca_magi_fraction.
 #     Group 1: is_aca_ptc_eligible (federally subsidized enrollee).
 #     Group 3: immigration_status == UNDOCUMENTED AND NOT
 #              wa_apple_health_expansion_eligible (undocumented, but not covered
 #              by the Apple Health Expansion Medicaid proxy).
-# All person-level gates and aca_magi_fraction are supplied directly so each
-# expected value is hand-verifiable.
+# All person-level gates are supplied directly. Supplied-income cases pin the
+# prior-year guideline to $10,000 and set aca_magi to the target ratio, so each
+# expected value is hand-verifiable; income-derived cases use the actual 2025
+# one-person guideline, $15,650.
 
 # --- Income limit boundary at 250% FPL (Group 1 member present) ---
 
 - name: Case 1, income just below 250% FPL with a Group 1 member is eligible.
-  # aca_magi_fraction 2.49 <= 2.5 and person1 is Group 1 -> eligible.
+  # 24_900 / 10_000 = 2.49 <= 2.5 and person1 is Group 1 -> eligible.
   period: 2026
   input:
     people:
@@ -23,7 +27,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.49
+        aca_magi: 24_900
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -32,7 +38,7 @@
     wa_cascade_care_savings_eligible: true
 
 - name: Case 2, income exactly at 250% FPL with a Group 1 member is eligible.
-  # aca_magi_fraction 2.5 <= 2.5 (inclusive "up to 250%") -> eligible.
+  # 25_000 / 10_000 = 2.5 <= 2.5 (inclusive "up to 250%") -> eligible.
   period: 2026
   input:
     people:
@@ -42,7 +48,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.5
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -51,7 +59,7 @@
     wa_cascade_care_savings_eligible: true
 
 - name: Case 3, income just above 250% FPL is ineligible.
-  # aca_magi_fraction 2.51 > 2.5 -> income-ineligible even with a Group 1 member.
+  # 25_100 / 10_000 = 2.51 > 2.5 -> income-ineligible even with a Group 1 member.
   period: 2026
   input:
     people:
@@ -61,12 +69,90 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.51
+        aca_magi: 25_100
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
         state_code: WA
   output:
+    wa_cascade_care_savings_eligible: false
+
+- name: Case 3a, $39,124 (249.994% of the 2025 guideline) is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_124
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    aca_magi_fraction: 2.49
+    wa_cascade_care_savings_eligible: true
+
+- name: Case 3b, $39,125 (exactly 250%) is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    aca_magi_fraction: 2.50
+    wa_cascade_care_savings_eligible: true
+
+- name: Case 3c, $39,125.47 (250.003%) is ineligible though truncated to 2.50.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125.47
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    aca_magi_fraction: 2.50
+    wa_cascade_care_savings_eligible: false
+
+- name: Case 3d, $39,280.56 (250.994%) is ineligible though truncated to 2.50.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_280.56
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    aca_magi_fraction: 2.50
     wa_cascade_care_savings_eligible: false
 
 # --- Group membership paths ---
@@ -84,7 +170,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -106,7 +194,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.0
+        aca_magi: 10_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -127,7 +217,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.5
+        aca_magi: 15_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -148,7 +240,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -167,7 +261,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        tax_unit_fpg:
+          2024: 10_000
     households:
       household:
         members: [person1]
@@ -199,7 +295,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        aca_magi_fraction: 1.6
+        aca_magi: 16_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1, person2, person3]
@@ -227,7 +325,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.4
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -252,7 +352,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.4
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -277,7 +379,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.4
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -288,7 +392,7 @@
 - name: Case 9e, income above 250% FPL with a Group-3 member is ineligible.
   # Closes the matrix: prior above-limit cases (Case 3) used a Group 1 member.
   # Here the sole member is Group 3 (UNDOCUMENTED, not Apple-Health-eligible),
-  # is_aca_ptc_eligible false explicitly. aca_magi_fraction 2.51 > 2.5 (fpl_limit)
+  # is_aca_ptc_eligible false explicitly. 25_100 / 10_000 = 2.51 > 2.5 (fpl_limit)
   # -> income-ineligible despite the Group 3 member.
   period: 2026
   input:
@@ -301,7 +405,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.51
+        aca_magi: 25_100
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -321,7 +427,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        tax_unit_fpg:
+          2026: 10_000
     households:
       household:
         members: [person1]
