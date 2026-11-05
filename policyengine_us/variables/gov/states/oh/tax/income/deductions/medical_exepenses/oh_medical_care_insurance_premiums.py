@@ -22,13 +22,12 @@ class oh_medical_care_insurance_premiums(Variable):
         # Premiums already deducted in computing federal AGI are not deducted
         # again (worksheet line 1 note).
         # Only the medical insurance part (Form 7206 line 1) of the
-        # deduction; its long-term care part (line 2) comes off
-        # oh_long_term_care_insurance_premiums.
+        # deduction: the deduction less its long-term care part (line 2),
+        # which comes off oh_long_term_care_insurance_premiums.
         self_employed_deduction = max_(
             0, person("self_employed_health_insurance_ald_person", period)
         )
-        medical_part = min_(
-            person("self_employed_health_insurance_premiums", period),
-            self_employed_deduction,
+        medical_part = self_employed_deduction - person(
+            "self_employed_health_insurance_ald_long_term_care_part", period
         )
         return max_(premiums - medical_part, 0)

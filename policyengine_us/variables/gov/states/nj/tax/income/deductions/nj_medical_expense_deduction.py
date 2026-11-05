@@ -42,11 +42,13 @@ class nj_medical_expense_deduction(Variable):
         # The federal base already excludes the filers' deduction and the
         # long-term care part (Form 7206 line 2) of each dependent's own
         # deduction. Remove the medical part (line 1) of each dependent's
-        # deduction, limited to that person's own paid medical premiums.
+        # deduction (the deduction less its long-term care part), limited to
+        # that person's own paid medical premiums.
         person = tax_unit.members
         dependent_medical_part = min_(
             person("self_employed_health_insurance_ald_excluded_premiums", period),
-            person("self_employed_health_insurance_premiums", period),
+            max_(0, person("self_employed_health_insurance_ald_person", period))
+            - person("self_employed_health_insurance_ald_long_term_care_part", period),
         )
         excluded_dependent_premiums = tax_unit.sum(
             dependent_medical_part * person("is_tax_unit_dependent", period)
