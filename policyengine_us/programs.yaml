@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, CO, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
+    coverage: AK, AR, AL, AZ, CO, DC, DE, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
     state_implementations:
       - state: AL
         status: partial
@@ -1073,6 +1073,14 @@ programs:
         full_name: DC Low Income Home Energy Assistance Program
         variable: dc_liheap_payment
         parameter_prefix: gov.states.dc.doee.liheap
+      - state: DE
+        status: partial
+        name: Delaware LIHEAP
+        full_name: Delaware Low Income Home Energy Assistance Program
+        variable: de_liheap
+        parameter_prefix: gov.states.de.dhss.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating matrix and the subsidized-housing flat award. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: MA
         status: complete
         name: Massachusetts LIHEAP

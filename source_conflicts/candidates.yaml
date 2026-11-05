@@ -2131,6 +2131,78 @@ candidates:
     on joint returns (de_elderly_or_disabled_income_exclusion_joint.py) and on other returns (de_elderly_or_disabled_income_exclusion_eligible_person.py).
     The statute-first rule requires replacing age-60 eligibility if the literal boundary is confirmed; verify individual-return
     scope and intervening editions.'
+- id: us-de:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can Delaware's 60% SMI heating limit exclude a household of 20 or more whose income is below the federal
+    110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: Delaware FY2026 LIHEAP State Plan, section 2.1, p.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=9
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The plan's 60% SMI limit falls below that floor from 20 members.
+  example: Twenty-five people with $150,000 exceed the $142,995 limit but are below the $162,415 floor (2025 guideline,
+    one-year lag), so they keep the last-band gas award of $155.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/de/dhss/liheap/eligibility/de_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/de/dhss/liheap/eligibility/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10612
+  state: unreviewed
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (de_liheap_eligible.py).
+- id: us-de:liheap-plan-income-checklist
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do strike benefits, insurance disability payments and minors' unearned income count for Delaware LIHEAP as
+    the manual provides or as the FY2026 plan checklist marks them?
+  sources:
+  - kind: manual
+    citation: DEAP Policies and Procedures Manual, sections 416, 416.2, 418 and 419.3, PDF pages 33, 35 and 37
+    url: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=33
+  - kind: plan
+    citation: Delaware FY2026 LIHEAP State Plan, section 1.9, PDF pages 6-7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=6
+  - kind: guidance
+    citation: Delaware LIHEAP RFP HSS-20-036 statement of work, which lists the manual as an applicable document and asks
+      for income documentation from members aged 18 and over not attending school, PDF pages 69 and 73
+    url: https://bidcondocs.delaware.gov/HSS/HSS_20036Liheap_RFP.pdf#page=69
+  readings:
+    statute: No statute is supplied; the manual counts strike benefits and disability payments made by an insurance
+      company to the individual, and excludes the income of members under 18 except child support and Social Security.
+    other: Plan 1.9 leaves "Strike Pay" and "Insurance payments made directly to the insured" unchecked. Its only
+      person-based exclusion, "Earned income of a child under the age of 18", is also unchecked, so a child's unearned
+      income of a checked type would count.
+  example: One adult with $20,000 of insurance disability payments and natural gas heat counts $20,000 and receives $318
+    under the manual, and counts $0 and receives $1,126 under the plan.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/de/dhss/liheap/income/sources/earned.yaml
+    - policyengine_us/parameters/gov/states/de/dhss/liheap/income/sources/unearned.yaml
+    - policyengine_us/parameters/gov/states/de/dhss/liheap/income/sources/minor_unearned.yaml
+    - policyengine_us/variables/gov/states/de/dhss/liheap/income/de_liheap_countable_income_person.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10612
+  state: ruled
+  note: 'Ruled 2026-11-02 for strike pay and disability payments, and 2026-11-03 for minors: follow the manual over the
+    plan. Neither text is a statute. The statement of work lists the manual as an applicable document, and plan 1.9 is a
+    checkbox summary. On minors, manual 418 is the specific rule, and the statement of work asks for income documentation
+    from members aged 18 and over not attending school. The manual also fills what the plan does not list: trusts
+    (estate_income, 416.2) and other taxable income (miscellaneous_income, 416.1). Its sections carry 2011-2015 dates.'
 - id: us-de:snap-child-support-exclusion
   program: snap
   years:
