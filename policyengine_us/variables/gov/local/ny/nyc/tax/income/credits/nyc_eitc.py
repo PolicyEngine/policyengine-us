@@ -11,6 +11,10 @@ class nyc_eitc(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "in_nyc"
+    reference = (
+        "https://www.nysenate.gov/legislation/laws/TAX/1310",
+        "https://www.tax.ny.gov/pdf/2025/inc/it215i_2025.pdf#page=2",
+    )
 
     def formula(tax_unit, period, parameters):
         # First get their NYAGI and EITC.
@@ -34,6 +38,14 @@ class nyc_eitc(Variable):
         excess = max_(0, ny_agi - threshold)
         pct_point_reduction_if_applicable = p.percent_reduction * excess
         pct_point_reduction = where(threshold > 0, pct_point_reduction_if_applicable, 0)
+
+        # From 2022, worksheet line 4 rounds the reduction with halves up.
+        # Protect exact halves from floating-point error before taking the floor.
+        pct_point_reduction = where(
+            period.start.year >= 2022,
+            np.floor(np.nextafter(pct_point_reduction * 10_000, np.inf) + 0.5) / 10_000,
+            pct_point_reduction,
+        )
 
         # Percentage is nonnegative because the last bracket is a flat 10%.
         percentage = percentage_pre_reduction - pct_point_reduction

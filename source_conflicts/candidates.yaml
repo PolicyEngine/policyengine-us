@@ -6781,6 +6781,51 @@ candidates:
     can be claimed, reading item C as marked for the whole return (ny_household_credit_potential.py, nyc_household_credit.py).
     An October 2026 ruling accepted the instructions; the statute-first rule requires a model change after resolving
     the statutory allocation.'
+- id: us-ny:nyc-eic-reduction-rounding
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: Should New York City EIC filers round the reduction to four decimal places before subtracting it from
+    the base percentage when the Legislature specifies no rounding?
+  sources:
+  - kind: statute
+    citation: N.Y. Tax Law 1310(f)(1)(B), (D), (F), (H)
+    url: https://www.nysenate.gov/legislation/laws/TAX/1310
+  - kind: statute
+    citation: NYC Administrative Code 11-1706(d)(1)(B), (D), (F), (H)
+    url: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-13608
+  - kind: instructions
+    citation: 2022 IT-215-I, NYC EIC rate worksheet line 4
+    url: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it215i-2022.pdf#page=3
+  - kind: instructions
+    citation: 2023 IT-215-I, NYC EIC rate worksheet line 4
+    url: https://www.tax.ny.gov/forms/html-instructions/2023/it/it215i-2023.htm
+  - kind: instructions
+    citation: 2024 IT-215-I, NYC EIC rate worksheet line 4
+    url: https://www.tax.ny.gov/pdf/2024/inc/it215i_2024.pdf#page=2
+  - kind: instructions
+    citation: 2025 IT-215-I, NYC EIC rate worksheet line 4
+    url: https://www.tax.ny.gov/pdf/2025/inc/it215i_2025.pdf#page=2
+  readings:
+    statute: The Legislature authorizes base percentages less per-dollar reductions and specifies no rounding.
+      Keeping the worksheet coefficient, an unrounded reduction preserves the full product.
+    other: The Department directs filers to round line 4's reduction to four decimal places before subtracting it
+      from the base percentage on line 6.
+  example: For 2025 NYAGI of $21,000, line 4 gives (21,000 - 19,999) * .00002 = .02002, which rounds to .0200.
+    The rate becomes .20 - .0200 = .1800; a federal EITC of $4,328 gives a NYC EIC of $779.04.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/local/ny/nyc/tax/income/credits/nyc_eitc.py
+    prs: []
+  state: ruled
+  note: The Department fills the precision gap; every available worksheet from 2022 through 2025 rounds the
+    reduction. Rounding starts in 2022, preserving earlier calculations despite parameter backdating.
+    No 2026 worksheet was available when checked. The model retains the existing .00002 coefficient;
+    this change does not resolve the statutory words two-tenths against the parenthetical numeric notation 0.002.
+    Axiom holds NYC 11-1706 and the 2025 worksheet. Captures here supply the state statute excerpt and the
+    2022-2024 worksheet instructions that its pinned corpus lacks.
 - id: us-ny:real-property-credit-claimable-spouse
   program: income-tax
   years:
