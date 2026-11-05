@@ -40,10 +40,10 @@ class ca_eitc_eligible(Variable):
         federal_agi = tax_unit("adjusted_gross_income", period)
         meets_agi_requirements = federal_agi < p.phase_out.final.end
 
-        # RTC 17052 adopts IRC 32(c)(1)(A)(ii)(III): without a qualifying
+        # California adopts IRC 32(c)(1)(A)(ii)(III) in RTC 17052: without a qualifying
         # child, neither joint filer may be another taxpayer's dependent.
-        # The instructions say to skip the dependency question for joint filers
-        # (FTB 3514, Step 4(d)); apply the statutory dependency restriction.
+        # FTB sends joint filers past the dependency question (3514, Step 4(d)).
+        # Apply the dependency restriction rather than the instructions' shortcut.
         has_qualifying_child = tax_unit.any(
             person("ca_is_qualifying_child_for_caleitc", period)
         )

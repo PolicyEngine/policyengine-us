@@ -24,7 +24,7 @@ class ar_low_income_tax_joint(Variable):
         p = parameters(period).gov.states.ar.tax.income.rates.low_income_tax_tables
         filing_status_separate = person.tax_unit("filing_status", period)
         status = filing_status_separate.possible_values
-        # Section 26-51-301 leaves the table's dependent count undefined.
+        # Arkansas leaves the table's dependent count undefined in 26-51-301.
         # We use the form's line 7B count to fill that gap: IRC 152 dependents
         # under 26-51-501(a)(3)(B), not unrestricted household members.
         # IRC 152(b)(1) leaves none when either filer can be claimed.

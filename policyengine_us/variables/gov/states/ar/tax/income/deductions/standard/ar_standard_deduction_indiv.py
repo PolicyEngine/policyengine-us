@@ -22,7 +22,7 @@ class ar_standard_deduction_indiv(Variable):
         )
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         p = parameters(period).gov.states.ar.tax.income.deductions
-        # Section 26-51-430 grants each taxpayer and spouse a deduction.
-        # The instructions say the deduction does not apply to dependents;
-        # that note cannot remove a claimable filer's statutory entitlement.
+        # Arkansas grants each taxpayer and spouse a deduction in 26-51-430.
+        # DFA says the deduction does not apply to dependents.
+        # Keep each filer's entitlement rather than the instructions' restriction.
         return head_or_spouse * p.standard[filing_status]

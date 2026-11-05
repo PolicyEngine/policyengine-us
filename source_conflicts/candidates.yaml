@@ -12484,7 +12484,7 @@ candidates:
     citation: 2025 Arkansas low-income tax tables, joint returns, PDF page 3
     url: https://www.dfa.arkansas.gov/wp-content/uploads/TaxTables_FI_2025.pdf#page=3
   readings:
-    statute: Section 26-51-301 separates returns by dependent count without defining dependent. Section 26-51-501 limits its IRC 152 definition to the personal-credit subdivision.
+    statute: Arkansas separates returns by dependent count without defining dependent in 26-51-301. Legislators confined the IRC 152 definition to personal credits in 26-51-501.
     other: AR1000F supplies the personal-credit dependent count on line 7B. Use that return count for the tables rather than an unrestricted household count.
   example: For 2025 joint AGI of $26,050 and two household children, a claimable filer has no IRC 152 dependents and pays $222 under the no-or-one table; counting the children gives $0.
   pe_us:
@@ -12546,8 +12546,8 @@ candidates:
     citation: 26 CAR 100-140(a)
     url: https://codeofarrules.arkansas.gov/Rules/Rule?chapterID=33&levelType=section&partID=941&sectionID=40247&subChapterID=261&subPartID=6195&titleID=26
   readings:
-    statute: Section 26-51-447 covers tuition for the taxpayer, spouse, or dependent without defining dependent. Section 26-51-501 confines its IRC 152 definition to its personal-credit subdivision.
-    other: AR1075 and 26 CAR 100-140 repeat the categories without requiring the student to appear as a dependent on this return. Neither settles the tuition term's meaning.
+    statute: Arkansas covers tuition for the taxpayer, spouse, or dependent without defining dependent in 26-51-447. Legislators confined the IRC 152 definition to personal credits in 26-51-501.
+    other: DFA repeats the categories in AR1075 and 26 CAR 100-140 without requiring a dependent claim on this return. DFA does not define dependent in either source.
   example: For a would-be dependent student's $1,000 tuition at a two-year college in 2025, the retained reading gives min(50% × $1,000, $2,646) = $500; importing IRC 152(b)(1) gives $0.
   pe_us:
     follows: unknown
@@ -12579,7 +12579,7 @@ candidates:
     url: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf#page=25
   readings:
     statute: Each joint filer remains an individual taxpayer. The claimed filer fails subsection (A) and files a return, so cannot enter subsection (C) as a nonfiling spouse. The unclaimed filer receives $25.
-    other: The joint worksheet enters two without adjusting for a claimed spouse, yielding $50 if the unclaimed spouse first qualifies.
+    other: ADOR tells joint filers to enter two without adjusting for a claimed spouse, yielding $50 if the unclaimed spouse first qualifies.
   example: One claimed spouse and no dependents give 1 x $25 = $25 under the statute, against 2 x $25 = $50 under the unadjusted worksheet.
   pe_us:
     follows: statute
@@ -12606,8 +12606,8 @@ candidates:
     url: https://www.ftb.ca.gov/forms/2025/2025-540-booklet.pdf#page=25
   readings:
     statute: Exclude a filer only after another taxpayer actually claimed them and they lived with that claimant for more than half the year.
-    other: The form asks whether another person can claim the filer and whether the filer lived with that person.
-  example: A single renter with $2,000 AGI and $6,000 rent can be claimed but remains unclaimed. If the renter lives with the would-be claimant for more than half the year, the statute gives $60 and the form gives $0.
+    other: FTB asks whether another person can claim the filer and whether the filer lived with that person.
+  example: A single renter with $2,000 AGI and $6,000 rent can be claimed but remains unclaimed. If the renter lives with the would-be claimant for more than half the year, the renter receives $60 under the statute and $0 under the form.
   pe_us:
     follows: statute
     code:

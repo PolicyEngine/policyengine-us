@@ -22,13 +22,13 @@ class ca_renter_credit(Variable):
         filing_status = tax_unit("filing_status", period)
         income_cap = p.income_cap[filing_status]
         income_eligible = agi <= income_cap
-        # RTC 17053.5(d)(2) excludes an individual only after an actual claim
+        # California excludes an individual under RTC 17053.5(d)(2) after an actual claim
         # and residence with that claimant for more than half the year.
-        # The form uses claimability; follow the actual-claim statute.
-        # The form's stopping questions also omit the individual scope of
-        # (d)(2). An eligible joint filer keeps $120 for 2025 under (a)(1)(A).
-        # Subsection (d)(3) expressly extends the homeowner exclusion to a
-        # spouse; subsection (d)(2) does not extend the dependent exclusion.
+        # Follow the actual-claim statute rather than the form's claimability test.
+        # FTB also stops readers without addressing (d)(2)'s individual scope.
+        # An eligible joint filer keeps $120 for 2025 under (a)(1)(A).
+        # Legislators expressly extend the homeowner exclusion to a spouse
+        # in (d)(3), but keep the dependent exclusion individual in (d)(2).
         person = tax_unit.members
         filer = person("is_tax_unit_head_or_spouse", period)
         excluded = person("claimed_as_dependent_on_another_return", period) & person(

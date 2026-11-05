@@ -16,8 +16,9 @@ class ar_post_secondary_education_tuition_deduction_person(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ar.tax.income.deductions.itemized.tuition
-        # Section 26-51-447 and AR1075 leave dependent undefined. Section
-        # 26-51-501 limits its IRC 152 definition to personal credits.
+        # Legislators left dependent undefined in 26-51-447; DFA repeats the
+        # term in AR1075. Legislators confined the IRC 152 definition to
+        # personal credits in 26-51-501.
         # Retain tuition for a supported student on a claimable return
         # pending resolution of that statutory ambiguity.
         tuition_expenses = person("qualified_tuition_expenses", period)
