@@ -22,8 +22,8 @@ def _nearest_100_half_down(amount):
 def test_ar_income_tax_bounds_round_to_nearest_100_from_2026():
     # A.C.A. 26-51-201(d)(1): bracket amounts are indexed "rounding to the
     # nearest one hundred dollars ($100)"; DFA rounded exact $50 ties down.
-    # From 2026 each bound is Act 1 of 2026's value times the loaded index,
-    # so a CPI refresh moves the expected values without breaking the test.
+    # PolicyEngine selects 2026 for the first adjustment. Each annual step
+    # adjusts the preceding rounded bound, starting from Act 1's tables.
     main = SYSTEM.parameters.gov.states.ar.tax.income.rates.main
     uprating = SYSTEM.parameters.gov.states.ar.tax.income.uprating
     high_income = main.high_income
@@ -37,19 +37,25 @@ def test_ar_income_tax_bounds_round_to_nearest_100_from_2026():
             tuple(range(94_700, 97_601, 100)),
         ),
     }
+    previous = {name: bases for name, (_, _, bases) in act_1_of_2026.items()}
     differs_from_rounding_down = False
     for year in range(2026, 2036):
         period = f"{year}-01-01"
-        factor = uprating(period) / uprating("2025-01-01")
+        factor = uprating(period) / uprating(f"{year - 1}-01-01")
         for name, (scale, indexes, bases) in act_1_of_2026.items():
             if scale is None:
                 loaded = (high_income.threshold(period),)
             else:
                 loaded = _thresholds(scale, period, indexes)
-            expected = tuple(_nearest_100_half_down(base * factor) for base in bases)
+            expected = tuple(
+                _nearest_100_half_down(bound * factor) for bound in previous[name]
+            )
             assert loaded == expected, (year, name)
-            rounded_down = tuple(base * factor // 100 * 100 for base in bases)
+            rounded_down = tuple(
+                bound * factor // 100 * 100 for bound in previous[name]
+            )
             differs_from_rounding_down |= loaded != rounded_down
+            previous[name] = expected
         assert isinf(main.rate.brackets[5].threshold(period))
         assert isinf(main.rate.brackets[6].threshold(period))
     # In 2026, 3% takes $5,600 to $5,768, rounded to $5,800.

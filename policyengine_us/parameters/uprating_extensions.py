@@ -101,10 +101,12 @@ def get_ar_cpi(parameters: ParameterNode, calendar_year: int) -> float:
 
 
 AR_INCOME_TAX_INDEX = "gov.states.ar.tax.income.uprating"
-# Act 1 of 2026 (1st Extraordinary Session) enacts the tax year 2026 tables,
-# and A.C.A. 26-51-201(a)(5) indexes them under (d). DFA indexed each newly
-# enacted table in its first year (the 2022, 2023 and 2024 cards), so the
-# 2026 tables are the base and 2026 is the first indexed year.
+# PolicyEngine selects 2026 as the first adjustment year under
+# us-ar:first-indexed-year-after-act-1-2026. Neither (a)(5) nor (d) names it.
+# DFA indexed newly enacted tables in its 2022-2024 cards, but lists unindexed
+# bounds in its withholding formula effective January 2026, before the
+# adjustment's August 2026 CPI window ends. We follow the cards' timing
+# pending DFA's 2026 card.
 AR_FIRST_INDEXED_YEAR = 2026
 
 
@@ -139,14 +141,15 @@ def round_ar_income_tax_bound(amount: float, interval: float) -> float:
 def extend_ar_income_tax_uprating(parameters: ParameterNode, end_year: int) -> None:
     """Build Arkansas's income tax index and index its bracket bounds.
 
-    The index is 1 before AR_FIRST_INDEXED_YEAR and compounds each year's
-    cost-of-living adjustment from then on. The statute's "if any" language
-    prevents a decrease.
+    The diagnostic index is 1 before AR_FIRST_INDEXED_YEAR and compounds
+    each year's unrounded cost-of-living adjustment from then on. Bound
+    metadata identifies the parameters this extension adjusts; the bounds
+    do not multiply their statutory bases by that cumulative index.
 
     Each bound whose uprating metadata names this index is then set, for
-    every year from AR_FIRST_INDEXED_YEAR to ``end_year``, to its tax year
-    2026 statutory value times the index, rounded by
-    round_ar_income_tax_bound to its metadata's interval. Core's own
+    every year from AR_FIRST_INDEXED_YEAR to ``end_year``, by adjusting the
+    preceding rounded bound and rounding again to its metadata's interval.
+    The first adjustment starts from the 2026 statutory value. Core's own
     rounding would send exact ties to even, so the bounds are written here,
     and Core's uprating, which starts after a parameter's last value, then
     adds nothing. Bracket-adjustment amounts are not bounds and stay fixed.
@@ -173,12 +176,15 @@ def extend_ar_income_tax_uprating(parameters: ParameterNode, end_year: int) -> N
         interval = meta["rounding"]["interval"]
         base = parameter(base_instant)
         starts_at_base = parameter.values_list[-1].instant_str >= base_instant
+        bound = base
         for year in range(AR_FIRST_INDEXED_YEAR, end_year + 1):
+            bound = round_ar_income_tax_bound(
+                bound * (1 + get_ar_cost_of_living_adjustment(parameters, year)),
+                interval,
+            )
             parameter.update(
                 start=instant(f"{year}-01-01"),
-                value=round_ar_income_tax_bound(
-                    base * index(f"{year}-01-01"), interval
-                ),
+                value=bound,
             )
         if starts_at_base:
             # Backdating copies a parameter's earliest value to earlier

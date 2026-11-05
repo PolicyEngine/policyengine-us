@@ -11,11 +11,11 @@ and `ar_uses_low_income_tax_tables`) has two paths:
   threshold) silently shifts every later bracket.
 - Later years apply the statutory tables of A.C.A. 26-51-201(a)(4) (Act 1 of
   2026): (A) marginal rates up to the high-income threshold, and above it the
-  (B) marginal rates less the (C) bracket adjustment. 26-51-201(a)(5) and
-  (d)(1) index every bracket bound each year, "rounding to the nearest one
-  hundred dollars ($100)"; the (C) dollar amounts are not bracket bounds and
-  stay fixed. The reduction is derived from the same indexed tables, so it
-  moves with the thresholds (a stored reduction would not).
+  (B) marginal rates less the (C) bracket adjustment. Under
+  26-51-201(a)(5) and (d)(1), the secretary adjusts every bracket bound each
+  year and rounds it to the nearest $100. The (C) dollar amounts stay fixed.
+  The reduction is derived from the same indexed tables, so it moves with
+  the thresholds (a stored reduction would not).
 
 Differential tests compare every integer taxable income against an
 independent transcription of each year's source:
@@ -26,10 +26,11 @@ independent transcription of each year's source:
   minus adjustment falls $10 per row. Asterisked rows span $200, so the next
   row's start is skipped.
 - 2026-2035: Act 1 of 2026's (1st Extraordinary Session) A.C.A.
-  26-51-201(a)(4) tables with every bracket bound indexed by Arkansas's
-  capped CPI-U index from 2026, the tables' first year (as DFA indexed each
-  new table in its first year), and rounded to the nearest $100 with exact
-  $50 ties down (as DFA's 2022 and 2024 cards did).
+  26-51-201(a)(4) tables with each preceding rounded bound adjusted annually
+  by Arkansas's capped CPI-U increase. PolicyEngine selects 2026 as the
+  first adjustment year, following its recorded reading and DFA's
+  2022-2024 cards. DFA's 2026 withholding formula retains unindexed bounds.
+  DFA rounded exact $50 ties down in its 2022 and 2024 cards.
 
 Invariants:
 - reduction.yaml rows carry strictly increasing finite thresholds, with every
@@ -68,7 +69,8 @@ from policyengine_us.variables.gov.states.ar.tax.income.ar_income_tax_helpers im
 )
 
 P = system.parameters.gov.states.ar.tax.income.rates.main
-UPRATING = system.parameters.gov.states.ar.tax.income.uprating
+CPI_U = system.parameters.gov.bls.cpi.cpi_u
+UPRATING_CAP = system.parameters.gov.states.ar.tax.income.uprating_cap
 PUBLISHED_YEARS = range(2021, 2026)
 SOURCE_YEARS = range(2021, 2036)
 LONG_RUN_YEARS = [2050, 2075, 2100]
@@ -197,29 +199,52 @@ def nearest_100(amount):
 
 
 def indexed_act_1_of_2026_tax(year, ti):
-    """Act 1 of 2026's tables, every bracket bound indexed from 2026."""
-    return act_1_of_2026_tax_at(UPRATING(f"{year}-01-01") / UPRATING("2025-01-01"), ti)
+    """Adjust preceding rounded bounds annually, first in 2026."""
+
+    def calendar_cpi(calendar_year):
+        months = [(calendar_year - 1, month) for month in range(9, 13)] + [
+            (calendar_year, month) for month in range(1, 9)
+        ]
+        return np.mean([CPI_U(f"{year}-{month:02d}-01") for year, month in months])
+
+    annual_factors = [
+        1
+        + min(
+            UPRATING_CAP(f"{adjustment_year}-01-01"),
+            max(
+                calendar_cpi(adjustment_year) / calendar_cpi(adjustment_year - 1) - 1, 0
+            ),
+        )
+        for adjustment_year in range(2026, year + 1)
+    ]
+    return act_1_of_2026_tax_at(annual_factors, ti)
 
 
 def act_1_of_2026_tax_at(factor, ti):
-    """Act 1 of 2026's tables with every bracket bound times ``factor``."""
-    starts = [nearest_100(start * factor) for start, _ in ACT_1_TABLE_A]
+    """Apply one factor or a sequence of annual factors to each bound."""
+
+    def adjusted_bound(bound):
+        for annual_factor in np.atleast_1d(factor):
+            bound = nearest_100(bound * annual_factor)
+        return bound
+
+    starts = [adjusted_bound(start) for start, _ in ACT_1_TABLE_A]
     ends = starts[1:] + [np.inf]
     rates = [rate for _, rate in ACT_1_TABLE_A]
     table_a = sum(
         rate * np.clip(ti - start, 0, end - start)
         for start, end, rate in zip(starts, ends, rates)
     )
-    top_2_percent = nearest_100(ACT_1_TABLE_B_2_PERCENT_TOP * factor)
+    top_2_percent = adjusted_bound(ACT_1_TABLE_B_2_PERCENT_TOP)
     table_b = 0.02 * np.minimum(ti, top_2_percent) + 0.037 * np.maximum(
         ti - top_2_percent, 0
     )
-    bounds = np.array([nearest_100(bound * factor) for bound, _ in ACT_1_LADDER])
+    bounds = np.array([adjusted_bound(bound) for bound, _ in ACT_1_LADDER])
     amounts = np.array([amount for _, amount in ACT_1_LADDER])
     # Row k covers income above bounds[k] up to and including bounds[k + 1].
     row = np.searchsorted(bounds, ti, side="left") - 1
     adjustment = np.where(row >= 0, amounts[np.maximum(row, 0)], 0)
-    threshold = nearest_100(ACT_1_THRESHOLD * factor)
+    threshold = adjusted_bound(ACT_1_THRESHOLD)
     return np.where(ti <= threshold, table_a, table_b - adjustment)
 
 
