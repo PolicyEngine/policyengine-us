@@ -660,9 +660,10 @@
   # add-back and the floor decides the result.
   # AGI: 5,000 - 5,000 x 0.9235 x 0.153 / 2 = 5,000 - 353.24 = 4,646.76.
   # Deductions: 2026 standard deduction 16,100 + QBI deduction 400 = 16,500.
-  # MCA 15-30-2101(22) starts from federal taxable income, which 26 U.S.C. 63
-  # computes as AGI minus deductions with no floor; MCA 15-30-2120(2)(i) adds
-  # the QBI deduction claimed back to that base before Form 2's line 7 floor.
+  # Montana starts from federal taxable income (MCA 15-30-2101(22)) and adds
+  # back the QBI deduction claimed (MCA 15-30-2120(2)(i)). On the 2025 Form 2,
+  # the filer leaves that deduction out of line 2 (Form 1040 lines 12e and
+  # 13b) and enters line 1 minus line 2, or zero, on line 3.
   # max(0, 4,646.76 - 16,500 + 400) = 0, not max(0, 4,646.76 - 16,500) + 400 = 400.
   period: 2026
   absolute_error_margin: 0.01
