@@ -19,7 +19,11 @@ class basic_standard_deduction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.deductions.standard
         filing_status = tax_unit("filing_status", period)
-        separate_filer_itemizes = tax_unit("separate_filer_itemizes", period)
+        # IRC 63(c)(6)(A) applies only to a married individual filing a
+        # separate return.
+        separate_filer_itemizes = tax_unit("separate_filer_itemizes", period) & (
+            filing_status == filing_status.possible_values.SEPARATE
+        )
         # A joint return uses the dependent worksheet, with the couple's
         # earned income and the joint amount as the cap, when either spouse
         # can be claimed.
