@@ -4,9 +4,11 @@ from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusi
 )
 from policyengine_us.variables.gov.states.ca.cdss.capi._ca_capi_ssi_ssp_standard import (
     ca_capi_couple_computation,
-    ca_capi_in_title_xix_facility,
     ca_capi_spouse_ssi_ssp,
     ca_capi_ssi_ssp_standard,
+)
+from policyengine_us.variables.gov.states.ca.cdss.state_supplement._ca_state_supplement_rates import (
+    ca_in_title_xix_facility,
 )
 
 
@@ -29,7 +31,9 @@ class ca_capi_person(Variable):
     def formula(person, period, parameters):
         # When only the California facility input separates a couple that SSI
         # computes jointly, ssi_countable_income holds half the couple's
-        # income; each spouse's own income counts (20 CFR 416.414(b)(3)).
+        # income; each spouse's own income counts (20 CFR 416.414(b)(3)). The
+        # same goes for a dependent who shares the couple's unit because the
+        # situation has no marital units.
         # NOTE: this own income leaves out in-kind support and the student
         # earned income exclusion, which SSI's joint computation would apply.
         separated = person(
@@ -53,7 +57,7 @@ class ca_capi_person(Variable):
         # Deeming needs an ineligible spouse living in the same household
         # (20 CFR 416.1160(a)(1)), so a Title XIX facility resident counts
         # only their own income.
-        medical_facility = ca_capi_in_title_xix_facility(person, period)
+        medical_facility = ca_in_title_xix_facility(person, period)
         income = where(medical_facility, own_income, countable_income)
         # NOTE: the reduced-needs standards for another person's household are
         # not modeled (issue 7892), so those recipients get the
@@ -67,9 +71,12 @@ class ca_capi_person(Variable):
         # can still pay such a spouse SSI that SSA would not (issue 10481).
         capi_eligible = person("ca_capi_eligible_person", period.this_year)
         joint = ca_capi_couple_computation(person, period)
-        couple_with_spouse = joint & ~(person.marital_unit.sum(capi_eligible) > 1)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
+        couple_with_spouse = joint & ~(
+            person.marital_unit.sum(capi_eligible & head_or_spouse) > 1
+        )
         spouse_ssi_ssp = ca_capi_spouse_ssi_ssp(person, period)
-        couple_income = person.marital_unit.sum(countable_income)
+        couple_income = person.marital_unit.sum(countable_income * head_or_spouse)
         # A spouse counts as an eligible spouse only while receiving SSI/SSP
         # (MPP 49-005(e)(3), 49-050.13). A spouse paid neither is an
         # ineligible spouse (MPP 49-005(i)(2)), whose income is deemed.

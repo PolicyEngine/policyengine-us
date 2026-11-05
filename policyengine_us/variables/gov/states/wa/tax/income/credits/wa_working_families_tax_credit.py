@@ -153,15 +153,13 @@ class wa_working_families_tax_credit(Variable):
         # $0.24 for 3+), which equal this ratio. The $50 minimum (RCW
         # 82.08.0206(3)(c)) then floors any positive reduced amount.
         phase_out_rate = max_amount / phase_out_start_reduction
-        # Modeling choice: the reduction is measured against the greater of
-        # earned income or AGI, the same measure used for the
-        # maximum-qualifying-income ceiling above. RCW 82.08.0206(2)(b) defines
-        # "income" as earned income (26 U.S.C. Sec. 32), so using the greater
-        # of earned income and AGI is not the statutory base; it can
-        # over-reduce households whose AGI exceeds their earned income inside
-        # the band. Aligning the reduction base to earned income alone is a
-        # follow-up.
-        excess = max_(0, higher_income - phase_out_start)
+        # The reduction is measured on earned income: RCW 82.08.0206(3)(b)
+        # reduces the refund "per additional dollar of income", and (2)(b)
+        # defines "income" as earned income under 26 U.S.C. Sec. 32. WAC
+        # 458-20-285 Answer 10C: "The department calculates your WFTC refund
+        # based on your earned income". AGI still sets the eligibility
+        # ceiling above (Answer 4C).
+        excess = max_(0, earnings - phase_out_start)
         reduction = excess * phase_out_rate
         phased_out_amount = max_amount - reduction
         # RCW 82.08.0206(3)(b): the reduced refund is rounded to the nearest
