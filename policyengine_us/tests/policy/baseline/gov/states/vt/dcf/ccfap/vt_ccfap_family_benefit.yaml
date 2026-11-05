@@ -1,0 +1,299 @@
+# The family's saving under CCFAP, which differs from the state's payment to
+# the provider (vt_ccfap) from December 17, 2023. CCFAP Understanding Payments:
+# the family pays the family share to the provider (question 1) plus any charge
+# above the state rate (question 6), and the state pays the state rate less the
+# family share whatever the provider charges (question 3).
+# Cases 1 to 6 use one preschooler at a licensed center, full time, in a family
+# at 250% of the poverty line, as in vt_ccfap.yaml Case 1: a $439 weekly state
+# rate and a $100 weekly family share, so the state pays
+# ($439 - $100) * 52 / 12 = $1,469.00 a month.
+
+- name: Case 1, a charge below the state rate saves the family the charge less its share.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 52_875
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        pre_subsidy_childcare_expenses: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # The "Jane Smith" example: the provider charges $10,000 / 52 = $192.31 a
+    # week, below the $439 state rate. The family pays its $100 share and saves
+    # ($192.31 - $100) * 52 / 12 = $400.00 a month; the state still pays $1,469.
+    vt_ccfap_family_benefit: 400.00
+    vt_ccfap: 1_469.00
+
+- name: Case 2, a charge above the state rate leaves the excess to the family.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 52_875
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        pre_subsidy_childcare_expenses: 25_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # The "Honey Child Care" example: $25,000 / 52 = $480.77 a week, above the
+    # $439 state rate. The family pays its share plus the $41.77 excess, so it
+    # saves what the state pays: ($439 - $100) * 52 / 12 = $1,469.00.
+    vt_ccfap_family_benefit: 1_469.00
+    vt_ccfap: 1_469.00
+
+- name: Case 3, a family share above the charge saves the family nothing.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 52_875
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        pre_subsidy_childcare_expenses: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # $1,000 / 52 = $19.23 a week, below the $100 share: paying the provider
+    # directly costs the family less, so CCFAP saves it nothing.
+    vt_ccfap_family_benefit: 0
+    vt_ccfap: 1_469.00
+
+- name: Case 4, with care hours and no bill the family saves what the state pays.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 52_875
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # The charge is unknown, so the state rate stands in for it.
+    vt_ccfap_family_benefit: 1_469.00
+    vt_ccfap: 1_469.00
+
+- name: Case 5, a child with no care hours and no bill saves the family nothing.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 52_875
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    vt_ccfap_family_benefit: 0
+    vt_ccfap: 0
+
+- name: Case 6, a Reach Up family with no share has its whole bill covered.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        pre_subsidy_childcare_expenses: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled:
+          2025-01: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Reach Up families pay no share. The infant rate is $471 a week, above the
+    # $192.31 weekly charge, so the family saves its whole bill, $10,000 / 12,
+    # and the state pays $471 * 52 / 12 = $2,041.00.
+    vt_ccfap_family_benefit: 833.33
+    vt_ccfap: 2_041.00
+
+- name: Case 7, each child's share of the bill is set against that child's rate.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 52_875
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        vt_ccfap_family_share: 0
+        spm_unit_pre_subsidy_childcare_expenses: 45_760
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    # Each child's share is $22,880 a year, $440 a week. That sits below the
+    # $471 infant rate and above the $439 preschool rate, so the family saves
+    # ($440 + $439) * 52 / 12 = $3,809.00. The state pays
+    # ($471 + $439) * 52 / 12 = $3,943.33.
+    vt_ccfap_family_benefit: 3_809.00
+    vt_ccfap: 3_943.33
+
+- name: Case 8, before December 17, 2023, the family saves what the state pays.
+  absolute_error_margin: 0.01
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        vt_ccfap_eligible_child: true
+        vt_ccfap_state_rate: 325
+        pre_subsidy_childcare_expenses: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Vermont paid the lesser of the charge and the state rate: $10,000 / 12.
+    vt_ccfap_family_benefit: 833.33
+    vt_ccfap: 833.33
+
+- name: Case 9, from December 17, 2023, the state pays above the bill and the family saves the bill.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        vt_ccfap_eligible_child: true
+        vt_ccfap_state_rate: 439
+        pre_subsidy_childcare_expenses: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # The same family as Case 8 a year later: the state pays
+    # $439 * 52 / 12 = $1,902.33, and the family saves its $10,000 / 12 bill.
+    vt_ccfap_family_benefit: 833.33
+    vt_ccfap: 1_902.33
+
+- name: Case 10, an ineligible family saves nothing.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 125_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        pre_subsidy_childcare_expenses: 25_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Income above 575% of the poverty line, as in vt_ccfap.yaml Case 2.
+    vt_ccfap_family_benefit: 0
+    vt_ccfap: 0
