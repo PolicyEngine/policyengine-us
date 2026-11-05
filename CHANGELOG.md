@@ -1,3 +1,63 @@
+## [2.96.2] - 2026-11-05
+
+### Fixed
+
+- Add the Medicare Part B and Part D income-related monthly adjustment brackets for 2015-2023 and the standard Part B premium for 2015-2020, which had been backdated from their 2024 and 2021 values.
+
+
+## [2.96.1] - 2026-11-05
+
+### Fixed
+
+- From 2021, a filer whose only qualifying child lacks a valid SSN gets the zero-child EITC without the childless age test (IRC 32(c)(1)(A)(i); ARPA section 9622).
+- Restrict military survivor retirement tax exemptions to eligible surviving spouses in Arizona, Idaho, Indiana, Michigan, North Dakota, New Mexico, Rhode Island, South Carolina, and Virginia. Apply New Mexico's 2025 survivor eligibility date and use Michigan's eligible subtraction in retirement deduction worksheets. Limit South Carolina's general survivor retirement deduction to surviving spouses, base its maximum on the deceased spouse's age, and drop the 2021 reduction by the military survivor deduction.
+
+
+## [2.96.0] - 2026-11-05
+
+### Added
+
+- Add an opt-in annual earnings-history Social Security calculator with shared owners' draw credit, mini-PIAs, named above-cap credit variants, and a reconciliation ledger.
+
+### Fixed
+
+- With the abolish-federal-income-tax or abolish-payroll-tax parameter on, household tax and net income now count every other tax: the Idaho permanent building fund tax, the California, Indiana, North Carolina, Oklahoma and Pennsylvania use taxes, and every local income and occupational tax (only New York City's was counted), along with the Colorado AMT, the Michigan surtax and the Vermont child care contribution. Mississippi tax now counts after its nonrefundable credits, Pennsylvania refundable credits are no longer counted twice, and federal refundable credits leave household net income in every year the federal income tax is abolished, including when the parameter is first set after 2024.
+- Count eligible long-term care insurance premiums, up to the 26 U.S.C. 213(d)(10) limit for the insured person's age, in Schedule A medical expenses and the self-employed health insurance deduction. Ohio, Idaho, New Jersey and Michigan remove only the part of that deduction that took the premiums each one counts.
+- Fill total AGI in calibration.gov.cbo.income_by_source.adjusted_gross_income for 2015-2018 with IRS Statistics of Income actuals. The 2015 value was tax-year 2013 AGI excluding dependent filers and was held flat through 2018, so dollar inputs on the default uprating series (those with no series of their own, such as charitable donations) dated 2018 or earlier came out 13% to 29% too high when uprated to 2019 or later, and up to 12% too low when uprated to a year within 2016-2018. Medicare IRMAA's two-year lookback deflates income by the same per-capita index, so a household entered for a single benefit year from 2016 to 2020 now gets that year's income times 1.007, 0.942, 0.890, 0.932 or 0.929, instead of 1.009, 1.016, 1.014, 0.765 or 0.721.
+- Start Vermont's 2017 taxable income from federal taxable income, with the former 32 V.S.A. § 5811(21) itemized deduction addback, additions and subtractions, and add the 2017 federal standard deduction amounts.
+
+### Removed
+
+- Removed the abolish-federal-income-tax and abolish-payroll-tax structural reforms (`policyengine_us.reforms.federal`). Their parameters, `gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax` and `abolish_payroll_tax`, still abolish the taxes through the baseline formulas. Also removed the parameters `gov.household.household_tax_before_refundable_credits`, which only those reforms read, and `gov.household.household_refundable_credits`, which nothing read.
+
+
+## [2.95.0] - 2026-11-05
+
+### Added
+
+- Add an optional California out-of-state municipal bond interest input for nondependent filers and document the zero-addback default.
+- Add state income tax rebate adjustments and a pre-rebate comparison output that preserves ordinary credits and existing tax calculations.
+
+### Changed
+
+- Document automatic Alaska PFD and energy relief calculations, person-level overrides, and the 2022 payment split.
+- Clarify tax-unit dependent and spouse inference for callers and add explicit-role regression examples.
+
+
+## [2.94.9] - 2026-11-05
+
+### Fixed
+
+- Correct pre-2018 AMT for child filers by applying the limited exemption to AMT income, excluding joint returns from the child exemption cap, applying the support test to 18-year-olds and full-time students, and judging the child rule by the filer alone.
+
+
+## [2.94.8] - 2026-11-05
+
+### Fixed
+
+- Zero the whole standard deduction, including the aged and blind amount, for a married separate filer whose spouse itemizes (IRC 63(c)(6)), and leave employer dependent care benefits out of income tax, FICA and FUTA wages, adding back any part above the IRC 129 exclusion and counting it as EITC earned income.
+
+
 ## [2.94.7] - 2026-11-04
 
 ### Fixed

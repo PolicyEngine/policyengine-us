@@ -17,6 +17,11 @@ DEPENDENT_GROSS_INCOME_SOURCE_OVERRIDES = {
     # Gross income includes gains but not losses (computed below). Modified
     # AGI nets them, subject to the IRC 1211(b) limit.
     "capital_gains": [],
+    # Dependent care benefits above the IRC 129 exclusion depend on the
+    # exclusion's filing-status cap, and filing status depends on this
+    # variable. Excluded benefits are already out of irs_employment_income;
+    # the taxable excess is left out here to break that cycle.
+    "taxable_dependent_care_benefits": [],
 }
 
 

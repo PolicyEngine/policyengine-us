@@ -14,6 +14,11 @@ reforms replace household_benefits or spm_unit_benefits with their own
 hardcoded list, so a contributed program added to the baseline aggregates is
 silently dropped under those reforms unless it is added to every copy. That
 shipped with the Trump dividend, which #9430 added to the baseline lists only.
+
+The last test keeps reforms from copying the household tax totals at all. The
+abolish-federal-income-tax and abolish-payroll-tax reforms once did, from a
+separate list that lost the Idaho permanent building fund tax, five states'
+use taxes and every local tax except New York City's.
 """
 
 import ast
@@ -305,4 +310,77 @@ def test_reform_aggregates_keep_shared_cash_programs(
     assert not missing, (
         f"{source_path} redefines {variable_name} and drops {missing}, which "
         "both income totals count. Add them to this copy."
+    )
+
+
+# --- Household tax totals -------------------------------------------------
+
+HOUSEHOLD_TAX_TOTALS = {
+    "household_tax_before_refundable_credits",
+    "household_state_tax_before_refundable_credits",
+    "state_income_tax_before_refundable_credits",
+    "state_use_tax",
+    "local_income_tax_before_refundable_credits",
+    "local_occupational_tax",
+    "household_refundable_tax_credits",
+    "income_tax_refundable_credits_in_force",
+    "federal_income_tax_in_force",
+    "household_refundable_state_tax_credits",
+    "household_refundable_local_tax_credits",
+    "household_tax",
+    "household_net_income",
+}
+
+
+def test_no_reform_redefines_a_household_tax_total():
+    """Change a component or the baseline formula instead of copying a total.
+
+    A copy keeps the components it was written with, so it misses any that
+    the baseline total gains later.
+    """
+    redefinitions = []
+    for source in sorted((PACKAGE / "reforms").rglob("*.py")):
+        tree = ast.parse(source.read_text())
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ClassDef) and node.name in HOUSEHOLD_TAX_TOTALS:
+                redefinitions.append(f"{source.relative_to(PACKAGE)}::{node.name}")
+    assert not redefinitions, (
+        "Reforms redefine household tax totals, which then drift from the "
+        f"baseline: {redefinitions}"
+    )
+
+
+# Components that the abolish parameters zero in their own formulas. The
+# household totals rely on those checks, so a reform that replaces one of
+# these variables must keep reading the parameter.
+ABOLITION_CHECKS = {
+    "income_tax": "abolish_federal_income_tax",
+    "income_tax_before_refundable_credits": "abolish_federal_income_tax",
+    "income_tax_chapter_1": "abolish_federal_income_tax",
+    "employee_payroll_tax": "abolish_payroll_tax",
+}
+
+
+def test_reforms_replacing_an_abolished_tax_keep_the_abolition_check():
+    """A replacement without the check would charge the tax again.
+
+    Before the abolish parameters relied on the baseline formulas alone, the
+    structural reforms dropped the abolished tax from the household total by
+    name. Now only the check inside each formula drops it.
+    """
+    missing = []
+    for source in sorted((PACKAGE / "reforms").rglob("*.py")):
+        tree = ast.parse(source.read_text())
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ClassDef) and node.name in ABOLITION_CHECKS:
+                reads_parameter = any(
+                    isinstance(child, ast.Attribute)
+                    and child.attr == ABOLITION_CHECKS[node.name]
+                    for child in ast.walk(node)
+                )
+                if not reads_parameter:
+                    missing.append(f"{source.relative_to(PACKAGE)}::{node.name}")
+    assert not missing, (
+        "Reforms replace a tax the abolish parameters zero without reading "
+        f"the parameter: {missing}"
     )
