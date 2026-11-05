@@ -1,9 +1,13 @@
 from policyengine_us.model_api import *
 
 
-class household_refundable_federal_tax_credits(Variable):
+class income_tax_refundable_credits_in_force(Variable):
     value_type = float
-    entity = Household
+    # On the tax unit, so household_refundable_tax_credits maps it up in float64
+    # and sums the household total to the same bits as main's direct read of
+    # income_tax_refundable_credits. A household variable would come back in
+    # float32 and shift the total by a rounding step.
+    entity = TaxUnit
     label = "refundable federal income tax credits"
     documentation = (
         "Federal refundable income tax credits counted in household net "

@@ -14,7 +14,7 @@
   output:
     income_tax_before_refundable_credits: 0
     federal_income_tax_in_force: false
-    household_refundable_federal_tax_credits: 0
+    income_tax_refundable_credits_in_force: 0
     household_refundable_tax_credits: 600
     household_state_tax_before_refundable_credits: 1_000
     household_tax_before_refundable_credits: 1_000
@@ -42,7 +42,7 @@
     hi_refundable_credits: 600
   output:
     federal_income_tax_in_force: true
-    household_refundable_federal_tax_credits: 800
+    income_tax_refundable_credits_in_force: 800
     household_refundable_tax_credits: 1_400  # 800 + 600
     household_state_tax_before_refundable_credits: 1_000
     household_tax_before_refundable_credits: 2_200
@@ -180,5 +180,5 @@
     refundable_ctc: 1_700
     income_tax_refundable_credits: 6_028
     income_tax: 0
-    household_refundable_federal_tax_credits: 0
+    income_tax_refundable_credits_in_force: 0
     household_refundable_tax_credits: 0

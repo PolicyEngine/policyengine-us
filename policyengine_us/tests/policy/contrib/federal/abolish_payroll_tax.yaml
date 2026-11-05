@@ -1,8 +1,8 @@
 # With gov.contrib.ubi_center.flat_tax.abolish_payroll_tax on,
 # employee_payroll_tax is zero and every other component of the household
-# total stays. Each case below leaves payroll tax to its formula on earnings,
-# pins federal income tax, and leaves one other component to its own formula
-# or input.
+# total stays. Each abolition case below leaves payroll tax to its formula on
+# earnings, pins federal income tax, and leaves one other component to its own
+# formula or input.
 
 - name: Abolishing payroll tax drops it from the household total
   period: 2022

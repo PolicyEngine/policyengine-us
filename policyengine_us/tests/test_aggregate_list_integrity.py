@@ -318,8 +318,12 @@ def test_reform_aggregates_keep_shared_cash_programs(
 HOUSEHOLD_TAX_TOTALS = {
     "household_tax_before_refundable_credits",
     "household_state_tax_before_refundable_credits",
+    "state_income_tax_before_refundable_credits",
+    "state_use_tax",
+    "local_income_tax_before_refundable_credits",
+    "local_occupational_tax",
     "household_refundable_tax_credits",
-    "household_refundable_federal_tax_credits",
+    "income_tax_refundable_credits_in_force",
     "federal_income_tax_in_force",
     "household_refundable_state_tax_credits",
     "household_refundable_local_tax_credits",
@@ -369,7 +373,12 @@ def test_reforms_replacing_an_abolished_tax_keep_the_abolition_check():
         tree = ast.parse(source.read_text())
         for node in ast.walk(tree):
             if isinstance(node, ast.ClassDef) and node.name in ABOLITION_CHECKS:
-                if ABOLITION_CHECKS[node.name] not in ast.unparse(node):
+                reads_parameter = any(
+                    isinstance(child, ast.Attribute)
+                    and child.attr == ABOLITION_CHECKS[node.name]
+                    for child in ast.walk(node)
+                )
+                if not reads_parameter:
                     missing.append(f"{source.relative_to(PACKAGE)}::{node.name}")
     assert not missing, (
         "Reforms replace a tax the abolish parameters zero without reading "
