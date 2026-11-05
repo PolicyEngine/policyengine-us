@@ -297,7 +297,7 @@ def _section_461l_reference(runs, units, include):
     """Excess business loss and the part on NII losses, from leaf inputs.
 
     ``include`` selects the members counted (the head and spouse, or all).
-    The NII share is proportional: NII losses (rental and farm rental losses,
+    The NII share is provisionally proportional: NII losses (rental and farm rental losses,
     estate losses and the passive part of partnership losses) over all
     business losses.
     """

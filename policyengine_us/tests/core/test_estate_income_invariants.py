@@ -153,6 +153,11 @@ def _draw_units():
         # The filer's estate loss exceeds the section 461(l) cap.
         {**edge, "head_wages": 600_000.0, "head_estate": -400_000.0,
          "cap_binds": True},
+        # Same, with a positive code H adjustment: separate Form 8960 line 7
+        # income that leaves the whole estate loss in the section 461(l) NII
+        # share.
+        {**edge, "head_wages": 600_000.0, "head_estate": -400_000.0,
+         "head_adjustment": 400_000.0, "cap_binds": True},
         # Same, with a dependent whose estate income raises the pooled cap.
         {**edge, "kind": "dependent", "head_wages": 600_000.0,
          "head_estate": -400_000.0, "dependent_estate": 50_000.0,
@@ -302,8 +307,8 @@ def test_net_investment_income_adds_estate_income_and_code_h(runs, units):
     expected = np.bincount(
         runs["with"]["person_tax_unit"], weights=per_person, minlength=len(units)
     ) + _section_461l_estate_addback(runs, units)
-    # The two edge rows with a 400,000 estate loss make section 461(l) bind.
-    assert (_section_461l_estate_addback(runs, units) > 0).sum() >= 2
+    # The three edge rows with a 400,000 estate loss make section 461(l) bind.
+    assert (_section_461l_estate_addback(runs, units) > 0).sum() >= 3
     delta = (
         runs["with"]["net_investment_income"] - runs["zero"]["net_investment_income"]
     )
