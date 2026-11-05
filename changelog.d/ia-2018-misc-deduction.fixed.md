@@ -1,1 +1,0 @@
-Keep Iowa's 2018 miscellaneous itemized deduction above 2% of federal AGI, which Iowa did not suspend until 2019, and apply Iowa's 2018 limitation on the itemized deductions of filers with federal AGI above the IA 104 applicable amounts.
