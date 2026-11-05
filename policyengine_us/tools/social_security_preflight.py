@@ -53,6 +53,9 @@ CALCULATED_TAX_LEAVES = frozenset(
         # The TOB leaves difference it, so a stored value freezes every tax
         # state they measure and zeroes TOB.
         "income_tax_chapter_1",
+        # The TOB counterfactual holders: a stored value freezes that state.
+        "income_tax_without_social_security",
+        "income_tax_with_pre_1993_social_security",
         "net_investment_income_tax",
         "niit",
         "oasdi_payroll_tax_revenue",

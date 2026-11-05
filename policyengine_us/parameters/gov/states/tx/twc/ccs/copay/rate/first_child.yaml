@@ -40,7 +40,8 @@ metadata:
 # management system (WD 06-24, Change 2), so each Board kept setting its own
 # scale (WD 24-23 for BCY 2024, WD 20-24 for BCY 2025). From TX3C's launch on
 # January 13, 2025, TWC phased in this statewide scale as families enrolled or
-# recertified. PolicyEngine applies it to every earlier month back to 2015.
+# recertified. PolicyEngine applies it to every earlier month back to 2015,
+# except where copay/board/applies.yaml turns on a Board's own scale.
 # Actual effective date of every value below: 2025-01-13.
 brackets:
   - threshold:
