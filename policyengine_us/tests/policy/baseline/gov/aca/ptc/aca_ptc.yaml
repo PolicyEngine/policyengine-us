@@ -1229,7 +1229,7 @@
     # 22,590 / 20,440 = 110% FPL: 0% contribution; 2 * 6,000.
     aca_ptc: 12_000
 
-- name: Review r4 joint filers ages 18 and 17 with claimable age 18, inferred roles
+- name: 2025 TX joint filers aged 18 and 17, the 18-year-old claimable, roles inferred from age
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -1270,7 +1270,7 @@
     aca_ptc: 6000
     is_aca_filer: [true, true]
 
-- name: Review r4 joint filers ages 18 and 17 with claimable age 18, explicit-role control
+- name: 2025 TX joint filers aged 18 and 17, the 18-year-old claimable, explicit head and spouse roles
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -1315,7 +1315,7 @@
     aca_ptc: 6000
     is_aca_filer: [true, true]
 
-- name: Review r4 joint filers ages 18 and 17 with claimable age 17, inferred roles
+- name: 2025 TX joint filers aged 18 and 17, the 17-year-old claimable, roles inferred from age
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -1356,7 +1356,7 @@
     aca_ptc: 6000
     is_aca_filer: [true, true]
 
-- name: Review r4 joint filers ages 18 and 17 with claimable age 17, explicit-role control
+- name: 2025 TX joint filers aged 18 and 17, the 17-year-old claimable, explicit head and spouse roles
   period: 2025
   absolute_error_margin: 0.01
   input:
