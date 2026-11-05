@@ -4080,3 +4080,44 @@
     ca_liheap_energy_burden_group: 4
     ca_liheap_madera_priority_points: 35
     ca_liheap_covered_liquid_heating: 640
+
+# Heat in rent is the second half of WPO's own-fuel test. With no bills the burden
+# is 0.00%, group 1 (4 points). $1,000 a month is group 1 (10 points) and age 60
+# adds 10, for 24 points: 411 + 0 + 105 = 516. A propane home has no utility
+# account, so HEAP is 0. With electricity of $2,040 the burden is 17.00%, group 4:
+# 10 + 10 = 20 points and 411 + 105 = 516, so WPO pays and HEAP stays at 0.
+- name: "Case 15, heat in rent establishes the own-fuel cost for liquid heating."
+  period: 2026
+  input:
+    people:
+      person1: {"age": 60, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12_000}
+      person2: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12_000}
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "PROPANE"
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+        heat_expense_included_in_rent: true
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "PROPANE"
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+        heat_expense_included_in_rent: true
+        pre_subsidy_electricity_expense: 2_040
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      household2:
+        members: ["person2"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+  output:
+    ca_liheap_madera_priority_points: [24, 20]
+    ca_liheap_covered_liquid_heating: [516, 516]
+    ca_liheap_utility_heating: [0, 0]

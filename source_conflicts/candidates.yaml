@@ -1165,6 +1165,8 @@ candidates:
     - policyengine_us/variables/gov/states/ca/csd/liheap/eligibility/ca_liheap_income_eligible.py
     - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
     - policyengine_us/parameters/gov/states/ca/csd/liheap/income/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10607
   state: unreviewed
   note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (ca_liheap_income_eligible.py).
     No source prices a household the floor admits above the limit. It gets the group 4 amount, as guide p.218 pays a
@@ -1195,6 +1197,8 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/states/ca/csd/liheap/eligibility/ca_liheap_basic_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10607
   state: ruled
   note: 'Ruled 2026-11-03: follow plan 2.3 and guide 3.3. PE-US applies guide 1.6 only to a subsidized household with
     neither a bill nor heat in rent.'
