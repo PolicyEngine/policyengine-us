@@ -16,41 +16,44 @@ metadata:
       href: https://www.mahealthconnector.org/wp-content/uploads/amended-956CMR12.00.pdf#page=13
 
 brackets:
-  # Household income measured as ACA MAGI as a share of the federal poverty line.
-  # Band boundaries are lower-exclusive / upper-inclusive per 956 CMR 12.04(3)(b),
-  # so thresholds use the "x.0001" convention matching the published "150.1%"
-  # banding. The schedule is a flat dollar step function decoupled from the
-  # affordability percent-of-income schedule (Board-set, 956 CMR 12.12(9)); every
-  # band is $0 before the PY2026 effective date.
-  # Plan Type 2A, 100-150% FPL -> $0 per person per month.
+  # Household income measured as ACA MAGI as a share of the prior-year federal
+  # poverty guideline, the exact ratio. Band boundaries are lower-exclusive /
+  # upper-inclusive per 956 CMR 12.04(3)(b) ("at or below 150%", "over 150% and
+  # not over 200%"), so each threshold is the band's lower edge and
+  # ma_connector_care evaluates the scale with right-closed brackets: a ratio
+  # exactly at a threshold stays in the band below it. The schedule is a flat
+  # dollar step function decoupled from the affordability percent-of-income
+  # schedule (Board-set, 956 CMR 12.12(9)); every band is $0 before the PY2026
+  # effective date.
+  # Plan Type 2A, 100% to 150% FPL -> $0 per person per month.
   - threshold:
       2026-01-01: 1
     amount:
       0000-01-01: 0
       2026-01-01: 0
-  # Plan Type 2B, 150.1-200% FPL -> $53.
+  # Plan Type 2B, over 150% to 200% FPL -> $53.
   - threshold:
-      2026-01-01: 1.5001
+      2026-01-01: 1.5
     amount:
       0000-01-01: 0
       2026-01-01: 53
-  # Plan Type 3A, 200.1-250% FPL -> $103.
+  # Plan Type 3A, over 200% to 250% FPL -> $103.
   - threshold:
-      2026-01-01: 2.0001
+      2026-01-01: 2
     amount:
       0000-01-01: 0
       2026-01-01: 103
-  # Plan Type 3B, 250.1-300% FPL -> $152.
+  # Plan Type 3B, over 250% to 300% FPL -> $152.
   - threshold:
-      2026-01-01: 2.5001
+      2026-01-01: 2.5
     amount:
       0000-01-01: 0
       2026-01-01: 152
-  # Plan Type 3C, 300.1-400% FPL -> $235. This tier is a pilot extended through
+  # Plan Type 3C, over 300% to 400% FPL -> $235. This tier is a pilot extended through
   # FY2026 in the state budget and may lapse in out-years; it is carried forward
   # without end-dating as a current-law assumption.
   - threshold:
-      2026-01-01: 3.0001
+      2026-01-01: 3
     amount:
       0000-01-01: 0
       2026-01-01: 235
