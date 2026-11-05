@@ -883,6 +883,49 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify the legal basis for the amended-return remedy and treatment of exactly $3,000.
+- id: us-az:military-survivor-benefit-recipient
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does Arizona subtract Survivor Benefit Plan (SBP) payments under 43-1022(2)'s $2,500 subtraction for
+    federal plans or in full on line 29b under 43-1022(26), and does the answer differ for a deceased veteran's
+    surviving spouse and for other recipients?
+  sources:
+  - kind: statute
+    citation: A.R.S. 43-1022(2)(a) and (26)
+    url: https://www.azleg.gov/ars/43/01022.htm
+  - kind: guidance
+    citation: Arizona Individual Income Tax Ruling ITR 11-3
+    url: https://azdor.gov/sites/default/files/2023-03/RULINGS_INDV_2011_itr11-3.pdf#page=2
+  - kind: instructions
+    citation: 2025 Arizona Form 140 instructions, line 29b
+    url: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf
+  readings:
+    statute: Paragraph (2)(a) allows up to $2,500 of benefits from "any other retirement system or plan established
+      by federal law", except "retired or retainer pay of the uniformed services of the United States that qualifies
+      for a subtraction under paragraph 26". Paragraph (26) covers "annuities and pensions received as retired or
+      retainer pay" and names no survivors.
+    other: ITR 11-3 says "Arizona allows a subtraction of up to $2,500 for uniformed services retired pay and SBP
+      benefits." From 2023, the Form 140 instructions put the payments of "the surviving spouse of a deceased military
+      veteran" on line 29b, which has no cap from 2021.
+  example: A 2021 surviving spouse with $6,000 of SBP payments and no other income subtracts $2,500 under (2) and
+    $0 on line 29b. In 2023 the same filer subtracts $6,000 on line 29b and $0 under (2). A non-spouse recipient
+    subtracts $2,500 under (2) in both years.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/az/tax/income/subtractions/az_military_retirement_subtraction.py
+    - policyengine_us/variables/gov/states/az/tax/income/subtractions/az_public_pension_exclusion.py
+    - policyengine_us/parameters/gov/states/az/tax/income/subtractions/military_retirement/surviving_spouse_eligible.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10398
+  state: ruled
+  note: Neither paragraph says whether a survivor's SBP payments count as annuities "received as retired or retainer
+    pay", and (2)(a)'s exception turns on that question, so PolicyEngine follows ADOR's reading for each year. A
+    surviving spouse's payments stay under (2) through 2022, as ITR 11-3 provides, and move to line 29b from 2023, as
+    the Form 140 instructions provide. ADOR has moved no other recipient's payments, so those stay under (2) in every
+    year.
 - id: us-ca:capi-payment-standard-offset
   program: capi
   years:
@@ -1412,8 +1455,7 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/states/ca/cdss/capi/_ca_capi_ssi_ssp_standard.py
-    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/payment_standard/ca_state_supplement_food_allowance.py
-    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/payment_standard/ca_state_supplement_payment_standard.py
+    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/_ca_state_supplement_rates.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10379
     - https://github.com/PolicyEngine/policyengine-us/pull/10546
@@ -1426,9 +1468,49 @@ candidates:
     https://github.com/PolicyEngine/policyengine-us/pull/10379#issuecomment-6509402355. WIC 12200(e) gives the
     no-cooking allowance only under (c) and (d), so a couple paid the one-blind rate under (b) gets none, in CAPI and
     in the state supplement. CAPI (_ca_capi_ssi_ssp_standard.py) and the state supplement
-    (ca_state_supplement_food_allowance.py) both follow the statute: neither adds a food allowance to the one-blind
+    (_ca_state_supplement_rates.py) both follow the statute: neither adds a food allowance to the one-blind
     couple rate, and a couple both aged or disabled takes the aged or disabled rate with the couple allowance when
     that is higher.'
+- id: us-ca:ssp-household-of-another-share
+  program: ssi-ssp
+  years:
+    from: 2013
+    type: calendar
+  question: Does a California recipient in another person's household keep the regular state share, or take the
+    separate share POMS lists for that arrangement?
+  sources:
+  - kind: statute
+    citation: Cal. WIC §12200(i)
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200
+  - kind: statute
+    citation: Cal. WIC §12200.03
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200.03
+  - kind: manual
+    citation: SSA POMS SI 01415.058 B.1 and B.2, codes D, F and G
+    url: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058
+  readings:
+    statute: Subdivision 12200(i) reduces the grant level under (a) through (d) by the amount of the federal reduction,
+      which alone keeps the regular state share. Section 12200.03 applies notwithstanding any other law and sets the
+      payments at the federal minimum, which may change that result.
+    other: POMS lists separate state shares for recipients with the federal one-third reduction.
+  example: In January 2026, an aged person with no income in another person's household has a $902.61 total with the
+    regular share, which PE-US pays ($662.67 federal plus $239.94), and $907.87 under POMS ($662.67 plus $245.20).
+  pe_us:
+    follows: not-modelled
+    code:
+    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/_ca_state_supplement_rates.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10601
+  state: open
+  note: PE-US has no household-of-another shares, so these recipients keep the regular share on the reduced federal
+    amount (issue 7892). The January 2026 POMS shares are 245.20 for aged or disabled, 329.58 for blind, 624.40 for
+    out-of-home care (code F) and 102.53 for a disabled child (code G); the couple shares are 615.70, 841.22 for two
+    blind, 755.31 for one blind and 1,604.20 for out-of-home care. Subdivision 12200(i) names only (a) through (d), so
+    it does not decide codes F and G. WIC 12204 keeps a Public Law 93-66 payment and does not explain the difference.
+    WIC 12200.03 may, since it sets the Section 12200 payments, other than (e), (g) and (h), at the federal minimum and
+    no lower than the March 1983 standards adjusted under 20 CFR 416.2096(b); that arithmetic has not been checked.
+    The project lead leans toward POMS because SSA issues the payment from its chart; the model stays as it is until
+    that is decided.
 - id: us-ca:ssp-nmohc-couple-standard
   program: ssi-ssp
   years:
@@ -2516,6 +2598,89 @@ candidates:
   state: ruled
   note: Ruled statute-first in October 2026; the rule requires a model change after confirming that the exclusion
     reaches alternate tax.
+- id: us-ia:itemized-limitation-2018-federal-suspension
+  program: income-tax
+  years:
+    from: 2018
+    to: 2018
+    type: tax
+  question: Did Iowa limit the 2018 itemized deductions of high-income filers, although section 68(f) suspended the
+    federal limitation for 2018 and 701 IAC 41.11 ties the Iowa reduction to the years it applies federally?
+  sources:
+  - kind: statute
+    citation: Iowa Code 422.3(5) (2018)
+    url: https://www.legis.iowa.gov/docs/code/2018/422.3.pdf#page=1
+  - kind: statute
+    citation: Iowa Code 422.9(2) (2018)
+    url: https://www.legis.iowa.gov/docs/code/2018/422.9.pdf#page=1
+  - kind: regulation
+    citation: 701 IAC 41.11 (IAC 2/28/18)
+    url: https://www.legis.iowa.gov/docs/iac/chapter/03-28-2018.701.41.pdf#page=9
+  - kind: statute
+    citation: 2018 Iowa Acts, chapter 1161, sections 58, 63, 66 and 69
+    url: https://www.legis.iowa.gov/docs/acts/2018/CH1161.pdf#page=14
+  - kind: worksheet
+    citation: 2018 IA 104 Iowa Itemized Deductions Worksheet
+    url: https://revenue.iowa.gov/media/2335/download?inline=#page=1
+  readings:
+    statute: For 2018 Iowa Code 422.3(5) defines the Internal Revenue Code as the one in effect on January 1, 2015, so
+      section 68 still limits the deductions Iowa Code 422.9(2) allows. In 2018 Iowa Acts chapter 1161, the legislature
+      moved that date only from 2019 (section 69). For 2018, it applied named sections of Pub. L. 115-97 (section 63)
+      and the section 179 allowance as section 13101 amended it (section 58), none of them section 11045 or 11046. The
+      Iowa Department of Revenue applies the limitation in the 2018 IA 104 and instructions.
+    other: Rule 41.11 applies the reduction "for the same tax years that the provision applies for federal income tax
+      purposes"; read against federal law as amended, which suspends section 68 for 2018, Iowa would not limit 2018
+      deductions.
+  example: A joint filer with federal AGI of $400,000, $32,000 of Schedule A deductions ($4,000 of them medical) and
+    $20,000 of Iowa income tax deducts $30,600 under the IA 104, versus $32,000 with no limitation.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ia/tax/income/deductions/itemized/limitation/retained.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10101
+  state: unreviewed
+  note: Under Iowa's own definition of the Internal Revenue Code, section 68 applies to 2018, so the rule agrees with
+    the statute and the form.
+- id: us-ia:itemized-limitation-iowa-tax-share-rounding
+  program: income-tax
+  years:
+    from: 2018
+    to: 2018
+    type: tax
+  question: Does Iowa subtract the Iowa income tax at its exact share of the limited deductions, or at the IA 104 line
+    18 percentage rounded to the nearest tenth of a percent?
+  sources:
+  - kind: statute
+    citation: Iowa Code 422.9(2)(a) (2018)
+    url: https://www.legis.iowa.gov/docs/code/2018/422.9.pdf#page=1
+  - kind: regulation
+    citation: 701 IAC 41.5(1) and 41.11(1) (IAC 2/28/18)
+    url: https://www.legis.iowa.gov/docs/iac/chapter/03-28-2018.701.41.pdf#page=10
+  - kind: worksheet
+    citation: 2018 IA 104 Iowa Itemized Deductions Worksheet, line 18
+    url: https://revenue.iowa.gov/media/2335/download?inline=#page=1
+  readings:
+    statute: Iowa Code 422.9(2)(a) subtracts "the deduction for Iowa income taxes" and doesn't say how much of it stays
+      deducted after the overall reduction. Rule 41.11(1) requires high-income filers to complete Form 41-104. The copy
+      of the form it prints gives the share with no rounding instruction (line 6), and rule 41.5(1) subtracts the tax
+      "to the extent" included.
+    other: The IA 104 enters line 15 divided by line 17 "to the nearest tenth of a percent" before applying it to the
+      Iowa income tax.
+  example: A joint filer with federal AGI of $400,000, $30,000 of Schedule A deductions ($4,000 of them medical) and
+    $20,000 of Iowa income tax enters 94.8% and deducts $28,640; the exact share, 94.78%, gives $28,643.48.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/ia/tax/income/including_married_filing_separately/deductions/ia_itemized_deductions_reduction.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10101
+  state: unreviewed
+  note: Rounding moves the result by at most 0.05% of the Iowa income tax, but it can raise line 21 above line 1. A
+    joint filer at $500,000 with only $20,000 of medical expenses and investment interest and $9,700 of Iowa income
+    tax enters 44.3% and gets $20,002.90; the exact share gives $20,000. The statute and the rule's copy of the form
+    leave the rounding open, and the rule requires the form, so the model follows the 2018 form. The form gives no tie
+    rule, so the model rounds a half up, and a 93.25% share enters as 93.3%.
 - id: us-ia:low-income-exemption-claimant-income
   program: income-tax
   years:
@@ -6087,6 +6252,39 @@ candidates:
   note: 'Retain as a disputable gap-fill; verify whether repayments are statutory losses and separate this issue
     from unsupported spouse attribution. Code not yet on main: policyengine_us/variables/gov/states/nj/tax/income/adjusted_gross_income/claim_of_right/nj_claim_of_right_repayment_category.py,
     gov/states/nj/tax/income/adjusted_gross_income/nj_claim_of_right_offset.yaml, nj_claim_of_right_offset, nj_claim_of_right_repayment_category.'
+- id: us-nj:eitc-married-separate-filer
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Can a married New Jersey resident who files a separate return claim the NJEITC when the federal
+    separated-spouse exception applies?
+  sources:
+  - kind: statute
+    citation: N.J.S.A. 54A:4-7a.(3), as amended by P.L.2021, c.130
+    url: https://pub.njleg.state.nj.us/Bills/2020/PL21/130_.HTM
+  - kind: regulation
+    citation: N.J.A.C. 18:35-4.3(g)(3)
+    url: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-18-35-4-3
+  - kind: instructions
+    citation: 2025 Form NJ-1040 instructions, line 58
+    url: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=44
+  readings:
+    statute: A married claimant who does not file federally as a head of household or surviving spouse must file
+      jointly, with no exception for a separated filer. N.J.A.C. 18:35-4.3(g)(3) says the same.
+    other: A married filer not filing jointly can claim the credit with a qualifying child who lived with the filer
+      for more than half the year and six months apart from the spouse.
+  example: In 2026, a separate filer with a child, $30,000 of wages and six months apart gets $1,380.25 under the
+    instructions and $0 under the statute.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nj/tax/income/credits/eitc/nj_eitc_separate_filer_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10307
+  state: ruled
+  note: A filer separated under a decree of divorce or separate maintenance is not married (IRC 7703(a)(2)) and can
+    claim the credit on a separate return.
 - id: us-nj:liheap-income-ceiling
   program: liheap
   years:
@@ -8262,6 +8460,33 @@ candidates:
     use the same wording. The RI-22-0024 state plan groups, RIte Start and FCEP have no conflicting text, and CHIP
     (RI-22-0025 CS27) ends the period "on the last day of the 12th month consistent with paragraphs (5) and (16) of
     section 1902(e)". R.I. Gen. Laws 42-12.3-3(g) does not say when the 12-month period begins.
+- id: us-ri:pension-modification-agi-threshold-strict
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does a filer whose federal AGI equals the threshold qualify for the pension and annuity modification?
+  sources:
+  - kind: statute
+    citation: R.I. Gen. Laws § 44-30-12(c), income test for the taxable retirement income modification
+    url: https://webserver.rilegislature.gov/Statutes/TITLE44/44-30/44-II/44-30-12.htm
+  - kind: worksheet
+    citation: RI-1040 instructions, line 1t worksheet
+    url: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-12/2025%201040R%20Instructions%20122025.pdf#page=10
+  readings:
+    statute: Federal AGI must be less than the threshold; AGI equal to it does not qualify.
+    other: The worksheet allows AGI less than or equal to the threshold.
+  example: A 2025 single filer born in 1950 with AGI of exactly $107,000 gets no modification under the statute and
+    qualifies under the worksheet.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ri/tax/income/agi/subtractions/taxable_retirement_income/ri_retirement_income_subtraction_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10398
+  state: ruled
+  note: The code already uses a strict comparison and the eligibility tests pin AGI equal to the threshold as
+    ineligible. Verify the statute's and the worksheet's wording before registering.
 - id: us-ri:ssp-category-d-without-federal-ssi
   program: ssi-state-supplement
   years:
@@ -8397,6 +8622,38 @@ candidates:
   note: The model computes the couple jointly at $90, which the couple.yaml comment derives from the per-individual
     allowance in §40-6-27(a)(3); ri_ssp.yaml Case 18 pins [45, 45] for a couple with no income. SSA administered
     Category E only through December 31, 2010.
+- id: us-sc:2021-survivor-offset-surviving-spouse
+  program: income-tax
+  years:
+    from: 2021
+    to: 2021
+    type: tax
+  question: Is a surviving spouse's 2021 retirement deduction maximum reduced by the military retirement deduction
+    attributable to the deceased spouse?
+  sources:
+  - kind: statute
+    citation: S.C. Code § 12-6-1170(C)(1)
+    url: https://www.scstatehouse.gov/code/t12c006.php
+  - kind: guidance
+    citation: SCDOR Revenue Ruling 22-11
+    url: https://dor.sc.gov/sites/dor/files/policies/RR22-11.pdf#page=39
+  - kind: worksheet
+    citation: 2021 SC1040 retirement deduction worksheet, line p-3, line 2
+    url: https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=17
+  readings:
+    statute: The reduction for military retirement does not apply to a military retiree's surviving spouse.
+    other: The 2021 worksheet subtracts the surviving spouse's military retirement deduction from the survivor
+      retirement deduction maximum.
+  example: A 2021 surviving spouse whose deceased spouse would be 64, with $4,000 of survivor pension and $6,000 of
+    military survivor benefits, deducts $3,000 under the statute and $0 under the worksheet.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tax/income/subtractions/retirement/sc_retirement_deduction_survivors.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10398
+  state: ruled
+  note: RR22-11 agrees with the statute. PR 10398 removes the 2021 reduction and the parameter that toggled it.
 - id: us-sd:liheap-2025-published-income-limit
   program: liheap
   years:
@@ -10781,7 +11038,7 @@ candidates:
     url: https://www.irs.gov/pub/irs-drop/n-23-62.pdf#page=4
   - kind: worksheet
     citation: Publication 560 (2025), Deduction Worksheet for Self-Employed, steps 16-18
-    url: https://www.irs.gov/pub/irs-pdf/p560.pdf#page=39
+    url: https://www.irs.gov/pub/irs-prior/p560--2025.pdf#page=39
   readings:
     statute: For taxable years beginning after 2023, section 402(g)(1)(A) includes elective deferrals above the
       applicable dollar amount in gross income, except designated Roth contributions; the catch-up exclusion in former
@@ -11323,7 +11580,7 @@ candidates:
     url: https://www.law.cornell.edu/uscode/text/26/401#c_2_A
   - kind: worksheet
     citation: Publication 560 (2025), Deduction Worksheet for Self-Employed, step 2
-    url: https://www.irs.gov/pub/irs-pdf/p560.pdf#page=39
+    url: https://www.irs.gov/pub/irs-prior/p560--2025.pdf#page=39
   - kind: form
     citation: Form 7206 (2023), lines 5-8
     url: https://www.irs.gov/pub/irs-prior/f7206--2023.pdf#page=1

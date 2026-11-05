@@ -269,7 +269,7 @@
   output:
     # 402(g) limit 22,500 less 17,500 deferred leaves 5,000 of room. Schedule
     # SE line 4: 5,600 x 0.9235 = 5,171.60. Line 15: 5,171.60 x 15.3% / 2 =
-    # 395.63. Step 3: 5,600 - 395.63 = 5,204.37. Step 7: 867.40. Step 12:
+    # 395.63. Step 3: 5,600 - 395.63 = 5,204.37. Step 7: 1,040.87. Step 12:
     # (5,204.37 - 5,000) / 2 = 102.19, the smallest, so steps 13 + 15 are
     # (5,204.37 + 5,000) / 2 = 5,102.19.
     # A SIMPLE IRA would allow more (Pub. 560 (2025), page 15; section
@@ -297,6 +297,24 @@
     self_employed_pension_earned_income: 55_761.14
     # Steps 13 + 15: 20% x 55,761.14 + 23,500 = 34,652.23.
     self_employed_pension_contribution_limit: 34_652.23
+
+- name: A farm loss adds no profit to the split, so Schedule C takes all of line 15.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: 60_000
+        farm_operations_income: -20_000
+        self_employed_pension_contributions_desired: 70_000
+  output:
+    # Schedule SE line 4: (60,000 - 20,000) x 0.9235 = 36,940. Line 15:
+    # 36,940 x 15.3% / 2 = 2,825.91. Step 3: 60,000 - 2,825.91 = 57,174.09.
+    # Step 7: 20% x 57,174.09 = 11,434.82. Steps 13 + 15: 11,434.82 + 23,500
+    # of deferral room = 34,934.82.
+    self_employed_pension_earned_income: 57_174.09
+    self_employed_pension_contribution_limit: 34_934.82
 
 - name: A plan under the Schedule C business counts only that business's earned income, not a partnership's.
   period: 2025

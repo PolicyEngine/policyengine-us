@@ -1,0 +1,73 @@
+- name: 2017 aged single filer adds $1,550
+  period: 2017
+  input:
+    filing_status: SINGLE
+    aged_blind_count: 1
+  output:
+    additional_standard_deduction: 1_550
+
+- name: 2017 aged and blind head of household adds 2 x $1,550
+  period: 2017
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    aged_blind_count: 2
+  output:
+    additional_standard_deduction: 3_100
+
+- name: 2017 joint filers with one aged spouse add $1,250
+  period: 2017
+  input:
+    filing_status: JOINT
+    aged_blind_count: 1
+  output:
+    additional_standard_deduction: 1_250
+
+- name: 2017 separate filer aged adds $1,250
+  period: 2017
+  input:
+    filing_status: SEPARATE
+    aged_blind_count: 1
+  output:
+    additional_standard_deduction: 1_250
+
+- name: 2017 aged surviving spouse adds $1,250
+  period: 2017
+  input:
+    filing_status: SURVIVING_SPOUSE
+    aged_blind_count: 1
+  output:
+    additional_standard_deduction: 1_250
+
+- name: 2015 single filer aged 65 adds $1,550
+  period: 2015
+  input:
+    people:
+      head:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    additional_standard_deduction: 1_550
+
+- name: 2016 single filer aged 65 adds $1,550
+  period: 2016
+  input:
+    people:
+      head:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    additional_standard_deduction: 1_550
+
+- name: 2018 aged single filer adds $1,600, unchanged
+  period: 2018
+  input:
+    filing_status: SINGLE
+    aged_blind_count: 1
+  output:
+    additional_standard_deduction: 1_600
