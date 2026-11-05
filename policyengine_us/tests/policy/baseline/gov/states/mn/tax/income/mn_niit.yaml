@@ -41,12 +41,12 @@
     mn_niit: 1_000
 
 - name: Minnesota net investment income takes the section 461(l) add-back
-  # Minn. Stat. 290.033(a) uses the section 1411(c) definition with two
-  # exceptions, and neither reaches section 461(l). Interest 2,000,000 and a
-  # Form 4835 loss of 600,000 give an excess of 600,000 - 313,000 = 287,000 and
-  # NII of 2,000,000 - 600,000 + 287,000 = 1,687,000;
-  # 1% x (1,687,000 - 1,000,000) = 6,870. Without the add-back the tax would
-  # read 4,000.
+  # In Minn. Stat. 290.033(a), the Legislature adopts section 1411(c) and
+  # excludes class 2a disposition gains, and leaves section 461(l) in place.
+  # Interest 2,000,000 and a Form 4835 loss of 600,000 give an excess of
+  # 600,000 - 313,000 = 287,000 and NII of 2,000,000 - 600,000 + 287,000 =
+  # 1,687,000; 1% x (1,687,000 - 1,000,000) = 6,870. Without the add-back the
+  # tax would read 4,000.
   period: 2025
   absolute_error_margin: 0.01
   input:

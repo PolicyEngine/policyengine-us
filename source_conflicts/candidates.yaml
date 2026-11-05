@@ -11496,8 +11496,8 @@ candidates:
   state: unreviewed
   note: Form 461 line 16 sends the add-back to Schedule 1 line 8p. Form 8960 line 4a takes Schedule 1 lines 3, 5 and 6,
     and line 7 names line 8z but not line 8p, though line 7 also takes modifications the form doesn't specify. Example
-    1 in the regulation applies sections 465 and 469 before NII takes the deductions, and no regulation names section
-    461(l).
+    1 in the regulation applies sections 465 and 469 before NII takes the deductions, and Treasury doesn't mention
+    section 461(l) in that regulation.
 - id: us:niit-excess-business-loss-split
   program: income-tax
   years:
@@ -11559,7 +11559,8 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10076
   state: unreviewed
   note: The same instructions say on page 1 that income excepted under sections 1402(a)(1) through (17) "is subject to
-    NIIT", and line 4b's own list removes only income taken into account in self-employment income.
+    NIIT", and the self-employment bullet in line 4b's list removes income taken into account in self-employment
+    income.
 - id: us:recovery-rebate-joint-claimable-spouse
   program: recovery-rebate-credit
   years:
