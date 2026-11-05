@@ -333,13 +333,13 @@
         <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="supplied-record-social-security-calculator">
 <h1>Supplied-record Social Security calculator<a class="headerlink" href="#supplied-record-social-security-calculator" title="Link to this heading">¶</a></h1>
-<p>The opt-in calculator implements design v3 D0, 4a-1 and the shared 4d core,
+<p>The opt-in calculator implements design v3 D0, 4a-1, 4a-2 and the shared 4d core,
 including amendments M1–M4, the top-factor structure in M6 and M8. It returns
 <strong>gross benefits before Medicare deductions</strong>, from an identified worker record.
 Existing public benefit inputs continue to work independently.</p>
 <section id="inputs-and-outputs">
 <h2>Inputs and outputs<a class="headerlink" href="#inputs-and-outputs" title="Link to this heading">¶</a></h2>
-<p>Set <code class="docutils literal notranslate"><span class="pre">ss_calculator_source</span></code> to <code class="docutils literal notranslate"><span class="pre">aime</span></code>, <code class="docutils literal notranslate"><span class="pre">pia</span></code> or <code class="docutils literal notranslate"><span class="pre">survivor</span></code>; its default is <code class="docutils literal notranslate"><span class="pre">off</span></code>.
+<p>Set <code class="docutils literal notranslate"><span class="pre">ss_calculator_source</span></code> to <code class="docutils literal notranslate"><span class="pre">aime</span></code>, <code class="docutils literal notranslate"><span class="pre">pia</span></code>, <code class="docutils literal notranslate"><span class="pre">history</span></code> or <code class="docutils literal notranslate"><span class="pre">survivor</span></code>; its default is <code class="docutils literal notranslate"><span class="pre">off</span></code>.
 The selector determines the route even when the selected amount is zero.
 Omitting the selected amount fails; it is distinct from supplying zero.
 Identity/source fields are eternal inputs. Supply exact recipient birth date,
@@ -350,7 +350,11 @@ supplies their own record. Disability, spouse, child, minimum and dual-entitleme
 computations are outside this route.</p>
 <p>For own retirement, also supply <code class="docutils literal notranslate"><span class="pre">ss_calculator_eligibility_year</span></code> and either
 <code class="docutils literal notranslate"><span class="pre">ss_calculator_supplied_aime</span></code> (whole monthly dollars) or
-<code class="docutils literal notranslate"><span class="pre">ss_calculator_supplied_pia</span></code> (monthly dimes at initial eligibility). Optional
+<code class="docutils literal notranslate"><span class="pre">ss_calculator_supplied_pia</span></code> (monthly dimes at initial eligibility). The
+<code class="docutils literal notranslate"><span class="pre">history</span></code> mode instead requires a complete <code class="docutils literal notranslate"><span class="pre">ss_calculator_earnings_history</span></code>
+JSON source with observed or certified-zero years through the year before
+claiming. See <a class="reference internal" href="../contributed_reforms/social_security_history.html"><span class="std std-doc">annual histories, owners’ draw, mini-PIA and above-cap credit</span></a>
+for the source contract and annual reconciliation outputs. Optional
 <code class="docutils literal notranslate"><span class="pre">ss_calculator_claiming_factor</span></code> is an exact decimal <strong>string</strong>; otherwise exact
 claiming months, birth-cohort FRA, early reduction and delayed credits determine
 it. Delayed credits earned in a midyear claiming year enter the benefit the
@@ -494,9 +498,12 @@ text</a>.</p>
 <section id="shared-pia-paths-and-policies">
 <h2>Shared PIA paths and policies<a class="headerlink" href="#shared-pia-paths-and-policies" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">tools.social_security.pia.compute_pia</span></code> is the common pure monthly service for
-supplied AIME, recovered AIME and future history callers. Its inputs explicitly
+supplied AIME, recovered AIME and annual history callers. Its inputs explicitly
 separate initial eligibility, formula path, scoring/payment year and cohort vs
 retroactive applicability. All computations and inverses require E &gt;= 1983.
+The annual history route requires E &gt;= 1984, because 42 U.S.C.
+415(a)(4)(B)(i) keeps the December 1978 computation, when larger, for workers
+eligible before 1984; see <a class="reference internal" href="../contributed_reforms/social_security_history.html"><span class="std std-doc">annual histories</span></a>.
 Historical bends back to 1979 are separate parameters, preserving legacy scale
 values. Future bends use the model’s existing wage-indexed projections.</p>
 <p><code class="docutils literal notranslate"><span class="pre">gov.contrib.ssa.pia</span></code> contains neutral bend-point multipliers, factors and cohort
@@ -556,6 +563,15 @@ then reads the calculated checks, bypassing population PIA, COLA, across-the-boa
 and payable factors already applied in this ledger. The earnings test runs
 once. Explicit public final overrides retain their precedence. Calculated
 checks are never written into <code class="docutils literal notranslate"><span class="pre">_reported</span></code> as original data.</p>
+<p>The public selectors do not yet accept <code class="docutils literal notranslate"><span class="pre">history</span></code>: a public source of <code class="docutils literal notranslate"><span class="pre">history</span></code>,
+or any pair other than those above, raises an error. With
+<code class="docutils literal notranslate"><span class="pre">ss_calculator_source</span></code> of <code class="docutils literal notranslate"><span class="pre">history</span></code>, read the calculated checks from
+<code class="docutils literal notranslate"><span class="pre">ss_calculated_retirement</span></code> and the other <code class="docutils literal notranslate"><span class="pre">ss_calculated_*</span></code> outputs. To place
+such a check in a public component, call <code class="docutils literal notranslate"><span class="pre">set_input</span></code> on that component
+<strong>after</strong> constructing the simulation. A later public input is an explicit
+final override, so no benefit factor is applied to it again. A public benefit
+supplied when the simulation is constructed is instead treated as a reported
+source, and the benefit factors apply to it.</p>
 </section>
 <section id="sources-and-validation">
 <h2>Sources and validation<a class="headerlink" href="#sources-and-validation" title="Link to this heading">¶</a></h2>

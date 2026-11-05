@@ -1,0 +1,731 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html">
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2025.12.19 -->
+        <title>Social Security annual earnings histories - PolicyEngine US documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">PolicyEngine US documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <span class="sidebar-brand-text">PolicyEngine US documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Government programs</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/fcc/index.html">FCC</a><input aria-label="Toggle navigation of FCC" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/fcc/lifeline.html">Lifeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/fcc/acp.html">Affordable Connectivity Program</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/hhs/index.html">HHS</a><input aria-label="Toggle navigation of HHS" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/hhs/tanf.html">Temporary Assistance for Needy Families (TANF)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/hud/index.html">HUD</a><input aria-label="Toggle navigation of HUD" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/hud/housing-assistance.html">Housing assistance</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/irs/tax.html">IRS</a><input aria-label="Toggle navigation of IRS" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/irs/credits/eitc.html">Earned Income Tax Credit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/irs/credits/cdcc.html">Child and Dependent Care Credit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/irs/credits/clean-vehicle.html">Clean vehicle credit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/irs/capital-gains.html">Capital Gains Tax</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/ssa/index.html">SSA</a><input aria-label="Toggle navigation of SSA" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/ssa/ssi.html">SSI</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/states/index.html">States</a><input aria-label="Toggle navigation of States" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/ca/index.html">California</a><input aria-label="Toggle navigation of California" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ca/calepa/carb/cvrp.html">California Clean Vehicle Rebate Project (CVRP)</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/ma/index.html">Massachusetts</a><input aria-label="Toggle navigation of Massachusetts" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ma/tax-benefit.html">Massachusetts tax and benefit system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ma/tax/income/index.html">Massachusetts income tax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ma/tax/income/credits/senior-circuit-breaker.html">Massachusetts Senior Circuit Breaker Credit</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/md/index.html">Maryland</a><input aria-label="Toggle navigation of Maryland" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/index.html">Maryland state income tax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/credits/cdcc.html">Maryland Child and Dependent Care Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/credits/ctc.html">Maryland Child Tax Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/credits/eitc.html">Maryland Earned Income Tax Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/credits/poverty-line-credit.html">Maryland Poverty Line Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/deductions/standard-deduction.html">Maryland Standard Deduction</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/ny/index.html">New York</a><input aria-label="Toggle navigation of New York" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/cdcc.html">NY Child and Dependent Care Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/ctc.html">Empire State Child Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/eitc.html">New York EITC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/tax.html">New York state income tax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/tax-benefit.html">New York State income tax</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/states/pa/tax.html">Pennsylvania</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/states/ut/ut_income_tax.html">Utah State income tax</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/wa/index.html">Washington</a><input aria-label="Toggle navigation of Washington" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/wa/tax/income/credits/working-families-tax-credit.html">Washington Working Families Tax Credit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/usda/index.html">USDA</a><input aria-label="Toggle navigation of USDA" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/usda/snap.html">SNAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/usda/school-meals.html">School meals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/usda/wic.html">WIC</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Validation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../validation/taxsim.html">Validation against TAXSIM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validation/state-rebates.html">State rebate attribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validation/alaska-pfd.html">Alaska Permanent Fund Dividend in model comparisons</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage/microsimulation.html">Microsimulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/chunked-calculations.html">Household-chunked calculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/parameter-discovery.html">Finding parameters</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../usage/social-security-calculator.html">Supplied-record Social Security calculator</a><input aria-label="Toggle navigation of Supplied-record Social Security calculator" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../usage/social-security/RULINGS.html">Restricted-survivor modeling ruling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/social-security-pia-ratio.html">Population Social Security PIA ratio</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../social-security-benefit-levers.html">Social Security benefit levers</a><input aria-label="Toggle navigation of Social Security benefit levers" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../social-security-cola-means-test.html">Social Security COLA means test</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../usage/social-security-oasdi-accounting.html">OASDI modeled liabilities and benefits</a><input aria-label="Toggle navigation of OASDI modeled liabilities and benefits" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../usage/social-security-scoring-preflight.html">Social Security scoring data preflight</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/speed.html">Speed</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../examples/income-sources.html">Income sources</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/contributed_reforms/social_security_history.md" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="social-security-annual-earnings-histories">
+<h1>Social Security annual earnings histories<a class="headerlink" href="#social-security-annual-earnings-histories" title="Link to this heading">¶</a></h1>
+<p>The opt-in household calculator accepts an annual covered-earnings history
+with <code class="docutils literal notranslate"><span class="pre">ss_calculator_source:</span> <span class="pre">history</span></code>. It computes conventional AIME and the
+initial eligibility PIA, with optional owners’ draw credit, annual mini-PIAs,
+and a separate above-cap AIME+ component. All reforms are off by default.
+Insured status is supplied explicitly; this route does not calculate credits
+or disability, family, survivor, or minimum benefits.</p>
+<p>The existing supplied-AIME, supplied-PIA, and restricted-survivor routes remain
+available. Calculated <code class="docutils literal notranslate"><span class="pre">ss_calculated_*</span></code> outputs remain separate from reported
+public Social Security benefits, following the merged household calculator’s
+interface. The history selector does not replace a public benefit input.</p>
+<section id="annual-source-and-missing-years">
+<h2>Annual source and missing years<a class="headerlink" href="#annual-source-and-missing-years" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ss_calculator_earnings_history</span></code> is one JSON string containing the complete
+source record. Keeping the career in one structural input preserves all years
+and supplied decimal amounts through source extraction and reload. It also
+avoids treating Core’s carry-forward of an annual scalar as a new earnings
+observation.</p>
+<p>The JSON object contains:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">first_year</span></code></p></td>
+<td><p>First year enumerated by the history.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">records</span></code></p></td>
+<td><p>Annual observations with <code class="docutils literal notranslate"><span class="pre">year</span></code>, <code class="docutils literal notranslate"><span class="pre">covered_wages</span></code>, and <code class="docutils literal notranslate"><span class="pre">covered_self_employment</span></code>. Both monetary fields are required, including explicit zero.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">certified_zero_years</span></code></p></td>
+<td><p>Explicitly certified zero years omitted from <code class="docutils literal notranslate"><span class="pre">records</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">certified_zero_before_first_year</span></code></p></td>
+<td><p>Certifies all earlier potential base years as zero. Required when <code class="docutils literal notranslate"><span class="pre">first_year</span></code> is later than the worker’s birth year or 1951, whichever is later.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Covered wages mean earnings in covered employment before the ordinary annual
+cap. Existing covered self-employment means earnings after their existing
+net-earnings adjustment, before the benefit cap. These are earnings amounts,
+not tax liabilities. Amounts may be JSON numbers or decimal strings; strings
+are useful when another application’s JSON encoder would lose precision.</p>
+<p>Every year from <code class="docutils literal notranslate"><span class="pre">first_year</span></code> through the year before initial entitlement must
+be observed or certified zero. Missing years are rejected. Duplicate records,
+overlapping observations and zero certificates, nonfinite amounts, and negative
+covered earnings are rejected. Later observations may remain in the source
+but do not enter the initial calculation: a claim in year Q uses earnings
+through Q−1. Requesting a later benefit year does not recompute the initial
+earnings record.</p>
+<p>For example, a worker born in 1964, first eligible in 2026 and claiming in
+2029 can supply the following JSON string. The certificate is an explicit
+assertion about this synthetic worker’s earlier earnings:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"first_year"</span><span class="p">:</span><span class="w"> </span><span class="mi">2026</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"certified_zero_before_first_year"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"certified_zero_years"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">2027</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"records"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"year"</span><span class="p">:</span><span class="w"> </span><span class="mi">2026</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"covered_wages"</span><span class="p">:</span><span class="w"> </span><span class="s2">"60000.00"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"covered_self_employment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.00"</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"year"</span><span class="p">:</span><span class="w"> </span><span class="mi">2028</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"covered_wages"</span><span class="p">:</span><span class="w"> </span><span class="s2">"65000.00"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"covered_self_employment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.00"</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The calculator also requires the existing own-record fields: worker ID, exact
+birth date, age-62 eligibility year, first entitlement month, insured-status
+assertion, and assertions about unsupported special earnings tests and prior
+withholding adjustments. The supported eligibility benchmark begins in 1984.
+Earnings can precede that benchmark, beginning in 1951 or the worker’s birth
+year, whichever is later; annual inactive-policy defaults cover those years.</p>
+<p>The route computes only the wage-indexed formula of
+<a class="reference external" href="https://www.law.cornell.edu/uscode/text/42/415">42 U.S.C. 415(a)(1)</a>. For a
+worker with covered earnings before 1979 who first becomes eligible from 1979
+through 1983, 415(a)(4)(B)(i) keeps the computation under subsection (a) as in
+effect in December 1978 when that amount is larger. The route cannot compute
+that amount, so it refuses eligibility years before 1984. At any eligibility
+year, 415(a)(4)(B)(ii) also keeps the subsection (d) computation when it is
+larger. Subsection (d) computes the 1939 Act primary insurance benefit, which
+counts wages before 1951, and 415(d)(2)(A) limits it to a worker with a quarter
+of coverage before 1951. Annual records begin in 1951, so the route cannot take
+those wages or compute that amount, and it assumes the worker had no covered
+wages before 1951. It also assumes the worker had no disability-benefit
+eligibility before January 1979, the case 415(a)(4)(A) takes outside
+paragraph (1).</p>
+</section>
+<section id="conventional-aime-and-the-shared-benefit-pipeline">
+<h2>Conventional AIME and the shared benefit pipeline<a class="headerlink" href="#conventional-aime-and-the-shared-benefit-pipeline" title="Link to this heading">¶</a></h2>
+<p>For eligibility year E and initial claim year Q:</p>
+<ol class="arabic simple">
+<li><p>Include annual earnings through Q−1, including earnings after age 62.</p></li>
+<li><p>Cap each year’s covered wages plus existing covered SE plus enabled owners’
+draw credit at that earnings year’s ordinary contribution and benefit base.</p></li>
+<li><p>For a year y before E−2, multiply by <code class="docutils literal notranslate"><span class="pre">NAWI(E−2)</span> <span class="pre">/</span> <span class="pre">NAWI(y)</span></code> and round to
+cents, with half cents rounded upward. Earnings in E−2 and later remain at
+face value.</p></li>
+<li><p>Select the cohort’s computation years: <code class="docutils literal notranslate"><span class="pre">min(35,</span> <span class="pre">E</span> <span class="pre">−</span> <span class="pre">1956)</span></code>, so 28 years
+for E = 1984, 34 for E = 1990 and 35 from E = 1991. Select that many
+highest annual indexed amounts, pad with certified zeros, divide by that
+count times 12 (336, 408 or 420 months in those examples), and floor to a
+whole monthly dollar.</p></li>
+<li><p>Call the same eligibility-year <code class="docutils literal notranslate"><span class="pre">compute_pia</span></code> service used by supplied AIME.</p></li>
+</ol>
+<p>Step 4 follows <a class="reference external" href="https://www.law.cornell.edu/uscode/text/42/415">42 U.S.C. 415(b)(2)</a>:
+elapsed years run from 1951 (or the year after age 21, if later) through the
+year before age-62 eligibility, and the computation period is elapsed years
+less five, with a minimum of two (POMS RS 00605.016 and RS 00605.017). A
+worker first eligible in 1990 has 39 elapsed years and 34 computation years.
+For example, <span class="math notranslate nohighlight">\(3,000 of covered wages in every year 1951–1989 with eligibility
+and claim in 1990 indexes to a highest-34 sum of \)</span>372,486.21, so AIME is
+floor(372,486.21 / 408) = <span class="math notranslate nohighlight">\(912 and the PIA is \)</span>498.30; a fixed 35-year,
+420-month selection would give <span class="math notranslate nohighlight">\(895 and \)</span>492.80. Legacy <code class="docutils literal notranslate"><span class="pre">ss_aime</span></code> keeps its
+own window, and the supplied-AIME and supplied-PIA routes are unchanged.</p>
+<p>The <a class="reference external" href="https://secure.ssa.gov/poms.nsf/lnx/0300605018">POMS indexing procedure</a>
+establishes the index year and cent rounding. The
+<a class="reference external" href="https://secure.ssa.gov/poms.nsf/lnx/0300605021">POMS AIME/PIA procedure</a>
+specifies whole-dollar AIME and lower-dime PIA rounding for modern benchmarks.
+The <a class="reference external" href="https://secure.ssa.gov/poms.nsf/lnx/0300605017">initial base-year rules</a>
+distinguish the initial calculation from later recomputations. This calculator
+deliberately freezes earnings at initial claim; post-claim recomputation is
+outside this deliverable.</p>
+<p>The household payment service then applies eligibility-origin COLAs, the
+claiming adjustment, contributed payment policies, rounding, and the earnings
+test once. The <a class="reference external" href="https://www.ssa.gov/OACT/COLA/colaapplic.html">SSA COLA application sequence</a>
+truncates the PIA after a COLA and the claiming-adjusted amount to dimes,
+followed by the applicable final payment rounding.</p>
+<p>An entitlement month’s check is normally paid the following month. Annual
+entitlement and annual payments are separate totals. A January first
+entitlement therefore normally produces 12 entitlement months and 11 checks
+in that calendar year.</p>
+</section>
+<section id="owners-draw-credit">
+<h2>Owners’ draw credit<a class="headerlink" href="#owners-draw-credit" title="Link to this heading">¶</a></h2>
+<p>When E1 is enabled for an observed earnings year, its record must contain
+<code class="docutils literal notranslate"><span class="pre">owners_draw</span></code> with all four signed fields: <code class="docutils literal notranslate"><span class="pre">s_corp_income</span></code>, <code class="docutils literal notranslate"><span class="pre">partnership_income</span></code>,
+<code class="docutils literal notranslate"><span class="pre">passive_income</span></code>, and <code class="docutils literal notranslate"><span class="pre">already_se_income</span></code>, including explicit zero values.
+Include <code class="docutils literal notranslate"><span class="pre">subsets_are_disjoint</span></code> or <code class="docutils literal notranslate"><span class="pre">passive_se_overlap</span></code> when required.
+Certified-zero years supply zero owners’ inputs automatically. The passive and
+already-SE amounts are subsets already included in the entity totals.
+<code class="docutils literal notranslate"><span class="pre">already_se_income</span></code> is a gross partnership source amount; it differs from the
+record’s adjusted <code class="docutils literal notranslate"><span class="pre">covered_self_employment</span></code>.</p>
+<p>The history route and installed reform call one shared <code class="docutils literal notranslate"><span class="pre">compute_owners_draw</span></code>
+kernel. Extracting the existing arithmetic preserves the reform’s intermediate
+outputs and input overrides while avoiding a second implementation. Annual
+policy parameters govern activation, the phase-in share, netting, the separate
+reporting floor, and wages/SE/draw room priority. See the
+<a class="reference internal" href="owners_draw.html"><span class="std std-doc">owners’ draw specification</span></a> for signed losses and overlapping
+subsets.</p>
+<p>The shared kernel retains the reform’s existing floating-point and NumPy
+intermediate arithmetic. The history adapter restores its monetary outputs
+with <code class="docutils literal notranslate"><span class="pre">Decimal(str(...))</span></code>, then applies the history route’s annual indexed-cent
+rounding. This preserves the existing reform computation while keeping the
+subsequent annual earnings ledger separate from Core’s float32 input storage.</p>
+<p>The default netting expression is
+<code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">−</span> <span class="pre">employer_share</span> <span class="pre">×</span> <span class="pre">(SE_OASDI_rate</span> <span class="pre">+</span> <span class="pre">SE_HI_rate)</span></code>, or 0.9235 at current rates.
+The planned adjusted draw must independently meet the $400 net-earnings floor
+at current settings. Enabled benefit credit adds accepted adjusted draw N_D
+to annual covered earnings before the ordinary cap. It does not append N_D
+to AIME or derive earnings by dividing a tax amount by a rate.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">room_cap_basis</span></code> parameter preserves the current-law cap or explicitly
+removes the draw ceiling. It changes the tax-side room; ordinary benefit
+credit still follows the annual benefit cap and any separately enabled
+above-threshold credit. The existing reform’s active NIIT exclusion remains
+<code class="docutils literal notranslate"><span class="pre">draw_oasdi_base</span> <span class="pre">/</span> <span class="pre">q</span></code> with OASDI only and the full actual gross draw with HI.</p>
+</section>
+<section id="mini-pia">
+<h2>Mini-PIA<a class="headerlink" href="#mini-pia" title="Link to this heading">¶</a></h2>
+<p>The named <code class="docutils literal notranslate"><span class="pre">compute_mini_pia</span></code> function applies the same eligibility-year PIA
+formula to each annual ordinary indexed covered amount divided by 12. It
+selects the highest 40 annual mini-PIAs, pads shorter certified careers with
+zeros, and divides their sum by 37. The divisor is always 37.</p>
+<p>The archived <a class="reference external" href="https://www.ssa.gov/OACT/solvency/provisions_tr2025/benefitlevel.html">B3.12 description in OACT’s 2025 Trustees Report edition</a>
+says, “Sum these individual PIAs for the 40 highest years of indexed earnings
+and divide that total amount by 37”. Its retired-worker phase-in, in that
+2025 edition, is 20% in 2032, 40% in 2033, 60% in 2034, 80% in 2035, and 100% from 2036. Disability
+benefits are unchanged. The independently enabled parameter path is under
+<code class="docutils literal notranslate"><span class="pre">gov.contrib.ssa.history.mini_pia</span></code>.</p>
+<p><strong>Modeling convention: combined dime rounding.</strong> Retain precision in each
+mini-AIME and mini-PIA, aggregate with /37, and blend
+<code class="docutils literal notranslate"><span class="pre">mini_share_E</span> <span class="pre">×</span> <span class="pre">mini_PIA</span> <span class="pre">+</span> <span class="pre">(1</span> <span class="pre">−</span> <span class="pre">mini_share_E)</span> <span class="pre">×</span> <span class="pre">conventional_PIA</span></code>.
+Conventional AIME/PIA retains its statutory rounding. Add the separate AIME+
+PIA after the blend, then floor the combined eligibility PIA to a dime once.
+42 U.S.C. 415(a)(1)(A) rounds the summed formula result down to a multiple of
+<span class="math notranslate nohighlight">\(0.10; the provision descriptions do not address rounding. For example, a mini of \)</span>399.99 plus a
+<span class="math notranslate nohighlight">\(0.02 credit gives a \)</span>400 PIA and payment; truncating the mini first would
+give <span class="math notranslate nohighlight">\(399.90 and \)</span>399.</p>
+</section>
+<section id="above-cap-aime-credit">
+<h2>Above-cap AIME+ credit<a class="headerlink" href="#above-cap-aime-credit" title="Link to this heading">¶</a></h2>
+<p>Independent named parameter sets under <code class="docutils literal notranslate"><span class="pre">gov.contrib.ssa.history.donut</span></code> retain
+the archived <code class="docutils literal notranslate"><span class="pre">oact_2025_e2_13</span></code> and <code class="docutils literal notranslate"><span class="pre">oact_2025_e2_14</span></code> provisions and a <code class="docutils literal notranslate"><span class="pre">custom</span></code>
+set. Activation, threshold, start year, tax rate, credit flag/rate, and
+inclusion of existing SE or reclassified draw are separate settings. A
+credit-off variant can tax earnings while producing no AIME+ credit.</p>
+<p>The archived <a class="reference external" href="https://www.ssa.gov/OACT/solvency/provisions_tr2025/payrolltax.html">payroll-tax descriptions in OACT’s 2025 Trustees Report edition</a>
+state E2.13 as “Apply OASDI 12.4 percent payroll tax rate on earnings above
+<span class="math notranslate nohighlight">\(400,000” and E2.14 as “Apply OASDI 12.4 percent payroll tax rate on earnings
+above \)</span>250,000”. In that 2025 edition both begin with 2027 earnings and use a
+2% secondary AIME+ factor. The 2026 Trustees Report edition moved the start of E2.13
+and E2.14 to 2028. This calculator keeps the 2025 edition’s years and
+citations; its named variants (<code class="docutils literal notranslate"><span class="pre">oact_2025_e2_13</span></code>, <code class="docutils literal notranslate"><span class="pre">oact_2025_e2_14</span></code>) and the
+B3.12 phase-in above are the 2025 edition’s. Their thresholds stay fixed; once the ordinary cap reaches the
+threshold, the gap disappears.</p>
+<p>For each enabled earnings year, the separate taxed stream is
+<code class="docutils literal notranslate"><span class="pre">max(selected_covered_earnings</span> <span class="pre">−</span> <span class="pre">max(ordinary_cap,</span> <span class="pre">threshold),</span> <span class="pre">0)</span></code>. The gap
+between cap and threshold receives neither additional tax nor credit.
+Earnings receive AIME+ credit only when the provision taxes them and enables
+credit. Including existing SE or adjusted owners’ draw applies consistently
+to the tax and credit ledger.</p>
+<p>Index the extra stream using the same E−2 convention, select its own highest
+35 years, divide by 420 and floor to whole dollars. Multiply that separate
+AIME+ by the credit rate and add it after the mini/conventional blend. This
+stream never changes conventional AIME. These services expose hypothetical
+annual tax/credit amounts for the household report; they do not change
+population payroll-tax variables.</p>
+<p><strong>Modeling convention: cohort-selected donut coefficient.</strong> For a custom
+changing path, annual tax/coverage settings determine the extra earnings
+stream, and the PIA credit coefficient is read at eligibility E, as benefit
+formulas select by cohort. The named E2.13 and E2.14 variants (2025 Trustees
+Report edition) carry a constant 2%, so this only moves a custom path that
+varies. For example, AIME+ <span class="math notranslate nohighlight">\(240 at 2% against 3% gives \)</span>4.80 against <span class="math notranslate nohighlight">\(7.20;
+with a \)</span>2,180 baseline PIA and claiming at 65, payment is <span class="math notranslate nohighlight">\(1,893 against
+\)</span>1,895. Pure callers whose credited annual streams use different coefficients
+must supply the eligibility coefficient explicitly.</p>
+</section>
+<section id="annual-earnings-ledger">
+<h2>Annual earnings ledger<a class="headerlink" href="#annual-earnings-ledger" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">AnnualBenefit.history</span></code> exposes the typed history calculation to Python
+callers. <code class="docutils literal notranslate"><span class="pre">ss_calculated_history_ledger</span></code> exposes its annual ledger as a JSON
+string for a household report. The ledger retains ordinary covered earnings,
+accepted E1 credit, the separate donut-taxed and credited stream, indexing
+amounts, and each year’s mini-PIA so the result can be reconciled by year.</p>
+<p>The accompanying annual diagnostics are <code class="docutils literal notranslate"><span class="pre">ss_calculated_history_aime</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ss_calculated_history_aime_plus</span></code>, <code class="docutils literal notranslate"><span class="pre">ss_calculated_history_mini_pia</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">ss_calculated_history_conventional_pia</span></code>. These diagnostics preserve the
+initial-claim earnings calculation when a later payment year is requested.
+<code class="docutils literal notranslate"><span class="pre">ss_calculator_donut_variant</span></code> selects the named donut parameter set; its
+default <code class="docutils literal notranslate"><span class="pre">custom</span></code> set is inactive until explicitly configured.</p>
+<p>The annual report prices mini-PIAs and PIA diagnostics using January
+entitlement’s formula; <code class="docutils literal notranslate"><span class="pre">diagnostic_pia_entitlement_month</span></code> and
+<code class="docutils literal notranslate"><span class="pre">diagnostic_pia_formula_year</span></code> name that period. <code class="docutils literal notranslate"><span class="pre">donut_credit_rate</span></code> (with its
+exact fraction) and <code class="docutils literal notranslate"><span class="pre">donut_credit_rate_year</span></code> name the AIME+ coefficient
+applied and the year whose parameters selected it. <code class="docutils literal notranslate"><span class="pre">computation_years</span></code> gives
+the ordinary selection count, which the <code class="docutils literal notranslate"><span class="pre">ordinary_top35</span></code> flags follow; the
+<code class="docutils literal notranslate"><span class="pre">donut_top35</span></code> flags always mark 35 years. Its income ledger stays frozen at
+Q−1. An exact fraction
+accompanies recurring mini-PIA decimals, and highest-year selection flags use
+the earlier earnings year to resolve ties. Before eligibility, the report
+retains the earnings ledger and leaves PIA diagnostics unset.</p>
+</section>
+<section id="reviewable-arithmetic-and-compatibility">
+<h2>Reviewable arithmetic and compatibility<a class="headerlink" href="#reviewable-arithmetic-and-compatibility" title="Link to this heading">¶</a></h2>
+<p>The synthetic 2036-eligibility fixture uses flat NAWI, zero COLAs, a <span class="math notranslate nohighlight">\(120,000
+ordinary cap, \)</span>1,000/<span class="math notranslate nohighlight">\(6,000 bend points, and .90/.32/.15 factors. Thirty-three
+\)</span>60,000 wage years and a <span class="math notranslate nohighlight">\(120,000 capped year give AIME \)</span>5,000 and PIA
+<span class="math notranslate nohighlight">\(2,180.00. A \)</span>60,000 accepted gross draw contributes <span class="math notranslate nohighlight">\(55,410, giving AIME
+\)</span>5,131 and conventional PIA <span class="math notranslate nohighlight">\(2,221.90. A \)</span>500,800 wage year contributes
+<span class="math notranslate nohighlight">\(100,800 to the \)</span>400,000 donut stream: AIME+ <span class="math notranslate nohighlight">\(240 and PIA+ \)</span>4.80.</p>
+<p>Annual minis are <span class="math notranslate nohighlight">\(2,180.00 for a \)</span>60,000 year, <span class="math notranslate nohighlight">\(3,100.00 for the capped year,
+and \)</span>2,057.60 for the owners’ year. The mini with E1 is
+<code class="docutils literal notranslate"><span class="pre">(33</span> <span class="pre">×</span> <span class="pre">2180</span> <span class="pre">+</span> <span class="pre">3100</span> <span class="pre">+</span> <span class="pre">2057.60)</span> <span class="pre">/</span> <span class="pre">37</span> <span class="pre">=</span> <span class="pre">2083.718918…</span></code>. Adding PIA+ and
+truncating to dimes gives <span class="math notranslate nohighlight">\(2,088.50. Claiming 24 months before FRA uses
+13/15 and pays \)</span>1,810 monthly, or $21,720 for 12 entitlement months.</p>
+<p>Published conventional comparisons use SSA’s
+<a class="reference external" href="https://www.ssa.gov/OACT/ProgData/retirebenefit1.html">annual earnings histories</a>
+and <a class="reference external" href="https://www.ssa.gov/OACT/ProgData/retirebenefit2.html">PIA examples</a>.
+In the 2027 examples, Case A has AIME <span class="math notranslate nohighlight">\(6,072; SSA prints the formula result
+\)</span>2,720.24 and then the initial PIA <span class="math notranslate nohighlight">\(2,720.20. Case B, first eligible in 2022,
+has AIME \)</span>11,843, including later earnings through 2026; SSA’s page prints the
+formula result <span class="math notranslate nohighlight">\(3,419.61, and \)</span>3,419.60 is its floor to a dime, which the
+calculator reports as the initial PIA. Source data are fixed in the corresponding
+test fixtures; the live SSA examples can advance to another retirement year.</p>
+<p>The merged implementation takes precedence over older design descriptions:</p>
+<ul class="simple">
+<li><p>The existing <code class="docutils literal notranslate"><span class="pre">ss_calculated_*</span></code> interface remains separate from reported
+public benefits. Payment-year totals retain the merged one-month check lag.</p></li>
+<li><p>Runtime parameters already include historical bends and future wage-indexed
+paths. The history route reuses them, including future household claim years.</p></li>
+<li><p>Legacy <code class="docutils literal notranslate"><span class="pre">ss_aime</span></code> keeps its rolling lookback, age filters, and untruncated
+result. The opt-in complete-history route shares applicable arithmetic and
+is compared with it where those legacy assumptions match.</p></li>
+<li><p>One structural JSON source holds all annual observations instead of many
+period-specific inputs. Explicit certificates preserve missing-versus-zero
+semantics and make source export complete.</p></li>
+</ul>
+<p>There are no package-specific settings, population impact estimates, insured
+credits algorithm, or post-claim earnings recomputations in this interface.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./contributed_reforms"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Social Security annual earnings histories</a><ul>
+<li><a class="reference internal" href="#annual-source-and-missing-years">Annual source and missing years</a></li>
+<li><a class="reference internal" href="#conventional-aime-and-the-shared-benefit-pipeline">Conventional AIME and the shared benefit pipeline</a></li>
+<li><a class="reference internal" href="#owners-draw-credit">Owners’ draw credit</a></li>
+<li><a class="reference internal" href="#mini-pia">Mini-PIA</a></li>
+<li><a class="reference internal" href="#above-cap-aime-credit">Above-cap AIME+ credit</a></li>
+<li><a class="reference internal" href="#annual-earnings-ledger">Annual earnings ledger</a></li>
+<li><a class="reference internal" href="#reviewable-arithmetic-and-compatibility">Reviewable arithmetic and compatibility</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>
