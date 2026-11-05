@@ -42,4 +42,21 @@ class ca_dependent_care_assistance_exclusion(Variable):
         # gives line 26 whenever the federal cap is at least California's,
         # as it is for every filer in 2021.
         federal_exclusion = tax_unit("dependent_care_assistance_exclusion", period)
-        return min_(federal_exclusion, dollar_cap)
+        # The federal IRC 129(b) earned-income limit leaves out payroll HSA
+        # contributions, which California taxes. Where California's earned
+        # income is higher, let the exclusion rise by the difference, up to
+        # the benefits. This equals the lesser of the benefits, the cap and
+        # California earned income, because the federal cap is at least
+        # California's.
+        increase = max_(
+            tax_unit("ca_cdcc_min_head_spouse_earned", period)
+            - tax_unit("min_head_spouse_earned", period),
+            0,
+        )
+        benefits = add(tax_unit, period, ["dependent_care_employer_benefits"])
+        exclusion = where(
+            increase > 0,
+            min_(benefits, federal_exclusion + increase),
+            federal_exclusion,
+        )
+        return min_(exclusion, dollar_cap)

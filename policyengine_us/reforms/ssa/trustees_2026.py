@@ -39,8 +39,10 @@ Reach. From those two paths the module re-derives:
 - the base's owners' draw copy, ``gov.contrib.ssa.owners_draw.current_law_cap``,
   on the same rule from the copy's own values through 2027, so a policy reform
   that changes the live base doesn't reach it;
-- the wage base, quarter-of-coverage threshold, earnings-test exempt amounts,
-  PIA bend points and SGA amounts, from 2027;
+- the wage base on the same rule from its own values through 2027, so a
+  policy reform that changes the live base or the copy doesn't reach it;
+- the quarter-of-coverage threshold, earnings-test exempt amounts, PIA bend
+  points and SGA amounts, from 2027;
 - every parameter whose ``uprating`` metadata names either path. Core's
   ``uprate_parameters`` writes their values when the system builds, so a later
   change to a path doesn't reach them. The module derives each again as core
@@ -480,7 +482,26 @@ def apply_trustees_2026_economic_assumptions(
         end_year=end_year,
         cap=parameters.gov.contrib.ssa.owners_draw.current_law_cap,
     )
-    extend_social_security_wage_indexed_parameters(parameters, end_year=end_year)
+    # Extend the benefit wage base on the same rule from its own values
+    # through 2027. The rule reads the wage base's 1994 base, its value for
+    # the year before and the NAWI, but neither the live cap nor the copy, so
+    # a reform that changes only one of those doesn't move the wage base when
+    # the reform set runs again. A reform that means to move it sets the wage
+    # base itself.
+    wage_base = parameters.gov.ssa.social_security.wage_base
+    extend_social_security_payroll_cap(
+        parameters,
+        last_projected_year=TRUSTEES_2026_LAST_DETERMINED_CAP_YEAR,
+        end_year=end_year,
+        cap=wage_base,
+    )
+    # Reads the wage base from itself, so this rewrites the wage base with its
+    # own values and extends the other wage-indexed amounts on the NAWI.
+    extend_social_security_wage_indexed_parameters(
+        parameters,
+        end_year=end_year,
+        cap=wage_base,
+    )
     apply_trustees_2026_path_readers(parameters, end_year=end_year)
 
 
