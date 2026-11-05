@@ -73,3 +73,95 @@ for checking the dated aggregation path and applied liability cap.
 The [TAXSIM validation comparison](taxsim.md#how-agreement-is-measured) includes
 a rebate-adjusted metric. Its limitations and each program's aggregation path
 matter when reconciling that metric with the reported state income tax.
+
+## Pre-rebate comparison output
+
+Two tax-unit outputs restore one-time rebates to state income tax for
+comparison with models that report them separately:
+
+```text
+state_income_tax_before_one_time_rebates
+    = state_income_tax + state_income_tax_rebate_adjustment
+```
+
+`state_income_tax_rebate_adjustment` sums the state variables in the
+[rebate registry](https://github.com/PolicyEngine/policyengine-us/blob/main/policyengine_us/parameters/gov/states/household/state_income_tax_rebate_adjustments.yaml).
+Each restores only the registered rebate amounts that actually reduced that
+year's modeled state tax. The comparison liability keeps ordinary credits,
+including refundable credits such as state EITCs, so it can be negative.
+Neither output changes `state_income_tax`, existing credit totals, or
+household net income.
+
+### Scope rule
+
+A payment is in the registry when both of these hold:
+
+1. **It is one-time.** State law provides it for named tax years only, not
+   as a standing mechanism that recurs under permanent law.
+2. **The model credits it against that year's state income tax,** through
+   the state's dated credit list or, for Montana, directly in
+   `mt_refundable_credits`.
+
+Standing refund mechanisms stay in the comparison liability, even when they
+return surplus revenue. Colorado's residual TABOR sales tax refund
+(`co_sales_tax_refund`) and Oregon's kicker (`or_kicker`) are both recurring,
+so the output restores neither. Colorado Cash Back (`co_tabor_cash_back`) is a
+2021-only payment and is restored. Ordinary recurring credits also stay in
+liability.
+
+Under this rule the registry covers every payment in the inventory above
+except Colorado's sales tax refund, plus four payments modeled through
+refundable credits that the inventory does not list:
+
+| Payment and raw variable(s) | Eligibility year in the dated credit list | Aggregation |
+|---|---|---|
+| Maine affordability payment: `me_affordability_payment` | 2025 only | R: `me_refundable_credits`, per eligible head or spouse. |
+| Delaware relief rebate: `de_relief_rebate` | 2020 only | R: `de_refundable_credits`, per modeled head or spouse. |
+| Idaho rebates: `id_2022_rebate`, `id_special_season_rebate` | 2020 only in the current model | R: the 2020 list includes both and the 2021 list removes them. Their standalone formulas persist. |
+| Indiana automatic refund: `in_automatic_refund_rebate` | 2020 only | R: `in_refundable_credits`. |
+
+A raw rebate amount enters the adjustment only in years when the state's
+dated credit list includes it, so a positive standalone amount in another
+year contributes zero.
+
+### How the adjustment is computed
+
+This is an additive reconciliation with filing choices and other credit
+bases held fixed. It does not rerun taxes with the rebates removed.
+
+- **Refundable rebates** restore the registered amounts in the year's
+  refundable-credit list.
+- **Massachusetts** Chapter 62F uses liability after other refundable
+  credits, including premium pay, as its base. The adjustment restores the
+  included amounts and keeps that calculated 62F base.
+- **Montana's** separate-versus-joint filing election is determined before
+  its 2021 rebate, by model assumption, and the comparison keeps it.
+- **Virginia's** rebate is nonrefundable. With before-credit tax `T`, other
+  applied nonrefundable credits `C`, rebate `R` and spouse adjustment `S`,
+  the adjustment is `max(T - C - S, 0) - max(T - C - R - S, 0)`. A calculated
+  `va_rebate` is already limited to tax after the spouse adjustment and
+  refundable credits, including the refundable EITC, so the adjustment equals
+  it. The formula differs only when a caller supplies a larger `va_rebate`.
+- **South Carolina's** rebate is already limited to liability remaining
+  after other credits.
+
+If a caller overrides an aggregate credit total or final tax directly, it must
+also supply a consistent adjustment; the model cannot infer the rebate share
+of an arbitrary total.
+
+### Differences from the TAXSIM dashboard
+
+The dashboard's "Within 1%, net of rebates" column adds a PolicyEngine rebate
+amount computed by policyengine-taxsim from its own rebate list. That list is
+not this registry, so the column is not a test of
+`state_income_tax_before_one_time_rebates`. At the time of writing they differ
+for:
+
+- **Oregon:** policyengine-taxsim includes `or_kicker`, because PolicyEngine
+  credits the kicker on the return year while TAXSIM reports it for the base
+  year. This output leaves the kicker in liability under the scope rule.
+- **Massachusetts premium pay** and the **Maine affordability payment:** this
+  registry includes them; policyengine-taxsim's list does not.
+
+Both measures restore Colorado Cash Back and leave out Colorado's sales tax
+refund.

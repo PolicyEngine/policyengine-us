@@ -7,14 +7,15 @@
   output:
     state_income_tax_rebate_adjustment: 250
 
-- name: Colorado residual TABOR and Cash Back
+- name: Colorado restores Cash Back but not the recurring residual TABOR refund
   period: 2021
   input:
     state_code: CO
     co_sales_tax_refund: 56
     co_tabor_cash_back: 750
   output:
-    state_income_tax_rebate_adjustment: 806
+    # Only the one-time 750 Cash Back; the 56 sales tax refund stays in tax.
+    state_income_tax_rebate_adjustment: 750
 
 - name: Connecticut child rebate
   period: 2021
@@ -149,6 +150,22 @@
   output:
     state_income_tax_rebate_adjustment: 200
 
+- name: Virginia calculated rebate equals its effect on final tax
+  # va_rebate is limited to tax after the spouse adjustment and refundable
+  # credits, so the max - max form returns the rebate itself.
+  # 2024 single: rebate = min(200, 1,000) = 200;
+  # adjustment = max(1,000, 0) - max(1,000 - 200, 0) = 200.
+  period: 2024
+  input:
+    state_code: VA
+    filing_status: SINGLE
+    va_income_tax_before_non_refundable_credits: 1_000
+    va_spouse_tax_adjustment: 0
+    va_refundable_credits: 0
+  output:
+    va_rebate: 200
+    state_income_tax_rebate_adjustment: 200
+
 - name: Virginia inactive rebate list
   period: 2023
   input:
@@ -189,15 +206,15 @@
   output:
     state_income_tax_rebate_adjustment: 0
 
-- name: Colorado sales refund remains without Cash Back in 2022
+- name: Colorado's recurring sales refund is not restored in 2022
   period: 2022
   input:
     state_code: CO
     co_sales_tax_refund: 234
   output:
-    state_income_tax_rebate_adjustment: 234
+    state_income_tax_rebate_adjustment: 0
 
-- name: Colorado amount gate zeroes refund in 2026
+- name: Colorado has no one-time rebate to restore in 2026
   period: 2026
   input:
     state_code: CO
@@ -393,4 +410,5 @@
         members: [florida]
         state_code: FL
   output:
-    state_income_tax_rebate_adjustment: [806, 600, 0]
+    # CO: 750 Cash Back only; MA: 500 premium pay + 100 62F; FL: none.
+    state_income_tax_rebate_adjustment: [750, 600, 0]

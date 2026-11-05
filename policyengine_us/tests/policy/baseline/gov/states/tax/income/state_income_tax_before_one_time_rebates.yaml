@@ -13,8 +13,10 @@
     state_income_tax_before_refundable_credits: 1000
     state_refundable_credits: 906
     state_income_tax: 94
-    state_income_tax_rebate_adjustment: 806
-    state_income_tax_before_one_time_rebates: 900
+    # Restore only the one-time 750 Cash Back: 94 + 750 = 844. The 100 EITC
+    # and the recurring 56 sales tax refund stay in liability.
+    state_income_tax_rebate_adjustment: 750
+    state_income_tax_before_one_time_rebates: 844
 
 - name: Pre-rebate tax can remain negative with ordinary refundable credits
   period: 2021
@@ -29,8 +31,9 @@
     co_tabor_cash_back: 750
   output:
     state_income_tax: -906
-    state_income_tax_rebate_adjustment: 806
-    state_income_tax_before_one_time_rebates: -100
+    # -906 + 750 = -156.
+    state_income_tax_rebate_adjustment: 750
+    state_income_tax_before_one_time_rebates: -156
 
 - name: Virginia comparison restores only the final tax effect
   period: 2021
@@ -65,18 +68,27 @@
     state_income_tax_before_one_time_rebates: 1900
 
 - name: Comparison leaves existing household income and tax decomposition unchanged
-  # 2022 Colorado example from the comparison audit: 100000 wages,
-  # federal taxable income 87050, 4.4% state tax 3830.20, sales refund 234.
+  # 2022 Colorado single filer with 100,000 of wages.
+  # Federal: taxable income 100,000 - 12,950 = 87,050; tax
+  #   1,027.50 + 3,780 + 22% * 45,275 = 14,768.
+  # FICA: 7.65% * 100,000 = 7,650.
+  # Colorado: 4.4% * 87,050 = 3,830.20, less the 234 sales tax refund
+  #   = 3,596.20. The refund recurs, so nothing is restored.
+  # FAMLI: C.R.S. 8-13.3-507 starts premiums on January 1, 2023, so there is
+  #   no 2022 premium. The model's rate file starts in 2023 and is otherwise
+  #   carried back, so the case sets the 2022 contribution to zero.
+  # Net income: 100,000 - 14,768 - 7,650 - 3,596.20 = 73,985.80.
   period: 2022
   absolute_error_margin: 0.01
   input:
     age: 40
     employment_income: 100000
+    co_employee_famli_contribution: 0
     state_code: CO
   output:
     co_sales_tax_refund: 234
     co_tabor_cash_back: 0
     state_income_tax: 3596.20
-    state_income_tax_rebate_adjustment: 234
-    state_income_tax_before_one_time_rebates: 3830.20
-    household_net_income: 73535.80
+    state_income_tax_rebate_adjustment: 0
+    state_income_tax_before_one_time_rebates: 3596.20
+    household_net_income: 73985.80

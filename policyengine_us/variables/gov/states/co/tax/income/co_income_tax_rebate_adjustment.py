@@ -16,6 +16,8 @@ class co_income_tax_rebate_adjustment(Variable):
 
     def formula(tax_unit, period, parameters):
         credits = parameters(period).gov.states.co.tax.income.credits.refundable
-        rebates = ["co_sales_tax_refund", "co_tabor_cash_back"]
+        # The residual TABOR sales tax refund recurs under permanent law, so
+        # it stays in the comparison liability; only Cash Back is one-time.
+        rebates = ["co_tabor_cash_back"]
         included = [rebate for rebate in rebates if rebate in credits]
         return add(tax_unit, period, included) if included else 0

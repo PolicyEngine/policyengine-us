@@ -6,9 +6,9 @@ class state_income_tax_rebate_adjustment(Variable):
     entity = TaxUnit
     label = "State income tax rebate adjustment"
     documentation = (
-        "Registered rebate amounts actually included in modeled state income "
-        "tax for this year, including Colorado's residual TABOR sales tax "
-        "refund and Massachusetts premium pay. Nonrefundable amounts reflect "
+        "Registered one-time rebate amounts actually included in modeled "
+        "state income tax for this year. Standing refunds such as Colorado's "
+        "residual TABOR sales tax refund are not registered. Nonrefundable amounts reflect "
         "remaining liability and any subsequent spouse adjustment. Ordinary "
         "credits, other credit bases and filing elections remain fixed. "
         "The dated registry defines coverage; see docs/validation/state-rebates.md."

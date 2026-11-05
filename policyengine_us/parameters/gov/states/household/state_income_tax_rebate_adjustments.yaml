@@ -1,11 +1,11 @@
 description: >-
-  Registry of state tax effects restored for the pre-rebate comparison output.
-  Each effect follows canonical credit aggregation and calculated amounts;
-  dated credit lists and amount gates determine inclusion. Registry membership
-  alone does not imply a payment in every year. Existing
-  historical backdating is preserved, not corrected by this comparison output.
-  Colorado's residual TABOR sales refund and Massachusetts premium pay are in
-  scope. Ordinary recurring credits remain in liability.
+  The pre-rebate state income tax comparison output restores these state
+  adjustments. Each covers payments that state law provides for named tax
+  years only and that the model credits against that year's state income tax.
+  Standing refund mechanisms, such as Colorado's residual TABOR sales tax
+  refund and Oregon's kicker, and ordinary credits stay in liability. Dated
+  credit lists and amount gates decide whether a registered payment counts in
+  a given year.
 values:
   0000-01-01:
     - az_income_tax_rebate_adjustment
