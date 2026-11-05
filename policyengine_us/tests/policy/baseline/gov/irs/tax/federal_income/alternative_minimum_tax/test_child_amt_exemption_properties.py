@@ -1,227 +1,138 @@
-"""The historical child AMT fixes leave post-2017 AMT unchanged.
+"""Properties of the AMT child exemption limitation that follow from the law.
 
-Compare the model to both formulas as they stood before these fixes, rather
-than assuming that equal AMTI and regular taxable income conceal a change.
-Section 55(d)(4)(A)(iii) disapplies section 59(j) from 2018 onward.
+- IRC 59(j)(1) (2016 ed.): for a child to whom IRC 1(g) applies, the AMT
+  exemption cannot exceed earned income plus the indexed child amount.
+- IRC 1(g)(2)(C): IRC 1(g) never applies to a joint return.
+- IRC 55(d)(4)(A)(iii): IRC 59(j) does not apply from 2018, so a child's
+  exemption equals that of an otherwise identical adult.
+
+YAML cases pin hand-computed values; this test checks the properties across
+generated households, without restating the model's formulas.
 """
-
-from itertools import product
 
 import hypothesis
 import numpy as np
-import pytest
 from hypothesis import strategies as st
 
-from policyengine_core.reforms import Reform
-from policyengine_core.variables import Variable
 from policyengine_us import Simulation
 from policyengine_us.system import system
 
-STATUSES = (
-    "SINGLE",
-    "JOINT",
-    "SEPARATE",
-    "HEAD_OF_HOUSEHOLD",
-    "SURVIVING_SPOUSE",
+STATUSES = ("SINGLE", "JOINT", "SEPARATE", "HEAD_OF_HOUSEHOLD", "SURVIVING_SPOUSE")
+CAP_YEARS = (2015, 2017)
+NO_CAP_YEARS = (2018, 2025, 2026)
+YEARS = CAP_YEARS + NO_CAP_YEARS
+ADULT_AGE = 40
+
+# Fixed cases keep each property non-vacuous whatever Hypothesis draws: a
+# capped child, an uncapped child, an 18-year-old on each side of the support
+# test, and a joint return by spouses under 18 (no support test applies).
+FIXED_CASES = (
+    dict(status="SINGLE", age=17, student=False, earnings=0, support=0, amti=50_000),
+    dict(
+        status="SINGLE", age=17, student=False, earnings=47_000, support=0, amti=77_000
+    ),
+    dict(
+        status="SEPARATE",
+        age=18,
+        student=False,
+        earnings=10_000,
+        support=20_000,
+        amti=60_000,
+    ),
+    dict(
+        status="SINGLE", age=18, student=False, earnings=10_000, support=0, amti=60_000
+    ),
+    dict(
+        status="JOINT", age=17, student=False, earnings=29_000, support=0, amti=150_000
+    ),
 )
-OUTPUTS = (
-    "amt_exemption",
-    "amt_income_less_exemptions",
-    "amt_base_tax",
-    "alternative_minimum_tax",
-)
-YEARS = tuple(range(2018, 2031))
 
 
-class PreviousChildAmtFormulas(Reform):
-    """Restore the two formulas from main before the historical fixes."""
-
-    def apply(self):
-        class amt_kiddie_tax_applies(Variable):
-            def formula(tax_unit, period, parameters):
-                p = parameters(period).gov.irs.dependent.ineligible_age
-                person = tax_unit.members
-                is_student = person("is_full_time_student", period)
-                head_is_student = tax_unit.any(
-                    is_student & person("is_tax_unit_head", period)
-                )
-                spouse_is_student = tax_unit.any(
-                    is_student & person("is_tax_unit_spouse", period)
-                )
-                age_head = tax_unit("age_head", period)
-                age_spouse = tax_unit("age_spouse", period)
-                head_age_limit = np.where(head_is_student, p.student, p.non_student)
-                spouse_age_limit = np.where(spouse_is_student, p.student, p.non_student)
-                young_head = (age_head != 0) & (age_head < head_age_limit)
-                no_or_young_spouse = (age_spouse == 0) | (age_spouse < spouse_age_limit)
-                return young_head & no_or_young_spouse
-
-        class amt_income_less_exemptions(Variable):
-            def formula(tax_unit, period, parameters):
-                p = parameters(period).gov.irs.income.amt
-                amt_income = tax_unit("amt_income", period)
-                if p.exemption.child.in_effect:
-                    applied_income = np.where(
-                        tax_unit("amt_kiddie_tax_applies", period),
-                        tax_unit("taxable_income", period),
-                        amt_income,
-                    )
-                else:
-                    applied_income = amt_income
-                return np.maximum(0, applied_income - tax_unit("amt_exemption", period))
-
-        self.update_variable(amt_kiddie_tax_applies)
-        self.update_variable(amt_income_less_exemptions)
-
-
-@pytest.fixture(scope="module")
-def previous_system():
-    return PreviousChildAmtFormulas(system)
-
-
-def boundary_cases(year):
-    """Include every status, age branch, phaseout stage, and tax comparison."""
-    p = system.parameters(str(year)).gov.irs.income.amt.exemption
-    for status, (age, student) in product(
-        STATUSES, ((17, False), (18, False), (22, True), (40, False))
-    ):
-        exemption = p.amount[status]
-        phaseout_start = p.phase_out.start[status]
-        incomes = (
-            0,
-            50_000,
-            exemption + 100_000,
-            phaseout_start,
-            phaseout_start + exemption / (2 * p.phase_out.rate),
-            phaseout_start + exemption / p.phase_out.rate + 1,
-        )
-        for income, regular_tax_fraction in product(incomes, (0, 0.2, 1)):
-            yield {
-                "status": status,
-                "age": age,
-                "student": student,
-                "amt_income": income,
-                "deductions": 25_000,
-                "regular_tax": income * regular_tax_fraction,
-            }
-
-
-def situation(cases, year):
+def situation(cases):
+    """Each case appears twice: as given, and as an otherwise identical adult."""
     people, tax_units, households = {}, {}, {}
-    for i, case in enumerate(cases):
+    twins = [dict(case, twin=False) for case in cases] + [
+        dict(case, age=ADULT_AGE, student=False, twin=True) for case in cases
+    ]
+    for i, case in enumerate(twins):
         joint = case["status"] == "JOINT"
-        members = [f"head_{i}"]
+        members = []
         for role in ("head", "spouse") if joint else ("head",):
             person_id = f"{role}_{i}"
+            members.append(person_id)
             people[person_id] = {
-                "age": {year: case["age"]},
-                "is_full_time_student": {year: case["student"]},
-                "is_tax_unit_head": {year: role == "head"},
-                "is_tax_unit_spouse": {year: role == "spouse"},
-                "is_tax_unit_dependent": {year: False},
+                "age": {year: case["age"] for year in YEARS},
+                "is_full_time_student": {year: case["student"] for year in YEARS},
+                "is_tax_unit_head": {year: role == "head" for year in YEARS},
+                "is_tax_unit_spouse": {year: role == "spouse" for year in YEARS},
+                "is_tax_unit_dependent": {year: False for year in YEARS},
+                "adjusted_earnings": {
+                    year: case["earnings"] if role == "head" else 0 for year in YEARS
+                },
+                "care_and_support_costs": {year: case["support"] for year in YEARS},
             }
-            if role == "spouse":
-                members.append(person_id)
         tax_units[f"unit_{i}"] = {
             "members": members,
-            "filing_status": {year: case["status"]},
-            "age_head": {year: case["age"]},
-            "age_spouse": {year: case["age"] if joint else 0},
-            "amt_income": {year: case["amt_income"]},
-            "taxable_income": {year: max(0, case["amt_income"] - case["deductions"])},
-            "regular_tax_before_credits": {year: case["regular_tax"]},
-            "amt_part_iii_required": {year: False},
-            "amt_tax_including_cg": {year: 0},
-            "foreign_earned_income_exclusion": {year: 0},
-            "foreign_tax_credit_potential": {year: 0},
-            "form_4972_lumpsum_distributions": {year: 0},
+            "filing_status": {year: case["status"] for year in YEARS},
+            "amt_income": {year: case["amti"] for year in YEARS},
         }
         households[f"household_{i}"] = {
             "members": members,
-            "state_code": {year: "TX"},
+            "state_code": {year: "TX" for year in YEARS},
         }
     return {"people": people, "tax_units": tax_units, "households": households}
 
 
-def multi_year_situation(extra_cases):
-    """Merge annual inputs while keeping each cohort's membership fixed."""
-    inputs = {"people": {}, "tax_units": {}, "households": {}}
-    for year_index, year in enumerate(YEARS):
-        cases = [
-            *boundary_cases(year),
-            *(
-                {
-                    "status": case["status"],
-                    "age": case["age"],
-                    "student": case["student"],
-                    **case["finances"][year_index],
-                }
-                for case in extra_cases
-            ),
-        ]
-        for entity_type, entities in situation(cases, year).items():
-            for entity_id, fields in entities.items():
-                merged = inputs[entity_type].setdefault(entity_id, {})
-                for variable, value in fields.items():
-                    if variable == "members":
-                        assert merged.setdefault(variable, value) == value
-                    else:
-                        merged.setdefault(variable, {}).update(value)
-    return inputs
-
-
-financial_strategy = st.fixed_dictionaries(
-    {
-        "amt_income": st.integers(0, 3_000_000),
-        "deductions": st.integers(0, 100_000),
-        "regular_tax": st.integers(0, 1_000_000),
-    }
-)
 case_strategy = st.fixed_dictionaries(
     {
         "status": st.sampled_from(STATUSES),
-        "age": st.integers(17, 40),
+        "age": st.integers(14, 30),
         "student": st.booleans(),
-        "finances": st.lists(
-            financial_strategy, min_size=len(YEARS), max_size=len(YEARS)
-        ),
+        "earnings": st.integers(0, 150_000),
+        "support": st.integers(0, 150_000),
+        "amti": st.integers(0, 2_000_000),
     }
 )
 
 
-@hypothesis.settings(max_examples=3, deadline=None, derandomize=True)
-@hypothesis.given(
-    extra_cases=st.lists(case_strategy, min_size=1, max_size=4),
-)
-def test_post_2017_amt_is_unchanged(previous_system, extra_cases):
-    inputs = multi_year_situation(extra_cases)
-    current = Simulation(tax_benefit_system=system, situation=inputs)
-    previous = Simulation(tax_benefit_system=previous_system, situation=inputs)
+@hypothesis.settings(max_examples=5, deadline=None, derandomize=True)
+@hypothesis.given(cases=st.lists(case_strategy, min_size=1, max_size=20))
+def test_child_amt_exemption_properties(cases):
+    cases = [*FIXED_CASES, *cases]
+    n = len(cases)
+    sim = Simulation(tax_benefit_system=system, situation=situation(cases))
+    earnings = np.array([case["earnings"] for case in cases], dtype=float)
 
     for year in YEARS:
-        for variable in OUTPUTS:
+        applies = sim.calculate("amt_kiddie_tax_applies", year)
+        exemption = sim.calculate("amt_exemption", year)
+        status = sim.calculate("filing_status", year).decode_to_str()
+        child, adult = slice(0, n), slice(n, 2 * n)
+        p = system.parameters(str(year)).gov.irs.income.amt.exemption
+
+        # IRC 1(g)(2)(C): never a joint return.
+        assert not applies[status == "JOINT"].any(), year
+        # An adult aged 40 is never a child under IRC 1(g)(2)(A).
+        assert not applies[adult].any(), year
+        # The exemption never exceeds the statutory amount for the status.
+        assert np.all(exemption <= p.amount[status]), year
+
+        if year in CAP_YEARS:
+            # IRC 59(j)(1): earned income plus the indexed child amount.
+            limit = earnings + p.child.amount
+            covered = applies[child]
+            assert covered.any(), year
+            assert np.all(exemption[child][covered] <= limit[covered]), year
+            # The limit is the only difference from an identical adult.
             np.testing.assert_array_equal(
-                current.calculate(variable, year),
-                previous.calculate(variable, year),
-                err_msg=f"{variable} changed in {year}",
+                exemption[child],
+                np.minimum(exemption[adult], np.where(covered, limit, np.inf)),
+                err_msg=str(year),
             )
-
-        # Confirm the joint-return fix actually changes eligibility in this
-        # vector, while the statutory switch keeps post-2017 AMT identical.
-        eligibility_changed = current.calculate(
-            "amt_kiddie_tax_applies", year
-        ) != previous.calculate("amt_kiddie_tax_applies", year)
-        assert eligibility_changed.any()
-        filing_status = current.calculate("filing_status", year)
-        assert np.all(filing_status.decode_to_str()[eligibility_changed] == "JOINT")
-
-        exemption = current.calculate("amt_exemption", year)
-        base_exemption = system.parameters(
-            str(year)
-        ).gov.irs.income.amt.exemption.amount[filing_status]
-        assert np.any(exemption == base_exemption)
-        assert np.any((exemption > 0) & (exemption < base_exemption))
-        assert np.any(exemption == 0)
-        amt = current.calculate("alternative_minimum_tax", year)
-        assert np.any(amt == 0)
-        assert np.any(amt > 0)
+            # The limit binds for at least one fixed case.
+            assert np.any(exemption[child] < exemption[adult]), year
+        else:
+            # IRC 55(d)(4)(A)(iii): no limit, so age makes no difference.
+            np.testing.assert_array_equal(
+                exemption[child], exemption[adult], err_msg=str(year)
+            )
