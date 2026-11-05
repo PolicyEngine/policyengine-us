@@ -24,8 +24,10 @@ class md_poverty_line_credit_income_level(Variable):
         # filing exception (IRC 152(b)(1)).
         # HHS lists guideline amounts from one person up, so no amount
         # corresponds to zero exemptions: a filer with no allowed exemption
-        # has no applicable poverty income level. The 2025 Resident Booklet
-        # likewise bars every filing status 6 filer from the credit.
+        # has no applicable poverty income level. In its 2025 Resident
+        # Booklet, the Comptroller bars every filing status 6 filer from the
+        # credit. The model follows the booklet only when the return has no
+        # allowed exemption (see is_eligible_md_poverty_line_credit).
         filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
         exemptions = tax_unit("md_personal_exemptions_count", period)
         state_group = tax_unit.household("state_group_str", period)

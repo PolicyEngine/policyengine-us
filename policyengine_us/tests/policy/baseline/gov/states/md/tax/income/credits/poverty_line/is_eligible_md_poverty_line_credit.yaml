@@ -316,3 +316,131 @@
     md_poverty_line_credit_income_level: 15_650
     is_eligible_md_poverty_line_credit: false
     md_poverty_line_credit_potential: 0
+
+- name: 2025 joint return with a claimable head uses one allowed exemption's level and fails at 18,000
+  period: 2025
+  input:
+    people:
+      a:
+        age: 30
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+      b:
+        age: 30
+        is_tax_unit_spouse: true
+        employment_income: 18_000
+    tax_units:
+      tax_unit:
+        members: [a, b]
+        filing_status: JOINT
+        md_income_tax_before_credits: 1_000
+        md_married_or_has_child_non_refundable_eitc: 0
+    households:
+      household:
+        members: [a, b]
+        state_code: MD
+  output:
+    # Tax-General 10-709(a)(2): Maryland allows one exemption, for the
+    # member no one can claim, and so uses the one-person level of 15,650
+    # rather than the two-person 21,150. Income of 18,000 exceeds 15,650.
+    md_personal_exemptions_count: 1
+    md_poverty_line_credit_income_level: 15_650
+    is_eligible_md_poverty_line_credit: false
+    md_poverty_line_credit_potential: 0
+
+- name: 2025 joint return with a claimable spouse uses one allowed exemption's level and fails at 18,000
+  period: 2025
+  input:
+    people:
+      a:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 18_000
+      b:
+        age: 30
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [a, b]
+        filing_status: JOINT
+        md_income_tax_before_credits: 1_000
+        md_married_or_has_child_non_refundable_eitc: 0
+    households:
+      household:
+        members: [a, b]
+        state_code: MD
+  output:
+    # Tax-General 10-709(a)(2): Maryland allows one exemption, for the
+    # member no one can claim, and so uses the one-person level of 15,650
+    # rather than the two-person 21,150. Income of 18,000 exceeds 15,650.
+    md_personal_exemptions_count: 1
+    md_poverty_line_credit_income_level: 15_650
+    is_eligible_md_poverty_line_credit: false
+    md_poverty_line_credit_potential: 0
+
+- name: 2025 joint return with both spouses claimable and no filing exception gets no level and no credit
+  period: 2025
+  input:
+    people:
+      a:
+        age: 30
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        employment_income: 500
+      b:
+        age: 30
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+        employment_income: 500
+    tax_units:
+      tax_unit:
+        members: [a, b]
+        filing_status: JOINT
+        md_income_tax_before_credits: 200
+        md_married_or_has_child_non_refundable_eitc: 0
+    households:
+      household:
+        members: [a, b]
+        state_code: MD
+  output:
+    md_personal_exemptions_count: 0
+    md_poverty_line_credit_income_level: 0
+    is_eligible_md_poverty_line_credit: false
+    md_poverty_line_credit_potential: 0
+
+- name: 2025 joint return with both spouses claimable and the filing exception keeps the child's level
+  period: 2025
+  input:
+    people:
+      a:
+        age: 30
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        employment_income: 500
+      b:
+        age: 30
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        employment_income: 500
+      c:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [a, b, c]
+        filing_status: JOINT
+        md_income_tax_before_credits: 200
+        md_married_or_has_child_non_refundable_eitc: 0
+    households:
+      household:
+        members: [a, b, c]
+        state_code: MD
+  output:
+    # 0 own + 1 child = 1 exemption: 15,650. min(200, 5% x 1,000) = 50.
+    md_personal_exemptions_count: 1
+    md_poverty_line_credit_income_level: 15_650
+    is_eligible_md_poverty_line_credit: true
+    md_poverty_line_credit_potential: 50
