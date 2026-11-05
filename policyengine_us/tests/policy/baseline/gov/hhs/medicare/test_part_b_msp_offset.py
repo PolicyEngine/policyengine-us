@@ -87,8 +87,9 @@ def test_medicare_cost_uses_gross_part_b_before_msp_offset():
     )
 
     assert sim.calculate("medicare_part_b_premium", PERIOD)[0] == pytest.approx(0)
-    # $17,751 CMS Medicare spending per enrollee (2025) - $2,220 gross Part B.
-    assert sim.calculate("medicare_cost", PERIOD)[0] == pytest.approx(15_531)
+    # $17,751 CMS Medicare spending per enrollee (2025) - $2,220 gross Part B
+    # - 0.8191 x $220.25 expected Part D premium.
+    assert sim.calculate("medicare_cost", PERIOD)[0] == pytest.approx(15_350.59)
 
 
 def test_medicare_part_b_premium_is_zero_when_not_enrolled():
@@ -344,8 +345,9 @@ def test_gross_medicare_part_b_premium_if_enrolled_preserves_irmaa():
     assert sim.calculate("gross_medicare_part_b_premium_if_enrolled", PERIOD)[
         0
     ] == pytest.approx(4_440)
-    # $17,751 CMS Medicare spending per enrollee (2025) - $4,440 gross Part B.
-    assert sim.calculate("medicare_cost", PERIOD)[0] == pytest.approx(13_311)
+    # $17,751 CMS Medicare spending per enrollee (2025) - $4,440 gross Part B
+    # - 0.8191 x $220.25 expected Part D premium.
+    assert sim.calculate("medicare_cost", PERIOD)[0] == pytest.approx(13_130.59)
 
 
 def test_medicare_irmaa_magi_two_years_prior_falls_back_to_lagged_income():
