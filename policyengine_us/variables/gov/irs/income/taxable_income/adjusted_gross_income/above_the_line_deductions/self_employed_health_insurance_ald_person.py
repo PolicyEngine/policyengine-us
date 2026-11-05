@@ -10,8 +10,9 @@ class self_employed_health_insurance_ald_person(Variable):
         "Personal above-the-line deduction for self-employed health insurance "
         "premiums: the smaller of the premiums and the earned income from the "
         "business under which the plan is established (Form 7206 line 14). "
-        "The premiums exclude qualified long-term care insurance (line 2), "
-        "which the model does not include in self-employed premiums."
+        "The premiums are the medical insurance premiums (line 1) plus "
+        "eligible long-term care premiums up to the 26 U.S.C. 213(d)(10) "
+        "limit (line 2)."
     )
     definition_period = YEAR
     reference = (
@@ -21,7 +22,16 @@ class self_employed_health_insurance_ald_person(Variable):
     )
 
     def formula(person, period, parameters):
-        premiums = person("self_employed_health_insurance_premiums", period)
+        # Line 3: health insurance premiums (line 1) plus eligible long-term
+        # care premiums (line 2).
+        premiums = add(
+            person,
+            period,
+            [
+                "self_employed_health_insurance_premiums",
+                "self_employed_long_term_care_premiums",
+            ],
+        )
         earned_income_limit = person(
             "self_employed_health_insurance_earned_income_limit", period
         )

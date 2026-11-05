@@ -150,6 +150,26 @@ def test_series_is_defined_across_the_projection_window(series):
         assert _value(series, year) not in (None, 0)
 
 
+def test_default_series_has_a_value_for_every_year():
+    """A year with no value holds the previous one, so the per-capita index
+    drifts down with population and then jumps when values resume. CBO AGI
+    once held a tax-year 2013 total for 2015 and had nothing for 2016 to
+    2018. Inputs on the default series dated 2018 came out 29% too high by
+    2019, and Medicare IRMAA's lookback, which deflates income by the same
+    index, put a household entered for 2019 alone at 0.765 of its income
+    instead of 0.932. With the right 2015 total, the gap alone gives 14% and
+    0.864."""
+    total = get_parameter(system.parameters, _authored_series(DEFAULT))
+    years = sorted(
+        {
+            int(value.instant_str[:4])
+            for value in total.values_list
+            if value.instant_str.endswith("-01-01")
+        }
+    )
+    assert years == list(range(years[0], years[-1] + 1))
+
+
 @pytest.mark.parametrize("year", (2025, 2030, 2035, 2036))
 def test_unemployment_compensation_grows_with_cbo_unemployment_outlays(year):
     soi = "calibration.gov.irs.soi.unemployment_compensation"

@@ -26,8 +26,9 @@ class ca_capi_payment_standard(Variable):
         individual, couple = ca_capi_ssi_ssp_standard(person, period, parameters)
         p = parameters(period).gov.states.ca.cdss.capi.payment_standard_offset
         joint = ca_capi_couple_computation(person, period)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         capi_members = person.marital_unit.sum(
-            person("ca_capi_eligible_person", period.this_year)
+            person("ca_capi_eligible_person", period.this_year) & head_or_spouse
         )
         # Each member of a CAPI couple takes one-half (MPP 49-050.12, 49-055.4).
         both_capi = joint & (capi_members > 1)
