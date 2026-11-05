@@ -254,7 +254,7 @@
         members: [person1]
         state_code: CA
   output:
-    # min($16,334 one-person FPL, max($1,400, $0 + $500)) = $1,400.
+    # min($16,427 one-person FPL, max($1,400, $0 + $500)) = $1,400.
     ca_standard_deduction: 1_400
 
 - name: Joint return with one claimable spouse uses the dependent worksheet in a year the election is not in effect (the claimable spouse is the head).
@@ -294,7 +294,7 @@
     tax_units: {tax_unit: {members: [person_a, person_b], filing_status: JOINT}}
     households: {household: {members: [person_a, person_b], state_code: CA}}
   output:
-    # min($22,147 two-person FPL, max($1,400, $0 + $500)) = $1,400.
+    # min($22,273 two-person FPL, max($1,400, $0 + $500)) = $1,400.
     ca_standard_deduction: 1_400
 
 - name: Joint return with one claimable spouse and no earnings is limited to the dependent minimum under the election (the claimable spouse is the spouse).
