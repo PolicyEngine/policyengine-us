@@ -101,7 +101,13 @@ def additions(name, list_name, year):
 
 
 def benefit_list(tax_benefit_system, list_name, year):
-    return list(getattr(tax_benefit_system.parameters(year).gov.household, list_name))
+    """A benefit list as formulas read it in a year.
+
+    Reading the one parameter, not parameters(year), keeps the test from
+    building and caching the whole parameter tree for every year it draws.
+    """
+    parameter = getattr(tax_benefit_system.parameters.gov.household, list_name)
+    return list(parameter(f"{year}-01-01"))
 
 
 # --- 1. add_to_list_parameter --------------------------------------------
