@@ -8670,13 +8670,16 @@ candidates:
   - kind: manual
     citation: South Carolina 2024 LIHEAP Administrative Guide, plan file PDF page 538
     url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=538
+  - kind: manual
+    citation: South Carolina draft 2026 LIHEAP Administrative Guide (plan attachment), plan file PDF page 312
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=312
   - kind: guidance
     citation: South Carolina 2026 Benefit Matrix, item 5, p.2
     url: https://liheapch.acf.gov/docs/2026/benefits-matricies/SC_BenefitMatrix_2026.pdf#page=2
   readings:
     statute: No statute is supplied; plan item 2.5 pays the supplement at "20% or more of income used for utilities".
-    other: The guide and the matrix test the current month's bill and demonstrate a burden when "the current energy bill
-      is higher than the PRODUCT".
+    other: The 2024 and draft 2026 guides and the matrix test the current month's bill and demonstrate a burden when "the
+      current energy bill is higher than the PRODUCT".
   example: One person with $20,000 of income and $4,000 of gas bills receives $450 under the plan and $275 under the
     guide's "higher than".
   pe_us:
@@ -8798,8 +8801,10 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10616
   state: ruled
-  note: 'Ruled 2026-11-02: follow the 2024 guide. PE-US reads SSI as a child''s disability income and uses
-    disability_benefits for other disability income.'
+  note: 'Ruled 2026-11-02: follow the 2024 guide, the edition in force. Plan 1.9 is a checklist of income types, while
+    the guide''s "Income from Minors" section is the specific rule for members under 18. The draft 2026 guide repeats it,
+    and the OEO page asks for income only from members 18 and older. PE-US reads SSI as a child''s disability income and
+    uses disability_benefits for other disability income.'
 
 - id: us-sc:liheap-mixed-status-household
   program: liheap
