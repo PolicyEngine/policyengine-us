@@ -1,9 +1,8 @@
 # The Trump dividend must survive stacking with the Economic Dignity for All
-# Agenda version of the End Child Poverty Act. That reform rebuilds
-# household_benefits from the gov.household.household_benefits parameter but
-# keeps a static spm_unit_benefits list, so only the SPM side could drop the
-# dividend. Two adult citizens at $500,000 of employment income so no other
-# benefit fires and each aggregate isolates the dividend.
+# Agenda version of the End Child Poverty Act, which adds its child benefit to
+# the gov.household benefit lists that both aggregates read. Two adult
+# citizens at $500,000 of employment income so no other benefit fires and each
+# aggregate isolates the dividend.
 #
 # NOTE: This lives under tests/policy/reform (one subprocess per file) rather
 # than contrib/congress/tlaib because the congress structural batch runs each

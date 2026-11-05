@@ -1,0 +1,53 @@
+# The Texas rebate once replaced spm_unit_benefits with its own copy of the
+# program list. The copy lacked 19 state SSI supplements, and the reform
+# applies in every state, so those supplements dropped out of SPM resources
+# nationwide (#10226). The reform now adds tx_rebate to the
+# gov.household.spm_unit_benefits parameter, and every baseline program still
+# counts. One adult at $500,000 of employment income, so no other benefit fires
+# and each total isolates the supplement.
+#
+# This lives under tests/policy/reform (one subprocess per file) rather than
+# contrib/states/tx because the contrib states batches pack whole state folders
+# into one process at their memory ceiling.
+
+- name: Under the Texas rebate, Wyoming's SSI supplement counts in both benefit totals.
+  period: 2027
+  reforms: policyengine_us.reforms.states.tx.rebate.tx_rebate.tx_rebate
+  input:
+    gov.contrib.states.tx.rebate.in_effect: true
+    age: 70
+    employment_income: 500_000
+    wy_ssp: 240
+    state_code: WY
+  output:
+    tx_rebate: 0
+    spm_unit_benefits: 240
+    household_benefits: 240
+
+- name: Under the Texas rebate, California's SSI supplement counts in both benefit totals.
+  period: 2027
+  reforms: policyengine_us.reforms.states.tx.rebate.tx_rebate.tx_rebate
+  input:
+    gov.contrib.states.tx.rebate.in_effect: true
+    age: 70
+    employment_income: 500_000
+    ca_state_supplement: 2_000
+    state_code: CA
+  output:
+    tx_rebate: 0
+    spm_unit_benefits: 2_000
+    household_benefits: 2_000
+
+- name: In Texas, the rebate adds to the baseline benefits rather than replacing them.
+  period: 2027
+  reforms: policyengine_us.reforms.states.tx.rebate.tx_rebate.tx_rebate
+  input:
+    gov.contrib.states.tx.rebate.in_effect: true
+    age: 70
+    employment_income: 500_000
+    tx_ssi_state_supplement: 300
+    state_code: TX
+  output:
+    tx_rebate: 1_500
+    spm_unit_benefits: 1_800
+    household_benefits: 1_800

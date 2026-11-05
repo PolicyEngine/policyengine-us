@@ -1,8 +1,9 @@
-# The Trump dividend must survive stacking with BOOST, which replaces
-# household_benefits and spm_unit_benefits with its own static lists. With
-# administered_through_ssa false, both BOOST aggregates are the static list
-# alone, so the asserted totals isolate the dividend. Two adult citizens at
-# $500,000 of employment income so no other benefit fires.
+# The Trump dividend must survive stacking with BOOST. BOOST adds its
+# SSA-paid credit to the gov.household benefit lists that both aggregates
+# read, so the baseline programs, the dividend among them, stay counted. With
+# administered_through_ssa false that credit is zero, so the asserted totals
+# isolate the dividend. Two adult citizens at $500,000 of employment income so
+# no other benefit fires.
 #
 # NOTE: This lives under tests/policy/reform (one subprocess per file) rather
 # than contrib/congress/tlaib because the congress structural batch runs each
