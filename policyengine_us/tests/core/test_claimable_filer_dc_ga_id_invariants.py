@@ -24,6 +24,8 @@ subject to an actual claim requiring claimability and excluding the exception:
 Hypothesis batches check 1 and 3; the seeded population checks 1, 2 and 3.
 """
 
+import gc
+
 import numpy as np
 import pytest
 from hypothesis import HealthCheck, given, settings
@@ -56,6 +58,14 @@ MONOTONE = [
     "id_household_and_dependent_care_expense_deduction",
 ]
 OUTPUTS = MONOTONE + ["ga_surplus_tax_rebate", "id_2022_rebate"]
+
+
+def _run_check(check, *args):
+    try:
+        check(*args)
+    finally:
+        # Simulations contain reference cycles; collect them between checks.
+        gc.collect()
 
 
 @st.composite
@@ -166,7 +176,7 @@ def test_dc_id_filing_exception_restores_children_under_both_labels(
             np.testing.assert_array_equal(children, [1, 1])
         _identities(sim, year)
 
-    check_swap(units, year, OUTPUTS, exception_identities)
+    _run_check(check_swap, units, year, OUTPUTS, exception_identities)
 
 
 @settings(
@@ -177,7 +187,7 @@ def test_dc_id_filing_exception_restores_children_under_both_labels(
 )
 @given(st.sampled_from(YEARS), st.lists(couples(), min_size=6, max_size=12))
 def test_dc_ga_id_claimable_filer_rules_are_label_free(year, units):
-    check_swap(units, year, OUTPUTS, _identities)
+    _run_check(check_swap, units, year, OUTPUTS, _identities)
 
 
 @pytest.mark.parametrize("year", YEARS)
@@ -191,7 +201,8 @@ def test_dc_ga_id_claimable_filer_rules_seeded_population(year):
         {**unit, "claimable": unit["claimed"], "exception": (False, False)}
         for unit in crafted
     ]
-    check_swap(
+    _run_check(
+        check_swap,
         _with_independent_claim_inputs(seeded) + explicit_crafted,
         year,
         OUTPUTS,
@@ -201,4 +212,4 @@ def test_dc_ga_id_claimable_filer_rules_seeded_population(year):
     # explicit claimability and exception inputs fixed. Retain the legacy
     # population here so every variant is valid and claimability changes with
     # the actual claim; the swap population independently exercises all inputs.
-    check_monotone(seeded + crafted, year, MONOTONE, _identities)
+    _run_check(check_monotone, seeded + crafted, year, MONOTONE, _identities)
