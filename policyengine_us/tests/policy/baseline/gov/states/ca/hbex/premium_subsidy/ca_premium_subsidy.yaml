@@ -959,8 +959,10 @@
         members: [person_a, person_b]
         state_code: CA
   output:
-    # The Medicaid work-requirement flag is held false, as the other
-    # coverage flags are, so Marketplace enrollment turns on income alone.
+    # This case supplies aca_magi without income, so Medicaid sees $0, and
+    # main's 2027 work requirement would bar these childless adults from
+    # Medicaid and, through ineligible_coverage, from the Marketplace. With
+    # $35,000 of earnings the flag reads false; the case holds it false to match.
     # 35,000 / 15,960 (2026 one-person guideline) = 2.1930 (219.3%),
     # above 2.00: not eligible. Over the two-person 21,640 it would be
     # 1.6174, eligible.

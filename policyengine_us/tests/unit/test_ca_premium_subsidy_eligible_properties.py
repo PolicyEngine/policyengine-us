@@ -9,7 +9,9 @@ arithmetic.
 
 The model divides nonnegative ACA MAGI by aca_fpg: the prior-year poverty
 guideline for the section 36B tax family (Form 8962 line 4), defined for the
-tax year. These tests supply aca_fpg for the tax year directly. It must not use aca_magi_fraction for the band: that fraction truncates to
+tax year. These tests supply aca_fpg for the tax year directly.
+
+The model must not use aca_magi_fraction for the band: that fraction truncates to
 whole percentages, so every income from 165.00% to 165.99% of the guideline
 becomes 1.65 and would pass an "at or below 165 percent" test (in PY2027,
 200.00% to 200.99% becomes 2.00). FTB 3849 Table 1-2, for the predecessor

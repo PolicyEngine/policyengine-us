@@ -13,8 +13,8 @@ it follow.
 For couples drawn by Hypothesis in every year 2021-2026 (spouses claimable,
 actually claimed or neither, with or without the filing exception, and
 dependents with tax-exempt interest and Social Security) and a seeded
-population in 2025 and 2026 that includes review r2's family and premium
-cases:
+population in 2025 and 2026 that includes family-tier and coverage-family
+premium cases:
 
 1. Swap invariance: each output is the same under either head/spouse
    labelling.
@@ -145,7 +145,7 @@ def _ptc_cases(states):
     return cases
 
 
-def _review_r2_cases():
+def _family_premium_cases():
     # A New York family-tier policy and a Texas coverage family of one adult
     # and three children, each beside a claimable spouse whose claimant meets
     # the refund-only exception, and dependents whose tax-exempt interest or
@@ -209,7 +209,7 @@ def _with_dependent_income(units):
     return out
 
 
-def _review_r3_cases():
+def _no_marginal_premium_cases():
     # The 19-year-old spouse is an enrolled fourth ACA child, so pays no
     # marginal premium. Claimability excludes that spouse from substantive
     # PTC eligibility and blocks CSR. Ordinary fourth children remain
@@ -450,10 +450,10 @@ def test_claimable_filer_ptc_seeded_population(year):
         _with_dependent_income(_seeded_couples(STATES, per_state=2))
         + _crafted_cases(STATES, review_case_only=True)
         + _ptc_cases(STATES)
-        + _review_r2_cases()
-        + _review_r3_cases()
+        + _family_premium_cases()
+        + _no_marginal_premium_cases()
     )
-    # Explicit inputs apply simulation-wide, so the review cases' claimability
+    # Explicit inputs apply simulation-wide, so the crafted cases' claimability
     # inputs would otherwise default the legacy fixtures to false.
     units = [
         {**unit, "claimable": unit.get("claimable", unit["claimed"])} for unit in units
