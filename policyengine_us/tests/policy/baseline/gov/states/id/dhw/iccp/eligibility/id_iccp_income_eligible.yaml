@@ -1,4 +1,6 @@
-- name: Case 1, initial eligibility uses 175 percent of the federal poverty guideline.
+# Limits for new applicants come from the department's Apply for Child Care page
+# (effective October 2025): 130% of the 2025 guideline, rounded up to a dollar.
+- name: Case 1, initial eligibility uses 130 percent of the guideline from January 2025.
   period: 2026-01
   input:
     people:
@@ -11,13 +13,13 @@
     spm_units:
       spm_unit:
         members: [person1]
-        id_iccp_countable_income: 3_500
+        id_iccp_countable_income: 2_600
         id_iccp_enrolled: false
-        spm_unit_fpg: 24_000
+        id_iccp_fpg: 2_000
   output:
     id_iccp_income_eligible: true
 
-- name: Case 2, initial eligibility fails above 175 percent of the federal poverty guideline.
+- name: Case 2, initial eligibility fails above 130 percent of the guideline.
   period: 2026-01
   input:
     people:
@@ -30,9 +32,9 @@
     spm_units:
       spm_unit:
         members: [person1]
-        id_iccp_countable_income: 3_501
+        id_iccp_countable_income: 2_601
         id_iccp_enrolled: false
-        spm_unit_fpg: 24_000
+        id_iccp_fpg: 2_000
   output:
     id_iccp_income_eligible: false
 
@@ -73,3 +75,142 @@
         hhs_smi: 60_000
   output:
     id_iccp_income_eligible: false
+
+- name: Case 5, a family of three at the posted limit of 2,888 dollars qualifies as a new applicant.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 4
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        id_iccp_countable_income: 2_888
+        id_iccp_enrolled: false
+  output:
+    id_iccp_income_eligible: true
+
+- name: Case 6, a family of three one dollar above the posted limit doesn't qualify as a new applicant.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 4
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        id_iccp_countable_income: 2_889
+        id_iccp_enrolled: false
+  output:
+    id_iccp_income_eligible: false
+
+- name: Case 7, the old 175 percent rate still applies in January 2025, before the department's change takes hold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 4
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # 175% of the 2025 guideline for three: 26,650 x 1.75 / 12 = 3,886.46, so 3,887.
+        id_iccp_countable_income: 3_887
+        id_iccp_enrolled: false
+  output:
+    id_iccp_income_eligible: true
+
+- name: Case 8, new applicants from February 2025 face 130 percent of the 2024 guideline.
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 4
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # 25,820 x 1.3 / 12 = 2,797.17, so 2,798 (33,566 a year, as reported in November 2024).
+        id_iccp_countable_income: 2_798
+        id_iccp_enrolled: false
+  output:
+    id_iccp_income_eligible: true
+
+- name: Case 9, one dollar above 130 percent of the 2024 guideline fails in February 2025.
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 4
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        id_iccp_countable_income: 2_799
+        id_iccp_enrolled: false
+  output:
+    id_iccp_income_eligible: false
+
+- name: Case 10, an enrolled family keeps the 85 percent of state median income limit after the change.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 4
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        id_iccp_countable_income: 2_889
+        id_iccp_enrolled: true
+  output:
+    id_iccp_income_eligible: true

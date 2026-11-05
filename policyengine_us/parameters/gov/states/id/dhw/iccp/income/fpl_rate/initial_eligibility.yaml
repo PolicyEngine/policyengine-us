@@ -1,6 +1,10 @@
 description: Idaho limits initial income to this share of the federal poverty guidelines under the Idaho Child Care Program.
+# IDAPA 16.06.12.070.01 still prints 175%. The department moved new applicants
+# to 130% when it reopened applications on January 13, 2025, and posts its
+# limits at that rate. The model follows what the department applies.
 values:
   2023-04-06: 1.75
+  2025-01-13: 1.3
 
 metadata:
   unit: /1
@@ -11,3 +15,7 @@ metadata:
       href: https://adminrules.idaho.gov/rules/current/16/160612.pdf#page=7
     - title: Idaho Department of Health and Welfare, Idaho Child Care Program
       href: https://healthandwelfare.idaho.gov/services-programs/children-families-older-adults/idaho-child-care-program
+    - title: Idaho Department of Health and Welfare, DHW will resume applications for the Idaho Child Care Program in January (November 14, 2024)
+      href: https://healthandwelfare.idaho.gov/news/dhw-will-resume-applications-idaho-child-care-program-january
+    - title: Idaho Department of Health and Welfare, Apply for Child Care (limits effective October 2025; page last updated September 30, 2025)
+      href: https://healthandwelfare.idaho.gov/services-programs/children-families/apply-child-care

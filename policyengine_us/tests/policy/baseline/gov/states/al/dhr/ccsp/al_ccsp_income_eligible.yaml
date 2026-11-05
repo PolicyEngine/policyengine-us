@@ -256,3 +256,173 @@
   output:
     # 75,145.96 > 75,145.95 (85% SMI cap) -> SMI cap fails.
     al_ccsp_income_eligible: false
+
+# Family of three on the 2025 guideline ($26,650): the January 1, 2026 fact sheet
+# tops at 180% ($3,998) for new applicants and 200% ($4,442) for continuing families;
+# the June 1, 2026 fact sheet tops at 150% ($3,331) and 170% ($3,775).
+- name: New applicant of three at 3,998 dollars qualifies in May 2026.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        al_ccsp_countable_income: 3_998
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_income_eligible: true
+
+- name: New applicant of three at the June 2026 top of 3,331 dollars qualifies.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        al_ccsp_countable_income: 3_331
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_income_eligible: true
+
+- name: New applicant of three at 3,332 dollars doesn't qualify from June 2026.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        al_ccsp_countable_income: 3_332
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_income_eligible: false
+
+- name: Continuing family of three at the January 2026 top of 4,442 dollars stays eligible in May 2026.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        al_ccsp_countable_income: 4_442
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_income_eligible: true
+
+- name: Continuing family of three at the June 2026 top of 3,775 dollars stays eligible.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        al_ccsp_countable_income: 3_775
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_income_eligible: true
+
+- name: Continuing family of three at 3,776 dollars loses eligibility from June 2026.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        al_ccsp_countable_income: 3_776
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_income_eligible: false
+
+- name: A half-dollar limit prints up, so a family of two at 3,173 dollars qualifies in May 2026.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # 21,150 x 1.8 / 12 = 3,172.50, printed as 3,173 on the January 2026 fact sheet.
+        al_ccsp_countable_income: 3_173
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_income_eligible: true
