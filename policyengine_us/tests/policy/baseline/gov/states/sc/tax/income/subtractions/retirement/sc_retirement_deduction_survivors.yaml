@@ -157,3 +157,15 @@
     # The deceased spouse would be 66, so the maximum is $10,000 though the
     # survivor is 60.
     sc_retirement_deduction_survivors: 5_000
+
+- name: A survivor gets the $10,000 maximum when the deceased spouse would have reached 65.
+  period: 2022
+  input:
+    pension_survivors: 12_000
+    is_surviving_spouse: true
+    age: 60
+    deceased_spouse_age: 65
+    state_code: SC
+  output:
+    # min(12_000, 10_000)
+    sc_retirement_deduction_survivors: 10_000

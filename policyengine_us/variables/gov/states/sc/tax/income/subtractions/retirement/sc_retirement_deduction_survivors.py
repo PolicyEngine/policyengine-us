@@ -8,7 +8,7 @@ class sc_retirement_deduction_survivors(Variable):
     defined_for = StateCode.SC
     unit = USD
     reference = (
-        "https://www.scstatehouse.gov/code/t12c006.php",  # SECTION 12-6-1170(A)(1), (C)(1)
+        "https://www.scstatehouse.gov/code/t12c006.php",  # SECTION 12-6-1170(A)(1), (A)(3), (C)(1)
         "https://dor.sc.gov/sites/dor/files/policies/RR21-13.pdf#page=11",
         "https://dor.sc.gov/sites/dor/files/policies/RR22-11.pdf#page=39",
         "https://dor.sc.gov/sites/dor/files/forms/SC1040Instr_2021.pdf",
@@ -18,8 +18,10 @@ class sc_retirement_deduction_survivors(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.sc.tax.income.subtractions.retirement
-        # Line 1: the surviving spouse's maximum follows the age the deceased
-        # spouse would have reached had they lived.
+        # Line 1: a surviving spouse applies the deduction "in the same manner
+        # that the deduction applied to the deceased spouse" (12-6-1170(A)(3)),
+        # so the survivor takes the maximum for the age the deceased spouse
+        # would have reached.
         deceased_spouse_age = person("deceased_spouse_age", period)
         max_deduction_allowed = p.cap.calc(deceased_spouse_age)
         # Source conflict: the 2021 SC1040 worksheet (line p-3, line 2)
