@@ -50,11 +50,17 @@ class ia_itemized_deductions_reduction(Variable):
             p.limitation.agi_rate * excess_agi,
         )
         # IA 104 lines 12 to 21 subtract the Iowa income tax in the share of
-        # line 5 that the reduction leaves (701 IAC 41.11(1)), so line 1 bears
-        # the rest: line 1 - line 21 = line 11 * (line 1 - line 4) / line 5.
-        return np.divide(
-            reduction * max_(0, deductions - excluded),
-            reducible,
-            out=np.zeros_like(reducible),
-            where=reducible > 0,
+        # line 5 that the reduction leaves. Line 18 enters that share to the
+        # nearest tenth of a percent; neither Iowa Code 422.9(2) nor 701 IAC
+        # 41.11(1) says how to round it. So line 1 - line 21 =
+        # line 11 - line 2 * (1 - line 18), which can fall slightly below 0.
+        line_18 = np.round(
+            np.divide(
+                reducible - reduction,
+                reducible,
+                out=np.ones_like(reducible),
+                where=reducible > 0,
+            ),
+            3,
         )
+        return reduction - iowa_income_tax * (1 - line_18)
