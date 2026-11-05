@@ -1,3 +1,10 @@
+## [2.99.0] - 2026-11-05
+
+### Added
+
+- Add Hawaii LIHEAP regular heating eligibility, the flat benefit for subsidized dwellings and private-dwelling points for fiscal year 2026; private-dwelling dollar awards stay unmodeled because the statewide value per point was not located.
+
+
 ## [2.98.0] - 2026-11-05
 
 ### Added
