@@ -5,6 +5,11 @@ class mt_refundable_credits(Variable):
     value_type = float
     entity = Person
     label = "Montana refundable credits"
+    documentation = (
+        "One-time rebates are included for the eligibility tax year identified by the "
+        "return, even when payment occurs later. A standalone rebate value does not "
+        "establish inclusion in this total."
+    )
     unit = USD
     reference = (
         # 2022 Montana Form 2 instructions, Other Payments and Refundable

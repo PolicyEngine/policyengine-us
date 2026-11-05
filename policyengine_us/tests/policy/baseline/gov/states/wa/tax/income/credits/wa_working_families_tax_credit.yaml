@@ -157,7 +157,7 @@
   output:
     wa_working_families_tax_credit: 640
 
-- name: Case 6b, phase-out keys off federal phase-out income (max of earned income and AGI), not earnings alone.
+- name: Case 6b, unemployment compensation raises AGI but not the earned income the reduction is measured on.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -204,15 +204,11 @@
         state_code: WA
   output:
     # Earned income ($40,000) is below the 2025 three-child phase-out start
-    # ($63,675 = limit $68,675 less the $5,000 band), but AGI ($65,000, incl.
-    # $25,000 unemployment) lands inside the phase-out band. As a modeling
-    # choice (not a statutory base -- RCW 82.08.0206(2)(b) defines "income" as
-    # earned income), the reduction is measured against max(earned income, AGI)
-    # = $65,000, matching the maximum-qualifying-income ceiling. The $1,330
-    # maximum tapers at 1,330 / 5,000 = 26.6% (WAC 458-20-285(10)(d)) over the
-    # $1,325 of excess to 977.55, which the RCW 82.08.0206(3)(b) nearest-dollar
-    # rounding lifts to 978. See policyengine-taxsim#986.
-    wa_working_families_tax_credit: 978
+    # ($63,675 = limit $68,675 less the $5,000 band). AGI ($65,000, incl.
+    # $25,000 unemployment) is below the $68,675 limit, so the household is
+    # eligible, and the reduction is measured on earned income (RCW
+    # 82.08.0206(2)(b), WAC 458-20-285 Answer 10C), so there is none.
+    wa_working_families_tax_credit: 1_330
 
 # ESSB 6346 Sec. 901 - WFTC Age Expansion tests (effective 2028)
 
@@ -1657,3 +1653,133 @@
     # ETA 3240.2026 gives the 2025 two-child maximum, $995. Measuring from
     # 62,000 would give 995 - 0.199 x (62,000 - 59,430) = 484.
     wa_working_families_tax_credit: 995
+
+- name: Childless separate filer below the age band gets no credit from a dependent's age
+  # IRC 32(c)(1)(A)(ii)(II), in the frozen 2022 federal rules, applies the
+  # 25-64 age test to the filer, not a dependent. The 22-year-old filer has
+  # no qualifying child, and the 30-year-old qualifying relative does not
+  # satisfy the age test for them.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 10_000
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [head, dependent]
+        state_code: WA
+  output:
+    wa_working_families_tax_credit: 0
+
+- name: Childless single filer below the age band gets no credit from a dependent's age
+  period: 2025
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 10_000
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head, dependent]
+        state_code: WA
+  output:
+    wa_working_families_tax_credit: 0
+
+- name: Childless separate filer in the age band keeps the state-only credit
+  # The filer is 30, so the age test is met. Earnings of 10,000 are below the
+  # childless phase-out start (maximum qualifying income less 2,500), so the
+  # credit is the 2025 no-child amount, $335.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 10_000
+      dependent:
+        age: 22
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [head, dependent]
+        state_code: WA
+  output:
+    wa_working_families_tax_credit: 335
+
+- name: Case 39, interest raises AGI but not the earned income the reduction is measured on (taxsim 1489).
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 33
+        employment_income: 17_600
+        taxable_interest_income: 18.27
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WA
+  output:
+    # 2024 single, no children: limit $18,591 (Rev. Proc. 2023-34), reduction
+    # from $16,091, $325 maximum, $0.13 per dollar (ETA 3240.2026). Earned
+    # income $17,600: 325 - 0.13 x 1,509 = 128.83, rounded to 129. Measuring
+    # from AGI ($17,618.27) would give 127.
+    wa_working_families_tax_credit: 129
+
+- name: Separated filer who did not live apart for six months files separately and keeps the state-only credit
+  # IRC 7703(b)(3) needs the spouse out of the household for the last six
+  # months, so the filer cannot file as head of household and files
+  # separately. The federal EITC is 0 (IRC 32(d)), and Washington's
+  # state-only path pays the 2025 one-child amount, $660, with no phase-out
+  # at $10,000 of earnings.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 10_000
+        is_separated: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        eitc_spouses_lived_apart_last_six_months: false
+    households:
+      household:
+        members: [head, child]
+        state_code: WA
+  output:
+    filing_status: SEPARATE
+    eitc: 0
+    wa_working_families_tax_credit: 660

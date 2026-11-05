@@ -32,7 +32,7 @@
         members: [person]
         state_code: TX
   output:
-    # 10,000 x 27,704.54 (2013, held at 2015) / 27,704.54 (2015).
+    # 10,000 x 31,312.48 (2013, held at 2015) / 31,312.48 (2015).
     medicare_irmaa_magi_two_years_prior: 10_000
     income_tax: 0
     ssi: 4_306
@@ -52,8 +52,9 @@
         members: [person]
         state_code: TX
   output:
-    # 10,000 x 27,704.54 (2014, held at 2015) / 27,461.49 (2016).
-    medicare_irmaa_magi_two_years_prior: 10_088.51
+    # 10,000 x 31,312.48 (2014, held at 2015) / 31,085.28 (2016), from IRS
+    # SOI total AGI over population (see medicare_irmaa_magi_two_years_prior.yaml).
+    medicare_irmaa_magi_two_years_prior: 10_073.09
     income_tax: 0
     ssi: 4_306
     snap: 192
