@@ -1,6 +1,9 @@
 description: Federal deduction from AGI if not itemizing.
 
 SINGLE:
+  2015-01-01: 6_300
+  2016-01-01: 6_300
+  2017-01-01: 6_350
   2018-01-01: 12_000
   2019-01-01: 12_200
   2020-01-01: 12_400
@@ -11,6 +14,9 @@ SINGLE:
   2025-01-01: 15_750
   2026-01-01: 16_100
 JOINT:
+  2015-01-01: 12_600
+  2016-01-01: 12_600
+  2017-01-01: 12_700
   2018-01-01: 24_000
   2019-01-01: 24_400
   2020-01-01: 24_800
@@ -21,6 +27,9 @@ JOINT:
   2025-01-01: 31_500
   2026-01-01: 32_200
 SEPARATE:
+  2015-01-01: 6_300
+  2016-01-01: 6_300
+  2017-01-01: 6_350
   2018-01-01: 12_000
   2019-01-01: 12_200
   2020-01-01: 12_400
@@ -31,6 +40,9 @@ SEPARATE:
   2025-01-01: 15_750
   2026-01-01: 16_100
 HEAD_OF_HOUSEHOLD:
+  2015-01-01: 9_250
+  2016-01-01: 9_300
+  2017-01-01: 9_350
   2018-01-01: 18_000
   2019-01-01: 18_350
   2020-01-01: 18_650
@@ -41,6 +53,9 @@ HEAD_OF_HOUSEHOLD:
   2025-01-01: 23_625
   2026-01-01: 24_150
 SURVIVING_SPOUSE:
+  2015-01-01: 12_600
+  2016-01-01: 12_600
+  2017-01-01: 12_700
   2018-01-01: 24_000
   2019-01-01: 24_400
   2020-01-01: 24_800
@@ -76,6 +91,12 @@ metadata:
       href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf
     - title: 2019 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf
+    - title: 2017 IRS data release (Rev. Proc. 2016-55)
+      href: https://www.irs.gov/pub/irs-drop/rp-16-55.pdf#page=15
+    - title: 2016 IRS data release (Rev. Proc. 2015-53)
+      href: https://www.irs.gov/pub/irs-drop/rp-15-53.pdf#page=13
+    - title: 2015 IRS data release (Rev. Proc. 2014-61)
+      href: https://www.irs.gov/pub/irs-drop/rp-14-61.pdf#page=13
     - title: CBO Tax Parameters and Effective Marginal Tax Rates | Feb 2024
       # 1. Tax Parameters.
       href: https://www.cbo.gov/system/files/2024-02/53724-2024-02-Tax-Parameters.xlsx

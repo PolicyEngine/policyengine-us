@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SD, RI, TN, TX, UT, VA, VT, WA, WI, WV, WY
+    coverage: AK, AR, AL, AZ, CO, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SD, RI, TN, TX, UT, VA, VT, WA, WI, WV, WY
     state_implementations:
       - state: AL
         status: partial
@@ -1020,6 +1020,14 @@ programs:
         parameter_prefix: gov.states.az.des.liheap
         verified_years: "2026"
         notes: FY2026 Standard benefit covering heating and cooling bills from the point-based benefit matrix. Crisis assistance, water for evaporative cooling and weatherization are out of scope.
+      - state: CO
+        status: partial
+        name: Colorado LEAP
+        full_name: Colorado Low-income Energy Assistance Program
+        variable: co_leap
+        parameter_prefix: gov.states.co.cdhs.leap
+        verified_years: "2026"
+        notes: FY2026 regular heating assistance, including heat-in-rent costs, income contribution rates and the subsidized-housing deduction. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: GA
         status: partial
         name: Georgia LIHEAP
@@ -1362,7 +1370,7 @@ programs:
         variable: ca_state_supplement
         parameter_prefix: gov.states.ca.cdss.state_supplement
         verified_years: "2025-2026"
-        notes: Payment standards verified for independent living, no cooking facilities, blind and disabled minor categories. Facility and household-of-another arrangements are not verified (issue 7892).
+        notes: Payment standards verified against POMS SI 01415.058, except household-of-another levels, children with a non-parent relative or guardian, and private medical facilities, which are not modeled (issue 7892).
       - state: CT
         status: complete
         name: Connecticut SSP
