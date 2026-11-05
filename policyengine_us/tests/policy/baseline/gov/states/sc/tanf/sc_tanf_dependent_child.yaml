@@ -148,3 +148,29 @@
   output:
     sc_tanf_dependent_child: [false, false, true]
     sc_tanf_gross_earned_income: [500, 0, 0]
+
+- name: Case 8, a younger minor in a group with no adult counts as a dependent child.
+  period: 2026-01
+  input:
+    people:
+      sibling:
+        age: 17
+      minor_parent:
+        age: 16
+        employment_income_before_lsr: 6_000
+      baby:
+        age: 0
+    households:
+      household:
+        members: [sibling, minor_parent, baby]
+        state_code: SC
+  output:
+    # The inputs set no tax-unit role. With no adult in the group, the
+    # 17-year-old, its oldest member, alone heads the household. The
+    # 16-year-old counts as a dependent child, so DSS leaves out the
+    # 16-year-old's earnings (Section 7.5).
+    sc_tanf_dependent_child: [false, true, true]
+    sc_tanf_gross_earned_income: [0, 0, 0]
+    sc_tanf_countable_income: 0
+    # floor(1,110 x 0.4046 = 449.11) = 449.
+    sc_tanf: 449
