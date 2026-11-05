@@ -19,14 +19,13 @@ import pytest
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 
-from policyengine_us import Simulation
+from policyengine_us.system import system
 from policyengine_us.tests.core.test_claimable_filer_federal_invariants import (
     check_monotone,
     check_swap,
 )
 from policyengine_us.tests.core.test_dependent_elsewhere_head_spouse_swap_invariance import (
     CLAIM_PATTERNS,
-    TOLERANCE,
     _calc,
     _crafted_cases,
     _seeded_couples,
@@ -113,23 +112,11 @@ def _pa_forgiveness_bounds(sim, year):
     forgiveness = _calc(sim, "pa_tax_forgiveness_amount", year)
     tax = _calc(sim, "pa_income_tax_before_forgiveness", year)
     assert (forgiveness >= 0).all()
-    assert (forgiveness <= tax + TOLERANCE).all()
+    assert (forgiveness <= tax).all()
 
 
 def test_pa_tax_forgiveness_has_no_parent_qualification_input():
-    sim = Simulation(
-        situation={
-            "people": {"filer": {}},
-            "tax_units": {"tax_unit": {"members": ["filer"]}},
-            "households": {
-                "household": {
-                    "members": ["filer"],
-                    "state_code": {2025: "PA"},
-                }
-            },
-        }
-    )
-    assert "pa_tax_forgiveness_parent_qualifies" not in sim.tax_benefit_system.variables
+    assert "pa_tax_forgiveness_parent_qualifies" not in system.variables
 
 
 @settings(
