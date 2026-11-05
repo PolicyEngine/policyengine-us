@@ -179,7 +179,10 @@ def _review_r2_cases():
         {
             "state": "TX",
             "adults": [adult, adult],
-            "dependents": [{"age": 10, "social_security_survivors": -30_000.0}],
+            # Signed Social Security is supplied as the total: since
+            # PolicyEngine/policyengine-us#10484 the reported components must
+            # be nonnegative, as aca_magi.yaml does for its signed cases.
+            "dependents": [{"age": 10, "social_security": -30_000.0}],
             "claimed": (True, False),
         },
     ]
