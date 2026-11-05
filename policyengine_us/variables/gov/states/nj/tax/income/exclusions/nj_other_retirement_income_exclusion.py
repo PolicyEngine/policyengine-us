@@ -32,8 +32,9 @@ class nj_other_retirement_income_exclusion(Variable):
         filing_status = tax_unit("filing_status", period)
         exclusion_cap = p.max_amount[filing_status]
 
-        # calculate maximum exclusion
-        total_income_person = age_eligible * person("nj_total_income", period)
+        # calculate maximum exclusion on the age-eligible filers' total
+        # income; a dependent's income goes on the dependent's own return
+        total_income_person = eligible_person * person("nj_total_income", period)
         total_income = tax_unit.sum(total_income_person)
         maximum_exclusion = min_(fraction * total_income, exclusion_cap)
 
@@ -41,8 +42,9 @@ class nj_other_retirement_income_exclusion(Variable):
         used = min_(pension_income * fraction, exclusion_cap)
         unused_exclusion = max_(0, maximum_exclusion - used)
 
-        # calculate earnings eligibility
-        earnings = add(tax_unit, period, ["earned_income"])
+        # calculate earnings eligibility on the filers' own earnings
+        # (Worksheet D lines 4-8), leaving out a dependent's
+        earnings = tax_unit_non_dep_add(tax_unit, period, ["earned_income"])
         limit = p.other_retirement_income.earned_income_threshold
         earnings_eligible = earnings <= limit
 
