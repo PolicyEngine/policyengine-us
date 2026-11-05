@@ -26,7 +26,8 @@ class ira_compensation(Variable):
 
     def formula(person, period, parameters):
         # tests/test_ira_formula_differential.py runs this body on its own,
-        # so it repeats ira_compensation_amount rather than calling it.
+        # so it repeats the sum in ira_compensation_without_line_1e and
+        # adds line 1e.
         # Disability pay treated as wages before minimum retirement age is
         # compensation (Pub. 4491 (Rev. 10-2025), file page 144). Taxable
         # dependent care benefits (Form 1040 line 1e) are includible pay for
@@ -58,18 +59,14 @@ class ira_compensation(Variable):
         return max_(wages, 0) + max_(alimony, 0) + max_(self_employment_earnings, 0)
 
 
-def ira_compensation_amount(person, period, include_line_1e):
-    """IRC 219(f)(1) compensation, with or without Form 1040 line 1e.
+def ira_compensation_without_line_1e(person, period):
+    """IRC 219(f)(1) compensation without Form 1040 line 1e.
 
-    With include_line_1e it equals the ira_compensation formula, which
-    repeats this sum. dependent_traditional_ira_deduction leaves line 1e out.
+    The ira_compensation formula repeats this sum and adds line 1e.
     """
     # Disability pay treated as wages before minimum retirement age is
     # compensation (Pub. 4491 (Rev. 10-2025), file page 144).
-    wage_sources = ["irs_employment_income", "earned_disability_benefits"]
-    if include_line_1e:
-        wage_sources.append("taxable_dependent_care_benefits")
-    wages = add(person, period, wage_sources)
+    wages = add(person, period, ["irs_employment_income", "earned_disability_benefits"])
     alimony = person("taxable_alimony_income", period)
     self_employment_earnings = (
         add(
@@ -96,4 +93,4 @@ def dependent_ira_compensation(person, period):
     """
     if _is_supplied(person.simulation, "ira_compensation", period):
         return person("ira_compensation", period)
-    return ira_compensation_amount(person, period, include_line_1e=False)
+    return ira_compensation_without_line_1e(person, period)
