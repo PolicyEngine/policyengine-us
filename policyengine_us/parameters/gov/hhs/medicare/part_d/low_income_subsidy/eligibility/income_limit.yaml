@@ -1,0 +1,15 @@
+description: Medicare limits the Part D low-income subsidy to people whose countable income is below this share of the federal poverty guideline for their family size.
+values:
+  2006-01-01: 1.5
+
+metadata:
+  unit: /1
+  period: year
+  label: Medicare Part D low-income subsidy income limit
+  reference:
+    - title: 42 U.S.C. § 1395w-114(a)(3)(A)(ii) - Subsidy eligible individual defined
+      href: https://www.law.cornell.edu/uscode/text/42/1395w-114#a_3_A_ii
+    - title: 42 CFR § 423.773(a)(1) - Subsidy eligible individual
+      href: https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-B/part-423/subpart-P/section-423.773#p-423.773(a)(1)
+    - title: SSA POMS HI 03020.055 - Income Limits for Subsidy Eligibility
+      href: https://secure.ssa.gov/poms.nsf/lnx/0603020055

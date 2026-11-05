@@ -1,0 +1,60 @@
+# Each enrollee gets the Trustees' average subsidy per low-income subsidy
+# enrollee (2026 report, Table IV.B9; 2015 from the 2025 report).
+
+- name: Enrollee in 2026.
+  period: 2026
+  input:
+    people:
+      person:
+        part_d_lis_enrolled: true
+  output:
+    part_d_lis: 1_254
+
+- name: Enrollee in 2015.
+  period: 2015
+  input:
+    people:
+      person:
+        part_d_lis_enrolled: true
+  output:
+    part_d_lis: 2_112
+
+- name: Enrollee in 2024, before the Inflation Reduction Act redesign.
+  period: 2024
+  input:
+    people:
+      person:
+        part_d_lis_enrolled: true
+  output:
+    part_d_lis: 2_833
+
+- name: Enrollee in 2035, the last Trustees year.
+  period: 2035
+  input:
+    people:
+      person:
+        part_d_lis_enrolled: true
+  output:
+    part_d_lis: 2_076
+
+- name: Not enrolled.
+  period: 2026
+  input:
+    people:
+      person:
+        part_d_lis_enrolled: false
+  output:
+    part_d_lis: 0
+
+- name: Two enrollees in one household get the same average.
+  period: 2026
+  input:
+    people:
+      spouse1:
+        part_d_lis_enrolled: true
+      spouse2:
+        part_d_lis_enrolled: true
+      child:
+        part_d_lis_enrolled: false
+  output:
+    part_d_lis: [1_254, 1_254, 0]

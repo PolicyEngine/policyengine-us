@@ -1,0 +1,40 @@
+description: Medicare limits the Part D low-income subsidy to married people living with their spouse whose combined countable resources do not exceed this amount, before the burial funds exclusion.
+values:
+  2006-01-01: 20_000
+  2007-01-01: 20_410
+  2008-01-01: 20_970
+  2009-01-01: 22_010
+  2011-01-01: 22_260
+  2012-01-01: 23_120
+  2013-01-01: 23_580
+  2014-01-01: 23_860
+  2015-01-01: 24_250
+  2017-01-01: 24_600
+  2018-01-01: 25_150
+  2019-01-01: 25_720
+  2020-01-01: 26_160
+  2021-01-01: 26_520
+  2022-01-01: 27_950
+  2023-01-01: 30_240
+  2024-01-01: 31_360
+  2025-01-01: 32_130
+  2026-01-01: 33_100
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Medicare Part D low-income subsidy couple resource limit
+  reference:
+    # The statute's alternative resource standard: $20,000 in 2006, raised
+    # each year by the September CPI-U and rounded to $10. Before 2024 it was
+    # the limit for the partial subsidy (the full subsidy had a lower limit);
+    # from 2024 it is the limit for the full subsidy, the only one left. SSA's
+    # table lists both pre-2024 limits; these are the higher ones. SSA's table
+    # excludes the $3,000 couple burial funds exclusion, which is a separate
+    # parameter.
+    - title: 42 U.S.C. § 1395w-114(a)(3)(E)(i) - Alternative resource standard
+      href: https://www.law.cornell.edu/uscode/text/42/1395w-114#a_3_E_i
+    - title: 42 CFR § 423.773(b)(2)(iii) and (d)(2) - Resource thresholds
+      href: https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-B/part-423/subpart-P/section-423.773#p-423.773(d)(2)
+    - title: SSA POMS HI 03030.025 - Resource Limits for Subsidy Eligibility
+      href: https://secure.ssa.gov/poms.nsf/lnx/0603030025

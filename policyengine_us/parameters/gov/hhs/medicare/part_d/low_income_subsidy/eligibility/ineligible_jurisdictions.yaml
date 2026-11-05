@@ -1,0 +1,25 @@
+description: Medicare limits the Part D low-income subsidy to residents of the 50 states and the District of Columbia, so residents of these other jurisdictions are ineligible.
+values:
+  2006-01-01:
+    # Territories and freely associated states.
+    - GU
+    - MP
+    - PR
+    - PW
+    - VI
+    # Armed Forces mail codes, which are addresses abroad.
+    - AA
+    - AE
+    - AP
+
+metadata:
+  unit: list
+  period: year
+  label: Medicare Part D low-income subsidy ineligible jurisdictions
+  reference:
+    - title: 42 U.S.C. § 1395w-114(a)(3)(F) - Treatment of territorial residents
+      href: https://www.law.cornell.edu/uscode/text/42/1395w-114#a_3_F
+    - title: 42 CFR § 423.772 - Definitions (State)
+      href: https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-B/part-423/subpart-P/section-423.772
+    - title: 20 CFR § 418.3010(b)(11) - Definitions (State)
+      href: https://www.ecfr.gov/current/title-20/chapter-III/part-418/subpart-A/section-418.3010#p-418.3010(b)(11)

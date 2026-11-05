@@ -1,0 +1,61 @@
+# Medicaid enrollees and SSI recipients are enrolled without an application;
+# other eligible people are enrolled if they take up the subsidy.
+
+- name: Medicaid enrollee who would not apply is enrolled anyway.
+  period: 2026
+  input:
+    people:
+      person:
+        part_d_lis_eligible: true
+        medicaid_enrolled: true
+        ssi: 0
+        takes_up_part_d_lis_if_eligible: false
+  output:
+    part_d_lis_enrolled: true
+
+- name: SSI recipient who would not apply is enrolled anyway.
+  period: 2026
+  input:
+    people:
+      person:
+        part_d_lis_eligible: true
+        medicaid_enrolled: false
+        ssi: 1_200
+        takes_up_part_d_lis_if_eligible: false
+  output:
+    part_d_lis_enrolled: true
+
+- name: Other eligible person who does not take it up.
+  period: 2026
+  input:
+    people:
+      person:
+        part_d_lis_eligible: true
+        medicaid_enrolled: false
+        ssi: 0
+        takes_up_part_d_lis_if_eligible: false
+  output:
+    part_d_lis_enrolled: false
+
+- name: Other eligible person who takes it up.
+  period: 2026
+  input:
+    people:
+      person:
+        part_d_lis_eligible: true
+        medicaid_enrolled: false
+        ssi: 0
+        takes_up_part_d_lis_if_eligible: true
+  output:
+    part_d_lis_enrolled: true
+
+- name: Medicaid enrollee who is not eligible (not in Medicare) is not enrolled.
+  period: 2026
+  input:
+    people:
+      person:
+        part_d_lis_eligible: false
+        medicaid_enrolled: true
+        ssi: 0
+  output:
+    part_d_lis_enrolled: false

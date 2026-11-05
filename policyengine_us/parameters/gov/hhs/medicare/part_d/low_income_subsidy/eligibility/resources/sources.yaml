@@ -1,0 +1,20 @@
+description: Medicare counts these assets as resources under the Part D low-income subsidy.
+values:
+  2006-01-01:
+    - bank_account_assets
+    - stock_assets
+    - bond_assets
+
+metadata:
+  unit: list
+  period: year
+  label: Medicare Part D low-income subsidy countable resource sources
+  reference:
+    # SSA counts liquid resources (cash, financial accounts, stocks, bonds,
+    # mutual funds, retirement accounts and similar) and equity in real
+    # property other than the home. The model has no retirement account or
+    # non-home real property inputs.
+    - title: 20 CFR § 418.3405 - What types of resources do we count?
+      href: https://www.ecfr.gov/current/title-20/chapter-III/part-418/subpart-D/section-418.3405
+    - title: 42 CFR § 423.772 - Definitions (resources)
+      href: https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-B/part-423/subpart-P/section-423.772
