@@ -904,9 +904,10 @@ candidates:
   readings:
     statute: Paragraph (2)(a) allows up to $2,500 of benefits from "any other retirement system or plan established
       by federal law", except "retired or retainer pay of the uniformed services of the United States that qualifies
-      for a subtraction under paragraph 26". Paragraph (26) names no survivors. ITR 11-3 says "Arizona allows a
-      subtraction of up to $2,500 for uniformed services retired pay and SBP benefits."
-    other: From 2023, the Form 140 instructions put the payments of "the surviving spouse of a deceased military
+      for a subtraction under paragraph 26". Paragraph (26) covers "annuities and pensions received as retired or
+      retainer pay" and names no survivors.
+    other: ITR 11-3 says "Arizona allows a subtraction of up to $2,500 for uniformed services retired pay and SBP
+      benefits." From 2023, the Form 140 instructions put the payments of "the surviving spouse of a deceased military
       veteran" on line 29b, which has no cap from 2021.
   example: A 2021 surviving spouse with $6,000 of SBP payments and no other income subtracts $2,500 under (2) and
     $0 on line 29b. In 2023 the same filer subtracts $6,000 on line 29b and $0 under (2). A non-spouse recipient
@@ -920,9 +921,11 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10398
   state: ruled
-  note: PolicyEngine puts a surviving spouse's SBP payments under (2) through 2022 and on line 29b from 2023, where
-    paragraph (26) is silent on survivors and ADOR's instructions fill the gap. Every other recipient's payments stay
-    under (2) in every year, as its text and ITR 11-3 provide.
+  note: Neither paragraph says whether a survivor's SBP payments count as annuities "received as retired or retainer
+    pay", and (2)(a)'s exception turns on that question, so PolicyEngine follows ADOR's reading for each year. A
+    surviving spouse's payments stay under (2) through 2022, as ITR 11-3 provides, and move to line 29b from 2023, as
+    the Form 140 instructions provide. ADOR has moved no other recipient's payments, so those stay under (2) in every
+    year.
 - id: us-ca:capi-payment-standard-offset
   program: capi
   years:
