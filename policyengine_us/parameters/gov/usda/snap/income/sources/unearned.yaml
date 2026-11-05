@@ -21,6 +21,8 @@ values:
     # facility on the recipient's behalf.
     - ak_ssp
     - al_ssp
+    # ca_state_supplement only adds up this person-level variable.
+    - ca_state_supplement_person
     # co_oap has an annual definition period; policyengine-core's
     # calculate_divide converts it to a monthly amount here.
     - co_oap
@@ -74,10 +76,6 @@ values:
     # special need payments (or_ssp) from SNAP income as reimbursements. Its
     # nursing facility payment goes to institution residents, who are not SNAP
     # households under 7 CFR 273.1(b)(7)(vi).
-    # Listed elsewhere: ca_state_supplement is an SPM unit variable with no
-    # person-level counterpart. policyengine-core projects a group value onto
-    # every member, so listing it here would count it once per person in the
-    # SPM unit. It is listed in unearned_spm_unit.yaml instead.
     # (ii)
     - pension_income # Includes annuities.
     - veterans_benefits
