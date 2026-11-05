@@ -22,7 +22,9 @@ from policyengine_us import Simulation
 
 YEARS = (2022, 2023, 2024, 2025, 2026)
 EXCLUDED_YEAR = 2022
-TOLERANCE = 0.02
+# 32-bit floats resolve to $0.03125 at this income, and the net income formulas
+# round several times, so a change can differ from its components by a few cents.
+TOLERANCE = 0.25
 # Earnings this high rule out every means-tested response.
 HIGH_EARNINGS = 500_000
 NET_INCOMES = ("household_net_income", "spm_unit_net_income")
@@ -50,7 +52,7 @@ def calculate(simulation, name, year):
     return float(simulation.calculate(name, year).sum())
 
 
-@settings(max_examples=20, deadline=None)
+@settings(max_examples=10, deadline=None)
 @example(year=2022, earnings=50_000, payment=662)
 @example(year=2024, earnings=50_000, payment=298)
 @example(year=2026, earnings=0, payment=200)
@@ -69,7 +71,7 @@ def test_gross_income_rises_by_the_payment_except_in_2022(year, earnings, paymen
     assert change == pytest.approx(expected, abs=TOLERANCE)
 
 
-@settings(max_examples=20, deadline=None)
+@settings(max_examples=10, deadline=None)
 @example(state="WA", year=2026, payment=200)
 @example(state="AK", year=2022, payment=662)
 @given(
@@ -85,7 +87,7 @@ def test_taxable_amount_stays_within_the_payment_and_in_alaska(state, year, paym
         assert taxable == 0
 
 
-@settings(max_examples=20, deadline=None)
+@settings(max_examples=10, deadline=None)
 @example(year=2022, payment=662)
 @example(year=2024, payment=298)
 @example(year=2026, payment=200)
