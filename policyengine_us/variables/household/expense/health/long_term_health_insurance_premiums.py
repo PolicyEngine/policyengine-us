@@ -8,12 +8,19 @@ class long_term_health_insurance_premiums(Variable):
     unit = USD
     definition_period = YEAR
     documentation = (
-        "Annual person-paid long-term care insurance premiums excluding pretax "
-        "payroll deductions and employer-paid premiums. Pretax payroll payments "
-        "belong only in pre_tax_health_insurance_premiums. The pretax and non- "
-        "pretax sets are disjoint; total person-paid premiums equal pretax "
-        "payments plus the applicable non-pretax aggregate. This component must "
-        "be counted only once when included in a broader premium input."
+        "Annual long-term care insurance premiums paid for this person's own "
+        "contract, excluding pretax payroll deductions and employer-paid "
+        "premiums. Unlike the other premium inputs, which sit on the person "
+        "who paid them, record these on the insured person, whoever in the "
+        "tax unit paid them: 26 U.S.C. 213(d)(10) limits the premiums that "
+        "count as medical care by the insured person's age. The model treats "
+        "the insured person as the payer, so these premiums enter only that "
+        "person's own self-employed health insurance deduction. Pretax payroll "
+        "payments belong only in pre_tax_health_insurance_premiums. The "
+        "pretax and non-pretax sets are disjoint; total person-paid premiums "
+        "equal pretax payments plus the applicable non-pretax aggregate. This "
+        "component must be counted only once when included in a broader "
+        "premium input."
     )
     # No dataset fills this input, and CMS's health expenditure projections
     # have no long-term care insurance premium series. 26 U.S.C.
