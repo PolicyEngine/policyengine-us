@@ -187,3 +187,20 @@
     nj_main_income_tax: 416.50
     nj_ctc: 1_000
     nj_property_tax_credit: 0
+
+- name: Cohabiting separate filer weighs the deduction against a $25 credit
+  # Tax saving 463.75 - 416.50 = 47.25. A separate filer who lives with
+  # the spouse gets half the $50 credit, $25, so the filer takes the
+  # deduction: 47.25 exceeds 25.
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_eligible: true
+    nj_potential_property_tax_deduction: 2_700
+    nj_taxable_income_before_property_tax_deduction: 30_500
+    filing_status: SEPARATE
+    cohabitating_spouses: true
+    cdcc: 0
+    state_code: NJ
+  output:
+    nj_taking_property_tax_deduction: true

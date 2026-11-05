@@ -9,6 +9,7 @@ class nj_taking_property_tax_deduction(Variable):
     definition_period = YEAR
     reference = (
         "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-3a-17/",
+        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-3a-20/",
         # The NJ child tax credit and the NJ child and dependent care credit
         # are refundable and both depend on NJ taxable income.
         "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-17-1/",
