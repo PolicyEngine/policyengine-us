@@ -1,0 +1,29 @@
+description: Colorado estimates these electricity heating costs when included in rent under the Low-income Energy Assistance Program.
+HOUSE_MODULAR:
+  2025-11-01: 472
+MOBILE_HOME:
+  2025-11-01: 440
+DUPLEX_TRIPLEX_FOURPLEX:
+  2025-11-01: 343
+TOWNHOUSE:
+  2025-11-01: 350
+APARTMENT_CONDO:
+  2025-11-01: 227
+HOTEL_MOTEL:
+  2025-11-01: 239
+CABIN:
+  2025-11-01: 380
+TINY_HOME:
+  2025-11-01: 357
+CAMPER_RV:
+  2025-11-01: 393
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Colorado LEAP electricity heating included in rent
+  breakdown:
+    - co_leap_dwelling_type
+  reference:
+    - title: Colorado FY2026 LEAP benefit methodology and annual rates
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heat-Crisis_2026.pdf#page=6

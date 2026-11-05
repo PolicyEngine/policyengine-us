@@ -1,0 +1,117 @@
+- name: Michigan subtracts the retiree's own military retirement pay
+  period: 2024
+  input:
+    state_code: MI
+    military_retirement_pay: 10_000
+    military_retirement_pay_survivors: 0
+    is_surviving_spouse: false
+  output:
+    mi_military_retirement_subtraction: 10_000
+
+- name: Michigan subtracts military survivor benefits received by a surviving spouse
+  period: 2024
+  input:
+    state_code: MI
+    military_retirement_pay: 0
+    military_retirement_pay_survivors: 10_000
+    is_surviving_spouse: true
+  output:
+    mi_military_retirement_subtraction: 10_000
+
+- name: Michigan taxes military survivor benefits received by a non-spouse
+  period: 2024
+  input:
+    state_code: MI
+    military_retirement_pay: 0
+    military_retirement_pay_survivors: 10_000
+    is_surviving_spouse: false
+  output:
+    mi_military_retirement_subtraction: 0
+
+- name: Michigan evaluates survivor eligibility separately for each filer and excludes dependent pay
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        military_retirement_pay: 20_000
+        military_retirement_pay_survivors: 10_000
+        is_surviving_spouse: true
+      spouse:
+        age: 40
+        military_retirement_pay: 5_000
+        military_retirement_pay_survivors: 15_000
+        is_surviving_spouse: false
+      dependent:
+        age: 15
+        military_retirement_pay: 3_000
+        military_retirement_pay_survivors: 5_000
+        is_surviving_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+    marital_units:
+      couple:
+        members: [head, spouse]
+      child:
+        members: [dependent]
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: MI
+  output:
+    mi_military_retirement_subtraction: [30_000, 5_000, 8_000]
+    mi_subtractions: 35_000
+
+- name: Taxable non-spouse survivor benefits do not reduce the 2024 expanded retirement cap
+  period: 2024
+  input:
+    state_code: MI
+    age: 62
+    taxable_private_pension_income: 50_000
+    military_retirement_pay_survivors: 10_000
+    is_surviving_spouse: false
+  output:
+    mi_military_retirement_subtraction: 0
+    # Worksheet 3.3 uses only the military subtraction on Schedule 1 line 11.
+    # The full $64,040 cap times 50% remains available for civilian pensions.
+    mi_expanded_retirement_benefits_deduction: 32_020
+    mi_retirement_benefits_deduction_tier_one_amount: 50_000
+
+- name: Taxable non-spouse survivor benefits do not reduce the 2025 expanded retirement cap
+  period: 2025
+  input:
+    state_code: MI
+    age: 62
+    taxable_private_pension_income: 50_000
+    military_retirement_pay_survivors: 10_000
+    is_surviving_spouse: false
+  output:
+    mi_military_retirement_subtraction: 0
+    # $65,897 times 75%, with no military subtraction to offset the cap.
+    mi_expanded_retirement_benefits_deduction: 49_422.75
+
+- name: Taxable non-spouse survivor benefits do not reduce a senior's private pension cap
+  period: 2024
+  input:
+    state_code: MI
+    age: 82
+    taxable_private_pension_income: 70_000
+    military_retirement_pay_survivors: 10_000
+    is_surviving_spouse: false
+  output:
+    mi_military_retirement_subtraction: 0
+    mi_retirement_benefits_deduction_tier_one_amount: 64_040
+
+- name: Taxable non-spouse survivor benefits do not reduce a senior's investment income deduction
+  period: 2024
+  input:
+    state_code: MI
+    age: 82
+    taxable_interest_income: 20_000
+    military_retirement_pay_survivors: 10_000
+    is_surviving_spouse: false
+  output:
+    mi_military_retirement_subtraction: 0
+    mi_interest_dividends_capital_gains_deduction: 14_274

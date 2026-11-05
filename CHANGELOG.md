@@ -1,3 +1,397 @@
+## [2.100.0] - 2026-11-05
+
+### Added
+
+- Add South Carolina LIHEAP regular heating assistance for FY2026, with countable income, the federal 110% poverty floor and statewide supplements.
+
+
+## [2.99.0] - 2026-11-05
+
+### Added
+
+- Add Hawaii LIHEAP regular heating eligibility, the flat benefit for subsidized dwellings and private-dwelling points for fiscal year 2026; private-dwelling dollar awards stay unmodeled because the statewide value per point was not located.
+
+
+## [2.98.0] - 2026-11-05
+
+### Added
+
+- Add Delaware LIHEAP regular heating assistance for fiscal year 2026, including the income-interval benefit matrix, the subsidized-housing flat award, federal income protection and Social Security net of Part B.
+
+
+## [2.97.0] - 2026-11-05
+
+### Added
+
+- Add Colorado LEAP regular heating assistance for fiscal year 2026, including received income, heating-cost adjustments and federal income protection for large households.
+
+
+## [2.96.3] - 2026-11-05
+
+### Fixed
+
+- Keep Iowa's 2018 miscellaneous itemized deduction above 2% of federal AGI, which Iowa did not suspend until 2019, and apply Iowa's 2018 limitation on the itemized deductions of filers with federal AGI above the IA 104 applicable amounts.
+
+
+## [2.96.2] - 2026-11-05
+
+### Fixed
+
+- Add the Medicare Part B and Part D income-related monthly adjustment brackets for 2015-2023 and the standard Part B premium for 2015-2020, which had been backdated from their 2024 and 2021 values.
+
+
+## [2.96.1] - 2026-11-05
+
+### Fixed
+
+- From 2021, a filer whose only qualifying child lacks a valid SSN gets the zero-child EITC without the childless age test (IRC 32(c)(1)(A)(i); ARPA section 9622).
+- Restrict military survivor retirement tax exemptions to eligible surviving spouses in Arizona, Idaho, Indiana, Michigan, North Dakota, New Mexico, Rhode Island, South Carolina, and Virginia. Apply New Mexico's 2025 survivor eligibility date and use Michigan's eligible subtraction in retirement deduction worksheets. Limit South Carolina's general survivor retirement deduction to surviving spouses, base its maximum on the deceased spouse's age, and drop the 2021 reduction by the military survivor deduction.
+
+
+## [2.96.0] - 2026-11-05
+
+### Added
+
+- Add an opt-in annual earnings-history Social Security calculator with shared owners' draw credit, mini-PIAs, named above-cap credit variants, and a reconciliation ledger.
+
+### Fixed
+
+- With the abolish-federal-income-tax or abolish-payroll-tax parameter on, household tax and net income now count every other tax: the Idaho permanent building fund tax, the California, Indiana, North Carolina, Oklahoma and Pennsylvania use taxes, and every local income and occupational tax (only New York City's was counted), along with the Colorado AMT, the Michigan surtax and the Vermont child care contribution. Mississippi tax now counts after its nonrefundable credits, Pennsylvania refundable credits are no longer counted twice, and federal refundable credits leave household net income in every year the federal income tax is abolished, including when the parameter is first set after 2024.
+- Count eligible long-term care insurance premiums, up to the 26 U.S.C. 213(d)(10) limit for the insured person's age, in Schedule A medical expenses and the self-employed health insurance deduction. Ohio, Idaho, New Jersey and Michigan remove only the part of that deduction that took the premiums each one counts.
+- Fill total AGI in calibration.gov.cbo.income_by_source.adjusted_gross_income for 2015-2018 with IRS Statistics of Income actuals. The 2015 value was tax-year 2013 AGI excluding dependent filers and was held flat through 2018, so dollar inputs on the default uprating series (those with no series of their own, such as charitable donations) dated 2018 or earlier came out 13% to 29% too high when uprated to 2019 or later, and up to 12% too low when uprated to a year within 2016-2018. Medicare IRMAA's two-year lookback deflates income by the same per-capita index, so a household entered for a single benefit year from 2016 to 2020 now gets that year's income times 1.007, 0.942, 0.890, 0.932 or 0.929, instead of 1.009, 1.016, 1.014, 0.765 or 0.721.
+- Start Vermont's 2017 taxable income from federal taxable income, with the former 32 V.S.A. § 5811(21) itemized deduction addback, additions and subtractions, and add the 2017 federal standard deduction amounts.
+
+### Removed
+
+- Removed the abolish-federal-income-tax and abolish-payroll-tax structural reforms (`policyengine_us.reforms.federal`). Their parameters, `gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax` and `abolish_payroll_tax`, still abolish the taxes through the baseline formulas. Also removed the parameters `gov.household.household_tax_before_refundable_credits`, which only those reforms read, and `gov.household.household_refundable_credits`, which nothing read.
+
+
+## [2.95.0] - 2026-11-05
+
+### Added
+
+- Add an optional California out-of-state municipal bond interest input for nondependent filers and document the zero-addback default.
+- Add state income tax rebate adjustments and a pre-rebate comparison output that preserves ordinary credits and existing tax calculations.
+
+### Changed
+
+- Document automatic Alaska PFD and energy relief calculations, person-level overrides, and the 2022 payment split.
+- Clarify tax-unit dependent and spouse inference for callers and add explicit-role regression examples.
+
+
+## [2.94.9] - 2026-11-05
+
+### Fixed
+
+- Correct pre-2018 AMT for child filers by applying the limited exemption to AMT income, excluding joint returns from the child exemption cap, applying the support test to 18-year-olds and full-time students, and judging the child rule by the filer alone.
+
+
+## [2.94.8] - 2026-11-05
+
+### Fixed
+
+- Zero the whole standard deduction, including the aged and blind amount, for a married separate filer whose spouse itemizes (IRC 63(c)(6)), and leave employer dependent care benefits out of income tax, FICA and FUTA wages, adding back any part above the IRC 129 exclusion and counting it as EITC earned income.
+
+
+## [2.94.7] - 2026-11-04
+
+### Fixed
+
+- Compute the California state supplement per person with one standard for each living arrangement, which stops facility residents getting stacked amounts and pays blind children, adult dependents, children in facilities and unrelated people sharing an SPM unit the right levels. `ca_state_supplement_eligible_person` now shows whether a person is paid a supplement, so it is false when income leaves none.
+
+
+## [2.94.6] - 2026-11-03
+
+### Fixed
+
+- Require a resident qualifying child and the statutory separation conditions for married separate filers, and for separated head-of-household filers from 2021, to receive the federal EITC, CalEITC, and credits that follow the federal marital rule. A head or spouse marked as separated meets the six-month living-apart condition by default. A new `is_separated_under_decree` input (default false) treats a head or spouse separated under a decree of divorce or separate maintenance as unmarried for the EITC, under IRC 7703(a)(2). New Jersey's EITC, including its childless age fallback, now follows the federal marital condition and, under N.J.S.A. 54A:4-7a.(3), bars every married separate filer unless a decree applies. Head-of-household status for a separated filer now requires a child resident for more than half the year and six months apart from the spouse (IRC 7703(b)). Washington's Working Families Tax Credit no longer meets the childless age test through a dependent's age.
+
+
+## [2.94.5] - 2026-11-03
+
+### Changed
+
+- Store California's state supplement payment standards as state shares on top of the federal benefit rate, so the standards follow each federal cost-of-living adjustment, and date the shares and food allowances from January 2013 using the levels SSA POMS lists for each year.
+
+
+## [2.94.4] - 2026-11-03
+
+### Fixed
+
+- Make ca_state_supplement_eligible_person true for blind or disabled dependents under 18, whom the model pays California's dependent supplement amount.
+
+
+## [2.94.3] - 2026-11-03
+
+### Fixed
+
+- Keep the Social Security wage base on each Trustees assumption's path when a reform changes only the payroll cap.
+
+
+## [2.94.2] - 2026-11-03
+
+### Fixed
+
+- Measure the Washington Working Families Tax Credit reduction on earned income, as RCW 82.08.0206(2)(b) and WAC 458-20-285 Answer 10C require, instead of the greater of earned income and AGI.
+
+
+## [2.94.1] - 2026-11-03
+
+### Fixed
+
+- Count every state child care subsidy in the CCDF program list in household benefits, up to the family's child care and after-school bill.
+
+
+## [2.94.0] - 2026-11-03
+
+### Added
+
+- Added the Vermont Fair Share high-income surcharge proposals as a contributed reform.
+
+### Changed
+
+- Require spm-calculator 1.1, whose canonical forecast covers 2022–2036, so SPM thresholds and SPM resources calculate for 2036.
+
+
+## [2.93.3] - 2026-11-03
+
+### Fixed
+
+- Apply each Texas Local Workforce Development Board's own Child Care Services parent share of cost scale, where the Board's chart was found, to October 2023 through December 2024, continuing a Board's BCY 2024 chart where no later one was found, instead of the statewide scale that TWC brought in with TX3C on January 13, 2025.
+
+
+## [2.93.2] - 2026-11-03
+
+### Fixed
+
+- Add Texas Child Care Services maximum provider payment rates from six tables the Texas Workforce Commission published: its maximum daily rates as of October 1, 2016 and the rate tables it attached to WD Letters 12-18 (August 2018), 23-19, 25-20, 24-21 and 22-22 (Board Contract Years 2020 to 2023). PolicyEngine had applied the October 2023 rates to every month before October 2023. It now applies the October 2016 rates from January 2015 to July 2018 and each later table from its effective date.
+
+
+## [2.93.1] - 2026-11-03
+
+### Fixed
+
+- Set the DC EITC match for filers with qualifying children to 85% for 2026 through 2028 and 100% from 2029, after the temporary 100% match for 2025 expired.
+
+
+## [2.93.0] - 2026-11-03
+
+### Added
+
+- Add exact household-chunked microsimulation calculations, including variable-centric population files, and share sequential TOB counterfactual tax calculations.
+
+
+## [2.92.18] - 2026-11-03
+
+### Fixed
+
+- Add Texas Child Care Services provider payment rates for Board Contract Year 2024 (October 2023 to September 2024) from TWC WD Letter 20-23, Attachment 1, as TWC revised it on October 16, 2023. PolicyEngine had applied October 2024 rates to every month from January 2015 through September 2024. Correct four Dallas County BCY 2025 rates to match TWC's table. Date the statewide parent share of cost scale from January 13, 2025, when TWC launched TX3C and began phasing the scale in. TWC's Commission amended its rules in 2022 to set the parent share of cost statewide from December 1, 2023. TWC put the statewide scale off until TX3C, and each Board set its own scale until then. PolicyEngine still applies the scale to earlier months, so no copay changes.
+
+
+## [2.92.17] - 2026-11-03
+
+### Fixed
+
+- Limit Missouri's itemized deduction for self-employment tax to the part the filer didn't deduct in computing federal adjusted gross income (RSMo 143.141(4)(c)).
+
+
+## [2.92.16] - 2026-11-03
+
+### Fixed
+
+- Make Riverside County General Relief eligible at exactly $500 of total combined countable property, since the DPSS fact sheet says the total cannot exceed $500.
+
+
+## [2.92.15] - 2026-11-03
+
+### Fixed
+
+- California's high-income itemized limitation now leaves out the FTB 3526 investment interest deduction instead of the interest paid; Minnesota leaves investment interest out of its itemized deduction reduction, and its AMT subtracts investment interest and miscellaneous deductions.
+
+
+## [2.92.14] - 2026-11-03
+
+### Fixed
+
+- Cite M.G.L. c.62 s.6(x) and Acts 2023 c.50 for the Massachusetts child and family tax credit's amount, dependent cap and child age limit. For 2021 and 2022, cite an archived copy of s.6(y) and Acts 2021 c.24.
+
+
+## [2.92.13] - 2026-11-03
+
+### Fixed
+
+- Count the income of everyone living in an Arizona property tax credit claimant's home, allow one claimant per household, exclude Arizona unemployment, count other states' unemployment, nontaxable strike benefits and nontaxable alimony, and stop subtracting federal above-the-line deductions other than business and capital losses.
+- Stop Colorado CCAP from reading parameters before 2015, which made every 2015 Colorado income tax calculation raise ParameterNotFoundError. Measure the Colorado sales tax refund's age test as of December 31 of the preceding year, per C.R.S. 39-22-2003(1)(a)(II).
+- Keep ABLE contributions in the saver's credit for 2026, reduce qualified contributions by relevant ABLE distributions through a new input, and from 2027 count only ABLE contributions, reduced only by those distributions, under a $2,100 cap (Pub. L. 119-21). From 2026, apply the 26 U.S.C. 6012(a)(1)(A) and (B) filing threshold to every filer, including a married individual filing separately with no gross income and a filer who can be claimed as a dependent. Under section 6012(a)(1), require a joint return when either spouse can be claimed as a dependent and the other spouse's own gross income is at least the exemption amount ((A)(iv)), and withdraw the (A) exception when the standard deduction is zero under section 63(c)(6) ((C)(ii)).
+
+
+## [2.92.12] - 2026-11-03
+
+### Fixed
+
+- Correct 128 Texas Child Care Services expanded-age rate cells to the Texas Workforce Commission's published tables. Pay relative care and blended schedules from January to September 2025, and pay relative care entered with either the Reg or None rating.
+
+
+## [2.92.11] - 2026-11-03
+
+### Fixed
+
+- Compute Alabama's miscellaneous itemized deduction from its own list of expenses (unreimbursed employee business expenses and tax preparation fees) above 2% of Alabama AGI in every modeled year, counting only the head's and spouse's expenses, instead of applying a second floor to the federal deduction, which is zero from 2018.
+
+
+## [2.92.10] - 2026-11-03
+
+### Fixed
+
+- Cap Minnesota's K-12 education subtraction per qualifying child by grade (Minn. Stat. 290.0132 subd. 4), and give Minnesota Supplemental Aid's living-alone standard to people eligible for an HCBS waiver or with a Housing Support placement determination (Minn. Stat. 256D.44 subd. 2).
+
+
+## [2.92.9] - 2026-11-03
+
+### Fixed
+
+- Cite the enacted appropriations and Department of Revenue announcements for the 2025 and 2026 Alaska Permanent Fund Dividend amounts, in place of a news report on the 2026 budget bill.
+
+
+## [2.92.8] - 2026-11-03
+
+### Fixed
+
+- Apply the 2026 federal section 68 itemized deduction reduction in Maryland, Maine and New Mexico itemized deductions.
+
+
+## [2.92.7] - 2026-11-03
+
+### Fixed
+
+- Count Michigan household resources' Social Security, SSI and railroad retirement benefits, and deduct health insurance premiums, only for the claimant and spouse (MCL 206.508(3) and 206.510), so a dependent's own benefits and premiums no longer change the homestead property tax and home heating credits.
+
+
+## [2.92.6] - 2026-11-03
+
+### Fixed
+
+- Prevent Colorado sales tax refunds and Illinois, New Mexico, Virginia, Hawaii, and Massachusetts rebates from applying before their eligibility years, while preserving eligibility-year amounts. Document eligibility-year attribution for state rebates.
+
+
+## [2.92.5] - 2026-11-03
+
+### Fixed
+
+- Give a married individual filing separately the $3,750 Schedule R initial amount, and set the section 22 amount to zero for a separate filer who lived with their spouse at any time in the year, so the elderly or disabled credit and Michigan's section 22 subtraction both follow 26 U.S.C. 22(c)(2)(A) and 22(e)(1).
+
+
+## [2.92.4] - 2026-11-03
+
+### Fixed
+
+- Apply the Income-Based Repayment and Pay As You Earn 10-year standard payment cap before the spousal balance proration, as 34 CFR 685.209(f)(2)-(3) and (g)(1) order them.
+
+
+## [2.92.3] - 2026-11-03
+
+### Fixed
+
+- Count the owners' draw profits whose SECA is in the deductible self-employment tax in Form 7206 line 5 when the owners' draw reform computes the self-employed health insurance earned income limit.
+
+
+## [2.92.2] - 2026-11-03
+
+### Fixed
+
+- Keep plain inputs such as EITC take-up when New York and Alabama recompute federal credits under pinned rules, so a 2021 New York filer who does not take up the federal EITC no longer gets the New York EITC.
+
+
+## [2.92.1] - 2026-11-03
+
+### Fixed
+
+- Fix the documentation helper's chart import for current Core, list the PIA-ratio guide in the docs table of contents, update stale interpolation comments in the pinned-system test, and make the calculator reference test classify every leaf under kept parameter nodes and flag missing calculator-only paths.
+- Add the 2015-2017 federal income tax rates and bracket thresholds (10% to 39.6%), which had fallen back to the 2018 schedule.
+
+
+## [2.92.0] - 2026-11-03
+
+### Added
+
+- Apply the standard repayment plan's $50 minimum once across a borrower's Direct and parent PLUS loans in a new combined_standard_repayment_payment, as 34 CFR 685.208(b)(1)(ii) sets it, while a consolidated parent PLUS loan under 685.208(b)(2) keeps its own minimum.
+
+### Fixed
+
+- Compare completed years in the childless EITC age ceiling, so a filer aged 64.5, who has not attained 65, meets IRC 32(c)(1)(A)(ii)(II).
+
+
+## [2.91.13] - 2026-11-03
+
+### Fixed
+
+- Make branch-measured marginal tax rates match fresh re-simulation: household simulations now list the inputs they move onto pre-response variables, so rate branches keep them (`marginal_tax_rate` with `long_term_capital_gains` read about 13 on Core 3.33), and branches raise those inputs, so programs that read pre-response income, such as TANF, see the raise.
+
+
+## [2.91.12] - 2026-11-03
+
+### Fixed
+
+- Deny the DC standard deduction, basic and additional amounts, to a separate filer whose spouse itemizes (D.C. Code 47-1803.03(c)).
+- Follow the statute where IRS forms differ: the refundable child tax credit bar applies only to a section 911 exclusion, not the housing deduction alone (with Form 2555 leaf inputs; a positive legacy aggregate still counts as an exclusion); a claimable spouse aged 65 or blind on a 2018-2025 joint return must file with income other than earned income over the section 63(c)(5)(A) amount; estate and trust royalties count as EITC investment income; and through 2020 former section 32(c)(1)(F) denies the EITC to a filer whose qualifying children all lack identification.
+
+
+## [2.91.11] - 2026-11-03
+
+### Changed
+
+- Describe the source-conflict steps in CONTRIBUTING.md in the order the guard enforces: candidate in the ruling PR, register entry after it merges, marker and pin refresh in a follow-up PR, then `cites_entry: true` in the register and a second pin refresh.
+
+
+## [2.91.10] - 2026-11-02
+
+### Fixed
+
+- Let the unclaimed spouse on a joint return deduct their own student loan interest when the other spouse is claimed as a dependent elsewhere (26 U.S.C. 221(c)), and count both spouses in joint MAGI.
+
+
+## [2.91.9] - 2026-11-02
+
+### Fixed
+
+- Count only wages includible in gross income (after traditional 401(k)/403(b) deferrals and other pre-tax payroll deductions) in `adjusted_earnings`, the earned income limit of the child and dependent care credit, the IRC 129 dependent care exclusion and the state credits that inherit them, per IRC 32(c)(2)(A)(i) and Treas. Reg. 1.21-2(b)(3); California's credit limit, exclusion and AMT child exemption use California wages, which keep the payroll HSA contributions California taxes, net of any business loss, and New York's 2026 credit keeps counting the deferrals under Tax Law 606(c-2)(2)(C), also net of any business loss. California's credit now applies its own FTB 3506 expense, employer benefit and earned income limits in every year, not only 2021, and its AMT child exemption uses California's own minimum ($9,750 for 2025) instead of the federal amount.
+
+
+## [2.91.8] - 2026-11-02
+
+### Changed
+
+- Lock policyengine-core 3.34.2, the version CI's test jobs already resolve, so local `uv sync` environments and the CI jobs that install the committed lock (lint, Rest shard planning and the release build) use it too.
+
+
+## [2.91.7] - 2026-11-02
+
+### Fixed
+
+- Count the pre-2018 federal miscellaneous deduction once in Mississippi and Missouri itemized deductions.
+
+
+## [2.91.6] - 2026-11-02
+
+### Fixed
+
+- Compare the federal free and reduced-price school meal income limits at USDA's published whole-dollar values, rounded up, so a household exactly at a published federal limit gets that tier; state percentage limits are still compared exactly.
+
+
+## [2.91.5] - 2026-11-02
+
+### Fixed
+
+- California's non-MAGI Medi-Cal asset limit falls to $21,000 for one person and $31,000 for two on July 1, 2027 (SB 164) in the aged, blind and disabled, medically needy, Medicare Savings Program and 250% Working Disabled Program limits; the Working Disabled Program also adds $1,550 for each person beyond two.
+
+
+## [2.91.4] - 2026-11-02
+
+### Fixed
+
+- Count railroad retirement annuities as unearned income for Supplemental Security Income and the Colorado Old Age Pension.
+
+
 ## [2.91.3] - 2026-11-02
 
 ### Fixed
