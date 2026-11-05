@@ -15,7 +15,7 @@ Invariants:
 3. Closed form: the rate in year y between knots (y0, g0) and (y1, g1) is
    g0 + (g1 - g0)(y - y0) / (y1 - y0), and the value is the last projected
    value times the product of (1 + rate). Checked against an independent
-   numpy implementation, for synthetic series and for the wired CMS series.
+   numpy implementation, for synthetic series and for every wired series.
 4. Constant knots: knots equal to the short-range rate reproduce the
    compound path V_L (1 + g)^(y - L), and no knots leave the old rule intact.
 5. Monotonicity: raising any knot's rate never lowers any extended value.
@@ -23,13 +23,22 @@ Invariants:
    value by c, so the glide depends only on growth, not on the level.
 7. Projected years are untouched, and years after the end year hold the end
    year's value.
-8. Trustees consistency: starting from the Trustees' 2035 per beneficiary
-   growth (Table V.D1), the Medicare per-enrollee knots reproduce the growth
-   in spending per enrollee implied by the Trustees' incurred expenditure
-   growth (Table V.B5) and enrollment (Table V.B3) in each long-range period,
-   and the Part B and Part D knots reproduce Table II.D1's total increase net
-   of beneficiary growth, within the tables' rounding.
+8. Growth years: with growth_years=(y - 1, y), the short-range rate is
+   V_y / V_(y-1) - 1, and the glide still starts from it at the last
+   projected year, whatever the growth between y and that year.
+9. Trustees consistency: Medicare spending per enrollee, which starts its
+   glide at its 2031-2032 growth in 2034, reproduces the growth in spending
+   per enrollee implied by the Trustees' incurred expenditure growth (Table
+   V.B5) and enrollment (Table V.B3) in each long-range period. Starting
+   from the Trustees' 2035 per beneficiary growth (Table V.D1), the Part B
+   and Part D knots reproduce Table II.D1's total increase net of
+   beneficiary growth. The Part B premium's glide matches II.D1's Part B
+   growth per beneficiary in 2051-2100, where the per capita health
+   spending knots would overshoot it.
 """
+
+import ast
+import inspect
 
 import numpy as np
 import pytest
@@ -37,6 +46,7 @@ from hypothesis import given, settings
 from hypothesis import strategies as st
 from policyengine_core.parameters import ParameterNode
 
+from policyengine_us.parameters import uprating_extensions
 from policyengine_us.parameters.uprating_extensions import (
     HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH,
     MEDICARE_LONG_RANGE_DEMOGRAPHIC_MIX,
@@ -50,6 +60,9 @@ from policyengine_us.parameters.uprating_extensions import (
 from policyengine_us.system import system
 
 END_YEAR = 2100
+PARAMETERS = system.parameters
+PER_CAPITA_COST = PARAMETERS.calibration.gov.hhs.medicare.per_capita_cost
+PART_B_PREMIUM = PARAMETERS.calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee
 
 rates = st.floats(-0.05, 0.15, allow_nan=False, allow_infinity=False)
 
@@ -230,15 +243,67 @@ def test_projected_years_hold_and_later_years_freeze(case, later):
         assert _value(series, year) == _value(series, end_year)
 
 
-# 8. Trustees consistency.
+# 8. Growth years.
+
+
+def test_growth_years_set_the_rate_the_glide_starts_from():
+    """2031-2032 grows 5 percent and 2033-2034 faster; the glide starts from 5
+    percent at 2034 and reaches the 3 percent knot in 2050."""
+    series = _series({2031: 100.0, 2032: 105.0, 2033: 112.0, 2034: 120.0})
+    extend_parameter_values(
+        series,
+        2034,
+        END_YEAR,
+        growth_years=(2031, 2032),
+        long_range_growth={2050: 0.03},
+    )
+    # Hand computed: 2035 is one sixteenth of the way from 5% to 3%, so it
+    # grows 0.05 - 0.02 / 16 = 4.875%, to 120 * 1.04875 = 125.85, and 2036
+    # grows 4.75%, to 125.85 * 1.0475 = 131.827875.
+    assert _value(series, 2035) == pytest.approx(125.85, rel=1e-12)
+    assert _value(series, 2036) == pytest.approx(131.827875, rel=1e-12)
+    for year in (2051, END_YEAR):
+        growth = _value(series, year) / _value(series, year - 1)
+        assert growth == pytest.approx(1.03, rel=1e-12)
+    projected = [_value(series, year) for year in range(2031, 2035)]
+    assert projected == [100, 105, 112, 120]
+
+
+@st.composite
+def growth_year_cases(draw):
+    """A series whose last projected year comes zero to five years after its
+    growth years, with arbitrary growth in between."""
+    last, _, knots = draw(glide_cases())
+    later = draw(st.integers(last - 5, last))
+    values = {later - 1: draw(st.floats(1, 1e6))}
+    for year in range(later, last + 1):
+        values[year] = values[year - 1] * (1 + draw(rates))
+    return last, later, values, knots
+
+
+@given(growth_year_cases())
+@settings(max_examples=60, deadline=None)
+def test_growth_years_extension_matches_an_independent_implementation(case):
+    last, later, values, knots = case
+    series = _series(values)
+    extend_parameter_values(
+        series,
+        last,
+        END_YEAR,
+        growth_years=(later - 1, later),
+        long_range_growth=knots,
+    )
+    short = values[later] / values[later - 1] - 1
+    reference = _reference_path(values[last], last, short, knots)
+    for year, expected in reference.items():
+        assert _value(series, year) == pytest.approx(expected, rel=1e-12)
+
+
+# 9. Trustees consistency.
 
 # Table V.D1 (file page 210): 2035 average percent change in per beneficiary
 # costs, intermediate estimates.
-TRUSTEES_2035_PER_BENEFICIARY_GROWTH = {
-    "total": 0.054,
-    "part_b": 0.067,
-    "part_d": 0.031,
-}
+TRUSTEES_2035_PER_BENEFICIARY_GROWTH = {"part_b": 0.067, "part_d": 0.031}
 # Table V.B5 (file page 200): average annual growth in incurred Medicare
 # expenditures.
 TRUSTEES_INCURRED_EXPENDITURE_GROWTH = {
@@ -254,11 +319,17 @@ TRUSTEES_COMPONENTS = {
     "part_b": {(2036, 2050): (0.056, 0.004), (2051, 2100): (0.041, 0.004)},
     "part_d": {(2036, 2050): (0.039, 0.004), (2051, 2100): (0.043, 0.004)},
 }
-# Every published rate is rounded to a tenth of a point. A period's implied
-# per-enrollee growth carries two such roundings, and the glide's start rate
-# and knots carry more; 0.1 point covers them for the long periods.
+# Table V.B5 rounds expenditure growth to a tenth of a point, while Table V.B3
+# gives enrollment in thousands, so a period's implied per-enrollee growth
+# carries one such rounding. The glide's start rate and rounded knots, and
+# its straight line where the Trustees' path is not one, carry more; 0.1
+# point covers them for the long periods.
 V_B5_TOLERANCE = 0.001
-# Table II.D1's per-beneficiary growth nets two rounded components.
+# Table II.D1's per-beneficiary growth nets two components rounded to a tenth
+# of a point, and the knots apply 2051-2100's demographic mix to 2036-2050 as
+# well. That mix is -0.1 for Part B in both periods, but -0.2 for Part D in
+# 2036-2050, so the Part D glide runs 0.09 point above II.D1 there (0.12 point
+# with Table V.B3's Part D enrollment).
 II_D1_TOLERANCE = 0.0015
 
 
@@ -280,22 +351,26 @@ def test_medicare_knots_compound_cost_growth_with_the_demographic_mix():
             assert 0.035 < rate < 0.041
 
 
-@pytest.mark.parametrize("period", TRUSTEES_INCURRED_EXPENDITURE_GROWTH)
-def test_medicare_knots_reproduce_trustees_spending_per_enrollee(period):
+def _implied_spending_per_enrollee_growth(period):
+    """Table V.B5's incurred expenditure growth net of Table V.B3's enrollment
+    growth over a period."""
     start, end = period
     enrollment_growth = (
         TRUSTEES_TOTAL_ENROLLMENT[end] / TRUSTEES_TOTAL_ENROLLMENT[start - 1]
     ) ** (1 / (end - start + 1)) - 1
-    implied = (1 + TRUSTEES_INCURRED_EXPENDITURE_GROWTH[period]) / (
+    return (1 + TRUSTEES_INCURRED_EXPENDITURE_GROWTH[period]) / (
         1 + enrollment_growth
     ) - 1
-    series = _extend(
-        2035,
-        TRUSTEES_2035_PER_BENEFICIARY_GROWTH["total"],
-        MEDICARE_PER_ENROLLEE_LONG_RANGE_GROWTH,
-    )
-    assert _average_growth(series, start, end) == pytest.approx(
-        implied, abs=V_B5_TOLERANCE
+
+
+@pytest.mark.parametrize("period", TRUSTEES_INCURRED_EXPENDITURE_GROWTH)
+def test_medicare_spending_per_enrollee_reproduces_the_trustees_path(period):
+    """The wired series starts its glide in 2034, a year before the Trustees'
+    2035, from its 2031-2032 growth of 5.43 percent rather than Table V.D1's
+    5.4 percent in 2035; it misses by at most 0.05 point."""
+    start, end = period
+    assert _average_growth(PER_CAPITA_COST, start, end) == pytest.approx(
+        _implied_spending_per_enrollee_growth(period), abs=V_B5_TOLERANCE
     )
 
 
@@ -315,42 +390,100 @@ def test_part_knots_reproduce_table_ii_d1(part, knots):
         )
 
 
-def test_repeating_the_2035_rate_misses_the_trustees_path():
-    """The rule this replaces: 5.4 percent a year from 2036 runs a point and
-    more above every period's implied growth."""
-    series = _extend(2035, TRUSTEES_2035_PER_BENEFICIARY_GROWTH["total"], None)
-    for (start, end), growth in TRUSTEES_INCURRED_EXPENDITURE_GROWTH.items():
-        enrollment_growth = (
-            TRUSTEES_TOTAL_ENROLLMENT[end] / TRUSTEES_TOTAL_ENROLLMENT[start - 1]
-        ) ** (1 / (end - start + 1)) - 1
-        implied = (1 + growth) / (1 + enrollment_growth) - 1
-        assert _average_growth(series, start, end) - implied > 0.009
+def test_repeating_the_2031_2032_rate_misses_the_trustees_path():
+    """The rule this replaces: 5.43 percent a year from 2035 runs 0.9 point
+    and more above every period's implied growth."""
+    short = _value(PER_CAPITA_COST, 2032) / _value(PER_CAPITA_COST, 2031) - 1
+    for period in TRUSTEES_INCURRED_EXPENDITURE_GROWTH:
+        assert short - _implied_spending_per_enrollee_growth(period) > 0.009
 
 
-# Wiring of the CMS series in the tax-benefit system.
+def _part_b_per_beneficiary_growth(period):
+    total, beneficiaries = TRUSTEES_COMPONENTS["part_b"][period]
+    return (1 + total) / (1 + beneficiaries) - 1
 
-PARAMETERS = system.parameters
+
+def test_part_b_premium_glide_tracks_table_ii_d1():
+    """The Secretary of Health and Human Services sets the standard premium
+    to cover about 25 percent of average expenditures for beneficiaries aged
+    65 and over (42 U.S.C. 1395r(a); file page 97), so the premium glides to
+    the Part B knots. In 2051-2100 it grows within 0.02 point of
+    Table II.D1's Part B growth per beneficiary, 3.685 percent; the per
+    capita health spending knots would run 0.5 point above it. In 2036-2050
+    it runs 0.16 point below II.D1's 5.18 percent: half from its start at
+    the premium's 6.53 percent 2034-2035 growth, below Table V.D1's 6.7
+    percent Part B growth in 2035, and half from the straight-line glide
+    (test_part_knots_reproduce_table_ii_d1 starts from 6.7 percent)."""
+    late = _part_b_per_beneficiary_growth((2051, 2100))
+    assert _average_growth(PART_B_PREMIUM, 2051, END_YEAR) == pytest.approx(
+        late, abs=0.0002
+    )
+    short = _value(PART_B_PREMIUM, 2035) / _value(PART_B_PREMIUM, 2034) - 1
+    per_capita = _extend(2035, short, HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH)
+    assert _average_growth(per_capita, 2051, END_YEAR) - late > 0.005
+    early = _part_b_per_beneficiary_growth((2036, 2050))
+    assert _average_growth(PART_B_PREMIUM, 2036, 2050) == pytest.approx(
+        early, abs=0.002
+    )
+
+
+# Wiring in the tax-benefit system: (series, last projected year, growth
+# years, long-range knots).
+
+CMS = PARAMETERS.calibration.gov.hhs.cms
 WIRED_SERIES = [
-    (PARAMETERS.calibration.gov.hhs.cms.moop_per_capita, 2034),
-    (PARAMETERS.calibration.gov.hhs.cms.esi_premium_per_enrollee, 2034),
-    (PARAMETERS.calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee, 2034),
+    (CMS.moop_per_capita, 2034, None, HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH),
+    (
+        CMS.esi_premium_per_enrollee,
+        2034,
+        None,
+        HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH,
+    ),
+    (
+        CMS.direct_purchase_premium_per_enrollee,
+        2034,
+        None,
+        HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH,
+    ),
+    (PART_B_PREMIUM, 2035, None, MEDICARE_PART_B_PER_ENROLLEE_LONG_RANGE_GROWTH),
+    (PER_CAPITA_COST, 2034, (2031, 2032), MEDICARE_PER_ENROLLEE_LONG_RANGE_GROWTH),
 ]
 
 
-@pytest.mark.parametrize("parameter, last", WIRED_SERIES)
-def test_cms_series_glide_to_per_capita_health_spending(parameter, last):
-    short = _value(parameter, last) / _value(parameter, last - 1) - 1
-    reference = _reference_path(
-        _value(parameter, last),
-        last,
-        short,
-        HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH,
-    )
+@pytest.mark.parametrize(
+    "parameter, last, growth_years, knots",
+    WIRED_SERIES,
+    ids=[series.name for series, *_ in WIRED_SERIES],
+)
+def test_wired_series_glide_to_their_long_range_rates(
+    parameter, last, growth_years, knots
+):
+    earlier, later = growth_years or (last - 1, last)
+    short = _value(parameter, later) / _value(parameter, earlier) - 1
+    reference = _reference_path(_value(parameter, last), last, short, knots)
     for year, expected in reference.items():
         assert _value(parameter, year) == pytest.approx(expected, rel=1e-12)
     assert _value(parameter, 2150) == _value(parameter, END_YEAR)
-    # From 2050 the series grows at the Trustees' 4.3 to 4.1 percent.
-    for year in (2051, 2075, END_YEAR):
+    # From 2050 each year grows at a rate between the 2050 and 2100 knots.
+    low, high = sorted((knots[2050], knots[2100]))
+    for year in range(2051, END_YEAR + 1):
         growth = _value(parameter, year) / _value(parameter, year - 1) - 1
-        assert 0.041 - 1e-12 <= growth <= 0.043 + 1e-12
-    assert _average_growth(parameter, 2051, END_YEAR) == pytest.approx(0.042, abs=1e-4)
+        assert low - 1e-12 <= growth <= high + 1e-12
+    assert _average_growth(parameter, 2051, END_YEAR) == pytest.approx(
+        (low + high) / 2, abs=1e-4
+    )
+
+
+def test_every_glided_series_is_checked_here():
+    """Each series that set_all_uprating_parameters extends with
+    long_range_growth appears in WIRED_SERIES, so the differential check above
+    covers it."""
+    tree = ast.parse(inspect.getsource(uprating_extensions))
+    glided = {
+        ast.unparse(call.args[0]).removeprefix("parameters.")
+        for call in ast.walk(tree)
+        if isinstance(call, ast.Call)
+        and getattr(call.func, "id", None) == "extend_parameter_values"
+        and any(keyword.arg == "long_range_growth" for keyword in call.keywords)
+    }
+    assert glided == {series.name for series, *_ in WIRED_SERIES}

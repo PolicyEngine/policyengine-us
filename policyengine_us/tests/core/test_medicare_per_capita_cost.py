@@ -7,9 +7,10 @@ Spending covers every Part, including payments to Medicare Advantage plans and
 program administration; enrollment counts Part A and/or Part B enrollees in
 person-years; both exclude the territories (NHEA methodology paper, file pages
 15, 23 and 34). 2013-2024 are historical and 2025-2034 projected, from the
-projections prepared for the 2026 Medicare Trustees Report. 2035 to 2100 grow
-at the 2031-2032 rate, because the end of sequestration on August 31, 2033
-lifts 2033 and 2034 growth.
+projections prepared for the 2026 Medicare Trustees Report. After 2034, growth
+glides from the 2031-2032 rate, because the end of sequestration on August 31,
+2033 lifts 2033 and 2034 growth, to the Trustees' long-range growth in
+Medicare spending per enrollee (``MEDICARE_PER_ENROLLEE_LONG_RANGE_GROWTH``).
 
 ``medicare_gross_cost`` returns the series for each enrolled person,
 ``medicare_cost`` subtracts the person's Part A and gross Part B premiums, and
@@ -27,7 +28,9 @@ Invariants:
 3. Bounds and order: the series is positive and strictly increasing from 2013
    to 2100, and holds the 2100 value afterwards.
 4. Extension rule: each year from 2035 to 2100 equals the 2034 value times
-   (26,552 / 25,185) ** (year - 2034), the closed form of the iterative
+   the product of (1 + r) over the years since 2034, where r moves in a
+   straight line from g = 26,552 / 25,185 - 1 in 2034 to 1.038 * 0.999 - 1 in
+   2050 and 1.037 * 0.999 - 1 in 2100, the closed form of the iterative
    extension; the 2035 value is within 0.1% of the 2034 value grown at the
    Trustees' 2034-2035 per beneficiary growth.
 5. Calendar years: every date within a year reads the January 1 value.
@@ -37,6 +40,8 @@ Invariants:
    ``medicare_gross_cost``; a QMB enrollee's monthly ``qmb_cost_sharing`` is
    the series over 12 times the QMB rate. A person not enrolled gets zero.
 """
+
+import math
 
 import pytest
 from hypothesis import given, settings
@@ -149,18 +154,43 @@ def test_series_is_positive_and_strictly_increasing(year):
     assert 0 < _value(year) < _value(year + 1)
 
 
-@pytest.mark.parametrize("year", range(LAST_PROJECTED_YEAR + 1, END_YEAR + 1))
-def test_extension_is_the_closed_form_of_the_2031_2032_growth(year):
+def _glide_rate(year):
+    """The extension's growth rate in a year after 2034: a straight line from
+    the 2031-2032 rate in 2034 to the Trustees' long-range growth in Medicare
+    spending per enrollee in 2050 and 2100 (cost growth of 3.8 and 3.7
+    percent compounded with a -0.1 percent demographic mix)."""
     earlier, later = GROWTH_YEARS
-    growth = (
-        MEDICARE_SPENDING_PER_ENROLLEE[later]
-        / (MEDICARE_SPENDING_PER_ENROLLEE[earlier])
-    )
-    expected = MEDICARE_SPENDING_PER_ENROLLEE[LAST_PROJECTED_YEAR] * growth ** (
-        year - LAST_PROJECTED_YEAR
+    spending = MEDICARE_SPENDING_PER_ENROLLEE
+    start = spending[later] / spending[earlier] - 1
+    in_2050 = 1.038 * 0.999 - 1
+    in_2100 = 1.037 * 0.999 - 1
+    if year <= 2050:
+        share = (year - LAST_PROJECTED_YEAR) / (2050 - LAST_PROJECTED_YEAR)
+        return start + (in_2050 - start) * share
+    return in_2050 + (in_2100 - in_2050) * (year - 2050) / (END_YEAR - 2050)
+
+
+@pytest.mark.parametrize("year", range(LAST_PROJECTED_YEAR + 1, END_YEAR + 1))
+def test_extension_is_the_closed_form_of_the_glide(year):
+    expected = MEDICARE_SPENDING_PER_ENROLLEE[LAST_PROJECTED_YEAR] * math.prod(
+        1 + _glide_rate(y) for y in range(LAST_PROJECTED_YEAR + 1, year + 1)
     )
     assert _value(year) == pytest.approx(expected, rel=1e-9)
-    assert _value(year) / _value(year - 1) == pytest.approx(growth, rel=1e-12)
+    assert _value(year) / _value(year - 1) - 1 == pytest.approx(
+        _glide_rate(year), rel=1e-9
+    )
+
+
+@pytest.mark.parametrize(
+    "year, expected",
+    # Hand computed from 30,129 at a 5.42783% rate in 2034: 2035 grows
+    # 5.31961%, 2050 3.6962%, 2100 3.5963%.
+    [(2035, 31_731.74), (2050, 60_994.64), (2100, 365_393.86)],
+)
+def test_extension_levels(year, expected):
+    """The constant 2031-2032 rate gave $70,189 in 2050 and $986,356 in
+    2100."""
+    assert _value(year) == pytest.approx(expected, abs=0.01)
 
 
 @settings(deadline=None)

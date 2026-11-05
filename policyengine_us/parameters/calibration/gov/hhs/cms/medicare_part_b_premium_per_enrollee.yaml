@@ -40,6 +40,11 @@ values:
   2033-01-01: 313.6
   2034-01-01: 338.5
   2035-01-01: 360.6
-  # 2036 to 2100 grow at the 2034-2035 rate (360.6 / 338.5, 6.5% a year) and
-  # later years hold the 2100 value; see set_all_uprating_parameters in
-  # uprating_extensions.py.
+  # After 2035, growth glides from the 2034-2035 rate (360.6 / 338.5, 6.5%)
+  # to the Trustees' long-range growth in Part B spending per enrollee, 3.7%
+  # a year from 2050 (Part B cost growth of 3.8% compounded with a -0.1%
+  # demographic mix, file pages 29 and 180), because the Secretary of Health
+  # and Human Services sets the standard premium to cover about 25% of
+  # average expenditures for beneficiaries aged 65 and over (42 U.S.C.
+  # 1395r(a); file page 97). Later years hold the 2100 value; see
+  # set_all_uprating_parameters in uprating_extensions.py.
