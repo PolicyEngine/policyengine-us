@@ -1,15 +1,25 @@
 """Check published monthly CPI values and the forecast boundary."""
 
 from decimal import ROUND_HALF_UP, Decimal
+from functools import lru_cache
+from pathlib import Path
 
 import pytest
 import yaml
 
-from policyengine_us.system import system
+from policyengine_core.parameters import load_parameter_file
+
+
+PARAMETERS_PATH = Path(__file__).resolve().parents[5] / "parameters"
+
+
+@lru_cache(maxsize=4)
+def _parameter(relative_path):
+    return load_parameter_file(str(PARAMETERS_PATH / relative_path))
 
 
 def _cpi(name):
-    return getattr(system.parameters.gov.bls.cpi, name)
+    return _parameter(f"gov/bls/cpi/{name}.yaml")
 
 
 def test_cpi_w_monthly_actuals():
@@ -136,7 +146,7 @@ def test_cpi_w_third_quarter_averages_reproduce_ssa_uprating():
     2024 failed this: they put the 2024Q3 average at 307.931, not 308.729.
     """
     cpi_w = _listed_values(_cpi("cpi_w"))
-    ssa_uprating = _listed_values(system.parameters.gov.ssa.uprating)
+    ssa_uprating = _listed_values(_parameter("gov/ssa/uprating.yaml"))
     checked = []
     prior_level = None
     for instant in sorted(ssa_uprating):
