@@ -1,3 +1,17 @@
+## [2.99.0] - 2026-11-05
+
+### Added
+
+- Add Hawaii LIHEAP regular heating eligibility, the flat benefit for subsidized dwellings and private-dwelling points for fiscal year 2026; private-dwelling dollar awards stay unmodeled because the statewide value per point was not located.
+
+
+## [2.98.0] - 2026-11-05
+
+### Added
+
+- Add Delaware LIHEAP regular heating assistance for fiscal year 2026, including the income-interval benefit matrix, the subsidized-housing flat award, federal income protection and Social Security net of Part B.
+
+
 ## [2.97.0] - 2026-11-05
 
 ### Added

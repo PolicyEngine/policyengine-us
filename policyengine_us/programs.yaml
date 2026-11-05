@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, CO, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SD, RI, TN, TX, UT, VA, VT, WA, WI, WV, WY
+    coverage: AK, AR, AL, AZ, CO, DC, DE, GA, HI, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SC, SD, RI, TN, TX, UT, VA, VT, WA, WI, WV, WY
     state_implementations:
       - state: AL
         status: partial
@@ -1036,6 +1036,13 @@ programs:
         parameter_prefix: gov.states.ga.dfcs.liheap
         verified_years: "2025-2026"
         notes: FY2025-FY2026 regular heating only, with the published fuel matrix and the bundled-utility rental payment. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: HI
+        status: partial
+        name: Hawaii LIHEAP subsidized dwelling benefit
+        full_name: Hawaii Low Income Home Energy Assistance Program subsidized dwelling benefit
+        variable: hi_liheap_subsidized_amount
+        parameter_prefix: gov.states.hi.dhs.liheap
+        notes: FY2026 eligibility, the subsidized-dwelling flat benefit and private-dwelling points; no private-dwelling dollar award because its statewide value per point was not located. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: OH
         status: partial
         name: Ohio HEAP
@@ -1073,6 +1080,14 @@ programs:
         full_name: DC Low Income Home Energy Assistance Program
         variable: dc_liheap_payment
         parameter_prefix: gov.states.dc.doee.liheap
+      - state: DE
+        status: partial
+        name: Delaware LIHEAP
+        full_name: Delaware Low Income Home Energy Assistance Program
+        variable: de_liheap
+        parameter_prefix: gov.states.de.dhss.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating matrix and the subsidized-housing flat award. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: MA
         status: complete
         name: Massachusetts LIHEAP
@@ -1252,6 +1267,14 @@ programs:
         parameter_prefix: gov.states.or.ohcs.liheap
         verified_years: "2025-2027"
         notes: PY2025-PY2027 regular heating only, with the two county regions, five fuel columns and the roomer half payment. Crisis, cooling, Fuel Payment, equipment and OEAP assistance are out of scope.
+      - state: SC
+        status: partial
+        name: South Carolina LIHEAP
+        full_name: South Carolina Low Income Home Energy Assistance Program
+        variable: sc_liheap
+        parameter_prefix: gov.states.sc.oeo.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating base amount with demographic, fuel, low-income and high-burden supplements. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: SD
         status: partial
         name: South Dakota LIEAP

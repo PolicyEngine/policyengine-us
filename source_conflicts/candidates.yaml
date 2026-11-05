@@ -2131,6 +2131,78 @@ candidates:
     on joint returns (de_elderly_or_disabled_income_exclusion_joint.py) and on other returns (de_elderly_or_disabled_income_exclusion_eligible_person.py).
     The statute-first rule requires replacing age-60 eligibility if the literal boundary is confirmed; verify individual-return
     scope and intervening editions.'
+- id: us-de:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can Delaware's 60% SMI heating limit exclude a household of 20 or more whose income is below the federal
+    110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: Delaware FY2026 LIHEAP State Plan, section 2.1, p.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=9
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The plan's 60% SMI limit falls below that floor from 20 members.
+  example: Twenty-five people with $150,000 exceed the $142,995 limit but are below the $162,415 floor (2025 guideline,
+    one-year lag), so they keep the last-band gas award of $155.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/de/dhss/liheap/eligibility/de_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/de/dhss/liheap/eligibility/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10612
+  state: unreviewed
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (de_liheap_eligible.py).
+- id: us-de:liheap-plan-income-checklist
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do strike benefits, insurance disability payments and minors' unearned income count for Delaware LIHEAP as
+    the manual provides or as the FY2026 plan checklist marks them?
+  sources:
+  - kind: manual
+    citation: DEAP Policies and Procedures Manual, sections 416, 416.2, 418 and 419.3, PDF pages 33, 35 and 37
+    url: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=33
+  - kind: plan
+    citation: Delaware FY2026 LIHEAP State Plan, section 1.9, PDF pages 6-7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=6
+  - kind: guidance
+    citation: Delaware LIHEAP RFP HSS-20-036 statement of work, which lists the manual as an applicable document and asks
+      for income documentation from members aged 18 and over not attending school, PDF pages 69 and 73
+    url: https://bidcondocs.delaware.gov/HSS/HSS_20036Liheap_RFP.pdf#page=69
+  readings:
+    statute: No statute is supplied; the manual counts strike benefits and disability payments made by an insurance
+      company to the individual, and excludes the income of members under 18 except child support and Social Security.
+    other: Plan 1.9 leaves "Strike Pay" and "Insurance payments made directly to the insured" unchecked. Its only
+      person-based exclusion, "Earned income of a child under the age of 18", is also unchecked, so a child's unearned
+      income of a checked type would count.
+  example: One adult with $20,000 of insurance disability payments and natural gas heat counts $20,000 and receives $318
+    under the manual, and counts $0 and receives $1,126 under the plan.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/de/dhss/liheap/income/sources/earned.yaml
+    - policyengine_us/parameters/gov/states/de/dhss/liheap/income/sources/unearned.yaml
+    - policyengine_us/parameters/gov/states/de/dhss/liheap/income/sources/minor_unearned.yaml
+    - policyengine_us/variables/gov/states/de/dhss/liheap/income/de_liheap_countable_income_person.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10612
+  state: ruled
+  note: 'Ruled 2026-11-02 for strike pay and disability payments, and 2026-11-03 for minors: follow the manual over the
+    plan. Neither text is a statute. The statement of work lists the manual as an applicable document, and plan 1.9 is a
+    checkbox summary. On minors, manual 418 is the specific rule, and the statement of work asks for income documentation
+    from members aged 18 and over not attending school. The manual also fills what the plan does not list: trusts
+    (estate_income, 416.2) and other taxable income (miscellaneous_income, 416.1). Its sections carry 2011-2015 dates.'
 - id: us-de:snap-child-support-exclusion
   program: snap
   years:
@@ -2663,6 +2735,146 @@ candidates:
     theirs (hi_disabled_exemptions.py, compared with hi_regular_exemptions in hi_exemptions.py). The October 2026
     ruling retained the regulation and instruction reading; verify the statute and whether the guidance describes
     only the disabled spouse''s exemption.'
+- id: us-hi:liheap-bottled-gas-accounts
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does a Hawaii gas company's bottled gas customer qualify for LIHEAP on that bill, as the plan's fraud section
+    and the manuals' bill definition suggest, or does the active utility account requirement leave bottled gas out?
+  sources:
+  - kind: manual
+    citation: Hawaii draft FY2026 Policies and Procedures, definitions and sections 2.1 and 4.2, model plan packet PDF pages
+      55, 57, 58 and 65
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=55
+  - kind: manual
+    citation: Hawaii 2020 Policies and Procedures, definitions, PDF page 2
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2019/07/Policies-and-Procedures-2020.pdf#page=2
+  - kind: plan
+    citation: Hawaii FY2026 LIHEAP State Plan, item 17.9, PDF page 41
+    url: https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=41
+  readings:
+    statute: No statute is supplied; draft 2.1 requires "a place of residence with an active utility account", and draft
+      4.2 item 9 requires "an active account number for residential energy service with the specified island utility
+      company".
+    other: Plan 17.9 says "natural gas or propane is delivered but is handled by the utility company". Both manuals'
+      Current Utility Expense includes "kilowatt/therms/tank/ cylinder charges", and the draft defines Utility by the
+      company, "electricity or gas provided by a company subject to regulation by the Public Utilities Commission".
+  example: One person aged 70 in public housing with $18,000 of Social Security, propane heat and a $480 bottled gas bill
+    receives $0 under the account reading and $375 if a tank account is credited.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/hi/dhs/liheap/hi_liheap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10614
+  state: unreviewed
+  note: PE-US reads a positive gas_expense as the bill and does not read bottled_gas_expense, so a bottled gas customer is
+    not eligible. No source says outright that tank accounts are credited.
+
+- id: us-hi:liheap-categorical-routes
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does general assistance receipt waive Hawaii's LIHEAP income test, as the draft manual and matrix provide, or
+    only SNAP, SSI and TANF, as the plan and application list?
+  sources:
+  - kind: manual
+    citation: Hawaii draft FY2026 Policies and Procedures, section 2.8, model plan packet PDF page 60
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=60
+  - kind: guidance
+    citation: Hawaii FY2026 H-HEAP benefit matrix, PDF page 1
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=1
+  - kind: plan
+    citation: Hawaii FY2026 LIHEAP State Plan, item 1.4, PDF page 5
+    url: https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=5
+  - kind: form
+    citation: 2026 H-HEAP application, question 12, PDF page 3
+    url: https://humanservices.hawaii.gov/bessd/files/2026/06/2026-Application-Packet.pdf#page=3
+  readings:
+    statute: No statute is supplied; draft 2.8 and the matrix treat receipt of SNAP, TANF, general assistance, AABD or SSI
+      as categorical.
+    other: Plan 1.4 and application question 12 name only SNAP, SSI and TANF.
+  example: One person in public housing with $100,000 of countable income, $1,200 of general assistance and a gas bill
+    receives $375 under the manual and $0 under the plan.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/hi/dhs/liheap/hi_liheap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10614
+  state: ruled
+  note: 'Ruled 2026-11-02: follow the manual and matrix. AABD has no input. Income points for a categorical household follow
+    matrix page 3 and draft page 69 (actual total income) over the categorical chart on matrix page 1.'
+- id: us-hi:liheap-income-limit-comparison
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Hawaii LIHEAP income exactly at the limit qualify?
+  sources:
+  - kind: manual
+    citation: Hawaii draft FY2026 Policies and Procedures, section 5.5, model plan packet PDF page 67
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=67
+  - kind: manual
+    citation: Hawaii draft FY2026 Policies and Procedures, section 2.9, model plan packet PDF page 60
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=60
+  - kind: guidance
+    citation: Hawaii FY2026 H-HEAP benefit matrix, PDF page 3
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=3
+  readings:
+    statute: No statute is supplied; draft 5.5 reads "equal to or less than".
+    other: Draft 2.9 reads "less than" and the matrix reads "below".
+  example: One person in public housing with $41,941 of countable income and a gas bill receives $375 under draft 5.5 and
+    $0 under draft 2.9.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/hi/dhs/liheap/hi_liheap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10614
+  state: ruled
+  note: 'Ruled 2026-11-02: the comparison is inclusive, following the calculation section.'
+- id: us-hi:liheap-utilities-in-rent
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is a Hawaii household whose gas is included in its rent eligible for LIHEAP, as the draft manual and application
+    provide, or ineligible, as the 2020 manual provides?
+  sources:
+  - kind: manual
+    citation: Hawaii draft FY2026 Policies and Procedures, sections 2.1 and 4.2, model plan packet PDF pages 58 and 65
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=58
+  - kind: form
+    citation: 2026 H-HEAP application, questions 23 and 24, PDF page 4
+    url: https://humanservices.hawaii.gov/bessd/files/2026/06/2026-Application-Packet.pdf#page=4
+  - kind: manual
+    citation: Hawaii 2020 Policies and Procedures, ineligible households, PDF page 9
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2019/07/Policies-and-Procedures-2020.pdf#page=9
+  - kind: plan
+    citation: Hawaii FY2026 LIHEAP State Plan, item 2.3, PDF page 9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=9
+  readings:
+    statute: No statute is supplied; draft 2.1 accepts "the household's prorated share of the utility bill if rent includes
+      utilities", and application questions 23 and 24 ask for that share.
+    other: The 2020 manual lists "Households where all utilities are included in the rent" as ineligible, and plan 2.3
+      answers No for differing policies for renters with utilities in the rent.
+  example: One person aged 70 in public housing with $18,000 of Social Security and gas in the rent receives $375 under the
+    draft manual and $0 under the 2020 manual.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/hi/dhs/liheap/hi_liheap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10614
+  state: ruled
+  note: 'Ruled 2026-11-02: follow the draft manual and application. The size of the share has no input.'
 - id: us-hi:snap-abawd-implementation-date
   program: snap
   years:
@@ -8805,6 +9017,223 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10398
   state: ruled
   note: RR22-11 agrees with the statute. PR 10398 removes the 2021 reduction and the parameter that toggled it.
+
+- id: us-sc:liheap-energy-burden-test
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is South Carolina's high energy burden supplement paid when energy costs equal 20% of income, as the FY2026
+    plan reads, or only when the current bill is higher than 20% of income, as the 2024 guide and the matrix read?
+  sources:
+  - kind: plan
+    citation: South Carolina FY2026 LIHEAP State Plan, item 2.5, p.9
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=9
+  - kind: manual
+    citation: South Carolina 2024 LIHEAP Administrative Guide, plan file PDF page 538
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=538
+  - kind: manual
+    citation: South Carolina draft 2026 LIHEAP Administrative Guide (plan attachment), plan file PDF page 312
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=312
+  - kind: guidance
+    citation: South Carolina 2026 Benefit Matrix, item 5, p.2
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/SC_BenefitMatrix_2026.pdf#page=2
+  readings:
+    statute: No statute is supplied; plan item 2.5 pays the supplement at "20% or more of income used for utilities".
+    other: The 2024 and draft 2026 guides and the matrix test the current month's bill and demonstrate a burden when "the
+      current energy bill is higher than the PRODUCT".
+  example: One person with $20,000 of income and $4,000 of gas bills receives $450 under the plan and $275 under the
+    guide's "higher than".
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap.py
+    - policyengine_us/parameters/gov/states/sc/oeo/liheap/payment/burden_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10616
+  state: unreviewed
+  note: PE-US follows the plan's inclusive test, with annual bills against annual income.
+
+- id: us-sc:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can South Carolina's 60% SMI heating limit exclude a household of 15 or more whose income is below the
+    federal 110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: South Carolina FY2026 LIHEAP State Plan, income eligibility, p.8
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The plan's 60% SMI limit falls below that floor from 15 members.
+  example: Twenty-five people with $150,000 exceed the $116,282 limit but are below the $162,415 floor (2025 guideline,
+    one-year lag), so they keep the $200 base award.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/sc/oeo/liheap/eligibility/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10616
+  state: unreviewed
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (sc_liheap_eligible.py).
+- id: us-sc:liheap-low-income-tier-base
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is South Carolina's $175 low-income tier 30% of the full size-adjusted state median income, or 30% of the 60%
+    income limit that OEO's guides call the SMI?
+  sources:
+  - kind: plan
+    citation: South Carolina FY2026 LIHEAP State Plan, items 2.3 and 2.5, pp.8-9
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8
+  - kind: manual
+    citation: South Carolina draft 2026 LIHEAP Administrative Guide (plan attachment), plan file PDF pages 311, 312 and 338
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=311
+  - kind: manual
+    citation: South Carolina 2024 LIHEAP Administrative Guide, plan file PDF page 538
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=538
+  - kind: guidance
+    citation: South Carolina 2026 Benefit Matrix, pp.1-2
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/SC_BenefitMatrix_2026.pdf#page=1
+  readings:
+    statute: No statute is supplied; plan item 2.3 gives $175 "at or below 30% of the State's Median Income guidelines" and
+      item 2.5 "household income 30% of the SMI or less".
+    other: 'The draft guide says "must be at or below the 30% SMI. Note: SMI is 60% of the State''s Median Income" and "30
+      of 60 percent of the SMI", which is 18% of the state median income. Its page 338 definition compares the tier "with
+      the same 30% variance when compared to the State''s 60% Median Income guidelines".'
+  example: A person aged 70 with $12,000 of income and a $1,000 electric bill receives $275 with the 60% limit as the base
+    (limit $9,597.90) and $450 with the full SMI as the base (limit $15,996.55).
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap.py
+    - policyengine_us/parameters/gov/states/sc/oeo/liheap/payment/low_income_limit_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10616
+  state: ruled
+  note: 'Ruled 2026-11-03: use 30% of the 60% limit. The plan''s words allow either base, and OEO''s own texts define
+    the SMI it means here, so the agency breaks the tie. The 2024 guide and the matrix use 70% of the same limit, a tier
+    the FY2026 plan replaced. The guide with the 30% text is a draft, and OEO has not been asked.'
+
+- id: us-sc:liheap-minor-income
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does South Carolina LIHEAP count only a minor's Social Security or disability income, as the 2024 guide
+    provides, the unearned income plan item 1.9 checks, or no income of members under 18, as the OEO page reads?
+  sources:
+  - kind: manual
+    citation: South Carolina 2024 LIHEAP Administrative Guide, Income from Minors, plan file PDF page 529
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=529
+  - kind: manual
+    citation: South Carolina draft 2026 LIHEAP Administrative Guide (plan attachment), plan file PDF page 304
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=304
+  - kind: plan
+    citation: South Carolina FY2026 LIHEAP State Plan, item 1.9, pp.5-6
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=5
+  - kind: guidance
+    citation: South Carolina OEO LIHEAP page
+    url: https://oeo.sc.gov/managedsites/prd/oeo/liheap.html
+  readings:
+    statute: No statute is supplied; the guide says "Income is not calculated for persons under age 18" but "If household
+      members under 18 receive Social Security or Disability income, the gross amount must be included".
+    other: Plan item 1.9 checks Social Security, SSI, pensions, child support and VA benefits and leaves only "Earned income
+      of a child under the age of 18" unchecked. The OEO page asks for "Gross 30-day income for all household members 18
+      and older".
+  example: A parent aged 35 with $36,000 of wages and a 10-year-old with $8,000 of veterans benefits count $36,000 and
+    receive $200 with a $1,000 electric bill under the guide, and count $44,000 and receive $0 under plan item 1.9.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_countable_income.py
+    - policyengine_us/parameters/gov/states/sc/oeo/liheap/income/adult_min_age.yaml
+    - policyengine_us/parameters/gov/states/sc/oeo/liheap/income/minor_unearned_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10616
+  state: ruled
+  note: 'Ruled 2026-11-02: follow the 2024 guide, the edition in force. Plan 1.9 is a checklist of income types, while
+    the guide''s "Income from Minors" section is the specific rule for members under 18. The draft 2026 guide repeats it,
+    and the OEO page asks for income only from members 18 and older. PE-US reads SSI as a child''s disability income and
+    uses disability_benefits for other disability income.'
+
+- id: us-sc:liheap-mixed-status-household
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do South Carolina's itemized supplements look only at eligible members, with the award prorated, and are
+    state-placed foster children left out of the household, as the 2024 guide provides where the FY2026 plan is silent?
+  sources:
+  - kind: manual
+    citation: South Carolina 2024 LIHEAP Administrative Guide, plan file PDF pages 529, 537 and 546
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=529
+  - kind: plan
+    citation: South Carolina FY2026 LIHEAP State Plan, items 2.3 and 2.5, pp.8-9
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8
+  readings:
+    statute: No statute is supplied; the guide says to "only consider eligible household members" for the itemized
+      benefits and then "apply the Direct Assistance Prorated Calculation".
+    other: The plan's supplements apply if "the household/a member of the household" qualifies, and it states no proration.
+  example: A nonqualified parent with $30,000 of income and a qualified child with gas heat receive (200 + 50 + 75) / 2
+    members x 1 eligible = $162.50 under the guide, and $325 with no proration.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap.py
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_household_size.py
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10616
+  state: ruled
+  note: 'Ruled 2026-11-02: follow the 2024 guide. The veteran supplement also looks only at eligible members, although
+    the guide''s list does not name veterans, and the prorated award keeps its cents.'
+
+- id: us-sc:liheap-plan-income-checklist
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does South Carolina LIHEAP count all income, as the 2024 guide opens, or only the income forms plan item 1.9
+    checks?
+  sources:
+  - kind: plan
+    citation: South Carolina FY2026 LIHEAP State Plan, item 1.9, pp.5-6
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=5
+  - kind: manual
+    citation: South Carolina 2024 LIHEAP Administrative Guide, How to Calculate Income, plan file PDF page 526
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=526
+  readings:
+    statute: No statute is supplied; plan item 1.9 leaves interest and dividends unchecked, has no box for workers'
+      compensation or employment disability benefits, and leaves its Other box unchecked.
+    other: The guide says "When calculating total household income, include all income".
+  example: One person with a $1,000 electric bill, $20,000 of wages and $15,000 of interest counts $20,000 and receives
+    $200 under the plan, and counts $35,000 and receives $0 under the guide.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_countable_income.py
+    - policyengine_us/parameters/gov/states/sc/oeo/liheap/income/earned_sources.yaml
+    - policyengine_us/parameters/gov/states/sc/oeo/liheap/income/unearned_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10616
+  state: ruled
+  note: 'Ruled 2026-11-02: income other than minors'' income follows the plan.'
+
 - id: us-sd:liheap-2025-published-income-limit
   program: liheap
   years:
