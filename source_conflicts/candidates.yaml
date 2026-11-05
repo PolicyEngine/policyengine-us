@@ -1929,6 +1929,8 @@ candidates:
     - policyengine_us/variables/gov/states/ct/dss/ceap/payment/ct_ceap_benefit_level.py
     - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
     - policyengine_us/parameters/gov/states/ct/dss/ceap/payment/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10611
   state: unreviewed
   note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (ct_ceap_income_eligible.py). The
     benefit matrix note's Level 3 reaches only categorical households the income test would deny. A categorical
@@ -1940,8 +1942,8 @@ candidates:
     from: 2026
     to: 2027
     type: federal-fiscal
-  question: Do SSI, TFA, general assistance, the State Supplement and a minor's earnings count for CEAP, as the allocation
-    plans' income definition can be read, or stay out, as the FY2026 plan's section 1.9 check boxes leave them?
+  question: Do SSI, TFA, general assistance and a minor's earnings count for CEAP, as the allocation plans' income
+    definition can be read, or stay out, as the FY2026 plan's section 1.9 check boxes leave them?
   sources:
   - kind: plan
     citation: Connecticut FY2026 LIHEAP State Plan, section 1.9, pp.6-7
@@ -1950,8 +1952,8 @@ candidates:
     citation: Connecticut approved FFY2027 LIHEAP Allocation Plan, section III, p.5
     url: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5
   readings:
-    statute: No statute is supplied; plan 1.9 leaves SSI, General Assistance, TANF, "Other" and "Earned income of a child
-      under the age of 18" unchecked and does not name the State Supplement.
+    plan: Plan 1.9 leaves SSI, General Assistance, TANF, "Other" and "Earned income of a child under the age of 18"
+      unchecked.
     other: Section III of both allocation plans counts "Gross salaries/wages" with no age exception and "governmental
       assistance not otherwise excluded as income".
   example: A parent aged 40 with wages of $20,000 and a child aged 17 with wages of $8,000 is at 95% of the 2025
@@ -1962,9 +1964,41 @@ candidates:
     - policyengine_us/parameters/gov/states/ct/dss/ceap/income/sources/earned.yaml
     - policyengine_us/parameters/gov/states/ct/dss/ceap/income/sources/unearned.yaml
     - policyengine_us/variables/gov/states/ct/dss/ceap/income/ct_ceap_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10611
   state: unreviewed
-  note: PE-US follows plan 1.9, the specific list, and carries it into FY2027, which has no model plan. The State
-    Supplement stays out by the 2026-11-02 ruling; the other items have no ruling.
+  note: PE-US follows plan 1.9, the specific list, and carries it into FY2027, which has no model plan.
+- id: us-ct:liheap-state-supplement-income
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does the Connecticut State Supplement count as CEAP income under the allocation plans' governmental-assistance
+    clause, or stay out, with the FY2026 plan's section 1.9 "Other" box unchecked?
+  sources:
+  - kind: plan
+    citation: Connecticut FY2026 LIHEAP State Plan, section 1.9, pp.6-7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/CT_Plan_2026.pdf#page=6
+  - kind: plan
+    citation: Connecticut approved FFY2027 LIHEAP Allocation Plan, section III, p.5
+    url: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5
+  readings:
+    plan: Plan 1.9 leaves General Assistance, SSI, TANF and "Other" unchecked and does not name the State Supplement.
+    other: Section III of both allocation plans counts "governmental assistance not otherwise excluded as income" and
+      does not name the State Supplement either.
+  example: A disabled person aged 50 with a pension of $18,000, a $2,400 State Supplement and a $1,000 gas bill is at 115%
+    of the 2025 guideline, Level 1 and $645, with the supplement out, and at 130%, Level 2 and $495, with it counted.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/ct/dss/ceap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/ct/dss/ceap/income/ct_ceap_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10611
+  state: ruled
+  note: 'Ruled 2026-11-02 by the PR author in the pre-filing review of this PR, item CT-S3: keep the State Supplement out
+    of countable income. Neither document names it, and plan 1.9 is the specific list.'
 - id: us-dc:eitc-no-tin-child-schedule-before-2023
   program: income-tax
   years:
