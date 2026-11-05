@@ -90,7 +90,15 @@
         members: [person1, person2]
         state_code: MA
   output:
-    ma_eaedc: 0
+    # The unit is TAFDC-eligible ($7,600 of applicable income against the
+    # $7,725 standard) and EAEDC's own test fails, but the annual EAEDC figure
+    # is no longer zero: with the work-related expense deduction counted once
+    # (106 CMR 704.270(A)) rather than for both members, TAFDC is smaller in
+    # the months after the six-month 100% disregard, and in those months it no
+    # longer exceeds EAEDC, so `ma_tafdc_exceeds_eaedc` stops zeroing EAEDC
+    # there. Before that fix the doubled deduction kept TAFDC above EAEDC all
+    # year.
+    ma_eaedc: 691.07
     ma_eaedc_eligible: false
     ma_eaedc_standard_assistance: 6_264
     ma_eaedc_dependent_care_deduction: 2_100
