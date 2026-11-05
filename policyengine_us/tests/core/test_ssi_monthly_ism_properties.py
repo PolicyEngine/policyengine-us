@@ -1,47 +1,232 @@
-"""Invariants of the monthly SSI in-kind support and maintenance chain.
+"""Check monthly SSI inputs, payment timing, and compatibility with main.
 
-The ISM chain and SSI countable income are computed per month so that the
-food exclusion that took effect September 30, 2024 (89 FR 21199) reaches only
-the months it applies to. Everything else is supplied for the whole year, so
-nothing else may vary between months. One simulation holds randomized aged
-or disabled people in several states with a supplement, with and without
-shelter or food support; each check says which months it compares:
+One Simulation holds randomized single adults plus couples and children who
+share parental resources. Independent January 2026 SSI inputs check every
+modeled state supplement outside the 2024 food change. Separate checks compare
+all months and distinguish the income month from the payment month.
 
-1. In 2023 and 2025 every month gives the same countable income, ISM, SSI
-   and state supplement, and the annual countable income is twelve times
-   one month: annual inputs reach each month as one-twelfth.
-2. In 2024 the same holds for everyone without food-only support. With
-   food-only support, January to September match one another, October to
-   December match one another and count no ISM, and dropping the food ISM
-   never lowers SSI.
-3. An annual countable income input reaches every month as one-twelfth.
-4. For an eligible individual with no other income, a month's countable
-   income is that month's ISM less the $20 general exclusion.
-
-Comparisons against the pre-monthly model on randomized households are
-reported on the pull request; they cannot run here, where only one version
-of the model exists.
+Python exercises the Simulation API's annual-to-monthly input conversion and
+vectorized comparisons across periods and entities. YAML supplies individual
+policy examples. This file runs in the existing Rest/core Python group.
 """
+
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
+from hypothesis import example, given, settings
+from hypothesis import strategies as st
 
+from policyengine_core.periods import period as make_period
 from policyengine_us import Simulation
+from policyengine_us.system import system
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income.ism.ssi_in_kind_support_and_maintenance import (
+    ssi_in_kind_support_and_maintenance,
+)
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income.ism.ssi_pmv_amount import (
+    ssi_pmv_amount,
+)
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income.ism.ssi_pmv_applies import (
+    ssi_pmv_applies,
+)
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income.ssi_countable_income import (
+    ssi_countable_income,
+)
+from policyengine_us.variables.gov.ssa.ssi.eligibility.status.ssi_federal_living_arrangement import (
+    SSIFederalLivingArrangement,
+)
+from policyengine_us.variables.gov.ssa.ssi.ssi_amount_if_eligible import (
+    ssi_amount_if_eligible,
+)
+from policyengine_us.variables.gov.ssa.ssi.ssi_if_takes_up import ssi_if_takes_up
+from policyengine_us.variables.gov.ssa.ssi.uncapped_ssi import uncapped_ssi
 
 YEARS = (2023, 2024, 2025)
 STATES = ("CA", "CO", "FL", "IN", "KY", "LA", "MO", "MT", "NY", "OK")
-SUPPLEMENTS = (
-    "co_state_supplement",
-    "fl_oss",
-    "in_ssp",
-    "ky_ssp",
-    "la_oss",
-    "mo_ssp",
-    "mt_ssp",
-    "ny_ssp",
-    "ok_ssp",
-)
+SUPPLEMENTS = {
+    "AK": "ak_ssp",
+    "AL": "al_ssp",
+    "CA": "ca_state_supplement",
+    "CO": "co_state_supplement",
+    "CT": "ct_ssp",
+    "DC": "dc_ossp",
+    "DE": "de_ssp",
+    "FL": "fl_oss",
+    "GA": "ga_ssp",
+    "HI": "hi_oss",
+    "IA": "ia_ssa",
+    "ID": "id_aabd",
+    "IN": "in_ssp",
+    "KS": "ks_sspp",
+    "KY": "ky_ssp",
+    "LA": "la_oss",
+    "MA": "ma_state_supplement",
+    "MD": "md_paa",
+    "ME": "me_ssp",
+    "MI": "mi_ssp",
+    "MN": "mn_msa",
+    "MO": "mo_ssp",
+    "MT": "mt_ssp",
+    "NC": "nc_sa",
+    "NE": "ne_aabd",
+    "NH": "nh_ssp",
+    "NJ": "nj_ssp",
+    "NM": "nm_ssi_state_supplement",
+    "NV": "nv_oss",
+    "NY": "ny_ssp",
+    "OH": "oh_rss",
+    "OK": "ok_ssp",
+    "OR": "or_ssp",
+    "PA": "pa_ssp",
+    "RI": "ri_ssp",
+    "SC": "sc_ssi_state_supplement",
+    "SD": "sd_ssp",
+    "TX": "tx_ssi_state_supplement",
+    "UT": "ut_ssp",
+    "VA": "va_ag",
+    "VT": "vt_aabd",
+    "WA": "wa_ssp",
+    "WI": "wi_ssp",
+    "WY": "wy_ssp",
+}
 N = 60
+
+
+def _add_reference_households(situation):
+    settings = {
+        "AL": {"al_ssp_payment_category": "IHC_LEVEL_A", "al_ssp_eligible": True},
+        "CO": {"age": 40, "is_disabled": True, "meets_ssi_disability_criteria": True},
+        "FL": {"fl_oss_living_arrangement": "ALF", "fl_oss_eligible": True},
+        "HI": {"hi_oss_living_arrangement": "COMMUNITY_CARE"},
+        "IN": {"in_ssp_living_arrangement": "LICENSED_RESIDENTIAL"},
+        "KY": {"ky_ssp_category": "PCH"},
+        "LA": {
+            "is_in_medicaid_facility": True,
+            "ssi_lives_in_medical_treatment_facility": True,
+            "ssi_medicaid_pays_majority_of_care": True,
+            "social_security": 0,
+        },
+        "MD": {"md_paa_living_arrangement": "CARE_HOME_LEVEL_A"},
+        "MO": {"mo_ssp_living_arrangement": "RCF_LEVEL_I"},
+        "MT": {"mt_ssp_payment_category": "ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME"},
+        "NM": {"is_in_adult_residential_care": True},
+        "TX": {
+            "is_in_medicaid_facility": True,
+            "ssi_lives_in_medical_treatment_facility": True,
+            "ssi_medicaid_pays_majority_of_care": True,
+            "social_security": 0,
+        },
+    }
+    rows = {}
+    for state in SUPPLEMENTS:
+        kind = (
+            "couple"
+            if state in ("AK", "CA", "MA", "NJ")
+            else "children"
+            if state in ("NY", "OK")
+            else "single"
+        )
+        roles = (
+            ("parent", "child", "sibling")
+            if kind == "children"
+            else (("head", "spouse") if kind == "couple" else ("head",))
+        )
+        members = [f"reference_{state}_{role}" for role in roles]
+        positions = []
+        for i, (role, member) in enumerate(zip(roles, members)):
+            child = role in ("child", "sibling")
+            parent = role == "parent"
+            values = {
+                "age": 10 + i if child else 40 if parent else 70,
+                "is_disabled": child,
+                "meets_ssi_disability_criteria": child,
+                "is_parent": parent,
+                "is_tax_unit_head": i == 0,
+                "is_tax_unit_spouse": role == "spouse",
+                "is_tax_unit_dependent": child,
+                "is_household_head": i == 0,
+                "social_security": 0 if parent else 2_400 if child else 7_200,
+                "ssi_countable_resources": 3_000 if parent else 0,
+                **settings.get(state, {}),
+            }
+            positions.append(len(situation["people"]))
+            situation["people"][member] = {
+                name: {"2026": value} for name, value in values.items()
+            }
+        group_position = len(situation["spm_units"])
+        for group in ("households", "tax_units", "families", "spm_units"):
+            situation[group][f"reference_{state}"] = {"members": members}
+        situation["households"][f"reference_{state}"]["state_code"] = {"2026": state}
+        if kind == "children":
+            for member in members:
+                situation["marital_units"][member] = {"members": [member]}
+        else:
+            situation["marital_units"][f"reference_{state}"] = {"members": members}
+        rows[state] = {"people": positions, "spm_unit": [group_position], "kind": kind}
+    return rows
+
+
+def _supplement_values(sim, rows):
+    values = {}
+    federal = sim.calculate("ssi", "2026-01")
+    for state, name in SUPPLEMENTS.items():
+        supplement = sim.calculate(name, "2026-01")
+        entity = sim.tax_benefit_system.variables[name].entity.key
+        indices = rows[state]["people" if entity == "person" else entity]
+        values[state] = {
+            "ssi": federal[rows[state]["people"]].tolist(),
+            "supplement": supplement[indices].tolist(),
+        }
+    return values
+
+
+def _independent_reference_values(sim, rows):
+    """Check January 2026 against independent, constant monthly SSI inputs.
+
+    Main e53b426082cd8953b30d8ede8b944f2d5f7246be defines countable income
+    annually. The reference supplies annual FLOW inputs, so Core divides
+    them across months. State formulas keep their native period reads.
+    This reference covers these January 2026 households; it supplies no
+    historical main output snapshot.
+    """
+    count = max(index for row in rows.values() for index in row["people"]) + 1
+    countable, federal, deemed = (np.zeros(count) for _ in range(3))
+    for state, row in rows.items():
+        indices = row["people"]
+        if row["kind"] == "couple":
+            # (14,400 / 12 - 20) / 2 = 590 countable per spouse;
+            # 1,491 / 2 - 590 = 155.50 federal SSI per spouse.
+            countable[indices] = 590
+            federal[indices] = 155.5
+        elif row["kind"] == "children":
+            # Each child counts 2,400 / 12 - 20 = 180 and receives
+            # 994 - 180 = 814. The non-ABD parent receives no SSI.
+            countable[indices[1:]] = 180
+            federal[indices[1:]] = 814
+            deemed[indices[1:]] = 500
+        elif state in ("LA", "TX"):
+            federal[indices] = 30
+        else:
+            # 7,200 / 12 - 20 = 580; federal SSI = 994 - 580 = 414.
+            countable[indices] = 580
+            federal[indices] = 414
+
+    branch_name = "ssi_independent_monthly_reference"
+    reference = sim.get_branch(branch_name)
+    try:
+        reference.set_input("ssi_countable_income", "2026", countable * 12)
+        reference.set_input("ssi", "2026", federal * 12)
+        reference.set_input(
+            "ssi_in_kind_support_and_maintenance", "2026", np.zeros(count)
+        )
+        # Deemed resources use STOCK inputs; each month retains the $500
+        # share of the parent's (3,000 - 2,000) / 2 excess.
+        reference.set_input(
+            "ssi_resources_deemed_from_ineligible_parent", "2026", deemed
+        )
+        return _supplement_values(reference, rows)
+    finally:
+        sim.branches.pop(branch_name, None)
 
 
 def _households(seed=2024):
@@ -58,6 +243,7 @@ def _households(seed=2024):
             "ssi_receives_food_from_others": food,
             "ssi_receives_outside_shelter_support": shelter,
         }
+        person["meets_ssi_disability_criteria"] = person["is_disabled"]
         if shelter and rng.random() < 0.3:
             person["ssi_shelter_support_value"] = float(rng.choice([1_200, 3_000]))
         people[f"p{i}"] = {
@@ -84,6 +270,7 @@ def _households(seed=2024):
 @pytest.fixture(scope="module")
 def results():
     situation, food_only, no_income = _households()
+    reference_rows = _add_reference_households(situation)
     sim = Simulation(situation=situation)
     out = {}
     for year in YEARS:
@@ -99,9 +286,17 @@ def results():
                     "is_ssi_eligible_individual",
                 )
             }
-            values["supplement"] = sum(sim.calculate(s, period) for s in SUPPLEMENTS)
+            for state in STATES:
+                name = SUPPLEMENTS[state]
+                values[name] = sim.calculate(name, period)
             out[period] = values
         out[year] = sim.calculate("ssi_countable_income", year)
+    # Build the reference before caching any January 2026 state payments.
+    out["independent_2026"] = _independent_reference_values(sim, reference_rows)
+    out["actual_2026"] = _supplement_values(sim, reference_rows)
+    out["reference_rows"] = reference_rows
+    for name in ("ssi_countable_income", "ssi_resources_deemed_from_ineligible_parent"):
+        out[name] = sim.calculate(name, "2026-01")
     return out, food_only, no_income
 
 
@@ -121,7 +316,7 @@ def test_months_match_when_nothing_changes_within_the_year(results, year):
     for name in ("ssi_countable_income", "ssi_in_kind_support_and_maintenance"):
         values = _months(out, year, name)
         _assert_constant(values)
-    for name in ("ssi", "supplement"):
+    for name in ("ssi", *(SUPPLEMENTS[state] for state in STATES)):
         values = _months(out, year, name)
         _assert_constant(values)
     np.testing.assert_allclose(
@@ -135,11 +330,15 @@ def test_months_match_when_nothing_changes_within_the_year(results, year):
     assert np.all(pmv < 600)
 
 
-def test_2024_changes_only_food_only_support_from_october(results):
+def test_2024_food_income_changes_payments_from_december(results):
     out, food_only, _ = results
-    before = range(1, 10)
-    after = range(10, 13)
-    for name in ("ssi_countable_income", "ssi", "supplement"):
+    before = range(1, 12)
+    after = [12]
+    for name in (
+        "ssi_countable_income",
+        "ssi",
+        *(SUPPLEMENTS[state] for state in STATES),
+    ):
         values = _months(out, 2024, name)
         others = values[:, ~food_only]
         _assert_constant(others)
@@ -149,9 +348,198 @@ def test_2024_changes_only_food_only_support_from_october(results):
         _assert_constant(late)
     late_ism = _months(out, 2024, "ssi_in_kind_support_and_maintenance", after)
     assert not late_ism[:, food_only].any()
-    ssi_sep = _months(out, 2024, "ssi", [9])[0]
-    ssi_oct = _months(out, 2024, "ssi", [10])[0]
-    assert np.all(ssi_oct >= ssi_sep - 1e-6)
+    ssi_nov = _months(out, 2024, "ssi", [11])[0]
+    ssi_dec = _months(out, 2024, "ssi", [12])[0]
+    assert np.all(ssi_dec >= ssi_nov - 1e-6)
+
+
+def test_continuing_food_support_counts_eleven_income_months(results):
+    out, food_only, no_income = results
+    eligible = _months(out, 2024, "is_ssi_eligible_individual")[0].astype(bool)
+    checked = food_only & no_income & eligible
+    assert checked.any()
+    # January-November payments use income months before the September 30
+    # exclusion. ISM = 11 * (943 / 3 + 20) = 3,677.666667 annually.
+    ism = _months(out, 2024, "ssi_in_kind_support_and_maintenance")[:, checked]
+    np.testing.assert_allclose(ism.sum(axis=0), 11 * (943 / 3 + 20), atol=1e-3)
+    np.testing.assert_allclose(ism[:11], 943 / 3 + 20, atol=1e-4)
+    np.testing.assert_array_equal(ism[11], 0)
+    # October and November pay 943 - 943 / 3 = 628.666667, rounded to
+    # $628.67. December pays $943 after excluding October food income.
+    for month, expected in ((10, 628.67), (11, 628.67), (12, 943)):
+        np.testing.assert_allclose(
+            _months(out, 2024, "ssi", [month])[0, checked], expected, atol=0.01
+        )
+
+
+@pytest.mark.parametrize("state", SUPPLEMENTS)
+def test_ssi_and_each_supplement_match_independent_reference(results, state):
+    out, _, _ = results
+    for name in ("ssi", "supplement"):
+        np.testing.assert_allclose(
+            out["actual_2026"][state][name],
+            out["independent_2026"][state][name],
+            atol=1e-4,
+            rtol=1e-6,
+            err_msg=f"{state} {name} differs from independent SSI inputs",
+        )
+
+
+def test_reference_households_share_parental_resources_and_couple_income(results):
+    out, _, _ = results
+    for state in ("NY", "OK"):
+        rows = out["reference_rows"][state]["people"]
+        # A $3,000 parent resource pool exceeds the $2,000 allowance by
+        # $1,000; each of two eligible children receives $500.
+        np.testing.assert_allclose(
+            out["ssi_resources_deemed_from_ineligible_parent"][rows], [0, 500, 500]
+        )
+    for state in ("AK", "CA", "MA", "NJ"):
+        rows = out["reference_rows"][state]["people"]
+        # The couple receives $14,400 / 12 = $1,200 monthly unearned
+        # income. After the $20 exclusion, each spouse counts $590.
+        np.testing.assert_allclose(out["ssi_countable_income"][rows], [590, 590])
+
+
+@pytest.mark.parametrize(
+    "payment_month,income_month",
+    [
+        ("2024-01", "2023-11"),
+        ("2024-02", "2023-12"),
+        ("2025-01", "2024-11"),
+        ("2025-02", "2024-12"),
+    ],
+)
+def test_payment_month_uses_second_prior_income_month(payment_month, income_month):
+    assert str(make_period(payment_month).offset(-2, "month")) == income_month
+
+
+@settings(max_examples=150, deadline=None, database=None, derandomize=True)
+@given(
+    year=st.sampled_from(YEARS),
+    month=st.integers(1, 12),
+    food=st.booleans(),
+    shelter=st.booleans(),
+    late_food=st.booleans(),
+)
+@example(year=2024, month=1, food=True, shelter=False, late_food=False)
+@example(year=2024, month=2, food=True, shelter=False, late_food=False)
+@example(year=2025, month=1, food=True, shelter=False, late_food=False)
+@example(year=2025, month=2, food=True, shelter=False, late_food=False)
+@example(year=2024, month=11, food=True, shelter=False, late_food=True)
+def test_pmv_reads_income_month_dates_and_payment_month_support(
+    year, month, food, shelter, late_food
+):
+    payment = make_period(f"{year}-{month:02d}")
+    income_year = year - (month <= 2)
+    income_month = (month - 3) % 12 + 1
+    income = make_period(f"{income_year}-{income_month:02d}")
+    person_reads, parameter_reads = {}, []
+
+    def person(name, period):
+        person_reads[name] = str(period)
+        if name == "ssi_federal_living_arrangement":
+            return SSIFederalLivingArrangement.OWN_HOUSEHOLD
+        if name == "ssi_food_from_others_only_on_or_after_food_exclusion":
+            value = late_food and str(period) == "2024-09"
+        else:
+            # A one-year household has no earlier-year support inputs.
+            values = {
+                "ssi_receives_food_from_others": food,
+                "ssi_receives_outside_shelter_support": shelter,
+                "ssi_receives_shelter_from_others_in_household": False,
+            }
+            value = values[name] if period == payment else False
+        return np.array([value])
+
+    food_parameter = system.parameters.gov.ssa.ssi.income.ism.food_counts
+
+    def parameters(period):
+        parameter_reads.append(str(period))
+        instant = getattr(period, "start", period)
+        return SimpleNamespace(
+            gov=SimpleNamespace(
+                ssa=SimpleNamespace(
+                    ssi=SimpleNamespace(
+                        income=SimpleNamespace(
+                            ism=SimpleNamespace(food_counts=food_parameter(instant))
+                        )
+                    )
+                )
+            )
+        )
+
+    actual = ssi_pmv_applies.formula(person, payment, parameters)
+    counts_food = (year, month) < (2024, 12) and not (
+        (year, month) == (2024, 11) and late_food
+    )
+    np.testing.assert_array_equal(actual, [shelter or (food and counts_food)])
+    assert parameter_reads == [str(income), str(income.stop)]
+    assert person_reads.pop(
+        "ssi_food_from_others_only_on_or_after_food_exclusion"
+    ) == str(income)
+    assert set(person_reads.values()) == {str(payment)}
+
+
+@pytest.mark.parametrize("month", [1, 2, 10, 11, 12])
+def test_couple_food_pmv_uses_payment_rate_and_splits_countable_income(month):
+    payment = make_period(f"2024-{month:02d}")
+    zero = np.zeros(3)
+    values = {
+        "ssi_couple_computation_applies": np.array([False, True, False]),
+        "is_ssi_spousal_deeming_applies": np.array([False, False, True]),
+        "ssi_federal_living_arrangement": SSIFederalLivingArrangement.OWN_HOUSEHOLD,
+        "ssi_receives_food_from_others": np.ones(3, dtype=bool),
+        "ssi_receives_outside_shelter_support": zero.astype(bool),
+        "ssi_receives_shelter_from_others_in_household": zero.astype(bool),
+        "ssi_food_from_others_only_on_or_after_food_exclusion": zero.astype(bool),
+        "ssi_shelter_support_value": zero,
+        "ssi_marital_earned_income": zero,
+        "ssi_blind_or_disabled_working_student_exclusion": zero,
+        "ssi_marital_unearned_income": zero,
+        "ssi_unearned_income_deemed_from_ineligible_parent": zero,
+        "ssi_income_deemed_from_ineligible_spouse": zero,
+        "is_ssi_aged_blind_disabled": np.ones(3, dtype=bool),
+        "is_child": zero.astype(bool),
+    }
+
+    def person(name, period):
+        return values[name]
+
+    def parameters(period):
+        instant = getattr(period, "start", period)
+        return SimpleNamespace(
+            gov=SimpleNamespace(
+                ssa=SimpleNamespace(ssi=system.parameters.gov.ssa.ssi(instant))
+            )
+        )
+
+    formulas = (
+        ("ssi_pmv_applies", ssi_pmv_applies),
+        ("ssi_pmv_amount", ssi_pmv_amount),
+        ("ssi_in_kind_support_and_maintenance", ssi_in_kind_support_and_maintenance),
+        ("ssi_countable_income", ssi_countable_income),
+        ("ssi_amount_if_eligible", ssi_amount_if_eligible),
+        ("uncapped_ssi", uncapped_ssi),
+        ("ssi_if_takes_up", ssi_if_takes_up),
+    )
+    for name, variable in formulas:
+        values[name] = variable.formula(person, payment, parameters)
+
+    # The 2024 joint PMV equals 1,415 / 3 + 20 = 491.666667.
+    # Spousal deeming uses half that PMV: 245.833333. January and February
+    # retain the payment month's rate while reading the prior year's food dates.
+    np.testing.assert_allclose(
+        values["ssi_pmv_amount"],
+        [943 / 3 + 20, 1_415 / 3 + 20, (1_415 / 3 + 20) / 2],
+    )
+    # Through November each spouse counts (491.666667 - 20) / 2 =
+    # 235.833333, then receives 1,415 / 2 - 235.833333 = 471.666667.
+    # December excludes food, so each spouse receives 1,415 / 2 = 707.50.
+    countable = 0 if month == 12 else 1_415 / 6
+    assert values["ssi_countable_income"][1] == pytest.approx(countable)
+    assert values["ssi_amount_if_eligible"][1] == pytest.approx(1_415 / 2)
+    assert values["ssi_if_takes_up"][1] == pytest.approx(1_415 / 2 - countable)
 
 
 def test_annual_countable_income_input_reaches_each_month():
