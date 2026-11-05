@@ -6,10 +6,10 @@ class deductible_mortgage_interest(Variable):
     entity = Person
     label = "Deductible mortgage interest"
     documentation = (
-        "Federal deductible mortgage interest. When structural mortgage inputs "
-        "are provided at the tax-unit level, PolicyEngine applies the "
-        "acquisition-debt caps and allocates the resulting deduction across "
-        "filers."
+        "Federal deductible home mortgage interest and points. When "
+        "structural mortgage inputs are provided at the tax-unit level, "
+        "PolicyEngine applies the acquisition-debt caps and allocates the "
+        "resulting deduction across filers."
     )
     unit = USD
     definition_period = YEAR

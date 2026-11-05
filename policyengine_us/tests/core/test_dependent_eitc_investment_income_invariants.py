@@ -9,7 +9,15 @@ through a Form 8814 election, which the model does not implement. So
 `irs_gross_income` does for AGI. 32(i)(2)(E) determines passive income and
 losses without regard to amounts included in earned income, so the passive
 basket removes the signed `eitc_passive_income_also_in_earned_income`, and it
-includes farm rental income, which Worksheet 1 lines 11 and 12 name.
+includes farm rental income and passive estate and trust income, which
+Worksheet 1 lines 11 and 12 name (Schedule E lines 40, 34a column (d) and 34b
+column (c)). `passive_estate_income`, the passive subset of `estate_income`,
+defaults to zero; the draws leave it unset, or set it to all, half or none of
+`estate_income`, or to an unrelated signed amount. Royalties received through
+an estate or trust and not derived in a trade or business
+(`estate_royalty_income`, Schedule K-1 (Form 1041) box 5) are their own
+basket under 32(i)(2)(C), floored at zero, which Worksheet 1 line 8 leaves out
+and the model counts under the statute.
 
 Hypothesis draws batches of tax units (single, head of household with
 dependents, joint with and without dependents), and a seeded population of 200
@@ -26,11 +34,14 @@ spouse. For every tax unit:
 2. Differential: `eitc_relevant_investment_income` equals an independent numpy
    computation of Worksheet 1 over the head and spouse: interest, tax-exempt
    interest and dividends, plus their Schedule D gain with capital gain
-   distributions floored at zero (line 7), plus their net rental, farm rental
-   and passive income less the signed part also in earned income, floored at
-   zero (line 13).
+   distributions floored at zero (line 7), plus their net rental, farm rental,
+   passive partnership and passive estate and trust income less the signed part
+   also in earned income, floored at zero (line 13), plus the estate and trust
+   royalty basket floored at zero (section 32(i)(2)(C)).
 3. Bounds: it is at least the filers' interest and dividends (drawn
-   nonnegative), so never negative, and $1,000 more of the head's interest
+   nonnegative), so never negative, and at least that plus their capital gains
+   floored at zero, so no passive loss (an estate or trust loss included)
+   reaches those baskets. $1,000 more of the head's interest
    raises it by exactly $1,000 even though the filers' partnership
    self-employment earnings change too: only the explicit overlap input moves
    passive income out of the basket.
@@ -68,8 +79,16 @@ PASSIVE_INPUTS = [
     "rental_income",
     "farm_rent_income",
     "passive_partnership_s_corp_income",
+    "passive_estate_income",
 ]
+# passive_estate_income is the passive subset of estate_income. It is left
+# unset in some draws, where it defaults to zero.
+ESTATE = "estate_income"
+PASSIVE_ESTATE = "passive_estate_income"
 OVERLAP = "eitc_passive_income_also_in_earned_income"
+# Section 32(i)(2)(C) royalties received through an estate or trust: a basket
+# of their own, floored at zero.
+ROYALTY = "estate_royalty_income"
 SE_EARNINGS = "partnership_self_employment_net_earnings"
 # The filer's amounts, which a dependent's income must not change.
 FILER_OUTPUTS = [
@@ -118,7 +137,26 @@ def investment_amounts(draw, dependent=False):
             )
         ),
         SE_EARNINGS: draw(signed),
+        ROYALTY: draw(signed),
+        **draw(estate_amounts()),
     }
+
+
+@st.composite
+def estate_amounts(draw):
+    estate = draw(signed)
+    passive = draw(
+        st.one_of(
+            st.none(),
+            st.just(estate),
+            st.just(float(round(estate / 2))),
+            st.just(0.0),
+            signed,
+        )
+    )
+    if passive is None:
+        return {ESTATE: estate}
+    return {ESTATE: estate, PASSIVE_ESTATE: passive}
 
 
 @st.composite
@@ -169,6 +207,23 @@ def _seeded_amounts(rng, dependent=False):
             "other": some(-12_000, 12_000),
         }[overlap],
         SE_EARNINGS: some(-12_000, 12_000),
+        **_seeded_estate(rng),
+    }
+
+
+def _seeded_estate(rng):
+    estate = float(round(rng.uniform(-12_000, 12_000))) if rng.random() < 0.6 else 0.0
+    passive = rng.choice(["default", "all", "half", "none", "other"])
+    if passive == "default":
+        return {ESTATE: estate}
+    return {
+        ESTATE: estate,
+        PASSIVE_ESTATE: {
+            "all": estate,
+            "half": float(round(estate / 2)),
+            "none": 0.0,
+            "other": float(round(rng.uniform(-12_000, 12_000))),
+        }[passive],
     }
 
 
@@ -194,6 +249,19 @@ def _seeded_units(n=200):
                 ],
             }
         )
+    # Royalties come from their own stream, so the draws above stay as they
+    # were before the royalty basket existed. The stream and the 30% rate
+    # leave every basket deciding eligibility for some units (the coverage
+    # assertions in test_seeded_population).
+    royalty_rng = np.random.default_rng(SEED + 5)
+    for unit in units:
+        for amounts in [unit["head"], unit["spouse"], *unit["dependents"]]:
+            if amounts is not None:
+                amounts[ROYALTY] = (
+                    float(round(royalty_rng.uniform(-12_000, 12_000)))
+                    if royalty_rng.random() < 0.3
+                    else 0.0
+                )
     return units
 
 
@@ -271,6 +339,9 @@ def _by_person(units, key):
         rows += [(amounts, True) for amounts in u["dependents"]]
     if key == "is_dependent":
         return np.array([dependent for _, dependent in rows])
+    if key == PASSIVE_ESTATE:
+        # Unset: the default, zero.
+        return np.array([amounts.get(key, 0.0) for amounts, _ in rows])
     return np.array([amounts[key] for amounts, _ in rows])
 
 
@@ -306,22 +377,39 @@ def _check(units, year):
     )
     capital = np.maximum(0, filer_sum(CAPITAL_INPUTS) + distributions)
     passive = np.maximum(0, filer_sum(PASSIVE_INPUTS) - filer_sum([OVERLAP]))
-    expected = portfolio + capital + passive
+    royalties = np.maximum(0, filer_sum([ROYALTY]))
+    expected = portfolio + capital + passive + royalties
     # Units whose eligibility turns on farm rent alone, or on the overlap input
     # alone, so the seeded population shows each term is exercised.
     eligible = expected <= run["limit"]
     without_farm_rent = (
         portfolio
         + capital
+        + royalties
         + np.maximum(
             0,
             filer_sum([n for n in PASSIVE_INPUTS if n != "farm_rent_income"])
             - filer_sum([OVERLAP]),
         )
     )
-    without_overlap = portfolio + capital + np.maximum(0, filer_sum(PASSIVE_INPUTS))
+    without_overlap = (
+        portfolio + capital + royalties + np.maximum(0, filer_sum(PASSIVE_INPUTS))
+    )
+    without_estate = (
+        portfolio
+        + capital
+        + royalties
+        + np.maximum(
+            0,
+            filer_sum([n for n in PASSIVE_INPUTS if n != PASSIVE_ESTATE])
+            - filer_sum([OVERLAP]),
+        )
+    )
+    without_royalties = portfolio + capital + passive
+    royalty_decides = eligible != (without_royalties <= run["limit"])
     farm_rent_decides = eligible != (without_farm_rent <= run["limit"])
     overlap_decides = eligible != (without_overlap <= run["limit"])
+    estate_decides = eligible != (without_estate <= run["limit"])
     investment_income = run["eitc_relevant_investment_income"]
     np.testing.assert_allclose(investment_income, expected, atol=TOLERANCE)
     np.testing.assert_array_equal(
@@ -333,6 +421,9 @@ def _check(units, year):
     # 3. Bounds, and an exact shift in the head's interest while the filers'
     # partnership self-employment earnings change too.
     assert (investment_income >= portfolio - TOLERANCE).all()
+    # A passive loss, including an estate or trust loss, never reaches the
+    # interest and dividend or capital gain baskets.
+    assert (investment_income >= portfolio + capital - TOLERANCE).all()
     assert (investment_income >= -TOLERANCE).all()
     np.testing.assert_allclose(
         shifted["eitc_relevant_investment_income"] - investment_income,
@@ -360,11 +451,19 @@ def _check(units, year):
                 - _by_person(units, OVERLAP),
             ),
         )
+        + np.maximum(0, _unit_sum(run, _by_person(units, ROYALTY)))
     )
     np.testing.assert_allclose(
         investment_income[unchanged], all_member[unchanged], atol=TOLERANCE
     )
-    return has_dependent, unchanged, farm_rent_decides, overlap_decides
+    return (
+        has_dependent,
+        unchanged,
+        farm_rent_decides,
+        overlap_decides,
+        estate_decides,
+        royalty_decides,
+    )
 
 
 # A batch's cost is mostly per-variable overhead, so each example is a large
@@ -385,11 +484,18 @@ def test_dependent_investment_income_stays_off_the_filers_eitc_test(units):
 
 @pytest.mark.parametrize("year", [2021, 2025])
 def test_seeded_population(year):
-    has_dependent, unchanged, farm_rent_decides, overlap_decides = _check(
-        _seeded_units(), year
-    )
+    (
+        has_dependent,
+        unchanged,
+        farm_rent_decides,
+        overlap_decides,
+        estate_decides,
+        royalty_decides,
+    ) = _check(_seeded_units(), year)
     # The population exercises both branches of each property.
     assert has_dependent.sum() > 50
     assert unchanged.sum() > 20
     assert farm_rent_decides.sum() > 2
     assert overlap_decides.sum() > 2
+    assert estate_decides.sum() > 2
+    assert royalty_decides.sum() > 2

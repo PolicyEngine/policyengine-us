@@ -15,9 +15,11 @@ class nd_renters_refund_income(Variable):
 
     documentation = (
         "Renter refund income after unreimbursed medical costs actually paid. "
-        "The paid-cost base restores self-employed premiums only when the "
-        "federal formula excluded them. Caller-supplied subtotals remain "
-        "unchanged, including when components are supplied. Premium inputs use payer "
+        "The paid-cost base restores the self-employed premiums excluded from "
+        "the federal subtotal: by the federal formula, or as supplied with a "
+        "caller's subtotal in itemized_medical_expenses_applied_exclusion. A "
+        "caller-supplied subtotal without that amount is used unchanged, "
+        "including when components are supplied. Premium inputs use payer "
         "attribution: each person reports premiums that person paid, including "
         "family coverage regardless of whom it covers."
     )
@@ -30,7 +32,8 @@ class nd_renters_refund_income(Variable):
         # These premiums are disjoint from itemized_medical_expenses,
         # whose medical definition follows state income tax law.
         excluded_premiums = add(tax_unit, period, ["pre_tax_health_insurance_premiums"])
-        # Restore only premiums excluded from a computed federal subtotal.
+        # Restore premiums excluded from the federal subtotal (computed, or
+        # supplied with a caller's subtotal).
         medical_expenses = add(
             tax_unit,
             period,

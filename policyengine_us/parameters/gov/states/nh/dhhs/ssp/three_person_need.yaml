@@ -1,0 +1,20 @@
+description: New Hampshire sets this standard of need for a three-person independent-living assistance group under the adult category financial assistance program.
+values:
+  # NOTE: NH's three-person standard is DHHS's stated SSI maximum for a couple
+  # and needy essential person less $12 ($1,988 - $12 = $1,976 in 2026). That
+  # maximum usually equals the couple rate plus the SSI essential person
+  # increment, but not in 2026 ($1,491 + $498 = $1,989), so the published
+  # standard is kept and needs a new value each January.
+  2026-01-01: 1_976
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: New Hampshire SSP three-person standard of need
+  reference:
+    - title: NH DHHS Supervisory Release SR 26-01, January 2026 COLA
+      href: https://www.dhhs.nh.gov/sr_htm/html/sr_26-01_dated_01_26.htm
+    - title: NH DHHS Adult Assistance Manual 601, Table A
+      href: https://www.dhhs.nh.gov/aam_htm/html/601_table_a_income_limits_aam.htm
+    - title: He-W 658.03(e), Adult category standard of need
+      href: https://gc.nh.gov/rules/state_agencies/he-w600.html

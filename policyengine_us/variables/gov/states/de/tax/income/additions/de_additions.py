@@ -8,3 +8,4 @@ class de_additions(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.DE
+    adds = ["de_other_additions"]

@@ -1,0 +1,110 @@
+# Retired-worker benefit of $2,088 a month, the August 2026 average
+# ($2,087.52, SSA Monthly Statistical Snapshot, Table 2).
+# https://www.ssa.gov/policy/docs/quickfacts/stat_snapshot/
+- name: Case 1, Social Security less the general income exclusion with no SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 70
+    social_security_retirement: 25_056
+    nc_sa_care_setting: ADULT_CARE_HOME
+  output:
+    # 25,056 / 12 = 2,088; 2,088 - 20 = 2,068 > 994, so no SSI.
+    ssi: 0
+    # 2,068 + SSI 0; the facility restoration adds max(994 - 2,068, 0) = 0.
+    nc_sa_countable_income: 2_068
+
+# Disabled-worker benefit of $1,636 a month, the August 2026 average
+# ($1,635.90, SSA Monthly Statistical Snapshot, Table 2), plus 20 hours a
+# week at North Carolina's $7.25 minimum wage: 7.25 * 20 * 52 = $7,540.
+- name: Case 2, earned income after the $65 and one-half exclusions.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 45
+    meets_ssi_disability_criteria: true
+    social_security_disability: 19_632
+    employment_income: 7_540
+    nc_sa_care_setting: IN_HOME
+  output:
+    # Unearned 1,636 - 20 = 1,616; earned (628.33 - 65) / 2 = 281.67.
+    # 1,616 + 281.67 = 1,897.67 > 994, so no SSI.
+    ssi: 0
+    nc_sa_countable_income: 1_897.67
+
+# SA-3210 V.D.1.e: SA budgets assume the full FBR unless SSA counts the
+# applicant as part of a married couple or SSI is one-third reduced for an
+# SAIH applicant.
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=195
+# Disabled-worker benefit of $711 a month, the December 2024 North Carolina
+# average for disabled workers who also receive SSI ($710.97, SSA SSI Annual
+# Statistical Report 2024, Table 16).
+# https://www.ssa.gov/policy/docs/statcomps/ssi_asr/2024/sect03.html
+- name: Case 3, ongoing facility month after the two-month admission window restores one-third-reduced SSI to the full FBR.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 55
+    meets_ssi_disability_criteria: true
+    social_security_disability: 8_532
+    nc_sa_care_setting: ADULT_CARE_HOME
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    # Reduced FBR 994 * (1 - 1/3) = 662.67 < 711 - 20 = 691, so no SSI.
+    ssi: 0
+    # 691 + max(0, 994 - 691) = 691 + 303 = 994.
+    nc_sa_countable_income: 994
+
+- name: Case 4, in-home budget keeps one-third-reduced SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 55
+    meets_ssi_disability_criteria: true
+    social_security_disability: 8_532
+    nc_sa_care_setting: IN_HOME
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    ssi: 0
+    # 711 - 20 = 691 + SSI 0; no restoration for in-home budgets.
+    nc_sa_countable_income: 691
+
+- name: Case 5, couple sharing an adult care home room whom SSA treats as a couple keeps the couple amount.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 58
+        meets_ssi_disability_criteria: true
+        social_security_disability: 8_532
+        nc_sa_care_setting: ADULT_CARE_HOME
+      person2:
+        age: 55
+        meets_ssi_disability_criteria: true
+        social_security_disability: 8_532
+        nc_sa_care_setting: ADULT_CARE_HOME
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    # Joint claim: (711 + 711 - 20) / 2 = 701 countable each;
+    # couple FBR 1,491 / 2 = 745.50; 745.50 - 701 = 44.50.
+    ssi: [44.5, 44.5]
+    # 711 - 20 = 691 + SSI 44.50 = 735.50; no restoration to 994 for a couple.
+    nc_sa_countable_income: [735.5, 735.5]

@@ -110,3 +110,66 @@
     household_benefits: 12_000
     # The SPM resource valuation remains separate.
     spm_unit_benefits: 1_000
+
+- name: Alaska's 2024 energy relief reaches household benefits for each person.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult1:
+        age: 40
+        employment_income: 500_000
+      adult2:
+        age: 40
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2]
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2]
+    households:
+      household:
+        members: [adult1, adult2]
+        state_code: AK
+  output:
+    ak_energy_relief: [298.17, 298.17]
+    household_benefits: 2 * 298.17
+    spm_unit_benefits: 2 * 298.17
+
+- name: Alaska's 2026 energy relief reaches household benefits.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: AK
+  output:
+    household_benefits: 200
+    spm_unit_benefits: 200
+
+- name: New York's Drive Clean rebate reaches household benefits.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: NY
+        ny_drive_clean_rebate: 2_000
+  output:
+    household_benefits: 2_000
+    spm_unit_benefits: 2_000

@@ -10,9 +10,11 @@ values:
     # A-1324.19 and A-1324.20.
     - total_unemployment_compensation
     - veterans_benefits
-    # A-1326.9: pensions, including military retirement and recurring withdrawals.
+    # A-1326.9: pensions and recurring withdrawals. A-1324.20 counts gross
+    # military retirement pay and the gross amount of any Survivor Benefit
+    # Plan payment; military_retirement_income adds both.
     - pension_income
-    - military_retirement_pay
+    - military_retirement_income
     - retirement_distributions
     # A-1324.23: railroad retirement benefits.
     - railroad_benefits

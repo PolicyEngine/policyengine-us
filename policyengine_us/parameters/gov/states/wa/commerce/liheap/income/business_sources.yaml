@@ -1,0 +1,20 @@
+description: Washington uses these nonnegative net business income sources under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+
+# Existing net inputs approximate allowable expenses and cannot reproduce
+# monthly loss floors or business-specific expense disallowances. Do not apply
+# the alternative 50% standard expense deduction to already-net income.
+metadata:
+  unit: list
+  period: year
+  label: Washington LIHEAP business sources
+  reference:
+    - title: "Byrd Barr FY2025-26 application, self-employment instructions #page 2,13"
+      href: https://drive.google.com/file/d/18fvR5CL8UKpTj4Vsm7KlkitKUJclAvkR/view#page=2
+    - title: "KCR currently linked LIHEAP self-employment worksheet"
+      href: https://www.kcr.org/wp-content/uploads/2018/08/Self-Employment-Form.pdf#page=1

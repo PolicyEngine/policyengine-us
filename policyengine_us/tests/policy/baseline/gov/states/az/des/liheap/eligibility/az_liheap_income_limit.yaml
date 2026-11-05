@@ -1,0 +1,95 @@
+# Arizona LIHEAP annual income limit: twelve times the Appendix A monthly
+# gross income limit, which is the greater of 60% of the state median income
+# and 150% of the federal poverty level (DES LIHEAP Policy rev. 16A eff.
+# 2026-07-01, p. 8 VI.A.6.c.i, https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8;
+# FFY2026 Appendix A in rev. 13 eff. 2025-08-25, p. 37,
+# https://web.archive.org/web/20251030203752/https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=37).
+# FFY2026 Appendix A monthly limits: 2,807; 3,671; 4,535; 5,399; 6,262; 7,126;
+# 7,288; 7,450; 7,612; 8,143; 8,831; 9,518; +687 for each person over 12.
+# Reproduction from the federal guidelines (period 2026):
+# SMI arm: four-person Arizona SMI 107,983 (FFY2026); floor(0.6 x 107,983) =
+#   64,789; size share 0.52 + 0.16 per person two to six + 0.03 per person
+#   above six (45 CFR 96.85); floor(floor(share x 64,789) / 12).
+# FPG arm: 2025 guideline 15,650 + 5,500 per additional person (one-year lag);
+#   floor(1.5 x FPG(size) / 12), table capped at 12 with
+#   floor(1.5 x 5,500 / 12) = floor(687.5) = 687 per person above 12.
+
+- name: Case 1, Appendix A monthly limits times twelve for sizes 1 to 14.
+  period: 2026
+  input:
+    state_code: [AZ, AZ, AZ, AZ, AZ, AZ, AZ, AZ, AZ, AZ, AZ, AZ, AZ, AZ]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800]
+    az_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+  output:
+    # size 1: floor(0.52 x 64,789) = 33,690; floor(33,690 / 12) = 2,807;
+    #   FPG floor(1.5 x 15,650 / 12) = 1,956; max 2,807 x 12 = 33,684.
+    # size 2: floor(0.68 x 64,789) = 44,056 -> 3,671; FPG 2,643; 3,671 x 12 = 44,052.
+    # size 3: floor(0.84 x 64,789) = 54,422 -> 4,535; FPG 3,331; 4,535 x 12 = 54,420.
+    # size 4: 64,789 -> 5,399; FPG 4,018; 5,399 x 12 = 64,788.
+    # size 5: floor(1.16 x 64,789) = 75,155 -> 6,262; FPG 4,706; 6,262 x 12 = 75,144.
+    # size 6: floor(1.32 x 64,789) = 85,521 -> 7,126; FPG 5,393; 7,126 x 12 = 85,512.
+    # size 7: floor(1.35 x 64,789) = 87,465 -> 7,288; FPG 6,081; 7,288 x 12 = 87,456.
+    # size 8: floor(1.38 x 64,789) = 89,408 -> 7,450; FPG 6,768; 7,450 x 12 = 89,400.
+    # size 9: floor(1.41 x 64,789) = 91,352 -> 7,612; FPG 7,456; 7,612 x 12 = 91,344.
+    # size 10: SMI floor(1.44 x 64,789) = 93,296 -> 7,774; FPG floor(1.5 x
+    #   65,150 / 12) = floor(8,143.75) = 8,143; max 8,143 x 12 = 97,716.
+    # size 11: SMI 7,936; FPG floor(1.5 x 70,650 / 12) = 8,831; x 12 = 105,972.
+    # size 12: SMI 8,098; FPG floor(1.5 x 76,150 / 12) = 9,518; x 12 = 114,216.
+    # size 13: SMI 8,260; FPG 9,518 + 687 = 10,205; x 12 = 122,460.
+    # size 14: SMI 8,422; FPG 9,518 + 2 x 687 = 10,892; x 12 = 130,704.
+    az_liheap_income_limit: [33_684, 44_052, 54_420, 64_788, 75_144, 85_512, 87_456, 89_400, 91_344, 97_716, 105_972, 114_216, 122_460, 130_704]
+
+- name: Case 2, a household with no eligible member has no income limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 28
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_liheap_household_size: 0
+    az_liheap_income_limit: 0
+
+- name: Case 3, a five-person family's limit follows its computed household size.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 44_000
+      person2:
+        age: 36
+        employment_income: 31_000
+      person3:
+        age: 12
+      person4:
+        age: 8
+      person5:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        heating_type: NATURAL_GAS
+        pre_subsidy_electricity_expense: 2_400
+        gas_expense: 700
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: AZ
+  output:
+    az_liheap_household_size: 5
+    # Appendix A size 5: 6,262 x 12 = 75,144.
+    az_liheap_income_limit: 75_144
