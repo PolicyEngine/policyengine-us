@@ -245,7 +245,8 @@ def test_series_hold_the_2100_values_afterwards(year):
         assert _value(series, year) == _value(series, END_YEAR)
 
 
-@given(st.integers(FIRST_YEAR, END_YEAR), st.integers(1, 12), st.integers(1, 28))
+@given(st.integers(BACKFILL_YEARS[0], END_YEAR), st.integers(1, 12), st.integers(1, 28))
+@example(BACKFILL_YEARS[0], 12, 28)
 def test_every_date_in_a_year_reads_the_january_value(year, month, day):
     date = f"{year}-{month:02d}-{day:02d}"
     for series in SERIES:
