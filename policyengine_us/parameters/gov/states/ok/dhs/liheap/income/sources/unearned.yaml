@@ -24,11 +24,13 @@ values:
     # page 7) also uses gross income.
     - social_security
     - ssi
-    # Military retirement pay is a separate input from the pension inputs that
+    # Military retirement income (retiree pay plus Survivor Benefit Plan
+    # annuities) is a separate input from the pension inputs that
     # pension_income adds, so both are listed; a household reports the amount
-    # in one or the other.
+    # in one or the other. A military survivor annuity belongs in
+    # military_retirement_pay_survivors, not survivor_benefits.
     - pension_income
-    - military_retirement_pay
+    - military_retirement_income
     # Plan Section 1.9 counts retirement benefits; IRA, 401(k), 403(b), SEP
     # and Keogh distributions are separate inputs from pension_income.
     - retirement_distributions
