@@ -222,7 +222,13 @@
     ca_eitc_eligible: true
     ca_yctc: 1_189
 
-- name: CalEITC retains its own age rules for an eligible separated parent
+- name: CalEITC and the federal zero-child credit both reach a separated parent aged 20 whose child lacks an SSN
+  # The child without an SSN meets the federal separated-spouse exception
+  # (IRC 32(d)(2)(B), counted before identification) and, from 2021,
+  # establishes federal eligibility without the childless age test
+  # (32(c)(1)(A)(i)), but stays out of the amount (32(c)(3)(D)). Federal
+  # zero-child 2025: min(649, 0.0765 x 8,639 = 660.88) = 649, below the
+  # 10,620 phase-out start. CalEITC applies its own rules and is unchanged.
   period: 2025
   input:
     people:
@@ -245,7 +251,8 @@
   output:
     eitc_child_count: 0
     eitc_marital_eligible: true
-    eitc_eligible: false
+    eitc_eligible: true
+    eitc: 649
     ca_eitc_eligible: true
     ca_yctc: 1_189
 
