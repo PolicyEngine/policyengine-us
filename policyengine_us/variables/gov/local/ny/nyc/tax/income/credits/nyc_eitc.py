@@ -39,7 +39,7 @@ class nyc_eitc(Variable):
         pct_point_reduction_if_applicable = p.percent_reduction * excess
         pct_point_reduction = where(threshold > 0, pct_point_reduction_if_applicable, 0)
 
-        # From 2022, worksheet line 4 rounds the reduction with halves up.
+        # From 2022, filers round the reduction with halves up at worksheet line 4.
         # Protect exact halves from floating-point error before taking the floor.
         pct_point_reduction = where(
             period.start.year >= 2022,

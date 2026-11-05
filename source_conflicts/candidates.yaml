@@ -6812,8 +6812,8 @@ candidates:
       Keeping the worksheet coefficient, an unrounded reduction preserves the full product.
     other: The Department directs filers to round line 4's reduction to four decimal places before subtracting it
       from the base percentage on line 6.
-  example: For 2025 NYAGI of $21,000, line 4 gives (21,000 - 19,999) * .00002 = .02002, which rounds to .0200.
-    The rate becomes .20 - .0200 = .1800; a federal EITC of $4,328 gives a NYC EIC of $779.04.
+  example: For 2025 NYAGI of $21,000, filers compute line 4 as (21,000 - 19,999) * .00002 = .02002 and round to .0200.
+    They subtract .20 - .0200 = .1800 and multiply a federal EITC of $4,328 by .1800 for a NYC EIC of $779.04.
   pe_us:
     follows: gap-fill
     code:
@@ -6821,12 +6821,12 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10664
   state: ruled
-  note: The Department fills the precision gap; every available worksheet from 2022 through 2025 rounds the
-    reduction. Rounding starts in 2022, preserving earlier calculations despite parameter backdating.
-    We could not fetch a 2026 worksheet. The model retains the existing .00002 coefficient;
-    this change does not resolve the statutory words two-tenths against the parenthetical numeric notation 0.002.
-    Axiom holds NYC 11-1706 and the 2025 worksheet. Captures here supply the state statute excerpt and the
-    2022-2024 worksheet instructions that its pinned corpus lacks.
+  note: The Department tells filers to round the reduction in each worksheet from 2022 through 2025, filling
+    the precision gap. The model rounds from 2022 and preserves earlier calculations despite parameter backdating.
+    The 2026 worksheet was unavailable at the checked official URLs. The model retains the existing .00002 coefficient;
+    this change leaves unresolved the statutory words two-tenths against the parenthetical numeric notation 0.002.
+    The pinned Axiom corpus includes NYC 11-1706 and the 2025 worksheet. The accompanying captures include the
+    state statute excerpt and the 2022-2024 worksheet instructions.
 - id: us-ny:real-property-credit-claimable-spouse
   program: income-tax
   years:
