@@ -313,3 +313,19 @@
     net_investment_income_tax: 1_140
     # 1,140, within the 8,500 cap at 230,000.
     or_federal_tax_liability_subtraction: 1_140
+
+- name: Case 21, 2025 with no EITC on the federal refundable credit list, the code backs out none.
+  period: 2025
+  input:
+    gov.irs.credits.refundable:
+      [refundable_american_opportunity_credit, refundable_ctc, recovery_rebate_credit, refundable_payroll_tax_credit]
+    state_code: OR
+    filing_status: SINGLE
+    adjusted_gross_income: 40_000
+    income_tax_before_refundable_credits: 3_000
+    eitc: 1_000
+    assigned_aca_ptc: 0
+  output:
+    # income_tax_refundable_credits holds no EITC here, so the code backs out
+    # none: 3,000 - 0 = 3,000. Without the guard: 3,000 - (0 - 1,000) = 4,000.
+    or_federal_tax_liability_subtraction: 3_000
