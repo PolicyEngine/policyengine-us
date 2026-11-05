@@ -1412,8 +1412,7 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/states/ca/cdss/capi/_ca_capi_ssi_ssp_standard.py
-    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/payment_standard/ca_state_supplement_food_allowance.py
-    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/payment_standard/ca_state_supplement_payment_standard.py
+    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/_ca_state_supplement_rates.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10379
     - https://github.com/PolicyEngine/policyengine-us/pull/10546
@@ -1426,9 +1425,49 @@ candidates:
     https://github.com/PolicyEngine/policyengine-us/pull/10379#issuecomment-6509402355. WIC 12200(e) gives the
     no-cooking allowance only under (c) and (d), so a couple paid the one-blind rate under (b) gets none, in CAPI and
     in the state supplement. CAPI (_ca_capi_ssi_ssp_standard.py) and the state supplement
-    (ca_state_supplement_food_allowance.py) both follow the statute: neither adds a food allowance to the one-blind
+    (_ca_state_supplement_rates.py) both follow the statute: neither adds a food allowance to the one-blind
     couple rate, and a couple both aged or disabled takes the aged or disabled rate with the couple allowance when
     that is higher.'
+- id: us-ca:ssp-household-of-another-share
+  program: ssi-ssp
+  years:
+    from: 2013
+    type: calendar
+  question: Does a California recipient in another person's household keep the regular state share, or take the
+    separate share POMS lists for that arrangement?
+  sources:
+  - kind: statute
+    citation: Cal. WIC §12200(i)
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200
+  - kind: statute
+    citation: Cal. WIC §12200.03
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200.03
+  - kind: manual
+    citation: SSA POMS SI 01415.058 B.1 and B.2, codes D, F and G
+    url: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058
+  readings:
+    statute: Subdivision 12200(i) reduces the grant level under (a) through (d) by the amount of the federal reduction,
+      which alone keeps the regular state share. Section 12200.03 applies notwithstanding any other law and sets the
+      payments at the federal minimum, which may change that result.
+    other: POMS lists separate state shares for recipients with the federal one-third reduction.
+  example: In January 2026, an aged person with no income in another person's household has a $902.61 total with the
+    regular share, which PE-US pays ($662.67 federal plus $239.94), and $907.87 under POMS ($662.67 plus $245.20).
+  pe_us:
+    follows: not-modelled
+    code:
+    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/_ca_state_supplement_rates.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10601
+  state: open
+  note: PE-US has no household-of-another shares, so these recipients keep the regular share on the reduced federal
+    amount (issue 7892). The January 2026 POMS shares are 245.20 for aged or disabled, 329.58 for blind, 624.40 for
+    out-of-home care (code F) and 102.53 for a disabled child (code G); the couple shares are 615.70, 841.22 for two
+    blind, 755.31 for one blind and 1,604.20 for out-of-home care. Subdivision 12200(i) names only (a) through (d), so
+    it does not decide codes F and G. WIC 12204 keeps a Public Law 93-66 payment and does not explain the difference.
+    WIC 12200.03 may, since it sets the Section 12200 payments, other than (e), (g) and (h), at the federal minimum and
+    no lower than the March 1983 standards adjusted under 20 CFR 416.2096(b); that arithmetic has not been checked.
+    The project lead leans toward POMS because SSA issues the payment from its chart; the model stays as it is until
+    that is decided.
 - id: us-ca:ssp-nmohc-couple-standard
   program: ssi-ssp
   years:

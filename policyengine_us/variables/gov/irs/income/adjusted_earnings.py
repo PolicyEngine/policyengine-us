@@ -28,10 +28,12 @@ class adjusted_earnings(Variable):
     definition_period = YEAR
     label = "Personal earned income adjusted for self-employment tax"
     documentation = (
-        "Earned income under IRC 32(c)(2): wages includible in gross income "
-        "(after pre-tax payroll deductions such as traditional elective "
-        "deferrals) plus self-employment earnings less the deductible part "
-        "of self-employment tax. It sets each spouse's earned income limit "
+        "Earned income for the IRC 129(b) limit (IRC 129(e)(2), Form 2441 "
+        "lines 18-19): W-2 box 1 wages, which leave out pre-tax payroll "
+        "deductions and all dependent care benefits, plus self-employment "
+        "earnings less the deductible part of self-employment tax. Taxable "
+        "dependent care benefits (Form 1040 line 1e) stay out, though they "
+        "count toward earned income under IRC 32(c)(2) and 21(d). It sets each spouse's earned income limit "
         "for the child and dependent care credit and the dependent care "
         "assistance exclusion."
     )
