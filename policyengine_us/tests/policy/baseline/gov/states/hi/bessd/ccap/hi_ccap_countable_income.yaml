@@ -275,3 +275,51 @@
     hi_tanf_dependent_care_deduction: 0
     hi_tanf: 35.76
     hi_ccap_countable_income: 1_535.76
+
+- name: Case 13, August 2021 income excludes Hawaii TANF.
+  period: 2021-08
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 12_000
+      child:
+        age: 5
+    spm_units:
+      unit:
+        members: [parent, child]
+        hi_tanf: 100
+        takes_up_tanf_if_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: HI
+  output:
+    # The monthly formula reads August 1, before the August 6 parameter
+    # date, and counts $1,000 earnings without the $100 TANF grant.
+    hi_ccap_countable_income: 1_000
+
+- name: Case 14, September 2021 income includes Hawaii TANF.
+  period: 2021-09
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 12_000
+      child:
+        age: 5
+    spm_units:
+      unit:
+        members: [parent, child]
+        hi_tanf: 100
+        takes_up_tanf_if_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: HI
+  output:
+    # The monthly formula first reads the August 6 parameter in September:
+    # $1,000 earnings + $100 Hawaii TANF = $1,100 countable income.
+    hi_ccap_countable_income: 1_100
