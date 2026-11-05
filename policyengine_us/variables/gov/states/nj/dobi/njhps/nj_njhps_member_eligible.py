@@ -35,8 +35,13 @@ class nj_njhps_member_eligible(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nj.dobi.njhps
-        # aca_magi_fraction is a TaxUnit variable read at the person level.
-        magi_fraction = person.tax_unit("aca_magi_fraction", period)
+        # DOBI's plan year 2026 schedule runs to "less than or equal to 600%
+        # FPL" ($0 "Above 600% FPL"). Test the exact ratio, not the truncated
+        # aca_magi_fraction: truncation maps 600.00%-600.99% to 6.00, which
+        # would admit incomes above 600%. The 138% floor (">=") is unaffected
+        # by truncation. Both are TaxUnit quantities read at the person level.
+        magi = max_(person.tax_unit("aca_magi", period), 0)
+        magi_fraction = magi / person.tax_unit("tax_unit_fpg", period.last_year)
         # pays_aca_premium is the Person-level Marketplace enrollment test:
         # TIN, immigration/lawful-presence status, no ineligible minimum
         # essential coverage, the age-based premium requirement and, since

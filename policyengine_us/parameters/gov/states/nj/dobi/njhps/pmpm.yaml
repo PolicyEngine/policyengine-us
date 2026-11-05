@@ -14,6 +14,8 @@ metadata:
       href: https://pub.njleg.gov/bills/2020/AL20/61_.HTM
     - title: Get Covered NJ - New Jersey Health Plan Savings
       href: https://www.nj.gov/getcoverednj/financialhelp/premiums/
+    - title: NJ DOBI 2027 Rate Filing Requirements, section 7 (plan year 2026 subsidy amounts by FPL range)
+      href: https://www.nj.gov/dobi/division_insurance/ihcseh/ratefilings/2027RateFilingRequirements.pdf#page=4
 
 brackets:
   # Household income measured as ACA MAGI as a share of the federal poverty line.
@@ -33,17 +35,23 @@ brackets:
   # FY2026, continuing "up to 600% FPL"). Neither source alone both states the
   # values and confirms PY2026 currency, so both are carried. The Get Covered NJ
   # URL is a secondary (anchorless) corroborating reference, not a value source.
-  # Bands are lower-exclusive / upper-inclusive, so thresholds use the "x.0001"
-  # convention to match the published "from X% through Y%" banding. The 138% floor
-  # is enforced by the eligibility gate; this base band gives $0 below 138% FPL so
-  # the single_amount lookup covers the full domain.
+  # Bands are lower-inclusive / upper-exclusive, as DOBI's 2027 Rate Filing
+  # Requirements (section 7) tabulate "the subsidy amounts from plan year 2026":
+  # "Less than 150% FPL" $20, "At least 150% FPL but less than 200% FPL" $40, ...,
+  # "At least 550% FPL but less than or equal to 600% FPL" $50, "Above 600% FPL"
+  # $0. Each threshold is therefore the band's lower edge, and a household exactly
+  # at an edge takes the higher band. The scale reads the truncated
+  # aca_magi_fraction, which is exact for lower-inclusive whole-percentage edges.
+  # The 138% floor and the 600% ceiling are enforced by the eligibility gate; this
+  # base band gives $0 below 138% FPL so the single_amount lookup covers the full
+  # domain.
   # Below 138% FPL (routed to NJ FamilyCare/Medicaid) -> $0 per member per month.
   - threshold:
       2026-01-01: 0
     amount:
       0000-01-01: 0
       2026-01-01: 0
-  # 138% through 150% FPL -> $20 per member per month. The schedule is new to the
+  # 138% to less than 150% FPL -> $20 per member per month. The schedule is new to the
   # model for PY2026, so every band is $0 before 2026-01-01. The threshold is set
   # to 1.3799 (just below the 138% floor) because aca_magi_fraction is a float32
   # variable and float32(1.38) rounds to 1.37999999..., which is just BELOW a
@@ -54,32 +62,32 @@ brackets:
     amount:
       0000-01-01: 0
       2026-01-01: 20
-  # 150% through 200% FPL -> $40.
+  # At least 150% but less than 200% FPL -> $40.
   - threshold:
-      2026-01-01: 1.5001
+      2026-01-01: 1.5
     amount:
       0000-01-01: 0
       2026-01-01: 40
-  # 200% through 250% FPL -> $50.
+  # At least 200% but less than 250% FPL -> $50.
   - threshold:
-      2026-01-01: 2.0001
+      2026-01-01: 2
     amount:
       0000-01-01: 0
       2026-01-01: 50
-  # 250% through 400% FPL -> $100.
+  # At least 250% but less than 400% FPL -> $100.
   - threshold:
-      2026-01-01: 2.5001
+      2026-01-01: 2.5
     amount:
       0000-01-01: 0
       2026-01-01: 100
-  # 400% through 600% FPL -> $50. In this band the federal APTC is $0 (the 400% FPL
+  # At least 400% and up to 600% FPL -> $50. In this band the federal APTC is $0 (the 400% FPL
   # cliff reverts for PY2026), so NJHPS is the sole premium subsidy.
   - threshold:
-      2026-01-01: 4.0001
+      2026-01-01: 4
     amount:
       0000-01-01: 0
       2026-01-01: 50
-  # Above 600% FPL (ineligible) -> $0.
+  # Above 600% FPL (ineligible; the eligibility gate excludes it) -> $0.
   - threshold:
       2026-01-01: 6.0001
     amount:

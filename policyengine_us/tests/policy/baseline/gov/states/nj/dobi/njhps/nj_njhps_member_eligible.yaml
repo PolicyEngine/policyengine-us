@@ -5,11 +5,14 @@
 # PY2026 (the 400% APTC cliff reverts). It returns:
 #   pays_aca_premium
 #   & filing_status != SEPARATE
-#   & (fpl_floor <= aca_magi_fraction <= fpl_limit)   [1.38 <= frac <= 6.0]
+#   & (fpl_floor <= ratio <= fpl_limit)   [1.38 <= ratio <= 6.0]
+# where ratio = max(aca_magi, 0) / tax_unit_fpg(prior year), the exact ratio, not
+# the truncated aca_magi_fraction.
 #
 # pays_aca_premium is a Person YEAR bool supplied directly so each case is
-# independent of the immigration / MEC / TIN / coverage-gap internals. aca_magi_fraction and
-# filing_status are TaxUnit inputs. The band boundaries are inclusive on both ends:
+# independent of the immigration / MEC / TIN / coverage-gap internals. aca_magi (against a
+# prior-year tax_unit_fpg pinned to $10,000) and filing_status are TaxUnit inputs;
+# income-derived cases use the actual 2025 one-person guideline, $15,650. The band boundaries are inclusive on both ends:
 # 1.38 (138% floor) and 6.0 (600% ceiling).
 
 # --- pays_aca_premium gate ---
@@ -24,7 +27,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -42,7 +47,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -64,7 +71,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        tax_unit_fpg:
+          2025: 10_000
         filing_status: SEPARATE
     households:
       household:
@@ -86,7 +95,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.37
+        aca_magi: 13_700
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -105,7 +116,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.38
+        aca_magi: 13_800
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -124,7 +137,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 6.0
+        aca_magi: 60_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -143,7 +158,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 6.01
+        aca_magi: 60_100
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -166,7 +183,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 5.0
+        aca_magi: 50_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -187,7 +206,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -210,7 +231,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        tax_unit_fpg:
+          2024: 10_000
     households:
       household:
         members: [person1]
@@ -235,7 +258,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
-        aca_magi_fraction: 3.0
+        aca_magi: 30_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1, person2, person3, person4]
@@ -260,10 +285,88 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: -0.5
+        aca_magi: -5_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
         state_code: NJ
   output:
     nj_njhps_member_eligible: false
+
+- name: Case 13, $93,900 (exactly 600% of the 2025 guideline) is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 93_900
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    aca_magi_fraction: 6.00
+    nj_njhps_member_eligible: [true]
+
+- name: Case 14, $93,900.47 (600.003%) is ineligible though truncated to 6.00.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 93_900.47
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    aca_magi_fraction: 6.00
+    nj_njhps_member_eligible: [false]
+
+- name: Case 15, $94,055.56 (600.994%) is ineligible though truncated to 6.00.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 94_055.56
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    aca_magi_fraction: 6.00
+    nj_njhps_member_eligible: [false]
+
+- name: Case 16, $21,597 (exactly 138%) is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 21_597
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    aca_magi_fraction: 1.38
+    nj_njhps_member_eligible: [true]
