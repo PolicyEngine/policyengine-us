@@ -7,7 +7,8 @@ https://revenue.iowa.gov/media/2335/download?inline=#page=1
 Line 11 is the smaller of 80% of the deductions subject to the limitation
 (line 6) and 3% of the excess income (line 10). Lines 12 to 21 then remove
 the Iowa income tax on federal Schedule A line 5a in proportion, as
-701 IAC 41.11(1) does, at a share that line 18 rounds to a tenth of a percent:
+701 IAC 41.11(1) does, at a share that line 18 enters to the nearest tenth of
+a percent:
 https://www.legis.iowa.gov/docs/iac/chapter/03-28-2018.701.41.pdf#page=10
 
 So each bound below allows ROUNDING of the Iowa income tax on line 2, the most
@@ -37,8 +38,8 @@ Iowa income tax. For every tax unit:
    reduction, because lines 15 to 20 give the Iowa income tax its share of
    line 11.
 7. Worksheet: the reduction stays within rounding of line 11 times the
-   Schedule A share, (line 1 - line 4) / line 5, with every line restated
-   here from the draw.
+   Schedule A share, (line 1 - line 4) / line 5, with line 1 and AGI taken
+   from the model and lines 2 to 11 restated here from the draw.
 
 Comparisons allow ten cents: float32 spacing is under seven cents below
 $1 million.

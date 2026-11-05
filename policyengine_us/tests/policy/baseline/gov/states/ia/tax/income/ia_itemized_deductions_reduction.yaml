@@ -170,6 +170,27 @@
     ia_itemized_deductions_reduction: -2.90
     ia_itemized_deductions_unit: 20_002.90
 
+- name: 2018 line 18 rounds an exact half up
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    filing_status: JOINT
+    adjusted_gross_income: 410_000
+    real_estate_taxes: 10_000
+    deductible_mortgage_interest: 10_000
+    ia_withheld_income_tax: 20_000
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: IA
+  output:
+    # Line 1: 20,000; line 2: 20,000; line 3: 40,000; line 4: 0; line 5: 40,000;
+    # line 6: 32,000; line 9: 90,000; line 10: 2,700; line 11: 2,700;
+    # line 12: 37,300; line 15: 37,300; line 17: 40,000;
+    # line 18: 93.25% enters as 93.3%; line 20: 18,660;
+    # line 21: 37,300 - 18,660 = 18,640.
+    ia_itemized_deductions_reduction: 1_360
+    ia_itemized_deductions_unit: 18_640
+
 - name: 2018 joint filer with sales tax on federal Schedule A has no Iowa income tax on line 2
   period: 2018
   input:

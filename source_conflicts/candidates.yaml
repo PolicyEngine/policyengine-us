@@ -2543,9 +2543,9 @@ candidates:
   readings:
     statute: For 2018 Iowa Code 422.3(5) defines the Internal Revenue Code as the one in effect on January 1, 2015, so
       section 68 still limits the deductions Iowa Code 422.9(2) allows. In 2018 Iowa Acts chapter 1161, the legislature
-      moved that date only from 2019 (section 69) and adopted named Pub. L. 115-97 sections for 2018 (sections 58 and
-      63), none of them section 11045 or 11046. The Iowa Department of Revenue applies the limitation in the 2018 IA 104
-      and instructions.
+      moved that date only from 2019 (section 69). For 2018, it applied named sections of Pub. L. 115-97 (section 63)
+      and the section 179 allowance as section 13101 amended it (section 58), none of them section 11045 or 11046. The
+      Iowa Department of Revenue applies the limitation in the 2018 IA 104 and instructions.
     other: Rule 41.11 applies the reduction "for the same tax years that the provision applies for federal income tax
       purposes"; read against federal law as amended, which suspends section 68 for 2018, Iowa would not limit 2018
       deductions.
@@ -2580,8 +2580,9 @@ candidates:
     url: https://revenue.iowa.gov/media/2335/download?inline=#page=1
   readings:
     statute: Iowa Code 422.9(2)(a) subtracts "the deduction for Iowa income taxes" and doesn't say how much of it stays
-      deducted after the overall reduction. Rule 41.11(1)'s worksheet gives the share with no rounding instruction (line
-      6), and rule 41.5(1) subtracts the tax "to the extent" included.
+      deducted after the overall reduction. Rule 41.11(1) requires high-income filers to complete Form 41-104. The copy
+      of the form it prints gives the share with no rounding instruction (line 6), and rule 41.5(1) subtracts the tax
+      "to the extent" included.
     other: The IA 104 enters line 15 divided by line 17 "to the nearest tenth of a percent" before applying it to the
       Iowa income tax.
   example: A joint filer with federal AGI of $400,000, $30,000 of Schedule A deductions ($4,000 of them medical) and
@@ -2595,8 +2596,9 @@ candidates:
   state: unreviewed
   note: Rounding moves the result by at most 0.05% of the Iowa income tax, but it can raise line 21 above line 1. A
     joint filer at $500,000 with only $20,000 of medical expenses and investment interest and $9,700 of Iowa income
-    tax enters 44.3% and gets $20,002.90; the exact share gives $20,000. The statute and the rule leave the rounding
-    open, so the model follows the form.
+    tax enters 44.3% and gets $20,002.90; the exact share gives $20,000. The statute and the rule's copy of the form
+    leave the rounding open, and the rule requires the form, so the model follows the 2018 form. The form gives no tie
+    rule, so the model rounds a half up: a 93.25% share enters as 93.3%.
 - id: us-ia:low-income-exemption-claimant-income
   program: income-tax
   years:

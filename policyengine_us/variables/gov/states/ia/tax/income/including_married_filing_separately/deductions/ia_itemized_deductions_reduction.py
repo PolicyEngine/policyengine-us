@@ -38,12 +38,15 @@ class ia_itemized_deductions_reduction(Variable):
         # theft and gambling losses, which section 68(c) leaves unlimited.
         p_fed = parameters(period).gov.irs.deductions.itemized.limitation
         excluded = add(tax_unit, period, p_fed.excluded_deductions)
-        # IA 104 lines 3 and 5.
-        reducible = max_(0, deductions + iowa_income_tax - excluded)
+        # IA 104 lines 3 and 5. Lines 3 to 11 run in float64, so float32 error
+        # can't move line 18 across a half.
+        reducible = max_(0, deductions + iowa_income_tax - excluded).astype(np.float64)
         # IA 104 lines 7 to 9, with the federal filing status.
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
-        excess_agi = max_(0, agi - p.limitation.applicable_amount[filing_status])
+        excess_agi = max_(
+            0, agi - p.limitation.applicable_amount[filing_status]
+        ).astype(np.float64)
         # IA 104 lines 6, 10 and 11.
         reduction = min_(
             p.limitation.itemized_deduction_rate * reducible,
@@ -54,13 +57,12 @@ class ia_itemized_deductions_reduction(Variable):
         # nearest tenth of a percent; neither Iowa Code 422.9(2) nor 701 IAC
         # 41.11(1) says how to round it. So line 1 - line 21 =
         # line 11 - line 2 * (1 - line 18), which can fall slightly below 0.
-        line_18 = np.round(
-            np.divide(
-                reducible - reduction,
-                reducible,
-                out=np.ones_like(reducible),
-                where=reducible > 0,
-            ),
-            3,
+        share = np.divide(
+            reducible - reduction,
+            reducible,
+            out=np.ones_like(reducible),
+            where=reducible > 0,
         )
+        # A half rounds up; the offset absorbs float64 error.
+        line_18 = np.floor(share * 1_000 + 0.5 + 1e-9) / 1_000
         return reduction - iowa_income_tax * (1 - line_18)
