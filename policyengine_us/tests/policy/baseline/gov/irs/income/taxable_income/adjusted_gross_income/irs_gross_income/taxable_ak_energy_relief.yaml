@@ -1,0 +1,168 @@
+- name: Case 1, the 2022 payment stays out of gross income (IR-2023-23, footnote 1).
+  period: 2022
+  input:
+    state_code: AK
+  output:
+    ak_energy_relief: 662
+    taxable_ak_energy_relief: 0
+
+- name: Case 2, the 2024 payment counts in full (Publication 525 for 2024).
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+  output:
+    ak_energy_relief: 298.17
+    taxable_ak_energy_relief: 298.17
+
+- name: Case 3, Alaska paid no energy relief in 2025.
+  period: 2025
+  input:
+    state_code: AK
+  output:
+    ak_energy_relief: 0
+    taxable_ak_energy_relief: 0
+
+- name: Case 4, the 2026 payment counts in full (PFD Division tax information).
+  period: 2026
+  input:
+    state_code: AK
+  output:
+    ak_energy_relief: 200
+    taxable_ak_energy_relief: 200
+
+- name: Case 5, no amount outside Alaska.
+  period: 2026
+  input:
+    state_code: WA
+  output:
+    taxable_ak_energy_relief: 0
+
+- name: Case 6, a supplied 2022 payment stays out.
+  period: 2022
+  input:
+    state_code: AK
+    ak_energy_relief: 1_000
+  output:
+    taxable_ak_energy_relief: 0
+
+- name: Case 7, a supplied 2026 payment counts in full.
+  period: 2026
+  input:
+    state_code: AK
+    ak_energy_relief: 1_000
+  output:
+    taxable_ak_energy_relief: 1_000
+
+- name: Case 8, nothing counts before 2022.
+  period: 2021
+  input:
+    state_code: AK
+  output:
+    taxable_ak_energy_relief: 0
+
+- name: Case 9, a 2022 filer reports the $2,622 regular dividend and not the $662 payment.
+  period: 2022
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: AK
+  output:
+    ak_permanent_fund_dividend: 2_622
+    taxable_ak_energy_relief: 0
+    irs_gross_income: 52_622
+    adjusted_gross_income: 52_622
+
+- name: Case 10, a 2024 filer reports the entire $1,702 from Publication 525.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_403.83
+    taxable_ak_energy_relief: 298.17
+    irs_gross_income: 51_702
+    adjusted_gross_income: 51_702
+
+- name: Case 11, a 2025 filer reports the $1,000 dividend, which held no energy relief.
+  period: 2025
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_000
+    taxable_ak_energy_relief: 0
+    irs_gross_income: 51_000
+    adjusted_gross_income: 51_000
+
+- name: Case 12, a 2026 filer reports the $1,200 dividend and pays tax on all of it.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_000
+    taxable_ak_energy_relief: 200
+    irs_gross_income: 51_200
+    adjusted_gross_income: 51_200
+    # Rev. Proc. 2025-32: taxable income of 51,200 - 16,100 = 35,100.
+    # 10% of 12,400 + 12% of (35,100 - 12,400) = 1,240 + 2,724.
+    income_tax: 3_964
+
+- name: Case 13, a dependent child's 2026 dividend counts as the child's own gross income.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 50_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    is_tax_unit_dependent: [false, true]
+    taxable_ak_energy_relief: [200, 200]
+    irs_gross_income: [51_200, 0]
+    dependent_gross_income: [0, 1_200]

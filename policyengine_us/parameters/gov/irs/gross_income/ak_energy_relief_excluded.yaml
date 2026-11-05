@@ -1,0 +1,23 @@
+description: Taxpayers leave Alaska's energy relief payment out of federal gross income, if this is true.
+
+values:
+  2022-01-01: true
+  2023-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Alaska energy relief payment excluded from gross income
+  reference:
+    # The 2022 payment, footnote 1.
+    - title: IRS News Release IR-2023-23, IRS issues guidance on state tax payments to help taxpayers
+      href: https://www.irs.gov/newsroom/irs-issues-guidance-on-state-tax-payments-to-help-taxpayers
+    # The news release covers only payments made in 2022.
+    - title: IRS Notice 2023-56, Federal Income Tax Consequences of Certain State Payments
+      href: https://www.irs.gov/pub/irs-drop/n-23-56.pdf#page=2
+    # The 2024 payment.
+    - title: IRS Publication 525 (2024), Taxable and Nontaxable Income
+      href: https://www.irs.gov/pub/irs-prior/p525--2024.pdf#page=32
+    # The 2026 payment.
+    - title: Alaska Permanent Fund Dividend Division, Tax Information
+      href: https://pfd.alaska.gov/payments/tax-information
