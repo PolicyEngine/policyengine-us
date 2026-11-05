@@ -1,3 +1,10 @@
+## [2.100.1] - 2026-11-05
+
+### Fixed
+
+- Count Form 4835 farm rental income (Schedule E line 40) in net investment income, and count rental, farm rental, estate and passive pass-through losses in net investment income only as far as section 461(l) allows them, for the net investment income tax and Minnesota's net investment income tax.
+
+
 ## [2.100.0] - 2026-11-05
 
 ### Added
