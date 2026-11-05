@@ -138,3 +138,230 @@
         state_code: NJ
   output:
     nj_eitc: 0
+
+- name: Married separated head of household without a qualifying child gets no NJ age fallback
+  # The filer is married under IRC 7703(a) (7703(b) gives only HoH status),
+  # lived apart six months (is_separated default), but has no EITC
+  # qualifying child, so IRC 32(d) denies the federal credit. The NJ
+  # fallback waives only the age limits, so the marital failure denies it
+  # too: federal 0, NJ 0. Before this fix NJ paid 0.4 x 649 = 259.60.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 55
+        employment_income: 12_000
+        is_separated: true
+      adult_child:
+        age: 30
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, adult_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, adult_child]
+        state_code: NJ
+  output:
+    eitc_spouses_lived_apart_last_six_months: true
+    eitc_child_count: 0
+    eitc_marital_eligible: false
+    eitc: 0
+    nj_childless_eitc_age_eligible: false
+    nj_eitc: 0
+
+- name: Unmarried 22-year-old without a qualifying child still gets the NJ age fallback
+  # Below the federal minimum age of 25 but above NJ's minimum of 18.
+  # 2025: NJ match 0.4 x federal zero-child maximum 649 = 259.60.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NJ
+  output:
+    eitc_marital_eligible: true
+    eitc: 0
+    nj_childless_eitc_age_eligible: true
+    nj_eitc: 259.60
+
+- name: Separate filer who meets the federal exception through a child without an SSN gets no NJ age fallback
+  # The child counts for IRC 32(d)(2)(B) but not for the federal schedule
+  # (32(c)(3)(D)), so eitc_child_count is 0 and the filer, at 22, is below
+  # the federal minimum age. The filer meets the federal marital test, but
+  # N.J.S.A. 54A:4-7a.(3) requires a married claimant to file jointly, so
+  # the age fallback pays 0.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 8_000
+      child:
+        age: 5
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+        eitc_spouses_lived_apart_last_six_months: true
+    households:
+      household:
+        members: [head, child]
+        state_code: NJ
+  output:
+    eitc_marital_eligible: true
+    eitc_child_count: 0
+    nj_eitc_separate_filer_eligible: false
+    nj_childless_eitc_age_eligible: false
+    nj_eitc: 0
+
+- name: Separate filer on the separation-instrument route gets the federal EITC but no NJ EITC
+  # IRC 32(d)(2)(B)(ii)(II): a written separation instrument and living apart
+  # at year end meet the federal exception. 2026, one child: phase-in
+  # 0.34 x 20,000 = 6,800 caps at the 4,427 maximum, and 20,000 is below the
+  # 23,890 phase-out start, so the federal EITC is 4,427. N.J.S.A.
+  # 54A:4-7a.(3) requires a married claimant to file jointly, so NJ pays 0.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 20_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+        eitc_legal_separation_and_apart_at_year_end: true
+    households:
+      household:
+        members: [head, child]
+        state_code: NJ
+  output:
+    eitc: 4_427
+    nj_eitc_separate_filer_eligible: false
+    nj_eitc: 0
+
+- name: Separate filer on the separation-instrument route with a child without an SSN gets no NJ age fallback
+  # The instrument route meets the federal marital test, and the child
+  # without an SSN leaves eitc_child_count at 0, so the 22-year-old reaches
+  # only the age fallback. N.J.S.A. 54A:4-7a.(3) bars a married separate
+  # filer from it.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 8_000
+      child:
+        age: 5
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+        eitc_legal_separation_and_apart_at_year_end: true
+    households:
+      household:
+        members: [head, child]
+        state_code: NJ
+  output:
+    eitc_marital_eligible: true
+    nj_childless_eitc_age_eligible: false
+    nj_eitc: 0
+
+- name: Separate filer with a child and six months apart gets no NJ EITC, against the NJ-1040 line 58 instructions
+  # The 2025 NJ-1040 instructions allow this filer the credit; the statute,
+  # N.J.S.A. 54A:4-7a.(3), and N.J.A.C. 18:35-4.3(g)(3) require a married
+  # claimant to file jointly, and the model follows them. Federal 2026, one
+  # child: 4,427 - 0.1598 x (30,000 - 23,890) = 3,450.62. The instructions'
+  # reading would pay 0.4 x 3,450.62 = 1,380.25.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 30_000
+        is_separated: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [head, child]
+        state_code: NJ
+  output:
+    eitc_spouses_lived_apart_last_six_months: true
+    eitc: 3_450.62
+    nj_eitc_separate_filer_eligible: false
+    nj_eitc: 0
+
+- name: Separate filer under a decree with a child gets the NJ match
+  # IRC 7703(a)(2): a filer legally separated under a decree is not married,
+  # so neither the federal marital test nor New Jersey's joint-filing rule
+  # applies, with both separation routes false. 2025, one child: phase-in
+  # 0.34 x 20,000 = 6,800 caps at 4,328, so NJ pays 0.4 x 4,328 = 1,731.20.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 20_000
+        is_separated_under_decree: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+        eitc_spouses_lived_apart_last_six_months: false
+        eitc_legal_separation_and_apart_at_year_end: false
+    households:
+      household:
+        members: [head, child]
+        state_code: NJ
+  output:
+    eitc: 4_328
+    nj_eitc_separate_filer_eligible: true
+    nj_eitc: 1_731.20
+
+- name: Separate filer under a decree without a child gets the NJ age fallback
+  # The decree makes the 22-year-old unmarried (IRC 7703(a)(2)), so the
+  # marital tests pass with no child. Below the federal minimum age of 25,
+  # the filer reaches the age fallback: 2025, 0.4 x 649 = 259.60.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 8_000
+        is_separated_under_decree: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [head]
+        state_code: NJ
+  output:
+    eitc: 0
+    nj_childless_eitc_age_eligible: true
+    nj_eitc: 259.60
