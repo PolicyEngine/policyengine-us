@@ -1,4 +1,4 @@
-- name: The dependent income goes to the spouse with the greater income, here not the head
+- name: A dependent's income stays off both spouses' columns
   period: 2021
   input:
     people:
@@ -22,10 +22,11 @@
         members: [person1, person2, person3]
         state_code: MS
   output:
-    # The spouse's $10,000 is greater than the head's $9,000.
-    ms_agi: [9_000, 13_000, 0]
+    # Each spouse's column holds their own income; the dependent's 3,000 goes
+    # on the dependent's own return (35 Miss. Admin. Code Pt. III, 10.01.104).
+    ms_agi: [9_000, 10_000, 0]
 
-- name: The dependent income stays with the same spouse when the head and spouse labels are exchanged
+- name: A dependent's income stays off both spouses' columns when the head and spouse labels are exchanged
   period: 2021
   input:
     people:
@@ -55,9 +56,9 @@
         members: [person1, person2, person3]
         state_code: MS
   output:
-    ms_agi: [9_000, 13_000, 0]
+    ms_agi: [9_000, 10_000, 0]
 
-- name: Spouses with equal income split the dependent income equally
+- name: Spouses with equal income keep their own income; the dependent's is on the dependent's own return
   period: 2021
   input:
     people:
@@ -87,9 +88,9 @@
         members: [person1, person2, person3]
         state_code: MS
   output:
-    ms_agi: [11_500, 11_500, 0]
+    ms_agi: [10_000, 10_000, 0]
 
-- name: A dependent's negative income is not moved to a spouse
+- name: A dependent's negative income does not reduce a spouse's column
   period: 2021
   input:
     people:
@@ -139,7 +140,7 @@
   output:
     ms_agi: 100_000
 
-- name: A dependent's self-employment adjustments are subtracted once, with the dependent's income
+- name: A dependent's self-employment income and adjustments stay on the dependent's own return
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -163,9 +164,9 @@
     # The child's own adjustments: one-half of self-employment tax (Schedule
     # SE line 13, 706.48), health insurance (1,000) and SEP (500), 2,206.48.
     ms_agi_adjustments: [0, 2_206.48]
-    # The child's income and adjustments reach the parent's Mississippi AGI
-    # once: 40,000 + 10,000 - 2,206.48.
-    ms_agi: [47_793.52, 0]
+    # The child's income and adjustments both go on the child's own
+    # Mississippi return, so the parent's AGI is the parent's 40,000.
+    ms_agi: [40_000, 0]
 
 - name: Each spouse subtracts only their own self-employed health insurance
   period: 2025
@@ -213,3 +214,53 @@
     # Line 41 is "the income or loss from activities reported on Federal
     # Schedule E": 30,000 - 5,000.
     ms_agi: 25_000
+
+- name: A dependent child's interest stays off the parent's Mississippi AGI and tax
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 16
+        taxable_interest_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MS
+  output:
+    # A minor resident files their own Form 80-105 when their gross income is
+    # over the personal exemption plus the standard deduction (2024 Form
+    # 80-100 instructions, p. 3). The parent's AGI is the parent's wages.
+    ms_agi: [40_000, 0]
+    # Head of household: 40,000 - 3,400 standard deduction - 8,000 exemption
+    # - 1,500 for the dependent = 27,100 of taxable income; 4.4% of the
+    # 17,100 over 10,000 = 752.40, the same as with no child income.
+    ms_income_tax: 752.4
+
+- name: A dependent child's wages stay off the parent's Mississippi AGI and tax
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 16
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MS
+  output:
+    ms_agi: [40_000, 0]
+    ms_income_tax: 752.4
