@@ -10,7 +10,7 @@ class ok_federal_eitc_demographic_eligible(Variable):
         # Oklahoma Statutes 68 O.S. Section 2357.43
         "https://law.justia.com/codes/oklahoma/title-68/section-68-2357-43/",
         "https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii",
-        "https://www.irs.gov/pub/irs-prior/p596--2020.pdf#page=17",
+        "https://www.irs.gov/pub/irs-prior/p596--2020.pdf#page=16",
     )
     defined_for = StateCode.OK
     documentation = """
@@ -22,7 +22,7 @@ class ok_federal_eitc_demographic_eligible(Variable):
        neither filer can be claimed as a dependent on another return
 
     2020 Age requirements (for filers without qualifying children):
-    - Minimum age: 25 (or 19 if full-time student)
+    - Minimum age: 25 for students and nonstudents
     - Maximum age: 64
 
     Note: If the tax unit has qualifying children, age requirements
@@ -42,7 +42,7 @@ class ok_federal_eitc_demographic_eligible(Variable):
             "2020-01-01"
         )
         student = person("is_full_time_student", period)
-        # Students have a lower minimum age requirement
+        # Both frozen 2020 minimum ages equal 25.
         min_age = where(student, min_age_student, min_age_non_student)
         max_age = parameters.gov.irs.credits.eitc.eligibility.age.max("2020-01-01")
         # Check if at least one filer meets age requirements. The age test

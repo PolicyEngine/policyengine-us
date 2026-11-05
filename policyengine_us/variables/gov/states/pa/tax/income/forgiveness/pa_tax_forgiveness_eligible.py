@@ -6,10 +6,9 @@ class pa_tax_forgiveness_eligible(Variable):
     entity = Person
     label = "Eligible to claim Pennsylvania tax forgiveness"
     documentation = (
-        "Whether this head or spouse can claim Pennsylvania Tax Forgiveness: "
-        "one who is claimed as a dependent on another federal return can claim it "
-        "only when the parent, grandparent or foster parent who claims them "
-        "qualifies for it."
+        "Whether this head or spouse can claim Pennsylvania tax forgiveness. "
+        "A filer who can be claimed as a dependent on another return cannot "
+        "claim forgiveness under Tax Reform Code section 301(c.2)."
     )
     definition_period = YEAR
     defined_for = StateCode.PA
@@ -25,12 +24,7 @@ class pa_tax_forgiveness_eligible(Variable):
 
     def formula(person, period, parameters):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        claimed = person("claimed_as_dependent_on_another_return", period)
-        # Schedule SP: a taxpayer who is "a dependent on another person's
-        # federal tax return" can claim Tax Forgiveness only if "the taxpayer
-        # on whose return the dependency is claimed also qualifies" ("A
-        # dependent child may also be eligible if he or she is a dependent on
-        # the PA-40 Schedule SP of his or her parents, grandparents, or foster
-        # parents").
-        parent_qualifies = person("pa_tax_forgiveness_parent_qualifies", period)
-        return head_or_spouse & (~claimed | parent_qualifies)
+        claimable = person("claimable_as_dependent_on_another_return", period)
+        # The instructions say a dependent child can qualify through a parent.
+        # Sections 301(c.2) and 304 exclude dependents without that exception.
+        return head_or_spouse & ~claimable

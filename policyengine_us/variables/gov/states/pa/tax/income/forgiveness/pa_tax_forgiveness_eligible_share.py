@@ -8,8 +8,8 @@ class pa_tax_forgiveness_eligible_share(Variable):
     documentation = (
         "The share of the return's Pennsylvania income tax that belongs to a "
         "head or spouse who can claim Tax Forgiveness. It is one unless a "
-        "filer is claimed as a dependent on another return. When one "
-        "spouse is claimed, the spouses must file separate Pennsylvania "
+        "filer can be claimed as a dependent on another return. When one "
+        "spouse can be claimed, the spouses must file separate Pennsylvania "
         "returns and each spouse's Tax Forgiveness is determined separately, "
         "so it applies only to the tax on the eligible spouse's own income. "
         "Each spouse's tax is approximated by that spouse's share of the "
@@ -54,8 +54,7 @@ class pa_tax_forgiveness_eligible_share(Variable):
             eligible_income / where(total > 0, total, 1),
             eligible_count / filer_count,
         )
-        # Separate claims apply only when a spouse "is claimed as a dependent
-        # on another person's federal income tax return" (Schedule SP).
-        claimed = person("claimed_as_dependent_on_another_return", period)
-        filer_is_claimed = tax_unit.any(filer & claimed)
-        return where(filer_is_claimed, share, 1)
+        # Section 301(c.2) excludes any filer who can be claimed elsewhere.
+        claimable = person("claimable_as_dependent_on_another_return", period)
+        filer_is_claimable = tax_unit.any(filer & claimable)
+        return where(filer_is_claimable, share, 1)

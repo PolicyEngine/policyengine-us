@@ -1,32 +1,33 @@
-"""New Jersey, North Carolina, North Dakota, Ohio, Oklahoma and Pennsylvania
-rules for a filer who can be claimed as a dependent.
+"""Check claimable-filer invariants in New Jersey, North Carolina, North Dakota,
+Ohio, Oklahoma and Pennsylvania.
 
-A return on which the filer (or, if joint, either spouse) can be claimed as a
-dependent has no dependents (IRC 152(b)(1)), so the NJ dependent, college
-and child tax credit counts, Ohio's tuition credit, Oklahoma's dependent
-exemptions and sales tax credit dependents, North Dakota's stillborn
-subtraction and Pennsylvania's dependent child allowance count none. A
-claimable filer has no Oklahoma regular exemption, no childless NJ or
-Oklahoma EITC, and claims Pennsylvania Tax Forgiveness only on their own tax
-and only when the parent who claims them qualifies.
+Hypothesis draws couples with each adult's claimability, actual claim and
+refund-only claimant exception. These tests exchange head and spouse labels
+and check that each output stays unchanged. They also mark another filer as
+claimed and check that the listed exemptions, credits, deductions and
+forgiveness never rise, using generated and seeded populations.
 
-For couples drawn by Hypothesis (with claimability, the actual claim and the
-refund-only claimant exception drawn per adult) and a seeded population in
-these states, each output is the same under either head/spouse labelling, and
-marking another filer as claimed never raises the exemptions, credits,
-deductions and forgiveness changed here.
+For Pennsylvania, they bound the eligible share between zero and one and
+require a full share when neither filer can be claimed. They also check that
+forgiveness stays between zero and tax before forgiveness. YAML cases cover
+North Dakota's stillborn subtraction; these populations supply no stillborn
+children.
 """
 
+import numpy as np
 import pytest
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 
+from policyengine_us import Simulation
 from policyengine_us.tests.core.test_claimable_filer_federal_invariants import (
     check_monotone,
     check_swap,
 )
 from policyengine_us.tests.core.test_dependent_elsewhere_head_spouse_swap_invariance import (
     CLAIM_PATTERNS,
+    TOLERANCE,
+    _calc,
     _crafted_cases,
     _seeded_couples,
     adults,
@@ -66,16 +67,6 @@ OUTPUTS = MONOTONE + [
 
 
 @st.composite
-def filers(draw):
-    # Whether the parent who claims this adult qualifies for Pennsylvania
-    # Tax Forgiveness (read only when the adult can be claimed).
-    return {
-        **draw(adults()),
-        "pa_tax_forgiveness_parent_qualifies": draw(st.booleans()),
-    }
-
-
-@st.composite
 def children(draw):
     child = draw(dependents())
     return {
@@ -94,7 +85,7 @@ def couples(draw):
     claimed = tuple(can_claim and draw(st.booleans()) for can_claim in claimable)
     return {
         "state": draw(st.sampled_from(STATES)),
-        "adults": [draw(filers()), draw(filers())],
+        "adults": [draw(adults()), draw(adults())],
         "dependents": draw(st.lists(children(), max_size=2)),
         "claimed": claimed,
         "claimable": claimable,
@@ -113,6 +104,34 @@ def _claim_only(units):
     ]
 
 
+def _pa_forgiveness_bounds(sim, year):
+    share = _calc(sim, "pa_tax_forgiveness_eligible_share", year)
+    assert ((share >= 0) & (share <= 1)).all()
+    in_pa = np.asarray(sim.calculate("PA", year, map_to="tax_unit"), dtype=bool)
+    claimable_filer = _calc(sim, "head_or_spouse_is_dependent_elsewhere", year) > 0
+    np.testing.assert_allclose(share[in_pa & ~claimable_filer], 1, atol=0, rtol=0)
+    forgiveness = _calc(sim, "pa_tax_forgiveness_amount", year)
+    tax = _calc(sim, "pa_income_tax_before_forgiveness", year)
+    assert (forgiveness >= 0).all()
+    assert (forgiveness <= tax + TOLERANCE).all()
+
+
+def test_pa_tax_forgiveness_has_no_parent_qualification_input():
+    sim = Simulation(
+        situation={
+            "people": {"filer": {}},
+            "tax_units": {"tax_unit": {"members": ["filer"]}},
+            "households": {
+                "household": {
+                    "members": ["filer"],
+                    "state_code": {2025: "PA"},
+                }
+            },
+        }
+    )
+    assert "pa_tax_forgiveness_parent_qualifies" not in sim.tax_benefit_system.variables
+
+
 @settings(
     max_examples=2,
     deadline=None,
@@ -121,12 +140,12 @@ def _claim_only(units):
 )
 @given(st.sampled_from(YEARS), st.lists(couples(), min_size=6, max_size=12))
 def test_nj_pa_claimable_filer_rules_are_label_free(year, units):
-    check_swap(units, year, OUTPUTS)
-    check_monotone(_claim_only(units), year, MONOTONE)
+    check_swap(units, year, OUTPUTS, _pa_forgiveness_bounds)
+    check_monotone(_claim_only(units), year, MONOTONE, _pa_forgiveness_bounds)
 
 
 @pytest.mark.parametrize("year", YEARS)
 def test_nj_pa_claimable_filer_rules_seeded_population(year):
     units = _seeded_couples(STATES, per_state=2) + _crafted_cases(STATES)
-    check_swap(units, year, OUTPUTS)
-    check_monotone(units, year, MONOTONE)
+    check_swap(units, year, OUTPUTS, _pa_forgiveness_bounds)
+    check_monotone(units, year, MONOTONE, _pa_forgiveness_bounds)

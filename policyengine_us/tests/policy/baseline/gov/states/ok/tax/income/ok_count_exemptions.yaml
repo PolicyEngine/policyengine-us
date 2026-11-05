@@ -615,7 +615,8 @@
         members: [person_a, person_b, child_1]
         state_code: OK
   output:
-    # The other spouse's exemption and the restored dependent: 2 x $40.
+    # The other spouse and restored dependent give two exemptions.
+    # The sales tax credit pays $40 per exemption: $80.
     ok_count_exemptions: 2
     ok_stc: 80
 
@@ -656,3 +657,15 @@
   output:
     ok_count_exemptions: 2
     ok_stc: 80
+
+- name: Claimable 66-year-old single filer keeps the special exemption
+  period: 2025
+  input:
+    state_code: OK
+    age: 66
+    filing_status: SINGLE
+    claimable_as_dependent_on_another_return: true
+    adjusted_gross_income: 10000
+  output:
+    ok_count_exemptions: 1
+    ok_exemptions: 1000
