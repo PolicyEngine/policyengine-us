@@ -8,12 +8,15 @@ class cbo_medicare_benefit(Variable):
     documentation = (
         "Medicare benefit as the Congressional Budget Office counts it in "
         "household income: the government's average cost per enrollee of "
-        "providing Medicare Parts A, B and D, net of premiums paid by or on "
-        "behalf of enrollees. CBO assigns the same average to every "
-        "enrollee and counts the Part D low-income subsidy separately as a "
-        "means-tested transfer, so this subtracts per-enrollee averages of "
-        "premium income and of the low-income subsidy from Medicare "
-        "spending per enrollee, rather than the person's own premiums."
+        "providing Medicare Parts A, B and D, net of premium income "
+        "(premiums paid by or on behalf of enrollees, as the Medicare "
+        "Trustees count it; this includes premiums state Medicaid programs "
+        "pay, which PolicyEngine counts in Medicaid). CBO assigns the same "
+        "average to every enrollee and counts the Part D low-income subsidy "
+        "separately as a means-tested transfer, so this subtracts "
+        "per-enrollee averages of premium income and of the low-income "
+        "subsidy from Medicare spending per enrollee, rather than the "
+        "person's own premiums."
     )
     unit = USD
     definition_period = YEAR
