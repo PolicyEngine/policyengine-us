@@ -1,0 +1,110 @@
+# Tests for mt_ccap_fpg (SPMUnit, MONTH). The Sliding Fee Scale effective 07-01-2025 prints
+# the 2025 guideline; ACF's January 2025 table prints the 2024 guideline.
+- name: 2024-08 uses the 2024 guideline.
+  period: 2024-08
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: MT
+  output:
+    mt_ccap_fpg: 2_151.67
+
+- name: 2025-03 uses the 2024 guideline.
+  period: 2025-03
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: MT
+  output:
+    mt_ccap_fpg: 2_151.67
+
+- name: 2025-08 uses the 2025 guideline.
+  period: 2025-08
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: MT
+  output:
+    mt_ccap_fpg: 2_220.83
+
+- name: 2026-06 uses the 2025 guideline.
+  period: 2026-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: MT
+  output:
+    mt_ccap_fpg: 2_220.83
+
+- name: 2027-01 uses the 2026 guideline.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_fpg: 2_276.67

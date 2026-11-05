@@ -180,7 +180,7 @@
     people:
       person1:
         age: 30
-        employment_income: 51_183
+        employment_income: 51_180
       person2:
         age: 5
     spm_units:
@@ -192,7 +192,7 @@
         members: [person1, person2]
         state_code: MO
   output:
-    # Monthly income = 51,183 / 12 = 4,265.25 = 242% FPL limit -> <= -> eligible.
+    # 242% FPL prints as 4,265 on the chart; 51,180 / 12 = 4,265 -> <= -> eligible.
     mo_ccs_income_eligible: true
 
 - name: Case 10, existing family just above 242 percent FPL is ineligible.
@@ -298,4 +298,284 @@
     # Income 144,000 / 12 = 12,000 <= 13,138.58 (242% FPL) but > 10,794.15
     # (85% SMI) -> the 85% SMI cap binds -> ineligible (would be eligible on the
     # FPL limit alone).
+    mo_ccs_income_eligible: false
+
+# Tops from DESE's chart headed November 2025 and updated July 1, 2026: 150% of the
+# 2025 guideline to the nearest dollar for new applicants, and Transitional Level 2
+# (215%) for existing families from July 1, 2026, when DESE removed Level 3.
+
+- name: New applicant of 2 at 2,644 dollars qualifies in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mo_ccs_adjusted_income: 2_644
+        mo_ccs_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: MO
+  output:
+    mo_ccs_income_eligible: true
+
+- name: New applicant of 2 at 2,645 dollars doesn't qualify in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mo_ccs_adjusted_income: 2_645
+        mo_ccs_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: MO
+  output:
+    mo_ccs_income_eligible: false
+
+- name: New applicant of 3 at 3,331 dollars qualifies in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mo_ccs_adjusted_income: 3_331
+        mo_ccs_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: MO
+  output:
+    mo_ccs_income_eligible: true
+
+- name: New applicant of 3 at 3,332 dollars doesn't qualify in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mo_ccs_adjusted_income: 3_332
+        mo_ccs_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: MO
+  output:
+    mo_ccs_income_eligible: false
+
+- name: New applicant of 4 at 4,019 dollars qualifies in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        mo_ccs_adjusted_income: 4_019
+        mo_ccs_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: MO
+  output:
+    mo_ccs_income_eligible: true
+
+- name: New applicant of 4 at 4,020 dollars doesn't qualify in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        mo_ccs_adjusted_income: 4_020
+        mo_ccs_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: MO
+  output:
+    mo_ccs_income_eligible: false
+
+- name: New applicant of 3 at 3,331 dollars qualifies in 2025-11.
+  period: 2025-11
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mo_ccs_adjusted_income: 3_331
+        mo_ccs_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: MO
+  output:
+    mo_ccs_income_eligible: true
+
+- name: New applicant of 3 at 3,332 dollars doesn't qualify in 2025-11.
+  period: 2025-11
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mo_ccs_adjusted_income: 3_332
+        mo_ccs_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: MO
+  output:
+    mo_ccs_income_eligible: false
+
+- name: Continuing family of 3 at 5,374 dollars qualifies in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mo_ccs_adjusted_income: 5_374
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: MO
+  output:
+    mo_ccs_income_eligible: true
+
+- name: Continuing family of 3 at 5,375 dollars doesn't qualify in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mo_ccs_adjusted_income: 5_375
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: MO
+  output:
+    mo_ccs_income_eligible: false
+
+- name: Continuing family of 3 at 4,775 dollars qualifies in 2026-07.
+  period: 2026-07
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mo_ccs_adjusted_income: 4_775
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: MO
+  output:
+    mo_ccs_income_eligible: true
+
+- name: Continuing family of 3 at 4,776 dollars doesn't qualify in 2026-07.
+  period: 2026-07
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mo_ccs_adjusted_income: 4_776
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: MO
+  output:
     mo_ccs_income_eligible: false

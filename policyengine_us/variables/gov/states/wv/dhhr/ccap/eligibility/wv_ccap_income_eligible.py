@@ -20,7 +20,10 @@ class wv_ccap_income_eligible(Variable):
         # full TANF — is_tanf_enrolled treats both as categorically eligible.
         p = parameters(period).gov.states.wv.dhhr.ccap.income
         countable_income = spm_unit("wv_ccap_countable_income", period)
-        fpg = spm_unit("spm_unit_fpg", period)
-        fpl_eligible = countable_income <= fpg * p.fpl_limit
+        fpg = spm_unit("wv_ccap_fpg", period)
+        # Appendix A prints each limit to the nearest dollar. Round to cents
+        # first so floating-point noise can't move a tie.
+        fpl_limit = np.floor(np.round(fpg * p.fpl_limit, 2) + 0.5)
+        fpl_eligible = countable_income <= fpl_limit
         is_tanf = spm_unit("is_tanf_enrolled", period)
         return is_tanf | fpl_eligible

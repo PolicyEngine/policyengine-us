@@ -20,7 +20,7 @@ class wv_ccap_copay(Variable):
         # in care. Manual §6.4.3.4: capped at three youngest children.
         p = parameters(period).gov.states.wv.dhhr.ccap.copayment
         countable_income = spm_unit("wv_ccap_countable_income", period)
-        fpg = spm_unit("spm_unit_fpg", period)
+        fpg = spm_unit("wv_ccap_fpg", period)
         fpl_ratio = where(fpg > 0, countable_income / fpg, 0)
         family_size = spm_unit("spm_unit_size", period.this_year)
         # Look up daily fee per child from Appendix A by family size column.

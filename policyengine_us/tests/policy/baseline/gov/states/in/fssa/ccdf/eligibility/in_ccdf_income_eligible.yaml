@@ -6,7 +6,8 @@
 # value takes effect 2026-04-05, so it is exercised with a 2027-01 period.
 
 # --- Applicant (get-on), 1.5 FPL era at 2026-01 ---
-# 2-person FPG 2026 = 21,640/yr; limit = 1.5 * 21,640 = 32,460/yr.
+# January 2026 still uses the 2025 guideline: 2-person FPG = 21,150/yr. The limit is
+# 1.5 * 21,150 / 12 = 2,643.75, printed as 2,644 a month, or 31,728 a year.
 
 - name: Case 1, applicant income below get-on limit, eligible.
   period: 2026-01
@@ -35,7 +36,7 @@
     people:
       person1:
         age: 35
-        employment_income: 32_460  # 1.5 * 21,640 FPG
+        employment_income: 31_728  # 12 * 2,644, the rounded limit
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -57,7 +58,7 @@
     people:
       person1:
         age: 35
-        employment_income: 33_000  # above 32,460 limit
+        employment_income: 33_000  # above 31,728 limit
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -183,12 +184,11 @@
     in_ccdf_income_eligible: false
 
 # --- 135% FPL applicant boundary at 2027-01 (1.35 era) ---
-# 2-person 2027 FPG = 22,147.39/yr; 135% = 29,898.98/yr. The 2027 FPG is a
-# CBO-CPI-forecast-uprated value that shifts when the actual 2027 guideline is
-# published, so these cases keep a comfortable margin on each side of the
-# limit rather than pinning the exact boundary (the inclusive <= boundary is
-# exercised at 2026 with the published FPG in Case 2). The ineligible income
-# stays below the 1.5-era limit (33,221), proving the 1.35 rate applies.
+# January 2027 still uses the 2026 guideline: 2-person FPG = 21,640/yr; 135% prints
+# as 2,435 a month, or 29,220 a year. These cases keep a comfortable margin on each
+# side of the limit (the inclusive <= boundary is exercised at 2026 in Case 2). The
+# ineligible income stays below the 1.5-era limit (32,460), proving the 1.35 rate
+# applies.
 
 - name: Case 9, applicant income below 135% FPL, eligible.
   period: 2027-01
@@ -196,7 +196,7 @@
     people:
       person1:
         age: 35
-        employment_income: 29_000  # comfortably below the ~29,899 limit
+        employment_income: 29_000  # comfortably below the 29,220 limit
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -217,7 +217,7 @@
     people:
       person1:
         age: 35
-        employment_income: 30_800  # above the ~29,899 limit, below 1.5 * FPG
+        employment_income: 30_800  # above the 29,220 limit, below 1.5 * FPG
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -343,3 +343,616 @@
     # 5-person FPG 2026 = 38,680/yr; 150% limit = 58,020/yr (4,835/mo).
     # 3,333/mo < 4,835/mo -> eligible. A 2-person unit at this income fails.
     in_ccdf_income_eligible: true
+
+# Tops by family of three: 150% of the 2023 guideline ($3,108) until March 31, 2024; of
+# the 2024 guideline ($3,228, state plan section 2.2.4) until May 1, 2025; of the 2025
+# guideline ($3,331) until April 5, 2026; then 135% of the 2026 guideline ($3,074, FSSA's
+# chart). A monthly period reads each change from the next month's first day.
+
+- name: New applicant of 3 at 3,108 dollars qualifies in 2024-03.
+  period: 2024-03
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_108
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 3 at 3,109 dollars doesn't qualify in 2024-03.
+  period: 2024-03
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_109
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 3 at 3,228 dollars qualifies in 2024-04.
+  period: 2024-04
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_228
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 3 at 3,229 dollars doesn't qualify in 2024-04.
+  period: 2024-04
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_229
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 3 at 3,228 dollars qualifies in 2025-04.
+  period: 2025-04
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_228
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 3 at 3,229 dollars doesn't qualify in 2025-04.
+  period: 2025-04
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_229
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 3 at 3,331 dollars qualifies in 2025-05.
+  period: 2025-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_331
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 3 at 3,332 dollars doesn't qualify in 2025-05.
+  period: 2025-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_332
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 3 at 3,331 dollars qualifies in 2026-04.
+  period: 2026-04
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_331
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 3 at 3,332 dollars doesn't qualify in 2026-04.
+  period: 2026-04
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_332
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 2 at 2,435 dollars qualifies in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        in_ccdf_countable_income: 2_435
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 2 at 2,436 dollars doesn't qualify in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        in_ccdf_countable_income: 2_436
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 3 at 3,074 dollars qualifies in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_074
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 3 at 3,075 dollars doesn't qualify in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_075
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 4 at 3,713 dollars qualifies in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        in_ccdf_countable_income: 3_713
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 4 at 3,714 dollars doesn't qualify in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        in_ccdf_countable_income: 3_714
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 5 at 4,352 dollars qualifies in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        in_ccdf_countable_income: 4_352
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 5 at 4,353 dollars doesn't qualify in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        in_ccdf_countable_income: 4_353
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 6 at 4,991 dollars qualifies in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        in_ccdf_countable_income: 4_991
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 6 at 4,992 dollars doesn't qualify in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        in_ccdf_countable_income: 4_992
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 7 at 5,630 dollars qualifies in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+      person7:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        in_ccdf_countable_income: 5_630
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 7 at 5,631 dollars doesn't qualify in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+      person7:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        in_ccdf_countable_income: 5_631
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 8 at 6,269 dollars qualifies in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+      person7:
+        age: 15
+      person8:
+        age: 16
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        in_ccdf_countable_income: 6_269
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 8 at 6,270 dollars doesn't qualify in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+      person7:
+        age: 15
+      person8:
+        age: 16
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        in_ccdf_countable_income: 6_270
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: false
