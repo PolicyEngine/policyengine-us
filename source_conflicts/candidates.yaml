@@ -6818,11 +6818,12 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/local/ny/nyc/tax/income/credits/nyc_eitc.py
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10664
   state: ruled
   note: The Department fills the precision gap; every available worksheet from 2022 through 2025 rounds the
     reduction. Rounding starts in 2022, preserving earlier calculations despite parameter backdating.
-    No 2026 worksheet was available when checked. The model retains the existing .00002 coefficient;
+    We could not fetch a 2026 worksheet. The model retains the existing .00002 coefficient;
     this change does not resolve the statutory words two-tenths against the parenthetical numeric notation 0.002.
     Axiom holds NYC 11-1706 and the 2025 worksheet. Captures here supply the state statute excerpt and the
     2022-2024 worksheet instructions that its pinned corpus lacks.
