@@ -1,0 +1,1 @@
+Start Vermont's 2017 taxable income from federal taxable income, with the former 32 V.S.A. § 5811(21) itemized deduction addback, additions and subtractions, and add the 2017 federal standard deduction amounts.
