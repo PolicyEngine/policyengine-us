@@ -1,1 +1,1 @@
-Reduce Oregon's federal tax liability subtraction by every federal refundable credit except the EITC, plus the premium tax credit, and stop counting the employee payroll tax on unreported tips and wages.
+Net the premium tax credit out of Oregon's federal tax liability subtraction, and stop counting the employee payroll tax on unreported tips and wages.
