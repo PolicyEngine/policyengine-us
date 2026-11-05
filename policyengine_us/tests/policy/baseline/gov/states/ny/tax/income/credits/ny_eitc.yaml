@@ -226,3 +226,107 @@
     adjusted_gross_income: 41_500
     ny_recomputed_federal_agi: 41_800
     ny_eitc: 0
+
+- name: 2021 NY EITC for a parent who takes up the federal EITC
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        takes_up_eitc: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # Tax Law 606(d) and the 2021 IT-215 instructions: 30% of the federal
+    # credit computed without ARPA. One child: 34% phase-in x $10,000 =
+    # $3,400, under the $3,618 maximum. 30% x 3,400 = $1,020, less the
+    # household credit capped at NY tax before credits, which is zero.
+    eitc: 3_400
+    ny_income_tax_before_credits: 0
+    ny_eitc: 1_020
+
+- name: 2021 NY EITC is zero for a parent who does not take up the federal EITC
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        takes_up_eitc: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # The pre-ARPA recomputation reads the same take-up input, so the
+    # recomputed federal credit, and 30% of it, is zero.
+    eitc: 0
+    ny_eitc: 0
+
+# The pre-ARPA branch copies the parent's cache, so this case lists the
+# current-law federal credit first: the branch must recompute it, not read it.
+- name: 2021 NY EITC recomputes the federal credit without ARPA after the ARPA credit
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 9_000
+    households:
+      household:
+        members: [filer]
+        state_code: NY
+  output:
+    # ARPA childless credit (gov.irs.credits.eitc.phase_in_rate and .max,
+    # 2021, no children): 15.3% x 9,000 = 1,377, under the 1,502 maximum,
+    # and below the 11,610 ARPA phase-out start.
+    eitc: 1_377
+    # The model's NY tax before credits and household credit for this filer.
+    ny_income_tax_before_credits: 40
+    ny_household_credit: 40
+    # Pre-ARPA (Rev. Proc. 2020-45): gov.states.ny.tax.income.credits.eitc
+    # .pre_arpa childless_max 543 and childless_phase_out_start 8,880, and
+    # the 2020 childless phase-out rate of 7.65% (eitc.phase_out.rate):
+    # 543 - 7.65% x (9,000 - 8,880) = 533.82; 30% = 160.146, less the
+    # household credit of 40 (capped at NY tax of 40) = 120.15.
+    ny_eitc: 120.15
+
+# A supplied eitc is the current-law (ARPA) amount; the pre-ARPA branch
+# recomputes the federal credit rather than reading it.
+- name: 2021 NY EITC recomputes the federal credit when the ARPA credit is supplied
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        eitc: 500
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # Pre-ARPA one-child credit: 34% x 10,000 = 3,400, under the 3,618
+    # maximum; 30% = 1,020, less a household credit capped at NY tax of 0.
+    ny_eitc: 1_020
