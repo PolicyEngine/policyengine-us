@@ -1,8 +1,9 @@
 # Unit tests for the Colorado Premium Assistance amount.
 #
-# All inputs (is_aca_ptc_eligible per person, aca_magi_fraction, slcsp as an
-# annual value, aca_ptc) are supplied directly so every expected value is
-# exactly hand-verifiable and independent of the rating-area premium lookup.
+# All inputs (is_aca_ptc_eligible per person, aca_magi against a prior-year
+# tax_unit_fpg pinned to $10,000, slcsp as an annual value, aca_ptc) are supplied
+# directly so every expected value is exactly hand-verifiable and independent of
+# the rating-area premium lookup.
 # slcsp is a MONTH-period variable; the amount formula annualizes it via
 # add(tax_unit, period, ["slcsp"]). Providing slcsp at the YEAR period sets the
 # annual total, so the values below are annual SLCSP.
@@ -30,7 +31,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 10_000
         aca_ptc: 2_000
     households:
@@ -57,7 +60,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        aca_magi_fraction: 3.00
+        aca_magi: 30_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 12_000
         aca_ptc: 2_000
     households:
@@ -94,7 +99,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5]
-        aca_magi_fraction: 3.00
+        aca_magi: 30_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 20_000
         aca_ptc: 3_000
     households:
@@ -140,7 +147,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6, person7]
-        aca_magi_fraction: 3.00
+        aca_magi: 30_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 25_000
         aca_ptc: 4_000
     households:
@@ -164,7 +173,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 10_000
         aca_ptc: 9_500
     households:
@@ -188,7 +199,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 8_000
         aca_ptc: 8_000
     households:
@@ -200,7 +213,7 @@
     co_premium_assistance: 0
 
 - name: Case 7, ineligible unit (above 400% FPL) -> amount 0.
-  # aca_magi_fraction 4.50 > 4.0 -> co_premium_assistance_eligible false ->
+  # 45_000 / 10_000 = 4.50 > 4.0 -> co_premium_assistance_eligible false ->
   # where(eligible, annual, 0) returns 0.
   period: 2026
   absolute_error_margin: 0.01
@@ -212,7 +225,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 4.50
+        aca_magi: 45_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 10_000
         aca_ptc: 2_000
     households:
@@ -234,7 +249,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 10_000
         aca_ptc: 2_000
     households:
@@ -256,7 +273,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2024: 10_000
         slcsp: 10_000
         aca_ptc: 2_000
     households:
@@ -281,7 +300,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 0
         aca_ptc: 0
     households:
@@ -305,7 +326,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 8_000
         aca_ptc: 7_040
     households:
@@ -346,7 +369,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
-        aca_magi_fraction: 3.00
+        aca_magi: 30_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 25_000
         aca_ptc: 4_000
     households:
@@ -371,7 +396,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.01
+        aca_magi: 10_100
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 10_000
         aca_ptc: 2_000
     households:
@@ -407,7 +434,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        aca_magi_fraction: 3.00
+        aca_magi: 30_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 14_000
         aca_ptc: 3_000
     households:
@@ -439,7 +468,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        aca_magi_fraction: 3.00
+        aca_magi: 30_000
+        tax_unit_fpg:
+          2026: 10_000
         slcsp: 14_000
         aca_ptc: 3_000
     households:
@@ -477,7 +508,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5]
-        aca_magi_fraction: 3.00
+        aca_magi: 30_000
+        tax_unit_fpg:
+          2026: 10_000
         slcsp: 22_000
         aca_ptc: 4_000
     households:
@@ -504,7 +537,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 8_000
         aca_ptc: 9_000
     households:
@@ -531,7 +566,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 0.99
+        aca_magi: 9_900
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 10_000
         aca_ptc: 2_000
     households:
@@ -558,7 +595,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 0.99
+        aca_magi: 9_900
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 10_000
         aca_ptc: 0
     households:
@@ -592,7 +631,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
-        aca_magi_fraction: 3.00
+        aca_magi: 30_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 18_000
         aca_ptc: 3_000
     households:
@@ -617,7 +658,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 10_000
         aca_ptc: 0
     households:
@@ -642,7 +685,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2027: 10_000
         slcsp: 10_000
         aca_ptc: 2_000
     households:
@@ -669,7 +714,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 10_000
         aca_ptc: 2_000
         takes_up_co_premium_assistance_if_eligible: false
