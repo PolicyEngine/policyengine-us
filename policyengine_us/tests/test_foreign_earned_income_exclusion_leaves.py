@@ -198,18 +198,25 @@ def test_set_input_marks_a_leaf_explicit_after_its_default_was_cached(entered):
     )
 
 
-def expected_legacy_carry(simulation, entered):
-    # The original pure dollar input used default uprating, then the system
-    # converted that national total to its per-capita series. Adding a
-    # formula must preserve the projected value.
+def uprated(simulation, amounts, entered, year):
+    """The amounts entered for one year, uprated straight to ``year``.
+
+    The original pure dollar input used default uprating, then the system
+    converted that national total to its per-capita series. Adding a formula
+    must preserve the projected value.
+    """
     parameters = simulation.tax_benefit_system.parameters
-    before = parameters(
-        str(YEAR)
-    ).calibration.gov.cbo.income_by_source.adjusted_gross_income_per_capita
-    after = parameters(
-        str(YEAR + 1)
-    ).calibration.gov.cbo.income_by_source.adjusted_gross_income_per_capita
-    return np.array([entered], dtype=np.float32) * (after / before)
+
+    def index(index_year):
+        return parameters(
+            str(index_year)
+        ).calibration.gov.cbo.income_by_source.adjusted_gross_income_per_capita
+
+    return np.array(amounts, dtype=np.float32) * (index(year) / index(entered))
+
+
+def expected_legacy_carry(simulation, entered):
+    return uprated(simulation, [entered], YEAR, YEAR + 1)
 
 
 @pytest.mark.parametrize("legacy", [0, 10_000, -5_000])
@@ -264,6 +271,103 @@ def test_future_leaf_inputs_do_not_replace_legacy_carry():
     np.testing.assert_array_equal(
         simulation.calculate("ma_foreign_earned_income_exclusion_addback", YEAR + 1),
         expected,
+    )
+
+
+@st.composite
+def legacy_calculation_orders(draw):
+    """Amounts entered for one year, a later year to ask for, and the years
+    calculated first, in the order drawn. Some may follow the target year."""
+    entered = draw(st.integers(2015, 2030))
+    target = draw(st.integers(entered + 1, entered + 6))
+    first = draw(
+        st.lists(st.integers(entered + 1, target + 2), unique=True, max_size=5)
+    )
+    amounts = draw(
+        st.lists(
+            st.floats(-1e6, 1e7, allow_nan=False, width=32), min_size=1, max_size=4
+        )
+    )
+    return amounts, entered, target, first
+
+
+@hypothesis.settings(max_examples=6, deadline=None, derandomize=True)
+# The reproducing case: 10,000 entered for 2024 gave 11,090.326171875 for 2026
+# asked alone, but 11,090.3271484375 after 2025, which was uprated from the
+# float32 result calculated for 2025 rather than from the input.
+@hypothesis.example(([10_000], 2024, 2026, [2025]))
+@hypothesis.given(legacy_calculation_orders())
+def test_legacy_uprating_does_not_depend_on_calculation_order(case):
+    amounts, entered, target, first = case
+
+    def build():
+        return simulation_for_tax_units(
+            [
+                {"foreign_earned_income_exclusion": {entered: amount}}
+                for amount in amounts
+            ]
+        )
+
+    fresh = build().calculate("foreign_earned_income_exclusion", target)
+    simulation = build()
+    for year in first:
+        simulation.calculate("foreign_earned_income_exclusion", year)
+    after = simulation.calculate("foreign_earned_income_exclusion", target)
+    # Bit for bit: the drift was in the last bits of a float32.
+    np.testing.assert_array_equal(after.view(np.uint32), fresh.view(np.uint32))
+    np.testing.assert_array_equal(after, uprated(simulation, amounts, entered, target))
+
+
+@pytest.mark.parametrize("order", [(YEAR + 1, YEAR + 3), (YEAR + 3, YEAR + 1)])
+def test_legacy_uprating_starts_from_the_latest_earlier_entered_year(order):
+    # Each year uprates from the latest year entered before it, whichever of
+    # the other years were calculated first.
+    simulation = simulation_for_tax_units(
+        [{"foreign_earned_income_exclusion": {YEAR: 10_000, YEAR + 2: 7_000}}]
+    )
+    values = {
+        year: simulation.calculate("foreign_earned_income_exclusion", year)
+        for year in order
+    }
+    np.testing.assert_array_equal(
+        values[YEAR + 1], uprated(simulation, [10_000], YEAR, YEAR + 1)
+    )
+    np.testing.assert_array_equal(
+        values[YEAR + 3], uprated(simulation, [7_000], YEAR + 2, YEAR + 3)
+    )
+
+
+@pytest.mark.parametrize("first", [(), (2013, 2015)])
+def test_legacy_amount_is_held_flat_until_the_index_starts(first):
+    # The per-capita AGI index starts in 2015. An amount entered for 2012 is
+    # carried unchanged until then and uprated from the index's first value
+    # after it, whichever earlier years were calculated first.
+    simulation = simulation_for_tax_units(
+        [{"foreign_earned_income_exclusion": {2012: 12_345.67}}]
+    )
+    for year in first:
+        simulation.calculate("foreign_earned_income_exclusion", year)
+    np.testing.assert_array_equal(
+        simulation.calculate("foreign_earned_income_exclusion", 2014),
+        np.array([12_345.67], dtype=np.float32),
+    )
+    np.testing.assert_array_equal(
+        simulation.calculate("foreign_earned_income_exclusion", 2016),
+        uprated(simulation, [12_345.67], 2015, 2016),
+    )
+
+
+def test_legacy_uprating_ignores_an_amount_only_another_branch_holds():
+    # An amount stored only under a branch this simulation cannot read is not
+    # one of its inputs, so the year after it takes the legacy default. When
+    # any stored year could be the source, that amount was chosen, read back
+    # as None and raised TypeError.
+    simulation = simulation_for_tax_units([{}])
+    simulation.get_holder("foreign_earned_income_exclusion").set_input(
+        period(YEAR), np.array([10_000], dtype=np.float32), "sibling"
+    )
+    np.testing.assert_array_equal(
+        simulation.calculate("foreign_earned_income_exclusion", YEAR + 1), [0]
     )
 
 

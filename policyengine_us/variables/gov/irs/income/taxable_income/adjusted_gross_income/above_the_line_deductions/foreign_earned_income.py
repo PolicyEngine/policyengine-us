@@ -1,6 +1,9 @@
 from policyengine_us.model_api import *
 from policyengine_core.parameters import get_parameter
-from policyengine_core.simulations.simulation import _uprating_index_value
+from policyengine_core.simulations.simulation import (
+    _latest_input_key,
+    _uprating_index_value,
+)
 from policyengine_us.tools.default_uprating import DEFAULT_DOLLAR_INPUT_UPRATING
 from policyengine_us.tools.section_911 import has_section_911_leaf_inputs
 
@@ -22,17 +25,26 @@ class foreign_earned_income_exclusion(Variable):
             # A formula cannot also declare Core uprating. Preserve the
             # old dollar input's per-capita default uprating here instead,
             # including signed inputs and Core's held-flat index boundaries.
+            # As Core does, uprate only from an entered input this branch
+            # reads. A year this simulation calculated was itself uprated
+            # and rounded to float32, so uprating from it would make the
+            # result depend on which years were calculated first.
             simulation = tax_unit.simulation
             holder = simulation.get_holder("foreign_earned_income_exclusion")
-            earlier_periods = [
-                known_period
-                for known_period in holder.get_known_periods()
-                if known_period.unit == period.unit
-                and known_period.start < period.start
+            earlier_inputs = [
+                input_period
+                for input_period in holder.get_input_periods(simulation.branch_name)
+                if input_period.unit == period.unit
+                and input_period.start < period.start
             ]
-            if not earlier_periods:
+            if not earlier_inputs:
                 return None
-            latest = max(earlier_periods, key=lambda known_period: known_period.start)
+            # Core's tie-break: of two inputs starting the same year, the one
+            # that ends last, so the source never depends on storage order.
+            latest = max(
+                earlier_inputs,
+                key=lambda input_period: _latest_input_key(input_period, period.unit),
+            )
             index = get_parameter(
                 simulation.tax_benefit_system.parameters,
                 DEFAULT_DOLLAR_INPUT_UPRATING + "_per_capita",
