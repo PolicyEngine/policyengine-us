@@ -795,11 +795,12 @@
     separate_filer_itemizes: true
     employment_income: 1_000
   output:
-    # The model zeroes the basic standard deduction whenever this input is
-    # true, and the formula then withdraws the (A) exception: $1,000 >= $0.
-    # Without that the threshold would be $0 basic + $2,050 age addition. In
-    # law section 63(c)(6)(A) reaches only a married individual filing a
-    # separate return, and a head of household isn't married (sections 2(b)(1),
-    # 2(c), 63(g), 7703(b)), so this case pins the model's input rule.
-    basic_standard_deduction: 0
+    # Section 63(c)(6)(A) reaches only a married individual filing a separate
+    # return, and a head of household isn't married (sections 2(b)(1), 2(c),
+    # 63(g), 7703(b)), so basic_standard_deduction keeps the 2026 head of
+    # household amount. The filing test still withdraws the (A) exception
+    # whenever this input is true, whatever the filing status: $1,000 >= $0.
+    # This case pins that input rule; in law the threshold would be $24,150
+    # basic + $2,050 age addition, and no return would be required.
+    basic_standard_deduction: 24_150
     tax_unit_is_required_to_file: true

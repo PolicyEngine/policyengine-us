@@ -74,8 +74,6 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
         # base premium plus any IRMAA (42 USC 1395r(i)), whoever pays it.
         # Only a Part B enrollee (medicare_part_b_enrolled) has a Part B
         # premium to disregard.
-        # NOTE: gov.hhs.medicare.part_b.base_premium starts in 2021, so a
-        # person-paid Part B before 2021 reads the 2021 premium.
         # NOTE: ACWDL 20-24 Example 5 also deducts a non-applicant spouse's
         # premiums. Spousal income here follows SSI deeming (20 CFR 416.1163),
         # so that premium is not modeled, nor is MC 176's maintenance need
