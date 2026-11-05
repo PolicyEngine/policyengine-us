@@ -4,7 +4,7 @@ household_net_income and spm_unit_net_income are two views of one family's
 cash. Each total keeps its own list of what it adds, in two different files, and
 the lists drift: a cash program reaches one total and not the other.
 
-Five invariants hold for every input.
+Six invariants hold for every input.
 
 1. The list difference is exactly the documented one. Every program that one
    total counts and the other does not appears below with its reason.
@@ -18,6 +18,8 @@ Five invariants hold for every input.
 5. A dollar of market income, or of a loss, moves both totals by a dollar, and
    cash income never lowers the SPM net income of a family with no
    means-tested benefits to lose.
+6. The head and spouse together hold a tax unit's whole Form 4797 amount, with
+   its sign, and gross income holds its positive part.
 
 Child care stays out of this file: household_state_benefits and the SPM treat
 subsidies differently on purpose, and #9405 and #10569 cover that difference.
@@ -271,6 +273,52 @@ def test_cash_income_never_lowers_spm_net_income(source, amount, state):
         zero, ["spm_unit_net_income"], 2026
     )
     assert -TOLERANCE <= change <= amount + TOLERANCE
+
+
+@settings(max_examples=10, deadline=None)
+@given(
+    amount=st.integers(min_value=-200_000, max_value=200_000),
+    has_spouse=st.booleans(),
+    children=st.integers(min_value=0, max_value=2),
+)
+@example(amount=-6_000, has_spouse=True, children=1)
+@example(amount=10_000, has_spouse=True, children=0)
+def test_head_and_spouse_hold_the_whole_form_4797_amount(amount, has_spouse, children):
+    year = 2026
+    people = {"head": {"age": {year: 45}, "is_tax_unit_head": {year: True}}}
+    adults = ["head"]
+    if has_spouse:
+        people["spouse"] = {"age": {year: 43}, "is_tax_unit_spouse": {year: True}}
+        adults.append("spouse")
+    kids = [f"child_{index}" for index in range(children)]
+    for kid in kids:
+        people[kid] = {"age": {year: 8}, "is_tax_unit_dependent": {year: True}}
+    members = adults + kids
+    simulation = Simulation(
+        situation={
+            "people": people,
+            "tax_units": {
+                "tax_unit": {"members": members, "other_net_gain": {year: amount}}
+            },
+            "spm_units": {"spm_unit": {"members": members}},
+            "families": {"family": {"members": members}},
+            "marital_units": {
+                "adults": {"members": adults},
+                **{kid: {"members": [kid]} for kid in kids},
+            },
+            "households": {
+                "household": {"members": members, "state_name": {year: "TX"}}
+            },
+        }
+    )
+    shares = simulation.calculate("other_net_gain_person", year)
+    gross = simulation.calculate("other_net_gain_gross_income", year)
+    expected = [amount / len(adults)] * len(adults) + [0] * len(kids)
+    assert list(shares) == pytest.approx(expected, abs=TOLERANCE)
+    assert list(gross) == pytest.approx([max(0, x) for x in expected], abs=TOLERANCE)
+    assert total(simulation, ["spm_unit_market_income"], year) == pytest.approx(
+        amount, abs=TOLERANCE
+    )
 
 
 def one_person(state, earnings, year, **variables):
