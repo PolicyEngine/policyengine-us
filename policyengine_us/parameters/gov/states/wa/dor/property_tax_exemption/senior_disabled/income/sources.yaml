@@ -12,8 +12,11 @@ values:
     # dominated by those excluded categories, so adding it back would
     # systematically over-count CDI. We omit it conservatively at the moment
     # and don't track the included subcomponents separately.
-    # RCW 84.36.383(7)(g) — Social Security and Railroad Retirement not in AGI
-    - tax_exempt_social_security
+    # RCW 84.36.383(7)(g) — Social Security and Railroad Retirement not in AGI,
+    # added to the AGI of "the person receiving these benefits" (WAC
+    # 458-16A-120(2)(b)(vi)). The head's and spouse's benefits only: a tax
+    # unit dependent's benefits are the dependent's own disposable income.
+    - filer_tax_exempt_social_security
     # RCW 84.36.383(7)(i) — state/municipal bond interest not in AGI
     - tax_exempt_interest_income
     # RCW 84.36.383(7)(a) — capital gains add-back. AGI already includes

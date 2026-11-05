@@ -1,0 +1,71 @@
+# 36 M.R.S. 5213-A(1)(B) and 5219-KK(1)(D): income is federal adjusted gross
+# income increased by interest and "Payments received under the federal Social
+# Security Act ... to the extent not included in federal adjusted gross
+# income". Rule 813 .03 makes it "the taxpayer's". Schedule PTFC/STFC line 2b
+# is the filers' Form 1040 line 6a less line 6b. A tax unit dependent's
+# benefits and interest are the dependent's own. Credit amounts follow the
+# 2025 Schedule PTFC/STFC.
+
+- name: A dependent child's Social Security and interest stay out of the parent's income
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 36_000
+        rent: 12_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        social_security_survivors: 6_000
+        tax_exempt_interest_income: 600
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, child]
+        state_code: ME
+  output:
+    # Line 3: the parent's 36_000, not 36_000 + 6_000 + 600 = 42_600.
+    me_sales_and_property_tax_fairness_credit_income: 36_000
+    # Line 17, head of household with one child: $215 up to $38,200 ($125
+    # from $41,951 to $42,700).
+    me_sales_tax_fairness_credit: 215
+    # Line 5e: 15% of 12_000 = 1_800; line 9: min(1_800, 3_300) = 1_800;
+    # line 10: 4% of 36_000 = 1_440; line 13: min(360, 1_000) = 360 (with
+    # 42_600: 1_800 - 1_704 = 96).
+    me_property_tax_fairness_credit: 360
+
+- name: Joint filers' own nontaxable Social Security counts, a dependent's does not
+  period: 2025
+  input:
+    people:
+      head:
+        age: 66
+        social_security_retirement: 20_000
+        real_estate_taxes: 2_500
+      spouse:
+        age: 60
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        social_security_dependents: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: ME
+  output:
+    # Combined income of 20_000 / 2 = 10_000 is below the $32,000 joint base
+    # amount, so line 2a is 0 and line 2b is the head's 20_000; the child's
+    # 5_000 would make it 25_000.
+    me_sales_and_property_tax_fairness_credit_income: 20_000
+    # Line 8: $4,100 (a filer is 65 or older); line 9: min(2_500, 4_100) =
+    # 2_500; line 10: 4% of 20_000 = 800; line 13: min(1_700, 2_000) = 1_700
+    # (with 25_000: 2_500 - 1_000 = 1_500).
+    me_property_tax_fairness_credit: 1_700
