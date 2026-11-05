@@ -9,10 +9,10 @@ class wv_lieap(Variable):
     definition_period = YEAR
     defined_for = "wv_lieap_income_eligible"
     reference = (
-        # PDF pages 1729-1731,1753-1755,1772-1773
-        "https://bfa.wv.gov/media/39948/download?inline=#page=1729",
+        # PDF pages 1736-1738,1760-1762,1780-1781
+        "https://web.archive.org/web/20260302130424/https://bfa.wv.gov/media/39948/download?inline#page=1736",
         # PDF pages 1730-1734,1757-1758,1775-1776
-        "https://bfa.wv.gov/media/40005/download?inline=#page=1730",
+        "https://web.archive.org/web/20261023203756/https://bfa.wv.gov/media/40005/download?inline#page=1730",
     )
 
     def formula(spm_unit, period, parameters):

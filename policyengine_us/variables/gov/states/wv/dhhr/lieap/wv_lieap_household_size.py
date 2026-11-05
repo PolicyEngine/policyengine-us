@@ -8,10 +8,10 @@ class wv_lieap_household_size(Variable):
     definition_period = YEAR
     defined_for = StateCode.WV
     reference = (
-        # PDF pages 1728,1732
-        "https://bfa.wv.gov/media/39948/download?inline=#page=1728",
+        # PDF pages 1735,1739
+        "https://web.archive.org/web/20260302130424/https://bfa.wv.gov/media/39948/download?inline#page=1735",
         # PDF pages 1729,1734
-        "https://bfa.wv.gov/media/40005/download?inline=#page=1729",
+        "https://web.archive.org/web/20261023203756/https://bfa.wv.gov/media/40005/download?inline#page=1729",
     )
     # The manual treats everyone living in the home as one assistance group, whether
     # or not they share heating costs. The SPM unit stands in for that group, so a

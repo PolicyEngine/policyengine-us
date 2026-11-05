@@ -20,10 +20,10 @@ class wv_lieap_income_limit(Variable):
         "https://liheapch.acf.gov/docs/2026/state-plans/WV_Plan_2026.pdf#page=9",
         # PDF pages 9,12
         "https://bfa.wv.gov/media/39990/download?inline=#page=9",
-        # FY2026 chart, PDF pages 406,1777
-        "https://bfa.wv.gov/media/39948/download?inline=#page=406",
+        # FY2026 chart, PDF pages 407,1785
+        "https://web.archive.org/web/20260302130424/https://bfa.wv.gov/media/39948/download?inline#page=407",
         # FY2027 chart, PDF pages 405,1779
-        "https://bfa.wv.gov/media/40005/download?inline=#page=405",
+        "https://web.archive.org/web/20261023203756/https://bfa.wv.gov/media/40005/download?inline#page=405",
     )
 
     def formula(spm_unit, period, parameters):
