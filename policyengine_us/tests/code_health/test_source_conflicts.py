@@ -126,6 +126,7 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/variables/gov/states/az/tax/income/credits/az_increased_excise_tax_credit.py": 1,
     "policyengine_us/variables/gov/states/ca/tax/income/credits/ca_renter_credit.py": 1,
     "policyengine_us/variables/gov/states/ca/tax/income/credits/earned_income/ca_eitc_eligible.py": 1,
+    "policyengine_us/parameters/gov/states/ca/tax/income/credits/renter/income_cap.yaml": 1,
     "policyengine_us/parameters/gov/irs/ald/charitable_contributions/cap.yaml": 1,
     "policyengine_us/parameters/gov/irs/credits/residential_clean_energy/fuel_cell_cap_per_kw.yaml": 1,
     "policyengine_us/parameters/gov/irs/income/exemption/overtime/hce_salary_threshold.yaml": 1,

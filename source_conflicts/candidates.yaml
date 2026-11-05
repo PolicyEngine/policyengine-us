@@ -1237,8 +1237,8 @@ candidates:
     and booklet or $107,987 on the agency website?
   sources:
   - kind: statute
-    citation: RTC 17053.5(j)(4)
-    url: null
+    citation: RTC 17053.5(a)(1), (j)(3)-(4), SB 1005 section 98, PDF p.89
+    url: https://www.leginfo.ca.gov/pub/15-16/bill/sen/sb_1001-1050/sb_1005_bill_20160701_chaptered.pdf#page=89
   - kind: form
     citation: 2025 renter's credit qualification record question 2
     url: https://www.ftb.ca.gov/forms/2025/2025-540-booklet.pdf#page=25
@@ -1246,17 +1246,17 @@ candidates:
     citation: FTB nonrefundable renter's credit web page
     url: https://www.ftb.ca.gov/file/personal/credits/nonrefundable-renters-credit.html
   readings:
-    statute: Twice the $53,994 single amount is $107,988, also used by the qualification record.
+    statute: The FTB doubles the rounded single amount. Twice $53,994 equals $107,988, which the 2025 qualification record also gives.
     other: The agency website gives $107,987.
-  example: The published limits differ by $1.
+  example: A qualified joint renter with $107,988 AGI and enough tax receives $120 under the statute and booklet, or $0 under the website's threshold.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ca/tax/income/credits/renter/income_cap.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
-  state: unreviewed
-  note: 'Verify the statutory indexing calculation and preserve dated evidence of the website discrepancy. Code
-    not yet on main: ca_renter_credit.'
+  state: ruled
+  note: The PR sets the three higher 2025 limits to twice the single amount. The official website still gives $107,987 when fetched on November 5, 2026, while linking to 2025 return forms.
 - id: us-ca:renter-credit-one-excluded-joint-spouse
   program: income-tax
   years:
