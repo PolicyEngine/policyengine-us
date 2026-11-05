@@ -4,41 +4,55 @@ MCL 206.508(3): "'Household' means a claimant and spouse." MCL 206.508(4)
 counts "all income received by all persons of a household". The MI-1040CR
 asks for "all taxable and nontaxable income you and your spouse received"
 (2025 MI-1040 book, page 31), so a dependent's own income and Schedule 1
-adjustments are on the dependent's return, not the claimant's. The form
-counts amounts the claimant receives for others in the household on three
-lines (page 32):
+adjustments belong on the dependent's return, not the claimant's.
 
-- line 21: Social Security, SSI and railroad retirement benefits, including
-  "amounts received for minor children or other dependent adults who live
-  with you";
+That includes Social Security, SSI and railroad retirement benefits (line
+21). The beneficiary receives a minor child's or dependent adult's own
+benefit, even when the claimant acts as representative payee, so household
+resources leave it out. Revenue Administrative Bulletin 2015-18 counts
+benefits received by minor children, and the line 21 instructions count
+amounts received for minor children or other dependent adults; the statute's
+definition of household governs both.
+
+The claimant receives two kinds of amount for others in the household
+(page 32), which count on any member's record:
+
 - line 22: child support and foster parent payments;
 - line 27: payments to the household by MDHHS and other public assistance.
 
-Line 31 is "insurance premiums you paid for yourself and your family"; a
-premium on any member's record is read as one the claimant or spouse paid
-for the family's coverage. Line 31 leaves out "any insurance premiums
-deducted on lines 21 or 30" (page 33), so the head's and spouse's
-self-employed health insurance deduction, which is on line 30, is not
-subtracted again. Lines 20 and 24 count gambling winnings and gifts "over
-$300" (MCL 206.510(1)(a) and (b)), one amount for the claimant and spouse.
+Line 31 is "insurance premiums you paid for yourself and your family" (page
+32). health_insurance_premiums records the premiums each person
+paid, so only the head's and spouse's count; theirs may cover the family.
+Line 31 leaves out "any insurance premiums deducted on lines 21 or 30"
+(page 33): line 30 takes the head's and spouse's self-employed health
+insurance deduction, so line 31 doesn't subtract it again. Lines 20 and 24
+count gambling winnings and gifts "over $300" (MCL 206.510(1)(a) and (b)),
+one amount for the claimant and spouse.
 
 So for every household:
 
 1. mi_household_resources equals a reference written from the form: the head
-   and spouse's lines 14 to 20 and 23 to 26 and their line 30 adjustments,
-   plus every member's lines 21, 22 and 27, less every member's premiums not
-   deducted on line 30, floored at zero.
-2. A dependent's own income and adjustments do not matter: zeroing them
-   leaves household resources unchanged.
-3. Amounts received for the household count wherever they are recorded:
-   moving a dependent's line 21, 22 or 27 amount, or premium, to the head
-   leaves household resources unchanged.
-4. Raising a dependent's line 21, 22 or 27 amount by d raises household
+   and spouse's lines 14 to 21 and 23 to 26, their line 30 adjustments and
+   their premiums not deducted on line 30, plus every member's lines 22 and
+   27, floored at zero.
+2. A dependent's own income, benefits, adjustments and premiums do not
+   matter: zeroing them leaves household resources unchanged. In
+   particular a dependent's own Social Security, SSI or railroad benefit
+   never changes household resources.
+3. Amounts the claimant receives for the household count on any member's
+   record: moving a dependent's line 22 or 27 amount to the head leaves
+   household resources unchanged.
+4. Raising a dependent's line 22 or 27 amount by d raises household
    resources by between 0 and d, and by exactly d when they were positive.
 5. Each of the spouse's own sources adds what it adds on the head.
 6. The lists are reformable: a source moved into
    household_resources_all_members counts for every member, and an SPM unit
    source in household_resources counts in full.
+7. The claimant's and spouse's own benefits count in full: raising one by d
+   raises household resources by exactly d when they were positive, and by
+   between 0 and d otherwise.
+8. Household resources never fall when the head's or spouse's income,
+   other than self-employment income, rises.
 
 Every generated household has a dependent, so properties 2 to 4 always bind,
 and property 4 always includes a household with positive resources.
@@ -84,18 +98,35 @@ CLAIMANT_LINES = {
     "workers_compensation": 26,
     # Guaranteed income pilot payments: the recipient's own (line 25).
     "gi_cash_assistance": 25,
+    # Line 21: the beneficiary's own benefits (MCL 206.508(3)).
+    "social_security_retirement": 21,
+    "social_security_survivors": 21,
+    "ssi": 21,
+    "railroad_benefits": 21,
     # Line 30: penalty on early withdrawal of savings (Schedule 1 line 18).
     "early_withdrawal_penalty": 30,
 }
 # Inputs the claimant receives for the household, by MI-1040CR line.
 HOUSEHOLD_LINES = {
-    "social_security_retirement": 21,
-    "social_security_survivors": 21,
-    "ssi": 21,
-    "railroad_benefits": 21,
     "child_support_received": 22,
     "general_assistance": 27,
 }
+BENEFITS = [
+    "social_security_retirement",
+    "social_security_survivors",
+    "ssi",
+    "railroad_benefits",
+]
+# The claimant's and spouse's own income, for property 8. Not
+# self-employment income: line 16 nets it against other business losses,
+# while line 30 takes its self-employment tax deduction on the gross
+# amount, so with an S corporation loss of 404, Schedule C income of 434
+# adds 30 on line 16 and deducts 30.66 on line 30.
+INCOME = [
+    name
+    for name in CLAIMANT_LINES
+    if name not in ("early_withdrawal_penalty", "self_employment_income")
+]
 PREMIUMS = "health_insurance_premiums"
 # MCL 206.510(1)(a) and (b): the first $300 of gifts and of gambling winnings.
 EXCLUSION = 300
@@ -210,6 +241,7 @@ def reference(h, person_adjustments):
     line_16 = max(0, amount(own, ["self_employment_income", "s_corp_income"]))
     line_17 = max(0, amount(own, ["rental_income"]))
     line_18 = amount(own, by_line(CLAIMANT_LINES, 18))
+    line_21 = amount(own, by_line(CLAIMANT_LINES, 21))
     line_19 = max(-CAPITAL_LOSS_LIMIT, amount(own, ["long_term_capital_gains"]))
     excluded = ["gambling_winnings", "financial_assistance"]
     lines_20_to_26 = amount(
@@ -233,10 +265,11 @@ def reference(h, person_adjustments):
     }
     line_30 = sum(filer_adjustments.values())
     line_30 += amount(own, ["early_withdrawal_penalty"])
-    # Line 31: every member's premiums, less those deducted on line 30.
-    line_31 = amount(everyone(h), [PREMIUMS])
+    # Line 31: the head's and spouse's premiums, less those deducted on
+    # line 30.
+    line_31 = amount(own, [PREMIUMS])
     line_31 -= filer_adjustments["self_employed_health_insurance_ald_person"]
-    total = line_14 + line_15 + line_16 + line_17 + line_18 + line_19
+    total = line_14 + line_15 + line_16 + line_17 + line_18 + line_19 + line_21
     total += lines_20_to_26 + received
     return max(0, total - line_30 - line_31)
 
@@ -260,7 +293,7 @@ def copy(h):
 def without_dependents_own_amounts(h):
     out = copy(h)
     for d in out["dependents"]:
-        for name in CLAIMANT_LINES:
+        for name in [*CLAIMANT_LINES, PREMIUMS]:
             d[name] = 0
     return out
 
@@ -268,7 +301,7 @@ def without_dependents_own_amounts(h):
 def with_household_amounts_on_head(h):
     out = copy(h)
     for d in out["dependents"]:
-        for name in [*HOUSEHOLD_LINES, PREMIUMS]:
+        for name in HOUSEHOLD_LINES:
             out["head"][name] = out["head"].get(name, 0) + d.get(name, 0)
             d[name] = 0
     return out
@@ -309,9 +342,9 @@ def base_household(dependent_age=10, spouse=False):
 
 def test_each_source_for_a_dependent():
     """For a child and for a dependent parent, every source on its own: a
-    dependent's own income and adjustments leave household resources at the
-    base, and an amount received for the household adds in full, as it
-    would for the head."""
+    dependent's own income, benefits, adjustments and premiums leave
+    household resources at the base, and an amount received for the
+    household adds in full, as it would for the head."""
     households, cases = [], []
     for age, spouse in itertools.product([10, 75], [False, True]):
         base = base_household(age, spouse)
@@ -324,7 +357,7 @@ def test_each_source_for_a_dependent():
                 h["dependents"][0][name] = value
                 households.append(h)
                 cases.append((age, spouse, name, value))
-                if name in HOUSEHOLD_LINES or name == PREMIUMS:
+                if name in HOUSEHOLD_LINES:
                     on_head = copy(base)
                     on_head["head"][name] = value
                     households.append(on_head)
@@ -347,29 +380,24 @@ def test_each_source_for_a_dependent():
         if name is None or name.startswith("head:"):
             continue
         base = base_result[(age, spouse)]
-        if name in CLAIMANT_LINES:
-            assert result[i] == pytest.approx(base, abs=TOLERANCE), cases[i]
-        elif name in HOUSEHOLD_LINES:
+        if name in HOUSEHOLD_LINES:
             assert result[i] == pytest.approx(base + value, abs=TOLERANCE)
             assert result[i] == pytest.approx(
                 head_result[(age, spouse, name, value)], abs=TOLERANCE
             ), cases[i]
-        else:  # Premiums paid for the family.
-            assert result[i] == pytest.approx(base - value, abs=TOLERANCE)
-            assert result[i] == pytest.approx(
-                head_result[(age, spouse, name, value)], abs=TOLERANCE
-            ), cases[i]
+        else:  # The dependent's own income, benefits and premiums.
+            assert result[i] == pytest.approx(base, abs=TOLERANCE), cases[i]
 
 
 def test_spouse_counts_like_the_head():
     """Both spouses' own amounts count: each source on the spouse adds what
-    it adds on the head."""
+    it adds on the head, and so do their premiums."""
     households = []
-    for name in CLAIMANT_LINES:
+    for name in [*CLAIMANT_LINES, PREMIUMS]:
         if name == "early_withdrawal_penalty":
             continue
         on_head = base_household(spouse=True)
-        on_head["head"][name] += 7_000
+        on_head["head"][name] = on_head["head"].get(name, 0) + 7_000
         on_spouse = base_household(spouse=True)
         on_spouse["spouse"][name] = 7_000
         households += [on_head, on_spouse]
@@ -415,7 +443,7 @@ def test_reformed_lists():
     p = baseline.tax_benefit_system.parameters.gov.states.mi.tax.income
     sources = list(p.household_resources(f"{YEAR}-01-01"))
     all_members = list(p.household_resources_all_members(f"{YEAR}-01-01"))
-    # The dependent's own pilot payment is not household resources...
+    # Household resources leave out the dependent's own pilot payment...
     assert baseline.calculate("mi_household_resources", YEAR)[0] == pytest.approx(
         40_000, abs=TOLERANCE
     )
@@ -448,8 +476,8 @@ def test_reformed_lists():
 
 
 # ---------------------------------------------------------------------------
-# Hypothesis properties. Hypothesis is a dev extra: without it these tests
-# are not collected and the deterministic tests above still run.
+# Hypothesis properties. Hypothesis is a dev extra: without it the module
+# defines none of these tests, and the deterministic tests above still run.
 # ---------------------------------------------------------------------------
 
 try:
@@ -504,7 +532,7 @@ if hypothesis is not None:
         st.integers(min_value=1, max_value=50_000),
     )
     def test_more_received_for_a_dependent(households, source, extra):
-        """4. More of a line 21, 22 or 27 amount for a dependent raises
+        """4. More of a line 22 or 27 amount for a dependent raises
         household resources by between 0 and the increase, and by exactly
         the increase when they were positive."""
         # A household with positive resources, so the exact-increase branch
@@ -526,3 +554,65 @@ if hypothesis is not None:
                     households[i],
                     source,
                 )
+
+    def _raise(households, role, source, extra):
+        raised = []
+        for h in households:
+            r = copy(h)
+            if role == "dependent":
+                target = r["dependents"][0]
+            elif role == "spouse" and r.get("spouse") is not None:
+                target = r["spouse"]
+            else:
+                target = r["head"]
+            target[source] = target.get(source, 0) + extra
+            raised.append(r)
+        return raised
+
+    @hypothesis.settings(
+        max_examples=20, deadline=None, derandomize=True, suppress_health_check=SLOW
+    )
+    @hypothesis.given(
+        st.lists(household(), min_size=1, max_size=10),
+        st.sampled_from(BENEFITS),
+        st.integers(min_value=1, max_value=50_000),
+    )
+    def test_benefits_count_for_filers_only(households, source, extra):
+        """2 and 7. A dependent's own benefit never changes household
+        resources; the head's or spouse's counts in full."""
+        households = households + [base_household(spouse=True)]
+        n = len(households)
+        result, _ = calculate(
+            households
+            + _raise(households, "dependent", source, extra)
+            + _raise(households, "head", source, extra)
+            + _raise(households, "spouse", source, extra)
+        )
+        for i, h in enumerate(households):
+            # The raised household's scale can't exceed the base's plus extra.
+            tol = tolerance(h) + 8 * float(np.spacing(np.float32(extra)))
+            assert result[n + i] == pytest.approx(result[i], abs=tol), (h, source)
+            for k in (2, 3):
+                change = float(result[k * n + i]) - float(result[i])
+                assert -tol <= change <= extra + tol, (h, source, k)
+                if result[i] > tol:
+                    assert change == pytest.approx(extra, abs=tol), (h, source, k)
+
+    @hypothesis.settings(
+        max_examples=20, deadline=None, derandomize=True, suppress_health_check=SLOW
+    )
+    @hypothesis.given(
+        st.lists(household(), min_size=1, max_size=10),
+        st.sampled_from(["head", "spouse"]),
+        st.sampled_from(INCOME),
+        st.integers(min_value=1, max_value=50_000),
+    )
+    def test_monotone_in_filer_income(households, role, source, extra):
+        """8. More of the head's or spouse's own income never lowers
+        household resources."""
+        raised = _raise(households, role, source, extra)
+        result, _ = calculate(households + raised)
+        n = len(households)
+        for i, h in enumerate(raised):
+            tol = tolerance(h)
+            assert result[n + i] >= result[i] - tol, (households[i], role, source)

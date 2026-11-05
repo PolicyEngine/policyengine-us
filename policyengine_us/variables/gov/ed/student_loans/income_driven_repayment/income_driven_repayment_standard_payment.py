@@ -10,8 +10,8 @@ class income_driven_repayment_standard_payment(Variable):
     label = "Income-driven repayment 10-year standard payment cap"
     documentation = (
         "What the borrower would pay on the 10-year standard repayment plan "
-        "on their own eligible loans, the most the borrower pays under the "
-        "Income-Based Repayment and Pay As You Earn plans (20 U.S.C. "
+        "on their own eligible loans, the cap on the income-based amount under "
+        "the Income-Based Repayment and Pay As You Earn plans (20 U.S.C. "
         "1098e(b)(6)(A): 'for all loans made to the borrower under part B or "
         "D'). Eligible loans are Direct and FFEL loans other than parent PLUS "
         "loans and excepted consolidation loans, so this is the 10-year "
@@ -20,8 +20,14 @@ class income_driven_repayment_standard_payment(Variable):
         "One standard plan minimum covers the Direct and FFEL loans together, "
         "and the payment is no more than the eligible balance. A joint filer's "
         "spouse's loans do not enter it: 34 CFR 685.209(e)(2)(i) counts them "
-        "only in the (g) proration. The cap uses the current balance, not the "
-        "balance when the borrower began paying under the plan."
+        "only in the (g) proration. The plans take the lesser of the "
+        "income-based amount and this payment (685.209(f)(2), (f)(3)) and "
+        "then prorate that lesser amount by "
+        "income_driven_repayment_balance_share (685.209(g)(1)), so a joint "
+        "filer whose income-based amount exceeds this payment pays this "
+        "payment times their balance share. The cap uses the current "
+        "balance, not the balance when the borrower began paying under the "
+        "plan."
     )
     unit = USD
     definition_period = MONTH

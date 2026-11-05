@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.period_branch import drop_recomputed_values
 from policyengine_us.tools.pinned_tbs import get_pre_arpa_eitc_tbs
 from policyengine_us.variables.gov.states.ny.tax.income.adjusted_gross_income.ny_recomputed_federal_agi import (
     get_ny_recomputed_branch,
@@ -33,9 +34,10 @@ class ny_eitc(Variable):
             branch.tax_benefit_system = get_pre_arpa_eitc_tbs(
                 simulation.tax_benefit_system
             )
-            for variable in branch.tax_benefit_system.variables:
-                if "eitc" in variable:
-                    branch.delete_arrays(variable)
+            # Recalculate every EITC formula variable under the pinned rules,
+            # a supplied current-law eitc included; keep plain inputs such as
+            # takes_up_eitc.
+            drop_recomputed_values(branch, ["eitc"])
             federal_eitc = branch.tax_unit("eitc", period)
         else:
             # IT-215: the federal credit recomputed with recomputed federal

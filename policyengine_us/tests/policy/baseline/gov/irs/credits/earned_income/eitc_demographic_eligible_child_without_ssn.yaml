@@ -1,0 +1,195 @@
+# From 2021, a filer whose only qualifying child lacks a valid SSN is still an
+# eligible individual with a qualifying child (IRC 32(c)(1)(A)(i)); the child
+# is left out only of the amount (32(c)(3)(D), (m)). ARPA section 9622 struck
+# former 32(c)(1)(F). So the filer gets the zero-child amount without the
+# childless age test.
+
+- name: TY2023 parent age 20 with only qualifying child lacking SSN
+  period: 2023
+  input:
+    people:
+      filer:
+        age: 20
+        is_tax_unit_head: true
+        is_full_time_student: false
+        is_eitc_qualifying_child: false
+        ssn_card_type: CITIZEN
+      child:
+        age: 2
+        is_tax_unit_dependent: true
+        is_eitc_qualifying_child: true
+        ssn_card_type: NONE
+    tax_units:
+      unit:
+        members: [filer, child]
+        filing_status: SINGLE
+        eitc_earned_income: 8_000
+        adjusted_gross_income: 8_000
+        eitc_relevant_investment_income: 0
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+  output:
+    eitc_child_count: 0
+    eitc_demographic_eligible: true
+    eitc_eligible: true
+    # Zero-child schedule: min($600, 7.65% x $8,000 = $612) = $600; $8,000 is
+    # below the $9,800 phase-out start.
+    eitc: 600
+
+- name: TY2021 student parent age 20 with only qualifying child lacking SSN
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 20
+        is_tax_unit_head: true
+        is_full_time_student: true
+        is_eitc_qualifying_child: false
+        ssn_card_type: CITIZEN
+      child:
+        age: 2
+        is_tax_unit_dependent: true
+        is_eitc_qualifying_child: true
+        ssn_card_type: NONE
+    tax_units:
+      unit:
+        members: [filer, child]
+        filing_status: SINGLE
+        eitc_earned_income: 10_000
+        adjusted_gross_income: 10_000
+        eitc_relevant_investment_income: 0
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+  output:
+    eitc_child_count: 0
+    # The 2021 specified-student minimum age of 24 does not apply: the filer
+    # has a qualifying child.
+    eitc_demographic_eligible: true
+    eitc_eligible: true
+    # Zero-child schedule: min($1,502, 15.3% x $10,000 = $1,530) = $1,502;
+    # $10,000 is below the $11,610 phase-out start.
+    eitc: 1_502
+
+- name: TY2021 married separate student parent age 20 whose only qualifying child lacks an SSN
+  # The child without an SSN does both jobs: it is the qualifying child the
+  # separated-spouse exception needs (IRC 32(d)(2)(B), counted before
+  # identification), and it establishes eligibility without the 2021
+  # specified-student minimum age of 24 (32(c)(1)(A)(i)). It stays out of
+  # the amount (32(c)(3)(D)), so the zero-child schedule applies.
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 20
+        is_tax_unit_head: true
+        is_full_time_student: true
+        is_eitc_qualifying_child: false
+        ssn_card_type: CITIZEN
+      child:
+        age: 2
+        is_tax_unit_dependent: true
+        is_eitc_qualifying_child: true
+        ssn_card_type: NONE
+    tax_units:
+      unit:
+        members: [filer, child]
+        filing_status: SEPARATE
+        eitc_spouses_lived_apart_last_six_months: true
+        eitc_earned_income: 8_000
+        adjusted_gross_income: 8_000
+        eitc_relevant_investment_income: 0
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+  output:
+    eitc_child_count: 0
+    eitc_marital_eligible: true
+    eitc_demographic_eligible: true
+    eitc_eligible: true
+    # Zero-child schedule: min($1,502, 15.3% x $8,000 = $1,224) = $1,224;
+    # $8,000 is below the $11,610 phase-out start.
+    eitc: 1_224
+
+- name: TY2020 parent age 20 with only qualifying child lacking SSN stays ineligible
+  period: 2020
+  input:
+    people:
+      filer:
+        age: 20
+        is_tax_unit_head: true
+        is_full_time_student: false
+        is_eitc_qualifying_child: false
+        ssn_card_type: CITIZEN
+      child:
+        age: 2
+        is_tax_unit_dependent: true
+        is_eitc_qualifying_child: true
+        ssn_card_type: NONE
+    tax_units:
+      unit:
+        members: [filer, child]
+        filing_status: SINGLE
+        eitc_earned_income: 6_000
+        adjusted_gross_income: 6_000
+        eitc_relevant_investment_income: 0
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+  output:
+    # Before 2021 the identification-filtered count decides, as on main: the
+    # filer is under the childless minimum age of 25.
+    eitc_child_count: 0
+    eitc_demographic_eligible: false
+    eitc: 0
+
+- name: TY2023 parent age 20 whose child has an SSN gets the one-child credit
+  period: 2023
+  input:
+    people:
+      filer:
+        age: 20
+        is_tax_unit_head: true
+        is_full_time_student: false
+        is_eitc_qualifying_child: false
+        ssn_card_type: CITIZEN
+      child:
+        age: 2
+        is_tax_unit_dependent: true
+        is_eitc_qualifying_child: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      unit:
+        members: [filer, child]
+        filing_status: SINGLE
+        eitc_earned_income: 8_000
+        adjusted_gross_income: 8_000
+        eitc_relevant_investment_income: 0
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+  output:
+    eitc_child_count: 1
+    eitc_demographic_eligible: true
+    eitc_eligible: true
+    # One child: 34% x $8,000 = $2,720, below the $3,995 maximum.
+    eitc: 2_720
+
+- name: TY2023 parent age 20 with no qualifying child stays ineligible
+  period: 2023
+  input:
+    people:
+      filer:
+        age: 20
+        is_tax_unit_head: true
+        is_full_time_student: false
+        is_eitc_qualifying_child: false
+        ssn_card_type: CITIZEN
+    tax_units:
+      unit:
+        members: [filer]
+        filing_status: SINGLE
+        eitc_earned_income: 8_000
+        adjusted_gross_income: 8_000
+        eitc_relevant_investment_income: 0
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+  output:
+    eitc_demographic_eligible: false
+    eitc: 0
