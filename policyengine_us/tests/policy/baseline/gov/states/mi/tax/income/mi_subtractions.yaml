@@ -243,3 +243,18 @@
   output:
     wagering_losses_deduction: 20_000
     mi_subtractions: 0
+
+- name: A Michigan filer who itemizes federally in 2023 subtracts all the wagering losses deducted.
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    age: 40
+    employment_income: 50_000
+    gambling_winnings: 20_000
+    gambling_losses: 20_000
+    state_code: MI
+  output:
+    tax_unit_itemizes: true
+    # 2021 PA 168; all losses up to winnings before 2026
+    mi_wagering_losses_deduction: 20_000
+    mi_subtractions: 20_000
