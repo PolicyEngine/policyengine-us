@@ -14,6 +14,7 @@ pytest.importorskip("hypothesis")
 
 from hypothesis import (  # noqa: E402
     HealthCheck,
+    Phase,
     assume,
     given,
     settings,
@@ -90,6 +91,9 @@ def state_and_city_tax(simulation, year):
     deadline=None,
     derandomize=True,
     database=None,
+    # Hypothesis reports a failing draw unshrunk, since shrinking would
+    # rebuild the Simulations at every step.
+    phases=[Phase.generate],
     suppress_health_check=[
         HealthCheck.too_slow,
         HealthCheck.data_too_large,

@@ -14,9 +14,11 @@ class ny_deductions(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
-        # ny_itemizes makes the election: it itemizes when that gives less
-        # New York State plus City tax, and before 2018 only for a federal
-        # itemizer (N.Y. Tax Law 615(a)).
+        # ny_itemizes makes the election. Before 2018 only a federal itemizer
+        # may itemize (N.Y. Tax Law 615(a)). A filer with college tuition
+        # expenses itemizes when that lowers New York State plus City tax, and
+        # any other filer when the itemized deduction exceeds the standard
+        # deduction.
         return where(
             tax_unit("ny_itemizes", period),
             tax_unit("ny_itemized_deductions", period),
