@@ -500,7 +500,7 @@
 
 # Ages alone cannot distinguish equally old filers from dependents;
 # the explicit-role cases document how callers resolve that ambiguity.
-- name: Review r3 minor joint filers ages 17 and 16, order ['a', 'b']
+- name: Minor joint filers ages 17 and 16, order ['a', 'b']
   period: 2025
   input:
     people:
@@ -523,7 +523,7 @@
     is_aca_tax_family_member:
     - false
     - true
-- name: Review r3 minor joint filers ages 17 and 17, order ['a', 'b']
+- name: Minor joint filers ages 17 and 17, order ['a', 'b']
   period: 2025
   input:
     people:
@@ -546,7 +546,7 @@
     is_aca_tax_family_member:
     - false
     - true
-- name: Review r3 minor joint filers ages 17 and 17, order ['b', 'a']
+- name: Minor joint filers ages 17 and 17, order ['b', 'a']
   period: 2025
   input:
     people:
@@ -569,7 +569,7 @@
     is_aca_tax_family_member:
     - true
     - false
-- name: Review r3 equal-age minor filers and dependent with explicit roles, order
+- name: Equal-age minor filers and dependent with explicit roles, order
     ['a', 'b', 'dependent']
   period: 2025
   input:
@@ -603,7 +603,7 @@
     - false
     - true
     - false
-- name: Review r3 equal-age minor filers and dependent with explicit roles, order
+- name: Equal-age minor filers and dependent with explicit roles, order
     ['b', 'a', 'dependent']
   period: 2025
   input:
@@ -637,7 +637,7 @@
     - true
     - false
     - false
-- name: Review r3 minor joint filer inference respects supplied dependency hints
+- name: Minor joint filer inference respects supplied dependency hints
   period: 2025
   input:
     people:

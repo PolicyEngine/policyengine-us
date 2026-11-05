@@ -339,7 +339,7 @@
     medicaid_magi: 0
     aca_magi: 20_000
 
-- name: Review r3 supplied Medicaid MAGI remains ACA MAGI without excluded dependents
+- name: Supplied Medicaid MAGI remains ACA MAGI without excluded dependents
   period: 2025
   input:
     age: 30
@@ -356,7 +356,7 @@
     aca_magi: 20_000
     pays_aca_premium: true
 
-- name: Review r3 minor joint filers both retain their MAGI additions
+- name: Minor joint filers aged 17 and 16 both retain their MAGI additions
   period: 2025
   input:
     people:
@@ -384,7 +384,7 @@
     medicaid_magi: 29_000
     aca_magi: 25_000
 
-- name: Review r4 partially inferred joint filers both retain their MAGI additions
+- name: Partially inferred joint filers aged 18 and 17 both retain their MAGI additions
   period: 2025
   input:
     people:

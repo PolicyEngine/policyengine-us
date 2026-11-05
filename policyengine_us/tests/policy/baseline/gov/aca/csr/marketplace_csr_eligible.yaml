@@ -140,7 +140,7 @@
   output:
     marketplace_csr_eligible: true
 
-- name: Review r3 2025 enrolled claimable spouse who pays no marginal premium blocks shared-policy CSR
+- name: 2025 enrolled claimable spouse who pays no marginal premium blocks shared-policy CSR
   period: 2025
   input:
     people:
@@ -215,7 +215,7 @@
     is_aca_ptc_eligible: [true, false, true, true, true]
     marketplace_csr_eligible: false
 
-- name: Review r3 2025 ordinary fourth enrolled child who pays no marginal premium preserves shared-policy CSR
+- name: 2025 ordinary fourth enrolled child who pays no marginal premium preserves shared-policy CSR
   period: 2025
   input:
     people:

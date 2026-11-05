@@ -913,7 +913,7 @@
     # Both spouses are Group 2: 2 * 12 * 250 = 6,000, below the cap of 12,000.
     wa_cascade_care_savings: 6000
 
-- name: Review r4 WA Group 2 includes an enrolled spouse with no marginal premium
+- name: WA Group 2 includes an enrolled spouse with no marginal premium
   period: 2026
   absolute_error_margin: 0.02
   input:
