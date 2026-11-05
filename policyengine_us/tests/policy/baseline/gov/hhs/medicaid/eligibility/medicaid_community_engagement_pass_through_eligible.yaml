@@ -526,8 +526,8 @@
           2026: 5_000
         weeks_unemployed:
           2026: 13
-        person_id:
-          2026: 1
+        unemployment_compensation_start_month:
+          2026: 2
     spm_units:
       spm_unit:
         members: [person1]
@@ -538,7 +538,7 @@
         state_code:
           2026: TX
   output:
-    # months = ceil(13 x 12 / 52) = 3; person_id 1 starts in February ->
+    # months = ceil(13 x 12 / 52) = 3; the block starts in February ->
     # Feb-Apr, so January (the month medicaid_work_requirement_eligible reads)
     # has no UI exemption -> subject -> passes through. Before this change:
     # any UI exempted all 12 months -> false.
