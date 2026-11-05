@@ -7,13 +7,27 @@ class eitc_demographic_eligible(Variable):
     label = "Meets demographic eligibility for EITC"
     definition_period = YEAR
     reference = (
-        "https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii",
+        "https://www.law.cornell.edu/uscode/text/26/32#c_1_A",
+        "https://www.law.cornell.edu/uscode/text/26/32#c_3_D",
+        "https://www.congress.gov/117/bills/hr1319/BILLS-117hr1319enr.pdf#page=150",
         "https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=18",
     )
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
+        # IRC 32(c)(1)(A)(i): an individual who has a qualifying child is an
+        # eligible individual. 32(c)(3)(D) and (m) leave a child without a
+        # valid SSN out only of the amount under subsection (b), which
+        # eitc_child_count carries. Since ARPA section 9622 struck former
+        # (c)(1)(F) (from 2021), such a child still establishes eligibility,
+        # so the filer gets the zero-child amount without the childless age
+        # test. Years before 2021 keep the identification-filtered count.
+        p = parameters(period).gov.irs.credits.eitc.eligibility
         has_child = tax_unit("eitc_child_count", period) > 0
+        if not p.qualifying_child_without_identification_bar:
+            has_child = has_child | tax_unit.any(
+                person("is_eitc_qualifying_child", period)
+            )
         age = person("age", period)
         # Relative parameter reference break branching in some states that
         # modify EITC age limits.

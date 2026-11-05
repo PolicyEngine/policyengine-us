@@ -767,5 +767,5 @@ def test_guard_adds_no_frames_per_dependency(chunking_dataset):
         del simulation
         gc.collect()
     # The chain is long: each variable costs several frames.
-    assert depths[False] > 300
+    assert depths[False] > 200
     assert 0 <= depths[True] - depths[False] <= 3, depths

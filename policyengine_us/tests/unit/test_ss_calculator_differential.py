@@ -31,6 +31,9 @@ NEW_PARAMETER_NODES = (
     # Benefit levers and statutory COLA history also remain in the reference.
     "gov.ssa.social_security.pia.bend_points",
     "gov.ssa.social_security.cola",
+    # Read only by the calculator's history route (history_parameters_at
+    # through donut.py and mini_pia.py).
+    "gov.contrib.ssa.history",
 )
 # Contributed namespaces whose every leaf must be classified: either
 # calculator-only (at or under a path in NEW_PARAMETER_NODES, so the reference

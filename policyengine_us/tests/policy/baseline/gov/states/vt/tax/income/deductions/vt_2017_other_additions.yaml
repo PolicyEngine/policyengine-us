@@ -1,0 +1,8 @@
+- name: 2017 other additions total tax-exempt interest and other additions.
+  period: 2017
+  input:
+    state_code: VT
+    tax_exempt_interest_income: 1_500
+    vt_other_additions: 700
+  output:
+    vt_2017_other_additions: 2_200
