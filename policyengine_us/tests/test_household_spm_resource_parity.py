@@ -4,13 +4,20 @@ household_net_income and spm_unit_net_income are two views of one family's
 cash. Each total keeps its own list of what it adds, in two different files, and
 the lists drift: a cash program reaches one total and not the other.
 
-Three invariants hold for every input.
+Five invariants hold for every input.
 
 1. The list difference is exactly the documented one. Every program that one
    total counts and the other does not appears below with its reason.
 2. A dollar of a cash payment adds a dollar to both totals.
 3. For a one-person household, the two net incomes differ only by the SPM's
    subtractions and the items each measure defines differently.
+4. Every source of federal gross income reaches SPM resources, or appears below
+   with the reason the SPM leaves it out. spm_unit_taxes subtracts the tax on
+   all of them, so a source missing from resources costs the family the tax
+   without the income (#9919).
+5. A dollar of market income, or of a loss, moves both totals by a dollar, and
+   cash income never lowers the SPM net income of a family with no
+   means-tested benefits to lose.
 
 Child care stays out of this file: household_state_benefits and the SPM treat
 subsidies differently on purpose, and #9405 and #10569 cover that difference.
@@ -66,13 +73,60 @@ SPM_ONLY = {
     "assigned_aca_ptc": "only under the flat tax reform's deduct_ptc switch",
 }
 
-# Sources in the household list that person market_income still lacks.
-# #9919 tracks these.
+# Sources in the household list that person market_income leaves out on purpose.
 MARKET_HOUSEHOLD_ONLY = {
-    "debt_relief",
-    "farm_rent_income",
-    "partnership_s_corp_income",
+    "debt_relief": "discharged debt is not cash, and Census money income leaves it out",
 }
+
+GROSS_INCOME_SOURCES = PACKAGE / "parameters/gov/irs/gross_income/sources.yaml"
+
+# Each source of federal gross income, and the market_income or
+# spm_unit_benefits member that counts its cash in SPM resources.
+GROSS_INCOME_IN_RESOURCES = {
+    "irs_employment_income": "employment_income",
+    "self_employment_income": "self_employment_income",
+    "sstb_self_employment_income": "sstb_self_employment_income",
+    "partnership_s_corp_income": "partnership_s_corp_income",
+    "farm_operations_income": "farm_operations_income",
+    "farm_rent_income": "farm_rent_income",
+    "other_net_gain_gross_income": "other_net_gain_person",
+    "capital_gains": "capital_gains",
+    "non_sch_d_capital_gains": "non_sch_d_capital_gains",
+    "taxable_interest_income": "interest_income",
+    "rental_income": "rental_income",
+    "dividend_income": "dividend_income",
+    "taxable_pension_income": "pension_income",
+    "taxable_disability_benefits": "disability_benefits",
+    "estate_income": "estate_income",
+    "taxable_unemployment_compensation": "total_unemployment_compensation",
+    "taxable_social_security": "social_security",
+    "illicit_income": "illicit_income",
+    "taxable_retirement_distributions": "retirement_distributions",
+    "miscellaneous_income": "miscellaneous_income",
+    "ak_permanent_fund_dividend": "ak_permanent_fund_dividend",
+    "taxable_alimony_income": "alimony_income",
+    "military_retirement_income": "military_retirement_income",
+}
+
+# Sources of federal gross income that SPM resources leave out, and why. The
+# SPM still subtracts the tax on them: the family owes it either way.
+GROSS_INCOME_OUTSIDE_RESOURCES = {
+    "debt_relief": "discharged debt is not cash the family receives",
+    "taxable_roth_conversions": "moves savings between retirement accounts, "
+    "and is not cash available for spending",
+    "salt_refund_income": "returns state and local tax paid for an earlier "
+    "year, and the SPM subtracts each year's tax as owed, not as paid",
+}
+
+# Market income inputs: the entity each sits on, and whether it can be a loss.
+MARKET_SOURCES = [
+    ("partnership_income", "person", True),
+    ("s_corp_income", "person", True),
+    ("farm_rent_income", "person", True),
+    ("non_sch_d_capital_gains", "person", False),
+    ("other_net_gain", "tax_unit", True),
+    ("disability_benefits", "person", False),
+]
 
 # Cash payments, with the state that pays each and a year it pays.
 CASH_PAYMENTS = [
@@ -136,10 +190,84 @@ def test_benefit_lists_differ_only_where_documented(year):
     assert spm_extra == set(), f"{year}: only in SPM: {spm_extra}"
 
 
-def test_market_income_differs_only_by_the_tracked_sources():
+def test_market_income_differs_only_where_documented():
     household = block_for("market_income_sources", 2026)
-    assert household - person_market_members() == MARKET_HOUSEHOLD_ONLY
+    assert household - person_market_members() == set(MARKET_HOUSEHOLD_ONLY)
     assert person_market_members() - household == set()
+
+
+def gross_income_sources():
+    """Every source in any year block of the federal gross income list."""
+    raw = yaml.load(GROSS_INCOME_SOURCES.read_text(), Loader=yaml.BaseLoader)
+    return {name for block in raw["values"].values() for name in block}
+
+
+def test_every_gross_income_source_reaches_spm_resources_or_is_documented():
+    sources = gross_income_sources()
+    counted = set(GROSS_INCOME_IN_RESOURCES)
+    left_out = set(GROSS_INCOME_OUTSIDE_RESOURCES)
+    assert not counted & left_out
+    unmapped = sources - counted - left_out
+    assert unmapped == set(), (
+        f"Gross income sources with no SPM treatment: {sorted(unmapped)}. Map "
+        "each to the resource that counts its cash, or document why the SPM "
+        "leaves it out."
+    )
+    assert (counted | left_out) - sources == set(), "stale entries above"
+
+    resources = person_market_members() | spm_members()
+    uncounted = {
+        source: resource
+        for source, resource in GROSS_INCOME_IN_RESOURCES.items()
+        if resource not in resources
+    }
+    assert uncounted == {}, f"mapped to a variable SPM resources lack: {uncounted}"
+    assert not left_out & resources
+
+
+def market_situation(name, entity, amount, year=2026, state="TX"):
+    # Earnings this high rule out every means-tested response.
+    return one_person(state, 500_000, year, **{name: (entity, amount)})
+
+
+@settings(max_examples=25, deadline=None)
+@given(
+    source=st.sampled_from(MARKET_SOURCES),
+    magnitude=st.integers(min_value=1, max_value=200_000),
+    loss=st.booleans(),
+)
+@example(source=MARKET_SOURCES[0], magnitude=287_010, loss=False)
+@example(source=MARKET_SOURCES[0], magnitude=40_000, loss=True)
+def test_market_income_moves_both_totals_dollar_for_dollar(source, magnitude, loss):
+    name, entity, can_be_loss = source
+    amount = -magnitude if loss and can_be_loss else magnitude
+    zero = Simulation(situation=market_situation(name, entity, 0))
+    paid = Simulation(situation=market_situation(name, entity, amount))
+    for names in (("spm_unit_market_income",), ("household_market_income",)):
+        change = total(paid, names, 2026) - total(zero, names, 2026)
+        assert change == pytest.approx(amount, abs=TOLERANCE), names
+
+
+@settings(max_examples=25, deadline=None)
+@given(
+    source=st.sampled_from(MARKET_SOURCES),
+    amount=st.integers(min_value=1, max_value=200_000),
+    state=st.sampled_from(STATES),
+)
+@example(source=MARKET_SOURCES[0], amount=287_010, state="TN")
+def test_cash_income_never_lowers_spm_net_income(source, amount, state):
+    """The tax on a source never exceeds the source in SPM resources.
+
+    Before #9919 the SPM subtracted the tax on partnership income without
+    counting the income, so this net change was negative.
+    """
+    name, entity, _ = source
+    zero = Simulation(situation=market_situation(name, entity, 0, state=state))
+    paid = Simulation(situation=market_situation(name, entity, amount, state=state))
+    change = total(paid, ["spm_unit_net_income"], 2026) - total(
+        zero, ["spm_unit_net_income"], 2026
+    )
+    assert -TOLERANCE <= change <= amount + TOLERANCE
 
 
 def one_person(state, earnings, year, **variables):
