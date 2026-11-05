@@ -391,3 +391,20 @@
         state_code: CO
   output:
     co_ssa_in_kind_support_and_maintenance: 0
+
+- name: Case 19, Colorado counts no ISM for a homeless client without SSI.
+  # Colorado exempts a homeless client (3.520.79(B)(3)).
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 62
+        pension_income: 6_000
+        ssi_receives_outside_shelter_support: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+        is_homeless: true
+  output:
+    co_ssa_in_kind_support_and_maintenance: 0
