@@ -5,6 +5,7 @@ EMPLOYEE_STATE_PAYROLL_TAX_COMPONENTS = [
     "co_employee_state_payroll_tax",
     "ct_employee_state_payroll_tax",
     "de_employee_state_payroll_tax",
+    "hi_employee_state_payroll_tax",
     "ma_employee_state_payroll_tax",
     "me_employee_state_payroll_tax",
     "mn_employee_state_payroll_tax",
@@ -24,7 +25,10 @@ class employee_state_payroll_tax(Variable):
     label = "Employee state payroll taxes and contributions"
     documentation = (
         "Employee-side mandatory state payroll taxes and payroll-funded "
-        "contributions, aggregated from jurisdiction-specific rules."
+        "contributions, aggregated from jurisdiction-specific rules. Hawaii "
+        "lets employers withhold its temporary disability insurance "
+        "contribution without requiring it, and the model assumes they "
+        "withhold the full limit."
     )
     definition_period = YEAR
     unit = USD

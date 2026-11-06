@@ -1,0 +1,1 @@
+Add Hawaii's employee temporary disability insurance contribution under HRS 392-43, with the published maximum weekly wage base for 2004 through 2026, and count it in employee payroll tax and household net income.
