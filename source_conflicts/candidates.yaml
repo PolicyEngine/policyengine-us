@@ -11644,6 +11644,38 @@ candidates:
   note: 'PE-US keeps WV out of requires_income_below_limit, so income equal to the SSI rate qualifies. This assumes
     the group is the 42 CFR 435.210 group of section 1902(a)(10)(A)(ii)(I); West Virginia''s state plan page for the
     group was not checked. The archived 2013 manual pairs the same two wordings (§ 16.7.H and § 10.23.C).'
+- id: us-wv:senior-modification-529-contribution
+  program: income-tax
+  years:
+    from: 2014
+    type: tax
+  question: Does a 529 or prepaid tuition contribution deducted under W. Va. Code 11-21-12a reduce the income base of
+    the senior or disability modification under 11-21-12(c)(9)?
+  sources:
+  - kind: statute
+    citation: W. Va. Code 11-21-12a
+    url: https://code.wvlegislature.gov/11-21-12a/
+  - kind: statute
+    citation: W. Va. Code 11-21-12(c)(9)
+    url: https://code.wvlegislature.gov/11-21-12/
+  - kind: form
+    citation: 2025 Schedule M, line 39 and line 47 box (c), PDF p. 6
+    url: https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=6
+  readings:
+    statute: Section 12a's deduction adds to the subsection (c) modifications, and (c)(9)(ii) limits the senior
+      modification only by the modifications under (c)(1), (2) and (5)-(8), so a contribution doesn't reduce it.
+    other: Schedule M box (c) counts income not included in lines 35 to 46, and line 39 holds the 529 contribution, so
+      the form excludes it.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wv/tax/income/subtractions/senior_citizen_disability/wv_senior_citizen_disability_deduction_person.py
+    - policyengine_us/parameters/gov/states/wv/tax/income/subtractions/senior_citizen_disability_deduction/excluded_income_sources.yaml
+  state: open
+  note: 'This PR follows the statute for line 39 and keeps the section 12a contribution deduction apart from the
+    income receipts on lines 36 and 38 that the senior cap excludes. Main follows the registered
+    us-wv:senior-disability-modification-income-base reading, which excludes all of Schedule M lines 35 to 46, line 39
+    included. This PR keeps the existing marker, vendored register and pin.'
 - id: us-wv:senior-modification-excluded-line-range
   program: income-tax
   years:
@@ -11670,7 +11702,8 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10082
   state: unreviewed
   note: 'PE-US follows the form and worked example: box (c) excludes the person''s own amounts on 2025 Schedule
-    M lines 35-46, and the list holds lines 36, 38 and 39 (wv_senior_citizen_disability_deduction_person.py, excluded_income_sources.yaml).
+    M lines 35-46, and from 2014 the list holds lines 36 and 38 and leaves out the line 39 529 contribution (see
+    us-wv:senior-modification-529-contribution) (wv_senior_citizen_disability_deduction_person.py, excluded_income_sources.yaml).
     Verify the stale range and resulting amount difference.'
 - id: us-wv:zero-exemption-return-500-allowance
   program: income-tax
