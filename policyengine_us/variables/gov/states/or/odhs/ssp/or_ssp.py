@@ -16,6 +16,8 @@ class or_ssp(Variable):
         "https://ch461rules.odhs.oregon.gov/rules/461-155-0575.pdf",
         # PDF pages 1-3
         "https://ch461rules.odhs.oregon.gov/rules/461-155-0630.pdf#page=1",
+        # OAR 461-001-0000(62): legal marriage defines spouses.
+        "https://ch461rules.odhs.oregon.gov/rules/461-001-0000.pdf#page=15",
         # PDF pages 1-3
         "https://ch461rules.odhs.oregon.gov/rules/461-155-0700.pdf#page=1",
         "https://ch461rules.odhs.oregon.gov/rules/461-160-0070.pdf",
@@ -41,9 +43,9 @@ class or_ssp(Variable):
         # Community care and SSI restoration amounts depend on the SSI payment,
         # so those paths require modeled SSI rather than reported receipt.
         care = (category == c.COMMUNITY_CARE) & (ssi > 0)
-        # OAR 461-155-0630(3) applies when each spouse receives SSI and
-        # community-based care services, including in separate facilities.
-        # Hub ruling: us-or:ssp-community-care-spouses-separate-facilities.
+        # Oregon pays legally married spouses who each receive SSI and
+        # community-based care services, in one facility or two, under
+        # OAR 461-155-0630(3) and 461-001-0000(62).
         couple = state_couple_total(person, period.this_year, care.astype(int)) == 2
         own_excess = max_(income - standard, 0)
         spouse_excess = (

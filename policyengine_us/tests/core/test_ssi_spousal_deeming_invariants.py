@@ -20,8 +20,8 @@ simulations for the generated income and state-supplement properties:
   ineligible-spouse status.
 - Every implemented state supplement, comparing a couple and third adult
   with the API's default marital unit against explicit couple/single units.
-  Hypothesis varies income, age, resources and care membership; explicit
-  examples retain the payment, exclusion, eligibility and resource edges.
+  Hypothesis varies income, age, resources and care membership. YAML
+  retains the worked payment, exclusion, eligibility and resource edges.
   Each comparison uses two independent three-person simulations sharing the
   same read-only system as the grids.
 - Declared spouses who live in separate households in Colorado, Missouri,
@@ -693,46 +693,6 @@ def _supplement_amounts(
     derandomize=True,
     suppress_health_check=[HealthCheck.too_slow],
 )
-@example(
-    pensions=(0, 0, 0),
-    ages=(65, 65, 65),
-    resources=(0, 0, 0),
-    care=True,
-    third_care=True,
-    iowa_scenario="standard",
-)
-@example(
-    pensions=(0, 497, 994),
-    ages=(65, 64, 90),
-    resources=(0, 0, 2_001),
-    care=True,
-    third_care=False,
-    iowa_scenario="ia_rcf",
-)
-@example(
-    pensions=(20, 65, 1_491),
-    ages=(90, 65, 64),
-    resources=(2_000, 0, 3_001),
-    care=True,
-    third_care=True,
-    iowa_scenario="ia_in_home",
-)
-@example(
-    pensions=(994, 1_491, 20),
-    ages=(65, 90, 65),
-    resources=(3_000, 0, 0),
-    care=False,
-    third_care=False,
-    iowa_scenario="standard",
-)
-@example(
-    pensions=(0, 0, 0),
-    ages=(65, 65, 90),
-    resources=(7_000, 1_000, 5_000),
-    care=True,
-    third_care=True,
-    iowa_scenario="ia_smme",
-)
 @given(
     pensions=st.tuples(*(st.integers(0, 1_600) for _ in range(3))),
     ages=st.tuples(*(st.sampled_from((64, 65, 90)) for _ in range(3))),
@@ -771,8 +731,11 @@ def test_state_supplements_do_not_depend_on_omitted_marital_units(
 # is not a spouse cannot alter them.
 # CO: 9 CCR 2503-5 3.533(A)(2)(c), 3.534(B)-(C).
 # MO: RSMo 208.010.1; DSS Manual 1035.005.00 (medical/nursing separation).
-# OR: OAR 461-155-0630(3), hub ruling
-# us-or:ssp-community-care-spouses-separate-facilities.
+# Oregon pays legally married spouses who each receive SSI and
+# community-based care services, in one facility or two, under
+# OAR 461-155-0630(3) and 461-001-0000(62).
+# https://ch461rules.odhs.oregon.gov/rules/461-155-0630.pdf#page=2
+# https://ch461rules.odhs.oregon.gov/rules/461-001-0000.pdf#page=15
 # SD: ARSD 67:46:04:10(6), 67:46:05:30 (joint care-entry month).
 # VA: AG Manual Chapter B section 6 (first moment of the initial month).
 # IA: 6-B Spouses Living Separately p.60 (prior-SSI RCF entry month).
