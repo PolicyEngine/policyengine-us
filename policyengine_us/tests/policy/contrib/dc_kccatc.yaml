@@ -42,3 +42,30 @@
     state_code: DC
   output:
     dc_kccatc: 3_000
+
+- name: DC KCCATC reform switched off keeps the baseline dependent rule for a filer who can be claimed
+  period: 2025
+  reforms: policyengine_us.reforms.dc_kccatc.dc_kccatc_reform
+  input:
+    gov.contrib.dc_kccatc.active: false
+    people:
+      parent: {age: 20, employment_income: 10_000, claimed_as_dependent_on_another_return: true}
+      child: {age: 2}
+    tax_units: {tax_unit: {members: [parent, child], tax_unit_childcare_expenses: 2_000}}
+    households: {household: {members: [parent, child], state_code: DC}}
+  # D.C. Code 47-1806.15(d)(1); IRC 152(b)(1).
+  output:
+    dc_kccatc: 0
+
+- name: DC KCCATC reform switched off matches the baseline when nobody can be claimed
+  period: 2025
+  reforms: policyengine_us.reforms.dc_kccatc.dc_kccatc_reform
+  input:
+    gov.contrib.dc_kccatc.active: false
+    people:
+      parent: {age: 20, employment_income: 10_000}
+      child: {age: 2}
+    tax_units: {tax_unit: {members: [parent, child], tax_unit_childcare_expenses: 2_000}}
+    households: {household: {members: [parent, child], state_code: DC}}
+  output:
+    dc_kccatc: 1_200

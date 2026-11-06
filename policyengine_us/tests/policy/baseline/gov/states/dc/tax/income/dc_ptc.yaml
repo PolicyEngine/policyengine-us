@@ -27,7 +27,8 @@
         state_code: DC
   output:
     adjusted_gross_income: 40_000
-    dc_ptc: 800  # = 12000 * 20% - 40000 * 4%
+    # One claimant: max(8,000 * 20% - 40,000 * 4%, 0) = 0.
+    dc_ptc: 0
 
 - name: dc_ptc unit test 2
   absolute_error_margin: 0.01
@@ -58,7 +59,9 @@
         state_code: DC
   output:
     adjusted_gross_income: 40_000
-    dc_ptc: 1_200  # = 12000 * 20% - 40000 * 3%
+    # Age 69: 8,000 * 20% - 40,000 * 4% = 0.
+    # Age 70: max(4,000 * 20% - 40,000 * 3%, 0) = 0.
+    dc_ptc: 0
 
 - name: dc_ptc unit test 3
   absolute_error_margin: 0.01
@@ -120,7 +123,8 @@
         state_code: DC
   output:
     adjusted_gross_income: 56_200
-    dc_ptc: 1_190  # = 12000 * 20% - 56_200 * 5%
+    # Either claimant: max(10,000 * 20% - 56,200 * 5%, 0) = 0.
+    dc_ptc: 0
 
 - name: dc_ptc unit test 5 (same as test 4 except an extra dollar of income)
   absolute_error_margin: 0.01
@@ -182,7 +186,8 @@
         state_code: DC
   output:
     adjusted_gross_income: 57_600
-    dc_ptc: 1_120  # = 20000 * 20% - 57_600 * 5%
+    # Either claimant: max(10,000 * 20% - 57,600 * 5%, 0) = 0.
+    dc_ptc: 0
 
 - name: dc_ptc unit test 7 (same as test 6 except an extra dollar of income)
   absolute_error_margin: 0.01
@@ -242,7 +247,7 @@
         members: [person1, person2, person3]
         state_code: DC
   output:
-    dc_ptc: 1_250  # = min(1250, 20000 * 20% - 0 * 5%)
+    dc_ptc: 1_250  # min(1,250, 10,000 * 20% - 0 * 3%) = 1,250.
 
 - name: dc_ptc unit test 9 (negative AGI with no rent or property taxes)
   absolute_error_margin: 0.01
@@ -290,3 +295,290 @@
         state_code: MN
   output:
     dc_ptc: 0
+
+
+- name: 2025 single filer who can be claimed as a dependent, property tax credit only through a claimant who is not a dependent
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 10_000
+        rent: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: DC
+  output:
+    # D.C. Code 47-1806.06(k) bars a claimant who was a dependent,
+    # unless 65 or older: 1,425 before the claimant bar, then 0.
+    dc_ptc: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, property tax credit only through a claimant who is not a dependent (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 5_000
+        rent: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: DC
+  output:
+    dc_ptc: 1_425
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, property tax credit only through a claimant who is not a dependent (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 5_000
+        rent: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: DC
+  output:
+    dc_ptc: 1_425
+
+- name: 2025 joint return with both spouses claimable as dependents, property tax credit only through a claimant who is not a dependent
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 5_000
+        rent: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: DC
+  output:
+    dc_ptc: 0
+
+- name: 2025 joint return with neither spouse claimable, property tax credit only through a claimant who is not a dependent
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 5_000
+        rent: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: DC
+  output:
+    dc_ptc: 1_425
+
+- name: 2025 single filer aged 65 who can be claimed as a dependent claims the property tax credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 65
+        employment_income: 10_000
+        rent: 10_000
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: DC
+  output:
+    # The dependent bar does not apply at 65 or older; the
+    # elderly fractions start at 70.
+    dc_ptc: 1_425
+
+
+- name: 2025 claimable filer under 65 cannot claim Schedule H through the federal filing exception
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 10_000
+        rent: 10_000
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: DC
+  output:
+    # Section 47-1801.04(13) incorporates IRC 152 dependent status.
+    # The filing exception permits claiming one's own dependents.
+    # min(1,425, 10,000 * 20% - 10,000 * 3%) = 1,425;
+    # section 47-1806.06(k) still bars this claimant, giving 0.
+    dc_ptc_has_eligible_claimant: false
+    dc_ptc: 0
+
+- name: 2025 single filer who can be claimed but is not claimed cannot claim Schedule H
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 10_000
+        rent: 10_000
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: DC
+  output:
+    # 47-1806.06(k) turns on being a dependent, not on an
+    # actual claim.
+    dc_ptc: 0
+
+- name: 2025 Schedule H uses the eligible spouse's own rent when the head can be claimed
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 5_000
+        rent: 5_000
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+      spouse:
+        age: 30
+        employment_income: 5_000
+        rent: 5_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    # Sections 47-1806.06(b)(4), (b)(8): one claimant's rent.
+    # min(1,425, 5,000 * 20% - 10,000 * 3%) = 700.
+    dc_ptc: 700
+
+- name: 2025 Schedule H uses the eligible head's own rent when the spouse can be claimed
+  period: 2025
+  input:
+    people:
+      spouse:
+        age: 30
+        employment_income: 5_000
+        rent: 5_000
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+      head:
+        age: 30
+        employment_income: 5_000
+        rent: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    # min(1,425, 5,000 * 20% - 10,000 * 3%) = 700.
+    dc_ptc: 700
+
+- name: 2025 Schedule H applies each eligible claimant's own age to their rent
+  period: 2025
+  input:
+    people:
+      head:
+        age: 69
+        employment_income: 20_000
+        rent: 12_000
+        is_tax_unit_head: true
+      spouse:
+        age: 70
+        employment_income: 20_000
+        rent: 1_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    # Age 69: 12,000 * 20% - 40,000 * 4% = 800.
+    # Age 70: max(1,000 * 20% - 40,000 * 3%, 0) = 0.
+    # The couple chooses the eligible claimant with the larger credit: 800.
+    dc_ptc: 800
