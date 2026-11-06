@@ -84,6 +84,16 @@ class ca_capi_person(Variable):
         mixed = couple_with_spouse & spouse_paid
         unpaid_spouse = couple_with_spouse & ~spouse_paid
         mixed_benefit = max_(payment_standard - couple_income - spouse_ssi_ssp, 0)
+        # Stored standards and payments use float32; couple income uses
+        # float64. Normalize cancellation within the stored standard's
+        # precision so an exhausted benefit cannot create income eligibility.
+        exhausted = np.isclose(
+            payment_standard,
+            couple_income + spouse_ssi_ssp,
+            rtol=np.finfo(payment_standard.dtype).eps,
+            atol=0,
+        )
+        mixed_benefit = where(exhausted, 0, mixed_benefit)
 
         # MPP 49-035.71 follows the SSI spouse-to-spouse deeming steps: the
         # federal and state parts are each the lesser of the individual and the
