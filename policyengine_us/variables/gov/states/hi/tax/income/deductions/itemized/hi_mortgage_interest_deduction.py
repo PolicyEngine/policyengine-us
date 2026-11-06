@@ -19,8 +19,8 @@ def _hi_qualified_loan_limit(
     Debt above the acquisition-debt limit may qualify as home equity debt, up
     to the home equity debt limit (line 7; Publication 936 (2017), Figure A,
     note 3). The home equity debt limit is also capped by each home's fair
-    market value less its acquisition debt; PolicyEngine has no home value
-    input, so every home is treated as worth at least its mortgages.
+    market value less its acquisition debt; PolicyEngine has no Hawaii home
+    value input, so it counts every home as worth at least its mortgages.
     """
     total_debt = grandfathered_debt + other_debt
     # Lines 3-6.

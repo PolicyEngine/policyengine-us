@@ -1,0 +1,1 @@
+Apply New York's pre-TCJA mortgage debt limits ($1,000,000 acquisition and $100,000 home equity debt) to its itemized interest deduction from 2018, with new home value and non-acquisition debt inputs.
