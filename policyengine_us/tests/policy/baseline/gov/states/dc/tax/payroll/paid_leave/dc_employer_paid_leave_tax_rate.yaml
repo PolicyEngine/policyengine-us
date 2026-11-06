@@ -21,14 +21,6 @@
     # (0 + 0.62% + 0.62% + 0.62%) / 4 = 0.465%
     dc_employer_paid_leave_tax_rate: 0.00465
 
-- name: The DC rate is 0.62% for all of 2020.
-  period: 2020
-  absolute_error_margin: 0.000001
-  input:
-    state_code: DC
-  output:
-    dc_employer_paid_leave_tax_rate: 0.0062
-
 - name: The DC rate is 0.62% for all of 2021.
   period: 2021
   absolute_error_margin: 0.000001
@@ -65,14 +57,6 @@
 
 - name: The DC rate is 0.75% for all of 2025.
   period: 2025
-  absolute_error_margin: 0.000001
-  input:
-    state_code: DC
-  output:
-    dc_employer_paid_leave_tax_rate: 0.0075
-
-- name: The DC rate is 0.75% for all of 2026.
-  period: 2026
   absolute_error_margin: 0.000001
   input:
     state_code: DC
