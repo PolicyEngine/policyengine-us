@@ -24,6 +24,13 @@ class ri_retirement_income_subtraction(Variable):
         military_subtraction = person("ri_military_retirement_subtraction", period)
         retirement_income = max_(retirement_income - military_subtraction, 0)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        # The RI-1040 worksheet has Primary and Spouse columns, and only the
+        # retirement income of a taxpayer born on or before the threshold
+        # date qualifies, so the age test applies to each person.
+        birth_year = person("birth_year", period)
+        age_eligible = birth_year <= p.birth_year
         # Cap applies per person, not per tax unit
-        capped_per_person = min_(retirement_income, p.cap) * head_or_spouse
+        capped_per_person = (
+            min_(retirement_income, p.cap) * head_or_spouse * age_eligible
+        )
         return tax_unit.sum(capped_per_person)
