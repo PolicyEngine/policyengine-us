@@ -491,3 +491,86 @@
     # exemption = tier_3_exempt_share * real_estate_taxes
     #           = 0.45 * 5,000 = 2,250
     wa_senior_disabled_property_tax_exemption: 2_250
+
+- name: Case 19, 2026 Washington and South Dakota households in one simulation.
+  # Reproduces the full-population crash: defined_for masks the output but
+  # the tier lookup still runs over the South Dakota household, whose county
+  # is not a key of the Washington county thresholds.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 6_000
+        assessed_property_value: 700_000
+      person2:
+        age: 70
+        real_estate_taxes: 6_000
+        assessed_property_value: 700_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        adjusted_gross_income: 40_000
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        adjusted_gross_income: 40_000
+        filing_status: SINGLE
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+    households:
+      household1:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+      household2:
+        members: [person2]
+        state_code: SD
+        county: MARSHALL_COUNTY_SD
+  output:
+    # household1 is Case 16's household: 4,320.
+    # household2 is in South Dakota: 0.
+    wa_senior_disabled_property_tax_exemption: [4_320, 0]
+
+- name: Case 20, 2027 Washington and South Dakota households in one simulation.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 6_000
+        assessed_property_value: 700_000
+      person2:
+        age: 70
+        real_estate_taxes: 6_000
+        assessed_property_value: 700_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        adjusted_gross_income: 40_000
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        adjusted_gross_income: 40_000
+        filing_status: SINGLE
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+    households:
+      household1:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+      household2:
+        members: [person2]
+        state_code: SD
+        county: MARSHALL_COUNTY_SD
+  output:
+    # household1 is Case 17's household: 5,340.
+    # household2 is in South Dakota: 0.
+    wa_senior_disabled_property_tax_exemption: [5_340, 0]

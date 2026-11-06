@@ -241,3 +241,66 @@
     # CDI = 60,000 + 30,000 = 90,000 > King 2024 T3 ($84,000) -> ineligible.
     # Without the cotenant amount the tax unit would have qualified for Tier 3.
     wa_pte_income_eligible: false
+
+- name: Case 12, out-of-state and unknown-county households in one simulation with a King County household.
+  # defined_for masks the output but the formula still runs over every
+  # household in the simulation. Before the county guard, the South Dakota
+  # county and the UNKNOWN county reached the Washington county-keyed
+  # thresholds and raised ParameterNotFoundError.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+      person3:
+        age: 70
+      person4:
+        age: 70
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        adjusted_gross_income: 84_000
+      tax_unit2:
+        members: [person2]
+        adjusted_gross_income: 84_000
+      tax_unit3:
+        members: [person3]
+        adjusted_gross_income: 41_000
+      tax_unit4:
+        members: [person4]
+        adjusted_gross_income: 41_001
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+      spm_unit4:
+        members: [person4]
+    households:
+      household1:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+      household2:
+        members: [person2]
+        state_code: SD
+        county: MARSHALL_COUNTY_SD
+      household3:
+        members: [person3]
+        state_code: WA
+        county: UNKNOWN
+      household4:
+        members: [person4]
+        state_code: WA
+        county: UNKNOWN
+  output:
+    # household1: King 2024 T3 = $84,000; income at threshold -> eligible.
+    # household2: South Dakota; defined_for zeroes the result.
+    # household3: UNKNOWN county falls back to Adams 2024 T3 = $41,000;
+    #   income at threshold -> eligible.
+    # household4: $41,001 > Adams T3 -> ineligible (King T3 would admit it).
+    wa_pte_income_eligible: [true, false, true, false]
