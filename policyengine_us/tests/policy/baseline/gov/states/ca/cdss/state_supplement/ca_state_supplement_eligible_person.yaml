@@ -1,97 +1,139 @@
-- name: Eligible citizen
-  period: 2024
+- name: Case 1, aged citizen with no income is eligible.
+  period: 2026-01
   input:
-    meets_ssi_resource_test: true
-    is_ssi_aged_blind_disabled: true
-    is_ssi_qualified_noncitizen: false
-    immigration_status: CITIZEN
-    state_code: CA
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: CA
   output:
     ca_state_supplement_eligible_person: true
 
-- name: Ineligible based on immigration status
-  period: 2024
-  input:
-    meets_ssi_resource_test: true
-    is_ssi_aged_blind_disabled: true
-    is_ssi_qualified_noncitizen: false
-    immigration_status: LEGAL_PERMANENT_RESIDENT
-    state_code: CA
-  output:
-    ca_state_supplement_eligible_person: false
-
-- name: Not aged or disabled
-  period: 2024
-  input:
-    meets_ssi_resource_test: true
-    is_ssi_aged_blind_disabled: false
-    is_ssi_qualified_noncitizen: false
-    immigration_status: CITIZEN
-    state_code: CA
-  output:
-    ca_state_supplement_eligible_person: false
-
-- name: Does not meet resource test
-  period: 2024
-  input:
-    meets_ssi_resource_test: false
-    is_ssi_aged_blind_disabled: true
-    is_ssi_qualified_noncitizen: false
-    immigration_status: CITIZEN
-    state_code: CA
-  output:
-    ca_state_supplement_eligible_person: false
-
-- name: Disabled dependent child below the age limit
-  period: 2026
+- name: Case 2, aged noncitizen who fails SSI's noncitizen test is not eligible.
+  period: 2026-01
   input:
     people:
       person1:
-        age: 33
-        meets_ssi_resource_test: true
-        is_ssi_aged_blind_disabled: false
+        age: 70
+        is_ssi_qualified_noncitizen: false
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_state_supplement_eligible_person: false
+
+- name: Case 3, person who is not aged, blind or disabled is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
         immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_state_supplement_eligible_person: false
+
+- name: Case 4, aged person who fails the resource test is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        meets_ssi_resource_test: false
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_state_supplement_eligible_person: false
+
+- name: Case 5, disabled dependent under 18 is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
       person2:
-        age: 17
-        meets_ssi_resource_test: true
-        is_ssi_aged_blind_disabled: true
-        immigration_status: CITIZEN
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
+        age: 3
+        is_tax_unit_dependent: true
+        is_disabled: true
+        meets_ssi_disability_criteria: true
     households:
       household:
         members: [person1, person2]
         state_code: CA
   output:
-    is_tax_unit_dependent: [false, true]
     ca_state_supplement_eligible_person: [false, true]
 
-- name: Disabled dependent at the age limit
-  period: 2026
+- name: Case 6, disabled dependent aged 18 is eligible.
+  period: 2026-01
   input:
     people:
       person1:
-        age: 45
-        meets_ssi_resource_test: true
-        is_ssi_aged_blind_disabled: false
-        immigration_status: CITIZEN
+        age: 50
+        is_tax_unit_head: true
       person2:
         age: 18
-        # Input so the age-ordered fallback does not make them the spouse.
         is_tax_unit_dependent: true
-        meets_ssi_resource_test: true
-        is_ssi_aged_blind_disabled: true
-        immigration_status: CITIZEN
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
+        is_disabled: true
+        meets_ssi_disability_criteria: true
     households:
       household:
         members: [person1, person2]
         state_code: CA
   output:
-    # Known limitation: POMS SI 01415.058 pays a disabled dependent aged 18 or
-    # older the adult rate, but the model pays them nothing and leaves the
-    # flag false (issue 10557).
-    ca_state_supplement_eligible_person: [false, false]
+    # The supplement has no tax-role condition, so an adult dependent takes the
+    # individual share.
+    ca_state_supplement_eligible_person: [false, true]
+
+- name: Case 7, income above the federal rate but below the California standard leaves the person eligible with no SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        social_security_retirement: 13_200 # 1,100 a month
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # Countable income of 1,100 - 20 = 1,080 is above the 994 federal rate but
+    # below the 1,233.94 standard: 1,233.94 - 1,080 = 153.94.
+    is_ssi_eligible: true
+    ssi: 0
+    ca_state_supplement_person: 153.94
+    ca_state_supplement_eligible_person: true
+
+- name: Case 8, income above the California standard makes an otherwise SSI-eligible person not eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        social_security_retirement: 24_000 # 2,000 a month
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # is_ssi_eligible has no income test, but countable income of 2,000 - 20 =
+    # 1,980 is above the 1,233.94 standard, so no supplement is left to pay.
+    is_ssi_eligible: true
+    ssi: 0
+    ca_state_supplement_person: 0
+    ca_state_supplement_eligible_person: false
