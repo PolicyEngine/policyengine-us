@@ -172,7 +172,7 @@
   period: 2017
   absolute_error_margin: 0.01
   input:
-    adjusted_gross_income: 400_000
+    adjusted_gross_income: 1_000_000
     filing_status: SINGLE
     gambling_winnings: 20_000
     gambling_losses: 20_000
@@ -185,10 +185,10 @@
   output:
     wagering_losses_deduction: 20_000
     # Line 1: 30_000. Line 2: 20_000. Line 3: 10_000. Line 4: 8_000.
-    # Line 7: 400_000 - 261_500 = 138_500. Line 8: 4_155.
-    # Line 9: smaller of 8_000 or 4_155.
-    itemized_taxable_income_deductions_reduction: 4_155
-    itemized_taxable_income_deductions: 25_845
+    # Line 7: 1_000_000 - 261_500 = 738_500. Line 8: 22_155.
+    # Line 9: smaller of 8_000 or 22_155.
+    itemized_taxable_income_deductions_reduction: 8_000
+    itemized_taxable_income_deductions: 22_000
 
 - name: 2026 single filer - the reduction counts wagering losses
   period: 2026

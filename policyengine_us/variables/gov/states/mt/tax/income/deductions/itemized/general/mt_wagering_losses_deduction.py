@@ -39,5 +39,6 @@ class mt_wagering_losses_deduction(Variable):
         total_unused = person.tax_unit.sum(unused_winnings)
         share = np.zeros_like(total_unused)
         mask = total_unused > 0
+        # Montana's instructions leave this proportional split unspecified.
         share[mask] = unused_winnings[mask] / total_unused[mask]
         return own + remaining * share

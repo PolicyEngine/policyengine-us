@@ -19,6 +19,7 @@
     state_code: AL
   output:
     al_gambling_loss_deduction: 5_000
+    al_itemized_deductions: 5_000
 
 - name: A dependent's gambling is not on the parent's Alabama return.
   absolute_error_margin: 0.01
