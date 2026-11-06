@@ -9,15 +9,18 @@ class hi_ccap_tanf_income(Variable):
     definition_period = MONTH
     defined_for = StateCode.HI
     reference = (
+        # HAR 17-798.2-10(b)(11), eff. 2008-03-08.
+        "https://www.law.cornell.edu/regulations/hawaii/Haw-Code-R-SS-17-798-2-10",
         # HAR 17-798.3-10(b)(11), eff. 2021-08-06.
         "https://www.law.cornell.edu/regulations/hawaii/Haw-Code-R-SS-17-798-3-10",
     )
 
     def formula(spm_unit, period, parameters):
-        # HAR 17-798.3-10(b)(11) counts "Hawaii public assistance payments
-        # prior to any reduction of the monthly assistance payment due to
-        # overpayment recovery". The model has no overpayment recovery, so
-        # the payment is the Hawaii TANF grant the family takes up.
+        # Hawaii counts its public assistance payments under
+        # HAR 17-798.2-10(b)(11) and its successor 17-798.3-10(b)(11).
+        # Hawaii counts payments before overpayment recovery under the
+        # successor chapter. The model has no recovery, so count the Hawaii
+        # TANF grant the family takes up.
         # Reading tanf here would be circular: tanf sums every state's TANF
         # program, several of which deduct childcare_expenses, which nets
         # out child_care_subsidies, which includes Hawaii CCAP. hi_tanf under

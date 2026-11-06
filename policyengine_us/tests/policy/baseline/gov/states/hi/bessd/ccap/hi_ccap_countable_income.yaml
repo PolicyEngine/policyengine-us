@@ -1,13 +1,14 @@
 # HI CCAP countable monthly income (HAR 17-798.2-10 counted, -11 excluded).
 # Counted: employment, self-employment, Social Security (retirement,
 # disability, survivors), SSI, pensions, veterans benefits, unemployment,
-# workers compensation, interest, dividends, rent, alimony, child support.
+# workers compensation, interest, dividends, rent, alimony, child support,
+# and Hawaii TANF.
 # Excluded: capital gains, SNAP, WIC, EITC, lump sums, and others.
 #
 # hi_ccap_countable_income is MONTH-defined. YEAR-defined sources are entered
 # annually (auto-divided to monthly); SSI is MONTH-defined and entered monthly.
 # Earnings are entered as employment_income_before_lsr, the input Hawaii TANF
-# reads, so the TANF grant CCAP counts from 2021-08-06 sees the same earnings.
+# reads, so Hawaii TANF and CCAP use the same earnings in every modeled month.
 
 - name: Case 1, employment income is counted.
   period: 2025-01
@@ -223,7 +224,7 @@
     hi_ccap_tanf_income: 0
     hi_ccap_countable_income: 1_000
 
-- name: Case 11, Hawaii TANF is not added before the August 6, 2021 rules.
+- name: Case 11, January 2021 income includes Hawaii TANF.
   period: 2021-01
   absolute_error_margin: 0.01
   input:
@@ -242,9 +243,9 @@
         members: [parent, child]
         state_code: HI
   output:
-    # The predecessor HAR 17-798.2 edition in force before then was not
-    # established, so the earlier source list applies.
-    hi_ccap_countable_income: 1_000
+    # HAR 17-798.2-10(b)(11): $1,000 earnings + $100 Hawaii TANF.
+    hi_ccap_tanf_income: 100
+    hi_ccap_countable_income: 1_100
 
 - name: Case 12, a computed Hawaii TANF grant flows into CCAP income.
   period: 2024-01
@@ -276,7 +277,7 @@
     hi_tanf: 35.76
     hi_ccap_countable_income: 1_535.76
 
-- name: Case 13, August 2021 income excludes Hawaii TANF.
+- name: Case 13, August 2021 income includes Hawaii TANF.
   period: 2021-08
   absolute_error_margin: 0.01
   input:
@@ -296,9 +297,9 @@
         members: [parent, child]
         state_code: {2021: HI}
   output:
-    # The monthly formula reads August 1, before the August 6 parameter
-    # date, and counts $1,000 earnings without the $100 TANF grant.
-    hi_ccap_countable_income: 1_000
+    # HAR 17-798.2-10(b)(11) counts Hawaii TANF before the successor chapter.
+    hi_ccap_tanf_income: 100
+    hi_ccap_countable_income: 1_100
 
 - name: Case 14, September 2021 income includes Hawaii TANF.
   period: 2021-09
@@ -320,6 +321,54 @@
         members: [parent, child]
         state_code: {2021: HI}
   output:
-    # The monthly formula first reads the August 6 parameter in September:
-    # $1,000 earnings + $100 Hawaii TANF = $1,100 countable income.
+    # HAR 17-798.3-10(b)(11) continues counting $1,000 earnings + $100 TANF.
+    hi_ccap_tanf_income: 100
+    hi_ccap_countable_income: 1_100
+
+- name: Case 15, abolishing TANF removes Hawaii TANF from CCAP income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    gov.hhs.tanf.abolish_tanf: true
+    people:
+      parent:
+        age: {2025: 30}
+        employment_income_before_lsr: {2025: 12_000}
+      child:
+        age: {2025: 5}
+    spm_units:
+      unit:
+        members: [parent, child]
+        hi_tanf: 100
+        takes_up_tanf_if_eligible: {2025: true}
+    households:
+      household:
+        members: [parent, child]
+        state_code: {2025: HI}
+  output:
+    hi_ccap_tanf_income: 0
+    hi_ccap_countable_income: 1_000
+
+- name: Case 16, August 2017 income includes Hawaii TANF.
+  period: 2017-08
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: {2017: 30}
+        employment_income_before_lsr: {2017: 12_000}
+      child:
+        age: {2017: 5}
+    spm_units:
+      unit:
+        members: [parent, child]
+        hi_tanf: 100
+        takes_up_tanf_if_eligible: {2017: true}
+    households:
+      household:
+        members: [parent, child]
+        state_code: {2017: HI}
+  output:
+    # Hawaii counts public assistance in the source list's first month.
+    hi_ccap_tanf_income: 100
     hi_ccap_countable_income: 1_100

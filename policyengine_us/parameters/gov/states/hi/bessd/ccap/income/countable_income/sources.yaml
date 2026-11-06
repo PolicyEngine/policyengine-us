@@ -25,6 +25,11 @@ values:
     - workers_compensation
     - alimony_income
     - child_support_received
+    # Hawaii counts public assistance under both HAR 17-798.2-10(b)(11)
+    # and its successor 17-798.3-10(b)(11), effective August 6, 2021.
+    # hi_ccap_tanf_income applies take-up and TANF abolition without
+    # introducing a dependency through other states' TANF programs.
+    - hi_ccap_tanf_income
     # The following are counted per HAR 17-798.2-10(b) but have no
     # matching PolicyEngine variables:
     # - railroad retirement (item (2)(A); captured via social_security_*)
@@ -33,56 +38,23 @@ values:
     # - royalties (item (17))
     # - free rent converted to cost compensation (item (19));
     #   we don't track in-kind rent-for-activity at the moment
-    # Hawaii public assistance (item (11)) is counted from August 6, 2021,
-    # under the replacement HAR 17-798.3-10(b)(11) (see the entry below).
-    # The predecessor 17-798.2-10(b)(11) lists it too, but the edition in
-    # force from August 2017 was not established, so this period keeps the
-    # earlier list.
     # Items (10) out-of-state public assistance and (12) adoption assistance
     # have no clean PolicyEngine income input.
     # Excluded per HAR 17-798.2-11 (omitted from the list above): capital
     # gains, SNAP, WIC, USDA donated foods, EITC, Title IV HEA aid, lump sums,
     # and others. The half-time+ student-minor earnings exclusion (item (8)) is
     # applied as a formula filter in hi_ccap_countable_income.
-  2021-08-06:
-    # Same sources as above, plus Hawaii TANF payments before any
-    # overpayment-recovery reduction (HAR 17-798.3-10(b)(11), eff.
-    # 2021-08-06). hi_ccap_tanf_income explains why it reads hi_tanf
-    # rather than tanf.
-    - employment_income
-    - self_employment_income
-    - sstb_self_employment_income
-    - social_security_retirement
-    - social_security_disability
-    - social_security_survivors
-    - ssi
-    - dividend_income
-    - interest_income
-    - rental_income
-    - pension_income
-    - veterans_benefits
-    - military_retirement_income
-    - total_unemployment_compensation
-    - strike_benefits
-    - workers_compensation
-    - alimony_income
-    - child_support_received
-    - hi_ccap_tanf_income
 
 metadata:
   unit: list
   period: year
   label: Hawaii CCAP countable income sources
   reference:
-    # Chapter 17-798.3 (eff. 2021-08-06) carries the same source list in
-    # 17-798.3-10(b) and the same exclusions in 17-798.3-11 (page 29);
-    # "gross income" is defined in 17-798.3-2 as all non-excluded earned
-    # and unearned income.
-    - title: HAR 17-798.3-10(b) and 17-798.3-11
-      href: https://humanservices.hawaii.gov/bessd/files/2021/09/CHAPTER-17-798.3-Child-Care-Payments.pdf#page=24
+    - title: "HAR 17-798.3-10(b)(11) and 17-798.3-11 #page 27,29"
+      href: https://humanservices.hawaii.gov/bessd/files/2021/09/CHAPTER-17-798.3-Child-Care-Payments.pdf#page=27
     - title: HAR 17-798.3-10(b)(11), Hawaii public assistance payments
       href: https://www.law.cornell.edu/regulations/hawaii/Haw-Code-R-SS-17-798-3-10
-    - title: HAR 17-798.2-10(b)
-      href: https://humanservices.hawaii.gov/bessd/files/2013/01/HAR-17-798.2-Child-Care-Services-Rules.pdf#page=19
-    - title: HAR 17-798.2-11
-      href: https://humanservices.hawaii.gov/bessd/files/2013/01/HAR-17-798.2-Child-Care-Services-Rules.pdf#page=24
+    - title: "HAR 17-798.2-10(b)(11) and 17-798.2-11 #page 21,24"
+      href: https://humanservices.hawaii.gov/bessd/files/2013/01/HAR-17-798.2-Child-Care-Services-Rules.pdf#page=21
+    - title: HAR 17-798.2-10(b)(11), Hawaii public assistance payments
+      href: https://www.law.cornell.edu/regulations/hawaii/Haw-Code-R-SS-17-798-2-10
