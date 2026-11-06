@@ -1512,3 +1512,197 @@ entries:
     name: Case 3, guardian fee bound by 5% of low gross income.
     pins:
     - reading
+- id: premium-subsidy-150-fpl-boundary
+  jurisdiction: us-ca
+  program: california-premium-subsidy
+  question: Does a household at exactly 150% FPL stay in the California Premium Subsidy's 0% band, as the adopted Program Designs read, or enter the paying
+    band, as Covered California's guidance tables and enroller example read?
+  texts: []
+  pending_texts:
+  - citation: Covered California, Final 2026 California Premium Subsidy Program Design, (d)(4) applicable percentage table, PDF p. 2
+    kind: policy
+    url: https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=2
+    excerpt: 100% up to 150% 0% 0% Above 150% up to 165%
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 9d87a5e16ced31b2f96d947ca5ecbb29c60109ba
+      path: source_conflicts/sources/us-ca/premium-subsidy-program-design-2026-p2.txt
+      sha256: 765f35dcd103bd29785639171a7f18ee2b774cb2dff85a64115a02d0239f50fb
+  - citation: Covered California, Final 2027 California Premium Subsidy Program Design, (d)(4) applicable percentage table, PDF p. 2
+    kind: policy
+    url: https://hbex.coveredca.com/data-research/Final-2027-California-Premium-Subsidy-Program-Design.pdf#page=2
+    excerpt: 100% up to 150% 0% 0% Above 150% up to 200%
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 9d87a5e16ced31b2f96d947ca5ecbb29c60109ba
+      path: source_conflicts/sources/us-ca/premium-subsidy-program-design-2027-p2.txt
+      sha256: 57ea32aaa2d8926e4fe42309789a86478e581a71c29891817c6a678f613fc4b4
+  - citation: Covered California, 2026 California State Premium Subsidy Program policy explainer, Table 1, PDF p. 2
+    kind: guidance
+    url: https://hbex.coveredca.com/stakeholders/PDFs/2026-02_StatePremiumSub_PolicyExplainer-Final.pdf#page=2
+    excerpt: Under 150% 0% 3.14% – 4.19% 0.0%* 150% – At or Below 165%
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 9d87a5e16ced31b2f96d947ca5ecbb29c60109ba
+      path: source_conflicts/sources/us-ca/premium-subsidy-explainer-2026-p2.txt
+      sha256: e208ed890b07c1a95cdb733fa5a1049680c8c64744ddc5ac0db6e472b4df5094
+  - citation: Covered California, 2027 California State Premium Subsidy Program insight, Table 1, PDF p. 2
+    kind: guidance
+    url: https://hbex.coveredca.com/stakeholders/PDFs/2026-03_StatePremiumSub2027_Insight_Final.pdf#page=2
+    excerpt: Under 150% 0% 3.23% – 4.3% 0.0%* 150% – At or Below 200%
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 9d87a5e16ced31b2f96d947ca5ecbb29c60109ba
+      path: source_conflicts/sources/us-ca/premium-subsidy-insight-2027-p1-2.txt
+      sha256: f901edf10b9ee28051cfbdc1771461d5253b05dfb3cd8c1a44823e5d781ba3c4
+  - citation: Covered California, Open Enrollment Period 2027 Enroller Kick-off Event, 150% FPL example, PDF pp. 39-40
+    kind: agency-practice
+    url: https://hbex.coveredca.com/toolkit/webinars-briefings/downloads/OE27_Enroller_Kickoff.pdf#page=39
+    excerpt: For individuals at 150% of the FPL, the required contribution percentage decreases from 4.30% to 2.80%.
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 9d87a5e16ced31b2f96d947ca5ecbb29c60109ba
+      path: source_conflicts/sources/us-ca/oe27-enroller-kickoff-p37-40.txt
+      sha256: e07b9777f8a8a45664e5c6d7b8398f4d1b5a93612296a79dd7bfdda636bdde95
+  reading: Keep a household at exactly 150% FPL in the 0% band, and start the paying band above 150%.
+  alternatives:
+  - id: paying-band-from-150
+    reading: Start the paying band at exactly 150% FPL, as the Explainer and Insight tables label it and the enroller deck's example applies it.
+    effect: A household at exactly 150% FPL pays the band's initial percentage of income, 3.19% in 2026 or 2.8% in 2027, in place of 0%.
+  basis: Covered California adopted both Program Designs, and in (d)(4) of each it runs the 0% band up to 150% and starts the paying band above 150%. The
+    adopted wording governs when it conflicts with the labels in its guidance tables and the example in its enroller deck.
+  status: open
+  outcome: computed
+  years:
+    from: 2026
+    type: program
+    note: Covered California coverage year beginning January 1.
+  implementations:
+  - repo: PolicyEngine/policyengine-us
+    commit: 4648a77837e91d1a4463784247b889c591a48594
+    path: policyengine_us/parameters/gov/states/ca/hbex/premium_subsidy/applicable_percentage/threshold.yaml
+    follows: reading
+    adopts: reading
+    basis: The adopted Program Design governs when it conflicts with Covered California's guidance table labels and enroller example.
+    ruling:
+      by: PolicyEngine
+      date: '2026-10-22'
+      record: https://github.com/PolicyEngine/policyengine-us/pull/10301
+    cites_entry: false
+  - repo: PolicyEngine/policyengine-us
+    commit: 4648a77837e91d1a4463784247b889c591a48594
+    path: policyengine_us/variables/gov/states/ca/hbex/premium_subsidy/ca_premium_subsidy_applicable_percentage.py
+    follows: reading
+    adopts: reading
+    basis: The adopted Program Design governs when it conflicts with Covered California's guidance table labels and enroller example.
+    ruling:
+      by: PolicyEngine
+      date: '2026-10-22'
+      record: https://github.com/PolicyEngine/policyengine-us/pull/10301
+    cites_entry: true
+  tests:
+  - repo: PolicyEngine/policyengine-us
+    commit: 4648a77837e91d1a4463784247b889c591a48594
+    path: policyengine_us/tests/policy/baseline/gov/states/ca/hbex/premium_subsidy/ca_premium_subsidy_applicable_percentage.yaml
+    name: Case 2d, PY2026 raw income $23,475, exactly 150% remains in the 0% band.
+    pins:
+    - reading
+  - repo: PolicyEngine/policyengine-us
+    commit: 4648a77837e91d1a4463784247b889c591a48594
+    path: policyengine_us/tests/policy/baseline/gov/states/ca/hbex/premium_subsidy/ca_premium_subsidy_applicable_percentage.yaml
+    name: Case 16a, PY2027 raw income $23,940, exactly 150% remains in the 0% band.
+    pins:
+    - reading
+- id: premium-subsidy-200-fpl-limit
+  jurisdiction: us-ca
+  program: california-premium-subsidy
+  question: Does a household at exactly 200% FPL qualify for the 2027 California Premium Subsidy, as the adopted Program Design reads, or fall outside it,
+    as the summary slide in Covered California's enroller deck reads?
+  texts: []
+  pending_texts:
+  - citation: Covered California, Final 2027 California Premium Subsidy Program Design, (d)(7), PDF p. 2
+    kind: policy
+    url: https://hbex.coveredca.com/data-research/Final-2027-California-Premium-Subsidy-Program-Design.pdf#page=2
+    excerpt: household income for the taxable year is at or above 100 percent and at or below 200 percent of the federal poverty level
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 9d87a5e16ced31b2f96d947ca5ecbb29c60109ba
+      path: source_conflicts/sources/us-ca/premium-subsidy-program-design-2027-p2.txt
+      sha256: 57ea32aaa2d8926e4fe42309789a86478e581a71c29891817c6a678f613fc4b4
+  - citation: Covered California, 2027 California State Premium Subsidy Program insight, Background, PDF p. 1
+    kind: guidance
+    url: https://hbex.coveredca.com/stakeholders/PDFs/2026-03_StatePremiumSub2027_Insight_Final.pdf#page=1
+    excerpt: The 2027 financial assistance program provides premium assistance for individuals with household incomes at or below 200% FPL.
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 9d87a5e16ced31b2f96d947ca5ecbb29c60109ba
+      path: source_conflicts/sources/us-ca/premium-subsidy-insight-2027-p1-2.txt
+      sha256: f901edf10b9ee28051cfbdc1771461d5253b05dfb3cd8c1a44823e5d781ba3c4
+  - citation: Covered California, Open Enrollment Period 2027 Enroller Kick-off Event, summary slide, PDF p. 38
+    kind: agency-practice
+    url: https://hbex.coveredca.com/toolkit/webinars-briefings/downloads/OE27_Enroller_Kickoff.pdf#page=38
+    excerpt: The California State Premium Subsidy for 2027 applies only to enrollees up to under 200% FPL
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 9d87a5e16ced31b2f96d947ca5ecbb29c60109ba
+      path: source_conflicts/sources/us-ca/oe27-enroller-kickoff-p37-40.txt
+      sha256: e07b9777f8a8a45664e5c6d7b8398f4d1b5a93612296a79dd7bfdda636bdde95
+  - citation: Covered California, Open Enrollment Period 2027 Enroller Kick-off Event, 200% FPL example, PDF p. 39
+    kind: agency-practice
+    url: https://hbex.coveredca.com/toolkit/webinars-briefings/downloads/OE27_Enroller_Kickoff.pdf#page=39
+    excerpt: For individuals at 200% of the FPL, the required contribution percentage decreases from 6.78% to 5.28%
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 9d87a5e16ced31b2f96d947ca5ecbb29c60109ba
+      path: source_conflicts/sources/us-ca/oe27-enroller-kickoff-p37-40.txt
+      sha256: e07b9777f8a8a45664e5c6d7b8398f4d1b5a93612296a79dd7bfdda636bdde95
+  reading: Keep a household at exactly 200% FPL eligible for the 2027 subsidy, at the band's final 5.28% of income.
+  alternatives:
+  - id: under-200-only
+    reading: Limit the 2027 subsidy to income under 200% FPL, as the enroller deck's summary slide reads.
+    effect: A household at exactly 200% FPL receives no state subsidy, and its required contribution stays at the federal 6.78% of income in place of 5.28%.
+  basis: Covered California adopted the 2027 Program Design, and in (d)(7) it covers return filers with household income at or below 200 percent of the federal
+    poverty level. The adopted wording governs when it conflicts with the enroller deck's summary slide. Covered California states the same limit in its
+    2027 Insight and applies 5.28% at exactly 200% FPL in the deck's worked example.
+  status: open
+  outcome: computed
+  years:
+    from: 2027
+    type: program
+    note: Covered California coverage year beginning January 1.
+  implementations:
+  - repo: PolicyEngine/policyengine-us
+    commit: 4648a77837e91d1a4463784247b889c591a48594
+    path: policyengine_us/parameters/gov/states/ca/hbex/premium_subsidy/fpl_limit.yaml
+    follows: reading
+    adopts: reading
+    basis: The adopted Program Design governs when it conflicts with the enroller deck's summary slide.
+    ruling:
+      by: PolicyEngine
+      date: '2026-10-23'
+      record: https://github.com/PolicyEngine/policyengine-us/pull/10305
+    cites_entry: true
+  - repo: PolicyEngine/policyengine-us
+    commit: 4648a77837e91d1a4463784247b889c591a48594
+    path: policyengine_us/variables/gov/states/ca/hbex/premium_subsidy/ca_premium_subsidy_eligible.py
+    follows: reading
+    adopts: reading
+    basis: The adopted Program Design governs when it conflicts with the enroller deck's summary slide.
+    ruling:
+      by: PolicyEngine
+      date: '2026-10-23'
+      record: https://github.com/PolicyEngine/policyengine-us/pull/10305
+    cites_entry: false
+  tests:
+  - repo: PolicyEngine/policyengine-us
+    commit: 4648a77837e91d1a4463784247b889c591a48594
+    path: policyengine_us/tests/policy/baseline/gov/states/ca/hbex/premium_subsidy/ca_premium_subsidy_eligible.yaml
+    name: Case 18b, PY2027 income of exactly 200% of FPL is eligible.
+    pins:
+    - reading
+  - repo: PolicyEngine/policyengine-us
+    commit: 4648a77837e91d1a4463784247b889c591a48594
+    path: policyengine_us/tests/policy/baseline/gov/states/ca/hbex/premium_subsidy/ca_premium_subsidy_applicable_percentage.yaml
+    name: Case 16c, PY2027 raw income $31,920, exactly 200% pays 5.28%.
+    pins:
+    - reading

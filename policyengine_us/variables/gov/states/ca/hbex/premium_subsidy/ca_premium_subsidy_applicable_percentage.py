@@ -45,7 +45,7 @@ class ca_premium_subsidy_applicable_percentage(Variable):
         # The OE27 enroller example conflicts with the adopted Designs at 150%:
         # it charges 2.80%, but (d)(4) starts the paying band "Above 150%".
         # Follow the adopted 0% boundary; the citations above document both.
-        # Candidate: us-ca:premium-subsidy-150-fpl-boundary until registered.
+        # Source conflict us-ca:premium-subsidy-150-fpl-boundary
         bracket_idx = clip(
             np.searchsorted(thresholds, exact_magi_frac, side="left") - 1,
             0,

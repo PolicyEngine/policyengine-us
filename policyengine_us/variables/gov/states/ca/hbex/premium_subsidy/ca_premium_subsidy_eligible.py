@@ -51,6 +51,7 @@ class ca_premium_subsidy_eligible(Variable):
         # Divide in float64: a float32 quotient can round a ratio just above
         # a limit down onto it.
         exact_magi_frac = magi.astype(np.float64) / fpg
+        # Source conflict us-ca:premium-subsidy-200-fpl-limit
         income_eligible = (exact_magi_frac >= p.fpl_floor) & (
             exact_magi_frac <= p.fpl_limit
         )

@@ -1,5 +1,6 @@
 description: California sets the federal poverty line thresholds for the applicable percentage brackets under the California Premium Subsidy program.
 values:
+  # Source conflict us-ca:premium-subsidy-150-fpl-boundary
   # The adopted Program Design runs its bands "100% up to 150%" (0%) and
   # "Above 150% up to 165%", so an exact ratio equal to a threshold takes the
   # lower band: 150% pays 0%. The Policy Explainer labels the upper band
