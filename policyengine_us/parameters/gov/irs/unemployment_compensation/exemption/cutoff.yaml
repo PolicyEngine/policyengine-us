@@ -1,4 +1,4 @@
-description: Unemployment Insurance exemption cutoff
+description: The IRS allows the unemployment compensation exclusion when adjusted gross income, figured without unemployment compensation, is under this amount.
 HEAD_OF_HOUSEHOLD:
   2013-01-01: 0
   2020-01-01: 150_000
@@ -21,7 +21,13 @@ SURVIVING_SPOUSE:
   2021-01-01: 0
 metadata:
   propagate_metadata_to_children: true
-  label: Unemployment compensation exemption cutoff
+  label: Unemployment compensation exclusion cutoff
+  period: year
   breakdown:
     - filing_status
   unit: currency-USD
+  reference:
+    - title: 26 U.S. Code § 85(c) - Special rule for 2020
+      href: https://www.law.cornell.edu/uscode/text/26/85#c
+    - title: 2020 Instructions for Form 1040 (rev. 4-2021), Unemployment Compensation Exclusion Worksheet, lines 6 and 7
+      href: https://www.irs.gov/pub/irs-prior/i1040gi--2020.pdf#page=88

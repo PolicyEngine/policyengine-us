@@ -1,7 +1,14 @@
-description: Unemployment Insurance exemption amount
-metadata:
-  unit: currency-USD
+description: The IRS excludes up to this amount of the unemployment compensation each person received from gross income, for each spouse on a joint return, when adjusted gross income is under the cutoff.
 values:
   2013-01-01: 0
   2020-01-01: 10_200
   2021-01-01: 0
+metadata:
+  unit: currency-USD
+  period: year
+  label: Unemployment compensation exclusion amount per recipient
+  reference:
+    - title: 26 U.S. Code § 85(c)(1) - Special rule for 2020
+      href: https://www.law.cornell.edu/uscode/text/26/85#c_1
+    - title: 2020 Instructions for Form 1040 (rev. 4-2021), Unemployment Compensation Exclusion Worksheet, lines 8 and 9
+      href: https://www.irs.gov/pub/irs-prior/i1040gi--2020.pdf#page=88

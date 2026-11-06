@@ -216,3 +216,41 @@
   output:
     mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback: 5_000
     mt_elderly_homeowner_or_renter_credit_gross_household_income: 5_000
+
+- name: Case 10, a dependent at their own 2020 exclusion cutoff counts compensation once.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_pension_income: 20_000
+        unemployment_compensation: 8_000
+        ssi: 0
+      person2:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        dividend_income: 150_000
+        unemployment_compensation: 5_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # IRC 85(c): the claimant's AGI without UC is under 150_000, but the
+    # dependent's own AGI is exactly 150_000, so only the claimant excludes UC.
+    dependent_taxable_uc_agi: [0, 150_000]
+    taxable_unemployment_compensation: [0, 5_000]
+    adjusted_gross_income_person: [20_000, 0]
+    dependent_gross_income: [0, 155_000]
+    # MCA 15-30-2337(4), (9)(a) counts all household members' income,
+    # including nontaxable income. The dependent's full UC is already counted
+    # in their gross income; only the claimant needs an addback. Their 2020
+    # recovery rebate credit adds 1_800 to the claimant's household income.
+    mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback: [8_000, 0]
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [29_800, 155_000]
