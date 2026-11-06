@@ -187,3 +187,13 @@
         members: [person1, person2]
   output:
     ssi_federal_living_arrangement: [OWN_HOUSEHOLD, OWN_HOUSEHOLD]
+
+- name: Case 13, Medicaid nursing facility derives the SSI facility arrangement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_in_medicaid_facility: true
+  output:
+    ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY

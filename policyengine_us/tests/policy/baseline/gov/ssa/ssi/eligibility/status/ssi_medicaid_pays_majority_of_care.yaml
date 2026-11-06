@@ -1,0 +1,14 @@
+- name: Medicaid nursing facility defaults to Medicaid paying most care costs.
+  period: 2026-01
+  input:
+    is_in_medicaid_facility: true
+  output:
+    ssi_medicaid_pays_majority_of_care: true
+
+- name: Explicit SSI payment status overrides the Medicaid facility default.
+  period: 2026-01
+  input:
+    is_in_medicaid_facility: true
+    ssi_medicaid_pays_majority_of_care: false
+  output:
+    ssi_medicaid_pays_majority_of_care: false
