@@ -1,0 +1,87 @@
+# The Department of Employment Services (DOES) publishes the District of
+# Columbia Paid Family Leave tax rate for each quarter in "Historical PFL Tax
+# Rate Information": 0.62% for 2019 Q2 through 2022 Q2, 0.26% for 2022 Q3
+# through 2024 Q2, and 0.75% from 2024 Q3. The annual rate is the average of the
+# year's four quarterly rates, and 2019 Q1 has no rate. Each expected value is
+# hand-computed from that table.
+
+- name: DC has no paid leave tax rate in 2018, before the first taxed quarter.
+  period: 2018
+  input:
+    state_code: DC
+  output:
+    dc_employer_paid_leave_tax_rate: 0
+
+- name: The 2019 DC rate covers the last three quarters of the year.
+  period: 2019
+  absolute_error_margin: 0.000001
+  input:
+    state_code: DC
+  output:
+    # (0 + 0.62% + 0.62% + 0.62%) / 4 = 0.465%
+    dc_employer_paid_leave_tax_rate: 0.00465
+
+- name: The DC rate is 0.62% for all of 2020.
+  period: 2020
+  absolute_error_margin: 0.000001
+  input:
+    state_code: DC
+  output:
+    dc_employer_paid_leave_tax_rate: 0.0062
+
+- name: The DC rate is 0.62% for all of 2021.
+  period: 2021
+  absolute_error_margin: 0.000001
+  input:
+    state_code: DC
+  output:
+    dc_employer_paid_leave_tax_rate: 0.0062
+
+- name: The 2022 DC rate averages 0.62% and, from July 1, 0.26%.
+  period: 2022
+  absolute_error_margin: 0.000001
+  input:
+    state_code: DC
+  output:
+    # (0.62% + 0.62% + 0.26% + 0.26%) / 4 = 0.44%
+    dc_employer_paid_leave_tax_rate: 0.0044
+
+- name: The DC rate is 0.26% for all of 2023.
+  period: 2023
+  absolute_error_margin: 0.000001
+  input:
+    state_code: DC
+  output:
+    dc_employer_paid_leave_tax_rate: 0.0026
+
+- name: The 2024 DC rate averages 0.26% and, from July 1, 0.75%.
+  period: 2024
+  absolute_error_margin: 0.000001
+  input:
+    state_code: DC
+  output:
+    # (0.26% + 0.26% + 0.75% + 0.75%) / 4 = 0.505%
+    dc_employer_paid_leave_tax_rate: 0.00505
+
+- name: The DC rate is 0.75% for all of 2025.
+  period: 2025
+  absolute_error_margin: 0.000001
+  input:
+    state_code: DC
+  output:
+    dc_employer_paid_leave_tax_rate: 0.0075
+
+- name: The DC rate is 0.75% for all of 2026.
+  period: 2026
+  absolute_error_margin: 0.000001
+  input:
+    state_code: DC
+  output:
+    dc_employer_paid_leave_tax_rate: 0.0075
+
+- name: The DC rate does not apply to a Virginia household.
+  period: 2024
+  input:
+    state_code: VA
+  output:
+    dc_employer_paid_leave_tax_rate: 0

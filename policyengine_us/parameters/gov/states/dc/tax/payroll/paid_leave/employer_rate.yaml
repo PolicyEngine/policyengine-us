@@ -1,16 +1,26 @@
 description: Employer-side District of Columbia Paid Family Leave tax rate.
 values:
-  2019-01-01: 0.0062
-  2025-01-01: 0.0075
+  0000-01-01: 0
+  2019-04-01: 0.0062
+  2022-07-01: 0.0026
+  2024-07-01: 0.0075
 
 metadata:
   period: year
   unit: /1
   label: District of Columbia paid leave tax rate
   reference:
-    - title: District of Columbia Code Section 32-541.03
-      href: https://code.dccouncil.gov/us/dc/council/code/sections/32-541.03%28Perm%29
-    - title: Fiscal Year 2024 Revised Local Budget Adjustment Emergency Act of 2024
-      href: https://code.dccouncil.gov/us/dc/council/acts/25-499
-    - title: District of Columbia Paid Family Leave employer information
+    - title: District of Columbia Paid Family Leave employer information, Historical PFL Tax Rate Information
       href: https://dcpaidfamilyleave.dc.gov/employer-information/
+    - title: District of Columbia Paid Family Leave employers page, archived July 1, 2019
+      href: https://web.archive.org/web/20190701201620/https://dcpaidfamilyleave.dc.gov/employers/
+    - title: District of Columbia Code Section 32-541.03
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/32-541.03
+    - title: District of Columbia Code Section 32-541.04a, as codified before its repeal
+      href: https://github.com/DCCouncil/law-xml-codified/blob/710159523a70d60bc82235fdde479c0faa2f7588/us/dc/council/code/titles/32/sections/32-541.04a.xml
+    - title: District of Columbia Chief Financial Officer, Fiscal Year 2024 budget chapter UL0, Universal Paid Leave
+      href: https://cfo.dc.gov/publication/2024-ul0-universal-paid-leave
+    - title: Fiscal Year 2024 Revised Local Budget Adjustment Emergency Act of 2024, section 12
+      href: https://code.dccouncil.gov/us/dc/council/acts/25-499
+    - title: Fiscal Year 2025 Budget Support Act of 2024, D.C. Law 25-217, section 4112
+      href: https://code.dccouncil.gov/us/dc/council/laws/25-217
