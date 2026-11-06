@@ -1,0 +1,169 @@
+# Employer dependent care benefits (W-2 box 10, Form 2441 line 12) are left
+# out of box 1 wages and of FICA and FUTA wages (IRC 129(a)(1), 3121(a)(18),
+# 3306(b)(13)). The part above the filer's own IRC 129 exclusion is taxable
+# (Form 2441 line 26, Form 1040 line 1e).
+
+- name: Benefits within the exclusion leave income tax and FICA wages, 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 60_000
+        dependent_care_employer_benefits: 5_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        # Qualified expenses at least equal to the benefits (Form 2441 line 16).
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # $60,000 - $5,000 = $55,000.
+    irs_employment_income: [55_000, 0]
+    payroll_tax_gross_wages: [55_000, 0]
+    dependent_care_assistance_exclusion: 5_000
+    taxable_dependent_care_benefits: [0, 0]
+    adjusted_gross_income: 55_000
+    # 6.2% and 1.45% of $55,000.
+    employee_social_security_tax: [3_410, 0]
+    employee_medicare_tax: [797.5, 0]
+
+- name: Separate filer's benefits above the $2,500 cap return to gross income, 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 60_000
+        dependent_care_employer_benefits: 5_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    irs_employment_income: [55_000, 0]
+    # FICA follows the employer's exclusion, not the filer's MFS cap.
+    payroll_tax_gross_wages: [55_000, 0]
+    # min($5,000, $2,500 MFS cap, earnings) = $2,500.
+    dependent_care_assistance_exclusion: 2_500
+    taxable_dependent_care_benefits: [2_500, 0]
+    # $55,000 + $2,500.
+    adjusted_gross_income: 57_500
+
+- name: Joint return splits the taxable part by each spouse's benefits, 2024
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 80_000
+        dependent_care_employer_benefits: 4_000
+      spouse:
+        age: 40
+        employment_income: 3_000
+        dependent_care_employer_benefits: 2_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 6_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    # Form 2441 lines 18-19 leave out line 12 benefits: the spouse's earned
+    # income is $3,000 - $2,000 = $1,000. Exclusion min($6,000, $5,000,
+    # $1,000) = $1,000; taxable $5,000, split 4:2.
+    dependent_care_assistance_exclusion: 1_000
+    taxable_dependent_care_benefits: [3_333.33, 1_666.67, 0]
+    irs_employment_income: [76_000, 1_000, 0]
+    # $77,000 of box 1 wages plus $5,000 taxable benefits.
+    adjusted_gross_income: 82_000
+
+- name: Part-time worker's exclusion is capped at wages net of benefits, 2024
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 6_000
+        dependent_care_employer_benefits: 5_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Form 2441 line 18 earned income leaves out line 12 benefits:
+    # $6,000 - $5,000 = $1,000. Exclusion min($5,000, $5,000, $1,000) =
+    # $1,000; taxable $4,000 (Form 1040 line 1e).
+    irs_employment_income: [1_000, 0]
+    dependent_care_assistance_exclusion: 1_000
+    taxable_dependent_care_benefits: [4_000, 0]
+    # $1,000 of box 1 wages plus $4,000 taxable benefits.
+    adjusted_gross_income: 5_000
+
+- name: Claimable filer's taxable dependent care benefits are earned income, 2024
+  period: 2024
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 6_000
+        dependent_care_employer_benefits: 5_000
+        claimable_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SINGLE
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Box 1 $1,000; exclusion min($5,000, $5,000, $1,000) = $1,000; line 1e
+    # $4,000. Earned income is line 1z, $5,000; unearned income is $0.
+    standard_deduction_worksheet_earned_income_person: [5_000, 0]
+    # max($1,300, $5,000 + $450) = $5,450 (Rev. Proc. 2023-34).
+    basic_standard_deduction: 5_450
+    # Taxable income $5,000 - $5,450 < 0. Refundable credits are left out:
+    # the model's EITC doesn't test whether the filer is claimable.
+    income_tax_before_refundable_credits: 0
+    tax_unit_is_required_to_file: false
+    medicaid_person_is_required_to_file: [false, false]
+
+- name: No benefits leaves wages unchanged
+  period: 2025
+  input:
+    employment_income: 30_000
+  output:
+    irs_employment_income: 30_000
+    payroll_tax_gross_wages: 30_000
+    taxable_dependent_care_benefits: 0
