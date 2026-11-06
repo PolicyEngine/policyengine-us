@@ -1,1 +1,1 @@
-Apply the New York itemized deduction adjustment (IT-196 line 46) to line 45, after the line 40 limitation and before the college tuition deduction.
+Apply the New York itemized deduction adjustment (Tax Law 615(f), IT-196 line 46) to the deduction after the line 40 limitation, including the college tuition itemized deduction.
