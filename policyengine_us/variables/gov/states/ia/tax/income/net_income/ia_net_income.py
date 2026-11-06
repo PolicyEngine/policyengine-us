@@ -14,11 +14,12 @@ class ia_net_income(Variable):
     definition_period = YEAR
     reference = (
         "https://revenue.iowa.gov/sites/default/files/2022-01/IA1040%2841-001%29.pdf",
-        "https://revenue.iowa.gov/media/2650/download?inline",
-        "https://revenue.iowa.gov/sites/default/files/2023-01/2022IA1040%2841001%29.pdf",
-        "https://revenue.iowa.gov/media/2721/download?inline",
-        # Status 3: married filing separately on a combined return
+        # PDF page 7: Status 3, married filing separately on a combined return
         "https://revenue.iowa.gov/media/2650/download?inline#page=7",
+        "https://revenue.iowa.gov/sites/default/files/2023-01/2022IA1040%2841001%29.pdf",
+        # PDF pages 4, 8: who must file (c), and the note to dependents
+        # filing their own returns
+        "https://revenue.iowa.gov/media/2721/download?inline#page=4",
         # Iowa Code 422.7: net income starts from federal adjusted gross
         # income, which leaves out a dependent's income.
         "https://www.legis.iowa.gov/docs/code/2022/422.7.pdf",
@@ -26,10 +27,6 @@ class ia_net_income(Variable):
         # person's return files their own return with net income of $5,000
         # or more.
         "https://www.legis.iowa.gov/docs/code/2022/422.13.pdf",
-        # Who must file (c), and the note to dependents filing their own
-        # returns
-        "https://revenue.iowa.gov/media/2721/download?inline#page=4",
-        "https://revenue.iowa.gov/media/2721/download?inline#page=8",
     )
     defined_for = StateCode.IA
 

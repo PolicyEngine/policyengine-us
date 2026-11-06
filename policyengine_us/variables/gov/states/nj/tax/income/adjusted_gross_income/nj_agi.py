@@ -18,10 +18,10 @@ class nj_agi(Variable):
         # threshold files a return; (b): only a husband and wife file a
         # joint return; (f): a minor's return is filed by a fiduciary.
         "https://codes.findlaw.com/nj/title-54a-new-jersey-gross-income-tax-act/nj-st-sect-54a-8-3-1/",
-        # Who must file, with no exception for dependents
+        # 2025 NJ-1040 instructions, PDF pages 5, 40: who must file, with no
+        # exception for dependents, and Worksheet L ("dependents who do not
+        # file a New Jersey tax return")
         "https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=5",
-        # Worksheet L: "dependents who do not file a New Jersey tax return"
-        "https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=40",
     )
     defined_for = StateCode.NJ
 

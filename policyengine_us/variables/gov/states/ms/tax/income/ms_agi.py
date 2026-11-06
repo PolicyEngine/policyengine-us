@@ -13,10 +13,11 @@ class ms_agi(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100221.pdf#page=14",
-        "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80105228.pdf",  # Line 66
-        # Combined return: one spouse's income in Column A, the other's in B
+        # PDF pages 5, 14: a combined return puts one spouse's income in
+        # Column A and the other's in Column B (p. 5), and line 66,
+        # Mississippi adjusted gross income (p. 14)
         "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100221.pdf#page=5",
+        "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80105228.pdf",  # Line 66
         # 35 Miss. Admin. Code Pt. III, 10.01.104: a minor is taxable on their
         # own income and files their own return, with their own deductions
         # and exemptions.
