@@ -13030,7 +13030,8 @@ candidates:
     from: 2021
     to: 2025
     type: tax
-  question: Does the undefined dependent term in Arkansas's tuition deduction incorporate IRC 152 or include a supported dependent student when the filer can be claimed elsewhere?
+  question: Does a filer whom another taxpayer can claim deduct tuition paid for a dependent student, or does IRC
+    152(b)(1) leave that filer with no dependents for Arkansas's tuition deduction?
   sources:
   - kind: statute
     citation: Ark. Code 26-51-447(a), Act 1075 of 1997 section 1
@@ -13038,24 +13039,33 @@ candidates:
   - kind: statute
     citation: Ark. Code 26-51-501(a)(3)(B), Act 483 of 2021 section 7
     url: https://www.arkleg.state.ar.us/Home/FTPDocument?path=/ACTS/2021R/Public/ACT483.pdf#page=15
-  - kind: form
-    citation: 2025 AR1075, instructions
-    url: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1075.pdf#page=1
+  - kind: regulation
+    citation: 26 CAR 100-143(f)
+    url: https://codeofarrules.arkansas.gov/Rules/Rule?chapterID=33&levelType=section&partID=941&sectionID=40250&subChapterID=261&subPartID=6195&titleID=26
   - kind: regulation
     citation: 26 CAR 100-140(a)
     url: https://codeofarrules.arkansas.gov/Rules/Rule?chapterID=33&levelType=section&partID=941&sectionID=40247&subChapterID=261&subPartID=6195&titleID=26
+  - kind: form
+    citation: 2025 AR1075, instructions
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1075.pdf#page=1
   readings:
-    statute: Arkansas covers tuition for the taxpayer, spouse, or dependent without defining dependent in 26-51-447. Legislators confined the IRC 152 definition to personal credits in 26-51-501.
-    other: DFA repeats the categories in AR1075 and 26 CAR 100-140 without requiring a dependent claim on this return. DFA does not define dependent in either source.
-  example: For a would-be dependent student's $1,000 tuition at a two-year college in 2025, the retained reading gives min(50% × $1,000, $2,646) = $500; importing IRC 152(b)(1) gives $0.
+    statute: 26-51-447 covers tuition for the taxpayer, spouse or dependent and leaves dependent undefined, and
+      26-51-501(a)(3)(B) applies the IRC 152 definition only "As used in subdivision (a)(3)(A) of this section". DFA's
+      definition in 26 CAR 100-143(f) tests relationship, gross income, support, joint filing and citizenship, and has
+      no test for a filer whom another taxpayer can claim.
+    other: Read dependent as IRC 152 defines it, so section 152(b)(1) leaves a filer whom another taxpayer can claim
+      with no dependents.
+  example: For a dependent student's $1,000 tuition at a two-year college in 2025, a claimable filer deducts min(50%
+    × $1,000, $2,646) = $500; importing IRC 152(b)(1) gives $0.
   pe_us:
-    follows: unknown
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/post_secondary_education/ar_post_secondary_education_tuition_deduction_person.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
-  state: open
-  note: Retain the PR's $500 dependent-student result while the hub decides whether the legislature intended the personal-credit definition to reach this deduction. Taxpayer and spouse tuition remains eligible under either reading.
+  state: ruled
+  note: PolicyEngine reads dependent by DFA's definition, because the statute defines it only for the personal credit.
+    Taxpayer and spouse tuition counts under either reading.
 - id: us-az:excise-credit-claimed-joint-filer
   program: income-tax
   years:
