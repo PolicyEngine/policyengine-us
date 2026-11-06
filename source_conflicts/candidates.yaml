@@ -1139,6 +1139,69 @@ candidates:
   state: ruled
   note: 'The October 2026 statute-first ruling retains the bar; obtain the statutory URL and verify the instruction
     flow''s joint-return effect. Code not yet on main: ca_eitc_eligible.'
+- id: us-ca:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can California's 60% SMI heating limit exclude a household of 21 or more whose income is below the federal
+    110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: California FY2026 LIHEAP State Plan, income eligibility table, pp.9, 184
+    url: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=9
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The plan's 60% SMI limits fall below that floor for households of 21 to 25 members.
+  example: Twenty-one people with $136,088.28 a year exceed the $136,088.16 limit ($11,340.68 a month) but are below the
+    $138,215 floor (2025 guideline, one-year lag), so they stay income eligible.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ca/csd/liheap/eligibility/ca_liheap_income_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/ca/csd/liheap/income/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10607
+  state: unreviewed
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (ca_liheap_income_eligible.py).
+    No source prices a household the floor admits above the limit. It gets the group 4 amount, as guide p.218 pays a
+    categorical household above the limit, even where its income is below the poverty guideline.
+- id: us-ca:liheap-subsidized-heat-in-rent
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can a subsidized California tenant whose heat is included in rent, with no separate bill, receive LIHEAP?
+  sources:
+  - kind: plan
+    citation: California FY2026 LIHEAP State Plan, item 2.3, p.9
+    url: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=9
+  - kind: manual
+    citation: LIHEAP Eligibility and Verification Guide 1.6 and 3.3, plan pp.205, 279
+    url: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=205
+  readings:
+    statute: No statute is supplied; guide 1.6 makes ineligible "Subsidized households that do not pay any out of pocket
+      energy costs".
+    other: Plan item 2.3 answers No to differing policies for renters in subsidized housing and renters with utilities in
+      rent. Guide 3.3 says "Applicants that pay their utility costs as a portion of their rent are eligible" and accepts
+      a "HUD or USDA statement showing zero utility allowance".
+  example: One Alameda adult with a Section 8 voucher, gas heat included in rent, no separate bill and wages of $12,000
+    receives $484 under plan 2.3 and guide 3.3 and $0 if guide 1.6 reaches heat in rent.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/ca/csd/liheap/eligibility/ca_liheap_basic_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10607
+  state: ruled
+  note: 'Ruled 2026-11-03: follow plan 2.3 and guide 3.3. PE-US applies guide 1.6 only to a subsidized household with
+    neither a bill nor heat in rent.'
 - id: us-ca:premium-subsidy-150-fpl-boundary
   program: california-premium-subsidy
   years:
@@ -1902,6 +1965,103 @@ candidates:
   state: ruled
   note: 'Ruled in October 2026 to follow the statute; verify the applicable regulation version. Code not yet on
     main: co premium assistance formula, aca_ptc_slcsp.'
+- id: us-ct:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Can Connecticut's 60% SMI CEAP limit exclude a very large household whose income is below the federal 110%
+    poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: Connecticut approved FFY2027 LIHEAP Allocation Plan, section IV.B, p.7
+    url: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=7
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The 60% SMI limit falls below that floor from 29 members in FY2026 and 28 in FY2027.
+  example: Thirty people with $190,000 exceed the $187,382 FY2026 limit but are below the $192,665 floor (2025
+    guideline, one-year lag), so they keep the Level 1 basic benefit of $595.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ct/dss/ceap/eligibility/ct_ceap_income_eligible.py
+    - policyengine_us/variables/gov/states/ct/dss/ceap/payment/ct_ceap_benefit_level.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/ct/dss/ceap/payment/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10611
+  state: unreviewed
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (ct_ceap_income_eligible.py). The
+    benefit matrix note's Level 3 reaches only categorical households the income test would deny. A categorical
+    household the floor admits keeps its income level, because 42 U.S.C. 8624(b)(5) bars differentiating between
+    (b)(2)(A) and (b)(2)(B) households, so those thirty people get $595 with or without SNAP.
+- id: us-ct:liheap-plan-income-checklist
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Do SSI, TFA, general assistance and a minor's earnings count for CEAP, as the allocation plans' income
+    definition can be read, or stay out, as the FY2026 plan's section 1.9 check boxes leave them?
+  sources:
+  - kind: plan
+    citation: Connecticut FY2026 LIHEAP State Plan, section 1.9, pp.6-7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/CT_Plan_2026.pdf#page=6
+  - kind: plan
+    citation: Connecticut approved FFY2027 LIHEAP Allocation Plan, section III, p.5
+    url: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5
+  readings:
+    plan: Plan 1.9 leaves SSI, General Assistance, TANF, "Other" and "Earned income of a child under the age of 18"
+      unchecked.
+    other: Section III of both allocation plans counts "Gross salaries/wages" with no age exception and "governmental
+      assistance not otherwise excluded as income".
+  example: A parent aged 40 with wages of $20,000 and a child aged 17 with wages of $8,000 is at 95% of the 2025
+    guideline for two, Level 1 and $595, under plan 1.9, and at 132%, Level 2 and $445, if the child's wages count.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/ct/dss/ceap/income/sources/earned.yaml
+    - policyengine_us/parameters/gov/states/ct/dss/ceap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/ct/dss/ceap/income/ct_ceap_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10611
+  state: unreviewed
+  note: PE-US follows plan 1.9, the specific list, and carries it into FY2027, which has no model plan.
+- id: us-ct:liheap-state-supplement-income
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does the Connecticut State Supplement count as CEAP income under the allocation plans' governmental-assistance
+    clause, or stay out, with the FY2026 plan's section 1.9 "Other" box unchecked?
+  sources:
+  - kind: plan
+    citation: Connecticut FY2026 LIHEAP State Plan, section 1.9, pp.6-7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/CT_Plan_2026.pdf#page=6
+  - kind: plan
+    citation: Connecticut approved FFY2027 LIHEAP Allocation Plan, section III, p.5
+    url: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5
+  readings:
+    plan: Plan 1.9 leaves General Assistance, SSI, TANF and "Other" unchecked and does not name the State Supplement.
+    other: Section III of both allocation plans counts "governmental assistance not otherwise excluded as income" and
+      does not name the State Supplement either.
+  example: A disabled person aged 50 with a pension of $18,000, a $2,400 State Supplement and a $1,000 gas bill is at 115%
+    of the 2025 guideline, Level 1 and $645, with the supplement out, and at 130%, Level 2 and $495, with it counted.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/ct/dss/ceap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/ct/dss/ceap/income/ct_ceap_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10611
+  state: ruled
+  note: 'Ruled 2026-11-02 by the PR author in the pre-filing review of this PR, item CT-S3: keep the State Supplement out
+    of countable income. Neither document names it, and plan 1.9 is the specific list.'
 - id: us-dc:eitc-no-tin-child-schedule-before-2023
   program: income-tax
   years:
@@ -3238,6 +3398,119 @@ candidates:
   state: ruled
   note: 'Ruled statute-first in October 2026; confirm line 12(c)''s scope against the per-person statute and worksheet.
     Code not yet on main: id_grocery_credit.'
+- id: us-id:liheap-heat-in-rent-fy2026
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is an Idaho household that pays for heat through its rent eligible for FY2026 regular heating, as the rule in
+    force until June 2026 provides, or ineligible, as the FY2026 plan provides?
+  sources:
+  - kind: regulation
+    citation: IDAPA 16.04.14.152.02 and 16.04.14.010.08.b, effective April 6, 2023
+    url: https://www.law.cornell.edu/regulations/idaho/IDAPA-16.04.14.152
+  - kind: plan
+    citation: Idaho FY2026 LIHEAP State Plan, items 2.3 and 2.5, PDF pages 8-9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=8
+  - kind: regulation
+    citation: IDAPA 16.03.08.200.07, effective July 1, 2026
+    url: https://adminrules.idaho.gov/rules/current/16/160308.pdf#page=5
+  readings:
+    statute: No statute is supplied; 16.04.14.152.02 covers households that incur home energy costs "either directly or as
+      an undesignated portion of their rent". From July 1, 2026, 16.03.08.200.07 says "designated portion".
+    other: Plan 2.5 says "Household with no specific heat cost obligation (included in rent, rent subsidized) will not be
+      eligible to a LIHEAP benefit", and the PY26 chart has no rent amount.
+  example: One person aged 65 with $15,000 of Social Security and natural gas heat included in rent in Ada County receives
+    $0 under the plan. Under 16.04.14.152.02 the household is eligible, and no FY2026 amount is printed for it.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/id/dhw/liheap/eligibility/id_liheap_eligible.py
+    - policyengine_us/parameters/gov/states/id/dhw/liheap/payment/rent.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10613
+  state: ruled
+  note: 'Ruled 2026-11-02 and confirmed 2026-11-03: heat in rent is read as no specific obligation and is ineligible from
+    FY2026, although plan 1.1 runs heating assistance from October 2025 to March 2026, all under 16.04.14. Basis: 16.04.14
+    sets no amount (001.02: "does not entitle any household to a certain amount or form of assistance"), and the PY26
+    chart, the only FY2026 amount instrument, drops the Rent column PY25 had. A designated heat charge within rent has no
+    input.'
+- id: us-id:liheap-monthly-limit-above-federal-ceiling
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can Idaho's monthly income limits in cents pay a household whose annual income exceeds HHS's 60% state median
+    income amount?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: guidance
+    citation: HHS LIHEAP IM 2025-02 Attachment 4, Mandatory Use in LIHEAP for FY26, Idaho, pages 1 and 4
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=1
+  - kind: guidance
+    citation: Idaho DHW Apply for Heating Assistance, monthly income limits effective October 1, 2025
+    url: https://healthandwelfare.idaho.gov/services-programs/financial-assistance/home-heating-and-utility-assistance/apply-heating-assistance
+  readings:
+    statute: Payments go only to households whose income does not exceed the greater of 150% of the poverty guideline and
+      60% of the state median income, which HHS publishes as $42,938 for two people and $83,351 for six.
+    other: DHW prints $3,578.17 and $6,945.92 a month, which annualize to $42,938.04 and $83,351.04.
+  example: Two adults with $42,938.02 of wages and natural gas heat in Ada County exceed the $42,938 federal maximum and
+    receive $0. The annualized monthly limit would pay $122.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/id/dhw/liheap/eligibility/id_liheap_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10613
+  state: unreviewed
+  note: The PR caps the annualized monthly limit at HHS's amount. DHW's lower annualized figures at sizes 3 and 4 ($53,040.96
+    and $63,144.96) stay, since a lower limit is allowed.
+- id: us-id:liheap-plan-income-checklist
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do VA benefits, general assistance and minors' earnings count for Idaho LIHEAP in FY2026, as IDAPA 16.04.14
+    provides, or stay out under the FY2026 plan checklist?
+  sources:
+  - kind: regulation
+    citation: IDAPA 16.04.14.010.06 and 16.04.14.151.02, effective April 6, 2023
+    url: https://www.law.cornell.edu/regulations/idaho/IDAPA-16.04.14.010
+  - kind: plan
+    citation: Idaho FY2026 LIHEAP State Plan, section 1.9, PDF pages 5-7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5
+  - kind: regulation
+    citation: IDAPA 16.03.08.202, effective July 1, 2026
+    url: https://adminrules.idaho.gov/rules/current/16/160308.pdf#page=6
+  readings:
+    statute: No statute is supplied; 16.04.14.010.06 counts moneys "from all sources", and the closed exclusion list at
+      151.02 names only GI Bill education money among VA payments and no general assistance or minors' earnings.
+    other: Plan 1.9 leaves "General Assistance benefits", "Veterans Administration (VA) benefits" and "Earned income of a
+      child under the age of 18" unchecked. From July 1, 2026, 16.03.08.202 counts gross income as the Department determines.
+  example: A veteran aged 45 with $35,000 of VA disability compensation and natural gas heat in Ada County counts $35,000
+    under the rule, above the $32,835 limit, and receives $0. Under the plan the household counts $0 and receives $132.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/id/dhw/liheap/income/sources/earned.yaml
+    - policyengine_us/parameters/gov/states/id/dhw/liheap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/id/dhw/liheap/income/id_liheap_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10613
+  state: ruled
+  note: 'Ruled 2026-11-05 for the regulation by the project lead; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10613#issuecomment-6665844738. 16.04.14.010.06 defines income as moneys "from all sources", the
+    151.02 exclusion list is closed, and 16.04.14 does not delegate countable income to the department or adopt the state
+    plan. The rule was in force April 6, 2023 to June 30, 2026, and plan 1.1 runs FY2026 heating October 1, 2025 to March
+    31, 2026, so it governed every heating determination. us-nm:liheap-plan-income-checklist followed its regulation over
+    the same checklist. The ruling covers VA benefits, general assistance, minors'' earnings and id_aabd; Part B netting
+    under plan 1.9 and miscellaneous_income, pfml_benefits, life_insurance_benefits, gi_cash_assistance and capital_gains,
+    which stay uncounted, are unchanged and outside it.'
 - id: us-il:2022-rebate-claimed-vs-claimable
   program: income-tax
   years:
@@ -12206,31 +12479,99 @@ candidates:
 - id: us:niit-excess-business-loss-addback
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2021
     type: tax
   question: Does NII take the full loss carried by Form 8960 line 4a or only the loss chapter 1 allows after section
     461(l)?
   sources:
   - kind: statute
-    citation: 26 U.S.C. 1411(c)(1)(B); Treas. Reg. 1.1411-4(f), 1.1411-1(a)
-    url: null
+    citation: 26 U.S.C. 1411(c)(1)(B); Treas. Reg. 1.1411-4(f)(2)(ii) and (f)(2)(v), Example 1
+    url: https://www.law.cornell.edu/uscode/text/26/1411#c_1_B
   - kind: form
-    citation: Form 461 / Form 8960 line 4a
-    url: null
+    citation: 2025 Form 461 line 16
+    url: https://www.irs.gov/pub/irs-prior/f461--2025.pdf
+  - kind: instructions
+    citation: 2025 Instructions for Form 8960, lines 4a and 7
+    url: https://www.irs.gov/pub/irs-prior/i8960--2025.pdf#page=8
   readings:
     statute: NII takes only the loss section 461(l) allows.
     other: NII takes the loss in full through line 4a.
-  example: For $300,000 wages, $500,000 interest and a $600,000 rental loss, main gives NIIT of $0; the statutory
-    reading gives NII of $187,000 and NIIT of $7,106.
+  example: For 2025 wages of $300,000, interest of $500,000 and a $600,000 rental loss, the statutory reading gives NII
+    of $187,000 and NIIT of $7,106; the loss in full gives NII below zero and no NIIT.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/irs/tax/federal_income/net_investment_income_excess_business_loss.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10076
   state: unreviewed
-  note: 'Main follows the form-line omission; the statute-first rule requires the statutory add-back proposed in
-    the open PR. Code not yet on main: excess_business_loss, net_investment_income_excess_business_loss, gov.irs.investment.income.sources.'
+  note: Form 461 line 16 sends the add-back to Schedule 1 line 8p. Form 8960 line 4a takes Schedule 1 lines 3, 5 and 6,
+    and line 7 names line 8z but not line 8p, though line 7 also takes modifications the form doesn't specify. Example
+    1 in the regulation applies sections 465 and 469 before NII takes the deductions, and Treasury doesn't mention
+    section 461(l) in that regulation.
+- id: us:niit-excess-business-loss-split
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: When section 461(l) disallows part of a filer's business losses and NII counts only some of those losses,
+    how much of the disallowed excess falls on the losses NII counts?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 461(l)(3)(A); 26 U.S.C. 1411(c)(1)(B)
+    url: https://www.law.cornell.edu/uscode/text/26/461#l
+  - kind: form
+    citation: 2025 Form 461 line 16
+    url: https://www.irs.gov/pub/irs-prior/f461--2025.pdf
+  readings:
+    statute: Section 461(l) measures one excess across all business deductions and doesn't say which deductions it
+      disallows.
+    other: Form 461 computes one amount on line 16 and doesn't split it. The excess could fall on the NII losses first,
+      on the other losses first, or on both in proportion.
+  example: With 2025 wages of $600,000, interest of $200,000, a Schedule C loss of $300,000 and a Form 4835 loss of
+    $300,000, the excess of $287,000 puts $143,500 on the Form 4835 loss in proportion, $287,000 if NII losses go first
+    and $0 if other losses go first, for NII of $43,500, $187,000 or -$100,000.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/irs/tax/federal_income/net_investment_income_excess_business_loss.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10076
+  state: open
+  note: The code splits the excess in proportion to the two kinds of loss and calls that provisional. Either other
+    reading changes the investment_share lines only.
+- id: us:niit-form-8960-line-4a-tip
+  program: income-tax
+  years:
+    from: 2025
+    to: 2025
+    type: tax
+  question: Does Form 8960 line 4b remove income that self-employment tax doesn't reach, such as Form 4835 farm rent,
+    as the 2025 tip under line 4a reads, or only income that tax does reach?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 1411(c)(1)(A)(i) and (c)(6)
+    url: https://www.law.cornell.edu/uscode/text/26/1411#c
+  - kind: instructions
+    citation: 2025 Instructions for Form 8960, tip under line 4a
+    url: https://www.irs.gov/pub/irs-prior/i8960--2025.pdf#page=8
+  readings:
+    statute: NII leaves out only items taken into account in self-employment income on which section 1401(b) imposes
+      tax, so rent that section 1402(a)(1) excepts stays in.
+    other: The tip enters income on Schedules C, E and F "that is not subject to self-employment tax under section
+      1401(b)" as a negative on line 4b.
+  example: A single filer with 2025 wages of $190,000 and Form 4835 farm rent of $30,000 owes NIIT of $760 under the
+    statute; the tip's words would remove the rent and leave no NIIT.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/irs/investment/income/sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10076
+  state: unreviewed
+  note: The same instructions say on page 1 that income excepted under sections 1402(a)(1) through (17) "is subject to
+    NIIT", and the self-employment bullet in line 4b's list removes income taken into account in self-employment
+    income.
 - id: us:recovery-rebate-joint-claimable-spouse
   program: recovery-rebate-credit
   years:

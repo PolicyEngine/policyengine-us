@@ -1,3 +1,31 @@
+## [2.103.0] - 2026-11-06
+
+### Added
+
+- Add Idaho LIHEAP regular heating assistance for FY2026.
+
+
+## [2.102.0] - 2026-11-06
+
+### Added
+
+- Add Connecticut Energy Assistance Program basic and rental heating assistance for fiscal years 2026 and 2027, including federal income protection, military pensions, Social Security net of Part B premiums and receipt-based benefits.
+
+
+## [2.101.0] - 2026-11-06
+
+### Added
+
+- Add California LIHEAP regular utility heating schedules, a covered Madera propane/fuel-oil calculation, and approved-cost wood assistance, including the federal income floor, military pensions, receipt-based benefits and allowable medical-premium deductions.
+
+
+## [2.100.1] - 2026-11-05
+
+### Fixed
+
+- Count Form 4835 farm rental income (Schedule E line 40) in net investment income, and count rental, farm rental, estate and passive pass-through losses in net investment income only as far as section 461(l) allows them, for the net investment income tax and Minnesota's net investment income tax.
+
+
 ## [2.100.0] - 2026-11-05
 
 ### Added
