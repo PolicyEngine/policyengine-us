@@ -200,9 +200,9 @@ def test_dataset_without_supplied_columns_keeps_age_ordering():
 
     The 60-year-old heads the couple instead of the reference person - the
     behaviour the supplied roles exist to correct - and the 16-year-old heads
-    nothing. The spouse must share the head's marital unit, so the parent's
-    student, who has their own, is a dependent and the parent files as head
-    of household.
+    nothing. The parent's 21-year-old student has their own marital unit and
+    meets the qualifying child age test, so they are a dependent and the
+    parent files as head of household.
     """
     simulation = Microsimulation(dataset=_dataset(False), dataset_end_year=YEAR)
     heads, spouses, dependents, statuses = _roles_and_statuses(simulation, YEAR)

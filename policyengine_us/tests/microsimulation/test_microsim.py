@@ -245,10 +245,10 @@ def test_default_dataset_uses_its_supplied_tax_unit_roles():
     `populace_us_2024` ships its tax-unit constructor's roles
     (`tax_unit_role_input`). Without supplied roles, the oldest adult heads
     the tax unit; when two candidates share a two-person marital unit in the
-    tax unit, the older of that couple heads instead. The inferred spouse must
-    share the head's marital unit, so supplied marital units no longer pair an
-    adult student with a parent; when marital units are omitted, plain age
-    order applies. The fallback still heads couples by the older partner
+    tax unit, the older of that couple heads instead. An adult outside the
+    head's marital unit who meets the qualifying child age test is not the
+    inferred spouse, so supplied marital units no longer pair an adult student
+    with a parent; when marital units are omitted, plain age order applies. The fallback still heads couples by the older partner
     rather than the reference person and leaves lone minors with no head.
     This checks the whole population, person by person, in the data year and
     in an extended year, since the loader carries the column forward rather

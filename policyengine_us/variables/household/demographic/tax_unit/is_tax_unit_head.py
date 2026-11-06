@@ -28,15 +28,18 @@ class is_tax_unit_head(Variable):
         # couple heads it, even if another adult is older. When a situation
         # omits marital units, Core puts everyone in one unit, so this changes
         # nothing there: a two-person unit gives the same head.
+        # A separated member doesn't form such a couple: is_tax_unit_spouse
+        # gives no one the spouse role in a unit with a separated member.
         # NOTE: the older adult then becomes the couple's dependent whatever
         # their income. If that adult files instead, claiming a couple who
         # don't file jointly, supply is_tax_unit_head or tax_unit_role_input.
         marital_unit = person.marital_unit
         tax_unit_id = tax_unit.reference_entity.members_entity_id
+        couple_eligible = eligible & ~person("is_separated", period)
         couple_candidate = (
-            eligible
+            couple_eligible
             & (marital_unit.nb_persons() == 2)
-            & (marital_unit.sum(eligible) == 2)
+            & (marital_unit.sum(couple_eligible) == 2)
             & (marital_unit.min(tax_unit_id) == marital_unit.max(tax_unit_id))
         )
         eligible = where(tax_unit.any(couple_candidate), couple_candidate, eligible)

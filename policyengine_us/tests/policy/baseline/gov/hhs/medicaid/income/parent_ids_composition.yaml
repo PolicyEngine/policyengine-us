@@ -2098,8 +2098,9 @@
         members: [grandparent, teen, baby]
         state_code: OH
   output:
-    # The teen has their own marital unit, so the default tax roles make them
-    # the grandparent's dependent rather than spouse, and the parent links
+    # The teen has their own marital unit and, at 18, meets the qualifying
+    # child age test, so the default tax roles make them the grandparent's
+    # dependent rather than spouse, and the parent links
     # show that the two are parent and child. The grandparent is not the
     # baby's step parent. The baby uses non-filer rules and counts only baby
     # plus teen.

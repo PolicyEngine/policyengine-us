@@ -156,18 +156,31 @@ the head, skipping adults input as tax-unit dependents unless every adult in
 the unit is one. When two such adults share a two-person marital unit within
 the tax unit, the older of that couple is the head instead: a married couple
 can file jointly (26 USC 6013(a)), and a couple who files a joint return can't
-be claimed as anyone's dependents (26 USC 152(b)(2)). The spouse is the
-next-oldest such adult who shares the head's marital unit, unless any member of
-the unit is separated. When a situation omits marital units, Core puts everyone
-in one marital unit, so plain age order applies. A minor living without a
-parent is left with no head.
+be claimed as anyone's dependents (26 USC 152(b)(2)). The spouse is the head's
+partner in their marital unit. A head without one takes the next-oldest such
+adult, except an adult who meets the qualifying child age test against the head
+(26 USC 152(c)(3)): under 19, or under 24 if a full-time student, and younger
+than the head, or permanently and totally disabled at any age. That adult stays
+a dependent. No spouse is inferred when any member of the unit is separated,
+and a separated member doesn't count toward a couple. When a situation omits
+marital units, Core puts everyone in one marital unit, so plain age order
+applies. A minor living without a parent is left with no head.
 
-This rule has one known limitation. When a tax unit holds a married couple and
-an older adult outside their marital unit, the couple heads the unit and the
-older adult becomes their dependent, whatever that adult's income. If the older
-adult files instead, for example a parent who claims a married child and the
-child's spouse who don't file jointly, supply `is_tax_unit_head` or
-`tax_unit_role_input`.
+This rule has three known limitations. Supply `is_tax_unit_head`,
+`is_tax_unit_spouse` or `tax_unit_role_input` for these households:
+
+- When a tax unit holds a married couple and an older adult outside their
+  marital unit, the couple heads the unit and the older adult becomes their
+  dependent, whatever that adult's income. The older adult may file instead,
+  for example a parent who claims a married child and the child's spouse who
+  don't file jointly.
+- An adult outside the head's marital unit who fails the age test, such as a
+  45-year-old child with wages, is still paired with the head, and the unit
+  files jointly. Under the law each would file their own return, or the adult
+  could be a qualifying relative, but the pairing keeps the adult's income on
+  the one return the model computes for the unit.
+- A disabled spouse living apart in their own marital unit, such as in a care
+  facility, becomes the head's dependent.
 
 The Populace build carries its constructor's filing status in a
 `filing_status_input` column. No variable has that name, so the column is

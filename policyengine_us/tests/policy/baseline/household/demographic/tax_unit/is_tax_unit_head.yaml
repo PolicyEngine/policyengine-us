@@ -190,3 +190,37 @@
     # Wages 80,000 + 40,000 = 120,000. The parent's 15,000 of Social Security
     # is a dependent's income, so it is left off the couple's return.
     adjusted_gross_income: 120_000
+
+- name: A separated member of a two-person marital unit does not head the unit ahead of an older parent.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 78
+        social_security_retirement: 15_000
+      separated_adult:
+        age: 40
+        is_separated: true
+        employment_income_before_lsr: 30_000
+      partner:
+        age: 38
+        employment_income_before_lsr: 20_000
+    tax_units:
+      tax_unit:
+        members: [parent, separated_adult, partner]
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      couple:
+        members: [separated_adult, partner]
+    households:
+      household:
+        members: [parent, separated_adult, partner]
+        state_code: TX
+  output:
+    # A unit with a separated member infers no spouse, so the two-person
+    # marital unit is not a couple that can file jointly. The oldest adult
+    # heads the unit.
+    is_tax_unit_head: [true, false, false]
+    is_tax_unit_spouse: [false, false, false]
+    filing_status: SINGLE

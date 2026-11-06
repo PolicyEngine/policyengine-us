@@ -261,8 +261,9 @@
   input:
     people:
       person1:
-        # At 78 she is not an ineligible child; her own marital unit keeps
-        # her from being the inferred spouse.
+        # At 78 she is not an ineligible child. Her son heads the unit with
+        # his wife, his partner in their marital unit, so she isn't the
+        # inferred spouse.
         age: 78
         social_security_retirement: 15_000
       person2:
