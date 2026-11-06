@@ -373,7 +373,9 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
 
     # IRS uprating - special case that computes from CPI
     IRS_UPRATING_START_YEAR = 2010
-    IRS_LAST_PROJECTED_YEAR = 2035
+    # 2036 averages chained CPI-U from August 2034 to July 2035, the 2034 and
+    # 2035 February instants, which hold CBO's February 2026 calendar points.
+    IRS_LAST_PROJECTED_YEAR = 2036
 
     uprating_index = parameters.gov.irs.uprating
 
@@ -446,19 +448,22 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_day=1,
     )
 
-    # CPI-U (February values, last projection year 2034)
+    # CPI-U (February values, last projection year 2036). Each February
+    # instant holds CBO's February 2026 calendar-year average for that year
+    # (the "# YYYY value" comments name the tax year it feeds), so CBO's last
+    # point, calendar 2036, sits at the 2036 instant.
     extend_parameter_values(
         parameters.gov.bls.cpi.cpi_u,
-        last_projected_year=2034,
+        last_projected_year=2036,
         end_year=END_YEAR,
         period_month=2,
         period_day=1,
     )
 
-    # Chained CPI-U (February values, last projection year 2034)
+    # Chained CPI-U (February values, last projection year 2036), as for CPI-U.
     extend_parameter_values(
         parameters.gov.bls.cpi.c_cpi_u,
-        last_projected_year=2034,
+        last_projected_year=2036,
         end_year=END_YEAR,
         period_month=2,
         period_day=1,
