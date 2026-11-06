@@ -11,5 +11,6 @@ class dc_employer_paid_leave_tax(Variable):
     defined_for = StateCode.DC
 
     def formula(person, period, parameters):
-        rate = parameters(period).gov.states.dc.tax.payroll.paid_leave.employer_rate
-        return rate * person("dc_paid_leave_taxable_wages", period)
+        return person("dc_employer_paid_leave_tax_rate", period) * person(
+            "dc_paid_leave_taxable_wages", period
+        )

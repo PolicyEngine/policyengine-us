@@ -1,0 +1,146 @@
+# District of Columbia Paid Family Leave tax on $50,000 of annual wages, with
+# wages earned evenly over the year. The Department of Employment Services
+# publishes the rate for each quarter in "Historical PFL Tax Rate Information":
+# 0.62% for 2019 Q2 through 2022 Q2, 0.26% for 2022 Q3 through 2024 Q2, and 0.75%
+# from 2024 Q3. Each expected value is hand-computed from that table.
+
+- name: DC paid leave tax does not apply in 2018, before the first taxed quarter.
+  period: 2018
+  input:
+    employment_income: 50_000
+    state_code: DC
+  output:
+    dc_paid_leave_taxable_wages: 50_000
+    dc_employer_paid_leave_tax: 0
+    dc_employer_additional_state_payroll_tax: 0
+    employer_additional_state_payroll_tax: 0
+
+- name: DC paid leave tax in 2019 covers wages paid from April 1.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: DC
+  output:
+    # 50,000 * 3/4 * 0.62% = 232.50
+    dc_employer_paid_leave_tax: 232.50
+    dc_employer_additional_state_payroll_tax: 232.50
+    employer_additional_state_payroll_tax: 232.50
+
+- name: DC paid leave tax in 2021 is 0.62% of wages.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: DC
+  output:
+    # 50,000 * 0.62% = 310
+    dc_employer_paid_leave_tax: 310
+    dc_employer_additional_state_payroll_tax: 310
+    employer_additional_state_payroll_tax: 310
+
+- name: DC paid leave tax in 2022 falls to 0.26% for the second half of the year.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: DC
+  output:
+    # 25,000 * 0.62% + 25,000 * 0.26% = 155 + 65 = 220
+    dc_employer_paid_leave_tax: 220
+    dc_employer_additional_state_payroll_tax: 220
+    employer_additional_state_payroll_tax: 220
+
+- name: DC paid leave tax in 2023 is 0.26% of wages.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: DC
+  output:
+    # 50,000 * 0.26% = 130
+    dc_employer_paid_leave_tax: 130
+    dc_employer_additional_state_payroll_tax: 130
+    employer_additional_state_payroll_tax: 130
+
+- name: DC paid leave tax in 2024 rises to 0.75% for the second half of the year.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: DC
+  output:
+    # 25,000 * 0.26% + 25,000 * 0.75% = 65 + 187.50 = 252.50
+    dc_employer_paid_leave_tax: 252.50
+    dc_employer_additional_state_payroll_tax: 252.50
+    employer_additional_state_payroll_tax: 252.50
+
+- name: DC paid leave tax in 2025 is 0.75% of wages.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: DC
+  output:
+    # 50,000 * 0.75% = 375
+    dc_employer_paid_leave_tax: 375
+    dc_employer_additional_state_payroll_tax: 375
+    employer_additional_state_payroll_tax: 375
+
+- name: DC paid leave tax has no wage cap.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 1_000_000
+    state_code: DC
+  output:
+    # 1,000,000 * 0.75% = 7,500
+    dc_employer_paid_leave_tax: 7_500
+
+- name: DC paid leave tax is zero on negative earnings.
+  period: 2024
+  input:
+    employment_income: -5_000
+    state_code: DC
+  output:
+    dc_paid_leave_taxable_wages: 0
+    dc_employer_paid_leave_tax: 0
+
+- name: DC paid leave tax applies the 2024 average rate to each worker's wages.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      worker_1:
+        employment_income: 50_000
+      worker_2:
+        employment_income: 120_000
+      worker_3:
+        employment_income: 0
+    households:
+      household:
+        members: [worker_1, worker_2, worker_3]
+        state_code: DC
+  output:
+    # 50,000 * 0.505% = 252.50; 120,000 * 0.505% = 606; 0 * 0.505% = 0
+    dc_employer_paid_leave_tax: [252.50, 606, 0]
+
+- name: DC paid leave tax reaches only the DC household in a mixed simulation.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      dc_worker:
+        employment_income: 50_000
+      va_worker:
+        employment_income: 50_000
+    households:
+      dc_household:
+        members: [dc_worker]
+        state_code: DC
+      va_household:
+        members: [va_worker]
+        state_code: VA
+  output:
+    dc_employer_paid_leave_tax: [252.50, 0]
+    employer_additional_state_payroll_tax: [252.50, 0]

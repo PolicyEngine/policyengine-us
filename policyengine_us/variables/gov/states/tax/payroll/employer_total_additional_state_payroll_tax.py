@@ -37,9 +37,7 @@ class employer_total_additional_state_payroll_tax(Variable):
             0,
         )
 
-        dc = parameters(
-            period
-        ).gov.states.dc.tax.payroll.paid_leave.employer_rate * person(
+        dc = person("dc_employer_paid_leave_tax_rate", period) * person(
             "employer_total_dc_paid_leave_taxable_wages", period
         )
 
