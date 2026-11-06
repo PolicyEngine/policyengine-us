@@ -1,3 +1,10 @@
+## [2.103.0] - 2026-11-06
+
+### Added
+
+- Add Idaho LIHEAP regular heating assistance for FY2026.
+
+
 ## [2.102.0] - 2026-11-06
 
 ### Added
