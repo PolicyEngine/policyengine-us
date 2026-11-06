@@ -1,0 +1,22 @@
+description: Maryland charges employees this share of the total contribution rate under the Family and Medical Leave Insurance program.
+values:
+  0000-01-01: 0
+  # An employer of 15 or more employees pays the other half. An employer may
+  # elect to pay some or all of this share, and may not deduct more than it.
+  2027-01-01: 0.5
+
+metadata:
+  period: year
+  unit: /1
+  label: Maryland FAMLI employee share of the total contribution rate
+  reference:
+    - title: Md. Code, Labor and Employment § 8.3-601(e)
+      href: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gle&section=8.3-601&enactments=false
+    - title: COMAR 09.42.02.05, employer contributions
+      href: https://regs.maryland.gov/us/md/exec/comar/09.42.02.05
+    - title: COMAR 09.42.02.07, failure to deduct from payroll
+      href: https://regs.maryland.gov/us/md/exec/comar/09.42.02.07
+    - title: Maryland Department of Labor, FAMLI Frequently Asked Questions on contributions (updated October 2026), question 1
+      href: https://paidleave.maryland.gov/files/famli-faqs_-contribution-questions.pdf#page=1
+    - title: Maryland Department of Labor, Make contributions, How contribution amounts are split
+      href: https://paidleave.maryland.gov/employers/make-contributions/

@@ -6,6 +6,7 @@ EMPLOYER_ADDITIONAL_STATE_PAYROLL_TAX_COMPONENTS = [
     "dc_employer_additional_state_payroll_tax",
     "de_employer_additional_state_payroll_tax",
     "ma_employer_additional_state_payroll_tax",
+    "md_employer_additional_state_payroll_tax",
     "me_employer_additional_state_payroll_tax",
     "or_employer_additional_state_payroll_tax",
     "ri_employer_additional_state_payroll_tax",

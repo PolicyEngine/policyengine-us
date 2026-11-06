@@ -1,0 +1,148 @@
+# How Maryland FAMLI contributions reach payroll tax totals and household net
+# income. The net income cases set income taxes, credits, benefits and health
+# costs to zero, so net income is wages less employee payroll tax.
+# Social Security is 6.2% and Medicare 1.45% of wages.
+
+- name: Case 1, in 2026 the worker owes only federal payroll tax.
+  period: 2026
+  input:
+    employment_income: 50_000
+    state_code: MD
+    income_tax_before_refundable_credits: 0
+    household_state_tax_before_refundable_credits: 0
+    local_income_tax_before_refundable_credits: 0
+    household_refundable_tax_credits: 0
+    household_benefits: 0
+    household_health_costs: 0
+  output:
+    md_employee_state_payroll_tax: 0
+    employee_state_payroll_tax: 0
+    # 50,000 * 6.2% = 3,100; 50,000 * 1.45% = 725
+    employee_payroll_tax: 3_825
+    household_tax_before_refundable_credits: 3_825
+    # 50,000 - 3,825 = 46,175
+    household_net_income: 46_175
+
+- name: Case 2, in 2027 the employee contribution lowers net income dollar for dollar.
+  period: 2027
+  input:
+    employment_income: 50_000
+    state_code: MD
+    income_tax_before_refundable_credits: 0
+    household_state_tax_before_refundable_credits: 0
+    local_income_tax_before_refundable_credits: 0
+    household_refundable_tax_credits: 0
+    household_benefits: 0
+    household_health_costs: 0
+  output:
+    md_employee_state_payroll_tax: 225
+    employee_state_payroll_tax: 225
+    # 3,100 + 725 + 225 = 4,050
+    employee_payroll_tax: 4_050
+    spm_unit_payroll_tax: 4_050
+    household_tax_before_refundable_credits: 4_050
+    # 50,000 - 4,050 = 45,950
+    household_net_income: 45_950
+
+- name: Case 3, a Virginia household with the same wages owes no contribution.
+  period: 2027
+  input:
+    employment_income: 50_000
+    state_code: VA
+    income_tax_before_refundable_credits: 0
+    household_state_tax_before_refundable_credits: 0
+    local_income_tax_before_refundable_credits: 0
+    household_refundable_tax_credits: 0
+    household_benefits: 0
+    household_health_costs: 0
+  output:
+    md_employee_state_payroll_tax: 0
+    employee_state_payroll_tax: 0
+    employee_payroll_tax: 3_825
+    household_net_income: 46_175
+
+- name: Case 4, a married couple's contributions add up on the tax unit.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+      person2:
+        age: 40
+        employment_income: 250_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    md_employee_state_payroll_tax: [225, 865.35]
+    # 225 + 865.35 = 1,090.35
+    employee_state_payroll_tax: 1_090.35
+
+- name: Case 5, the employer contribution joins Maryland unemployment tax on the employer side.
+  period: 2027
+  input:
+    employment_income: 50_000
+    state_code: MD
+  output:
+    md_employer_additional_state_payroll_tax: 225
+    employer_additional_state_payroll_tax: 225
+    # 8,500 * 2.6% = 221 of unemployment tax, plus the 225 contribution.
+    employer_state_payroll_tax: 446
+
+- name: Case 6, the employer contribution stays out of employee payroll tax.
+  period: 2027
+  input:
+    employment_income: 50_000
+    employer_headcount: 14
+    state_code: MD
+  output:
+    md_employer_additional_state_payroll_tax: 0
+    employer_additional_state_payroll_tax: 0
+    # 8,500 * 2.6% = 221 of unemployment tax alone.
+    employer_state_payroll_tax: 221
+    # 3,100 + 725 + 225: the employee share stands without an employer share.
+    employee_payroll_tax: 4_050
+
+- name: Case 7, the employer-level total is 0.45% of the employer's taxable wages.
+  period: 2027
+  input:
+    employer_total_taxable_earnings_for_social_security: 1_000_000
+    employer_headcount: 40
+    state_code: MD
+  output:
+    # 1,000,000 * 0.9% * 50% = 4,500
+    employer_total_additional_state_payroll_tax: 4_500
+
+- name: Case 8, the employer-level total is zero for an employer of 14 employees.
+  period: 2027
+  input:
+    employer_total_taxable_earnings_for_social_security: 1_000_000
+    employer_headcount: 14
+    state_code: MD
+  output:
+    employer_total_additional_state_payroll_tax: 0
+
+- name: Case 9, the employer-level total applies at exactly 15 employees.
+  period: 2027
+  input:
+    employer_total_taxable_earnings_for_social_security: 1_000_000
+    employer_headcount: 15
+    state_code: MD
+  output:
+    # 1,000,000 * 0.9% * 50% = 4,500
+    employer_total_additional_state_payroll_tax: 4_500
+
+- name: Case 10, the employer-level total is zero in 2026.
+  period: 2026
+  input:
+    employer_total_taxable_earnings_for_social_security: 1_000_000
+    employer_headcount: 40
+    state_code: MD
+  output:
+    employer_total_additional_state_payroll_tax: 0
