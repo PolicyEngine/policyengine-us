@@ -17,18 +17,17 @@ class meets_ssi_resource_test(Variable):
         joint_claim = person("ssi_claim_is_joint", period)
         personal_resources = person("ssi_countable_resources", period)
         spousal_deeming = person("is_ssi_spousal_resource_deeming_applies", period)
-        deemed_resources = add(
-            person,
-            period,
-            [
-                "ssi_resources_deemed_from_ineligible_spouse",
-                "ssi_resources_deemed_from_ineligible_parent",
-            ],
-        )
+        spouse_resources = person("ssi_resources_deemed_from_ineligible_spouse", period)
+        parent_resources = person("ssi_resources_deemed_from_ineligible_parent", period)
+        # Balances are float32 inputs, so a sum of them can land a fraction of
+        # a cent off the total it represents. Round each such sum to cents: a
+        # couple's balances, or a person's own plus a spouse's. The parental
+        # share is an equal division with no rounding rule (SI 01330.200 B,
+        # 416.1202(b)(1)), so it is added unrounded.
         countable_resources = where(
             joint_claim,
-            person.marital_unit.sum(personal_resources),
-            personal_resources + deemed_resources,
+            round_to_cents(person.marital_unit.sum(personal_resources)),
+            round_to_cents(personal_resources + spouse_resources) + parent_resources,
         )
         # 416.1205(a): an individual living with an ineligible spouse counts
         # 'including the resources of the spouse' against the spouse limit.

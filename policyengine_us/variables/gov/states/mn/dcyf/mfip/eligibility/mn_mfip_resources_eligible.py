@@ -13,5 +13,6 @@ class mn_mfip_resources_eligible(Variable):
         # Per MN Stat. 256P.02, Subd. 2:
         # Assets must not exceed $10,000.
         p = parameters(period).gov.states.mn.dcyf.mfip.resources
-        resources = spm_unit("spm_unit_cash_assets", period.this_year)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        resources = round_to_cents(spm_unit("spm_unit_cash_assets", period.this_year))
         return resources <= p.limit

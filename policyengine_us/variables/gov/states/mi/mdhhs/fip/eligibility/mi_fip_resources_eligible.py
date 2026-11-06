@@ -17,6 +17,7 @@ class mi_fip_resources_eligible(Variable):
 
         # Count liquid financial assets explicitly. BEM 400 excludes several
         # non-liquid resources that are not yet modeled separately here.
-        assets = spm_unit("spm_unit_cash_assets", period.this_year)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        assets = round_to_cents(spm_unit("spm_unit_cash_assets", period.this_year))
 
         return assets <= p.resources.limit

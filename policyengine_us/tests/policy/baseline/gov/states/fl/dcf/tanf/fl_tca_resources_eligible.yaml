@@ -69,3 +69,28 @@
         state_code: FL
   output:
     fl_tca_resources_eligible: false
+
+# 1,157.81 + 285.17 + 557.02 = 2,000.00, at the limit.
+# The float32 balances add to a fraction of a cent above 2,000 unless rounded to cents.
+- name: Three accounts that total exactly the resource limit pass
+  period: 2025-01
+  input:
+    age: 30
+    bank_account_assets: 1_157.81
+    stock_assets: 285.17
+    bond_assets: 557.02
+    state_code: FL
+  output:
+    fl_tca_resources_eligible: true
+
+# 1,157.81 + 285.17 + 557.03 = 2,000.01, a cent over the limit.
+- name: Three accounts a cent over the resource limit fail
+  period: 2025-01
+  input:
+    age: 30
+    bank_account_assets: 1_157.81
+    stock_assets: 285.17
+    bond_assets: 557.03
+    state_code: FL
+  output:
+    fl_tca_resources_eligible: false

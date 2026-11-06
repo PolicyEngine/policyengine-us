@@ -53,21 +53,28 @@ class ia_ssa_resources_deemed_from_parents(Variable):
             person, period, resources
         )
         allowance = where(parent_count > 1, limit.couple, limit.individual)
-        excess = max_(parental_resources - allowance, 0)
+        # Balances are float32 inputs, so round the deemors' total and the
+        # child's own balances to cents, as SSI's deeming does. The share
+        # stays exact, so own + share is tested in whole cents.
+        excess = max_(round_to_cents(parental_resources) - allowance, 0)
         child = person("is_ssi_resource_deeming_child", period)
         ihhrc = person("ia_ssa_nonfinancial_eligible", period) & (
             person("ia_ssa_ihhrc_amount", period) > 0
         )
-        own = person("ssi_countable_resources", period.this_year)
+        own = round_to_cents(person("ssi_countable_resources", period.this_year))
         eligible = child & (receives_ssi | ihhrc) & (own <= limit.individual)
         pool_count = int(np.max(pool, initial=-1)) + 1
         share = excess
         # Each round removes at least one child or leaves the result stable.
         for _ in range(int(np.max(person.household.nb_persons(), initial=0)) + 1):
             count = np.bincount(pool[eligible], minlength=pool_count)
-            share = excess / max_(count[pool], 1)
-            remaining = eligible & (own + share <= limit.individual)
+            divisor = max_(count[pool], 1)
+            share = excess / divisor
+            remaining = eligible & meets_limit_with_share(
+                own, excess, divisor, limit.individual
+            )
             if np.array_equal(remaining, eligible):
                 break
             eligible = remaining
-        return child * share
+        # Stored as float32, a share must not round up past the exact total.
+        return float32_at_most(child * share)

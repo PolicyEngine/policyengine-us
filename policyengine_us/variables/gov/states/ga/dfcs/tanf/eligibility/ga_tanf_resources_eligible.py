@@ -18,5 +18,6 @@ class ga_tanf_resources_eligible(Variable):
         # In a more complete implementation, this would account for
         # excluded resources (primary residence, household goods, etc.)
         # and vehicle value limits
-        cash_assets = spm_unit("spm_unit_cash_assets", period.this_year)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        cash_assets = round_to_cents(spm_unit("spm_unit_cash_assets", period.this_year))
         return cash_assets <= p.limit

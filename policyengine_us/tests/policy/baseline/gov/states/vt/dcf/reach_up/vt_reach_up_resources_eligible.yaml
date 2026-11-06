@@ -73,3 +73,28 @@
   output:
     # Assets: $9,001 > $9,000 limit
     vt_reach_up_resources_eligible: false
+
+# 617.28 + 8,353.98 + 28.74 = 9,000.00, at the limit.
+# The float32 balances add to a fraction of a cent above 9,000 unless rounded to cents.
+- name: Three accounts that total exactly the resource limit pass
+  period: 2025-01
+  input:
+    age: 30
+    bank_account_assets: 617.28
+    stock_assets: 8_353.98
+    bond_assets: 28.74
+    state_code: VT
+  output:
+    vt_reach_up_resources_eligible: true
+
+# 617.28 + 8,353.98 + 28.75 = 9,000.01, a cent over the limit.
+- name: Three accounts a cent over the resource limit fail
+  period: 2025-01
+  input:
+    age: 30
+    bank_account_assets: 617.28
+    stock_assets: 8_353.98
+    bond_assets: 28.75
+    state_code: VT
+  output:
+    vt_reach_up_resources_eligible: false

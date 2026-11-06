@@ -18,7 +18,10 @@ class va_ag_eligible(Variable):
             person.marital_unit.sum(person("va_ag_is_joint_initial_month", period)) == 2
         )
         resources = person("ssi_countable_resources", period.this_year)
-        resources = where(joint, person.marital_unit.sum(resources), resources)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        resources = round_to_cents(
+            where(joint, person.marital_unit.sum(resources), resources)
+        )
         limits = parameters(period).gov.ssa.ssi.eligibility.resources.limit
         receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
         resource_eligible = receives_ssi | (

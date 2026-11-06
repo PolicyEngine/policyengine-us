@@ -10,7 +10,8 @@ class ca_capi_resource_eligible(Variable):
     reference = "https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf"
 
     def formula(spm_unit, period, parameters):
-        resources = spm_unit("ca_capi_resources", period)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        resources = round_to_cents(spm_unit("ca_capi_resources", period))
         p = parameters(period).gov.states.ca.cdss.capi.resources
         married = spm_unit("spm_unit_is_married", period)
         resource_limit = where(married, p.limit.couple, p.limit.single)

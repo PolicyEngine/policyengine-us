@@ -120,11 +120,15 @@ class ssi_resources_deemed_from_ineligible_parent(Variable):
         # 'only to the extent that those resources exceed the resource limits
         # described in § 416.1205': use the reformable individual/couple limits.
         allowance = where(parent_count > 1, p.couple, p.individual)
-        excess = max_(0, parental_resources - allowance)
+        # Balances are float32 inputs. Each deemor's are added together, then
+        # the deemors' totals, so the sum can land a fraction of a cent off
+        # the total it represents: round it to cents before the limit comes off.
+        excess = max_(0, round_to_cents(parental_resources) - allowance)
         # Do not discard ABD parents. SI 01330.310 B-C says zero if parent(s)
         # meets resource eligibility, usual deeming if not. The Ryder example
         # (.340) has an ABD mother failing the couple limit: 3100-3000=100.
-        own_resources = person("ssi_countable_resources", period)
+        # The child's own float32 balances are added together: round to cents.
+        own_resources = round_to_cents(person("ssi_countable_resources", period))
         active = person("is_ssi_resource_deeming_child", period) & (
             own_resources <= p.individual
         )
@@ -148,10 +152,22 @@ class ssi_resources_deemed_from_ineligible_parent(Variable):
         pool_count = int(np.max(pool, initial=-1)) + 1
         for _ in range(rounds):
             count = np.bincount(pool[active & income_eligible], minlength=pool_count)
-            share = excess / max_(1, count[pool])
+            divisor = max_(1, count[pool])
+            # The share is a division, not a sum of balances, so it stays
+            # exact: SI 01330.200 B says to 'equally divide the value of the
+            # deemed resources among those children', and 416.1202(b)(1) sets
+            # no rule for rounding a child's share. Own resources and the
+            # excess are whole cents, so test own + share in whole cents.
+            # https://secure.ssa.gov/poms.nsf/lnx/0501330200
+            # https://www.law.cornell.edu/cfr/text/20/416.1202
+            share = excess / divisor
             deemed = where(active, share, deemed)
-            remaining = active & (own_resources + share <= p.individual)
+            remaining = active & meets_limit_with_share(
+                own_resources, excess, divisor, p.individual
+            )
             if np.array_equal(active, remaining):
                 break
             active = remaining
-        return deemed
+        # Stored as float32, a share must not round up: own resources plus
+        # the share read back would then exceed a limit the exact total meets.
+        return float32_at_most(deemed)

@@ -940,3 +940,219 @@
     # 2027 still reads the 195,000 couple limit; 31,000 first applies in 2028.
     is_in_medicaid_medically_needy_category: [true, true]
     is_medically_needy_for_medicaid: [true, true]
+
+# Hawaii's 2,000 individual asset limit: 178.57 + 1,547.79 + 273.64 =
+# 2,000.00. The float32 balances add to 2,000.0001 unless rounded to cents.
+- name: Three accounts that total exactly the Hawaii limit pass
+  period: 2026
+  input:
+    is_disabled: true
+    meets_ssi_disability_criteria: true
+    is_in_medicaid_medically_needy_category: true
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    ssi_countable_income: 0
+    bank_account_assets: 178.57
+    stock_assets: 1_547.79
+    bond_assets: 273.64
+    state_code: HI
+  output:
+    is_medically_needy_for_medicaid: true
+
+# 178.57 + 1,547.79 + 273.65 = 2,000.01, a cent over the limit.
+- name: Three accounts a cent over the Hawaii limit fail
+  period: 2026
+  input:
+    is_disabled: true
+    meets_ssi_disability_criteria: true
+    is_in_medicaid_medically_needy_category: true
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    ssi_countable_income: 0
+    bank_account_assets: 178.57
+    stock_assets: 1_547.79
+    bond_assets: 273.65
+    state_code: HI
+  output:
+    is_medically_needy_for_medicaid: false
+
+
+# A child's resources include the SSI parental share (Cases 5 and 6). The
+# first child's own income is too high for SSI, as in Case 5, so they don't
+# count in the division but are still deemed the share the three SSI-eligible
+# siblings divide (SI 01330.200 B, which sets no rounding rule for a share).
+# The parent's 2,100 is 100 over the SSI individual allowance, so the share
+# is 100 / 3 = 33.3333. The first child's 1,966.67 in one account plus the
+# share is 2,000.0033, over Massachusetts's 2,000 limit. The siblings receive
+# SSI, so they qualify through that pathway instead; the parent's 80,000 of
+# wages keeps the children out of the MAGI child groups.
+- name: Case 37, a fractional parental share counts against a disabled child's asset limit.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        is_parent: true
+        employment_income_before_lsr: 80_000
+        bank_account_assets: 2_100
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        ssi_countable_income: 21_358
+        medicaid_medically_needy_medical_expenses: 16_000
+        is_optional_senior_or_disabled_for_medicaid: false
+        bank_account_assets: 1_966.67
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        ssi_countable_income: 0
+        is_optional_senior_or_disabled_for_medicaid: false
+      child3:
+        age: 12
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        ssi_countable_income: 0
+        is_optional_senior_or_disabled_for_medicaid: false
+      child4:
+        age: 14
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        ssi_countable_income: 0
+        is_optional_senior_or_disabled_for_medicaid: false
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child1_unit:
+        members: [child1]
+      child2_unit:
+        members: [child2]
+      child3_unit:
+        members: [child3]
+      child4_unit:
+        members: [child4]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4]
+        state_code: MA
+  output:
+    ssi_resources_deemed_from_ineligible_parent:
+      2026-01: [0, 33.3333, 33.3333, 33.3333, 33.3333]
+    is_medically_needy_for_medicaid: [false, false, false, false, false]
+
+# With four SSI-eligible siblings the parent's 100 of excess divides as 25
+# each. The first child's 178.57 + 1,522.79 + 273.64 = 1,975.00 plus 25 is
+# 2,000.00, at the limit, and income 21,358 - 16,000 = 5,358 <= 6,264 as in
+# Case 5. That child's float32 balances add to 1,975.0001 unless rounded to
+# cents.
+- name: Case 38, a disabled child's accounts plus a whole-cent parental share at the asset limit qualify.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        is_parent: true
+        employment_income_before_lsr: 80_000
+        bank_account_assets: 2_100
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        ssi_countable_income: 21_358
+        medicaid_medically_needy_medical_expenses: 16_000
+        is_optional_senior_or_disabled_for_medicaid: false
+        bank_account_assets: 178.57
+        stock_assets: 1_522.79
+        bond_assets: 273.64
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        ssi_countable_income: 0
+        is_optional_senior_or_disabled_for_medicaid: false
+      child3:
+        age: 12
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        ssi_countable_income: 0
+        is_optional_senior_or_disabled_for_medicaid: false
+      child4:
+        age: 14
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        ssi_countable_income: 0
+        is_optional_senior_or_disabled_for_medicaid: false
+      child5:
+        age: 16
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        ssi_countable_income: 0
+        is_optional_senior_or_disabled_for_medicaid: false
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4, child5]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child1_unit:
+        members: [child1]
+      child2_unit:
+        members: [child2]
+      child3_unit:
+        members: [child3]
+      child4_unit:
+        members: [child4]
+      child5_unit:
+        members: [child5]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5]
+        state_code: MA
+  output:
+    ssi_resources_deemed_from_ineligible_parent:
+      2026-01: [0, 25, 25, 25, 25, 25]
+    is_medically_needy_for_medicaid: [false, true, false, false, false, false]
+
+# The parent's 2,100.01 is 100.01 over the SSI individual allowance, all
+# deemed to the only child, whose own income is too high for SSI. The
+# child's 1,899.99 plus 100.01 is exactly 2,000.00, at the limit.
+- name: Case 39, a disabled child's whole-cent parental share that reaches the asset limit exactly qualifies.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        is_parent: true
+        employment_income_before_lsr: 80_000
+        bank_account_assets: 2_100.01
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        ssi_countable_income: 21_358
+        medicaid_medically_needy_medical_expenses: 16_000
+        is_optional_senior_or_disabled_for_medicaid: false
+        bank_account_assets: 1_899.99
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child1_unit:
+        members: [child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: MA
+  output:
+    ssi_resources_deemed_from_ineligible_parent:
+      2026-01: [0, 100.01]
+    is_medically_needy_for_medicaid: [false, true]

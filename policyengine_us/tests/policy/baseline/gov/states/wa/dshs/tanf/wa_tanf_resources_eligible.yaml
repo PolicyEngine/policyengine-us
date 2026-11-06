@@ -50,3 +50,28 @@
     bank_account_assets: 1_001
   output:
     wa_tanf_resources_eligible: false
+
+# 8,978.98 + 2,564.81 + 456.21 = 12,000.00, at the limit.
+# The float32 balances add to a fraction of a cent above 12,000 unless rounded to cents.
+- name: Three accounts that total exactly the resource limit pass
+  period: 2025
+  input:
+    age: 30
+    bank_account_assets: 8_978.98
+    stock_assets: 2_564.81
+    bond_assets: 456.21
+    state_code: WA
+  output:
+    wa_tanf_resources_eligible: true
+
+# 8,978.98 + 2,564.81 + 456.22 = 12,000.01, a cent over the limit.
+- name: Three accounts a cent over the resource limit fail
+  period: 2025
+  input:
+    age: 30
+    bank_account_assets: 8_978.98
+    stock_assets: 2_564.81
+    bond_assets: 456.22
+    state_code: WA
+  output:
+    wa_tanf_resources_eligible: false

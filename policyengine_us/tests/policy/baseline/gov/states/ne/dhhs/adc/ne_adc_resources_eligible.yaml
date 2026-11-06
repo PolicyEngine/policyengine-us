@@ -84,3 +84,28 @@
     spm_unit_size: 2
     ne_adc_resources_eligible: false
     # Resources ($6,001) > Limit ($6,000) -> false
+
+# 2,286.12 + 404.84 + 1,309.04 = 4,000.00, at the limit.
+# The float32 balances add to a fraction of a cent above 4,000 unless rounded to cents.
+- name: Three accounts that total exactly the resource limit pass
+  period: 2025
+  input:
+    age: 30
+    bank_account_assets: 2_286.12
+    stock_assets: 404.84
+    bond_assets: 1_309.04
+    state_code: NE
+  output:
+    ne_adc_resources_eligible: true
+
+# 2,286.12 + 404.84 + 1,309.05 = 4,000.01, a cent over the limit.
+- name: Three accounts a cent over the resource limit fail
+  period: 2025
+  input:
+    age: 30
+    bank_account_assets: 2_286.12
+    stock_assets: 404.84
+    bond_assets: 1_309.05
+    state_code: NE
+  output:
+    ne_adc_resources_eligible: false
