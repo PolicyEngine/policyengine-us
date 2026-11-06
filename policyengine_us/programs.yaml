@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, CO, CT, DC, DE, GA, HI, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SC, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DC, DE, GA, HI, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SC, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
     state_implementations:
       - state: AL
         status: partial
@@ -1020,6 +1020,14 @@ programs:
         parameter_prefix: gov.states.az.des.liheap
         verified_years: "2026"
         notes: FY2026 Standard benefit covering heating and cooling bills from the point-based benefit matrix. Crisis assistance, water for evaporative cooling and weatherization are out of scope.
+      - state: CA
+        status: partial
+        name: California utility HEAP
+        full_name: California Home Energy Assistance Program utility heating component
+        variable: ca_liheap_utility_heating
+        parameter_prefix: gov.states.ca.csd.liheap
+        verified_years: "2026"
+        notes: FY2026 regular utility heating on gas and electric accounts, Madera propane and fuel-oil heating, and statewide wood heating from an approved delivery cost; other liquid-fuel service areas and vendor-service supplements are not modeled. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: CO
         status: partial
         name: Colorado LEAP
