@@ -556,6 +556,8 @@
         age: 40
         is_tax_unit_head: true
         ca_in_medical_care_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
     tax_units:
       couple:
         members: [head, spouse]
