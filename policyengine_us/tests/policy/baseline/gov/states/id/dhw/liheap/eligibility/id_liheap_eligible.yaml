@@ -1,0 +1,58 @@
+# Accepted FY2026 plan, sections 2.3 and 2.5 (pages 8-9); FY2025 plan, section 2.5 (page 9).
+# https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=8
+# https://liheapch.acf.gov/docs/2025/state-plans/ID_Plan_2025.pdf#page=9
+# IDAPA 16.03.08.200.07: costs incurred directly or as a designated portion of rent.
+# https://adminrules.idaho.gov/rules/current/16/160308.pdf#page=5
+
+- name: Case 1, income eligibility and a modeled heating cost are both required.
+  period: 2026
+  # Ada County is Area I. OTHER, NONE and UNSPECIFIED have no chart column. No Idaho
+  # source names solar or kerosene; solar reads as electric and kerosene as oil.
+  input:
+    state_code: [ID, ID, ID, ID, ID, ID, ID, ID, OR]
+    county: [ADA_COUNTY_ID, ADA_COUNTY_ID, ADA_COUNTY_ID, ADA_COUNTY_ID, ADA_COUNTY_ID,
+             ADA_COUNTY_ID, ADA_COUNTY_ID, UNKNOWN, BAKER_COUNTY_OR]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, SOLAR, KEROSENE, OTHER, NONE, UNSPECIFIED,
+                   NATURAL_GAS, NATURAL_GAS]
+    has_heating_expense: [true, true, true, true, true, true, true, true, true]
+    id_liheap_income_eligible: [true, false, true, true, true, true, true, true, true]
+  output:
+    id_liheap_eligible: [true, false, true, true, false, false, false, false, false]
+
+- name: Case 2, heat in rent has no specific obligation from FY2026 while subsidized tenants paying directly qualify.
+  period: 2026
+  input:
+    state_code: [ID, ID, ID]
+    county: [ADA_COUNTY_ID, ADA_COUNTY_ID, ADA_COUNTY_ID]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heat_expense_included_in_rent: [true, true, false]
+    receives_housing_assistance: [false, true, true]
+    gas_expense: [0, 0, 900]
+    id_liheap_income_eligible: [true, true, true]
+  output:
+    id_liheap_eligible: [false, false, true]
+
+- name: Case 3, FY2025 paid households with heat in rent, whatever the fuel.
+  period: 2025
+  input:
+    state_code: [ID, ID]
+    county: [ADA_COUNTY_ID, ADA_COUNTY_ID]
+    heating_type: [NATURAL_GAS, OTHER]
+    heat_expense_included_in_rent: [true, true]
+    id_liheap_income_eligible: [true, true]
+  output:
+    id_liheap_eligible: [true, true]
+
+- name: Case 4, a direct fuel household needs a heating cost obligation.
+  period: 2026
+  # Plan 2.3: "The household must pay for home heating costs". Free gathered wood and a
+  # subsidized tenant with no gas bill have none; a wood bill establishes one.
+  input:
+    state_code: [ID, ID, ID]
+    county: [ADA_COUNTY_ID, ADA_COUNTY_ID, ADA_COUNTY_ID]
+    heating_type: [WOOD, NATURAL_GAS, WOOD]
+    wood_expense: [0, 0, 300]
+    receives_housing_assistance: [false, true, false]
+    id_liheap_income_eligible: [true, true, true]
+  output:
+    id_liheap_eligible: [false, false, true]
