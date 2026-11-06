@@ -1,3 +1,10 @@
+## [2.101.0] - 2026-11-06
+
+### Added
+
+- Add California LIHEAP regular utility heating schedules, a covered Madera propane/fuel-oil calculation, and approved-cost wood assistance, including the federal income floor, military pensions, receipt-based benefits and allowable medical-premium deductions.
+
+
 ## [2.100.1] - 2026-11-05
 
 ### Fixed
