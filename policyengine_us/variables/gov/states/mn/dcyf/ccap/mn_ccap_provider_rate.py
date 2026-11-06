@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.geography.county_helpers import county_has_state_suffix
 from policyengine_us.variables.gov.states.mn.dcyf.ccap.mn_ccap_provider_type import (
     MNCCAPProviderType,
 )
@@ -27,12 +28,16 @@ class mn_ccap_provider_rate(Variable):
         age_group = person("mn_ccap_age_group", period)
         rate_unit = person("mn_ccap_rate_unit", period)
         # defined_for filters output but does not short-circuit vectorized
-        # execution, so mask on Minnesota before indexing county_str; non-MN
-        # county strings are absent from the rate tables and would crash the
-        # lookup.
+        # execution, so only Minnesota households with a Minnesota county can
+        # index the county-keyed tables. Unknown and mismatched-state counties
+        # fall back to Hennepin along with non-Minnesota households.
         county = person.household("county_str", period.this_year)
         in_mn = person.household("state_code_str", period.this_year) == "MN"
-        county_key = where(in_mn, county, "HENNEPIN_COUNTY_MN")
+        county_key = where(
+            in_mn & county_has_state_suffix(county, "MN"),
+            county,
+            "HENNEPIN_COUNTY_MN",
+        )
 
         # Centers and license-exempt programs (paid at the center rate per
         # section 9.9) use the child care center column; family child care
