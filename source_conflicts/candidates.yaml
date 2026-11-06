@@ -2685,35 +2685,6 @@ candidates:
   note: Both readings arise from the statute's grammar. PE-US keeps its existing $0 result pending a ruling and
     discloses the $26 alternative. DOR's guidance supports the retained reading but does not remove the statutory
     ambiguity.
-- id: us-ga:low-income-credit-dependent-count
-  program: income-tax
-  years:
-    from: 2025
-    to: 2025
-    type: tax
-  question: Does Georgia count every dependent the taxpayer may claim for its low-income credit, or only the
-    children specified by the worksheet?
-  sources:
-  - kind: statute
-    citation: O.C.G.A. 48-7A-3(a), HB 1069 (2010) section 5, printed page 1172
-    url: https://dlg.usg.edu/record/dlg_ggpd_y-ga-bl407-b2010-bv-p1-bbk-p1-belec-p-btext
-  - kind: worksheet
-    citation: 2025 IT-511, Low Income Credit Worksheet, page 35
-    url: https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=35
-  readings:
-    statute: Taxpayers count every dependent they are entitled to claim, including adult dependents.
-    other: The worksheet limits its dependent count to natural or legally adopted children.
-  example: An eligible filer under 65 with $5,000 AGI and an adult parent dependent receives two $26 units, or $52,
-    under the statute. Excluding the parent leaves $26.
-  pe_us:
-    follows: statute
-    code:
-    - policyengine_us/variables/gov/states/ga/tax/income/credits/ga_low_income_credit_potential.py
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/10050
-  state: ruled
-  note: PE-US counts all lawful dependents under the statute. The worksheet's restriction supplies no statutory
-    basis to exclude an adult dependent.
 - id: us-ga:liheap-subsidized-renter-energy-burden
   program: liheap
   years:

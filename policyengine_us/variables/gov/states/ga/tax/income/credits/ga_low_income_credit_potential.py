@@ -20,9 +20,8 @@ class ga_low_income_credit_potential(Variable):
     defined_for = StateCode.GA
 
     def formula(tax_unit, period, parameters):
-        # The instructions say to count only self, spouse and children.
-        # Georgia lawmakers count all entitled dependents in O.C.G.A.
-        # 48-7A-3(a), and expressly count both spouses on a joint return.
+        # Georgia lawmakers count both spouses under O.C.G.A. 48-7A-3(a)(1).
+        # They set the amount per credit unit in subsection (b).
         # Either eligible spouse can claim for both spouse units. IRC
         # 152(b)(1) bars child units when either filer is a dependent outside
         # the filing exception. The statutory claimed-or-otherwise-eligible

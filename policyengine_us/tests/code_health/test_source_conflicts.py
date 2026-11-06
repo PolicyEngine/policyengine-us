@@ -164,7 +164,6 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/variables/gov/states/fl/commerce/liheap/eligibility/fl_liheap_eligible.py": 1,
     "policyengine_us/variables/gov/states/fl/commerce/liheap/eligibility/fl_liheap_income_limit.py": 1,
     "policyengine_us/variables/gov/states/fl/commerce/liheap/fl_liheap.py": 1,
-    "policyengine_us/variables/gov/states/ga/tax/income/credits/ga_low_income_credit_potential.py": 1,
     "policyengine_us/variables/gov/states/hi/tax/income/credits/cdcc/hi_cdcc_qualifying_individuals.py": 1,
     "policyengine_us/variables/gov/states/hi/tax/income/subtractions/hi_student_loan_interest_adjustment.py": 1,
     "policyengine_us/variables/gov/states/ks/tax/income/deductions/ks_itemized_deductions.py": 1,
