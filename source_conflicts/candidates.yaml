@@ -636,10 +636,10 @@ candidates:
     citation: Arkansas DFA Withholding Tax Formula, effective January 1, 2026
     url: https://www.dfa.arkansas.gov/wp-content/uploads/Withholding-Tax-Formula.pdf#page=1
   readings:
-    statute: The secretary first adjusts the newly enacted tables in 2026 under (a)(5) and (d)(1), following
-      DFA's practice of indexing newly enacted tables in 2022, 2023 and 2024.
-    other: The secretary first adjusts the tables in 2027, retaining the unindexed $5,600 and $94,700 bounds
-      that DFA uses in its withholding formula effective January 1, 2026.
+    statute: The General Assembly requires an adjustment for each calendar year under 26-51-201(a)(5) and (d)(1)
+      but names no first year for the tables Act 1 of 2026 enacts.
+    other: DFA indexed each newly enacted table in its first year on its 2022, 2023 and 2024 cards, but kept the
+      unindexed $5,600 and $94,700 bounds in its withholding formula effective January 1, 2026.
   pe_us:
     follows: gap-fill
     code:
@@ -648,11 +648,11 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10324
   state: ruled
-  note: PolicyEngine selects 2026 as the first indexed year under the hub's reading of (a)(5) and (d)(1).
-    The General Assembly requires annual adjustment but names no first year. DFA indexed newly enacted tables
-    in 2022 through 2024. DFA's withholding formula effective January 1, 2026 uses unindexed bounds, but the
-    secretary cannot compute the 2026 adjustment until CPI through August 2026 becomes available. PolicyEngine
-    follows the cards until DFA publishes a 2026 indexed card. The hub will register this ruling after landing.
+  note: PolicyEngine settled this in November 2026 by indexing the tables from 2026, as DFA did for each newly
+    enacted table on its 2022 through 2024 cards. DFA published the withholding formula before BLS published CPI
+    through August 2026, which the secretary needs for the 2026 adjustment. PolicyEngine follows the cards until
+    DFA publishes a 2026 indexed card. It reads the same tables for Arkansas withholding, so it estimates 2026
+    withholding from the indexed bounds, not the formula's.
 - id: us-ar:gambling-loss-deduction-before-2015
   program: income-tax
   years:
