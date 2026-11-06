@@ -2221,7 +2221,8 @@
         is_tax_unit_dependent: true
         is_household_head: false
         ssi_unearned_income: 8_400
-        ssi_receives_food_from_others: true
+        ssi_receives_food_from_others:
+          2024: true
         ssi_countable_resources: 0
       sibling:
         age: 10

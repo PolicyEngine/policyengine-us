@@ -3,7 +3,7 @@ description: SSA uses this indicator to determine whether food counts in SSI in-
 # SSA excludes food received on or after September 30, 2024 (89 FR 21199).
 # This parameter dates the income month. Under 20 CFR 416.420(a),
 # ssi_pmv_applies reads the start and end of the second prior income month.
-# SSA values that support using the payment month's benefit rate.
+# The PMV uses the payment month's federal benefit rate.
 values:
   1975-01-01: true
   2024-09-30: false

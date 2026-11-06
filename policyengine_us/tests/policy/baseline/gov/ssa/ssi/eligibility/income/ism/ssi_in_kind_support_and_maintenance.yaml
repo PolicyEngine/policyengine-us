@@ -78,7 +78,8 @@
       person1:
         age: 40
         ssi_federal_living_arrangement: OWN_HOUSEHOLD
-        ssi_receives_food_from_others: true
+        ssi_receives_food_from_others:
+          2024: true
         ssi_receives_outside_shelter_support: false
         ssi_receives_shelter_from_others_in_household: false
   output:
@@ -94,7 +95,8 @@
       person1:
         age: 40
         ssi_federal_living_arrangement: OWN_HOUSEHOLD
-        ssi_receives_food_from_others: true
+        ssi_receives_food_from_others:
+          2024: true
         ssi_receives_outside_shelter_support: false
         ssi_receives_shelter_from_others_in_household: false
         ssi_pmv_amount: 334.33
@@ -111,7 +113,8 @@
       person1:
         age: 40
         ssi_federal_living_arrangement: OWN_HOUSEHOLD
-        ssi_receives_food_from_others: false
+        ssi_receives_food_from_others:
+          2024: false
         ssi_receives_outside_shelter_support: true
         ssi_receives_shelter_from_others_in_household: false
         ssi_pmv_amount: 334.33

@@ -32,7 +32,12 @@ class ssi_pmv_applies(Variable):
             parameters(income_period.stop).gov.ssa.ssi.income.ism.food_counts
         )
         exclusion_starts_this_month = food_counts and not food_counts_at_month_end
-        receives_food = person("ssi_receives_food_from_others", period)
+        # Use the income month's food receipt when that month falls in
+        # the payment year. One-year households lack prior-year inputs.
+        support_period = (
+            income_period if income_period.start.year == period.start.year else period
+        )
+        receives_food = person("ssi_receives_food_from_others", support_period)
         receives_counted_food = receives_food & food_counts
         # Read the day-specific flag only in the transition month, so
         # earlier payments do not cache inputs before the model starts.

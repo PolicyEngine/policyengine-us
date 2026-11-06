@@ -430,13 +430,14 @@ def test_payment_month_uses_second_prior_income_month(payment_month, income_mont
 @example(year=2025, month=1, food=True, shelter=False, late_food=False)
 @example(year=2025, month=2, food=True, shelter=False, late_food=False)
 @example(year=2024, month=11, food=True, shelter=False, late_food=True)
-def test_pmv_reads_income_month_dates_and_payment_month_support(
+def test_pmv_reads_income_month_food_and_payment_month_shelter(
     year, month, food, shelter, late_food
 ):
     payment = make_period(f"{year}-{month:02d}")
     income_year = year - (month <= 2)
     income_month = (month - 3) % 12 + 1
     income = make_period(f"{income_year}-{income_month:02d}")
+    support = income if income_year == year else payment
     person_reads, parameter_reads = {}, []
 
     def person(name, period):
@@ -445,10 +446,10 @@ def test_pmv_reads_income_month_dates_and_payment_month_support(
             return SSIFederalLivingArrangement.OWN_HOUSEHOLD
         if name == "ssi_food_from_others_only_on_or_after_food_exclusion":
             value = late_food and str(period) == "2024-09"
+        elif name == "ssi_receives_food_from_others":
+            value = food if period == support else False
         else:
-            # A one-year household has no earlier-year support inputs.
             values = {
-                "ssi_receives_food_from_others": food,
                 "ssi_receives_outside_shelter_support": shelter,
                 "ssi_receives_shelter_from_others_in_household": False,
             }
@@ -484,6 +485,7 @@ def test_pmv_reads_income_month_dates_and_payment_month_support(
     # Only September 2024 income needs the day-specific food flag.
     # Other months must not cache irrelevant inputs before the model starts.
     assert flag_month == (str(income) if str(income) == "2024-09" else None)
+    assert person_reads.pop("ssi_receives_food_from_others") == str(support)
     assert set(person_reads.values()) == {str(payment)}
 
 
