@@ -1,0 +1,1 @@
+From 2024 Montana takes the federal itemized deductions (after the section 68 limitation, and including casualty losses) less the state income tax down to the federal standard deduction, uses the federal return's deduction type, and from 2026 gives standard deduction filers the federal charitable deduction for non-itemizers.
