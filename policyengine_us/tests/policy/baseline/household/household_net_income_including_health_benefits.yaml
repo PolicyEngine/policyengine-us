@@ -21,3 +21,12 @@
     healthcare_benefit_value: 2_000
   output:
     household_net_income_including_health_benefits: 4_000
+
+- name: Health benefits already included in household net income
+  period: 2024
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    household_net_income: 2_000
+    healthcare_benefit_value: 2_000
+  output:
+    household_net_income_including_health_benefits: 2_000
