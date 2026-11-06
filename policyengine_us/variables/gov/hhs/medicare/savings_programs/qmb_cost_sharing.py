@@ -15,10 +15,11 @@ class qmb_cost_sharing(Variable):
         "https://www.law.cornell.edu/uscode/text/42/1396d#p_3",
     )
     documentation = (
-        "First-pass monthly value of QMB coverage for Medicare deductibles, "
+        "Estimated monthly value of QMB coverage before take-up for Medicare deductibles, "
         "coinsurance, and copayments. The model lacks beneficiary-level "
         "Medicare claims, so this approximates cost sharing as a parameterized "
-        "share of average Medicare per-capita spending."
+        "share of average Medicare per-capita spending. Actual MSP cost variables "
+        "apply participation to this estimate."
     )
 
     def formula(person, period, parameters):

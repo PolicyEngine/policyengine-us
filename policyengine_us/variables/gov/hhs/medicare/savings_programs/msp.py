@@ -12,4 +12,5 @@ class msp(Variable):
     )
     defined_for = "msp_eligible"
 
-    adds = ["msp_benefit_value"]
+    def formula(person, period, parameters):
+        return person("msp_benefit_value", period) * person("msp_participation", period)
