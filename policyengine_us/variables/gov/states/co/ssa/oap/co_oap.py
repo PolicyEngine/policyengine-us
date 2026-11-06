@@ -22,8 +22,6 @@ class co_oap(Variable):
             p = parameters(month).gov.states.co.ssa.oap
             # 9 CCR 2503-5 3.532(B), 3.533(B): the grant is the grant standard
             # less total countable income, SSI included (3.533(A)(2)(d)).
-            # PE-US's SSI counts interest that 20 CFR 416.1124(c)(22)
-            # excludes (#10079); OAP, which adds SSI back, offsets it.
             ssi = ssi_paid(person("ssi", month))
             income = ssi + person("co_oap_countable_income", month)
             grant = p.grant_standard - income

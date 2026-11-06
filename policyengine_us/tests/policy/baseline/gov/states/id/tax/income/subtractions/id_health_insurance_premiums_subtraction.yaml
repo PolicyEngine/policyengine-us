@@ -79,6 +79,9 @@
     people:
       head:
         age: 70
+        # Explicit savings keep this premium-deduction example above the MSP
+        # asset limit; $2 million earning 5% produces the stated interest.
+        bank_account_assets: 2_000_000
         taxable_interest_income: 100_000
         medicare_enrolled: true
         is_tax_unit_head: true
@@ -86,6 +89,9 @@
         ssn_card_type: CITIZEN
       spouse:
         age: 70
+        # Explicit savings keep this premium-deduction example above the MSP
+        # asset limit; $2 million earning 5% produces the stated interest.
+        bank_account_assets: 2_000_000
         taxable_interest_income: 100_000
         medicare_enrolled: true
         is_tax_unit_spouse: true
@@ -102,6 +108,7 @@
         members: [head, spouse]
         state_code: ID
   output:
+    msp_part_b_premium_coverage: [0, 0]
     medicare_part_b_premium: [2_220, 2_220]
     medical_expense_health_insurance_premiums: [2_220, 2_220]
     medical_expense_deduction: 0

@@ -47,24 +47,22 @@ class ia_ssa_care_countable_income(Variable):
             - person("ssi_blind_or_disabled_working_student_exclusion", period),
             0,
         )
-        # NOTE: 20 CFR 416.1124(c)(22) excludes "Interest and dividend income
-        # from a countable resource", as Manual 8-E Dividends and Interest
-        # Income do. Federal SSI still counts them (issue 10079), so the
-        # sources in excluded_unearned_sources are dropped here and from the
-        # family-life home $20 test in ia_ssa (ia_ssa.yaml Case 74 for
-        # residential care income and Case 63 for the $20 test).
-        # Remove the list once issue 10079 is fixed, or they are excluded
-        # twice. SMME income (ia_ssa_smme_countable_income) and the SSA-paid
-        # amounts (ia_ssa_federal) use SSI countable income, so they count
-        # interest and dividends until then. The 8-E exceptions for excluded
-        # resources are not modeled.
+        # 20 CFR 416.1124(c)(22) and Manual 8-E exclude interest and dividends
+        # from countable resources. Deduct only sources still included in
+        # the annual SSI total, so the same income is not excluded twice.
+        # The 8-E exceptions for excluded resources are not modeled.
+        ssi_sources = parameters(period.this_year).gov.ssa.ssi.income.sources.unearned
+        excluded = [
+            source for source in p.excluded_unearned_sources if source in ssi_sources
+        ]
+        excluded_income = sum(person(source, period) for source in excluded)
         # NOTE: 6-B excludes one-third of child support a child receives from
         # an absent parent. Federal SSI does not apply 20 CFR 416.1124(c)(11)
         # yet (issue 10242), so the shared federal share is read here; remove
         # it once issue 10242 is fixed.
         unearned = max_(
             person("ssi_unearned_income", period)
-            - add(person, period, p.excluded_unearned_sources)
+            - excluded_income
             - ~adult
             * person("child_support_received", period)
             * ssi.income.exclusions.child_support_share,

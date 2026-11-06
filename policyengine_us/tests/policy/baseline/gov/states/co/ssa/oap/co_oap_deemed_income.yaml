@@ -646,3 +646,73 @@
   output:
     co_oap_deemed_income: [11_616, 0, 0]
     co_oap: [2_268, 0, 0]
+
+- name: Case 21, the child allocation still counts interest excluded from federal SSI.
+  # 3.534(B)(3) counts the child's own income, including $100/month of interest.
+  # The SSI interest and dividend exclusion does not apply to this child allocation.
+  # The allocation is 497 - 100 = 397: 2,000 - 1,032 - 397 = 571/month, or
+  # 6,852/year.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        pension_income: 24_000
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        taxable_interest_income: 1_200
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CO
+  output:
+    co_oap_deemed_income: [6_852, 0, 0]
+
+- name: Case 22, the child allocation still counts dividends excluded from federal SSI.
+  # 3.534(B)(3) counts the child's own income, including $100/month of dividends.
+  # The SSI interest and dividend exclusion does not apply to this child allocation.
+  # The allocation is 497 - 100 = 397: 2,000 - 1,032 - 397 = 571/month, or
+  # 6,852/year.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        pension_income: 24_000
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        qualified_dividend_income: 1_200
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CO
+  output:
+    co_oap_deemed_income: [6_852, 0, 0]

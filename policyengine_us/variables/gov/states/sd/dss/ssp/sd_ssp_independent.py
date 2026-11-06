@@ -13,10 +13,11 @@ class sd_ssp_independent(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.sd.dss.ssp
         source = parameters(period).gov.ssa.ssi.income.sources
-        floored_sources = [
-            max_(person(name, period), 0)
-            for name in list(source.earned) + list(source.unearned)
-        ]
+        # Keep the other-income test independent of the federal SSI exclusions.
+        sources = dict.fromkeys(
+            [*source.earned, *source.unearned, "interest_income", "dividend_income"]
+        )
+        floored_sources = [max_(person(name, period), 0) for name in sources]
         own_income = sum(floored_sources)
         receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
         arrangement = person("ssi_federal_living_arrangement", period)

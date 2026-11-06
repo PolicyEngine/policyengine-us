@@ -25,18 +25,18 @@ class oh_rss_countable_income(Variable):
             - person("ssi_blind_or_disabled_working_student_exclusion", period),
             0,
         )
-        # Interest and dividends are excluded under 5160:1-3-03.2(D)(2)(v).
-        unearned = max_(
-            person("ssi_unearned_income", period)
-            - person("interest_income", period)
-            - person("dividend_income", period),
-            0,
-        )
+        # Exclude interest and dividends once under 5160:1-3-03.2(D)(2)(v).
+        # Match the annual source list used by ssi_unearned_income.
+        ssi_sources = parameters(period.this_year).gov.ssa.ssi.income.sources.unearned
+        excluded = [
+            source
+            for source in ("interest_income", "dividend_income")
+            if source in ssi_sources
+        ]
+        excluded_income = sum(person(source, period) for source in excluded)
+        unearned = max_(person("ssi_unearned_income", period) - excluded_income, 0)
         earned = where(couple, person.marital_unit.sum(earned), earned)
         unearned = where(couple, person.marital_unit.sum(unearned), unearned)
-        # NOTE: PolicyEngine's federal SSI still counts interest and dividends
-        # (#10079), so for an SSI recipient with that income the SSI counted
-        # here is understated and RSS is overstated by the same amount.
         # NOTE: SSI's joint-claim test reads only aged, blind or disabled
         # status, so a spouse who declines SSI is still budgeted jointly
         # (#10138).
