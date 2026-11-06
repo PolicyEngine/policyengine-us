@@ -5,6 +5,13 @@ class long_term_capital_gains_on_assets_eligible_for_vt_exclusion(Variable):
     value_type = float
     entity = Person
     label = "Long-term capital gains on assets eligible for Vermont's 40% exclusion"
+    documentation = (
+        "The part of long_term_capital_gains from assets held more than three "
+        "years that Vermont's percentage exclusion covers (Schedule IN-153 "
+        "Part II), which excludes primary or nonprimary homes, depreciable "
+        "personal property other than farm property and standing timber, and "
+        "publicly traded stocks, bonds and other financial instruments."
+    )
     unit = USD
     definition_period = YEAR
     uprating = "calibration.gov.irs.soi.long_term_capital_gains"

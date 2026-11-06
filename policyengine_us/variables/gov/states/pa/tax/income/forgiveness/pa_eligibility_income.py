@@ -9,7 +9,10 @@ class pa_eligibility_income(Variable):
     label = "PA eligibility income"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2021/2021_pa-40sp.pdf"
+    reference = (
+        "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2021/2021_pa-40sp.pdf",
+        "https://www.pa.gov/en/agencies/revenue/forms-and-publications/pa-personal-income-tax-guide/tax-forgiveness.html",
+    )
     defined_for = StateCode.PA
 
     def formula(tax_unit, period, parameters):

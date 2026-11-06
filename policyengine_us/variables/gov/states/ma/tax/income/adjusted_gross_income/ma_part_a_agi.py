@@ -11,8 +11,13 @@ class ma_part_a_agi(Variable):
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
+        # Part B gross income starts from irs_gross_income, which leaves out
+        # tax unit dependents, whose interest, dividends and gains are on their
+        # own returns, so Parts A and C count only the head's and spouse's.
         part_a_gross_income = tax_unit("ma_part_a_gross_income", period)
-        short_term_capital_gains = add(tax_unit, period, ["short_term_capital_gains"])
+        short_term_capital_gains = tax_unit_non_dep_add(
+            tax_unit, period, ["short_term_capital_gains"]
+        )
         nonnegative_short_term_capital_gains = max_(0, short_term_capital_gains)
         # Massachusetts Schedule D, line 13: long-term gains and losses,
         # capital gain distributions without a federal Schedule D (line 6)
@@ -35,7 +40,7 @@ class ma_part_a_agi(Variable):
         )
 
         tax = parameters(period).gov.states.ma.tax.income
-        long_term_capital_gains_on_collectibles = add(
+        long_term_capital_gains_on_collectibles = tax_unit_non_dep_add(
             tax_unit, period, ["long_term_capital_gains_on_collectibles"]
         )
         nonnegative_long_term_capital_gains_on_collectibles = max_(

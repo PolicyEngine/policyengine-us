@@ -1,0 +1,18 @@
+- name: A dependent's U.S. government interest is not subtracted
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        us_govt_interest_person: 200
+        taxable_interest_income: 200
+      child:
+        age: 10
+        us_govt_interest_person: 50_000
+        taxable_interest_income: 50_000
+    household:
+      state_code: DC
+  output:
+    dc_income_subtractions: [200, 0]

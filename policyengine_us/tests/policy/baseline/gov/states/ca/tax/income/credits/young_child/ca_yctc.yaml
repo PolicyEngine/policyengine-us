@@ -406,3 +406,20 @@
     # Step 8: earned income of zero or less; the 5,000 net loss and the
     # 10,000 wages are within the 2022 $32,490 limits, so the full $1,083.
     ca_yctc: 1_083
+
+- name: A dependent's capital loss does not count against the filers' loss limit
+  # FTB 3514 line 23b measures the filers' own net loss; the child's loss is on
+  # the child's own return, so the parent keeps the credit.
+  period: 2025
+  input:
+    people:
+      parent:
+        is_tax_unit_head: true
+        age: 35
+      child:
+        age: 3
+        short_term_capital_gains: -40_000
+    household:
+      state_code: CA
+  output:
+    ca_yctc: 1_189

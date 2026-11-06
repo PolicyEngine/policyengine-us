@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.tax.federal_income.capital_gains.filer_schedule_d_lines import (
+    filer_schedule_d_lines,
+)
 
 
 class ca_yctc(Variable):
@@ -45,9 +48,10 @@ class ca_yctc(Variable):
         # loss_limited_net_capital_gains, which already includes capital gain
         # distributions (they net against losses on Schedule D line 13), so the
         # unlimited amount adds them back to net_capital_gains as well.
-        limited_capital_gains = tax_unit("loss_limited_net_capital_gains", period)
-        distributions = tax_unit.sum(max_(0, person("non_sch_d_capital_gains", period)))
-        unlimited_capital_gains = tax_unit("net_capital_gains", period) + distributions
+        # Both are the filers' own: a tax unit dependent's gains and losses are
+        # on the dependent's own return, and federal AGI leaves them out.
+        limited_capital_gains = tax_unit("filer_loss_limited_net_capital_gains", period)
+        unlimited_capital_gains = filer_schedule_d_lines(tax_unit, period).line_16
         total_income = (
             tax_unit("ca_agi", period) - limited_capital_gains + unlimited_capital_gains
         )

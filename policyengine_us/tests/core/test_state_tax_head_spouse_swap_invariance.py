@@ -9,10 +9,12 @@ two adults' `is_tax_unit_head` and `is_tax_unit_spouse` labels, with every
 other input kept, must leave each state's income tax unchanged.
 
 On main these depended on the label:
-- Arkansas, Delaware, Iowa, Mississippi and Montana put the dependents' income
-  the model counts on the head's column before taxing each column separately.
-  It now goes on the column of the spouse with the greater income of their
-  own, and an exact tie splits it (move_dependent_amounts_to_filer).
+- Arkansas, Delaware, Iowa and Mississippi tax each spouse's column
+  separately. The model used to put the dependents' income it counts on the
+  head's column. It now puts it on the column of the spouse with more income
+  of their own, and splits it on an exact tie
+  (move_dependent_amounts_to_filer). Montana leaves the dependents' amounts
+  off both columns, since the dependent reports them on their own return.
 - Delaware's combined separate return routed the EITC and the dependent care
   credit by label on equal incomes and split the dependent personal credits
   with a heuristic. They are now chosen together to minimise tax.

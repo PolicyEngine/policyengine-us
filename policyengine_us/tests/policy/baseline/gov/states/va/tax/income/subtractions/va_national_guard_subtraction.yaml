@@ -29,3 +29,62 @@
     state_code: VA
   output:
     va_national_guard_subtraction: 5_500
+
+- name: A dependent's Guard pay neither uses up the cap nor shares in it
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 30
+        employment_income: 50_000
+        military_service_income: 5_500
+      student:
+        age: 20
+        is_tax_unit_dependent: true
+        military_service_income: 5_500
+    household:
+      state_code: VA
+  output:
+    va_national_guard_subtraction: 5_500
+    va_national_guard_subtraction_person: [5_500, 0]
+    va_subtractions: 5_500
+
+- name: Each spouse subtracts their own Guard pay up to the cap
+  # Va. Code 58.1-322.02(8): wages "received by any person", up to $5,500.
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 30
+        employment_income: 40_000
+        military_service_income: 5_500
+      spouse:
+        is_tax_unit_spouse: true
+        age: 30
+        military_service_income: 5_500
+    household:
+      state_code: VA
+  output:
+    va_national_guard_subtraction: 11_000
+    va_national_guard_subtraction_person: [5_500, 5_500]
+
+- name: A supplied tax unit amount is allocated by capped pay
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 30
+        military_service_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        va_national_guard_subtraction: 3_000
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_national_guard_subtraction_person: 3_000

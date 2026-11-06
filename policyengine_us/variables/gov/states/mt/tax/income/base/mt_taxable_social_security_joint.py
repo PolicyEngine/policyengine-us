@@ -15,8 +15,11 @@ class mt_taxable_social_security_joint(Variable):
         # Joint filers run the Taxable Social Security Benefits Schedule once
         # in a single column, combining both spouses' lines 1-9 and applying
         # the joint base amounts once (Form 2, page 6).
+        # The worksheet takes the head's and spouse's amounts from their federal
+        # return; a tax unit dependent's benefits, interest and adjustments are
+        # on the dependent's own return.
         # line 1 total net SS amount
-        social_security = add(tax_unit, period, ["social_security"])
+        social_security = tax_unit_non_dep_add(tax_unit, period, ["social_security"])
         # line 2 SS multiplied by the base rate
         social_security_benefits_fraction = social_security * p_irs.base.benefit_cap
         # line 3: irs_gross_income - taxable_social_security
@@ -24,7 +27,7 @@ class mt_taxable_social_security_joint(Variable):
         taxable_ss = add(tax_unit, period, ["taxable_social_security"])
         reduced_gross_income = max_(gross_income - taxable_ss, 0)
         # line 5: tax exempt interest income
-        tax_exempt_interest_income = add(
+        tax_exempt_interest_income = tax_unit_non_dep_add(
             tax_unit, period, ["tax_exempt_interest_income"]
         )
         # line 6: Sum of line 2, 3, 4, 5
@@ -34,15 +37,16 @@ class mt_taxable_social_security_joint(Variable):
             + tax_exempt_interest_income
         )
         # line 7: Remove the student loans from the above the line deductions
-        ald_less_student_loan = add(
+        ald_less_student_loan = tax_unit_non_dep_add(
             tax_unit, period, ["mt_applicable_ald_deductions"]
-        ) - add(tax_unit, period, ["student_loan_interest_ald"])
+        ) - tax_unit_non_dep_add(tax_unit, period, ["student_loan_interest_ald"])
         # line 8: Montana subtractions + ald
         # Subtractions Schedule line 35 includes the partial pension, annuity,
-        # and IRA income exemption (line 34).
-        subtractions = add(tax_unit, period, ["mt_subtractions"]) + tax_unit(
-            "mt_pension_exemption_joint", period
-        )
+        # and IRA income exemption (line 34). A tax unit dependent's
+        # subtractions are on the dependent's own return.
+        subtractions = tax_unit_non_dep_add(
+            tax_unit, period, ["mt_subtractions"]
+        ) + tax_unit("mt_pension_exemption_joint", period)
         increased_subtractions = subtractions + ald_less_student_loan
         # line 9: line 6 - line 8, if line 8 >= line 6, return 0
         income_reduced_by_subtractions = max_(

@@ -1,3 +1,24 @@
+- name: A dependent's U.S. government interest is not subtracted
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        us_govt_interest_person: 200
+        taxable_interest_income: 200
+      child:
+        age: 10
+        us_govt_interest_person: 50_000
+        taxable_interest_income: 50_000
+    household:
+      state_code: MT
+  output:
+    # Federal AGI 60,200 includes only the head's interest, and Montana
+    # subtracts only the head's 200: 60,000.
+    mt_agi_joint: 60_000
+
 - name: A dependent's Montana subtraction stays off the filer's joint Montana AGI
   period: 2022
   input:

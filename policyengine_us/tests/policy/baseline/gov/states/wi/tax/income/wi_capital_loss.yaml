@@ -39,3 +39,20 @@
     filing_status: JOINT
   output:
     wi_capital_loss: 2_000
+
+- name: A dependent's capital loss is on the dependent's own return
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        long_term_capital_gains: 1_000
+      child:
+        age: 10
+        short_term_capital_gains: -20_000
+    household:
+      state_code: WI
+  output:
+    wi_capital_loss: 0

@@ -37,5 +37,8 @@ class va_subtractions_person(Variable):
         )
         other_sub = person.tax_unit("va_other_subtractions", period) * prorate
         total_subtractions = person_subtractions + other_sub
+        # A tax unit dependent's income is on the dependent's own return, so
+        # the dependent has no subtractions on this one, as in va_subtractions.
+        head_or_spouse = ~person("is_tax_unit_dependent", period)
         # Prevent negative subtractions from acting as additions.
-        return max_(0, total_subtractions)
+        return max_(0, total_subtractions) * head_or_spouse

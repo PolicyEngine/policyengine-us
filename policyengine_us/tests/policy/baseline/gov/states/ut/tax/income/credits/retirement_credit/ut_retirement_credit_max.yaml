@@ -48,24 +48,30 @@
     people:
       person1:
         age: 80
+        is_tax_unit_head: true
         tax_exempt_interest_income: 500
-      person2: 
+      person2:
         age: 64
+        is_tax_unit_dependent: true
         tax_exempt_interest_income: 500
       person3:
         age: 80
+        is_tax_unit_dependent: true
         tax_exempt_interest_income: 500
     tax_units:
       tax_unit:
-        members: [person1, person2,person3]
+        members: [person1, person2, person3]
         ut_total_income: 30_000
         filing_status: SINGLE
     households:
       household:
-        members: [person1, person2]
+        members: [person1, person2, person3]
         state_code: UT
-  output:  
-    ut_retirement_credit_max: 737.5 # phase-out reduction partially eliminates credit: 900-(30000+3*500-25000)/0.025 = 737.5
+  output:
+    # Only the head is a claimant, and only the head's tax-exempt interest
+    # counts; the dependents' is on their own returns (Utah Code 59-10-1019).
+    # 450 - (30_000 + 500 - 25_000) * 0.025 = 312.5.
+    ut_retirement_credit_max: 312.5
 
 - name: UT retirement credit max unit test 4
   period: 2022
@@ -115,7 +121,9 @@
         members: [person1, person2]
         state_code: UT
   output:  
-    ut_retirement_credit_max: 662.5
+    # person2 is a dependent, so only the head's and spouse's tax-exempt
+    # interest counts: 900 - (40_000 + 2 * 500 - 32_000) * 0.025 = 675.
+    ut_retirement_credit_max: 675
 
 - name: Edge case test, birth year
   period: 2022
@@ -138,3 +146,20 @@
         state_code: UT
   output: 
     ut_retirement_credit_max: 300
+
+- name: An elderly dependent is not a claimant, and a dependent's interest is on their own return
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 75
+        taxable_pension_income: 20_000
+      parent:
+        age: 95
+        is_tax_unit_dependent: true
+        tax_exempt_interest_income: 50_000
+    household:
+      state_code: UT
+  output:
+    ut_retirement_credit_max: 450

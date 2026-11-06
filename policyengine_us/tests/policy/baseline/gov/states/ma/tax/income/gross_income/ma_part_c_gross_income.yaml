@@ -1,0 +1,36 @@
+- name: A dependent's long-term gains are on the dependent's own return
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        long_term_capital_gains: 2_000
+      child:
+        age: 10
+        long_term_capital_gains: 300_000
+    household:
+      state_code: MA
+  output:
+    ma_part_c_gross_income: 2_000
+    ma_part_b_gross_income: 60_000
+    ma_income_tax: 2_170
+
+- name: Same household without the dependent's gains
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        long_term_capital_gains: 2_000
+      child:
+        age: 10
+    household:
+      state_code: MA
+  output:
+    ma_part_c_gross_income: 2_000
+    ma_part_b_gross_income: 60_000
+    ma_income_tax: 2_170
