@@ -133,7 +133,7 @@
     self_employed_health_insurance_premiums: [6_000, 0]
     self_employed_health_insurance_ald: [6_000, 0]
 
-- name: A dependent child's own employer plan does not bar the parent's deduction.
+- name: A dependent's ESI flag leaves the parents' employer-plan eligibility clear.
   period: 2025
   input:
     people:
@@ -163,7 +163,9 @@
         members: [head, spouse, child]
         state_code: TX
   output:
-    self_employed_health_insurance_employer_plan_eligible: [false, false, true]
+    # A dependent's ESI flag can describe a parent's employer plan, so it
+    # does not establish access through the dependent's own employer.
+    self_employed_health_insurance_employer_plan_eligible: [false, false, false]
     self_employed_health_insurance_premiums: [6_000, 0, 0]
     self_employed_health_insurance_ald: 6_000
 
@@ -192,6 +194,106 @@
   output:
     self_employed_health_insurance_employer_plan_eligible: [true, false]
     self_employed_health_insurance_premiums: [0, 1_000]
-    # The child's limit is 3,000 of profit (less half its SE tax after
-    # 401(c)), above the 1,000 of premiums either way.
+    # Half of the child's SE tax: 3,000 x 0.9235 x 0.153 / 2 = 211.94325.
+    # The earned income limit is 3,000 - 211.94325 = 2,788.05675.
+    # The child deducts min(1,000, 2,788.05675) = 1,000.
     self_employed_health_insurance_ald_person: [0, 1_000]
+
+- name: A dependent's employer offer flag leaves premiums for their own policy deductible.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 80_000
+        has_esi: true
+      child:
+        age: 22
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_self_employed: true
+        self_employment_income: 3_000
+        health_insurance_premiums: 1_000
+        offered_aca_disqualifying_esi: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # The parent's ESI flag counts; the dependent's offer or enrollment
+    # flag does not. The parent has no self-employed premiums: base = 0.
+    # Half of the child's SE tax: 3,000 x 0.9235 x 0.153 / 2 = 211.94325.
+    # Earned income limit: 3,000 - 211.94325 = 2,788.05675.
+    # The child's base is 1,000; min(1,000, 2,788.05675) = 1,000.
+    self_employed_health_insurance_employer_plan_eligible: [true, false]
+    self_employed_health_insurance_premiums: [0, 1_000]
+    self_employed_health_insurance_ald_person: [0, 1_000]
+
+- name: A dependent's ESI flag leaves premiums for their own policy deductible.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 80_000
+        has_esi: true
+      child:
+        age: 22
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_self_employed: true
+        self_employment_income: 3_000
+        health_insurance_premiums: 1_000
+        has_esi: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # The parent's ESI flag counts; the dependent's offer or enrollment
+    # flag does not. The parent has no self-employed premiums: base = 0.
+    # Half of the child's SE tax: 3,000 x 0.9235 x 0.153 / 2 = 211.94325.
+    # Earned income limit: 3,000 - 211.94325 = 2,788.05675.
+    # The child's base is 1,000; min(1,000, 2,788.05675) = 1,000.
+    self_employed_health_insurance_employer_plan_eligible: [true, false]
+    self_employed_health_insurance_premiums: [0, 1_000]
+    self_employed_health_insurance_ald_person: [0, 1_000]
+
+- name: A dependent's own employer contribution bars their deduction without barring the parent.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 80_000
+      child:
+        age: 22
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_self_employed: true
+        self_employment_income: 3_000
+        health_insurance_premiums: 1_000
+        employer_contribution_to_health_insurance_premiums_category: SOME
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # The parent has no coverage flags and no self-employed premiums.
+    # SOME establishes the dependent's own employer contribution, so
+    # their 1,000 of premiums yield a base of 0 and a deduction of 0.
+    # Half of SE tax: 3,000 x 0.9235 x 0.153 / 2 = 211.94325.
+    # The earned income limit, 3,000 - 211.94325 = 2,788.05675,
+    # exceeds the base; min(0, 2,788.05675) = 0.
+    self_employed_health_insurance_employer_plan_eligible: [false, true]
+    self_employed_health_insurance_premiums: [0, 0]
+    self_employed_health_insurance_ald_person: [0, 0]

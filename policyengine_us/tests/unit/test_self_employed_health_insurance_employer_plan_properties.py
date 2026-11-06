@@ -2,26 +2,29 @@
 
 26 U.S.C. 162(l)(2)(B) and Form 7206 line 1 leave out premiums for any month
 the taxpayer is eligible for a subsidized plan of their own or their spouse's
-employer. The model's inputs are annual, so a person who has or is offered
-employer coverage (`has_esi`, `offered_aca_disqualifying_esi`), or whose
-employer pays some or all of the premiums, is eligible for the year, and so is
-the other of the head and spouse on a joint return. A tax unit dependent is
-barred only by their own coverage, never by a parent's.
+employer. The model treats annual eligibility as full-year eligibility. For
+the head and spouse, ESI, an offer or an employer contribution of SOME or ALL
+counts as access through their own or their spouse's employer. Either filer's flags
+bar both filers on a joint return. For tax unit dependents, only an employer
+contribution of SOME or ALL counts; ESI and offer flags can describe a
+parent's employer plan.
 
 Each batch places every drawn tax unit twice, once as drawn and once with every
 coverage flag cleared, and runs as one vectorized baseline simulation. For
 every tax unit and year:
 
-1. Reference: each person's premium base equals a closed-form reference on
-   the inputs: the person's premiums if they are self-employed and neither
-   they nor (for the head and spouse) the other of the two is eligible, and 0
-   otherwise.
+1. Reference: each person's premium base follows the flag interpretation
+   above: their premiums if they are self-employed and neither their own
+   eligibility nor a spouse's eligibility bars them, and 0 otherwise. Only
+   the head and spouse can pass eligibility to each other.
 2. Bounds: 0 <= deduction <= premium base <= premiums.
 3. Monotone: clearing the coverage flags never lowers a person's premium base
    or deduction.
-4. Differential: the flags move AGI only through the deduction, so the
-   twins' AGI difference equals the difference in the head's and spouse's
-   deductions.
+4. Differential: the generated units have wages and self-employment income
+   only, so the twins' AGI difference equals the difference in the head's
+   and spouse's deductions. This identity does not hold in general. With
+   Social Security income, taxable benefits can also change when the
+   deduction changes, so AGI can move by a different amount.
 
 A deterministic grid runs every combination of the head's, the spouse's and a
 dependent's flags for a joint couple with a self-employed head.
@@ -49,9 +52,9 @@ def every_year(value):
     return {year: value for year in YEARS}
 
 
-def own_eligible(flags):
-    return (
-        flags["has_esi"] or flags["offered"] or flags["contribution"] in EMPLOYER_PAYS
+def own_eligible(flags, filer=True):
+    return flags["contribution"] in EMPLOYER_PAYS or (
+        filer and (flags["has_esi"] or flags["offered"])
     )
 
 
@@ -94,7 +97,7 @@ def build_situation(units):
                     member["age"], member, member_flags, dependent=is_dependent
                 )
             for j, member in enumerate(members):
-                own = own_eligible(flags[j])
+                own = own_eligible(flags[j], filers[j])
                 other_filer = any(
                     own_eligible(flags[k])
                     for k in range(len(members))
@@ -140,8 +143,9 @@ def check_batch(units):
         drawn, cleared = ~twin, twin
         assert np.all(base[cleared] >= base[drawn] - TOLERANCE)
         assert np.all(deduction[cleared] >= deduction[drawn] - TOLERANCE)
-        # 4. Differential: AGI moves only through the head's and spouse's
-        # deductions, which `self_employed_health_insurance_ald` sums.
+        # 4. Differential: with wages and self-employment income only,
+        # AGI moves through the head's and spouse's deductions, which
+        # `self_employed_health_insurance_ald` sums.
         agi = sim.calculate("adjusted_gross_income", year)
         filer_deduction = sim.calculate("self_employed_health_insurance_ald", year)
         np.testing.assert_allclose(
@@ -226,7 +230,11 @@ def grid_units():
             "members": [
                 member(45, True, head, 6_000.0),
                 member(43, False, spouse, 0.0),
-                member(19, False, dependent, 0.0),
+                # Half of SE tax: 50,000 x 0.9235 x 0.153 / 2 = 3,532.3875.
+                # Earned income limit: 50,000 - 3,532.3875 = 46,467.6125.
+                # A dependent's ESI flag leaves the 1,000 of premiums
+                # deductible: min(1,000, 46,467.6125) = 1,000.
+                member(19, True, dependent, 1_000.0),
             ],
         }
         for head, spouse, dependent in itertools.product(
