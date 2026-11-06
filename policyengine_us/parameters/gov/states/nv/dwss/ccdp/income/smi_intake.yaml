@@ -1,5 +1,22 @@
 description: Nevada limits new applicants to income at or below this share of state median income under the Child Care and Development Program.
+# Nevada has moved the limit for new applicants three times:
+# - Through 2017 Urban's CCDF Policies Database prints 85% of SMI each October ($3,954,
+#   $4,104 and $4,127 a month for three in 2015, 2016 and 2017). No Nevada document
+#   from those years survives on its site.
+# - By October 2018 Urban shows a lower first tier with 85% kept for families already
+#   enrolled. The state's plan documents and NWLC print 130% of the poverty guideline
+#   ($27,012 a year for three in February 2019; $2,353 a month from October 2020; $2,379
+#   in October 2021, which the FFY 2022-2024 plan reports as 41% of SMI). 41% stands in
+#   for that guideline-based limit, which ran up to about four points higher for three
+#   in earlier years (NWLC prints 45% for February 2019).
+# - The FFY 2022-2024 plan moves new applicants to 85% of SMI effective July 1, 2022
+#   ($5,066 for three), and CC PT 07-23 keeps 85% for October 2023 ($5,314.84).
+# - From October 1, 2024 new applicants face 41% and renewals 49%. The chart effective
+#   October 1, 2026 keeps both shares.
 values:
+  2015-01-01: 0.85
+  2018-10-01: 0.41
+  2022-07-01: 0.85
   2024-10-01: 0.41
 
 metadata:
@@ -7,11 +24,25 @@ metadata:
   period: year
   label: Nevada CCDP intake income limit share of state median income
   reference:
+    - title: Urban Institute, CCDF Policies Database Book of Tables 2015, Table 14
+      href: https://ccdf.urban.org/sites/default/files/CCDF%20Policies%20Database%202015%20Book%20of%20Tables%20%28final%2011%2023%2016%29.pdf#page=124
+    - title: Urban Institute, CCDF Policies Database Book of Tables 2017, Table 14
+      href: https://ccdf.urban.org/sites/default/files/CCDF%20Policies%20Database%202017%20Book%20of%20Tables%20%28final%2010%2009%2018%29.pdf#page=122
+    - title: Urban Institute, CCDF Policies Database Book of Tables 2018, Table 14
+      href: https://ccdf.urban.org/sites/default/files/CrossStateVariationCCDFPolicies2018%20%28final%2011%2021%202019%29.pdf#page=123
+    - title: National Women's Law Center, Nevada child care subsidy profile 2019
+      href: https://nwlc.org/wp-content/uploads/2020/02/nevada-childcare-subsidy2019_v1.pdf#page=1
+    - title: Nevada draft CCDF State Plan FFY 2022-2024, Section 3.1.3 (limits effective October 1, 2020)
+      href: https://dwss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/2022-2024%20Child%20Care%20PrePrint%20Draft(1).pdf#page=45
+    - title: Urban Institute, CCDF Policies Database Book of Tables 2021, Table B-1
+      href: https://ccdf.urban.org/sites/default/files/CCDF%20Policies%20Database%202021%20Book%20of%20Tables%20%28final%29_1.pdf#page=393
+    - title: Nevada CCDF State Plan FFY 2022-2024, Amendment approved May 16, 2023, Section 3.1.3 (85% of SMI effective July 1, 2022)
+      href: https://dwss.nv.gov/uploadedFiles/dwssnvgov/content/Care/Amended%20State%20Plan.pdf#page=51
+    - title: Nevada DWSS Policy Transmittal CC PT 07-23 (October 9, 2023), Household Size Monthly Income Chart
+      href: https://dwss.nv.gov/uploadedFiles/dwssnvgov/content/Care/CC%20PT%2007-23%20Annual%20Income%20Ceiling%20Increase%20(Public%20Distribution).pdf#page=1
     - title: Nevada DWSS Policy Transmittal CC PT 06-25 (Oct 2, 2025) — Annual Income Changes
       href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/CC_PT_06-25_ANNUAL_INCOME_CHANGES_10.02.2025.pdf#page=1
     - title: Nevada CCDF State Plan FFY 2025-2027, Section 2.5.5 — Eligibility income thresholds (initial and graduated)
       href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/ACF-118_CCDF_FFY_2025-2027_For_Nevada__3.pdf#page=35
-
-# The flat $0/$90/$150 copay and two-tier 41%/49% SMI eligibility took effect
-# Oct 1, 2024 (State Plan Section 2.4.v); CC PT 06-25 is the Oct 1, 2025 annual
-# income-chart refresh that restates the same percentages and bands.
+    - title: Nevada DSS Policy Transmittal, Annual Changes to the CCDP Household Size and Monthly Income Limits (October 1, 2026)
+      href: https://prod.dss.nv.gov/siteassets/dwss.nv.gov/ccdp-annual-income-changes-2026_1.pdf#page=1

@@ -7,7 +7,11 @@ class nv_ccdp_income_eligible(Variable):
     label = "Eligible for Nevada CCDP based on income"
     definition_period = MONTH
     defined_for = StateCode.NV
-    reference = "https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/CC_PT_06-25_ANNUAL_INCOME_CHANGES_10.02.2025.pdf#page=1"
+    reference = (
+        "https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/CC_PT_06-25_ANNUAL_INCOME_CHANGES_10.02.2025.pdf#page=1",
+        "https://dwss.nv.gov/uploadedFiles/dwssnvgov/content/Care/CC%20PT%2007-23%20Annual%20Income%20Ceiling%20Increase%20(Public%20Distribution).pdf#page=1",
+        "https://dwss.nv.gov/uploadedFiles/dwssnvgov/content/Care/Amended%20State%20Plan.pdf#page=51",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nv.dwss.ccdp.income
@@ -18,13 +22,14 @@ class nv_ccdp_income_eligible(Variable):
         )
         monthly_smi = spm_unit("nv_ccdp_smi", period)
         enrolled = spm_unit("nv_ccdp_enrolled", period)
-        # New applicants must be at or below 41% SMI (intake). Enrolled families
-        # are redetermined at or below 49% SMI (renewal); this matches the
-        # published renewal income/copay chart (CC PT 06-25), whose copay bands
-        # top out at 49% SMI. A separate federal protection (45 CFR
-        # 98.21(a)(1)(ii)) bars terminating a family mid-certification until
-        # income exceeds 85% SMI, but we don't track certification periods at
-        # the moment, so the 85% mid-period ceiling is not modeled.
+        # New applicants face smi_intake and enrolled families face smi_renewal, both
+        # dated. From October 1, 2024 they are 41% and 49% of SMI, which match the
+        # published charts (CC PT 06-25 and the October 2026 transmittal). From July 1,
+        # 2022 through September 2024 both were 85%, the ceiling in the state's chart
+        # effective October 1, 2023. Since October 2024 a separate federal protection
+        # (45 CFR 98.21(a)(1)(ii)) bars terminating a family mid-certification until
+        # income exceeds 85% SMI, but we don't track certification periods at the
+        # moment, so the 85% mid-period ceiling is not modeled.
         # MS 216.4.3.1 (Foster) and MS 216.4.4.1 (CPS) treat a foster or CPS
         # child as a household of one and do NOT count the traditional
         # household's income ("Income received by the traditional household is
