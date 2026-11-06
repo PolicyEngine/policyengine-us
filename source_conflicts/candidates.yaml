@@ -451,6 +451,37 @@ candidates:
   note: 'PE-US follows the administrative code: Alabama''s age limit is 19 from 2014 with no student condition,
     and the file''s comment records the S25 conflict (age_limit.yaml). Verify overlapping effective dates and any
     conflict before the cited 2023 code, since the model applies 19 from 2014.'
+- id: us-ar:bound-rounding-ties-down
+  program: income-tax
+  years:
+    from: 2026
+    type: tax
+  question: Does the secretary round an exact $50 income tax bracket tie down or up to the nearest $100?
+  sources:
+  - kind: statute
+    citation: A.C.A. 26-51-201(d)(1), as amended by Act 532 of 2023, section 2
+    url: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2023R%2FPublic%2FACT532.pdf#page=4
+  - kind: agency-practice
+    citation: Arkansas DFA 2022 Indexed Tax Brackets
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/TaxBrackets_2022.pdf#page=1
+  - kind: agency-practice
+    citation: Arkansas DFA 2024 Indexed Tax Brackets
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/2024_TaxBrackets.pdf#page=1
+  readings:
+    statute: The General Assembly requires the secretary to round each bracket bound to the nearest $100 but
+      prescribes no direction for an exact $50 tie.
+    other: DFA rounds exact ties down, publishing $5,100 after $5,000 times 1.03 gives $5,150 and $25,700 after
+      $25,000 times 1.03 gives $25,750.
+  example: Rounding $25,750 down gives $25,700; rounding the tie up or to even gives $25,800.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/uprating_extensions.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10324
+  state: ruled
+  note: PolicyEngine follows DFA's tie-down practice where the General Assembly leaves the rounding direction
+    unspecified.
 - id: us-ar:casualty-loss-aggregate-agi-floor
   program: income-tax
   years:
@@ -579,6 +610,49 @@ candidates:
   state: ruled
   note: 'The October 2026 ruling leaves small repayments unmodelled; verify whether the fiscal notes establish a
     post-2013 remedy. Code not yet on main: ar_claim_of_right_deduction.py.'
+- id: us-ar:first-indexed-year-after-act-1-2026
+  program: income-tax
+  years:
+    from: 2026
+    type: tax
+  question: Does the secretary first index Act 1 of 2026's individual income-tax tables in 2026 or 2027?
+  sources:
+  - kind: statute
+    citation: A.C.A. 26-51-201(a)(5), as amended by Act 1 of 2026, section 1
+    url: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2026S1%2FPublic%2FACT1.pdf#page=3
+  - kind: statute
+    citation: A.C.A. 26-51-201(d)(1), as amended by Act 532 of 2023, section 2
+    url: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2023R%2FPublic%2FACT532.pdf#page=4
+  - kind: agency-practice
+    citation: Arkansas DFA 2022 Indexed Tax Brackets
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/TaxBrackets_2022.pdf#page=1
+  - kind: agency-practice
+    citation: Arkansas DFA 2023 Indexed Tax Brackets
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/TaxBrackets_2023.pdf#page=1
+  - kind: agency-practice
+    citation: Arkansas DFA 2024 Indexed Tax Brackets
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/2024_TaxBrackets.pdf#page=1
+  - kind: guidance
+    citation: Arkansas DFA Withholding Tax Formula, effective January 1, 2026
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/Withholding-Tax-Formula.pdf#page=1
+  readings:
+    statute: The General Assembly requires an adjustment for each calendar year under 26-51-201(a)(5) and (d)(1)
+      but names no first year for the tables Act 1 of 2026 enacts.
+    other: DFA indexed each newly enacted table in its first year on its 2022, 2023 and 2024 cards, but kept the
+      unindexed $5,600 and $94,700 bounds in its withholding formula effective January 1, 2026.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/uprating_extensions.py
+    - policyengine_us/parameters/gov/states/ar/tax/income/uprating.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10324
+  state: ruled
+  note: PolicyEngine settled this in November 2026 by indexing the tables from 2026, as DFA did for each newly
+    enacted table on its 2022 through 2024 cards. DFA published the withholding formula before BLS published CPI
+    through August 2026, which the secretary needs for the 2026 adjustment. PolicyEngine follows the cards until
+    DFA publishes a 2026 indexed card. It reads the same tables for Arkansas withholding, so it estimates 2026
+    withholding from the indexed bounds, not the formula's.
 - id: us-ar:gambling-loss-deduction-before-2015
   program: income-tax
   years:
