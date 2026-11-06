@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, CA, CO, CT, DC, DE, GA, HI, Riverside County, MA, FL, IL, IA, ID, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SC, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DC, DE, GA, HI, Riverside County, MA, FL, IL, IA, ID, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SC, SD, RI, TN, TX, UT, VA, VT, WA, WI, WV, WY
     state_implementations:
       - state: AL
         status: partial
@@ -1353,6 +1353,14 @@ programs:
         parameter_prefix: gov.states.wi.doa.wheap
         verified_years: "2026"
         notes: FFY2026 regular heating benefit from the HE+ formula with the published heat proxy table. The non-heating electric benefit, crisis and weatherization are out of scope.
+      - state: WV
+        status: partial
+        name: West Virginia LIEAP
+        full_name: West Virginia Low Income Energy Assistance Program
+        variable: wv_lieap
+        parameter_prefix: gov.states.wv.dhhr.lieap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular heating payments for households of one to twenty qualified members. Crisis, cooling, weatherization, equipment and the utility discount are out of scope.
       - state: WY
         status: partial
         name: Wyoming LIEAP
