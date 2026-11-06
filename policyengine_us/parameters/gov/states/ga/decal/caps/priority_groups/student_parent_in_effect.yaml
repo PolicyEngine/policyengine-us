@@ -1,0 +1,14 @@
+description: Georgia uses this indicator to determine whether student parents form a priority group under the Childcare and Parent Services program.
+values:
+  2015-01-01: false
+  2022-05-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: Georgia CAPS student parent priority group in effect
+  reference:
+    - title: Georgia CAPS Policy CAPS/00-7, revision history (May 1, 2022)
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS/07-CAPS_Policy-Priority%20Groups.pdf#page=10
+    - title: Georgia CAPS Policy CAPS/00-7, Section 7.16 (revised October 5, 2026)
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS/07-CAPS_Policy-Priority%20Groups.pdf#page=9

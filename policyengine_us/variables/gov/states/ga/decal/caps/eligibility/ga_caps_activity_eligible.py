@@ -7,7 +7,11 @@ class ga_caps_activity_eligible(Variable):
     label = "Eligible for Georgia CAPS based on activity requirements"
     definition_period = MONTH
     defined_for = StateCode.GA
-    reference = "https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=33"
+    reference = (
+        "https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=33",
+        "https://caps.decal.ga.gov/assets/downloads/CAPS/07-CAPS_Policy-Priority%20Groups.pdf#page=2",
+        "https://caps.decal.ga.gov/assets/downloads/CAPS/07-CAPS_Policy-Priority%20Groups.pdf#page=8",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ga.decal.caps.activity_requirements
@@ -33,4 +37,17 @@ class ga_caps_activity_eligible(Variable):
         individually_eligible = meets_work_requirement | is_student | is_disabled
         all_heads_meet = ~spm_unit.any(is_head_or_spouse & ~individually_eligible)
         meets_ccdf = spm_unit("meets_ccdf_activity_test", period.this_year)
-        return all_heads_meet | meets_ccdf
+        # CAPS/00-7 waives the requirement for foster parents of children in DFCS
+        # custody (7.5) and for parents in Grandparents Raising Grandchildren
+        # (7.13). The Child Protective Services waiver in 7.4 is discretionary
+        # ("may be waived"), so meets_ccdf_activity_test carries it as an input.
+        has_dfcs_custody_child = add(spm_unit, period, ["is_in_foster_care"]) > 0
+        grandparents_raising_grandchildren = spm_unit(
+            "ga_caps_grandparents_raising_grandchildren", period
+        )
+        return (
+            all_heads_meet
+            | meets_ccdf
+            | has_dfcs_custody_child
+            | grandparents_raising_grandchildren
+        )

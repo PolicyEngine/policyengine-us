@@ -1,0 +1,1020 @@
+# GA CAPS income limits by date.
+# DECAL's letters date each change. A monthly variable reads the parameter at the first day of
+# the month, so a change after the first applies from the next month.
+
+- name: September 2019, 50 percent for four, at the limit.
+  period: 2019-09
+  input:
+    people:
+      person1:
+        age:
+          2019: 30
+      person2:
+        age:
+          2019: 5
+      person3:
+        age:
+          2019: 5
+      person4:
+        age:
+          2019: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ga_caps_countable_income: 3_050
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2019: GA
+  output:
+    # DECAL webinar, September 24, 2019: $36,601 for four before October 2019.
+    ga_caps_income_eligible: true
+
+- name: September 2019, 50 percent for four, over the limit.
+  period: 2019-09
+  input:
+    people:
+      person1:
+        age:
+          2019: 30
+      person2:
+        age:
+          2019: 5
+      person3:
+        age:
+          2019: 5
+      person4:
+        age:
+          2019: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ga_caps_countable_income: 3_051
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2019: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: October 2019, 50 percent for four on the new median income table, at the limit.
+  period: 2019-10
+  input:
+    people:
+      person1:
+        age:
+          2019: 30
+      person2:
+        age:
+          2019: 5
+      person3:
+        age:
+          2019: 5
+      person4:
+        age:
+          2019: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ga_caps_countable_income: 3_175.25
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2019: GA
+  output:
+    # DECAL webinar, September 24, 2019: $38,103 for four in October 2019.
+    ga_caps_income_eligible: true
+
+- name: October 2019, 50 percent for four on the new median income table, over the limit.
+  period: 2019-10
+  input:
+    people:
+      person1:
+        age:
+          2019: 30
+      person2:
+        age:
+          2019: 5
+      person3:
+        age:
+          2019: 5
+      person4:
+        age:
+          2019: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ga_caps_countable_income: 3_176
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2019: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: October 2021, 50 percent for four, at the limit.
+  period: 2021-10
+  input:
+    people:
+      person1:
+        age:
+          2021: 30
+      person2:
+        age:
+          2021: 5
+      person3:
+        age:
+          2021: 5
+      person4:
+        age:
+          2021: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ga_caps_countable_income: 3_535.5
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2021: GA
+  output:
+    # DECAL letter, October 21, 2021: $42,426 for four before the waiver.
+    ga_caps_income_eligible: true
+
+- name: October 2021, 50 percent for four, over the limit.
+  period: 2021-10
+  input:
+    people:
+      person1:
+        age:
+          2021: 30
+      person2:
+        age:
+          2021: 5
+      person3:
+        age:
+          2021: 5
+      person4:
+        age:
+          2021: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ga_caps_countable_income: 3_536
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2021: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: November 2021, 85 percent for four, at the limit.
+  period: 2021-11
+  input:
+    people:
+      person1:
+        age:
+          2021: 30
+      person2:
+        age:
+          2021: 5
+      person3:
+        age:
+          2021: 5
+      person4:
+        age:
+          2021: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ga_caps_countable_income: 6_010.33
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2021: GA
+  output:
+    # DECAL letter, October 21, 2021: $72,124 for four from November 1, 2021.
+    ga_caps_income_eligible: true
+
+- name: November 2021, 85 percent for four, over the limit.
+  period: 2021-11
+  input:
+    people:
+      person1:
+        age:
+          2021: 30
+      person2:
+        age:
+          2021: 5
+      person3:
+        age:
+          2021: 5
+      person4:
+        age:
+          2021: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ga_caps_countable_income: 6_011
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2021: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: October 2021, 50 percent for three, at the limit.
+  period: 2021-10
+  input:
+    people:
+      person1:
+        age:
+          2021: 30
+      person2:
+        age:
+          2021: 5
+      person3:
+        age:
+          2021: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_969
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2021: GA
+  output:
+    # Urban Institute CCDF tables print $2,969 for three in October 2021.
+    ga_caps_income_eligible: true
+
+- name: October 2021, 50 percent for three, over the limit.
+  period: 2021-10
+  input:
+    people:
+      person1:
+        age:
+          2021: 30
+      person2:
+        age:
+          2021: 5
+      person3:
+        age:
+          2021: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_970
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2021: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: November 2021, 85 percent for three, at the limit.
+  period: 2021-11
+  input:
+    people:
+      person1:
+        age:
+          2021: 30
+      person2:
+        age:
+          2021: 5
+      person3:
+        age:
+          2021: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 5_048
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2021: GA
+  output:
+    ga_caps_income_eligible: true
+
+- name: November 2021, 85 percent for three, over the limit.
+  period: 2021-11
+  input:
+    people:
+      person1:
+        age:
+          2021: 30
+      person2:
+        age:
+          2021: 5
+      person3:
+        age:
+          2021: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 5_049
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2021: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: October 2022, 85 percent for three, at the limit.
+  period: 2022-10
+  input:
+    people:
+      person1:
+        age:
+          2022: 30
+      person2:
+        age:
+          2022: 5
+      person3:
+        age:
+          2022: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 5_351
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2022: GA
+  output:
+    # Urban Institute CCDF tables print $5,351 for three in October 2022.
+    ga_caps_income_eligible: true
+
+- name: October 2022, 85 percent for three, over the limit.
+  period: 2022-10
+  input:
+    people:
+      person1:
+        age:
+          2022: 30
+      person2:
+        age:
+          2022: 5
+      person3:
+        age:
+          2022: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 5_352
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2022: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: December 2022 reads December 1, so 85 percent still applies.
+  period: 2022-12
+  input:
+    people:
+      person1:
+        age:
+          2022: 30
+      person2:
+        age:
+          2022: 5
+      person3:
+        age:
+          2022: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 5_351
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2022: GA
+  output:
+    # DECAL letter, December 19, 2022: the waiver ended December 15, 2022.
+    ga_caps_income_eligible: true
+
+- name: January 2023, back to 50 percent for three, at the limit.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_147
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    ga_caps_income_eligible: true
+
+- name: January 2023, back to 50 percent for three, over the limit.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_148
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: August 2024, 50 percent for three, at the limit.
+  period: 2024-08
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_333.33
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: GA
+  output:
+    ga_caps_income_eligible: true
+
+- name: August 2024, 50 percent for three, over the limit.
+  period: 2024-08
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_334
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: September 2024, 30 percent for three, at the limit.
+  period: 2024-09
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: GA
+  output:
+    # DECAL letter, September 3, 2024: 50% to 30% from September 1, 2024.
+    ga_caps_income_eligible: true
+
+- name: September 2024, 30 percent for three, over the limit.
+  period: 2024-09
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000.5
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: October 2024, 30 percent for three on the new median income table, at the limit.
+  period: 2024-10
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_223
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: GA
+  output:
+    ga_caps_income_eligible: true
+
+- name: October 2024, 30 percent for three on the new median income table, over the limit.
+  period: 2024-10
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_224
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: October 2025 reads October 1, so 30 percent still applies, at the limit.
+  period: 2025-10
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+      person2:
+        age:
+          2025: 5
+      person3:
+        age:
+          2025: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_325
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: GA
+  output:
+    ga_caps_income_eligible: true
+
+- name: October 2025 reads October 1, so 30 percent still applies, over the limit.
+  period: 2025-10
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+      person2:
+        age:
+          2025: 5
+      person3:
+        age:
+          2025: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_326
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: November 2025, 40 percent for three, at the limit.
+  period: 2025-11
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+      person2:
+        age:
+          2025: 5
+      person3:
+        age:
+          2025: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_100.6
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: GA
+  output:
+    # DECAL letter, October 6, 2025: 30% to 40%. The CCDF plan prints $3,101 a month for three,
+    # which rounds $37,208 a year divided by 12. Manual 8.8.4 compares income times 12 with the
+    # annual chart, so $3,101 a month fails.
+    ga_caps_income_eligible: true
+
+- name: November 2025, 40 percent for three, over the limit.
+  period: 2025-11
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+      person2:
+        age:
+          2025: 5
+      person3:
+        age:
+          2025: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_101
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: A family of three earning $40,000 fails in January 2026.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_333.33
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: March 2026 reads March 1, so 40 percent still applies.
+  period: 2026-03
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_101
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: April 2026, 50 percent for three, at the limit.
+  period: 2026-04
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_875
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: GA
+  output:
+    # DECAL letter, March 2, 2026: 40% to 50% from March 2, 2026.
+    ga_caps_income_eligible: true
+
+- name: April 2026, 50 percent for three, over the limit.
+  period: 2026-04
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_876
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: October 2026, 50 percent for three, at the limit.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 4_029.16
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: GA
+  output:
+    # Appendix A, effective October 5, 2026, prints $48,350 for three.
+    ga_caps_income_eligible: true
+
+- name: October 2026, 50 percent for three, over the limit.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 4_029.25
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: October 2026, 50 percent for two, at the limit.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ga_caps_countable_income: 3_261.75
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: GA
+  output:
+    # Appendix A prints $39,141 for two.
+    ga_caps_income_eligible: true
+
+- name: October 2026, 50 percent for two, over the limit.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ga_caps_countable_income: 3_262
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: October 2026, 50 percent for six, at the limit.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+      person4:
+        age:
+          2026: 5
+      person5:
+        age:
+          2026: 5
+      person6:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        ga_caps_countable_income: 6_331.5
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code:
+          2026: GA
+  output:
+    # Appendix A prints $75,978 for six.
+    ga_caps_income_eligible: true
+
+- name: October 2026, 50 percent for six, over the limit.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+      person4:
+        age:
+          2026: 5
+      person5:
+        age:
+          2026: 5
+      person6:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        ga_caps_countable_income: 6_332
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code:
+          2026: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: October 2026, 85 percent for an enrolled family of three, at the limit.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 6_849.58
+        ga_caps_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: GA
+  output:
+    # Appendix A prints $82,195 for three.
+    ga_caps_income_eligible: true
+
+- name: October 2026, 85 percent for an enrolled family of three, over the limit.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 6_850
+        ga_caps_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: GA
+  output:
+    ga_caps_income_eligible: false

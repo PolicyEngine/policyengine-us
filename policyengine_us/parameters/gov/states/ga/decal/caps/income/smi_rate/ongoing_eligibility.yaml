@@ -1,6 +1,11 @@
 description: Georgia limits the Childcare and Parent Services program to enrolled families with income at or below this share of state median income.
+
+# DECAL's June 2018 letter raises the limit at annual redetermination from 50% to
+# 85% on March 26, 2018. Urban Institute's 2016 tables print 85% within the
+# eligibility period and 50% at redetermination before that. The model carries one
+# limit for enrolled families, so it reads 85% at every date.
 values:
-  2026-03-02: 0.85
+  2016-10-01: 0.85
 
 metadata:
   unit: /1
@@ -9,5 +14,9 @@ metadata:
   reference:
     - title: Georgia CAPS Policy Manual, Section 8.3 (Gross Income)
       href: https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=49
-    - title: Georgia CAPS Appendix A - Maximum Income Limits by Family Size (effective March 2, 2026)
-      href: https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixA-CAPS%20Maximum%20Income%20Limits%20by%20Family%20Size.pdf
+    - title: Georgia CAPS Appendix A, Maximum Income Limits (effective October 5, 2026)
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixA-CAPS%20Maximum%20Income%20Limits%20by%20Family%20Size.pdf#page=1
+    - title: Georgia DECAL, Letter to CAPS Child Care Providers (June 18, 2018), 85% at redetermination from March 26, 2018
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS_Letter_from_Elisabetta_Kasfir_6-18-2018.pdf#page=1
+    - title: Georgia DECAL, Letter to CAPS Families (March 2, 2026), ongoing limit stays at 85%
+      href: https://caps.decal.ga.gov/Assets/downloads/CAPS_Letter_to_Families_Policy_Revisions_03.02.26.pdf#page=1

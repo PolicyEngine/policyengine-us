@@ -1,5 +1,18 @@
 description: Georgia limits the Childcare and Parent Services program to new applicants with income at or below this share of state median income.
+
+# DECAL's letters date every change. An emergency waiver raised the limit to 85%
+# from November 1, 2021, through December 15, 2022. The 2024 spending plan's
+# "November 2021 - September 2024" and the governor's "through October 1, 2024"
+# describe the funding window, and DECAL's December 2022 letter and emergency
+# memorandum end the income waiver earlier. DECAL applies each limit by application
+# received date. The model carries no application date, so it moves every new
+# applicant at the first month that starts on or after the effective date.
 values:
+  2016-10-01: 0.5
+  2021-11-01: 0.85
+  2022-12-16: 0.5
+  2024-09-01: 0.3
+  2025-10-06: 0.4
   2026-03-02: 0.5
 
 metadata:
@@ -9,5 +22,19 @@ metadata:
   reference:
     - title: Georgia CAPS Policy Manual, Section 8.3 (Gross Income)
       href: https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=49
-    - title: Georgia CAPS Appendix A - Maximum Income Limits by Family Size (effective March 2, 2026)
-      href: https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixA-CAPS%20Maximum%20Income%20Limits%20by%20Family%20Size.pdf
+    - title: Georgia CAPS Appendix A, Maximum Income Limits (effective October 5, 2026)
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixA-CAPS%20Maximum%20Income%20Limits%20by%20Family%20Size.pdf#page=1
+    - title: Georgia DECAL, Letter to CAPS Families (October 21, 2021), 50% to 85% from November 1, 2021
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS_Letter_from_Elisabetta_Kasfir_Families_10-21-21.pdf#page=1
+    - title: Georgia DECAL, Letter to CAPS Families (December 19, 2022), back to 50% from December 16, 2022
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS_Letter_to_Parents_Change_in_Income_Limits_12.19.2022.pdf#page=1
+    - title: Georgia DECAL, CAPS Emergency Policy Memorandum, income limit waiver dates
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS_Emergency_Policy_Memorandum.pdf#page=3
+    - title: Georgia DECAL, Letter to CAPS Families (September 3, 2024), 50% to 30% from September 1, 2024
+      href: https://caps.decal.ga.gov/Assets/downloads/CAPS_Letter_from_Elisabetta_Kasfir_Families_09.03.2024.pdf#page=1
+    - title: Georgia DECAL, Letter to CAPS Families (October 6, 2025), 30% to 40% from October 6, 2025
+      href: https://caps.decal.ga.gov/Assets/downloads/CAPS_Letter_to_Families_Policy_Revisions_10.06.25.pdf#page=1
+    - title: Georgia DECAL, Letter to CAPS Families (March 2, 2026), 40% to 50% from March 2, 2026
+      href: https://caps.decal.ga.gov/Assets/downloads/CAPS_Letter_to_Families_Policy_Revisions_03.02.26.pdf#page=1
+    - title: Georgia CCDF Plan FFY 2025-2027, Section 2.2.4, 40% of state median income effective October 6, 2025
+      href: https://www.decal.ga.gov/documents/attachments/CCDFStatePlan25-27.pdf#page=22
