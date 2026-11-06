@@ -22,9 +22,9 @@ class ssi_claim_is_joint(Variable):
         # Spouses are found by the test resource deeming uses (416.1806:
         # husband or wife, living together), not by tax-unit head and spouse
         # roles, which go to the two oldest adults of a tax unit when roles
-        # are not supplied. Both must be aged, blind or disabled. The
-        # citizenship condition is not applied here: state supplements and
-        # Medicaid read this as the SSI couple methodology.
+        # are not supplied. Both must be aged, blind or disabled.
+        # NOTE: We do not apply the citizenship condition here (issue 10481).
+        # State supplements and Medicaid use this SSI couple methodology.
         abd = person("is_ssi_aged_blind_disabled", period)
         spouse = _ssi_spouse_index(person, period)
         return abd & (spouse >= 0) & abd[np.maximum(spouse, 0)]

@@ -35,11 +35,14 @@ The implementation follows these steps according to the regulations:
    - The deemed amount is the difference between the combined countable income and the individual's countable income
 
 6. **Limit the benefit to the amount without deeming** (§416.1163(e)(2))
-   - The benefit is the lesser of the couple computation and the individual Federal benefit rate less only the individual's own countable income (`uncapped_ssi_without_spousal_deeming`), applied in `uncapped_ssi` before the zero floor
+   - We compare the couple computation with the individual Federal benefit rate less the individual's own countable income (`uncapped_ssi_without_spousal_deeming`) and apply the lesser amount in `uncapped_ssi` before the zero floor.
+   - For this individual computation, we value in-kind support using the regular individual PMV ([POMS SI 01320.150 B.1.b](https://secure.ssa.gov/poms.nsf/lnx/0501320150), [SI 01320.400 C.2](https://secure.ssa.gov/poms.nsf/lnx/0501320400)).
 
 ## Who is an ineligible spouse
 
-An ineligible spouse is "someone who lives with you as your husband or wife and is not eligible for SSI benefits" (§416.1160(d)). The spouse is found by the co-resident spouse test in `eligibility/resources/deemed/_ssi_spouses.py`, which resource deeming and joint claims also use, not by tax-unit head and spouse roles. For income, eligibility here means aged, blind or disabled status: a spouse who is aged, blind or disabled but fails the citizenship or qualified-noncitizen condition is still treated as part of a joint claim, because state supplements and Medicaid read the joint claim as the SSI couple methodology. The resource test treats that spouse as an ineligible spouse (`_ssi_resource_couple`).
+SSA deems income from a spouse who lives with the claimant and does not qualify for SSI under §416.1160(d). We find that spouse through the co-resident spouse test in `eligibility/resources/deemed/_ssi_spouses.py`. We also use that test for resource deeming and joint claims.
+
+NOTE: We still treat a spouse who meets SSI age, blindness, or disability criteria but fails citizenship or qualified-noncitizen conditions as part of a joint claim ([issue 10481](https://github.com/PolicyEngine/policyengine-us/issues/10481)). State supplements and Medicaid use that joint-claim flag for couple methodology. For resources, we treat that spouse as ineligible (`_ssi_resource_couple`).
 
 ## Exclusions Applied
 
