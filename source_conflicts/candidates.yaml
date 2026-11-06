@@ -10752,6 +10752,54 @@ candidates:
   note: Transmittal 71 (July 1, 2021) removed Appendix 3, so the agency schedule applied only in state fiscal year
     2021 (July 2020 to June 2021). The 7/20 Chapter 900, Appendix II, Example 6 (a TANF-UP household of four in Group II) uses the $499 TANF
     standard. Before July 2020 and from July 2021 the manual has one schedule for all units.
+- id: us-vt:ccfap-family-share-below-state-rate
+  program: child-care-assistance
+  years:
+    from: 2023
+    type: calendar
+  question: When a program's tuition for a CCFAP family falls below Vermont's state rate, does the family owe tuition
+    less the state's payment, or its whole family share?
+  sources:
+  - kind: statute
+    citation: 33 V.S.A. § 3512(a)(2) and (a)(4)
+    url: https://legislature.vermont.gov/statutes/section/33/035/03512
+  - kind: regulation
+    citation: CCFAP Regulations section IV A, with sections VI(8) and IX
+    url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/CCFAP/CCFAP-Regulations.pdf#page=13
+  - kind: rulemaking
+    citation: Child Development Division memo of June 28, 2024, restating sections IV A and VI(8)
+    url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/Act76/Memo-Act-76-CCFAP-Rule-Revision.pdf#page=10
+  - kind: guidance
+    citation: CCFAP Understanding Payments, questions 1, 6 and 8 and its two examples
+    url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/CCFAP/CCFAP-Understanding-Payments.pdf#page=1
+  - kind: guidance
+    citation: Child Development Division memo of January 13, 2026, separate tuition example 1
+    url: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/CDD-Memo-UPK-and-CCFAP-family-tuition%20(1).pdf#page=6
+  - kind: plan
+    citation: Vermont CCDF Plan FFY 2025-2027 section 3.1.2(e)
+    url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/Reports/CCDF-Plans/CCDF-Plan-2025-2027-Approved.pdf#page=39
+  readings:
+    statute: Section 3512(a)(2) has the Commissioner set the family contribution by rule, and (a)(4) lets a program set
+      tuition below the state's rate. Neither says what the family owes in that case.
+    other: Understanding Payments calls the share the amount the family pays and lets a program waive or collect it, and
+      the plan calls it the required co-payment, so the family would owe its whole share. Section IV A makes the family
+      responsible for fees above the state's payment, and the January 2026 memo's invoices take that payment off tuition,
+      so the family would owe the remainder.
+  example: A program charges a CCFAP family $350 a week under a $439 state rate, with a $300 family share. The state pays
+    $139. The memo's invoice shows $211 due, and the share reading has the family owe $300.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/household/expense/childcare/childcare_expenses.py
+    - policyengine_us/variables/gov/hhs/ccdf/household_child_care_subsidies.py
+    - policyengine_us/variables/gov/states/vt/dcf/ccfap/vt_ccfap.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10668
+  state: ruled
+  note: Ruled 2026-11-06 for the remainder. Section IV A and the January 2026 memo both reach it, so the reading stands
+    whether or not state regulations rank as law. The bill stands for what the program charges a CCFAP family, the memo's
+    wording, so a program that charges such a family the full state rate collects the whole share. No department example
+    shows a positive share with a payment above tuition, and the test of that case follows section IV A.
 - id: us-vt:liheap-income-maximum-large-households
   program: liheap
   years:
