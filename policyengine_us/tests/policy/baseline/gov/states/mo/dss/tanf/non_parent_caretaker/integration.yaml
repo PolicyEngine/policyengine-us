@@ -1,10 +1,9 @@
 # Missouri TANF non-parent caretaker relative (NPCR) rules: 13 CSR 40-2.300(5)(D),
 # 13 CSR 40-2.310(3) and (8)(B)1.C, and DSS Manual 0210.005.05, 0210.005.10,
 # 0210.005.15, 0210.005.35, 0210.005.40 and 0210.010.10.
-# Standard of need: size 1 $393, size 2 $678, size 3 $846. The maximum is
-# 34.526% of the standard (size 1 $135.687, size 2 $234.086, size 3
-# $292.090), and 13 CSR 40-2.310(14) lowers the payment to the whole
-# dollar: size 1 $135, size 2 $234, size 3 $292.
+# Standard of need: size 1 $393, size 2 $678, size 3 $846.
+# Missouri pays the maximum grants in 13 CSR 40-2.310(13): size 1 $136,
+# size 2 $234, size 3 $292. Section (14) lowers deficits to whole dollars.
 
 - name: Grandparent with no spouse and $100 unemployment is left out because inclusion lowers the grant
   period: 2026-01
@@ -32,7 +31,7 @@
         state_code: MO
   output:
     # No spouse in the home, so the NPCR is needy without a budget
-    # (DSS Manual 0210.005.35). Included: 292.090 - 100 = 192.090, paid as 192.
+    # (DSS Manual 0210.005.35). Included: 292 - 100 = 192.
     # Excluded: the two children alone get 234. DSS Manual 0210.005.15
     # forbids an optional inclusion that reduces the grant.
     mo_tanf_non_parent_caretaker: [true, false, false]
@@ -343,7 +342,7 @@
   output:
     # An NPCR on SSI cannot be included (DSS Manual 0210.005.35), so the
     # grandmother is the caretaker relative, and her spouse's SSI makes
-    # her needy. Included: size 2, 234.086; excluded: size 1, 135.687.
+    # her needy. Included: size 2, 234; excluded: size 1, 136.
     mo_tanf_non_parent_caretaker: [false, true, false]
     mo_tanf_non_parent_caretaker_needy: true
     mo_tanf_non_parent_caretaker_included: true
@@ -377,7 +376,7 @@
         state_code: MO
   output:
     # Needy with no spouse in the home, whatever the income. Including $800
-    # exceeds the size-3 payment of 292.090, so DSS Manual 0210.005.15
+    # exceeds the size-3 payment of 292, so DSS Manual 0210.005.15
     # keeps the caretaker out.
     mo_tanf_non_parent_caretaker_needy: true
     mo_tanf_if_non_parent_caretaker_included: 0
@@ -413,7 +412,7 @@
     mo_tanf_non_parent_caretaker_included: true
     mo_tanf_is_assistance_unit_member: [true, false]
     mo_tanf_assistance_unit_size: 1
-    mo_tanf: 135
+    mo_tanf: 136
 
 - name: A grandparent is not a non-parent caretaker when the grandchild's adult mother lives in the home
   period: 2026-01
@@ -445,7 +444,7 @@
     # not a cash-eligible child, so the grandparent cannot be included.
     # Under 0210.005.05 the mother is the caretaker payee and a member even
     # though the grandparent claims her as a tax dependent, so the unit is
-    # the mother and child (size 2), not the child alone (size 1, $135.687).
+    # the mother and child (size 2), not the child alone (size 1, $136).
     mo_tanf_non_parent_caretaker: [false, false, false]
     mo_tanf_non_parent_caretaker_needy: false
     mo_tanf_is_assistance_unit_member: [false, true, true]
