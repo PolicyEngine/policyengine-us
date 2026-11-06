@@ -1,7 +1,7 @@
 # The Trump dividend must survive stacking with the End Child Poverty Act,
-# which replaces household_benefits and spm_unit_benefits with its own static
-# lists. Two adult citizens at $500,000 of employment income so no other
-# benefit fires and each aggregate isolates the dividend.
+# which adds its child benefit to the gov.household benefit lists that both
+# aggregates read. Two adult citizens at $500,000 of employment income so no
+# other benefit fires and each aggregate isolates the dividend.
 #
 # NOTE: This lives under tests/policy/reform (one subprocess per file) rather
 # than contrib/congress/tlaib because the congress structural batch runs each

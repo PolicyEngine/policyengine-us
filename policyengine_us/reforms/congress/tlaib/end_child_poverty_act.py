@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.parameters import add_to_list_parameter
 
 
 def create_end_child_poverty_act() -> Reform:
@@ -79,104 +80,13 @@ def create_end_child_poverty_act() -> Reform:
 
             return total_dependents * amount
 
-    class household_benefits(Variable):
-        value_type = float
-        entity = Household
-        label = "benefits"
-        unit = USD
-        definition_period = YEAR
-
-        def formula(household, period, parameters):
-            BENEFITS = [
-                "social_security",
-                "ssi",
-                "snap",
-                "wic",
-                "free_school_meals",
-                "reduced_price_school_meals",
-                "child_support_received",
-                "workers_compensation",
-                "educational_assistance",
-                "financial_assistance",
-                "survivor_benefits",
-                # Broadband subsidies.
-                "acp",
-                "ebb",
-                "tanf",
-                "high_efficiency_electric_home_rebate",
-                "residential_efficiency_electrification_rebate",
-                "total_unemployment_compensation",
-                # Contributed.
-                "basic_income",
-                "trump_dividend",
-                "housing_assistance",
-                "household_state_benefits",
-                "household_local_benefits",
-                "household_head_start_benefits",
-                "ak_energy_relief",
-                "ny_drive_clean_rebate",
-                "ecpa_child_benefit",
-            ]
-            if parameters(period).gov.hud.abolition:
-                BENEFITS = [
-                    benefit for benefit in BENEFITS if benefit != "housing_assistance"
-                ]
-            return add(household, period, BENEFITS)
-
-    class spm_unit_benefits(Variable):
-        value_type = float
-        entity = SPMUnit
-        label = "Benefits"
-        definition_period = YEAR
-        unit = USD
-
-        def formula(spm_unit, period, parameters):
-            BENEFITS = [
-                "social_security",
-                "ssi",
-                "ma_state_supplement",  # Massachusetts benefits
-                # California programs.
-                "ca_cvrp",  # California Clean Vehicle Rebate Project.
-                # Colorado programs.
-                "co_ccap_subsidy",
-                "co_state_supplement",
-                "co_oap",
-                "snap",
-                "wic",
-                "free_school_meals",
-                "reduced_price_school_meals",
-                "child_support_received",
-                "workers_compensation",
-                "educational_assistance",
-                "financial_assistance",
-                "survivor_benefits",
-                # Broadband subsidies.
-                "acp",
-                "ebb",
-                "spm_unit_energy_subsidy",
-                "tanf",
-                "high_efficiency_electric_home_rebate",
-                "residential_efficiency_electrification_rebate",
-                "total_unemployment_compensation",
-                # Contributed.
-                "basic_income",
-                "trump_dividend",
-                # Cash programs that household_benefits also counts.
-                "ca_capi",  # California Cash Assistance Program for Immigrants.
-                "ca_la_expectant_parent_payment",  # Los Angeles County.
-                "ca_la_infant_supplement",  # Los Angeles County.
-                "co_denver_property_tax_relief",  # Denver.
-                "ma_eaedc",  # Massachusetts.
-                "ak_energy_relief",
-                "nj_property_tax_relief",  # ANCHOR, Senior Freeze and Stay NJ.
-                "ny_drive_clean_rebate",
-                "ecpa_child_benefit",
-            ]
-            if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
-                BENEFITS.append("aca_ptc")
-            if not parameters(period).gov.hud.abolition:
-                BENEFITS.append("spm_unit_capped_housing_subsidy")
-            return add(spm_unit, period, BENEFITS)
+    def modify_parameters(parameters):
+        # The child benefit is a payment, so both income totals count it on
+        # top of every baseline benefit.
+        household = parameters.gov.household
+        add_to_list_parameter(household.household_benefits, ["ecpa_child_benefit"])
+        add_to_list_parameter(household.spm_unit_benefits, ["ecpa_child_benefit"])
+        return parameters
 
     class income_tax_refundable_credits(Variable):
         value_type = float
@@ -198,8 +108,7 @@ def create_end_child_poverty_act() -> Reform:
             self.update_variable(ecpa_filer_credit)
             self.update_variable(income_tax_refundable_credits)
             self.update_variable(ecpa_child_benefit)
-            self.update_variable(household_benefits)
-            self.update_variable(spm_unit_benefits)
+            self.modify_parameters(modify_parameters)
             self.neutralize_variable("eitc")
             self.neutralize_variable("ctc")
 

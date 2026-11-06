@@ -9,11 +9,13 @@ have shipped before (see issues #9234 and #9080):
 3. A new year block silently dropping members of the previous block, since
    these lists are full-replacement rather than incremental.
 
-The second half covers the benefit aggregates themselves. Several structural
-reforms replace household_benefits or spm_unit_benefits with their own
-hardcoded list, so a contributed program added to the baseline aggregates is
-silently dropped under those reforms unless it is added to every copy. That
-shipped with the Trump dividend, which #9430 added to the baseline lists only.
+The second half covers the benefit aggregates themselves. Structural reforms
+used to replace household_benefits or spm_unit_benefits with their own
+hardcoded copy of the list, and every copy fell behind: the Trump dividend
+(#9430) and dozens of state SSI supplements reached the baseline lists only, so
+those reforms dropped them for every household (#10226). Both lists are now
+parameters, and a reform adds its own programs to them with
+add_to_list_parameter. These tests keep it that way.
 
 The last test keeps reforms from copying the household tax totals at all. The
 abolish-federal-income-tax and abolish-payroll-tax reforms once did, from a
@@ -155,10 +157,15 @@ def test_members_are_state_gated(list_path, variables):
     )
 
 
-# household_benefits needs no state gate, because most members are national.
-@pytest.mark.parametrize(
-    "list_path", [*AGGREGATE_LISTS, "gov/household/household_benefits.yaml"]
-)
+# household_benefits and spm_unit_benefits need no state gate, because most
+# members are national.
+BENEFIT_LISTS = [
+    "gov/household/household_benefits.yaml",
+    "gov/household/spm_unit_benefits.yaml",
+]
+
+
+@pytest.mark.parametrize("list_path", [*AGGREGATE_LISTS, *BENEFIT_LISTS])
 def test_no_silent_removals_between_year_blocks(list_path):
     blocks = blocks_of(list_path)
     for (_, prev), (date, curr) in zip(blocks, blocks[1:]):
@@ -173,143 +180,69 @@ def test_no_silent_removals_between_year_blocks(list_path):
         )
 
 
-# --- Reform-side copies of the benefit aggregates -------------------------
+@pytest.mark.parametrize("list_path", BENEFIT_LISTS)
+def test_benefit_list_members_are_defined_variables(list_path, variables):
+    undefined = sorted(members_of(list_path) - set(variables))
+    assert not undefined, (
+        f"{list_path} references variables that do not exist: {undefined}"
+    )
+
+
+@pytest.mark.parametrize("list_path", BENEFIT_LISTS)
+def test_benefit_lists_hold_each_member_once(list_path):
+    for date, members in blocks_of(list_path):
+        repeated = sorted(m for m in set(members) if members.count(m) > 1)
+        assert not repeated, f"{list_path} block {date} repeats {repeated}"
+
+
+# --- Reforms extend the benefit lists rather than copy them ----------------
 
 AGGREGATE_VARIABLES = ("household_benefits", "spm_unit_benefits")
 
-BASELINE_SPM_BENEFITS_SOURCE = (
-    PACKAGE / "variables/household/income/spm_unit/spm_unit_benefits.py"
-)
-BASELINE_HOUSEHOLD_BENEFITS_LIST = "gov/household/household_benefits.yaml"
 
-# Contributed programs that a reform may legitimately leave out of its own
-# copy of an aggregate, keyed by (reform source path, variable name).
-ALLOWED_REFORM_OMISSIONS: dict[tuple[str, str], set[str]] = {}
+def aggregate_redefinitions(source_text):
+    """Names of the benefit aggregates that a module defines a class for.
 
-
-def contrib_variable_names():
-    """Variables defined under variables/contrib, by source-file location."""
-    names = set()
-    for source in (PACKAGE / "variables/contrib").rglob("*.py"):
-        names.update(re.findall(r"^class (\w+)\(Variable\)", source.read_text(), re.M))
-    return names
-
-
-def benefits_lists_in(source_path):
-    """(variable name, members) for each literal BENEFITS list in a file.
-
-    Only plain list literals are returned. A reform that rebuilds its list
-    from the parameter (or filters an existing one) has no literal to check.
+    Reform modules define their variables inside a create_* function, so the
+    walk covers nested classes too.
     """
-    tree = ast.parse(source_path.read_text())
-    found = []
-    for node in ast.walk(tree):
-        if not isinstance(node, ast.ClassDef) or node.name not in AGGREGATE_VARIABLES:
-            continue
-        for statement in ast.walk(node):
-            if not isinstance(statement, ast.Assign):
-                continue
-            targets = [t.id for t in statement.targets if isinstance(t, ast.Name)]
-            if "BENEFITS" not in targets:
-                continue
-            if not isinstance(statement.value, ast.List):
-                continue
-            found.append(
-                (
-                    node.name,
-                    [
-                        element.value
-                        for element in statement.value.elts
-                        if isinstance(element, ast.Constant)
-                    ],
-                )
-            )
-    return found
-
-
-def reform_aggregate_overrides():
-    cases = []
-    for source in sorted((PACKAGE / "reforms").rglob("*.py")):
-        for variable_name, members in benefits_lists_in(source):
-            cases.append(
-                (str(source.relative_to(PACKAGE)), variable_name, tuple(members))
-            )
-    return cases
-
-
-REFORM_AGGREGATE_OVERRIDES = reform_aggregate_overrides()
-
-
-def baseline_members(variable_name):
-    if variable_name == "spm_unit_benefits":
-        lists = benefits_lists_in(BASELINE_SPM_BENEFITS_SOURCE)
-        assert len(lists) == 1, "baseline spm_unit_benefits changed shape"
-        return set(lists[0][1])
-    return members_of(BASELINE_HOUSEHOLD_BENEFITS_LIST)
-
-
-def test_reform_aggregate_overrides_are_discovered():
-    """The scan below is only a guard while it still finds the copies."""
-    found = {(path, variable) for path, variable, _ in REFORM_AGGREGATE_OVERRIDES}
-    assert len(found) >= 6, (
-        f"expected the reform-side benefit aggregate copies, found {sorted(found)}"
+    return sorted(
+        node.name
+        for node in ast.walk(ast.parse(source_text))
+        if isinstance(node, ast.ClassDef) and node.name in AGGREGATE_VARIABLES
     )
 
 
-@pytest.mark.parametrize(
-    "source_path,variable_name,members",
-    REFORM_AGGREGATE_OVERRIDES,
-    ids=[f"{path}::{variable}" for path, variable, _ in REFORM_AGGREGATE_OVERRIDES],
-)
-def test_reform_aggregates_keep_baseline_contrib_entries(
-    source_path, variable_name, members
-):
-    contrib = contrib_variable_names()
-    expected = baseline_members(variable_name) & contrib
-    allowed = ALLOWED_REFORM_OMISSIONS.get((source_path, variable_name), set())
-    missing = sorted(expected - set(members) - allowed)
-    assert not missing, (
-        f"{source_path} redefines {variable_name} with its own list and drops "
-        f"{missing}, which the baseline {variable_name} counts. Add the entry "
-        "here too, or record a deliberate omission in "
-        "ALLOWED_REFORM_OMISSIONS in this test."
+def test_aggregate_redefinitions_finds_a_nested_copy():
+    """The scan below is only a guard while it would find a copy."""
+    source = (
+        "def create_reform():\n"
+        "    class spm_unit_benefits(Variable):\n"
+        "        pass\n"
+        "    class household_benefits(Variable):\n"
+        "        pass\n"
+        "    class spm_unit_net_income(Variable):\n"
+        "        pass\n"
     )
+    assert aggregate_redefinitions(source) == [
+        "household_benefits",
+        "spm_unit_benefits",
+    ]
 
 
-# Cash programs that household_benefits and spm_unit_benefits both count. A
-# reform's copy that drops one takes the payment away from every household in
-# the simulation, not only the reform's target group.
-SHARED_CASH_PROGRAMS = {
-    "spm_unit_benefits": {
-        "ak_energy_relief",
-        "ca_capi",
-        "ca_la_expectant_parent_payment",
-        "ca_la_infant_supplement",
-        "co_denver_property_tax_relief",
-        "ma_eaedc",
-        "nj_property_tax_relief",
-        "ny_drive_clean_rebate",
-    },
-    "household_benefits": {
-        "ak_energy_relief",
-        "household_local_benefits",
-        "ny_drive_clean_rebate",
-    },
-}
-
-
-@pytest.mark.parametrize(
-    "source_path,variable_name,members",
-    REFORM_AGGREGATE_OVERRIDES,
-    ids=[f"{path}::{variable}" for path, variable, _ in REFORM_AGGREGATE_OVERRIDES],
-)
-def test_reform_aggregates_keep_shared_cash_programs(
-    source_path, variable_name, members
-):
-    missing = sorted(SHARED_CASH_PROGRAMS[variable_name] - set(members))
-    assert not missing, (
-        f"{source_path} redefines {variable_name} and drops {missing}, which "
-        "both income totals count. Add them to this copy."
+def test_reforms_extend_benefit_lists_rather_than_copy_them():
+    copies = [
+        f"{source.relative_to(PACKAGE)}::{name}"
+        for source in sorted((PACKAGE / "reforms").rglob("*.py"))
+        for name in aggregate_redefinitions(source.read_text())
+    ]
+    assert not copies, (
+        f"These reforms redefine a benefit aggregate: {copies}. A copy of the "
+        "list falls behind the baseline, and every program it misses drops "
+        "out of income for every household the reform applies to (#10226). "
+        "Add the reform's own programs to gov.household.household_benefits or "
+        "gov.household.spm_unit_benefits with add_to_list_parameter "
+        "(policyengine_us/tools/parameters.py) in its modify_parameters."
     )
 
 

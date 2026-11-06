@@ -1,12 +1,12 @@
-# Head Start values compose into BOOST's static household_benefits list when
+# Head Start values compose into household_benefits under BOOST when
 # gov.simulation.include_head_start_benefits_in_net_income is on.
 #
 # Lives under tests/policy/reform (one subprocess per file) rather than
 # contrib/congress/tlaib for the same reason as the ECPA composition case: the
 # congress structural batch runs each proposal directory in a single process at
 # its memory ceiling, and an extra reformed-system variant stalls that job.
-# With administered_through_ssa false, BOOST's household_benefits is the static
-# list alone, so the asserted total isolates the wrapper entry.
+# With administered_through_ssa false, BOOST adds nothing to household_benefits,
+# so the asserted total isolates the wrapper entry.
 
 - name: Head Start values compose into BOOST household benefits when the inclusion switch is on.
   period: 2023

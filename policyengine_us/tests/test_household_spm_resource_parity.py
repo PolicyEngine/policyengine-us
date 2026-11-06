@@ -112,12 +112,11 @@ def household_members(year):
     return (members | nested) - {"household_state_benefits", "household_local_benefits"}
 
 
-def spm_members():
+def spm_members(year):
+    """spm_unit_benefits: its parameter list and what its formula appends."""
     source = PACKAGE / "variables/household/income/spm_unit/spm_unit_benefits.py"
-    text = source.read_text()
-    listed = set(re.findall(r'^\s+"([a-z0-9_]+)",', text, re.M))
-    appended = set(re.findall(r'BENEFITS\.append\("([a-z0-9_]+)"\)', text))
-    return listed | appended
+    appended = set(re.findall(r'\.append\("([a-z0-9_]+)"\)', source.read_text()))
+    return block_for("spm_unit_benefits", year) | appended
 
 
 def person_market_members():
@@ -128,7 +127,7 @@ def person_market_members():
 @pytest.mark.parametrize("year", YEARS)
 def test_benefit_lists_differ_only_where_documented(year):
     household = {name for name in household_members(year) if not is_child_care(name)}
-    spm = {name for name in spm_members() if not is_child_care(name)}
+    spm = {name for name in spm_members(year) if not is_child_care(name)}
 
     household_extra = household - spm - set(HOUSEHOLD_ONLY)
     spm_extra = spm - household - set(SPM_ONLY)
