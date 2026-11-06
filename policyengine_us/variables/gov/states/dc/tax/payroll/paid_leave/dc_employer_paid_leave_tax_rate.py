@@ -9,9 +9,9 @@ class dc_employer_paid_leave_tax_rate(Variable):
     label = "District of Columbia employer paid leave tax rate"
     documentation = (
         "Annual effective rate of the District of Columbia Paid Family Leave "
-        "tax. Employers pay this tax by calendar quarter, and each rate change "
-        "so far began a quarter, so the annual rate averages the four quarterly "
-        "rates, assuming wages accrue evenly over the year."
+        "tax. The District applies one rate to each calendar quarter, and each "
+        "rate change so far began a quarter, so the annual rate averages the "
+        "four quarterly rates, assuming wages accrue evenly over the year."
     )
     definition_period = YEAR
     unit = "/1"
