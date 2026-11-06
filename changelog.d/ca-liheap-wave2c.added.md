@@ -1,0 +1,1 @@
+Add California LIHEAP regular utility heating schedules, a covered Madera propane/fuel-oil calculation, and approved-cost wood assistance, including the federal income floor, military pensions, receipt-based benefits and allowable medical-premium deductions.
