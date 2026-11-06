@@ -1,0 +1,152 @@
+# The department states these amounts by the week. The model's year has 52 weeks.
+# Each bill stands for what the program charges a CCFAP family.
+
+- name: Tuition of 350 under a 439 state rate with a 300 family share leaves the family 211 a week.
+  # Department memo of January 13, 2026, separate tuition example 1 (PDF page 6):
+  # the state pays 439 - 300 = 139 and the invoice shows 350 - 139 = 211 due.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 7
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 15_600 # 300 x 52
+        spm_unit_pre_subsidy_childcare_expenses: 18_200 # 350 x 52
+    households:
+      household:
+        members: [parent, child]
+        state_code: VT
+  output:
+    child_care_subsidies: 7_228 # 139 x 52
+    household_child_care_subsidies: 7_228
+    childcare_expenses: 10_972 # 211 x 52
+
+- name: Tuition equal to the 439 state rate leaves the family its whole 300 share.
+  # Department memo of January 13, 2026, blended tuition example 1 (PDF page 2),
+  # with the prekindergarten payment left out: 439 - 139 = 300 due.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 7
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 15_600 # 300 x 52
+        spm_unit_pre_subsidy_childcare_expenses: 22_828 # 439 x 52
+    households:
+      household:
+        members: [parent, child]
+        state_code: VT
+  output:
+    child_care_subsidies: 7_228 # 139 x 52
+    household_child_care_subsidies: 7_228
+    childcare_expenses: 15_600 # 300 x 52
+
+- name: A rate of 260 above the 243 state rate with a 50 family share leaves the family 67 a week.
+  # CCFAP Understanding Payments, "Honey Child Care" (PDF page 2): the state pays
+  # 243 - 50 = 193 and the remaining 67 falls to the family.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 2_600 # 50 x 52
+        spm_unit_pre_subsidy_childcare_expenses: 13_520 # 260 x 52
+    households:
+      household:
+        members: [parent, child]
+        state_code: VT
+  output:
+    child_care_subsidies: 10_036 # 193 x 52
+    household_child_care_subsidies: 10_036
+    childcare_expenses: 3_484 # 67 x 52
+
+- name: The state pays 337 a week on a 250 rate under the 387 state rate with a 50 family share.
+  # CCFAP Understanding Payments, "Jane Smith" (PDF page 2).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 1
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        pre_subsidy_childcare_expenses:
+          2025: 13_000 # 250 x 52
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 216.6667 # 50 x 52 / 12
+    households:
+      household:
+        members: [parent, child]
+        state_code: VT
+  output:
+    vt_ccfap: 1_460.33 # 337 x 52 / 12
+
+- name: A state payment above the 250 rate leaves the family nothing and counts up to the bill.
+  # Understanding Payments states the state's 337 and no family amount. Regulations
+  # sections IV A and VI(8) and the memo's invoices leave the fees above the state's
+  # payment to the family, and 337 covers 250. The state rate rises from 387 to 407
+  # in August 2025: 7 x (387 x 52 / 12 - 2,600 / 12) + 5 x (407 x 52 / 12 - 2,600 / 12).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 1
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 2_600 # 50 x 52
+        spm_unit_pre_subsidy_childcare_expenses: 13_000 # 250 x 52
+    households:
+      household:
+        members: [parent, child]
+        state_code: VT
+  output:
+    child_care_subsidies: 17_957.33
+    household_child_care_subsidies: 13_000
+    childcare_expenses: 0
