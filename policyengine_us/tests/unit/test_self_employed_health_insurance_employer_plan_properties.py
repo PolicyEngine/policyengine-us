@@ -26,8 +26,8 @@ every tax unit and year:
    Social Security income, taxable benefits can also change when the
    deduction changes, so AGI can move by a different amount.
 
-A deterministic grid runs every combination of the head's, the spouse's and a
-dependent's flags for a joint couple with a self-employed head.
+The deterministic grid combines every head and spouse flag setting with a
+dependent's ESI flag both clear and set, for a couple with a self-employed head.
 Sources: https://www.law.cornell.edu/uscode/text/26/162#l_2_B and
 https://www.irs.gov/pub/irs-prior/f7206--2025.pdf#page=1 (line 1).
 """

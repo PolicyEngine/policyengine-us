@@ -297,3 +297,60 @@
     self_employed_health_insurance_employer_plan_eligible: [false, true]
     self_employed_health_insurance_premiums: [0, 0]
     self_employed_health_insurance_ald_person: [0, 0]
+
+- name: An employer pays all premiums for a plan, so the filer's own-policy premiums do not count.
+  period: 2025
+  input:
+    is_self_employed: true
+    self_employment_income: 50_000
+    health_insurance_premiums: 6_000
+    employer_contribution_to_health_insurance_premiums_category: ALL
+  output:
+    # ALL establishes employer support, so the filer excludes all 6,000.
+    # Half of SE tax: 50,000 x 0.9235 x 0.153 / 2 = 3,532.3875.
+    # The limit, 50,000 - 3,532.3875 = 46,467.6125, exceeds the base.
+    # The filer deducts min(0, 46,467.6125) = 0.
+    self_employed_health_insurance_employer_plan_eligible: true
+    self_employed_health_insurance_premiums: 0
+    self_employed_health_insurance_ald_person: 0
+
+- name: The spouse's medical plan bars medical premiums while long-term care premiums remain deductible.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_self_employed: true
+        self_employment_income: 50_000
+        health_insurance_premiums: 6_000
+        long_term_health_insurance_premiums: 500
+      spouse:
+        age: 43
+        employment_income: 40_000
+        has_esi: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # The spouse's ESI bars both filers' medical premiums: line 1 = 0.
+    self_employed_health_insurance_employer_plan_eligible: [true, true]
+    self_employed_health_insurance_premiums: [0, 0]
+    # At age 45, the head's 2025 long-term care limit exceeds 500.
+    # Line 2 = 500; half of SE tax = 50,000 x 0.9235 x 0.153 / 2
+    # = 3,532.3875; earned income limit = 46,467.6125.
+    # The head deducts min(0 + 500, 46,467.6125) = 500.
+    self_employed_health_insurance_ald_person: [500, 0]
+    self_employed_health_insurance_ald: 500
+    # The head deducts 500 - min(0, 500) = 500 of long-term care premiums.
+    self_employed_health_insurance_ald_long_term_care_part: [500, 0]
+    # AGI = 50,000 + 40,000 - 3,532.3875 - 500 = 85,967.6125.
+    adjusted_gross_income: 85_967.61
+    # Schedule A retains 6,000 + 500 - 500 = 6,000 before its floor.
+    itemized_medical_expenses: 6_000
