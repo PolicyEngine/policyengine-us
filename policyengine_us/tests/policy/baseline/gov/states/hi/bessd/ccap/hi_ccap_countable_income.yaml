@@ -282,19 +282,19 @@
   input:
     people:
       parent:
-        age: 30
-        employment_income_before_lsr: 12_000
+        age: {2021: 30}
+        employment_income_before_lsr: {2021: 12_000}
       child:
-        age: 5
+        age: {2021: 5}
     spm_units:
       unit:
         members: [parent, child]
         hi_tanf: 100
-        takes_up_tanf_if_eligible: true
+        takes_up_tanf_if_eligible: {2021: true}
     households:
       household:
         members: [parent, child]
-        state_code: HI
+        state_code: {2021: HI}
   output:
     # The monthly formula reads August 1, before the August 6 parameter
     # date, and counts $1,000 earnings without the $100 TANF grant.
@@ -306,19 +306,19 @@
   input:
     people:
       parent:
-        age: 30
-        employment_income_before_lsr: 12_000
+        age: {2021: 30}
+        employment_income_before_lsr: {2021: 12_000}
       child:
-        age: 5
+        age: {2021: 5}
     spm_units:
       unit:
         members: [parent, child]
         hi_tanf: 100
-        takes_up_tanf_if_eligible: true
+        takes_up_tanf_if_eligible: {2021: true}
     households:
       household:
         members: [parent, child]
-        state_code: HI
+        state_code: {2021: HI}
   output:
     # The monthly formula first reads the August 6 parameter in September:
     # $1,000 earnings + $100 Hawaii TANF = $1,100 countable income.
