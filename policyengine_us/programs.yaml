@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, CA, CO, DC, DE, GA, HI, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SC, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DC, DE, GA, HI, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SC, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
     state_implementations:
       - state: AL
         status: partial
@@ -1036,6 +1036,14 @@ programs:
         parameter_prefix: gov.states.co.cdhs.leap
         verified_years: "2026"
         notes: FY2026 regular heating assistance, including heat-in-rent costs, income contribution rates and the subsidized-housing deduction. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: CT
+        status: partial
+        name: Connecticut CEAP
+        full_name: Connecticut Energy Assistance Program
+        variable: ct_ceap
+        parameter_prefix: gov.states.ct.dss.ceap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 basic and rental heating assistance. The SNAP nominal benefit, crisis, weatherization and equipment assistance are out of scope.
       - state: GA
         status: partial
         name: Georgia LIHEAP
