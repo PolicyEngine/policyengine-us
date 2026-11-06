@@ -3,6 +3,14 @@ metadata:
   unit: currency-USD
   period: year
   label: Medicare Part A deductible
+  # After the last announced year, the deductible follows the Medicare
+  # Trustees' projected deductible, rounded to the nearest multiple of $4 as 42
+  # U.S.C. 1395e(b)(1) requires.
+  uprating:
+    parameter: calibration.gov.hhs.cms.medicare_part_a_deductible
+    rounding:
+      type: nearest
+      interval: 4
   reference:
     - title: 42 U.S.C. § 1395e(b)(1)
       href: https://www.law.cornell.edu/uscode/text/42/1395e#b_1

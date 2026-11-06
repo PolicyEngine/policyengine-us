@@ -193,3 +193,64 @@
     msp_asset_eligible: false
   output:
     medicare_part_b_premium: 8_278.8
+
+# Projected years. The standard premium follows the Trustees' projection
+# (Table V.E2), each income-related adjustment amount grows with it from
+# CMS's 2026 amount, and the thresholds follow 42 U.S.C. 1395r(i)(5)'s CPI-U
+# schedule: $112,000 / $141,000 / $176,000 / $211,000 / $500,000 unmarried in
+# 2027, and twice that (but $888,000 at the top) jointly in 2034.
+- name: 2027 single filer in the 50 percent tier.
+  period: 2027
+  input:
+    age: 65
+    filing_status: SINGLE
+    adjusted_gross_income:
+      2025: 160_000
+    tax_exempt_interest_income:
+      2025: 0
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    msp_income_eligible: false
+    msp_asset_eligible: false
+  output:
+    # ($209.50 standard + $209.50 adjustment) * 12 months
+    medicare_part_b_premium: 5_028
+
+- name: 2027 separate filer above the falling top threshold.
+  period: 2027
+  input:
+    age: 65
+    filing_status: SEPARATE
+    adjusted_gross_income:
+      2025: 390_000
+    tax_exempt_interest_income:
+      2025: 0
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    msp_income_eligible: false
+    msp_asset_eligible: false
+  output:
+    # The top tier starts at $500,000 less the $112,000 unmarried threshold,
+    # $388,000 (CMS's 2026 figure was $391,000). The 85 percent tier's
+    # adjustment is $487.00 * 209.50 / 202.90 = $502.84, rounded to $502.80.
+    # ($209.50 + $502.80) * 12 months
+    medicare_part_b_premium: 8_547.6
+
+- name: 2034 joint filers in the 65 percent tier.
+  period: 2034
+  input:
+    age: 65
+    filing_status: JOINT
+    adjusted_gross_income:
+      2032: 450_000
+    tax_exempt_interest_income:
+      2032: 0
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    msp_income_eligible: false
+    msp_asset_eligible: false
+  output:
+    # Joint 65 percent tier: $418,001 to $500,000. Adjustment $324.60 *
+    # 338.50 / 202.90 = $541.53, rounded to $541.50.
+    # ($338.50 + $541.50) * 12 months
+    medicare_part_b_premium: 10_560
