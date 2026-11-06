@@ -105,3 +105,13 @@
   output:
     # 50,000 * 0.45% = 225; 192,300 * 0.45% = 865.35
     md_employee_famli_contribution: [225, 865.35]
+
+- name: Case 11, a 401(k) deferral taken from salary stays in the contribution base.
+  period: 2027
+  input:
+    employment_income: 60_000
+    traditional_401k_contributions: 4_000
+    state_code: MD
+  output:
+    # 60,000 * 0.9% * 50% = 270. Taking the deferral out would give 252.
+    md_employee_famli_contribution: 270

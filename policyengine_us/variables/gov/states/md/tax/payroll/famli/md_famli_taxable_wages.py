@@ -22,6 +22,7 @@ class md_famli_taxable_wages(Variable):
         "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gle&section=8.3-101&enactments=false",
         "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gle&section=8-101&enactments=false",
         "https://regs.maryland.gov/us/md/exec/comar/09.42.02.04",
+        "https://regs.maryland.gov/us/md/exec/comar/09.32.01.14",
         "https://labor.maryland.gov/employment/empguide/empguide.pdf#page=19",
     )
 

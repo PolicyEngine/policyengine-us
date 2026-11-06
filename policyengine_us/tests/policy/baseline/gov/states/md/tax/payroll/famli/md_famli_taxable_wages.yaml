@@ -2,9 +2,10 @@
 # wages up to the Social Security wage base, and COMAR 09.42.02.01B(2) takes
 # that base from the Federal Insurance Contributions Act maximum for the year:
 # $184,500 in 2026 and $192,300 in 2027. Section 8.3-101(r) takes wages from the
-# unemployment insurance definition in s. 8-101(aa). Maryland Labor's employer
-# guide reads that definition to exclude cafeteria plan salary reductions and
-# include 401(k) deferrals.
+# unemployment insurance definition in s. 8-101(aa). COMAR 09.32.01.14A(2)(a)
+# leaves out deferred compensation only when it is not deducted from salary, and
+# Maryland Labor's employer guide excludes cafeteria plan salary reductions and
+# includes 401(k) deferrals.
 
 - name: Case 1, wages below the wage base are all taxable.
   period: 2027
@@ -117,3 +118,12 @@
     state_code: VA
   output:
     employer_total_md_famli_taxable_wages: 0
+
+- name: Case 14, a 401(k) deferral taken from salary stays in taxable wages.
+  period: 2027
+  input:
+    employment_income: 60_000
+    traditional_401k_contributions: 4_000
+    state_code: MD
+  output:
+    md_famli_taxable_wages: 60_000
