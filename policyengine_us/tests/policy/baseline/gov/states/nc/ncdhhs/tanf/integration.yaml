@@ -502,3 +502,43 @@
     nc_tanf_countable_gross_unearned_income: 3_600
     # Need standard for 1: 362 a month; 0.5 * (362 - 300) = 31 a month
     nc_tanf: 31 * 12
+
+- name: One adult and one child with no income and $3,000 in the bank receive the full payment.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        bank_account_assets: 3_000
+      person2:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    # $3,000 is at the limit (10A NCAC 71W .0407), so the unit stays eligible.
+    nc_tanf: (472 - 0) * 0.5 * 12
+
+- name: One adult and one child with no income and $5,000 in stocks receive nothing.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        stock_assets: 5_000
+      person2:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    # $5,000 of countable resources exceeds the $3,000 limit.
+    nc_tanf: 0

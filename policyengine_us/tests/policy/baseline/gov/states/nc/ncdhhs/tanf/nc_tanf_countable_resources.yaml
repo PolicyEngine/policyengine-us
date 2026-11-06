@@ -1,0 +1,23 @@
+- name: Bank, stock and bond assets count; vehicle value does not.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        bank_account_assets: 1_000
+        stock_assets: 1_500
+        bond_assets: 700
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+        household_vehicles_value: 20_000
+  output:
+    # 1,000 + 1,500 + 700 = 3,200; the vehicle is excluded.
+    nc_tanf_countable_resources: 3_200
+    nc_tanf_resources_eligible: false
