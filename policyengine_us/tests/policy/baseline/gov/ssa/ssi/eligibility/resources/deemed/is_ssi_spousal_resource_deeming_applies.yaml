@@ -313,9 +313,9 @@
     ssi_resources_deemed_from_ineligible_spouse: [3001, 0]
     meets_ssi_resource_test: [false, false]
 
-# Two aged, blind or disabled spouses who are both tax dependents do not
-# claim jointly in the model, but 416.1205(b) still tests a couple's
-# combined resources against the couple limit: 0 + 3,001 > 3,000.
+# Two aged, blind or disabled spouses who are both tax dependents claim
+# jointly. Under 416.1205(b), SSA tests their combined resources against
+# the couple limit: 0 + 3,001 > 3,000.
 - name: Disabled married dependents count each other's resources
   period: 2026-01
   input:

@@ -7,7 +7,7 @@ from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spo
 class ssi_marital_unearned_income(Variable):
     value_type = float
     entity = Person
-    label = "Total SSI unearned income for a marital unit"
+    label = "Combined SSI unearned income of the two spouses"
     definition_period = YEAR
     reference = (
         "https://www.ecfr.gov/current/title-20/section-416.1802#p-416.1802(b)(1)"
