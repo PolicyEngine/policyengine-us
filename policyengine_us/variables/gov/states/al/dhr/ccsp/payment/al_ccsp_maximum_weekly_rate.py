@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.childcare import childcare_hours_for_weekly_schedule
 from policyengine_us.variables.gov.states.al.dhr.ccsp.al_ccsp_provider_type import (
     ALCCSPProviderType,
 )
@@ -40,7 +41,7 @@ class al_ccsp_maximum_weekly_rate(Variable):
         # Part-time (≤25 hours/week) pays half the applicable full-time
         # rate, including for INFORMAL providers (so the part-time cap is
         # half of informal_weekly_cap).
-        hours = person("childcare_hours_per_week", period.this_year)
+        hours = childcare_hours_for_weekly_schedule(person, period)
         # Zero also represents unknown hours, so retain full-time pricing.
         is_part_time = (hours > 0) & (hours <= p.full_time_hours_threshold)
         return where(
