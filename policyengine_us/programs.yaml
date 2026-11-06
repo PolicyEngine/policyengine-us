@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, CA, CO, CT, DC, DE, GA, HI, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SC, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DC, DE, GA, HI, Riverside County, MA, FL, IL, IA, ID, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SC, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
     state_implementations:
       - state: AL
         status: partial
@@ -1361,6 +1361,13 @@ programs:
         parameter_prefix: gov.states.wy.dfs.lieap
         verified_years: "2026"
         notes: FY2026 regular heating from the published fuel cost standards. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: ID
+        status: partial
+        name: Idaho LIHEAP
+        full_name: Idaho Low Income Home Energy Assistance Program
+        variable: id_liheap
+        parameter_prefix: gov.states.id.dhw.liheap
+        notes: FY2026 regular heating; burden bands use the PY2007 heating-cost table, whose FY2026 currency is unconfirmed, so no year is verified. Crisis, cooling, weatherization and equipment assistance are out of scope.
 
   # --- SSA programs ---
   - id: ssi

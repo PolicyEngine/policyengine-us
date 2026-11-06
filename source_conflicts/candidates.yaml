@@ -3398,6 +3398,119 @@ candidates:
   state: ruled
   note: 'Ruled statute-first in October 2026; confirm line 12(c)''s scope against the per-person statute and worksheet.
     Code not yet on main: id_grocery_credit.'
+- id: us-id:liheap-heat-in-rent-fy2026
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is an Idaho household that pays for heat through its rent eligible for FY2026 regular heating, as the rule in
+    force until June 2026 provides, or ineligible, as the FY2026 plan provides?
+  sources:
+  - kind: regulation
+    citation: IDAPA 16.04.14.152.02 and 16.04.14.010.08.b, effective April 6, 2023
+    url: https://www.law.cornell.edu/regulations/idaho/IDAPA-16.04.14.152
+  - kind: plan
+    citation: Idaho FY2026 LIHEAP State Plan, items 2.3 and 2.5, PDF pages 8-9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=8
+  - kind: regulation
+    citation: IDAPA 16.03.08.200.07, effective July 1, 2026
+    url: https://adminrules.idaho.gov/rules/current/16/160308.pdf#page=5
+  readings:
+    statute: No statute is supplied; 16.04.14.152.02 covers households that incur home energy costs "either directly or as
+      an undesignated portion of their rent". From July 1, 2026, 16.03.08.200.07 says "designated portion".
+    other: Plan 2.5 says "Household with no specific heat cost obligation (included in rent, rent subsidized) will not be
+      eligible to a LIHEAP benefit", and the PY26 chart has no rent amount.
+  example: One person aged 65 with $15,000 of Social Security and natural gas heat included in rent in Ada County receives
+    $0 under the plan. Under 16.04.14.152.02 the household is eligible, and no FY2026 amount is printed for it.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/id/dhw/liheap/eligibility/id_liheap_eligible.py
+    - policyengine_us/parameters/gov/states/id/dhw/liheap/payment/rent.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10613
+  state: ruled
+  note: 'Ruled 2026-11-02 and confirmed 2026-11-03: heat in rent is read as no specific obligation and is ineligible from
+    FY2026, although plan 1.1 runs heating assistance from October 2025 to March 2026, all under 16.04.14. Basis: 16.04.14
+    sets no amount (001.02: "does not entitle any household to a certain amount or form of assistance"), and the PY26
+    chart, the only FY2026 amount instrument, drops the Rent column PY25 had. A designated heat charge within rent has no
+    input.'
+- id: us-id:liheap-monthly-limit-above-federal-ceiling
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can Idaho's monthly income limits in cents pay a household whose annual income exceeds HHS's 60% state median
+    income amount?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: guidance
+    citation: HHS LIHEAP IM 2025-02 Attachment 4, Mandatory Use in LIHEAP for FY26, Idaho, pages 1 and 4
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=1
+  - kind: guidance
+    citation: Idaho DHW Apply for Heating Assistance, monthly income limits effective October 1, 2025
+    url: https://healthandwelfare.idaho.gov/services-programs/financial-assistance/home-heating-and-utility-assistance/apply-heating-assistance
+  readings:
+    statute: Payments go only to households whose income does not exceed the greater of 150% of the poverty guideline and
+      60% of the state median income, which HHS publishes as $42,938 for two people and $83,351 for six.
+    other: DHW prints $3,578.17 and $6,945.92 a month, which annualize to $42,938.04 and $83,351.04.
+  example: Two adults with $42,938.02 of wages and natural gas heat in Ada County exceed the $42,938 federal maximum and
+    receive $0. The annualized monthly limit would pay $122.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/id/dhw/liheap/eligibility/id_liheap_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10613
+  state: unreviewed
+  note: The PR caps the annualized monthly limit at HHS's amount. DHW's lower annualized figures at sizes 3 and 4 ($53,040.96
+    and $63,144.96) stay, since a lower limit is allowed.
+- id: us-id:liheap-plan-income-checklist
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do VA benefits, general assistance and minors' earnings count for Idaho LIHEAP in FY2026, as IDAPA 16.04.14
+    provides, or stay out under the FY2026 plan checklist?
+  sources:
+  - kind: regulation
+    citation: IDAPA 16.04.14.010.06 and 16.04.14.151.02, effective April 6, 2023
+    url: https://www.law.cornell.edu/regulations/idaho/IDAPA-16.04.14.010
+  - kind: plan
+    citation: Idaho FY2026 LIHEAP State Plan, section 1.9, PDF pages 5-7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5
+  - kind: regulation
+    citation: IDAPA 16.03.08.202, effective July 1, 2026
+    url: https://adminrules.idaho.gov/rules/current/16/160308.pdf#page=6
+  readings:
+    statute: No statute is supplied; 16.04.14.010.06 counts moneys "from all sources", and the closed exclusion list at
+      151.02 names only GI Bill education money among VA payments and no general assistance or minors' earnings.
+    other: Plan 1.9 leaves "General Assistance benefits", "Veterans Administration (VA) benefits" and "Earned income of a
+      child under the age of 18" unchecked. From July 1, 2026, 16.03.08.202 counts gross income as the Department determines.
+  example: A veteran aged 45 with $35,000 of VA disability compensation and natural gas heat in Ada County counts $35,000
+    under the rule, above the $32,835 limit, and receives $0. Under the plan the household counts $0 and receives $132.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/id/dhw/liheap/income/sources/earned.yaml
+    - policyengine_us/parameters/gov/states/id/dhw/liheap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/id/dhw/liheap/income/id_liheap_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10613
+  state: ruled
+  note: 'Ruled 2026-11-05 for the regulation by the project lead; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10613#issuecomment-6665844738. 16.04.14.010.06 defines income as moneys "from all sources", the
+    151.02 exclusion list is closed, and 16.04.14 does not delegate countable income to the department or adopt the state
+    plan. The rule was in force April 6, 2023 to June 30, 2026, and plan 1.1 runs FY2026 heating October 1, 2025 to March
+    31, 2026, so it governed every heating determination. us-nm:liheap-plan-income-checklist followed its regulation over
+    the same checklist. The ruling covers VA benefits, general assistance, minors'' earnings and id_aabd; Part B netting
+    under plan 1.9 and miscellaneous_income, pfml_benefits, life_insurance_benefits, gi_cash_assistance and capital_gains,
+    which stay uncounted, are unchanged and outside it.'
 - id: us-il:2022-rebate-claimed-vs-claimable
   program: income-tax
   years:
