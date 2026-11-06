@@ -1,0 +1,12 @@
+description: Each ACA marketplace enrollee charged a premium pays at least this much per month under this reform, so the premium tax credit cannot reduce the premium below it.
+
+values:
+  0000-01-01: 5
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: ACA minimum monthly premium per enrollee
+  reference:
+    - title: Urban Institute, Latest Premium Tax Credit Proposal Would Raise Premiums for Millions of People (February 2026), describing the January 2026 CARE Act draft's $5 minimum premium
+      href: https://www.urban.org/sites/default/files/2026-02/Latest%20Premium%20Tax%20Credit%20Proposal%20Would%20Raise%20Premiums%20for%20Millions%20of%20People.pdf#page=2
