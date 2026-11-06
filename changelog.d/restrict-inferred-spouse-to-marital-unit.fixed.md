@@ -1,1 +1,1 @@
-Keep an inferred tax unit spouse within the head's supplied marital unit, so an unmarried adult child or other relative is no longer made the head's spouse.
+Keep an inferred tax unit spouse within the head's supplied marital unit, so an unmarried adult child or other relative is no longer made the head's spouse. A married couple sharing a marital unit in the tax unit now heads it ahead of an older adult outside the couple.

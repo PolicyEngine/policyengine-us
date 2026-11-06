@@ -22,7 +22,9 @@ class is_tax_unit_spouse(Variable):
         head = person("is_tax_unit_head", period)
         eligible = candidate & ~head & ~is_separated
         # An inferred spouse must also share the head's marital unit, which
-        # holds a married, cohabiting couple. When a situation omits marital
+        # holds a married, cohabiting couple. is_tax_unit_head takes the head
+        # from such a couple when the tax unit has one, so the next-oldest
+        # adult here is the head's partner. When a situation omits marital
         # units, Core puts everyone in one unit, so this only applies when
         # membership is supplied. A married couple living apart in separate
         # marital units, such as one spouse in a care facility, is therefore

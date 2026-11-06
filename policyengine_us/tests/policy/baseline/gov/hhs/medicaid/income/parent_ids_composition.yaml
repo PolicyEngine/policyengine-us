@@ -1239,6 +1239,8 @@
       parent:
         person_id: 1
         age: 40
+        # Pinned as head: without roles, the married couple would head the unit.
+        is_tax_unit_head: true
       adult_child:
         person_id: 2
         age: 19

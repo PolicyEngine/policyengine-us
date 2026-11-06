@@ -153,10 +153,21 @@ still take precedence.
 
 Without supplied roles, a unit falls back to age ordering. The oldest adult is
 the head, skipping adults input as tax-unit dependents unless every adult in
-the unit is one. The next-oldest such adult is the spouse, unless any member of
-the unit is separated. Without dependent inputs, that pairs an adult student
-with a parent as joint filers and leaves a minor living without a parent with
-no head.
+the unit is one. When two such adults share a two-person marital unit within
+the tax unit, the older of that couple is the head instead: a married couple
+can file jointly (26 USC 6013(a)), and a couple who files a joint return can't
+be claimed as anyone's dependents (26 USC 152(b)(2)). The spouse is the
+next-oldest such adult who shares the head's marital unit, unless any member of
+the unit is separated. When a situation omits marital units, Core puts everyone
+in one marital unit, so plain age order applies. A minor living without a
+parent is left with no head.
+
+This rule has one known limitation. When a tax unit holds a married couple and
+an older adult outside their marital unit, the couple heads the unit and the
+older adult becomes their dependent, whatever that adult's income. If the older
+adult files instead, for example a parent who claims a married child and the
+child's spouse who don't file jointly, supply `is_tax_unit_head` or
+`tax_unit_role_input`.
 
 The Populace build carries its constructor's filing status in a
 `filing_status_input` column. No variable has that name, so the column is

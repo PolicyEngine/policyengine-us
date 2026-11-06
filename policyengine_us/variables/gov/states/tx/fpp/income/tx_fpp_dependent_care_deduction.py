@@ -26,16 +26,13 @@ class tx_fpp_dependent_care_deduction(Variable):
         adult_care_expenses = person("care_expenses", period)
         age = person("age", period)
         is_child = age < p.child_age_threshold
-        # When marital units are omitted, is_tax_unit_spouse can flag the
-        # oldest non-head adult even if unmarried, so also require an actual
-        # two-person marital unit.
-        is_spouse = person("is_tax_unit_spouse", period) & (
-            person.marital_unit.nb_persons() == 2
-        )
         is_disabled_adult = (
             person("is_disabled", period)
             & ~is_child
-            & (person("is_tax_unit_dependent", period) | is_spouse)
+            & (
+                person("is_tax_unit_dependent", period)
+                | person("is_tax_unit_spouse", period)
+            )
         )
         eligible_expenses = (
             childcare_expenses * is_child + adult_care_expenses * is_disabled_adult
