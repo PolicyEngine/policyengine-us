@@ -2933,6 +2933,47 @@ candidates:
     prs: []
   state: unreviewed
   note: PE-US follows state rules; verify their effective text throughout the historical periods.
+- id: us-hi:tdi-wages-salary-reductions
+  program: hi-tdi
+  years:
+    from: 2004
+    type: calendar
+  question: Do amounts an employer pays into a retirement or medical plan out of an employee's salary count as wages for
+    Hawaii's temporary disability insurance contribution, and do dependent care benefits?
+  sources:
+  - kind: statute
+    citation: HRS 392-3 (wages), adopting HRS 383-11(1)(A), (1)(C), (4)(A) and (5)
+    url: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0383/HRS_0383-0011.htm
+  - kind: regulation
+    citation: HAR 12-11-1, which takes wages from HRS 392-3 and says nothing on salary reductions
+    url: https://labor.hawaii.gov/dcd/files/2012/11/TDI-Admin-Rules.pdf#page=5
+  - kind: guidance
+    citation: Hawaii DLIR Unemployment Insurance Division, Handbook for Employers, on the wages that chapter 383 reaches
+    url: https://labor.hawaii.gov/ui/test-handbook-for-employers/
+  readings:
+    statute: A salary-reduction amount the employer pays under a medical or retirement plan, or to a section 401(a) trust,
+      is a listed payment, so it falls outside wages. HRS 383-11(5) limits one paragraph to payments without a deduction
+      from pay, and paragraphs (1) and (4) carry no such limit. The list names no dependent care payment, so those benefits
+      stay in wages.
+    other: The federal payroll wage base keeps elective deferrals in and takes cafeteria-plan amounts and dependent care
+      out, through IRC 3306(r)(1)(A), (b)(5)(G) and (b)(13), which Hawaii did not enact. A second alternative treats every
+      salary reduction as the employee's own remuneration, so all of it stays in wages. The rule and the handbook address
+      neither alternative.
+  example: In 2026, $60,000 of salary with a $4,000 traditional 401(k) deferral gives a $280 contribution under the statute,
+    versus $300 on the federal base. $60,000 with $5,000 of dependent care benefits gives $300, versus $275 on the federal
+    base.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/hi/tax/payroll/temporary_disability_insurance/excluded_payments.yaml
+    - policyengine_us/variables/gov/states/hi/tax/payroll/temporary_disability_insurance/hi_temporary_disability_insurance_wages.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10677
+  state: ruled
+  note: The code follows the statute's text because we found no agency reading of salary reductions in the temporary
+    disability rules, the unemployment insurance rules (HAR 12-5) or the employer handbook. A published agency reading
+    would reopen this under the agency-breaks-ties principle if the text leaves the question open. Short excerpts are
+    in source_conflicts/sources/us-hi/.
 - id: us-ia:alternate-tax-claimed-spouse
   program: income-tax
   years:

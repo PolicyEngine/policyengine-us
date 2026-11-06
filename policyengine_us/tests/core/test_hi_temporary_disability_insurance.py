@@ -69,6 +69,14 @@ NOTICES = {
     2026: ("64471.82", "1500.21", "7.50"),
 }
 YEARS = sorted(NOTICES)
+# HRS 383-11(1)(A) and (4)(A). The model's elective deferral limit starts in 2015.
+DEFERRALS = (
+    "traditional_401k_contributions",
+    "roth_401k_contributions",
+    "traditional_403b_contributions",
+    "roth_403b_contributions",
+)
+FIRST_DEFERRAL_YEAR = 2015
 GROUP_ENTITIES = (
     "tax_units",
     "spm_units",
@@ -105,6 +113,17 @@ def simulate(year, workers, **overrides):
             "age": {period: 40},
             "employment_income": {period: worker["wages"]},
             "pre_tax_health_insurance_premiums": {period: worker.get("premiums", 0)},
+            "dependent_care_employer_benefits": {
+                period: worker.get("dependent_care", 0)
+            },
+            **{
+                kind: {
+                    period: worker.get("deferral", 0)
+                    if kind == worker.get("deferral_kind")
+                    else 0
+                }
+                for kind in DEFERRALS
+            },
             "weeks_worked": {period: worker.get("weeks", 0)},
             "weekly_hours_worked_before_lsr": {period: worker.get("hours", 0)},
             **{name: {period: value} for name, value in overrides.items()},
@@ -144,6 +163,9 @@ workers = st.fixed_dictionaries(
             st.integers(-5_000, 200_000),
         ),
         "premiums": st.one_of(st.just(0), st.integers(0, 10_000)),
+        "deferral": st.one_of(st.just(0), st.integers(0, 10_000)),
+        "deferral_kind": st.sampled_from(DEFERRALS),
+        "dependent_care": st.one_of(st.just(0), st.integers(0, 5_000)),
         "weeks": st.one_of(st.sampled_from([0, 13, 14, 52]), st.integers(1, 52)),
         "hours": st.one_of(st.sampled_from([0, 19, 20, 40]), st.integers(1, 80)),
     }
@@ -165,8 +187,17 @@ def test_contribution_properties(year, batch, bump):
     ).calculate(CONTRIBUTION, period)
 
     in_hawaii = np.array([worker["state"] == "HI" for worker in batch])
+    counts_deferral = year >= FIRST_DEFERRAL_YEAR
     wages = np.array(
-        [max(0, worker["wages"] - worker["premiums"]) for worker in batch],
+        [
+            max(
+                0,
+                worker["wages"]
+                - worker["premiums"]
+                - (worker["deferral"] if counts_deferral else 0),
+            )
+            for worker in batch
+        ],
         dtype=float,
     )
     weeks = np.array([worker["weeks"] or 52 for worker in batch], dtype=float)

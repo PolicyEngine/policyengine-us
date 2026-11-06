@@ -24,7 +24,7 @@ class hi_temporary_disability_insurance_qualified(Variable):
         p = parameters(
             period
         ).gov.states.hi.tax.payroll.temporary_disability_insurance.qualification
-        wages = person("payroll_tax_gross_wages", period)
+        wages = person("hi_temporary_disability_insurance_wages", period)
         weeks = person("weeks_worked", period)
         hours = person("weekly_hours_worked_before_lsr", period)
         meets_wages = wages >= p.minimum_wages
