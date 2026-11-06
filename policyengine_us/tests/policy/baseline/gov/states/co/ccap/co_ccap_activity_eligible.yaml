@@ -1,0 +1,597 @@
+# 8 CCR 1403-1 section 3.111(B)(1), (D), (E) and (G); 3.116(A); 3.119(D); 3.121(B)(3).
+# Federal minimum wage $7.25: 40 hours for 52 weeks is 2,080 hours, so the floor is $15,080.
+- name: Case 1, single parent with wages and no recorded hours meets the requirement.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: true
+
+- name: Case 2, single parent with no activity does not meet the requirement.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: false
+
+- name: Case 3, wages exactly at the minimum wage floor for the hours worked meet the requirement.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 15_080
+        weekly_hours_worked_before_lsr: 40
+        weeks_worked: 52
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: true
+
+- name: Case 4, wages a dollar below the floor fail 3.111(G)(1)(b).
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 15_079
+        weekly_hours_worked_before_lsr: 40
+        weeks_worked: 52
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: false
+
+- name: Case 5, the floor counts only the weeks worked, so $10,000 for 26 weeks at 40 hours passes.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        weekly_hours_worked_before_lsr: 40
+        weeks_worked: 26
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    # 40 x 26 = 1,040 hours x $7.25 = $7,540 <= $10,000
+    co_ccap_activity_eligible: true
+
+- name: Case 6, with no weeks reported, usual hours run the full year, so the same $10,000 fails.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: false
+
+- name: Case 7, self-employment income above the floor meets 3.111(G)(2).
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        self_employment_income: 20_000
+        weekly_hours_worked_before_lsr: 30
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    # 30 x 52 = 1,560 hours x $7.25 = $11,310 <= $20,000
+    co_ccap_activity_eligible: true
+
+- name: Case 8, a business loss fails 3.111(G)(2)(c).
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        self_employment_income: -5_000
+        weekly_hours_worked_before_lsr: 30
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: false
+
+- name: Case 9, a business loss does not erase wages.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+        self_employment_income: -30_000
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: true
+
+- name: Case 10, a full-time college student meets 3.111(G)(4).
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_full_time_college_student: true
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: true
+
+- name: Case 11, two parents who both work meet 3.111(D)(1)(c)(1).
+  period: 2026-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 20_000
+      parent2:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: true
+
+- name: Case 12, one parent working and the other at home and able to provide care fail 3.111(D)(1)(c).
+  period: 2026-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 20_000
+      parent2:
+        age: 30
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: false
+
+- name: Case 13, one parent working and the other incapacitated meet 3.111(D)(1)(c)(3).
+  period: 2026-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 20_000
+      parent2:
+        age: 30
+        is_disabled: true
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: true
+
+- name: Case 14, an incapacitated single parent with no activity fails 3.111(E).
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_disabled: true
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: false
+
+- name: Case 15, two incapacitated parents with no activity fail, since neither is in an activity.
+  period: 2026-01
+  input:
+    people:
+      parent1:
+        age: 30
+        is_disabled: true
+      parent2:
+        age: 30
+        is_disabled: true
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: false
+
+- name: Case 16, an incarcerated parent counts as absent under 3.111(D)(1)(b), so the working parent qualifies.
+  period: 2026-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 20_000
+      parent2:
+        age: 30
+        is_incarcerated: true
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: true
+
+- name: Case 17, a retired grandparent who files separately is not a caretaker under 3.103(C).
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 70
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [grandparent, parent, child]
+    tax_units:
+      grandparent_tax_unit:
+        members: [grandparent]
+      parent_tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [grandparent, parent, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: true
+
+- name: Case 18, a working grandparent who files separately does not supply the claiming parent's activity.
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 60
+        employment_income: 50_000
+      parent:
+        age: 30
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [grandparent, parent, child]
+    tax_units:
+      grandparent_tax_unit:
+        members: [grandparent]
+      parent_tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [grandparent, parent, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: false
+
+- name: Case 19, the activity input covers job search and other activities the model does not track.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        meets_ccdf_activity_test: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: true
+
+- name: Case 20, Colorado Works enrollment meets 3.116(A).
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: true
+
+- name: Case 21, an eligible child under protective services exempts the household under 3.119(D).
+  period: 2026-01
+  input:
+    people:
+      caretaker:
+        age: 50
+      child:
+        age: 3
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+    tax_units:
+      tax_unit:
+        members: [caretaker, child]
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: true
+
+- name: Case 22, an eligible child in foster care exempts the household under 3.118(A) and 3.119(D).
+  period: 2026-01
+  input:
+    people:
+      caretaker:
+        age: 50
+      child:
+        age: 3
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+    tax_units:
+      tax_unit:
+        members: [caretaker, child]
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: true
+
+- name: Case 23, a family experiencing homelessness is exempt under 3.121(B)(3)(a).
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+        is_homeless: true
+  output:
+    co_ccap_activity_eligible: true
+
+- name: Case 24, a working parent with an eligible child receives the subsidy through the full pipeline.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+      child:
+        age: 3
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+        county: DENVER_COUNTY_CO
+  output:
+    co_ccap_activity_eligible: true
+    co_ccap_eligible: true
+    # $1,000 a month less the $115.57 parent fee in court_supervision.yaml Case 5.
+    co_ccap_subsidy: 884.43
+
+- name: Case 25, the same family with the same income from a pension receives nothing.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        pension_income: 30_000
+      child:
+        age: 3
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+        county: DENVER_COUNTY_CO
+  output:
+    co_ccap_activity_eligible: false
+    co_ccap_eligible: false
+    co_ccap_subsidy: 0

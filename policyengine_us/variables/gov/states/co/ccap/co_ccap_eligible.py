@@ -9,6 +9,7 @@ class co_ccap_eligible(Variable):
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=17",
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=19",
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=31",
+        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=31",
     )
     definition_period = MONTH
     defined_for = StateCode.CO
@@ -23,6 +24,8 @@ class co_ccap_eligible(Variable):
             "co_ccap_re_determination_eligible", period
         )
 
-        return (in_entry_process & entry_eligible) | (
-            in_re_determination_process & re_determination_eligible
+        activity_eligible = spm_unit("co_ccap_activity_eligible", period)
+        return activity_eligible & (
+            (in_entry_process & entry_eligible)
+            | (in_re_determination_process & re_determination_eligible)
         )

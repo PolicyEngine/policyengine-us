@@ -1,0 +1,15 @@
+description: Colorado counts these income sources as earnings from employment or self-employment under the Child Care Assistance Program activity requirement.
+values:
+  2020-01-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+
+metadata:
+  unit: list
+  period: year
+  label: Colorado CCAP activity requirement earned income sources
+  reference:
+    - title: 8 CCR 1403-1 Section 3.111(G)(1) and (2), employment and self-employed criteria
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=36
