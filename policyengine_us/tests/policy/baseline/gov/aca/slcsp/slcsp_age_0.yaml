@@ -149,3 +149,43 @@
     slcsp_rating_area: 0
   output:
     slcsp_age_0: 0
+
+- name: slcsp_age_0 2026 California rating area 16 (Los Angeles County)
+  period: 2026-01
+  input:
+    state_code: CA
+    slcsp_rating_area: 16
+  output:
+    slcsp_age_0: 275
+
+- name: slcsp_age_0 2026 Florida rating area 22 (Gulf County)
+  period: 2026-01
+  input:
+    state_code: FL
+    slcsp_rating_area: 22
+  output:
+    slcsp_age_0: 409
+
+- name: slcsp_age_0 2026 Washington rating area 9
+  period: 2026-01
+  input:
+    state_code: WA
+    slcsp_rating_area: 9
+  output:
+    slcsp_age_0: 339
+
+- name: slcsp_age_0 2027 Texas rating area 3
+  period: 2027-01
+  input:
+    state_code: TX
+    slcsp_rating_area: 3
+  output:
+    slcsp_age_0: 441
+
+- name: slcsp_age_0 2027 New York rating area 4 (adult rate)
+  period: 2027-01
+  input:
+    state_code: NY
+    slcsp_rating_area: 4
+  output:
+    slcsp_age_0: 1_053

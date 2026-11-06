@@ -1088,11 +1088,12 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     extend_wa_millionaires_standard_deduction(parameters, end_year=END_YEAR)
 
     # ACA benchmark premium uprating (January values, last actual 2026).
-    # The published 2026 actual is 25.8% above 2025; keep long-run growth
-    # at the 2024-2025 trend so the one-off jump does not compound.
+    # The published 2026 actual is 25.8% above 2025 and 2027 is a further
+    # 12.5%; keep long-run growth at the 2024-2025 trend so the jumps do not
+    # compound.
     extend_parameter_values(
         parameters.gov.aca.benchmark_premium_uprating,
-        last_projected_year=2026,
+        last_projected_year=2027,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
