@@ -1121,8 +1121,11 @@ candidates:
     that skip the dependency question for joint filers?
   sources:
   - kind: statute
-    citation: RTC 17052 adopting IRC 32(c)(1)(A)(ii)(III)
-    url: null
+    citation: RTC 17052(a)(1), SB 1073 of 2016 section 1
+    url: https://www.leginfo.ca.gov/pub/15-16/bill/sen/sb_1051-1100/sb_1073_bill_20160927_chaptered.html
+  - kind: statute
+    citation: 26 USC 32(c)(1)(A)(ii)(III)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm
   - kind: instructions
     citation: 2025 FTB 3514 booklet, Step 4(d), p.6
     url: https://www.ftb.ca.gov/forms/2025/2025-3514-booklet.pdf#page=6
@@ -1133,12 +1136,12 @@ candidates:
     $65.025 under the model's continuous formula if the instruction flow permits eligibility.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/ca/tax/income/credits/earned_income/ca_eitc_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
-  note: 'The October 2026 statute-first ruling retains the bar; obtain the statutory URL and verify the instruction
-    flow''s joint-return effect. Code not yet on main: ca_eitc_eligible.'
+  note: RTC 17052 retains the federal dependency restriction. FTB 3514 Step 4(d) skips the dependency question for joint filers. Apply the statute and retain zero.
 - id: us-ca:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -1297,8 +1300,8 @@ candidates:
     and booklet or $107,987 on the agency website?
   sources:
   - kind: statute
-    citation: RTC 17053.5(j)(4)
-    url: null
+    citation: RTC 17053.5(a)(1), (j)(3)-(4), SB 1005 section 98, PDF p.89
+    url: https://www.leginfo.ca.gov/pub/15-16/bill/sen/sb_1001-1050/sb_1005_bill_20160701_chaptered.pdf#page=89
   - kind: form
     citation: 2025 renter's credit qualification record question 2
     url: https://www.ftb.ca.gov/forms/2025/2025-540-booklet.pdf#page=25
@@ -1306,17 +1309,17 @@ candidates:
     citation: FTB nonrefundable renter's credit web page
     url: https://www.ftb.ca.gov/file/personal/credits/nonrefundable-renters-credit.html
   readings:
-    statute: Twice the $53,994 single amount is $107,988, also used by the qualification record.
+    statute: The FTB doubles the rounded single amount. Twice $53,994 equals $107,988, which the 2025 qualification record also gives.
     other: The agency website gives $107,987.
-  example: The published limits differ by $1.
+  example: A qualified joint renter with $107,988 AGI and enough tax receives $120 under the statute and booklet, or $0 under the website's threshold.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ca/tax/income/credits/renter/income_cap.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
-  state: unreviewed
-  note: 'Verify the statutory indexing calculation and preserve dated evidence of the website discrepancy. Code
-    not yet on main: ca_renter_credit.'
+  state: ruled
+  note: The PR sets the three higher 2025 limits to twice the single amount. The official website still gives $107,987 when fetched on November 5, 2026, while linking to 2025 return forms.
 - id: us-ca:renter-credit-one-excluded-joint-spouse
   program: income-tax
   years:
@@ -1338,12 +1341,12 @@ candidates:
   example: With $2,000 joint AGI and $6,000 rent, the statutory reading gives $120 versus $0 under the form reading.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/ca/tax/income/credits/ca_renter_credit.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
-  note: 'The October 2026 statute-first ruling retains $120; verify the procedural inference from the form and the
-    spouse exclusions. Code not yet on main: ca_renter_credit.'
+  note: Subsection (d)(2) excludes the individual; (d)(3) expressly extends a different exclusion to a spouse. The qualification record gives joint filers $120 on PDF page 26. Retain the statutory joint amount.
 - id: us-ca:riverside-liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -12961,3 +12964,164 @@ candidates:
   note: 'Main applies the gross-income test; the draft PR would adopt instructions and needs revision under the
     statute-first rule after resolving the two statutory clauses. Code not yet on main: surviving_spouse_eligible,
     is_child_dependent.'
+
+- id: us-ar:low-income-table-dependent-definition
+  program: income-tax
+  years:
+    from: 2021
+    to: 2025
+    type: tax
+  question: Do Arkansas low-income tables count the return's personal-credit dependents or supported household members when either filer can be claimed elsewhere?
+  sources:
+  - kind: statute
+    citation: Ark. Code 26-51-301 and 26-51-501(a)(3)(B), Act 483 of 2021 sections 6–7
+    url: https://www.arkleg.state.ar.us/Home/FTPDocument?path=/ACTS/2021R/Public/ACT483.pdf#page=3
+  - kind: instructions
+    citation: 2025 AR1000F instructions, line 7B, PDF page 12
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=12
+  - kind: form
+    citation: 2025 Arkansas low-income tax tables, joint returns, PDF page 3
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/TaxTables_FI_2025.pdf#page=3
+  readings:
+    statute: Arkansas separates returns by dependent count without defining dependent in 26-51-301. Legislators confined the IRC 152 definition to personal credits in 26-51-501.
+    other: AR1000F supplies the personal-credit dependent count on line 7B. Use that return count for the tables rather than an unrestricted household count.
+  example: For 2025 joint AGI of $26,050 and two household children, a claimable filer has no IRC 152 dependents and pays $222 under the no-or-one table; counting the children gives $0.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/ar/tax/income/low_income/ar_low_income_tax_joint.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10053
+  state: ruled
+  note: Use the return's line 7B count as a form gap-fill. The statute does not expressly extend the personal-credit definition to the low-income tables.
+- id: us-ar:claimable-filer-standard-deduction
+  program: income-tax
+  years:
+    from: 2021
+    to: 2025
+    type: tax
+  question: Does Arkansas's instruction note concerning taxpayers' dependents bar a claimable filer's own standard deduction despite each taxpayer's statutory entitlement?
+  sources:
+  - kind: statute
+    citation: Ark. Code 26-51-430(a)(1) and (b)(2), Act 997 of 2003 section 1
+    url: https://www.arkleg.state.ar.us/Home/FTPDocument?path=/ACTS/2003/Public/ACT997.pdf#page=1
+  - kind: statute
+    citation: Act 1488 of 2013 section 1
+    url: https://arkleg.state.ar.us/Home/FTPDocument?path=/ACTS/2013/Public/ACT1488.pdf#page=1
+  - kind: instructions
+    citation: 2025 AR1000F instructions, standard deduction note, PDF page 14
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=14
+  readings:
+    statute: Each taxpayer may elect the standard deduction, and each spouse may claim one. The legislature added no claimability exception.
+    other: Read the instruction note as denying a claimable filer's own deduction, rather than denying an additional deduction for each dependent on the claimant's return.
+  example: In 2025 a claimable single filer keeps $2,470 and joint spouses keep $4,940. Denying a claimable filer's own amount would give $0 single or $2,470 joint with one claimable spouse.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/standard/ar_standard_deduction_indiv.py
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/standard/ar_standard_deduction_joint.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10053
+  state: ruled
+  note: Retain each taxpayer's own standard deduction under section 26-51-430. The alternative administrative reading cannot remove the statutory entitlement.
+- id: us-ar:tuition-dependent-definition
+  program: income-tax
+  years:
+    from: 2021
+    to: 2025
+    type: tax
+  question: Does a filer whom another taxpayer can claim deduct tuition paid for a dependent student, or does IRC
+    152(b)(1) leave that filer with no dependents for Arkansas's tuition deduction?
+  sources:
+  - kind: statute
+    citation: Ark. Code 26-51-447(a), Act 1075 of 1997 section 1
+    url: https://www.arkleg.state.ar.us/Home/FTPDocument?path=/ACTS/1997/Public/1075.pdf#page=1
+  - kind: statute
+    citation: Ark. Code 26-51-501(a)(3)(B), Act 483 of 2021 section 7
+    url: https://www.arkleg.state.ar.us/Home/FTPDocument?path=/ACTS/2021R/Public/ACT483.pdf#page=15
+  - kind: regulation
+    citation: 26 CAR 100-143(f)
+    url: https://codeofarrules.arkansas.gov/Rules/Rule?chapterID=33&levelType=section&partID=941&sectionID=40250&subChapterID=261&subPartID=6195&titleID=26
+  - kind: regulation
+    citation: 26 CAR 100-140(a)
+    url: https://codeofarrules.arkansas.gov/Rules/Rule?chapterID=33&levelType=section&partID=941&sectionID=40247&subChapterID=261&subPartID=6195&titleID=26
+  - kind: form
+    citation: 2025 AR1075, instructions
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1075.pdf#page=1
+  readings:
+    statute: 26-51-447 covers tuition for the taxpayer, spouse or dependent and leaves dependent undefined, and
+      26-51-501(a)(3)(B) applies the IRC 152 definition only "As used in subdivision (a)(3)(A) of this section". DFA's
+      definition in 26 CAR 100-143(f) tests relationship, gross income, support, joint filing and citizenship, and has
+      no test for a filer whom another taxpayer can claim.
+    other: Read dependent as IRC 152 defines it, so section 152(b)(1) leaves a filer whom another taxpayer can claim
+      with no dependents.
+  example: For a dependent student's $1,000 tuition at a two-year college in 2025, a claimable filer deducts min(50%
+    × $1,000, $2,646) = $500; importing IRC 152(b)(1) gives $0.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/post_secondary_education/ar_post_secondary_education_tuition_deduction_person.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10053
+  state: ruled
+  note: PolicyEngine reads dependent by DFA's definition, because the statute defines it only for the personal credit.
+    Taxpayer and spouse tuition counts under either reading.
+- id: us-az:excise-credit-claimed-joint-filer
+  program: income-tax
+  years:
+    from: 2021
+    to: 2041
+    type: tax
+  question: Does Arizona count a claimed joint filer when the Form 140 worksheet enters two filers?
+  sources:
+  - kind: statute
+    citation: A.R.S. 43-1072.02(A), (C)
+    url: https://www.azleg.gov/ars/43/01072-02.htm
+  - kind: statute
+    citation: A.R.S. 43-1001(8), (12)
+    url: https://www.azleg.gov/ars/43/01001.htm
+  - kind: statute
+    citation: A.R.S. 42-2201(A)(1)
+    url: https://www.azleg.gov/ars/42/02201.htm
+  - kind: instructions
+    citation: 2025 Form 140 instructions and joint worksheet, PDF pages 25-26
+    url: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf#page=25
+  readings:
+    statute: Each joint filer remains an individual taxpayer. The claimed filer fails subsection (A) and files a return, so cannot enter subsection (C) as a nonfiling spouse. The unclaimed filer receives $25.
+    other: ADOR tells joint filers to enter two without adjusting for a claimed spouse, yielding $50 if the unclaimed spouse first qualifies.
+  example: One claimed spouse and no dependents give 1 x $25 = $25 under the statute, against 2 x $25 = $50 under the unadjusted worksheet.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/az/tax/income/credits/az_increased_excise_tax_credit.py
+    - policyengine_us/variables/gov/states/az/tax/income/credits/az_increased_excise_tax_credit_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10053
+  state: ruled
+  note: The statutory individual taxpayer definition also rejects treating the whole joint return as an excluded taxpayer. Retain $25.
+- id: us-ca:renter-credit-actual-dependent-claim
+  program: income-tax
+  years:
+    from: 2025
+    to: 2025
+    type: tax
+  question: Does the renter exclusion require an actual dependent claim or only claimability?
+  sources:
+  - kind: statute
+    citation: RTC 17053.5(d)(2), SB 1005 section 98
+    url: https://www.leginfo.ca.gov/pub/15-16/bill/sen/sb_1001-1050/sb_1005_bill_20160701_chaptered.pdf#page=88
+  - kind: form
+    citation: 2025 Form 540 booklet, renter qualification questions 4-5, PDF page 25
+    url: https://www.ftb.ca.gov/forms/2025/2025-540-booklet.pdf#page=25
+  readings:
+    statute: Exclude a filer only after another taxpayer actually claimed them and they lived with that claimant for more than half the year.
+    other: FTB asks whether another person can claim the filer and whether the filer lived with that person.
+  example: A single renter with $2,000 AGI and $6,000 rent can be claimed but remains unclaimed. If the renter lives with the would-be claimant for more than half the year, the renter receives $60 under the statute and $0 under the form.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ca/tax/income/credits/ca_renter_credit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10053
+  state: ruled
+  note: Neither source prescribes a fallback when residence data are missing. Keep the existing false default.

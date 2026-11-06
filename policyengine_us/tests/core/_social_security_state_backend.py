@@ -620,6 +620,10 @@ class Backend:
             "clone",
             "get_branch",
             "apply_reform",
+            # From Core 3.34.8 apply_reform rebinds holders to the reformed
+            # system, and each existing branch to its own, before replaying
+            # inputs.
+            "_bind_to_tax_benefit_system",
             "_invalidate_all_caches",
             "drop_computed_arrays",
             "extract_person",
