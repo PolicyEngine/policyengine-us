@@ -1,0 +1,1 @@
+Add an ACA minimum premium reform (gov.contrib.aca.minimum_premium): each marketplace enrollee charged a premium pays at least a monthly minimum ($5 by default), so the premium tax credit cannot reduce the benchmark or selected plan's premium below it.
