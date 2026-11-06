@@ -7543,6 +7543,32 @@ candidates:
     can be claimed, reading item C as marked for the whole return (ny_household_credit_potential.py, nyc_household_credit.py).
     An October 2026 ruling accepted the instructions; the statute-first rule requires a model change after resolving
     the statutory allocation.'
+- id: us-ny:nyc-school-tax-credit-fixed-amount-rounding
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: Is the NYC school tax credit fixed amount for unmarried, head of household and separate filers the
+    statutory $62.50 or the $63 that the IT-201 instructions print?
+  sources:
+  - kind: statute
+    citation: N.Y. Tax Law 606(ggg)(4-a)(B)
+    url: https://www.nysenate.gov/legislation/laws/TAX/606
+  - kind: instructions
+    citation: 2025 Instructions for Form IT-201, line 69
+    url: https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=20
+  readings:
+    statute: The statute sets the fixed amount for these filers at $62.50.
+    other: The instructions' table prints $63 and says the statutory amounts have been rounded.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/local/ny/nyc/tax/income/credits/school/fixed/amount.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10330
+  state: unreviewed
+  note: 'Found in review of the rate reduction amount, where the model now follows the statute over the
+    instructions; the fixed amount still follows the instructions'' rounding. The difference is $0.50 per return.'
 - id: us-ny:real-property-credit-claimable-spouse
   program: income-tax
   years:
@@ -11185,6 +11211,46 @@ candidates:
   state: unreviewed
   note: 'PE-US follows the rounded standards as a disputable gap-fill; verify statutory rounding requirements and
     applicability of the undated precedent. Code not yet on main: medicaid_ltss_mmmna.'
+- id: us-wa:pte-veteran-pathway-pre-2016
+  program: property-tax-exemption
+  years:
+    from: 2008
+    to: 2015
+    type: program
+    note: property tax collection year (taxes levied for collection in that year)
+  question: Before collection year 2016, does RCW 84.36.381(3)(b)'s "one hundred percent service-connected disability
+    as provided in 42 U.S.C. Sec. 423(d)(1)(A)" mean a disability wholly connected to service under Social Security's
+    definition, or a 100% VA rating?
+  sources:
+  - kind: statute
+    citation: RCW 84.36.381(3)(b), as amended by 2008 c 6 s 706
+    url: https://lawfilesext.leg.wa.gov/biennium/2007-08/Pdf/Bills/Session%20Laws/House/3104-S2.SL.pdf#page=85
+  - kind: statute
+    citation: RCW 84.36.381(3)(a)(ii), as amended by 2015 3rd sp.s. c 30 s 2, for collection in 2016 and after
+    url: https://lawfilestestext.leg.wa.gov/LawTest/RCW%20Supplement/RCW%20%2084%20%20TITLE/RCW%20%2084%20.%2036%20%20CHAPTER/RCW%20%2084%20.%2036%20.381.htm
+  - kind: statute
+    citation: 42 U.S.C. 423(d)(1)(A) (Social Security Act 223(d)(1)(A))
+    url: https://www.ssa.gov/OP_Home/ssact/title02/0223.htm
+  readings:
+    statute: A disability that meets Social Security's definition in 42 U.S.C. 423(d)(1)(A) and is wholly connected
+      to service; the cross-reference names that definition, and the 2016 amendment's move to VA-rating language marks
+      the older text as something other than a rating.
+    other: A 100% VA service-connected disability rating.
+  example: In collection year 2015 a 45-year-old veteran with a disability meeting the Social Security definition,
+    wholly service-connected but with no VA rating, qualifies under the Social Security reading and not under the
+    VA-rating reading.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wa/dor/property_tax_exemption/senior_disabled/wa_pte_wholly_service_connected_disability.py
+    - policyengine_us/variables/gov/states/wa/dor/property_tax_exemption/senior_disabled/wa_pte_categorical_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10330
+  state: ruled
+  note: PolicyEngine ruled on 2026-10-21 for the Social Security reading. The model has no service-connection input,
+    so wa_pte_wholly_service_connected_disability defaults to is_disabled (or is_fully_disabled_service_connected_veteran)
+    as an overridable proxy, read together with is_veteran in wa_pte_categorical_eligible; it over-includes a veteran
+    whose disability is not service-connected.
 - id: us-wi:claim-of-right-itemized-deduction-credit
   program: income-tax
   years:
