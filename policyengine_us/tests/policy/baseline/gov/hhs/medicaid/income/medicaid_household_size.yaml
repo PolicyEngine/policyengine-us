@@ -97,3 +97,312 @@
         state_code: KS
   output:
     medicaid_household_size: 1
+
+# Non-filer members in 42 CFR 435.603(f)(3) form a union, even for young parents.
+- name: Non-filing adults and their child keep the ordinary household size.
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 35
+      parent2:
+        age: 35
+      child:
+        age: 1
+    marital_units:
+      couple:
+        members:
+        - parent1
+        - parent2
+      child_unit:
+        members:
+        - child
+    households:
+      household:
+        members:
+        - parent1
+        - parent2
+        - child
+        state_code: CA
+  output:
+    tax_unit_size: 3
+    tax_unit_is_filer: false
+    medicaid_uses_non_filer_rules:
+    - true
+    - true
+    - false
+    medicaid_household_size:
+    - 3
+    - 3
+    - 3
+- name: Filing adults and their child keep the ordinary household size.
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 50000
+      parent2:
+        age: 35
+      child:
+        age: 1
+    marital_units:
+      couple:
+        members:
+        - parent1
+        - parent2
+      child_unit:
+        members:
+        - child
+    households:
+      household:
+        members:
+        - parent1
+        - parent2
+        - child
+        state_code: CA
+  output:
+    tax_unit_size: 3
+    tax_unit_is_filer: true
+    medicaid_uses_non_filer_rules:
+    - false
+    - false
+    - false
+    medicaid_household_size:
+    - 3
+    - 3
+    - 3
+- name: Non-filing young spouses are counted once without parent-count inputs.
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 18
+      parent2:
+        age: 18
+      child:
+        age: 1
+    marital_units:
+      couple:
+        members:
+        - parent1
+        - parent2
+      child_unit:
+        members:
+        - child
+    households:
+      household:
+        members:
+        - parent1
+        - parent2
+        - child
+        state_code: CA
+  output:
+    tax_unit_size: 3
+    tax_unit_is_filer: false
+    medicaid_uses_non_filer_rules:
+    - true
+    - true
+    - false
+    medicaid_household_size:
+    - 3
+    - 3
+    - 3
+- name: Filing young spouses keep their tax-unit household size.
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 18
+        employment_income: 50000
+      parent2:
+        age: 18
+      child:
+        age: 1
+    marital_units:
+      couple:
+        members:
+        - parent1
+        - parent2
+      child_unit:
+        members:
+        - child
+    households:
+      household:
+        members:
+        - parent1
+        - parent2
+        - child
+        state_code: CA
+  output:
+    tax_unit_size: 3
+    tax_unit_is_filer: true
+    medicaid_uses_non_filer_rules:
+    - false
+    - false
+    - false
+    medicaid_household_size:
+    - 3
+    - 3
+    - 3
+- name: Non-filing young parents and their child are each counted once.
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 18
+        own_children_in_household: 1
+      parent2:
+        age: 18
+        own_children_in_household: 1
+      child:
+        age: 1
+    marital_units:
+      couple:
+        members:
+        - parent1
+        - parent2
+      child_unit:
+        members:
+        - child
+    households:
+      household:
+        members:
+        - parent1
+        - parent2
+        - child
+        state_code: CA
+  output:
+    tax_unit_size: 3
+    tax_unit_is_filer: false
+    medicaid_uses_non_filer_rules:
+    - true
+    - true
+    - false
+    medicaid_household_size:
+    - 3
+    - 3
+    - 3
+- name: Non-filing young parents add an expected child after counting members once.
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 18
+        own_children_in_household: 1
+      parent2:
+        age: 18
+        own_children_in_household: 1
+        current_pregnancies: 1
+      child:
+        age: 1
+    marital_units:
+      couple:
+        members:
+        - parent1
+        - parent2
+      child_unit:
+        members:
+        - child
+    households:
+      household:
+        members:
+        - parent1
+        - parent2
+        - child
+        state_code: CA
+  output:
+    tax_unit_size: 3
+    tax_unit_is_filer: false
+    medicaid_uses_non_filer_rules:
+    - true
+    - true
+    - false
+    medicaid_household_size:
+    - 4
+    - 4
+    - 4
+- name: Non-filing adult and young spouse are each counted once.
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 35
+        own_children_in_household: 1
+      parent2:
+        age: 18
+        own_children_in_household: 1
+      child:
+        age: 1
+    marital_units:
+      couple:
+        members:
+        - parent1
+        - parent2
+      child_unit:
+        members:
+        - child
+    households:
+      household:
+        members:
+        - parent1
+        - parent2
+        - child
+        state_code: CA
+  output:
+    tax_unit_size: 3
+    tax_unit_is_filer: false
+    medicaid_uses_non_filer_rules:
+    - true
+    - true
+    - false
+    medicaid_household_size:
+    - 3
+    - 3
+    - 3
+
+- name: Young non-filing spouses on separate tax returns are each counted once.
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 18
+        own_children_in_household: 1
+      parent2:
+        age: 18
+        own_children_in_household: 1
+      child:
+        age: 1
+    marital_units:
+      couple:
+        members:
+        - parent1
+        - parent2
+      child_unit:
+        members:
+        - child
+    tax_units:
+      return1:
+        members:
+        - parent1
+        - child
+        cohabitating_spouses: true
+      return2:
+        members:
+        - parent2
+        cohabitating_spouses: true
+    households:
+      household:
+        members:
+        - parent1
+        - parent2
+        - child
+        state_code: CA
+  output:
+    tax_unit_is_filer:
+    - false
+    - false
+    medicaid_household_size:
+    - 3
+    - 3
+    - 3

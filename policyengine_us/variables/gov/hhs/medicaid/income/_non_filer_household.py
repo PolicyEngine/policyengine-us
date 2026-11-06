@@ -7,10 +7,90 @@ from policyengine_us.variables.gov.hhs.medicaid.income._medicaid_parents import 
 )
 from policyengine_us.variables.household.demographic.person._parent_links import (
     has_parent_ids,
+    group_member_indices,
     household_has_parent_ids,
     household_member_indices,
     unlinked_parent,
 )
+
+
+def medicaid_non_filer_fallback_sum(person, period, values, spouse_sum, income=False):
+    """Deduplicate the existing family proxy when parent links are absent.
+
+    Keep the proxy's family-level parent and child groups, and its tax-role
+    and cohabiting-spouse channels. The applicant and spouse take precedence
+    over relatives; parents take precedence over child-age relatives. For
+    income, keep own/spouse amounts signed, remaining parents netted within
+    each marital unit and floored, and remaining children's positive amounts.
+    ``spouse_sum`` retains the caller's fallback for an unidentified spouse.
+    """
+    values = np.asarray(values, dtype=np.float64)
+    total = values + spouse_sum
+    own = np.arange(person.count)
+    child = person("medicaid_non_filer_child_age_eligible", period)
+    parent = person("is_parent", period)
+    head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+    separate = (
+        person.tax_unit("cohabitating_spouses", period)
+        & (person.tax_unit("head_spouse_count", period) == 1)
+        & (head_or_spouse | person("claimed_as_dependent_on_another_return", period))
+    )
+    spouse = np.full(person.count, -1, dtype=int)
+    matches = np.zeros(person.count, dtype=int)
+    for member in group_member_indices(person.tax_unit):
+        included = (
+            (member >= 0) & (member != own) & head_or_spouse & head_or_spouse[member]
+        )
+        spouse = np.where(included, member, spouse)
+        matches += included
+    for member in group_member_indices(person.marital_unit):
+        included = (member >= 0) & (member != own) & separate
+        spouse = np.where(included, member, spouse)
+        matches += included
+    # A larger, ambiguous group cannot identify which member is the spouse.
+    spouse = np.where(matches == 1, spouse, -1)
+
+    if income:
+        marital_unit = person.marital_unit.reference_entity.members_entity_id
+        parent_income = person.marital_unit.sum(parent * values)
+        parent_count = person.marital_unit.sum(parent)
+
+    for member in group_member_indices(person.family):
+        included = (member >= 0) & (member != own) & (member != spouse)
+        relative_parent = child & parent[member]
+        relative_child = child[member] & ~relative_parent
+        if income:
+            # Exclude direct members before netting the remaining parents;
+            # otherwise a young parent/spouse contributes in both groups.
+            own_parent = parent & (marital_unit == marital_unit[member])
+            spouse_parent = (
+                (spouse >= 0)
+                & parent[spouse]
+                & (marital_unit[spouse] == marital_unit[member])
+            )
+            remaining_income = (
+                parent_income[member]
+                - own_parent * values
+                - spouse_parent * values[spouse]
+            )
+            remaining_count = (
+                parent_count[member]
+                - own_parent.astype(int)
+                - spouse_parent.astype(int)
+            )
+            parent_share = np.divide(
+                np.maximum(0, remaining_income),
+                remaining_count,
+                out=np.zeros(person.count),
+                where=remaining_count > 0,
+            )
+            amount = np.where(
+                relative_parent, parent_share, np.maximum(0, values[member])
+            )
+        else:
+            amount = values[member]
+        total += np.where(included & (relative_parent | relative_child), amount, 0)
+    return total
 
 
 def _shares_parent_id(parent_1, parent_2, member):

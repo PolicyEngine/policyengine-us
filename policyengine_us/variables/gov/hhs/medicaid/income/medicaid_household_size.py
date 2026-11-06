@@ -5,6 +5,7 @@ from policyengine_us.variables.gov.hhs.medicaid.income._claiming_tax_unit import
 )
 from policyengine_us.variables.gov.hhs.medicaid.income._non_filer_household import (
     medicaid_filer_spouse_sum,
+    medicaid_non_filer_fallback_sum,
     medicaid_non_filer_member_sum,
     medicaid_tax_dependent_spouse_sum,
 )
@@ -27,10 +28,7 @@ class medicaid_household_size(Variable):
     )
 
     def formula(person, period, parameters):
-        child_age_eligible = person("medicaid_non_filer_child_age_eligible", period)
         non_filer_rules = person("medicaid_uses_non_filer_rules", period)
-        family_child_count = person.family.sum(child_age_eligible)
-        family_parent_count = person.family.sum(person("is_parent", period))
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         same_unit_spouse_count = head_or_spouse.astype(int) * (
             person.tax_unit("head_spouse_count", period) - 1
@@ -45,10 +43,8 @@ class medicaid_household_size(Variable):
             int
         ) * cohabitating_separate.astype(int)
         spouse_count = same_unit_spouse_count + separate_spouse_count
-        non_filer_household_size = where(
-            child_age_eligible,
-            spouse_count + family_parent_count + family_child_count,
-            1 + spouse_count + family_child_count,
+        non_filer_household_size = medicaid_non_filer_fallback_sum(
+            person, period, np.ones(person.count), spouse_count
         )
         # With parent links in the household, count each member of the
         # applicant's own non-filer household once, spouse included.
