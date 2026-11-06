@@ -252,14 +252,17 @@
     # 3,717.41, so the dependent's own deduction is 3,000, all of it Form
     # 7206 line 2.
     dependents_self_employed_health_insurance_ald: 3_000
-    # The dependent's deduction took those premiums, so the subtotal holds
-    # only the dependent's Medicare Part B premiums: $185 x 12 = $2,220.
+    # The dependent's deduction took those premiums.
     itemized_medical_expenses_long_term_care_premiums: 0
-    itemized_medical_expenses: 2_220
+    # The head isn't the dependent's spouse, so SSI deems none of the head's
+    # income to the dependent. The dependent's own countable income, 1,490,
+    # passes the Medicare Savings Program test, and the program pays the
+    # $185 x 12 = $2,220 Part B premium. The subtotal holds nothing.
+    itemized_medical_expenses: 0
     nj_agi: 104_000
-    # 3,000 + max(0, 2,220 - 0.02 x 104,000) = 3,000 + 140 = 3,140. The
-    # deduction took none of the Part B premiums.
-    nj_medical_expense_deduction: 3_140
+    # 3,000 + max(0, 0 - 0.02 x 104,000) = 3,000. Counting the long-term care
+    # premiums again would give 3,000 + (3,000 - 2,080) = 3,920.
+    nj_medical_expense_deduction: 3_000
 
 - name: A filer's own deduction is not removed again from the federal base
   period: 2025
