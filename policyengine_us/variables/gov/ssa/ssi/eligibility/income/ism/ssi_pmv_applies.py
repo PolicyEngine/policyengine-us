@@ -32,10 +32,13 @@ class ssi_pmv_applies(Variable):
             parameters(income_period.stop).gov.ssa.ssi.income.ism.food_counts
         )
         exclusion_starts_this_month = food_counts and not food_counts_at_month_end
-        food_only_after_exclusion = person(
-            "ssi_food_from_others_only_on_or_after_food_exclusion", income_period
-        )
-        late_food_excluded = exclusion_starts_this_month & food_only_after_exclusion
         receives_food = person("ssi_receives_food_from_others", period)
-        receives_counted_food = receives_food & food_counts & ~late_food_excluded
+        receives_counted_food = receives_food & food_counts
+        # Read the day-specific flag only in the transition month, so
+        # earlier payments do not cache inputs before the model starts.
+        if exclusion_starts_this_month:
+            food_only_after_exclusion = person(
+                "ssi_food_from_others_only_on_or_after_food_exclusion", income_period
+            )
+            receives_counted_food = receives_counted_food & ~food_only_after_exclusion
         return is_own_household & (receives_shelter | receives_counted_food)

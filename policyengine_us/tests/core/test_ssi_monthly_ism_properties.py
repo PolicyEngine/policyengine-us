@@ -417,12 +417,14 @@ def test_payment_month_uses_second_prior_income_month(payment_month, income_mont
 
 @settings(max_examples=150, deadline=None, database=None, derandomize=True)
 @given(
-    year=st.sampled_from(YEARS),
+    year=st.sampled_from((2015, *YEARS)),
     month=st.integers(1, 12),
     food=st.booleans(),
     shelter=st.booleans(),
     late_food=st.booleans(),
 )
+@example(year=2015, month=1, food=True, shelter=False, late_food=False)
+@example(year=2015, month=2, food=True, shelter=False, late_food=False)
 @example(year=2024, month=1, food=True, shelter=False, late_food=False)
 @example(year=2024, month=2, food=True, shelter=False, late_food=False)
 @example(year=2025, month=1, food=True, shelter=False, late_food=False)
@@ -476,9 +478,12 @@ def test_pmv_reads_income_month_dates_and_payment_month_support(
     )
     np.testing.assert_array_equal(actual, [shelter or (food and counts_food)])
     assert parameter_reads == [str(income), str(income.stop)]
-    assert person_reads.pop(
-        "ssi_food_from_others_only_on_or_after_food_exclusion"
-    ) == str(income)
+    flag_month = person_reads.pop(
+        "ssi_food_from_others_only_on_or_after_food_exclusion", None
+    )
+    # Only September 2024 income needs the day-specific food flag.
+    # Other months must not cache irrelevant inputs before the model starts.
+    assert flag_month == (str(income) if str(income) == "2024-09" else None)
     assert set(person_reads.values()) == {str(payment)}
 
 
