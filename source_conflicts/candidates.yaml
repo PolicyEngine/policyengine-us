@@ -6717,17 +6717,17 @@ candidates:
     citation: 2025 Schedule ND-1SA line 8, p. 2
     url: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2025-iit/28710-schedule-nd-1sa-2025.pdf#page=2
   readings:
-    statute: The subtraction applies for each birth resulting in stillbirth without the added dependency condition.
+    statute: A filer subtracts an allowance for each birth resulting in stillbirth without a dependency condition.
     other: The filer must have been eligible to claim the child federally.
   example: A claimable filer receives $5,241 under the statutory reading versus $0 under the form.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nd/tax/income/subtractions/nd_stillborn_subtraction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10043
-  state: open
-  note: 'The statute-first rule requires removing the form''s added dependency condition if confirmed; the requested
-    decision remains open. Code not yet on main: nd_stillborn_subtraction.'
+  state: ruled
+  note: PE-US counts tax_unit_stillborn_children without a dependency test, following section 57-38-30.3(2)(p).
 - id: us-ne:claim-of-right-obsolete-revenue-ruling
   program: income-tax
   years:
@@ -8731,34 +8731,38 @@ candidates:
     dependent exclusion?
   sources:
   - kind: statute
-    citation: Tax Reform Code 301(c.2)
+    citation: Tax Reform Code sections 301(c.2) and 304, PDF pages 112, 127-128
     url: https://www.legis.state.pa.us/WU01/LI/LI/US/PDF/1971/0/0002..PDF#page=112
   - kind: form
     citation: 2025 PA-40 Schedule SP, pp. 3-5
     url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40sp.pdf#page=3
   readings:
-    statute: A dependent cannot be a claimant.
-    other: A dependent child may qualify when the claiming parent qualifies.
+    statute: A filer who can be claimed as a dependent cannot claim forgiveness, even without an actual claim or
+      when a parent qualifies.
+    other: A dependent child may qualify when the claiming parent qualifies; Schedule SP asks about an actual
+      federal claim.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/pa/tax/income/forgiveness/pa_tax_forgiveness_eligible.py
+    - policyengine_us/variables/gov/states/pa/tax/income/forgiveness/pa_tax_forgiveness_eligible_share.py
+    - policyengine_us/variables/gov/states/pa/tax/income/forgiveness/pa_tax_forgiveness_amount.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10043
-  state: open
-  note: 'The statute-first rule requires removing the form''s dependent-child exception if confirmed; the requested
-    decision remains open. Code not yet on main: pa_tax_forgiveness_eligible, pa_tax_forgiveness_parent_qualifies,
-    pa_tax_forgiveness_amount.'
+  state: ruled
+  note: PE-US excludes a claimable head or spouse even if no one claims them and removes the parent-qualification
+    input.
 - id: us-pa:tax-forgiveness-one-claimed-spouse-table
   program: income-tax
   years:
     from: 2025
     to: 2025
     type: tax
-  question: Which tax-forgiveness table and allocation apply when one spouse is claimed elsewhere and the other
+  question: Which tax-forgiveness table and allocation apply when one spouse can be claimed elsewhere and the other
     qualifies?
   sources:
   - kind: statute
-    citation: Tax Reform Code 301(c.2)
+    citation: Tax Reform Code sections 301(c.2) and 304, PDF pages 112, 127-128
     url: https://www.legis.state.pa.us/WU01/LI/LI/US/PDF/1971/0/0002..PDF#page=112
   - kind: form
     citation: 2025 PA-40 Schedule SP, pp. 3-5
@@ -8767,18 +8771,22 @@ candidates:
     citation: PA Personal Income Tax Guide, Tax Forgiveness
     url: https://www.pa.gov/agencies/revenue/forms-and-publications/pa-personal-income-tax-guide/tax-forgiveness
   readings:
-    statute: The statute does not specify the table for this mixed-spouse case.
-    other: Schedule SP supplies married treatment; the guide's classification of married-separate claimants points
-      to the single table.
-  example: The supplied case with $3,000 income for each spouse gives $92.10 under Schedule SP.
+    statute: A claimable spouse cannot claim forgiveness. The General Assembly does not specify how the other
+      spouse allocates forgiveness.
+    other: An eligible spouse claims forgiveness on their own tax, using both spouses' eligibility income and the
+      married table under Schedule SP.
+  example: With $3,000 income per spouse, the eligible spouse receives $92.10 under Schedule SP.
   pe_us:
     follows: gap-fill
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/pa/tax/income/forgiveness/pa_tax_forgiveness_eligible_share.py
+    - policyengine_us/variables/gov/states/pa/tax/income/forgiveness/pa_tax_forgiveness_amount.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10043
-  state: open
-  note: 'PE-US follows Schedule SP''s gap-fill; reconcile it with the guide''s single-claimant category. Code not
-    yet on main: pa_tax_forgiveness_eligible_share, pa_tax_forgiveness_amount.'
+  state: ruled
+  note: PE-US excludes the claimable spouse and allocates forgiveness to the eligible spouse's own tax. Both
+    spouses contribute eligibility income, and the eligible spouse uses the married table. The PIT guide excludes
+    dependent spouses as claimants.
 - id: us-pr:eitc-minimum-age-gap-fill
   program: income-tax
   years:
