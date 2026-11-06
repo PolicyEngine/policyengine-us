@@ -88,7 +88,9 @@
     il_hbwd_age_eligible: [true, false]
     il_hbwd_disability_eligible: [true, false]
     il_hbwd_employment_eligible: [true, false]
-    il_hbwd_eligible: [true, false]
+    # MAGI of about $27,880 is within 138% of the two-person guideline ($28,207), so
+    # 89 Ill. Adm. Code 120.510(b) bars this parent, who is otherwise eligible.
+    il_hbwd_eligible: [false, false]
     # Income calculation for person1
     il_hbwd_gross_earned_income: [2_500, 0]
     # $30,000 / 12 = $2,500

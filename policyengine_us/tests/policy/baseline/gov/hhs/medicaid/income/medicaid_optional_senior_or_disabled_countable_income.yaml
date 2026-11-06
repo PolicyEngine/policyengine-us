@@ -778,3 +778,192 @@
     # The spouse's own countable income stays 0 to avoid counting it twice.
     medicaid_optional_senior_or_disabled_countable_income: [25_370, 0]
     is_optional_senior_or_disabled_income_eligible: [false, false]
+
+# 89 Ill. Adm. Code 120.335(a)(1), 120.362(b)(1) and 120.370(a), monthly:
+# 1,000 wages - 25 - 50 - 62 Social Security tax - 37.43 Illinois withholding = 825.57.
+# SSI of 994 - (1,000 - 20 - 65) / 2 = 536.50 is deducted (42 CFR 435.121(f)(1)(i)).
+- name: Illinois counts wages after its own exemptions and employment expenses.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    employment_income: 12_000
+    state_code: IL
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: 9_906.79
+
+# 120.330(a) counts all unearned income not specified as exempt, and 120.335 does
+# not exempt pensions: 1,340 - 25 = 1,315 a month, within the 1,330 limit.
+- name: Illinois counts a pension less its 25-dollar exemption.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    pension_income: 16_080
+    state_code: IL
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: 15_780
+    is_optional_senior_or_disabled_income_eligible: true
+
+# SSI of 994 - (600 - 20) = 414 a month is deducted (42 CFR 435.121(f)(1)(i)), and
+# the exemption applies to income other than SSI (89 Ill. Adm. Code 120.335(a)(1)):
+# 600 - 25 = 575 a month.
+- name: Illinois deducts SSI and takes its 25-dollar exemption from other income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    pension_income: 7_200
+    state_code: IL
+  output:
+    ssi:
+      2026-01: 414
+    medicaid_optional_senior_or_disabled_countable_income: 6_900
+
+# 89 Ill. Adm. Code 120.335(a)(1) gives "only one $25.00 exemption regardless of the
+# types of sources": 1,340 pension + 20 interest - 25 = 1,335 a month, above the
+# 1,330 limit.
+- name: Illinois gives one 25-dollar exemption across a pension and interest.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    pension_income: 16_080
+    interest_income: 240
+    state_code: IL
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: 16_020
+    is_optional_senior_or_disabled_income_eligible: false
+
+# SSI of 994 - (1,000 - 20) = 14 a month is deducted (42 CFR 435.121(f)(1)(i)), and
+# the whole exemption comes off the pension (89 Ill. Adm. Code 120.335(a)(1)):
+# 1,000 - 25 = 975 a month.
+- name: Illinois takes the whole 25-dollar exemption from a pension when SSI is under 25 dollars.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    pension_income: 12_000
+    state_code: IL
+  output:
+    ssi:
+      2026-01: 14
+    medicaid_optional_senior_or_disabled_countable_income: 11_700
+    is_optional_senior_or_disabled_income_eligible: true
+
+# Each spouse is a client with one exemption (89 Ill. Adm. Code 120.335(a)(1)):
+# 920 - 25 = 895 each, or 1,790 together, within the guideline for two of
+# 21,640 / 12 = 1,803.33 a month. One shared exemption would give 1,815, above it.
+- name: Illinois gives each spouse of a couple a 25-dollar exemption.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        social_security_retirement: 11_040
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        social_security_retirement: 11_040
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: [10_740, 10_740]
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+    medicaid_category: [SENIOR_OR_DISABLED, SENIOR_OR_DISABLED]
+
+# 932 - 25 = 907 each, or 1,814 together, above the 1,803.33 guideline for two.
+- name: An Illinois couple above the guideline for two after both exemptions is not income eligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        social_security_retirement: 11_184
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        social_security_retirement: 11_184
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: [10_884, 10_884]
+    is_optional_senior_or_disabled_income_eligible: [false, false]
+
+# Rent is unearned income: 89 Ill. Adm. Code 120.360(b) limits earned income to wages
+# and self-employment profits. 1,400 - 25 = 1,375 a month, above the 1,330 limit.
+# There is no input for a self-employed landlord.
+- name: Illinois counts rent once, as unearned income less its 25-dollar exemption.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    rental_income: 16_800
+    state_code: IL
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: 16_500
+    is_optional_senior_or_disabled_income_eligible: false
+
+# 89 Ill. Adm. Code 120.362(b)(2)(A) exempts "The first $85.00 of the gross earned
+# income and one-half of the amount in excess of $85.00": (2,500 - 85) / 2 = 1,207.50.
+# 120.370(a), with Illinois withholding the only withholding modeled: 155 Social
+# Security tax + 111.68 Illinois withholding = 266.68.
+# 1,207.50 - 266.68 - 25 = 915.82 a month, within the 1,330 limit.
+- name: Illinois takes a blind person's exemption from gross earnings before employment expenses.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    is_blind: true
+    employment_income: 30_000
+    state_code: IL
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: 10_989.79
+    is_optional_senior_or_disabled_income_eligible: true
+
+# 89 Ill. Adm. Code 120.330(a) considers "All currently available, unearned income".
+# A capital loss is not income and does not reduce the pension: 1,400 - 25 = 1,375
+# a month, above the 1,330 limit.
+- name: Illinois does not let a capital loss reduce a pension.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    pension_income: 16_800
+    short_term_capital_gains: -3_000
+    state_code: IL
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: 16_500
+    is_optional_senior_or_disabled_income_eligible: false
+
+# 89 Ill. Adm. Code 120.362(b)(1) exempts "the first $20.00 of gross earned income
+# and one-half of the next $60.00": 20 + 30 = 50 of the gross 100.
+# 100 - 50 - 25 (120.362(a)) - 6.20 Social Security tax (120.370(a)(2)) = 18.80 a month.
+# Wages of 1,200 a year are below Illinois's 2,925 exemption, so nothing is withheld.
+# SSI of 994 - (100 - 20 - 65) / 2 = 986.50 is deducted (42 CFR 435.121(f)(1)(i)).
+- name: Illinois takes its earned income exemption from gross wages when wages are low.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    employment_income: 1_200
+    state_code: IL
+  output:
+    ssi:
+      2026-01: 986.50
+    medicaid_optional_senior_or_disabled_countable_income: 225.60
+    is_optional_senior_or_disabled_income_eligible: true
