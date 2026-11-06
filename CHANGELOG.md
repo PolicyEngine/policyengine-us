@@ -1,3 +1,10 @@
+## [2.104.1] - 2026-11-06
+
+### Fixed
+
+- Apply the baseline ACA premium tax credit coverage exclusions (Basic Health Program, Healthier Oregon, VA/CHAMPVA/TRICARE, Medicaid work requirements and the coverage gap) and the below-FPL immigration exception in the additional-bracket and simplified-bracket ACA reforms, as the 700% FPL reform does.
+
+
 ## [2.104.0] - 2026-11-06
 
 ### Added
