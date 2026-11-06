@@ -1,5 +1,5 @@
-- name: Single blind parent with non eligible dependent child
-  period: 2024
+- name: Case 1, single blind parent with a dependent child who is not eligible.
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -10,19 +10,25 @@
       person2:
         age: 4
         is_tax_unit_dependent: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
     households:
       household:
         members: [person1, person2]
         state_code: CA
+        living_arrangements_allow_for_food_preparation: true
   output:
-    # (943 + 324.32) * 12.
-    ca_state_supplement_payment_standard: 15_207.84
+    ca_state_supplement_eligible_person: [true, false]
+    ssi: [994, 0]
+    # 1,318.32 blind total - 994 federal benefit rate.
+    ca_state_supplement_person: [324.32, 0]
+    ca_state_supplement: 324.32
 
-- name: Married household with one blind and one disabled person, with a disabled dependent child, no food preparation and spouse in out of home care
-  period: 2024-01
+- name: Case 2, aged couple with one blind spouse, one spouse in out-of-home care, a disabled child and no food preparation.
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -41,105 +47,105 @@
         is_tax_unit_dependent: true
         is_disabled: true
         meets_ssi_disability_criteria: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        spm_unit_is_married: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
     households:
       household:
         members: [person1, person2, person3]
         state_code: CA
         living_arrangements_allow_for_food_preparation: false
   output:
-    # Both spouses are aged, so the couple takes the higher of the one-blind
-    # rate, 1,415 + 747.44 = 2,162.44, and the aged couple amount with the food
-    # allowance, 1,415 + 607.83 + 257.74 = 2,280.57 (WIC 12200(b), (d), (e)). The
-    # dependent amount is 943 + 97.27 = 1,040.27 and the out-of-home care amount
-    # is 2 * (943 + 632.07) - (1,415 + 607.83) = 1,127.31:
-    # 2,280.57 + 1,040.27 + 1,127.31 = 4,448.15.
-    ca_state_supplement_payment_standard: 4_448.15
+    ca_state_supplement_eligible_person: [true, true, true]
+    ssi: [745.5, 745.5, 994]
+    # person1 supplies the aged couple level with the allowance, 607.83 + 257.74
+    # = 865.57, above the 747.44 one-blind level. person2 supplies the
+    # out-of-home care couple level, 2 * 1,626.07 - 1,491 = 1,761.14. The couple
+    # share is (865.57 + 1,761.14) / 2 = 1,313.355, or 656.6775 each, rounded up
+    # to 656.68. The child takes the disabled minor level, 97.27.
+    ca_state_supplement_person: [656.68, 656.68, 97.27]
+    ca_state_supplement: 1_410.63
 
-- name: Case A ,single disabled parent with non eligible dependent child.
+- name: Case 3, single disabled parent with a disabled child.
   period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-        is_disabled: true
-        meets_ssi_disability_criteria: true
-      person2:
-        age: 4
-        is_tax_unit_dependent: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: CA
-        living_arrangements_allow_for_food_preparation: true
-  output:
-    ca_state_supplement_payment_standard: 1_206.94
-
-- name: Case A1, single disabled parent with a disabled child. 
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-        is_disabled: true
-        meets_ssi_disability_criteria: true
-      person2:
-        age: 4
-        is_tax_unit_dependent: true
-        is_disabled: true
-        meets_ssi_disability_criteria: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: CA
-        living_arrangements_allow_for_food_preparation: true
-  output:
-    ca_state_supplement_payment_standard: 2_271.21 # 1206.94 + 1064.27
-
-- name: Case A2, single healthy parent with a disabled child.
-  period: 2025-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
         is_tax_unit_head: true
+        is_disabled: true
+        meets_ssi_disability_criteria: true
       person2:
         age: 4
         is_tax_unit_dependent: true
         is_disabled: true
         meets_ssi_disability_criteria: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
     households:
       household:
         members: [person1, person2]
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    ca_state_supplement_payment_standard: 1_064.27
+    ssi: [967, 967]
+    # 1,206.94 - 967 and 1,064.27 - 967.
+    ca_state_supplement_person: [239.94, 97.27]
+    ca_state_supplement: 337.21
 
-- name: Case B ,joint filers, one of them is disabled.
+- name: Case 4, earning parent with a disabled child, the supplement goes to the child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 33
+        is_tax_unit_head: true
+        employment_income: 12_222
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ca_state_supplement_eligible_person: [false, true]
+    ssi: [0, 994]
+    # The parent is not aged, blind or disabled, and the parent's income leaves
+    # the child's SSI at 994, so the child takes the full 97.27.
+    ca_state_supplement_person: [0, 97.27]
+    ca_state_supplement: 97.27
+
+- name: Case 5, couple with one disabled spouse and no income.
   period: 2025-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
+        is_tax_unit_head: true
         is_disabled: true
         meets_ssi_disability_criteria: true
       person2:
         age: 22
-    spm_units:
-      spm_unit:
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
         members: [person1, person2]
     households:
       household:
@@ -147,22 +153,27 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    ca_state_supplement_payment_standard: 1_206.94
+    ca_state_supplement_eligible_person: [true, false]
+    ca_state_supplement_person: [239.94, 0]
+    ca_state_supplement: 239.94
 
-- name: Case B1 ,joint filers, both of them are disabled.
+- name: Case 6, couple with both spouses disabled and no income.
   period: 2025-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
+        is_tax_unit_head: true
         is_disabled: true
         meets_ssi_disability_criteria: true
       person2:
         age: 22
+        is_tax_unit_spouse: true
         is_disabled: true
         meets_ssi_disability_criteria: true
-    spm_units:
-      spm_unit:
+    marital_units:
+      marital_unit:
         members: [person1, person2]
     households:
       household:
@@ -170,180 +181,7 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    ca_state_supplement_payment_standard: 2_057.83
-
-# 2026 payment standards: CDSS, SSI Total Monthly Payment Amounts 2026, and
-# SSA POMS SI 01415.058 (California, January 2026).
-- name: 2026 single aged person living independently
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 70
-        is_tax_unit_head: true
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: CA
-        living_arrangements_allow_for_food_preparation: true
-  output:
-    ca_state_supplement_payment_standard: 1_233.94
-
-- name: 2026 single aged person living independently without cooking facilities
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 70
-        is_tax_unit_head: true
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: CA
-        living_arrangements_allow_for_food_preparation: false
-  output:
-    ca_state_supplement_food_allowance: 128.87
-    ca_state_supplement_payment_standard: 1_362.81 # 1,233.94 + 128.87
-
-- name: 2026 single blind person living independently
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 40
-        is_tax_unit_head: true
-        is_blind: true
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: CA
-        living_arrangements_allow_for_food_preparation: true
-  output:
-    ca_state_supplement_payment_standard: 1_318.32
-
-- name: 2026 aged couple living independently
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 70
-        is_tax_unit_head: true
-      person2:
-        age: 68
-        is_tax_unit_spouse: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_is_married: true
-    households:
-      household:
-        members: [person1, person2]
-        state_code: CA
-        living_arrangements_allow_for_food_preparation: true
-  output:
-    ca_state_supplement_payment_standard: 2_098.83
-
-- name: 2026 aged couple living independently without cooking facilities
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 70
-        is_tax_unit_head: true
-      person2:
-        age: 68
-        is_tax_unit_spouse: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_is_married: true
-    households:
-      household:
-        members: [person1, person2]
-        state_code: CA
-        living_arrangements_allow_for_food_preparation: false
-  output:
-    ca_state_supplement_food_allowance: 257.74
-    ca_state_supplement_payment_standard: 2_356.57 # 2,098.83 + 257.74
-
-- name: 2026 couple, both blind, living independently
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 50
-        is_tax_unit_head: true
-        is_blind: true
-      person2:
-        age: 48
-        is_tax_unit_spouse: true
-        is_blind: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_is_married: true
-    households:
-      household:
-        members: [person1, person2]
-        state_code: CA
-        living_arrangements_allow_for_food_preparation: true
-  output:
-    ca_state_supplement_payment_standard: 2_324.35
-
-- name: 2026 blind person with an aged spouse, living independently
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 60
-        is_tax_unit_head: true
-        is_blind: true
-      person2:
-        age: 70
-        is_tax_unit_spouse: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_is_married: true
-    households:
-      household:
-        members: [person1, person2]
-        state_code: CA
-        living_arrangements_allow_for_food_preparation: true
-  output:
-    ca_state_supplement_payment_standard: 2_238.44
-
-- name: 2026 single disabled parent with a disabled child
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        is_tax_unit_head: true
-        is_disabled: true
-        meets_ssi_disability_criteria: true
-      person2:
-        age: 4
-        is_tax_unit_dependent: true
-        is_disabled: true
-        meets_ssi_disability_criteria: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: CA
-        living_arrangements_allow_for_food_preparation: true
-  output:
-    ca_state_supplement_dependent_amount: 1_091.27
-    ca_state_supplement_payment_standard: 2_325.21 # 1,233.94 + 1,091.27
+    ssi: [725, 725]
+    # 2,057.83 - 1,450 = 607.83; half is 303.915, rounded up.
+    ca_state_supplement_person: [303.92, 303.92]
+    ca_state_supplement: 607.84

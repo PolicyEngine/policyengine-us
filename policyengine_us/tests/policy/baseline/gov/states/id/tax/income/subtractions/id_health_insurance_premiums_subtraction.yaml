@@ -218,6 +218,39 @@
     dependents_self_employed_health_insurance_ald: 500
     id_health_insurance_premiums_subtraction: 1_000
 
+- name: A long-term care deduction does not reduce a spouse's medical premiums
+  # The head's eligible long-term care premiums (1,800, the 2025 limit at
+  # age 55) are the head's whole $1,800 self-employed deduction (Form 7206
+  # line 2). That part took no medical premiums, so the spouse's $3,000 of
+  # employee premiums all qualify.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 55
+        self_employment_income: 50_000
+        is_self_employed: true
+        long_term_health_insurance_premiums: 1_800
+        is_tax_unit_head: true
+      spouse:
+        age: 55
+        employment_income: 50_000
+        health_insurance_premiums: 3_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ID
+  output:
+    self_employed_health_insurance_ald: 1_800
+    self_employed_health_insurance_ald_long_term_care_part: [1_800, 0]
+    # Schedule A: the spouse's 3,000 plus 1,800 - 1,800 of long-term care.
+    itemized_medical_expenses: 3_000
+    id_qualified_health_insurance_premiums: 3_000
+
 - name: Dependent-paid premiums cannot reduce the parent's itemized subtraction
   # Idaho Code 63-3022P; 2025 Form 39R worksheet, PDF page 49,
   # lines 1-6 and 8: $3,000 claimant costs - $2,250 floor = $750 overlap.
@@ -495,3 +528,30 @@
     id_health_insurance_premiums_subtraction: [1_750, 1_750]
     id_deductions: [20_000, 20_000]
     id_taxable_income: [8_250, 8_250]
+
+- name: A supplied deduction below the person amounts takes medical premiums first
+  period: 2025
+  input:
+    people:
+      head:
+        age: 55
+        self_employment_income: 50_000
+        is_self_employed: true
+        health_insurance_premiums: 3_000
+        long_term_health_insurance_premiums: 1_800
+        is_tax_unit_head: true
+      spouse:
+        age: 55
+        employment_income: 50_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        self_employed_health_insurance_ald: 3_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ID
+  output:
+    itemized_medical_expenses_excluded_premiums: 3_000
+    id_qualified_health_insurance_premiums: 0

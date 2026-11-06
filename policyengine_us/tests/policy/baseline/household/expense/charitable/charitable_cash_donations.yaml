@@ -1,0 +1,34 @@
+# charitable_cash_donations has no uprating series of its own, so it follows the
+# default, calibration.gov.cbo.income_by_source.adjusted_gross_income_per_capita
+# (total AGI divided by population). An input dated in one year and read in a
+# later year is multiplied by the ratio of that index between the two years.
+# Total AGI is IRS SOI Publication 1304 Table 1.1, all returns, adjusted gross
+# income less deficit, for 2015 to 2018, and CBO's series from 2019:
+#   2015: 10,210,310,102,000 / 326,078,000 = 31,312.48
+#         (https://www.irs.gov/pub/irs-soi/15in11si.xls)
+#   2018: 11,643,439,106,000 / 333,525,000 = 34,910.24
+#         (https://www.irs.gov/pub/irs-soi/18in11si.xls)
+#   2019: 11,962,000,000,000 / 335,329,000 = 35,672.43
+
+- name: A 2018 donation read in 2019 grows with per-capita AGI across the SOI-to-CBO splice.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    charitable_cash_donations:
+      2018: 10_000
+  output:
+    # 10,000 x 35,672.43 / 34,910.24. When total AGI for 2018 held the old 2015
+    # value, the index was 27,085.95 and this came to 13,170.09.
+    charitable_cash_donations: 10_218.33
+
+- name: A 2015 donation read in 2018 grows with per-capita AGI within the SOI years.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    charitable_cash_donations:
+      2015: 10_000
+  output:
+    # 10,000 x 34,910.24 / 31,312.48. When total AGI held the old 2015 value
+    # through 2018, the index was 27,704.54 in 2015 and 27,085.95 in 2018, and
+    # this came to 9,776.72.
+    charitable_cash_donations: 11_148.99

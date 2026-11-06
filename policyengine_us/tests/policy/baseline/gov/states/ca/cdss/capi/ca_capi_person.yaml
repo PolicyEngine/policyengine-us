@@ -194,6 +194,7 @@
         # being reworked separately.
         ssi: 994
         ssi_countable_income: 0
+        ca_state_supplement_person: 239.94
       person2:
         age: 68
         immigration_status: LEGAL_PERMANENT_RESIDENT
@@ -208,10 +209,6 @@
     marital_units:
       marital_unit:
         members: [person1, person2]
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        ca_state_supplement: 239.94
     households:
       household:
         members: [person1, person2]
@@ -372,6 +369,7 @@
         pension_income: 5_040
         ssi: 594
         ssi_countable_income: 4_800
+        ca_state_supplement_person: 239.94
       person2:
         age: 68
         immigration_status: LEGAL_PERMANENT_RESIDENT
@@ -380,10 +378,6 @@
     marital_units:
       marital_unit:
         members: [person1, person2]
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        ca_state_supplement: 239.94
     households:
       household:
         members: [person1, person2]
@@ -632,3 +626,88 @@
     ssi_countable_income: 980
     ca_capi_payment_standard: 931.72
     ca_capi_person: 0
+
+- name: Case 20, disabled noncitizen child of a citizen couple with no marital units is not the couple's partner.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # With no marital units everyone shares one unit, but the parents' SSI and
+    # supplement are not spouse income to the child: 994 + 97.27 = 1,091.27.
+    ca_capi_person: [0, 0, 1_091.27]
+
+- name: Case 21, CAPI spouse with no marital units does not count a citizen child's SSI and supplement as the spouse's.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # Only the citizen spouse's 745.50 SSI and 488.44 supplement count:
+    # 2,098.83 - 745.50 - 488.44 = 864.89.
+    ca_capi_person: [0, 864.89, 0]
+
+- name: Case 22, CAPI child with no marital units is not a second CAPI member of a mixed couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The same amounts as Case 12, which has explicit marital units.
+    ca_capi_person: [0, 864.89, 1_091.27]

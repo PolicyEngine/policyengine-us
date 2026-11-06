@@ -207,13 +207,16 @@
         state_code: NY
   output:
     # Worksheet 1: line 5 = 5,000; line 6 = 8,000; line 7 = 5,000;
-    # lines 8 and 9 = 50,000; line 10 = 5,000; line 11 = 5,000;
+    # line 8 = 45,000 (person1's $50,000 less the $5,000 of benefits);
+    # line 9 = 50,000; line 10 = 5,000; line 11 = 5,000;
     # line 12 = 6,000 (two persons); line 13 = 5,000;
     # line 14 = 6,000 - 5,000 = 1,000; line 15 = 8,000 - 5,000 = 3,000;
     # line 16 = 1,000.
-    # Form IT-216: line 3b = 1,000; line 5 = 1,000; lines 6 and 7 = 50,000;
-    # line 8 = 1,000; line 10 (FAGI 100,000) = .20; line 11 = 200;
-    # line 13 (NYAGI 100,000) = .600; line 14 = 200 x .600 = 120.
+    # Form IT-216: line 3b = 1,000; line 5 = 1,000; line 6 = 45,000;
+    # line 7 = 50,000;
+    # line 8 = 1,000; line 10 (FAGI 95,000: $100,000 of employment_income
+    # less the $5,000 of excluded benefits) = .20; line 11 = 200;
+    # line 13 (NYAGI 95,000) = .600; line 14 = 200 x .600 = 120.
     ny_cdcc_max: 1_000
     ny_cdcc: 120
 
@@ -248,12 +251,14 @@
         state_code: NY
   output:
     # Worksheet 1: line 5 = 2,000; line 6 = 5,000; line 7 = 2,000;
-    # lines 8 and 9 = 50,000; line 10 = 2,000; line 11 = 5,000;
+    # line 8 = 48,000 (person1's $50,000 less the $2,000 of benefits);
+    # line 9 = 50,000; line 10 = 2,000; line 11 = 5,000;
     # line 12 = 6,000; line 13 = 2,000; line 14 = 6,000 - 2,000 = 4,000;
     # line 15 = 5,000 - 2,000 = 3,000; line 16 = 3,000.
     # Form IT-216: line 3b = 3,000; line 5 = 3,000; line 8 = 3,000;
-    # line 10 (FAGI 100,000) = .20; line 11 = 600;
-    # line 13 (NYAGI 100,000) = .600; line 14 = 600 x .600 = 360.
+    # line 10 (FAGI 98,000: $100,000 of employment_income less the $2,000
+    # of excluded benefits) = .20; line 11 = 600;
+    # line 13 (NYAGI 98,000) = .600; line 14 = 600 x .600 = 360.
     ny_cdcc_max: 3_000
     ny_cdcc: 360
 

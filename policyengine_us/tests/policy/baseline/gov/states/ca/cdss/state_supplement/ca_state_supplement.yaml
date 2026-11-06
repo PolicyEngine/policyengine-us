@@ -1,21 +1,3 @@
-- name: Payment standard fully reduced
-  period: 2024
-  input:
-    ssi: 1_200
-    ca_state_supplement_payment_standard: 1_000
-    state_code: CA
-  output:
-    ca_state_supplement: 0
-
-- name: Payment standard partially reduced
-  period: 2024
-  input:
-    ssi: 1_200
-    ca_state_supplement_payment_standard: 2_000
-    state_code: CA
-  output:
-    ca_state_supplement: 800
-
 - name: Case 3, disabled SSI recipient receives state supplement.
   period: 2024
   absolute_error_margin: 0.01
@@ -38,8 +20,8 @@
         living_arrangements_allow_for_food_preparation: true
   output:
     ca_state_supplement_eligible_person: true
-    # (943 + 239.94) * 12 - 3,458.28.
-    ca_state_supplement: 10_737
+    # 239.94 * 12.
+    ca_state_supplement: 2_879.28
 
 # 2026: federal SSI is $994 (individual) and $1,491 (couple); the California
 # payment standard is $1,233.94 (individual) and $2,098.83 (couple), per CDSS,
@@ -63,7 +45,6 @@
         living_arrangements_allow_for_food_preparation: true
   output:
     ssi: 11_928 # 994 * 12
-    ca_state_supplement_payment_standard: 14_807.28 # 1,233.94 * 12
     ca_state_supplement: 2_879.28 # (1,233.94 - 994) * 12
 
 - name: Case 5, 2026 aged couple living independently with no income.
@@ -95,8 +76,9 @@
         living_arrangements_allow_for_food_preparation: true
   output:
     ssi: [8_946, 8_946] # 1,491 * 12 / 2
-    ca_state_supplement_payment_standard: 25_185.96 # 2,098.83 * 12
-    ca_state_supplement: 7_293.96 # (2,098.83 - 1,491) * 12
+    # (2,098.83 - 1,491) / 2 = 303.915 each, which federal administration
+    # rounds up to 303.92, or 3,647.04 a year each.
+    ca_state_supplement: 7_294.08
 
 - name: Case 6, 2026 aged individual with Social Security below the federal benefit rate.
   period: 2026
@@ -253,8 +235,6 @@
     # 995 and 1,362.81 a month. SSI is 994 - 993 = 1 a month for person1 and 0
     # for the rest.
     ssi: [12, 0, 0, 0, 0, 0]
-    ca_state_supplement_payment_standard:
-      [14_807.28, 14_807.28, 14_807.28, 14_807.28, 16_353.72, 16_353.72]
     # The supplement is the standard less SSI and countable income:
     # 1,233.94 - 1 - 993 = 239.94; 1,233.94 - 994 = 239.94; 1,233.94 - 995 =
     # 238.94; 1,233.94 - 1,233.94 = 0; 1,362.81 - 995 = 367.81;
@@ -351,11 +331,11 @@
     # a month, each at or above the 1,491 couple federal benefit rate, so SSI
     # is 0.
     ssi: [0, 0, 0, 0, 0, 0, 0, 0]
-    ca_state_supplement_payment_standard: [25_185.96, 25_185.96, 28_278.84, 28_278.84]
     # The supplement is the standard less countable income:
-    # 2,098.83 - 1,491 = 607.83; 2,098.83 - 2,098.83 = 0;
-    # 2,356.57 - 2,098.83 = 257.74; 2,356.57 - 2,356.57 = 0.
-    ca_state_supplement: [7_293.96, 0, 3_092.88, 0]
+    # 2,098.83 - 1,491 = 607.83, half rounded up to 303.92 for each spouse;
+    # 2,098.83 - 2,098.83 = 0; 2,356.57 - 2,098.83 = 257.74; 2,356.57 - 2,356.57
+    # = 0.
+    ca_state_supplement: [7_294.08, 0, 3_092.88, 0]
 
 # A CAPI-eligible member's income does not reduce the state supplement: CAPI
 # budgets its own members' income (CAPI regulations MPP 49-035), and SSI/SSP
@@ -407,7 +387,6 @@
     ssi: [5_844, 0] # 487 * 12
     # One eligible aged member without cooking facilities, so the standard is
     # 1,206.94 + 128.87 = 1,335.81.
-    ca_state_supplement_payment_standard: 16_029.72 # 1,335.81 * 12
     # The supplement is 1,335.81 - 487 - 480 = 368.81 a month; person2's 480
     # is not counted.
     ca_state_supplement: 4_425.72 # 368.81 * 12
@@ -464,7 +443,6 @@
     ssi: [2_820, 0] # 235 * 12
     # One eligible aged member without cooking facilities, so the standard is
     # 1,206.94 + 128.87 = 1,335.81.
-    ca_state_supplement_payment_standard: 16_029.72 # 1,335.81 * 12
     # The supplement counts the citizen's own 500 - 20 = 480:
     # 1,335.81 - 235 - 480 = 620.81 a month.
     ca_state_supplement: 7_449.72 # 620.81 * 12
@@ -508,7 +486,6 @@
     # Each has 500 - 20 = 480 a month of countable income.
     ssi_countable_income: [5_760, 5_760]
     ssi: [5_844, 0] # 487 * 12
-    ca_state_supplement_payment_standard: 16_029.72 # 1,335.81 * 12
     # A sibling's income is never deemed to an SSI/SSP recipient
     # (20 CFR 416.1160(a)), so the supplement stays 1,335.81 - 487 - 480 =
     # 368.81 a month.
@@ -681,6 +658,32 @@
         living_arrangements_allow_for_food_preparation: true
   output:
     ssi: 12_348 # 1,029 * 12
-    ca_state_supplement_payment_standard: 15_227.28 # (1,029 + 239.94) * 12
     # CDSS projects the 239.94 share for January 2027 (2026 May Revision, page 27).
     ca_state_supplement: 2_879.28 # 239.94 * 12
+
+- name: Case 18, 2026 mixed couple's supplement rounds up to the next cent like other federal payments.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+        social_security_retirement: 9_601 # 800.0833 a month
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        pension_income: 9_600 # 800 a month
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # 1,233.94 - 0 - (800.0833 - 20) = 453.8567, which rounds up to 453.86
+    # (POMS SI 02001.010 A.2).
+    ca_state_supplement_person: [453.86, 0]
