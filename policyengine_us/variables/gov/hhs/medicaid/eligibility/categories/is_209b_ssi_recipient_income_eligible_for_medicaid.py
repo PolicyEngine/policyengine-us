@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.medicaid.income._couple_standard import (
+    spouses_split_by_facility,
+)
 
 
 class is_209b_ssi_recipient_income_eligible_for_medicaid(Variable):
@@ -28,12 +31,23 @@ class is_209b_ssi_recipient_income_eligible_for_medicaid(Variable):
         medical_expenses = person("medicaid_medically_needy_medical_expenses", period)
         # SSI financial responsibility rules (42 CFR 435.602): the unit is
         # the individual or the married couple, not the tax filing unit.
-        income_after_spenddown = person.marital_unit.sum(
-            personal_income - medical_expenses
+        # 42 CFR 435.831(d) also deducts a spouse's expenses when the spouse's
+        # income is not counted, unless a facility splits the couple.
+        income = where(
+            person("medicaid_optional_senior_or_disabled_uses_couple_standard", period),
+            person.marital_unit.sum(personal_income),
+            personal_income,
         )
+        expenses = where(
+            spouses_split_by_facility(person, period),
+            medical_expenses,
+            person.marital_unit.sum(medical_expenses),
+        )
+        income_after_spenddown = income - expenses
 
         # The limit is per person (Missouri's blind standard can differ
-        # within a couple) while the income is the couple's combined total.
+        # within a couple). The income is the couple's combined total only
+        # under the couple standard.
         income_limit = person(
             "medicaid_optional_senior_or_disabled_income_limit", period
         )
