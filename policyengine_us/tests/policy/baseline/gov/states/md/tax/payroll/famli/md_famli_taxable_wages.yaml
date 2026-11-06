@@ -1,0 +1,129 @@
+# Md. Code, Lab. & Empl. s. 8.3-601(a)(1)(ii)2 applies the contribution rate to
+# wages up to the Social Security wage base, and COMAR 09.42.02.01B(2) takes
+# that base from the Federal Insurance Contributions Act maximum for the year:
+# $184,500 in 2026 and $192,300 in 2027. Section 8.3-101(r) takes wages from the
+# unemployment insurance definition in s. 8-101(aa). COMAR 09.32.01.14A(2)(a)
+# leaves out deferred compensation only when it is not deducted from salary, and
+# Maryland Labor's employer guide excludes cafeteria plan salary reductions and
+# includes 401(k) deferrals.
+
+- name: Case 1, wages below the wage base are all taxable.
+  period: 2027
+  input:
+    employment_income: 50_000
+    state_code: MD
+  output:
+    md_famli_taxable_wages: 50_000
+
+- name: Case 2, wages exactly at the 2027 wage base are all taxable.
+  period: 2027
+  input:
+    employment_income: 192_300
+    state_code: MD
+  output:
+    md_famli_taxable_wages: 192_300
+
+- name: Case 3, wages one dollar above the 2027 wage base stop at the base.
+  period: 2027
+  input:
+    employment_income: 192_301
+    state_code: MD
+  output:
+    md_famli_taxable_wages: 192_300
+
+- name: Case 4, wages well above the 2027 wage base stop at the base.
+  period: 2027
+  input:
+    employment_income: 250_000
+    state_code: MD
+  output:
+    md_famli_taxable_wages: 192_300
+
+- name: Case 5, the wage base is the one for the year the wages are paid.
+  period: 2026
+  input:
+    employment_income: 250_000
+    state_code: MD
+  output:
+    md_famli_taxable_wages: 184_500
+
+- name: Case 6, cafeteria plan and dependent care amounts come out, and 401(k) deferrals stay in.
+  period: 2027
+  input:
+    employment_income: 60_000
+    pre_tax_health_insurance_premiums: 5_000
+    health_savings_account_payroll_contributions: 1_000
+    dependent_care_employer_benefits: 2_000
+    traditional_401k_contributions: 4_000
+    state_code: MD
+  output:
+    # 60,000 - 5,000 - 1,000 - 2,000 = 52,000. The 4,000 deferral stays in.
+    md_famli_taxable_wages: 52_000
+
+- name: Case 7, the cap applies after the pre-tax amounts come out.
+  period: 2027
+  input:
+    employment_income: 195_000
+    pre_tax_health_insurance_premiums: 5_000
+    state_code: MD
+  output:
+    # 195,000 - 5,000 = 190,000, below the 192,300 base.
+    md_famli_taxable_wages: 190_000
+
+- name: Case 8, tips within employment income count as wages.
+  period: 2027
+  input:
+    employment_income: 50_000
+    tip_income: 5_000
+    state_code: MD
+  output:
+    md_famli_taxable_wages: 50_000
+
+- name: Case 9, self-employment income is not wages.
+  period: 2027
+  input:
+    self_employment_income: 100_000
+    state_code: MD
+  output:
+    md_famli_taxable_wages: 0
+
+- name: Case 10, no wages.
+  period: 2027
+  input:
+    employment_income: 0
+    state_code: MD
+  output:
+    md_famli_taxable_wages: 0
+
+- name: Case 11, a household outside Maryland has no Maryland taxable wages.
+  period: 2027
+  input:
+    employment_income: 50_000
+    state_code: VA
+  output:
+    md_famli_taxable_wages: 0
+
+- name: Case 12, the employer-level base is the employer's Social Security taxable earnings.
+  period: 2027
+  input:
+    employer_total_taxable_earnings_for_social_security: 1_000_000
+    state_code: MD
+  output:
+    employer_total_md_famli_taxable_wages: 1_000_000
+
+- name: Case 13, the employer-level base is zero outside Maryland.
+  period: 2027
+  input:
+    employer_total_taxable_earnings_for_social_security: 1_000_000
+    state_code: VA
+  output:
+    employer_total_md_famli_taxable_wages: 0
+
+- name: Case 14, a 401(k) deferral taken from salary stays in taxable wages.
+  period: 2027
+  input:
+    employment_income: 60_000
+    traditional_401k_contributions: 4_000
+    state_code: MD
+  output:
+    md_famli_taxable_wages: 60_000

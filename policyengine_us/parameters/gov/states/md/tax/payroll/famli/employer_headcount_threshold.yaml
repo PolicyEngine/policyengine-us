@@ -1,0 +1,23 @@
+description: Maryland requires employers with at least this many employees to pay the employer share under the Family and Medical Leave Insurance program.
+values:
+  0000-01-01: 0
+  # A smaller employer owes no employer share but still remits the employee
+  # share. The count covers every employee paid wages, inside or outside
+  # Maryland.
+  2027-01-01: 15
+
+metadata:
+  period: year
+  unit: person
+  label: Maryland FAMLI employer share headcount threshold
+  reference:
+    - title: Md. Code, Labor and Employment § 8.3-601(a)(1)(i), (e)(1)(i)
+      href: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gle&section=8.3-601&enactments=false
+    - title: COMAR 09.42.02.01B(1), small employer
+      href: https://regs.maryland.gov/us/md/exec/comar/09.42.02.01
+    - title: COMAR 09.42.02.06, employer size
+      href: https://regs.maryland.gov/us/md/exec/comar/09.42.02.06
+    - title: "Maryland Department of Labor, FAMLI policy guidance on small employers, Control E-26-002 (September 18, 2026) #page 1-2"
+      href: https://paidleave.maryland.gov/files/famli-policy-guidance-on-small-employers.pdf#page=1
+    - title: Maryland Department of Labor, FAMLI Frequently Asked Questions on contributions (updated October 2026), question 1
+      href: https://paidleave.maryland.gov/files/famli-faqs_-contribution-questions.pdf#page=1

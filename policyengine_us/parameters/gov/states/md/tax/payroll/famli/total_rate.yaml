@@ -1,0 +1,27 @@
+description: Maryland applies this total contribution rate to wages up to the Social Security wage base under the Family and Medical Leave Insurance program.
+values:
+  0000-01-01: 0
+  # The Secretary of Labor sets the rate; the statute caps it at 1.2% of wages
+  # and fixes no number. Maryland Labor set 0.9% for wages paid in 2027. The
+  # Secretary sets the 2028 rate by November 1, 2027.
+  2027-01-01: 0.009
+
+metadata:
+  period: year
+  unit: /1
+  label: Maryland FAMLI total contribution rate
+  reference:
+    - title: Md. Code, Labor and Employment § 8.3-601(a)(1), (b), (d)
+      href: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gle&section=8.3-601&enactments=false
+    - title: "Laws of Maryland 2025, Chapter 363 (HB 102), Section 1, amending § 8.3-601 to start contributions on January 1, 2027 #page 3-4"
+      href: https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_363_hb0102t.pdf#page=3
+    - title: COMAR 09.42.02.01B(3), total rate of contribution
+      href: https://regs.maryland.gov/us/md/exec/comar/09.42.02.01
+    - title: COMAR 09.42.02.08A, quarterly contribution calculation
+      href: https://regs.maryland.gov/us/md/exec/comar/09.42.02.08
+    - title: Maryland Department of Labor, FAMLI Frequently Asked Questions on contributions (updated October 2026), question 1
+      href: https://paidleave.maryland.gov/files/famli-faqs_-contribution-questions.pdf#page=1
+    - title: Maryland Department of Labor, Make contributions, How FAMLI contribution rates will be set
+      href: https://paidleave.maryland.gov/employers/make-contributions/
+    - title: Maryland Department of Labor, FAMLI policy guidance on small employers, Control E-26-002 (September 18, 2026), footnote 1
+      href: https://paidleave.maryland.gov/files/famli-policy-guidance-on-small-employers.pdf#page=1

@@ -4649,6 +4649,41 @@ candidates:
   state: ruled
   note: 'Ruled statute-first in October 2026; verify whether the chart''s zero column applies to dependent exemptions
     or only the filer''s own exemption. Code not yet on main: md_personal_exemptions_count.'
+- id: us-md:famli-wages-401k-deferrals
+  program: md-famli
+  years:
+    from: 2027
+    type: calendar
+  question: Do an employee's elective 401(k) deferrals count as wages for Maryland Family and Medical Leave Insurance
+    contributions?
+  sources:
+  - kind: statute
+    citation: Md. Code, Lab. & Empl. s. 8-101(aa)(1), (aa)(3)(iv)1, adopted by s. 8.3-101(r)
+    url: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gle&section=8-101&enactments=false
+  - kind: regulation
+    citation: COMAR 09.32.01.14A(2)(a)
+    url: https://regs.maryland.gov/us/md/exec/comar/09.32.01.14
+  - kind: guidance
+    citation: Maryland Labor, Employer's Quick Reference Guide, Taxable Contributions under IRS Section 125 Cafeteria
+      Plans and 401K plans
+    url: https://labor.maryland.gov/employment/empguide/empguide.pdf#page=19
+  readings:
+    statute: A deferral the employer pays into a qualified trust on the employee's behalf is a payment to such a trust,
+      so it falls outside wages.
+    other: A deferral taken from salary stays in wages. The regulation leaves out only deferred compensation not deducted
+      from salary, and the guide calls elective 401(k) deferrals taxable.
+  example: $60,000 of salary with a $4,000 deferral gives a $270 employee contribution under the regulation and guide,
+    versus $252 if the deferral comes out.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/md/tax/payroll/famli/md_famli_taxable_wages.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10674
+  state: ruled
+  note: The statute does not separate employer contributions from salary reductions, and the code follows the regulation
+    and the agency's guide, under the regulations-are-law and agency-breaks-ties principles. Short excerpts of all three
+    texts are in source_conflicts/sources/us-md/.
 - id: us-md:meap-garrett-oil-level-four
   program: liheap
   years:

@@ -1,0 +1,1 @@
+Add Maryland Family and Medical Leave Insurance payroll contributions, which begin January 1, 2027 at 0.9% of wages up to the Social Security wage base, split equally between employees and employers of 15 or more employees.

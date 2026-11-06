@@ -6,6 +6,7 @@ EMPLOYEE_STATE_PAYROLL_TAX_COMPONENTS = [
     "ct_employee_state_payroll_tax",
     "de_employee_state_payroll_tax",
     "ma_employee_state_payroll_tax",
+    "md_employee_state_payroll_tax",
     "me_employee_state_payroll_tax",
     "mn_employee_state_payroll_tax",
     "nj_employee_state_payroll_tax",
