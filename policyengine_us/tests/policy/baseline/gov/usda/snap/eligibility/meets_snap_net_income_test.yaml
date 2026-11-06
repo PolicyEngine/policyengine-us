@@ -291,7 +291,8 @@
     households:
       household:
         members: [person1, person2]
-        state_code: GU
+        state_code:
+          2026: GU
   output:
     meets_snap_net_income_test: true
 
@@ -309,7 +310,8 @@
     households:
       household:
         members: [person1, person2]
-        state_code: VI
+        state_code:
+          2026: VI
   output:
     meets_snap_net_income_test: true
 
@@ -327,7 +329,8 @@
     households:
       household:
         members: [person1, person2]
-        state_code: VI
+        state_code:
+          2026: VI
   output:
     meets_snap_net_income_test: false
 
@@ -347,6 +350,7 @@
     households:
       household:
         members: [person1]
-        state_code: VI
+        state_code:
+          2026: VI
   output:
     meets_snap_net_income_test: true

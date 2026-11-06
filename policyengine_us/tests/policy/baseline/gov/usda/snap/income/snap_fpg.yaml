@@ -34,7 +34,8 @@
     households:
       household:
         members: [person1, person2]
-        state_code: GU
+        state_code:
+          2026: GU
   output:
     # 7 CFR 273.9(a)(1)(i), (a)(2)(i): ($15,960 + $5,680) / 12.
     snap_fpg: 1_803.33
@@ -54,7 +55,8 @@
     households:
       household:
         members: [person1, person2, person3]
-        state_code: VI
+        state_code:
+          2026: VI
   output:
     # ($15,960 + 2 x $5,680) / 12.
     snap_fpg: 2_276.67
