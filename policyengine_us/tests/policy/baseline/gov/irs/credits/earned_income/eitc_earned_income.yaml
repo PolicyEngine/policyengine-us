@@ -440,3 +440,89 @@
     # No qualifying children: 7.65% x $8,260 = $632, and the $10,000 of AGI
     # is under the $10,330 phase-out threshold.
     eitc: 632
+
+# Dependent care benefits above the IRC 129 exclusion (Form 2441 line 26,
+# Form 1040 line 1e) are includible in gross income, so they are earned income
+# under IRC 32(c)(2)(A)(i).
+- name: Separate filer's taxable dependent care benefits count as earned income, 2024
+  period: 2024
+  input:
+    people:
+      person:
+        age: 35
+        employment_income: 20_000
+        dependent_care_employer_benefits: 5_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person, child]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [person, child]
+        state_code: TX
+  output:
+    # Box 1 $20,000 - $5,000 = $15,000. Exclusion min($5,000, $2,500 MFS
+    # cap, $15,000, $5,000 of care expenses) = $2,500; line 1e $2,500.
+    # Earned income $17,500.
+    eitc_earned_income: 17_500
+
+- name: Part-time worker's line 1e benefits count toward the EITC, 2024
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 6_000
+        dependent_care_employer_benefits: 5_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Box 1 $1,000; exclusion min($5,000, $5,000, $1,000, $5,000 of care
+    # expenses) = $1,000; line 1e $4,000. Earned income $5,000.
+    eitc_earned_income: 5_000
+    # One child, 2024: 34% x $5,000 = $1,700 (below the $12,390 plateau).
+    eitc: 1_700
+
+- name: Joint filers' line 1e benefits count toward the EITC phase-out, 2024
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 25_000
+      spouse:
+        age: 30
+        employment_income: 6_000
+        dependent_care_employer_benefits: 5_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    # Box 1 $25,000 + $1,000; exclusion min($5,000, $5,000, $1,000, $5,000 of
+    # care expenses) = $1,000; line 1e $4,000. Earned income and AGI $30,000.
+    eitc_earned_income: 30_000
+    adjusted_gross_income: 30_000
+    # One child, 2024 joint: $4,213 - 15.98% x ($30,000 - $29,640) = $4,155.47.
+    eitc: 4_155.47
