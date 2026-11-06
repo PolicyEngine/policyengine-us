@@ -3638,6 +3638,43 @@ candidates:
   state: ruled
   note: Ruled statute-first in October 2026; verify the incorporated dependency bar and annual questionnaire routing,
     including the 2026 draft.
+- id: us-il:msp-exemption-applicant-without-income
+  program: medicare-savings-programs
+  years:
+    from: 2026
+    type: calendar
+  question: Does an Illinois Medicare Savings Program applicant with no income of their own get the $25 exemption on
+    income counted from a spouse who is not applying?
+  sources:
+  - kind: manual
+    citation: IDHS Policy Manual PM 15-04-03-a
+    url: https://www.dhs.state.il.us/page.aspx?item=16387
+  - kind: regulation
+    citation: 89 Ill. Adm. Code 120.335(a)(1)
+    url: https://www.ilga.gov/ftp/JCAR/AdminCode/089/089001200H03350R.html
+  - kind: manual
+    citation: IDHS Policy Manual PM 06-12-01-c
+    url: https://www.dhs.state.il.us/page.aspx?item=14179
+  readings:
+    statute: 'No statute is supplied; 120.335(a)(1) exempts "the first $25.00 of a client''s earned or unearned income
+      other than SSI income, or contributions from a spouse or other individual", and PM 06-12-01-c allows "no more
+      than one income exemption for their own income" and an exemption on a spouse''s income only if the spouse "is
+      an applicant or client in another MANG case".'
+    other: 'PM 15-04-03-a: "If the person applying for or receiving AABD Medical has no income other than SSI or
+      contributions, and another person included in the standard has income, deduct one $25 exemption even if the
+      other person receives benefits under one of the Family Health Plans."'
+  example: An Illinois applicant, 68, with no income and a disabled spouse, 62, with $1,825 a month counts $1,800 and
+    is QMB with one $25, and counts $1,805 and is SLMB with only the SSI $20.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/msp_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10633
+  state: ruled
+  note: 'PE-US follows PM 15-04-03-a: one $25 applies when only one spouse is on Medicare, whether or not that spouse
+    has income of their own. Two spouses on Medicare keep one exemption each, capped at each spouse''s own income. Ruled
+    by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10633'
 - id: us-il:msp-income-exemption-contributions
   program: medicare-savings-programs
   years:
@@ -12476,6 +12513,52 @@ candidates:
     three places, and floors the result at the federal deduction, a PE safeguard that binds only when the rounded
     share falls below the exact federal share. Settling the federal reading (rulespec-us#1413) and using it for
     both would make that floor unnecessary.'
+- id: us:msp-eligible-spouse-ssi-definition
+  program: medicare-savings-programs
+  years:
+    from: 2026
+    type: calendar
+  question: Under SSI methodology for the Medicare Savings Programs, is a spouse who is aged, blind or disabled but not
+    eligible for SSI an eligible spouse, whose income is combined, or an ineligible spouse, whose income is deemed?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1382c(b) and (f)(1)
+    url: https://www.law.cornell.edu/uscode/text/42/1382c
+  - kind: regulation
+    citation: 20 CFR 416.1801(c)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1801
+  - kind: regulation
+    citation: 20 CFR 416.1160(d)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1160
+  - kind: regulation
+    citation: 20 CFR 416.1163(b) and (d)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1163
+  - kind: manual
+    citation: POMS SI 00501.154 A.1
+    url: https://secure.ssa.gov/poms.nsf/lnx/0500501154
+  readings:
+    statute: 'Section 1382c(b) defines an eligible spouse as "an aged, blind, or disabled individual" married to and
+      living with another such individual, and (f)(1) deems income from a spouse who "is not an eligible spouse".'
+    other: '416.1801(c) defines an eligible spouse as a person "Who is eligible for SSI"; 416.1160(d) defines an
+      ineligible spouse as someone who "is not eligible for SSI benefits"; POMS SI 00501.154 A.1 applies couple
+      computation rules if "each is eligible for benefits". 416.1163 then allocates to ineligible children and deems
+      only a remainder above the rate difference.'
+  example: A, on Medicare, has $1,000 a month and B, 62 and disabled, has $1,500, with two ineligible children. Combined
+    income is $2,480 and no tier; under deeming it is $1,000 + ($1,500 - 2 x $497) - $20 = $1,486 and QMB.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/msp_tests_as_couple.py
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/_msp_spouse_income.py
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/msp_countable_income.py
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/msp_fpg.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10633
+  state: ruled
+  note: 'PE-US follows the regulations for the Medicare Savings Programs: spouses are an eligible couple only if each
+    is eligible for SSI, and any other spouse is an ineligible spouse, with income deemed above the rate difference.
+    The SSI variables (is_ssi_ineligible_spouse, ssi_couple_computation_applies) still classify by aged, blind or
+    disabled status. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10633'
 - id: us:niit-excess-business-loss-addback
   program: income-tax
   years:
