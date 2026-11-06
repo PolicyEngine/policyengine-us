@@ -12030,6 +12030,48 @@ candidates:
     Credit Limit Worksheet B (ctc_credit_limit_worksheet_b_applies.py). The legacy aggregates still count as an exclusion.
     The EITC keeps the broader section 32(c)(1)(C) test in elects_section_911_exclusion. Register the entry and add
     the marker once #10297 is on main.
+- id: us:catch-up-deferrals-after-402g1c-repeal
+  program: income-tax
+  years:
+    from: 2024
+    type: tax
+  question: Are pre-tax catch-up contributions above the section 402(g)(1)(B) amount excluded from gross income, and
+    deductible in a self-employed plan, now that SECURE 2.0 section 603(b)(1) has struck section 402(g)(1)(C)?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 402(g)(1) as amended by Pub. L. 117-328 section 603(b)(1) and (c); 414(v)(3)(A)(i)
+    url: https://www.law.cornell.edu/uscode/text/26/402#g_1
+  - kind: regulation
+    citation: 26 CFR 1.402(g)-2(a)
+    url: https://www.law.cornell.edu/cfr/text/26/1.402(g)-2
+  - kind: guidance
+    citation: Notice 2023-62, section III.A, PDF pages 4-5
+    url: https://www.irs.gov/pub/irs-drop/n-23-62.pdf#page=4
+  - kind: worksheet
+    citation: Publication 560 (2025), Deduction Worksheet for Self-Employed, steps 16-18
+    url: https://www.irs.gov/pub/irs-prior/p560--2025.pdf#page=39
+  readings:
+    statute: For taxable years beginning after 2023, section 402(g)(1)(A) includes elective deferrals above the
+      applicable dollar amount in gross income, except designated Roth contributions; the catch-up exclusion in former
+      subparagraph (C) is struck, and section 414(v)(3)(A)(i) does not list section 402(g).
+    other: Notice 2023-62 says non-Roth catch-up contributions are not includible under section 402(g)(1)(A), reading
+      section 414(v)(3)(A)(i); section 1.402(g)-2(a) still raises the 402(g)(1)(B) limit by the catch-up amount; and
+      Pub. 560 adds catch-up contributions to the self-employed maximum deductible contribution.
+  example: In 2025 a 55-year-old with $200,000 of Schedule C profit and $100,000 of desired contributions gets a
+    $68,280.73 plan limit, including the $7,500 catch-up. Including that $7,500 in gross income under the amended
+    section 402(g)(1)(A) would leave a net deduction of $60,780.73.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/household/expense/retirement/elective_deferral_limit.py
+    - policyengine_us/variables/household/expense/retirement/self_employed_pension_contribution_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10121
+  state: unreviewed
+  note: elective_deferral_limit adds k401_catch_up_limit to the section 402(g)(1)(B) amount in every year, and the
+    self-employed plan limit adds the same catch-up room to its maximum. The regulation binds unless it flatly
+    contradicts the amended statute, and the notice reads section 414(v)(3)(A)(i) to keep catch-ups excludable, so
+    the project lead should rule before any model change.
 - id: us:charitable-non-itemizer-2020-separate-cap
   program: income-tax
   years:
@@ -12604,6 +12646,41 @@ candidates:
   state: ruled
   note: Ruled October 2026; verify the worksheet version and whether claiming the rebate defeats the refund-only
     joint-return exception.
+- id: us:se-plan-step-2-multiple-businesses
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: When a self-employed person has more than one business, does Pub. 560's step 2 subtract all of Schedule 1
+    line 15 from the plan business's net profit, or only the part attributable to that business?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 401(c)(2)(A)(vi); 404(a)(8)(C)
+    url: https://www.law.cornell.edu/uscode/text/26/401#c_2_A
+  - kind: worksheet
+    citation: Publication 560 (2025), Deduction Worksheet for Self-Employed, step 2
+    url: https://www.irs.gov/pub/irs-prior/p560--2025.pdf#page=39
+  - kind: form
+    citation: Form 7206 (2023), lines 5-8
+    url: https://www.irs.gov/pub/irs-prior/f7206--2023.pdf#page=1
+  readings:
+    statute: Earned income is figured with regard to the section 164(f) deduction and only from the business that
+      has the plan; the statute does not say how to split the deduction among businesses.
+    other: Pub. 560's step 2 enters the deduction from Schedule 1 line 15; Form 7206 lines 5 to 8 split line 15 by
+      each business's share of the profitable businesses' net profits for the same section 401(c) earned income.
+  example: In 2025, Schedule C profit of $60,000 and farm profit of $40,000 give a Schedule 1 line 15 of $7,064.78.
+    Splitting it gives step 3 of $55,761.14 and a $34,652.23 limit; subtracting all of it gives $52,935.23 and
+    $34,087.05.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/household/expense/retirement/self_employed_pension_earned_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10121
+  state: unreviewed
+  note: 'The code follows Form 7206: the Schedule C business takes Schedule 1 line 15 in proportion to its share of
+    the positive net profits of Schedule C, Schedule F and K-1 box 14 code A, the split the self-employed health
+    insurance limit already uses for the same earned income. Code not yet on main: self_employed_pension_earned_income.'
 - id: us:separate-filer-zero-income-threshold
   program: income-tax
   years:
