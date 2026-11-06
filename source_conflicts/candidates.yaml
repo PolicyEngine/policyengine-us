@@ -11671,6 +11671,8 @@ candidates:
     code:
     - policyengine_us/variables/gov/states/wv/tax/income/subtractions/senior_citizen_disability/wv_senior_citizen_disability_deduction_person.py
     - policyengine_us/parameters/gov/states/wv/tax/income/subtractions/senior_citizen_disability_deduction/excluded_income_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10673
   state: open
   note: 'This PR follows the statute for line 39 and keeps the section 12a contribution deduction apart from the
     income receipts on lines 36 and 38 that the senior cap excludes. Main follows the registered
