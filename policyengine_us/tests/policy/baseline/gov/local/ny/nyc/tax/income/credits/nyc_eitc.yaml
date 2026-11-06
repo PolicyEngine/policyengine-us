@@ -35,7 +35,7 @@
 
 - name: NYC EITC, fraction of federal EITC (NYAGI=21k)
   period: 2022
-  absolute_error_margin: 1
+  absolute_error_margin: 0.0001
   input:
     state_code: NY
     in_nyc: true
@@ -92,3 +92,88 @@
     # Recomputed federal AGI 41,800 is over the $41,756 one-child limit.
     ny_recomputed_federal_agi: 41_800
     nyc_eitc: 0
+
+- name: NYC EIC rounds the reduction for a parent earning $21,000 in 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 21_000
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+        in_nyc: true
+  output:
+    ny_agi: 21_000
+    eitc: 4_328
+    # (21,000 - 19,999) * .00002 = .02002; filers round to .0200.
+    # Line 6: .20 - .0200 = .1800; Worksheet C: 4,328 * .1800 = 779.04.
+    nyc_eitc: 779.04
+
+- name: NYC EIC rounds each reduction band's boundaries in 2022
+  period: 2022
+  absolute_error_margin: 0.001
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    in_nyc: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    eitc: [10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000]
+    ny_agi: [4999, 5000, 5001, 5002, 7498, 7499, 7500, 14999, 15000, 15001, 15002, 17498, 17499, 17500, 19999, 20000, 20001, 20002, 22498, 22499, 22500, 39999, 40000, 40001, 40002, 42498, 42499, 42500, 43000]
+  output:
+    # At each lower bound, filers round $1 * .00002 to .0000.
+    # For excesses of $2 and $3, filers round to .0000 and .0001.
+    # At the last two dollars, filers round .04998 and .05000 to .0500.
+    # In the next band, filers use its flat rate; at $43,000, they use .10.
+    nyc_eitc: [3000, 3000, 3000, 2999, 2500, 2500, 2500, 2500, 2500, 2500, 2499, 2000, 2000, 2000, 2000, 2000, 2000, 1999, 1500, 1500, 1500, 1500, 1500, 1500, 1499, 1000, 1000, 1000, 1000]
+
+- name: NYC EIC rounds each reduction band's boundaries in 2023
+  period: 2023
+  absolute_error_margin: 0.001
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    in_nyc: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    eitc: [10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000]
+    ny_agi: [4999, 5000, 5001, 5002, 7498, 7499, 7500, 14999, 15000, 15001, 15002, 17498, 17499, 17500, 19999, 20000, 20001, 20002, 22498, 22499, 22500, 39999, 40000, 40001, 40002, 42498, 42499, 42500, 43000]
+  output:
+    # At each lower bound, filers round $1 * .00002 to .0000.
+    # For excesses of $2 and $3, filers round to .0000 and .0001.
+    # At the last two dollars, filers round .04998 and .05000 to .0500.
+    # In the next band, filers use its flat rate; at $43,000, they use .10.
+    nyc_eitc: [3000, 3000, 3000, 2999, 2500, 2500, 2500, 2500, 2500, 2500, 2499, 2000, 2000, 2000, 2000, 2000, 2000, 1999, 1500, 1500, 1500, 1500, 1500, 1500, 1499, 1000, 1000, 1000, 1000]
+
+- name: NYC EIC rounds each reduction band's boundaries in 2024
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    in_nyc: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    eitc: [10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000]
+    ny_agi: [4999, 5000, 5001, 5002, 7498, 7499, 7500, 14999, 15000, 15001, 15002, 17498, 17499, 17500, 19999, 20000, 20001, 20002, 22498, 22499, 22500, 39999, 40000, 40001, 40002, 42498, 42499, 42500, 43000]
+  output:
+    # At each lower bound, filers round $1 * .00002 to .0000.
+    # For excesses of $2 and $3, filers round to .0000 and .0001.
+    # At the last two dollars, filers round .04998 and .05000 to .0500.
+    # In the next band, filers use its flat rate; at $43,000, they use .10.
+    nyc_eitc: [3000, 3000, 3000, 2999, 2500, 2500, 2500, 2500, 2500, 2500, 2499, 2000, 2000, 2000, 2000, 2000, 2000, 1999, 1500, 1500, 1500, 1500, 1500, 1500, 1499, 1000, 1000, 1000, 1000]
+
+- name: NYC EIC rounds each reduction band's boundaries in 2025
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    in_nyc: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    eitc: [10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000]
+    ny_agi: [4999, 5000, 5001, 5002, 7498, 7499, 7500, 14999, 15000, 15001, 15002, 17498, 17499, 17500, 19999, 20000, 20001, 20002, 22498, 22499, 22500, 39999, 40000, 40001, 40002, 42498, 42499, 42500, 43000]
+  output:
+    # At each lower bound, filers round $1 * .00002 to .0000.
+    # For excesses of $2 and $3, filers round to .0000 and .0001.
+    # At the last two dollars, filers round .04998 and .05000 to .0500.
+    # In the next band, filers use its flat rate; at $43,000, they use .10.
+    nyc_eitc: [3000, 3000, 3000, 2999, 2500, 2500, 2500, 2500, 2500, 2500, 2499, 2000, 2000, 2000, 2000, 2000, 2000, 1999, 1500, 1500, 1500, 1500, 1500, 1500, 1499, 1000, 1000, 1000, 1000]
