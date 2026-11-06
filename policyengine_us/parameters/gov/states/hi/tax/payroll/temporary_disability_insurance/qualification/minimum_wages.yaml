@@ -1,0 +1,16 @@
+description: Hawaii counts an employee's weekly wages toward the temporary disability insurance contribution only if the employee earned at least this amount in the prior 52 weeks.
+values:
+  # Act 30 of 1999 applies from 2000 and left this amount in place. Later acts
+  # did not change it. Zero marks earlier years, which this program does not model.
+  0000-01-01: 0
+  2000-01-01: 400
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Hawaii TDI minimum wages to count weekly wages
+  reference:
+    - title: Hawaii Revised Statutes Section 392-43(b)(1)
+      href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0392/HRS_0392-0043.htm
+    - title: Session Laws of Hawaii 1999, Act 30
+      href: https://data.capitol.hawaii.gov/slh/Years/SLH1999/SLH1999_Act30.pdf#page=1
