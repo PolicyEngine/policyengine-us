@@ -1,3 +1,31 @@
+## [2.104.0] - 2026-11-06
+
+### Added
+
+- Add West Virginia LIEAP regular heating payments for FY2026 and FY2027 for one through twenty qualified members, with the manual's income rules, income ceiling and payment chart.
+
+
+## [2.103.0] - 2026-11-06
+
+### Added
+
+- Add Idaho LIHEAP regular heating assistance for FY2026.
+
+
+## [2.102.0] - 2026-11-06
+
+### Added
+
+- Add Connecticut Energy Assistance Program basic and rental heating assistance for fiscal years 2026 and 2027, including federal income protection, military pensions, Social Security net of Part B premiums and receipt-based benefits.
+
+
+## [2.101.0] - 2026-11-06
+
+### Added
+
+- Add California LIHEAP regular utility heating schedules, a covered Madera propane/fuel-oil calculation, and approved-cost wood assistance, including the federal income floor, military pensions, receipt-based benefits and allowable medical-premium deductions.
+
+
 ## [2.100.1] - 2026-11-05
 
 ### Fixed
