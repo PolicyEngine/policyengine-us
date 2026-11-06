@@ -1,9 +1,13 @@
 description: Montana limits gross income to this share of the federal poverty guideline for initial eligibility under the Best Beginnings Child Care Scholarship program.
 # ARM 37.80.202(1) still prints 150%. MCA 52-2-715, enacted by House Bill 648 in 2023,
-# requires a threshold of no less than 185%, and the department's scale ends Standard
-# Eligibility at 185%. The model follows the statute and the scale. This is the initial /
-# first-time applicant standard; continuing recipients at annual redetermination use
-# the higher graduated share (see graduated.yaml), selected via the mt_ccap_enrolled input.
+# requires a threshold of no less than 185%, and the department has applied 185% since
+# July 1, 2023; its scale ends Standard Eligibility there. The model follows the statute
+# and the scale from that date. The Legislative Fiscal Division's timeline, adapted from
+# the department's communications, also lists 185% from July 2021 through December 2022
+# under pandemic CCDF policies; the model keeps the rule's 150% for that period. This is
+# the initial / first-time applicant standard; continuing recipients at annual
+# redetermination use the higher graduated share (see graduated.yaml), selected via the
+# mt_ccap_enrolled input.
 values:
   2016-11-01: 1.5
   2023-07-01: 1.85
@@ -17,6 +21,10 @@ metadata:
       href: https://archive.legmt.gov/bills/MCA/title_0520/chapter_0020/part_0070/section_0150/0520-0020-0070-0150.html
     - title: Best Beginnings Child Care Sliding Fee Scale (document header "Effective 07-01-2025"; URL filename says 2023)
       href: https://dphhs.mt.gov/assets/ecfsd/childcare/policymanual/SlidingFeeScale07012023.pdf#page=1
+    - title: Montana Legislative Fiscal Division, Child Care Overview (June 2024), HB 648 in the 2023 Session
+      href: https://leg.mt.gov/content/Publications/fiscal/2025-Biennium/Special-Topics/Childcare/Childcare-Overview-LEG-Days-June2024.pdf#page=4
+    - title: Montana Legislative Fiscal Division, Child Care Overview (June 2024), Policy Timeline
+      href: https://leg.mt.gov/content/Publications/fiscal/2025-Biennium/Special-Topics/Childcare/Childcare-Overview-LEG-Days-June2024.pdf#page=13
     - title: Mont. Admin. R. 37.80.202(1)
       href: https://rules.mt.gov/gateway/ruleno.asp?RN=37.80.202
     - title: Mont. Admin. R. 37.80.202(1) — Cornell LII

@@ -214,3 +214,99 @@
         id_iccp_enrolled: true
   output:
     id_iccp_income_eligible: true
+
+# IDAPA 16.06.12.070 set 130% before April 6, 2023 and 175% from then.
+# 130% x 23,030 / 12 = 2,494.92, rounded up to 2,495 (June 2022).
+# 175% x 24,860 / 12 = 3,625.42, rounded up to 3,626 (June 2023).
+
+- name: Case 11, in June 2022 a family of three at 130 percent of the 2022 guideline qualifies as a new applicant.
+  period: 2022-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 4
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2022: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        id_iccp_countable_income: 2_495
+        id_iccp_enrolled: false
+  output:
+    id_iccp_income_eligible: true
+
+- name: Case 12, in June 2022 a family of three one dollar above 130 percent of the 2022 guideline doesn't qualify.
+  period: 2022-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 4
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2022: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        id_iccp_countable_income: 2_496
+        id_iccp_enrolled: false
+  output:
+    id_iccp_income_eligible: false
+
+- name: Case 13, in June 2023 a family of three at 175 percent of the 2023 guideline qualifies as a new applicant.
+  period: 2023-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 4
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2023: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        id_iccp_countable_income: 3_626
+        id_iccp_enrolled: false
+  output:
+    id_iccp_income_eligible: true
+
+- name: Case 14, in June 2023 a family of three one dollar above 175 percent of the 2023 guideline doesn't qualify.
+  period: 2023-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 4
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2023: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        id_iccp_countable_income: 3_627
+        id_iccp_enrolled: false
+  output:
+    id_iccp_income_eligible: false
