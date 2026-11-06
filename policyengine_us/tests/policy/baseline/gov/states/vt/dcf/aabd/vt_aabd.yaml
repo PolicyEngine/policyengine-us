@@ -203,3 +203,38 @@
     age: 65
   output:
     vt_aabd: 52.04
+
+# POMS SI 01415.058 M.2: independent living pays $105.80 per couple
+# and $55.68 per individual; $105.80 / 2 = $52.90.
+# https://secure.ssa.gov/poms.nsf/lnx/0501415058#m2
+# No marital units: only the head and spouse form the eligible couple.
+- name: VT couple rate excludes a third aged adult
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: VT
+  output:
+    vt_aabd: [52.9, 52.9, 55.68]

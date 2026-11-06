@@ -1,0 +1,134 @@
+# SSA applies the regular individual PMV to the individual computation in
+# POMS SI 01320.400 C.2 through SI 01320.150 B.1.b.
+# https://secure.ssa.gov/poms.nsf/lnx/0501320150
+# https://secure.ssa.gov/poms.nsf/lnx/0501320400
+# https://secure.ssa.gov/poms.nsf/lnx/0500835300
+# Individual PMV: $994 / 3 + $20 = $351.33 monthly. After the $20
+# general exclusion, the ISM-only claimant gets $662.67 monthly.
+# We retain the model's unrounded annual amounts and compare within $0.01.
+
+- name: ISM-only claimant uses the individual PMV for the no-deeming limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        ssi_receives_outside_shelter_support: true
+      spouse:
+        age: 60
+        employment_income: 500 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    uncapped_ssi_without_spousal_deeming: [662.67, 0]
+    ssi: [662.67, 0]
+
+- name: Claimant earnings retain the earned exclusion with the individual PMV.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        ssi_receives_outside_shelter_support: true
+        employment_income: 100 * 12
+      spouse:
+        age: 60
+        employment_income: 500 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    uncapped_ssi_without_spousal_deeming: [645.17, 0]
+
+- name: Claimant unearned income shares the general exclusion with ISM.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        ssi_receives_outside_shelter_support: true
+        social_security_retirement: 100 * 12
+      spouse:
+        age: 60
+        employment_income: 500 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    uncapped_ssi_without_spousal_deeming: [562.67, 0]
+
+- name: Actual shelter support between the deemed and individual PMVs limits ISM.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        ssi_receives_outside_shelter_support: true
+        ssi_shelter_support_value: 300 * 12
+      spouse:
+        age: 60
+        employment_income: 500 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    uncapped_ssi_without_spousal_deeming: [714, 0]
+
+- name: A low ISM rebuttal transfers unused general exclusion to claimant earnings.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        ssi_receives_outside_shelter_support: true
+        employment_income: 200 * 12
+        ssi_shelter_support_value: 10 * 12
+      spouse:
+        age: 60
+        employment_income: 500 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    uncapped_ssi_without_spousal_deeming: [931.5, 0]

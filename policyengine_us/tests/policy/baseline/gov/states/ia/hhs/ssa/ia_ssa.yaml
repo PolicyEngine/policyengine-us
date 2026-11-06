@@ -1677,6 +1677,7 @@
         # Both spouses enter on January 10: January 10 through 31.
         ia_ssa_care_partial_month_days: 22
         ia_ssa_care_initial_partial_month: true
+        ia_ssa_rcf_shares_room_with_spouse: true
       person2:
         age:
           2026: 70
@@ -3153,7 +3154,7 @@
     ia_ssa_smme_countable_income: [2_247.5, 457.5]
     ia_ssa: [1, 0]
 
-- name: Case 101, without marital units an SMME applicant working above the SGA level in a household of three adults is budgeted alone.
+- name: Case 101, an unmarried SMME applicant working above the SGA level in a household of three adults is budgeted alone.
   period: 2026-04
   absolute_error_margin: 0.01
   input:
@@ -3177,6 +3178,13 @@
       person3:
         age:
           2026: 30
+    marital_units:
+      first:
+        members: [person1]
+      second:
+        members: [person2]
+      third:
+        members: [person3]
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -3189,8 +3197,9 @@
         state_code:
           2026: IA
   output:
-    # With no marital units, the default unit holds all three people, so
-    # ia_ssa_has_spouse is false and each member is budgeted alone:
+    # Explicit single-person marital units establish that these adults are
+    # unmarried, even though two adults receive inferred tax head/spouse roles.
+    # Each member is budgeted alone:
     # (3,277 - 20 - 65) / 2 = 1,596, at least the one-person 1,596. If
     # person2's 520 pension were deemed it would be 2,106, below the two-person
     # 2,164. person2's own income is 520 - 20 = 500.
@@ -3711,3 +3720,497 @@
     ssi: [0, 29, 0, 0, 0]
     ia_ssa_smme_countable_income: [2_207.5, 2_207.5, 0, 0, 0]
     ia_ssa: [1, 0, 0, 0, 0]
+
+- name: Case 111, prior-SSI spouses entering separate facilities retain only the entry-month couple budget.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 14_400
+        ssi_countable_resources: 1_000
+        ia_ssa_category:
+          2026-01: RESIDENTIAL_CARE
+          2026-02: RESIDENTIAL_CARE
+        ia_ssa_care_partial_month_days:
+          2026-01: 22
+        ia_ssa_care_initial_partial_month:
+          2026-01: true
+        ia_ssa_rcf_received_ssi_before_entry:
+          2026-01: true
+      person2:
+        age: 70
+        social_security_retirement: 20_400
+        ssi_countable_resources: 1_500
+        ia_ssa_category:
+          2026-01: RESIDENTIAL_CARE
+          2026-02: RESIDENTIAL_CARE
+        ia_ssa_care_partial_month_days:
+          2026-01: 22
+        ia_ssa_care_initial_partial_month:
+          2026-01: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      first:
+        members: [person1]
+      second:
+        members: [person2]
+    households:
+      facility1:
+        members: [person1]
+        state_code: IA
+      facility2:
+        members: [person2]
+        state_code: IA
+  output:
+    # 6-B Spouses Living Separately retains a couple in the prior-SSI entry
+    # month even across facilities. (1,200 + 1,700) / 2 = 1,450 care income;
+    # each gets half the couple home allowance, 745.50. Participation is
+    # 1,450 - 130 - 745.50 = 574.50, against 22 * 38.47 = 846.34.
+    # February uses each resident's income and 28 * 38.47 = 1,077.16.
+    ia_ssa_has_spouse:
+      2026-01: [false, false]
+    ia_ssa_rcf_couple_budget:
+      2026-01: [true, true]
+      2026-02: [false, false]
+    ia_ssa_eligible:
+      2026-01: [true, true]
+    ia_ssa_care_countable_income:
+      2026-01: [1_450, 1_450]
+      2026-02: [1_200, 1_700]
+    ia_ssa:
+      2026-01: [271.84, 271.84]
+      2026-02: [7.16, 0]
+
+- name: Case 112, current individual SSI does not establish prior SSI for spouses entering separate facilities.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ia_ssa_category: RESIDENTIAL_CARE
+        ia_ssa_care_initial_partial_month: true
+      person2:
+        age: 70
+        ia_ssa_category: RESIDENTIAL_CARE
+        ia_ssa_care_initial_partial_month: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      first:
+        members: [person1]
+      second:
+        members: [person2]
+    households:
+      facility1:
+        members: [person1]
+        state_code: IA
+      facility2:
+        members: [person2]
+        state_code: IA
+  output:
+    ssi: [994, 994]
+    ia_ssa_rcf_couple_budget: [false, false]
+    ia_ssa_care_countable_income: [994, 994]
+    ia_ssa: [1_192.57, 1_192.57]
+
+- name: Case 113, a third adult does not enter the family-life home couple budget in a default marital unit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ia_ssa_category: FAMILY_LIFE_HOME
+        ssi_countable_resources: 1_000
+      person2:
+        age: 70
+        ia_ssa_category: FAMILY_LIFE_HOME
+        ssi_countable_resources: 1_000
+      person3:
+        age: 70
+        is_blind: true
+        social_security_retirement: 120_000
+        ia_ssa_category: FAMILY_LIFE_HOME
+        ia_ssa_dependent_countable_income: 10_000
+        ssi_countable_resources: 100_000
+    tax_units:
+      couple:
+        members: [person1, person2]
+      other:
+        members: [person3]
+    households:
+      home:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # The actual spouses share the $801 federal supplement and $20 top-up;
+    # the third adult's income, blindness and resources do not enter theirs.
+    ia_ssa_has_spouse: [true, true, false]
+    ia_ssa_eligible: [true, true, false]
+    ia_ssa_care_countable_income: [745.5, 745.5, 10_000]
+    ia_ssa_federal: [400.5, 400.5, 0]
+    ia_ssa: [410.5, 410.5, 0]
+
+- name: Case 114, dependent-person certification and dependent income use only the actual spouses.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ia_ssa_category: DEPENDENT_PERSON
+        ia_ssa_dependent_countable_income: 100
+      person2:
+        age: 70
+        ia_ssa_dependent_countable_income: 200
+      person3:
+        age: 70
+        ia_ssa_category: DEPENDENT_PERSON
+        ia_ssa_dependent_countable_income: 10_000
+        ssi_countable_resources: 100_000
+    tax_units:
+      couple:
+        members: [person1, person2]
+      other:
+        members: [person3]
+    households:
+      home:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # The certified spouse establishes the couple category. Its dependent
+    # income is max(100, 200), not the unrelated adult's 10,000.
+    ia_ssa_federal: [259, 259, 0]
+    ia_ssa: [259, 259, 0]
+
+- name: Case 115, in-home care pools only the actual spouse's income costs and deductions.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 18_000
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        ia_ssa_care_additional_deductions: 100
+      person2:
+        age: 70
+        social_security_retirement: 6_000
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        ia_ssa_care_additional_deductions: 50
+      person3:
+        age: 70
+        social_security_retirement: 120_000
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        ia_ssa_care_additional_deductions: 10_000
+    tax_units:
+      couple:
+        members: [person1, person2]
+      other:
+        members: [person3]
+    households:
+      home:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Couple participation = 2,000 - 1,491 - 100 - 50 = 359; approved care
+    # costs total 800, leaving 441 split equally. The third adult is alone.
+    ia_ssa_care_countable_income: [2_000, 2_000, 10_000]
+    ia_ssa_ihhrc_participation: [359, 359, 0]
+    ia_ssa_ihhrc_amount: [220.5, 220.5, 400]
+    ia_ssa: [220.5, 220.5, 400]
+
+- name: Case 116, an Iowa couple with separate tax units still pools in-home care income and resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 18_000
+        ssi_countable_resources: 1_000
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+      person2:
+        age: 70
+        social_security_retirement: 6_000
+        ssi_countable_resources: 1_000
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      first:
+        members: [person1]
+      second:
+        members: [person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    is_tax_unit_spouse: [false, false]
+    ia_ssa_has_spouse: [true, true]
+    ia_ssa_eligible: [true, true]
+    ia_ssa_care_countable_income: [2_000, 2_000]
+    ia_ssa_ihhrc_participation: [509, 509]
+    ia_ssa: [145.5, 145.5]
+
+- name: Case 117, an unrelated adult in a medical facility does not stop Iowa SMME spouse income pooling.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        employment_income:
+          2026: 30_000
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 70
+        social_security_retirement:
+          2026: 16_800
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person3:
+        age:
+          2026: 70
+        social_security_retirement:
+          2026: 120_000
+        ssi_lives_in_medical_treatment_facility: true
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+    tax_units:
+      couple:
+        members: [person1, person2]
+      other:
+        members: [person3]
+    households:
+      home:
+        members: [person1, person2, person3]
+        state_code:
+          2026: IA
+  output:
+    # SMME combines 1,400 - 20 + (2,500 - 65) / 2 = 2,597.50. The unrelated
+    # adult's medical stay and income neither stop deeming nor enter the sum.
+    ia_ssa_smme_spousal_deeming_applies: [true, false, false]
+    ia_ssa_smme_countable_income: [2_597.5, 2_597.5, 9_980]
+    ia_ssa: [1, 1, 1]
+
+- name: Case 118, retained low-income residential-care entry uses couple SSI despite separate current facilities.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 2_100
+        ia_ssa_category:
+          2026-01: RESIDENTIAL_CARE
+          2026-02: RESIDENTIAL_CARE
+        ia_ssa_care_partial_month_days:
+          2026-01: 22
+        ia_ssa_care_initial_partial_month:
+          2026-01: true
+        ia_ssa_rcf_received_ssi_before_entry:
+          2026-01: true
+      person2:
+        age: 70
+        social_security_retirement: 1_200
+        ia_ssa_category:
+          2026-01: RESIDENTIAL_CARE
+          2026-02: RESIDENTIAL_CARE
+        ia_ssa_care_partial_month_days:
+          2026-01: 22
+        ia_ssa_care_initial_partial_month:
+          2026-01: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      first:
+        members: [person1]
+      second:
+        members: [person2]
+    households:
+      facility1:
+        members: [person1]
+        state_code: IA
+      facility2:
+        members: [person2]
+        state_code: IA
+  output:
+    # https://hhs.iowa.gov/media/3987/download?inline=#page=69
+    # Manual 6-B PDF p.69: the entry budget retains couple SSI of
+    # 1,491 - (175 + 100 - 20) = 1,236, so care income is
+    # (175 + 100 + 1,236) / 2 = 755.50. The half-couple home allowance
+    # 745.50 plus personal needs 130 leaves no client participation.
+    # Federal SSI's static current households yield individual amounts;
+    # Iowa's entry budget must not sum those amounts as couple SSI.
+    ssi:
+      2026-01: [839, 914]
+    ia_ssa_rcf_couple_budget:
+      2026-01: [true, true]
+      2026-02: [false, false]
+    ia_ssa_care_countable_income:
+      2026-01: [755.5, 755.5]
+      2026-02: [1_014, 1_014]
+    ia_ssa:
+      2026-01: [846.34, 846.34]
+      2026-02: [193.16, 193.16]
+
+- name: Case 119, prior SSI does not make a co-resident parent and dependent adult child an RCF couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 70
+        person_id:
+          2026: 1
+        ia_ssa_category: RESIDENTIAL_CARE
+        ia_ssa_care_initial_partial_month: true
+        ia_ssa_rcf_received_ssi_before_entry: true
+      person2:
+        age:
+          2026: 66
+        person_id:
+          2026: 2
+        parent_1_id:
+          2026: 1
+        is_tax_unit_dependent:
+          2026: true
+        ia_ssa_category: RESIDENTIAL_CARE
+        ia_ssa_care_initial_partial_month: true
+    tax_units:
+      family:
+        members: [person1, person2]
+    households:
+      facility:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Both adults meet the age condition and one received SSI before entry,
+    # but the default two-person marital unit does not establish marriage.
+    # SSI rejects this parent/dependent-child pair; sharing one household
+    # cannot activate Iowa's exception for separated spouses.
+    ia_ssa_has_spouse: [false, false]
+    ssi_claim_is_joint: [false, false]
+    ia_ssa_rcf_couple_budget: [false, false]
+    ia_ssa_care_countable_income: [994, 994]
+    ia_ssa: [1_192.57, 1_192.57]
+
+- name: Case 120, separated parent and dependent adult child retain individual RCF budgets with omitted marital units.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 96
+        person_id:
+          2026: 1
+        ssi_countable_resources:
+          2026: 1_800
+        ia_ssa_category: RESIDENTIAL_CARE
+        ia_ssa_care_initial_partial_month: true
+        ia_ssa_rcf_received_ssi_before_entry: true
+      child:
+        age:
+          2026: 66
+        person_id:
+          2026: 2
+        parent_1_id:
+          2026: 1
+        is_tax_unit_dependent:
+          2026: true
+        ssi_countable_resources:
+          2026: 1_800
+        ia_ssa_category: RESIDENTIAL_CARE
+        ia_ssa_care_initial_partial_month: true
+    tax_units:
+      family:
+        members: [parent, child]
+    households:
+      first_facility:
+        members: [parent]
+        state_code: IA
+      second_facility:
+        members: [child]
+        state_code: IA
+  output:
+    # A named parent remains a parent across households. Neither person's
+    # resources enter the other's individual $2,000 resource test.
+    ia_ssa_has_spouse: [false, false]
+    ssi_claim_is_joint: [false, false]
+    ia_ssa_rcf_couple_budget: [false, false]
+    ia_ssa_eligible: [true, true]
+    ia_ssa_care_countable_income: [994, 994]
+    ia_ssa: [1_192.57, 1_192.57]
+
+- name: Case 121, explicit singleton marital units give the same separated parent and child RCF payments.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 96
+        person_id:
+          2026: 1
+        ssi_countable_resources:
+          2026: 1_800
+        ia_ssa_category: RESIDENTIAL_CARE
+        ia_ssa_care_initial_partial_month: true
+        ia_ssa_rcf_received_ssi_before_entry: true
+      child:
+        age:
+          2026: 66
+        person_id:
+          2026: 2
+        parent_1_id:
+          2026: 1
+        is_tax_unit_dependent:
+          2026: true
+        ssi_countable_resources:
+          2026: 1_800
+        ia_ssa_category: RESIDENTIAL_CARE
+        ia_ssa_care_initial_partial_month: true
+    marital_units:
+      parent:
+        members: [parent]
+      child:
+        members: [child]
+    tax_units:
+      family:
+        members: [parent, child]
+    households:
+      first_facility:
+        members: [parent]
+        state_code: IA
+      second_facility:
+        members: [child]
+        state_code: IA
+  output:
+    ia_ssa_has_spouse: [false, false]
+    ssi_claim_is_joint: [false, false]
+    ia_ssa_rcf_couple_budget: [false, false]
+    ia_ssa_eligible: [true, true]
+    ia_ssa_care_countable_income: [994, 994]
+    ia_ssa: [1_192.57, 1_192.57]

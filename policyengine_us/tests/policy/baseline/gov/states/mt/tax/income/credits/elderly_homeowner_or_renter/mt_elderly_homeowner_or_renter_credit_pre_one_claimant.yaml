@@ -7,14 +7,17 @@
         age: 66
         taxable_pension_income: 10_000
         rent: 4_800
+        ssi: 0
       person2:
         age: 70
         taxable_pension_income: 15_000
         rent: 7_200
+        ssi: 0
       person3:
         age: 40
         taxable_interest_income: 5_000
         rent: 3_000
+        ssi: 0
     tax_units:
       tax_unit1:
         members: [person1]
@@ -27,6 +30,7 @@
         members: [person1, person2, person3]
         state_name: MT
   output:
+    # SSI is pinned at 0 to isolate the credit and claimant-limit arithmetic.
     # 2024 Schedule 2EC. Line 18 = 10_000 + 15_000 + 5_000 = 30_000 for the
     # whole household; line 20 = 17_400; line 21 = 0.05; line 22 = 870.
     # person1: line 25 = 720; line 27 = max(720 - 870, 0) = 0.
