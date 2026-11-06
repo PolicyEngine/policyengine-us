@@ -324,15 +324,17 @@ candidates:
       net premium tax and section 1341 credits, with a zero floor.
     other: Subtract only the enumerated refundable credits, omitting net premium tax and section 1341 credits.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/parameters/gov/states/al/tax/income/deductions/federal_tax/credits.yaml
     - policyengine_us/variables/gov/states/al/tax/income/deductions/federal_income_tax/al_federal_income_tax_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10038
-  state: open
-  note: A decision was requested; the statute-first rule requires correcting the worksheet-based model where it
-    conflicts with the statutory reading, after checking each year's list.
+  state: ruled
+  note: Under the statute-first rule the code applies the regulation's list, subtracting all federal payment credits
+    (refundable AOC only, net premium tax credit, section 1341 credit and a residual input), from 2015, the first year
+    the parameter covers, because the regulation's current text dates from a 2010 amendment. The item starts in 2018,
+    the first year whose worksheet PolicyEngine compared; worksheets before 2018 were not checked.
 - id: us-al:irrevocable-trust-loss-deduction
   program: income-tax
   years:
@@ -5499,15 +5501,16 @@ candidates:
     statute: Subtract the credit unless it falls within the statutory overpayment-credit exception.
     other: The chart omits Schedule 3 line 13b, leaving deductible federal tax unchanged.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/parameters/gov/states/mo/tax/income/deductions/federal_income_tax/ignored_credits.yaml
     - policyengine_us/variables/gov/states/mo/tax/income/deductions/mo_federal_income_tax_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10038
   state: ruled
-  note: 'Ruled in October 2026 to follow worksheets; the later statute-first rule requires a model change if this
-    credit is outside the statutory exception. Code not yet on main: mo_federal_income_tax_deduction.'
+  note: An October 2026 ruling followed the chart; under the later statute-first rule the code follows RSMo
+    143.171(2)(1). The section 1341 credit is outside the statutory exceptions and is not added back, so it reduces
+    the deduction.
 - id: us-mo:liheap-110-percent-poverty-floor
   program: liheap
   years:
@@ -8442,8 +8445,8 @@ candidates:
     remain excluded from the worksheet's reductions?
   sources:
   - kind: statute
-    citation: ORS 316.680(1)(b)
-    url: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html
+    citation: ORS 316.680(1)(b) and 316.685(1)(b)
+    url: https://www.oregonlegislature.gov/bills_laws/Archive/2023ors316.pdf#page=52
   - kind: guidance
     citation: 2025 Publication OR-17, PDF p.71
     url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71
@@ -8451,18 +8454,19 @@ candidates:
     citation: 2025 OR-17 federal tax subtraction worksheet, PDF pp.71-72 (also 2017, 2018 and 2021)
     url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71
   readings:
-    statute: The statute refers to federal income taxes accrued; how it treats the section 1341 credit is unresolved.
+    statute: The subtraction is for federal income taxes accrued, and ORS 316.685(1)(b) disregards only the earned
+      income credit in computing them, so the section 1341 credit reduces the subtraction.
     other: The prose says credits except EITC reduce the subtraction, but the worksheet does not subtract the section
       1341 credit.
   pe_us:
-    follows: unknown
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/or/tax/income/subtractions/or_federal_tax_liability_subtraction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10038
   state: ruled
-  note: 'Ruled in October 2026 to follow the worksheet; establish the statutory treatment before determining whether
-    a model change is required. Code not yet on main: or_federal_tax_liability_subtraction.'
+  note: An October 2026 ruling followed the worksheet; under the later statute-first rule the code follows ORS
+    316.685(1)(b), starting from federal income tax after all credits and adding back only the earned income credit.
 - id: us-or:liheap-final-payment-band-bound
   program: liheap
   years:
@@ -11208,14 +11212,15 @@ candidates:
       repayment exclusion applies when Wisconsin's own credit is used.
     other: The form includes only medical expenses, interest, charitable gifts and casualty losses.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/wi/tax/income/credits/itemized_deduction/wi_itemized_deduction_credit_potential.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10038
   state: ruled
-  note: An October 2026 ruling followed the worksheet; the statute-first rule requires including the repayment deduction
-    if the statutory reading is confirmed.
+  note: An October 2026 ruling followed the worksheet; under the later statute-first rule the code includes the
+    federal claim of right deduction in the credit base with the Schedule 1 components. The separate Wisconsin
+    repayment credit that would trigger the 71.07(5)(a)6 exclusion is not modeled.
 - id: us-wi:liheap-categorical-benefit-income
   program: liheap
   years:
