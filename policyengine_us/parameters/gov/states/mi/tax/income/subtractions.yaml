@@ -2,7 +2,7 @@ description: Michigan subtracts these sources to federal adjusted gross income w
 values:
   2017-01-01:
     - us_govt_interest # Line 10
-    - military_retirement_income # Line 11
+    - mi_military_retirement_subtraction # Line 11
     - taxable_social_security # Line 14
     - military_service_income # Line 14
     - section_22_income # Line 22
@@ -29,7 +29,7 @@ values:
     - mi_wagering_losses_deduction # Line 23 (2025), miscellaneous subtractions
   2026-01-01:
     - us_govt_interest # Line 10
-    - military_retirement_income # Line 11
+    - mi_military_retirement_subtraction # Line 11
 
     - taxable_social_security # Line 14
     - military_service_income # Line 14
