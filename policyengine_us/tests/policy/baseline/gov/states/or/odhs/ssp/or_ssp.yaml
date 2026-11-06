@@ -650,3 +650,45 @@
     ssi: [994, 994]
     or_ssp_countable_income: [800, 900]
     or_ssp: [194, 94]
+
+# OAR 461-155-0630(3) tops up each SSI spouse in community care to the one-person OSIPM standard, applying only the other spouses excess. OAR 461-155-0250(3) sets $994 in 2026. Both spouses are below it: $994 - $800 = $194 and $994 - $900 = $94. The unrelated third adult receives no couple payment.
+# https://ch461rules.odhs.oregon.gov/rules/461-155-0630.pdf#page=2
+- name: Oregon excludes another care resident from the spouses community care calculation
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        or_ssp_category: COMMUNITY_CARE
+        ssi: 100
+        or_ssp_countable_income: 800
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        or_ssp_category: COMMUNITY_CARE
+        ssi: 100
+        or_ssp_countable_income: 900
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+        or_ssp_category: COMMUNITY_CARE
+        ssi: 100
+        or_ssp_countable_income: 1500
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: OR
+  output:
+    or_ssp: [194, 94, 0]

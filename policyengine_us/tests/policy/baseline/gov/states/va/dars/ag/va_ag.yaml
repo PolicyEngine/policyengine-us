@@ -532,3 +532,62 @@
     va_ag_eligible:
     - false
     - false
+
+- name: Virginia initial-month couple excludes the third adult's income and resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        social_security_retirement:
+          2026: 24_000
+        ssi_countable_resources:
+          2026: 1_000
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        ssi_countable_resources:
+          2026: 1_000
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        social_security_retirement:
+          2026: 24_000
+        ssi_countable_resources:
+          2026: 2_000
+        va_ag_certified: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: VA
+  output:
+    # AG Manual Chapter B section 6: the initial-month AU contains only the
+    # applicant and spouse; Chapter D uses SSI income exclusions.
+    # https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf#page=34
+    # Couple resources 1,000 + 1,000 = 2,000 <= 3,000; individual 2,000 <= 2,000.
+    # Couple: (2,000 - 20) / 2 = 990 each; individual: 2,000 - 20 = 1,980.
+    va_ag_eligible: [true, true, true]
+    va_ag_countable_income: [990, 990, 1_980]
+    # January 2026 rate letter: care 2,130 plus personal needs 87 = 2,217.
+    # https://www.dss.virginia.gov/media/vdss/licensing/documents/assisted-living-facilities/additional-resources/ARC2026_ag_rate_letter.pdf
+    # Grants: 2,217 - 990 = 1,227 each; third adult 2,217 - 1,980 = 237.
+    va_ag: [1_227, 1_227, 237]
