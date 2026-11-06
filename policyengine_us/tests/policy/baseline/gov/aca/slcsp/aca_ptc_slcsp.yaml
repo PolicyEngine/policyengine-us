@@ -1,0 +1,825 @@
+- name: "2025 joint return with one claimable spouse: the benchmark covers only the other spouse (the claimable spouse is the head)"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 3000
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        aca_magi: 30_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    # 26 CFR 1.36B-3(f): the benchmark offered to the coverage family;
+    # slcsp still counts every enrollee.
+    slcsp: 15_000
+    aca_ptc_slcsp: 6000
+
+- name: "2025 joint return with one claimable spouse: the benchmark covers only the other spouse (the claimable spouse is the spouse)"
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 3000
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        aca_magi: 30_000
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: TX
+  output:
+    slcsp: 15_000
+    aca_ptc_slcsp: 6000
+
+- name: "2025 joint return with neither spouse claimable: the benchmark is slcsp"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 3000
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        aca_magi: 30_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    slcsp: 15_000
+    aca_ptc_slcsp: 15_000
+
+- name: "2025 single filer who can be claimed: no coverage family, no benchmark"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_a]
+        state_code: TX
+  output:
+    slcsp: 6000
+    aca_ptc_slcsp: 0
+
+- name: "2025 joint return with both spouses claimable: no benchmark"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    slcsp: 12_000
+    aca_ptc_slcsp: 0
+
+- name: 2025 a supplied slcsp carries through when every enrollee is in the coverage family
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+        slcsp: 1200
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    aca_ptc_slcsp: 1200
+
+- name: "2025 NY joint return with one claimable spouse and a child: one-adult benchmark (the claimable spouse is the head)"
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        monthly_age: 5
+        pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: NY
+        state_code_str: NY
+        slcsp_rating_area: 3
+        slcsp_age_0: 760
+  output:
+    slcsp: 2166.0
+    aca_ptc_slcsp: 760
+
+- name: "2025 NY joint return with one claimable spouse and a child: one-adult benchmark (the claimable spouse is the spouse)"
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        monthly_age: 5
+        pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: NY
+        state_code_str: NY
+        slcsp_rating_area: 3
+        slcsp_age_0: 760
+  output:
+    slcsp: 2166.0
+    aca_ptc_slcsp: 760
+
+- name: "2025 VT joint return with one claimable spouse and a child: one-adult benchmark (the claimable spouse is the head)"
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        monthly_age: 5
+        pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: VT
+        state_code_str: VT
+        slcsp_rating_area: 1
+        slcsp_age_0: 760
+  output:
+    slcsp: 2135.6
+    aca_ptc_slcsp: 760
+
+- name: "2025 VT joint return with one claimable spouse and a child: one-adult benchmark (the claimable spouse is the spouse)"
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        monthly_age: 5
+        pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: VT
+        state_code_str: VT
+        slcsp_rating_area: 1
+        slcsp_age_0: 760
+  output:
+    slcsp: 2135.6
+    aca_ptc_slcsp: 760
+
+- name: 2025 coverage family's three oldest children are charged once a claimable 19-year-old spouse is out (the claimable spouse is the head)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 19
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+      child2:
+        age: 8
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+      child3:
+        age: 6
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child, child2, child3]
+        filing_status: JOINT
+        aca_magi: 40_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b, child, child2, child3]
+        state_code: TX
+        slcsp_age_0: 1000
+        slcsp_rating_area: 1
+  output:
+    # 45 CFR 147.102(c)(1): the three oldest covered children. The whole
+    # tax unit ranks the 19-year-old first, so the youngest child pays no
+    # premium in slcsp; the coverage family (the other spouse and all
+    # three children) charges all three. Default age curve on 1,000.
+    pays_aca_premium: [true, true, true, true, false]
+    is_aca_marketplace_enrollee: [true, true, true, true, true]
+    slcsp: 4713.8
+    aca_ptc_slcsp: 4483.7
+
+- name: r3 2025 TX older children with other coverage leave a child-premium slot for the enrolled youngest child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+      spouse:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+      child_17:
+        age: 17
+        is_aca_eshi_eligible: true
+      child_16:
+        age: 16
+        is_aca_eshi_eligible: true
+      child_15:
+        age: 15
+        is_aca_eshi_eligible: true
+      child_10:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child_17, child_16, child_15, child_10]
+        filing_status: JOINT
+        aca_magi: 40_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [head, spouse, child_17, child_16, child_15, child_10]
+        state_code: TX
+        slcsp_age_0: 1000
+        slcsp_rating_area: 1
+  output:
+    is_aca_marketplace_enrollee: [true, true, false, false, false, true]
+    is_aca_tax_family_member: [true, false, true, true, true, true]
+    # 45 CFR 147.102(c)(1) counts only covered children. The adult's
+    # 1,483.70 and the covered 10-year-old's 1,000 both enter the benchmark.
+    pays_aca_premium: [true, true, false, false, false, true]
+    slcsp: 3967.40
+    aca_ptc_slcsp: 2483.70
+
+- name: r3 supplied age-curve premiums remain inputs to a mixed coverage-family benchmark
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+      spouse:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    slcsp: 12_000
+    aca_ptc_slcsp: 6000
+
+- name: r3 a supplied age-curve premium is preserved for an enrolled nonpayer
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: false
+        slcsp_age_curve_amount_person: 6000
+      spouse:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    slcsp: 12_000
+    aca_ptc_slcsp: 6000
+
+- name: r3 a supplied zero age-curve premium is preserved for an enrolled nonpayer
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: false
+        slcsp_age_curve_amount_person: 0
+      spouse:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    slcsp: 6000
+    aca_ptc_slcsp: 0
+
+- name: 2025 coverage family's three oldest children are charged once a claimable 19-year-old spouse is out (the claimable spouse is the spouse)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 19
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+      child2:
+        age: 8
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+      child3:
+        age: 6
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child, child2, child3]
+        filing_status: JOINT
+        aca_magi: 40_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_b, person_a, child, child2, child3]
+        state_code: TX
+        slcsp_age_0: 1000
+        slcsp_rating_area: 1
+  output:
+    pays_aca_premium: [true, true, true, true, false]
+    is_aca_marketplace_enrollee: [true, true, true, true, true]
+    slcsp: 4713.8
+    aca_ptc_slcsp: 4483.7
+- name: r4 NY supplied family-tier child classification applies to an enrolled nonpayer
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        monthly_age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: false
+      spouse:
+        age: 40
+        monthly_age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_aca_marketplace_enrollee: {2025: true}
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_aca_family_tier_dependent_child: false
+      oldest_child:
+        age: 20
+        monthly_age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: true
+      second_child:
+        age: 19
+        monthly_age: 19
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: true
+      third_child:
+        age: 18
+        monthly_age: 18
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: true
+      youngest_child:
+        age: 10
+        monthly_age: 10
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse, oldest_child, second_child, third_child, youngest_child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, oldest_child, second_child, third_child, youngest_child]
+        state_code: NY
+        state_code_str: NY
+        slcsp_age_0: 500
+  output:
+    # The fourth enrolled child pays no marginal age-rated premium. The
+    # supplied false classification still counts that enrollee as an adult
+    # when pricing the independent head's coverage family: 500 * 2.85.
+    pays_aca_premium: [true, true, true, true, true, false]
+    is_aca_tax_family_member: [true, false, true, true, true, true]
+    aca_ptc_slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+    aca_ptc_slcsp_family_tier_multiplier: 2.85
+    aca_ptc_slcsp: 1425
+
+- name: r4 NY supplied family-tier child classification applies only in its supplied month
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        monthly_age: {2025-01: 40, 2025-02: 40}
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: {2025-01: false}
+      spouse:
+        age: 40
+        monthly_age: {2025-01: 40, 2025-02: 40}
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_aca_marketplace_enrollee: {2025: true}
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_aca_family_tier_dependent_child: {2025-01: false}
+      oldest_child:
+        age: 20
+        monthly_age: {2025-01: 20, 2025-02: 20}
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: {2025-01: true}
+      second_child:
+        age: 19
+        monthly_age: {2025-01: 19, 2025-02: 19}
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: {2025-01: true}
+      third_child:
+        age: 18
+        monthly_age: {2025-01: 18, 2025-02: 18}
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: {2025-01: true}
+      youngest_child:
+        age: 10
+        monthly_age: {2025-01: 10, 2025-02: 10}
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: {2025-01: false}
+    tax_units:
+      tax_unit:
+        members: [head, spouse, oldest_child, second_child, third_child, youngest_child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, oldest_child, second_child, third_child, youngest_child]
+        state_code: NY
+        state_code_str: NY
+        slcsp_age_0: {2025-01: 500, 2025-02: 500}
+  output:
+    pays_aca_premium: [true, true, true, true, true, false]
+    is_aca_tax_family_member: [true, false, true, true, true, true]
+    # January honors the supplied false predicate. In February the public
+    # predicate is calculated, so the nonpayer uses the raw child condition.
+    aca_ptc_slcsp_family_tier_category:
+      2025-01: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+      2025-02: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+    aca_ptc_slcsp_family_tier_multiplier:
+      2025-01: 2.85
+      2025-02: 1.7
+    aca_ptc_slcsp:
+      2025-01: 1425
+      2025-02: 850

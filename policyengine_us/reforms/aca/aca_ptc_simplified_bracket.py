@@ -74,11 +74,16 @@ def create_aca_ptc_simplified_bracket() -> Reform:
             child_pays = person("aca_child_index", period) <= p_aca.max_child_count
             pays_aca_premium = is_aca_adult | child_pays
 
+            # The reform leaves 26 U.S.C. 36B(c)(1)(D) in place: someone
+            # another taxpayer can claim is outside the tax family.
+            tax_family_member = person("is_aca_tax_family_member", period)
+
             return (
                 is_status_eligible
                 & is_coverage_eligible
                 & is_income_eligible
                 & pays_aca_premium
+                & tax_family_member
             )
 
     class reform(Reform):

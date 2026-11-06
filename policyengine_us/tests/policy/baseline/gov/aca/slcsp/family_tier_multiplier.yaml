@@ -184,3 +184,50 @@
         state_fips: 50
   output:
     slcsp_family_tier_multiplier: 2.81
+
+- name: r3 a supplied false NY age-29 predicate preserves two-adult pricing with no
+    claimable filer
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+      dependent:
+        age: 27
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        is_aca_ny_age_29_dependent_child: false
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        - dependent
+        filing_status: SINGLE
+    households:
+      household:
+        members:
+        - head
+        - dependent
+        state_code: NY
+        state_code_str: NY
+        slcsp_age_0: 6000
+  output:
+    slcsp: 12000
+    is_aca_family_tier_dependent_child:
+      2025-01:
+      - false
+      - false
+    slcsp_family_tier_category:
+      2025-01: TWO_ADULTS
+    slcsp_family_tier_multiplier:
+      2025-01: 2
+    aca_ptc_slcsp: 12000

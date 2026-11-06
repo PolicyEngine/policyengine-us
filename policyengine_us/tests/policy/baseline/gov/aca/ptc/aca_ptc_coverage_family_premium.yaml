@@ -1,0 +1,557 @@
+- name: "2025 joint return with a claimable spouse on the policy: half the premium is the coverage family's (the claimable spouse is the head)"
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+        selected_marketplace_plan_benchmark_ratio: 0.75
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # Silver plan at 0.75 of the 12,000 benchmark: 9,000. 26 CFR 1.36B-3(h)(1):
+    # the coverage family's share is 6,000 / 12,000, so 4,500.
+    selected_marketplace_plan_premium_proxy: 9000
+    aca_ptc_coverage_family_premium: 4500
+
+- name: "2025 joint return with a claimable spouse on the policy: half the premium is the coverage family's (the claimable spouse is the spouse)"
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+        selected_marketplace_plan_benchmark_ratio: 0.75
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    selected_marketplace_plan_premium_proxy: 9000
+    aca_ptc_coverage_family_premium: 4500
+
+- name: "2025 joint return with neither spouse claimable: the whole premium is the coverage family's"
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+        selected_marketplace_plan_benchmark_ratio: 0.75
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    aca_ptc_coverage_family_premium: 9000
+
+- name: 2025 bronze plan is allocated by the same benchmark share (the claimable spouse is the head)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+        selected_marketplace_plan_category: BRONZE
+        lcbp: 7000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # 7,000 * 6,000 / 12,000.
+    aca_ptc_coverage_family_premium: 3500
+
+- name: 2025 bronze plan is allocated by the same benchmark share (the claimable spouse is the spouse)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+        selected_marketplace_plan_category: BRONZE
+        lcbp: 7000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    aca_ptc_coverage_family_premium: 3500
+
+- name: "2025 NY policy with a claimable spouse (refund-only exception) and a child: allocate by each family's tier (the claimable spouse is the head)"
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        aca_magi: 22_000
+        tax_unit_is_filer: true
+        selected_marketplace_plan_benchmark_ratio: 0.5
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: NY
+        slcsp_age_0: 6000
+        slcsp_rating_area: 3
+  output:
+    # NY tiers on 6,000: whole policy 2.85 = 17,100; coverage family (one
+    # adult and a child) 1.70 = 10,200; the claimable spouse alone 1.00 =
+    # 6,000. 26 CFR 1.36B-3(h)(1): 8,550 * 10,200 / (10,200 + 6,000).
+    slcsp: 17_100
+    aca_ptc_slcsp: 10_200
+    selected_marketplace_plan_premium_proxy: 8550
+    aca_ptc_coverage_family_premium: 5383.33
+
+- name: "2025 NY policy with a claimable spouse (refund-only exception) and a child: allocate by each family's tier (the claimable spouse is the spouse)"
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        aca_magi: 22_000
+        tax_unit_is_filer: true
+        selected_marketplace_plan_benchmark_ratio: 0.5
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: NY
+        slcsp_age_0: 6000
+        slcsp_rating_area: 3
+  output:
+    slcsp: 17_100
+    aca_ptc_slcsp: 10_200
+    selected_marketplace_plan_premium_proxy: 8550
+    aca_ptc_coverage_family_premium: 5383.33
+
+- name: "2025 both spouses claimable: no coverage family, so none of a bronze premium"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+        selected_marketplace_plan_category: BRONZE
+        lcbp: 7000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    aca_ptc_coverage_family_premium: 0
+
+- name: r3 NY changing monthly family tiers allocate each month's silver premium
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        monthly_age:
+          2025-01: 30
+          2025-02: 30
+          2025-03: 30
+          2025-04: 30
+          2025-05: 30
+          2025-06: 30
+          2025-07: 30
+          2025-08: 30
+          2025-09: 30
+          2025-10: 30
+          2025-11: 30
+          2025-12: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+      spouse:
+        age: 30
+        monthly_age:
+          2025-01: 30
+          2025-02: 30
+          2025-03: 30
+          2025-04: 30
+          2025-05: 30
+          2025-06: 30
+          2025-07: 30
+          2025-08: 30
+          2025-09: 30
+          2025-10: 30
+          2025-11: 30
+          2025-12: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+      dependent:
+        age: 29
+        monthly_age:
+          2025-01: 29
+          2025-02: 29
+          2025-03: 29
+          2025-04: 29
+          2025-05: 29
+          2025-06: 29
+          2025-07: 30
+          2025-08: 30
+          2025-09: 30
+          2025-10: 30
+          2025-11: 30
+          2025-12: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        filing_status: JOINT
+        aca_magi: 40_000
+        selected_marketplace_plan_benchmark_ratio: 0.5
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: NY
+        slcsp_age_0: 6000
+        slcsp_rating_area: 3
+  output:
+    aca_ptc_slcsp:
+      2025-01: 892.5
+      2025-07: 1000
+    selected_marketplace_plan_premium_proxy: 8988.75
+    # 26 CFR 1.36B-3(a), (h): sum the monthly allocated premiums:
+    # 6 * 748.125 * 892.5 / (892.5 + 500) + 6 * 750 * 1000 / (1000 + 500).
+    aca_ptc_coverage_family_premium: 5876.99
+
+- name: r3 monthly bronze allocation preserves a supplied annual selected premium
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        monthly_age:
+          2025-01: 30
+          2025-02: 30
+          2025-03: 30
+          2025-04: 30
+          2025-05: 30
+          2025-06: 30
+          2025-07: 30
+          2025-08: 30
+          2025-09: 30
+          2025-10: 30
+          2025-11: 30
+          2025-12: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+      spouse:
+        age: 30
+        monthly_age:
+          2025-01: 30
+          2025-02: 30
+          2025-03: 30
+          2025-04: 30
+          2025-05: 30
+          2025-06: 30
+          2025-07: 30
+          2025-08: 30
+          2025-09: 30
+          2025-10: 30
+          2025-11: 30
+          2025-12: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+      dependent:
+        age: 29
+        monthly_age:
+          2025-01: 29
+          2025-02: 29
+          2025-03: 29
+          2025-04: 29
+          2025-05: 29
+          2025-06: 29
+          2025-07: 30
+          2025-08: 30
+          2025-09: 30
+          2025-10: 30
+          2025-11: 30
+          2025-12: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        filing_status: JOINT
+        aca_magi: 40_000
+        selected_marketplace_plan_category: BRONZE
+        selected_marketplace_plan_premium_proxy: 12_000
+        lcbp:
+          2025-01: 1000
+          2025-02: 1000
+          2025-03: 1000
+          2025-04: 1000
+          2025-05: 1000
+          2025-06: 1000
+          2025-07: 500
+          2025-08: 500
+          2025-09: 500
+          2025-10: 500
+          2025-11: 500
+          2025-12: 500
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: NY
+        slcsp_age_0: 6000
+        slcsp_rating_area: 3
+  output:
+    # The monthly price pattern allocates 8,000 of the supplied annual total
+    # to Jan-Jun and 4,000 to Jul-Dec, before applying each month's share.
+    # 8,000 * 892.5 / 1,392.5 + 4,000 * 1,000 / 1,500.
+    selected_marketplace_plan_premium_proxy: 12_000
+    aca_ptc_coverage_family_premium: 7794.14
+
+- name: r3 no Marketplace enrollees receive none of a supplied annual premium
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: true
+        is_aca_eshi_eligible: true
+        is_aca_marketplace_enrollee: false
+        pays_aca_premium: false
+      spouse:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+        is_aca_eshi_eligible: true
+        is_aca_marketplace_enrollee: false
+        pays_aca_premium: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        aca_magi: 22_590
+        slcsp: 0
+        selected_marketplace_plan_premium_proxy: 7000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    aca_ptc_coverage_family_premium: 0
