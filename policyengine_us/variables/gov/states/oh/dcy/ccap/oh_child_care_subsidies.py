@@ -8,4 +8,4 @@ class oh_child_care_subsidies(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.OH
-    adds = ["oh_ccap"]
+    adds = ["oh_ccap", "oh_ccvp"]
