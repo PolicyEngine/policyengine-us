@@ -12,12 +12,18 @@ the one list of state programs.
    child care and after-school care. A payment above the bill goes to the
    provider, not the family.
 4. With a child care bill and no after-school care, the subsidy counted in
-   household benefits and the family's remaining expense add up to the bill, in
-   every state.
-5. Vermont's family balance follows the department's sample invoices: the state
-   pays the state rate less the family share, and the family owes tuition less
-   that payment. The family owes less than its share when tuition falls below the
+   household benefits and the family's remaining expense add up to the bill. The
+   test sets the drawn program's amount as an input, so it checks the two
+   family-level formulas for any amount and runs no program's own formula. Those
+   formulas don't read the state, so the identity holds in every state; the four
+   pinned examples all draw the same program.
+5. For one child at a licensed center in 2026, under Vermont's $439 state rate,
+   the family balance follows the department's sample invoices: the state pays
+   the state rate less the family share, and the family owes tuition less that
+   payment. The family owes less than its share when tuition falls below the
    state rate, and its share plus the excess when tuition reaches the state rate.
+   With more than one child in care, one program's payment above its tuition
+   offsets another child's bill, and this test doesn't cover that case.
 
 The YAML cases pin single families. These read every dated block of the list and
 generate programs, years and amounts, which YAML can't express.

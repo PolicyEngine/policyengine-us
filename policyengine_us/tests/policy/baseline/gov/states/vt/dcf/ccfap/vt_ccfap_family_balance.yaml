@@ -123,7 +123,8 @@
   # Understanding Payments states the state's 337 and no family amount. Regulations
   # sections IV A and VI(8) and the memo's invoices leave the fees above the state's
   # payment to the family, and 337 covers 250. The state rate rises from 387 to 407
-  # in August 2025: 7 x (387 x 52 / 12 - 2,600 / 12) + 5 x (407 x 52 / 12 - 2,600 / 12).
+  # on July 13, 2025, and the model reads rates at the start of each month, so 407
+  # applies from August: 7 x (387 x 52 / 12 - 2,600 / 12) + 5 x (407 x 52 / 12 - 2,600 / 12).
   period: 2025
   absolute_error_margin: 0.01
   input:

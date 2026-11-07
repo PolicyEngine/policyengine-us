@@ -10766,8 +10766,9 @@ candidates:
   - kind: regulation
     citation: CCFAP Regulations section IV A, with sections VI(8) and IX
     url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/CCFAP/CCFAP-Regulations.pdf#page=13
-  - kind: rulemaking
-    citation: Child Development Division memo of June 28, 2024, restating sections IV A and VI(8)
+  - kind: guidance
+    citation: Child Development Division memo of June 28, 2024, effective June 30, 2024 ahead of rulemaking, restating
+      sections IV A and VI(8)
     url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/Act76/Memo-Act-76-CCFAP-Rule-Revision.pdf#page=10
   - kind: guidance
     citation: CCFAP Understanding Payments, questions 1, 6 and 8 and its two examples
@@ -10775,18 +10776,24 @@ candidates:
   - kind: guidance
     citation: Child Development Division memo of January 13, 2026, separate tuition example 1
     url: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/CDD-Memo-UPK-and-CCFAP-family-tuition%20(1).pdf#page=6
+  - kind: agency-practice
+    citation: Child Development Division, Act 76 update to the House Human Services Committee, January 3, 2024, slide 6
+    url: https://legislature.vermont.gov/Documents/2024/WorkGroups/House%20Human%20Services/Act%2076%20of%202023/W~Janet%20McLaughlin~Act%2076%20Update~1-3-2024.pdf#page=6
   - kind: plan
     citation: Vermont CCDF Plan FFY 2025-2027 section 3.1.2(e)
     url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/Reports/CCDF-Plans/CCDF-Plan-2025-2027-Approved.pdf#page=39
   readings:
     statute: Section 3512(a)(2) has the Commissioner set the family contribution by rule, and (a)(4) lets a program set
       tuition below the state's rate. Neither says what the family owes in that case.
-    other: Understanding Payments calls the share the amount the family pays and lets a program waive or collect it, and
-      the plan calls it the required co-payment, so the family would owe its whole share. Section IV A makes the family
-      responsible for fees above the state's payment, and the January 2026 memo's invoices take that payment off tuition,
-      so the family would owe the remainder.
+    other: In Understanding Payments, the department calls the share the amount the family pays and lets a program waive
+      or collect it. In its CCDF plan, it calls the share the required co-payment. In January 2024 testimony to the House
+      Human Services Committee, the department gave the example of a toddler whose center charges $400 a week under a
+      $443 state rate. The state pays $393, the family pays its whole $50 share, and the center receives $43 more than
+      its tuition. On these sources the family would owe its whole share. Under section IV A, the family owes the fees
+      above the state's payment. In its January 2026 sample invoices, the department takes that payment off tuition, so
+      the family would owe the remainder.
   example: A program charges a CCFAP family $350 a week under a $439 state rate, with a $300 family share. The state pays
-    $139. The memo's invoice shows $211 due, and the share reading has the family owe $300.
+    $139, and the memo's sample invoice shows $211 due. Under the share reading, the family owes $300.
   pe_us:
     follows: gap-fill
     code:
@@ -10797,10 +10804,14 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10668
     - https://github.com/PolicyEngine/policyengine-us/pull/10678
   state: ruled
-  note: Ruled 2026-11-06 for the remainder. Section IV A and the January 2026 memo both reach it, so the reading stands
-    whether or not state regulations rank as law. The bill stands for what the program charges a CCFAP family, the memo's
-    wording, so a program that charges such a family the full state rate collects the whole share. No department example
-    shows a positive share with a payment above tuition, and the test of that case follows section IV A.
+  note: Ruled 2026-11-06 for the remainder and kept 2026-11-07 after weighing the January 2024 testimony. Under section
+    IV A and under the January 2026 memo the family owes the remainder, so the reading stands whether or not state
+    regulations rank as law. In the testimony, the department had the family pay its whole share when tuition fell below
+    the state rate. The memo outweighs the testimony. The department issued it two years later, to programs in both
+    CCFAP and prekindergarten. In it, the department sets the invoice rule and works a case with tuition below the state
+    rate. Following the memo, the bill stands for what the program charges a CCFAP family, so a program that charges such
+    a family the full state rate collects the whole share. No department example states what the family owes when the
+    state's payment exceeds tuition, and the test of that case follows section IV A.
 - id: us-vt:liheap-income-maximum-large-households
   program: liheap
   years:
