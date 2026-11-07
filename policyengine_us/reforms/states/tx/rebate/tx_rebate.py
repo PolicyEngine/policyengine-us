@@ -41,6 +41,11 @@ def create_tx_rebate() -> Reform:
                 stop=instant("2027-12-31"),
                 value=new_benefits,
             )
+        # CountryTaxBenefitSystem clears every modified flag before it applies
+        # a reform it is given for the second time, and the check above then
+        # skips the update, so mark the list here: the macro cache reads the
+        # flag as "differs from current law".
+        state_benefits.mark_as_modified()
         # SPM resources count the rebate as a benefit. It is zero outside
         # 2027, so the list carries it in every year.
         add_to_list_parameter(parameters.gov.household.spm_unit_benefits, ["tx_rebate"])

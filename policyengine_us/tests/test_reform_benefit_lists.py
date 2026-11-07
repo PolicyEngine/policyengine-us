@@ -22,10 +22,12 @@ for every input:
    order, appends only the names a value lacks, and changes nothing when it
    runs again. It writes new lists, leaving the names it gets and the member
    lists it reads unchanged, and it changes values only through
-   Parameter.update, so the parent node returns the new lists and core marks
-   the parameter modified.
+   Parameter.update, so the parent node returns the new lists. Every call
+   marks the parameter and its parent modified, even a call that adds nothing.
 2. Under each reform, each benefit list in each year is the baseline list,
-   followed by the reform's own additions and nothing else.
+   followed by the reform's own additions and nothing else. A reformed system
+   marks modified exactly the lists its reform changes, and current law marks
+   none.
 3. Applying a reform a second time changes no list. A simulation can apply a
    structural reform twice: once when its system is built, once at start.
 4. For any household, spm_unit_benefits and household_benefits equal the sum
@@ -198,6 +200,7 @@ def test_add_to_list_parameter_appends_only_missing_names(values, names, days):
     # formulas that read through it, with the old lists.
     for day in checked:
         assert node_value(parameter, day) == value_on(values_before, day)
+    assert not parameter.modified and not parameter.parent.modified
 
     add_to_list_parameter(parameter, names)
 
@@ -208,15 +211,20 @@ def test_add_to_list_parameter_appends_only_missing_names(values, names, days):
     assert values == values_before
     starts = sorted(value.instant_str for value in parameter.values_list)
     assert starts == sorted(values)
-    # Parameter.update also marks the parameter modified, and a simulation
-    # checks that flag before it serves a variable from its macro cache.
-    if expected != values_before:
-        assert parameter.modified
+    # Before a simulation serves a variable from its macro cache, it checks the
+    # modified flag on each parameter or folder the variable depends on, so
+    # the helper marks the parameter and each node above it.
+    assert parameter.modified and parameter.parent.modified
     for day in checked:
         assert parameter(instant(day)) == value_on(expected, day)
         assert node_value(parameter, day) == value_on(expected, day)
 
+    # CountryTaxBenefitSystem clears every flag before it applies a reform it
+    # is given for the second time. That call adds nothing, and must mark the
+    # parameter again.
+    parameter.modified = parameter.parent.modified = False
     add_to_list_parameter(parameter, names)
+    assert parameter.modified and parameter.parent.modified
     for day in checked:
         assert parameter(instant(day)) == value_on(expected, day)
         assert node_value(parameter, day) == value_on(expected, day)
@@ -254,6 +262,18 @@ def test_reform_lists_are_baseline_lists_plus_own_additions(policy, year, list_n
     assert benefit_list(reformed, list_name, year) == (
         benefit_list(system, list_name, year) + additions(name, list_name, year)
     )
+
+
+def test_reformed_systems_mark_exactly_the_lists_they_change(policy):
+    # The macro cache reads a modified flag as "differs from current law".
+    # The fixture passes each reform to CountryTaxBenefitSystem, which clears
+    # every flag between its two applications of that reform.
+    name, reformed = policy
+    node = reformed.parameters.gov.household
+    for list_name in LISTS:
+        changed = any(additions(name, list_name, year) for year in range(2015, 2036))
+        assert getattr(node, list_name).modified == changed, list_name
+    assert node.modified == (name != "baseline")
 
 
 def test_applying_a_reform_twice_changes_no_list(policy):

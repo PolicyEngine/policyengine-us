@@ -25,6 +25,12 @@ def add_to_list_parameter(parameter, names) -> None:
     The names follow the existing members, in the order given. A name already
     in the list for a period is not added again for that period, so a reform
     applied twice, or two reforms that add the same variable, count it once.
+
+    Every call marks the parameter, and each node above it, modified, even a
+    call that adds nothing. Core's macro cache reads the flag as "differs from
+    current law". ``CountryTaxBenefitSystem`` clears every flag before it
+    applies a reform it is given for the second time, and that second call
+    finds each name present.
     """
     names = list(dict.fromkeys(names))
     # values_list runs newest first. Each value lasts until the day before the
@@ -45,6 +51,7 @@ def add_to_list_parameter(parameter, names) -> None:
                     value=list(members) + missing,
                 )
         newer_start = value_at_instant.instant_str
+    parameter.mark_as_modified()
 
 
 def backdate_parameters(root: str = None, first_instant: str = "2021-01-01") -> Reform:
