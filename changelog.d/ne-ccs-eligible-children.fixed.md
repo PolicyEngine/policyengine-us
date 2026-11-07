@@ -1,0 +1,1 @@
+Pay Nebraska's child care subsidy only for children within the program's age limit who use an eligible provider; it had paid the bill share of every member the rate matrix didn't price, a teenager's among them.
