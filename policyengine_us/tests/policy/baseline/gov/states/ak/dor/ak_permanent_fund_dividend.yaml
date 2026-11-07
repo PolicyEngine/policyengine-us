@@ -26,3 +26,99 @@
     state_code: WA
   output:
     ak_permanent_fund_dividend: 0
+
+- name: Case 5, the 2015 Alaska Permanent Fund Dividend.
+  period: 2015
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 2_072
+
+- name: Case 6, the 2016 Alaska Permanent Fund Dividend.
+  period: 2016
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_022
+
+- name: Case 7, the 2017 Alaska Permanent Fund Dividend.
+  period: 2017
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_100
+
+- name: Case 8, the 2018 Alaska Permanent Fund Dividend.
+  period: 2018
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_600
+
+- name: Case 9, the 2019 Alaska Permanent Fund Dividend.
+  period: 2019
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_606
+
+- name: Case 10, the 2020 Alaska Permanent Fund Dividend.
+  period: 2020
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 992
+
+- name: Case 11, the 2021 Alaska Permanent Fund Dividend.
+  period: 2021
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_114
+
+- name: Case 12, no budget has set a dividend for 2027, so the 2026 dividend carries forward.
+  period: 2027
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_000
+
+- name: Case 13, a 2019 filer reports the $1,606 dividend in federal gross income.
+  period: 2019
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_606
+    ak_energy_relief: 0
+    irs_gross_income: 51_606
+    adjusted_gross_income: 51_606
+
+- name: Case 14, a 2027 filer reports the $1,000 dividend and no energy relief.
+  period: 2027
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_000
+    ak_energy_relief: 0
+    irs_gross_income: 51_000
+    adjusted_gross_income: 51_000
