@@ -124,6 +124,7 @@ delete or silently recalculate over supplied derived inputs.
 
 `Microsimulation()` defaults to the immutable dataset URI
 `hf://datasets/policyengine/populace-us/populace_us_2024.h5@populace-us-2024-spm-20260909`.
+`populace-*` ids name Microcosm releases.
 This dataset supplies observed county inputs and source-backed independence roles.
 The canonical country release must wait until that exact tag and its certified
 bytes exist and pass independent readback. The unpublished candidate embeds the

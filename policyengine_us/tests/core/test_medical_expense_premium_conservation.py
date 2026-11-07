@@ -293,9 +293,6 @@ def test_nj_excludes_each_dependents_deduction_only_from_their_own_premiums(
     simulation = _nj_simulation(members, reference_system)
     paid = np.array([sum(person["premiums"] for person in unit) for unit in members])
     other = np.array([sum(person["other"] for person in unit) for unit in members])
-    deductions = np.array(
-        [sum(person["deduction"] for person in unit) for unit in members]
-    )
     person_exclusions = [
         [min(person["deduction"], person["premiums"]) for person in unit]
         for unit in members
@@ -307,7 +304,10 @@ def test_nj_excludes_each_dependents_deduction_only_from_their_own_premiums(
         )
     excluded = np.array([sum(exclusions) for exclusions in person_exclusions])
     nj_deduction = simulation.calculate("nj_medical_expense_deduction", PERIOD)
-    actual_exclusion = paid + other + deductions - nj_deduction
+    # The dependents' separate SE deductions are on their own returns, with
+    # their income (nj_agi leaves both out), so the parent's deduction does
+    # not add them.
+    actual_exclusion = paid + other - nj_deduction
 
     # C.54A:3-3(c)(3) excludes only amounts separately deducted. Each person's
     # exclusion is bounded before summation, so no ALD can consume a different
@@ -316,7 +316,7 @@ def test_nj_excludes_each_dependents_deduction_only_from_their_own_premiums(
     assert (actual_exclusion >= 0).all()
     assert (actual_exclusion <= excluded).all()
     np.testing.assert_array_equal(actual_exclusion, excluded)
-    np.testing.assert_array_equal(nj_deduction, paid + other + deductions - excluded)
+    np.testing.assert_array_equal(nj_deduction, paid + other - excluded)
 
 
 # Flat strategies keep generation small while varying independent caller
