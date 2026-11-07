@@ -48,7 +48,12 @@ brackets:
         2024-01-01: 880
         2025-01-01: 900
         2026-01-01: 930
-        2027-01-01: 945
+        # Rev. Proc. 2026-35 prints $945. 26 U.S.C. 213(d)(10)(B)(ii) rounds
+        # each amount to the nearest multiple of $10. The other four 2027
+        # amounts each imply a factor of 2.514 to 2.5175 on the 213(d)(10)(A)
+        # bases, which puts this band's $375 at $942.75 to $944.06, so $940.
+        # Candidate us:long-term-care-premium-limit-2027-rounding.
+        2027-01-01: 940
       metadata:
         uprating:
           parameter: gov.bls.cpi.cpi_u_medical_care
