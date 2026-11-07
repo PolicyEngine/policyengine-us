@@ -14,7 +14,11 @@ class nd_renters_refund_income(Variable):
     defined_for = StateCode.ND
 
     documentation = (
-        "Renter refund income after unreimbursed medical costs actually paid. "
+        "Renter refund income: the listed income sources, less the parts of "
+        "market income that federal law excludes "
+        "(nd_renters_refund_federally_excluded_income) and the unreimbursed "
+        "medical costs actually paid, and at least zero. Social security "
+        "counts in full. "
         "The paid-cost base restores the self-employed premiums excluded from "
         "the federal subtotal: by the federal formula, or as supplied with a "
         "caller's subtotal in itemized_medical_expenses_applied_exclusion. A "
@@ -26,17 +30,14 @@ class nd_renters_refund_income(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nd.tax.property.renters_refund
-        # NDCC 57-02-08.1(5)(c) excludes income excluded by federal or state
-        # law. market_income includes wages before payroll deductions, so
-        # subtract the separate pretax premium input once from this base.
-        # These premiums are disjoint from itemized_medical_expenses,
-        # whose medical definition follows state income tax law.
-        excluded_premiums = add(tax_unit, period, ["pre_tax_health_insurance_premiums"])
-        # market_income counts disability benefits in full, and federal law
-        # excludes the part from a plan the recipient paid for (IRC 104(a)(3)).
-        excluded_disability_benefits = add(
-            tax_unit, period, ["disability_benefits"]
-        ) - add(tax_unit, period, ["taxable_disability_benefits"])
+        # NDCC 57-02-08.1(5)(c) excludes "any amount excluded from income by
+        # federal or state law with the exception of income from social
+        # security benefits". market_income counts wages before payroll
+        # deductions and the tax-exempt parts of several sources in full, so
+        # subtract the parts federal law excludes. Social security stays whole.
+        excluded_income = add(
+            tax_unit, period, ["nd_renters_refund_federally_excluded_income"]
+        )
         # Restore premiums excluded from the federal subtotal (computed, or
         # supplied with a caller's subtotal).
         medical_expenses = add(
@@ -49,8 +50,7 @@ class nd_renters_refund_income(Variable):
         )
         return max_(
             add(tax_unit, period, p.income_sources)
-            - excluded_premiums
-            - excluded_disability_benefits
+            - excluded_income
             - medical_expenses,
             0,
         )

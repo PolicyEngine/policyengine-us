@@ -249,3 +249,117 @@
     # The 5,000 from a plan the recipient paid for is excluded by IRC
     # 104(a)(3), and NDCC 57-02-08.1(5)(c) excludes it: 10,000 + 7,000.
     nd_renters_refund_income: 17_000
+
+- name: North Dakota leaves out interest on state and local bonds, which federal law excludes from income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 20_000
+    taxable_interest_income: 1_000
+    tax_exempt_interest_income: 5_000
+  output:
+    market_income: 26_000
+    # IRC 103(a) excludes the 5,000 of bond interest, and NDCC
+    # 57-02-08.1(5)(c) excludes any amount federal law excludes:
+    # 20,000 + 1,000.
+    nd_renters_refund_income: 21_000
+
+- name: North Dakota counts social security in full but leaves out the nontaxable parts of pensions and IRA distributions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    taxable_private_pension_income: 10_000
+    # The investment in the contract (IRC 72(b)(1)).
+    tax_exempt_private_pension_income: 4_000
+    # A qualified Roth IRA distribution (IRC 408A(d)(1)).
+    tax_exempt_ira_distributions: 6_000
+    taxable_ira_distributions: 3_000
+    social_security_retirement: 8_000
+  output:
+    # Social security is the one federal exclusion the statute keeps in
+    # income: 10,000 + 3,000 + 8,000.
+    nd_renters_refund_income: 21_000
+
+- name: North Dakota leaves out the payroll deductions federal law excludes from wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 50_000
+    # IRC 402(e)(3) and 402(g)(1) elective deferrals, and HSA contributions
+    # through payroll (IRC 106(d)).
+    traditional_401k_contributions: 5_000
+    health_savings_account_payroll_contributions: 2_000
+  output:
+    irs_employment_income: 43_000
+    nd_renters_refund_income: 43_000
+
+- name: North Dakota counts dependent care assistance above the IRC 129 limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 50_000
+    dependent_care_employer_benefits: 9_000
+  output:
+    # IRC 129(a)(2)(A) excludes 7,500 for 2026, and the other 1,500 is
+    # gross income: 50,000 - 7,500.
+    taxable_dependent_care_benefits: 1_500
+    nd_renters_refund_income: 42_500
+
+- name: North Dakota leaves out alimony under a divorce instrument executed after 2018.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 10_000
+    alimony_income: 12_000
+    divorce_year: 2020
+  output:
+    # The recipient's gross income leaves out alimony under an instrument
+    # executed after 2018 (IRS Topic 452).
+    nd_renters_refund_income: 10_000
+
+- name: North Dakota counts alimony under a divorce instrument executed before 2019.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 10_000
+    alimony_income: 12_000
+    divorce_year: 2015
+  output:
+    nd_renters_refund_income: 22_000
+
+- name: North Dakota leaves out a dependent's tax-exempt interest and counts the rest of the dependent's income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 30_000
+      child:
+        age: 15
+        is_tax_unit_dependent: true
+        taxable_interest_income: 500
+        tax_exempt_interest_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ND
+  output:
+    # NDCC 57-02-08.1(5)(c) counts the dependent's income and excludes what
+    # federal law excludes: 30,000 + 500.
+    nd_renters_refund_income: 30_500
