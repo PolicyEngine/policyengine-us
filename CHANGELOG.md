@@ -1,3 +1,24 @@
+## [2.104.8] - 2026-11-07
+
+### Fixed
+
+- Count partnership and S corporation income, farm rental income, capital gain distributions reported without Schedule D, Form 4797 gains and losses, and employer-plan disability benefits in person `market_income`, and so in SPM resources, since `spm_unit_taxes` already subtracted the tax on them (#9919). Household market income now also counts the last three, so the person and household lists match except for discharged debt. A new `other_net_gain_person` splits the tax unit's Form 4797 net gain or loss between the head and spouse. Programs whose income adds `market_income` (North Dakota's renter's refund, Washington's ECEAP and Missouri's Supplemental Nursing Care) and the ranking that picks which adults get a simulated marginal tax rate now see these sources too. North Dakota's renter's refund leaves out the disability benefits federal law excludes from income, as NDCC 57-02-08.1(5)(c) requires.
+
+
+## [2.104.7] - 2026-11-07
+
+### Changed
+
+- Glide the CMS out-of-pocket spending, employer premium and direct purchase premium upraters from their last projected growth rates to the 2026 Medicare Trustees' long-range per capita health spending rates after 2034, instead of compounding the last projected rate to 2100.
+
+
+## [2.104.6] - 2026-11-07
+
+### Fixed
+
+- Fixed Social Security period discovery to forward explicit branches while preserving compatibility with Core versions that accept no branch argument.
+
+
 ## [2.104.5] - 2026-11-07
 
 ### Changed

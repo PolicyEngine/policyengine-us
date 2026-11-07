@@ -6704,6 +6704,35 @@ candidates:
     and $105,227; 8, $107,574 and $107,565; 9, $109,914 and $109,903; 11, $114,582 and $114,580; 12, $116,922 and
     $116,919. Size 1 is below the ceiling, size 10 equals it, and from size 13 150% of the guideline exceeds the
     table. Verify each later fiscal-year table.'
+- id: us-nd:renters-refund-insurance-proceeds
+  program: renter-credit
+  years:
+    from: 2025
+    type: tax
+  question: Does the renter's refund count disability benefits from an employer-paid plan, when the Tax Commissioner's
+    guideline lists insurance policy proceeds for illness, injury or dismemberment among items that are not income?
+  sources:
+  - kind: statute
+    citation: N.D.C.C. 57-02-08.1(5)(c)
+    url: https://ndlegis.gov/cencode/t57c02.pdf#page=16
+  - kind: guidance
+    citation: Property Tax Credits for North Dakota Homeowners and Renters, item 11
+    url: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
+  readings:
+    statute: Income comes from all sources and leaves out any amount excluded from income by federal or state law.
+      Federal law excludes benefits from a plan the recipient paid for (IRC 104(a)(3)) and counts benefits from a plan
+      the employer paid for (IRC 105(a)).
+    other: Item 11 lists the proceeds as not income, whoever paid for the policy.
+  example: A renter with $10,000 of wages and $12,000 of disability benefits, $5,000 of them from a plan the renter
+    paid for, has income of $17,000 under the statute and $10,000 under item 11.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10663
+  state: ruled
+  note: The statute's text settles the case, so it governs over the guideline's general list.
 - id: us-nd:stillborn-subtraction-dependency-condition
   program: income-tax
   years:
