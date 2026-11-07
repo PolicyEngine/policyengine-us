@@ -1,5 +1,6 @@
 # Each enrollee gets the Trustees' average subsidy per low-income subsidy
-# enrollee (2026 report, Table IV.B9; 2015 from the 2025 report).
+# enrollee (2026 report, Table IV.B9; 2015 from the 2025 report; 2013 and
+# 2014 from the 2023 report).
 
 - name: Enrollee in 2026.
   period: 2026
@@ -18,6 +19,24 @@
         part_d_lis_enrolled: true
   output:
     part_d_lis: 2_112
+
+- name: Enrollee in 2013, the first year of the Medicare spending series.
+  period: 2013
+  input:
+    people:
+      person:
+        part_d_lis_enrolled: true
+  output:
+    part_d_lis: 2_023
+
+- name: Enrollee in 2014.
+  period: 2014
+  input:
+    people:
+      person:
+        part_d_lis_enrolled: true
+  output:
+    part_d_lis: 2_052
 
 - name: Enrollee in 2024, before the Inflation Reduction Act redesign.
   period: 2024

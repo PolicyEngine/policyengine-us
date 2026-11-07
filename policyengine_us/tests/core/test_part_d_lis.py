@@ -11,7 +11,8 @@ Trustees' average subsidy per subsidy enrollee, as CBO does.
 Parameters:
 
 1. Transcription: ``low_income_subsidy_per_recipient`` equals Table IV.B9's
-   "Subsidy amount" (2026 report; the 2025 report for 2015).
+   "Subsidy amount" (2026 report; the 2025 report for 2015; the 2023 report
+   for 2013 and 2014).
 2. Conservation: IV.B9 enrollment times the amount returns Table IV.B10's
    low-income subsidy payments, within the cells' rounding.
 3. Differential: the same payments over Table V.B3's total enrollment equal
@@ -23,8 +24,8 @@ Parameters:
    amounts. SSA's published 2015 couple limit is $10 below the rule; the
    parameter keeps the published amount (an intended exception).
 5. Bounds (Hypothesis): the amount per recipient is positive and below
-   Medicare spending per enrollee, and the limits never fall, in every year
-   from 2015 to 2100.
+   Medicare spending per enrollee in every year from 2013, the spending
+   series' first, to 2100, and the limits never fall.
 
 Households (a seeded sample in one shared simulation, each household also
 run with more Social Security, more interest and more assets):
@@ -65,8 +66,12 @@ LIS = P.gov.hhs.medicare.part_d.low_income_subsidy
 
 # 2026 Medicare Trustees Report (sha256 ffa56b91...8fa8), Table IV.B9 (file
 # page 158): low-income subsidy enrollment (millions) and subsidy amount ($).
-# 2015 from the 2025 report (sha256 1b3de7a4...4d95), Table IV.B9 (page 158).
+# 2015 from the 2025 report (sha256 1b3de7a4...4d95), Table IV.B9 (page 158);
+# 2013 and 2014 from the 2023 report (sha256 89daaf29...fa67), Table IV.B9
+# (page 158).
 IV_B9 = {
+    2013: (11.5, 2_023),
+    2014: (11.8, 2_052),
     2015: (12.1, 2_112),
     2016: (12.4, 2_126),
     2017: (12.7, 2_156),
@@ -90,18 +95,23 @@ IV_B9 = {
     2035: (16.7, 2_076),
 }
 # Table IV.B10 (file page 159), low-income subsidy, $ billions, incurred;
-# 2015 from the 2025 report's Table IV.B10 (page 159).
+# 2015 from the 2025 report's Table IV.B10 (page 159), 2013 and 2014 from the
+# 2023 report's (page 159).
 IV_B10 = {
+    **{2013: 23.2, 2014: 24.3},
     **{2015: 25.6, 2016: 26.4, 2017: 27.3, 2018: 28.5, 2019: 29.7, 2020: 33.0},
     **{2021: 35.0, 2022: 39.4, 2023: 44.2, 2024: 41.2, 2025: 17.4, 2026: 18.1},
     **{2027: 20.5, 2028: 22.1, 2029: 24.5, 2030: 28.9, 2031: 30.7, 2032: 31.7},
     **{2033: 32.4, 2034: 33.3, 2035: 34.8},
 }
-# Table V.B3 (file page 196), total enrollment (HI and/or SMI), thousands.
+# Table V.B3 (file page 196), total enrollment (HI and/or SMI), thousands;
+# 2013 and 2014 from the 2021 report's Table V.B3 (sha256 ef3d1fa7...c8e,
+# page 199), which the 2022 to 2026 reports drop.
 V_B3_TOTAL = dict(
     zip(
-        range(2015, 2036),
-        (55_589, 57_073, 58_683, 60_020, 61_535, 62_887, 63_980, 65_166)
+        range(2013, 2036),
+        (52_504, 54_115)
+        + (55_589, 57_073, 58_683, 60_020, 61_535, 62_887, 63_980, 65_166)
         + (66_606, 68_066, 69_289, 70_743, 72_322, 74_026, 75_436, 76_598)
         + (77_521, 78_327, 79_058, 79_827, 80_632),
     )
@@ -170,7 +180,7 @@ def test_resource_limits_follow_the_cpi_rule(kind):
         assert limit(f"{year}-01-01") == expected, year
 
 
-@given(st.integers(2015, 2100))
+@given(st.integers(2013, 2100))
 def test_amount_positive_and_below_spending(year):
     amount = _per_recipient(year)
     spending = P.calibration.gov.hhs.medicare.per_capita_cost(f"{year}-01-01")
