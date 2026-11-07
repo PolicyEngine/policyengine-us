@@ -15,20 +15,22 @@ plan's business (`self_employed_pension_plan_business`). By default every
 profitable business has a plan, under one dollar limit and one elective
 deferral limit, and their earned income adds up.
 
-The reference below runs the worksheet's steps literally, with the IRS's
+The reference below runs worksheet steps 4 to 19 literally, with the IRS's
 published dollar amounts rather than model parameters, and takes the largest
 step 19 over a grid of elective deferrals (step 9) and catch-up contributions
-(step 17). Only Schedule 1 line 15, the deductible part of self-employment
-tax, comes from the model. Hypothesis draws batches of single filers across
-three years, and each batch runs as one vectorized simulation in which every
-filer appears once for each plan business. For every person and year:
+(step 17). Schedule 1 line 15 is computed here from Schedule SE with the
+published wage bases, and step 2 is the plan businesses' share of it, split by
+net profit as on Form 7206 lines 5 to 8. Hypothesis draws batches of single
+filers across three years, and each batch runs as one vectorized simulation
+in which every filer appears once for each plan business. For every person
+and year:
 
-1. The limit equals the worksheet maximum, and step 3 equals the plan
-   businesses' net profit less their share of line 15, split by net profit
-   as on Form 7206 lines 5 to 8.
+1. Line 15 equals half of the Schedule SE tax, the limit equals the worksheet
+   maximum, and step 3 equals the plan businesses' net profit less step 2.
 2. The deduction is min(desired contributions, limit), is at most earned
    income (404(a)(8)(C)), which is at most the plan businesses' net profit,
-   and is at most the dollar limit plus the person's catch-up amount.
+   and is at most the dollar limit plus the person's catch-up amount, which
+   is all 414(v)(3)(A) puts outside 415(c).
 3. For a filer whose only income is self-employment profit, AGI is never
    negative when no business has a loss.
 4. Across plan businesses: the default's earned income is the sum of the
@@ -36,8 +38,13 @@ filer appears once for each plan business. For every person and year:
    business's limit, so naming no business never lowers the deduction from
    a plan under the Schedule C business alone, and at most their sum.
 
-A deterministic grid checks that the limit rises with Schedule C profit and
-with farm profit, and falls with deferrals to an employer's plan.
+A deterministic grid checks, at its points, that the limit rises with Schedule
+C profit (it dips just past $433 of profit, where self-employment tax starts)
+and with farm profit, and falls as deferrals to an employer's plan use up the
+room.
+
+The model computes in float32, so comparisons allow a relative error of 1e-6
+on top of the $0.01 tolerance.
 """
 
 import itertools
@@ -82,6 +89,28 @@ PUBLISHED = {
     ),
 }
 YEARS = list(PUBLISHED)
+
+# Schedule SE, as test data rather than model parameters.
+# 26 U.S.C. 1402(a)(12): net earnings are 92.35% of net profit.
+NET_EARNINGS_SHARE = 0.9235
+# 26 U.S.C. 1402(b)(2): no net earnings below $400.
+NET_EARNINGS_EXEMPTION = 400
+# 26 U.S.C. 1401(a) and (b).
+SOCIAL_SECURITY_RATE = 0.124
+MEDICARE_RATE = 0.029
+# Contribution and benefit bases, https://www.ssa.gov/oact/cola/cbb.html.
+WAGE_BASE = {2022: 147_000, 2025: 176_100, 2026: 184_500}
+
+
+def schedule_se_deduction(year, net_profit, wages):
+    """Schedule 1 line 15: half of Schedule SE self-employment tax."""
+    net_earnings = net_profit * NET_EARNINGS_SHARE
+    net_earnings = np.where(net_earnings < NET_EARNINGS_EXEMPTION, 0, net_earnings)
+    social_security_room = np.maximum(WAGE_BASE[year] - wages, 0)
+    tax = SOCIAL_SECURITY_RATE * np.minimum(
+        net_earnings, social_security_room
+    ) + MEDICARE_RATE * np.maximum(net_earnings, 0)
+    return tax / 2
 
 
 def catch_up_amount(year, age):
@@ -181,8 +210,18 @@ def reference(sim, people_inputs, year):
         out=np.zeros_like(plan_profit),
         where=all_profits > 0,
     )
-    # Step 2 is the one model output the reference takes as given.
-    step_2 = sim.calculate("self_employment_tax_ald_person", year) * share
+    # Schedule 1 line 15 from Schedule SE; step 2 is the plan businesses'
+    # share of it.
+    net_profit = (
+        column(people_inputs, "self_employment_income")
+        + column(people_inputs, "sstb_self_employment_income")
+        + column(people_inputs, "farm_operations_income")
+        + column(people_inputs, "partnership_self_employment_net_earnings")
+    )
+    line_15 = schedule_se_deduction(
+        year, net_profit, column(people_inputs, "employment_income")
+    )
+    step_2 = line_15 * share
     step_3 = np.maximum(plan_profit - step_2, 0)
     # Section 402(g) room left by deferrals to an employer's plan, which use
     # the regular limit first.
@@ -195,7 +234,7 @@ def reference(sim, people_inputs, year):
     catch_up_room = np.minimum(room, catch_up)
     regular_room = room - catch_up_room
     limit = worksheet_maximum(step_3, regular_room, catch_up_room, amounts)
-    return plan_profit, step_3, limit, catch_up
+    return plan_profit, line_15, step_3, limit, catch_up
 
 
 def close(actual, expected, message):
@@ -208,7 +247,7 @@ def at_most(actual, bound):
     return np.all(actual <= bound + TOLERANCE + RTOL * np.abs(bound))
 
 
-def check(sim, people_inputs):
+def check(sim, people_inputs, years=YEARS):
     desired = column(people_inputs, "self_employed_pension_contributions_desired")
     self_employment_only = np.array([p["self_employment_only"] for p in people_inputs])
     no_losses = (
@@ -220,13 +259,16 @@ def check(sim, people_inputs):
         & (column(people_inputs, "farm_operations_income") >= 0)
         & (column(people_inputs, "partnership_self_employment_net_earnings") >= 0)
     )
-    for year in YEARS:
-        plan_profit, step_3, expected, catch_up = reference(sim, people_inputs, year)
+    for year in years:
+        plan_profit, line_15, step_3, expected, catch_up = reference(
+            sim, people_inputs, year
+        )
         earned_income = sim.calculate("self_employed_pension_earned_income", year)
         limit = sim.calculate("self_employed_pension_contribution_limit", year)
         deduction = sim.calculate("self_employed_pension_contribution_ald_person", year)
         message = f"year {year}"
-        # 1. The worksheet.
+        # 1. Schedule SE and the worksheet.
+        close(sim.calculate("self_employment_tax_ald_person", year), line_15, message)
         close(earned_income, step_3, message)
         close(limit, expected, message)
         # 2. Bounds.
@@ -377,7 +419,7 @@ def grid():
 @pytest.mark.parametrize("year", YEARS)
 def test_grid_matches_the_worksheet_and_is_monotone(grid, year):
     sim, people_inputs = grid
-    check(sim, people_inputs)
+    check(sim, people_inputs, [year])
     limit = sim.calculate("self_employed_pension_contribution_limit", year).reshape(
         len(GRID_DEFERRALS), len(GRID_PROFITS)
     )
@@ -413,7 +455,7 @@ def test_limit_rises_with_farm_profit(year):
         for farm in GRID_FARM_PROFITS
     ]
     sim = Simulation(situation=build_situation(simulation_inputs(people_inputs)))
-    check(sim, people_inputs)
+    check(sim, people_inputs, [year])
     earned_income = sim.calculate("self_employed_pension_earned_income", year)
     limit = sim.calculate("self_employed_pension_contribution_limit", year)
     assert np.all(np.diff(earned_income) > 0)

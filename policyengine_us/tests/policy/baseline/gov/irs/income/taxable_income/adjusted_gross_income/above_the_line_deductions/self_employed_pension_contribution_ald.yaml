@@ -8,8 +8,8 @@
         self_employment_income: 20_000
         self_employed_pension_contributions_desired: 20_000
   output:
-    # Half of self-employment tax: 20,000 x 92.35% x 15.3% / 2 = 1,412.96.
-    # Pub. 560 Deduction Worksheet step 3: 20,000 - 1,412.96 = 18,587.05,
+    # Half of self-employment tax: 20,000 x 92.35% x 15.3% / 2 = 1,412.955.
+    # Pub. 560 Deduction Worksheet step 3: 20,000 - 1,412.955 = 18,587.045,
     # the most the plan deduction can be (26 U.S.C. 404(a)(8)(C)).
     self_employment_tax_ald: 1_412.96
     self_employed_pension_contribution_ald_person: [18_587.05]
@@ -49,8 +49,8 @@
       marital_unit:
         members: [person1, person2]
   output:
-    # Person 1: 20% x 186,403.65 + 23,500 = 60,780.73 (the Pub. 560 2025
-    # example's step 3). Person 2: (27,880.57 + 23,500) / 2 = 25,690.28.
+    # Person 1: 20% x 186,403.65 (step 3 in the Pub. 560 2025 example) +
+    # 23,500 = 60,780.73. Person 2: (27,880.5675 + 23,500) / 2 = 25,690.28.
     self_employed_pension_contribution_ald_person: [60_780.73, 25_690.28]
     self_employed_pension_contribution_ald: 86_471.01
 

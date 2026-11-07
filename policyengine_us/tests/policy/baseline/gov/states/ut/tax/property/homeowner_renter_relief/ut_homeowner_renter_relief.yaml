@@ -215,6 +215,7 @@
 
 - name: Case 12, nontaxable income uses self-employed pension contributions.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -230,5 +231,7 @@
         members: [person1]
         state_code: UT
   output:
-    self_employed_pension_contributions: 72_000
-    ut_homeowner_renter_relief_nontaxable_income: 72_000
+    # Pub. 560 worksheet: 20% x 92,935.23 of earned income + 24,500 of
+    # deferrals + the 8,000 catch-up at age 66.
+    self_employed_pension_contributions: 51_087.05
+    ut_homeowner_renter_relief_nontaxable_income: 51_087.05
