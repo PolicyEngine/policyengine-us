@@ -105,3 +105,155 @@
         spm_unit_pre_subsidy_childcare_expenses: 2_000
   output:
     spm_unit_capped_work_childcare_expenses: 2_000
+
+- name: A child care subsidy lowers the out-of-pocket expense
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    spm_unit_work_expenses: 1_000
+    spm_unit_head_spouse_earned_cap: 30_000
+    spm_unit_pre_subsidy_childcare_expenses: 14_000
+    child_care_subsidies: 13_916.40
+  output:
+    # 1,000 + (14,000 - 13,916.40).
+    spm_unit_capped_work_childcare_expenses: 1_083.60
+
+- name: A subsidy above the expense leaves only work expenses
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    spm_unit_work_expenses: 1_000
+    spm_unit_head_spouse_earned_cap: 30_000
+    spm_unit_pre_subsidy_childcare_expenses: 1_200
+    child_care_subsidies: 22_828
+  output:
+    # The floor keeps the part of the subsidy above the expense out of the
+    # SPM, so it cannot offset work expenses.
+    spm_unit_capped_work_childcare_expenses: 1_000
+
+- name: The earnings cap applies after the subsidy
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    spm_unit_work_expenses: 1_000
+    spm_unit_head_spouse_earned_cap: 5_000
+    spm_unit_pre_subsidy_childcare_expenses: 14_000
+    child_care_subsidies: 2_000
+  output:
+    # 1,000 + 12,000 exceeds the cap, so the subsidy leaves the expense at
+    # the cap.
+    spm_unit_capped_work_childcare_expenses: 5_000
+
+- name: A subsidy can bring the expense below the earnings cap
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    spm_unit_work_expenses: 1_000
+    spm_unit_head_spouse_earned_cap: 5_000
+    spm_unit_pre_subsidy_childcare_expenses: 14_000
+    child_care_subsidies: 13_000
+  output:
+    spm_unit_capped_work_childcare_expenses: 2_000
+
+- name: Expenses in a unit with no child are capped as before and take no subsidy
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 46
+        employment_income: 9_000
+        is_household_head: true
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    spm_units:
+      spm_unit:
+        members: [head]
+        spm_unit_work_expenses: 0
+        spm_unit_pre_subsidy_childcare_expenses: 4_000
+  output:
+    child_care_subsidies: 0
+    spm_unit_capped_work_childcare_expenses: 4_000
+
+- name: A subsidy in a unit with no child still lowers the expense
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 46
+        employment_income: 9_000
+        is_household_head: true
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    spm_units:
+      spm_unit:
+        members: [head]
+        spm_unit_work_expenses: 0
+        spm_unit_pre_subsidy_childcare_expenses: 4_000
+        child_care_subsidies: 1_500
+  output:
+    spm_unit_capped_work_childcare_expenses: 2_500
+
+- name: A direct out-of-pocket amount replaces the amount net of subsidies
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 30_000
+        is_household_head: true
+        is_tax_unit_head: true
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+        spm_unit_work_expenses: 0
+        spm_unit_pre_subsidy_childcare_expenses: 14_000
+        child_care_subsidies: 10_000
+        childcare_expenses: 6_000
+  output:
+    spm_unit_capped_work_childcare_expenses: 6_000
+
+- name: A subsidy lowers the expense in 2024, the formula's first year
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    spm_unit_work_expenses: 1_000
+    spm_unit_head_spouse_earned_cap: 50_000
+    spm_unit_pre_subsidy_childcare_expenses: 14_000
+    child_care_subsidies: 2_000
+  output:
+    spm_unit_capped_work_childcare_expenses: 13_000
+
+- name: A subsidy lowers the expense in 2025
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    spm_unit_work_expenses: 1_000
+    spm_unit_head_spouse_earned_cap: 50_000
+    spm_unit_pre_subsidy_childcare_expenses: 14_000
+    child_care_subsidies: 2_000
+  output:
+    spm_unit_capped_work_childcare_expenses: 13_000
+
+- name: Before 2024 the expense has no formula, so a subsidy cannot lower it
+  period: 2023
+  absolute_error_margin: 0.001
+  input:
+    spm_unit_work_expenses: 1_000
+    spm_unit_head_spouse_earned_cap: 50_000
+    spm_unit_pre_subsidy_childcare_expenses: 14_000
+    child_care_subsidies: 2_000
+  output:
+    spm_unit_capped_work_childcare_expenses: 0

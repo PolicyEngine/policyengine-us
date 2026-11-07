@@ -266,7 +266,12 @@ def _rebuild_baseline_branch(simulation):
     ``input_variables``. Its TANF counted no earnings, and the baseline
     marginal tax rate that labor supply responses compare against erased
     pre-response wages. Branching again from the simulation, as core's
-    ``subsample`` does, gives the baseline the same inputs as the reform.
+    ``subsample`` does, gives the baseline the same inputs as the reform,
+    except those the reform stored for its own definition of a variable in
+    another entity or with other ``ETERNITY`` storage, which core's branch
+    dropped too. Of those, the baseline then sets again each input the
+    reform received that the baseline's definition can hold, such as a yearly
+    subsidy the reform stores for all time.
     """
     baseline = simulation.branches.pop("baseline", None)
     if baseline is None:
@@ -279,8 +284,16 @@ def _rebuild_baseline_branch(simulation):
     rebuilt.tracer = simulation.tracer
     rebuilt.tax_benefit_system = baseline.tax_benefit_system
     # Cloning bound holders to reform variables. Restoring policy must also
-    # restore those bindings and remove inputs that exist only in the reform.
+    # drop holders whose entity or storage the baseline's variables cannot
+    # use, restore the other bindings and remove inputs that exist only in
+    # the reform. A kept holder would hand the baseline the reform's input:
+    # under a reform that stores ``child_care_subsidies`` for all time, the
+    # baseline read that input in place of its own formula. A dropped holder
+    # takes its inputs with it, so the baseline sets again each one it can
+    # hold: dropping a yearly 2026 subsidy left the baseline calculating one.
+    rebuilt._drop_holders_built_for_another_policy()
     rebuilt._rebind_holders()
+    rebuilt._set_inputs_kept_for_baseline_policy(simulation)
     rebuilt._isolate_parameter_tracing()
     simulation.baseline = rebuilt
 

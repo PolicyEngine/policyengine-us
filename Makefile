@@ -96,13 +96,14 @@ REST_SOCIAL_SECURITY_PIA_RATIO_INPUT_TESTS := $(TESTS)/core/test_ss_pia_ratio_in
 # a default Microsimulation only to read parameters. Release their heap before
 # the remaining policy tests, rather than stacking both in the 13.9 GB group.
 REST_POLICY_PARAMETER_TESTS := $(TESTS)/policy/baseline/parameters
-# The first four files retain three independent full systems (the two CTC
+# The first five files retain four independent full systems (the two CTC
 # files share one). The last two use transient TX simulations and balance
 # elapsed time without warming the NY/AL pinned-system cache.
 REST_REMAINING_HEAVY_TESTS := $(TESTS)/test_niit_section_911_magi.py \
 	$(TESTS)/test_ctc_foreign_earned_income_exclusion.py \
 	$(TESTS)/test_ctc_foreign_earned_income_exclusion_property.py \
 	$(TESTS)/unit/test_medicaid_abd_ssi_rate_standard_properties.py \
+	$(TESTS)/test_spm_child_care_subsidy_invariants.py \
 	$(TESTS)/test_capital_gain_distributions_loss_limit.py \
 	$(TESTS)/test_schedule_d_filer_net_capital_gain.py
 REST_LISTED_TESTS := $(REST_CACHED_ARRAY_TESTS) $(REST_HEAVY_A_TESTS) $(REST_HEAVY_B_TESTS) \

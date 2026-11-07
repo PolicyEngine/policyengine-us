@@ -58,19 +58,14 @@ class spm_unit_benefits(Variable):
             # summing it with ssi does not double-count.
             "ca_state_supplement",
             # Colorado programs.
-            "co_ccap_subsidy",
             "co_state_supplement",
             "co_oap",
-            # Washington programs.
-            "wa_child_care_subsidies",
             # New Mexico programs.
             "nm_ssi_state_supplement",
             # South Carolina programs.
             "sc_ssi_state_supplement",
             # Texas programs.
             "tx_ssi_state_supplement",
-            # West Virginia programs.
-            "wv_child_care_subsidies",
             "snap",
             "wic",
             "free_school_meals",
@@ -111,4 +106,16 @@ class spm_unit_benefits(Variable):
             BENEFITS.append("assigned_aca_ptc")
         if not parameters(period).gov.hud.abolition:
             BENEFITS.append("spm_unit_capped_housing_subsidy")
+        # From 2024, child care subsidies lower the expense in
+        # spm_unit_capped_work_childcare_expenses instead of adding to
+        # resources. That expense has no formula before 2024, so these three
+        # stay resources until then.
+        if period.start.year < 2024:
+            BENEFITS.extend(
+                [
+                    "co_ccap_subsidy",
+                    "wa_child_care_subsidies",
+                    "wv_child_care_subsidies",
+                ]
+            )
         return add(spm_unit, period, BENEFITS)
