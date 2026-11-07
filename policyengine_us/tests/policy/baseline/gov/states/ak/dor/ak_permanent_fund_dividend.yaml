@@ -76,7 +76,7 @@
   output:
     ak_permanent_fund_dividend: 1_114
 
-- name: Case 12, no budget has set a dividend for 2027, so the 2026 dividend carries forward.
+- name: Case 12, Alaska has set no dividend for 2027, so PolicyEngine keeps the 2026 dividend.
   period: 2027
   input:
     state_code: AK

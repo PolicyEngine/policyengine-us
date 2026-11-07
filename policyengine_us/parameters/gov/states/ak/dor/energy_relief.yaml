@@ -1,4 +1,4 @@
-description: Alaska provides this one-time energy relief payment with the Permanent Fund Dividend. The amount is zero in years without a payment.
+description: Alaska provides this one-time energy relief payment with the Permanent Fund Dividend in years when it appropriates one.
 
 values:
   2015-01-01: 0
@@ -7,8 +7,8 @@ values:
   2024-01-01: 298.17
   2025-01-01: 0
   2026-01-01: 200
-  # Each payment needs its own appropriation, and no budget has made one for
-  # 2027 or later.
+  # Alaska appropriates each one-time payment in its budget, and it has
+  # appropriated none for 2027 or later.
   2027-01-01: 0
 
 metadata:
@@ -16,29 +16,29 @@ metadata:
   period: year
   unit: currency-USD
   reference:
-    # 2015 to 2021: each year's payment was the dividend alone.
+    # 2015 to 2021: Alaska paid the dividend alone.
     - title: Alaska Permanent Fund Dividend Division, Summary of Dividend Applications & Payments
       href: https://pfd.alaska.gov/division-info/summary-of-dividend-applications-payments
     - title: Alaska Permanent Fund Dividend Division, 2019 Annual Report
       href: https://pfd.alaska.gov/docs/permanentfunddividendlibraries/annual-reports/2019-pfd-annual-report.pdf#page=24
     - title: Alaska Permanent Fund Dividend Division, 2021 Annual Report
       href: https://pfd.alaska.gov/docs/permanentfunddividendlibraries/annual-reports/2021-pfd-annual-report---final.pdf#page=24
-    # 2022: $662.19 of the $3,284 payment, which the model rounds to $662.
+    # 2022: $662.19 of the $3,284 payment, which PolicyEngine rounds to $662.
     - title: Alaska Department of Revenue, DOR Response to IRS Guidance on 2022 PFD (release 23-002)
       href: https://dor.alaska.gov/docs/default-source/press-releases/2023_02_17-dor-response-to-irs-guidance-on-2022-pfd.pdf#page=1
-    # 2023: the $1,312 dividend was the whole payment.
+    # 2023: Alaska paid the $1,312 dividend alone.
     - title: Alaska Permanent Fund Dividend Division, 2023 Annual Report
       href: https://pfd.alaska.gov/docs/permanentfunddividendlibraries/annual-reports/2023-pfd-annual-report.pdf#page=3
     # 2024.
     - title: Department of Revenue Announces 2024 Permanent Fund Dividend Amount and Energy Relief
       href: https://dor.alaska.gov/department-of-revenue/news-detail/2024/09/19/department-of-revenue-announces-2024-permanent-fund-dividend-amount-and-energy-relief
-    # 2025: the $1,000 dividend was the whole payment.
+    # 2025: Alaska paid the $1,000 dividend alone.
     - title: Department of Revenue Announces 2025 Permanent Fund Dividend Amount
       href: https://dor.alaska.gov/department-of-revenue/news-detail/2025/09/22/department-of-revenue-announces-2025-permanent-fund-dividend-amount
-    # 2026: sec. 13 amends sec. 49(a), ch. 10, SLA 2025 so that, if unrestricted
-    # general fund revenue for fiscal 2026 exceeded $6.3 billion, Alaska pays "a
-    # one-time energy relief payment of $200 as part of the permanent fund
-    # dividend". The DOR announcement reports the payment.
+    # 2026: in sec. 13, amending sec. 49(a), ch. 10, SLA 2025, the Legislature
+    # appropriated "a one-time energy relief payment of $200 as part of the
+    # permanent fund dividend" if unrestricted general fund revenue for fiscal
+    # 2026 exceeded $6.3 billion. DOR announced the payment in release 26-004.
     - title: "Sec. 13, ch. 34, SLA 2026 (enrolled HB 263), amending sec. 49(a), ch. 10, SLA 2025 #page 84-85"
       href: https://www.akleg.gov/PDF/34/Bills/HB0263Z.PDF#page=84
     - title: Department of Revenue Announces 2026 Permanent Fund Dividend
