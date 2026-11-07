@@ -21,7 +21,9 @@ for every input:
 1. add_to_list_parameter keeps every dated value of a list and its members in
    order, appends only the names a value lacks, and changes nothing when it
    runs again. It writes new lists, leaving the names it gets and the member
-   lists it reads unchanged.
+   lists it reads unchanged, and it changes values only through
+   Parameter.update, so the parent node returns the new lists and core marks
+   the parameter modified.
 2. Under each reform, each benefit list in each year is the baseline list,
    followed by the reform's own additions and nothing else.
 3. Applying a reform a second time changes no list. A simulation can apply a
@@ -123,11 +125,12 @@ def dated_lists(draw):
     """A list parameter's dated values: {date: members}.
 
     A value can start on any day. None marks a gap, as a null does in a
-    parameter file.
+    parameter file. Members can repeat, and the helper must keep them as
+    they are.
     """
     starts = draw(st.lists(DAYS, min_size=1, max_size=4, unique=True))
     return {
-        start.isoformat(): draw(st.none() | st.lists(NAMES, max_size=5, unique=True))
+        start.isoformat(): draw(st.none() | st.lists(NAMES, max_size=5))
         for start in sorted(starts)
     }
 
@@ -143,6 +146,13 @@ def value_on(values, day):
     """The members a dated list holds on a day, or None before its first."""
     starts = [start for start in sorted(values) if start <= day]
     return values[starts[-1]] if starts else None
+
+
+def node_value(parameter, day):
+    """The members the parameter's parent node returns on a day, as formulas
+    read them. A node leaves out a child with no value on that day."""
+    at_instant = parameter.parent(instant(day))
+    return at_instant["members"] if "members" in at_instant else None
 
 
 @settings(max_examples=200, deadline=None)
@@ -171,6 +181,24 @@ def test_add_to_list_parameter_appends_only_missing_names(values, names, days):
     }
 
     parameter = list_parameter(values)
+    # Core keeps the lists it reads, so the checks below that the drawn lists
+    # stay unchanged see an edit the helper makes to the parameter's own.
+    assert all(
+        value.value is values[value.instant_str] for value in parameter.values_list
+    )
+    # Each value's first day and the day before it hold the stop dates the
+    # helper computes, so check them along with the drawn days.
+    checked = [day.isoformat() for day in days]
+    for start in values:
+        first_day = date.fromisoformat(start)
+        checked += [first_day.isoformat(), (first_day - timedelta(days=1)).isoformat()]
+    # The parent node caches what it returns for each day, and
+    # Parameter.update clears that cache. Reading it now fills the cache, so a
+    # helper that changed the values another way would leave the node, and the
+    # formulas that read through it, with the old lists.
+    for day in checked:
+        assert node_value(parameter, day) == value_on(values_before, day)
+
     add_to_list_parameter(parameter, names)
 
     # The helper writes new lists. A clone of a parameter shares its member
@@ -180,18 +208,18 @@ def test_add_to_list_parameter_appends_only_missing_names(values, names, days):
     assert values == values_before
     starts = sorted(value.instant_str for value in parameter.values_list)
     assert starts == sorted(values)
-    # Each value's first day and the day before it hold the stop dates the
-    # helper computes, so check them along with the drawn days.
-    checked = [day.isoformat() for day in days]
-    for start in values:
-        first_day = date.fromisoformat(start)
-        checked += [first_day.isoformat(), (first_day - timedelta(days=1)).isoformat()]
+    # Parameter.update also marks the parameter modified, and a simulation
+    # checks that flag before it serves a variable from its macro cache.
+    if expected != values_before:
+        assert parameter.modified
     for day in checked:
         assert parameter(instant(day)) == value_on(expected, day)
+        assert node_value(parameter, day) == value_on(expected, day)
 
     add_to_list_parameter(parameter, names)
     for day in checked:
         assert parameter(instant(day)) == value_on(expected, day)
+        assert node_value(parameter, day) == value_on(expected, day)
 
 
 def test_add_to_list_parameter_keeps_dates_from_year_zero():
