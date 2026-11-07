@@ -44,8 +44,14 @@ LAST_SET_YEAR = max(WHOLE_PAYMENT)
 
 
 def amounts(year):
-    dor = system.parameters(f"{year}-01-01").gov.states.ak.dor
-    return float(dor.permanent_fund_dividend), float(dor.energy_relief)
+    # Read the two parameters at the instant, not the whole tree, which would
+    # build every parameter for each year drawn.
+    dor = system.parameters.gov.states.ak.dor
+    instant = f"{year}-01-01"
+    return (
+        float(dor.permanent_fund_dividend(instant)),
+        float(dor.energy_relief(instant)),
+    )
 
 
 def test_published_years_start_at_first_modeled_year():
