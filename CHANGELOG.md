@@ -1,3 +1,10 @@
+## [2.104.5] - 2026-11-07
+
+### Changed
+
+- Call PolicyEngine's microdata stack Microcosm in docs, comments, variable documentation and tests, and link its issues in PolicyEngine/microcosm; published dataset ids keep their names.
+
+
 ## [2.104.4] - 2026-11-07
 
 ### Fixed
