@@ -2,7 +2,8 @@
 
 import math
 from decimal import ROUND_HALF_UP, Decimal
-from typing import Dict, Optional, Tuple
+from types import MappingProxyType
+from typing import Mapping, Optional, Tuple
 
 from policyengine_us.model_api import *
 from policyengine_core.periods import Instant, instant
@@ -30,10 +31,13 @@ LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS = (
 # period and the rate at the start of the last 50 years (file pages 24 and
 # 180), and the long-range rates then decline gradually from 2050 to 2100
 # (file pages 23 and 173). They publish only the 2050 and 2100 rates, so the
-# path between those two knots is linear here. That is an approximation: the
-# Trustees' own path is not a straight line, as their income-technology
-# elasticity declines at a slowing pace and their price elasticity follows a
-# non-linear path between 2050 and 2100 (file page 175).
+# glide runs in a straight line between those two knots. The Trustees' own
+# path bends, as their income-technology elasticity declines at a slowing
+# pace and their price elasticity follows a non-linear path between 2050 and
+# 2100 (file page 175). Each series also starts its glide from its own last
+# projected year and growth rate, which for CMS's 2034 projections comes a
+# year before the Trustees' 2035 start. MappingProxyType keeps importers from
+# changing the knots.
 #
 # Per capita overall health spending grows at GDP plus 0.7 percent (4.3
 # percent) in 2050, declining gradually to GDP plus 0.4 percent (4.1 percent)
@@ -41,12 +45,14 @@ LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS = (
 # out-of-pocket spending or private insurance (Table V.B5, file page 200,
 # stops private health insurance in 2035), so this rate serves those series:
 # the factors model behind it holds insurance coverage unchanged (file page
-# 175), and the Trustees see only a small likelihood that one part of the
-# health sector grows indefinitely at significantly faster rates than the
-# others (file page 177). The Trustees extend CMS's national health
+# 175), and the Trustees expect "the drivers of health spending will be
+# similar for the overall health sector and for the Medicare program" over
+# the long range (file page 176). The Trustees extend CMS's national health
 # expenditure projections past 2033 by the same long-range methods (Table
 # V.B5, note 1, file page 200).
-HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH = {2050: 0.043, 2100: 0.041}
+HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH = MappingProxyType(
+    {2050: 0.043, 2100: 0.041}
+)
 
 # The Trustees' Medicare cost growth rates exclude the effects of the aging of
 # the population and of changes in the sex and time-to-death mix of
@@ -56,14 +62,18 @@ HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH = {2050: 0.043, 2100: 0.041}
 MEDICARE_LONG_RANGE_DEMOGRAPHIC_MIX = -0.001
 
 
-def with_medicare_demographic_mix(cost_growth: Dict[int, float]) -> Dict[int, float]:
+def with_medicare_demographic_mix(
+    cost_growth: Mapping[int, float],
+) -> Mapping[int, float]:
     """Medicare spending per enrollee growth: the Trustees' cost growth rate
     (excluding demographic impacts) compounded with the long-range
     demographic mix."""
-    return {
-        year: (1 + rate) * (1 + MEDICARE_LONG_RANGE_DEMOGRAPHIC_MIX) - 1
-        for year, rate in cost_growth.items()
-    }
+    return MappingProxyType(
+        {
+            year: (1 + rate) * (1 + MEDICARE_LONG_RANGE_DEMOGRAPHIC_MIX) - 1
+            for year, rate in cost_growth.items()
+        }
+    )
 
 
 # Parts A, B and D combined: 3.8 percent in 2050, declining to 3.7 percent by
@@ -781,7 +791,7 @@ def long_range_growth_rate(
     year: int,
     last_projected_year: int,
     short_range_growth: float,
-    long_range_growth: Dict[int, float],
+    long_range_growth: Mapping[int, float],
 ) -> float:
     """Annual growth rate for a year after the last projected year, on a path
     that glides from the short-range rate to long-range rates.
@@ -789,11 +799,16 @@ def long_range_growth_rate(
     The knots are (last_projected_year, short_range_growth) and each
     (year, rate) in long_range_growth. The Medicare Trustees interpolate
     between their short-range and long-range rates; this path is linear
-    between adjacent knots, and holds the last knot's rate after it.
+    between adjacent knots, and holds the last knot's rate after it. It
+    rejects a NaN or infinite rate and any rate at or below -1, which would
+    make a year's growth factor zero or negative.
     """
     knots = sorted(long_range_growth.items())
     if not knots or knots[0][0] <= last_projected_year:
         raise ValueError("Long-range growth knots must follow the last projected year.")
+    rates = [short_range_growth, *(rate for _, rate in knots)]
+    if not all(math.isfinite(rate) and rate > -1 for rate in rates):
+        raise ValueError(f"Growth rates must exceed -1 and stay finite; got {rates}.")
     if year <= last_projected_year:
         raise ValueError(
             "Long-range growth applies only after the last projected year."
@@ -816,7 +831,7 @@ def extend_parameter_values(
     period_month: int = 1,
     period_day: int = 1,
     growth_years: Optional[Tuple[int, int]] = None,
-    long_range_growth: Optional[Dict[int, float]] = None,
+    long_range_growth: Optional[Mapping[int, float]] = None,
 ) -> None:
     """
     Extend a parameter's values from last_projected_year to end_year. The
@@ -831,21 +846,27 @@ def extend_parameter_values(
         end_year: The year to extend values through
         period_month: The month for the period (default 1 for January)
         period_day: The day for the period (default 1)
-        growth_years: Optional (earlier, later) pair to measure the growth
-            rate between, instead of the last two projected years — used
-            when the final actual embeds a one-off level shift that should
-            not compound in the long-run extension.
-        long_range_growth: Optional {year: annual growth rate} knots. When
-            given, growth moves from the measured short-range rate, placed
-            at last_projected_year, through the knots (see
+        growth_years: Optional (earlier, later) pair of consecutive years, no
+            later than last_projected_year, to measure the short-range rate
+            between, instead of the last two projected years. Callers pass
+            it when the final actual embeds a one-off level shift that
+            should not compound in the long-run extension.
+        long_range_growth: Optional {year: annual growth rate} knots. With
+            knots, growth moves from the measured short-range rate in
+            last_projected_year through the knots (see
             long_range_growth_rate) instead of repeating the short-range
-            rate in every year.
+            rate every year.
     """
     # Measure the short-range growth rate between growth_years
     date_format = f"-{period_month:02d}-{period_day:02d}"
     if growth_years is None:
         growth_years = (last_projected_year - 1, last_projected_year)
     earlier_year, later_year = growth_years
+    if later_year != earlier_year + 1 or later_year > last_projected_year:
+        raise ValueError(
+            "growth_years must name consecutive years ending no later than "
+            f"{last_projected_year}; got {growth_years}."
+        )
     second_to_last_value = parameter(f"{earlier_year}{date_format}")
     last_value = parameter(f"{later_year}{date_format}")
     growth_rate = last_value / second_to_last_value

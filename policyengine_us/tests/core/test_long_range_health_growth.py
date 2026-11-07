@@ -35,6 +35,11 @@ Invariants:
    beneficiary growth. The Part B premium's glide matches II.D1's Part B
    growth per beneficiary in 2051-2100, where the per capita health
    spending knots would overshoot it.
+10. Guards: long_range_growth_rate rejects any rate that would make a growth
+   factor zero, negative or not finite; extend_parameter_values rejects
+   growth_years other than consecutive years ending by the last projected
+   year, before it changes any value; and the module's knots reject
+   assignment.
 """
 
 import ast
@@ -160,6 +165,53 @@ def test_rate_is_undefined_up_to_the_last_projected_year(year):
 def test_knots_must_follow_the_last_projected_year(knots):
     with pytest.raises(ValueError):
         long_range_growth_rate(2040, 2034, 0.05, knots)
+
+
+# 10. Guards.
+
+bad_rates = st.one_of(
+    st.floats(max_value=-1), st.sampled_from([float("nan"), float("inf")])
+)
+
+
+@given(glide_cases(), bad_rates, st.booleans())
+def test_rates_must_keep_every_growth_factor_positive_and_finite(
+    case, bad, short_is_bad
+):
+    last, short, knots = case
+    if short_is_bad:
+        short = bad
+    else:
+        # The last knot, which the first extended year never reaches.
+        knots = {**knots, max(knots): bad}
+    with pytest.raises(ValueError):
+        long_range_growth_rate(last + 1, last, short, knots)
+
+
+@pytest.mark.parametrize(
+    "knots",
+    [
+        HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH,
+        MEDICARE_PER_ENROLLEE_LONG_RANGE_GROWTH,
+        MEDICARE_PART_B_PER_ENROLLEE_LONG_RANGE_GROWTH,
+        MEDICARE_PART_D_PER_ENROLLEE_LONG_RANGE_GROWTH,
+    ],
+)
+def test_importers_cannot_change_the_module_knots(knots):
+    with pytest.raises(TypeError):
+        knots[2050] = 0.0
+    assert sorted(knots) == [2050, 2100]
+
+
+@pytest.mark.parametrize("growth_years", [(2030, 2032), (2032, 2031), (2034, 2035)])
+def test_growth_years_name_consecutive_projected_years(growth_years):
+    series = _series(
+        {year: 100.0 * 1.05 ** (year - 2030) for year in range(2030, 2035)}
+    )
+    with pytest.raises(ValueError):
+        extend_parameter_values(series, 2034, END_YEAR, growth_years=growth_years)
+    # Nothing extended: later years still read the 2034 value.
+    assert _value(series, 2040) == _value(series, 2034)
 
 
 # 3. Closed form.
