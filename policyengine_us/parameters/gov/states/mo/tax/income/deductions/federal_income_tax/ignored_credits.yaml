@@ -7,6 +7,8 @@ description: Missouri ignores the following credits in federal income tax deduct
 # are added back here. The EIC is not added back: the Line 9 instructions say
 # "If you have an earned income credit, you must subtract the credit from the
 # tax on your federal return."
+# Section 143.171 reduces the base for all credits except its listed exceptions;
+# the section 1341 credit is not added back.
 values:
   2018-01-01:
     - recovery_rebate_credit
