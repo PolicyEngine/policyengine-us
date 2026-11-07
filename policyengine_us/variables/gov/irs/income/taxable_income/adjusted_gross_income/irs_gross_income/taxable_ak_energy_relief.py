@@ -9,10 +9,10 @@ class taxable_ak_energy_relief(Variable):
     documentation = (
         "The part of ak_energy_relief in federal gross income: none of a "
         "payment from the 2022 program, whose exclusion the IRS said it would "
-        "not challenge, whether received in 2022 or in 2023; and all of each "
-        "payment from 2024 on, which Alaska pays as part of the taxable "
-        "dividend. A payment counts wherever the recipient lives now, as the "
-        "regular dividend does. See docs/validation/alaska-pfd.md."
+        "not challenge, whether the recipient got it in 2022 or in 2023; and "
+        "all of each payment from 2024 on, which Alaska pays as part of the "
+        "taxable dividend. A payment counts wherever the recipient lives, as "
+        "the regular dividend does. See docs/validation/alaska-pfd.md."
     )
     definition_period = YEAR
     reference = (
@@ -26,9 +26,9 @@ class taxable_ak_energy_relief(Variable):
     )
 
     def formula(person, period, parameters):
-        # No defined_for: ak_energy_relief computes nothing for people living
-        # outside Alaska, and a payment supplied for someone who has since
-        # moved stays in gross income.
+        # No defined_for: ak_energy_relief computes nothing for people who live
+        # outside Alaska, and when a dataset or user supplies a payment for
+        # someone who has since moved, the payment stays in gross income.
         p = parameters(period).gov.irs.gross_income
         return where(
             p.ak_energy_relief_excluded,
