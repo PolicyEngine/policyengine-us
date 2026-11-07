@@ -219,14 +219,17 @@ def test_every_gross_income_source_reaches_spm_resources_or_is_documented():
     )
     assert (counted | left_out) - sources == set(), "stale entries above"
 
-    resources = person_market_members() | spm_members()
-    uncounted = {
-        source: resource
-        for source, resource in GROSS_INCOME_IN_RESOURCES.items()
-        if resource not in resources
-    }
-    assert uncounted == {}, f"mapped to a variable SPM resources lack: {uncounted}"
-    assert not left_out & resources
+    for year in YEARS:
+        resources = person_market_members() | spm_members(year)
+        uncounted = {
+            source: resource
+            for source, resource in GROSS_INCOME_IN_RESOURCES.items()
+            if resource not in resources
+        }
+        assert uncounted == {}, (
+            f"{year}: mapped to a variable SPM resources lack: {uncounted}"
+        )
+        assert not left_out & resources, year
 
 
 def market_situation(name, entity, amount, year=2026, state="TX"):
