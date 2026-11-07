@@ -11765,13 +11765,15 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/parameters/gov/states/wv/dhhr/ccap/income/fpl_limit.yaml
+    - policyengine_us/parameters/gov/states/wv/dhhr/ccap/income/smi_limit.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10670
   state: unreviewed
   note: PE-US follows the manual and Appendix A, which the Bureau for Family Assistance links from its Child Care
-    Policy page; the PR changes only the guideline year. Check whether the plan's 85% states a limit the Bureau
-    applies or the federal ceiling. With no statute or rule in the entry, gap-fill means the code follows the manual
-    and Appendix A, not the plan.
+    Policy page. The PR changes the guideline year and adds Appendix A's own stop at 85% of state median income,
+    which binds from ten people ($9,247 a month), so the code takes the lower of the two limits at every size.
+    Check whether the plan's 85% states a limit the Bureau applies or the federal ceiling. With no statute or rule
+    in the entry, gap-fill means the code follows the manual and Appendix A, not the plan.
 - id: us-wv:claim-of-right-subtraction-authority
   program: income-tax
   years:

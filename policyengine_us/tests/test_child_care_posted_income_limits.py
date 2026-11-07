@@ -6,9 +6,11 @@ families, one simulation per case, which single YAML households can't draw:
 
 1. Rules: for every date in RULES and NEVADA_RULES and for any income, a family passes
    exactly when its income is at or below the rate times that date's guideline or
-   median income, rounded as the state's chart rounds. This also makes each income
-   test monotonic in income. Each rule states the limit apart from the formulas, so
-   it acts as a second implementation.
+   median income, rounded as the state's chart rounds. In Indiana and West Virginia
+   the limit stops at 85% of the state median income, which binds only for large
+   families, so those rules draw families of up to 20 and 11 people. This also makes
+   each income test monotonic in income. Each rule states the limit apart from the
+   formulas, so it acts as a second implementation.
 2. Enrolled families: a family that passes as a new applicant passes as an enrolled
    family at the same income, in every state with separate limits.
 3. Ohio: the voucher pays only families over the Publicly Funded Child Care limit,
@@ -123,6 +125,13 @@ ID = Program(
 IN = Program(
     "IN", "in_ccdf_income_eligible", "in_ccdf_countable_income", "is_in_ccdf_enrolled"
 )
+IN_ENROLLED = Program(
+    "IN",
+    "in_ccdf_income_eligible",
+    "in_ccdf_countable_income",
+    "is_in_ccdf_enrolled",
+    True,
+)
 MO = Program(
     "MO", "mo_ccs_income_eligible", "mo_ccs_adjusted_income", "mo_ccs_enrolled"
 )
@@ -201,20 +210,42 @@ def nearest_dollar(amount):
 
 
 def next_dollar(amount):
-    """Any cents go up, as Idaho and Ohio print."""
+    """Any cents go up, as Idaho, Ohio and Indiana's 85% limits print."""
     return math.ceil(round(amount, 2))
+
+
+def median_share(size):
+    """A family's share of the four-person state median income (45 CFR 96.85(b)):
+    52% for one person, 16 points more for each person through six, and 3 points for
+    each person after that."""
+    return 0.52 + 0.16 * (min(size, 6) - 1) + 0.03 * max(size - 6, 0)
 
 
 @dataclass(frozen=True)
 class Rule:
     program: Program
     month: str
-    guideline_year: int
-    rate: float
-    rounding: Callable
+    # A rule without a guideline year tests the median income limit alone.
+    guideline_year: Optional[int]
+    rate: Optional[float] = None
+    rounding: Optional[Callable] = None
+    # Indiana's and West Virginia's charts stop at 85% of a four-person state median
+    # income table, adjusted for family size and rounded as each chart prints.
+    median: Optional[int] = None
+    median_rounding: Callable = nearest_dollar
+    max_size: int = 6
 
     def top(self, size):
-        return self.rounding(guideline(self.guideline_year, size) * self.rate / 12)
+        limits = []
+        if self.guideline_year is not None:
+            limits.append(
+                self.rounding(guideline(self.guideline_year, size) * self.rate / 12)
+            )
+        if self.median is not None:
+            limits.append(
+                self.median_rounding(self.median * median_share(size) * 0.85 / 12)
+            )
+        return min(limits)
 
 
 RULES = [
@@ -233,23 +264,44 @@ RULES = [
     Rule(ID, "2025-09", 2024, 1.3, next_dollar),
     Rule(ID, "2025-10", 2025, 1.3, next_dollar),
     Rule(ID, "2026-06", 2025, 1.3, next_dollar),
-    # Indiana's charts move partway through each year.
-    Rule(IN, "2024-06", 2024, 1.5, nearest_dollar),
-    Rule(IN, "2025-03", 2024, 1.5, nearest_dollar),
-    Rule(IN, "2025-06", 2025, 1.5, nearest_dollar),
-    Rule(IN, "2026-01", 2025, 1.5, nearest_dollar),
-    Rule(IN, "2026-04", 2025, 1.5, nearest_dollar),
-    Rule(IN, "2026-05", 2026, 1.35, nearest_dollar),
+    # Indiana's charts move partway through each year. Each caps families at 85% of
+    # the four-person median that starts the October before its guideline year,
+    # rounded up.
+    Rule(IN, "2024-06", 2024, 1.5, nearest_dollar, 95_373, next_dollar, 20),
+    Rule(IN, "2025-03", 2024, 1.5, nearest_dollar, 95_373, next_dollar, 20),
+    Rule(IN, "2025-06", 2025, 1.5, nearest_dollar, 103_324, next_dollar, 20),
+    Rule(IN, "2026-01", 2025, 1.5, nearest_dollar, 103_324, next_dollar, 20),
+    Rule(IN, "2026-04", 2025, 1.5, nearest_dollar, 103_324, next_dollar, 20),
+    Rule(IN, "2026-05", 2026, 1.35, nearest_dollar, 107_555, next_dollar, 20),
+    Rule(
+        IN_ENROLLED,
+        "2026-01",
+        None,
+        median=103_324,
+        median_rounding=next_dollar,
+        max_size=20,
+    ),
+    Rule(
+        IN_ENROLLED,
+        "2026-05",
+        None,
+        median=107_555,
+        median_rounding=next_dollar,
+        max_size=20,
+    ),
     # Missouri holds the 2025 guideline through 2026.
     Rule(MO, "2025-11", 2025, 1.5, nearest_dollar),
     Rule(MO, "2026-01", 2025, 1.5, nearest_dollar),
     Rule(MO, "2026-07", 2025, 1.5, nearest_dollar),
     Rule(MO_ENROLLED, "2026-06", 2025, 2.42, nearest_dollar),
     Rule(MO_ENROLLED, "2026-07", 2025, 2.15, nearest_dollar),
-    # West Virginia's Appendix A still prints the 2024 guideline.
+    # West Virginia's Appendix A still prints the 2024 guideline, and from October 2024
+    # stops at 85% of that October's four-person median.
     Rule(WV, "2024-06", 2024, 1.85, nearest_dollar),
-    Rule(WV, "2025-03", 2024, 1.85, nearest_dollar),
-    Rule(WV, "2026-03", 2024, 1.85, nearest_dollar),
+    Rule(WV, "2024-10", 2024, 1.85, nearest_dollar, 90_661, max_size=11),
+    Rule(WV, "2025-03", 2024, 1.85, nearest_dollar, 90_661, max_size=11),
+    Rule(WV, "2026-03", 2024, 1.85, nearest_dollar, 90_661, max_size=11),
+    Rule(WV, "2026-10", 2024, 1.85, nearest_dollar, 90_661, max_size=11),
     # Montana's scale moves each July.
     Rule(MT, "2024-03", 2024, 1.85, nearest_dollar),
     Rule(MT, "2025-03", 2024, 1.85, nearest_dollar),
@@ -270,14 +322,20 @@ RULES = [
     Rule(NV, "2022-06", 2021, 1.3, nearest_dollar),
 ]
 
-SMALL_FAMILIES = st.lists(
-    st.tuples(
-        st.integers(min_value=1, max_value=6),
-        st.integers(min_value=0, max_value=12_000),
-    ),
-    min_size=20,
-    max_size=20,
-)
+
+def families_up_to(max_size, max_income):
+    """Twenty (size, monthly income) families."""
+    return st.lists(
+        st.tuples(
+            st.integers(min_value=1, max_value=max_size),
+            st.integers(min_value=0, max_value=max_income),
+        ),
+        min_size=20,
+        max_size=20,
+    )
+
+
+SMALL_FAMILIES = families_up_to(6, 12_000)
 
 
 @pytest.mark.parametrize(
@@ -289,12 +347,17 @@ SMALL_FAMILIES = st.lists(
     ),
 )
 def test_limit_equals_rate_times_dated_guideline(rule):
+    families_drawn = (
+        SMALL_FAMILIES if rule.max_size == 6 else families_up_to(rule.max_size, 16_000)
+    )
+
     @settings(max_examples=2, deadline=None, derandomize=True)
-    @given(families=SMALL_FAMILIES)
+    @given(families=families_drawn)
     def check(families):
         # Each family also sits at its top and one dollar over, the two cases a
-        # random income almost never lands on.
-        sizes = sorted({size for size, _ in families})
+        # random income almost never lands on, and so does the largest size, where
+        # a median income cap binds.
+        sizes = sorted({size for size, _ in families} | {rule.max_size})
         edges = [
             (size, income)
             for size in sizes
@@ -382,17 +445,7 @@ ENROLLMENT_PAIRS = [
         ),
         "2026-01",
     ),
-    (
-        IN,
-        Program(
-            "IN",
-            "in_ccdf_income_eligible",
-            "in_ccdf_countable_income",
-            "is_in_ccdf_enrolled",
-            True,
-        ),
-        "2026-05",
-    ),
+    (IN, IN_ENROLLED, "2026-05"),
     (MO, MO_ENROLLED, "2026-07"),
     (MT, MT_ENROLLED, "2026-03"),
     (NV, NV_ENROLLED, "2024-10"),

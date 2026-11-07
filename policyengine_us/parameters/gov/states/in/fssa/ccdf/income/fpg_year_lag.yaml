@@ -9,6 +9,8 @@ description: Indiana uses the federal poverty guideline from this many years bef
 # Before March 12, 2023 the model reads the 2022 guideline, and before 2023 the current
 # year's, since no earlier dated schedule is available. From 2027 a lag of 1 extrapolates:
 # the model keeps the prior year's guideline because no 2027 schedule exists yet.
+# Each schedule caps families at 85% of the state median income table that starts the
+# October before its guideline year, so in_ccdf_smi reads that table through this lag.
 values:
   2015-01-01: 0
   2023-01-01: 1

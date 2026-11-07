@@ -154,6 +154,53 @@
     # DFCS child: min(1,000, 957.67) = $957.67, with no fee. The sibling gets nothing.
     ga_caps: 957.67
 
+- name: A child in DFCS custody doesn't waive the income test for a working, enrolled family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 108_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_foster_care: true
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: NONE
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+        county_str: FULTON_COUNTY_GA
+  output:
+    # The family of two passes the activity test and, as an enrolled family, needs no
+    # priority group, but $108,000 exceeds 85% of the median for two:
+    # 110,736 * 0.68 * 0.85 = 64,005.41, printed as $64,006.
+    ga_caps_income_eligible: false
+    ga_caps_activity_eligible: true
+    ga_caps_family_eligible: false
+    ga_caps_eligible: true
+    # Only the DFCS child's care: min(1,000, 957.67) = $957.67, with no fee.
+    ga_caps: 957.67
+
 - name: The family's own case pays its fee while the DFCS child's care owes none.
   period: 2026-01
   absolute_error_margin: 0.01

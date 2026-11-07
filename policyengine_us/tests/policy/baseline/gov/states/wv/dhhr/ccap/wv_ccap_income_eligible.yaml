@@ -715,6 +715,18 @@
       p18:
         age:
           2026: 30
+      p19:
+        age:
+          2026: 30
+      p20:
+        age:
+          2026: 30
+      p21:
+        age:
+          2026: 30
+      p22:
+        age:
+          2026: 30
     spm_units:
       u1:
         members: [p1]
@@ -806,6 +818,26 @@
         spm_unit_size:
           2026: 9
         wv_ccap_countable_income: 8_958
+      u19:
+        members: [p19]
+        spm_unit_size:
+          2026: 10
+        wv_ccap_countable_income: 9_247
+      u20:
+        members: [p20]
+        spm_unit_size:
+          2026: 10
+        wv_ccap_countable_income: 9_248
+      u21:
+        members: [p21]
+        spm_unit_size:
+          2026: 11
+        wv_ccap_countable_income: 9_440
+      u22:
+        members: [p22]
+        spm_unit_size:
+          2026: 11
+        wv_ccap_countable_income: 9_441
     households:
       h1:
         members: [p1]
@@ -879,6 +911,197 @@
         members: [p18]
         state_code:
           2026: WV
+      h19:
+        members: [p19]
+        state_code:
+          2026: WV
+      h20:
+        members: [p20]
+        state_code:
+          2026: WV
+      h21:
+        members: [p21]
+        state_code:
+          2026: WV
+      h22:
+        members: [p22]
+        state_code:
+          2026: WV
   output:
-    # 185% of the 2024 guideline, sizes 1 to 9.
-    wv_ccap_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+    # 185% of the 2024 guideline, sizes 1 to 9. For ten and eleven people the
+    # scale stops at 85% of the October 2024 state median income.
+    wv_ccap_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: Appendix A caps ten and eleven people at 85% of the October 2024 state median income in October 2024, when the scale starts.
+  period: 2024-10
+  input:
+    people:
+      p1:
+        age:
+          2024: 30
+      p2:
+        age:
+          2024: 30
+      p3:
+        age:
+          2024: 30
+      p4:
+        age:
+          2024: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2024: 10
+        wv_ccap_countable_income: 9_247
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2024: 10
+        wv_ccap_countable_income: 9_248
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2024: 11
+        wv_ccap_countable_income: 9_440
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2024: 11
+        wv_ccap_countable_income: 9_441
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2024: WV
+      h2:
+        members: [p2]
+        state_code:
+          2024: WV
+      h3:
+        members: [p3]
+        state_code:
+          2024: WV
+      h4:
+        members: [p4]
+        state_code:
+          2024: WV
+  output:
+    # $9,247 for ten people and $9,440 for eleven.
+    wv_ccap_income_eligible: [true, false, true, false]
+
+- name: Appendix A caps ten and eleven people at 85% of the October 2024 state median income in October 2025, after the next table starts.
+  period: 2025-10
+  input:
+    people:
+      p1:
+        age:
+          2025: 30
+      p2:
+        age:
+          2025: 30
+      p3:
+        age:
+          2025: 30
+      p4:
+        age:
+          2025: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2025: 10
+        wv_ccap_countable_income: 9_247
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2025: 10
+        wv_ccap_countable_income: 9_248
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2025: 11
+        wv_ccap_countable_income: 9_440
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2025: 11
+        wv_ccap_countable_income: 9_441
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2025: WV
+      h2:
+        members: [p2]
+        state_code:
+          2025: WV
+      h3:
+        members: [p3]
+        state_code:
+          2025: WV
+      h4:
+        members: [p4]
+        state_code:
+          2025: WV
+  output:
+    # $9,247 for ten people and $9,440 for eleven.
+    wv_ccap_income_eligible: [true, false, true, false]
+
+- name: Appendix A caps ten and eleven people at 85% of the October 2024 state median income in October 2026, after two more tables start.
+  period: 2026-10
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 10
+        wv_ccap_countable_income: 9_247
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 10
+        wv_ccap_countable_income: 9_248
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 11
+        wv_ccap_countable_income: 9_440
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 11
+        wv_ccap_countable_income: 9_441
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: WV
+      h2:
+        members: [p2]
+        state_code:
+          2026: WV
+      h3:
+        members: [p3]
+        state_code:
+          2026: WV
+      h4:
+        members: [p4]
+        state_code:
+          2026: WV
+  output:
+    # $9,247 for ten people and $9,440 for eleven.
+    wv_ccap_income_eligible: [true, false, true, false]
