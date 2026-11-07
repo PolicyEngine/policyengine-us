@@ -1,0 +1,93 @@
+# Employer-level District of Columbia Paid Family Leave tax on $1,000,000 of
+# annual wages, with wages paid evenly over the year. The Department of
+# Employment Services publishes the rate for each quarter in "Historical PFL Tax
+# Rate Information": 0.62% for 2019 Q2 through 2022 Q2, 0.26% for 2022 Q3 through
+# 2024 Q2, and 0.75% from 2024 Q3. Each expected value is hand-computed from that
+# table.
+
+- name: A DC employer owes no paid leave tax in 2018, before the first taxed quarter.
+  period: 2018
+  input:
+    employer_total_dc_paid_leave_taxable_wages: 1_000_000
+    state_code: DC
+  output:
+    employer_total_additional_state_payroll_tax: 0
+
+- name: A DC employer's 2019 tax covers wages paid from April 1.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    employer_total_dc_paid_leave_taxable_wages: 1_000_000
+    state_code: DC
+  output:
+    # 1,000,000 * 3/4 * 0.62% = 4,650
+    employer_total_additional_state_payroll_tax: 4_650
+
+- name: A DC employer's 2021 tax is 0.62% of wages.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    employer_total_dc_paid_leave_taxable_wages: 1_000_000
+    state_code: DC
+  output:
+    # 1,000,000 * 0.62% = 6,200
+    employer_total_additional_state_payroll_tax: 6_200
+
+- name: A DC employer's 2022 tax falls to 0.26% for the second half of the year.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    employer_total_dc_paid_leave_taxable_wages: 1_000_000
+    state_code: DC
+  output:
+    # 500,000 * 0.62% + 500,000 * 0.26% = 3,100 + 1,300 = 4,400
+    employer_total_additional_state_payroll_tax: 4_400
+
+- name: A DC employer's 2023 tax is 0.26% of wages.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    employer_total_dc_paid_leave_taxable_wages: 1_000_000
+    state_code: DC
+  output:
+    # 1,000,000 * 0.26% = 2,600
+    employer_total_additional_state_payroll_tax: 2_600
+
+- name: A DC employer's 2024 tax rises to 0.75% for the second half of the year.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    employer_total_dc_paid_leave_taxable_wages: 1_000_000
+    state_code: DC
+  output:
+    # 500,000 * 0.26% + 500,000 * 0.75% = 1,300 + 3,750 = 5,050
+    employer_total_additional_state_payroll_tax: 5_050
+
+- name: A DC employer's 2025 tax is 0.75% of wages.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    employer_total_dc_paid_leave_taxable_wages: 1_000_000
+    state_code: DC
+  output:
+    # 1,000,000 * 0.75% = 7,500
+    employer_total_additional_state_payroll_tax: 7_500
+
+- name: A DC employer's taxable wages default to its gross wages.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    employer_total_payroll_tax_gross_wages: 1_000_000
+    state_code: DC
+  output:
+    employer_total_dc_paid_leave_taxable_wages: 1_000_000
+    # 500,000 * 0.26% + 500,000 * 0.75% = 1,300 + 3,750 = 5,050
+    employer_total_additional_state_payroll_tax: 5_050
+
+- name: DC paid leave wages do not create a tax for a Virginia employer.
+  period: 2024
+  input:
+    employer_total_dc_paid_leave_taxable_wages: 1_000_000
+    state_code: VA
+  output:
+    employer_total_additional_state_payroll_tax: 0
