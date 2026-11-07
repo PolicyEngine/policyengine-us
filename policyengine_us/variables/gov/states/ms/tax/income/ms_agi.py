@@ -5,18 +5,25 @@ class ms_agi(Variable):
     value_type = float
     entity = Person
     label = "Mississippi adjusted gross income"
+    documentation = (
+        "Mississippi adjusted gross income in the head's and spouse's columns "
+        "of the return. A tax unit dependent's income belongs on the "
+        "dependent's own Mississippi return, so a dependent's amount is zero."
+    )
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100221.pdf#page=14",
-        "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80105228.pdf",  # Line 66
-        # Combined return: one spouse's income in Column A, the other's in B
+        # PDF pages 5, 14: a combined return puts one spouse's income in
+        # Column A and the other's in Column B (p. 5), and line 66,
+        # Mississippi adjusted gross income (p. 14)
         "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100221.pdf#page=5",
-        # Borrowed for dependents' income: parents filing separately report a
-        # child's income on the return of the parent with the greater
-        # taxable income
-        "https://www.law.cornell.edu/uscode/text/26/1#g_5_B",
-        "https://www.irs.gov/instructions/i8814",
+        "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80105228.pdf",  # Line 66
+        # 35 Miss. Admin. Code Pt. III, 10.01.104: a minor is taxable on their
+        # own income and files their own return, with their own deductions
+        # and exemptions.
+        "https://www.law.cornell.edu/regulations/mississippi/35-Miss-Code-R-SS-3-10-01-104",
+        # Filing requirements: minor resident taxpayers file their own return
+        "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100241.pdf#page=4",
     )
     defined_for = StateCode.MS
 
@@ -27,11 +34,7 @@ class ms_agi(Variable):
         # A spouse's column can be negative on a joint or combined return;
         # the tax computation combines it with the other column.
         net_income = gross_income - adjustments
-        # Each spouse's column holds their own income. The dependents'
-        # positive income the model counts here goes on the column of the
-        # spouse with the greater income (a modelling convention; see the
-        # helper).
+        # Each spouse's column holds their own income. A dependent's income
+        # goes on the dependent's own return, not on the filer's.
         is_dependent = person("is_tax_unit_dependent", period)
-        return move_dependent_amounts_to_filer(
-            person, period, where(is_dependent, max_(net_income, 0), net_income)
-        )
+        return where(is_dependent, 0, net_income)

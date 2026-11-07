@@ -104,7 +104,7 @@ def test_county_persists_across_periods():
 
 
 def test_default_dataset_loads_and_runs():
-    """The no-argument default (certified Populace build) resolves via the
+    """The no-argument default (certified Microcosm build) resolves via the
     hf://datasets/ path and entity-level interception, and produces sane
     aggregates.
 
@@ -118,7 +118,7 @@ def test_default_dataset_loads_and_runs():
     from policyengine_us.system import DEFAULT_DATASET
 
     assert "populace" in DEFAULT_DATASET, (
-        "Default dataset should be the certified Populace build."
+        "Default dataset should be the certified Microcosm build."
     )
 
     sim = Microsimulation()  # no dataset -> DEFAULT_DATASET (hf://datasets/...)
