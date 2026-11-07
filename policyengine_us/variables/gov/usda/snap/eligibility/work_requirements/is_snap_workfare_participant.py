@@ -13,7 +13,7 @@ class is_snap_workfare_participant(Variable):
         "number of hours, since workfare hours are set by dividing the "
         "household benefit by the minimum wage (7 U.S.C. 2015(o)(2)(C); "
         "7 CFR 273.24(a)(1)(iv)). Survey data does not capture this "
-        "input, so it defaults to false; see PolicyEngine/populace#249 "
+        "input, so it defaults to false; see PolicyEngine/microcosm#249 "
         "for the companion data issue."
     )
     definition_period = YEAR

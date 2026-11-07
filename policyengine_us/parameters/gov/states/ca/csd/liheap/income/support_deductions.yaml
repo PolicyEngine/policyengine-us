@@ -1,0 +1,14 @@
+description: California deducts these legally mandated support payments from household income under the Low Income Home Energy Assistance Program.
+# Child-support input specifies legally mandated payments; alimony mandate verification is not separately modeled.
+values:
+  2025-10-01:
+    - child_support_expense
+    - alimony_expense
+
+metadata:
+  unit: list
+  period: year
+  label: California LIHEAP support payment deductions
+  reference:
+    - title: California FY2026 LIHEAP State Plan
+      href: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=247

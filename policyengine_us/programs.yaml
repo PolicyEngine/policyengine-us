@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DC, DE, GA, HI, Riverside County, MA, FL, IL, IA, ID, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SC, SD, RI, TN, TX, UT, VA, VT, WA, WI, WV, WY
     state_implementations:
       - state: AL
         status: partial
@@ -1020,6 +1020,30 @@ programs:
         parameter_prefix: gov.states.az.des.liheap
         verified_years: "2026"
         notes: FY2026 Standard benefit covering heating and cooling bills from the point-based benefit matrix. Crisis assistance, water for evaporative cooling and weatherization are out of scope.
+      - state: CA
+        status: partial
+        name: California utility HEAP
+        full_name: California Home Energy Assistance Program utility heating component
+        variable: ca_liheap_utility_heating
+        parameter_prefix: gov.states.ca.csd.liheap
+        verified_years: "2026"
+        notes: FY2026 regular utility heating on gas and electric accounts, Madera propane and fuel-oil heating, and statewide wood heating from an approved delivery cost; other liquid-fuel service areas and vendor-service supplements are not modeled. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: CO
+        status: partial
+        name: Colorado LEAP
+        full_name: Colorado Low-income Energy Assistance Program
+        variable: co_leap
+        parameter_prefix: gov.states.co.cdhs.leap
+        verified_years: "2026"
+        notes: FY2026 regular heating assistance, including heat-in-rent costs, income contribution rates and the subsidized-housing deduction. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: CT
+        status: partial
+        name: Connecticut CEAP
+        full_name: Connecticut Energy Assistance Program
+        variable: ct_ceap
+        parameter_prefix: gov.states.ct.dss.ceap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 basic and rental heating assistance. The SNAP nominal benefit, crisis, weatherization and equipment assistance are out of scope.
       - state: GA
         status: partial
         name: Georgia LIHEAP
@@ -1028,6 +1052,13 @@ programs:
         parameter_prefix: gov.states.ga.dfcs.liheap
         verified_years: "2025-2026"
         notes: FY2025-FY2026 regular heating only, with the published fuel matrix and the bundled-utility rental payment. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: HI
+        status: partial
+        name: Hawaii LIHEAP subsidized dwelling benefit
+        full_name: Hawaii Low Income Home Energy Assistance Program subsidized dwelling benefit
+        variable: hi_liheap_subsidized_amount
+        parameter_prefix: gov.states.hi.dhs.liheap
+        notes: FY2026 eligibility, the subsidized-dwelling flat benefit and private-dwelling points; no private-dwelling dollar award because its statewide value per point was not located. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: OH
         status: partial
         name: Ohio HEAP
@@ -1065,6 +1096,14 @@ programs:
         full_name: DC Low Income Home Energy Assistance Program
         variable: dc_liheap_payment
         parameter_prefix: gov.states.dc.doee.liheap
+      - state: DE
+        status: partial
+        name: Delaware LIHEAP
+        full_name: Delaware Low Income Home Energy Assistance Program
+        variable: de_liheap
+        parameter_prefix: gov.states.de.dhss.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating matrix and the subsidized-housing flat award. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: MA
         status: complete
         name: Massachusetts LIHEAP
@@ -1244,6 +1283,14 @@ programs:
         parameter_prefix: gov.states.or.ohcs.liheap
         verified_years: "2025-2027"
         notes: PY2025-PY2027 regular heating only, with the two county regions, five fuel columns and the roomer half payment. Crisis, cooling, Fuel Payment, equipment and OEAP assistance are out of scope.
+      - state: SC
+        status: partial
+        name: South Carolina LIHEAP
+        full_name: South Carolina Low Income Home Energy Assistance Program
+        variable: sc_liheap
+        parameter_prefix: gov.states.sc.oeo.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating base amount with demographic, fuel, low-income and high-burden supplements. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: SD
         status: partial
         name: South Dakota LIEAP
@@ -1306,6 +1353,14 @@ programs:
         parameter_prefix: gov.states.wi.doa.wheap
         verified_years: "2026"
         notes: FFY2026 regular heating benefit from the HE+ formula with the published heat proxy table. The non-heating electric benefit, crisis and weatherization are out of scope.
+      - state: WV
+        status: partial
+        name: West Virginia LIEAP
+        full_name: West Virginia Low Income Energy Assistance Program
+        variable: wv_lieap
+        parameter_prefix: gov.states.wv.dhhr.lieap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular heating payments for households of one to twenty qualified members. Crisis, cooling, weatherization, equipment and the utility discount are out of scope.
       - state: WY
         status: partial
         name: Wyoming LIEAP
@@ -1314,6 +1369,13 @@ programs:
         parameter_prefix: gov.states.wy.dfs.lieap
         verified_years: "2026"
         notes: FY2026 regular heating from the published fuel cost standards. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: ID
+        status: partial
+        name: Idaho LIHEAP
+        full_name: Idaho Low Income Home Energy Assistance Program
+        variable: id_liheap
+        parameter_prefix: gov.states.id.dhw.liheap
+        notes: FY2026 regular heating; burden bands use the PY2007 heating-cost table, whose FY2026 currency is unconfirmed, so no year is verified. Crisis, cooling, weatherization and equipment assistance are out of scope.
 
   # --- SSA programs ---
   - id: ssi
