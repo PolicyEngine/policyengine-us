@@ -1,0 +1,117 @@
+# Contributions begin January 1, 2027 (Md. Code, Lab. & Empl. s.
+# 8.3-601(a)(1)(i)). Maryland Labor's 2027 total rate is 0.9%, and the employee
+# share is 50% of it (s. 8.3-601(e)(1)(ii)), so employees pay 0.45% of taxable
+# wages. Taxable wages stop at the 2027 Social Security wage base of $192,300.
+
+- name: Case 1, no contribution in 2026.
+  period: 2026
+  input:
+    employment_income: 50_000
+    state_code: MD
+  output:
+    md_employee_famli_contribution: 0
+
+- name: Case 2, 0.45% of wages in 2027.
+  period: 2027
+  input:
+    employment_income: 50_000
+    state_code: MD
+  output:
+    # 50,000 * 0.9% * 50% = 225
+    md_employee_famli_contribution: 225
+
+- name: Case 3, the contribution stops at the 2027 wage base.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 250_000
+    state_code: MD
+  output:
+    # 192,300 * 0.9% * 50% = 865.35
+    md_employee_famli_contribution: 865.35
+
+- name: Case 4, wages exactly at the 2027 wage base pay the most.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 192_300
+    state_code: MD
+  output:
+    # 192,300 * 0.9% * 50% = 865.35
+    md_employee_famli_contribution: 865.35
+
+- name: Case 5, an employee of an employer below 15 employees pays the same share.
+  period: 2027
+  input:
+    employment_income: 50_000
+    employer_headcount: 14
+    state_code: MD
+  output:
+    # Section 8.3-601(e)(1)(ii) reaches each employee of any employer.
+    # 50,000 * 0.9% * 50% = 225
+    md_employee_famli_contribution: 225
+
+- name: Case 6, the contribution uses wages after cafeteria plan amounts.
+  period: 2027
+  input:
+    employment_income: 60_000
+    pre_tax_health_insurance_premiums: 5_000
+    health_savings_account_payroll_contributions: 1_000
+    traditional_401k_contributions: 4_000
+    state_code: MD
+  output:
+    # (60,000 - 5,000 - 1,000) * 0.9% * 50% = 243. The 401(k) deferral stays in.
+    md_employee_famli_contribution: 243
+
+- name: Case 7, no wages, no contribution.
+  period: 2027
+  input:
+    employment_income: 0
+    state_code: MD
+  output:
+    md_employee_famli_contribution: 0
+
+- name: Case 8, self-employment income carries no contribution.
+  period: 2027
+  input:
+    self_employment_income: 100_000
+    state_code: MD
+  output:
+    md_employee_famli_contribution: 0
+
+- name: Case 9, no contribution outside Maryland.
+  period: 2027
+  input:
+    employment_income: 50_000
+    state_code: VA
+  output:
+    md_employee_famli_contribution: 0
+
+- name: Case 10, two earners each pay on their own wages.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+      person2:
+        age: 40
+        employment_income: 250_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # 50,000 * 0.45% = 225; 192,300 * 0.45% = 865.35
+    md_employee_famli_contribution: [225, 865.35]
+
+- name: Case 11, a 401(k) deferral taken from salary stays in the contribution base.
+  period: 2027
+  input:
+    employment_income: 60_000
+    traditional_401k_contributions: 4_000
+    state_code: MD
+  output:
+    # 60,000 * 0.9% * 50% = 270. Taking the deferral out would give 252.
+    md_employee_famli_contribution: 270

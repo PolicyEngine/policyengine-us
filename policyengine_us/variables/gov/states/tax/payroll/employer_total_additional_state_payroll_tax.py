@@ -66,6 +66,15 @@ class employer_total_additional_state_payroll_tax(Variable):
             0,
         )
 
+        md_p = parameters(period).gov.states.md.tax.payroll.famli
+        md = where(
+            headcount >= md_p.employer_headcount_threshold,
+            md_p.total_rate
+            * (1 - md_p.employee_share)
+            * person("employer_total_md_famli_taxable_wages", period),
+            0,
+        )
+
         me_p = parameters(period).gov.states.me.tax.payroll.paid_leave
         me = where(
             headcount >= me_p.employer_headcount_threshold,
@@ -111,12 +120,13 @@ class employer_total_additional_state_payroll_tax(Variable):
                 state_code == StateCode.DC,
                 state_code == StateCode.DE,
                 state_code == StateCode.MA,
+                state_code == StateCode.MD,
                 state_code == StateCode.ME,
                 state_code == StateCode.OR,
                 state_code == StateCode.RI,
                 state_code == StateCode.VT,
                 state_code == StateCode.WA,
             ],
-            [ca, co, dc, de, ma, me, or_tax, ri, vt, wa],
+            [ca, co, dc, de, ma, md, me, or_tax, ri, vt, wa],
             default=0,
         )

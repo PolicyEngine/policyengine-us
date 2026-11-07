@@ -1,0 +1,89 @@
+# Contributions begin January 1, 2027 (Md. Code, Lab. & Empl. s.
+# 8.3-601(a)(1)(i)). An employer of 15 or more employees pays 50% of the 0.9%
+# total rate, or 0.45% of taxable wages (s. 8.3-601(e)(1)(i)). A smaller employer
+# owes no employer share (COMAR 09.42.02.06D). Taxable wages stop at the 2027
+# Social Security wage base of $192,300.
+
+- name: Case 1, no contribution in 2026.
+  period: 2026
+  input:
+    employment_income: 50_000
+    state_code: MD
+  output:
+    md_employer_famli_contribution: 0
+
+- name: Case 2, 0.45% of wages in 2027 at the default employer size.
+  period: 2027
+  input:
+    employment_income: 50_000
+    state_code: MD
+  output:
+    # 50,000 * 0.9% * 50% = 225
+    md_employer_famli_contribution: 225
+
+- name: Case 3, an employer of 14 employees owes no employer share.
+  period: 2027
+  input:
+    employment_income: 50_000
+    employer_headcount: 14
+    state_code: MD
+  output:
+    md_employer_famli_contribution: 0
+
+- name: Case 4, an employer of exactly 15 employees owes the employer share.
+  period: 2027
+  input:
+    employment_income: 50_000
+    employer_headcount: 15
+    state_code: MD
+  output:
+    # 50,000 * 0.9% * 50% = 225
+    md_employer_famli_contribution: 225
+
+- name: Case 5, the employer contribution stops at the 2027 wage base.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 250_000
+    state_code: MD
+  output:
+    # 192,300 * 0.9% * 50% = 865.35
+    md_employer_famli_contribution: 865.35
+
+- name: Case 6, no employer contribution in 2026 at any employer size.
+  period: 2026
+  input:
+    employment_income: 50_000
+    employer_headcount: 500
+    state_code: MD
+  output:
+    md_employer_famli_contribution: 0
+
+- name: Case 7, no employer contribution outside Maryland.
+  period: 2027
+  input:
+    employment_income: 50_000
+    state_code: VA
+  output:
+    md_employer_famli_contribution: 0
+
+- name: Case 8, each worker's employer is tested on its own size.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        employer_headcount: 14
+      person2:
+        age: 40
+        employment_income: 250_000
+        employer_headcount: 15
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # person1's employer is below 15; person2's pays 192,300 * 0.45% = 865.35.
+    md_employer_famli_contribution: [0, 865.35]
