@@ -14,5 +14,5 @@ class vt_employer_child_care_contribution(Variable):
     defined_for = StateCode.VT
 
     def formula(person, period, parameters):
-        rate = parameters(period).gov.states.vt.tax.payroll.child_care.employer_rate
+        rate = person("vt_employer_child_care_contribution_rate", period)
         return rate * person("vt_child_care_contribution_wages", period)

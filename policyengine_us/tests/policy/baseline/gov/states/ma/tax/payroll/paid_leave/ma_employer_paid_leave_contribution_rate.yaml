@@ -1,0 +1,92 @@
+# Massachusetts PFML employer share: 60% of the medical leave rate, owed by
+# employers with 25 or more covered individuals (employer headcount stands in
+# for covered individuals). Contributions began October 1, 2019, with a 0.62%
+# medical rate through 2021, 0.56% in 2022 and 0.52% in 2023.
+
+- name: Massachusetts PFML employer rate is zero in 2018, before contributions began.
+  period: 2018
+  input:
+    employer_headcount: 100
+    state_code: MA
+  output:
+    ma_employer_paid_leave_contribution_rate: 0
+
+- name: Massachusetts PFML employer rate in 2019 counts only October through December.
+  period: 2019
+  absolute_error_margin: 0.0000001
+  input:
+    employment_income: 60_000
+    employer_headcount: 25
+    state_code: MA
+  output:
+    # 60% * 0.62% * 3/12 = 0.372% * 3/12 = 0.093%.
+    ma_employer_paid_leave_contribution_rate: 0.00093
+    # 0.093% * 60,000 = 55.80.
+    ma_employer_paid_leave_contribution: 55.80
+    ma_employer_additional_state_payroll_tax: 55.80
+    employer_additional_state_payroll_tax: 55.80
+
+- name: Massachusetts PFML employer rate in 2019 is zero below 25 covered individuals.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    employer_headcount: 24
+    state_code: MA
+  output:
+    ma_employer_paid_leave_contribution_rate: 0
+    ma_employer_paid_leave_contribution: 0
+    # The employee share does not depend on employer size: 0.0945% * 60,000.
+    ma_employee_paid_leave_contribution: 56.70
+
+- name: Massachusetts PFML employer rate in 2021 is 0.372%.
+  period: 2021
+  absolute_error_margin: 0.0000001
+  input:
+    employer_headcount: 25
+    state_code: MA
+  output:
+    # 60% * 0.62% = 0.372%.
+    ma_employer_paid_leave_contribution_rate: 0.00372
+
+- name: Massachusetts PFML employer rate in 2022 is 0.336%.
+  period: 2022
+  absolute_error_margin: 0.0000001
+  input:
+    employer_headcount: 50
+    state_code: MA
+  output:
+    # 60% * 0.56% = 0.336%.
+    ma_employer_paid_leave_contribution_rate: 0.00336
+
+- name: Massachusetts PFML employer rate in 2023 is 0.312%.
+  period: 2023
+  absolute_error_margin: 0.0000001
+  input:
+    employer_headcount: 50
+    state_code: MA
+  output:
+    # 60% * 0.52% = 0.312%.
+    ma_employer_paid_leave_contribution_rate: 0.00312
+
+- name: Massachusetts employer-total PFML in 2019 applies the October-to-December share.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    employer_headcount: 30
+    employer_total_ma_paid_leave_taxable_wages: 1_000_000
+    state_code: MA
+  output:
+    # 0.093% * 1,000,000 = 930.
+    employer_total_additional_state_payroll_tax: 930
+
+- name: Massachusetts employer-total PFML in 2022 applies the 0.336% employer rate.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    employer_headcount: 30
+    employer_total_ma_paid_leave_taxable_wages: 1_000_000
+    state_code: MA
+  output:
+    # 0.336% * 1,000,000 = 3,360.
+    employer_total_additional_state_payroll_tax: 3_360

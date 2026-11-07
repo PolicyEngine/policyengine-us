@@ -1,9 +1,17 @@
 description: Employee-side New Jersey temporary disability insurance contribution rate.
 values:
-  0000-01-01: 0
+  # Worker TDI contributions existed before 2018. The model does not encode earlier
+  # years, so it carries the 2018 value back to 2015, its first year.
+  2018-01-01: 0.0019
+  2019-01-01: 0.0017
+  2020-01-01: 0.0026
+  2021-01-01: 0.0047
+  2022-01-01: 0.0014
+  2023-01-01: 0
   2024-01-01: 0
   2025-01-01: 0.0023
   2026-01-01: 0.0019
+  2027-01-01: 0.0024
 
 metadata:
   period: year

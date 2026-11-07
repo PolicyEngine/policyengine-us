@@ -14,8 +14,5 @@ class ma_employer_paid_leave_contribution(Variable):
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.ma.tax.payroll.paid_leave
-        liable = person("employer_headcount", period) >= p.employer_headcount_threshold
-        rate = p.medical_rate * (1 - p.medical_employee_share)
-        taxable_wages = person("ma_paid_leave_taxable_wages", period)
-        return where(liable, rate * taxable_wages, 0)
+        rate = person("ma_employer_paid_leave_contribution_rate", period)
+        return rate * person("ma_paid_leave_taxable_wages", period)

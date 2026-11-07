@@ -57,13 +57,8 @@ class employer_total_additional_state_payroll_tax(Variable):
         )
         de = de_contribution_rate * (1 - de_p.employee_share) * ss_taxable
 
-        ma_p = parameters(period).gov.states.ma.tax.payroll.paid_leave
-        ma = where(
-            headcount >= ma_p.employer_headcount_threshold,
-            ma_p.medical_rate
-            * (1 - ma_p.medical_employee_share)
-            * person("employer_total_ma_paid_leave_taxable_wages", period),
-            0,
+        ma = person("ma_employer_paid_leave_contribution_rate", period) * person(
+            "employer_total_ma_paid_leave_taxable_wages", period
         )
 
         me_p = parameters(period).gov.states.me.tax.payroll.paid_leave
@@ -89,9 +84,7 @@ class employer_total_additional_state_payroll_tax(Variable):
             * state_ui_taxable
         )
 
-        vt = parameters(
-            period
-        ).gov.states.vt.tax.payroll.child_care.employer_rate * person(
+        vt = person("vt_employer_child_care_contribution_rate", period) * person(
             "employer_total_vt_child_care_contribution_wages", period
         )
 
