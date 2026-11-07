@@ -6,33 +6,43 @@ income by federal or state law with the exception of income from social
 security benefits". nd_renters_refund_income starts from market_income. That
 counts wages before payroll deductions, and the tax-exempt parts of interest,
 pensions, retirement distributions, disability benefits and alimony, so the
-variable subtracts nd_renters_refund_federally_excluded_income.
+variable subtracts nd_renters_refund_federally_excluded_income. The federal
+model also deducts four exclusions above the line, so market_income holds that
+income too, and the variable subtracts them as well (excluded_deductions).
 
 Four invariants hold for every input.
 
 1. Every market_income component has a stated treatment. Either federal gross
    income counts it in full, or North Dakota subtracts the part federal law
    excludes, or federal gross income leaves it out although federal law does
-   not exclude it (each named below, with the reason). A new component fails
-   until it is classified, so a wider market_income cannot bring excluded
-   income into the refund again, as #10663's wider market_income did.
+   not exclude it (each named below, with the reason). Every above-the-line
+   deduction in the federal model is likewise either a deduction, which leaves
+   the income in, or an exclusion, which North Dakota subtracts. A new
+   component or deduction fails until it is classified, so a wider
+   market_income cannot bring excluded income into the refund again, as
+   #10663's wider market_income did.
 2. Each excluded part lies between zero and the market_income component it
-   comes from, so the exclusions never exceed what those components hold.
+   comes from, so the exclusions never exceed what those components hold. The
+   exclusions the model deducts above the line come only out of the market
+   income left after the others, so social security always counts in full.
 3. Differential: for a filer whose income comes only from sources that
    market_income and federal gross income share, renter's refund income equals
-   irs_gross_income. The statute's federal exclusions and the federal gross
-   income model agree on every shared source.
+   irs_gross_income less the exclusions the federal model deducts above the
+   line. The statute's federal exclusions and the federal model agree on every
+   shared source.
 4. Moving a dollar from the taxable form of a source to its excluded form
    lowers renter's refund income by that dollar. A dollar of social security
    raises it by a dollar, however much of the benefit federal law taxes.
 
 YAML pins one household per case. These need random amounts over many
-households at once, and a list read from market_income's source file.
+households at once, and lists read from market_income's source file and the
+federal parameters.
 """
 
 import re
 from pathlib import Path
 
+import numpy as np
 import pytest
 import yaml
 from hypothesis import example, given, settings
@@ -43,6 +53,11 @@ from policyengine_us import Simulation
 PACKAGE = Path(__file__).parent.parent
 MARKET_INCOME = PACKAGE / "variables/household/income/person/general/market_income.py"
 GROSS_INCOME_SOURCES = PACKAGE / "parameters/gov/irs/gross_income/sources.yaml"
+ABOVE_THE_LINE = PACKAGE / "parameters/gov/irs/ald/deductions.yaml"
+ND_DEDUCTED_EXCLUSIONS = (
+    PACKAGE
+    / "parameters/gov/states/nd/tax/property/renters_refund/excluded_deductions.yaml"
+)
 YEAR = 2026
 # Amounts are float32 in the model.
 TOLERANCE = 0.5
@@ -99,13 +114,53 @@ COUNTED_THOUGH_GROSS_INCOME_OMITS = {
 }
 
 
+# The federal model's above-the-line deductions. A deduction leaves the income
+# it offsets in renter's refund income; the statute excludes only what federal
+# law excludes from income.
+ABOVE_THE_LINE_DEDUCTIONS = {
+    "loss_ald": "IRC 62(a)(3) and 1211(b): capital losses",
+    "self_employment_tax_ald": "IRC 164(f)",
+    "student_loan_interest_ald": "IRC 221",
+    "early_withdrawal_penalty": "IRC 62(a)(9)",
+    "alimony_expense_ald": "IRC 215, for the payer",
+    "educator_expense_ald": "IRC 62(a)(2)(D)",
+    "capped_qualified_tuition_expenses_ald": "IRC 222",
+    "domestic_production_ald": "IRC 199",
+    "health_savings_account_ald": "IRC 223(a): contributions outside payroll",
+    "self_employed_health_insurance_ald": "IRC 162(l)",
+    "self_employed_pension_contribution_ald": "IRC 404",
+    "traditional_ira_deduction": "IRC 219",
+    "charitable_contributions_ald": "IRC 62(a)(22)",
+}
+# Exclusions from gross income that the federal model deducts above the line,
+# with market_income holding the income they exclude. North Dakota subtracts
+# them.
+ABOVE_THE_LINE_EXCLUSIONS = {
+    "us_bonds_for_higher_ed": "IRC 135(a)",
+    "qualified_adoption_assistance_expense": "IRC 137(a)",
+    "specified_possession_income": "IRC 931(a)",
+    "puerto_rico_income": "IRC 933",
+}
+# The two a household records on a person; the other two are tax unit inputs,
+# which the YAML tests cover.
+PERSON_DEDUCTED_EXCLUSIONS = [
+    "qualified_adoption_assistance_expense",
+    "us_bonds_for_higher_ed",
+]
+
+
 def market_income_components():
     return set(re.findall(r'^\s+"([a-z0-9_]+)",', MARKET_INCOME.read_text(), re.M))
 
 
-def gross_income_sources():
-    raw = yaml.load(GROSS_INCOME_SOURCES.read_text(), Loader=yaml.BaseLoader)
+def list_parameter_entries(path):
+    """Every name a list parameter has held in any period."""
+    raw = yaml.load(path.read_text(), Loader=yaml.BaseLoader)
     return {name for block in raw["values"].values() for name in block}
+
+
+def gross_income_sources():
+    return list_parameter_entries(GROSS_INCOME_SOURCES)
 
 
 def test_every_market_income_component_has_a_stated_treatment():
@@ -137,6 +192,22 @@ def test_each_treatment_matches_the_federal_gross_income_list():
     # A component that federal gross income starts counting moves to
     # COUNTED_IN_FULL.
     assert not set(COUNTED_THOUGH_GROSS_INCOME_OMITS) & sources
+
+
+def test_every_above_the_line_deduction_has_a_stated_treatment():
+    assert not set(ABOVE_THE_LINE_DEDUCTIONS) & set(ABOVE_THE_LINE_EXCLUSIONS)
+    entries = list_parameter_entries(ABOVE_THE_LINE)
+    classified = set(ABOVE_THE_LINE_DEDUCTIONS) | set(ABOVE_THE_LINE_EXCLUSIONS)
+    assert entries - classified == set(), (
+        f"above-the-line deductions with no North Dakota treatment: "
+        f"{sorted(entries - classified)}. Say whether each is a deduction, "
+        "which leaves its income in renter's refund income, or an exclusion "
+        "from gross income, which excluded_deductions subtracts."
+    )
+    assert classified - entries == set(), "stale entries above"
+    assert list_parameter_entries(ND_DEDUCTED_EXCLUSIONS) == set(
+        ABOVE_THE_LINE_EXCLUSIONS
+    )
 
 
 def situation(households):
@@ -181,12 +252,21 @@ def shared_sources(draw):
         )
     }
     disability = draw(amount)
+    other_wages = draw(st.integers(min_value=0, max_value=150_000))
+    taxable_interest = draw(amount)
     inputs = {
-        # Wages cover the payroll deductions.
-        "employment_income": sum(deductions.values())
-        + draw(st.integers(min_value=0, max_value=150_000)),
+        # Wages cover the payroll deductions and any adoption assistance.
+        "employment_income": sum(deductions.values()) + other_wages,
         **deductions,
-        "taxable_interest_income": draw(amount),
+        # Exclusions the federal model deducts above the line, each within the
+        # income that holds it.
+        "qualified_adoption_assistance_expense": draw(
+            st.integers(min_value=0, max_value=other_wages)
+        ),
+        "us_bonds_for_higher_ed": draw(
+            st.integers(min_value=0, max_value=taxable_interest)
+        ),
+        "taxable_interest_income": taxable_interest,
         "tax_exempt_interest_income": draw(amount),
         "taxable_private_pension_income": draw(amount),
         "tax_exempt_private_pension_income": draw(amount),
@@ -212,7 +292,11 @@ def shared_sources(draw):
     }
     # Leave out a random subset, so zero amounts and missing inputs both occur.
     keep = draw(st.sets(st.sampled_from(sorted(inputs))))
-    return {k: v for k, v in inputs.items() if k in keep or k == "employment_income"}
+    kept = {k: v for k, v in inputs.items() if k in keep or k == "employment_income"}
+    # Taxable interest holds the savings bond interest.
+    if "taxable_interest_income" not in kept:
+        kept.pop("us_bonds_for_higher_ed", None)
+    return kept
 
 
 @settings(max_examples=12, deadline=None)
@@ -226,6 +310,9 @@ def shared_sources(draw):
             "tax_exempt_private_pension_income": 4_000,
             "alimony_income": 12_000,
             "divorce_year": 2020,
+            "taxable_interest_income": 3_000,
+            "us_bonds_for_higher_ed": 2_000,
+            "qualified_adoption_assistance_expense": 4_000,
         }
     ]
 )
@@ -233,7 +320,12 @@ def test_renters_refund_income_equals_gross_income_on_shared_sources(households)
     nd_income, gross_income = calculate(
         households, "nd_renters_refund_income", "irs_gross_income"
     )
-    assert list(nd_income) == pytest.approx(list(gross_income), abs=TOLERANCE)
+    deducted = [
+        sum(inputs.get(name, 0) for name in ABOVE_THE_LINE_EXCLUSIONS)
+        for inputs in households
+    ]
+    expected = [gross - out for gross, out in zip(gross_income, deducted)]
+    assert list(nd_income) == pytest.approx(expected, abs=TOLERANCE)
 
 
 # Inputs for the bounds test: shared sources, plus totals reported without
@@ -252,19 +344,34 @@ def any_sources(draw):
         ) + draw(amount)
     inputs["capital_gains"] = draw(st.integers(min_value=-60_000, max_value=40_000))
     inputs["strike_benefits"] = draw(amount)
+    inputs["social_security_retirement"] = draw(amount)
+    # Person-level exclusions larger than the income that should hold them.
+    for name in draw(st.sets(st.sampled_from(PERSON_DEDUCTED_EXCLUSIONS))):
+        inputs[name] = draw(st.integers(min_value=0, max_value=400_000))
     return inputs
 
 
 @settings(max_examples=12, deadline=None)
 @given(households=st.lists(any_sources(), min_size=1, max_size=12))
 def test_each_excluded_part_lies_within_its_component(households):
-    names = ["nd_renters_refund_federally_excluded_income", "nd_renters_refund_income"]
+    names = [
+        "nd_renters_refund_federally_excluded_income",
+        "nd_renters_refund_income",
+        "market_income",
+        "social_security",
+    ]
     names += list(PARTLY_EXCLUDED)
-    excluded, nd_income, *components = calculate(households, *names)
+    excluded, nd_income, market, social_security, *components = calculate(
+        households, *names
+    )
     ceiling = sum(component.clip(min=0) for component in components)
     assert (excluded >= -TOLERANCE).all()
     assert (excluded <= ceiling + TOLERANCE).all()
     assert (nd_income >= 0).all()
+    # The exclusions the model deducts above the line come out of the market
+    # income left after the person-level parts, never out of social security.
+    floor = np.minimum(social_security, market + social_security - excluded)
+    assert (nd_income >= floor - TOLERANCE).all()
 
 
 # Each pair moves a dollar from the taxable form of a source to its excluded
@@ -312,12 +419,26 @@ def test_a_dollar_moved_to_its_excluded_form_leaves_income(
         **base,
         "social_security_retirement": social_security + moved,
     }
-    households = [base, shifted, deferred, disability, paid_for, more_social_security]
+    # A dollar of taxable interest that IRC 135 excludes leaves too, though
+    # the federal model deducts it above the line.
+    interest = {**base, "taxable_interest_income": taxable}
+    bonds = {**interest, "us_bonds_for_higher_ed": moved}
+    households = [
+        base,
+        shifted,
+        deferred,
+        disability,
+        paid_for,
+        more_social_security,
+        interest,
+        bonds,
+    ]
     (income,) = calculate(households, "nd_renters_refund_income")
     assert income[0] - income[1] == pytest.approx(moved, abs=TOLERANCE)
     assert income[0] - income[2] == pytest.approx(deferral, abs=TOLERANCE)
     assert income[3] - income[4] == pytest.approx(moved, abs=TOLERANCE)
     assert income[5] - income[0] == pytest.approx(moved, abs=TOLERANCE)
+    assert income[6] - income[7] == pytest.approx(moved, abs=TOLERANCE)
 
 
 def test_alimony_leaves_income_only_under_a_post_2018_instrument():

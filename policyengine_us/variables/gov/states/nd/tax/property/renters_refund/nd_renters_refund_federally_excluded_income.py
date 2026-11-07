@@ -8,14 +8,16 @@ class nd_renters_refund_federally_excluded_income(Variable):
     unit = USD
     definition_period = YEAR
     documentation = (
-        "The parts of market_income that federal law leaves out of gross "
-        "income, which N.D.C.C. 57-02-08.1(5)(c) excludes from renter's refund "
-        "income: the payroll deductions federal law excludes from wages, "
-        "tax-exempt interest, the nontaxable part of pensions and of "
-        "retirement account distributions, disability benefits from a plan "
-        "the recipient paid for, and alimony under a divorce or separation "
-        "instrument executed after 2018. Each part is at least zero and at "
-        "most the market_income component it comes from."
+        "The parts of a person's market_income components that federal law "
+        "leaves out of gross income, which N.D.C.C. 57-02-08.1(5)(c) excludes "
+        "from renter's refund income: the payroll deductions federal law "
+        "excludes from wages, tax-exempt interest, the nontaxable part of "
+        "pensions and of retirement account distributions, disability "
+        "benefits from a plan the recipient paid for, and alimony under a "
+        "divorce or separation instrument executed after 2018. Each part is at "
+        "least zero and at most the market_income component it comes from. "
+        "nd_renters_refund_income also subtracts the federal exclusions the "
+        "model deducts above the line."
     )
     reference = (
         # N.D.C.C. 57-02-08.1(5)(c).

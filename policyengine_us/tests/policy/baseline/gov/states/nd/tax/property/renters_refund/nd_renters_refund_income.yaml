@@ -363,3 +363,103 @@
     # NDCC 57-02-08.1(5)(c) counts the dependent's income and excludes what
     # federal law excludes: 30,000 + 500.
     nd_renters_refund_income: 30_500
+
+- name: North Dakota leaves out savings bond interest spent on higher education, which federal law excludes from income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 20_000
+    taxable_interest_income: 3_000
+    # IRC 135(a) excludes it. The model deducts it above the line, so
+    # interest_income still holds it.
+    us_bonds_for_higher_ed: 2_000
+  output:
+    market_income: 23_000
+    # 20,000 + 3,000 - 2,000.
+    nd_renters_refund_income: 21_000
+
+- name: North Dakota leaves out savings bond interest whose exclusion the household records on the student it paid for.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 30_000
+        taxable_interest_income: 4_000
+      child:
+        age: 19
+        is_tax_unit_dependent: true
+        us_bonds_for_higher_ed: 2_500
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ND
+  output:
+    # 30,000 + 4,000 - 2,500.
+    nd_renters_refund_income: 31_500
+
+- name: North Dakota leaves out employer adoption assistance, which federal law excludes from income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 45_000
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        # IRC 137(a) excludes it, and households record it on the adopted
+        # child. The model deducts it above the line, so the wages include it.
+        qualified_adoption_assistance_expense: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ND
+  output:
+    # 45,000 - 5,000.
+    nd_renters_refund_income: 40_000
+
+- name: North Dakota leaves out income from Puerto Rico that federal law excludes.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        # IRC 933 excludes it. The model deducts it above the line, so the
+        # wages include it.
+        puerto_rico_income: 15_000
+    households:
+      household:
+        members: [person]
+        state_code: ND
+  output:
+    # 40,000 - 15,000.
+    nd_renters_refund_income: 25_000
+
+- name: North Dakota takes the exclusions the model deducts above the line out of market income only, never out of social security.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    taxable_interest_income: 1_000
+    us_bonds_for_higher_ed: 3_000
+    social_security_retirement: 8_000
+  output:
+    # Only the 1,000 of market income can leave: 1,000 + 8,000 - 1,000.
+    nd_renters_refund_income: 8_000
