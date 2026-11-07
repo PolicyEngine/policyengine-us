@@ -6701,6 +6701,48 @@ candidates:
     and $105,227; 8, $107,574 and $107,565; 9, $109,914 and $109,903; 11, $114,582 and $114,580; 12, $116,922 and
     $116,919. Size 1 is below the ceiling, size 10 equals it, and from size 13 150% of the guideline exceeds the
     table. Verify each later fiscal-year table.'
+- id: us-nd:renters-refund-federally-excluded-income
+  program: renter-credit
+  years:
+    from: 2025
+    type: tax
+  question: Does the renter's refund count the interest, pensions, IRA distributions, wages and alimony that federal
+    law leaves out of gross income, when the Tax Commissioner's guideline and the application list those sources as
+    income with no exception?
+  sources:
+  - kind: statute
+    citation: N.D.C.C. 57-02-08.1(5)(c)
+    url: https://ndlegis.gov/cencode/t57c02.pdf#page=16
+  - kind: guidance
+    citation: Property Tax Credits for North Dakota Homeowners and Renters, item 10
+    url: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
+  - kind: form
+    citation: SFN 24777 (10-2025), lines 5 to 7 and the instructions for lines 4 to 9
+    url: https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf#page=1
+  readings:
+    statute: Income comes from all sources but leaves out "any amount excluded from income by federal or state law
+      with the exception of income from social security benefits". Federal law leaves out of gross income the interest
+      on state and local bonds (IRC 103(a)); the return of a pension's cost, rollovers and qualified Roth distributions
+      (IRC 72(b)(1), 402(c)(1), 402A(d)(1), 408(d)(3), 408A(d)(1)); the pre-tax payroll deductions of IRC 106, 125,
+      129, 402(e)(3) and 403(b)(1); and alimony under a divorce or separation instrument executed after 2018.
+    other: Item 10 lists pensions "including military pension and I.R.A.", salaries and wages, dividends and interest,
+      and alimony as income. The application asks for income from salary and wages (line 5) and from interest (line
+      6), and its instructions for lines 4 to 9 repeat the list. Neither leaves out the amounts federal law excludes.
+  example: A renter with $20,000 of wages, $1,000 of taxable interest and $5,000 of interest on municipal bonds has
+    income of $21,000 under the statute and $26,000 under item 10 and line 6.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_federally_excluded_income.py
+    - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10697
+  state: ruled
+  note: The statute names the exclusion, so it governs over the general lists, as in
+    us-nd:renters-refund-insurance-proceeds. Social security counts in full by the statute's own exception. North
+    Dakota's income tax reductions (N.D.C.C. 57-38-30.3(2)), such as military pay, military retirement benefits and 40
+    percent of long-term capital gains and qualified dividends, lower taxable income; they do not exclude amounts from
+    income, and item 10 counts military pensions and net gains, so the refund counts them.
 - id: us-nd:renters-refund-insurance-proceeds
   program: renter-credit
   years:
