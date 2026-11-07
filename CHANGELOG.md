@@ -1,3 +1,10 @@
+## [2.104.7] - 2026-11-07
+
+### Changed
+
+- Glide the CMS out-of-pocket spending, employer premium and direct purchase premium upraters from their last projected growth rates to the 2026 Medicare Trustees' long-range per capita health spending rates after 2034, instead of compounding the last projected rate to 2100.
+
+
 ## [2.104.6] - 2026-11-07
 
 ### Fixed
