@@ -1,3 +1,10 @@
+## [2.104.9] - 2026-11-07
+
+### Fixed
+
+- Updated the subsampling holder test to supply a yearly input before checking reform storage.
+
+
 ## [2.104.8] - 2026-11-07
 
 ### Fixed

@@ -437,17 +437,22 @@ def test_dataset_rebuild_refreshes_discarded_holder_caches(warm_source):
 def test_dataset_rebuild_keeps_new_input_provenance_when_old_cache_shares_key():
     from policyengine_core.data import Dataset
 
-    simulation = SimulationBuilder().build_from_variables(make_system(), {})
+    # The 2022 input carries over to 2023. Both cores cache that carry-over
+    # as a derived return under the key the dataset's input then reuses, so
+    # the adapter's pre-rebuild snapshot captures it.
+    simulation = SimulationBuilder().build_from_variables(
+        make_system(), {"independent_input": {"2022": [0.0]}}
+    )
     assert scalar(simulation, PUBLIC, "2023") == 0
     since = earliest_source_dependency(simulation, requested="2023")
     assert since is not None
     assert scalar(simulation, "independent_input", "2023") == 0
     old_holder = simulation.get_holder("independent_input")
-    # Core may leave a missing input's default uncached. Store the derived
-    # entry this test needs under the key the dataset's input then reuses.
-    old_holder.put_in_cache(np.array([0.0]), period("2023"), derived=True)
     assert old_holder.is_derived(period("2023"))
     assert sequence_number(simulation, "independent_input", "2023") >= since
+    assert ("independent_input", period("2023")) in hooks._derived_cached_returns(
+        simulation
+    )
 
     class TinyDataset:
         data_format = Dataset.TIME_PERIOD_ARRAYS
