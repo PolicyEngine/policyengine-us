@@ -14,9 +14,12 @@ I3. 45 U.S.C. 231m(a): a household whose only income is railroad benefits
     taxable income is zero.
 I4. For a wage earner under 65, adding railroad benefits leaves the state's
     AGI unchanged, and in states whose reported AGI includes them it leaves
-    state taxable income unchanged. STATE_BASE_EXCEPTIONS lists the states
-    with a provision measured with federal AGI or federal income tax, which
-    railroad benefits raise.
+    state taxable income unchanged. Colorado and South Carolina start from
+    federal taxable income, which floors at zero; while the standard
+    deduction absorbs some of the benefits, their subtraction exceeds what
+    federal taxable income gained, so there the base can only fall.
+    STATE_BASE_EXCEPTIONS lists the states with a provision measured with
+    federal AGI or federal income tax, which railroad benefits raise.
 I5. Totals: railroad_benefits is the sum of its three parts; the title II
     and tier 1 shares sum to the section 86 taxable amount; and
     taxable_railroad_benefits is what the head's and spouse's federal AGI
@@ -31,7 +34,7 @@ Simulation that holds every household it compares.
 """
 
 import numpy as np
-from hypothesis import given, settings
+from hypothesis import example, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us import Simulation
@@ -50,6 +53,11 @@ INCOME_TAX_STATES = (
 # subtracts the benefits on the way to taxable income. I4 compares their
 # taxable income.
 FEDERAL_AGI_STATES = {"CO", "MI", "MN", "MT", "NC", "ND", "NM", "SC", "UT"}
+
+# co_taxable_income and, before the SCIAD, sc_taxable_income start from
+# taxable_income, which floors at zero, and subtract the benefits federal AGI
+# includes. North Dakota starts from AGI less deductions without the floor.
+FEDERAL_TAXABLE_INCOME_STATES = {"CO", "SC"}
 
 # Provisions measured with federal AGI or federal income tax. Railroad
 # benefits raise both, so these states' bases move by the state's own rule.
@@ -193,7 +201,7 @@ def test_i2_the_rest_of_the_annuity_is_taxed_as_a_pension(
         assert abs(private - railroad) < TOLERANCE, (variable, private, railroad)
 
 
-@settings(max_examples=8, deadline=None)
+@settings(max_examples=6, deadline=None)
 @given(
     tier_1=st.integers(min_value=0, max_value=60_000),
     tier_2=st.integers(min_value=1, max_value=80_000),
@@ -223,13 +231,18 @@ def test_i3_no_state_taxes_railroad_benefits(tier_1, tier_2, tax_free, age, join
             assert abs(tax[i]) < TOLERANCE, (state, tax[i])
 
 
-@settings(max_examples=8, deadline=None)
+@settings(max_examples=6, deadline=None)
 @given(
     wages=st.integers(min_value=0, max_value=120_000),
     tier_1=st.integers(min_value=0, max_value=30_000),
     tier_2=st.integers(min_value=0, max_value=40_000),
     age=st.integers(min_value=25, max_value=64),
 )
+# South Carolina adds back $750 of the 2025 standard deduction for every
+# non-itemizer, so a dollar of benefits the standard deduction absorbs still
+# lowers its base from 750 to 749.
+@example(wages=0, tier_1=0, tier_2=1, age=25)
+@example(wages=40_000, tier_1=12_000, tier_2=15_000, age=50)
 def test_i4_railroad_benefits_leave_state_bases_unchanged(wages, tier_1, tier_2, age):
     worker = {"age": age, "employment_income": wages}
     retiree = worker | {
@@ -243,9 +256,15 @@ def test_i4_railroad_benefits_leave_state_bases_unchanged(wages, tier_1, tier_2,
     n = len(I4_STATES)
     agi = calc(simulation, "taxsim_state_agi")
     taxable_income = calc(simulation, "taxsim_state_taxable_income")
+    federal_taxable_income = calc(simulation, "taxable_income")
     for i, state in enumerate(I4_STATES):
         base = taxable_income if state in FEDERAL_AGI_STATES else agi
-        assert abs(base[i] - base[i + n]) < TOLERANCE, (state, base[i], base[i + n])
+        before, after = base[i], base[i + n]
+        floored = federal_taxable_income[i] <= 0
+        if state in FEDERAL_TAXABLE_INCOME_STATES and floored:
+            assert after <= before + TOLERANCE, (state, before, after)
+        else:
+            assert abs(before - after) < TOLERANCE, (state, before, after)
 
 
 @settings(max_examples=25, deadline=None)

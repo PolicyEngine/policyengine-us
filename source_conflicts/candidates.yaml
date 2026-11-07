@@ -12249,6 +12249,37 @@ candidates:
     zero and kept apart from the passive basket, so these royalties count although Worksheet 1 line 8 reads only Schedule
     E line 23b. Where rental real estate goes is a separate reading (us:eitc-rental-real-estate-basket). Register the
     entry and add the marker once #10297 is on main.
+- id: us:elderly-credit-railroad-tier-2-return-of-cost
+  program: income-tax
+  years:
+    from: 2023
+    type: tax
+  question: Does the tax-free recovery of tier 2 employee contributions from a Railroad Retirement Act annuity reduce
+    the section 22 amount for the credit for the elderly or disabled?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 22(c)(3)(A)(i)(II); 72(b) and (r)
+    url: https://www.law.cornell.edu/uscode/text/26/22#c_3_A
+  - kind: instructions
+    citation: 2026 Instructions for Schedule R (Form 1040), lines 13a and 13b
+    url: https://www.irs.gov/pub/irs-pdf/i1040sr.pdf#page=4
+  readings:
+    statute: Section 22(c)(3)(A)(i)(II) reduces the section 22 amount by amounts the individual, or either spouse on a
+      joint return, receives as a pension or annuity "which is excluded from gross income and payable under" the
+      Railroad Retirement Act of 1974. The tax-free part of the annuity other than the social security equivalent
+      benefit, which recovers tier 2 employee taxes under 72(b) and 72(r)(2), meets both conditions.
+    other: Line 13a takes nontaxable tier 1 benefits treated as social security. Line 13b says "Don't include amounts
+      that are treated as a return of your cost of a pension or annuity," so the tax-free recovery reduces nothing.
+  example: A single filer aged 67 with $3,000 of social security equivalent benefits, all nontaxable, $2,000 of taxable
+    tier 2 benefits and $500 recovered tax free has a section 22 amount of $1,500 under the statute ($5,000 - $3,000 -
+    $500) and $2,000 under the instructions ($5,000 - $3,000); the model gives $1,500.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/irs/credits/elderly_and_disabled/section_22_income.py
+  state: ruled
+  note: The 2023, 2024 and 2025 instructions carry the same line 13b sentence. The model takes the tax-free recovery
+    from tax_exempt_railroad_pension_benefits for the head and spouse.
 - id: us:filing-chart-a-blindness-and-equality
   program: income-tax
   years:
