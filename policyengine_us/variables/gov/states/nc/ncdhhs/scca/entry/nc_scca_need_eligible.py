@@ -46,10 +46,11 @@ class nc_scca_need_eligible(Variable):
             "is_incapable_of_self_care", year
         )
         has_need = employed | student | unable_to_provide_care
-        # Section III.A requires a need of both parents or responsible adults in the
-        # household, and another adult in the home doesn't block care, so the filers
-        # who claim an eligible child stand in for them. An incarcerated adult isn't
-        # in the household.
+        # Sections III and III.A require a need of both parents or responsible
+        # adults in the household. Under section III, another adult in the home
+        # blocks care only when willing and able to provide it, which the model
+        # can't see, so the filers who claim an eligible child stand in for the
+        # responsible adults. An incarcerated adult isn't in the household.
         eligible_child = person("nc_scca_child_eligible", period)
         claims_eligible_child = person.tax_unit.sum(eligible_child) > 0
         responsible_adult = (
