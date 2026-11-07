@@ -15,7 +15,10 @@ metadata:
     geographic rating areas (aca_rating_area_corrections.csv). A 2026 value that is a premium
     in a ZIP inside its area is kept, and that area's 2027 value comes from the same ZIPs.
     Otherwise (and for Idaho's and Washington's current areas) both years are the
-    population-weighted median across the area's counties.
+    population-weighted median across the area's counties. Florida area 22 and South Carolina
+    areas 9 and 19 had no values before 2026: their 2024 and 2025 values are from KFF's
+    calculator data for those years, and 2018-2023 scale the 2024 value by the median change
+    across the state's other areas.
   label: Second Lowest Cost Silver Plan premiums by rating area
   uprating: gov.aca.benchmark_premium_uprating
   propagate_metadata_to_children: true
@@ -1022,6 +1025,14 @@ FL:
     2026-01-01: 491.00
     2027-01-01: 607.00
   22:
+    2018-01-01: 304.00
+    2019-01-01: 299.00
+    2020-01-01: 286.00
+    2021-01-01: 278.00
+    2022-01-01: 279.00
+    2023-01-01: 290.00
+    2024-01-01: 297.00
+    2025-01-01: 305.00
     2026-01-01: 409.00
     2027-01-01: 408.00
   23:
@@ -4136,6 +4147,14 @@ SC:
     2026-01-01: 331.00
     2027-01-01: 415.00
   9:
+    2018-01-01: 285.00
+    2019-01-01: 306.00
+    2020-01-01: 275.00
+    2021-01-01: 248.00
+    2022-01-01: 230.00
+    2023-01-01: 260.00
+    2024-01-01: 265.00
+    2025-01-01: 268.00
     2026-01-01: 330.00
     2027-01-01: 397.00
   10:
@@ -4238,6 +4257,14 @@ SC:
     2026-01-01: 338.00
     2027-01-01: 428.00
   19:
+    2018-01-01: 271.00
+    2019-01-01: 290.00
+    2020-01-01: 261.00
+    2021-01-01: 235.00
+    2022-01-01: 218.00
+    2023-01-01: 247.00
+    2024-01-01: 252.00
+    2025-01-01: 245.00
     2026-01-01: 298.00
     2027-01-01: 399.00
   20:

@@ -11,9 +11,14 @@ metadata:
      - Rating area
   documentation: >-
     Values are derived from KFF ZIP and county premiums using representative ZIPs by rating
-    area, normalized to age 0 with the state's gov.aca.age_curves curve (the 2026 values first
-    published here held the age-21 premium). For NY and VT below is base adult premium. Rating
-    areas and the choice of ZIPs follow the benchmark (second-lowest silver) table.
+    area, normalized to age 0 with the state's gov.aca.age_curves curve. The 2026 values first
+    published here held the age-21 premium; DC's and Massachusetts's matched no ZIP premium on
+    that basis, so theirs are rebuilt from KFF's ZIP premiums. For NY and VT below is base adult
+    premium. Rating areas and the choice of ZIPs follow the benchmark (second-lowest silver)
+    table. Values start in 2026, and earlier years use the 2026 premium. Before 2026 the model
+    places households by the earlier county map, so Idaho's and Washington's areas (renumbered in
+    2026) and Massachusetts area 3 (no county from 2026) have a 2018 row with the 2026 premium of
+    the earlier map's area.
   label: Lowest Cost Bronze Plan premiums by rating area
   propagate_metadata_to_children: true
   reference:
@@ -521,25 +526,31 @@ ID:
   # From 2026, Idaho's areas are CMS's six county-based areas (in place since 2017); values before
   # 2026 follow the earlier seven-area map, which area 7 belongs to.
   1:
+    2018-01-01: 212.00
     2026-01-01: 214.00
     2027-01-01: 222.00
   2:
+    2018-01-01: 209.00
     2026-01-01: 207.00
     2027-01-01: 225.00
   3:
+    2018-01-01: 218.00
     2026-01-01: 198.00
     2027-01-01: 216.00
   4:
+    2018-01-01: 207.00
     2026-01-01: 218.00
     2027-01-01: 217.00
   5:
+    2018-01-01: 198.00
     2026-01-01: 209.00
     2027-01-01: 245.00
   6:
+    2018-01-01: 198.00
     2026-01-01: 212.00
     2027-01-01: 210.00
   7:
-    2026-01-01: 280.00
+    2018-01-01: 214.00
 IL:
   1:
     2026-01-01: 223.00
@@ -705,6 +716,8 @@ LA:
     2026-01-01: 241.00
     2027-01-01: 285.00
 MA:
+  # Area 3 has no county from 2026, when Middlesex and Norfolk counties move to area 5; its
+  # 2018 row serves the earlier map.
   1:
     2026-01-01: 216.00
     2027-01-01: 242.00
@@ -712,7 +725,7 @@ MA:
     2026-01-01: 231.00
     2027-01-01: 267.00
   3:
-    2026-01-01: 280.00
+    2018-01-01: 210.00
   4:
     2026-01-01: 211.00
     2027-01-01: 258.00
@@ -1476,18 +1489,23 @@ WA:
   # From 2026, Washington's areas are CMS's nine areas (in place since 2019); values before 2026
   # follow the earlier five-area map.
   1:
+    2018-01-01: 215.00
     2026-01-01: 215.00
     2027-01-01: 281.00
   2:
+    2018-01-01: 234.00
     2026-01-01: 230.00
     2027-01-01: 292.00
   3:
+    2018-01-01: 251.00
     2026-01-01: 251.00
     2027-01-01: 302.00
   4:
+    2018-01-01: 212.00
     2026-01-01: 212.00
     2027-01-01: 268.00
   5:
+    2018-01-01: 208.00
     2026-01-01: 201.00
     2027-01-01: 274.00
   6:

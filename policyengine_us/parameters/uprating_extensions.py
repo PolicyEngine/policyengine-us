@@ -1087,7 +1087,7 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     # determination dates are available through the projection horizon.
     extend_wa_millionaires_standard_deduction(parameters, end_year=END_YEAR)
 
-    # ACA benchmark premium uprating (January values, last actual 2026).
+    # ACA benchmark premium uprating (January values, last actual 2027).
     # The published 2026 actual is 25.8% above 2025 and 2027 is a further
     # 12.5%; keep long-run growth at the 2024-2025 trend so the jumps do not
     # compound.
