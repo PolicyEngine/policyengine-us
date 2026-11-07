@@ -1,3 +1,10 @@
+## [2.104.10] - 2026-11-07
+
+### Fixed
+
+- Reduce Colorado's federal deduction addback by the Schedule A state income tax already added back on DR 0104 line 2.
+
+
 ## [2.104.9] - 2026-11-07
 
 ### Fixed
