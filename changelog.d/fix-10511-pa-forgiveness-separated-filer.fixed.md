@@ -1,1 +1,0 @@
-Give a Pennsylvania separate filer who lives apart from their spouse for the last six months of the year the unmarried $6,500 tax forgiveness base on their own income, and give a married separate filer who does not live apart the $13,000 base on the joint eligibility income of both spouses, including a spouse in another tax unit (72 P.S. 7304(d)(1)).
