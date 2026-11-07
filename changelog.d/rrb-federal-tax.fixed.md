@@ -1,0 +1,1 @@
+Tax Railroad Retirement Act benefits federally, with tier 1 social security equivalent benefits under IRC 86 alongside Social Security and the rest of the annuity as a pension under IRC 72(r), and subtract them from state income in every state with an income tax, as 45 U.S.C. 231m(a) requires.

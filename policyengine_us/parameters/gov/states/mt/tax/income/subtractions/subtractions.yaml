@@ -4,6 +4,7 @@ values:
     - mt_disability_income_exclusion_person
     - mt_unemployment_compensation_subtraction
     - mt_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
   2021-01-01:
     - mt_interest_exemption_person
     - us_govt_interest_person
@@ -14,6 +15,7 @@ values:
     - mt_unemployment_compensation_subtraction
     - salt_refund_income # Form 2 Subtractions Schedule
     - mt_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
   2024-01-01:
     # MCA 15-30-2120(3)(n) allows exempting up to 50% of military retirement pay
     # (capped at MT earned income, (3)(n)(i)) and up to 50% of military survivor
@@ -24,6 +26,7 @@ values:
     - mt_disability_income_exclusion_person
     - salt_refund_income # MCA 15-30-2120 / Form 2 Subtractions Schedule
     - mt_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
   2025-01-01:
     # Section 15-30-2120 starts from federal taxable income, so federal
     # OBBBA Schedule 1-A deductions (enhanced senior deduction, qualified
@@ -38,6 +41,7 @@ values:
     - mt_federal_obbba_subtraction
     - salt_refund_income # MCA 15-30-2120 / Form 2 Subtractions Schedule
     - mt_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 metadata:
   unit: list
   period: year
@@ -53,3 +57,5 @@ metadata:
       href: https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0100/0150-0300-0210-0100.html
     - title: 2025 Montana Form 2 Instructions
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=21
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a

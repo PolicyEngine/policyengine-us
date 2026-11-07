@@ -1,0 +1,99 @@
+# Railroad Retirement Act benefits in federal gross income. IRC 72(r)(1)
+# treats every benefit other than the tier 1 social security equivalent
+# benefit as a benefit from a section 401(a) plan, and 72(r)(2) treats tier 2
+# employee taxes as contributions recovered tax-free (Form RRB-1099-R).
+# taxable_railroad_benefits is what federal AGI includes from the Act, which
+# 45 U.S.C. 231m(a) bars states from taxing.
+
+- name: The taxable part of the rest of the annuity is gross income, like a private pension.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 67
+        railroad_social_security_equivalent_benefits: 18_000
+        taxable_railroad_pension_benefits: 12_000
+        tax_exempt_railroad_pension_benefits: 1_500
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # Combined income = 12,000 + 0.5 * 18,000 = 21,000, under the 25,000 base
+    # amount, so no tier 1 benefits are taxable.
+    railroad_benefits: 31_500
+    tax_unit_taxable_railroad_social_security_equivalent_benefits: 0
+    irs_gross_income: 12_000
+    adjusted_gross_income: 12_000
+    taxable_railroad_benefits: 12_000
+
+- name: Taxable tier 1 benefits and the taxable rest of the annuity both reach AGI.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 30_000
+        railroad_social_security_equivalent_benefits: 20_000
+        taxable_railroad_pension_benefits: 10_000
+        tax_exempt_railroad_pension_benefits: 1_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # Modified AGI = 30,000 + 10,000 = 40,000; combined income = 50,000.
+    # 86(a)(2)(A): 0.85 * (50,000 - 34,000) + min(10,000, 4,500) = 18,100.
+    # 86(a)(2)(B): 0.85 * 20,000 = 17,000, the lesser.
+    railroad_benefits: 31_000
+    taxable_railroad_social_security_equivalent_benefits: 17_000
+    adjusted_gross_income: 57_000
+    taxable_railroad_benefits: 27_000
+
+- name: A dependent's railroad benefits are not in the filer's AGI, so states have nothing to remove.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 50_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        taxable_railroad_pension_benefits: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    irs_gross_income: [50_000, 0]
+    dependent_gross_income: [0, 5_000]
+    taxable_railroad_benefits: [0, 0]
+
+- name: A railroad_benefits total entered directly reaches no tax variable.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 67
+        railroad_benefits: 30_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    tax_unit_section_86_benefits: 0
+    irs_gross_income: 0
+    taxable_railroad_benefits: 0

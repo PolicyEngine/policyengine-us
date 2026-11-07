@@ -12,6 +12,7 @@ class ma_gross_income(Variable):
         # c.62C s.6(a): each individual with Massachusetts gross income over
         # $8,000 files a return, so a dependent reports their own income.
         "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62C/Section6",
+        "https://www.law.cornell.edu/uscode/text/45/231m#a",
     )
     defined_for = StateCode.MA
 
@@ -52,7 +53,15 @@ class ma_gross_income(Variable):
                 "military_retirement_income",
             ],
         )
-        deductions = social_security_in_agi + salt_refund_income + public_pension
+        # 45 U.S.C. 231m(a) bars state tax on Railroad Retirement Act
+        # annuities, so the part federal gross income includes comes out.
+        railroad_in_agi = add(tax_unit, period, ["taxable_railroad_benefits"])
+        deductions = (
+            social_security_in_agi
+            + railroad_in_agi
+            + salt_refund_income
+            + public_pension
+        )
         return max_(
             0,
             federal_gross_income

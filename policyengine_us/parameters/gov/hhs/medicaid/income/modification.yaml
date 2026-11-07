@@ -5,6 +5,9 @@ values:
     - section_911_excluded_income
     - tax_exempt_interest_income
     - tax_exempt_social_security
+    # Section 36B(d)(2)(B)(iii) adds back social security benefits as section
+    # 86(d) defines them, which include tier 1 railroad retirement benefits.
+    - tax_exempt_railroad_social_security_equivalent_benefits
 metadata:
   unit: list
   label: Medicaid/CHIP/ACA-related MAGI additions over AGI

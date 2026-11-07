@@ -11,6 +11,8 @@ class section_22_income(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/22#c",
         "https://www.law.cornell.edu/uscode/text/26/22#e_1",
+        # 2024 Instructions for Schedule R, lines 13a and 13b.
+        "https://www.irs.gov/pub/irs-prior/i1040sr--2024.pdf#page=5",
     )
 
     def formula(tax_unit, period, parameters):
@@ -62,8 +64,29 @@ class section_22_income(Variable):
         total_social_security = tax_unit("tax_unit_social_security", period)
         taxable_social_security = tax_unit("tax_unit_taxable_social_security", period)
         non_taxable_social_security = total_social_security - taxable_social_security
+        # Section 22(c)(3)(A)(i)(II) reduces the amount by what the head or
+        # spouse receives as a pension or annuity payable under the Railroad
+        # Retirement Act of 1974 and excluded from gross income, whatever
+        # provision excludes it: the tier 1 benefits section 86 leaves out,
+        # and the tax-free part of the rest of the annuity, which 72(r)(2)
+        # and 72(b) exclude as a recovery of the employee's tier 2 taxes.
+        # Schedule R's line 13b keeps returns of cost out; the model follows
+        # the statute's words.
+        non_taxable_tier_1 = tax_unit(
+            "tax_unit_railroad_social_security_equivalent_benefits_for_taxability",
+            period,
+        ) - tax_unit(
+            "tax_unit_taxable_railroad_social_security_equivalent_benefits", period
+        )
+        non_taxable_tier_2 = tax_unit_non_dep_add(
+            tax_unit, period, ["tax_exempt_railroad_pension_benefits"]
+        )
+        non_taxable_railroad = non_taxable_tier_1 + non_taxable_tier_2
         capped_reduced_amount = (
-            capped_amount - non_taxable_pensions - non_taxable_social_security
+            capped_amount
+            - non_taxable_pensions
+            - non_taxable_social_security
+            - non_taxable_railroad
         )
         agi = tax_unit("adjusted_gross_income", period)
 

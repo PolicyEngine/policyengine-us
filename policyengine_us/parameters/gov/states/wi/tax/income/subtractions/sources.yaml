@@ -12,6 +12,7 @@ values:
     - salt_refund_income
     - wi_disability_income_exclusion # Schedule SB, Schedule 2440W
     - wi_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
   2022-01-01:
     - wi_unemployment_compensation_subtraction
     - tax_unit_taxable_social_security
@@ -23,6 +24,7 @@ values:
     - salt_refund_income
     - wi_disability_income_exclusion # Schedule SB, Schedule 2440W
     - wi_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 
 metadata:
   unit: list
@@ -42,3 +44,5 @@ metadata:
     href: https://www.revenue.wi.gov/TaxForms2024/2024-Schedule2440Wf.pdf#page=1
   - title: 2025 Wisconsin Form 1 Schedule SB instructions
     href: https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleSB-inst.pdf
+  - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+    href: https://www.law.cornell.edu/uscode/text/45/231m#a

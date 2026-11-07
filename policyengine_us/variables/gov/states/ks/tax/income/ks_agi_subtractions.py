@@ -10,6 +10,7 @@ class ks_agi_subtractions(Variable):
     reference = (
         "https://ksrevisor.gov/statutes/chapters/ch79/079_032_0117.html",
         "https://www.ksrevenue.gov/pdf/ip25.pdf#page=12",
+        "https://www.law.cornell.edu/uscode/text/45/231m#a",
     )
     defined_for = StateCode.KS
 
@@ -39,11 +40,16 @@ class ks_agi_subtractions(Variable):
                 "military_retirement_income",
             ],
         )
+        # 45 U.S.C. 231m(a) bars state tax on Railroad Retirement Act
+        # annuities, so the part federal AGI includes comes back out,
+        # whatever the federal AGI.
+        railroad = add(tax_unit, period, ["taxable_railroad_benefits"])
         return (
             oasdi_subtraction
             + us_govt_interest
             + plan_529
             + salt_refund_income
             + public_and_military_pension
+            + railroad
             + tax_unit("ks_other_subtractions", period)
         )

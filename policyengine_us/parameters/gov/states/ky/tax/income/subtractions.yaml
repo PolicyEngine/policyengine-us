@@ -9,6 +9,7 @@ values:
   # - Kentucky depreciation 
     - military_service_income
     - ky_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 metadata:
   unit: list
   reference:
@@ -28,3 +29,5 @@ metadata:
       href: https://revenue.ky.gov/Forms/740%20Packet%20Instructions%205-9-23.pdf#page=23
     - title: 2021 Kentucky Individual Income Tax Forms
       href: https://taxsim.nber.org/historical_state_tax_forms/KY/2021/Form%20740%20Packet%20Instructions-2021.pdf#page=27
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a

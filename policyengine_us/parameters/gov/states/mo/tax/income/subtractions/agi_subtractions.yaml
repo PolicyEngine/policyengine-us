@@ -7,6 +7,7 @@ values:
     - salt_refund_income # 143.121 RSMo / Form MO-A Line 9
     - military_retirement_pay # 143.121.3(12) RSMo / Form MO-A Line 10
     - mo_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
   2025-01-01:
     - mo_qualified_health_insurance_premiums
     - mo_capital_gains_subtraction_person
@@ -15,6 +16,7 @@ values:
     - salt_refund_income # 143.121 RSMo / Form MO-A Line 9
     - military_retirement_pay # 143.121.3(12) RSMo / Form MO-A Line 10
     - mo_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 
 
 metadata:
@@ -28,3 +30,5 @@ metadata:
       href: https://www.revisor.mo.gov/main/OneSection.aspx?section=143.121&bid=57543
     - title: 2025 MO-1040 Book - Individual Income Tax Long Form
       href: https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=12
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a

@@ -13,6 +13,8 @@ metadata:
       href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2023_D40_Book_Final_012324.pdf#page=34
     - title: 2024 DC Form D-40 Booklet
       href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2024_D40_Booklet_011525.pdf#page=34
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a
 values:
   2021-01-01:
     - taxable_social_security
@@ -23,3 +25,4 @@ values:
     - salt_refund_income
     - dc_survivor_benefits_subtraction
     - dc_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)

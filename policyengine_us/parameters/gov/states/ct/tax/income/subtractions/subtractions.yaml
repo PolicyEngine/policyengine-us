@@ -8,6 +8,7 @@ values:
     - ct_pension_annuity_subtraction #ln 48b
     - salt_refund_income #ln 38
     - ct_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 
 metadata:
   unit: list
@@ -26,3 +27,5 @@ metadata:
       href: https://portal.ct.gov/-/media/drs/forms/2024/income/2024-ct-1040-instructions_1224.pdf#page=8
     - title: 2025 Form CT-1040 Connecticut Resident Income Tax Return Instructions, Lines 39,41,44,48b
       href: https://portal.ct.gov/-/media/drs/forms/2025/income/2025-ct-1040-instructions_1225.pdf#page=8
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a

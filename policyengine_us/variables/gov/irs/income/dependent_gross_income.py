@@ -14,6 +14,10 @@ DEPENDENT_GROSS_INCOME_SOURCE_OVERRIDES = {
     # computed in dependent_taxable_social_security, on the dependent's own
     # income, and modified AGI is figured without it (IRC 86(b)(2)(A)).
     "taxable_social_security": [],
+    # Tier 1 railroad retirement benefits are social security benefits under
+    # IRC 86(d)(1)(B), handled the same way in
+    # dependent_taxable_railroad_social_security_equivalent_benefits.
+    "taxable_railroad_social_security_equivalent_benefits": [],
     # Gross income includes gains but not losses (computed below). Modified
     # AGI nets them, subject to the IRC 1211(b) limit.
     "capital_gains": [],
@@ -73,6 +77,12 @@ class dependent_gross_income(Variable):
 
         if "taxable_social_security" in sources:
             gross_income += person("dependent_taxable_social_security", period)
+
+        if "taxable_railroad_social_security_equivalent_benefits" in sources:
+            gross_income += person(
+                "dependent_taxable_railroad_social_security_equivalent_benefits",
+                period,
+            )
 
         # Only dependents' own income is tested.
         is_dependent = ~person("is_tax_unit_head_or_spouse", period)

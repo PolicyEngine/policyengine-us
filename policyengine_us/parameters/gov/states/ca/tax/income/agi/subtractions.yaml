@@ -6,6 +6,7 @@ values:
     - us_govt_interest
     - salt_refund_income
     - ca_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
   2025-01-01:
     - taxable_social_security
     - taxable_unemployment_compensation
@@ -13,6 +14,7 @@ values:
     - salt_refund_income
     - ca_military_retirement_exclusion
     - ca_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 
 metadata:
   reference:
@@ -24,6 +26,8 @@ metadata:
       href: https://www.ftb.ca.gov/forms/2024/2024-540-ca-instructions.html
     - title: 2025 California Form 540 Schedule CA instructions
       href: https://www.ftb.ca.gov/forms/2025/2025-540-ca-instructions.html
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a
   period: year
   unit: list
   label: California AGI subtractions

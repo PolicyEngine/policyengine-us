@@ -7,6 +7,7 @@ values:
     - ri_retirement_income_subtraction
     - us_govt_interest
     - ri_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 
   2023-01-01:
     - ri_social_security_modification
@@ -15,6 +16,7 @@ values:
     - us_govt_interest
     - ri_military_retirement_subtraction
     - ri_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 
 metadata:
   unit: list
@@ -33,3 +35,5 @@ metadata:
       href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-12/2025%201040R%20Instructions%20122025.pdf#page=9
     - title: 2025 RI Schedule M - page 1 RI Modifications to Federal AGI
       href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2026-01/2025%20RI%20Schedule%20M_w.pdf#page=1
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a

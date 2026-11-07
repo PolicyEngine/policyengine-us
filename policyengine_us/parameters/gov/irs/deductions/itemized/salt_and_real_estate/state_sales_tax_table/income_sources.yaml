@@ -44,11 +44,13 @@ values:
     - veterans_benefits
     # Nontaxable combat pay - not available.
     - workers_compensation
-    # Nontaxable part of social security and railroad retirement benefits;
-    # railroad retirement benefits are not included.
+    # Nontaxable part of social security and railroad retirement benefits.
     - tax_exempt_social_security
-    # Nontaxable IRA, pension, or annuity distributions (excluding rollovers).
+    - tax_exempt_railroad_social_security_equivalent_benefits
+    # Nontaxable IRA, pension, or annuity distributions (excluding rollovers),
+    # including Railroad Retirement Act annuities' tax-free part.
     - tax_exempt_pension_income
+    - tax_exempt_railroad_pension_benefits
     - tax_exempt_retirement_distributions
     # Public assistance payments.
     - tanf

@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.irs_gross_income.social_security.tax_unit_taxable_section_86_benefits import (
+    SECTION_86_GROSS_INCOME_SOURCES,
+)
 
 
 class ira_219g_magi(Variable):
@@ -17,7 +20,8 @@ class ira_219g_magi(Variable):
         sources = [
             s
             for s in irs.gross_income.sources
-            if s not in ["taxable_social_security", "taxable_unemployment_compensation"]
+            if s not in SECTION_86_GROSS_INCOME_SOURCES
+            and s != "taxable_unemployment_compensation"
         ]
         if "taxable_unemployment_compensation" in irs.gross_income.sources:
             # 219(g)(3)(A)(ii): without regard to 85(c).

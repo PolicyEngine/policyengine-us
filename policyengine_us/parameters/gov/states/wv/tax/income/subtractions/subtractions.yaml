@@ -11,6 +11,7 @@ values:
     - wv_529_plan_deduction
     - wv_senior_citizen_disability_deduction # Line 47
     - wv_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 
 metadata:
   unit: list
@@ -29,3 +30,5 @@ metadata:
       href: https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=3
     - title: Code of West Virginia §11-21-12
       href: https://code.wvlegislature.gov/11-21-12/
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a

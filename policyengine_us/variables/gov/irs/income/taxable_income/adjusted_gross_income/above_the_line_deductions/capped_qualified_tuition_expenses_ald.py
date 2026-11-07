@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.irs_gross_income.social_security.tax_unit_taxable_section_86_benefits import (
+    SECTION_86_GROSS_INCOME_SOURCES,
+)
 
 
 class capped_qualified_tuition_expenses_ald(Variable):
@@ -49,7 +52,7 @@ class capped_qualified_tuition_expenses_ald(Variable):
                 else src
             )
             for src in gross_income_sources
-            if src != "taxable_social_security"
+            if src not in SECTION_86_GROSS_INCOME_SOURCES
         ]
         magi = 0
         for source in safe_sources:

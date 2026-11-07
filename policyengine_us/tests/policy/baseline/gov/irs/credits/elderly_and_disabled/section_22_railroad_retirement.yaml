@@ -1,0 +1,75 @@
+# Section 22(c)(3)(A)(i)(II): the section 22 amount is reduced by amounts the
+# head or spouse receives as a pension or annuity payable under the Railroad
+# Retirement Act of 1974 and excluded from gross income. That covers tier 1
+# benefits section 86 leaves out and the tax-free part of the rest of the
+# annuity (72(r)(2), 72(b)). Initial amounts: $5,000 single, $7,500 joint with
+# two qualified individuals (22(c)(2)); AGI thresholds $7,500 and $10,000
+# (22(d)).
+
+- name: Nontaxable tier 1 benefits and the tax-free tier 2 part both reduce the amount.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 67
+        railroad_social_security_equivalent_benefits: 3_000
+        taxable_railroad_pension_benefits: 2_000
+        tax_exempt_railroad_pension_benefits: 500
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # Combined income = 2,000 + 1,500 = 3,500, so all 3,000 of tier 1 benefits
+    # are excluded. AGI = 2,000, under 7,500.
+    # 5,000 - 3,000 - 500 = 1,500.
+    section_22_income: 1_500
+
+- name: On a joint return title II and railroad exclusions of both spouses reduce the amount.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 67
+        railroad_social_security_equivalent_benefits: 2_000
+        taxable_railroad_pension_benefits: 4_000
+        tax_exempt_railroad_pension_benefits: 300
+      spouse:
+        age: 67
+        social_security_retirement: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # Combined income = 4,000 + 1,500 = 5,500, so no benefits are taxable.
+    # AGI = 4,000, under 10,000.
+    # 7,500 - 1,000 (title II) - 2,000 (tier 1) - 300 (tier 2) = 4,200.
+    section_22_income: 4_200
+
+- name: The AGI phase-out still applies after the railroad reduction.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 67
+        railroad_social_security_equivalent_benefits: 1_000
+        taxable_railroad_pension_benefits: 9_500
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # Combined income = 9,500 + 500 = 10,000: no tier 1 benefits are taxable.
+    # AGI = 9,500; 22(d): 0.5 * (9,500 - 7,500) = 1,000.
+    # 5,000 - 1,000 - 1,000 = 3,000.
+    section_22_income: 3_000

@@ -9,6 +9,7 @@ values:
     - nd_529_deduction
     - nd_stillborn_subtraction
     - nd_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 
   2022-01-01:
     - us_govt_interest
@@ -19,6 +20,7 @@ values:
     - nd_529_deduction
     - nd_stillborn_subtraction
     - nd_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 
   2023-01-01:
     - us_govt_interest
@@ -30,6 +32,7 @@ values:
     - nd_529_deduction
     - nd_stillborn_subtraction
     - nd_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 
 
 metadata:
@@ -55,3 +58,5 @@ metadata:
     href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2025-iit/2025-individual-income-tax-booklet.pdf#page=14
   - title: North Dakota Century Code Title 57 - Taxation Chapter 57-38 - Income Tax, 57-38-30.3 (2)
     href: https://law.justia.com/codes/north-dakota/2022/title-57/chapter-57-38/
+  - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+    href: https://www.law.cornell.edu/uscode/text/45/231m#a

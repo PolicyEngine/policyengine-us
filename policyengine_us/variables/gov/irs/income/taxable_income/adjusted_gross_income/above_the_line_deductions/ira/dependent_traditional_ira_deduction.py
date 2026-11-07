@@ -3,7 +3,7 @@ from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_inco
     dependent_income_and_deductions,
 )
 from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.irs_gross_income.social_security.dependent_taxable_social_security import (
-    dependent_taxable_social_security_amount,
+    dependent_taxable_section_86_amount,
 )
 from policyengine_us.variables.household.expense.retirement.ira_compensation import (
     dependent_ira_compensation,
@@ -63,7 +63,7 @@ class dependent_traditional_ira_deduction(Variable):
             d for d in deductions if d != "dependent_traditional_ira_deduction"
         ]
         agi_before_ira = income - add(person, period, other_deductions)
-        taxable_social_security = dependent_taxable_social_security_amount(
+        taxable_social_security = dependent_taxable_section_86_amount(
             person,
             period,
             parameters,

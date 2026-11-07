@@ -5,7 +5,8 @@ values:
     - in_homeowners_property_tax_deduction
     - salt_refund_income
     - us_govt_interest
-    - tax_unit_taxable_social_security  # includes railroad retirement benefits
+    - tax_unit_taxable_social_security
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
     - in_military_service_deduction
     - in_nonpublic_school_deduction
     - in_nol
@@ -25,7 +26,9 @@ values:
     # IC 6-8-5-1
     - us_govt_interest
     # US Code 26-A-1-B-II-§86
-    - tax_unit_taxable_social_security  # includes railroad retirement benefits
+    - tax_unit_taxable_social_security
+    # 45 U.S.C. 231m(a)
+    - taxable_railroad_benefits
     # IC 6-3-2-4-(a)(1)
     - in_military_service_deduction
     # IC 6-3-2-22-(d)(1)
@@ -55,7 +58,9 @@ values:
     # IC 6-8-5-1
     - us_govt_interest
     # US Code 26-A-1-B-II-§86
-    - tax_unit_taxable_social_security  # includes railroad retirement benefits
+    - tax_unit_taxable_social_security
+    # 45 U.S.C. 231m(a)
+    - taxable_railroad_benefits
     # IC 6-3-2-4-(a)(1)
     - in_military_service_deduction
     # IC 6-3-2-22-(d)(1)
@@ -87,7 +92,9 @@ values:
     # IC 6-8-5-1
     - us_govt_interest
     # US Code 26-A-1-B-II-§86
-    - tax_unit_taxable_social_security  # includes railroad retirement benefits
+    - tax_unit_taxable_social_security
+    # 45 U.S.C. 231m(a)
+    - taxable_railroad_benefits
     # IC 6-3-2-4-(a)(1)
     - in_military_service_deduction
     # IC 6-3-2-22-(d)(1)
@@ -125,7 +132,9 @@ values:
     # IC 6-8-5-1
     - us_govt_interest
     # US Code 26-A-1-B-II-§86
-    - tax_unit_taxable_social_security  # includes railroad retirement benefits
+    - tax_unit_taxable_social_security
+    # 45 U.S.C. 231m(a)
+    - taxable_railroad_benefits
     # IC 6-3-2-4-(a)(1)
     - in_military_service_deduction
     # IC 6-3-2-22-(d)(1)
@@ -160,3 +169,5 @@ metadata:
       href: https://www.law.cornell.edu/uscode/text
     - title: 2025 IT-40 Income Tax Form Instruction Booklet, pg. 19
       href: https://forms.in.gov/Download.aspx?id=16915#page=19
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a

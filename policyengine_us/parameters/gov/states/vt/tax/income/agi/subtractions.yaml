@@ -8,6 +8,7 @@ values:
     - vt_retirement_income_exemption
     - salt_refund_income
     - vt_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 metadata:
   unit: list
   label: Vermont subtractions
@@ -22,3 +23,5 @@ metadata:
       href: https://tax.vermont.gov/sites/tax/files/documents/IN-112-2021.pdf#page=1
     - title: Titl. 32 V.S.A. § 5811(21)(B)(i), (C)(iv), (B)(vi), (B)(ii), (B)(iv)
       href: https://legislature.vermont.gov/statutes/section/32/151/05811
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a
