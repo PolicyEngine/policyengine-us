@@ -10,9 +10,10 @@ shareholder's wages from the corporation their earned income. Form 7206 (Pub.
 business's net profit (line 4), less the part of Schedule 1 line 15
 attributable to that business by its share of all net profits subject to
 self-employment tax (lines 5 to 8), less the Schedule 1 line 16 plan deduction
-attributable to it (lines 9 and 10), or as the S corporation wages (line 11);
-the deduction is the smaller of the premiums and that amount (line 14). The
-plan business may be a Schedule C business, a Schedule F farm, a partnership
+attributable to it (lines 9 and 10), or as the S corporation wages (line 11).
+The deduction is the smaller of line 3 and that amount (line 14), where line 3
+adds eligible long-term care premiums (line 2) to the medical premiums (line 1).
+The plan business may be a Schedule C business, a Schedule F farm, a partnership
 (K-1 box 14 code A) or an S corporation. When
 self_employed_health_insurance_plan_business is not supplied, the model uses
 the business with the largest earned income. The model treats a person's
@@ -29,15 +30,17 @@ the four businesses. For every filer and year:
    computed here from Schedule SE, and each limit equals a closed-form Form
    7206 computation for its plan business from that line 15 and the model's
    line 16. Without a named business, the limit is the largest of the four.
-   The deduction is the smaller of the premiums and that reference limit.
+   The deduction is the smaller of line 3 and that reference limit. Line 3
+   adds the drawn long-term care premiums, up to the limit for ages 41 to 50
+   (line 2), to the medical premiums (line 1).
 2. Differential: the limit without a named business equals the largest of the
    limits the model computes when each business is named. With property 1,
    which ties each named limit to that business's own Form 7206, one plan
    never pools the earned income of two businesses.
-3. Bounds: 0 <= deduction <= premiums, and the limit is at least the Schedule
+3. Bounds: 0 <= deduction <= line 3, and the limit is at least the Schedule
    C limit (widening the base never lowers the deduction).
-4. Monotone in premiums: raising premiums by d raises the deduction by at
-   least 0 and at most d, and leaves the limit unchanged.
+4. Monotone in premiums: raising the medical premiums by d raises the
+   deduction by at least 0 and at most d, and leaves the limit unchanged.
 5. For a filer with no business losses whose income is wages and
    self-employment income, the deduction never takes adjusted gross income
    below the Schedule C line 10 amount before its floor at zero. That amount
@@ -45,6 +48,9 @@ the four businesses. For every filer and year:
    Schedule C business's net profit less its share of line 15; otherwise
    adjusted gross income stays at or above zero. Intended: a plan under the
    farm or partnership does not subtract the Schedule C plan deduction.
+6. Line 2 and Schedule A: the long-term care part is the smaller of line 2
+   and what the deduction leaves after line 1, and Schedule A keeps line 3
+   less the deduction, so each premium counts once.
 
 The model computes in float32, whose spacing passes a cent above $131,072, so
 comparisons allow a relative error of 1e-6 on top of the $0.01 tolerance.
@@ -72,6 +78,9 @@ SOCIAL_SECURITY_RATE = 0.124
 MEDICARE_RATE = 0.029
 # Contribution and benefit bases, https://www.ssa.gov/oact/cola/cbb.html.
 WAGE_BASE = {2022: 147_000, 2024: 168_600, 2026: 184_500}
+# 26 U.S.C. 213(d)(10): eligible long-term care premiums at ages 41 to 50
+# (Rev. Proc. 2021-45, 2023-34 and 2025-32), as test data.
+LONG_TERM_CARE_LIMIT_AGE_45 = {2022: 850, 2024: 880, 2026: 930}
 BUSINESSES = ["SCHEDULE_C", "SCHEDULE_F", "PARTNERSHIP", "S_CORPORATION"]
 # (name prefix, named plan business, premium raise) for each copy of a filer.
 COPIES = [("u", "UNSPECIFIED", 0), ("r", "UNSPECIFIED", PREMIUM_RAISE)] + [
@@ -107,6 +116,9 @@ def build_situation(filers):
                     filer["plan"]
                 ),
                 "health_insurance_premiums": every_year(filer["premiums"] + raise_),
+                "long_term_health_insurance_premiums": every_year(
+                    filer["long_term_care"]
+                ),
                 "self_employed_health_insurance_plan_business": every_year(
                     plan_business
                 ),
@@ -175,8 +187,19 @@ def check_properties(sim, filers, n):
     s_corp = column(filers, "s_corp")
     # S corporation wages are Social Security wages too.
     wages = column(filers, "wages") + s_corp
+    long_term_care = column(filers, "long_term_care")
     for year in YEARS:
         premiums = sim.calculate("self_employed_health_insurance_premiums", year)
+        # Line 2: the drawn premiums up to the age 41-50 limit, for every copy.
+        line_2 = np.tile(
+            np.minimum(long_term_care, LONG_TERM_CARE_LIMIT_AGE_45[year]),
+            len(COPIES),
+        )
+        line_3 = premiums + line_2
+        long_term_care_part = sim.calculate(
+            "self_employed_health_insurance_ald_long_term_care_part", year
+        )
+        schedule_a = sim.calculate("itemized_medical_expenses", year)
         limit = sim.calculate(
             "self_employed_health_insurance_earned_income_limit", year
         )
@@ -212,7 +235,7 @@ def check_properties(sim, filers, n):
         )
 
         # 1. Reference.
-        close(deduction, np.minimum(premiums, reference_limit))
+        close(deduction, np.minimum(line_3, reference_limit))
         close(copy(limit, "u"), largest)
         for business in BUSINESSES:
             close(copy(limit, business.lower()), line_13[business])
@@ -223,7 +246,7 @@ def check_properties(sim, filers, n):
 
         # 3. Bounds.
         assert np.all(deduction >= 0)
-        assert at_least(premiums, deduction)
+        assert at_least(line_3, deduction)
         assert at_least(copy(limit, "u"), line_13["SCHEDULE_C"])
 
         # 4. Monotone and 1-Lipschitz in premiums; the limit ignores premiums.
@@ -243,6 +266,14 @@ def check_properties(sim, filers, n):
         for prefix, _, _ in COPIES:
             assert at_least(copy(agi, prefix)[no_losses], floor[no_losses])
 
+        # 6. Line 2 takes what the deduction leaves after line 1, and
+        # Schedule A keeps line 3 less the deduction.
+        close(
+            long_term_care_part,
+            np.minimum(line_2, deduction - np.minimum(premiums, deduction)),
+        )
+        close(schedule_a, line_3 - deduction)
+
 
 money = st.integers(0, 120_000)
 filer_strategy = st.fixed_dictionaries(
@@ -258,6 +289,7 @@ filer_strategy = st.fixed_dictionaries(
         "wages": st.one_of(st.just(0), st.integers(0, 250_000)),
         "plan": st.one_of(st.just(0), money),
         "premiums": st.one_of(st.sampled_from([0, 1_000, 6_000]), money),
+        "long_term_care": st.one_of(st.just(0), st.integers(1, 2_000)),
     }
 )
 SETTINGS = dict(
@@ -284,6 +316,7 @@ def filer(
     wages=0,
     plan=0,
     premiums=0,
+    long_term_care=0,
 ):
     return dict(
         schedule_c=schedule_c,
@@ -294,11 +327,13 @@ def filer(
         wages=wages,
         plan=plan,
         premiums=premiums,
+        long_term_care=long_term_care,
     )
 
 
 def test_reviewer_example_and_boundaries():
-    """Fixed filers: the $2,000 example, the $400 threshold, and the new bases."""
+    """Fixed filers: the $2,000 example, the $400 threshold, the new bases and
+    long-term care premiums."""
     filers = [
         filer(schedule_c=2_000, premiums=6_000),
         filer(schedule_c=434, premiums=6_000),
@@ -316,6 +351,9 @@ def test_reviewer_example_and_boundaries():
         # A plan deduction as large as the Schedule C profit, with the farm as
         # the plan business (property 5).
         filer(schedule_c=20_000, plan=20_000, farm=50_000, premiums=100_000),
+        # Long-term care premiums under an S corporation plan: line 3 is
+        # 6,000 + min(2,000, 850) = 6,850, above line 11.
+        filer(s_corp=6_500, premiums=6_000, long_term_care=2_000),
     ]
     situation, n = build_situation(filers)
     sim = Simulation(situation=situation)
@@ -336,3 +374,5 @@ def test_reviewer_example_and_boundaries():
     assert abs(deduction[9] - 5_000) < TOLERANCE
     # Farm line 13: 50,000 - 50,000 / 70,000 x (70,000 x 0.9235 x 0.153 / 2).
     assert abs(deduction[10] - (50_000 - 50_000 * 0.9235 * 0.153 / 2)) < TOLERANCE
+    # Line 11, 6,500, exceeds the 6,000 of medical premiums.
+    assert abs(deduction[11] - 6_500) < TOLERANCE

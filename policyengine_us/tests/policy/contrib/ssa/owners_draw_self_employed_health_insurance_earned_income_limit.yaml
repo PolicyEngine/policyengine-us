@@ -71,7 +71,7 @@
     # baseline.
     self_employed_health_insurance_earned_income_limit: 37_174.09
 
-- name: Without a Schedule C business the limit stays zero
+- name: S corporation profits without box 5 wages leave the limit at zero
   period: 2027
   absolute_error_margin: 0.02
   reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
