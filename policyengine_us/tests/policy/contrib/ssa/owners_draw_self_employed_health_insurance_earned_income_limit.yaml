@@ -85,7 +85,7 @@
     self_employed_health_insurance_premiums: 8_000
   output:
     self_employment_tax_ald_person: 3_720
-    # Line 4 is zero, so line 13 and the deduction are zero.
+    # Lines 4 and 11 are zero, so line 13 and the deduction are zero.
     self_employed_health_insurance_earned_income_limit: 0
     self_employed_health_insurance_ald_person: 0
 

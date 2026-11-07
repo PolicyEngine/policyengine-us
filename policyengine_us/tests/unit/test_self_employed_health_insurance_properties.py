@@ -50,7 +50,7 @@ the four businesses. For every filer and year:
    farm or partnership does not subtract the Schedule C plan deduction.
 6. Line 2 and Schedule A: the long-term care part is the smaller of line 2
    and what the deduction leaves after line 1, and Schedule A keeps line 3
-   less the deduction, so each premium counts once.
+   less the deduction, so each premium in line 3 counts once.
 
 The model computes in float32, whose spacing passes a cent above $131,072, so
 comparisons allow a relative error of 1e-6 on top of the $0.01 tolerance.
@@ -351,8 +351,8 @@ def test_reviewer_example_and_boundaries():
         # A plan deduction as large as the Schedule C profit, with the farm as
         # the plan business (property 5).
         filer(schedule_c=20_000, plan=20_000, farm=50_000, premiums=100_000),
-        # Long-term care premiums under an S corporation plan: line 3 is
-        # 6,000 + min(2,000, 850) = 6,850, above line 11.
+        # Long-term care premiums under an S corporation plan: in 2022, line 3
+        # is 6,000 + min(2,000, 850) = 6,850, above line 11.
         filer(s_corp=6_500, premiums=6_000, long_term_care=2_000),
     ]
     situation, n = build_situation(filers)

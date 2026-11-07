@@ -23,8 +23,10 @@ class s_corp_shareholder_medicare_wages(Variable):
         "not box 5, so those premiums also count as payroll tax wages. "
         "Long-term care premiums the corporation pays or reimburses and "
         "reports in box 1 go in employment_income and in "
-        "long_term_health_insurance_premiums, on the insured person. The "
-        "deduction counts both premium inputs only when "
+        "long_term_health_insurance_premiums, on the insured person. "
+        "The model's payroll tax wages start from employment_income, so it "
+        "taxes these premiums as payroll wages too. The deduction "
+        "counts both premium inputs only when "
         "is_self_employed is true, so set it for a shareholder even when "
         "these wages are their only earned income."
     )
