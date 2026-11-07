@@ -120,6 +120,13 @@ CONFLICT_COMMENT_RE = re.compile(
 # or raise its line here in the same PR, and the line goes when the marker lands
 # (CONTRIBUTING.md, "Source conflicts"). A lower count must be recorded here too.
 KNOWN_UNMARKED: dict[str, int] = {
+    "policyengine_us/variables/gov/states/ar/tax/income/deductions/standard/ar_standard_deduction_indiv.py": 1,
+    "policyengine_us/variables/gov/states/ar/tax/income/deductions/standard/ar_standard_deduction_joint.py": 1,
+    "policyengine_us/variables/gov/states/ar/tax/income/low_income/ar_low_income_tax_joint.py": 1,
+    "policyengine_us/variables/gov/states/az/tax/income/credits/az_increased_excise_tax_credit.py": 1,
+    "policyengine_us/variables/gov/states/ca/tax/income/credits/ca_renter_credit.py": 1,
+    "policyengine_us/variables/gov/states/ca/tax/income/credits/earned_income/ca_eitc_eligible.py": 1,
+    "policyengine_us/parameters/gov/states/ca/tax/income/credits/renter/income_cap.yaml": 1,
     "policyengine_us/parameters/gov/irs/ald/charitable_contributions/cap.yaml": 1,
     "policyengine_us/parameters/gov/irs/credits/residential_clean_energy/fuel_cell_cap_per_kw.yaml": 1,
     "policyengine_us/parameters/gov/irs/income/exemption/overtime/hce_salary_threshold.yaml": 1,
@@ -171,6 +178,7 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/variables/gov/states/mn/dcyf/mfip/income/earned/mn_mfip_dependent_care_deduction.py": 1,
     "policyengine_us/variables/gov/states/mn/tax/income/deductions/mn_itemized_deductions.py": 1,
     "policyengine_us/variables/gov/states/mo/dese/ccs/eligibility/mo_ccs_income_eligible.py": 1,
+    "policyengine_us/variables/gov/states/sc/tax/income/subtractions/retirement/sc_retirement_deduction_survivors.py": 1,
     "policyengine_us/variables/gov/states/vt/tax/income/credits/cdcc/vt_low_income_cdcc_eligible.py": 1,
     "policyengine_us/variables/gov/states/wa/dor/property_tax_exemption/senior_disabled/wa_pte_categorical_eligible.py": 1,
     "policyengine_us/variables/gov/territories/pr/tax/income/pr_agi.py": 1,

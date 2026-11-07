@@ -11,6 +11,7 @@ class eitc_eligible(Variable):
         "https://www.law.cornell.edu/uscode/text/26/32#c_1_A",
         # No EITC for an individual who claims the benefits of section 911.
         "https://www.law.cornell.edu/uscode/text/26/32#c_1_C",
+        "https://www.law.cornell.edu/uscode/text/26/32#d",
         # Former section 32(c)(1)(F), struck from 2021.
         "https://www.govinfo.gov/content/pkg/USCODE-2015-title26/html/USCODE-2015-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm",
     )
@@ -26,12 +27,12 @@ class eitc_eligible(Variable):
         # Section 32(c)(1)(C): "eligible individual" does not include an
         # individual who claims the benefits of section 911 (Form 2555).
         claims_section_911 = elects_section_911_exclusion(tax_unit, period)
-        # Define eligibility before considering separate filer limitation.
         eligible = (
             demographic_eligible
             & investment_income_eligible
             & filers_has_ssn
             & ~claims_section_911
+            & tax_unit("eitc_marital_eligible", period)
         )
         # Former section 32(c)(1)(F), through 2020: "No credit shall be
         # allowed under this section to any eligible individual who has one or
@@ -48,10 +49,4 @@ class eitc_eligible(Variable):
             )
             no_child_counted = tax_unit("eitc_child_count", period) == 0
             eligible = eligible & ~(has_qualifying_child & no_child_counted)
-        # This parameter is true if separate filers are eligible.
-        if eitc.eligibility.separate_filer:
-            return eligible
-        # If separate filers are not eligible, check if the filer is separate.
-        filing_status = tax_unit("filing_status", period)
-        separate = filing_status == filing_status.possible_values.SEPARATE
-        return eligible & ~separate
+        return eligible

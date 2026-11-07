@@ -34,3 +34,129 @@
     state_code: VT
   output:
     vt_taxable_income: 0
+
+- name: 2017 uses federal deductions and historical adjustments.
+  period: 2017
+  input:
+    state_code: VT
+    adjusted_gross_income: 50_000
+    exemptions: 4_050
+    taxable_income_deductions: 20_000
+    vt_2017_itemized_deduction_addback: 2_000
+    vt_2017_other_additions: 1_000
+    vt_2017_subtractions: 500
+    # The 2018+ Vermont-base inputs below do not enter 2017 taxable income.
+    vt_agi: 49_500
+    vt_standard_deduction: 6_350
+    vt_personal_exemptions: 4_050
+  output:
+    # 50,000 - 4,050 - 20,000 + 2,000 + 1,000 - 500
+    vt_taxable_income: 28_450
+
+- name: 2017 restores excess other itemized deductions.
+  period: 2017
+  input:
+    state_code: VT
+    adjusted_gross_income: 70_000
+    exemptions: 4_050
+    taxable_income_deductions: 30_000
+    vt_2017_itemized_deduction_addback: 14_125
+    vt_2017_other_additions: 0
+    vt_2017_subtractions: 0
+  output:
+    # 70,000 - 4,050 - 30,000 + 14,125
+    vt_taxable_income: 50_075
+
+- name: 2017 keeps a negative federal base before Vermont additions.
+  period: 2017
+  input:
+    state_code: VT
+    adjusted_gross_income: 5_000
+    exemptions: 4_050
+    taxable_income_deductions: 6_350
+    taxable_income: 0
+    vt_2017_itemized_deduction_addback: 0
+    vt_2017_other_additions: 1_000
+    vt_2017_subtractions: 0
+  output:
+    # 5,000 - 4,050 - 6,350 + 1,000 = -4,400, floored at zero. Starting
+    # from floored federal taxable income would give $1,000.
+    vt_taxable_income: 0
+
+- name: 2017 subtractions cannot push taxable income below zero.
+  period: 2017
+  input:
+    state_code: VT
+    adjusted_gross_income: 20_000
+    exemptions: 4_050
+    taxable_income_deductions: 6_350
+    vt_2017_itemized_deduction_addback: 0
+    vt_2017_other_additions: 0
+    vt_2017_subtractions: 15_000
+  output:
+    vt_taxable_income: 0
+
+- name: 2018 still starts from Vermont AGI.
+  period: 2018
+  input:
+    state_code: VT
+    adjusted_gross_income: 50_000
+    exemptions: 0
+    taxable_income_deductions: 20_000
+    vt_agi: 40_000
+    vt_standard_deduction: 6_000
+    vt_personal_exemptions: 4_000
+  output:
+    vt_taxable_income: 30_000
+
+- name: 2016 keeps the Vermont-base formula.
+  period: 2016
+  input:
+    state_code: VT
+    adjusted_gross_income: 50_000
+    exemptions: 0
+    taxable_income_deductions: 20_000
+    vt_agi: 45_000
+    vt_standard_deduction: 6_000
+    vt_personal_exemptions: 4_000
+  output:
+    # 45,000 - 6,000 - 4,000. The 2017 federal base would give
+    # 50,000 - 0 - 20,000 = 30,000, and no formula would give 0.
+    vt_taxable_income: 35_000
+
+- name: 2017 starts from the federal base, not Vermont AGI less Vermont deductions.
+  period: 2017
+  input:
+    state_code: VT
+    tax_unit_itemizes: false
+    adjusted_gross_income: 50_000
+    exemptions: 4_050
+    taxable_income_deductions: 20_000
+    vt_agi: 49_500
+    vt_standard_deduction: 6_350
+    vt_personal_exemptions: 4_050
+  output:
+    # 50,000 - 4,050 - 20,000, with no addback, additions or subtractions.
+    # The Vermont-base formula would give 49,500 - 6,350 - 4,050 = 39,100.
+    vt_taxable_income: 25_950
+
+- name: 2017 single wage earner, end to end from the federal base.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VT
+  output:
+    # 60,000 - 4,050 exemption - 6,350 standard deduction.
+    standard_deduction: 6_350
+    exemptions: 4_050
+    vt_taxable_income: 49_600
