@@ -20,7 +20,8 @@ for every input:
 
 1. add_to_list_parameter keeps every dated value of a list and its members in
    order, appends only the names a value lacks, and changes nothing when it
-   runs again.
+   runs again. It writes new lists, leaving the names it gets and the member
+   lists it reads unchanged.
 2. Under each reform, each benefit list in each year is the baseline list,
    followed by the reform's own additions and nothing else.
 3. Applying a reform a second time changes no list. A simulation can apply a
@@ -151,9 +152,9 @@ def value_on(values, day):
     days=st.lists(DAYS, max_size=6),
 )
 def test_add_to_list_parameter_appends_only_missing_names(values, names, days):
-    parameter = list_parameter(values)
-    add_to_list_parameter(parameter, names)
-
+    # The expectation comes from copies taken before the call. The parameter
+    # holds the drawn member lists themselves, so a helper that changed them,
+    # or the names, in place would otherwise move the expectation with it.
     unique_names = list(dict.fromkeys(names))
     expected = {
         start: (
@@ -163,6 +164,20 @@ def test_add_to_list_parameter_appends_only_missing_names(values, names, days):
         )
         for start, members in values.items()
     }
+    names_before = list(names)
+    values_before = {
+        start: None if members is None else list(members)
+        for start, members in values.items()
+    }
+
+    parameter = list_parameter(values)
+    add_to_list_parameter(parameter, names)
+
+    # The helper writes new lists. A clone of a parameter shares its member
+    # lists (ParameterAtInstant.clone copies its dict shallowly), so a helper
+    # that edited one in place would change every clone that shares it.
+    assert names == names_before
+    assert values == values_before
     starts = sorted(value.instant_str for value in parameter.values_list)
     assert starts == sorted(values)
     # Each value's first day and the day before it hold the stop dates the
