@@ -342,6 +342,32 @@ remain country-model formulas. General household benefits and CBO transfer
 aggregates count actual <code class="docutils literal notranslate"><span class="pre">housing_assistance</span></code>; only SPM resources count
 <code class="docutils literal notranslate"><span class="pre">spm_unit_capped_housing_subsidy</span></code>. The cap uses the canonical housing amount before
 the final model storage conversion.</p>
+<section id="cash-income-in-resources">
+<h2>Cash income in resources<a class="headerlink" href="#cash-income-in-resources" title="Link to this heading">¶</a></h2>
+<p>SPM resources add person <code class="docutils literal notranslate"><span class="pre">market_income</span></code> and <code class="docutils literal notranslate"><span class="pre">spm_unit_benefits</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">spm_unit_taxes</span></code> subtracts the tax on every source of federal gross income. Each
+source in <code class="docutils literal notranslate"><span class="pre">gov.irs.gross_income.sources</span></code> therefore needs a place in resources:
+without one, the SPM takes a family’s tax on the income and never counts the
+income. <code class="docutils literal notranslate"><span class="pre">test_household_spm_resource_parity.py</span></code> maps each source to the variable
+that counts its cash, and it fails when a new source has none. Market income
+keeps a source’s losses where the source has them, such as partnership, farm
+rental and Form 4797 losses.</p>
+<p>Three sources stay out of resources on purpose:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">debt_relief</span></code>: discharged debt brings the family no cash.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">taxable_roth_conversions</span></code>: a conversion moves savings from one retirement
+account to another.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">salt_refund_income</span></code>: the refund returns state or local tax from an earlier
+year, and the SPM subtracts each year’s tax as the family owes it.</p></li>
+</ul>
+<p>Census money income leaves out capital gains
+(<a class="reference external" href="https://www.census.gov/programs-surveys/cps/technical-documentation/subject-definitions.html#incomemeasurement">CPS subject definitions</a>).
+PolicyEngine’s market income counts realized capital gains, and it counts
+capital gain distributions and Form 4797 gains alongside them, so resources hold
+every gain whose tax the SPM subtracts. Disability benefits from an employer plan
+count in full, the part federal tax exempts included, since Census lists
+disability benefits among the sources of money income.</p>
+</section>
 <section id="housing-allocation-and-its-assumptions">
 <h2>Housing allocation and its assumptions<a class="headerlink" href="#housing-allocation-and-its-assumptions" title="Link to this heading">¶</a></h2>
 <p>The country sums modeled <code class="docutils literal notranslate"><span class="pre">housing_assistance</span></code> within each household, then
@@ -527,6 +553,7 @@ an isolated environment and runs tests with <code class="docutils literal notran
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Supplemental Poverty Measure</a><ul>
+<li><a class="reference internal" href="#cash-income-in-resources">Cash income in resources</a></li>
 <li><a class="reference internal" href="#housing-allocation-and-its-assumptions">Housing allocation and its assumptions</a></li>
 <li><a class="reference internal" href="#measurement-configuration">Measurement configuration</a></li>
 <li><a class="reference internal" href="#default-population-build">Default population build</a></li>
