@@ -93,11 +93,11 @@ hh_eitc = sim.calc("eitc", map_to="household")
 
 ### The default build
 
-The default is the certified Populace build, pinned by build id and hosted as a
+The default is the certified Microcosm build, pinned by build id and hosted as a
 HuggingFace *dataset* repository:
 
 ```python
-# Default: the certified Populace build named in DEFAULT_DATASET.
+# Default: the certified Microcosm build named in DEFAULT_DATASET.
 sim = Microsimulation()
 ```
 
@@ -145,7 +145,7 @@ variable-centric HDF5 format.
 
 A population file can supply the tax units its constructor built, not just
 their membership, through `tax_unit_role_input` (person): `HEAD`, `SPOUSE` or
-`DEPENDENT`. The certified Populace build supplies it. When every member of a
+`DEPENDENT`. The certified Microcosm build supplies it. When every member of a
 tax unit has a supplied role, `is_tax_unit_head` and `is_tax_unit_spouse`
 follow it and `is_tax_unit_dependent` covers everyone else. Explicitly set
 `is_tax_unit_head`, `is_tax_unit_spouse` or `is_tax_unit_dependent` inputs
@@ -158,7 +158,7 @@ the unit is separated. Without dependent inputs, that pairs an adult student
 with a parent as joint filers and leaves a minor living without a parent with
 no head.
 
-The Populace build carries its constructor's filing status in a
+The Microcosm build carries its constructor's filing status in a
 `filing_status_input` column. No variable has that name, so the column is
 ignored. By default, `filing_status` is computed from the unit's members,
 including any supplied roles, and the filing rules. Reforms to those rules
