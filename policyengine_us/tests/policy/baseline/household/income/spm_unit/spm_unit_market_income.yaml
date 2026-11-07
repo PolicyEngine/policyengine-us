@@ -46,3 +46,38 @@
         state_code: WA
   output:
     spm_unit_market_income: 0
+
+- name: Partnership income and employer disability benefits reach SPM unit market income.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 45
+        partnership_income: 287_010
+      grandparent:
+        age: 70
+        disability_benefits: 6_000
+    spm_units:
+      spm_unit:
+        members: [parent, grandparent]
+    households:
+      household:
+        members: [parent, grandparent]
+        state_code: TN
+  output:
+    spm_unit_market_income: 287_010 + 6_000
+    household_market_income: 287_010 + 6_000
+
+- name: A farm rental loss and capital gain distributions reach SPM unit market income.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 60
+        farm_rent_income: -2_000
+        non_sch_d_capital_gains: 3_500
+    spm_units:
+      spm_unit:
+        members: [person]
+  output:
+    spm_unit_market_income: 1_500
