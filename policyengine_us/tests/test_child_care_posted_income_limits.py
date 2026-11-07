@@ -25,9 +25,13 @@ year and a rounding rule, written apart from the formulas.
 7. A family of three earning $40,000 gets the result each state's chart gives.
 
 YAML pins single households. These tests walk whole charts and many incomes in one
-simulation, which keeps them fast enough to run in CI.
+simulation, which keeps them fast enough to run in CI. Hypothesis draws families
+from a fixed seed, so every run checks the same ones. The properties also check fixed
+families: each size at its limit, and a grid of Georgia families, some failing only
+one test.
 """
 
+import itertools
 import math
 from dataclasses import dataclass
 from typing import Callable, Optional
@@ -534,7 +538,7 @@ SMALL_FAMILIES = st.lists(
     ),
 )
 def test_limit_equals_rate_times_dated_guideline(rule):
-    @settings(max_examples=2, deadline=None)
+    @settings(max_examples=2, deadline=None, derandomize=True)
     @given(families=SMALL_FAMILIES)
     def check(families):
         # Each family also sits at its top and one dollar over, the two cases a
@@ -642,13 +646,52 @@ ENROLLMENT_PAIRS = [
 ]
 
 
+def highest_passing_incomes(program, month, high=15_000):
+    """The highest monthly income at which a family of each size from 1 to 6 passes.
+
+    Scans $100 steps up to `high`, then each dollar after the last step that passes.
+    """
+    sizes = range(1, 7)
+    steps = range(0, high + 1, 100)
+    coarse = passes(
+        program, month, [(size, income) for size in sizes for income in steps]
+    ).reshape(len(sizes), len(steps))
+    starts = {
+        size: steps[np.flatnonzero(row)[-1]]
+        for size, row in zip(sizes, coarse)
+        if row.any()
+    }
+    if not starts:
+        return {}
+    fine = passes(
+        program,
+        month,
+        [
+            (size, start + extra)
+            for size, start in starts.items()
+            for extra in range(100)
+        ],
+    ).reshape(len(starts), 100)
+    return {
+        size: start + int(np.flatnonzero(row)[-1])
+        for (size, start), row in zip(starts.items(), fine)
+    }
+
+
 @pytest.mark.parametrize(
     "new, enrolled, month",
     ENROLLMENT_PAIRS,
     ids=lambda value: value.state if isinstance(value, Program) else str(value),
 )
 def test_new_applicant_who_passes_also_passes_when_enrolled(new, enrolled, month):
-    @settings(max_examples=2, deadline=None)
+    # A family at the highest income that passes as a new applicant must pass when
+    # enrolled. If the enrolled test is monotonic in income, passing there means
+    # passing at every lower income too.
+    tops = highest_passing_incomes(new, month)
+    assert sorted(tops) == [1, 2, 3, 4, 5, 6]
+    assert passes(enrolled, month, list(tops.items())).all(), tops
+
+    @settings(max_examples=2, deadline=None, derandomize=True)
     @given(families=SMALL_FAMILIES)
     def check(families):
         passes_new = passes(new, month, families)
@@ -849,47 +892,107 @@ def georgia_results(month, families, **overrides):
     }
 
 
+# Every combination of the drawn flags at seven incomes. The tests below check that
+# the grid holds families on each side of every test they cover.
+GEORGIA_GRID = [
+    {
+        "size": size,
+        "income": income,
+        "hours": hours,
+        "enrolled": enrolled,
+        "pre_k": pre_k,
+        "domestic_violence": domestic_violence,
+    }
+    for size, income, hours, enrolled, pre_k, domestic_violence in itertools.product(
+        [2, 3, 5],
+        [100, 1_000, 2_000, 3_000, 4_500, 6_000, 7_500],
+        [0, 20, 40],
+        [False, True],
+        [False, True],
+        [False, True],
+    )
+]
+
+
+def check_georgia_product(month, families):
+    results = georgia_results(month, families)
+    # Every family has a citizen child under 13 and assets under the limit, so
+    # those two conjuncts hold for all of them.
+    expected = (
+        results["ga_caps_income_eligible"]
+        & results["ga_caps_activity_eligible"]
+        & (results["ga_caps_priority_group_eligible"] | results["ga_caps_enrolled"])
+    )
+    assert (results["ga_caps_eligible"] == expected).all()
+    return results
+
+
 @pytest.mark.parametrize(
     "month", ["2015-06", "2022-11", "2024-08", "2026-01", "2026-10"]
 )
 def test_georgia_eligibility_is_the_product_of_its_tests(month):
-    @settings(max_examples=2, deadline=None)
+    results = check_georgia_product(month, GEORGIA_GRID)
+    income = results["ga_caps_income_eligible"]
+    activity = results["ga_caps_activity_eligible"]
+    group = results["ga_caps_priority_group_eligible"]
+    enrolled = results["ga_caps_enrolled"]
+    # Some grid family fails each test while passing the others, and some enrolled
+    # family passes outside every priority group, so dropping any term changes a
+    # result. Georgia has required new applicants to belong to a priority group since
+    # August 2016.
+    assert (~income & activity & (group | enrolled)).any()
+    assert (income & ~activity & (group | enrolled)).any()
+    if month >= "2016-08":
+        assert (income & activity & ~group & ~enrolled).any()
+        assert (income & activity & ~group & enrolled).any()
+
+    @settings(max_examples=2, deadline=None, derandomize=True)
     @given(families=st.lists(GEORGIA_FLAGS, min_size=20, max_size=20))
     def check(families):
-        results = georgia_results(month, families)
-        # Every family has a citizen child under 13 and assets under the limit, so
-        # those two conjuncts hold for all of them.
-        expected = (
-            results["ga_caps_income_eligible"]
-            & results["ga_caps_activity_eligible"]
-            & (results["ga_caps_priority_group_eligible"] | results["ga_caps_enrolled"])
-        )
-        assert (results["ga_caps_eligible"] == expected).all()
+        check_georgia_product(month, families)
 
     check()
+
+
+def check_priority_group_never_removes_eligibility(families):
+    without = georgia_results("2026-10", families, enrolled=False, pre_k=False)
+    with_group = georgia_results("2026-10", families, enrolled=False, pre_k=True)
+    assert not (without["ga_caps_eligible"] & ~with_group["ga_caps_eligible"]).any()
+    assert with_group["ga_caps_priority_group_eligible"].all()
+    return without, with_group
 
 
 def test_georgia_priority_group_never_removes_eligibility():
-    @settings(max_examples=2, deadline=None)
+    without, with_group = check_priority_group_never_removes_eligibility(GEORGIA_GRID)
+    # Pre-K admits some grid families that no other group admits.
+    assert (~without["ga_caps_eligible"] & with_group["ga_caps_eligible"]).any()
+
+    @settings(max_examples=2, deadline=None, derandomize=True)
     @given(families=st.lists(GEORGIA_FLAGS, min_size=20, max_size=20))
     def check(families):
-        without = georgia_results("2026-10", families, enrolled=False, pre_k=False)
-        with_group = georgia_results("2026-10", families, enrolled=False, pre_k=True)
-        assert not (without["ga_caps_eligible"] & ~with_group["ga_caps_eligible"]).any()
-        assert with_group["ga_caps_priority_group_eligible"].all()
+        check_priority_group_never_removes_eligibility(families)
 
     check()
 
 
+def check_enrollment_replaces_the_priority_group(families):
+    results = georgia_results("2026-10", families, enrolled=True, pre_k=False)
+    expected = results["ga_caps_income_eligible"] & results["ga_caps_activity_eligible"]
+    assert (results["ga_caps_eligible"] == expected).all()
+    return results
+
+
 def test_georgia_enrollment_replaces_the_priority_group():
-    @settings(max_examples=2, deadline=None)
+    results = check_enrollment_replaces_the_priority_group(GEORGIA_GRID)
+    # Some enrolled grid families pass outside every priority group.
+    assert (
+        results["ga_caps_eligible"] & ~results["ga_caps_priority_group_eligible"]
+    ).any()
+
+    @settings(max_examples=2, deadline=None, derandomize=True)
     @given(families=st.lists(GEORGIA_FLAGS, min_size=20, max_size=20))
     def check(families):
-        results = georgia_results("2026-10", families, enrolled=True, pre_k=False)
-        expected = (
-            results["ga_caps_income_eligible"] & results["ga_caps_activity_eligible"]
-        )
-        assert (results["ga_caps_eligible"] == expected).all()
+        check_enrollment_replaces_the_priority_group(families)
 
     check()
 
