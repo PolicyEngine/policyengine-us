@@ -101,10 +101,14 @@ GROSS_INCOME_IN_RESOURCES = {
     "rental_income": "rental_income",
     "dividend_income": "dividend_income",
     "taxable_pension_income": "pension_income",
+    # railroad_benefits holds the whole Railroad Retirement Act annuity; these
+    # two sources tax its non-SSEB part (IRC 72(r)) and its SSEB (IRC 86).
+    "taxable_railroad_pension_benefits": "railroad_benefits",
     "taxable_disability_benefits": "disability_benefits",
     "estate_income": "estate_income",
     "taxable_unemployment_compensation": "total_unemployment_compensation",
     "taxable_social_security": "social_security",
+    "taxable_railroad_social_security_equivalent_benefits": "railroad_benefits",
     "illicit_income": "illicit_income",
     "taxable_retirement_distributions": "retirement_distributions",
     "miscellaneous_income": "miscellaneous_income",
