@@ -35,7 +35,12 @@ class self_employed_health_insurance_plan_business(Variable):
         "counts as established under the partnership or S corporation only "
         "when that business pays or reimburses the premiums and reports them "
         "as guaranteed payments or wages; enter those premiums in "
-        "health_insurance_premiums. Long-term care premiums the business pays "
+        "health_insurance_premiums. A partner also includes those guaranteed "
+        "payments in partnership_income, and in "
+        "partnership_self_employment_net_earnings when the partnership "
+        "reports them in K-1 box 14 code A; a shareholder includes the wages "
+        "in employment_income (see s_corp_shareholder_medicare_wages). "
+        "Long-term care premiums the business pays "
         "or reimburses and reports the same way go in "
         "long_term_health_insurance_premiums, on the insured person. The "
         "deduction counts premiums only when "
@@ -51,4 +56,8 @@ class self_employed_health_insurance_plan_business(Variable):
         "https://www.law.cornell.edu/uscode/text/26/162#l_2_A",
         # PDF pages 1-2
         "https://www.irs.gov/pub/irs-prior/i7206--2023.pdf#page=1",
+        # Notice 2008-1: when a plan is established by the S corporation
+        "https://www.irs.gov/pub/irs-drop/n-08-01.pdf#page=3",
+        # Guaranteed payments to partners are net earnings from self-employment
+        "https://www.irs.gov/pub/irs-prior/i1065--2023.pdf#page=43",
     )

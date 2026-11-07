@@ -36,5 +36,8 @@ class s_corp_shareholder_medicare_wages(Variable):
         "https://www.law.cornell.edu/uscode/text/26/1372",
         "https://www.law.cornell.edu/uscode/text/26/3121#a_2",
         "https://www.irs.gov/pub/irs-prior/f7206--2023.pdf#page=1",
+        # Notice 2008-1: premiums are box 1 wages but not Social Security
+        # or Medicare wages when section 3121(a)(2)(B) applies
+        "https://www.irs.gov/pub/irs-drop/n-08-01.pdf#page=2",
     )
     uprating = "calibration.gov.irs.soi.employment_income"
