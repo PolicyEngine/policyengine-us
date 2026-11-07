@@ -1,3 +1,10 @@
+## [2.104.6] - 2026-11-07
+
+### Fixed
+
+- Fixed Social Security period discovery to forward explicit branches while preserving compatibility with Core versions that accept no branch argument.
+
+
 ## [2.104.5] - 2026-11-07
 
 ### Changed
