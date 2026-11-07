@@ -14,25 +14,25 @@ metadata:
   # https://www.cms.gov/data-research/statistics-trends-and-reports/national-health-expenditure-data/projected
   - title: CMS National Health Expenditure Projections 2025-2034, Table 17
     href: https://www.cms.gov/files/zip/nhe-projections-tables.zip
-  # Medicare enrollment is Part A and/or B enrollment by "a person-year
-  # methodology, which sums the number of months each beneficiary is enrolled
-  # during the year and divides by 12", with U.S. territories removed.
-  - title: "CMS National Health Expenditure Accounts: Methodology Paper, 2024, Medicare enrollment"
-    href: https://www.cms.gov/files/document/definitions-sources-and-methods.pdf#page=34
   # Medicare spending covers Parts A, B, C (Medicare Advantage) and D (file
   # page 15) and, as program spending, federal administration and the
   # non-medical expenditures of Part C and Part D private plans (file page
   # 23). Premiums finance part of that spending rather than reduce it: the
   # sponsor analysis counts SMI premiums as household spending on Medicare
-  # (file page 30).
-  - title: "CMS National Health Expenditure Accounts: Methodology Paper, 2024, Medicare spending"
-    href: https://www.cms.gov/files/document/definitions-sources-and-methods.pdf#page=23
+  # (file page 30). Medicare enrollment is Part A and/or B enrollment by "a
+  # person-year methodology, which sums the number of months each
+  # beneficiary is enrolled during the year and divides by 12", with U.S.
+  # territories removed (file page 34). sha256
+  # 9c5755666847a78103016f04da937326744071a9a6736f4e77e91ce9e7af8629.
+  - title: "CMS National Health Expenditure Accounts: Methodology Paper, 2024 #page 15,23,30,34"
+    href: https://www.cms.gov/files/document/definitions-sources-methods.pdf#page=15
   # "Projections of Medicare spending and enrollment used in the NHE
-  # projections were generated for the most recent Trustees Report", here
-  # the 2026 report. Last Updated June 24, 2026, sha256
+  # projections were generated for the most recent Trustees Report" (file
+  # page 7); file page 6 names the 2026 report for the economic assumptions.
+  # Last Updated June 24, 2026, sha256
   # ce62fe2c236cc96ce287027784b141584ddf39e62c5fd8ddc3e771a014944817.
-  - title: "Projections of National Health Expenditures and Enrollment: Methodology and Model Specification"
-    href: https://www.cms.gov/research-statistics-data-and-systems/statistics-trends-and-reports/nationalhealthexpenddata/downloads/projectionsmethodology.pdf#page=7
+  - title: "Projections of National Health Expenditures and Enrollment: Methodology and Model Specification #page 6-7"
+    href: https://www.cms.gov/research-statistics-data-and-systems/statistics-trends-and-reports/nationalhealthexpenddata/downloads/projectionsmethodology.pdf#page=6
 values:
   # Historical.
   2013-01-01: 11_483

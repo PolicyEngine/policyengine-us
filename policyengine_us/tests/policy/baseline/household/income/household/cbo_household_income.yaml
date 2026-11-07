@@ -46,6 +46,21 @@
     cbo_household_income_before_transfers_and_taxes: 78_627.64
     cbo_household_income: 78_627.64
 
+- name: CBO income counts a Medicare enrollee net of premiums in 2014
+  period: 2014
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    medicare_enrolled: true
+    employment_income: 10_000
+  output:
+    # ($11,683 - $449.04) x 0.971 - $60.98 - $1,213.05 - $210.66.
+    cbo_medicare_benefit: 9_423.49
+    # $10,891, the same household's CBO income without an enrollee, plus
+    # $9,423.49. Counting gross Medicare spending per enrollee ($11,683)
+    # instead gives $10,891 + $11,683 = $22,574.
+    cbo_household_income: 20_314.49
+
 - name: CBO means-tested transfers include only the listed programs
   period: 2026
   input:

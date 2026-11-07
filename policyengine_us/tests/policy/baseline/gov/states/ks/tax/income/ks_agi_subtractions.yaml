@@ -149,3 +149,14 @@
     ks_taxable_income: 29_170
     # 23,001 * 5.2% + (29,170 - 23,001) * 5.58% = 1,196.05 + 344.23
     ks_income_tax_before_credits: 1_540.28
+
+- name: Filer military retirement pay and survivor benefits subtracted under K.S.A. § 79-32,117(c)
+  period: 2025
+  input:
+    state_code: KS
+    employment_income: 50_000
+    military_retirement_pay: 15_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    ks_agi_subtractions: 25_000
+    ks_agi: 50_000

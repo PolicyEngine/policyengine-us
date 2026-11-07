@@ -127,3 +127,158 @@
     meets_ssi_disability_criteria: true
   output:
     medicaid_federal_share: 0.9000
+
+# RIte Start/FCEP continuation for undocumented residents has no Title XIX
+# Medicaid match. Separate Title XXI HSI funding is outside this cost variable.
+# https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm
+# https://www.law.cornell.edu/uscode/text/42/1396b#v
+# https://www.medicaid.gov/CHIP/Downloads/RI-22-0026.pdf#page=2
+# January 2024 uses Rhode Island's regular FY2024 FMAP of 55.01%.
+- name: Rhode Island RIte Start and FCEP continuation has no Title XIX match for undocumented residents while a Medicaid citizen retains regular FMAP.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        ri_pregnancy_coverage: FCEP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+        takes_up_medicaid_if_eligible: true
+        medicaid_cost: 1_000
+      person2:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+        takes_up_medicaid_if_eligible: true
+        medicaid_cost: 1_000
+      person3:
+        age: 30
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: MEDICAID
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+        takes_up_medicaid_if_eligible: true
+        medicaid_cost: 1_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    is_medicaid_eligible: [true, true, true]
+    medicaid_enrolled: [true, true, true]
+    medicaid_federal_share: [0, 0, 0.5501]
+    medicaid_federal_cost: [0, 0, 550.1]
+
+# R.I. Gen. Laws § 42-12.3-3(b) limits RIte Start to people not eligible under
+# Title XIX or XXI, so its postpartum continuation has no Title XIX match even
+# for a citizen. Only a Medicaid pregnancy keeps the pregnancy group, and at
+# 400% FPL this citizen meets no other Medicaid group.
+# https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm
+- name: Rhode Island RIte Start continuation has no Title XIX match for a citizen.
+  period: 2024
+  input:
+    state_code: RI
+    age: 30
+    immigration_status: CITIZEN
+    ri_pregnancy_coverage: RITE_START
+    ri_pregnancy_end_date: "2023-03-07"
+    medicaid_household_size: 2
+    medicaid_income_level: 4
+    takes_up_medicaid_if_eligible: true
+  output:
+    medicaid_category: NONE
+    medicaid_enrolled: true
+    medicaid_federal_share: 0
+
+# Only a Medicaid-covered pregnancy of someone who meets Medicaid immigration
+# requirements keeps the Title XIX match in the continuation. A citizen whose
+# pregnancy was covered by CHIP and who now takes up Medicaid instead, and an
+# undocumented resident whose pregnancy was covered by Medicaid, both get 0.
+- name: Rhode Island CHIP-history and Medicaid-history-without-status continuations have no Title XIX match.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+        takes_up_medicaid_if_eligible: true
+        takes_up_chip_if_eligible: false
+      person2:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        ri_pregnancy_coverage: MEDICAID
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+        takes_up_medicaid_if_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    medicaid_enrolled: [true, true]
+    medicaid_federal_share: [0, 0]
+
+# 210-RICR-30-00-1 § 1.6(A)(2)(d)(1) extends postpartum coverage to people not
+# eligible under another Medicaid eligibility category, and § 42-12.3-3(g)
+# uses state-only funds only if federal financial participation is not
+# available. Each person meets a federally matched group: the adult group at
+# 120% FPL, the pregnancy group at 150% FPL, or SSI.
+# https://risos-apa-production-public.s3.amazonaws.com/EOHHS/REG_13314_20250728104245127.pdf#page=6
+- name: Rhode Island non-Medicaid pregnancy histories keep the match of a federally matched group the person meets.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 1.2
+        takes_up_medicaid_if_eligible: true
+      person2:
+        age: 30
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: FCEP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 1.2
+        takes_up_medicaid_if_eligible: true
+      person3:
+        age: 30
+        immigration_status: CITIZEN
+        is_pregnant: true
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 1.5
+        takes_up_medicaid_if_eligible: true
+      person4:
+        age: 30
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2023-03-07"
+        is_ssi_recipient_for_medicaid: true
+        medicaid_household_size: 2
+        medicaid_income_level: 0.5
+        takes_up_medicaid_if_eligible: true
+        takes_up_chip_if_eligible: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    medicaid_category: [ADULT, ADULT, PREGNANT, SSI_RECIPIENT]
+    medicaid_enrolled: [true, true, true, true]
+    medicaid_federal_share: [0.9, 0.9, 0.5501, 0.5501]

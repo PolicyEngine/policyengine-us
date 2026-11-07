@@ -103,3 +103,34 @@
     # like the earned sources: $33,000 + $0 + $0 = $33,000, and $33,000 + $3,000 =
     # $36,000.
     md_meap_countable_income: [33_000, 36_000]
+
+- name: Case 6, reported unemployment compensation counts as unearned income.
+  # The unearned source list reads total_unemployment_compensation. Maryland
+  # has no modeled unemployment insurance program, so the total is the
+  # reported amount and this control shows reported UC still counts.
+  period: 2026
+  input:
+    state_code: MD
+    age: 40
+    unemployment_compensation: 6_000
+    ssi: 0
+    tanf: 0
+  output:
+    total_unemployment_compensation: 6_000
+    # COMAR 07.03.21.04D(17) counts unemployment benefits.
+    md_meap_countable_income: 6_000
+
+- name: Case 7, a military Survivor Benefit Plan annuity counts as a survivor benefit.
+  # The survivor annuity is recorded in military_retirement_pay_survivors, not
+  # in military_retirement_pay or survivor_benefits, so it counts once.
+  period: 2026
+  input:
+    state_code: MD
+    age: 70
+    military_retirement_pay_survivors: 9_600
+    ssi: 0
+    tanf: 0
+  output:
+    # COMAR 07.03.21.04D(12) counts pensions and D(13) counts disbursements
+    # from annuities, so the $9,600 annuity counts in full.
+    md_meap_countable_income: 9_600

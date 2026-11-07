@@ -1,8 +1,10 @@
 # Spending is CMS Medicare spending per enrollee times the ratio of spending
 # per enrollee outside nursing homes to spending per enrollee (0.971); 2025:
-# $17,751 x 0.971 = $17,236.22. The expected Part D premium is the Part D
-# enrollment share times (Part D premiums per Part D enrollee + the person's
-# Part D IRMAA). 2025: 0.8191 x $220.25 = $180.41 without IRMAA.
+# $17,751 x 0.971 = $17,236.22. The Part D premium is the average per
+# Medicare enrollee, the Part D enrollment share times Part D premiums per
+# Part D enrollee (2025: 0.8191 x $220.25 = $180.41), plus the person's own
+# Part D IRMAA. Sources: 2026 Medicare Trustees Report, Tables III.D3, V.B3
+# and V.E4.
 
 - name: unit test 1 - enrolled, premium-free Part A
   period: 2025
@@ -47,9 +49,9 @@
       2023: 0
     filing_status: SINGLE
   output:
-    # $17,236.22 - $7,546.80 Part B with IRMAA - 0.8191 x ($220.25 + $85.80 x
-    # 12 Part D IRMAA) = $1,023.75 Part D (2025)
-    medicare_cost: 8_665.67
+    # $17,236.22 - $7,546.80 Part B with IRMAA - $180.41 Part D - $85.80 x
+    # 12 = $1,029.60 Part D IRMAA (2025)
+    medicare_cost: 8_479.41
 
 - name: unit test 4 - eligible but not enrolled
   period: 2025
@@ -103,9 +105,8 @@
     gross_medicare_part_b_premium: 2_220
   output:
     income_adjusted_part_d_premium_surcharge: 423.6
-    # $17,236.22 - $2,220 Part B - 0.8191 x ($220.25 + $423.60) = $527.38
-    # Part D
-    medicare_cost: 14_488.84
+    # $17,236.22 - $2,220 Part B - $180.41 Part D - $423.60 Part D IRMAA
+    medicare_cost: 14_412.21
 
 - name: unit test 8 - projected year
   period: 2027
@@ -131,9 +132,9 @@
     gross_medicare_part_b_premium: 3_000
     income_adjusted_part_d_premium_surcharge: 1_000
   output:
-    # $23,789 x 0.971 = $23,099.12 - $3,000 Part B - 0.8382 x ($637.06 +
-    # $1,000) = $1,372.18 Part D
-    medicare_cost: 18_726.94
+    # $23,789 x 0.971 = $23,099.12 - $3,000 Part B - 0.8382 x $637.06 =
+    # $533.98 Part D - $1,000 Part D IRMAA (2030)
+    medicare_cost: 18_565.14
 
 - name: unit test 10 - premiums above spending floor the value at zero
   period: 2025
@@ -156,3 +157,25 @@
     income_adjusted_part_d_premium_surcharge: 1_029.6
   output:
     medicare_gross_cost: 17_236.22
+
+# A Medicare enrollee whose drug coverage is not Part D owes no Part D IRMAA
+# (income_adjusted_part_d_premium_surcharge is defined for
+# medicare_part_d_enrolled), but still has the average Part D premium
+# subtracted, because the spending averages Part D over every enrollee.
+- name: unit test 12 - high income, not enrolled in Part D
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 40
+    takes_up_medicare_part_d_if_eligible: false
+    adjusted_gross_income:
+      2023: 500_000  # IRMAA uses income from 2 years prior
+    tax_exempt_interest_income:
+      2023: 0
+    filing_status: SINGLE
+  output:
+    income_adjusted_part_d_premium_surcharge: 0
+    # $17,236.22 - $7,546.80 Part B with IRMAA - $180.41 Part D (2025)
+    medicare_cost: 9_509.01

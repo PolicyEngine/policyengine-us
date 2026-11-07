@@ -6,11 +6,13 @@ class medicare_cost(Variable):
     entity = Person
     label = "Medicare cost"
     documentation = (
-        "Annual value of Medicare benefits received. Calculated as Medicare "
-        "spending per enrollee who does not live in a nursing home, which "
-        "covers Parts A through D, minus the premiums that finance it: the "
-        "Part A premium, the gross Part B premium and the expected Part D "
-        "premium. This represents the net benefit value of Medicare coverage."
+        "Annual value of Medicare benefits received: Medicare spending per "
+        "enrollee who does not live in a nursing home, which covers Parts A "
+        "through D, minus the premiums that finance it, namely the Part A "
+        "premium, the gross Part B premium, the average Part D premium per "
+        "Medicare enrollee, and the person's own Part D income-related "
+        "monthly adjustment amount. This represents the net benefit value of "
+        "Medicare coverage."
     )
     unit = USD
     definition_period = YEAR
@@ -31,15 +33,22 @@ class medicare_cost(Variable):
         # inflate Medicare's value.
         part_a_premium = person("base_part_a_premium", period)
         part_b_premium = person("gross_medicare_part_b_premium_if_enrolled", period)
-        # The spending includes Part D, which enrollee premiums partly finance.
-        # No variable records Part D enrollment, so subtract the expected
-        # Part D premium: the Part D enrollment share times the premium per
-        # Part D enrollee plus the person's income-related adjustment.
-        part_d_irmaa = person("income_adjusted_part_d_premium_surcharge", period)
-        part_d_premium = p.part_d.enrollment_share * (
-            p.part_d.premiums_per_enrollee + part_d_irmaa
+        # The spending includes Part D averaged over every Medicare enrollee,
+        # and enrollee premiums finance part of it. Subtract the Part D
+        # premium averaged the same way: the Part D enrollment share times
+        # premiums per Part D enrollee, which exclude the income-related
+        # monthly adjustment amount.
+        average_part_d_premium = (
+            p.part_d.enrollment_share * p.part_d.premiums_per_enrollee
         )
-        total_premiums = part_a_premium + part_b_premium + part_d_premium
+        # The adjustment amount is the person's own, and is zero for anyone
+        # not enrolled in Part D (medicare_part_d_enrolled), so it is
+        # subtracted in full: scaling it by the enrollment share would count
+        # non-enrollment twice.
+        part_d_irmaa = person("income_adjusted_part_d_premium_surcharge", period)
+        total_premiums = (
+            part_a_premium + part_b_premium + average_part_d_premium + part_d_irmaa
+        )
 
         # Net benefit = spending - premiums
         return max_(per_capita_spending - total_premiums, 0)

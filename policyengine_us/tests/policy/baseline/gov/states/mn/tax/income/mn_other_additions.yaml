@@ -1,0 +1,14 @@
+- name: Case 1, default mn_other_additions is zero
+  period: 2024
+  input:
+    state_code: MN
+  output:
+    mn_other_additions: 0.0
+
+- name: Case 2, mn_other_additions flows into mn_additions
+  period: 2024
+  input:
+    state_code: MN
+    mn_other_additions: 1_700
+  output:
+    mn_additions: 1_700

@@ -1,0 +1,34 @@
+description: Tennessee sets the regular assistance income limit at this multiple of the federal poverty guideline, by household size, under the Low Income Home Energy Assistance Program.
+# A zero rate means the state median income limit applies. FY2026 uses 60% of
+# state median income for every size. FY2027 uses 150% of the poverty
+# guideline for sizes 9 and over, with upper limits rounded down to the
+# nearest dollar. The draft plan lists sizes 9-15 and the draft manual sizes
+# 9-16; larger households carry the same rate. The LI-12 matrix prints size
+# 13-16 ceilings of $125,910 to $150,660, below 150% of the 2026 guideline
+# ($126,180 to $151,740); these sizes follow the stated 150% rule.
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 0
+  - threshold:
+      2025-10-01: 9
+    amount:
+      2025-10-01: 0
+      2026-10-01: 1.5
+
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: /1
+  period: year
+  label: Tennessee LIHEAP poverty guideline income limit rate
+  reference:
+    - title: Tennessee FY2026 LIHEAP State Plan, Section 2.1
+      href: https://liheapch.acf.gov/docs/2026/state-plans/TN_Plan_2026.pdf#page=8
+    - title: "Tennessee FY2027 LIHEAP State Plan (draft), Sections 2.1 and 2.5 #page 9,12"
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/DETAILED-MODEL-PLAN-LIHEAP_10_01_2026.pdf#page=9
+    - title: Tennessee LIHEAP 2027 Policy Manual (draft), Section 2.10
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/DRAFT-LIHEAP-2027-Policy-Manual-7-11-2026.pdf#page=27
+    - title: "Tennessee FY2027 LIHEAP Benefit Matrix (LI-12), household sizes 9-16 #page 3-4"
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/2027-LIHEAP-LI-12-Eligible-Income-Benefit-Matrix.pdf#page=3
