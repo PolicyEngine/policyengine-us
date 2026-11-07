@@ -11,7 +11,6 @@ class mo_ccs(Variable):
     reference = "https://www.law.cornell.edu/regulations/missouri/5-CSR-25-200-060"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.mo.dese.ccs
         # Reimbursement is paid per child at a daily rate for each day of care,
         # capped at the family's child care charges.
         person = spm_unit.members
@@ -28,8 +27,5 @@ class mo_ccs(Variable):
         # funds the percentage "of the remaining state base rate"). Traditional
         # families are funded at the full rate, so the multiplier is 1 and the
         # order has no effect.
-        adjusted_income = spm_unit("mo_ccs_adjusted_income", period)
-        monthly_fpg = spm_unit("mo_ccs_fpg", period)
-        fpl_ratio = where(monthly_fpg > 0, adjusted_income / monthly_fpg, 0)
-        funding_rate = p.transitional.funding_rate.calc(fpl_ratio)
+        funding_rate = spm_unit("mo_ccs_funding_rate", period)
         return funding_rate * max_(total_reimbursement - copay, 0)

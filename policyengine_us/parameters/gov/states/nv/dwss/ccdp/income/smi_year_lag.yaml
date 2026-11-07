@@ -1,0 +1,17 @@
+description: Nevada reads the state median income table from this many federal fiscal years before the program year in effect under the Child Care and Development Program.
+
+# Nevada takes up each federal table on its October 1 start, with one exception: the
+# FFY 2022-2024 plan dates its 85% limits ($5,066 a month for three) to July 1, 2022,
+# and builds them on the LIHEAP fiscal year 2023 table, which starts October 1, 2022.
+values:
+  2015-01-01: 0
+  2022-07-01: -1
+  2022-10-01: 0
+
+metadata:
+  unit: year
+  period: month
+  label: Nevada CCDP state median income table year lag
+  reference:
+    - title: "Nevada CCDF State Plan FFY 2022-2024, Amendment approved May 16, 2023, Section 3.1.3(b), (d) and (f), 85% of the LIHEAP FFY23 state median income from July 1, 2022 #page 50-51"
+      href: https://dwss.nv.gov/uploadedFiles/dwssnvgov/content/Care/Amended%20State%20Plan.pdf#page=50

@@ -856,6 +856,7 @@ programs:
         full_name: Ohio Child Care Assistance Program (Publicly Funded Child Care and Child Care Choice Voucher Program)
         variable: oh_child_care_subsidies
         parameter_prefix: gov.states.oh.dcy.ccap
+        notes: The Child Care Choice Voucher Program starts in November 2025 with Procedure Letter 36's monthly payment chart; the model leaves out the voucher from its April 2024 launch until then and the initial enrollment payment the letter adds on top of the monthly payments.
       - state: PA
         status: complete
         name: Pennsylvania CCW

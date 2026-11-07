@@ -1,0 +1,17 @@
+description: Maryland pins the State Median Income (SMI) base year used for the Child Care Scholarship continuation income scale when continuation_smi_freeze_in_effect is true. Maryland's fiscal year starts July 1.
+values:
+  2018-07-01: 2018
+  2022-07-01: 2021
+  # The posted Continuation Income Scale effective April 22, 2024 uses the median HHS
+  # published for federal fiscal 2025, which starts October 1, 2024.
+  2024-04-22: 2024
+
+metadata:
+  unit: year
+  period: year
+  label: Maryland CCS continuation SMI frozen year
+  reference:
+    - title: MSDE Child Care Scholarship Program Briefing (Feb 4, 2026), slide 21 - fiscal-year base years
+      href: https://mgaleg.maryland.gov/meeting_material/2026/w&m%20-%20134146885147130127%20-%20Briefing%20materials.pdf#page=21
+    - title: MSDE, Child Care Scholarship Program, Continuation Income Scale effective April 22, 2024 (captured October 9, 2026)
+      href: https://web.archive.org/web/20261009215322/https://earlychildhood.marylandpublicschools.org/child-care-providers/child-care-scholarship-program

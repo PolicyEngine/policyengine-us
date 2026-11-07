@@ -9,8 +9,8 @@ class oh_ccvp(Variable):
     definition_period = MONTH
     defined_for = "oh_ccvp_eligible"
     reference = (
+        # PDF pages 2, 4
         "https://dam.assets.ohio.gov/image/upload/childrenandyouth.ohio.gov/For%20Partners/Rules%20and%20Resources/2025/PL_36.pdf#page=2",
-        "https://dam.assets.ohio.gov/image/upload/childrenandyouth.ohio.gov/For%20Partners/Rules%20and%20Resources/2025/PL_36.pdf#page=4",
     )
 
     def formula(spm_unit, period, parameters):
@@ -19,7 +19,9 @@ class oh_ccvp(Variable):
         # provider's private rate, so the charge caps the payment. The voucher
         # has no Publicly Funded Child Care copayment; the letter encourages
         # programs to hold the family's portion to 9% of income without
-        # requiring it.
+        # requiring it. The model leaves out the letter's initial enrollment
+        # payment, which programs receive on authorization on top of the
+        # monthly payments.
         person = spm_unit.members
         rate = person("oh_ccvp_rate", period)
         charge = person("pre_subsidy_childcare_expenses", period)

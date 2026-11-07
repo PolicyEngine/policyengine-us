@@ -310,3 +310,199 @@
         id_iccp_enrolled: false
   output:
     id_iccp_income_eligible: false
+
+# Posted charts: each printed family size at its top passes and a dollar more
+# fails. Each case sets the unit's size directly and lists the outcomes in size
+# order, the top first.
+
+- name: The department's table effective October 2025 holds at every family size in January 2026.
+  period: 2026-01
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 2
+        id_iccp_countable_income: 2_292
+        id_iccp_enrolled: false
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 2
+        id_iccp_countable_income: 2_293
+        id_iccp_enrolled: false
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 3
+        id_iccp_countable_income: 2_888
+        id_iccp_enrolled: false
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 3
+        id_iccp_countable_income: 2_889
+        id_iccp_enrolled: false
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 4
+        id_iccp_countable_income: 3_483
+        id_iccp_enrolled: false
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 4
+        id_iccp_countable_income: 3_484
+        id_iccp_enrolled: false
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 5
+        id_iccp_countable_income: 4_079
+        id_iccp_enrolled: false
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 5
+        id_iccp_countable_income: 4_080
+        id_iccp_enrolled: false
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 6
+        id_iccp_countable_income: 4_675
+        id_iccp_enrolled: false
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 6
+        id_iccp_countable_income: 4_676
+        id_iccp_enrolled: false
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 7
+        id_iccp_countable_income: 5_271
+        id_iccp_enrolled: false
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 7
+        id_iccp_countable_income: 5_272
+        id_iccp_enrolled: false
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 8
+        id_iccp_countable_income: 5_867
+        id_iccp_enrolled: false
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 8
+        id_iccp_countable_income: 5_868
+        id_iccp_enrolled: false
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: ID
+      h2:
+        members: [p2]
+        state_code:
+          2026: ID
+      h3:
+        members: [p3]
+        state_code:
+          2026: ID
+      h4:
+        members: [p4]
+        state_code:
+          2026: ID
+      h5:
+        members: [p5]
+        state_code:
+          2026: ID
+      h6:
+        members: [p6]
+        state_code:
+          2026: ID
+      h7:
+        members: [p7]
+        state_code:
+          2026: ID
+      h8:
+        members: [p8]
+        state_code:
+          2026: ID
+      h9:
+        members: [p9]
+        state_code:
+          2026: ID
+      h10:
+        members: [p10]
+        state_code:
+          2026: ID
+      h11:
+        members: [p11]
+        state_code:
+          2026: ID
+      h12:
+        members: [p12]
+        state_code:
+          2026: ID
+      h13:
+        members: [p13]
+        state_code:
+          2026: ID
+      h14:
+        members: [p14]
+        state_code:
+          2026: ID
+  output:
+    # Apply for Child Care, 130% of the 2025 guideline, sizes 2 to 8.
+    id_iccp_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false]

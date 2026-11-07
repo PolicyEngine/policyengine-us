@@ -475,3 +475,391 @@
         state_code: OH
   output:
     oh_ccap_income_eligible: true
+
+# Posted charts: each printed family size at its top passes and a dollar more
+# fails. Each case sets the unit's size directly and lists the outcomes in size
+# order, the top first.
+
+- name: Procedure Letter 21's initial limits hold at every family size in January 2026.
+  period: 2026-01
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 2
+        oh_ccap_countable_income: 2_556
+        oh_ccap_enrolled: false
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 2
+        oh_ccap_countable_income: 2_557
+        oh_ccap_enrolled: false
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 3
+        oh_ccap_countable_income: 3_221
+        oh_ccap_enrolled: false
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 3
+        oh_ccap_countable_income: 3_222
+        oh_ccap_enrolled: false
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 4
+        oh_ccap_countable_income: 3_885
+        oh_ccap_enrolled: false
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 4
+        oh_ccap_countable_income: 3_886
+        oh_ccap_enrolled: false
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 5
+        oh_ccap_countable_income: 4_550
+        oh_ccap_enrolled: false
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 5
+        oh_ccap_countable_income: 4_551
+        oh_ccap_enrolled: false
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 6
+        oh_ccap_countable_income: 5_214
+        oh_ccap_enrolled: false
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 6
+        oh_ccap_countable_income: 5_215
+        oh_ccap_enrolled: false
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 7
+        oh_ccap_countable_income: 5_879
+        oh_ccap_enrolled: false
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 7
+        oh_ccap_countable_income: 5_880
+        oh_ccap_enrolled: false
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 8
+        oh_ccap_countable_income: 6_544
+        oh_ccap_enrolled: false
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 8
+        oh_ccap_countable_income: 6_545
+        oh_ccap_enrolled: false
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: OH
+      h2:
+        members: [p2]
+        state_code:
+          2026: OH
+      h3:
+        members: [p3]
+        state_code:
+          2026: OH
+      h4:
+        members: [p4]
+        state_code:
+          2026: OH
+      h5:
+        members: [p5]
+        state_code:
+          2026: OH
+      h6:
+        members: [p6]
+        state_code:
+          2026: OH
+      h7:
+        members: [p7]
+        state_code:
+          2026: OH
+      h8:
+        members: [p8]
+        state_code:
+          2026: OH
+      h9:
+        members: [p9]
+        state_code:
+          2026: OH
+      h10:
+        members: [p10]
+        state_code:
+          2026: OH
+      h11:
+        members: [p11]
+        state_code:
+          2026: OH
+      h12:
+        members: [p12]
+        state_code:
+          2026: OH
+      h13:
+        members: [p13]
+        state_code:
+          2026: OH
+      h14:
+        members: [p14]
+        state_code:
+          2026: OH
+  output:
+    # 145% of the 2025 guideline, sizes 2 to 8.
+    oh_ccap_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: Procedure Letter 45's initial limits hold at every family size in October 2026.
+  period: 2026-10
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 2
+        oh_ccap_countable_income: 2_615
+        oh_ccap_enrolled: false
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 2
+        oh_ccap_countable_income: 2_616
+        oh_ccap_enrolled: false
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 3
+        oh_ccap_countable_income: 3_302
+        oh_ccap_enrolled: false
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 3
+        oh_ccap_countable_income: 3_303
+        oh_ccap_enrolled: false
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 4
+        oh_ccap_countable_income: 3_988
+        oh_ccap_enrolled: false
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 4
+        oh_ccap_countable_income: 3_989
+        oh_ccap_enrolled: false
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 5
+        oh_ccap_countable_income: 4_674
+        oh_ccap_enrolled: false
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 5
+        oh_ccap_countable_income: 4_675
+        oh_ccap_enrolled: false
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 6
+        oh_ccap_countable_income: 5_361
+        oh_ccap_enrolled: false
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 6
+        oh_ccap_countable_income: 5_362
+        oh_ccap_enrolled: false
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 7
+        oh_ccap_countable_income: 6_047
+        oh_ccap_enrolled: false
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 7
+        oh_ccap_countable_income: 6_048
+        oh_ccap_enrolled: false
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 8
+        oh_ccap_countable_income: 6_733
+        oh_ccap_enrolled: false
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 8
+        oh_ccap_countable_income: 6_734
+        oh_ccap_enrolled: false
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: OH
+      h2:
+        members: [p2]
+        state_code:
+          2026: OH
+      h3:
+        members: [p3]
+        state_code:
+          2026: OH
+      h4:
+        members: [p4]
+        state_code:
+          2026: OH
+      h5:
+        members: [p5]
+        state_code:
+          2026: OH
+      h6:
+        members: [p6]
+        state_code:
+          2026: OH
+      h7:
+        members: [p7]
+        state_code:
+          2026: OH
+      h8:
+        members: [p8]
+        state_code:
+          2026: OH
+      h9:
+        members: [p9]
+        state_code:
+          2026: OH
+      h10:
+        members: [p10]
+        state_code:
+          2026: OH
+      h11:
+        members: [p11]
+        state_code:
+          2026: OH
+      h12:
+        members: [p12]
+        state_code:
+          2026: OH
+      h13:
+        members: [p13]
+        state_code:
+          2026: OH
+      h14:
+        members: [p14]
+        state_code:
+          2026: OH
+  output:
+    # 145% of the 2026 guideline, sizes 2 to 8.
+    oh_ccap_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false]

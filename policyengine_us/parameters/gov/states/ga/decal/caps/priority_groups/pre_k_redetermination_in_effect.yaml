@@ -1,0 +1,20 @@
+description: Georgia uses this indicator to determine whether families of children enrolled in Georgia's Pre-K Program at initial application or the previous eligibility determination must belong to a priority group at redetermination under the Childcare and Parent Services program.
+
+# DECAL's July 1, 2024 letter adds the requirement to CAPS/00-7 and CAPS/00-14, and
+# its October 6, 2025 letter removes it. The model applies each date at the first
+# month that starts on or after it, so the requirement covers July 2024 through
+# October 2025.
+values:
+  2015-01-01: false
+  2024-07-01: true
+  2025-10-06: false
+
+metadata:
+  unit: bool
+  period: month
+  label: Georgia CAPS Pre-K redetermination requirement in effect
+  reference:
+    - title: Georgia DECAL, Letter to CAPS Families (July 1, 2024), requirement added July 1, 2024
+      href: https://caps.decal.ga.gov/Assets/downloads/CAPS_Letter_from_Elisabetta_Kasfir_Families_07.01.2024.pdf#page=1
+    - title: Georgia DECAL, Letter to CAPS Families (October 6, 2025), requirement removed October 6, 2025
+      href: https://caps.decal.ga.gov/Assets/downloads/CAPS_Letter_to_Families_Policy_Revisions_10.06.25.pdf#page=1

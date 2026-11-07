@@ -344,16 +344,58 @@
     # 3,333/mo < 4,835/mo -> eligible. A 2-person unit at this income fails.
     in_ccdf_income_eligible: true
 
-# Tops by family of three: 150% of the 2023 guideline ($3,108) until March 31, 2024; of
-# the 2024 guideline ($3,228, state plan section 2.2.4) until May 1, 2025; of the 2025
-# guideline ($3,331) until April 5, 2026; then 135% of the 2026 guideline ($3,074, FSSA's
-# chart). A monthly period reads each change from the next month's first day.
-#
-# Before August 2023 the limit was 127% (OECOSL bulletin). No source dates Indiana's
-# guideline year before the March 31, 2024 plan, so the model reads the current year's
-# guideline until 2024, and these two cases pin that choice: 127% of the 2023 guideline
-# gives $2,631 for three in June 2023. The 2022 guideline would give $2,437, and 150%
-# would give $3,108.
+# Tops by family of three, from FSSA's fee schedules: 127% of the 2022 guideline ($2,437)
+# until March 12, 2023; 127% of the 2023 guideline ($2,631) until August 1, 2023, when the
+# rate rises to 150% ($3,108, OECOSL bulletin); 150% of the 2024 guideline ($3,228) from
+# March 31, 2024; of the 2025 guideline ($3,331) from March 23, 2025; then 135% of the
+# 2026 guideline ($3,074) from April 5, 2026. A monthly period reads each change from the
+# next month's first day.
+
+- name: New applicant of 3 at 2,437 dollars qualifies in 2023-03.
+  period: 2023-03
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 2_437
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2023: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 3 at 2,438 dollars doesn't qualify in 2023-03.
+  period: 2023-03
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 2_438
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2023: IN
+  output:
+    in_ccdf_income_eligible: false
 
 - name: New applicant of 3 at 2,631 dollars qualifies in 2023-06.
   period: 2023-06
@@ -493,8 +535,8 @@
   output:
     in_ccdf_income_eligible: false
 
-- name: New applicant of 3 at 3,228 dollars qualifies in 2025-04.
-  period: 2025-04
+- name: New applicant of 3 at 3,228 dollars qualifies in 2025-03.
+  period: 2025-03
   input:
     people:
       person1:
@@ -516,8 +558,8 @@
   output:
     in_ccdf_income_eligible: true
 
-- name: New applicant of 3 at 3,229 dollars doesn't qualify in 2025-04.
-  period: 2025-04
+- name: New applicant of 3 at 3,229 dollars doesn't qualify in 2025-03.
+  period: 2025-03
   input:
     people:
       person1:
@@ -539,8 +581,8 @@
   output:
     in_ccdf_income_eligible: false
 
-- name: New applicant of 3 at 3,331 dollars qualifies in 2025-05.
-  period: 2025-05
+- name: New applicant of 3 at 3,331 dollars qualifies in 2025-04.
+  period: 2025-04
   input:
     people:
       person1:
@@ -562,8 +604,8 @@
   output:
     in_ccdf_income_eligible: true
 
-- name: New applicant of 3 at 3,332 dollars doesn't qualify in 2025-05.
-  period: 2025-05
+- name: New applicant of 3 at 3,332 dollars doesn't qualify in 2025-04.
+  period: 2025-04
   input:
     people:
       person1:
@@ -1008,3 +1050,339 @@
           2026: IN
   output:
     in_ccdf_income_eligible: false
+
+# Posted charts: each printed family size at its top passes and a dollar more
+# fails. Each case sets the unit's size directly and lists the outcomes in size
+# order, the top first.
+
+- name: FSSA's chart effective April 5, 2026 holds at every family size in May 2026.
+  period: 2026-05
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 2
+        in_ccdf_countable_income: 2_435
+        is_in_ccdf_enrolled: false
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 2
+        in_ccdf_countable_income: 2_436
+        is_in_ccdf_enrolled: false
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 3
+        in_ccdf_countable_income: 3_074
+        is_in_ccdf_enrolled: false
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 3
+        in_ccdf_countable_income: 3_075
+        is_in_ccdf_enrolled: false
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 4
+        in_ccdf_countable_income: 3_713
+        is_in_ccdf_enrolled: false
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 4
+        in_ccdf_countable_income: 3_714
+        is_in_ccdf_enrolled: false
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 5
+        in_ccdf_countable_income: 4_352
+        is_in_ccdf_enrolled: false
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 5
+        in_ccdf_countable_income: 4_353
+        is_in_ccdf_enrolled: false
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 6
+        in_ccdf_countable_income: 4_991
+        is_in_ccdf_enrolled: false
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 6
+        in_ccdf_countable_income: 4_992
+        is_in_ccdf_enrolled: false
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 7
+        in_ccdf_countable_income: 5_630
+        is_in_ccdf_enrolled: false
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 7
+        in_ccdf_countable_income: 5_631
+        is_in_ccdf_enrolled: false
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 8
+        in_ccdf_countable_income: 6_269
+        is_in_ccdf_enrolled: false
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 8
+        in_ccdf_countable_income: 6_270
+        is_in_ccdf_enrolled: false
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: IN
+      h2:
+        members: [p2]
+        state_code:
+          2026: IN
+      h3:
+        members: [p3]
+        state_code:
+          2026: IN
+      h4:
+        members: [p4]
+        state_code:
+          2026: IN
+      h5:
+        members: [p5]
+        state_code:
+          2026: IN
+      h6:
+        members: [p6]
+        state_code:
+          2026: IN
+      h7:
+        members: [p7]
+        state_code:
+          2026: IN
+      h8:
+        members: [p8]
+        state_code:
+          2026: IN
+      h9:
+        members: [p9]
+        state_code:
+          2026: IN
+      h10:
+        members: [p10]
+        state_code:
+          2026: IN
+      h11:
+        members: [p11]
+        state_code:
+          2026: IN
+      h12:
+        members: [p12]
+        state_code:
+          2026: IN
+      h13:
+        members: [p13]
+        state_code:
+          2026: IN
+      h14:
+        members: [p14]
+        state_code:
+          2026: IN
+  output:
+    # 135% of the 2026 guideline, sizes 2 to 8.
+    in_ccdf_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: The CCDF plan's limits effective March 31, 2024 hold at every family size in June 2024.
+  period: 2024-06
+  input:
+    people:
+      p1:
+        age:
+          2024: 30
+      p2:
+        age:
+          2024: 30
+      p3:
+        age:
+          2024: 30
+      p4:
+        age:
+          2024: 30
+      p5:
+        age:
+          2024: 30
+      p6:
+        age:
+          2024: 30
+      p7:
+        age:
+          2024: 30
+      p8:
+        age:
+          2024: 30
+      p9:
+        age:
+          2024: 30
+      p10:
+        age:
+          2024: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2024: 1
+        in_ccdf_countable_income: 1_883
+        is_in_ccdf_enrolled: false
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2024: 1
+        in_ccdf_countable_income: 1_884
+        is_in_ccdf_enrolled: false
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2024: 2
+        in_ccdf_countable_income: 2_555
+        is_in_ccdf_enrolled: false
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2024: 2
+        in_ccdf_countable_income: 2_556
+        is_in_ccdf_enrolled: false
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2024: 3
+        in_ccdf_countable_income: 3_228
+        is_in_ccdf_enrolled: false
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2024: 3
+        in_ccdf_countable_income: 3_229
+        is_in_ccdf_enrolled: false
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2024: 4
+        in_ccdf_countable_income: 3_900
+        is_in_ccdf_enrolled: false
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2024: 4
+        in_ccdf_countable_income: 3_901
+        is_in_ccdf_enrolled: false
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2024: 5
+        in_ccdf_countable_income: 4_573
+        is_in_ccdf_enrolled: false
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2024: 5
+        in_ccdf_countable_income: 4_574
+        is_in_ccdf_enrolled: false
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2024: IN
+      h2:
+        members: [p2]
+        state_code:
+          2024: IN
+      h3:
+        members: [p3]
+        state_code:
+          2024: IN
+      h4:
+        members: [p4]
+        state_code:
+          2024: IN
+      h5:
+        members: [p5]
+        state_code:
+          2024: IN
+      h6:
+        members: [p6]
+        state_code:
+          2024: IN
+      h7:
+        members: [p7]
+        state_code:
+          2024: IN
+      h8:
+        members: [p8]
+        state_code:
+          2024: IN
+      h9:
+        members: [p9]
+        state_code:
+          2024: IN
+      h10:
+        members: [p10]
+        state_code:
+          2024: IN
+  output:
+    # 150% of the 2024 guideline, sizes 1 to 5.
+    in_ccdf_income_eligible: [true, false, true, false, true, false, true, false, true, false]

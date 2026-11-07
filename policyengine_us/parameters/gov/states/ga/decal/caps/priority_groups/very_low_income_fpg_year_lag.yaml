@@ -1,0 +1,43 @@
+description: Georgia uses the federal poverty guideline from this many years before the current date for the very low income priority group under the Childcare and Parent Services program.
+
+# Each Appendix A chart prints the date CAPS took up that year's guideline: March 1
+# in 2020 through 2025 and March 2 in 2026. The prior year's guideline holds until
+# then. The model applies each date at the first month that starts on or after it,
+# so the 2026 guideline takes effect in April 2026. No chart before 2020 survives, so
+# earlier years read the current year's guideline.
+values:
+  2015-01-01: 0
+  2020-01-01: 1
+  2020-03-01: 0
+  2021-01-01: 1
+  2021-03-01: 0
+  2022-01-01: 1
+  2022-03-01: 0
+  2023-01-01: 1
+  2023-03-01: 0
+  2024-01-01: 1
+  2024-03-01: 0
+  2025-01-01: 1
+  2025-03-01: 0
+  2026-01-01: 1
+  2026-03-02: 0
+
+metadata:
+  unit: year
+  period: month
+  label: Georgia CAPS very low income poverty guideline year lag
+  reference:
+    - title: Georgia CAPS Appendix A, Maximum Income Limits (effective October 1, 2020), guidelines effective for CAPS March 1, 2020
+      href: https://web.archive.org/web/20201124060600id_/https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixA-CAPS%20Maximum%20Income%20Limits%20by%20Family%20Size.pdf#page=1
+    - title: Georgia CAPS Appendix A, Maximum Income Limits (effective October 1, 2021), guidelines effective for CAPS March 1, 2021
+      href: https://web.archive.org/web/20211026013823id_/https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixA-CAPS%20Maximum%20Income%20Limits%20by%20Family%20Size.pdf#page=1
+    - title: Georgia CAPS Appendix A, Maximum Income Limits (archived March 1, 2022), guidelines effective for CAPS March 1, 2022
+      href: https://web.archive.org/web/20220301180356id_/https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixA-CAPS%20Maximum%20Income%20Limits%20by%20Family%20Size.pdf#page=1
+    - title: Georgia CAPS Appendix A, Maximum Income Limits (archived March 4, 2023), guidelines effective for CAPS March 1, 2023
+      href: https://web.archive.org/web/20230304133123id_/https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixA-CAPS%20Maximum%20Income%20Limits%20by%20Family%20Size.pdf#page=1
+    - title: Georgia CAPS Appendix A, Maximum Income Limits (archived May 20, 2024), guidelines effective for CAPS March 1, 2024
+      href: https://web.archive.org/web/20240520214500id_/https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixA-CAPS%20Maximum%20Income%20Limits%20by%20Family%20Size.pdf#page=1
+    - title: Georgia CAPS Appendix A, Maximum Income Limits (archived March 8, 2025), guidelines effective for CAPS March 1, 2025
+      href: https://web.archive.org/web/20250308021446id_/https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixA-CAPS%20Maximum%20Income%20Limits%20by%20Family%20Size.pdf#page=1
+    - title: Georgia CAPS Appendix A, Maximum Income Limits (archived March 8, 2026), guidelines effective for CAPS March 2, 2026
+      href: https://web.archive.org/web/20260308171215id_/https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixA-CAPS%20Maximum%20Income%20Limits%20by%20Family%20Size.pdf#page=1

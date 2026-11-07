@@ -1473,3 +1473,521 @@
           2023: MT
   output:
     mt_ccap_income_eligible: false
+
+# Posted charts: each printed family size at its top passes and a dollar more
+# fails. Each case sets the unit's size directly and lists the outcomes in size
+# order, the top first.
+
+- name: The July 1, 2025 sliding fee scale's Standard Eligibility top holds at sizes 2 to 11 in January 2026.
+  period: 2026-01
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+      p15:
+        age:
+          2026: 30
+      p16:
+        age:
+          2026: 30
+      p17:
+        age:
+          2026: 30
+      p18:
+        age:
+          2026: 30
+      p19:
+        age:
+          2026: 30
+      p20:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 2
+        mt_ccap_countable_income: 3_261
+        mt_ccap_enrolled: false
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 2
+        mt_ccap_countable_income: 3_262
+        mt_ccap_enrolled: false
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 3
+        mt_ccap_countable_income: 4_109
+        mt_ccap_enrolled: false
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 3
+        mt_ccap_countable_income: 4_110
+        mt_ccap_enrolled: false
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 4
+        mt_ccap_countable_income: 4_956
+        mt_ccap_enrolled: false
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 4
+        mt_ccap_countable_income: 4_957
+        mt_ccap_enrolled: false
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 5
+        mt_ccap_countable_income: 5_804
+        mt_ccap_enrolled: false
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 5
+        mt_ccap_countable_income: 5_805
+        mt_ccap_enrolled: false
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 6
+        mt_ccap_countable_income: 6_652
+        mt_ccap_enrolled: false
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 6
+        mt_ccap_countable_income: 6_653
+        mt_ccap_enrolled: false
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 7
+        mt_ccap_countable_income: 7_500
+        mt_ccap_enrolled: false
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 7
+        mt_ccap_countable_income: 7_501
+        mt_ccap_enrolled: false
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 8
+        mt_ccap_countable_income: 8_348
+        mt_ccap_enrolled: false
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 8
+        mt_ccap_countable_income: 8_349
+        mt_ccap_enrolled: false
+      u15:
+        members: [p15]
+        spm_unit_size:
+          2026: 9
+        mt_ccap_countable_income: 9_196
+        mt_ccap_enrolled: false
+      u16:
+        members: [p16]
+        spm_unit_size:
+          2026: 9
+        mt_ccap_countable_income: 9_197
+        mt_ccap_enrolled: false
+      u17:
+        members: [p17]
+        spm_unit_size:
+          2026: 10
+        mt_ccap_countable_income: 10_044
+        mt_ccap_enrolled: false
+      u18:
+        members: [p18]
+        spm_unit_size:
+          2026: 10
+        mt_ccap_countable_income: 10_045
+        mt_ccap_enrolled: false
+      u19:
+        members: [p19]
+        spm_unit_size:
+          2026: 11
+        mt_ccap_countable_income: 10_892
+        mt_ccap_enrolled: false
+      u20:
+        members: [p20]
+        spm_unit_size:
+          2026: 11
+        mt_ccap_countable_income: 10_893
+        mt_ccap_enrolled: false
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: MT
+      h2:
+        members: [p2]
+        state_code:
+          2026: MT
+      h3:
+        members: [p3]
+        state_code:
+          2026: MT
+      h4:
+        members: [p4]
+        state_code:
+          2026: MT
+      h5:
+        members: [p5]
+        state_code:
+          2026: MT
+      h6:
+        members: [p6]
+        state_code:
+          2026: MT
+      h7:
+        members: [p7]
+        state_code:
+          2026: MT
+      h8:
+        members: [p8]
+        state_code:
+          2026: MT
+      h9:
+        members: [p9]
+        state_code:
+          2026: MT
+      h10:
+        members: [p10]
+        state_code:
+          2026: MT
+      h11:
+        members: [p11]
+        state_code:
+          2026: MT
+      h12:
+        members: [p12]
+        state_code:
+          2026: MT
+      h13:
+        members: [p13]
+        state_code:
+          2026: MT
+      h14:
+        members: [p14]
+        state_code:
+          2026: MT
+      h15:
+        members: [p15]
+        state_code:
+          2026: MT
+      h16:
+        members: [p16]
+        state_code:
+          2026: MT
+      h17:
+        members: [p17]
+        state_code:
+          2026: MT
+      h18:
+        members: [p18]
+        state_code:
+          2026: MT
+      h19:
+        members: [p19]
+        state_code:
+          2026: MT
+      h20:
+        members: [p20]
+        state_code:
+          2026: MT
+  output:
+    # 185% FPG GMI row, sizes 2 to 11.
+    mt_ccap_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: The July 1, 2025 sliding fee scale's Graduated Eligibility top holds at sizes 2 to 10 in January 2026.
+  period: 2026-01
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+      p15:
+        age:
+          2026: 30
+      p16:
+        age:
+          2026: 30
+      p17:
+        age:
+          2026: 30
+      p18:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 2
+        mt_ccap_countable_income: 3_525
+        mt_ccap_enrolled: true
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 2
+        mt_ccap_countable_income: 3_526
+        mt_ccap_enrolled: true
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 3
+        mt_ccap_countable_income: 4_442
+        mt_ccap_enrolled: true
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 3
+        mt_ccap_countable_income: 4_443
+        mt_ccap_enrolled: true
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 4
+        mt_ccap_countable_income: 5_358
+        mt_ccap_enrolled: true
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 4
+        mt_ccap_countable_income: 5_359
+        mt_ccap_enrolled: true
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 5
+        mt_ccap_countable_income: 6_275
+        mt_ccap_enrolled: true
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 5
+        mt_ccap_countable_income: 6_276
+        mt_ccap_enrolled: true
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 6
+        mt_ccap_countable_income: 7_192
+        mt_ccap_enrolled: true
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 6
+        mt_ccap_countable_income: 7_193
+        mt_ccap_enrolled: true
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 7
+        mt_ccap_countable_income: 8_108
+        mt_ccap_enrolled: true
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 7
+        mt_ccap_countable_income: 8_109
+        mt_ccap_enrolled: true
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 8
+        mt_ccap_countable_income: 9_025
+        mt_ccap_enrolled: true
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 8
+        mt_ccap_countable_income: 9_026
+        mt_ccap_enrolled: true
+      u15:
+        members: [p15]
+        spm_unit_size:
+          2026: 9
+        mt_ccap_countable_income: 9_942
+        mt_ccap_enrolled: true
+      u16:
+        members: [p16]
+        spm_unit_size:
+          2026: 9
+        mt_ccap_countable_income: 9_943
+        mt_ccap_enrolled: true
+      u17:
+        members: [p17]
+        spm_unit_size:
+          2026: 10
+        mt_ccap_countable_income: 10_858
+        mt_ccap_enrolled: true
+      u18:
+        members: [p18]
+        spm_unit_size:
+          2026: 10
+        mt_ccap_countable_income: 10_859
+        mt_ccap_enrolled: true
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: MT
+      h2:
+        members: [p2]
+        state_code:
+          2026: MT
+      h3:
+        members: [p3]
+        state_code:
+          2026: MT
+      h4:
+        members: [p4]
+        state_code:
+          2026: MT
+      h5:
+        members: [p5]
+        state_code:
+          2026: MT
+      h6:
+        members: [p6]
+        state_code:
+          2026: MT
+      h7:
+        members: [p7]
+        state_code:
+          2026: MT
+      h8:
+        members: [p8]
+        state_code:
+          2026: MT
+      h9:
+        members: [p9]
+        state_code:
+          2026: MT
+      h10:
+        members: [p10]
+        state_code:
+          2026: MT
+      h11:
+        members: [p11]
+        state_code:
+          2026: MT
+      h12:
+        members: [p12]
+        state_code:
+          2026: MT
+      h13:
+        members: [p13]
+        state_code:
+          2026: MT
+      h14:
+        members: [p14]
+        state_code:
+          2026: MT
+      h15:
+        members: [p15]
+        state_code:
+          2026: MT
+      h16:
+        members: [p16]
+        state_code:
+          2026: MT
+      h17:
+        members: [p17]
+        state_code:
+          2026: MT
+      h18:
+        members: [p18]
+        state_code:
+          2026: MT
+  output:
+    # 200% FPG GMI row, sizes 2 to 10.
+    mt_ccap_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]

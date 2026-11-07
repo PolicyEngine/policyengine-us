@@ -1,6 +1,73 @@
-# Tests for in_ccdf_fpg (SPMUnit, MONTH). Indiana moves to a new year's guideline when it
-# posts a new eligibility package: March 31, 2024, May 1, 2025 and April 5, 2026. No source
-# dates the guideline year before 2024, so the model reads the current year's until then.
+# Tests for in_ccdf_fpg (SPMUnit, MONTH). Indiana moves to a new year's guideline on each
+# fee schedule's effective date: March 12, 2023, March 31, 2024, March 23, 2025 and April 5,
+# 2026. A monthly period reads the parameter at its first day, so each switch shows in the
+# next month. Before 2023 the model reads the current year's guideline.
+- name: 2022-12 uses the 2022 guideline.
+  period: 2022-12
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2022: IN
+  output:
+    in_ccdf_fpg: 1_919.17
+
+- name: 2023-03 still uses the 2022 guideline.
+  period: 2023-03
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2023: IN
+  output:
+    in_ccdf_fpg: 1_919.17
+
+- name: 2023-04 uses the 2023 guideline.
+  period: 2023-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2023: IN
+  output:
+    in_ccdf_fpg: 2_071.67
+
 - name: 2023-06 uses the 2023 guideline.
   period: 2023-06
   absolute_error_margin: 0.01
@@ -67,8 +134,8 @@
   output:
     in_ccdf_fpg: 2_151.67
 
-- name: 2025-04 uses the 2024 guideline.
-  period: 2025-04
+- name: 2025-03 uses the 2024 guideline.
+  period: 2025-03
   absolute_error_margin: 0.01
   input:
     people:
@@ -89,8 +156,8 @@
   output:
     in_ccdf_fpg: 2_151.67
 
-- name: 2025-05 uses the 2025 guideline.
-  period: 2025-05
+- name: 2025-04 uses the 2025 guideline.
+  period: 2025-04
   absolute_error_margin: 0.01
   input:
     people:

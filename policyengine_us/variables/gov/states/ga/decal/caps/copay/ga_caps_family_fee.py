@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
 
 class ga_caps_family_fee(Variable):
@@ -21,16 +22,19 @@ class ga_caps_family_fee(Variable):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         age = person("age", period.this_year)
         has_minor_parent = spm_unit.any(is_head_or_spouse & (age <= p.minor_parent_age))
-        # DFCS custody fee waiver: any child in DFCS custody waives the fee.
-        has_dfcs_custody_child = add(spm_unit, period, ["is_in_foster_care"]) > 0
-        fee_waived = has_minor_parent | has_dfcs_custody_child
-        # Compute fee from FPL-ratio scale bracket.
+        # Each child in DFCS custody forms a family unit of one that owes no fee
+        # (CAPS/00-5, 5.4.1; CAPS/00-7, 7.5), which ga_caps pays apart from this
+        # fee. The family's own unit leaves those children out of its size.
         countable_income = spm_unit("ga_caps_countable_income", period)
-        fpg = spm_unit("spm_unit_fpg", period)
-        mask = fpg > 0
+        size = spm_unit("ga_caps_family_size", period)
+        state_group = spm_unit.household("state_group_str", period.this_year)
+        monthly_fpg = fpg(size, state_group, period.this_year, parameters) / (
+            MONTHS_IN_YEAR
+        )
+        mask = monthly_fpg > 0
         fpl_ratio = np.divide(
             countable_income,
-            fpg,
+            monthly_fpg,
             out=np.zeros_like(countable_income),
             where=mask,
         )
@@ -39,4 +43,4 @@ class ga_caps_family_fee(Variable):
         annual_income = countable_income * MONTHS_IN_YEAR
         weekly_fee = np.floor(annual_income * fee_rate / WEEKS_IN_YEAR)
         monthly_fee = weekly_fee * (WEEKS_IN_YEAR / MONTHS_IN_YEAR)
-        return where(fee_waived, 0, monthly_fee)
+        return where(has_minor_parent, 0, monthly_fee)

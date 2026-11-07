@@ -579,3 +579,1070 @@
           2026: MO
   output:
     mo_ccs_income_eligible: false
+
+# Posted charts: each printed family size at its top passes and a dollar more
+# fails. Each case sets the unit's size directly and lists the outcomes in size
+# order, the top first.
+
+- name: DESE's July 1, 2026 chart holds new applicants to the lower of its maximum and 85% of SMI at sizes 1 to 20.
+  period: 2026-07
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+      p15:
+        age:
+          2026: 30
+      p16:
+        age:
+          2026: 30
+      p17:
+        age:
+          2026: 30
+      p18:
+        age:
+          2026: 30
+      p19:
+        age:
+          2026: 30
+      p20:
+        age:
+          2026: 30
+      p21:
+        age:
+          2026: 30
+      p22:
+        age:
+          2026: 30
+      p23:
+        age:
+          2026: 30
+      p24:
+        age:
+          2026: 30
+      p25:
+        age:
+          2026: 30
+      p26:
+        age:
+          2026: 30
+      p27:
+        age:
+          2026: 30
+      p28:
+        age:
+          2026: 30
+      p29:
+        age:
+          2026: 30
+      p30:
+        age:
+          2026: 30
+      p31:
+        age:
+          2026: 30
+      p32:
+        age:
+          2026: 30
+      p33:
+        age:
+          2026: 30
+      p34:
+        age:
+          2026: 30
+      p35:
+        age:
+          2026: 30
+      p36:
+        age:
+          2026: 30
+      p37:
+        age:
+          2026: 30
+      p38:
+        age:
+          2026: 30
+      p39:
+        age:
+          2026: 30
+      p40:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 1
+        mo_ccs_adjusted_income: 1_956
+        mo_ccs_enrolled: false
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 1
+        mo_ccs_adjusted_income: 1_957
+        mo_ccs_enrolled: false
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 2
+        mo_ccs_adjusted_income: 2_644
+        mo_ccs_enrolled: false
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 2
+        mo_ccs_adjusted_income: 2_645
+        mo_ccs_enrolled: false
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 3
+        mo_ccs_adjusted_income: 3_331
+        mo_ccs_enrolled: false
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 3
+        mo_ccs_adjusted_income: 3_332
+        mo_ccs_enrolled: false
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 4
+        mo_ccs_adjusted_income: 4_019
+        mo_ccs_enrolled: false
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 4
+        mo_ccs_adjusted_income: 4_020
+        mo_ccs_enrolled: false
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 5
+        mo_ccs_adjusted_income: 4_706
+        mo_ccs_enrolled: false
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 5
+        mo_ccs_adjusted_income: 4_707
+        mo_ccs_enrolled: false
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 6
+        mo_ccs_adjusted_income: 5_394
+        mo_ccs_enrolled: false
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 6
+        mo_ccs_adjusted_income: 5_395
+        mo_ccs_enrolled: false
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 7
+        mo_ccs_adjusted_income: 6_081
+        mo_ccs_enrolled: false
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 7
+        mo_ccs_adjusted_income: 6_082
+        mo_ccs_enrolled: false
+      u15:
+        members: [p15]
+        spm_unit_size:
+          2026: 8
+        mo_ccs_adjusted_income: 6_769
+        mo_ccs_enrolled: false
+      u16:
+        members: [p16]
+        spm_unit_size:
+          2026: 8
+        mo_ccs_adjusted_income: 6_770
+        mo_ccs_enrolled: false
+      u17:
+        members: [p17]
+        spm_unit_size:
+          2026: 9
+        mo_ccs_adjusted_income: 7_456
+        mo_ccs_enrolled: false
+      u18:
+        members: [p18]
+        spm_unit_size:
+          2026: 9
+        mo_ccs_adjusted_income: 7_457
+        mo_ccs_enrolled: false
+      u19:
+        members: [p19]
+        spm_unit_size:
+          2026: 10
+        mo_ccs_adjusted_income: 8_144
+        mo_ccs_enrolled: false
+      u20:
+        members: [p20]
+        spm_unit_size:
+          2026: 10
+        mo_ccs_adjusted_income: 8_145
+        mo_ccs_enrolled: false
+      u21:
+        members: [p21]
+        spm_unit_size:
+          2026: 11
+        mo_ccs_adjusted_income: 8_831
+        mo_ccs_enrolled: false
+      u22:
+        members: [p22]
+        spm_unit_size:
+          2026: 11
+        mo_ccs_adjusted_income: 8_832
+        mo_ccs_enrolled: false
+      u23:
+        members: [p23]
+        spm_unit_size:
+          2026: 12
+        mo_ccs_adjusted_income: 9_519
+        mo_ccs_enrolled: false
+      u24:
+        members: [p24]
+        spm_unit_size:
+          2026: 12
+        mo_ccs_adjusted_income: 9_520
+        mo_ccs_enrolled: false
+      u25:
+        members: [p25]
+        spm_unit_size:
+          2026: 13
+        mo_ccs_adjusted_income: 10_206
+        mo_ccs_enrolled: false
+      u26:
+        members: [p26]
+        spm_unit_size:
+          2026: 13
+        mo_ccs_adjusted_income: 10_207
+        mo_ccs_enrolled: false
+      u27:
+        members: [p27]
+        spm_unit_size:
+          2026: 14
+        mo_ccs_adjusted_income: 10_894
+        mo_ccs_enrolled: false
+      u28:
+        members: [p28]
+        spm_unit_size:
+          2026: 14
+        mo_ccs_adjusted_income: 10_895
+        mo_ccs_enrolled: false
+      u29:
+        members: [p29]
+        spm_unit_size:
+          2026: 15
+        mo_ccs_adjusted_income: 11_581
+        mo_ccs_enrolled: false
+      u30:
+        members: [p30]
+        spm_unit_size:
+          2026: 15
+        mo_ccs_adjusted_income: 11_582
+        mo_ccs_enrolled: false
+      u31:
+        members: [p31]
+        spm_unit_size:
+          2026: 16
+        mo_ccs_adjusted_income: 12_269
+        mo_ccs_enrolled: false
+      u32:
+        members: [p32]
+        spm_unit_size:
+          2026: 16
+        mo_ccs_adjusted_income: 12_270
+        mo_ccs_enrolled: false
+      u33:
+        members: [p33]
+        spm_unit_size:
+          2026: 17
+        mo_ccs_adjusted_income: 12_766
+        mo_ccs_enrolled: false
+      u34:
+        members: [p34]
+        spm_unit_size:
+          2026: 17
+        mo_ccs_adjusted_income: 12_767
+        mo_ccs_enrolled: false
+      u35:
+        members: [p35]
+        spm_unit_size:
+          2026: 18
+        mo_ccs_adjusted_income: 12_998
+        mo_ccs_enrolled: false
+      u36:
+        members: [p36]
+        spm_unit_size:
+          2026: 18
+        mo_ccs_adjusted_income: 12_999
+        mo_ccs_enrolled: false
+      u37:
+        members: [p37]
+        spm_unit_size:
+          2026: 19
+        mo_ccs_adjusted_income: 13_230
+        mo_ccs_enrolled: false
+      u38:
+        members: [p38]
+        spm_unit_size:
+          2026: 19
+        mo_ccs_adjusted_income: 13_231
+        mo_ccs_enrolled: false
+      u39:
+        members: [p39]
+        spm_unit_size:
+          2026: 20
+        mo_ccs_adjusted_income: 13_462
+        mo_ccs_enrolled: false
+      u40:
+        members: [p40]
+        spm_unit_size:
+          2026: 20
+        mo_ccs_adjusted_income: 13_463
+        mo_ccs_enrolled: false
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: MO
+      h2:
+        members: [p2]
+        state_code:
+          2026: MO
+      h3:
+        members: [p3]
+        state_code:
+          2026: MO
+      h4:
+        members: [p4]
+        state_code:
+          2026: MO
+      h5:
+        members: [p5]
+        state_code:
+          2026: MO
+      h6:
+        members: [p6]
+        state_code:
+          2026: MO
+      h7:
+        members: [p7]
+        state_code:
+          2026: MO
+      h8:
+        members: [p8]
+        state_code:
+          2026: MO
+      h9:
+        members: [p9]
+        state_code:
+          2026: MO
+      h10:
+        members: [p10]
+        state_code:
+          2026: MO
+      h11:
+        members: [p11]
+        state_code:
+          2026: MO
+      h12:
+        members: [p12]
+        state_code:
+          2026: MO
+      h13:
+        members: [p13]
+        state_code:
+          2026: MO
+      h14:
+        members: [p14]
+        state_code:
+          2026: MO
+      h15:
+        members: [p15]
+        state_code:
+          2026: MO
+      h16:
+        members: [p16]
+        state_code:
+          2026: MO
+      h17:
+        members: [p17]
+        state_code:
+          2026: MO
+      h18:
+        members: [p18]
+        state_code:
+          2026: MO
+      h19:
+        members: [p19]
+        state_code:
+          2026: MO
+      h20:
+        members: [p20]
+        state_code:
+          2026: MO
+      h21:
+        members: [p21]
+        state_code:
+          2026: MO
+      h22:
+        members: [p22]
+        state_code:
+          2026: MO
+      h23:
+        members: [p23]
+        state_code:
+          2026: MO
+      h24:
+        members: [p24]
+        state_code:
+          2026: MO
+      h25:
+        members: [p25]
+        state_code:
+          2026: MO
+      h26:
+        members: [p26]
+        state_code:
+          2026: MO
+      h27:
+        members: [p27]
+        state_code:
+          2026: MO
+      h28:
+        members: [p28]
+        state_code:
+          2026: MO
+      h29:
+        members: [p29]
+        state_code:
+          2026: MO
+      h30:
+        members: [p30]
+        state_code:
+          2026: MO
+      h31:
+        members: [p31]
+        state_code:
+          2026: MO
+      h32:
+        members: [p32]
+        state_code:
+          2026: MO
+      h33:
+        members: [p33]
+        state_code:
+          2026: MO
+      h34:
+        members: [p34]
+        state_code:
+          2026: MO
+      h35:
+        members: [p35]
+        state_code:
+          2026: MO
+      h36:
+        members: [p36]
+        state_code:
+          2026: MO
+      h37:
+        members: [p37]
+        state_code:
+          2026: MO
+      h38:
+        members: [p38]
+        state_code:
+          2026: MO
+      h39:
+        members: [p39]
+        state_code:
+          2026: MO
+      h40:
+        members: [p40]
+        state_code:
+          2026: MO
+  output:
+    # The chart's $5.00 row tops for sizes 1 to 20, except that the chart's
+    # July 1, 2026 clarification applies the lower of that top and its 85% State
+    # Median Income row, which binds from size 17 ($12,766.15 for 17).
+    mo_ccs_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: DESE's July 1, 2026 chart holds enrolled families to the lower of Transitional Level 2 and 85% of SMI at sizes 1 to 20.
+  period: 2026-07
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+      p15:
+        age:
+          2026: 30
+      p16:
+        age:
+          2026: 30
+      p17:
+        age:
+          2026: 30
+      p18:
+        age:
+          2026: 30
+      p19:
+        age:
+          2026: 30
+      p20:
+        age:
+          2026: 30
+      p21:
+        age:
+          2026: 30
+      p22:
+        age:
+          2026: 30
+      p23:
+        age:
+          2026: 30
+      p24:
+        age:
+          2026: 30
+      p25:
+        age:
+          2026: 30
+      p26:
+        age:
+          2026: 30
+      p27:
+        age:
+          2026: 30
+      p28:
+        age:
+          2026: 30
+      p29:
+        age:
+          2026: 30
+      p30:
+        age:
+          2026: 30
+      p31:
+        age:
+          2026: 30
+      p32:
+        age:
+          2026: 30
+      p33:
+        age:
+          2026: 30
+      p34:
+        age:
+          2026: 30
+      p35:
+        age:
+          2026: 30
+      p36:
+        age:
+          2026: 30
+      p37:
+        age:
+          2026: 30
+      p38:
+        age:
+          2026: 30
+      p39:
+        age:
+          2026: 30
+      p40:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 1
+        mo_ccs_adjusted_income: 2_804
+        mo_ccs_enrolled: true
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 1
+        mo_ccs_adjusted_income: 2_805
+        mo_ccs_enrolled: true
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 2
+        mo_ccs_adjusted_income: 3_789
+        mo_ccs_enrolled: true
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 2
+        mo_ccs_adjusted_income: 3_790
+        mo_ccs_enrolled: true
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 3
+        mo_ccs_adjusted_income: 4_775
+        mo_ccs_enrolled: true
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 3
+        mo_ccs_adjusted_income: 4_776
+        mo_ccs_enrolled: true
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 4
+        mo_ccs_adjusted_income: 5_760
+        mo_ccs_enrolled: true
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 4
+        mo_ccs_adjusted_income: 5_761
+        mo_ccs_enrolled: true
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 5
+        mo_ccs_adjusted_income: 6_746
+        mo_ccs_enrolled: true
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 5
+        mo_ccs_adjusted_income: 6_747
+        mo_ccs_enrolled: true
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 6
+        mo_ccs_adjusted_income: 7_731
+        mo_ccs_enrolled: true
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 6
+        mo_ccs_adjusted_income: 7_732
+        mo_ccs_enrolled: true
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 7
+        mo_ccs_adjusted_income: 8_716
+        mo_ccs_enrolled: true
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 7
+        mo_ccs_adjusted_income: 8_717
+        mo_ccs_enrolled: true
+      u15:
+        members: [p15]
+        spm_unit_size:
+          2026: 8
+        mo_ccs_adjusted_income: 9_702
+        mo_ccs_enrolled: true
+      u16:
+        members: [p16]
+        spm_unit_size:
+          2026: 8
+        mo_ccs_adjusted_income: 9_703
+        mo_ccs_enrolled: true
+      u17:
+        members: [p17]
+        spm_unit_size:
+          2026: 9
+        mo_ccs_adjusted_income: 10_687
+        mo_ccs_enrolled: true
+      u18:
+        members: [p18]
+        spm_unit_size:
+          2026: 9
+        mo_ccs_adjusted_income: 10_688
+        mo_ccs_enrolled: true
+      u19:
+        members: [p19]
+        spm_unit_size:
+          2026: 10
+        mo_ccs_adjusted_income: 11_141
+        mo_ccs_enrolled: true
+      u20:
+        members: [p20]
+        spm_unit_size:
+          2026: 10
+        mo_ccs_adjusted_income: 11_142
+        mo_ccs_enrolled: true
+      u21:
+        members: [p21]
+        spm_unit_size:
+          2026: 11
+        mo_ccs_adjusted_income: 11_373
+        mo_ccs_enrolled: true
+      u22:
+        members: [p22]
+        spm_unit_size:
+          2026: 11
+        mo_ccs_adjusted_income: 11_374
+        mo_ccs_enrolled: true
+      u23:
+        members: [p23]
+        spm_unit_size:
+          2026: 12
+        mo_ccs_adjusted_income: 11_605
+        mo_ccs_enrolled: true
+      u24:
+        members: [p24]
+        spm_unit_size:
+          2026: 12
+        mo_ccs_adjusted_income: 11_606
+        mo_ccs_enrolled: true
+      u25:
+        members: [p25]
+        spm_unit_size:
+          2026: 13
+        mo_ccs_adjusted_income: 11_837
+        mo_ccs_enrolled: true
+      u26:
+        members: [p26]
+        spm_unit_size:
+          2026: 13
+        mo_ccs_adjusted_income: 11_838
+        mo_ccs_enrolled: true
+      u27:
+        members: [p27]
+        spm_unit_size:
+          2026: 14
+        mo_ccs_adjusted_income: 12_069
+        mo_ccs_enrolled: true
+      u28:
+        members: [p28]
+        spm_unit_size:
+          2026: 14
+        mo_ccs_adjusted_income: 12_070
+        mo_ccs_enrolled: true
+      u29:
+        members: [p29]
+        spm_unit_size:
+          2026: 15
+        mo_ccs_adjusted_income: 12_301
+        mo_ccs_enrolled: true
+      u30:
+        members: [p30]
+        spm_unit_size:
+          2026: 15
+        mo_ccs_adjusted_income: 12_302
+        mo_ccs_enrolled: true
+      u31:
+        members: [p31]
+        spm_unit_size:
+          2026: 16
+        mo_ccs_adjusted_income: 12_534
+        mo_ccs_enrolled: true
+      u32:
+        members: [p32]
+        spm_unit_size:
+          2026: 16
+        mo_ccs_adjusted_income: 12_535
+        mo_ccs_enrolled: true
+      u33:
+        members: [p33]
+        spm_unit_size:
+          2026: 17
+        mo_ccs_adjusted_income: 12_766
+        mo_ccs_enrolled: true
+      u34:
+        members: [p34]
+        spm_unit_size:
+          2026: 17
+        mo_ccs_adjusted_income: 12_767
+        mo_ccs_enrolled: true
+      u35:
+        members: [p35]
+        spm_unit_size:
+          2026: 18
+        mo_ccs_adjusted_income: 12_998
+        mo_ccs_enrolled: true
+      u36:
+        members: [p36]
+        spm_unit_size:
+          2026: 18
+        mo_ccs_adjusted_income: 12_999
+        mo_ccs_enrolled: true
+      u37:
+        members: [p37]
+        spm_unit_size:
+          2026: 19
+        mo_ccs_adjusted_income: 13_230
+        mo_ccs_enrolled: true
+      u38:
+        members: [p38]
+        spm_unit_size:
+          2026: 19
+        mo_ccs_adjusted_income: 13_231
+        mo_ccs_enrolled: true
+      u39:
+        members: [p39]
+        spm_unit_size:
+          2026: 20
+        mo_ccs_adjusted_income: 13_462
+        mo_ccs_enrolled: true
+      u40:
+        members: [p40]
+        spm_unit_size:
+          2026: 20
+        mo_ccs_adjusted_income: 13_463
+        mo_ccs_enrolled: true
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: MO
+      h2:
+        members: [p2]
+        state_code:
+          2026: MO
+      h3:
+        members: [p3]
+        state_code:
+          2026: MO
+      h4:
+        members: [p4]
+        state_code:
+          2026: MO
+      h5:
+        members: [p5]
+        state_code:
+          2026: MO
+      h6:
+        members: [p6]
+        state_code:
+          2026: MO
+      h7:
+        members: [p7]
+        state_code:
+          2026: MO
+      h8:
+        members: [p8]
+        state_code:
+          2026: MO
+      h9:
+        members: [p9]
+        state_code:
+          2026: MO
+      h10:
+        members: [p10]
+        state_code:
+          2026: MO
+      h11:
+        members: [p11]
+        state_code:
+          2026: MO
+      h12:
+        members: [p12]
+        state_code:
+          2026: MO
+      h13:
+        members: [p13]
+        state_code:
+          2026: MO
+      h14:
+        members: [p14]
+        state_code:
+          2026: MO
+      h15:
+        members: [p15]
+        state_code:
+          2026: MO
+      h16:
+        members: [p16]
+        state_code:
+          2026: MO
+      h17:
+        members: [p17]
+        state_code:
+          2026: MO
+      h18:
+        members: [p18]
+        state_code:
+          2026: MO
+      h19:
+        members: [p19]
+        state_code:
+          2026: MO
+      h20:
+        members: [p20]
+        state_code:
+          2026: MO
+      h21:
+        members: [p21]
+        state_code:
+          2026: MO
+      h22:
+        members: [p22]
+        state_code:
+          2026: MO
+      h23:
+        members: [p23]
+        state_code:
+          2026: MO
+      h24:
+        members: [p24]
+        state_code:
+          2026: MO
+      h25:
+        members: [p25]
+        state_code:
+          2026: MO
+      h26:
+        members: [p26]
+        state_code:
+          2026: MO
+      h27:
+        members: [p27]
+        state_code:
+          2026: MO
+      h28:
+        members: [p28]
+        state_code:
+          2026: MO
+      h29:
+        members: [p29]
+        state_code:
+          2026: MO
+      h30:
+        members: [p30]
+        state_code:
+          2026: MO
+      h31:
+        members: [p31]
+        state_code:
+          2026: MO
+      h32:
+        members: [p32]
+        state_code:
+          2026: MO
+      h33:
+        members: [p33]
+        state_code:
+          2026: MO
+      h34:
+        members: [p34]
+        state_code:
+          2026: MO
+      h35:
+        members: [p35]
+        state_code:
+          2026: MO
+      h36:
+        members: [p36]
+        state_code:
+          2026: MO
+      h37:
+        members: [p37]
+        state_code:
+          2026: MO
+      h38:
+        members: [p38]
+        state_code:
+          2026: MO
+      h39:
+        members: [p39]
+        state_code:
+          2026: MO
+      h40:
+        members: [p40]
+        state_code:
+          2026: MO
+  output:
+    # Transitional Level 2 tops for sizes 1 to 20, except that the 85% State
+    # Median Income row binds from size 10 ($11,141.38 for 10).
+    mo_ccs_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]

@@ -140,3 +140,227 @@
     # Monthly 75% SMI threshold: 124,807 * 0.75 / 12 = 7,800.44
     # 8,333.33 > 7,800.44 -> not eligible
     md_ccs_income_eligible: false
+
+# MSDE posts an Initial Income Scale effective December 15, 2024 ($94,026 a year for three)
+# and a Continuation Income Scale effective April 22, 2024 ($106,563), both at the federal
+# fiscal 2025 median, and still posts them in October 2026.
+- name: In November 2024 a new family of three still faced 75% of the median MSDE froze at its 2021 level.
+  period: 2024-11
+  input:
+    people:
+      p1_1:
+        age:
+          2024: 30
+      p1_2:
+        age:
+          2024: 8
+      p1_3:
+        age:
+          2024: 5
+      p2_1:
+        age:
+          2024: 30
+      p2_2:
+        age:
+          2024: 8
+      p2_3:
+        age:
+          2024: 5
+    spm_units:
+      u1:
+        members: [p1_1, p1_2, p1_3]
+        md_ccs_countable_income: 6_552
+        md_ccs_enrolled: false
+      u2:
+        members: [p2_1, p2_2, p2_3]
+        md_ccs_countable_income: 6_553
+        md_ccs_enrolled: false
+    households:
+      h1:
+        members: [p1_1, p1_2, p1_3]
+        state_code:
+          2024: MD
+      h2:
+        members: [p2_1, p2_2, p2_3]
+        state_code:
+          2024: MD
+  output:
+    # 75% * 124_807 * 0.84 / 12 = 6_552.37
+    md_ccs_income_eligible: [true, false]
+
+- name: In March 2026 a new family of three faces the posted Initial Income Scale of $94,026 a year.
+  period: 2026-03
+  input:
+    people:
+      p1_1:
+        age:
+          2026: 30
+      p1_2:
+        age:
+          2026: 8
+      p1_3:
+        age:
+          2026: 5
+      p2_1:
+        age:
+          2026: 30
+      p2_2:
+        age:
+          2026: 8
+      p2_3:
+        age:
+          2026: 5
+    spm_units:
+      u1:
+        members: [p1_1, p1_2, p1_3]
+        md_ccs_countable_income: 7_835
+        md_ccs_enrolled: false
+      u2:
+        members: [p2_1, p2_2, p2_3]
+        md_ccs_countable_income: 7_836
+        md_ccs_enrolled: false
+    households:
+      h1:
+        members: [p1_1, p1_2, p1_3]
+        state_code:
+          2026: MD
+      h2:
+        members: [p2_1, p2_2, p2_3]
+        state_code:
+          2026: MD
+  output:
+    # 75% of the federal fiscal 2025 median: 0.75 * 149_249 * 0.84 / 12 = 7_835.57.
+    # The federal fiscal 2026 median would give 0.75 * 154_117 * 0.84 / 12 = 8_091.14
+    md_ccs_income_eligible: [true, false]
+
+- name: In April 2024 an enrolled family of three faced 85% of the median MSDE froze at its 2021 level.
+  period: 2024-04
+  input:
+    people:
+      p1_1:
+        age:
+          2024: 30
+      p1_2:
+        age:
+          2024: 8
+      p1_3:
+        age:
+          2024: 5
+      p2_1:
+        age:
+          2024: 30
+      p2_2:
+        age:
+          2024: 8
+      p2_3:
+        age:
+          2024: 5
+    spm_units:
+      u1:
+        members: [p1_1, p1_2, p1_3]
+        md_ccs_countable_income: 7_426
+        md_ccs_enrolled: true
+      u2:
+        members: [p2_1, p2_2, p2_3]
+        md_ccs_countable_income: 7_427
+        md_ccs_enrolled: true
+    households:
+      h1:
+        members: [p1_1, p1_2, p1_3]
+        state_code:
+          2024: MD
+      h2:
+        members: [p2_1, p2_2, p2_3]
+        state_code:
+          2024: MD
+  output:
+    # 0.85 * 124_807 * 0.84 / 12 = 7_426.02; the posted scale of April 22, 2024 shows from May
+    md_ccs_income_eligible: [true, false]
+
+- name: In May 2024 an enrolled family of three faces the posted Continuation Income Scale of $106,563 a year.
+  period: 2024-05
+  input:
+    people:
+      p1_1:
+        age:
+          2024: 30
+      p1_2:
+        age:
+          2024: 8
+      p1_3:
+        age:
+          2024: 5
+      p2_1:
+        age:
+          2024: 30
+      p2_2:
+        age:
+          2024: 8
+      p2_3:
+        age:
+          2024: 5
+    spm_units:
+      u1:
+        members: [p1_1, p1_2, p1_3]
+        md_ccs_countable_income: 8_880
+        md_ccs_enrolled: true
+      u2:
+        members: [p2_1, p2_2, p2_3]
+        md_ccs_countable_income: 8_881
+        md_ccs_enrolled: true
+    households:
+      h1:
+        members: [p1_1, p1_2, p1_3]
+        state_code:
+          2024: MD
+      h2:
+        members: [p2_1, p2_2, p2_3]
+        state_code:
+          2024: MD
+  output:
+    # 85% of the federal fiscal 2025 median: 0.85 * 149_249 * 0.84 / 12 = 8_880.32
+    md_ccs_income_eligible: [true, false]
+
+- name: In March 2026 an enrolled family of three still faces the posted Continuation Income Scale.
+  period: 2026-03
+  input:
+    people:
+      p1_1:
+        age:
+          2026: 30
+      p1_2:
+        age:
+          2026: 8
+      p1_3:
+        age:
+          2026: 5
+      p2_1:
+        age:
+          2026: 30
+      p2_2:
+        age:
+          2026: 8
+      p2_3:
+        age:
+          2026: 5
+    spm_units:
+      u1:
+        members: [p1_1, p1_2, p1_3]
+        md_ccs_countable_income: 8_880
+        md_ccs_enrolled: true
+      u2:
+        members: [p2_1, p2_2, p2_3]
+        md_ccs_countable_income: 8_881
+        md_ccs_enrolled: true
+    households:
+      h1:
+        members: [p1_1, p1_2, p1_3]
+        state_code:
+          2026: MD
+      h2:
+        members: [p2_1, p2_2, p2_3]
+        state_code:
+          2026: MD
+  output:
+    # 0.85 * 149_249 * 0.84 / 12 = 8_880.32; the fiscal 2026 median would give 9_170.31
+    md_ccs_income_eligible: [true, false]

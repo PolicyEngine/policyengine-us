@@ -1,0 +1,202 @@
+# GA CAPS children in DFCS custody.
+# CAPS/00-5, 5.4.1: the State stands as the parent of each child in DFCS custody, and the
+# child forms a family unit of one. CAPS/00-7, 7.5: foster parents need not meet the income
+# or activity requirements, and Manual 9.5.1 assesses no family fee for these children. The
+# family's own case covers its other children on its own tests.
+#
+# GA SMI 4-person at 2026-01 (October 2025 table): $110,736. New applicants in January 2026
+# face 40% of it: $30,121 for two, $37,208 for three.
+# Center, full time, preschool, Zone 1: $221 a week, or 221 * 52 / 12 = $957.67 a month.
+
+- name: Each child in DFCS custody leaves the family's own unit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 2
+        is_in_foster_care: true
+      person4:
+        age: 6
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: GA
+  output:
+    ga_caps_family_size: 2
+    ga_caps_dfcs_custody_child: [false, false, true, true]
+
+- name: The family's income test counts a family of two beside a child in DFCS custody, at the limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 2
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_510.08
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # 2,510.08 * 12 = 30,120.96, within $30,121 for two.
+    ga_caps_income_eligible: true
+
+- name: The family's income test counts a family of two beside a child in DFCS custody, over the limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 2
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_510.09
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # 2,510.09 * 12 = 30,121.08 exceeds $30,121 for two, though it falls within $37,208
+    # for three.
+    ga_caps_income_eligible: false
+
+- name: A child in DFCS custody qualifies when the family's own case does not.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        is_in_foster_care: true
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 9_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # The family of two fails its own income, activity and priority group tests.
+    ga_caps_income_eligible: false
+    ga_caps_activity_eligible: false
+    ga_caps_priority_group_eligible: false
+    ga_caps_family_eligible: false
+    ga_caps_dfcs_custody_child: [false, true, false]
+    ga_caps_eligible: true
+
+- name: CAPS pays only the DFCS child's care when the family's own case fails.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        employment_income: 108_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_foster_care: true
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: NONE
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+        county_str: FULTON_COUNTY_GA
+  output:
+    ga_caps_family_eligible: false
+    ga_caps_eligible: true
+    # Expenses of $2,000 a month split evenly: $1,000 for each child.
+    # DFCS child: min(1,000, 957.67) = $957.67, with no fee. The sibling gets nothing.
+    ga_caps: 957.67
+
+- name: The family's own case pays its fee while the DFCS child's care owes none.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_foster_care: true
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: NONE
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+        county_str: FULTON_COUNTY_GA
+  output:
+    ga_caps_family_size: 2
+    ga_caps_family_eligible: true
+    # FPL ratio for two = 24,000 / 21,640 = 1.109 -> 7%
+    # weekly fee = floor(24,000 * 0.07 / 52) = floor(32.31) = $32
+    # monthly fee = 32 * 52 / 12 = $138.67
+    ga_caps_family_fee: 138.67
+    # Family's case: min(2,000 - 1,000, 957.67) - 138.67 = $819.00
+    # DFCS child: min(1,000, 957.67) = $957.67
+    ga_caps: 1_776.67

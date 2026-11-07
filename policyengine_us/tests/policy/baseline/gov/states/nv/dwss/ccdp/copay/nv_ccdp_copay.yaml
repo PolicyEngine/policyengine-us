@@ -4,9 +4,10 @@
 # October 1, 2023, by household size.
 # From October 2024, and standing in before July 2022, the flat schedule below applies.
 # Flat copay by income as a share of SMI (eff. Oct 1, 2024; State Plan 2.4.v):
-#   <= 32.99% SMI -> $0; 33%-42% SMI -> $90; above 42% SMI -> $150.
-# The $150 band begins just above 42% SMI (threshold 0.4201) per the operational
-# CC PT 06-25 fee chart; the State Plan summary's "43%" is superseded by the chart.
+#   up to 33% SMI -> $0; up to 42% SMI -> $90; above 42% SMI -> $150.
+# The charts print each band top as the nearest dollar, and MS 316 rounds monthly
+# income to the nearest dollar before reading them. The $150 band begins above 42%
+# SMI per the operational fee charts; the State Plan summary's "43%" is superseded.
 # Waived for TANF/NEON (is_tanf_enrolled), CPS/foster placements, and homeless.
 # Family of 3, period 2025-01 -> monthly SMI = 6_721.82.
 
@@ -157,10 +158,10 @@
     # Eligible child in foster care -> protective-care waiver -> $0
     nv_ccdp_copay: 0
 
-# Edge cases: copay-band cut-points. The scale is at-or-above (single_amount),
-# so the 0.33 and 0.4201 thresholds belong to the HIGHER band:
-#   ratio < 0.33 -> $0; 0.33 <= ratio < 0.4201 -> $90; ratio >= 0.4201 -> $150.
-# Family of 3, period 2025-01: monthly SMI = 6_721.82.
+# Edge cases: copay-band cut-points. Each band top is a share of SMI rounded to the
+# nearest dollar, and income above a top pays the next band.
+# Family of 3, period 2025-01: monthly SMI = 6_721.82, so the $0 band tops out at
+# round(0.33 * 6_721.82) = $2,218 and the $90 band at round(0.42 * 6_721.82) = $2,823.
 
 - name: Income just below the 33% SMI cut-point yields a zero copay.
   period: 2025-01
@@ -183,7 +184,7 @@
         members: [person1, person2, person3]
         state_code: NV
   output:
-    # 2_200/mo / 6_721.82 = 0.3273 < 0.33 -> $0
+    # 2_200 stays within the $2,218 top of the $0 band -> $0
     nv_ccdp_copay: 0
 
 - name: Income just above the 33% SMI cut-point yields a $90 copay.
@@ -207,7 +208,7 @@
         members: [person1, person2, person3]
         state_code: NV
   output:
-    # 2_225/mo / 6_721.82 = 0.3310 >= 0.33 -> $90
+    # 2_225 exceeds the $2,218 top of the $0 band -> $90
     nv_ccdp_copay: 90
 
 - name: Income just below the 42% SMI cut-point stays in the $90 band.
@@ -231,7 +232,7 @@
         members: [person1, person2, person3]
         state_code: NV
   output:
-    # 2_800/mo / 6_721.82 = 0.4166 in [0.33, 0.4201) -> $90
+    # 2_800 stays within the $2,823 top of the $90 band -> $90
     nv_ccdp_copay: 90
 
 - name: Income just above the 42% SMI cut-point yields a $150 copay.
@@ -255,7 +256,7 @@
         members: [person1, person2, person3]
         state_code: NV
   output:
-    # 2_850/mo / 6_721.82 = 0.4240 >= 0.4201 -> $150
+    # 2_850 exceeds the $2,823 top of the $90 band -> $150
     nv_ccdp_copay: 150
 
 - name: Income at 42.8% SMI (above the operational 42% break) yields a $150 copay.
@@ -279,7 +280,7 @@
         members: [person1, person2, person3]
         state_code: NV
   output:
-    # 2_875/mo / 6_721.82 = 0.4277 >= 0.4201 -> $150. The State Plan summary
+    # 2_875 is 42.8% of SMI, above the $2,823 top -> $150. The State Plan summary
     # text ("43%-49% -> $150") would wrongly bucket this 42-43% SMI income as
     # $90; the operational chart (42% break) correctly makes it $150.
     nv_ccdp_copay: 150
@@ -834,7 +835,7 @@
   output:
     nv_ccdp_copay: 344.05
 
-- name: Under the April 2024 chart a family of 3 at $5,314.84 pays $372.04.
+- name: Under the April 2024 chart a family of 3 at $5,314 pays $371.98.
   period: 2024-04
   absolute_error_margin: 0.01
   input:
@@ -852,14 +853,15 @@
       spm_unit:
         members: [person1, person2, person3]
         nv_ccdp_countable_income:
-          2024: 63_778.08
+          2024: 63_768
     households:
       household:
         members: [person1, person2, person3]
         state_code:
           2024: NV
   output:
-    nv_ccdp_copay: 372.04
+    # The top band charges 7%: 0.07 * 5_314 = 371.98.
+    nv_ccdp_copay: 371.98
 
 - name: Under the April 2024 chart a family of 4 at $2,979 pays $0.
   period: 2024-04
@@ -1029,7 +1031,7 @@
   output:
     nv_ccdp_copay: 43.82
 
-- name: Under the April 2024 chart a family of 7 at $8,541.7 pays $597.92.
+- name: Under the April 2024 chart a family of 7 at $8,541 pays $597.87.
   period: 2024-04
   absolute_error_margin: 0.01
   input:
@@ -1059,14 +1061,15 @@
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6, person7]
         nv_ccdp_countable_income:
-          2024: 102_500.4
+          2024: 102_492
     households:
       household:
         members: [person1, person2, person3, person4, person5, person6, person7]
         state_code:
           2024: NV
   output:
-    nv_ccdp_copay: 597.92
+    # The top band charges 7%: 0.07 * 8_541 = 597.87.
+    nv_ccdp_copay: 597.87
 
 - name: Under the April 2024 chart a family of 14 at $7,170 pays $0.
   period: 2024-04
@@ -1188,7 +1191,7 @@
   output:
     nv_ccdp_copay: 71.71
 
-- name: Under the April 2024 chart a family of 14 at $9,870.41 pays $690.93.
+- name: Under the April 2024 chart a family of 14 at $9,870 pays $690.90.
   period: 2024-04
   absolute_error_margin: 0.01
   input:
@@ -1239,14 +1242,15 @@
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
         nv_ccdp_countable_income:
-          2024: 118_444.92
+          2024: 118_440
     households:
       household:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
         state_code:
           2024: NV
   output:
-    nv_ccdp_copay: 690.93
+    # The top band charges 7%: 0.07 * 9_870 = 690.90.
+    nv_ccdp_copay: 690.9
 
 - name: Copayments stay a share of income through September 2024.
   period: 2024-09
@@ -1360,3 +1364,254 @@
           2024: NV
   output:
     nv_ccdp_copay: 0
+
+- name: Under the April 2024 chart a family of 3 at $2,478.25 rounds to $2,478 and pays $0.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 29_739
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+  output:
+    # MS 316 rounds monthly income to the nearest dollar before reading the chart.
+    nv_ccdp_copay: 0
+
+- name: Under the April 2024 chart a family of 3 at $2,478.50 rounds to $2,479 and pays $24.79.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 29_742
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+  output:
+    # 1% of the rounded $2,479.
+    nv_ccdp_copay: 24.79
+
+- name: Under the April 2024 chart a family of 2 at $1,976 pays $0.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nv_ccdp_countable_income:
+          2024: 23_712
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 0
+
+- name: Under the April 2024 chart a family of 2 at $1,977 pays $19.77.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nv_ccdp_countable_income:
+          2024: 23_724
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 19.77
+
+- name: Under the October 2026 chart a new applicant of 1 at $1,502 pays $0.
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nv_ccdp_countable_income:
+          2026: 18_024
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: NV
+  output:
+    # The chart prints $1,502 as the top of the $0 band: 33% * 105_027 * 0.52 / 12 = 1_501.89.
+    nv_ccdp_copay: 0
+
+- name: Under the October 2026 chart a new applicant of 1 at $1,503 pays $90.
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nv_ccdp_countable_income:
+          2026: 18_036
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: NV
+  output:
+    nv_ccdp_copay: 90
+
+- name: Under the October 2026 chart a renewing family of 1 at $1,911 pays $90.
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nv_ccdp_countable_income:
+          2026: 22_932
+        nv_ccdp_enrolled: true
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: NV
+  output:
+    # The renewal chart prints $1,911 as the top of the $90 band: 42% * 105_027 * 0.52 / 12 = 1_911.49.
+    nv_ccdp_copay: 90
+
+- name: Under the October 2026 chart a renewing family of 1 at $1,912 pays $150.
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nv_ccdp_countable_income:
+          2026: 22_944
+        nv_ccdp_enrolled: true
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: NV
+  output:
+    nv_ccdp_copay: 150
+
+- name: Under the October 2026 chart a family of 3 at $2,426.49 rounds to $2,426 and pays $0.
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2026: 29_117.88
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: NV
+  output:
+    # The chart prints $2,426 as the top of the $0 band for three.
+    nv_ccdp_copay: 0
+
+- name: Under the October 2026 chart a family of 3 at $2,426.50 rounds to $2,427 and pays $90.
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2026: 29_118
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: NV
+  output:
+    nv_ccdp_copay: 90

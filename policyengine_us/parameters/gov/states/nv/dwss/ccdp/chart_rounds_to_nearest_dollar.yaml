@@ -1,0 +1,22 @@
+description: Nevada uses this indicator to determine whether its income chart rounds each income limit and copayment band to the nearest dollar under the Child Care and Development Program.
+
+# The charts effective October 1, 2025 and October 1, 2026 print every limit and band
+# top as the nearest dollar of its share of state median income ($1,789 a month for one
+# at 41% in 2025, from $1,788.77). CC PT 07-23 prints the 85% tops of the October 2023
+# chart in cents ($5,314.84 for three). The model treats the flat schedule's charts,
+# from October 1, 2024, as rounded and earlier charts as unrounded.
+values:
+  2015-01-01: false
+  2024-10-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: Nevada CCDP chart rounds to the nearest dollar
+  reference:
+    - title: Nevada DWSS Policy Transmittal CC PT 06-25 (October 2, 2025), Household Size and Monthly Income Charts
+      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/CC_PT_06-25_ANNUAL_INCOME_CHANGES_10.02.2025.pdf#page=2
+    - title: Nevada DSS Policy Transmittal, Annual Changes to the CCDP Household Size and Monthly Income Limits (October 1, 2026)
+      href: https://prod.dss.nv.gov/siteassets/dwss.nv.gov/ccdp-annual-income-changes-2026_1.pdf#page=2
+    - title: Nevada DWSS Policy Transmittal CC PT 07-23 (October 9, 2023), Household Size Monthly Income Chart
+      href: https://dwss.nv.gov/uploadedFiles/dwssnvgov/content/Care/CC%20PT%2007-23%20Annual%20Income%20Ceiling%20Increase%20(Public%20Distribution).pdf#page=2

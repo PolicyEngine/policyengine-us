@@ -26,9 +26,8 @@ class mo_ccs_income_eligible(Variable):
         # first so floating-point noise can't move a tie.
         fpg_limit = np.floor(np.round(monthly_fpg * fpg_rate, 2) + 0.5)
         # Adjusted gross income may also not exceed 85% of the state median
-        # income at application (Manual sec. 4.7). In practice the FPG limit is
-        # the binding ceiling at all realistic household sizes; the 85% SMI cap
-        # is a non-binding federal backstop kept for CCDF compliance and
-        # robustness to future FPG/SMI ratio shifts.
+        # income (Manual sec. 4.7), and the July 2026 chart applies the lower of
+        # its maximum and that amount. On that chart 85% of the median binds for
+        # enrolled families from ten people and for new applicants from 17.
         smi_limit = spm_unit("hhs_smi", period) * p_ccdf.income_limit_smi
         return adjusted_income <= min_(fpg_limit, smi_limit)

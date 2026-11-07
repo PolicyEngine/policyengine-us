@@ -1,6 +1,8 @@
 # Procedure Letter 36, pages 2-3: monthly voucher payment by provider type and age from November 1, 2025.
 # H.B. 96, Section 423.190: Publicly Funded Child Care payment rates by November 1, 2026, without the
-# Step Up to Quality enhancement.
+# Step Up to Quality enhancement. OAC 5180:6-1-10(B)(1) caps the base at the provider's customary
+# charge, and its (D), (F) and (G) add-ons for accreditation, non-traditional hours and special needs
+# apply.
 
 - name: January 2026 center rate for an infant.
   period: 2026-01
@@ -318,6 +320,8 @@
           2026: CITIZEN
         childcare_hours_per_week:
           2026: 40
+        pre_subsidy_childcare_expenses:
+          2026: 24_000
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -347,6 +351,8 @@
           2026: CITIZEN
         childcare_hours_per_week:
           2026: 40
+        pre_subsidy_childcare_expenses:
+          2026: 24_000
         oh_ccap_provider_type: HOME
     spm_units:
       spm_unit:
@@ -377,6 +383,8 @@
           2026: CITIZEN
         childcare_hours_per_week:
           2026: 40
+        pre_subsidy_childcare_expenses:
+          2026: 24_000
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -405,6 +413,8 @@
           2026: CITIZEN
         childcare_hours_per_week:
           2026: 0
+        pre_subsidy_childcare_expenses:
+          2026: 24_000
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -417,3 +427,351 @@
           2026: BROWN_COUNTY_OH
   output:
     oh_ccvp_rate: [0, 0]
+
+- name: A six-year-old outside school takes the school-age center rate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 6
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        is_in_k12_school: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # Procedure Letter 36, page 3: the school-age row covers children eligible to enroll in kindergarten.
+    oh_ccvp_rate: [0, 375]
+
+- name: A six-year-old outside school takes the school-age home rate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 6
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        is_in_k12_school: false
+        oh_ccap_provider_type: HOME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccvp_rate: [0, 300]
+
+- name: A four-year-old already in kindergarten takes the school-age center rate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccvp_rate: [0, 375]
+
+- name: A four-year-old outside school keeps the preschool center rate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        is_in_k12_school: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccvp_rate: [0, 750]
+
+- name: November 2026 adds no Step Up to Quality bonus at a gold-rated center.
+  period: 2026-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+        childcare_hours_per_week:
+          2026: 40
+        pre_subsidy_childcare_expenses:
+          2026: 24_000
+        oh_ccap_quality_tier: GOLD
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+        county_str:
+          2026: BROWN_COUNTY_OH
+  output:
+    # Publicly Funded Child Care would pay 780 x 1.25 = 975; H.B. 96 leaves the 25% out.
+    oh_ccvp_rate: [0, 780]
+
+- name: November 2026 adds the accreditation payment.
+  period: 2026-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+        childcare_hours_per_week:
+          2026: 40
+        pre_subsidy_childcare_expenses:
+          2026: 24_000
+        oh_ccap_is_accredited: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+        county_str:
+          2026: BROWN_COUNTY_OH
+  output:
+    # 5180:6-1-10(D)(1): 780 x 1.10 = 858.
+    oh_ccvp_rate: [0, 858]
+
+- name: November 2026 adds the accreditation payment, not the larger gold bonus, at an accredited gold-rated center.
+  period: 2026-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+        childcare_hours_per_week:
+          2026: 40
+        pre_subsidy_childcare_expenses:
+          2026: 24_000
+        oh_ccap_quality_tier: GOLD
+        oh_ccap_is_accredited: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+        county_str:
+          2026: BROWN_COUNTY_OH
+  output:
+    # Without (C), (D)(2)'s higher of the two leaves the accreditation payment: 780 x 1.10 = 858.
+    oh_ccvp_rate: [0, 858]
+
+- name: November 2026 adds the special needs payment.
+  period: 2026-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+        childcare_hours_per_week:
+          2026: 40
+        pre_subsidy_childcare_expenses:
+          2026: 24_000
+        is_disabled:
+          2026: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+        county_str:
+          2026: BROWN_COUNTY_OH
+  output:
+    # 5180:6-1-10(G)(1): 780 + 5% x 780 = 819.
+    oh_ccvp_rate: [0, 819]
+
+- name: November 2026 adds the non-traditional hours payment.
+  period: 2026-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+        childcare_hours_per_week:
+          2026: 40
+        pre_subsidy_childcare_expenses:
+          2026: 24_000
+        oh_ccap_non_traditional_hours: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+        county_str:
+          2026: BROWN_COUNTY_OH
+  output:
+    # 5180:6-1-10(F)(1): 780 + 5% x 780 = 819.
+    oh_ccvp_rate: [0, 819]
+
+- name: November 2026 doubles the rate for approved special accommodations.
+  period: 2026-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+        childcare_hours_per_week:
+          2026: 40
+        pre_subsidy_childcare_expenses:
+          2026: 24_000
+        is_disabled:
+          2026: true
+        oh_ccap_has_special_accommodations: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+        county_str:
+          2026: BROWN_COUNTY_OH
+  output:
+    # 5180:6-1-10(G)(2): 2 x 780 = 1,560.
+    oh_ccvp_rate: [0, 1560]
+
+- name: November 2026 takes a customary charge below the county rate as the base.
+  period: 2026-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+        childcare_hours_per_week:
+          2026: 40
+        pre_subsidy_childcare_expenses:
+          2026: 6_000
+        oh_ccap_is_accredited: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+        county_str:
+          2026: BROWN_COUNTY_OH
+  output:
+    # 5180:6-1-10(B)(1): min(780, 6,000 / 12) = 500; (D)(1) adds 10%: 550.
+    oh_ccvp_rate: [0, 550]
+
+- name: October 2026 adds nothing for special needs under the flat chart.
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+        childcare_hours_per_week:
+          2026: 40
+        pre_subsidy_childcare_expenses:
+          2026: 24_000
+        is_disabled:
+          2026: true
+        oh_ccap_is_accredited: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+        county_str:
+          2026: BROWN_COUNTY_OH
+  output:
+    # Procedure Letter 36 pays a center toddler 800 a month with no add-ons.
+    oh_ccvp_rate: [0, 800]

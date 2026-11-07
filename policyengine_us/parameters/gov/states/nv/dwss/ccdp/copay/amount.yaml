@@ -19,12 +19,12 @@ metadata:
 # The flat $0/$90/$150 copay and two-tier copay structure took effect
 # Oct 1, 2024 (State Plan Section 2.4.v); CC PT 06-25 is the Oct 1, 2025 annual
 # income-chart refresh that restates the same percentages and bands.
-# Income up to 32.99% SMI -> $0; 33%-42% SMI -> $90; above 42% SMI -> $150.
-# The State Plan summary prose ("33%-42% -> $90, 43%-49% -> $150") leaves an
-# undefined 42%-43% gap; the operational CC PT 06-25 fee chart resolves it, with
-# the $90 band topping out at 42% SMI and the $150 band beginning just above it.
-# The scale is at-or-above, so 0.33 belongs to the $90 band and 0.4201 to the
-# $150 band (a family at exactly 42% SMI stays in the $90 band, per the chart).
+# Each threshold gives, as a share of SMI, the top of the band below it: income up to
+# 33% SMI pays $0, up to 42% SMI pays $90, and above 42% SMI pays $150. The charts
+# print each top as the nearest dollar ($2,326 and $2,890 a month for three in October
+# 2025), and nv_ccdp_copay rounds them the same way. The State Plan summary prose
+# ("33%-42% -> $90, 43%-49% -> $150") leaves an undefined 42%-43% gap; the operational
+# fee charts resolve it, with the $90 band topping out at 42% SMI.
 brackets:
   - threshold:
       2024-10-01: 0
@@ -35,6 +35,6 @@ brackets:
     amount:
       2024-10-01: 90
   - threshold:
-      2024-10-01: 0.4201
+      2024-10-01: 0.42
     amount:
       2024-10-01: 150

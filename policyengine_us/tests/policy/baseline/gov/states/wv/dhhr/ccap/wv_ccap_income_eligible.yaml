@@ -652,3 +652,233 @@
           2026: WV
   output:
     wv_ccap_income_eligible: false
+
+# Posted charts: each printed family size at its top passes and a dollar more
+# fails. Each case sets the unit's size directly and lists the outcomes in size
+# order, the top first.
+
+- name: Appendix A's FY 2024 scale holds at every family size in January 2026.
+  period: 2026-01
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+      p15:
+        age:
+          2026: 30
+      p16:
+        age:
+          2026: 30
+      p17:
+        age:
+          2026: 30
+      p18:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 1
+        wv_ccap_countable_income: 2_322
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 1
+        wv_ccap_countable_income: 2_323
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 2
+        wv_ccap_countable_income: 3_151
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 2
+        wv_ccap_countable_income: 3_152
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 3
+        wv_ccap_countable_income: 3_981
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 3
+        wv_ccap_countable_income: 3_982
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 4
+        wv_ccap_countable_income: 4_810
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 4
+        wv_ccap_countable_income: 4_811
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 5
+        wv_ccap_countable_income: 5_639
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 5
+        wv_ccap_countable_income: 5_640
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 6
+        wv_ccap_countable_income: 6_469
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 6
+        wv_ccap_countable_income: 6_470
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 7
+        wv_ccap_countable_income: 7_298
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 7
+        wv_ccap_countable_income: 7_299
+      u15:
+        members: [p15]
+        spm_unit_size:
+          2026: 8
+        wv_ccap_countable_income: 8_128
+      u16:
+        members: [p16]
+        spm_unit_size:
+          2026: 8
+        wv_ccap_countable_income: 8_129
+      u17:
+        members: [p17]
+        spm_unit_size:
+          2026: 9
+        wv_ccap_countable_income: 8_957
+      u18:
+        members: [p18]
+        spm_unit_size:
+          2026: 9
+        wv_ccap_countable_income: 8_958
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: WV
+      h2:
+        members: [p2]
+        state_code:
+          2026: WV
+      h3:
+        members: [p3]
+        state_code:
+          2026: WV
+      h4:
+        members: [p4]
+        state_code:
+          2026: WV
+      h5:
+        members: [p5]
+        state_code:
+          2026: WV
+      h6:
+        members: [p6]
+        state_code:
+          2026: WV
+      h7:
+        members: [p7]
+        state_code:
+          2026: WV
+      h8:
+        members: [p8]
+        state_code:
+          2026: WV
+      h9:
+        members: [p9]
+        state_code:
+          2026: WV
+      h10:
+        members: [p10]
+        state_code:
+          2026: WV
+      h11:
+        members: [p11]
+        state_code:
+          2026: WV
+      h12:
+        members: [p12]
+        state_code:
+          2026: WV
+      h13:
+        members: [p13]
+        state_code:
+          2026: WV
+      h14:
+        members: [p14]
+        state_code:
+          2026: WV
+      h15:
+        members: [p15]
+        state_code:
+          2026: WV
+      h16:
+        members: [p16]
+        state_code:
+          2026: WV
+      h17:
+        members: [p17]
+        state_code:
+          2026: WV
+      h18:
+        members: [p18]
+        state_code:
+          2026: WV
+  output:
+    # 185% of the 2024 guideline, sizes 1 to 9.
+    wv_ccap_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]

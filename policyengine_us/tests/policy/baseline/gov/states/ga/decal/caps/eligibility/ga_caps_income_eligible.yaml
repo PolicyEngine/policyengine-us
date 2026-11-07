@@ -334,3 +334,759 @@
   output:
     # total income = 20,000 + 10,000 = 30,000 <= 30,121 -> eligible
     ga_caps_income_eligible: true
+
+# Posted charts: each printed family size at its top passes and a dollar more
+# fails. Each case sets the unit's size directly and lists the outcomes in size
+# order, the top first.
+
+- name: Appendix A's initial limits effective October 5, 2026 hold at sizes 1 to 14 in November 2026.
+  period: 2026-11
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+      p15:
+        age:
+          2026: 30
+      p16:
+        age:
+          2026: 30
+      p17:
+        age:
+          2026: 30
+      p18:
+        age:
+          2026: 30
+      p19:
+        age:
+          2026: 30
+      p20:
+        age:
+          2026: 30
+      p21:
+        age:
+          2026: 30
+      p22:
+        age:
+          2026: 30
+      p23:
+        age:
+          2026: 30
+      p24:
+        age:
+          2026: 30
+      p25:
+        age:
+          2026: 30
+      p26:
+        age:
+          2026: 30
+      p27:
+        age:
+          2026: 30
+      p28:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 1
+        ga_caps_countable_income: 2_494.25
+        ga_caps_enrolled: false
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 1
+        ga_caps_countable_income: 2_494.34
+        ga_caps_enrolled: false
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 2
+        ga_caps_countable_income: 3_261.75
+        ga_caps_enrolled: false
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 2
+        ga_caps_countable_income: 3_261.84
+        ga_caps_enrolled: false
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 3
+        ga_caps_countable_income: 4_029.16
+        ga_caps_enrolled: false
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 3
+        ga_caps_countable_income: 4_029.25
+        ga_caps_enrolled: false
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 4
+        ga_caps_countable_income: 4_796.58
+        ga_caps_enrolled: false
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 4
+        ga_caps_countable_income: 4_796.67
+        ga_caps_enrolled: false
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 5
+        ga_caps_countable_income: 5_564.08
+        ga_caps_enrolled: false
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 5
+        ga_caps_countable_income: 5_564.17
+        ga_caps_enrolled: false
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 6
+        ga_caps_countable_income: 6_331.50
+        ga_caps_enrolled: false
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 6
+        ga_caps_countable_income: 6_331.59
+        ga_caps_enrolled: false
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 7
+        ga_caps_countable_income: 6_475.41
+        ga_caps_enrolled: false
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 7
+        ga_caps_countable_income: 6_475.50
+        ga_caps_enrolled: false
+      u15:
+        members: [p15]
+        spm_unit_size:
+          2026: 8
+        ga_caps_countable_income: 6_619.33
+        ga_caps_enrolled: false
+      u16:
+        members: [p16]
+        spm_unit_size:
+          2026: 8
+        ga_caps_countable_income: 6_619.42
+        ga_caps_enrolled: false
+      u17:
+        members: [p17]
+        spm_unit_size:
+          2026: 9
+        ga_caps_countable_income: 6_763.25
+        ga_caps_enrolled: false
+      u18:
+        members: [p18]
+        spm_unit_size:
+          2026: 9
+        ga_caps_countable_income: 6_763.34
+        ga_caps_enrolled: false
+      u19:
+        members: [p19]
+        spm_unit_size:
+          2026: 10
+        ga_caps_countable_income: 6_907.08
+        ga_caps_enrolled: false
+      u20:
+        members: [p20]
+        spm_unit_size:
+          2026: 10
+        ga_caps_countable_income: 6_907.17
+        ga_caps_enrolled: false
+      u21:
+        members: [p21]
+        spm_unit_size:
+          2026: 11
+        ga_caps_countable_income: 7_051
+        ga_caps_enrolled: false
+      u22:
+        members: [p22]
+        spm_unit_size:
+          2026: 11
+        ga_caps_countable_income: 7_051.09
+        ga_caps_enrolled: false
+      u23:
+        members: [p23]
+        spm_unit_size:
+          2026: 12
+        ga_caps_countable_income: 7_194.91
+        ga_caps_enrolled: false
+      u24:
+        members: [p24]
+        spm_unit_size:
+          2026: 12
+        ga_caps_countable_income: 7_195
+        ga_caps_enrolled: false
+      u25:
+        members: [p25]
+        spm_unit_size:
+          2026: 13
+        ga_caps_countable_income: 7_338.83
+        ga_caps_enrolled: false
+      u26:
+        members: [p26]
+        spm_unit_size:
+          2026: 13
+        ga_caps_countable_income: 7_338.92
+        ga_caps_enrolled: false
+      u27:
+        members: [p27]
+        spm_unit_size:
+          2026: 14
+        ga_caps_countable_income: 7_482.75
+        ga_caps_enrolled: false
+      u28:
+        members: [p28]
+        spm_unit_size:
+          2026: 14
+        ga_caps_countable_income: 7_482.84
+        ga_caps_enrolled: false
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: GA
+      h2:
+        members: [p2]
+        state_code:
+          2026: GA
+      h3:
+        members: [p3]
+        state_code:
+          2026: GA
+      h4:
+        members: [p4]
+        state_code:
+          2026: GA
+      h5:
+        members: [p5]
+        state_code:
+          2026: GA
+      h6:
+        members: [p6]
+        state_code:
+          2026: GA
+      h7:
+        members: [p7]
+        state_code:
+          2026: GA
+      h8:
+        members: [p8]
+        state_code:
+          2026: GA
+      h9:
+        members: [p9]
+        state_code:
+          2026: GA
+      h10:
+        members: [p10]
+        state_code:
+          2026: GA
+      h11:
+        members: [p11]
+        state_code:
+          2026: GA
+      h12:
+        members: [p12]
+        state_code:
+          2026: GA
+      h13:
+        members: [p13]
+        state_code:
+          2026: GA
+      h14:
+        members: [p14]
+        state_code:
+          2026: GA
+      h15:
+        members: [p15]
+        state_code:
+          2026: GA
+      h16:
+        members: [p16]
+        state_code:
+          2026: GA
+      h17:
+        members: [p17]
+        state_code:
+          2026: GA
+      h18:
+        members: [p18]
+        state_code:
+          2026: GA
+      h19:
+        members: [p19]
+        state_code:
+          2026: GA
+      h20:
+        members: [p20]
+        state_code:
+          2026: GA
+      h21:
+        members: [p21]
+        state_code:
+          2026: GA
+      h22:
+        members: [p22]
+        state_code:
+          2026: GA
+      h23:
+        members: [p23]
+        state_code:
+          2026: GA
+      h24:
+        members: [p24]
+        state_code:
+          2026: GA
+      h25:
+        members: [p25]
+        state_code:
+          2026: GA
+      h26:
+        members: [p26]
+        state_code:
+          2026: GA
+      h27:
+        members: [p27]
+        state_code:
+          2026: GA
+      h28:
+        members: [p28]
+        state_code:
+          2026: GA
+  output:
+    # Annual tops as monthly income: the top rounded down to the cent, then a
+    # dollar more a year rounded up to the cent. The chart takes effect October 5,
+    # 2026, so the model applies it from November 2026.
+    ga_caps_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: Appendix A's ongoing limits effective October 5, 2026 hold at sizes 1 to 14 in November 2026.
+  period: 2026-11
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+      p15:
+        age:
+          2026: 30
+      p16:
+        age:
+          2026: 30
+      p17:
+        age:
+          2026: 30
+      p18:
+        age:
+          2026: 30
+      p19:
+        age:
+          2026: 30
+      p20:
+        age:
+          2026: 30
+      p21:
+        age:
+          2026: 30
+      p22:
+        age:
+          2026: 30
+      p23:
+        age:
+          2026: 30
+      p24:
+        age:
+          2026: 30
+      p25:
+        age:
+          2026: 30
+      p26:
+        age:
+          2026: 30
+      p27:
+        age:
+          2026: 30
+      p28:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 1
+        ga_caps_countable_income: 4_240.25
+        ga_caps_enrolled: true
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 1
+        ga_caps_countable_income: 4_240.34
+        ga_caps_enrolled: true
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 2
+        ga_caps_countable_income: 5_544.91
+        ga_caps_enrolled: true
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 2
+        ga_caps_countable_income: 5_545
+        ga_caps_enrolled: true
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 3
+        ga_caps_countable_income: 6_849.58
+        ga_caps_enrolled: true
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 3
+        ga_caps_countable_income: 6_849.67
+        ga_caps_enrolled: true
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 4
+        ga_caps_countable_income: 8_154.25
+        ga_caps_enrolled: true
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 4
+        ga_caps_countable_income: 8_154.34
+        ga_caps_enrolled: true
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 5
+        ga_caps_countable_income: 9_458.91
+        ga_caps_enrolled: true
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 5
+        ga_caps_countable_income: 9_459
+        ga_caps_enrolled: true
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 6
+        ga_caps_countable_income: 10_763.58
+        ga_caps_enrolled: true
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 6
+        ga_caps_countable_income: 10_763.67
+        ga_caps_enrolled: true
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 7
+        ga_caps_countable_income: 11_008.16
+        ga_caps_enrolled: true
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 7
+        ga_caps_countable_income: 11_008.25
+        ga_caps_enrolled: true
+      u15:
+        members: [p15]
+        spm_unit_size:
+          2026: 8
+        ga_caps_countable_income: 11_252.83
+        ga_caps_enrolled: true
+      u16:
+        members: [p16]
+        spm_unit_size:
+          2026: 8
+        ga_caps_countable_income: 11_252.92
+        ga_caps_enrolled: true
+      u17:
+        members: [p17]
+        spm_unit_size:
+          2026: 9
+        ga_caps_countable_income: 11_497.41
+        ga_caps_enrolled: true
+      u18:
+        members: [p18]
+        spm_unit_size:
+          2026: 9
+        ga_caps_countable_income: 11_497.50
+        ga_caps_enrolled: true
+      u19:
+        members: [p19]
+        spm_unit_size:
+          2026: 10
+        ga_caps_countable_income: 11_742.08
+        ga_caps_enrolled: true
+      u20:
+        members: [p20]
+        spm_unit_size:
+          2026: 10
+        ga_caps_countable_income: 11_742.17
+        ga_caps_enrolled: true
+      u21:
+        members: [p21]
+        spm_unit_size:
+          2026: 11
+        ga_caps_countable_income: 11_986.66
+        ga_caps_enrolled: true
+      u22:
+        members: [p22]
+        spm_unit_size:
+          2026: 11
+        ga_caps_countable_income: 11_986.75
+        ga_caps_enrolled: true
+      u23:
+        members: [p23]
+        spm_unit_size:
+          2026: 12
+        ga_caps_countable_income: 12_231.33
+        ga_caps_enrolled: true
+      u24:
+        members: [p24]
+        spm_unit_size:
+          2026: 12
+        ga_caps_countable_income: 12_231.42
+        ga_caps_enrolled: true
+      u25:
+        members: [p25]
+        spm_unit_size:
+          2026: 13
+        ga_caps_countable_income: 12_475.91
+        ga_caps_enrolled: true
+      u26:
+        members: [p26]
+        spm_unit_size:
+          2026: 13
+        ga_caps_countable_income: 12_476
+        ga_caps_enrolled: true
+      u27:
+        members: [p27]
+        spm_unit_size:
+          2026: 14
+        ga_caps_countable_income: 12_720.58
+        ga_caps_enrolled: true
+      u28:
+        members: [p28]
+        spm_unit_size:
+          2026: 14
+        ga_caps_countable_income: 12_720.67
+        ga_caps_enrolled: true
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: GA
+      h2:
+        members: [p2]
+        state_code:
+          2026: GA
+      h3:
+        members: [p3]
+        state_code:
+          2026: GA
+      h4:
+        members: [p4]
+        state_code:
+          2026: GA
+      h5:
+        members: [p5]
+        state_code:
+          2026: GA
+      h6:
+        members: [p6]
+        state_code:
+          2026: GA
+      h7:
+        members: [p7]
+        state_code:
+          2026: GA
+      h8:
+        members: [p8]
+        state_code:
+          2026: GA
+      h9:
+        members: [p9]
+        state_code:
+          2026: GA
+      h10:
+        members: [p10]
+        state_code:
+          2026: GA
+      h11:
+        members: [p11]
+        state_code:
+          2026: GA
+      h12:
+        members: [p12]
+        state_code:
+          2026: GA
+      h13:
+        members: [p13]
+        state_code:
+          2026: GA
+      h14:
+        members: [p14]
+        state_code:
+          2026: GA
+      h15:
+        members: [p15]
+        state_code:
+          2026: GA
+      h16:
+        members: [p16]
+        state_code:
+          2026: GA
+      h17:
+        members: [p17]
+        state_code:
+          2026: GA
+      h18:
+        members: [p18]
+        state_code:
+          2026: GA
+      h19:
+        members: [p19]
+        state_code:
+          2026: GA
+      h20:
+        members: [p20]
+        state_code:
+          2026: GA
+      h21:
+        members: [p21]
+        state_code:
+          2026: GA
+      h22:
+        members: [p22]
+        state_code:
+          2026: GA
+      h23:
+        members: [p23]
+        state_code:
+          2026: GA
+      h24:
+        members: [p24]
+        state_code:
+          2026: GA
+      h25:
+        members: [p25]
+        state_code:
+          2026: GA
+      h26:
+        members: [p26]
+        state_code:
+          2026: GA
+      h27:
+        members: [p27]
+        state_code:
+          2026: GA
+      h28:
+        members: [p28]
+        state_code:
+          2026: GA
+  output:
+    # Annual tops as monthly income: the top rounded down to the cent, then a
+    # dollar more a year rounded up to the cent. The chart takes effect October 5,
+    # 2026, so the model applies it from November 2026.
+    ga_caps_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
