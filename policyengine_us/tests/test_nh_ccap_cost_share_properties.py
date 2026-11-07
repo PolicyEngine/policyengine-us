@@ -4,8 +4,9 @@
 2. Step 2: a family above 100% and at or below 138% owes $5 a week.
 3. Step 3: a family above 138% owes 7% of monthly income divided by 4.33 weeks,
    and within the step the share rises with income.
-4. The monthly payment equals 52/12 weeks of the lesser of the charge and the
-   standard rate, less the cost share, floored at zero.
+4. For a family with one eligible child and no disability supplement, the
+   monthly payment equals 52/12 weeks of the lesser of the charge and the standard
+   rate, less the cost share, floored at zero.
 
 rule_cost_share restates the rule's table on its own, so the variable and the
 table must agree. The YAML cases pin single families; these draw incomes and
@@ -19,8 +20,9 @@ import pytest
 from policyengine_us import Simulation
 
 YEAR = 2025
-MONTH = "2025-01"
-# 2025 poverty guideline for a family of two.
+# He-C 6910.18(e) applies each year's poverty guidelines from the following July,
+# so July 2025 uses the 2025 guideline for a family of two.
+MONTH = "2025-07"
 FPG = 21_150
 WEEKLY_RATE = 280  # Preschool, full time, licensed center.
 TOLERANCE = 0.01
@@ -37,8 +39,9 @@ def rule_cost_share(annual_income):
 def outside_boundary_slivers(annual_income):
     # The parameters place the steps at 1.0001 and 1.3801 of the guideline, so a
     # family inside those slivers takes the lower step.
-    in_first = FPG < annual_income < FPG * 1.0001
-    in_second = FPG * 1.38 < annual_income < FPG * 1.3801
+    # Integer cross-products keep 138% of the guideline, $29,187, out of the sliver.
+    in_first = FPG * 10_000 < annual_income * 10_000 < FPG * 10_001
+    in_second = FPG * 13_800 < annual_income * 10_000 < FPG * 13_801
     return not (in_first or in_second)
 
 
