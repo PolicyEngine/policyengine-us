@@ -1,5 +1,28 @@
 # Tests for in_ccdf_fpg (SPMUnit, MONTH). Indiana moves to a new year's guideline when it
-# posts a new eligibility package: March 31, 2024, May 1, 2025 and April 5, 2026.
+# posts a new eligibility package: March 31, 2024, May 1, 2025 and April 5, 2026. No source
+# dates the guideline year before 2024, so the model reads the current year's until then.
+- name: 2023-06 uses the 2023 guideline.
+  period: 2023-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2023: IN
+  output:
+    in_ccdf_fpg: 2_071.67
+
 - name: 2024-03 uses the 2023 guideline.
   period: 2024-03
   absolute_error_margin: 0.01

@@ -348,6 +348,58 @@
 # the 2024 guideline ($3,228, state plan section 2.2.4) until May 1, 2025; of the 2025
 # guideline ($3,331) until April 5, 2026; then 135% of the 2026 guideline ($3,074, FSSA's
 # chart). A monthly period reads each change from the next month's first day.
+#
+# Before August 2023 the limit was 127% (OECOSL bulletin). No source dates Indiana's
+# guideline year before the March 31, 2024 plan, so the model reads the current year's
+# guideline until 2024, and these two cases pin that choice: 127% of the 2023 guideline
+# gives $2,631 for three in June 2023. The 2022 guideline would give $2,437, and 150%
+# would give $3,108.
+
+- name: New applicant of 3 at 2,631 dollars qualifies in 2023-06.
+  period: 2023-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 2_631
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2023: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 3 at 2,632 dollars doesn't qualify in 2023-06.
+  period: 2023-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 2_632
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2023: IN
+  output:
+    in_ccdf_income_eligible: false
 
 - name: New applicant of 3 at 3,108 dollars qualifies in 2024-03.
   period: 2024-03
