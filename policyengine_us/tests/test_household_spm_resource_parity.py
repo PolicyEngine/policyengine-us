@@ -224,3 +224,63 @@ def test_net_incomes_reconcile_for_one_person(state, earnings):
         - value("spm_unit_energy_subsidy")
     )
     assert np.isclose(household_side, spm_side, atol=TOLERANCE)
+
+
+# Federal cash benefits, paid in every state to the person who receives them.
+# Census P60-200 Appendix A counts veterans' payments as money income and
+# railroad retirement as a government transfer, so both totals count them.
+FEDERAL_CASH_BENEFITS = ("veterans_benefits", "railroad_benefits")
+
+
+@settings(max_examples=30, deadline=None)
+@given(
+    name=st.sampled_from(FEDERAL_CASH_BENEFITS),
+    amount=st.integers(min_value=1, max_value=60_000),
+    state=st.sampled_from(STATES),
+)
+@example(name="veterans_benefits", amount=12_000, state="TX")
+@example(name="railroad_benefits", amount=30_000, state="VA")
+def test_a_dollar_of_federal_cash_benefits_adds_a_dollar_to_both_totals(
+    name, amount, state
+):
+    year = 2026
+    # Earnings this high rule out every means-tested response.
+    zero = Simulation(
+        situation=one_person(state, 500_000, year, **{name: ("person", 0)})
+    )
+    paid = Simulation(
+        situation=one_person(state, 500_000, year, **{name: ("person", amount)})
+    )
+    for names in (
+        ("spm_unit_benefits",),
+        ("household_benefits",),
+        SPM_RESOURCES,
+        HOUSEHOLD_RESOURCES,
+    ):
+        change = total(paid, names, year) - total(zero, names, year)
+        assert change == pytest.approx(amount, abs=TOLERANCE), names
+
+
+@settings(max_examples=20, deadline=None)
+@given(
+    amount=st.integers(min_value=1, max_value=60_000),
+    earnings=st.integers(min_value=0, max_value=300_000),
+    state=st.sampled_from(STATES),
+)
+@example(amount=30_000, earnings=0, state="TX")
+@example(amount=20_000, earnings=45_000, state="VT")
+def test_veterans_benefits_never_change_federal_income_tax(amount, earnings, state):
+    """38 U.S.C. 5301(a)(1) exempts VA benefits from taxation."""
+    year = 2026
+    zero = Simulation(
+        situation=one_person(state, earnings, year, veterans_benefits=("person", 0))
+    )
+    paid = Simulation(
+        situation=one_person(
+            state, earnings, year, veterans_benefits=("person", amount)
+        )
+    )
+    for name in ("irs_gross_income", "adjusted_gross_income", "income_tax"):
+        assert total(paid, [name], year) == pytest.approx(
+            total(zero, [name], year), abs=TOLERANCE
+        ), name
