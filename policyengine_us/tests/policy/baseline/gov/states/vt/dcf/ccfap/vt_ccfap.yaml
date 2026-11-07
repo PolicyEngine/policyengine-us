@@ -512,3 +512,96 @@
   output:
     # $439 * 52 / 12 = $1,902.33.
     vt_ccfap: 1_902.33
+
+- name: Once a child has care hours, a sibling with none draws nothing from the unit's bill.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_hours_per_week: 35
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 1_300 # 300 x 52 / 12
+        spm_unit_pre_subsidy_childcare_expenses: 18_200 # 350 x 52
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    # The bill splits 9,100 to each child, but only the preschooler has hours:
+    # 439 x 52 / 12 - 1,300 = 602.33, the state's 139 a week in the January 13,
+    # 2026 memo.
+    vt_ccfap: 602.33
+
+- name: With no care hours recorded, each child with a share of the bill counts.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 1_300 # 300 x 52 / 12
+        spm_unit_pre_subsidy_childcare_expenses: 18_200 # 350 x 52
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    # No hours reads as part time: (240 + 204) x 52 / 12 - 1,300 = 624.
+    vt_ccfap: 624
+
+- name: The memo's family owes the same 211 a week with a sibling in no care.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_hours_per_week: 35
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 15_600 # 300 x 52
+        spm_unit_pre_subsidy_childcare_expenses: 18_200 # 350 x 52
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    # The state pays 139 x 52 = 7,228, and the family owes 211 x 52 = 10,972.
+    child_care_subsidies: 7_228
+    household_child_care_subsidies: 7_228
+    childcare_expenses: 10_972

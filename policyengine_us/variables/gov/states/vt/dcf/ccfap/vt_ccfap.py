@@ -25,18 +25,19 @@ class vt_ccfap(Variable):
         # Source: CCFAP Understanding Payments (Q3 and "Jane Smith" example)
         # https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/CCFAP/CCFAP-Understanding-Payments.pdf
         # Under CCFAP Regulations V, as the department revised it on June 28,
-        # 2024, payment runs from the first week of submitted attendance. With
-        # no attendance record, care hours or a share of the SPM unit's bill
-        # count as attendance. pre_subsidy_childcare_expenses splits the bill
-        # evenly across the unit's children, so once the unit has a bill a child
-        # with no care hours also counts.
+        # 2024, payment runs from the first week of submitted attendance, so a
+        # child who attends no provider draws nothing. With no attendance
+        # record, care hours stand in for attendance. When no one in the SPM
+        # unit has care hours, a share of the unit's bill stands in instead;
+        # pre_subsidy_childcare_expenses splits that bill evenly across the
+        # unit's children.
         p = parameters(period).gov.states.vt.dcf.ccfap.rates
         person = spm_unit.members
         eligible_child = person("vt_ccfap_eligible_child", period)
         annual_bill = person("pre_subsidy_childcare_expenses", period.this_year)
-        in_care = (person("childcare_hours_per_week", period.this_year) > 0) | (
-            annual_bill > 0
-        )
+        has_hours = person("childcare_hours_per_week", period.this_year) > 0
+        unit_has_hours = spm_unit.project(spm_unit.any(has_hours))
+        in_care = where(unit_has_hours, has_hours, annual_bill > 0)
         state_rate = person("vt_ccfap_state_rate", period)
         weekly_rate = where(
             p.pays_above_provider_charge | (annual_bill == 0),
