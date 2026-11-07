@@ -574,3 +574,73 @@
     irs_gross_income: 15_000
     basic_standard_deduction: 15_450
     tax_unit_is_required_to_file: false
+
+- name: 2017 single filer standard deduction is $6,350
+  period: 2017
+  input:
+    filing_status: SINGLE
+  output:
+    basic_standard_deduction: 6_350
+
+- name: 2017 separate filer standard deduction is $6,350
+  period: 2017
+  input:
+    filing_status: SEPARATE
+  output:
+    basic_standard_deduction: 6_350
+
+- name: 2017 head of household standard deduction is $9,350
+  period: 2017
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    basic_standard_deduction: 9_350
+
+- name: 2017 joint filer standard deduction is $12,700
+  period: 2017
+  input:
+    filing_status: JOINT
+  output:
+    basic_standard_deduction: 12_700
+
+- name: 2017 surviving spouse standard deduction is $12,700
+  period: 2017
+  input:
+    filing_status: SURVIVING_SPOUSE
+  output:
+    basic_standard_deduction: 12_700
+
+- name: 2015 head of household standard deduction is $9,250
+  period: 2015
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    basic_standard_deduction: 9_250
+
+- name: 2015 joint filers get a $12,600 standard deduction
+  period: 2015
+  input:
+    filing_status: JOINT
+  output:
+    basic_standard_deduction: 12_600
+
+- name: 2015 single filers get a $6,300 standard deduction
+  period: 2015
+  input:
+    filing_status: SINGLE
+  output:
+    basic_standard_deduction: 6_300
+
+- name: 2016 head of household standard deduction is $9,300
+  period: 2016
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    basic_standard_deduction: 9_300
+
+- name: 2016 joint filer standard deduction is $12,600
+  period: 2016
+  input:
+    filing_status: JOINT
+  output:
+    basic_standard_deduction: 12_600

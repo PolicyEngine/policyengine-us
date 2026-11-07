@@ -883,6 +883,49 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify the legal basis for the amended-return remedy and treatment of exactly $3,000.
+- id: us-az:military-survivor-benefit-recipient
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does Arizona subtract Survivor Benefit Plan (SBP) payments under 43-1022(2)'s $2,500 subtraction for
+    federal plans or in full on line 29b under 43-1022(26), and does the answer differ for a deceased veteran's
+    surviving spouse and for other recipients?
+  sources:
+  - kind: statute
+    citation: A.R.S. 43-1022(2)(a) and (26)
+    url: https://www.azleg.gov/ars/43/01022.htm
+  - kind: guidance
+    citation: Arizona Individual Income Tax Ruling ITR 11-3
+    url: https://azdor.gov/sites/default/files/2023-03/RULINGS_INDV_2011_itr11-3.pdf#page=2
+  - kind: instructions
+    citation: 2025 Arizona Form 140 instructions, line 29b
+    url: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf
+  readings:
+    statute: Paragraph (2)(a) allows up to $2,500 of benefits from "any other retirement system or plan established
+      by federal law", except "retired or retainer pay of the uniformed services of the United States that qualifies
+      for a subtraction under paragraph 26". Paragraph (26) covers "annuities and pensions received as retired or
+      retainer pay" and names no survivors.
+    other: ITR 11-3 says "Arizona allows a subtraction of up to $2,500 for uniformed services retired pay and SBP
+      benefits." From 2023, the Form 140 instructions put the payments of "the surviving spouse of a deceased military
+      veteran" on line 29b, which has no cap from 2021.
+  example: A 2021 surviving spouse with $6,000 of SBP payments and no other income subtracts $2,500 under (2) and
+    $0 on line 29b. In 2023 the same filer subtracts $6,000 on line 29b and $0 under (2). A non-spouse recipient
+    subtracts $2,500 under (2) in both years.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/az/tax/income/subtractions/az_military_retirement_subtraction.py
+    - policyengine_us/variables/gov/states/az/tax/income/subtractions/az_public_pension_exclusion.py
+    - policyengine_us/parameters/gov/states/az/tax/income/subtractions/military_retirement/surviving_spouse_eligible.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10398
+  state: ruled
+  note: Neither paragraph says whether a survivor's SBP payments count as annuities "received as retired or retainer
+    pay", and (2)(a)'s exception turns on that question, so PolicyEngine follows ADOR's reading for each year. A
+    surviving spouse's payments stay under (2) through 2022, as ITR 11-3 provides, and move to line 29b from 2023, as
+    the Form 140 instructions provide. ADOR has moved no other recipient's payments, so those stay under (2) in every
+    year.
 - id: us-ca:capi-payment-standard-offset
   program: capi
   years:
@@ -1078,8 +1121,11 @@ candidates:
     that skip the dependency question for joint filers?
   sources:
   - kind: statute
-    citation: RTC 17052 adopting IRC 32(c)(1)(A)(ii)(III)
-    url: null
+    citation: RTC 17052(a)(1), SB 1073 of 2016 section 1
+    url: https://www.leginfo.ca.gov/pub/15-16/bill/sen/sb_1051-1100/sb_1073_bill_20160927_chaptered.html
+  - kind: statute
+    citation: 26 USC 32(c)(1)(A)(ii)(III)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm
   - kind: instructions
     citation: 2025 FTB 3514 booklet, Step 4(d), p.6
     url: https://www.ftb.ca.gov/forms/2025/2025-3514-booklet.pdf#page=6
@@ -1090,12 +1136,75 @@ candidates:
     $65.025 under the model's continuous formula if the instruction flow permits eligibility.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/ca/tax/income/credits/earned_income/ca_eitc_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
-  note: 'The October 2026 statute-first ruling retains the bar; obtain the statutory URL and verify the instruction
-    flow''s joint-return effect. Code not yet on main: ca_eitc_eligible.'
+  note: RTC 17052 retains the federal dependency restriction. FTB 3514 Step 4(d) skips the dependency question for joint filers. Apply the statute and retain zero.
+- id: us-ca:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can California's 60% SMI heating limit exclude a household of 21 or more whose income is below the federal
+    110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: California FY2026 LIHEAP State Plan, income eligibility table, pp.9, 184
+    url: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=9
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The plan's 60% SMI limits fall below that floor for households of 21 to 25 members.
+  example: Twenty-one people with $136,088.28 a year exceed the $136,088.16 limit ($11,340.68 a month) but are below the
+    $138,215 floor (2025 guideline, one-year lag), so they stay income eligible.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ca/csd/liheap/eligibility/ca_liheap_income_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/ca/csd/liheap/income/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10607
+  state: unreviewed
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (ca_liheap_income_eligible.py).
+    No source prices a household the floor admits above the limit. It gets the group 4 amount, as guide p.218 pays a
+    categorical household above the limit, even where its income is below the poverty guideline.
+- id: us-ca:liheap-subsidized-heat-in-rent
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can a subsidized California tenant whose heat is included in rent, with no separate bill, receive LIHEAP?
+  sources:
+  - kind: plan
+    citation: California FY2026 LIHEAP State Plan, item 2.3, p.9
+    url: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=9
+  - kind: manual
+    citation: LIHEAP Eligibility and Verification Guide 1.6 and 3.3, plan pp.205, 279
+    url: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=205
+  readings:
+    statute: No statute is supplied; guide 1.6 makes ineligible "Subsidized households that do not pay any out of pocket
+      energy costs".
+    other: Plan item 2.3 answers No to differing policies for renters in subsidized housing and renters with utilities in
+      rent. Guide 3.3 says "Applicants that pay their utility costs as a portion of their rent are eligible" and accepts
+      a "HUD or USDA statement showing zero utility allowance".
+  example: One Alameda adult with a Section 8 voucher, gas heat included in rent, no separate bill and wages of $12,000
+    receives $484 under plan 2.3 and guide 3.3 and $0 if guide 1.6 reaches heat in rent.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/ca/csd/liheap/eligibility/ca_liheap_basic_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10607
+  state: ruled
+  note: 'Ruled 2026-11-03: follow plan 2.3 and guide 3.3. PE-US applies guide 1.6 only to a subsidized household with
+    neither a bill nor heat in rent.'
 - id: us-ca:premium-subsidy-150-fpl-boundary
   program: california-premium-subsidy
   years:
@@ -1191,8 +1300,8 @@ candidates:
     and booklet or $107,987 on the agency website?
   sources:
   - kind: statute
-    citation: RTC 17053.5(j)(4)
-    url: null
+    citation: RTC 17053.5(a)(1), (j)(3)-(4), SB 1005 section 98, PDF p.89
+    url: https://www.leginfo.ca.gov/pub/15-16/bill/sen/sb_1001-1050/sb_1005_bill_20160701_chaptered.pdf#page=89
   - kind: form
     citation: 2025 renter's credit qualification record question 2
     url: https://www.ftb.ca.gov/forms/2025/2025-540-booklet.pdf#page=25
@@ -1200,17 +1309,17 @@ candidates:
     citation: FTB nonrefundable renter's credit web page
     url: https://www.ftb.ca.gov/file/personal/credits/nonrefundable-renters-credit.html
   readings:
-    statute: Twice the $53,994 single amount is $107,988, also used by the qualification record.
+    statute: The FTB doubles the rounded single amount. Twice $53,994 equals $107,988, which the 2025 qualification record also gives.
     other: The agency website gives $107,987.
-  example: The published limits differ by $1.
+  example: A qualified joint renter with $107,988 AGI and enough tax receives $120 under the statute and booklet, or $0 under the website's threshold.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ca/tax/income/credits/renter/income_cap.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
-  state: unreviewed
-  note: 'Verify the statutory indexing calculation and preserve dated evidence of the website discrepancy. Code
-    not yet on main: ca_renter_credit.'
+  state: ruled
+  note: The PR sets the three higher 2025 limits to twice the single amount. The official website still gives $107,987 when fetched on November 5, 2026, while linking to 2025 return forms.
 - id: us-ca:renter-credit-one-excluded-joint-spouse
   program: income-tax
   years:
@@ -1232,12 +1341,12 @@ candidates:
   example: With $2,000 joint AGI and $6,000 rent, the statutory reading gives $120 versus $0 under the form reading.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/ca/tax/income/credits/ca_renter_credit.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
-  note: 'The October 2026 statute-first ruling retains $120; verify the procedural inference from the form and the
-    spouse exclusions. Code not yet on main: ca_renter_credit.'
+  note: Subsection (d)(2) excludes the individual; (d)(3) expressly extends a different exclusion to a spouse. The qualification record gives joint filers $120 on PDF page 26. Retain the statutory joint amount.
 - id: us-ca:riverside-liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -1412,8 +1521,7 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/states/ca/cdss/capi/_ca_capi_ssi_ssp_standard.py
-    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/payment_standard/ca_state_supplement_food_allowance.py
-    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/payment_standard/ca_state_supplement_payment_standard.py
+    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/_ca_state_supplement_rates.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10379
     - https://github.com/PolicyEngine/policyengine-us/pull/10546
@@ -1426,9 +1534,49 @@ candidates:
     https://github.com/PolicyEngine/policyengine-us/pull/10379#issuecomment-6509402355. WIC 12200(e) gives the
     no-cooking allowance only under (c) and (d), so a couple paid the one-blind rate under (b) gets none, in CAPI and
     in the state supplement. CAPI (_ca_capi_ssi_ssp_standard.py) and the state supplement
-    (ca_state_supplement_food_allowance.py) both follow the statute: neither adds a food allowance to the one-blind
+    (_ca_state_supplement_rates.py) both follow the statute: neither adds a food allowance to the one-blind
     couple rate, and a couple both aged or disabled takes the aged or disabled rate with the couple allowance when
     that is higher.'
+- id: us-ca:ssp-household-of-another-share
+  program: ssi-ssp
+  years:
+    from: 2013
+    type: calendar
+  question: Does a California recipient in another person's household keep the regular state share, or take the
+    separate share POMS lists for that arrangement?
+  sources:
+  - kind: statute
+    citation: Cal. WIC §12200(i)
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200
+  - kind: statute
+    citation: Cal. WIC §12200.03
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200.03
+  - kind: manual
+    citation: SSA POMS SI 01415.058 B.1 and B.2, codes D, F and G
+    url: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058
+  readings:
+    statute: Subdivision 12200(i) reduces the grant level under (a) through (d) by the amount of the federal reduction,
+      which alone keeps the regular state share. Section 12200.03 applies notwithstanding any other law and sets the
+      payments at the federal minimum, which may change that result.
+    other: POMS lists separate state shares for recipients with the federal one-third reduction.
+  example: In January 2026, an aged person with no income in another person's household has a $902.61 total with the
+    regular share, which PE-US pays ($662.67 federal plus $239.94), and $907.87 under POMS ($662.67 plus $245.20).
+  pe_us:
+    follows: not-modelled
+    code:
+    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/_ca_state_supplement_rates.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10601
+  state: open
+  note: PE-US has no household-of-another shares, so these recipients keep the regular share on the reduced federal
+    amount (issue 7892). The January 2026 POMS shares are 245.20 for aged or disabled, 329.58 for blind, 624.40 for
+    out-of-home care (code F) and 102.53 for a disabled child (code G); the couple shares are 615.70, 841.22 for two
+    blind, 755.31 for one blind and 1,604.20 for out-of-home care. Subdivision 12200(i) names only (a) through (d), so
+    it does not decide codes F and G. WIC 12204 keeps a Public Law 93-66 payment and does not explain the difference.
+    WIC 12200.03 may, since it sets the Section 12200 payments, other than (e), (g) and (h), at the federal minimum and
+    no lower than the March 1983 standards adjusted under 20 CFR 416.2096(b); that arithmetic has not been checked.
+    The project lead leans toward POMS because SSA issues the payment from its chart; the model stays as it is until
+    that is decided.
 - id: us-ca:ssp-nmohc-couple-standard
   program: ssi-ssp
   years:
@@ -1615,6 +1763,157 @@ candidates:
   state: ruled
   note: The October 2026 ruling retains the statutory bar; verify the weak literal joint-return interpretation and
     obtain a corresponding 2025 example.
+- id: us-co:leap-catch-all-income
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Colorado LEAP count miscellaneous receipts and guaranteed-income cash under the rule's catch-all,
+    although the FY2026 plan's section 1.9 leaves Other unchecked?
+  sources:
+  - kind: regulation
+    citation: 9 CCR 2503-7 3.752.21, p.20
+    url: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12221&fileName=9%20CCR%202503-7#page=20
+  - kind: plan
+    citation: Colorado FY2026 LIHEAP State Plan, section 1.9, pp.5-7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/CO_Plan_2026.pdf#page=5
+  readings:
+    statute: Countable unearned income includes "payments from any other source, which is considered to be a gain or
+      benefit to the applicant or recipient".
+    other: Plan 1.9 leaves Other unchecked.
+  example: One adult with $50,000 of miscellaneous_income and a $1,000 gas bill receives $0 under the rule and $1,000
+    if the receipt stays out.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/co/cdhs/leap/income/sources/unearned.yaml
+  state: ruled
+  note: 'Ruled 2026-11-02: follow the rule over the plan.'
+- id: us-co:leap-prizes-lump-sums
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do gambling winnings count as prizes under the rule, or does the manual's exemption for one-time lump sums
+    reach them?
+  sources:
+  - kind: regulation
+    citation: 9 CCR 2503-7 3.752.21 A, p.20
+    url: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12221&fileName=9%20CCR%202503-7#page=20
+  - kind: manual
+    citation: 2025-26 LEAP Training and Operations Manual, p.82
+    url: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=82
+  readings:
+    statute: Countable unearned income includes "Inheritance, gifts, and prizes".
+    other: The manual exempts "All one-time non-recurring lump sum benefits received", citing 3.752.23 EE.
+  example: One adult with $50,000 of gambling winnings and a $1,000 gas bill receives $0 under the rule and $1,000 if
+    the winnings are an exempt lump sum.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/co/cdhs/leap/income/sources/unearned.yaml
+  state: unreviewed
+  note: PE-US counts gambling_winnings as prizes. The regulation's own exemption, 3.752.23 EE, lists lump sums for income
+    tax refunds, rebates or credits and retroactive Social Security, SSI and public assistance payments.
+- id: us-co:leap-subsidized-allowance-order
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Colorado's $180 subsidized-housing allowance come off the heating cost remaining after Step B, before
+    the electric, income and sharing adjustments, or last, after them?
+  sources:
+  - kind: regulation
+    citation: 9 CCR 2503-7 3.758.47 Steps F and G, p.43
+    url: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12221&fileName=9%20CCR%202503-7#page=43
+  - kind: plan
+    citation: Colorado FY2026 LIHEAP plan attachment, benefit methodology, p.2
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heat-Crisis_2026.pdf#page=2
+  - kind: manual
+    citation: 2025-26 LEAP Training and Operations Manual, pp.90, 94
+    url: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=90
+  readings:
+    statute: Step F deducts the allowance from the cost remaining after Step B, and Step G applies Steps B-F. The
+      plan attachment repeats this text.
+    other: The manual applies the adjustments in its listed order, with the allowance last.
+  example: A subsidized household sharing a $1,000 bill with one other household, at a 10% contribution, receives $270
+    with the allowance last (1,000 x 0.9 / 2 - 180) and $369 with it first ((1,000 - 180) x 0.9 / 2).
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/co/cdhs/leap/co_leap.py
+  state: ruled
+  note: 'Ruled 2026-11-02: take the allowance last, in the manual''s order. The rule''s text does not settle the order:
+    Step F is lettered after Steps C-E, Step G subtracts "Steps B-F", and the same words sat under the 2017 rule''s Step
+    E, after the electric and sharing steps.'
+- id: us-co:leap-whole-dollar-income-tables
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do Colorado's LEAP contribution bands and income limits use exact percentages of the poverty guideline and
+    state median income, or the whole-dollar monthly tables the plan attachment and manual print?
+  sources:
+  - kind: regulation
+    citation: 9 CCR 2503-7 3.752.22 D, p.23, and 3.758.47 Step D, p.43
+    url: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12221&fileName=9%20CCR%202503-7#page=23
+  - kind: plan
+    citation: Colorado FY2026 LIHEAP plan attachment, rates tables, p.5
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heat-Crisis_2026.pdf#page=5
+  - kind: manual
+    citation: 2025-26 LEAP Training and Operations Manual, rates handout, p.4
+    url: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=4
+  readings:
+    statute: No statute is supplied; Step D sets the contribution by "0 – 75% FPL", "75.01 – 125% FPL", "125.01 – 175% FPL"
+      and "175.01% +", and 3.752.22 D sets the limit at 60 percent of state median income.
+    other: The plan attachment and manual print whole-dollar monthly amounts, $978 at 75% FPL and $3,607 at 60% of state
+      median income for one person, and the attachment says Colorado "uses the FPL chart".
+  example: One adult with wages of $11,737.20 ($978.10 a month, 74.998% of the guideline) and a $1,000 gas bill receives
+    $900 under the printed $978 and $1,000 under Step D's 75%. One adult with $43,290 and the same bill receives $0
+    under the printed $3,607 and $700 within 60% of state median income ($43,293).
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/co/cdhs/leap/co_leap_income_contribution_rate.py
+    - policyengine_us/variables/gov/states/co/cdhs/leap/co_leap_income_limit.py
+  state: ruled
+  note: 'Ruled 2026-11-03: keep the printed tables. The rule states no dollar conversion, and PE-US reproduces the tables
+    by rounding the monthly guideline and each percentage half up and flooring 60% of state median income to the month.
+    The rule''s next sentence lets the department "adjust the income limits annually based on funds available and the
+    state median income guidelines".'
+- id: us-co:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can Colorado's LEAP income limit, which stops growing at 15 members, exclude a household of 21 or more whose
+    income is below the federal 110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: manual
+    citation: Colorado 2025-26 LEAP Training Operations Manual, income guidelines and household size, pp.4, 31
+    url: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=4
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The manual caps household size at 15, so the $132,360 limit falls below the floor from 21 actual members.
+  example: Twenty-five people with $150,000 exceed the $132,360 size-15 limit but are below the $162,415 floor (2025
+    guideline, one-year lag), so they keep the 20% contribution and an $800 award on a $1,000 bill.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/co/cdhs/leap/co_leap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/co/cdhs/leap/payment/fpg_year_lag.yaml
+  state: unreviewed
+  note: PE-US applies the floor to the actual qualified household, before the state size cap, rounded to cents with
+    the statute's strict "less than" (co_leap_eligible.py).
 - id: us-co:oap-initial-application-income-test
   program: old-age-pension
   years:
@@ -1669,6 +1968,103 @@ candidates:
   state: ruled
   note: 'Ruled in October 2026 to follow the statute; verify the applicable regulation version. Code not yet on
     main: co premium assistance formula, aca_ptc_slcsp.'
+- id: us-ct:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Can Connecticut's 60% SMI CEAP limit exclude a very large household whose income is below the federal 110%
+    poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: Connecticut approved FFY2027 LIHEAP Allocation Plan, section IV.B, p.7
+    url: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=7
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The 60% SMI limit falls below that floor from 29 members in FY2026 and 28 in FY2027.
+  example: Thirty people with $190,000 exceed the $187,382 FY2026 limit but are below the $192,665 floor (2025
+    guideline, one-year lag), so they keep the Level 1 basic benefit of $595.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ct/dss/ceap/eligibility/ct_ceap_income_eligible.py
+    - policyengine_us/variables/gov/states/ct/dss/ceap/payment/ct_ceap_benefit_level.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/ct/dss/ceap/payment/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10611
+  state: unreviewed
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (ct_ceap_income_eligible.py). The
+    benefit matrix note's Level 3 reaches only categorical households the income test would deny. A categorical
+    household the floor admits keeps its income level, because 42 U.S.C. 8624(b)(5) bars differentiating between
+    (b)(2)(A) and (b)(2)(B) households, so those thirty people get $595 with or without SNAP.
+- id: us-ct:liheap-plan-income-checklist
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Do SSI, TFA, general assistance and a minor's earnings count for CEAP, as the allocation plans' income
+    definition can be read, or stay out, as the FY2026 plan's section 1.9 check boxes leave them?
+  sources:
+  - kind: plan
+    citation: Connecticut FY2026 LIHEAP State Plan, section 1.9, pp.6-7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/CT_Plan_2026.pdf#page=6
+  - kind: plan
+    citation: Connecticut approved FFY2027 LIHEAP Allocation Plan, section III, p.5
+    url: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5
+  readings:
+    plan: Plan 1.9 leaves SSI, General Assistance, TANF, "Other" and "Earned income of a child under the age of 18"
+      unchecked.
+    other: Section III of both allocation plans counts "Gross salaries/wages" with no age exception and "governmental
+      assistance not otherwise excluded as income".
+  example: A parent aged 40 with wages of $20,000 and a child aged 17 with wages of $8,000 is at 95% of the 2025
+    guideline for two, Level 1 and $595, under plan 1.9, and at 132%, Level 2 and $445, if the child's wages count.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/ct/dss/ceap/income/sources/earned.yaml
+    - policyengine_us/parameters/gov/states/ct/dss/ceap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/ct/dss/ceap/income/ct_ceap_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10611
+  state: unreviewed
+  note: PE-US follows plan 1.9, the specific list, and carries it into FY2027, which has no model plan.
+- id: us-ct:liheap-state-supplement-income
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does the Connecticut State Supplement count as CEAP income under the allocation plans' governmental-assistance
+    clause, or stay out, with the FY2026 plan's section 1.9 "Other" box unchecked?
+  sources:
+  - kind: plan
+    citation: Connecticut FY2026 LIHEAP State Plan, section 1.9, pp.6-7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/CT_Plan_2026.pdf#page=6
+  - kind: plan
+    citation: Connecticut approved FFY2027 LIHEAP Allocation Plan, section III, p.5
+    url: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5
+  readings:
+    plan: Plan 1.9 leaves General Assistance, SSI, TANF and "Other" unchecked and does not name the State Supplement.
+    other: Section III of both allocation plans counts "governmental assistance not otherwise excluded as income" and
+      does not name the State Supplement either.
+  example: A disabled person aged 50 with a pension of $18,000, a $2,400 State Supplement and a $1,000 gas bill is at 115%
+    of the 2025 guideline, Level 1 and $645, with the supplement out, and at 130%, Level 2 and $495, with it counted.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/ct/dss/ceap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/ct/dss/ceap/income/ct_ceap_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10611
+  state: ruled
+  note: 'Ruled 2026-11-02 by the PR author in the pre-filing review of this PR, item CT-S3: keep the State Supplement out
+    of countable income. Neither document names it, and plan 1.9 is the specific list.'
 - id: us-dc:eitc-no-tin-child-schedule-before-2023
   program: income-tax
   years:
@@ -1898,6 +2294,78 @@ candidates:
     on joint returns (de_elderly_or_disabled_income_exclusion_joint.py) and on other returns (de_elderly_or_disabled_income_exclusion_eligible_person.py).
     The statute-first rule requires replacing age-60 eligibility if the literal boundary is confirmed; verify individual-return
     scope and intervening editions.'
+- id: us-de:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can Delaware's 60% SMI heating limit exclude a household of 20 or more whose income is below the federal
+    110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: Delaware FY2026 LIHEAP State Plan, section 2.1, p.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=9
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The plan's 60% SMI limit falls below that floor from 20 members.
+  example: Twenty-five people with $150,000 exceed the $142,995 limit but are below the $162,415 floor (2025 guideline,
+    one-year lag), so they keep the last-band gas award of $155.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/de/dhss/liheap/eligibility/de_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/de/dhss/liheap/eligibility/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10612
+  state: unreviewed
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (de_liheap_eligible.py).
+- id: us-de:liheap-plan-income-checklist
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do strike benefits, insurance disability payments and minors' unearned income count for Delaware LIHEAP as
+    the manual provides or as the FY2026 plan checklist marks them?
+  sources:
+  - kind: manual
+    citation: DEAP Policies and Procedures Manual, sections 416, 416.2, 418 and 419.3, PDF pages 33, 35 and 37
+    url: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=33
+  - kind: plan
+    citation: Delaware FY2026 LIHEAP State Plan, section 1.9, PDF pages 6-7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=6
+  - kind: guidance
+    citation: Delaware LIHEAP RFP HSS-20-036 statement of work, which lists the manual as an applicable document and asks
+      for income documentation from members aged 18 and over not attending school, PDF pages 69 and 73
+    url: https://bidcondocs.delaware.gov/HSS/HSS_20036Liheap_RFP.pdf#page=69
+  readings:
+    statute: No statute is supplied; the manual counts strike benefits and disability payments made by an insurance
+      company to the individual, and excludes the income of members under 18 except child support and Social Security.
+    other: Plan 1.9 leaves "Strike Pay" and "Insurance payments made directly to the insured" unchecked. Its only
+      person-based exclusion, "Earned income of a child under the age of 18", is also unchecked, so a child's unearned
+      income of a checked type would count.
+  example: One adult with $20,000 of insurance disability payments and natural gas heat counts $20,000 and receives $318
+    under the manual, and counts $0 and receives $1,126 under the plan.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/de/dhss/liheap/income/sources/earned.yaml
+    - policyengine_us/parameters/gov/states/de/dhss/liheap/income/sources/unearned.yaml
+    - policyengine_us/parameters/gov/states/de/dhss/liheap/income/sources/minor_unearned.yaml
+    - policyengine_us/variables/gov/states/de/dhss/liheap/income/de_liheap_countable_income_person.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10612
+  state: ruled
+  note: 'Ruled 2026-11-02 for strike pay and disability payments, and 2026-11-03 for minors: follow the manual over the
+    plan. Neither text is a statute. The statement of work lists the manual as an applicable document, and plan 1.9 is a
+    checkbox summary. On minors, manual 418 is the specific rule, and the statement of work asks for income documentation
+    from members aged 18 and over not attending school. The manual also fills what the plan does not list: trusts
+    (estate_income, 416.2) and other taxable income (miscellaneous_income, 416.1). Its sections carry 2011-2015 dates.'
 - id: us-de:snap-child-support-exclusion
   program: snap
   years:
@@ -2430,6 +2898,146 @@ candidates:
     theirs (hi_disabled_exemptions.py, compared with hi_regular_exemptions in hi_exemptions.py). The October 2026
     ruling retained the regulation and instruction reading; verify the statute and whether the guidance describes
     only the disabled spouse''s exemption.'
+- id: us-hi:liheap-bottled-gas-accounts
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does a Hawaii gas company's bottled gas customer qualify for LIHEAP on that bill, as the plan's fraud section
+    and the manuals' bill definition suggest, or does the active utility account requirement leave bottled gas out?
+  sources:
+  - kind: manual
+    citation: Hawaii draft FY2026 Policies and Procedures, definitions and sections 2.1 and 4.2, model plan packet PDF pages
+      55, 57, 58 and 65
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=55
+  - kind: manual
+    citation: Hawaii 2020 Policies and Procedures, definitions, PDF page 2
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2019/07/Policies-and-Procedures-2020.pdf#page=2
+  - kind: plan
+    citation: Hawaii FY2026 LIHEAP State Plan, item 17.9, PDF page 41
+    url: https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=41
+  readings:
+    statute: No statute is supplied; draft 2.1 requires "a place of residence with an active utility account", and draft
+      4.2 item 9 requires "an active account number for residential energy service with the specified island utility
+      company".
+    other: Plan 17.9 says "natural gas or propane is delivered but is handled by the utility company". Both manuals'
+      Current Utility Expense includes "kilowatt/therms/tank/ cylinder charges", and the draft defines Utility by the
+      company, "electricity or gas provided by a company subject to regulation by the Public Utilities Commission".
+  example: One person aged 70 in public housing with $18,000 of Social Security, propane heat and a $480 bottled gas bill
+    receives $0 under the account reading and $375 if a tank account is credited.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/hi/dhs/liheap/hi_liheap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10614
+  state: unreviewed
+  note: PE-US reads a positive gas_expense as the bill and does not read bottled_gas_expense, so a bottled gas customer is
+    not eligible. No source says outright that tank accounts are credited.
+
+- id: us-hi:liheap-categorical-routes
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does general assistance receipt waive Hawaii's LIHEAP income test, as the draft manual and matrix provide, or
+    only SNAP, SSI and TANF, as the plan and application list?
+  sources:
+  - kind: manual
+    citation: Hawaii draft FY2026 Policies and Procedures, section 2.8, model plan packet PDF page 60
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=60
+  - kind: guidance
+    citation: Hawaii FY2026 H-HEAP benefit matrix, PDF page 1
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=1
+  - kind: plan
+    citation: Hawaii FY2026 LIHEAP State Plan, item 1.4, PDF page 5
+    url: https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=5
+  - kind: form
+    citation: 2026 H-HEAP application, question 12, PDF page 3
+    url: https://humanservices.hawaii.gov/bessd/files/2026/06/2026-Application-Packet.pdf#page=3
+  readings:
+    statute: No statute is supplied; draft 2.8 and the matrix treat receipt of SNAP, TANF, general assistance, AABD or SSI
+      as categorical.
+    other: Plan 1.4 and application question 12 name only SNAP, SSI and TANF.
+  example: One person in public housing with $100,000 of countable income, $1,200 of general assistance and a gas bill
+    receives $375 under the manual and $0 under the plan.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/hi/dhs/liheap/hi_liheap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10614
+  state: ruled
+  note: 'Ruled 2026-11-02: follow the manual and matrix. AABD has no input. Income points for a categorical household follow
+    matrix page 3 and draft page 69 (actual total income) over the categorical chart on matrix page 1.'
+- id: us-hi:liheap-income-limit-comparison
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Hawaii LIHEAP income exactly at the limit qualify?
+  sources:
+  - kind: manual
+    citation: Hawaii draft FY2026 Policies and Procedures, section 5.5, model plan packet PDF page 67
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=67
+  - kind: manual
+    citation: Hawaii draft FY2026 Policies and Procedures, section 2.9, model plan packet PDF page 60
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=60
+  - kind: guidance
+    citation: Hawaii FY2026 H-HEAP benefit matrix, PDF page 3
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=3
+  readings:
+    statute: No statute is supplied; draft 5.5 reads "equal to or less than".
+    other: Draft 2.9 reads "less than" and the matrix reads "below".
+  example: One person in public housing with $41,941 of countable income and a gas bill receives $375 under draft 5.5 and
+    $0 under draft 2.9.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/hi/dhs/liheap/hi_liheap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10614
+  state: ruled
+  note: 'Ruled 2026-11-02: the comparison is inclusive, following the calculation section.'
+- id: us-hi:liheap-utilities-in-rent
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is a Hawaii household whose gas is included in its rent eligible for LIHEAP, as the draft manual and application
+    provide, or ineligible, as the 2020 manual provides?
+  sources:
+  - kind: manual
+    citation: Hawaii draft FY2026 Policies and Procedures, sections 2.1 and 4.2, model plan packet PDF pages 58 and 65
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=58
+  - kind: form
+    citation: 2026 H-HEAP application, questions 23 and 24, PDF page 4
+    url: https://humanservices.hawaii.gov/bessd/files/2026/06/2026-Application-Packet.pdf#page=4
+  - kind: manual
+    citation: Hawaii 2020 Policies and Procedures, ineligible households, PDF page 9
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2019/07/Policies-and-Procedures-2020.pdf#page=9
+  - kind: plan
+    citation: Hawaii FY2026 LIHEAP State Plan, item 2.3, PDF page 9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=9
+  readings:
+    statute: No statute is supplied; draft 2.1 accepts "the household's prorated share of the utility bill if rent includes
+      utilities", and application questions 23 and 24 ask for that share.
+    other: The 2020 manual lists "Households where all utilities are included in the rent" as ineligible, and plan 2.3
+      answers No for differing policies for renters with utilities in the rent.
+  example: One person aged 70 in public housing with $18,000 of Social Security and gas in the rent receives $375 under the
+    draft manual and $0 under the 2020 manual.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/hi/dhs/liheap/hi_liheap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10614
+  state: ruled
+  note: 'Ruled 2026-11-02: follow the draft manual and application. The size of the share has no input.'
 - id: us-hi:snap-abawd-implementation-date
   program: snap
   years:
@@ -2516,6 +3124,89 @@ candidates:
   state: ruled
   note: Ruled statute-first in October 2026; the rule requires a model change after confirming that the exclusion
     reaches alternate tax.
+- id: us-ia:itemized-limitation-2018-federal-suspension
+  program: income-tax
+  years:
+    from: 2018
+    to: 2018
+    type: tax
+  question: Did Iowa limit the 2018 itemized deductions of high-income filers, although section 68(f) suspended the
+    federal limitation for 2018 and 701 IAC 41.11 ties the Iowa reduction to the years it applies federally?
+  sources:
+  - kind: statute
+    citation: Iowa Code 422.3(5) (2018)
+    url: https://www.legis.iowa.gov/docs/code/2018/422.3.pdf#page=1
+  - kind: statute
+    citation: Iowa Code 422.9(2) (2018)
+    url: https://www.legis.iowa.gov/docs/code/2018/422.9.pdf#page=1
+  - kind: regulation
+    citation: 701 IAC 41.11 (IAC 2/28/18)
+    url: https://www.legis.iowa.gov/docs/iac/chapter/03-28-2018.701.41.pdf#page=9
+  - kind: statute
+    citation: 2018 Iowa Acts, chapter 1161, sections 58, 63, 66 and 69
+    url: https://www.legis.iowa.gov/docs/acts/2018/CH1161.pdf#page=14
+  - kind: worksheet
+    citation: 2018 IA 104 Iowa Itemized Deductions Worksheet
+    url: https://revenue.iowa.gov/media/2335/download?inline=#page=1
+  readings:
+    statute: For 2018 Iowa Code 422.3(5) defines the Internal Revenue Code as the one in effect on January 1, 2015, so
+      section 68 still limits the deductions Iowa Code 422.9(2) allows. In 2018 Iowa Acts chapter 1161, the legislature
+      moved that date only from 2019 (section 69). For 2018, it applied named sections of Pub. L. 115-97 (section 63)
+      and the section 179 allowance as section 13101 amended it (section 58), none of them section 11045 or 11046. The
+      Iowa Department of Revenue applies the limitation in the 2018 IA 104 and instructions.
+    other: Rule 41.11 applies the reduction "for the same tax years that the provision applies for federal income tax
+      purposes"; read against federal law as amended, which suspends section 68 for 2018, Iowa would not limit 2018
+      deductions.
+  example: A joint filer with federal AGI of $400,000, $32,000 of Schedule A deductions ($4,000 of them medical) and
+    $20,000 of Iowa income tax deducts $30,600 under the IA 104, versus $32,000 with no limitation.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ia/tax/income/deductions/itemized/limitation/retained.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10101
+  state: unreviewed
+  note: Under Iowa's own definition of the Internal Revenue Code, section 68 applies to 2018, so the rule agrees with
+    the statute and the form.
+- id: us-ia:itemized-limitation-iowa-tax-share-rounding
+  program: income-tax
+  years:
+    from: 2018
+    to: 2018
+    type: tax
+  question: Does Iowa subtract the Iowa income tax at its exact share of the limited deductions, or at the IA 104 line
+    18 percentage rounded to the nearest tenth of a percent?
+  sources:
+  - kind: statute
+    citation: Iowa Code 422.9(2)(a) (2018)
+    url: https://www.legis.iowa.gov/docs/code/2018/422.9.pdf#page=1
+  - kind: regulation
+    citation: 701 IAC 41.5(1) and 41.11(1) (IAC 2/28/18)
+    url: https://www.legis.iowa.gov/docs/iac/chapter/03-28-2018.701.41.pdf#page=10
+  - kind: worksheet
+    citation: 2018 IA 104 Iowa Itemized Deductions Worksheet, line 18
+    url: https://revenue.iowa.gov/media/2335/download?inline=#page=1
+  readings:
+    statute: Iowa Code 422.9(2)(a) subtracts "the deduction for Iowa income taxes" and doesn't say how much of it stays
+      deducted after the overall reduction. Rule 41.11(1) requires high-income filers to complete Form 41-104. The copy
+      of the form it prints gives the share with no rounding instruction (line 6), and rule 41.5(1) subtracts the tax
+      "to the extent" included.
+    other: The IA 104 enters line 15 divided by line 17 "to the nearest tenth of a percent" before applying it to the
+      Iowa income tax.
+  example: A joint filer with federal AGI of $400,000, $30,000 of Schedule A deductions ($4,000 of them medical) and
+    $20,000 of Iowa income tax enters 94.8% and deducts $28,640; the exact share, 94.78%, gives $28,643.48.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/ia/tax/income/including_married_filing_separately/deductions/ia_itemized_deductions_reduction.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10101
+  state: unreviewed
+  note: Rounding moves the result by at most 0.05% of the Iowa income tax, but it can raise line 21 above line 1. A
+    joint filer at $500,000 with only $20,000 of medical expenses and investment interest and $9,700 of Iowa income
+    tax enters 44.3% and gets $20,002.90; the exact share gives $20,000. The statute and the rule's copy of the form
+    leave the rounding open, and the rule requires the form, so the model follows the 2018 form. The form gives no tie
+    rule, so the model rounds a half up, and a 93.25% share enters as 93.3%.
 - id: us-ia:low-income-exemption-claimant-income
   program: income-tax
   years:
@@ -2710,6 +3401,119 @@ candidates:
   state: ruled
   note: 'Ruled statute-first in October 2026; confirm line 12(c)''s scope against the per-person statute and worksheet.
     Code not yet on main: id_grocery_credit.'
+- id: us-id:liheap-heat-in-rent-fy2026
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is an Idaho household that pays for heat through its rent eligible for FY2026 regular heating, as the rule in
+    force until June 2026 provides, or ineligible, as the FY2026 plan provides?
+  sources:
+  - kind: regulation
+    citation: IDAPA 16.04.14.152.02 and 16.04.14.010.08.b, effective April 6, 2023
+    url: https://www.law.cornell.edu/regulations/idaho/IDAPA-16.04.14.152
+  - kind: plan
+    citation: Idaho FY2026 LIHEAP State Plan, items 2.3 and 2.5, PDF pages 8-9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=8
+  - kind: regulation
+    citation: IDAPA 16.03.08.200.07, effective July 1, 2026
+    url: https://adminrules.idaho.gov/rules/current/16/160308.pdf#page=5
+  readings:
+    statute: No statute is supplied; 16.04.14.152.02 covers households that incur home energy costs "either directly or as
+      an undesignated portion of their rent". From July 1, 2026, 16.03.08.200.07 says "designated portion".
+    other: Plan 2.5 says "Household with no specific heat cost obligation (included in rent, rent subsidized) will not be
+      eligible to a LIHEAP benefit", and the PY26 chart has no rent amount.
+  example: One person aged 65 with $15,000 of Social Security and natural gas heat included in rent in Ada County receives
+    $0 under the plan. Under 16.04.14.152.02 the household is eligible, and no FY2026 amount is printed for it.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/id/dhw/liheap/eligibility/id_liheap_eligible.py
+    - policyengine_us/parameters/gov/states/id/dhw/liheap/payment/rent.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10613
+  state: ruled
+  note: 'Ruled 2026-11-02 and confirmed 2026-11-03: heat in rent is read as no specific obligation and is ineligible from
+    FY2026, although plan 1.1 runs heating assistance from October 2025 to March 2026, all under 16.04.14. Basis: 16.04.14
+    sets no amount (001.02: "does not entitle any household to a certain amount or form of assistance"), and the PY26
+    chart, the only FY2026 amount instrument, drops the Rent column PY25 had. A designated heat charge within rent has no
+    input.'
+- id: us-id:liheap-monthly-limit-above-federal-ceiling
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can Idaho's monthly income limits in cents pay a household whose annual income exceeds HHS's 60% state median
+    income amount?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: guidance
+    citation: HHS LIHEAP IM 2025-02 Attachment 4, Mandatory Use in LIHEAP for FY26, Idaho, pages 1 and 4
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=1
+  - kind: guidance
+    citation: Idaho DHW Apply for Heating Assistance, monthly income limits effective October 1, 2025
+    url: https://healthandwelfare.idaho.gov/services-programs/financial-assistance/home-heating-and-utility-assistance/apply-heating-assistance
+  readings:
+    statute: Payments go only to households whose income does not exceed the greater of 150% of the poverty guideline and
+      60% of the state median income, which HHS publishes as $42,938 for two people and $83,351 for six.
+    other: DHW prints $3,578.17 and $6,945.92 a month, which annualize to $42,938.04 and $83,351.04.
+  example: Two adults with $42,938.02 of wages and natural gas heat in Ada County exceed the $42,938 federal maximum and
+    receive $0. The annualized monthly limit would pay $122.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/id/dhw/liheap/eligibility/id_liheap_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10613
+  state: unreviewed
+  note: The PR caps the annualized monthly limit at HHS's amount. DHW's lower annualized figures at sizes 3 and 4 ($53,040.96
+    and $63,144.96) stay, since a lower limit is allowed.
+- id: us-id:liheap-plan-income-checklist
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do VA benefits, general assistance and minors' earnings count for Idaho LIHEAP in FY2026, as IDAPA 16.04.14
+    provides, or stay out under the FY2026 plan checklist?
+  sources:
+  - kind: regulation
+    citation: IDAPA 16.04.14.010.06 and 16.04.14.151.02, effective April 6, 2023
+    url: https://www.law.cornell.edu/regulations/idaho/IDAPA-16.04.14.010
+  - kind: plan
+    citation: Idaho FY2026 LIHEAP State Plan, section 1.9, PDF pages 5-7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5
+  - kind: regulation
+    citation: IDAPA 16.03.08.202, effective July 1, 2026
+    url: https://adminrules.idaho.gov/rules/current/16/160308.pdf#page=6
+  readings:
+    statute: No statute is supplied; 16.04.14.010.06 counts moneys "from all sources", and the closed exclusion list at
+      151.02 names only GI Bill education money among VA payments and no general assistance or minors' earnings.
+    other: Plan 1.9 leaves "General Assistance benefits", "Veterans Administration (VA) benefits" and "Earned income of a
+      child under the age of 18" unchecked. From July 1, 2026, 16.03.08.202 counts gross income as the Department determines.
+  example: A veteran aged 45 with $35,000 of VA disability compensation and natural gas heat in Ada County counts $35,000
+    under the rule, above the $32,835 limit, and receives $0. Under the plan the household counts $0 and receives $132.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/id/dhw/liheap/income/sources/earned.yaml
+    - policyengine_us/parameters/gov/states/id/dhw/liheap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/id/dhw/liheap/income/id_liheap_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10613
+  state: ruled
+  note: 'Ruled 2026-11-05 for the regulation by the project lead; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10613#issuecomment-6665844738. 16.04.14.010.06 defines income as moneys "from all sources", the
+    151.02 exclusion list is closed, and 16.04.14 does not delegate countable income to the department or adopt the state
+    plan. The rule was in force April 6, 2023 to June 30, 2026, and plan 1.1 runs FY2026 heating October 1, 2025 to March
+    31, 2026, so it governed every heating determination. us-nm:liheap-plan-income-checklist followed its regulation over
+    the same checklist. The ruling covers VA benefits, general assistance, minors'' earnings and id_aabd; Part B netting
+    under plan 1.9 and miscellaneous_income, pfml_benefits, life_insurance_benefits, gi_cash_assistance and capital_gains,
+    which stay uncounted, are unchanged and outside it.'
 - id: us-il:2022-rebate-claimed-vs-claimable
   program: income-tax
   years:
@@ -6087,6 +6891,39 @@ candidates:
   note: 'Retain as a disputable gap-fill; verify whether repayments are statutory losses and separate this issue
     from unsupported spouse attribution. Code not yet on main: policyengine_us/variables/gov/states/nj/tax/income/adjusted_gross_income/claim_of_right/nj_claim_of_right_repayment_category.py,
     gov/states/nj/tax/income/adjusted_gross_income/nj_claim_of_right_offset.yaml, nj_claim_of_right_offset, nj_claim_of_right_repayment_category.'
+- id: us-nj:eitc-married-separate-filer
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Can a married New Jersey resident who files a separate return claim the NJEITC when the federal
+    separated-spouse exception applies?
+  sources:
+  - kind: statute
+    citation: N.J.S.A. 54A:4-7a.(3), as amended by P.L.2021, c.130
+    url: https://pub.njleg.state.nj.us/Bills/2020/PL21/130_.HTM
+  - kind: regulation
+    citation: N.J.A.C. 18:35-4.3(g)(3)
+    url: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-18-35-4-3
+  - kind: instructions
+    citation: 2025 Form NJ-1040 instructions, line 58
+    url: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=44
+  readings:
+    statute: A married claimant who does not file federally as a head of household or surviving spouse must file
+      jointly, with no exception for a separated filer. N.J.A.C. 18:35-4.3(g)(3) says the same.
+    other: A married filer not filing jointly can claim the credit with a qualifying child who lived with the filer
+      for more than half the year and six months apart from the spouse.
+  example: In 2026, a separate filer with a child, $30,000 of wages and six months apart gets $1,380.25 under the
+    instructions and $0 under the statute.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nj/tax/income/credits/eitc/nj_eitc_separate_filer_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10307
+  state: ruled
+  note: A filer separated under a decree of divorce or separate maintenance is not married (IRC 7703(a)(2)) and can
+    claim the credit on a separate return.
 - id: us-nj:liheap-income-ceiling
   program: liheap
   years:
@@ -8262,6 +9099,33 @@ candidates:
     use the same wording. The RI-22-0024 state plan groups, RIte Start and FCEP have no conflicting text, and CHIP
     (RI-22-0025 CS27) ends the period "on the last day of the 12th month consistent with paragraphs (5) and (16) of
     section 1902(e)". R.I. Gen. Laws 42-12.3-3(g) does not say when the 12-month period begins.
+- id: us-ri:pension-modification-agi-threshold-strict
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does a filer whose federal AGI equals the threshold qualify for the pension and annuity modification?
+  sources:
+  - kind: statute
+    citation: R.I. Gen. Laws § 44-30-12(c), income test for the taxable retirement income modification
+    url: https://webserver.rilegislature.gov/Statutes/TITLE44/44-30/44-II/44-30-12.htm
+  - kind: worksheet
+    citation: RI-1040 instructions, line 1t worksheet
+    url: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-12/2025%201040R%20Instructions%20122025.pdf#page=10
+  readings:
+    statute: Federal AGI must be less than the threshold; AGI equal to it does not qualify.
+    other: The worksheet allows AGI less than or equal to the threshold.
+  example: A 2025 single filer born in 1950 with AGI of exactly $107,000 gets no modification under the statute and
+    qualifies under the worksheet.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ri/tax/income/agi/subtractions/taxable_retirement_income/ri_retirement_income_subtraction_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10398
+  state: ruled
+  note: The code already uses a strict comparison and the eligibility tests pin AGI equal to the threshold as
+    ineligible. Verify the statute's and the worksheet's wording before registering.
 - id: us-ri:ssp-category-d-without-federal-ssi
   program: ssi-state-supplement
   years:
@@ -8397,6 +9261,255 @@ candidates:
   note: The model computes the couple jointly at $90, which the couple.yaml comment derives from the per-individual
     allowance in §40-6-27(a)(3); ri_ssp.yaml Case 18 pins [45, 45] for a couple with no income. SSA administered
     Category E only through December 31, 2010.
+- id: us-sc:2021-survivor-offset-surviving-spouse
+  program: income-tax
+  years:
+    from: 2021
+    to: 2021
+    type: tax
+  question: Is a surviving spouse's 2021 retirement deduction maximum reduced by the military retirement deduction
+    attributable to the deceased spouse?
+  sources:
+  - kind: statute
+    citation: S.C. Code § 12-6-1170(C)(1)
+    url: https://www.scstatehouse.gov/code/t12c006.php
+  - kind: guidance
+    citation: SCDOR Revenue Ruling 22-11
+    url: https://dor.sc.gov/sites/dor/files/policies/RR22-11.pdf#page=39
+  - kind: worksheet
+    citation: 2021 SC1040 retirement deduction worksheet, line p-3, line 2
+    url: https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=17
+  readings:
+    statute: The reduction for military retirement does not apply to a military retiree's surviving spouse.
+    other: The 2021 worksheet subtracts the surviving spouse's military retirement deduction from the survivor
+      retirement deduction maximum.
+  example: A 2021 surviving spouse whose deceased spouse would be 64, with $4,000 of survivor pension and $6,000 of
+    military survivor benefits, deducts $3,000 under the statute and $0 under the worksheet.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tax/income/subtractions/retirement/sc_retirement_deduction_survivors.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10398
+  state: ruled
+  note: RR22-11 agrees with the statute. PR 10398 removes the 2021 reduction and the parameter that toggled it.
+
+- id: us-sc:liheap-energy-burden-test
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is South Carolina's high energy burden supplement paid when energy costs equal 20% of income, as the FY2026
+    plan reads, or only when the current bill is higher than 20% of income, as the 2024 guide and the matrix read?
+  sources:
+  - kind: plan
+    citation: South Carolina FY2026 LIHEAP State Plan, item 2.5, p.9
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=9
+  - kind: manual
+    citation: South Carolina 2024 LIHEAP Administrative Guide, plan file PDF page 538
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=538
+  - kind: manual
+    citation: South Carolina draft 2026 LIHEAP Administrative Guide (plan attachment), plan file PDF page 312
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=312
+  - kind: guidance
+    citation: South Carolina 2026 Benefit Matrix, item 5, p.2
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/SC_BenefitMatrix_2026.pdf#page=2
+  readings:
+    statute: No statute is supplied; plan item 2.5 pays the supplement at "20% or more of income used for utilities".
+    other: The 2024 and draft 2026 guides and the matrix test the current month's bill and demonstrate a burden when "the
+      current energy bill is higher than the PRODUCT".
+  example: One person with $20,000 of income and $4,000 of gas bills receives $450 under the plan and $275 under the
+    guide's "higher than".
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap.py
+    - policyengine_us/parameters/gov/states/sc/oeo/liheap/payment/burden_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10616
+  state: unreviewed
+  note: PE-US follows the plan's inclusive test, with annual bills against annual income.
+
+- id: us-sc:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can South Carolina's 60% SMI heating limit exclude a household of 15 or more whose income is below the
+    federal 110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: South Carolina FY2026 LIHEAP State Plan, income eligibility, p.8
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The plan's 60% SMI limit falls below that floor from 15 members.
+  example: Twenty-five people with $150,000 exceed the $116,282 limit but are below the $162,415 floor (2025 guideline,
+    one-year lag), so they keep the $200 base award.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/sc/oeo/liheap/eligibility/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10616
+  state: unreviewed
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (sc_liheap_eligible.py).
+- id: us-sc:liheap-low-income-tier-base
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is South Carolina's $175 low-income tier 30% of the full size-adjusted state median income, or 30% of the 60%
+    income limit that OEO's guides call the SMI?
+  sources:
+  - kind: plan
+    citation: South Carolina FY2026 LIHEAP State Plan, items 2.3 and 2.5, pp.8-9
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8
+  - kind: manual
+    citation: South Carolina draft 2026 LIHEAP Administrative Guide (plan attachment), plan file PDF pages 311, 312 and 338
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=311
+  - kind: manual
+    citation: South Carolina 2024 LIHEAP Administrative Guide, plan file PDF page 538
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=538
+  - kind: guidance
+    citation: South Carolina 2026 Benefit Matrix, pp.1-2
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/SC_BenefitMatrix_2026.pdf#page=1
+  readings:
+    statute: No statute is supplied; plan item 2.3 gives $175 "at or below 30% of the State's Median Income guidelines" and
+      item 2.5 "household income 30% of the SMI or less".
+    other: 'The draft guide says "must be at or below the 30% SMI. Note: SMI is 60% of the State''s Median Income" and "30
+      of 60 percent of the SMI", which is 18% of the state median income. Its page 338 definition compares the tier "with
+      the same 30% variance when compared to the State''s 60% Median Income guidelines".'
+  example: A person aged 70 with $12,000 of income and a $1,000 electric bill receives $275 with the 60% limit as the base
+    (limit $9,597.90) and $450 with the full SMI as the base (limit $15,996.55).
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap.py
+    - policyengine_us/parameters/gov/states/sc/oeo/liheap/payment/low_income_limit_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10616
+  state: ruled
+  note: 'Ruled 2026-11-03: use 30% of the 60% limit. The plan''s words allow either base, and OEO''s own texts define
+    the SMI it means here, so the agency breaks the tie. The 2024 guide and the matrix use 70% of the same limit, a tier
+    the FY2026 plan replaced. The guide with the 30% text is a draft, and OEO has not been asked.'
+
+- id: us-sc:liheap-minor-income
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does South Carolina LIHEAP count only a minor's Social Security or disability income, as the 2024 guide
+    provides, the unearned income plan item 1.9 checks, or no income of members under 18, as the OEO page reads?
+  sources:
+  - kind: manual
+    citation: South Carolina 2024 LIHEAP Administrative Guide, Income from Minors, plan file PDF page 529
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=529
+  - kind: manual
+    citation: South Carolina draft 2026 LIHEAP Administrative Guide (plan attachment), plan file PDF page 304
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=304
+  - kind: plan
+    citation: South Carolina FY2026 LIHEAP State Plan, item 1.9, pp.5-6
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=5
+  - kind: guidance
+    citation: South Carolina OEO LIHEAP page
+    url: https://oeo.sc.gov/managedsites/prd/oeo/liheap.html
+  readings:
+    statute: No statute is supplied; the guide says "Income is not calculated for persons under age 18" but "If household
+      members under 18 receive Social Security or Disability income, the gross amount must be included".
+    other: Plan item 1.9 checks Social Security, SSI, pensions, child support and VA benefits and leaves only "Earned income
+      of a child under the age of 18" unchecked. The OEO page asks for "Gross 30-day income for all household members 18
+      and older".
+  example: A parent aged 35 with $36,000 of wages and a 10-year-old with $8,000 of veterans benefits count $36,000 and
+    receive $200 with a $1,000 electric bill under the guide, and count $44,000 and receive $0 under plan item 1.9.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_countable_income.py
+    - policyengine_us/parameters/gov/states/sc/oeo/liheap/income/adult_min_age.yaml
+    - policyengine_us/parameters/gov/states/sc/oeo/liheap/income/minor_unearned_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10616
+  state: ruled
+  note: 'Ruled 2026-11-02: follow the 2024 guide, the edition in force. Plan 1.9 is a checklist of income types, while
+    the guide''s "Income from Minors" section is the specific rule for members under 18. The draft 2026 guide repeats it,
+    and the OEO page asks for income only from members 18 and older. PE-US reads SSI as a child''s disability income and
+    uses disability_benefits for other disability income.'
+
+- id: us-sc:liheap-mixed-status-household
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do South Carolina's itemized supplements look only at eligible members, with the award prorated, and are
+    state-placed foster children left out of the household, as the 2024 guide provides where the FY2026 plan is silent?
+  sources:
+  - kind: manual
+    citation: South Carolina 2024 LIHEAP Administrative Guide, plan file PDF pages 529, 537 and 546
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=529
+  - kind: plan
+    citation: South Carolina FY2026 LIHEAP State Plan, items 2.3 and 2.5, pp.8-9
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8
+  readings:
+    statute: No statute is supplied; the guide says to "only consider eligible household members" for the itemized
+      benefits and then "apply the Direct Assistance Prorated Calculation".
+    other: The plan's supplements apply if "the household/a member of the household" qualifies, and it states no proration.
+  example: A nonqualified parent with $30,000 of income and a qualified child with gas heat receive (200 + 50 + 75) / 2
+    members x 1 eligible = $162.50 under the guide, and $325 with no proration.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap.py
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_household_size.py
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10616
+  state: ruled
+  note: 'Ruled 2026-11-02: follow the 2024 guide. The veteran supplement also looks only at eligible members, although
+    the guide''s list does not name veterans, and the prorated award keeps its cents.'
+
+- id: us-sc:liheap-plan-income-checklist
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does South Carolina LIHEAP count all income, as the 2024 guide opens, or only the income forms plan item 1.9
+    checks?
+  sources:
+  - kind: plan
+    citation: South Carolina FY2026 LIHEAP State Plan, item 1.9, pp.5-6
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=5
+  - kind: manual
+    citation: South Carolina 2024 LIHEAP Administrative Guide, How to Calculate Income, plan file PDF page 526
+    url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=526
+  readings:
+    statute: No statute is supplied; plan item 1.9 leaves interest and dividends unchecked, has no box for workers'
+      compensation or employment disability benefits, and leaves its Other box unchecked.
+    other: The guide says "When calculating total household income, include all income".
+  example: One person with a $1,000 electric bill, $20,000 of wages and $15,000 of interest counts $20,000 and receives
+    $200 under the plan, and counts $35,000 and receives $0 under the guide.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_countable_income.py
+    - policyengine_us/parameters/gov/states/sc/oeo/liheap/income/earned_sources.yaml
+    - policyengine_us/parameters/gov/states/sc/oeo/liheap/income/unearned_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10616
+  state: ruled
+  note: 'Ruled 2026-11-02: income other than minors'' income follows the plan.'
+
 - id: us-sd:liheap-2025-published-income-limit
   program: liheap
   years:
@@ -10338,6 +11451,164 @@ candidates:
     threshold and federal-method conditions by year. Code not yet on main: gov/states/wv/tax/income/subtractions/wv_claim_of_right_subtraction.yaml,
     policyengine_us/variables/gov/states/wv/tax/income/subtractions/wv_subtractions.py, wv_claim_of_right_subtraction,
     gov.states.wv.tax.income.subtractions.claim_of_right.threshold.'
+- id: us-wv:liheap-income-limit-above-federal-ceiling
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Can West Virginia's whole-dollar monthly LIEAP limits pay a household whose income exceeds both 150% of the
+    poverty guideline and HHS's 60% state median income amount?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: guidance
+    citation: HHS LIHEAP IM 2025-02 Attachment 4, Mandatory Use in LIHEAP for FY26, West Virginia, pages 3 and 6
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=3
+  - kind: guidance
+    citation: HHS LIHEAP FY2027 Attachment 4, Mandatory Use in LIHEAP for FY27, West Virginia, pages 3 and 6
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_Att4SMITable_States_FY2027.pdf#page=3
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual, Chapter 4 Appendix A, PDF page 407 (FY2026 chart)
+    url: https://web.archive.org/web/20260302130424/https://bfa.wv.gov/media/39948/download?inline#page=407
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual, update 881, Chapter 4 Appendix A, PDF page 405 (FY2027 chart)
+    url: https://web.archive.org/web/20261023203756/https://bfa.wv.gov/media/40005/download?inline#page=405
+  readings:
+    statute: Payments go only to households whose income does not exceed the greater of 150% of the poverty guideline
+      and 60% of the state median income that HHS publishes and adjusts for household size.
+    other: The charts round each monthly limit to the nearest dollar, and the FY2026 chart adds a rounded $688 for each
+      member above ten, which puts the limits above the federal maximum at several sizes.
+  example: In FY2026, three people with $47,578 of countable income and electric heat are within the printed $47,580
+    limit ($3,965 a month), which would pay $253.75, but exceed the $47,575 federal maximum and receive $0 in the PR.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wv/dhhr/lieap/wv_lieap_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10618
+  state: ruled
+  note: 'Ruled under the 2026-10-19 statute-first rule. The PR stops each limit at the federal maximum. Printed and capped
+    annual limits: FY2026 size 3, $47,580 and $47,575; 4, $56,640 and $56,637; 5, $65,700 and $65,698; 7, $76,464 and
+    $76,459; sizes 8 and 10, $3 lower ($81,228 and $81,225 at 8). From size 11 the FY2026 chart adds $688 a person,
+    while the PR uses 150% of the guideline, rounded by month and capped: $105,972 against the printed $105,984 at 11
+    and $180,225 against $180,288 at 20. FY2027 size 2, $40,020 and $40,019; 3, $49,440 and
+    $49,435; 6, $77,688 and $77,684; 7, $79,452 and $79,450. Other sizes keep the printed amount, which rounds down or
+    equals the maximum. Verify each later fiscal-year chart.'
+
+- id: us-wv:liheap-plan-categorical-eligibility
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do West Virginia households receiving TANF, SSI or SNAP bypass the LIEAP income test, as FY2026 plan item 1.4
+    answers, or does the manual's income test apply to every assistance group?
+  sources:
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual, 21.3.1.A and 21.4.9.A, PDF pages 1732 and 1756
+    url: https://web.archive.org/web/20260302130424/https://bfa.wv.gov/media/39948/download?inline#page=1732
+  - kind: plan
+    citation: West Virginia FY2026 LIHEAP State Plan, item 1.4, page 5
+    url: https://liheapch.acf.gov/docs/2026/state-plans/WV_Plan_2026.pdf#page=5
+  - kind: plan
+    citation: West Virginia submitted FY2027 LIHEAP State Plan, item 1.4, page 5
+    url: https://bfa.wv.gov/media/39990/download?inline=#page=5
+  readings:
+    statute: No statute is supplied; the manual denies a group above the ceiling, and its 21.4.9.A example verifies a
+      working member's income when another member receives SSI.
+    other: FY2026 plan item 1.4 answers Yes for TANF, SSI and SNAP in heating. The FY2027 plan answers No for all of them.
+  example: In FY2026, a two-person SNAP household with $40,000 of wages is above the $38,508 limit and ineligible under
+    the manual, and categorically eligible under plan item 1.4.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/wv/dhhr/lieap/wv_lieap_income_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10618
+  state: ruled
+  note: 'Ruled 2026-10-06: follow the manual over the plan.'
+
+- id: us-wv:liheap-plan-income-and-benefit-items
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Do income sources and benefit factors follow West Virginia's manual or the check boxes in plan items 1.9 and
+    2.5?
+  sources:
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual, 21.3.1.A and 21.4.11.B, PDF pages 1732-1735 and 1761-1762
+    url: https://web.archive.org/web/20260302130424/https://bfa.wv.gov/media/39948/download?inline#page=1732
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual, update 881, 21.3.1.A and 21.4.11.B, PDF pages 1726-1729 and
+      1757-1758
+    url: https://web.archive.org/web/20261023203756/https://bfa.wv.gov/media/40005/download?inline#page=1726
+  - kind: plan
+    citation: West Virginia FY2026 LIHEAP State Plan, items 1.9 and 2.5, pages 6-7 and 11
+    url: https://liheapch.acf.gov/docs/2026/state-plans/WV_Plan_2026.pdf#page=6
+  - kind: plan
+    citation: West Virginia submitted FY2027 LIHEAP State Plan, items 1.9 and 2.5, pages 6-7 and 12
+    url: https://bfa.wv.gov/media/39990/download?inline=#page=6
+  readings:
+    statute: No statute is supplied; the manual considers all sources of income, excludes nonrecurring lump sums and sets
+      the payment by income, group size and energy type.
+    other: Plan item 1.9 leaves general assistance, TANF, cash gifts and (in FY2026 only) a child's earnings unchecked and
+      checks one-time lump sums. Plan item 2.5 also checks individual bill, energy burden and energy need.
+  example: In FY2026, a parent's $12,000 of wages and a 17-year-old's $6,000 of wages count $18,000 under the manual and
+    $12,000 under the plan.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/wv/dhhr/lieap/wv_lieap_countable_income.py
+    - policyengine_us/variables/gov/states/wv/dhhr/lieap/wv_lieap.py
+    - policyengine_us/parameters/gov/states/wv/dhhr/lieap/income/sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10618
+  state: ruled
+  note: 'Ruled 2026-10-06: follow the manual over the plan. Veterans benefits have their own item,
+    us-wv:liheap-veterans-benefits.'
+
+- id: us-wv:liheap-veterans-benefits
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does West Virginia LIEAP exclude all veterans benefits, as the agency's December 2025 announcement and the
+    plan's unchecked box read, or only VA Aid and Attendance payments, as both manual editions read?
+  sources:
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual, 21.3.1.A.4, PDF pages 1734-1735
+    url: https://web.archive.org/web/20260302130424/https://bfa.wv.gov/media/39948/download?inline#page=1734
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual, update 881, 21.3.1.A.5, PDF page 1729
+    url: https://web.archive.org/web/20261023203756/https://bfa.wv.gov/media/40005/download?inline#page=1729
+  - kind: agency-practice
+    citation: West Virginia Department of Human Services announcement, December 18, 2025
+    url: https://dohs.wv.gov/article/west-virginia-department-human-services-announces-automatic-lieap-application-mailing-low
+  - kind: plan
+    citation: West Virginia FY2026 LIHEAP State Plan, item 1.9, page 7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/WV_Plan_2026.pdf#page=7
+  readings:
+    statute: No statute is supplied; both manual editions list only "Veterans Affairs (VA) Aid and Attendance payments"
+      among the exclusions.
+    other: The announcement's income table says "Social Security & Veterans Benefits Excluded", and plan item 1.9 leaves
+      "Veterans Administration (VA) benefits" unchecked.
+  example: In FY2026, one person with electric heat, $20,000 of wages and $12,000 of VA compensation counts $32,000 and
+    receives $0 under the manual, and counts $20,000 and receives $280 under the announcement.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/wv/dhhr/lieap/income/sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10618
+  state: unreviewed
+  note: PE-US follows the manual, whose two editions are both later than the announcement, and counts veterans_benefits in
+    full because the input cannot separate Aid and Attendance.
+
 - id: us-wv:medicaid-ssi-related-non-cash-income-at-standard
   program: medicaid
   years:
@@ -10355,10 +11626,10 @@ candidates:
     url: https://www.ecfr.gov/current/title-42/section-435.210
   - kind: manual
     citation: West Virginia Income Maintenance Manual § 23.11.4 (consolidated PDF built 2026-10-05, PDF p.1889)
-    url: https://bfa.wv.gov/media/40005/download?inline#page=1889
+    url: https://web.archive.org/web/20261023203756/https://bfa.wv.gov/media/40005/download?inline#page=1889
   - kind: manual
     citation: West Virginia Income Maintenance Manual § 4.14.3 Step 5 (PDF p.662)
-    url: https://bfa.wv.gov/media/40005/download?inline#page=662
+    url: https://web.archive.org/web/20261023203756/https://bfa.wv.gov/media/40005/download?inline#page=662
   readings:
     statute: The optional group covers people who meet SSI's income requirement, which admits income at or below
       the benefit rate.
@@ -11211,31 +12482,99 @@ candidates:
 - id: us:niit-excess-business-loss-addback
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2021
     type: tax
   question: Does NII take the full loss carried by Form 8960 line 4a or only the loss chapter 1 allows after section
     461(l)?
   sources:
   - kind: statute
-    citation: 26 U.S.C. 1411(c)(1)(B); Treas. Reg. 1.1411-4(f), 1.1411-1(a)
-    url: null
+    citation: 26 U.S.C. 1411(c)(1)(B); Treas. Reg. 1.1411-4(f)(2)(ii) and (f)(2)(v), Example 1
+    url: https://www.law.cornell.edu/uscode/text/26/1411#c_1_B
   - kind: form
-    citation: Form 461 / Form 8960 line 4a
-    url: null
+    citation: 2025 Form 461 line 16
+    url: https://www.irs.gov/pub/irs-prior/f461--2025.pdf
+  - kind: instructions
+    citation: 2025 Instructions for Form 8960, lines 4a and 7
+    url: https://www.irs.gov/pub/irs-prior/i8960--2025.pdf#page=8
   readings:
     statute: NII takes only the loss section 461(l) allows.
     other: NII takes the loss in full through line 4a.
-  example: For $300,000 wages, $500,000 interest and a $600,000 rental loss, main gives NIIT of $0; the statutory
-    reading gives NII of $187,000 and NIIT of $7,106.
+  example: For 2025 wages of $300,000, interest of $500,000 and a $600,000 rental loss, the statutory reading gives NII
+    of $187,000 and NIIT of $7,106; the loss in full gives NII below zero and no NIIT.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/irs/tax/federal_income/net_investment_income_excess_business_loss.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10076
   state: unreviewed
-  note: 'Main follows the form-line omission; the statute-first rule requires the statutory add-back proposed in
-    the open PR. Code not yet on main: excess_business_loss, net_investment_income_excess_business_loss, gov.irs.investment.income.sources.'
+  note: Form 461 line 16 sends the add-back to Schedule 1 line 8p. Form 8960 line 4a takes Schedule 1 lines 3, 5 and 6,
+    and line 7 names line 8z but not line 8p, though line 7 also takes modifications the form doesn't specify. Example
+    1 in the regulation applies sections 465 and 469 before NII takes the deductions, and Treasury doesn't mention
+    section 461(l) in that regulation.
+- id: us:niit-excess-business-loss-split
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: When section 461(l) disallows part of a filer's business losses and NII counts only some of those losses,
+    how much of the disallowed excess falls on the losses NII counts?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 461(l)(3)(A); 26 U.S.C. 1411(c)(1)(B)
+    url: https://www.law.cornell.edu/uscode/text/26/461#l
+  - kind: form
+    citation: 2025 Form 461 line 16
+    url: https://www.irs.gov/pub/irs-prior/f461--2025.pdf
+  readings:
+    statute: Section 461(l) measures one excess across all business deductions and doesn't say which deductions it
+      disallows.
+    other: Form 461 computes one amount on line 16 and doesn't split it. The excess could fall on the NII losses first,
+      on the other losses first, or on both in proportion.
+  example: With 2025 wages of $600,000, interest of $200,000, a Schedule C loss of $300,000 and a Form 4835 loss of
+    $300,000, the excess of $287,000 puts $143,500 on the Form 4835 loss in proportion, $287,000 if NII losses go first
+    and $0 if other losses go first, for NII of $43,500, $187,000 or -$100,000.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/irs/tax/federal_income/net_investment_income_excess_business_loss.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10076
+  state: open
+  note: The code splits the excess in proportion to the two kinds of loss and calls that provisional. Either other
+    reading changes the investment_share lines only.
+- id: us:niit-form-8960-line-4a-tip
+  program: income-tax
+  years:
+    from: 2025
+    to: 2025
+    type: tax
+  question: Does Form 8960 line 4b remove income that self-employment tax doesn't reach, such as Form 4835 farm rent,
+    as the 2025 tip under line 4a reads, or only income that tax does reach?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 1411(c)(1)(A)(i) and (c)(6)
+    url: https://www.law.cornell.edu/uscode/text/26/1411#c
+  - kind: instructions
+    citation: 2025 Instructions for Form 8960, tip under line 4a
+    url: https://www.irs.gov/pub/irs-prior/i8960--2025.pdf#page=8
+  readings:
+    statute: NII leaves out only items taken into account in self-employment income on which section 1401(b) imposes
+      tax, so rent that section 1402(a)(1) excepts stays in.
+    other: The tip enters income on Schedules C, E and F "that is not subject to self-employment tax under section
+      1401(b)" as a negative on line 4b.
+  example: A single filer with 2025 wages of $190,000 and Form 4835 farm rent of $30,000 owes NIIT of $760 under the
+    statute; the tip's words would remove the rent and leave no NIIT.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/irs/investment/income/sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10076
+  state: unreviewed
+  note: The same instructions say on page 1 that income excepted under sections 1402(a)(1) through (17) "is subject to
+    NIIT", and the self-employment bullet in line 4b's list removes income taken into account in self-employment
+    income.
 - id: us:recovery-rebate-joint-claimable-spouse
   program: recovery-rebate-credit
   years:
@@ -11625,3 +12964,164 @@ candidates:
   note: 'Main applies the gross-income test; the draft PR would adopt instructions and needs revision under the
     statute-first rule after resolving the two statutory clauses. Code not yet on main: surviving_spouse_eligible,
     is_child_dependent.'
+
+- id: us-ar:low-income-table-dependent-definition
+  program: income-tax
+  years:
+    from: 2021
+    to: 2025
+    type: tax
+  question: Do Arkansas low-income tables count the return's personal-credit dependents or supported household members when either filer can be claimed elsewhere?
+  sources:
+  - kind: statute
+    citation: Ark. Code 26-51-301 and 26-51-501(a)(3)(B), Act 483 of 2021 sections 6–7
+    url: https://www.arkleg.state.ar.us/Home/FTPDocument?path=/ACTS/2021R/Public/ACT483.pdf#page=3
+  - kind: instructions
+    citation: 2025 AR1000F instructions, line 7B, PDF page 12
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=12
+  - kind: form
+    citation: 2025 Arkansas low-income tax tables, joint returns, PDF page 3
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/TaxTables_FI_2025.pdf#page=3
+  readings:
+    statute: Arkansas separates returns by dependent count without defining dependent in 26-51-301. Legislators confined the IRC 152 definition to personal credits in 26-51-501.
+    other: AR1000F supplies the personal-credit dependent count on line 7B. Use that return count for the tables rather than an unrestricted household count.
+  example: For 2025 joint AGI of $26,050 and two household children, a claimable filer has no IRC 152 dependents and pays $222 under the no-or-one table; counting the children gives $0.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/ar/tax/income/low_income/ar_low_income_tax_joint.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10053
+  state: ruled
+  note: Use the return's line 7B count as a form gap-fill. The statute does not expressly extend the personal-credit definition to the low-income tables.
+- id: us-ar:claimable-filer-standard-deduction
+  program: income-tax
+  years:
+    from: 2021
+    to: 2025
+    type: tax
+  question: Does Arkansas's instruction note concerning taxpayers' dependents bar a claimable filer's own standard deduction despite each taxpayer's statutory entitlement?
+  sources:
+  - kind: statute
+    citation: Ark. Code 26-51-430(a)(1) and (b)(2), Act 997 of 2003 section 1
+    url: https://www.arkleg.state.ar.us/Home/FTPDocument?path=/ACTS/2003/Public/ACT997.pdf#page=1
+  - kind: statute
+    citation: Act 1488 of 2013 section 1
+    url: https://arkleg.state.ar.us/Home/FTPDocument?path=/ACTS/2013/Public/ACT1488.pdf#page=1
+  - kind: instructions
+    citation: 2025 AR1000F instructions, standard deduction note, PDF page 14
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=14
+  readings:
+    statute: Each taxpayer may elect the standard deduction, and each spouse may claim one. The legislature added no claimability exception.
+    other: Read the instruction note as denying a claimable filer's own deduction, rather than denying an additional deduction for each dependent on the claimant's return.
+  example: In 2025 a claimable single filer keeps $2,470 and joint spouses keep $4,940. Denying a claimable filer's own amount would give $0 single or $2,470 joint with one claimable spouse.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/standard/ar_standard_deduction_indiv.py
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/standard/ar_standard_deduction_joint.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10053
+  state: ruled
+  note: Retain each taxpayer's own standard deduction under section 26-51-430. The alternative administrative reading cannot remove the statutory entitlement.
+- id: us-ar:tuition-dependent-definition
+  program: income-tax
+  years:
+    from: 2021
+    to: 2025
+    type: tax
+  question: Does a filer whom another taxpayer can claim deduct tuition paid for a dependent student, or does IRC
+    152(b)(1) leave that filer with no dependents for Arkansas's tuition deduction?
+  sources:
+  - kind: statute
+    citation: Ark. Code 26-51-447(a), Act 1075 of 1997 section 1
+    url: https://www.arkleg.state.ar.us/Home/FTPDocument?path=/ACTS/1997/Public/1075.pdf#page=1
+  - kind: statute
+    citation: Ark. Code 26-51-501(a)(3)(B), Act 483 of 2021 section 7
+    url: https://www.arkleg.state.ar.us/Home/FTPDocument?path=/ACTS/2021R/Public/ACT483.pdf#page=15
+  - kind: regulation
+    citation: 26 CAR 100-143(f)
+    url: https://codeofarrules.arkansas.gov/Rules/Rule?chapterID=33&levelType=section&partID=941&sectionID=40250&subChapterID=261&subPartID=6195&titleID=26
+  - kind: regulation
+    citation: 26 CAR 100-140(a)
+    url: https://codeofarrules.arkansas.gov/Rules/Rule?chapterID=33&levelType=section&partID=941&sectionID=40247&subChapterID=261&subPartID=6195&titleID=26
+  - kind: form
+    citation: 2025 AR1075, instructions
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1075.pdf#page=1
+  readings:
+    statute: 26-51-447 covers tuition for the taxpayer, spouse or dependent and leaves dependent undefined, and
+      26-51-501(a)(3)(B) applies the IRC 152 definition only "As used in subdivision (a)(3)(A) of this section". DFA's
+      definition in 26 CAR 100-143(f) tests relationship, gross income, support, joint filing and citizenship, and has
+      no test for a filer whom another taxpayer can claim.
+    other: Read dependent as IRC 152 defines it, so section 152(b)(1) leaves a filer whom another taxpayer can claim
+      with no dependents.
+  example: For a dependent student's $1,000 tuition at a two-year college in 2025, a claimable filer deducts min(50%
+    × $1,000, $2,646) = $500; importing IRC 152(b)(1) gives $0.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/post_secondary_education/ar_post_secondary_education_tuition_deduction_person.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10053
+  state: ruled
+  note: PolicyEngine reads dependent by DFA's definition, because the statute defines it only for the personal credit.
+    Taxpayer and spouse tuition counts under either reading.
+- id: us-az:excise-credit-claimed-joint-filer
+  program: income-tax
+  years:
+    from: 2021
+    to: 2041
+    type: tax
+  question: Does Arizona count a claimed joint filer when the Form 140 worksheet enters two filers?
+  sources:
+  - kind: statute
+    citation: A.R.S. 43-1072.02(A), (C)
+    url: https://www.azleg.gov/ars/43/01072-02.htm
+  - kind: statute
+    citation: A.R.S. 43-1001(8), (12)
+    url: https://www.azleg.gov/ars/43/01001.htm
+  - kind: statute
+    citation: A.R.S. 42-2201(A)(1)
+    url: https://www.azleg.gov/ars/42/02201.htm
+  - kind: instructions
+    citation: 2025 Form 140 instructions and joint worksheet, PDF pages 25-26
+    url: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf#page=25
+  readings:
+    statute: Each joint filer remains an individual taxpayer. The claimed filer fails subsection (A) and files a return, so cannot enter subsection (C) as a nonfiling spouse. The unclaimed filer receives $25.
+    other: ADOR tells joint filers to enter two without adjusting for a claimed spouse, yielding $50 if the unclaimed spouse first qualifies.
+  example: One claimed spouse and no dependents give 1 x $25 = $25 under the statute, against 2 x $25 = $50 under the unadjusted worksheet.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/az/tax/income/credits/az_increased_excise_tax_credit.py
+    - policyengine_us/variables/gov/states/az/tax/income/credits/az_increased_excise_tax_credit_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10053
+  state: ruled
+  note: The statutory individual taxpayer definition also rejects treating the whole joint return as an excluded taxpayer. Retain $25.
+- id: us-ca:renter-credit-actual-dependent-claim
+  program: income-tax
+  years:
+    from: 2025
+    to: 2025
+    type: tax
+  question: Does the renter exclusion require an actual dependent claim or only claimability?
+  sources:
+  - kind: statute
+    citation: RTC 17053.5(d)(2), SB 1005 section 98
+    url: https://www.leginfo.ca.gov/pub/15-16/bill/sen/sb_1001-1050/sb_1005_bill_20160701_chaptered.pdf#page=88
+  - kind: form
+    citation: 2025 Form 540 booklet, renter qualification questions 4-5, PDF page 25
+    url: https://www.ftb.ca.gov/forms/2025/2025-540-booklet.pdf#page=25
+  readings:
+    statute: Exclude a filer only after another taxpayer actually claimed them and they lived with that claimant for more than half the year.
+    other: FTB asks whether another person can claim the filer and whether the filer lived with that person.
+  example: A single renter with $2,000 AGI and $6,000 rent can be claimed but remains unclaimed. If the renter lives with the would-be claimant for more than half the year, the renter receives $60 under the statute and $0 under the form.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ca/tax/income/credits/ca_renter_credit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10053
+  state: ruled
+  note: Neither source prescribes a fallback when residence data are missing. Keep the existing false default.
