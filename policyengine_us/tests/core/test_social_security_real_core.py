@@ -443,6 +443,9 @@ def test_dataset_rebuild_keeps_new_input_provenance_when_old_cache_shares_key():
     assert since is not None
     assert scalar(simulation, "independent_input", "2023") == 0
     old_holder = simulation.get_holder("independent_input")
+    # Core may leave a missing input's default uncached. Store the derived
+    # entry this test needs under the key the dataset's input then reuses.
+    old_holder.put_in_cache(np.array([0.0]), period("2023"), derived=True)
     assert old_holder.is_derived(period("2023"))
     assert sequence_number(simulation, "independent_input", "2023") >= since
 
