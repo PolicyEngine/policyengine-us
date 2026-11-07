@@ -108,9 +108,9 @@
         is_aca_ptc_eligible: false
     tax_units:
       tax_unit:
-        # Adults-only SLCSP = 312.00 x (1.5974 + 1.566) x 12 = 11,843.77.
+        # Adults-only SLCSP = 275.00 x (1.5974 + 1.566) x 12 = 10,439.22.
         # MAGI fraction = floor(100 x 50,000 / 26,650) / 100 = 1.87; figure
         # = 0.0419 + (1.87 - 1.50) / 0.50 x (0.066 - 0.0419) = 0.059734.
-        # PTC = 11,843.77 - 0.059734 x 50,000 = 8,857.07.
-        aca_ptc: 8_857.07
-        premium_tax_credit: 8_857.07
+        # PTC = 10,439.22 - 0.059734 x 50,000 = 7,452.52.
+        aca_ptc: 7_452.52
+        premium_tax_credit: 7_452.52
