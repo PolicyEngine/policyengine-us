@@ -1,0 +1,15 @@
+description: North Carolina counts these income sources as employment or self-employment under the Subsidized Child Care Assistance need for care.
+values:
+  2019-03-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+
+metadata:
+  unit: list
+  period: year
+  label: North Carolina SCCA need for care earned income sources
+  reference:
+    - title: Subsidized Child Care Assistance Program Policy Manual, Chapter 5, section III.B, child care to support employment
+      href: https://policies.ncdhhs.gov/wp-content/uploads/Chapter-5-CN-25-3-Establishing-Need-and-Plan-of-Care.pdf#page=5
