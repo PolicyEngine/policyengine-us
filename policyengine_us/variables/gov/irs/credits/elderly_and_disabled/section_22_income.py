@@ -68,8 +68,9 @@ class section_22_income(Variable):
         # spouse receives as a pension or annuity payable under the Railroad
         # Retirement Act of 1974 and excluded from gross income, whatever
         # provision excludes it: the tier 1 benefits section 86 leaves out,
-        # and the tax-free part of the rest of the annuity, which 72(r)(2)
-        # and 72(b) exclude as a recovery of the employee's tier 2 taxes.
+        # and the tax-free part of the rest of the annuity, which recovers
+        # the employee's tier 2 taxes (72(r)(2); 72(d)'s Simplified Method,
+        # or 72(b) for some annuities that started before November 19, 1996).
         # Schedule R's line 13b keeps returns of cost out; the model follows
         # the statute's words.
         non_taxable_tier_1 = tax_unit(
