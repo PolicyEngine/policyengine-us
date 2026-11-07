@@ -24,9 +24,10 @@ from hypothesis import strategies as st
 from policyengine_us import Simulation
 
 YEARS = (2022, 2023, 2024, 2025, 2026)
-# Payments from the 2022 program: received in 2022, or in 2023 under section
-# 4.03 of Notice 2023-56, since Alaska paid no energy relief under a 2023
-# program.
+# Recipients got the 2022 program's payments in 2022 or 2023, and the model
+# leaves out energy relief from both years (IR-2023-23; Notice 2023-56, section
+# 4.03). Alaska paid no energy relief with the 2023 dividend and paid the relief
+# the Legislature added in 2023 with the 2024 dividend.
 EXCLUDED_YEARS = (2022, 2023)
 STATES = ("AK", "HI", "TX", "WA")
 # 32-bit floats resolve to $0.03125 at this income, and the net income formulas

@@ -73,17 +73,23 @@ does not establish those facts.
 The model also leaves out a payment from the 2022 program that a recipient got
 in 2023. In
 [section 4.03 of Notice 2023-56](https://www.irs.gov/pub/irs-drop/n-23-56.pdf#page=13),
-the IRS lets a taxpayer who got no payment under a covered 2022 program during
-2022 exclude a payment under that program that they got in 2023, and it repeats
-the rule in
+the IRS lets a taxpayer who got nothing under a covered 2022 program in 2022
+exclude a payment under it that they got in 2023. It repeats the rule in
 [Publication 525 for 2023](https://www.irs.gov/pub/irs-prior/p525--2023.pdf#page=37).
-Alaska paid no energy relief under a 2023 program, so the model leaves out any
-energy relief that a recipient got in 2023.
+Alaska paid the 2022 program's energy relief as part of
+[one \$3,284 disbursement per eligible Alaskan](https://dor.alaska.gov/docs/default-source/press-releases/2023_02_17-dor-response-to-irs-guidance-on-2022-pfd.pdf#page=1),
+so a recipient who got it in 2023 got nothing under the program in 2022. Alaska
+paid no energy relief with the
+[2023 dividend](https://dor.alaska.gov/department-of-revenue/news-detail/2023/09/21/dor-announces-2023-pfd-amount),
+and it paid the relief that the Legislature
+[added in 2023](https://dor.alaska.gov/department-of-revenue/news-detail/2024/09/19/department-of-revenue-announces-2024-permanent-fund-dividend-amount-and-energy-relief)
+with the 2024 dividend. So every energy relief payment that a recipient got in
+2023 came from the 2022 program, and the model leaves all of them out.
 
 The model counts every payment from 2024 on. In
 [section 2 of Notice 2023-56](https://www.irs.gov/pub/irs-drop/n-23-56.pdf#page=2),
-the IRS limits the news release to payments that states made in 2022, and in
-section 4.03 it adds only 2023 payments under 2022 programs. In
+the IRS says the news release applied only to payments that states made in
+2022, and in section 4.03 it adds only 2023 payments under 2022 programs. In
 [Publication 525 for 2024](https://www.irs.gov/pub/irs-prior/p525--2024.pdf#page=32),
 the IRS tells filers not to reduce Schedule 1 line 8g by the energy relief
 portion and treats the entire \$1,702 as taxable. The model's \$1,403.83 of PFD
@@ -97,4 +103,4 @@ of \$51,200 in 2026.
 A payment counts wherever the recipient lives. The model calculates
 `ak_energy_relief` only for Alaska residents. When a dataset or user supplies a
 payment for someone who has since moved, the payment stays in federal gross
-income, as the regular dividend does.
+income, as a supplied regular dividend does.

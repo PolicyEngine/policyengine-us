@@ -7,12 +7,13 @@ class taxable_ak_energy_relief(Variable):
     label = "Alaska energy relief payment in gross income"
     unit = USD
     documentation = (
-        "The part of ak_energy_relief in federal gross income: none of a "
-        "payment from the 2022 program, whose exclusion the IRS said it would "
-        "not challenge, whether the recipient got it in 2022 or in 2023; and "
-        "all of each payment from 2024 on, which Alaska pays as part of the "
-        "taxable dividend. A payment counts wherever the recipient lives, as "
-        "the regular dividend does. See docs/validation/alaska-pfd.md."
+        "The part of ak_energy_relief in federal gross income. It holds none "
+        "of a payment from the 2022 program, which the IRS lets recipients "
+        "exclude whether they got it in 2022 or in 2023. It holds all of each "
+        "payment from 2024 on, which Alaska pays as part of the taxable "
+        "dividend. A payment that a dataset or user supplies counts wherever "
+        "the recipient lives, as a supplied regular dividend does. See "
+        "docs/validation/alaska-pfd.md."
     )
     definition_period = YEAR
     reference = (

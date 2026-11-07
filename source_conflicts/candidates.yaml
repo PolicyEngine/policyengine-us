@@ -6717,10 +6717,10 @@ candidates:
     citation: Property Tax Credits for North Dakota Homeowners and Renters, item 11
     url: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
   readings:
-    statute: Income comes from all sources and leaves out any amount excluded from income by federal or state law.
-      Federal law excludes benefits from a plan the recipient paid for (IRC 104(a)(3)) and counts wage-replacement
-      benefits from a plan the employer paid for (IRC 105(a)), apart from the medical reimbursements and permanent-injury
-      payments that IRC 105(b) and (c) exclude.
+    statute: Income comes from all sources and leaves out any amount that federal or state law excludes from income.
+      Federal law excludes benefits from a plan the recipient paid for (IRC 104(a)(3)). It counts benefits from a plan
+      the employer paid for (IRC 105(a)), other than the medical reimbursements and permanent-injury payments that IRC
+      105(b) and (c) exclude.
     other: Item 11 lists the proceeds as not income, whoever paid for the policy.
   example: A renter with $10,000 of wages and $12,000 of wage-replacement disability benefits, $5,000 of them from a
     plan the renter paid for, has income of $17,000 under the statute and $10,000 under item 11.
@@ -12085,14 +12085,24 @@ candidates:
   - kind: guidance
     citation: IRS Notice 2023-56, section 4.03
     url: https://www.irs.gov/pub/irs-drop/n-23-56.pdf#page=13
+  - kind: agency-practice
+    citation: Alaska Department of Revenue, DOR Response to IRS Guidance on 2022 PFD (February 17, 2023)
+    url: https://dor.alaska.gov/docs/default-source/press-releases/2023_02_17-dor-response-to-irs-guidance-on-2022-pfd.pdf#page=1
+  - kind: agency-practice
+    citation: Alaska Department of Revenue, Department of Revenue Announces 2023 PFD Amount (September 21, 2023)
+    url: https://dor.alaska.gov/department-of-revenue/news-detail/2023/09/21/dor-announces-2023-pfd-amount
+  - kind: agency-practice
+    citation: Alaska Department of Revenue, Department of Revenue Announces 2024 Permanent Fund Dividend Amount and Energy
+      Relief (September 19, 2024)
+    url: https://dor.alaska.gov/department-of-revenue/news-detail/2024/09/19/department-of-revenue-announces-2024-permanent-fund-dividend-amount-and-energy-relief
   readings:
     statute: Section 61(a) counts all income unless another section excludes it. Section 139 excludes a government
       payment only in connection with a qualified disaster, and the general welfare exclusion requires a payment
       based on individual or family need.
     other: In IR-2023-23, the IRS says that if a taxpayer leaves the payment out of 2022 income, it will not challenge
-      that treatment, and in a footnote it limits the Alaska item to the supplemental energy relief payment. In section
-      4.03 of Notice 2023-56, the IRS extends the same treatment to a payment under the 2022 program that a taxpayer got
-      in 2023.
+      that treatment. In a footnote, it limits the Alaska item to the supplemental energy relief payment. In section
+      4.03 of Notice 2023-56, the IRS lets a taxpayer who got nothing under the 2022 program in 2022 exclude a payment
+      under it that they got in 2023.
   example: An Alaskan adult with $50,000 of wages has 2022 gross income of $52,622 if they leave the $662 payment
     out, and $53,284 if they count it.
   pe_us:
@@ -12103,11 +12113,14 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10669
   state: ruled
-  note: By the IRS's own account, whether the 2022 payment qualifies under either exclusion depends on the facts,
-    so the model takes the agency's position and the taxpayer's cheaper choice. Alaska paid no energy relief under a
-    2023 program, so the model also leaves out energy relief that recipients got in 2023. Payments from 2024 on
-    count, since in Notice 2023-56 the IRS limits the news release to payments that states made in 2022 and to
-    2023 payments under 2022 programs, and in Publication 525 for 2024 it treats the entire dividend as taxable.
+  note: By the IRS's own account, whether the 2022 payment qualifies under either exclusion depends on the facts, so the
+    model takes the agency's position and the taxpayer's cheaper choice. Alaska paid no energy relief with the 2023
+    dividend and paid the relief that the Legislature added in 2023 with the 2024 dividend. So any energy relief that a
+    recipient got in 2023 came from the 2022 program. Alaska paid each eligible Alaskan once under that program, so a
+    2023 recipient got nothing under it in 2022, and the model leaves the 2023 payment out too. The model counts
+    payments from 2024 on. In Notice 2023-56, the IRS says the news release applied only to payments that states made in
+    2022, and in section 4.03 it adds only 2023 payments under 2022 programs. In Publication 525 for 2024, the IRS
+    treats the entire 2024 dividend as taxable.
 - id: us:charitable-non-itemizer-2020-separate-cap
   program: income-tax
   years:

@@ -2,9 +2,12 @@ description: Taxpayers leave Alaska's energy relief payment out of federal gross
 
 values:
   2022-01-01: true
-  # Alaska paid no energy relief under a 2023 program, so any payment a
-  # recipient got in 2023 came from the 2022 program, and under section 4.03
-  # of Notice 2023-56 the recipient may exclude it.
+  # Alaska paid no energy relief with the 2023 dividend. It paid the relief that
+  # the Legislature added in 2023 with the 2024 dividend, so any payment that a
+  # recipient got in 2023 came from the 2022 program. Alaska paid that program's
+  # relief as part of one disbursement per eligible Alaskan, so a recipient who
+  # got it in 2023 got nothing under the program in 2022. In section 4.03 of
+  # Notice 2023-56, the IRS lets that taxpayer exclude the payment.
   2024-01-01: false
 
 metadata:
@@ -15,15 +18,27 @@ metadata:
     # The 2022 payment, footnote 1.
     - title: IRS News Release IR-2023-23, IRS issues guidance on state tax payments to help taxpayers
       href: https://www.irs.gov/newsroom/irs-issues-guidance-on-state-tax-payments-to-help-taxpayers
-    # Section 2: the news release covers payments that states made in 2022.
+    # Alaska paid the 2022 program's relief as part of one disbursement per
+    # eligible Alaskan.
+    - title: Alaska Department of Revenue, DOR Response to IRS Guidance on 2022 PFD
+      href: https://dor.alaska.gov/docs/default-source/press-releases/2023_02_17-dor-response-to-irs-guidance-on-2022-pfd.pdf#page=1
+    # Section 2: the news release applied only to payments that states made in
+    # 2022.
     - title: IRS Notice 2023-56, Federal Income Tax Consequences of Certain State Payments, section 2
       href: https://www.irs.gov/pub/irs-drop/n-23-56.pdf#page=2
-    # Section 4.03: a taxpayer may exclude a payment that they got in 2023 under
-    # a 2022 program the news release covered.
+    # Section 4.03: a taxpayer who got no payment under a 2022 program that the
+    # news release covered may exclude a payment under it that they got in 2023.
     - title: IRS Notice 2023-56, Federal Income Tax Consequences of Certain State Payments, section 4.03
       href: https://www.irs.gov/pub/irs-drop/n-23-56.pdf#page=13
     - title: IRS Publication 525 (2023), Spillover payments under certain 2022 state tax payment programs
       href: https://www.irs.gov/pub/irs-prior/p525--2023.pdf#page=37
+    # Alaska paid no energy relief with the 2023 dividend.
+    - title: Alaska Department of Revenue, Department of Revenue Announces 2023 PFD Amount
+      href: https://dor.alaska.gov/department-of-revenue/news-detail/2023/09/21/dor-announces-2023-pfd-amount
+    # Alaska paid the relief that the Legislature added in 2023 with the 2024
+    # dividend.
+    - title: Alaska Department of Revenue, Department of Revenue Announces 2024 Permanent Fund Dividend Amount and Energy Relief
+      href: https://dor.alaska.gov/department-of-revenue/news-detail/2024/09/19/department-of-revenue-announces-2024-permanent-fund-dividend-amount-and-energy-relief
     # The 2024 payment.
     - title: IRS Publication 525 (2024), Taxable and Nontaxable Income
       href: https://www.irs.gov/pub/irs-prior/p525--2024.pdf#page=32

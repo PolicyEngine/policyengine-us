@@ -168,7 +168,7 @@
     irs_gross_income: [51_200, 0]
     dependent_gross_income: [0, 1_200]
 
-- name: Case 14, Alaska paid no energy relief under a 2023 program.
+- name: Case 14, Alaska paid no energy relief with the 2023 dividend.
   period: 2023
   input:
     state_code: AK
@@ -176,7 +176,7 @@
     ak_energy_relief: 0
     taxable_ak_energy_relief: 0
 
-- name: Case 15, a payment from the 2022 program received in 2023 stays out (Notice 2023-56, section 4.03).
+- name: Case 15, a 2022-program payment that the recipient got in 2023 stays out (Notice 2023-56, section 4.03).
   period: 2023
   input:
     people:
