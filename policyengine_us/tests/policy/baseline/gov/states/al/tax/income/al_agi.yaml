@@ -66,6 +66,7 @@
     # health insurance (1,000) and SEP (500) deductions all go on the child's
     # Alabama return (Ala. Code 40-18-27(a); Form 40 booklet p. 5,
     # "Dependent's and Student's Income"), as on the federal return.
+    # Parent-only AGI: 40,000 + 0 dependent income - 0 dependent deductions.
     adjusted_gross_income: 40_000
     al_agi: 40_000
 
@@ -187,3 +188,37 @@
     # amortization apportioned to the beneficiary can exceed the income:
     # 30,000 - 5,000.
     al_agi: 25_000
+
+- name: Alabama taxes gambling winnings.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    irs_employment_income: 50_000
+    gambling_winnings: 20_000
+    gambling_losses: 12_000
+    state_code: AL
+  output:
+    al_agi: 70_000
+
+- name: A dependent's gambling winnings are not in the parent's Alabama AGI.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        gambling_winnings: 2_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        gambling_winnings: 20_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AL
+  output:
+    al_gambling_winnings: [2_000, 0]
+    al_agi: 2_000

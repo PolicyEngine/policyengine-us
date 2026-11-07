@@ -94,3 +94,21 @@
         members: [parent, child]
   output:
     irs_gross_income: [0, 0]
+
+- name: Gambling winnings are gross income for the filer, not a dependent's on this return.
+  period: 2024
+  input:
+    people:
+      parent:
+        is_tax_unit_head: true
+        gambling_winnings: 10_000
+        gambling_losses: 4_000
+      child:
+        is_tax_unit_dependent: true
+        gambling_winnings: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+  output:
+    # The full winnings, not reduced by losses.
+    irs_gross_income: [10_000, 0]

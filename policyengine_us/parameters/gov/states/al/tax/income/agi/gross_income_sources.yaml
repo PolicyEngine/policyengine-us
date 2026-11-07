@@ -19,6 +19,9 @@ values:
     - partnership_s_corp_income
     - farm_operations_income
     - farm_rent_income
+    # Prizes and awards: contests, lotteries and gambling winnings (Form 40
+    # page 2, Part I, other income), of the head and spouse.
+    - al_gambling_winnings
     # Form 40, Part I, line 5: rents, royalties, partnerships, S corporations,
     # trusts and estates (Alabama Schedule E, Part II).
     - estate_income

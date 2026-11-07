@@ -27,16 +27,13 @@ class taxable_income_before_itemized_deductions(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         exemptions = tax_unit("exemptions", period)
         # Section 68(a)(2) adds the itemized deductions back to taxable
-        # income, so neither they nor wagering losses (a section 165(d)
-        # itemized deduction, listed apart from the other itemized
-        # deductions) reduce this amount. Everything else an itemizer
-        # deducts does: the section 199A, 224 and 225 deductions, the
-        # section 151(d)(5)(C) senior deduction and qualified passenger
+        # income, so they don't reduce this amount. Everything else an
+        # itemizer deducts does: the section 199A, 224 and 225 deductions,
+        # the section 151(d)(5)(C) senior deduction and qualified passenger
         # vehicle loan interest.
-        itemized = ["itemized_taxable_income_deductions", "wagering_losses_deduction"]
         other_deductions = [
             deduction
             for deduction in p.deductions_if_itemizing
-            if deduction not in itemized
+            if deduction != "itemized_taxable_income_deductions"
         ]
         return agi - exemptions - add(tax_unit, period, other_deductions)

@@ -11,11 +11,23 @@ class ky_itemized_deductions_unit(Variable):
         "https://revenue.ky.gov/Forms/Form%20740%20Schedule%20A%202022.pdf",
         "https://law.justia.com/codes/kentucky/2022/chapter-141/section-141-019/",  # (2)(i)
         "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=57914#page=4",  # (2)(j)
+        # 2019 Ky. Acts ch. 151, sec. 37: wagering losses allowed from 2019
+        # PDF pages 60, 112
+        "https://apps.legislature.ky.gov/law/acts/19RS/documents/0151.pdf#page=60",
     )
     defined_for = StateCode.KY
 
-    adds = ["itemized_deductions_less_salt"]
-    subtracts = [
-        "medical_expense_deduction",
-        "ky_disallowed_second_residence_interest",
-    ]
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.ky.tax.income.deductions.itemized
+        deductions = add(tax_unit, period, ["itemized_deductions_less_salt"]) - add(
+            tax_unit,
+            period,
+            [
+                "medical_expense_deduction",
+                "ky_disallowed_second_residence_interest",
+            ],
+        )
+        if p.wagering_losses_allowed:
+            return deductions
+        # KRS 141.019(2) excluded every section 165 loss for 2018.
+        return deductions - tax_unit("wagering_losses_deduction", period)

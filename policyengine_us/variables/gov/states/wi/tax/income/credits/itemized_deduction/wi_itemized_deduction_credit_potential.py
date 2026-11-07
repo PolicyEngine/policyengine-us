@@ -14,13 +14,19 @@ class wi_itemized_deduction_credit_potential(Variable):
         "https://www.revenue.wi.gov/TaxForms2021/2021-Form1NPR-Inst.pdf#page=34",
         "https://www.revenue.wi.gov/TaxForms2022/2022-Form1.pdf#page=4",
         "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2023/0002_individual_income_tax_informational_paper_2.pdf#page=19",
+        # Publication 600: gambling losses are not deductible and may not
+        # be used in computing the itemized deduction credit.
+        # PDF pages 4, 6, 9-10
+        "https://www.revenue.wi.gov/DOR%20Publications/pb600.pdf#page=4",
     )
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
         # Schedule 1 uses actual or hypothetical Schedule A components,
         # excluding SALT, miscellaneous deductions, and the federal
-        # charitable allowance for non-itemizers.
+        # charitable allowance for non-itemizers. Wagering losses are not
+        # among the components: Wisconsin allows no deduction or credit for
+        # gambling losses.
         wi_itmded = add(
             tax_unit,
             period,

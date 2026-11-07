@@ -1,0 +1,18 @@
+description: Kentucky allows the federal wagering losses deduction as an itemized deduction if this is true.
+values:
+  2000-01-01: true
+  # For 2018 Kentucky disallowed every section 165 loss.
+  2018-01-01: false
+  # 2019 Ky. Acts ch. 151, sec. 37 restored wagering losses allowed under
+  # section 165(d), for taxable years beginning on or after January 1, 2019
+  # (sec. 83).
+  2019-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Kentucky wagering losses itemized deduction allowed
+  reference:
+    - title: "2019 Ky. Acts ch. 151, sec. 37 (KRS 141.019(2)(b)) and sec. 83 #page 60,112"
+      href: https://apps.legislature.ky.gov/law/acts/19RS/documents/0151.pdf#page=60
+    - title: TY2018 Kentucky Publication 1345, itemized deductions obsolete for tax year 2018
+      href: https://revenue.ky.gov/Software-Developer/Software%20Development%20Documents/TY2018%20KY%20Publication%201345-Handbook%20for%20Electronic%20Filing.pdf#page=9

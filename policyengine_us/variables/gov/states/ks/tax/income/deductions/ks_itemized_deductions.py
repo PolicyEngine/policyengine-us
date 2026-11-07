@@ -10,6 +10,7 @@ class ks_itemized_deductions(Variable):
     reference = (
         "https://www.ksrevenue.gov/pdf/ip21.pdf",
         "https://www.ksrevenue.gov/pdf/ip22.pdf",
+        "https://kslegislature.gov/b2025_26/laws/079_000_0000_chapter/079_032_0000_article/079_032_0120_section/079_032_0120_k/",
     )
     defined_for = StateCode.KS
 
@@ -25,4 +26,8 @@ class ks_itemized_deductions(Variable):
         # compute itemized deduction maximum
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
         uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
-        return itm_deds_less_salt + uncapped_property_taxes
+        # K.S.A. 79-32,120(a) limits Kansas itemized deductions to charitable
+        # contributions, medical care, qualified residence interest and
+        # property taxes, so federal wagering losses are not one of them.
+        wagering_losses = tax_unit("wagering_losses_deduction", period)
+        return itm_deds_less_salt - wagering_losses + uncapped_property_taxes

@@ -93,6 +93,22 @@
   output:
     mn_itemized_deductions: 10_000
 
+- name: Wagering losses are outside the Minnesota itemized deduction limitation.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    age: 40
+    employment_income: 200_000
+    gambling_winnings: 100_000
+    gambling_losses: 50_000
+    state_code: MN
+  output:
+    adjusted_gross_income: 300_000
+    # min(90% x 50,000 losses, 100,000 winnings) = 45,000.
+    wagering_losses_deduction: 45_000
+    # Minn. Stat. 290.0122, subd. 2(d)(3): no reduction of the losses.
+    mn_itemized_deductions: 45_000
+
 # Schedule M1SA line 19 takes the casualty and theft loss from Schedule M1CAT:
 # each casualty less $100, then less 10% of Form M1 line 1 (federal AGI). Minn.
 # Stat. 290.0122, subd. 8, disregards the federal limit to declared disasters.

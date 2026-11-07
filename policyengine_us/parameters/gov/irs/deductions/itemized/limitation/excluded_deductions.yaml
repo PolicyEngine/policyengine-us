@@ -5,8 +5,6 @@ values:
   # and wagering losses (section 165(c)(2), (c)(3) and (d)).
   # investment_interest_expense is the investment interest that
   # interest_deduction includes through non_mortgage_interest.
-  # wagering_losses_deduction is deducted outside
-  # total_itemized_taxable_income_deductions, so it never enters the base.
   # The 2017 worksheet also removes qualified disaster-relief contributions
   # (P.L. 115-63 sec. 504(a)(3), P.L. 115-123 sec. 20104(a)(3)), which are
   # not modeled.
@@ -14,6 +12,7 @@ values:
     - medical_expense_deduction
     - investment_interest_expense
     - casualty_loss_deduction
+    - wagering_losses_deduction
 metadata:
   unit: list
   period: year

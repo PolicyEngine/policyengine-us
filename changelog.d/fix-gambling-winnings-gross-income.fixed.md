@@ -1,0 +1,1 @@
+Count gambling winnings in federal gross income, limit the wagering losses deduction to 90% of losses from 2026 and to the head's and spouse's gambling, treat it as a Schedule A itemized deduction, and align the states that tax gambling winnings or build on federal itemized deductions.
