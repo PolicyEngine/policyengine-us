@@ -219,9 +219,9 @@ def test_add_to_list_parameter_appends_only_missing_names(values, names, days):
         assert parameter(instant(day)) == value_on(expected, day)
         assert node_value(parameter, day) == value_on(expected, day)
 
-    # CountryTaxBenefitSystem clears every flag before it applies a reform it
-    # is given for the second time. That call adds nothing, and must mark the
-    # parameter again.
+    # CountryTaxBenefitSystem clears every flag below the root before it
+    # applies a reform it is given for the second time. That call adds
+    # nothing, and must mark the parameter again.
     parameter.modified = parameter.parent.modified = False
     add_to_list_parameter(parameter, names)
     assert parameter.modified and parameter.parent.modified
@@ -267,7 +267,7 @@ def test_reform_lists_are_baseline_lists_plus_own_additions(policy, year, list_n
 def test_reformed_systems_mark_exactly_the_lists_they_change(policy):
     # The macro cache reads a modified flag as "differs from current law".
     # The fixture passes each reform to CountryTaxBenefitSystem, which clears
-    # every flag between its two applications of that reform.
+    # every flag below the root between its two applications of that reform.
     name, reformed = policy
     node = reformed.parameters.gov.household
     for list_name in LISTS:

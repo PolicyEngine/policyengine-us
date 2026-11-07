@@ -28,9 +28,9 @@ def add_to_list_parameter(parameter, names) -> None:
 
     Every call marks the parameter, and each node above it, modified, even a
     call that adds nothing. Core's macro cache reads the flag as "differs from
-    current law". ``CountryTaxBenefitSystem`` clears every flag before it
-    applies a reform it is given for the second time, and that second call
-    finds each name present.
+    current law". ``CountryTaxBenefitSystem`` clears every flag below the root
+    before it applies a reform it is given for the second time, and that
+    second call finds each name present.
     """
     names = list(dict.fromkeys(names))
     # values_list runs newest first. Each value lasts until the day before the
