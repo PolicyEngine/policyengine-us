@@ -1,0 +1,23 @@
+description: Wisconsin sets this base heat proxy amount for wood or other fuels heat by dwelling type under the Home Energy Assistance Program.
+# The motel or camper row is the rooming house, motel and hotel row of the
+# calculator. Cells the calculator flags as estimated (IsFake) are used as
+# published.
+SINGLE_FAMILY:
+  2025-10-01: 524
+TWO_TO_FOUR_UNITS:
+  2025-10-01: 440
+APARTMENT:
+  2025-10-01: 172
+MOBILE_HOME:
+  2025-10-01: 697
+MOTEL_OR_CAMPER:
+  2025-10-01: 172
+metadata:
+  unit: currency-USD
+  period: year
+  label: Wisconsin WHEAP wood or other fuels base heat proxy
+  breakdown:
+    - wi_wheap_dwelling_type
+  reference:
+    - title: Wisconsin HE+ Benefit Calculator FFY2026, HT_Proxy!F8, F13, F18, F23, F28
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/WI_BenefitMatrix_2026.xlsx

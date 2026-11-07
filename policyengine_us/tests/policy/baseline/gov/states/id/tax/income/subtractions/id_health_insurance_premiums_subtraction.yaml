@@ -317,8 +317,8 @@
 - name: Derived claimant medical overlap uses premiums excluding pretax payroll payments
   # Pretax payroll premiums are separate; remove only the Schedule 1 amount.
   # Qualified premiums: $6,000 - $1,000 = $5,000; floor: $30,000 * 7.5% = $2,250.
-  # Federal medical: $6,000 + $500 - $2,250 = $4,250 (unchanged).
-  # Claimant overlap: min($4,250, $5,000 + $500 - $2,250) = $3,250.
+  # Federal medical: $6,000 - $1,000 + $500 - $2,250 = $3,250.
+  # Claimant overlap: min($3,250, $5,000 + $500 - $2,250) = $3,250.
   # Itemized route: $20,000 + ($5,000 - $3,250) = $21,750, exceeding
   # standard route $15,750 + $5,000 = $20,750; subtraction remains $1,750.
   period: 2025
@@ -332,7 +332,7 @@
     standard_deduction: 15_750
     id_itemized_deductions: 20_000
   output:
-    medical_expense_deduction: 4_250
+    medical_expense_deduction: 3_250
     id_qualified_health_insurance_premiums: 5_000
     id_health_insurance_premiums_medical_deduction: 3_250
     id_itemizes: true

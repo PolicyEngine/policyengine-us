@@ -1,17 +1,21 @@
-"""The expected Part D premium that ``medicare_cost`` subtracts.
+"""The Part D premium that ``medicare_cost`` subtracts.
 
 CMS Medicare spending per enrollee (``calibration.gov.hhs.medicare.
-per_capita_cost``) covers Parts A through D, gross of the premiums that
-finance it. No variable records Part D enrollment, so ``medicare_cost``
-subtracts an expected Part D premium:
+per_capita_cost``) covers Parts A through D, averaged over every Medicare
+enrollee, gross of the premiums that finance it. ``medicare_cost`` subtracts
+the Part D premium averaged the same way, plus the person's own
+income-related monthly adjustment amount (IRMAA):
 
-    enrollment_share x (premiums_per_enrollee + Part D IRMAA)
+    enrollment_share x premiums_per_enrollee + Part D IRMAA
 
-from two series under ``calibration.gov.hhs.medicare.part_d``, both from the
-2026 Medicare Trustees Report:
+The IRMAA is subtracted in full: ``income_adjusted_part_d_premium_surcharge``
+is already zero for anyone not enrolled in Part D, so scaling it by the share
+would count non-enrollment twice. The two series are under
+``calibration.gov.hhs.medicare.part_d``, both from the 2026 Medicare Trustees
+Report:
 
 - ``premiums_per_enrollee``: Table III.D3 premium income (footnote 6's
-  December 31 credits moved back a year) less Table V.E4's aggregate
+  December 31 credits moved to the following year) less Table V.E4's aggregate
   income-related premiums, over Table V.B3's Part D enrollment.
 - ``enrollment_share``: Table V.B3's Part D enrollment over its total, people
   with Part A and/or Part B coverage.
@@ -34,10 +38,12 @@ Invariants:
 5. Calendar years: every date in a year reads the January 1 value; between
    the Trustees' five-year enrollment points the share holds the earlier one.
 6. Consumer (Hypothesis, differential): ``medicare_cost`` equals a reference
-   implementation, max(gross - Part A - Part B - share x (premium + IRMAA),
-   0), for any year and premiums; it lies in [0, ``medicare_gross_cost``],
-   which does not change with the Part D premium; and it does not rise with
-   the person's Part D IRMAA.
+   implementation, max(gross - Part A - Part B - share x premium - IRMAA, 0),
+   for any year and premiums; it lies in [0, ``medicare_gross_cost``], which
+   does not change with the Part D premium.
+7. Accounting (Hypothesis): the person's Part D IRMAA lowers
+   ``medicare_cost`` dollar for dollar until the zero floor, as it raises
+   what the person pays; the enrollment share does not scale it.
 """
 
 import pytest
@@ -227,7 +233,7 @@ def _enrollee(year, part_a, part_b, irmaa):
 
 def _reference_medicare_cost(year, part_a, part_b, irmaa):
     gross = _read("calibration.gov.hhs.medicare.per_capita_cost", f"{year}-01-01")
-    part_d = _share(year) * (_premium(year) + irmaa)
+    part_d = _share(year) * _premium(year) + irmaa
     return max(gross - part_a - part_b - part_d, 0)
 
 
@@ -259,3 +265,8 @@ def test_medicare_cost_matches_reference_and_bounds(
     # The gross cost subtracts no premium, so both people have the same one.
     assert gross[0] == gross[1]
     assert net[1] <= net[0]
+    # Accounting: above the zero floor, more IRMAA lowers the value dollar for
+    # dollar, so the enrollment share does not scale it. Float32 values near
+    # the 2100 spending level carry about 0.1 of rounding.
+    if net[1] > 0:
+        assert net[0] - net[1] == pytest.approx(high - low, abs=0.02 + 1e-6 * gross[0])

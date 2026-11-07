@@ -1,0 +1,22 @@
+description: Tennessee sets the top of each lower benefit matrix income group at this multiple of the federal poverty guideline under the Low Income Home Energy Assistance Program.
+# Inferred from the FY2026 matrix: 71%, 87% and 117% of the 2025 guideline
+# reproduce all 36 printed income-end values for groups A-C, sizes 1-12 (size
+# 1: $11,111.50, $13,615.50 and $18,310.50 of $15,650). The workshop labels
+# the groups 0%-50%, 51%-75% and 76%-100%. Group D runs to the income limit.
+# Used while uses_fpg_rates is true.
+A:
+  2025-10-01: 0.71
+B:
+  2025-10-01: 0.87
+C:
+  2025-10-01: 1.17
+
+metadata:
+  unit: /1
+  period: year
+  label: Tennessee LIHEAP benefit matrix income group poverty guideline rate
+  reference:
+    - title: Tennessee LIHEAP 2026 Benefit Matrix, income end
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/2026-LIHEAP-Eligible-Income-Household-Size-Benefits.pdf
+    - title: Tennessee LIHEAP 2026 Workshop, annualized income by family size and percentage of poverty
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-26-Workshop-Powerpoint-09.16.25.pdf#page=30

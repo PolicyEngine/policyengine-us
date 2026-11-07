@@ -73,3 +73,165 @@
   output:
     american_opportunity_credit: 1_000
     lifetime_learning_credit: 0
+
+# The reform keeps the dependency rules: a dependent student's tuition does not
+# count on a return whose filer can be claimed as a dependent (IRC
+# 25A(f)(1)(A)(iii), 152(b)(1)), under either credit.
+- name: Dependent student of a filer who can be claimed gets neither credit
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_ssn_for_llc_and_aoc.reconciled_ssn_for_llc_and_aoc
+  input:
+    gov.contrib.reconciliation.ssn_for_llc_and_aoc.in_effect: true
+    people:
+      parent:
+        age: 45
+        ssn_card_type: CITIZEN
+        has_tin: true
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      student:
+        age: 19
+        ssn_card_type: CITIZEN
+        has_tin: true
+        qualified_tuition_expenses: 4_000
+        is_pursuing_credential_for_american_opportunity_credit: true
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    american_opportunity_credit: 0
+    lifetime_learning_credit: 0
+
+- name: Dependent student of a joint return with one claimable spouse gets neither credit (the claimable spouse is the head)
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_ssn_for_llc_and_aoc.reconciled_ssn_for_llc_and_aoc
+  input:
+    gov.contrib.reconciliation.ssn_for_llc_and_aoc.in_effect: true
+    people:
+      person_a:
+        age: 45
+        ssn_card_type: CITIZEN
+        has_tin: true
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 45
+        ssn_card_type: CITIZEN
+        has_tin: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      student:
+        age: 19
+        ssn_card_type: CITIZEN
+        has_tin: true
+        qualified_tuition_expenses: 4_000
+        is_pursuing_credential_for_american_opportunity_credit: true
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, student]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, student]
+        state_code: TX
+  output:
+    american_opportunity_credit: 0
+    lifetime_learning_credit: 0
+
+- name: Dependent student of a joint return with one claimable spouse gets neither credit (the claimable spouse is the spouse)
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_ssn_for_llc_and_aoc.reconciled_ssn_for_llc_and_aoc
+  input:
+    gov.contrib.reconciliation.ssn_for_llc_and_aoc.in_effect: true
+    people:
+      person_b:
+        age: 45
+        ssn_card_type: CITIZEN
+        has_tin: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 45
+        ssn_card_type: CITIZEN
+        has_tin: true
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      student:
+        age: 19
+        ssn_card_type: CITIZEN
+        has_tin: true
+        qualified_tuition_expenses: 4_000
+        is_pursuing_credential_for_american_opportunity_credit: true
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, student]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, student]
+        state_code: TX
+  output:
+    american_opportunity_credit: 0
+    lifetime_learning_credit: 0
+
+- name: Dependent student of a filer who cannot be claimed is eligible for the American Opportunity Credit, not the Lifetime Learning Credit
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_ssn_for_llc_and_aoc.reconciled_ssn_for_llc_and_aoc
+  input:
+    gov.contrib.reconciliation.ssn_for_llc_and_aoc.in_effect: true
+    people:
+      parent:
+        age: 45
+        ssn_card_type: CITIZEN
+        has_tin: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      student:
+        age: 19
+        ssn_card_type: CITIZEN
+        has_tin: true
+        qualified_tuition_expenses: 4_000
+        is_pursuing_credential_for_american_opportunity_credit: true
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    is_eligible_for_american_opportunity_credit: [false, true]
+    lifetime_learning_credit: 0

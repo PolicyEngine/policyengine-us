@@ -7,9 +7,9 @@ metadata:
   # spending per enrollee, so the subsidy keeps its 2035 share of spending.
   uprating: calibration.gov.hhs.medicare.per_capita_cost
   reference:
-  # Each value is Table IV.B10's "Low-income subsidy" payments ($ billions,
-  # incurred basis) over Table V.B3's total enrollment (file page 196,
-  # thousands), people with Part A and/or Part B coverage, so it is per
+  # From 2015, each value is Table IV.B10's "Low-income subsidy" payments ($
+  # billions, incurred basis) over Table V.B3's total enrollment (file page
+  # 196, thousands), people with Part A and/or Part B coverage, so it is per
   # Medicare enrollee, not per subsidy recipient. 2016 to 2035 come from the
   # 2026 report's Table IV.B10 (file page 159); 2015, which that table no
   # longer shows, from the 2025 report's (file page 159). The two reports
@@ -18,14 +18,25 @@ metadata:
   # ffa56b9137006872300b0346149eae1613d09a172b6ba118aad48e66dfc48fa8; 2025
   # report sha256
   # 1b3de7a4faeee5ad42059e10740603182b716a5fa7b53b30d360b45b9e474d95.
-  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table IV.B10
-    href: https://www.cms.gov/oact/tr/2026#page=159
-  - title: 2025 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table IV.B10
+  - title: "2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Tables IV.B9, IV.B10 and V.B3 #page 119,158-159,196"
+    href: https://www.cms.gov/oact/tr/2026#page=119
+  - title: "2025 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table IV.B10"
     href: https://www.cms.gov/oact/tr/2025#page=159
-  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table V.B3
-    href: https://www.cms.gov/oact/tr/2026#page=196
+  # 2013 and 2014: the 2023 report's Table IV.B10 (file page 159),
+  # "Low-income subsidy", $ billions, incurred basis, over the 2021
+  # report's Table V.B3 total enrollment (file page 199, thousands). Both
+  # retrieved 2026-11-04; 2023 report sha256
+  # 89daaf2909ae18648783f652c05114d007c5f902cc5fa5fad0f76d43f6ccfa67,
+  # 2021 report sha256
+  # ef3d1fa77e99362c460f45b3d0ff0734181340e617675e21fde99276a520fc8e.
+  - title: "2023 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table IV.B10"
+    href: https://www.cms.gov/oact/tr/2023#page=159
+  - title: "2021 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table V.B3"
+    href: https://www.cms.gov/files/document/2021-medicare-trustees-report.pdf#page=199
 values:
   # Historical.
+  2013-01-01: 441.87
+  2014-01-01: 449.04
   2015-01-01: 460.52
   2016-01-01: 462.57
   2017-01-01: 465.21

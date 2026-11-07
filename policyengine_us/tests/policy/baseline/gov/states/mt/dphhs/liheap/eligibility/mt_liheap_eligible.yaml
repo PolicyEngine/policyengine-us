@@ -1,0 +1,118 @@
+# ARM 37.70.402, 37.70.406, 37.70.408; LIHEAP Manual 2025-2026 Appendix A
+# 9.3-9.4. A household needs an eligible member, an obligation to pay for heat
+# (a heating bill or heat included in rent), a reported heating fuel, and
+# either categorical eligibility or income at or below the limit with
+# non-business resources at or below the size limit and business equity at or
+# below $25,000.
+# FFY2026 size 1 limit $33,719: $33,719 eligible, $33,720 not.
+- name: Case 1, income at the limit is eligible and one dollar over is not.
+  period: 2026
+  input:
+    state_code: [MT, MT]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [33_719, 33_720]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [900, 900]
+    ssi: [0, 0]
+    snap: [0, 0]
+    tanf: [0, 0]
+  output:
+    mt_liheap_eligible: [true, false]
+
+# FFY2026 size 1 non-business resource limit $14,358: savings + other real
+# estate equity + rental property equity of $8,000 + $4,000 + $2,358 =
+# $14,358 eligible; $14,359 not.
+- name: Case 2, non-business resources at the size limit are eligible and one dollar over is not.
+  period: 2026
+  input:
+    state_code: [MT, MT]
+    age: [55, 55]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [20_000, 20_000]
+    bank_account_assets: [8_000, 8_001]
+    household_other_real_estate_equity: [4_000, 4_000]
+    household_rental_property_equity: [2_358, 2_358]
+    heating_type: [PROPANE, PROPANE]
+    heating_expense: [1_800, 1_800]
+    ssi: [0, 0]
+    snap: [0, 0]
+    tanf: [0, 0]
+  output:
+    mt_liheap_eligible: [true, false]
+
+# ARM 37.70.408(2): business asset equity may not exceed $25,000.
+- name: Case 3, business equity of 25,000 dollars is eligible and 25,001 dollars is not.
+  period: 2026
+  input:
+    state_code: [MT, MT]
+    age: [48, 48]
+    immigration_status: [CITIZEN, CITIZEN]
+    self_employment_income: [18_000, 18_000]
+    household_business_assets_equity: [25_000, 25_001]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [800, 800]
+    ssi: [0, 0]
+    snap: [0, 0]
+    tanf: [0, 0]
+  output:
+    mt_liheap_eligible: [true, false]
+
+# Appendix A 9.8 (2026-2027): a person who earned $50,000 and was just
+# approved for SSI, and an SSI recipient with $15,000 of savings, are
+# categorically eligible. Income $50,967 > $33,719 and savings $15,000 >
+# $14,358, but the SSI recipient is eligible without income or resource tests.
+- name: Case 4, an SSI categorical household over the income and resource limits is eligible.
+  period: 2026
+  input:
+    state_code: MT
+    age: 62
+    immigration_status: CITIZEN
+    is_disabled: true
+    employment_income: 50_000
+    ssi: 967
+    bank_account_assets: 15_000
+    heating_type: ELECTRICITY
+    heating_expense: 1_400
+    snap: 0
+    tanf: 0
+  output:
+    mt_liheap_eligible: true
+
+# ARM 37.70.402(1): the household must be obligated to pay for heat. Heat in
+# rent counts as an obligation without a separate bill; no bill and no heat in
+# rent does not. An unreported (UNSPECIFIED) or NONE heating type is
+# ineligible.
+- name: Case 5, heating obligation and a reported fuel are required.
+  period: 2026
+  input:
+    state_code: [MT, MT, MT, MT, MT]
+    age: [40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [15_000, 15_000, 15_000, 15_000, 15_000]
+    heating_type: [NATURAL_GAS, UNSPECIFIED, NONE, NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [900, 900, 0, 0, 0]
+    heat_expense_included_in_rent: [false, false, false, true, false]
+    pre_subsidy_rent: [0, 0, 0, 9_000, 9_000]
+    ssi: [0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0]
+  output:
+    mt_liheap_eligible: [true, false, false, true, false]
+
+# ARM 37.70.402(8): a household with no citizen or qualified alien member has
+# no eligible size.
+- name: Case 6, a household with no eligible member is ineligible.
+  period: 2026
+  input:
+    state_code: MT
+    age: 30
+    immigration_status: UNDOCUMENTED
+    employment_income: 12_000
+    heating_type: NATURAL_GAS
+    heating_expense: 900
+    ssi: 0
+    snap: 0
+    tanf: 0
+  output:
+    mt_liheap_eligible: false

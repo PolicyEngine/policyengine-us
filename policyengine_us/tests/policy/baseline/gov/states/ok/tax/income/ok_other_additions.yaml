@@ -1,0 +1,14 @@
+- name: Case 1, default ok_other_additions is zero
+  period: 2024
+  input:
+    state_code: OK
+  output:
+    ok_other_additions: 0.0
+
+- name: Case 2, ok_other_additions flows into ok_additions
+  period: 2024
+  input:
+    state_code: OK
+    ok_other_additions: 1_200
+  output:
+    ok_additions: 1_200

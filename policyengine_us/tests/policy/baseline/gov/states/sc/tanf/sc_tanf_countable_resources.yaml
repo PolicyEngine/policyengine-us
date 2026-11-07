@@ -1,0 +1,60 @@
+# SC DSS TANF Policy Manual (Volume 67), Sections 3.6 (page 56) and 7.7
+# (page 117): exclude the SSI recipient's resources; Section 6.4 (page 91):
+# $2,500 limit per benefit group.
+
+- name: Case 1, an SSI recipient's own assets are left out.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        bank_account_assets: 800
+      person2:
+        age: 9
+        receives_ssi: true
+        bank_account_assets: 1_800
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # 2,600 in the unit, less the SSI child's 1,800.
+    sc_tanf_countable_resources: 800
+    sc_tanf_resources_eligible: true
+
+- name: Case 2, stocks and bonds of an SSI recipient are left out too.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        bank_account_assets: 500
+        stock_assets: 1_000
+      person2:
+        age: 40
+        receives_ssi: true
+        stock_assets: 2_000
+        bond_assets: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_tanf_countable_resources: 1_500
+
+- name: Case 3, an aggregate asset input is counted as given.
+  period: 2025-01
+  input:
+    state_code: SC
+    receives_ssi: true
+    spm_unit_cash_assets: 3_000
+  output:
+    # Without person-level assets nothing can be attributed to the SSI
+    # recipient, so the aggregate stands.
+    sc_tanf_countable_resources: 3_000

@@ -1,0 +1,9 @@
+description: "Income threshold group for a surviving spouse under the COLA means test: 0 = single; 1 = joint. OACT A9 does not name this filing status; the default 1 is an explicit modeling choice that scenarios may change."
+values:
+  0000-01-01: 1
+metadata:
+  label: Social Security COLA means-test surviving spouse group
+  economy: false
+  reference:
+    - title: OACT provision A9, 2026 Trustees Report basis
+      href: https://www.ssa.gov/OACT/solvency/provisions/cola.html
