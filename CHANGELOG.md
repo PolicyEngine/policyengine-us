@@ -1,3 +1,26 @@
+## [2.104.5] - 2026-11-07
+
+### Changed
+
+- Call PolicyEngine's microdata stack Microcosm in docs, comments, variable documentation and tests, and link its issues in PolicyEngine/microcosm; published dataset ids keep their names.
+
+
+## [2.104.4] - 2026-11-07
+
+### Fixed
+
+- Stop charging the Medicare Part B premium to Part A-only enrollees (new medicare_part_b_enrolled input) and to SSI recipients whose Part B premium a state Medicaid buy-in pays, counted month by month and including 209(b) SSI recipients who qualify for Medicaid; Medicaid eligibility counts the premium before the buy-in.
+- Leave tax unit dependents' income out of Arkansas, Mississippi and New Jersey adjusted gross income and Iowa net income; dependents report it on their own state returns. Mississippi now limits only the head's and spouse's own capital loss, so a dependent's capital gains no longer change the filers' Mississippi adjusted gross income.
+- Give a Pennsylvania separate filer who lives apart from their spouse for the last six months of the year the unmarried $6,500 tax forgiveness base on their own income, and give a married separate filer who does not live apart the $13,000 base on the joint eligibility income of both spouses, including a spouse in another tax unit (72 P.S. 7304(d)(1)).
+
+
+## [2.104.3] - 2026-11-06
+
+### Fixed
+
+- Give the Social Security input state-machine test's Core backend the holder-rebinding method that policyengine-core 3.34.8's `apply_reform` calls, which had made the test fail on every pull request.
+
+
 ## [2.104.2] - 2026-11-06
 
 ### Fixed
