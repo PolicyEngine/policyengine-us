@@ -8,6 +8,6 @@ class mt_ccap_enrolled(Variable):
     definition_period = MONTH
     defined_for = StateCode.MT
     reference = "https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.80.202"
-    # Distinguishes a continuing recipient (at annual redetermination, eligible
-    # under the ARM 37.80.202(2) graduated 185% FPG limit) from a first-time
-    # applicant (the default, held to the 150% initial limit in 37.80.202(1)).
+    # Distinguishes a continuing recipient at annual redetermination, who faces
+    # the graduated limit, from a first-time applicant (the default), who faces
+    # the initial limit; gov.states.mt.dphhs.ccap.income.fpg_limit holds both.
