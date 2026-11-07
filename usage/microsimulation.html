@@ -423,9 +423,9 @@
 <h2>Available datasets<a class="headerlink" href="#available-datasets" title="Link to this heading">¶</a></h2>
 <section id="the-default-build">
 <h3>The default build<a class="headerlink" href="#the-default-build" title="Link to this heading">¶</a></h3>
-<p>The default is the certified Populace build, pinned by build id and hosted as a
+<p>The default is the certified Microcosm build, pinned by build id and hosted as a
 HuggingFace <em>dataset</em> repository:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Default: the certified Populace build named in DEFAULT_DATASET.</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Default: the certified Microcosm build named in DEFAULT_DATASET.</span>
 <span class="n">sim</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -469,7 +469,7 @@ variable-centric HDF5 format.</p>
 <h3>Tax-unit roles<a class="headerlink" href="#tax-unit-roles" title="Link to this heading">¶</a></h3>
 <p>A population file can supply the tax units its constructor built, not just
 their membership, through <code class="docutils literal notranslate"><span class="pre">tax_unit_role_input</span></code> (person): <code class="docutils literal notranslate"><span class="pre">HEAD</span></code>, <code class="docutils literal notranslate"><span class="pre">SPOUSE</span></code> or
-<code class="docutils literal notranslate"><span class="pre">DEPENDENT</span></code>. The certified Populace build supplies it. When every member of a
+<code class="docutils literal notranslate"><span class="pre">DEPENDENT</span></code>. The certified Microcosm build supplies it. When every member of a
 tax unit has a supplied role, <code class="docutils literal notranslate"><span class="pre">is_tax_unit_head</span></code> and <code class="docutils literal notranslate"><span class="pre">is_tax_unit_spouse</span></code>
 follow it and <code class="docutils literal notranslate"><span class="pre">is_tax_unit_dependent</span></code> covers everyone else. Explicitly set
 <code class="docutils literal notranslate"><span class="pre">is_tax_unit_head</span></code>, <code class="docutils literal notranslate"><span class="pre">is_tax_unit_spouse</span></code> or <code class="docutils literal notranslate"><span class="pre">is_tax_unit_dependent</span></code> inputs
@@ -480,7 +480,7 @@ the unit is one. The next-oldest such adult is the spouse, unless any member of
 the unit is separated. Without dependent inputs, that pairs an adult student
 with a parent as joint filers and leaves a minor living without a parent with
 no head.</p>
-<p>The Populace build carries its constructor’s filing status in a
+<p>The Microcosm build carries its constructor’s filing status in a
 <code class="docutils literal notranslate"><span class="pre">filing_status_input</span></code> column. No variable has that name, so the column is
 ignored. By default, <code class="docutils literal notranslate"><span class="pre">filing_status</span></code> is computed from the unit’s members,
 including any supplied roles, and the filing rules. Reforms to those rules
