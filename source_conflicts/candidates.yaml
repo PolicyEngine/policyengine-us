@@ -12441,6 +12441,37 @@ candidates:
     payment covers only their own Direct and FFEL loans; (e)(2)(i) brings the spouse's loans in only for (g). A couple
     whose income-based amount exceeds both standard payments pays each standard payment times the balance share,
     so at equal balances and rates half their combined standard amount.
+- id: us:long-term-care-premium-limit-2027-rounding
+  program: income-tax
+  years:
+    from: 2027
+    to: 2027
+    type: tax
+  question: Is the 2027 eligible long-term care premium limit for ages 41 to 50 the $945 that Rev. Proc. 2026-35
+    prints, or the nearest multiple of $10 that section 213(d)(10)(B)(ii) requires?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 213(d)(10)(A) and (B)(ii)
+    url: https://www.law.cornell.edu/uscode/text/26/213#d_10
+  - kind: guidance
+    citation: Rev. Proc. 2026-35, section 3.29
+    url: https://www.irs.gov/pub/irs-drop/rp-26-35.pdf#page=17
+  readings:
+    statute: Section 213(d)(10)(B)(ii) rounds each adjusted amount to the nearest multiple of $10. The 2027 amounts for
+      the other bands ($500, $1,890, $5,030 and $6,290 on bases of $200, $750, $2,000 and $2,500) each imply an
+      adjustment factor between 2.514 and 2.5175, which puts the $375 base at $942.75 to $944.06, or $940.
+    other: Rev. Proc. 2026-35 section 3.29 prints $945 for attained age more than 40 but not more than 50. Every
+      earlier year's published amount for the band is a multiple of $10.
+  example: A filer aged 45 in 2027 who pays $1,200 of qualified long-term care premiums counts $940 as medical care
+    under the statute's rounding and $945 under the printed table.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/irs/deductions/itemized/medical/long_term_care_premium_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10683
+  state: unreviewed
+  note: The published PDF still reads "[Release Date, 2026]" in section 1, so a dated version may change the figure.
 - id: us:mortgage-interest-limit-ratio-rounding
   program: income-tax
   years:

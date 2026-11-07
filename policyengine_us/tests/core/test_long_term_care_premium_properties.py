@@ -74,6 +74,9 @@ PUBLISHED_LIMITS = {
     2024: (470, 880, 1_760, 4_710, 5_880),  # Rev. Proc. 2023-34
     2025: (480, 900, 1_800, 4_810, 6_020),  # Rev. Proc. 2024-40
     2026: (500, 930, 1_860, 4_960, 6_200),  # Rev. Proc. 2025-32
+    # Rev. Proc. 2026-35 prints $945 for 41-50; 213(d)(10)(B)(ii) rounding
+    # gives $940 (candidate us:long-term-care-premium-limit-2027-rounding).
+    2027: (500, 940, 1_890, 5_030, 6_290),
 }
 BAND_TOPS = (40, 50, 60, 70)
 LAST_PUBLISHED = max(PUBLISHED_LIMITS)

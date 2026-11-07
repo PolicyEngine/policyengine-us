@@ -62,6 +62,11 @@ INGRESS_OUTCOMES = (
 )
 AMOUNTS = ((12_000, 0, 1_800, 600), (0, 6_000, 1_200, 300))
 REVIEWED_MAIN_SHA = "8986e05cab65d56435a23df1910e2d35f2c5f5bf"
+# Rev. Proc. 2026-35 replaced the 2027 federal forecasts that the reviewed
+# main used (brackets, standard deduction and other indexed amounts), so 2027
+# income tax differs from main by design. Household net income must differ by
+# exactly the same amount, which keeps every other component equal to main.
+TAX_LAW_CHANGED_AFTER_REVIEWED_MAIN = ("income_tax@2027",)
 # Hand-computed per-person growth from calibration.gov.cbo.social_security
 # divided by calibration.gov.census.populations.total in each year. The IRS
 # SOI series follows this CBO growth; Core multiplies float32 benefit arrays.
@@ -1094,6 +1099,25 @@ def test_legacy_public_ingress_matches_unmodified_main(differential, route):
             )
     assert current[route].keys() == main[route].keys()
     for request in main[route]:
+        if request in TAX_LAW_CHANGED_AFTER_REVIEWED_MAIN:
+            continue
+        variable, _, period = request.partition("@")
+        tax = f"income_tax@{period}"
+        if (
+            variable == "household_net_income"
+            and tax in TAX_LAW_CHANGED_AFTER_REVIEWED_MAIN
+            and tax in main[route]
+        ):
+            tax_change = np.asarray(current[route][tax]) - np.asarray(main[route][tax])
+            np.testing.assert_allclose(
+                current[route][request],
+                np.asarray(main[route][request]) - tax_change,
+                rtol=0,
+                atol=0.01,
+                err_msg=f"Legacy public ingress differs on {route}: {request} "
+                "beyond the 2027 income tax change",
+            )
+            continue
         np.testing.assert_array_equal(
             current[route][request],
             main[route][request],
