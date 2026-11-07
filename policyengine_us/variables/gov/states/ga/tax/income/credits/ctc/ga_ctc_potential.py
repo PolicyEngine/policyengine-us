@@ -14,10 +14,6 @@ class ga_ctc_potential(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ga.tax.income.credits.ctc
-        person = tax_unit.members
-        age = person("age", period)
-        ctc_eligible_child = person("ctc_qualifying_child", period)
-        ga_child_age_eligible = age < p.age_threshold
-        eligible_children = tax_unit.sum(ctc_eligible_child & ga_child_age_eligible)
+        eligible_children = add(tax_unit, period, ["ga_ctc_eligible_child"])
 
         return eligible_children * p.amount

@@ -1,9 +1,15 @@
-# NM CCAP age group classification by age in months (8.15.2.7 NMAC).
+# NM CCAP age group classification by age in months (8.15.2.7 NMAC, then
+# 8.9.3.7 NMAC from 2022-11-01).
 # Bracket boundaries (rates/age_group/months.yaml):
 #   0-23 months  -> INFANT
 #   24-35 months -> TODDLER
-#   36-71 months -> PRESCHOOL
-#   72+ months   -> SCHOOL_AGE
+#   36-71 months -> PRESCHOOL (36-59 months from 2026-09-09)
+#   72+ months   -> SCHOOL_AGE (60+ months from 2026-09-09)
+# The rule that replaced 8.9.3 NMAC on 2026-09-09 makes a child school age
+# once the child is five by September 1 of the school year (8.9.3.7(I)(3)).
+# 8.9.3.19(D) names September 1, 2026, but the rule took effect on its
+# publication on 2026-09-09 (8.9.3.5 NMAC; NMSA 14-4-5), so the monthly model
+# first applies the 60-month threshold in October 2026.
 
 - name: Case 1, six month old is an infant.
   period: 2025-01
@@ -86,5 +92,89 @@
       household:
         members: [person1]
         state_code: NM
+  output:
+    nm_ccap_age_group: SCHOOL_AGE
+
+- name: Case 7, a five year old is preschool before September 2026.
+  period: 2026-08
+  input:
+    people:
+      person1:
+        # 5.0 years = 60 months -> PRESCHOOL (below the 72-month threshold)
+        age:
+          2026: 5.0
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_age_group: PRESCHOOL
+
+- name: Case 8, a five year old is still preschool in September 2026.
+  period: 2026-09
+  input:
+    people:
+      person1:
+        # The rule took effect 2026-09-09, so September 2026 still uses the
+        # 72-month threshold: 60 months -> PRESCHOOL.
+        age:
+          2026: 5.0
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_age_group: PRESCHOOL
+
+- name: Case 9, a five year old is school age from October 2026.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        # 5.0 years = 60 months -> SCHOOL_AGE (at the 60-month threshold)
+        age:
+          2026: 5.0
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_age_group: SCHOOL_AGE
+
+- name: Case 10, fifty nine months is the top of preschool from October 2026.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        # 59/12 = 4.9167 years = 59 months -> PRESCHOOL (below 60 months)
+        age:
+          2026: 4.9167
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_age_group: PRESCHOOL
+
+- name: Case 11, a five year old is school age late in the school year (approximation).
+  period: 2027-03
+  input:
+    people:
+      person1:
+        # Approximation: whole-year age cannot show the September 1 cutoff.
+        # A child who turned five after 2026-09-01 stays preschool for the
+        # 2026-27 school year (8.9.3.7(I)(3)(c), 8.9.3.19(D)), but the model
+        # gives every five-year-old SCHOOL_AGE.
+        age:
+          2027: 5.0
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2027: NM
   output:
     nm_ccap_age_group: SCHOOL_AGE

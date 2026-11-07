@@ -3,7 +3,7 @@
 The country model uses the installed `spm-calculator` artifact for all five SPM
 measurement amounts. It does not extrapolate thresholds with country CPI or income
 parameters. Each supported year and scenario comes from the verified artifact.
-The installed 1.0.0 artifact covers 2022 through 2035; unavailable years fail.
+The installed 1.1.0 artifact covers 2022 through 2036; unavailable years fail.
 Taxes, benefits, resources and the housing-assistance cap
 remain country-model formulas. General household benefits and CBO transfer
 aggregates count actual `housing_assistance`; only SPM resources count
@@ -124,6 +124,7 @@ delete or silently recalculate over supplied derived inputs.
 
 `Microsimulation()` defaults to the immutable dataset URI
 `hf://datasets/policyengine/populace-us/populace_us_2024.h5@populace-us-2024-spm-20260909`.
+`populace-*` ids name Microcosm releases.
 This dataset supplies observed county inputs and source-backed independence roles.
 The canonical country release must wait until that exact tag and its certified
 bytes exist and pass independent readback. The unpublished candidate embeds the

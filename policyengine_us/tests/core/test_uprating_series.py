@@ -1,7 +1,8 @@
 """Each dollar input follows the series closest to what it measures: its own
 national series, the income source it is part of, prices for consumption
-expenses and debts, CMS per-capita spending for health costs and CMS premiums
-per enrollee for employer plan premiums."""
+expenses and debts, CMS per-capita out-of-pocket spending for health costs,
+premiums per enrollee, or the prices that index them, for health insurance
+premiums, and the statutory limit for capped contributions."""
 
 from pathlib import Path
 
@@ -20,8 +21,14 @@ UNEMPLOYMENT = per_capita_path("calibration.gov.irs.soi.unemployment_compensatio
 DEFAULT = per_capita_path("calibration.gov.cbo.income_by_source.adjusted_gross_income")
 CMS = "calibration.gov.hhs.cms.moop_per_capita"
 ESI = "calibration.gov.hhs.cms.esi_premium_per_enrollee"
+DIRECT_PURCHASE = "calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee"
 CPI_U = "gov.bls.cpi.cpi_u"
+MEDICAL_CPI = "gov.bls.cpi.cpi_u_medical_care"
+PART_B = "calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee"
 COLA = "gov.ssa.uprating"
+HSA_FAMILY_LIMIT = (
+    "gov.irs.gross_income.health_savings_account_contributions.limit.family"
+)
 
 EXPECTED = {
     # Pay, and amounts set as a share of pay.
@@ -42,6 +49,8 @@ EXPECTED = {
     # Wage-replacement benefits.
     "workers_compensation": EMPLOYMENT,
     "disability_benefits": EMPLOYMENT,
+    "tax_exempt_disability_benefits": EMPLOYMENT,
+    "disability_benefits_before_minimum_retirement_age": EMPLOYMENT,
     "self_employed_pension_contributions_desired": SELF_EMPLOYMENT,
     # Components of capital gains.
     "long_term_capital_gains_on_collectibles": CAPITAL_GAINS,
@@ -60,18 +69,31 @@ EXPECTED = {
     "alimony_income": ALIMONY,
     "alimony_expense": ALIMONY,
     "unemployment_compensation": UNEMPLOYMENT,
-    # Health costs.
-    "health_insurance_premiums": CMS,
-    # Employer plan premiums: the employer's share and the employee's pre-tax
-    # share.
+    # Health costs paid out of pocket.
+    "other_medical_expenses": CMS,
+    "over_the_counter_health_expenses": CMS,
+    # Premiums for employer plans: the employer's share, the employee's
+    # pre-tax share, and the premiums people report, most of them paid by
+    # people with employer coverage.
     "employer_sponsored_insurance_premiums": ESI,
     "pre_tax_health_insurance_premiums": ESI,
+    "health_insurance_premiums_without_medicare_part_b": ESI,
+    "other_health_insurance_premiums": ESI,
+    # Premiums for plans bought directly.
+    "health_insurance_premiums": DIRECT_PURCHASE,
+    # Long-term care insurance premiums, whose deductible limits follow
+    # medical care prices.
+    "long_term_health_insurance_premiums": MEDICAL_CPI,
+    # Medicare Part B premiums.
+    "medicare_part_b_premiums_reported": PART_B,
+    # Contributions under a cap that 26 U.S.C. 223(g) indexes to chained
+    # CPI-U.
+    "health_savings_account_payroll_contributions": HSA_FAMILY_LIMIT,
     # Benefits adjusted by the Social Security cost-of-living index.
     "veterans_benefits": COLA,
     # Consumption expenses, and the interest on debts, follow prices. The
-    # structured first and second mortgage inputs stay on the default: two are
-    # deprecated (issue #9275) and the file's formulas are outside the
-    # selective coverage job.
+    # per-mortgage balance and origination-year inputs stay on the default:
+    # the file's formulas are outside the selective coverage job.
     "pre_subsidy_rent": CPI_U,
     "pre_subsidy_care_expenses": CPI_U,
     "spm_unit_pre_subsidy_childcare_expenses": CPI_U,
@@ -100,6 +122,11 @@ EXPECTED = {
     "homeowners_association_fees": CPI_U,
     "pre_subsidy_transportation_expense": CPI_U,
     "home_mortgage_interest": CPI_U,
+    "home_mortgage_points": CPI_U,
+    "mortgage_insurance_premiums": CPI_U,
+    "second_residence_mortgage_interest": CPI_U,
+    "second_residence_mortgage_points": CPI_U,
+    "second_residence_mortgage_insurance_premiums": CPI_U,
     "student_loan_interest": CPI_U,
     "investment_interest_expense": CPI_U,
     # Still on the default.
@@ -121,6 +148,26 @@ def test_variable_follows_expected_series(variable, series):
 def test_series_is_defined_across_the_projection_window(series):
     for year in (2024, 2025, 2030, 2035):
         assert _value(series, year) not in (None, 0)
+
+
+def test_default_series_has_a_value_for_every_year():
+    """A year with no value holds the previous one, so the per-capita index
+    drifts down with population and then jumps when values resume. CBO AGI
+    once held a tax-year 2013 total for 2015 and had nothing for 2016 to
+    2018. Inputs on the default series dated 2018 came out 29% too high by
+    2019, and Medicare IRMAA's lookback, which deflates income by the same
+    index, put a household entered for 2019 alone at 0.765 of its income
+    instead of 0.932. With the right 2015 total, the gap alone gives 14% and
+    0.864."""
+    total = get_parameter(system.parameters, _authored_series(DEFAULT))
+    years = sorted(
+        {
+            int(value.instant_str[:4])
+            for value in total.values_list
+            if value.instant_str.endswith("-01-01")
+        }
+    )
+    assert years == list(range(years[0], years[-1] + 1))
 
 
 @pytest.mark.parametrize("year", (2025, 2030, 2035, 2036))

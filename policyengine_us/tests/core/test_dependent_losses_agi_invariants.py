@@ -275,10 +275,9 @@ def test_units_without_dependents_match_all_member_formula(runs, units):
     """Differential check against the all-member formula."""
     p = runs["irs"]
     filing_status = runs["with"]["filing_status"]
-    se = _by_person(units, "self_employment_income") + _by_person(
-        units, "sstb_self_employment_income"
-    )
-    person_business = [se] + [_by_person(units, name) for name in BUSINESS_INPUTS[2:]]
+    # Each Schedule C category's profit and loss on its own, as
+    # irs_gross_income counts them (#9989).
+    person_business = [_by_person(units, name) for name in BUSINESS_INPUTS]
     income = sum(_unit_sum(runs, np.maximum(x, 0)) for x in person_business)
     loss = sum(_unit_sum(runs, np.maximum(-x, 0)) for x in person_business)
     limited_business_loss = np.minimum(loss, income + p.ald.loss.max[filing_status])

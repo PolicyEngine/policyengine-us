@@ -5,6 +5,9 @@ from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_inco
 from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.irs_gross_income.social_security.dependent_taxable_social_security import (
     dependent_taxable_social_security_amount,
 )
+from policyengine_us.variables.household.expense.retirement.ira_compensation import (
+    dependent_ira_compensation,
+)
 from policyengine_us.variables.household.expense.retirement._ira_supplied_contributions import (
     traditional_ira_contributions_without_spousal_rule,
 )
@@ -40,7 +43,8 @@ class dependent_traditional_ira_deduction(Variable):
         retirement = parameters(period).gov.irs.gross_income.retirement_contributions
         catch_up = person("age", period) >= retirement.catch_up.age_threshold
         dollar_limit = retirement.limit.ira + catch_up * retirement.catch_up.limit.ira
-        compensation = person("ira_compensation", period)
+        # A dependent's own line 1e would need the filer's filing status.
+        compensation = dependent_ira_compensation(person, period)
         # The spousal rule never reaches a dependent, so their contributions
         # are figured on their own limit. This avoids the filer's filing
         # status, which itself depends on who is a dependent.

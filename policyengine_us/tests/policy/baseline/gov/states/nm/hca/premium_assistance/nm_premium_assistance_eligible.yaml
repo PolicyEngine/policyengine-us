@@ -260,6 +260,8 @@
       tax_unit:
         members: [person1]
         tax_unit_is_filer: false
+        # Nor does it take up the federal credit, so it files no return to claim it.
+        takes_up_aca_if_eligible: false
         aca_magi_fraction: 2.50
     households:
       household:
@@ -267,3 +269,78 @@
         state_code: NM
   output:
     nm_premium_assistance_eligible: false
+
+- name: Case 13b, an NM unit at 250% FPL that takes up the federal credit files and is base-eligible.
+  # Case 13 with take-up true and a positive federal credit ($6,000 benchmark
+  # less 8.44% of $39,125 = $2,697.85), so it files to claim the credit
+  # (26 CFR 1.6011-8(a)).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: false
+        takes_up_aca_if_eligible: true
+        aca_magi_fraction: 2.50
+        slcsp: 6_000
+        aca_magi: 39_125
+        aca_required_contribution_percentage: 0.0844
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_eligible: true
+
+- name: Case 13c, a non-filer that takes up coverage with a zero federal credit is base-ineligible.
+  # At 383% FPL the federal contribution (9.96% of $60,000 = $5,976) exceeds the
+  # $5,500 benchmark, so the federal credit is $0 and taking up coverage gives
+  # no reason to file. Filer twin: Case 13d.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: false
+        takes_up_aca_if_eligible: true
+        aca_magi_fraction: 3.83
+        slcsp: 5_500
+        aca_magi: 60_000
+        aca_required_contribution_percentage: 0.0996
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_eligible: false
+
+- name: Case 13d, the same unit filing for another reason is base-eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: true
+        takes_up_aca_if_eligible: true
+        aca_magi_fraction: 3.83
+        slcsp: 5_500
+        aca_magi: 60_000
+        aca_required_contribution_percentage: 0.0996
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_eligible: true
