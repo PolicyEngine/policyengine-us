@@ -37,14 +37,18 @@ run with more Social Security, more interest and more assets):
 8. More Social Security never lowers countable income or makes an income
    ineligible person income eligible; more assets never make a resource
    ineligible person resource eligible.
-9. Eligibility equals the restated rule, and the benefit is either zero or
-   the year's amount per recipient, positive exactly for enrollees, who
-   are all eligible.
+9. Eligibility equals the restated rule; enrollees are the eligible people
+   in a Part D plan who are on Medicaid or SSI or take the subsidy up; and
+   the benefit is either zero or the year's amount per recipient, positive
+   exactly for enrollees.
 10. Spouses get the same countable income, family size and test results.
 11. Differential: for people without interest or dividends, countable income
     equals 12 times ``msp_countable_income``, which applies the same SSI
     exclusions through a separate formula (single people, and couples where
-    both spouses are Medicare eligible).
+    both spouses are Medicare eligible). The sample's states keep SSI's $20
+    general exclusion for the Medicare Savings Programs; Illinois and
+    Mississippi exclude more under 42 U.S.C. 1396a(r)(2), which the subsidy's
+    income definition sets aside.
 """
 
 import numpy as np
@@ -207,6 +211,7 @@ def _households():
                 ssi=int(rng.choice([0, 0, 0, 0, 2_400])),
                 msp_eligible=bool(rng.random() < 0.15),
                 takes_up_part_d_lis_if_eligible=bool(rng.random() < 0.7),
+                takes_up_medicare_part_d_if_eligible=bool(rng.random() < 0.85),
             )
 
         out.append(
@@ -392,7 +397,12 @@ def test_eligibility_and_benefit_match_restated_rules(sample):
             and (deemed or (income_ok and resource_ok))
         )
         automatic = me["medicaid_enrolled"] or me["ssi"] > 0
-        enrolled = eligible and (automatic or me["takes_up_part_d_lis_if_eligible"])
+        in_part_d = me["takes_up_medicare_part_d_if_eligible"]
+        enrolled = (
+            eligible
+            and in_part_d
+            and (automatic or me["takes_up_part_d_lis_if_eligible"])
+        )
         assert _value(values, index, "part_d_lis_income_eligible", name) == income_ok
         assert _value(values, index, "part_d_lis_resource_eligible", name) == (
             resource_ok

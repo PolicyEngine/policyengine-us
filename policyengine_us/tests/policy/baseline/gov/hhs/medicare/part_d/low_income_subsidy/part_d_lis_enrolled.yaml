@@ -1,5 +1,6 @@
-# Medicaid enrollees and SSI recipients are enrolled without an application;
-# other eligible people are enrolled if they take up the subsidy.
+# The subsidy goes only to people in a Part D plan. Medicaid enrollees and
+# SSI recipients are enrolled without an application; other eligible people
+# are enrolled if they take up the subsidy.
 
 - name: Medicaid enrollee who would not apply is enrolled anyway.
   period: 2026
@@ -7,6 +8,7 @@
     people:
       person:
         part_d_lis_eligible: true
+        medicare_part_d_enrolled: true
         medicaid_enrolled: true
         ssi: 0
         takes_up_part_d_lis_if_eligible: false
@@ -19,6 +21,7 @@
     people:
       person:
         part_d_lis_eligible: true
+        medicare_part_d_enrolled: true
         medicaid_enrolled: false
         ssi: 1_200
         takes_up_part_d_lis_if_eligible: false
@@ -31,6 +34,7 @@
     people:
       person:
         part_d_lis_eligible: true
+        medicare_part_d_enrolled: true
         medicaid_enrolled: false
         ssi: 0
         takes_up_part_d_lis_if_eligible: false
@@ -43,11 +47,25 @@
     people:
       person:
         part_d_lis_eligible: true
+        medicare_part_d_enrolled: true
         medicaid_enrolled: false
         ssi: 0
         takes_up_part_d_lis_if_eligible: true
   output:
     part_d_lis_enrolled: true
+
+- name: Medicaid enrollee who opted out of Part D gets no subsidy.
+  period: 2026
+  input:
+    people:
+      person:
+        part_d_lis_eligible: true
+        medicare_part_d_enrolled: false
+        medicaid_enrolled: true
+        ssi: 1_200
+        takes_up_part_d_lis_if_eligible: true
+  output:
+    part_d_lis_enrolled: false
 
 - name: Medicaid enrollee who is not eligible (not in Medicare) is not enrolled.
   period: 2026
@@ -55,6 +73,7 @@
     people:
       person:
         part_d_lis_eligible: false
+        medicare_part_d_enrolled: true
         medicaid_enrolled: true
         ssi: 0
   output:

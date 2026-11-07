@@ -130,6 +130,28 @@
     part_d_lis_enrolled: false
     part_d_lis: 0
 
+- name: An eligible person outside Part D gets no subsidy.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 70
+        social_security: 20_000
+        bank_account_assets: 5_000
+        # For example, drug coverage from TRICARE for Life instead.
+        takes_up_medicare_part_d_if_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # Deemed eligible through a Medicare Savings Program, as in the first
+    # case, but the subsidy pays only for people in a Part D plan.
+    part_d_lis_eligible: true
+    medicare_part_d_enrolled: false
+    part_d_lis_enrolled: false
+    part_d_lis: 0
+
 - name: 2023, a person in the former partial-subsidy range gets the average.
   period: 2023
   input:
