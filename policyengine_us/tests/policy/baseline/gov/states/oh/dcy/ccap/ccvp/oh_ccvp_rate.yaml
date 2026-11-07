@@ -1,0 +1,419 @@
+# Procedure Letter 36, pages 2-3: monthly voucher payment by provider type and age from November 1, 2025.
+# H.B. 96, Section 423.190: Publicly Funded Child Care payment rates by November 1, 2026, without the
+# Step Up to Quality enhancement.
+
+- name: January 2026 center rate for an infant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0.5
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccvp_rate: [0, 900]
+
+- name: January 2026 home rate for an infant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0.5
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        oh_ccap_provider_type: HOME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccvp_rate: [0, 600]
+
+- name: January 2026 center rate for a toddler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccvp_rate: [0, 800]
+
+- name: January 2026 home rate for a toddler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        oh_ccap_provider_type: HOME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccvp_rate: [0, 550]
+
+- name: January 2026 center rate for a preschooler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccvp_rate: [0, 750]
+
+- name: January 2026 home rate for a preschooler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        oh_ccap_provider_type: HOME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccvp_rate: [0, 500]
+
+- name: January 2026 center rate for a school-age child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 7
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccvp_rate: [0, 375]
+
+- name: January 2026 home rate for a school-age child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 7
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        oh_ccap_provider_type: HOME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccvp_rate: [0, 300]
+
+- name: A 14-year-old takes the school-age rate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 14
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccvp_rate: [0, 375]
+
+- name: A 16-year-old with special needs takes the school-age rate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 16
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccvp_rate: [0, 375]
+
+- name: A 15-year-old without special needs has no rate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 15
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccvp_rate: [0, 0]
+
+- name: The chart has no summer row, so July keeps the school-age center rate.
+  period: 2026-07
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 7
+        immigration_status:
+          2026: CITIZEN
+        childcare_hours_per_week:
+          2026: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+  output:
+    oh_ccvp_rate: [0, 375]
+
+- name: The chart has no summer row, so July keeps the school-age home rate.
+  period: 2026-07
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 7
+        immigration_status:
+          2026: CITIZEN
+        childcare_hours_per_week:
+          2026: 40
+        oh_ccap_provider_type: HOME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+  output:
+    oh_ccvp_rate: [0, 300]
+
+- name: The flat chart still applies in October 2026.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+        childcare_hours_per_week:
+          2026: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+  output:
+    oh_ccvp_rate: [0, 800]
+
+- name: November 2026 pays the Publicly Funded Child Care rate for a toddler at a center.
+  period: 2026-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+        childcare_hours_per_week:
+          2026: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+        county_str:
+          2026: BROWN_COUNTY_OH
+  output:
+    # OAC 5180:6-1-10 Appendix A, category 1 center toddler full-time: 180 a week x 52 / 12 = 780.
+    oh_ccvp_rate: [0, 780]
+
+- name: November 2026 pays the Publicly Funded Child Care rate for a toddler at a home.
+  period: 2026-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+        childcare_hours_per_week:
+          2026: 40
+        oh_ccap_provider_type: HOME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+        county_str:
+          2026: BROWN_COUNTY_OH
+  output:
+    # OAC 5180:6-1-10 Appendix A, category 1 home toddler full-time: 162.71 a week x 52 / 12 = 705.08.
+    oh_ccvp_rate: [0, 705.08]
+
+- name: November 2026 pays a 14-year-old the school-age rate.
+  period: 2026-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 14
+        immigration_status:
+          2026: CITIZEN
+        childcare_hours_per_week:
+          2026: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+        county_str:
+          2026: BROWN_COUNTY_OH
+  output:
+    # Category 1 center school-age full-time: 107.71 a week x 52 / 12 = 466.74.
+    oh_ccvp_rate: [0, 466.74]
+
+- name: November 2026 pays nothing for a child without care hours.
+  period: 2026-11
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+        childcare_hours_per_week:
+          2026: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+        county_str:
+          2026: BROWN_COUNTY_OH
+  output:
+    oh_ccvp_rate: [0, 0]

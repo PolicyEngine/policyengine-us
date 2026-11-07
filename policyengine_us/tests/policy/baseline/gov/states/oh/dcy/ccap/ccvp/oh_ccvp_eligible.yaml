@@ -1,0 +1,945 @@
+# Ohio Child Care Choice Voucher Program eligibility.
+# Procedure Letter 36 (October 29, 2025), pages 3-4: income of 146-200% of poverty, all other
+# Publicly Funded Child Care conditions, and no family eligible for that program.
+# Procedure Letter 21, page 2, and Procedure Letter 45, page 2, print the monthly limits.
+# H.B. 96, Section 423.190, sets the same income conditions in law.
+
+- name: Family of three at the January 2026 Publicly Funded Child Care intake limit stays on that program.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_221
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # Procedure Letter 21: 145% prints $3,221 for three.
+    oh_ccap_income_eligible: true
+    oh_ccvp_eligible: false
+
+- name: One dollar over the January 2026 intake limit qualifies for the voucher.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_222
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: false
+    oh_ccvp_eligible: true
+
+- name: January 2026 voucher limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 4_442
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # Procedure Letter 21: 200% prints $4,442 for three.
+    oh_ccvp_eligible: true
+
+- name: One dollar over the January 2026 voucher limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 4_443
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccvp_eligible: false
+
+- name: September 2026 still reads the 2025 guideline.
+  period: 2026-09
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 4
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_222
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: OH
+  output:
+    oh_ccap_income_eligible: false
+    oh_ccvp_eligible: true
+
+- name: October 2026 moves the same family back to Publicly Funded Child Care.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 4
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_222
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: OH
+  output:
+    # Procedure Letter 45: 145% prints $3,302 for three from October 1, 2026.
+    oh_ccap_income_eligible: true
+    oh_ccvp_eligible: false
+
+- name: October 2026 intake limit.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 4
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_302
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: OH
+  output:
+    oh_ccap_income_eligible: true
+    oh_ccvp_eligible: false
+
+- name: One dollar over the October 2026 intake limit.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 4
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_303
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: OH
+  output:
+    oh_ccap_income_eligible: false
+    oh_ccvp_eligible: true
+
+- name: October 2026 voucher limit for three.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 4
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 4_554
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: OH
+  output:
+    # Procedure Letter 45: 200% prints $4,554 for three.
+    oh_ccvp_eligible: true
+
+- name: One dollar over the October 2026 voucher limit for three.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 4
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 4_555
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: OH
+  output:
+    oh_ccvp_eligible: false
+
+- name: October 2026 voucher limit for 2.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        oh_ccap_countable_income: 3_607
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+  output:
+    oh_ccvp_eligible: true
+
+- name: One dollar over the October 2026 voucher limit for 2.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        oh_ccap_countable_income: 3_608
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+  output:
+    oh_ccvp_eligible: false
+
+- name: October 2026 voucher limit for 4.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person4:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        oh_ccap_countable_income: 5_500
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: OH
+  output:
+    oh_ccvp_eligible: true
+
+- name: One dollar over the October 2026 voucher limit for 4.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person4:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        oh_ccap_countable_income: 5_501
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: OH
+  output:
+    oh_ccvp_eligible: false
+
+- name: October 2026 voucher limit for 8.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person4:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person5:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person6:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person7:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person8:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        oh_ccap_countable_income: 9_287
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code:
+          2026: OH
+  output:
+    oh_ccvp_eligible: true
+
+- name: One dollar over the October 2026 voucher limit for 8.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person4:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person5:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person6:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person7:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person8:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        oh_ccap_countable_income: 9_288
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code:
+          2026: OH
+  output:
+    oh_ccvp_eligible: false
+
+- name: Enrolled Publicly Funded Child Care family keeps that program, not the voucher.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_400
+        oh_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # Procedure Letter 36: families eligible for Publicly Funded Child Care are not eligible for the voucher.
+    oh_ccap_eligible: true
+    oh_ccvp_eligible: false
+
+- name: Special-needs family at 150% stays on Publicly Funded Child Care.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        is_disabled: true
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_332
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # Procedure Letter 21: 150% prints $3,332 for three.
+    oh_ccap_income_eligible: true
+    oh_ccvp_eligible: false
+
+- name: Special-needs family one dollar over 150% qualifies for the voucher.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        is_disabled: true
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_333
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: false
+    oh_ccvp_eligible: true
+
+- name: Employed family in the transitional period stays on Publicly Funded Child Care at 150%.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        oh_ccap_owf_transitional: true
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_300
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: true
+    oh_ccvp_eligible: false
+
+- name: Caretaker without a qualifying activity gets no voucher.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_activity_eligible: false
+    oh_ccvp_eligible: false
+
+- name: Full-time student caretaker qualifies for the voucher.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_activity_eligible: true
+    oh_ccvp_eligible: true
+
+- name: Assets at the federal limit pass.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        bank_account_assets: 1_000_000
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccvp_eligible: true
+
+- name: Assets over the federal limit fail.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        bank_account_assets: 1_000_001
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccvp_eligible: false
+
+- name: Homeless family goes to Publicly Funded Child Care whatever its income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+        is_homeless: true
+  output:
+    oh_ccap_eligible: true
+    oh_ccvp_eligible: false
+
+- name: Protective care family goes to Publicly Funded Child Care whatever its income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        receives_or_needs_protective_services: true
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_eligible: true
+    oh_ccvp_eligible: false
+
+- name: October 2025 precedes the modeled voucher.
+  period: 2025-10
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+        weekly_hours_worked_before_lsr:
+          2025: 40
+      person2:
+        age:
+          2025: 2
+        immigration_status:
+          2025: CITIZEN
+      person3:
+        age:
+          2025: 4
+        immigration_status:
+          2025: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: OH
+  output:
+    oh_ccvp_eligible: false
+
+- name: November 2025 starts the modeled voucher.
+  period: 2025-11
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+        weekly_hours_worked_before_lsr:
+          2025: 40
+      person2:
+        age:
+          2025: 2
+        immigration_status:
+          2025: CITIZEN
+      person3:
+        age:
+          2025: 4
+        immigration_status:
+          2025: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: OH
+  output:
+    oh_ccvp_eligible: true
+
+- name: A 14-year-old qualifies the family for the voucher but not for Publicly Funded Child Care.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 14
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_eligible: false
+    oh_ccvp_eligible: true
+
+- name: A 15-year-old does not qualify the family.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 15
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccvp_eligible: false
+
+- name: Below the intake limit a family with only a 14-year-old fails both programs.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 14
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        oh_ccap_countable_income: 2_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # H.B. 96, Section 423.190: the voucher serves families that fail the income conditions for Publicly Funded Child Care.
+    oh_ccap_income_eligible: true
+    oh_ccap_eligible: false
+    oh_ccvp_eligible: false
+
+- name: A family outside Ohio gets no voucher.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    oh_ccvp_eligible: false

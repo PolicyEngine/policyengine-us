@@ -1,0 +1,31 @@
+description: Indiana uses the federal poverty guideline from this many years before the current date under the Child Care and Development Fund program.
+# Indiana moves to a new year's guideline when it posts a new eligibility package,
+# months into that year, and the old guideline holds until then:
+# - March 31, 2024: the state plan prints 150% limits on the 2024 guideline ($3,228 for three).
+# - May 1, 2025: FSSA's 2025 sliding fee schedule carries that date in its file name
+#   (CCDFSlidingFeeSchedule_w-Copays_2025_050125.pdf).
+# - April 5, 2026: FSSA's chart prints 135% of the 2026 guideline ($3,074 for three).
+# So a family of three faces 150% of the 2025 guideline ($3,331) through April 4, 2026.
+values:
+  2015-01-01: 0
+  2024-01-01: 1
+  2024-03-31: 0
+  2025-01-01: 1
+  2025-05-01: 0
+  2026-01-01: 1
+  2026-04-05: 0
+  2027-01-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: Indiana CCDF poverty guideline year lag
+  reference:
+    - title: Indiana CCDF State Plan FFY 2025-2027, Amendment 2, Section 2.2.4 (limits effective March 31, 2024)
+      href: https://www.in.gov/dA/6307709ae5/ACF-118CCDFFFY2025-2027IndianaAmendment.pdf?language_id=1
+    - title: Indiana FSSA, CCDF Sliding Fee Schedule with copays, 2025, file dated May 1, 2025
+      href: https://secure.in.gov/fssa/carefinder/files/CCDFSlidingFeeSchedule_w-Copays_2025_050125.pdf
+    - title: Indiana FSSA, Income to Get on CCDF (effective April 5, 2026)
+      href: https://www.in.gov/dA/3271c7180e/Income-Get-on-CCDF.pdf
+    - title: Indiana FSSA, CCDF Sliding Fee Schedule with copays, 2026 (effective April 5, 2026)
+      href: https://www.in.gov/dA/7fc32972de/CCDFSlidingFeeSchedule_withCopays_2026.pdf

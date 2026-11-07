@@ -1,0 +1,22 @@
+description: Montana uses the federal poverty guideline from this many years before the current date under the Best Beginnings Child Care Scholarship program.
+# The Sliding Fee Scale effective July 1, 2025 prints the 2025 guideline (its footnote
+# cites Federal Register Vol. 90, No. 11, January 17, 2025, though it says "2023"), so
+# a lag of one holds that scale through 2026. ACF's January 2025 table prints 185% of
+# the 2024 guideline ($3,981 a month for three), so a lag of one also covers the first
+# half of 2025. A new scale adds a date here. No source dates the guideline year before
+# 2025, so the list keeps the current year until then.
+values:
+  2015-01-01: 0
+  2025-01-01: 1
+  2025-07-01: 0
+  2026-01-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: Montana CCAP poverty guideline year lag
+  reference:
+    - title: Best Beginnings Child Care Sliding Fee Scale (document header "Effective 07-01-2025"; URL filename says 2023)
+      href: https://dphhs.mt.gov/assets/ecfsd/childcare/policymanual/SlidingFeeScale07012023.pdf#page=1
+    - title: ACF, CCDF Family Income Eligibility Levels by State (January 2025)
+      href: https://acf.gov/sites/default/files/documents/occ/CCDF-Family-Income-Eligibility-Levels-by-State.pdf

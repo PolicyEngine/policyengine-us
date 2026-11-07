@@ -3,7 +3,7 @@
 #               - household copay, 0).
 # Per-child charge comes from pre_subsidy_childcare_expenses, which prorates
 # spm_unit_pre_subsidy_childcare_expenses (annual) evenly across children.
-# 2026 (contiguous) FPG: size 2 = 21,640 annual; size 3 = 27,320 annual.
+# January 2026 uses the scale's 2025 FPG (contiguous): size 2 = 21,150 annual; size 3 = 26,650 annual.
 - name: Case 1, one child at a center, charge exceeds the max rate (capped at max rate).
   period: 2026-01
   absolute_error_margin: 0.1
@@ -11,7 +11,7 @@
     people:
       person1:
         age: 30
-        employment_income: 24_000  # size 2, ~111% FPG -> 1.0% copay bracket
+        employment_income: 24_000  # size 2, ~113% FPG -> 1.0% copay bracket
         weekly_hours_worked_before_lsr: 40
       person2:
         age: 4  # preschool
@@ -66,7 +66,7 @@
     people:
       person1:
         age: 30
-        employment_income: 30_000  # size 3, ~110% FPG -> 1.0% copay bracket
+        employment_income: 30_000  # size 3, ~113% FPG -> 1.0% copay bracket
         weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
@@ -228,12 +228,12 @@
 - name: Case 9, copay exceeds the reimbursement so the benefit floors at 0.
   period: 2026-01
   absolute_error_margin: 0.1
-  # continuing recipient with a small provider charge; copay 213.33 > reimbursement 200 -> benefit floored at 0.
+  # continuing recipient with a small provider charge; copay 208.50 > reimbursement 200 -> benefit floored at 0.
   input:
     people:
       person1:
         age: 30
-        employment_income: 39_384  # size 2, 182% FPG (3,282/mo) -> 6.5% copay bracket
+        employment_income: 38_493  # size 2, 182% FPG (3,207.75/mo) -> 6.5% copay bracket
         weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
@@ -251,5 +251,5 @@
         state_code: MT
   output:
     # reimbursement = min(200, 1,210) = 200
-    # copay = 3,282.00 * 6.5% = 213.33 > 200 -> max(200 - 213.33, 0) = 0
+    # copay = 3,207.75 * 6.5% = 208.50 > 200 -> max(200 - 208.50, 0) = 0
     mt_ccap: 0

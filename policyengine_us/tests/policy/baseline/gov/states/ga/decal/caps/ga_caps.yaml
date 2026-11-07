@@ -6,8 +6,11 @@
 #   Family of 2: 21,640
 #   Family of 3: 27,320
 #
-# GA SMI 4-person at 2026-01: $116,773.19 (uprated)
-#   Family of 2: 116,773.19 * 0.68 = $79,405.77 -> 50% = $39,702.88
+# GA SMI 4-person at 2026-01 (October 2025 table): $110,736
+# New applicants in January 2026 face 40% of it, rounded up to the next dollar:
+#   Family of 2: 110,736 * 0.68 * 0.4 -> $30,121
+#   Family of 3: 110,736 * 0.84 * 0.4 -> $37,208
+#   Family of 4: 110,736 * 1.00 * 0.4 -> $44,295
 
 - name: Case 1, subsidy zero when fee exceeds expenses.
   period: 2026-01
@@ -32,6 +35,9 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        # Enrolled, so the 85% limit applies. New applicants face a lower limit in
+        # January 2026.
+        ga_caps_enrolled: true
         spm_unit_pre_subsidy_childcare_expenses: 2_000
     households:
       household:
@@ -75,6 +81,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        ga_caps_priority_group_eligible: true
         spm_unit_pre_subsidy_childcare_expenses: 10_000
     households:
       household:
@@ -122,6 +129,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        ga_caps_priority_group_eligible: true
         spm_unit_pre_subsidy_childcare_expenses: 10_000
     households:
       household:
@@ -163,6 +171,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        ga_caps_priority_group_eligible: true
         spm_unit_pre_subsidy_childcare_expenses: 10_000
     households:
       household:
@@ -293,6 +302,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
+        ga_caps_priority_group_eligible: true
         spm_unit_pre_subsidy_childcare_expenses: 12_000
     households:
       household:
@@ -382,6 +392,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        ga_caps_priority_group_eligible: true
         spm_unit_pre_subsidy_childcare_expenses: 6_000
     households:
       household:
@@ -427,6 +438,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        ga_caps_priority_group_eligible: true
         spm_unit_pre_subsidy_childcare_expenses: 0
     households:
       household:
@@ -464,6 +476,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        ga_caps_priority_group_eligible: true
         spm_unit_pre_subsidy_childcare_expenses: 8_000
     households:
       household:
@@ -510,6 +523,9 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        # Enrolled, so the 85% limit applies. New applicants face a lower limit in
+        # January 2026.
+        ga_caps_enrolled: true
         # Expenses far above the max rate, so the base is capped at the max.
         spm_unit_pre_subsidy_childcare_expenses: 60_000
     households:

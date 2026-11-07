@@ -1,4 +1,8 @@
 # nv_ccdp_copay: SPMUnit, float (USD), MONTH
+# July 2022 through March 2024: federal funds reimburse the copayment, so it reads $0.
+# April through September 2024: a share of gross income from the chart effective
+# October 1, 2023, by household size.
+# From October 2024, and standing in before July 2022, the flat schedule below applies.
 # Flat copay by income as a share of SMI (eff. Oct 1, 2024; State Plan 2.4.v):
 #   <= 32.99% SMI -> $0; 33%-42% SMI -> $90; above 42% SMI -> $150.
 # The $150 band begins just above 42% SMI (threshold 0.4201) per the operational
@@ -383,3 +387,976 @@
     # 3_333/mo / 6_721.82 = 0.4959 >= 0.4201 -> $150; no eligible child in
     # protective care, so the waiver does not apply.
     nv_ccdp_copay: 150
+
+- name: The flat schedule stands in for June 2022.
+  period: 2022-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2022: 30
+      person2:
+        age:
+          2022: 5
+      person3:
+        age:
+          2022: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2022: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2022: NV
+  output:
+    # 2_500 / (82_509 * 0.84 / 12) = 0.4328 -> $150.
+    nv_ccdp_copay: 150
+
+- name: In July 2022 federal funds reimburse the copayment.
+  period: 2022-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2022: 30
+      person2:
+        age:
+          2022: 5
+      person3:
+        age:
+          2022: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2022: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2022: NV
+  output:
+    nv_ccdp_copay: 0
+
+- name: In March 2024 federal funds still reimburse the copayment.
+  period: 2024-03
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 48_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 0
+
+- name: In April 2024 the chart charges a family of three at $4,000 four percent.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 48_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+  output:
+    # Row $3,697 to $4,102 prints 4%.
+    nv_ccdp_copay: 160
+
+- name: Under the April 2024 chart a family of 1 at $1,475 pays $0.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nv_ccdp_countable_income:
+          2024: 17_700
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 0
+
+- name: Under the April 2024 chart a family of 1 at $1,476 pays $14.76.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nv_ccdp_countable_income:
+          2024: 17_712
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 14.76
+
+- name: Under the April 2024 chart a family of 1 at $1,735 pays $17.35.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nv_ccdp_countable_income:
+          2024: 20_820
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 17.35
+
+- name: Under the April 2024 chart a family of 1 at $1,736 pays $34.72.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nv_ccdp_countable_income:
+          2024: 20_832
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 34.72
+
+- name: Under the April 2024 chart a family of 1 at $3,035 pays $182.1.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nv_ccdp_countable_income:
+          2024: 36_420
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 182.1
+
+- name: Under the April 2024 chart a family of 1 at $3,036 pays $212.52.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nv_ccdp_countable_income:
+          2024: 36_432
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 212.52
+
+- name: Under the April 2024 chart a family of 1 at $3,290.14 pays $230.31.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nv_ccdp_countable_income:
+          2024: 39_481.68
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 230.31
+
+- name: Under the April 2024 chart a family of 3 at $2,072 pays $0.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 24_864
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 0
+
+- name: Under the April 2024 chart a family of 3 at $2,478 pays $0.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 29_736
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 0
+
+- name: Under the April 2024 chart a family of 3 at $2,479 pays $24.79.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 29_748
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 24.79
+
+- name: Under the April 2024 chart a family of 3 at $2,884 pays $28.84.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 34_608
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 28.84
+
+- name: Under the April 2024 chart a family of 3 at $2,885 pays $57.7.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 34_620
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 57.7
+
+- name: Under the April 2024 chart a family of 3 at $4,914 pays $294.84.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 58_968
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 294.84
+
+- name: Under the April 2024 chart a family of 3 at $4,915 pays $344.05.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 58_980
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 344.05
+
+- name: Under the April 2024 chart a family of 3 at $5,314.84 pays $372.04.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 63_778.08
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 372.04
+
+- name: Under the April 2024 chart a family of 4 at $2,979 pays $0.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+      person4:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        nv_ccdp_countable_income:
+          2024: 35_748
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 0
+
+- name: Under the April 2024 chart a family of 4 at $2,980 pays $29.8.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+      person4:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        nv_ccdp_countable_income:
+          2024: 35_760
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 29.8
+
+- name: Under the April 2024 chart a family of 4 at $6,327.19 pays $442.9.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+      person4:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        nv_ccdp_countable_income:
+          2024: 75_926.28
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 442.9
+
+- name: Under the April 2024 chart a family of 7 at $4,381 pays $0.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+      person4:
+        age:
+          2024: 5
+      person5:
+        age:
+          2024: 5
+      person6:
+        age:
+          2024: 5
+      person7:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        nv_ccdp_countable_income:
+          2024: 52_572
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 0
+
+- name: Under the April 2024 chart a family of 7 at $4,382 pays $43.82.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+      person4:
+        age:
+          2024: 5
+      person5:
+        age:
+          2024: 5
+      person6:
+        age:
+          2024: 5
+      person7:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        nv_ccdp_countable_income:
+          2024: 52_584
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 43.82
+
+- name: Under the April 2024 chart a family of 7 at $8,541.7 pays $597.92.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+      person4:
+        age:
+          2024: 5
+      person5:
+        age:
+          2024: 5
+      person6:
+        age:
+          2024: 5
+      person7:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        nv_ccdp_countable_income:
+          2024: 102_500.4
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 597.92
+
+- name: Under the April 2024 chart a family of 14 at $7,170 pays $0.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+      person4:
+        age:
+          2024: 5
+      person5:
+        age:
+          2024: 5
+      person6:
+        age:
+          2024: 5
+      person7:
+        age:
+          2024: 5
+      person8:
+        age:
+          2024: 5
+      person9:
+        age:
+          2024: 5
+      person10:
+        age:
+          2024: 5
+      person11:
+        age:
+          2024: 5
+      person12:
+        age:
+          2024: 5
+      person13:
+        age:
+          2024: 5
+      person14:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        nv_ccdp_countable_income:
+          2024: 86_040
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 0
+
+- name: Under the April 2024 chart a family of 14 at $7,171 pays $71.71.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+      person4:
+        age:
+          2024: 5
+      person5:
+        age:
+          2024: 5
+      person6:
+        age:
+          2024: 5
+      person7:
+        age:
+          2024: 5
+      person8:
+        age:
+          2024: 5
+      person9:
+        age:
+          2024: 5
+      person10:
+        age:
+          2024: 5
+      person11:
+        age:
+          2024: 5
+      person12:
+        age:
+          2024: 5
+      person13:
+        age:
+          2024: 5
+      person14:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        nv_ccdp_countable_income:
+          2024: 86_052
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 71.71
+
+- name: Under the April 2024 chart a family of 14 at $9,870.41 pays $690.93.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+      person4:
+        age:
+          2024: 5
+      person5:
+        age:
+          2024: 5
+      person6:
+        age:
+          2024: 5
+      person7:
+        age:
+          2024: 5
+      person8:
+        age:
+          2024: 5
+      person9:
+        age:
+          2024: 5
+      person10:
+        age:
+          2024: 5
+      person11:
+        age:
+          2024: 5
+      person12:
+        age:
+          2024: 5
+      person13:
+        age:
+          2024: 5
+      person14:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        nv_ccdp_countable_income:
+          2024: 118_444.92
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 690.93
+
+- name: Copayments stay a share of income through September 2024.
+  period: 2024-09
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+  output:
+    # Row $2,479 to $2,884 prints 1%.
+    nv_ccdp_copay: 25
+
+- name: Flat copayments start in October 2024.
+  period: 2024-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+  output:
+    # 2_500 / (96_026 * 0.84 / 12) = 0.3719 -> $90.
+    nv_ccdp_copay: 90
+
+- name: Homeless households pay nothing under the April 2024 chart.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 48_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+        is_homeless:
+          2024: true
+  output:
+    nv_ccdp_copay: 0
+
+- name: TANF families pay nothing under the April 2024 chart.
+  period: 2024-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 48_000
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+  output:
+    nv_ccdp_copay: 0

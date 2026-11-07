@@ -18,7 +18,7 @@ class in_ccdf_copay(Variable):
         # Income is floored at zero so a self-employment loss cannot produce a
         # negative copay.
         countable_income = max_(spm_unit("in_ccdf_countable_income", period), 0)
-        fpg = spm_unit("spm_unit_fpg", period)
+        fpg = spm_unit("in_ccdf_fpg", period)
         fpg_ratio = where(fpg > 0, countable_income / fpg, 0)
         # The sliding fee schedule also varies by years on the program (Year
         # 1-3 through Year 10+); we don't track program tenure at the moment,

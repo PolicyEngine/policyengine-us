@@ -1,0 +1,309 @@
+# Procedure Letter 36, pages 2 and 4: one monthly payment per child, up to the provider's private rate.
+
+- name: Family of three earning $40,000 with a toddler and a preschooler at centers.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 24_000
+        childcare_hours_per_week: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 24_000
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_333.33
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # Procedure Letter 36: 800 + 750.
+    oh_ccap_eligible: false
+    oh_ccap: 0
+    oh_ccvp_eligible: true
+    oh_ccvp: 1_550
+
+- name: The charge caps the payment for each child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 6_000
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # min(800, 6,000 / 12 = 500) + min(750, 2,000) = 1,250.
+    oh_ccvp: 1_250
+
+- name: Each child takes its own provider's rate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 24_000
+        childcare_hours_per_week: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 24_000
+        childcare_hours_per_week: 40
+        oh_ccap_provider_type: HOME
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # Center toddler 800 + home preschooler 500.
+    oh_ccvp: 1_300
+
+- name: A child without a charge draws no payment.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 0
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 24_000
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccvp: 750
+
+- name: A family over the limit draws no payment.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 24_000
+        childcare_hours_per_week: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 24_000
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 4_443
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccvp_eligible: false
+    oh_ccvp: 0
+
+- name: A family on Publicly Funded Child Care draws no voucher payment.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 24_000
+        childcare_hours_per_week: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 24_000
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 2_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_eligible: true
+    oh_ccvp: 0
+
+- name: November 2026 pays the Publicly Funded Child Care rates.
+  period: 2026-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+        pre_subsidy_childcare_expenses:
+          2026: 24_000
+        childcare_hours_per_week:
+          2026: 40
+      person3:
+        age:
+          2026: 4
+        immigration_status:
+          2026: CITIZEN
+        pre_subsidy_childcare_expenses:
+          2026: 24_000
+        childcare_hours_per_week:
+          2026: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: OH
+        county_str:
+          2026: BROWN_COUNTY_OH
+  output:
+    # Category 1 center full-time: 780 + 693.33.
+    oh_ccvp: 1_473.33
+
+- name: November 2026 adds no quality enhancement.
+  period: 2026-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+        pre_subsidy_childcare_expenses:
+          2026: 24_000
+        childcare_hours_per_week:
+          2026: 40
+        oh_ccap_quality_tier: GOLD
+        oh_ccap_is_accredited: true
+      person3:
+        age:
+          2026: 4
+        immigration_status:
+          2026: CITIZEN
+        pre_subsidy_childcare_expenses:
+          2026: 24_000
+        childcare_hours_per_week:
+          2026: 40
+        oh_ccap_quality_tier: GOLD
+        oh_ccap_is_accredited: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: OH
+        county_str:
+          2026: BROWN_COUNTY_OH
+  output:
+    # H.B. 96, Section 423.190, rules out Step Up to Quality rates. Accreditation stays out too;
+    # the pull request lists this as a reading.
+    oh_ccvp: 1_473.33
+
+- name: November 2026 caps the payment at the charge.
+  period: 2026-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+        pre_subsidy_childcare_expenses:
+          2026: 6_000
+        childcare_hours_per_week:
+          2026: 40
+      person3:
+        age:
+          2026: 4
+        immigration_status:
+          2026: CITIZEN
+        pre_subsidy_childcare_expenses:
+          2026: 24_000
+        childcare_hours_per_week:
+          2026: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: OH
+        county_str:
+          2026: BROWN_COUNTY_OH
+  output:
+    # min(780, 500) + min(693.33, 2,000) = 1,193.33.
+    oh_ccvp: 1_193.33

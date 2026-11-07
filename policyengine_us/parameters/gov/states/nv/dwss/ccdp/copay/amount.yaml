@@ -12,6 +12,10 @@ metadata:
     - title: Nevada DWSS Policy Transmittal CC PT 06-25 (Oct 2, 2025) — Annual Income Changes
       href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/CC_PT_06-25_ANNUAL_INCOME_CHANGES_10.02.2025.pdf#page=1
 
+# Before October 2024 the formula reads reimbursed and percent_of_income instead.
+# Before July 2022 Nevada set the copayment by income, county, age of child and type
+# of care (FFY 2022-2024 plan, Section 3.2.2). The model does not carry that schedule,
+# so this one stands in for those dates.
 # The flat $0/$90/$150 copay and two-tier copay structure took effect
 # Oct 1, 2024 (State Plan Section 2.4.v); CC PT 06-25 is the Oct 1, 2025 annual
 # income-chart refresh that restates the same percentages and bands.

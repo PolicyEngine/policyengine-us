@@ -1,6 +1,8 @@
 # nv_ccdp_income_eligible: SPMUnit, bool, MONTH
+# From October 2024:
 # New applicants (not enrolled): monthly countable income <= 41% SMI (intake).
 # Enrolled families: monthly countable income <= 49% SMI (renewal/redetermination).
+# Earlier dates carry their own shares; see the cases at the end of this file.
 # The 85% SMI federal mid-certification protection (45 CFR 98.21) is not modeled
 # because we don't track certification periods at the moment.
 # Family of 3, period 2025-01 -> monthly SMI = 6_721.82:
@@ -308,3 +310,841 @@
     # intake limit = 0.41 * 11_042.99 = 4_527.63/mo.
     # 50_000 / 12 = 4_166.67/mo <= 4_527.63 -> eligible.
     nv_ccdp_income_eligible: true
+
+- name: Through 2017 a new applicant of three qualifies up to 85% of SMI.
+  period: 2017-10
+  input:
+    people:
+      person1:
+        age:
+          2017: 30
+      person2:
+        age:
+          2017: 5
+      person3:
+        age:
+          2017: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2017: 49_512
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2017: NV
+  output:
+    # Urban 2017 Table 14 prints $4,127: 85% * 69_361 * 0.84 / 12 = 4_126.98.
+    nv_ccdp_income_eligible: true
+
+- name: Through 2017 a new applicant of three above 85% of SMI fails.
+  period: 2017-10
+  input:
+    people:
+      person1:
+        age:
+          2017: 30
+      person2:
+        age:
+          2017: 5
+      person3:
+        age:
+          2017: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2017: 49_536
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2017: NV
+  output:
+    nv_ccdp_income_eligible: false
+
+- name: In October 2018 a new applicant of three at $4,000 fails the lower first tier.
+  period: 2018-10
+  input:
+    people:
+      person1:
+        age:
+          2018: 30
+      person2:
+        age:
+          2018: 5
+      person3:
+        age:
+          2018: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2018: 48_000
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2018: NV
+  output:
+    # 41% * 71_593 * 0.84 / 12 = 2_054.72.
+    nv_ccdp_income_eligible: false
+
+- name: In October 2018 an enrolled family of three at $4,000 stays within 85% of SMI.
+  period: 2018-10
+  input:
+    people:
+      person1:
+        age:
+          2018: 30
+      person2:
+        age:
+          2018: 5
+      person3:
+        age:
+          2018: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2018: 48_000
+        nv_ccdp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2018: NV
+  output:
+    # Urban 2022 Table F-3 prints $4,260 for continuing families: 85% * 71_593 * 0.84 / 12 = 4_259.78.
+    nv_ccdp_income_eligible: true
+
+- name: In June 2022 a new applicant of three at $4,000 still fails.
+  period: 2022-06
+  input:
+    people:
+      person1:
+        age:
+          2022: 30
+      person2:
+        age:
+          2022: 5
+      person3:
+        age:
+          2022: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2022: 48_000
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2022: NV
+  output:
+    # 41% * 82_509 * 0.84 / 12 = 2_368.01.
+    nv_ccdp_income_eligible: false
+
+- name: In July 2022 a new applicant of three at $4,000 qualifies under 85% of SMI.
+  period: 2022-07
+  input:
+    people:
+      person1:
+        age:
+          2022: 30
+      person2:
+        age:
+          2022: 5
+      person3:
+        age:
+          2022: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2022: 48_000
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2022: NV
+  output:
+    # 85% * 82_509 * 0.84 / 12 = 4_909.29, the top of the October 2021 sliding fee scale.
+    nv_ccdp_income_eligible: true
+
+- name: Under the October 2023 chart a new applicant of 1 at $3,290 qualifies.
+  period: 2023-10
+  input:
+    people:
+      person1:
+        age:
+          2023: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nv_ccdp_countable_income:
+          2023: 39_480
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2023: NV
+  output:
+    # The chart's ceiling for 1 is $3,290.14.
+    nv_ccdp_income_eligible: true
+
+- name: Under the October 2023 chart a new applicant of 1 at $3,291 fails.
+  period: 2023-10
+  input:
+    people:
+      person1:
+        age:
+          2023: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nv_ccdp_countable_income:
+          2023: 39_492
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2023: NV
+  output:
+    nv_ccdp_income_eligible: false
+
+- name: Under the October 2023 chart a new applicant of 3 at $5,314 qualifies.
+  period: 2023-10
+  input:
+    people:
+      person1:
+        age:
+          2023: 30
+      person2:
+        age:
+          2023: 5
+      person3:
+        age:
+          2023: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2023: 63_768
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2023: NV
+  output:
+    # The chart's ceiling for 3 is $5,314.84.
+    nv_ccdp_income_eligible: true
+
+- name: Under the October 2023 chart a new applicant of 3 at $5,315 fails.
+  period: 2023-10
+  input:
+    people:
+      person1:
+        age:
+          2023: 30
+      person2:
+        age:
+          2023: 5
+      person3:
+        age:
+          2023: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2023: 63_780
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2023: NV
+  output:
+    nv_ccdp_income_eligible: false
+
+- name: Under the October 2023 chart a new applicant of 4 at $6,327 qualifies.
+  period: 2023-10
+  input:
+    people:
+      person1:
+        age:
+          2023: 30
+      person2:
+        age:
+          2023: 5
+      person3:
+        age:
+          2023: 5
+      person4:
+        age:
+          2023: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        nv_ccdp_countable_income:
+          2023: 75_924
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2023: NV
+  output:
+    # The chart's ceiling for 4 is $6,327.19.
+    nv_ccdp_income_eligible: true
+
+- name: Under the October 2023 chart a new applicant of 4 at $6,328 fails.
+  period: 2023-10
+  input:
+    people:
+      person1:
+        age:
+          2023: 30
+      person2:
+        age:
+          2023: 5
+      person3:
+        age:
+          2023: 5
+      person4:
+        age:
+          2023: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        nv_ccdp_countable_income:
+          2023: 75_936
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2023: NV
+  output:
+    nv_ccdp_income_eligible: false
+
+- name: Under the October 2023 chart a new applicant of 7 at $8,541 qualifies.
+  period: 2023-10
+  input:
+    people:
+      person1:
+        age:
+          2023: 30
+      person2:
+        age:
+          2023: 5
+      person3:
+        age:
+          2023: 5
+      person4:
+        age:
+          2023: 5
+      person5:
+        age:
+          2023: 5
+      person6:
+        age:
+          2023: 5
+      person7:
+        age:
+          2023: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        nv_ccdp_countable_income:
+          2023: 102_492
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code:
+          2023: NV
+  output:
+    # The chart's ceiling for 7 is $8,541.70.
+    nv_ccdp_income_eligible: true
+
+- name: Under the October 2023 chart a new applicant of 7 at $8,542 fails.
+  period: 2023-10
+  input:
+    people:
+      person1:
+        age:
+          2023: 30
+      person2:
+        age:
+          2023: 5
+      person3:
+        age:
+          2023: 5
+      person4:
+        age:
+          2023: 5
+      person5:
+        age:
+          2023: 5
+      person6:
+        age:
+          2023: 5
+      person7:
+        age:
+          2023: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        nv_ccdp_countable_income:
+          2023: 102_504
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code:
+          2023: NV
+  output:
+    nv_ccdp_income_eligible: false
+
+- name: Under the October 2023 chart a new applicant of 14 at $9,870 qualifies.
+  period: 2023-10
+  input:
+    people:
+      person1:
+        age:
+          2023: 30
+      person2:
+        age:
+          2023: 5
+      person3:
+        age:
+          2023: 5
+      person4:
+        age:
+          2023: 5
+      person5:
+        age:
+          2023: 5
+      person6:
+        age:
+          2023: 5
+      person7:
+        age:
+          2023: 5
+      person8:
+        age:
+          2023: 5
+      person9:
+        age:
+          2023: 5
+      person10:
+        age:
+          2023: 5
+      person11:
+        age:
+          2023: 5
+      person12:
+        age:
+          2023: 5
+      person13:
+        age:
+          2023: 5
+      person14:
+        age:
+          2023: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        nv_ccdp_countable_income:
+          2023: 118_440
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        state_code:
+          2023: NV
+  output:
+    # The chart's ceiling for 14 is $9,870.41.
+    nv_ccdp_income_eligible: true
+
+- name: Under the October 2023 chart a new applicant of 14 at $9,871 fails.
+  period: 2023-10
+  input:
+    people:
+      person1:
+        age:
+          2023: 30
+      person2:
+        age:
+          2023: 5
+      person3:
+        age:
+          2023: 5
+      person4:
+        age:
+          2023: 5
+      person5:
+        age:
+          2023: 5
+      person6:
+        age:
+          2023: 5
+      person7:
+        age:
+          2023: 5
+      person8:
+        age:
+          2023: 5
+      person9:
+        age:
+          2023: 5
+      person10:
+        age:
+          2023: 5
+      person11:
+        age:
+          2023: 5
+      person12:
+        age:
+          2023: 5
+      person13:
+        age:
+          2023: 5
+      person14:
+        age:
+          2023: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        nv_ccdp_countable_income:
+          2023: 118_452
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        state_code:
+          2023: NV
+  output:
+    nv_ccdp_income_eligible: false
+
+- name: The deck family of three at $40,000 qualifies as a new applicant in September 2024.
+  period: 2024-09
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 39_999.96
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+  output:
+    # 85% * 89_325 * 0.84 / 12 = 5_314.84.
+    nv_ccdp_income_eligible: true
+
+- name: The deck family of three at $40,000 fails as a new applicant in October 2024.
+  period: 2024-10
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 39_999.96
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+  output:
+    # 41% * 96_026 * 0.84 / 12 = 2_755.95; FFY 2025 chart prints $2,756.
+    nv_ccdp_income_eligible: false
+
+- name: The deck family of three at $40,000 fails at renewal in October 2024.
+  period: 2024-10
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2024: 39_999.96
+        nv_ccdp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: NV
+  output:
+    # 49% * 96_026 * 0.84 / 12 = 3_293.69.
+    nv_ccdp_income_eligible: false
+
+- name: Under the October 2026 chart a new applicant of 3 at $3,014 qualifies.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2026: 36_168
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: NV
+  output:
+    nv_ccdp_income_eligible: true
+
+- name: Under the October 2026 chart a new applicant of 3 at $3,015 fails.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2026: 36_180
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: NV
+  output:
+    nv_ccdp_income_eligible: false
+
+- name: Under the October 2026 chart a renewing family of 3 at $3,602 qualifies.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2026: 43_224
+        nv_ccdp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: NV
+  output:
+    nv_ccdp_income_eligible: true
+
+- name: Under the October 2026 chart a renewing family of 3 at $3,603 fails.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_countable_income:
+          2026: 43_236
+        nv_ccdp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: NV
+  output:
+    nv_ccdp_income_eligible: false
+
+- name: Under the October 2026 chart a new applicant of 4 at $3,588 qualifies.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+      person4:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        nv_ccdp_countable_income:
+          2026: 43_056
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: NV
+  output:
+    nv_ccdp_income_eligible: true
+
+- name: Under the October 2026 chart a new applicant of 4 at $3,589 fails.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+      person4:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        nv_ccdp_countable_income:
+          2026: 43_068
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: NV
+  output:
+    nv_ccdp_income_eligible: false
+
+- name: Under the October 2026 chart a renewing family of 4 at $4,288 qualifies.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+      person4:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        nv_ccdp_countable_income:
+          2026: 51_456
+        nv_ccdp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: NV
+  output:
+    nv_ccdp_income_eligible: true
+
+- name: Under the October 2026 chart a renewing family of 4 at $4,290 fails.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+      person4:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        nv_ccdp_countable_income:
+          2026: 51_480
+        nv_ccdp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: NV
+  output:
+    nv_ccdp_income_eligible: false

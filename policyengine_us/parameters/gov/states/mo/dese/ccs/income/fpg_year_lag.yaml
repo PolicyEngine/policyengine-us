@@ -1,0 +1,16 @@
+description: Missouri uses the federal poverty guideline from this many years before the current date under the Child Care Subsidy program.
+# DESE's chart headed November 2025 and updated July 1, 2026 prints 150% of the 2025
+# guideline ($3,331 a month for three). A lag of one holds the 2025 guideline through
+# 2026; a new chart adds a date here. No source dates the guideline year before the
+# October 2025 chart, so the list keeps the current year until then.
+values:
+  2015-01-01: 0
+  2026-01-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: Missouri Child Care Subsidy poverty guideline year lag
+  reference:
+    - title: November 2025 Child Care Eligibility Income Guidelines and Sliding Fee Chart (updated July 1, 2026)
+      href: https://dese.mo.gov/sites/g/files/zuston521/files/media/pdf/2026/07/Income%20Elig%20_Updated%206.29.26.pdf#page=1
