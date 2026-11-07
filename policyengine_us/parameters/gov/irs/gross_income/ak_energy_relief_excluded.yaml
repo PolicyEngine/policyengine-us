@@ -2,7 +2,10 @@ description: Taxpayers leave Alaska's energy relief payment out of federal gross
 
 values:
   2022-01-01: true
-  2023-01-01: false
+  # Alaska paid no energy relief under a 2023 program, so a payment received
+  # in 2023 came from the 2022 program, and section 4.03 of Notice 2023-56
+  # keeps it out.
+  2024-01-01: false
 
 metadata:
   unit: bool
@@ -12,9 +15,15 @@ metadata:
     # The 2022 payment, footnote 1.
     - title: IRS News Release IR-2023-23, IRS issues guidance on state tax payments to help taxpayers
       href: https://www.irs.gov/newsroom/irs-issues-guidance-on-state-tax-payments-to-help-taxpayers
-    # The news release covers only payments made in 2022.
-    - title: IRS Notice 2023-56, Federal Income Tax Consequences of Certain State Payments
+    # Section 2: the news release covers payments made in 2022.
+    - title: IRS Notice 2023-56, Federal Income Tax Consequences of Certain State Payments, section 2
       href: https://www.irs.gov/pub/irs-drop/n-23-56.pdf#page=2
+    # Section 4.03: a payment received in 2023 under a 2022 program that the
+    # news release covered stays out.
+    - title: IRS Notice 2023-56, Federal Income Tax Consequences of Certain State Payments, section 4.03
+      href: https://www.irs.gov/pub/irs-drop/n-23-56.pdf#page=13
+    - title: IRS Publication 525 (2023), Spillover payments under certain 2022 state tax payment programs
+      href: https://www.irs.gov/pub/irs-prior/p525--2023.pdf#page=37
     # The 2024 payment.
     - title: IRS Publication 525 (2024), Taxable and Nontaxable Income
       href: https://www.irs.gov/pub/irs-prior/p525--2024.pdf#page=32

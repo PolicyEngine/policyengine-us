@@ -11023,7 +11023,7 @@ candidates:
   program: income-tax
   years:
     from: 2022
-    to: 2022
+    to: 2023
     type: tax
   question: Does Alaska's 2022 supplemental energy relief payment count as federal gross income, when the IRS said
     it would not challenge a taxpayer who leaves it out?
@@ -11037,12 +11037,16 @@ candidates:
   - kind: guidance
     citation: IRS Notice 2023-56, sections 2, 3.03 and 3.04
     url: https://www.irs.gov/pub/irs-drop/n-23-56.pdf#page=2
+  - kind: guidance
+    citation: IRS Notice 2023-56, section 4.03
+    url: https://www.irs.gov/pub/irs-drop/n-23-56.pdf#page=13
   readings:
     statute: Section 61(a) counts all income unless another section excludes it. Section 139 excludes a government
       payment only in connection with a qualified disaster, and the general welfare exclusion requires a payment
       based on individual or family need.
     other: IR-2023-23 says that if a taxpayer leaves the payment out of 2022 income, the IRS will not challenge that
-      treatment, and its footnote limits the Alaska item to the supplemental energy relief payment.
+      treatment, and its footnote limits the Alaska item to the supplemental energy relief payment. Section 4.03 of
+      Notice 2023-56 extends the same treatment to a payment under the 2022 program received in 2023.
   example: An Alaskan adult with $50,000 of wages has 2022 gross income of $52,622 with the $662 payment left out,
     and $53,284 with it counted.
   pe_us:
@@ -11054,9 +11058,10 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10669
   state: ruled
   note: Whether the 2022 payment qualifies under either exclusion is a fact-intensive question, by the IRS's own
-    account, so the model takes the agency's position and the taxpayer's cheaper choice. Later payments count, since
-    Notice 2023-56 limits the news release to payments made in 2022 and Publication 525 for 2024 taxes the entire
-    dividend.
+    account, so the model takes the agency's position and the taxpayer's cheaper choice. Alaska paid no energy relief
+    under a 2023 program, so the model also leaves out energy relief received in 2023. Payments from 2024 on count,
+    since Notice 2023-56 limits the news release to payments made in 2022 and to 2023 payments under 2022 programs,
+    and Publication 525 for 2024 taxes the entire dividend.
 - id: us:charitable-non-itemizer-2020-separate-cap
   program: income-tax
   years:

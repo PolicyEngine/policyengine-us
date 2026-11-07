@@ -31,11 +31,12 @@
     ak_energy_relief: 200
     taxable_ak_energy_relief: 200
 
-- name: Case 5, no amount outside Alaska.
+- name: Case 5, the calculated payment reaches no one living outside Alaska.
   period: 2026
   input:
     state_code: WA
   output:
+    ak_energy_relief: 0
     taxable_ak_energy_relief: 0
 
 - name: Case 6, a supplied 2022 payment stays out.
@@ -166,3 +167,51 @@
     taxable_ak_energy_relief: [200, 200]
     irs_gross_income: [51_200, 0]
     dependent_gross_income: [0, 1_200]
+
+- name: Case 14, Alaska paid no energy relief under a 2023 program.
+  period: 2023
+  input:
+    state_code: AK
+  output:
+    ak_energy_relief: 0
+    taxable_ak_energy_relief: 0
+
+- name: Case 15, a payment from the 2022 program received in 2023 stays out (Notice 2023-56, section 4.03).
+  period: 2023
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 50_000
+        ak_energy_relief: 662
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: AK
+  output:
+    taxable_ak_energy_relief: 0
+    # 50,000 of wages and the $1,312 regular dividend for 2023.
+    irs_gross_income: 51_312
+
+- name: Case 16, a supplied 2026 payment counts for a recipient who now lives outside Alaska, as a supplied dividend does.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 50_000
+        ak_permanent_fund_dividend: 1_000
+        ak_energy_relief: 200
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: WA
+  output:
+    taxable_ak_energy_relief: 200
+    irs_gross_income: 51_200
