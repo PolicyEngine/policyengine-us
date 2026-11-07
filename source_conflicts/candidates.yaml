@@ -12277,6 +12277,8 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/irs/credits/elderly_and_disabled/section_22_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10696
   state: ruled
   note: The 2023, 2024 and 2025 instructions carry the same line 13b sentence. The model takes the tax-free recovery
     from tax_exempt_railroad_pension_benefits for the head and spouse.
