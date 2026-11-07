@@ -6,12 +6,12 @@ class medicare_cost(Variable):
     entity = Person
     label = "Medicare cost"
     documentation = (
-        "Annual value of Medicare benefits received. Calculated as total "
-        "Medicare spending on behalf of the beneficiary, which covers Parts A "
-        "through D, minus the premiums that finance it: the Part A premium, "
-        "the gross Part B premium, the average Part D premium per Medicare "
-        "enrollee, and the person's own Part D income-related monthly "
-        "adjustment amount. This represents the net benefit value of "
+        "Annual value of Medicare benefits received: Medicare spending per "
+        "enrollee who does not live in a nursing home, which covers Parts A "
+        "through D, minus the premiums that finance it, namely the Part A "
+        "premium, the gross Part B premium, the average Part D premium per "
+        "Medicare enrollee, and the person's own Part D income-related "
+        "monthly adjustment amount. This represents the net benefit value of "
         "Medicare coverage."
     )
     unit = USD
@@ -24,8 +24,9 @@ class medicare_cost(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).calibration.gov.hhs.medicare
-        # Total Medicare spending on behalf of beneficiary
-        per_capita_spending = p.per_capita_cost
+        # Medicare spending on behalf of an enrollee who does not live in a
+        # nursing home, the population the household survey data cover.
+        per_capita_spending = p.per_capita_cost * p.noninstitutionalized_spending_ratio
 
         # Premium offsets to Medicare program cost. Use the enrollment-gated
         # gross Part B premium before MSP offsets so MSP support does not
