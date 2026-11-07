@@ -1273,7 +1273,7 @@ def test_documented_default_build_matches_the_shipped_constants():
 def test_default_dataset_is_digested_once_per_resolved_file(monkeypatch, tmp_path):
     """The certified build is ~830 MB; construction must not re-digest it."""
     path = tmp_path / "counted.h5"
-    path.write_bytes(b"populace")
+    path.write_bytes(b"microcosm")
     digests = []
 
     def counting_sha256(file_path):

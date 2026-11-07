@@ -38,7 +38,7 @@ class ok_liheap_income_deductions(Variable):
         # by analogy and without its $35 threshold: health premiums paid after
         # tax or through payroll, the whole Medicare Part B premium, and other
         # medical costs. The Part B premium counts only for a member with
-        # medicare_enrolled, and a nonzero health_insurance_premiums input
+        # medicare_part_b_enrolled, and a nonzero health_insurance_premiums input
         # replaces the non-Medicare and Part B split.
         medical_expenses = max_(person("snap_allowable_medical_expenses", period), 0)
         medical_deduction = medical_expenses * medical_eligible

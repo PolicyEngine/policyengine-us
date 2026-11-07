@@ -27,18 +27,15 @@ class nj_medical_expense_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nj.tax.income.deductions.medical_expenses
-        # nj_agi counts every member's income, dependents included, so the
-        # dependents' self-employed health insurance deductions count too.
-        self_employed_medical_expense_deduction = add(
-            tax_unit,
-            period,
-            [
-                "self_employed_health_insurance_ald",
-                "dependents_self_employed_health_insurance_ald",
-            ],
+        # The filers' own self-employed health insurance deduction. A
+        # dependent's self-employment income and its deduction go on the
+        # dependent's own return, as nj_agi leaves out the dependent's income.
+        self_employed_medical_expense_deduction = tax_unit(
+            "self_employed_health_insurance_ald", period
         )
         # C.54A:3-3 excludes premiums counted by the separate SE deduction
-        # under C.54A:3-5, including dependents' deductions recognized by NJ.
+        # under C.54A:3-5, including a dependent's deduction on their own
+        # return.
         # The federal base already excludes the filers' deduction and the
         # long-term care part (Form 7206 line 2) of each dependent's own
         # deduction. Remove the medical part (line 1) of each dependent's
