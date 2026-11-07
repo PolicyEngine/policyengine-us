@@ -13,9 +13,10 @@ year and a rounding rule, written apart from the formulas.
 3. Enrolled families: a family that passes as a new applicant passes as an enrolled
    family at the same income, in every state with separate limits.
 4. Ohio: the voucher pays only families over the Publicly Funded Child Care limit,
-   never pays more than the charge, and leaves the two programs exclusive. Together
-   the two income tests stay monotonic. The voucher's own test is not monotonic, and
-   that violation is intended, since a family under the intake limit belongs to
+   never pays more than the charge, and leaves the two programs exclusive, including
+   for homeless families, whom Publicly Funded Child Care serves without its income
+   test. Together the two income tests stay monotonic. The voucher's own test breaks
+   monotonicity on purpose, since a family under the intake limit belongs to
    Publicly Funded Child Care.
 5. Nevada: while the April to September 2024 percent-of-income schedule applied, no
    family owed more than 7% of income, and sizes above 14 use the 14-person column.
@@ -39,7 +40,9 @@ from hypothesis import strategies as st
 from policyengine_us import Simulation
 
 
-def simulate(state, month, families, income_variable, spm=None, person=None):
+def simulate(
+    state, month, families, income_variable, spm=None, person=None, household=None
+):
     """Build one simulation with a separate household per (size, monthly income)."""
     year = int(month[:4])
     people, tax_units, spm_units, family_units, households = {}, {}, {}, {}, {}
@@ -70,6 +73,7 @@ def simulate(state, month, families, income_variable, spm=None, person=None):
         households[f"household_{index}"] = {
             "members": members,
             "state_code": {year: state},
+            **(household(index) if household else {}),
         }
     return Simulation(
         situation={
@@ -657,21 +661,37 @@ def test_new_applicant_who_passes_also_passes_when_enrolled(new, enrolled, month
 OHIO_MONTHS = ["2025-11", "2026-01", "2026-10", "2026-11"]
 
 
-def ohio_family_results(month, cases):
-    """Run Ohio for a family with one 2-year-old in center care at a set charge."""
+def ohio_family_results(month, cases, charges=None, homeless=None):
+    """Run Ohio for families whose children are 2 and in center care.
+
+    Each child's provider charges charges[index] a year ($24,000 unless given), and
+    homeless[index] marks a homeless household.
+    """
     year = int(month[:4])
 
-    def person(_, slot):
+    def person(index, slot):
         if slot == 0:
             return {}
         return {
             "age": {year: 2},
             "childcare_hours_per_week": {year: 40},
             "oh_ccap_provider_type": {month: "CENTER"},
-            "pre_subsidy_childcare_expenses": {year: 24_000},
+            "pre_subsidy_childcare_expenses": {
+                year: charges[index] if charges else 24_000
+            },
         }
 
-    simulation = simulate("OH", month, cases, "oh_ccap_countable_income", person=person)
+    def household(index):
+        return {"is_homeless": {year: homeless[index]}} if homeless else {}
+
+    simulation = simulate(
+        "OH",
+        month,
+        cases,
+        "oh_ccap_countable_income",
+        person=person,
+        household=household,
+    )
     return {
         variable: simulation.calculate(variable, month)
         for variable in [
@@ -685,16 +705,39 @@ def ohio_family_results(month, cases):
 
 @pytest.mark.parametrize("month", OHIO_MONTHS)
 def test_ohio_voucher_stays_apart_from_publicly_funded_child_care(month):
-    cases = [
-        (size, income) for size in (2, 3, 4) for income in range(1_500, 9_500, 250)
+    # Each child's provider charges $300 a month, under every voucher rate, or
+    # $2,000, over them. Homeless families qualify for Publicly Funded Child Care
+    # without its income test.
+    families = [
+        (size, income, annual_charge, homeless)
+        for size in (2, 3, 4)
+        for income in range(1_500, 9_500, 250)
+        for annual_charge in (3_600, 24_000)
+        for homeless in (False, True)
     ]
-    results = ohio_family_results(month, cases)
+    results = ohio_family_results(
+        month,
+        [(size, income) for size, income, _, _ in families],
+        charges=[annual_charge for _, _, annual_charge, _ in families],
+        homeless=[homeless for _, _, _, homeless in families],
+    )
     voucher = results["oh_ccvp"]
+    publicly_funded = results["oh_ccap"]
+    charge = np.array(
+        [(size - 1) * annual_charge / 12 for size, _, annual_charge, _ in families]
+    )
+    homeless = np.array([homeless for _, _, _, homeless in families])
     # Exclusive: a family drawing the voucher draws nothing from the other program.
-    assert not ((voucher > 0) & (results["oh_ccap"] > 0)).any()
-    # The voucher never pays more than the family's charge, $2,000 a month a child.
-    charge = np.array([(size - 1) * 2_000 for size, _ in cases])
+    assert not ((voucher > 0) & (publicly_funded > 0)).any()
+    # The voucher never pays more than the family's charge...
     assert (voucher <= charge + 0.01).all()
+    # ...and the charge sets the payment for some families, so the bound binds.
+    assert ((voucher > 0) & (np.abs(voucher - charge) < 0.01)).any()
+    # Homeless families draw Publicly Funded Child Care at any income, so none draws
+    # the voucher, and some over that program's intake limit draw it.
+    assert not (voucher[homeless] > 0).any()
+    over_intake_limit = ~results["oh_ccap_income_eligible"].astype(bool)
+    assert ((publicly_funded > 0) & homeless & over_intake_limit).any()
     # The voucher pays in some months of this range, so the checks above bind.
     assert (voucher > 0).any()
     # Only families over the intake limit qualify.
