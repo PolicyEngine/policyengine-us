@@ -19,7 +19,7 @@
   output:
     ar_agi_indiv: [900, 1_800]
 
-- name: Dependent AGI goes to the spouse with the greater AGI, AGI capped at 0
+- name: A dependent's AGI stays off the filers' columns, and a negative column is floored at 0
   period: 2022
   input:
     people:
@@ -43,7 +43,9 @@
         members: [person1, person2, person3]
         state_code: AR 
   output:
-    ar_agi_indiv: [1_200, 0, 0]
+    # The dependent's 300 goes on the dependent's own return (Ark. Code
+    # 26-51-801(a)-(b)). The spouse's 100 - 200 is floored at 0.
+    ar_agi_indiv: [900, 0, 0]
 
 - name: Single filer with 401(k) distributions included in gross income and exempted
   period: 2024
@@ -65,7 +67,7 @@
     ar_capped_retirement_or_disability_benefits_exemption_person: 6_000
     ar_agi_indiv: 50_000
 
-- name: Dependent AGI goes to the spouse with the greater AGI when that spouse is not the head
+- name: A dependent's AGI stays off the filers' columns when the head and spouse labels are exchanged
   period: 2022
   input:
     people:
@@ -96,9 +98,9 @@
         state_code: AR
   output:
     # The same couple as above with the head and spouse labels exchanged.
-    ar_agi_indiv: [1_200, 0, 0]
+    ar_agi_indiv: [900, 0, 0]
 
-- name: Spouses with equal AGI split the dependent AGI equally
+- name: Spouses with equal AGI keep their own AGI; the dependent's is on the dependent's own return
   period: 2022
   input:
     people:
@@ -128,7 +130,7 @@
         members: [person1, person2, person3]
         state_code: AR
   output:
-    ar_agi_indiv: [1_150, 1_150, 0]
+    ar_agi_indiv: [1_000, 1_000, 0]
 
 - name: Only taxable disability benefits enter Arkansas gross income on line 18.
   period: 2024
@@ -152,3 +154,53 @@
     # The 3,000 is under the 6,000 cap and exempt in full.
     ar_capped_retirement_or_disability_benefits_exemption_person: 3_000
     ar_agi_indiv: 30_000
+
+- name: A dependent child's interest stays off the parent's Arkansas AGI
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 16
+        taxable_interest_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AR
+  output:
+    # The child files their own AR1000F if their gross income is over the
+    # filing minimum (Ark. Code 26-51-801(a)); the parent's columns hold only
+    # the parent's 40,000 of wages, as with no child income.
+    ar_gross_income_indiv: [40_000, 8_000]
+    ar_agi_indiv: [40_000, 0]
+    ar_agi_joint: [40_000, 0]
+
+- name: A dependent child's wages stay off the parent's Arkansas AGI and tax
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 16
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AR
+  output:
+    ar_agi_indiv: [40_000, 0]
+    ar_agi_joint: [40_000, 0]
+    # The same tax as the parent with a child who has no income (issue
+    # #9814 reproduction): 957.
+    ar_income_tax: 957

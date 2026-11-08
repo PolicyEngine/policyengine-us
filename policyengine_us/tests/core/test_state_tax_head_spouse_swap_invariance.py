@@ -11,8 +11,11 @@ other input kept, must leave each state's income tax unchanged.
 On main these depended on the label:
 - Arkansas, Delaware, Iowa, Mississippi and Montana put the dependents' income
   the model counts on the head's column before taxing each column separately.
-  It now goes on the column of the spouse with the greater income of their
-  own, and an exact tie splits it (move_dependent_amounts_to_filer).
+  In Delaware and Montana it now goes on the column of the spouse with the
+  greater income of their own, and an exact tie splits it
+  (move_dependent_amounts_to_filer). Arkansas, Iowa and Mississippi now leave
+  a dependent's income off the filers' columns altogether, since it belongs
+  on the dependent's own return (PolicyEngine/policyengine-us#9814).
 - Delaware's combined separate return routed the EITC and the dependent care
   credit by label on equal incomes and split the dependent personal credits
   with a heuristic. They are now chosen together to minimise tax.
@@ -45,10 +48,11 @@ drawn and with the head and spouse labels exchanged. For each couple:
    is finite and the same to the cent.
 2. The per-person columns (`ar_agi_indiv`, `de_agi_indiv`, `ia_net_income`,
    `ms_agi`, `mt_agi_indiv`) are the same for each person, to the cent.
-3. Differential: in Arkansas, Delaware, Iowa and Mississippi those columns
-   equal an independent numpy allocation of each person's own amount, which
-   conserves the tax unit's total. Montana's own amounts are not
-   reconstructed, so it is checked by 1 and 2 only.
+3. Differential: in Delaware the column equals an independent numpy
+   allocation of each person's own amount, which conserves the tax unit's
+   total. In Arkansas, Iowa and Mississippi it equals each filer's own amount,
+   and zero for a dependent. Montana's own amounts are not reconstructed, so
+   it is checked by 1 and 2 only.
 """
 
 import numpy as np
@@ -71,6 +75,9 @@ TAX_UNIT_OUTPUTS = [
     "state_income_tax_before_refundable_credits",
 ]
 COLUMNS = ["ar_agi_indiv", "de_agi_indiv", "ia_net_income", "ms_agi", "mt_agi_indiv"]
+# Columns that move the dependents' amounts to a filer's column; the others
+# leave a dependent's amount off the filers' return.
+MOVES_DEPENDENT_AMOUNTS = ["de_agi_indiv"]
 
 
 def money(high):
@@ -475,11 +482,9 @@ def _own_amounts(sim, year, column):
         return calc("ia_gross_income") - calc("ia_income_adjustments")
     if column == "ms_agi":
         p = sim.tax_benefit_system.parameters(year).gov.states.ms.tax.income
-        net = sum(calc(source) for source in p.income_sources) - calc(
+        return sum(calc(source) for source in p.income_sources) - calc(
             "ms_agi_adjustments"
         )
-        dependent = calc("is_tax_unit_dependent").astype(bool)
-        return np.where(dependent, np.maximum(net, 0), net)
     raise ValueError(column)
 
 
@@ -547,7 +552,10 @@ def _check(units, year):
         # 3. Differential against the numpy allocation, where the column
         # applies (its state, and its years for Iowa).
         own = _own_amounts(sim, year, column)
-        reference = _reference_allocation(own, unit, head, spouse, dependent)
+        if column in MOVES_DEPENDENT_AMOUNTS:
+            reference = _reference_allocation(own, unit, head, spouse, dependent)
+        else:
+            reference = np.where(dependent, 0.0, own)
         in_state = states[unit // 2] == column[:2].upper()
         np.testing.assert_allclose(
             values[in_state],

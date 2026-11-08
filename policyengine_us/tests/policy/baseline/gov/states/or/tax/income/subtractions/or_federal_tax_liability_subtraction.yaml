@@ -329,3 +329,38 @@
     # income_tax_refundable_credits holds no EITC here, so the code backs out
     # none: 3,000 - 0 = 3,000. Without the guard: 3,000 - (0 - 1,000) = 4,000.
     or_federal_tax_liability_subtraction: 3_000
+
+- name: The section 1341 credit reduces the federal tax liability subtraction
+  # ORS 316.680(1)(b) and 316.685(1) allow federal taxes accrued and
+  # disregard only the EITC. Section 1341 relief reduces accrued tax.
+  # Federal (as in the federal claim of right integration case 4): tax on
+  # 40,000 - 15,750 = 24,250 is 2,671.50, less the 2,200 prior-year decrease
+  # under the credit method: 471.50. No EITC at this income.
+  # Oregon: min(max(0, 471.50 + 0), 8,500 cap) = 471.50.
+  # (Adding the credit back would give 2,671.50.)
+  # aca_ptc is pinned at 0 so the case isolates the section 1341 credit: an
+  # Oregon formula that also nets the premium tax credit would otherwise
+  # subtract this household's modeled credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 40_000
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        claim_of_right_prior_year_tax_decrease: 2_200
+        aca_ptc: 0
+    households:
+      household:
+        members: [person]
+        state_code: OR
+  output:
+    claim_of_right_credit_applies: true
+    claim_of_right_credit: 2_200
+    eitc: 0
+    income_tax: 471.5
+    or_federal_tax_liability_subtraction: 471.5

@@ -1,0 +1,64 @@
+# The long-term care part (Form 7206 line 2) of a person's self-employed
+# health insurance deduction: what the deduction leaves after the person's
+# medical insurance premiums (line 1), limited to the line 2 premiums. The
+# 2025 limit at age 51-60 is $1,800 (Rev. Proc. 2024-40).
+- name: Medical premiums take the deduction first
+  period: 2025
+  input:
+    age: 55
+    is_self_employed: true
+    self_employment_income: 50_000
+    health_insurance_premiums: 3_000
+    long_term_health_insurance_premiums: 2_500
+  output:
+    # 3,000 + min(2,500, 1,800) = 4,800 deducted; 4,800 - 3,000 = 1,800.
+    self_employed_health_insurance_ald_person: 4_800
+    self_employed_health_insurance_ald_long_term_care_part: 1_800
+
+- name: The earned income limit cuts the long-term care part
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 55
+    is_self_employed: true
+    self_employment_income: 4_000
+    health_insurance_premiums: 3_000
+    long_term_health_insurance_premiums: 2_500
+  output:
+    # Limit 4,000 - 4,000 x 0.9235 x 0.153 / 2 = 3,717.41; 3,717.41 - 3,000.
+    self_employed_health_insurance_ald_long_term_care_part: 717.41
+
+- name: Survey premium inputs are not on line 1
+  period: 2025
+  input:
+    age: 55
+    is_self_employed: true
+    self_employment_income: 120_000
+    health_insurance_premiums_without_medicare_part_b: 3_000
+    long_term_health_insurance_premiums: 1_800
+  output:
+    self_employed_health_insurance_ald_person: 1_800
+    self_employed_health_insurance_ald_long_term_care_part: 1_800
+
+- name: A supplied deduction above lines 1 and 2 adds nothing
+  period: 2025
+  input:
+    age: 55
+    is_self_employed: true
+    health_insurance_premiums: 1_000
+    long_term_health_insurance_premiums: 500
+    self_employed_health_insurance_ald_person: 5_000
+  output:
+    # min(500, 5,000 - min(1,000, 5,000)) = 500.
+    self_employed_health_insurance_ald_long_term_care_part: 500
+
+- name: An employee has no long-term care part
+  period: 2025
+  input:
+    age: 55
+    employment_income: 50_000
+    long_term_health_insurance_premiums: 1_800
+    self_employed_health_insurance_ald_person: 1_800
+  output:
+    # Not self-employed: no line 2 premiums.
+    self_employed_health_insurance_ald_long_term_care_part: 0

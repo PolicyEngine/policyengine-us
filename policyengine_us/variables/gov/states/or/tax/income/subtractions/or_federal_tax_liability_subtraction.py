@@ -10,6 +10,8 @@ class or_federal_tax_liability_subtraction(Variable):
     reference = (
         # ORS 316.680(1)(b), 316.685 and 316.695(3).
         "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html",
+        # ORS 316.680(1)(b) and 316.685(1), 2023 edition, PDF pages 52 and 54.
+        "https://www.oregonlegislature.gov/bills_laws/Archive/2023ors316.pdf#page=52",
         # 26 U.S.C. 1411(a)(1): the net investment income tax is imposed
         # under Subtitle A.
         "https://www.law.cornell.edu/uscode/text/26/1411#a_1",
@@ -51,7 +53,10 @@ class or_federal_tax_liability_subtraction(Variable):
         # tax credit (Form 8962, line 24), which the federal list omits. Read
         # the federal total, income_tax_refundable_credits, rather than the
         # list, so credits that structural reforms add to that variable count
-        # too; back out the EITC only when the list carries it.
+        # too; back out the EITC only when the list carries it. The federal
+        # list, and so the total, includes the section 1341 credit
+        # (claim_of_right_credit), so section 1341 relief reduces the
+        # liability as well.
         refundable = parameters(period).gov.irs.credits.refundable
         eitc = tax_unit("eitc", period) if "eitc" in refundable else 0
         refundable_credits = (
