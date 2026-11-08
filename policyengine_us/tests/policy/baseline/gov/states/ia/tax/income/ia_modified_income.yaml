@@ -1,0 +1,70 @@
+- name: QBI deduction is added back once, as part of taxable income deductions
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    ia_taxable_income_consolidated: 5_000
+    # Standard deduction of $16,000 plus a $1,000 QBI deduction.
+    taxable_income_deductions: 17_000
+    qualified_business_income_deduction: 1_000
+    state_code: IA
+  output:
+    # 2023 Iowa Alternate Tax Worksheet, lines 1a + 1b + 1d:
+    # $5,000 + $16,000 + $1,000
+    ia_modified_income: 22_000
+
+- name: Single filer aged 70 with $25,500 of self-employment income is exempt
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        self_employment_income: 25_500
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Federal AGI: $25,500 - $1,801.52 (half of self-employment tax) = $23,698.48.
+    # Taxable income before QBI: $23,698.48 - $16,550 standard deduction = $7,148.48.
+    # QBI deduction: 20% x $7,148.48 = $1,429.70.
+    # Iowa taxable income: $7,148.48 - $1,429.70 = $5,718.78.
+    # Alternate tax worksheet lines 1a + 1b + 1d:
+    # $5,718.78 + $16,550 + $1,429.70 = $23,698.48.
+    ia_modified_income: 23_698.48
+    # $23,698.48 does not exceed the $24,000 limit for single filers 65 or older.
+    ia_is_tax_exempt: true
+    ia_income_tax: 0
+
+- name: Joint filers aged 70 and 68 with $40,000 of self-employment income
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        self_employment_income: 40_000
+        is_tax_unit_head: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Federal AGI: $40,000 - $2,825.91 (half of self-employment tax) = $37,174.09.
+    # Taxable income before QBI: $37,174.09 - $32,300 standard deduction = $4,874.09.
+    # QBI deduction: 20% x $4,874.09 = $974.82.
+    # Iowa taxable income: $4,874.09 - $974.82 = $3,899.27.
+    # Alternate tax worksheet lines 1a + 1b + 1d:
+    # $3,899.27 + $32,300 + $974.82 = $37,174.09.
+    ia_modified_income: 37_174.09
+    # Alternate tax: ($37,174.09 - $32,000) x 5.7% = $294.92.
+    ia_alternate_tax_consolidated: 294.92
+    # Iowa income tax: the regular tax of $171.57 (4.4% of $3,899.27), which
+    # is below the alternate tax, less $120 of exemption credits.
+    ia_income_tax: 51.57
