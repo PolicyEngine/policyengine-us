@@ -32,9 +32,11 @@ businesses (404(a)(3)(A), (a)(8)(D) and (a)(12)), and the person's elective
 deferrals can sit in any of the plans, within one section 402(g) limit
 (402(g)(1)(A) and 404(n)). As in the plan limit, the dollar limit and the
 limit of half of earned income less deferrals apply to all of the plans
-together, as section 415 applies them to one employer's plans (415(f)(1)(B))
-and to a partnership the person controls (414(c) and 415(h)). Each plan's
-contributions stay within its own business's earned income (404(a)(8)(C)).
+together, as section 415 requires for one employer's plans (415(f)(1)(B)),
+including a partnership's plan when the person owns at least 80 percent of
+its profits or capital interest (414(c) and Treas. Reg. 1.414(c)-2(c)).
+Each plan's contributions stay within its own business's earned income
+(404(a)(8)(C)).
 The reference finds that least share with an exact linear program, solved
 here by enumerating the vertices of its feasible set, so it shares no code
 with the model's closed form.

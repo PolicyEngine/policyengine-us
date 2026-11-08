@@ -41,10 +41,12 @@ class self_employed_health_insurance_earned_income_limit(Variable):
         "partnership, as in the Pub. 560 worksheet, leaving out other "
         "participants' compensation. As in the plan limit, the model applies "
         "the dollar limit and the limit of half of earned income less deferrals "
-        "to all of the plans together, as section 415 requires when the person "
-        "controls more than 50 percent of the partnership. When the person "
-        "doesn't, the partnership's plan has its own section 415 limits, which "
-        "can raise line 9; the model has no data on ownership shares. The plan "
+        "to all of the plans together, as section 415 requires when the "
+        "businesses count as one employer under section 414. For common "
+        "control, the person must own at least 80 percent of the partnership's "
+        "profits or capital interest. When the businesses count as separate "
+        "employers, the partnership's plan has its own section 415 limits, "
+        "which can raise line 9; the model has no data on ownership. The plan "
         "deduction attributable to a business is then the part of it above what "
         "the other plans can carry. Each kind of "
         "business is one total per person: all "
@@ -76,11 +78,20 @@ class self_employed_health_insurance_earned_income_limit(Variable):
         # within that earned income; and elective deferrals outside the
         # limit.
         "https://www.law.cornell.edu/uscode/text/26/404",
-        # Subsections (f)(1)(B) and (h): one employer's defined contribution
-        # plans count as one plan, and so do those of businesses under more
-        # than 50 percent common control (section 414(c)).
+        # Subsection (f)(1)(B): one employer's defined contribution plans
+        # count as one plan.
         "https://www.law.cornell.edu/uscode/text/26/415",
+        # Subsection (c): businesses under common control are one employer
+        # for section 415, though not for section 404.
         "https://www.law.cornell.edu/uscode/text/26/414#c",
+        # Paragraphs (b)(2)(i), (c) and (e) Example 4: a sole proprietorship
+        # and a partnership form a brother-sister group only when the
+        # proprietor owns, directly or by attribution, at least 80 percent of
+        # the partnership's profits or capital interest.
+        "https://www.law.cornell.edu/cfr/text/26/1.414(c)-2",
+        # Paragraph (f)(1): Treasury keeps that 80 percent brother-sister test
+        # when it applies section 415(h)'s more-than-50-percent test.
+        "https://www.law.cornell.edu/cfr/text/26/1.415(a)-1",
         # Subsection (g)(1)(A): one elective deferral limit for each
         # individual.
         "https://www.law.cornell.edu/uscode/text/26/402#g_1_A",
@@ -128,9 +139,10 @@ def plan_deduction_attributable_to_business(
     those limits leave for the other plans' employer contributions when this
     business's plan makes none. The model applies the dollar limit and the
     limit of half of earned income less deferrals to all of the plans
-    together, as section 415 does for one employer (415(f)(1)(B)) or for
-    businesses under more than 50 percent common control (414(c), 415(h)),
-    and the plan deduction is within them.
+    together, as section 415 requires for one employer's plans
+    (415(f)(1)(B)), including a partnership's plan when the person owns at
+    least 80 percent of its profits or capital interest (414(c) and Treas.
+    Reg. 1.414(c)-2(c)), and the plan deduction is within them.
 
     So the other plans can carry their employer room plus the person's
     deferral room, up to their earned income, and this business's plan

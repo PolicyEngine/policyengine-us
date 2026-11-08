@@ -37,11 +37,13 @@ class self_employed_pension_contribution_limit(Variable):
         "plans' combined contributions and earned income. A partnership is "
         "the employer of its partners, so its plan's employer contributions "
         "have a deduction limit of their own, and its section 415 limits join "
-        "those of the person's own plans only when the person controls more "
-        "than 50 percent of the partnership. The model applies the worksheet "
-        "to all of the plans together. For this limit that matters only when "
-        "the person doesn't control the partnership and the dollar limit "
-        "binds: the elective deferral limits cover all of a person's "
+        "those of the person's own plans only when the businesses count as "
+        "one employer under section 414. For common control, the person must "
+        "own at least 80 percent of the partnership's profits or capital "
+        "interest. The model applies the worksheet to all of the plans "
+        "together. For this limit that matters only when the businesses "
+        "count as separate employers and the dollar limit binds: the "
+        "elective deferral limits cover all of a person's "
         "employers, and the other limits grow in step with each business's "
         "earned income, so with the deferrals split among the plans, each "
         "plan's own limits add up to the limits for the plans together. "
@@ -53,14 +55,22 @@ class self_employed_pension_contribution_limit(Variable):
         # Subsections (a)(3)(A)(i)(I) and (iv), (a)(8), (a)(10), (a)(12),
         # (h)(1)(C) and (2), and (n).
         "https://www.law.cornell.edu/uscode/text/26/404",
-        # Subsections (a)(2), (c)(1), (c)(3)(B) and (D), (f)(1)(B) and (h):
-        # section 415 aggregates the plans of one employer.
+        # Subsections (a)(2), (c)(1), (c)(3)(B) and (D), and (f)(1)(B): one
+        # employer's defined contribution plans count as one plan.
         "https://www.law.cornell.edu/uscode/text/26/415",
         # Subsection (c), under which businesses under common control are one
         # employer for sections 401 and 415 among others, though not for
         # section 404, and (v)(2)(A) and (v)(3)(A), on catch-up
         # contributions.
         "https://www.law.cornell.edu/uscode/text/26/414",
+        # Paragraphs (b)(2)(i), (c) and (e) Example 4: a sole proprietorship
+        # and a partnership form a brother-sister group only when the
+        # proprietor owns, directly or by attribution, at least 80 percent of
+        # the partnership's profits or capital interest.
+        "https://www.law.cornell.edu/cfr/text/26/1.414(c)-2",
+        # Paragraph (f)(1): Treasury keeps that 80 percent brother-sister test
+        # when it applies section 415(h)'s more-than-50-percent test.
+        "https://www.law.cornell.edu/cfr/text/26/1.415(a)-1",
         # PDF pages 7, 10, 15, 39: the employer and compensation of a
         # self-employed person, the plans one employer maintains counting
         # together, SIMPLE IRA compensation, and the worksheet.
