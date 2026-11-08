@@ -185,3 +185,160 @@
     # step 9: 70,000; step 11: 70,000 - 62,090 = 7,910; step 12: 1,582;
     # step 14: 4,090 - 1,582 = 2,508; step 18: min(2,508, 8,500).
     mn_social_security_subtraction: 2_508
+
+# Tier 1 railroad retirement benefits. Minn. Stat. 290.0132, subd. 26(i) gives
+# "Social Security benefits" the meaning in IRC 86(d)(1), so Form 1040 lines 6a
+# and 6b carry title II and tier 1 benefits together. The model subtracts the
+# taxable tier 1 benefits with the rest of the railroad annuity
+# (taxable_railroad_benefits, Schedule M1M line 17), so line 12 leaves them out
+# as steps 26-29 of the 2025 worksheet for line 12 do.
+- name: MN social security subtraction 2025 single below the threshold leaves the tier 1 benefits to line 17
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security: 20_000
+        taxable_social_security: 8_000
+        railroad_social_security_equivalent_benefits: 10_000
+        taxable_railroad_social_security_equivalent_benefits: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # AGI is under $84,490, so line 12 takes all of Form 1040 line 6b,
+    # $12,000, and line 17 leaves out the tier 1 benefits. The model's line 12
+    # is the $8,000 of taxable title II benefits, and the $4,000 of taxable
+    # tier 1 benefits come off once, through taxable_railroad_benefits.
+    mn_social_security_subtraction: 8_000
+    taxable_railroad_benefits: 4_000
+    mn_subtractions: 12_000
+
+- name: MN social security subtraction 2025 single simplified method takes out the tier 1 benefits after the phase-out
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security: 20_000
+        taxable_social_security: 17_000
+        railroad_social_security_equivalent_benefits: 10_000
+        taxable_railroad_social_security_equivalent_benefits: 8_500
+        irs_gross_income: 92_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 92_000
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Steps 1-5: (92,000 - 84,490) / 4,000 = 1.88, rounded up to 2, so 20%.
+    # Steps 6-8: 25,500 - 20% x 25,500 = 20,400.
+    # Steps 9-19: 92,000 - 25,500 + 50% x 30,000 = 81,500 of provisional
+    # income. Steps 20-24: 4,560 - 20% x (81,500 - 69,250) = 2,110.
+    # Steps 25-28: min(2,110, 25,500 - 8,500) = 2,110.
+    # Step 29: 20,400 - 8,500 = 11,900. Step 30: 11,900.
+    # With line 17's 8,500, the subtractions total 20,400.
+    mn_social_security_subtraction: 11_900
+    mn_subtractions: 20_400
+
+- name: MN social security subtraction 2025 joint provisional income counts tier 1 benefits
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: JOINT
+    social_security: 60_000
+    taxable_social_security: 51_000
+    railroad_social_security_equivalent_benefits: 40_000
+    taxable_railroad_social_security_equivalent_benefits: 34_000
+    irs_gross_income: 150_000
+    adjusted_gross_income: 150_000
+    state_code: MN
+  output:
+    # Steps 1-8: (150,000 - 108,320) / 4,000 rounds up to 11, capped at 10,
+    # so the simplified subtraction is $0.
+    # Steps 9-19: 150,000 - 85,000 + 50% x 100,000 = 115,000.
+    # Steps 20-24: 5,840 - 20% x (115,000 - 88,630) = 566.
+    # Steps 25-28: min(566, 85,000 - 34,000) = 566.
+    mn_social_security_subtraction: 566
+
+- name: MN social security subtraction 2025 joint alternate method capped at taxable title II benefits
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: JOINT
+    social_security: 1_000
+    taxable_social_security: 850
+    railroad_social_security_equivalent_benefits: 99_000
+    taxable_railroad_social_security_equivalent_benefits: 84_150
+    irs_gross_income: 145_000
+    adjusted_gross_income: 145_000
+    state_code: MN
+  output:
+    # Steps 1-8: (145,000 - 108,320) / 4,000 rounds up to 10, so $0.
+    # Steps 9-19: 145,000 - 85,000 + 50% x 100,000 = 110,000.
+    # Steps 20-24: 5,840 - 20% x (110,000 - 88,630) = 1,566.
+    # Steps 25-28: min(1,566, 85,000 - 84,150) = 850.
+    mn_social_security_subtraction: 850
+
+- name: MN social security subtraction 2022 provisional income counts tier 1 benefits
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    filing_status: JOINT
+    social_security: 60_000
+    taxable_social_security: 51_000
+    railroad_social_security_equivalent_benefits: 40_000
+    taxable_railroad_social_security_equivalent_benefits: 34_000
+    irs_gross_income: 120_000
+    adjusted_gross_income: 120_000
+    state_code: MN
+  output:
+    # 2022 worksheet for line 12: steps 1-11, 120,000 - 85,000 + 50% x
+    # 100,000 = 85,000; steps 12-16, 5,450 - 20% x (85,000 - 82,770) =
+    # 5,004; steps 17-20, min(5,004, 85,000 - 34,000) = 5,004.
+    mn_social_security_subtraction: 5_004
+
+- name: MN social security subtraction 2025 provisional income leaves out a dependent's benefits
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 70
+        social_security: 100_000
+        taxable_social_security: 85_000
+        irs_gross_income: 150_000
+      spouse:
+        is_tax_unit_spouse: true
+        age: 68
+      child:
+        age: 15
+        social_security: 12_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        adjusted_gross_income: 150_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MN
+  output:
+    # Step 12 takes Form 1040 line 6a, which holds the filers' benefits only;
+    # the child's $12,000 belongs on the child's return (IRS Pub. 915).
+    # Provisional income: 150,000 - 85,000 + 50% x 100,000 = 115,000.
+    # Steps 20-24: 5,840 - 20% x (115,000 - 88,630) = 566.
+    mn_social_security_subtraction: 566

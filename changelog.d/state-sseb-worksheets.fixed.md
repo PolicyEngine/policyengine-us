@@ -1,0 +1,1 @@
+Count tier 1 railroad retirement benefits as Social Security benefits in Minnesota's Social Security subtraction, elderly and disabled subtraction, marriage credit and homestead credit refund income, as Minn. Stat. 290.0132 subd. 26, 290.0802, 290.0675 and 290A.03 define them, without subtracting them twice.

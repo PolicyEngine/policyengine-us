@@ -9,7 +9,8 @@ class mn_homestead_credit_refund_household_income(Variable):
     definition_period = YEAR
     documentation = (
         "Approximates Form M1PR lines 1 through 13 using modeled adjusted gross "
-        "income, nontaxable Social Security, retirement add-backs and "
+        "income, nontaxable Social Security and tier 1 railroad retirement "
+        "benefits, retirement add-backs and "
         "contributions, and age/disability and dependent subtractions. "
         "Co-occupant income and other nontaxable additions or subtractions "
         "are not separately modeled."
@@ -17,6 +18,7 @@ class mn_homestead_credit_refund_household_income(Variable):
     reference = (
         "https://www.taxformfinder.org/forms/2024/2024-minnesota-form-m1pr-instructions.pdf#page=7",
         "https://www.taxformfinder.org/forms/2025/2025-minnesota-form-m1pr-instructions.pdf#page=7",
+        "https://www.revisor.mn.gov/statutes/cite/290A.03#stat.290A.03.3",
     )
     defined_for = StateCode.MN
 
@@ -35,10 +37,22 @@ class mn_homestead_credit_refund_household_income(Variable):
         is_dependent = people("is_tax_unit_dependent", period) | people(
             "claimable_as_dependent_on_another_return", period
         )
+        # M1PR line 2: the head's and spouse's Social Security and tier 1
+        # railroad retirement benefits (box 5 of Forms SSA-1099 and RRB-1099)
+        # less the taxable part on Form 1040 line 6b. Minn. Stat. 290A.03,
+        # subd. 3(a)(2)(v) counts both kinds of benefits.
         social_security = people("social_security", period)
         taxable_social_security = people("taxable_social_security", period)
+        tier_1 = people("railroad_social_security_equivalent_benefits", period)
+        taxable_tier_1 = people(
+            "taxable_railroad_social_security_equivalent_benefits", period
+        )
         nontaxable_social_security = tax_unit.sum(
-            max_(0, social_security - taxable_social_security) * ~is_dependent
+            (
+                max_(0, social_security - taxable_social_security)
+                + max_(0, tier_1 - taxable_tier_1)
+            )
+            * ~is_dependent
         )
 
         # Line 1 is the filer's federal AGI, which leaves out tax unit

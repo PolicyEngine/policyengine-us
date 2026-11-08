@@ -129,3 +129,67 @@
         state_code: MN
   output:
     mn_marriage_credit: 1_851.44
+
+# Minn. Stat. 290.0675, subd. 1(b) counts each spouse's earned income,
+# pensions and IRC 86(d)(1) Social Security benefits "to the extent included in
+# Minnesota taxable income". Railroad retirement benefits never are: the state
+# subtracts them (45 U.S.C. 231m(a)).
+- name: MN marriage credit 2025 counts a spouse's taxable title II benefits
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 66
+        employment_income: 60_000
+      spouse:
+        is_tax_unit_spouse: true
+        age: 66
+        taxable_social_security: 35_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        mn_taxable_income: 90_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MN
+  output:
+    # Lesser earner: 35,000. Joint tax on 90,000: 0.0535 x 47,620 + 0.068 x
+    # 42,380 = 5,429.51. Lesser earner less half the joint standard deduction:
+    # 35,000 - 14,950 = 20,050, taxed at single rates: 1,072.675. The rest,
+    # 69,950: 0.0535 x 32,570 + 0.068 x 37,380 = 4,284.335.
+    # 5,429.51 - 1,072.675 - 4,284.335 = 72.50.
+    mn_marriage_credit: 72.50
+
+- name: MN marriage credit 2025 leaves out a spouse's taxable tier 1 railroad benefits
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 66
+        employment_income: 60_000
+      spouse:
+        is_tax_unit_spouse: true
+        age: 66
+        railroad_social_security_equivalent_benefits: 40_000
+        taxable_railroad_social_security_equivalent_benefits: 35_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        mn_taxable_income: 90_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MN
+  output:
+    # The spouse's $35,000 of taxable tier 1 benefits are subtracted from
+    # Minnesota taxable income, so the spouse has no income under subd. 1(b)
+    # and the couple misses the $31,000 minimum. Schedule M1MA line 4 would
+    # carry Form 1040 line 6b, which includes them.
+    mn_marriage_credit: 0
