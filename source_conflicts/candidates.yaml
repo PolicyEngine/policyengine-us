@@ -7351,13 +7351,13 @@ candidates:
 - id: us-nm:medical-expense-exemption-28000-boundary
   program: income-tax
   years:
-    from: 2023
+    from: 2021
     type: tax
   question: Must medical expenses exceed $28,000, or does exactly $28,000 qualify for the exemption?
   sources:
   - kind: statute
-    citation: NMSA 7-2-5.9(A)
-    url: null
+    citation: NMSA 7-2-5.9(A) (TRD Income Tax Act compilation, rev. July 2023, PDF p. 41)
+    url: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/856ebf4b-3814-49dd-8631-ebe579d6a42b/Personal%20Income%20Tax.pdf#page=41
   - kind: instructions
     citation: 2025 PIT-ADJ line 18 instructions
     url: https://realfile.tax.newmexico.gov/2025pit-adj-ins.pdf#page=5
@@ -7369,16 +7369,20 @@ candidates:
     other: Expenses of $28,000 or more qualify.
   example: At exactly $28,000 of expenses, the statute gives no exemption and the instructions give a $3,000 exemption.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/nm/tax/income/exemptions/nm_medical_expense_exemption.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10047
     - https://github.com/PolicyEngine/policyengine-us/pull/10088
+    - https://github.com/PolicyEngine/policyengine-us/pull/10300
   state: ruled
-  note: 'PE-US follows the instructions: expenses of exactly $28,000 qualify, and the formula''s comment records
-    the statute''s "exceed" wording (nm_medical_expense_exemption.py). An October 2026 ruling accepted the instructions;
-    the later statute-first rule requires a strict greater-than threshold.'
+  note: 'An October 2026 ruling accepted the instructions; under the later statute-first rule PE-US follows the statute
+    (#10300): expenses must exceed $28,000, so exactly $28,000 gives no exemption (nm_medical_expense_exemption.py).
+    The companion 65+ medical care credit (7-2-18.13) keeps its own "$28,000 or more" test. The instructions direct
+    filers to claim the exemption at $28,000 of expenses or more, so a return filed as instructed differs from the
+    model at exactly $28,000. The years start at 2021, the first year the model computes nm_medical_expense_exemption; the
+    statute''s text dates from Laws 2005, ch. 104, § 6.'
 - id: us-nm:mixed-spouse-dependent-credit-tests
   program: income-tax
   years:
@@ -7609,22 +7613,56 @@ candidates:
     citation: IT-201 instructions, line 40 (household credit) and item C
     url: https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=12
   readings:
-    statute: An exemption-count or whole-household reading preserves some or all of the credit.
+    statute: Only an unmarried individual whom another taxpayer can claim is excluded from the household definition;
+      a husband and wife, a head of household and a surviving spouse count the exemptions they are entitled to, and
+      a spouse filing separately gets one-half the household's credit on the couple's combined AGI.
     other: The instructions deny the credit when either spouse can be claimed.
-  example: The test household receives $0 under the instructions, $60 state/$30 NYC by exemption count, or $75 state/$60
-    NYC by whole household.
+  example: A joint return with one claimable spouse, AGI $10,000 and no dependents receives $0 under the instructions
+    and $60 state / $30 NYC by exemption count.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/ny/tax/income/credits/ny_household_credit_potential.py
     - policyengine_us/variables/gov/local/ny/nyc/tax/income/credits/household/nyc_household_credit.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10090
+    - https://github.com/PolicyEngine/policyengine-us/pull/10300
   state: ruled
-  note: 'PE-US follows the instructions: the New York and New York City household credits are zero when either spouse
-    can be claimed, reading item C as marked for the whole return (ny_household_credit_potential.py, nyc_household_credit.py).
-    An October 2026 ruling accepted the instructions; the statute-first rule requires a model change after resolving
-    the statutory allocation.'
+  note: 'An October 2026 ruling accepted the instructions; under the later statute-first rule PE-US follows Tax Law
+    606(b)(3)(B) and 1310(d)(3)(B) (#10300): only claimable single filers are zeroed, other households count their
+    federal exemptions (exemptions_count), and NYC separate filers get half the married credit on the couple''s AGI
+    and exemptions. The instructions direct filers who mark item C Yes not to claim the credit, so a return filed as
+    instructed differs from the model for these households.'
+- id: us-ny:household-credit-separate-return-halving
+  program: income-tax
+  years:
+    from: 2015
+    type: tax
+  question: Does a married individual filing a separate return get exactly one-half of the household credit, or the
+    half amounts that IT-201 Tables 3 and 6 round up to whole dollars?
+  sources:
+  - kind: statute
+    citation: N.Y. Tax Law 606(b)(3)(C); 1310(d)(3)(C)
+    url: https://www.nysenate.gov/legislation/laws/TAX/606
+  - kind: instructions
+    citation: IT-201 instructions, 2025, household credit Tables 3 and 6 and their Note 5 ("The credit amounts have
+      been rounded"), under lines 40 and 48
+    url: https://www.tax.ny.gov/forms/html-instructions/2025/it/it201i-2025.htm#line-40
+  readings:
+    statute: Each spouse gets one-half the credit otherwise allowed the household, unrounded.
+    other: Tables 3 and 6 round each half amount up to a whole dollar.
+  example: New York City, combined AGI $16,000 and three exemptions, gives $37.50 by the statute and $38 by Table 6;
+    New York State, combined AGI $5,000 and two exemptions, gives $52.50 by the statute and $53 by Table 3.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ny/tax/income/credits/ny_household_credit_potential.py
+    - policyengine_us/variables/gov/local/ny/nyc/tax/income/credits/household/nyc_household_credit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10300
+  state: ruled
+  note: Both credits halve exactly, as the statute says; the tables round for the form. Section 606 authorizes
+    nearest-dollar tables only for the real property tax credit.
 - id: us-ny:real-property-credit-claimable-spouse
   program: income-tax
   years:
@@ -8907,31 +8945,6 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify whether statutory silence permits the filing-status restriction; no individual policy ruling is supplied.
-- id: us-pr:eitc-unearned-income-limit
-  program: income-tax
-  years:
-    from: 2023
-    type: tax
-  question: Is Puerto Rico's EITC unearned-income limit the statute's $2,200 or Schedule CT's $10,000?
-  sources:
-  - kind: statute
-    citation: P.R. Laws tit. 13, § 30211(6)(e)
-    url: https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1007/subchapter-b/30211/
-  - kind: instructions
-    citation: Schedule CT Individual, Earned Income Credit, 2023, page 4
-    url: https://hacienda.pr.gov/sites/default/files/schedule_ct_rev._jul_5_23_informative_-_instructions.pdf#page=4
-  readings:
-    statute: Filers with unearned income at or above $2,200 lose the credit.
-    other: The limit is $10,000.
-  example: A filer with $5,000 unearned income passes the form's limit but fails the supplied statutory limit.
-  pe_us:
-    follows: conflicting-source
-    code:
-    - policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/unearned_income/limit.yaml
-    prs: []
-  state: unreviewed
-  note: The statute-first rule requires changing the $10,000 form-based limit to the statutory limit; confirm applicable
-    years and the boundary test.
 - id: us-ri:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -10935,13 +10948,15 @@ candidates:
   program: income-tax
   years:
     from: 2021
+    to: 2021
     type: tax
   question: Does AGI exactly equal to the low-income child-care-credit threshold qualify under the form despite
     the statute requiring income below it?
   sources:
   - kind: statute
-    citation: 32 V.S.A. § 5828c
-    url: https://law.justia.com/codes/vermont/2021/title-32/chapter-151/section-5828c/
+    citation: 32 V.S.A. § 5828c as in effect through 2021 (text struck by 2022 Act 138, Sec. 3; Sec. 13(b) makes the
+      change retroactive to January 1, 2022)
+    url: https://legislature.vermont.gov/Documents/2022/Docs/ACTS/ACT138/ACT138%20As%20Enacted.pdf#page=3
   - kind: form
     citation: Vermont Schedule IN-112, 2021, page 2
     url: https://tax.vermont.gov/sites/tax/files/documents/IN-112-2021.pdf#page=2
@@ -10949,13 +10964,16 @@ candidates:
     statute: AGI must be strictly below the threshold.
     other: AGI equal to the threshold qualifies.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/vt/tax/income/credits/cdcc/vt_low_income_cdcc_eligible.py
-    prs: []
-  state: unreviewed
-  note: The statute-first rule requires a strict below-threshold test; verify form years before changing the inclusive
-    comparison.
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10300
+  state: ruled
+  note: Under the statute-first rule PE-US applies the strict below-threshold test (#10300). Act 138 struck the income
+    test from 2022, so 2021 is the only affected year in the model; a 2021 filer at exactly the threshold takes the
+    24% nonrefundable credit instead. The 2021 form directs filers whose AGI equals the threshold to treat it as
+    qualifying, so a return filed as instructed differs from the model at exactly $30,000 or $40,000.
 - id: us-vt:medical-deduction-without-federal-itemizing
   program: income-tax
   years:

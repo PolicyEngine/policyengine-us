@@ -27,10 +27,11 @@ class vt_cdcc(Variable):
             federal_cdcc = tax_unit("pre_obbba_capped_cdcc", period)
         else:
             federal_cdcc = tax_unit("capped_cdcc", period)
-        # 2022 Act 138 raised the 5828c match to 72 percent but retained the
-        # low-income adjusted gross income cap and the certified-facility
-        # requirement for 2022; 2023 Act 72 removed them effective 2023. We
-        # do not track facility certification or in-state care at the moment.
+        # 2022 Act 138, Sec. 3 raised the 5828c match to 72 percent and struck
+        # the low-income AGI cap, retroactive to January 1, 2022 under Sec.
+        # 13(b), so from 2022 there is no income test (see
+        # income_limit_in_effect). We do not track facility certification or
+        # in-state care at the moment.
         if p.income_limit_in_effect:
             income_eligible = tax_unit("vt_low_income_cdcc_eligible", period)
             return income_eligible * federal_cdcc * p.rate
