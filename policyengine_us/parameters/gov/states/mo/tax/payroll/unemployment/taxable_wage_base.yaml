@@ -1,8 +1,8 @@
 description: Missouri limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
   # Missouri Revised Statutes Section 288.036.2 raises the base by $1,000 when
-  # the trust fund's average balance is $350 million or less and cuts it by
-  # $500 when the balance is $650 million or more, within $7,000 to $13,000.
+  # the trust fund's average balance falls to $350 million or less and cuts it
+  # by $500 when the balance reaches $650 million, within $7,000 to $13,000.
   # The Division of Employment Security publishes each year's base.
   2018-01-01: 12_500
   2019-01-01: 12_000

@@ -1,23 +1,24 @@
 description: Washington assigns each new employer the history factor times its industry's average experience rate, at least 1%, plus the history factor times its industry's average social cost rate, so this parameter applies that rule to the statewide averages.
 values:
-  # The Employment Security Department's first trust fund forecast of each
-  # year gives the statewide average experience and total tax rates; their
-  # difference is the average social cost rate. Each part is rounded to 0.01
-  # point, and the 1% minimum on the experience part binds in every year but
-  # 2022. The history factor is 90% for 2018 and 2019.
+  # The Employment Security Department's first trust fund forecast of each year
+  # gives the statewide average experience and total tax rates; subtracting the
+  # first from the second gives the average social cost rate. WAC 192-320-025
+  # rounds each part to 0.01 point, and the 1% minimum on the experience part
+  # binds in every year but 2022. The department applied a 90% history factor
+  # for 2018 and 2019.
   2018-01-01: 0.0115
   # No surviving Employment Security Department page gives the 2020 history
-  # factor, so this uses 90%, the factor for 2018 and 2019; 100% or 115% would
-  # give 1.16% or 1.18%.
+  # factor, so PE-US uses 90%, the factor for 2018 and 2019; 100% or 115%
+  # would give 1.16% or 1.18%.
   2020-01-01: 0.0114
-  # History factor of 115% for 2021 and 2022.
+  # The department applied a 115% history factor for 2021 and 2022.
   2021-01-01: 0.0135
   2022-01-01: 0.0154
-  # History factor of 90% for 2023 to 2025.
+  # The department applied a 90% history factor for 2023 to 2025.
   2023-01-01: 0.0136
   2024-01-01: 0.0141
   2025-01-01: 0.0137
-  # History factor of 115% for 2026.
+  # The department applied a 115% history factor for 2026.
   2026-01-01: 0.0149
 
 metadata:

@@ -106,7 +106,7 @@
     md_employer_state_unemployment_tax: 208.25
     employer_state_unemployment_tax: 208.25
 
-- name: Maryland 2018, wages below the wage base are all taxable.
+- name: Maryland 2018 taxes every dollar of wages below the wage base.
   period: 2018
   absolute_error_margin: 0.01
   input:
@@ -116,7 +116,7 @@
     taxable_earnings_for_state_unemployment_tax: 5_000
     employer_state_unemployment_tax: 130
 
-- name: Maryland employer unemployment tax is zero for a worker in another state.
+- name: Maryland charges no employer unemployment tax on a worker in another state.
   period: 2024
   input:
     state_code: TX

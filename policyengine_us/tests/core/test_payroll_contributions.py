@@ -1167,7 +1167,7 @@ def test_st_louis_total_payroll_expense_tax():
         5_000
     )
     assert calculate(sim, "employer_total_local_payroll_tax") == pytest.approx(5_000)
-    # Missouri's 2026 new employer rate is 2.376% (2.7% less 12%) on $9,000.
+    # Missouri's 2026 new employer rate comes to 2.376% (2.7% less 12%) on $9,000.
     assert calculate(sim, "employer_total_payroll_tax") == pytest.approx(12_905.84)
     assert calculate(sim, "employer_total_cost_of_employment") == pytest.approx(
         112_905.84

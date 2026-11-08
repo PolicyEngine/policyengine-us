@@ -106,7 +106,7 @@
     pr_employer_state_unemployment_tax: 196
     employer_state_unemployment_tax: 196
 
-- name: Puerto Rico 2018, wages below the wage base are all taxable.
+- name: Puerto Rico 2018 taxes every dollar of wages below the wage base.
   period: 2018
   absolute_error_margin: 0.01
   input:
@@ -116,7 +116,7 @@
     taxable_earnings_for_state_unemployment_tax: 5_000
     employer_state_unemployment_tax: 155
 
-- name: Puerto Rico employer unemployment tax is zero for a worker in another state.
+- name: Puerto Rico charges no employer unemployment tax on a worker in another state.
   period: 2024
   input:
     state_code: TX

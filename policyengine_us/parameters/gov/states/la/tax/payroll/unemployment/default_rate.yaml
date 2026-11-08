@@ -1,7 +1,8 @@
 description: Louisiana assigns each new employer its industry's average rate, at least 1%, so this parameter uses the greater of 1% and the statewide average employer contribution rate on taxable wages.
 values:
-  # The Department of Labor's average employer contribution rates on taxable
-  # wages; the Workforce Commission publishes no comparable series.
+  # PE-US uses the U.S. Department of Labor's average employer contribution
+  # rates on taxable wages; the Workforce Commission publishes no comparable
+  # series.
   2018-01-01: 0.0154
   2019-01-01: 0.0144
   2020-01-01: 0.0131
@@ -10,7 +11,7 @@ values:
   2023-01-01: 0.0129
   2024-01-01: 0.013
   2025-01-01: 0.0123
-  # Department of Labor estimate.
+  # The U.S. Department of Labor estimated the 2026 average.
   2026-01-01: 0.0125
 
 metadata:

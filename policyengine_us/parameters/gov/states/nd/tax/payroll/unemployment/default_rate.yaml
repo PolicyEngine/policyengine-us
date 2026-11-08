@@ -1,12 +1,12 @@
 description: North Dakota assigns this unemployment insurance tax rate to each new employer outside construction.
 values:
   # North Dakota Century Code Section 52-04-05(6)(b)(1) assigns each new
-  # employer outside construction 90% of the year's positive employer maximum
-  # rate or 1%, whichever is greater, rounded to 0.01%; a new employer whose
+  # employer outside construction the greater of 1% and 90% of the year's
+  # positive employer maximum rate, rounded to 0.01%. A new employer whose
   # cumulative benefit charges reach its cumulative contributions takes a
-  # negative-employer rate instead. These are the positive-balance rates for
-  # new nonconstruction employers that Job Service North Dakota published in
-  # each year's rate schedule.
+  # negative-employer rate instead. Job Service North Dakota published these
+  # positive-balance rates for new nonconstruction employers in each year's
+  # rate schedule.
   2018-01-01: 0.017
   2019-01-01: 0.0121
   2020-01-01: 0.0102

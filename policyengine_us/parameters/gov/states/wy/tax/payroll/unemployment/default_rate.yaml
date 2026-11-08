@@ -4,26 +4,27 @@ values:
   # industry's average contribution rate for the preceding calendar year, at
   # least 1%, plus the Section 27-3-505 adjustment factors. Department of
   # Workforce Services figures put experience-rated employers' average base
-  # rate at 0.63% to 0.96% from 2018 to 2023, so a new employer at the
-  # statewide average pays 1% plus the noncharged and ineffectively charged
+  # rate at 0.63% to 0.96% from 2018 to 2023. A new employer at the statewide
+  # average therefore pays 1% plus the noncharged and ineffectively charged
   # benefits factor and any positive fund balance factor: 0.17 and 0.11 point
   # for 2018.
   2018-01-01: 0.0128
-  # Factors of 0.13 and 0.09 point; only experience-rated employers take a
-  # negative fund balance factor (Section 27-3-505(d)).
+  # The department's figures give factors of 0.13 and 0.09 point; only
+  # experience-rated employers take a negative fund balance factor (Section
+  # 27-3-505(d)).
   2019-01-01: 0.0122
-  # Factors of 0.12 and 0.08 point.
+  # The department's figures give factors of 0.12 and 0.08 point.
   2020-01-01: 0.012
-  # Factors of 0.23 and 0.15 point plus a 0.90 point positive fund balance
-  # factor for new employers.
+  # The department's figures give factors of 0.23 and 0.15 point plus a 0.90
+  # point positive fund balance factor for new employers.
   2021-01-01: 0.0228
-  # Factors of 0.21 and 0.14 point.
+  # The department's figures give factors of 0.21 and 0.14 point.
   2022-01-01: 0.0135
-  # Factors of 0.08 and 0.06 point.
+  # The department's figures give factors of 0.08 and 0.06 point.
   2023-01-01: 0.0114
   # The department reports a 0% minimum rate for 2024, so no positive fund
   # balance factor applied; it has published no 2024 noncharged benefits
-  # factor, which this value leaves out.
+  # factor, which PE-US leaves out.
   2024-01-01: 0.01
   # The department reports 396 employers at the 10% maximum for 2025, the 8.5%
   # maximum base rate plus the 1.5% cap on the noncharged benefits and
@@ -31,7 +32,7 @@ values:
   # the factors of employers with a benefit ratio above zero (Section
   # 27-3-505(b)), so they paid 1% plus 1.5%.
   2025-01-01: 0.025
-  # The department has published no 2026 factors, so this value is the 1%
+  # The department has published no 2026 factors, so PE-US uses the 1%
   # minimum alone.
   2026-01-01: 0.01
 

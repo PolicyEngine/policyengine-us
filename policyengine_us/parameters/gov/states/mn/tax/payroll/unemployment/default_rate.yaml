@@ -1,15 +1,16 @@
 description: Minnesota assigns each new employer the average rate of its industry, at least 1%, so this parameter uses the greater of 1% and the statewide average employer contribution rate on taxable wages.
 values:
-  # The Department of Labor's average employer contribution rates on taxable
-  # wages; the Department of Employment and Economic Development publishes no
-  # comparable series. Leaves out the 0.1% workforce development fee.
+  # PE-US uses the U.S. Department of Labor's average employer contribution
+  # rates on taxable wages; the Department of Employment and Economic
+  # Development publishes no comparable series. PE-US leaves out the 0.1%
+  # workforce development fee.
   2018-01-01: 0.0116
   2019-01-01: 0.0111
   2020-01-01: 0.0107
   2021-01-01: 0.0109
   # The averages for 2022 to 2025, 0.90% to 0.97%, fall below the 1% minimum.
   2022-01-01: 0.01
-  # Department of Labor estimate.
+  # The U.S. Department of Labor estimated the 2026 average.
   2026-01-01: 0.0153
 
 metadata:

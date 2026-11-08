@@ -3,7 +3,7 @@ values:
   # Michigan Compiled Laws Section 421.19(a)(1), Table A-2, sets a new
   # employer's rate at 2.7% plus part of its own chargeable benefits
   # component, and the Unemployment Insurance Agency gives 2.7% as the rate
-  # for a business's first two years outside construction; the solvency tax
+  # for a business's first two years outside construction. The solvency tax
   # under Section 421.19a skips an employer's first four years. Section
   # 421.26a added an obligation assessment to repay the bonds that refinanced
   # the fund's federal advances, and the Agency counted it in each employer's
@@ -13,8 +13,8 @@ values:
   # The 2019 ratio of 0.166825 gives 1.16%, the figure in the Agency's table
   # of 2019 rates.
   2019-01-01: 0.0386
-  # The Agency paid off the bonds in 2019, and the fourth quarter of 2019 was
-  # the last to carry the assessment.
+  # The Agency paid off the bonds in 2019 and stopped charging the assessment
+  # after the fourth quarter of 2019.
   2020-01-01: 0.027
 
 metadata:

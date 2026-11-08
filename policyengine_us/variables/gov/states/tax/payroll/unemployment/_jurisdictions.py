@@ -93,10 +93,10 @@ def select_state_unemployment_tax_parameter(
     Minnesota's wage base reaches back to 2014, for example, while most
     jurisdictions start in 2018 and carry that value back to 2015.
 
-    With average_over_quarter_starts, each jurisdiction's value is the mean
-    of its values at the four calendar quarter starts. New Hampshire, New
-    Jersey, Tennessee and Vermont assign rates for a July-June rate year, so
-    their annual rate mixes two rate years.
+    With average_over_quarter_starts, the selector averages each
+    jurisdiction's values at the four calendar quarter starts. New
+    Hampshire, New Jersey, Tennessee and Vermont assign rates for a July-June
+    rate year, so their annual rate mixes two rate years.
     """
     state_code = person.household("state_code_str", period)
     jurisdictions = []

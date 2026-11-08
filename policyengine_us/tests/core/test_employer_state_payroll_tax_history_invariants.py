@@ -67,8 +67,8 @@ MONTHS = range(1, 13)
 QUARTER_START_MONTHS = (1, 4, 7, 10)
 
 # Published new-employer rate and taxable wage base for each jurisdiction and
-# year. A rate is one number, or four numbers when the rate changes inside the
-# calendar year: the rates in force at the starts of the four quarters.
+# year. Each rate holds one number or, when the rate changes inside the
+# calendar year, four: the rates in force at the starts of the four quarters.
 # BEGIN PUBLISHED_SUTA (generated from the curated source table)
 PUBLISHED_SUTA = {
     "AK": {
@@ -800,10 +800,10 @@ STATEWIDE_AVERAGE_RATE = {
     "NM": ("0.90", "0.81", "0.73", "0.76", "0.73", "0.85", "0.87", "0.93", "0.99"),
 }
 # Utah's reserve factor and social contribution rate (percent), from the
-# Department of Workforce Services. A new employer's basic rate is the greater
-# of its industry's benefit cost rate and 1% (Utah Code 35A-4-303(5)(b)), and
-# the Department of Labor's average employer rates of 0.41% to 0.68% leave the
-# statewide average benefit cost rate below 1%.
+# Department of Workforce Services. Utah Code 35A-4-303(5)(b) sets a new
+# employer's basic rate at the greater of its industry's benefit cost rate and
+# 1%, and the Department of Labor's average employer rates of 0.41% to 0.68%
+# leave the statewide average benefit cost rate below 1%.
 UT_RESERVE_FACTOR_AND_SOCIAL_RATE = (
     ("1.00", "0.1"),
     ("1.00", "0.1"),
@@ -1014,7 +1014,8 @@ def _check(batch):
                 else (_calculate(sim, variable, year))
             )
             # 4. Differential against the published tables; 8. geography for
-            # the state-specific contributions, which are zero elsewhere.
+            # the state-specific contributions, which no other jurisdiction
+            # charges.
             np.testing.assert_allclose(
                 computed, amount, atol=TOLERANCE, rtol=0, err_msg=f"{variable} {year}"
             )
@@ -1028,7 +1029,7 @@ def _check(batch):
             )
         assert (total <= top_rate * positive + TOLERANCE).all(), year
 
-        # 8. Geography: each jurisdiction's tax is zero outside it, and the
+        # 8. Geography: no jurisdiction taxes a worker outside it, and the
         # jurisdiction taxes add up to the total.
         by_jurisdiction = 0
         for code in CODES:

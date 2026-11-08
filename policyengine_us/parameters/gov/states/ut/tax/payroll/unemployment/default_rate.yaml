@@ -1,6 +1,6 @@
 description: Utah assigns each new employer a rate based on its industry, at least 1.1%, so this parameter applies the new-employer rule to the statewide average benefit cost rate.
 values:
-  # A new employer whose industry's benefit cost rate is at most 1% pays a
+  # A new employer whose industry's benefit cost rate does not exceed 1% pays a
   # basic rate of 1% times the reserve factor, plus the social cost rate, and
   # at least 1.1%. The Department of Labor's average employer contribution
   # rates on taxable wages, 0.41% to 0.68% from 2018 to 2026, leave the

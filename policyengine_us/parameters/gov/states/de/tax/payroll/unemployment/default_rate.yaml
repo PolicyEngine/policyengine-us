@@ -1,16 +1,16 @@
 description: Delaware assigns this unemployment insurance assessment rate, including any supplemental assessment the Division of Unemployment Insurance adds to it, to each new employer outside the construction industry.
 values:
-  # Leaves out the training tax under 19 Del. C. Section 3401, which the
+  # PE-US leaves out the training tax under 19 Del. C. Section 3401, which the
   # Division of Unemployment Insurance bills separately.
   2018-01-01: 0.016
   2019-01-01: 0.015
   # Emergency rules and later legislation held the 2021 and 2022 rates at this
   # 2020 level.
   2020-01-01: 0.018
-  # The 1% average employer assessment rate plus the 0.2% supplemental
-  # assessment.
+  # A new employer pays the 1% average employer assessment rate plus the 0.2%
+  # supplemental assessment.
   2023-01-01: 0.012
-  # Leaves out the 0.2% operations and technology assessment, which the
+  # PE-US leaves out the 0.2% operations and technology assessment, which the
   # Division of Unemployment Insurance bills separately from 2026.
   2026-01-01: 0.01
 
