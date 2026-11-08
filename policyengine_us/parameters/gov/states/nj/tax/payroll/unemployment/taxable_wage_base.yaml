@@ -1,13 +1,22 @@
-description: Employer-side unemployment insurance taxable wage base for New Jersey.
+description: New Jersey limits employer unemployment insurance, disability insurance and workforce fund contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 42_300
+  2018-01-01: 33_700
+  2019-01-01: 34_400
+  2020-01-01: 35_300
+  2021-01-01: 36_200
+  2022-01-01: 39_800
+  2023-01-01: 41_100
+  2024-01-01: 42_300
+  2025-01-01: 43_300
+  2026-01-01: 44_800
+  2027-01-01: 46_400
 
 metadata:
   period: year
   unit: currency-USD
   label: New Jersey unemployment taxable wage base
   reference:
-    - title: New Jersey Unemployment Compensation Law Section 43:21-7
-      href: https://www.nj.gov/labor/myunemployment/assets/pdfs/UI_statute.pdf#page=46
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=40
+    - title: New Jersey Department of Labor and Workforce Development, Rate information, contributions, and due dates (taxable wage base for UI and WF/SWF, workers and employers, and TDI, employers)
+      href: https://www.nj.gov/labor/ea/employer-services/rate-info/
+    - title: N.J.S.A. 43:21-7(b)(3), annual taxable wage base
+      href: https://www.nj.gov/labor/myunemployment/assets/pdfs/UI_statute.pdf#page=47

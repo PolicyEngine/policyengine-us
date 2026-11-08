@@ -63,21 +63,48 @@ STATE_EMPLOYER_UNEMPLOYMENT_TAX_VARIABLES = tuple(
 )
 
 
+MONTHS_IN_QUARTER = 3
+
+
+def _jurisdiction_parameter_values(parameters, instant, parameter_name: str) -> list:
+    gov = parameters(instant).gov
+    return [
+        getattr(
+            getattr(getattr(gov, group), slug).tax.payroll.unemployment,
+            parameter_name,
+        )
+        for group, _, slug in STATE_UNEMPLOYMENT_TAX_JURISDICTIONS
+    ]
+
+
 def select_state_unemployment_tax_parameter(
     person: Population,
     period: Period,
     parameters,
     parameter_name: str,
+    average_over_quarter_starts: bool = False,
 ) -> ArrayLike:
+    """Select each person's jurisdiction value of an unemployment parameter.
+
+    With average_over_quarter_starts, each jurisdiction's value is the mean
+    of its values at the four calendar quarter starts. New Hampshire, New
+    Jersey, Tennessee and Vermont assign rates for a July-June rate year, so
+    their annual rate mixes two rate years.
+    """
     state_code = person.household("state_code_str", period)
-    gov = parameters(period).gov
-    conditions = []
-    values = []
-
-    for group, code, slug in STATE_UNEMPLOYMENT_TAX_JURISDICTIONS:
-        jurisdiction = getattr(getattr(gov, group), slug)
-        unemployment = jurisdiction.tax.payroll.unemployment
-        conditions.append(state_code == code)
-        values.append(getattr(unemployment, parameter_name))
-
+    if average_over_quarter_starts:
+        quarter_starts = period.get_subperiods(MONTH)[::MONTHS_IN_QUARTER]
+        by_quarter = [
+            _jurisdiction_parameter_values(parameters, quarter_start, parameter_name)
+            for quarter_start in quarter_starts
+        ]
+        values = [
+            sum(quarter_values) / len(quarter_starts)
+            for quarter_values in zip(*by_quarter)
+        ]
+    else:
+        values = _jurisdiction_parameter_values(parameters, period, parameter_name)
+    conditions = [
+        state_code == code for _, code, _ in STATE_UNEMPLOYMENT_TAX_JURISDICTIONS
+    ]
     return select(conditions, values, default=0)

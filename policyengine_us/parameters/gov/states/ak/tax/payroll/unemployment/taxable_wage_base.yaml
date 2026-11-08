@@ -1,6 +1,14 @@
-description: Employer-side unemployment insurance taxable wage base for Alaska.
+description: Alaska taxes each employee's wages up to this amount a year for unemployment insurance, on both the employer and the employee contributions.
 values:
-  0000-01-01: 49_700
+  2018-01-01: 39_500
+  2019-01-01: 39_900
+  2020-01-01: 41_500
+  2021-01-01: 43_600
+  2022-01-01: 45_200
+  2023-01-01: 47_100
+  2024-01-01: 49_700
+  2025-01-01: 51_700
+  2026-01-01: 54_200
 
 metadata:
   period: year
@@ -9,7 +17,9 @@ metadata:
   reference:
     - title: Alaska Statutes Section 23.20.175
       href: https://www.akleg.gov/basis/statutes.asp?media=print&secStart=23.20.175&secEnd=23.20.175
-    - title: Alaska 2026 industry rates
+    - title: Alaska Department of Labor and Workforce Development, Alaska Unemployment Insurance Actuarial Report 2024, Table 1.3 (tax base, 2015 to 2024)
+      href: https://live.laborstats.alaska.gov/sites/default/files/2026-02/UI%20Actuarial%20Study%202024.pdf#page=11
+    - title: Alaska Department of Labor and Workforce Development, Alaska Unemployment Insurance Tax Rates for New (Industry) Employers, 2025
+      href: https://labor.alaska.gov/estax/2025-industry-rates.html
+    - title: Alaska Department of Labor and Workforce Development, Alaska Unemployment Insurance Tax Rates for New (Industry) Employers, 2026
       href: https://labor.alaska.gov/estax/2026-industry-rates.html
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=11

@@ -1,13 +1,21 @@
-description: Default employer-side unemployment insurance tax rate for New Jersey.
+description: New Jersey assigns new employers this unemployment insurance contribution rate for each July-June fiscal year, excluding the workforce development and supplemental workforce fund contributions.
 values:
-  0000-01-01: 0.034
+  # The fiscal year that began July 1, 2017, and the next four fiscal years
+  # through June 30, 2022, all used 2.6825 percent.
+  2018-01-01: 0.026825
+  2022-07-01: 0.029825
+  2023-07-01: 0.032825
+  2024-07-01: 0.029825
+  2025-07-01: 0.026825
 
 metadata:
   period: year
   unit: /1
   label: New Jersey default unemployment tax rate
   reference:
-    - title: New Jersey Unemployment Compensation Law Section 43:21-7.7
-      href: https://www.nj.gov/labor/myunemployment/assets/pdfs/UI_statute.pdf#page=82
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=40
+    - title: New Jersey Department of Labor and Workforce Development, Rate information, contributions, and due dates (new employer rates for July 2014 through June 2027)
+      href: https://www.nj.gov/labor/ea/employer-services/rate-info/
+    - title: N.J.S.A. 43:21-7(c)(5)(E), contribution rate table with the new employer rate
+      href: https://www.nj.gov/labor/myunemployment/assets/pdfs/UI_statute.pdf#page=52
+    - title: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, January 2025 (New Jersey rate year runs July 1 to June 30)
+      href: https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/January2025.pdf#page=3

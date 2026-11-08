@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 
 EMPLOYEE_STATE_PAYROLL_TAX_COMPONENTS = [
+    "ak_employee_state_payroll_tax",
     "ca_employee_state_payroll_tax",
     "co_employee_state_payroll_tax",
     "ct_employee_state_payroll_tax",

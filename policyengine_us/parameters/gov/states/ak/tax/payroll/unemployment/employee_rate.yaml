@@ -1,0 +1,26 @@
+description: Alaska withholds this unemployment insurance contribution rate from each employee's wages up to the taxable wage base.
+values:
+  2018-01-01: 0.005
+  2022-01-01: 0.0056
+  2023-01-01: 0.0051
+  2024-01-01: 0.005
+
+metadata:
+  period: year
+  unit: /1
+  label: Alaska employee unemployment insurance contribution rate
+  reference:
+    - title: Alaska Statutes Section 23.20.290(d), employee rate of 27 percent of the average benefit cost rate, at least 0.5 percent and at most 1 percent
+      href: https://www.akleg.gov/basis/statutes.asp?media=print&secStart=23.20.290&secEnd=23.20.290
+    - title: Alaska Department of Labor and Workforce Development, Alaska Unemployment Insurance Actuarial Report 2024, Table 1.3 (average employee tax rate, 2015 to 2024)
+      href: https://live.laborstats.alaska.gov/sites/default/files/2026-02/UI%20Actuarial%20Study%202024.pdf#page=11
+    - title: Alaska Department of Labor and Workforce Development, Alaska Unemployment Insurance Tax Rates for New (Industry) Employers, 2022
+      href: https://labor.alaska.gov/estax/documents/2022_industry_rates.pdf#page=1
+    - title: Alaska Department of Labor and Workforce Development, Alaska Unemployment Insurance Tax Rates for New (Industry) Employers, 2023
+      href: https://labor.alaska.gov/estax/documents/2023_industry_rates.pdf#page=1
+    - title: Alaska Department of Labor and Workforce Development, Alaska Unemployment Insurance Tax Rates for New (Industry) Employers, 2024
+      href: https://labor.alaska.gov/estax/documents/2024_industry_rates.pdf#page=1
+    - title: Alaska Department of Labor and Workforce Development, Alaska Unemployment Insurance Tax Rates for New (Industry) Employers, 2025
+      href: https://labor.alaska.gov/estax/2025-industry-rates.html
+    - title: Alaska Department of Labor and Workforce Development, Alaska Unemployment Insurance Tax Rates for New (Industry) Employers, 2026
+      href: https://labor.alaska.gov/estax/2026-industry-rates.html
