@@ -1,0 +1,921 @@
+- name: Case 1, aged individual living independently takes the code A level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # POMS SI 01415.058 B.2.a: 1,233.94 total less the 994 federal benefit rate.
+    ssi: 994
+    ca_state_supplement_person: 239.94
+    ca_state_supplement: 239.94
+
+- name: Case 2, aged individual without cooking facilities takes the code C level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # WIC 12200(e): 239.94 + 128.87, the 1,362.81 total in POMS SI 01415.058 B.2.a.
+    ca_state_supplement_person: 368.81
+
+- name: Case 3, blind individual without cooking facilities stays at the code A blind level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        is_tax_unit_head: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # WIC 12200(e) gives the allowance only under (c) or (d), not the blind level in (a).
+    ca_state_supplement_person: 324.32
+
+- name: Case 4, aged and blind individual without cooking facilities takes the higher code C level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: true
+        is_tax_unit_head: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # California pays the highest category (POMS SI 01415.058 B.2.a note): 368.81 is above 324.32.
+    ca_state_supplement_person: 368.81
+
+- name: Case 5, disabled dependent aged 17 takes the disabled minor level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 17
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # WIC 12200(f) and POMS SI 01415.058 code E: 1,091.27 total less 994.
+    ssi: [0, 994]
+    ca_state_supplement_person: [0, 97.27]
+    ca_state_supplement: 97.27
+
+- name: Case 6, disabled dependent aged 18 takes the individual level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 18
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # POMS SI 01415.058 B.1 code A covers a disabled child aged 18 or over living with a parent.
+    ca_state_supplement_person: [0, 239.94]
+
+- name: Case 7, blind dependent child takes the blind level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 10
+        is_blind: true
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # WIC 12200(a) and POMS SI 01415.058 B.1 code A cover a blind child living with a parent.
+    ca_state_supplement_person: [0, 324.32]
+
+- name: Case 8, disabled dependent child without cooking facilities gets no allowance.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 10
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # WIC 12200(e) gives the allowance only under (c) or (d), not the disabled minor level in (f).
+    ca_state_supplement_person: [0, 97.27]
+
+- name: Case 9, individual in nonmedical out-of-home care takes the code B level alone.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        in_out_of_home_care_facility: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # WIC 12200(g) and POMS SI 01415.058 code B: 1,626.07 total less 994, not added to the
+    # independent-living level.
+    ca_state_supplement_person: 632.07
+
+- name: Case 10, dependent child in nonmedical out-of-home care takes the code B level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 10
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_dependent: true
+        in_out_of_home_care_facility: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # POMS SI 01415.058 B.1 code B lists children in licensed facilities.
+    ca_state_supplement_person: [0, 632.07]
+
+- name: Case 11, Title XIX facility resident takes the code J level alone.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        ca_in_medical_care_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # WIC 12200(h) and POMS SI 01415.058 code J: 62 total less the 30 federal payment cap.
+    ssi: 30
+    ca_state_supplement_person: 32
+
+- name: Case 12, dependent child in a Title XIX facility takes the code J level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 10
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_dependent: true
+        ca_in_medical_care_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ssi: [0, 30]
+    ca_state_supplement_person: [0, 32]
+
+- name: Case 13, aged couple takes half of the couple level each.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # WIC 12200(d) and POMS SI 01415.058 B.2.b: 607.83 for the couple. Half is 303.915, which
+    # federal administration rounds up to the next cent (ssi_state_supplement).
+    ssi: [745.5, 745.5]
+    ca_state_supplement_person: [303.92, 303.92]
+    ca_state_supplement: 607.84
+
+- name: Case 14, blind couple takes half of the couple level each.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        is_tax_unit_head: true
+      person2:
+        age: 48
+        is_blind: true
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # WIC 12200(a): 833.35 / 2 = 416.675, rounded up.
+    ca_state_supplement_person: [416.68, 416.68]
+
+- name: Case 15, couple of a blind person and an aged person takes the one-blind level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_blind: true
+        is_tax_unit_head: true
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # WIC 12200(b): 747.44 / 2.
+    ca_state_supplement_person: [373.72, 373.72]
+
+- name: Case 16, aged couple without cooking facilities adds the couple allowance.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # WIC 12200(d), (e): 607.83 + 257.74 = 865.57; half is 432.785, rounded up.
+    ca_state_supplement_person: [432.79, 432.79]
+
+- name: Case 17, couple of an aged person and a blind person under 65 without cooking facilities gets no allowance.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+      person2:
+        age: 50
+        is_blind: true
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # The one-blind rate is under WIC 12200(b), and (e) gives the allowance only under (c) or (d).
+    # POMS code C adds the individual allowance for this couple; PolicyEngine follows the statute
+    # (ruled 2026-10-29, PR 10379 comment 6509402355).
+    ca_state_supplement_person: [373.72, 373.72]
+
+- name: Case 18, aged couple with one blind spouse without cooking facilities takes the higher aged couple level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: true
+        is_tax_unit_head: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # 865.57 for the aged couple with the allowance is above the 747.44 one-blind level.
+    ca_state_supplement_person: [432.79, 432.79]
+
+- name: Case 19, couple both in nonmedical out-of-home care takes twice the individual total.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        in_out_of_home_care_facility: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        in_out_of_home_care_facility: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # 2 * 1,626.07 - 1,491 = 1,761.14 for the couple (CDSS 2026 May Revision, page 26, note 2).
+    ca_state_supplement_person: [880.57, 880.57]
+
+- name: Case 20, couple with one spouse in nonmedical out-of-home care averages the two couple levels.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        in_out_of_home_care_facility: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # (1,761.14 + 607.83) / 2 = 1,184.485 for the couple, as CAPI computes it (MPP 49-050.24);
+    # half is 592.2425, rounded up.
+    ca_state_supplement_person: [592.25, 592.25]
+
+- name: Case 21, couple both in a Title XIX facility takes the code J couple level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        ca_in_medical_care_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        ca_in_medical_care_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # POMS SI 01415.058 B.2.b: 64 for the couple.
+    ssi: [30, 30]
+    ca_state_supplement_person: [32, 32]
+
+- name: Case 22, couple with one spouse in a Title XIX facility is computed as two individuals.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        ca_in_medical_care_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # 20 CFR 416.414(b)(3).
+    ssi: [30, 994]
+    ca_state_supplement_person: [32, 239.94]
+
+- name: Case 23, two unrelated people in one SPM unit each take their own level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        is_blind: true
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # WIC 12200 pays each recipient, and an unrelated person's income and SSI do not reduce it.
+    ssi: [994, 994]
+    ca_state_supplement_person: [239.94, 324.32]
+    ca_state_supplement: 564.26
+
+- name: Case 24, spouse's deemed income below the couple federal rate leaves the individual level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+      person2:
+        age: 50
+        employment_income: 24_000
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # (2,000 - 20 - 65) / 2 = 957.50 deemed. POMS SI 01320.430 D: federal min(994, 1,491 - 957.50) =
+    # 533.50; state min(239.94, 607.83) = 239.94.
+    ssi: [533.5, 0]
+    ca_state_supplement_person: [239.94, 0]
+
+- name: Case 25, spouse's deemed income above the couple total leaves no supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+      person2:
+        age: 50
+        employment_income: 60_000
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # (5,000 - 20 - 65) / 2 = 2,457.50 deemed. POMS SI 01320.430 D: state min(239.94, 607.83 -
+    # (2,457.50 - 1,491)) = 0.
+    ssi: [0, 0]
+    ca_state_supplement_person: [0, 0]
+
+- name: Case 26, person who declines SSI gets no supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        takes_up_ssi_if_eligible: false
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # SSA pays the supplement with SSI (POMS SI 01415.058 A).
+    ca_state_supplement_eligible_person: false
+    ssi: 0
+    ca_state_supplement_person: 0
+
+- name: Case 27, disabled noncitizen child who fails SSI's noncitizen test gets CAPI, not the supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        is_tax_unit_head: true
+      person2:
+        age: 10
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # WIC 18938, 18941: CAPI pays the disabled minor standard, 994 + 97.27.
+    ca_state_supplement_person: [0, 0]
+    ca_capi_person: [0, 1_091.27]
+
+- name: Case 28, disabled child who fails SSI's resource test gets no supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 10
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_dependent: true
+        bank_account_assets:
+          '2026': 3_000
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The child's 3,000 of countable resources exceed SSI's 2,000 limit (20 CFR 416.1205).
+    meets_ssi_resource_test: [true, false]
+    ssi: [0, 0]
+    ca_state_supplement_person: [0, 0]
+
+- name: Case 29, person in another person's household keeps the independent-living share.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The household-of-another shares are not modeled, so the regular 239.94 share
+    # stays on the reduced federal amount. POMS SI 01415.058 code D lists 245.20
+    # (issue 7892; us-ca:ssp-household-of-another-share in the source-conflict candidates).
+    ssi: 662.67
+    ca_state_supplement_person: 239.94
+
+- name: Case 30, aged person outside California gets no supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    ssi: 994
+    ca_state_supplement_person: 0
+    ca_state_supplement_eligible_person: false
+
+- name: Case 31, couple both in a Title XIX facility in 2023 takes the published couple level, not twice the individual level.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        ca_in_medical_care_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        ca_in_medical_care_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # POMS SI 01415.055 B.2.b: 57 for the couple, or a 117 total with the 60
+    # federal amount. The individual share is 29.
+    ssi: [30, 30]
+    ca_state_supplement_person: [28.5, 28.5]
+
+- name: Case 32, couple with only the California input marking one spouse in a Title XIX facility is computed as two individuals.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        ca_in_medical_care_facility: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # 20 CFR 416.414(b)(3): the facility share for the resident and the
+    # independent-living share for the other spouse, not an average of the two
+    # couple levels.
+    # NOTE: SSI stays joint without the federal facility inputs.
+    ssi: [745.5, 745.5]
+    ca_state_supplement_person: [32, 239.94]
+
+- name: Case 33, married parents who are their child's tax dependents take the individual share.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 100_000
+      person2:
+        age: 70
+        is_tax_unit_dependent: true
+      person3:
+        age: 68
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # NOTE: a known limitation. The couple level is 607.83, or 303.92 each, but
+    # SSI's couple test excludes tax dependents, so SSI and the supplement both
+    # treat the parents as individuals. When SSI identifies couples by marriage
+    # (PR 10141), the head-or-spouse guards in CAPI, the supplement and its rates
+    # must go too, or these parents would get no supplement.
+    ssi: [0, 994, 994]
+    ca_state_supplement_person: [0, 239.94, 239.94]
+
+- name: Case 34, dependent child of an aged couple with no marital units takes their own level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ssi: [745.5, 745.5, 994]
+    # With no marital units everyone shares one unit, but the child is not part
+    # of the couple: half of 607.83 rounded up for each spouse, 97.27 for the child.
+    ca_state_supplement_person: [303.92, 303.92, 97.27]
+    ca_state_supplement: 705.11
+
+- name: Case 35, dependent child in a Title XIX facility with no marital units does not separate the parents.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ca_in_medical_care_facility: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The 416.414(b)(3) split needs one spouse in the facility, so the parents
+    # keep half of 607.83 rounded up, and the child takes the code J level.
+    ca_state_supplement_person: [303.92, 303.92, 32]

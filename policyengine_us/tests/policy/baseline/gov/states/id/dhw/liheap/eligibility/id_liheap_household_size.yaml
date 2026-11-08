@@ -1,0 +1,63 @@
+# Idaho FY2026 LIHEAP plan, qualified household membership (page 9).
+# https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=9
+# IDAPA 16.03.08 sections 201-202, shared economic household (pages 5-6).
+# https://adminrules.idaho.gov/rules/current/16/160308.pdf#page=5
+
+- name: Case 1, citizen child counts while nonqualified parent does not.
+  period: 2026
+  # One qualified child; the adult status cannot erase the child.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: false, employment_income: 20_000, ssi: 0}
+      person2: {age: 8, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit: {members: [person1, person2], heating_type: NATURAL_GAS}
+    households:
+      household: {members: [person1, person2], state_code: ID}
+  output:
+    id_liheap_household_size: 1
+
+- name: Case 2, all nonqualified members give zero eligible size.
+  period: 2026
+  # Neither member satisfies the citizenship or qualified-status rule.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: false, ssi: 0}
+      person2: {age: 8, is_citizen_or_legal_immigrant: false, ssi: 0}
+    spm_units:
+      spm_unit: {members: [person1, person2], heating_type: NATURAL_GAS}
+    households:
+      household: {members: [person1, person2], state_code: ID}
+  output:
+    id_liheap_household_size: 0
+
+- name: Case 3, qualified foster child remains a household member.
+  period: 2026
+  # No Idaho source excludes a qualified foster member from size.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person2: {age: 8, is_citizen_or_legal_immigrant: true, ssi: 0, is_in_foster_care: {2026-01: true}}
+    spm_units:
+      spm_unit: {members: [person1, person2], heating_type: NATURAL_GAS}
+    households:
+      household: {members: [person1, person2], state_code: ID}
+  output:
+    id_liheap_household_size: 2
+
+- name: Case 4, mixed states keep Idaho size separate.
+  period: 2026
+  # The qualified Idaho pair counts; Colorado is outside this component.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person2: {age: 8, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit1: {members: [person1, person2], heating_type: NATURAL_GAS}
+      spm_unit2: {members: [person3], heating_type: NATURAL_GAS}
+    households:
+      household1: {members: [person1, person2], state_code: ID}
+      household2: {members: [person3], state_code: CO}
+  output:
+    id_liheap_household_size: [2, 0]

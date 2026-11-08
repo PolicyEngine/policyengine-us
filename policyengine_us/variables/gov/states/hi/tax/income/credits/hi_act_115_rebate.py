@@ -5,6 +5,14 @@ class hi_act_115_rebate(Variable):
     value_type = float
     entity = TaxUnit
     label = "Hawaii ACT 115 rebate"
+    documentation = (
+        "One-time Hawaii Act 115 refund paid in 2022 and determined from the 2021 "
+        "return. PolicyEngine attributes it to eligibility tax year 2021 through "
+        "hi_refundable_credits. Its standalone formula can calculate an amount in "
+        "later years because the amount schedules persist; inclusion in the dated "
+        "credit total determines whether it affects income tax and household net "
+        "income."
+    )
     defined_for = StateCode.HI
     unit = USD
     definition_period = YEAR
@@ -52,16 +60,10 @@ class hi_act_115_rebate(Variable):
         independent_filers = tax_unit(
             "head_spouse_count_not_dependent_elsewhere", period
         )
-        dependent_taxpayer = tax_unit(
-            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
-        )
-        filers = add(tax_unit, period, ["is_tax_unit_head_or_spouse"])
-        dependent_filers = filers - independent_filers
-        ordinary_exemptions = max_(exemptions - dependent_filers, 0)
+        # exemptions_count applies these rules: it leaves out a claimable
+        # filer's own exemption and, unless the filing exception applies, the
+        # return's dependents.
         qualified_exemptions = where(
-            dependent_taxpayer, independent_filers, ordinary_exemptions
-        )
-        qualified_exemptions = where(
-            dependent_filer & (independent_filers == 0), 0, qualified_exemptions
+            dependent_filer & (independent_filers == 0), 0, exemptions
         )
         return amount_per_exemption * qualified_exemptions

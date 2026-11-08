@@ -1,0 +1,34 @@
+from policyengine_us.model_api import *
+
+
+class in_military_retirement_deduction(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Indiana military retirement deduction"
+    unit = USD
+    definition_period = YEAR
+    reference = (
+        "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-4",
+        "https://forms.in.gov/Download.aspx?id=16915#page=20",
+        "https://www.in.gov/dor/files/ib27.pdf",
+    )
+    defined_for = StateCode.IN
+
+    def formula(tax_unit, period, parameters):
+        person = tax_unit.members
+        p = (
+            parameters(period)
+            .gov.states["in"]
+            .tax.income.deductions.military_retirement
+        )
+        # Dependents' income is not in federal AGI; they report it on their
+        # own return.
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        # IC 6-3-2-4(a)(2) covers the service member and surviving spouse.
+        retirement_pay = person("military_retirement_pay", period)
+        survivor_pay = person("military_retirement_pay_survivors", period)
+        surviving_spouse = person("is_surviving_spouse", period)
+        military_retirement = retirement_pay + survivor_pay * surviving_spouse
+        excess = max_(0, military_retirement - p.base)
+        person_deduction = min_(military_retirement, p.base) + p.excess_rate * excess
+        return tax_unit.sum(person_deduction * head_or_spouse)

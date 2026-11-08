@@ -142,10 +142,14 @@ def _assert_conservation(members, simulation):
     # non-premium expenses. Check the bound separately from conservation.
     assert (schedule_a_premium_use >= 0).all()
     assert (schedule_a_premium_use >= dependent_premiums).all()
-    assert (schedule_a_premium_use + se_deduction <= paid).all()
+    # The Form 7206 earnings limit leaves cents in the derived deduction, so
+    # the sums carry float32 rounding: allow a cent.
+    assert (schedule_a_premium_use + se_deduction <= paid + 0.01).all()
     # All premiums here are otherwise eligible: unused premiums remain in
     # Schedule A's base, even when earnings cap the SE deduction.
-    np.testing.assert_array_equal(schedule_a_premium_use + se_deduction, paid)
+    np.testing.assert_allclose(
+        schedule_a_premium_use + se_deduction, paid, rtol=0, atol=0.01
+    )
 
 
 EXAMPLE_UNITS = [
@@ -289,9 +293,6 @@ def test_nj_excludes_each_dependents_deduction_only_from_their_own_premiums(
     simulation = _nj_simulation(members, reference_system)
     paid = np.array([sum(person["premiums"] for person in unit) for unit in members])
     other = np.array([sum(person["other"] for person in unit) for unit in members])
-    deductions = np.array(
-        [sum(person["deduction"] for person in unit) for unit in members]
-    )
     person_exclusions = [
         [min(person["deduction"], person["premiums"]) for person in unit]
         for unit in members
@@ -303,7 +304,10 @@ def test_nj_excludes_each_dependents_deduction_only_from_their_own_premiums(
         )
     excluded = np.array([sum(exclusions) for exclusions in person_exclusions])
     nj_deduction = simulation.calculate("nj_medical_expense_deduction", PERIOD)
-    actual_exclusion = paid + other + deductions - nj_deduction
+    # The dependents' separate SE deductions are on their own returns, with
+    # their income (nj_agi leaves both out), so the parent's deduction does
+    # not add them.
+    actual_exclusion = paid + other - nj_deduction
 
     # C.54A:3-3(c)(3) excludes only amounts separately deducted. Each person's
     # exclusion is bounded before summation, so no ALD can consume a different
@@ -312,7 +316,7 @@ def test_nj_excludes_each_dependents_deduction_only_from_their_own_premiums(
     assert (actual_exclusion >= 0).all()
     assert (actual_exclusion <= excluded).all()
     np.testing.assert_array_equal(actual_exclusion, excluded)
-    np.testing.assert_array_equal(nj_deduction, paid + other + deductions - excluded)
+    np.testing.assert_array_equal(nj_deduction, paid + other - excluded)
 
 
 # Flat strategies keep generation small while varying independent caller
@@ -395,7 +399,10 @@ def _state_simulation(cases, reference_system, with_se_deduction):
         # deduction. The oracle preserves the supplied amount exactly as main
         # does; only the computed path restores an applied federal exclusion.
         main_base = case["subtotal"] if supplied else gross
+        # The credit (NMSA 7-2-18.13) takes expenses of $28,000 or more; the
+        # exemption (NMSA 7-2-5.9(A)) takes expenses that "exceed" $28,000.
         senior_eligible = case["age"] >= 65 and main_base >= 28_000
+        senior_exemption_eligible = case["age"] >= 65 and main_base > 28_000
         denominator = 2 if case["filing_status"] == "SEPARATE" else 1
 
         for state in ("ND", "NM"):
@@ -462,8 +469,9 @@ def _state_simulation(cases, reference_system, with_se_deduction):
                 if state == "NM" and senior_eligible and not case["dependent_elsewhere"]
                 else 0
             )
+            # NMSA 7-2-5.9 and PIT-ADJ line 18 allow the full exemption.
             expectations["nm_medical_expense_exemption"].append(
-                3_000 / denominator if state == "NM" and senior_eligible else 0
+                3_000 if state == "NM" and senior_exemption_eligible else 0
             )
     simulation = Simulation(
         tax_benefit_system=reference_system,

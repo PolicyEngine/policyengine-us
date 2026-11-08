@@ -69,7 +69,7 @@
     filing_status: JOINT
     age_head: 35
     claimed_as_dependent_on_another_return: true
-    tax_unit_earned_income: 600
+    standard_deduction_worksheet_earned_income: 600
   output: 
     # $1100 base 
     or_standard_deduction: 1_100
@@ -81,7 +81,7 @@
     filing_status: SINGLE
     age_head: 35
     claimed_as_dependent_on_another_return: true
-    tax_unit_earned_income: 1_000
+    standard_deduction_worksheet_earned_income: 1_000
   output:
     # $1000 income + $350 addition, below the $2,350 normal standard deduction cap.
     or_standard_deduction: 1_350
@@ -93,7 +93,7 @@
     filing_status: SINGLE
     age: 35
     claimed_as_dependent_on_another_return: true
-    tax_unit_earned_income: 1_000
+    standard_deduction_worksheet_earned_income: 1_000
     blind_head: true
   output:
     # $1000 income + $350 addition + $1200 blind
@@ -156,7 +156,7 @@
       tax_unit:
         members: [person_a, person_b]
         filing_status: JOINT
-        tax_unit_earned_income: 3_000
+        standard_deduction_worksheet_earned_income: 3_000
     households:
       household:
         members: [person_a, person_b]
@@ -183,7 +183,7 @@
       tax_unit:
         members: [person_b, person_a]
         filing_status: JOINT
-        tax_unit_earned_income: 3_000
+        standard_deduction_worksheet_earned_income: 3_000
     households:
       household:
         members: [person_b, person_a]
@@ -213,3 +213,47 @@
     # $1,500 - $1,500 x 0.9235 x 15.3% / 2 = $1,394.03; plus $450 = $1,844.03,
     # above the $1,350 minimum and below the $2,835 single amount.
     or_standard_deduction: 1844.03
+
+- name: 2025 dependent filer with a 401(k) deferral uses W-2 box 1 wages
+  # Earned income is figured as in the federal worksheet, from W-2 box 1,
+  # which leaves out the $2,000 elective deferral: $3,000 - $2,000 = $1,000;
+  # $1,000 + $450 = $1,450, above the $1,350 minimum and below the $2,835
+  # single amount.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 3_000
+        traditional_401k_contributions: 2_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: OR
+  output:
+    or_standard_deduction: 1_450
+
+- name: 2025 dependent filer with the same box 1 wages and no deferral gets the same deduction
+  # Control for the case above: $1,000 + $450 = $1,450.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: OR
+  output:
+    or_standard_deduction: 1_450
