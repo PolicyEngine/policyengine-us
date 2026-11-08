@@ -8580,9 +8580,76 @@ candidates:
     - policyengine_us/variables/gov/states/or/tax/income/subtractions/or_federal_tax_liability_subtraction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10038
+    - https://github.com/PolicyEngine/policyengine-us/pull/10093
   state: ruled
-  note: An October 2026 ruling followed the worksheet; under the later statute-first rule the code follows ORS
-    316.685(1)(b), starting from federal income tax after all credits and adding back only the earned income credit.
+  note: An October 2026 ruling followed the worksheet; a 2026-10-20 ruling under the later statute-first rule chose
+    the statute, and the code follows ORS 316.685(1)(b). The formula subtracts every federal refundable credit except
+    the EITC, and gov.irs.credits.refundable lists the section 1341 credit, so that credit reduces the subtraction.
+    The worksheet's list conflicts with the statute.
+- id: us-or:federal-tax-subtraction-niit
+  program: income-tax
+  years:
+    from: 2017
+    to: 2025
+    type: tax
+  question: Is the net investment income tax among the federal income taxes accrued that Oregon's federal-tax
+    subtraction allows, though the OR-17 worksheet's other-taxes line leaves it out?
+  sources:
+  - kind: statute
+    citation: ORS 316.680(1)(b) and 316.685
+    url: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html
+  - kind: statute
+    citation: 26 U.S.C. 1411(a)(1)
+    url: https://www.law.cornell.edu/uscode/text/26/1411#a_1
+  - kind: worksheet
+    citation: 2025 OR-17 federal tax worksheet, Part A, PDF pp.71-72 (each year 2017-2025)
+    url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71
+  readings:
+    statute: 26 U.S.C. 1411(a)(1) imposes the net investment income tax under Subtitle A, and the closed list in ORS
+      316.685(3) excludes only payroll taxes and the self-employment tax (chapter 2), not chapter 2A, so the net
+      investment income tax counts.
+    other: The worksheet's other-taxes line does not include the net investment income tax.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/or/tax/income/subtractions/or_federal_tax_liability_subtraction.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10093
+  state: ruled
+  note: The code follows the statute and keeps the net investment income tax in the federal tax it subtracts; the
+    worksheet's other-taxes line leaves it out.
+- id: us-or:federal-tax-subtraction-unlisted-refundable-credits
+  program: income-tax
+  years:
+    from: 2017
+    to: 2025
+    type: tax
+  question: Do refundable credits the OR-17 worksheet does not list, such as the additional child tax credit outside
+    2021 and the refundable payroll tax credit, reduce Oregon's federal-tax subtraction?
+  sources:
+  - kind: statute
+    citation: ORS 316.680(1)(b) and 316.685(1)(b)
+    url: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html
+  - kind: guidance
+    citation: 2025 Publication OR-17, PDF p.71
+    url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71
+  - kind: worksheet
+    citation: 2025 OR-17 federal tax worksheet, Part A, PDF pp.71-72 (each year 2017-2025)
+    url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71
+  readings:
+    statute: ORS 316.685(1)(b) leaves out only the earned income credit, so every other refundable credit reduces the
+      subtraction.
+    other: The publication's prose says credits other than the EITC reduce the subtraction, but the worksheet subtracts
+      only the credits it lists for each year.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/or/tax/income/subtractions/or_federal_tax_liability_subtraction.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10093
+  state: ruled
+  note: The code follows the statute and subtracts every federal refundable credit except the EITC, plus the premium
+    tax credit, including credits the worksheet does not list, such as the additional child tax credit outside 2021.
 - id: us-or:liheap-final-payment-band-bound
   program: liheap
   years:
