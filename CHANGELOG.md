@@ -1,3 +1,10 @@
+## [2.107.4] - 2026-11-08
+
+### Fixed
+
+- Net the premium tax credit out of Oregon's federal tax liability subtraction, and stop counting the employee payroll tax on unreported tips and wages.
+
+
 ## [2.107.3] - 2026-11-08
 
 ### Fixed
