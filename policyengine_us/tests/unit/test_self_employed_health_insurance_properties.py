@@ -24,13 +24,20 @@ retirement plan is established (self_employed_pension_plan_business). With one
 named business, all of it is attributable to that business. By default every
 profitable business has a plan and the person chooses how much each plan
 carries, so line 9 for a business is the least its plan must carry while the
-other plans carry as much as they can. The model treats the plans as one
-employer's, so the Pub. 560 worksheet limits apply to the plans together
-(sections 415(f)(1)(B) and 404(a)(3)(A)(iv)), and each plan's contributions
-stay within its own business's earned income (404(a)(8)(C)). The reference
-finds that least share with an exact linear program, solved here by
-enumerating the vertices of its feasible set, so it shares no code with the
-model's closed form.
+other plans carry as much as they can. The person is the employer for their
+own Schedule C business and farm, and a partnership is the employer of its
+partners (sections 401(c)(4) and 404(a)(8)(A)). Each employer's contributions
+stay within the reduced plan rate times the earned income of its plans'
+businesses (404(a)(3)(A), (a)(8)(D) and (a)(12)), and the person's elective
+deferrals can sit in any of the plans, within one section 402(g) limit
+(402(g)(1)(A) and 404(n)). As in the plan limit, the dollar limit and the
+limit of half of earned income less deferrals apply to all of the plans
+together, as section 415 applies them to one employer's plans (415(f)(1)(B))
+and to a partnership the person controls (414(c) and 415(h)). Each plan's
+contributions stay within its own business's earned income (404(a)(8)(C)).
+The reference finds that least share with an exact linear program, solved
+here by enumerating the vertices of its feasible set, so it shares no code
+with the model's closed form.
 
 Hypothesis draws batches of self-employed single filers, each with a
 retirement plan business, and runs each batch as one vectorized baseline
@@ -72,7 +79,8 @@ The plan limit's property tests tie the model's plan limit to the Pub. 560
 worksheet, so check 1 makes the program's constraints the worksheet's. One
 test needs no simulation: it checks the model's line 9 function against the
 linear program over drawn earned incomes, contributions and limits, including
-plan rates other than 25%.
+plan rates other than 25%, and checks that separate employers' limits leave
+the program's largest total unchanged.
 
 The model computes in float32, whose spacing passes a cent above $131,072, so
 comparisons allow a relative error of 1e-6, of the amounts that enter each
@@ -139,54 +147,72 @@ COPIES = (
     + [(prefix + "_c", business, 0, "SCHEDULE_C") for prefix, business in HEALTH_COPIES]
 )
 
-# The linear program behind line 9. Two plans: the plans under the other
-# businesses together (each one's only limit of its own is its earned income,
-# so together they act as one plan with the sum of their earned income), then
-# the plan under this business. x = [employer contributions, regular elective
-# deferrals, catch-up contributions] for the other plans, then for this one.
+# The linear program behind line 9, with three plans: the plan under this
+# business (t), the plans of the same employer under the person's other
+# businesses (s), and the plans of the other employer (o). The person is the
+# employer for their own Schedule C business and farm, and a partnership is
+# the employer of its partners (26 U.S.C. 401(c)(4) and 404(a)(8)(A)). So
+# for the Schedule C business s is the farm's plan and o the partnership's,
+# and for the partnership s is empty and o is the plans under the Schedule C
+# business and the farm. Within s or o, each plan's only limit of its own is
+# its earned income, so they act as one plan with the sum of their earned
+# income. x = [employer contributions of t, s and o; elective deferrals of
+# t, s and o; the regular deferrals among all of them], so the catch-up
+# contributions are the deferrals less the regular ones.
 LP_ROWS = np.array(
     [
-        # The plans together, since one employer's plans count as one, from
-        # Pub. 560's Deduction Worksheet for Self-Employed: employer
-        # contributions at most the reduced rate times earned income (steps 4
-        # and 5) and at most half of earned income less deferrals (step 12).
-        [1, 0, 0, 1, 0, 0],
-        [2, 1, 0, 2, 1, 0],
-        # Each plan alone: all of its contributions at most its own
-        # business's earned income (404(a)(8)(C)).
-        [1, 1, 1, 0, 0, 0],
-        [0, 0, 0, 1, 1, 1],
+        # Each employer: employer contributions at most the reduced rate times
+        # the earned income of its plans' businesses (Pub. 560 steps 4 and 5;
+        # 404(a)(3)(A), (a)(8)(D) and (n)).
+        [1, 1, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0],
+        # All of the plans together, as section 415 treats one employer's
+        # plans: employer contributions at most half of earned income less
+        # regular deferrals (step 12), and with the regular deferrals within
+        # the dollar limit (415(c)).
+        [2, 2, 2, 0, 0, 0, 1],
+        [1, 1, 1, 0, 0, 0, 1],
         # The person's regular and catch-up elective deferral room (402(g)
-        # and 414(v)) and the dollar limit on employer contributions and
-        # regular deferrals (415(c)).
-        [0, 1, 0, 0, 1, 0],
-        [0, 0, 1, 0, 0, 1],
-        [1, 1, 0, 1, 1, 0],
+        # and 414(v)), with no negative catch-up contributions.
+        [0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 1, 1, 1, -1],
+        [0, 0, 0, -1, -1, -1, 1],
+        # Each plan: all of its contributions at most its own businesses'
+        # earned income (404(a)(8)(C)).
+        [1, 0, 0, 1, 0, 0, 0],
+        [0, 1, 0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0, 1, 0],
         # No negative contributions.
-        *(-np.eye(6)),
+        *(-np.eye(7)),
     ],
     dtype=float,
 )
+# The plan deduction: every employer contribution and elective deferral.
+TOTAL_ROW = np.array([1, 1, 1, 1, 1, 1, 0], dtype=float)
+# What the plan under this business carries.
+THIS_PLAN_ROW = np.array([1, 0, 0, 1, 0, 0, 0], dtype=float)
 # The program's arithmetic is float64, accurate to about 1e-10 dollars.
 LP_TOLERANCE = 1e-6
 
 
-def lp_bounds(this, other, rate, dollar_limit, regular_room, catch_up_room):
+def lp_bounds(this, same, other, rate, dollar_limit, regular_room, catch_up_room):
     """Right-hand sides of LP_ROWS for each case."""
     reduced_rate = rate / (1 + rate)
     zeros = np.zeros_like(this)
-    both = this + other
     return np.stack(
         [
-            reduced_rate * both,
-            both,
-            other,
-            this,
+            reduced_rate * (this + same),
+            reduced_rate * other,
+            this + same + other,
+            dollar_limit + zeros,
             regular_room + zeros,
             catch_up_room + zeros,
-            dollar_limit + zeros,
+            zeros,
+            this,
+            same,
+            other,
         ]
-        + [zeros] * 6,
+        + [zeros] * 7,
         axis=-1,
     )
 
@@ -203,7 +229,7 @@ def vertex_systems(with_total):
     for rows in itertools.combinations(range(len(LP_ROWS)), columns - with_total):
         system = LP_ROWS[list(rows)]
         if with_total:
-            system = np.vstack([system, np.ones(columns)])
+            system = np.vstack([system, TOTAL_ROW])
         if abs(np.linalg.det(system)) > 1e-9:
             chosen.append(rows)
             inverses.append(np.linalg.inv(system))
@@ -211,7 +237,8 @@ def vertex_systems(with_total):
 
 
 def lp_minimum(objective, bounds, total=None):
-    """Least objective over LP_ROWS x <= bounds, and sum(x) == total if given.
+    """Least objective over LP_ROWS x <= bounds, and TOTAL_ROW x == total if
+    given.
 
     The feasible set is a bounded polytope, so the minimum is at one of its
     vertices; returns infinity where the set is empty.
@@ -229,16 +256,37 @@ def lp_minimum(objective, bounds, total=None):
     return np.where(feasible, points @ objective, np.inf).min(axis=1)
 
 
-def lp_largest_total(this, other, rate, dollar_limit, regular_room, catch_up_room):
-    """Largest total contribution to the two plans."""
-    bounds = lp_bounds(this, other, rate, dollar_limit, regular_room, catch_up_room)
-    return -lp_minimum(-np.ones(6), bounds)
+def lp_largest_total(
+    this, same, other, rate, dollar_limit, regular_room, catch_up_room
+):
+    """Largest plan deduction the three plans allow."""
+    bounds = lp_bounds(
+        this, same, other, rate, dollar_limit, regular_room, catch_up_room
+    )
+    return -lp_minimum(-TOTAL_ROW, bounds)
 
 
-def lp_least_share(total, this, other, rate, dollar_limit, regular_room, catch_up_room):
+def lp_least_share(
+    total, this, same, other, rate, dollar_limit, regular_room, catch_up_room
+):
     """Least that this business's plan carries of a total the plans share."""
-    bounds = lp_bounds(this, other, rate, dollar_limit, regular_room, catch_up_room)
-    return lp_minimum(np.array([0, 0, 0, 1, 1, 1.0]), bounds, total)
+    bounds = lp_bounds(
+        this, same, other, rate, dollar_limit, regular_room, catch_up_room
+    )
+    return lp_minimum(THIS_PLAN_ROW, bounds, total)
+
+
+def employer_groups(plan_earned_income, business):
+    """Earned income of the plan under this business, of the same employer's
+    other plans, and of the other employer's plans."""
+    schedule_c = plan_earned_income["SCHEDULE_C"]
+    farm = plan_earned_income["SCHEDULE_F"]
+    partnership = plan_earned_income["PARTNERSHIP"]
+    return {
+        "SCHEDULE_C": (schedule_c, farm, partnership),
+        "SCHEDULE_F": (farm, schedule_c, partnership),
+        "PARTNERSHIP": (partnership, np.zeros_like(partnership), schedule_c + farm),
+    }[business]
 
 
 def every_year(value):
@@ -326,22 +374,22 @@ def form_7206_limits(
         )
         for business in SELF_EMPLOYMENT_BUSINESSES
     }
-    all_plan_earned_income = sum(plan_earned_income.values())
     largest_total = lp_largest_total(
-        plan_earned_income["SCHEDULE_C"],
-        all_plan_earned_income - plan_earned_income["SCHEDULE_C"],
-        *room,
+        *employer_groups(plan_earned_income, "SCHEDULE_C"), *room
     )
     # Line 16 comes from the model in float32 and may pass the largest total
     # by a rounding error.
-    total = np.minimum(line_16, largest_total)
+    total = np.minimum(line_16, largest_total)[every_business]
     line_13 = {}
     for business in SELF_EMPLOYMENT_BUSINESSES:
-        this = plan_earned_income[business]
-        least = lp_least_share(total, this, all_plan_earned_income - this, *room)
-        line_9 = np.select(
-            [every_business, plan_business == business], [least, line_16], 0
-        )
+        # A plan under one named business carries all of line 16.
+        line_9 = np.where(plan_business == business, line_16, 0.0)
+        # Plans under every business: the least this business's plan carries.
+        if every_business.any():
+            plans = employer_groups(plan_earned_income, business)
+            line_9[every_business] = lp_least_share(
+                total, *(plan[every_business] for plan in plans), *room
+            )
         line_13[business] = np.maximum(line_8[business] - line_9, 0)
     line_13["S_CORPORATION"] = np.maximum(s_corp, 0)
     return line_13, line_8, largest_total
@@ -409,28 +457,34 @@ def check_properties(sim, filers, n):
         expected_line_15 = schedule_se_deduction(
             year, schedule_c, farm, partnership, wages
         )
+        # The Form 7206 reference for each retirement plan configuration, the
+        # drawn plan businesses and the plan under the Schedule C business
+        # alone, from the line 16 of its first copy.
+        references = {
+            plan: form_7206_limits(
+                year,
+                schedule_c,
+                farm,
+                partnership,
+                s_corp,
+                drawn_plan_business if plan is None else np.full(n, plan),
+                expected_line_15,
+                copy(line_16, prefix).astype(float),
+            )
+            for plan, prefix in [(None, "u"), ("SCHEDULE_C", "u_c")]
+        }
         # The reference limit and the float32 scale, every amount that enters
         # a limit, for every copy in the simulation's order.
         reference_limit, scale = [], []
         for prefix, health_business, _, plan in COPIES:
             # Line 15 from Schedule SE.
             close(copy(line_15, prefix), expected_line_15)
-            plan_business = drawn_plan_business if plan is None else np.full(n, plan)
             plan_deduction = copy(line_16, prefix).astype(float)
             # Line 16 depends on the retirement plan business but not on
             # premiums or the named health plan business, so the plan limit
             # never reads the health insurance deduction.
             close(plan_deduction, copy(line_16, "u" if plan is None else "u_c"))
-            line_13, line_8, largest_total = form_7206_limits(
-                year,
-                schedule_c,
-                farm,
-                partnership,
-                s_corp,
-                plan_business,
-                expected_line_15,
-                plan_deduction,
-            )
+            line_13, line_8, largest_total = references[plan]
             copy_scale = profits + plan_deduction
             # 1. Reference: the program's largest total is the model's plan
             # limit.
@@ -640,12 +694,13 @@ def test_reviewer_example_and_boundaries():
     # In 2026 the partnership's plan carries its whole earned income,
     # 9,293.5225, of the 35,652.227 plan deduction, and the Schedule C
     # business keeps 46,467.6125 - 26,358.7045 = 20,108.908. With two equal
-    # businesses, the other business's plan carries 39,962.14675 of
-    # 40,484.8587, and each business keeps 39,962.14675 - 522.71195 =
-    # 39,439.4348.
+    # businesses, the other business's plan carries its employer's limit,
+    # 0.2 x 39,962.14675 = 7,992.42935, and all 24,500 of elective deferrals,
+    # 32,492.42935 of the 40,484.8587 plan deduction, and each business keeps
+    # 39,962.14675 - 7,992.42935 = 31,969.7174.
     deduction = sim.calculate("self_employed_health_insurance_ald_person", 2026)[:n]
     assert abs(deduction[12] - 20_108.908) < 0.02
-    assert abs(deduction[13] - 39_439.4348) < 0.02
+    assert abs(deduction[13] - 31_969.7174) < 0.02
     # With plans under all three businesses, the two 10,000 businesses'
     # plans carry 9,293.5225 each of the 39,369.636 plan deduction, and the
     # 60,000 business keeps 55,761.135 - 20,782.591 = 34,978.544, the largest
@@ -654,9 +709,9 @@ def test_reviewer_example_and_boundaries():
         assert abs(deduction[i] - 34_978.544) < 0.02
 
 
-# Draws for the line 9 function: earned income of the business and of the
-# other plans, the shared limits and room, and the plan deduction as a share
-# of the largest total.
+# Draws for the line 9 function: earned income of the business, of the same
+# employer's other plans and of the other employer's plans, the shared limits
+# and room, and the plan deduction as a share of the largest total.
 earned_income = st.one_of(
     st.just(0.0),
     st.floats(0, 40_000),
@@ -665,6 +720,7 @@ earned_income = st.one_of(
 plan_case = st.fixed_dictionaries(
     {
         "this": earned_income,
+        "same": earned_income,
         "other": earned_income,
         "rate": st.sampled_from([0.25, 0.25, 0.15, 0.4, 1.0]),
         "dollar_limit": st.one_of(
@@ -697,6 +753,7 @@ def plan_arrays(cases):
         # Case 26: the partnership's plan carries its whole earned income.
         dict(
             this=46_467.6125,
+            same=0.0,
             other=9_293.5225,
             rate=0.25,
             dollar_limit=72_000.0,
@@ -704,10 +761,51 @@ def plan_arrays(cases):
             catch_up_room=0.0,
             share=1.0,
         ),
-        # Case 27: two equal businesses.
+        # Case 27: two equal businesses, one of them the partnership. The
+        # other plan carries its employer's limit and all of the elective
+        # deferrals, and this one carries the 7,992.42935 left.
         dict(
             this=39_962.14675,
+            same=0.0,
             other=39_962.14675,
+            rate=0.25,
+            dollar_limit=72_000.0,
+            regular_room=24_500.0,
+            catch_up_room=0.0,
+            share=1.0,
+        ),
+        # Case 32: a farm in place of the partnership. The person is the
+        # employer for both plans, so the farm's plan can take all of their
+        # limit, and this one carries 522.71195.
+        dict(
+            this=39_962.14675,
+            same=39_962.14675,
+            other=0.0,
+            rate=0.25,
+            dollar_limit=72_000.0,
+            regular_room=24_500.0,
+            catch_up_room=0.0,
+            share=1.0,
+        ),
+        # Case 31: the partnership's plan beside a larger Schedule C
+        # business, which carries 43,087.045, so the partnership's plan
+        # carries 3,717.409.
+        dict(
+            this=18_587.045,
+            same=0.0,
+            other=92_935.225,
+            rate=0.25,
+            dollar_limit=72_000.0,
+            regular_room=24_500.0,
+            catch_up_room=0.0,
+            share=1.0,
+        ),
+        # Case 34: the farm's plan and the partnership's carry 39,369.636, so
+        # the Schedule C plan carries 4,832.6317.
+        dict(
+            this=46_467.6125,
+            same=5_576.1135,
+            other=46_467.6125,
             rate=0.25,
             dollar_limit=72_000.0,
             regular_room=24_500.0,
@@ -720,6 +818,7 @@ def plan_arrays(cases):
         # this one carries 8,000.
         dict(
             this=8_000.0,
+            same=0.0,
             other=2_000.0,
             rate=0.25,
             dollar_limit=72_000.0,
@@ -731,6 +830,7 @@ def plan_arrays(cases):
         # all.
         dict(
             this=0.0,
+            same=0.0,
             other=50_000.0,
             rate=0.25,
             dollar_limit=72_000.0,
@@ -741,6 +841,7 @@ def plan_arrays(cases):
         # No other business has earned income, so this plan carries it all.
         dict(
             this=50_000.0,
+            same=0.0,
             other=0.0,
             rate=0.25,
             dollar_limit=72_000.0,
@@ -752,9 +853,30 @@ def plan_arrays(cases):
 )
 def test_line_9_is_the_least_share_the_plans_allow(cases):
     c = plan_arrays(cases)
+    plans = (c["this"], c["same"], c["other"])
     room = (c["rate"], c["dollar_limit"], c["regular_room"], c["catch_up_room"])
-    largest = lp_largest_total(c["this"], c["other"], *room)
+    largest = lp_largest_total(*plans, *room)
+    # Separate employers' limits leave the largest total unchanged: it equals
+    # the largest total with every plan under one employer, so the plan limit
+    # can apply the worksheet to all of the plans together.
+    one_employer = lp_largest_total(
+        c["this"], c["same"] + c["other"], np.zeros_like(c["other"]), *room
+    )
+    np.testing.assert_allclose(largest, one_employer, rtol=1e-9, atol=1e-6)
     total = c["share"] * largest
-    least = lp_least_share(total, c["this"], c["other"], *room)
-    model = plan_deduction_attributable_to_business(total, c["other"])
+    least = lp_least_share(total, *plans, *room)
+    # The arguments form_7206_line_13 passes: the other plans' earned income,
+    # what the employers' limits leave for their employer contributions when
+    # this business's plan makes none, and the elective deferral room.
+    reduced_rate = c["rate"] / (1 + c["rate"])
+    other_employer_room = (
+        np.minimum(c["same"], reduced_rate * (c["this"] + c["same"]))
+        + reduced_rate * c["other"]
+    )
+    model = plan_deduction_attributable_to_business(
+        total,
+        c["same"] + c["other"],
+        other_employer_room,
+        c["regular_room"] + c["catch_up_room"],
+    )
     np.testing.assert_allclose(model, least, rtol=1e-9, atol=1e-6)

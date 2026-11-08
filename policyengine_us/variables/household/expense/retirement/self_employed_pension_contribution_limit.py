@@ -34,25 +34,32 @@ class self_employed_pension_contribution_limit(Variable):
         "(self_employed_pension_earned_income). A sole proprietor is the "
         "employer for all of their own businesses, and one employer's plans "
         "count as one plan for these limits, so the worksheet applies to the "
-        "plans' combined contributions and earned income. A partnership is a "
-        "separate employer unless the person controls it, and its plan then "
-        "has limits of its own. The model treats all of the plans as one "
-        "employer's. For this limit that matters only when the dollar limit "
-        "binds, since the elective deferral limits cover all of a person's "
-        "employers and the other limits grow in step with each business's "
-        "earned income. Defined benefit plans are not modeled, so "
+        "plans' combined contributions and earned income. A partnership is "
+        "the employer of its partners, so its plan's employer contributions "
+        "have a deduction limit of their own, and its section 415 limits join "
+        "those of the person's own plans only when the person controls more "
+        "than 50 percent of the partnership. The model applies the worksheet "
+        "to all of the plans together. For this limit that matters only when "
+        "the person doesn't control the partnership and the dollar limit "
+        "binds: the elective deferral limits cover all of a person's "
+        "employers, and the other limits grow in step with each business's "
+        "earned income, so with the deferrals split among the plans, each "
+        "plan's own limits add up to the limits for the plans together. "
+        "Defined benefit plans are not modeled, so "
         "contributions to them above this limit are cut."
     )
     definition_period = YEAR
     reference = (
-        # Subsections (a)(3)(A)(i)(I) and (iv), (a)(8)(C) and (D), (a)(10),
+        # Subsections (a)(3)(A)(i)(I) and (iv), (a)(8), (a)(10), (a)(12),
         # (h)(1)(C) and (2), and (n).
         "https://www.law.cornell.edu/uscode/text/26/404",
         # Subsections (a)(2), (c)(1), (c)(3)(B) and (D), (f)(1)(B) and (h):
         # section 415 aggregates the plans of one employer.
         "https://www.law.cornell.edu/uscode/text/26/415",
-        # Subsection (c), under which employers under common control are one
-        # employer, and (v)(2)(A) and (v)(3)(A), on catch-up contributions.
+        # Subsection (c), under which businesses under common control are one
+        # employer for sections 401 and 415 among others, though not for
+        # section 404, and (v)(2)(A) and (v)(3)(A), on catch-up
+        # contributions.
         "https://www.law.cornell.edu/uscode/text/26/414",
         # PDF pages 7, 10, 15, 39: the employer and compensation of a
         # self-employed person, the plans one employer maintains counting
@@ -77,19 +84,7 @@ class self_employed_pension_contribution_limit(Variable):
         # Step 9: elective deferrals, up to the section 402(g) room left
         # after deferrals to other employers' plans, which use the regular
         # limit before the catch-up amount.
-        other_deferrals = add(
-            person,
-            period,
-            [
-                "traditional_401k_contributions",
-                "roth_401k_contributions",
-                "traditional_403b_contributions",
-                "roth_403b_contributions",
-            ],
-        )
-        deferral_room = max_(
-            0, person("elective_deferral_limit", period) - other_deferrals
-        )
+        deferral_room = elective_deferral_room(person, period)
         catch_up_room = min_(deferral_room, person("k401_catch_up_limit", period))
         regular_deferral_room = deferral_room - catch_up_room
         # Steps 10 to 15: employer contributions stay within step 7 and
@@ -104,3 +99,23 @@ class self_employed_pension_contribution_limit(Variable):
         # Steps 16 to 19: catch-up contributions, outside the dollar limit.
         # The total never exceeds earned income.
         return min_(earned_income, annual_additions + catch_up_room)
+
+
+def elective_deferral_room(person, period):
+    """Section 402(g) elective deferral room, with any catch-up amount, left
+    after the person's deferrals to other employers' 401(k) and 403(b) plans.
+
+    The limit covers all of an individual's elective deferrals, whatever the
+    employer (402(g)(1)(A)), so the person's own plans share this room.
+    """
+    other_deferrals = add(
+        person,
+        period,
+        [
+            "traditional_401k_contributions",
+            "roth_401k_contributions",
+            "traditional_403b_contributions",
+            "roth_403b_contributions",
+        ],
+    )
+    return max_(0, person("elective_deferral_limit", period) - other_deferrals)

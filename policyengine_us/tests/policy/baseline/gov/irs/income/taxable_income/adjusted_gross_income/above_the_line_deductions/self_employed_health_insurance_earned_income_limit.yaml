@@ -9,6 +9,11 @@
 # business (self_employed_pension_plan_business) puts all of line 16 there. By
 # default every profitable business has a plan, and line 9 is the least that
 # this business's plan must carry while the other plans carry all they can.
+# The person is the employer for their own Schedule C business and farm, whose
+# plans share one limit on employer contributions, 20% of their earned income
+# at the 25% plan rate. A partnership is the employer of its partners, so its
+# plan's limit is 20% of the person's earned income from the partnership. The
+# person's elective deferrals can sit in any of the plans.
 
 - name: Case 1, one business, the limit is net profit less half of self-employment tax.
   period: 2022
@@ -283,14 +288,16 @@
     # Within the 2023 limit of min(66,000, 5,576.11 + 22,500,
     # (27,880.57 + 22,500) / 2) = 25,190.28.
     self_employed_pension_contribution_ald_person: 15_000
-    # Line 9 for the Schedule C business: the person is one employer, so the
-    # worksheet limits apply to both plans together, and each plan can carry
-    # up to its own business's earned income (26 U.S.C. 404(a)(8)(C)). The
-    # partnership's plan carries 9,293.5225, and the Schedule C plan carries
-    # 15,000 - 9,293.5225 = 5,706.4775. Line 10: 18,587.045 - 5,706.4775 =
-    # 12,880.5675. For the partnership, line 9 is 0, since the Schedule C
-    # plan can carry all 15,000, and line 10 is 9,293.5225. The larger is
-    # the limit.
+    # Line 9 for the Schedule C business: each plan can carry up to its own
+    # business's earned income (26 U.S.C. 404(a)(8)(C)). The partnership's
+    # plan can take its employer's limit, 0.2 x 9,293.5225 = 1,858.7045, and
+    # the elective deferrals, so it carries its whole earned income,
+    # 9,293.5225, and the Schedule C plan carries 15,000 - 9,293.5225 =
+    # 5,706.4775. Line 10: 18,587.045 - 5,706.4775 = 12,880.5675. For the
+    # partnership, line 9 is 0, since the Schedule C plan can carry all
+    # 15,000: 0.2 x 18,587.045 = 3,717.409 of employer contributions and
+    # 11,282.591 of deferrals. Line 10 is 9,293.5225. The larger is the
+    # limit.
     self_employed_health_insurance_earned_income_limit: 12_880.5675
 
 - name: Case 23, a retirement plan under the partnership leaves the Schedule C business's earned income whole.
@@ -330,8 +337,8 @@
     # Line 15: 2,825.91. Line 8: Schedule C 27,880.5675 and farm 9,293.5225.
     self_employed_pension_contribution_ald_person: 4_000
     # Line 9 for the farm: 0, since the plan under the Schedule C business
-    # can carry up to that business's earned income, 27,880.5675, which
-    # covers all 4,000. Line 10: 9,293.5225.
+    # can carry all 4,000, within that business's earned income, 27,880.5675.
+    # Line 10: 9,293.5225.
     self_employed_health_insurance_earned_income_limit: 9_293.5225
 
 - name: Case 26, the partnership's plan carries its whole earned income, and the Schedule C plan carries the rest.
@@ -349,14 +356,14 @@
     # The 2026 limit: min(72,000, 0.2 x 55,761.135 + 24,500,
     # (55,761.135 + 24,500) / 2) = 35,652.227.
     self_employed_pension_contribution_ald_person: 35_652.227
-    # Line 9 for the Schedule C business. The worksheet limits apply to both
-    # plans together, so the partnership's plan can carry its whole earned
-    # income, 9,293.5225, and the Schedule C plan carries 35,652.227 -
-    # 9,293.5225 = 26,358.7045, within its own earned income. Line 10:
-    # 46,467.6125 - 26,358.7045 = 20,108.908.
+    # Line 9 for the Schedule C business. The partnership's plan can take its
+    # employer's limit, 0.2 x 9,293.5225 = 1,858.7045, and all 24,500 of
+    # elective deferrals, up to its whole earned income, 9,293.5225. So the
+    # Schedule C plan carries 35,652.227 - 9,293.5225 = 26,358.7045, within
+    # its own earned income. Line 10: 46,467.6125 - 26,358.7045 = 20,108.908.
     self_employed_health_insurance_earned_income_limit: 20_108.908
 
-- name: Case 27, with retirement plans under two equal businesses, the other plan carries its whole earned income.
+- name: Case 27, with retirement plans under two equal businesses, one of them a partnership, each plan's employer contributions stay within its employer's limit.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -370,11 +377,13 @@
     # The 2026 limit: min(72,000, 0.2 x 79,924.2935 + 24,500,
     # (79,924.2935 + 24,500) / 2) = 40,484.8587.
     self_employed_pension_contribution_ald_person: 40_484.8587
-    # Line 9 for either business. The other business's plan can carry its
-    # whole earned income, 39,962.14675, so this plan carries 40,484.8587 -
-    # 39,962.14675 = 522.71195. Line 10: 39,962.14675 - 522.71195 =
-    # 39,439.4348.
-    self_employed_health_insurance_earned_income_limit: 39_439.4348
+    # Line 9 for either business. The person is the employer for the
+    # Schedule C plan, and the partnership for its own plan, so each plan's
+    # employer contributions stay within 0.2 x 39,962.14675 = 7,992.42935.
+    # The other plan can carry that and all 24,500 of elective deferrals,
+    # 32,492.42935, so this plan carries 40,484.8587 - 32,492.42935 =
+    # 7,992.42935. Line 10: 39,962.14675 - 7,992.42935 = 31,969.7174.
+    self_employed_health_insurance_earned_income_limit: 31_969.7174
 
 - name: Case 28, with retirement plans under all three businesses, the plans under the farm and the partnership carry their whole earned income, and the Schedule C plan carries the rest.
   period: 2026
@@ -434,3 +443,120 @@
     # Line 9 for the partnership: 39,369.636 - 18,587.045 = 20,782.591. Line
     # 10: 55,761.135 - 20,782.591 = 34,978.544.
     self_employed_health_insurance_earned_income_limit: 34_978.544
+
+- name: Case 31, a health plan under a partnership beside a larger Schedule C business, whose plan carries its employer's limit and the elective deferrals.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: 100_000
+    partnership_self_employment_net_earnings: 20_000
+    self_employed_pension_contributions_desired: 60_000
+    self_employed_health_insurance_plan_business: PARTNERSHIP
+  output:
+    # Line 15: 120,000 x 0.9235 x 0.153 / 2 = 8,477.73. Line 8: Schedule C
+    # 100,000 - 5 / 6 x 8,477.73 = 92,935.225; partnership 18,587.045.
+    self_employment_tax_ald_person: 8_477.73
+    # The 2026 limit: min(72,000, 0.2 x 111,522.27 + 24,500,
+    # (111,522.27 + 24,500) / 2) = 46,804.454.
+    self_employed_pension_contribution_ald_person: 46_804.454
+    # Line 9 for the partnership. The Schedule C plan's employer
+    # contributions stay within the person's limit, 0.2 x 92,935.225 =
+    # 18,587.045, so it can carry that and all 24,500 of elective deferrals,
+    # 43,087.045, and the partnership's plan carries 46,804.454 - 43,087.045
+    # = 3,717.409. Line 10: 18,587.045 - 3,717.409 = 14,869.636.
+    self_employed_health_insurance_earned_income_limit: 14_869.636
+
+- name: Case 32, with retirement plans under two equal businesses, a Schedule C business and a farm, the farm's plan can take all of the person's employer limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: 43_000
+    farm_operations_income: 43_000
+    self_employed_pension_contributions_desired: 60_000
+    self_employed_health_insurance_plan_business: SCHEDULE_C
+  output:
+    # As in Case 27 with a farm in place of the partnership: line 8 is
+    # 39,962.14675 for each business, and the plan deduction is 40,484.8587.
+    self_employment_tax_ald_person: 6_075.7065
+    self_employed_pension_contribution_ald_person: 40_484.8587
+    # Line 9 for the Schedule C business. The person is the employer for
+    # both plans, whose employer contributions share one limit, 0.2 x
+    # 79,924.2935 = 15,984.8587. The farm's plan can take that and all
+    # 24,500 of elective deferrals, up to its whole earned income,
+    # 39,962.14675, so the Schedule C plan carries 40,484.8587 -
+    # 39,962.14675 = 522.71195. Line 10: 39,962.14675 - 522.71195 =
+    # 39,439.4348.
+    self_employed_health_insurance_earned_income_limit: 39_439.4348
+
+- name: Case 33, with a job's 401(k) using all of the elective deferral room, each plan carries its own employer contributions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    traditional_401k_contributions: 24_500
+    self_employment_income: 50_000
+    partnership_self_employment_net_earnings: 50_000
+    self_employed_pension_contributions_desired: 60_000
+    self_employed_health_insurance_plan_business: SCHEDULE_C
+  output:
+    # Line 15: 100,000 x 0.9235 x 0.153 / 2 = 7,064.775, with the wages
+    # below the Social Security wage base. Line 8: 46,467.6125 for each
+    # business.
+    self_employment_tax_ald_person: 7_064.775
+    # No elective deferral room is left, so the 2026 limit is 0.2 x
+    # 92,935.225 = 18,587.045 of employer contributions.
+    self_employed_pension_contribution_ald_person: 18_587.045
+    # Line 9 for the Schedule C business. The partnership's plan can take
+    # only its employer's limit, 0.2 x 46,467.6125 = 9,293.5225, so the
+    # Schedule C plan carries 18,587.045 - 9,293.5225 = 9,293.5225. Line 10:
+    # 46,467.6125 - 9,293.5225 = 37,174.09.
+    self_employed_health_insurance_earned_income_limit: 37_174.09
+
+- name: Case 34, with retirement plans under all three businesses, the partnership's employer limit leaves part of the plan deduction to the Schedule C plan.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: 50_000
+    farm_operations_income: 6_000
+    partnership_self_employment_net_earnings: 50_000
+    self_employed_pension_contributions_desired: 60_000
+    self_employed_health_insurance_plan_business: SCHEDULE_C
+  output:
+    # Line 15: 106,000 x 0.9235 x 0.153 / 2 = 7,488.6615. Line 8: Schedule C
+    # and partnership 50,000 - 50 / 106 x 7,488.6615 = 46,467.6125 each;
+    # farm 6,000 - 6 / 106 x 7,488.6615 = 5,576.1135.
+    self_employment_tax_ald_person: 7_488.6615
+    # The 2026 limit: min(72,000, 0.2 x 98,511.3385 + 24,500,
+    # (98,511.3385 + 24,500) / 2) = 44,202.2677.
+    self_employed_pension_contribution_ald_person: 44_202.2677
+    # Line 9 for the Schedule C business. The farm's plan can take its whole
+    # earned income, 5,576.1135, in employer contributions, within the
+    # person's limit, 0.2 x 52,043.726 = 10,408.7452. The partnership's plan
+    # can take its employer's limit, 0.2 x 46,467.6125 = 9,293.5225, and all
+    # 24,500 of elective deferrals. Together they carry 39,369.636, so the
+    # Schedule C plan carries 44,202.2677 - 39,369.636 = 4,832.6317. Line 10:
+    # 46,467.6125 - 4,832.6317 = 41,634.9808.
+    self_employed_health_insurance_earned_income_limit: 41_634.9808
+
+- name: Case 35, catch-up contributions are elective deferrals, so the other plan can carry them too.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 55
+    self_employment_income: 43_000
+    partnership_self_employment_net_earnings: 43_000
+    self_employed_pension_contributions_desired: 60_000
+    self_employed_health_insurance_plan_business: SCHEDULE_C
+  output:
+    # As in Case 27, line 8 is 39,962.14675 for each business. The 2026
+    # limit adds the 8,000 catch-up amount: 8,000 + min(72,000, 0.2 x
+    # 79,924.2935 + 24,500, (79,924.2935 + 24,500) / 2) = 48,484.8587.
+    self_employment_tax_ald_person: 6_075.7065
+    self_employed_pension_contribution_ald_person: 48_484.8587
+    # Line 9 for the Schedule C business. The partnership's plan can take its
+    # employer's limit, 7,992.42935, and up to 32,500 of elective deferrals
+    # with catch-up contributions, up to its whole earned income,
+    # 39,962.14675. So the Schedule C plan carries 48,484.8587 -
+    # 39,962.14675 = 8,522.71195. Line 10: 39,962.14675 - 8,522.71195 =
+    # 31,439.4348.
+    self_employed_health_insurance_earned_income_limit: 31_439.4348

@@ -130,6 +130,13 @@ def _parameters(
                 ),
             ),
             irs=SimpleNamespace(
+                # Form 7206 line 9 reads the plan rate for plans under every
+                # business.
+                gross_income=SimpleNamespace(
+                    retirement_contributions=SimpleNamespace(
+                        limit=SimpleNamespace(profit_sharing_deduction_rate=0.25)
+                    )
+                ),
                 payroll=SimpleNamespace(social_security=SimpleNamespace(cap=cap)),
                 self_employment=SimpleNamespace(
                     rate=SimpleNamespace(social_security=oasdi_rate, medicare=hi_rate),
@@ -161,6 +168,14 @@ def _calculate(variables, parameters, inputs, outputs=None):
         "payroll_tax_gross_wages": 0,
         "self_employed_pension_contribution_ald_person": 0,
         "s_corp_shareholder_medicare_wages": 0,
+        # Line 9 for plans under every business also reads the person's
+        # elective deferral room; the oracles below name the Schedule C
+        # business, so the room never changes their results.
+        "elective_deferral_limit": 0,
+        "traditional_401k_contributions": 0,
+        "roth_401k_contributions": 0,
+        "traditional_403b_contributions": 0,
+        "roth_403b_contributions": 0,
         **inputs,
     }
 
