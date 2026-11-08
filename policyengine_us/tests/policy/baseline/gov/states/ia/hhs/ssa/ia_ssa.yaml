@@ -3643,8 +3643,8 @@
       2026: 600
     ia_ssa_category: RESIDENTIAL_CARE
   output:
-    # SSI: 1,100 + 50 - 20 = 1,130 > 994, so SSI is 0 (still 0 once SSI
-    # excludes dividends: 1,080 > 994). 20 CFR 416.1124(c)(22) and 8-E p.23
+    # SSI excludes dividends: 1,100 - 20 = 1,080 > 994, so SSI is 0.
+    # 20 CFR 416.1124(c)(22) and 8-E p.23
     # exclude the dividends from care income: 1,100. Participation
     # 1,100 - 130 = 970; 38.47 * 31 = 1,192.57 - 970 = 222.57. Counting the
     # dividends gives 172.57; excluding them twice gives 272.57.

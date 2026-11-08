@@ -3,8 +3,36 @@
   output:
     ssi_unearned_income: 0
 
-- name: Otherwise sums across sources.
-  period: 2022
+- name: Interest and dividends are excluded under current law.
+  period: 2026
+  input:
+    social_security: 1
+    taxable_interest_income: 2
+    tax_exempt_interest_income: 3
+    qualified_dividend_income: 4
+    non_qualified_dividend_income: 5
+    gi_cash_assistance: 6
+  output:
+    ssi_unearned_income: 1 + 6
+
+- name: Bank interest does not reduce an aged person's SSI.
+  period: 2026
+  input:
+    people:
+      recipient:
+        age: 70
+        taxable_interest_income: 2_400
+    households:
+      household:
+        members: [recipient]
+        state_code: TX
+  output:
+    ssi_unearned_income: 0
+    ssi_countable_income: 0
+    ssi: 11_928
+
+- name: The annual model still uses the pre-exclusion sources in 2004.
+  period: 2004
   input:
     social_security: 1
     interest_income: 2
@@ -12,6 +40,16 @@
     gi_cash_assistance: 4
   output:
     ssi_unearned_income: 1 + 2 + 3 + 4
+
+- name: The annual model excludes interest and dividends starting in 2005.
+  period: 2005
+  input:
+    social_security: 1
+    interest_income: 2
+    dividend_income: 3
+    gi_cash_assistance: 4
+  output:
+    ssi_unearned_income: 1 + 4
 
 - name: SSI unearned income ignores taxable Roth conversions.
   period: 2022

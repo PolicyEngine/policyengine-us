@@ -8,9 +8,8 @@ metadata:
   unit: list
   period: year
   label: Iowa SSA excluded unearned income sources
-  # NOTE: 20 CFR 416.1124(c)(22) excludes interest and dividends from a
-  # countable resource, but federal SSI in the model still counts them (issue
-  # 10079). Remove this list once SSI excludes them, or they are excluded twice.
+  # Care budgets deduct these sources only when the federal SSI income
+  # total includes them. The family-life home other-income test excludes them.
   reference:
     - title: 20 CFR 416.1124(c)(22)
       href: https://www.ecfr.gov/current/title-20/section-416.1124#p-416.1124(c)(22)

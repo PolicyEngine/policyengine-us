@@ -61,10 +61,15 @@ class co_oap_deemed_income(Variable):
             person("age", year) < age_limit
         )
         ssi_sources = parameters(period).gov.ssa.ssi.income.sources
-        child_sources = [
-            cents(max_(0, person(source, period)))
-            for source in ["ssi_earned_income", *ssi_sources.unearned]
-        ]
+        sources = dict.fromkeys(
+            [
+                "ssi_earned_income",
+                *ssi_sources.unearned,
+                "interest_income",
+                "dividend_income",
+            ]
+        )
+        child_sources = [cents(max_(0, person(source, period))) for source in sources]
         child_income = sum(child_sources) + ssi
         fbr = parameters(period).gov.ssa.ssi.amount.individual
         child_allocation = dependent_child * max_(

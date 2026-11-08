@@ -18,8 +18,8 @@
     bank_account_assets: 1_500
     taxable_interest_income: 5.55
   output:
-    # $5.55 / 12 = $0.4625 interest a month, all absorbed by the $20 general
-    # exclusion: countable income $0, so $994 - $0 = $994.
+    # Federal SSI excludes the $5.55 annual interest under 416.1124(c)(22):
+    # countable income is $0, so $994 - $0 = $994.
     ssi: 994
     # $0.4625 > $0 is other income in the month, so the sole income rule fails.
     wy_ssp: 0

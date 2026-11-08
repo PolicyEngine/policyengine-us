@@ -245,7 +245,7 @@
     ssi_countable_resources: 2_000
     interest_income: 60
   output:
-    # SSI counts the 5 monthly interest: 2,000 + 5 - 20 = 1,985 > 994, so SSI is 0.
+    # SSI excludes the $5 monthly interest: 2,000 - 20 = 1,980 > 994, so SSI is 0.
     # The AG budget excludes it: 2,000 - 20 = 1,980 (resources 2,000 at the limit).
     # 2,217 - 1,980 = 237; counting the interest would give 232.
     va_ag: 237

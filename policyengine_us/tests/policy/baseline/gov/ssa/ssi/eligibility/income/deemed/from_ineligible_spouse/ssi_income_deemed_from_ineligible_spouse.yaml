@@ -121,6 +121,29 @@
   output:
     ssi_income_deemed_from_ineligible_spouse: [0, 0]
 
+- name: Interest from an ineligible spouse is excluded from deeming.
+  period: 2026
+  input:
+    people:
+      eligible_spouse:
+        age: 65
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_spouse: true
+      ineligible_spouse:
+        age: 60
+        is_tax_unit_head: true
+        taxable_interest_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [eligible_spouse, ineligible_spouse]
+    marital_units:
+      marital_unit:
+        members: [eligible_spouse, ineligible_spouse]
+  output:
+    ssi_unearned_income: [0, 0]
+    ssi_income_deemed_from_ineligible_spouse: [0, 0]
+
 - name: Disabled individual with high-income ineligible spouse (2025)
   period: 2025
   input:
