@@ -5,6 +5,9 @@ class educational_assistance(Variable):
     value_type = float
     entity = Person
     label = "educational assistance"
-    documentation = "Scholarships, grants, and other educational assistance."
+    documentation = (
+        "Scholarships, grants, and other educational assistance. VA education "
+        "benefits go in veterans_benefits."
+    )
     unit = USD
     definition_period = YEAR

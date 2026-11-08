@@ -1534,3 +1534,30 @@
     salt_deduction: 21_728
     itemized_taxable_income_deductions_reduction: 2_661
     itemized_taxable_income_deductions: 19_067
+
+# Form 1040 line 11b plus "any nontaxable items", veterans' benefits among
+# them, sets the row (2025 Instructions for Schedule A, page 5). In the 2025
+# table, a Texas family of one owes $931 in the $100,000-$120,000 row and $992
+# in the $120,000-$140,000 row (page 16). Veterans' benefits stay out of AGI
+# under 38 U.S.C. 5301(a)(1) but raise this deduction for a filer who
+# itemizes and deducts sales tax.
+- name: A Texas filer with $100,000 of AGI uses the $100,000-$120,000 row, 2025
+  period: 2025
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    adjusted_gross_income: 100_000
+    state_sales_tax_income_bracket: 10
+    state_sales_tax: 931
+
+- name: $30,000 of veterans' benefits moves the same filer to the $120,000-$140,000 row, 2025
+  period: 2025
+  input:
+    state_code: TX
+    employment_income: 100_000
+    veterans_benefits: 30_000
+  output:
+    adjusted_gross_income: 100_000
+    state_sales_tax_income_bracket: 11
+    state_sales_tax: 992
