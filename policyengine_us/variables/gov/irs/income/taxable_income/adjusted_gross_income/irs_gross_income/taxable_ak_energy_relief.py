@@ -11,8 +11,8 @@ class taxable_ak_energy_relief(Variable):
         "of a payment from the 2022 program, which the IRS lets recipients "
         "exclude whether they got it in 2022 or in 2023. It holds all of each "
         "payment from 2024 on, which Alaska pays as part of the taxable "
-        "dividend. A payment that a dataset or user supplies counts wherever "
-        "the recipient lives, as a supplied regular dividend does. See "
+        "dividend. Like a regular dividend, a payment that a dataset or user "
+        "supplies counts wherever the recipient lives. See "
         "docs/validation/alaska-pfd.md."
     )
     definition_period = YEAR

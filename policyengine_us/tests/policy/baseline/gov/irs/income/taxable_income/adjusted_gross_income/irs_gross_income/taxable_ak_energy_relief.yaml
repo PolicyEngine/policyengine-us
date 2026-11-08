@@ -31,7 +31,7 @@
     ak_energy_relief: 200
     taxable_ak_energy_relief: 200
 
-- name: Case 5, the calculated payment reaches no one living outside Alaska.
+- name: Case 5, the model calculates no payment for someone living outside Alaska.
   period: 2026
   input:
     state_code: WA
@@ -39,7 +39,7 @@
     ak_energy_relief: 0
     taxable_ak_energy_relief: 0
 
-- name: Case 6, a supplied 2022 payment stays out.
+- name: Case 6, a 2022 payment that a user supplies stays out.
   period: 2022
   input:
     state_code: AK
@@ -47,7 +47,7 @@
   output:
     taxable_ak_energy_relief: 0
 
-- name: Case 7, a supplied 2026 payment counts in full.
+- name: Case 7, a 2026 payment that a user supplies counts in full.
   period: 2026
   input:
     state_code: AK
@@ -196,7 +196,7 @@
     # 50,000 of wages and the $1,312 regular dividend for 2023.
     irs_gross_income: 51_312
 
-- name: Case 16, a supplied 2026 payment counts for a recipient who now lives outside Alaska, as a supplied dividend does.
+- name: Case 16, a 2026 payment and dividend that a user supplies count for a recipient who now lives outside Alaska.
   period: 2026
   input:
     people:

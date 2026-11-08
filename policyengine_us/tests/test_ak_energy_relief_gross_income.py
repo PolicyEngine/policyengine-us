@@ -1,20 +1,20 @@
 """Invariants for Alaska's energy relief payment in federal gross income.
 
-Two hold for any payment amount, any year from 2022 on and any state of
-residence.
+1. From 2024 on, taxable_ak_energy_relief equals a payment that a dataset or
+   user supplies, wherever the recipient lives, and in 2022 and 2023 it holds
+   zero (IR-2023-23, footnote 1; Notice 2023-56, section 4.03). For a single
+   filer with no income but wages, irs_gross_income rises by the same amount.
+   Social Security that the payment makes taxable adds to the rise.
+2. For a single Alaskan with $500,000 of wages, the tax on the payment stays
+   below the payment, and household and SPM net income each rise by what
+   remains. Below that income, the tax on a small payment can exceed the
+   payment when the payment ends a deduction or credit. A smaller premium tax
+   credit also raises a Marketplace enrollee's SPM expenses.
 
-1. A supplied payment raises gross income by the whole payment, wherever the
-   recipient lives now, except a payment from the 2022 program, received in
-   2022 or 2023, which leaves gross income where it was (IR-2023-23,
-   footnote 1; Notice 2023-56, section 4.03). taxable_ak_energy_relief holds
-   exactly that change.
-2. With no means-tested response in play, the tax on the payment takes less than
-   the payment, and household and SPM net income each rise by what remains.
-
-YAML pins the amounts the IRS and Alaska publish for each year, and that the
-calculated payment reaches no one outside Alaska. These tests draw amounts,
-years and states no published figure names, and they compare two simulations
-of one household.
+YAML pins the amounts that the IRS and Alaska publish for each year, and that
+the model calculates no payment for anyone outside Alaska. These tests draw
+amounts, years and states beyond the sources' examples, and they compare two
+simulations of one household.
 """
 
 import pytest

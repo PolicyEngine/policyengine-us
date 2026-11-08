@@ -14,9 +14,8 @@ class ak_energy_relief(Variable):
         "requires also overriding ak_permanent_fund_dividend for each person. "
         "The rounded 2022 energy payment is $662, separate from the $2,622 "
         "regular PFD. taxable_ak_energy_relief holds the part in federal gross "
-        "income: none of a payment from the 2022 program, whose exclusion the "
-        "IRS said it would not challenge, whether the recipient got it in 2022 "
-        "or in 2023, and all of each payment from 2024 on. "
+        "income: none of a 2022-program payment, which the IRS lets recipients "
+        "exclude in 2022 or 2023, and all of each payment from 2024 on. "
         "See docs/validation/alaska-pfd.md."
     )
     unit = USD
