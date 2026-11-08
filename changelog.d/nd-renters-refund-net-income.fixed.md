@@ -1,0 +1,1 @@
+Count the property tax and rent refunds that North Dakota, Minnesota, Montana, Pennsylvania, Utah and Vermont pay outside the income tax in household and SPM benefits, and split Utah's homeowner and renter relief into the renter's credit the state pays and the homeowner's credit counties apply to the bill.
