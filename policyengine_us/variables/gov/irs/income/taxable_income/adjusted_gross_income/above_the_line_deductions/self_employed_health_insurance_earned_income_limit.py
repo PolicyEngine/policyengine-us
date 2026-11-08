@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.household.expense.retirement.self_employed_pension_contribution_limit import (
+    plan_deduction_attributable_to_business,
+    self_employed_plan_room,
+)
 
 
 class self_employed_health_insurance_earned_income_limit(Variable):
@@ -18,11 +22,17 @@ class self_employed_health_insurance_earned_income_limit(Variable):
         "is net profit less the part of the deductible part of "
         "self-employment tax attributable to that business (lines 4 to 8) and "
         "less the self-employed SEP, SIMPLE and qualified plan deduction "
-        "attributable to it (lines 9 and 10). That plan deduction is "
-        "attributable to the businesses under which the retirement plan is "
-        "established (self_employed_pension_plan_business), in proportion to "
-        "each one's earned income, so a business outside the retirement plan "
-        "subtracts none of it. Each kind of business is one total per person: all "
+        "attributable to it (lines 9 and 10). With the retirement plan under "
+        "one named business (self_employed_pension_plan_business), all of "
+        "that plan deduction is attributable to that business. By default "
+        "each business with a net profit has a retirement plan, and the person "
+        "chooses how much to contribute to each, so the plan deduction "
+        "attributable to a business is the least that its plan must carry "
+        "while the plans under the other businesses carry as much as their "
+        "own limits and the shared dollar and elective deferral limits allow. "
+        "Form 7206 gives no rule for that split, and this one leaves the most "
+        "earned income for the health insurance deduction. Each kind of "
+        "business is one total per person: all "
         "Schedule C income (SSTB and non-SSTB), all Schedule F profit, all "
         "K-1 box 14 code A earnings and all more-than-2% shareholder wages, "
         "so a loss in one business of a kind reduces line 4. Schedule 1 line "
@@ -53,10 +63,10 @@ class self_employed_health_insurance_earned_income_limit(Variable):
     )
 
     def formula(person, period, parameters):
-        return form_7206_line_13(person, period)
+        return form_7206_line_13(person, period, parameters)
 
 
-def form_7206_line_13(person, period, other_line_5_profits=0):
+def form_7206_line_13(person, period, parameters, other_line_5_profits=0):
     """Form 7206 line 13 for the plan business.
 
     other_line_5_profits adds the profits of businesses that cannot
@@ -98,43 +108,59 @@ def form_7206_line_13(person, period, other_line_5_profits=0):
         attributable_self_employment_tax_deduction(partnership_profit)
     )
     # Line 9: the SEP, SIMPLE and qualified plan deduction (Schedule 1 line
-    # 16) attributable to each business. The retirement plan's earned income
-    # is the sum of its businesses' line 8 amounts (Pub. 560 Deduction
-    # Worksheet step 3), and each of them takes the deduction in proportion
-    # to its share of that sum.
+    # 16) attributable to each business.
     retirement_plan_deduction = person(
         "self_employed_pension_contribution_ald_person", period
     )
-    retirement_plan_earned_income = person(
-        "self_employed_pension_earned_income", period
-    )
-    retirement_plan_deduction_rate = np.divide(
-        retirement_plan_deduction,
-        retirement_plan_earned_income,
-        out=np.zeros_like(retirement_plan_earned_income),
-        where=retirement_plan_earned_income > 0,
-    )
     retirement_plan_business = person("self_employed_pension_plan_business", period)
     retirement_plan_businesses = retirement_plan_business.possible_values
-    all_businesses = retirement_plan_business == retirement_plan_businesses.ALL
-    schedule_c_in_plan = all_businesses | (
-        retirement_plan_business == retirement_plan_businesses.SCHEDULE_C
-    )
-    farm_in_plan = all_businesses | (
-        retirement_plan_business == retirement_plan_businesses.SCHEDULE_F
-    )
-    partnership_in_plan = all_businesses | (
-        retirement_plan_business == retirement_plan_businesses.PARTNERSHIP
-    )
+    plan_room = self_employed_plan_room(person, period, parameters)
+
+    def line_9(line_8, other_businesses_line_8, business):
+        # A retirement plan under one named business: all of line 16.
+        named = where(
+            retirement_plan_business == business, retirement_plan_deduction, 0
+        )
+        # Plans under every business with a net profit, whose line 8 amounts
+        # are their earned income (Pub. 560 Deduction Worksheet step 3): the
+        # least that this business's plan must carry.
+        least = plan_deduction_attributable_to_business(
+            retirement_plan_deduction,
+            line_8,
+            other_businesses_line_8,
+            *plan_room,
+        )
+        return where(
+            retirement_plan_business == retirement_plan_businesses.ALL, least, named
+        )
+
     # Line 10 for each self-employment business.
     schedule_c = max_(
         0,
-        schedule_c_line_8 * (1 - schedule_c_in_plan * retirement_plan_deduction_rate),
+        schedule_c_line_8
+        - line_9(
+            schedule_c_line_8,
+            farm_line_8 + partnership_line_8,
+            retirement_plan_businesses.SCHEDULE_C,
+        ),
     )
-    farm = max_(0, farm_line_8 * (1 - farm_in_plan * retirement_plan_deduction_rate))
+    farm = max_(
+        0,
+        farm_line_8
+        - line_9(
+            farm_line_8,
+            schedule_c_line_8 + partnership_line_8,
+            retirement_plan_businesses.SCHEDULE_F,
+        ),
+    )
     partnership = max_(
         0,
-        partnership_line_8 * (1 - partnership_in_plan * retirement_plan_deduction_rate),
+        partnership_line_8
+        - line_9(
+            partnership_line_8,
+            schedule_c_line_8 + farm_line_8,
+            retirement_plan_businesses.PARTNERSHIP,
+        ),
     )
     # Line 11: an S corporation shareholder's wages from the corporation.
     s_corporation = max_(0, person("s_corp_shareholder_medicare_wages", period))

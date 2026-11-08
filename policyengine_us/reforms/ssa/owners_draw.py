@@ -256,7 +256,10 @@ def create_owners_draw():
             # chosen among the baseline's Schedule C, farm, partnership and
             # S corporation businesses.
             return form_7206_line_13(
-                person, period, other_line_5_profits=draw_profits_in_line_7
+                person,
+                period,
+                parameters,
+                other_line_5_profits=draw_profits_in_line_7,
             )
 
     class self_employed_pension_earned_income(baseline_pension_earned_income):
@@ -265,7 +268,7 @@ def create_owners_draw():
                 return baseline_pension_earned_income.formula(
                     person, period, parameters
                 )
-            # Pub. 560 step 2 takes the Schedule C business's share of
+            # Pub. 560 step 2 takes the plan businesses' share of
             # Schedule 1 line 15, split by net profit as on Form 7206 lines 5
             # to 8. As in the health insurance limit above, the draw profits
             # whose SECA is in line 15 join the profits it is split over.

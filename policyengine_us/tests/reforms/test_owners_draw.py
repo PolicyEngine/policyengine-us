@@ -45,6 +45,9 @@ from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_inco
 from policyengine_us.variables.household.expense.retirement.self_employed_pension_earned_income import (
     self_employed_pension_earned_income,
 )
+from policyengine_us.variables.household.expense.retirement.self_employed_pension_plan_business import (
+    SelfEmployedPensionPlanBusiness,
+)
 from policyengine_us.variables.gov.irs.tax.payroll.social_security.taxable_earnings_for_social_security import (
     taxable_earnings_for_social_security,
 )
@@ -138,6 +141,16 @@ def _parameters(
                         percent_deductible=deductible_share
                     ),
                 ),
+                # Form 7206 line 9 reads the retirement plan limits, which
+                # matter only with plans under every business (2026 values).
+                gross_income=SimpleNamespace(
+                    retirement_contributions=SimpleNamespace(
+                        limit=SimpleNamespace(
+                            profit_sharing_deduction_rate=0.25,
+                            annual_additions=72_000,
+                        )
+                    )
+                ),
             ),
         )
     )
@@ -158,6 +171,12 @@ def _calculate(variables, parameters, inputs, outputs=None):
         "payroll_tax_gross_wages": 0,
         "self_employed_pension_contribution_ald_person": 0,
         "s_corp_shareholder_medicare_wages": 0,
+        "traditional_401k_contributions": 0,
+        "roth_401k_contributions": 0,
+        "traditional_403b_contributions": 0,
+        "roth_403b_contributions": 0,
+        "elective_deferral_limit": 24_500,
+        "k401_catch_up_limit": 0,
         **inputs,
     }
 
@@ -174,14 +193,20 @@ def _calculate(variables, parameters, inputs, outputs=None):
         "total_self_employment_income",
         values["self_employment_income"] + values["sstb_self_employment_income"],
     )
-    # The oracles below take the Schedule C business as the plan business.
+    # The oracles below take the Schedule C business as the business under
+    # which both the health insurance plan and the retirement plan are
+    # established, so Form 7206 line 9 is the whole plan deduction.
+    shape = np.atleast_1d(values["total_self_employment_income"]).shape
     values.setdefault(
         "self_employed_health_insurance_plan_business",
         SelfEmployedHealthInsurancePlanBusiness.encode(
-            np.full(
-                np.atleast_1d(values["total_self_employment_income"]).shape,
-                SelfEmployedHealthInsurancePlanBusiness.SCHEDULE_C,
-            )
+            np.full(shape, SelfEmployedHealthInsurancePlanBusiness.SCHEDULE_C)
+        ),
+    )
+    values.setdefault(
+        "self_employed_pension_plan_business",
+        SelfEmployedPensionPlanBusiness.encode(
+            np.full(shape, SelfEmployedPensionPlanBusiness.SCHEDULE_C)
         ),
     )
 
