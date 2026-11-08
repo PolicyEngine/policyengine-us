@@ -13097,13 +13097,16 @@ candidates:
     - policyengine_us/variables/gov/irs/income/taxable_income/deductions/standard_deduction/basic_standard_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10272
+    - https://github.com/PolicyEngine/policyengine-us/pull/10727
   state: unreviewed
   note: 'PE-US follows the worksheet: earned income is W-2 box 1 wages (after elective deferrals), earned disability
     benefits and Schedule 1 business and farm income, less the deductible part of self-employment tax, summed for
     the head and spouse and floored at zero; the Medicaid filing test and Oregon''s and Hawaii''s dependent deductions
     read the same measure (standard_deduction_worksheet_earned_income_person.py, standard_deduction_worksheet_earned_income.py,
     filing_requirement/dependent/earned_income_sources.yaml, basic_standard_deduction.py). Verify the line 15 subtraction
-    for partnership self-employment income, which the list leaves out.'
+    for partnership self-employment income, which the list leaves out. Strike or lockout benefits other than bona fide
+    gifts (Form 1040 line 1h, part of line 1z) joined the list in PR 10727; us:strike-benefits-earned-income records
+    the earned income question.'
 - id: us:education-benefits-joint-claimed-spouse
   program: income-tax
   years:
@@ -13923,6 +13926,44 @@ candidates:
     2025 CFR editions carry the same sentence at 685.208(b)(2), so the question runs from the model's first
     minimum_payment value in 2016. Issue
     10567 reports the double minimum.
+- id: us:strike-benefits-earned-income
+  program: income-tax
+  years:
+    from: 2010
+    type: tax
+  question: Are taxable strike and lockout benefits a union pays earned income for the earned income credit, the
+    child and dependent care credit and the dependent standard deduction?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 32(c)(2)(A)(i)
+    url: https://www.law.cornell.edu/uscode/text/26/32#c_2_A_i
+  - kind: guidance
+    citation: Publication 596 (2025), page 8, Strike and lockout benefits
+    url: https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=8
+  - kind: guidance
+    citation: Publication 503 (2025), page 4, Earned income
+    url: https://www.irs.gov/pub/irs-prior/p503--2025.pdf#page=4
+  readings:
+    statute: Section 32(c)(2)(A)(i) counts wages, salaries, tips and other employee compensation includible in gross
+      income; neither it nor Treas. Reg. 1.32-2(c)(2) names strike benefits, which a union rather than an employer pays.
+    other: Publication 596 makes taxable strike and lockout benefits generally earned income, and Publication 503 says
+      earned income includes strike benefits.
+  example: A 2025 head of household with one child and $20,000 of taxable strike benefits and no other income gets the
+    $4,328 maximum earned income credit; with the benefits outside earned income the credit is zero.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/irs/credits/earned_income/eitc_earned_income.py
+    - policyengine_us/variables/gov/irs/income/adjusted_earnings.py
+    - policyengine_us/parameters/gov/irs/income/filing_requirement/dependent/earned_income_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10727
+  state: unreviewed
+  note: 'PE-US follows the publications: taxable_strike_benefits (strike_benefits less the tax_exempt_strike_benefits
+    gift part) counts in eitc_earned_income (the EITC, and the refundable CTC through ctc_phase_in_relevant_earnings),
+    in earnings_before_zero_floor (adjusted_earnings: the child and dependent care credit, section 129 and the
+    California dependent care credit) and in the dependent earned income sources (standard deduction worksheet and
+    filing test). Payroll taxes do not read it.'
 - id: us:student-loan-interest-joint-claimed-spouse
   program: income-tax
   years:
