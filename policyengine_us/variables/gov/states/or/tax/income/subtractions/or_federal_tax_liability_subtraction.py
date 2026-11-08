@@ -9,7 +9,9 @@ class or_federal_tax_liability_subtraction(Variable):
     definition_period = YEAR
     reference = (
         "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2021.pdf#page=71",
-        "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html",  # Subsection 316.800
+        "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html",  # ORS 316.680 and 316.685
+        # ORS 316.680(1)(b) and 316.685(1), PDF pages 52, 54
+        "https://www.oregonlegislature.gov/bills_laws/Archive/2023ors316.pdf#page=52",
     )
     defined_for = StateCode.OR
 
@@ -17,6 +19,8 @@ class or_federal_tax_liability_subtraction(Variable):
         # calculate Oregon concept of federal income tax
         federal_itax = tax_unit("income_tax", period)
         federal_eitc = tax_unit("eitc", period)
+        # ORS 316.685(1)(b) disregards EITC when computing federal taxes
+        # accrued. Section 1341 relief continues to reduce those taxes.
         or_federal_income_tax = max_(0, federal_itax + federal_eitc)
         # limit subtraction based on caps scaled to federal AGI
         filing_status = tax_unit("filing_status", period)

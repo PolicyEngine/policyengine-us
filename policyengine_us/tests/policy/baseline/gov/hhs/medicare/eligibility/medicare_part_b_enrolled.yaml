@@ -1,0 +1,31 @@
+- name: A Medicare enrollee is in Part B by default.
+  period: 2025
+  input:
+    age: 70
+  output:
+    medicare_enrolled: true
+    medicare_part_b_enrolled: true
+
+- name: A person not enrolled in Medicare is not in Part B.
+  period: 2025
+  input:
+    age: 70
+    medicare_enrolled: false
+  output:
+    medicare_part_b_enrolled: false
+
+- name: A person under 65 without Medicare is not in Part B.
+  period: 2025
+  input:
+    age: 64
+  output:
+    medicare_part_b_enrolled: false
+
+- name: A Part A-only enrollee is entered as not in Part B.
+  period: 2025
+  input:
+    age: 70
+    medicare_part_b_enrolled: false
+  output:
+    medicare_enrolled: true
+    medicare_part_b_enrolled: false
