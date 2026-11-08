@@ -31,6 +31,12 @@ D1. Differential: section 86 runs once on the head and spouse's return and
 YAML tests pin worked examples; these properties quantify over amounts,
 filing status and every state, which YAML cannot. Each example builds one
 Simulation that holds every household it compares.
+
+The model keeps money in float32, whose step grows with the amount: 2^-7
+from $65,536 to $131,072 and 2^-6 from there to $262,144. Two calculations
+that add the same dollars in a different order can land a few steps apart,
+so the comparisons allow eight steps at the largest amount involved, and
+never less than a cent.
 """
 
 import numpy as np
@@ -40,7 +46,14 @@ from hypothesis import strategies as st
 from policyengine_us import Simulation
 
 YEAR = 2025
-TOLERANCE = 0.01
+CENT = 0.01
+
+
+def tolerance(*amounts):
+    """Eight float32 steps at the largest of the amounts, or a cent."""
+    largest = max(abs(float(amount)) for amount in amounts)
+    return max(CENT, 8 * float(np.spacing(np.float32(largest))))
+
 
 INCOME_TAX_STATES = (
     "AL AZ AR CA CO CT DE DC GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO "
@@ -137,6 +150,18 @@ shares = st.integers(min_value=0, max_value=100).map(lambda x: x / 100)
     joint=st.booleans(),
     age=st.integers(min_value=62, max_value=85),
 )
+# At $131,072 of wages, float32 rounds the two households' AGI one $0.015625
+# step apart: the railroad household adds its title II and SSEB shares to AGI
+# separately.
+@example(
+    wages=131_072,
+    head_benefits=1,
+    spouse_benefits=0,
+    head_share=0.01,
+    spouse_share=0.0,
+    joint=False,
+    age=62,
+)
 def test_i1_tier_1_benefits_are_taxed_as_title_ii_benefits(
     wages, head_benefits, spouse_benefits, head_share, spouse_share, joint, age
 ):
@@ -158,6 +183,7 @@ def test_i1_tier_1_benefits_are_taxed_as_title_ii_benefits(
     simulation = Simulation(
         situation=situation([household(0, 0), household(head_share, spouse_share)])
     )
+    tol = tolerance(wages + head_benefits + spouse_benefits)
     for variable in (
         "adjusted_gross_income",
         "income_tax",
@@ -165,11 +191,11 @@ def test_i1_tier_1_benefits_are_taxed_as_title_ii_benefits(
         "medicaid_magi",
     ):
         title_ii, railroad = calc(simulation, variable)[:2]
-        assert abs(title_ii - railroad) < TOLERANCE, (variable, title_ii, railroad)
+        assert abs(title_ii - railroad) < tol, (variable, title_ii, railroad)
     np.testing.assert_allclose(
         section_86_parts(simulation),
         calc(simulation, "tax_unit_taxable_section_86_benefits"),
-        atol=TOLERANCE,
+        atol=tol,
     )
 
 
@@ -196,9 +222,10 @@ def test_i2_the_rest_of_the_annuity_is_taxed_as_a_pension(
             ]
         )
     )
+    tol = tolerance(wages + pension + title_ii)
     for variable in ("adjusted_gross_income", "income_tax"):
         private, railroad = calc(simulation, variable)
-        assert abs(private - railroad) < TOLERANCE, (variable, private, railroad)
+        assert abs(private - railroad) < tol, (variable, private, railroad)
 
 
 @settings(max_examples=6, deadline=None)
@@ -228,7 +255,7 @@ def test_i3_no_state_taxes_railroad_benefits(tier_1, tier_2, tax_free, age, join
         if state == "ID":
             assert idaho_taxable_income[i] == 0, (state, idaho_taxable_income[i])
         else:
-            assert abs(tax[i]) < TOLERANCE, (state, tax[i])
+            assert abs(tax[i]) < CENT, (state, tax[i])
 
 
 @settings(max_examples=6, deadline=None)
@@ -257,14 +284,15 @@ def test_i4_railroad_benefits_leave_state_bases_unchanged(wages, tier_1, tier_2,
     agi = calc(simulation, "taxsim_state_agi")
     taxable_income = calc(simulation, "taxsim_state_taxable_income")
     federal_taxable_income = calc(simulation, "taxable_income")
+    tol = tolerance(wages + tier_1 + tier_2)
     for i, state in enumerate(I4_STATES):
         base = taxable_income if state in FEDERAL_AGI_STATES else agi
         before, after = base[i], base[i + n]
         floored = federal_taxable_income[i] <= 0
         if state in FEDERAL_TAXABLE_INCOME_STATES and floored:
-            assert after <= before + TOLERANCE, (state, before, after)
+            assert after <= before + tol, (state, before, after)
         else:
-            assert abs(before - after) < TOLERANCE, (state, before, after)
+            assert abs(before - after) < tol, (state, before, after)
 
 
 @settings(max_examples=25, deadline=None)
@@ -292,6 +320,7 @@ def test_i5_railroad_totals_add_up(tier_1, tier_2, tax_free, title_ii, earnings)
         for i in range(3)
     ]
     simulation = Simulation(situation=situation([("TX", members)]))
+    tol = tolerance(sum(earnings) + sum(title_ii) + sum(tier_1) + sum(tier_2))
     np.testing.assert_allclose(
         calc(simulation, "railroad_benefits"),
         np.add(np.add(tier_1, tier_2), tax_free),
@@ -299,7 +328,7 @@ def test_i5_railroad_totals_add_up(tier_1, tier_2, tax_free, title_ii, earnings)
     np.testing.assert_allclose(
         section_86_parts(simulation),
         calc(simulation, "tax_unit_taxable_section_86_benefits"),
-        atol=TOLERANCE,
+        atol=tol,
     )
     taxable_tier_1 = calc(
         simulation, "taxable_railroad_social_security_equivalent_benefits"
@@ -311,12 +340,12 @@ def test_i5_railroad_totals_add_up(tier_1, tier_2, tax_free, title_ii, earnings)
         calc(
             simulation, "tax_unit_taxable_railroad_social_security_equivalent_benefits"
         )[0],
-        atol=TOLERANCE,
+        atol=tol,
     )
     np.testing.assert_allclose(
         calc(simulation, "taxable_railroad_benefits"),
         taxable_tier_1 + np.array(tier_2, dtype=float) * [1, 1, 0],
-        atol=TOLERANCE,
+        atol=tol,
     )
 
 
@@ -343,4 +372,7 @@ def test_d1_dependent_and_filer_section_86_agree(wages, title_ii, tier_1):
             simulation, "dependent_taxable_railroad_social_security_equivalent_benefits"
         )
     )[2]
-    assert abs(filer - dependent) < TOLERANCE, (filer, dependent)
+    assert abs(filer - dependent) < tolerance(wages + title_ii + tier_1), (
+        filer,
+        dependent,
+    )
