@@ -569,7 +569,8 @@ def filer(
 
 def test_reviewer_example_and_boundaries():
     """Fixed filers: the $2,000 example, the $400 threshold, the new bases,
-    long-term care premiums and line 9 with plans under two businesses."""
+    long-term care premiums and line 9 with plans under two or three
+    businesses."""
     filers = [
         filer(schedule_c=2_000, premiums=6_000),
         filer(schedule_c=434, premiums=6_000),
@@ -599,6 +600,21 @@ def test_reviewer_example_and_boundaries():
         # Plans under two businesses, as in the YAML tests' Cases 26 and 27.
         filer(schedule_c=50_000, partnership=10_000, plan=40_000, premiums=100_000),
         filer(schedule_c=43_000, partnership=43_000, plan=60_000, premiums=100_000),
+        # Plans under all three businesses, as in Cases 29 and 30.
+        filer(
+            schedule_c=10_000,
+            farm=60_000,
+            partnership=10_000,
+            plan=60_000,
+            premiums=100_000,
+        ),
+        filer(
+            schedule_c=10_000,
+            farm=10_000,
+            partnership=60_000,
+            plan=60_000,
+            premiums=100_000,
+        ),
     ]
     situation, n = build_situation(filers)
     sim = Simulation(situation=situation)
@@ -630,6 +646,12 @@ def test_reviewer_example_and_boundaries():
     deduction = sim.calculate("self_employed_health_insurance_ald_person", 2026)[:n]
     assert abs(deduction[12] - 20_108.908) < 0.02
     assert abs(deduction[13] - 39_439.4348) < 0.02
+    # With plans under all three businesses, the two 10,000 businesses'
+    # plans carry 9,293.5225 each of the 39,369.636 plan deduction, and the
+    # 60,000 business keeps 55,761.135 - 20,782.591 = 34,978.544, the largest
+    # limit.
+    for i in (14, 15):
+        assert abs(deduction[i] - 34_978.544) < 0.02
 
 
 # Draws for the line 9 function: earned income of the business and of the

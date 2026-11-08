@@ -375,3 +375,62 @@
     # 39,962.14675 = 522.71195. Line 10: 39,962.14675 - 522.71195 =
     # 39,439.4348.
     self_employed_health_insurance_earned_income_limit: 39_439.4348
+
+- name: Case 28, with retirement plans under all three businesses, the plans under the farm and the partnership carry their whole earned income, and the Schedule C plan carries the rest.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: 60_000
+    farm_operations_income: 10_000
+    partnership_self_employment_net_earnings: 10_000
+    self_employed_pension_contributions_desired: 60_000
+    self_employed_health_insurance_plan_business: SCHEDULE_C
+  output:
+    # Line 15: 80,000 x 0.9235 x 0.153 / 2 = 5,651.82. Line 8: Schedule C
+    # 60,000 - 3 / 4 x 5,651.82 = 55,761.135; farm and partnership 10,000 -
+    # 5,651.82 / 8 = 9,293.5225 each.
+    self_employment_tax_ald_person: 5_651.82
+    # The 2026 limit: min(72,000, 0.2 x 74,348.18 + 24,500,
+    # (74,348.18 + 24,500) / 2) = 39,369.636.
+    self_employed_pension_contribution_ald_person: 39_369.636
+    # Line 9 for the Schedule C business: the plans under the farm and the
+    # partnership carry 9,293.5225 each, so this plan carries 39,369.636 -
+    # 18,587.045 = 20,782.591. Line 10: 55,761.135 - 20,782.591 = 34,978.544.
+    self_employed_health_insurance_earned_income_limit: 34_978.544
+
+- name: Case 29, with retirement plans under all three businesses, the plans under the Schedule C business and the partnership carry their whole earned income, and the farm's plan carries the rest.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: 10_000
+    farm_operations_income: 60_000
+    partnership_self_employment_net_earnings: 10_000
+    self_employed_pension_contributions_desired: 60_000
+    self_employed_health_insurance_plan_business: SCHEDULE_F
+  output:
+    # As in Case 28 with the farm in place of the Schedule C business: line
+    # 8 is 55,761.135 for the farm and 9,293.5225 for each other business.
+    self_employment_tax_ald_person: 5_651.82
+    self_employed_pension_contribution_ald_person: 39_369.636
+    # Line 9 for the farm: 39,369.636 - 18,587.045 = 20,782.591. Line 10:
+    # 55,761.135 - 20,782.591 = 34,978.544.
+    self_employed_health_insurance_earned_income_limit: 34_978.544
+
+- name: Case 30, with retirement plans under all three businesses, the plans under the Schedule C business and the farm carry their whole earned income, and the partnership's plan carries the rest.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: 10_000
+    farm_operations_income: 10_000
+    partnership_self_employment_net_earnings: 60_000
+    self_employed_pension_contributions_desired: 60_000
+    self_employed_health_insurance_plan_business: PARTNERSHIP
+  output:
+    # As in Case 28 with the partnership in place of the Schedule C
+    # business: line 8 is 55,761.135 for the partnership and 9,293.5225 for
+    # each other business.
+    self_employment_tax_ald_person: 5_651.82
+    self_employed_pension_contribution_ald_person: 39_369.636
+    # Line 9 for the partnership: 39,369.636 - 18,587.045 = 20,782.591. Line
+    # 10: 55,761.135 - 20,782.591 = 34,978.544.
+    self_employed_health_insurance_earned_income_limit: 34_978.544
