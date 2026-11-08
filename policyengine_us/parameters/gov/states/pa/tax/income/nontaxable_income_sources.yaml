@@ -13,6 +13,9 @@ values:
     # third-party insurer payments, and disability distributions (61 Pa.
     # Code 101.6(c)(1)). Regular sick leave pay is in employment income.
     - taxable_disability_benefits
+    # Strike benefits are never taxable as PA compensation (72 P.S.
+    # 7301(d)(vi)). Federal gross income holds the part that is not a gift.
+    - taxable_strike_benefits
 metadata:
   unit: currency-USD
   label: PA nontaxable income sources
@@ -23,3 +26,9 @@ metadata:
       href: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/061/chapter101/s101.6.html
     - title: "2024 Pennsylvania PIT Return Instructions (PA-40 IN), nontaxable sick pay and disability benefits and Code 3 disability distributions #page 8,13"
       href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2024/2024_pa-40in.pdf#page=8
+    # The guide lists strike benefits among the "Income Items Never Taxable
+    # as PA Compensation", and under "Pennsylvania Nontaxable Benefits"
+    # quotes 72 P.S. 7301(d)(vi), which leaves out of compensation payments
+    # by employers or labor unions for programs covering strike benefits.
+    - title: Pennsylvania Personal Income Tax Guide, Gross Compensation - income items never taxable as PA compensation
+      href: https://www.pa.gov/agencies/revenue/forms-and-publications/pa-personal-income-tax-guide/gross-compensation.html#IncomeItemsNeverTaxablePA

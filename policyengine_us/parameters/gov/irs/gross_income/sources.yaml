@@ -4,6 +4,10 @@ values:
     - irs_employment_income
     # Dependent care benefits above the IRC 129 exclusion (Form 1040 line 1e).
     - taxable_dependent_care_benefits
+    # Strike and lockout benefits a union pays, in cash or other property,
+    # unless the facts clearly show the union meant them as gifts (Pub. 525);
+    # Form 1040 line 1h from 2022.
+    - taxable_strike_benefits
     - self_employment_income
     - sstb_self_employment_income
     - partnership_s_corp_income
@@ -72,3 +76,11 @@ metadata:
       href: https://www.irs.gov/pub/irs-prior/f1040s1--2024.pdf#page=1
     - title: 2024 Instructions for Schedule E (Form 1040), Part III - Income or Loss From Estates and Trusts
       href: https://www.irs.gov/pub/irs-prior/i1040se--2024.pdf#page=11
+    - title: IRS Publication 525 (2025), Taxable and Nontaxable Income - Strike and lockout benefits
+      href: https://www.irs.gov/pub/irs-prior/p525--2025.pdf#page=36
+    - title: IRS Publication 525 (2010), Taxable and Nontaxable Income - Strike and lockout benefits
+      href: https://www.irs.gov/pub/irs-prior/p525--2010.pdf#page=36
+    - title: 2025 Form 1040 instructions, line 1h - Strike or lockout benefits (other than bona fide gifts)
+      href: https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=24
+    - title: United States v. Kaiser, 363 U.S. 299 (1960) - strike assistance found to be a gift on the facts
+      href: https://www.govinfo.gov/content/pkg/USREPORTS-363/pdf/USREPORTS-363-299.pdf

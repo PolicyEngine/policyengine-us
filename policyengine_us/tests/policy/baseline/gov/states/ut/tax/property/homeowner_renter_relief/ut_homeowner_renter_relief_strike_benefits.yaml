@@ -1,0 +1,25 @@
+# Utah Code 59-2a-101(17) defines income as federal adjusted gross income
+# plus nontaxable income, and (20)(a) defines nontaxable income as "amounts
+# excluded from adjusted gross income under the Internal Revenue Code",
+# including "nontaxable strike benefits" ((20)(a)(v)). Strike benefits in
+# federal adjusted gross income count there, so only the gift part is
+# nontaxable income.
+
+- name: 2025, taxable strike benefits are not Utah nontaxable income
+  period: 2025
+  input:
+    age: 70
+    strike_benefits: 10_000
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief_nontaxable_income: 0
+
+- name: 2025, the gift part of strike benefits is Utah nontaxable income
+  period: 2025
+  input:
+    age: 70
+    strike_benefits: 10_000
+    tax_exempt_strike_benefits: 3_000
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief_nontaxable_income: 3_000

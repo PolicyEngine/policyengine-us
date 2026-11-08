@@ -1,0 +1,23 @@
+# ARS 43-1072(H)(6) counts adjusted gross income as the department defines
+# it plus "nontaxable strike benefits" ((6)(c); Form 140PTC line I). The
+# strike benefits that are not gifts are in federal gross income, which the
+# household income already counts, so line I takes the gift part.
+
+- name: 2025, taxable strike benefits are not Arizona line I income
+  period: 2025
+  input:
+    age: 70
+    strike_benefits: 10_000
+    state_code: AZ
+  output:
+    az_property_tax_credit_nontaxable_income: 0
+
+- name: 2025, the gift part of strike benefits is Arizona line I income
+  period: 2025
+  input:
+    age: 70
+    strike_benefits: 10_000
+    tax_exempt_strike_benefits: 4_000
+    state_code: AZ
+  output:
+    az_property_tax_credit_nontaxable_income: 4_000

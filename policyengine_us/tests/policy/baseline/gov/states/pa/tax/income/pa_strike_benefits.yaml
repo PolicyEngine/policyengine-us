@@ -1,0 +1,23 @@
+# 72 P.S. 7301(d)(vi) leaves strike benefits out of compensation, and the
+# PA Personal Income Tax Guide lists them among the "Income Items Never
+# Taxable as PA Compensation". Pennsylvania taxable income starts from
+# federal gross income here, so the federal amount is subtracted.
+
+- name: 2025, strike benefits are not Pennsylvania taxable income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        strike_benefits: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: PA
+  output:
+    pa_total_taxable_income: 50_000

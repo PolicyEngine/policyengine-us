@@ -96,6 +96,7 @@ INPUT_VARIABLES = [
     "long_term_capital_gains",
     "traditional_401k_contributions_desired",
     "strike_benefits",
+    "tax_exempt_strike_benefits",
     "other_medical_expenses",
     "over_the_counter_health_expenses",
     "health_insurance_premiums_without_medicare_part_b",

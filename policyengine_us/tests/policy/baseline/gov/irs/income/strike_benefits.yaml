@@ -1,0 +1,258 @@
+# Strike and lockout benefits.
+#
+# Publication 525 (2025), page 36: "Benefits paid to you by a union as strike
+# or lockout benefits, including both cash and the FMV of other property, are
+# usually included in your income as compensation. You can exclude these
+# benefits from your income only when the facts clearly show that the union
+# intended them as gifts to you."
+# Form 1040 instructions (2025), line 1h: "Strike or lockout benefits (other
+# than bona fide gifts)."
+# Publication 596 (2025), page 8: "If strike and lockout benefits are
+# taxable, the benefits are generally earned income."
+# Publication 503 (2025), page 4: "Earned income also includes strike
+# benefits and any disability pay you report as wages."
+#
+# strike_benefits is the total a union pays; tax_exempt_strike_benefits is
+# the part the facts show to be a gift (IRC 102(a)); taxable_strike_benefits
+# is the rest.
+#
+# 2025 amounts from Rev. Proc. 2024-40: earned income credit with one
+# qualifying child, earned income amount $12,730, maximum credit $4,328,
+# phaseout from $23,350 of AGI for filers other than joint filers (sec.
+# 3.06(1)); standard deduction of a dependent, the greater of $1,350 or $450
+# plus earned income (sec. 3.15(2)). The credit percentage for one child is
+# 34% (IRC 32(b)(1)(A)).
+
+- name: The gift part of strike benefits is not taxable
+  period: 2025
+  input:
+    strike_benefits: 10_000
+    tax_exempt_strike_benefits: 4_000
+  output:
+    taxable_strike_benefits: 6_000
+
+- name: A gift part above the total leaves no taxable strike benefits
+  period: 2025
+  input:
+    strike_benefits: 3_000
+    tax_exempt_strike_benefits: 5_000
+  output:
+    taxable_strike_benefits: 0
+
+- name: 2025, strike benefits are gross income and adjusted gross income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        strike_benefits: 20_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    irs_gross_income: 20_000
+    adjusted_gross_income: 20_000
+
+- name: 2025, strike benefits the union meant as gifts are not gross income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        strike_benefits: 20_000
+        tax_exempt_strike_benefits: 20_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    irs_gross_income: 0
+    adjusted_gross_income: 0
+
+- name: 2015, strike benefits were gross income before Form 1040 had line 1h
+  period: 2015
+  input:
+    people:
+      head:
+        age: 40
+        strike_benefits: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    irs_gross_income: 10_000
+
+- name: 2025, taxable strike benefits are earned income for the EITC
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        strike_benefits: 20_000
+      child:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    eitc_earned_income: 20_000
+    # Earned income of $20,000 passes the $12,730 earned income amount and
+    # AGI of $20,000 is under the $23,350 phaseout threshold: the $4,328
+    # maximum credit.
+    eitc: 4_328
+
+- name: 2025, strike benefits add to wages in the EITC phase-in
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 5_000
+        strike_benefits: 5_000
+      child:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    eitc_earned_income: 10_000
+    # 34% of $10,000.
+    eitc: 3_400
+
+- name: 2025, strike benefits received as gifts are not earned income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        strike_benefits: 20_000
+        tax_exempt_strike_benefits: 20_000
+      child:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    eitc_earned_income: 0
+    eitc: 0
+
+- name: 2025, a spouse's strike benefits are earned income for the child and dependent care credit
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+      spouse:
+        age: 40
+        strike_benefits: 2_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 6_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    adjusted_earnings: [50_000, 2_000, 0]
+    spouse_earned: 2_000
+    # The lower-earning spouse's earned income caps the expenses (IRC
+    # 21(d)(1)(B)), below the $3,000 limit for one child (IRC 21(c)(1)).
+    cdcc_relevant_expenses: 2_000
+
+- name: 2025, a dependent's strike benefits raise the dependent's standard deduction
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        strike_benefits: 5_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # max($1,350, $450 + $5,000).
+    basic_standard_deduction: 5_450
+
+- name: 2025, a dependent with $2,000 of strike benefits need not file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    strike_benefits: 2_000
+  output:
+    # Strike benefits are earned income (Form 1040 line 1h, part of line 1z,
+    # which the worksheet footnote counts): earned income of $2,000 is not
+    # over $15,750, there is no unearned income, and gross income of $2,000
+    # is not more than the larger of $1,350 or $2,000 plus $450.
+    tax_unit_is_required_to_file: false
+
+- name: 2025, a dependent with $2,000 of interest must file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    taxable_interest_income: 2_000
+  output:
+    # Unearned income of $2,000 is over $1,350.
+    tax_unit_is_required_to_file: true
+
+- name: 2026, strike benefits stay gross income
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        strike_benefits: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    irs_gross_income: 10_000
+    adjusted_gross_income: 10_000

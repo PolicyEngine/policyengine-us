@@ -4,10 +4,11 @@ from policyengine_us.model_api import *
 def earnings_before_zero_floor(person, period, parameters, taxable_wages):
     """
     IRC 32(c)(2) earned income before the zero floor: wages measured as
-    taxable_wages, plus self-employment earnings, less the deductible part
-    of self-employment tax. States that tax a different wage base, such as
-    California, pass their own taxable wages so that a business loss offsets
-    those wages before the floor.
+    taxable_wages, disability pay reported as wages, strike benefits and
+    self-employment earnings, less the deductible part of self-employment
+    tax. States that tax a different wage base, such as California, pass
+    their own taxable wages so that a business loss offsets those wages
+    before the floor.
     """
     p = parameters(period).gov.irs.ald.misc
     adjustment = (
@@ -16,9 +17,15 @@ def earnings_before_zero_floor(person, period, parameters, taxable_wages):
         * person("self_employment_tax", period)
     )
     excluded_wages = person("employment_income", period) - taxable_wages
-    # Disability pay reported as wages is earned income (Pub. 503 (2024),
-    # file page 4).
-    earnings = add(person, period, ["earned_income", "earned_disability_benefits"])
+    # "Earned income also includes strike benefits and any disability pay you
+    # report as wages", and "Generally, only taxable compensation is
+    # included" (Pub. 503 (2025), file page 4). FTB 3506 line 4 lists both
+    # for California.
+    earnings = add(
+        person,
+        period,
+        ["earned_income", "earned_disability_benefits", "taxable_strike_benefits"],
+    )
     return earnings - excluded_wages - adjustment
 
 
@@ -30,7 +37,8 @@ class adjusted_earnings(Variable):
     documentation = (
         "Earned income for the IRC 129(b) limit (IRC 129(e)(2), Form 2441 "
         "lines 18-19): W-2 box 1 wages, which leave out pre-tax payroll "
-        "deductions and all dependent care benefits, plus self-employment "
+        "deductions and all dependent care benefits, plus disability pay "
+        "reported as wages, strike benefits (Pub. 503) and self-employment "
         "earnings less the deductible part of self-employment tax. Taxable "
         "dependent care benefits (Form 1040 line 1e) stay out, though they "
         "count toward earned income under IRC 32(c)(2) and 21(d). It sets each spouse's earned income limit "
@@ -45,6 +53,7 @@ class adjusted_earnings(Variable):
         "https://www.law.cornell.edu/uscode/text/26/129#e_2",
         "https://www.law.cornell.edu/uscode/text/26/402#e_3",
         "https://www.irs.gov/pub/irs-prior/i2441--2025.pdf#page=4",
+        "https://www.irs.gov/pub/irs-prior/p503--2025.pdf#page=4",
     )
 
     def formula(person, period, parameters):

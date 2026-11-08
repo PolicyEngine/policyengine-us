@@ -1,0 +1,23 @@
+# IA 1040 line 14 takes "taxable income not reported on lines 1-13" (2022
+# IA 1040 instructions, page 20); Iowa net income starts from federal
+# adjusted gross income (Iowa Code 422.7).
+
+- name: 2022, strike benefits are Iowa gross income
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        strike_benefits: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: IA
+  output:
+    ia_gross_income: 60_000
+    ia_net_income: 60_000

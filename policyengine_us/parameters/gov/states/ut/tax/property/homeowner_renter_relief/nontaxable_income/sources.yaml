@@ -4,7 +4,9 @@ values:
     - alimony_income
     - child_support_received
     - railroad_benefits
-    - strike_benefits
+    # Nontaxable strike benefits (59-2a-101(20)(a)(v)); taxable ones are in
+    # federal adjusted gross income.
+    - tax_exempt_strike_benefits
     - tax_exempt_interest_income
     - tax_exempt_pension_income
     - tax_exempt_retirement_distributions
@@ -19,5 +21,5 @@ metadata:
   period: year
   label: Utah homeowner's/renter's relief modeled nontaxable income sources
   reference:
-    - title: Utah Code Section 59-2a-101
-      href: https://le.utah.gov/xcode/Title59/Chapter2A/C59-2a_2026010120250507.pdf#page=5
+    - title: "Utah Code Section 59-2a-101(17) and (20) #page 3-4"
+      href: https://le.utah.gov/xcode/Title59/Chapter2A/C59-2a_2026010120250507.pdf#page=3

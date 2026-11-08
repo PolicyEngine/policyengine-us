@@ -51,7 +51,9 @@ values:
     - tax_exempt_pension_income
     - veterans_benefits # § 15-30-2337(9)(a)(i) – veterans' disability benefits
     - child_support_received # § 15-30-2337(9)(a)(iv) – support money
-    - strike_benefits # § 15-30-2337(9)(a)(v) – nontaxable strike benefits
+    # § 15-30-2337(9)(a)(v) – nontaxable strike benefits; taxable ones are in
+    # federal AGI.
+    - tax_exempt_strike_benefits
     - general_assistance # § 15-30-2337(9)(a)(vi) – cash public assistance
     # Government assistance (Schedule 2EC line 16 from 2024; "disability
     # benefits including ... SSI payments and workers' compensation" and
@@ -105,7 +107,7 @@ values:
     - tax_exempt_pension_income
     - veterans_benefits
     - child_support_received
-    - strike_benefits
+    - tax_exempt_strike_benefits
     - general_assistance
     - ssi
     - mt_ssp
@@ -128,7 +130,7 @@ values:
     - tax_exempt_pension_income
     - veterans_benefits
     - child_support_received
-    - strike_benefits
+    - tax_exempt_strike_benefits
     - general_assistance
     - ssi
     - mt_ssp

@@ -1,0 +1,23 @@
+# "Gross income is all income (before deductions) other than income
+# specifically described as exempt on pages 10 and 11" (2025 AR1000F
+# instructions, page 9). Strike benefits are not on that list; gifts are.
+
+- name: 2025, strike benefits are Arkansas gross income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        strike_benefits: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: AR
+  output:
+    ar_gross_income_indiv: 60_000
+    ar_gross_income_joint: 60_000
