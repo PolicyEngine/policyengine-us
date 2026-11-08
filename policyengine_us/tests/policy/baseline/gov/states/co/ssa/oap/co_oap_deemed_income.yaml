@@ -646,3 +646,35 @@
   output:
     co_oap_deemed_income: [11_616, 0, 0]
     co_oap: [2_268, 0, 0]
+
+- name: Case 21, a spouse in another state with shelter support has Colorado's ISM deemed.
+  # The client, 66, lives in Colorado. The spouse, 50, lives in Nevada, has a
+  # $1,000/month pension and outside shelter support, and isn't on SSI.
+  # 3.520.79(C)(3) counts the spouse the $351 maximum, and 3.534(B) deems
+  # 1,000 + 351 - 1,032 = 319.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 66
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        pension_income: 12_000
+        ssi_receives_outside_shelter_support: true
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      head_household:
+        members: [head]
+        state_code: CO
+      spouse_household:
+        members: [spouse]
+        state_code: NV
+  output:
+    co_oap_deemed_income: [319, 0]
