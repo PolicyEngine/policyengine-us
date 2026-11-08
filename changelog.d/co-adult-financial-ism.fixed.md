@@ -1,0 +1,1 @@
+Count Colorado's in-kind support and maintenance (9 CCR 2503-5 3.520.79) in AND-CS and Old Age Pension income: SSA's matching ISM for SSI recipients, including the one-third reduction for those in another person's household from March 2014, Colorado's maximum for clients without SSI, and the pre-2014 rules.
