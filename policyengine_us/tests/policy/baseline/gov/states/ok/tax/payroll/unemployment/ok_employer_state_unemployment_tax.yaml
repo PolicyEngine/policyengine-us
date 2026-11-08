@@ -94,17 +94,17 @@
     ok_employer_state_unemployment_tax: 423
     employer_state_unemployment_tax: 423
 
-- name: Oklahoma 2026, its 1.5% new-employer rate on the $25,000 wage base.
+- name: Oklahoma 2026, its 1.5% new-employer rate on the $24,200 wage base.
   period: 2026
   absolute_error_margin: 0.01
   input:
     state_code: OK
     employment_income: 100_000
   output:
-    taxable_earnings_for_state_unemployment_tax: 25_000
+    taxable_earnings_for_state_unemployment_tax: 24_200
     employer_state_unemployment_tax_default_rate: 0.015
-    ok_employer_state_unemployment_tax: 375
-    employer_state_unemployment_tax: 375
+    ok_employer_state_unemployment_tax: 363
+    employer_state_unemployment_tax: 363
 
 - name: Oklahoma 2018, wages below the wage base are all taxable.
   period: 2018

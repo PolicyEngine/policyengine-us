@@ -5,7 +5,10 @@ agencies published, from the sources cited in each parameter file, so these
 tests compare the model with those publications and not with its own
 parameters. Where new employers take their industry's rate, the tables hold the
 state's new-employer rule applied to the statewide averages that its agencies
-or the U.S. Department of Labor published.
+or the U.S. Department of Labor published. Oklahoma's 2026 wage base applies
+the 41.25% share that Senate Bill 911 set to the average annual wage that the
+Oklahoma Employment Security Commission published, which gives $24,200; the
+Commission lists $25,000, the share that applied before the act.
 
 Three tests run without a simulation:
 
@@ -473,7 +476,7 @@ PUBLISHED_SUTA = {
         2023: (0.015, 25_700),
         2024: (0.015, 27_000),
         2025: (0.015, 28_200),
-        2026: (0.015, 25_000),
+        2026: (0.015, 24_200),
     },
     "OR": {
         2018: (0.024, 39_300),

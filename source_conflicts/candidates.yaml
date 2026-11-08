@@ -8626,6 +8626,58 @@ candidates:
   note: The model takes the federal in-kind support and maintenance value, so it follows POMS. The NOTE in _ok_ssp_income.py
     adds that federal SSI also runs a couple computation for an aged, blind or disabled spouse who is not eligible
     (issue 10243), so the deeming value applies even when 317:35-5-42(m)(4) deems nothing.
+- id: us-ok:ui-taxable-wage-base-2026
+  program: unemployment-insurance
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: For 2026, is Oklahoma's unemployment insurance taxable wage base the $25,000 that the Oklahoma Employment Security
+    Commission (OESC) publishes, or $24,200, the 41.25% share that Senate Bill 911 set for conditional factor A from November
+    1, 2025, applied to the $58,765.95 average annual wage that OESC lists?
+  sources:
+  - kind: statute
+    citation: 40 O.S. § 1-201(48), taxable wages
+    url: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=23
+  - kind: statute
+    citation: 40 O.S. § 1-223, taxable wages, conditional factors and percentages
+    url: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=44
+  - kind: statute
+    citation: Laws 2025, chapter 140 (Senate Bill 911), section 1, amending § 1-223
+    url: https://www.oklegislature.gov/cf_pdf/2025-26%20ENR/SB/SB911%20ENR.PDF#page=1
+  - kind: statute
+    citation: Laws 2025, chapter 140 (Senate Bill 911), section 5, effective date
+    url: https://www.oklegislature.gov/cf_pdf/2025-26%20ENR/SB/SB911%20ENR.PDF#page=25
+  - kind: agency-practice
+    citation: Oklahoma Employment Security Commission, Important Numbers for 2026
+    url: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Improtant-Numbers-2026.pdf#page=1
+  - kind: agency-practice
+    citation: Oklahoma Employment Security Commission, Important Numbers for 2025
+    url: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2025.pdf#page=1
+  - kind: agency-practice
+    citation: Oklahoma Employment Security Commission, Important Numbers for 2024
+    url: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2024.pdf#page=1
+  readings:
+    statute: Section 1-201(48) sets taxable wages at "the applicable percentage of the state's average annual wage for the
+      second preceding calendar year as determined by the Commission, rounded to the nearest multiple of One Hundred Dollars."
+      Section 1-223, as Senate Bill 911 amended it from November 1, 2025, sets "Forty-one and one-quarter percent (41.25%)
+      during calendar years in which condition 'a' exists." OESC's 2026 notice gives conditional factor A and a $58,765.95
+      average annual wage, and 41.25% of that is $24,240.95, or $24,200.
+    other: OESC's 2026 notice gives a $25,000 base, which equals 42.5% of $58,765.95 ($24,975.53) rounded to the nearest
+      $100, the share Section 1-223 gave condition A before Senate Bill 911. Each of OESC's 2022 to 2025 notices gives a
+      base equal to 50% of the average annual wage it lists, the share for condition D before Senate Bill 911, so the
+      listed wage is the one OESC uses.
+  example: At 1.5%, a new employer pays $375 on a worker earning at least $25,000, or $363 on the $24,200 base.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ok/tax/payroll/unemployment/taxable_wage_base.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10700
+  state: ruled
+  note: PE-US uses $24,200 for 2026. Section 1-223 picks the share by the conditional factor in place during the year,
+    and OESC's notice gives factor A for 2026, so the 41.25% share applies; OESC's $25,000 matches the share that factor
+    A carried before Senate Bill 911 took effect.
 - id: us-or:2026-standard-deduction-agency-figures
   program: income-tax
   years:
@@ -12342,6 +12394,54 @@ candidates:
     unearned_sources.yaml) and for categorical eligibility (wy_lieap_eligible.py). It follows rule 8(a)(ii)(L) over
     the plan in excluding lump sums and has no lottery-winnings input. It deducts child support paid only from the
     payer's own earnings (wy_lieap_countable_income.py), since rule 8(a)(iii) does not say whose earnings.
+- id: us-wy:ui-new-employer-rate-2023-average
+  program: unemployment-insurance
+  years:
+    from: 2018
+    to: 2023
+    type: calendar
+  question: For Wyoming's new employers from 2018 to 2023, does the default rate follow W.S. 27-3-503(f), the industry's
+    average rate but at least 1% plus the adjustment factors of W.S. 27-3-505, or the averages that the Department of
+    Workforce Services (DWS) reports for employers with the new employer rate, 1.01% for 2023 in its July 2023 slides
+    and 1.59% to 2.92% for 2018 to 2023 in the Legislative Service Office's June 2023 Table 1?
+  sources:
+  - kind: statute
+    citation: W.S. 27-3-503(b) and (f), base rates and the new employer rate
+    url: https://wyoleg.gov/statutes/compress/title27.pdf#page=69
+  - kind: statute
+    citation: W.S. 27-3-505(a), (b), (d) and (h), adjustment factors
+    url: https://wyoleg.gov/statutes/compress/title27.pdf#page=73
+  - kind: agency-practice
+    citation: Department of Workforce Services, Unemployment Insurance Overview, presentation to the Joint
+      Appropriations Committee (July 10, 2023), slides 11 to 13
+    url: https://www.wyoleg.gov/InterimCommittee/2023/02-2023071010-03_UIOverviewJuly2023JACSlides.pdf#page=11
+  - kind: agency-practice
+    citation: Legislative Service Office, Unemployment Insurance Trust Fund memorandum (June 8, 2023), Table 1 of
+      Department of Workforce Services figures
+    url: https://wyoleg.gov/InterimCommittee/2023/02-2023071010-01_UnemploymentInsuranceTrust_JAC_Final.pdf#page=3
+  readings:
+    statute: Section 27-3-503(f) gives each new employer its major industrial classification's average rate for the
+      preceding year, and "In no case, however, will any new employer be assigned a rate of less than one percent (1%),
+      plus the adjustment factors computed under W.S. 27-3-505." New employers share the positive fund balance factor
+      (27-3-505(b)), never take the negative one (27-3-505(d)), and the factors of subsections (a) and (b) stop at 1.5%
+      (27-3-505(h)). Table 1 puts experience-rated employers' average base rate at 0.63% to 0.96%, so a new employer at
+      the statewide average takes the 1% minimum. Its factor columns give new employers 0.28, 0.22, 0.20, 1.28, 0.35
+      and 0.14 point for 2018 to 2023, and they match DWS's published minimum rates (0.23 + 0.15 + 0.10 = 0.48% for
+      2021). That makes 1.14% for 2023.
+    other: DWS's July 2023 slides give an "Average total tax rate for employers with new employer rate" of "0.0101
+      (1.01%)", below the statute's floor of 1% plus the 2023 factors. Table 1's new employer totals, 1.59% to 2.92%, exceed the
+      sum of its own base and factor columns, because they average the industry rates that new employers took.
+  example: At the $29,100 base for 2023, a new employer pays $331.74 at 1.14%, $293.91 at 1.01% or $500.52 at 1.72%.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/wy/tax/payroll/unemployment/default_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10700
+  state: ruled
+  note: PE-US applies the statute's rule to DWS's published inputs. For 2025 it uses 2.5%, the 1% minimum plus the
+    1.5% cap on the factors, since DWS's October 2025 memo puts 396 employers at the 10% maximum (8.5% plus 1.5%). DWS
+    has published no factors for 2024 or 2026, so PE-US uses the bare 1% there.
 - id: us:additional-child-credit-2021-abode-section-911
   program: income-tax
   years:
@@ -13505,55 +13605,3 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
   note: Neither source prescribes a fallback when residence data are missing. Keep the existing false default.
-- id: us-ok:ui-taxable-wage-base-2026
-  program: unemployment-insurance
-  years:
-    from: 2026
-    to: 2026
-    type: calendar
-  question: For 2026, is Oklahoma's unemployment insurance taxable wage base the $25,000 that the Oklahoma Employment Security
-    Commission (OESC) publishes, or $24,200, the 41.25% share that Senate Bill 911 set for conditional factor A from November
-    1, 2025, applied to the $58,765.95 average annual wage that OESC lists?
-  sources:
-  - kind: statute
-    citation: 40 O.S. § 1-201(48), taxable wages
-    url: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=23
-  - kind: statute
-    citation: 40 O.S. § 1-223, taxable wages, conditional factors and percentages
-    url: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=44
-  - kind: statute
-    citation: Laws 2025, chapter 140 (Senate Bill 911), section 1, amending § 1-223
-    url: https://www.oklegislature.gov/cf_pdf/2025-26%20ENR/SB/SB911%20ENR.PDF#page=1
-  - kind: statute
-    citation: Laws 2025, chapter 140 (Senate Bill 911), section 5, effective date
-    url: https://www.oklegislature.gov/cf_pdf/2025-26%20ENR/SB/SB911%20ENR.PDF#page=25
-  - kind: agency-practice
-    citation: Oklahoma Employment Security Commission, Important Numbers for 2026
-    url: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Improtant-Numbers-2026.pdf#page=1
-  - kind: agency-practice
-    citation: Oklahoma Employment Security Commission, Important Numbers for 2025
-    url: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2025.pdf#page=1
-  - kind: agency-practice
-    citation: Oklahoma Employment Security Commission, Important Numbers for 2024
-    url: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2024.pdf#page=1
-  readings:
-    statute: Section 1-201(48) sets taxable wages at "the applicable percentage of the state's average annual wage for the
-      second preceding calendar year as determined by the Commission, rounded to the nearest multiple of One Hundred Dollars."
-      Section 1-223, as Senate Bill 911 amended it from November 1, 2025, sets "Forty-one and one-quarter percent (41.25%)
-      during calendar years in which condition 'a' exists." OESC's 2026 notice gives conditional factor A and a $58,765.95
-      average annual wage, and 41.25% of that is $24,240.95, or $24,200.
-    other: OESC's 2026 notice gives a $25,000 base, which equals 42.5% of $58,765.95 ($24,975.53) rounded to the nearest
-      $100, the share Section 1-223 gave condition A before Senate Bill 911. Each of OESC's 2022 to 2025 notices gives a
-      base equal to 50% of the average annual wage it lists, the share for condition D before Senate Bill 911, so the
-      listed wage is the one OESC uses.
-  example: At 1.5%, a new employer pays $375 on a worker earning at least $25,000, or $363 on the $24,200 base.
-  pe_us:
-    follows: conflicting-source
-    code:
-    - policyengine_us/parameters/gov/states/ok/tax/payroll/unemployment/taxable_wage_base.yaml
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/10700
-  state: open
-  note: PE-US keeps OESC's $25,000, the value main already had for 2026. A ruling for the statute would set $24,200. OESC's
-    notice does not show its computation, and Senate Bill 911 also gives 42.5% when condition B exists, so the question is
-    which share and factor OESC applied.
