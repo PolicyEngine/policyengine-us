@@ -8582,10 +8582,10 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10038
     - https://github.com/PolicyEngine/policyengine-us/pull/10093
   state: ruled
-  note: An October 2026 ruling followed the worksheet; under the later statute-first rule the code follows ORS
-    316.685(1)(b). The formula subtracts every federal refundable credit except the EITC, and
-    gov.irs.credits.refundable lists the section 1341 credit, so it reduces the subtraction. The worksheet's list
-    conflicts with the statute.
+  note: An October 2026 ruling followed the worksheet; a 2026-10-20 ruling under the later statute-first rule chose
+    the statute, and the code follows ORS 316.685(1)(b). The formula subtracts every federal refundable credit except
+    the EITC, and gov.irs.credits.refundable lists the section 1341 credit, so that credit reduces the subtraction.
+    The worksheet's list conflicts with the statute.
 - id: us-or:federal-tax-subtraction-niit
   program: income-tax
   years:

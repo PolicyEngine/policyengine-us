@@ -318,7 +318,11 @@
   period: 2025
   input:
     gov.irs.credits.refundable:
-      [refundable_american_opportunity_credit, refundable_ctc, recovery_rebate_credit, refundable_payroll_tax_credit]
+      - refundable_american_opportunity_credit
+      - refundable_ctc
+      - recovery_rebate_credit
+      - refundable_payroll_tax_credit
+      - claim_of_right_credit
     state_code: OR
     filing_status: SINGLE
     adjusted_gross_income: 40_000

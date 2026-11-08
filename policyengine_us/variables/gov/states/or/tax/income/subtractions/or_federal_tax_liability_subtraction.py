@@ -54,9 +54,11 @@ class or_federal_tax_liability_subtraction(Variable):
         # the federal total, income_tax_refundable_credits, rather than the
         # list, so credits that structural reforms add to that variable count
         # too; back out the EITC only when the list carries it. The federal
-        # list, and so the total, includes the section 1341 credit
-        # (claim_of_right_credit), so section 1341 relief reduces the
-        # liability as well.
+        # list, and so the total, includes the section 1341(a)(5) credit
+        # (claim_of_right_credit). Relief under section 1341(a)(4), an
+        # itemized deduction, already lowers
+        # income_tax_before_refundable_credits. Either way, section 1341
+        # relief reduces the liability.
         refundable = parameters(period).gov.irs.credits.refundable
         eitc = tax_unit("eitc", period) if "eitc" in refundable else 0
         refundable_credits = (
