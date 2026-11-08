@@ -71,10 +71,22 @@ class de_pension_exclusion(Variable):
                 older_amount = greater_amount
             else:
                 older_amount = capped_eligible_pension_income
-            return where(
+            exclusion = where(
                 eligible_for_pension_exclusion_income,
                 older_amount,
                 greater_amount,
             )
         else:
-            return capped_eligible_pension_income
+            exclusion = capped_eligible_pension_income
+        if p.domicile_requirement_applies:
+            # A person at or above the age threshold claims the exclusion only
+            # after 3 years of Delaware domicile, or 5 years for a person
+            # domiciled in Delaware from 2027 (30 Del. C. 1106(b)(3)f.4).
+            meets_domicile_requirement = person(
+                "de_pension_exclusion_domicile_requirement_met", period
+            )
+            older_exclusion = where(meets_domicile_requirement, exclusion, 0)
+            return where(
+                eligible_for_pension_exclusion_income, older_exclusion, exclusion
+            )
+        return exclusion

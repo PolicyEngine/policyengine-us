@@ -6,17 +6,21 @@ a person under 60, and pensions and eligible retirement income up to $12,500
 for a person 60 or older. For 2027, 2028 and from 2029 ((b)(3)c, d and e) the
 military cap is $15,000, $20,000 and $25,000, and a person 60 or older takes
 the greater of the $12,500 exclusion and the military pension up to that cap.
+From 2027 ((b)(3)f.4), a person 60 or older who fails the domicile requirement
+gets no subtraction.
 
 The reference below restates those rules from the statute, not from the
 model's parameters. Hypothesis draws batches of single filers (any age;
 military retired pay, survivor benefits, other pensions, IRA distributions,
-interest and capital gains or losses), runs each batch as one simulation with
-the same inputs in every year, and checks for every filer and year:
+interest, capital gains or losses, and the domicile requirement), runs each
+batch as one simulation with the same inputs in every year, and checks for
+every filer and year:
 
 1. The exclusion equals the reference amount.
 2. It is never negative and never exceeds the military pension plus the
    pension basket floored at zero.
-3. From 2027, a filer 60 or older never gets less than the 2026 rule gives.
+3. From 2027, a filer 60 or older who meets the domicile requirement never
+   gets less than the 2026 rule gives.
 """
 
 import numpy as np
@@ -50,6 +54,12 @@ def basket(filer):
 
 def reference(year, filer):
     military = min(military_cap(year), filer["military_retirement_pay"])
+    if (
+        year >= 2027
+        and filer["age"] >= 60
+        and not filer["de_pension_exclusion_domicile_requirement_met"]
+    ):
+        return 0
     if filer["age"] < 60:
         pensions = (
             filer["taxable_pension_income"]
@@ -74,6 +84,7 @@ filers = st.fixed_dictionaries(
         "taxable_ira_distributions": st.sampled_from([0, 5_000, 20_000]),
         "taxable_interest_income": st.sampled_from([0, 2_000]),
         "long_term_capital_gains": st.sampled_from([-10_000, -2_000, 0, 4_000]),
+        "de_pension_exclusion_domicile_requirement_met": st.booleans(),
     }
 )
 
@@ -120,5 +131,9 @@ def test_military_pension_exclusion(batch):
             assert (
                 0 <= amount <= filer["military_retirement_pay"] + max(basket(filer), 0)
             )
-            if year >= 2027 and filer["age"] >= 60:
+            if (
+                year >= 2027
+                and filer["age"] >= 60
+                and filer["de_pension_exclusion_domicile_requirement_met"]
+            ):
                 assert amount >= reference(2026, filer)

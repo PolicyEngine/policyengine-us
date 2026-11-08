@@ -310,3 +310,69 @@
         state_code: DE
   output:
     de_pension_exclusion: [25_000, 22_000]
+
+# 30 Del. C. 1106(b)(3)f.4 (85 Del. Laws c. 426, Senate Amendment 1): from
+# 2027, a person 60 or older claims the subtraction only after 3 years of
+# Delaware domicile, or 5 years for a person domiciled in Delaware from 2027.
+
+- name: DE 60+ filer who fails the domicile requirement gets no exclusion in 2027.
+  period: 2027
+  input:
+    state_code: DE
+    age: 65
+    military_retirement_pay: 30_000
+    de_pension_exclusion_domicile_requirement_met: false
+  output:
+    de_pension_exclusion: 0
+
+- name: DE domicile requirement also removes the 60+ pension exclusion in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 70
+    taxable_ira_distributions: 20_000
+    de_pension_exclusion_domicile_requirement_met: false
+  output:
+    de_pension_exclusion: 0
+
+- name: DE domicile requirement does not apply in 2026.
+  period: 2026
+  input:
+    state_code: DE
+    age: 65
+    military_retirement_pay: 30_000
+    de_pension_exclusion_domicile_requirement_met: false
+  output:
+    de_pension_exclusion: 12_500
+
+- name: DE domicile requirement does not apply under 60.
+  period: 2027
+  input:
+    state_code: DE
+    age: 45
+    military_retirement_pay: 30_000
+    de_pension_exclusion_domicile_requirement_met: false
+  output:
+    de_pension_exclusion: 15_000
+
+- name: DE joint return applies the domicile requirement to each spouse.
+  period: 2029
+  input:
+    people:
+      head:
+        age: 65
+        military_retirement_pay: 30_000
+        de_pension_exclusion_domicile_requirement_met: false
+      spouse:
+        age: 62
+        military_retirement_pay: 22_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    de_pension_exclusion: [0, 22_000]
