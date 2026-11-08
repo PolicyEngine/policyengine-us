@@ -1,0 +1,125 @@
+- name: North Dakota 2018, its 1.7% new-employer rate on the $35,500 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 35_500
+    employer_state_unemployment_tax_default_rate: 0.017
+    nd_employer_state_unemployment_tax: 603.50
+    employer_state_unemployment_tax: 603.50
+
+- name: North Dakota 2019, its 1.21% new-employer rate on the $36,400 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 36_400
+    employer_state_unemployment_tax_default_rate: 0.0121
+    nd_employer_state_unemployment_tax: 440.44
+    employer_state_unemployment_tax: 440.44
+
+- name: North Dakota 2020, its 1.02% new-employer rate on the $37,900 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 37_900
+    employer_state_unemployment_tax_default_rate: 0.0102
+    nd_employer_state_unemployment_tax: 386.58
+    employer_state_unemployment_tax: 386.58
+
+- name: North Dakota 2021, its 1.02% new-employer rate on the $38,500 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 38_500
+    employer_state_unemployment_tax_default_rate: 0.0102
+    nd_employer_state_unemployment_tax: 392.70
+    employer_state_unemployment_tax: 392.70
+
+- name: North Dakota 2022, its 1.02% new-employer rate on the $38,400 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 38_400
+    employer_state_unemployment_tax_default_rate: 0.0102
+    nd_employer_state_unemployment_tax: 391.68
+    employer_state_unemployment_tax: 391.68
+
+- name: North Dakota 2023, its 1.13% new-employer rate on the $40,800 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 40_800
+    employer_state_unemployment_tax_default_rate: 0.0113
+    nd_employer_state_unemployment_tax: 461.04
+    employer_state_unemployment_tax: 461.04
+
+- name: North Dakota 2024, its 1.09% new-employer rate on the $43,800 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 43_800
+    employer_state_unemployment_tax_default_rate: 0.0109
+    nd_employer_state_unemployment_tax: 477.42
+    employer_state_unemployment_tax: 477.42
+
+- name: North Dakota 2025, its 1.03% new-employer rate on the $45,100 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 45_100
+    employer_state_unemployment_tax_default_rate: 0.0103
+    nd_employer_state_unemployment_tax: 464.53
+    employer_state_unemployment_tax: 464.53
+
+- name: North Dakota 2026, its 1% new-employer rate on the $46,600 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 46_600
+    employer_state_unemployment_tax_default_rate: 0.01
+    nd_employer_state_unemployment_tax: 466
+    employer_state_unemployment_tax: 466
+
+- name: North Dakota 2018, wages below the wage base are all taxable.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 85
+
+- name: North Dakota employer unemployment tax is zero for a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    nd_employer_state_unemployment_tax: 0

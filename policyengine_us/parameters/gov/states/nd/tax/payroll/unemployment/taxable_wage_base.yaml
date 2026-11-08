@@ -1,13 +1,45 @@
-description: Employer-side unemployment insurance taxable wage base for North Dakota.
+description: North Dakota limits employer unemployment insurance taxes to this amount of each worker's annual wages.
 values:
-  0000-01-01: 43_800
+  # North Dakota Century Code Section 52-04-03(3) sets the base at 70% of the
+  # statewide average annual wage, rounded to the nearest $100, which Job
+  # Service North Dakota computes by October 1 of the preceding year from the
+  # four quarters ending that June 30; Section 52-04-03(4) keeps it at least
+  # at the federal unemployment tax base. These are the bases Job Service
+  # North Dakota published.
+  2018-01-01: 35_500
+  2019-01-01: 36_400
+  2020-01-01: 37_900
+  2021-01-01: 38_500
+  2022-01-01: 38_400
+  2023-01-01: 40_800
+  2024-01-01: 43_800
+  2025-01-01: 45_100
+  2026-01-01: 46_600
 
 metadata:
   period: year
   unit: currency-USD
   label: North Dakota unemployment taxable wage base
   reference:
-    - title: North Dakota Century Code Section 52-04-03
+    - title: North Dakota Century Code Section 52-04-03(3), taxable wage base
       href: https://ndlegis.gov/cencode/t52c04.pdf#page=2
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=44
+    - title: North Dakota Century Code chapter 52-04 (October 2020 edition), Section 52-04-03(3)
+      href: https://web.archive.org/web/20201020153139/https://www.legis.nd.gov/cencode/t52c04.pdf#page=2
+    - title: Job Service North Dakota, 2018 UI Tax Rate Schedules
+      href: https://web.archive.org/web/20201016162521/https://www.jobsnd.com/sites/www/files/documents/jsnd-documents/uitaxrateschedules2018.pdf
+    - title: Job Service North Dakota, 2019 UI Tax Rate Schedules
+      href: https://web.archive.org/web/20201016162603/https://www.jobsnd.com/sites/www/files/documents/jsnd-documents/uitaxrateschedules2019.pdf
+    - title: Job Service North Dakota, 2020 UI Tax Rate Schedules
+      href: https://web.archive.org/web/20201016162232/https://www.jobsnd.com/sites/www/files/documents/jsnd-documents/uitaxrateschedules2020.pdf
+    - title: Job Service North Dakota, 2021 UI Tax Rate Schedules
+      href: https://web.archive.org/web/20220303190318/https://www.jobsnd.com/sites/www/files/documents/jsnd-documents/uitaxrateschedules2021.pdf
+    - title: Job Service North Dakota, 2022 UI Tax Rate Schedules
+      href: https://web.archive.org/web/20220303190550/https://www.jobsnd.com/sites/www/files/documents/jsnd-documents/uitaxrateschedules2022.pdf
+    - title: Job Service North Dakota, 2023 UI Tax Rate Schedules
+      href: https://www.jobsnd.com/sites/www/files/documents/jsnd-documents/uitaxrateschedules2023.pdf
+    - title: Job Service North Dakota, 2024 UI Tax Rate Schedules
+      href: https://www.jobsnd.com/sites/www/files/documents/jsnd-documents/uitaxrateschedules2024.pdf
+    - title: Job Service North Dakota, 2025 UI Tax Rate Schedules
+      href: https://www.jobsnd.com/sites/www/files/documents/jsnd-documents/uitaxrateschedules2025.pdf
+    - title: Job Service North Dakota, 2026 UI Tax Rate Schedules
+      href: https://www.jobsnd.com/sites/www/files/documents/jsnd-documents/uitaxrateschedules2026.pdf
