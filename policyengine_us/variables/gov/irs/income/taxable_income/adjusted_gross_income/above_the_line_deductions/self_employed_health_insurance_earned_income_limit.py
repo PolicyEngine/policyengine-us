@@ -112,33 +112,30 @@ def plan_deduction_attributable_to_business(
     plan deduction (404(a)(8)(C)).
 
     Elective deferrals sit outside an employer's deduction limit (404(n)),
-    so the person can put them in any plan, within one section 402(g) limit
-    with catch-ups (402(g)(1)(A)): deferral_room. Employer contributions stay
-    within each employer's limit of 25% of compensation (404(a)(3)(A)(i)(I)),
-    which for a self-employed person is earned income from the business
-    whose plan it is, net of the employer contribution (404(a)(8)(D),
-    404(a)(12)): the reduced rate times earned income before the plan
-    deduction (Pub. 560 steps 4 and 5). A sole proprietor is the employer
-    for all of their own businesses (401(c)(4), 404(a)(8)(A)), and their
-    profit-sharing trusts count as one trust for that limit
-    (404(a)(3)(A)(iv)); a partnership is the employer of its partners, so its
-    plan has a limit of its own. other_employer_room is what those limits
-    leave for the other plans' employer contributions when this business's
-    plan makes none. The model applies the dollar limit and the limit of
-    half of earned income less deferrals to all of the plans together, as
-    section 415 does for one employer (415(f)(1)(B)) or for businesses under
-    more than 50 percent common control (414(c), 415(h)), and the plan
-    deduction is within them.
+    so the person can put them in any plan, within their one section 402(g)
+    limit (402(g)(1)(A)) and catch-up amount (414(v)): deferral_room.
+    Employer contributions stay within each employer's limit of 25% of
+    compensation (404(a)(3)(A)(i)(I)), which for a self-employed person is
+    earned income from the business whose plan it is, net of the employer
+    contribution (404(a)(8)(D), 404(a)(12)): the reduced rate times earned
+    income before the plan deduction (Pub. 560 steps 4 and 5). A sole
+    proprietor is the employer for all of their own businesses (401(c)(4),
+    404(a)(8)(A)), and their profit-sharing trusts count as one trust for
+    that limit (404(a)(3)(A)(iv)); a partnership is the employer of its
+    partners, so its plan has a limit of its own. other_employer_room is what
+    those limits leave for the other plans' employer contributions when this
+    business's plan makes none. The model applies the dollar limit and the
+    limit of half of earned income less deferrals to all of the plans
+    together, as section 415 does for one employer (415(f)(1)(B)) or for
+    businesses under more than 50 percent common control (414(c), 415(h)),
+    and the plan deduction is within them.
 
-    So the other plans can carry their employer room plus all the
-    deferrals that the plan deduction and the person's room allow, up to
-    their earned income, and this business's plan carries the rest (Form
-    7206 line 9).
+    So the other plans can carry their employer room plus the person's
+    deferral room, up to their earned income, and this business's plan
+    carries the rest (Form 7206 line 9). Where that capacity passes the plan
+    deduction, this plan carries none of it.
     """
-    other_plans = min_(
-        other_earned_income,
-        other_employer_room + min_(plan_deduction, deferral_room),
-    )
+    other_plans = min_(other_earned_income, other_employer_room + deferral_room)
     return max_(0, plan_deduction - other_plans)
 
 
