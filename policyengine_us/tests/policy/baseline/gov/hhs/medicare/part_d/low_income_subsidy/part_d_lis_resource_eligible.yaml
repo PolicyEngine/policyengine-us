@@ -71,7 +71,7 @@
       person:
         bank_account_assets: 18_710
   output:
-    # 16,590 x 336.940 / 324.800 = 17,210.04, rounded to 17,210; plus 1,500.
+    # 16,590 x 336.940 / 324.800 = 17,210.08, rounded to 17,210; plus 1,500.
     part_d_lis_resource_eligible: true
 
 - name: Single person one dollar over the projected 2027 limit.
@@ -95,7 +95,7 @@
       marital_unit:
         members: [spouse1, spouse2]
   output:
-    # 33,120 x 336.940 / 324.800 = 34,358.11, rounded to 34,360; plus 2 x
+    # 33,120 x 336.940 / 324.800 = 34,357.92, rounded to 34,360; plus 2 x
     # 1,500 = 37,360.
     part_d_lis_resource_eligible: [true, true]
 
