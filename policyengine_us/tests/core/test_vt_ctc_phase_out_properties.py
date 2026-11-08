@@ -71,8 +71,8 @@ def build_situation(agis, n_children, year):
 )
 @example(year=2025, agis=EDGES, n_children=2)
 @example(year=2022, agis=EDGES, n_children=4)
-# No YAML case reaches 2026, so this example checks the per-child reduction
-# in a year the hand-computed cases leave out.
+# No vt_ctc.yaml case covers 2026, so this example checks the per-child
+# reduction in a year that file leaves out.
 @example(year=2026, agis=EDGES, n_children=3)
 def test_vt_ctc_phase_out_properties(year, agis, n_children):
     agis = sorted(agis)
