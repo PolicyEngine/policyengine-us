@@ -1,0 +1,1 @@
+Add Census Bureau money income for people, families and households (census_money_income, census_family_money_income and census_household_money_income), built from one list for each of the 18 sources in Current Population Reports P60-200, Appendix A.

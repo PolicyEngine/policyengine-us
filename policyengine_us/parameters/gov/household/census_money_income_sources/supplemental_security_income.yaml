@@ -1,0 +1,106 @@
+description: The Census Bureau counts these sources as Supplemental Security Income, source 5 of 18 in money income.
+# Appendix A counts federal, state and local payments to low-income
+# people 65 or older, blind or disabled, so state supplements to SSI
+# count here alongside the federal payment.
+values:
+  2022-01-01:
+    - ssi
+  # State programs join in 2023, when household_state_benefits begins.
+  2023-01-01:
+    - ssi
+    # Alabama
+    - al_ssp
+    # Alaska
+    - ak_ssp
+    # California
+    - ca_state_supplement
+    - ca_capi
+    # Colorado
+    - co_state_supplement
+    # Connecticut
+    - ct_ssp
+    # Delaware
+    - de_ssp
+    # District of Columbia
+    - dc_ossp
+    # Florida
+    - fl_oss
+    # Georgia
+    - ga_ssp
+    # Hawaii
+    - hi_oss
+    # Idaho
+    - id_aabd
+    # Indiana
+    - in_ssp
+    # Iowa
+    - ia_ssa
+    # Kansas
+    - ks_sspp
+    # Kentucky
+    - ky_ssp
+    # Louisiana
+    - la_oss
+    # Maine
+    - me_ssp
+    # Maryland
+    - md_paa
+    # Massachusetts
+    - ma_state_supplement
+    # Michigan
+    - mi_ssp
+    # Minnesota
+    - mn_msa
+    # Missouri
+    - mo_ssp
+    # Montana
+    - mt_ssp
+    # Nebraska
+    - ne_aabd
+    # Nevada
+    - nv_oss
+    # New Hampshire
+    - nh_ssp
+    # New Jersey
+    - nj_ssp
+    # New Mexico
+    - nm_ssi_state_supplement
+    # New York
+    - ny_ssp
+    # North Carolina
+    - nc_sa
+    # Ohio
+    - oh_rss
+    # Oklahoma
+    - ok_ssp
+    # Oregon
+    - or_ssp
+    # Pennsylvania
+    - pa_ssp
+    # Rhode Island
+    - ri_ssp
+    # South Carolina
+    - sc_ssi_state_supplement
+    # South Dakota
+    - sd_ssp
+    # Texas
+    - tx_ssi_state_supplement
+    # Utah
+    - ut_ssp
+    # Vermont
+    - vt_aabd
+    # Virginia
+    - va_ag
+    # Washington
+    - wa_ssp
+    # Wisconsin
+    - wi_ssp
+    # Wyoming
+    - wy_ssp
+metadata:
+  unit: list
+  period: year
+  label: Census money income Supplemental Security Income sources
+  reference:
+    - title: "Census Bureau, Current Population Reports P60-200, Appendix A, source 5 (Supplemental Security Income) #page 1,3"
+      href: https://www2.census.gov/programs-surveys/cps/methodology/Appendix%20A%20P60-200%20income%20measurement%20definition.pdf#page=1

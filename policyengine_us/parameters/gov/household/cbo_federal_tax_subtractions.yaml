@@ -1,0 +1,14 @@
+description: Refundable credits that CBO household federal taxes subtract beyond those in income_tax.
+values:
+  0000-01-01:
+    # CBO's individual income taxes include the premium tax credit, which
+    # income_tax leaves out.
+    - assigned_aca_ptc
+
+metadata:
+  unit: list
+  period: year
+  label: CBO federal tax subtractions
+  reference:
+    - title: Congressional Budget Office, The Distribution of Household Income in 2021, Appendix D (individual income taxes include premium tax credits)
+      href: https://www.cbo.gov/system/files/2024-09/60341-income.pdf#page=42

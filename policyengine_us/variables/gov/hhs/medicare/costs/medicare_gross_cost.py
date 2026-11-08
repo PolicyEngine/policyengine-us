@@ -7,8 +7,9 @@ class medicare_gross_cost(Variable):
     label = "Gross Medicare cost"
     documentation = (
         "Annual Medicare spending on behalf of the beneficiary before "
-        "subtracting beneficiary premiums. This matches the gross Medicare "
-        "benefit concept used in the CBO household-income framework."
+        "subtracting beneficiary premiums. CBO's household income framework "
+        "measures Medicare net of offsetting receipts, so its social "
+        "insurance benefits use medicare_cost instead."
     )
     unit = USD
     definition_period = YEAR
