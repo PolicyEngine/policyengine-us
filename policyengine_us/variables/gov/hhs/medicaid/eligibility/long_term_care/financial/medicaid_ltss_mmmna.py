@@ -29,7 +29,10 @@ class medicaid_ltss_mmmna(Variable):
         "and $794 through June 2026, then $2,705 and $812 from July 2026. "
         "These published standards are used even where they differ from "
         "the unrounded federal arithmetic: January 2026 shelter expenses "
-        "of $1,000 produce $2,850, rather than $2,850.625."
+        "of $1,000 produce $2,850, rather than $2,850.625. The federal "
+        "maximum projects forward under 42 USC 1396r-5(g), while the "
+        "federal minimum and Washington's published standards hold their "
+        "latest values, so projected years can raise only the maximum."
     )
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396r-5#d",

@@ -1858,6 +1858,9 @@
         medicaid_ltss_qit_covered_earned_income: 1000
         medicaid_ltss_qit_covered_earned_income_deposited: 1000
         medicaid_ltss_qit_subsequent_full_deposits_verified: false
+      # This row relies on the deposit inputs' validity contract. Covered
+      # amounts aggregate by income stream, so they cannot tell a whole-source
+      # deposit from a partial deposit of one source (MEPD F-6820).
       later_month:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
