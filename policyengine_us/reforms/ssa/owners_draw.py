@@ -21,6 +21,7 @@ from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_inco
 )
 from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.above_the_line_deductions.self_employed_health_insurance_earned_income_limit import (
     self_employed_health_insurance_earned_income_limit as baseline_sehi_limit,
+    form_7206_line_13,
 )
 from policyengine_us.variables.gov.ssa.social_security.ss_aime import (
     ss_aime as baseline_aime,
@@ -247,32 +248,11 @@ def create_owners_draw():
                 person("owners_draw_niit_exclusion", period),
                 0,
             )
-            plan_business_profit = max_(
-                0, person("total_self_employment_income", period)
-            )
-            all_business_profits = (
-                plan_business_profit
-                + max_(0, person("farm_operations_income", period))
-                + max_(0, person("partnership_self_employment_net_earnings", period))
-                + draw_profits_in_line_7
-            )
-            plan_business_share = np.divide(
-                plan_business_profit,
-                all_business_profits,
-                out=np.zeros_like(all_business_profits),
-                where=all_business_profits > 0,
-            )
-            self_employment_tax_deduction = (
-                person("self_employment_tax_ald_person", period) * plan_business_share
-            )
-            retirement_plan_deduction = person(
-                "self_employed_pension_contribution_ald_person", period
-            )
-            return max_(
-                0,
-                plan_business_profit
-                - self_employment_tax_deduction
-                - retirement_plan_deduction,
+            # The draw profits enter line 5 only: the plan business is still
+            # chosen among the baseline's Schedule C, farm, partnership and
+            # S corporation businesses.
+            return form_7206_line_13(
+                person, period, other_line_5_profits=draw_profits_in_line_7
             )
 
     class ss_aime(baseline_aime):
