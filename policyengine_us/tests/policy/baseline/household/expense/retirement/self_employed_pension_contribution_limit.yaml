@@ -397,13 +397,13 @@
         farm_operations_income: 100_000
         self_employed_pension_contributions_desired: 100_000
   output:
-    # Steps 1 to 3: 100,000 - 92,350 x 15.3% / 2 = 100,000 - 7,064.7775.
-    self_employment_tax_ald_person: 7_064.7775
-    self_employed_pension_earned_income: 92_935.2225
-    # Step 7: 18,587.0445. Steps 13 + 15: 18,587.0445 + 23,500.
-    self_employed_pension_contribution_limit: 42_087.0445
-    self_employed_pension_contributions: 42_087.0445
-    self_employed_pension_contribution_ald_person: 42_087.0445
+    # Steps 1 to 3: 100,000 - 92,350 x 15.3% / 2 = 100,000 - 7,064.775.
+    self_employment_tax_ald_person: 7_064.775
+    self_employed_pension_earned_income: 92_935.225
+    # Step 7: 18,587.045. Steps 13 + 15: 18,587.045 + 23,500.
+    self_employed_pension_contribution_limit: 42_087.045
+    self_employed_pension_contributions: 42_087.045
+    self_employed_pension_contribution_ald_person: 42_087.045
 
 - name: A partnership with K-1 box 14 code A earnings is the only business.
   period: 2025
@@ -416,8 +416,8 @@
         self_employed_pension_contributions_desired: 10_000
   output:
     # Step 3 and the limit as for the farm alone.
-    self_employed_pension_earned_income: 92_935.2225
-    self_employed_pension_contribution_limit: 42_087.0445
+    self_employed_pension_earned_income: 92_935.225
+    self_employed_pension_contribution_limit: 42_087.045
     self_employed_pension_contributions: 10_000
 
 - name: By default a Schedule C business and a farm both have plans, and their earned income adds up.
@@ -431,11 +431,11 @@
         farm_operations_income: 40_000
         self_employed_pension_contributions_desired: 100_000
   output:
-    # Steps 1 to 3: 100,000 - 7,064.7775 (all of Schedule 1 line 15).
-    self_employed_pension_earned_income: 92_935.2225
-    # Steps 13 + 15: 18,587.0445 + 23,500, against 34,652.23 with the plan
+    # Steps 1 to 3: 100,000 - 7,064.775 (all of Schedule 1 line 15).
+    self_employed_pension_earned_income: 92_935.225
+    # Steps 13 + 15: 18,587.045 + 23,500, against 34,652.23 with the plan
     # under the Schedule C business alone.
-    self_employed_pension_contribution_limit: 42_087.0445
+    self_employed_pension_contribution_limit: 42_087.045
 
 - name: A plan under the farm alone uses the farm's earned income.
   period: 2025
@@ -449,11 +449,11 @@
         self_employed_pension_contributions_desired: 100_000
         self_employed_pension_plan_business: SCHEDULE_F
   output:
-    # Steps 1 to 3: 40,000 - 40% x 7,064.7775 = 37,174.089.
-    self_employed_pension_earned_income: 37_174.089
-    # Step 7: 7,434.82. Step 9: 23,500. Step 12: (37,174.089 - 23,500) / 2 =
-    # 6,837.0445, the smallest, so step 13 is 6,837.0445. Step 19: 30,337.0445.
-    self_employed_pension_contribution_limit: 30_337.0445
+    # Steps 1 to 3: 40,000 - 40% x 7,064.775 = 37,174.09.
+    self_employed_pension_earned_income: 37_174.09
+    # Step 7: 7,434.818. Step 9: 23,500. Step 12: (37,174.09 - 23,500) / 2 =
+    # 6,837.045, the smallest, so step 13 is 6,837.045. Step 19: 30,337.045.
+    self_employed_pension_contribution_limit: 30_337.045
 
 - name: A plan under the partnership alone uses the partnership's earned income.
   period: 2025
@@ -467,10 +467,10 @@
         self_employed_pension_contributions_desired: 100_000
         self_employed_pension_plan_business: PARTNERSHIP
   output:
-    # Steps 1 to 3: 50,000 - 50% x 7,064.7775 = 46,467.61125.
-    self_employed_pension_earned_income: 46_467.6113
-    # Steps 13 + 15: 9,293.5223 + 23,500.
-    self_employed_pension_contribution_limit: 32_793.5223
+    # Steps 1 to 3: 50,000 - 50% x 7,064.775 = 46,467.6125.
+    self_employed_pension_earned_income: 46_467.6125
+    # Steps 13 + 15: 9,293.5225 + 23,500.
+    self_employed_pension_contribution_limit: 32_793.5225
 
 - name: A farm with a net loss has no plan by default and does not reduce the Schedule C business's earned income.
   period: 2024
