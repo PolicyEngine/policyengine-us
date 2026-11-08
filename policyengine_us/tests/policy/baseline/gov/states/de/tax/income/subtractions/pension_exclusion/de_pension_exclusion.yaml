@@ -153,3 +153,160 @@
     state_code: DE
   output:
     de_pension_exclusion: 12_500
+
+# 30 Del. C. 1106(b)(3)c-e: the military pension cap rises to $15,000 for
+# 2027, $20,000 for 2028 and $25,000 from 2029, and from 2027 filers age 60 or
+# older take the greater of the $12,500 pension exclusion and the military
+# pension exclusion.
+
+- name: DE under-60 military pension cap stays $12,500 in 2026.
+  period: 2026
+  input:
+    state_code: DE
+    age: 45
+    military_retirement_pay: 30_000
+  output:
+    de_pension_exclusion: 12_500
+
+- name: DE under-60 military pension cap is $15,000 in 2027.
+  period: 2027
+  input:
+    state_code: DE
+    age: 45
+    military_retirement_pay: 30_000
+  output:
+    de_pension_exclusion: 15_000
+
+- name: DE under-60 military pension cap is $20,000 in 2028.
+  period: 2028
+  input:
+    state_code: DE
+    age: 45
+    military_retirement_pay: 30_000
+  output:
+    de_pension_exclusion: 20_000
+
+- name: DE under-60 military pension cap is $25,000 in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 45
+    military_retirement_pay: 30_000
+  output:
+    de_pension_exclusion: 25_000
+
+- name: DE under-60 military pension cap stays $25,000 after 2029.
+  period: 2031
+  input:
+    state_code: DE
+    age: 45
+    military_retirement_pay: 30_000
+  output:
+    de_pension_exclusion: 25_000
+
+- name: DE military pension under the cap is excluded in full in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 45
+    military_retirement_pay: 18_000
+  output:
+    de_pension_exclusion: 18_000
+
+- name: DE 60+ filer excludes $12,500 of military pension in 2026.
+  period: 2026
+  input:
+    state_code: DE
+    age: 65
+    military_retirement_pay: 30_000
+  output:
+    de_pension_exclusion: 12_500
+
+- name: DE 60+ filer takes the $15,000 military pension exclusion in 2027.
+  period: 2027
+  input:
+    state_code: DE
+    age: 65
+    military_retirement_pay: 30_000
+  output:
+    de_pension_exclusion: 15_000
+
+- name: DE 60+ filer takes the $25,000 military pension exclusion in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 65
+    military_retirement_pay: 30_000
+  output:
+    de_pension_exclusion: 25_000
+
+- name: DE 60+ filer keeps the $12,500 pension exclusion when it is larger in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 65
+    military_retirement_pay: 10_000
+    taxable_ira_distributions: 20_000
+  output:
+    # The greater of min(12,500, 30,000) and min(25,000, 10,000).
+    de_pension_exclusion: 12_500
+
+- name: DE 60+ filer without military pension keeps the $12,500 cap in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 65
+    taxable_pension_income: 30_000
+  output:
+    de_pension_exclusion: 12_500
+
+- name: DE 60+ filer with a capital loss takes military pension alone from 2027.
+  period: 2027
+  input:
+    state_code: DE
+    age: 75
+    military_retirement_pay: 10_000
+    long_term_capital_gains: -3_000
+  output:
+    # The basket nets to 7,000; the military pension exclusion gives 10,000.
+    de_pension_exclusion: 10_000
+
+- name: DE 60+ filer with a capital loss keeps the netted basket in 2026.
+  period: 2026
+  input:
+    state_code: DE
+    age: 75
+    military_retirement_pay: 10_000
+    long_term_capital_gains: -3_000
+  output:
+    de_pension_exclusion: 7_000
+
+- name: DE under-60 survivor benefits stay in the $2,000 pension exclusion in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 50
+    military_retirement_pay_survivors: 30_000
+  output:
+    de_pension_exclusion: 2_000
+
+- name: DE joint return gives each spouse the 2029 cap on their own military pension.
+  period: 2029
+  input:
+    people:
+      head:
+        age: 65
+        military_retirement_pay: 30_000
+      spouse:
+        age: 58
+        military_retirement_pay: 22_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    de_pension_exclusion: [25_000, 22_000]

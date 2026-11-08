@@ -1,0 +1,1 @@
+Raise Delaware's military pension exclusion cap to $15,000 for 2027, $20,000 for 2028 and $25,000 from 2029, and let filers age 60 or older take the greater of the $12,500 pension exclusion and the military pension exclusion from 2027, under 30 Del. C. § 1106(b)(3)c-e.

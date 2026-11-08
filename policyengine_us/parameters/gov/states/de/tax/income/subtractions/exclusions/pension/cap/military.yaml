@@ -1,6 +1,11 @@
 description: Delaware caps the military pension income exclusion at this amount.
 values:
+  # 30 Del. C. 1106(b)(3)b, for 2022 through 2026.
   2022-01-01: 12_500
+  # 1106(b)(3)c, d and e.
+  2027-01-01: 15_000
+  2028-01-01: 20_000
+  2029-01-01: 25_000
 metadata:
   unit: currency-USD
   period: year
@@ -16,6 +21,8 @@ metadata:
     - title: Delaware individual income tax instructions for 2022 Line 6
       href: https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf#page=6
     - title: The Delaware Code - Title 30 - Chapter 11 - Subchapter II - § 1106 - (b) - (3)
+      href: https://delcode.delaware.gov/title30/c011/sc02/index.html
+    - title: 30 Del. C. § 1106(b)(3)c-e, military pension caps for 2027, 2028 and 2029 on
       href: https://delcode.delaware.gov/title30/c011/sc02/index.html
     - title: Delaware Individual Income Tax Return Line 6
       href: https://revenuefiles.delaware.gov/2023/PIT-RES_TY23_2023-01_Instructions.pdf#page=6
