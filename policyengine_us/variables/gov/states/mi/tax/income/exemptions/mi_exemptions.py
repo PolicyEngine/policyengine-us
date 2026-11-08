@@ -27,10 +27,9 @@ class mi_exemptions(Variable):
         )
         disabled_exemption = disabled_people * p.disabled.amount.base
 
-        # Disabled veteran exemptions
-        disabled_veterans = add(
-            tax_unit, period, ["is_fully_disabled_service_connected_veteran"]
-        )
+        # MCL 206.30(3)(b): each qualified disabled veteran, a veteran with
+        # a service-connected disability at any rating, adds an exemption.
+        disabled_veterans = add(tax_unit, period, ["has_service_connected_disability"])
         disabled_veteran_exemption = disabled_veterans * p.disabled.amount.veteran
 
         # MCL 206.30(4): an individual who can be claimed as a dependent on

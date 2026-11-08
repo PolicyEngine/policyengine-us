@@ -56,3 +56,22 @@
       state_code: MI
   output: # 6 + 0
     mi_exemptions_count: 6
+
+- name: 2026 a veteran with a partial service-connected disability rating adds an exemption to the count
+  period: 2026
+  input:
+    people:
+      person1:
+        mi_disabled_exemption_eligible_person: false
+        has_service_connected_disability: true
+      person2:
+        mi_disabled_exemption_eligible_person: false
+        has_service_connected_disability: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    household:
+      members: [person1, person2]
+      state_code: MI
+  output: # 2 people + 1 qualified disabled veteran
+    mi_exemptions_count: 3

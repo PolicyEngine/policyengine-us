@@ -1,0 +1,21 @@
+- name: A fully disabled service-connected veteran has a service-connected disability.
+  period: 2026
+  input:
+    is_fully_disabled_service_connected_veteran: true
+  output:
+    has_service_connected_disability: true
+
+- name: Without either input, the person has no service-connected disability.
+  period: 2026
+  input:
+    is_fully_disabled_service_connected_veteran: false
+  output:
+    has_service_connected_disability: false
+
+- name: A veteran with a partial rating sets the input directly.
+  period: 2026
+  input:
+    is_fully_disabled_service_connected_veteran: false
+    has_service_connected_disability: true
+  output:
+    has_service_connected_disability: true

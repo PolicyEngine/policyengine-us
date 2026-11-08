@@ -17,5 +17,5 @@ class mi_exemptions_count(Variable):
     adds = [
         "tax_unit_size",
         "mi_disabled_exemption_eligible_person",
-        "is_fully_disabled_service_connected_veteran",
+        "has_service_connected_disability",
     ]

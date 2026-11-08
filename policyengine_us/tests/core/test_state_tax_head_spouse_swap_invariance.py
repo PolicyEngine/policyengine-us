@@ -116,6 +116,7 @@ def adults(draw):
         "pre_subsidy_care_expenses": draw(money(6_000)),
         "social_security_survivors": draw(money(20_000)),
         "is_fully_disabled_service_connected_veteran": draw(st.booleans()),
+        "has_service_connected_disability": draw(st.booleans()),
     }
 
 
@@ -190,6 +191,7 @@ def _seeded_adult(rng):
         "pre_subsidy_care_expenses": some(6_000, 0.05),
         "social_security_survivors": some(20_000, 0.05 if age >= 55 else 0.0),
         "is_fully_disabled_service_connected_veteran": bool(rng.random() < 0.03),
+        "has_service_connected_disability": bool(rng.random() < 0.05),
     }
 
 
