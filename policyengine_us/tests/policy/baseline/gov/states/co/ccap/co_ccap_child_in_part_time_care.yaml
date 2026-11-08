@@ -1,0 +1,74 @@
+# 8 CCR 1403-1 3.124(U) and (W), PDF page 85 of ruleVersionId 12658. Care is
+# part time when it averages fewer than 13 full-time equivalent units a month,
+# and a child in grades 1 to 12 with part-time days (up to 5 hours, 3.130(C))
+# has part-time care. The model takes a child in school aged 6 or older to be
+# in grade 1 or above.
+- name: Case 1, part-time care by units and by school grade.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+        is_in_k12_school: false
+      short_days:
+        age: 3
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        childcare_hours_per_day: 4
+      many_short_days:
+        age: 3
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        childcare_hours_per_day: 4
+        childcare_attending_days_per_month: 24
+      grade_school:
+        age: 8
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_day: 4
+        childcare_attending_days_per_month: 24
+      kindergarten:
+        age: 5
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_day: 4
+        childcare_attending_days_per_month: 24
+      few_days:
+        age: 3
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        childcare_attending_days_per_month: 10
+      full_days:
+        age: 3
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        childcare_hours_per_day: 8
+      twelve_full_days:
+        age: 3
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 12
+      out_of_school:
+        age: 8
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        childcare_hours_per_day: 4
+        childcare_attending_days_per_month: 24
+    spm_units:
+      spm_unit:
+        members: [parent, short_days, many_short_days, grade_school, kindergarten, few_days, full_days, twelve_full_days, out_of_school]
+    households:
+      household:
+        members: [parent, short_days, many_short_days, grade_school, kindergarten, few_days, full_days, twelve_full_days, out_of_school]
+        state_code: CO
+  output:
+    # short_days: 0.55 * 21.67 = 11.92 units, under 13.
+    # many_short_days: 0.55 * 24 = 13.2 units.
+    # grade_school: 13.2 units, but section 3.124(W) covers an 8-year-old in school.
+    # kindergarten: 13.2 units, and kindergarten precedes grade 1.
+    # few_days: 10 days of unknown length, 10 units.
+    # full_days: 21.67 units.
+    # twelve_full_days: 12 units.
+    # out_of_school: 13.2 units, and the child attends no school.
+    co_ccap_child_in_part_time_care: [false, true, false, true, false, true, false, true, false]
