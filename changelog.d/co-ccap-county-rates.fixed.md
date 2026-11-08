@@ -1,0 +1,1 @@
+Cap Colorado's Child Care Assistance Program payment for each eligible child at the county's reimbursement rate for that child's care, from CDEC's state-established licensed rates (October 2024 and October 2025) and each county's qualified exempt rates, and cap the parent fee at the reimbursement. The program had paid any charge in full.
