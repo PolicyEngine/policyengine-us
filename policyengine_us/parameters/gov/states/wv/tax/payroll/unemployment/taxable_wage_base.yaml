@@ -1,13 +1,38 @@
-description: Employer-side unemployment insurance taxable wage base for West Virginia.
+description: West Virginia limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 9_521
+  # Before July 1, 2024, West Virginia Code Section 21A-1A-28 limited
+  # contribution wages to a threshold wage: it set that wage at $12,000 from
+  # 2009, cut it to $9,000 once the unemployment fund reached $220 million on
+  # a February 15, and then moved it each year by the same percentage as the
+  # state's average wage. WorkForce West Virginia's July 2016 employer
+  # handbook gives the $12,000 base.
+  2018-01-01: 12_000
+  # The threshold wage fell to $9,000 from 2022; the employer handbook that
+  # WorkForce West Virginia posted in February 2023 gives the $9,000 base.
+  2022-01-01: 9_000
+  # WorkForce West Virginia's June 2024 employer handbook gives a 2024 base of
+  # $9,521.
+  2024-01-01: 9_521
+  # Senate Bill 841 of 2024 set the base at $9,500 in Section 21A-1A-28(b)(1)
+  # from July 1, 2024, and WorkForce West Virginia applies it from 2025.
+  2025-01-01: 9_500
 
 metadata:
   period: year
   unit: currency-USD
   label: West Virginia unemployment taxable wage base
   reference:
-    - title: West Virginia Code Section 21A-1A-28
+    - title: West Virginia Code Section 21A-1A-28 before the 2024 amendment, threshold wage, archived May 10, 2024
+      href: https://web.archive.org/web/20240510223931/https://code.wvlegislature.gov/21A-1A-28/
+    - title: West Virginia Code Section 21A-1A-28(b)(1), wages
       href: https://code.wvlegislature.gov/21A-1A-28/
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=60
+    - title: Enrolled Committee Substitute for Senate Bill 841 (2024), amending Section 21A-1A-28
+      href: https://www.wvlegislature.gov/Bill_Status/bills_text.cfm?billdoc=sb841%20sub1%20enr.htm&yr=2024&sesstype=RS&billtype=B&houseorig=S&i=841
+    - title: WorkForce West Virginia, Handbook for Employers (July 2016), contributions and reports, archived July 13, 2018
+      href: https://web.archive.org/web/20180713011053/http://workforcewv.org/images/files/employers/Employer_Handbook.pdf#page=13
+    - title: WorkForce West Virginia, Handbook for Employers as posted in February 2023, contributions and reports, archived October 26, 2023
+      href: https://web.archive.org/web/20231026211313/https://workforcewv.org/wp-content/uploads/2023/02/Employer-Handbook.pdf#page=13
+    - title: WorkForce West Virginia, Employer Handbook (June 2024), taxable wage base
+      href: https://web.archive.org/web/20241203054845/https://workforcewv.org/wp-content/uploads/2024/06/Employer-Handbook-Rev.-06.24.pdf#page=14
+    - title: WorkForce West Virginia, Employer Handbook (February 2025), taxable wage base
+      href: https://web.archive.org/web/20251111054317/https://workforcewv.org/wp-content/uploads/2025/02/Employer-Handbook-Rev.-02.25.pdf#page=14

@@ -1,13 +1,34 @@
-description: Default employer-side unemployment insurance tax rate for West Virginia.
+description: West Virginia assigns this unemployment insurance contribution rate to each new employer.
 values:
-  0000-01-01: 0.027
+  # West Virginia Code Section 21A-5-5(b) sets each employer's contribution
+  # rate at 2.7% of wages until it has been an employer for 36 consecutive
+  # months ending on the computation date; Section 21A-5-5(c) sets a higher
+  # rate for foreign businesses in the construction trades. WorkForce West
+  # Virginia's employer handbooks give the 2.7% initial rate.
+  2018-01-01: 0.027
+  # From July 1, 2026, Section 21A-5-5(d), which Senate Bill 1053 of 2026
+  # added, cuts each employer's otherwise applicable rate by seven percent, so
+  # a new employer pays 2.511%. Section 21A-9-10, which the same act added,
+  # charges a separately billed annual automation and administration fee,
+  # which this parameter leaves out, and has the commissioner reimpose full
+  # rates once fee collections reach $60 million or on July 1, 2031, whichever
+  # comes first.
+  2026-07-01: 0.02511
 
 metadata:
   period: year
   unit: /1
   label: West Virginia default unemployment tax rate
   reference:
-    - title: West Virginia Code Section 21A-5-5
+    - title: West Virginia Code Section 21A-5-5, rate of contribution
       href: https://code.wvlegislature.gov/21A-5-5/
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=60
+    - title: Enrolled Committee Substitute for Committee Substitute for Senate Bill 1053 (2026), amending Section 21A-5-5 and adding Section 21A-9-10
+      href: https://www.wvlegislature.gov/Bill_Status/bills_text.cfm?billdoc=sb1053%20sub2%20enr.htm&yr=2026&sesstype=RS&billtype=B&houseorig=S&i=1053
+    - title: West Virginia Code Section 21A-9-10, Unemployment Automation and Administration Fund
+      href: https://code.wvlegislature.gov/21A-9-10/
+    - title: WorkForce West Virginia, Handbook for Employers (July 2016), experience rating, archived July 13, 2018
+      href: https://web.archive.org/web/20180713011053/http://workforcewv.org/images/files/employers/Employer_Handbook.pdf#page=17
+    - title: WorkForce West Virginia, Employer Handbook (June 2024), initial tax rate
+      href: https://web.archive.org/web/20241203054845/https://workforcewv.org/wp-content/uploads/2024/06/Employer-Handbook-Rev.-06.24.pdf#page=12
+    - title: WorkForce West Virginia, Employer Handbook (February 2025), initial tax rate
+      href: https://web.archive.org/web/20251111054317/https://workforcewv.org/wp-content/uploads/2025/02/Employer-Handbook-Rev.-02.25.pdf#page=12
