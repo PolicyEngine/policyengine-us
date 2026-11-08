@@ -524,6 +524,26 @@ def test_every_property_tax_credit_has_one_documented_route(year):
     assert outside == set(), f"{year}: refunds not in the credits list: {outside}"
 
 
+def list_change_years(path):
+    raw = yaml.load(path.read_text(), Loader=yaml.BaseLoader)
+    return {int(date[:4]) for date in raw["values"]}
+
+
+def test_refunds_stay_inside_the_credits_list_in_every_year():
+    """Checks each year either list changes, from the refund list's first block.
+
+    Years before that block take it, because policyengine-core reads an empty
+    block as no list at all.
+    """
+    refund_years = list_change_years(STATE_LISTS / "state_property_tax_refunds.yaml")
+    years = refund_years | list_change_years(
+        STATE_LISTS / "state_property_tax_credits.yaml"
+    )
+    for year in sorted(year for year in years if year >= min(refund_years)):
+        outside = property_tax_refunds(year) - property_tax_credit_items(year)
+        assert outside == set(), f"{year}: refunds not in the credits list: {outside}"
+
+
 def test_property_tax_credit_routes_have_no_stale_entries():
     listed = set().union(*(property_tax_credit_items(year) for year in YEARS))
     documented = set(PROPERTY_TAX_CREDITS_IN_INCOME_TAX) | set(

@@ -1,13 +1,15 @@
 description: States pay these property tax and rent refunds in cash, outside the income tax return.
 values:
   # Each refund appears from the year it enters state_property_tax_credits,
-  # the first year its parameters are defined in PE-US.
+  # so from 2021 on this list stays inside that one. Years before 2021 take
+  # the 2021 block, as household_state_benefits' first block covers the years
+  # before it; policyengine-core reads an empty block as no list at all.
   # The other members of state_property_tax_credits either sit in a state's
   # income tax credit lists, which reach net income through state income tax,
   # or reduce the property tax bill, which no net income total subtracts.
   2021-01-01:
-    # Vermont pays the renter credit on Form RCC-146, which Form IN-112 leaves
-    # out of the refundable credits it carries to Form IN-111.
+    # Vermont pays the renter credit on its own claim, Form RCC-146. Schedule
+    # IN-112 carries only other refundable credits to Form IN-111.
     - vt_renter_credit
   2022-01-01:
     # Montana's Department of Revenue pays the rebate on its own claim.
