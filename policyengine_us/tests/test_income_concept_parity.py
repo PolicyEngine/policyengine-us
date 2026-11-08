@@ -12,8 +12,8 @@ Five invariants hold for every input.
 1. Every source that any of these lists counts appears in each concept, or in
    that concept's documented exclusions below, with the reason.
 2. No source counts twice: no variable sits under two Census sources, the CBO
-   categories are disjoint, and CBO adds nothing household market income
-   already holds.
+   categories are disjoint, CBO adds nothing household market income already
+   holds, and neither concept counts a variable beside another that sums it.
 3. A dollar of a listed source adds a dollar to its concept. A person's Census
    money income gains the dollar, or an equal share of a dollar paid to a
    group, and the family and household totals gain the dollar. The CBO
@@ -164,6 +164,10 @@ CBO_EXCLUDED = {
     "pfml_benefits": "state paid leave insurance: CBO's social insurance is "
     "Social Security, Medicare, unemployment insurance and workers' "
     "compensation",
+    "educational_assistance": "Pell Grants and other government aid beside "
+    "private scholarships (IPUMS INCEDUC), which the model does not split: "
+    "CBO's other income covers only nongovernmental sources, and its transfer "
+    "lists name no education grants",
     # cbo_market_income_subtractions removes these two from household market
     # income.
     "gi_cash_assistance": "guaranteed income pilot payments, which CBO's lists "
@@ -215,8 +219,23 @@ CBO_INCOMES = (
     "cbo_household_means_tested_transfers",
 )
 
+# Sources Census counts through the variables they add, because Appendix A
+# puts the parts under different sources: military retirement pay under
+# pension or retirement income, military survivor annuities under survivor
+# benefits.
+CENSUS_COUNTED_AS = {
+    "military_retirement_income": (
+        "military_retirement_pay",
+        "military_retirement_pay_survivors",
+    ),
+}
+
 # Sources CBO counts through another listed variable that sums them.
-CBO_COUNTED_AS = {"medicaid_cost": "medicaid"}
+CBO_COUNTED_AS = {
+    "medicaid_cost": "medicaid",
+    "military_retirement_pay": "military_retirement_income",
+    "military_retirement_pay_survivors": "military_retirement_income",
+}
 
 # Sources that can be losses.
 LOSSES = {
@@ -343,10 +362,20 @@ def test_census_lists_follow_appendix_a():
 
 def test_concept_lists_name_defined_variables(variables):
     names = set(CENSUS_EXCLUDED) | set(CBO_EXCLUDED)
+    names |= set(CENSUS_COUNTED_AS) | set().union(*CENSUS_COUNTED_AS.values())
     names |= set(CBO_COUNTED_AS) | set(CBO_COUNTED_AS.values())
     for year in YEARS:
         names |= census_members(year) | set().union(*cbo_lists(year).values())
     assert names - set(variables) == set()
+
+
+def test_aliases_sum_exactly_their_parts(variables):
+    # A part added to one of these variables later would otherwise reach
+    # neither concept.
+    for name, parts in CENSUS_COUNTED_AS.items():
+        assert set(variables[name].adds) == set(parts), name
+    for name, alias in CBO_COUNTED_AS.items():
+        assert name in variables[alias].adds, f"{alias} does not add {name}"
 
 
 @pytest.mark.parametrize("year", YEARS)
@@ -356,6 +385,8 @@ def test_no_source_counts_twice(year):
         for name in members:
             assert name not in seen, f"{name} is under {seen[name]} and {source}"
             seen[name] = source
+    for name, parts in CENSUS_COUNTED_AS.items():
+        assert name not in seen, f"{name} counts beside {parts}, which it sums"
 
     lists = cbo_lists(year)
     market = block(MARKET_INCOME_SOURCES, year)
@@ -381,6 +412,9 @@ def test_no_source_counts_twice(year):
 @pytest.mark.parametrize("year", YEARS)
 def test_census_classifies_every_source(year):
     counted = census_members(year)
+    counted |= {
+        name for name, parts in CENSUS_COUNTED_AS.items() if set(parts) <= counted
+    }
     excluded = set(CENSUS_EXCLUDED)
     assert counted & excluded == set(), "listed and excluded"
     unclassified = universe(year) - counted - excluded
@@ -411,6 +445,7 @@ def test_cbo_classifies_every_source(year):
 def test_exclusions_are_current():
     every_year = set().union(*(universe(year) for year in YEARS))
     assert set(CENSUS_EXCLUDED) - every_year == set(), "stale Census entries"
+    assert set(CENSUS_COUNTED_AS) - every_year == set(), "stale Census aliases"
     assert set(CBO_EXCLUDED) - every_year == set(), "stale CBO entries"
     assert set(CBO_COUNTED_AS) - every_year == set(), "stale CBO aliases"
 
@@ -575,11 +610,13 @@ def test_cbo_counts_a_source_through_the_variable_that_sums_it(name, alias):
     simulation = paired_households(
         [(name, entity_of(name), "TX", 1_000)], size=1, earnings=500_000
     )
-    for total, members in cbo_categories(YEAR).items():
-        if alias in members:
-            assert change(values_by_id(simulation, total), 0) == pytest.approx(
-                1_000, abs=TOLERANCE
-            )
+    categories = cbo_categories(YEAR)
+    assert any(alias in categories[total] for total in CBO_INCOMES), alias
+    for total in CBO_INCOMES:
+        expected = 1_000 if alias in categories[total] else 0
+        assert change(values_by_id(simulation, total), 0) == pytest.approx(
+            expected, abs=TOLERANCE
+        ), total
 
 
 def reference_census_money_income(simulation, year):

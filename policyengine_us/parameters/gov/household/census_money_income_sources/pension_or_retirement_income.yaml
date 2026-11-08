@@ -3,10 +3,15 @@ values:
   2022-01-01:
     # Pensions, annuities and paid-up insurance policies.
     - pension_income
-    - military_retirement_income
+    # Military retirement pay. Survivor annuities under the military
+    # retirement plans count as survivor benefits.
+    - military_retirement_pay
     # IRA, Keogh and 401(k) payments.
     - retirement_distributions
     # Railroad retirement, one of the eight sources Appendix A lists here.
+    # railroad_benefits also holds the Railroad Retirement Board's disability
+    # and survivor annuities, which Appendix A counts as disability and
+    # survivor benefits; the model does not split that variable.
     - railroad_benefits
 metadata:
   unit: list

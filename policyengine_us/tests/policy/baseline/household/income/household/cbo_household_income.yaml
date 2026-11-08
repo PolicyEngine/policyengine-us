@@ -112,7 +112,7 @@
     # $37,437 + $11,000 - $2,452.
     cbo_household_income_after_transfers_and_taxes: 45_985
 
-- name: CBO market income adds retirement income and private transfers but not veterans' benefits
+- name: CBO market income adds retirement income and private transfers but not veterans' benefits or educational assistance
   period: 2026
   input:
     state_code: TX
@@ -127,15 +127,17 @@
     # Other nongovernmental sources.
     child_support_received: 800
     financial_assistance: 250
-    educational_assistance: 900
     cbo_corporate_income_tax: 100
+    # Educational assistance mixes Pell Grants and other government aid with
+    # private scholarships, and CBO's other income covers only
+    # nongovernmental sources.
+    educational_assistance: 900
     # CBO's income categories have not named veterans' benefits since its
     # report on 2014, published in March 2018.
     veterans_benefits: 3_000
   output:
-    # $100,000 + $6,200 + $1,450 + $42 + $1,200 + $700 + $800 + $250 + $900
-    # + $100.
-    cbo_household_market_income: 111_642
+    # $100,000 + $6,200 + $1,450 + $42 + $1,200 + $700 + $800 + $250 + $100.
+    cbo_household_market_income: 110_742
     cbo_household_social_insurance_benefits: 0
     cbo_household_means_tested_transfers: 0
-    cbo_household_income_before_transfers_and_taxes: 111_642
+    cbo_household_income_before_transfers_and_taxes: 110_742

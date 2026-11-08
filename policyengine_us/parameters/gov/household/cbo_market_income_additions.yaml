@@ -18,11 +18,10 @@ values:
     - survivor_benefits
     # Other income sources: other nongovernmental sources of income, which
     # CBO draws from the Current Population Survey. educational_assistance
-    # also holds government grants such as Pell Grants, which CBO's lists do
-    # not name.
+    # stays out: it holds Pell Grants and other government aid beside
+    # private scholarships, and the model does not split them.
     - child_support_received
     - financial_assistance
-    - educational_assistance
 
 metadata:
   unit: list

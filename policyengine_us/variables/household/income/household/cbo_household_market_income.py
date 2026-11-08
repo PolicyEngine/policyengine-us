@@ -12,10 +12,9 @@ class cbo_household_market_income(Variable):
         "Dividend, plus employer-sponsored insurance premiums, the modeled "
         "federal employer payroll taxes, any corporate income tax incidence "
         "input, railroad retirement and survivor benefits (income received in "
-        "retirement for past services), and child support, financial "
-        "assistance and educational assistance (other nongovernmental "
-        "sources). Corporate income tax incidence is not yet allocated in the "
-        "default PE-US benchmark."
+        "retirement for past services), and child support and financial "
+        "assistance (other nongovernmental sources). Corporate income tax "
+        "incidence is not yet allocated in the default PE-US benchmark."
     )
     definition_period = YEAR
     unit = USD

@@ -22,12 +22,15 @@
     social_security: 6_000
     # 7. Veterans' payments.
     veterans_benefits: 3_000
-    # 8. Survivor benefits.
+    # 8. Survivor benefits, military survivor annuities included.
     survivor_benefits: 700
+    military_retirement_pay_survivors: 300
     # 9. Disability benefits.
     disability_benefits: 400
-    # 10. Pension or retirement income, railroad retirement included.
+    # 10. Pension or retirement income, military and railroad retirement
+    # included.
     pension_income: 2_500
+    military_retirement_pay: 800
     railroad_benefits: 1_100
     # 11. Interest, 12. dividends, 13. rents, royalties, estates and trusts.
     interest_income: 300
@@ -42,9 +45,9 @@
     financial_assistance: 250
     gi_cash_assistance: 150
   output:
-    census_money_income: 56_700
-    census_family_money_income: 56_700
-    census_household_money_income: 56_700
+    census_money_income: 57_800
+    census_family_money_income: 57_800
+    census_household_money_income: 57_800
 
 - name: Receipts Appendix A does not count leave money income unchanged
   period: 2026

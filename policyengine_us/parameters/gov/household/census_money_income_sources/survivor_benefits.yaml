@@ -5,6 +5,9 @@ description: The Census Bureau counts these sources as survivor benefits, source
 values:
   2022-01-01:
     - survivor_benefits
+    # Survivor annuities under the uniformed services retirement plans:
+    # Appendix A lists military survivor pensions here.
+    - military_retirement_pay_survivors
 metadata:
   unit: list
   period: year
