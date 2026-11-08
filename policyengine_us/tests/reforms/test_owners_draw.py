@@ -195,19 +195,22 @@ def _calculate(variables, parameters, inputs, outputs=None):
     )
     # The oracles below take the Schedule C business as the business under
     # which both the health insurance plan and the retirement plan are
-    # established, so Form 7206 line 9 is the whole plan deduction.
-    shape = np.atleast_1d(values["total_self_employment_income"]).shape
+    # established, so Form 7206 line 9 is the whole plan deduction. The enums
+    # take the inputs' own shape, so scalar inputs give scalar results.
+    shape = np.shape(values["total_self_employment_income"])
+
+    def schedule_c_plan(business):
+        return business.encode(
+            np.full(np.atleast_1d(np.zeros(shape)).shape, business.SCHEDULE_C)
+        ).reshape(shape)
+
     values.setdefault(
         "self_employed_health_insurance_plan_business",
-        SelfEmployedHealthInsurancePlanBusiness.encode(
-            np.full(shape, SelfEmployedHealthInsurancePlanBusiness.SCHEDULE_C)
-        ),
+        schedule_c_plan(SelfEmployedHealthInsurancePlanBusiness),
     )
     values.setdefault(
         "self_employed_pension_plan_business",
-        SelfEmployedPensionPlanBusiness.encode(
-            np.full(shape, SelfEmployedPensionPlanBusiness.SCHEDULE_C)
-        ),
+        schedule_c_plan(SelfEmployedPensionPlanBusiness),
     )
 
     def person(name, instant, options=None):

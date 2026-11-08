@@ -5,9 +5,10 @@
 # which the plan is established (self_employed_health_insurance_plan_business),
 # or of the person's business with the largest earned income when that input
 # is not supplied. Line 9 is the part of the Schedule 1 line 16 retirement plan
-# deduction attributable to that business: the retirement plan's businesses
-# (self_employed_pension_plan_business, by default every profitable one) take
-# it in proportion to their line 8 amounts.
+# deduction attributable to that business. A retirement plan under one named
+# business (self_employed_pension_plan_business) puts all of line 16 there. By
+# default every profitable business has a plan, and line 9 is the least that
+# this business's plan must carry while the other plans carry all they can.
 
 - name: Case 1, one business, the limit is net profit less half of self-employment tax.
   period: 2022
