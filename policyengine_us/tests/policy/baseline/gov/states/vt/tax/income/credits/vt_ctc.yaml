@@ -181,6 +181,56 @@
     # reduction off the total would leave $1,000.
     vt_ctc: 0
 
+- name: Three children at $174,000 of AGI get $20 each.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 5
+      child2:
+        age: 3
+      child3:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+        adjusted_gross_income: 174_000
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: VT
+  output:
+    # 49 increments leave $20 per child, and 3 x $20 = $60. One reduction off
+    # the $3,000 total would leave $2,020.
+    vt_ctc: 60
+
+- name: Three children at $174,001 of AGI get nothing.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 5
+      child2:
+        age: 3
+      child3:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+        adjusted_gross_income: 174_001
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: VT
+  output:
+    # 50 increments leave $0 per child. One reduction off the $3,000 total
+    # would leave $2,000.
+    vt_ctc: 0
+
 - name: In 2022, the credit's first year, two children at $150,000 of AGI get $500 each.
   period: 2022
   input:
