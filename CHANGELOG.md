@@ -1,3 +1,11 @@
+## [2.106.1] - 2026-11-08
+
+### Fixed
+
+- Correct New York's and South Dakota's child care coverage notes, which listed the court-supervision age extension as not modeled; the model applies it in both states. Drop the separate school-age rate table from New York's not-modeled list, since OCFS prices school-age programs at the day care center rates for ages 3 to 12. Correct the description of New York's county default in the note and in `ny_ccap_county_group`: without a county or county FIPS input, the model places a household in Albany County, in county group 2. Move the limits New York shares with other states to the CCDF program note.
+- Count Colorado's in-kind support and maintenance (9 CCR 2503-5 3.520.79) in AND-CS and Old Age Pension income: SSA's matching ISM for SSI recipients, including the one-third reduction for those in another person's household from March 2014, Colorado's maximum for clients without SSI, and the pre-2014 rules.
+
+
 ## [2.106.0] - 2026-11-08
 
 ### Fixed
