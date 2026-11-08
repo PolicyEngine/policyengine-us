@@ -19,9 +19,8 @@ class co_ccap_provider_type(Variable):
     label = "Colorado Child Care Assistance Program provider type"
     defined_for = StateCode.CO
     reference = (
-        # 8 CCR 1403-1 3.130(B), PDF page 119: rate types by provider type.
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=119",
-        # 3.103(MMMM), PDF page 17: qualified exempt child care provider.
+        # 8 CCR 1403-1 3.103(MMMM) and 3.130(B), PDF pages 17, 119: qualified
+        # exempt child care provider, and rate types by provider type.
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=17",
     )
 
