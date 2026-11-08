@@ -4,7 +4,7 @@ household_net_income and spm_unit_net_income are two views of one family's
 cash. Each total keeps its own list of what it adds, in two different files, and
 the lists drift: a cash program reaches one total and not the other.
 
-Six invariants hold for every input.
+Eight invariants hold for every input.
 
 1. The list difference is exactly the documented one. Every program that one
    total counts and the other does not appears below with its reason.
@@ -20,6 +20,12 @@ Six invariants hold for every input.
    means-tested benefits to lose.
 6. The head and spouse together hold a tax unit's whole Form 4797 amount, with
    its sign, and gross income holds its positive part.
+7. For a household with no means-tested benefits to lose, a dollar of veterans'
+   or railroad benefits adds a dollar to both benefit totals and to market
+   income plus benefits.
+8. Veterans' benefits never change federal gross income or AGI, and they leave
+   federal income tax unchanged for a filer under 65 without a disability who
+   doesn't itemize.
 
 Child care stays out of this file: household_state_benefits and the SPM treat
 subsidies differently on purpose, and #9405 and #10569 cover that difference.
@@ -454,7 +460,10 @@ def test_veterans_benefits_stay_out_of_federal_gross_income(amount, earnings, st
     The IRS still counts them as income for the optional sales tax tables
     (state_sales_tax.yaml), so a filer who itemizes and deducts sales tax can
     owe less federal income tax with them. The test checks income tax only
-    when neither household itemizes.
+    when neither household itemizes. The person is 40 and has no disability,
+    so the credit for the elderly or disabled doesn't apply. 26 U.S.C.
+    22(c)(3)(A)(i)(III) reduces that credit by VA pensions, and the model
+    doesn't yet.
     """
     year = 2026
     zero = Simulation(
