@@ -11263,8 +11263,8 @@ candidates:
       sets it, giving $24,620 in 2017 and $33,120 in 2026.
     other: CMS's memo gives the 1.01658 factor and the rounding to $10 but prints $24,250, and POMS lists $24,250 for
       2015 and 2016. SSA raises its own published amount each later year, giving $24,600 in 2017 and $33,100 in 2026.
-  example: In 2026 a married couple with $36,110 of countable resources and the burial funds exclusion meets the
-    statutory limit of $33,120 plus $3,000 but not SSA's $33,100 plus $3,000.
+  example: In 2026 a married couple with $36,110 of resources, $3,000 of them set aside for burial, has $33,110 of
+    countable resources, within the statutory limit of $33,120 but over SSA's $33,100.
   pe_us:
     follows: statute
     code:
@@ -11273,8 +11273,8 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10127
   state: ruled
   note: Every other higher (partial subsidy, then full subsidy) limit SSA published from 2007 to 2026 equals the
-    formula applied to the previous published limit, and the memo's 1.01658 factor reproduces its other 2015 amounts ($7,280, $10,930 and
-    $12,140), so the $24,250 is the one cell the stated method doesn't produce. The model applies the formula as the
+    formula applied to the previous published limit, and the memo's 1.01658 factor reproduces its other 2015 amounts
+    ($7,280, $10,930 and $12,140), so the $24,250 is the one cell the stated method doesn't produce. The model applies the formula as the
     statute and 423.773(d)(2)(ii) state it, from the statute's 2006 amount of $20,000. The difference reaches only
     couples whose countable resources fall within $10 to $20 of the limit.
 - id: us:recovery-rebate-joint-claimable-spouse
