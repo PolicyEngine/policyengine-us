@@ -452,8 +452,14 @@ def test_a_dollar_of_federal_cash_benefits_adds_a_dollar_to_both_totals(
 )
 @example(amount=30_000, earnings=0, state="TX")
 @example(amount=20_000, earnings=45_000, state="VT")
-def test_veterans_benefits_never_change_federal_income_tax(amount, earnings, state):
-    """38 U.S.C. 5301(a)(1) exempts VA benefits from taxation."""
+def test_veterans_benefits_stay_out_of_federal_gross_income(amount, earnings, state):
+    """38 U.S.C. 5301(a)(1) exempts VA benefits from taxation.
+
+    The IRS still counts them as income for the optional sales tax tables
+    (state_sales_tax.yaml), so a filer who itemizes and deducts sales tax can
+    owe less federal income tax with them. The test checks income tax only
+    when neither household itemizes.
+    """
     year = 2026
     zero = Simulation(
         situation=one_person(state, earnings, year, veterans_benefits=("person", 0))
@@ -463,7 +469,11 @@ def test_veterans_benefits_never_change_federal_income_tax(amount, earnings, sta
             state, earnings, year, veterans_benefits=("person", amount)
         )
     )
-    for name in ("irs_gross_income", "adjusted_gross_income", "income_tax"):
+    for name in ("irs_gross_income", "adjusted_gross_income"):
         assert total(paid, [name], year) == pytest.approx(
             total(zero, [name], year), abs=TOLERANCE
         ), name
+    if not any(total(s, ["tax_unit_itemizes"], year) for s in (zero, paid)):
+        assert total(paid, ["income_tax"], year) == pytest.approx(
+            total(zero, ["income_tax"], year), abs=TOLERANCE
+        )
