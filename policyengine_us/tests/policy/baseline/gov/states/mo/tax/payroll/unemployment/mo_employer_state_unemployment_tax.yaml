@@ -1,0 +1,125 @@
+- name: Missouri 2018, its 2.511% new-employer rate on the $12,500 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 12_500
+    employer_state_unemployment_tax_default_rate: 0.02511
+    mo_employer_state_unemployment_tax: 313.88
+    employer_state_unemployment_tax: 313.88
+
+- name: Missouri 2019, its 2.376% new-employer rate on the $12,000 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 12_000
+    employer_state_unemployment_tax_default_rate: 0.02376
+    mo_employer_state_unemployment_tax: 285.12
+    employer_state_unemployment_tax: 285.12
+
+- name: Missouri 2020, its 2.376% new-employer rate on the $11,500 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 11_500
+    employer_state_unemployment_tax_default_rate: 0.02376
+    mo_employer_state_unemployment_tax: 273.24
+    employer_state_unemployment_tax: 273.24
+
+- name: Missouri 2021, its 2.376% new-employer rate on the $11,000 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 11_000
+    employer_state_unemployment_tax_default_rate: 0.02376
+    mo_employer_state_unemployment_tax: 261.36
+    employer_state_unemployment_tax: 261.36
+
+- name: Missouri 2022, its 2.376% new-employer rate on the $11,000 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 11_000
+    employer_state_unemployment_tax_default_rate: 0.02376
+    mo_employer_state_unemployment_tax: 261.36
+    employer_state_unemployment_tax: 261.36
+
+- name: Missouri 2023, its 2.511% new-employer rate on the $10,500 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 10_500
+    employer_state_unemployment_tax_default_rate: 0.02511
+    mo_employer_state_unemployment_tax: 263.66
+    employer_state_unemployment_tax: 263.66
+
+- name: Missouri 2024, its 2.376% new-employer rate on the $10,000 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 10_000
+    employer_state_unemployment_tax_default_rate: 0.02376
+    mo_employer_state_unemployment_tax: 237.60
+    employer_state_unemployment_tax: 237.60
+
+- name: Missouri 2025, its 2.376% new-employer rate on the $9,500 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 9_500
+    employer_state_unemployment_tax_default_rate: 0.02376
+    mo_employer_state_unemployment_tax: 225.72
+    employer_state_unemployment_tax: 225.72
+
+- name: Missouri 2026, its 2.376% new-employer rate on the $9,000 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 9_000
+    employer_state_unemployment_tax_default_rate: 0.02376
+    mo_employer_state_unemployment_tax: 213.84
+    employer_state_unemployment_tax: 213.84
+
+- name: Missouri 2018, wages below the wage base are all taxable.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 125.55
+
+- name: Missouri employer unemployment tax is zero for a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    mo_employer_state_unemployment_tax: 0

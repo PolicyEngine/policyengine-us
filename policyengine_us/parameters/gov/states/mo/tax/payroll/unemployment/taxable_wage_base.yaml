@@ -1,15 +1,42 @@
-description: Employer-side unemployment insurance taxable wage base for Missouri.
+description: Missouri limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 10_000
+  # Missouri Revised Statutes Section 288.036.2 raises the base by $1,000 when
+  # the trust fund's average balance is $350 million or less and cuts it by
+  # $500 when the balance is $650 million or more, within $7,000 to $13,000.
+  # The Division of Employment Security publishes each year's base.
+  2018-01-01: 12_500
+  2019-01-01: 12_000
+  2020-01-01: 11_500
+  2021-01-01: 11_000
+  2023-01-01: 10_500
+  2024-01-01: 10_000
+  2025-01-01: 9_500
+  2026-01-01: 9_000
 
 metadata:
   period: year
   unit: currency-USD
   label: Missouri unemployment taxable wage base
   reference:
-    - title: Missouri Revised Statutes Section 288.036
-      href: https://revisor.mo.gov/main/OneSection.aspx?section=288.036
-    - title: Missouri unemployment tax rates
-      href: https://labor.mo.gov/des/employers/tax-rates
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=35
+    - title: Missouri Revised Statutes Section 288.036.2 (as effective October 1, 2006), state taxable wage base
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=288.036&bid=33833
+    - title: Missouri Division of Employment Security, Tax Rates (November 2019)
+      href: https://web.archive.org/web/20191112014741/https://labor.mo.gov/DES/Employers/tax_rates
+    - title: Missouri Division of Employment Security, Tax Rates (December 2021)
+      href: https://web.archive.org/web/20211206171236/https://labor.mo.gov/DES/Employers/tax_rates
+    - title: Missouri Division of Employment Security, Tax Rates (January 2023)
+      href: https://web.archive.org/web/20230124003733/https://labor.mo.gov/des/employers/tax-rates
+    - title: Missouri Division of Employment Security, Tax Rates (April 2024)
+      href: https://web.archive.org/web/20240427081016/https://labor.mo.gov/des/employers/tax-rates
+    - title: Missouri Division of Employment Security, Tax Rates (February 2025)
+      href: https://web.archive.org/web/20250205202759/https://labor.mo.gov/des/employers/tax-rates
+    - title: Missouri Division of Employment Security, Tax Rates (January 2026)
+      href: https://web.archive.org/web/20260110071912/https://labor.mo.gov/des/employers/tax-rates
+    - title: Missouri Department of Labor and Industrial Relations, release on the 2019 taxable wage base and rate reduction (December 20, 2018)
+      href: https://labor.mo.gov/news/press-releases/lower-unemployment-leads-millions-dollars-reduced-taxes-missouri-businesses
+    - title: Missouri Department of Labor and Industrial Relations, release on the 2020 taxable wage base and rate reduction (December 20, 2019)
+      href: https://labor.mo.gov/news/press-releases/lower-unemployment-leads-millions-dollars-reduced-taxes-missouri-businesses-0
+    - title: Missouri Department of Labor and Industrial Relations, release on 2021 unemployment tax rates (November 4, 2020)
+      href: https://labor.mo.gov/news/press-releases/missouri-employers-receive-unemployment-tax-rate-reduction-2021
+    - title: Missouri Department of Labor and Industrial Relations, release on the 2024 contribution rate adjustment and wage base (October 31, 2023)
+      href: https://labor.mo.gov/news/press-releases/missouri-department-labor-sets-2024-unemployment-insurance-contribution-rate
