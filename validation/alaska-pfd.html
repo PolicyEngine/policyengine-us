@@ -372,6 +372,90 @@ and benefit amounts unchanged.</p>
 PFD is $2,622, energy relief is $662, and federal AGI is $52,622. With both inputs
 set to zero as above, federal AGI is $50,000.</p>
 </section>
+<section id="amounts-by-year">
+<h2>Amounts by year<a class="headerlink" href="#amounts-by-year" title="Link to this heading">¶</a></h2>
+<p>PolicyEngine sets <code class="docutils literal notranslate"><span class="pre">gov.states.ak.dor.permanent_fund_dividend</span></code> and
+<code class="docutils literal notranslate"><span class="pre">gov.states.ak.dor.energy_relief</span></code> to what Alaska paid each eligible person in
+each year from 2015, the first year it models:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Year</p></th>
+<th class="head"><p>Dividend</p></th>
+<th class="head"><p>Energy relief</p></th>
+<th class="head"><p>Source</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2015</p></td>
+<td><p>$2,072</p></td>
+<td><p>$0</p></td>
+<td><p><a class="reference external" href="https://pfd.alaska.gov/division-info/summary-of-dividend-applications-payments">PFD Division summary table</a>; <a class="reference external" href="https://pfd.alaska.gov/docs/permanentfunddividendlibraries/annual-reports/2019-pfd-annual-report.pdf#page=24">2019 annual report</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>2016</p></td>
+<td><p>$1,022</p></td>
+<td><p>$0</p></td>
+<td><p>Summary table; 2019 annual report</p></td>
+</tr>
+<tr class="row-even"><td><p>2017</p></td>
+<td><p>$1,100</p></td>
+<td><p>$0</p></td>
+<td><p>Summary table; 2019 and <a class="reference external" href="https://pfd.alaska.gov/docs/permanentfunddividendlibraries/annual-reports/2021-pfd-annual-report---final.pdf#page=24">2021</a> annual reports</p></td>
+</tr>
+<tr class="row-odd"><td><p>2018</p></td>
+<td><p>$1,600</p></td>
+<td><p>$0</p></td>
+<td><p>Summary table; 2019 and 2021 annual reports</p></td>
+</tr>
+<tr class="row-even"><td><p>2019</p></td>
+<td><p>$1,606</p></td>
+<td><p>$0</p></td>
+<td><p>Summary table; 2019 and 2021 annual reports</p></td>
+</tr>
+<tr class="row-odd"><td><p>2020</p></td>
+<td><p>$992</p></td>
+<td><p>$0</p></td>
+<td><p>Summary table; 2021 annual report</p></td>
+</tr>
+<tr class="row-even"><td><p>2021</p></td>
+<td><p>$1,114</p></td>
+<td><p>$0</p></td>
+<td><p>Summary table; 2021 annual report</p></td>
+</tr>
+<tr class="row-odd"><td><p>2022</p></td>
+<td><p>$2,622</p></td>
+<td><p>$662</p></td>
+<td><p><a class="reference external" href="https://dor.alaska.gov/docs/default-source/press-releases/2023_02_17-dor-response-to-irs-guidance-on-2022-pfd.pdf#page=1">Alaska DOR release 23-002</a> (Alaska paid $2,621.81 and $662.19)</p></td>
+</tr>
+<tr class="row-even"><td><p>2023</p></td>
+<td><p>$1,312</p></td>
+<td><p>$0</p></td>
+<td><p><a class="reference external" href="https://pfd.alaska.gov/docs/permanentfunddividendlibraries/annual-reports/2023-pfd-annual-report.pdf#page=3">2023 annual report</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>2024</p></td>
+<td><p>$1,403.83</p></td>
+<td><p>$298.17</p></td>
+<td><p><a class="reference external" href="https://dor.alaska.gov/department-of-revenue/news-detail/2024/09/19/department-of-revenue-announces-2024-permanent-fund-dividend-amount-and-energy-relief">Alaska DOR release 24-005</a></p></td>
+</tr>
+<tr class="row-even"><td><p>2025</p></td>
+<td><p>$1,000</p></td>
+<td><p>$0</p></td>
+<td><p><a class="reference external" href="https://www.akleg.gov/PDF/34/Bills/HB0053Z.PDF#page=89">Sec. 25(d), ch. 10, SLA 2025</a>; <a class="reference external" href="https://dor.alaska.gov/department-of-revenue/news-detail/2025/09/22/department-of-revenue-announces-2025-permanent-fund-dividend-amount">Alaska DOR release 25-004</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>2026</p></td>
+<td><p>$1,000</p></td>
+<td><p>$200</p></td>
+<td><p><a class="reference external" href="https://www.akleg.gov/PDF/34/Bills/HB0263Z.PDF#page=87">Sec. 18(d)</a> and <a class="reference external" href="https://www.akleg.gov/PDF/34/Bills/HB0263Z.PDF#page=84">sec. 13</a>, ch. 34, SLA 2026; <a class="reference external" href="https://dor.alaska.gov/department-of-revenue/news-detail/2026/09/28/department-of-revenue-announces-2026-permanent-fund-dividend-amount">Alaska DOR release 26-004</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Alaska sets each year’s dividend in its budget and adds energy relief only in
+years when it appropriates a one-time payment. It has set no dividend and
+appropriated no energy relief for 2027 or later. From 2027, PolicyEngine carries
+the 2026 dividend of $1,000 forward and sets energy relief to zero. To model
+amounts that Alaska sets later, supply either variable as an input.</p>
+</section>
 <section id="the-2022-regular-dividend-and-energy-relief-split">
 <h2>The 2022 regular dividend and energy relief split<a class="headerlink" href="#the-2022-regular-dividend-and-energy-relief-split" title="Link to this heading">¶</a></h2>
 <p>Alaska paid $3,284 in total: $2,621.81 of regular PFD and $662.19 of supplemental
@@ -469,6 +553,7 @@ does not establish those facts or extend the 2022 IRS policy to other years.</p>
             <ul>
 <li><a class="reference internal" href="#">Alaska Permanent Fund Dividend in model comparisons</a><ul>
 <li><a class="reference internal" href="#override-calculated-payments">Override calculated payments</a></li>
+<li><a class="reference internal" href="#amounts-by-year">Amounts by year</a></li>
 <li><a class="reference internal" href="#the-2022-regular-dividend-and-energy-relief-split">The 2022 regular dividend and energy relief split</a></li>
 </ul>
 </li>
