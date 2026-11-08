@@ -1,13 +1,29 @@
-description: Default employer-side unemployment insurance tax rate for Idaho.
+description: Idaho assigns this standard unemployment insurance contribution rate to each new employer.
 values:
-  0000-01-01: 0.012
+  # The standard rate combines the unemployment insurance, administrative
+  # reserve and workforce development rates.
+  2018-01-01: 0.01
 
 metadata:
   period: year
   unit: /1
   label: Idaho default unemployment tax rate
   reference:
-    - title: Idaho Code Section 72-1350
-      href: https://legislature.idaho.gov/statutesrules/idstat/Title72/T72CH13/SECT72-1350
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=22
+    - title: Idaho Department of Labor, 2018 rate class array (standard rate)
+      href: https://www.labor.idaho.gov/wp-content/uploads/pdf/2018TaxArray.pdf#page=1
+    - title: Idaho Department of Labor, 2019 rate class array (standard rate)
+      href: https://www.labor.idaho.gov/wp-content/uploads/Publications/2019TaxArray.pdf#page=1
+    - title: Idaho Department of Labor, 2020 rate class array (standard rate)
+      href: https://www.labor.idaho.gov/wp-content/uploads/ui/Business/2020TaxArray.pdf#page=1
+    - title: Idaho Department of Labor, 2021 rate class array (standard rate)
+      href: https://www.labor.idaho.gov/wp-content/uploads/ui/Business/2021TaxArray.pdf#page=1
+    - title: Idaho Department of Labor, 2022 rate class array (standard rate)
+      href: https://www.labor.idaho.gov/wp-content/uploads/ui/Business/2022TaxArray-AmendedRates.pdf#page=1
+    - title: Idaho Department of Labor, 2023 rate class array (standard rate)
+      href: https://www.labor.idaho.gov/wp-content/uploads/ui/Business/2023TaxArray.pdf#page=1
+    - title: Idaho Department of Labor, 2024 rate class array (standard rate)
+      href: https://www.labor.idaho.gov/wp-content/uploads/2024/03/2024TaxArray.pdf#page=1
+    - title: Idaho Department of Labor, 2025 rate class array (standard rate)
+      href: https://www.labor.idaho.gov/wp-content/uploads/2024/06/2025_Rate_Class_Array.pdf#page=1
+    - title: Idaho Department of Labor, 2026 rate class array (standard rate)
+      href: https://www.labor.idaho.gov/wp-content/uploads/2024/12/Tax-rate_Class-array_2026.pdf#page=1

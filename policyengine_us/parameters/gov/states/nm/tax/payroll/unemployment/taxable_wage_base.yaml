@@ -1,13 +1,35 @@
-description: Employer-side unemployment insurance taxable wage base for New Mexico.
+description: New Mexico limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 31_700
+  2018-01-01: 24_200
+  2019-01-01: 24_800
+  2020-01-01: 25_800
+  2021-01-01: 27_000
+  2022-01-01: 28_700
+  2023-01-01: 30_100
+  2024-01-01: 31_700
+  2025-01-01: 33_200
+  2026-01-01: 34_800
 
 metadata:
   period: year
   unit: currency-USD
   label: New Mexico unemployment taxable wage base
   reference:
-    - title: New Mexico Statutes Section 51-1-42
-      href: https://law.justia.com/codes/new-mexico/chapter-51/article-1/section-51-1-42/
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=41
+    - title: New Mexico Statutes Section 51-1-42(T)(1), base wage of 60% of the state's average annual earnings
+      href: https://nmonesource.com/nmos/nmsa/en/4425/1/document.do#page=117
+    - title: New Mexico Department of Workforce Solutions, Unemployment Insurance Tax Information (2018 to 2026 taxable wage bases)
+      href: https://www.dws.state.nm.us/Unemployment/Unemployment-for-a-Business/Unemployment-Insurance-Tax-Information
+    - title: New Mexico Department of Workforce Solutions, UI Tax Information (2018 to 2020)
+      href: https://web.archive.org/web/20200508162817/https://www.dws.state.nm.us/UI-Tax-Information
+    - title: New Mexico Department of Workforce Solutions, UI Tax Information (2021)
+      href: https://web.archive.org/web/20210305072251/https://www.dws.state.nm.us/UI-Tax-Information
+    - title: New Mexico Department of Workforce Solutions, UI Tax Information (2022)
+      href: https://web.archive.org/web/20220526012221/https://www.dws.state.nm.us/UI-Tax-Information
+    - title: New Mexico Department of Workforce Solutions, UI Tax Information (2023)
+      href: https://web.archive.org/web/20230609233920/https://www.dws.state.nm.us/UI-Tax-Information
+    - title: New Mexico Department of Workforce Solutions, UI Tax Information (2024)
+      href: https://web.archive.org/web/20240423144016/https://www.dws.state.nm.us/UI-Tax-Information
+    - title: New Mexico Department of Workforce Solutions, UI Tax Information (2025)
+      href: https://web.archive.org/web/20250523170513/https://www.dws.state.nm.us/UI-Tax-Information
+    - title: New Mexico Department of Workforce Solutions, UI Tax Information (2026)
+      href: https://web.archive.org/web/20260125061828/https://www.dws.state.nm.us/UI-Tax-Information

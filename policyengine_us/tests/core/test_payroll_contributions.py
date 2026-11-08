@@ -519,8 +519,8 @@ def test_employee_payroll_tax_zero_when_payroll_tax_abolished():
         pytest.param(
             "RI",
             {
-                "ri_employer_job_development_fund_tax": 61.32,
-                "ri_employer_additional_state_payroll_tax": 61.32,
+                "ri_employer_job_development_fund_tax": 64.68,
+                "ri_employer_additional_state_payroll_tax": 64.68,
             },
             id="RI",
         ),
@@ -761,8 +761,8 @@ def test_connecticut_paid_leave_uses_fica_taxable_wages():
             {
                 "nj_temporary_disability_insurance_taxable_wages": 171_100,
                 "nj_family_leave_insurance_taxable_wages": 171_100,
-                "nj_taxable_earnings_for_state_unemployment_tax": 42_300,
-                "taxable_earnings_for_state_unemployment_tax": 42_300,
+                "nj_taxable_earnings_for_state_unemployment_tax": 44_800,
+                "taxable_earnings_for_state_unemployment_tax": 44_800,
             },
             id="NJ",
         ),
@@ -770,8 +770,8 @@ def test_connecticut_paid_leave_uses_fica_taxable_wages():
             "RI",
             {
                 "ri_temporary_disability_insurance_taxable_wages": 100_000,
-                "ri_taxable_earnings_for_state_unemployment_tax": 29_200,
-                "taxable_earnings_for_state_unemployment_tax": 29_200,
+                "ri_taxable_earnings_for_state_unemployment_tax": 30_800,
+                "taxable_earnings_for_state_unemployment_tax": 30_800,
             },
             id="RI",
         ),

@@ -1,13 +1,18 @@
-description: Default employer-side unemployment insurance tax rate for Mississippi.
+description: Mississippi assigns this unemployment insurance contribution rate to each employer in its first year of liability.
 values:
-  0000-01-01: 0.01
+  # Mississippi also collects workforce investment and training contributions
+  # of up to 0.20% of taxable wages under Section 71-5-353(3); these values
+  # leave them out.
+  2018-01-01: 0.01
 
 metadata:
   period: year
   unit: /1
   label: Mississippi default unemployment tax rate
   reference:
-    - title: Mississippi Employment Security Law Section 71-5-355
-      href: https://mdes.ms.gov/media/456617/mdes_lawsandregulation_web_02152024.pdf#page=44
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=34
+    - title: Mississippi Laws 2016, chapter 302 (SB 2808), section 1, Section 71-5-353(1)(a)
+      href: https://billstatus.ls.state.ms.us/documents/2016/html/SB/2800-2899/SB2808SG.htm
+    - title: Mississippi Laws 2023, chapter 542 (HB 588), section 1, Section 71-5-353(1)(a)
+      href: https://billstatus.ls.state.ms.us/documents/2023/html/HB/0500-0599/HB0588SG.htm
+    - title: Mississippi Laws 2025, HB 1414, section 1, Section 71-5-353(1)(a)
+      href: https://billstatus.ls.state.ms.us/documents/2025/html/HB/1400-1499/HB1414SG.htm

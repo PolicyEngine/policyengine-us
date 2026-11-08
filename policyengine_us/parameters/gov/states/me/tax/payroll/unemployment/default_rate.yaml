@@ -1,13 +1,38 @@
-description: Default employer-side unemployment insurance tax rate for Maine.
+description: Maine assigns this unemployment insurance contribution rate to each new employer.
 values:
-  0000-01-01: 0.0197
+  # Maine lists the Competitive Skills Scholarship Fund contribution and, from
+  # 2021, the Unemployment Program Administrative Fund contribution on top of
+  # this rate; these values leave both out.
+  2018-01-01: 0.018
+  2019-01-01: 0.0183
+  2020-01-01: 0.0186
+  2021-01-01: 0.0211
+  2022-01-01: 0.0224
+  2023-01-01: 0.0197
+  2024-01-01: 0.0204
+  2025-01-01: 0.0211
+  2026-01-01: 0.0223
 
 metadata:
   period: year
   unit: /1
   label: Maine default unemployment tax rate
   reference:
-    - title: Maine Revised Statutes Title 26 Section 1221
-      href: https://legislature.maine.gov/legis/statutes/26/title26sec1221.html
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=29
+    - title: Maine Department of Labor, rate year 2018 rate category and employer array (new employer rate)
+      href: https://www.maine.gov/unemployment/docs/2018/2018taxrate.pdf#page=1
+    - title: Maine Department of Labor, rate year 2019 rate category and employer array (new employer rate)
+      href: https://www.maine.gov/unemployment/docs/2019/2019taxrate.pdf#page=1
+    - title: Maine Department of Labor, rate year 2020 rate category and employer array (new employer rate)
+      href: https://www.maine.gov/unemployment/docs/2019/2020taxrate.pdf#page=1
+    - title: Maine Department of Labor, rate year 2021 rate category and employer array (new employer rate)
+      href: https://www.maine.gov/unemployment/docs/2020/2021taxrate.pdf#page=1
+    - title: Maine Department of Labor, rate year 2022 rate category and employer array (new employer rate)
+      href: https://www.maine.gov/unemployment/docs/2021/employers/2022Array.pdf#page=1
+    - title: Maine Department of Labor, rate year 2023 rate category and employer array (new employer rate)
+      href: https://www.maine.gov/unemployment/docs/2022/employers/2023Array.pdf#page=1
+    - title: Maine Department of Labor, rate year 2024 rate category and employer array (new employer rate)
+      href: https://www.maine.gov/unemployment/docs/2023/taxpublications/2024Array.pdf#page=1
+    - title: Maine Department of Labor, rate year 2025 rate category and employer array (new employer rate)
+      href: https://www.maine.gov/unemployment/docs/2025/RateArray.pdf#page=1
+    - title: Maine Department of Labor, rate year 2026 rate category and employer array (new employer rate)
+      href: https://www.maine.gov/unemployment/docs/2026/employers/uitaxrates2026.pdf#page=1

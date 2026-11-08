@@ -1,13 +1,19 @@
-description: Default employer-side unemployment insurance tax rate for Nebraska.
+description: Nebraska assigns this combined tax rate to each new employer outside the construction industry.
 values:
-  0000-01-01: 0.0125
+  # The Department of Labor's live combined tax rate table lists 1.39% for new
+  # employers in 2022, but its fiscal year 2021-2022 annual report lists
+  # 1.25%, the statutory floor, which applies because the 2022 average
+  # combined tax rate was 0.49%.
+  2018-01-01: 0.0125
 
 metadata:
   period: year
   unit: /1
   label: Nebraska default unemployment tax rate
   reference:
-    - title: Nebraska Revised Statute 48-649.02
+    - title: Nebraska Revised Statutes Section 48-649.02, combined tax rate before benefits have been payable
       href: https://nebraskalegislature.gov/laws/statutes.php?statute=48-649.02
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=37
+    - title: Nebraska Department of Labor, Unemployment Insurance Annual Report, fiscal year 2021-2022 (combined tax rates for new employers, 2018 to 2022)
+      href: https://govdocs.nebraska.gov/epubs/L1100/A001-202122.pdf#page=5
+    - title: Nebraska Department of Labor, Combined Tax Rates (new employer rates, 2022 to 2026)
+      href: https://dol.nebraska.gov/UITax/UnemploymentInsuranceTax/CombinedTaxRates

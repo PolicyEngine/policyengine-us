@@ -1,15 +1,34 @@
-description: Default employer-side unemployment insurance tax rate for Colorado.
+description: Colorado assigns this combined premium rate, including any support and solvency surcharges, to each new employer outside the construction industry.
 values:
-  0000-01-01: 0.0153
+  # No solvency surcharge applied from 2018 to 2023.
+  2018-01-01: 0.017
+  # The 1.53% beginning rate and 0.17% support surcharge, which Senate Bill
+  # 23-232 split from the former 1.70% rate, plus the 1.35% solvency
+  # surcharge.
+  2024-01-01: 0.0305
 
 metadata:
   period: year
   unit: /1
   label: Colorado default unemployment tax rate
   reference:
-    - title: Colorado Revised Statutes Section 8-76-102
-      href: https://olls.info/crs/crs2025-title-08.pdf#page=660
-    - title: Colorado unemployment insurance premium rates
-      href: https://cdle.colorado.gov/employers/unemployment-insurance-premiums/premium-rates
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=15
+    - title: Colorado Revised Statutes Section 8-76-102.5, premium rate schedules and solvency surcharge
+      href: https://olls.info/crs/crs2025-title-08.pdf#page=662
+    - title: Session Laws of Colorado 2023, chapter 141 (Senate Bill 23-232), premium rate and support surcharge schedules
+      href: https://content.leg.colorado.gov/sites/default/files/documents/2023A/bills/sl/2023a_sl_141.pdf#page=4
+    - title: Colorado Department of Labor and Employment, Beginning Rates (2018 and 2019)
+      href: https://web.archive.org/web/20190823030257/https://www.colorado.gov/pacific/cdle/beginning-rates
+    - title: Colorado Department of Labor and Employment, Beginning Rates (2020)
+      href: https://web.archive.org/web/20200718033536/https://www.colorado.gov/pacific/cdle/beginning-rates
+    - title: Colorado Department of Labor and Employment, Beginning Rates (2021)
+      href: https://web.archive.org/web/20210625105003/https://cdle.colorado.gov/beginning-rates
+    - title: Colorado Department of Labor and Employment, Beginning Rates (2022)
+      href: https://web.archive.org/web/20220303190206/https://cdle.colorado.gov/beginning-rates
+    - title: Colorado Department of Labor and Employment, Beginning Rates (2023)
+      href: https://web.archive.org/web/20230609121530/https://cdle.colorado.gov/beginning-rates
+    - title: Colorado Department of Labor and Employment, Beginning Rates (2024)
+      href: https://web.archive.org/web/20240621203054/https://cdle.colorado.gov/beginning-rates
+    - title: Colorado Department of Labor and Employment, Introductory Rates (2025)
+      href: https://web.archive.org/web/20250306064117/https://cdle.colorado.gov/employers/unemployment-insurance-premiums/introductory-rates
+    - title: Colorado Department of Labor and Employment, Introductory Rates (2026)
+      href: https://cdle.colorado.gov/ui/employers/requirements/premiums/introductory-rates

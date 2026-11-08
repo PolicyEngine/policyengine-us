@@ -1,0 +1,125 @@
+- name: Pennsylvania 2018, its 3.689% new-employer rate on the $10,000 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 10_000
+    employer_state_unemployment_tax_default_rate: 0.03689
+    pa_employer_state_unemployment_tax: 368.90
+    employer_state_unemployment_tax: 368.90
+
+- name: Pennsylvania 2019, its 3.689% new-employer rate on the $10,000 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 10_000
+    employer_state_unemployment_tax_default_rate: 0.03689
+    pa_employer_state_unemployment_tax: 368.90
+    employer_state_unemployment_tax: 368.90
+
+- name: Pennsylvania 2020, its 3.689% new-employer rate on the $10,000 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 10_000
+    employer_state_unemployment_tax_default_rate: 0.03689
+    pa_employer_state_unemployment_tax: 368.90
+    employer_state_unemployment_tax: 368.90
+
+- name: Pennsylvania 2021, its 3.689% new-employer rate on the $10,000 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 10_000
+    employer_state_unemployment_tax_default_rate: 0.03689
+    pa_employer_state_unemployment_tax: 368.90
+    employer_state_unemployment_tax: 368.90
+
+- name: Pennsylvania 2022, its 3.689% new-employer rate on the $10,000 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 10_000
+    employer_state_unemployment_tax_default_rate: 0.03689
+    pa_employer_state_unemployment_tax: 368.90
+    employer_state_unemployment_tax: 368.90
+
+- name: Pennsylvania 2023, its 3.822% new-employer rate on the $10,000 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 10_000
+    employer_state_unemployment_tax_default_rate: 0.03822
+    pa_employer_state_unemployment_tax: 382.20
+    employer_state_unemployment_tax: 382.20
+
+- name: Pennsylvania 2024, its 3.822% new-employer rate on the $10,000 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 10_000
+    employer_state_unemployment_tax_default_rate: 0.03822
+    pa_employer_state_unemployment_tax: 382.20
+    employer_state_unemployment_tax: 382.20
+
+- name: Pennsylvania 2025, its 3.822% new-employer rate on the $10,000 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 10_000
+    employer_state_unemployment_tax_default_rate: 0.03822
+    pa_employer_state_unemployment_tax: 382.20
+    employer_state_unemployment_tax: 382.20
+
+- name: Pennsylvania 2026, its 3.822% new-employer rate on the $10,000 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 10_000
+    employer_state_unemployment_tax_default_rate: 0.03822
+    pa_employer_state_unemployment_tax: 382.20
+    employer_state_unemployment_tax: 382.20
+
+- name: Pennsylvania 2018, wages below the wage base are all taxable.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 184.45
+
+- name: Pennsylvania employer unemployment tax is zero for a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    pa_employer_state_unemployment_tax: 0

@@ -1,15 +1,32 @@
-description: Default employer-side unemployment insurance tax rate for Kansas.
+description: Kansas assigns this unemployment insurance contribution rate to each new employer outside the construction industry.
 values:
-  0000-01-01: 0.027
+  2018-01-01: 0.027
+  2025-01-01: 0.0175
 
 metadata:
   period: year
   unit: /1
   label: Kansas default unemployment tax rate
   reference:
-    - title: Kansas Statutes Section 44-710a
+    - title: Kansas Statutes Annotated Section 44-710a(a)(1)(B), rates for employers not eligible for a rate computation
       href: https://ksrevisor.gov/statutes/chapters/ch44/044_007_0010a.html
-    - title: Kansas employer services
-      href: https://www.dol.ks.gov/employers/employer-services
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=26
+    - title: Session Laws of Kansas 2024, chapter 83 (Substitute for House Bill 2570)
+      href: https://sos.ks.gov/publications/sessionlaws/2024/Chapter-83-HB-2570.html
+    - title: Kansas Department of Labor, Employer Tax Rates (2018)
+      href: https://web.archive.org/web/20191215073945/https://www.dol.ks.gov/employers/tax-rates/employer-tax-rates
+    - title: Kansas Department of Labor, 2019 Employer Tax Rates
+      href: https://web.archive.org/web/20191215062624/https://www.dol.ks.gov/employers/tax-rates/2019-tax-rates
+    - title: Kansas Department of Labor, 2020 Employer Tax Rates
+      href: https://web.archive.org/web/20200502090620/https://www.dol.ks.gov/employers/tax-rates/2020-tax-rates
+    - title: Kansas Department of Labor, 2021 Employer Tax Rates
+      href: https://web.archive.org/web/20210121215945/https://www.dol.ks.gov/employers/tax-rates/2021-tax-rates
+    - title: Kansas Department of Labor, Employer Tax Rates and Trust Fund Data (2022)
+      href: https://web.archive.org/web/20220122231012/https://dol.ks.gov/employers/tax-rates
+    - title: Kansas Department of Labor, Employer Tax Rates and Trust Fund Data (2023)
+      href: https://web.archive.org/web/20230205065923/https://dol.ks.gov/employers/tax-rates
+    - title: Kansas Department of Labor, Unemployment Tax (2024)
+      href: https://web.archive.org/web/20240203180024/https://www.dol.ks.gov/employers/employer-services/unemployment-tax
+    - title: Kansas Department of Labor, Employer Services, employer tax rates (2025)
+      href: https://web.archive.org/web/20250209013157/https://www.dol.ks.gov/employers/employer-services
+    - title: Kansas Department of Labor, Employer Services, employer tax rates (2023 to 2026)
+      href: https://web.archive.org/web/20260124073723/https://www.dol.ks.gov/employers/employer-services

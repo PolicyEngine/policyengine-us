@@ -1,15 +1,41 @@
-description: Default employer-side unemployment insurance tax rate for Utah.
+description: Utah assigns each new employer a rate based on its industry, so this parameter uses the average employer contribution rate on taxable wages.
 values:
-  0000-01-01: 0.0061
+  # The Department of Labor's average employer contribution rates on taxable
+  # wages; the Department of Workforce Services publishes no comparable
+  # series.
+  2018-01-01: 0.0049
+  2019-01-01: 0.0043
+  2020-01-01: 0.0041
+  2021-01-01: 0.005
+  2022-01-01: 0.0068
+  2023-01-01: 0.0062
+  2024-01-01: 0.0061
+  2025-01-01: 0.0054
+  # Department of Labor estimate.
+  2026-01-01: 0.0042
 
 metadata:
   period: year
   unit: /1
   label: Utah default unemployment tax rate
   reference:
-    - title: Utah Code Section 35A-4-303
-      href: https://le.utah.gov/xcode/Title35a/Chapter4/C35A-4_1800010118000101.pdf#page=42
-    - title: Utah unemployment insurance tax rates
-      href: https://jobs.utah.gov/ui/Employer/%28S%28s5d4bcyft23kevj5ydmhig2k%29%29/Public/Questions/TaxRates.aspx
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=55
+    - title: Utah Code Section 35A-4-303, contribution rates of new employers
+      href: https://le.utah.gov/xcode/Title35A/Chapter4/C35A-4-S303_2021111020211116.pdf
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2018 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2018.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2019 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2019.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2020 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2020.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2021 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2021.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2022 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2022.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2023 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2023.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2024 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2024.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2025 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2025.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Estimated Employer Contribution Rates, Calendar Year 2026 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2026est.pdf#page=1

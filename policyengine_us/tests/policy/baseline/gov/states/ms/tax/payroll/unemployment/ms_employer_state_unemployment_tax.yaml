@@ -1,0 +1,125 @@
+- name: Mississippi 2018, its 1% new-employer rate on the $14,000 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: MS
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 14_000
+    employer_state_unemployment_tax_default_rate: 0.01
+    ms_employer_state_unemployment_tax: 140
+    employer_state_unemployment_tax: 140
+
+- name: Mississippi 2019, its 1% new-employer rate on the $14,000 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: MS
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 14_000
+    employer_state_unemployment_tax_default_rate: 0.01
+    ms_employer_state_unemployment_tax: 140
+    employer_state_unemployment_tax: 140
+
+- name: Mississippi 2020, its 1% new-employer rate on the $14,000 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: MS
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 14_000
+    employer_state_unemployment_tax_default_rate: 0.01
+    ms_employer_state_unemployment_tax: 140
+    employer_state_unemployment_tax: 140
+
+- name: Mississippi 2021, its 1% new-employer rate on the $14,000 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: MS
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 14_000
+    employer_state_unemployment_tax_default_rate: 0.01
+    ms_employer_state_unemployment_tax: 140
+    employer_state_unemployment_tax: 140
+
+- name: Mississippi 2022, its 1% new-employer rate on the $14,000 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: MS
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 14_000
+    employer_state_unemployment_tax_default_rate: 0.01
+    ms_employer_state_unemployment_tax: 140
+    employer_state_unemployment_tax: 140
+
+- name: Mississippi 2023, its 1% new-employer rate on the $14,000 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: MS
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 14_000
+    employer_state_unemployment_tax_default_rate: 0.01
+    ms_employer_state_unemployment_tax: 140
+    employer_state_unemployment_tax: 140
+
+- name: Mississippi 2024, its 1% new-employer rate on the $14,000 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: MS
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 14_000
+    employer_state_unemployment_tax_default_rate: 0.01
+    ms_employer_state_unemployment_tax: 140
+    employer_state_unemployment_tax: 140
+
+- name: Mississippi 2025, its 1% new-employer rate on the $14,000 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: MS
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 14_000
+    employer_state_unemployment_tax_default_rate: 0.01
+    ms_employer_state_unemployment_tax: 140
+    employer_state_unemployment_tax: 140
+
+- name: Mississippi 2026, its 1% new-employer rate on the $14,000 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MS
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 14_000
+    employer_state_unemployment_tax_default_rate: 0.01
+    ms_employer_state_unemployment_tax: 140
+    employer_state_unemployment_tax: 140
+
+- name: Mississippi 2018, wages below the wage base are all taxable.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: MS
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 50
+
+- name: Mississippi employer unemployment tax is zero for a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    ms_employer_state_unemployment_tax: 0

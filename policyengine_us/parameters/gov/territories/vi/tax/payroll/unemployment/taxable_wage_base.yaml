@@ -1,13 +1,38 @@
-description: Employer-side unemployment insurance taxable wage base for Virgin Islands.
+description: The Virgin Islands limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 31_000
+  # We found no Virgin Islands Department of Labor announcement for 2018, 2020
+  # or 2023, so those three years come from the U.S. Department of Labor's
+  # Significant Provisions reports.
+  2018-01-01: 24_200
+  2019-01-01: 26_500
+  2020-01-01: 28_900
+  2021-01-01: 32_500
+  2022-01-01: 30_800
+  2023-01-01: 30_200
+  2024-01-01: 31_000
+  2025-01-01: 31_100
+  2026-01-01: 32_100
 
 metadata:
   period: year
   unit: currency-USD
   label: Virgin Islands unemployment taxable wage base
   reference:
-    - title: Virgin Islands Unemployment Insurance 2024 Updates (Title 24 Chapter 12 Section 308(c))
-      href: https://www.vidol.gov/news/vidol-announces-unemployment-insurance-2024-updates/
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=58
+    - title: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2018 (Virgin Islands taxable wage base)
+      href: https://oui.doleta.gov/unemploy/content/sigpros/2010-2019/July2018.pdf#page=5
+    - title: Virgin Islands Department of Labor, 2019 Maximum Weekly Benefit Amount and Taxable Wage Base
+      href: https://www.vidol.gov/2019/01/10/2019-maximum-weekly-benefit-amount-mwba-and-taxable-wage-base-twb/
+    - title: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2020 (Virgin Islands taxable wage base)
+      href: https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/July2020.pdf#page=5
+    - title: Virgin Islands Department of Labor, 2021 Maximum Weekly Benefit Amount and Taxable Wage Base
+      href: https://www.vidol.gov/2021/01/12/2021-maximum-weekly-benefit-amount-mwba-and-taxable-wage-base-twb/
+    - title: Virgin Islands Department of Labor, 2022 Unemployment Benefit Information
+      href: https://www.vidol.gov/2021/12/30/vidol-announces-2022-unemployment-benefit-information/
+    - title: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2023 (Virgin Islands taxable wage base)
+      href: https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/July2023.pdf#page=5
+    - title: Virgin Islands Department of Labor, Unemployment Insurance 2024 Updates
+      href: https://www.vidol.gov/2023/12/28/vidol-announces-unemployment-insurance-2024-updates/
+    - title: Virgin Islands Department of Labor, 2025 Maximum Weekly Benefit Amount and Taxable Wage Base
+      href: https://www.vidol.gov/2024/12/27/commissioner-gary-molloy-announces-2025-maximum-weekly-benefit-amount-mwba-and-taxable-wage-base-twb/
+    - title: Virgin Islands Department of Labor, 2026 Maximum Weekly Benefit Amount and Taxable Wage Base
+      href: https://www.vidol.gov/2025/12/23/virgin-islands-department-of-labor-commissioner-announces-the-maximum-weekly-benefit-amount-mwba-and-taxable-wage-base-twb/

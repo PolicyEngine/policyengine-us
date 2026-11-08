@@ -1,13 +1,27 @@
-description: Default employer-side unemployment insurance tax rate for Georgia.
+description: Georgia assigns this unemployment insurance contribution rate to each new employer.
 values:
-  0000-01-01: 0.0264
+  # Georgia also charges new employers a separate 0.06% administrative
+  # assessment in every year but 2023, which these rates leave out.
+  2018-01-01: 0.0264
+  # Before Senate Bill 160 (2023), Section 34-8-151 set 2.7% for periods after
+  # 2022. Senate Bill 160 extended the 2.64% rate through 2026 and took effect
+  # on the Governor's approval, with no retroactive date; the U.S. Department
+  # of Labor's tax measures reports list 2.70% for 2023 and 2.64% for 2024.
+  2023-01-01: 0.027
+  2024-01-01: 0.0264
 
 metadata:
   period: year
   unit: /1
   label: Georgia default unemployment tax rate
   reference:
-    - title: Georgia House Bill 347 amending Official Code of Georgia Section 34-8-156
-      href: https://www.legis.ga.gov/api/document/docs/default-source/general-statutes/2012sumdoc.pdf?sfvrsn=77e95ae6_2#page=20
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=20
+    - title: Official Code of Georgia Annotated Title 34, 2017 edition, Section 34-8-151(a) and (d), new employer rates
+      href: https://www.legis.ga.gov/api/document/docs/default-source/joint-features-document-library/t34-(v26)-2017-pdf.pdf#page=217
+    - title: Georgia Senate Bill 160 (2023), as passed, sections 1, 3 and 4
+      href: https://www.legis.ga.gov/api/legislation/document/20232024/219961#page=2
+    - title: Official Code of Georgia Annotated Title 34, 2025 edition, Section 34-8-151(d), new employer rate
+      href: https://www.legis.ga.gov/api/document/docs/default-source/joint-features-document-library/t34-(v26)-pdf.pdf#page=53
+    - title: U.S. Department of Labor, Tax Measures of State Unemployment Insurance Tax Systems, CY 2023 (new employer tax rates)
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys23.pdf#page=66
+    - title: U.S. Department of Labor, Tax Measures of State Unemployment Insurance Tax Systems, CY 2024 (new employer tax rates)
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=66

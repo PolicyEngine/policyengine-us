@@ -1,15 +1,21 @@
-description: Default employer-side unemployment insurance tax rate for Hawaii.
+description: Hawaii assigns this unemployment insurance contribution rate to each new employer.
 values:
-  0000-01-01: 0.03
+  # These rates leave out the 0.01% employment and training assessment that
+  # Section 383-129 adds to contributions.
+  2018-01-01: 0.024
+  2021-01-01: 0.03
+  2023-01-01: 0.04
+  2024-01-01: 0.03
+  2025-01-01: 0.024
 
 metadata:
   period: year
   unit: /1
   label: Hawaii default unemployment tax rate
   reference:
-    - title: Hawaii Revised Statutes Section 383-66
-      href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0383/HRS_0383-0066.htm
-    - title: Hawaii unemployment tax rate schedule and weekly benefit amount
+    - title: Hawaii Department of Labor and Industrial Relations, Tax Rate Schedule and Weekly Benefit Amount (new employer rate and taxable wage base, 2020 to 2026)
       href: https://labor.hawaii.gov/ui/tax-rate-schedule-and-weekly-benefit-amount/
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=21
+    - title: Hawaii Department of Labor and Industrial Relations, Annual Evaluation of the Unemployment Compensation Trust Fund, December 2019 (rate schedules and taxable wage bases for 2018 and 2019)
+      href: https://labor.hawaii.gov/wp-content/uploads/2020/01/UI-Fund-Evaluation-2020.pdf#page=5
+    - title: Hawaii Revised Statutes Section 383-68, contribution rate schedules
+      href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0383/HRS_0383-0068.htm

@@ -1,0 +1,125 @@
+- name: Colorado 2018, its 1.7% new-employer rate on the $12,600 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: CO
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 12_600
+    employer_state_unemployment_tax_default_rate: 0.017
+    co_employer_state_unemployment_tax: 214.20
+    employer_state_unemployment_tax: 214.20
+
+- name: Colorado 2019, its 1.7% new-employer rate on the $13,100 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: CO
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 13_100
+    employer_state_unemployment_tax_default_rate: 0.017
+    co_employer_state_unemployment_tax: 222.70
+    employer_state_unemployment_tax: 222.70
+
+- name: Colorado 2020, its 1.7% new-employer rate on the $13,600 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: CO
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 13_600
+    employer_state_unemployment_tax_default_rate: 0.017
+    co_employer_state_unemployment_tax: 231.20
+    employer_state_unemployment_tax: 231.20
+
+- name: Colorado 2021, its 1.7% new-employer rate on the $13,600 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: CO
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 13_600
+    employer_state_unemployment_tax_default_rate: 0.017
+    co_employer_state_unemployment_tax: 231.20
+    employer_state_unemployment_tax: 231.20
+
+- name: Colorado 2022, its 1.7% new-employer rate on the $17,000 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: CO
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 17_000
+    employer_state_unemployment_tax_default_rate: 0.017
+    co_employer_state_unemployment_tax: 289
+    employer_state_unemployment_tax: 289
+
+- name: Colorado 2023, its 1.7% new-employer rate on the $20,400 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: CO
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 20_400
+    employer_state_unemployment_tax_default_rate: 0.017
+    co_employer_state_unemployment_tax: 346.80
+    employer_state_unemployment_tax: 346.80
+
+- name: Colorado 2024, its 3.05% new-employer rate on the $23,800 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: CO
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 23_800
+    employer_state_unemployment_tax_default_rate: 0.0305
+    co_employer_state_unemployment_tax: 725.90
+    employer_state_unemployment_tax: 725.90
+
+- name: Colorado 2025, its 3.05% new-employer rate on the $27,200 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: CO
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 27_200
+    employer_state_unemployment_tax_default_rate: 0.0305
+    co_employer_state_unemployment_tax: 829.60
+    employer_state_unemployment_tax: 829.60
+
+- name: Colorado 2026, its 3.05% new-employer rate on the $30,600 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CO
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 30_600
+    employer_state_unemployment_tax_default_rate: 0.0305
+    co_employer_state_unemployment_tax: 933.30
+    employer_state_unemployment_tax: 933.30
+
+- name: Colorado 2018, wages below the wage base are all taxable.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: CO
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 85
+
+- name: Colorado employer unemployment tax is zero for a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    co_employer_state_unemployment_tax: 0

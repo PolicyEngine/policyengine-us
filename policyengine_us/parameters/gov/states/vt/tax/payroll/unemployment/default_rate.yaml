@@ -1,13 +1,13 @@
-description: Default employer-side unemployment insurance tax rate for Vermont.
+description: Vermont assigns this unemployment insurance contribution rate to each new employer.
 values:
-  0000-01-01: 0.01
+  2018-01-01: 0.01
 
 metadata:
   period: year
   unit: /1
   label: Vermont default unemployment tax rate
   reference:
-    - title: Vermont Statutes Title 21 Section 1327
-      href: https://legislature.vermont.gov/statutes/section/21/017/01327
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=56
+    - title: Vermont Statutes Title 21, Section 1324(b), rate for employers without a computed rate
+      href: https://legislature.vermont.gov/statutes/section/21/017/01324
+    - title: Vermont Acts 2003-2004, No. 131 (Adj. Sess.), section 1 (one percent rate for new employers)
+      href: http://www.leg.state.vt.us/docs/2004/acts/ACT131.HTM

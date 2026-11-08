@@ -1,13 +1,30 @@
-description: Employer-side unemployment insurance taxable wage base for Arizona.
+description: Arizona limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 8_000
+  2018-01-01: 7_000
+  2023-01-01: 8_000
 
 metadata:
   period: year
   unit: currency-USD
   label: Arizona unemployment taxable wage base
   reference:
-    - title: Arizona Revised Statutes Section 23-622
+    - title: Arizona Revised Statutes Section 23-622(B), taxable wages
       href: https://www.azleg.gov/ars/23/00622.htm
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=12
+    - title: Arizona Laws 2021, chapter 412 (SB 1828), section 2 ($8,000 from 2023)
+      href: https://www.azleg.gov/legtext/55leg/1R/laws/0412.htm
+    - title: Arizona Department of Economic Security, Unemployment Insurance Tax Rate Chart for 2018
+      href: https://web.archive.org/web/20180925013549/https://des.az.gov/sites/default/files/media/2018rate_chart.pdf#page=1
+    - title: Arizona Department of Economic Security, Unemployment Insurance Tax Rate Chart for 2019
+      href: https://web.archive.org/web/20190927031159/https://des.az.gov/sites/default/files/media/2019-rate-chart_compliant.pdf#page=1
+    - title: Arizona Department of Economic Security, Unemployment Insurance Tax Rate Charts for 2021 and 2020 (2020 on page 2)
+      href: https://web.archive.org/web/20201223093811/https://des.az.gov/sites/default/files/dl/UIT-0603A.pdf#page=2
+    - title: Arizona Department of Economic Security, Unemployment Insurance Tax Rate Chart for 2022
+      href: https://web.archive.org/web/20220616092605/https://des.az.gov/sites/default/files/dl/UIT-0603A-FY22.pdf#page=1
+    - title: Arizona Department of Economic Security, Unemployment Insurance Tax Rate Chart for 2023
+      href: https://web.archive.org/web/20230112174940/https://des.az.gov/sites/default/files/dl/UIT-0603A%20%28FY23%29.pdf#page=1
+    - title: Arizona Department of Economic Security, Unemployment Insurance Tax Rate Chart for 2024
+      href: https://web.archive.org/web/20240130082507/https://des.az.gov/sites/default/files/dl/UIT-0603A%20%28FY24%29.pdf#page=1
+    - title: Arizona Department of Economic Security, Unemployment Insurance Tax Rate Chart for 2025
+      href: https://web.archive.org/web/20250310170859/https://des.az.gov/sites/default/files/dl/UIT-0603A%20%28FY25%29.pdf#page=1
+    - title: Arizona Department of Economic Security, Unemployment Insurance Tax Rate Chart for 2026
+      href: https://web.archive.org/web/20260707123554/https://des.az.gov/sites/default/files/dl/UIT-0603A_FY26.pdf#page=1

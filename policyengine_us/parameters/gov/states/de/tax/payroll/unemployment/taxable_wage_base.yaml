@@ -1,13 +1,31 @@
-description: Employer-side unemployment insurance taxable wage base for Delaware.
+description: Delaware limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 10_500
+  2018-01-01: 16_500
+  2022-01-01: 14_500
+  2023-01-01: 10_500
+  2025-01-01: 12_500
+  2026-01-01: 14_500
 
 metadata:
   period: year
   unit: currency-USD
   label: Delaware unemployment taxable wage base
   reference:
-    - title: Delaware Code Title 19 Section 3302
+    - title: Delaware Code Title 19, Section 3302(28), wages
       href: https://delcode.delaware.gov/title19/c033/sc01/index.html#3302
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=17
+    - title: Delaware Division of Unemployment Insurance, Employer Services (2018 taxable wage base)
+      href: https://web.archive.org/web/20180628133858/https://ui.delawareworks.com/employer-services.php
+    - title: Delaware Division of Unemployment Insurance, Employer Services (2019 taxable wage base)
+      href: https://web.archive.org/web/20190228133852/https://ui.delawareworks.com/employer-services.php
+    - title: Delaware Department of Labor, Employer Services, merit rate table (2016 to 2021)
+      href: https://web.archive.org/web/20220106043547/https://labor.delaware.gov/divisions/unemployment-insurance/employer-services/
+    - title: Delaware Department of Labor, New Employer UI and Construction Employer Tax Rates for 2022 (January 11, 2022)
+      href: https://news.delaware.gov/2022/01/11/new-employer-ui-and-construction-employer-tax-rates-for-2022/
+    - title: Delaware Department of Labor, DOL Announces New Employer UI & Construction Employer Tax Rates for 2023 (February 6, 2023)
+      href: https://news.delaware.gov/2023/02/06/dol-announces-new-employer-ui-construction-employer-tax-rates-for-2023/
+    - title: Delaware Department of Labor, Employer Services (2023 and 2024 taxable wage base)
+      href: https://web.archive.org/web/20240228152600/https://labor.delaware.gov/divisions/unemployment-insurance/employer-services/
+    - title: Delaware Division of Unemployment Insurance, Delaware 2025 Tax Schedules (House Bill 433)
+      href: https://laborfiles.delaware.gov/main/dui/Delaware_2025_Tax_Schedules_(HB%20433).pdf#page=2
+    - title: Delaware Department of Labor, Employer Services (2026 taxable wage base)
+      href: https://labor.delaware.gov/divisions/unemployment-insurance/employer-services/

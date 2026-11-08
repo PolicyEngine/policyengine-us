@@ -1,15 +1,21 @@
-description: Employer-side unemployment insurance taxable wage base for Hawaii.
+description: Hawaii limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 59_100
+  2018-01-01: 45_900
+  2019-01-01: 46_800
+  2020-01-01: 48_100
+  2021-01-01: 47_400
+  2022-01-01: 51_600
+  2023-01-01: 56_700
+  2024-01-01: 59_100
+  2025-01-01: 62_000
+  2026-01-01: 64_500
 
 metadata:
   period: year
   unit: currency-USD
   label: Hawaii unemployment taxable wage base
   reference:
-    - title: Hawaii Revised Statutes Section 383-61
-      href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0383/HRS_0383-0061.htm
-    - title: Hawaii unemployment tax rate schedule and weekly benefit amount
+    - title: Hawaii Department of Labor and Industrial Relations, Tax Rate Schedule and Weekly Benefit Amount (new employer rate and taxable wage base, 2020 to 2026)
       href: https://labor.hawaii.gov/ui/tax-rate-schedule-and-weekly-benefit-amount/
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=21
+    - title: Hawaii Department of Labor and Industrial Relations, Annual Evaluation of the Unemployment Compensation Trust Fund, December 2019 (rate schedules and taxable wage bases for 2018 and 2019)
+      href: https://labor.hawaii.gov/wp-content/uploads/2020/01/UI-Fund-Evaluation-2020.pdf#page=5

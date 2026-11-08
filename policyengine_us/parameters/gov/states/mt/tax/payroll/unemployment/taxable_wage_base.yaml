@@ -1,13 +1,37 @@
-description: Employer-side unemployment insurance taxable wage base for Montana.
+description: Montana limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 43_000
+  2018-01-01: 32_000
+  2019-01-01: 33_000
+  2020-01-01: 34_100
+  2021-01-01: 35_300
+  2022-01-01: 38_100
+  2023-01-01: 40_500
+  2024-01-01: 43_000
+  2025-01-01: 45_100
+  2026-01-01: 47_300
 
 metadata:
   period: year
   unit: currency-USD
   label: Montana unemployment taxable wage base
   reference:
-    - title: Montana Code Annotated 39-51-1108
+    - title: Montana Code Annotated Section 39-51-1108, taxable wage base
       href: https://archive.legmt.gov/bills/mca/title_0390/chapter_0510/part_0110/section_0080/0390-0510-0110-0080.html
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=36
+    - title: Montana Department of Labor and Industry, 2018 New Employer Rates (taxable wage base)
+      href: https://web.archive.org/web/20180304133747/http://uid.dli.mt.gov:80/Portals/55/Documents/Contributions-Bureau/dli-uid-ui074.pdf#page=1
+    - title: Montana Department of Labor and Industry, 2019 New Employer Rates (taxable wage base)
+      href: https://web.archive.org/web/20190101170539/http://uid.dli.mt.gov/Portals/55/Documents/Contributions-Bureau/dli-uid-ui074.pdf#page=1
+    - title: Montana Department of Labor and Industry, Montana Taxable Wage Base Released for 2020 (September 23, 2019)
+      href: https://news.dli.mt.gov/News/2019/09/23
+    - title: Montana Department of Labor and Industry, Montana Taxable Wage Base Released for 2021 (September 21, 2020)
+      href: https://news.dli.mt.gov/News/2020/09/21
+    - title: Montana Department of Labor and Industry, 2022 New Employer Rates (taxable wage base)
+      href: https://web.archive.org/web/20220120165223/https://uid.dli.mt.gov/_docs/contributions-bureau/industry-rate.pdf#page=1
+    - title: Montana Department of Labor and Industry, 2023 New Employer Rates (taxable wage base)
+      href: https://uid.dli.mt.gov/_docs/contributions-bureau/New-Employer-Rate-Insert.pdf#page=1
+    - title: Montana Department of Labor and Industry, Unemployment Insurance Contribution Taxable Wage Base and Rates for 2024
+      href: https://web.archive.org/web/20240102054754/https://uid.dli.mt.gov/_docs/contributions-bureau/Rate-Explanation.pdf#page=1
+    - title: Montana Department of Labor and Industry, Unemployment Insurance Contribution Taxable Wage Base and Rates for 2025
+      href: https://web.archive.org/web/20250102194427/https://uid.dli.mt.gov/_docs/contributions-bureau/rate-insert.pdf#page=1
+    - title: Montana Department of Labor and Industry, Unemployment Insurance Contribution Taxable Wage Base and Rates for 2026
+      href: https://uid.dli.mt.gov/_docs/contributions-bureau/Rate-Explanation.pdf#page=1

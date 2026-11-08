@@ -1,13 +1,23 @@
-description: Employer-side unemployment insurance taxable wage base for Vermont.
+description: Vermont limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 14_300
+  2018-01-01: 17_600
+  2019-01-01: 15_600
+  2020-01-01: 16_100
+  2021-01-01: 14_100
+  2022-01-01: 15_500
+  2023-01-01: 13_500
+  2024-01-01: 14_300
+  2025-01-01: 14_800
+  2026-01-01: 15_400
 
 metadata:
   period: year
   unit: currency-USD
   label: Vermont unemployment taxable wage base
   reference:
-    - title: Vermont Statutes Title 21 Section 1321
-      href: https://legislature.vermont.gov/statutes/section/21/017/01321
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=56
+    - title: Vermont Department of Labor, first quarter 2018 C-101 bulletin (taxable wage base)
+      href: https://labor.vermont.gov/sites/labor/files/doc_library/1-18-C101-Bulletin.pdf#page=1
+    - title: Vermont Department of Labor, first quarter 2019 C-101 bulletin (taxable wage base)
+      href: https://labor.vermont.gov/sites/labor/files/doc_library/1-19-C101-Bulletin.pdf#page=1
+    - title: Vermont Department of Labor, Quarterly Reporting and Taxable Wage Information (taxable wage base by year from 2020)
+      href: https://labor.vermont.gov/unemployment-insurance/ui-employers/quarterly-reporting-taxable-wage-information

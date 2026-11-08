@@ -1,15 +1,42 @@
-description: Employer-side unemployment insurance taxable wage base for Louisiana.
+description: Louisiana limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 7_700
+  # Procedure 2 of the Section 23:1474(I) table; Acts 2020 (2nd Extraordinary
+  # Session) No. 40, Acts 2021 No. 91 and Acts 2022 No. 116 kept Procedure 2
+  # for 2021 to 2023.
+  2018-01-01: 7_700
+  # Procedure 3 of the Section 23:1474(I) table.
+  2026-01-01: 7_000
 
 metadata:
   period: year
   unit: currency-USD
   label: Louisiana unemployment taxable wage base
   reference:
-    - title: Louisiana Revised Statutes Section 23:1474
+    - title: Louisiana Revised Statutes Section 23:1474(I), taxable wage base by trust fund balance (text in force 2018 to 2020)
+      href: https://web.archive.org/web/20200814121640/https://legis.la.gov/Legis/Law.aspx?d=83557
+    - title: Louisiana Revised Statutes Section 23:1474(I), taxable wage base by trust fund balance
       href: https://www.legis.la.gov/legis/Law.aspx?d=83557
-    - title: Louisiana Workforce Commission employer tax rates
-      href: https://www.louisianaworks.net/hire/admins/employertaxrates.asp
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=28
+    - title: Acts 2020, 2nd Extraordinary Session, No. 40 (Senate Bill 55), wage base for 2021
+      href: https://legis.la.gov/legis/ViewDocument.aspx?d=1194823#page=1
+    - title: Acts 2021, No. 91 (Senate Bill 89), wage base for 2022
+      href: https://legis.la.gov/legis/ViewDocument.aspx?d=1232787#page=1
+    - title: Acts 2022, No. 116 (House Bill 192), wage base for 2023
+      href: https://legis.la.gov/legis/ViewDocument.aspx?d=1286040#page=1
+    - title: Louisiana Workforce Commission, 2018 Unemployment Insurance Contribution Rate Table
+      href: https://web.archive.org/web/20190728013819/http://www.laworks.net:80/Downloads/UI/WTS/2018RateTable.pdf#page=1
+    - title: Louisiana Workforce Commission, 2019 Unemployment Insurance Contribution Rate Table
+      href: https://web.archive.org/web/20190713104525/http://www.laworks.net:80/Downloads/UI/WTS/2019RateTable.pdf#page=1
+    - title: Louisiana Workforce Commission, 2020 Unemployment Insurance Contribution Rate Table
+      href: https://web.archive.org/web/20200215095613/http://www.laworks.net:80/Downloads/UI/WTS/2020RateTable.pdf#page=1
+    - title: Louisiana Workforce Commission, 2021 Unemployment Insurance Contribution Rate Table
+      href: https://www.laworks.net/Downloads/UI/wts/2021ratetable.pdf#page=1
+    - title: Louisiana Workforce Commission, 2022 Unemployment Insurance Contribution Rate Table
+      href: https://www.laworks.net/Downloads/UI/wts/2022ratetable.pdf#page=1
+    - title: Louisiana Workforce Commission, 2023 Unemployment Insurance Contribution Rate Table
+      href: https://www.laworks.net/Downloads/UI/wts/2023ratetable.pdf#page=1
+    - title: Louisiana Workforce Commission, 2024 Unemployment Insurance Contribution Rate Table
+      href: https://www.laworks.net/Downloads/UI/wts/2024ratetable.pdf#page=1
+    - title: Louisiana Workforce Commission, 2025 Unemployment Insurance Contribution Rate Table
+      href: https://www.laworks.net/Downloads/UI/wts/2025ratetable.pdf#page=1
+    - title: Louisiana Workforce Commission, 2026 Unemployment Insurance Contribution Rate Table
+      href: https://www.laworks.net/Downloads/UI/wts/2026ratetable.pdf#page=1

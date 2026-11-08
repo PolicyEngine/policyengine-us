@@ -1,13 +1,19 @@
-description: Default employer-side unemployment insurance tax rate for South Dakota.
+description: South Dakota assigns this reemployment assistance contribution rate to each new employer outside the construction industry.
 values:
-  0000-01-01: 0.012
+  # Leaves out the 0.55% investment in South Dakota's future fee under SDCL
+  # 61-5-29.
+  2018-01-01: 0.012
 
 metadata:
   period: year
   unit: /1
   label: South Dakota default unemployment tax rate
   reference:
-    - title: South Dakota Codified Laws Section 61-5-24
+    - title: South Dakota Codified Laws Section 61-5-24, initial contribution rates
       href: https://sdlegislature.gov/api/Statutes/61-5-24.html
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=52
+    - title: South Dakota Department of Labor and Regulation, Unemployment Insurance Tax for Businesses, new employer tax rates (2018)
+      href: https://web.archive.org/web/20180213100856/http://dlr.sd.gov/ui/businesses/default.aspx
+    - title: South Dakota Department of Labor and Regulation, Reemployment Assistance for Businesses, new employer tax rates (2022)
+      href: https://web.archive.org/web/20220120142039/https://dlr.sd.gov/ra/businesses/default.aspx
+    - title: South Dakota Department of Labor and Regulation, Reemployment Assistance for Businesses, new employer tax rates (2026)
+      href: https://web.archive.org/web/20260119121735/https://dlr.sd.gov/ra/businesses/default.aspx

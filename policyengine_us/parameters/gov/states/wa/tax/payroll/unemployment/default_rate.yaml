@@ -1,17 +1,37 @@
-description: Default employer-side unemployment insurance tax rate for Washington.
+description: Washington assigns each new employer a rate based on its industry, so this parameter uses the Employment Security Department's average unemployment tax rate.
 values:
-  0000-01-01: 0.0125
+  2018-01-01: 0.011
+  2019-01-01: 0.0103
+  2020-01-01: 0.0099
+  2021-01-01: 0.0106
+  2022-01-01: 0.013
+  2023-01-01: 0.0143
+  2024-01-01: 0.0135
+  2025-01-01: 0.0121
+  2026-01-01: 0.0108
 
 metadata:
   period: year
   unit: /1
   label: Washington default unemployment tax rate
   reference:
-    - title: Revised Code of Washington Section 50.29.025
+    - title: Revised Code of Washington Section 50.29.025, contribution rates
       href: https://app.leg.wa.gov/rcw/default.aspx?cite=50.29.025
-    - title: Washington Administrative Code 192-320-025
-      href: https://app.leg.wa.gov/WAC/default.aspx?cite=192-320-025
-    - title: Washington Employment Security Department how tax rates are determined
-      href: https://esd.wa.gov/employer-requirements/unemployment-taxes/how-we-determine-tax-rates
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=59
+    - title: Washington Employment Security Department, Determining your tax rates (average tax rate for 2018)
+      href: https://web.archive.org/web/20180118012359/https://esd.wa.gov/employer-taxes/determining-your-tax-rates
+    - title: Washington Employment Security Department, Determining your tax rate (average tax rate for 2019)
+      href: https://web.archive.org/web/20190717234434/https://esd.wa.gov/employer-taxes/determining-your-tax-rate
+    - title: Washington Employment Security Department, Frequently asked questions about unemployment taxes, 2020 (average tax rate)
+      href: https://web.archive.org/web/20201017021006/https://esdorchardstorage.blob.core.windows.net/esdwa/Default/ESDWAGOV/employer-Taxes/FAQ_re_unemployment%20taxes_2020.pdf#page=1
+    - title: Washington Employment Security Department, Determining your tax rates (average tax rate for 2021)
+      href: https://web.archive.org/web/20210420235439/https://esd.wa.gov/employer-taxes/determining-rates
+    - title: Washington Employment Security Department, Determining your tax rates (average tax rate for 2022)
+      href: https://web.archive.org/web/20220403023159/https://esd.wa.gov/employer-taxes/determining-rates
+    - title: Washington Employment Security Department, Determining your tax rates (average tax rate for 2023)
+      href: https://web.archive.org/web/20230207222038/https://esd.wa.gov/employer-taxes/determining-rates
+    - title: Washington Employment Security Department, Determining your tax rates (average tax rate for 2024)
+      href: https://web.archive.org/web/20240416052120/https://esd.wa.gov/employer-taxes/determining-rates
+    - title: Washington Employment Security Department, Unemployment benefits overview, August 2025 (average tax rate for 2025)
+      href: https://esd.wa.gov/media/pdf/3988/2025-ui-benefits-overview-rh-update-82225-rlpdf/download?inline=#page=1
+    - title: Washington Employment Security Department, Unemployment Insurance Trust Fund Forecast, March 2026 (average tax rate for 2026)
+      href: https://esd.wa.gov/media/pdf/4727/202603-ui-trust-fund-reportpdf/download?inline=#page=8

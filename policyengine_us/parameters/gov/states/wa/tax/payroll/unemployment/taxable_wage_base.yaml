@@ -1,15 +1,37 @@
-description: Employer-side unemployment insurance taxable wage base for Washington.
+description: Washington limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 68_500
+  2018-01-01: 47_300
+  2019-01-01: 49_800
+  2020-01-01: 52_700
+  2021-01-01: 56_500
+  2022-01-01: 62_500
+  2023-01-01: 67_600
+  2024-01-01: 68_500
+  2025-01-01: 72_800
+  2026-01-01: 78_200
 
 metadata:
   period: year
   unit: currency-USD
   label: Washington unemployment taxable wage base
   reference:
-    - title: Revised Code of Washington Section 50.24.010
+    - title: Revised Code of Washington Section 50.24.010, wages subject to contributions
       href: https://app.leg.wa.gov/rcw/default.aspx?cite=50.24.010
-    - title: Washington Employment Security Department how tax rates are determined
-      href: https://esd.wa.gov/employer-requirements/unemployment-taxes/how-we-determine-tax-rates
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=59
+    - title: Washington Employment Security Department, Unemployment tax rates FAQ (taxable wage base for 2018)
+      href: https://web.archive.org/web/20200916192940/https://esd.wa.gov/employer-taxes/tax-rate-faq
+    - title: Washington Employment Security Department, Taxable wage base (2019)
+      href: https://web.archive.org/web/20190717234205/https://esd.wa.gov/employer-taxes/taxable-wage-base
+    - title: Washington Employment Security Department, Frequently asked questions about unemployment taxes, 2020 (taxable wage base)
+      href: https://web.archive.org/web/20201017021006/https://esdorchardstorage.blob.core.windows.net/esdwa/Default/ESDWAGOV/employer-Taxes/FAQ_re_unemployment%20taxes_2020.pdf#page=1
+    - title: Washington Employment Security Department, Employer taxes for 2021
+      href: https://web.archive.org/web/20201228173705/https://esd.wa.gov/employer-taxes/rates
+    - title: Washington Employment Security Department, Taxable wage base (2022)
+      href: https://web.archive.org/web/20220120083935/https://esd.wa.gov/employer-taxes/taxable-wage-base
+    - title: Washington Employment Security Department, Unemployment taxes fact sheet, January 9, 2023 (taxable wage base for 2023)
+      href: https://esd.wa.gov/media/pdf/298/ui-tax-fact20sheet-230109pdf/download?inline=#page=1
+    - title: Washington Employment Security Department, Washington's average wage increased to $84,167 in 2022 (taxable wage base for 2024)
+      href: https://esd.wa.gov/about-us/news-release/2023/washingtons-average-wage-increased-84167-2022
+    - title: Washington Employment Security Department, Washington's average wage increases 5.9% in 2023 (taxable wage base for 2025)
+      href: https://esd.wa.gov/about-us/news-release/2024/washingtons-average-wage-increases-59-2023
+    - title: Washington Employment Security Department, Washington's average wage increased to $95,160 in 2024 (taxable wage base for 2026)
+      href: https://esd.wa.gov/about-us/news-release/2025/washingtons-average-wage-increased-95160-2024

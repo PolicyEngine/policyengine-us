@@ -1,13 +1,21 @@
-description: Employer-side unemployment insurance taxable wage base for North Carolina.
+description: North Carolina limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 31_400
+  2018-01-01: 23_500
+  2019-01-01: 24_300
+  2020-01-01: 25_200
+  2021-01-01: 26_000
+  2022-01-01: 28_000
+  2023-01-01: 29_600
+  2024-01-01: 31_400
+  2025-01-01: 32_600
+  2026-01-01: 34_200
 
 metadata:
   period: year
   unit: currency-USD
   label: North Carolina unemployment taxable wage base
   reference:
-    - title: North Carolina General Statutes Section 96-9.3
-      href: https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_96/GS_96-9.3.html
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=43
+    - title: North Carolina Division of Employment Security, NCUI 685 instructions, revised December 2020 (taxable wage bases for 2016 to 2021), archived January 19, 2021
+      href: https://web.archive.org/web/20210119222104/https://files.nc.gov/des/documents/Downloads/ncui685.pdf#page=2
+    - title: North Carolina Division of Employment Security, Tax Rate Information (beginning tax rate and taxable wage base, 2021 to 2026)
+      href: https://www.des.nc.gov/employers/tax-rate-information

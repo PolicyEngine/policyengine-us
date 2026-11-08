@@ -1,13 +1,11 @@
-description: Employer-side unemployment insurance taxable wage base for Tennessee.
+description: Tennessee limits employer unemployment insurance premiums to this amount of each worker's annual wages.
 values:
-  0000-01-01: 7_000
+  2018-01-01: 7_000
 
 metadata:
   period: year
   unit: currency-USD
   label: Tennessee unemployment taxable wage base
   reference:
-    - title: Tennessee Code Annotated Section 50-7-213
-      href: https://law.justia.com/codes/tennessee/title-50/chapter-7/part-2/section-50-7-213/
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=53
+    - title: Tennessee Department of Labor and Workforce Development, UI Tax Rates (taxable wage base by calendar year)
+      href: https://www.tn.gov/workforce/employers/tax-and-insurance-redirect/unemployment-insurance-tax/ui-tax-rates.html

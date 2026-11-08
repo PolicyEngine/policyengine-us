@@ -1,13 +1,15 @@
-description: Employer-side unemployment insurance taxable wage base for Nebraska.
+description: Nebraska limits employer unemployment insurance contributions to this amount of each worker's annual wages for employers below the highest rate category.
 values:
-  0000-01-01: 9_000
+  2018-01-01: 9_000
 
 metadata:
   period: year
   unit: currency-USD
   label: Nebraska unemployment taxable wage base
   reference:
-    - title: Nebraska Revised Statute 48-648
-      href: https://nebraskalegislature.gov/laws/statutes.php?statute=48-648
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=37
+    - title: Nebraska Laws 2019, LB428, section 1, amending Section 48-648.02 (taxable wages)
+      href: https://nebraskalegislature.gov/FloorDocs/106/PDF/Slip/LB428.pdf#page=1
+    - title: Nebraska Department of Labor, Unemployment Insurance Annual Report, fiscal year 2021-2022 (taxable wage base)
+      href: https://govdocs.nebraska.gov/epubs/L1100/A001-202122.pdf#page=5
+    - title: Nebraska Department of Labor, Combined Tax Rates (taxable wage base, 2022 to 2026)
+      href: https://dol.nebraska.gov/UITax/UnemploymentInsuranceTax/CombinedTaxRates

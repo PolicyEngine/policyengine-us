@@ -1,13 +1,11 @@
-description: Employer-side unemployment insurance taxable wage base for New Hampshire.
+description: New Hampshire limits employer unemployment compensation contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 14_000
+  2018-01-01: 14_000
 
 metadata:
   period: year
   unit: currency-USD
   label: New Hampshire unemployment taxable wage base
   reference:
-    - title: New Hampshire RSA 282-A:84
-      href: https://gc.nh.gov/rsa/html/XXIII/282-A/282-A-84.htm
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=39
+    - title: New Hampshire RSA 282-A:69, payment of contributions
+      href: https://gc.nh.gov/rsa/html/xxiii/282-a/282-a-69.htm

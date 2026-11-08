@@ -1,0 +1,125 @@
+- name: Vermont 2018, its 1% new-employer rate on the $17,600 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 17_600
+    employer_state_unemployment_tax_default_rate: 0.01
+    vt_employer_state_unemployment_tax: 176
+    employer_state_unemployment_tax: 176
+
+- name: Vermont 2019, its 1% new-employer rate on the $15,600 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 15_600
+    employer_state_unemployment_tax_default_rate: 0.01
+    vt_employer_state_unemployment_tax: 156
+    employer_state_unemployment_tax: 156
+
+- name: Vermont 2020, its 1% new-employer rate on the $16,100 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 16_100
+    employer_state_unemployment_tax_default_rate: 0.01
+    vt_employer_state_unemployment_tax: 161
+    employer_state_unemployment_tax: 161
+
+- name: Vermont 2021, its 1% new-employer rate on the $14,100 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 14_100
+    employer_state_unemployment_tax_default_rate: 0.01
+    vt_employer_state_unemployment_tax: 141
+    employer_state_unemployment_tax: 141
+
+- name: Vermont 2022, its 1% new-employer rate on the $15,500 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 15_500
+    employer_state_unemployment_tax_default_rate: 0.01
+    vt_employer_state_unemployment_tax: 155
+    employer_state_unemployment_tax: 155
+
+- name: Vermont 2023, its 1% new-employer rate on the $13,500 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 13_500
+    employer_state_unemployment_tax_default_rate: 0.01
+    vt_employer_state_unemployment_tax: 135
+    employer_state_unemployment_tax: 135
+
+- name: Vermont 2024, its 1% new-employer rate on the $14,300 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 14_300
+    employer_state_unemployment_tax_default_rate: 0.01
+    vt_employer_state_unemployment_tax: 143
+    employer_state_unemployment_tax: 143
+
+- name: Vermont 2025, its 1% new-employer rate on the $14,800 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 14_800
+    employer_state_unemployment_tax_default_rate: 0.01
+    vt_employer_state_unemployment_tax: 148
+    employer_state_unemployment_tax: 148
+
+- name: Vermont 2026, its 1% new-employer rate on the $15,400 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 15_400
+    employer_state_unemployment_tax_default_rate: 0.01
+    vt_employer_state_unemployment_tax: 154
+    employer_state_unemployment_tax: 154
+
+- name: Vermont 2018, wages below the wage base are all taxable.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 50
+
+- name: Vermont employer unemployment tax is zero for a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    vt_employer_state_unemployment_tax: 0
