@@ -8,9 +8,9 @@ class household_child_care_subsidies(Variable):
     label = "Child care subsidies counted in household benefits"
     documentation = (
         "Child care subsidies up to the family's pre-subsidy bill for child "
-        "care and after-school care. A payment above the bill goes to the "
-        "provider, not the family. With no bill recorded, the whole subsidy "
-        "counts."
+        "care and after-school care. A payment above a provider's bill goes "
+        "to that provider, not the family, and pays none of another "
+        "provider's bill. With no bill recorded, the whole subsidy counts."
     )
     unit = USD
     reference = (
@@ -22,10 +22,11 @@ class household_child_care_subsidies(Variable):
 
     def formula(spm_unit, period, parameters):
         subsidies = spm_unit("child_care_subsidies", period)
+        above_bills = spm_unit("child_care_subsidies_above_provider_bills", period)
         # Colorado's subsidy pays for after-school care too (co_ccap_subsidy).
         bill = add(
             spm_unit,
             period,
             ["pre_subsidy_childcare_expenses", "after_school_expenses"],
         )
-        return where(bill > 0, min_(subsidies, bill), subsidies)
+        return where(bill > 0, min_(subsidies - above_bills, bill), subsidies)
