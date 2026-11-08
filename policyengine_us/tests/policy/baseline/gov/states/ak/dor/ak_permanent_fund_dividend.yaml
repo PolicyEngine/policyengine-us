@@ -83,7 +83,7 @@
   output:
     ak_permanent_fund_dividend: 1_000
 
-- name: Case 13, a 2019 filer gets the $1,606 dividend and no energy relief, so federal gross income and AGI come to $51,606.
+- name: Case 13, a 2019 filer with $50,000 of wages gets the $1,606 dividend and no energy relief, so federal gross income and AGI come to $51,606.
   period: 2019
   input:
     people:
@@ -103,7 +103,7 @@
     irs_gross_income: 51_606
     adjusted_gross_income: 51_606
 
-- name: Case 14, a 2027 filer gets the $1,000 dividend and no energy relief, so federal gross income and AGI come to $51,000.
+- name: Case 14, a 2027 filer with $50,000 of wages gets the $1,000 dividend and no energy relief, so federal gross income and AGI come to $51,000.
   period: 2027
   input:
     people:
