@@ -14,7 +14,7 @@ class vt_ccfap_child_bill(Variable):
         "shares of the members not in care. Zero for a member not in care."
     )
     reference = (
-        # PDF pages 1, 7
+        # PDF pages 1, 6
         "https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/CDD-Memo-UPK-and-CCFAP-family-tuition%20(1).pdf#page=1",
         "https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/Act76/Memo-Act-76-CCFAP-Rule-Revision.pdf#page=11",
     )

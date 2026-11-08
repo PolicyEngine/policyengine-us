@@ -15,14 +15,14 @@ class vt_ccfap_assigned_family_share(Variable):
     )
 
     def formula(person, period, parameters):
-        # In its family booklet, the department has the family pay its share to
-        # the youngest child's provider first, with any share left over going
-        # to the next provider. Each provider takes the share up to what the
-        # state would otherwise pay it for the child, the child's rate, so the
-        # share lowers the state's payment dollar for dollar until it runs out.
-        # Since December 17, 2023 that rate is the state rate (Understanding
-        # Payments, questions 1 and 3). Children of the same age take the share
-        # in the order the SPM unit lists them.
+        # In its 2023/24 family booklet, the department has the family pay its
+        # share to the youngest child's provider first, with any share left
+        # over going to the next provider. Each provider takes the share up to
+        # what the state would otherwise pay it for the child, the child's
+        # rate, so the share lowers the state's payment dollar for dollar until
+        # it runs out. Since December 17, 2023 that rate is the state rate
+        # (Understanding Payments, questions 1 and 3). Children of the same age
+        # take the share in the order the SPM unit lists them.
         rate = person("vt_ccfap_child_rate", period)
         age = person("age", period.this_year)
         order = person.get_rank(person.spm_unit, age, rate > 0)
