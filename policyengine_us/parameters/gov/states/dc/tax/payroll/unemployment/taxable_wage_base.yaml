@@ -1,13 +1,31 @@
-description: Employer-side unemployment insurance taxable wage base for District of Columbia.
+description: The District of Columbia limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 9_000
+  # The Council set this $9,000 base for 1997 and every later year in D.C.
+  # Code Section 51-103(e)(6), which D.C. Law 12-175 added in 1999.
+  2018-01-01: 9_000
 
 metadata:
   period: year
   unit: currency-USD
   label: District of Columbia unemployment taxable wage base
   reference:
-    - title: District of Columbia Code Section 51-103
+    - title: District of Columbia Code Section 51-103(e)(6), wages
       href: https://code.dccouncil.gov/us/dc/council/code/sections/51-103
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=18
+    - title: D.C. Law 12-175, Fiscal Year 1999 Budget Support Act of 1998, section 202(a)
+      href: https://code.dccouncil.gov/us/dc/council/laws/docs/12-175.pdf#page=6
+    - title: District of Columbia Department of Employment Services, Tax Rate Questions (2019)
+      href: https://web.archive.org/web/20191019041049/https://does.dc.gov/service/tax-rate-questions
+    - title: District of Columbia Department of Employment Services, Tax Rate Questions (2020)
+      href: https://web.archive.org/web/20201130012206/https://does.dc.gov/service/tax-rate-questions
+    - title: District of Columbia Department of Employment Services, Employer Self Service Portal notice (2021)
+      href: https://web.archive.org/web/20210421041447/https://essp.does.dc.gov/DOES%20ESSP%20Employer%20Landing%20Page.html
+    - title: District of Columbia Department of Employment Services, Employer Self Service Portal notice (2022)
+      href: https://web.archive.org/web/20220330073933/https://essp.does.dc.gov/DOES%20ESSP%20Employer%20Landing%20Page.html
+    - title: District of Columbia Department of Employment Services, Employer Self Service Portal notice (2023)
+      href: https://web.archive.org/web/20230211210827/https://essp.does.dc.gov/DOES%20ESSP%20Employer%20Landing%20Page.html
+    - title: District of Columbia Department of Employment Services, Employer Self Service Portal notice (2024)
+      href: https://web.archive.org/web/20240309233357/https://essp.does.dc.gov/DOES%20ESSP%20Employer%20Landing%20Page.html
+    - title: District of Columbia Department of Employment Services, Employer Self Service Portal notice (2025)
+      href: https://web.archive.org/web/20250326195216/https://essp.does.dc.gov/DOES%20ESSP%20Employer%20Landing%20Page.html
+    - title: District of Columbia Department of Employment Services, Employer Self Service Portal notice (2026)
+      href: https://web.archive.org/web/20260206215416/https://essp.does.dc.gov/DOES%20ESSP%20Employer%20Landing%20Page.html

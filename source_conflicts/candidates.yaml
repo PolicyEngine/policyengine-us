@@ -10978,6 +10978,52 @@ candidates:
   note: Transmittal 71 (July 1, 2021) removed Appendix 3, so the agency schedule applied only in state fiscal year
     2021 (July 2020 to June 2021). The 7/20 Chapter 900, Appendix II, Example 6 (a TANF-UP household of four in Group II) uses the $499 TANF
     standard. Before July 2020 and from July 2021 the manual has one schedule for all units.
+- id: us-va:ui-new-employer-rate-2018-pool-charge
+  program: unemployment-insurance
+  years:
+    from: 2018
+    to: 2018
+    type: calendar
+  question: For 2018, does a new Virginia employer pay the 2.53% that the Virginia Employment Commission's (VEC) rate table
+    lists, or 2.51%, the 2.5% of Code of Virginia Section 60.2-526(B) plus the 0.01% pool cost charge that the same table
+    and the Governor's release give for 2018?
+  sources:
+  - kind: statute
+    citation: Code of Virginia § 60.2-526(B), rate for newly subject employers
+    url: https://law.lis.virginia.gov/vacode/title60.2/chapter5/section60.2-526/
+  - kind: statute
+    citation: Code of Virginia § 60.2-532, pool cost charges
+    url: https://law.lis.virginia.gov/vacode/title60.2/chapter5/section60.2-532/
+  - kind: statute
+    citation: Code of Virginia § 60.2-533(C), fund building rate
+    url: https://law.lis.virginia.gov/vacode/title60.2/chapter5/section60.2-533/
+  - kind: agency-practice
+    citation: Office of the Governor of Virginia, release on 2018 unemployment insurance tax rates (December 21, 2017)
+    url: https://web.archive.org/web/20180111075003/https://governor.virginia.gov/newsroom/newsarticle?articleId=22020
+  - kind: agency-practice
+    citation: Virginia Employment Commission, Forms and Publications, Employer Tax Rates table (2017 to 2024)
+    url: https://web.archive.org/web/20240125230128/https://www.vec.virginia.gov/forms-publications
+  - kind: agency-practice
+    citation: Virginia Employment Commission, presentation to the Commission on Unemployment Compensation (July 9, 2026),
+      p. 11
+    url: https://apps.dlas.virginia.gov/User_db/frmView.aspx?ViewId=7243&s=11#page=11
+  readings:
+    statute: Section 60.2-526(B) sets 2.5% for each employer newly subject to the act, and Section 60.2-532 adds each year's
+      pool cost charge to that rate. The Governor's December 2017 release says "The pool cost charge for 2018 will be 0.01
+      percent, down from the 2017 cost of 0.03 percent." VEC's table gives the same 0.01% in its pool row, and its July 2026
+      presentation charts a $0.80 pool tax per employee for 2018, 0.01% of the $8,000 base. The table's fund building row
+      reads 0.00% for 2018, so Section 60.2-533(C) adds nothing. That makes 2.51%.
+    other: VEC's table lists the 2018 new employer rate as 2.53% and the 2018 maximum as 6.23%, the figures it gives for 2017,
+      when the pool charge was 0.03%. Its 2019 column, with the same 0.01% pool charge, gives 2.51% and 6.21%.
+  example: At the $8,000 base, a new employer pays $200.80 at 2.51% or $202.40 at 2.53%.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/va/tax/payroll/unemployment/default_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10700
+  state: ruled
+  note: PE-US uses 2.51% for 2018 and 2019.
 - id: us-vi:ui-new-employer-rate-payroll-variation
   program: unemployment-insurance
   years:

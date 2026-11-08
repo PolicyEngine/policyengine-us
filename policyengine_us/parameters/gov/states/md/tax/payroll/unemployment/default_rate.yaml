@@ -1,15 +1,51 @@
-description: Default employer-side unemployment insurance tax rate for Maryland.
+description: Maryland assigns this unemployment insurance contribution rate to each new employer outside the construction industry.
 values:
-  0000-01-01: 0.026
+  2018-01-01: 0.026
+  # The Division of Unemployment Insurance's January 2021 page gave 2.6%; its
+  # May 2021 pages and its January 2022 presentation give 2.3% for 2021.
+  2021-01-01: 0.023
+  2024-01-01: 0.026
+  # From 2026, Labor and Employment Article Section 8-605.1(b)(2) subtracts
+  # 0.15% from each contribution rate, with a 1% floor for new employers, and
+  # Section 8-605.1(b)(1) adds a separate 0.15% administrative fee, which
+  # PE-US leaves out. The Maryland Department of Labor's 2026 pages give only
+  # a 1.0% to 2.6% range for new employers, so PE-US starts from the 2.6% that
+  # the U.S. Department of Labor's July 2026 Significant Provisions report
+  # lists.
+  2026-01-01: 0.0245
 
 metadata:
   period: year
   unit: /1
   label: Maryland default unemployment tax rate
   reference:
-    - title: Maryland Labor and Employment Section 8-609
+    - title: Maryland Labor and Employment Article Section 8-609(b), new employer rate
       href: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gle&section=8-609&enactments=false
-    - title: Maryland Unemployment Insurance
-      href: https://labor.maryland.gov/unemployment-insurance/
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=30
+    - title: Maryland Labor and Employment Article Section 8-605.1, administrative fee and rate adjustment from 2026
+      href: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gle&section=8-605.1&enactments=false
+    - title: Chapter 604 of 2025 (House Bill 352), Budget Reconciliation and Financing Act of 2025, enacting Section 8-605.1
+      href: https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=70
+    - title: Maryland Division of Unemployment Insurance, Unemployment Insurance Tax Rates (2018)
+      href: https://web.archive.org/web/20180402033849/http://www.dllr.state.md.us:80/employment/uitrustfundpoints.shtml
+    - title: Maryland Division of Unemployment Insurance, Unemployment Insurance Tax Rates (2019)
+      href: https://web.archive.org/web/20190207121026/http://www.dllr.state.md.us:80/employment/uitrustfundpoints.shtml
+    - title: Maryland Division of Unemployment Insurance, Unemployment Insurance Tax Rates (2020)
+      href: https://web.archive.org/web/20200401224407/http://www.labor.maryland.gov/employment/uitrustfundpoints.shtml
+    - title: Maryland Division of Unemployment Insurance, Unemployment Insurance Tax Rates (2021)
+      href: https://web.archive.org/web/20210510085333/https://labor.maryland.gov/employment/uitrustfundpoints.shtml
+    - title: Maryland Division of Unemployment Insurance, Unemployment Insurance Tax Rates (2022)
+      href: https://web.archive.org/web/20220308065255/http://www.labor.maryland.gov/employment/uitrustfundpoints.shtml
+    - title: Maryland Division of Unemployment Insurance, Unemployment Insurance Tax Rates (2023)
+      href: https://web.archive.org/web/20230205234508/https://www.labor.maryland.gov/employment/uitrustfundpoints.shtml
+    - title: Maryland Division of Unemployment Insurance, Unemployment Insurance Tax Rates (2024)
+      href: https://web.archive.org/web/20240228062743/https://www.labor.maryland.gov/employment/uitrustfundpoints.shtml
+    - title: Maryland Division of Unemployment Insurance, Unemployment Insurance Tax Rates (2025)
+      href: https://web.archive.org/web/20250421155945/https://labor.maryland.gov/employment/uitrustfundpoints.shtml
+    - title: Maryland Division of Unemployment Insurance, Annual Tax Rate FAQs (May 2021)
+      href: https://web.archive.org/web/20210510073701/https://labor.maryland.gov/employment/uitaxexpratefaqs.shtml
+    - title: Maryland Division of Unemployment Insurance, UI Tax Rate Information for Employers (January 2022)
+      href: https://web.archive.org/web/20220119104436/https://labor.maryland.gov/employment/uitaxrateinformationemployers.pdf#page=3
+    - title: Maryland Department of Labor, Tax Rates and Quarterly Reporting (2026 tax rates)
+      href: https://labor.maryland.gov/unemployment-insurance/employer-agent/tax-rate.shtml
+    - title: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2026 (Maryland new employer rate)
+      href: https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/July2026.pdf#page=3

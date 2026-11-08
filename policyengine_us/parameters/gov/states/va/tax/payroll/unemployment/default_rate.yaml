@@ -1,13 +1,53 @@
-description: Default employer-side unemployment insurance tax rate for Virginia.
+description: Virginia assigns this unemployment insurance tax rate, including the pool cost charge and any fund building charge, to each new employer.
 values:
-  0000-01-01: 0.025
+  # Code of Virginia Section 60.2-526(B) sets 2.5%; Sections 60.2-532 and
+  # 60.2-533(C) add the pool cost charge and, when the fund balance factor is
+  # 50% or less, a 0.2% fund building charge. The Virginia Employment
+  # Commission's rate table lists 2.53% for 2018, but its own pool-charge row,
+  # the Governor's December 2017 release and the Commission's July 2026
+  # presentation all give a 0.01% pool charge for 2018, which makes 2.51%.
+  2018-01-01: 0.0251
+  2020-01-01: 0.025
+  # A 0.03% pool cost charge and the 0.2% fund building charge, for 2021 and
+  # 2022.
+  2021-01-01: 0.0273
+  # Budget action ended the fund building charge for 2023; the 0.03% pool cost
+  # charge remained.
+  2023-01-01: 0.0253
+  2024-01-01: 0.025
+  # From 2025, Item 356 K.1 of the 2024 budget (Special Session I, Chapter 2),
+  # carried in later budgets, cuts each rate by 0.05% and adds a separate
+  # administrative fee of 0.05% of taxable wages, which PE-US leaves out. The
+  # Commission's July 2026 presentation shows no pool cost or fund building
+  # charge for 2025 or 2026.
+  2025-01-01: 0.0245
 
 metadata:
   period: year
   unit: /1
   label: Virginia default unemployment tax rate
   reference:
-    - title: Virginia Code Section 60.2-526
+    - title: Code of Virginia Section 60.2-526(B), rate for newly subject employers
       href: https://law.lis.virginia.gov/vacode/title60.2/chapter5/section60.2-526/
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=57
+    - title: Code of Virginia Section 60.2-532, pool cost charges
+      href: https://law.lis.virginia.gov/vacode/title60.2/chapter5/section60.2-532/
+    - title: Code of Virginia Section 60.2-533(C), fund building rate
+      href: https://law.lis.virginia.gov/vacode/title60.2/chapter5/section60.2-533/
+    - title: Office of the Governor of Virginia, release on 2018 unemployment insurance tax rates (December 21, 2017)
+      href: https://web.archive.org/web/20180111075003/https://governor.virginia.gov/newsroom/newsarticle?articleId=22020
+    - title: Virginia Employment Commission, Forms and Publications, Employer Tax Rates table (2017 to 2024)
+      href: https://web.archive.org/web/20240125230128/https://www.vec.virginia.gov/forms-publications
+    - title: Virginia Employment Commission, Annual Tax Rate Notice form T-RAT-001, sample for 2022
+      href: https://ris.dls.virginia.gov/uploads/16VAC5/forms/T-RAT-001-20220527122244.pdf
+    - title: Virginia Employment Commission, release on 2023 tax rates (December 6, 2022)
+      href: https://web.archive.org/web/20221207232103/https://www.vec.virginia.gov/node/15714
+    - title: 2024 Acts of Assembly, Special Session I, Chapter 2, Item 356 K.1, rate reduction and administrative fee from 2025
+      href: https://budget.lis.virginia.gov/item/2024/2/HB6001/Chapter/1/356/PDF/
+    - title: 2025 Acts of Assembly, Chapter 725, Item 356 K.1
+      href: https://budget.lis.virginia.gov/item/2025/1/HB1600/Chapter/1/356/PDF/
+    - title: 2026 Acts of Assembly, Special Session I, Chapter 1, Item 359 J.1
+      href: https://budget.lis.virginia.gov/item/2026/2/HB30/Chapter/1/359/PDF/
+    - title: Virginia Employment Commission, Employer Tax Rate Notices for 2025
+      href: https://web.archive.org/web/20241213062645/https://www.vec.virginia.gov/employer-tax-rate-notices-2025
+    - title: Virginia Employment Commission, presentation to the Commission on Unemployment Compensation (July 9, 2026), average tax per employee by component, 2015 to 2026
+      href: https://apps.dlas.virginia.gov/User_db/frmView.aspx?ViewId=7243&s=11#page=11

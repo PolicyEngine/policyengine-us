@@ -1,13 +1,36 @@
-description: Default employer-side unemployment insurance tax rate for District of Columbia.
+description: The District of Columbia assigns this unemployment insurance contribution rate to each new employer.
 values:
-  0000-01-01: 0.027
+  # D.C. Code Section 51-103(c)(3)(A) assigns the greater of 2.7% and the
+  # average rate on taxable wages for the 12 months ending June 30. The
+  # Department of Employment Services gives that rule but no rate for 2018 and
+  # 2019, so those two years rest on the U.S. Department of Labor's
+  # Significant Provisions reports, which list 2.7%. PE-US leaves out the 0.2%
+  # administrative funding assessment, which Section 51-103(m) keeps separate
+  # from contributions.
+  2018-01-01: 0.027
 
 metadata:
   period: year
   unit: /1
   label: District of Columbia default unemployment tax rate
   reference:
-    - title: District of Columbia Code Section 51-103
+    - title: District of Columbia Code Section 51-103(c)(3)(A), rate for employers newly subject to the act
       href: https://code.dccouncil.gov/us/dc/council/code/sections/51-103
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=18
+    - title: District of Columbia Department of Employment Services, Tax Rate Questions (2019)
+      href: https://web.archive.org/web/20191019041049/https://does.dc.gov/service/tax-rate-questions
+    - title: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2018 (District of Columbia new employer rate)
+      href: https://oui.doleta.gov/unemploy/content/sigpros/2010-2019/July2018.pdf#page=1
+    - title: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2019 (District of Columbia new employer rate)
+      href: https://oui.doleta.gov/unemploy/content/sigpros/2010-2019/July2019.pdf#page=1
+    - title: District of Columbia Department of Employment Services, Employer Self Service Portal notice (2021)
+      href: https://web.archive.org/web/20210421041447/https://essp.does.dc.gov/DOES%20ESSP%20Employer%20Landing%20Page.html
+    - title: District of Columbia Department of Employment Services, Employer Self Service Portal notice (2022)
+      href: https://web.archive.org/web/20220330073933/https://essp.does.dc.gov/DOES%20ESSP%20Employer%20Landing%20Page.html
+    - title: District of Columbia Department of Employment Services, Employer Self Service Portal notice (2023)
+      href: https://web.archive.org/web/20230211210827/https://essp.does.dc.gov/DOES%20ESSP%20Employer%20Landing%20Page.html
+    - title: District of Columbia Department of Employment Services, Employer Self Service Portal notice (2024)
+      href: https://web.archive.org/web/20240309233357/https://essp.does.dc.gov/DOES%20ESSP%20Employer%20Landing%20Page.html
+    - title: District of Columbia Department of Employment Services, Employer Self Service Portal notice (2025)
+      href: https://web.archive.org/web/20250326195216/https://essp.does.dc.gov/DOES%20ESSP%20Employer%20Landing%20Page.html
+    - title: District of Columbia Department of Employment Services, Employer Self Service Portal notice (2026)
+      href: https://web.archive.org/web/20260206215416/https://essp.does.dc.gov/DOES%20ESSP%20Employer%20Landing%20Page.html

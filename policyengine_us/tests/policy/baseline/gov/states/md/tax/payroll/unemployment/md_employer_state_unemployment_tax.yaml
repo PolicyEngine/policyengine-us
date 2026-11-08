@@ -1,0 +1,125 @@
+- name: Maryland 2018, its 2.6% new-employer rate on the $8,500 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 8_500
+    employer_state_unemployment_tax_default_rate: 0.026
+    md_employer_state_unemployment_tax: 221
+    employer_state_unemployment_tax: 221
+
+- name: Maryland 2019, its 2.6% new-employer rate on the $8,500 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 8_500
+    employer_state_unemployment_tax_default_rate: 0.026
+    md_employer_state_unemployment_tax: 221
+    employer_state_unemployment_tax: 221
+
+- name: Maryland 2020, its 2.6% new-employer rate on the $8,500 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 8_500
+    employer_state_unemployment_tax_default_rate: 0.026
+    md_employer_state_unemployment_tax: 221
+    employer_state_unemployment_tax: 221
+
+- name: Maryland 2021, its 2.3% new-employer rate on the $8,500 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 8_500
+    employer_state_unemployment_tax_default_rate: 0.023
+    md_employer_state_unemployment_tax: 195.50
+    employer_state_unemployment_tax: 195.50
+
+- name: Maryland 2022, its 2.3% new-employer rate on the $8,500 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 8_500
+    employer_state_unemployment_tax_default_rate: 0.023
+    md_employer_state_unemployment_tax: 195.50
+    employer_state_unemployment_tax: 195.50
+
+- name: Maryland 2023, its 2.3% new-employer rate on the $8,500 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 8_500
+    employer_state_unemployment_tax_default_rate: 0.023
+    md_employer_state_unemployment_tax: 195.50
+    employer_state_unemployment_tax: 195.50
+
+- name: Maryland 2024, its 2.6% new-employer rate on the $8,500 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 8_500
+    employer_state_unemployment_tax_default_rate: 0.026
+    md_employer_state_unemployment_tax: 221
+    employer_state_unemployment_tax: 221
+
+- name: Maryland 2025, its 2.6% new-employer rate on the $8,500 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 8_500
+    employer_state_unemployment_tax_default_rate: 0.026
+    md_employer_state_unemployment_tax: 221
+    employer_state_unemployment_tax: 221
+
+- name: Maryland 2026, its 2.45% new-employer rate on the $8,500 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 8_500
+    employer_state_unemployment_tax_default_rate: 0.0245
+    md_employer_state_unemployment_tax: 208.25
+    employer_state_unemployment_tax: 208.25
+
+- name: Maryland 2018, wages below the wage base are all taxable.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 130
+
+- name: Maryland employer unemployment tax is zero for a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    md_employer_state_unemployment_tax: 0

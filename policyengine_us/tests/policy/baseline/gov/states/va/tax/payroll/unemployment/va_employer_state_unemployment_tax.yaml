@@ -1,0 +1,125 @@
+- name: Virginia 2018, its 2.51% new-employer rate on the $8,000 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 8_000
+    employer_state_unemployment_tax_default_rate: 0.0251
+    va_employer_state_unemployment_tax: 200.80
+    employer_state_unemployment_tax: 200.80
+
+- name: Virginia 2019, its 2.51% new-employer rate on the $8,000 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 8_000
+    employer_state_unemployment_tax_default_rate: 0.0251
+    va_employer_state_unemployment_tax: 200.80
+    employer_state_unemployment_tax: 200.80
+
+- name: Virginia 2020, its 2.5% new-employer rate on the $8,000 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 8_000
+    employer_state_unemployment_tax_default_rate: 0.025
+    va_employer_state_unemployment_tax: 200
+    employer_state_unemployment_tax: 200
+
+- name: Virginia 2021, its 2.73% new-employer rate on the $8,000 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 8_000
+    employer_state_unemployment_tax_default_rate: 0.0273
+    va_employer_state_unemployment_tax: 218.40
+    employer_state_unemployment_tax: 218.40
+
+- name: Virginia 2022, its 2.73% new-employer rate on the $8,000 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 8_000
+    employer_state_unemployment_tax_default_rate: 0.0273
+    va_employer_state_unemployment_tax: 218.40
+    employer_state_unemployment_tax: 218.40
+
+- name: Virginia 2023, its 2.53% new-employer rate on the $8,000 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 8_000
+    employer_state_unemployment_tax_default_rate: 0.0253
+    va_employer_state_unemployment_tax: 202.40
+    employer_state_unemployment_tax: 202.40
+
+- name: Virginia 2024, its 2.5% new-employer rate on the $8,000 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 8_000
+    employer_state_unemployment_tax_default_rate: 0.025
+    va_employer_state_unemployment_tax: 200
+    employer_state_unemployment_tax: 200
+
+- name: Virginia 2025, its 2.45% new-employer rate on the $8,000 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 8_000
+    employer_state_unemployment_tax_default_rate: 0.0245
+    va_employer_state_unemployment_tax: 196
+    employer_state_unemployment_tax: 196
+
+- name: Virginia 2026, its 2.45% new-employer rate on the $8,000 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 8_000
+    employer_state_unemployment_tax_default_rate: 0.0245
+    va_employer_state_unemployment_tax: 196
+    employer_state_unemployment_tax: 196
+
+- name: Virginia 2018, wages below the wage base are all taxable.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 125.50
+
+- name: Virginia employer unemployment tax is zero for a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    va_employer_state_unemployment_tax: 0
