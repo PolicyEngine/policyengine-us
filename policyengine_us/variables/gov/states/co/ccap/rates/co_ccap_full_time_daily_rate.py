@@ -23,12 +23,13 @@ class co_ccap_full_time_daily_rate(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.co.ccap.rates
         county = person.household("county_str", period.this_year)
-        # A county outside Colorado's list, such as one the household doesn't
-        # report, reads Denver's rates, as co_ccap_fpg_eligible does.
-        colorado_counties = np.array(list(p.qualified_exempt._children))
-        county = np.where(
-            np.isin(county, colorado_counties), county, "DENVER_COUNTY_CO"
-        )
+        # A county outside Colorado, such as UNKNOWN for a household that
+        # doesn't report one, reads Denver's rates, as co_ccap_fpg_eligible
+        # does. The tables' county breakdown fills them with every county in
+        # the country at zero, so their keys can't tell Colorado's counties
+        # apart; the state suffix in each county's name does.
+        in_colorado = np.char.endswith(county.astype(str), "_CO")
+        county = np.where(in_colorado, county, "DENVER_COUNTY_CO")
         tier = person("co_ccap_quality_tier", period)
         center = p.licensed_center[county][person("co_ccap_center_age_band", period)][
             tier

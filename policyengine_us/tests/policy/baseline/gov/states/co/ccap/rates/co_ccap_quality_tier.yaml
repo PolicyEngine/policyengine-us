@@ -1,0 +1,23 @@
+- name: Colorado Shines levels map to the rate tables' three tiers, and an unrated provider takes the first.
+  period: 2026-01
+  input:
+    people:
+      unrated:
+        co_quality_rating_of_child_care_facility: 0
+      level_1:
+        co_quality_rating_of_child_care_facility: 1
+      level_2:
+        co_quality_rating_of_child_care_facility: 2
+      level_3:
+        co_quality_rating_of_child_care_facility: 3
+      level_4:
+        co_quality_rating_of_child_care_facility: 4
+      level_5:
+        co_quality_rating_of_child_care_facility: 5
+    households:
+      household:
+        members: [unrated, level_1, level_2, level_3, level_4, level_5]
+        state_code: CO
+  output:
+    co_ccap_quality_tier:
+      [TIER_1_2, TIER_1_2, TIER_1_2, TIER_3, TIER_4_5, TIER_4_5]

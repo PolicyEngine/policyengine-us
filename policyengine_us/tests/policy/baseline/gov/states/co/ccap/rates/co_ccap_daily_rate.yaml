@@ -1,0 +1,36 @@
+- name: An Adams County center's infant rate by care unit in January 2025, rounded half up to the cent.
+  period: 2025-01
+  input:
+    people:
+      part_time:
+        age:
+          2025: 0
+        childcare_hours_per_day:
+          2025: 4
+      full_time:
+        age:
+          2025: 0
+        childcare_hours_per_day:
+          2025: 8
+      full_and_part_time:
+        age:
+          2025: 0
+        childcare_hours_per_day:
+          2025: 14
+      two_full_time:
+        age:
+          2025: 0
+        childcare_hours_per_day:
+          2025: 20
+    households:
+      household:
+        members: [part_time, full_time, full_and_part_time, two_full_time]
+        state_code:
+          2025: CO
+        county:
+          2025: ADAMS_COUNTY_CO
+  output:
+    # Adams County Rate Plan 10.1.2024, Regular 0-6 Months, Tier 1: FT 73.90,
+    # PT 40.65 (73.90 x 0.55 = 40.645), FTPT 114.55 (73.90 x 1.55 = 114.545)
+    # and FTFT 147.80.
+    co_ccap_daily_rate: [40.65, 73.9, 114.55, 147.8]
