@@ -364,3 +364,601 @@
   output:
     # 0.85 * 149_249 * 0.84 / 12 = 8_880.32; the fiscal 2026 median would give 9_170.31
     md_ccs_income_eligible: [true, false]
+
+# Posted charts: MSDE rounds each cell of its scales, while PolicyEngine computes
+# the limits from the federal fiscal 2025 state median income, so the two differ
+# by less than $2 a year. Each case puts monthly income $2 a year below each
+# printed maximum, which passes, and $2 a year above it, which fails, and lists
+# the outcomes in size order.
+
+- name: MSDE's Initial Income Scale effective December 15, 2024 holds within $2 a year at sizes 2 to 12 in March 2026.
+  period: 2026-03
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+      p15:
+        age:
+          2026: 30
+      p16:
+        age:
+          2026: 30
+      p17:
+        age:
+          2026: 30
+      p18:
+        age:
+          2026: 30
+      p19:
+        age:
+          2026: 30
+      p20:
+        age:
+          2026: 30
+      p21:
+        age:
+          2026: 30
+      p22:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 2
+        md_ccs_countable_income: 6_342.91
+        md_ccs_enrolled: false
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 2
+        md_ccs_countable_income: 6_343.25
+        md_ccs_enrolled: false
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 3
+        md_ccs_countable_income: 7_835.33
+        md_ccs_enrolled: false
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 3
+        md_ccs_countable_income: 7_835.67
+        md_ccs_enrolled: false
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 4
+        md_ccs_countable_income: 9_327.83
+        md_ccs_enrolled: false
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 4
+        md_ccs_countable_income: 9_328.17
+        md_ccs_enrolled: false
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 5
+        md_ccs_countable_income: 10_820.33
+        md_ccs_enrolled: false
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 5
+        md_ccs_countable_income: 10_820.67
+        md_ccs_enrolled: false
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 6
+        md_ccs_countable_income: 12_312.83
+        md_ccs_enrolled: false
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 6
+        md_ccs_countable_income: 12_313.17
+        md_ccs_enrolled: false
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 7
+        md_ccs_countable_income: 12_592.66
+        md_ccs_enrolled: false
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 7
+        md_ccs_countable_income: 12_593.00
+        md_ccs_enrolled: false
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 8
+        md_ccs_countable_income: 12_872.50
+        md_ccs_enrolled: false
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 8
+        md_ccs_countable_income: 12_872.84
+        md_ccs_enrolled: false
+      u15:
+        members: [p15]
+        spm_unit_size:
+          2026: 9
+        md_ccs_countable_income: 13_152.33
+        md_ccs_enrolled: false
+      u16:
+        members: [p16]
+        spm_unit_size:
+          2026: 9
+        md_ccs_countable_income: 13_152.67
+        md_ccs_enrolled: false
+      u17:
+        members: [p17]
+        spm_unit_size:
+          2026: 10
+        md_ccs_countable_income: 13_432.16
+        md_ccs_enrolled: false
+      u18:
+        members: [p18]
+        spm_unit_size:
+          2026: 10
+        md_ccs_countable_income: 13_432.50
+        md_ccs_enrolled: false
+      u19:
+        members: [p19]
+        spm_unit_size:
+          2026: 11
+        md_ccs_countable_income: 13_712.00
+        md_ccs_enrolled: false
+      u20:
+        members: [p20]
+        spm_unit_size:
+          2026: 11
+        md_ccs_countable_income: 13_712.34
+        md_ccs_enrolled: false
+      u21:
+        members: [p21]
+        spm_unit_size:
+          2026: 12
+        md_ccs_countable_income: 13_991.83
+        md_ccs_enrolled: false
+      u22:
+        members: [p22]
+        spm_unit_size:
+          2026: 12
+        md_ccs_countable_income: 13_992.17
+        md_ccs_enrolled: false
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: MD
+      h2:
+        members: [p2]
+        state_code:
+          2026: MD
+      h3:
+        members: [p3]
+        state_code:
+          2026: MD
+      h4:
+        members: [p4]
+        state_code:
+          2026: MD
+      h5:
+        members: [p5]
+        state_code:
+          2026: MD
+      h6:
+        members: [p6]
+        state_code:
+          2026: MD
+      h7:
+        members: [p7]
+        state_code:
+          2026: MD
+      h8:
+        members: [p8]
+        state_code:
+          2026: MD
+      h9:
+        members: [p9]
+        state_code:
+          2026: MD
+      h10:
+        members: [p10]
+        state_code:
+          2026: MD
+      h11:
+        members: [p11]
+        state_code:
+          2026: MD
+      h12:
+        members: [p12]
+        state_code:
+          2026: MD
+      h13:
+        members: [p13]
+        state_code:
+          2026: MD
+      h14:
+        members: [p14]
+        state_code:
+          2026: MD
+      h15:
+        members: [p15]
+        state_code:
+          2026: MD
+      h16:
+        members: [p16]
+        state_code:
+          2026: MD
+      h17:
+        members: [p17]
+        state_code:
+          2026: MD
+      h18:
+        members: [p18]
+        state_code:
+          2026: MD
+      h19:
+        members: [p19]
+        state_code:
+          2026: MD
+      h20:
+        members: [p20]
+        state_code:
+          2026: MD
+      h21:
+        members: [p21]
+        state_code:
+          2026: MD
+      h22:
+        members: [p22]
+        state_code:
+          2026: MD
+  output:
+    # Maximum annual income from $76,117 for two to $167,904 for twelve.
+    md_ccs_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: MSDE's Continuation Income Scale effective April 22, 2024 holds within $2 a year at sizes 2 to 12 in March 2026.
+  period: 2026-03
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+      p15:
+        age:
+          2026: 30
+      p16:
+        age:
+          2026: 30
+      p17:
+        age:
+          2026: 30
+      p18:
+        age:
+          2026: 30
+      p19:
+        age:
+          2026: 30
+      p20:
+        age:
+          2026: 30
+      p21:
+        age:
+          2026: 30
+      p22:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 2
+        md_ccs_countable_income: 7_188.66
+        md_ccs_enrolled: true
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 2
+        md_ccs_countable_income: 7_189.00
+        md_ccs_enrolled: true
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 3
+        md_ccs_countable_income: 8_880.08
+        md_ccs_enrolled: true
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 3
+        md_ccs_countable_income: 8_880.42
+        md_ccs_enrolled: true
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 4
+        md_ccs_countable_income: 10_571.58
+        md_ccs_enrolled: true
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 4
+        md_ccs_countable_income: 10_571.92
+        md_ccs_enrolled: true
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 5
+        md_ccs_countable_income: 12_263.08
+        md_ccs_enrolled: true
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 5
+        md_ccs_countable_income: 12_263.42
+        md_ccs_enrolled: true
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 6
+        md_ccs_countable_income: 13_954.58
+        md_ccs_enrolled: true
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 6
+        md_ccs_countable_income: 13_954.92
+        md_ccs_enrolled: true
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 7
+        md_ccs_countable_income: 14_271.66
+        md_ccs_enrolled: true
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 7
+        md_ccs_countable_income: 14_272.00
+        md_ccs_enrolled: true
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 8
+        md_ccs_countable_income: 14_588.83
+        md_ccs_enrolled: true
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 8
+        md_ccs_countable_income: 14_589.17
+        md_ccs_enrolled: true
+      u15:
+        members: [p15]
+        spm_unit_size:
+          2026: 9
+        md_ccs_countable_income: 14_906.00
+        md_ccs_enrolled: true
+      u16:
+        members: [p16]
+        spm_unit_size:
+          2026: 9
+        md_ccs_countable_income: 14_906.34
+        md_ccs_enrolled: true
+      u17:
+        members: [p17]
+        spm_unit_size:
+          2026: 10
+        md_ccs_countable_income: 15_223.16
+        md_ccs_enrolled: true
+      u18:
+        members: [p18]
+        spm_unit_size:
+          2026: 10
+        md_ccs_countable_income: 15_223.50
+        md_ccs_enrolled: true
+      u19:
+        members: [p19]
+        spm_unit_size:
+          2026: 11
+        md_ccs_countable_income: 15_540.33
+        md_ccs_enrolled: true
+      u20:
+        members: [p20]
+        spm_unit_size:
+          2026: 11
+        md_ccs_countable_income: 15_540.67
+        md_ccs_enrolled: true
+      u21:
+        members: [p21]
+        spm_unit_size:
+          2026: 12
+        md_ccs_countable_income: 15_857.50
+        md_ccs_enrolled: true
+      u22:
+        members: [p22]
+        spm_unit_size:
+          2026: 12
+        md_ccs_countable_income: 15_857.84
+        md_ccs_enrolled: true
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: MD
+      h2:
+        members: [p2]
+        state_code:
+          2026: MD
+      h3:
+        members: [p3]
+        state_code:
+          2026: MD
+      h4:
+        members: [p4]
+        state_code:
+          2026: MD
+      h5:
+        members: [p5]
+        state_code:
+          2026: MD
+      h6:
+        members: [p6]
+        state_code:
+          2026: MD
+      h7:
+        members: [p7]
+        state_code:
+          2026: MD
+      h8:
+        members: [p8]
+        state_code:
+          2026: MD
+      h9:
+        members: [p9]
+        state_code:
+          2026: MD
+      h10:
+        members: [p10]
+        state_code:
+          2026: MD
+      h11:
+        members: [p11]
+        state_code:
+          2026: MD
+      h12:
+        members: [p12]
+        state_code:
+          2026: MD
+      h13:
+        members: [p13]
+        state_code:
+          2026: MD
+      h14:
+        members: [p14]
+        state_code:
+          2026: MD
+      h15:
+        members: [p15]
+        state_code:
+          2026: MD
+      h16:
+        members: [p16]
+        state_code:
+          2026: MD
+      h17:
+        members: [p17]
+        state_code:
+          2026: MD
+      h18:
+        members: [p18]
+        state_code:
+          2026: MD
+      h19:
+        members: [p19]
+        state_code:
+          2026: MD
+      h20:
+        members: [p20]
+        state_code:
+          2026: MD
+      h21:
+        members: [p21]
+        state_code:
+          2026: MD
+      h22:
+        members: [p22]
+        state_code:
+          2026: MD
+  output:
+    # Maximum annual income from $86,266 for two to $190,292 for twelve.
+    md_ccs_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
