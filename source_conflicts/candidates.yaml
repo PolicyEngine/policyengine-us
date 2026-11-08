@@ -4606,32 +4606,34 @@ candidates:
   years:
     from: 2025
     type: tax
-  question: Does Maryland's surtax exclude net short-term gains under the statutory IRC definition or include them
-    through Form 502CG's federal-line transfer?
+  question: Does Maryland's capital gains surtax base exclude a net short-term capital gain under the statute's IRC
+    definition, or include it through Form 502CG's transfer of the federal capital gain line?
   sources:
   - kind: statute
-    citation: Md. Code, Tax-General § 10-105(a)(3)(i)
+    citation: Md. Code, Tax-General § 10-105(a)(3)(i), incorporating net capital gain under 26 U.S.C. 1222(11)
     url: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-105&enactments=false
   - kind: guidance
-    citation: TB-58
-    url: null
-  - kind: form
-    citation: 2025 Form 502CG line 1 → Form 502 line 1c (resident instructions p. 13)
-    url: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=13
+    citation: Maryland Comptroller Technical Bulletin No. 58 (Dec. 29, 2025), section I
+    url: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/legal-publications/technical-bulletins/tb-58.pdf#page=1
+  - kind: instructions
+    citation: 2025 Form 502CG instructions, line 1, pointing to Form 502 line 1c (Form 1040 line 7a; resident booklet
+      p. 13)
+    url: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/forms/2025/502cg.pdf#page=2
   readings:
-    statute: Net short-term gain adds nothing to the surtax base.
-    other: The form transfer includes net short-term gains.
-  example: Long-term gains $100,000 and short-term gains $50,000 give $2,000 versus $3,000; short-term gains $80,000
-    alone give $0 versus $1,600.
+    statute: The base is net long-term capital gain less any net short-term capital loss; a net short-term capital
+      gain adds nothing.
+    other: The base is the Form 1040 line 7a capital gain, which also counts a net short-term capital gain.
+  example: For an eligible filer, $100,000 of long-term and $50,000 of short-term gain give a $2,000 surtax under the
+    statute and $3,000 under the form; $80,000 of short-term gain alone gives $0 versus $1,600.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
-    - policyengine_us/variables/gov/states/md/tax/income/capital_gains/md_capital_gains_surtax_applies.py
+    - policyengine_us/variables/gov/states/md/tax/income/capital_gains/md_net_capital_gain.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9898
-  state: unreviewed
-  note: 'The statute-first rule requires changing main''s form-based treatment; the open PR proposes following the
-    statute and TB-58. Code not yet on main: md_net_capital_gain, md_capital_gains_surtax.'
+  state: ruled
+  note: PR 9898 computes the base as max(0, min(Schedule D line 15, line 16)) and pins both readings' witnesses in
+    md_capital_gains_surtax.yaml. Statute-first rule of 2026-10-19; register it once PR 9898 is on main.
 - id: us-md:ccs-copay-flat-schedule
   program: child-care-assistance
   years:
