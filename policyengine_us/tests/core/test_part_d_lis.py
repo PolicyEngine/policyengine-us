@@ -217,6 +217,20 @@ def test_typed_septembers_match_the_parameter():
         ), year
 
 
+def test_september_values_skip_non_september_instants():
+    # The backdated 2015-01-01 entry is no BLS September, so 2017, which
+    # needs Septembers 2015 and 2016, reads both from the model's series.
+    cpi = ParameterNode(
+        data={
+            "cpi_u_nsa_september": {
+                "values": {"2015-01-01": 237.945, "2016-09-01": 241.428}
+            },
+            "cpi_u": {"values": {"2015-09-01": 200.0, "2016-09-01": 210.0}},
+        }
+    )
+    assert get_september_cpi_u_values(cpi, 2017) == (200.0, 210.0)
+
+
 @pytest.mark.parametrize("kind", KINDS)
 def test_resource_limits_follow_the_cpi_rule(kind):
     limit = _limit(kind)

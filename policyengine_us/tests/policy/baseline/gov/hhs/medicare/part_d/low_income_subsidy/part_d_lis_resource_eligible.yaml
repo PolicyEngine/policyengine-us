@@ -127,6 +127,32 @@
     # 36,120. The mother: 9,000 <= 16,590 + 1,500 = 18,090.
     part_d_lis_resource_eligible: [false, false, true]
 
+- name: With two flagged heads, the older one holds the real estate.
+  period: 2026
+  input:
+    people:
+      younger:
+        age: 70
+        is_household_head: true
+        bank_account_assets: 9_000
+      older:
+        age: 80
+        is_household_head: true
+        bank_account_assets: 9_000
+    marital_units:
+      younger_unit:
+        members: [younger]
+      older_unit:
+        members: [older]
+    households:
+      household:
+        members: [younger, older]
+        household_other_real_estate_equity: 10_000
+  output:
+    # The younger: 9,000 <= 16,590 + 1,500 = 18,090. The older: 9,000 +
+    # 10,000 = 19,000 > 18,090.
+    part_d_lis_resource_eligible: [true, false]
+
 - name: Without a designated head, the oldest member holds the real estate.
   period: 2026
   input:
