@@ -22,9 +22,12 @@ class co_ccap_care_days_per_month(Variable):
     def formula(person, period, parameters):
         days_per_week = person("childcare_days_per_week", period.this_year)
         attending_days = person("childcare_attending_days_per_month", period.this_year)
-        # The scheduled days count the absences that counties pay within an
-        # authorized schedule (3.130(E)); attending days above the schedule
-        # count the drop-in days a county may pay (3.130(F)).
+        # Counties pay licensed providers at least three or four absences a
+        # month within an authorized schedule, and through a county rate plan
+        # may pay more, along with holidays and hold slots (3.130(E)). The
+        # model carries no county's absence policy, so the scheduled days set
+        # the most a county may pay. Attending days above the schedule count
+        # the drop-in days a county may pay (3.130(F)).
         scheduled_days = days_per_week * WEEKS_IN_YEAR / MONTHS_IN_YEAR
         days = max_(scheduled_days, attending_days)
         default_days = DEFAULT_DAYS_PER_WEEK * WEEKS_IN_YEAR / MONTHS_IN_YEAR

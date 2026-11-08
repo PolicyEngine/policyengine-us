@@ -1,0 +1,32 @@
+- name: Days of care come from the larger of the weekly schedule and the attending days, or a five-day week without either.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      no_schedule:
+        childcare_days_per_week: 0
+        childcare_attending_days_per_month: 0
+      three_days_a_week:
+        childcare_days_per_week: 3
+      ten_attending_days:
+        childcare_attending_days_per_month: 10
+      absences_within_schedule:
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 18
+      drop_in_days:
+        childcare_days_per_week: 2
+        childcare_attending_days_per_month: 12
+    households:
+      household:
+        members:
+          [
+            no_schedule,
+            three_days_a_week,
+            ten_attending_days,
+            absences_within_schedule,
+            drop_in_days,
+          ]
+        state_code: CO
+  output:
+    # 5 x 52 / 12 = 21.67; 3 x 52 / 12 = 13; 2 x 52 / 12 = 8.67 < 12.
+    co_ccap_care_days_per_month: [21.67, 13, 10, 21.67, 12]

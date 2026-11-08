@@ -98,8 +98,11 @@
     # 8 hours/day => hours rate 1; facility rating 0 => no discount (1).
     # 115.57 * 1 * 1 = 115.57
     co_ccap_parent_fee: 115.57
-    # Expenses 12,000 / 12 = 1,000 - 115.57 = 884.43
-    co_ccap_subsidy: 884.43
+    # Denver, licensed center, School Age, Tier 1 & Tier 2 from October 2025:
+    # $38.65 a day x 5 x 52 / 12 = $837.42, below the $1,000 charge.
+    co_ccap_reimbursement: 837.42
+    # 837.42 - 115.57 = 721.85
+    co_ccap_subsidy: 721.85
 
 - name: Case 6, without court supervision the same teenager receives nothing.
   period: 2026-01

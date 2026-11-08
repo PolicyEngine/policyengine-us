@@ -8,9 +8,8 @@ supervision (3.103(UU) and 3.111(F) define the eligible child the same way).
    care needs or a 19-year-old, adds nothing to the payment, whatever that
    member's charges, the eligible child's charges or the parent fee.
 2. The payment equals the eligible children's child care and after-school
-   charges less the parent fee, and never falls below zero. The model has no
-   county reimbursement rate yet (3.125 and 3.130), so nothing caps a charge;
-   once a rate caps it, this becomes an upper bound.
+   charges, each child's capped at the county rate for that child's care
+   (3.125(FFF) and 3.130), less the parent fee, and never falls below zero.
 
 The tests set eligibility and the parent fee as inputs, so they exercise the
 payment formula alone.
@@ -27,6 +26,14 @@ MONTH = f"{YEAR}-01"
 TOLERANCE = 0.01
 AGE_LIMIT = 13
 ADDITIONAL_NEEDS_AGE_LIMIT = 19
+MONTHS_IN_YEAR = 12
+# These households report no county, provider, rating or schedule, so the
+# county rate reads an Adams County center at Tier 1 & Tier 2, full time, five
+# days a week. CDEC's table effective October 1, 2025 sets Adams County's
+# daily rates by age band, in months.
+ADAMS_CENTER_DAILY_RATES = ((18, 76.71), (36, 62.26), (72, 44.24))
+ADAMS_CENTER_SCHOOL_AGE_DAILY_RATE = 37.33
+DAYS_PER_MONTH = 5 * 52 / 12
 
 
 def colorado(children, monthly_fee):
@@ -66,6 +73,15 @@ def eligible(child):
         (child["disabled"] or child["court"])
         and child["age"] < ADDITIONAL_NEEDS_AGE_LIMIT
     )
+
+
+def county_rate(child):
+    """3.130: the most Adams County pays for the child's care in a month."""
+    age_months = child["age"] * MONTHS_IN_YEAR
+    for limit, daily in ADAMS_CENTER_DAILY_RATES:
+        if age_months < limit:
+            return daily * DAYS_PER_MONTH
+    return ADAMS_CENTER_SCHOOL_AGE_DAILY_RATE * DAYS_PER_MONTH
 
 
 charges = dict(
@@ -164,11 +180,15 @@ def test_a_member_outside_the_age_limits_adds_nothing(child, other, fee):
     ),
     fee=st.integers(min_value=0, max_value=500),
 )
-def test_the_payment_equals_the_eligible_childrens_charges_less_the_fee(children, fee):
+def test_the_payment_equals_the_eligible_childrens_capped_charges_less_the_fee(
+    children, fee
+):
     named = {f"child_{i}": child for i, child in enumerate(children)}
     paid = colorado(named, fee)
     eligible_charges = sum(
-        child["care"] + child["after_school"] for child in children if eligible(child)
+        min(child["care"] + child["after_school"], county_rate(child))
+        for child in children
+        if eligible(child)
     )
     assert paid >= -TOLERANCE
     assert paid == pytest.approx(max(eligible_charges - fee, 0), abs=TOLERANCE)
