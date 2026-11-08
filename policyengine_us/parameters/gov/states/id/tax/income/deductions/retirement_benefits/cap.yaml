@@ -26,6 +26,8 @@ metadata:
       href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_10-23-2024.pdf#page=32
     - title: Idaho Individual Income Tax Instructions Packet 2025
       href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=45
+    - title: Social Security Administration, 2026 Social Security changes (maximum benefit for a worker retiring at full retirement age)
+      href: https://www.ssa.gov/news/en/cola/factsheets/2026.html
 
 SINGLE:
   2021-01-01: 37_776
@@ -33,12 +35,19 @@ SINGLE:
   2023-01-01: 43_524
   2024-01-01: 45_864
   2025-01-01: 48_216
+  # 12 times SSA's 2026 maximum benefit for a worker retiring at full
+  # retirement age ($4,152 a month), as 63-3022A(2)(b) defines it.
+  2026-01-01: 49_824
 JOINT:
   2021-01-01: 56_664
   2022-01-01: 60_210
   2023-01-01: 65_286
   2024-01-01: 68_796
   2025-01-01: 72_324
+  # 63-3022A(2)(a) adds the benefit of a spouse who draws only on the
+  # worker's record. The Tax Commission's 2021-2025 amounts equal 1.5 times
+  # the single amount, as this one does.
+  2026-01-01: 74_736
 SEPARATE:
   # Per Idaho Form 39R instructions: "If you're married, you can't claim
   # this deduction if you file separately." (Idaho Code 63-3022A(2)(e))
@@ -51,6 +60,7 @@ SURVIVING_SPOUSE:
   2023-01-01: 43_524
   2024-01-01: 45_864
   2025-01-01: 48_216
+  2026-01-01: 49_824
 HEAD_OF_HOUSEHOLD:
   # Per Idaho Code 63-3022A(2)(b): "not married" taxpayers use single cap
   2021-01-01: 37_776
@@ -58,3 +68,4 @@ HEAD_OF_HOUSEHOLD:
   2023-01-01: 43_524
   2024-01-01: 45_864
   2025-01-01: 48_216
+  2026-01-01: 49_824

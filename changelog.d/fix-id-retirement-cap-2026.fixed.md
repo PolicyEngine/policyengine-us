@@ -1,0 +1,1 @@
+Set Idaho's 2026 retirement benefits deduction cap to $49,824 for single filers, heads of household and surviving spouses, and $74,736 for joint filers, from the Social Security Administration's 2026 maximum benefit for a worker retiring at full retirement age, as Idaho Code § 63-3022A(2) defines the cap.

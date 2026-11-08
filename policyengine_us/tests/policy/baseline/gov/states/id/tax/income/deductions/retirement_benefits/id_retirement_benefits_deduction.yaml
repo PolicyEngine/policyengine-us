@@ -135,3 +135,113 @@
   output:
     id_retirement_benefits_deduction_relevant_income: 10_000
     id_retirement_benefits_deduction: 10_000
+
+# Idaho Code 63-3022A(2) caps the deduction at SSA's maximum benefit for a
+# worker reaching full retirement age: $4,152 a month in 2026, so $49,824 for
+# a single filer and 1.5 times that, $74,736, on a joint return.
+
+- name: Idaho 2026 retirement benefits cap for a single filer.
+  period: 2026
+  input:
+    people:
+      person1:
+        id_retirement_benefits_deduction_relevant_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction: 49_824
+
+- name: Idaho 2026 retirement benefits cap on a joint return.
+  period: 2026
+  input:
+    people:
+      person1:
+        id_retirement_benefits_deduction_relevant_income: 80_000
+      person2:
+        id_retirement_benefits_deduction_relevant_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction: 74_736
+
+- name: Idaho 2026 retirement benefits cap less Social Security retirement benefits.
+  period: 2026
+  input:
+    people:
+      person1:
+        id_retirement_benefits_deduction_relevant_income: 60_000
+        social_security_retirement: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # 49,824 - 20,000
+    id_retirement_benefits_deduction: 29_824
+
+- name: Idaho 2026 retirement benefits cap for a head of household.
+  period: 2026
+  input:
+    people:
+      person1:
+        id_retirement_benefits_deduction_relevant_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction: 49_824
+
+- name: Idaho 2026 retirement benefits cap for a surviving spouse.
+  period: 2026
+  input:
+    people:
+      person1:
+        id_retirement_benefits_deduction_relevant_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction: 49_824
+
+- name: Idaho 2025 retirement benefits cap for a single filer stays $48,216.
+  period: 2025
+  input:
+    people:
+      person1:
+        id_retirement_benefits_deduction_relevant_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction: 48_216
