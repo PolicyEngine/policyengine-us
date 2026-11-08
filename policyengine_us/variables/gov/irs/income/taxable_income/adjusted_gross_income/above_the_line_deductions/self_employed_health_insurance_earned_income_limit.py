@@ -1,8 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.household.expense.retirement.self_employed_pension_contribution_limit import (
-    plan_deduction_attributable_to_business,
-    self_employed_plan_room,
-)
 
 
 class self_employed_health_insurance_earned_income_limit(Variable):
@@ -26,12 +22,17 @@ class self_employed_health_insurance_earned_income_limit(Variable):
         "one named business (self_employed_pension_plan_business), all of "
         "that plan deduction is attributable to that business. By default "
         "each business with a net profit has a retirement plan, and the person "
-        "chooses how much to contribute to each, so the plan deduction "
-        "attributable to a business is the least that its plan must carry "
-        "while the plans under the other businesses carry as much as their "
-        "own limits and the shared dollar and elective deferral limits allow. "
-        "Form 7206 gives no rule for that split, and this one leaves the most "
-        "earned income for the health insurance deduction. Each kind of "
+        "chooses how much to contribute to each. Form 7206 gives no rule for "
+        "that split, so the model takes the split that leaves the most earned "
+        "income for the health insurance deduction: the plans under the other "
+        "businesses carry as much of the plan deduction as they can. As in the "
+        "plan limit, the model treats all of the plans as one employer's, so "
+        "the worksheet limits apply to the plans together and each plan can "
+        "carry up to its own business's earned income. The plan deduction "
+        "attributable to a business is then the part of it above the other "
+        "businesses' earned income. A partnership that the person doesn't "
+        "control is a separate employer whose plan has limits of its own, and "
+        "for its partners line 9 can exceed the model's. Each kind of "
         "business is one total per person: all "
         "Schedule C income (SSTB and non-SSTB), all Schedule F profit, all "
         "K-1 box 14 code A earnings and all more-than-2% shareholder wages, "
@@ -52,6 +53,17 @@ class self_employed_health_insurance_earned_income_limit(Variable):
         # Subsection (l)(2)(A), and (l)(5) for S corporation shareholders.
         "https://www.law.cornell.edu/uscode/text/26/162#l",
         "https://www.law.cornell.edu/uscode/text/26/401#c_2_A",
+        # Subsections (a)(3)(A)(iv) and (a)(8)(C): one employer's
+        # profit-sharing trusts count as one trust, and each plan's
+        # contributions stay within its own business's earned income.
+        "https://www.law.cornell.edu/uscode/text/26/404",
+        # Subsection (f)(1)(B): one employer's defined contribution plans
+        # count as one plan.
+        "https://www.law.cornell.edu/uscode/text/26/415#f_1_B",
+        # PDF pages 7, 10: a sole proprietor is their own employer and a
+        # partnership is each partner's, and the plans one employer maintains
+        # count together.
+        "https://www.irs.gov/pub/irs-prior/p560--2025.pdf#page=7",
         "https://www.irs.gov/pub/irs-prior/f7206--2023.pdf#page=1",
         # Where a plan may be established, and one Form 7206 per plan.
         # PDF pages 1-2
@@ -63,10 +75,29 @@ class self_employed_health_insurance_earned_income_limit(Variable):
     )
 
     def formula(person, period, parameters):
-        return form_7206_line_13(person, period, parameters)
+        return form_7206_line_13(person, period)
 
 
-def form_7206_line_13(person, period, parameters, other_line_5_profits=0):
+def plan_deduction_attributable_to_business(plan_deduction, other_earned_income):
+    """Least part of the plan deduction that one business's plan must carry.
+
+    Every business with a net profit has a retirement plan, the person
+    chooses how much to contribute to each, and the plans under the other
+    businesses have other_earned_income in all. The model treats the plans
+    as one employer's, which a sole proprietor is for all of their own
+    businesses. One employer's defined contribution plans count as one plan
+    for the section 415(c) limits (415(f)(1)(B)), and its profit-sharing
+    trusts as one trust for the section 404(a)(3) limit (404(a)(3)(A)(iv)),
+    so the Pub. 560 worksheet limits apply to the plans together. The only
+    limit on each plan alone is its own business's earned income before the
+    plan deduction (404(a)(8)(C)). So the other plans can carry the plan
+    deduction up to their earned income, and this business's plan carries
+    the rest (Form 7206 line 9).
+    """
+    return max_(0, plan_deduction - other_earned_income)
+
+
+def form_7206_line_13(person, period, other_line_5_profits=0):
     """Form 7206 line 13 for the plan business.
 
     other_line_5_profits adds the profits of businesses that cannot
@@ -114,9 +145,8 @@ def form_7206_line_13(person, period, parameters, other_line_5_profits=0):
     )
     retirement_plan_business = person("self_employed_pension_plan_business", period)
     retirement_plan_businesses = retirement_plan_business.possible_values
-    plan_room = self_employed_plan_room(person, period, parameters)
 
-    def line_9(line_8, other_businesses_line_8, business):
+    def line_9(other_businesses_line_8, business):
         # A retirement plan under one named business: all of line 16.
         named = where(
             retirement_plan_business == business, retirement_plan_deduction, 0
@@ -125,10 +155,7 @@ def form_7206_line_13(person, period, parameters, other_line_5_profits=0):
         # are their earned income (Pub. 560 Deduction Worksheet step 3): the
         # least that this business's plan must carry.
         least = plan_deduction_attributable_to_business(
-            retirement_plan_deduction,
-            line_8,
-            other_businesses_line_8,
-            *plan_room,
+            retirement_plan_deduction, other_businesses_line_8
         )
         return where(
             retirement_plan_business == retirement_plan_businesses.ALL, least, named
@@ -139,7 +166,6 @@ def form_7206_line_13(person, period, parameters, other_line_5_profits=0):
         0,
         schedule_c_line_8
         - line_9(
-            schedule_c_line_8,
             farm_line_8 + partnership_line_8,
             retirement_plan_businesses.SCHEDULE_C,
         ),
@@ -148,7 +174,6 @@ def form_7206_line_13(person, period, parameters, other_line_5_profits=0):
         0,
         farm_line_8
         - line_9(
-            farm_line_8,
             schedule_c_line_8 + partnership_line_8,
             retirement_plan_businesses.SCHEDULE_F,
         ),
@@ -157,7 +182,6 @@ def form_7206_line_13(person, period, parameters, other_line_5_profits=0):
         0,
         partnership_line_8
         - line_9(
-            partnership_line_8,
             schedule_c_line_8 + farm_line_8,
             retirement_plan_businesses.PARTNERSHIP,
         ),

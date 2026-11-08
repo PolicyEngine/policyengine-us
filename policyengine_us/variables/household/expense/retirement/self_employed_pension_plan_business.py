@@ -26,10 +26,11 @@ class self_employed_pension_plan_business(Variable):
         "with a net loss is left out. The person then chooses how much to "
         "contribute to each plan, and Form 7206 line 9 for the business under "
         "which the health insurance plan is established takes the least that "
-        "this business's plan must carry. A named business limits the "
-        "deduction to that business's earned income, as when the person has "
-        "more than one business but only one has a plan. The input cannot "
-        "name two of the three businesses."
+        "this business's plan must carry: the part of the plan deduction "
+        "above the other businesses' earned income. A named business limits "
+        "the deduction to that business's earned income, as when the person "
+        "has more than one business but only one has a plan. The input "
+        "cannot name two of the three businesses."
     )
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/404#a_8_C",

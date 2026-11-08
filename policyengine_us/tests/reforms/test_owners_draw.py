@@ -141,16 +141,6 @@ def _parameters(
                         percent_deductible=deductible_share
                     ),
                 ),
-                # Form 7206 line 9 reads the retirement plan limits, which
-                # matter only with plans under every business (2026 values).
-                gross_income=SimpleNamespace(
-                    retirement_contributions=SimpleNamespace(
-                        limit=SimpleNamespace(
-                            profit_sharing_deduction_rate=0.25,
-                            annual_additions=72_000,
-                        )
-                    )
-                ),
             ),
         )
     )
@@ -171,12 +161,6 @@ def _calculate(variables, parameters, inputs, outputs=None):
         "payroll_tax_gross_wages": 0,
         "self_employed_pension_contribution_ald_person": 0,
         "s_corp_shareholder_medicare_wages": 0,
-        "traditional_401k_contributions": 0,
-        "roth_401k_contributions": 0,
-        "traditional_403b_contributions": 0,
-        "roth_403b_contributions": 0,
-        "elective_deferral_limit": 24_500,
-        "k401_catch_up_limit": 0,
         **inputs,
     }
 

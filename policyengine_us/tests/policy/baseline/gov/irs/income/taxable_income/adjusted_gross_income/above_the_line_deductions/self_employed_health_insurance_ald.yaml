@@ -337,8 +337,8 @@
     health_insurance_premiums: 20_000
   output:
     # Line 15: 20,000 x 0.9235 x 0.153 / 2 = 1,412.955. Line 8: 9,293.5225
-    # for each business, and either business's plan can carry all 3,000, so
-    # line 9 is 0 for the other.
+    # for each business. Either business's plan can carry up to its own
+    # earned income, which covers all 3,000, so line 9 is 0 for the other.
     self_employed_pension_contribution_ald_person: 3_000
     self_employed_health_insurance_ald_person: 9_293.5225
     # 20,000 - 1,412.955 - 3,000 - 9,293.5225.

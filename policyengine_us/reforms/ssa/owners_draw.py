@@ -256,10 +256,7 @@ def create_owners_draw():
             # chosen among the baseline's Schedule C, farm, partnership and
             # S corporation businesses.
             return form_7206_line_13(
-                person,
-                period,
-                parameters,
-                other_line_5_profits=draw_profits_in_line_7,
+                person, period, other_line_5_profits=draw_profits_in_line_7
             )
 
     class self_employed_pension_earned_income(baseline_pension_earned_income):
