@@ -1,13 +1,52 @@
-description: Default employer-side unemployment insurance tax rate for Wyoming.
+description: Wyoming assigns each new employer its industry's average rate, at least 1%, plus adjustment factors, so this parameter uses the 1% minimum plus the factors charged to new employers.
 values:
-  0000-01-01: 0.0089
+  # Wyoming Statutes Section 27-3-503(f) gives each new employer its
+  # industry's average contribution rate for the preceding calendar year, at
+  # least 1%, plus the Section 27-3-505 adjustment factors. Department of
+  # Workforce Services figures put experience-rated employers' average base
+  # rate at 0.63% to 0.96% from 2018 to 2023, so a new employer at the
+  # statewide average pays 1% plus the noncharged and ineffectively charged
+  # benefits factor and any positive fund balance factor: 0.17 and 0.11 point
+  # for 2018.
+  2018-01-01: 0.0128
+  # Factors of 0.13 and 0.09 point; only experience-rated employers take a
+  # negative fund balance factor (Section 27-3-505(d)).
+  2019-01-01: 0.0122
+  # Factors of 0.12 and 0.08 point.
+  2020-01-01: 0.012
+  # Factors of 0.23 and 0.15 point plus a 0.90 point positive fund balance
+  # factor for new employers.
+  2021-01-01: 0.0228
+  # Factors of 0.21 and 0.14 point.
+  2022-01-01: 0.0135
+  # Factors of 0.08 and 0.06 point.
+  2023-01-01: 0.0114
+  # The department reports a 0% minimum rate for 2024, so no positive fund
+  # balance factor applied; it has published no 2024 noncharged benefits
+  # factor, which this value leaves out.
+  2024-01-01: 0.01
+  # The department reports 396 employers at the 10% maximum for 2025, the 8.5%
+  # maximum base rate plus the 1.5% cap on the noncharged benefits and
+  # positive fund balance factors (Section 27-3-505(h)). New employers take
+  # the factors of employers with a benefit ratio above zero (Section
+  # 27-3-505(b)), so they paid 1% plus 1.5%.
+  2025-01-01: 0.025
+  # The department has published no 2026 factors, so this value is the 1%
+  # minimum alone.
+  2026-01-01: 0.01
 
 metadata:
   period: year
   unit: /1
   label: Wyoming default unemployment tax rate
   reference:
-    - title: Wyoming Statutes Section 27-3-505
-      href: https://wyoleg.gov/statutes/compress/title27.pdf#page=69
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=62
+    - title: Wyoming Statutes Sections 27-3-503(f) and 27-3-505, new employer rate and adjustment factors
+      href: https://wyoleg.gov/statutes/compress/title27.pdf#page=71
+    - title: Wyoming Legislative Service Office, Unemployment Insurance Trust Fund, memorandum to the Joint Appropriations Committee, June 8, 2023, Table 1 (Department of Workforce Services rate components, 2018-2023)
+      href: https://wyoleg.gov/InterimCommittee/2023/02-2023071010-01_UnemploymentInsuranceTrust_JAC_Final.pdf#page=3
+    - title: Wyoming Department of Workforce Services, Unemployment Insurance Overview, Joint Appropriations Committee, July 2023 (minimum tax rates by year)
+      href: https://www.wyoleg.gov/InterimCommittee/2023/02-2023071010-03_UIOverviewJuly2023JACSlides.pdf#page=13
+    - title: Wyoming Department of Workforce Services, memorandum to the Legislative Service Office on the draft unemployment insurance coverage-period and reporting bill, October 2, 2025 (minimum and maximum rates for 2024 and 2025)
+      href: https://wyoleg.gov/InterimCommittee/2025/10-202510166-05DWSMemoandAttachments.pdf#page=6
+    - title: Wyoming Department of Workforce Services, Unemployment Tax Rates
+      href: https://dws.wyo.gov/dws-division/unemployment-insurance/employers/unemployment-tax-rates/

@@ -1,0 +1,125 @@
+- name: Wyoming 2018, its 1.28% new-employer rate at the statewide average on the $24,700 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 24_700
+    employer_state_unemployment_tax_default_rate: 0.0128
+    wy_employer_state_unemployment_tax: 316.16
+    employer_state_unemployment_tax: 316.16
+
+- name: Wyoming 2019, its 1.22% new-employer rate at the statewide average on the $25,400 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 25_400
+    employer_state_unemployment_tax_default_rate: 0.0122
+    wy_employer_state_unemployment_tax: 309.88
+    employer_state_unemployment_tax: 309.88
+
+- name: Wyoming 2020, its 1.2% new-employer rate at the statewide average on the $26,400 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 26_400
+    employer_state_unemployment_tax_default_rate: 0.012
+    wy_employer_state_unemployment_tax: 316.80
+    employer_state_unemployment_tax: 316.80
+
+- name: Wyoming 2021, its 2.28% new-employer rate at the statewide average on the $27,300 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 27_300
+    employer_state_unemployment_tax_default_rate: 0.0228
+    wy_employer_state_unemployment_tax: 622.44
+    employer_state_unemployment_tax: 622.44
+
+- name: Wyoming 2022, its 1.35% new-employer rate at the statewide average on the $27,700 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 27_700
+    employer_state_unemployment_tax_default_rate: 0.0135
+    wy_employer_state_unemployment_tax: 373.95
+    employer_state_unemployment_tax: 373.95
+
+- name: Wyoming 2023, its 1.14% new-employer rate at the statewide average on the $29,100 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 29_100
+    employer_state_unemployment_tax_default_rate: 0.0114
+    wy_employer_state_unemployment_tax: 331.74
+    employer_state_unemployment_tax: 331.74
+
+- name: Wyoming 2024, its 1% new-employer rate at the statewide average on the $30,900 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 30_900
+    employer_state_unemployment_tax_default_rate: 0.01
+    wy_employer_state_unemployment_tax: 309
+    employer_state_unemployment_tax: 309
+
+- name: Wyoming 2025, its 2.5% new-employer rate at the statewide average on the $32,400 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 32_400
+    employer_state_unemployment_tax_default_rate: 0.025
+    wy_employer_state_unemployment_tax: 810
+    employer_state_unemployment_tax: 810
+
+- name: Wyoming 2026, its 1% new-employer rate at the statewide average on the $33,800 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 33_800
+    employer_state_unemployment_tax_default_rate: 0.01
+    wy_employer_state_unemployment_tax: 338
+    employer_state_unemployment_tax: 338
+
+- name: Wyoming 2018, wages below the wage base are all taxable.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 64
+
+- name: Wyoming employer unemployment tax is zero for a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    wy_employer_state_unemployment_tax: 0

@@ -604,6 +604,17 @@ PUBLISHED_SUTA = {
         2025: (0.0305, 14_000),
         2026: (0.0305, 14_000),
     },
+    "WY": {
+        2018: (0.0128, 24_700),
+        2019: (0.0122, 25_400),
+        2020: (0.012, 26_400),
+        2021: (0.0228, 27_300),
+        2022: (0.0135, 27_700),
+        2023: (0.0114, 29_100),
+        2024: (0.01, 30_900),
+        2025: (0.025, 32_400),
+        2026: (0.01, 33_800),
+    },
     "PR": {
         2018: (0.031, 7_000),
         2019: (0.029, 7_000),
@@ -747,7 +758,8 @@ def test_quarter_averaged_parameters_change_only_at_quarter_starts():
 # Minn. Stat. 268.051, subd. 5(a); MCA 39-51-1217(4); NMSA 51-1-11(G), which
 # also caps the rate at 5.4%; Utah Code 35A-4-303(4)(b)(iii); and, for the
 # experience part of Washington's rate, RCW 50.29.025(1)(d)(i) and WAC
-# 192-320-025(4)(b).
+# 192-320-025(4)(b); and W.S. 27-3-503(f), which adds Wyoming's adjustment
+# factors on top.
 MINIMUM_NEW_EMPLOYER_RATE = {
     "AK": Decimal("1"),
     "LA": Decimal("1"),
@@ -756,6 +768,7 @@ MINIMUM_NEW_EMPLOYER_RATE = {
     "NM": Decimal("1"),
     "UT": Decimal("1.1"),
     "WA": Decimal("1"),
+    "WY": Decimal("1"),
 }
 NM_MAXIMUM_NEW_EMPLOYER_RATE = Decimal("5.4")
 # Statewide averages in percent, 2018 to 2026, as each parameter file cites
@@ -811,7 +824,27 @@ WA_EXPERIENCE_AND_TOTAL_RATE = (
     ("0.76", "1.17"),
     ("0.65", "1.08"),
 )
-INDUSTRY_RATE_CODES = ("LA", "MN", "MT", "NM", "UT", "WA")
+# Wyoming's adjustment factors for new employers, in percentage points: the
+# noncharged and ineffectively charged benefits factor plus any positive fund
+# balance factor (W.S. 27-3-505(a), (b) and (d)). 2018-2023 from the
+# Department of Workforce Services figures in the Legislative Service Office's
+# June 2023 Table 1, whose experience-rated base rates of 0.63% to 0.96% leave
+# the 1% minimum binding at the statewide average; 2025 from the department's
+# 10% maximum rate, 8.5% plus the 1.5% cap of W.S. 27-3-505(h). The department
+# published no factors for 2024 or 2026.
+WY_NEW_EMPLOYER_FACTORS = (
+    "0.28",
+    "0.22",
+    "0.20",
+    "1.28",
+    "0.35",
+    "0.14",
+    "0",
+    "1.5",
+    "0",
+)
+WY_MAXIMUM_ADJUSTMENT_FACTORS = Decimal("1.5")
+INDUSTRY_RATE_CODES = ("LA", "MN", "MT", "NM", "UT", "WA", "WY")
 
 
 def _new_employer_rate(code, year):
@@ -837,6 +870,12 @@ def _new_employer_rate(code, year):
         experience_tax = (factor * experience).quantize(point, ROUND_HALF_UP)
         social_tax = (factor * (total - experience)).quantize(point, ROUND_HALF_UP)
         return max(minimum, experience_tax) + social_tax
+    if code == "WY":
+        # The 1% minimum plus the factors, which never fall below zero or
+        # exceed 1.5% (W.S. 27-3-505(d) and (h)).
+        factors = Decimal(WY_NEW_EMPLOYER_FACTORS[i])
+        assert 0 <= factors <= WY_MAXIMUM_ADJUSTMENT_FACTORS, year
+        return minimum + factors
     rate = max(minimum, Decimal(STATEWIDE_AVERAGE_RATE[code][i]))
     return min(rate, NM_MAXIMUM_NEW_EMPLOYER_RATE) if code == "NM" else rate
 

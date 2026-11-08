@@ -1,13 +1,25 @@
-description: Employer-side unemployment insurance taxable wage base for Wyoming.
+description: Wyoming limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 30_900
+  # Wyoming Statutes Section 27-3-102(a)(xviii)(A) excludes from contribution
+  # wages each worker's annual pay above 55% of the statewide average annual
+  # wage computed under Section 27-3-303(a), rounded down to the nearest $100;
+  # the Department of Workforce Services publishes each year's amount.
+  2018-01-01: 24_700
+  2019-01-01: 25_400
+  2020-01-01: 26_400
+  2021-01-01: 27_300
+  2022-01-01: 27_700
+  2023-01-01: 29_100
+  2024-01-01: 30_900
+  2025-01-01: 32_400
+  2026-01-01: 33_800
 
 metadata:
   period: year
   unit: currency-USD
   label: Wyoming unemployment taxable wage base
   reference:
-    - title: Wyoming Statutes Section 27-3-104(a)(xviii)(A)
-      href: https://wyoleg.gov/statutes/compress/title27.pdf#page=14
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=62
+    - title: Wyoming Statutes Section 27-3-102(a)(xviii)(A), wages subject to contributions
+      href: https://wyoleg.gov/statutes/compress/title27.pdf#page=16
+    - title: Wyoming Department of Workforce Services, Unemployment Taxable Wage Base
+      href: https://dws.wyo.gov/dws-division/unemployment-insurance/wyui/unemployment-taxable-wage-base/
