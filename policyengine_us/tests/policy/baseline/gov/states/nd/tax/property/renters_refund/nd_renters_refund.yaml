@@ -134,3 +134,29 @@
         state_code: ND
   output:
     nd_renters_refund: 400
+
+- name: Case 8, SSI counts in income and lowers the refund.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 6_000
+        ssi: 9_000
+        rent: 4_800
+    tax_units:
+      tax_unit:
+        members: [person1]
+        itemized_medical_expenses: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # NDCC 57-02-08.1(5)(c) counts social security and federal public
+    # assistance benefits: 6,000 + 9,000.
+    nd_renters_refund_income: 15_000
+    # NDCC 57-02-08.1(2)(b): 20% of the rent less 4% of income,
+    # 960 - 600.
+    nd_renters_refund: 360

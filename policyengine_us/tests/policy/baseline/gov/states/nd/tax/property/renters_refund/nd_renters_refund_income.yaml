@@ -40,7 +40,7 @@
   output:
     nd_renters_refund_income: 0
 
-- name: Case 3, income includes unemployment and excludes nonincome sources.
+- name: Case 3, income includes unemployment and public assistance and excludes nonincome sources.
   absolute_error_margin: 0.01
   period: 2025
   input:
@@ -61,7 +61,10 @@
         members: [person1]
         state_code: ND
   output:
-    nd_renters_refund_income: 12_000
+    # NDCC 57-02-08.1(5)(c) counts "any county, state, or federal public
+    # assistance benefits", so general assistance and SSI count with
+    # unemployment compensation: 8,000 + 4,000 + 6,000.
+    nd_renters_refund_income: 18_000
 
 - name: Case 4, after-tax premiums reduce renter refund income as medical expenses.
   absolute_error_margin: 0.01
@@ -346,7 +349,9 @@
     people:
       parent:
         age: 40
-        employment_income: 30_000
+        # Wages go in before any labor supply response, where TANF reads
+        # them, so the family has no TANF.
+        employment_income_before_lsr: 30_000
       child:
         age: 15
         is_tax_unit_dependent: true
@@ -411,7 +416,9 @@
     people:
       parent:
         age: 40
-        employment_income: 45_000
+        # Wages go in before any labor supply response, where TANF reads
+        # them, so the family has no TANF.
+        employment_income_before_lsr: 45_000
       child:
         age: 3
         is_tax_unit_dependent: true
@@ -678,3 +685,55 @@
     nd_qdiv_subtraction: 400
     # 30,000 + 5,000 + 1,000, with no state-law subtraction.
     nd_renters_refund_income: 36_000
+
+- name: North Dakota counts TANF, which no law excludes from income, and leaves out SNAP, which federal law excludes.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 10_000
+      child:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 3_600
+        snap: 2_400
+    households:
+      household:
+        members: [parent, child]
+        state_code: ND
+  output:
+    # NDCC 57-02-08.1(5)(c) counts "any county, state, or federal public
+    # assistance benefits" and excludes "any amount excluded from income by
+    # federal or state law". 7 U.S.C. 2017(b) keeps SNAP out of income "for
+    # any purpose under any Federal, State, or local laws": 10,000 + 3,600.
+    nd_renters_refund_income: 13_600
+
+- name: North Dakota counts a dependent's SSI with the applicant's social security.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      grandparent:
+        age: 70
+        social_security_retirement: 18_000
+      grandchild:
+        age: 10
+        ssi: 9_000
+    tax_units:
+      tax_unit:
+        members: [grandparent, grandchild]
+    households:
+      household:
+        members: [grandparent, grandchild]
+        state_code: ND
+  output:
+    # The statute counts "the income of any dependent of the applicant" and
+    # federal public assistance benefits: 18,000 + 9,000.
+    nd_renters_refund_income: 27_000

@@ -4,7 +4,13 @@ values:
     - market_income
     - social_security
     - total_unemployment_compensation
+    # NDCC 57-02-08.1(5)(c) counts "any county, state, or federal public
+    # assistance benefits". The IRS leaves these out of gross income under its
+    # general welfare exclusion, which no statute or regulation enacts, so no
+    # federal or state law excludes them from income.
     - general_assistance
+    - ssi
+    - tanf
 metadata:
   unit: list
   period: year
@@ -14,3 +20,5 @@ metadata:
       href: https://ndlegis.gov/cencode/t57c02.pdf#page=16
     - title: North Dakota Office of State Tax Commissioner | Property Tax Credits for North Dakota Homeowners and Renters
       href: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
+    - title: North Dakota Office of State Tax Commissioner | SFN 24777 (10-2025), Application for Senior Citizens or Permanently and Totally Disabled Renter's Property Tax Refund, line 7
+      href: https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf#page=1
