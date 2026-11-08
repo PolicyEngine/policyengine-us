@@ -1,0 +1,18 @@
+description: Idaho extends the retirement benefits deduction to the military retirement benefits of a recipient whose employment income requires a federal return, if this is true.
+values:
+  2021-01-01: false
+  # 2025 House Bills 40 and 479, retroactive to January 1, 2025.
+  2025-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Idaho military retirement benefits deduction employment test in effect
+  reference:
+    - title: Idaho Code 63-3022A(1)(b)(iii)
+      href: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/
+    - title: 2025 Idaho House Bill 40, sections 2 and 5
+      href: https://legislature.idaho.gov/wp-content/uploads/sessioninfo/2025/legislation/H0040.pdf#page=5
+    - title: 2025 Idaho House Bill 479, sections 1 and 9
+      href: https://legislature.idaho.gov/wp-content/uploads/sessioninfo/2025/legislation/H0479.pdf#page=2
+    - title: Idaho Individual Income Tax Instructions Packet 2025, Form 39R line 8e
+      href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=45

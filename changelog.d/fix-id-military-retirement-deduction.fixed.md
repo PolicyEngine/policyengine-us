@@ -1,0 +1,1 @@
+Apply Idaho's 2025 eligibility tests to military retirement benefits (disabled, age 62 or older, or working enough to file a federal return) and count them within the retirement benefits deduction's cap and Social Security offset, under Idaho Code 63-3022A as amended by House Bills 40 and 479.

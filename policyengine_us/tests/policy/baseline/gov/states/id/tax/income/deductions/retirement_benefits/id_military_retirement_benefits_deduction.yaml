@@ -1,0 +1,198 @@
+# Military retirement benefits in the Idaho retirement benefits deduction
+# (Idaho Code 63-3022A; Form 39R line 8). From 2025, 63-3022A(1)(b) admits
+# them for a recipient who is disabled, is 62 or older, or works enough to
+# have to file a federal return. They share the deduction's cap ($48,216
+# single and $72,324 joint for 2025, $0 on a separate return), which Social
+# Security and Railroad Retirement benefits reduce (63-3022A(2) and (3)).
+
+- name: 2024 a 40-year-old cannot deduct military retired pay.
+  period: 2024
+  input:
+    state_code: ID
+    age: 40
+    military_retirement_pay: 30_000
+  output:
+    id_retirement_benefits_deduction_eligible_person: false
+    id_retirement_benefits_deduction_military_eligible_person: false
+    id_retirement_benefits_deduction_relevant_income: 0
+    id_retirement_benefits_deduction: 0
+
+- name: 2024 a 66-year-old deducts military retired pay.
+  period: 2024
+  input:
+    state_code: ID
+    age: 66
+    military_retirement_pay: 30_000
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: true
+    id_retirement_benefits_deduction_relevant_income: 30_000
+    id_retirement_benefits_deduction: 30_000
+
+- name: 2025 a 40-year-old without a job or disability cannot deduct military retired pay.
+  period: 2025
+  input:
+    state_code: ID
+    age: 40
+    military_retirement_pay: 30_000
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: false
+    id_retirement_benefits_deduction_relevant_income: 0
+    id_retirement_benefits_deduction: 0
+
+- name: 2025 a working 40-year-old deducts military retired pay.
+  period: 2025
+  input:
+    state_code: ID
+    age: 40
+    employment_income: 50_000
+    military_retirement_pay: 30_000
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: true
+    id_retirement_benefits_deduction_relevant_income: 30_000
+    id_retirement_benefits_deduction: 30_000
+
+- name: 2025 a disabled 40-year-old deducts military retired pay.
+  period: 2025
+  input:
+    state_code: ID
+    age: 40
+    is_disabled: true
+    military_retirement_pay: 30_000
+  output:
+    id_retirement_benefits_deduction_relevant_income: 30_000
+    id_retirement_benefits_deduction: 30_000
+
+- name: 2025 a 40-year-old with a public pension still needs the general age test.
+  period: 2025
+  input:
+    state_code: ID
+    age: 40
+    employment_income: 50_000
+    public_pension_income: 20_000
+  output:
+    id_retirement_benefits_deduction_relevant_income: 0
+    id_retirement_benefits_deduction: 0
+
+- name: 2025 military retired pay and a public pension share the $48,216 single cap.
+  period: 2025
+  input:
+    state_code: ID
+    age: 66
+    military_retirement_pay: 40_000
+    public_pension_income: 20_000
+  output:
+    id_retirement_benefits_deduction_relevant_income: 60_000
+    id_retirement_benefits_deduction: 48_216
+
+- name: 2025 Social Security benefits reduce the cap on military retired pay.
+  period: 2025
+  input:
+    state_code: ID
+    age: 66
+    military_retirement_pay: 40_000
+    social_security_retirement: 20_000
+  output:
+    # 48,216 - 20,000
+    id_retirement_benefits_deduction: 28_216
+
+- name: 2025 working couple deducts all of the retiree's $30,000.
+  period: 2025
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 60_000
+        military_retirement_pay: 30_000
+      spouse:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_relevant_income: [30_000, 0]
+    id_retirement_benefits_deduction: 30_000
+
+- name: 2025 retired couple's Social Security reduces the $72,324 joint cap.
+  period: 2025
+  input:
+    people:
+      retiree:
+        age: 67
+        military_retirement_pay: 45_000
+        social_security_retirement: 30_000
+      spouse:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_relevant_income: [45_000, 0]
+    # 72,324 - 30,000
+    id_retirement_benefits_deduction: 42_324
+
+- name: 2025 a married retiree filing separately cannot deduct military retired pay.
+  period: 2025
+  input:
+    people:
+      retiree:
+        age: 66
+        military_retirement_pay: 30_000
+      spouse:
+        age: 66
+    marital_units:
+      couple:
+        members: [retiree, spouse]
+    tax_units:
+      retiree_return:
+        members: [retiree]
+        filing_status: SEPARATE
+      spouse_return:
+        members: [spouse]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction: [0, 0]
+
+- name: 2025 an unremarried widow under 62 without a job or disability cannot deduct survivor benefits.
+  period: 2025
+  input:
+    state_code: ID
+    age: 50
+    is_surviving_spouse: true
+    military_retirement_pay_survivors: 25_000
+  output:
+    id_retirement_benefits_deduction: 0
+
+- name: 2025 an unremarried widow aged 62 deducts survivor benefits.
+  period: 2025
+  input:
+    state_code: ID
+    age: 62
+    is_surviving_spouse: true
+    military_retirement_pay_survivors: 25_000
+  output:
+    id_retirement_benefits_deduction: 25_000
+
+- name: 2025 the deduction reduces Idaho AGI.
+  period: 2025
+  input:
+    state_code: ID
+    age: 40
+    employment_income: 50_000
+    military_retirement_pay: 30_000
+  output:
+    id_retirement_benefits_deduction: 30_000
+    id_subtractions: 30_000

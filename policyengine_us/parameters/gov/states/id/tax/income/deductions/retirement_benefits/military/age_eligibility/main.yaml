@@ -1,0 +1,23 @@
+description: Idaho limits the retirement benefits deduction for military retirement benefits to recipients this age or older.
+values:
+  # Before 2025, military retirement benefits shared the age test of the
+  # other retirement benefits in Idaho Code 63-3022A(1).
+  2021-01-01: 65
+  # From 2025, 63-3022A(1)(b)(ii): "Has attained the age of sixty-two (62)
+  # years by the end of the tax year".
+  2025-01-01: 62
+metadata:
+  unit: year
+  period: year
+  label: Idaho military retirement benefits deduction age threshold
+  reference:
+    - title: Idaho Code 63-3022A(1)(b)
+      href: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/
+    - title: 2025 Idaho House Bill 40, section 2 (63-3022A as in effect for 2024, with the 2025 amendment)
+      href: https://legislature.idaho.gov/wp-content/uploads/sessioninfo/2025/legislation/H0040.pdf#page=5
+    - title: 2025 Idaho House Bill 479, section 1
+      href: https://legislature.idaho.gov/wp-content/uploads/sessioninfo/2025/legislation/H0479.pdf#page=2
+    - title: Idaho Individual Income Tax Instructions Packet 2024, Form 39R line 8
+      href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_10-23-2024.pdf#page=31
+    - title: Idaho Individual Income Tax Instructions Packet 2025, Form 39R line 8e
+      href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=45

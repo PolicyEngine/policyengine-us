@@ -1,0 +1,201 @@
+# Idaho Code 63-3022A(1)(b)(iii): employed, with enough income from that
+# employment to have to file a federal return. 2025 applies section 6012(f):
+# gross income over the standard deduction ($15,750 single and $31,500 joint,
+# plus $2,000 unmarried or $1,600 married for each of age 65 and blindness).
+# 2026 applies section 6012(a)(1): gross income of at least the basic
+# standard deduction ($16,100 single and $32,200 joint, Rev. Proc. 2025-32),
+# plus $2,050 unmarried or $1,650 married for each spouse aged 65 or older.
+
+- name: 2025 single filer with wages equal to the standard deduction does not meet the test.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    employment_income: 15_750
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: false
+
+- name: 2025 single filer with wages a dollar over the standard deduction meets the test.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    employment_income: 15_751
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: true
+
+- name: 2025 blindness raises the single threshold to $17,750.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    is_blind: true
+    employment_income: 17_750
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: false
+
+- name: 2026 single filer with wages a dollar under the basic standard deduction does not meet the test.
+  period: 2026
+  input:
+    state_code: ID
+    age: 45
+    employment_income: 16_099
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: false
+
+- name: 2026 single filer with wages equal to the basic standard deduction meets the test.
+  period: 2026
+  input:
+    state_code: ID
+    age: 45
+    employment_income: 16_100
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: true
+
+- name: 2026 blindness does not raise the threshold.
+  period: 2026
+  input:
+    state_code: ID
+    age: 45
+    is_blind: true
+    employment_income: 16_100
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: true
+
+- name: 2026 joint return uses the joint threshold, and a dollar under it fails.
+  period: 2026
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 32_199
+      spouse:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: [false, false]
+
+- name: 2026 joint return with wages equal to the joint threshold meets the test for the employed spouse only.
+  period: 2026
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 32_200
+      spouse:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: [true, false]
+
+- name: 2026 a spouse aged 65 raises the joint threshold to $33,850.
+  period: 2026
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 33_849
+      spouse:
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: [false, false]
+
+- name: 2026 joint return with wages at the $33,850 threshold meets the test.
+  period: 2026
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 33_850
+      spouse:
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: [true, false]
+
+- name: 2025 a spouse aged 65 raises the joint standard deduction to $33,100.
+  period: 2025
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 33_100
+      spouse:
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: [false, false]
+
+- name: Self-employment profit counts as income from employment.
+  period: 2026
+  input:
+    state_code: ID
+    age: 45
+    self_employment_income: 20_000
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: true
+
+- name: A business loss does not reduce wages.
+  period: 2026
+  input:
+    state_code: ID
+    age: 45
+    employment_income: 20_000
+    self_employment_income: -10_000
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: true
+
+- name: Pension and investment income are not income from employment.
+  period: 2026
+  input:
+    state_code: ID
+    age: 45
+    military_retirement_pay: 30_000
+    taxable_interest_income: 20_000
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: false
+
+- name: The employment test does not apply before 2025.
+  period: 2024
+  input:
+    state_code: ID
+    age: 45
+    employment_income: 100_000
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: false

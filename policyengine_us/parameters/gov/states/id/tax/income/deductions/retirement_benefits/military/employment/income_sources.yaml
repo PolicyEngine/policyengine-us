@@ -1,0 +1,24 @@
+description: Idaho counts these income sources as income from employment in the employment test of the military retirement benefits deduction.
+values:
+  # The list applies from 2021 so the formula can read it in every year;
+  # in_effect.yaml turns the employment test on from 2025.
+  2021-01-01:
+    # Wages: Form 1040 line 1a, as in the federal gross income test.
+    - irs_employment_income
+    # Idaho Code 63-3022A(1)(b)(iii) ("was employed during the tax year and
+    # received sufficient income from such employment") doesn't define
+    # employment, and the Form 39R line 8e instructions repeat its words.
+    # PolicyEngine counts business and farm profits as income from
+    # employment.
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+metadata:
+  unit: list
+  period: year
+  label: Idaho military retirement benefits deduction employment income sources
+  reference:
+    - title: Idaho Code 63-3022A(1)(b)(iii)
+      href: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/
+    - title: Idaho Individual Income Tax Instructions Packet 2025, Form 39R line 8e
+      href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=45
