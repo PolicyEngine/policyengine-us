@@ -7,17 +7,25 @@ class part_d_lis_enrolled(Variable):
     label = "Enrolled in the Medicare Part D low-income subsidy"
     documentation = (
         "Medicare pays the subsidy only for people enrolled in a Part D plan "
-        "(medicare_part_d_enrolled). It enrolls Medicaid enrollees and "
-        "Supplemental Security Income recipients in a plan with the subsidy "
-        "without an application, unless they opt out of Part D. Other "
-        "eligible people in a Part D plan receive it if they take it up."
+        "(medicare_part_d_enrolled). Medicaid enrollees and Supplemental "
+        "Security Income recipients get the subsidy without applying; other "
+        "eligible people in a plan get it if they take it up. CMS enrolls "
+        "subsidy-eligible people who don't choose a plan, unless they "
+        "decline Part D or are qualifying covered retirees whose employer "
+        "gets the retiree drug subsidy (42 CFR 423.34(d) and (e)). So "
+        "microdata that set takes_up_medicare_part_d_if_eligible should set "
+        "it true for Medicaid enrollees and SSI recipients other than those "
+        "two groups; a person whose Part D input is false gets no subsidy. "
+        "Not modeled: people deemed eligible from July to December stay "
+        "deemed eligible through the following year (423.773(c)(2)(ii)); the "
+        "model tests each year on its own."
     )
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1395w-114#a_3_A",
         "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-B/part-423/subpart-P/section-423.773#p-423.773(c)(2)",
         "https://www.ecfr.gov/current/title-20/chapter-III/part-418/subpart-D/section-418.3101",
-        "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-B/part-423/subpart-B/section-423.34",
+        "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-B/part-423/subpart-B/section-423.34#p-423.34(d)",
     )
     defined_for = "part_d_lis_eligible"
 

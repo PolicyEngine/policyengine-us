@@ -8,22 +8,31 @@ values:
   2012-01-01: 23_120
   2013-01-01: 23_580
   2014-01-01: 23_860
-  2015-01-01: 24_250
-  2017-01-01: 24_600
-  2018-01-01: 25_150
-  2019-01-01: 25_720
-  2020-01-01: 26_160
-  2021-01-01: 26_520
-  2022-01-01: 27_950
-  2023-01-01: 30_240
-  2024-01-01: 31_360
-  2025-01-01: 32_130
-  2026-01-01: 33_100
+  # From 2015 the statute's formula, which runs $10 to $20 above SSA's
+  # published amounts (see the note under reference).
+  # Candidate: us:part-d-lis-couple-resource-limit-2015 until registered.
+  2015-01-01: 24_260
+  2017-01-01: 24_620
+  2018-01-01: 25_170
+  2019-01-01: 25_740
+  2020-01-01: 26_180
+  2021-01-01: 26_540
+  2022-01-01: 27_970
+  2023-01-01: 30_260
+  2024-01-01: 31_380
+  2025-01-01: 32_150
+  2026-01-01: 33_120
 
 metadata:
   unit: currency-USD
   period: year
   label: Medicare Part D low-income subsidy couple resource limit
+  # Years after the last value here are projected in
+  # parameters/uprating_extensions.py (extend_part_d_lis_resource_limits): the
+  # previous year's limit times the change in the not seasonally adjusted
+  # CPI-U from September two years before to September one year before,
+  # never lowered, rounded to the nearest $10, effective January 1. The
+  # published September 2026 index gives $34,360 for 2027.
   reference:
     # The statute's alternative resource standard: $20,000 in 2006, raised
     # each year by the September CPI-U and rounded to $10. Before 2024 it was
@@ -32,9 +41,21 @@ metadata:
     # table lists both pre-2024 limits; these are the higher ones. SSA's table
     # excludes the $3,000 couple burial funds exclusion, which is a separate
     # parameter.
+    #
+    # Through 2014 these are SSA's amounts. For 2015, CMS's memo multiplies
+    # the 2014 limit of $23,860 by 1.01658 (238.031 / 234.149) and rounds to
+    # $10, which gives $24,260 ($24,255.58 unrounded), but it prints $24,250,
+    # and SSA has raised its own previous amount each year since. The values
+    # here apply the formula to the previous year's limit as the statute
+    # sets it, so they are $10 above SSA's in 2015 and 2016 and $20 above
+    # from 2017 ($33,120 against $33,100 in 2026).
     - title: 42 U.S.C. § 1395w-114(a)(3)(E)(i) - Alternative resource standard
       href: https://www.law.cornell.edu/uscode/text/42/1395w-114#a_3_E_i
     - title: 42 CFR § 423.773(b)(2)(iii) and (d)(2) - Resource thresholds
       href: https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-B/part-423/subpart-P/section-423.773#p-423.773(d)(2)
     - title: SSA POMS HI 03030.025 - Resource Limits for Subsidy Eligibility
       href: https://secure.ssa.gov/poms.nsf/lnx/0603030025
+    - title: CMS, 2015 Medicare Part D Low-Income Subsidy (LIS) Income and Resource Standards, Attachment 4
+      href: https://www.cms.gov/files/document/2015-lis-income-and-resourcespdf#page=5
+    - title: CMS, Calendar Year (CY) 2026 Resource and Cost-Sharing Limits for Low-Income Subsidy (LIS), October 31, 2025
+      href: https://www.cms.gov/files/document/cy2026-lis-resource-limits-memo.pdf#page=2

@@ -8,8 +8,9 @@ class part_d_lis_family_size(Variable):
     documentation = (
         "The person, a spouse living with them, and relatives living with "
         "them who depend on the person or spouse for at least half of their "
-        "support, approximated by the dependents of the tax unit the person "
-        "heads or is the spouse in."
+        "support, approximated by the dependents on the couple's tax "
+        "returns: a joint return's dependents count once, and when the "
+        "spouses file separately, the dependents on both returns count."
     )
     definition_period = YEAR
     reference = (
@@ -19,6 +20,9 @@ class part_d_lis_family_size(Variable):
 
     def formula(person, period, parameters):
         couple_size = person.marital_unit.nb_persons()
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        # Each tax unit's dependents count once, through the unit's head: on a
+        # joint return the couple has one head, and spouses who file
+        # separately each head their own return.
+        head = person("is_tax_unit_head", period)
         dependents = person.tax_unit("tax_unit_dependents", period)
-        return couple_size + where(head_or_spouse, dependents, 0)
+        return couple_size + person.marital_unit.sum(where(head, dependents, 0))

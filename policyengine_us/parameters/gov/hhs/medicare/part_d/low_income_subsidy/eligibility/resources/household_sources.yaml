@@ -1,0 +1,29 @@
+description: Medicare counts these household assets as resources of the household head and spouse under the Part D low-income subsidy.
+values:
+  2006-01-01:
+    - household_other_real_estate_equity
+
+metadata:
+  unit: list
+  period: year
+  label: Medicare Part D low-income subsidy countable household resource sources
+  reference:
+    # Equity in real property other than the home counts, whether or not it
+    # can be sold within 20 workdays. The model holds real estate equity by
+    # household, so the formula counts it for the household head's couple.
+    # Rental property equity (household_rental_property_equity) is left out:
+    # property essential to self-support is excluded (418.3425(c) and (d)),
+    # rental property used in a trade or business in full and other
+    # income-producing property up to $6,000 of equity when it returns 6% a
+    # year (POMS SI 01130.501 and SI 01130.500), and the model can't tell
+    # which applies.
+    - title: 20 CFR § 418.3405(b) - What types of resources do we count?
+      href: https://www.ecfr.gov/current/title-20/chapter-III/part-418/subpart-D/section-418.3405#p-418.3405(b)
+    - title: 20 CFR § 418.3425 - What resources do we exclude from counting?
+      href: https://www.ecfr.gov/current/title-20/chapter-III/part-418/subpart-D/section-418.3425
+    - title: 42 CFR § 423.772 - Definitions (resources)
+      href: https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-B/part-423/subpart-P/section-423.772
+    - title: SSA POMS SI 01130.501 - Essential Property Excluded Regardless of Value or Rate of Return
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501130501
+    - title: SSA POMS SI 01130.500 - Property Essential to Self-Support - Overview
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501130500

@@ -1,4 +1,4 @@
-description: Medicare limits the Part D low-income subsidy to unmarried people whose countable resources do not exceed this amount, before the burial funds exclusion.
+description: Medicare limits the Part D low-income subsidy to people who are not married and living with a spouse whose countable resources do not exceed this amount, before the burial funds exclusion.
 values:
   2006-01-01: 10_000
   2007-01-01: 10_210
@@ -24,6 +24,12 @@ metadata:
   unit: currency-USD
   period: year
   label: Medicare Part D low-income subsidy individual resource limit
+  # Years after the last value here are projected in
+  # parameters/uprating_extensions.py (extend_part_d_lis_resource_limits): the
+  # previous year's limit times the change in the not seasonally adjusted
+  # CPI-U from September two years before to September one year before,
+  # never lowered, rounded to the nearest $10, effective January 1. The
+  # published September 2026 index gives $17,210 for 2027.
   reference:
     # The statute's alternative resource standard: $10,000 in 2006, raised
     # each year by the September CPI-U and rounded to $10. Before 2024 it was
@@ -31,10 +37,13 @@ metadata:
     # from 2024 it is the limit for the full subsidy, the only one left. SSA's
     # table lists both pre-2024 limits; these are the higher ones. SSA's table
     # excludes the $1,500 burial funds exclusion, which is a separate
-    # parameter.
+    # parameter. A person who is married but separated from their spouse
+    # counts only their own resources against this limit (20 CFR 418.3410(b)).
     - title: 42 U.S.C. § 1395w-114(a)(3)(E)(i) - Alternative resource standard
       href: https://www.law.cornell.edu/uscode/text/42/1395w-114#a_3_E_i
     - title: 42 CFR § 423.773(b)(2)(iii) and (d)(2) - Resource thresholds
       href: https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-B/part-423/subpart-P/section-423.773#p-423.773(d)(2)
     - title: SSA POMS HI 03030.025 - Resource Limits for Subsidy Eligibility
       href: https://secure.ssa.gov/poms.nsf/lnx/0603030025
+    - title: CMS, Calendar Year (CY) 2026 Resource and Cost-Sharing Limits for Low-Income Subsidy (LIS), October 31, 2025
+      href: https://www.cms.gov/files/document/cy2026-lis-resource-limits-memo.pdf#page=2

@@ -575,6 +575,28 @@ def extend_la_cpi_u_indexed_amounts(parameters: ParameterNode, end_year: int) ->
         )
 
 
+def get_september_cpi_u_values(cpi: ParameterNode, year: int) -> Tuple[float, float]:
+    """The CPI-U for September two years and one year before ``year``.
+
+    CMS indexes the Medicaid home equity limits and the Part D low-income
+    subsidy resource limits for ``year`` by the change from September of
+    ``year - 2`` to September of ``year - 1`` in the not seasonally adjusted
+    CPI-U. ``cpi`` is the ``gov.bls.cpi`` node. The published Septembers in
+    ``cpi_u_nsa_september`` are used when both are available. Otherwise both
+    Septembers come from the model's CPI-U series (seasonally adjusted from
+    January 2024) through ``get_projected_cpi_u_for_month``, so the two are
+    never mixed. Returns ``(prior September, later September)``.
+    """
+    september = cpi.cpi_u_nsa_september
+    published = {int(value.instant_str[:4]) for value in september.values_list}
+    if {year - 2, year - 1} <= published:
+        return september(f"{year - 2}-09-01"), september(f"{year - 1}-09-01")
+    return (
+        get_projected_cpi_u_for_month(cpi.cpi_u, instant(f"{year - 2}-09-01")),
+        get_projected_cpi_u_for_month(cpi.cpi_u, instant(f"{year - 1}-09-01")),
+    )
+
+
 def get_cms_cpi_u_percentage_increase(cpi: ParameterNode, year: int) -> float:
     """The CPI-U percentage increase CMS applies to ``year``'s home equity limits.
 
@@ -591,20 +613,10 @@ def get_cms_cpi_u_percentage_increase(cpi: ParameterNode, year: int) -> float:
     A fall in the index is not an increase, so the percentage is never
     negative.
 
-    ``cpi`` is the ``gov.bls.cpi`` node. The published Septembers in
-    ``cpi_u_nsa_september`` are used when both are available. Otherwise both
-    Septembers come from the model's CPI-U series (seasonally adjusted from
-    January 2024) through ``get_projected_cpi_u_for_month``, so the two are
-    never mixed.
+    ``cpi`` is the ``gov.bls.cpi`` node; see ``get_september_cpi_u_values``
+    for where the Septembers come from.
     """
-    september = cpi.cpi_u_nsa_september
-    published = {int(value.instant_str[:4]) for value in september.values_list}
-    if {year - 2, year - 1} <= published:
-        current = september(f"{year - 1}-09-01")
-        prior = september(f"{year - 2}-09-01")
-    else:
-        current = get_projected_cpi_u_for_month(cpi.cpi_u, instant(f"{year - 1}-09-01"))
-        prior = get_projected_cpi_u_for_month(cpi.cpi_u, instant(f"{year - 2}-09-01"))
+    prior, current = get_september_cpi_u_values(cpi, year)
     change = 100 * (Decimal(repr(current)) / Decimal(repr(prior)) - 1)
     percentage = change.quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
     return float(max(percentage, 0))
@@ -672,6 +684,67 @@ def extend_medicaid_home_equity_limits(
                 period=f"year:{year}-01-01:1",
                 value=agricultural(f"{year}-01-01"),
             )
+
+
+def adjust_part_d_lis_resource_limit_for_inflation(
+    prior_limit: float, prior_september: float, current_september: float
+) -> float:
+    """Raise a Part D low-income subsidy resource limit for one year.
+
+    42 U.S.C. 1395w-114(a)(3)(E)(i)(II) and 42 CFR 423.773(d)(2)(ii) increase
+    the previous year's limit "by the annual percentage increase in the
+    consumer price index (all items, U.S. city average) as of September of
+    the previous year, rounded to the nearest multiple of $10". The increase
+    is the unrounded ratio of the two Septembers. CMS's CY 2026 memo reports
+    it as 3.01% (324.800 / 315.301), but the published $16,590 is $16,100
+    times the unrounded 1.030127 ($16,585.04), where 1.0301 would give
+    $16,584.61 and so $16,580. A fall in the index is not an increase, so the
+    limit never falls: SSA kept the 2009 and 2015 limits for 2010 and 2016.
+    The arithmetic is decimal, with halves rounding up, so a product that
+    ends in exactly $5 rounds up as it does on paper.
+    """
+    ratio = max(
+        Decimal(str(float(current_september))) / Decimal(str(float(prior_september))),
+        1,
+    )
+    adjusted = Decimal(str(float(prior_limit))) * ratio
+    tens = (adjusted / 10).quantize(Decimal(1), rounding=ROUND_HALF_UP)
+    return float(tens * 10)
+
+
+def extend_part_d_lis_resource_limits(parameters: ParameterNode, end_year: int) -> None:
+    """Project the CPI-indexed Part D low-income subsidy resource limits.
+
+    Each year after the last value in the YAML, the individual and couple
+    limits each become the previous year's limit raised by the change from
+    September two years before to September one year before (see
+    ``get_september_cpi_u_values``), never lowered, and rounded to the
+    nearest $10 (see ``adjust_part_d_lis_resource_limit_for_inflation``),
+    effective January 1. Amounts encoded in the YAML take precedence for
+    their own years.
+
+    Like the other projections in this module, the values are fixed when the
+    parameter tree is built: a reform that changes one year's limit does not
+    carry through to later years.
+    """
+    limits = parameters.gov.hhs.medicare.part_d.low_income_subsidy.eligibility.resources.limit
+    cpi = parameters.gov.bls.cpi
+    for limit in (limits.individual, limits.couple):
+        first_projected_year = 1 + max(
+            int(value.instant_str[:4]) for value in limit.values_list
+        )
+        for year in range(first_projected_year, end_year + 1):
+            prior_september, current_september = get_september_cpi_u_values(cpi, year)
+            limit.update(
+                period=f"year:{year}-01-01:1",
+                value=adjust_part_d_lis_resource_limit_for_inflation(
+                    limit(f"{year - 1}-01-01"), prior_september, current_september
+                ),
+            )
+        limit.update(
+            start=instant(f"{end_year}-01-01"),
+            value=limit(f"{end_year}-01-01"),
+        )
 
 
 def extend_wa_millionaires_standard_deduction(
@@ -1221,6 +1294,12 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
 
     # Medicaid long-term care home equity limits, CMS's rounded CPI-U method
     extend_medicaid_home_equity_limits(parameters, end_year=END_YEAR)
+
+    # Part D low-income subsidy resource limits, raised by the unrounded
+    # September-to-September CPI-U change under 42 U.S.C.
+    # 1395w-114(a)(3)(E)(i). Must run after the CPI-U extension above so
+    # projected Septembers are available.
+    extend_part_d_lis_resource_limits(parameters, end_year=END_YEAR)
 
     # The limits on a dependent's standard deduction follow 26 U.S.C.
     # 63(c)(4)'s chained CPI-U schedule, computed from the statutory 1987 and

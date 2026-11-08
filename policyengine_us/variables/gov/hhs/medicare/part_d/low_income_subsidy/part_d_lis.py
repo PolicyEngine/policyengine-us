@@ -6,11 +6,15 @@ class part_d_lis(Variable):
     entity = Person
     label = "Medicare Part D low-income subsidy"
     documentation = (
-        "Value of the Part D low-income subsidy (Extra Help) as the "
-        "Congressional Budget Office counts it: the Medicare Trustees' "
-        "average subsidy payment per subsidy enrollee, the same for every "
-        "enrollee. Most of the subsidy pays cost sharing, which depends on "
-        "each enrollee's drug use, which the model does not have."
+        "Value of the Part D low-income subsidy (Extra Help): the Medicare "
+        "Trustees' average subsidy payment per subsidy enrollee, the same for "
+        "every enrollee, which is how the Congressional Budget Office values "
+        "it. Most of the subsidy pays cost sharing, which depends on each "
+        "enrollee's drug use, which the model does not have. Recipients "
+        "differ from CBO's: CBO draws them at random from the eligible "
+        "population until they match the administrative count, while the "
+        "model pays every eligible person in a Part D plan who is on "
+        "Medicaid or SSI or takes the subsidy up."
     )
     unit = USD
     definition_period = YEAR
@@ -24,5 +28,4 @@ class part_d_lis(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).calibration.gov.hhs.medicare.part_d
-        enrolled = person("part_d_lis_enrolled", period)
-        return enrolled * p.low_income_subsidy_per_recipient
+        return person.filled_array(p.low_income_subsidy_per_recipient)

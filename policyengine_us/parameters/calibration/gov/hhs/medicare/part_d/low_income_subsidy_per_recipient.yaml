@@ -14,9 +14,10 @@ metadata:
   # 2016 to 2035 come from the 2026 report (file page 158); 2015, which that
   # table no longer shows, from the 2025 report (file page 158); 2013 and
   # 2014 from the 2023 report (file page 158), the newest that shows both,
-  # as for the per-enrollee series beside this one. The reports differ by $1
-  # to $2 in 2021 to 2023 (revised data). 2026 Medicare Trustees Report,
-  # transmitted 2026-06-09, retrieved 2026-10-11, sha256
+  # as for the per-enrollee series beside this one. The 2026 report moves
+  # 2021 to 2023 by $1 to $2 from the 2025 report, and 2024 by $15 ($2,848
+  # in the 2025 report, $2,833 in the 2026 report). 2026 Medicare Trustees
+  # Report, transmitted 2026-06-09, retrieved 2026-10-11, sha256
   # ffa56b9137006872300b0346149eae1613d09a172b6ba118aad48e66dfc48fa8; 2025
   # report sha256
   # 1b3de7a4faeee5ad42059e10740603182b716a5fa7b53b30d360b45b9e474d95; 2023
@@ -28,7 +29,7 @@ metadata:
   # $2,112 per recipient, the same as this table's 2015 average; for 2016
   # CBO's $26.5 billion (from its own baseline) for 11.1 million gives
   # $2,387 against $2,126 here.
-  - title: "2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table IV.B9 #page 119,158"
+  - title: "2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Tables IV.B9 and IV.B10 #page 119,158-159"
     href: https://www.cms.gov/oact/tr/2026#page=119
   - title: 2025 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table IV.B9
     href: https://www.cms.gov/oact/tr/2025#page=158
@@ -51,8 +52,8 @@ values:
   2023-01-01: 3_092
   2024-01-01: 2_833
   # 2025 is the first year of the full Inflation Reduction Act benefit
-  # redesign (2026 report, file page 119), which moved spending from the
-  # subsidy to the direct subsidy (Table IV.B9).
+  # redesign (2026 report, file page 119). The average falls from $2,833 in
+  # 2024 to $1,226 in 2025; the report gives no cause.
   2025-01-01: 1_226
   # Trustees' intermediate estimates.
   2026-01-01: 1_254

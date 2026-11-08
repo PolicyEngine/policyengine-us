@@ -12,8 +12,9 @@ metadata:
   reference:
     # SSA counts liquid resources (cash, financial accounts, stocks, bonds,
     # mutual funds, retirement accounts and similar) and equity in real
-    # property other than the home. The model has no retirement account or
-    # non-home real property inputs.
+    # property other than the home. The model has no retirement account
+    # balances. Real estate is a household amount in the model, so it is in
+    # household_sources.yaml.
     - title: 20 CFR § 418.3405 - What types of resources do we count?
       href: https://www.ecfr.gov/current/title-20/chapter-III/part-418/subpart-D/section-418.3405
     - title: 42 CFR § 423.772 - Definitions (resources)
