@@ -1,0 +1,43 @@
+# 8 CCR 1403-1 3.130(C): part time through 5 hours a day at 55% of the
+# full-time rate, full time through 12, full time plus part time through 17,
+# and two full-time units through 24.
+
+- name: Each hour boundary opens the next care unit, and no hours read as full time.
+  period: 2026-01
+  input:
+    people:
+      no_hours:
+        childcare_hours_per_day: 0
+      three:
+        childcare_hours_per_day: 3
+      five:
+        childcare_hours_per_day: 5
+      five_and_a_half:
+        childcare_hours_per_day: 5.5
+      twelve:
+        childcare_hours_per_day: 12
+      twelve_and_a_half:
+        childcare_hours_per_day: 12.5
+      seventeen:
+        childcare_hours_per_day: 17
+      seventeen_and_a_half:
+        childcare_hours_per_day: 17.5
+      twenty_four:
+        childcare_hours_per_day: 24
+    households:
+      household:
+        members:
+          [
+            no_hours,
+            three,
+            five,
+            five_and_a_half,
+            twelve,
+            twelve_and_a_half,
+            seventeen,
+            seventeen_and_a_half,
+            twenty_four,
+          ]
+        state_code: CO
+  output:
+    co_ccap_care_unit: [1, 0.55, 0.55, 1, 1, 1.55, 1.55, 2, 2]
