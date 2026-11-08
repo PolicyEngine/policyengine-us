@@ -5,8 +5,8 @@
    PFD Division publishes 2015 to 2025 in its summary table, and the Department
    of Revenue published 2026 in release 26-004. PolicyEngine rounds 2022's
    $2,621.81 and $662.19 to $2,622 and $662, which keeps the $3,284 total.
-2. In every year PolicyEngine models, the dividend stays positive and energy
-   relief never falls below zero.
+2. From 2015 to 2100, the dividend stays positive and energy relief never
+   falls below zero.
 3. Alaska has set neither amount for 2027 or later, so from 2027 the dividend
    stays at the 2026 amount and energy relief at zero.
 

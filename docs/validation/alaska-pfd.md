@@ -62,7 +62,7 @@ each year from 2015, the first year it models:
 | 2022 | \$2,622 | \$662 | [Alaska DOR release 23-002](https://dor.alaska.gov/docs/default-source/press-releases/2023_02_17-dor-response-to-irs-guidance-on-2022-pfd.pdf#page=1) (Alaska paid \$2,621.81 and \$662.19) |
 | 2023 | \$1,312 | \$0 | [2023 annual report](https://pfd.alaska.gov/docs/permanentfunddividendlibraries/annual-reports/2023-pfd-annual-report.pdf#page=3) |
 | 2024 | \$1,403.83 | \$298.17 | [Alaska DOR release 24-005](https://dor.alaska.gov/department-of-revenue/news-detail/2024/09/19/department-of-revenue-announces-2024-permanent-fund-dividend-amount-and-energy-relief) |
-| 2025 | \$1,000 | \$0 | [Sec. 25(d), ch. 10, SLA 2025](https://www.akleg.gov/PDF/34/Bills/HB0053Z.PDF#page=89) |
+| 2025 | \$1,000 | \$0 | [Sec. 25(d), ch. 10, SLA 2025](https://www.akleg.gov/PDF/34/Bills/HB0053Z.PDF#page=89); [Alaska DOR release 25-004](https://dor.alaska.gov/department-of-revenue/news-detail/2025/09/22/department-of-revenue-announces-2025-permanent-fund-dividend-amount) |
 | 2026 | \$1,000 | \$200 | [Sec. 18(d)](https://www.akleg.gov/PDF/34/Bills/HB0263Z.PDF#page=87) and [sec. 13](https://www.akleg.gov/PDF/34/Bills/HB0263Z.PDF#page=84), ch. 34, SLA 2026; [Alaska DOR release 26-004](https://dor.alaska.gov/department-of-revenue/news-detail/2026/09/28/department-of-revenue-announces-2026-permanent-fund-dividend-amount) |
 
 Alaska sets each year's dividend in its budget and adds energy relief only in
