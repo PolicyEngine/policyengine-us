@@ -89,8 +89,8 @@
         medicaid_enrolled: true
         ssi: 0
         # CMS enrolls Medicaid enrollees in a plan unless they decline Part D
-        # or are qualifying covered retirees (42 CFR 423.34(d), (e)); the
-        # microdata mark those people with this input.
+        # or are qualifying covered retirees who don't choose one (42 CFR
+        # 423.34(d), (e)); the microdata mark those people with this input.
         takes_up_medicare_part_d_if_eligible: false
   output:
     medicare_part_d_enrolled: false
