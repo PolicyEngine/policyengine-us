@@ -1,18 +1,24 @@
-description: Oklahoma sets the annual unemployment insurance taxable wage base at this amount under the Unemployment Insurance program.
-
+description: Oklahoma limits employer unemployment insurance taxes to this amount of each worker's annual wages.
 values:
-  # 40 O.S. §1-223 sets the taxable wage base as a conditional-factor share of
-  # the state's average annual wage. The pre-Laws-2025 ladder ran 40 / 42.5 /
-  # 45 / 47.5 / 50% across factors A-D; conditional factor "D" applies for
-  # 2022-2025 and factor "A" for 2026. The Laws 2025 ladder (effective
-  # Nov. 1, 2025) resets these shares, which is why the 2026 base falls below
-  # the 2025 base rather than rising. Values below are the OESC-published
-  # taxable wage bases, so no recomputation from the ladder is required.
-  0000-01-01: 27_000
+  # 40 O.S. Section 1-201(48) sets taxable wages at a percentage of the
+  # state's average annual wage for the second preceding year, as the Oklahoma
+  # Employment Security Commission determines it, rounded to the nearest $100;
+  # Section 1-223 sets the percentage by the conditional factor in place.
+  # These are the bases the Commission published.
+  2018-01-01: 17_600
+  2019-01-01: 18_100
+  2020-01-01: 18_700
+  # Conditional factor D, with its 50% share, applied from 2021 through 2025.
+  2021-01-01: 24_000
   2022-01-01: 24_800
   2023-01-01: 25_700
   2024-01-01: 27_000
   2025-01-01: 28_200
+  # The Commission's 2026 notice gives conditional factor A, a $58,765.95
+  # average annual wage and a $25,000 base. Laws 2025, chapter 140 (Senate
+  # Bill 911), in force from November 1, 2025, set condition A's share at
+  # 41.25%, which gives $24,200; $25,000 equals the earlier 42.5% share. PE-US
+  # uses the Commission's $25,000.
   2026-01-01: 25_000
 
 metadata:
@@ -20,27 +26,23 @@ metadata:
   unit: currency-USD
   label: Oklahoma unemployment taxable wage base
   reference:
-    - title: 40 O.S. §1-201(48)
+    - title: 40 O.S. Section 1-201(48) (page 23) and Section 1-223 (page 44), taxable wages and conditional factor percentages
       href: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=23
-    - title: 40 O.S. §1-201
-      href: https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=77132
-    - title: 40 O.S. §1-223
-      href: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=44
-    - title: 40 O.S. §1-223
-      href: https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=77157
-    - title: 40 O.S. §2-207(B)
-      href: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=56
-    - title: 40 O.S. §2-207
-      href: https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=77177
-    - title: Oklahoma Unemployment Insurance Tax Rates by Industry, Size, and County (2022 column)
+    - title: Laws 2025, chapter 140 (Senate Bill 911), sections 1 and 5
+      href: https://www.oklegislature.gov/cf_pdf/2025-26%20ENR/SB/SB911%20ENR.PDF
+    - title: Oklahoma Employment Security Commission, Taxable Wage Base and Rates (January 2018)
+      href: https://web.archive.org/web/20180108114807/https://www.ok.gov/oesc_web/Services/Unemployment_Insurance/Taxable_Wage_Base_and_Rates.html
+    - title: Oklahoma Employment Security Commission, Oklahoma Unemployment Insurance Tax Rates by Industry, 2019, Table 1
+      href: https://oklahoma.gov/content/dam/ok/en/oesc/documents/labor-market/publications/special-reports/oklahoma-ui-tax-rates-industry-2019.pdf#page=6
+    - title: Oklahoma Employment Security Commission, Oklahoma Unemployment Insurance Tax Rates by Industry, Size, and County, 2021, Table 1
       href: https://www.oklahoma.gov/content/dam/ok/en/oesc/documents/labor-market/publications/special-reports/oklahoma-ui-tax-rates-industry-size-county-2021.pdf#page=6
-    - title: OESC Important Numbers for 2023
+    - title: Oklahoma Employment Security Commission, Important Numbers for 2022
+      href: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2022.pdf#page=1
+    - title: Oklahoma Employment Security Commission, Important Numbers for 2023
       href: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2023.pdf#page=1
-    - title: OESC Important Numbers for 2024
+    - title: Oklahoma Employment Security Commission, Important Numbers for 2024
       href: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2024.pdf#page=1
-    - title: Oklahoma OMES 2025 Rates and Maximums for FICA and Unemployment
-      href: https://oklahoma.gov/content/dam/ok/en/omes/documents/2025RatesMaximumsFICAUnemployment.pdf#page=1
-    - title: Oklahoma Employment Security Commission Important Numbers for 2026
+    - title: Oklahoma Employment Security Commission, Important Numbers for 2025
+      href: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2025.pdf#page=1
+    - title: Oklahoma Employment Security Commission, Important Numbers for 2026
       href: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Improtant-Numbers-2026.pdf#page=1
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=46

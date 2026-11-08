@@ -1,15 +1,38 @@
-description: Default employer-side unemployment insurance tax rate for Oklahoma.
+description: Oklahoma assigns this unemployment insurance tax rate, including the Technology Reinvestment Apportionment, to each new employer.
 values:
-  0000-01-01: 0.015
+  # 40 O.S. Section 3-110.1 assigns 1.5% to each employer without enough
+  # experience for an earned rate. Section 3-109.3 cuts each rate by 5% for
+  # 2018 through 2022 and again for 2023 through 2027, and Section 6-204(B)
+  # charges assigned-rate employers a Technology Reinvestment Apportionment
+  # equal to that cut, so a new employer pays 1.5% of taxable wages in all.
+  2018-01-01: 0.015
 
 metadata:
   period: year
   unit: /1
   label: Oklahoma default unemployment tax rate
   reference:
-    - title: Oklahoma Statutes Title 40 Section 3-110.1
-      href: https://oksenate.gov/sites/default/files/2022-05/os40.pdf#page=57
-    - title: Oklahoma Employment Security Commission contribution rates
+    - title: 40 O.S. Sections 3-109.3 and 3-110.1 (page 122) and Section 6-204 (page 192), rate reduction, unemployment tax rate and technology reinvestment apportionment
+      href: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=122
+    - title: Laws 2017, chapter 345 (House Bill 1110), sections 8 and 12
+      href: https://www.oklegislature.gov/cf_pdf/2017-18%20ENR/hB/HB1110%20ENR.PDF
+    - title: Laws 2023, chapter 346 (House Bill 2456), sections 1 and 6
+      href: https://www.oklegislature.gov/cf_pdf/2023-24%20ENR/HB/HB2456%20ENR.PDF
+    - title: Oklahoma Employment Security Commission, Taxable Wage Base and Rates (January 2018)
+      href: https://web.archive.org/web/20180108114807/https://www.ok.gov/oesc_web/Services/Unemployment_Insurance/Taxable_Wage_Base_and_Rates.html
+    - title: Oklahoma Employment Security Commission, Oklahoma Unemployment Insurance Tax Rates by Industry, 2019, Table 1
+      href: https://oklahoma.gov/content/dam/ok/en/oesc/documents/labor-market/publications/special-reports/oklahoma-ui-tax-rates-industry-2019.pdf#page=6
+    - title: Oklahoma Employment Security Commission, Oklahoma Unemployment Insurance Tax Rates by Industry, Size, and County, 2021, Table 1
+      href: https://www.oklahoma.gov/content/dam/ok/en/oesc/documents/labor-market/publications/special-reports/oklahoma-ui-tax-rates-industry-size-county-2021.pdf#page=6
+    - title: Oklahoma Employment Security Commission, Important Numbers for 2022
+      href: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2022.pdf#page=1
+    - title: Oklahoma Employment Security Commission, Important Numbers for 2023
+      href: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2023.pdf#page=1
+    - title: Oklahoma Employment Security Commission, Important Numbers for 2024
+      href: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2024.pdf#page=1
+    - title: Oklahoma Employment Security Commission, Important Numbers for 2025
+      href: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2025.pdf#page=1
+    - title: Oklahoma Employment Security Commission, Important Numbers for 2026
+      href: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Improtant-Numbers-2026.pdf#page=1
+    - title: Oklahoma Employment Security Commission, Contribution Rates
       href: https://oklahoma.gov/oesc/employers/tax/contribution-rates.html
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=46

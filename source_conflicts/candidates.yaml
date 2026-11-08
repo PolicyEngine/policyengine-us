@@ -13505,3 +13505,55 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
   note: Neither source prescribes a fallback when residence data are missing. Keep the existing false default.
+- id: us-ok:ui-taxable-wage-base-2026
+  program: unemployment-insurance
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: For 2026, is Oklahoma's unemployment insurance taxable wage base the $25,000 that the Oklahoma Employment Security
+    Commission (OESC) publishes, or $24,200, the 41.25% share that Senate Bill 911 set for conditional factor A from November
+    1, 2025, applied to the $58,765.95 average annual wage that OESC lists?
+  sources:
+  - kind: statute
+    citation: 40 O.S. § 1-201(48), taxable wages
+    url: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=23
+  - kind: statute
+    citation: 40 O.S. § 1-223, taxable wages, conditional factors and percentages
+    url: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=44
+  - kind: statute
+    citation: Laws 2025, chapter 140 (Senate Bill 911), section 1, amending § 1-223
+    url: https://www.oklegislature.gov/cf_pdf/2025-26%20ENR/SB/SB911%20ENR.PDF#page=1
+  - kind: statute
+    citation: Laws 2025, chapter 140 (Senate Bill 911), section 5, effective date
+    url: https://www.oklegislature.gov/cf_pdf/2025-26%20ENR/SB/SB911%20ENR.PDF#page=25
+  - kind: agency-practice
+    citation: Oklahoma Employment Security Commission, Important Numbers for 2026
+    url: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Improtant-Numbers-2026.pdf#page=1
+  - kind: agency-practice
+    citation: Oklahoma Employment Security Commission, Important Numbers for 2025
+    url: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2025.pdf#page=1
+  - kind: agency-practice
+    citation: Oklahoma Employment Security Commission, Important Numbers for 2024
+    url: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2024.pdf#page=1
+  readings:
+    statute: Section 1-201(48) sets taxable wages at "the applicable percentage of the state's average annual wage for the
+      second preceding calendar year as determined by the Commission, rounded to the nearest multiple of One Hundred Dollars."
+      Section 1-223, as Senate Bill 911 amended it from November 1, 2025, sets "Forty-one and one-quarter percent (41.25%)
+      during calendar years in which condition 'a' exists." OESC's 2026 notice gives conditional factor A and a $58,765.95
+      average annual wage, and 41.25% of that is $24,240.95, or $24,200.
+    other: OESC's 2026 notice gives a $25,000 base, which equals 42.5% of $58,765.95 ($24,975.53) rounded to the nearest
+      $100, the share Section 1-223 gave condition A before Senate Bill 911. Each of OESC's 2022 to 2025 notices gives a
+      base equal to 50% of the average annual wage it lists, the share for condition D before Senate Bill 911, so the
+      listed wage is the one OESC uses.
+  example: At 1.5%, a new employer pays $375 on a worker earning at least $25,000, or $363 on the $24,200 base.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/ok/tax/payroll/unemployment/taxable_wage_base.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10700
+  state: open
+  note: PE-US keeps OESC's $25,000, the value main already had for 2026. A ruling for the statute would set $24,200. OESC's
+    notice does not show its computation, and Senate Bill 911 also gives 42.5% when condition B exists, so the question is
+    which share and factor OESC applied.
