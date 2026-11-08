@@ -4,19 +4,20 @@
 fee from gross countable income and household size: 1% of income plus 14% of
 income above the federal poverty guideline ((P)(1) and (P)(2)), $15 for each
 child in care after the first when income exceeds the guideline ((P)(3)), in
-whole dollars ((A)), at 55% when every child in care is in part-time care ((U)
-and (W)), and 20% lower at a provider in the top three quality levels ((H)).
-The Department's parent fee tool drops the cents after each step.
+whole dollars ((A)), at 55% when every child in care receives part-time care
+((U) and (W)), and 20% lower at a provider in the top three quality levels
+((H)). The Department's parent fee tool drops the cents after each step.
 
 Invariants, for every household:
 
-1. The fee is never negative, and it is a whole number of dollars.
-2. With income and household size fixed, each child in care after the first
-   adds $15 to the fee when income exceeds the guideline and nothing when it
-   does not. The number of children in care changes the fee in no other way.
-3. When every child in care is in part-time care, the fee is 55% of the
-   full-time fee with the cents dropped. When any child in care is in
-   full-time care, the fee is the full-time fee.
+1. The fee never falls below zero and always comes to whole dollars.
+2. Until October 2028, with income and household size fixed, each child in
+   care after the first adds $15 to the fee when income exceeds the guideline
+   and nothing when it does not. The number of children in care changes the
+   fee in no other way.
+3. When every child in care receives part-time care, the fee falls to 55% of
+   the full-time fee with the cents dropped. When any child in care receives
+   full-time care, the household pays the full-time fee.
 4. A provider in the top three quality levels, for any child in care, cuts the
    fee by 20% with the cents dropped. A lower rating, or a rating for a child
    outside care, changes nothing.
@@ -45,7 +46,7 @@ GUIDELINES = {
     "2026-01": (Decimal(15_650), Decimal(5_500)),
     "2026-10": (Decimal(15_960), Decimal(5_680)),
 }
-# With no days of care reported, the model assumes care on each weekday.
+# Without a schedule, the model reads care on each weekday.
 ASSUMED_DAYS_PER_MONTH = Decimal(5 * 52) / 12
 
 
@@ -71,9 +72,11 @@ def part_time(child):
     """Fewer than 13 units a month (3.124(U)), or up to 5 hours a day for a
     child in grades 1 to 12 (3.124(W)). PolicyEngine has no grade input, so a
     child in school (ages 5 to 17) aged 6 or older counts as in grade 1 or
-    above, as in the model."""
+    above, as in the model. Days of care come from the larger of days a week
+    x 52 / 12 and attending days a month, as in the model."""
     hours = Decimal(str(child["hours"]))
-    days = Decimal(child["days"]) if child["days"] > 0 else ASSUMED_DAYS_PER_MONTH
+    scheduled_days = Decimal(child["week"] * 52) / 12
+    days = max(scheduled_days, Decimal(child["days"])) or ASSUMED_DAYS_PER_MONTH
     in_grade_one_or_above = 6 <= child["age"] <= 17
     return daily_units(hours) * days < 13 or (in_grade_one_or_above and 0 < hours <= 5)
 
@@ -128,6 +131,7 @@ def fees(month, households):
             if child["in_care"]:
                 person["childcare_hours_per_day"] = {year: child["hours"]}
                 person["childcare_attending_days_per_month"] = {year: child["days"]}
+                person["childcare_days_per_week"] = {year: child["week"]}
                 person["pre_subsidy_childcare_expenses"] = {year: MONTHLY_CHARGE * 12}
             situation["people"][name] = person
             members.append(name)
@@ -139,8 +143,10 @@ def fees(month, households):
     return [float(fee) for fee in simulation.calculate("co_ccap_parent_fee", month)]
 
 
-def child(age=3, in_care=True, hours=8, days=0, rating=0):
-    return dict(age=age, in_care=in_care, hours=hours, days=days, rating=rating)
+def child(age=3, in_care=True, hours=8, days=0, week=0, rating=0):
+    return dict(
+        age=age, in_care=in_care, hours=hours, days=days, week=week, rating=rating
+    )
 
 
 months = st.sampled_from(sorted(GUIDELINES))
@@ -149,6 +155,8 @@ incomes = st.integers(min_value=0, max_value=150_000)
 daily_hours = st.sampled_from([0, 1, 4.5, 5, 5.5, 8, 12, 12.5, 16, 17, 18])
 # Attending days per month; 0 means none reported.
 monthly_days = st.integers(min_value=0, max_value=23)
+# Scheduled days per week; 0 means none reported.
+weekly_days = st.integers(min_value=0, max_value=7)
 child_ages = st.integers(min_value=0, max_value=12)
 any_children = st.builds(
     child,
@@ -156,6 +164,7 @@ any_children = st.builds(
     in_care=st.booleans(),
     hours=daily_hours,
     days=monthly_days,
+    week=weekly_days,
     rating=st.integers(min_value=0, max_value=5),
 )
 
@@ -172,6 +181,10 @@ any_children = st.builds(
 @example(month="2026-01", income=26_650, children=[child(), child()])
 # 13 days of 8 hours make 13 units, full time; 12 days make 12, part time.
 @example(month="2026-01", income=60_000, children=[child(days=13), child(days=12)])
+# 12 attending days beat a two-day week (8.67 days): 12 units, part time.
+# A three-day week (13 days) beats 10 attending days: 13 units, full time.
+@example(month="2026-01", income=60_000, children=[child(week=2, days=12)])
+@example(month="2026-01", income=60_000, children=[child(week=3, days=10)])
 # A 6-year-old with 5-hour days is part time under (W) at 24 days; a
 # 5-year-old with the same days has 13.2 units, full time.
 @example(month="2026-01", income=30_000, children=[child(age=6, hours=5, days=24)])
@@ -251,7 +264,13 @@ def test_each_additional_child_in_care_adds_15_dollars_above_the_guideline(
     month=months,
     income=incomes,
     children=st.lists(
-        st.builds(child, age=child_ages, hours=daily_hours, days=monthly_days),
+        st.builds(
+            child,
+            age=child_ages,
+            hours=daily_hours,
+            days=monthly_days,
+            week=weekly_days,
+        ),
         min_size=1,
         max_size=4,
     ),
@@ -259,7 +278,7 @@ def test_each_additional_child_in_care_adds_15_dollars_above_the_guideline(
 def test_the_part_time_rate_applies_only_when_every_child_in_care_is_part_time(
     month, income, children
 ):
-    full_time = [dict(child, hours=8, days=0) for child in children]
+    full_time = [dict(child, hours=8, days=0, week=0) for child in children]
     fee, full_time_fee = fees(
         month,
         [

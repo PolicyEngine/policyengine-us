@@ -23,7 +23,7 @@ class co_ccap_parent_fee(Variable):
     documentation = (
         "One monthly fee for the household, in whole dollars: the base fee "
         "plus the fee for additional children, at 55% when every child in "
-        "care is in part-time care, and 20% lower when a provider rates in "
+        "care receives part-time care, and 20% lower when a provider rates in "
         "the top three quality levels. Each step drops the cents, as the "
         "Department's parent fee tool does."
     )

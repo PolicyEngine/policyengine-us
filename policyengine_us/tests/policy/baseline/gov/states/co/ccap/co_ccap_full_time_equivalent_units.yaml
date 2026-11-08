@@ -2,8 +2,9 @@
 # unit, and 3.130(C) sets the daily units: part time up to 5 hours, full time
 # up to 12, full time and part time up to 17, and two full-time units above
 # that (PDF pages 10 and 119 of ruleVersionId 12658). A day of unknown length
-# counts as one full-time unit, and a child with no reported days attends each
-# weekday: 5 * 52 / 12 = 21.67 days a month.
+# counts as one full-time unit. Days of care come from the larger of days a
+# week x 52 / 12 and attending days a month, and a child with neither attends
+# each weekday: 5 * 52 / 12 = 21.67 days a month.
 - name: Case 1, units from daily hours and reported days.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -49,12 +50,18 @@
         childcare_hours_per_day: 4
         childcare_attending_days_per_month: 10
         childcare_days_per_week: 5
+      drop_in_days:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 2
+        childcare_attending_days_per_month: 12
     spm_units:
       spm_unit:
-        members: [parent, four_hours, eight_hours, unknown_hours, fourteen_hours, twenty_hours, five_hours, five_and_a_half_hours, both_day_counts]
+        members: [parent, four_hours, eight_hours, unknown_hours, fourteen_hours, twenty_hours, five_hours, five_and_a_half_hours, both_day_counts, drop_in_days]
     households:
       household:
-        members: [parent, four_hours, eight_hours, unknown_hours, fourteen_hours, twenty_hours, five_hours, five_and_a_half_hours, both_day_counts]
+        members: [parent, four_hours, eight_hours, unknown_hours, fourteen_hours, twenty_hours, five_hours, five_and_a_half_hours, both_day_counts, drop_in_days]
         state_code: CO
   output:
     # parent: not in care.
@@ -65,5 +72,8 @@
     # twenty_hours: 2 * 2 * 52 / 12 = 17.33.
     # five_hours: 5 hours is still part time, 0.55 * 20 = 11.
     # five_and_a_half_hours: 1 * 12 = 12.
-    # both_day_counts: monthly days come first, 0.55 * 10 = 5.5.
-    co_ccap_full_time_equivalent_units: [0, 11.92, 21.67, 21.67, 15.5, 17.33, 11, 12, 5.5]
+    # both_day_counts: a five-day week (21.67 days) beats 10 attending days,
+    # 0.55 * 21.67 = 11.92.
+    # drop_in_days: 12 attending days beat a two-day week (8.67 days),
+    # 1 * 12 = 12.
+    co_ccap_full_time_equivalent_units: [0, 11.92, 21.67, 21.67, 15.5, 17.33, 11, 12, 11.92, 12]

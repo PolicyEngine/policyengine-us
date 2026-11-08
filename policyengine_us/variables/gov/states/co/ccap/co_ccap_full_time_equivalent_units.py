@@ -3,8 +3,8 @@ from policyengine_us.variables.gov.states.co.ccap.co_ccap_parameter_instant impo
     co_ccap_parameter_instant,
 )
 
-# With no days of care reported, assume care on each weekday. This is an
-# imputation, not a rule, so it is not a parameter.
+# Without a schedule, the model reads a five-day week of care. It imputes
+# this, so the number stays out of the parameters.
 WEEKDAYS_PER_WEEK = 5
 
 
@@ -15,11 +15,14 @@ class co_ccap_full_time_equivalent_units(Variable):
     documentation = (
         "A child's monthly units of care, with each part-time unit counted as "
         "0.55 of a full-time unit. A day of care of unknown length counts as "
-        "one full-time unit, and a child with no reported days is assumed to "
-        "attend each weekday."
+        "one full-time unit. Days of care come from the larger of the weekly "
+        "schedule (days a week times 52 / 12) and attending days a month, and "
+        "a child with neither attends each weekday."
     )
     reference = (
-        # PDF pages 10, 85, 119
+        # 8 CCR 1403-1 3.103(ZZ), 3.124(U) and (V), and 3.130(C) and (F), PDF
+        # pages 10, 85 and 119-120: full-time equivalent units, part-time
+        # fees, daily units and drop-in days.
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=10",
     )
     definition_period = MONTH
@@ -37,11 +40,11 @@ class co_ccap_full_time_equivalent_units(Variable):
             1,
         )
         weeks_per_month = WEEKS_IN_YEAR / MONTHS_IN_YEAR
-        monthly_days = person("childcare_attending_days_per_month", year)
+        # Counties assess the fee on the authorized care schedule (3.124(V)),
+        # and attending days above it count the drop-in days a county may pay
+        # (3.130(F)).
         weekly_days = person("childcare_days_per_week", year)
-        days = select(
-            [monthly_days > 0, weekly_days > 0],
-            [monthly_days, weekly_days * weeks_per_month],
-            default=WEEKDAYS_PER_WEEK * weeks_per_month,
-        )
-        return daily_units * days
+        attending_days = person("childcare_attending_days_per_month", year)
+        days = max_(weekly_days * weeks_per_month, attending_days)
+        default_days = WEEKDAYS_PER_WEEK * weeks_per_month
+        return daily_units * where(days > 0, days, default_days)
