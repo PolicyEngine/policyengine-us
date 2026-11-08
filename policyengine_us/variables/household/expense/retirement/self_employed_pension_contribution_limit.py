@@ -46,7 +46,7 @@ class self_employed_pension_contribution_limit(Variable):
     definition_period = YEAR
     reference = (
         # Subsections (a)(3)(A)(i)(I) and (iv), (a)(8)(C) and (D), (a)(10),
-        # (h)(1)(C) and (n).
+        # (h)(1)(C) and (2), and (n).
         "https://www.law.cornell.edu/uscode/text/26/404",
         # Subsections (a)(2), (c)(1), (c)(3)(B) and (D), (f)(1)(B) and (h):
         # section 415 aggregates the plans of one employer.

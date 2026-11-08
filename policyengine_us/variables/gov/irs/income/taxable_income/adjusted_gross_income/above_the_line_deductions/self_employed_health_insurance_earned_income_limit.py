@@ -53,9 +53,10 @@ class self_employed_health_insurance_earned_income_limit(Variable):
         # Subsection (l)(2)(A), and (l)(5) for S corporation shareholders.
         "https://www.law.cornell.edu/uscode/text/26/162#l",
         "https://www.law.cornell.edu/uscode/text/26/401#c_2_A",
-        # Subsections (a)(3)(A)(iv) and (a)(8)(C): one employer's
-        # profit-sharing trusts count as one trust, and each plan's
-        # contributions stay within its own business's earned income.
+        # Subsections (a)(3)(A)(iv), (h)(2) and (a)(8)(C): one employer's
+        # profit-sharing trusts count as one trust, a SEP's deduction counts
+        # against their limit, and each plan's contributions stay within its
+        # own business's earned income.
         "https://www.law.cornell.edu/uscode/text/26/404",
         # Subsection (f)(1)(B): one employer's defined contribution plans
         # count as one plan.
@@ -88,7 +89,8 @@ def plan_deduction_attributable_to_business(plan_deduction, other_earned_income)
     businesses. One employer's defined contribution plans count as one plan
     for the section 415(c) limits (415(f)(1)(B)), and its profit-sharing
     trusts as one trust for the section 404(a)(3) limit (404(a)(3)(A)(iv)),
-    so the Pub. 560 worksheet limits apply to the plans together. The only
+    against which a SEP's deduction also counts (404(h)(2)), so the Pub. 560
+    worksheet limits apply to the plans together. The only
     limit on each plan alone is its own business's earned income before the
     plan deduction (404(a)(8)(C)). So the other plans can carry the plan
     deduction up to their earned income, and this business's plan carries
