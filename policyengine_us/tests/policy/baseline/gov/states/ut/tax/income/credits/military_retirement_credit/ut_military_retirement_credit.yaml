@@ -98,3 +98,45 @@
         state_code: UT
   output:
     ut_military_retirement_credit: 1350
+
+- name: UT military retirement credit - retiree too young for the retirement credit gets the military credit
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        military_retirement_pay: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ut_income_tax_before_non_refundable_credits: 1_000_000
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_claims_retirement_credit: false
+    ut_military_retirement_credit_eligible: true
+    ut_military_retirement_credit: 1_350
+
+- name: UT military retirement credit - older retiree with little military pay takes the retirement credit instead
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 76
+        military_retirement_pay: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ut_income_tax_before_non_refundable_credits: 1_000_000
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_retirement_credit_max: 450
+    ut_military_retirement_credit_max: 180
+    ut_claims_retirement_credit: true
+    ut_military_retirement_credit_eligible: false
+    ut_military_retirement_credit: 0

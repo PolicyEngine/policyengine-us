@@ -1,0 +1,1 @@
+Utah's military retirement credit no longer goes unclaimed when the filer has neither a retirement credit nor a Social Security benefits credit, and the retirement-credit choice now weighs the military credit alongside the Social Security credit; the credit starts in 2021.

@@ -1,5 +1,7 @@
 description: Utah military retirement credit rate applied to taxable military retirement pay.
 values:
+  # 59-10-1043 applies to taxable years beginning on or after January 1, 2021.
+  0000-01-01: 0
   2021-01-01: 0.0495
   2022-01-01: 0.0485
   2023-01-01: 0.0465
