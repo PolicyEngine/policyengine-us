@@ -1,0 +1,125 @@
+- name: Connecticut 2018, its 3.6% new-employer rate on the $15,000 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: CT
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 15_000
+    employer_state_unemployment_tax_default_rate: 0.036
+    ct_employer_state_unemployment_tax: 540
+    employer_state_unemployment_tax: 540
+
+- name: Connecticut 2019, its 3.4% new-employer rate on the $15,000 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: CT
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 15_000
+    employer_state_unemployment_tax_default_rate: 0.034
+    ct_employer_state_unemployment_tax: 510
+    employer_state_unemployment_tax: 510
+
+- name: Connecticut 2020, its 3.2% new-employer rate on the $15,000 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: CT
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 15_000
+    employer_state_unemployment_tax_default_rate: 0.032
+    ct_employer_state_unemployment_tax: 480
+    employer_state_unemployment_tax: 480
+
+- name: Connecticut 2021, its 3% new-employer rate on the $15,000 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: CT
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 15_000
+    employer_state_unemployment_tax_default_rate: 0.03
+    ct_employer_state_unemployment_tax: 450
+    employer_state_unemployment_tax: 450
+
+- name: Connecticut 2022, its 3% new-employer rate on the $15,000 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: CT
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 15_000
+    employer_state_unemployment_tax_default_rate: 0.03
+    ct_employer_state_unemployment_tax: 450
+    employer_state_unemployment_tax: 450
+
+- name: Connecticut 2023, its 2.8% new-employer rate on the $15,000 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: CT
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 15_000
+    employer_state_unemployment_tax_default_rate: 0.028
+    ct_employer_state_unemployment_tax: 420
+    employer_state_unemployment_tax: 420
+
+- name: Connecticut 2024, its 2.5% new-employer rate on the $25,000 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: CT
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 25_000
+    employer_state_unemployment_tax_default_rate: 0.025
+    ct_employer_state_unemployment_tax: 625
+    employer_state_unemployment_tax: 625
+
+- name: Connecticut 2025, its 2.2% new-employer rate on the $26,100 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: CT
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 26_100
+    employer_state_unemployment_tax_default_rate: 0.022
+    ct_employer_state_unemployment_tax: 574.20
+    employer_state_unemployment_tax: 574.20
+
+- name: Connecticut 2026, its 1.9% new-employer rate on the $27,000 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CT
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 27_000
+    employer_state_unemployment_tax_default_rate: 0.019
+    ct_employer_state_unemployment_tax: 513
+    employer_state_unemployment_tax: 513
+
+- name: Connecticut 2018, wages below the wage base are all taxable.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: CT
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 180
+
+- name: Connecticut employer unemployment tax is zero for a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    ct_employer_state_unemployment_tax: 0

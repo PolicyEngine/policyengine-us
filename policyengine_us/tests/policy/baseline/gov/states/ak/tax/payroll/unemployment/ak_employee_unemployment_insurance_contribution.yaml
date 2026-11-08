@@ -1,0 +1,54 @@
+- name: Alaska 2018 employee contribution of 0.5% on the $39,500 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+    employment_income: 100_000
+  output:
+    ak_employee_unemployment_insurance_contribution: 197.50
+    ak_employee_state_payroll_tax: 197.50
+    employee_state_payroll_tax: 197.50
+
+- name: Alaska 2022 employee contribution of 0.56% on the $45,200 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+    employment_income: 100_000
+  output:
+    ak_employee_unemployment_insurance_contribution: 253.12
+
+- name: Alaska 2023 employee contribution of 0.51% on the $47,100 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+    employment_income: 100_000
+  output:
+    ak_employee_unemployment_insurance_contribution: 240.21
+
+- name: Alaska 2026 employee contribution of 0.5% on the $54,200 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+    employment_income: 100_000
+  output:
+    ak_employee_unemployment_insurance_contribution: 271
+
+- name: Alaska employee contribution on wages below the wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+    employment_income: 20_000
+  output:
+    ak_employee_unemployment_insurance_contribution: 100
+
+- name: Workers outside Alaska owe no Alaska employee contribution.
+  period: 2024
+  input:
+    state_code: WA
+    employment_income: 100_000
+  output:
+    ak_employee_unemployment_insurance_contribution: 0

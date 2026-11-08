@@ -1,0 +1,125 @@
+- name: Illinois 2018, its 3.225% new-employer rate on the $12,960 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 12_960
+    employer_state_unemployment_tax_default_rate: 0.03225
+    il_employer_state_unemployment_tax: 417.96
+    employer_state_unemployment_tax: 417.96
+
+- name: Illinois 2019, its 3.175% new-employer rate on the $12,960 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 12_960
+    employer_state_unemployment_tax_default_rate: 0.03175
+    il_employer_state_unemployment_tax: 411.48
+    employer_state_unemployment_tax: 411.48
+
+- name: Illinois 2020, its 3.125% new-employer rate on the $12,740 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 12_740
+    employer_state_unemployment_tax_default_rate: 0.03125
+    il_employer_state_unemployment_tax: 398.12
+    employer_state_unemployment_tax: 398.12
+
+- name: Illinois 2021, its 3.175% new-employer rate on the $12,960 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 12_960
+    employer_state_unemployment_tax_default_rate: 0.03175
+    il_employer_state_unemployment_tax: 411.48
+    employer_state_unemployment_tax: 411.48
+
+- name: Illinois 2022, its 3.525% new-employer rate on the $12,960 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 12_960
+    employer_state_unemployment_tax_default_rate: 0.03525
+    il_employer_state_unemployment_tax: 456.84
+    employer_state_unemployment_tax: 456.84
+
+- name: Illinois 2023, its 3.95% new-employer rate on the $13,271 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 13_271
+    employer_state_unemployment_tax_default_rate: 0.0395
+    il_employer_state_unemployment_tax: 524.20
+    employer_state_unemployment_tax: 524.20
+
+- name: Illinois 2024, its 3.95% new-employer rate on the $13,590 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 13_590
+    employer_state_unemployment_tax_default_rate: 0.0395
+    il_employer_state_unemployment_tax: 536.80
+    employer_state_unemployment_tax: 536.80
+
+- name: Illinois 2025, its 3.65% new-employer rate on the $13,916 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 13_916
+    employer_state_unemployment_tax_default_rate: 0.0365
+    il_employer_state_unemployment_tax: 507.93
+    employer_state_unemployment_tax: 507.93
+
+- name: Illinois 2026, its 3.35% new-employer rate on the $14,250 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 14_250
+    employer_state_unemployment_tax_default_rate: 0.0335
+    il_employer_state_unemployment_tax: 477.38
+    employer_state_unemployment_tax: 477.38
+
+- name: Illinois 2018, wages below the wage base are all taxable.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 161.25
+
+- name: Illinois employer unemployment tax is zero for a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    il_employer_state_unemployment_tax: 0

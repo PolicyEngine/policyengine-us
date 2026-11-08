@@ -1,0 +1,125 @@
+- name: Alaska 2018, its 1% new-employer rate on the $39,500 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 39_500
+    employer_state_unemployment_tax_default_rate: 0.01
+    ak_employer_state_unemployment_tax: 395
+    employer_state_unemployment_tax: 395
+
+- name: Alaska 2019, its 1% new-employer rate on the $39,900 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 39_900
+    employer_state_unemployment_tax_default_rate: 0.01
+    ak_employer_state_unemployment_tax: 399
+    employer_state_unemployment_tax: 399
+
+- name: Alaska 2020, its 1% new-employer rate on the $41,500 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 41_500
+    employer_state_unemployment_tax_default_rate: 0.01
+    ak_employer_state_unemployment_tax: 415
+    employer_state_unemployment_tax: 415
+
+- name: Alaska 2021, its 1.41% new-employer rate on the $43,600 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 43_600
+    employer_state_unemployment_tax_default_rate: 0.0141
+    ak_employer_state_unemployment_tax: 614.76
+    employer_state_unemployment_tax: 614.76
+
+- name: Alaska 2022, its 1.53% new-employer rate on the $45,200 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 45_200
+    employer_state_unemployment_tax_default_rate: 0.0153
+    ak_employer_state_unemployment_tax: 691.56
+    employer_state_unemployment_tax: 691.56
+
+- name: Alaska 2023, its 1.04% new-employer rate on the $47,100 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 47_100
+    employer_state_unemployment_tax_default_rate: 0.0104
+    ak_employer_state_unemployment_tax: 489.84
+    employer_state_unemployment_tax: 489.84
+
+- name: Alaska 2024, its 1% new-employer rate on the $49,700 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 49_700
+    employer_state_unemployment_tax_default_rate: 0.01
+    ak_employer_state_unemployment_tax: 497
+    employer_state_unemployment_tax: 497
+
+- name: Alaska 2025, its 1% new-employer rate on the $51,700 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 51_700
+    employer_state_unemployment_tax_default_rate: 0.01
+    ak_employer_state_unemployment_tax: 517
+    employer_state_unemployment_tax: 517
+
+- name: Alaska 2026, its 1% new-employer rate on the $54,200 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 54_200
+    employer_state_unemployment_tax_default_rate: 0.01
+    ak_employer_state_unemployment_tax: 542
+    employer_state_unemployment_tax: 542
+
+- name: Alaska 2018, wages below the wage base are all taxable.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 50
+
+- name: Alaska employer unemployment tax is zero for a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    ak_employer_state_unemployment_tax: 0
