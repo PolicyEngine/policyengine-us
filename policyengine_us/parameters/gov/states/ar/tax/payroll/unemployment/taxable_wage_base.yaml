@@ -1,15 +1,55 @@
-description: Employer-side unemployment insurance taxable wage base for Arkansas.
+description: Arkansas limits employer unemployment insurance taxes to this amount of each worker's annual wages.
 values:
-  0000-01-01: 7_000
+  # Act 734 of 2017 set the base at $10,000 from 2018. These are the bases
+  # that the Division of Workforce Services and, for 2026, the Division of
+  # Reemployment published.
+  2018-01-01: 10_000
+  # From 2020, Arkansas Code Section 11-10-215(a)(2)(A)(i)(d), which Act 512
+  # of 2019 added, sets the base by the average insured unemployment rate for
+  # the last state fiscal year: $7,000 at up to 1%, then $8,000, $9,000 and,
+  # at 2.2% or more, $10,000. The base rises to $11,000 when the year's
+  # disbursements from the trust fund exceed $200 million and the fund holds
+  # less than $600 million, and to $12,000 when they exceed $250 million and
+  # the fund holds less than $400 million.
+  2020-01-01: 7_000
+  # Act 368 of 2021 held the 2022 base to the lesser of the computed base and
+  # $10,000.
+  2021-01-01: 10_000
+  # From 2024, Act 196 of 2023 sets the base at $7,000 whenever the trust fund
+  # holds more than $600 million on June 30 of the last state fiscal year, and
+  # limits each year's increase to $2,000.
+  2023-01-01: 7_000
 
 metadata:
   period: year
   unit: currency-USD
   label: Arkansas unemployment taxable wage base
   reference:
-    - title: Arkansas Act 196 of 2023 amending Arkansas Code Section 11-10-215
-      href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2023R%2FPublic%2FACT196.pdf#page=1
-    - title: Arkansas employer unemployment insurance contributions
-      href: https://dws.arkansas.gov/workforce-services/employers/employer-ui-contributions/
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=13
+    - title: Act 734 of 2017 (House Bill 1405), section 2, amending Arkansas Code Section 11-10-215(a)
+      href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2017R%2FPublic%2FACT734.pdf#page=2
+    - title: Act 512 of 2019 (Senate Bill 298), taxable wage base from 2020
+      href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2019R%2FPublic%2FACT512.pdf#page=1
+    - title: Act 368 of 2021 (House Bill 1409), taxable wage base for 2022
+      href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2021R%2FPublic%2FACT368.pdf#page=1
+    - title: Act 196 of 2023 (House Bill 1430), section 1, taxable wage base from 2024
+      href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2023R%2FPublic%2FACT196.pdf#page=2
+    - title: Arkansas Department of Workforce Services, Unemployment Insurance Tax Information, 2018 State UI Tax Rates
+      href: https://web.archive.org/web/20180309180645/https://dws.arkansas.gov/wp-content/uploads/2018/02/2018-UI-Tax-Alert.pdf
+    - title: Arkansas Department of Workforce Services, Unemployment Insurance Tax Information, 2019 State UI Tax Rates
+      href: https://web.archive.org/web/20190305053141/https://dws.arkansas.gov/wp-content/uploads/2018/10/2019-UI-Tax-Alert.pdf
+    - title: Arkansas Division of Workforce Services, Unemployment Insurance Tax Information, 2020 State UI Tax Rates
+      href: https://web.archive.org/web/20200512215759/https://www.dws.arkansas.gov/src/files/2020_Unemployment_Insurance_Tax_Information_v11-01-2019.pdf
+    - title: Arkansas Division of Workforce Services, Unemployment Insurance Tax Information, 2021 State UI Tax Rates
+      href: https://web.archive.org/web/20210120125335/https://www.dws.arkansas.gov/src/files/2021_Tax_Alert.pdf
+    - title: Arkansas Division of Workforce Services, Unemployment Insurance Tax Information, 2022 State UI Tax Rates
+      href: https://dws.arkansas.gov/wp-content/uploads/2022_Tax_Alert.pdf
+    - title: Arkansas Division of Workforce Services, 2019 Annual Report
+      href: https://dws.arkansas.gov/wp-content/uploads/2019_DWS_Annual_Report.pdf#page=5
+    - title: Arkansas Division of Workforce Services, UI Employer Newsletter 2022, 2023 tax rates
+      href: https://dws.arkansas.gov/wp-content/uploads/UI-Employer-Newsletter-2022.pdf#page=3
+    - title: Arkansas Division of Workforce Services, Employer Newsletter (September 2023), Act 196 of 2023 and 2024 tax rates
+      href: https://dws.arkansas.gov/wp-content/uploads/Employer-Newsletter-2023-Final-Review-9.8.2023.pdf#page=4
+    - title: Arkansas Division of Workforce Services, Employer UI Contributions (February 2025), 2024 and 2025 rates and wage base
+      href: https://web.archive.org/web/20250202203714/https://dws.arkansas.gov/workforce-services/employers/employer-ui-contributions/
+    - title: Arkansas Division of Reemployment, Calculating Taxable Wages (October 6, 2026)
+      href: https://reemployment.arkansas.gov/calculating-taxable-wages/
