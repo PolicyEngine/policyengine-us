@@ -560,3 +560,52 @@
     # 39,962.14675 = 8,522.71195. Line 10: 39,962.14675 - 8,522.71195 =
     # 31,439.4348.
     self_employed_health_insurance_earned_income_limit: 31_439.4348
+
+- name: Case 36, a job's designated Roth 403(b) deferrals use part of the elective deferral room, so the partnership's plan can carry less.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    roth_403b_contributions: 20_000
+    self_employment_income: 50_000
+    partnership_self_employment_net_earnings: 10_000
+    self_employed_pension_contributions_desired: 60_000
+    self_employed_health_insurance_plan_business: SCHEDULE_C
+  output:
+    # Line 15: 60,000 x 0.9235 x 0.153 / 2 = 4,238.865, with the wages
+    # below the Social Security wage base. Line 8: Schedule C 46,467.6125;
+    # partnership 9,293.5225, as in Case 26.
+    self_employment_tax_ald_person: 4_238.865
+    # Designated Roth contributions are elective deferrals (section
+    # 402A(a)(1)), so 24,500 - 20,000 = 4,500 of deferral room is left. The
+    # 2026 limit: min(72,000, 0.2 x 55,761.135 + 4,500, (55,761.135 + 4,500)
+    # / 2) = 15,652.227.
+    self_employed_pension_contribution_ald_person: 15_652.227
+    # Line 9 for the Schedule C business. The partnership's plan can take its
+    # employer's limit, 1,858.7045, and the 4,500 of deferral room, 6,358.7045
+    # in all, within its earned income. So the Schedule C plan carries
+    # 15,652.227 - 6,358.7045 = 9,293.5225. Line 10: 46,467.6125 - 9,293.5225
+    # = 37,174.09.
+    self_employed_health_insurance_earned_income_limit: 37_174.09
+
+- name: Case 37, a partnership with a net loss has no plan, so the Schedule C plan carries the whole plan deduction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: 60_000
+    partnership_self_employment_net_earnings: -20_000
+    self_employed_pension_contributions_desired: 70_000
+    self_employed_health_insurance_plan_business: SCHEDULE_C
+  output:
+    # Line 15: 40,000 x 0.9235 x 0.153 / 2 = 2,825.91. Line 5 leaves out the
+    # partnership's loss, so line 8 for the Schedule C business is 60,000 -
+    # 2,825.91 = 57,174.09.
+    self_employment_tax_ald_person: 2_825.91
+    # The plans' earned income leaves out the loss too: 57,174.09. The 2025
+    # limit: min(70,000, 0.2 x 57,174.09 + 23,500, (57,174.09 + 23,500) / 2)
+    # = 34,934.818.
+    self_employed_pension_contribution_ald_person: 34_934.818
+    # Line 9 for the Schedule C business: no other plan can carry any of the
+    # plan deduction, so it is all 34,934.818. Line 10: 57,174.09 -
+    # 34,934.818 = 22,239.272.
+    self_employed_health_insurance_earned_income_limit: 22_239.272
