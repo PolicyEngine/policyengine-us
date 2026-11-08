@@ -10978,6 +10978,74 @@ candidates:
   note: Transmittal 71 (July 1, 2021) removed Appendix 3, so the agency schedule applied only in state fiscal year
     2021 (July 2020 to June 2021). The 7/20 Chapter 900, Appendix II, Example 6 (a TANF-UP household of four in Group II) uses the $499 TANF
     standard. Before July 2020 and from July 2021 the manual has one schedule for all units.
+- id: us-vi:ui-new-employer-rate-payroll-variation
+  program: unemployment-insurance
+  years:
+    from: 2024
+    to: 2026
+    type: calendar
+  question: From 2024, when the Virgin Islands Department of Labor (VIDOL) began assigning payroll variation rates to experience-rated
+    employers, does a new employer pay the 2% in 24 V.I.C. Section 308(b)(2), or a new-employer rate that the Commissioner
+    of Labor publishes each year under Act 8209?
+  sources:
+  - kind: statute
+    citation: Act No. 7410 (2012), section 1(2), amending 24 V.I.C. § 308(b)(2)
+    url: https://billtracking.legvi.org/view-pdf/?pdf_path=RTpcaW5ldHB1Ylx3d3dyb290XEJpbGxUcmFja2luZzIwMnhCYWNrZW5kXEJpbGxUcmFja2luZ1BERlxBY3RcNzQxMC5wZGY=#page=1
+  - kind: statute
+    citation: Act No. 8209 (2019), section 1(b), defining "new employer rate" in 24 V.I.C. § 302, and section 2, rewriting
+      § 308(b)(3) to (8)
+    url: https://billtracking.legvi.org/view-pdf/?pdf_path=RTpcaW5ldHB1Ylx3d3dyb290XEJpbGxUcmFja2luZzIwMnhCYWNrZW5kXEJpbGxUcmFja2luZ1BERlxBY3RcODIwOS5wZGY=#page=3
+  - kind: statute
+    citation: Act No. 8827 (2024), section 1(c), amending 24 V.I.C. § 308(b)(6) and (7)
+    url: https://billtracking.legvi.org/view-pdf/?pdf_path=RTpcaW5ldHB1Ylx3d3dyb290XEJpbGxUcmFja2luZzIwMnhCYWNrZW5kXEJpbGxUcmFja2luZ1BERlxBY3RcODgyNy5wZGY=#page=2
+  - kind: agency-practice
+    citation: Virgin Islands Department of Labor, Virgin Islands 2020 Unemployment Tax Rate (December 27, 2019)
+    url: https://www.vidol.gov/2019/12/27/virgin-islands-2020-unemployment-tax-rate/
+  - kind: agency-practice
+    citation: Virgin Islands Department of Labor, VIDOL Reminds Employers of New Payroll Tax Rate in Effect for Quarterly
+      Reports (May 15, 2024)
+    url: https://www.vidol.gov/2024/05/16/new-payroll-tax-rate-2024/
+  - kind: agency-practice
+    citation: Virgin Islands Department of Labor, VIDOL Announces 2025 Unemployment Insurance (UI) Tax Rates, update (January
+      22, 2025)
+    url: https://www.vidol.gov/2025/02/05/virgin-islands-department-of-labor-vidol-announces-2025-unemployment-insurance-ui-tax-rates-2/
+  - kind: guidance
+    citation: Virgin Islands Department of Labor, 2025 Unemployment Insurance Tax Rates flyer (February 2025)
+    url: https://www.vidol.gov/wp-content/uploads/2025/02/UI-Tax-Rate-Flyer.pdf
+  - kind: agency-practice
+    citation: Virgin Islands Department of Labor, VIDOL Announces 2026 Unemployment Insurance Tax Rates (December 29, 2025)
+    url: https://www.vidol.gov/2025/12/30/vidol-announces-2026-unemployment-insurance-tax-rates/
+  - kind: guidance
+    citation: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2024, p. 5
+    url: https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/July2024.pdf#page=5
+  - kind: guidance
+    citation: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2025, p. 5
+    url: https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/July2025.pdf#page=5
+  - kind: guidance
+    citation: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2026, p. 6
+    url: https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/July2026.pdf#page=6
+  readings:
+    statute: In Act 7410 the Legislature raised the rate in Section 308(b)(2) from "one percent (1%)" to "two percent (2%)".
+      In Act 8209 it rewrote paragraphs (3) to (8) for a payroll variation system, and in Act 8827 it moved the system's start
+      to 2024. It left paragraph (2) as Act 7410 set it. In its December 2019 notice for 2020, VIDOL kept new employers at
+      2.0% "under Act 8209 (24 V.I.C. §308(b)(2))."
+    other: In Act 8209 the Legislature defined the "new employer rate" as "the initial contribution rate for new employers
+      without an unemployment insurance history" and directed the Commissioner of Labor to publish it yearly. In a February
+      2025 flyer, VIDOL introduced "the new employer tax rates" for 2025 as an average contribution rate of 4.06% and a range
+      of 2.46% to 5.4%. For 2026 it gave an average of 4.04% and a range of 2.43% to 5.4%. The U.S. Department of Labor lists
+      4.04% as the Virgin Islands new-employer rate in its July 2026 Significant Provisions report, after listing 2.00% in
+      July 2024 and July 2025.
+  example: At the $32,100 base in 2026, a new employer pays $642 at 2% or $1,297 at 4.04%.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/territories/vi/tax/payroll/unemployment/default_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10700
+  state: open
+  note: PE-US applies Section 308(b)(2)'s 2% from 2024 to 2026. PolicyEngine can rule once VIDOL states a new-employer rate
+    for those years in a notice, handbook or regulation. The Department of Labor's 4.04% for 2026 equals VIDOL's 2026 average
+    contribution rate.
 - id: us-vt:liheap-income-maximum-large-households
   program: liheap
   years:
