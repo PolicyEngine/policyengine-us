@@ -1,4 +1,4 @@
-description: Minnesota assigns each new employer a rate based on its industry, so this parameter uses the average employer contribution rate on taxable wages.
+description: Minnesota assigns each new employer the average rate of its industry, at least 1%, so this parameter uses the greater of 1% and the statewide average employer contribution rate on taxable wages.
 values:
   # The Department of Labor's average employer contribution rates on taxable
   # wages; the Department of Employment and Economic Development publishes no
@@ -7,10 +7,8 @@ values:
   2019-01-01: 0.0111
   2020-01-01: 0.0107
   2021-01-01: 0.0109
-  2022-01-01: 0.0097
-  2023-01-01: 0.0091
-  2024-01-01: 0.009
-  2025-01-01: 0.0092
+  # The averages for 2022 to 2025, 0.90% to 0.97%, fall below the 1% minimum.
+  2022-01-01: 0.01
   # Department of Labor estimate.
   2026-01-01: 0.0153
 

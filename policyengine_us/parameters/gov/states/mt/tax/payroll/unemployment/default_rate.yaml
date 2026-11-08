@@ -1,10 +1,12 @@
-description: Montana assigns each new employer the average rate of its industry, so this parameter uses the Department of Labor and Industry's average contribution rate for the rate schedule in effect.
+description: Montana assigns each new employer the average rate of its industry, at least 1%, so this parameter uses the greater of 1% and the Department of Labor and Industry's average contribution rate for the rate schedule in effect.
 values:
   # Leaves out the 0.18% administrative fund tax, which the Department of
   # Labor and Industry states apart from the contribution rate.
   2018-01-01: 0.0132
   2019-01-01: 0.0112
-  2026-01-01: 0.0095
+  # The Department of Labor and Industry's 0.95% average for 2026 falls below
+  # the 1% minimum.
+  2026-01-01: 0.01
 
 metadata:
   period: year

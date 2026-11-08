@@ -2837,6 +2837,48 @@ candidates:
     rent shows through a heating bill or a direct electric bill, and the comment records that FY2026 plan item 2.3
     answers No to differing policies for subsidized renters (ga_liheap_eligible.py, eligibility/_ga_liheap_housing.py).
     Verify that the plan addresses the same circumstances.'
+- id: us-ga:ui-new-employer-rate-2023
+  program: unemployment-insurance
+  years:
+    from: 2023
+    to: 2023
+    type: calendar
+  question: Does Senate Bill 160 (2023), which extended the 2.64% new-employer rate through 2026 and took effect on May
+    1, 2023, lower the 2023 rate from the 2.7% that the Department of Labor assigned in January 2023?
+  sources:
+  - kind: statute
+    citation: O.C.G.A. 34-8-151(a), (d), as amended by Ga. L. 2023, p. 288, § 1/SB 160, effective May 1, 2023
+    url: https://www.legis.ga.gov/api/document/docs/default-source/joint-features-document-library/t34-(v26)-pdf.pdf#page=53
+  - kind: statute
+    citation: Senate Bill 160 (2023), as passed, sections 1 and 4
+    url: https://www.legis.ga.gov/api/legislation/document/20232024/219961#page=2
+  - kind: agency-practice
+    citation: Georgia Department of Labor, Employer Tax Rates Released (January 3, 2023)
+    url: https://web.archive.org/web/20230126225531/https://dol.georgia.gov/blog-post/2023-01-03/employer-tax-rates-released
+  - kind: agency-practice
+    citation: U.S. Department of Labor, State UI Tax Measures Report, 2023, new employer tax rates
+    url: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys23.pdf#page=66
+  readings:
+    statute: Senate Bill 160 moves the end of subsection (d)'s 2.64% rate, which covers "periods on or after January 1,
+      2017," from December 31, 2022 to December 31, 2026, and takes effect on the Governor's approval (May 1, 2023, by
+      the Code's history note). On its face it sets 2.64% for all of 2023; from its effective date, for wages paid from
+      May 1. It has no transition rule for the 2023 rates already assigned.
+    other: The Department of Labor released its 2023 rate notices on January 3, 2023, under the tables the Code then set
+      for periods after 2022, and the U.S. Department of Labor's 2023 tax measures report lists Georgia's
+      new-employer rate as 2.70%.
+  example: At $100,000 paid evenly through 2023, the employer pays the whole $9,500 base by February, so it owes
+    $256.50 at 2.7% or $250.80 if 2.64% applies from January 1. A worker hired in May with $9,500 of 2023 wages costs
+    $256.50 at 2.7% or $250.80 if the extension applies from May 1.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/ga/tax/payroll/unemployment/default_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10700
+  state: ruled
+  note: Senate Bill 160 leaves the timing open, so PE-US follows the Department's assigned rate, 2.7% for all of 2023.
+    PE-US applies one rate to each year's taxable wages, averaged over the four quarter starts, so a change dated May
+    1 has no exact place in it. The readings differ by at most 0.06% of the $9,500 base, $5.70 a worker.
 - id: us-hi:claim-of-right-credit-agi-addback
   program: income-tax
   years:
@@ -4601,6 +4643,72 @@ candidates:
   state: unreviewed
   note: PE-US follows the regulation; the October 2016-September 2024 span is approximate and needs contemporaneous-source
     verification.
+- id: us-ma:ui-new-employer-schedule-in-force
+  program: unemployment-insurance
+  years:
+    from: 2018
+    to: 2022
+    type: calendar
+  question: In 2018, 2019, 2021 and 2022, when session laws set the experience-rate column, do newly subject employers
+    pay on that column, as the Department of Unemployment Assistance applies, or on the column that the fund reserve
+    percentage heads under Section 14(i)(2)?
+  sources:
+  - kind: statute
+    citation: M.G.L. c. 151A, § 14(i)(1) and (2)
+    url: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXXI/Chapter151A/Section14
+  - kind: statute
+    citation: Acts of 2017, c. 63, § 11 (column D for 2018 and column E for 2019)
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2017/Chapter63
+  - kind: statute
+    citation: Acts of 2021, c. 9, § 10 (column E for 2021 and 2022)
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2021/Chapter9
+  - kind: guidance
+    citation: Department of Unemployment Assistance, Employer Handbook (January 2018), p. 30
+    url: https://web.archive.org/web/20180315155606/https://www.mass.gov/files/documents/2018/01/17/Employer%20Handbook_01-11-18.pdf#page=30
+  - kind: guidance
+    citation: Department of Unemployment Assistance, The Employer's Guide to Unemployment Insurance, p. 30 (archived June
+      3, 2021)
+    url: https://web.archive.org/web/20210603052604/https://www.mass.gov/doc/the-employers-guide-to-unemployment-insurance-2/download#page=30
+  - kind: agency-practice
+    citation: Department of Unemployment Assistance, Learn about unemployment insurance (UI) contributions (archived
+      February 4, 2020)
+    url: https://web.archive.org/web/20200204012720/https://www.mass.gov/service-details/learn-about-unemployment-insurance-ui-contributions
+  - kind: agency-practice
+    citation: Department of Unemployment Assistance, Learn about unemployment insurance (UI) contributions (archived
+      January 7, 2022)
+    url: https://web.archive.org/web/20220107130439/https://www.mass.gov/service-details/learn-about-unemployment-insurance-ui-contributions
+  - kind: agency-practice
+    citation: Department of Unemployment Assistance, Unemployment Insurance Trust Fund Outlook Report, October 2016, p. 5
+    url: https://s3lmipub-prod.s3.amazonaws.com/prod/trustfund/Trust_Fund_Report_1017.pdf#page=5
+  - kind: agency-practice
+    citation: Department of Unemployment Assistance, Unemployment Insurance Trust Fund Outlook Report, February 2021, p. 1
+    url: https://s3lmipub-prod.s3.amazonaws.com/prod/trustfund/Trust_Fund_Report_0221.pdf#page=1
+  readings:
+    statute: Section 14(i)(2) puts a newly subject employer in "the column headed by the unemployment compensation fund
+      reserve percentage as of the applicable computation date," on the 10.5 to 11.0 line. The session laws set columns
+      D and E only for "the experience rate of an employer qualifying under subsection (b)," so the fund reserve
+      percentage still picks the new-employer column. On the Department's estimates, which put 2021 and 2022
+      contributions on schedule G before Chapter 9 set column E, new employers would pay column G's 3.12% in those
+      years. For 2018 and 2019, the Department's October 2016 outlook projected schedule F (2.75%), and none of the
+      cited reports gives a computed column.
+    other: The Department's employer guide puts a new employer at the 10.5 to 11.0 line "on the rate schedule currently
+      in effect," so "this rate changes any time the rate schedule changes." Its February 2020 page gives 2.42%
+      "according to UI Tax Rate Schedule E in effect for 2019 and 2020," and its January 2022 page still gives 2.42% as
+      the current rate for new employers.
+  example: At the $15,000 base in 2021, a new employer outside construction pays $363 at column E's 2.42% or $468 at
+    column G's 3.12%.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/ma/tax/payroll/unemployment/default_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10700
+  state: open
+  note: PE-US follows the Department, which puts new employers on the schedule in force, D in 2018 and E from 2019 to
+    2022. The literal reading needs the fund reserve percentage at each computation date, and the Department's reports
+    give it for these years only as estimates and projections. A ruling for the statute would set 3.12% for 2021 and
+    2022 and needs the computed columns for 2018 and 2019. The readings agree in 2020, when the fund reserve percentage
+    itself triggered schedule E (the Department's February 2020 trust fund report).
 - id: us-md:capital-gains-surtax-short-term-gains
   program: income-tax
   years:
@@ -6832,6 +6940,41 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify whether the still-listed ruling applies during these years despite its obsolete tax base.
+- id: us-ne:ui-new-employer-rate-2022
+  program: unemployment-insurance
+  years:
+    from: 2022
+    to: 2022
+    type: calendar
+  question: Is Nebraska's 2022 combined tax rate for new employers outside construction 1.25%, the statutory minimum,
+    or the 1.39% that the Department of Labor's combined tax rate table lists?
+  sources:
+  - kind: statute
+    citation: Neb. Rev. Stat. 48-649.02(1)(a) and (2)
+    url: https://nebraskalegislature.gov/laws/statutes.php?statute=48-649.02
+  - kind: agency-practice
+    citation: Nebraska Department of Labor, Combined Tax Rates (new employer rates, CY 2022 to CY 2026)
+    url: https://dol.nebraska.gov/UITax/UnemploymentInsuranceTax/CombinedTaxRates
+  - kind: agency-practice
+    citation: Nebraska Department of Labor, Unemployment Insurance Annual Report, fiscal year 2021-2022, page 5
+    url: https://govdocs.nebraska.gov/epubs/L1100/A001-202122.pdf#page=5
+  readings:
+    statute: Section 48-649.02(1)(a) sets a new non-construction employer's combined tax rate at the lesser of the
+      state's average combined tax rate and 2.5%, and (2) adds that "In no event shall the combined tax rate under
+      subsection (1) of this section be less than one and twenty-five hundredths percent." The 2022 average combined
+      tax rate was 0.49%, so the rate is 1.25%.
+    other: The Department's combined tax rate table lists 1.39% for new non-construction employers in CY 2022; its
+      fiscal year 2021-2022 annual report lists 1.25% for every year from 2018 to 2022.
+  example: At $100,000 of 2022 wages, the $9,000 taxable wage base gives $112.50 at 1.25% and $125.10 at 1.39%.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ne/tax/payroll/unemployment/default_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10700
+  state: ruled
+  note: The annual report gives the 2022 average combined tax rate as 0.49% ("a reduction from the 2022 rate of
+    0.49%").
 - id: us-nh:fanf-resource-limit-equality
   program: tanf
   years:
@@ -11268,6 +11411,49 @@ candidates:
   state: unreviewed
   note: 'PE-US follows the rounded standards as a disputable gap-fill; verify statutory rounding requirements and
     applicability of the undated precedent. Code not yet on main: medicaid_ltss_mmmna.'
+- id: us-wa:ui-new-employer-minimum-rate
+  program: unemployment-insurance
+  years:
+    from: 2018
+    to: 2026
+    type: calendar
+  question: Does Washington's 1% minimum for new employers apply to the experience part of the rate alone, as RCW
+    50.29.025(1)(d) and WAC 192-320-025 provide, or to the whole rate, as the Employment Security Department's rate
+    pages describe it?
+  sources:
+  - kind: statute
+    citation: RCW 50.29.025(1)(d)
+    url: https://app.leg.wa.gov/rcw/default.aspx?cite=50.29.025
+  - kind: regulation
+    citation: WAC 192-320-025(4)
+    url: https://app.leg.wa.gov/wac/default.aspx?cite=192-320-025
+  - kind: guidance
+    citation: Employment Security Department, Determining your tax rates (new employer share for 2021)
+    url: https://web.archive.org/web/20210420235439/https://esd.wa.gov/employer-taxes/determining-rates
+  - kind: guidance
+    citation: Employment Security Department, How we determine tax rates (new employer share for 2026)
+    url: https://web.archive.org/web/20260205010135/https://esd.wa.gov/employer-requirements/unemployment-taxes/how-we-determine-tax-rates
+  readings:
+    statute: RCW 50.29.025(1)(d)(i) sets a new employer's array calculation factor rate at the industry average times
+      the history factor, "but not less than one percent," and (1)(d)(ii) sets its social cost factor rate at the
+      industry average times the history factor, with a cap but no minimum. WAC 192-320-025(4) rounds each to two
+      decimal places and requires an experience tax of at least 1.00 percent.
+    other: The Department's pages say new employers pay the history factor times "the average rate for all businesses
+      in their respective industries, with the minimum rate being 1.00%" (2021 to 2024), or that federal law sets the
+      minimum rate at 1% (2025 and 2026), a minimum on the whole rate.
+  example: For 2025, statewide averages of 0.76% (experience) and 1.17% (total) with a 90% history factor give 1.00% +
+    0.37% = 1.37% under the statute and 1.05% under the Department's description; at the $72,800 base that is $997.36
+    against $764.40.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/wa/tax/payroll/unemployment/default_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10700
+  state: ruled
+  note: PE-US applies the rule to the statewide averages in the Department's first trust fund forecast of each year.
+    The readings agree in 2022, when the experience part exceeds 1%, and differ by 0.07 to 0.32 point in the other
+    years. The 2018 and 2019 pages state no minimum.
 - id: us-wi:claim-of-right-itemized-deduction-credit
   program: income-tax
   years:

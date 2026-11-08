@@ -3,38 +3,45 @@
 The tables below copy the new-employer rates and taxable wage bases that state
 agencies published, from the sources cited in each parameter file, so these
 tests compare the model with those publications and not with its own
-parameters. Industry-average states (where new employers take the rate of their
-industry) list the state's published average employer rate on taxable wages.
+parameters. Where new employers take their industry's rate, the tables hold the
+state's new-employer rule applied to the statewide averages that its agencies
+or the U.S. Department of Labor published.
 
-Two tests read the stored parameters without a simulation:
+Three tests run without a simulation:
 
 1. Schedule: in every month from 2015 through 2026, every jurisdiction's
    default rate and taxable wage base equal the published value for that
    month, and so do New Jersey's employer TDI and workforce fund rates, Rhode
    Island's Job Development Fund rate and 2019 adjustment, and Alaska's
-   employee contribution rate. The model does not encode years before 2018, so
-   2015-2017 read the 2018 value, an intended approximation that this test
-   pins.
+   employee contribution rate. Apart from Minnesota's wage base, which keeps
+   DEED's 2014-2017 values, the parameters start in 2018, so 2015-2017 read
+   the value in force on January 1, 2018, an intended approximation that this
+   test pins.
 2. Dates: every stored value of a parameter that an annual rate averages
    begins a calendar quarter. The annual rates read only the four quarter
    starts, so this keeps them equal to the average of all twelve months.
+3. New-employer rules: where new employers take their industry's rate, the
+   published default equals the state's rule rebuilt from its published
+   inputs, and no published default falls below the statutory minimum.
 
 Hypothesis draws batches of workers, each with wages, a raise and a state; a
 seeded population puts two workers in every jurisdiction. Each batch runs as
 one vectorized simulation covering SIMULATED_YEARS, which include the July-June
 rate changes. For every worker and year:
 
-3. Differential: each employer unemployment tax equals the published rate,
+4. Differential: each employer unemployment tax equals the published rate,
    averaged over the four quarter starts, times wages up to the published wage
    base; so do New Jersey's employer TDI and workforce fund contributions,
    Rhode Island's Job Development Fund tax and Alaska's employee contribution.
-4. Bounds: each tax lies between zero and its highest quarterly rate times
+5. Bounds: each tax lies between zero and its highest quarterly rate times
    positive wages, and wages at or below zero owe nothing.
-5. Monotonicity: no tax falls when wages rise.
-6. Agreement: the employer-total paths equal the worker paths when the
+6. Monotonicity: no tax falls when wages rise.
+7. Agreement: the employer-total paths equal the worker paths when the
    employer-total taxable wages equal the worker's.
-7. Geography: outside its jurisdiction, each jurisdiction's tax is zero.
+8. Geography: outside its jurisdiction, each jurisdiction's tax is zero.
 """
+
+from decimal import ROUND_FLOOR, ROUND_HALF_UP, Decimal
 
 import numpy as np
 from hypothesis import HealthCheck, given, settings
@@ -272,10 +279,10 @@ PUBLISHED_SUTA = {
         2019: (0.0111, 34_000),
         2020: (0.0107, 35_000),
         2021: (0.0109, 35_000),
-        2022: (0.0097, 38_000),
-        2023: (0.0091, 40_000),
-        2024: (0.009, 42_000),
-        2025: (0.0092, 43_000),
+        2022: (0.01, 38_000),
+        2023: (0.01, 40_000),
+        2024: (0.01, 42_000),
+        2025: (0.01, 43_000),
         2026: (0.0153, 44_000),
     },
     "MS": {
@@ -298,7 +305,7 @@ PUBLISHED_SUTA = {
         2023: (0.0112, 40_500),
         2024: (0.0112, 43_000),
         2025: (0.0112, 45_100),
-        2026: (0.0095, 47_300),
+        2026: (0.01, 47_300),
     },
     "NC": {
         2018: (0.01, 23_500),
@@ -345,15 +352,15 @@ PUBLISHED_SUTA = {
         2026: (0.026825, 44_800),
     },
     "NM": {
-        2018: (0.009, 24_200),
-        2019: (0.0081, 24_800),
-        2020: (0.0073, 25_800),
-        2021: (0.0076, 27_000),
-        2022: (0.0073, 28_700),
-        2023: (0.0085, 30_100),
-        2024: (0.0087, 31_700),
-        2025: (0.0093, 33_200),
-        2026: (0.0099, 34_800),
+        2018: (0.01, 24_200),
+        2019: (0.01, 24_800),
+        2020: (0.01, 25_800),
+        2021: (0.01, 27_000),
+        2022: (0.01, 28_700),
+        2023: (0.01, 30_100),
+        2024: (0.01, 31_700),
+        2025: (0.01, 33_200),
+        2026: (0.01, 34_800),
     },
     "NV": {
         2018: (0.0295, 30_500),
@@ -466,15 +473,15 @@ PUBLISHED_SUTA = {
         2026: (0.027, 9_000),
     },
     "UT": {
-        2018: (0.0049, 34_300),
-        2019: (0.0043, 35_300),
-        2020: (0.0041, 36_600),
-        2021: (0.005, 38_900),
-        2022: (0.0068, 41_600),
-        2023: (0.0062, 44_800),
-        2024: (0.0061, 47_000),
-        2025: (0.0054, 48_900),
-        2026: (0.0042, 50_700),
+        2018: (0.011, 34_300),
+        2019: (0.011, 35_300),
+        2020: (0.011, 36_600),
+        2021: (0.012, 38_900),
+        2022: (0.014, 41_600),
+        2023: (0.014, 44_800),
+        2024: (0.014, 47_000),
+        2025: (0.013, 48_900),
+        2026: (0.012, 50_700),
     },
     "VT": {
         2018: (0.01, 17_600),
@@ -488,15 +495,15 @@ PUBLISHED_SUTA = {
         2026: (0.01, 15_400),
     },
     "WA": {
-        2018: (0.011, 47_300),
-        2019: (0.0103, 49_800),
-        2020: (0.0099, 52_700),
-        2021: (0.0106, 56_500),
-        2022: (0.013, 62_500),
-        2023: (0.0143, 67_600),
-        2024: (0.0135, 68_500),
-        2025: (0.0121, 72_800),
-        2026: (0.0108, 78_200),
+        2018: (0.0115, 47_300),
+        2019: (0.0115, 49_800),
+        2020: (0.0114, 52_700),
+        2021: (0.0135, 56_500),
+        2022: (0.0154, 62_500),
+        2023: (0.0136, 67_600),
+        2024: (0.0141, 68_500),
+        2025: (0.0137, 72_800),
+        2026: (0.0149, 78_200),
     },
     "WI": {
         2018: (0.0305, 14_000),
@@ -533,6 +540,10 @@ PUBLISHED_SUTA = {
     },
 }
 # END PUBLISHED_SUTA
+
+# Minnesota's wage base keeps its 2015-2017 values (DEED, history of tax rate
+# factors); every other parameter reads its 2018 value in those years.
+PRE_2018_WAGE_BASE = {"MN": {2015: 30_000, 2016: 31_000, 2017: 32_000}}
 
 # New Jersey Department of Labor and Workforce Development, rate information:
 # new-employer TDI rate and workforce development and supplemental workforce
@@ -577,11 +588,14 @@ def _annual_rate(code, year):
 
 
 def _rate_in_month(code, year, month):
+    if year < FIRST_PUBLISHED_YEAR:
+        # Backdating copies the first stored value to earlier years.
+        return _quarterly_rates(code, FIRST_PUBLISHED_YEAR)[0]
     return _quarterly_rates(code, year)[(month - 1) // 3]
 
 
 def _wage_base(code, year):
-    return _published(code, year)[1]
+    return PRE_2018_WAGE_BASE.get(code, {}).get(year, _published(code, year)[1])
 
 
 def _instants():
@@ -639,6 +653,121 @@ def test_quarter_averaged_parameters_change_only_at_quarter_starts():
                 parameter.name,
                 entry.instant_str,
             )
+
+
+# Minimum new-employer rates, in percent: AS 23.20.290(c); R.S. 23:1535(B);
+# Minn. Stat. 268.051, subd. 5(a); MCA 39-51-1217(4); NMSA 51-1-11(G), which
+# also caps the rate at 5.4%; Utah Code 35A-4-303(4)(b)(iii); and, for the
+# experience part of Washington's rate, RCW 50.29.025(1)(d)(i) and WAC
+# 192-320-025(4)(b).
+MINIMUM_NEW_EMPLOYER_RATE = {
+    "AK": Decimal("1"),
+    "LA": Decimal("1"),
+    "MN": Decimal("1"),
+    "MT": Decimal("1"),
+    "NM": Decimal("1"),
+    "UT": Decimal("1.1"),
+    "WA": Decimal("1"),
+}
+NM_MAXIMUM_NEW_EMPLOYER_RATE = Decimal("5.4")
+# Statewide averages in percent, 2018 to 2026, as each parameter file cites
+# them: the U.S. Department of Labor's average employer contribution rates on
+# taxable wages for Louisiana, Minnesota and New Mexico (its estimates for
+# 2026), and the Montana Department of Labor and Industry's average for the
+# rate schedule in effect.
+STATEWIDE_AVERAGE_RATE = {
+    "LA": ("1.54", "1.44", "1.31", "1.28", "1.33", "1.29", "1.30", "1.23", "1.25"),
+    "MN": ("1.16", "1.11", "1.07", "1.09", "0.97", "0.91", "0.90", "0.92", "1.53"),
+    "MT": ("1.32", "1.12", "1.12", "1.12", "1.12", "1.12", "1.12", "1.12", "0.95"),
+    "NM": ("0.90", "0.81", "0.73", "0.76", "0.73", "0.85", "0.87", "0.93", "0.99"),
+}
+# Utah's reserve factor and social contribution rate (percent), from the
+# Department of Workforce Services. A new employer's basic rate is the greater
+# of its industry's benefit cost rate and 1% (Utah Code 35A-4-303(5)(b)), and
+# the Department of Labor's average employer rates of 0.41% to 0.68% leave the
+# statewide average benefit cost rate below 1%.
+UT_RESERVE_FACTOR_AND_SOCIAL_RATE = (
+    ("1.00", "0.1"),
+    ("1.00", "0.1"),
+    ("1.00", "0.1"),
+    ("1.05", "0.2"),
+    ("1.15", "0.3"),
+    ("1.10", "0.3"),
+    ("1.10", "0.3"),
+    ("1.10", "0.2"),
+    ("1.10", "0.1"),
+)
+# Washington's history factor, from the Employment Security Department's
+# new-employer pages, and the average experience and total tax rates (percent)
+# from its first trust fund forecast of each year. No surviving ESD page
+# states the 2020 factor; the parameter takes 90%, the factor for 2018 and 2019.
+WA_HISTORY_FACTOR = (
+    "0.90",
+    "0.90",
+    "0.90",
+    "1.15",
+    "1.15",
+    "0.90",
+    "0.90",
+    "0.90",
+    "1.15",
+)
+WA_EXPERIENCE_AND_TOTAL_RATE = (
+    ("0.90", "1.07"),
+    ("0.80", "0.97"),
+    ("0.78", "0.94"),
+    ("0.80", "1.10"),
+    ("1.00", "1.34"),
+    ("1.03", "1.43"),
+    ("0.88", "1.33"),
+    ("0.76", "1.17"),
+    ("0.65", "1.08"),
+)
+INDUSTRY_RATE_CODES = ("LA", "MN", "MT", "NM", "UT", "WA")
+
+
+def _new_employer_rate(code, year):
+    # The state's new-employer rule applied to the statewide average, in
+    # percent.
+    i = year - FIRST_PUBLISHED_YEAR
+    minimum = MINIMUM_NEW_EMPLOYER_RATE[code]
+    if code == "UT":
+        # The 1% basic rate times the reserve factor, to 0.01 point, plus the
+        # social rate, to 0.1 point, disregarding any remaining fraction (Utah
+        # Code 35A-4-303(4)(b)(i)).
+        reserve_factor, social_rate = map(Decimal, UT_RESERVE_FACTOR_AND_SOCIAL_RATE[i])
+        basic = (Decimal("1") * reserve_factor).quantize(Decimal("0.01"), ROUND_FLOOR)
+        overall = (basic + social_rate).quantize(Decimal("0.1"), ROUND_FLOOR)
+        return max(minimum, overall)
+    if code == "WA":
+        # The history factor times the experience rate, at least 1%, plus the
+        # history factor times the social rate, each to 0.01 point (WAC
+        # 192-320-025(4) and (5)).
+        factor = Decimal(WA_HISTORY_FACTOR[i])
+        experience, total = map(Decimal, WA_EXPERIENCE_AND_TOTAL_RATE[i])
+        point = Decimal("0.01")
+        experience_tax = (factor * experience).quantize(point, ROUND_HALF_UP)
+        social_tax = (factor * (total - experience)).quantize(point, ROUND_HALF_UP)
+        return max(minimum, experience_tax) + social_tax
+    rate = max(minimum, Decimal(STATEWIDE_AVERAGE_RATE[code][i]))
+    return min(rate, NM_MAXIMUM_NEW_EMPLOYER_RATE) if code == "NM" else rate
+
+
+def _percent(rate):
+    return Decimal(str(rate)) * 100
+
+
+def test_industry_rate_defaults_follow_the_new_employer_rules():
+    for year in range(FIRST_PUBLISHED_YEAR, LAST_YEAR + 1):
+        for code, minimum in MINIMUM_NEW_EMPLOYER_RATE.items():
+            for rate in _quarterly_rates(code, year):
+                assert _percent(rate) >= minimum, (code, year)
+        for code in INDUSTRY_RATE_CODES:
+            for rate in _quarterly_rates(code, year):
+                assert _percent(rate) == _new_employer_rate(code, year), (
+                    code,
+                    year,
+                )
 
 
 wages = st.one_of(
@@ -740,22 +869,22 @@ def _check(batch):
                 if variable == "employer_state_unemployment_tax"
                 else (_calculate(sim, variable, year))
             )
-            # 3. Differential against the published tables; 7. geography for
+            # 4. Differential against the published tables; 8. geography for
             # the state-specific contributions, which are zero elsewhere.
             np.testing.assert_allclose(
                 computed, amount, atol=TOLERANCE, rtol=0, err_msg=f"{variable} {year}"
             )
-            # 4. Bounds.
+            # 5. Bounds.
             assert (computed >= 0).all(), (variable, year)
             np.testing.assert_array_equal(computed[wages <= 0], 0)
-            # 5. Monotonicity.
+            # 6. Monotonicity.
             assert (computed[raised] >= computed[base] - TOLERANCE).all(), (
                 variable,
                 year,
             )
         assert (total <= top_rate * positive + TOLERANCE).all(), year
 
-        # 7. Geography: each jurisdiction's tax is zero outside it, and the
+        # 8. Geography: each jurisdiction's tax is zero outside it, and the
         # jurisdiction taxes add up to the total.
         by_jurisdiction = 0
         for code in CODES:
@@ -766,7 +895,7 @@ def _check(batch):
             by_jurisdiction = by_jurisdiction + amount
         np.testing.assert_allclose(by_jurisdiction, total, atol=TOLERANCE, rtol=0)
 
-        # 6. Agreement of the employer-total and worker paths.
+        # 7. Agreement of the employer-total and worker paths.
         np.testing.assert_allclose(
             _calculate(sim, "employer_total_state_unemployment_tax", year),
             total,

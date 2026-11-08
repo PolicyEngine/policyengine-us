@@ -1,17 +1,10 @@
-description: New Mexico assigns each new employer a rate based on its industry, so this parameter uses the average employer contribution rate on taxable wages.
+description: New Mexico assigns each new employer the average rate of its industry, from 1% to 5.4%, so this parameter holds the statewide average employer contribution rate on taxable wages within those limits.
 values:
   # The Department of Labor's average employer contribution rates on taxable
-  # wages; the Department of Workforce Solutions publishes no annual series.
-  2018-01-01: 0.009
-  2019-01-01: 0.0081
-  2020-01-01: 0.0073
-  2021-01-01: 0.0076
-  2022-01-01: 0.0073
-  2023-01-01: 0.0085
-  2024-01-01: 0.0087
-  2025-01-01: 0.0093
-  # Department of Labor estimate.
-  2026-01-01: 0.0099
+  # wages, 0.73% to 0.99% from 2018 to 2026 (its estimate for 2026), all fall
+  # below the 1% minimum; the Department of Workforce Solutions publishes no
+  # annual series.
+  2018-01-01: 0.01
 
 metadata:
   period: year
