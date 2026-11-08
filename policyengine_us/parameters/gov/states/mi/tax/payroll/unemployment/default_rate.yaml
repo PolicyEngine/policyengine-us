@@ -1,13 +1,52 @@
-description: Default employer-side unemployment insurance tax rate for Michigan.
+description: Michigan assigns this unemployment insurance tax rate, including the obligation assessment through 2019, to each new employer outside construction.
 values:
-  0000-01-01: 0.027
+  # Michigan Compiled Laws Section 421.19(a)(1), Table A-2, sets a new
+  # employer's rate at 2.7% plus part of its own chargeable benefits
+  # component, and the Unemployment Insurance Agency gives 2.7% as the rate
+  # for a business's first two years outside construction; the solvency tax
+  # under Section 421.19a skips an employer's first four years. Section
+  # 421.26a added an obligation assessment to repay the bonds that refinanced
+  # the fund's federal advances, and the Agency counted it in each employer's
+  # total tax rate as (rate x OA ratio) + ($63 / $9,000), rounded up to the
+  # next 0.01%. The 2018 ratio of 0.171757 gives 1.17% for a 2.7% employer.
+  2018-01-01: 0.0387
+  # The 2019 ratio of 0.166825 gives 1.16%, the figure in the Agency's table
+  # of 2019 rates.
+  2019-01-01: 0.0386
+  # The Agency paid off the bonds in 2019, and the fourth quarter of 2019 was
+  # the last to carry the assessment.
+  2020-01-01: 0.027
 
 metadata:
   period: year
   unit: /1
   label: Michigan default unemployment tax rate
   reference:
-    - title: Michigan Compiled Laws Section 421.19
+    - title: Michigan Compiled Laws Section 421.19(a)(1), Table A-2, contribution rates
       href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-421-19
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=32
+    - title: Michigan Compiled Laws Section 421.19a, solvency tax
+      href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-421-19a
+    - title: Michigan Compiled Laws Section 421.26a(2), unemployment obligation assessment
+      href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-421-26a
+    - title: 2011 Public Act 268 (Senate Bill 484), adding Section 421.26a
+      href: https://www.legislature.mi.gov/documents/2011-2012/publicact/pdf/2011-PA-0268.pdf
+    - title: 2011 Public Act 269 (Senate Bill 806), amending Sections 421.19 and 421.19a
+      href: https://www.legislature.mi.gov/documents/2011-2012/publicact/pdf/2011-PA-0269.pdf
+    - title: Michigan Unemployment Insurance Agency, How is the unemployment tax rate computed? (April 2018)
+      href: https://web.archive.org/web/20180416035610/http://www.michigan.gov/uia/0,4680,7-118-26898_27193-78833--,00.html
+    - title: Michigan Unemployment Insurance Agency, Determine Your Obligation Assessment, 2018 rates
+      href: https://web.archive.org/web/20180220050932/http://www.michigan.gov/uia/0,4680,7-118-26898_27193-270759--,00.html
+    - title: Michigan Unemployment Insurance Agency, Determine Your Obligation Assessment, 2019 rates
+      href: https://web.archive.org/web/20190418021931/https://www.michigan.gov/uia/0,4680,7-118-26898_27193-270759--,00.html
+    - title: Michigan Unemployment Insurance Agency, Fact Sheet 146, Obligation Assessment (January 2019)
+      href: https://web.archive.org/web/20190418022230/https://www.michigan.gov/documents/uia/FS_146_Obligation_Assessment-updated_11-2016_544223_7.pdf
+    - title: Michigan Unemployment Insurance Agency, 2020 Savings Based on 2019 Obligation Assessment Rates
+      href: https://web.archive.org/web/20200521093434/https://www.michigan.gov/documents/uia/2020_Savings_Based_on_2019_Obligation_Assessment_Rates-web_673176_7.pdf
+    - title: Michigan Unemployment Insurance Agency, Michigan Employer Advisor (January 2020)
+      href: https://web.archive.org/web/20200422060951/https://www.michigan.gov/documents/leo/Advisor-Winter-2020-3-final_678850_7.pdf
+    - title: Office of the Governor of Michigan, release on the early end of the obligation assessment (December 20, 2019)
+      href: https://web.archive.org/web/20220704010047/https://www.michigan.gov/whitmer/news/press-releases/2019/12/20/michigan-businesses-to-receive-tax-reduction-ahead-of-schedule
+    - title: Michigan Unemployment Insurance Agency, Unemployment Insurance Taxes (June 2021)
+      href: https://web.archive.org/web/20210618074809/https://www.michigan.gov/leo/0,5863,7-336-94422_97241_89981_90255-502287--,00.html
+    - title: Michigan Unemployment Insurance Agency, Frequently asked questions for employers, tax rates and liability (February 2026)
+      href: https://web.archive.org/web/20260218124736/https://www.michigan.gov/leo/bureaus-agencies/uia/employers/frequently-asked-questions-for-employers/for-employers/tax-rates-and-liability

@@ -1,15 +1,44 @@
-description: Employer-side unemployment insurance taxable wage base for Michigan.
+description: Michigan limits employer unemployment insurance taxes to this amount of each worker's annual wages.
 values:
-  0000-01-01: 9_500
+  # Michigan Compiled Laws Section 421.44(4) sets a $9,500 taxable wage limit
+  # and cuts it to $9,000 for the year for each employer not delinquent in its
+  # contributions when the trust fund holds at least $2.5 billion on the
+  # preceding June 30 and the agency projects it will stay there for the next
+  # quarter. PE-US uses the limit for a nondelinquent employer, which the
+  # Unemployment Insurance Agency says most employers qualify for.
+  2018-01-01: 9_000
+  # The trust fund fell below $2.5 billion in 2020, which raised the limit to
+  # $9,500 for 2021 through 2024.
+  2021-01-01: 9_500
+  # The $9,000 limit returned for 2025 and 2026.
+  2025-01-01: 9_000
 
 metadata:
   period: year
   unit: currency-USD
   label: Michigan unemployment taxable wage base
   reference:
-    - title: Michigan Compiled Laws Section 421.13
-      href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-421-13
-    - title: Michigan taxable wage base for employers
-      href: https://www.michigan.gov/leo/bureaus-agencies/uia/employers/frequently-asked-questions-for-employers/for-employers/taxable-wage-base
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=32
+    - title: Michigan Compiled Laws Section 421.44(4), taxable wage limit
+      href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-421-44
+    - title: 2015 Public Act 240 (Senate Bill 500), amending Section 421.44
+      href: https://www.legislature.mi.gov/documents/2015-2016/publicact/pdf/2015-PA-0240.pdf
+    - title: Michigan Talent Investment Agency, release on 2018 unemployment insurance tax rates (January 17, 2018)
+      href: https://web.archive.org/web/20220517185742/https://www.michigan.gov/leo/news/2018/01/17/2018-unemployment-insurance-tax-rates-projected-to-drop-an-average-of-4-5
+    - title: Michigan Unemployment Insurance Agency, Determine Your Obligation Assessment, 2018 rates
+      href: https://web.archive.org/web/20180220050932/http://www.michigan.gov/uia/0,4680,7-118-26898_27193-270759--,00.html
+    - title: Michigan Unemployment Insurance Agency, Michigan Employer Advisor (Winter 2018-2019)
+      href: https://web.archive.org/web/20190102083941/https://www.michigan.gov/documents/uia/Advisor-Winter-2018-Final-secure_641707_7.pdf
+    - title: Michigan House Fiscal Agency, legislative analysis of House Bill 6136 (September 2, 2020)
+      href: https://www.legislature.mi.gov/documents/2019-2020/billanalysis/House/pdf/2019-HLA-6136-7F89FA4F.pdf
+    - title: Michigan Unemployment Insurance Agency, Changes to the taxable wage base (July 2021)
+      href: https://web.archive.org/web/20210730161926/https://www.michigan.gov/leo/0,5863,7-336-94422_97241_89981_90257-502351--,00.html
+    - title: Michigan Unemployment Insurance Agency, Michigan Employer Advisor (December 15, 2021)
+      href: https://content.govdelivery.com/accounts/MILEO/bulletins/3010d52
+    - title: Michigan Unemployment Insurance Agency, Michigan Employer Advisor (August 23, 2023)
+      href: https://content.govdelivery.com/accounts/MILEO/bulletins/36c2fe9
+    - title: Michigan Unemployment Insurance Agency, Michigan Employer Advisor (December 19, 2023)
+      href: https://content.govdelivery.com/accounts/MILEO/bulletins/3803305
+    - title: Michigan Department of Labor and Economic Opportunity, release on unemployment tax savings in 2025 (December 11, 2024)
+      href: https://web.archive.org/web/20241212100012/https://www.michigan.gov/leo/news/2024/12/11/employers-will-see-unemployment-tax-savings-in-2025
+    - title: Michigan Unemployment Insurance Agency, Michigan Employer Advisor (November 2025)
+      href: https://web.archive.org/web/20251206132507/https://www.michigan.gov/leo/bureaus-agencies/uia/employers/michigan-employer-advisor/2025/11/26/michigan-employer-advisor-november-2025
