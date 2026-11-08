@@ -1,3 +1,10 @@
+## [2.107.0] - 2026-11-08
+
+### Added
+
+- Add source captures for registering Maryland's capital gains surtax source conflict.
+
+
 ## [2.106.3] - 2026-11-08
 
 ### Fixed
