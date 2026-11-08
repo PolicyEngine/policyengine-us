@@ -259,3 +259,79 @@
   output:
     # No income, so no fee: the 4-year-old's $1,000 share, not the teenager's.
     ne_child_care_subsidy: 1_000
+
+- name: Case 12, the historical approximation pays for an 18-year-old with a special need.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 18
+        ne_dhhs_has_special_needs: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ne_child_care_subsidy_countable_income: 0
+        ne_child_care_subsidy_eligible: true
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: [false, true]
+    # The model splits the bill only across members under 18, so the
+    # 18-year-old takes the $1,000 a month that no member received.
+    ne_child_care_subsidy: 1_000
+
+- name: Case 13, with no care schedule the fallback pays for an 18-year-old with a special need.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 18
+        ne_dhhs_has_special_needs: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ne_child_care_subsidy_eligible: true
+        ne_child_care_subsidy_family_fee: 0
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_maximum_provider_rate: [0, 0]
+    # The 18-year-old takes the $1,000 a month that no member received.
+    ne_child_care_subsidy: 1_000
+
+- name: Case 14, a 19-year-old with a special need takes no part of the bill.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 19
+        ne_dhhs_has_special_needs: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ne_child_care_subsidy_eligible: true
+        ne_child_care_subsidy_family_fee: 0
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: [false, false]
+    # 392 NAC 2-004(E) covers a child with a special need through age 18.
+    ne_child_care_subsidy: 0
