@@ -15,12 +15,11 @@ values:
     - salt_refund_income # Form 2 Subtractions Schedule
     - mt_other_subtractions
   2024-01-01:
-    # MCA 15-30-2120(3)(n) allows exempting up to 50% of military retirement pay
-    # (capped at MT earned income, (3)(n)(i)) and up to 50% of military survivor
-    # benefits regardless of other income ((3)(n)(ii), Form WMRE); not yet modeled.
     - mt_interest_exemption_person
     - mt_tuition_subtraction_person
     - mt_old_age_subtraction
+    # MCA 15-30-2120(3)(n), Form WMRE
+    - mt_military_retirement_exemption
     - mt_disability_income_exclusion_person
     - salt_refund_income # MCA 15-30-2120 / Form 2 Subtractions Schedule
     - mt_other_subtractions
@@ -32,6 +31,8 @@ values:
     - mt_interest_exemption_person
     - mt_tuition_subtraction_person
     - mt_old_age_subtraction
+    # MCA 15-30-2120(3)(n), Form WMRE
+    - mt_military_retirement_exemption
     - mt_disability_income_exclusion_person
     # TODO: Remove this subtraction starting in 2029 because the federal
     # Schedule 1-A deductions expire after 2028.
@@ -53,3 +54,5 @@ metadata:
       href: https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0100/0150-0300-0210-0100.html
     - title: 2025 Montana Form 2 Instructions
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=21
+    - title: 2025 Montana Form WMRE
+      href: https://revenue.mt.gov/files/Forms/Montana-Working-Military-Retirement-and-Survivor-Benefit-Exemption.pdf#page=1

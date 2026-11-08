@@ -1,0 +1,200 @@
+# MCA 15-30-2120(3)(n), (8) and (9); 2025 Montana Form WMRE.
+
+- name: A working retiree exempts half the military retirement pay
+  period: 2026
+  input:
+    people:
+      head:
+        age: 45
+        military_retirement_pay: 30_000
+        employment_income: 60_000
+      spouse:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_name: MT
+  output:
+    # Form WMRE line 8: the lesser of 60,000 and 0.5 * 30,000.
+    mt_military_retirement_exemption: [15_000, 0]
+    mt_subtractions: [15_000, 0]
+
+- name: Montana earned income limits the retirement exemption
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        military_retirement_pay: 30_000
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    mt_military_retirement_exemption: 8_000
+
+- name: A retiree with no Montana earned income gets no retirement exemption
+  period: 2026
+  input:
+    people:
+      head:
+        age: 67
+        military_retirement_pay: 45_000
+        social_security_retirement: 30_000
+        taxable_interest_income: 5_000
+      spouse:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_name: MT
+  output:
+    mt_military_retirement_exemption: [0, 0]
+
+- name: A survivor exempts half the survivor benefits with no earned income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        military_retirement_pay_survivors: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    mt_military_retirement_exemption: 5_000
+
+- name: Retirement pay and survivor benefits on one return each get their exemption
+  period: 2026
+  input:
+    people:
+      head:
+        age: 60
+        military_retirement_pay: 20_000
+        self_employment_income: 5_000
+      spouse:
+        age: 58
+        military_retirement_pay_survivors: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_name: MT
+  output:
+    # min(0.5 * 20,000, 5,000) + 0.5 * 10,000
+    mt_military_retirement_exemption: [10_000, 0]
+
+- name: The spouse's military pay counts against the return's wages
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 60_000
+      spouse:
+        age: 48
+        military_retirement_pay: 30_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_name: MT
+  output:
+    mt_military_retirement_exemption: [15_000, 0]
+
+- name: A business loss does not reduce wages in the earned income limit
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        military_retirement_pay: 30_000
+        employment_income: 6_000
+        self_employment_income: -4_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    # Form WMRE line 3 enters a business loss as 0.
+    mt_military_retirement_exemption: 6_000
+
+- name: A dependent's military pay does not count on the filer's return
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 40_000
+      dependent:
+        age: 45
+        is_tax_unit_dependent: true
+        military_retirement_pay: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+        state_name: MT
+  output:
+    mt_military_retirement_exemption: [0, 0]
+
+- name: A filer who fails the residency or timing conditions gets no exemption
+  period: 2026
+  input:
+    people:
+      head:
+        age: 45
+        military_retirement_pay: 30_000
+        employment_income: 60_000
+        mt_military_retirement_exemption_eligible: false
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    mt_military_retirement_exemption: 0
+
+- name: Montana has no military retirement exemption before 2024
+  period: 2023
+  input:
+    people:
+      head:
+        age: 45
+        military_retirement_pay: 30_000
+        employment_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    mt_military_retirement_exemption: 0
+    mt_subtractions: 0

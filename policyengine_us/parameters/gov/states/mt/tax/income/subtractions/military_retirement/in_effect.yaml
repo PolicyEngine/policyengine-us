@@ -1,0 +1,14 @@
+description: Montana allows the working military retirement and survivor benefit exemption when this is true.
+values:
+  0000-01-01: false
+  # 15-30-2120(3)(n) first applies to tax year 2024.
+  2024-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Montana military retirement exemption in effect
+  reference:
+    - title: MCA 15-30-2120(3)(n)
+      href: https://archive.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0200/0150-0300-0210-0200.html
+    - title: Montana Revenue Interim Committee, Tax Benefits for Veterans (November 2025), p. 1
+      href: https://archive.legmt.gov/content/Committees/Interim/2025-2026/RIC/Meetings/November_12_13_2025/veteran-tax-benefits.pdf#page=1
