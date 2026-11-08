@@ -219,3 +219,36 @@
         state_code: OR
   output:
     or_retirement_credit: 675
+
+- name: Tier 1 railroad benefits count as Social Security on lines 5 and 7.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 66
+        taxable_private_pension_income: 25_000
+        taxable_interest_income: 5_000
+      spouse:
+        age: 66
+        railroad_social_security_equivalent_benefits: 4_000
+        taxable_railroad_pension_benefits: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: OR
+  output:
+    # Section 86: combined income is 33,000 + 0.5 x 4,000 = 35,000, which
+    # exceeds the $32,000 joint base by 3,000, so 1,500 of the tier 1
+    # benefits enters federal AGI.
+    adjusted_gross_income: 34_500
+    # ORS 316.157(2)(b) and (f): household income leaves out the 1,500.
+    or_retirement_credit_household_income: 33_000
+    # Line 6: 15,000 - 4,000 = 11,000. Line 10: 11,000 - (33,000 - 30,000)
+    # = 8,000. Line 11: min(25,000, 8,000) x 9% = 720.
+    or_retirement_credit: 720

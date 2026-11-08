@@ -4,25 +4,36 @@ Invariants, for every input the strategies draw:
 
 I1. IRC 86(d)(1): moving any part of a filer's benefits from title II to the
     tier 1 social security equivalent benefit leaves federal AGI, federal
-    income tax, the section 86 taxable amount and Medicaid MAGI unchanged.
+    income tax, the section 86 taxable amount, Medicaid MAGI and the section
+    22 amount unchanged. Section 22(c)(3)(A)(i) reduces that amount by
+    nontaxable title II benefits under (I) and by nontaxable Railroad
+    Retirement Act benefits under (II).
 I2. IRC 72(r)(1): moving any amount from the taxable part of a private
     pension to the taxable part of the rest of the railroad annuity leaves
     federal AGI and federal income tax unchanged.
 I3. 45 U.S.C. 231m(a): a household whose only income is railroad benefits
-    owes no state income tax in any state, alternative and minimum taxes
-    included, and no state's withholding estimate counts the benefits.
+    owes no state income tax in any state in 2025 or 2026, alternative and
+    minimum taxes included, and no state's withholding estimate counts the
+    benefits.
     Idaho's $10 permanent building fund tax falls on every required filer,
     so there the test checks that taxable income is zero.
-I4. For a wage earner under 65, adding railroad benefits leaves the state's
-    AGI unchanged, and in states whose reported AGI includes them it leaves
-    state taxable income unchanged. Colorado and South Carolina start from
-    federal taxable income, which floors at zero; while the standard
-    deduction absorbs some of the benefits, their subtraction exceeds what
-    federal taxable income gained, so there the base can only fall.
+I4. For a wage earner under 65 in 2025, with wages up to $120,000 and
+    benefits up to $70,000, adding railroad benefits leaves the state's AGI
+    unchanged, and in states whose reported AGI includes them it leaves state
+    taxable income unchanged. Colorado and South Carolina start from federal
+    taxable income, which floors at zero; while the standard deduction
+    absorbs some of the benefits, their subtraction exceeds what federal
+    taxable income gained, so there the base can only fall.
     STATE_BASE_EXCEPTIONS lists the states with a provision measured with
-    federal AGI or federal income tax, which railroad benefits raise.
-I5. Totals: railroad_benefits is the sum of its three parts; the title II
-    and tier 1 shares sum to the section 86 taxable amount; and
+    federal AGI or federal income tax that binds in that range. Outside it,
+    more such provisions bind: Minnesota reduces its standard deduction with
+    federal AGI above $238,950 in 2025 and phases out its dependent
+    exemptions with federal AGI, and from 2026 South Carolina phases out its
+    income adjusted deduction (SCIAD) with federal AGI.
+I5. Totals: when railroad_benefits itself is left unset, it is the sum of
+    its three parts; the title II and tier 1 shares sum to the section 86
+    taxable amount; each spouse carries the share of the unit's taxable tier
+    1 amount that their own tier 1 benefits make up; and
     taxable_railroad_benefits is what the head's and spouse's federal AGI
     includes from the Act, and zero for dependents.
 D1. Differential: section 86 runs once on the head and spouse's return and
@@ -41,6 +52,7 @@ never less than a cent.
 """
 
 import numpy as np
+import pytest
 from hypothesis import example, given, settings
 from hypothesis import strategies as st
 
@@ -163,6 +175,17 @@ shares = st.integers(min_value=0, max_value=100).map(lambda x: x / 100)
     joint=False,
     age=62,
 )
+# A 70-year-old with no other income keeps a section 22 amount: $5,000 less
+# the $2,000 of nontaxable benefits, whichever kind they are.
+@example(
+    wages=0,
+    head_benefits=2_000,
+    spouse_benefits=0,
+    head_share=1.0,
+    spouse_share=0.0,
+    joint=False,
+    age=70,
+)
 def test_i1_tier_1_benefits_are_taxed_as_title_ii_benefits(
     wages, head_benefits, spouse_benefits, head_share, spouse_share, joint, age
 ):
@@ -190,6 +213,7 @@ def test_i1_tier_1_benefits_are_taxed_as_title_ii_benefits(
         "income_tax",
         "tax_unit_taxable_section_86_benefits",
         "medicaid_magi",
+        "section_22_income",
     ):
         title_ii, railroad = calc(simulation, variable)[:2]
         assert abs(title_ii - railroad) < tol, (variable, title_ii, railroad)
@@ -236,13 +260,18 @@ def test_i2_the_rest_of_the_annuity_is_taxed_as_a_pension(
     tax_free=st.integers(min_value=0, max_value=5_000),
     age=st.integers(min_value=18, max_value=90),
     joint=st.booleans(),
+    year=st.sampled_from((2025, 2026)),
 )
 # Minnesota's AMT starts from federal AGI (Schedule M1MT line 1) and Vermont's
 # minimum tax takes 3% of federal AGI over $150,000 (32 V.S.A. 5822(a)(6)).
 # Both bases must leave the benefits out.
-@example(tier_1=0, tier_2=64_255, tax_free=0, age=70, joint=True)
-@example(tier_1=0, tier_2=262_000, tax_free=0, age=70, joint=False)
-def test_i3_no_state_taxes_railroad_benefits(tier_1, tier_2, tax_free, age, joint):
+@example(tier_1=0, tier_2=64_255, tax_free=0, age=70, joint=True, year=2025)
+@example(tier_1=0, tier_2=79_918, tax_free=0, age=18, joint=False, year=2025)
+@example(tier_1=0, tier_2=262_000, tax_free=0, age=70, joint=False, year=2025)
+@example(tier_1=0, tier_2=262_000, tax_free=0, age=70, joint=False, year=2026)
+def test_i3_no_state_taxes_railroad_benefits(
+    tier_1, tier_2, tax_free, age, joint, year
+):
     head = {
         "age": age,
         "railroad_social_security_equivalent_benefits": tier_1,
@@ -251,13 +280,15 @@ def test_i3_no_state_taxes_railroad_benefits(tier_1, tier_2, tax_free, age, join
     }
     members = [head] + ([head | {"role": "spouse"}] if joint else [])
     simulation = Simulation(
-        situation=situation([(state, members) for state in INCOME_TAX_STATES])
+        situation=situation(
+            [(state, members) for state in INCOME_TAX_STATES], year=year
+        )
     )
     # Tier 2 benefits are always taxable federally, so the test is not vacuous.
-    assert calc(simulation, "adjusted_gross_income").min() >= tier_2
-    tax = calc(simulation, "state_income_tax_before_refundable_credits")
-    idaho_taxable_income = calc(simulation, "id_taxable_income")
-    withholding = calc(simulation, "state_withheld_income_tax")
+    assert calc(simulation, "adjusted_gross_income", year).min() >= tier_2
+    tax = calc(simulation, "state_income_tax_before_refundable_credits", year)
+    idaho_taxable_income = calc(simulation, "id_taxable_income", year)
+    withholding = calc(simulation, "state_withheld_income_tax", year)
     for i, state in enumerate(INCOME_TAX_STATES):
         if state == "ID":
             assert idaho_taxable_income[i] == 0, (state, idaho_taxable_income[i])
@@ -343,13 +374,18 @@ def test_i5_railroad_totals_add_up(tier_1, tier_2, tax_free, title_ii, earnings)
     )
     # The head's and spouse's shares add up to the tax unit's tier 1 amount.
     assert taxable_tier_1[2] == 0
-    np.testing.assert_allclose(
-        taxable_tier_1.sum(),
-        calc(
-            simulation, "tax_unit_taxable_railroad_social_security_equivalent_benefits"
-        )[0],
-        atol=tol,
-    )
+    unit_taxable_tier_1 = calc(
+        simulation, "tax_unit_taxable_railroad_social_security_equivalent_benefits"
+    )[0]
+    np.testing.assert_allclose(taxable_tier_1.sum(), unit_taxable_tier_1, atol=tol)
+    # Each spouse carries the share of it that their own tier 1 benefits make up.
+    couple_tier_1 = tier_1[0] + tier_1[1]
+    if couple_tier_1 > 0:
+        np.testing.assert_allclose(
+            taxable_tier_1[:2],
+            unit_taxable_tier_1 * np.array(tier_1[:2], dtype=float) / couple_tier_1,
+            atol=tol,
+        )
     np.testing.assert_allclose(
         calc(simulation, "taxable_railroad_benefits"),
         taxable_tier_1 + np.array(tier_2, dtype=float) * [1, 1, 0],
@@ -384,3 +420,29 @@ def test_d1_dependent_and_filer_section_86_agree(wages, title_ii, tier_1):
         filer,
         dependent,
     )
+
+
+@pytest.mark.parametrize("amount", [-5_000, float("nan")])
+def test_negative_or_missing_tier_1_benefits_raise(amount):
+    """Box 5 of Form RRB-1099 can be negative when repayments exceed the
+    year's benefits. The model doesn't net such amounts as IRS Publication 915
+    does, so it rejects them, as it rejects negative title II benefits."""
+    simulation = Simulation(
+        situation=situation(
+            [
+                (
+                    "TX",
+                    [
+                        {
+                            "age": 70,
+                            "employment_income": 20_000,
+                            "social_security_retirement": 20_000,
+                            "railroad_social_security_equivalent_benefits": amount,
+                        }
+                    ],
+                )
+            ]
+        )
+    )
+    with pytest.raises(ValueError, match="finite and nonnegative"):
+        simulation.calculate("adjusted_gross_income", YEAR)
