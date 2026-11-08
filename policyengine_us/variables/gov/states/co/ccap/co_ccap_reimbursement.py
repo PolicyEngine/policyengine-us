@@ -9,13 +9,11 @@ class co_ccap_reimbursement(Variable):
     label = "Colorado Child Care Assistance Program reimbursement for the eligible children's care"
     defined_for = "co_ccap_eligible"
     reference = (
-        # 8 CCR 1403-1 3.125(FFF), PDF page 101: the lesser of the provider's
-        # private pay rate and the county reimbursement rate.
+        # 8 CCR 1403-1 3.125(FFF), 3.130 and 3.132(D) and (E), PDF pages 101,
+        # 118-119, 126: the lesser of the provider's private pay rate and the
+        # county reimbursement rate, the county rates, and the children whose
+        # care CCCAP pays.
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=101",
-        # 3.130, PDF pages 118 and 119: the county reimbursement rates.
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=118",
-        # 3.132(D) and (E), PDF page 126: the children whose care CCCAP pays.
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=126",
     )
 
     def formula(spm_unit, period, parameters):

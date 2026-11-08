@@ -9,10 +9,8 @@ class co_ccap_maximum_monthly_payment(Variable):
     label = "Colorado Child Care Assistance Program county rate for the child's care in a month"
     defined_for = "co_ccap_child_eligible"
     reference = (
-        # 8 CCR 1403-1 3.125(FFF), PDF page 101.
+        # 8 CCR 1403-1 3.125(FFF) and 3.130(C), PDF pages 101, 119
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=101",
-        # 3.130(C), PDF page 119.
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=119",
     )
 
     def formula(person, period, parameters):
