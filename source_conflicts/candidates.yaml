@@ -2114,6 +2114,75 @@ candidates:
   state: ruled
   note: 'Ruled 2026-11-02 by the PR author in the pre-filing review of this PR, item CT-S3: keep the State Supplement out
     of countable income. Neither document names it, and plan 1.9 is the specific list.'
+- id: us-ct:social-security-adjustment-railroad-tier-1
+  program: income-tax
+  years:
+    from: 2019
+    type: tax
+  question: When line D of the Social Security benefit adjustment, 25% of the lesser of the benefits and the IRC 86(b)(1)
+    excess, exceeds the taxable title II benefits, does Connecticut tax part of the tier 1 railroad retirement benefits?
+  sources:
+  - kind: statute
+    citation: Conn. Gen. Stat. 12-701(a)(20)(B)(iv) and (x)(IV)
+    url: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-701
+  - kind: instructions
+    citation: 2024 Form CT-1040 instructions, line 43
+    url: https://portal.ct.gov/-/media/drs/forms/2024/income/2024-ct-1040-instructions_1224.pdf#page=9
+  - kind: worksheet
+    citation: 2024 Form CT-1040 instructions, Social Security Benefit Adjustment Worksheet, lines A to F
+    url: https://portal.ct.gov/-/media/drs/forms/2024/income/2024-ct-1040-instructions_1224.pdf#page=24
+  readings:
+    statute: Clause (iv) subtracts every taxable tier 1 benefit that clause (x) did not, so clauses (x) and (iv) together
+      leave at most the taxable title II benefits in Connecticut AGI.
+    other: Line 43 lets filers deduct tier 1 and tier 2 benefits only to the extent line 41 did not subtract them, and has
+      them enter the railroad benefits reported on Form 1040 line 5b. The tier 1 benefits on Form RRB-1099 go on line 6b,
+      so line 43 never reaches them, and all of line D stays in Connecticut AGI even when it exceeds the taxable title II
+      benefits.
+  example: A joint filer with AGI of $150,000, $4,000 of title II and $36,000 of tier 1 benefits, $34,000 of them taxable,
+    and a line B of $60,000 has a line D of $10,000. Under the statute Connecticut subtracts the $30,600 of taxable tier 1
+    benefits and taxes the $3,400 of taxable title II benefits; under the instructions line 41 is $24,000 and line 43 is
+    $0, so Connecticut taxes $10,000. PE-US taxes $3,400.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ct/tax/income/subtractions/ct_social_security_benefit_adjustment.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10722
+  state: ruled
+  note: Ruled for the statute (statute first). Instructions before 2024 were not compared.
+- id: us-ct:social-security-adjustment-railroad-tier-1-order
+  program: income-tax
+  years:
+    from: 2019
+    type: tax
+  question: Clause (iv) subtracts the taxable tier 1 railroad retirement benefits that clause (x) does not. Which benefits
+    does the clause (x) amount, line E less line D, cover first?
+  sources:
+  - kind: statute
+    citation: Conn. Gen. Stat. 12-701(a)(20)(B)(iv) and (x)(IV); 45 U.S.C. 231m(a)
+    url: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-701
+  - kind: instructions
+    citation: 2024 Form CT-1040 instructions, line 43
+    url: https://portal.ct.gov/-/media/drs/forms/2024/income/2024-ct-1040-instructions_1224.pdf#page=9
+  readings:
+    statute: Clause (x) subtracts one amount figured on all the benefits and does not say which benefits it covers. Covering
+      tier 1 benefits first, Connecticut taxes the lesser of line D and the taxable title II benefits; covering them in
+      proportion, line D times the title II share; covering title II benefits first, line D less the taxable tier 1
+      benefits, but not below zero.
+    other: The instructions put the tier 1 benefits from Form RRB-1099 on line 41 and none of them on line 43, which treats
+      line 41 as covering them first.
+  example: A joint filer with AGI of $150,000, $30,000 of title II and $20,000 of tier 1 benefits, $42,500 of them taxable,
+    and a line B of $60,000 has a line D of $12,500. Covering tier 1 benefits first, Connecticut taxes $12,500; in
+    proportion, $7,500; title II benefits first, $0. PE-US taxes $12,500.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/ct/tax/income/subtractions/ct_social_security_benefit_adjustment.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10722
+  state: ruled
+  note: Ruled for covering tier 1 benefits first. The statute leaves the order open, the instructions treat line 41 as
+    covering tier 1 benefits, and the order matches us-mn:social-security-subtraction-railroad-tier-1-order.
 - id: us-dc:eitc-no-tin-child-schedule-before-2023
   program: income-tax
   years:
@@ -5409,6 +5478,42 @@ candidates:
   state: unreviewed
   note: PE-US follows the manual and surrounding report editions; obtain contemporaneous BEM 556 for October 2022-September
     2023.
+- id: us-mn:elderly-disabled-subtraction-railroad-benefits
+  program: income-tax
+  years:
+    from: 2025
+    type: tax
+  question: How do railroad retirement benefits enter the elderly or disabled subtraction, which reduces the base amount
+    by nontaxable retirement and disability benefits and by half of adjusted gross income over a threshold?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 290.0802, subd. 1(a) and (c), and subd. 2(b)(2)
+    url: https://www.revisor.mn.gov/statutes/cite/290.0802
+  - kind: form
+    citation: 2025 Schedule M1R, lines 5 to 9, and the instructions for lines 5b and 9
+    url: https://www.revenue.state.mn.us/sites/default/files/2026-07/m1r-25.pdf#page=1
+  readings:
+    statute: Subd. 1(c) counts the benefits section 22(c)(3) would count, which include the tier 1 benefits section 86
+      leaves out and the tax-free part of the rest of the annuity, and "pension, annuity, or disability benefits included
+      in federal gross income but not subject to state taxation", which takes in the taxable tier 1 and tier 2 benefits
+      that 45 U.S.C. 231m(a) keeps the state from taxing. Subd. 1(a) takes those same benefits out of adjusted gross
+      income.
+    other: Line 5 subtracts all of Form 1040 line 6b, taxable tier 1 benefits included, from the Form SSA-1099 benefits;
+      line 6 adds the tier 1 benefits from Form RRB-1099 and the railroad benefits on Form 1040 lines 4b and 5b; line 9
+      takes only the railroad benefits on line 6b out of federal AGI. The reduction so leaves out the taxable tier 1
+      benefits and the tax-free part of the rest of the annuity, and AGI keeps the taxable rest of the annuity.
+  example: A single filer aged 70 with $6,000 of nontaxable tier 1 benefits, $2,000 of taxable tier 2 benefits, $500
+    recovered tax free and $12,000 of federal AGI subtracts $1,100 under the statute ($9,600 - $8,500; AGI of $10,000 is
+    under the $14,500 threshold) and $1,600 under Schedule M1R ($9,600 - $8,000); PE-US gives $1,100.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mn/tax/income/subtractions/mn_elderly_disabled_subtraction.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10722
+  state: ruled
+  note: Ruled for the statute (statute first). The section 22(c)(3) amounts follow the reading in
+    us:elderly-credit-railroad-tier-2-return-of-cost. Schedules M1R before 2025 were not compared.
 - id: us-mn:k12-subtraction-grade-cap-default
   program: income-tax
   years:
@@ -5471,6 +5576,67 @@ candidates:
   state: ruled
   note: 'Ruled 2026-10-06: follow the manual over the plan. Code not yet on main: mn_eap_countable_income,
     gov.states.mn.commerce.eap.income.sources.'
+- id: us-mn:marriage-credit-railroad-tier-1
+  program: income-tax
+  years:
+    from: 2025
+    type: tax
+  question: Do a spouse's taxable tier 1 railroad retirement benefits count toward the marriage credit's earned income,
+    which Minn. Stat. 290.0675 limits to amounts "included in Minnesota taxable income"?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 290.0675, subd. 1(b)
+    url: https://www.revisor.mn.gov/statutes/cite/290.0675#stat.290.0675.1
+  - kind: instructions
+    citation: 2025 Schedule M1MA instructions, lines 1 to 4
+    url: https://www.revenue.state.mn.us/sites/default/files/2026-07/m1ma-25.pdf#page=2
+  readings:
+    statute: Subd. 1(b) counts IRC 86(d)(1) Social Security benefits, tier 1 benefits included, "to the extent included
+      in Minnesota taxable income". Minnesota subtracts taxable railroad retirement benefits (45 U.S.C. 231m(a); Schedule
+      M1M line 17), so they never count.
+    other: Line 4 takes "the amount from line 6b of federal Form 1040", which includes taxable tier 1 benefits, while the
+      instructions for lines 1 and 3 leave out Railroad Retirement Board benefits.
+  example: A couple filing jointly in 2025 with $90,000 of Minnesota taxable income, where one spouse has $60,000 of
+    wages and the other only $35,000 of taxable tier 1 benefits, gets no credit under the statute (the lesser earner has
+    no earned income) and $72.50 under line 4; PE-US gives no credit.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/mn/tax/income/credits/marriage/income_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10696
+    - https://github.com/PolicyEngine/policyengine-us/pull/10722
+  state: ruled
+  note: Ruled for the statute (statute first). PR 10696 made taxable_social_security the title II share, which keeps the
+    tier 1 benefits out of the source list; PR 10722 adds the tests. Instructions before 2025 were not compared.
+- id: us-mn:marriage-credit-subtracted-social-security
+  program: income-tax
+  years:
+    from: 2025
+    type: tax
+  question: Does the marriage credit's earned income count a spouse's taxable title II benefits that the Social Security
+    subtraction takes out of Minnesota taxable income?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 290.0675, subd. 1(b); Minn. Stat. 290.0132, subd. 26
+    url: https://www.revisor.mn.gov/statutes/cite/290.0675#stat.290.0675.1
+  - kind: instructions
+    citation: 2025 Schedule M1MA instructions, line 4
+    url: https://www.revenue.state.mn.us/sites/default/files/2026-07/m1ma-25.pdf#page=2
+  readings:
+    statute: Subd. 1(b) counts Social Security benefits only "to the extent included in Minnesota taxable income", so
+      not the part the subd. 26 subtraction removes.
+    other: Line 4 takes all of Form 1040 line 6b, divided between the spouses by Form SSA-1099 box 5.
+  example: A couple filing jointly in 2025 with AGI under $108,320, where the lesser earner's only income is $35,000 of
+    taxable title II benefits, subtracts all $35,000 under subd. 26, so under the statute the lesser earner has no
+    earned income and the couple gets no credit; line 4 counts $35,000. PE-US counts $35,000.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/mn/tax/income/credits/marriage/income_sources.yaml
+    prs: []
+  state: unreviewed
+  note: Found while auditing the railroad benefit changes in PR 10722, which leaves it unchanged.
 - id: us-mn:msa-couple-arrangement-b-pathways
   program: msa
   years:
@@ -5530,6 +5696,72 @@ candidates:
     prs: []
   state: unreviewed
   note: Establish the guidance's statutory basis and reconcile M1SA with M1REF.
+- id: us-mn:social-security-subtraction-provisional-income-benefits
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: Does provisional income for the alternate Social Security subtraction add half of the taxable benefits, as
+    Minn. Stat. 290.0132 subd. 26(i) provides, or half of all benefits received, as the line 12 worksheet does?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 290.0132, subd. 26(i); Laws 2019, 1st Spec. Sess., ch. 6, art. 2, sec. 12
+    url: https://www.revisor.mn.gov/statutes/cite/290.0132#stat.290.0132.26
+  - kind: worksheet
+    citation: 2025 Schedule M1M instructions, worksheet for line 12, steps 12 and 13 (2022, steps 4 and 5)
+    url: https://www.revenue.state.mn.us/sites/default/files/2026-07/m1m-25.pdf#page=4
+  readings:
+    statute: Provisional income is section 86(b)(2) modified adjusted gross income "plus one-half of the taxable Social
+      Security benefits received during the taxable year". The 2019 act inserted "taxable", effective for taxable years
+      beginning after December 31, 2017.
+    other: Steps 12 and 13 add half of Form 1040 line 6a, all benefits received.
+  example: A couple filing jointly in 2025 with $150,000 of gross income and AGI and $100,000 of benefits, $85,000 of them
+    taxable, has provisional income of $107,500 under the statute and an alternate subtraction of $2,066, against
+    $115,000 and $566 under the worksheet. PE-US gives $566.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/mn/tax/income/subtractions/mn_social_security_subtraction.py
+    - policyengine_us/parameters/gov/states/mn/tax/income/subtractions/social_security/total_benefit_fraction.yaml
+    prs: []
+  state: unreviewed
+  note: Found while auditing the railroad benefit changes in PR 10722, which keeps the worksheet's base. Either reading
+    counts tier 1 benefits with title II benefits, since subd. 26(i) gives "Social Security benefits" the IRC 86(d)(1)
+    meaning.
+- id: us-mn:social-security-subtraction-railroad-tier-1-order
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: The Social Security subtraction runs on taxable benefits that include tier 1 railroad retirement benefits,
+    which Minnesota also subtracts under 45 U.S.C. 231m(a). How do the two subtractions combine?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 290.0132, subd. 26; 45 U.S.C. 231m(a)
+    url: https://www.revisor.mn.gov/statutes/cite/290.0132#stat.290.0132.26
+  - kind: worksheet
+    citation: 2025 Schedule M1M instructions, line 12, worksheet for line 12 steps 25-30, and line 17 (2022, steps 17-20)
+    url: https://www.revenue.state.mn.us/sites/default/files/2026-07/m1m-25.pdf#page=4
+  readings:
+    statute: Subd. 26 does not coordinate the two. Taking both in full subtracts taxable tier 1 benefits twice; the
+      reduced simplified subtraction could cover the tier 1 benefits first, last or in proportion.
+    other: Below the phase-out threshold, line 12 takes all of Form 1040 line 6b and line 17 leaves out the tier 1
+      benefits. Above it, steps 26-29 take the tier 1 benefits subtracted on line 17 out of the worksheet. Step 27 caps
+      the alternate subtraction at the other taxable benefits, and step 29 takes the tier 1 benefits from the reduced
+      simplified amount, so the reduction falls on the tier 1 benefits first. Line 17 never gives less than line 12 for
+      them.
+  example: A single filer in 2025 with AGI of $92,000, $17,000 of taxable title II benefits and $8,500 of taxable tier 1
+    benefits subtracts $11,900 on line 12 and $8,500 on line 17, $20,400 in all (80% of $25,500). Reducing title II
+    benefits alone gives $13,600 + $8,500 = $22,100, and reducing tier 1 benefits last gives $25,500. PE-US gives $20,400.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/mn/tax/income/subtractions/mn_social_security_subtraction.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10722
+  state: ruled
+  note: Ruled for the worksheet, since the statute leaves the order open and the department's worksheet settles it
+    without a double subtraction.
 - id: us-mo:claim-of-right-federal-tax-deduction
   program: income-tax
   years:
@@ -5858,6 +6090,42 @@ candidates:
   state: unreviewed
   note: 'The open PR applies the regulation from 2024; main''s source choice is unspecified, and no statute is supplied.
     Code not yet on main: mo_federal_adjusted_gross_income, gov.states.mo.tax.income.federal_agi.negative_floor_applies.'
+- id: us-mo:pension-income-test-railroad-tier-1
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does the income test for Missouri's private pension subtraction, Missouri AGI less Social Security benefits,
+    take the taxable tier 1 railroad retirement benefits out a second time?
+  sources:
+  - kind: statute
+    citation: RSMo 143.124.3, 143.124.4 and 143.124.8
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=143.124
+  - kind: form
+    citation: 2024 Form MO-A, Part 3, Section B, lines 1 to 9
+    url: https://dor.mo.gov/forms/MO-A_2024.pdf#page=3
+  - kind: instructions
+    citation: 2024 Form MO-1040 instructions, Form MO-A Part 1, line 11 (railroad retirement benefits)
+    url: https://dor.mo.gov/forms/MO-1040%20Instructions_2024.pdf#page=14
+  readings:
+    statute: Subsection 8 subtracts the Social Security benefits "otherwise included in Missouri adjusted gross income".
+      Form MO-A, Part 1, line 11 has already removed the taxable tier 1 benefits from Missouri AGI, so the test subtracts
+      the taxable title II benefits alone.
+    other: Section B, line 2 takes the taxable benefits on Form 1040 line 6b, tier 1 included, and subtracts them from a
+      Missouri AGI that no longer holds the tier 1 benefits.
+  example: A single filer with $20,000 of tier 1 benefits ($7,900 of them taxable), a $6,000 private pension and $22,000 of
+    interest has Missouri AGI of $28,000. Under the statute the test income is $28,000, $3,000 above the $25,000 allowance,
+    and the subtraction is $3,000; under Form MO-A, line 3 is $20,100 and the subtraction is $6,000. PE-US subtracts
+    $3,000.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mo/tax/income/deductions/mo_pension_and_ss_or_ssd_deduction_section_b.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10722
+  state: ruled
+  note: Ruled for the statute (statute first). Subsection 8 also sets the income for Section A's public pension test,
+    which applied through 2023, and PE-US reads it the same way there.
 - id: us-mo:property-tax-credit-rounding
   program: property-tax-credit
   years:
@@ -5965,6 +6233,48 @@ candidates:
   note: PE-US applies Missouri's one-adult-per-household cap from 2025, a start date the parameter's comment calls
     a modeling choice, and keeps the uncapped federal reading in other states (child_care_claim_cap/per_household.yaml,
     meets_snap_parent_exception.py). Verify whether the manual permissibly fills the federal silence.
+- id: us-mo:social-security-deduction-railroad-tier-1
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: RSMo 143.125 and the railroad retirement subtraction both reach the taxable tier 1 railroad retirement
+    benefits. Which one takes them, given that RSMo 143.124.7 reduces the public pension subtraction by the 143.125
+    exemption?
+  sources:
+  - kind: statute
+    citation: RSMo 143.125.1 and 143.125.2
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=143.125
+  - kind: statute
+    citation: RSMo 143.124.7; 45 U.S.C. 231m(a)
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=143.124
+  - kind: form
+    citation: 2024 Form MO-A, Part 1, line 11 and Part 3, Sections A and C
+    url: https://dor.mo.gov/forms/MO-A_2024.pdf#page=3
+  - kind: instructions
+    citation: 2024 Form MO-1040 instructions, Form MO-A Part 3, Section C, lines 1 and 2 and their worksheet
+    url: https://dor.mo.gov/forms/MO-1040%20Instructions_2024.pdf#page=17
+  readings:
+    statute: Section 143.125 subtracts the benefits "included in federal adjusted gross income under Section 86", which
+      counts tier 1 benefits, from Missouri AGI, and Missouri AGI has already left out the same benefits as income
+      federal law exempts. Neither statute says which subtraction takes them.
+    other: Section C, lines 1 and 2 take the taxable benefits on Form 1040 line 6b, tier 1 included, while Part 1, line 11
+      subtracts the taxable tier 1 benefits as well, so the forms subtract them twice and reduce the public pension
+      subtraction by them.
+  example: A single filer aged 70 with $10,000 of title II and $10,000 of tier 1 benefits ($9,600 of them taxable, half of
+    each) and a $30,000 public pension. Taking the tier 1 benefits in Part 1, Section C is $4,800, Section A is $25,200
+    and Part 1, line 11 is $4,800; taking them in Section C, Section C is $9,600, Section A is $20,400 and line 11 is $0.
+    PE-US takes them in Part 1.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/mo/tax/income/deductions/mo_pension_and_ss_or_ssd_deduction_section_c.py
+    - policyengine_us/variables/gov/states/mo/tax/income/deductions/mo_pension_and_ss_or_ssd_deduction_section_a.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10722
+  state: ruled
+  note: Ruled for Part 1 (taxpayer choices minimize tax). Missouri AGI drops the exempt benefits before 143.125 applies to
+    it, and a filer free to choose would take Part 1, which leaves the public pension subtraction whole.
 - id: us-mo:wftc-investment-income-boundary
   program: income-tax
   years:
@@ -9221,6 +9531,42 @@ candidates:
   state: ruled
   note: The code already uses a strict comparison and the eligibility tests pin AGI equal to the threshold as
     ineligible. Verify the statute's and the worksheet's wording before registering.
+- id: us-ri:social-security-modification-railroad-tier-1
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: The Social Security modification and the railroad retirement modification both reach the taxable tier 1
+    railroad retirement benefits. Which one takes them?
+  sources:
+  - kind: statute
+    citation: R.I. Gen. Laws 44-30-12(c)(1) and (c)(8); 45 U.S.C. 231m(a)
+    url: https://webserver.rilegislature.gov/Statutes/TITLE44/44-30/44-II/44-30-12.htm
+  - kind: worksheet
+    citation: 2024 Modification for Taxable Social Security Income Worksheet, lines 8 to 13
+    url: https://tax.ri.gov/sites/g/files/xkgbur541/files/2024-09/Social%20Security%20Worksheet_bd.pdf#page=1
+  - kind: instructions
+    citation: 2025 RI-1040 instructions, Schedule M lines 1d and 1s
+    url: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-12/2025%201040R%20Instructions%20122025.pdf#page=9
+  readings:
+    statute: Subsection (c)(8) subtracts "the social security benefits includible in federal adjusted gross income", an
+      IRC 86 amount that counts tier 1 benefits, and subsection (c)(1) subtracts income federal law exempts, which takes
+      in the same benefits. Neither says which modification takes them.
+    other: Worksheet line 11 takes the taxable benefits on Form 1040 line 6b, tier 1 included, and line 1d subtracts the
+      railroad retirement benefits in federal gross income, so the forms subtract the taxable tier 1 benefits twice.
+  example: A single filer aged 70 with $10,000 of title II and $10,000 of tier 1 benefits ($9,600 of them taxable, half of
+    each) and AGI of $39,600. Taking the tier 1 benefits on line 1d, line 1d is $4,800 and line 1s is $4,800; taking them
+    on line 1s, line 1s is $9,600 and line 1d is $0. On the forms, line 1d is $4,800 and line 1s is $9,600. PE-US takes
+    them on line 1d.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/ri/tax/income/agi/subtractions/social_security/ri_social_security_modification.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10722
+  state: ruled
+  note: Ruled for line 1d (taxpayer choices minimize tax). Line 1d has no age or income test, so it takes the tier 1
+    benefits whenever line 1s would, and also when the filer fails line 1s's tests.
 - id: us-ri:ssp-category-d-without-federal-ssi
   program: ssi-state-supplement
   years:
@@ -10633,6 +10979,40 @@ candidates:
     Utah state supplement (ut_ssp, which adds ut_dws_ssp, a Department of Workforce Services payment, and ut_dhhs_ssp,
     another agency payment that section 405 excludes in the same item). R982-403 is a current rule with its next
     five-year review due June 17, 2027, so decide whether it governs over the manual and plan.
+- id: us-ut:social-security-credit-railroad-tier-1
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does Utah's Social Security benefits credit apply to the taxable tier 1 railroad retirement benefits on Form
+    1040 line 6b?
+  sources:
+  - kind: statute
+    citation: Utah Code 59-10-1042(1)(f) and (2)
+    url: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1042.html
+  - kind: worksheet
+    citation: 2024 Form TC-40 instructions, Social Security Credit Worksheet, line 1
+    url: https://tax.utah.gov/forms/2024/tc-40inst.pdf#page=23
+  - kind: instructions
+    citation: 2024 Form TC-40 instructions, code 78 (railroad retirement income)
+    url: https://tax.utah.gov/forms/2024/tc-40inst.pdf#page=20
+  readings:
+    statute: Subsection (1)(f) limits "social security benefit" to monthly benefits under the Social Security Act, and
+      subsection (2)(b) gives the credit on those included in state taxable income. Tier 1 benefits come under the
+      Railroad Retirement Act, and code 78 removes them from state taxable income, so the credit leaves them out.
+    other: Worksheet line 1 takes Form 1040 line 6b, which includes the taxable tier 1 benefits that code 78 subtracts.
+  example: A single filer with $10,000 of title II and $10,000 of tier 1 benefits ($9,600 of them taxable, half of each)
+    and MAGI of $39,600. Under the statute line 7 is $218.40 (4.55% of $4,800); under the worksheet $436.80 (4.55% of
+    $9,600). PE-US gives $218.40.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ut/tax/income/credits/ss_benefits_credit/ut_ss_benefits_credit_max.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10722
+  state: ruled
+  note: Ruled for the statute (statute first). Before 2025 subsection (2)(b) read "included in adjusted gross income on the
+    claimant's federal income tax return", which reaches the same benefits through subsection (1)(f).
 - id: us-va:ag-entry-month-spouse-at-home
   program: ssi-state-supplement
   years:

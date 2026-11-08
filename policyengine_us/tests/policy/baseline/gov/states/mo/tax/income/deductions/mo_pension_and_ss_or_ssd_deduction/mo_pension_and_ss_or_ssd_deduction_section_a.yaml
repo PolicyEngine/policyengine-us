@@ -377,3 +377,41 @@
     state_code: MO
   output:
     mo_pension_and_ss_or_ssd_deduction_section_a: 8_000
+
+# Tier 1 railroad retirement benefits. RSMo 143.125 subtracts the Social
+# Security benefits included in federal AGI under IRC 86, which counts tier 1
+# benefits, and Form MO-A, Part 1, line 11 subtracts the same taxable tier 1
+# benefits as exempt railroad retirement (taxable_railroad_benefits, 45 U.S.C.
+# 231m(a)). The model takes them on Part 1, line 11, so Section C holds the
+# title II benefits alone and RSMo 143.124.7 reduces the public pension
+# subtraction by the title II benefits only.
+- name: MO public pension and Social Security deductions 2024 take the taxable tier 1 benefits in Part 1
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        social_security_retirement: 10_000
+        railroad_social_security_equivalent_benefits: 10_000
+        taxable_public_pension_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: MO
+  output:
+    # Federal: provisional income 30,000 + 50% x 20,000 = 40,000; taxable
+    # benefits min(85% x 20,000, 85% x (40,000 - 34,000) + 4,500) = 9,600,
+    # half title II and half tier 1.
+    taxable_social_security: 4_800
+    taxable_railroad_benefits: 4_800
+    mo_adjusted_gross_income: 34_800
+    # Section C: the 4,800 of taxable title II benefits.
+    mo_pension_and_ss_or_ssd_deduction_section_c: 4_800
+    # Section A: min(30,000, 46,381) - 4,800.
+    mo_pension_and_ss_or_ssd_deduction_section_a: 25_200

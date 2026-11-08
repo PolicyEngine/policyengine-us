@@ -23,7 +23,10 @@
   output:
     adjusted_gross_income: 57_600
     taxable_social_security: [11_760, 7_840]
-    ia_reportable_social_security: 4_000  # one-half of (income - deduction)
+    # Worksheet line 2: 50% x 40,000 = 20,000. Line 3: 38,000 of interest.
+    # Line 6: 2,000. Line 7: 60,000. Line 11: 60,000 - 32,000 = 28,000.
+    # Line 12: 14,000. Line 13: min(20,000, 14,000).
+    ia_reportable_social_security: 14_000
 
 - name: IA reportable social security unit test 2
   absolute_error_margin: 0.01
@@ -49,3 +52,68 @@
         state_code: IA
   output:
     ia_reportable_social_security: 1_500  # one-half of gross social security
+
+# Tier 1 railroad retirement benefits. Worksheet line 1 leaves out Form
+# RRB-1099, line 4 adds half of its benefits, and line 3 leaves out Form 1040
+# line 6b, which holds the taxable title II and tier 1 benefits.
+- name: IA reportable social security 2022 counts half of the tier 1 benefits in income
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security: 10_000
+        railroad_social_security_equivalent_benefits: 20_000
+        taxable_interest_income: 30_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Federal: 30,000 + 50% x 30,000 = 45,000 of provisional income, so
+    # min(25,500, 85% x 1,000 + 6,000) = 6,850 of the benefits are taxable.
+    adjusted_gross_income: 36_850
+    # Line 2: 5,000. Line 3: 30,000. Line 4: 10,000. Line 7: 45,000.
+    # Line 11: 13,000. Line 12: 6,500. Line 13: min(5,000, 6,500).
+    ia_reportable_social_security: 5_000
+
+- name: IA reportable social security 2022 leaves out a dependent's benefits
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security: 30_000
+        taxable_interest_income: 40_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+      person3:
+        is_tax_unit_dependent: true
+        age: 15
+        social_security_survivors: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Federal: 40,000 + 15,000 = 55,000 of provisional income, so
+    # min(25,500, 85% x 11,000 + 6,000) = 15,350 of the benefits are taxable.
+    adjusted_gross_income: 55_350
+    # Line 1 holds the head's 30,000; the child's benefits go on the child's
+    # own return. Line 2: 15,000. Line 7: 55,000. Line 11: 23,000.
+    # Line 12: 11,500. Line 13: min(15,000, 11,500).
+    ia_reportable_social_security: 11_500
