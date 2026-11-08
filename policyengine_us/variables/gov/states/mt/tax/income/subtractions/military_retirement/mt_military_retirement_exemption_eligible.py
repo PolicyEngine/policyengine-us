@@ -8,8 +8,8 @@ class mt_military_retirement_exemption_eligible(Variable):
     definition_period = YEAR
     default_value = True
     documentation = (
-        "MCA 15-30-2120(9): the retiree or survivor became a Montana resident "
-        "after June 30, 2023, or lived in Montana before the military "
+        "MCA 15-30-2120(9): the retiree or survivor became a Montana resident on "
+        "or after June 30, 2023, or lived in Montana before the military "
         "retirement pay or survivor benefits began; claims the exemption "
         "within five consecutive years of meeting that condition (tax years "
         "2024 through 2028 for residents from before July 2023); and has not "
