@@ -659,6 +659,20 @@ def plan_arrays(cases):
             catch_up_room=8_000.0,
             share=1.0,
         ),
+        # A job's 401(k) used all the regular deferral room. The partnership's
+        # plan carries its 2,000 with 1,600 of catch-up contributions and 400
+        # of employer contributions, which leaves the Schedule C plan 6,400
+        # of catch-up room for its 8,000; giving the partnership's plan all of
+        # the catch-up room would not.
+        dict(
+            this=8_000.0,
+            other=2_000.0,
+            rate=0.25,
+            dollar_limit=72_000.0,
+            regular_room=0.0,
+            catch_up_room=8_000.0,
+            share=1.0,
+        ),
     ]
 )
 def test_line_9_is_the_least_share_the_plans_allow(cases):
