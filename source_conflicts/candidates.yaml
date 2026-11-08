@@ -324,15 +324,17 @@ candidates:
       net premium tax and section 1341 credits, with a zero floor.
     other: Subtract only the enumerated refundable credits, omitting net premium tax and section 1341 credits.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/parameters/gov/states/al/tax/income/deductions/federal_tax/credits.yaml
     - policyengine_us/variables/gov/states/al/tax/income/deductions/federal_income_tax/al_federal_income_tax_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10038
-  state: open
-  note: A decision was requested; the statute-first rule requires correcting the worksheet-based model where it
-    conflicts with the statutory reading, after checking each year's list.
+  state: ruled
+  note: Under the statute-first rule the code applies the regulation's list, subtracting all federal payment credits
+    (refundable AOC only, net premium tax credit, section 1341 credit and a residual input), from 2015, the first year
+    the parameter covers, because the regulation's current text dates from a 2010 amendment. The item starts in 2018,
+    the first year whose worksheet PolicyEngine compared; worksheets before 2018 were not checked.
 - id: us-al:irrevocable-trust-loss-deduction
   program: income-tax
   years:
@@ -1734,6 +1736,53 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify the guide's year coverage and the model's comparison operator.
+- id: us-co:federal-deduction-addback-net-of-state-tax-addback
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: Is Colorado's high-income federal deductions addback reduced by the state income tax already added back
+    under C.R.S. 39-22-104(3)(d)(I), or are the two additions made separately?
+  sources:
+  - kind: statute
+    citation: C.R.S. 39-22-104(3)(d)(I), (3)(p), (3)(p.5) and (3)(p.7)
+    url: https://olls.info/crs/crs2025-title-39.pdf#page=382
+  - kind: regulation
+    citation: 1 CCR 201-2, Rule 39-22-104(3)(p), paragraph (3)
+    url: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12424&fileName=1%20CCR%20201-2#page=12
+  - kind: regulation
+    citation: 1 CCR 201-2, Rule 39-22-104(3)(p.5), paragraph (3)(a)(i)
+    url: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12424&fileName=1%20CCR%20201-2#page=13
+  - kind: instructions
+    citation: 2023 DR 0104 booklet, line 4
+    url: https://tax.colorado.gov/sites/tax/files/documents/Book0104_2023.pdf#page=6
+  - kind: instructions
+    citation: 2024 DR 0104 booklet, line 4
+    url: https://tax.colorado.gov/sites/tax/files/documents/DR0104_book_2024.pdf#page=9
+  - kind: instructions
+    citation: 2025 DR 0104 booklet, line 4
+    url: https://tax.colorado.gov/sites/tax/files/documents/Book104_2025.pdf#page=9
+  - kind: instructions
+    citation: 2022 DR 0104 booklet, line 4
+    url: https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=6
+  readings:
+    statute: Read literally, (3)(d)(I) and (3)(p), (p.5) or (p.7) are two separate additions, so state income tax
+      deducted on Schedule A is added back once on DR 0104 line 2 and again inside the line 4 excess.
+    other: The two rules and the 2023 to 2025 booklets reduce the line 4 addition by the state income tax already
+      added back on line 2, excluding a share of state income tax deducted by a partnership or S corporation.
+  example: A 2025 single itemizer with $30,000 of itemized deductions, including $5,000 of state income tax added back
+    on line 2, adds back $13,000 on line 4 under the net reading and $18,000 under the literal one.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/co/tax/income/additions/federal_deductions/co_federal_deduction_addback.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10094
+  state: ruled
+  note: The statute does not say how the additions coordinate; the code nets them in every year from 2022, following
+    the rules, the booklets and the canon against counting a dollar twice. The 2022 booklet subtracts only the $30,000
+    or $60,000 limit, with no reduction for state income tax, and no rule or booklet yet covers 2026, where the same
+    reading carries to (p.7).
 - id: us-co:joint-childless-eitc-dependent-question
   program: income-tax
   years:
@@ -5499,15 +5548,16 @@ candidates:
     statute: Subtract the credit unless it falls within the statutory overpayment-credit exception.
     other: The chart omits Schedule 3 line 13b, leaving deductible federal tax unchanged.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/parameters/gov/states/mo/tax/income/deductions/federal_income_tax/ignored_credits.yaml
     - policyengine_us/variables/gov/states/mo/tax/income/deductions/mo_federal_income_tax_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10038
   state: ruled
-  note: 'Ruled in October 2026 to follow worksheets; the later statute-first rule requires a model change if this
-    credit is outside the statutory exception. Code not yet on main: mo_federal_income_tax_deduction.'
+  note: An October 2026 ruling followed the chart; under the later statute-first rule the code follows RSMo
+    143.171(2)(1). The section 1341 credit is outside the statutory exceptions and is not added back, so it reduces
+    the deduction.
 - id: us-mo:liheap-110-percent-poverty-floor
   program: liheap
   years:
@@ -6701,6 +6751,35 @@ candidates:
     and $105,227; 8, $107,574 and $107,565; 9, $109,914 and $109,903; 11, $114,582 and $114,580; 12, $116,922 and
     $116,919. Size 1 is below the ceiling, size 10 equals it, and from size 13 150% of the guideline exceeds the
     table. Verify each later fiscal-year table.'
+- id: us-nd:renters-refund-insurance-proceeds
+  program: renter-credit
+  years:
+    from: 2025
+    type: tax
+  question: Does the renter's refund count disability benefits from an employer-paid plan, when the Tax Commissioner's
+    guideline lists insurance policy proceeds for illness, injury or dismemberment among items that are not income?
+  sources:
+  - kind: statute
+    citation: N.D.C.C. 57-02-08.1(5)(c)
+    url: https://ndlegis.gov/cencode/t57c02.pdf#page=16
+  - kind: guidance
+    citation: Property Tax Credits for North Dakota Homeowners and Renters, item 11
+    url: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
+  readings:
+    statute: Income comes from all sources and leaves out any amount excluded from income by federal or state law.
+      Federal law excludes benefits from a plan the recipient paid for (IRC 104(a)(3)) and counts benefits from a plan
+      the employer paid for (IRC 105(a)).
+    other: Item 11 lists the proceeds as not income, whoever paid for the policy.
+  example: A renter with $10,000 of wages and $12,000 of disability benefits, $5,000 of them from a plan the renter
+    paid for, has income of $17,000 under the statute and $10,000 under item 11.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10663
+  state: ruled
+  note: The statute's text settles the case, so it governs over the guideline's general list.
 - id: us-nd:stillborn-subtraction-dependency-condition
   program: income-tax
   years:
@@ -8442,8 +8521,8 @@ candidates:
     remain excluded from the worksheet's reductions?
   sources:
   - kind: statute
-    citation: ORS 316.680(1)(b)
-    url: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html
+    citation: ORS 316.680(1)(b) and 316.685(1)(b)
+    url: https://www.oregonlegislature.gov/bills_laws/Archive/2023ors316.pdf#page=52
   - kind: guidance
     citation: 2025 Publication OR-17, PDF p.71
     url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71
@@ -8451,18 +8530,19 @@ candidates:
     citation: 2025 OR-17 federal tax subtraction worksheet, PDF pp.71-72 (also 2017, 2018 and 2021)
     url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71
   readings:
-    statute: The statute refers to federal income taxes accrued; how it treats the section 1341 credit is unresolved.
+    statute: The subtraction is for federal income taxes accrued, and ORS 316.685(1)(b) disregards only the earned
+      income credit in computing them, so the section 1341 credit reduces the subtraction.
     other: The prose says credits except EITC reduce the subtraction, but the worksheet does not subtract the section
       1341 credit.
   pe_us:
-    follows: unknown
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/or/tax/income/subtractions/or_federal_tax_liability_subtraction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10038
   state: ruled
-  note: 'Ruled in October 2026 to follow the worksheet; establish the statutory treatment before determining whether
-    a model change is required. Code not yet on main: or_federal_tax_liability_subtraction.'
+  note: An October 2026 ruling followed the worksheet; under the later statute-first rule the code follows ORS
+    316.685(1)(b), starting from federal income tax after all credits and adding back only the earned income credit.
 - id: us-or:liheap-final-payment-band-bound
   program: liheap
   years:
@@ -11208,14 +11288,15 @@ candidates:
       repayment exclusion applies when Wisconsin's own credit is used.
     other: The form includes only medical expenses, interest, charitable gifts and casualty losses.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/wi/tax/income/credits/itemized_deduction/wi_itemized_deduction_credit_potential.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10038
   state: ruled
-  note: An October 2026 ruling followed the worksheet; the statute-first rule requires including the repayment deduction
-    if the statutory reading is confirmed.
+  note: An October 2026 ruling followed the worksheet; under the later statute-first rule the code includes the
+    federal claim of right deduction in the credit base with the Schedule 1 components. The separate Wisconsin
+    repayment credit that would trigger the 71.07(5)(a)6 exclusion is not modeled.
 - id: us-wi:liheap-categorical-benefit-income
   program: liheap
   years:
