@@ -588,7 +588,13 @@ def get_september_cpi_u_values(cpi: ParameterNode, year: int) -> Tuple[float, fl
     never mixed. Returns ``(prior September, later September)``.
     """
     september = cpi.cpi_u_nsa_september
-    published = {int(value.instant_str[:4]) for value in september.values_list}
+    # Only September instants are BLS values; the parameter tree also
+    # backdates the first value to 2015-01-01.
+    published = {
+        int(value.instant_str[:4])
+        for value in september.values_list
+        if value.instant_str.endswith("-09-01")
+    }
     if {year - 2, year - 1} <= published:
         return september(f"{year - 2}-09-01"), september(f"{year - 1}-09-01")
     return (

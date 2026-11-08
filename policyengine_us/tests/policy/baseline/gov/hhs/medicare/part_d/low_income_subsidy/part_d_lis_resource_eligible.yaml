@@ -28,13 +28,15 @@
       spouse1:
         bank_account_assets: 20_000
       spouse2:
-        stock_assets: 10_100
+        stock_assets: 10_120
         bond_assets: 6_000
     marital_units:
       marital_unit:
         members: [spouse1, spouse2]
   output:
-    # 20,000 + 10,100 + 6,000 = 36,100 = 33,100 + 2 x 1,500.
+    # 20,000 + 10,120 + 6,000 = 36,120 = 33,120 + 2 x 1,500. The statute's
+    # formula gives $33,120; CMS published $33,100 (see the couple limit's
+    # parameter file).
     part_d_lis_resource_eligible: [true, true]
 
 - name: Married couple one dollar over the 2026 couple limit.
@@ -44,7 +46,7 @@
       spouse1:
         bank_account_assets: 20_001
       spouse2:
-        stock_assets: 16_100
+        stock_assets: 16_120
     marital_units:
       marital_unit:
         members: [spouse1, spouse2]
@@ -61,3 +63,93 @@
     # 15,160 + 1,500 = 16,660, CMS's published 2023 partial subsidy limit.
     # The 2023 full subsidy limit was 9,090 + 1,500 = 10,590.
     part_d_lis_resource_eligible: true
+
+- name: Single person at the projected 2027 limit.
+  period: 2027
+  input:
+    people:
+      person:
+        bank_account_assets: 18_710
+  output:
+    # 16,590 x 336.940 / 324.800 = 17,210.04, rounded to 17,210; plus 1,500.
+    part_d_lis_resource_eligible: true
+
+- name: Single person one dollar over the projected 2027 limit.
+  period: 2027
+  input:
+    people:
+      person:
+        bank_account_assets: 18_711
+  output:
+    part_d_lis_resource_eligible: false
+
+- name: Married couple at the projected 2027 couple limit.
+  period: 2027
+  input:
+    people:
+      spouse1:
+        bank_account_assets: 37_360
+      spouse2:
+        bank_account_assets: 0
+    marital_units:
+      marital_unit:
+        members: [spouse1, spouse2]
+  output:
+    # 33,120 x 336.940 / 324.800 = 34,358.11, rounded to 34,360; plus 2 x
+    # 1,500 = 37,360.
+    part_d_lis_resource_eligible: [true, true]
+
+- name: Non-home real estate counts for the household head's couple only.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        is_household_head: true
+        bank_account_assets: 20_000
+      spouse:
+        age: 68
+        bank_account_assets: 7_000
+      mother:
+        age: 92
+        bank_account_assets: 9_000
+    marital_units:
+      couple:
+        members: [head, spouse]
+      mother_unit:
+        members: [mother]
+    households:
+      household:
+        members: [head, spouse, mother]
+        household_other_real_estate_equity: 10_000
+  output:
+    # The couple: 20,000 + 7,000 + 10,000 = 37,000 > 33,120 + 3,000 =
+    # 36,120. The mother: 9,000 <= 16,590 + 1,500 = 18,090.
+    part_d_lis_resource_eligible: [false, false, true]
+
+- name: Without a designated head, the oldest member holds the real estate.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        bank_account_assets: 20_000
+      spouse:
+        age: 68
+        bank_account_assets: 7_000
+      mother:
+        age: 92
+        bank_account_assets: 9_000
+    marital_units:
+      couple:
+        members: [head, spouse]
+      mother_unit:
+        members: [mother]
+    households:
+      household:
+        members: [head, spouse, mother]
+        household_other_real_estate_equity: 10_000
+  output:
+    # The couple: 27,000 <= 36,120. The mother: 9,000 + 10,000 = 19,000 >
+    # 18,090.
+    part_d_lis_resource_eligible: [true, true, false]

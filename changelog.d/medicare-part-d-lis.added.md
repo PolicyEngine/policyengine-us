@@ -1,1 +1,1 @@
-Model the Medicare Part D low-income subsidy (Extra Help): statutory eligibility valued at the Trustees' average subsidy per enrollee, and count it as a CBO means-tested transfer.
+Model the Medicare Part D low-income subsidy (Extra Help): statutory eligibility, with CPI-indexed resource limits, valued at the Trustees' average subsidy per subsidy enrollee for people in a Part D plan; count it as a CBO means-tested transfer and a household health benefit.

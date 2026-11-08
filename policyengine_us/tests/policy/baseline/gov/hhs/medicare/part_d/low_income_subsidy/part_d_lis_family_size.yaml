@@ -55,3 +55,57 @@
     # The parent depends on the child, so the parent's family is just the
     # parent; the child's family includes the dependent parent.
     part_d_lis_family_size: [2, 1]
+
+- name: Spouses filing separately count the dependents on both returns.
+  period: 2026
+  input:
+    people:
+      spouse1:
+        age: 70
+      spouse2:
+        age: 68
+      grandchild:
+        age: 10
+        is_tax_unit_dependent: true
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+      grandchild_unit:
+        members: [grandchild]
+    tax_units:
+      spouse1_return:
+        members: [spouse1]
+      spouse2_return:
+        members: [spouse2, grandchild]
+  output:
+    # Each spouse heads a return; only the second claims the grandchild.
+    part_d_lis_family_size: [3, 3, 1]
+
+- name: Each spouse files separately and claims one child.
+  period: 2026
+  input:
+    people:
+      spouse1:
+        age: 70
+      child1:
+        age: 15
+        is_tax_unit_dependent: true
+      spouse2:
+        age: 68
+      child2:
+        age: 12
+        is_tax_unit_dependent: true
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+      child1_unit:
+        members: [child1]
+      child2_unit:
+        members: [child2]
+    tax_units:
+      spouse1_return:
+        members: [spouse1, child1]
+      spouse2_return:
+        members: [spouse2, child2]
+  output:
+    part_d_lis_family_size: [4, 1, 4, 1]

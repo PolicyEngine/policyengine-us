@@ -23,6 +23,16 @@
   output:
     healthcare_benefit_value: 2_434.8
 
+- name: Case 2b, the Part D low-income subsidy is a healthcare benefit value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 2_434.8
+    part_d_lis: 1_254
+  output:
+    healthcare_benefit_value: 3_688.8
+
 - name: Case 3, enrolled CHIP value is included in healthcare benefit value.
   period: 2026
   absolute_error_margin: 0.01

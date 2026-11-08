@@ -1,12 +1,13 @@
 """Invariants of the Medicare Part D low-income subsidy (``part_d_lis``).
 
 The subsidy goes to Medicare enrollees in the 50 states and DC who are deemed
-eligible (Medicaid enrollees, SSI recipients, Medicare Savings Program
-enrollees) or whose countable income is below 150% of the poverty guideline
-for their family size and whose countable resources are within the limit
-plus $1,500 per person for burial funds (42 U.S.C. 1395w-114(a)(3); 42 CFR
-423.773; 20 CFR 418 subpart D). Each enrollee is valued at the Medicare
-Trustees' average subsidy per subsidy enrollee, as CBO does.
+eligible (Medicaid enrollees, SSI recipients, people eligible for a Medicare
+Savings Program) or whose countable income is below 150% of the poverty
+guideline for their family size and whose countable resources are within the
+limit plus $1,500 per person for burial funds (42 U.S.C. 1395w-114(a)(3); 42
+CFR 423.773; 20 CFR 418 subpart D). Each enrollee in a Part D plan is valued
+at the Medicare Trustees' average subsidy per subsidy enrollee, as CBO values
+it.
 
 Parameters:
 
@@ -21,48 +22,70 @@ Parameters:
 4. Indexing: each resource limit is the previous year's limit raised by the
    September-to-September change in the CPI-U (not seasonally adjusted),
    never lowered, and rounded to the nearest $10, from the statute's 2006
-   amounts. SSA's published 2015 couple limit is $10 below the rule; the
-   parameter keeps the published amount (an intended exception).
-5. Bounds (Hypothesis): the amount per recipient is positive and below
-   Medicare spending per enrollee in every year from 2013, the spending
-   series' first, to 2100, and the limits never fall.
+   amounts, through 2027, the last year both Septembers are published. In
+   2015 the couple limit is the formula's $24,260, not the $24,250 CMS
+   printed (source-conflict candidate
+   ``us:part-d-lis-couple-resource-limit-2015``). The Septembers typed here
+   equal ``cpi_u_nsa_september`` wherever both have a value.
+5. Projection: from 2028 each limit is the previous year's raised by the
+   model's projected September CPI-U, never lowered, and rounded to $10. On
+   a synthetic parameter tree, values in the YAML stand, published
+   Septembers come first, a fall in the index leaves the limit unchanged,
+   and a missing September sends both Septembers to the model's CPI-U
+   series.
+6. Rounding: the year-to-year adjustment reproduces CMS's published 2026
+   limits from the unrounded ratio, and rounds an exact $5 up.
+7. Bounds: the amount per recipient is positive and below Medicare spending
+   per enrollee in every year from 2013, the spending series' first, to 2100.
 
-Households (a seeded sample in one shared simulation, each household also
-run with more Social Security, more interest and more assets):
+Households (a seeded sample in one shared simulation, plus households at each
+income and resource limit and just past it, each also run with more Social
+Security, more interest and more assets):
 
-6. Countable income equals the rule restated here: the couple's SSI
-   income without interest and dividends, less $20 a month from unearned
-   income (the rest from earnings), $65 a month of earnings and half the
-   remaining earnings.
-7. Interest and dividends never change countable income or eligibility.
-8. More Social Security never lowers countable income or makes an income
-   ineligible person income eligible; more assets never make a resource
-   ineligible person resource eligible.
-9. Eligibility equals the restated rule; enrollees are the eligible people
-   in a Part D plan who are on Medicaid or SSI or take the subsidy up; and
-   the benefit is either zero or the year's amount per recipient, positive
-   exactly for enrollees.
-10. Spouses get the same countable income, family size and test results.
-11. Differential: for people without interest or dividends, countable income
-    equals 12 times ``msp_countable_income``, which applies the same SSI
-    exclusions through a separate formula (single people, and couples where
-    both spouses are Medicare eligible). The sample's states keep SSI's $20
-    general exclusion for the Medicare Savings Programs; Illinois and
-    Mississippi exclude more under 42 U.S.C. 1396a(r)(2), which the subsidy's
-    income definition sets aside.
+8. Countable income equals the rule restated here: the couple's SSI income
+   without interest and dividends, each source counted at no less than zero
+   for each person, less $20 a month from unearned income (the rest from
+   earnings), $65 a month of earnings and half the remaining earnings.
+9. Interest and dividends never change countable income or eligibility.
+10. More Social Security never lowers countable income or makes an income
+    ineligible person income eligible; more assets never make a resource
+    ineligible person resource eligible.
+11. Eligibility equals the restated rule: family size counts the dependents
+    on both returns when spouses file separately, and resources include the
+    household's other real estate for the couple that holds it. Enrollees
+    are the eligible people in a Part D plan who are on Medicaid or SSI or
+    take the subsidy up, and the benefit is either zero or the year's amount
+    per recipient, positive exactly for enrollees.
+12. Spouses get the same countable income, family size and test results.
+13. Reach: the sample reaches every branch the properties above check, so a
+    change to the generator or the seed can't leave them vacuous.
+14. Differential: for people without interest, dividends or rental income,
+    countable income equals 12 times ``msp_countable_income``, which applies
+    the same SSI exclusions through a separate formula (single people, and
+    couples where both spouses are Medicare eligible). This checks how each
+    formula gathers the couple's income; property 8 checks the exclusions
+    themselves. The sample's states keep SSI's $20 general exclusion for the
+    Medicare Savings Programs; Illinois and Mississippi exclude more under 42
+    U.S.C. 1396a(r)(2), which the subsidy's income definition sets aside.
 """
+
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
-from hypothesis import given
-from hypothesis import strategies as st
+from policyengine_core.parameters import ParameterNode
 
 from policyengine_us import Simulation
+from policyengine_us.parameters.uprating_extensions import (
+    adjust_part_d_lis_resource_limit_for_inflation,
+    extend_part_d_lis_resource_limits,
+    get_september_cpi_u_values,
+)
 from policyengine_us.system import system
 
 P = system.parameters
-PER_RECIPIENT = "calibration.gov.hhs.medicare.part_d.low_income_subsidy_per_recipient"
 LIS = P.gov.hhs.medicare.part_d.low_income_subsidy
+KINDS = ["individual", "couple"]
 
 # 2026 Medicare Trustees Report (sha256 ffa56b91...8fa8), Table IV.B9 (file
 # page 158): low-income subsidy enrollment (millions) and subsidy amount ($).
@@ -117,25 +140,38 @@ V_B3_TOTAL = dict(
     )
 )
 # BLS CPI-U, U.S. city average, all items, not seasonally adjusted
-# (CUUR0000SA0), September of each year, retrieved 2026-10-11 from the BLS
-# public API. (pe-us's gov.bls.cpi.cpi_u holds seasonally adjusted values
-# from 2024, so it is not used here.)
+# (CUUR0000SA0), September of each year, from the BLS public API: 2004 to
+# 2025 retrieved 2026-10-11, 2026 retrieved 2026-11-08. pe-us's
+# gov.bls.cpi.cpi_u_nsa_september starts in 2018; the years both hold must
+# agree.
 CPI_U_SEPTEMBER = {
     **{2004: 189.9, 2005: 198.8, 2006: 202.9, 2007: 208.490, 2008: 218.783},
     **{2009: 215.969, 2010: 218.439, 2011: 226.889, 2012: 231.407},
     **{2013: 234.149, 2014: 238.031, 2015: 237.945, 2016: 241.428},
     **{2017: 246.819, 2018: 252.439, 2019: 256.759, 2020: 260.280},
     **{2021: 274.310, 2022: 296.808, 2023: 307.789, 2024: 315.301},
-    **{2025: 324.800},
+    **{2025: 324.800, 2026: 336.940},
 }
+LAST_SEPTEMBER = max(CPI_U_SEPTEMBER)
 STATUTE_2006 = {"individual": 10_000, "couple": 20_000}
-PUBLISHED_EXCEPTIONS = {("couple", 2015): 24_250}  # the rule gives 24,260
+# CMS, CY 2026 Resource and Cost-Sharing Limits for LIS (October 31, 2025),
+# page 2, before the burial funds exclusion.
+CMS_2025 = {"individual": 16_100, "couple": 32_130}
+CMS_2026 = {"individual": 16_590, "couple": 33_100}
 
 
 def _per_recipient(year):
     return P.calibration.gov.hhs.medicare.part_d.low_income_subsidy_per_recipient(
         f"{year}-01-01"
     )
+
+
+def _limit(kind):
+    return getattr(LIS.eligibility.resources.limit, kind)
+
+
+def _round_to_10(x):
+    return int(np.floor(x / 10 + 0.5)) * 10
 
 
 @pytest.mark.parametrize("year", sorted(IV_B9))
@@ -165,33 +201,162 @@ def test_recipients_times_amount_matches_per_enrollee_series(year):
     assert rebuilt == pytest.approx(per_enrollee, rel=0.005)
 
 
-def _round_to_10(x):
-    return int(np.floor(x / 10 + 0.5)) * 10
+def test_typed_septembers_match_the_parameter():
+    september = P.gov.bls.cpi.cpi_u_nsa_september
+    # pe-us backdates each parameter's first value to 2015-01-01; only the
+    # September instants are BLS values.
+    years = [
+        int(value.instant_str[:4])
+        for value in september.values_list
+        if value.instant_str.endswith("-09-01")
+    ]
+    assert LAST_SEPTEMBER in years
+    for year in years:
+        assert september(f"{year}-09-01") == pytest.approx(
+            CPI_U_SEPTEMBER[year], abs=5e-4
+        ), year
 
 
-@pytest.mark.parametrize("kind", ["individual", "couple"])
+@pytest.mark.parametrize("kind", KINDS)
 def test_resource_limits_follow_the_cpi_rule(kind):
-    limit = getattr(LIS.eligibility.resources.limit, kind)
+    limit = _limit(kind)
     assert limit("2006-01-01") == STATUTE_2006[kind]
-    for year in range(2007, 2027):
+    for year in range(2007, LAST_SEPTEMBER + 2):
         growth = CPI_U_SEPTEMBER[year - 1] / CPI_U_SEPTEMBER[year - 2]
         expected = _round_to_10(limit(f"{year - 1}-01-01") * max(growth, 1))
-        expected = PUBLISHED_EXCEPTIONS.get((kind, year), expected)
         assert limit(f"{year}-01-01") == expected, year
+        assert limit(f"{year}-07-01") == expected, year
 
 
-@given(st.integers(2013, 2100))
-def test_amount_positive_and_below_spending(year):
-    amount = _per_recipient(year)
-    spending = P.calibration.gov.hhs.medicare.per_capita_cost(f"{year}-01-01")
-    assert 0 < amount < spending
+@pytest.mark.parametrize("kind", KINDS)
+def test_projected_resource_limits_follow_the_projected_cpi(kind):
+    limit = _limit(kind)
+    for year in range(LAST_SEPTEMBER + 2, 2101):
+        prior, current = get_september_cpi_u_values(P.gov.bls.cpi, year)
+        expected = _round_to_10(limit(f"{year - 1}-01-01") * max(current / prior, 1))
+        assert limit(f"{year}-01-01") == expected, year
+    # The projection is not flat over the Trustees' window.
+    assert limit("2035-01-01") > limit(f"{LAST_SEPTEMBER + 1}-01-01")
 
 
-@given(st.integers(2007, 2100))
-def test_resource_limits_never_fall(year):
-    for kind in ["individual", "couple"]:
-        limit = getattr(LIS.eligibility.resources.limit, kind)
-        assert limit(f"{year}-01-01") >= limit(f"{year - 1}-01-01")
+def test_published_2026_limits_need_the_unrounded_ratio():
+    # CMS reports the CY 2026 increase as 3.01%, but $16,100 x 1.0301 =
+    # $16,584.61 rounds to $16,580; the unrounded ratio gives $16,585.04 and
+    # the published $16,590. CMS's couple limits ($32,130 to $33,100) follow
+    # the same rule; the model's couple limit builds on the formula's 2025
+    # amount, $20 above CMS's (see the couple limit's parameter file).
+    for kind in KINDS:
+        assert (
+            adjust_part_d_lis_resource_limit_for_inflation(
+                CMS_2025[kind], 315.301, 324.800
+            )
+            == CMS_2026[kind]
+        )
+    assert _limit("individual")("2026-01-01") == CMS_2026["individual"]
+    assert _limit("couple")("2026-01-01") == CMS_2026["couple"] + 20
+
+
+@pytest.mark.parametrize(
+    "prior_limit, prior, current, expected",
+    [
+        # 2015 couple: 23,860 x 238.031 / 234.149 = 24,255.58.
+        (23_860, 234.149, 238.031, 24_260),
+        # 2016: the index fell (237.945 < 238.031), so the limit stays.
+        (24_260, 238.031, 237.945, 24_260),
+        # An exact $5 rounds up.
+        (1_005, 100.0, 100.0, 1_010),
+        (1_000, 100.0, 100.5, 1_010),
+        (1_000, 100.0, 100.4, 1_000),
+    ],
+)
+def test_adjustment_rounds_to_the_nearest_10(prior_limit, prior, current, expected):
+    assert (
+        adjust_part_d_lis_resource_limit_for_inflation(prior_limit, prior, current)
+        == expected
+    )
+
+
+def _synthetic_tree(nsa_septembers, sa_septembers):
+    def values(data):
+        return {"values": data}
+
+    return ParameterNode(
+        data={
+            "gov": {
+                "hhs": {
+                    "medicare": {
+                        "part_d": {
+                            "low_income_subsidy": {
+                                "eligibility": {
+                                    "resources": {
+                                        "limit": {
+                                            "individual": values(
+                                                {"2025-01-01": 16_100}
+                                            ),
+                                            "couple": values(
+                                                {
+                                                    "2025-01-01": 32_150,
+                                                    "2026-01-01": 33_120,
+                                                }
+                                            ),
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "bls": {
+                    "cpi": {
+                        "cpi_u_nsa_september": values(nsa_septembers),
+                        "cpi_u": values(sa_septembers),
+                    }
+                },
+            }
+        }
+    )
+
+
+def test_extension_on_a_synthetic_tree():
+    nsa = {"2024-09-01": 315.301, "2025-09-01": 324.8, "2026-09-01": 336.94}
+    nsa["2027-09-01"] = 330.0  # a fall
+    nsa["2028-09-01"] = 340.0
+    # The model's (seasonally adjusted) series differs from the published one,
+    # so a year that reads it shows which series it used.
+    sa = {date: 0.99 * value for date, value in nsa.items()}
+    sa["2029-09-01"] = 0.99 * 350.0
+    parameters = _synthetic_tree(nsa, sa)
+    extend_part_d_lis_resource_limits(parameters, end_year=2031)
+    limits = parameters.gov.hhs.medicare.part_d.low_income_subsidy.eligibility
+    limits = limits.resources.limit
+    individual = {y: limits.individual(f"{y}-01-01") for y in range(2025, 2036)}
+    couple = {y: limits.couple(f"{y}-01-01") for y in range(2025, 2036)}
+    # 2026: published Septembers 2024 and 2025; the YAML's 2026 couple stands.
+    assert individual[2026] == 16_590
+    assert couple[2026] == 33_120
+    # 2027: published 2025 and 2026.
+    assert individual[2027] == _round_to_10(16_590 * 336.94 / 324.8)
+    assert couple[2027] == _round_to_10(33_120 * 336.94 / 324.8)
+    # 2028: the published index fell, so the limits stay.
+    assert individual[2028] == individual[2027]
+    assert couple[2028] == couple[2027]
+    # 2029: published 2027 and 2028.
+    assert individual[2029] == _round_to_10(individual[2028] * 340.0 / 330.0)
+    # 2030: September 2029 is not published, so both Septembers come from
+    # the model's series (0.99 x 350 / (0.99 x 340), not 0.99 x 350 / 340).
+    assert individual[2030] == _round_to_10(individual[2029] * 350.0 / 340.0)
+    # 2031: the model's series holds flat after its last month.
+    assert individual[2031] == individual[2030]
+    # After the end year the last value holds.
+    assert individual[2035] == individual[2031]
+    assert couple[2035] == couple[2031]
+
+
+def test_amount_positive_and_below_spending():
+    for year in range(2013, 2101):
+        amount = _per_recipient(year)
+        spending = P.calibration.gov.hhs.medicare.per_capita_cost(f"{year}-01-01")
+        assert 0 < amount < spending, year
 
 
 # Households.
@@ -200,10 +365,15 @@ N = 300
 SEED = 20261011
 STATES = ["TX", "CA", "NY", "AK", "HI", "FL", "PR", "DC"]
 VARIANTS = ["base", "more_ss", "more_interest", "more_assets"]
+LIMITS = LIS.eligibility.resources(f"{YEAR}-01-01")
+BURIAL = LIMITS.burial_exclusion
 
 
-def _households():
+def _random_households():
     rng = np.random.default_rng(SEED)
+    # Features added after the first sample come from their own generator,
+    # so the original draws stay the same.
+    extra = np.random.default_rng(SEED + 1)
     out = []
     for _ in range(N):
         married = bool(rng.random() < 0.5)
@@ -222,6 +392,7 @@ def _households():
                 msp_eligible=bool(rng.random() < 0.15),
                 takes_up_part_d_lis_if_eligible=bool(rng.random() < 0.7),
                 takes_up_medicare_part_d_if_eligible=bool(rng.random() < 0.85),
+                rental_income=int(extra.choice([0, 0, 0, -6_000, 2_400])),
             )
 
         out.append(
@@ -229,12 +400,72 @@ def _households():
                 state=str(rng.choice(STATES)),
                 dependents=int(rng.choice([0, 0, 0, 1, 2])),
                 members=[person()] + ([person()] if married else []),
+                separate=married and bool(extra.random() < 0.3),
+                real_estate=int(extra.choice([0, 0, 0, 6_000, 60_000])),
             )
         )
     return out
 
 
-HOUSEHOLDS = _households()
+def _boundary_households():
+    # Not deemed, in a Part D plan, taking the subsidy up, in Texas.
+    def person(social_security, bank_account_assets=0):
+        return dict(
+            social_security=social_security,
+            employment_income=0,
+            interest_income=0,
+            dividend_income=0,
+            bank_account_assets=bank_account_assets,
+            stock_assets=0,
+            medicare_enrolled=True,
+            medicaid_enrolled=False,
+            ssi=0,
+            msp_eligible=False,
+            takes_up_part_d_lis_if_eligible=True,
+            takes_up_medicare_part_d_if_eligible=True,
+            rental_income=0,
+        )
+
+    def household(members, real_estate=0):
+        return dict(
+            state="TX",
+            dependents=0,
+            members=members,
+            separate=False,
+            real_estate=real_estate,
+        )
+
+    single = LIMITS.limit.individual + BURIAL
+    couple = LIMITS.limit.couple + 2 * BURIAL
+    single_income = 1.5 * _fpg("TX", 1)
+    couple_income = 1.5 * _fpg("TX", 2)
+    out = []
+    for over in (0, 1):
+        out.append(household([person(6_000, single + over)]))
+        out.append(
+            household([person(6_000, couple - 9_000 + over), person(6_000, 9_000)])
+        )
+        out.append(household([person(6_000, single - 10_000 + over)], 10_000))
+        # Countable income at 150% of the guideline, and $12 a year below.
+        out.append(household([person(int(single_income + 240 - 12 * (1 - over)))]))
+        out.append(
+            household(
+                [
+                    person(20_000),
+                    person(int(couple_income + 240 - 20_000 - 12 * (1 - over))),
+                ]
+            )
+        )
+    return out
+
+
+def _fpg(state, size):
+    fpg = P.gov.hhs.fpg(f"{YEAR}-01-01")
+    group = state if state in ("AK", "HI", "PR") else "CONTIGUOUS_US"
+    return fpg.first_person[group] + fpg.additional_person[group] * (size - 1)
+
+
+HOUSEHOLDS = _random_households() + _boundary_households()
 
 
 def _variant(member, variant, is_head):
@@ -249,6 +480,15 @@ def _variant(member, variant, is_head):
     return member
 
 
+INCOME_INPUTS = (
+    "social_security",
+    "employment_income",
+    "interest_income",
+    "dividend_income",
+    "rental_income",
+)
+
+
 def _situation(households, variants, inputs=True):
     people, marital_units, tax_units, spm_units, units = {}, {}, {}, {}, {}
     rows = []  # (household index, variant, member index, person name)
@@ -259,15 +499,7 @@ def _situation(households, variants, inputs=True):
                 name = f"{v}_{i}_{j}"
                 record = _variant(member, v, j == 0)
                 if not inputs:
-                    record = {
-                        k: record[k]
-                        for k in (
-                            "social_security",
-                            "employment_income",
-                            "interest_income",
-                            "dividend_income",
-                        )
-                    }
+                    record = {k: record[k] for k in INCOME_INPUTS}
                 people[name] = {
                     "age": {YEAR: 70},
                     **{k: {YEAR: val} for k, val in record.items()},
@@ -275,6 +507,7 @@ def _situation(households, variants, inputs=True):
                 names.append(name)
                 rows.append((i, v, j, name))
             spouses = list(names)
+            returns = [[name] for name in spouses] if h["separate"] else [list(spouses)]
             dependents = []
             for k in range(h["dependents"]):
                 name = f"{v}_{i}_d{k}"
@@ -283,14 +516,18 @@ def _situation(households, variants, inputs=True):
                     "is_tax_unit_dependent": {YEAR: True},
                 }
                 marital_units[f"mu_{name}"] = {"members": [name]}
+                # Spouses who file separately claim the dependents in turn.
+                returns[k % len(returns)].append(name)
                 dependents.append(name)
             marital_units[f"mu_{v}_{i}"] = {"members": spouses}
+            for r, members in enumerate(returns):
+                tax_units[f"tu_{v}_{i}_{r}"] = {"members": members}
             members = spouses + dependents
-            tax_units[f"tu_{v}_{i}"] = {"members": members}
             spm_units[f"spm_{v}_{i}"] = {"members": members}
             units[f"hh_{v}_{i}"] = {
                 "members": members,
                 "state_code": {YEAR: h["state"]},
+                "household_other_real_estate_equity": {YEAR: h["real_estate"]},
             }
     situation = {
         "people": people,
@@ -322,32 +559,45 @@ def sample():
     return rows, index, values
 
 
-def _restated_countable(members):
+def _restated_countable(members, floor_sources=True):
+    def unearned(m):
+        rent = max(m["rental_income"], 0) if floor_sources else m["rental_income"]
+        return m["social_security"] + rent
+
     earned = sum(m["employment_income"] for m in members) / 12
-    unearned = sum(m["social_security"] for m in members) / 12
-    general = min(20, unearned)
-    countable_unearned = unearned - general
+    total_unearned = sum(unearned(m) for m in members) / 12
+    general = min(20, max(total_unearned, 0))
+    countable_unearned = max(total_unearned, 0) - general
     countable_earned = max(earned - 65 - (20 - general), 0) / 2
     return 12 * (countable_unearned + countable_earned)
 
 
-def _fpg(state, size):
-    fpg = P.gov.hhs.fpg(f"{YEAR}-01-01")
-    group = state if state in ("AK", "HI", "PR") else "CONTIGUOUS_US"
-    return fpg.first_person[group] + fpg.additional_person[group] * (size - 1)
+def _restated_tests(h, members, real_estate=True):
+    """Family size, income test and resource test for the household's couple."""
+    couple = len(members)
+    size = couple + h["dependents"]
+    income_ok = _restated_countable(members) < 1.5 * _fpg(h["state"], size)
+    resources = sum(m["bank_account_assets"] + m["stock_assets"] for m in members)
+    # Every adult is 70 and every dependent 10, so the couple holds the
+    # household's real estate.
+    resources += h["real_estate"] if real_estate else 0
+    limit = LIMITS.limit.couple if couple == 2 else LIMITS.limit.individual
+    resource_ok = resources <= limit + BURIAL * couple
+    return size, income_ok, resource_ok, resources - (limit + BURIAL * couple)
 
 
 def _value(values, index, variable, name):
     return values[variable][index[name]]
 
 
+def _members(i, v):
+    return [_variant(m, v, j == 0) for j, m in enumerate(HOUSEHOLDS[i]["members"])]
+
+
 def test_countable_income_matches_restated_rule(sample):
     rows, index, values = sample
     for i, v, _, name in rows:
-        members = [
-            _variant(m, v, j == 0) for j, m in enumerate(HOUSEHOLDS[i]["members"])
-        ]
-        expected = _restated_countable(members)
+        expected = _restated_countable(_members(i, v))
         actual = _value(values, index, "part_d_lis_countable_income", name)
         assert actual == pytest.approx(expected, abs=0.01), (i, v)
 
@@ -384,39 +634,36 @@ def test_more_income_or_assets_never_helps(sample):
                 assert _value(values, index, "part_d_lis_resource_eligible", base), i
 
 
+def _restated_enrollment(h, me, income_ok, resource_ok):
+    excluded = list(LIS.eligibility.ineligible_jurisdictions(f"{YEAR}-01-01"))
+    deemed = me["medicaid_enrolled"] or me["ssi"] > 0 or me["msp_eligible"]
+    eligible = (
+        me["medicare_enrolled"]
+        and h["state"] not in excluded
+        and (deemed or (income_ok and resource_ok))
+    )
+    automatic = me["medicaid_enrolled"] or me["ssi"] > 0
+    in_part_d = me["takes_up_medicare_part_d_if_eligible"]
+    takes_up = me["takes_up_part_d_lis_if_eligible"]
+    enrolled = eligible and in_part_d and (automatic or takes_up)
+    return deemed, eligible, enrolled
+
+
 def test_eligibility_and_benefit_match_restated_rules(sample):
     rows, index, values = sample
     amount = _per_recipient(YEAR)
-    excluded = list(LIS.eligibility.ineligible_jurisdictions(f"{YEAR}-01-01"))
-    limits = LIS.eligibility.resources(f"{YEAR}-01-01")
     for i, v, j, name in rows:
         h = HOUSEHOLDS[i]
-        members = [_variant(m, v, k == 0) for k, m in enumerate(h["members"])]
-        me = members[j]
-        couple = len(members)
-        size = couple + h["dependents"]
-        assert _value(values, index, "part_d_lis_family_size", name) == size
-        income_ok = _restated_countable(members) < 1.5 * _fpg(h["state"], size)
-        resources = sum(m["bank_account_assets"] + m["stock_assets"] for m in members)
-        limit = limits.limit.couple if couple == 2 else limits.limit.individual
-        resource_ok = resources <= limit + limits.burial_exclusion * couple
-        deemed = me["medicaid_enrolled"] or me["ssi"] > 0 or me["msp_eligible"]
-        eligible = (
-            me["medicare_enrolled"]
-            and h["state"] not in excluded
-            and (deemed or (income_ok and resource_ok))
+        members = _members(i, v)
+        size, income_ok, resource_ok, _ = _restated_tests(h, members)
+        _, eligible, enrolled = _restated_enrollment(
+            h, members[j], income_ok, resource_ok
         )
-        automatic = me["medicaid_enrolled"] or me["ssi"] > 0
-        in_part_d = me["takes_up_medicare_part_d_if_eligible"]
-        enrolled = (
-            eligible
-            and in_part_d
-            and (automatic or me["takes_up_part_d_lis_if_eligible"])
-        )
+        assert _value(values, index, "part_d_lis_family_size", name) == size, i
         assert _value(values, index, "part_d_lis_income_eligible", name) == income_ok
         assert _value(values, index, "part_d_lis_resource_eligible", name) == (
             resource_ok
-        )
+        ), i
         assert _value(values, index, "part_d_lis_eligible", name) == eligible, i
         assert _value(values, index, "part_d_lis_enrolled", name) == enrolled, i
         benefit = _value(values, index, "part_d_lis", name)
@@ -440,15 +687,90 @@ def test_spouses_agree(sample):
             ), (i, variable)
 
 
+def test_sample_reaches_every_branch():
+    counts = dict.fromkeys(
+        [
+            "couple",
+            "dependents",
+            "territory",
+            "no_medicare",
+            "deemed_by_medicaid_only",
+            "deemed_by_ssi_only",
+            "deemed_by_msp_only",
+            "passes_both_tests",
+            "fails_only_resources",
+            "fails_only_income",
+            "eligible_without_part_d",
+            "eligible_not_taking_up",
+            "automatic_despite_no_take_up",
+            "enrolled",
+            "on_resource_limit",
+            "one_dollar_over_resource_limit",
+            "on_income_limit",
+            "separate_returns_split_dependents",
+            "split_dependents_change_income_test",
+            "rental_floor_changes_income_test",
+            "real_estate_changes_resource_test",
+        ],
+        0,
+    )
+    for i, h in enumerate(HOUSEHOLDS):
+        members = _members(i, "base")
+        size, income_ok, resource_ok, over = _restated_tests(h, members)
+        counts["couple"] += len(members) == 2
+        counts["dependents"] += h["dependents"] > 0
+        counts["territory"] += h["state"] == "PR"
+        counts["on_resource_limit"] += over == 0
+        counts["one_dollar_over_resource_limit"] += over == 1
+        countable = _restated_countable(members)
+        counts["on_income_limit"] += countable == 1.5 * _fpg(h["state"], size)
+        if h["separate"] and h["dependents"] == 1:
+            counts["separate_returns_split_dependents"] += 1
+            own_return = _restated_countable(members) < 1.5 * _fpg(h["state"], size - 1)
+            counts["split_dependents_change_income_test"] += own_return != income_ok
+        netted = _restated_countable(members, floor_sources=False)
+        counts["rental_floor_changes_income_test"] += income_ok != (
+            netted < 1.5 * _fpg(h["state"], size)
+        )
+        without = _restated_tests(h, members, real_estate=False)[2]
+        counts["real_estate_changes_resource_test"] += without != resource_ok
+        for me in members:
+            counts["no_medicare"] += not me["medicare_enrolled"]
+            routes = [me["medicaid_enrolled"], me["ssi"] > 0, me["msp_eligible"]]
+            if sum(routes) == 1:
+                counts["deemed_by_medicaid_only"] += routes[0]
+                counts["deemed_by_ssi_only"] += routes[1]
+                counts["deemed_by_msp_only"] += routes[2]
+            counts["passes_both_tests"] += income_ok and resource_ok
+            counts["fails_only_resources"] += income_ok and not resource_ok
+            counts["fails_only_income"] += resource_ok and not income_ok
+            _, eligible, enrolled = _restated_enrollment(h, me, income_ok, resource_ok)
+            in_part_d = me["takes_up_medicare_part_d_if_eligible"]
+            automatic = me["medicaid_enrolled"] or me["ssi"] > 0
+            takes_up = me["takes_up_part_d_lis_if_eligible"]
+            counts["eligible_without_part_d"] += eligible and not in_part_d
+            counts["eligible_not_taking_up"] += (
+                eligible and in_part_d and not automatic and not takes_up
+            )
+            counts["automatic_despite_no_take_up"] += (
+                eligible and in_part_d and automatic and not takes_up
+            )
+            counts["enrolled"] += enrolled
+    unreached = [branch for branch, count in counts.items() if count == 0]
+    assert not unreached, counts
+
+
 def test_countable_income_matches_msp_countable_income():
-    # No interest or dividends, everyone 70 and so Medicare eligible: the
-    # MSP formula then counts the same income the same way, through its
-    # couple branch for married couples and its personal branch otherwise.
+    # No interest, dividends or rental income, everyone 70 and so Medicare
+    # eligible: the MSP formula then counts the same income the same way,
+    # through its couple branch for married couples and its personal branch
+    # otherwise.
     households = [
         {
             **h,
             "members": [
-                {**m, "interest_income": 0, "dividend_income": 0} for m in h["members"]
+                {**m, "interest_income": 0, "dividend_income": 0, "rental_income": 0}
+                for m in h["members"]
             ],
         }
         for h in HOUSEHOLDS

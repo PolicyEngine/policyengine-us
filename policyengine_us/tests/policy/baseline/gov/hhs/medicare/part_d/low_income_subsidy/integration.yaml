@@ -102,7 +102,7 @@
   output:
     # Combined countable income (30,000 / 12 - 20) x 12 = 29,760 is over the
     # couple QI limit (29,214) but under 32,460; combined resources $30,000
-    # are under 33,100 + 3,000 = 36,100.
+    # are under 33,120 + 3,000 = 36,120.
     msp_eligible: [false, false]
     part_d_lis_family_size: [2, 2]
     part_d_lis_countable_income: [29_760, 29_760]
@@ -207,3 +207,135 @@
   output:
     part_d_lis_eligible: false
     part_d_lis: 0
+
+- name: Non-home real estate counts toward the resource limit.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 72
+        social_security: 22_800
+        bank_account_assets: 1_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+        household_other_real_estate_equity: 200_000
+  output:
+    # Countable income (22,800 / 12 - 20) x 12 = 22,560 is over the QI limit
+    # (21,546), so no Medicare Savings Program deems the person eligible, and
+    # under 23,940. Resources 1,000 + 200,000 exceed 16,590 + 1,500 = 18,090
+    # (20 CFR 418.3405(b)).
+    msp_eligible: false
+    part_d_lis_income_eligible: true
+    part_d_lis_resource_eligible: false
+    part_d_lis_eligible: false
+    part_d_lis: 0
+
+- name: The same person without the real estate gets the subsidy.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 72
+        social_security: 22_800
+        bank_account_assets: 1_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    msp_eligible: false
+    part_d_lis_resource_eligible: true
+    part_d_lis_eligible: true
+    part_d_lis: 1_254
+
+- name: A rental loss does not offset Social Security.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 70
+        social_security: 30_000
+        rental_income: -8_000
+        bank_account_assets: 5_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # SSI counts net rental income but does not let excess expenses offset
+    # other income (POMS SI 00830.505), so the subsidy counts (30,000 / 12 -
+    # 20) x 12 = 29,760, over 23,940. Netting the loss would give 21,760.
+    part_d_lis_countable_income: 29_760
+    part_d_lis_income_eligible: false
+    part_d_lis: 0
+
+- name: Spouses filing separately share one family size.
+  period: 2026
+  input:
+    people:
+      spouse1:
+        age: 70
+        social_security: 24_000
+      spouse2:
+        age: 68
+        social_security: 9_000
+      grandchild:
+        age: 10
+        is_tax_unit_dependent: true
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+      grandchild_unit:
+        members: [grandchild]
+    tax_units:
+      spouse1_return:
+        members: [spouse1]
+      spouse2_return:
+        members: [spouse2, grandchild]
+    spm_units:
+      spm_unit:
+        members: [spouse1, spouse2, grandchild]
+    households:
+      household:
+        members: [spouse1, spouse2, grandchild]
+        state_code: TX
+  output:
+    # The grandchild is a dependent on the second spouse's separate return,
+    # so the couple's family is 3 for both spouses. Combined countable
+    # income (33,000 / 12 - 20) x 12 = 32,760 is under 150% of the 3-person
+    # guideline, 1.5 x (15,960 + 2 x 5,680) = 40,980, but over the 2-person
+    # 32,460, so counting only the first spouse's return would deny that
+    # spouse. The couple's 2,730 a month exceeds the couple QI limit of
+    # 29,214 / 12 = 2,434.50, so no Medicare Savings Program deems them.
+    msp_eligible: [false, false, false]
+    part_d_lis_family_size: [3, 3, 1]
+    part_d_lis_countable_income: [32_760, 32_760, 0]
+    part_d_lis_income_eligible: [true, true, true]
+    part_d_lis_eligible: [true, true, false]
+    part_d_lis: [1_254, 1_254, 0]
+
+- name: 2027 uses the CPI-indexed resource limit.
+  period: 2027
+  input:
+    people:
+      person:
+        age: 70
+        social_security: 18_000
+        bank_account_assets: 18_500
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # The 2027 limit is 16,590 x 336.940 / 324.800 = 17,210.04, rounded to
+    # 17,210 (September 2026 and 2025 CPI-U), so resources may reach 17,210
+    # + 1,500 = 18,710. $18,500 is over the Medicare Savings Program's
+    # resource limit, and countable income 17,760 is under 150% of the
+    # projected 2027 guideline.
+    msp_eligible: false
+    part_d_lis_income_eligible: true
+    part_d_lis_resource_eligible: true
+    part_d_lis_eligible: true
+    part_d_lis: 1_384

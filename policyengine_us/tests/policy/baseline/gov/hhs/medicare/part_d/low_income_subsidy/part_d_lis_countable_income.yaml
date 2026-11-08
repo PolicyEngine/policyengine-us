@@ -77,3 +77,43 @@
         age: 66
   output:
     part_d_lis_countable_income: 0
+
+- name: A rental loss counts as zero and does not offset other income.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 70
+        social_security: 12_000
+        rental_income: -3_000
+  output:
+    # (12,000 / 12 - 20) x 12 = 11,760 (POMS SI 00830.505).
+    part_d_lis_countable_income: 11_760
+
+- name: One spouse's rental loss does not offset the other's income.
+  period: 2026
+  input:
+    people:
+      spouse1:
+        age: 70
+        social_security: 12_000
+      spouse2:
+        age: 68
+        rental_income: -6_000
+    marital_units:
+      marital_unit:
+        members: [spouse1, spouse2]
+  output:
+    part_d_lis_countable_income: [11_760, 11_760]
+
+- name: Rental income counts.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 70
+        social_security: 12_000
+        rental_income: 2_400
+  output:
+    # (14,400 / 12 - 20) x 12 = 14,160.
+    part_d_lis_countable_income: 14_160
