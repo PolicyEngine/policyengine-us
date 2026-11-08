@@ -19,5 +19,8 @@ class ut_military_retirement_credit_max(Variable):
             period,
             ["military_retirement_income"],
         )
-        p = parameters(period).gov.states.ut.tax.income.credits.military_retirement
-        return military_retirement_pay * p.rate
+        # 59-10-1043(2)(a): the percentage listed in 59-10-104(2), the
+        # income tax rate.
+        p = parameters(period).gov.states.ut.tax.income
+        in_effect = p.credits.military_retirement.in_effect
+        return in_effect * military_retirement_pay * p.rate

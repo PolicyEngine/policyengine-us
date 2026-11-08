@@ -1,0 +1,18 @@
+description: Utah allows the military retirement credit when this is true.
+values:
+  0000-01-01: false
+  # 59-10-1043 applies to taxable years beginning on or after January 1, 2021.
+  2021-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Utah military retirement credit in effect
+  reference:
+    - title: Utah Code §59-10-1043
+      href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1043.html
+    - title: Utah Military Retirement Credit
+      href: https://incometax.utah.gov/credits/military-retirement
+    - title: 2021 Utah TC-40 Instructions, Military Retirement Credit Worksheet
+      href: https://files.tax.utah.gov/tax/forms/2021/tc-40inst.pdf#page=22
+    - title: 2025 Utah TC-40 Instructions, Military Retirement Credit Worksheet
+      href: https://files.tax.utah.gov/tax/forms/2025/tc-40inst.pdf#page=23
