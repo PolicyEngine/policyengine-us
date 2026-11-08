@@ -12,12 +12,17 @@ class mn_amt_taxable_income(Variable):
         "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1mt_22.pdf",
         # 2024 Schedule M1MT, line 12
         "https://www.revenue.state.mn.us/sites/default/files/2025-07/m1mt-24.pdf#page=1",
+        # 2024 Schedule M1MT instructions, line 18: adds Schedule M1M line 17,
+        # Railroad Retirement Board benefits.
+        "https://www.revenue.state.mn.us/sites/default/files/2025-07/m1mt-24.pdf#page=2",
         # 2020 Schedule M1MT instructions, line 4: includes Schedule M1NC
         # line 6, the federal charitable deduction for non-itemizers.
         "https://www.revenue.state.mn.us/sites/default/files/2023-02/m1mt_20.pdf#page=2",
         # Laws 2023, ch. 1, sec. 22(c)(2) and (d)(2): the addition applies
         # to alternative minimum taxable income.
         "https://www.revisor.mn.gov/laws/2023/0/Session+Law/Chapter/1/",
+        # No state may tax Railroad Retirement Act annuities.
+        "https://www.law.cornell.edu/uscode/text/45/231m#a",
     )
     defined_for = StateCode.MN
 
@@ -49,6 +54,10 @@ class mn_amt_taxable_income(Variable):
             "mn_charity_subtraction",
             "mn_social_security_subtraction",
             "mn_military_pension_subtraction",
+            # M1MT line 18 takes Schedule M1M line 17, the Railroad
+            # Retirement Board benefits in federal AGI; 45 U.S.C. 231m(a)
+            # bars any state tax on them.
+            "taxable_railroad_benefits",
         ]
         amt_subs = add(tax_unit, period, AMT_SUBTRACTIONS)
         return fagi + charitable_addition - some_itm_deds - amt_subs

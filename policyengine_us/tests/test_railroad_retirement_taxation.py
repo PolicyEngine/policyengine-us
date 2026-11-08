@@ -9,9 +9,10 @@ I2. IRC 72(r)(1): moving any amount from the taxable part of a private
     pension to the taxable part of the rest of the railroad annuity leaves
     federal AGI and federal income tax unchanged.
 I3. 45 U.S.C. 231m(a): a household whose only income is railroad benefits
-    owes no state income tax in any state. Idaho's $10 permanent building
-    fund tax falls on every required filer, so there the test checks that
-    taxable income is zero.
+    owes no state income tax in any state, alternative and minimum taxes
+    included, and no state's withholding estimate counts the benefits.
+    Idaho's $10 permanent building fund tax falls on every required filer,
+    so there the test checks that taxable income is zero.
 I4. For a wage earner under 65, adding railroad benefits leaves the state's
     AGI unchanged, and in states whose reported AGI includes them it leaves
     state taxable income unchanged. Colorado and South Carolina start from
@@ -35,7 +36,7 @@ Simulation that holds every household it compares.
 The model keeps money in float32, whose step grows with the amount: 2^-7
 from $65,536 to $131,072 and 2^-6 from there to $262,144. Two calculations
 that add the same dollars in a different order can land a few steps apart,
-so the comparisons allow eight steps at the largest amount involved, and
+so the comparisons allow eight steps at the sum of the income inputs, and
 never less than a cent.
 """
 
@@ -183,7 +184,7 @@ def test_i1_tier_1_benefits_are_taxed_as_title_ii_benefits(
     simulation = Simulation(
         situation=situation([household(0, 0), household(head_share, spouse_share)])
     )
-    tol = tolerance(wages + head_benefits + spouse_benefits)
+    tol = tolerance(wages + head_benefits + (spouse_benefits if joint else 0))
     for variable in (
         "adjusted_gross_income",
         "income_tax",
@@ -231,11 +232,16 @@ def test_i2_the_rest_of_the_annuity_is_taxed_as_a_pension(
 @settings(max_examples=6, deadline=None)
 @given(
     tier_1=st.integers(min_value=0, max_value=60_000),
-    tier_2=st.integers(min_value=1, max_value=80_000),
+    tier_2=st.integers(min_value=1, max_value=300_000),
     tax_free=st.integers(min_value=0, max_value=5_000),
     age=st.integers(min_value=18, max_value=90),
     joint=st.booleans(),
 )
+# Minnesota's AMT starts from federal AGI (Schedule M1MT line 1) and Vermont's
+# minimum tax takes 3% of federal AGI over $150,000 (32 V.S.A. 5822(a)(6)).
+# Both bases must leave the benefits out.
+@example(tier_1=0, tier_2=64_255, tax_free=0, age=70, joint=True)
+@example(tier_1=0, tier_2=262_000, tax_free=0, age=70, joint=False)
 def test_i3_no_state_taxes_railroad_benefits(tier_1, tier_2, tax_free, age, joint):
     head = {
         "age": age,
@@ -251,11 +257,13 @@ def test_i3_no_state_taxes_railroad_benefits(tier_1, tier_2, tax_free, age, join
     assert calc(simulation, "adjusted_gross_income").min() >= tier_2
     tax = calc(simulation, "state_income_tax_before_refundable_credits")
     idaho_taxable_income = calc(simulation, "id_taxable_income")
+    withholding = calc(simulation, "state_withheld_income_tax")
     for i, state in enumerate(INCOME_TAX_STATES):
         if state == "ID":
             assert idaho_taxable_income[i] == 0, (state, idaho_taxable_income[i])
         else:
             assert abs(tax[i]) < CENT, (state, tax[i])
+        assert abs(withholding[i]) < CENT, (state, withholding[i])
 
 
 @settings(max_examples=6, deadline=None)

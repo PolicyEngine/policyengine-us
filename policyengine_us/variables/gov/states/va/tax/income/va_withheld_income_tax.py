@@ -10,7 +10,7 @@ class va_withheld_income_tax(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        agi = person("adjusted_gross_income_person", period)
+        agi = person("state_withholding_agi", period)
         p = parameters(period).gov.states.va.tax.income
         standard_deduction = p.deductions.standard["SINGLE"]
         reduced_agi = max_(agi - standard_deduction, 0)

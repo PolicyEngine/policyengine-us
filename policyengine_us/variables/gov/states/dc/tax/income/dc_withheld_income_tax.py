@@ -10,7 +10,7 @@ class dc_withheld_income_tax(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        agi = person("adjusted_gross_income_person", period)
+        agi = person("state_withholding_agi", period)
         p_irs = parameters(period).gov.irs.deductions.standard
         # We apply the maximum standard deduction amount
         standard_deduction = p_irs.amount["SINGLE"]
