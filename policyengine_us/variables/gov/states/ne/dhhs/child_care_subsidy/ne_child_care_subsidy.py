@@ -22,7 +22,18 @@ class ne_child_care_subsidy(Variable):
         # the program's age limit, so the state pays nothing toward the bill
         # share of any other member, such as a teenager without a special need.
         eligible_child = person("ne_child_care_subsidy_eligible_child", period)
-        private_charge = person("pre_subsidy_childcare_expenses", period)
+        bill_share = person("pre_subsidy_childcare_expenses", period)
+        # pre_subsidy_childcare_expenses splits the SPM unit's bill across
+        # members under 18, so an eligible 18-year-old with a special need gets
+        # no share. Eligible children without a share split the part of the
+        # bill that no member received.
+        unit_bill = spm_unit("spm_unit_pre_subsidy_childcare_expenses", period)
+        unshared_bill = max_(unit_bill - spm_unit.sum(bill_share), 0)
+        without_share = eligible_child & (bill_share <= 0)
+        count_without_share = spm_unit.sum(without_share)
+        private_charge = bill_share + without_share * spm_unit.project(
+            unshared_bill / max_(count_without_share, 1)
+        )
         if not p.provider_rate_model_in_effect:
             # Preserve the prior expense-based approximation until the first
             # fully encoded provider-rate matrix takes effect.
