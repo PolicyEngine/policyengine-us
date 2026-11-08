@@ -3,10 +3,13 @@ from policyengine_us.variables.gov.states.co.ccap.co_ccap_parameter_instant impo
     co_ccap_parameter_instant,
 )
 
-# Fees drop their cents. Income reaches the fee in float32, so a fee that should
-# come to whole dollars can fall a hair short of them; this tolerance keeps such
-# a fee from losing a dollar.
-WHOLE_DOLLAR_TOLERANCE = 0.001
+# Fees drop their cents. Income reaches the fee in float32, which leaves a fee
+# that should come to whole dollars up to about $0.0002 short of them, so the
+# floor adds this tolerance first. It stays below $1/1200 (about $0.00083):
+# whole-dollar annual income can give a fee that much short of a whole dollar,
+# such as $0.99917 on $1,199 a year, and that fee must still drop to the dollar
+# below.
+WHOLE_DOLLAR_TOLERANCE = 0.0005
 
 
 def drop_cents(amount):
