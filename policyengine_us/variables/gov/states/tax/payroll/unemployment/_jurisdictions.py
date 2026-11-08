@@ -66,14 +66,16 @@ STATE_EMPLOYER_UNEMPLOYMENT_TAX_VARIABLES = tuple(
 MONTHS_IN_QUARTER = 3
 
 
-def _jurisdiction_parameter_values(parameters, instant, parameter_name: str) -> list:
+def _jurisdiction_parameter_values(
+    parameters, instant, parameter_name: str, jurisdictions
+) -> list:
     gov = parameters(instant).gov
     return [
         getattr(
             getattr(getattr(gov, group), slug).tax.payroll.unemployment,
             parameter_name,
         )
-        for group, _, slug in STATE_UNEMPLOYMENT_TAX_JURISDICTIONS
+        for group, _, slug in jurisdictions
     ]
 
 
@@ -86,16 +88,32 @@ def select_state_unemployment_tax_parameter(
 ) -> ArrayLike:
     """Select each person's jurisdiction value of an unemployment parameter.
 
+    Reads the parameter only for jurisdictions where the simulation has
+    people, so a simulation needs values only for its own jurisdictions.
+    Minnesota's wage base reaches back to 2014, for example, while most
+    jurisdictions start in 2018 and carry that value back to 2015.
+
     With average_over_quarter_starts, each jurisdiction's value is the mean
     of its values at the four calendar quarter starts. New Hampshire, New
     Jersey, Tennessee and Vermont assign rates for a July-June rate year, so
     their annual rate mixes two rate years.
     """
     state_code = person.household("state_code_str", period)
+    jurisdictions = []
+    conditions = []
+    for jurisdiction in STATE_UNEMPLOYMENT_TAX_JURISDICTIONS:
+        in_jurisdiction = state_code == jurisdiction[1]
+        if in_jurisdiction.any():
+            jurisdictions.append(jurisdiction)
+            conditions.append(in_jurisdiction)
+    if not jurisdictions:
+        return np.zeros(len(state_code))
     if average_over_quarter_starts:
         quarter_starts = period.get_subperiods(MONTH)[::MONTHS_IN_QUARTER]
         by_quarter = [
-            _jurisdiction_parameter_values(parameters, quarter_start, parameter_name)
+            _jurisdiction_parameter_values(
+                parameters, quarter_start, parameter_name, jurisdictions
+            )
             for quarter_start in quarter_starts
         ]
         values = [
@@ -103,8 +121,7 @@ def select_state_unemployment_tax_parameter(
             for quarter_values in zip(*by_quarter)
         ]
     else:
-        values = _jurisdiction_parameter_values(parameters, period, parameter_name)
-    conditions = [
-        state_code == code for _, code, _ in STATE_UNEMPLOYMENT_TAX_JURISDICTIONS
-    ]
+        values = _jurisdiction_parameter_values(
+            parameters, period, parameter_name, jurisdictions
+        )
     return select(conditions, values, default=0)

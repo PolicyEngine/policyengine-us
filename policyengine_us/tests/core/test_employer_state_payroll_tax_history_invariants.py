@@ -27,7 +27,10 @@ Three tests run without a simulation:
 Hypothesis draws batches of workers, each with wages, a raise and a state; a
 seeded population puts two workers in every jurisdiction. Each batch runs as
 one vectorized simulation covering SIMULATED_YEARS, which include the July-June
-rate changes. For every worker and year:
+rate changes. The model reads each parameter only for the jurisdictions a
+simulation covers, and the batches cover from one to twelve, so the checks
+below also show that a worker's taxes do not depend on which other
+jurisdictions share the simulation. For every worker and year:
 
 4. Differential: each employer unemployment tax equals the published rate,
    averaged over the four quarter starts, times wages up to the published wage
