@@ -5,9 +5,12 @@ values:
     - social_security
     - total_unemployment_compensation
     # NDCC 57-02-08.1(5)(c) counts "any county, state, or federal public
-    # assistance benefits". The IRS leaves these out of gross income under its
-    # general welfare exclusion, which no statute or regulation enacts, so no
-    # federal or state law excludes them from income.
+    # assistance benefits". The IRS leaves general assistance, SSI and TANF out
+    # of gross income under its general welfare exclusion, which rests on IRS
+    # rulings, not a statute or regulation, so no federal or state law
+    # excludes them from income. SNAP (7 U.S.C. 2017(b)) and LIHEAP, including
+    # nd_liheap (42 U.S.C. 8624(f)(1)), stay out because federal law excludes
+    # them from income for any purpose under state law.
     - general_assistance
     - ssi
     - tanf

@@ -5,17 +5,20 @@ counts income "including any county, state, or federal public assistance
 benefits" and excludes "any amount excluded from income by federal or state
 law". No federal or North Dakota law excludes SSI, TANF or general assistance
 from income. 7 U.S.C. 2017(b) excludes SNAP from income "for any purpose under
-any Federal, State, or local laws". SSI and general assistance belong to a
-person; TANF belongs to an SPM unit, and add() gives each member of the unit an
-equal share, which counts in that member's tax unit.
+any Federal, State, or local laws", and 42 U.S.C. 8624(f)(1) excludes LIHEAP,
+including North Dakota's, "for any purpose under any Federal or State law".
+SSI and general assistance belong to a person; TANF belongs to an SPM unit,
+and add() gives each member of the unit an equal share, which counts in that
+member's tax unit.
 
 Four invariants hold for every input.
 
-1. A dollar of SSI, TANF or general assistance raises renter's refund income
-   by at most a dollar and never lowers it. It raises it by exactly a dollar
-   when the income without the benefits is above zero, since only the floor
-   at zero can absorb any of it.
-2. SNAP never changes renter's refund income or the refund.
+1. A dollar of a tax unit's SSI, general assistance or TANF share raises its
+   renter's refund income by at most a dollar and never lowers it. It raises
+   it by exactly a dollar when the income without the benefits exceeds zero,
+   since only the floor at zero can absorb any of it.
+2. SNAP and North Dakota LIHEAP never change renter's refund income or the
+   refund.
 3. Public assistance never raises the refund, since the refund falls as
    income rises.
 4. TANF counts once in total across the tax units of an SPM unit: the shares
@@ -61,6 +64,7 @@ def spm_units(draw, positive_income=False):
         },
         "tanf": draw(st.integers(min_value=0, max_value=10_000)),
         "snap": draw(st.integers(min_value=0, max_value=8_000)),
+        "nd_liheap": draw(st.integers(min_value=0, max_value=3_000)),
     }
     if positive_income or draw(st.booleans()):
         unit["family"] = {
@@ -78,14 +82,15 @@ def without_public_assistance(unit):
     return {**unit, "renter": renter, "family": family, "tanf": 0}
 
 
-def without(unit, benefit):
-    return {**unit, benefit: 0}
+def without(unit, *benefits):
+    return {**unit, **{benefit: 0 for benefit in benefits}}
 
 
 def situation(units):
-    """One household per SPM unit, all in North Dakota. Every benefit is an
-    input, so no formula adds any other."""
-    people, tax_units, spm, households, marital_units = {}, {}, {}, {}, {}
+    """One household, family and SPM unit per unit, all in North Dakota.
+    Every benefit is an input, so no formula adds any other."""
+    people, tax_units, marital_units = {}, {}, {}
+    spm, families, households = {}, {}, {}
     for index, unit in enumerate(units):
         renter = f"renter_{index}"
         people[renter] = {
@@ -136,7 +141,10 @@ def situation(units):
             "members": members,
             "tanf": {YEAR: unit["tanf"]},
             "snap": {YEAR: unit["snap"]},
+            "nd_liheap": {YEAR: unit["nd_liheap"]},
         }
+        # Without explicit families, the model puts every person in one.
+        families[f"family_{index}"] = {"members": members}
         households[f"household_{index}"] = {
             "members": members,
             "state_code": {YEAR: "ND"},
@@ -144,9 +152,10 @@ def situation(units):
     return {
         "people": people,
         "tax_units": tax_units,
-        "spm_units": spm,
-        "households": households,
         "marital_units": marital_units,
+        "spm_units": spm,
+        "families": families,
+        "households": households,
     }
 
 
@@ -163,8 +172,7 @@ def tax_unit_rows(units):
     return rows
 
 
-def calculate(units, *names):
-    simulation = Simulation(situation=situation(units))
+def calculate(simulation, *names):
     return [simulation.calculate(name, YEAR).astype(float) for name in names]
 
 
@@ -202,6 +210,7 @@ def expected_public_assistance(units):
             },
             "tanf": 0,
             "snap": 2_000,
+            "nd_liheap": 600,
         },
         # The floor absorbs part of the SSI.
         {
@@ -215,17 +224,47 @@ def expected_public_assistance(units):
             },
             "tanf": 0,
             "snap": 0,
+            "nd_liheap": 0,
         },
+    ]
+)
+@example(
+    units=[
+        # Above the floor in a shared SPM unit, the renter's tax unit counts
+        # 3,000 of SSI, 500 of general assistance and a third of the TANF
+        # (4,700), and the family's counts the child's 2,400 of SSI and two
+        # thirds of the TANF (4,800).
+        {
+            "renter": {
+                "age": 72,
+                "employment_income": 12_000,
+                "ssi": 3_000,
+                "general_assistance": 500,
+                "other_medical_expenses": 0,
+                "rent": 7_200,
+            },
+            "tanf": 3_600,
+            "snap": 1_500,
+            "nd_liheap": 900,
+            "family": {"parent_wages": 9_000, "child_ssi": 2_400},
+        }
     ]
 )
 def test_public_assistance_counts_dollar_for_dollar_above_the_floor(units):
     stripped = [without_public_assistance(unit) for unit in units]
-    no_snap = [without(unit, "snap") for unit in units]
+    no_snap_or_liheap = [without(unit, "snap", "nd_liheap") for unit in units]
+    simulation = Simulation(situation=situation(units + stripped + no_snap_or_liheap))
+    # The SNAP and LIHEAP inputs reach the model, so the guard below tests them.
+    for name in ("snap", "nd_liheap"):
+        (amounts,) = calculate(simulation, name)
+        np.testing.assert_allclose(
+            amounts[: len(units)], [unit[name] for unit in units], atol=TOLERANCE
+        )
     income, refund = calculate(
-        units + stripped + no_snap, "nd_renters_refund_income", "nd_renters_refund"
+        simulation, "nd_renters_refund_income", "nd_renters_refund"
     )
     count = len(income) // 3
-    with_benefits, without_benefits, without_snap = (
+    with_benefits, without_benefits, without_snap_or_liheap = (
         income[:count],
         income[count : 2 * count],
         income[2 * count :],
@@ -238,8 +277,8 @@ def test_public_assistance_counts_dollar_for_dollar_above_the_floor(units):
     np.testing.assert_allclose(
         added[above_floor], benefits[above_floor], atol=TOLERANCE
     )
-    # SNAP stays out of income and the refund.
-    np.testing.assert_allclose(without_snap, with_benefits, atol=TOLERANCE)
+    # SNAP and LIHEAP stay out of income and the refund.
+    np.testing.assert_allclose(without_snap_or_liheap, with_benefits, atol=TOLERANCE)
     np.testing.assert_allclose(refund[2 * count :], refund[:count], atol=TOLERANCE)
     # More income never raises the refund.
     assert (refund[:count] <= refund[count : 2 * count] + TOLERANCE).all()
@@ -260,13 +299,16 @@ def test_public_assistance_counts_dollar_for_dollar_above_the_floor(units):
             },
             "tanf": 3_600,
             "snap": 0,
+            "nd_liheap": 0,
             "family": {"parent_wages": 9_000, "child_ssi": 0},
         }
     ]
 )
 def test_tanf_counts_once_across_the_tax_units_of_an_spm_unit(units):
     no_tanf = [without(unit, "tanf") for unit in units]
-    (income,) = calculate(units + no_tanf, "nd_renters_refund_income")
+    (income,) = calculate(
+        Simulation(situation=situation(units + no_tanf)), "nd_renters_refund_income"
+    )
     count = len(income) // 2
     added = income[:count] - income[count:]
     # Every tax unit has wages, so the floor absorbs no share.
