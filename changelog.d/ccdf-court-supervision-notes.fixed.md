@@ -1,1 +1,1 @@
-Correct New York's and South Dakota's child care coverage notes, which listed the court-supervision age extension as not modeled; both programs model it.
+Correct New York's and South Dakota's child care coverage notes, which listed the court-supervision age extension as not modeled; the model applies it in both states. Move the limits that apply in every state, such as the 12-month eligibility period, from New York's note to the CCDF program note.
