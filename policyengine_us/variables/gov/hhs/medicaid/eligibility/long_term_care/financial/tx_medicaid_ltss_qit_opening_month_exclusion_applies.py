@@ -14,8 +14,9 @@ class tx_medicaid_ltss_qit_opening_month_exclusion_applies(Variable):
         "opening deposit can cover multiple identified sources, so the "
         "positive deposit condition combines earned and unearned source "
         "components. Covered deposited components cannot exceed either "
-        "the covered source or the actual valid deposits. Other months "
-        "and states continue to exclude actual valid deposits only."
+        "the covered source or the actual valid deposits. Other months, "
+        "and other states with a qualified income trust exception, "
+        "continue to exclude actual valid deposits only."
     )
     reference = "https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/f-6800-qualified-income-trust"
 

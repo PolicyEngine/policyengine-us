@@ -18,11 +18,16 @@ class medicaid_ltss_qit_adjusted_unearned_income(Variable):
         "Under F-6820, an unverified partial opening-month deposit "
         "invalidates the trust for this screen: neither income stream "
         "receives a deposited-income exclusion. Full covered deposits "
-        "retain their actual-deposit exclusion without that verification."
+        "retain their actual-deposit exclusion without that verification. "
+        "Washington covers nursing facility services for the medically "
+        "needy, so 42 USC 1396p(d)(4)(B)(iii) gives it no qualified income "
+        "trust exception and deposits leave its income unchanged."
     )
     reference = (
         "https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/f-6800-qualified-income-trust",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=54",
+        "https://www.law.cornell.edu/uscode/text/42/1396p#d_4_B",
+        "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1395",
     )
 
     def formula(person, period, parameters):
@@ -49,8 +54,9 @@ class medicaid_ltss_qit_adjusted_unearned_income(Variable):
         invalid_opening_deposit = person(
             "tx_medicaid_ltss_qit_opening_month_deposit_invalid", period
         )
+        state = person.household("state_code", period)
         return where(
-            invalid_opening_deposit,
+            invalid_opening_deposit | (state == state.possible_values.WA),
             income,
             max_(income - deposits - additional_exclusion, 0),
         )

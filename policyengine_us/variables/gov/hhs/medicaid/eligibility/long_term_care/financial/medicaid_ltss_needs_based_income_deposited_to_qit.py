@@ -15,7 +15,10 @@ class medicaid_ltss_needs_based_income_deposited_to_qit(Variable):
         "than an additional deposit. Defaults to zero. The model caps it "
         "at both gross needs-based income and total unearned deposits "
         "when computing the needs-based income remaining outside the "
-        "trust. Trust and deposit validity are unmodeled."
+        "trust. Washington deposits have no effect, because the state has "
+        "no qualified income trust exception under 42 USC "
+        "1396p(d)(4)(B)(iii). Other trust and deposit validity are "
+        "unmodeled."
     )
     reference = (
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=9",

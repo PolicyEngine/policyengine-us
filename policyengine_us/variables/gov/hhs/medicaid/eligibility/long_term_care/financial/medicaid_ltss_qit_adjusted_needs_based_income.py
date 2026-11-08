@@ -14,7 +14,10 @@ class medicaid_ltss_qit_adjusted_needs_based_income(Variable):
         "cannot exceed gross needs-based income or total unearned "
         "deposits; the remaining needs-based amount cannot exceed "
         "remaining unearned income. This preserves the general exclusion "
-        "carve-out when deposited source classifications are incomplete."
+        "carve-out when deposited source classifications are incomplete. "
+        "Washington has no qualified income trust exception under "
+        "42 USC 1396p(d)(4)(B)(iii), so deposits leave its needs-based "
+        "income unchanged."
     )
     reference = "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=9"
 
@@ -33,7 +36,12 @@ class medicaid_ltss_qit_adjusted_needs_based_income(Variable):
             ),
             min_(gross_needs_based, unearned_deposits),
         )
-        return min_(
-            max_(gross_needs_based - needs_based_deposits, 0),
-            person("medicaid_ltss_qit_adjusted_unearned_income", period),
+        state = person.household("state_code", period)
+        return where(
+            state == state.possible_values.WA,
+            gross_needs_based,
+            min_(
+                max_(gross_needs_based - needs_based_deposits, 0),
+                person("medicaid_ltss_qit_adjusted_unearned_income", period),
+            ),
         )

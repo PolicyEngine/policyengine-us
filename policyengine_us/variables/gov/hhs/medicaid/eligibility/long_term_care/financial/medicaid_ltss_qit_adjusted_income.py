@@ -13,8 +13,10 @@ class medicaid_ltss_qit_adjusted_income(Variable):
         "person's earned and unearned trust deposits from their own gross "
         "source components and combines the remaining income when the "
         "derived assistance unit budgets both spouses as a couple. "
-        "Trust legality, irrevocability, funding, payback terms, and the "
-        "validity of deposits are unmodeled. Delaware income exclusions "
+        "Washington has no qualified income trust exception under "
+        "42 USC 1396p(d)(4)(B)(iii), so its deposits reduce no income. "
+        "Other trust legality, irrevocability, funding, payback terms, and "
+        "the validity of deposits are unmodeled. Delaware income exclusions "
         "are computed separately in medicaid_ltss_countable_income."
     )
     reference = (

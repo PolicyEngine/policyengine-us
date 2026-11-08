@@ -10,9 +10,11 @@ class medicaid_ltss_earned_income_deposited_to_qit(Variable):
     default_value = 0
     documentation = (
         "Each person's own monthly earned income validly deposited into "
-        "a qualified income trust. Defaults to no deposits. The model "
-        "excludes these deposits from gross earned income without allowing "
-        "a negative remainder. The Texas opening-month rule can also "
+        "a qualified income trust. Defaults to no deposits. Outside "
+        "Washington, which has no qualified income trust exception under "
+        "42 USC 1396p(d)(4)(B)(iii), the model excludes these deposits "
+        "from gross earned income without allowing a negative remainder. "
+        "The Texas opening-month rule can also "
         "exclude an entire identified source after verification of "
         "subsequent full deposits. An unverified partial opening-month "
         "deposit invalidates the Texas trust for this screen, restoring "

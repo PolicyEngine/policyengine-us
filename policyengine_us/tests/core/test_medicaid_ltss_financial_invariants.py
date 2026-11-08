@@ -364,8 +364,12 @@ def test_raw_components_determine_income_in_the_statutory_order(population):
     people, _, base, shifted = population
     expected = []
     for person in people:
-        earned = max(person["earned_income"] - person["earned_qit"], 0)
-        unearned = max(person["unearned_income"] - person["unearned_qit"], 0)
+        # Washington has no qualified income trust exception.
+        has_qit_exception = person["state"] != "WA"
+        earned_qit = person["earned_qit"] if has_qit_exception else 0
+        unearned_qit = person["unearned_qit"] if has_qit_exception else 0
+        earned = max(person["earned_income"] - earned_qit, 0)
+        unearned = max(person["unearned_income"] - unearned_qit, 0)
         needs = min(person["needs_based_income"], person["unearned_income"])
         deposited_needs = min(
             person["needs_based_qit"],
