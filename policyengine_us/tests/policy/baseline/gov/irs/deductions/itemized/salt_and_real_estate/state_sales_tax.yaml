@@ -1561,3 +1561,35 @@
     adjusted_gross_income: 100_000
     state_sales_tax_income_bracket: 11
     state_sales_tax: 992
+
+# The same page 5 list adds the "nontaxable part of social security and
+# railroad retirement benefits" and the "nontaxable part of IRA, pension, or
+# annuity distributions" to line 11b. A Railroad Retirement Act annuity's
+# tax-free part and the untaxed part of the social security equivalent benefit
+# (SSEB) therefore raise the row, as veterans' benefits do.
+- name: $30,000 of tax-free railroad annuity moves the same filer to the $120,000-$140,000 row, 2025
+  period: 2025
+  input:
+    state_code: TX
+    employment_income: 100_000
+    tax_exempt_railroad_pension_benefits: 30_000
+  output:
+    adjusted_gross_income: 100_000
+    state_sales_tax_income_bracket: 11
+    state_sales_tax: 992
+
+- name: The untaxed part of a $22,000 SSEB moves the same filer to the $120,000-$140,000 row, 2025
+  period: 2025
+  input:
+    state_code: TX
+    employment_income: 100_000
+    railroad_social_security_equivalent_benefits: 22_000
+  output:
+    # Provisional income comes to $100,000 + $22,000 / 2 = $111,000. Section
+    # 86(a)(2) taxes the lesser of 85% of the benefit ($18,700) and 85% of
+    # $111,000 - $34,000 plus $4,500 ($69,950), so AGI reaches $118,700, in
+    # the $100,000-$120,000 row. The untaxed $3,300 lifts the total to $122,000.
+    adjusted_gross_income: 118_700
+    tax_exempt_railroad_social_security_equivalent_benefits: 3_300
+    state_sales_tax_income_bracket: 11
+    state_sales_tax: 992
