@@ -11042,10 +11042,9 @@ candidates:
     - policyengine_us/parameters/gov/territories/vi/tax/payroll/unemployment/default_rate.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10700
-  state: open
-  note: PE-US applies Section 308(b)(2)'s 2% from 2024 to 2026. PolicyEngine can rule once VIDOL states a new-employer rate
-    for those years in a notice, handbook or regulation. The Department of Labor's 4.04% for 2026 equals VIDOL's 2026 average
-    contribution rate.
+  state: ruled
+  note: PE-US applies Section 308(b)(2)'s 2% from 2024 to 2026. The Department of Labor's 4.04% for 2026 equals VIDOL's 2026
+    average contribution rate.
 - id: us-vt:liheap-income-maximum-large-households
   program: liheap
   years:
