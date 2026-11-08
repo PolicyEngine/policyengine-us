@@ -12,11 +12,9 @@ class co_ccap_care_days_per_month(Variable):
     label = "Colorado Child Care Assistance Program days of care a month"
     defined_for = StateCode.CO
     reference = (
-        # 8 CCR 1403-1 3.130(C), PDF page 119: daily rates.
+        # 8 CCR 1403-1 3.130(C), (E) and (F), PDF pages 119-120: daily rates,
+        # paid absences and drop-in days.
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=119",
-        # 3.130(E) and (F), PDF pages 119 and 120: paid absences and drop-in
-        # days.
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=120",
     )
 
     def formula(person, period, parameters):

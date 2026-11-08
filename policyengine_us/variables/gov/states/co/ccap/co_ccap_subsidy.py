@@ -9,16 +9,9 @@ class co_ccap_subsidy(Variable):
     definition_period = MONTH
     defined_for = "co_ccap_eligible"
     reference = (
-        # 8 CCR 1403-1 3.103(UU), PDF page 9
+        # 8 CCR 1403-1 3.103(UU), 3.111(F), 3.124(K) and (L), 3.125(FFF) and
+        # 3.132(D) and (E), PDF pages 9, 35, 82, 101, 126
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=9",
-        # 3.111(F), PDF page 35
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=35",
-        # 3.124(K) and (L), PDF page 82
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=82",
-        # 3.125(FFF), PDF page 101
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=101",
-        # 3.132(D) and (E), PDF page 126
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=126",
     )
 
     def formula(spm_unit, period, parameters):
