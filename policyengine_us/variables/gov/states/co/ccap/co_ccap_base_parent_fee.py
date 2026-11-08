@@ -8,23 +8,29 @@ class co_ccap_base_parent_fee(Variable):
     value_type = float
     entity = SPMUnit
     label = "Colorado Child Care Assistance Program base parent fee"
+    documentation = (
+        "The parent fee on gross countable income, before the fee for "
+        "additional children, rounding, the part-time rate and the quality "
+        "discount. Through July 2028 it is 1% of income plus 14% of income "
+        "above the federal poverty guideline; from August 2028 it is a "
+        "marginal schedule of 1%, 3%, 5% and 7%."
+    )
     reference = (
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=41",
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=62",
+        # PDF pages 82-84
+        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=82",
     )
     unit = USD
     definition_period = MONTH
+    defined_for = StateCode.CO
 
     def formula(spm_unit, period, parameters):
         instant_str = co_ccap_parameter_instant(period)
-        p = parameters(instant_str).gov.states.co.ccap
-        # Calculate base parent fee and add on parent fee.
-        gross_income = spm_unit("co_ccap_countable_income", period)
-        fpg = spm_unit("spm_unit_fpg", period)
-        # Calculate base parent fee scaled (note income is monthly):
-        # When income_scaled <= 1: income_scaled * 0.01
-        # When income_scaled > 1: [1 * 0.01 + (income_scaled - 1) * 0.14]
-        # Multiply by fpg afterward to scale back up
-        gross_income_fpg_ratio = gross_income / fpg
-        base_parent_fee_scaled = p.parent_fee.base.calc(gross_income_fpg_ratio)
-        return base_parent_fee_scaled * fpg
+        p = parameters(instant_str).gov.states.co.ccap.parent_fee
+        # Families with no income pay no fee (section 3.124(I)(7)); a net loss
+        # counts as no income.
+        income = max_(spm_unit("co_ccap_countable_income", period), 0)
+        fpg = spm_unit("co_ccap_fpg", period)
+        income_to_fpg = np.zeros_like(income)
+        has_fpg = fpg > 0
+        income_to_fpg[has_fpg] = income[has_fpg] / fpg[has_fpg]
+        return p.income_rate * income + p.marginal_rate.calc(income_to_fpg) * fpg
