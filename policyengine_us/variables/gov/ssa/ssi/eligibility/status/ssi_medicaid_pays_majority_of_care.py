@@ -10,3 +10,6 @@ class ssi_medicaid_pays_majority_of_care(Variable):
         "https://www.law.cornell.edu/cfr/text/20/416.414",
         "https://secure.ssa.gov/apps10/poms.nsf/lnx/0500520011",
     )
+
+    def formula(person, period, parameters):
+        return person("is_in_medicaid_facility", period)
