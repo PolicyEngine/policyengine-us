@@ -893,10 +893,13 @@ def install_social_security_input_compatibility():
     Holder.get_array = get_array
 
     @wraps(_PHYSICAL["get_known_periods"])
-    def get_known_periods(holder):
-        values = _PHYSICAL["get_known_periods"](holder)
+    def get_known_periods(holder, branch_name=None):
+        branch_kwargs = {} if branch_name is None else {"branch_name": branch_name}
+        values = _PHYSICAL["get_known_periods"](holder, **branch_kwargs)
         if holder.variable.name in _REPORTED_COMPONENTS and _enabled(holder.simulation):
-            if _allow_fallback(holder.simulation, holder.variable.name):
+            if _allow_fallback(
+                holder.simulation, holder.variable.name, **branch_kwargs
+            ):
                 values = [
                     *values,
                     *(
@@ -904,9 +907,13 @@ def install_social_security_input_compatibility():
                         for period in _public_periods(
                             holder.simulation,
                             holder.variable.name.removesuffix("_reported"),
+                            **branch_kwargs,
                         )
                         if _effective_value(
-                            holder.simulation, holder.variable.name, period
+                            holder.simulation,
+                            holder.variable.name,
+                            period,
+                            **branch_kwargs,
                         )[0]
                         is not None
                     ),

@@ -47,7 +47,8 @@ checked on every run:
 These are structural checks: they tie markers, the register and the backlog
 together; they do not judge whether code follows a statute. rulespec-us's own
 ``verify`` checks the other half at pinned commits: that each listed file and
-test exists and that ``cites_entry`` is true.
+test exists and that each ``cites_entry`` claim matches whether the file names
+the entry.
 """
 
 from __future__ import annotations
@@ -114,10 +115,18 @@ CONFLICT_COMMENT_RE = re.compile(
 )
 
 # Files with conflict-sounding comments and no marker, and how many such
-# lines each has. A file may only go down: register and mark the conflict,
-# or reword a comment that is not one, then lower or delete its count here.
-# A new file or a higher count fails.
+# lines each has. A new file or a higher count fails, so reword a comment that
+# describes no conflict. A real conflict stays: record it as a candidate and add
+# or raise its line here in the same PR, and the line goes when the marker lands
+# (CONTRIBUTING.md, "Source conflicts"). A lower count must be recorded here too.
 KNOWN_UNMARKED: dict[str, int] = {
+    "policyengine_us/variables/gov/states/ar/tax/income/deductions/standard/ar_standard_deduction_indiv.py": 1,
+    "policyengine_us/variables/gov/states/ar/tax/income/deductions/standard/ar_standard_deduction_joint.py": 1,
+    "policyengine_us/variables/gov/states/ar/tax/income/low_income/ar_low_income_tax_joint.py": 1,
+    "policyengine_us/variables/gov/states/az/tax/income/credits/az_increased_excise_tax_credit.py": 1,
+    "policyengine_us/variables/gov/states/ca/tax/income/credits/ca_renter_credit.py": 1,
+    "policyengine_us/variables/gov/states/ca/tax/income/credits/earned_income/ca_eitc_eligible.py": 1,
+    "policyengine_us/parameters/gov/states/ca/tax/income/credits/renter/income_cap.yaml": 1,
     "policyengine_us/parameters/gov/irs/ald/charitable_contributions/cap.yaml": 1,
     "policyengine_us/parameters/gov/irs/credits/residential_clean_energy/fuel_cell_cap_per_kw.yaml": 1,
     "policyengine_us/parameters/gov/irs/income/exemption/overtime/hce_salary_threshold.yaml": 1,
@@ -139,19 +148,20 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/parameters/gov/states/wi/tax/income/credits/homestead/income/disqualified_loss_sources.yaml": 1,
     "policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/eligibility/min.yaml": 1,
     "policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/eligibility/separate_filer.yaml": 1,
-    "policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/max_amount.yaml": 1,
     "policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/phase_in_rate.yaml": 1,
     "policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/phase_out/rate.yaml": 1,
-    "policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/phase_out/threshold/joint.yaml": 1,
-    "policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/phase_out/threshold/single.yaml": 1,
-    "policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/unearned_income/limit.yaml": 1,
     "policyengine_us/parameters/gov/territories/pr/tax/income/gradual_adjustment/exemption_rate.yaml": 1,
     "policyengine_us/parameters/gov/territories/pr/tax/income/gradual_adjustment/threshold.yaml": 1,
     "policyengine_us/parameters/gov/usda/snap/eligibility/waiting_period/subject_immigration_statuses.yaml": 1,
     "policyengine_us/reforms/states/az/dependent_credit/az_dependent_credit_reform.py": 1,
     "policyengine_us/reforms/states/mn/walz/mn_walz_hf1938.py": 1,
+    "policyengine_us/variables/gov/irs/credits/ctc/refundable/ctc_credit_limit_worksheet_b_applies.py": 1,
+    "policyengine_us/variables/gov/irs/credits/earned_income/eitc_relevant_investment_income.py": 1,
+    "policyengine_us/variables/gov/irs/credits/earned_income/eligibility/eitc_eligible.py": 1,
+    "policyengine_us/variables/gov/irs/tax_unit_is_required_to_file.py": 1,
     "policyengine_us/variables/gov/local/ca/cc/ga/ca_cc_general_assistance_maximum_grant.py": 1,
     "policyengine_us/variables/gov/local/ca/cc/ga/eligibility/ca_cc_general_assistance_eligible.py": 1,
+    "policyengine_us/variables/gov/local/ny/nyc/tax/income/credits/household/nyc_household_credit.py": 2,
     "policyengine_us/variables/gov/states/ar/ade/oec/sra/rates/ar_sra_daily_copay.py": 1,
     "policyengine_us/variables/gov/states/ca/hbex/premium_subsidy/ca_premium_subsidy_applicable_percentage.py": 1,
     "policyengine_us/variables/gov/states/ct/tax/income/rebate/ct_child_tax_rebate.py": 1,
@@ -162,10 +172,13 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/variables/gov/states/hi/tax/income/subtractions/hi_student_loan_interest_adjustment.py": 1,
     "policyengine_us/variables/gov/states/ks/tax/income/deductions/ks_itemized_deductions.py": 1,
     "policyengine_us/variables/gov/states/ky/dcbs/liheap/ky_liheap.py": 1,
+    "policyengine_us/variables/gov/states/md/tax/income/capital_gains/md_net_capital_gain.py": 1,
     "policyengine_us/variables/gov/states/mn/dcyf/mfip/income/earned/mn_mfip_dependent_care_deduction.py": 1,
     "policyengine_us/variables/gov/states/mn/tax/income/deductions/mn_itemized_deductions.py": 1,
-    "policyengine_us/variables/gov/states/mn/tax/income/subtractions/mn_k12_education_subtraction.py": 1,
     "policyengine_us/variables/gov/states/mo/dese/ccs/eligibility/mo_ccs_income_eligible.py": 1,
+    "policyengine_us/variables/gov/states/nm/tax/income/exemptions/nm_medical_expense_exemption.py": 1,
+    "policyengine_us/variables/gov/states/ny/tax/income/credits/ny_household_credit_potential.py": 2,
+    "policyengine_us/variables/gov/states/sc/tax/income/subtractions/retirement/sc_retirement_deduction_survivors.py": 1,
     "policyengine_us/variables/gov/states/vt/tax/income/credits/cdcc/vt_low_income_cdcc_eligible.py": 1,
     "policyengine_us/variables/gov/states/wa/dor/property_tax_exemption/senior_disabled/wa_pte_categorical_eligible.py": 1,
     "policyengine_us/variables/gov/territories/pr/tax/income/pr_agi.py": 1,
@@ -443,8 +456,11 @@ def test_conflict_sounding_comments_do_not_grow():
     assert not grown, (
         "These files gained comments that read like a conflict between sources, with no "
         "`# Source conflict <jurisdiction>:<id>` marker. If a statute and a form, instructions, manual or "
-        "agency practice disagree, register it (rulespec-us known-source-conflicts.yaml) and "
-        f"mark the deciding line; otherwise reword the comment. Files and counts: {grown}"
+        "agency practice disagree, record it in source_conflicts/candidates.yaml (unless the "
+        "pinned register already lists it) and add or raise the file's KNOWN_UNMARKED line in "
+        "this PR; the register entry and the marker come after "
+        'it merges (CONTRIBUTING.md, "Source conflicts"). '
+        f"Otherwise reword the comment. Files and counts: {grown}"
     )
     assert not shrunk, (
         "These files now have fewer unmarked conflict-sounding comments; lower or delete "

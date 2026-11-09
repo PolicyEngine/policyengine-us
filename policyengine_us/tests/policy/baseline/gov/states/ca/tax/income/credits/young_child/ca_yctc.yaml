@@ -406,3 +406,108 @@
     # Step 8: earned income of zero or less; the 5,000 net loss and the
     # 10,000 wages are within the 2022 $32,490 limits, so the full $1,083.
     ca_yctc: 1_083
+
+- name: 2024 child under 6 with an SSN qualifies for the YCTC
+  # R&TC 17052.1(c): the YCTC qualifying child has the section 17052
+  # meaning. Earned income of $10,000 is below the $26,626 phase-out start,
+  # so the full 2024 amount.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+      child:
+        age: 3
+        ssn_card_type: CITIZEN
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_is_qualifying_child_for_caleitc: [false, true]
+    ca_eitc_child_count: 1
+    ca_yctc: 1_154
+
+- name: 2024 child under 6 with an ITIN qualifies for the YCTC
+  # R&TC 17052(p) accepts an ITIN from 2020, for CalEITC and so for YCTC.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+      child:
+        age: 3
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_is_qualifying_child_for_caleitc: [false, true]
+    ca_eitc_child_count: 1
+    ca_yctc: 1_154
+
+- name: 2024 child under 6 with neither an SSN nor an ITIN does not qualify for the YCTC
+  # FTB 3514 Line 7: a child without an SSN or federal ITIN cannot count as
+  # a qualifying child for the EITC or YCTC.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+      child:
+        age: 3
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_is_qualifying_child_for_caleitc: [false, false]
+    ca_eitc_child_count: 0
+    # The childless CalEITC is still positive, but no qualifying child.
+    ca_yctc: 0
+
+- name: 2019 child under 6 with only an ITIN does not qualify for the YCTC
+  # Before 2020 California follows the federal identification rule, under
+  # which an ITIN does not count.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+      child:
+        age: 3
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_is_qualifying_child_for_caleitc: [false, false]
+    ca_eitc_child_count: 0
+    ca_yctc: 0

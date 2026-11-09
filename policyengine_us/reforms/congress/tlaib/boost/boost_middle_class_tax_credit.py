@@ -141,6 +141,7 @@ def create_boost_middle_class_tax_credit() -> Reform:
                 "ma_eaedc",  # Massachusetts.
                 "ak_energy_relief",
                 "nj_property_tax_relief",  # ANCHOR, Senior Freeze and Stay NJ.
+                "state_property_tax_refunds",  # Paid outside the income tax.
                 "ny_drive_clean_rebate",
             ]
             if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:

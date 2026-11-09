@@ -386,7 +386,6 @@ def _gross_test_simulation(day: date):
             },
             spm_unit={
                 "tanf": {str(year): 0 for year in years},
-                "ca_state_supplement": _monthly(months, 0),
             },
         )
         for state in STATES

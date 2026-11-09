@@ -104,6 +104,25 @@ fixed. Already-SE income is removed before computing the draw, and disabled
 years retain baseline tax and deduction behavior. The `1` cap option
 intentionally permits earnings above C.
 
+## Self-employed health insurance limit
+
+The reform also replaces
+`self_employed_health_insurance_earned_income_limit` (Form 7206 line 13).
+Line 5 sums the profits of businesses subject to SE tax, and line 6
+apportions the deductible SE tax on line 7 to the plan business by its share
+of line 5. With `half_seca_deduction: true`, line 5 adds
+`owners_draw_niit_exclusion`: `draw_oasdi_base` divided by the net-earnings
+factor (q by default) with HI off, or the whole actual gross draw D with HI
+on. These are the draw profits whose SECA the deduction includes. Draw
+profits beyond the OASDI room with HI off stay out of line 5. With
+`half_seca_deduction: false` the draw's SECA is not deductible, so line 5
+omits the draw and the limit follows the baseline formula. Disabled years
+use the baseline formula. The draw enters line 5 only: the plan business is
+chosen as in the baseline, from the Schedule C business, the farm, the
+partnership or the S corporation named by
+`self_employed_health_insurance_plan_business`, or the one with the largest
+line 13 when none is named.
+
 ## Benefit credit and active NIIT interaction
 
 `owners_draw_credited_earnings` exposes N_D when benefit credit is enabled,
@@ -112,23 +131,27 @@ annual earnings to the existing `ss_aime` earnings-history helper and adds
 them before applying each year's wage-base cap. A supplied positive
 `ss_aime_input` retains its baseline precedence. This reform does not append
 an amount to final AIME or alter reported benefits. This bridge inherits
-main's AIME lookback and age rules and its separate
-`gov.ssa.social_security.wage_base` path, last authored for 2026; it does not
-synchronize that path with the current tax cap. Mini-PIA integration and a
-complete annual-history ledger remain separate future work.
+main's AIME lookback, age rules and separate
+`gov.ssa.social_security.wage_base` path. The processed current-law wage-indexed
+paths now extend through 2100; tax-cap and benefit-cap reforms remain separate
+policy choices. The opt-in [annual-history calculator](social_security_history.md)
+uses the same per-year owners' draw kernel, retains earnings through the year
+before claiming, and carries the adjusted draw into both conventional AIME
+and annual mini-PIAs. Its ledger also coordinates separate above-cap credit.
 
 `owners_draw_niit_exclusion` is the matching gross-profit exclusion for a
-S.770 active-business NIIT option. With OASDI only it is
-`draw_oasdi_base / q`: only profits whose adjusted earnings actually face
-SECA are excluded. With HI enabled it is the entire actual gross draw D,
-because N_D faces uncapped HI. Profits beyond OASDI room remain in the active
-base when HI is off. The undrawn share and any floor-rejected planned draw
-also remain. Existing already-SE gross K_active must separately be excluded
-regardless of the OASDI cap because existing SE earnings face uncapped HI.
-When both reforms are active, `s770_active_business_income` consumes this
-calculated exclusion, including an explicit net-factor override. When owners
-draw is disabled, before its start year, or uninstalled, the S.770 manual
-draw hooks retain their original behavior.
+S.770 active-business NIIT option. With OASDI only it is `draw_oasdi_base`
+divided by the net-earnings factor (q by default): only profits whose
+adjusted earnings actually face SECA are excluded. With HI enabled it is the
+entire actual gross draw D, because N_D faces uncapped HI. Profits beyond
+OASDI room remain in the active base when HI is off. The undrawn share and
+any floor-rejected planned draw also remain. Existing already-SE gross
+K_active must separately be excluded regardless of the OASDI cap because
+existing SE earnings face uncapped HI. When both reforms are active,
+`s770_active_business_income` consumes this calculated exclusion, including
+an explicit net-factor override. When owners draw is disabled, before its
+start year, or uninstalled, the S.770 manual draw hooks retain their
+original behavior.
 
 The automatic joint route requires `material_participation_only: true`.
 Passive-inclusive draws remain supported by the standalone owners' draw

@@ -873,12 +873,27 @@ def test_spm_and_dataset_suites_run_once_in_separate_steps_with_reports(workflow
     assert uploads[0]["with"]["name"] != "rest-test-timings"
 
 
-@pytest.mark.parametrize("name", ["engine", "differential"])
+@pytest.mark.parametrize(
+    "group,file",
+    [
+        (
+            "ss-calculator-engine",
+            "policyengine_us/tests/unit/test_ss_calculator_engine.py",
+        ),
+        (
+            "ss-calculator-differential",
+            "policyengine_us/tests/unit/test_ss_calculator_differential.py",
+        ),
+        ("ss-history-engine", "policyengine_us/tests/unit/test_ss_history_engine.py"),
+        (
+            "ss-history-differential",
+            "policyengine_us/tests/unit/test_ss_history_differential.py",
+        ),
+    ],
+)
 def test_calculator_api_files_run_once_in_separate_rest_processes(
-    groups, group_files, name
+    groups, group_files, group, file
 ):
-    file = f"policyengine_us/tests/unit/test_ss_calculator_{name}.py"
-    group = f"ss-calculator-{name}"
     assert group_files[group] == [file]
     assert [owner for owner, files in group_files.items() if file in files] == [group]
     assert groups[group]["reports"] == [

@@ -41,3 +41,14 @@
   output:
     co_ccap_child_eligible: 
       2022-12: false
+
+- name: Child eligibility in January 2015, before the first October read.
+  period: 2015
+  input:
+    is_disabled: false
+    is_tax_unit_dependent: true
+    age: 12
+    state_code: CO
+  output:
+    co_ccap_child_eligible:
+      2015-01: true
