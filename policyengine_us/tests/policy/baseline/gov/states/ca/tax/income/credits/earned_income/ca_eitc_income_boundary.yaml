@@ -37,7 +37,7 @@
     age: [35, 35, 35, 35]
     state_code: [CA, CA, CA, CA]
     employment_income: [31_950, 31_950, 31_950, 31_950]
-    eitc_child_count: [0, 1, 2, 3]
+    ca_eitc_child_count: [0, 1, 2, 3]
   output:
     ca_eitc_eligible: [true, true, true, true]
     ca_eitc: [0.009155, 0.030057, 0.041937, 0.042520]
@@ -49,7 +49,7 @@
     state_code: [CA, CA, CA, CA]
     employment_income: [31_951, 31_951, 31_951, 31_951]
     adjusted_gross_income: [10_000, 10_000, 10_000, 10_000]
-    eitc_child_count: [0, 1, 2, 3]
+    ca_eitc_child_count: [0, 1, 2, 3]
   output:
     ca_eitc_eligible: [true, true, true, true]
     ca_eitc: [0, 0, 0, 0]
