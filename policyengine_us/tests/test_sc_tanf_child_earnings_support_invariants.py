@@ -214,6 +214,29 @@ SETTINGS = dict(
     ],
     month="2026-05",
 )
+# A payer whose support exceeds the payer's own income. The stored float32
+# deduction exceeds the float64 sum of that income by about 3e-5, and the
+# floor in sc_tanf_countable_income keeps countable income at 0.
+@example(
+    cases=[
+        (
+            [
+                {
+                    "child": False,
+                    "age": 40,
+                    WAGES: 9_005,
+                    "alimony_income": 2_298,
+                    "support_paid": 9_000,
+                },
+                {"child": True, "age": 5},
+            ],
+            1,
+            0,
+            1,
+        )
+    ],
+    month="2026-01",
+)
 @given(
     cases=st.lists(case(), min_size=1, max_size=6),
     month=st.sampled_from(MONTHS),
