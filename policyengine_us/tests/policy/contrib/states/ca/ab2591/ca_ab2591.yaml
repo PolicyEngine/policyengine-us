@@ -2,12 +2,13 @@
 # Allows taxpayers to elect a standard deduction equal to the federal
 # poverty line for their household size.
 # Effective for taxable years beginning on or after July 1, 2027.
-# 2027 federal poverty guidelines (CONTIGUOUS_US):
-#   first person = $16,334
-#   additional person = $5,813
-#   1-person FPL  = $16,334
-#   2-person FPL  = $22,147
-#   4-person FPL  = $33,774
+# 2027 federal poverty guidelines (CONTIGUOUS_US), 2026 values x 331.359 / 321.943,
+# the CPI-U change from calendar 2025 to calendar 2026 (gov.hhs.fpg_uprating):
+#   first person = $16,426.79
+#   additional person = $5,846.13
+#   1-person FPL  = $16,427 (rounded)
+#   2-person FPL  = $22,273 (rounded)
+#   4-person FPL  = $33,965 (rounded)
 
 - name: Single filer uses one-person FPL.
   period: 2027
@@ -28,7 +29,7 @@
         members: [person1]
         state_code: CA
   output:
-    ca_standard_deduction: 16_334
+    ca_standard_deduction: 16_427
 
 - name: Head of household with one child uses two-person FPL.
   period: 2027
@@ -53,7 +54,7 @@
         members: [person1, person2]
         state_code: CA
   output:
-    ca_standard_deduction: 22_147
+    ca_standard_deduction: 22_273
 
 - name: Head of household with two children still uses two-person FPL.
   # Bill R&TC 17073.5(b)(2) fixes HoH at the two-person FPL regardless of size.
@@ -82,7 +83,7 @@
         members: [person1, person2, person3]
         state_code: CA
   output:
-    ca_standard_deduction: 22_147
+    ca_standard_deduction: 22_273
 
 - name: Joint filers with no children use two-person FPL.
   period: 2027
@@ -107,7 +108,7 @@
         members: [person1, person2]
         state_code: CA
   output:
-    ca_standard_deduction: 22_147
+    ca_standard_deduction: 22_273
 
 - name: Joint filers with two children use four-person FPL.
   # Bill R&TC 17073.5(b)(3) scales joint FPL with the number of persons in the household.
@@ -139,7 +140,7 @@
         members: [person1, person2, person3, person4]
         state_code: CA
   output:
-    ca_standard_deduction: 33_774
+    ca_standard_deduction: 33_965
 
 - name: Married filing separately uses one-person FPL.
   period: 2027
@@ -161,7 +162,7 @@
         members: [person1]
         state_code: CA
   output:
-    ca_standard_deduction: 16_334
+    ca_standard_deduction: 16_427
 
 - name: Reform inactive leaves baseline CA standard deduction unchanged.
   period: 2027
@@ -208,3 +209,104 @@
   output:
     # ca_standard_deduction is defined_for=CA, so non-CA returns 0
     ca_standard_deduction: 0
+
+# The dependent worksheet (RTC 17073.5(c)(2), IRC 63(c)(5)) still limits the
+# deduction of a filer who can be claimed as a dependent: in a year the
+# election is not in effect (the baseline amount), and, assuming the bill
+# leaves (c)(2) in place, on the elected amount.
+- name: Single filer who can be claimed uses the dependent worksheet in a year the election is not in effect.
+  period: 2025
+  reforms: policyengine_us.reforms.states.ca.ab2591.ab2591.ca_ab2591
+  input:
+    people:
+      person1:
+        age: 19
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # max($1,350, $2,000 + $450) = $2,450 < $5,706.
+    ca_standard_deduction: 2_450
+
+- name: Single filer who can be claimed and has no earnings is limited to the dependent minimum under the election.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.ab2591.ab2591.ca_ab2591
+  input:
+    gov.contrib.states.ca.ab2591.in_effect: true
+    people:
+      person1:
+        age: 19
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # min($16,427 one-person FPL, max($1,400, $0 + $500)) = $1,400.
+    ca_standard_deduction: 1_400
+
+- name: Joint return with one claimable spouse uses the dependent worksheet in a year the election is not in effect (the claimable spouse is the head).
+  period: 2025
+  reforms: policyengine_us.reforms.states.ca.ab2591.ab2591.ca_ab2591
+  input:
+    people:
+      person_a: {age: 20, employment_income: 1_000, claimed_as_dependent_on_another_return: true, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_b: {age: 22, employment_income: 1_000, is_tax_unit_head: false, is_tax_unit_spouse: true}
+    tax_units: {tax_unit: {members: [person_a, person_b], filing_status: JOINT}}
+    households: {household: {members: [person_a, person_b], state_code: CA}}
+  output:
+    # max($1,350, $2,000 + $450) = $2,450 < $11,412.
+    ca_standard_deduction: 2_450
+
+- name: Joint return with one claimable spouse uses the dependent worksheet in a year the election is not in effect (the claimable spouse is the spouse).
+  period: 2025
+  reforms: policyengine_us.reforms.states.ca.ab2591.ab2591.ca_ab2591
+  input:
+    people:
+      person_b: {age: 22, employment_income: 1_000, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_a: {age: 20, employment_income: 1_000, claimed_as_dependent_on_another_return: true, is_tax_unit_head: false, is_tax_unit_spouse: true}
+    tax_units: {tax_unit: {members: [person_b, person_a], filing_status: JOINT}}
+    households: {household: {members: [person_b, person_a], state_code: CA}}
+  output:
+    ca_standard_deduction: 2_450
+
+- name: Joint return with one claimable spouse and no earnings is limited to the dependent minimum under the election (the claimable spouse is the head).
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.ab2591.ab2591.ca_ab2591
+  input:
+    gov.contrib.states.ca.ab2591.in_effect: true
+    people:
+      person_a: {age: 20, claimed_as_dependent_on_another_return: true, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_b: {age: 22, is_tax_unit_head: false, is_tax_unit_spouse: true}
+    tax_units: {tax_unit: {members: [person_a, person_b], filing_status: JOINT}}
+    households: {household: {members: [person_a, person_b], state_code: CA}}
+  output:
+    # min($22,273 two-person FPL, max($1,400, $0 + $500)) = $1,400.
+    ca_standard_deduction: 1_400
+
+- name: Joint return with one claimable spouse and no earnings is limited to the dependent minimum under the election (the claimable spouse is the spouse).
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.ab2591.ab2591.ca_ab2591
+  input:
+    gov.contrib.states.ca.ab2591.in_effect: true
+    people:
+      person_b: {age: 22, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_a: {age: 20, claimed_as_dependent_on_another_return: true, is_tax_unit_head: false, is_tax_unit_spouse: true}
+    tax_units: {tax_unit: {members: [person_b, person_a], filing_status: JOINT}}
+    households: {household: {members: [person_b, person_a], state_code: CA}}
+  output:
+    ca_standard_deduction: 1_400

@@ -1,0 +1,18 @@
+description: Oregon pays a nursing facility resident the difference between countable income and this amount under the State Supplemental Payment program.
+values:
+  # NOTE: 461-155-0250(4)(c) prints $79.07, while (4)(b) (effective 1-01-26)
+  # and transmittal OEP-PT-25-045 (effective 1/1/2026) raise the personal
+  # incidentals allowance to $81.28. Every version with subsection (c), from
+  # 7-01-14 to 1-01-25, used one figure in (b) and (c). The model follows the
+  # text of (4)(c).
+  2026-01-01: 79.07
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Oregon SSP nursing facility payment standard
+  reference:
+    - title: "OAR 461-155-0250(4)(c) #page 1-2"
+      href: https://ch461rules.odhs.oregon.gov/rules/461-155-0250.pdf#page=1
+    - title: ODHS transmittal OEP-PT-25-045
+      href: https://www.oregon.gov/odhs/transmittals/oeptransmittals/pt25045.pdf#page=8
