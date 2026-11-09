@@ -142,8 +142,8 @@
     ut_federal_deductions_for_taxpayer_credit: 6_000
 
 - name: "Case 9: equal sales and income taxes follow the income-tax branch"
-  # The federal formula takes max(income, sales); only a strictly larger
-  # sales amount is treated as a sales-tax election.
+  # The federal SALT amount equals both taxes, so it doesn't show which one
+  # the return deducted; the conservative reading removes it as income tax.
   period: 2025
   input:
     state_code: UT
@@ -260,7 +260,8 @@
   # Section 68: min(3% x ($1,500,000 - $261,500), 80% x $120,000)
   # = min($37,155, $96,000) = $37,155.
   # Federal itemized deductions: $120,000 - $37,155 = $82,845, and a
-  # sales-tax election removes nothing from them.
+  # sales-tax election removes nothing from them: the 2017 text,
+  # 59-10-1018(2)(a)(ii)(A)(II), removes only state or local income taxes.
   period: 2017
   absolute_error_margin: 0.01
   input:
@@ -287,3 +288,45 @@
     itemized_taxable_income_deductions_reduction: 37_155
     itemized_taxable_income_deductions: 82_845
     ut_federal_deductions_for_taxpayer_credit: 82_845
+
+- name: "Case 15: a supplied sales-tax election stands when the sales tax is below the income tax"
+  # The supplied $3,600 federal SALT amount equals the sales tax and not the
+  # $3,700 income tax, so the return deducted sales tax (Schedule A line 5a)
+  # and reports no income tax. 59-10-1018(1)(e)-(f) removes only income tax
+  # the claimant reports on the federal return, so nothing is removed.
+  # Federal itemized deductions: $36,000 + $3,600 = $39,600 (no section 68
+  # reduction in 2025).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 80_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        tax_unit_itemizes: true
+        charitable_deduction: 36_000
+        state_withheld_income_tax: 3_700
+        local_income_tax: 0
+        state_sales_tax: 3_600
+        local_sales_tax: 0
+        state_and_local_sales_or_income_tax: 3_600
+    households:
+      household:
+        members: [head, spouse]
+        state_code: UT
+  output:
+    salt_deduction: 3_600
+    itemized_taxable_income_deductions: 39_600
+    ut_federal_deductions_for_taxpayer_credit: 39_600
+    # TC-40 line 16: 6% x $39,600.
+    ut_taxpayer_credit_max: 2_376
+    # Lines 17 to 19: 1.3% x ($80,000 - $36,426) = $566.46. Line 20:
+    # $2,376 - $566.46. Before this fix the base was $36,000, the credit
+    # maximum $2,160 and the credit $1,593.54, $216 less.
+    ut_taxpayer_credit_reduction: 566.46
+    ut_taxpayer_credit: 1_809.54

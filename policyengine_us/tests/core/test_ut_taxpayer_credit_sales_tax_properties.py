@@ -1,9 +1,12 @@
 """Properties of the federal deductions in Utah's taxpayer credit base.
 
-Utah Code 59-10-1018(1)(f)(i) starts from the federal itemized deductions
-and removes only state or local income tax. A tax unit whose sales taxes
-strictly exceed its income taxes takes the sales tax under the federal
-formula (state_and_local_sales_or_income_tax is the larger of the two), so:
+Utah Code 59-10-1018 starts from the federal itemized deductions and removes
+only state or local income tax: in (2)(a)(ii)(A) of the edition superseded on
+May 8, 2018, which the 2017 draws use, and after that in the definition of
+the Utah itemized deduction ((1)(f)(i) in the 2021, 2023 and 2026 editions).
+A tax unit whose sales taxes strictly exceed its income taxes takes the
+sales tax under the federal formula (state_and_local_sales_or_income_tax is
+the larger of the two), so:
 
 1. Sales-tax election: nothing is removed. The base is never above the
    supplied federal itemized total, and equals it; with no total supplied,
