@@ -15,5 +15,6 @@ class ks_tanf_resources_eligible(Variable):
     def formula(spm_unit, period, parameters):
         # Per KEESM 5110: Resource limit is $3,000
         p = parameters(period).gov.states.ks.dcf.tanf.resource_limit
-        resources = spm_unit("spm_unit_cash_assets", period.this_year)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        resources = round_to_cents(spm_unit("spm_unit_cash_assets", period.this_year))
         return resources <= p.amount

@@ -10,6 +10,7 @@ class ca_tanf_resources_eligible(Variable):
     reference = "https://my.dpss.lacounty.gov/public/en/home/epolicy/program/calworks/property/property.html"
 
     def formula(spm_unit, period, parameters):
-        resources = spm_unit("ca_tanf_resources", period)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        resources = round_to_cents(spm_unit("ca_tanf_resources", period))
         limit = spm_unit("ca_tanf_resources_limit", period)
         return resources <= limit

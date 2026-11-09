@@ -61,7 +61,10 @@ class md_paa_eligible(Variable):
         ssi_resource_limit = parameters(
             period
         ).gov.ssa.ssi.eligibility.resources.limit.individual
-        ssi_resources = person("ssi_countable_resources", period.this_year)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        ssi_resources = round_to_cents(
+            person("ssi_countable_resources", period.this_year)
+        )
         resource_eligible = ssi_resources <= ssi_resource_limit
         living_arrangement = person("md_paa_living_arrangement", period)
         in_facility = living_arrangement != living_arrangement.possible_values.NONE

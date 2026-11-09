@@ -15,5 +15,6 @@ class fl_tca_resources_eligible(Variable):
     def formula(spm_unit, period, parameters):
         # Per Florida DCF: Countable assets must be <= $2,000
         p = parameters(period).gov.states.fl.dcf.tanf.resources
-        assets = spm_unit("spm_unit_cash_assets", period.this_year)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        assets = round_to_cents(spm_unit("spm_unit_cash_assets", period.this_year))
         return assets <= p.asset_limit

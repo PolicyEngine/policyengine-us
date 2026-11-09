@@ -118,3 +118,28 @@
   output:
     # $1,999 < $2,000 limit = eligible
     nh_fanf_resources_eligible: true
+
+# 719.22 + 208.18 + 72.60 = 1,000.00, which the limit excludes.
+# The float32 balances add to a fraction of a cent below 1,000 unless rounded to cents.
+- name: Three accounts that total exactly the resource limit fail
+  period: 2025
+  input:
+    age: 30
+    bank_account_assets: 719.22
+    stock_assets: 208.18
+    bond_assets: 72.60
+    state_code: NH
+  output:
+    nh_fanf_resources_eligible: false
+
+# 719.22 + 208.18 + 72.59 = 999.99, a cent under the limit.
+- name: Three accounts a cent under the resource limit pass
+  period: 2025
+  input:
+    age: 30
+    bank_account_assets: 719.22
+    stock_assets: 208.18
+    bond_assets: 72.59
+    state_code: NH
+  output:
+    nh_fanf_resources_eligible: true

@@ -64,3 +64,28 @@
     # Limit: $5,000
     # $4,999 <= $5,000 = true
     ri_works_resource_eligible: true
+
+# 4,211.74 + 769.20 + 19.06 = 5,000.00, at the limit.
+# The float32 balances add to a fraction of a cent above 5,000 unless rounded to cents.
+- name: Three accounts that total exactly the resource limit pass
+  period: 2025-01
+  input:
+    age: 30
+    bank_account_assets: 4_211.74
+    stock_assets: 769.20
+    bond_assets: 19.06
+    state_code: RI
+  output:
+    ri_works_resource_eligible: true
+
+# 4,211.74 + 769.20 + 19.07 = 5,000.01, a cent over the limit.
+- name: Three accounts a cent over the resource limit fail
+  period: 2025-01
+  input:
+    age: 30
+    bank_account_assets: 4_211.74
+    stock_assets: 769.20
+    bond_assets: 19.07
+    state_code: RI
+  output:
+    ri_works_resource_eligible: false

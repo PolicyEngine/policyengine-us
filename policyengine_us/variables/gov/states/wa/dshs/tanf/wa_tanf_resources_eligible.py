@@ -11,5 +11,8 @@ class wa_tanf_resources_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.wa.dshs.tanf
-        countable_resources = spm_unit("wa_tanf_countable_resources", period)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        countable_resources = round_to_cents(
+            spm_unit("wa_tanf_countable_resources", period)
+        )
         return countable_resources <= p.resource_limit

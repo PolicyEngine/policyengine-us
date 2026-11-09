@@ -24,10 +24,13 @@ class msp_asset_eligible(Variable):
         # If asset test doesn't apply, everyone is asset-eligible
         personal_resources = person("ssi_countable_resources", period.this_year)
         married = person.spm_unit("spm_unit_is_married", period.this_year)
-        countable_resources = where(
-            married,
-            person.marital_unit.sum(personal_resources),
-            personal_resources,
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        countable_resources = round_to_cents(
+            where(
+                married,
+                person.marital_unit.sum(personal_resources),
+                personal_resources,
+            )
         )
         # States may set a higher limit than the federal one, never a lower one.
         state_limit = p.asset.state_limit

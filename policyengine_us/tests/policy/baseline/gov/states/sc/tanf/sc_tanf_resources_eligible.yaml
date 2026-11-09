@@ -34,3 +34,28 @@
   output:
     sc_tanf_resources_eligible: true
     # 0 <= 2,500 -> eligible
+
+# 2,105.87 + 384.60 + 9.53 = 2,500.00, at the limit.
+# The float32 balances add to a fraction of a cent above 2,500 unless rounded to cents.
+- name: Three accounts that total exactly the resource limit pass
+  period: 2025-01
+  input:
+    age: 30
+    bank_account_assets: 2_105.87
+    stock_assets: 384.60
+    bond_assets: 9.53
+    state_code: SC
+  output:
+    sc_tanf_resources_eligible: true
+
+# 2,105.87 + 384.60 + 9.54 = 2,500.01, a cent over the limit.
+- name: Three accounts a cent over the resource limit fail
+  period: 2025-01
+  input:
+    age: 30
+    bank_account_assets: 2_105.87
+    stock_assets: 384.60
+    bond_assets: 9.54
+    state_code: SC
+  output:
+    sc_tanf_resources_eligible: false

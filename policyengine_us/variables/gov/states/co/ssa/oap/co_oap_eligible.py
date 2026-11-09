@@ -9,7 +9,8 @@ class co_oap_eligible(Variable):
     defined_for = StateCode.CO
 
     def formula(person, period, parameters):
-        assets = person("ssi_countable_resources", period)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        assets = round_to_cents(person("ssi_countable_resources", period))
         joint_claim = person("ssi_claim_is_joint", period)
         p = parameters(period).gov.states.co.ssa.oap
         asset_limit = where(joint_claim, p.resources.couple, p.resources.single)

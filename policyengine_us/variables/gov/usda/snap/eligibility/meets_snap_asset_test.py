@@ -26,7 +26,8 @@ class meets_snap_asset_test(Variable):
         # their share at the moment.
         has_elderly_or_disabled = spm_unit("has_snap_elderly_disabled_member", period)
         asset_test = parameters(period).gov.usda.snap.asset_test
-        assets = spm_unit("snap_assets", period.this_year)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        assets = round_to_cents(spm_unit("snap_assets", period.this_year))
         asset_limit = where(
             has_elderly_or_disabled,
             asset_test.limit.elderly_disabled,

@@ -36,3 +36,28 @@
     # Liquid resources alone can fail the NM Works test even before adding any
     # future modeled non-liquid countable resources.
     nm_works_resources_eligible: false
+
+# 285.92 + 1,181.93 + 32.15 = 1,500.00, at the limit.
+# The float32 balances add to a fraction of a cent above 1,500 unless rounded to cents.
+- name: Three accounts that total exactly the resource limit pass
+  period: 2025-01
+  input:
+    age: 30
+    bank_account_assets: 285.92
+    stock_assets: 1_181.93
+    bond_assets: 32.15
+    state_code: NM
+  output:
+    nm_works_resources_eligible: true
+
+# 285.92 + 1,181.93 + 32.16 = 1,500.01, a cent over the limit.
+- name: Three accounts a cent over the resource limit fail
+  period: 2025-01
+  input:
+    age: 30
+    bank_account_assets: 285.92
+    stock_assets: 1_181.93
+    bond_assets: 32.16
+    state_code: NM
+  output:
+    nm_works_resources_eligible: false

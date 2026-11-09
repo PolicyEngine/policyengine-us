@@ -332,3 +332,32 @@
         state_code: MN
   output:
     mn_msa_resource_eligible: true
+
+# 8,688.73 + 9.74 + 1,301.53 = 10,000.00, at the limit.
+# The float32 balances add to a fraction of a cent above 10,000 unless rounded to cents.
+- name: Three accounts that total exactly the resource limit pass
+  period: 2025-01
+  input:
+    age: 70
+    is_ssi_aged_blind_disabled: true
+    is_ssi_disabled: true
+    bank_account_assets: 8_688.73
+    stock_assets: 9.74
+    bond_assets: 1_301.53
+    state_code: MN
+  output:
+    mn_msa_resource_eligible: true
+
+# 8,688.73 + 9.74 + 1,301.54 = 10,000.01, a cent over the limit.
+- name: Three accounts a cent over the resource limit fail
+  period: 2025-01
+  input:
+    age: 70
+    is_ssi_aged_blind_disabled: true
+    is_ssi_disabled: true
+    bank_account_assets: 8_688.73
+    stock_assets: 9.74
+    bond_assets: 1_301.54
+    state_code: MN
+  output:
+    mn_msa_resource_eligible: false

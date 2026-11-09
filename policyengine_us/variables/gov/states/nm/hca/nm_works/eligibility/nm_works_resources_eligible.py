@@ -11,7 +11,10 @@ class nm_works_resources_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nm.hca.nm_works.resources.limit
-        liquid_resources = spm_unit("nm_works_countable_liquid_resources", period)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        liquid_resources = round_to_cents(
+            spm_unit("nm_works_countable_liquid_resources", period)
+        )
         non_liquid_resources = spm_unit(
             "nm_works_countable_non_liquid_resources", period
         )

@@ -123,3 +123,28 @@
   output:
     # $5,000 > $3,000 old limit, ineligible before 10/1/2023
     ct_tfa_resources_eligible: false
+
+# 4,489.49 + 1,282.41 + 228.10 = 6,000.00, at the limit.
+# The float32 balances add to a fraction of a cent above 6,000 unless rounded to cents.
+- name: Three accounts that total exactly the resource limit pass
+  period: 2025-01
+  input:
+    age: 30
+    bank_account_assets: 4_489.49
+    stock_assets: 1_282.41
+    bond_assets: 228.10
+    state_code: CT
+  output:
+    ct_tfa_resources_eligible: true
+
+# 4,489.49 + 1,282.41 + 228.11 = 6,000.01, a cent over the limit.
+- name: Three accounts a cent over the resource limit fail
+  period: 2025-01
+  input:
+    age: 30
+    bank_account_assets: 4_489.49
+    stock_assets: 1_282.41
+    bond_assets: 228.11
+    state_code: CT
+  output:
+    ct_tfa_resources_eligible: false

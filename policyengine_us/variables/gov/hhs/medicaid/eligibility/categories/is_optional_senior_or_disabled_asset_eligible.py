@@ -19,7 +19,7 @@ class is_optional_senior_or_disabled_asset_eligible(Variable):
         # the individual or the married couple, not the tax filing unit.
         personal_assets = person("ssi_countable_resources", period)  # $
         # Inputs are stored as float32, so compare whole cents with the limit.
-        assets = np.round(person.marital_unit.sum(personal_assets), 2)
+        assets = round_to_cents(person.marital_unit.sum(personal_assets))
         is_couple = person.marital_unit.nb_persons() == 2
         state = person.household("state_code_str", period)
 

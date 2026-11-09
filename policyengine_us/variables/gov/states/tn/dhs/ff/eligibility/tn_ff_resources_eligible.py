@@ -10,6 +10,9 @@ class tn_ff_resources_eligible(Variable):
     defined_for = StateCode.TN
 
     def formula(spm_unit, period, parameters):
-        countable_resources = spm_unit("tn_ff_countable_resources", period)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        countable_resources = round_to_cents(
+            spm_unit("tn_ff_countable_resources", period)
+        )
         p = parameters(period).gov.states.tn.dhs.ff.resources
         return countable_resources <= p.limit

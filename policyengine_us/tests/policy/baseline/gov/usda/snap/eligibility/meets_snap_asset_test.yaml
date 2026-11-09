@@ -78,3 +78,26 @@
     # $4,000 is between the $3,000 standard and $4,500 elderly/disabled
     # limits, and the eligible elderly member confers the higher limit.
     meets_snap_asset_test: true
+
+# 7 U.S.C. 2014(g)(1): 2,607.87 + 29.87 + 362.26 = 3,000.00, at the FY2025
+# standard limit. The float32 balances add to 3,000.0002 unless rounded.
+- name: Three accounts that total exactly the standard limit pass
+  period: 2025-01
+  input:
+    age: 30
+    bank_account_assets: 2_607.87
+    stock_assets: 29.87
+    bond_assets: 362.26
+  output:
+    meets_snap_asset_test: true
+
+# 2,607.87 + 29.87 + 362.27 = 3,000.01, a cent over the limit.
+- name: Three accounts a cent over the standard limit fail
+  period: 2025-01
+  input:
+    age: 30
+    bank_account_assets: 2_607.87
+    stock_assets: 29.87
+    bond_assets: 362.27
+  output:
+    meets_snap_asset_test: false

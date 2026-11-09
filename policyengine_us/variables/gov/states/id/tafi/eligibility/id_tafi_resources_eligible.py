@@ -12,5 +12,6 @@ class id_tafi_resources_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.id.tafi.resources
         # Per IDAPA 16.03.08.200: Resources must not exceed $5,000
-        resources = spm_unit("spm_unit_cash_assets", period.this_year)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        resources = round_to_cents(spm_unit("spm_unit_cash_assets", period.this_year))
         return resources <= p.limit

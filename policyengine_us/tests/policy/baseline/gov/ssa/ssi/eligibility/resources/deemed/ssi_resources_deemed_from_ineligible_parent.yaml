@@ -397,6 +397,346 @@
     ssi_resources_deemed_from_ineligible_parent: [0, 500, 0, 500, 0, 500]
     meets_ssi_resource_test: [false, true, false, true, false, false]
 
+# 20 CFR 416.1202(b)(1), 416.1205: the child's 575.52 + 570.57 + 353.91 =
+# 1,500.00 plus parental excess 2,500 - 2,000 = 500 is 2,000.00, at the
+# individual limit. The child's float32 balances add to 1,500.0001 unless
+# rounded to cents.
+- name: Child accounts plus parental excess that total exactly the limit pass
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        bank_account_assets: 2_500
+      child:
+        age: 16
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        bank_account_assets: 575.52
+        stock_assets: 570.57
+        bond_assets: 353.91
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    ssi_resources_deemed_from_ineligible_parent: [0, 500]
+    meets_ssi_resource_test: [false, true]
+
+# The child's 575.52 + 570.57 + 353.92 = 1,500.01 plus the same 500 is
+# 2,000.01, a cent over the individual limit.
+- name: Child accounts plus parental excess a cent over the limit fail
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        bank_account_assets: 2_500
+      child:
+        age: 16
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        bank_account_assets: 575.52
+        stock_assets: 570.57
+        bond_assets: 353.92
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    ssi_resources_deemed_from_ineligible_parent: [0, 500]
+    meets_ssi_resource_test: [false, false]
+
+# POMS SI 01330.200 B: 'equally divide the value of the deemed resources
+# among those children'; 20 CFR 416.1202(b)(1) sets no rounding rule for a
+# child's share. The parent's 2,100 is 100 over the individual limit, so
+# each of three children is deemed 100 / 3 = 33.3333. Each child holds
+# 1,966.67 in one account, so the total of 2,000.0033 is over the limit.
+- name: A share of parental excess counts to the fraction of a cent
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        bank_account_assets: 2_100
+      child1:
+        age: 8
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        bank_account_assets: 1_966.67
+      child2:
+        age: 10
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        bank_account_assets: 1_966.67
+      child3:
+        age: 12
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        bank_account_assets: 1_966.67
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child1_unit:
+        members: [child1]
+      child2_unit:
+        members: [child2]
+      child3_unit:
+        members: [child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+  output:
+    ssi_resources_deemed_from_ineligible_parent: [0, 33.3333, 33.3333, 33.3333]
+    meets_ssi_resource_test: [false, false, false, false]
+
+# SI 01330.200 B: when a child is ineligible, 'divide the value of the deemed
+# resources among the remaining eligible children'. The first child's
+# 1,966.67 plus the exact share of 33.3333 is over the limit, so that child
+# leaves the division and keeps the share last tested; the other two
+# children, who hold nothing, divide the 100 as 50 each.
+- name: A child whom an unrounded share takes over the limit leaves the division
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        bank_account_assets: 2_100
+      child1:
+        age: 8
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        bank_account_assets: 1_966.67
+      child2:
+        age: 10
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+      child3:
+        age: 12
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child1_unit:
+        members: [child1]
+      child2_unit:
+        members: [child2]
+      child3_unit:
+        members: [child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+  output:
+    ssi_resources_deemed_from_ineligible_parent: [0, 33.3333, 50, 50]
+    meets_ssi_resource_test: [false, false, true, true]
+
+# The parent's 2,100 is 100 over the individual limit, which divides among
+# four children as 25 each. The first child's 178.57 + 1,522.79 + 273.64 =
+# 1,975.00 plus 25 is 2,000.00, at the limit. That child's float32 balances
+# add to 1,975.0001 unless rounded to cents.
+- name: Child accounts plus a share of parental excess that total exactly the limit pass
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        bank_account_assets: 2_100
+      child1:
+        age: 8
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        bank_account_assets: 178.57
+        stock_assets: 1_522.79
+        bond_assets: 273.64
+      child2:
+        age: 10
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+      child3:
+        age: 12
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+      child4:
+        age: 14
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child1_unit:
+        members: [child1]
+      child2_unit:
+        members: [child2]
+      child3_unit:
+        members: [child3]
+      child4_unit:
+        members: [child4]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4]
+  output:
+    ssi_resources_deemed_from_ineligible_parent: [0, 25, 25, 25, 25]
+    meets_ssi_resource_test: [false, true, true, true, true]
+
+# 20 CFR 416.1202(b)(1): the parent's 2,100.01 is 100.01 over the
+# individual limit, all deemed to the only child, whose 1,899.99 brings the
+# total to exactly 2,000.00. Stored as the nearest float32, the 100.01 share
+# would read back as 100.010002 and push that total over the limit.
+- name: A whole-cent parental share that brings a child exactly to the limit passes
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        bank_account_assets: 2_100.01
+      child:
+        age: 16
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        bank_account_assets: 1_899.99
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    ssi_resources_deemed_from_ineligible_parent: [0, 100.01]
+    meets_ssi_resource_test: [false, true]
+
+# SI 01330.200 B: the parent's 2,048.30 is 48.30 over the individual limit,
+# which divides among three children as 16.10 each. The first child's
+# 1,983.90 plus 16.10 is exactly 2,000.00, so all three stay in the division
+# and pass. In float64, 2,048.30 - 2,000 gives an excess of 48.30000000000018,
+# and 1,983.90 plus a third of it gives 2,000.0000000000002, which would
+# remove the first child and raise the others' shares.
+- name: A child whom a share reaches exactly to the limit stays in the division
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        bank_account_assets: 2_048.30
+      child1:
+        age: 8
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        bank_account_assets: 1_983.90
+      child2:
+        age: 10
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        bank_account_assets: 1_980
+      child3:
+        age: 12
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child1_unit:
+        members: [child1]
+      child2_unit:
+        members: [child2]
+      child3_unit:
+        members: [child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+  output:
+    ssi_resources_deemed_from_ineligible_parent: [0, 16.10, 16.10, 16.10]
+    meets_ssi_resource_test: [false, true, true, true]
+
+# 20 CFR 416.1202(b)(1): the child's own 178.57 + 1,547.79 + 273.64 =
+# 2,000.00 is at the individual limit, so the child is deemed the parent's
+# 100 of excess and fails at 2,100.00. The float32 balances add to
+# 2,000.0001 unless rounded to cents, which would leave the child out of the
+# deeming and pass them on their own 2,000.00.
+- name: A child whose own accounts total exactly the limit is still deemed the parental excess
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        bank_account_assets: 2_100
+      child:
+        age: 16
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        bank_account_assets: 178.57
+        stock_assets: 1_547.79
+        bond_assets: 273.64
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    ssi_resources_deemed_from_ineligible_parent: [0, 100]
+    meets_ssi_resource_test: [false, false]
+
 # POMS SI 01330.340 White example: parent pool1200 <=couple limit3000; child deemed0.
 - name: POMS White eligible parent leaves no excess resources to deem
   period: 2024-01

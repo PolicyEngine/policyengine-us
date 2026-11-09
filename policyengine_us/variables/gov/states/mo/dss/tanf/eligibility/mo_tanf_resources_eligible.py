@@ -20,5 +20,6 @@ class mo_tanf_resources_eligible(Variable):
         # pact"); IEP participation is not observable, so the $1,000 limit
         # applies to all units.
         p = parameters(period).gov.states.mo.dss.tanf.resource_limit
-        resources = spm_unit("mo_tanf_countable_resources", period)
+        # Inputs are stored as float32, so compare whole cents with the limit.
+        resources = round_to_cents(spm_unit("mo_tanf_countable_resources", period))
         return resources <= p.amount
