@@ -5,7 +5,7 @@ class or_liheap(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    label = "Oregon LIHEAP regular heating benefit"
+    label = "Oregon LIHEAP regular heating or cooling benefit"
     unit = USD
     defined_for = "or_liheap_eligible"
     reference = (
@@ -17,13 +17,15 @@ class or_liheap(Variable):
         "https://www.oregon.gov/ohcs/energy-weatherization/Documents/manuals/09-23-2027-PY-2027-EA-Operations-Policy-Manual.pdf#page=72",
     )
     documentation = (
-        "Annual regular heating assistance, verified for program years 2025 to 2027. "
+        "Annual regular heating or cooling assistance, verified for PY2025 to PY2027. "
         "Earlier years use parameter backfilling and are unverified historical "
         "estimates. No actual-expense cap applies. Heat-in-rent households need the "
         "building heating fuel; a fuel without a matrix column pays zero as a coverage "
         "gap, not a denial. Discretionary bulk-fuel minimum-delivery payments and local "
         "supplements are unsupported because the necessary award information is "
-        "absent. Cooling, crisis and equipment assistance are excluded."
+        "absent. A home without heating that pays for electric cooling is paid from "
+        "the COOLING column, which equals the Electricity column in every row of the "
+        "PY2025 to PY2027 matrices. Crisis and equipment assistance are excluded."
     )
 
     def formula(spm_unit, period, parameters):
@@ -34,11 +36,14 @@ class or_liheap(Variable):
         band = max_(spm_unit("or_liheap_income_band", period), 1)
         fuel = spm_unit("heating_type", period)
         types = fuel.possible_values
+        # An eligible home without heating pays for electric cooling, and the
+        # COOLING column equals the Electricity column.
+        cooling_only = (fuel == types.NONE) & spm_unit("has_cooling_expense", period)
         # Kerosene is billed as heating oil and a grid-tied solar home pays an
         # electricity bill, the same pairing heating_expense uses.
         amount = select(
             [
-                (fuel == types.ELECTRICITY) | (fuel == types.SOLAR),
+                (fuel == types.ELECTRICITY) | (fuel == types.SOLAR) | cooling_only,
                 (fuel == types.FUEL_OIL) | (fuel == types.KEROSENE),
                 fuel == types.PROPANE,
                 fuel == types.NATURAL_GAS,
