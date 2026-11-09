@@ -1,11 +1,7 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.co.ccap.co_ccap_parameter_instant import (
-    co_ccap_parameter_instant,
+from policyengine_us.variables.gov.states.co.ccap.co_ccap_care_hours_per_day import (
+    WEEKDAYS_PER_WEEK,
 )
-
-# Without a schedule, the model reads a five-day week of care. It imputes
-# this, so the number stays out of the parameters.
-WEEKDAYS_PER_WEEK = 5
 
 
 class co_ccap_full_time_equivalent_units(Variable):
@@ -29,10 +25,9 @@ class co_ccap_full_time_equivalent_units(Variable):
     defined_for = "co_ccap_child_in_care"
 
     def formula(person, period, parameters):
-        instant_str = co_ccap_parameter_instant(period)
-        p = parameters(instant_str).gov.states.co.ccap.parent_fee.part_time
+        p = parameters(period).gov.states.co.ccap.parent_fee.part_time
         year = period.this_year
-        daily_hours = person("childcare_hours_per_day", year)
+        daily_hours = person("co_ccap_care_hours_per_day", period)
         # Zero is also the input default for unknown hours.
         daily_units = where(
             daily_hours > 0,

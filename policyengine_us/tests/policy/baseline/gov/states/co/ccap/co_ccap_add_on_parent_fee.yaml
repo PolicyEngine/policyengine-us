@@ -46,8 +46,8 @@
   output:
     co_ccap_add_on_parent_fee: 0
 
-- name: Case 5, September 2028 still charges the fee.
-  period: 2028-09
+- name: Case 5, July 2028 still charges the fee.
+  period: 2028-07
   input:
     state_code:
       2028: CO
@@ -57,8 +57,8 @@
   output:
     co_ccap_add_on_parent_fee: 30
 
-- name: Case 6, from October 2028 section 3.124(Q) has no fee for additional children.
-  period: 2028-10
+- name: Case 6, from August 2028 section 3.124(Q) has no fee for additional children.
+  period: 2028-08
   input:
     state_code:
       2028: CO

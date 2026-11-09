@@ -1,19 +1,7 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.co.ccap.co_ccap_parameter_instant import (
-    co_ccap_parameter_instant,
+from policyengine_us.variables.gov.states.co.ccap.co_ccap_parent_fee_arithmetic import (
+    drop_cents,
 )
-
-# Fees drop their cents. Income reaches the fee in float32, which leaves a fee
-# that should come to whole dollars up to about $0.0002 short of them, so the
-# floor adds this tolerance first. It stays below $1/1200 (about $0.00083):
-# whole-dollar annual income can give a fee that much short of a whole dollar,
-# such as $0.99917 on $1,199 a year, and that fee must still drop to the dollar
-# below.
-WHOLE_DOLLAR_TOLERANCE = 0.0005
-
-
-def drop_cents(amount):
-    return np.floor(amount + WHOLE_DOLLAR_TOLERANCE)
 
 
 class co_ccap_parent_fee(Variable):
@@ -37,11 +25,11 @@ class co_ccap_parent_fee(Variable):
     defined_for = StateCode.CO
 
     def formula(spm_unit, period, parameters):
-        instant_str = co_ccap_parameter_instant(period)
-        p = parameters(instant_str).gov.states.co.ccap
+        p = parameters(period).gov.states.co.ccap
+        # Both come in whole dollars, which float32 stores exactly.
         base_fee = spm_unit("co_ccap_base_parent_fee", period)
         add_on_fee = spm_unit("co_ccap_add_on_parent_fee", period)
-        full_time_fee = drop_cents(base_fee + add_on_fee)
+        full_time_fee = np.asarray(base_fee + add_on_fee, dtype=np.float64)
 
         person = spm_unit.members
         in_care = person("co_ccap_child_in_care", period)

@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.co.ccap.co_ccap_parameter_instant import (
-    co_ccap_parameter_instant,
+from policyengine_us.variables.gov.states.co.ccap.co_ccap_parent_fee_arithmetic import (
+    income_and_guideline_in_cents,
 )
 
 
@@ -21,10 +21,8 @@ class co_ccap_add_on_parent_fee(Variable):
     defined_for = StateCode.CO
 
     def formula(spm_unit, period, parameters):
-        instant_str = co_ccap_parameter_instant(period)
-        p = parameters(instant_str).gov.states.co.ccap.parent_fee
-        income = spm_unit("co_ccap_countable_income", period)
-        fpg = spm_unit("co_ccap_fpg", period)
+        p = parameters(period).gov.states.co.ccap.parent_fee
+        income, fpg = income_and_guideline_in_cents(spm_unit, period)
         children_in_care = spm_unit("co_ccap_children_in_care", period)
         additional_children = max_(children_in_care - 1, 0)
         return additional_children * p.add_on * (income > fpg)

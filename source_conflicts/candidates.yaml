@@ -1645,7 +1645,7 @@ candidates:
       marginal rate increase of fourteen percent (14%)" on each dollar above the guideline. CDEC's Above 100% FPG
       tool computes (E4*0.01+((E4-I8)*0.14))/12, 1% of annual income E4 plus 14% above the guideline I8.
     other: CDEC's At 100% FPG tool computes (I8*0.01+((E4-I8)*0.14))/12 above the guideline, 1% of the guideline
-      rather than of income, a fee continuous at the guideline. CDEC tells households above the guideline to use
+      rather than of income. CDEC tells households above the guideline to use
       the other tool, so this branch serves no one the tool is for. PE-US used the same formula before PR 10721.
   example: A family of three with $40,000 a year and two children in full-time care in January 2026, under the
     $26,650 guideline in section 3.111(H)(2), pays (0.01 x $40,000 + 0.14 x $13,350) / 12 + $15 = $204.08, or $204,

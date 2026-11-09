@@ -8,8 +8,8 @@ class co_ccap_child_in_care(Variable):
     documentation = (
         "An eligible child for whom the household requests care. Reported care "
         "hours or days show care, and so does a child care or after-school "
-        "expense, since survey data records what families pay for care but "
-        "not when the care happens."
+        "expense, since surveys ask what families pay for care but not when "
+        "the care happens."
     )
     reference = (
         # PDF pages 79, 84
