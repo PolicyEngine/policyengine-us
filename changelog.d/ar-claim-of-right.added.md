@@ -1,0 +1,1 @@
+Add Arkansas's claim of right deduction (Ark. Code § 26-51-457): a repayment over $3,000 of income Arkansas taxed in an earlier year is a miscellaneous itemized deduction above 2% of Arkansas AGI, whichever federal method applies.
