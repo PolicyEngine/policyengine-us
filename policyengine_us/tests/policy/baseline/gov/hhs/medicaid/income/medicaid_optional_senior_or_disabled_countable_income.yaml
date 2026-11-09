@@ -154,6 +154,20 @@
     # (1,000 - 20 - 202.90) x 12 = 9,325.20.
     medicaid_optional_senior_or_disabled_countable_income: 9_325.2
 
+- name: California deducts no Part B premium for a Part A-only Medicare enrollee.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    medicare_enrolled: true
+    medicare_part_b_enrolled: false
+    ssi_marital_unearned_income: 12_000
+    state_code: CA
+  output:
+    # No Part B enrollment, so no Part B premium to disregard:
+    # (1,000 - 20) x 12 = 11,760.
+    medicaid_optional_senior_or_disabled_countable_income: 11_760
+
 - name: California applies one 20-dollar deduction to a couple's combined unearned income.
   period: 2026
   absolute_error_margin: 0.01
@@ -574,7 +588,7 @@
     age: 70
     medicare_enrolled: true
     social_security_retirement: 17_400
-    medicare_part_b_premium: 1_626
+    medicare_part_b_premium_before_buy_in: 1_626
     health_insurance_premiums_without_medicare_part_b: 1_200
     state_code: CA
   output:

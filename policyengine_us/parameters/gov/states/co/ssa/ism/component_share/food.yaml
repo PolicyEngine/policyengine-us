@@ -1,0 +1,21 @@
+description: Before 2014 Colorado counted this share of the Aid to the Needy Disabled-Colorado Supplement grant standard as unearned income when food was supplied in full at no cost.
+
+values:
+  # Applied from 2007, as for the shelter share. The table effective
+  # January 1, 2014 dropped the food component.
+  2007-01-01: 0.205
+  2014-01-01: 0
+
+metadata:
+  unit: /1
+  period: month
+  label: Colorado AND-CS food component share before 2014
+  reference:
+    - title: 9 CCR 2503-1, Section 3.250.222 (effective January 1, 2008), in-kind items other than shelter and utilities
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-1&ruleVersionId=2137#page=103
+    - title: 9 CCR 2503-1, Sections 3.460.43, 3.460.45, AND/AB/SSI-CS components (emergency rule effective January 1, 2007)
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-1&ruleVersionId=2137#page=134
+    - title: 9 CCR 2503-2, Section 3.250.222 (effective September 15, 2012)
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-2&ruleVersionId=4793#page=32
+    - title: 9 CCR 2503-4, Section 3.460.45, grant component table without a food component (effective January 1, 2014)
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-4&ruleVersionId=5539#page=13
