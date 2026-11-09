@@ -65,7 +65,8 @@ REVIEWED_MAIN_SHA = "8986e05cab65d56435a23df1910e2d35f2c5f5bf"
 # Requests that differ from REVIEWED_MAIN_SHA for reasons outside Social
 # Security ingress. The reference predates the Medicare premium projection,
 # so its 2027 Part B premium differs. The medicare_irmaa_magi requests still
-# pin the IRMAA ingress path.
+# pin the IRMAA ingress path. Remove this entry once REVIEWED_MAIN_SHA
+# includes the projection.
 CHANGED_SINCE_REFERENCE = {"medicare_part_b_premium@2027"}
 # Hand-computed per-person growth from calibration.gov.cbo.social_security
 # divided by calibration.gov.census.populations.total in each year. The IRS
