@@ -8,7 +8,12 @@ class dc_liheap_payment(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "dc_liheap_eligible"
-    reference = "https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/DOEE%20FY24%20LIHEAP_REGULAR_Benefits_Table-Matrix.pdf"
+    reference = (
+        "https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/DOEE%20FY24%20LIHEAP_REGULAR_Benefits_Table-Matrix.pdf",
+        "https://doee.dc.gov/liheap",
+        "https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/LIHEAP%20FAQ_1_0.pdf#page=1",
+        "https://liheapch.acf.gov/docs/2026/state-plans/DC_Plan_2026.pdf#page=4",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.dc.doee.liheap.payment
@@ -44,6 +49,17 @@ class dc_liheap_payment(Variable):
         heating_expenses = where(
             unspecified, legacy_expense, spm_unit("heating_expense", period)
         )
+        # The one-time Regular benefit helps with heating and cooling costs. A
+        # home without heating that pays for cooling takes the Electric row
+        # (dc_liheap_heating_type), capped at its electricity bill.
+        cooling_only = (
+            canonical_type == canonical_type.possible_values.NONE
+        ) & spm_unit("has_cooling_expense", period)
+        expense_cap = where(
+            cooling_only,
+            spm_unit("pre_subsidy_electricity_expense", period),
+            heating_expenses,
+        )
 
         # Heat-in-rent is a direct subsidy — no expense cap.
         matrix_amount = select(
@@ -62,4 +78,4 @@ class dc_liheap_payment(Variable):
             default=0,
         )
         heat_in_rent = heating_type == types.HEAT_IN_RENT
-        return where(heat_in_rent, matrix_amount, min_(matrix_amount, heating_expenses))
+        return where(heat_in_rent, matrix_amount, min_(matrix_amount, expense_cap))

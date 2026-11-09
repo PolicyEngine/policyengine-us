@@ -1096,6 +1096,7 @@ programs:
         full_name: DC Low Income Home Energy Assistance Program
         variable: dc_liheap_payment
         parameter_prefix: gov.states.dc.doee.liheap
+        notes: One-time Regular benefit from the DOEE matrix; it also covers cooling-only households, paying the Electric row capped at the electricity bill.
       - state: DE
         status: partial
         name: Delaware LIHEAP
