@@ -530,16 +530,16 @@ def list_change_years(path):
 
 
 def test_refunds_stay_inside_the_credits_list_in_every_year():
-    """Checks each year either list changes, from the refund list's first block.
+    """Checks each year either list changes, so it covers every pair in force.
 
-    Years before that block take it, because policyengine-core reads an empty
-    block as no list at all.
+    PE-US copies each list's first block back to 2015, its first modeled
+    year, so the refund list starts with an empty block on the credits list's
+    first date.
     """
-    refund_years = list_change_years(STATE_LISTS / "state_property_tax_refunds.yaml")
-    years = refund_years | list_change_years(
-        STATE_LISTS / "state_property_tax_credits.yaml"
-    )
-    for year in sorted(year for year in years if year >= min(refund_years)):
+    years = list_change_years(
+        STATE_LISTS / "state_property_tax_refunds.yaml"
+    ) | list_change_years(STATE_LISTS / "state_property_tax_credits.yaml")
+    for year in sorted(years):
         outside = property_tax_refunds(year) - property_tax_credit_items(year)
         assert outside == set(), f"{year}: refunds not in the credits list: {outside}"
 
@@ -583,12 +583,12 @@ def one_household_per_credit(credits, amount, year):
 def test_property_tax_credits_move_both_net_incomes_together(amount):
     """A differential test over every credit in state_property_tax_credits.
 
-    A payment through state income tax can lose part of its value to federal
-    tax, through the SALT deduction, but it loses the same part in both totals.
+    At $500,000 of wages each earner owes enough state income tax to use a
+    non-refundable credit in full, so every credit but a bill reduction moves
+    both totals by the whole amount.
     """
     year = 2026
     credits = sorted(property_tax_credit_items(year))
-    refunds = property_tax_refunds(year)
     simulation = Simulation(situation=one_household_per_credit(credits, amount, year))
 
     def change(name):
@@ -598,10 +598,6 @@ def test_property_tax_credits_move_both_net_incomes_together(amount):
     household = change("household_net_income")
     spm = change("spm_unit_net_income")
     for name, household_change, spm_change in zip(credits, household, spm):
-        assert household_change == pytest.approx(spm_change, abs=TOLERANCE), name
-        if name in PROPERTY_TAX_BILL_REDUCTIONS:
-            assert household_change == pytest.approx(0, abs=TOLERANCE), name
-        elif name in refunds:
-            assert household_change == pytest.approx(amount, abs=TOLERANCE), name
-        else:
-            assert TOLERANCE < household_change <= amount + TOLERANCE, name
+        expected = 0 if name in PROPERTY_TAX_BILL_REDUCTIONS else amount
+        assert household_change == pytest.approx(expected, abs=TOLERANCE), name
+        assert spm_change == pytest.approx(expected, abs=TOLERANCE), name

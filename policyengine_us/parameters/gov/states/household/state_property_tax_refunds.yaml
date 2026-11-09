@@ -1,12 +1,13 @@
 description: States pay these property tax and rent refunds in cash, outside the income tax return.
 values:
   # Each refund appears from the year it enters state_property_tax_credits,
-  # so from 2021 on this list stays inside that one. Years before 2021 take
-  # the 2021 block, as household_state_benefits' first block covers the years
-  # before it; policyengine-core reads an empty block as no list at all.
+  # so this list stays inside that one in every year. The empty first block
+  # shares that list's first date; without it, PE-US would copy the 2021
+  # block back to 2015, its first modeled year.
   # The other members of state_property_tax_credits either sit in a state's
   # income tax credit lists, which reach net income through state income tax,
   # or reduce the property tax bill, which no net income total subtracts.
+  1977-01-01: []
   2021-01-01:
     # Vermont pays the renter credit on its own claim, Form RCC-146. Schedule
     # IN-112 carries only other refundable credits to Form IN-111.
@@ -45,13 +46,13 @@ metadata:
       href: https://www.revisor.mn.gov/statutes/cite/290A.07
     - title: 2025 Form M1PR instructions, refund check or direct deposit
       href: https://www.revenue.state.mn.us/sites/default/files/2026-06/m1pr-inst-25.pdf#page=5
-    - title: "Montana Department of Revenue, income tax and property tax rebate report, May 2024 #page 13-15"
+    - title: Montana Department of Revenue, income tax and property tax rebate report, May 2024
       href: https://archive.legmt.gov/content/Committees/Interim/2023-2024/Revenue/Meetings/May-2024/5.1-DOR-rebate-report.pdf#page=13
-    - title: "2025 Montana Session Laws, Chapter 767 (SB 542), sec. 3(5) and (9) #page 3-4"
+    - title: 2025 Montana Session Laws, Chapter 767 (SB 542), sec. 3(5) and (9)
       href: https://archive.legmt.gov/content/Sessions/69th/Contractor_index/CH0767.pdf#page=3
     - title: 2025 Form PA-1000 booklet, Line 20, rebate deposited or mailed by the Department of Revenue
       href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/ptrr/documents/2025_pa-1000_inst.pdf#page=11
-    - title: "Utah Code 59-2a-203 and 59-2a-205(5), renter's credit paid by the commission from the General Fund #page 11-12"
+    - title: Utah Code 59-2a-203 and 59-2a-205(5), renter's credit paid by the commission from the General Fund
       href: https://le.utah.gov/xcode/Title59/Chapter2A/C59-2a_2026010120250507.pdf#page=11
-    - title: "2024 Vermont income tax booklet, Schedule IN-112 Part II and Form RCC-146 instructions #page 24,35"
+    - title: 2024 Vermont income tax booklet, Schedule IN-112 Part II and Form RCC-146 instructions
       href: https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2024.pdf#page=24

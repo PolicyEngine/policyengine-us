@@ -187,6 +187,32 @@
     household_benefits: 1_729
     spm_unit_benefits: 1_729
 
+- name: Vermont's renter credit stays out of both totals before it enters the credits list in 2021.
+  # The input stands in for the credit PE-US computes for 2020 from its 2021
+  # parameters.
+  period: 2020
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [adult]
+        vt_renter_credit: 1_729
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: VT
+  output:
+    state_property_tax_refunds: 0
+    household_state_benefits: 0
+    household_benefits: 0
+    spm_unit_benefits: 0
+
 - name: A Utah owner who also rents counts only the renter's credit.
   # Same household as Case 7 of ut_homeowner_renter_relief.yaml. Counties
   # apply the $600 homeowner's credit to the property tax bill.
