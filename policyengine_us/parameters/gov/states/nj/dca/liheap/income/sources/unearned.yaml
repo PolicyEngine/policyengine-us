@@ -9,6 +9,9 @@ values:
   - strike_benefits
   - ssi
   - pension_income
+  # Handbook 2.3.D counts benefits, pensions and annuities. The Medicare Part B
+  # deduction in 2.3.F.7 and the exclusion for children in 2.3.E.9 name Social
+  # Security only, so railroad benefits count gross and at every age.
   - railroad_benefits
   # Military retirement income (retiree pay plus Survivor Benefit Plan
   # annuities) is a separate input from the pension inputs that pension_income

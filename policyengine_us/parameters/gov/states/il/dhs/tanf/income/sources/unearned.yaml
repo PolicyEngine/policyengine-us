@@ -2,6 +2,11 @@ description: Illinois counts these income sources as unearned income under the T
 values:
   1997-07-01:
     - social_security
+    # 89 Ill. Adm. Code 112.100 counts unearned income the section doesn't exempt.
+    # 112.110(aa) disregards Railroad Retirement disability payments up to the SSI
+    # payment level, as it does Social Security disability. The model doesn't apply
+    # that disregard to either, and railroad_benefits doesn't separate disability
+    # annuities, so the whole amount counts.
     - railroad_benefits
     - disability_benefits
     - workers_compensation
