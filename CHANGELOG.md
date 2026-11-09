@@ -1,3 +1,14 @@
+## [2.116.0] - 2026-11-09
+
+### Added
+
+- Model the Minnesota Paid Leave employer premium, including the small employer rate and test (Minn. Stat. 268B.14, subds. 5a-5c), and include it in employer payroll taxes.
+
+### Removed
+
+- Remove the Minnesota Paid Leave `employee_rate` parameter. The model now derives the employee portion from `rate`, `employer_minimum_share` and the `small_employer` shares, so reforms that set `employee_rate` must set those instead.
+
+
 ## [2.115.1] - 2026-11-09
 
 ### Fixed
