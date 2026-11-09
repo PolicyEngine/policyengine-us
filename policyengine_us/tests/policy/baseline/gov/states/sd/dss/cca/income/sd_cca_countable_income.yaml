@@ -302,3 +302,29 @@
         state_code: SD
   output:
     sd_cca_countable_income: 3_000
+
+- name: Case 14, railroad retirement benefits count as unearned income.
+  # Subsidy Manual Section 4 counts "pensions" and "retirement".
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 40
+        railroad_benefits: 12_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: SD
+  output:
+    # 12,000 / 12 = 1,000, with no disregard on unearned income.
+    sd_cca_gross_income: 1_000
+    sd_cca_countable_income: 1_000

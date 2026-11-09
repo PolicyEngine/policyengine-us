@@ -5,6 +5,9 @@ values:
     - ssi
     - veterans_benefits
     - pension_income
+    # LAC 28:CLXV.509.A.3.b counts recurring "retirement benefits" (iv) and
+    # "disability benefits" (v), which railroad retirement annuities are.
+    - railroad_benefits
     - disability_benefits
     - total_unemployment_compensation
     - workers_compensation
@@ -18,6 +21,9 @@ values:
     - ssi
     - veterans_benefits
     - pension_income
+    # LAC 28:CLXV.509.A.3.b counts recurring "retirement benefits" (iv) and
+    # "disability benefits" (v), which railroad retirement annuities are.
+    - railroad_benefits
     - disability_benefits
     - total_unemployment_compensation
     - workers_compensation
