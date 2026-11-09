@@ -8,9 +8,9 @@ model's inputs cannot resolve the statute's other tests: an application,
 residence on the application date and during all of the prior calendar year, 72
 consecutive hours of presence in the prior two years, allowable absences,
 Selective Service compliance, or a felony sentence or conviction-based
-incarceration during that year. `is_incarcerated` does not say why a person is
-incarcerated or tie to that year, so it does not affect the dividend. Supplying
-wages and other known income does not disable either calculation.
+incarceration during that year. `is_incarcerated` records no conviction and does
+not tie to that year, so it does not affect the dividend. Supplying wages and
+other known income does not disable either calculation.
 
 The regular PFD is included in federal gross income for nondependent people.
 A dependent child's PFD is not automatically added to the parent's adjusted
@@ -74,16 +74,16 @@ calendar years before the dividend year. The Division [takes
 applications](https://pfd.alaska.gov/application/applying-for-a-child) for a child
 "born on or before December 31st of the qualifying year."
 
-`age` cannot identify these children, because a child aged 0 may have been born in
-either calendar year. Populace takes `age` from the CPS ASEC, which the Census
+`age` cannot identify these children, because a child aged 0 may have a birth date
+in either calendar year. Populace takes `age` from the CPS ASEC, which the Census
 Bureau [conducts in February, March and
 April](https://www.census.gov/topics/income-poverty/poverty/guidance/surveys-programs.html)
 and which records age [as of the survey
 date](https://www.census.gov/programs-surveys/cps/technical-documentation/subject-definitions.html).
-Most children under one on those dates were born the year before, and those
-children can qualify under (c). So the model pays a resident aged 0 unless the
-take-up input says otherwise. Set that input to false for a child born during the
-dividend year.
+Most children under one on those dates have birth dates in the year before, and
+those children can qualify under (c). So the model pays a resident aged 0 unless
+the take-up input says otherwise. Set that input to false for a child born during
+the dividend year.
 
 ### Recipients in microsimulation
 
