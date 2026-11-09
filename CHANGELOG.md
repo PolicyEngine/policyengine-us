@@ -1,3 +1,90 @@
+## [2.115.1] - 2026-11-09
+
+### Fixed
+
+- End Montana's disability income exclusion with its 2024 repeal, count only the federal and Montana refundable credits a household actually received (by default the 2020 and 2021 Economic Impact Payments, with other receipts as separate inputs) in the elderly homeowner/renter credit's gross household income, and require that credit's claimant to meet the six-month owner, renter or lessee occupancy and nine-month residence tests (MCA 15-30-2338(1)(b)-(c)).
+
+
+## [2.115.0] - 2026-11-09
+
+### Added
+
+- Add 2027 ACA benchmark (second-lowest silver) and lowest bronze premiums for every rating area, from KFF's 2027 marketplace calculator, and KFF's 2027 national average benchmark premium ($703 a month for a 40-year-old).
+
+### Fixed
+
+- Correct ACA rating areas for 118 counties to match CMS's state geographic rating areas. From 2026: Idaho's six county-based areas, Washington's nine areas, Orange County and four other California counties, Massachusetts, Alaska, Nebraska and South Dakota; earlier years keep the previous map. From 2014: 32 counties the map misspelled or lacked. Correct 21 rating areas' 2026 benchmark premiums, including Los Angeles County's, add premiums for the three areas that had none, and put lowest bronze premiums on the age-0 basis the model applies them on.
+
+
+## [2.114.0] - 2026-11-09
+
+### Added
+
+- Add an ACA minimum premium reform (gov.contrib.aca.minimum_premium), following section 5(a)(1) of the January 2026 CARE Act draft bill: a tax unit with a member eligible for the premium tax credit pays at least a monthly minimum ($5 by default) toward its enrolled plan's premium.
+
+
+## [2.113.0] - 2026-11-09
+
+### Added
+
+- Add `employer_state_payroll_premium_deduction_share`, the share of the permitted employee premium an employer deducts (default 1, the current full-share assumption). It covers Colorado FAMLI, Delaware Paid Leave, Maine and Massachusetts PFML, Minnesota Paid Leave, New York PFL and DBL, the Vermont Child Care Contribution and Washington PFML. Outside Minnesota and New York, the employer-side variables carry any part the employer does not deduct. Apply the swap of Massachusetts' family and medical deduction caps and rates (Acts 2026 c. 101) from January 1, 2027. Cite Conn. Gen. Stat. 31-49g(b)(1) for Connecticut's paid leave rate.
+
+
+## [2.112.0] - 2026-11-09
+
+### Fixed
+
+- The model now computes Colorado's Child Care Assistance Program parent fee under 8 CCR 1403-1 section 3.124. Each household pays one fee: 1% of gross income plus 14% of income above the poverty guideline Colorado sets each October, and $15 for each child in care after the first when income exceeds that guideline. The model drops the cents, charges 55% of the fee when every child in care receives part-time care, and takes 20% off at a provider in the top three quality levels. A household whose children have no recorded hours of care now pays the full-time fee, where the model used to charge nothing. From August 2028 the model applies the marginal rates of section 3.124(Q).
+
+### Removed
+
+- Removed the Colorado Child Care Assistance Program parameters `parent_fee/base` and `parent_fee_rate_by_child_care_hours`. The household parent fee under section 3.124 replaces them.
+
+
+## [2.111.1] - 2026-11-09
+
+### Fixed
+
+- Count the property tax and rent refunds that North Dakota, Minnesota, Montana, Pennsylvania, Utah and Vermont pay outside the income tax in household and SPM benefits, and split Utah's homeowner and renter relief into the renter's credit the state pays and the homeowner's credit counties apply to the bill. Limit Vermont's renter credit to tax units that paid rent, as 32 V.S.A. 6066 requires, and let its table lookups run for every household, using the eight-person values for larger tax units as the Department of Taxes' calculator does.
+
+
+## [2.111.0] - 2026-11-09
+
+### Added
+
+- Offset New Jersey claim of right repayments against income of the same category in the year of repayment (N.J.S.A. 54A:5-2, TAM 2011-7), including in the pension exclusion's base and Worksheet D's earnings test.
+
+
+## [2.110.0] - 2026-11-09
+
+### Added
+
+- Add Illinois's subtraction (35 ILCS 5/203(a)(2)(P)), which applies when the federal return claims section 1341 relief, and Ohio's deduction (R.C. 5747.01(A)(12)), which applies to any repayment section 1341 covers. Users who entered a repayment in il_other_subtractions or oh_other_subtractions should move it to claim_of_right_repayment, or it counts twice.
+
+
+## [2.109.0] - 2026-11-09
+
+### Added
+
+- Add Arkansas's claim of right deduction (Ark. Code § 26-51-457): a repayment over $3,000 of income Arkansas taxed in an earlier year is a miscellaneous itemized deduction above 2% of Arkansas AGI, whichever federal method applies.
+- Model Hawaii's claim of right relief: from 2022 the section 1341 lesser-of computed on Hawaii tax with the Form N-364 refundable credit, and repayments as 2% miscellaneous itemized deductions otherwise (through 2025).
+- Add Indiana's repayment of previously taxed income deduction (IC 6-3-1-3.5(a)(22)), Massachusetts's claim of right deduction (M.G.L. c. 62, s. 3(B)(a)(14)) and West Virginia's IRC 1341 repayments modification, which apply whichever federal method is used. Indiana users who entered a repayment in in_other_subtractions should move it to claim_of_right_repayment, or it counts twice.
+
+
+## [2.108.0] - 2026-11-09
+
+### Added
+
+- Add an opt-in Medicaid LTSS financial eligibility screen for Texas, Delaware, and Washington, with source income exclusions, qualified income trust opening-month rules, individual and couple budgeting, initial and continuing spousal resource rules, CMS-indexed home equity limits, and maintenance needs allowances. Derive budgets from each spouse's income, resource inventories, service locations, Delaware elections, Washington institutionalization history, and qualifying impairment-related work expense payment and allocation facts. Keep the screen separate from Medicaid enrollment and benefit calculations.
+
+
+## [2.107.4] - 2026-11-08
+
+### Fixed
+
+- Net the premium tax credit out of Oregon's federal tax liability subtraction, and stop counting the employee payroll tax on unreported tips and wages.
+
+
 ## [2.107.3] - 2026-11-08
 
 ### Fixed
