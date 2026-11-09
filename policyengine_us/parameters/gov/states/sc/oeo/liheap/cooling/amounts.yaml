@@ -1,0 +1,37 @@
+description: South Carolina provides these base and supplemental regular cooling amounts under the Low Income Home Energy Assistance Program.
+# The cooling season (May 1 to September 30) pays no fuel supplement. The FY2027
+# plan keeps the child, disabled and veteran supplements at 50.
+base:
+  2025-10-01: 200
+  2026-10-01: 300
+elderly:
+  2025-10-01: 75
+  2026-10-01: 50
+child:
+  2025-10-01: 50
+disabled:
+  2025-10-01: 50
+veteran:
+  2025-10-01: 50
+low_income:
+  2025-10-01: 175
+  2026-10-01: 150
+high_burden:
+  2025-10-01: 175
+  2026-10-01: 200
+maximum:
+  2025-10-01: 775
+  2026-10-01: 850
+metadata:
+  unit: currency-USD
+  period: year
+  label: South Carolina LIHEAP regular cooling amounts
+  reference:
+    - title: "South Carolina FY2026 LIHEAP Detailed Model Plan, items 3.3, 3.5 and 3.6 #page 10-11"
+      href: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=10
+    - title: "South Carolina FY2027 LIHEAP Detailed Model Plan, items 3.3, 3.5 and 3.6 #page 10-11"
+      href: https://liheapch.acf.gov/docs/2027/state-plans/SC_Plan_2027.pdf#page=10
+    - title: South Carolina 2026 Benefit Matrix, nonemergency benefits
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/SC_BenefitMatrix_2026.pdf#page=1
+    - title: "South Carolina 2024 Administrative Guide, Section 3A, Direct Assistance benefit levels #page 536,538"
+      href: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=536
