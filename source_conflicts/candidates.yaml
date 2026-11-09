@@ -3795,22 +3795,22 @@ candidates:
     citation: 2018-2025 IT-40 instructions, code 630; 2025 Example 1 footnote
     url: https://forms.in.gov/Download.aspx?id=16915#page=23
   readings:
-    statute: The cross-reference can require an allowable federal deduction, excluding small nonbusiness repayments
-      disallowed federally from 2018.
-    other: Allow any repayment amount independently of the federal method, limited to previously taxed income and
-      adjusted for lost unemployment deductions.
+    statute: The paragraph subtracts an amount as described in section 1341(a)(2), to the extent previously included in
+      adjusted gross income, so a repayment qualifies whether or not federal law allows its deduction.
+    other: Read through IC 6-3-1-11(b), the reference could import federal allowability, excluding small nonbusiness
+      repayments disallowed federally from 2018. The IT-40 general rule asks for federal eligibility, but its 2025
+      Example 1 footnote allows a repayment the federal return cannot deduct.
   example: The 2025 instructions deduct $345 less $15 of lost unemployment deduction, giving $330; a $3,400 credit-method
     repayment gives a $3,400 state deduction.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/parameters/gov/states/in/tax/income/deductions/deductions.yaml
-    - policyengine_us/variables/gov/states/in/tax/income/deductions/in_other_subtractions.py
+    - policyengine_us/variables/gov/states/in/tax/income/deductions/claim_of_right/in_claim_of_right_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10196
-  state: unreviewed
-  note: 'The statute-first rule requires changing the instructions-based scope if the federal-eligibility reading
-    is verified; the 2026 statutory text remains unverified. Code not yet on main: gov/states/in/tax/income/deductions/in_claim_of_right_deduction.yaml.'
+  state: ruled
+  note: Ruled in November 2026 as built, in line with the Massachusetts ruling on a similar reference.
 - id: us-in:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -4469,19 +4469,20 @@ candidates:
       2026)
     url: https://web.archive.org/web/20260211211815/https://www.mass.gov/info-details/differences-between-ma-and-federal-tax-law-for-personal-income
   readings:
-    statute: The cross-reference can require an allowable federal deduction, excluding small repayments disallowed
-      federally from 2018.
-    other: Allow any amount previously included in Massachusetts taxable income unless otherwise deductible, independently
-      of the federal method.
+    statute: The paragraph stands alone. Any amount previously included in Massachusetts taxable income counts unless
+      otherwise deductible, independently of the federal method.
+    other: DOR guidance agrees. A contrary reading would import federal allowability through the section 1341(a)(2)
+      cross-reference, excluding small repayments disallowed federally from 2018.
   example: With $60,000 wages and a $2,000 repayment, Massachusetts tax falls from $2,680 to $2,580.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ma/tax/income/deductions/claim_of_right/ma_claim_of_right_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10196
-  state: unreviewed
-  note: 'The statute-first rule requires changing the guidance-based scope if the cross-reference imports federal
-    deduction eligibility; verify that interpretation first. Code not yet on main: gov/states/ma/tax/income/deductions/ma_claim_of_right_deduction.yaml.'
+  state: ruled
+  note: Ruled in October 2026 as built. The paragraph states its own limits, while paragraph (13) expressly imports
+    federal conditions.
 - id: us-ma:connectorcare-income-bands-2026
   program: connectorcare
   years:
@@ -11612,13 +11613,12 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/parameters/gov/states/wv/tax/income/subtractions/subtractions.yaml
+    - policyengine_us/variables/gov/states/wv/tax/income/subtractions/claim_of_right/wv_claim_of_right_subtraction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10196
-  state: unreviewed
-  note: 'Retain as a disputable gap-fill; identify statutory authority, resolve the study''s citation, and verify
-    threshold and federal-method conditions by year. Code not yet on main: gov/states/wv/tax/income/subtractions/wv_claim_of_right_subtraction.yaml,
-    policyengine_us/variables/gov/states/wv/tax/income/subtractions/wv_subtractions.py, wv_claim_of_right_subtraction,
-    gov.states.wv.tax.income.subtractions.claim_of_right.threshold.'
+  state: ruled
+  note: Ruled in November 2026 as a gap-fill, because the statute does not address repayments and the instructions
+    provide the modification. Statutory authority remains unidentified, and the study's citation remains unresolved.
 - id: us-wv:liheap-income-limit-above-federal-ceiling
   program: liheap
   years:
