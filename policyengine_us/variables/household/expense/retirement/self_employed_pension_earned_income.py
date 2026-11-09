@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.above_the_line_deductions.self_employed_health_insurance_earned_income_limit import (
+    form_7206_line_7,
+)
 
 
 class self_employed_pension_earned_income(Variable):
@@ -43,24 +46,11 @@ def pension_plan_earned_income(person, period, other_line_5_profits=0):
     """
     # Step 1: net profit from the business with the plan.
     plan_business_profit = max_(0, person("total_self_employment_income", period))
-    # Net profits of every business whose earnings are subject to
-    # self-employment tax, leaving out net losses.
-    other_business_profits = max_(0, person("farm_operations_income", period)) + max_(
-        0, person("partnership_self_employment_net_earnings", period)
-    )
-    all_business_profits = (
-        plan_business_profit + other_business_profits + other_line_5_profits
-    )
-    plan_business_share = np.divide(
-        plan_business_profit,
-        all_business_profits,
-        out=np.zeros_like(all_business_profits),
-        where=all_business_profits > 0,
-    )
     # Step 2: the deductible part of self-employment tax (Schedule 1
-    # line 15) attributable to the plan's business.
-    self_employment_tax_deduction = (
-        person("self_employment_tax_ald_person", period) * plan_business_share
+    # line 15) attributable to the plan's business, split by net profit as
+    # on Form 7206 lines 5 to 7.
+    self_employment_tax_deduction = form_7206_line_7(
+        person, period, plan_business_profit, other_line_5_profits
     )
     # Step 3.
     return max_(0, plan_business_profit - self_employment_tax_deduction)
