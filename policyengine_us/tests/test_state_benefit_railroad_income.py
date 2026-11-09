@@ -139,7 +139,7 @@ def received(variable, amount):
     "state, variable, rule", PROGRAMS, ids=[r[1] for r in PROGRAMS]
 )
 @given(st.floats(min_value=1_200, max_value=200_000).map(lambda x: round(x, 2)))
-@settings(max_examples=2, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_railroad_benefits_count_as_received(state, variable, rule, amount):
     """R1. The whole benefit counts, from the first dollar."""
     change = income(state, variable, {"railroad_benefits": amount}) - base_income(
@@ -166,7 +166,7 @@ PENSION_PROGRAMS = [
     "state, variable, rule", PENSION_PROGRAMS, ids=[r[1] for r in PENSION_PROGRAMS]
 )
 @given(st.floats(min_value=1_200, max_value=200_000).map(lambda x: round(x, 2)))
-@settings(max_examples=2, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_railroad_benefits_count_as_a_pension_would(state, variable, rule, amount):
     """R2. These rules count pensions and annuities without distinction."""
     railroad = income(state, variable, {"railroad_benefits": amount})
