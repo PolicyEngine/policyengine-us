@@ -1073,7 +1073,15 @@ programs:
         variable: ok_liheap
         parameter_prefix: gov.states.ok.dhs.liheap
         verified_years: "2025-2027"
-        notes: FY2025-FY2027 regular winter heating only, using the Appendix C-7-A payment matrix. Crisis, cooling, weatherization and equipment assistance are out of scope.
+        notes: FY2025-FY2027 regular winter heating only, using the Appendix C-7-A payment matrix. Summer cooling is listed separately; crisis, weatherization and equipment assistance are out of scope.
+      - state: OK
+        status: partial
+        name: Oklahoma LIHEAP cooling
+        full_name: Oklahoma Low Income Home Energy Assistance Program summer cooling
+        variable: ok_liheap_cooling
+        parameter_prefix: gov.states.ok.dhs.liheap.cooling
+        verified_years: "2025-2027"
+        notes: FY2025-FY2027 regular summer cooling payment from the Appendix C-7-A flat amounts by household size and net monthly income, for households with cooling costs. The cooling equipment reimbursement, crisis and weatherization assistance are out of scope.
       - state: PA
         status: partial
         name: Pennsylvania LIHEAP
