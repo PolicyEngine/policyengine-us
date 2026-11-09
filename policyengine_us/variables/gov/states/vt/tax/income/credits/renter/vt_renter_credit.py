@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.geography.county_helpers import county_has_state_suffix
 
 
 class vt_renter_credit(Variable):
@@ -17,17 +18,29 @@ class vt_renter_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.vt.tax.income.credits.renter
-        # get tax unit size and county.
+        # The tables run through family size 8; larger households use the
+        # 8-person values, as in the Department of Taxes' renter credit
+        # calculator.
         tax_unit_size = tax_unit("tax_unit_size", period)
-        county = tax_unit.household("county", period)
+        size = min_(tax_unit_size, p.max_household_size).astype(int)
+        # defined_for masks the output but does not stop the formula from
+        # running over every household, so non-Vermont households and Vermont
+        # households with unknown or another state's counties use Addison
+        # before indexing the county-keyed tables, which would otherwise raise
+        # ParameterNotFoundError.
+        county = tax_unit.household("county_str", period)
+        in_vt = tax_unit.household("state_code_str", period) == "VT"
+        safe_county = where(
+            in_vt & county_has_state_suffix(county, "VT"),
+            county,
+            "ADDISON_COUNTY_VT",
+        )
         # locate the values by family size and county
-        full_credit_income_limit = p.income_limit_ami.thirty_percent[tax_unit_size][
-            county
+        full_credit_income_limit = p.income_limit_ami.thirty_percent[size][safe_county]
+        partial_credit_income_limit = p.income_limit_ami.fifty_percent[size][
+            safe_county
         ]
-        partial_credit_income_limit = p.income_limit_ami.fifty_percent[tax_unit_size][
-            county
-        ]
-        fmr = p.fair_market_rent[tax_unit_size][county]
+        fmr = p.fair_market_rent[size][safe_county]
         # The department rounds the credit amount to whole dollars, half up,
         # before applying the income phase-out: its 2021 calculator computes
         # ROUND(FMR * 12 * 10%, 0), and its published tables are whole dollars.
