@@ -69,6 +69,14 @@ estimate feeds the deduction for state and local taxes, which has nothing to
 do with how a state treats the benefits, so S1 and S2 set its input to zero
 for both households.
 
+The swap households take up no SSI. Oklahoma's supplement rounds "the monthly
+amount of each income source" to the nearest dollar (OAC 317:35-5-42(i)), and
+the swap turns two payments, title II and the rest of a railroad annuity, into
+one railroad payment. The supplement, which Oklahoma's gross income and sales
+tax credit count, can then move by a dollar a month: $26.50 and $416.50 round to
+$444, and $443 stays $443. That rounding has nothing to do with how a state
+treats the benefits.
+
 YAML tests pin worked examples; these properties quantify over amounts, filing
 status and every state, which YAML cannot.
 """
@@ -223,6 +231,8 @@ def swap_simulation(states, age, earnings, pension, amount, joint, tier_2, tax_f
     built = situation(households)
     for unit in built["tax_units"].values():
         unit["state_and_local_sales_or_income_tax"] = {YEAR: 0}
+    for person in built["people"].values():
+        person["takes_up_ssi_if_eligible"] = {YEAR: False}
     return Simulation(situation=built)
 
 
@@ -286,6 +296,11 @@ def test_s1_s2_swapping_title_ii_for_tier_1(
     joint=st.booleans(),
     tier_2=tier_2s,
     tax_free=tax_frees,
+)
+# Oklahoma: with SSI taken up, the supplement's rounding of each monthly source
+# moved ok_gross_income by $12 (title II $12,312, tier 1 $12,324).
+@example(
+    age=67, earnings=0, pension=0, amount=318, joint=False, tier_2=0, tax_free=4_998
 )
 def test_s3_income_tests_count_tier_1_like_title_ii(
     age, earnings, pension, amount, joint, tier_2, tax_free
