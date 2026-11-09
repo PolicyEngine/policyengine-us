@@ -13163,6 +13163,47 @@ candidates:
   note: The same instructions say on page 1 that income excepted under sections 1402(a)(1) through (17) "is subject to
     NIIT", and the self-employment bullet in line 4b's list removes income taken into account in self-employment
     income.
+- id: us:railroad-benefits-in-state-income-tests
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does 45 U.S.C. 231m(a), under which no railroad annuity shall "be subject to any tax", bar a state from
+    counting the annuity in an income test, phase-out or deduction limit that sizes the tax on other income?
+  sources:
+  - kind: statute
+    citation: 45 U.S.C. 231m(a)
+    url: https://www.law.cornell.edu/uscode/text/45/231m
+  - kind: statute
+    citation: 36 M.R.S. 5122(2)(M-2)(1)(a)(ii), reducing Maine's pension deduction by "railroad retirement benefits paid
+      by the United States"
+    url: https://legislature.maine.gov/statutes/36/title36sec5122.html
+  - kind: statute
+    citation: Md. Code, Tax-General 10-209(b)(2), reducing Maryland's pension exclusion by payments under the Railroad
+      Retirement Act
+    url: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-209
+  readings:
+    statute: The annuity itself stays untaxed, and a state may count it as a measure, as each state's statute or form
+      says. The tax clause lacks the "considered in computing a tax" words of 31 U.S.C. 3124(a).
+    other: The words "any tax ... under any circumstances whatsoever" also bar counting the annuity where that raises
+      the tax on other income, at least when a deduction shrinks because the filer holds the annuity.
+  example: In 2025, a Maine filer with a $60,000 pension and $20,000 of tier 1 benefits deducts $28,216 under the
+    statute ($48,216 less $20,000) and $48,216 under the other reading.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/me/tax/income/adjusted_gross_income/me_pension_income_deduction.py
+    - policyengine_us/variables/gov/states/md/tax/income/agi/subtractions/md_pension_subtraction_amount.py
+    - policyengine_us/variables/gov/states/id/tax/income/deductions/retirement_benefits/id_retirement_benefits_deduction.py
+    - policyengine_us/variables/gov/states/mi/tax/income/mi_military_and_railroad_retirement_subtraction.py
+    - policyengine_us/variables/gov/states/nm/tax/income/exemptions/nm_low_and_middle_income_exemption.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10722
+  state: open
+  note: PE-US applies each state's provision as that state's statute and forms read it, whether the provision measures
+    income with federal AGI, names railroad benefits in an income test, or shrinks a deduction limit because of the
+    benefits. No decision found applies 231m(a) to such a provision. The Oregon Tax Court's Deras v. Department of
+    Revenue (2026) reached AGI phase-outs under Oregon's constitution and 31 U.S.C. 3124, whose words differ.
 - id: us:recovery-rebate-joint-claimable-spouse
   program: recovery-rebate-credit
   years:
