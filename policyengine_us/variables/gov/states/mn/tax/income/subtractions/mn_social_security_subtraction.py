@@ -60,15 +60,15 @@ class mn_social_security_subtraction(Variable):
             simplified_subtraction = 0
         # Alternate subtraction, subd. 26(e) to (h), on provisional income
         # (steps 9-19). Step 11 starts from total income less all taxable
-        # benefits, and step 12 adds half of Form 1040 line 6a: the head's and
-        # spouse's title II and tier 1 benefits. A dependent's benefits go on
-        # the dependent's own return.
+        # benefits. Subd. 26(i) defines provisional income with "one-half of
+        # the taxable Social Security benefits", title II and tier 1 alike, so
+        # the model adds half of Form 1040 line 6b in place of steps 12 and
+        # 13, which take half of line 6a.
         income_amount = p.income_amount[filing_status]
         alt_amount = p.alternative_amount[filing_status]
         us_gross_income = add(tax_unit, period, ["irs_gross_income"])
         adj_income = us_gross_income - taxable_benefits
-        section_86_benefits = tax_unit("tax_unit_section_86_benefits", period)
-        benefit_amount = section_86_benefits * p.total_benefit_fraction
+        benefit_amount = taxable_benefits * p.total_benefit_fraction
         tax_exempt_int = add(tax_unit, period, ["tax_exempt_interest_income"])
         sum_income = adj_income + benefit_amount + tax_exempt_int
         us_ald = tax_unit("above_the_line_deductions", period)

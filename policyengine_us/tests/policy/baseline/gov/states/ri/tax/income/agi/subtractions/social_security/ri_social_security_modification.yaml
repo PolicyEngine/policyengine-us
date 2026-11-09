@@ -132,13 +132,11 @@
   output:
     ri_social_security_modification: 10_000
 
-# Tier 1 railroad retirement benefits. R.I. Gen. Laws 44-30-12(c)(8) subtracts
-# the "social security benefits includible in federal adjusted gross income",
-# an IRC 86 amount that counts tier 1 benefits, and Schedule M line 1d
-# subtracts the same taxable tier 1 benefits as railroad retirement benefits
-# exempt under federal law (taxable_railroad_benefits, 45 U.S.C. 231m(a)).
-# Line 1d has no age or income test, so the model takes the tier 1 benefits
-# there, and the worksheet's line 11 holds the taxable title II benefits.
+# Tier 1 railroad retirement benefits. Schedule M line 1d subtracts the taxable
+# tier 1 benefits as railroad retirement benefits exempt under federal law
+# (taxable_railroad_benefits, 45 U.S.C. 231m(a)). The header of the 2024
+# worksheet reads "Do not include amounts from Railroad Retirement Benefits on
+# this worksheet", so line 13 holds the taxable title II benefits alone.
 - name: RI Social Security modification 2024 takes the taxable tier 1 benefits on line 1d
   period: 2024
   absolute_error_margin: 0.01
@@ -164,6 +162,5 @@
     taxable_railroad_benefits: 4_800
     ri_social_security_modification_eligible: true
     # Line 12: 1.0000, since the filer was born before the 2024 cutoff. Line
-    # 13: the 4,800 of taxable title II benefits. With line 6b on line 11,
-    # line 13 would be 9,600 and line 1d would subtract the 4,800 again.
+    # 13: the 4,800 of taxable title II benefits.
     ri_social_security_modification: 4_800

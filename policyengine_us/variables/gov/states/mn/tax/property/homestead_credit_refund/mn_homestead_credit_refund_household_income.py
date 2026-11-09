@@ -9,7 +9,7 @@ class mn_homestead_credit_refund_household_income(Variable):
     definition_period = YEAR
     documentation = (
         "Approximates Form M1PR lines 1 through 13 using modeled adjusted gross "
-        "income, nontaxable Social Security and tier 1 railroad retirement "
+        "income, nontaxable Social Security and railroad retirement "
         "benefits, retirement add-backs and "
         "contributions, and age/disability and dependent subtractions. "
         "Co-occupant income and other nontaxable additions or subtractions "
@@ -53,6 +53,15 @@ class mn_homestead_credit_refund_household_income(Variable):
                 + max_(0, tier_1 - taxable_tier_1)
             )
             * ~is_dependent
+        )
+        # Subd. 3(a)(2)(v) counts a pension or annuity, railroad retirement
+        # benefits included, "which was not exclusively funded by the claimant
+        # or spouse". Railroad employers and employees both pay tier 2 tax (26
+        # U.S.C. 3201(b), 3221(b)), so the tax-free rest of the annuity counts
+        # and subd. 3(b)(2), for annuities the claimant alone funded, doesn't
+        # reach it.
+        tax_free_railroad_annuity = tax_unit.sum(
+            people("tax_exempt_railroad_pension_benefits", period) * ~is_dependent
         )
 
         # Line 1 is the filer's federal AGI, which leaves out tax unit
@@ -114,7 +123,11 @@ class mn_homestead_credit_refund_household_income(Variable):
             income_p.exemptions.amount * dependent_subtraction_multiplier
         )
 
-        additions = nontaxable_social_security + retirement_additions
+        additions = (
+            nontaxable_social_security
+            + tax_free_railroad_annuity
+            + retirement_additions
+        )
         subtractions = (
             age_or_disability_subtraction
             + dependent_subtraction

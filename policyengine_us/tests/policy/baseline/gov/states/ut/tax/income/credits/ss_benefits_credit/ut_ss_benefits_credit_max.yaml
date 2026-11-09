@@ -59,8 +59,9 @@
 # income. Tier 1 benefits are paid under the Railroad Retirement Act, and the
 # subtraction for railroad retirement income (code 78,
 # taxable_railroad_benefits) removes them from state taxable income, so line 1
-# holds the taxable title II benefits alone, though it points to Form 1040
-# line 6b.
+# holds the taxable title II benefits alone, though the 2024 worksheet points
+# to Form 1040 line 6b. From 2025 the worksheet's line 2 takes those benefits
+# back out of line 1.
 - name: UT Social Security benefits credit 2024 leaves the taxable tier 1 benefits out of line 1
   period: 2024
   absolute_error_margin: 0.01
