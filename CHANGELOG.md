@@ -1,3 +1,405 @@
+## [2.113.0] - 2026-11-09
+
+### Added
+
+- Add `employer_state_payroll_premium_deduction_share`, the share of the permitted employee premium an employer deducts (default 1, the current full-share assumption). It covers Colorado FAMLI, Delaware Paid Leave, Maine and Massachusetts PFML, Minnesota Paid Leave, New York PFL and DBL, the Vermont Child Care Contribution and Washington PFML. Outside Minnesota and New York, the employer-side variables carry any part the employer does not deduct. Apply the swap of Massachusetts' family and medical deduction caps and rates (Acts 2026 c. 101) from January 1, 2027. Cite Conn. Gen. Stat. 31-49g(b)(1) for Connecticut's paid leave rate.
+
+
+## [2.112.0] - 2026-11-09
+
+### Fixed
+
+- The model now computes Colorado's Child Care Assistance Program parent fee under 8 CCR 1403-1 section 3.124. Each household pays one fee: 1% of gross income plus 14% of income above the poverty guideline Colorado sets each October, and $15 for each child in care after the first when income exceeds that guideline. The model drops the cents, charges 55% of the fee when every child in care receives part-time care, and takes 20% off at a provider in the top three quality levels. A household whose children have no recorded hours of care now pays the full-time fee, where the model used to charge nothing. From August 2028 the model applies the marginal rates of section 3.124(Q).
+
+### Removed
+
+- Removed the Colorado Child Care Assistance Program parameters `parent_fee/base` and `parent_fee_rate_by_child_care_hours`. The household parent fee under section 3.124 replaces them.
+
+
+## [2.111.1] - 2026-11-09
+
+### Fixed
+
+- Count the property tax and rent refunds that North Dakota, Minnesota, Montana, Pennsylvania, Utah and Vermont pay outside the income tax in household and SPM benefits, and split Utah's homeowner and renter relief into the renter's credit the state pays and the homeowner's credit counties apply to the bill. Limit Vermont's renter credit to tax units that paid rent, as 32 V.S.A. 6066 requires, and let its table lookups run for every household, using the eight-person values for larger tax units as the Department of Taxes' calculator does.
+
+
+## [2.111.0] - 2026-11-09
+
+### Added
+
+- Offset New Jersey claim of right repayments against income of the same category in the year of repayment (N.J.S.A. 54A:5-2, TAM 2011-7), including in the pension exclusion's base and Worksheet D's earnings test.
+
+
+## [2.110.0] - 2026-11-09
+
+### Added
+
+- Add Illinois's subtraction (35 ILCS 5/203(a)(2)(P)), which applies when the federal return claims section 1341 relief, and Ohio's deduction (R.C. 5747.01(A)(12)), which applies to any repayment section 1341 covers. Users who entered a repayment in il_other_subtractions or oh_other_subtractions should move it to claim_of_right_repayment, or it counts twice.
+
+
+## [2.109.0] - 2026-11-09
+
+### Added
+
+- Add Arkansas's claim of right deduction (Ark. Code § 26-51-457): a repayment over $3,000 of income Arkansas taxed in an earlier year is a miscellaneous itemized deduction above 2% of Arkansas AGI, whichever federal method applies.
+- Model Hawaii's claim of right relief: from 2022 the section 1341 lesser-of computed on Hawaii tax with the Form N-364 refundable credit, and repayments as 2% miscellaneous itemized deductions otherwise (through 2025).
+- Add Indiana's repayment of previously taxed income deduction (IC 6-3-1-3.5(a)(22)), Massachusetts's claim of right deduction (M.G.L. c. 62, s. 3(B)(a)(14)) and West Virginia's IRC 1341 repayments modification, which apply whichever federal method is used. Indiana users who entered a repayment in in_other_subtractions should move it to claim_of_right_repayment, or it counts twice.
+
+
+## [2.108.0] - 2026-11-09
+
+### Added
+
+- Add an opt-in Medicaid LTSS financial eligibility screen for Texas, Delaware, and Washington, with source income exclusions, qualified income trust opening-month rules, individual and couple budgeting, initial and continuing spousal resource rules, CMS-indexed home equity limits, and maintenance needs allowances. Derive budgets from each spouse's income, resource inventories, service locations, Delaware elections, Washington institutionalization history, and qualifying impairment-related work expense payment and allocation facts. Keep the screen separate from Medicaid enrollment and benefit calculations.
+
+
+## [2.107.4] - 2026-11-08
+
+### Fixed
+
+- Net the premium tax credit out of Oregon's federal tax liability subtraction, and stop counting the employee payroll tax on unreported tips and wages.
+
+
+## [2.107.3] - 2026-11-08
+
+### Fixed
+
+- Give Alaska's Permanent Fund Dividend and energy relief the amounts Alaska paid in each year from 2015, the first year PolicyEngine models, to 2021 (#5148). PolicyEngine had carried 2022's $2,622 dividend and $662 energy relief back to those years. The PFD Division reports dividends of $2,072 in 2015, $1,022 in 2016, $1,100 in 2017, $1,600 in 2018, $1,606 in 2019, $992 in 2020 and $1,114 in 2021, with no energy relief. From 2027, PolicyEngine carries the 2026 dividend of $1,000 forward and sets energy relief to zero until Alaska sets new amounts.
+
+
+## [2.107.2] - 2026-11-08
+
+### Fixed
+
+- Correct the 2021 child tax credit split after both phaseouts so the credit for other dependents remains nonrefundable, including its effect on solar-credit ordering and Oklahoma conformity.
+
+  Correct the ordinary CTC phaseout threshold for surviving spouses to $200,000 from 2018 onward, while retaining their separate $150,000 ARPA threshold.
+
+  Stop adding the 2021 nonrefundable child tax credit back to the federal tax in Iowa's federal tax deduction, so the deduction reflects the credit for other dependents.
+
+
+## [2.107.1] - 2026-11-08
+
+### Fixed
+
+- Remove Louisiana's extra $1,000 exemption for a widowed tax unit member, since the $9,000 combined personal exemption for a qualifying surviving spouse already covers the surviving spouse exemption (former La. R.S. 47:294).
+
+
+## [2.107.0] - 2026-11-08
+
+### Added
+
+- Add source captures for registering Maryland's capital gains surtax source conflict.
+
+
+## [2.106.3] - 2026-11-08
+
+### Fixed
+
+- Reduce each child's Vermont child tax credit by $20 for each $1,000 of AGI over $125,000, as 32 V.S.A. 5830f(b) requires, instead of taking one reduction off the total, so the credit ends above $174,000 of AGI for any number of children.
+
+
+## [2.106.2] - 2026-11-08
+
+### Fixed
+
+- Tax Maryland's 2% capital gains surtax on net capital gain as the Internal Revenue Code defines it (net long-term gain over net short-term loss, with capital gain distributions, for the head and spouse), test the $350,000 threshold on federal rather than Maryland AGI, and add an input for gain from excepted assets (Form 502CG line 8), treating negative excepted amounts as zero.
+
+
+## [2.106.1] - 2026-11-08
+
+### Fixed
+
+- Correct New York's and South Dakota's child care coverage notes, which listed the court-supervision age extension as not modeled; the model applies it in both states. Drop the separate school-age rate table from New York's not-modeled list, since OCFS prices school-age programs at the day care center rates for ages 3 to 12. Correct the description of New York's county default in the note and in `ny_ccap_county_group`: without a county or county FIPS input, the model places a household in Albany County, in county group 2. Move the limits New York shares with other states to the CCDF program note.
+- Count Colorado's in-kind support and maintenance (9 CCR 2503-5 3.520.79) in AND-CS and Old Age Pension income: SSA's matching ISM for SSI recipients, including the one-third reduction for those in another person's household from March 2014, Colorado's maximum for clients without SSI, and the pre-2014 rules.
+
+
+## [2.106.0] - 2026-11-08
+
+### Fixed
+
+- Apply Colorado's $13 AND-CS payment floor from January 2026, and count income for every AND-CS client under 9 CCR 2503-5 3.549: no unearned disregard for SSI-only clients, spousal and parental deeming without SSI's threshold, and the exemption for spouses and parents on SSI, Old Age Pension or Medicaid.
+
+### Removed
+
+- Remove `co_oap_medicaid_enrolled`; set `co_adult_financial_medicaid_enrolled` instead, which both Colorado Old Age Pension and AND-CS read for their deeming exemptions.
+
+
+## [2.105.3] - 2026-11-08
+
+### Fixed
+
+- Follow the statute where state forms differ: New Mexico's senior medical exemption needs expenses over $28,000; Vermont's 2021 low-income child care credit needs AGI under the threshold; the New York and New York City household credits count the federal exemptions of married, head-of-household and surviving-spouse filers instead of denying the credit when a filer can be claimed (Tax Law 606(b), 1310(d)), and the New York City credit for a married couple filing separately uses the couple's AGI and exemptions, and separate filers get exactly one-half of both household credits (Tax Law 606(b)(3)(C), 1310(d)(3)(C)) rather than the tables' rounded halves; Puerto Rico's earned income credit uses Hacienda's 2024 and 2025 inflation-adjusted schedules; and the New York City household credit gives negative AGI the lowest bracket's amount.
+
+
+## [2.105.2] - 2026-11-08
+
+### Fixed
+
+- Count qualifying children with an ITIN or SSN for California's earned income tax credit from 2020.
+
+  Apply the same identification rule to the California young child tax credit: a child under 6 needs a work-valid SSN before 2020 and an SSN or ITIN from 2020.
+
+
+## [2.105.1] - 2026-11-08
+
+### Fixed
+
+- Let the self-employed health insurance deduction's earned income limit come from a Schedule F farm, a partnership's K-1 box 14 code A earnings, or a more-than-2% S corporation shareholder's wages when the plan is established under that business (26 U.S.C. 162(l)(2)(A) and (l)(5), Form 7206); the business can be named, and otherwise the person's business with the largest earned income is used.
+
+
+## [2.105.0] - 2026-11-07
+
+### Added
+
+- Add the federal claim of right repayment deduction and section 1341 credit (26 U.S.C. 1341), North Carolina's bar on its claim of right deduction when federal tax is computed under section 1341(a)(5), and North Carolina's tax payment for restored income (G.S. 105-266.2). Carry the federal claim of right deduction into California itemized deductions by default through Schedule CA column A. Require section 1341 eligibility for North Carolina's payment and deduction bar, including when the federal method is supplied as an input. Keep North Carolina's refundable payment in the state and household accounting totals. Apply statute-first federal-tax deduction treatment in Alabama, Missouri and Oregon, retain qualifying repayments in Wisconsin's itemized credit base, and complete Montana and Virginia repayment and historical miscellaneous-deduction treatment.
+
+### Changed
+
+- From 2024, Montana taxable income starts from federal AGI less the federal deduction for every Montana filer (with the QBI deduction added back), replacing the reconstructed Montana standard and itemized deductions. From 2015, Alabama's federal income tax deduction subtracts only the refundable part of the American Opportunity Credit for every AOC claimant, along with the net premium tax credit and the section 1341 credit.
+
+### Fixed
+
+- Apply Montana's capped state-income-tax adjustment before flooring the federal taxable-income base at zero in 2024 (Worksheet A), and from 2025 add it after the floor as a Schedule I addition.
+
+
+## [2.104.10] - 2026-11-07
+
+### Fixed
+
+- Reduce Colorado's federal deduction addback by the Schedule A state income tax already added back on DR 0104 line 2.
+
+
+## [2.104.9] - 2026-11-07
+
+### Fixed
+
+- Updated the subsampling holder test to supply a yearly input before checking reform storage.
+
+
+## [2.104.8] - 2026-11-07
+
+### Fixed
+
+- Count partnership and S corporation income, farm rental income, capital gain distributions reported without Schedule D, Form 4797 gains and losses, and employer-plan disability benefits in person `market_income`, and so in SPM resources, since `spm_unit_taxes` already subtracted the tax on them (#9919). Household market income now also counts the last three, so the person and household lists match except for discharged debt. A new `other_net_gain_person` splits the tax unit's Form 4797 net gain or loss between the head and spouse. Programs whose income adds `market_income` (North Dakota's renter's refund, Washington's ECEAP and Missouri's Supplemental Nursing Care) and the ranking that picks which adults get a simulated marginal tax rate now see these sources too. North Dakota's renter's refund leaves out the disability benefits federal law excludes from income, as NDCC 57-02-08.1(5)(c) requires.
+
+
+## [2.104.7] - 2026-11-07
+
+### Changed
+
+- Glide the CMS out-of-pocket spending, employer premium and direct purchase premium upraters from their last projected growth rates to the 2026 Medicare Trustees' long-range per capita health spending rates after 2034, instead of compounding the last projected rate to 2100.
+
+
+## [2.104.6] - 2026-11-07
+
+### Fixed
+
+- Fixed Social Security period discovery to forward explicit branches while preserving compatibility with Core versions that accept no branch argument.
+
+
+## [2.104.5] - 2026-11-07
+
+### Changed
+
+- Call PolicyEngine's microdata stack Microcosm in docs, comments, variable documentation and tests, and link its issues in PolicyEngine/microcosm; published dataset ids keep their names.
+
+
+## [2.104.4] - 2026-11-07
+
+### Fixed
+
+- Stop charging the Medicare Part B premium to Part A-only enrollees (new medicare_part_b_enrolled input) and to SSI recipients whose Part B premium a state Medicaid buy-in pays, counted month by month and including 209(b) SSI recipients who qualify for Medicaid; Medicaid eligibility counts the premium before the buy-in.
+- Leave tax unit dependents' income out of Arkansas, Mississippi and New Jersey adjusted gross income and Iowa net income; dependents report it on their own state returns. Mississippi now limits only the head's and spouse's own capital loss, so a dependent's capital gains no longer change the filers' Mississippi adjusted gross income.
+- Give a Pennsylvania separate filer who lives apart from their spouse for the last six months of the year the unmarried $6,500 tax forgiveness base on their own income, and give a married separate filer who does not live apart the $13,000 base on the joint eligibility income of both spouses, including a spouse in another tax unit (72 P.S. 7304(d)(1)).
+
+
+## [2.104.3] - 2026-11-06
+
+### Fixed
+
+- Give the Social Security input state-machine test's Core backend the holder-rebinding method that policyengine-core 3.34.8's `apply_reform` calls, which had made the test fail on every pull request.
+
+
+## [2.104.2] - 2026-11-06
+
+### Fixed
+
+- Apply Arizona, Arkansas and California rules for a filer who can be claimed as a dependent. A return on which the filer (or, if joint, either spouse) can be claimed, unless the would-be claimant files only for a refund, counts no dependents for Arizona's dependent credit, family credit and 2021 families rebate, Arkansas's dependent credit, disabled-dependent credit (except for a filer's own child, new input `ar_personal_credit_disabled_child_of_filer`) and low-income tables, or California's dependent exemption credit, and gets no childless CalEITC or foster youth credit. A claimable filer loses California's personal, senior and blind credits, and California's standard deduction follows its dependent worksheet, with earned income from the new `dependent_standard_deduction_earned_income` (taxable wages, self-employment and farm income). A filer who is claimed is not counted for Arizona's excise credit and, if they lived in the claimer's home, is not a qualified renter for California's renter credit (new input `lives_with_claiming_taxpayer`). Arkansas's care credit counts only childcare for a qualifying person. The Arizona, Arkansas and California dependent credit reforms, the state dependent exemption repeal and California's AB 2591 reform keep these rules. Arizona's 2021 families rebate counts at most three dependents on a joint return, as on every other return (Laws 2023, ch. 147, sec. 3(E)), and California's 2025 joint renter credit income limit is now $107,988.
+
+
+## [2.104.1] - 2026-11-06
+
+### Fixed
+
+- Apply the baseline ACA premium tax credit coverage exclusions (Basic Health Program, Healthier Oregon, VA/CHAMPVA/TRICARE, Medicaid work requirements and the coverage gap) and the below-FPL immigration exception in the additional-bracket and simplified-bracket ACA reforms, as the 700% FPL reform does.
+
+
+## [2.104.0] - 2026-11-06
+
+### Added
+
+- Add West Virginia LIEAP regular heating payments for FY2026 and FY2027 for one through twenty qualified members, with the manual's income rules, income ceiling and payment chart.
+
+
+## [2.103.0] - 2026-11-06
+
+### Added
+
+- Add Idaho LIHEAP regular heating assistance for FY2026.
+
+
+## [2.102.0] - 2026-11-06
+
+### Added
+
+- Add Connecticut Energy Assistance Program basic and rental heating assistance for fiscal years 2026 and 2027, including federal income protection, military pensions, Social Security net of Part B premiums and receipt-based benefits.
+
+
+## [2.101.0] - 2026-11-06
+
+### Added
+
+- Add California LIHEAP regular utility heating schedules, a covered Madera propane/fuel-oil calculation, and approved-cost wood assistance, including the federal income floor, military pensions, receipt-based benefits and allowable medical-premium deductions.
+
+
+## [2.100.1] - 2026-11-05
+
+### Fixed
+
+- Count Form 4835 farm rental income (Schedule E line 40) in net investment income, and count rental, farm rental, estate and passive pass-through losses in net investment income only as far as section 461(l) allows them, for the net investment income tax and Minnesota's net investment income tax.
+
+
+## [2.100.0] - 2026-11-05
+
+### Added
+
+- Add South Carolina LIHEAP regular heating assistance for FY2026, with countable income, the federal 110% poverty floor and statewide supplements.
+
+
+## [2.99.0] - 2026-11-05
+
+### Added
+
+- Add Hawaii LIHEAP regular heating eligibility, the flat benefit for subsidized dwellings and private-dwelling points for fiscal year 2026; private-dwelling dollar awards stay unmodeled because the statewide value per point was not located.
+
+
+## [2.98.0] - 2026-11-05
+
+### Added
+
+- Add Delaware LIHEAP regular heating assistance for fiscal year 2026, including the income-interval benefit matrix, the subsidized-housing flat award, federal income protection and Social Security net of Part B.
+
+
+## [2.97.0] - 2026-11-05
+
+### Added
+
+- Add Colorado LEAP regular heating assistance for fiscal year 2026, including received income, heating-cost adjustments and federal income protection for large households.
+
+
+## [2.96.3] - 2026-11-05
+
+### Fixed
+
+- Keep Iowa's 2018 miscellaneous itemized deduction above 2% of federal AGI, which Iowa did not suspend until 2019, and apply Iowa's 2018 limitation on the itemized deductions of filers with federal AGI above the IA 104 applicable amounts.
+
+
+## [2.96.2] - 2026-11-05
+
+### Fixed
+
+- Add the Medicare Part B and Part D income-related monthly adjustment brackets for 2015-2023 and the standard Part B premium for 2015-2020, which had been backdated from their 2024 and 2021 values.
+
+
+## [2.96.1] - 2026-11-05
+
+### Fixed
+
+- From 2021, a filer whose only qualifying child lacks a valid SSN gets the zero-child EITC without the childless age test (IRC 32(c)(1)(A)(i); ARPA section 9622).
+- Restrict military survivor retirement tax exemptions to eligible surviving spouses in Arizona, Idaho, Indiana, Michigan, North Dakota, New Mexico, Rhode Island, South Carolina, and Virginia. Apply New Mexico's 2025 survivor eligibility date and use Michigan's eligible subtraction in retirement deduction worksheets. Limit South Carolina's general survivor retirement deduction to surviving spouses, base its maximum on the deceased spouse's age, and drop the 2021 reduction by the military survivor deduction.
+
+
+## [2.96.0] - 2026-11-05
+
+### Added
+
+- Add an opt-in annual earnings-history Social Security calculator with shared owners' draw credit, mini-PIAs, named above-cap credit variants, and a reconciliation ledger.
+
+### Fixed
+
+- With the abolish-federal-income-tax or abolish-payroll-tax parameter on, household tax and net income now count every other tax: the Idaho permanent building fund tax, the California, Indiana, North Carolina, Oklahoma and Pennsylvania use taxes, and every local income and occupational tax (only New York City's was counted), along with the Colorado AMT, the Michigan surtax and the Vermont child care contribution. Mississippi tax now counts after its nonrefundable credits, Pennsylvania refundable credits are no longer counted twice, and federal refundable credits leave household net income in every year the federal income tax is abolished, including when the parameter is first set after 2024.
+- Count eligible long-term care insurance premiums, up to the 26 U.S.C. 213(d)(10) limit for the insured person's age, in Schedule A medical expenses and the self-employed health insurance deduction. Ohio, Idaho, New Jersey and Michigan remove only the part of that deduction that took the premiums each one counts.
+- Fill total AGI in calibration.gov.cbo.income_by_source.adjusted_gross_income for 2015-2018 with IRS Statistics of Income actuals. The 2015 value was tax-year 2013 AGI excluding dependent filers and was held flat through 2018, so dollar inputs on the default uprating series (those with no series of their own, such as charitable donations) dated 2018 or earlier came out 13% to 29% too high when uprated to 2019 or later, and up to 12% too low when uprated to a year within 2016-2018. Medicare IRMAA's two-year lookback deflates income by the same per-capita index, so a household entered for a single benefit year from 2016 to 2020 now gets that year's income times 1.007, 0.942, 0.890, 0.932 or 0.929, instead of 1.009, 1.016, 1.014, 0.765 or 0.721.
+- Start Vermont's 2017 taxable income from federal taxable income, with the former 32 V.S.A. § 5811(21) itemized deduction addback, additions and subtractions, and add the 2017 federal standard deduction amounts.
+
+### Removed
+
+- Removed the abolish-federal-income-tax and abolish-payroll-tax structural reforms (`policyengine_us.reforms.federal`). Their parameters, `gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax` and `abolish_payroll_tax`, still abolish the taxes through the baseline formulas. Also removed the parameters `gov.household.household_tax_before_refundable_credits`, which only those reforms read, and `gov.household.household_refundable_credits`, which nothing read.
+
+
+## [2.95.0] - 2026-11-05
+
+### Added
+
+- Add an optional California out-of-state municipal bond interest input for nondependent filers and document the zero-addback default.
+- Add state income tax rebate adjustments and a pre-rebate comparison output that preserves ordinary credits and existing tax calculations.
+
+### Changed
+
+- Document automatic Alaska PFD and energy relief calculations, person-level overrides, and the 2022 payment split.
+- Clarify tax-unit dependent and spouse inference for callers and add explicit-role regression examples.
+
+
+## [2.94.9] - 2026-11-05
+
+### Fixed
+
+- Correct pre-2018 AMT for child filers by applying the limited exemption to AMT income, excluding joint returns from the child exemption cap, applying the support test to 18-year-olds and full-time students, and judging the child rule by the filer alone.
+
+
+## [2.94.8] - 2026-11-05
+
+### Fixed
+
+- Zero the whole standard deduction, including the aged and blind amount, for a married separate filer whose spouse itemizes (IRC 63(c)(6)), and leave employer dependent care benefits out of income tax, FICA and FUTA wages, adding back any part above the IRC 129 exclusion and counting it as EITC earned income.
+
+
+## [2.94.7] - 2026-11-04
+
+### Fixed
+
+- Compute the California state supplement per person with one standard for each living arrangement, which stops facility residents getting stacked amounts and pays blind children, adult dependents, children in facilities and unrelated people sharing an SPM unit the right levels. `ca_state_supplement_eligible_person` now shows whether a person is paid a supplement, so it is false when income leaves none.
+
+
+## [2.94.6] - 2026-11-03
+
+### Fixed
+
+- Require a resident qualifying child and the statutory separation conditions for married separate filers, and for separated head-of-household filers from 2021, to receive the federal EITC, CalEITC, and credits that follow the federal marital rule. A head or spouse marked as separated meets the six-month living-apart condition by default. A new `is_separated_under_decree` input (default false) treats a head or spouse separated under a decree of divorce or separate maintenance as unmarried for the EITC, under IRC 7703(a)(2). New Jersey's EITC, including its childless age fallback, now follows the federal marital condition and, under N.J.S.A. 54A:4-7a.(3), bars every married separate filer unless a decree applies. Head-of-household status for a separated filer now requires a child resident for more than half the year and six months apart from the spouse (IRC 7703(b)). Washington's Working Families Tax Credit no longer meets the childless age test through a dependent's age.
+
+
+## [2.94.5] - 2026-11-03
+
+### Changed
+
+- Store California's state supplement payment standards as state shares on top of the federal benefit rate, so the standards follow each federal cost-of-living adjustment, and date the shares and food allowances from January 2013 using the levels SSA POMS lists for each year.
+
+
+## [2.94.4] - 2026-11-03
+
+### Fixed
+
+- Make ca_state_supplement_eligible_person true for blind or disabled dependents under 18, whom the model pays California's dependent supplement amount.
+
+
+## [2.94.3] - 2026-11-03
+
+### Fixed
+
+- Keep the Social Security wage base on each Trustees assumption's path when a reform changes only the payroll cap.
+
+
 ## [2.94.2] - 2026-11-03
 
 ### Fixed
