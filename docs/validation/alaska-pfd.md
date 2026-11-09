@@ -53,9 +53,10 @@ The other values of `immigration_status` stay out:
 - `CUBAN_HAITIAN_ENTRANT` and `CONDITIONAL_ENTRANT` do not say whether the person
   may adopt the United States as their domicile.
 
-Alaska tests the status held during the qualifying year, and 15 AAC 23.154(c)
-starts an alien's qualifying year on January 1 after the person gains the status.
-PolicyEngine has no status history, so it reads the status for the dividend year.
+Alaska tests the status held during the qualifying year and on the application
+date (15 AAC 23.154(e)), and 15 AAC 23.154(c) starts an alien's qualifying year on
+January 1 after the person gains the status. PolicyEngine has no status history,
+so it reads the status for the dividend year.
 
 `takes_up_ak_permanent_fund_dividend_if_eligible` covers the statute's other
 tests and anyone who does not apply. It defaults to true, so a household
