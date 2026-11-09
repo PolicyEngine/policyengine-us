@@ -1,0 +1,111 @@
+# Sources: Kentucky FFY 2026 Summer Cooling Subsidy fact sheet (responsibility
+# for home utility costs; monthly income at or below 1,995 for one person,
+# 150% of the 2026 guideline), FY2026 state plan Section 3.4 (electric
+# benefits only), and 921 KAR 4:116 Section 2(1)(d) (a Social Security number
+# or permanent residency card for each member). Electric bills of 1,560 are
+# 130 a month.
+
+- name: Case 1, income at the 2026 cooling limit qualifies and one cent more does not.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        # 1_995.00 a month.
+        employment_income_before_lsr: 23_940
+      person2:
+        age: 40
+        # 1_995.01 a month.
+        employment_income_before_lsr: 23_940.12
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_560
+        has_cooling_expense: true
+      spm_unit2:
+        members: [person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_560
+        has_cooling_expense: true
+    households:
+      household1:
+        members: [person1]
+        state_code: KY
+      household2:
+        members: [person2]
+        state_code: KY
+  output:
+    # Limit: 15_960 * 1.5 / 12 = 1_995.
+    ky_liheap_cooling_eligible: [true, false]
+
+- name: Case 2, the household must have cooling costs and its own electric bill, in Kentucky.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 7_540
+      person2:
+        age: 40
+        employment_income_before_lsr: 7_540
+      person3:
+        age: 40
+        employment_income_before_lsr: 7_540
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_560
+        has_cooling_expense: false
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 720
+        pre_subsidy_electricity_expense: 0
+        has_cooling_expense: true
+      spm_unit3:
+        members: [person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_560
+        has_cooling_expense: true
+    households:
+      household1:
+        members: [person1]
+        state_code: KY
+      household2:
+        members: [person2]
+        state_code: KY
+      household3:
+        members: [person3]
+        state_code: IN
+  output:
+    # Household 1 has no cooling costs, household 2 has no electric bill, and
+    # household 3 lives in Indiana.
+    ky_liheap_cooling_eligible: [false, false, false]
+    ky_liheap_cooling: [0, 0, 0]
+
+- name: Case 3, a member without a Social Security number or green card makes the household ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 7_540
+      person2:
+        age: 38
+        immigration_status: UNDOCUMENTED
+        ssn_card_type: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_560
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_liheap_cooling_eligible: false
+    ky_liheap_cooling: 0

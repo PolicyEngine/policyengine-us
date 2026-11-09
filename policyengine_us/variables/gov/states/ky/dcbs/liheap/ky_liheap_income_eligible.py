@@ -2,6 +2,40 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
 
+def ky_liheap_meets_income_limit(spm_unit, period, parameters, year_lag):
+    """Compare monthly income with the limit from guidelines lagged year_lag years.
+
+    Heating and the cooling subsidy share the limit rate and rounding but can
+    use different guideline years.
+    """
+    p = parameters(period).gov.states.ky.dcbs.liheap
+    size = spm_unit("spm_unit_size", period)
+    state_group = spm_unit.household("state_group_str", period)
+    table_size = clip(size, 1, p.maximum_table_size)
+    additional_people = max_(size - p.maximum_table_size, 0)
+    guideline = fpg(table_size, state_group, period, parameters, year_lag=year_lag)
+    additional_guideline = (
+        fpg(
+            table_size + 1,
+            state_group,
+            period,
+            parameters,
+            year_lag=year_lag,
+        )
+        - guideline
+    )
+    # The fact sheet states "Add $688 for each additional family member"
+    # without a derivation. Rounding the additional-person guideline up at
+    # the income limit rate reproduces $688 for FY2026 and all eight
+    # published limits. The workbook's own table for sizes 9-14 rounds each
+    # whole limit instead and differs by up to $3 (for example $8,144
+    # against $8,145 at size 10); the fact sheet is followed.
+    monthly_limit = np.ceil(guideline * p.income_limit / MONTHS_IN_YEAR)
+    monthly_increment = np.ceil(additional_guideline * p.income_limit / MONTHS_IN_YEAR)
+    income = spm_unit("ky_liheap_income", period) / MONTHS_IN_YEAR
+    return income <= monthly_limit + additional_people * monthly_increment
+
+
 class ky_liheap_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
@@ -18,32 +52,6 @@ class ky_liheap_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ky.dcbs.liheap
-        size = spm_unit("spm_unit_size", period)
-        state_group = spm_unit.household("state_group_str", period)
-        table_size = clip(size, 1, p.maximum_table_size)
-        additional_people = max_(size - p.maximum_table_size, 0)
-        guideline = fpg(
-            table_size, state_group, period, parameters, year_lag=p.fpg_year_lag
+        return ky_liheap_meets_income_limit(
+            spm_unit, period, parameters, p.fpg_year_lag
         )
-        additional_guideline = (
-            fpg(
-                table_size + 1,
-                state_group,
-                period,
-                parameters,
-                year_lag=p.fpg_year_lag,
-            )
-            - guideline
-        )
-        # The fact sheet states "Add $688 for each additional family member"
-        # without a derivation. Rounding the additional-person guideline up at
-        # the income limit rate reproduces $688 for FY2026 and all eight
-        # published limits. The workbook's own table for sizes 9-14 rounds each
-        # whole limit instead and differs by up to $3 (for example $8,144
-        # against $8,145 at size 10); the fact sheet is followed.
-        monthly_limit = np.ceil(guideline * p.income_limit / MONTHS_IN_YEAR)
-        monthly_increment = np.ceil(
-            additional_guideline * p.income_limit / MONTHS_IN_YEAR
-        )
-        income = spm_unit("ky_liheap_income", period) / MONTHS_IN_YEAR
-        return income <= monthly_limit + additional_people * monthly_increment

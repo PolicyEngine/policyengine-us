@@ -1,0 +1,14 @@
+description: Kentucky uses the federal poverty guidelines from this many years before the federal fiscal year's ending year for the cooling subsidy under the Low Income Home Energy Assistance Program.
+# The summer fact sheet's limits are 150% of the 2026 guidelines:
+# 15,960 * 1.5 / 12 = 1,995 for one person, and 5,680 * 1.5 / 12 = 710 for
+# each additional member. Heating in the same federal fiscal year uses the
+# 2025 guidelines (fpg_year_lag).
+values:
+  2025-10-01: 0
+metadata:
+  unit: year
+  period: year
+  label: Kentucky LIHEAP cooling federal poverty guideline year lag
+  reference:
+    - title: Kentucky LIHEAP Summer Cooling Subsidy Component FFY 2026 fact sheet, eligibility
+      href: https://www.capky.org/wp-content/uploads/2026/07/FY26-LIHEAP-Summer-Cooling-Subsidy-Fact-Sheet.pdf

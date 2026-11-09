@@ -1,6 +1,36 @@
 from policyengine_us.model_api import *
 
 
+def ky_liheap_members_documented(spm_unit, period):
+    """Return whether the household meets the LIHEAP documentation rules.
+
+    Heating and the cooling subsidy share these rules.
+    """
+    # LIHEAP is a federal public benefit, so at least one member must be a
+    # citizen or qualified noncitizen; plan Section 17.3 verifies that
+    # status.
+    has_qualified_member = add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+    # 921 KAR 4:116 Section 2(1)(d) requires "a Social Security number, or
+    # a permanent residency card, for each household member". Section 2(2)
+    # treats the application as incomplete until it is received and
+    # Section 8(3) denies it after five working days, so a household with
+    # a member who has neither is ineligible. The plan's Section 17.2
+    # checklist requires the card from adults and requests it from other
+    # members; the regulation's per-member rule applies here. Section 1(10)
+    # defines the household with no immigration carve-out, so every member
+    # counts for size and income.
+    person = spm_unit.members
+    ssn_card_type = person("ssn_card_type", period)
+    immigration_status = person("immigration_status", period)
+    has_ssn = ssn_card_type != ssn_card_type.possible_values.NONE
+    is_permanent_resident = (
+        immigration_status
+        == immigration_status.possible_values.LEGAL_PERMANENT_RESIDENT
+    )
+    all_documented = spm_unit.all(has_ssn | is_permanent_resident)
+    return has_qualified_member & all_documented
+
+
 class ky_liheap_eligible(Variable):
     value_type = bool
     entity = SPMUnit
@@ -21,28 +51,5 @@ class ky_liheap_eligible(Variable):
         responsible = (spm_unit("heating_expense", period) > 0) | spm_unit(
             "heat_expense_included_in_rent", period
         )
-        # LIHEAP is a federal public benefit, so at least one member must be a
-        # citizen or qualified noncitizen; plan Section 17.3 verifies that
-        # status.
-        has_qualified_member = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
-        )
-        # 921 KAR 4:116 Section 2(1)(d) requires "a Social Security number, or
-        # a permanent residency card, for each household member". Section 2(2)
-        # treats the application as incomplete until it is received and
-        # Section 8(3) denies it after five working days, so a household with
-        # a member who has neither is ineligible. The plan's Section 17.2
-        # checklist requires the card from adults and requests it from other
-        # members; the regulation's per-member rule applies here. Section 1(10)
-        # defines the household with no immigration carve-out, so every member
-        # counts for size and income.
-        person = spm_unit.members
-        ssn_card_type = person("ssn_card_type", period)
-        immigration_status = person("immigration_status", period)
-        has_ssn = ssn_card_type != ssn_card_type.possible_values.NONE
-        is_permanent_resident = (
-            immigration_status
-            == immigration_status.possible_values.LEGAL_PERMANENT_RESIDENT
-        )
-        all_documented = spm_unit.all(has_ssn | is_permanent_resident)
-        return income_eligible & responsible & has_qualified_member & all_documented
+        documented = ky_liheap_members_documented(spm_unit, period)
+        return income_eligible & responsible & documented
