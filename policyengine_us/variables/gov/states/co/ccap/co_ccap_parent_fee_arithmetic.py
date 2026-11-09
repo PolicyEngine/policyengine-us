@@ -1,7 +1,7 @@
 import numpy as np
 
-# Section 3.111(H) lists the guideline in cents and counties work from monthly
-# income in cents, so an exact fee has at most five decimal places. Float64
+# Section 3.111(H) lists the guideline in cents and the model rounds monthly
+# income to cents, so an exact fee has at most five decimal places. Float64
 # arithmetic on those amounts strays from the exact fee by about $0.000000000001.
 # This tolerance brings a fee that should come to whole dollars up to them, and
 # it can't reach the next possible fee, $0.00001 away.

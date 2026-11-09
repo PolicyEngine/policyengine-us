@@ -28,9 +28,9 @@ class co_ccap_care_hours_per_day(Variable):
         weekly_hours = person("childcare_hours_per_week", year)
         days_per_week = person("childcare_days_per_week", year)
         attending_days = person("childcare_attending_days_per_month", year)
-        days_in_a_week = select(
-            [days_per_week > 0, attending_days > 0],
-            [days_per_week, attending_days * MONTHS_IN_YEAR / WEEKS_IN_YEAR],
-            default=WEEKDAYS_PER_WEEK,
+        # co_ccap_full_time_equivalent_units takes the same larger day count.
+        reported_days = max_(
+            days_per_week, attending_days * MONTHS_IN_YEAR / WEEKS_IN_YEAR
         )
+        days_in_a_week = where(reported_days > 0, reported_days, WEEKDAYS_PER_WEEK)
         return where(daily_hours > 0, daily_hours, weekly_hours / days_in_a_week)

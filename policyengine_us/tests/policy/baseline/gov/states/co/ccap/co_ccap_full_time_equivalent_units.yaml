@@ -94,3 +94,70 @@
     # weekly_over_two_days: 10 hours a day, 1 * 2 * 52 / 12 = 8.67.
     # weekly_forty: 8 hours a day, 1 * 21.67.
     co_ccap_full_time_equivalent_units: [0, 11.92, 21.67, 21.67, 15.5, 17.33, 11, 12, 11.92, 12, 11.92, 8.67, 21.67]
+
+- name: Case 2, each side of the 12-hour and 17-hour band edges.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      twelve_hours:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 12
+        childcare_attending_days_per_month: 10
+      twelve_and_a_half_hours:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 12.5
+        childcare_attending_days_per_month: 10
+      seventeen_hours:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 17
+        childcare_attending_days_per_month: 10
+      seventeen_and_a_half_hours:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 17.5
+        childcare_attending_days_per_month: 10
+    spm_units:
+      spm_unit:
+        members: [parent, twelve_hours, twelve_and_a_half_hours, seventeen_hours, seventeen_and_a_half_hours]
+    households:
+      household:
+        members: [parent, twelve_hours, twelve_and_a_half_hours, seventeen_hours, seventeen_and_a_half_hours]
+        state_code: CO
+  output:
+    # twelve_hours: full time through 12 hours, 1 * 10 = 10.
+    # twelve_and_a_half_hours: full time and part time, 1.55 * 10 = 15.5.
+    # seventeen_hours: full time and part time through 17 hours, 15.5.
+    # seventeen_and_a_half_hours: two full-time units, 2 * 10 = 20.
+    co_ccap_full_time_equivalent_units: [0, 10, 15.5, 15.5, 20]
+
+- name: Case 3, weekly hours and units take the same larger day count.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 20
+        childcare_days_per_week: 2
+        childcare_attending_days_per_month: 20
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    # 20 attending days exceed a two-day week (8.67 days). They make
+    # 20 * 12 / 52 = 4.62 days a week, so 20 / 4.62 = 4.33 hours a day, part
+    # time: 0.55 * 20 = 11.
+    co_ccap_full_time_equivalent_units: [0, 11]

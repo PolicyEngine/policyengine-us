@@ -24,11 +24,10 @@ Invariants, which these tests check on generated households:
    fee by 20% without cents. A lower rating, or a rating for a child outside
    care, changes nothing.
 
-A differential test checks the model against `reference_fee`, an independent
-implementation of the rule and the Department's tool in exact decimal
-arithmetic, on incomes in whole dollars and in cents. It takes the guidelines
-that section 3.111(H)(2) and (H)(3) list, and reads the model's projected
-guideline for 2028, which Colorado has not yet published.
+A differential test compares the model with `reference_fee`, written from the
+rule in exact decimal arithmetic, in January and October 2026 and in July and
+August 2028, on incomes in whole dollars and in cents. The reference uses the
+model's schedule defaults and, for 2028, its projected guideline.
 """
 
 from decimal import ROUND_FLOOR, ROUND_HALF_EVEN, Decimal
@@ -88,12 +87,8 @@ def care_hours(child):
     """Reported daily hours, or weekly hours over the child's days of care."""
     if child["hours"]:
         return Decimal(str(child["hours"]))
-    if child["week"]:
-        days_in_a_week = Decimal(child["week"])
-    elif child["days"]:
-        days_in_a_week = Decimal(child["days"]) * 12 / 52
-    else:
-        days_in_a_week = ASSUMED_DAYS_PER_WEEK
+    reported_days = max(Decimal(child["week"]), Decimal(child["days"]) * 12 / 52)
+    days_in_a_week = reported_days or ASSUMED_DAYS_PER_WEEK
     return Decimal(str(child["weekly"])) / days_in_a_week
 
 
@@ -134,7 +129,7 @@ def marginal_fee(income, limit):
 
 
 def reference_fee(month, annual_income, children, limit):
-    """Section 3.124 and the Department's tool, step by step."""
+    """Section 3.124, step by step, dropping cents as the Department's tool does."""
     in_care = [child for child in children if child["in_care"]]
     if not in_care:
         return Decimal(0)
@@ -296,6 +291,13 @@ any_children = st.builds(
 @example(month="2026-01", income=40_000, children=[child(hours=0, weekly=40)])
 # 15 hours a week over 13 attending days (three a week): 5 hours a day.
 @example(month="2026-01", income=40_000, children=[child(hours=0, weekly=15, days=13)])
+# 20 attending days give more days a week (4.62) than a two-day week: 4.33 hours
+# a day, 11 units, part time.
+@example(
+    month="2026-01",
+    income=40_000,
+    children=[child(hours=0, weekly=20, week=2, days=20)],
+)
 # An 8-year-old with only after-school expenses receives part-time care; a
 # 4-year-old with the same expense has no school day to fit it around.
 @example(

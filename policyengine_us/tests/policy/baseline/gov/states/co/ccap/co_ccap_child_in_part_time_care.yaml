@@ -119,3 +119,32 @@
     # after_school_and_other_care: other care leaves the schedule unknown.
     # after_school_long_days: 8 hours a day, 21.67 units.
     co_ccap_child_in_part_time_care: [false, true, false, true, false, true, false, true, false, true, false, true, true, false, false, false]
+
+- name: Case 2, an after-school expense with reported days of care.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+      five_days_a_week:
+        age: 8
+        is_tax_unit_dependent: true
+        after_school_expenses: 3_000
+        childcare_days_per_week: 5
+      twenty_attending_days:
+        age: 8
+        is_tax_unit_dependent: true
+        after_school_expenses: 3_000
+        childcare_attending_days_per_month: 20
+    spm_units:
+      spm_unit:
+        members: [parent, five_days_a_week, twenty_attending_days]
+    households:
+      household:
+        members: [parent, five_days_a_week, twenty_attending_days]
+        state_code: CO
+  output:
+    # five_days_a_week: reported days, so not after-school care alone, and one
+    # full-time unit a day gives 21.67 units.
+    # twenty_attending_days: reported days too, 20 units.
+    co_ccap_child_in_part_time_care: [false, false, false]
