@@ -6,11 +6,14 @@ class ak_permanent_fund_dividend_eligible(Variable):
     entity = Person
     label = "Alaska Permanent Fund Dividend eligible"
     documentation = (
-        "Applies the immigration status test in AS 43.23.005(a)(5). PolicyEngine "
-        "has no inputs for the statute's other tests: an application, residence "
-        "during all of the qualifying year, allowable absences, or a felony "
-        "sentence or conviction-based incarceration during that year. To model "
-        "a person who fails one of those, set "
+        "Applies the immigration status test in AS 43.23.005(a)(5). "
+        "PolicyEngine's inputs cannot resolve the statute's other tests: an "
+        "application, residence on the application date and during all of "
+        "the qualifying year, 72 consecutive hours of presence in the prior "
+        "two years, allowable absences, Selective Service compliance, a "
+        "felony sentence or conviction-based incarceration during that "
+        "year, or whether a child was born during the dividend year. To "
+        "model a person who fails one of those, set "
         "takes_up_ak_permanent_fund_dividend_if_eligible to false. See "
         "docs/validation/alaska-pfd.md."
     )

@@ -3,15 +3,17 @@
 AS 43.23.005(a)(5) limits the dividend to citizens, lawful permanent residents,
 refugees and asylees, and Alaska pays energy relief as part of the dividend
 (sec. 13, ch. 34, SLA 2026). PolicyEngine also lets an input say a person does
-not take up the dividend, for the statute's tests it has no input for. These
-properties hold for every year and every mix of people in a household:
+not take up the dividend, for the statute's tests its inputs cannot resolve. These
+properties hold for every modeled year, every mix of people in a household and
+every age, unless an input overrides the eligibility variable or a payment:
 
 1. A person's dividend and energy relief each equal zero or the full amount
    for the year.
 2. A person gets the dividend exactly when they live in Alaska, hold a status
    the statute names, and take it up. A status or take-up flag left unset
    counts as citizen and true, so a household calculation pays a resident
-   unless an input says otherwise.
+   unless an input says otherwise. Age plays no part: age 0 does not show a
+   birth during the dividend year.
 3. Energy relief passes through the same gate as the dividend.
 4. Nobody outside Alaska gets either payment.
 5. Turning one person's take-up off lowers that person's payment to zero and
@@ -19,12 +21,13 @@ properties hold for every year and every mix of people in a household:
 
 ELIGIBLE_STATUSES restates AS 43.23.005(a)(5) here on purpose, so a change to
 the parameter file that the statute does not support fails these tests. The
-YAML tests pin examples. These tests run the real model on every status and
-take-up combination, and on drawn years, states and household mixes, through one
-shared tax-benefit system, so they build no extra model and load no dataset.
+YAML tests pin examples. These tests run the real model on every combination of
+state, status, take-up and representative age, and on drawn years, states, ages
+and household mixes, through one shared tax-benefit system, so they build no
+extra model and load no dataset.
 """
 
-from collections import defaultdict
+from collections import defaultdict, namedtuple
 from itertools import product
 
 import numpy as np
@@ -49,6 +52,9 @@ STATUSES = tuple(status.name for status in ImmigrationStatus)
 # None leaves the input unset, so the model's default applies.
 STATUS_INPUTS = (None, *STATUSES)
 TAKE_UP_INPUTS = (None, True, False)
+# None leaves age at the model's default of 40. The rest straddle the ages where
+# a mistaken child or newborn rule would change a payment.
+AGE_INPUTS = (None, 0, 1, 17, 18, 65)
 EXHAUSTIVE_STATES = ("AK", "WA")
 ALL_STATES = tuple(state.name for state in StateCode)
 LAST_YEAR = 2100
@@ -56,11 +62,14 @@ LAST_YEAR = 2100
 # none.
 EXHAUSTIVE_YEARS = (2015, 2022, 2026, 2027)
 
-PERSON = st.tuples(
+Person = namedtuple("Person", ["state", "status", "take_up", "age"])
+PERSON = st.builds(
+    Person,
     # Half the draws land in Alaska, so the gate's positive cases stay common.
     st.one_of(st.just("AK"), st.sampled_from(ALL_STATES)),
     st.sampled_from(STATUS_INPUTS),
     st.sampled_from(TAKE_UP_INPUTS),
+    st.one_of(st.sampled_from(AGE_INPUTS), st.integers(min_value=0, max_value=120)),
 )
 PEOPLE = st.lists(PERSON, min_size=1, max_size=10)
 YEARS = st.integers(min_value=FIRST_MODELED_YEAR, max_value=LAST_YEAR)
@@ -78,15 +87,17 @@ def calculate(year, people):
     """Run the model with each state's people in one household."""
     situation_people = {}
     members = defaultdict(list)
-    for index, (state, status, take_up) in enumerate(people):
+    for index, person in enumerate(people):
         name = f"person_{index}"
         inputs = {}
-        if status is not None:
-            inputs["immigration_status"] = {year: status}
-        if take_up is not None:
-            inputs[TAKE_UP] = {year: take_up}
+        if person.status is not None:
+            inputs["immigration_status"] = {year: person.status}
+        if person.take_up is not None:
+            inputs[TAKE_UP] = {year: person.take_up}
+        if person.age is not None:
+            inputs["age"] = {year: person.age}
         situation_people[name] = inputs
-        members[state].append(name)
+        members[person.state].append(name)
     situation = {
         "people": situation_people,
         "households": {
@@ -103,18 +114,18 @@ def calculate(year, people):
     )
 
 
-def receives(state, status, take_up):
+def receives(person):
     return (
-        state == "AK"
-        and (status is None or status in ELIGIBLE_STATUSES)
-        and take_up is not False
+        person.state == "AK"
+        and (person.status is None or person.status in ELIGIBLE_STATUSES)
+        and person.take_up is not False
     )
 
 
 def assert_gate_holds(year, people, dividend, energy_relief):
     full_dividend, full_energy_relief = amounts(year)
     for person, paid, relief in zip(people, dividend, energy_relief):
-        expected = receives(*person)
+        expected = receives(person)
         assert paid == pytest.approx(full_dividend if expected else 0, abs=0.005)
         assert relief == pytest.approx(full_energy_relief if expected else 0, abs=0.005)
 
@@ -124,8 +135,13 @@ def test_statuses_named_in_the_statute_exist_in_the_model():
 
 
 @pytest.mark.parametrize("year", EXHAUSTIVE_YEARS)
-def test_every_combination_of_state_status_and_take_up(year):
-    people = list(product(EXHAUSTIVE_STATES, STATUS_INPUTS, TAKE_UP_INPUTS))
+def test_every_combination_of_state_status_take_up_and_age(year):
+    people = [
+        Person(*combination)
+        for combination in product(
+            EXHAUSTIVE_STATES, STATUS_INPUTS, TAKE_UP_INPUTS, AGE_INPUTS
+        )
+    ]
     assert_gate_holds(year, people, *calculate(year, people))
 
 
@@ -140,7 +156,7 @@ def test_payments_follow_the_gate_for_any_year_and_household_mix(year, people):
 def test_turning_take_up_off_only_removes_that_persons_payment(year, people, draw):
     target = draw % len(people)
     declined = list(people)
-    declined[target] = (*people[target][:2], False)
+    declined[target] = people[target]._replace(take_up=False)
     dividend, energy_relief = calculate(year, people)
     new_dividend, new_energy_relief = calculate(year, declined)
 

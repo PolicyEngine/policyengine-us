@@ -4,12 +4,13 @@ PolicyEngine automatically calculates `ak_permanent_fund_dividend` and
 `ak_energy_relief` for each person who lives in Alaska, holds an immigration
 status the dividend statute names, and takes up the dividend. These amounts are
 calculated benefits, rather than imputed income or fixed default inputs. The
-model has no inputs for the statute's other tests: an application, residence
-during all of the prior calendar year, allowable absences, or a felony sentence
-or conviction-based incarceration during that year. `is_incarcerated` does not
-say why a person is incarcerated or tie to that year, so it does not affect the
-dividend. Supplying wages and other known income does not disable either
-calculation.
+model's inputs cannot resolve the statute's other tests: an application,
+residence on the application date and during all of the prior calendar year, 72
+consecutive hours of presence in the prior two years, allowable absences,
+Selective Service compliance, or a felony sentence or conviction-based
+incarceration during that year. `is_incarcerated` does not say why a person is
+incarcerated or tie to that year, so it does not affect the dividend. Supplying
+wages and other known income does not disable either calculation.
 
 The regular PFD is included in federal gross income for nondependent people.
 A dependent child's PFD is not automatically added to the parent's adjusted
@@ -21,14 +22,40 @@ The regular dividend appears on [2022 Schedule 1, line
 ## Who receives the dividend
 
 `ak_permanent_fund_dividend_eligible` applies the status test in [AS
-43.23.005(a)(5)](https://www.akleg.gov/basis/statutes.asp#43.23.005): a citizen, a
-lawful permanent resident, a refugee, or an asylee. [15 AAC
-23.154(a)](https://www.akleg.gov/basis/aac.asp#15.23.154) also counts conditional
-permanent residents and people on indefinite parole as lawfully admitted for
-permanent residence. PolicyEngine has no status for either, so code them as
-`LEGAL_PERMANENT_RESIDENT`. `PAROLED_ONE_YEAR`, `CUBAN_HAITIAN_ENTRANT` and
-`CONDITIONAL_ENTRANT` do not say whether a parole runs indefinitely or whether
-the person may adopt the United States as their domicile, so they stay out.
+43.23.005(a)(5)](https://www.akleg.gov/basis/statutes.asp#43.23.005): a citizen,
+an alien lawfully admitted for permanent residence, a refugee, or an asylee.
+
+*State v. Andrade*, 23 P.3d 58 (Alaska 2001), holds that the state phrase does
+not incorporate the federal definition: an alien must be legally present and able
+to form the intent to remain in Alaska. [15 AAC
+23.154(a)](https://www.akleg.gov/basis/aac.asp#15.23.154) applies that to a status
+under 8 U.S.C. 1101 to 1189 that lets the alien adopt the United States as their
+domicile. It names immigrants, nonimmigrants whose status requires no foreign
+residence, people on indefinite parole, and conditional permanent residents.
+PolicyEngine has no status for the last three, so code them as
+`LEGAL_PERMANENT_RESIDENT`. Under 15 AAC 23.154(b) and (d), a status that requires
+a foreign residence fails, and a limited-stay nonimmigrant fails the residence
+test until they take a significant step toward a permanent or indefinite status.
+The Division's [immigration
+page](https://pfd.alaska.gov/eligibility/immigration) also describes paths for
+US nationals and Compact of Free Association migrants. PolicyEngine has no status
+for those either, so code a person the Division accepts as
+`LEGAL_PERMANENT_RESIDENT`.
+
+The other values of `immigration_status` stay out:
+
+- `PAROLED_ONE_YEAR` does not say a parole runs indefinitely. [OAH No.
+  25-3180-PFD](https://aws.state.ak.us/OAH/Decision/Display?rec=7350) denied a
+  fixed-term parolee a 2025 dividend.
+- `TPS` (8 U.S.C. 1254a) and `DEPORTATION_WITHHELD` (8 U.S.C. 1231(b)(3)) fall
+  outside 8 U.S.C. 1101 to 1189, and `DACA` is not a status under those sections.
+- `UNDOCUMENTED` does not meet *Andrade*'s legal presence requirement.
+- `CUBAN_HAITIAN_ENTRANT` and `CONDITIONAL_ENTRANT` do not say whether the person
+  may adopt the United States as their domicile.
+
+Alaska tests the status held during the qualifying year, and 15 AAC 23.154(c)
+starts an alien's qualifying year on January 1 after the person gains the status.
+PolicyEngine has no status history, so it reads the status for the dividend year.
 
 `takes_up_ak_permanent_fund_dividend_if_eligible` covers the statute's other
 tests and anyone who does not apply. It defaults to true, so a household
@@ -37,6 +64,25 @@ Set it to false for a person Alaska did not pay. Both variables gate
 `ak_energy_relief` as well, because Alaska pays energy relief as part of the
 dividend ([sec. 13, ch. 34, SLA
 2026](https://www.akleg.gov/PDF/34/Bills/HB0263Z.PDF#page=84)).
+
+### Children under one
+
+A child born during the dividend year cannot receive that year's dividend. The
+child fails AS 43.23.005(a)(3), and (c) reaches only children born in the two
+calendar years before the dividend year. The Division [takes
+applications](https://pfd.alaska.gov/application/applying-for-a-child) for a child
+"born on or before December 31st of the qualifying year."
+
+`age` cannot identify these children, because a child aged 0 may have been born in
+either calendar year. Populace takes `age` from the CPS ASEC, which the Census
+Bureau [conducts in February, March and
+April](https://www.census.gov/topics/income-poverty/poverty/guidance/surveys-programs.html)
+and which records age [as of the survey
+date](https://www.census.gov/programs-surveys/cps/technical-documentation/subject-definitions.html).
+Most children under one on those dates were born the year before, and those
+children can qualify under (c). So the model pays a resident aged 0 unless the
+take-up input says otherwise. Set that input to false for a child born during the
+dividend year.
 
 ### Recipients in microsimulation
 
@@ -53,10 +99,11 @@ recipients for earlier years.
 ## Override calculated payments
 
 Supply either variable as an input on the person to replace its calculated
-amount. To exclude both transfers from a controlled comparison, set both to zero
-for **every person**. Overriding only `ak_permanent_fund_dividend` leaves energy
-relief in place. Overriding only tax-unit AGI leaves the underlying person income
-and benefit amounts unchanged.
+amount. Overriding only `ak_permanent_fund_dividend` leaves energy relief in
+place. To exclude both transfers from a controlled comparison, set
+`takes_up_ak_permanent_fund_dividend_if_eligible` to false or set both payments
+to zero, for **every person**. Overriding only tax-unit AGI leaves the underlying
+person income and benefit amounts unchanged.
 
 This complete situation retains Alaska residence while excluding both payments:
 

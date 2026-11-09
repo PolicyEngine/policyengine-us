@@ -128,3 +128,27 @@
         state_code: AK
   output:
     ak_energy_relief: [298.17, 0, 0, 298.17]
+
+- name: Case 17, a supplied zero dividend leaves energy relief in place, since each payment has its own override.
+  period: 2026
+  input:
+    state_code: AK
+    ak_permanent_fund_dividend: 0
+  output:
+    ak_energy_relief: 200
+
+- name: Case 18, an undocumented child gets no energy relief though a citizen parent does.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+      child:
+        age: 6
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    ak_energy_relief: [200, 0]

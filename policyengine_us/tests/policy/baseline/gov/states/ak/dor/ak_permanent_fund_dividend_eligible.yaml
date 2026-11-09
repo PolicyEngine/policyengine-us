@@ -30,7 +30,7 @@
   output:
     ak_permanent_fund_dividend_eligible: true
 
-- name: Case 5, the statuses AS 43.23.005(a)(5) does not name are not eligible, including fixed-term parole.
+- name: Case 5, the statuses AS 43.23.005(a)(5) and 15 AAC 23.154(a) do not reach are not eligible, including parole that does not say it runs indefinitely.
   period: 2026
   input:
     people:

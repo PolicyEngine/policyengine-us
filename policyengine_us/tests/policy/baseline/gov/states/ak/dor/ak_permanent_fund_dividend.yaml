@@ -227,3 +227,37 @@
     ak_permanent_fund_dividend: 1_000
   output:
     ak_permanent_fund_dividend: 1_000
+
+- name: Case 24, an undocumented child gets no dividend though a citizen parent does, since AS 43.23.005(c) waives (a)(2) to (4) but not the status test in (a)(5).
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+      child:
+        age: 6
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    ak_permanent_fund_dividend: [1_000, 0]
+
+- name: Case 25, a resident child under one gets the dividend unless an input says otherwise, since age 0 does not show a birth during the dividend year.
+  period: 2026
+  input:
+    people:
+      infant:
+        age: 0
+      infant_born_during_the_dividend_year:
+        age: 0
+        takes_up_ak_permanent_fund_dividend_if_eligible: false
+      one_year_old:
+        age: 1
+    households:
+      household:
+        members: [infant, infant_born_during_the_dividend_year, one_year_old]
+        state_code: AK
+  output:
+    ak_permanent_fund_dividend: [1_000, 0, 1_000]

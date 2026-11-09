@@ -1,11 +1,23 @@
 description: Alaska limits the Permanent Fund Dividend to people with these immigration statuses.
 
 values:
-  # 15 AAC 23.154(a) counts conditional permanent residents and aliens on
-  # indefinite parole as lawfully admitted for permanent residence.
-  # PolicyEngine has no status for either, so code them as
-  # LEGAL_PERMANENT_RESIDENT. PAROLED_ONE_YEAR stays out because it does not
-  # say whether a parole is indefinite.
+  # State v. Andrade, 23 P.3d 58 (Alaska 2001), holds that "lawfully admitted
+  # for permanent residence" in AS 43.23.005(a)(5)(B) does not incorporate the
+  # federal definition: an alien must be legally present and able to form the
+  # intent to remain in Alaska. 15 AAC 23.154(a) applies that to a status under
+  # 8 U.S.C. 1101 to 1189 that lets the alien adopt the United States as their
+  # domicile: an immigrant, a nonimmigrant whose status requires no foreign
+  # residence, a person on indefinite parole, or a conditional permanent
+  # resident. PolicyEngine has no status for the last three, so code them as
+  # LEGAL_PERMANENT_RESIDENT.
+  #
+  # The other statuses stay out. PAROLED_ONE_YEAR does not say a parole runs
+  # indefinitely, and OAH No. 25-3180-PFD denied a fixed-term parolee a
+  # dividend. TPS (8 U.S.C. 1254a) and DEPORTATION_WITHHELD (8 U.S.C.
+  # 1231(b)(3)) fall outside 8 U.S.C. 1101 to 1189, and DACA is not a status
+  # under those sections. UNDOCUMENTED does not meet Andrade's legal presence
+  # requirement. CUBAN_HAITIAN_ENTRANT and CONDITIONAL_ENTRANT do not say
+  # whether the person may adopt the United States as their domicile.
   2015-01-01:
     - CITIZEN
     - LEGAL_PERMANENT_RESIDENT
@@ -23,3 +35,5 @@ metadata:
       href: https://www.akleg.gov/basis/aac.asp#15.23.154
     - title: Alaska Permanent Fund Dividend Division, Immigration - Alien Status and Eligibility for the PFD
       href: https://pfd.alaska.gov/eligibility/immigration
+    - title: Alaska Office of Administrative Hearings, OAH No. 25-3180-PFD (adopted March 10, 2026)
+      href: https://aws.state.ak.us/OAH/Decision/Display?rec=7350
