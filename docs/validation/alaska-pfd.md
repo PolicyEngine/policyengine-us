@@ -1,11 +1,13 @@
 # Alaska Permanent Fund Dividend in model comparisons
 
 PolicyEngine automatically calculates `ak_permanent_fund_dividend` and
-`ak_energy_relief` for each person whose household is in Alaska. These amounts
-are calculated benefits, rather than imputed income or fixed default inputs.
-Current Alaska residence is an eligibility proxy: the model does not check an
-application, prior-year residence, or actual receipt. Supplying wages and other
-known income does not disable either calculation.
+`ak_energy_relief` for each person who lives in Alaska, holds an immigration
+status the dividend statute names, and takes up the dividend. These amounts are
+calculated benefits, rather than imputed income or fixed default inputs. The
+model has no inputs for the statute's other tests: an application, residence
+during all of the prior calendar year, allowable absences, or a felony sentence
+or incarceration. Supplying wages and other known income does not disable either
+calculation.
 
 The regular PFD is included in federal gross income for nondependent people.
 A dependent child's PFD is not automatically added to the parent's adjusted
@@ -13,6 +15,26 @@ gross income (AGI). Tax-unit membership alone does not determine dependent
 status; supply explicit roles or dependent status when constructing a household.
 The regular dividend appears on [2022 Schedule 1, line
 8g](https://www.irs.gov/pub/irs-prior/f1040s1--2022.pdf#page=1).
+
+## Who receives the dividend
+
+`ak_permanent_fund_dividend_eligible` applies the status test in [AS
+43.23.005(a)(5)](https://www.akleg.gov/basis/statutes.asp#43.23.005): a citizen, a
+lawful permanent resident, a refugee, or an asylee. [15 AAC
+23.154(a)](https://www.akleg.gov/basis/aac.asp#15.23.154) also counts conditional
+permanent residents and people on indefinite parole as lawfully admitted for
+permanent residence. PolicyEngine has no status for either, so code them as
+`LEGAL_PERMANENT_RESIDENT`. `PAROLED_ONE_YEAR`, `CUBAN_HAITIAN_ENTRANT` and
+`CONDITIONAL_ENTRANT` do not say whether a parole runs indefinitely or whether
+the person may adopt the United States as their domicile, so they stay out.
+
+`takes_up_ak_permanent_fund_dividend_if_eligible` covers the statute's other
+tests and anyone who does not apply. It defaults to true, so a household
+calculation pays every eligible Alaska resident unless an input says otherwise.
+Set it to false for a person Alaska did not pay. Both variables gate
+`ak_energy_relief` as well, because Alaska pays energy relief as part of the
+dividend ([sec. 13, ch. 34, SLA
+2026](https://www.akleg.gov/PDF/34/Bills/HB0263Z.PDF#page=84)).
 
 ## Override calculated payments
 

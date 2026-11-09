@@ -1,0 +1,25 @@
+description: Alaska limits the Permanent Fund Dividend to people with these immigration statuses.
+
+values:
+  # 15 AAC 23.154(a) counts conditional permanent residents and aliens on
+  # indefinite parole as lawfully admitted for permanent residence.
+  # PolicyEngine has no status for either, so code them as
+  # LEGAL_PERMANENT_RESIDENT. PAROLED_ONE_YEAR stays out because it does not
+  # say whether a parole is indefinite.
+  2015-01-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - REFUGEE
+    - ASYLEE
+
+metadata:
+  unit: list
+  period: year
+  label: Alaska Permanent Fund Dividend eligible immigration statuses
+  reference:
+    - title: AS 43.23.005(a)(5), Eligibility
+      href: https://www.akleg.gov/basis/statutes.asp#43.23.005
+    - title: 15 AAC 23.154, Eligibility of aliens
+      href: https://www.akleg.gov/basis/aac.asp#15.23.154
+    - title: Alaska Permanent Fund Dividend Division, Immigration - Alien Status and Eligibility for the PFD
+      href: https://pfd.alaska.gov/eligibility/immigration
