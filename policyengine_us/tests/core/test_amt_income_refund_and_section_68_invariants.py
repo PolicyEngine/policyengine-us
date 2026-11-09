@@ -11,7 +11,10 @@ charitable deduction to AGI, so a refund rightly raises AMTI by 0.5% of it.
 
 Two properties, for 2017 (the old section 68), 2025 (no section 68) and 2026
 (the P.L. 119-21 section 68), single, joint and married filing separately,
-itemizing or not:
+itemizing or not. The drawn households rarely reach section 68 or the separate
+filer's increase, so a fixed example pins households that do in each year:
+itemizers above the 2017 and 2026 section 68 thresholds, and separate filers
+inside the 2025 and 2026 increase bands.
 
 1. Refund invariance: adding a filer's state tax refund leaves AMTI unchanged.
    The refund enters AGI and comes back out, and any change it causes in the
@@ -28,7 +31,7 @@ itemizing or not:
 
 import numpy as np
 import pytest
-from hypothesis import HealthCheck, given, settings
+from hypothesis import HealthCheck, example, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us import Simulation
@@ -47,6 +50,46 @@ def tax_unit(draw):
         "real_estate_taxes": draw(st.integers(0, 40_000)),
         "home_mortgage_interest": draw(st.integers(0, 40_000)),
     }
+
+
+# Itemizers above the 2017 and 2026 section 68 thresholds, a separate filer
+# whose AMTI (700,000) is inside the 2026 increase band (over 640,200) and
+# below the 2025 one, and one (950,000) inside the 2025 band (over 900,350)
+# and above the 2026 cap.
+BOUNDARY_UNITS = [
+    dict(
+        status="SINGLE",
+        itemizes=True,
+        employment_income=2_000_000,
+        salt_refund_income=5_000,
+        real_estate_taxes=12_000,
+        home_mortgage_interest=30_000,
+    ),
+    dict(
+        status="JOINT",
+        itemizes=True,
+        employment_income=3_000_000,
+        salt_refund_income=8_000,
+        real_estate_taxes=20_000,
+        home_mortgage_interest=40_000,
+    ),
+    dict(
+        status="SEPARATE",
+        itemizes=False,
+        employment_income=700_000,
+        salt_refund_income=10_000,
+        real_estate_taxes=0,
+        home_mortgage_interest=0,
+    ),
+    dict(
+        status="SEPARATE",
+        itemizes=False,
+        employment_income=950_000,
+        salt_refund_income=20_000,
+        real_estate_taxes=0,
+        home_mortgage_interest=0,
+    ),
+]
 
 
 def _simulate(units, year):
@@ -88,6 +131,7 @@ def _simulate(units, year):
     suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
 )
 @given(units=st.lists(tax_unit(), min_size=8, max_size=8))
+@example(units=BOUNDARY_UNITS)
 def test_amt_income_leaves_out_refunds_and_section_68(year, units):
     simulation = _simulate(units, year)
 
