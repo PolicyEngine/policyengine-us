@@ -10,10 +10,9 @@ class oh_claim_of_right_deduction(Variable):
         "Ohio adjusted gross income deduction for repaying income included in "
         "adjusted gross income in an earlier year under a claim of right "
         "(Schedule of Adjustments, line 23 in 2021 and line 29 in 2025), "
-        "excluding the part that R.C. 5747.01(A)(12) does not allow. Following "
-        "the department's instructions, every edition from 2021, it applies "
-        "only when the federal return claims the section 1341 credit or "
-        "deducts the repayment as an itemized deduction; the statute itself "
+        "excluding the part that R.C. 5747.01(A)(12) does not allow. It applies "
+        "to a repayment that section 1341 covers, whichever federal method "
+        "applies and whether or not the federal return itemizes: the statute "
         "requires that the deduction be allowable, not claimed."
     )
     definition_period = YEAR
@@ -28,9 +27,9 @@ class oh_claim_of_right_deduction(Variable):
     defined_for = StateCode.OH
 
     def formula(person, period, parameters):
-        claimed = person.tax_unit("claim_of_right_relief_claimed", period)
+        eligible = person.tax_unit("claim_of_right_section_1341_eligible", period)
         repayment = person("claim_of_right_repayment", period)
         excluded = person("oh_claim_of_right_repayment_not_deductible", period)
         # Dependents' repayments belong on their own returns.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        return where(claimed & head_or_spouse, max_(repayment - excluded, 0), 0)
+        return where(eligible & head_or_spouse, max_(repayment - excluded, 0), 0)

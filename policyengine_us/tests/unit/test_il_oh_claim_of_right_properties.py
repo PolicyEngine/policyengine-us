@@ -1,22 +1,24 @@
 """Properties of Illinois's and Ohio's claim of right subtractions.
 
-Illinois (35 ILCS 5/203(a)(2)(P), Schedule M line 15) and Ohio (R.C.
-5747.01(A)(12), Schedule of Adjustments line 29) take a repayment of income
-held under a claim of right off federal AGI when the federal return claims
-section 1341 relief: the credit, or the repayment deduction on a return that
-itemizes. The policy cases are in YAML. Which federal method applies, and
-whether the return itemizes, come from the federal branch computations, so
-these tests compare simulations over a grid of repayments, earlier-year
-decreases, wages and charity, each against a reference that does not use the
-new variables:
+Illinois (35 ILCS 5/203(a)(2)(P), Schedule M line 15) takes a repayment of
+income held under a claim of right off federal AGI when the federal return
+claims section 1341 relief: the credit, or the repayment deduction on a return
+that itemizes. Ohio (R.C. 5747.01(A)(12), Schedule of Adjustments line 29)
+deducts a section 1341 repayment whichever federal method applies and whether
+or not the return itemizes. The policy cases are in YAML. Which federal method
+applies, and whether the return itemizes, come from the federal branch
+computations, so these tests compare simulations over a grid of repayments,
+earlier-year decreases, wages and charity, each against a reference that does
+not use the new variables:
 
 - with the federal credit method fixed, or the deduction method fixed on a
   return that itemizes, Illinois income tax equals that of a simulation with
   no repayment and the same amount entered through the existing Schedule M
   input, and Ohio taxable income equals that of a simulation with no
   repayment and wages lower by the repayment (where wages cover it); with the
-  deduction method fixed on a return taking the standard deduction, both equal
-  a simulation with no repayment;
+  deduction method fixed on a return taking the standard deduction, Illinois
+  income tax equals a simulation with no repayment and Ohio taxable income
+  still equals the lower-wage simulation;
 - with the method chosen by the model, an eligible return gets that relief
   whenever the earlier year's federal tax fell, because a winning deduction
   must have lowered tax, which only an itemized deduction does;
@@ -142,15 +144,16 @@ def test_each_federal_method_matches_the_existing_input_path(results):
     every = np.ones_like(REPAYMENT, dtype=bool)
     assert_relief(results["credit"], results["reference"], every)
     assert_relief(results["deduction_itemizing"], results["reference"], every)
-    # The standard deduction under the deduction method claims nothing.
+    # The standard deduction under the deduction method claims nothing, so
+    # Illinois gives nothing. Ohio asks only that the deduction be allowable.
     np.testing.assert_allclose(
         results["deduction_standard"]["il_income_tax"][IL],
         results["none"]["il_income_tax"][IL],
         atol=TOLERANCE,
     )
     np.testing.assert_allclose(
-        results["deduction_standard"]["oh_taxable_income"][OH],
-        results["none"]["oh_taxable_income"][OH],
+        results["deduction_standard"]["oh_taxable_income"][OH_COMPARABLE],
+        results["reference"]["oh_taxable_income"][OH_COMPARABLE],
         atol=TOLERANCE,
     )
 
@@ -159,6 +162,12 @@ def test_eligible_returns_get_relief_when_the_earlier_tax_fell(results):
     eligible = REPAYMENT > THRESHOLD
     assert_relief(results["model"], results["reference"], eligible & (DECREASE > 0))
     assert_relief(results["model"], results["none"], ~eligible)
+    # Ohio gives relief to every eligible return, whatever the earlier decrease.
+    np.testing.assert_allclose(
+        results["model"]["oh_taxable_income"][OH_COMPARABLE & eligible],
+        results["reference"]["oh_taxable_income"][OH_COMPARABLE & eligible],
+        atol=TOLERANCE,
+    )
 
 
 def test_state_tax_never_rises(results):
