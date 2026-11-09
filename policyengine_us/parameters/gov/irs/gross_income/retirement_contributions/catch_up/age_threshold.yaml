@@ -1,6 +1,6 @@
 description: The US limits catch-up pension contributions to individuals this age or older.
 values:
-  2004-01-01: 50
+  2003-01-01: 50
 metadata:
   unit: year
   period: year
@@ -8,3 +8,6 @@ metadata:
   reference:
   - title: 26 CFR § 1.414(v)-1 - Catch-up contributions. (g)(3)(ii)
     href: https://www.law.cornell.edu/cfr/text/26/1.414(v)-1#g_3_ii
+  # The regulation applies from 2004; the statute sets the age test from 2002.
+  - title: 26 USC 414(v)(5)(A)
+    href: https://www.law.cornell.edu/uscode/text/26/414#v_5_A

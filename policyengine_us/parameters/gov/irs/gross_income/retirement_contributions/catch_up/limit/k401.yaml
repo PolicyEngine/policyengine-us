@@ -3,15 +3,16 @@ description: The IRS limits 401(k) catch-up contributions to this amount based o
 brackets:
   - threshold:
       values:
-        2004-01-01: 0
+        2003-01-01: 0
     amount:
       values:
-        2004-01-01: 0
+        2003-01-01: 0
   - threshold:
       values:
-        2004-01-01: 50
+        2003-01-01: 50
     amount:
       values:
+        2003-01-01: 2_000
         2004-01-01: 3_000
         2005-01-01: 4_000
         2006-01-01: 5_000
@@ -30,9 +31,10 @@ brackets:
             interval: 500
   - threshold:
       values:
-        2004-01-01: 60
+        2003-01-01: 60
     amount:
       values:
+        2003-01-01: 2_000
         2004-01-01: 3_000
         2005-01-01: 4_000
         2006-01-01: 5_000
@@ -53,9 +55,10 @@ brackets:
             interval: 500
   - threshold:
       values:
-        2004-01-01: 64
+        2003-01-01: 64
     amount:
       values:
+        2003-01-01: 2_000
         2004-01-01: 3_000
         2005-01-01: 4_000
         2006-01-01: 5_000

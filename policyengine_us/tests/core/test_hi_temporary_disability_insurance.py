@@ -46,7 +46,9 @@ FACTOR = Decimal("1.21")  # HRS 392-43(b)(2)
 
 # Transcribed from each year's DLIR notice, independent of the parameter file:
 # state average annual wage, maximum weekly wage base, maximum weekly deduction.
+# The 2003 notice survives only as a scan, so its figures come from the image.
 NOTICES = {
+    2003: ("30184.73", "702.38", "3.51"),
     2004: ("30972.13", "720.70", "3.60"),
     2005: ("32336.24", "752.44", "3.76"),
     2006: ("34023.65", "791.70", "3.96"),

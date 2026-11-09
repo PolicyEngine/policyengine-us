@@ -8,9 +8,9 @@ values:
     - pre_tax_health_insurance_premiums
     - health_savings_account_payroll_contributions
     - military_basic_pay
-  # The law did not change in 2004. The federal elective deferral limit that the
+  # The law did not change in 2003. The federal elective deferral limit that the
   # contribution variables below read starts then, as does the contribution rate.
-  2004-01-01:
+  2003-01-01:
     - pre_tax_health_insurance_premiums
     - health_savings_account_payroll_contributions
     - military_basic_pay

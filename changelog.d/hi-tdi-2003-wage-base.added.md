@@ -1,0 +1,1 @@
+Add Hawaii's 2003 maximum weekly wage base for the employee temporary disability insurance contribution, and extend the federal 401(k) elective deferral and catch-up limits back to 2003 from the IRS cost-of-living table.

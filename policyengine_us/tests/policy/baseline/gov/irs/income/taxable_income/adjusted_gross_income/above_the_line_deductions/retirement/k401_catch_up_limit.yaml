@@ -170,3 +170,31 @@
     age: 50
   output:
     k401_catch_up_limit: 6_000
+
+- name: Case 24, age 49 in 2003 receives no catch-up.
+  period: 2003
+  input:
+    age: 49
+  output:
+    k401_catch_up_limit: 0
+
+- name: Case 25, age 50 in 2003 receives 2003 standard limit.
+  period: 2003
+  input:
+    age: 50
+  output:
+    k401_catch_up_limit: 2_000
+
+- name: Case 26, age 62 in 2003 receives 2003 standard limit.
+  period: 2003
+  input:
+    age: 62
+  output:
+    k401_catch_up_limit: 2_000
+
+- name: Case 27, age 70 in 2003 receives 2003 standard limit.
+  period: 2003
+  input:
+    age: 70
+  output:
+    k401_catch_up_limit: 2_000

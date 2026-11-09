@@ -1,9 +1,10 @@
 description: Hawaii counts weekly wages up to this amount toward the employee temporary disability insurance contribution.
 values:
-  # Zero marks years before the first notice read (2004), not a law without a
+  # Zero marks years before the first notice read (2003), not a law without a
   # wage base. The Director publishes one amount a year under HRS 392-43(b)(2):
   # the State's average annual wage / 52 * 1.21.
   0000-01-01: 0
+  2003-01-01: 702.38
   2004-01-01: 720.70
   2005-01-01: 752.44
   2006-01-01: 791.70
@@ -35,6 +36,8 @@ metadata:
   reference:
     - title: Hawaii Revised Statutes Section 392-43(b)(2)
       href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0392/HRS_0392-0043.htm
+    - title: Hawaii DLIR, 2003 maximum weekly wage base notice
+      href: https://web.archive.org/web/20030315040801/http://dlir.state.hi.us:80/dcd/WC%20weekly%20wage%20base.pdf#page=1
     - title: Hawaii DLIR, 2004 maximum weekly wage base notice
       href: https://web.archive.org/web/20050226051453/http://hawaii.gov:80/labor/dcd/pdf/TDI/2004%20TDI%20Wage%20Base.pdf#page=1
     - title: Hawaii DLIR, 2005 maximum weekly wage base notice

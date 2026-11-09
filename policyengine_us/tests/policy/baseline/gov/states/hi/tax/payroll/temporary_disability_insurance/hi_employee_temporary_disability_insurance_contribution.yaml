@@ -58,7 +58,20 @@
     employee_payroll_tax: 8_040.05
     spm_unit_payroll_tax: 8_040.05
 
-- name: Hawaii 2004, the first published year, uses the 720.70 weekly wage base.
+- name: Hawaii 2003, the first published year, uses the 702.38 weekly wage base.
+  period: 2003
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: HI
+  output:
+    # 52 * 702.38 = 36,523.76.
+    hi_temporary_disability_insurance_taxable_wages: 36_523.76
+    # 0.5% * 36,523.76 = 182.62.
+    hi_employee_temporary_disability_insurance_contribution: 182.62
+    employee_state_payroll_tax: 182.62
+
+- name: Hawaii 2004 uses the 720.70 weekly wage base.
   period: 2004
   absolute_error_margin: 0.01
   input:
@@ -85,7 +98,7 @@
     employee_state_payroll_tax: 200.00
 
 - name: Hawaii models no contribution before the first published year.
-  period: 2003
+  period: 2002
   absolute_error_margin: 0.01
   input:
     employment_income: 50_000

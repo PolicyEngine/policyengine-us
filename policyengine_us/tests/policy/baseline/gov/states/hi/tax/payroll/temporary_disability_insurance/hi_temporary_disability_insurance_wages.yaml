@@ -74,8 +74,8 @@
     traditional_401k_contributions: 24_500
     hi_temporary_disability_insurance_wages: 75_500
 
-- name: Hawaii wages leave out deferrals in 2004, the first year the model holds a limit.
-  period: 2004
+- name: Hawaii wages leave out deferrals in 2003, the first year the model holds a limit.
+  period: 2003
   absolute_error_margin: 0.01
   input:
     age: 55
@@ -85,6 +85,32 @@
   output:
     # 60,000 - 4,000 = 56,000.
     hi_temporary_disability_insurance_wages: 56_000
+
+- name: Hawaii wages leave out only the deferral the 2003 limit allows.
+  period: 2003
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    employment_income: 100_000
+    traditional_401k_contributions_desired: 30_000
+    state_code: HI
+  output:
+    # The 2003 limit under age 50 is 12,000: 100,000 - 12,000 = 88,000.
+    traditional_401k_contributions: 12_000
+    hi_temporary_disability_insurance_wages: 88_000
+
+- name: Hawaii wages leave out the 2003 catch-up from age 50.
+  period: 2003
+  absolute_error_margin: 0.01
+  input:
+    age: 50
+    employment_income: 100_000
+    traditional_401k_contributions_desired: 30_000
+    state_code: HI
+  output:
+    # 12,000 plus the 2,000 catch-up is 14,000: 100,000 - 14,000 = 86,000.
+    traditional_401k_contributions: 14_000
+    hi_temporary_disability_insurance_wages: 86_000
 
 - name: Hawaii wages leave out only the deferral the 2004 limit allows.
   period: 2004
@@ -110,8 +136,8 @@
     # 60,000 - 4,000 = 56,000.
     hi_temporary_disability_insurance_wages: 56_000
 
-- name: Hawaii wages keep deferrals in 2003, before the model holds a limit.
-  period: 2003
+- name: Hawaii wages keep deferrals in 2002, before the model holds a limit.
+  period: 2002
   absolute_error_margin: 0.01
   input:
     employment_income: 60_000
