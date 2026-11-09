@@ -1,0 +1,52 @@
+# Service Delivery Guide effective April 1, 2026: the heating and cooling benefits
+# share their requirements (Section 3.6, page 33), responsibility covers "heating and
+# cooling costs" (Section 3.6 E, page 41), and a cooling utility allowance greater
+# than the bill makes a subsidized household ineligible unless a member is 60 or
+# older (Section 4.1 C, pages 46-47). Wages of 15,080 are full-time work at the
+# federal 7.25 minimum wage, under the FFY2026 size-one limit of 30,618; electricity
+# of 1,740 is about the EIA 2024 Louisiana average residential bill of 145 a month.
+
+- name: Case 1, a home with no heating is cooling eligible like a home with a known heating fuel.
+  period: 2026
+  input:
+    state_code: [LA, LA]
+    age: [40, 40]
+    employment_income_before_lsr: [15_080, 15_080]
+    heating_type: [NONE, NATURAL_GAS]
+    gas_expense: [0, 900]
+    pre_subsidy_electricity_expense: [1_740, 1_740]
+    has_cooling_expense: [true, true]
+  output:
+    # Heating needs a heating fuel; cooling does not.
+    la_liheap_eligible: [false, true]
+    la_liheap_cooling_eligible: [true, true]
+
+- name: Case 2, a subsidized household is eligible only when its bill exceeds the utility allowance.
+  period: 2026
+  input:
+    state_code: [LA, LA]
+    age: [40, 40]
+    employment_income_before_lsr: [15_080, 15_080]
+    receives_housing_assistance: [true, true]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_740, 1_500]
+    # Section 8 utility allowances of 100 and 150 a month.
+    hud_utility_allowance: [1_200, 1_800]
+    has_cooling_expense: [true, true]
+  output:
+    # Energy cost 1,740 - 1,200 = 540 and 1,500 - 1,800 = -300.
+    la_liheap_cooling_eligible: [true, false]
+
+- name: Case 3, a household of only undocumented members is ineligible.
+  period: 2026
+  input:
+    state_code: [LA]
+    age: [40]
+    immigration_status: [UNDOCUMENTED]
+    employment_income_before_lsr: [15_080]
+    heating_type: [ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_740]
+    has_cooling_expense: [true]
+  output:
+    # No counted member, so household size is 0.
+    la_liheap_cooling_eligible: [false]

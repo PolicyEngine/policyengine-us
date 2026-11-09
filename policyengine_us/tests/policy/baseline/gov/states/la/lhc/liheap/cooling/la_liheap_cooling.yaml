@@ -1,0 +1,163 @@
+# FFY2026 Heating and Cooling Benefit Matrix: one cooling benefit each program year
+# (Service Delivery Guide effective April 1, 2026, Section 4.2 B) from the matrix
+# heating uses. Energy burden (energy cost / income) bands of 9.9% and less, 10-17.9%,
+# 18-24.9% and 25% and greater pay 200, 350, 500 and 650 for one to three members and
+# 250, 400, 550 and 700 for four or more, plus one 100 supplement for a member 60 or
+# older, disabled, or five or younger, up to 800. Wages of 15,080 are full-time work
+# at the federal 7.25 minimum wage; electricity of 1,740 is about the EIA 2024
+# Louisiana average residential bill of 145 a month.
+
+- name: Case 1, a home with no heating but a cooling bill receives the cooling benefit only.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # Heating requires a heating fuel.
+    la_liheap: 0
+    # 1,740 / 15,080 = 0.1154 -> band 2, size 1
+    la_liheap_cooling: 350
+
+- name: Case 2, a household eligible for both seasons receives the same matrix award for cooling as for heating.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income_before_lsr: 20_000
+      person2:
+        age: 31
+      person3:
+        age: 7
+      person4:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        # Not receiving FITAP.
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: LA
+  output:
+    # (900 + 1,740) / 20,000 = 0.132 -> band 2, sizes 4+; no member is in a
+    # priority group.
+    la_liheap: 400
+    la_liheap_cooling: 400
+
+- name: Case 3, zero countable income with a young child receives the 800 maximum.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income: -3_000
+      person2:
+        age: 34
+      person3:
+        age: 4
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf: 0
+        heating_type: ELECTRICITY
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: LA
+  output:
+    # max(-3,000, 0) = 0 income -> band 4, sizes 4+: 700 + 100 for the
+    # four-year-old
+    la_liheap_cooling: 800
+
+- name: Case 4, a household without cooling costs receives no cooling benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        has_cooling_expense: false
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # The electric heating bill qualifies the household for heating:
+    # 1,740 / 15,080 = 0.1154 -> band 2, size 1.
+    la_liheap: 350
+    la_liheap_cooling: 0
+
+- name: Case 5, income above the size-one limit receives no cooling benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 32_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # 32,000 is above the FFY2026 size-one limit of 30,618 (60% SMI).
+    la_liheap_cooling: 0
+
+- name: Case 6, an unspecified heating fuel receives no cooling benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # Otherwise identical to Case 1, which pays 350 with heating_type NONE.
+    la_liheap_cooling: 0

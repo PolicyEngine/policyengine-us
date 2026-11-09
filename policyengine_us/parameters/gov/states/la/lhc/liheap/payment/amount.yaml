@@ -1,7 +1,8 @@
-description: Louisiana provides this regular heating benefit by energy burden band and household size group under the Low Income Home Energy Assistance Program.
+description: Louisiana provides this regular heating or cooling benefit by energy burden band and household size group under the Low Income Home Energy Assistance Program.
 # The matrix prints one amount for sizes 1-3 and another for sizes 4 through
-# "8 or More". The FY2026 plan's $200 minimum and $800 maximum (Section 2.6)
-# equal the lowest cell and the highest cell plus the $100 priority supplement.
+# "8 or More". The FY2026 plan's $200 minimum and $800 maximum (Sections 2.6
+# and 3.6) equal the lowest cell and the highest cell plus the $100 priority
+# supplement. The same matrix sets the heating and the cooling benefit.
 # Energy burden band 1: 9.9% and less.
 1:
   1:
@@ -30,7 +31,7 @@ description: Louisiana provides this regular heating benefit by energy burden ba
 metadata:
   unit: currency-USD
   period: year
-  label: Louisiana LIHEAP regular heating benefit amount
+  label: Louisiana LIHEAP regular heating and cooling benefit amount
   breakdown:
     - range(1, 5) # energy burden band
     - range(1, 3) # household size group (1 = size 1-3, 2 = size 4+)
@@ -40,7 +41,7 @@ metadata:
   reference:
     - title: Louisiana FFY2026 Heating and Cooling Benefit Matrix, benefit amount
       href: https://liheapch.acf.gov/docs/2026/benefits-matricies/LA_BenefitMatrix_Heat-Cool_2026.pdf
-    - title: Louisiana FY2026 LIHEAP State Plan, Sections 2.4-2.6
+    - title: "Louisiana FY2026 LIHEAP State Plan, Sections 2.4-2.6 and 3.4-3.6 #page 10,12"
       href: https://liheapch.acf.gov/docs/2026/state-plans/LA_Plan_2026.pdf#page=10
     - title: Louisiana LIHEAP Service Delivery Guide, revised January 1, 2024, Section 4.2
       href: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20REVISED%20January%201_%202024.pdf#page=41

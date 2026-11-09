@@ -1162,7 +1162,15 @@ programs:
         variable: la_liheap
         parameter_prefix: gov.states.la.lhc.liheap
         verified_years: "2026"
-        notes: FY2026 regular heating-season benefit from the energy burden matrix, including the $100 priority supplement. The larger summer cooling award, crisis and weatherization assistance are out of scope.
+        notes: FY2026 regular heating-season benefit from the energy burden matrix, including the $100 priority supplement. The cooling-season benefit is listed separately; crisis and weatherization assistance are out of scope.
+      - state: LA
+        status: partial
+        name: Louisiana LIHEAP cooling
+        full_name: Louisiana Low Income Home Energy Assistance Program cooling assistance
+        variable: la_liheap_cooling
+        parameter_prefix: gov.states.la.lhc.liheap
+        verified_years: "2026"
+        notes: FY2026 regular cooling-season benefit from the same energy burden matrix as heating, including the $100 priority supplement, for households with cooling costs. Supplemental cooling payments, cooling included in rent, crisis and weatherization assistance are out of scope.
       - state: MD
         status: partial
         name: Maryland MEAP

@@ -1,0 +1,23 @@
+# FY2026 plan Sections 2.1 and 3.1: income at or below 60% of state median income for
+# heating and cooling (Notice LHP-2025-01: 30,618 for one person). 42 U.S.C.
+# 8624(b)(2)(B) protects income below 110% of the poverty guideline (2025 guidelines
+# in FFY2026: 15,650 + 5,500 per extra person).
+
+- name: Case 1, income at the size-one limit is eligible and one dollar above is not.
+  period: 2026
+  input:
+    state_code: [LA, LA]
+    age: [40, 40]
+    employment_income_before_lsr: [30_618, 30_619]
+  output:
+    la_liheap_income_eligible: [true, false]
+
+- name: Case 2, the poverty floor protects a fourteen-person household below 110 percent of the guideline but not at it.
+  period: 2026
+  input:
+    state_code: [LA, LA]
+    la_liheap_household_size: [14, 14]
+    # Limit 91,855; floor (15,650 + 5,500 x 13) x 1.1 = 95,865.
+    la_liheap_countable_income: [95_864, 95_865]
+  output:
+    la_liheap_income_eligible: [true, false]
