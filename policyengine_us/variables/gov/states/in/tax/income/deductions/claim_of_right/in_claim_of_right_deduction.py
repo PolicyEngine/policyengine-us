@@ -11,7 +11,11 @@ class in_claim_of_right_deduction(Variable):
         "gross income in an earlier year under a claim of right (IT-40 "
         "Schedule 2, code 630). It applies to repayments of any amount, "
         "whether the federal return deducts the repayment, claims the section "
-        "1341 credit or takes the standard deduction."
+        "1341 credit or takes the standard deduction. IC 6-3-1-3.5(a)(22) "
+        "names the amount and limits it to income previously included in "
+        "adjusted gross income. The IT-40 general rule asks for federal "
+        "eligibility, but the footnote to its Example 1 allows a repayment "
+        "that the federal return cannot deduct."
     )
     definition_period = YEAR
     reference = (
