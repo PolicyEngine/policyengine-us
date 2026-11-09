@@ -1,3 +1,10 @@
+## [2.108.0] - 2026-11-09
+
+### Added
+
+- Add an opt-in Medicaid LTSS financial eligibility screen for Texas, Delaware, and Washington, with source income exclusions, qualified income trust opening-month rules, individual and couple budgeting, initial and continuing spousal resource rules, CMS-indexed home equity limits, and maintenance needs allowances. Derive budgets from each spouse's income, resource inventories, service locations, Delaware elections, Washington institutionalization history, and qualifying impairment-related work expense payment and allocation facts. Keep the screen separate from Medicaid enrollment and benefit calculations.
+
+
 ## [2.107.4] - 2026-11-08
 
 ### Fixed
