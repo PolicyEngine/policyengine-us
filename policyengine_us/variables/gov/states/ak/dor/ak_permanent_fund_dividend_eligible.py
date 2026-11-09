@@ -9,8 +9,8 @@ class ak_permanent_fund_dividend_eligible(Variable):
         "Applies the immigration status test in AS 43.23.005(a)(5). PolicyEngine "
         "has no inputs for the statute's other tests: an application, residence "
         "during all of the qualifying year, allowable absences, or a felony "
-        "sentence or incarceration during that year. To model a person who "
-        "fails one of those, set "
+        "sentence or conviction-based incarceration during that year. To model "
+        "a person who fails one of those, set "
         "takes_up_ak_permanent_fund_dividend_if_eligible to false. See "
         "docs/validation/alaska-pfd.md."
     )
