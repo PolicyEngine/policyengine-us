@@ -536,11 +536,12 @@
     # resources: 2,600 - 1,800 = 800, within the $2,500 limit (page 91).
     # Benefit group of 2: need standard 851; benefit = floor(851 * 0.4046) = 344
 
-# Rules added for dependent children's earnings (Section 7.5, PDF page 105;
-# Section 8.16 B, page 134), child support paid (Section 8.11, page 131;
-# Section 8.16 D and F, page 134) and whole dollars (114-1140(A)(4); the
-# Section 8.15 table notes, page 133). 2026 months use the 2025 guideline:
-# a group of three has a need standard of floor(26,650 / 12 x 0.5) = 1,110.
+# Rules added for dependent children's earnings (114-1140(N)(1); Section 7.5,
+# PDF page 105; Section 8.16 B, page 134), child support paid (114-1140(L);
+# Section 8.11, page 131; Section 8.16 D and F, page 134) and whole dollars
+# (114-1140(A)(4); the Section 8.15 table notes, page 133). 2026 months use
+# the 2025 guideline: a group of three has a need standard of
+# floor(26,650 / 12 x 0.5) = 1,110.
 
 - name: Case 18, a parent and two children with no income.
   period: 2026-01
@@ -654,7 +655,7 @@
     sc_tanf:
       2026-05: 327
 
-- name: Case 22, one adult's support payment comes off the other adult's earnings.
+- name: Case 22, support paid by an adult with no income doesn't come off another adult's earnings.
   # Annual inputs cover calendar 2026; outputs select May, when the $100
   # disregard applies.
   period: 2026
@@ -681,19 +682,20 @@
         members: [adult_a, adult_b, child]
         state_code: SC
   output:
-    # Section 8.11 deducts support paid by a benefit group member from the
-    # group's income: E = 600 - 100 = 500, S = 200, countable 300.
+    # 114-1140(L) deducts support "from the income of the payor". Adult A
+    # has no income, so nothing is deducted, and B's earnings count:
+    # E = 600 - 100 = 500.
     sc_tanf_child_support_deduction:
-      2026-05: 200
+      2026-05: 0
     sc_tanf_countable_income:
-      2026-05: 300
-    # floor((1,110 - 300) x 0.4046) = 327. Limiting the deduction to the
-    # payer's own earnings (0) would leave 500 countable and
-    # floor(610 x 0.4046 = 246.81) = 246.
+      2026-05: 500
+    # floor((1,110 - 500) x 0.4046 = 246.81) = 246. Taking A's 200 from the
+    # group's income would leave 300 countable and
+    # floor(810 x 0.4046 = 327.73) = 327.
     sc_tanf:
-      2026-05: 327
+      2026-05: 246
 
-- name: Case 23, support paid above the group's income stops at zero.
+- name: Case 23, support paid above the payer's income stops at zero.
   # Annual inputs cover calendar 2026; outputs select May, when the $100
   # disregard applies.
   period: 2026
@@ -944,3 +946,181 @@
     sc_tanf_countable_income: 250
     # floor((1,110 - 250) x 0.4046 = 347.96) = 347.
     sc_tanf: 347
+
+- name: Case 32, support paid by an SSI recipient isn't deducted from another member's earnings.
+  # Annual inputs cover calendar 2026; outputs select May, when the $100
+  # disregard applies.
+  period: 2026
+  input:
+    people:
+      ssi_parent:
+        age: 40
+        is_tax_unit_head: true
+        receives_ssi: true
+        child_support_expense: 2_400
+      earner:
+        age: 38
+        is_tax_unit_spouse: true
+        employment_income_before_lsr: 7_200
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    marital_units:
+      couple:
+        members: [ssi_parent, earner]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [ssi_parent, earner, child]
+        state_code: SC
+  output:
+    # Section 7.7 (page 117) excludes the SSI recipient and that person's
+    # income in determining benefits for the other members, so the payer has
+    # no counted income to deduct from (114-1140(L)).
+    sc_tanf_ssi_recipient:
+      2026-05: [true, false, false]
+    sc_tanf_child_support_deduction:
+      2026-05: 0
+    # E = 600 - 100 = 500.
+    sc_tanf_countable_income:
+      2026-05: 500
+    # Size 2: floor((15,650 + 5,500) / 12 x 0.5 = 881.25) = 881.
+    sc_tanf_need_standard:
+      2026-05: 881
+    # floor((881 - 500) x 0.4046 = 154.15) = 154. Taking the 200 from the
+    # group's income would leave 300 and floor(581 x 0.4046 = 235.07) = 235.
+    sc_tanf:
+      2026-05: 154
+
+- name: Case 33, a dependent child who pays support deducts it from the child's own unearned income.
+  # Annual inputs cover calendar 2026; outputs select May.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+      teen:
+        age: 17
+        is_tax_unit_dependent: true
+        social_security_survivors: 2_400
+        child_support_expense: 1_200
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [parent, teen, child]
+        state_code: SC
+  output:
+    # 114-1140(L) deducts support paid by "a budget group member", which a
+    # dependent child is, from that member's income: 1,200 / 12 = 100 off
+    # the 17-year-old's 2,400 / 12 = 200 of survivor benefits.
+    sc_tanf_dependent_child:
+      2026-05: [false, true, true]
+    sc_tanf_gross_unearned_income:
+      2026-05: [0, 200, 0]
+    sc_tanf_child_support_deduction:
+      2026-05: 100
+    sc_tanf_countable_income:
+      2026-05: 100
+    # floor((1,110 - 100) x 0.4046 = 408.65) = 408. Limiting the deduction
+    # to adults would leave 200 and floor(910 x 0.4046 = 368.19) = 368.
+    sc_tanf:
+      2026-05: 408
+
+- name: Case 34, a negative child support input gives no deduction.
+  # Annual inputs cover calendar 2026; outputs select May, when the $100
+  # disregard applies.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income_before_lsr: 7_200
+        child_support_expense: -2_400
+      child1:
+        age: 16
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: SC
+  output:
+    # A negative payment counts as none, so it can't add to income:
+    # E = 600 - 100 = 500.
+    sc_tanf_child_support_deduction:
+      2026-05: 0
+    sc_tanf_countable_income:
+      2026-05: 500
+    # floor((1,110 - 500) x 0.4046 = 246.81) = 246.
+    sc_tanf:
+      2026-05: 246
+
+- name: Case 35, a self-employment loss with no support paid keeps countable income below zero.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        self_employment_income_before_lsr: -14_400
+      child1:
+        age: 16
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: SC
+  output:
+    # -14,400 / 12 = -1,200 a month, and the 50% January disregard leaves
+    # -600. With no support paid, countable income stays at -600.
+    sc_tanf_gross_earned_income: [-1_200, 0, 0]
+    sc_tanf_child_support_deduction: 0
+    sc_tanf_countable_income: -600
+    # The payment stops at the payment standard:
+    # floor(1,110 x 0.4046 = 449.11) = 449.
+    sc_tanf: 449
+
+- name: Case 36, a payer's support comes off the payer's income when another member has a self-employment loss.
+  period: 2026-01
+  input:
+    people:
+      adult_a:
+        age: 40
+        is_tax_unit_head: true
+        employment_income_before_lsr: 7_200
+        child_support_expense: 2_400
+      adult_b:
+        age: 38
+        is_tax_unit_spouse: true
+        self_employment_income_before_lsr: -14_400
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    marital_units:
+      couple:
+        members: [adult_a, adult_b]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [adult_a, adult_b, child]
+        state_code: SC
+  output:
+    # A: 600 x 0.5 = 300, less A's 2,400 / 12 = 200 of support, leaves 100.
+    # B: -1,200 x 0.5 = -600. Countable income is 100 - 600 = -500.
+    # Deducting from the group's income (300 - 600 = -300) would leave
+    # nothing to deduct from, and flooring the total at zero would give 0.
+    sc_tanf_child_support_deduction: 200
+    sc_tanf_countable_income: -500
+    # floor(1,110 x 0.4046 = 449.11) = 449.
+    sc_tanf: 449
