@@ -410,6 +410,33 @@
     # spouse meets both alone.
     wi_homestead_eligible: false
 
+- name: "2025 single parent with no earned income and an earning 19-year-old dependent: no Wisconsin homestead claimant"
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        real_estate_taxes: 1_000
+      student:
+        age: 19
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: WI
+  output:
+    # The parent is under 62, not disabled and has no earned income. The
+    # student is 18 or older and earns, but the parent claims the student as
+    # a dependent, so Wis. Stat. 71.53(2)(d) bars the student as a claimant,
+    # and the student's wages aren't the parent's earned income (71.52(1g)).
+    wi_homestead_eligible: false
+    wi_homestead_credit: 0
+
 # The claimant must have their own earned income; either spouse may be the
 # claimant (2024 Schedule H instructions, page 10). Unemployment compensation
 # is not earned income (page 7), and a dependent's wages do not qualify them.
