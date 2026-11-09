@@ -255,6 +255,44 @@
     self_employed_pension_earned_income: 92_935.23
     self_employed_pension_contribution_limit: 23_087.05
 
+- name: Designated Roth deferrals to another employer's 403(b) plan use up the deferral room too.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        roth_403b_contributions_desired: 20_000
+        self_employment_income: 100_000
+        self_employed_pension_contributions_desired: 100_000
+  output:
+    # Designated Roth contributions are elective deferrals (section
+    # 402(g)(3)), so 24,500 - 20,000 leaves 4,500 of room. Step 3:
+    # 100,000 - 92,350 x 15.3% / 2 = 92,935.23. Steps 13 + 15: 18,587.05 +
+    # 4,500 = 23,087.05. Without the Roth deferrals the room would be 24,500
+    # and the limit 43,087.05.
+    self_employed_pension_earned_income: 92_935.23
+    self_employed_pension_contribution_limit: 23_087.05
+
+- name: Deferrals supplied above the 402(g) limit leave no deferral room and don't cut the 20% rate.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        traditional_401k_contributions: 30_000
+        self_employment_income: 100_000
+        self_employed_pension_contributions_desired: 100_000
+  output:
+    # The supplied 30,000 exceeds the 24,500 limit, so the room is 0, not
+    # -5,500. Step 3: 92,935.23. Step 7: 20% x 92,935.23 = 18,587.05, the
+    # SEP and profit-sharing path.
+    self_employed_pension_earned_income: 92_935.23
+    self_employed_pension_contribution_limit: 18_587.05
+
 - name: With deferral room close to earned income, the limit is step 12, which a SIMPLE IRA can exceed.
   period: 2023
   absolute_error_margin: 0.01
@@ -313,6 +351,26 @@
     # 36,940 x 15.3% / 2 = 2,825.91. Step 3: 60,000 - 2,825.91 = 57,174.09.
     # Step 7: 20% x 57,174.09 = 11,434.82. Steps 13 + 15: 11,434.82 + 23,500
     # of deferral room = 34,934.82.
+    self_employed_pension_earned_income: 57_174.09
+    self_employed_pension_contribution_limit: 34_934.82
+
+- name: A partnership loss adds no profit to the split, so Schedule C takes all of line 15.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: 60_000
+        partnership_self_employment_net_earnings: -20_000
+        self_employed_pension_contributions_desired: 70_000
+  output:
+    # Schedule SE line 4: (60,000 - 20,000) x 0.9235 = 36,940. Line 15:
+    # 36,940 x 15.3% / 2 = 2,825.91. Form 7206 line 5 leaves out net losses,
+    # so Schedule C's share is 1. Step 3: 60,000 - 2,825.91 = 57,174.09.
+    # Steps 13 + 15: 20% x 57,174.09 + 23,500 = 34,934.82. Counting the loss
+    # would give a share of 1.5, step 3 of 55,761.14 and a 34,652.23 limit.
+    self_employment_tax_ald_person: 2_825.91
     self_employed_pension_earned_income: 57_174.09
     self_employed_pension_contribution_limit: 34_934.82
 
