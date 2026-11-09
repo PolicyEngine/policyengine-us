@@ -41,3 +41,54 @@
         state_code: CO
   output:
     co_ccap_care_unit: [1, 0.55, 0.55, 1, 1, 1.55, 1.55, 2, 2]
+
+- name: Without daily hours, weekly hours over the days of care pick the unit.
+  period: 2026-01
+  input:
+    people:
+      twenty_a_week:
+        childcare_hours_per_week: 20
+      twenty_five_a_week:
+        childcare_hours_per_week: 25
+      thirty_a_week:
+        childcare_hours_per_week: 30
+      sixty_a_week:
+        childcare_hours_per_week: 60
+      sixty_five_a_week:
+        childcare_hours_per_week: 65
+      eighty_five_a_week:
+        childcare_hours_per_week: 85
+      ninety_a_week:
+        childcare_hours_per_week: 90
+      twenty_over_two_days:
+        childcare_hours_per_week: 20
+        childcare_days_per_week: 2
+      twenty_over_more_attending_days:
+        childcare_hours_per_week: 20
+        childcare_days_per_week: 2
+        childcare_attending_days_per_month: 20
+      daily_hours_win:
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members:
+          [
+            twenty_a_week,
+            twenty_five_a_week,
+            thirty_a_week,
+            sixty_a_week,
+            sixty_five_a_week,
+            eighty_five_a_week,
+            ninety_a_week,
+            twenty_over_two_days,
+            twenty_over_more_attending_days,
+            daily_hours_win,
+          ]
+        state_code: CO
+  output:
+    # Over five weekdays: 4, 5, 6, 12, 13, 17 and 18 hours a day. Over two
+    # days: 10 hours. With 20 attending days, 20 x 12 / 52 = 4.62 days a week
+    # exceed the two scheduled days: 20 / 4.62 = 4.33 hours. Daily hours win
+    # over weekly hours: 4 hours.
+    co_ccap_care_unit: [0.55, 0.55, 1, 1, 1.55, 1.55, 2, 1, 0.55, 0.55]

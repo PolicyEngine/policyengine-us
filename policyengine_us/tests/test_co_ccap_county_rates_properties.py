@@ -26,8 +26,11 @@ recompute each rate by the rule, apart from the model's formulas:
    equals the reimbursement.
 4. More charges never lower the payment, and a higher fee never raises it.
 
-Without hours of care a child takes the full-time unit, and without a weekly
-schedule or attending days, a five-day week (5 x 52 / 12 days a month).
+Without daily hours, the model spreads a child's weekly hours over the days
+of care in a week: the larger of days a week and attending days a month x
+12 / 52, else five weekdays. Without hours of care a child takes the full-time
+unit, and without a weekly schedule or attending days, a five-day week
+(5 x 52 / 12 days a month).
 """
 
 from datetime import date
@@ -143,6 +146,18 @@ def full_time_rate(county, provider, age_months, rating, instant):
     return in_force(cell, instant)
 
 
+def care_hours(child):
+    """The child's daily hours, else weekly hours over the days of care."""
+    if child["hours"] > 0:
+        return child["hours"]
+    reported_days = max(
+        child["days_per_week"],
+        child["attending_days"] * MONTHS_IN_YEAR / WEEKS_IN_YEAR,
+    )
+    days_in_a_week = reported_days if reported_days > 0 else DEFAULT_DAYS_PER_WEEK
+    return child["weekly_hours"] / days_in_a_week
+
+
 def care_unit(hours):
     """3.130(C); without hours, the full-time unit."""
     if hours <= 0:
@@ -172,7 +187,7 @@ def county_rate(child, county, instant):
     full_time = full_time_rate(
         county, child["provider"], child["age_months"], child["rating"], instant
     )
-    daily = daily_rate(full_time, care_unit(child["hours"]))
+    daily = daily_rate(full_time, care_unit(care_hours(child)))
     return float(daily) * days_of_care(child["days_per_week"], child["attending_days"])
 
 
@@ -206,6 +221,7 @@ def simulate(month, units, variables):
                 "childcare_provider_type_group": {year: child["provider"]},
                 "co_quality_rating_of_child_care_facility": {year: child["rating"]},
                 "childcare_hours_per_day": {year: child["hours"]},
+                "childcare_hours_per_week": {year: child["weekly_hours"]},
                 "childcare_days_per_week": {year: child["days_per_week"]},
                 "childcare_attending_days_per_month": {year: child["attending_days"]},
                 "pre_subsidy_childcare_expenses": {
@@ -259,6 +275,12 @@ hours = st.one_of(
     st.integers(min_value=0, max_value=24),
     st.sampled_from([5, 5.5, 12, 12.5, 17, 17.5]),
 )
+# Whole hours a week, with the amounts that land on 5, 12 and 17 hours a day
+# over five weekdays.
+weekly_hours = st.one_of(
+    st.integers(min_value=0, max_value=120),
+    st.sampled_from([25, 26, 60, 61, 85, 86]),
+)
 children = st.fixed_dictionaries(
     dict(
         # Children under 13, whose care 3.132(D) covers.
@@ -266,6 +288,7 @@ children = st.fixed_dictionaries(
         provider=st.sampled_from(PROVIDER_GROUPS),
         rating=st.integers(min_value=0, max_value=5),
         hours=hours,
+        weekly_hours=weekly_hours,
         days_per_week=st.integers(min_value=0, max_value=7),
         attending_days=st.integers(min_value=0, max_value=31),
         charge=st.integers(min_value=0, max_value=4_000),
@@ -286,6 +309,7 @@ def child(**overrides):
         provider=CENTER,
         rating=0,
         hours=0,
+        weekly_hours=0,
         days_per_week=0,
         attending_days=0,
         charge=0,
@@ -408,6 +432,24 @@ def test_each_care_unit_pays_its_share_of_the_full_time_rate(month, unit):
 @example(
     month="2026-01",
     many=[dict(county="ADAMS_COUNTY_CO", fee=2_000, children=[child(charge=2_000)])],
+)
+# Weekly hours alone, at each edge of a care unit over five weekdays.
+@example(
+    month="2026-01",
+    many=[
+        dict(
+            county="ADAMS_COUNTY_CO",
+            fee=0,
+            children=[
+                child(weekly_hours=25, charge=4_000),
+                child(weekly_hours=26, charge=4_000),
+                child(weekly_hours=60, charge=4_000),
+                child(weekly_hours=61, charge=4_000),
+                child(weekly_hours=85, charge=4_000),
+                child(weekly_hours=86, charge=4_000),
+            ],
+        )
+    ],
 )
 # Two children, one capped and one below the cap, with schedules.
 @example(

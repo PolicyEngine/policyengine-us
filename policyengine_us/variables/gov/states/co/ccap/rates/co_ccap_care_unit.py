@@ -18,7 +18,7 @@ class co_ccap_care_unit(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.co.ccap.rates
-        hours = person("childcare_hours_per_day", period.this_year)
+        hours = person("co_ccap_care_hours_per_day", period)
         # Without hours of care, read the full-time unit: the schedule that
         # the daily rate prices. A user who knows the hours enters them.
         return where(

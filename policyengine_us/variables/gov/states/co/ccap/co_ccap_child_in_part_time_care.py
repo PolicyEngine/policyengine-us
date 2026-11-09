@@ -32,9 +32,7 @@ class co_ccap_child_in_part_time_care(Variable):
         part_time_units = units < p.unit_threshold
         year = period.this_year
         daily_hours = person("co_ccap_care_hours_per_day", period)
-        part_time_days = (daily_hours > 0) & (
-            p.full_time_equivalent_units.calc(daily_hours, right=True) < 1
-        )
+        part_time_days = person("co_ccap_care_unit", period) < 1
         in_grade_one_or_above = person("is_in_k12_school", year) & (
             person("age", year) >= FIRST_GRADE_AGE
         )
