@@ -1,3 +1,48 @@
+- name: Hawaii 2010 taxes wages up to 90% of the $38,800 average annual wage.
+  period: 2010
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    employment_income: 40_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 34_920
+
+- name: Hawaii 2015, its 3% new-employer rate on the $40,900 wage base.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 40_900
+    employer_state_unemployment_tax_default_rate: 0.03
+    hi_employer_state_unemployment_tax: 1_227
+    employer_state_unemployment_tax: 1_227
+
+- name: Hawaii 2016, its 2.4% new-employer rate on the $42,200 wage base.
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 42_200
+    employer_state_unemployment_tax_default_rate: 0.024
+    hi_employer_state_unemployment_tax: 1_012.80
+    employer_state_unemployment_tax: 1_012.80
+
+- name: Hawaii 2017, its 2.4% new-employer rate on the $44,000 wage base.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 44_000
+    employer_state_unemployment_tax_default_rate: 0.024
+    hi_employer_state_unemployment_tax: 1_056
+    employer_state_unemployment_tax: 1_056
+
 - name: Hawaii 2018, its 2.4% new-employer rate on the $45,900 wage base.
   period: 2018
   absolute_error_margin: 0.01
@@ -105,6 +150,17 @@
     employer_state_unemployment_tax_default_rate: 0.024
     hi_employer_state_unemployment_tax: 1_548
     employer_state_unemployment_tax: 1_548
+
+- name: Hawaii 2015 taxes every dollar of wages below the wage base at 3%.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    employment_income: 30_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 30_000
+    hi_employer_state_unemployment_tax: 900
+    employer_state_unemployment_tax: 900
 
 - name: Hawaii 2018 taxes every dollar of wages below the wage base.
   period: 2018

@@ -16,10 +16,10 @@ Three tests run without a simulation:
    default rate and taxable wage base equal the published value for that
    month, and so do New Jersey's employer TDI and workforce fund rates, Rhode
    Island's Job Development Fund rate and 2019 adjustment, and Alaska's
-   employee contribution rate. Apart from Minnesota's wage base, which keeps
-   DEED's 2014-2017 values, the parameters start in 2018, so 2015-2017 read
-   the value in force on January 1, 2018, an intended approximation that this
-   test pins.
+   employee contribution rate. Minnesota's wage base keeps DEED's 2014-2017
+   values, and Hawaii's rate and wage base keep DLIR's earlier values. The
+   other parameters start in 2018, so 2015-2017 read the value in force on
+   January 1, 2018, an intended approximation that this test pins.
 2. Dates: every stored value of a parameter that an annual rate averages
    begins a calendar quarter. The annual rates read only the four quarter
    starts, so this keeps them equal to the average of all twelve months.
@@ -657,9 +657,17 @@ PUBLISHED_SUTA = {
 }
 # END PUBLISHED_SUTA
 
-# Minnesota's wage base keeps its 2015-2017 values (DEED, history of tax rate
-# factors); every other parameter reads its 2018 value in those years.
-PRE_2018_WAGE_BASE = {"MN": {2015: 30_000, 2016: 31_000, 2017: 32_000}}
+# Minnesota's wage base (DEED, history of tax rate factors) and Hawaii's rate
+# and wage base (DLIR, December 2019 trust fund evaluation, Appendix B: the
+# schedule in effect and the taxable wage base) keep their 2015-2017 values;
+# every other parameter reads its 2018 value in those years. Hawaii's new
+# employers take the .0000 reserve ratio rate of schedule D in 2015 and of
+# schedule C in 2016 and 2017 (HRS 383-66(a)(2) and 383-68).
+PRE_2018_WAGE_BASE = {
+    "HI": {2015: 40_900, 2016: 42_200, 2017: 44_000},
+    "MN": {2015: 30_000, 2016: 31_000, 2017: 32_000},
+}
+PRE_2018_RATE = {"HI": {2015: 0.03, 2016: 0.024, 2017: 0.024}}
 
 # New Jersey Department of Labor and Workforce Development, rate information:
 # new-employer TDI rate and workforce development and supplemental workforce
@@ -704,6 +712,8 @@ def _annual_rate(code, year):
 
 
 def _rate_in_month(code, year, month):
+    if year in PRE_2018_RATE.get(code, {}):
+        return PRE_2018_RATE[code][year]
     if year < FIRST_PUBLISHED_YEAR:
         # Backdating copies the first stored value to earlier years.
         return _quarterly_rates(code, FIRST_PUBLISHED_YEAR)[0]
