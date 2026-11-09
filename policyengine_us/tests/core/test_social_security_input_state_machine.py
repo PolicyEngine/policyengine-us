@@ -8,7 +8,7 @@ After every step, actual Core readers must return the independently modeled
 reported amount and public formula amount, including the initial scored year
 and a later year whose intermediate base may already have been cached.
 
-The backend executes installed Core source bodies and the production US hooks
+The backend executes selected Core source bodies and the production US hooks
 without importing the country. Run this file directly for a country-free test:
 ``python policyengine_us/tests/core/test_social_security_input_state_machine.py``.
 """

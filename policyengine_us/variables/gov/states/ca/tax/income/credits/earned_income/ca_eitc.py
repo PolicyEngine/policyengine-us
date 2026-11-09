@@ -17,7 +17,7 @@ class ca_eitc(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.credits.earned_income
 
-        child_count = tax_unit("eitc_child_count", period)
+        child_count = tax_unit("ca_eitc_child_count", period)
 
         phase_in_rate = p.phase_in.rate.calc(child_count) * p.adjustment.factor
         phase_in_max_income = p.earned_income_amount.calc(child_count)
