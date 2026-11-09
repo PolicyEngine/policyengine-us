@@ -306,3 +306,40 @@
     itemized_medical_expenses: 0
     # 32,000 - 2,260.728 - 20,930.
     adjusted_gross_income: 8_809.272
+
+- name: Case 17, a farmer with health and retirement plans under the farm ends with AGI of zero.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    is_self_employed: true
+    farm_operations_income: 20_000
+    self_employed_pension_contributions_desired: 3_000
+    health_insurance_premiums: 20_000
+  output:
+    # Form 7206 line 13: 20,000 - 1,412.955 - 3,000 = 15,587.045.
+    self_employed_pension_contribution_ald_person: 3_000
+    self_employed_health_insurance_ald_person: 15_587.045
+    # 20,000 - 1,412.955 - 3,000 - 15,587.045.
+    adjusted_gross_income: 0
+
+- name: Case 18, with retirement plans under two businesses, either plan can carry the whole plan deduction, so neither business's limit falls.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_self_employed: true
+    self_employment_income: 10_000
+    # The partnership's earnings enter gross income through
+    # partnership_income and self-employment tax through
+    # partnership_self_employment_net_earnings.
+    partnership_income: 10_000
+    partnership_self_employment_net_earnings: 10_000
+    self_employed_pension_contributions_desired: 3_000
+    health_insurance_premiums: 20_000
+  output:
+    # Line 15: 20,000 x 0.9235 x 0.153 / 2 = 1,412.955. Line 8: 9,293.5225
+    # for each business. Either business's plan can carry up to its own
+    # earned income, which covers all 3,000, so line 9 is 0 for the other.
+    self_employed_pension_contribution_ald_person: 3_000
+    self_employed_health_insurance_ald_person: 9_293.5225
+    # 20,000 - 1,412.955 - 3,000 - 9,293.5225.
+    adjusted_gross_income: 6_293.5225

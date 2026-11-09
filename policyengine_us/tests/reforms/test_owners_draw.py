@@ -42,6 +42,12 @@ from policyengine_us.variables.household.expense.health.self_employed_health_ins
 from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.above_the_line_deductions.self_employment_tax_ald_person import (
     self_employment_tax_ald_person,
 )
+from policyengine_us.variables.household.expense.retirement.self_employed_pension_earned_income import (
+    self_employed_pension_earned_income,
+)
+from policyengine_us.variables.household.expense.retirement.self_employed_pension_plan_business import (
+    SelfEmployedPensionPlanBusiness,
+)
 from policyengine_us.variables.gov.irs.tax.payroll.social_security.taxable_earnings_for_social_security import (
     taxable_earnings_for_social_security,
 )
@@ -73,6 +79,7 @@ BASELINE_VARIABLES = {
         self_employment_tax,
         self_employment_tax_ald_person,
         self_employed_health_insurance_earned_income_limit,
+        self_employed_pension_earned_income,
     )
 }
 PERIOD = period("2027")
@@ -123,6 +130,13 @@ def _parameters(
                 ),
             ),
             irs=SimpleNamespace(
+                # Form 7206 line 9 reads the plan rate for plans under every
+                # business.
+                gross_income=SimpleNamespace(
+                    retirement_contributions=SimpleNamespace(
+                        limit=SimpleNamespace(profit_sharing_deduction_rate=0.25)
+                    )
+                ),
                 payroll=SimpleNamespace(social_security=SimpleNamespace(cap=cap)),
                 self_employment=SimpleNamespace(
                     rate=SimpleNamespace(social_security=oasdi_rate, medicare=hi_rate),
@@ -154,6 +168,14 @@ def _calculate(variables, parameters, inputs, outputs=None):
         "payroll_tax_gross_wages": 0,
         "self_employed_pension_contribution_ald_person": 0,
         "s_corp_shareholder_medicare_wages": 0,
+        # Line 9 for plans under every business also reads the person's
+        # elective deferral room; the oracles below name the Schedule C
+        # business, so the room never changes their results.
+        "elective_deferral_limit": 0,
+        "traditional_401k_contributions": 0,
+        "roth_401k_contributions": 0,
+        "traditional_403b_contributions": 0,
+        "roth_403b_contributions": 0,
         **inputs,
     }
 
@@ -170,15 +192,24 @@ def _calculate(variables, parameters, inputs, outputs=None):
         "total_self_employment_income",
         values["self_employment_income"] + values["sstb_self_employment_income"],
     )
-    # The oracles below take the Schedule C business as the plan business.
+    # The oracles below take the Schedule C business as the business under
+    # which both the health insurance plan and the retirement plan are
+    # established, so Form 7206 line 9 is the whole plan deduction. The enums
+    # take the inputs' own shape, so scalar inputs give scalar results.
+    shape = np.shape(values["total_self_employment_income"])
+
+    def schedule_c_plan(business):
+        return business.encode(
+            np.full(np.atleast_1d(np.zeros(shape)).shape, business.SCHEDULE_C)
+        ).reshape(shape)
+
     values.setdefault(
         "self_employed_health_insurance_plan_business",
-        SelfEmployedHealthInsurancePlanBusiness.encode(
-            np.full(
-                np.atleast_1d(values["total_self_employment_income"]).shape,
-                SelfEmployedHealthInsurancePlanBusiness.SCHEDULE_C,
-            )
-        ),
+        schedule_c_plan(SelfEmployedHealthInsurancePlanBusiness),
+    )
+    values.setdefault(
+        "self_employed_pension_plan_business",
+        schedule_c_plan(SelfEmployedPensionPlanBusiness),
     )
 
     def person(name, instant, options=None):

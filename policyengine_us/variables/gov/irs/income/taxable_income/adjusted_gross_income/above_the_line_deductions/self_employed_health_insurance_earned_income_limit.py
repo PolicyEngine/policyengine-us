@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.household.expense.retirement.self_employed_pension_contribution_limit import (
+    elective_deferral_room,
+)
 
 
 class self_employed_health_insurance_earned_income_limit(Variable):
@@ -18,9 +21,35 @@ class self_employed_health_insurance_earned_income_limit(Variable):
         "is net profit less the part of the deductible part of "
         "self-employment tax attributable to that business (lines 4 to 8) and "
         "less the self-employed SEP, SIMPLE and qualified plan deduction "
-        "attributable to it (lines 9 and 10); the model bases that plan "
-        "deduction on Schedule C income, so only the Schedule C business "
-        "subtracts it. Each kind of business is one total per person: all "
+        "attributable to it (lines 9 and 10). With the retirement plan under "
+        "one named business (self_employed_pension_plan_business), all of "
+        "that plan deduction is attributable to that business. By default "
+        "each business with a net profit has a retirement plan, and the person "
+        "chooses how much to contribute to each. Form 7206 has no rule for that "
+        "split, so the model takes the split that leaves the most earned income "
+        "for the health insurance deduction: the plans under the other "
+        "businesses carry as much of the plan deduction as they can. Each plan "
+        "can carry up to its own business's earned income. Elective deferrals "
+        "can sit in any of the plans, within the person's one section 402(g) "
+        "limit and catch-up amount. Employer contributions stay within each "
+        "employer's deduction limit, the reduced plan rate (20% at the 25% "
+        "rate) times the earned income of the businesses whose plans that "
+        "employer maintains. The person is the employer for their own Schedule "
+        "C business and farm, whose plans share one limit, and a partnership is "
+        "the employer of its partners, so its plan has a limit of its own. The "
+        "model figures that limit from the person's own earned income from the "
+        "partnership, as in the Pub. 560 worksheet, leaving out other "
+        "participants' compensation. As in the plan limit, the model applies "
+        "the dollar limit and the limit of half of earned income less deferrals "
+        "to all of the plans together, as section 415 requires when the "
+        "businesses count as one employer under section 414. For common "
+        "control, the person must own at least 80 percent of the partnership's "
+        "profits or capital interest. When the businesses count as separate "
+        "employers, the partnership's plan has its own section 415 limits, "
+        "which can raise line 9; the model has no data on ownership. The plan "
+        "deduction attributable to a business is then the part of it above what "
+        "the other plans can carry. Each kind of "
+        "business is one total per person: all "
         "Schedule C income (SSTB and non-SSTB), all Schedule F profit, all "
         "K-1 box 14 code A earnings and all more-than-2% shareholder wages, "
         "so a loss in one business of a kind reduces line 4. Schedule 1 line "
@@ -40,6 +69,36 @@ class self_employed_health_insurance_earned_income_limit(Variable):
         # Subsection (l)(2)(A), and (l)(5) for S corporation shareholders.
         "https://www.law.cornell.edu/uscode/text/26/162#l",
         "https://www.law.cornell.edu/uscode/text/26/401#c_2_A",
+        # Subsections (a)(3)(A)(i)(I) and (iv), (a)(8), (a)(12), (h)(2) and
+        # (n): the 25% limit on an employer's contributions, with one
+        # employer's profit-sharing trusts as one trust and a SEP's deduction
+        # counted against it; the employer of a self-employed person (the
+        # person treated as such under 401(c)(4)) and their compensation,
+        # earned income from the plan's business; each plan's contributions
+        # within that earned income; and elective deferrals outside the
+        # limit.
+        "https://www.law.cornell.edu/uscode/text/26/404",
+        # Subsection (f)(1)(B): one employer's defined contribution plans
+        # count as one plan.
+        "https://www.law.cornell.edu/uscode/text/26/415",
+        # Subsection (c): businesses under common control are one employer
+        # for section 415, though not for section 404.
+        "https://www.law.cornell.edu/uscode/text/26/414#c",
+        # Paragraphs (b)(2)(i), (c) and (e) Example 4: a sole proprietorship
+        # and a partnership form a brother-sister group only when the
+        # proprietor owns, directly or by attribution, at least 80 percent of
+        # the partnership's profits or capital interest.
+        "https://www.law.cornell.edu/cfr/text/26/1.414(c)-2",
+        # Paragraph (f)(1): Treasury keeps that 80 percent brother-sister test
+        # when it applies section 415(h)'s more-than-50-percent test.
+        "https://www.law.cornell.edu/cfr/text/26/1.415(a)-1",
+        # Subsection (g)(1)(A): one elective deferral limit for each
+        # individual.
+        "https://www.law.cornell.edu/uscode/text/26/402#g_1_A",
+        # PDF pages 7, 10: a sole proprietor is their own employer and a
+        # partnership is each partner's, and the plans one employer maintains
+        # count together.
+        "https://www.irs.gov/pub/irs-prior/p560--2025.pdf#page=7",
         "https://www.irs.gov/pub/irs-prior/f7206--2023.pdf#page=1",
         # Where a plan may be established, and one Form 7206 per plan.
         # PDF pages 1-2
@@ -51,10 +110,50 @@ class self_employed_health_insurance_earned_income_limit(Variable):
     )
 
     def formula(person, period, parameters):
-        return form_7206_line_13(person, period)
+        return form_7206_line_13(person, period, parameters)
 
 
-def form_7206_line_13(person, period, other_line_5_profits=0):
+def plan_deduction_attributable_to_business(
+    plan_deduction, other_earned_income, other_employer_room, deferral_room
+):
+    """Least part of the plan deduction that one business's plan must carry.
+
+    Every business with a net profit has a retirement plan, and the person
+    chooses how much to contribute to each. The plans under the other
+    businesses have other_earned_income in all, and each plan's
+    contributions stay within its own business's earned income before the
+    plan deduction (404(a)(8)(C)).
+
+    Elective deferrals sit outside an employer's deduction limit (404(n)),
+    so the person can put them in any plan, within their one section 402(g)
+    limit (402(g)(1)(A)) and catch-up amount (414(v)): deferral_room.
+    Employer contributions stay within each employer's limit of 25% of
+    compensation (404(a)(3)(A)(i)(I)), which for a self-employed person is
+    earned income from the business whose plan it is, net of the employer
+    contribution (404(a)(8)(D), 404(a)(12)): the reduced rate times earned
+    income before the plan deduction (Pub. 560 steps 4 and 5). A sole
+    proprietor is the employer for all of their own businesses (401(c)(4),
+    404(a)(8)(A)), and their profit-sharing trusts count as one trust for
+    that limit (404(a)(3)(A)(iv)); a partnership is the employer of its
+    partners, so its plan has a limit of its own. other_employer_room is what
+    those limits leave for the other plans' employer contributions when this
+    business's plan makes none. The model applies the dollar limit and the
+    limit of half of earned income less deferrals to all of the plans
+    together, as section 415 requires for one employer's plans
+    (415(f)(1)(B)), including a partnership's plan when the person owns at
+    least 80 percent of its profits or capital interest (414(c) and Treas.
+    Reg. 1.414(c)-2(c)), and the plan deduction is within them.
+
+    So the other plans can carry their employer room plus the person's
+    deferral room, up to their earned income, and this business's plan
+    carries the rest (Form 7206 line 9). Where that capacity passes the plan
+    deduction, this plan carries none of it.
+    """
+    other_plans = min_(other_earned_income, other_employer_room + deferral_room)
+    return max_(0, plan_deduction - other_plans)
+
+
+def form_7206_line_13(person, period, parameters, other_line_5_profits=0):
     """Form 7206 line 13 for the plan business.
 
     other_line_5_profits adds the profits of businesses that cannot
@@ -87,25 +186,84 @@ def form_7206_line_13(person, period, other_line_5_profits=0):
         )
         return self_employment_tax_deduction * share
 
-    # Lines 9 and 10: the SEP, SIMPLE and qualified plan deduction
-    # (Schedule 1 line 16) is attributable to the Schedule C business.
+    # Line 8 for each self-employment business.
+    schedule_c_line_8 = schedule_c_profit - attributable_self_employment_tax_deduction(
+        schedule_c_profit
+    )
+    farm_line_8 = farm_profit - attributable_self_employment_tax_deduction(farm_profit)
+    partnership_line_8 = partnership_profit - (
+        attributable_self_employment_tax_deduction(partnership_profit)
+    )
+    # Line 9: the SEP, SIMPLE and qualified plan deduction (Schedule 1 line
+    # 16) attributable to each business.
     retirement_plan_deduction = person(
         "self_employed_pension_contribution_ald_person", period
     )
-    # Line 10 for each self-employment business.
+    retirement_plan_business = person("self_employed_pension_plan_business", period)
+    retirement_plan_businesses = retirement_plan_business.possible_values
+    # With plans under every business with a net profit, their line 8
+    # amounts are their earned income (Pub. 560 Deduction Worksheet step 3).
+    # Each employer's limit on employer contributions: the reduced plan rate
+    # (steps 4 and 5) times the earned income of the businesses whose plans
+    # it maintains. The person is the employer for their own Schedule C
+    # business and farm, and a partnership for its partners.
+    rate = parameters(
+        period
+    ).gov.irs.gross_income.retirement_contributions.limit.profit_sharing_deduction_rate
+    reduced_rate = rate / (1 + rate)
+    own_businesses_employer_room = reduced_rate * (schedule_c_line_8 + farm_line_8)
+    partnership_employer_room = reduced_rate * partnership_line_8
+    # Elective deferrals can sit in any of the plans.
+    deferral_room = elective_deferral_room(person, period)
+
+    def line_9(other_businesses_line_8, other_businesses_employer_room, business):
+        # A retirement plan under one named business: all of line 16.
+        named = where(
+            retirement_plan_business == business, retirement_plan_deduction, 0
+        )
+        # Plans under every business with a net profit: the least that this
+        # business's plan must carry.
+        least = plan_deduction_attributable_to_business(
+            retirement_plan_deduction,
+            other_businesses_line_8,
+            other_businesses_employer_room,
+            deferral_room,
+        )
+        return where(
+            retirement_plan_business == retirement_plan_businesses.ALL, least, named
+        )
+
+    # Line 10 for each self-employment business. The plan under the person's
+    # other business can take all of their employer room, up to that
+    # business's earned income, when this business's plan makes no employer
+    # contribution.
     schedule_c = max_(
         0,
-        schedule_c_profit
-        - attributable_self_employment_tax_deduction(schedule_c_profit)
-        - retirement_plan_deduction,
+        schedule_c_line_8
+        - line_9(
+            farm_line_8 + partnership_line_8,
+            min_(farm_line_8, own_businesses_employer_room) + partnership_employer_room,
+            retirement_plan_businesses.SCHEDULE_C,
+        ),
     )
     farm = max_(
-        0, farm_profit - attributable_self_employment_tax_deduction(farm_profit)
+        0,
+        farm_line_8
+        - line_9(
+            schedule_c_line_8 + partnership_line_8,
+            min_(schedule_c_line_8, own_businesses_employer_room)
+            + partnership_employer_room,
+            retirement_plan_businesses.SCHEDULE_F,
+        ),
     )
     partnership = max_(
         0,
-        partnership_profit
-        - attributable_self_employment_tax_deduction(partnership_profit),
+        partnership_line_8
+        - line_9(
+            schedule_c_line_8 + farm_line_8,
+            own_businesses_employer_room,
+            retirement_plan_businesses.PARTNERSHIP,
+        ),
     )
     # Line 11: an S corporation shareholder's wages from the corporation.
     s_corporation = max_(0, person("s_corp_shareholder_medicare_wages", period))
