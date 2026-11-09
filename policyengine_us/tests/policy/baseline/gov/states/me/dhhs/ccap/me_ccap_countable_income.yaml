@@ -1,0 +1,9 @@
+- name: Case 1, railroad retirement benefits count as unearned income.
+  # 10-148 C.M.R. ch. 6, 2.C counts "railroad retirement, private pensions, annuities".
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: ME
+    railroad_benefits: 12_000
+  output:
+    me_ccap_countable_income: 1_000

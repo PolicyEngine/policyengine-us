@@ -1,0 +1,9 @@
+- name: Case 1, railroad retirement benefits count as unearned income.
+  # EP-300 300.09 A takes the types of income from FNS 300, whose 300.01 B lists railroad retirement as unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    railroad_benefits: 12_000
+  output:
+    nc_lieap_gross_income_person: 12_000
