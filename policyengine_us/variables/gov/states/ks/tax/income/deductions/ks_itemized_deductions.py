@@ -10,6 +10,7 @@ class ks_itemized_deductions(Variable):
     reference = (
         "https://www.ksrevisor.gov/statutes/chapters/ch79/079_032_0120.html",
         "https://www.ksrevenue.gov/pdf/ip17.pdf#page=14",
+        # PDF pages 14-15
         "https://www.ksrevenue.gov/pdf/ip25.pdf#page=14",
     )
     defined_for = StateCode.KS

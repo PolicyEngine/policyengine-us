@@ -89,6 +89,7 @@
     charitable_deduction_for_non_itemizers: 300
     real_estate_taxes: 4_000
   output:
+    # 2,000 + 4,000; the 300 non-itemizer deduction does not count.
     ks_itemized_deductions: 6_000
 
 # K.S.A. 79-32,120(a)(4) counts qualified residence interest under section
@@ -138,6 +139,34 @@
     # AGI of 0 is below the premium phase-out start.
     # 1 * 1,000
     ks_itemized_deductions: 1_000
+
+# 163(h)(3)(E)(iv) ends the premium deduction after 2021, and P.L. 119-21
+# sec. 70108 restores it only from 2026 (2025 Kansas Schedule A line 8d is
+# reserved).
+- name: Case 12, 2025 mortgage insurance premiums do not count.
+  period: 2025
+  input:
+    state_code: KS
+    home_mortgage_interest: 8_000
+    mortgage_insurance_premiums: 1_000
+  output:
+    # 1 * 8,000
+    ks_itemized_deductions: 8_000
+
+# 163(h)(3)(E)(ii) cuts premiums by 10% for each $1,000, or fraction of one,
+# of AGI above $100,000.
+- name: Case 13, 2019 premiums after the AGI phase-out count at the 75% share.
+  period: 2019
+  input:
+    state_code: KS
+    employment_income: 104_500
+    home_mortgage_interest: 8_000
+    mortgage_insurance_premiums: 1_000
+  output:
+    # AGI exceeds 100,000 by 4,500: 5 steps, so premiums fall 50% to 500.
+    deductible_mortgage_insurance_premiums: 500
+    # 0.75 * (8,000 + 500)
+    ks_itemized_deductions: 6_375
 
 - name: KS itemized deductions leave out the federal claim of right repayment deduction
   # K.S.A. 79-32,120(a) lists charitable contributions, medical care,
