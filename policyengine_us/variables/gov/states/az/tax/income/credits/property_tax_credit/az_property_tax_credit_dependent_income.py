@@ -44,13 +44,17 @@ class az_property_tax_credit_dependent_income(Variable):
         sources = parameters(period).gov.irs.gross_income.sources
         income = 0
         for source in sources:
-            # ARS 43-1072(I): Social Security benefits are not income.
-            # Capital gains and losses, including capital gain distributions,
-            # are added below as line D. ARS 43-1072(I): Arizona unemployment
-            # insurance payments are not income; other states' payments are
-            # in az_property_tax_credit_unemployment.
+            # ARS 43-1072(I): Social Security benefits are not income, and
+            # the 2025 Form 140PTC instructions (page 4) leave out railroad
+            # retirement benefits too. Capital gains and losses, including
+            # capital gain distributions, are added below as line D. ARS
+            # 43-1072(I): Arizona unemployment insurance payments are not
+            # income; other states' payments are in
+            # az_property_tax_credit_unemployment.
             if source in (
                 "taxable_social_security",
+                "taxable_railroad_social_security_equivalent_benefits",
+                "taxable_railroad_pension_benefits",
                 "taxable_unemployment_compensation",
                 "capital_gains",
                 "non_sch_d_capital_gains",

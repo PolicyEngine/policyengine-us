@@ -17,7 +17,12 @@ def create_watca() -> Reform:
         definition_period = YEAR
         unit = USD
         reference = WATCA_REFERENCES
-        documentation = "Section 1A(d): AGI + foreign income exclusions (sec 911, 931, 933) + non-taxable Social Security."
+        documentation = (
+            "Section 1A(d): AGI + foreign income exclusions (sec 911, 931, "
+            "933) + the social security benefits, as section 86(d) defines "
+            "them, that section 86 leaves out of gross income: Social "
+            "Security and tier 1 railroad retirement benefits."
+        )
 
         adds = [
             "adjusted_gross_income",
@@ -25,6 +30,7 @@ def create_watca() -> Reform:
             "specified_possession_income",
             "puerto_rico_income",
             "tax_exempt_social_security",
+            "tax_exempt_railroad_social_security_equivalent_benefits",
         ]
 
     class watca_surtax_magi(Variable):

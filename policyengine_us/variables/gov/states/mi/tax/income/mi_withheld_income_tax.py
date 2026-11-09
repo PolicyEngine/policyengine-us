@@ -10,7 +10,7 @@ class mi_withheld_income_tax(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        agi = person("adjusted_gross_income_person", period)
+        agi = person("state_withholding_agi", period)
         p = parameters(period).gov.states.mi.tax.income
         # The MI standard deduction only applys for elderly
         # Wo do not apply deductions here

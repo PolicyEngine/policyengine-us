@@ -15,3 +15,47 @@
     state_code: VT
   output:
     vt_amt: 0
+
+- name: Vermont minimum tax leaves out railroad retirement benefits
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        taxable_railroad_pension_benefits: 262_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VT
+  output:
+    # Federal AGI = 262,000 exceeds 150,000, so 32 V.S.A. 5822(a)(6) applies,
+    # but 45 U.S.C. 231m(a) bars any state tax on the railroad annuity:
+    # 3% x (262,000 - 262,000) = 0.
+    adjusted_gross_income: 262_000
+    vt_amt: 0
+    vt_income_tax_before_non_refundable_credits: 0
+
+- name: Vermont minimum tax applies to federal AGI less railroad retirement benefits
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+        taxable_railroad_pension_benefits: 100_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VT
+  output:
+    # Federal AGI = 100,000 + 100,000 = 200,000 exceeds 150,000, so the
+    # minimum tax applies to the 100,000 that is not railroad benefits:
+    # 3% x (200,000 - 100,000) = 3,000.
+    adjusted_gross_income: 200_000
+    vt_amt: 3_000

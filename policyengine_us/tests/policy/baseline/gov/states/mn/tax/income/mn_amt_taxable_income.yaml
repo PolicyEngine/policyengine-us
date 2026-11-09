@@ -112,3 +112,56 @@
     state_code: MN
   output:
     mn_amt_taxable_income: 200_000
+
+- name: MN AMT taxable income leaves out railroad retirement benefits
+  period: 2024
+  input:
+    people:
+      head:
+        age: 70
+        taxable_railroad_pension_benefits: 64_255
+      spouse:
+        age: 70
+        taxable_railroad_pension_benefits: 64_255
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MN
+  output:
+    # Federal AGI = 2 x 64,255 = 128,510, all of it the taxable rest of the
+    # railroad annuity (IRC 72(r)). 2024 Schedule M1MT line 18 subtracts
+    # Schedule M1M line 17, the Railroad Retirement Board benefits in federal
+    # AGI, and 45 U.S.C. 231m(a) bars any state tax on them:
+    # 128,510 - 128,510 = 0, so no AMT.
+    filing_status: JOINT
+    adjusted_gross_income: 128_510
+    mn_amt_taxable_income: 0
+    mn_amt: 0
+    mn_income_tax_before_credits: 0
+
+- name: MN AMT taxable income subtracts railroad retirement benefits from a wage earner's AGI
+  period: 2024
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 300_000
+        taxable_railroad_pension_benefits: 100_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MN
+  output:
+    # Federal AGI = 300,000 + 100,000 = 400,000; M1MT line 18 subtracts the
+    # 100,000 of railroad benefits: 400,000 - 100,000 = 300,000.
+    adjusted_gross_income: 400_000
+    mn_amt_taxable_income: 300_000

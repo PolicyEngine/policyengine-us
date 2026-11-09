@@ -7,6 +7,7 @@ class tax_exempt_railroad_pension_benefits(Variable):
     label = "Tax-exempt Railroad Retirement pension benefits"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.tax_exempt_pension_income"
     documentation = (
         "The part of Form RRB-1099-R benefits that recovers the employee's "
         "own contributions tax free. IRC 72(r)(2) treats tier 2 employee "

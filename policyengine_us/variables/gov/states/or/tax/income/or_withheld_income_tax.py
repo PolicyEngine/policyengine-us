@@ -10,7 +10,7 @@ class or_withheld_income_tax(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        agi = person("adjusted_gross_income_person", period)
+        agi = person("state_withholding_agi", period)
         p = parameters(period).gov.states["or"].tax.income
         # We apply the maximum standard deduction
         standard_deduction = p.deductions.standard.amount["SINGLE"]

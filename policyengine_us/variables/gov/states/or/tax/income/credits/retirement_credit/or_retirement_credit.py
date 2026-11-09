@@ -30,8 +30,13 @@ class or_retirement_credit(Variable):
             0, total_retirement_income - federal_pension_subtraction
         )
 
-        # Line 5, total social security
-        social_security = add(tax_unit, period, ["social_security"])
+        # Line 5, total social security. ORS 316.157(2)(f) counts tier 1
+        # railroad retirement benefits as Social Security benefits.
+        social_security = add(
+            tax_unit,
+            period,
+            ["social_security", "railroad_social_security_equivalent_benefits"],
+        )
 
         # Line 6, base amount reduced by social security benefits received
         p = parameters(period).gov.states["or"].tax.income.credits.retirement_income

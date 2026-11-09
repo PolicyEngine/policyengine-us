@@ -17,10 +17,12 @@ class railroad_benefits(Variable):
         "unemployment_compensation and sickness benefits in "
         "disability_benefits. Census counts railroad retirement as a "
         "government transfer, and household and SPM benefits include these "
-        "benefits. Enter the parts, not this total, so that taxes see them; "
-        "a total entered here reaches benefit programs only. Do not also "
-        "enter them as social_security, pension_income, disability_benefits "
-        "or survivor_benefits."
+        "benefits. Enter the parts, not this total, so that taxes see them. "
+        "A total entered here replaces the sum of the parts and reaches "
+        "income totals and benefit programs but no tax, and it applies only "
+        "to the year it is entered for, while the parts carry into later "
+        "years. Do not also enter them as social_security, pension_income, "
+        "disability_benefits or survivor_benefits."
     )
     adds = [
         "railroad_social_security_equivalent_benefits",

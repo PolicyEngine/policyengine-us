@@ -21,6 +21,13 @@ class ut_homeowner_renter_relief_nontaxable_income(Variable):
         nontaxable_social_security = max_(
             0, social_security - ssdi - taxable_social_security
         )
+        # Federal AGI includes the head's and spouse's taxable railroad
+        # retirement benefits, so the rest of the benefits is added here.
+        nontaxable_railroad_benefits = max_(
+            0,
+            person("railroad_benefits", period)
+            - person("taxable_railroad_benefits", period),
+        )
         total_unemployment_compensation = person(
             "total_unemployment_compensation", period
         )
@@ -34,5 +41,6 @@ class ut_homeowner_renter_relief_nontaxable_income(Variable):
         return (
             listed_sources
             + nontaxable_social_security
+            + nontaxable_railroad_benefits
             + nontaxable_unemployment_compensation
         )

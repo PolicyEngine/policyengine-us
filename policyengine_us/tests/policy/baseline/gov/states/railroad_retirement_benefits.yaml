@@ -9,7 +9,9 @@
 # security equivalent benefits and $25,000 of the taxable rest of the annuity.
 # Combined income = 25,000 + 10,000 = 35,000, so IRC 86(a)(2) makes
 # 0.85 * 1,000 + 4,500 = 5,350 of the tier 1 benefits taxable, and federal AGI
-# is 25,000 + 5,350 = 30,350. None of it is state income.
+# is 25,000 + 5,350 = 30,350. None of it is state income, and the state's
+# withholding estimate, which feeds the federal deduction for state and
+# local income taxes, counts none of it.
 
 - name: Railroad retirement benefits are not AL income.
   period: 2025
@@ -28,6 +30,7 @@
         state_code: AL
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not AZ income.
@@ -47,6 +50,7 @@
         state_code: AZ
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not AR income.
@@ -66,6 +70,7 @@
         state_code: AR
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not CA income.
@@ -85,6 +90,7 @@
         state_code: CA
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not CO income.
@@ -104,6 +110,7 @@
         state_code: CO
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not CT income.
@@ -123,6 +130,7 @@
         state_code: CT
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not DE income.
@@ -142,6 +150,7 @@
         state_code: DE
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not DC income.
@@ -161,6 +170,7 @@
         state_code: DC
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not GA income.
@@ -180,6 +190,7 @@
         state_code: GA
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not HI income.
@@ -199,6 +210,7 @@
         state_code: HI
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not ID income.
@@ -218,6 +230,7 @@
         state_code: ID
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     # The $10 permanent building fund tax falls on every required filer
     # (Idaho Code 63-3082), so the test checks taxable income.
     id_taxable_income: 0
@@ -239,6 +252,7 @@
         state_code: IL
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not IN income.
@@ -258,6 +272,7 @@
         state_code: IN
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not IA income.
@@ -277,6 +292,7 @@
         state_code: IA
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not KS income.
@@ -296,6 +312,7 @@
         state_code: KS
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not KY income.
@@ -315,6 +332,7 @@
         state_code: KY
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not LA income.
@@ -334,6 +352,7 @@
         state_code: LA
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not ME income.
@@ -353,6 +372,7 @@
         state_code: ME
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not MD income.
@@ -372,6 +392,7 @@
         state_code: MD
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not MA income.
@@ -391,6 +412,7 @@
         state_code: MA
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not MI income.
@@ -410,6 +432,7 @@
         state_code: MI
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not MN income.
@@ -429,6 +452,7 @@
         state_code: MN
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not MS income.
@@ -448,6 +472,7 @@
         state_code: MS
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not MO income.
@@ -467,6 +492,7 @@
         state_code: MO
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not MT income.
@@ -486,6 +512,7 @@
         state_code: MT
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not NE income.
@@ -505,6 +532,7 @@
         state_code: NE
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not NJ income.
@@ -524,6 +552,7 @@
         state_code: NJ
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not NM income.
@@ -543,6 +572,7 @@
         state_code: NM
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not NY income.
@@ -562,6 +592,7 @@
         state_code: NY
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not NC income.
@@ -581,6 +612,7 @@
         state_code: NC
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not ND income.
@@ -600,6 +632,7 @@
         state_code: ND
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not OH income.
@@ -619,6 +652,7 @@
         state_code: OH
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not OK income.
@@ -638,6 +672,7 @@
         state_code: OK
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not OR income.
@@ -657,6 +692,7 @@
         state_code: OR
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not PA income.
@@ -676,6 +712,7 @@
         state_code: PA
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not RI income.
@@ -695,6 +732,7 @@
         state_code: RI
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not SC income.
@@ -714,6 +752,7 @@
         state_code: SC
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not UT income.
@@ -733,6 +772,7 @@
         state_code: UT
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not VT income.
@@ -752,6 +792,7 @@
         state_code: VT
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not VA income.
@@ -771,6 +812,7 @@
         state_code: VA
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not WV income.
@@ -790,6 +832,7 @@
         state_code: WV
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0
 
 - name: Railroad retirement benefits are not WI income.
@@ -809,4 +852,5 @@
         state_code: WI
   output:
     adjusted_gross_income: 30_350
+    state_withheld_income_tax: 0
     state_income_tax_before_refundable_credits: 0

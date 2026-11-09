@@ -7,6 +7,7 @@ class taxable_railroad_pension_benefits(Variable):
     label = "Taxable Railroad Retirement pension benefits"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.taxable_pension_income"
     documentation = (
         "Railroad Retirement Act benefits other than the social security "
         "equivalent benefit, less the employee contributions recovered tax "

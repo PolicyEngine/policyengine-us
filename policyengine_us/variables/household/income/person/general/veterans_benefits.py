@@ -17,7 +17,9 @@ class veterans_benefits(Variable):
         "gross income leaves both out. Census money income counts VA payments "
         "as veterans' payments, and household and SPM benefits include this "
         "variable. Taxable military retirement pay goes in "
-        "military_retirement_pay instead."
+        "military_retirement_pay instead. The model marks anyone with "
+        "veterans_benefits as a veteran (is_veteran), so set is_veteran to "
+        "false for a survivor or dependent whose VA payments go here."
     )
     definition_period = YEAR
     uprating = "gov.ssa.uprating"
