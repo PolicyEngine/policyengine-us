@@ -1,8 +1,10 @@
 # Integration tests for NH FANF (Financial Assistance to Needy Families)
 # Tests the complete benefit calculation pipeline with real-world scenarios
-# Note: Tests default to applicant status (20% earned income disregard)
-# Recipients get 75% disregard per Cliff Effect Initiative (Sept 2022)
-# Sources: RSA 167:77-g; FAM 601; FAM 603; SR 97-03; BFA SR 22-28
+# Note: Tests default to applicant status. Applicants pass the eligibility
+# test with a 20% earned income disregard (He-W 654.13(b)-(c)); every eligible
+# unit's benefit uses the 50% disregard (He-W 654.13(d)-(e)).
+# Recipients get the 50% disregard for both, per He-W 654.13(e)(1).
+# Sources: RSA 167:77-g; He-W 654.13; FAM 601; FAM 603; SR 97-03; BFA SR 22-28
 
 - name: Case 1, single parent with one child, no income, maximum benefit.
   period: 2024-01
@@ -29,7 +31,7 @@
     nh_fanf_eligible: true
     nh_fanf: 1_022
 
-- name: Case 2, applicant with earnings, 20 percent disregard.
+- name: Case 2, applicant passes the 20 percent test and gets the 50 percent disregard for the benefit.
   period: 2024-01
   input:
     people:
@@ -48,14 +50,17 @@
         state_code: NH
   output:
     nh_fanf_payment_standard: 1_022
-    # Applicant: 1,000 * 0.80 = 800
-    nh_fanf_countable_earned_income: 800
-    nh_fanf_countable_income: 800
+    # Eligibility test, He-W 654.13(c): 1,000 * 0.80 = 800 < 1,022
+    nh_fanf_countable_earned_income_for_eligibility: 800
+    nh_fanf_countable_income_for_eligibility: 800
     nh_fanf_income_eligible: true
     nh_fanf_resources_eligible: true
     nh_fanf_eligible: true
-    # 1,022 - 800 = 222
-    nh_fanf: 222
+    # Benefit, He-W 654.13(d): 1,000 * 0.50 = 500
+    nh_fanf_countable_earned_income: 500
+    nh_fanf_countable_income: 500
+    # 1,022 - 500 = 522
+    nh_fanf: 522
 
 - name: Case 3, income above threshold, ineligible.
   period: 2024-01
@@ -77,8 +82,8 @@
   output:
     nh_fanf_payment_standard: 1_022
     # Applicant: 3,000 * 0.80 = 2,400 > 1,022
-    nh_fanf_countable_earned_income: 2_400
-    nh_fanf_countable_income: 2_400
+    nh_fanf_countable_earned_income_for_eligibility: 2_400
+    nh_fanf_countable_income_for_eligibility: 2_400
     nh_fanf_income_eligible: false
     nh_fanf_eligible: false
     nh_fanf: 0
@@ -151,14 +156,17 @@
         state_code: NH
   output:
     nh_fanf_payment_standard: 1_560
-    # Applicant: 800 * 0.80 = 640 earned + 200 unearned = 840
-    nh_fanf_countable_earned_income: 640
-    nh_fanf_countable_income: 840
+    # Eligibility: 800 * 0.80 = 640 earned + 200 unearned = 840 < 1,560
+    nh_fanf_countable_earned_income_for_eligibility: 640
+    nh_fanf_countable_income_for_eligibility: 840
     nh_fanf_eligible: true
-    # 1,560 - 840 = 720
-    nh_fanf: 720
+    # Benefit: 800 * 0.50 = 400 earned + 200 unearned = 600
+    nh_fanf_countable_earned_income: 400
+    nh_fanf_countable_income: 600
+    # 1,560 - 600 = 960
+    nh_fanf: 960
 
-- name: Case 7, recipient with 75 percent earned income disregard.
+- name: Case 7, recipient with 50 percent earned income disregard.
   period: 2024-01
   input:
     people:
@@ -177,12 +185,12 @@
         members: [person1, person2]
         state_code: NH
   output:
-    # Recipient: 1,000 * 0.25 = 250
-    nh_fanf_countable_earned_income: 250
-    nh_fanf_countable_income: 250
+    # Recipient: 1,000 * 0.50 = 500
+    nh_fanf_countable_earned_income: 500
+    nh_fanf_countable_income: 500
     nh_fanf_eligible: true
-    # 1,022 - 250 = 772
-    nh_fanf: 772
+    # 1,022 - 500 = 522
+    nh_fanf: 522
 
 - name: Case 8, recipient with higher resource limit.
   period: 2024-01
@@ -227,15 +235,15 @@
         members: [person1, person2]
         state_code: NH
   output:
-    # Recipient: 2,000 * 0.25 = 500
+    # Recipient: 2,000 * 0.50 = 1,000
     # Child care: $200
-    # Countable: 500 - 200 = 300
+    # Countable: 1,000 - 200 = 800
     nh_fanf_child_care_deduction: 200
-    nh_fanf_countable_earned_income: 300
-    nh_fanf_countable_income: 300
+    nh_fanf_countable_earned_income: 800
+    nh_fanf_countable_income: 800
     nh_fanf_eligible: true
-    # 1,022 - 300 = 722
-    nh_fanf: 722
+    # 1,022 - 800 = 222
+    nh_fanf: 222
 
 - name: Case 10, large 8-person household.
   period: 2024-01
@@ -294,15 +302,17 @@
         state_code: NH
   output:
     nh_fanf_payment_standard: 1_291
-    # Applicant: 2,000 * 0.80 = 1,600
     # Child care: $200 (age 3) + $175 (age 7) = $375
-    # Countable: 1,600 - 375 = 1,225
     nh_fanf_child_care_deduction: 375
-    nh_fanf_countable_earned_income: 1_225
-    nh_fanf_countable_income: 1_225
+    # Eligibility: 2,000 * 0.80 = 1,600 - 375 = 1,225 < 1,291
+    nh_fanf_countable_earned_income_for_eligibility: 1_225
+    nh_fanf_countable_income_for_eligibility: 1_225
     nh_fanf_eligible: true
-    # 1,291 - 1,225 = 66
-    nh_fanf: 66
+    # Benefit: 2,000 * 0.50 = 1,000 - 375 = 625
+    nh_fanf_countable_earned_income: 625
+    nh_fanf_countable_income: 625
+    # 1,291 - 625 = 666
+    nh_fanf: 666
 
 - name: Case 12, child care deduction brings countable to zero.
   period: 2024-01
@@ -327,9 +337,9 @@
         state_code: NH
   output:
     nh_fanf_payment_standard: 1_291
-    # Recipient: 200 * 0.25 = 50
+    # Recipient: 200 * 0.50 = 100
     # Child care (part-time): 2 * $100 = $200
-    # Countable: max(50 - 200, 0) = 0
+    # Countable: max(100 - 200, 0) = 0
     nh_fanf_child_care_deduction: 200
     nh_fanf_countable_earned_income: 0
     nh_fanf_countable_income: 0
@@ -358,12 +368,14 @@
         state_code: NH
   output:
     nh_fanf_payment_standard: 1_291
-    # Applicant: (500 + 500) * 0.80 = 800
-    nh_fanf_countable_earned_income: 800
-    nh_fanf_countable_income: 800
+    # Eligibility: (500 + 500) * 0.80 = 800 < 1,291
+    nh_fanf_countable_earned_income_for_eligibility: 800
     nh_fanf_eligible: true
-    # 1,291 - 800 = 491
-    nh_fanf: 491
+    # Benefit: (500 + 500) * 0.50 = 500
+    nh_fanf_countable_earned_income: 500
+    nh_fanf_countable_income: 500
+    # 1,291 - 500 = 791
+    nh_fanf: 791
 
 - name: Case 14, applicant with $1000 per month earnings.
   period: 2024-01
@@ -384,12 +396,14 @@
         members: [person1, person2]
         state_code: NH
   output:
-    # Applicant: 1,000 * 0.80 = 800
-    nh_fanf_countable_earned_income: 800
-    nh_fanf_countable_income: 800
+    # Eligibility test: 1,000 * 0.80 = 800 < 1,022
+    nh_fanf_countable_earned_income_for_eligibility: 800
     nh_fanf_eligible: true
-    # 1,022 - 800 = 222
-    nh_fanf: 222
+    # Benefit, He-W 654.13(d): 1,000 * 0.50 = 500
+    nh_fanf_countable_earned_income: 500
+    nh_fanf_countable_income: 500
+    # 1,022 - 500 = 522
+    nh_fanf: 522
 
 - name: Case 15, recipient with same $1000 per month earnings.
   period: 2024-01
@@ -410,9 +424,153 @@
         members: [person1, person2]
         state_code: NH
   output:
-    # Recipient: 1,000 * 0.25 = 250 (75% disregard)
-    nh_fanf_countable_earned_income: 250
-    nh_fanf_countable_income: 250
+    # Recipient: 1,000 * 0.50 = 500 (50% disregard) for both the test and
+    # the benefit
+    nh_fanf_countable_earned_income_for_eligibility: 500
+    nh_fanf_countable_earned_income: 500
+    nh_fanf_countable_income: 500
     nh_fanf_eligible: true
-    # 1,022 - 250 = 772 (vs 222 for applicant - $550 more benefit!)
-    nh_fanf: 772
+    # 1,022 - 500 = 522, the same benefit as Case 14's applicant
+    # (He-W 654.13(d)-(e))
+    nh_fanf: 522
+
+- name: Case 16, recipient family of three in 2025, 50 percent disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 18_000  # $1,500/month
+      person2:
+        age: 5
+      person3:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    # 60% x $26,650 (2025 FPG for 3) / 12 = $1,332.50
+    nh_fanf_payment_standard: 1_332.50
+    # He-W 654.13(e): 1,500 * 0.50 = 750
+    nh_fanf_countable_earned_income: 750
+    nh_fanf_income_eligible: true
+    # 1,332.50 - 750 = 582.50
+    nh_fanf: 582.50
+
+- name: Case 17, recipient with countable earnings above the payment standard is ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 32_400  # $2,700/month
+      person2:
+        age: 5
+      person3:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    nh_fanf_payment_standard: 1_332.50
+    # 2,700 * 0.50 = 1,350 > 1,332.50
+    nh_fanf_countable_earned_income_for_eligibility: 1_350
+    nh_fanf_countable_earned_income: 1_350
+    nh_fanf_income_eligible: false
+    nh_fanf: 0
+
+- name: Case 18, applicant fails the 20 percent test although the 50 percent income is below the payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 18_000  # $1,500/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_fanf_payment_standard: 1_022
+    # He-W 654.13(c): 1,500 * 0.80 = 1,200 > 1,022
+    nh_fanf_countable_earned_income_for_eligibility: 1_200
+    nh_fanf_income_eligible: false
+    nh_fanf_eligible: false
+    # 1,500 * 0.50 = 750 is not used, because the applicant is ineligible
+    nh_fanf_countable_earned_income: 750
+    nh_fanf: 0
+
+- name: Case 19, applicant exactly at the 20 percent test limit is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 15_330  # $1,277.50/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_fanf_payment_standard: 1_022
+    # Eligibility: 1,277.50 * 0.80 = 1,022, not less than 1,022
+    # (RSA 167:79 III(e); FAM 611.01)
+    nh_fanf_countable_earned_income_for_eligibility: 1_022
+    nh_fanf_income_eligible: false
+    nh_fanf: 0
+
+- name: Case 20, applicant just below the 20 percent test limit gets the 50 percent benefit.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 15_300  # $1,275/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_fanf_payment_standard: 1_022
+    # Eligibility: 1,275 * 0.80 = 1,020 < 1,022
+    nh_fanf_countable_earned_income_for_eligibility: 1_020
+    nh_fanf_income_eligible: true
+    nh_fanf_eligible: true
+    # Benefit: 1,275 * 0.50 = 637.50
+    nh_fanf_countable_earned_income: 637.50
+    # 1,022 - 637.50 = 384.50
+    nh_fanf: 384.50

@@ -1,0 +1,287 @@
+# South Dakota LIEAP households end to end, FY2026 (model year 2026).
+# Sources for the expected values:
+# - FY2026 benefit matrix (one page), Own and Rent Cases and Heat in Rent Cases:
+#   https://liheapch.acf.gov/docs/2026/benefits-matricies/SD_BenefitMatrix_2026.pdf
+# - DSS 2025-2026 Heating Season Income Limits, three-month maxima of $7,825
+#   (size 1), $10,575 (2), $13,325 (3) and $16,075 (4), each x 4 a year:
+#   https://web.archive.org/web/20260101052007/https://dss.sd.gov/economicassistance/energy_weatherization_assistance.aspx
+# - FY2026 state plan item 9.1: payments go to energy suppliers, except for coal,
+#   wood and heat in rent, which are paid to the household:
+#   https://liheapch.acf.gov/docs/2026/state-plans/SD_Plan_2026.pdf#page=22
+# - ARSD 67:15:01:18 (income exclusions), 67:15:01:35 (regions), 67:15:01:40
+#   (wood and coal), 67:15:01:41.02 (heat in rent, up to 30% of rent) and
+#   67:15:01:43.01 (payment to the energy supplier or landlord):
+#   https://sdlegislature.gov/Rules/Administrative/67:15:01
+# - LIEAP manual pages 28 and 30-32 (Social Security less the Part B premium;
+#   vendor payments; heat in rent from October through April):
+#   https://liheapch.acf.gov/sites/default/files/webfiles/docs/SD_Policy-and-Procedures-Manual2018.pdf#page=28
+# The FY2026 matrix names the first-tier threshold ("Mid") without printing it;
+# the model carries the FY2024 rule forward: 4 x round-half-up(125% x the 2025
+# guideline / 4). The 2025 guideline is $15,650 plus $5,500 per added person.
+# South Dakota's 2026 minimum wage is $11.85 an hour
+# (https://dlr.sd.gov/employment_laws/minimum_wage.aspx); full time is 2,080
+# hours, or $24,648 a year.
+
+# Sioux Falls (Minnehaha County) single parent working full time at the minimum
+# wage with two children, heating with natural gas billed in her name ($1,200 of
+# unpaid charges this season). No SNAP, TANF or SSI is received.
+- name: Case 1, a minimum-wage single parent with gas heat receives the tier one region three gas amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        immigration_status: CITIZEN
+        employment_income: 24_648
+        ssi: 0
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 5
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        snap:
+          2026-01: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+        county: MINNEHAHA_COUNTY_SD
+  output:
+    # The gas bill is the primary fuel's bill, and heat is not in rent.
+    heating_expense: 1_200
+    has_heating_expense: true
+    sd_liheap_household_size: 3
+    # $11.85 x 2,080 hours = $24,648 of wages.
+    sd_liheap_countable_income: 24_648
+    # DSS size 3: $13,325 x 4 = $53,300 (200% x $26,650).
+    sd_liheap_income_limit: 53_300
+    # 125% x $26,650 / 4 = $8,328.125, rounded half up to $8,328; x 4 = $33,312.
+    sd_liheap_income_threshold: 33_312
+    # Rule 67:15:01:35: Minnehaha County is region 3.
+    sd_liheap_region: 3
+    sd_liheap_eligible: true
+    # $24,648 is at or below Mid, so tier 1: Natural Gas, Reg 3, $1,007.
+    sd_liheap_base_payment: 1_007
+    sd_liheap_heat_in_rent_payment: 0
+    # Paid to the gas supplier against unpaid charges: min($1,007, $1,200).
+    sd_liheap: 1_007
+
+# Aberdeen (Brown County) retiree, 72, with Social Security of $2,071 a month
+# (the average for all retired workers after the 2.8% COLA, SSA 2026 COLA fact
+# sheet, https://www.ssa.gov/news/en/cola/factsheets/2026.html) and the 2026
+# standard Part B premium of $202.90 a month. She heats with kerosene and has
+# $900 of unpaid fill tickets from her supplier.
+- name: Case 2, a retiree heating with kerosene is paid to the supplier up to the unpaid fill tickets.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+        social_security: 24_852
+        medicare_part_b_premium: 2_434.8
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: KEROSENE
+        fuel_oil_expense: 900
+        tanf: 0
+        snap:
+          2026-01: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county: BROWN_COUNTY_SD
+  output:
+    # Kerosene bills are read from fuel_oil_expense.
+    heating_expense: 900
+    has_heating_expense: true
+    sd_liheap_household_size: 1
+    # $2,071 x 12 = $24,852 of Social Security less $202.90 x 12 = $2,434.80 of
+    # Part B premiums (rule 67:15:01:18(12); manual page 28) = $22,417.20.
+    sd_liheap_countable_income: 22_417.2
+    # DSS size 1: $7,825 x 4 = $31,300.
+    sd_liheap_income_limit: 31_300
+    # 125% x $15,650 / 4 = $4,890.625, rounded half up to $4,891; x 4 = $19,564.
+    sd_liheap_income_threshold: 19_564
+    # Brown County is region 4.
+    sd_liheap_region: 4
+    sd_liheap_eligible: true
+    # $22,417.20 is above Mid, so tier 2. Kerosene uses the Fuel Oil row
+    # (application EA-297 page 4, "Fuel Oil/Kerosene"): Reg 4, $3,093.
+    sd_liheap_base_payment: 3_093
+    sd_liheap_heat_in_rent_payment: 0
+    # Plan item 9.1 pays kerosene to the supplier, so the award is capped at the
+    # unpaid fill tickets: min($3,093, $900) = $900.
+    sd_liheap: 900
+
+# Buffalo (Harding County) couple, 58 and 55: one works full time at the minimum
+# wage and the other has no earnings. They heat with purchased cord wood ($500
+# this season).
+- name: Case 3, a couple heating with wood receives the full coal and wood amount whatever the wood bill.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 58
+        immigration_status: CITIZEN
+        employment_income: 24_648
+        ssi: 0
+      person2:
+        age: 55
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: WOOD
+        wood_expense: 500
+        tanf: 0
+        snap:
+          2026-01: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county: HARDING_COUNTY_SD
+  output:
+    heating_expense: 500
+    has_heating_expense: true
+    sd_liheap_household_size: 2
+    sd_liheap_countable_income: 24_648
+    # DSS size 2: $10,575 x 4 = $42,300 (200% x $21,150).
+    sd_liheap_income_limit: 42_300
+    # 125% x $21,150 / 4 = $6,609.375, rounded half up to $6,609; x 4 = $26,436.
+    sd_liheap_income_threshold: 26_436
+    # Harding County is region 4.
+    sd_liheap_region: 4
+    sd_liheap_eligible: true
+    # $24,648 is at or below Mid, so tier 1: Coal & Wood, Reg 4, $854.
+    sd_liheap_base_payment: 854
+    sd_liheap_heat_in_rent_payment: 0
+    # Plan item 9.1 and rule 67:15:01:40 pay wood households directly, and
+    # manual page 31 pays "the entire benefit amount": $854, not min($854, $500).
+    sd_liheap: 854
+
+# Rapid City (Pennington County) renter, 30, working 20 hours a week at the
+# minimum wage ($11.85 x 20 x 52 = $12,324). Heat is included in the $750
+# monthly rent, and the tenant does not know the building's fuel.
+- name: Case 4, a renter with heat in rent receives the region two heat-in-rent maximum.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 12_324
+        rent: 9_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        tanf: 0
+        snap:
+          2026-01: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county: PENNINGTON_COUNTY_SD
+  output:
+    # No separate heating bill: heat is paid through rent.
+    heating_expense: 0
+    has_heating_expense: false
+    sd_liheap_household_size: 1
+    sd_liheap_countable_income: 12_324
+    sd_liheap_income_limit: 31_300
+    sd_liheap_income_threshold: 19_564
+    # Pennington County is region 2.
+    sd_liheap_region: 2
+    # Positive tenant rent that includes heat shows responsibility for heat
+    # (rule 67:15:01:09; manual page 32).
+    sd_liheap_eligible: true
+    # No vendor fuel row applies to an unknown fuel.
+    sd_liheap_base_payment: 0
+    # Rule 67:15:01:41.02 and manual page 31: 30% of monthly rent for October
+    # through April, $9,000 / 12 x 30% x 7 = $1,575, above the region 2 amount.
+    sd_liheap_heat_in_rent_payment: 800
+    sd_liheap: 800
+
+# Harrisburg (Lincoln County) family of four. One parent earns $20 an hour full
+# time ($20 x 2,080 = $41,600); the other works 20 hours a week at the minimum
+# wage ($12,324). The 17-year-old, in high school, earned $4,000 at a summer
+# job. They heat with propane and owe $1,800 for fills since July 1.
+- name: Case 5, a four-person propane household excludes the teenager's earnings and is capped at its unpaid fills.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 42
+        immigration_status: CITIZEN
+        employment_income: 41_600
+        ssi: 0
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 12_324
+        ssi: 0
+      person3:
+        age: 17
+        immigration_status: CITIZEN
+        is_in_secondary_school: true
+        employment_income: 4_000
+        ssi: 0
+      person4:
+        age: 12
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_800
+        tanf: 0
+        snap:
+          2026-01: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: SD
+        county: LINCOLN_COUNTY_SD
+  output:
+    heating_expense: 1_800
+    has_heating_expense: true
+    sd_liheap_household_size: 4
+    # Rule 67:15:01:18(1) excludes the earnings of a member under 18:
+    # $41,600 + $12,324 = $53,924; the teenager's $4,000 does not count.
+    sd_liheap_countable_income: 53_924
+    # DSS size 4: $16,075 x 4 = $64,300 (200% x $32,150).
+    sd_liheap_income_limit: 64_300
+    # 125% x $32,150 / 4 = $10,046.875, rounded half up to $10,047; x 4 = $40,188.
+    sd_liheap_income_threshold: 40_188
+    # Lincoln County is region 1.
+    sd_liheap_region: 1
+    sd_liheap_eligible: true
+    # $53,924 is above Mid, so tier 2: Propane, Reg 1, $2,249.
+    sd_liheap_base_payment: 2_249
+    sd_liheap_heat_in_rent_payment: 0
+    # Paid to the propane supplier against unpaid fills: min($2,249, $1,800).
+    sd_liheap: 1_800

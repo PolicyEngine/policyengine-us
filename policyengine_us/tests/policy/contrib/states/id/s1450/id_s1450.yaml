@@ -27,6 +27,7 @@
   output:
     # 1 qualifying child * $205 = $205
     id_ctc: 205
+    taxsim_state_ctc: 205
 
 - name: Case 2, multiple children in 2026.
   # Three qualifying children, credit = $615
@@ -59,6 +60,7 @@
   output:
     # 3 qualifying children * $205 = $615
     id_ctc: 615
+    taxsim_state_ctc: 615
 
 - name: Case 3, MFJ filing status with two children.
   # Married couple with two qualifying children
@@ -117,6 +119,7 @@
   output:
     # 1 qualifying child * $205 = $205
     id_ctc: 205
+    taxsim_state_ctc: 205
 
 - name: Case 5, no qualifying children.
   # No children under 17, credit = $0

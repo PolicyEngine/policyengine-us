@@ -1,0 +1,223 @@
+- name: Case 1, Greater Dallas BCY 2024 at the top of the more than 75% to 100% FPG range.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 24_864  # $2,072 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    # The chart (policy S0408, change 5, effective as of 10.1.2016) charges $111 for the first child and $46 for the second.
+    tx_ccs_board_copay:
+      2024-03: 157
+
+- name: Case 2, Greater Dallas BCY 2024 one dollar into the more than 100% to 125% FPG range.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 24_876  # $2,073 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    # The chart (policy S0408, change 5, effective as of 10.1.2016) charges $141 for the first child and $61 for the second.
+    tx_ccs_board_copay:
+      2024-03: 202
+
+- name: Case 3, Greater Dallas BCY 2024 at the top of the more than 185% to 200% FPG range.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 49_716  # $4,143 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    # The chart (policy S0408, change 5, effective as of 10.1.2016) charges $251 for the first child and $106 for the second.
+    tx_ccs_board_copay:
+      2024-03: 357
+
+- name: Case 4, Greater Dallas BCY 2024 one dollar into the more than 200% FPG to 85% SMI range.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 49_728  # $4,144 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    # The chart (policy S0408, change 5, effective as of 10.1.2016) charges $286 for the first child and $121 for the second.
+    tx_ccs_board_copay:
+      2024-03: 407
+
+- name: Case 5, Greater Dallas BCY 2025 at the top of the more than 75% to 100% FPG range.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 25_824  # $2,152 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    # The chart (policy S0408, change 5, effective as of 10.1.2016) charges $111 for the first child and $46 for the second.
+    tx_ccs_board_copay:
+      2024-11: 157
+
+- name: Case 6, Greater Dallas BCY 2025 one dollar into the more than 100% to 125% FPG range.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 25_836  # $2,153 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    # The chart (policy S0408, change 5, effective as of 10.1.2016) charges $141 for the first child and $61 for the second.
+    tx_ccs_board_copay:
+      2024-11: 202
+
+- name: Case 7, Greater Dallas BCY 2025 at the top of the more than 185% to 200% FPG range.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 51_636  # $4,303 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    # The chart (policy S0408, change 5, effective as of 10.1.2016) charges $251 for the first child and $106 for the second.
+    tx_ccs_board_copay:
+      2024-11: 357
+
+- name: Case 8, Greater Dallas BCY 2025 one dollar into the more than 200% FPG to 85% SMI range.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 51_648  # $4,304 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    # The chart (policy S0408, change 5, effective as of 10.1.2016) charges $286 for the first child and $121 for the second.
+    tx_ccs_board_copay:
+      2024-11: 407

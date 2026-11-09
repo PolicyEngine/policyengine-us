@@ -314,3 +314,26 @@
         state_code: MN
   output:
     mn_msa_assistance_standard: 128
+
+- name: Case HCBS, waiver eligibility gives an individual living with others the living-alone standard in 2026.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 500
+        mn_msa_living_arrangement: INDIVIDUAL_LIVING_WITH_OTHERS
+        mn_msa_hcbs_waiver_eligible: true
+        ssi: 994
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Subd. 2 places the person in the subd. 3(a) individual living-alone
+    # standard; CM 0020.21 (01/2026) publishes it as $1,055, not the
+    # $755.33 living-with-others standard.
+    mn_msa_assistance_standard: 1_055

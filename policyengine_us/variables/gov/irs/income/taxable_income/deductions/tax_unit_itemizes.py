@@ -10,9 +10,42 @@ class tax_unit_itemizes(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        standard_deduction = tax_unit("standard_deduction", period)
-        limitation = parameters(period).gov.irs.deductions.itemized.limitation
-        if limitation.applies and limitation.obbb.applies:
+        p = parameters(period).gov.irs
+        limitation = p.deductions.itemized.limitation
+        if "charitable_contributions_ald" in p.ald.deductions:
+            # In 2020 a unit that does not itemize deducts charitable
+            # contributions above the line (26 U.S.C. 62(a)(22)), so adjusted
+            # gross income depends on the choice, and with it the itemized
+            # deductions it limits (the medical floor, the charitable
+            # ceiling) and any standard deduction that phases out with it.
+            # Each comes from the branch that makes that choice (the ones
+            # that also give the tax liabilities compared below).
+            itemizing = get_itemization_branch(tax_unit, period, itemizes=True)
+            not_itemizing = get_itemization_branch(tax_unit, period, itemizes=False)
+            # The deductions compared are everything each choice takes from
+            # gross income: every deduction from adjusted gross income on
+            # that side (with the qualified business income deduction and,
+            # for an itemizer, wagering losses), and, for not itemizing, the
+            # lower adjusted gross income (line 10b and what follows from it,
+            # such as taxable Social Security).
+            agi_reduction = itemizing.calculate(
+                "adjusted_gross_income", period
+            ) - not_itemizing.calculate("adjusted_gross_income", period)
+            itemized_deductions = itemizing.calculate(
+                "taxable_income_deductions_if_itemizing", period
+            )
+            standard_deduction = (
+                not_itemizing.calculate(
+                    "taxable_income_deductions_if_not_itemizing", period
+                )
+                + agi_reduction
+            )
+        elif limitation.applies and limitation.obbb.applies:
+            standard_deduction = add(
+                tax_unit,
+                period,
+                ["standard_deduction", "charitable_deduction_for_non_itemizers"],
+            )
             # The itemized deductions the unit would claim if it itemized.
             # The P.L. 119-21 section 68 limitation nets them of the
             # qualified business income deduction, which depends on the
@@ -21,11 +54,15 @@ class tax_unit_itemizes(Variable):
             # Calculated before branching, so the branch inherits it when no
             # one repays claim of right income above $3,000.
             tax_unit("total_itemized_taxable_income_deductions", period)
-            itemizing_branch = get_itemization_branch(tax_unit, period, itemizes=True)
-            itemized_deductions = itemizing_branch.calculate(
-                "itemized_taxable_income_deductions", period
-            )
+            itemized_deductions = get_itemization_branch(
+                tax_unit, period, itemizes=True
+            ).calculate("itemized_taxable_income_deductions", period)
         else:
+            standard_deduction = add(
+                tax_unit,
+                period,
+                ["standard_deduction", "charitable_deduction_for_non_itemizers"],
+            )
             itemized_deductions = tax_unit("itemized_taxable_income_deductions", period)
         if parameters(period).gov.simulation.branch_to_determine_itemization:
             # determine federal itemization behavior by comparing tax liability

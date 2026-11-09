@@ -159,3 +159,214 @@
     claim_of_right_credit_applies: true
     claim_of_right_credit: 500
     income_tax: 5_543
+
+# Combined regression for section 1341 and the charitable deduction for
+# non-itemizers. Wages of $120,000 phase out all pandemic rebates. New
+# Hampshire and zero sales taxes leave no state or local tax deduction.
+# The single-filer rate schedules give, throughout these cases:
+# 2020: $14,605.50 + 24% x (taxable income - $85,525).
+# 2021: $14,751 + 24% x (taxable income - $86,375).
+# https://www.irs.gov/pub/irs-prior/i1040gi--2020.pdf#page=111
+# https://www.irs.gov/pub/irs-prior/i1040gi--2021.pdf
+
+- name: Case 7, 2020 section 1341 deduction itemizes cash gifts once and forgoes line 10b.
+  period: 2020
+  input:
+    gov.simulation.branch_to_determine_itemization: true
+    age: 40
+    employment_income: 120_000
+    deductible_mortgage_interest: 10_000
+    charitable_cash_donations: 300
+    claim_of_right_repayment: 5_000
+    claim_of_right_prior_year_tax_decrease: 100
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: NH
+  output:
+    claim_of_right_section_1341_eligible: true
+    # Deduction: Schedule A = 10,000 + 300 + 5,000 = 15,300;
+    # taxable income = 120,000 - 15,300 = 104,700; tax =
+    # 14,605.50 + 24% x 19,175 = 19,207.50.
+    income_tax_if_claiming_claim_of_right_deduction: 19_207.5
+    # Credit: line 10b = 300; AGI = 119,700; taxable income =
+    # 119,700 - 12,400 = 107,300; tax = 14,605.50 + 24% x
+    # 21,775 = 19,831.50, less the prior-year decrease of 100.
+    income_tax_if_claiming_claim_of_right_credit: 19_731.5
+    claim_of_right_credit_applies: false
+    claim_of_right_deduction: 5_000
+    claim_of_right_credit: 0
+    tax_unit_itemizes: true
+    charitable_contributions_ald: 0
+    charitable_deduction_for_non_itemizers: 0
+    adjusted_gross_income: 120_000
+    total_itemized_taxable_income_deductions: 15_300
+    taxable_income: 104_700
+    # The forced-itemization branches must keep the deduction method:
+    # forcing the standard deduction does not introduce a 100 credit.
+    tax_liability_if_itemizing: 19_207.5
+    tax_liability_if_not_itemizing: 19_831.5
+    income_tax: 19_207.5
+
+- name: Case 8, 2020 section 1341 credit preserves the above-the-line charitable deduction.
+  period: 2020
+  input:
+    gov.simulation.branch_to_determine_itemization: true
+    age: 40
+    employment_income: 120_000
+    deductible_mortgage_interest: 10_000
+    charitable_cash_donations: 300
+    claim_of_right_repayment: 5_000
+    claim_of_right_prior_year_tax_decrease: 1_000
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: NH
+  output:
+    # The deduction still gives Case 7's 19,207.50, but the credit now
+    # gives 19,831.50 - 1,000 = 18,831.50, so it wins.
+    income_tax_if_claiming_claim_of_right_deduction: 19_207.5
+    income_tax_if_claiming_claim_of_right_credit: 18_831.5
+    claim_of_right_credit_applies: true
+    claim_of_right_deduction: 0
+    claim_of_right_credit: 1_000
+    tax_unit_itemizes: false
+    charitable_contributions_ald: 300
+    charitable_deduction_for_non_itemizers: 0
+    adjusted_gross_income: 119_700
+    taxable_income: 107_300
+    # Keep the credit method even when forced to itemize: Schedule A =
+    # 10,000 + 300 = 10,300; taxable income = 109,700; tax =
+    # 14,605.50 + 24% x 24,175 - 1,000 = 19,407.50.
+    tax_liability_if_itemizing: 19_407.5
+    tax_liability_if_not_itemizing: 18_831.5
+    income_tax: 18_831.5
+
+- name: Case 9, 2021 section 1341 deduction itemizes cash gifts without duplicating line 12b.
+  period: 2021
+  input:
+    gov.simulation.branch_to_determine_itemization: true
+    age: 40
+    employment_income: 120_000
+    deductible_mortgage_interest: 10_000
+    charitable_cash_donations: 300
+    claim_of_right_repayment: 5_000
+    claim_of_right_prior_year_tax_decrease: 100
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: NH
+  output:
+    # Schedule A = 10,000 + 300 + 5,000 = 15,300; taxable income =
+    # 120,000 - 15,300 = 104,700; tax = 14,751 + 24% x 18,325.
+    income_tax_if_claiming_claim_of_right_deduction: 19_149
+    # The standard deduction plus line 12b is 12,550 + 300 = 12,850;
+    # taxable income = 107,150; tax = 14,751 + 24% x 20,775 =
+    # 19,737, less the prior-year decrease of 100.
+    income_tax_if_claiming_claim_of_right_credit: 19_637
+    claim_of_right_credit_applies: false
+    claim_of_right_deduction: 5_000
+    claim_of_right_credit: 0
+    tax_unit_itemizes: true
+    charitable_contributions_ald: 0
+    adjusted_gross_income: 120_000
+    total_itemized_taxable_income_deductions: 15_300
+    taxable_income_deductions: 15_300
+    taxable_income: 104_700
+    # Both forced-itemization branches retain the deduction method.
+    tax_liability_if_itemizing: 19_149
+    tax_liability_if_not_itemizing: 19_737
+    income_tax: 19_149
+
+- name: Case 10, 2021 section 1341 credit keeps cash gifts below the line.
+  period: 2021
+  input:
+    gov.simulation.branch_to_determine_itemization: true
+    age: 40
+    employment_income: 120_000
+    deductible_mortgage_interest: 10_000
+    charitable_cash_donations: 300
+    claim_of_right_repayment: 5_000
+    claim_of_right_prior_year_tax_decrease: 1_000
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: NH
+  output:
+    # Case 9's deduction tax is 19,149; the credit gives
+    # 19,737 - 1,000 = 18,737, which is lower.
+    income_tax_if_claiming_claim_of_right_deduction: 19_149
+    income_tax_if_claiming_claim_of_right_credit: 18_737
+    claim_of_right_credit_applies: true
+    claim_of_right_deduction: 0
+    claim_of_right_credit: 1_000
+    tax_unit_itemizes: false
+    charitable_contributions_ald: 0
+    adjusted_gross_income: 120_000
+    charitable_deduction_for_non_itemizers: 300
+    taxable_income_deductions: 12_850
+    taxable_income: 107_150
+    # Forced itemization retains the credit: taxable income =
+    # 120,000 - (10,000 + 300) = 109,700; tax =
+    # 14,751 + 24% x 23,325 - 1,000 = 19,349.
+    tax_liability_if_itemizing: 19_349
+    tax_liability_if_not_itemizing: 18_737
+    income_tax: 18_737
+
+- name: Case 11, 2020 without branching counts line 10b against the section 1341 deduction.
+  period: 2020
+  input:
+    gov.simulation.branch_to_determine_itemization: false
+    age: 40
+    employment_income: 120_000
+    deductible_mortgage_interest: 7_300
+    charitable_cash_donations: 300
+    claim_of_right_repayment: 5_000
+    claim_of_right_prior_year_tax_decrease: 100
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: NH
+  output:
+    # With the repayment deduction, Schedule A = 7,300 + 300 + 5,000 =
+    # 12,600. Not itemizing deducts 12,400 plus 300 above the line =
+    # 12,700, so even the deduction method must use the standard deduction.
+    # Taxable income = 120,000 - 300 - 12,400 = 107,300; tax =
+    # 14,605.50 + 24% x 21,775 = 19,831.50.
+    income_tax_if_claiming_claim_of_right_deduction: 19_831.5
+    # The credit lowers the same tax by 100.
+    income_tax_if_claiming_claim_of_right_credit: 19_731.5
+    claim_of_right_credit_applies: true
+    claim_of_right_deduction: 0
+    claim_of_right_credit: 100
+    tax_unit_itemizes: false
+    charitable_contributions_ald: 300
+    adjusted_gross_income: 119_700
+    taxable_income: 107_300
+    income_tax: 19_731.5
+
+- name: Case 12, 2021 without branching counts line 12b against the section 1341 deduction.
+  period: 2021
+  input:
+    gov.simulation.branch_to_determine_itemization: false
+    age: 40
+    employment_income: 120_000
+    deductible_mortgage_interest: 7_400
+    charitable_cash_donations: 300
+    claim_of_right_repayment: 5_000
+    claim_of_right_prior_year_tax_decrease: 100
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: NH
+  output:
+    # With the repayment deduction, Schedule A = 7,400 + 300 + 5,000 =
+    # 12,700. The standard deduction plus line 12b is 12,550 + 300 =
+    # 12,850, so neither method itemizes. Taxable income =
+    # 120,000 - 12,850 = 107,150; tax = 14,751 + 24% x 20,775.
+    income_tax_if_claiming_claim_of_right_deduction: 19_737
+    income_tax_if_claiming_claim_of_right_credit: 19_637
+    claim_of_right_credit_applies: true
+    claim_of_right_deduction: 0
+    claim_of_right_credit: 100
+    tax_unit_itemizes: false
+    charitable_contributions_ald: 0
+    adjusted_gross_income: 120_000
+    charitable_deduction_for_non_itemizers: 300
+    taxable_income_deductions: 12_850
+    taxable_income: 107_150
+    income_tax: 19_637

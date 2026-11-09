@@ -1,0 +1,23 @@
+description: Minnesota counts these sources as earned income under the Energy Assistance Program.
+values:
+  2025-10-01:
+    - employment_income
+    # Business, rental, partnership and S corporation, and farm income count as
+    # self-employment (Form 1040 Schedule 1 lines 3, 5 and 6). Each source is
+    # floored at zero per person, so a loss in one source does not offset
+    # another. The 50% gross-receipts method has no input.
+    - self_employment_income
+    - sstb_self_employment_income
+    - partnership_s_corp_income
+    - farm_operations_income
+    - farm_rent_income
+    - rental_income
+metadata:
+  unit: list
+  period: year
+  label: Minnesota EAP earned income sources
+  reference:
+    - title: "Minnesota EAP Policy Manual FFY26, Chapter 3, Income Inclusions and Exclusions and Self-Employment Income #page 89,91,96,107-108"
+      href: https://mn.gov/commerce-stat/pdfs/ffy26-eap-policy-manual.pdf#page=89
+    - title: "Minnesota EAP Policy Manual FFY27, Chapter 3, Income Inclusions and Exclusions and Self-Employment Income #page 91-92,98,109-110"
+      href: https://mn.gov/commerce-stat/pdfs/ffy27-eap-policy-manual.pdf#page=91

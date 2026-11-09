@@ -1,0 +1,26 @@
+description: Montana counts these sources as earned income under the Low Income Home Energy Assistance Program.
+# Existing net business inputs are used without another expense deduction;
+# each source is floored at zero. The depreciation add-back and the optional
+# prior-year tax-return method are not modeled.
+values:
+  2025-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+metadata:
+  unit: list
+  period: year
+  label: Montana LIHEAP earned income sources
+  reference:
+    - title: Admin. R. Mont. 37.70.401(1), effective May 27, 2023 to May 22, 2026
+      href: https://rules.mt.gov/policy-library-documents/application/pdf/325b36e5abb6a3bfa036c3802fc997ed50711b5407868ec8f4b61eabc538e3ed#page=1
+    - title: Admin. R. Mont. 37.70.401(1), effective May 23, 2026
+      href: https://rules.mt.gov/policy-library-documents/application/pdf/fa158b2cdbf766e585e1fbf5811523e0dff4e760111590ae75d0456ee81551ad#page=1
+    - title: "Montana LIHEAP Policy Manual 2025-2026, section 3.15 #page 35,37"
+      href: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=35
+    - title: "Montana LIHEAP Policy Manual 2026-2027, section 3.15 #page 35,37"
+      href: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=35
+    - title: "Montana LIHEAP FY2026 State Plan, item 1.9 #page 6-7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/MT_Plan_2026.pdf#page=6
