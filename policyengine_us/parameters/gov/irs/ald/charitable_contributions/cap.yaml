@@ -1,0 +1,47 @@
+description: The IRS caps the above-the-line deduction for cash charitable contributions by individuals who do not itemize at this amount, based on filing status.
+metadata:
+  propagate_metadata_to_children: true
+  unit: currency-USD
+  period: year
+  label: Above-the-line charitable deduction cap for non-itemizers
+  breakdown:
+    - filing_status
+  reference:
+    # CARES Act sec. 2204 added 26 U.S.C. 62(a)(22) and 62(f) for taxable
+    # years beginning in 2020: "the amount (not to exceed $300) of qualified
+    # charitable contributions made by an eligible individual".
+    - title: Pub. L. 116-136, sec. 2204 (CARES Act)
+      href: https://www.congress.gov/116/plaws/publ136/PLAW-116publ136.pdf#page=65
+    # Pub. L. 116-260, div. EE, sec. 212(c) struck 62(a)(22) and 62(f) for
+    # taxable years beginning after 2020; sec. 212(a) replaced them with the
+    # below-the-line 26 U.S.C. 170(p).
+    - title: "Pub. L. 116-260, div. EE, sec. 212 (Consolidated Appropriations Act, 2021) #page 1888-1889"
+      href: https://www.congress.gov/116/plaws/publ260/PLAW-116publ260.pdf#page=1888
+    # Source conflict: $300 statutory cap versus $150 for separate filers.
+    # Form 1040 line 10b allows $300 a return. The instructions' $150 for
+    # married filing separately has no basis in 62(a)(22) or 62(f), which
+    # cap the deduction at $300 for every eligible individual, so the
+    # statute governs (PolicyEngine statute-first rule, 2026-10-19).
+    - title: 2020 Instructions for Form 1040, line 10b
+      href: https://www.irs.gov/pub/irs-prior/i1040gi--2020.pdf#page=30
+
+SINGLE:
+  2000-01-01: 0
+  2020-01-01: 300
+  2021-01-01: 0
+JOINT:
+  2000-01-01: 0
+  2020-01-01: 300
+  2021-01-01: 0
+SEPARATE:
+  2000-01-01: 0
+  2020-01-01: 300
+  2021-01-01: 0
+HEAD_OF_HOUSEHOLD:
+  2000-01-01: 0
+  2020-01-01: 300
+  2021-01-01: 0
+SURVIVING_SPOUSE:
+  2000-01-01: 0
+  2020-01-01: 300
+  2021-01-01: 0

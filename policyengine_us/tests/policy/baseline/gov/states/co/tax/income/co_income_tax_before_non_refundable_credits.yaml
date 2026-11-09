@@ -55,3 +55,20 @@
     co_taxable_income: 0
   output:
     co_income_tax_before_non_refundable_credits: 0
+
+# Under itemization branching, the federal tax computed for itemizing reaches
+# the child and dependent care credit, child care expenses and Colorado CCAP.
+# For January to September 2015, CCAP once read its parameters at
+# 2014-10-01, before the date to which the model backdates parameters, and
+# raised ParameterNotFoundError. This case covers that itemization path and
+# sets the flag so it doesn't depend on the package default. The Colorado
+# CDCC reaches CCAP without branching too; co_cdcc.yaml covers that path.
+- name: 2015 single filer with no income, under itemization branching
+  period: 2015
+  absolute_error_margin: 0
+  input:
+    gov.simulation.branch_to_determine_itemization: true
+    state_code: CO
+    filing_status: SINGLE
+  output:
+    co_income_tax_before_non_refundable_credits: 0

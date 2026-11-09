@@ -1,0 +1,38 @@
+# SEPARATE means Puerto Rico filing status 3: spouses living together at the
+# end of the year who file separately. A married person not living with the
+# spouse files as an individual taxpayer under the $5,000 cap.
+description: Puerto Rico limits the deduction for casualty losses of automobiles, furniture and other household goods to this amount, based on filing status.
+metadata:
+  propagate_metadata_to_children: true
+  unit: currency-USD
+  period: year
+  label: Puerto Rico personal property casualty loss deduction cap
+  breakdown:
+    - filing_status
+  breakdown_label:
+    - Filing status
+  reference:
+    - title: P.R. Internal Revenue Code of 2011, Section 1033.15(a)(10)(B)(i) (13 L.P.R.A. § 30135), as enacted by Act 1-2011
+      href: https://bvirtualogp.pr.gov/ogp/Bvirtual/leyesreferencia/PDF/2-ingles/0001-2011.pdf#page=189
+    - title: P.R. Internal Revenue Code of 2011, Section 1033.15(a)(10)(B)(i), OGP English compilation (Rev. June 18, 2026)
+      href: https://bvirtualogp.pr.gov/ogp/Bvirtual/leyesreferencia/PDF/2-ingles/1-2011.pdf#page=167
+    - title: Código de Rentas Internas de Puerto Rico de 2011, Sección 1033.15(a)(10)(B)(i), OGP compilation (Rev. 28 de mayo de 2026)
+      href: https://bvirtualogp.pr.gov/ogp/Bvirtual/leyesreferencia/PDF/C%C3%B3digos/1-2011/1-2011.pdf#page=182
+    - title: Act 1-2011, Section 6100.04(a)(1) (Subtitle A applies to taxable years starting after December 31, 2010)
+      href: https://bvirtualogp.pr.gov/ogp/Bvirtual/leyesreferencia/PDF/2-ingles/0001-2011.pdf#page=1313
+    - title: 2023 Individual Income Tax Return Instructions Booklet, Schedule A Individual, Part I, line 5
+      href: https://hacienda.pr.gov/sites/default/files/inst_individuals_2023.pdf#page=26
+    - title: 2024 Individual Income Tax Return Instructions Booklet, Schedule A Individual, Part I, line 5
+      href: https://hacienda.pr.gov/sites/default/files/inst_individuals_2024.pdf#page=26
+    - title: 2025 Individual Income Tax Return Instructions Booklet, Schedule A Individual, Part I, line 5
+      href: https://hacienda.pr.gov/sites/default/files/inst_individuals_2025.pdf#page=26
+SINGLE:
+  2011-01-01: 5_000
+JOINT:
+  2011-01-01: 5_000
+SEPARATE:
+  2011-01-01: 2_500
+HEAD_OF_HOUSEHOLD:
+  2011-01-01: 5_000
+SURVIVING_SPOUSE:
+  2011-01-01: 5_000

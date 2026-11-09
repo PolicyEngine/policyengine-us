@@ -1,0 +1,361 @@
+# ARM 37.70.402(2)-(3); LIHEAP Manual 2026-2027 section 3.11 and Appendix A
+# 9.8 (categorical eligibility examples). SNAP is checked first and requires
+# every member to be SNAP-eligible; otherwise the household is SSI/TANF
+# categorical when it consists solely of SSI recipients, TANF assistance-unit
+# members and people whose income was considered for those grants.
+# Appendix A 9.8 SNAP example 3: every member is in the SNAP case.
+- name: Case 1, every member in the SNAP unit makes the household SNAP categorical.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 18_000
+        ssi: 0
+      person2:
+        age: 7
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 4_800
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: SNAP
+
+# Appendix A 9.8 SNAP example 2: a member outside the SNAP case defeats SNAP
+# categorical eligibility. The spouse is a lawful permanent resident in the
+# five-year SNAP waiting period (2 years in status), so SNAP excludes him,
+# though he is a qualified alien for LIHEAP. No SSI or TANF: NONE.
+- name: Case 2, a member excluded from SNAP defeats SNAP categorical eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 36
+        immigration_status: CITIZEN
+        employment_income: 26_000
+        ssi: 0
+      person2:
+        age: 34
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        ssi: 0
+      person3:
+        age: 5
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 3_600
+        tanf: 0
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: NONE
+
+# Appendix A 9.8: "A single person receives SSI of $967" is categorical.
+- name: Case 3, a single SSI recipient is SSI or TANF categorical.
+  period: 2026
+  input:
+    state_code: MT
+    age: 70
+    immigration_status: CITIZEN
+    ssi: 11_604
+    snap: 0
+    tanf: 0
+  output:
+    mt_liheap_categorical_eligibility: SSI_TANF
+
+# Appendix A 9.8: "Married couple only one receives SSI ... and the other is
+# working" is categorical; the spouse's income is deemed for SSI.
+- name: Case 4, a married couple with one SSI recipient is SSI or TANF categorical.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 68
+        immigration_status: CITIZEN
+        ssi: 6_000
+      person2:
+        age: 66
+        immigration_status: CITIZEN
+        employment_income: 15_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: SSI_TANF
+
+# Appendix A 9.8: "Child receives SSI, Parent works" is categorical; parents'
+# income is deemed for a child's SSI.
+- name: Case 5, a child on SSI with a working parent is SSI or TANF categorical.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 34
+        immigration_status: CITIZEN
+        employment_income: 28_000
+        ssi: 0
+      person2:
+        age: 9
+        immigration_status: CITIZEN
+        ssi: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: SSI_TANF
+
+# Appendix A 9.8 not-categorical example: "Two parents and one of the children
+# are each receiving SSI, but one child is not." Here one child receives SSI;
+# the other child's income was not considered for it: NONE.
+- name: Case 6, a sibling of a child on SSI defeats SSI categorical eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 45_000
+        ssi: 0
+      person2:
+        age: 38
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 4_800
+      person4:
+        age: 7
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        snap: 0
+        tanf: 0
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+      marital_unit3:
+        members: [person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: NONE
+
+# Appendix A 9.8: "Mother and child in home and both receive TANF" is
+# categorical.
+- name: Case 7, a TANF mother and child are SSI or TANF categorical.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 28
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 6_900
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: SSI_TANF
+
+# Reported SSI receipt counts as receiving SSI even when the modeled SSI
+# amount is zero.
+- name: Case 8, reported SSI receipt with no modeled SSI is SSI or TANF categorical.
+  period: 2026
+  input:
+    state_code: MT
+    age: 67
+    immigration_status: CITIZEN
+    receives_ssi: true
+    ssi: 0
+    snap: 0
+    tanf: 0
+  output:
+    mt_liheap_categorical_eligibility: SSI_TANF
+
+# ARM 37.70.402(3); Appendix A 9.8: SSA considers a parent's income for a
+# child's SSI, but not the income of an adult sibling. The parent and the SSI
+# child share a tax unit; the 20-year-old working sibling files his own return
+# (own tax unit), so his income was not considered for the SSI grant and he
+# defeats SSI categorical eligibility: NONE.
+- name: Case 9, an adult sibling filing his own return defeats SSI categorical eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        immigration_status: CITIZEN
+        employment_income: 30_000
+        ssi: 0
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 6_000
+      person3:
+        age: 20
+        immigration_status: CITIZEN
+        employment_income: 22_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0
+        tanf: 0
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: NONE
+
+# 20 CFR 416.1160(d): "The income of ineligible parents affects your benefit
+# only if you are a child under age 18." Unlike Case 5, the SSI recipient is
+# 18, so the working parent's income was not considered for the grant and the
+# household is not categorical: NONE.
+- name: Case 10, the working parent of an 18-year-old SSI recipient defeats SSI categorical eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 46
+        immigration_status: CITIZEN
+        employment_income: 28_000
+        ssi: 0
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        is_disabled: true
+        ssi: 7_740
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: NONE
+
+# ARM 37.70.401(23) (numbered (24) from May 23, 2026): a TANF household is
+# categorical only when every member is in the TANF assistance unit or had
+# income considered for the grant. A mother (28) and child (4) receive $575 a
+# month of TANF; the mother's own mother (58) lives with them as a dependent on
+# the mother's return and is neither a parent nor a child in the Montana TANF
+# unit, so the household is not categorical: NONE.
+- name: Case 11, a dependent grandmother outside the TANF assistance unit defeats TANF categorical eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 28
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person3:
+        age: 58
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0
+        tanf: 6_900
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: NONE

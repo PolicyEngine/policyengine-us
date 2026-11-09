@@ -1,0 +1,227 @@
+- name: Case 1, January rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: WI
+    age:
+      2026: 65
+  output:
+    wi_ssp: 83.78
+
+- name: Case 2, April retains old rate.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: WI
+    age:
+      2026: 65
+  output:
+    wi_ssp: 83.78
+
+- name: Case 3, May new rate.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: WI
+    age:
+      2026: 65
+  output:
+    wi_ssp: 92.16
+
+- name: Case 4, December new rate.
+  period: 2026-12
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: WI
+    age:
+      2026: 65
+  output:
+    wi_ssp: 92.16
+
+- name: Case 5, annual amount spans rate change.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: WI
+    age:
+      2026: 65
+  output:
+    wi_ssp: 1_072.4
+
+- name: Case 6, other household retains flat individual rate.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: WI
+    age:
+      2026: 65
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    wi_ssp: 92.16
+
+- name: Case 7, small SSI payment gets full state amount.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: WI
+    age:
+      2026: 65
+    # Divorced-spouse benefit at SSA's August 2026 average for spouses of retired
+    # workers, $986.70 a month (Monthly Statistical Snapshot, Table 2):
+    # 986.70 * 12 = 11,840.40.
+    social_security_dependents:
+      2026: 11_840.4
+  output:
+    # SSI = 994 - (986.70 - 20) = 27.30.
+    ssi: 27.3
+    # Any federal SSI payment brings the full individual rate.
+    wi_ssp: 92.16
+
+- name: Case 8, no federal payment no new state eligibility.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: WI
+    age:
+      2026: 65
+    # SSA's August 2026 average retired-worker benefit, $2,087.52 a month
+    # (Monthly Statistical Snapshot, Table 2): 2,087.52 * 12 = 25,050.24.
+    social_security_retirement:
+      2026: 25_050.24
+  output:
+    # Countable 2,087.52 - 20 = 2,067.52 exceeds the 994 FBR, so SSI is 0.
+    ssi: 0
+    wi_ssp: 0
+
+- name: Case 9, certified exceptional expense supplement before increase.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: WI
+    age:
+      2026: 65
+    wi_ssi_e_certified: true
+  output:
+    wi_ssp: 179.77
+
+- name: Case 10, certified exceptional expense supplement after increase.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: WI
+    age:
+      2026: 65
+    wi_ssi_e_certified: true
+  output:
+    wi_ssp: 197.75
+
+- name: Case 11, long term medical institution excluded.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: WI
+    age:
+      2026: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    wi_ssp: 0
+
+- name: Case 12, authorized institutional continuation.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: WI
+    age:
+      2026: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    wi_ssp_institutional_continuation: true
+  output:
+    wi_ssp: 92.16
+
+- name: Case 13, incarceration excludes payment.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: WI
+    age:
+      2026: 65
+    is_incarcerated: true
+  output:
+    wi_ssp: 0
+
+- name: Case 14, outside Wisconsin.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: MN
+    age:
+      2026: 65
+  output:
+    wi_ssp: 0
+
+- name: Case 15, excess resources.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: WI
+    age:
+      2026: 65
+    ssi_countable_resources:
+      2026: 2_001
+  output:
+    wi_ssp: 0
+
+- name: Case 16, reported SSI receipt qualifies when modeled SSI is zero.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: WI
+    # No aged, blind or disability input, so the model computes no SSI.
+    age:
+      2026: 45
+    receives_ssi: true
+  output:
+    ssi: 0
+    wi_ssp_eligible: true
+    # Individual rate from May 2026.
+    wi_ssp: 92.16
+
+- name: Case 17, certified SSI-E recipient in the household of another gets no SSI-E.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: WI
+    age:
+      2026: 65
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+    wi_ssi_e_certified: true
+  output:
+    # One-third reduction: 994 * (1 - 1/3) = 662.67.
+    ssi: 662.67
+    # P-20679 3.1.1: the household-of-another arrangement bars SSI-E.
+    wi_ssi_e: 0
+    # Regular individual rate only.
+    wi_ssp: 92.16

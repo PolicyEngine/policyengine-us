@@ -54,15 +54,29 @@
 - name: 2030, after the tip, overtime, senior and vehicle loan deductions end
   period: 2030
   input:
-    adjusted_gross_income: 500_000
-    filing_status: SINGLE
-    qualified_business_income_deduction: 1_000
-    tip_income_deduction: 2_000
-    overtime_income_deduction: 3_000
-    additional_senior_deduction: 4_000
-    auto_loan_interest_deduction: 5_000
+    people:
+      person1:
+        age: 40
+        tip_income: 2_000
+        treasury_tipped_occupation_code: 102
+        fsla_overtime_premium: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 100_000
+        filing_status: SINGLE
+        qualified_business_income_deduction: 1_000
+        additional_senior_deduction: 4_000
+        auto_loan_interest_deduction: 5_000
+    households:
+      household:
+        members: [person1]
   output:
     # Sections 224(h), 225(g), 151(d)(5)(C)(i) and 163(h)(4)(A), as added by
     # P.L. 119-21, allow these deductions only for taxable years beginning
-    # before 2029, so only the QBI deduction is subtracted.
-    taxable_income_before_itemized_deductions: 499_000
+    # before 2029, so only the QBI deduction is subtracted. The tips and
+    # overtime deductions are zero from 2029 (their in_effect parameters);
+    # the senior and vehicle loan deductions are off the 2029 deduction list.
+    tip_income_deduction: 0
+    overtime_income_deduction: 0
+    taxable_income_before_itemized_deductions: 99_000
