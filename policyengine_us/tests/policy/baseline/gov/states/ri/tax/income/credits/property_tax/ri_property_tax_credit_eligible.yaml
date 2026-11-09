@@ -377,3 +377,32 @@
     # an actual claim. min($1,000 - $0, $700) = $700.
     ri_property_tax_credit_eligible: true
     ri_property_tax_credit: 700
+
+- name: 2025 single filer aged 40 whose 70-year-old parent is a dependent of the return has no Rhode Island property tax relief claimant
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 40
+        real_estate_taxes: 1000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      parent:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, parent]
+    households:
+      household:
+        members: [filer, parent]
+        state_code: RI
+  output:
+    # 44-33-3(1): the claimant is aged 65 or older or disabled and is not
+    # "any person claimed as a dependent by any taxpayer". The parent is 70
+    # but is claimed as a dependent on this return, and the filer is 40 and
+    # not disabled, so the household has no claimant.
+    ri_property_tax_credit_eligible: false
+    ri_property_tax_credit: 0
