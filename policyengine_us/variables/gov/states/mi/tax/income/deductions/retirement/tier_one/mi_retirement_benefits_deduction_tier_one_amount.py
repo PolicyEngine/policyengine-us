@@ -29,16 +29,18 @@ class mi_retirement_benefits_deduction_tier_one_amount(Variable):
         # "Recipients born before 1946 may subtract all qualifying retirement and
         # pension benefits received from federal or Michigan public sources"
         # all public benefits can be deducted
-        # Line 10
+        # Line 10: military retirement benefits and taxable railroad
+        # retirement benefits from Schedule 1, line 11 (MCL 206.30(1)(f)(iv)
+        # reduces the maximum by the subsection (1)(e) deduction).
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        military_retirement_pay = (
-            person("mi_military_retirement_subtraction", period) * is_head_or_spouse
+        line_11_benefits = (
+            person("mi_military_and_railroad_retirement_subtraction", period)
+            * is_head_or_spouse
         )
 
-        total_military_retirement_pay = tax_unit.sum(military_retirement_pay)
-        # the cap is reduced by the amount of military retirement pay
+        total_line_11_benefits = tax_unit.sum(line_11_benefits)
         # Line 11
-        reduced_private_cap = max_(private_cap - total_military_retirement_pay, 0)
+        reduced_private_cap = max_(private_cap - total_line_11_benefits, 0)
         # Line 12
         public_benefits = (
             person("taxable_public_pension_income", period) * is_head_or_spouse

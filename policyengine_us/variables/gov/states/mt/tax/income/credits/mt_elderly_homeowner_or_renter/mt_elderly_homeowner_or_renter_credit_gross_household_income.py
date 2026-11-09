@@ -67,6 +67,25 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
             person("taxable_social_security", period),
         )
         untaxed_social_security = max_(social_security - counted_social_security, 0)
+        # § 15-30-2337(9)(a)(i) counts "Railroad Retirement Act benefits", so
+        # the tier 1 social security equivalent benefit counts in full in the
+        # same way. The rest of the annuity outside federal AGI is in the
+        # sources (tax_exempt_railroad_pension_benefits).
+        railroad_benefits = person(
+            "railroad_social_security_equivalent_benefits", period
+        )
+        counted_railroad_benefits = where(
+            is_dependent,
+            ~head_or_spouse
+            * person(
+                "dependent_taxable_railroad_social_security_equivalent_benefits",
+                period,
+            ),
+            person("taxable_railroad_social_security_equivalent_benefits", period),
+        )
+        untaxed_railroad_benefits = max_(
+            railroad_benefits - counted_railroad_benefits, 0
+        )
         # Income is federal AGI "without regard to loss" (§ 15-30-2337(9)(a)),
         # so the business and capital losses deducted in computing federal
         # AGI are added back (2023 Elderly Homeowner/Renter Credit Schedule,
@@ -127,6 +146,7 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
             sources
             + dependent_income
             + untaxed_social_security
+            + untaxed_railroad_benefits
             + losses
             + lost_capital_gains
         )

@@ -36,7 +36,7 @@
   output:
     pa_property_tax_or_rent_rebate_income: 20_000
 
-- name: Case 3, SSI and railroad benefits are half-counted.
+- name: Case 3, SSI and tier 1 railroad benefits are half-counted.
   period: 2025
   input:
     people:
@@ -44,7 +44,9 @@
         age: 65
         ssi: 2_000
         pa_ssp: 0
-        railroad_benefits: 10_000
+        # Line 5: Railroad Retirement Tier 1 benefits. None of the $10,000
+        # is taxable federally (provisional income $5,000).
+        railroad_social_security_equivalent_benefits: 10_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -229,3 +231,30 @@
     # Federal AGI holds the taxable 6,000 and line 11 the exempt 4,000.
     adjusted_gross_income: 6_000
     pa_property_tax_or_rent_rebate_income: 10_000
+
+- name: Tier 1 railroad benefits count at half and Tier 2 benefits in full, once each.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        pa_ssp: 0
+        railroad_social_security_equivalent_benefits: 20_000
+        taxable_railroad_pension_benefits: 30_000
+        tax_exempt_railroad_pension_benefits: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # Provisional income 30,000 + 50% x 20,000 = 40,000; taxable tier 1
+    # benefits min(85% x 20,000, 85% x (40,000 - 34,000) + 4,500) = 9,600.
+    adjusted_gross_income: 39_600
+    # Line 5: 50% x 20,000 of Tier 1 benefits. Line 6: the gross 32,000 of
+    # Tier 2 benefits. Federal AGI's 9,600 of taxable Tier 1 benefits comes
+    # out, since line 5 counts them.
+    pa_property_tax_or_rent_rebate_income: 42_000

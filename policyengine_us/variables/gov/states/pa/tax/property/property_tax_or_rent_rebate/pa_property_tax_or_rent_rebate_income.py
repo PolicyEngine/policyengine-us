@@ -21,7 +21,12 @@ class pa_property_tax_or_rent_rebate_income(Variable):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         adjusted_gross_income = tax_unit("adjusted_gross_income", period)
         above_the_line_deductions = tax_unit("above_the_line_deductions", period)
+        # Federal AGI holds the taxable title II and tier 1 benefits; lines 4
+        # and 5 count half of all of them instead.
         taxable_social_security = tax_unit("tax_unit_taxable_social_security", period)
+        taxable_tier_1 = tax_unit(
+            "tax_unit_taxable_railroad_social_security_equivalent_benefits", period
+        )
         half_counted_benefits = tax_unit.sum(
             head_or_spouse
             * add(
@@ -34,7 +39,10 @@ class pa_property_tax_or_rent_rebate_income(Variable):
                     # Medicaid facility residents; the PA-1000 does not say
                     # whether the Department of Revenue treats it as SSP.
                     "pa_ssp",
-                    "railroad_benefits",
+                    # Line 5: Railroad Retirement Tier 1 benefits on Form
+                    # RRB-1099. The rest of the annuity (Form RRB-1099-R)
+                    # counts in full on line 6.
+                    "railroad_social_security_equivalent_benefits",
                 ],
             )
         )
@@ -47,6 +55,9 @@ class pa_property_tax_or_rent_rebate_income(Variable):
                     "tax_exempt_interest_income",
                     "tax_exempt_pension_income",
                     "tax_exempt_retirement_distributions",
+                    # Line 6 takes the gross Tier 2 benefits; AGI holds the
+                    # taxable part.
+                    "tax_exempt_railroad_pension_benefits",
                 ],
             )
         )
@@ -81,6 +92,7 @@ class pa_property_tax_or_rent_rebate_income(Variable):
             adjusted_gross_income
             + above_the_line_deductions
             - taxable_social_security
+            - taxable_tier_1
             + p.benefit_income_rate * half_counted_benefits
             + tax_exempt_income
             + pa_1000_line_11_income

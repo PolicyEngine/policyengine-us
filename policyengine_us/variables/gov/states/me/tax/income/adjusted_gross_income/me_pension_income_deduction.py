@@ -8,7 +8,11 @@ class me_pension_income_deduction(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.ME
-    reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sch_1s_fillable.pdf#page=2"
+    reference = (
+        "https://legislature.maine.gov/statutes/36/title36sec5122.html",
+        # Worksheet for Pension Income Deduction, lines P1 to P5.
+        "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sch_1s_fillable.pdf#page=2",
+    )
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
@@ -33,8 +37,12 @@ class me_pension_income_deduction(Variable):
             add(person, period, pension_sources)
             + add(person, period, distribution_sources) * age_eligible
         )
-        gross_ss = person("social_security", period)
-        ss_reduced_cap = max_(p.cap - gross_ss, 0)
+        # Line P3 and § 5122(2)(M-2)(1)(a)(ii): "the total amount of the
+        # individual's social security benefits and railroad retirement
+        # benefits paid by the United States", taxable or not, so all tiers
+        # of a railroad annuity count.
+        federal_benefits = add(person, period, ["social_security", "railroad_benefits"])
+        ss_reduced_cap = max_(p.cap - federal_benefits, 0)
         non_military_deduction = min_(pension_income, ss_reduced_cap)
 
         military_retirement = person("military_retirement_income", period)
