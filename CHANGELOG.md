@@ -1,3 +1,12 @@
+## [2.109.0] - 2026-11-09
+
+### Added
+
+- Add Arkansas's claim of right deduction (Ark. Code § 26-51-457): a repayment over $3,000 of income Arkansas taxed in an earlier year is a miscellaneous itemized deduction above 2% of Arkansas AGI, whichever federal method applies.
+- Model Hawaii's claim of right relief: from 2022 the section 1341 lesser-of computed on Hawaii tax with the Form N-364 refundable credit, and repayments as 2% miscellaneous itemized deductions otherwise (through 2025).
+- Add Indiana's repayment of previously taxed income deduction (IC 6-3-1-3.5(a)(22)), Massachusetts's claim of right deduction (M.G.L. c. 62, s. 3(B)(a)(14)) and West Virginia's IRC 1341 repayments modification, which apply whichever federal method is used. Indiana users who entered a repayment in in_other_subtractions should move it to claim_of_right_repayment, or it counts twice.
+
+
 ## [2.108.0] - 2026-11-09
 
 ### Added
