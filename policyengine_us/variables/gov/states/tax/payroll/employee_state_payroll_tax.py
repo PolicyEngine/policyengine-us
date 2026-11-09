@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 
 EMPLOYEE_STATE_PAYROLL_TAX_COMPONENTS = [
+    "ak_employee_state_payroll_tax",
     "ca_employee_state_payroll_tax",
     "co_employee_state_payroll_tax",
     "ct_employee_state_payroll_tax",
@@ -26,8 +27,9 @@ class employee_state_payroll_tax(Variable):
         "Employee-side state payroll taxes and payroll-funded contributions, "
         "aggregated from jurisdiction-specific rules. Most components are "
         "contributions the statute puts on the worker and requires the "
-        "employer to withhold: California SDI, Connecticut Paid Leave, New "
-        "Jersey TDI, FLI, UI and workforce contributions, Paid Leave Oregon "
+        "employer to withhold: Alaska UI, California SDI, Connecticut Paid "
+        "Leave, New Jersey TDI, FLI, UI and workforce contributions, Paid "
+        "Leave Oregon "
         "and the Oregon statewide transit tax, Pennsylvania UC, Rhode Island "
         "TDI and WA Cares. In the rest, the law caps what the employer may "
         "deduct from wages and leaves it to decide how much of that to "

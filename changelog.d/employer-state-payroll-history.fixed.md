@@ -1,0 +1,1 @@
+Give state employer unemployment insurance new-employer rates and taxable wage bases their published 2018-2026 histories; add New Jersey's employer TDI and workforce fund contributions on its July-June rate year, Rhode Island's 2019 Job Development Fund adjustment and Alaska's employee unemployment insurance contribution.

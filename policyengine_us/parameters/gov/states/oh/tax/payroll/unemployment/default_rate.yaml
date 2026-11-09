@@ -1,13 +1,27 @@
-description: Default employer-side unemployment insurance tax rate for Ohio.
+description: Ohio assigns this standard unemployment contribution rate, plus from 2026 the technology and customer service fee, to each new employer outside the construction industry.
 values:
-  0000-01-01: 0.027
+  2018-01-01: 0.027
+  # PE-US adds the 0.15% technology and customer service fee that House Bill 96
+  # (2025) levies for 2026 and 2027 and the Department of Job and Family
+  # Services includes in the new employer rate.
+  2026-01-01: 0.0285
 
 metadata:
   period: year
   unit: /1
   label: Ohio default unemployment tax rate
   reference:
-    - title: Ohio Revised Code Section 4141.25
-      href: https://codes.ohio.gov/assets/laws/revised-code/authenticated/41/4141/4141.25/3-28-2017/4141.25-3-28-2017.pdf#page=1
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=45
+    - title: Ohio Revised Code Section 4141.25(A)(1), standard rate
+      href: https://codes.ohio.gov/assets/laws/revised-code/authenticated/41/4141/4141.25/4-9-2025/4141.25-4-9-2025.pdf#page=1
+    - title: Ohio Am. Sub. H.B. 96, 136th General Assembly, Section 741.10, technology and customer service fee
+      href: https://search-prod.lis.state.oh.us/api/v2/general_assembly_136/legislation/hb96/07_EN/pdf/#page=3131
+    - title: Ohio Department of Job and Family Services, Contribution Rates (2018)
+      href: https://web.archive.org/web/20180118190138/http://jfs.ohio.gov:80/ouc/uctax/rates.stm
+    - title: Ohio Department of Job and Family Services, Contribution Rates (2019)
+      href: https://web.archive.org/web/20190112135716/http://jfs.ohio.gov:80/ouc/uctax/rates.stm
+    - title: Ohio Department of Job and Family Services, Contribution Rates for 2019 to 2022, archived May 19, 2022
+      href: https://web.archive.org/web/20220519122303/https://jfs.ohio.gov/ouio/uctax/rates.stm
+    - title: Ohio Department of Job and Family Services, Contribution Rates for Calendar Years 2023 to 2026
+      href: https://jfs.ohio.gov/unemployment-services/for-employers/file-unemployment-taxes/tax-resources/contribution-rates
+    - title: Ohio Department of Job and Family Services, 2026 Rates
+      href: https://dam.assets.ohio.gov/image/upload/jfs.ohio.gov/ouio/uctax/2026RateDetails.pdf#page=1

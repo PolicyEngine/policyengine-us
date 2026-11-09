@@ -1,13 +1,35 @@
-description: Default employer-side unemployment insurance tax rate for Texas.
+description: Texas assigns each new employer the higher of this entry-level unemployment tax rate or its industry's average rate.
 values:
-  0000-01-01: 0.027
+  # PE-US includes the 0.1% employment and training investment assessment under
+  # Texas Labor Code Section 204.121.
+  2018-01-01: 0.027
 
 metadata:
   period: year
   unit: /1
   label: Texas default unemployment tax rate
   reference:
-    - title: Texas Labor Code Section 204.006
-      href: https://statutes.capitol.texas.gov/StatutesByDate.aspx?code=LA&date=9/1/2025&level=SE&value=204.006
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=54
+    - title: Texas Labor Code Sections 204.006 and 204.121, initial contribution rate and employment and training investment assessment
+      href: https://statutes.capitol.texas.gov/Docs/LA/htm/LA.204.htm#204.006
+    - title: House Bill 2421, 79th Legislature (2005), Section 1, setting the 2.6% initial contribution rate
+      href: https://capitol.texas.gov/tlodocs/79R/billtext/pdf/HB02421F.pdf#page=1
+    - title: Texas Workforce Commission, Unemployment Insurance Tax Rates (2018)
+      href: https://web.archive.org/web/20180904015328/https://twc.texas.gov/businesses/unemployment-insurance-tax-rates
+    - title: Texas Workforce Commission, Unemployment Insurance Tax Rates (2019)
+      href: https://web.archive.org/web/20190715220731/https://twc.texas.gov/businesses/unemployment-insurance-tax-rates
+    - title: Texas Workforce Commission, Unemployment Insurance Tax Rates (2020)
+      href: https://web.archive.org/web/20200809024150/https://www.twc.texas.gov/businesses/unemployment-insurance-tax-rates
+    - title: Texas Workforce Commission, Unemployment Insurance Tax Rates (2021)
+      href: https://web.archive.org/web/20210916201627/https://www.twc.texas.gov/businesses/unemployment-insurance-tax-rates
+    - title: Texas Workforce Commission, Unemployment Insurance Tax Rates (2022)
+      href: https://web.archive.org/web/20220523080951/https://www.twc.texas.gov/businesses/unemployment-insurance-tax-rates
+    - title: Texas Workforce Commission, Unemployment Insurance Tax Rates (2023)
+      href: https://web.archive.org/web/20230610174241/https://www.twc.texas.gov/businesses/unemployment-insurance-tax-rates
+    - title: Texas Workforce Commission, Unemployment Insurance Tax Rates (2024)
+      href: https://web.archive.org/web/20240307115743/https://www.twc.texas.gov/programs/unemployment-tax/tax-rates
+    - title: Texas Workforce Commission, Unemployment Insurance Tax Rates (2025)
+      href: https://web.archive.org/web/20250301065651/https://www.twc.texas.gov/programs/unemployment-tax/tax-rates
+    - title: Texas Workforce Commission, Unemployment Insurance Tax Rates (2026)
+      href: https://web.archive.org/web/20260115015706/https://www.twc.texas.gov/programs/unemployment-tax/tax-rates
+    - title: Texas Workforce Commission, New Texas Employers (2026 entry-level rate)
+      href: https://web.archive.org/web/20260731220314/https://www.twc.texas.gov/programs/unemployment-tax/new-texas-employer-information

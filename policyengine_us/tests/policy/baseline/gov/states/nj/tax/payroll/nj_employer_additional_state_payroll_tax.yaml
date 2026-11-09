@@ -1,0 +1,53 @@
+- name: New Jersey 2018 employer TDI at 0.5% and workforce funds at 0.1175% of the $33,700 UI wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    employment_income: 100_000
+  output:
+    nj_employer_temporary_disability_insurance_contribution_rate: 0.005
+    nj_employer_workforce_fund_contribution_rate: 0.001175
+    nj_employer_temporary_disability_insurance_contribution: 168.5
+    nj_employer_workforce_fund_contribution: 39.60
+    nj_employer_additional_state_payroll_tax: 208.10
+    employer_additional_state_payroll_tax: 208.10
+
+- name: New Jersey 2026 employer TDI and workforce funds on the $44,800 UI wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    employment_income: 100_000
+  output:
+    nj_employer_temporary_disability_insurance_contribution: 224
+    nj_employer_workforce_fund_contribution: 52.64
+    nj_employer_additional_state_payroll_tax: 276.64
+
+- name: New Jersey employer TDI and workforce funds on wages below the wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    employment_income: 20_000
+  output:
+    nj_employer_temporary_disability_insurance_contribution: 100
+    nj_employer_workforce_fund_contribution: 23.50
+    nj_employer_additional_state_payroll_tax: 123.50
+
+- name: The employer-total path charges New Jersey TDI and workforce funds on aggregate UI taxable wages.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    employer_total_taxable_earnings_for_state_unemployment_tax: 1_000_000
+  output:
+    employer_total_additional_state_payroll_tax: 6_175
+
+- name: Workers outside New Jersey owe no New Jersey employer TDI or workforce fund contribution.
+  period: 2024
+  input:
+    state_code: NY
+    employment_income: 100_000
+  output:
+    nj_employer_temporary_disability_insurance_contribution: 0
+    nj_employer_workforce_fund_contribution: 0

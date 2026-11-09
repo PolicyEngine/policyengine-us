@@ -1,13 +1,21 @@
-description: Default employer-side unemployment insurance tax rate for New York.
+description: New York assigns this unemployment insurance contribution rate, the normal rate plus the subsidiary rate, to each new employer.
 values:
-  0000-01-01: 0.034
+  # These rates leave out the 0.075% Re-employment Services Fund contribution,
+  # which New York lists on a separate line.
+  2018-01-01: 0.03525
+  2019-01-01: 0.03125
+  2021-01-01: 0.04025
 
 metadata:
   period: year
   unit: /1
   label: New York default unemployment tax rate
   reference:
-    - title: New York Labor Law Section 581
-      href: https://www.nysenate.gov/legislation/laws/LAB/581
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=42
+    - title: New York State Department of Labor, Notice of Unemployment Insurance Contribution Rates (IA 98), 2020 edition (new employer rates for 2018 to 2020), archived May 5, 2020
+      href: https://web.archive.org/web/20200505020829/https://www.labor.ny.gov/formsdocs/ui/IA98.pdf#page=1
+    - title: New York State Department of Labor, Current 2021 Employer Contribution Rate, archived April 18, 2021
+      href: https://web.archive.org/web/20210418152658/https://dol.ny.gov/unemployment-insurance-rate-information
+    - title: New York State Department of Labor, Current 2022 Employer Contribution Rate, archived May 19, 2022
+      href: https://web.archive.org/web/20220519191529/https://dol.ny.gov/unemployment-insurance-rate-information
+    - title: New York State Department of Labor, Notice of Unemployment Insurance Contribution Rates (IA 98), February 2026 edition (new employer rates from 2023), archived April 25, 2026
+      href: https://web.archive.org/web/20260425010254/https://forms.labor.ny.gov/UI/IA98.pdf#page=1

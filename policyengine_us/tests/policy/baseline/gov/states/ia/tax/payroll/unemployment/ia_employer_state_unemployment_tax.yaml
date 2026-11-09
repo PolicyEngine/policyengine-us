@@ -1,0 +1,125 @@
+- name: Iowa 2018, its 1% new-employer rate on the $29,900 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: IA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 29_900
+    employer_state_unemployment_tax_default_rate: 0.01
+    ia_employer_state_unemployment_tax: 299
+    employer_state_unemployment_tax: 299
+
+- name: Iowa 2019, its 1% new-employer rate on the $30,600 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: IA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 30_600
+    employer_state_unemployment_tax_default_rate: 0.01
+    ia_employer_state_unemployment_tax: 306
+    employer_state_unemployment_tax: 306
+
+- name: Iowa 2020, its 1% new-employer rate on the $31,600 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: IA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 31_600
+    employer_state_unemployment_tax_default_rate: 0.01
+    ia_employer_state_unemployment_tax: 316
+    employer_state_unemployment_tax: 316
+
+- name: Iowa 2021, its 1% new-employer rate on the $32,400 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: IA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 32_400
+    employer_state_unemployment_tax_default_rate: 0.01
+    ia_employer_state_unemployment_tax: 324
+    employer_state_unemployment_tax: 324
+
+- name: Iowa 2022, its 1% new-employer rate on the $34,800 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: IA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 34_800
+    employer_state_unemployment_tax_default_rate: 0.01
+    ia_employer_state_unemployment_tax: 348
+    employer_state_unemployment_tax: 348
+
+- name: Iowa 2023, its 1% new-employer rate on the $36,100 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: IA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 36_100
+    employer_state_unemployment_tax_default_rate: 0.01
+    ia_employer_state_unemployment_tax: 361
+    employer_state_unemployment_tax: 361
+
+- name: Iowa 2024, its 1% new-employer rate on the $38,200 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: IA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 38_200
+    employer_state_unemployment_tax_default_rate: 0.01
+    ia_employer_state_unemployment_tax: 382
+    employer_state_unemployment_tax: 382
+
+- name: Iowa 2025, its 1% new-employer rate on the $39,500 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: IA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 39_500
+    employer_state_unemployment_tax_default_rate: 0.01
+    ia_employer_state_unemployment_tax: 395
+    employer_state_unemployment_tax: 395
+
+- name: Iowa 2026, its 1% new-employer rate on the $20,400 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: IA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 20_400
+    employer_state_unemployment_tax_default_rate: 0.01
+    ia_employer_state_unemployment_tax: 204
+    employer_state_unemployment_tax: 204
+
+- name: Iowa 2018 taxes every dollar of wages below the wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: IA
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 50
+
+- name: Iowa charges no employer unemployment tax on a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    ia_employer_state_unemployment_tax: 0

@@ -1,13 +1,35 @@
-description: Employer-side unemployment insurance taxable wage base for Idaho.
+description: Idaho limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 53_500
+  2018-01-01: 38_200
+  2019-01-01: 40_000
+  2020-01-01: 41_600
+  2021-01-01: 43_000
+  2022-01-01: 46_500
+  2023-01-01: 49_900
+  2024-01-01: 53_500
+  2025-01-01: 55_300
+  2026-01-01: 58_300
 
 metadata:
   period: year
   unit: currency-USD
   label: Idaho unemployment taxable wage base
   reference:
-    - title: Idaho Code Title 72 Chapter 13
-      href: https://legislature.idaho.gov/statutesrules/idstat/Title72/T72CH13/
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=22
+    - title: Idaho Department of Labor, 2018 rate class array (taxable wage base)
+      href: https://www.labor.idaho.gov/wp-content/uploads/pdf/2018TaxArray.pdf#page=1
+    - title: Idaho Department of Labor, 2019 rate class array (taxable wage base)
+      href: https://www.labor.idaho.gov/wp-content/uploads/Publications/2019TaxArray.pdf#page=1
+    - title: Idaho Department of Labor, 2020 rate class array (taxable wage base)
+      href: https://www.labor.idaho.gov/wp-content/uploads/ui/Business/2020TaxArray.pdf#page=1
+    - title: Idaho Department of Labor, 2021 rate class array (taxable wage base)
+      href: https://www.labor.idaho.gov/wp-content/uploads/ui/Business/2021TaxArray.pdf#page=1
+    - title: Idaho Department of Labor, 2022 rate class array (taxable wage base)
+      href: https://www.labor.idaho.gov/wp-content/uploads/ui/Business/2022TaxArray-AmendedRates.pdf#page=1
+    - title: Idaho Department of Labor, 2023 rate class array (taxable wage base)
+      href: https://www.labor.idaho.gov/wp-content/uploads/ui/Business/2023TaxArray.pdf#page=1
+    - title: Idaho Department of Labor, 2024 rate class array (taxable wage base)
+      href: https://www.labor.idaho.gov/wp-content/uploads/2024/03/2024TaxArray.pdf#page=1
+    - title: Idaho Department of Labor, 2026 rate class array (taxable wage base)
+      href: https://www.labor.idaho.gov/wp-content/uploads/2024/12/Tax-rate_Class-array_2026.pdf#page=1
+    - title: Idaho Department of Labor, Unemployment Tax Rates (taxable wage base for 2025)
+      href: https://www.labor.idaho.gov/businesses/unemployment-tax-rates/

@@ -1,6 +1,13 @@
-description: Default employer-side unemployment insurance tax rate for Connecticut.
+description: Connecticut assigns this unemployment insurance contribution rate to each new employer.
 values:
-  0000-01-01: 0.025
+  2018-01-01: 0.036
+  2019-01-01: 0.034
+  2020-01-01: 0.032
+  2021-01-01: 0.03
+  2023-01-01: 0.028
+  2024-01-01: 0.025
+  2025-01-01: 0.022
+  2026-01-01: 0.019
 
 metadata:
   period: year
@@ -9,7 +16,5 @@ metadata:
   reference:
     - title: Connecticut General Statutes Section 31-225a
       href: https://www.cga.ct.gov/current/PUB/chap_567.htm#sec_31-225a
-    - title: Connecticut unemployment tax rates and taxable wage base
+    - title: Connecticut Department of Labor, What are the Tax Rates and Taxable Wage Base? (annual taxable wage amounts and employer tax rates by year)
       href: https://portal.ct.gov/dol/knowledge-base/articles/unemployment-taxes/tax-rates-and-taxable-wage-base
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=16

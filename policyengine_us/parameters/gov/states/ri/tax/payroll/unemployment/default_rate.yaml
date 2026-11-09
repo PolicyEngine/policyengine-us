@@ -1,13 +1,37 @@
-description: Default employer-side unemployment insurance tax rate for Rhode Island.
+description: Rhode Island assigns new employers this unemployment insurance contribution rate, which excludes the Job Development Fund assessment and adjustment.
 values:
-  0000-01-01: 0.0109
+  2018-01-01: 0.015
+  2019-01-01: 0.0117
+  2020-01-01: 0.0106
+  2021-01-01: 0.0095
+  2022-01-01: 0.0098
+  2023-01-01: 0.0088
+  2024-01-01: 0.0079
+  2025-01-01: 0.01
+  2026-01-01: 0.01
 
 metadata:
   period: year
   unit: /1
   label: Rhode Island default unemployment tax rate
   reference:
-    - title: Rhode Island General Laws Section 28-43-8.3
-      href: https://webserver.rilegislature.gov/Statutes/TITLE28/28-43/28-43-8.3.htm
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=50
+    - title: Rhode Island Department of Labor and Training, Employer Tax Unit, 2018 rates (archived March 30, 2018)
+      href: https://web.archive.org/web/20180330013757/http://www.uitax.ri.gov/
+    - title: Rhode Island Department of Labor and Training, Employer Tax Unit, 2019 rates (archived March 3, 2019)
+      href: https://web.archive.org/web/20190303030955/http://www.uitax.ri.gov/
+    - title: Rhode Island Department of Labor and Training, Employer Tax Unit, 2020 rates (archived February 9, 2020)
+      href: https://web.archive.org/web/20200209045218/http://www.uitax.ri.gov/
+    - title: Rhode Island Department of Labor and Training, Employer Tax Unit, 2021 rates (archived March 31, 2021)
+      href: https://web.archive.org/web/20210331032224/http://www.uitax.ri.gov/
+    - title: Rhode Island Department of Labor and Training, 2022 UI and TDI quick reference
+      href: https://dlt.ri.gov/sites/g/files/xkgbur571/files/2021-12/quickref.pdf
+    - title: Rhode Island Department of Labor and Training, 2023 UI and TDI quick reference
+      href: https://dlt.ri.gov/sites/g/files/xkgbur571/files/2021-12/quickref_0.pdf
+    - title: Rhode Island Department of Labor and Training, UI and TDI quick reference effective January 1, 2024
+      href: https://dlt.ri.gov/sites/g/files/xkgbur571/files/2023-06/quickref.pdf
+    - title: Rhode Island Department of Labor and Training, 2025 tax rates for unemployment insurance and temporary disability insurance (archived January 4, 2025)
+      href: https://web.archive.org/web/20250104134049/https://dlt.ri.gov/press-releases/2025-tax-rates-unemployment-insurance-and-temporary-disability-insurance
+    - title: Rhode Island Department of Labor and Training, 2026 tax rates for unemployment insurance and temporary disability insurance (archived December 21, 2025)
+      href: https://web.archive.org/web/20251221073715/https://dlt.ri.gov/press-releases/2026-tax-rates-unemployment-insurance-and-temporary-disability-insurance
+    - title: Rhode Island General Laws Section 28-43-8.5, rates reduced by the job development assessment
+      href: https://webserver.rilegislature.gov/Statutes/TITLE28/28-43/28-43-8.5.htm

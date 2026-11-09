@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" prefix="og: http://ogp.me/ns#" >
+  <head>
+    <!-- DEPLOYMENT IDENTIFIER: 6a1056589dbd3a5208bdb1fa9528270ad76ded5a -->
+    <meta charset="utf-8" /><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={licenseKey:"23b062ec87",applicationID:"46704875"};window.NREUM||(NREUM={}),__nr_require=function(n,e,t){function r(t){if(!e[t]){var i=e[t]={exports:{}};n[t][0].call(i.exports,function(e){var i=n[t][1][e];return r(i||e)},i,i.exports)}return e[t].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<t.length;i++)r(t[i]);return r}({1:[function(n,e,t){function r(){}function i(n,e,t){return function(){return o(n,[u.now()].concat(f(arguments)),e?null:this,t),e?void 0:this}}var o=n("handle"),a=n(4),f=n(5),c=n("ee").get("tracer"),u=n("loader"),s=NREUM;"undefined"==typeof window.newrelic&&(newrelic=s);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],d="api-",l=d+"ixn-";a(p,function(n,e){s[e]=i(d+e,!0,"api")}),s.addPageAction=i(d+"addPageAction",!0),s.setCurrentRouteName=i(d+"routeName",!0),e.exports=newrelic,s.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(n,e){var t={},r=this,i="function"==typeof e;return o(l+"tracer",[u.now(),n,t],r),function(){if(c.emit((i?"":"no-")+"fn-start",[u.now(),r,i],t),i)try{return e.apply(this,arguments)}catch(n){throw c.emit("fn-err",[arguments,this,n],t),n}finally{c.emit("fn-end",[u.now()],t)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(n,e){m[e]=i(l+e)}),newrelic.noticeError=function(n,e){"string"==typeof n&&(n=new Error(n)),o("err",[n,u.now(),!1,e])}},{}],2:[function(n,e,t){function r(n,e){var t=n.getEntries();t.forEach(function(n){"first-paint"===n.name?a("timing",["fp",Math.floor(n.startTime)]):"first-contentful-paint"===n.name&&a("timing",["fcp",Math.floor(n.startTime)])})}function i(n){if(n instanceof c&&!s){var e,t=Math.round(n.timeStamp);e=t>1e12?Date.now()-t:f.now()-t,s=!0,a("timing",["fi",t,{type:n.type,fid:e}])}}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var o,a=n("handle"),f=n("loader"),c=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){o=new PerformanceObserver(r);try{o.observe({entryTypes:["paint"]})}catch(u){}}if("addEventListener"in document){var s=!1,p=["click","keydown","mousedown","pointerdown","touchstart"];p.forEach(function(n){document.addEventListener(n,i,!1)})}}},{}],3:[function(n,e,t){function r(n,e){if(!i)return!1;if(n!==i)return!1;if(!e)return!0;if(!o)return!1;for(var t=o.split("."),r=e.split("."),a=0;a<r.length;a++)if(r[a]!==t[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var f=navigator.userAgent,c=f.match(a);c&&f.indexOf("Chrome")===-1&&f.indexOf("Chromium")===-1&&(i="Safari",o=c[1])}e.exports={agent:i,version:o,match:r}},{}],4:[function(n,e,t){function r(n,e){var t=[],r="",o=0;for(r in n)i.call(n,r)&&(t[o]=e(r,n[r]),o+=1);return t}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],5:[function(n,e,t){function r(n,e,t){e||(e=0),"undefined"==typeof t&&(t=n?n.length:0);for(var r=-1,i=t-e||0,o=Array(i<0?0:i);++r<i;)o[r]=n[e+r];return o}e.exports=r},{}],6:[function(n,e,t){e.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(n,e,t){function r(){}function i(n){function e(n){return n&&n instanceof r?n:n?c(n,f,o):o()}function t(t,r,i,o){if(!d.aborted||o){n&&n(t,r,i);for(var a=e(i),f=v(t),c=f.length,u=0;u<c;u++)f[u].apply(a,r);var p=s[y[t]];return p&&p.push([b,t,r,a]),a}}function l(n,e){h[n]=v(n).concat(e)}function m(n,e){var t=h[n];if(t)for(var r=0;r<t.length;r++)t[r]===e&&t.splice(r,1)}function v(n){return h[n]||[]}function g(n){return p[n]=p[n]||i(t)}function w(n,e){u(n,function(n,t){e=e||"feature",y[t]=e,e in s||(s[e]=[])})}var h={},y={},b={on:l,addEventListener:l,removeEventListener:m,emit:t,get:g,listeners:v,context:e,buffer:w,abort:a,aborted:!1};return b}function o(){return new r}function a(){(s.api||s.feature)&&(d.aborted=!0,s=d.backlog={})}var f="nr@context",c=n("gos"),u=n(4),s={},p={},d=e.exports=i();d.backlog=s},{}],gos:[function(n,e,t){function r(n,e,t){if(i.call(n,e))return n[e];var r=t();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(n,e,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return n[e]=r,r}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(n,e,t){function r(n,e,t,r){i.buffer([n],r),i.emit(n,e,t)}var i=n("ee").get("handle");e.exports=r,r.ee=i},{}],id:[function(n,e,t){function r(n){var e=typeof n;return!n||"object"!==e&&"function"!==e?-1:n===window?0:a(n,o,function(){return i++})}var i=1,o="nr@id",a=n("gos");e.exports=r},{}],loader:[function(n,e,t){function r(){if(!x++){var n=E.info=NREUM.info,e=l.getElementsByTagName("script")[0];if(setTimeout(s.abort,3e4),!(n&&n.licenseKey&&n.applicationID&&e))return s.abort();u(y,function(e,t){n[e]||(n[e]=t)}),c("mark",["onload",a()+E.offset],null,"api");var t=l.createElement("script");t.src="https://"+n.agent,e.parentNode.insertBefore(t,e)}}function i(){"complete"===l.readyState&&o()}function o(){c("mark",["domContent",a()+E.offset],null,"api")}function a(){return O.exists&&performance.now?Math.round(performance.now()):(f=Math.max((new Date).getTime(),f))-E.offset}var f=(new Date).getTime(),c=n("handle"),u=n(4),s=n("ee"),p=n(3),d=window,l=d.document,m="addEventListener",v="attachEvent",g=d.XMLHttpRequest,w=g&&g.prototype;NREUM.o={ST:setTimeout,SI:d.setImmediate,CT:clearTimeout,XHR:g,REQ:d.Request,EV:d.Event,PR:d.Promise,MO:d.MutationObserver};var h=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1158.min.js"},b=g&&w&&w[m]&&!/CriOS/.test(navigator.userAgent),E=e.exports={offset:f,now:a,origin:h,features:{},xhrWrappable:b,userAgent:p};n(1),n(2),l[m]?(l[m]("DOMContentLoaded",o,!1),d[m]("load",r,!1)):(l[v]("onreadystatechange",i),d[v]("onload",r)),c("mark",["firstbyte",f],null,"api");var x=0,O=n(6)},{}],"wrap-function":[function(n,e,t){function r(n){return!(n&&n instanceof Function&&n.apply&&!n[a])}var i=n("ee"),o=n(5),a="nr@original",f=Object.prototype.hasOwnProperty,c=!1;e.exports=function(n,e){function t(n,e,t,i){function nrWrapper(){var r,a,f,c;try{a=this,r=o(arguments),f="function"==typeof t?t(r,a):t||{}}catch(u){d([u,"",[r,a,i],f])}s(e+"start",[r,a,i],f);try{return c=n.apply(a,r)}catch(p){throw s(e+"err",[r,a,p],f),p}finally{s(e+"end",[r,a,c],f)}}return r(n)?n:(e||(e=""),nrWrapper[a]=n,p(n,nrWrapper),nrWrapper)}function u(n,e,i,o){i||(i="");var a,f,c,u="-"===i.charAt(0);for(c=0;c<e.length;c++)f=e[c],a=n[f],r(a)||(n[f]=t(a,u?f+i:i,o,f))}function s(t,r,i){if(!c||e){var o=c;c=!0;try{n.emit(t,r,i,e)}catch(a){d([a,t,r,i])}c=o}}function p(n,e){if(Object.defineProperty&&Object.keys)try{var t=Object.keys(n);return t.forEach(function(t){Object.defineProperty(e,t,{get:function(){return n[t]},set:function(e){return n[t]=e,e}})}),e}catch(r){d([r])}for(var i in n)f.call(n,i)&&(e[i]=n[i]);return e}function d(e){try{n.emit("internal-error",e)}catch(t){}}return n||(n=i),t.inPlace=u,t.flag=a,t}},{}]},{},["loader"]);</script>
+<script>dataLayer = [{"drupalLanguage":"en","drupalCountry":"US","entityType":"node","entityBundle":"service_details","entityId":"377371","entityUuid":"07b887a7-5bbe-4a5a-8265-5b868cf3f2f3","entityLabel":"Learn about unemployment insurance (UI) contributions","entityLangcode":"en","entityVid":"3922551","entityUid":"821","entityCreated":"1530550152","entityStatus":"1","entityField_organizations":{"5376":"Department of Unemployment Assistance"},"entityName":"rneal","userUid":0}];</script>
+<meta name="mg_short_description" content="Employers subject to UI law are required to make quarterly contributions to fund the UI program in Massachusetts. Learn about how the annual UI contribution rate is calculated for newly subject and existing employers." />
+<meta name="mg_organization" content="departmentofunemploymentassistance,executiveofficeoflaborandworkforcedevelopment" />
+<meta name="mg_body_preview" content="Employers subject to UI law are required to make quarterly contributions to fund the UI program in Massachusetts. Learn about how the annual UI contribution rate is calculated for newly subject and existing employers." />
+<meta name="mg_stakeholder_org" content="Department of Unemployment Assistance" />
+<meta name="mg_url" content="https://www.mass.gov/service-details/learn-about-unemployment-insurance-ui-contributions" />
+<meta name="mg_title" content="Learn about unemployment insurance (UI) contributions" />
+<meta name="title" content="Learn about unemployment insurance (UI) contributions | Mass.gov" />
+<meta property="og:site_name" content="Mass.gov" />
+<meta name="twitter:card" content="summary" />
+<meta name="description" content="Employers subject to UI law are required to make quarterly contributions to fund the UI program in Massachusetts. Learn about how the annual UI contribution rate is calculated for newly subject and existing employers." />
+<meta name="twitter:description" content="Employers subject to UI law are required to make quarterly contributions to fund the UI program in Massachusetts. Learn about how the annual UI contribution rate is calculated for newly subject and existing employers." />
+<meta property="og:type" content="website" />
+<meta name="twitter:site" content="@massgov" />
+<meta name="twitter:title" content="Learn about unemployment insurance (UI) contributions" />
+<meta property="og:url" content="https://www.mass.gov/service-details/learn-about-unemployment-insurance-ui-contributions" />
+<meta name="twitter:site:id" content="16264003" />
+<meta property="og:title" content="Learn about unemployment insurance (UI) contributions" />
+<meta property="og:description" content="Employers subject to UI law are required to make quarterly contributions to fund the UI program in Massachusetts. Learn about how the annual UI contribution rate is calculated for newly subject and existing employers." />
+<meta name="twitter:url" content="https://www.mass.gov/service-details/learn-about-unemployment-insurance-ui-contributions" />
+<meta name="Generator" content="Drupal 8 (https://www.drupal.org)" />
+<meta name="MobileOptimized" content="width" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@id": "https://www.mass.gov/service-details/learn-about-unemployment-insurance-ui-contributions#service_detail",
+            "@type": "GovernmentService",
+            "potentialAction": [],
+            "name": "Learn about unemployment insurance (UI) contributions",
+            "isRelatedTo": [
+                {
+                    "@type": "Service",
+                    "name": "",
+                    "url": "https://www.mass.gov/service-details/employers-subject-to-unemployment-insurance-ui-contributions"
+                },
+                {
+                    "@type": "Service",
+                    "name": "",
+                    "url": "https://www.mass.gov/how-to/pay-unemployment-insurance-contributions-to-dua"
+                },
+                {
+                    "@type": "Service",
+                    "name": "",
+                    "url": "https://www.mass.gov/how-to/view-annual-rate-notice"
+                }
+            ],
+            "disambiguatingDescription": "Employers subject to UI law are required to make quarterly contributions to fund the UI program in Massachusetts. Learn about how the annual UI contribution rate is calculated for newly subject and existing employers."
+        }
+    ]
+}</script>
+<meta name="category" content="services" />
+<link rel="shortcut icon" href="/themes/custom/mass_theme/favicon.ico" type="image/png" />
+<link rel="canonical" href="https://www.mass.gov/service-details/learn-about-unemployment-insurance-ui-contributions" />
+<link rel="revision" href="https://www.mass.gov/service-details/learn-about-unemployment-insurance-ui-contributions" />
+
+    <title>Learn about unemployment insurance (UI) contributions | Mass.gov</title>
+    <link rel="stylesheet" media="all" href="/files/css/css_Qf92kn_Nhbj5p96PHYGnvwstbztTWzxVlmKKkKv2L9g.css?q4jcge" />
+<link rel="stylesheet" media="all" href="/files/css/css_0HwlYmK26X6AK6W7MGBFdJRklFPFtQo7jshV8PprB6U.css?q4jcge" />
+
+    
+<!--[if lte IE 8]>
+<script src="/files/js/js_VtafjXmRvoUgAzqzYTA3Wrjkx9wcWhjP0G4ZnnqRamA.js"></script>
+<![endif]-->
+<script src="/modules/custom/mayflower/js/modernizr.min.js?v=3.6.0"></script>
+
+        <script type="application/ld+json">
+      {
+          "@context": "http://schema.org",
+          "@type": "Organization",
+          "@id": "https://www.mass.gov/#organization",
+          "url": "https://www.mass.gov",
+          "logo": "https://www.mass.gov/libraries/mayflower-artifacts/assets/images/stateseal-color.png",          "name": "Commonwealth of Massachusetts",
+          "sameAs":
+            [
+    "https://www.facebook.com/massgov",
+    "https://twitter.com/massgov",
+    "https://www.linkedin.com/company/commonwealth-of-massachusetts",
+    "https://www.youtube.com/user/massgov",
+    "https://www.instagram.com/massgov/"
+]
+                  }
+    </script>
+    <script type="application/ld+json">
+      {
+          "@context": "http://schema.org",
+          "@type": "WPHeader",
+          "@id": "https://www.mass.gov/service-details/learn-about-unemployment-insurance-ui-contributions#header"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+          "@context": "http://schema.org",
+          "@type": "WPFooter",
+          "@id": "https://www.mass.gov/service-details/learn-about-unemployment-insurance-ui-contributions#footer"
+      }
+    </script>
+    <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "SiteNavigationElement",
+          "@id": "https://www.mass.gov/service-details/learn-about-unemployment-insurance-ui-contributions#main-navigation"
+        }
+    </script>
+
+    <style>.async-hide { opacity: 0 !important} </style>
+    <script>
+      (function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
+        h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
+        (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
+      })(window,document.documentElement,'async-hide','dataLayer',2000,
+        {'GTM-TBBFWGN':true});
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-12471675-5', 'auto');
+      ga('require', 'GTM-TBBFWGN');
+    </script>
+    <link rel="preload" href="/libraries/mayflower-artifacts/assets/fonts/texta-black-webfont.woff2" as="font" crossorigin />
+    <link rel="preload" href="/libraries/mayflower-artifacts/assets/fonts/texta-bold-webfont.woff2" as="font"  crossorigin />
+    <link rel="preload" href="/libraries/mayflower-artifacts/assets/fonts/texta-book-webfont.woff2" as="font"  crossorigin />
+  </head>
+  <body vocab="http://schema.org/" typeof="WebPage" class="not-front">
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MPHNMQ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script type="text/javascript">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0];var j=d.createElement(s);var dl=l!='dataLayer'?'&l='+l:'';j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;j.type='text/javascript';j.async=true;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MPHNMQ');</script>
+<!-- End Google Tag Manager -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none"><symbol xmlns="http://www.w3.org/2000/svg" aria-hidden="true" version="1.1" viewBox="0 0 21 20" id="a69837d03542969d77b2c42213053eec"><path d="M10.1,6.7c-1.9,0-3.4,1.5-3.4,3.3c0,1.8,1.5,3.3,3.4,3.3c1.9,0,3.4-1.5,3.4-3.3C13.4,8.2,11.9,6.7,10.1,6.7z    M14.2,1.9c-1.1,0-1.4-0.1-4.1-0.1c-2.7,0-3,0-4.1,0.1C3.3,2.1,2,3.4,1.9,6c0,1.1-0.1,1.4-0.1,4s0,3,0.1,4c0.1,2.7,1.4,4,4.1,4.1   c1.1,0,1.4,0.1,4.1,0.1c2.7,0,3,0,4.1-0.1c2.7-0.1,4-1.4,4.1-4.1c0-1.1,0.1-1.4,0.1-4s0-3-0.1-4C18.2,3.4,16.9,2.1,14.2,1.9z    M10.1,15.2c-2.9,0-5.2-2.3-5.2-5.1c0-2.8,2.3-5.1,5.2-5.1c2.9,0,5.2,2.3,5.2,5.1C15.3,12.9,12.9,15.2,10.1,15.2z M15.5,5.9   c-0.7,0-1.2-0.5-1.2-1.2c0-0.7,0.5-1.2,1.2-1.2s1.2,0.5,1.2,1.2C16.7,5.4,16.1,5.9,15.5,5.9z M20.1,14.2c-0.2,3.6-2.2,5.7-5.9,5.8   c-1.1,0-1.4,0.1-4.2,0.1c-2.7,0-3.1,0-4.2-0.1c-3.7-0.2-5.7-2.2-5.9-5.8C0,13.1,0,12.8,0,10.1C0,7.4,0,7,0.1,6   c0.2-3.6,2.2-5.6,5.9-5.8c1.1,0,1.4-0.1,4.2-0.1c2.7,0,3.1,0,4.2,0.1c3.7,0.2,5.7,2.2,5.9,5.8c0,1.1,0.1,1.4,0.1,4.1   C20.2,12.8,20.2,13.1,20.1,14.2z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" aria-hidden="true" version="1.1" viewBox="0 0 20.2 20.2" id="a57ca36606fdc2a32feb49d16592d004"><path d="M7.6,6.7l6.7,3.3l-6.7,3.3V6.7z M20.2,10.1c0-5.2-0.4-7.1-3.7-7.3c-3-0.2-9.8-0.2-12.8,0C0.4,3,0,4.9,0,10.1 c0,5.2,0.4,7.1,3.7,7.3c3,0.2,9.8,0.2,12.8,0C19.8,17.2,20.1,15.2,20.2,10.1z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" aria-hidden="true" version="1.1" viewBox="0 0 20 20" id="092594d7a75b3350310a960d5a1192af"><path d="M182.645 71.75H178.864V58H182.645ZM180.754 56.415C179.53699999999998 56.415 178.54899999999998 55.4275 178.54899999999998 54.21C178.54899999999998 52.9925 179.53699999999998 52.005 180.754 52.005C181.97199999999998 52.005 182.95999999999998 52.9925 182.95999999999998 54.21C182.95999999999998 55.4275 181.97299999999998 56.415 180.754 56.415ZM197.766 63.3012C197.766 56.735 190.706 56.973800000000004 188.945 60.2063V58H185.165V71.75H188.945V64.745C188.945 60.8537 193.986 60.535000000000004 193.986 64.745V71.75H197.766Z " transform="matrix(1,0,0,1,-178,-52)"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" aria-hidden="true" version="1.1" viewBox="0 0 20.2 20.2" id="790867d4977e750792617a600bc8e9db">
+<path d="M18.1,6.3c0.3,5.8-4.1,12.2-11.8,12.2c-2.3,0-4.5-0.7-6.3-1.8C2.2,17,4.4,16.3,6.1,15c-1.8,0-3.3-1.2-3.9-2.8 c0.6,0.1,1.3,0.1,1.9-0.1c-2-0.4-3.4-2.2-3.3-4.1C1.4,8.3,2,8.5,2.7,8.5C0.8,7.3,0.3,4.9,1.4,3c2,2.5,5.1,4.1,8.5,4.3 c-0.6-2.6,1.4-5,4-5c1.2,0,2.3,0.5,3,1.3c0.9-0.2,1.8-0.5,2.6-1c-0.3,1-1,1.8-1.8,2.3c0.8-0.1,1.6-0.3,2.4-0.6 C19.6,5,18.9,5.8,18.1,6.3z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" aria-hidden="true" version="1.1" viewBox="0 0 20 20" id="9e699f2e8303da021db48900ae2b534e"><path d="M14.7,3.8h-2.4c-0.8,0-1.4,0.3-1.4,1.1v1.4h3.8L14.4,10h-3.5v10H7.1V10H4.6V6.2h2.5V3.8C7.1,1.3,8.4,0,11.5,0h3.2V3.8z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" version="1.1" viewBox="0 0 16 18" id="8991ca7e135f70607ed0ec9444b44827"><path d="M983.721 1887.28L983.721 1887.28L986.423 1890L986.423 1890L986.423 1890L983.721 1892.72L983.721 1892.72L978.318 1898.17L975.617 1895.45L979.115 1891.92L971.443 1891.92L971.443 1888.0700000000002L979.103 1888.0700000000002L975.617 1884.5500000000002L978.318 1881.8300000000002Z " transform="matrix(1,0,0,1,-971,-1881)"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" aria-hidden="true" version="1.1" viewBox="0 0 36 30" id="35a1248566a855cbfb287c47b1da31d2"><path d="M424 1674L394 1674L394 1693.5L424 1693.5ZM421 1690.5L397 1690.5L397 1677L421 1677ZM424 1695L394 1695L391 1704L427 1704ZM405.658 1702.5L406.357 1701L411.64300000000003 1701L412.34200000000004 1702.5Z " transform="matrix(1,0,0,1,-391,-1674)"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" aria-hidden="true" version="1.1" viewBox="0 0 33 37" id="1f0d1d28f3e1f6cf16a18496638e41a6"><path d="M412.841 2040.51C401.798 2045.57 384.657 2012.19 395.451 2006.56L398.60900000000004 2005L403.84400000000005 2015.23L400.72300000000007 2016.77C397.44200000000006 2018.54 404.27600000000007 2031.91 407.63200000000006 2030.28C407.7680000000001 2030.22 410.7150000000001 2028.77 410.72600000000006 2028.76L416.0040000000001 2038.96C415.9920000000001 2038.97 413.02200000000005 2040.43 412.84100000000007 2040.51ZM413.24 2011.28C415.564 2011.98 417.62600000000003 2013.56 418.87 2015.86C420.115 2018.1699999999998 420.309 2020.76 419.616 2023.09L416.926 2022.29C417.413 2020.6499999999999 417.275 2018.83 416.39799999999997 2017.2C415.52399999999994 2015.5800000000002 414.073 2014.47 412.436 2013.98ZM411.838 2016C412.956 2016.33 413.95000000000005 2017.1 414.548 2018.21C415.148 2019.32 415.242 2020.56 414.908 2021.69L410.535 2020.38ZM413.841 2009.26C416.681 2010.11 419.2 2012.04 420.722 2014.86C422.24199999999996 2017.6799999999998 422.479 2020.85 421.63399999999996 2023.6899999999998L424.39199999999994 2024.5199999999998C425.44899999999996 2020.9599999999998 425.15399999999994 2017.0099999999998 423.2509999999999 2013.4899999999998C421.3539999999999 2009.9699999999998 418.20899999999995 2007.5599999999997 414.66399999999993 2006.4999999999998Z " transform="matrix(1,0,0,1,-392,-2005)"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" aria-hidden="true" version="1.1" viewBox="0 0 35 36" id="08b07eb0f896963fa2703861933b865e"><path d="M423.185 7038.21L420.033 7038.21L420.033 7033.43C420.033 7033.41 420.029 7033.400000000001 420.029 7033.39C420.027 7033.35 420.025 7033.31 420.019 7033.280000000001C420.012 7033.250000000001 420.005 7033.22 419.994 7033.200000000001C419.98800000000006 7033.18 419.98400000000004 7033.160000000001 419.97600000000006 7033.130000000001C419.96400000000006 7033.110000000001 419.94700000000006 7033.080000000001 419.93000000000006 7033.050000000001C419.9220000000001 7033.030000000001 419.91600000000005 7033.020000000001 419.90600000000006 7033.000000000001C419.87700000000007 7032.960000000001 419.84600000000006 7032.920000000001 419.8090000000001 7032.880000000001L412.2540000000001 7025.230000000001C412.25200000000007 7025.230000000001 412.2480000000001 7025.220000000001 412.24700000000007 7025.220000000001C412.2130000000001 7025.190000000001 412.1790000000001 7025.160000000001 412.13900000000007 7025.130000000001C412.1190000000001 7025.120000000001 412.09600000000006 7025.110000000001 412.0760000000001 7025.100000000001C412.05300000000005 7025.080000000001 412.0320000000001 7025.0700000000015 412.0080000000001 7025.060000000001C411.9810000000001 7025.050000000001 411.9540000000001 7025.040000000001 411.9280000000001 7025.040000000001C411.9070000000001 7025.030000000001 411.8870000000001 7025.02 411.8660000000001 7025.02C411.8190000000001 7025.01 411.7690000000001 7025 411.7200000000001 7025L394.71600000000007 7025C394.29800000000006 7025 393.96100000000007 7025.35 393.96100000000007 7025.77L393.96100000000007 7038.21L390.8060000000001 7038.21C390.3560000000001 7038.21 389.9900000000001 7038.59 389.9920000000001 7039.04L389.9920000000001 7050.79C389.9920000000001 7051.25 390.3620000000001 7051.61 390.8140000000001 7051.61L393.95900000000006 7051.61L393.95900000000006 7060.23C393.95900000000006 7060.65 394.29800000000006 7061 394.7130000000001 7061L419.2770000000001 7061C419.6940000000001 7061 420.0330000000001 7060.65 420.0330000000001 7060.23L420.0330000000001 7051.61L423.18500000000006 7051.61C423.63500000000005 7051.61 424.00000000000006 7051.25 424.00000000000006 7050.79L424.00000000000006 7039.04C424.00000000000006 7038.59 423.63500000000005 7038.21 423.18500000000006 7038.21ZM395.47 7026.53L410.96400000000006 7026.53L410.96400000000006 7033.429999999999C410.96400000000006 7033.849999999999 411.30300000000005 7034.19 411.72 7034.19L418.52200000000005 7034.19L418.52200000000005 7038.21L395.47 7038.21ZM418.522 7059.46L395.46999999999997 7059.46L395.46999999999997 7051.61L418.522 7051.61ZM402.433 7043.4C402.433 7043.94 402.319 7044.42 402.097 7044.8099999999995C401.876 7045.19 401.58799999999997 7045.499999999999 401.236 7045.719999999999C400.899 7045.94 400.545 7046.079999999999 400.19 7046.159999999999C399.742 7046.239999999999 399.127 7046.279999999999 398.311 7046.279999999999L397.614 7046.279999999999L397.614 7049.249999999999L394.92499999999995 7049.249999999999L394.92499999999995 7040.579999999999L398.227 7040.579999999999C399.325 7040.579999999999 400.034 7040.629999999999 400.393 7040.719999999999C400.97099999999995 7040.849999999999 401.46 7041.159999999999 401.849 7041.619999999999C402.23699999999997 7042.089999999999 402.433 7042.679999999999 402.433 7043.399999999999ZM411.126 7044.72C411.126 7046.570000000001 410.41499999999996 7047.62 409.82099999999997 7048.18C409.01099999999997 7048.92 407.82 7049.3 406.28299999999996 7049.3C405.58799999999997 7049.3 404.90999999999997 7049.26 404.36299999999994 7049.18L404.00699999999995 7049.13L404.00699999999995 7040.76L404.34899999999993 7040.7C404.95899999999995 7040.59 405.79999999999995 7040.53 406.6259999999999 7040.53C408.0349999999999 7040.53 409.0089999999999 7040.82 409.77699999999993 7041.46C410.6619999999999 7042.18 411.1259999999999 7043.31 411.1259999999999 7044.72ZM418.666 7043.94L418.666 7045.94L415.348 7045.94L415.348 7049.25L412.773 7049.25L412.773 7040.58L419.069 7040.58L419.069 7042.79L415.35 7042.79L415.35 7043.94ZM412.477 7027.62L417.453 7032.66L412.477 7032.66ZM406.797 7042.72C406.67400000000004 7042.72 406.57300000000004 7042.7300000000005 406.48600000000005 7042.7300000000005L406.48600000000005 7047.080000000001C406.53800000000007 7047.080000000001 406.58700000000005 7047.080000000001 406.63000000000005 7047.080000000001L406.65700000000004 7047.080000000001C407.26800000000003 7047.080000000001 407.74500000000006 7046.900000000001 408.069 7046.550000000001C408.425 7046.160000000001 408.606 7045.560000000001 408.606 7044.780000000001C408.61 7044.070000000001 408.437 7043.540000000001 408.098 7043.1900000000005C407.79 7042.88 407.354 7042.72 406.797 7042.72ZM399.185 7042.76C399.061 7042.74 398.755 7042.71 398.019 7042.71L397.616 7042.71L397.616 7044.15L398.13399999999996 7044.15C398.979 7044.15 399.26099999999997 7044.08 399.34299999999996 7044.049999999999C399.491 7043.999999999999 399.602 7043.919999999999 399.68399999999997 7043.8099999999995C399.76199999999994 7043.7 399.80499999999995 7043.57 399.80499999999995 7043.419999999999C399.80499999999995 7043.23 399.74799999999993 7043.089999999999 399.643 7042.98C399.52 7042.86 399.37199999999996 7042.79 399.18499999999995 7042.759999999999Z " transform="matrix(1,0,0,1,-389,-7025)"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" aria-hidden="true" version="1.1" viewBox="0 0 20 16" id="27a16744791d921ca1229e172a8a4c3b"><path d="M1338.67 19.6L1338.67 16.400000000000002L1345.3300000000002 22L1338.67 27.6L1338.67 24.400000000000002L1332 24.400000000000002L1332 19.6ZM1340.33 14L1340.33 15.6L1350.33 15.6L1350.33 28.4L1340.33 28.4L1340.33 30L1352 30L1352 14Z " transform="matrix(1,0,0,1,-1332,-14)"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" aria-hidden="true" version="1.1" viewBox="0 0 16 16" id="8cc18f06db89f584a9a8522f018ff661"><path d="M1169.73 14.5924L1169.73 13L1168.27 13L1168.27 14.5924C1166.21 14.9558 1164.6399999999999 16.8309 1164.6399999999999 19.0952L1173.36 19.0952C1173.36 16.8309 1171.79 14.955799999999998 1169.7299999999998 14.592399999999998ZM1176.27 24.4286L1174.09 24.4286L1174.09 21.381C1174.09 20.9604 1173.77 20.619 1173.36 20.619L1164.6399999999999 20.619C1164.2299999999998 20.619 1163.9099999999999 20.9604 1163.9099999999999 21.381L1163.9099999999999 24.4286L1161.7299999999998 24.4286C1161.3299999999997 24.4286 1160.9999999999998 24.7699 1160.9999999999998 25.1905L1160.9999999999998 28.2381C1160.9999999999998 28.659399999999998 1161.3299999999997 29 1161.7299999999998 29L1176.2699999999998 29C1176.6699999999998 29 1176.9999999999998 28.6594 1176.9999999999998 28.2381L1176.9999999999998 25.1905C1176.9999999999998 24.7699 1176.6699999999998 24.4286 1176.2699999999998 24.4286ZM1163.91 27.4762L1162.45 27.4762L1162.45 25.952399999999997L1163.91 25.952399999999997ZM1166.82 27.4762L1165.36 27.4762L1165.36 25.952399999999997L1166.82 25.952399999999997ZM1166.82 23.6667L1165.36 23.6667L1165.36 22.142899999999997L1166.82 22.142899999999997ZM1169.73 27.4762L1168.27 27.4762L1168.27 25.952399999999997L1169.73 25.952399999999997ZM1169.73 23.6667L1168.27 23.6667L1168.27 22.142899999999997L1169.73 22.142899999999997ZM1172.64 27.4762L1171.18 27.4762L1171.18 25.952399999999997L1172.64 25.952399999999997ZM1172.64 23.6667L1171.18 23.6667L1171.18 22.142899999999997L1172.64 22.142899999999997ZM1175.55 27.4762L1174.09 27.4762L1174.09 25.952399999999997L1175.55 25.952399999999997Z " transform="matrix(1,0,0,1,-1161,-13)"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" aria-hidden="true" version="1.1" viewBox="0 0 24 24" id="56e95733353afec5e74a8faaf2d2c2af"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 16.057v-3.057h2.994c-.059 1.143-.212 2.24-.456 3.279-.823-.12-1.674-.188-2.538-.222zm1.957 2.162c-.499 1.33-1.159 2.497-1.957 3.456v-3.62c.666.028 1.319.081 1.957.164zm-1.957-7.219v-3.015c.868-.034 1.721-.103 2.548-.224.238 1.027.389 2.111.446 3.239h-2.994zm0-5.014v-3.661c.806.969 1.471 2.15 1.971 3.496-.642.084-1.3.137-1.971.165zm2.703-3.267c1.237.496 2.354 1.228 3.29 2.146-.642.234-1.311.442-2.019.607-.344-.992-.775-1.91-1.271-2.753zm-7.241 13.56c-.244-1.039-.398-2.136-.456-3.279h2.994v3.057c-.865.034-1.714.102-2.538.222zm2.538 1.776v3.62c-.798-.959-1.458-2.126-1.957-3.456.638-.083 1.291-.136 1.957-.164zm-2.994-7.055c.057-1.128.207-2.212.446-3.239.827.121 1.68.19 2.548.224v3.015h-2.994zm1.024-5.179c.5-1.346 1.165-2.527 1.97-3.496v3.661c-.671-.028-1.329-.081-1.97-.165zm-2.005-.35c-.708-.165-1.377-.373-2.018-.607.937-.918 2.053-1.65 3.29-2.146-.496.844-.927 1.762-1.272 2.753zm-.549 1.918c-.264 1.151-.434 2.36-.492 3.611h-3.933c.165-1.658.739-3.197 1.617-4.518.88.361 1.816.67 2.808.907zm.009 9.262c-.988.236-1.92.542-2.797.9-.89-1.328-1.471-2.879-1.637-4.551h3.934c.058 1.265.231 2.488.5 3.651zm.553 1.917c.342.976.768 1.881 1.257 2.712-1.223-.49-2.326-1.211-3.256-2.115.636-.229 1.299-.435 1.999-.597zm9.924 0c.7.163 1.362.367 1.999.597-.931.903-2.034 1.625-3.257 2.116.489-.832.915-1.737 1.258-2.713zm.553-1.917c.27-1.163.442-2.386.501-3.651h3.934c-.167 1.672-.748 3.223-1.638 4.551-.877-.358-1.81-.664-2.797-.9zm.501-5.651c-.058-1.251-.229-2.46-.492-3.611.992-.237 1.929-.546 2.809-.907.877 1.321 1.451 2.86 1.616 4.518h-3.933z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" aria-hidden="true" version="1.1" viewBox="0 0 20 21" id="e11d7f1942a6675117aa36559b6959cf"><path d="M135.721 597.277V597.277L138.423 600V600V600L135.721 602.724V602.724L130.318 608.1690000000001L127.61700000000002 605.4470000000001L131.115 601.9190000000001H121.44300000000001V598.0680000000001H131.103L127.61600000000001 594.5530000000001L130.318 591.8300000000002ZM122.882 588.322V601.994H119.105V588.3340000000001Z " fill-opacity="1" transform="matrix(1,0,0,1,-119,-588)"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" aria-hidden="true" version="1.1" viewBox="0 0 20 20" id="5a8125a16c0479d2d3e3acad851e2062"><path d="M1424.99 107.4L1419.66 102.105C1420.44 100.884 1420.89 99.4383 1420.89 97.8892C1420.89 93.54 1417.3300000000002 90 1412.95 90C1408.57 90 1405.01 93.54 1405.01 97.89C1405.01 102.241 1408.57 105.781 1412.95 105.781C1414.43 105.781 1415.82 105.375 1417.01 104.67L1422.3799999999999 110ZM1407.97 97.89C1407.97 95.1625 1410.2 92.9416 1412.95 92.9416C1415.7 92.9416 1417.93 95.1617 1417.93 97.89C1417.93 100.619 1415.7 102.839 1412.95 102.839C1410.2 102.839 1407.97 100.619 1407.97 97.89Z " transform="matrix(1,0,0,1,-1405,-90)"/></symbol></svg>
+    <!--[if lte IE 10]>
+      <div class="ma__browser-update" role="alert" style="position: fixed; left: 0px; top: 0px; margin: 0px; width: 100%; z-index: 99999; color: #141414; font-size: 20px; line-height: 24px; font-weight: normal; padding: 0px; background: #f6c51b; border-bottom:1px solid #141414; text-align: left;">
+  <a class="ma__browser-update__link" href="//browser-update.org/update.html" style="padding-right: 30px; display: block; color: #141414;" target="_blank">
+    <span style="display: block; float: left; padding: 10px 18px 10px 8px; width: 100%;">
+      <span style="font-weight: bolder;"><img src="/themes/custom/mass_theme/overrides/images/stateseal-dark.png" width="40px" style="vertical-align: middle; margin-left: 16px; margin-right: 10px; border: 0;" alt="Mass. official state seal" />  Your browser is out of date! </span>
+      <span style="font-weight: normal;">Please <span style="text-decoration: underline;">update your browser</span> for more security, speed and the best experience on our site.</span>
+    </span>
+  </a>
+</div>
+    <![endif]-->
+
+    
+      <div class="dialog-off-canvas-main-canvas" data-off-canvas-main-canvas>
+      
+
+  
+<div class="ma__ajax-pattern js-ajax-site-alerts-jsonapi" data-ma-ajax-endpoint="/jsonapi/node/alert?page[limit]=250&amp;sort=-changed&amp;include=field_target_pages_para_ref,field_alert&amp;filter[status][value]=1&amp;fields[node--alert]=title,changed,entity_url,field_alert_severity,field_alert,field_target_pages_para_ref,field_alert_display&amp;fields[paragraph--emergency_alert]=id,changed,field_emergency_alert_timestamp,field_emergency_alert_message,field_emergency_alert_link,field_emergency_alert_content&amp;fields[paragraph--target_pages]=field_target_content_ref" data-ma-ajax-render-pattern="@organisms/by-template/emergency-alerts.twig">
+</div>
+
+
+
+
+<header id="header" class="ma__header" role="banner">
+  <a href="#main-content" class="ma__header__skip-nav visually-hidden focusable">
+    Skip to main content
+  </a>
+  <div class="ma__header__container">
+    <div class="ma__header__logo">
+      <div class="ma__site-logo">
+  <a href="/" title="Mass.gov home page">
+    <img src="https://www.mass.gov/libraries/mayflower-artifacts/assets/images/stateseal.png" alt="" height="45" />
+    <span>Mass.gov</span>
+  </a>
+</div>
+    </div>
+          <div class="ma__header__search js-header-search-menu">
+          
+<section class="ma__header-search">
+  <form action="https://search.mass.gov/" class="ma__form js-header-search-form">
+    <div role="search" class="ma__suggestions-container js-suggestions-container ma__search-banner__form cse-header-search-form">
+      <div class="visually-hidden js-suggestions-help" role="status"  aria-live="polite"></div>
+      <label for="header-search" class="ma__header-search__label">Search terms</label>
+      <input
+          id="header-search"
+          name="q"
+          class="ma__header-search__input"
+          autocomplete="off"
+          placeholder="Search Mass.gov"
+          data-suggest=""
+          type="text" />
+      <div class="ma__suggestions" data-suggestions=""></div>
+    </div>
+    <button type="submit" class="ma__button-search--secondary">
+      <span>Search</span>
+      <svg aria-hidden="true" focusable="false"><use xlink:href="#5a8125a16c0479d2d3e3acad851e2062"></use></svg>
+    </button>
+  </form>
+</section>
+
+
+
+      </div>
+      </div>
+    <nav class="ma__header__nav" role="navigation" aria-labelledby="main-navigation-heading" id="main-navigation">
+  <div class="ma__header__utility-nav ma__header__utility-nav--wide">
+      <div class="ma__utility-nav js-util-nav">
+  <ul class="ma__utility-nav__items">
+          <li class="ma__utility-nav__item">
+        <div class="ma__utility-nav__translate">
+          <div id="google_translate_element"></div>
+          <div class="ma__utility-nav__translate-icon">
+            <svg aria-hidden="true" focusable="false"><use xlink:href="#56e95733353afec5e74a8faaf2d2c2af"></use></svg>
+          </div>
+        </div>
+      </li>
+              <li class="ma__utility-nav__item js-util-nav-toggle">
+      <button class="ma__utility-nav__link js-util-nav-toggle"
+          aria-label="State Organizations">
+          <svg aria-hidden="true" focusable="false"><use xlink:href="#8cc18f06db89f584a9a8522f018ff661"></use></svg>
+          <span>
+            State Organizations
+          </span>
+        </button>
+        <div aria-hidden="true" class="ma__utility-nav__content js-util-nav-content is-closed">
+          <div class="ma__utility-nav__container">
+            <div class="ma__utility-nav__content-title">
+              <button class="ma__utility-nav__close js-close-util-nav"><span>Close</span><span class="ma__utility-nav__close-icon" aria-hidden="true">+</span></button>
+              <svg aria-hidden="true" focusable="false"><use xlink:href="#8cc18f06db89f584a9a8522f018ff661"></use></svg>
+              <h2>State Organizations</h2>
+            </div>
+            <div class="ma__utility-nav__content-body">
+                                          
+<div class="ma__utility-panel">
+  <div class="ma__utility-panel__description ma__utility-panel__description--full">
+        <div class="ma__rich-text ">
+  
+  
+              <p>The <a href="https://www.mass.gov/state-organization-index">State Organization Index</a> provides an alphabetical listing of government organizations, including commissions, departments, and bureaus.
+</p>      
+  </div>
+  </div>
+  
+  <ul class="ma__utility-panel__items">
+        <li class="ma__utility-panel__item js-clickable">
+      <span class="ma__decorative-link">
+  <a
+    href="https://www.mass.gov/state-a-to-z"
+    class="js-clickable-link"
+    >State Organizations&nbsp;<svg aria-hidden="true" focusable="false"><use xlink:href="#8991ca7e135f70607ed0ec9444b44827"></use></svg></a>
+</span>
+    </li>
+      </ul>
+</div>
+
+                          </div>
+          </div>
+        </div>
+      </li>
+          <li class="ma__utility-nav__item js-util-nav-toggle">
+      <button class="ma__utility-nav__link js-util-nav-toggle"
+          aria-label="Log in to one of Mass.gov&#039;s most frequently accessed services">
+          <svg aria-hidden="true" focusable="false"><use xlink:href="#27a16744791d921ca1229e172a8a4c3b"></use></svg>
+          <span>
+            Log In to...
+          </span>
+        </button>
+        <div aria-hidden="true" class="ma__utility-nav__content js-util-nav-content is-closed">
+          <div class="ma__utility-nav__container">
+            <div class="ma__utility-nav__content-title">
+              <button class="ma__utility-nav__close js-close-util-nav"><span>Close</span><span class="ma__utility-nav__close-icon" aria-hidden="true">+</span></button>
+              <svg aria-hidden="true" focusable="false"><use xlink:href="#27a16744791d921ca1229e172a8a4c3b"></use></svg>
+              <h2>Log In to...</h2>
+            </div>
+            <div class="ma__utility-nav__content-body">
+                                          
+<div class="ma__utility-panel">
+  <div class="ma__utility-panel__description ma__utility-panel__description--full">
+        <div class="ma__rich-text ">
+  
+  
+              <p>Top-requested sites to log in to services provided by the state
+</p>      
+  </div>
+  </div>
+  
+  <ul class="ma__utility-panel__items">
+        <li class="ma__utility-panel__item js-clickable">
+      <span class="ma__decorative-link">
+  <a
+    href="https://sso.hhs.state.ma.us/"
+    class="js-clickable-link"
+    >Virtual Gateway&nbsp;<svg aria-hidden="true" focusable="false"><use xlink:href="#8991ca7e135f70607ed0ec9444b44827"></use></svg></a>
+</span>
+    </li>
+        <li class="ma__utility-panel__item js-clickable">
+      <span class="ma__decorative-link">
+  <a
+    href="https://uionline.detma.org/Claimant/Core/Login.ASPX"
+    class="js-clickable-link"
+    >Unemployment Online&nbsp;<svg aria-hidden="true" focusable="false"><use xlink:href="#8991ca7e135f70607ed0ec9444b44827"></use></svg></a>
+</span>
+    </li>
+        <li class="ma__utility-panel__item js-clickable">
+      <span class="ma__decorative-link">
+  <a
+    href="https://ecse.cse.state.ma.us/ECSE/Login/login.asp"
+    class="js-clickable-link"
+    >Child Support Enforcement&nbsp;<svg aria-hidden="true" focusable="false"><use xlink:href="#8991ca7e135f70607ed0ec9444b44827"></use></svg></a>
+</span>
+    </li>
+      </ul>
+</div>
+
+                          </div>
+          </div>
+        </div>
+      </li>
+      </ul>
+</div>
+
+  </div>
+            
+  <h2 class="visually-hidden" id="main-navigation-heading">Main navigation</h2>
+  
+
+  <div class="ma__header__button-container js-sticky-header">
+    <button class="ma__header__back-button js-close-sub-nav"><span>Back</span></button>
+    <button class="ma__header__menu-button js-header-menu-button">
+      <span>Menu</span><span class="ma__header__menu-icon"></span>
+    </button>
+  </div>
+  <div class="ma__header__nav-container">
+    <div class="ma__header__nav-search">
+      <section class="ma__header-search">
+          
+<section class="ma__header-search">
+  <form action="https://search.mass.gov/" class="ma__form js-header-search-form">
+    <div role="search" class="ma__suggestions-container js-suggestions-container ma__search-banner__form cse-search-form-mobile">
+      <div class="visually-hidden js-suggestions-help" role="status"  aria-live="polite"></div>
+      <label for="header-search" class="ma__header-search__label">Search terms</label>
+      <input
+          id="header-search"
+          name="q"
+          class="ma__header-search__input"
+          autocomplete="off"
+          placeholder="Search Mass.gov"
+          data-suggest=""
+          type="text" />
+      <div class="ma__suggestions" data-suggestions=""></div>
+    </div>
+    <button type="submit" class="ma__button-search--secondary">
+      <span>Search</span>
+      <svg aria-hidden="true" focusable="false"><use xlink:href="#5a8125a16c0479d2d3e3acad851e2062"></use></svg>
+    </button>
+  </form>
+</section>
+
+
+
+      </section>
+    </div>
+    <div class="ma__header__main-nav">
+                    <div class="ma__main-nav">
+  <ul class="ma__main-nav__items js-main-nav" role="menubar">
+                      <li  role="menuitem" class="ma__main-nav__item  has-subnav js-main-nav-toggle" tabindex="-1">
+                  <button id="button1" class="ma__main-nav__top-link" aria-haspopup="true" aria-expanded="false" tabindex="0"><span class="visually-hidden show-label">Show the sub topics of </span>Living</button>
+          <div class="ma__main-nav__subitems js-main-nav-content is-closed">
+            <ul id="menu1" role="menu" aria-labelledby="button1" class="ma__main-nav__container">
+              <li role="menuitem" class="ma__main-nav__subitem"><a href="/topics/living" class="ma__main-nav__link">Living</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/health-social-services" class="ma__main-nav__link">Health &amp; Social Services</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/families-children" class="ma__main-nav__link">Families &amp; Children</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/housing-property" class="ma__main-nav__link">Housing &amp; Property</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/transportation" class="ma__main-nav__link">Transportation</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/legal-justice" class="ma__main-nav__link">Legal &amp; Justice</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/public-safety" class="ma__main-nav__link">Public Safety</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/energy" class="ma__main-nav__link">Energy</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/environment" class="ma__main-nav__link">Environment</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/taxes" class="ma__main-nav__link">Taxes</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/unclaimed-property" class="ma__main-nav__link">Unclaimed Property</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/vital-public-records" class="ma__main-nav__link">Vital &amp; Public Records</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/voting" class="ma__main-nav__link">Voting</a></li>
+                            <li class="ma__main-nav__subitem" role="menuitem">
+                <a href="/topics/living" class="ma__main-nav__link">
+                  <svg aria-hidden="true" focusable="false"><use xlink:href="#e11d7f1942a6675117aa36559b6959cf"></use></svg>
+                  <span>
+                    <span class="visually-hidden">See all topics under </span>
+                    Living
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+              </li>
+                      <li  role="menuitem" class="ma__main-nav__item  has-subnav js-main-nav-toggle" tabindex="-1">
+                  <button id="button2" class="ma__main-nav__top-link" aria-haspopup="true" aria-expanded="false" tabindex="0"><span class="visually-hidden show-label">Show the sub topics of </span>Working</button>
+          <div class="ma__main-nav__subitems js-main-nav-content is-closed">
+            <ul id="menu2" role="menu" aria-labelledby="button2" class="ma__main-nav__container">
+              <li role="menuitem" class="ma__main-nav__subitem"><a href="/topics/working" class="ma__main-nav__link">Working</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/business-resources" class="ma__main-nav__link">Business Resources</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/professional-licenses-permits" class="ma__main-nav__link">Professional Licenses &amp; Permits</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/unemployment" class="ma__main-nav__link">Unemployment</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/finding-a-job" class="ma__main-nav__link">Finding a Job</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/taxes" class="ma__main-nav__link">Taxes</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/workers-rights-safety" class="ma__main-nav__link">Workers&#039; Rights &amp; Safety</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/industry-regulations" class="ma__main-nav__link">Industry Regulations</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/state-employee-resources" class="ma__main-nav__link">For State Employees</a></li>
+                            <li class="ma__main-nav__subitem" role="menuitem">
+                <a href="/topics/working" class="ma__main-nav__link">
+                  <svg aria-hidden="true" focusable="false"><use xlink:href="#e11d7f1942a6675117aa36559b6959cf"></use></svg>
+                  <span>
+                    <span class="visually-hidden">See all topics under </span>
+                    Working
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+              </li>
+                      <li  role="menuitem" class="ma__main-nav__item  has-subnav js-main-nav-toggle" tabindex="-1">
+                  <button id="button3" class="ma__main-nav__top-link" aria-haspopup="true" aria-expanded="false" tabindex="0"><span class="visually-hidden show-label">Show the sub topics of </span>Learning</button>
+          <div class="ma__main-nav__subitems js-main-nav-content is-closed">
+            <ul id="menu3" role="menu" aria-labelledby="button3" class="ma__main-nav__container">
+              <li role="menuitem" class="ma__main-nav__subitem"><a href="/topics/learning" class="ma__main-nav__link">Learning</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/early-childhood-education-care" class="ma__main-nav__link">Early Childhood Education &amp; Care</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/elementary-secondary-schools" class="ma__main-nav__link">Elementary &amp; Secondary Schools</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/higher-education" class="ma__main-nav__link">Higher Education</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/continuing-education" class="ma__main-nav__link">Continuing Education</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/for-educators-administrators" class="ma__main-nav__link">For Educators &amp; Administrators</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/professional-training-career-development" class="ma__main-nav__link">Professional Training &amp; Career Development</a></li>
+                            <li class="ma__main-nav__subitem" role="menuitem">
+                <a href="/topics/learning" class="ma__main-nav__link">
+                  <svg aria-hidden="true" focusable="false"><use xlink:href="#e11d7f1942a6675117aa36559b6959cf"></use></svg>
+                  <span>
+                    <span class="visually-hidden">See all topics under </span>
+                    Learning
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+              </li>
+                      <li  role="menuitem" class="ma__main-nav__item  has-subnav js-main-nav-toggle" tabindex="-1">
+                  <button id="button4" class="ma__main-nav__top-link" aria-haspopup="true" aria-expanded="false" tabindex="0"><span class="visually-hidden show-label">Show the sub topics of </span>Visiting &amp; Exploring</button>
+          <div class="ma__main-nav__subitems js-main-nav-content is-closed">
+            <ul id="menu4" role="menu" aria-labelledby="button4" class="ma__main-nav__container">
+              <li role="menuitem" class="ma__main-nav__subitem"><a href="/topics/exploring-massachusetts" class="ma__main-nav__link">Visiting &amp; Exploring</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/parks-recreation" class="ma__main-nav__link">Parks &amp; Recreation</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/fishing-hunting" class="ma__main-nav__link">Fishing &amp; Hunting</a></li>
+                              <li class="ma__main-nav__subitem"><a href="https://www.mass.gov/topics/historic-sites" class="ma__main-nav__link">Historic Sites</a></li>
+                              <li class="ma__main-nav__subitem"><a href="https://www.mass.gov/topics/arts" class="ma__main-nav__link">Arts</a></li>
+                              <li class="ma__main-nav__subitem"><a href="https://www.mass.gov/topics/family-fun" class="ma__main-nav__link">Family Fun</a></li>
+                              <li class="ma__main-nav__subitem"><a href="https://www.mass.gov/topics/travel-options" class="ma__main-nav__link">Travel Options</a></li>
+                              <li class="ma__main-nav__subitem"><a href="https://www.mass.gov/topics/seasonal-activities" class="ma__main-nav__link">Seasonal Activities</a></li>
+                            <li class="ma__main-nav__subitem" role="menuitem">
+                <a href="/topics/exploring-massachusetts" class="ma__main-nav__link">
+                  <svg aria-hidden="true" focusable="false"><use xlink:href="#e11d7f1942a6675117aa36559b6959cf"></use></svg>
+                  <span>
+                    <span class="visually-hidden">See all topics under </span>
+                    Visiting &amp; Exploring
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+              </li>
+                      <li  role="menuitem" class="ma__main-nav__item  has-subnav js-main-nav-toggle" tabindex="-1">
+                  <button id="button5" class="ma__main-nav__top-link" aria-haspopup="true" aria-expanded="false" tabindex="0"><span class="visually-hidden show-label">Show the sub topics of </span>Your Government</button>
+          <div class="ma__main-nav__subitems js-main-nav-content is-closed">
+            <ul id="menu5" role="menu" aria-labelledby="button5" class="ma__main-nav__container">
+              <li role="menuitem" class="ma__main-nav__subitem"><a href="/topics/your-government" class="ma__main-nav__link">Your Government</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/executive-branch" class="ma__main-nav__link">Executive </a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/constitutionals-independents" class="ma__main-nav__link">Constitutionals &amp; Independents</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/legislative-branch" class="ma__main-nav__link">Legislative</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/judicial-branch" class="ma__main-nav__link">Judicial</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/topics/cities-towns" class="ma__main-nav__link">Cities &amp; Towns</a></li>
+                              <li class="ma__main-nav__subitem"><a href="/state-a-to-z" class="ma__main-nav__link">State Offices &amp; Courts A-Z</a></li>
+                            <li class="ma__main-nav__subitem" role="menuitem">
+                <a href="/topics/your-government" class="ma__main-nav__link">
+                  <svg aria-hidden="true" focusable="false"><use xlink:href="#e11d7f1942a6675117aa36559b6959cf"></use></svg>
+                  <span>
+                    <span class="visually-hidden">See all topics under </span>
+                    Your Government
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+              </li>
+      </ul>
+</div>
+
+          </div>
+    <div class="ma__header__utility-nav ma__header__utility-nav--narrow">
+      <div class="ma__utility-nav js-util-nav">
+  <ul class="ma__utility-nav__items">
+          <li class="ma__utility-nav__item">
+        <div class="ma__utility-nav__translate">
+          <div id="google_translate_element"></div>
+          <div class="ma__utility-nav__translate-icon">
+            <svg aria-hidden="true" focusable="false"><use xlink:href="#56e95733353afec5e74a8faaf2d2c2af"></use></svg>
+          </div>
+        </div>
+      </li>
+              <li class="ma__utility-nav__item js-util-nav-toggle">
+      <button class="ma__utility-nav__link js-util-nav-toggle"
+          aria-label="State Organizations">
+          <svg aria-hidden="true" focusable="false"><use xlink:href="#8cc18f06db89f584a9a8522f018ff661"></use></svg>
+          <span>
+            State Organizations
+          </span>
+        </button>
+        <div aria-hidden="true" class="ma__utility-nav__content js-util-nav-content is-closed">
+          <div class="ma__utility-nav__container">
+            <div class="ma__utility-nav__content-title">
+              <button class="ma__utility-nav__close js-close-util-nav"><span>Close</span><span class="ma__utility-nav__close-icon" aria-hidden="true">+</span></button>
+              <svg aria-hidden="true" focusable="false"><use xlink:href="#8cc18f06db89f584a9a8522f018ff661"></use></svg>
+              <h2>State Organizations</h2>
+            </div>
+            <div class="ma__utility-nav__content-body">
+                                          
+<div class="ma__utility-panel">
+  <div class="ma__utility-panel__description ma__utility-panel__description--full">
+        <div class="ma__rich-text ">
+  
+  
+              <p>The <a href="https://www.mass.gov/state-organization-index">State Organization Index</a> provides an alphabetical listing of government organizations, including commissions, departments, and bureaus.
+</p>      
+  </div>
+  </div>
+  
+  <ul class="ma__utility-panel__items">
+        <li class="ma__utility-panel__item js-clickable">
+      <span class="ma__decorative-link">
+  <a
+    href="https://www.mass.gov/state-a-to-z"
+    class="js-clickable-link"
+    >State Organizations&nbsp;<svg aria-hidden="true" focusable="false"><use xlink:href="#8991ca7e135f70607ed0ec9444b44827"></use></svg></a>
+</span>
+    </li>
+      </ul>
+</div>
+
+                          </div>
+          </div>
+        </div>
+      </li>
+          <li class="ma__utility-nav__item js-util-nav-toggle">
+      <button class="ma__utility-nav__link js-util-nav-toggle"
+          aria-label="Log in to one of Mass.gov&#039;s most frequently accessed services">
+          <svg aria-hidden="true" focusable="false"><use xlink:href="#27a16744791d921ca1229e172a8a4c3b"></use></svg>
+          <span>
+            Log In to...
+          </span>
+        </button>
+        <div aria-hidden="true" class="ma__utility-nav__content js-util-nav-content is-closed">
+          <div class="ma__utility-nav__container">
+            <div class="ma__utility-nav__content-title">
+              <button class="ma__utility-nav__close js-close-util-nav"><span>Close</span><span class="ma__utility-nav__close-icon" aria-hidden="true">+</span></button>
+              <svg aria-hidden="true" focusable="false"><use xlink:href="#27a16744791d921ca1229e172a8a4c3b"></use></svg>
+              <h2>Log In to...</h2>
+            </div>
+            <div class="ma__utility-nav__content-body">
+                                          
+<div class="ma__utility-panel">
+  <div class="ma__utility-panel__description ma__utility-panel__description--full">
+        <div class="ma__rich-text ">
+  
+  
+              <p>Top-requested sites to log in to services provided by the state
+</p>      
+  </div>
+  </div>
+  
+  <ul class="ma__utility-panel__items">
+        <li class="ma__utility-panel__item js-clickable">
+      <span class="ma__decorative-link">
+  <a
+    href="https://sso.hhs.state.ma.us/"
+    class="js-clickable-link"
+    >Virtual Gateway&nbsp;<svg aria-hidden="true" focusable="false"><use xlink:href="#8991ca7e135f70607ed0ec9444b44827"></use></svg></a>
+</span>
+    </li>
+        <li class="ma__utility-panel__item js-clickable">
+      <span class="ma__decorative-link">
+  <a
+    href="https://uionline.detma.org/Claimant/Core/Login.ASPX"
+    class="js-clickable-link"
+    >Unemployment Online&nbsp;<svg aria-hidden="true" focusable="false"><use xlink:href="#8991ca7e135f70607ed0ec9444b44827"></use></svg></a>
+</span>
+    </li>
+        <li class="ma__utility-panel__item js-clickable">
+      <span class="ma__decorative-link">
+  <a
+    href="https://ecse.cse.state.ma.us/ECSE/Login/login.asp"
+    class="js-clickable-link"
+    >Child Support Enforcement&nbsp;<svg aria-hidden="true" focusable="false"><use xlink:href="#8991ca7e135f70607ed0ec9444b44827"></use></svg></a>
+</span>
+    </li>
+      </ul>
+</div>
+
+                          </div>
+          </div>
+        </div>
+      </li>
+      </ul>
+</div>
+
+    </div>
+  </div>
+</nav>
+
+
+  
+<div class="ma__ajax-pattern js-ajax-page-alerts-jsonapi" data-ma-ajax-endpoint="/jsonapi/node/alert?page[limit]=250&amp;sort=-changed&amp;include=field_target_pages_para_ref,field_alert&amp;filter[status][value]=1&amp;fields[node--alert]=title,changed,entity_url,field_alert_severity,field_alert,field_target_pages_para_ref,field_alert_display&amp;fields[paragraph--emergency_alert]=id,changed,field_emergency_alert_timestamp,field_emergency_alert_message,field_emergency_alert_link,field_emergency_alert_content&amp;fields[paragraph--target_pages]=field_target_content_ref" data-ma-ajax-render-pattern="@organisms/by-template/header-alerts.twig">
+</div>
+
+
+
+</header>
+<main role="main" id="main-content" tabindex="-1">      <div data-drupal-messages-fallback class="hidden"></div>
+<main id="main-content" tabindex="-1">
+  <div class="pre-content">
+                  
+  <div class="ma__relationship-indicators">
+  <div class="ma__relationship-indicators--section primary">
+    <span class="ma__relationship-indicators--label">
+      offered by
+    </span>
+    <div class="ma__relationship-indicators--terms">
+            <div class="wrapped-link ma__relationship-indicators--term">
+  <a href="/orgs/department-of-unemployment-assistance" alt="" title="Department of Unemployment Assistance">Department of Unemployment Assistance</a>
+</div>
+
+        <button type="button" class="js-relationship-indicator-button">
+      show <span class="tag-count"></span> <span class="tag-state">more</span
+    </button>
+    </div>
+  </div>
+
+      <div class="ma__relationship-indicators--section secondary">
+      <span class="ma__relationship-indicators--label">
+        related to
+      </span>
+      </span>
+      <div class="ma__relationship-indicators--terms">
+              <div class="wrapped-link ma__relationship-indicators--term">
+  <a href="/guides/guide-to-employer-contributions-to-dua" alt="" title="Guide to employer contributions to DUA">Guide to employer contributions to DUA</a>
+</div>
+
+          <button type="button" class="js-relationship-indicator-button">
+        show <span class="tag-count"></span> <span class="tag-state">more</span>
+      </button>
+      </div>
+    </div>
+  </div>
+  
+
+<section class="ma__page-header">
+    <div class="ma__page-header__content">
+        
+              <h1 class="ma__page-header__title">Learn about unemployment insurance (UI) contributions
+      </h1>
+              <div class="ma__page-header__sub-title">  Employers subject to UI law are required to make quarterly contributions to fund the UI program in Massachusetts. Learn about how the annual UI contribution rate is calculated for newly subject and existing employers.
+</div>
+                </div>
+  
+  </section>
+  </div>
+  <div class="main-content main-content--two">
+    <div class="page-content">
+      
+  
+    <div class="ma__rich-text ">
+  
+  
+            
+      
+  </div>
+  
+    
+
+
+  <div class="ma__rich-text ">
+          
+
+
+
+
+
+
+
+<h2
+  class="ma__comp-heading    "
+    tabindex="-1">  UI contribution rates for newly subject employers
+
+  </h2>
+  
+  
+            <p><span><span>Newly subject employers pay at an assigned rate for the first 3 calendar years. In the fourth year of subjectivity, employers receive a true experience rating using the formula prescribed by law, according to <a href="https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXXI/Chapter151A/Section14">Massachusetts General Laws Chapter 151A, Section 14</a>.</span></span></p>
+
+<h5>Non-construction industry employers</h5>
+
+<ul><li>Newly subject employers in the non-construction industry pay at a rate consistent with a positive account reserve percentage of between 10.5% but less than 11% from the rate schedule currently in effect</li>
+	<li><span><span>The current newly subject employer rate for employers in the non-construction industry is 2.42%, according to </span></span><a href="/doc/ui-tax-rate-schedule/download">UI Tax Rate Schedule E</a><span><span> in effect for 2019 and 2020</span></span></li>
+	<li><span><span>This rate is subject to change any time the rate schedule changes</span></span></li>
+</ul><h5><span><span>Construction industry employers</span></span></h5>
+
+<ul><li><span><span>Newly subject employers in the construction industry (North American Industrial Classification System code 23) pay at a rate consistent with the average rate of employers in this industry</span></span></li>
+	<li><span><span>The current newly subject employer rate in the construction industry is 7.37% for 2020</span></span></li>
+	<li><span><span>This rate is subject to change annually</span></span></li>
+</ul>
+
+    
+  </div>
+
+
+    <section class="ma__form-downloads">
+          
+  
+
+
+
+
+
+
+<h3
+  class="ma__comp-heading    "
+    tabindex="-1">Additional Resources
+  <span class="visually-hidden"> for </span></h3>
+      <div class="ma__form-downloads__links">
+          
+        
+<div class="ma__download-link ">
+      <div class="ma__download-link__icon">
+      <svg aria-hidden="true" focusable="false"><use xlink:href="#08b07eb0f896963fa2703861933b865e"></use></svg>
+    </div>
+    <div class="ma__download-link__title">
+          <a
+        class="ma__download-link__file-link"
+        href="https://www.mass.gov/doc/ui-tax-rate-schedule/download">
+        <span class="visually-hidden">Open PDF file, 7.5 KB, for</span>
+          UI Tax Rate Schedule
+      </a>
+              <span class="ma__download-link__file-spec">(PDF 7.5 KB)</span>
+            </div>
+  </div>
+
+
+
+      </div>
+  </section>
+
+
+
+  
+
+
+  <div class="ma__rich-text ">
+          
+
+
+
+
+
+
+
+<h2
+  class="ma__comp-heading    "
+    tabindex="-1">  UI contribution rates for established employers
+
+  </h2>
+  
+  
+            <p>After the first 3 years at a new employer rate, the Department of Unemployment Assistance (DUA) calculates an experience rating based on the reserve ratio method:</p>
+
+<ol><li>A reserve percentage is calculated by dividing the employer's account balance by the 3-year wage average (subject to UI tax).</li>
+	<li>The reserve percentage is applied to the annual rate schedule currently in effect, and the experience rate is determined for the coming year.</li>
+</ol><p>UI contributions owed are based on wages paid. Once an experience rate is assigned, that rate is applied to the wage base in effect during that year. The taxable wage base is $15,000 in wages per employee per calendar year in 2019 and 2020.</p>
+
+    
+  </div>
+
+
+
+
+
+
+    </div>
+    <aside class="sidebar ">
+          
+  
+<section class="ma__contact-list ">
+  
+          
+
+
+
+
+
+
+
+<h2
+  class="ma__comp-heading   ma__comp-heading--sidebar "
+    tabindex="-1">Contact
+  </h2>
+      
+  
+  
+          
+                
+            
+
+<section
+  class="ma__contact-us js-accordion  ">
+
+                  
+<h3 class="ma__column-heading">
+      Department of Unemployment Assistance
+  </h3>
+              
+                                                <div class="ma__contact-group">
+          <h4 class="ma__contact-group__name">
+    <svg aria-hidden="true" focusable="false"><use xlink:href="#1f0d1d28f3e1f6cf16a18496638e41a6"></use></svg>
+      <span>Phone</span>
+    </h4>
+                        
+    
+<div class="ma__contact-group__item">
+      <span class="ma__contact-group__label" id="linkContext-2126353479">Employer/TPA Customer Service Line</span>
+  
+        <a
+      href="tel:6176265075"
+      class="ma__content-link ma__content-link--phone">
+      <span class="visually-hidden">Call Department of Unemployment Assistance, Employer/TPA Customer Service Line at </span>(617) 626-5075</a>
+
+   </div>
+
+                    
+    
+<div class="ma__contact-group__item">
+  
+        <a
+      href="tel:1"
+      class="ma__content-link ma__content-link--phone">
+      <span class="visually-hidden">Call Department of Unemployment Assistance at </span>Option 1</a>
+
+   </div>
+
+  <p class="ma__contact-group__details">Password resets and account users</p>
+                    
+    
+<div class="ma__contact-group__item">
+  
+        <a
+      href="tel:2"
+      class="ma__content-link ma__content-link--phone">
+      <span class="visually-hidden">Call Department of Unemployment Assistance at </span>Option 2</a>
+
+   </div>
+
+  <p class="ma__contact-group__details">EMAC Supplement Program and details of the EMAC Supplement liability determination</p>
+                    
+    
+<div class="ma__contact-group__item">
+  
+        <a
+      href="tel:3"
+      class="ma__content-link ma__content-link--phone">
+      <span class="visually-hidden">Call Department of Unemployment Assistance at </span>Option 3</a>
+
+   </div>
+
+  <p class="ma__contact-group__details">Employer Liability</p>
+                    
+    
+<div class="ma__contact-group__item">
+  
+        <a
+      href="tel:4"
+      class="ma__content-link ma__content-link--phone">
+      <span class="visually-hidden">Call Department of Unemployment Assistance at </span>Option 4</a>
+
+   </div>
+
+  <p class="ma__contact-group__details">Revenue collections and enforcement, certificate of compliance</p>
+                    
+    
+<div class="ma__contact-group__item">
+  
+        <a
+      href="tel:5"
+      class="ma__content-link ma__content-link--phone">
+      <span class="visually-hidden">Call Department of Unemployment Assistance at </span>Option 5</a>
+
+   </div>
+
+  <p class="ma__contact-group__details">Benefit charges protest and submission</p>
+                    
+    
+<div class="ma__contact-group__item">
+  
+        <a
+      href="tel:6"
+      class="ma__content-link ma__content-link--phone">
+      <span class="visually-hidden">Call Department of Unemployment Assistance at </span>Option 6</a>
+
+   </div>
+
+  <p class="ma__contact-group__details">All others, including Business Transfer, Audit, Employment and wage reporting, Rate information</p>
+      </div>
+                            <div class="ma__contact-group">
+          <h4 class="ma__contact-group__name">
+    <svg aria-hidden="true" focusable="false"><use xlink:href="#35a1248566a855cbfb287c47b1da31d2"></use></svg>
+      <span>Online</span>
+    </h4>
+                        
+    
+<div class="ma__contact-group__item">
+      <span class="ma__contact-group__label" id="linkContext-1738206019">To access UI Online from a computer:</span>
+  
+            <span class="ma__decorative-link">
+  <a
+    href="https://uionline.detma.org/Employer/Core/Login.ASPX"
+    class="js-clickable-link"
+    >Log in as an employer&nbsp;<svg aria-hidden="true" focusable="false"><use xlink:href="#8991ca7e135f70607ed0ec9444b44827"></use></svg></a>
+</span>
+      </div>
+
+                    
+    
+<div class="ma__contact-group__item">
+  
+            <span class="ma__decorative-link">
+  <a
+    href="https://uionline.detma.org/Agent/Core/Login.ASPX"
+    class="js-clickable-link"
+    >Log in as a TPA&nbsp;<svg aria-hidden="true" focusable="false"><use xlink:href="#8991ca7e135f70607ed0ec9444b44827"></use></svg></a>
+</span>
+      </div>
+
+                    
+    
+<div class="ma__contact-group__item">
+  
+            <span class="ma__decorative-link">
+  <a
+    href="/service-details/ui-online-computer-requirements"
+    class="js-clickable-link"
+    >UI Online computer requirements&nbsp;<svg aria-hidden="true" focusable="false"><use xlink:href="#8991ca7e135f70607ed0ec9444b44827"></use></svg></a>
+</span>
+      </div>
+
+      </div>
+              
+                      <div class="ma__contact-us__extra js-accordion-content">
+                                                  <div class="ma__contact-group">
+                        
+    
+<div class="ma__contact-group__item">
+  
+            <span class="ma__decorative-link">
+  <a
+    href="/orgs/department-of-unemployment-assistance"
+    class="js-clickable-link"
+    >Learn more about this organization&nbsp;<svg aria-hidden="true" focusable="false"><use xlink:href="#8991ca7e135f70607ed0ec9444b44827"></use></svg></a>
+</span>
+      </div>
+
+      </div>
+                              </div>
+        <div class="ma__contact-us__expand">
+          <button type="button" class="js-accordion-link">
+            <span>more</span><span>less</span> contact info
+          </button>
+        </div>
+            </section>
+
+      </section>
+
+    
+
+<section class="ma__link-list ">
+          
+
+
+
+
+
+
+
+<h2
+  class="ma__comp-heading   ma__comp-heading--sidebar "
+    tabindex="-1">Related
+  </h2>
+  
+  
+  <div class="ma__link-list__container">
+              <ul class="ma__link-list__items ">
+                  <li class="ma__link-list__item">
+        
+<span class="ma__decorative-link">
+  <a
+    href="/service-details/employers-subject-to-unemployment-insurance-ui-contributions"
+    class="js-clickable-link"
+    >Employers subject to unemployment insurance (UI) contributions&nbsp;<svg aria-hidden="true" focusable="false"><use xlink:href="#8991ca7e135f70607ed0ec9444b44827"></use></svg></a>
+</span>
+
+      </li>
+          <li class="ma__link-list__item">
+        
+<span class="ma__decorative-link">
+  <a
+    href="/how-to/pay-unemployment-insurance-contributions-to-dua"
+    class="js-clickable-link"
+    >Pay unemployment insurance contributions to DUA&nbsp;<svg aria-hidden="true" focusable="false"><use xlink:href="#8991ca7e135f70607ed0ec9444b44827"></use></svg></a>
+</span>
+
+      </li>
+          <li class="ma__link-list__item">
+        
+<span class="ma__decorative-link">
+  <a
+    href="/how-to/view-annual-rate-notice"
+    class="js-clickable-link"
+    >View annual rate notice&nbsp;<svg aria-hidden="true" focusable="false"><use xlink:href="#8991ca7e135f70607ed0ec9444b44827"></use></svg></a>
+</span>
+
+      </li>
+            </ul>
+      </div>
+  </section>
+
+    </aside>
+  </div>
+  <div class="post-content">
+      
+    <div class="feedback-steps">
+  <span id="feedback"></span>
+  <div id="feedback-step-1" class="feedback-step" data-feedback-next="feedback-step-2">
+    <div class="ma__mass-feedback-form">
+  <h2 class="visually-hidden">Feedback</h2>
+  <form class="ma__mass-feedback-form__form" method="post" novalidate action="https://www.formstack.com/forms/index.php" id="2521317">
+    <fieldset class="ma_feedback-fieldset feedback-load" role="radiogroup" aria-required="true">
+      <legend>
+        Did you find what you were looking for on this webpage? <span aria-hidden="true">*</span>
+      </legend>
+
+                  <div class="ma__input-group ">
+     <div class="ma__input-group__items ma__input-group__items--inline">
+                  <div class="ma__input-group__item">
+                    
+<span class="ma__input-radio">
+  <input name="field47054416" type="radio" value="Yes" id="field47054416_1"  required="required">
+  <label class="ma__input-radio__label" for="field47054416_1"><span>Yes</span></label>
+</span>
+        </div>
+              <div class="ma__input-group__item">
+                    
+<span class="ma__input-radio">
+  <input name="field47054416" type="radio" value="No" id="field47054416_2"  required="required">
+  <label class="ma__input-radio__label" for="field47054416_2"><span>No</span></label>
+</span>
+        </div>
+                </div>
+</div>
+    </fieldset>
+
+    <div class="ma__mass-feedback-form__fields">
+      <fieldset class="ma_feedback-fieldset">
+        <legend class="feedback-response feedback-positive">
+          Do you have anything else to tell us?
+        </legend>
+
+        <legend class="feedback-response feedback-negative">
+          Please tell us what you were looking for. <span aria-hidden="true">*</span>
+        </legend>
+
+        <p>We will use this information to improve the site.</p>
+
+                <div class="feedback-response feedback-positive">
+                      <label for="input-type-textarea"
+  class="ma__label ma__label--optional ma__label--hidden">Text Area</label>
+<textarea
+  class=""
+  name="field52940022"
+  id="field52940022"
+  data-type=""
+      maxlength="5000"
+     /></textarea>
+        </div>
+        <div class="feedback-response feedback-negative">
+                      <label for="input-type-textarea"
+  class="ma__label ma__label--optional ma__label--hidden">Text Area</label>
+<textarea
+  class=""
+  name="field47054414"
+  id="field47054414"
+  data-type=""
+      maxlength="5000"
+     /></textarea>
+        </div>
+
+                <label 
+  for="GUID2738572489"
+  aria-labelledby="GUID2738572489"
+  class="ma__helper-text">Do not include sensitive information, such as Social Security or bank account numbers.</label>
+
+                <div class="ma__mass-feedback-form__form--user-response feedback-response feedback-negative">
+          <legend>
+            Your feedback will not receive a response.
+                        <a class="ma__content-link--chevron form--no-response">Why? </a>          </legend>
+
+          <p class="no-response-info">This form only gathers feedback about the website.</p>
+          
+        </div>
+        
+      </fieldset>
+    </div>
+
+    <fieldset class="ma_feedback-fieldset ma__mass-feedback-form__form--submit-wrapper">
+      <input id="" class="submitButton ma__button ma__button--small" type="submit" value="Send Feedback" />
+    </fieldset>
+
+          <input type="hidden" id="field47056299" name="field47056299" value="https://www.mass.gov/service-details/learn-about-unemployment-insurance-ui-contributions" class="fsField" />
+          <input type="hidden" id="field58154059" name="field58154059" value="entityId" class="fsField data-layer-substitute" />
+          <input type="hidden" id="field57432673" name="field57432673" value="entityId" class="fsField data-layer-substitute" />
+          <input type="hidden" id="field68798989" name="field68798989" value="uniqueId" class="fsField unique-id-substitute" />
+          <input type="hidden" id="form2521317" name="form" value="2521317" class="" />
+          <input type="hidden" id="viewkeyvx39GBYJhi" name="viewkey" value="vx39GBYJhi" class="" />
+          <input type="hidden" id="hidden_fields2521317" name="hidden_fields" value="" class="" />
+          <input type="hidden" id="submit2521317" name="_submit" value="1" class="" />
+          <input type="hidden" id="style_version2521317" name="style_version" value="3" class="" />
+          <input type="hidden" id="viewparam" name="viewparam" value="524744" class="" />
+      </form>
+</div>
+  </div>
+  <div id="feedback-step-2" class="feedback-step hidden" data-feedback-next="feedback-step-3">
+            <div class="ma__mass-feedback-form ma__mass-feedback-form--success" id="feedback-success" data-mass-feedback-form>
+<form class="ma__mass-feedback-form__form" method="post" novalidate="" action="#" class="" id="">
+  <legend>Thanks, your message has been sent to Department of Unemployment Assistance!</legend>
+    <p class="">Would you like to provide additional feedback to help improve Mass.gov?</p>
+
+  <fieldset class="ma__mass-feedback-form__form--submit-wrapper">
+    <input id="" class="submitButton ma__button ma__button--small" type="submit" value="Start Survey" />
+  </fieldset>
+  </form>
+</div>
+  </div>
+  <div id="feedback-step-3" class="feedback-step hidden" data-feedback-next="feedback-step-4">
+    <div class="ma__mass-feedback-form" id="feedback" data-mass-feedback-form>
+  <h2 class="visually-hidden">Feedback</h2>
+  
+  <form class="ma__mass-feedback-form__form" method="post" novalidate="" action="https://massgov.formstack.com/forms/index.php" id="3184363">
+    <fieldset class="ma_feedback-fieldset">
+      <legend>Tell us more about your experience</legend>
+      <p>How much do you agree with the following statements?</p>
+
+      <style>
+  .ma__radio-scale__items::before,
+  .ma__radio-scale::before {
+    content: "Strongly Disagree";
+  }
+
+  .ma__radio-scale__items::after,
+  .ma__radio-scale::after {
+    content: "Strongly Agree";
+  }
+</style>
+
+<fieldset class="ma__radio-scale-groups">
+    <div class="ma__radio-scale__items" >
+      <div class="ma__radio-scale__item">
+      <fieldset class="ma__radio-scale" id="field68557157">
+  <legend class="ma__radio-scale__legend">This page is helpful.</legend>
+  <div class="ma__radio-scale__radios fieldset-content">
+      <label class="ma__radio-scale__label" for="field68557157_1">
+      <input type="radio" 
+      class="ma__radio-scale__radio"
+      id="field68557157_1" 
+      name="field68557157" 
+      value="1">
+      <span class="ma__radio-scale__text">1</span>
+    </label>
+  
+      <label class="ma__radio-scale__label" for="field68557157_2">
+      <input type="radio" 
+      class="ma__radio-scale__radio"
+      id="field68557157_2" 
+      name="field68557157" 
+      value="2">
+      <span class="ma__radio-scale__text">2</span>
+    </label>
+  
+      <label class="ma__radio-scale__label" for="field68557157_3">
+      <input type="radio" 
+      class="ma__radio-scale__radio"
+      id="field68557157_3" 
+      name="field68557157" 
+      value="3">
+      <span class="ma__radio-scale__text">3</span>
+    </label>
+  
+      <label class="ma__radio-scale__label" for="field68557157_4">
+      <input type="radio" 
+      class="ma__radio-scale__radio"
+      id="field68557157_4" 
+      name="field68557157" 
+      value="4">
+      <span class="ma__radio-scale__text">4</span>
+    </label>
+  
+      <label class="ma__radio-scale__label" for="field68557157_5">
+      <input type="radio" 
+      class="ma__radio-scale__radio"
+      id="field68557157_5" 
+      name="field68557157" 
+      value="5">
+      <span class="ma__radio-scale__text">5</span>
+    </label>
+  
+    </div>
+</fieldset>
+    </div>
+      <div class="ma__radio-scale__item">
+      <fieldset class="ma__radio-scale" id="field68557204">
+  <legend class="ma__radio-scale__legend">This page is easy to use.</legend>
+  <div class="ma__radio-scale__radios fieldset-content">
+      <label class="ma__radio-scale__label" for="field68557204_1">
+      <input type="radio" 
+      class="ma__radio-scale__radio"
+      id="field68557204_1" 
+      name="field68557204" 
+      value="1">
+      <span class="ma__radio-scale__text">1</span>
+    </label>
+  
+      <label class="ma__radio-scale__label" for="field68557204_2">
+      <input type="radio" 
+      class="ma__radio-scale__radio"
+      id="field68557204_2" 
+      name="field68557204" 
+      value="2">
+      <span class="ma__radio-scale__text">2</span>
+    </label>
+  
+      <label class="ma__radio-scale__label" for="field68557204_3">
+      <input type="radio" 
+      class="ma__radio-scale__radio"
+      id="field68557204_3" 
+      name="field68557204" 
+      value="3">
+      <span class="ma__radio-scale__text">3</span>
+    </label>
+  
+      <label class="ma__radio-scale__label" for="field68557204_4">
+      <input type="radio" 
+      class="ma__radio-scale__radio"
+      id="field68557204_4" 
+      name="field68557204" 
+      value="4">
+      <span class="ma__radio-scale__text">4</span>
+    </label>
+  
+      <label class="ma__radio-scale__label" for="field68557204_5">
+      <input type="radio" 
+      class="ma__radio-scale__radio"
+      id="field68557204_5" 
+      name="field68557204" 
+      value="5">
+      <span class="ma__radio-scale__text">5</span>
+    </label>
+  
+    </div>
+</fieldset>
+    </div>
+      <div class="ma__radio-scale__item">
+      <fieldset class="ma__radio-scale" id="field68557235">
+  <legend class="ma__radio-scale__legend">I am confident that I will find the information that I need.</legend>
+  <div class="ma__radio-scale__radios fieldset-content">
+      <label class="ma__radio-scale__label" for="field68557235_1">
+      <input type="radio" 
+      class="ma__radio-scale__radio"
+      id="field68557235_1" 
+      name="field68557235" 
+      value="1">
+      <span class="ma__radio-scale__text">1</span>
+    </label>
+  
+      <label class="ma__radio-scale__label" for="field68557235_2">
+      <input type="radio" 
+      class="ma__radio-scale__radio"
+      id="field68557235_2" 
+      name="field68557235" 
+      value="2">
+      <span class="ma__radio-scale__text">2</span>
+    </label>
+  
+      <label class="ma__radio-scale__label" for="field68557235_3">
+      <input type="radio" 
+      class="ma__radio-scale__radio"
+      id="field68557235_3" 
+      name="field68557235" 
+      value="3">
+      <span class="ma__radio-scale__text">3</span>
+    </label>
+  
+      <label class="ma__radio-scale__label" for="field68557235_4">
+      <input type="radio" 
+      class="ma__radio-scale__radio"
+      id="field68557235_4" 
+      name="field68557235" 
+      value="4">
+      <span class="ma__radio-scale__text">4</span>
+    </label>
+  
+      <label class="ma__radio-scale__label" for="field68557235_5">
+      <input type="radio" 
+      class="ma__radio-scale__radio"
+      id="field68557235_5" 
+      name="field68557235" 
+      value="5">
+      <span class="ma__radio-scale__text">5</span>
+    </label>
+  
+    </div>
+</fieldset>
+    </div>
+    </div>
+</fieldset>
+    </fieldset>
+
+    <fieldset class="ma_feedback-fieldset">
+      <legend>What did you come here to do today?</legend>
+
+              <label for="input-type-textarea"
+  class="ma__label ma__label--optional ma__label--hidden">Text Area</label>
+<textarea
+  class=""
+  name="field68557240"
+  id="field68557240"
+  data-type=""
+      maxlength="500"
+     /></textarea>
+    </fieldset>
+
+    <fieldset class="ma_feedback-fieldset">
+      <legend>Are you using Mass.gov for professional or personal reasons?</legend>
+
+            <div class="ma__input-group ">
+     <div class="ma__input-group__items ">
+                  <div class="ma__input-group__item">
+                    
+<span class="ma__input-radio">
+  <input name="field68557373" type="radio" value="Personal" id="field68557373_1"  required="required">
+  <label class="ma__input-radio__label" for="field68557373_1"><span>Personal</span></label>
+</span>
+        </div>
+              <div class="ma__input-group__item">
+                    
+<span class="ma__input-radio">
+  <input name="field68557373" type="radio" value="Professional" id="field68557373_2"  required="required">
+  <label class="ma__input-radio__label" for="field68557373_2"><span>Professional</span></label>
+</span>
+        </div>
+                </div>
+</div>
+    </fieldset>
+
+    <fieldset class="ma_feedback-fieldset">
+      <legend>What other feedback do you have about Mass.gov? (Optional)</legend>
+
+              <label for="input-type-textarea"
+  class="ma__label ma__label--optional ma__label--hidden">Text Area</label>
+<textarea
+  class=""
+  name="field68557414"
+  id="field68557414"
+  data-type=""
+      maxlength="1000"
+     /></textarea>
+    </fieldset>
+
+    <fieldset class="ma_feedback-fieldset">
+      <legend>If we have additional questions about your feedback, can we contact you? If so, enter your email address below. (Optional)</legend>
+
+              <label 
+  for="field68557501"
+  class="ma__label ma__label--optional ma__label--hidden">Email</label>
+<input 
+  class="ma__input " 
+  name="field68557501" 
+  id="field68557501" 
+  type="email" 
+  placeholder="" 
+  data-type="email"
+          style="width: 375px" 
+     />
+    </fieldset>
+
+    <fieldset class="ma_feedback-fieldset">
+      <input id="" class="submitButton ma__button ma__button--small" type="submit" value="Submit" />
+    </fieldset>
+
+          <input type="hidden" id="field68557708" name="field68557708" value="uniqueId" class="fsField unique-id-substitute" />
+          <input type="hidden" id="form3184363" name="form" value="3184363" class="" />
+          <input type="hidden" id="viewkeymLaeYhDMyl" name="viewkey" value="mLaeYhDMyl" class="" />
+          <input type="hidden" id="hidden_fields3184363" name="hidden_fields" value="" class="" />
+          <input type="hidden" id="submit3184363" name="_submit" value="1" class="" />
+          <input type="hidden" id="style_version3184363" name="style_version" value="3" class="" />
+          <input type="hidden" id="viewparam524744" name="viewparam" value="524744" class="" />
+      </form>
+</div>
+  </div>
+  <div id="feedback-step-4" class="feedback-step hidden">
+    <div class="ma__mass-feedback-form thank-you-panel">
+  <legend>Thanks, your survey has been submitted to the Mass.gov team!</legend>
+  <p>If you would like to continue helping us improve Mass.gov, join our user panel to test new features for the site.</p>
+  <span class="ma__decorative-link">
+    <a href="https://www.mass.gov/user-panel?utm_source=survey">Join user panel&nbsp;<svg aria-hidden="true" focusable="false"><use xlink:href="#8991ca7e135f70607ed0ec9444b44827"></use></svg></a>
+  </span>
+</div>
+  </div>
+</div>
+
+
+  </div>
+  </main>
+
+
+
+    
+</main>
+  <footer class="ma__footer js-footer" id="footer" role="contentinfo">
+  <div class="ma__footer__container">
+        
+      <section class="ma__footer__info">
+      <div class="ma__footer__logo">
+        <a href="/" title="Mass.gov home page">
+          <img src="https://www.mass.gov/libraries/mayflower-artifacts/assets/images/stateseal.png" alt="Massachusetts State Seal" width="100" height="100" />
+        </a>
+      </div>
+      <div class="ma__footer__social">
+                  <section class="ma__social-links">
+        <ul class="ma__social-links__items">
+              <li class="ma__social-links__item">
+          <a href="https://www.facebook.com/massgov" class="ma__social-links__link js-social-share" data-social-share="facebook">
+            <span class="visually-hidden">Follow Mass.gov on Facebook</span>
+            <svg aria-hidden="true" focusable="false"><use xlink:href="#9e699f2e8303da021db48900ae2b534e"></use></svg>
+          </a>
+        </li>
+              <li class="ma__social-links__item">
+          <a href="https://twitter.com/massgov" class="ma__social-links__link js-social-share" data-social-share="twitter">
+            <span class="visually-hidden">Follow Mass.gov on Twitter</span>
+            <svg aria-hidden="true" focusable="false"><use xlink:href="#790867d4977e750792617a600bc8e9db"></use></svg>
+          </a>
+        </li>
+              <li class="ma__social-links__item">
+          <a href="https://www.linkedin.com/company/commonwealth-of-massachusetts" class="ma__social-links__link js-social-share" data-social-share="linkedin">
+            <span class="visually-hidden">Follow Mass.gov on LinkedIn</span>
+            <svg aria-hidden="true" focusable="false"><use xlink:href="#092594d7a75b3350310a960d5a1192af"></use></svg>
+          </a>
+        </li>
+              <li class="ma__social-links__item">
+          <a href="https://www.youtube.com/user/massgov" class="ma__social-links__link js-social-share" data-social-share="youtube">
+            <span class="visually-hidden">Follow Mass.gov on Youtube</span>
+            <svg aria-hidden="true" focusable="false"><use xlink:href="#a57ca36606fdc2a32feb49d16592d004"></use></svg>
+          </a>
+        </li>
+              <li class="ma__social-links__item">
+          <a href="https://www.instagram.com/massgov/" class="ma__social-links__link js-social-share" data-social-share="instagram">
+            <span class="visually-hidden">Follow Mass.gov on Instagram</span>
+            <svg aria-hidden="true" focusable="false"><use xlink:href="#a69837d03542969d77b2c42213053eec"></use></svg>
+          </a>
+        </li>
+          </ul>
+  </section>
+      </div>
+      <div class="ma__footer__copyright">
+        <p class="ma__footer__copyright--date">&copy; 2020 Commonwealth of Massachusetts.</p>
+        <p>Mass.gov&#x00AE; is a registered service mark of the Commonwealth of Massachusetts.</p>
+        <a href="/privacypolicy">Mass.gov Privacy Policy</a>
+      </div>
+    </section>
+         
+  <div class="ma__footer__nav">
+    <section class="ma__footer-links">
+      <nav role="navigation" aria-labelledby="block-footer1-menu" id="block-footer1">
+            
+  <h2 class="visually-hidden" id="block-footer1-menu">Footer Primary Links</h2>
+  
+
+        
+              <ul class="ma__footer-links__items">
+              <li class="ma__footer-links__item">
+	<a href="/topics/living" class="ma__footer-links__link" data-drupal-link-system-path="node/22431">Living</a>
+	      </li>
+          <li class="ma__footer-links__item">
+	<a href="/topics/working" class="ma__footer-links__link" data-drupal-link-system-path="node/22446">Working</a>
+	      </li>
+          <li class="ma__footer-links__item">
+	<a href="/topics/learning" class="ma__footer-links__link" data-drupal-link-system-path="node/22551">Learning</a>
+	      </li>
+          <li class="ma__footer-links__item">
+	<a href="/topics/exploring-massachusetts" class="ma__footer-links__link" data-drupal-link-system-path="node/22536">Visiting &amp; Exploring</a>
+	      </li>
+          <li class="ma__footer-links__item">
+	<a href="/topics/your-government" class="ma__footer-links__link" data-drupal-link-system-path="node/14636">Your Government</a>
+	      </li>
+        </ul>
+  
+
+
+  </nav>
+<nav role="navigation" aria-labelledby="block-footer2-menu" id="block-footer2">
+            
+  <h2 class="visually-hidden" id="block-footer2-menu">Footer Secondary Links</h2>
+  
+
+        
+              <ul class="ma__footer-links__items">
+              <li class="ma__footer-links__item">
+	<a href="/site-policies" class="ma__footer-links__link" data-drupal-link-system-path="node/3566">Site Policies</a>
+	      </li>
+          <li class="ma__footer-links__item">
+	<a href="/topics/public-records-requests" class="ma__footer-links__link" data-drupal-link-system-path="node/57366">Public Records Requests</a>
+	      </li>
+        </ul>
+  
+
+
+  </nav>
+
+    </section>
+  </div>
+
+    </div>
+  </footer>
+  <div class="ma__fixed-feedback-button">
+  <a href="#feedback">Feedback</a>
+</div> 
+  </div>
+
+    
+
+        <script>
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'ar,es,fr,ht,it,km,ko,pl,pt,ru,vi,zh-CN', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+        document.querySelector('#google_translate_element') !== null ? document.querySelector('#google_translate_element').classList.add('has-rendered') : '';
+      }
+      (function() {
+        var script = document.createElement('script');
+        script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+        script.async = true;
+        element = document.getElementsByTagName('head')[0];
+        element.appendChild(script);
+      })();
+    </script>
+    <script type="application/json" data-drupal-selector="drupal-settings-json">{"mayflower":{"namespaces":{"@base":"\/libraries\/mayflower-artifacts\/twig\/00-base\/","@atoms":"\/libraries\/mayflower-artifacts\/twig\/01-atoms\/","@molecules":"\/libraries\/mayflower-artifacts\/twig\/02-molecules\/","@organisms":"\/libraries\/mayflower-artifacts\/twig\/03-organisms\/","@templates":"\/libraries\/mayflower-artifacts\/twig\/04-templates\/","@pages":"\/libraries\/mayflower-artifacts\/twig\/05-pages\/","@meta":"\/libraries\/mayflower-artifacts\/twig\/07-meta\/"},"assets":"\/libraries\/mayflower-artifacts\/assets","utcOffsetString":"-05:00"},"path":{"baseUrl":"\/","scriptPath":null,"pathPrefix":"","currentPath":"node\/377371","currentPathIsAdmin":false,"isFront":false,"currentLanguage":"en"},"pluralDelimiter":"\u0003","dataLayer":{"defaultLang":"en","languages":{"en":{"id":"en","name":"English","direction":"ltr","weight":0}}},"user":{"uid":0,"permissionsHash":"6acb81958910e27b6479a04e826610e213e60f99ed19bae8eee9f8da10cd8713"}}</script>
+<script src="/files/js/js_ayPgMZG3tCzgOb98qsWYFIts6gI3cbNqyUbNRTzJc4c.js"></script>
+
+  <script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"23b062ec87","applicationID":"46704875","transactionName":"bgcGbUZVXkMCUEZcXldNJ0xHQF9dTFZcQVhNG0pXW1BVHgBSXFpfUAEFVQ5HVUIVWlFQbl0HEFhdWEM=","queueTime":0,"applicationTime":398,"atts":"QkARGw5PTRxBUhAPSkQf","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+</html>

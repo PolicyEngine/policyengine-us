@@ -1,15 +1,37 @@
-description: Employer-side unemployment insurance taxable wage base for Oregon.
+description: Oregon limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 52_800
+  2018-01-01: 39_300
+  2019-01-01: 40_600
+  2020-01-01: 42_100
+  2021-01-01: 43_800
+  2022-01-01: 47_700
+  2023-01-01: 50_900
+  2024-01-01: 52_800
+  2025-01-01: 54_300
+  2026-01-01: 56_700
 
 metadata:
   period: year
   unit: currency-USD
   label: Oregon unemployment taxable wage base
   reference:
-    - title: Oregon Revised Statutes Section 657.095
+    - title: Oregon Revised Statutes Section 657.095, taxable wages
       href: https://www.oregonlegislature.gov/bills_laws/ors/ors657.html
-    - title: Oregon Employment Department employer news December 11 2025
-      href: https://www.oregon.gov/employ/Businesses/Documents/Employer%20News%20Archived%20issues/Employer%20News%2012.11.2025.pdf#page=1
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=47
+    - title: Oregon Department of Revenue, Oregon Combined Payroll Tax Report 2018 (taxable wage base)
+      href: https://www.oregon.gov/dor/forms/FormsPubs/combined-payroll_211-155-2_2018.pdf#page=5
+    - title: Oregon Department of Revenue, Oregon Combined Payroll Tax Report 2019 (taxable wage base)
+      href: https://www.oregon.gov/dor/forms/FormsPubs/combined-payroll_211-155-2_2019.pdf#page=5
+    - title: Oregon Department of Revenue, Oregon Combined Payroll Tax Report 2020 (taxable wage base)
+      href: https://www.oregon.gov/dor/forms/FormsPubs/combined-payroll_211-155-2_2020.pdf#page=6
+    - title: Oregon Department of Revenue, Oregon Combined Payroll Tax Report 2021 (taxable wage base)
+      href: https://www.oregon.gov/dor/forms/FormsPubs/combined-payroll_211-155-2_2021.pdf#page=6
+    - title: Oregon Department of Revenue, Oregon Combined Payroll Tax Report 2022 (taxable wage base)
+      href: https://www.oregon.gov/dor/forms/FormsPubs/combined-payroll_211-155-2_2022.pdf#page=6
+    - title: Oregon Department of Revenue, Oregon Combined Payroll Tax Report 2023 (taxable wage base)
+      href: https://www.oregon.gov/dor/forms/FormsPubs/combined-payroll_211-155-2_2023.pdf#page=6
+    - title: Oregon Department of Revenue, Oregon Combined Payroll Tax Report 2024 (taxable wage base)
+      href: https://www.oregon.gov/dor/forms/FormsPubs/combined-payroll_211-155-2_2024.pdf#page=6
+    - title: Oregon Department of Revenue, Oregon Combined Payroll Tax Report 2025 (taxable wage base)
+      href: https://www.oregon.gov/dor/forms/FormsPubs/combined-payroll_211-155-2_2025.pdf#page=6
+    - title: Oregon Department of Revenue, Oregon Combined Payroll Tax Report 2026 (taxable wage base)
+      href: https://www.oregon.gov/dor/forms/FormsPubs/combined-payroll_211-155-2_2026.pdf#page=6

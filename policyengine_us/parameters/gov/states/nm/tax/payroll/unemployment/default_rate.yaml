@@ -1,13 +1,35 @@
-description: Default employer-side unemployment insurance tax rate for New Mexico.
+description: New Mexico assigns each new employer the average rate of its industry, from 1% to 5.4%, so this parameter holds the statewide average employer contribution rate on taxable wages within those limits.
 values:
-  0000-01-01: 0.0086
+  # The Department of Labor's average employer contribution rates on taxable
+  # wages, 0.73% to 0.99% from 2018 to 2026 (its estimate for 2026), all fall
+  # below the 1% minimum; the Department of Workforce Solutions publishes no
+  # annual series.
+  2018-01-01: 0.01
 
 metadata:
   period: year
   unit: /1
   label: New Mexico default unemployment tax rate
   reference:
-    - title: New Mexico Statutes Section 51-1-11
-      href: https://law.justia.com/codes/new-mexico/chapter-51/article-1/section-51-1-11/
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=41
+    - title: New Mexico Statutes Section 51-1-11(G), contribution rates of new employers
+      href: https://nmonesource.com/nmos/nmsa/en/4425/1/document.do#page=54
+    - title: New Mexico Department of Workforce Solutions, Information about 2018 Employer Tax Rates
+      href: https://www.dws.state.nm.us/Portals/0/DM/UI/Employer_Rate_Flyer11202017.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2018 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2018.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2019 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2019.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2020 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2020.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2021 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2021.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2022 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2022.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2023 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2023.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2024 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2024.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2025 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2025.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Estimated Employer Contribution Rates, Calendar Year 2026 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2026est.pdf#page=1

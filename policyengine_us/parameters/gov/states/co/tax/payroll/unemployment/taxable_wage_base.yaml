@@ -1,15 +1,34 @@
-description: Employer-side unemployment insurance taxable wage base for Colorado.
+description: Colorado limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 23_800
+  2018-01-01: 12_600
+  2019-01-01: 13_100
+  2020-01-01: 13_600
+  2022-01-01: 17_000
+  2023-01-01: 20_400
+  2024-01-01: 23_800
+  2025-01-01: 27_200
+  2026-01-01: 30_600
 
 metadata:
   period: year
   unit: currency-USD
   label: Colorado unemployment taxable wage base
   reference:
-    - title: Colorado Revised Statutes Section 8-70-103
+    - title: Colorado Revised Statutes Section 8-70-103(6.5), chargeable wages
       href: https://olls.info/crs/crs2025-title-08.pdf#page=555
-    - title: Colorado unemployment insurance premium rates
-      href: https://cdle.colorado.gov/employers/unemployment-insurance-premiums/premium-rates
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=15
+    - title: Session Laws of Colorado 2020, chapter 296 (Senate Bill 20-207), chargeable wage schedule from 2021
+      href: https://content.leg.colorado.gov/sites/default/files/documents/2020A/bills/sl/2020a_sl_296.pdf#page=1
+    - title: Colorado Department of Labor and Employment, Premium Rates (chargeable wage limits for 2018 and 2019)
+      href: https://web.archive.org/web/20190817103740/https://www.colorado.gov/pacific/cdle/premium-rates
+    - title: Colorado Department of Labor and Employment, Premium Rates (chargeable wage limit for 2020)
+      href: https://web.archive.org/web/20200612081913/https://www.colorado.gov/pacific/cdle/premium-rates
+    - title: Colorado Department of Labor and Employment, Premium Rates (chargeable wage limits, 2018 to 2022)
+      href: https://web.archive.org/web/20220427225539/https://cdle.colorado.gov/employers/pay-premiums-and-report-wages/premium-rates
+    - title: Colorado Department of Labor and Employment, Premium Rates (chargeable wage limit for 2023)
+      href: https://web.archive.org/web/20230519040609/https://cdle.colorado.gov/employers/pay-premiums-and-report-wages/premium-rates
+    - title: Colorado Department of Labor and Employment, Premium Rates (chargeable wage limit for 2024)
+      href: https://web.archive.org/web/20240415214834/https://cdle.colorado.gov/employers/pay-premiums-and-report-wages/premium-rates
+    - title: Colorado Department of Labor and Employment, Premium Rates (chargeable wage limit for 2025)
+      href: https://web.archive.org/web/20250306064207/https://cdle.colorado.gov/employers/unemployment-insurance-premiums/premium-rates
+    - title: Colorado Department of Labor and Employment, Colorado Unemployment Insurance Trust Fund Status Report 2026
+      href: https://lmico.app.box.com/v/ui-trust-fund-report-2026#page=1

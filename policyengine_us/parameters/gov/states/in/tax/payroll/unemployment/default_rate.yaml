@@ -1,13 +1,27 @@
-description: Default employer-side unemployment insurance tax rate for Indiana.
+description: Indiana assigns this unemployment insurance contribution rate to each new employer outside the construction industry.
 values:
-  0000-01-01: 0.025
+  2018-01-01: 0.025
 
 metadata:
   period: year
   unit: /1
   label: Indiana default unemployment tax rate
   reference:
-    - title: Indiana Code Title 22 Article 4 Employment Security
-      href: https://iga.in.gov/laws/2025/ic/titles/22#22-4
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=24
+    - title: Indiana Code Section 22-4-11-2(b), rate for employers without 36 months of experience
+      href: https://iga.in.gov/ic/2026/Title_22.html#22-4-11-2
+    - title: Indiana Department of Workforce Development, Unemployment Insurance Employer Handbook (2018)
+      href: https://web.archive.org/web/20190109043723/https://www.in.gov/dwd/files/Employer_Handbook.pdf#page=48
+    - title: Indiana Department of Workforce Development, Unemployment Insurance Employer Handbook, archived April 12, 2020, page 32
+      href: https://web.archive.org/web/20200412122922/https://www.in.gov/dwd/files/Employer_Handbook.pdf#page=32
+    - title: Indiana Department of Workforce Development, Unemployment Insurance Employer Handbook, archived March 31, 2021, page 37
+      href: https://web.archive.org/web/20210331151803/https://www.in.gov/dwd/files/Employer_Handbook.pdf#page=37
+    - title: Indiana Department of Workforce Development, Unemployment Insurance Employer Handbook, archived March 2, 2022, page 69
+      href: https://web.archive.org/web/20220302194806/https://www.in.gov/dwd/files/Employer_Handbook.pdf#page=69
+    - title: Indiana Department of Workforce Development, Unemployment Insurance Employer Handbook, archived February 1, 2023, page 69
+      href: https://web.archive.org/web/20230201185929/https://www.in.gov/dwd/files/Employer_Handbook.pdf#page=69
+    - title: Indiana Department of Workforce Development, Unemployment Insurance Employer Handbook, archived July 18, 2024, page 71
+      href: https://web.archive.org/web/20240718143758/https://www.in.gov/dwd/files/Employer_Handbook.pdf#page=71
+    - title: Indiana Department of Workforce Development, Unemployment Insurance Employer Handbook, archived March 9, 2025, page 70
+      href: https://web.archive.org/web/20250309014220/https://www.in.gov/dwd/files/Employer_Handbook.pdf#page=70
+    - title: Indiana Department of Workforce Development, New Employer Premium Rate (2026)
+      href: https://www.in.gov/dwd/indiana-unemployment/employers/employer-guide/rate-computation/new-employer-premium-rate

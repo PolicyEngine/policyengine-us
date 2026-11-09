@@ -1,0 +1,45 @@
+- name: Rhode Island 2018 Job Development Fund assessment of 0.21% on the $23,000 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 100_000
+  output:
+    ri_employer_job_development_fund_tax: 48.30
+
+- name: Rhode Island 2019 adds the 0.08% adjustment, for 0.29% on the $23,600 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 100_000
+  output:
+    ri_employer_job_development_fund_tax: 68.44
+    ri_employer_additional_state_payroll_tax: 68.44
+
+- name: Rhode Island 2020 returns to 0.21% on the $24,000 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 100_000
+  output:
+    ri_employer_job_development_fund_tax: 50.40
+
+- name: Rhode Island 2026 Job Development Fund assessment on the $30,800 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 100_000
+  output:
+    ri_employer_job_development_fund_tax: 64.68
+
+- name: The employer-total path includes the 2019 adjustment.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employer_total_taxable_earnings_for_state_unemployment_tax: 1_000_000
+  output:
+    employer_total_additional_state_payroll_tax: 2_900

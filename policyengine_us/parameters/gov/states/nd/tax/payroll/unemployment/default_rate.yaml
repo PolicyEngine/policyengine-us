@@ -1,13 +1,44 @@
-description: Default employer-side unemployment insurance tax rate for North Dakota.
+description: North Dakota assigns this unemployment insurance tax rate to each new employer outside construction.
 values:
-  0000-01-01: 0.0109
+  # North Dakota Century Code Section 52-04-05(6)(b)(1) assigns each new
+  # employer outside construction the greater of 1% and 90% of the year's
+  # positive employer maximum rate, rounded to 0.01%. A new employer whose
+  # cumulative benefit charges reach its cumulative contributions takes a
+  # negative-employer rate instead. Job Service North Dakota published these
+  # positive-balance rates for new nonconstruction employers in each year's
+  # rate schedule.
+  2018-01-01: 0.017
+  2019-01-01: 0.0121
+  2020-01-01: 0.0102
+  2023-01-01: 0.0113
+  2024-01-01: 0.0109
+  2025-01-01: 0.0103
+  2026-01-01: 0.01
 
 metadata:
   period: year
   unit: /1
   label: North Dakota default unemployment tax rate
   reference:
-    - title: North Dakota Century Code Section 52-04-05
-      href: https://ndlegis.gov/cencode/t52c04.pdf#page=2
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=44
+    - title: North Dakota Century Code Section 52-04-05(6)(b)(1), determination of rates
+      href: https://ndlegis.gov/cencode/t52c04.pdf#page=4
+    - title: North Dakota Century Code chapter 52-04 (October 2020 edition), Section 52-04-05(6)(b)(1)
+      href: https://web.archive.org/web/20201020153139/https://www.legis.nd.gov/cencode/t52c04.pdf#page=4
+    - title: Job Service North Dakota, 2018 UI Tax Rate Schedules
+      href: https://web.archive.org/web/20201016162521/https://www.jobsnd.com/sites/www/files/documents/jsnd-documents/uitaxrateschedules2018.pdf
+    - title: Job Service North Dakota, 2019 UI Tax Rate Schedules
+      href: https://web.archive.org/web/20201016162603/https://www.jobsnd.com/sites/www/files/documents/jsnd-documents/uitaxrateschedules2019.pdf
+    - title: Job Service North Dakota, 2020 UI Tax Rate Schedules
+      href: https://web.archive.org/web/20201016162232/https://www.jobsnd.com/sites/www/files/documents/jsnd-documents/uitaxrateschedules2020.pdf
+    - title: Job Service North Dakota, 2021 UI Tax Rate Schedules
+      href: https://web.archive.org/web/20220303190318/https://www.jobsnd.com/sites/www/files/documents/jsnd-documents/uitaxrateschedules2021.pdf
+    - title: Job Service North Dakota, 2022 UI Tax Rate Schedules
+      href: https://web.archive.org/web/20220303190550/https://www.jobsnd.com/sites/www/files/documents/jsnd-documents/uitaxrateschedules2022.pdf
+    - title: Job Service North Dakota, 2023 UI Tax Rate Schedules
+      href: https://www.jobsnd.com/sites/www/files/documents/jsnd-documents/uitaxrateschedules2023.pdf
+    - title: Job Service North Dakota, 2024 UI Tax Rate Schedules
+      href: https://www.jobsnd.com/sites/www/files/documents/jsnd-documents/uitaxrateschedules2024.pdf
+    - title: Job Service North Dakota, 2025 UI Tax Rate Schedules
+      href: https://www.jobsnd.com/sites/www/files/documents/jsnd-documents/uitaxrateschedules2025.pdf
+    - title: Job Service North Dakota, 2026 UI Tax Rate Schedules
+      href: https://www.jobsnd.com/sites/www/files/documents/jsnd-documents/uitaxrateschedules2026.pdf

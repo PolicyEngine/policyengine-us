@@ -1,15 +1,33 @@
-description: Employer-side unemployment insurance taxable wage base for Maryland.
+description: Maryland limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 8_500
+  # The General Assembly set this $8,500 base in Labor and Employment Article
+  # Section 8-607(b)(1) in Chapter 554 of 1992, raising it from $7,000.
+  2018-01-01: 8_500
 
 metadata:
   period: year
   unit: currency-USD
   label: Maryland unemployment taxable wage base
   reference:
-    - title: Maryland Labor and Employment Section 8-607
+    - title: Maryland Labor and Employment Article Section 8-607(b)(1), taxable wage base
       href: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gle&section=8-607&enactments=false
-    - title: Maryland Unemployment Insurance
-      href: https://labor.maryland.gov/unemployment-insurance/
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=30
+    - title: Laws of Maryland 1992, Chapter 554 (House Bill 672), section 3, amending Section 8-607(b)
+      href: https://msa.maryland.gov/megafile/msa/speccol/sc2900/sc2908/000001/000808/pdf/am808--3428.pdf
+    - title: Maryland Division of Unemployment Insurance, Unemployment Insurance Tax Rates (2018)
+      href: https://web.archive.org/web/20180402033849/http://www.dllr.state.md.us:80/employment/uitrustfundpoints.shtml
+    - title: Maryland Division of Unemployment Insurance, Unemployment Insurance Tax Rates (2019)
+      href: https://web.archive.org/web/20190207121026/http://www.dllr.state.md.us:80/employment/uitrustfundpoints.shtml
+    - title: Maryland Division of Unemployment Insurance, Unemployment Insurance Tax Rates (2020)
+      href: https://web.archive.org/web/20200401224407/http://www.labor.maryland.gov/employment/uitrustfundpoints.shtml
+    - title: Maryland Division of Unemployment Insurance, Unemployment Insurance Tax Rates (2021)
+      href: https://web.archive.org/web/20210510085333/https://labor.maryland.gov/employment/uitrustfundpoints.shtml
+    - title: Maryland Division of Unemployment Insurance, Unemployment Insurance Tax Rates (2022)
+      href: https://web.archive.org/web/20220308065255/http://www.labor.maryland.gov/employment/uitrustfundpoints.shtml
+    - title: Maryland Division of Unemployment Insurance, Unemployment Insurance Tax Rates (2023)
+      href: https://web.archive.org/web/20230205234508/https://www.labor.maryland.gov/employment/uitrustfundpoints.shtml
+    - title: Maryland Division of Unemployment Insurance, Unemployment Insurance Tax Rates (2024)
+      href: https://web.archive.org/web/20240228062743/https://www.labor.maryland.gov/employment/uitrustfundpoints.shtml
+    - title: Maryland Division of Unemployment Insurance, Unemployment Insurance Tax Rates (2025)
+      href: https://web.archive.org/web/20250421155945/https://labor.maryland.gov/employment/uitrustfundpoints.shtml
+    - title: Maryland Department of Labor, Tax Rates and Quarterly Reporting (2026 tax rates)
+      href: https://labor.maryland.gov/unemployment-insurance/employer-agent/tax-rate.shtml

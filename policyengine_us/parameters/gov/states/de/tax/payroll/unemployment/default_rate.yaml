@@ -1,13 +1,43 @@
-description: Default employer-side unemployment insurance tax rate for Delaware.
+description: Delaware assigns this unemployment insurance assessment rate, including any supplemental assessment the Division of Unemployment Insurance adds to it, to each new employer outside the construction industry.
 values:
-  0000-01-01: 0.01
+  # PE-US leaves out the training tax under 19 Del. C. Section 3401, which the
+  # Division of Unemployment Insurance bills separately.
+  2018-01-01: 0.016
+  2019-01-01: 0.015
+  # Emergency rules and later legislation held the 2021 and 2022 rates at this
+  # 2020 level.
+  2020-01-01: 0.018
+  # A new employer pays the 1% average employer assessment rate plus the 0.2%
+  # supplemental assessment.
+  2023-01-01: 0.012
+  # PE-US leaves out the 0.2% operations and technology assessment, which the
+  # Division of Unemployment Insurance bills separately from 2026.
+  2026-01-01: 0.01
 
 metadata:
   period: year
   unit: /1
   label: Delaware default unemployment tax rate
   reference:
-    - title: Delaware Code Title 19 Section 3348
+    - title: Delaware Code Title 19, Sections 3348, 3350 and 3350B, new employer rate, supplemental assessment and operations and technology assessment
       href: https://delcode.delaware.gov/title19/c033/sc03/index.html#3348
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=17
+    - title: Delaware Division of Unemployment Insurance, Employer Services, merit rate table (2018)
+      href: https://web.archive.org/web/20180628133858/https://ui.delawareworks.com/employer-services.php
+    - title: Delaware Division of Unemployment Insurance, Employer Services, merit rate table (2019)
+      href: https://web.archive.org/web/20190228133852/https://ui.delawareworks.com/employer-services.php
+    - title: Delaware Department of Labor, Employer Services, merit rate table (2016 to 2021)
+      href: https://web.archive.org/web/20220106043547/https://labor.delaware.gov/divisions/unemployment-insurance/employer-services/
+    - title: Delaware Department of Labor, Fourteenth Emergency Rules, December 31, 2020
+      href: https://laborfiles.delaware.gov/covid-19/ui/DOL%20COVID-19%20Emergency%20Rules%20Release%2014.pdf#page=4
+    - title: Delaware Department of Labor, New Employer UI and Construction Employer Tax Rates for 2022 (January 11, 2022)
+      href: https://news.delaware.gov/2022/01/11/new-employer-ui-and-construction-employer-tax-rates-for-2022/
+    - title: Delaware Department of Labor, DOL Announces New Employer UI & Construction Employer Tax Rates for 2023 (February 6, 2023)
+      href: https://news.delaware.gov/2023/02/06/dol-announces-new-employer-ui-construction-employer-tax-rates-for-2023/
+    - title: Delaware Department of Labor, Employer Services, merit rate table (2020 to 2024)
+      href: https://web.archive.org/web/20240228152600/https://labor.delaware.gov/divisions/unemployment-insurance/employer-services/
+    - title: Delaware Division of Unemployment Insurance, Delaware 2025 Tax Schedules (House Bill 433)
+      href: https://laborfiles.delaware.gov/main/dui/Delaware_2025_Tax_Schedules_(HB%20433).pdf#page=2
+    - title: Delaware Department of Labor, Employer Services, merit rate table (2022 to 2026)
+      href: https://labor.delaware.gov/divisions/unemployment-insurance/employer-services/
+    - title: Delaware Division of Unemployment Insurance, Employer FAQs, operations and technology tax
+      href: https://labor.delaware.gov/divisions/unemployment-insurance/employer-faqs/

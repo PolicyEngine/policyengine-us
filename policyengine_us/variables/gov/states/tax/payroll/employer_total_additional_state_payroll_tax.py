@@ -112,12 +112,15 @@ class employer_total_additional_state_payroll_tax(Variable):
             0,
         )
 
-        ri = (
-            parameters(
-                period
-            ).gov.states.ri.tax.payroll.job_development_fund.employer_rate
-            * state_ui_taxable
-        )
+        nj = (
+            person(
+                "nj_employer_temporary_disability_insurance_contribution_rate", period
+            )
+            + person("nj_employer_workforce_fund_contribution_rate", period)
+        ) * state_ui_taxable
+
+        ri_p = parameters(period).gov.states.ri.tax.payroll.job_development_fund
+        ri = (ri_p.employer_rate + ri_p.adjustment_rate) * state_ui_taxable
 
         vt_p = parameters(period).gov.states.vt.tax.payroll.child_care
         vt = (vt_p.employer_rate + (1 - deducted) * vt_p.employee_rate) * person(
@@ -144,11 +147,12 @@ class employer_total_additional_state_payroll_tax(Variable):
                 state_code == StateCode.MA,
                 state_code == StateCode.ME,
                 state_code == StateCode.MN,
+                state_code == StateCode.NJ,
                 state_code == StateCode.OR,
                 state_code == StateCode.RI,
                 state_code == StateCode.VT,
                 state_code == StateCode.WA,
             ],
-            [ca, co, dc, de, ma, me, mn, or_tax, ri, vt, wa],
+            [ca, co, dc, de, ma, me, mn, nj, or_tax, ri, vt, wa],
             default=0,
         )

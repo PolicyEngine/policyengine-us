@@ -1,15 +1,43 @@
-description: Default employer-side unemployment insurance tax rate for Louisiana.
+description: Louisiana assigns each new employer its industry's average rate, at least 1%, so this parameter uses the greater of 1% and the statewide average employer contribution rate on taxable wages.
 values:
-  0000-01-01: 0.0131
+  # PE-US uses the U.S. Department of Labor's average employer contribution
+  # rates on taxable wages; the Workforce Commission publishes no comparable
+  # series.
+  2018-01-01: 0.0154
+  2019-01-01: 0.0144
+  2020-01-01: 0.0131
+  2021-01-01: 0.0128
+  2022-01-01: 0.0133
+  2023-01-01: 0.0129
+  2024-01-01: 0.013
+  2025-01-01: 0.0123
+  # The U.S. Department of Labor estimated the 2026 average.
+  2026-01-01: 0.0125
 
 metadata:
   period: year
   unit: /1
   label: Louisiana default unemployment tax rate
   reference:
-    - title: Louisiana Revised Statutes Section 23:1535
+    - title: Louisiana Revised Statutes Section 23:1535, contribution rates of new employers
       href: https://www.legis.la.gov/legis/Law.aspx?d=83578
-    - title: Louisiana Workforce Commission employer tax rates
-      href: https://www.louisianaworks.net/hire/admins/employertaxrates.asp
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=28
+    - title: Louisiana Workforce Commission, Louisiana Unemployment Insurance Tax Rates (2018)
+      href: https://web.archive.org/web/20180613154607/http://www.laworks.net:80/unemploymentinsurance/ui_lainsurancetaxrates.asp
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2018 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2018.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2019 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2019.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2020 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2020.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2021 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2021.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2022 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2022.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2023 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2023.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2024 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2024.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2025 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2025.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Estimated Employer Contribution Rates, Calendar Year 2026 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2026est.pdf#page=1

@@ -63,21 +63,65 @@ STATE_EMPLOYER_UNEMPLOYMENT_TAX_VARIABLES = tuple(
 )
 
 
+MONTHS_IN_QUARTER = 3
+
+
+def _jurisdiction_parameter_values(
+    parameters, instant, parameter_name: str, jurisdictions
+) -> list:
+    gov = parameters(instant).gov
+    return [
+        getattr(
+            getattr(getattr(gov, group), slug).tax.payroll.unemployment,
+            parameter_name,
+        )
+        for group, _, slug in jurisdictions
+    ]
+
+
 def select_state_unemployment_tax_parameter(
     person: Population,
     period: Period,
     parameters,
     parameter_name: str,
+    average_over_quarter_starts: bool = False,
 ) -> ArrayLike:
+    """Select each person's jurisdiction value of an unemployment parameter.
+
+    Reads the parameter only for jurisdictions where the simulation has
+    people, so a simulation needs values only for its own jurisdictions.
+    Minnesota's wage base reaches back to 2014, for example, while most
+    jurisdictions start in 2018 and carry that value back to 2015.
+
+    With average_over_quarter_starts, the selector averages each
+    jurisdiction's values at the four calendar quarter starts. New
+    Hampshire, New Jersey, Tennessee and Vermont assign rates for a July-June
+    rate year, so their annual rate mixes two rate years.
+    """
     state_code = person.household("state_code_str", period)
-    gov = parameters(period).gov
+    jurisdictions = []
     conditions = []
-    values = []
-
-    for group, code, slug in STATE_UNEMPLOYMENT_TAX_JURISDICTIONS:
-        jurisdiction = getattr(getattr(gov, group), slug)
-        unemployment = jurisdiction.tax.payroll.unemployment
-        conditions.append(state_code == code)
-        values.append(getattr(unemployment, parameter_name))
-
+    for jurisdiction in STATE_UNEMPLOYMENT_TAX_JURISDICTIONS:
+        in_jurisdiction = state_code == jurisdiction[1]
+        if in_jurisdiction.any():
+            jurisdictions.append(jurisdiction)
+            conditions.append(in_jurisdiction)
+    if not jurisdictions:
+        return np.zeros(len(state_code))
+    if average_over_quarter_starts:
+        quarter_starts = period.get_subperiods(MONTH)[::MONTHS_IN_QUARTER]
+        by_quarter = [
+            _jurisdiction_parameter_values(
+                parameters, quarter_start, parameter_name, jurisdictions
+            )
+            for quarter_start in quarter_starts
+        ]
+        values = [
+            sum(quarter_values) / len(quarter_starts)
+            for quarter_values in zip(*by_quarter)
+        ]
+    else:
+        values = _jurisdiction_parameter_values(
+            parameters, period, parameter_name, jurisdictions
+        )
     return select(conditions, values, default=0)

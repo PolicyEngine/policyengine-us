@@ -1,13 +1,17 @@
-description: Employer-side unemployment insurance taxable wage base for Indiana.
+description: Indiana limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 9_500
+  2018-01-01: 9_500
 
 metadata:
   period: year
   unit: currency-USD
   label: Indiana unemployment taxable wage base
   reference:
-    - title: Indiana Code Title 22 Article 4 Employment Security
-      href: https://iga.in.gov/laws/2025/ic/titles/22#22-4
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=24
+    - title: Indiana Code Section 22-4-4-2(b), wages subject to contributions
+      href: https://iga.in.gov/ic/2026/Title_22.html#22-4-4-2
+    - title: Indiana Department of Workforce Development, Unemployment Insurance Employer Handbook (2018)
+      href: https://web.archive.org/web/20190109043723/https://www.in.gov/dwd/files/Employer_Handbook.pdf#page=48
+    - title: Indiana Department of Workforce Development, Unemployment Insurance Employer Handbook, archived March 9, 2025, page 7 (wage base for 2011 to 2025)
+      href: https://web.archive.org/web/20250309014220/https://www.in.gov/dwd/files/Employer_Handbook.pdf#page=7
+    - title: Indiana Department of Workforce Development, Rate Computation (2026)
+      href: https://web.archive.org/web/20260520074032/https://www.in.gov/dwd/indiana-unemployment/employers/employer-guide/rate-computation/

@@ -1,0 +1,125 @@
+- name: Kentucky 2018, its 2.7% new-employer rate on the $10,200 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 10_200
+    employer_state_unemployment_tax_default_rate: 0.027
+    ky_employer_state_unemployment_tax: 275.40
+    employer_state_unemployment_tax: 275.40
+
+- name: Kentucky 2019, its 2.7% new-employer rate on the $10,500 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 10_500
+    employer_state_unemployment_tax_default_rate: 0.027
+    ky_employer_state_unemployment_tax: 283.50
+    employer_state_unemployment_tax: 283.50
+
+- name: Kentucky 2020, its 2.7% new-employer rate on the $10,800 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 10_800
+    employer_state_unemployment_tax_default_rate: 0.027
+    ky_employer_state_unemployment_tax: 291.60
+    employer_state_unemployment_tax: 291.60
+
+- name: Kentucky 2021, its 2.7% new-employer rate on the $10,800 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 10_800
+    employer_state_unemployment_tax_default_rate: 0.027
+    ky_employer_state_unemployment_tax: 291.60
+    employer_state_unemployment_tax: 291.60
+
+- name: Kentucky 2022, its 2.7% new-employer rate on the $10,800 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 10_800
+    employer_state_unemployment_tax_default_rate: 0.027
+    ky_employer_state_unemployment_tax: 291.60
+    employer_state_unemployment_tax: 291.60
+
+- name: Kentucky 2023, its 2.7% new-employer rate on the $11,100 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 11_100
+    employer_state_unemployment_tax_default_rate: 0.027
+    ky_employer_state_unemployment_tax: 299.70
+    employer_state_unemployment_tax: 299.70
+
+- name: Kentucky 2024, its 2.7% new-employer rate on the $11,400 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 11_400
+    employer_state_unemployment_tax_default_rate: 0.027
+    ky_employer_state_unemployment_tax: 307.80
+    employer_state_unemployment_tax: 307.80
+
+- name: Kentucky 2025, its 2.7% new-employer rate on the $11,700 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 11_700
+    employer_state_unemployment_tax_default_rate: 0.027
+    ky_employer_state_unemployment_tax: 315.90
+    employer_state_unemployment_tax: 315.90
+
+- name: Kentucky 2026, its 2.7% new-employer rate on the $12,000 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 12_000
+    employer_state_unemployment_tax_default_rate: 0.027
+    ky_employer_state_unemployment_tax: 324
+    employer_state_unemployment_tax: 324
+
+- name: Kentucky 2018 taxes every dollar of wages below the wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 135
+
+- name: Kentucky charges no employer unemployment tax on a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    ky_employer_state_unemployment_tax: 0

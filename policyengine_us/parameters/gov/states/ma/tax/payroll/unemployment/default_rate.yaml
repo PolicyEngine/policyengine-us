@@ -1,13 +1,55 @@
-description: Default employer-side unemployment insurance tax rate for Massachusetts.
+description: Massachusetts assigns this unemployment insurance contribution rate to each new employer.
 values:
-  0000-01-01: 0.0187
+  # New employers pay the rate on the 10.5 to 11.0 positive reserve line of
+  # the schedule in force; the Department of Unemployment Assistance applies
+  # that schedule to them even in years when a session law sets it only for
+  # experience-rated employers. Chapter 63 of the Acts of 2017 set schedule D
+  # for 2018 and schedule E for 2019. The trust fund triggered schedule E for
+  # 2020, Chapter 9 of the Acts of 2021 kept schedule E for 2021 and 2022, and
+  # the Department applied schedules A, C and D in 2023, 2024 and 2025. These
+  # rates leave out the workforce training fund contribution, and new
+  # employers do not pay the COVID-19 recovery assessment.
+  2018-01-01: 0.0213
+  2019-01-01: 0.0242
+  2023-01-01: 0.0145
+  2024-01-01: 0.0187
+  2025-01-01: 0.0213
+  2026-01-01: 0.0242
 
 metadata:
   period: year
   unit: /1
   label: Massachusetts default unemployment tax rate
   reference:
-    - title: Massachusetts General Laws Chapter 151A Section 14
+    - title: Massachusetts General Laws Chapter 151A, Section 14(i)(2), newly subject employers
       href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXXI/Chapter151A/Section14
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=31
+    - title: Massachusetts Department of Unemployment Assistance, Table of Contribution Rates and Schedules A to G
+      href: https://www.mass.gov/doc/massachusetts-ui-tax-rate-schedules-a-g/download#page=1
+    - title: Acts of 2017, Chapter 63, Section 11 (schedule D for 2018 and schedule E for 2019)
+      href: https://malegislature.gov/Laws/SessionLaws/Acts/2017/Chapter63
+    - title: Massachusetts Department of Unemployment Assistance, Unemployment Insurance Trust Fund Report, February 2018 (schedule D for 2018)
+      href: https://s3lmipub-prod.s3.amazonaws.com/prod/trustfund/Trust_Fund_Report_0218.pdf#page=1
+    - title: Massachusetts Department of Unemployment Assistance, Unemployment Insurance Trust Fund Report, February 2019 (schedule E for 2019)
+      href: https://s3lmipub-prod.s3.amazonaws.com/prod/trustfund/Trust_Fund_Report_0219.pdf#page=1
+    - title: Massachusetts Department of Unemployment Assistance, Unemployment Insurance Trust Fund Report, February 2020 (schedule E for 2020)
+      href: https://s3lmipub-prod.s3.amazonaws.com/prod/trustfund/Trust_Fund_Report_0220.pdf#page=1
+    - title: Acts of 2021, Chapter 9, Section 10 (schedule E for 2021 and 2022)
+      href: https://malegislature.gov/Laws/SessionLaws/Acts/2021/Chapter9
+    - title: Massachusetts Department of Unemployment Assistance, Learn about unemployment insurance contributions, archived February 4, 2020 (2.42% under schedule E for 2019 and 2020)
+      href: https://web.archive.org/web/20200204012720/https://www.mass.gov/service-details/learn-about-unemployment-insurance-ui-contributions
+    - title: Massachusetts Department of Unemployment Assistance, The Employer's Guide to Unemployment Insurance, archived June 3, 2021, page 30 (new employers pay on the rate schedule in effect)
+      href: https://web.archive.org/web/20210603052604/https://www.mass.gov/doc/the-employers-guide-to-unemployment-insurance-2/download#page=30
+    - title: Massachusetts Department of Unemployment Assistance, 2021 COVID-19 Recovery Assessment Rate Schedule (UI rate schedule)
+      href: https://www.mass.gov/doc/2021-covid-19-recovery-assessment-rate-schedule-0/download#page=1
+    - title: Massachusetts Department of Unemployment Assistance, 2022 COVID-19 Recovery Assessment Rate Schedule (UI rate schedule)
+      href: https://www.mass.gov/doc/2022-covid-19-recovery-assessment-rate-schedule/download#page=1
+    - title: Massachusetts Department of Unemployment Assistance, 2023 COVID-19 Recovery Assessment Rate Schedule (UI rate schedule)
+      href: https://www.mass.gov/doc/2023-covid-19-recovery-assessment-rate-schedule/download#page=1
+    - title: Massachusetts Department of Unemployment Assistance, 2024 COVID-19 Recovery Assessment Rate Schedule (UI rate schedule)
+      href: https://www.mass.gov/doc/2024-covid-19-recovery-assessment-rate-schedule-0/download#page=1
+    - title: Massachusetts Department of Unemployment Assistance, 2025 COVID-19 Recovery Assessment Rate Schedule (UI rate schedule)
+      href: https://www.mass.gov/doc/2025-covid-19-recovery-assessment-rate-schedule/download#page=1
+    - title: Massachusetts Department of Unemployment Assistance, COVID-19 Recovery Assessment rates (new employers exempt)
+      href: https://www.mass.gov/info-details/covid-19-recovery-assessment-rates
+    - title: Massachusetts Department of Unemployment Assistance, Employer contributions to unemployment (2026 new employer rate)
+      href: https://www.mass.gov/info-details/employer-contributions-to-unemployment

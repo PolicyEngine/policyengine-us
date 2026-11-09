@@ -1,13 +1,15 @@
-description: Employer-side unemployment insurance taxable wage base for Virginia.
+description: Virginia limits employer unemployment insurance taxes to this amount of each worker's annual wages.
 values:
-  0000-01-01: 8_000
+  # Code of Virginia Section 60.2-229(B)(1) has capped taxable wages at $8,000
+  # a year since 1991.
+  2018-01-01: 8_000
 
 metadata:
   period: year
   unit: currency-USD
   label: Virginia unemployment taxable wage base
   reference:
-    - title: Virginia Code Section 60.2-229
+    - title: Code of Virginia Section 60.2-229(B)(1), wages
       href: https://law.lis.virginia.gov/vacode/title60.2/chapter2/section60.2-229/
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=57
+    - title: Virginia Employment Commission, Annual Tax Rate Notice form T-RAT-001, sample for 2022
+      href: https://ris.dls.virginia.gov/uploads/16VAC5/forms/T-RAT-001-20220527122244.pdf

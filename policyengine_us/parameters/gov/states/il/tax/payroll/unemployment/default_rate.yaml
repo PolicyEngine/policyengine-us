@@ -1,6 +1,13 @@
-description: Default employer-side unemployment insurance tax rate for Illinois.
+description: Illinois assigns this standard unemployment insurance contribution rate, including the fund building rate, to each new employer.
 values:
-  0000-01-01: 0.034
+  2018-01-01: 0.03225
+  2019-01-01: 0.03175
+  2020-01-01: 0.03125
+  2021-01-01: 0.03175
+  2022-01-01: 0.03525
+  2023-01-01: 0.0395
+  2025-01-01: 0.0365
+  2026-01-01: 0.0335
 
 metadata:
   period: year
@@ -9,5 +16,5 @@ metadata:
   reference:
     - title: Illinois Compiled Statutes 820 ILCS 405/1506.1
       href: https://www.ilga.gov/documents/legislation/ilcs/documents/082004050K1506.1.htm
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=23
+    - title: Illinois Department of Employment Security, Historical Rate Chart, 2016 to 2026 (standard rate, which includes the fund building rate, and wage base)
+      href: https://ides.illinois.gov/content/dam/soi/en/web/ides/ides_forms_and_publications/UI_tax_rates_2026.pdf#page=1

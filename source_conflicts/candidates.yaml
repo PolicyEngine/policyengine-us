@@ -2881,6 +2881,48 @@ candidates:
     rent shows through a heating bill or a direct electric bill, and the comment records that FY2026 plan item 2.3
     answers No to differing policies for subsidized renters (ga_liheap_eligible.py, eligibility/_ga_liheap_housing.py).
     Verify that the plan addresses the same circumstances.'
+- id: us-ga:ui-new-employer-rate-2023
+  program: unemployment-insurance
+  years:
+    from: 2023
+    to: 2023
+    type: calendar
+  question: Does Senate Bill 160 (2023), which extended the 2.64% new-employer rate through 2026 and took effect on May
+    1, 2023, lower the 2023 rate from the 2.7% that the Department of Labor assigned in January 2023?
+  sources:
+  - kind: statute
+    citation: O.C.G.A. 34-8-151(a), (d), as amended by Ga. L. 2023, p. 288, § 1/SB 160, effective May 1, 2023
+    url: https://www.legis.ga.gov/api/document/docs/default-source/joint-features-document-library/t34-(v26)-pdf.pdf#page=53
+  - kind: statute
+    citation: Senate Bill 160 (2023), as passed, sections 1 and 4
+    url: https://www.legis.ga.gov/api/legislation/document/20232024/219961#page=2
+  - kind: agency-practice
+    citation: Georgia Department of Labor, Employer Tax Rates Released (January 3, 2023)
+    url: https://web.archive.org/web/20230126225531/https://dol.georgia.gov/blog-post/2023-01-03/employer-tax-rates-released
+  - kind: agency-practice
+    citation: U.S. Department of Labor, State UI Tax Measures Report, 2023, new employer tax rates
+    url: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys23.pdf#page=66
+  readings:
+    statute: Senate Bill 160 moves the end of subsection (d)'s 2.64% rate, which covers "periods on or after January 1,
+      2017," from December 31, 2022 to December 31, 2026, and takes effect on the Governor's approval (May 1, 2023, by
+      the Code's history note). On its face it sets 2.64% for all of 2023; from its effective date, for wages paid from
+      May 1. It has no transition rule for the 2023 rates already assigned.
+    other: The Department of Labor released its 2023 rate notices on January 3, 2023, under the tables the Code then set
+      for periods after 2022, and the U.S. Department of Labor's 2023 tax measures report lists Georgia's
+      new-employer rate as 2.70%.
+  example: At $100,000 paid evenly through 2023, the employer pays the whole $9,500 base by February, so it owes
+    $256.50 at 2.7% or $250.80 if 2.64% applies from January 1. A worker hired in May with $9,500 of 2023 wages costs
+    $256.50 at 2.7% or $250.80 if the extension applies from May 1.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/ga/tax/payroll/unemployment/default_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10700
+  state: ruled
+  note: Senate Bill 160 leaves the timing open, so PE-US follows the Department's assigned rate, 2.7% for all of 2023.
+    PE-US applies one rate to each year's taxable wages, averaged over the four quarter starts, so a change dated May
+    1 has no exact place in it. The readings differ by at most 0.06% of the $9,500 base, $5.70 a worker.
 - id: us-hi:claim-of-right-credit-agi-addback
   program: income-tax
   years:
@@ -4656,6 +4698,72 @@ candidates:
   state: unreviewed
   note: PE-US follows the regulation; the October 2016-September 2024 span is approximate and needs contemporaneous-source
     verification.
+- id: us-ma:ui-new-employer-schedule-in-force
+  program: unemployment-insurance
+  years:
+    from: 2018
+    to: 2022
+    type: calendar
+  question: In 2018, 2019, 2021 and 2022, when session laws set the experience-rate column, do newly subject employers
+    pay on that column, as the Department of Unemployment Assistance applies, or on the column that the fund reserve
+    percentage heads under Section 14(i)(2)?
+  sources:
+  - kind: statute
+    citation: M.G.L. c. 151A, § 14(i)(1) and (2)
+    url: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXXI/Chapter151A/Section14
+  - kind: statute
+    citation: Acts of 2017, c. 63, § 11 (column D for 2018 and column E for 2019)
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2017/Chapter63
+  - kind: statute
+    citation: Acts of 2021, c. 9, § 10 (column E for 2021 and 2022)
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2021/Chapter9
+  - kind: guidance
+    citation: Department of Unemployment Assistance, Employer Handbook (January 2018), p. 30
+    url: https://web.archive.org/web/20180315155606/https://www.mass.gov/files/documents/2018/01/17/Employer%20Handbook_01-11-18.pdf#page=30
+  - kind: guidance
+    citation: Department of Unemployment Assistance, The Employer's Guide to Unemployment Insurance, p. 30 (archived June
+      3, 2021)
+    url: https://web.archive.org/web/20210603052604/https://www.mass.gov/doc/the-employers-guide-to-unemployment-insurance-2/download#page=30
+  - kind: agency-practice
+    citation: Department of Unemployment Assistance, Learn about unemployment insurance (UI) contributions (archived
+      February 4, 2020)
+    url: https://web.archive.org/web/20200204012720/https://www.mass.gov/service-details/learn-about-unemployment-insurance-ui-contributions
+  - kind: agency-practice
+    citation: Department of Unemployment Assistance, Learn about unemployment insurance (UI) contributions (archived
+      January 7, 2022)
+    url: https://web.archive.org/web/20220107130439/https://www.mass.gov/service-details/learn-about-unemployment-insurance-ui-contributions
+  - kind: agency-practice
+    citation: Department of Unemployment Assistance, Unemployment Insurance Trust Fund Outlook Report, October 2016, p. 5
+    url: https://s3lmipub-prod.s3.amazonaws.com/prod/trustfund/Trust_Fund_Report_1017.pdf#page=5
+  - kind: agency-practice
+    citation: Department of Unemployment Assistance, Unemployment Insurance Trust Fund Outlook Report, February 2021, p. 1
+    url: https://s3lmipub-prod.s3.amazonaws.com/prod/trustfund/Trust_Fund_Report_0221.pdf#page=1
+  readings:
+    statute: Section 14(i)(2) puts a newly subject employer in "the column headed by the unemployment compensation fund
+      reserve percentage as of the applicable computation date," on the 10.5 to 11.0 line. The session laws set columns
+      D and E only for "the experience rate of an employer qualifying under subsection (b)," so the fund reserve
+      percentage still picks the new-employer column. On the Department's estimates, which put 2021 and 2022
+      contributions on schedule G before Chapter 9 set column E, new employers would pay column G's 3.12% in those
+      years. For 2018 and 2019, the Department's October 2016 outlook projected schedule F (2.75%), and none of the
+      cited reports gives a computed column.
+    other: The Department's employer guide puts a new employer at the 10.5 to 11.0 line "on the rate schedule currently
+      in effect," so "this rate changes any time the rate schedule changes." Its February 2020 page gives 2.42%
+      "according to UI Tax Rate Schedule E in effect for 2019 and 2020," and its January 2022 page still gives 2.42% as
+      the current rate for new employers.
+  example: At the $15,000 base in 2021, a new employer outside construction pays $363 at column E's 2.42% or $468 at
+    column G's 3.12%.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/ma/tax/payroll/unemployment/default_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10700
+  state: open
+  note: PE-US follows the Department, which puts new employers on the schedule in force, D in 2018 and E from 2019 to
+    2022. The literal reading needs the fund reserve percentage at each computation date, and the Department's reports
+    give it for these years only as estimates and projections. A ruling for the statute would set 3.12% for 2021 and
+    2022 and needs the computed columns for 2018 and 2019. The readings agree in 2020, when the fund reserve percentage
+    itself triggered schedule E (the Department's February 2020 trust fund report).
 - id: us-md:capital-gains-surtax-short-term-gains
   program: income-tax
   years:
@@ -6975,6 +7083,41 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify whether the still-listed ruling applies during these years despite its obsolete tax base.
+- id: us-ne:ui-new-employer-rate-2022
+  program: unemployment-insurance
+  years:
+    from: 2022
+    to: 2022
+    type: calendar
+  question: Is Nebraska's 2022 combined tax rate for new employers outside construction 1.25%, the statutory minimum,
+    or the 1.39% that the Department of Labor's combined tax rate table lists?
+  sources:
+  - kind: statute
+    citation: Neb. Rev. Stat. 48-649.02(1)(a) and (2)
+    url: https://nebraskalegislature.gov/laws/statutes.php?statute=48-649.02
+  - kind: agency-practice
+    citation: Nebraska Department of Labor, Combined Tax Rates (new employer rates, CY 2022 to CY 2026)
+    url: https://dol.nebraska.gov/UITax/UnemploymentInsuranceTax/CombinedTaxRates
+  - kind: agency-practice
+    citation: Nebraska Department of Labor, Unemployment Insurance Annual Report, fiscal year 2021-2022, page 5
+    url: https://govdocs.nebraska.gov/epubs/L1100/A001-202122.pdf#page=5
+  readings:
+    statute: Section 48-649.02(1)(a) sets a new non-construction employer's combined tax rate at the lesser of the
+      state's average combined tax rate and 2.5%, and (2) adds that "In no event shall the combined tax rate under
+      subsection (1) of this section be less than one and twenty-five hundredths percent." The 2022 average combined
+      tax rate was 0.49%, so the rate is 1.25%.
+    other: The Department's combined tax rate table lists 1.39% for new non-construction employers in CY 2022; its
+      fiscal year 2021-2022 annual report lists 1.25% for every year from 2018 to 2022.
+  example: At $100,000 of 2022 wages, the $9,000 taxable wage base gives $112.50 at 1.25% and $125.10 at 1.39%.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ne/tax/payroll/unemployment/default_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10700
+  state: ruled
+  note: The annual report gives the 2022 average combined tax rate as 0.49% ("a reduction from the 2022 rate of
+    0.49%").
 - id: us-nh:fanf-resource-limit-equality
   program: tanf
   years:
@@ -8665,6 +8808,58 @@ candidates:
   note: The model takes the federal in-kind support and maintenance value, so it follows POMS. The NOTE in _ok_ssp_income.py
     adds that federal SSI also runs a couple computation for an aged, blind or disabled spouse who is not eligible
     (issue 10243), so the deeming value applies even when 317:35-5-42(m)(4) deems nothing.
+- id: us-ok:ui-taxable-wage-base-2026
+  program: unemployment-insurance
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: For 2026, is Oklahoma's unemployment insurance taxable wage base the $25,000 that the Oklahoma Employment Security
+    Commission (OESC) publishes, or $24,200, the 41.25% share that Senate Bill 911 set for conditional factor A from November
+    1, 2025, applied to the $58,765.95 average annual wage that OESC lists?
+  sources:
+  - kind: statute
+    citation: 40 O.S. § 1-201(48), taxable wages
+    url: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=23
+  - kind: statute
+    citation: 40 O.S. § 1-223, taxable wages, conditional factors and percentages
+    url: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=44
+  - kind: statute
+    citation: Laws 2025, chapter 140 (Senate Bill 911), section 1, amending § 1-223
+    url: https://www.oklegislature.gov/cf_pdf/2025-26%20ENR/SB/SB911%20ENR.PDF#page=1
+  - kind: statute
+    citation: Laws 2025, chapter 140 (Senate Bill 911), section 5, effective date
+    url: https://www.oklegislature.gov/cf_pdf/2025-26%20ENR/SB/SB911%20ENR.PDF#page=25
+  - kind: agency-practice
+    citation: Oklahoma Employment Security Commission, Important Numbers for 2026
+    url: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Improtant-Numbers-2026.pdf#page=1
+  - kind: agency-practice
+    citation: Oklahoma Employment Security Commission, Important Numbers for 2025
+    url: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2025.pdf#page=1
+  - kind: agency-practice
+    citation: Oklahoma Employment Security Commission, Important Numbers for 2024
+    url: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2024.pdf#page=1
+  readings:
+    statute: Section 1-201(48) sets taxable wages at "the applicable percentage of the state's average annual wage for the
+      second preceding calendar year as determined by the Commission, rounded to the nearest multiple of One Hundred Dollars."
+      Section 1-223, as Senate Bill 911 amended it from November 1, 2025, sets "Forty-one and one-quarter percent (41.25%)
+      during calendar years in which condition 'a' exists." OESC's 2026 notice gives conditional factor A and a $58,765.95
+      average annual wage, and 41.25% of that is $24,240.95, or $24,200.
+    other: OESC's 2026 notice gives a $25,000 base, which equals 42.5% of $58,765.95 ($24,975.53) rounded to the nearest
+      $100, the share Section 1-223 gave condition A before Senate Bill 911. Each of OESC's 2022 to 2025 notices gives a
+      base equal to 50% of the average annual wage it lists, the share for condition D before Senate Bill 911, so the
+      listed wage is the one OESC uses.
+  example: At 1.5%, a new employer pays $375 on a worker earning at least $25,000, or $363 on the $24,200 base.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ok/tax/payroll/unemployment/taxable_wage_base.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10700
+  state: ruled
+  note: PE-US uses $24,200 for 2026. Section 1-223 picks the share by the conditional factor in place during the year,
+    and OESC's notice gives factor A for 2026, so the 41.25% share applies; OESC's $25,000 matches the share that factor
+    A carried before Senate Bill 911 took effect.
 - id: us-or:2026-standard-deduction-agency-figures
   program: income-tax
   years:
@@ -11059,6 +11254,119 @@ candidates:
   note: Transmittal 71 (July 1, 2021) removed Appendix 3, so the agency schedule applied only in state fiscal year
     2021 (July 2020 to June 2021). The 7/20 Chapter 900, Appendix II, Example 6 (a TANF-UP household of four in Group II) uses the $499 TANF
     standard. Before July 2020 and from July 2021 the manual has one schedule for all units.
+- id: us-va:ui-new-employer-rate-2018-pool-charge
+  program: unemployment-insurance
+  years:
+    from: 2018
+    to: 2018
+    type: calendar
+  question: For 2018, does a new Virginia employer pay the 2.53% that the Virginia Employment Commission's (VEC) rate table
+    lists, or 2.51%, the 2.5% of Code of Virginia Section 60.2-526(B) plus the 0.01% pool cost charge that the same table
+    and the Governor's release give for 2018?
+  sources:
+  - kind: statute
+    citation: Code of Virginia § 60.2-526(B), rate for newly subject employers
+    url: https://law.lis.virginia.gov/vacode/title60.2/chapter5/section60.2-526/
+  - kind: statute
+    citation: Code of Virginia § 60.2-532, pool cost charges
+    url: https://law.lis.virginia.gov/vacode/title60.2/chapter5/section60.2-532/
+  - kind: statute
+    citation: Code of Virginia § 60.2-533(C), fund building rate
+    url: https://law.lis.virginia.gov/vacode/title60.2/chapter5/section60.2-533/
+  - kind: agency-practice
+    citation: Office of the Governor of Virginia, release on 2018 unemployment insurance tax rates (December 21, 2017)
+    url: https://web.archive.org/web/20180111075003/https://governor.virginia.gov/newsroom/newsarticle?articleId=22020
+  - kind: agency-practice
+    citation: Virginia Employment Commission, Forms and Publications, Employer Tax Rates table (2017 to 2024)
+    url: https://web.archive.org/web/20240125230128/https://www.vec.virginia.gov/forms-publications
+  - kind: agency-practice
+    citation: Virginia Employment Commission, presentation to the Commission on Unemployment Compensation (July 9, 2026),
+      p. 11
+    url: https://apps.dlas.virginia.gov/User_db/frmView.aspx?ViewId=7243&s=11#page=11
+  readings:
+    statute: Section 60.2-526(B) sets 2.5% for each employer newly subject to the act, and Section 60.2-532 adds each year's
+      pool cost charge to that rate. The Governor's December 2017 release says "The pool cost charge for 2018 will be 0.01
+      percent, down from the 2017 cost of 0.03 percent." VEC's table gives the same 0.01% in its pool row, and its July 2026
+      presentation charts a $0.80 pool tax per employee for 2018, 0.01% of the $8,000 base. The table's fund building row
+      reads 0.00% for 2018, so Section 60.2-533(C) adds nothing. That makes 2.51%.
+    other: VEC's table lists the 2018 new employer rate as 2.53% and the 2018 maximum as 6.23%, the figures it gives for 2017,
+      when the pool charge was 0.03%. Its 2019 column, with the same 0.01% pool charge, gives 2.51% and 6.21%.
+  example: At the $8,000 base, a new employer pays $200.80 at 2.51% or $202.40 at 2.53%.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/va/tax/payroll/unemployment/default_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10700
+  state: ruled
+  note: PE-US uses 2.51% for 2018 and 2019.
+- id: us-vi:ui-new-employer-rate-payroll-variation
+  program: unemployment-insurance
+  years:
+    from: 2024
+    to: 2026
+    type: calendar
+  question: From 2024, when the Virgin Islands Department of Labor (VIDOL) began assigning payroll variation rates to experience-rated
+    employers, does a new employer pay the 2% in 24 V.I.C. Section 308(b)(2), or a new-employer rate that the Commissioner
+    of Labor publishes each year under Act 8209?
+  sources:
+  - kind: statute
+    citation: Act No. 7410 (2012), section 1(2), amending 24 V.I.C. § 308(b)(2)
+    url: https://billtracking.legvi.org/view-pdf/?pdf_path=RTpcaW5ldHB1Ylx3d3dyb290XEJpbGxUcmFja2luZzIwMnhCYWNrZW5kXEJpbGxUcmFja2luZ1BERlxBY3RcNzQxMC5wZGY=#page=1
+  - kind: statute
+    citation: Act No. 8209 (2019), section 1(b), defining "new employer rate" in 24 V.I.C. § 302, and section 2, rewriting
+      § 308(b)(3) to (8)
+    url: https://billtracking.legvi.org/view-pdf/?pdf_path=RTpcaW5ldHB1Ylx3d3dyb290XEJpbGxUcmFja2luZzIwMnhCYWNrZW5kXEJpbGxUcmFja2luZ1BERlxBY3RcODIwOS5wZGY=#page=3
+  - kind: statute
+    citation: Act No. 8827 (2024), section 1(c), amending 24 V.I.C. § 308(b)(6) and (7)
+    url: https://billtracking.legvi.org/view-pdf/?pdf_path=RTpcaW5ldHB1Ylx3d3dyb290XEJpbGxUcmFja2luZzIwMnhCYWNrZW5kXEJpbGxUcmFja2luZ1BERlxBY3RcODgyNy5wZGY=#page=2
+  - kind: agency-practice
+    citation: Virgin Islands Department of Labor, Virgin Islands 2020 Unemployment Tax Rate (December 27, 2019)
+    url: https://www.vidol.gov/2019/12/27/virgin-islands-2020-unemployment-tax-rate/
+  - kind: agency-practice
+    citation: Virgin Islands Department of Labor, VIDOL Reminds Employers of New Payroll Tax Rate in Effect for Quarterly
+      Reports (May 15, 2024)
+    url: https://www.vidol.gov/2024/05/16/new-payroll-tax-rate-2024/
+  - kind: agency-practice
+    citation: Virgin Islands Department of Labor, VIDOL Announces 2025 Unemployment Insurance (UI) Tax Rates, update (January
+      22, 2025)
+    url: https://www.vidol.gov/2025/02/05/virgin-islands-department-of-labor-vidol-announces-2025-unemployment-insurance-ui-tax-rates-2/
+  - kind: guidance
+    citation: Virgin Islands Department of Labor, 2025 Unemployment Insurance Tax Rates flyer (February 2025)
+    url: https://www.vidol.gov/wp-content/uploads/2025/02/UI-Tax-Rate-Flyer.pdf
+  - kind: agency-practice
+    citation: Virgin Islands Department of Labor, VIDOL Announces 2026 Unemployment Insurance Tax Rates (December 29, 2025)
+    url: https://www.vidol.gov/2025/12/30/vidol-announces-2026-unemployment-insurance-tax-rates/
+  - kind: guidance
+    citation: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2024, p. 5
+    url: https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/July2024.pdf#page=5
+  - kind: guidance
+    citation: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2025, p. 5
+    url: https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/July2025.pdf#page=5
+  - kind: guidance
+    citation: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2026, p. 6
+    url: https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/July2026.pdf#page=6
+  readings:
+    statute: In Act 7410 the Legislature raised the rate in Section 308(b)(2) from "one percent (1%)" to "two percent (2%)".
+      In Act 8209 it rewrote paragraphs (3) to (8) for a payroll variation system, and in Act 8827 it moved the system's start
+      to 2024. It left paragraph (2) as Act 7410 set it. In its December 2019 notice for 2020, VIDOL kept new employers at
+      2.0% "under Act 8209 (24 V.I.C. §308(b)(2))."
+    other: In Act 8209 the Legislature defined the "new employer rate" as "the initial contribution rate for new employers
+      without an unemployment insurance history" and directed the Commissioner of Labor to publish it yearly. In a February
+      2025 flyer, VIDOL introduced "the new employer tax rates" for 2025 as an average contribution rate of 4.06% and a range
+      of 2.46% to 5.4%. For 2026 it gave an average of 4.04% and a range of 2.43% to 5.4%. The U.S. Department of Labor lists
+      4.04% as the Virgin Islands new-employer rate in its July 2026 Significant Provisions report, after listing 2.00% in
+      July 2024 and July 2025.
+  example: At the $32,100 base in 2026, a new employer pays $642 at 2% or $1,297 at 4.04%.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/territories/vi/tax/payroll/unemployment/default_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10700
+  state: ruled
+  note: PE-US applies Section 308(b)(2)'s 2% from 2024 to 2026. The Department of Labor's 4.04% for 2026 equals VIDOL's 2026
+    average contribution rate.
 - id: us-vt:liheap-income-maximum-large-households
   program: liheap
   years:
@@ -11497,6 +11805,49 @@ candidates:
   state: unreviewed
   note: 'PE-US follows the rounded standards as a disputable gap-fill; verify statutory rounding requirements and
     applicability of the undated precedent. Code not yet on main: medicaid_ltss_mmmna.'
+- id: us-wa:ui-new-employer-minimum-rate
+  program: unemployment-insurance
+  years:
+    from: 2018
+    to: 2026
+    type: calendar
+  question: Does Washington's 1% minimum for new employers apply to the experience part of the rate alone, as RCW
+    50.29.025(1)(d) and WAC 192-320-025 provide, or to the whole rate, as the Employment Security Department's rate
+    pages describe it?
+  sources:
+  - kind: statute
+    citation: RCW 50.29.025(1)(d)
+    url: https://app.leg.wa.gov/rcw/default.aspx?cite=50.29.025
+  - kind: regulation
+    citation: WAC 192-320-025(4)
+    url: https://app.leg.wa.gov/wac/default.aspx?cite=192-320-025
+  - kind: guidance
+    citation: Employment Security Department, Determining your tax rates (new employer share for 2021)
+    url: https://web.archive.org/web/20210420235439/https://esd.wa.gov/employer-taxes/determining-rates
+  - kind: guidance
+    citation: Employment Security Department, How we determine tax rates (new employer share for 2026)
+    url: https://web.archive.org/web/20260205010135/https://esd.wa.gov/employer-requirements/unemployment-taxes/how-we-determine-tax-rates
+  readings:
+    statute: RCW 50.29.025(1)(d)(i) sets a new employer's array calculation factor rate at the industry average times
+      the history factor, "but not less than one percent," and (1)(d)(ii) sets its social cost factor rate at the
+      industry average times the history factor, with a cap but no minimum. WAC 192-320-025(4) rounds each to two
+      decimal places and requires an experience tax of at least 1.00 percent.
+    other: The Department's pages say new employers pay the history factor times "the average rate for all businesses
+      in their respective industries, with the minimum rate being 1.00%" (2021 to 2024), or that federal law sets the
+      minimum rate at 1% (2025 and 2026), a minimum on the whole rate.
+  example: For 2025, statewide averages of 0.76% (experience) and 1.17% (total) with a 90% history factor give 1.00% +
+    0.37% = 1.37% under the statute and 1.05% under the Department's description; at the $72,800 base that is $997.36
+    against $764.40.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/wa/tax/payroll/unemployment/default_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10700
+  state: ruled
+  note: PE-US applies the rule to the statewide averages in the Department's first trust fund forecast of each year.
+    The readings agree in 2022, when the experience part exceeds 1%, and differ by 0.07 to 0.32 point in the other
+    years. The 2018 and 2019 pages state no minimum.
 - id: us-wi:claim-of-right-itemized-deduction-credit
   program: income-tax
   years:
@@ -12271,6 +12622,54 @@ candidates:
     unearned_sources.yaml) and for categorical eligibility (wy_lieap_eligible.py). It follows rule 8(a)(ii)(L) over
     the plan in excluding lump sums and has no lottery-winnings input. It deducts child support paid only from the
     payer's own earnings (wy_lieap_countable_income.py), since rule 8(a)(iii) does not say whose earnings.
+- id: us-wy:ui-new-employer-rate-2023-average
+  program: unemployment-insurance
+  years:
+    from: 2018
+    to: 2023
+    type: calendar
+  question: For Wyoming's new employers from 2018 to 2023, does the default rate follow W.S. 27-3-503(f), the industry's
+    average rate but at least 1% plus the adjustment factors of W.S. 27-3-505, or the averages that the Department of
+    Workforce Services (DWS) reports for employers with the new employer rate, 1.01% for 2023 in its July 2023 slides
+    and 1.59% to 2.92% for 2018 to 2023 in the Legislative Service Office's June 2023 Table 1?
+  sources:
+  - kind: statute
+    citation: W.S. 27-3-503(b) and (f), base rates and the new employer rate
+    url: https://wyoleg.gov/statutes/compress/title27.pdf#page=69
+  - kind: statute
+    citation: W.S. 27-3-505(a), (b), (d) and (h), adjustment factors
+    url: https://wyoleg.gov/statutes/compress/title27.pdf#page=73
+  - kind: agency-practice
+    citation: Department of Workforce Services, Unemployment Insurance Overview, presentation to the Joint
+      Appropriations Committee (July 10, 2023), slides 11 to 13
+    url: https://www.wyoleg.gov/InterimCommittee/2023/02-2023071010-03_UIOverviewJuly2023JACSlides.pdf#page=11
+  - kind: agency-practice
+    citation: Legislative Service Office, Unemployment Insurance Trust Fund memorandum (June 8, 2023), Table 1 of
+      Department of Workforce Services figures
+    url: https://wyoleg.gov/InterimCommittee/2023/02-2023071010-01_UnemploymentInsuranceTrust_JAC_Final.pdf#page=3
+  readings:
+    statute: Section 27-3-503(f) gives each new employer its major industrial classification's average rate for the
+      preceding year, and "In no case, however, will any new employer be assigned a rate of less than one percent (1%),
+      plus the adjustment factors computed under W.S. 27-3-505." New employers share the positive fund balance factor
+      (27-3-505(b)), never take the negative one (27-3-505(d)), and the factors of subsections (a) and (b) stop at 1.5%
+      (27-3-505(h)). Table 1 puts experience-rated employers' average base rate at 0.63% to 0.96%, so a new employer at
+      the statewide average takes the 1% minimum. Its factor columns give new employers 0.28, 0.22, 0.20, 1.28, 0.35
+      and 0.14 point for 2018 to 2023, and they match DWS's published minimum rates (0.23 + 0.15 + 0.10 = 0.48% for
+      2021). That makes 1.14% for 2023.
+    other: DWS's July 2023 slides give an "Average total tax rate for employers with new employer rate" of "0.0101
+      (1.01%)", below the statute's floor of 1% plus the 2023 factors. Table 1's new employer totals, 1.59% to 2.92%, exceed the
+      sum of its own base and factor columns, because they average the industry rates that new employers took.
+  example: At the $29,100 base for 2023, a new employer pays $331.74 at 1.14%, $293.91 at 1.01% or $500.52 at 1.72%.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/wy/tax/payroll/unemployment/default_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10700
+  state: ruled
+  note: PE-US applies the statute's rule to DWS's published inputs. For 2025 it uses 2.5%, the 1% minimum plus the
+    1.5% cap on the factors, since DWS's October 2025 memo puts 396 employers at the 10% maximum (8.5% plus 1.5%). DWS
+    has published no factors for 2024 or 2026, so PE-US uses the bare 1% there.
 - id: us:additional-child-credit-2021-abode-section-911
   program: income-tax
   years:

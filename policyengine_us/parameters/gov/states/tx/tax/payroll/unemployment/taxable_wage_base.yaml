@@ -1,13 +1,31 @@
-description: Employer-side unemployment insurance taxable wage base for Texas.
+description: Texas limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 9_000
+  2018-01-01: 9_000
 
 metadata:
   period: year
   unit: currency-USD
   label: Texas unemployment taxable wage base
   reference:
-    - title: Texas Labor Code Section 201.082
-      href: https://statutes.capitol.texas.gov/StatutesByDate.aspx?code=LA&date=9/1/2025&level=SE&value=201.082
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=54
+    - title: Texas Labor Code Section 201.082, wages above $9,000
+      href: https://statutes.capitol.texas.gov/Docs/LA/htm/LA.201.htm#201.082
+    - title: House Bill 567, 75th Legislature (1997), Section 1, leaving the $9,000 wage base
+      href: https://capitol.texas.gov/tlodocs/75R/billtext/html/HB00567F.htm
+    - title: Texas Workforce Commission, Unemployment Insurance Tax Rates (2018), historical tax rate table
+      href: https://web.archive.org/web/20180904015328/https://twc.texas.gov/businesses/unemployment-insurance-tax-rates
+    - title: Texas Workforce Commission, Unemployment Insurance Tax Rates (2019), historical tax rate table
+      href: https://web.archive.org/web/20190715220731/https://twc.texas.gov/businesses/unemployment-insurance-tax-rates
+    - title: Texas Workforce Commission, Unemployment Insurance Tax Rates (2020), historical tax rate table
+      href: https://web.archive.org/web/20200809024150/https://www.twc.texas.gov/businesses/unemployment-insurance-tax-rates
+    - title: Texas Workforce Commission, Unemployment Insurance Tax Rates (2021), historical tax rate table
+      href: https://web.archive.org/web/20210916201627/https://www.twc.texas.gov/businesses/unemployment-insurance-tax-rates
+    - title: Texas Workforce Commission, Unemployment Insurance Tax Rates (2022), historical tax rate table
+      href: https://web.archive.org/web/20220523080951/https://www.twc.texas.gov/businesses/unemployment-insurance-tax-rates
+    - title: Texas Workforce Commission, Unemployment Insurance Tax Rates (2023), historical tax rate table
+      href: https://web.archive.org/web/20230610174241/https://www.twc.texas.gov/businesses/unemployment-insurance-tax-rates
+    - title: Texas Workforce Commission, Unemployment Insurance Tax Rates (2024), historical tax rate table
+      href: https://web.archive.org/web/20240307115743/https://www.twc.texas.gov/programs/unemployment-tax/tax-rates
+    - title: Texas Workforce Commission, Unemployment Insurance Tax Rates (2025), historical tax rate table
+      href: https://web.archive.org/web/20250301065651/https://www.twc.texas.gov/programs/unemployment-tax/tax-rates
+    - title: Texas Workforce Commission, Unemployment Insurance Tax Rates (2026), historical tax rate table
+      href: https://web.archive.org/web/20260115015706/https://www.twc.texas.gov/programs/unemployment-tax/tax-rates

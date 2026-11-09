@@ -1,15 +1,13 @@
-description: Default employer-side unemployment insurance tax rate for Kentucky.
+description: Kentucky assigns this unemployment insurance contribution rate to each new employer.
 values:
-  0000-01-01: 0.027
+  2018-01-01: 0.027
 
 metadata:
   period: year
   unit: /1
   label: Kentucky default unemployment tax rate
   reference:
-    - title: Kentucky Revised Statutes Section 341.530
+    - title: Kentucky Revised Statutes Section 341.270(1), initial contribution rate
       href: https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=54208
-    - title: Kentucky Employer Web
-      href: https://kewes.ky.gov/Welcome.aspx
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=27
+    - title: 1998 Kentucky Acts chapter 167, section 1 (2.7% rate for employers subject on or after January 1, 1999)
+      href: https://apps.legislature.ky.gov/law/acts/98RS/actsmas.pdf#page=610

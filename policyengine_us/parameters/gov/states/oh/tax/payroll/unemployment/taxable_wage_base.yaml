@@ -1,13 +1,22 @@
-description: Employer-side unemployment insurance taxable wage base for Ohio.
+description: Ohio limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 9_000
+  2018-01-01: 9_500
+  2020-01-01: 9_000
 
 metadata:
   period: year
   unit: currency-USD
   label: Ohio unemployment taxable wage base
   reference:
-    - title: Ohio Revised Code Section 4141.01
-      href: https://codes.ohio.gov/assets/laws/revised-code/authenticated/41/4141/4141.01/10-3-2023/4141.01-10-3-2023.pdf#page=17
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=45
+    - title: Ohio Revised Code Section 4141.01(G), wages
+      href: https://codes.ohio.gov/assets/laws/revised-code/authenticated/41/4141/4141.01/9-30-2025/4141.01-9-30-2025.pdf#page=14
+    - title: Ohio Sub. S.B. 235, 131st General Assembly ($9,500 for 2018 and 2019, $9,000 from 2020)
+      href: https://search-prod.lis.state.oh.us/api/v2/general_assembly_131/legislation/sb235/05_EN/pdf/#page=25
+    - title: Ohio Department of Job and Family Services, Taxable Wage Base (2018)
+      href: https://web.archive.org/web/20180131221456/http://jfs.ohio.gov:80/ouc/uctax/wagebase.stm
+    - title: Ohio Department of Job and Family Services, Contribution Rates (2019)
+      href: https://web.archive.org/web/20190112135716/http://jfs.ohio.gov:80/ouc/uctax/rates.stm
+    - title: Ohio Department of Job and Family Services, Contribution Rates for 2019 to 2022, archived May 19, 2022
+      href: https://web.archive.org/web/20220519122303/https://jfs.ohio.gov/ouio/uctax/rates.stm
+    - title: Ohio Department of Job and Family Services, Contribution Rates for Calendar Years 2023 to 2026
+      href: https://jfs.ohio.gov/unemployment-services/for-employers/file-unemployment-taxes/tax-resources/contribution-rates

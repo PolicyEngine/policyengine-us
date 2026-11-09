@@ -1,0 +1,125 @@
+- name: Florida 2018, its 2.7% new-employer rate on the $7,000 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: FL
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 7_000
+    employer_state_unemployment_tax_default_rate: 0.027
+    fl_employer_state_unemployment_tax: 189
+    employer_state_unemployment_tax: 189
+
+- name: Florida 2019, its 2.7% new-employer rate on the $7,000 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: FL
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 7_000
+    employer_state_unemployment_tax_default_rate: 0.027
+    fl_employer_state_unemployment_tax: 189
+    employer_state_unemployment_tax: 189
+
+- name: Florida 2020, its 2.7% new-employer rate on the $7,000 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: FL
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 7_000
+    employer_state_unemployment_tax_default_rate: 0.027
+    fl_employer_state_unemployment_tax: 189
+    employer_state_unemployment_tax: 189
+
+- name: Florida 2021, its 2.7% new-employer rate on the $7,000 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: FL
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 7_000
+    employer_state_unemployment_tax_default_rate: 0.027
+    fl_employer_state_unemployment_tax: 189
+    employer_state_unemployment_tax: 189
+
+- name: Florida 2022, its 2.7% new-employer rate on the $7,000 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: FL
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 7_000
+    employer_state_unemployment_tax_default_rate: 0.027
+    fl_employer_state_unemployment_tax: 189
+    employer_state_unemployment_tax: 189
+
+- name: Florida 2023, its 2.7% new-employer rate on the $7,000 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: FL
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 7_000
+    employer_state_unemployment_tax_default_rate: 0.027
+    fl_employer_state_unemployment_tax: 189
+    employer_state_unemployment_tax: 189
+
+- name: Florida 2024, its 2.7% new-employer rate on the $7,000 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: FL
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 7_000
+    employer_state_unemployment_tax_default_rate: 0.027
+    fl_employer_state_unemployment_tax: 189
+    employer_state_unemployment_tax: 189
+
+- name: Florida 2025, its 2.7% new-employer rate on the $7,000 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: FL
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 7_000
+    employer_state_unemployment_tax_default_rate: 0.027
+    fl_employer_state_unemployment_tax: 189
+    employer_state_unemployment_tax: 189
+
+- name: Florida 2026, its 2.7% new-employer rate on the $7,000 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: FL
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 7_000
+    employer_state_unemployment_tax_default_rate: 0.027
+    fl_employer_state_unemployment_tax: 189
+    employer_state_unemployment_tax: 189
+
+- name: Florida 2018 taxes every dollar of wages below the wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: FL
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 135
+
+- name: Florida charges no employer unemployment tax on a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    fl_employer_state_unemployment_tax: 0

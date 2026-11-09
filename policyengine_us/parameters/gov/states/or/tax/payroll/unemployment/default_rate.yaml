@@ -1,15 +1,34 @@
-description: Default employer-side unemployment insurance tax rate for Oregon.
+description: Oregon assigns this unemployment insurance tax rate, set by the tax schedule in effect for the year, to each new employer.
 values:
-  0000-01-01: 0.024
+  2018-01-01: 0.024
+  2020-01-01: 0.021
+  2021-01-01: 0.026
+  2022-01-01: 0.024
+  2023-01-01: 0.021
+  2024-01-01: 0.024
 
 metadata:
   period: year
   unit: /1
   label: Oregon default unemployment tax rate
   reference:
-    - title: Oregon Revised Statutes Section 657.462
+    - title: Oregon Revised Statutes Section 657.435, base rate for first year
       href: https://www.oregonlegislature.gov/bills_laws/ors/ors657.html
-    - title: Oregon Employment Department employer news December 11 2025
-      href: https://www.oregon.gov/employ/Businesses/Documents/Employer%20News%20Archived%20issues/Employer%20News%2012.11.2025.pdf#page=1
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=47
+    - title: Oregon Employment Department, Current Tax Rate (2018)
+      href: https://web.archive.org/web/20180325194634/http://www.oregon.gov/EMPLOY/Businesses/Tax/Pages/Current-Tax-Rate.aspx
+    - title: Oregon Employment Department, Current Tax Rate (2019)
+      href: https://web.archive.org/web/20190724002130/https://www.oregon.gov/EMPLOY/Businesses/Tax/Pages/Current-Tax-Rate.aspx
+    - title: Oregon Employment Department, Current Tax Rate (2020)
+      href: https://web.archive.org/web/20200814025832/https://www.oregon.gov/EMPLOY/Businesses/Tax/Pages/Current-Tax-Rate.aspx
+    - title: Oregon Employment Department, Current Tax Rate (2021)
+      href: https://web.archive.org/web/20211007000808/https://www.oregon.gov/employ/Businesses/Tax/Pages/Current-Tax-Rate.aspx
+    - title: Oregon Employment Department, Current Tax Rate (2022)
+      href: https://web.archive.org/web/20220623150143/https://www.oregon.gov/employ/businesses/tax/pages/current-tax-rate.aspx
+    - title: Oregon Employment Department, Current Tax Rate (2023)
+      href: https://web.archive.org/web/20230328074700/https://www.oregon.gov/employ/Businesses/Tax/Pages/Current-Tax-Rate.aspx
+    - title: Oregon Employment Department, Current Tax Rate (2024)
+      href: https://web.archive.org/web/20240913011005/https://www.oregon.gov/employ/Businesses/Pages/Current-Tax-Rate.aspx
+    - title: Oregon Employment Department, Current Tax Rate (2025 and 2026)
+      href: https://web.archive.org/web/20260310124929/https://www.oregon.gov/employ/Businesses/Pages/Current-Tax-Rate.aspx
+    - title: Oregon Employment Department, Unemployment Insurance tax and Paid Leave Oregon contribution rates hold steady for 2026 (November 18, 2025)
+      href: https://www.oregon.gov/employ/NewsAndMedia/Documents/2025-11-18_Tax_Rate_2026_Press_Release.pdf#page=2

@@ -1,13 +1,26 @@
-description: Default employer-side unemployment insurance tax rate for South Carolina.
+description: South Carolina assigns this unemployment insurance contribution rate, including the solvency surcharge, to each new employer.
 values:
-  0000-01-01: 0.0039
+  # New employers take the rate class 12 rate. PE-US subtracts the
+  # separately listed 0.06% departmental administrative contingency assessment
+  # from the total effective rate that the Department of Employment and
+  # Workforce publishes.
+  2018-01-01: 0.0103
+  2019-01-01: 0.0081
+  2020-01-01: 0.0049
+  2023-01-01: 0.0039
+  2024-01-01: 0.0035
+  # Regulation 47-6, as amended in the State Register of December 27, 2024,
+  # raises the new employer rate to 1% whenever the class 12 rate falls below
+  # it, the floor that the Federal Unemployment Tax Act sets for employers
+  # with less than one year of experience.
+  2025-01-01: 0.01
 
 metadata:
   period: year
   unit: /1
   label: South Carolina default unemployment tax rate
   reference:
-    - title: South Carolina Code Title 41 Chapter 31
-      href: https://www.scstatehouse.gov/code/t41c031.php
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=51
+    - title: South Carolina Department of Employment and Workforce, Previous Years Tax Contribution Tables (new employer rate, contingency assessment and taxable wage base, 2018 to 2026)
+      href: https://www.dew.sc.gov/employers/tax-rate-information/previous-years-tax-contribution-tables
+    - title: South Carolina State Register, Volume 48, Issue 12, Document No. 5305, amending Regulation 47-6
+      href: https://www.scstatehouse.gov/state_register.php?file=Sr48-12.pdf&first=FILE&pdf=1#page=20

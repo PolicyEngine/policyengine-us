@@ -1,0 +1,125 @@
+- name: New Jersey 2018, its 2.6825% new-employer rate on the $33,700 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 33_700
+    employer_state_unemployment_tax_default_rate: 0.026825
+    nj_employer_state_unemployment_tax: 904
+    employer_state_unemployment_tax: 904
+
+- name: New Jersey 2019, its 2.6825% new-employer rate on the $34,400 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 34_400
+    employer_state_unemployment_tax_default_rate: 0.026825
+    nj_employer_state_unemployment_tax: 922.78
+    employer_state_unemployment_tax: 922.78
+
+- name: New Jersey 2020, its 2.6825% new-employer rate on the $35,300 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 35_300
+    employer_state_unemployment_tax_default_rate: 0.026825
+    nj_employer_state_unemployment_tax: 946.92
+    employer_state_unemployment_tax: 946.92
+
+- name: New Jersey 2021, its 2.6825% new-employer rate on the $36,200 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 36_200
+    employer_state_unemployment_tax_default_rate: 0.026825
+    nj_employer_state_unemployment_tax: 971.07
+    employer_state_unemployment_tax: 971.07
+
+- name: New Jersey 2022, the average of its quarter-start rates of 2.6825%, 2.6825%, 2.9825%, 2.9825% (2.8325%) on the $39,800 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 39_800
+    employer_state_unemployment_tax_default_rate: 0.028325
+    nj_employer_state_unemployment_tax: 1_127.34
+    employer_state_unemployment_tax: 1_127.34
+
+- name: New Jersey 2023, the average of its quarter-start rates of 2.9825%, 2.9825%, 3.2825%, 3.2825% (3.1325%) on the $41,100 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 41_100
+    employer_state_unemployment_tax_default_rate: 0.031325
+    nj_employer_state_unemployment_tax: 1_287.46
+    employer_state_unemployment_tax: 1_287.46
+
+- name: New Jersey 2024, the average of its quarter-start rates of 3.2825%, 3.2825%, 2.9825%, 2.9825% (3.1325%) on the $42,300 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 42_300
+    employer_state_unemployment_tax_default_rate: 0.031325
+    nj_employer_state_unemployment_tax: 1_325.05
+    employer_state_unemployment_tax: 1_325.05
+
+- name: New Jersey 2025, the average of its quarter-start rates of 2.9825%, 2.9825%, 2.6825%, 2.6825% (2.8325%) on the $43,300 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 43_300
+    employer_state_unemployment_tax_default_rate: 0.028325
+    nj_employer_state_unemployment_tax: 1_226.47
+    employer_state_unemployment_tax: 1_226.47
+
+- name: New Jersey 2026, its 2.6825% new-employer rate on the $44,800 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 44_800
+    employer_state_unemployment_tax_default_rate: 0.026825
+    nj_employer_state_unemployment_tax: 1_201.76
+    employer_state_unemployment_tax: 1_201.76
+
+- name: New Jersey 2018 taxes every dollar of wages below the wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 134.12
+
+- name: New Jersey charges no employer unemployment tax on a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    nj_employer_state_unemployment_tax: 0

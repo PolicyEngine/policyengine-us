@@ -1,13 +1,15 @@
-description: Default employer-side unemployment insurance tax rate for Iowa.
+description: Iowa assigns this unemployment insurance contribution rate to each new employer outside the construction industry.
 values:
-  0000-01-01: 0.01
+  2018-01-01: 0.01
 
 metadata:
   period: year
   unit: /1
   label: Iowa default unemployment tax rate
   reference:
-    - title: Iowa Code Chapter 96
-      href: https://www.legis.iowa.gov/docs/code/2026/96.pdf#page=1
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=25
+    - title: Iowa Code Section 96.7(2)(c)(1), rate for new nonconstruction employers
+      href: https://www.legis.iowa.gov/docs/code/2026/96.pdf#page=28
+    - title: Iowa Workforce Development, Historical UI Tax Rates, Taxable Wage Bases, and Rate Table (October 2025)
+      href: https://workforce.iowa.gov/media/1278/download#page=1
+    - title: Iowa Workforce Development, Unemployment Insurance Employer Handbook, Unemployment Insurance Taxes
+      href: https://workforce.iowa.gov/employers/unemployment-insurance/employer-handbook/unemployment-insurance-taxes

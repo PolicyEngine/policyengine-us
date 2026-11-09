@@ -1,13 +1,27 @@
-description: Default employer-side unemployment insurance tax rate for New Hampshire.
+description: New Hampshire assigns this unemployment compensation contribution rate, including the administrative contribution, to each new employer.
 values:
-  0000-01-01: 0.027
+  # New employers pay 2.7% less the fund balance reduction that RSA 282-A:82
+  # applies that quarter.
+  2018-01-01: 0.017
+  2018-10-01: 0.012
+  2020-04-01: 0.017
+  # PE-US adds the 0.5% emergency power surcharge of the third and fourth
+  # quarters of 2020.
+  2020-07-01: 0.032
+  2021-01-01: 0.027
+  2022-10-01: 0.022
+  2023-04-01: 0.017
 
 metadata:
   period: year
   unit: /1
   label: New Hampshire default unemployment tax rate
   reference:
-    - title: New Hampshire RSA 282-A:82
-      href: https://gc.nh.gov/rsa/html/XXIII/282-A/282-A-82.htm
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=39
+    - title: New Hampshire RSA 282-A:81, newly covered employers
+      href: https://gc.nh.gov/rsa/html/xxiii/282-a/282-a-81.htm
+    - title: New Hampshire RSA 282-A:82, minimum rate (fund balance reductions)
+      href: https://gc.nh.gov/rsa/html/xxiii/282-a/282-a-82.htm
+    - title: New Hampshire Employment Security, Employer Claims and Taxes (new employer tax rate of 2.7% minus any fund balance reduction for the quarter)
+      href: https://www.nhes.nh.gov/employers/employer-claims-taxes
+    - title: New Hampshire Employment Security, Tax Rate Chart (quarterly fund balance reductions and surcharges)
+      href: https://www.nhes.nh.gov/employers/employer-claims-taxes/tax-rate-chart

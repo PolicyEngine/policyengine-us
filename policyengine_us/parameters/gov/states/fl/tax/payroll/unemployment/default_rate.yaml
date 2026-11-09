@@ -1,13 +1,13 @@
-description: Default employer-side unemployment insurance tax rate for Florida.
+description: Florida assigns this initial reemployment assistance contribution rate to each new employer.
 values:
-  0000-01-01: 0.027
+  2018-01-01: 0.027
 
 metadata:
   period: year
   unit: /1
   label: Florida default unemployment tax rate
   reference:
-    - title: Florida Statutes Section 443.131
+    - title: Florida Statutes 2018, Section 443.131(2)(a), initial rate
+      href: https://www.flsenate.gov/Laws/Statutes/2018/443.131
+    - title: Florida Statutes 2025, Section 443.131(2)(a), initial rate
       href: https://www.flsenate.gov/Laws/Statutes/2025/443.131
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=19

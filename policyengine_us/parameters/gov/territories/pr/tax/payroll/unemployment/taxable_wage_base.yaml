@@ -1,13 +1,11 @@
-description: Employer-side unemployment insurance taxable wage base for Puerto Rico.
+description: Puerto Rico limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 7_000
+  2018-01-01: 7_000
 
 metadata:
   period: year
   unit: currency-USD
   label: Puerto Rico unemployment taxable wage base
   reference:
-    - title: Puerto Rico Employment Security Law Section 8
+    - title: Puerto Rico Employment Security Act (Act 74 of 1956), contributions on the first $7,000 of wages, Department of Labor and Human Resources compilation revised January 2025
       href: https://trabajo.pr.gov/docs/Division%20de%20Apelaciones/Ley%2074-1956%2C%20Ley%20de%20Seguridad%20de%20Empleo%20de%20Puerto%20Rico%20Revisada%20enero%202025.pdf#page=43
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=49

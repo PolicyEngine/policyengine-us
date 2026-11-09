@@ -1,13 +1,27 @@
-description: Employer-side unemployment insurance taxable wage base for Iowa.
+description: Iowa limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 38_200
+  2018-01-01: 29_900
+  2019-01-01: 30_600
+  2020-01-01: 31_600
+  2021-01-01: 32_400
+  2022-01-01: 34_800
+  2023-01-01: 36_100
+  2024-01-01: 38_200
+  2025-01-01: 39_500
+  # Senate File 607 (2025) cut the base to one-third of the statewide average
+  # annual wage from 2026.
+  2026-01-01: 20_400
 
 metadata:
   period: year
   unit: currency-USD
   label: Iowa unemployment taxable wage base
   reference:
-    - title: Iowa Code Chapter 96
-      href: https://www.legis.iowa.gov/docs/code/2026/96.pdf#page=1
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=25
+    - title: Iowa Workforce Development, Historical UI Tax Rates, Taxable Wage Bases, and Rate Table (October 2025)
+      href: https://workforce.iowa.gov/media/1278/download#page=1
+    - title: Iowa Workforce Development, 2018 Status Report of the Iowa Unemployment Compensation Trust Fund (taxable wages)
+      href: https://www.legis.iowa.gov/docs/publications/DF/1041214.pdf#page=11
+    - title: Iowa Workforce Development, 2025 Status Report, Iowa's Unemployment Compensation Trust Fund (taxable wages)
+      href: https://workforce.iowa.gov/media/3005/download#page=13
+    - title: Iowa Workforce Development, Iowans' Unemployment Benefits to Increase Starting July 6 (June 30, 2025; taxable wage base for 2026)
+      href: https://workforce.iowa.gov/media/2622/download#page=2

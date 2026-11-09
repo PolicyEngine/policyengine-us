@@ -1,15 +1,24 @@
-description: Default employer-side unemployment insurance tax rate for Alaska.
+description: Alaska assigns each new employer the rate for its industry, so this parameter uses the state's average employer contribution rate on taxable wages; from 2025 Alaska assigns every industry's new employers 1 percent.
 values:
-  0000-01-01: 0.0156
+  # Average employer tax rate as a percent of taxable wages, which leaves out
+  # the employee contributions that Alaska also collects.
+  2018-01-01: 0.01
+  2021-01-01: 0.0141
+  2022-01-01: 0.0153
+  2023-01-01: 0.0104
+  # 2024 average, then the uniform 1 percent new-employer rate for 2025 and 2026.
+  2024-01-01: 0.01
 
 metadata:
   period: year
   unit: /1
   label: Alaska default unemployment tax rate
   reference:
-    - title: Alaska Statutes Sections 23.20.170 and 23.20.281
-      href: https://www.akleg.gov/basis/statutes.asp?media=print&secStart=23.20.170&secEnd=23.20.170
-    - title: Alaska 2026 industry rates
+    - title: Alaska Statutes Section 23.20.290(c), employer rates of at least 1 percent
+      href: https://www.akleg.gov/basis/statutes.asp?media=print&secStart=23.20.290&secEnd=23.20.290
+    - title: Alaska Department of Labor and Workforce Development, Alaska Unemployment Insurance Actuarial Report 2024, Table 1.3 (average employer tax rate as a percent of taxable wages, 2015 to 2024)
+      href: https://live.laborstats.alaska.gov/sites/default/files/2026-02/UI%20Actuarial%20Study%202024.pdf#page=11
+    - title: Alaska Department of Labor and Workforce Development, Alaska Unemployment Insurance Tax Rates for New (Industry) Employers, 2025
+      href: https://labor.alaska.gov/estax/2025-industry-rates.html
+    - title: Alaska Department of Labor and Workforce Development, Alaska Unemployment Insurance Tax Rates for New (Industry) Employers, 2026
       href: https://labor.alaska.gov/estax/2026-industry-rates.html
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=11

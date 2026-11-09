@@ -1,0 +1,125 @@
+- name: Oklahoma 2018, its 1.5% new-employer rate on the $17,600 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 17_600
+    employer_state_unemployment_tax_default_rate: 0.015
+    ok_employer_state_unemployment_tax: 264
+    employer_state_unemployment_tax: 264
+
+- name: Oklahoma 2019, its 1.5% new-employer rate on the $18,100 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 18_100
+    employer_state_unemployment_tax_default_rate: 0.015
+    ok_employer_state_unemployment_tax: 271.50
+    employer_state_unemployment_tax: 271.50
+
+- name: Oklahoma 2020, its 1.5% new-employer rate on the $18,700 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 18_700
+    employer_state_unemployment_tax_default_rate: 0.015
+    ok_employer_state_unemployment_tax: 280.50
+    employer_state_unemployment_tax: 280.50
+
+- name: Oklahoma 2021, its 1.5% new-employer rate on the $24,000 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 24_000
+    employer_state_unemployment_tax_default_rate: 0.015
+    ok_employer_state_unemployment_tax: 360
+    employer_state_unemployment_tax: 360
+
+- name: Oklahoma 2022, its 1.5% new-employer rate on the $24,800 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 24_800
+    employer_state_unemployment_tax_default_rate: 0.015
+    ok_employer_state_unemployment_tax: 372
+    employer_state_unemployment_tax: 372
+
+- name: Oklahoma 2023, its 1.5% new-employer rate on the $25,700 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 25_700
+    employer_state_unemployment_tax_default_rate: 0.015
+    ok_employer_state_unemployment_tax: 385.50
+    employer_state_unemployment_tax: 385.50
+
+- name: Oklahoma 2024, its 1.5% new-employer rate on the $27,000 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 27_000
+    employer_state_unemployment_tax_default_rate: 0.015
+    ok_employer_state_unemployment_tax: 405
+    employer_state_unemployment_tax: 405
+
+- name: Oklahoma 2025, its 1.5% new-employer rate on the $28,200 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 28_200
+    employer_state_unemployment_tax_default_rate: 0.015
+    ok_employer_state_unemployment_tax: 423
+    employer_state_unemployment_tax: 423
+
+- name: Oklahoma 2026, its 1.5% new-employer rate on the $24,200 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 24_200
+    employer_state_unemployment_tax_default_rate: 0.015
+    ok_employer_state_unemployment_tax: 363
+    employer_state_unemployment_tax: 363
+
+- name: Oklahoma 2018 taxes every dollar of wages below the wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 75
+
+- name: Oklahoma charges no employer unemployment tax on a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    ok_employer_state_unemployment_tax: 0

@@ -1,13 +1,42 @@
-description: Default employer-side unemployment insurance tax rate for Puerto Rico.
+description: Puerto Rico assigns this unemployment insurance contribution rate to each new employer.
 values:
-  0000-01-01: 0.034
+  # The Employment Security Act sets a new employer rate for each of eight
+  # schedules, from 2.7% to 3.4%. We found no Puerto Rico agency source that
+  # names the schedule in force each year, so the yearly values come from the
+  # U.S. Department of Labor; for 2018 its tax measures report lists 3.1% and
+  # its Significant Provisions report lists 3.2%. These rates leave out the 1%
+  # special contribution, which goes to Puerto Rico's General Fund.
+  2018-01-01: 0.031
+  2019-01-01: 0.029
+  2020-01-01: 0.028
+  2022-01-01: 0.027
+  2023-01-01: 0.033
+  2024-01-01: 0.034
+  2025-01-01: 0.031
+  2026-01-01: 0.028
 
 metadata:
   period: year
   unit: /1
   label: Puerto Rico default unemployment tax rate
   reference:
-    - title: Puerto Rico Employment Security Law Section 8
+    - title: Puerto Rico Employment Security Act (Act 74 of 1956), contribution rate schedules for new employers (page 50) and special contribution (page 54), Department of Labor and Human Resources compilation revised January 2025
       href: https://trabajo.pr.gov/docs/Division%20de%20Apelaciones/Ley%2074-1956%2C%20Ley%20de%20Seguridad%20de%20Empleo%20de%20Puerto%20Rico%20Revisada%20enero%202025.pdf#page=50
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=49
+    - title: U.S. Department of Labor, Tax Measures of State Unemployment Insurance Tax Systems, CY 2018 (Puerto Rico new employer tax rate)
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys18.pdf#page=50
+    - title: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2019 (Puerto Rico new employer rate)
+      href: https://oui.doleta.gov/unemploy/content/sigpros/2010-2019/July2019.pdf#page=4
+    - title: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2020 (Puerto Rico new employer rate)
+      href: https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/July2020.pdf#page=4
+    - title: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2021 (Puerto Rico new employer rate)
+      href: https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/July2021.pdf#page=5
+    - title: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2022 (Puerto Rico new employer rate)
+      href: https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/July2022.pdf#page=4
+    - title: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2023 (Puerto Rico new employer rate)
+      href: https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/July2023.pdf#page=4
+    - title: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2024 (Puerto Rico new employer rate)
+      href: https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/July2024.pdf#page=4
+    - title: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2025 (Puerto Rico new employer rate)
+      href: https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/July2025.pdf#page=4
+    - title: U.S. Department of Labor, Significant Provisions of State Unemployment Insurance Laws, July 2026 (Puerto Rico new employer rate)
+      href: https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/July2026.pdf#page=5

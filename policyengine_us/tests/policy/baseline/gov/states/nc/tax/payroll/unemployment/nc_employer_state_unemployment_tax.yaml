@@ -1,0 +1,125 @@
+- name: North Carolina 2018, its 1% new-employer rate on the $23,500 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 23_500
+    employer_state_unemployment_tax_default_rate: 0.01
+    nc_employer_state_unemployment_tax: 235
+    employer_state_unemployment_tax: 235
+
+- name: North Carolina 2019, its 1% new-employer rate on the $24,300 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 24_300
+    employer_state_unemployment_tax_default_rate: 0.01
+    nc_employer_state_unemployment_tax: 243
+    employer_state_unemployment_tax: 243
+
+- name: North Carolina 2020, its 1% new-employer rate on the $25,200 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 25_200
+    employer_state_unemployment_tax_default_rate: 0.01
+    nc_employer_state_unemployment_tax: 252
+    employer_state_unemployment_tax: 252
+
+- name: North Carolina 2021, its 1% new-employer rate on the $26,000 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 26_000
+    employer_state_unemployment_tax_default_rate: 0.01
+    nc_employer_state_unemployment_tax: 260
+    employer_state_unemployment_tax: 260
+
+- name: North Carolina 2022, its 1% new-employer rate on the $28,000 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 28_000
+    employer_state_unemployment_tax_default_rate: 0.01
+    nc_employer_state_unemployment_tax: 280
+    employer_state_unemployment_tax: 280
+
+- name: North Carolina 2023, its 1% new-employer rate on the $29,600 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 29_600
+    employer_state_unemployment_tax_default_rate: 0.01
+    nc_employer_state_unemployment_tax: 296
+    employer_state_unemployment_tax: 296
+
+- name: North Carolina 2024, its 1% new-employer rate on the $31,400 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 31_400
+    employer_state_unemployment_tax_default_rate: 0.01
+    nc_employer_state_unemployment_tax: 314
+    employer_state_unemployment_tax: 314
+
+- name: North Carolina 2025, its 1% new-employer rate on the $32,600 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 32_600
+    employer_state_unemployment_tax_default_rate: 0.01
+    nc_employer_state_unemployment_tax: 326
+    employer_state_unemployment_tax: 326
+
+- name: North Carolina 2026, its 1% new-employer rate on the $34,200 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 34_200
+    employer_state_unemployment_tax_default_rate: 0.01
+    nc_employer_state_unemployment_tax: 342
+    employer_state_unemployment_tax: 342
+
+- name: North Carolina 2018 taxes every dollar of wages below the wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 50
+
+- name: North Carolina charges no employer unemployment tax on a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    nc_employer_state_unemployment_tax: 0

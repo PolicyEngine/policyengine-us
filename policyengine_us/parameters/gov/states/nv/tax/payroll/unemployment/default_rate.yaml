@@ -1,13 +1,21 @@
-description: Default employer-side unemployment insurance tax rate for Nevada.
+description: Nevada assigns this standard unemployment insurance contribution rate to each new employer.
 values:
-  0000-01-01: 0.0295
+  # PE-US leaves out the 0.05% Career Enhancement Program contribution under
+  # NRS 612.606, which goes to a separate fund.
+  2018-01-01: 0.0295
 
 metadata:
   period: year
   unit: /1
   label: Nevada default unemployment tax rate
   reference:
-    - title: Nevada Revised Statutes Section 612.550
-      href: https://www.leg.state.nv.us/NRS/NRS-612.html#NRS612Sec550
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=38
+    - title: Nevada Revised Statutes Section 612.540, standard rate of contributions
+      href: https://www.leg.state.nv.us/NRS/NRS-612.html#NRS612Sec540
+    - title: Nevada Department of Employment, Training and Rehabilitation, Unemployment Insurance Information (2018)
+      href: https://web.archive.org/web/20180121171022/http://ui.nv.gov:80/ESSHTML/ui_information.htm
+    - title: Nevada Department of Employment, Training and Rehabilitation, 2022 Tax Schedule Explanation for Unemployment Insurance (October 4, 2021)
+      href: https://web.archive.org/web/20250220220659/https://detr.nv.gov/Content/Media/Tax_Schedule_Explanation.pdf#page=6
+    - title: Nevada Department of Employment, Training and Rehabilitation, 2024 Tax Rate, Small Business Impact (October 30, 2023)
+      href: https://web.archive.org/web/20241008004345/https://detr.nv.gov/Content/Media/2024_Tax_Rate_-_Small_Business_Impact-Presentation.pdf#page=4
+    - title: Nevada Department of Employment, Training and Rehabilitation, View Quarterly Reporting Information (2026)
+      href: https://web.archive.org/web/20260211034638/https://detr.nv.gov/Page/NUI_View_Quarterly_Reporting_Info

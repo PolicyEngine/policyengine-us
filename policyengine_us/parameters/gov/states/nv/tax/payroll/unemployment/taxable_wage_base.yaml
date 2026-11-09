@@ -1,13 +1,40 @@
-description: Employer-side unemployment insurance taxable wage base for Nevada.
+description: Nevada limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 40_600
+  2018-01-01: 30_500
+  2019-01-01: 31_200
+  2020-01-01: 32_500
+  2021-01-01: 33_400
+  2022-01-01: 36_600
+  # The Department of Employment, Training and Rehabilitation set $40,100 for
+  # 2023; the July 2023 Department of Labor compilation lists $40,600, the
+  # 2024 base.
+  2023-01-01: 40_100
+  2024-01-01: 40_600
+  2025-01-01: 41_800
+  2026-01-01: 43_700
 
 metadata:
   period: year
   unit: currency-USD
   label: Nevada unemployment taxable wage base
   reference:
-    - title: Nevada Revised Statutes Section 612.545
+    - title: Nevada Revised Statutes Section 612.545, taxable wages
       href: https://www.leg.state.nv.us/NRS/NRS-612.html#NRS612Sec545
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=38
+    - title: Nevada Department of Employment, Training and Rehabilitation, What's New in UI Tax (taxable wage base for 2018)
+      href: https://web.archive.org/web/20180209120540/http://ui.nv.gov:80/ESSHTML/whats_new.htm
+    - title: Nevada Department of Employment, Training and Rehabilitation, What's New in UI Tax (taxable wage base for 2019)
+      href: https://web.archive.org/web/20190118202843/http://ui.nv.gov:80/ESSHTML/whats_new.htm
+    - title: Nevada Department of Employment, Training and Rehabilitation, What's New in UI Tax (taxable wage base for 2020)
+      href: https://web.archive.org/web/20200121143934/http://www.ui.nv.gov:80/ESSHTML/whats_new.htm
+    - title: Nevada Department of Employment, Training and Rehabilitation, What's New in UI Tax (taxable wage base for 2021)
+      href: https://web.archive.org/web/20210117132115/https://ui.nv.gov/ESSHTML/whats_new.htm
+    - title: Nevada Department of Employment, Training and Rehabilitation, What's New in UI Tax (taxable wage base for 2022)
+      href: https://web.archive.org/web/20220118003818/https://ui.nv.gov/ESSHTML/whats_new.htm
+    - title: Nevada Department of Employment, Training and Rehabilitation, What's New in UI Tax (taxable wage base for 2023)
+      href: https://web.archive.org/web/20230205181746/https://ui.nv.gov/ESSHTML/whats_new.htm
+    - title: Nevada Department of Employment, Training and Rehabilitation, What's New in UI Tax (taxable wage base for 2024)
+      href: https://web.archive.org/web/20240301020934/https://ui.nv.gov/ESSHTML/whats_new.htm
+    - title: Nevada Department of Employment, Training and Rehabilitation, What's New in UI Tax (taxable wage base for 2025)
+      href: https://web.archive.org/web/20250125115135/https://ui.nv.gov/ESSHTML/whats_new.htm
+    - title: Nevada Department of Employment, Training and Rehabilitation, What's New in UI Tax (taxable wage base for 2026)
+      href: https://web.archive.org/web/20260123052806/https://detr.nv.gov/Page/UI_Tax

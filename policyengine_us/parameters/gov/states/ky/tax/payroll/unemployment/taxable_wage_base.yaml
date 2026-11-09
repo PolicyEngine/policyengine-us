@@ -1,15 +1,27 @@
-description: Employer-side unemployment insurance taxable wage base for Kentucky.
+description: Kentucky limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 11_400
+  2018-01-01: 10_200
+  2019-01-01: 10_500
+  # 2021 Kentucky Acts chapter 177 and 2022 Kentucky Acts chapter 29 held the
+  # 2021 and 2022 wage bases at the 2020 amount.
+  2020-01-01: 10_800
+  2023-01-01: 11_100
+  2024-01-01: 11_400
+  2025-01-01: 11_700
+  2026-01-01: 12_000
 
 metadata:
   period: year
   unit: currency-USD
   label: Kentucky unemployment taxable wage base
   reference:
-    - title: Kentucky Revised Statutes Section 341.070
-      href: https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=52055
-    - title: Kentucky Employer Web
-      href: https://kewes.ky.gov/Welcome.aspx
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=27
+    - title: Kentucky Office of Unemployment Insurance, Employer Guide, September 2019 (taxable wage base by year)
+      href: https://kcc.ky.gov/career/If-you-are-an-Employer/Documents/EMPLOYER%20GUIDE%202019.pdf#page=20
+    - title: Kentucky Office of Unemployment Insurance, Unemployment Insurance Trust Fund Annual Report, calendar year 2020 (taxable wage base)
+      href: https://apps.legislature.ky.gov/AgencyReports/IJC/AR/ELC/UITF/2020/2020%20CY%20Annual%20Report.pdf#page=6
+    - title: 2021 Kentucky Acts chapter 177, section 2, amending KRS 341.030(7)
+      href: https://apps.legislature.ky.gov/law/acts/21rs/documents/0177.pdf#page=3
+    - title: 2022 Kentucky Acts chapter 29, section 1, amending KRS 341.030(7)
+      href: https://apps.legislature.ky.gov/law/acts/22rs/documents/0029.pdf#page=2
+    - title: Kentucky Office of Unemployment Insurance, Taxable Wage Base and Surcharge Information
+      href: https://ui.ky.gov/Redesign/ResourcePages/TaxableWageBase.aspx

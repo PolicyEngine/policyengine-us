@@ -1,15 +1,62 @@
-description: Default employer-side unemployment insurance tax rate for Utah.
+description: Utah assigns each new employer a rate based on its industry, at least 1.1%, so this parameter applies the new-employer rule to the statewide average benefit cost rate.
 values:
-  0000-01-01: 0.0061
+  # A new employer whose industry's benefit cost rate does not exceed 1% pays a
+  # basic rate of 1% times the reserve factor, plus the social cost rate, and
+  # at least 1.1%. The Department of Labor's average employer contribution
+  # rates on taxable wages, 0.41% to 0.68% from 2018 to 2026, leave the
+  # statewide average benefit cost rate below 1%. The Department of Workforce
+  # Services set the reserve factor and social cost rate at 1.00 and 0.1% for
+  # 2018 to 2020, 1.05 and 0.2% for 2021, 1.15 and 0.3% for 2022, 1.10 and
+  # 0.3% for 2023 and 2024, 1.10 and 0.2% for 2025, and 1.10 and 0.1% for
+  # 2026.
+  2018-01-01: 0.011
+  2021-01-01: 0.012
+  2022-01-01: 0.014
+  2025-01-01: 0.013
+  2026-01-01: 0.012
 
 metadata:
   period: year
   unit: /1
   label: Utah default unemployment tax rate
   reference:
-    - title: Utah Code Section 35A-4-303
-      href: https://le.utah.gov/xcode/Title35a/Chapter4/C35A-4_1800010118000101.pdf#page=42
-    - title: Utah unemployment insurance tax rates
-      href: https://jobs.utah.gov/ui/Employer/%28S%28s5d4bcyft23kevj5ydmhig2k%29%29/Public/Questions/TaxRates.aspx
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=55
+    - title: Utah Code Section 35A-4-303, contribution rates of new employers
+      href: https://le.utah.gov/xcode/Title35A/Chapter4/C35A-4-S303_2021111020211116.pdf
+    - title: Utah Code Title 35A, Chapter 4, as in force on January 1, 2018, Section 35A-4-303(4)(b) and (5)(b), new employer rates
+      href: https://le.utah.gov/xcode/Title35a/Chapter4/C35A-4_1800010118000101.pdf#page=21
+    - title: "Utah Department of Workforce Services, Tax Rates (2018): new employer rates, reserve factor and social cost rate"
+      href: https://web.archive.org/web/20171228005737/https://jobs.utah.gov/ui/Employer/Public/Questions/TaxRates.aspx
+    - title: "Utah Department of Workforce Services, Tax Rates (2019): new employer rates, reserve factor and social cost rate"
+      href: https://web.archive.org/web/20190209132747/https://jobs.utah.gov/ui/employer/public/Questions/TaxRates.aspx
+    - title: "Utah Department of Workforce Services, Tax Rates (2020): new employer rates, reserve factor and social cost rate"
+      href: https://web.archive.org/web/20200602022034/https://jobs.utah.gov/ui/employer/public/Questions/TaxRates.aspx
+    - title: "Utah Department of Workforce Services, Tax Rates (2021): new employer rates, reserve factor and social cost rate"
+      href: https://web.archive.org/web/20210307103324/https://jobs.utah.gov/ui/employer/public/Questions/TaxRates.aspx
+    - title: "Utah Department of Workforce Services, Tax Rates (2022): new employer rates, reserve factor and social cost rate"
+      href: https://web.archive.org/web/20220303190308/https://jobs.utah.gov/ui/Employer/Public/Questions/TaxRates.aspx
+    - title: "Utah Department of Workforce Services, Tax Rates (2023): new employer rates, reserve factor and social cost rate"
+      href: https://web.archive.org/web/20230321170500/https://jobs.utah.gov/ui/Employer/Public/Questions/TaxRates.aspx
+    - title: "Utah Department of Workforce Services, Tax Rates (2024): new employer rates, reserve factor and social cost rate"
+      href: https://web.archive.org/web/20240418133352/https://jobs.utah.gov/ui/Employer/Public/Questions/TaxRates.aspx
+    - title: "Utah Department of Workforce Services, Tax Rates (2025): new employer rates, reserve factor and social cost rate"
+      href: https://web.archive.org/web/20250113062803/https://jobs.utah.gov/ui/Employer/Public/Questions/TaxRates.aspx
+    - title: "Utah Department of Workforce Services, Tax Rates (2026): new employer rates, reserve factor and social cost rate"
+      href: https://web.archive.org/web/20260116000318/https://jobs.utah.gov/ui/employer/public/Questions/TaxRates.aspx
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2018 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2018.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2019 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2019.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2020 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2020.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2021 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2021.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2022 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2022.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2023 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2023.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2024 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2024.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Employer Contribution Rates, Calendar Year 2025 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2025.pdf#page=1
+    - title: U.S. Department of Labor, Employment and Training Administration, Estimated Employer Contribution Rates, Calendar Year 2026 (percent of taxable wages)
+      href: https://oui.doleta.gov/unemploy/docs/aetr-2026est.pdf#page=1

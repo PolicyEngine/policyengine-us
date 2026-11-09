@@ -1,13 +1,13 @@
-description: Employer-side unemployment insurance taxable wage base for Mississippi.
+description: Mississippi limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
-  0000-01-01: 14_000
+  2018-01-01: 14_000
 
 metadata:
   period: year
   unit: currency-USD
   label: Mississippi unemployment taxable wage base
   reference:
-    - title: Mississippi Employment Security Law Section 71-5-11
-      href: https://mdes.ms.gov/media/456617/mdes_lawsandregulation_web_02152024.pdf#page=43
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=34
+    - title: Mississippi Laws 2010, chapter 504 (HB 1718), section 1, Section 71-5-351(4)
+      href: https://billstatus.ls.state.ms.us/documents/2010/html/HB/1700-1799/HB1718SG.htm
+    - title: Mississippi Laws 2013, chapter 309 (HB 932), section 5, Section 71-5-351(4)
+      href: https://billstatus.ls.state.ms.us/documents/2013/html/HB/0900-0999/HB0932SG.htm

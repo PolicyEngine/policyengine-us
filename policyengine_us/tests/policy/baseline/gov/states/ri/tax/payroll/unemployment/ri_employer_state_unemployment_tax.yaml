@@ -1,0 +1,125 @@
+- name: Rhode Island 2018, its 1.5% new-employer rate on the $23,000 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 23_000
+    employer_state_unemployment_tax_default_rate: 0.015
+    ri_employer_state_unemployment_tax: 345
+    employer_state_unemployment_tax: 345
+
+- name: Rhode Island 2019, its 1.17% new-employer rate on the $23,600 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 23_600
+    employer_state_unemployment_tax_default_rate: 0.0117
+    ri_employer_state_unemployment_tax: 276.12
+    employer_state_unemployment_tax: 276.12
+
+- name: Rhode Island 2020, its 1.06% new-employer rate on the $24,000 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 24_000
+    employer_state_unemployment_tax_default_rate: 0.0106
+    ri_employer_state_unemployment_tax: 254.40
+    employer_state_unemployment_tax: 254.40
+
+- name: Rhode Island 2021, its 0.95% new-employer rate on the $24,600 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 24_600
+    employer_state_unemployment_tax_default_rate: 0.0095
+    ri_employer_state_unemployment_tax: 233.70
+    employer_state_unemployment_tax: 233.70
+
+- name: Rhode Island 2022, its 0.98% new-employer rate on the $24,600 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 24_600
+    employer_state_unemployment_tax_default_rate: 0.0098
+    ri_employer_state_unemployment_tax: 241.08
+    employer_state_unemployment_tax: 241.08
+
+- name: Rhode Island 2023, its 0.88% new-employer rate on the $28,200 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 28_200
+    employer_state_unemployment_tax_default_rate: 0.0088
+    ri_employer_state_unemployment_tax: 248.16
+    employer_state_unemployment_tax: 248.16
+
+- name: Rhode Island 2024, its 0.79% new-employer rate on the $29,200 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 29_200
+    employer_state_unemployment_tax_default_rate: 0.0079
+    ri_employer_state_unemployment_tax: 230.68
+    employer_state_unemployment_tax: 230.68
+
+- name: Rhode Island 2025, its 1% new-employer rate on the $29,800 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 29_800
+    employer_state_unemployment_tax_default_rate: 0.01
+    ri_employer_state_unemployment_tax: 298
+    employer_state_unemployment_tax: 298
+
+- name: Rhode Island 2026, its 1% new-employer rate on the $30,800 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 30_800
+    employer_state_unemployment_tax_default_rate: 0.01
+    ri_employer_state_unemployment_tax: 308
+    employer_state_unemployment_tax: 308
+
+- name: Rhode Island 2018 taxes every dollar of wages below the wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 75
+
+- name: Rhode Island charges no employer unemployment tax on a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    ri_employer_state_unemployment_tax: 0

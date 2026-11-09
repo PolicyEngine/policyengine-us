@@ -1,13 +1,13 @@
-description: Default employer-side unemployment insurance tax rate for North Carolina.
+description: North Carolina assigns this unemployment insurance tax rate to each beginning employer.
 values:
-  0000-01-01: 0.01
+  2018-01-01: 0.01
 
 metadata:
   period: year
   unit: /1
   label: North Carolina default unemployment tax rate
   reference:
-    - title: North Carolina General Statutes Section 96-9.2
+    - title: North Carolina General Statutes Section 96-9.2(b), beginning rate
       href: https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_96/GS_96-9.2.html
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=43
+    - title: North Carolina Division of Employment Security, Tax Rate Information (beginning tax rate and taxable wage base, 2021 to 2026)
+      href: https://www.des.nc.gov/employers/tax-rate-information

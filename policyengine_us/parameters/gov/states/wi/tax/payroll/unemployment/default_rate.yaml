@@ -1,13 +1,31 @@
-description: Default employer-side unemployment insurance tax rate for Wisconsin.
+description: Wisconsin assigns this total rate, the 2.5% basic rate plus the solvency rate, to each new employer outside the construction industry with taxable payroll under $500,000.
 values:
-  0000-01-01: 0.025
+  2018-01-01: 0.0305
 
 metadata:
   period: year
   unit: /1
   label: Wisconsin default unemployment tax rate
   reference:
-    - title: Wisconsin Statutes Section 108.18
-      href: https://docs.legis.wisconsin.gov/statutes/statutes/108/18
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=61
+    - title: Wisconsin Statutes Section 108.18, initial and solvency contribution rates
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/108.pdf#page=57
+    - title: 2021 Wisconsin Act 59, Schedule D for 2022 and 2023
+      href: https://docs.legis.wisconsin.gov/2021/related/acts/59
+    - title: Wisconsin Department of Workforce Development, Unemployment Insurance 2018 Tax Rates
+      href: https://web.archive.org/web/20180430154751/https://dwd.wisconsin.gov/ui/employers/taxrates.htm
+    - title: Wisconsin Department of Workforce Development, Unemployment Insurance 2019 Tax Rates
+      href: https://web.archive.org/web/20190130160342/https://dwd.wisconsin.gov/ui/employers/taxrates.htm
+    - title: Wisconsin Department of Workforce Development, Unemployment Insurance 2020 Tax Rates
+      href: https://web.archive.org/web/20200430225044/https://dwd.wisconsin.gov/ui/employers/taxrates.htm
+    - title: Wisconsin Department of Workforce Development, Unemployment Insurance 2021 Tax Rates
+      href: https://web.archive.org/web/20210610025301/https://dwd.wisconsin.gov/ui/employers/taxrates.htm
+    - title: Wisconsin Department of Workforce Development, Unemployment Insurance 2022 Tax Rates
+      href: https://web.archive.org/web/20220511134341/https://dwd.wisconsin.gov/ui/employers/taxrates.htm
+    - title: Wisconsin Department of Workforce Development, Unemployment Insurance 2023 Tax Rates
+      href: https://web.archive.org/web/20230325004610/https://dwd.wisconsin.gov/ui/employers/taxrates.htm
+    - title: Wisconsin Department of Workforce Development, Unemployment Insurance 2024 Tax Rates
+      href: https://dwd.wisconsin.gov/ui/employers/prior/taxrates-2024.htm
+    - title: Wisconsin Department of Workforce Development, Unemployment Insurance 2025 Tax Rates
+      href: https://dwd.wisconsin.gov/ui/employers/prior/taxrates-2025.htm
+    - title: Wisconsin Department of Workforce Development, Unemployment Insurance 2026 Tax Rates
+      href: https://dwd.wisconsin.gov/ui/employers/prior/taxrates-2026.htm

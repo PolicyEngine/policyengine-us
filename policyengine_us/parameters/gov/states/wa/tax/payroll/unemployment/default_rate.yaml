@@ -1,17 +1,66 @@
-description: Default employer-side unemployment insurance tax rate for Washington.
+description: Washington assigns each new employer the history factor times its industry's average experience rate, at least 1%, plus the history factor times its industry's average social cost rate, so this parameter applies that rule to the statewide averages.
 values:
-  0000-01-01: 0.0125
+  # The Employment Security Department's first trust fund forecast of each year
+  # gives the statewide average experience and total tax rates; subtracting the
+  # first from the second gives the average social cost rate. WAC 192-320-025
+  # rounds each part to 0.01 point, and the 1% minimum on the experience part
+  # binds in every year but 2022. The department applied a 90% history factor
+  # for 2018 and 2019.
+  2018-01-01: 0.0115
+  # No surviving Employment Security Department page gives the 2020 history
+  # factor, so PE-US uses 90%, the factor for 2018 and 2019; 100% or 115%
+  # would give 1.16% or 1.18%.
+  2020-01-01: 0.0114
+  # The department applied a 115% history factor for 2021 and 2022.
+  2021-01-01: 0.0135
+  2022-01-01: 0.0154
+  # The department applied a 90% history factor for 2023 to 2025.
+  2023-01-01: 0.0136
+  2024-01-01: 0.0141
+  2025-01-01: 0.0137
+  # The department applied a 115% history factor for 2026.
+  2026-01-01: 0.0149
 
 metadata:
   period: year
   unit: /1
   label: Washington default unemployment tax rate
   reference:
-    - title: Revised Code of Washington Section 50.29.025
+    - title: Revised Code of Washington Section 50.29.025, contribution rates
       href: https://app.leg.wa.gov/rcw/default.aspx?cite=50.29.025
-    - title: Washington Administrative Code 192-320-025
-      href: https://app.leg.wa.gov/WAC/default.aspx?cite=192-320-025
-    - title: Washington Employment Security Department how tax rates are determined
-      href: https://esd.wa.gov/employer-requirements/unemployment-taxes/how-we-determine-tax-rates
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=59
+    - title: Washington Administrative Code 192-320-025, unemployment insurance tax rates for new employers
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=192-320-025
+    - title: Washington Employment Security Department, Determining your tax rates (new employer share for 2018)
+      href: https://web.archive.org/web/20180118012359/https://esd.wa.gov/employer-taxes/determining-your-tax-rates
+    - title: Washington Employment Security Department, Determining your tax rate (new employer share for 2019)
+      href: https://web.archive.org/web/20190717234434/https://esd.wa.gov/employer-taxes/determining-your-tax-rate
+    - title: Washington Employment Security Department, Determining your tax rates (new employer share for 2021)
+      href: https://web.archive.org/web/20210420235439/https://esd.wa.gov/employer-taxes/determining-rates
+    - title: Washington Employment Security Department, Determining your tax rates (new employer share for 2022)
+      href: https://web.archive.org/web/20220403023159/https://esd.wa.gov/employer-taxes/determining-rates
+    - title: Washington Employment Security Department, Determining your tax rates (new employer share for 2023)
+      href: https://web.archive.org/web/20230207222038/https://esd.wa.gov/employer-taxes/determining-rates
+    - title: Washington Employment Security Department, Determining your tax rates (new employer share for 2024)
+      href: https://web.archive.org/web/20240416052120/https://esd.wa.gov/employer-taxes/determining-rates
+    - title: Washington Employment Security Department, Unemployment Insurance Trust Fund Forecast, June 2018 (average experience and total tax rates for 2018)
+      href: https://esd.wa.gov/media/pdf/717/uitfreportjune202018pdf/download?inline=#page=6
+    - title: Washington Employment Security Department, Unemployment Insurance Trust Fund Forecast, May 2019 (average experience and total tax rates for 2019)
+      href: https://esd.wa.gov/media/pdf/715/uitfreportmay2019pdf/download?inline=#page=6
+    - title: Washington Employment Security Department, Unemployment Insurance Trust Fund Forecast, June 2020 (average experience and total tax rates for 2020)
+      href: https://web.archive.org/web/20201007152426/https://esdorchardstorage.blob.core.windows.net/esdwa/Default/ESDWAGOV/labor-market-info/Libraries/Economic-reports/Unemployment-benefits-and-trust-fund-reports/UI-TF-REPORT-June-2020.pdf#page=6
+    - title: Washington Employment Security Department, Unemployment Insurance Trust Fund Forecast, June 2021 (average experience and total tax rates for 2021)
+      href: https://esd.wa.gov/media/pdf/710/ui-trust-fund-report-june2021pdf/download?inline=#page=6
+    - title: Washington Employment Security Department, Unemployment Insurance Trust Fund Forecast, June 2022 (average experience and total tax rates for 2022)
+      href: https://esd.wa.gov/media/pdf/707/unemployment-insurance-trust-fund-report-june-2022pdf/download?inline=#page=6
+    - title: Washington Employment Security Department, Unemployment Insurance Trust Fund Forecast, June 2023 (average experience and total tax rates for 2023)
+      href: https://esd.wa.gov/media/pdf/704/uitf-report-june202023final20draft2pdf/download?inline=#page=6
+    - title: Washington Employment Security Department, Unemployment Insurance Trust Fund Forecast, June 2024 (average experience and total tax rates for 2024)
+      href: https://esd.wa.gov/media/pdf/2025/unemployment-insurance-trust-fund-report-june-2024pdf/download?inline=#page=7
+    - title: Washington Employment Security Department, Unemployment Insurance Trust Fund Forecast, March 2025 (average experience and total tax rates for 2025)
+      href: https://esd.wa.gov/media/pdf/3420/uitf-report-mar-2025pdf/download?inline=#page=7
+    - title: Washington Employment Security Department, Unemployment Insurance Trust Fund Forecast, March 2026 (average experience and total tax rates for 2026)
+      href: https://esd.wa.gov/media/pdf/4727/202603-ui-trust-fund-reportpdf/download?inline=#page=8
+    - title: Washington Employment Security Department, How we determine tax rates (new employer share for 2025)
+      href: https://web.archive.org/web/20250306223417/https://esd.wa.gov/employer-requirements/unemployment-taxes/how-we-determine-tax-rates
+    - title: Washington Employment Security Department, How we determine tax rates (new employer share for 2026)
+      href: https://web.archive.org/web/20260205010135/https://esd.wa.gov/employer-requirements/unemployment-taxes/how-we-determine-tax-rates

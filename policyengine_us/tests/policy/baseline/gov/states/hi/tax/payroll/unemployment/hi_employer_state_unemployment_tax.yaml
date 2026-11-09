@@ -1,0 +1,125 @@
+- name: Hawaii 2018, its 2.4% new-employer rate on the $45,900 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 45_900
+    employer_state_unemployment_tax_default_rate: 0.024
+    hi_employer_state_unemployment_tax: 1_101.60
+    employer_state_unemployment_tax: 1_101.60
+
+- name: Hawaii 2019, its 2.4% new-employer rate on the $46,800 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 46_800
+    employer_state_unemployment_tax_default_rate: 0.024
+    hi_employer_state_unemployment_tax: 1_123.20
+    employer_state_unemployment_tax: 1_123.20
+
+- name: Hawaii 2020, its 2.4% new-employer rate on the $48,100 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 48_100
+    employer_state_unemployment_tax_default_rate: 0.024
+    hi_employer_state_unemployment_tax: 1_154.40
+    employer_state_unemployment_tax: 1_154.40
+
+- name: Hawaii 2021, its 3% new-employer rate on the $47,400 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 47_400
+    employer_state_unemployment_tax_default_rate: 0.03
+    hi_employer_state_unemployment_tax: 1_422
+    employer_state_unemployment_tax: 1_422
+
+- name: Hawaii 2022, its 3% new-employer rate on the $51,600 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 51_600
+    employer_state_unemployment_tax_default_rate: 0.03
+    hi_employer_state_unemployment_tax: 1_548
+    employer_state_unemployment_tax: 1_548
+
+- name: Hawaii 2023, its 4% new-employer rate on the $56,700 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 56_700
+    employer_state_unemployment_tax_default_rate: 0.04
+    hi_employer_state_unemployment_tax: 2_268
+    employer_state_unemployment_tax: 2_268
+
+- name: Hawaii 2024, its 3% new-employer rate on the $59,100 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 59_100
+    employer_state_unemployment_tax_default_rate: 0.03
+    hi_employer_state_unemployment_tax: 1_773
+    employer_state_unemployment_tax: 1_773
+
+- name: Hawaii 2025, its 2.4% new-employer rate on the $62,000 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 62_000
+    employer_state_unemployment_tax_default_rate: 0.024
+    hi_employer_state_unemployment_tax: 1_488
+    employer_state_unemployment_tax: 1_488
+
+- name: Hawaii 2026, its 2.4% new-employer rate on the $64,500 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 64_500
+    employer_state_unemployment_tax_default_rate: 0.024
+    hi_employer_state_unemployment_tax: 1_548
+    employer_state_unemployment_tax: 1_548
+
+- name: Hawaii 2018 taxes every dollar of wages below the wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 120
+
+- name: Hawaii charges no employer unemployment tax on a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    hi_employer_state_unemployment_tax: 0

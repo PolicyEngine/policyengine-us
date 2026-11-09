@@ -1,13 +1,24 @@
-description: Default employer-side unemployment insurance tax rate for Pennsylvania.
+description: Pennsylvania assigns this unemployment compensation contribution rate, the 3.5% basic rate with the surcharge adjustment, to each newly liable employer outside the construction industry.
 values:
-  0000-01-01: 0.0382
+  2018-01-01: 0.03689
+  2023-01-01: 0.03822
 
 metadata:
   period: year
   unit: /1
   label: Pennsylvania default unemployment tax rate
   reference:
-    - title: Pennsylvania Unemployment Compensation Law Section 301
+    - title: Pennsylvania Unemployment Compensation Law Sections 301(a)(4) and 301.5, basic rate for newly liable employers and surcharge
       href: https://www.pa.gov/content/dam/copapwp-pagov/en/dli/documents/uc/uc_law.pdf#page=59
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=48
+    - title: Pennsylvania Department of Labor and Industry, Types of Rates, new employer rates (2018)
+      href: https://web.archive.org/web/20180120161540/http://www.uc.pa.gov:80/employers-uc-services-uc-tax/uc-tax-rates/Pages/Types-of-Rates.aspx
+    - title: Pennsylvania Department of Labor and Industry, Yearly Tax Highlights (2020)
+      href: https://web.archive.org/web/20200513042613/https://www.uc.pa.gov/employers-uc-services-uc-tax/uc-tax-rates/Pages/Yearly-Tax-Highlights.aspx
+    - title: Pennsylvania Department of Labor and Industry, Yearly Tax Highlights (2022)
+      href: https://web.archive.org/web/20220705121850/https://www.uc.pa.gov/employers-uc-services-uc-tax/uc-tax-rates/Pages/Yearly-Tax-Highlights.aspx
+    - title: Pennsylvania Department of Labor and Industry, Yearly Tax Highlights (2023)
+      href: https://web.archive.org/web/20230602044732/https://www.uc.pa.gov/employers-uc-services-uc-tax/uc-tax-rates/Pages/Yearly-Tax-Highlights.aspx
+    - title: Pennsylvania Department of Labor and Industry, UC Tax, types of UC rates (new employer rates from 2018)
+      href: https://www.pa.gov/agencies/dli/resources/for-employers-and-educators/how-to-file/uc-tax.html
+    - title: Pennsylvania Department of Labor and Industry, Yearly Tax Highlights (2026)
+      href: https://web.archive.org/web/20260209015640/https://www.pa.gov/agencies/dli/resources/for-employers-and-educators/how-to-file/uc-tax/yearly-tax-highlights

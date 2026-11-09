@@ -1,0 +1,125 @@
+- name: West Virginia 2018, its 2.7% new-employer rate on the $12,000 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 12_000
+    employer_state_unemployment_tax_default_rate: 0.027
+    wv_employer_state_unemployment_tax: 324
+    employer_state_unemployment_tax: 324
+
+- name: West Virginia 2019, its 2.7% new-employer rate on the $12,000 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 12_000
+    employer_state_unemployment_tax_default_rate: 0.027
+    wv_employer_state_unemployment_tax: 324
+    employer_state_unemployment_tax: 324
+
+- name: West Virginia 2020, its 2.7% new-employer rate on the $12,000 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 12_000
+    employer_state_unemployment_tax_default_rate: 0.027
+    wv_employer_state_unemployment_tax: 324
+    employer_state_unemployment_tax: 324
+
+- name: West Virginia 2021, its 2.7% new-employer rate on the $12,000 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 12_000
+    employer_state_unemployment_tax_default_rate: 0.027
+    wv_employer_state_unemployment_tax: 324
+    employer_state_unemployment_tax: 324
+
+- name: West Virginia 2022, its 2.7% new-employer rate on the $9,000 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 9_000
+    employer_state_unemployment_tax_default_rate: 0.027
+    wv_employer_state_unemployment_tax: 243
+    employer_state_unemployment_tax: 243
+
+- name: West Virginia 2023, its 2.7% new-employer rate on the $9,000 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 9_000
+    employer_state_unemployment_tax_default_rate: 0.027
+    wv_employer_state_unemployment_tax: 243
+    employer_state_unemployment_tax: 243
+
+- name: West Virginia 2024, its 2.7% new-employer rate on the $9,521 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 9_521
+    employer_state_unemployment_tax_default_rate: 0.027
+    wv_employer_state_unemployment_tax: 257.07
+    employer_state_unemployment_tax: 257.07
+
+- name: West Virginia 2025, its 2.7% new-employer rate on the $9,500 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 9_500
+    employer_state_unemployment_tax_default_rate: 0.027
+    wv_employer_state_unemployment_tax: 256.50
+    employer_state_unemployment_tax: 256.50
+
+- name: West Virginia 2026, the average of its quarter-start rates of 2.7%, 2.7%, 2.511%, 2.511% (2.6055%) on the $9,500 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 9_500
+    employer_state_unemployment_tax_default_rate: 0.026055
+    wv_employer_state_unemployment_tax: 247.52
+    employer_state_unemployment_tax: 247.52
+
+- name: West Virginia 2018 taxes every dollar of wages below the wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 135
+
+- name: West Virginia charges no employer unemployment tax on a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    wv_employer_state_unemployment_tax: 0

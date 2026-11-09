@@ -1,0 +1,125 @@
+- name: Washington 2018, its 1.15% new-employer rate at the statewide average on the $47,300 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 47_300
+    employer_state_unemployment_tax_default_rate: 0.0115
+    wa_employer_state_unemployment_tax: 543.95
+    employer_state_unemployment_tax: 543.95
+
+- name: Washington 2019, its 1.15% new-employer rate at the statewide average on the $49,800 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 49_800
+    employer_state_unemployment_tax_default_rate: 0.0115
+    wa_employer_state_unemployment_tax: 572.70
+    employer_state_unemployment_tax: 572.70
+
+- name: Washington 2020, its 1.14% new-employer rate at the statewide average on the $52,700 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 52_700
+    employer_state_unemployment_tax_default_rate: 0.0114
+    wa_employer_state_unemployment_tax: 600.78
+    employer_state_unemployment_tax: 600.78
+
+- name: Washington 2021, its 1.35% new-employer rate at the statewide average on the $56,500 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 56_500
+    employer_state_unemployment_tax_default_rate: 0.0135
+    wa_employer_state_unemployment_tax: 762.75
+    employer_state_unemployment_tax: 762.75
+
+- name: Washington 2022, its 1.54% new-employer rate at the statewide average on the $62,500 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 62_500
+    employer_state_unemployment_tax_default_rate: 0.0154
+    wa_employer_state_unemployment_tax: 962.50
+    employer_state_unemployment_tax: 962.50
+
+- name: Washington 2023, its 1.36% new-employer rate at the statewide average on the $67,600 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 67_600
+    employer_state_unemployment_tax_default_rate: 0.0136
+    wa_employer_state_unemployment_tax: 919.36
+    employer_state_unemployment_tax: 919.36
+
+- name: Washington 2024, its 1.41% new-employer rate at the statewide average on the $68,500 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 68_500
+    employer_state_unemployment_tax_default_rate: 0.0141
+    wa_employer_state_unemployment_tax: 965.85
+    employer_state_unemployment_tax: 965.85
+
+- name: Washington 2025, its 1.37% new-employer rate at the statewide average on the $72,800 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 72_800
+    employer_state_unemployment_tax_default_rate: 0.0137
+    wa_employer_state_unemployment_tax: 997.36
+    employer_state_unemployment_tax: 997.36
+
+- name: Washington 2026, its 1.49% new-employer rate at the statewide average on the $78,200 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 78_200
+    employer_state_unemployment_tax_default_rate: 0.0149
+    wa_employer_state_unemployment_tax: 1_165.18
+    employer_state_unemployment_tax: 1_165.18
+
+- name: Washington 2018 taxes every dollar of wages below the wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 57.50
+
+- name: Washington charges no employer unemployment tax on a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    wa_employer_state_unemployment_tax: 0

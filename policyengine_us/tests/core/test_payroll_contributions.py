@@ -534,8 +534,8 @@ def test_employee_payroll_tax_zero_when_payroll_tax_abolished():
         pytest.param(
             "RI",
             {
-                "ri_employer_job_development_fund_tax": 61.32,
-                "ri_employer_additional_state_payroll_tax": 61.32,
+                "ri_employer_job_development_fund_tax": 64.68,
+                "ri_employer_additional_state_payroll_tax": 64.68,
             },
             id="RI",
         ),
@@ -914,8 +914,8 @@ def test_connecticut_paid_leave_uses_fica_taxable_wages():
             {
                 "nj_temporary_disability_insurance_taxable_wages": 171_100,
                 "nj_family_leave_insurance_taxable_wages": 171_100,
-                "nj_taxable_earnings_for_state_unemployment_tax": 42_300,
-                "taxable_earnings_for_state_unemployment_tax": 42_300,
+                "nj_taxable_earnings_for_state_unemployment_tax": 44_800,
+                "taxable_earnings_for_state_unemployment_tax": 44_800,
             },
             id="NJ",
         ),
@@ -923,8 +923,8 @@ def test_connecticut_paid_leave_uses_fica_taxable_wages():
             "RI",
             {
                 "ri_temporary_disability_insurance_taxable_wages": 100_000,
-                "ri_taxable_earnings_for_state_unemployment_tax": 29_200,
-                "taxable_earnings_for_state_unemployment_tax": 29_200,
+                "ri_taxable_earnings_for_state_unemployment_tax": 30_800,
+                "taxable_earnings_for_state_unemployment_tax": 30_800,
             },
             id="RI",
         ),
@@ -1323,9 +1323,10 @@ def test_st_louis_total_payroll_expense_tax():
         5_000
     )
     assert calculate(sim, "employer_total_local_payroll_tax") == pytest.approx(5_000)
-    assert calculate(sim, "employer_total_payroll_tax") == pytest.approx(12_906.2)
+    # Missouri's 2026 new employer rate comes to 2.376% (2.7% less 12%) on $9,000.
+    assert calculate(sim, "employer_total_payroll_tax") == pytest.approx(12_905.84)
     assert calculate(sim, "employer_total_cost_of_employment") == pytest.approx(
-        112_906.2
+        112_905.84
     )
 
 

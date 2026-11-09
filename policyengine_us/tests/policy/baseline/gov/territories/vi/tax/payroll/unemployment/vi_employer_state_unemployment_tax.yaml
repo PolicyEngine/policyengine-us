@@ -1,0 +1,125 @@
+- name: Virgin Islands 2018, its 2% new-employer rate on the $24,200 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: VI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 24_200
+    employer_state_unemployment_tax_default_rate: 0.02
+    vi_employer_state_unemployment_tax: 484
+    employer_state_unemployment_tax: 484
+
+- name: Virgin Islands 2019, its 2% new-employer rate on the $26,500 wage base.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: VI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 26_500
+    employer_state_unemployment_tax_default_rate: 0.02
+    vi_employer_state_unemployment_tax: 530
+    employer_state_unemployment_tax: 530
+
+- name: Virgin Islands 2020, its 2% new-employer rate on the $28,900 wage base.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: VI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 28_900
+    employer_state_unemployment_tax_default_rate: 0.02
+    vi_employer_state_unemployment_tax: 578
+    employer_state_unemployment_tax: 578
+
+- name: Virgin Islands 2021, its 2% new-employer rate on the $32,500 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: VI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 32_500
+    employer_state_unemployment_tax_default_rate: 0.02
+    vi_employer_state_unemployment_tax: 650
+    employer_state_unemployment_tax: 650
+
+- name: Virgin Islands 2022, its 2% new-employer rate on the $30,800 wage base.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: VI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 30_800
+    employer_state_unemployment_tax_default_rate: 0.02
+    vi_employer_state_unemployment_tax: 616
+    employer_state_unemployment_tax: 616
+
+- name: Virgin Islands 2023, its 2% new-employer rate on the $30,200 wage base.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: VI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 30_200
+    employer_state_unemployment_tax_default_rate: 0.02
+    vi_employer_state_unemployment_tax: 604
+    employer_state_unemployment_tax: 604
+
+- name: Virgin Islands 2024, its 2% new-employer rate on the $31,000 wage base.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: VI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 31_000
+    employer_state_unemployment_tax_default_rate: 0.02
+    vi_employer_state_unemployment_tax: 620
+    employer_state_unemployment_tax: 620
+
+- name: Virgin Islands 2025, its 2% new-employer rate on the $31,100 wage base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: VI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 31_100
+    employer_state_unemployment_tax_default_rate: 0.02
+    vi_employer_state_unemployment_tax: 622
+    employer_state_unemployment_tax: 622
+
+- name: Virgin Islands 2026, its 2% new-employer rate on the $32,100 wage base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: VI
+    employment_income: 100_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 32_100
+    employer_state_unemployment_tax_default_rate: 0.02
+    vi_employer_state_unemployment_tax: 642
+    employer_state_unemployment_tax: 642
+
+- name: Virgin Islands 2018 taxes every dollar of wages below the wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: VI
+    employment_income: 5_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000
+    employer_state_unemployment_tax: 100
+
+- name: Virgin Islands charges no employer unemployment tax on a worker in another state.
+  period: 2024
+  input:
+    state_code: TX
+    employment_income: 100_000
+  output:
+    vi_employer_state_unemployment_tax: 0

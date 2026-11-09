@@ -1,15 +1,46 @@
-description: Default employer-side unemployment insurance tax rate for Missouri.
+description: Missouri assigns this unemployment insurance contribution rate, after its contribution rate adjustment, to each new employer outside mining and construction.
 values:
-  0000-01-01: 0.0238
+  # Missouri Revised Statutes Section 288.090.2 assigns each new employer the
+  # greater of its industry's average rate and 2.7%. Section 288.122 cuts each
+  # rate by 7% when the trust fund's average balance exceeds $600 million and
+  # by 12% when it exceeds $750 million; the 2006 text of Sections 288.036 and
+  # 288.122 governs, because Pestka v. State (2016) held the 2015 veto
+  # override of House Bill 150 invalid. The Division of Employment Security's
+  # rate tables, which include that adjustment, list 2.511% (2.7% less 7%) for
+  # 2018 and 2023 and 2.376% (2.7% less 12%) for the other years.
+  2018-01-01: 0.02511
+  2019-01-01: 0.02376
+  2023-01-01: 0.02511
+  2024-01-01: 0.02376
 
 metadata:
   period: year
   unit: /1
   label: Missouri default unemployment tax rate
   reference:
-    - title: Missouri Revised Statutes Section 288.090
+    - title: Missouri Revised Statutes Section 288.090.2, rate for employers not yet eligible for an experience rate
       href: https://revisor.mo.gov/main/OneSection.aspx?section=288.090
-    - title: Missouri unemployment tax rates
-      href: https://labor.mo.gov/des/employers/tax-rates
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=35
+    - title: Missouri Revised Statutes Section 288.122 (as effective October 1, 2006), contribution rate adjustment
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=288.122&bid=33835
+    - title: Missouri Division of Employment Security, Tax Rates (January 2019)
+      href: https://web.archive.org/web/20190111215632/https://labor.mo.gov/DES/Employers/tax_rates
+    - title: Missouri Division of Employment Security, Tax Rates (October 2020)
+      href: https://web.archive.org/web/20201016163305/https://labor.mo.gov/DES/Employers/tax_rates
+    - title: Missouri Division of Employment Security, Tax Rates (August 2022)
+      href: https://web.archive.org/web/20220819172952/https://labor.mo.gov/des/employers/tax-rates
+    - title: Missouri Division of Employment Security, Tax Rates (January 2023)
+      href: https://web.archive.org/web/20230124003733/https://labor.mo.gov/des/employers/tax-rates
+    - title: Missouri Division of Employment Security, Tax Rates (April 2024)
+      href: https://web.archive.org/web/20240427081016/https://labor.mo.gov/des/employers/tax-rates
+    - title: Missouri Division of Employment Security, Tax Rates (February 2025)
+      href: https://web.archive.org/web/20250205202759/https://labor.mo.gov/des/employers/tax-rates
+    - title: Missouri Division of Employment Security, Tax Rates (January 2026)
+      href: https://web.archive.org/web/20260110071912/https://labor.mo.gov/des/employers/tax-rates
+    - title: Missouri Department of Labor and Industrial Relations, release on the 2019 taxable wage base and rate reduction (December 20, 2018)
+      href: https://labor.mo.gov/news/press-releases/lower-unemployment-leads-millions-dollars-reduced-taxes-missouri-businesses
+    - title: Missouri Department of Labor and Industrial Relations, release on the 2020 taxable wage base and rate reduction (December 20, 2019)
+      href: https://labor.mo.gov/news/press-releases/lower-unemployment-leads-millions-dollars-reduced-taxes-missouri-businesses-0
+    - title: Missouri Department of Labor and Industrial Relations, release on 2021 unemployment tax rates (November 4, 2020)
+      href: https://labor.mo.gov/news/press-releases/missouri-employers-receive-unemployment-tax-rate-reduction-2021
+    - title: Missouri Department of Labor and Industrial Relations, release on the 2024 contribution rate adjustment and wage base (October 31, 2023)
+      href: https://labor.mo.gov/news/press-releases/missouri-department-labor-sets-2024-unemployment-insurance-contribution-rate

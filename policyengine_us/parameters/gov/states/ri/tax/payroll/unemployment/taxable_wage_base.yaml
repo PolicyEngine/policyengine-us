@@ -1,13 +1,35 @@
-description: Employer-side unemployment insurance taxable wage base for Rhode Island.
+description: Rhode Island limits employer unemployment insurance contributions to this amount of each worker's annual wages, for employers below the highest experience rate.
 values:
-  0000-01-01: 29_200
+  2018-01-01: 23_000
+  2019-01-01: 23_600
+  2020-01-01: 24_000
+  2021-01-01: 24_600
+  2022-01-01: 24_600
+  2023-01-01: 28_200
+  2024-01-01: 29_200
+  2025-01-01: 29_800
+  2026-01-01: 30_800
 
 metadata:
   period: year
   unit: currency-USD
   label: Rhode Island unemployment taxable wage base
   reference:
+    - title: Rhode Island Division of Taxation, Advisory ADV 2017-47, UI taxable wage base for 2018
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/Advisory/ADV-2017-47.pdf#page=2
+    - title: Rhode Island Division of Taxation, Advisory ADV 2019-37, UI taxable wage base for 2019 and 2020
+      href: http://www.tax.ri.gov/Advisory/ADV_2019_37.pdf#page=3
+    - title: Rhode Island Division of Taxation, Advisory ADV 2020-63, UI taxable wage base for 2021
+      href: http://www.tax.ri.gov/Advisory/ADV_2020_63.pdf#page=2
+    - title: Rhode Island Department of Labor and Training, 2022 UI and TDI quick reference
+      href: https://dlt.ri.gov/sites/g/files/xkgbur571/files/2021-12/quickref.pdf
+    - title: Rhode Island Department of Labor and Training, 2023 UI and TDI quick reference
+      href: https://dlt.ri.gov/sites/g/files/xkgbur571/files/2021-12/quickref_0.pdf
+    - title: Rhode Island Department of Labor and Training, 2024 tax rates for unemployment insurance and temporary disability insurance
+      href: https://dlt.ri.gov/press-releases/2024-tax-rates-unemployment-insurance-and-temporary-disability-insurance
+    - title: Rhode Island Department of Labor and Training, 2025 tax rates for unemployment insurance and temporary disability insurance (archived January 4, 2025)
+      href: https://web.archive.org/web/20250104134049/https://dlt.ri.gov/press-releases/2025-tax-rates-unemployment-insurance-and-temporary-disability-insurance
+    - title: Rhode Island Department of Labor and Training, 2026 tax rates for unemployment insurance and temporary disability insurance (archived December 21, 2025)
+      href: https://web.archive.org/web/20251221073715/https://dlt.ri.gov/press-releases/2026-tax-rates-unemployment-insurance-and-temporary-disability-insurance
     - title: Rhode Island General Laws Section 28-43-7
       href: https://webserver.rilegislature.gov/Statutes/TITLE28/28-43/28-43-7.htm
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=50
