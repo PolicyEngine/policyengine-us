@@ -17,8 +17,8 @@ class medicaid_ltss_couple_countable_income(Variable):
         "then counting half the earnings remainder (DSSM 20200.2(f), "
         "20240.1 and 20240.3; 20 CFR 416.1112(c)(4)-(7)). Each person's "
         "expenses are limited to their own earnings before aggregation. "
-        "Other modeled states use the combined income remaining "
-        "outside qualified income trusts. Texas also excludes qualifying "
+        "Other modeled states use combined income after their qualified "
+        "income trust treatment. Texas also excludes qualifying "
         "interest and dividends under MEPD E-3331.1 and E-3331.2."
     )
     reference = (

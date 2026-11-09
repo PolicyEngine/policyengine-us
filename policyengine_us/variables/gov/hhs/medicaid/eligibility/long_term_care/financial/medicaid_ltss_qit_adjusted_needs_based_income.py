@@ -22,6 +22,7 @@ class medicaid_ltss_qit_adjusted_needs_based_income(Variable):
     )
     reference = (
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=9",
+        "https://www.law.cornell.edu/uscode/text/42/1396p#d_4_B",
         "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1340",
     )
 

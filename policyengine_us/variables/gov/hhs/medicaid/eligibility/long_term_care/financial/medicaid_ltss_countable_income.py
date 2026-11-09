@@ -8,8 +8,8 @@ class medicaid_ltss_countable_income(Variable):
     unit = USD
     definition_period = MONTH
     documentation = (
-        "Income for the selected individual or couple budget after "
-        "qualified income trust deposits and modeled state income "
+        "Income for the selected individual or couple budget after each "
+        "state's qualified income trust treatment and modeled state income "
         "exclusions. Each spouse supplies their own gross source amounts; "
         "the model computes the combined budget and its exclusions."
     )
