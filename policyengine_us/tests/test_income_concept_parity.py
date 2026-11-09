@@ -17,7 +17,12 @@ dollar of wages can change a benefit.
 2. No source counts twice: no list repeats a variable, no variable sits under
    two Census sources, the CBO categories are disjoint, CBO adds nothing
    household market income already holds, and neither concept counts a variable
-   beside another that reaches it through `adds`.
+   beside another that reaches it through `adds` or through a formula that
+   FORMULA_SUMS or FORMULA_PARTS follows. Every other formula inside a listed
+   source that calls add, aggr or .sum, or that reads by name a variable
+   another listed source reaches, has a ruling in FORMULA_READS. The check
+   reads formula text, so a formula that reaches another source through an
+   intermediate variable escapes it.
 3. A dollar of a listed source adds a dollar to its concept. A person's Census
    money income gains the dollar, or an equal share of a dollar paid to a
    group, and the family and household totals gain the dollar. The CBO
@@ -34,9 +39,12 @@ YAML pins one household per case. These tests run every listed and excluded
 source at once, with Hypothesis over amounts and household sizes.
 """
 
+import ast
 import functools
+import inspect
 import itertools
 import re
+import textwrap
 from collections import Counter
 from pathlib import Path
 
@@ -262,6 +270,73 @@ CBO_COUNTED_AS = {
     ),
 }
 
+# Formulas that return what they pass to add(), which `adds` would otherwise
+# show. reachable() follows the variables they add.
+FORMULA_SUMS = {"snap_if_takes_up", "tanf_if_takes_up"}
+
+# Formulas that return another variable's value, a share of it, or it plus an
+# amount of their own. reachable() follows those variables too.
+FORMULA_PARTS = {
+    # Distributions from the age Census counts them (CENSUS_COUNTED_IN_PART).
+    "census_retirement_distributions": ("retirement_distributions",),
+    # The federally administered payment plus the amount the state pays.
+    "ia_ssa": ("ia_ssa_federal",),
+    # The head's or spouse's share of the tax unit's gain or loss.
+    "other_net_gain_person": ("other_net_gain",),
+}
+
+# The other formulas inside a listed source that call add, aggr or .sum, or
+# read by name a variable another listed source reaches. Each was read in
+# full, and none adds what it sums or reads to its own value.
+COUNTS = "counts people, such as eligible members or children"
+SPLITS = "splits a couple's payment between the two"
+INCOME_TEST = "sums income or resources for an income or resource test"
+OFFSET = "subtracts SSI or other income from its payment standard"
+RECEIPT = "tests whether the person receives SSI"
+REMAINDER = "takes the labor supply response the employment part leaves"
+FORMULA_READS = {
+    "ak_ssp": SPLITS,
+    "ar_tea": INCOME_TEST,
+    "ca_capi_person": INCOME_TEST,
+    "ca_la_infant_supplement": COUNTS,
+    "ca_state_supplement_person": OFFSET,
+    "ca_tanf": COUNTS,
+    "co_oap": OFFSET,
+    "co_state_supplement": OFFSET,
+    "co_tanf": INCOME_TEST,
+    "ct_tfa": INCOME_TEST,
+    "de_ssp": SPLITS,
+    "ia_ssa_federal": INCOME_TEST,
+    "in_ssp_rcap": OFFSET,
+    "in_ssp_sapn": OFFSET,
+    "ks_tanf": INCOME_TEST,
+    "la_oss": OFFSET,
+    "ma_state_supplement": SPLITS,
+    "md_paa": OFFSET,
+    "me_ssp": COUNTS,
+    "mn_msa_person": INCOME_TEST,
+    "mo_ssp": OFFSET,
+    "ne_adc": INCOME_TEST,
+    "ny_ssp": RECEIPT,
+    "oh_rss": INCOME_TEST,
+    "ok_ssp": COUNTS,
+    "or_ssp": INCOME_TEST,
+    "pa_ssp": RECEIPT,
+    "pa_tanf": INCOME_TEST,
+    "ri_ssp": RECEIPT,
+    "sc_ssi_state_supplement": OFFSET,
+    "sd_ssp_care": INCOME_TEST,
+    "sd_ssp_independent": INCOME_TEST,
+    "self_employment_income_behavioral_response": REMAINDER,
+    "sstb_self_employment_income_behavioral_response": REMAINDER,
+    "ut_dws_ssp": SPLITS,
+    "vt_aabd_ep": SPLITS,
+    "wi_ssi_e": SPLITS,
+    "wi_ssp_regular": COUNTS,
+}
+SUMS = re.compile(r"\b(?:add|aggr)\(|\.sum\(")
+NAMED_READS = re.compile(r"""\(\s*["']([a-z][a-z0-9_]*)["']""")
+
 # Sources that can be losses.
 LOSSES = {
     "self_employment_income",
@@ -397,8 +472,43 @@ def entity_of(name):
 
 
 @functools.cache
+def formula_text(name):
+    """The source of a variable's formulas, empty for an input."""
+    from policyengine_us.system import system
+
+    if name not in system.variables:
+        return ""
+    formulas = system.variables[name].formulas or {}
+    return "\n".join(inspect.getsource(formula) for formula in formulas.values())
+
+
+@functools.cache
+def added_by_formula(name):
+    """The variables a formula passes to add() or aggr()."""
+    from policyengine_us.system import system
+
+    added = set()
+    for formula in system.variables[name].formulas.values():
+        tree = ast.parse(textwrap.dedent(inspect.getsource(formula)))
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call):
+                continue
+            if getattr(node.func, "id", None) not in ("add", "aggr"):
+                continue
+            argument = node.args[2]
+            if isinstance(argument, ast.Name):
+                # A list the formula's module defines, such as
+                # STATE_TANF_VARIABLES.
+                added |= set(formula.__globals__[argument.id])
+            else:
+                added |= set(ast.literal_eval(argument))
+    return frozenset(added)
+
+
+@functools.cache
 def reachable(name, year):
-    """A variable and every variable it reaches through `adds`."""
+    """A variable and every variable it reaches through `adds`, or through a
+    formula that FORMULA_SUMS or FORMULA_PARTS follows."""
     from policyengine_us.system import system
 
     # `adds` can also name a parameter, which is a leaf.
@@ -408,6 +518,9 @@ def reachable(name, year):
     if isinstance(parts, str):
         node = functools.reduce(getattr, parts.split("."), system.parameters)
         parts = node(f"{year}-01-01")
+    parts = [*parts, *FORMULA_PARTS.get(name, ())]
+    if name in FORMULA_SUMS:
+        parts += sorted(added_by_formula(name))
     found = {name}
     for part in parts:
         found |= reachable(part, year)
@@ -419,6 +532,30 @@ def assert_none_sums_another(names, year):
     for first, second in itertools.combinations(sorted(names), 2):
         both = reached[first] & reached[second]
         assert not both, f"{first} and {second} both count {sorted(both)}"
+
+
+def summing_formulas(sources, year):
+    """Formulas inside the sources that call add, aggr or .sum, or read by name
+    a variable another of the sources reaches, with those variables."""
+    closures = {source: reachable(source, year) for source in sources}
+    found = {}
+    for source, closure in closures.items():
+        others = set().union(*(c for s, c in closures.items() if s != source))
+        others -= closure
+        for name in closure:
+            text = formula_text(name)
+            shared = set(NAMED_READS.findall(text)) & others
+            if SUMS.search(text) or shared:
+                found.setdefault(name, set()).update(shared)
+    return found
+
+
+def concept_sources(year):
+    """The sources each concept counts during a year."""
+    return {
+        "Census": census_members(year),
+        "CBO": set().union(*cbo_categories(year).values()),
+    }
 
 
 def test_census_lists_follow_appendix_a():
@@ -499,6 +636,42 @@ def test_no_source_counts_twice(year):
     # household_market_income + household_benefits must not count a source
     # twice either, or the reconciliation below would not hold.
     assert market & benefit_terms(year) == set()
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_formulas_inside_listed_sources_have_a_ruling(year):
+    # The check above sees `adds` and the formulas it follows. A formula that
+    # sums, or reads a variable another listed source counts, could count that
+    # variable again, so each one inside a listed source needs a ruling.
+    reviewed = FORMULA_SUMS | set(FORMULA_PARTS) | set(FORMULA_READS)
+    for concept, sources in concept_sources(year).items():
+        found = summing_formulas(sources, year)
+        unreviewed = {name: sorted(found[name]) for name in set(found) - reviewed}
+        assert unreviewed == {}, (
+            f"{year}: these formulas inside {concept} sources call add, aggr or "
+            f".sum, or read a variable another source counts: {unreviewed}. If "
+            "one returns a sum or share of other variables, add it to "
+            "FORMULA_SUMS or FORMULA_PARTS, so the check for double counting "
+            "follows it. Otherwise add it to FORMULA_READS with what it uses "
+            "them for."
+        )
+
+
+def test_formula_rulings_are_current():
+    found = set()
+    for year in YEARS:
+        for sources in concept_sources(year).values():
+            found |= set(summing_formulas(sources, year))
+    # A ruling on a formula that no longer sums or reads another source, or
+    # that no listed source reaches, is stale.
+    assert set(FORMULA_READS) - found == set(), "stale FORMULA_READS entries"
+    assert FORMULA_SUMS - found == set(), "stale FORMULA_SUMS entries"
+    for name in FORMULA_SUMS:
+        assert re.search(r"return add\(", formula_text(name)), name
+        assert added_by_formula(name), name
+    for name, parts in FORMULA_PARTS.items():
+        for part in parts:
+            assert f'"{part}"' in formula_text(name), f"{name} no longer reads {part}"
 
 
 @pytest.mark.parametrize("year", YEARS)
@@ -805,10 +978,12 @@ def members_by_group(names, assignment):
     infant_supplement=st.integers(min_value=0, max_value=10_000),
     state=st.sampled_from(STATES),
 )
+# The example's three groupings differ, so it fails a split by the wrong group
+# on its own.
 @example(
     spm_unit_of=[0, 0, 1, 1, 1],
     tax_unit_of=[0, 1, 2, 2, 2],
-    family_of=[0, 0, 1, 1, 1],
+    family_of=[0, 0, 0, 1, 1],
     earnings=[20_000, 0, 9_000, 0, 0],
     veterans=[0, 0, 3_000, 0, 0],
     tanf=[1_000, 900, 0],
@@ -905,8 +1080,10 @@ def test_census_money_income_reconciles_with_household_totals(year, earnings, ch
     reads the same lists as the variables, so it checks how the variables add
     them, not where a program belongs.
 
-    Each state has a working-age household with children, an aged person and a
-    disabled person, with rent, so that state cash and rent-tested programs pay.
+    Each state has a working-age household with children, an aged person, a
+    disabled person who does not meet SSI's disability test and one who does,
+    each with rent, so that SSI, the state supplements and the other state cash
+    and rent-tested programs pay.
     """
     people, units = {}, {key: {} for key in ("tax_units", "spm_units", "families")}
     marital_units, households = {}, {}
@@ -933,7 +1110,16 @@ def test_census_money_income_reconciles_with_household_totals(year, earnings, ch
             amount,
         )
         add_household(f"{state}_aged", state, [70], 0)
+        # Massachusetts EAEDC pays a disabled person without SSI.
         add_household(f"{state}_disabled", state, [45], 0, is_disabled=True)
+        add_household(
+            f"{state}_ssi_disabled",
+            state,
+            [45],
+            0,
+            is_disabled=True,
+            meets_ssi_disability_criteria=True,
+        )
     simulation = Simulation(
         situation={
             "people": people,
