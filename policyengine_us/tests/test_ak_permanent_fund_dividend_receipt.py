@@ -20,10 +20,11 @@ properties hold for every year and every mix of people in a household:
 ELIGIBLE_STATUSES restates AS 43.23.005(a)(5) here on purpose, so a change to
 the parameter file that the statute does not support fails these tests. The
 YAML tests pin examples. These tests run the real model on every status and
-take-up combination, and on drawn years and household mixes, through one shared
-tax-benefit system, so they build no extra model and load no dataset.
+take-up combination, and on drawn years, states and household mixes, through one
+shared tax-benefit system, so they build no extra model and load no dataset.
 """
 
+from collections import defaultdict
 from itertools import product
 
 import numpy as np
@@ -34,6 +35,9 @@ from hypothesis import strategies as st
 from policyengine_us import Simulation
 from policyengine_us.system import system
 from policyengine_us.tools.parameters import FIRST_MODELED_YEAR
+from policyengine_us.variables.household.demographic.geographic.state_code import (
+    StateCode,
+)
 from policyengine_us.variables.household.demographic.person.immigration_status import (
     ImmigrationStatus,
 )
@@ -45,14 +49,16 @@ STATUSES = tuple(status.name for status in ImmigrationStatus)
 # None leaves the input unset, so the model's default applies.
 STATUS_INPUTS = (None, *STATUSES)
 TAKE_UP_INPUTS = (None, True, False)
-STATES = ("AK", "WA")
+EXHAUSTIVE_STATES = ("AK", "WA")
+ALL_STATES = tuple(state.name for state in StateCode)
 LAST_YEAR = 2100
 # 2015 starts the modeled years, 2022 and 2026 pay energy relief, and 2027 pays
 # none.
 EXHAUSTIVE_YEARS = (2015, 2022, 2026, 2027)
 
 PERSON = st.tuples(
-    st.sampled_from(STATES),
+    # Half the draws land in Alaska, so the gate's positive cases stay common.
+    st.one_of(st.just("AK"), st.sampled_from(ALL_STATES)),
     st.sampled_from(STATUS_INPUTS),
     st.sampled_from(TAKE_UP_INPUTS),
 )
@@ -71,7 +77,7 @@ def amounts(year):
 def calculate(year, people):
     """Run the model with each state's people in one household."""
     situation_people = {}
-    members = {state: [] for state in STATES}
+    members = defaultdict(list)
     for index, (state, status, take_up) in enumerate(people):
         name = f"person_{index}"
         inputs = {}
@@ -86,7 +92,6 @@ def calculate(year, people):
         "households": {
             state: {"members": names, "state_code": {year: state}}
             for state, names in members.items()
-            if names
         },
     }
     simulation = Simulation(situation=situation)
@@ -120,7 +125,7 @@ def test_statuses_named_in_the_statute_exist_in_the_model():
 
 @pytest.mark.parametrize("year", EXHAUSTIVE_YEARS)
 def test_every_combination_of_state_status_and_take_up(year):
-    people = list(product(STATES, STATUS_INPUTS, TAKE_UP_INPUTS))
+    people = list(product(EXHAUSTIVE_STATES, STATUS_INPUTS, TAKE_UP_INPUTS))
     assert_gate_holds(year, people, *calculate(year, people))
 
 

@@ -6,7 +6,9 @@ status the dividend statute names, and takes up the dividend. These amounts are
 calculated benefits, rather than imputed income or fixed default inputs. The
 model has no inputs for the statute's other tests: an application, residence
 during all of the prior calendar year, allowable absences, or a felony sentence
-or incarceration. Supplying wages and other known income does not disable either
+or conviction-based incarceration during that year. `is_incarcerated` does not
+say why a person is incarcerated or tie to that year, so it does not affect the
+dividend. Supplying wages and other known income does not disable either
 calculation.
 
 The regular PFD is included in federal gross income for nondependent people.
@@ -35,6 +37,18 @@ Set it to false for a person Alaska did not pay. Both variables gate
 `ak_energy_relief` as well, because Alaska pays energy relief as part of the
 dividend ([sec. 13, ch. 34, SLA
 2026](https://www.akleg.gov/PDF/34/Bills/HB0263Z.PDF#page=84)).
+
+### Recipients in microsimulation
+
+Populace does not set `takes_up_ak_permanent_fund_dividend_if_eligible` yet, so
+the default microsimulation pays everyone who passes the status test: 730,150
+people for 2024, against the [624,489 applications Alaska
+paid](https://pfd.alaska.gov/division-info/summary-of-dividend-applications-payments)
+for that dividend year. The Microcosm data pipeline can close that gap by setting
+the flag from reported receipt and Alaska's paid count; see
+[microcosm issue 1551](https://github.com/PolicyEngine/microcosm/issues/1551).
+The microsimulation has no inputs before its 2024 base year, so it cannot report
+recipients for earlier years.
 
 ## Override calculated payments
 
