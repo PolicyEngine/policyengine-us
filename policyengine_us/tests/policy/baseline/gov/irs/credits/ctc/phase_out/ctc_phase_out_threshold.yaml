@@ -5,9 +5,40 @@
   output:
     ctc_phase_out_threshold: 200_000
 
-- name: CTC phases out at $400,000 for singles while TCJA is active.
+- name: CTC phases out at $400,000 for joint filers while TCJA is active.
   period: 2022
   input:
     filing_status: JOINT
   output:
     ctc_phase_out_threshold: 400_000
+
+# Section 24(h)(3) reserves $400,000 for joint returns. A surviving spouse
+# shares joint tax rates under section 1(a), but does not file a joint return.
+- name: Before TCJA surviving spouses retain the nonjoint threshold.
+  period: 2017
+  input:
+    filing_status: [SURVIVING_SPOUSE, JOINT]
+  output:
+    ctc_phase_out_threshold: [75_000, 110_000]
+
+- name: TCJA gives surviving spouses the ordinary nonjoint threshold.
+  period: 2018
+  input:
+    filing_status: [SURVIVING_SPOUSE, JOINT]
+  output:
+    ctc_phase_out_threshold: [200_000, 400_000]
+
+- name: ARPA does not make surviving spouses joint filers for ordinary phaseout.
+  period: 2021
+  input:
+    filing_status: [SURVIVING_SPOUSE, JOINT]
+  output:
+    ctc_phase_out_threshold: [200_000, 400_000]
+    ctc_arpa_phase_out_threshold: [150_000, 150_000]
+
+- name: OBBB retains the nonjoint ordinary threshold for surviving spouses.
+  period: 2026
+  input:
+    filing_status: [SURVIVING_SPOUSE, JOINT]
+  output:
+    ctc_phase_out_threshold: [200_000, 400_000]

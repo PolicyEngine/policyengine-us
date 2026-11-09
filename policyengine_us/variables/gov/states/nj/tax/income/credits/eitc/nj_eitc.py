@@ -32,10 +32,13 @@ class nj_eitc(Variable):
             "eitc_reduction", period
         )
         federal_eitc_takes_up = tax_unit("takes_up_eitc", period)
+        # N.J.S.A. 54A:4-7a.(3) bars a married separate filer, without the
+        # federal separated-spouse exception.
         federal_eitc_eligible = (
             federal_eitc_eligible_assuming_meets_income_test
             & federal_eitc_meets_income_test
             & federal_eitc_takes_up
+            & tax_unit("nj_eitc_separate_filer_eligible", period)
         )
         childless_eitc_age_eligible = tax_unit("nj_childless_eitc_age_eligible", period)
         childless_eitc_eligible = (

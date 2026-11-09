@@ -50,8 +50,8 @@
     snap_unearned_income: 1_122.82
     snap: 160
 
-# The California supplement is an SPM unit variable, so it is counted once for
-# the unit rather than projected onto each member.
+# SNAP counts the person-level California supplement, so the unit total is
+# counted once rather than projected onto each member.
 - name: California state supplement is counted once in a two-person SPM unit.
   period: 2026-01
   absolute_error_margin: 0.01

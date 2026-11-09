@@ -1,0 +1,42 @@
+# Form 7206 line 2: for each person covered by a qualified long-term care
+# insurance contract, the premiums paid or the 26 U.S.C. 213(d)(10) limit for
+# that person's age, whichever is less (26 U.S.C. 162(l)(2)(C)). 2024 limits
+# (Rev. Proc. 2023-34, section 3.28): 61-70 $4,710, over 70 $5,880.
+
+- name: A self-employed person's eligible long-term care premiums count toward the deduction.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 64
+    is_self_employed: true
+    self_employment_income: 40_000
+    long_term_health_insurance_premiums: 6_000
+  output:
+    self_employed_long_term_care_premiums: 4_710
+    self_employed_health_insurance_ald_person: 4_710
+
+- name: Premiums under the limit count in full, alongside health insurance premiums.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 72
+    medicare_enrolled: false
+    is_self_employed: true
+    self_employment_income: 40_000
+    health_insurance_premiums: 7_000
+    long_term_health_insurance_premiums: 2_000
+  output:
+    self_employed_long_term_care_premiums: 2_000
+    # Line 3: 7,000 + 2,000.
+    self_employed_health_insurance_ald_person: 9_000
+
+- name: A person who is not self-employed has none.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 64
+    employment_income: 40_000
+    long_term_health_insurance_premiums: 6_000
+  output:
+    self_employed_long_term_care_premiums: 0
+    self_employed_health_insurance_ald_person: 0

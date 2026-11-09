@@ -1574,3 +1574,68 @@
     # Line 21: the claimant's and spouse's own benefits, 12,000 + 6,000 +
     # 3,000 = 21,000. The child's 5,000 is the child's own.
     mi_household_resources: 21_000
+
+- name: A long-term care deduction on line 30 leaves the spouse's premiums on line 31
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 55
+        is_tax_unit_head: true
+        is_self_employed: true
+        self_employment_income: 50_000
+        long_term_health_insurance_premiums: 1_800
+      spouse:
+        age: 55
+        is_tax_unit_spouse: true
+        employment_income: 50_000
+        health_insurance_premiums: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MI
+  output:
+    # Income: 50,000 + 50,000 = 100,000.
+    # Line 30: half of self-employment tax, 50,000 x 0.9235 x 0.153 / 2 =
+    # 3,532.39, plus the head's self-employed health insurance deduction,
+    # 1,800, all of it long-term care premiums (Form 7206 line 2) at the
+    # 2025 limit for age 51-60.
+    self_employed_health_insurance_ald: 1_800
+    # Line 31: the spouse's 3,000 of premiums. The deduction took none of
+    # them, so none leave line 31.
+    # 100,000 - 5,332.39 - 3,000 = 91,667.61.
+    mi_household_resources: 91_667.61
+
+- name: A supplied deduction below the person amounts takes medical premiums first
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        age: 55
+        self_employment_income: 50_000
+        is_self_employed: true
+        health_insurance_premiums: 3_000
+        long_term_health_insurance_premiums: 1_800
+        is_tax_unit_head: true
+      spouse:
+        age: 55
+        employment_income: 50_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        self_employed_health_insurance_ald: 3_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MI
+  output:
+    itemized_medical_expenses_excluded_premiums: 3_000
+    # Line 30: 3,532.39 + 3,000 = 6,532.39. The 3,000 took all the head's
+    # medical premiums, so line 31 is 0: 100,000 - 6,532.39 = 93,467.61.
+    mi_household_resources: 93_467.61
