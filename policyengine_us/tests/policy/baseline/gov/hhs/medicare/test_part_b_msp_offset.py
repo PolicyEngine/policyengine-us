@@ -1,3 +1,6 @@
+"""Random draws check the paid premium's bounds across premium, coverage and
+enrollment values together; the YAML cases pin single points."""
+
 import pytest
 
 from policyengine_us import CountryTaxBenefitSystem, Simulation
@@ -256,6 +259,8 @@ def test_medicare_part_b_premium_does_not_depend_on_calculation_order():
                 "base_part_b_premium": {"2025": 2_220, "2026": 2_220},
                 "msp_income_eligible": no_msp_eligibility,
                 "msp_asset_eligible": no_msp_eligibility,
+                # Not an SSI recipient, so no state buy-in.
+                "ssi": {"2025": 0, "2026": 0},
             }
         },
         "households": {"household": {"members": ["person"]}},
@@ -415,3 +420,50 @@ def test_medicare_irmaa_magi_two_years_prior_input_drives_irmaa():
     assert sim.calculate("gross_medicare_part_b_premium", PERIOD)[0] == pytest.approx(
         7_546.8
     )
+
+
+def test_part_b_premium_paid_stays_between_zero_and_gross_premium():
+    # Property over random premiums, state-paid amounts and Part B enrollment:
+    # what the enrollee pays is never negative and never above the gross
+    # premium, and a Part A-only enrollee pays nothing. One vectorized
+    # simulation covers every draw.
+    import numpy as np
+
+    rng = np.random.default_rng(10634)
+    n = 200
+    gross = rng.uniform(0, 10_000, n).round(2)
+    msp = rng.choice([0, 1, 2], n) * rng.uniform(0, 6_000, n).round(2) / 2
+    buy_in = rng.choice([0, 1], n) * rng.uniform(0, 6_000, n).round(2)
+    part_b = rng.random(n) < 0.8
+    names = [f"p{i}" for i in range(n)]
+    people = {
+        name: {
+            "age": {PERIOD: 70},
+            "medicare_enrolled": {PERIOD: True},
+            "medicare_part_b_enrolled": {PERIOD: bool(part_b[i])},
+            "gross_medicare_part_b_premium": {PERIOD: float(gross[i])},
+            "msp_part_b_premium_coverage": {PERIOD: float(msp[i])},
+            "medicaid_part_b_buy_in_premium_coverage": {PERIOD: float(buy_in[i])},
+        }
+        for i, name in enumerate(names)
+    }
+    groups = {name: {"members": [name]} for name in names}
+    sim = Simulation(
+        tax_benefit_system=SYSTEM,
+        situation={
+            "people": people,
+            "households": {f"h_{k}": v for k, v in groups.items()},
+            "tax_units": {f"t_{k}": v for k, v in groups.items()},
+            "spm_units": {f"s_{k}": v for k, v in groups.items()},
+            "families": {f"f_{k}": v for k, v in groups.items()},
+            "marital_units": {f"m_{k}": v for k, v in groups.items()},
+        },
+    )
+    paid = sim.calculate("medicare_part_b_premium", PERIOD)
+    modeled_gross = sim.calculate("gross_medicare_part_b_premium", PERIOD)
+
+    assert (paid >= 0).all()
+    assert (paid <= modeled_gross).all()
+    assert (paid[~part_b] == 0).all()
+    # The exact netting (a person covered by both pathways is covered once)
+    # is pinned by the overlap case in medicare_part_b_premium.yaml.

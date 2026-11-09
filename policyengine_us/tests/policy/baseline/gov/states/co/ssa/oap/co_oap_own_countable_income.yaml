@@ -180,8 +180,10 @@
     co_oap_own_countable_income: 3_976
     co_oap: 2_268
 
-- name: Case 10, SSI's ISM is not charged to a client who is not on SSI.
-  # Colorado's own ISM for clients not on SSI (3.520.79(C)) is not modeled.
+- name: Case 10, a client not on SSI is counted Colorado's own ISM.
+  # 3.520.79(C)(3): a client paying no shelter costs is counted the maximum
+  # ISM, $351 in 2026 (3.530(B)), not SSA's presumed maximum value. Less the
+  # $20 disregard (3.533(A)(2)(c)): 331/month, or 3,972/year.
   period: 2026
   input:
     people:
@@ -193,7 +195,7 @@
         members: [person]
         state_code: CO
   output:
-    co_oap_own_countable_income: 0
+    co_oap_own_countable_income: 3_972
 
 - name: Case 11, an SSI-only client with SSI under $20 still passes nothing to earnings.
   # SSI of $10/month is the only unearned income, so 3.533(A)(2)(c)(2) gives

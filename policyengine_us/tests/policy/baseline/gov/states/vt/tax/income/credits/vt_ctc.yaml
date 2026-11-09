@@ -1,3 +1,285 @@
+# 32 V.S.A. 5830f(b) reduces "the amount of the credit per child", but not
+# below zero, by $20 for each $1,000, or fraction thereof, of AGI over
+# $125,000. Each child's $1,000 therefore reaches $0 once AGI exceeds
+# $174,000. The 2025 Schedule IN-112 instructions' Child Tax Credit Table
+# (Income Booklet 2025, file page 34) gives the same amount per qualifying
+# child: $980 from $125,001 and $0 from $174,001.
+
+- name: Two children at $130,000 of wages, the first case in issue 9996, get $900 each.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 130_000
+      spouse:
+        age: 38
+      child1:
+        age: 3
+      child2:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: VT
+  output:
+    adjusted_gross_income: 130_000
+    # $5,000 over $125,000 is 5 increments: $1,000 - 5 x $20 = $900 per child
+    # (table: 129,001 to 130,000), and 2 x $900 = $1,800. One reduction off
+    # the $2,000 total would leave $1,900.
+    vt_ctc: 1_800
+
+- name: Three children at $130,000 of wages, the second case in issue 9996, get $900 each.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 130_000
+      spouse:
+        age: 38
+      child1:
+        age: 5
+      child2:
+        age: 3
+      child3:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2, child3]
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3]
+        state_code: VT
+  output:
+    # 3 x ($1,000 - 5 x $20) = $2,700; one reduction off the total would
+    # leave $2,900.
+    vt_ctc: 2_700
+
+- name: Two children at $180,000 of wages, the third case in issue 9996, get nothing.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 180_000
+      spouse:
+        age: 38
+      child1:
+        age: 3
+      child2:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: VT
+  output:
+    adjusted_gross_income: 180_000
+    # $55,000 over $125,000 is 55 increments: $1,000 - 55 x $20 is below
+    # zero, so each child's credit is $0 (table: 174,001 and over). One
+    # reduction off the $2,000 total would leave $900.
+    vt_ctc: 0
+
+- name: Two children at exactly $125,000 of AGI keep $1,000 each.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 3
+      child2:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        adjusted_gross_income: 125_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: VT
+  output:
+    # AGI does not exceed $125,000, so nothing is reduced: 2 x $1,000
+    # (table: 0 to 125,000).
+    vt_ctc: 2_000
+
+- name: Two children at $125,001 of AGI get $980 each.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 3
+      child2:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        adjusted_gross_income: 125_001
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: VT
+  output:
+    # $1 over $125,000 is a fraction of $1,000, so each child loses $20:
+    # 2 x $980 = $1,960 (table: 125,001 to 126,000). One reduction off the
+    # total would leave $1,980.
+    vt_ctc: 1_960
+
+- name: Two children at $174,000 of AGI get $20 each.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 3
+      child2:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        adjusted_gross_income: 174_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: VT
+  output:
+    # $49,000 over $125,000 is 49 increments: $1,000 - 49 x $20 = $20 per
+    # child (table: 173,001 to 174,000), and 2 x $20 = $40. One reduction off
+    # the total would leave $1,020.
+    vt_ctc: 40
+
+- name: Two children at $174,001 of AGI get nothing.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 3
+      child2:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        adjusted_gross_income: 174_001
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: VT
+  output:
+    # $49,001 over $125,000 is 50 increments, counting the fraction:
+    # $1,000 - 50 x $20 = $0 per child (table: 174,001 and over). One
+    # reduction off the total would leave $1,000.
+    vt_ctc: 0
+
+- name: Three children at $174,000 of AGI get $20 each.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 5
+      child2:
+        age: 3
+      child3:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+        adjusted_gross_income: 174_000
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: VT
+  output:
+    # 49 increments leave $20 per child, and 3 x $20 = $60. One reduction off
+    # the $3,000 total would leave $2,020.
+    vt_ctc: 60
+
+- name: Three children at $174,001 of AGI get nothing.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 5
+      child2:
+        age: 3
+      child3:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+        adjusted_gross_income: 174_001
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: VT
+  output:
+    # 50 increments leave $0 per child. One reduction off the $3,000 total
+    # would leave $2,000.
+    vt_ctc: 0
+
+- name: In 2022, the credit's first year, two children at $150,000 of AGI get $500 each.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 4
+      child2:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        adjusted_gross_income: 150_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: VT
+  output:
+    # 2022 Act 138, Sec. 1 enacted 5830f(b) with the per-child reduction,
+    # applying from January 1, 2022 (Sec. 13(b)). $25,000 over $125,000 is
+    # 25 increments: 2 x ($1,000 - 25 x $20) = $1,000. One reduction off the
+    # total would leave $1,500.
+    vt_ctc: 1_000
+
+- name: A married filer filing separately with two children at $130,000 of AGI gets $900 each, the same as any other status.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 3
+      child2:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        adjusted_gross_income: 130_000
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: VT
+  output:
+    # 5830f(b) applies the $125,000 start "irrespective of the individual's
+    # filing status": 2 x ($1,000 - 5 x $20) = $1,800.
+    vt_ctc: 1_800
+
 - name: Five qualifying children.
   period: 2023
   input:

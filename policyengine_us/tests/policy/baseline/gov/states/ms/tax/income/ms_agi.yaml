@@ -1,4 +1,4 @@
-- name: The dependent income goes to the spouse with the greater income, here not the head
+- name: A dependent's income stays off both spouses' columns
   period: 2021
   input:
     people:
@@ -22,10 +22,11 @@
         members: [person1, person2, person3]
         state_code: MS
   output:
-    # The spouse's $10,000 is greater than the head's $9,000.
-    ms_agi: [9_000, 13_000, 0]
+    # Each spouse's column holds their own income; the dependent's 3,000 goes
+    # on the dependent's own return (35 Miss. Admin. Code Pt. III, 10.01.104).
+    ms_agi: [9_000, 10_000, 0]
 
-- name: The dependent income stays with the same spouse when the head and spouse labels are exchanged
+- name: A dependent's income stays off both spouses' columns when the head and spouse labels are exchanged
   period: 2021
   input:
     people:
@@ -55,9 +56,9 @@
         members: [person1, person2, person3]
         state_code: MS
   output:
-    ms_agi: [9_000, 13_000, 0]
+    ms_agi: [9_000, 10_000, 0]
 
-- name: Spouses with equal income split the dependent income equally
+- name: Spouses with equal income keep their own income; the dependent's is on the dependent's own return
   period: 2021
   input:
     people:
@@ -87,9 +88,9 @@
         members: [person1, person2, person3]
         state_code: MS
   output:
-    ms_agi: [11_500, 11_500, 0]
+    ms_agi: [10_000, 10_000, 0]
 
-- name: A dependent's negative income is not moved to a spouse
+- name: A dependent's negative income does not reduce a spouse's column
   period: 2021
   input:
     people:
@@ -139,7 +140,7 @@
   output:
     ms_agi: 100_000
 
-- name: A dependent's self-employment adjustments are subtracted once, with the dependent's income
+- name: A dependent's self-employment income and adjustments stay on the dependent's own return
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -163,9 +164,9 @@
     # The child's own adjustments: one-half of self-employment tax (Schedule
     # SE line 13, 706.48), health insurance (1,000) and SEP (500), 2,206.48.
     ms_agi_adjustments: [0, 2_206.48]
-    # The child's income and adjustments reach the parent's Mississippi AGI
-    # once: 40,000 + 10,000 - 2,206.48.
-    ms_agi: [47_793.52, 0]
+    # The child's income and adjustments both go on the child's own
+    # Mississippi return, so the parent's AGI is the parent's 40,000.
+    ms_agi: [40_000, 0]
 
 - name: Each spouse subtracts only their own self-employed health insurance
   period: 2025
@@ -213,3 +214,184 @@
     # Line 41 is "the income or loss from activities reported on Federal
     # Schedule E": 30,000 - 5,000.
     ms_agi: 25_000
+
+- name: A dependent child's interest stays off the parent's Mississippi AGI and tax
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 16
+        taxable_interest_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MS
+  output:
+    # A minor resident files their own Form 80-105 when their gross income is
+    # over the personal exemption plus the standard deduction (2024 Form
+    # 80-100 instructions, p. 3). The parent's AGI is the parent's wages.
+    ms_agi: [40_000, 0]
+    # Head of household: 40,000 - 3,400 standard deduction - 8,000 exemption
+    # - 1,500 for the dependent = 27,100 of taxable income; 4.4% of the
+    # 17,100 over 10,000 = 752.40, the same as with no child income.
+    ms_income_tax: 752.4
+
+- name: A dependent child's wages stay off the parent's Mississippi AGI and tax
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 16
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MS
+  output:
+    ms_agi: [40_000, 0]
+    ms_income_tax: 752.4
+
+- name: A parent's capital loss is limited to 3,000 when the dependent child has no capital gains
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+        long_term_capital_gains: -10_000
+      child:
+        age: 16
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MS
+  output:
+    # Mississippi limits a capital loss as on the federal return (2024 Form
+    # 80-100 instructions, line 40; 26 USC 1211(b)): 40,000 - 3,000.
+    ms_agi: [37_000, 0]
+    # Head of household: 37,000 - 3,400 standard deduction - 8,000 exemption
+    # - 1,500 for the dependent = 24,100; 4.4% of the 14,100 over 10,000.
+    ms_income_tax: 620.4
+
+- name: A dependent child's capital gain smaller than the parent's loss does not change the parent's AGI
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+        long_term_capital_gains: -10_000
+      child:
+        age: 16
+        long_term_capital_gains: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MS
+  output:
+    # The child's 5,000 gain is on the child's own return. The parent's
+    # return has only the parent's 10,000 loss, limited to 3,000:
+    # 40,000 - 3,000. (Allocating the tax unit's limited loss over every
+    # member gave the parent -6,000 and an AGI of 34,000.)
+    ms_agi: [37_000, 0]
+    ms_income_tax: 620.4
+
+- name: A dependent child's capital gain larger than the parent's loss does not lift the parent's loss limit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+        long_term_capital_gains: -10_000
+      child:
+        age: 16
+        long_term_capital_gains: 20_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MS
+  output:
+    # The parent's own net loss is 10,000, limited to 3,000: 40,000 - 3,000.
+    # (A tax unit net gain of 10,000 left the parent's whole 10,000 loss
+    # unlimited and gave an AGI of 30,000.)
+    ms_agi: [37_000, 0]
+    ms_income_tax: 620.4
+
+- name: A dependent child's capital loss does not reduce the parent's capital gain
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+        long_term_capital_gains: 5_000
+      child:
+        age: 16
+        short_term_capital_gains: -10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MS
+  output:
+    # The child's loss is on the child's own return; the parent keeps the
+    # whole 5,000 gain: 40,000 + 5,000.
+    ms_agi: [45_000, 0]
+
+- name: Spouses share their limited capital loss in proportion to their own losses
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 30_000
+        long_term_capital_gains: -8_000
+      spouse:
+        age: 45
+        employment_income: 20_000
+        long_term_capital_gains: -2_000
+      child:
+        age: 15
+        long_term_capital_gains: 50_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MS
+  output:
+    # The filers' net loss is 10,000, limited to 3,000 for a joint federal
+    # return. The head takes 8,000 / 10,000 of it (2,400) and the spouse
+    # 2,000 / 10,000 (600). The child's 50,000 gain is on the child's own
+    # return: 30,000 - 2,400 and 20,000 - 600.
+    ms_agi: [27_600, 19_400, 0]

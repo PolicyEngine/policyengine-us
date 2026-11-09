@@ -1,6 +1,6 @@
 """Tax-unit roles supplied by a population dataset.
 
-The Populace US build's tax-unit constructor (microunit, called from
+The Microcosm US build's tax-unit constructor (microunit, called from
 microcosm-frame) assigns every person a role - HEAD, SPOUSE or DEPENDENT - and
 writes it to the person column ``tax_unit_role_input``. The role variables use
 it when supplied and fall back to age ordering when not.
@@ -42,7 +42,7 @@ def _situation(people: dict) -> dict:
 
 
 def test_supplied_input_carries_the_producers_column_name_and_values():
-    """The role variable must match the column the Populace build writes.
+    """The role variable must match the column the Microcosm build writes.
 
     The loader sets a dataset column only when a variable has its exact name,
     and encodes a string column by Enum member name, so a renamed variable or
@@ -93,7 +93,7 @@ def _dataset(
     filing_status_column: list | None = None,
     empty_tax_units: int = 0,
 ) -> USSingleYearDataset:
-    """Three tax units in one household, with Populace-style string columns.
+    """Three tax units in one household, with Microcosm-style string columns.
 
     1. A couple headed by a 30-year-old reference person with a 60-year-old
        spouse, and their 20-year-old full-time student.
