@@ -265,3 +265,31 @@
     amt_separate_addition: 24_912.5
     amt_income: 1_024_912.5
 
+# 26 U.S.C. 55(d)(2) and (d)(4)(A)(ii)(IV): from 2026 the separate filer's
+# increase is 50% of AMTI (net of the refund) over 640,200, where the 70,100
+# exemption phases out (Rev. Proc. 2025-32), up to that exemption.
+- name: Separate filer's 2026 increase is 50% and figured after the refund
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 700_000
+        salt_refund_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # AGI 710,000 - 16,100 standard deduction = 693,900 taxable income; line 2a
+    # adds back the 16,100 and line 2b subtracts the 10,000 refund.
+    amt_income_before_separate_addition: 700_000
+    # min(70,100, 0.5 x (700,000 - 640,200))
+    amt_separate_addition: 29_900
+    amt_income: 729_900
