@@ -12297,7 +12297,9 @@ candidates:
   note: elective_deferral_limit adds k401_catch_up_limit to the section 402(g)(1)(B) amount in every year, and the
     self-employed plan limit adds the same catch-up room to its maximum. The regulation binds unless it flatly
     contradicts the amended statute, and the notice reads section 414(v)(3)(A)(i) to keep catch-ups excludable, so
-    the project lead should rule before any model change.
+    the project lead should rule before any model change. Its texts for the register are captured in
+    source_conflicts/sources/us/notice-2023-62-p4-5.txt (section III.A), treas-reg-1-402g-2-2025-p1.txt and
+    p560-2025-p39.txt (steps 16 to 18).
 - id: us:charitable-non-itemizer-2020-separate-cap
   program: income-tax
   years:
@@ -12905,8 +12907,10 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10121
   state: unreviewed
   note: 'The code follows Form 7206: the Schedule C business takes Schedule 1 line 15 in proportion to its share of
-    the positive net profits of Schedule C, Schedule F and K-1 box 14 code A, the split the self-employed health
-    insurance limit already uses for the same earned income. Code not yet on main: self_employed_pension_earned_income.'
+    the positive net profits of Schedule C, Schedule F and K-1 box 14 code A, through form_7206_line_7, the helper the
+    self-employed health insurance limit uses for the same earned income. Code not yet on main:
+    self_employed_pension_earned_income. Its texts for the register are captured in
+    source_conflicts/sources/us/p560-2025-p39.txt (step 2) and f7206-2023-p1.txt (lines 5 to 8).'
 - id: us:separate-filer-zero-income-threshold
   program: income-tax
   years:
