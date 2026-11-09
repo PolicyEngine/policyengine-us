@@ -12,8 +12,9 @@ class ak_permanent_fund_dividend_eligible(Variable):
         "the qualifying year, 72 consecutive hours of presence in the prior "
         "two years, allowable absences, Selective Service compliance, a "
         "felony sentence or conviction-based incarceration during that "
-        "year, or, for a child, a birth during the dividend year. To "
-        "model a person who fails one of those, set "
+        "year, a child's birth during the dividend year, or, for a child "
+        "born during the qualifying year, a parent's eligibility (AS "
+        "43.23.005(c)). To model a person who fails one of those, set "
         "takes_up_ak_permanent_fund_dividend_if_eligible to false. See "
         "docs/validation/alaska-pfd.md."
     )

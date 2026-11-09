@@ -49,6 +49,8 @@ The other values of `immigration_status` stay out:
   fixed-term parolee a 2025 dividend.
 - `TPS` (8 U.S.C. 1254a) and `DEPORTATION_WITHHELD` (8 U.S.C. 1231(b)(3)) fall
   outside 8 U.S.C. 1101 to 1189, and `DACA` is not a status under those sections.
+  *Andrade*'s test alone might reach a TPS holder, but the court did not address
+  TPS, and PolicyEngine follows the regulation's range.
 - `UNDOCUMENTED` does not meet *Andrade*'s legal presence requirement.
 - `CUBAN_HAITIAN_ENTRANT` and `CONDITIONAL_ENTRANT` do not say whether the person
   may adopt the United States as their domicile.
@@ -72,18 +74,27 @@ A child born during the dividend year cannot receive that year's dividend. The
 child fails AS 43.23.005(a)(3), and (c) reaches only children born in the two
 calendar years before the dividend year. The Division [takes
 applications](https://pfd.alaska.gov/application/applying-for-a-child) for a child
-"born on or before December 31st of the qualifying year."
+"born on or before December 31st of the qualifying year." A child born during the
+qualifying year qualifies only under (c), which also requires a parent who is
+eligible for that dividend. `ak_permanent_fund_dividend_eligible` tests the
+child's own status, not a parent's eligibility.
 
-`age` cannot identify these children, because a child aged 0 may have a birth date
-in either calendar year. Populace takes `age` from the CPS ASEC, which the Census
-Bureau [conducts in February, March and
+`age` cannot identify a child born during the dividend year, because a child aged
+0 may have a birth date in either calendar year. Populace takes `age` from the
+CPS ASEC, which the Census Bureau [conducts in February, March and
 April](https://www.census.gov/topics/income-poverty/poverty/guidance/surveys-programs.html)
 and which records age [as of the survey
 date](https://www.census.gov/programs-surveys/cps/technical-documentation/subject-definitions.html).
-Most children under one on those dates have birth dates in the year before, and
-those children can qualify under (c). So the model pays a resident aged 0 unless
-the take-up input says otherwise. Set that input to false for a child born during
-the dividend year.
+Each survey asks about income in the year before, which Populace records as
+`source_year`. If each record keeps its own survey date, 92% to 96% of the people
+aged 0 in Populace's 2024 Alaska records have birth dates in 2022 or 2023 and can
+qualify under (c), because 74% of them come from the 2023 survey. If every survey
+fell in the dividend year instead, 71% to 87% could. The ranges run from
+mid-February to mid-April interviews. `birth_year`, which subtracts `age` from
+the year, would put all of them in the dividend year. So the model pays a
+resident aged 0 unless the take-up input says otherwise. Set that input to false
+for a child born during the dividend year, or for a child born during the
+qualifying year who has no eligible parent.
 
 ### Recipients in microsimulation
 
