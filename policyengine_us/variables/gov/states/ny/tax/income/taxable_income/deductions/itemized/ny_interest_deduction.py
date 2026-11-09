@@ -8,9 +8,11 @@ class ny_interest_deduction(Variable):
     unit = USD
     definition_period = YEAR
     documentation = (
-        "Interest New York allows as an itemized deduction: the federal "
+        "Interest for New York's itemized deduction: the federal "
         "interest_deduction with New York's pre-TCJA home mortgage interest "
-        "in place of the federal home mortgage interest."
+        "in place of the federal home mortgage interest. Mortgage insurance "
+        "premiums stay in it, and ny_itemized_deductions_max removes those "
+        "New York disallows."
     )
     reference = (
         "https://www.nysenate.gov/legislation/laws/TAX/615",
