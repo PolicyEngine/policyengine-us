@@ -223,6 +223,37 @@
     mn_employer_paid_leave_contribution: 0
     mn_employer_additional_state_payroll_tax: 0
 
+# Earlier years read the 2026 small employer limits, so a reform that sets an
+# earlier rate gets the 2026 test.
+- name: In 2025, 31 employees fail the small employer headcount test.
+  period: 2025
+  input:
+    employment_income: 100_000
+    employer_headcount: 31
+    state_code: MN
+  output:
+    mn_paid_leave_small_employer: false
+
+- name: In 2025, an average quarterly wage equal to the 2026 limit meets the wage test.
+  period: 2025
+  input:
+    employment_income: 100_000
+    employer_headcount: 30
+    mn_paid_leave_employer_average_quarterly_wage: 27_745.88
+    state_code: MN
+  output:
+    mn_paid_leave_small_employer: true
+
+- name: In 2025, an average quarterly wage a cent above the 2026 limit fails the wage test.
+  period: 2025
+  input:
+    employment_income: 100_000
+    employer_headcount: 10
+    mn_paid_leave_employer_average_quarterly_wage: 27_745.89
+    state_code: MN
+  output:
+    mn_paid_leave_small_employer: false
+
 - name: Years before the 2015 parameter backdating still compute.
   period: 2014
   input:

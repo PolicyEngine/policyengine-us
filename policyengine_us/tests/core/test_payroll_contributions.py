@@ -626,7 +626,10 @@ def test_minnesota_paid_leave_shares_follow_the_parameters(
     paid_leave = "gov.states.mn.tax.payroll.paid_leave"
     reform = Reform.from_dict(
         {
-            f"{paid_leave}.rate": {"2026-01-01.2026-12-31": 0.01},
+            f"{paid_leave}.rate": {
+                "2025-01-01.2025-12-31": 0.01,
+                "2026-01-01.2026-12-31": 0.01,
+            },
             f"{paid_leave}.employer_minimum_share": {"2026-01-01.2026-12-31": 0.6},
             f"{paid_leave}.small_employer.employer_minimum_share": {
                 "2026-01-01.2026-12-31": small_employer_minimum
@@ -637,8 +640,9 @@ def test_minnesota_paid_leave_shares_follow_the_parameters(
     people = {
         name: {
             "age": {PERIOD: 30},
-            "employment_income": {PERIOD: WAGES},
-            "employer_headcount": {PERIOD: headcount},
+            "employment_income": {"2025": WAGES, PERIOD: WAGES},
+            "employer_headcount": {"2025": headcount, PERIOD: headcount},
+            "employer_total_mn_paid_leave_taxable_wages": {PERIOD: WAGES},
         }
         for name, headcount in (("large", 100), ("small", 30))
     }
@@ -647,7 +651,10 @@ def test_minnesota_paid_leave_shares_follow_the_parameters(
         situation={
             "people": people,
             "households": {
-                "household": {"members": list(people), "state_code": {PERIOD: "MN"}}
+                "household": {
+                    "members": list(people),
+                    "state_code": {"2025": "MN", PERIOD: "MN"},
+                }
             },
             "tax_units": {"tax_unit": {"members": list(people)}},
             "spm_units": {"spm_unit": {"members": list(people)}},
@@ -666,15 +673,29 @@ def test_minnesota_paid_leave_shares_follow_the_parameters(
     assert sim.calculate(
         "mn_employer_paid_leave_contribution", PERIOD
     ) == pytest.approx([600, small_employer])
+    # The employer-level path reads the same derived rates.
+    assert sim.calculate(
+        "employer_total_additional_state_payroll_tax", PERIOD
+    ) == pytest.approx([600, small_employer])
+    # In 2025 the reform sets only the rate, so the shares keep their
+    # statutory values: the employer pays 1% - 0.5% = 0.5% of wages, or for
+    # a small employer 0.75% - (0.75% - 0.25%) = 0.25%.
+    assert sim.calculate("mn_paid_leave_premium", "2025") == pytest.approx([1_000, 750])
+    assert sim.calculate(
+        "mn_employer_paid_leave_contribution", "2025"
+    ) == pytest.approx([500, 250])
 
 
 def test_minnesota_small_employer_wage_limit_rounds_half_up():
     # 150% * $73,991 / 4 = $27,746.625, which rounds half up to $27,746.63
-    # (half to even would give $27,746.62).
+    # (half to even would give $27,746.62). In 2027, 150% * $73,989.02 / 4 =
+    # $27,745.8825, which rounds to $27,745.88 (rounding up would give
+    # $27,745.89).
     reform = Reform.from_dict(
         {
             "gov.states.mn.tax.payroll.paid_leave.small_employer.state_average_annual_wage": {
-                "2026-01-01.2026-12-31": 73_991
+                "2026-01-01.2026-12-31": 73_991,
+                "2027-01-01.2027-12-31": 73_989.02,
             },
         },
         country_id="us",
@@ -683,17 +704,26 @@ def test_minnesota_small_employer_wage_limit_rounds_half_up():
         name: {
             "age": {PERIOD: 30},
             "employment_income": {PERIOD: WAGES},
-            "employer_headcount": {PERIOD: 10},
-            "mn_paid_leave_employer_average_quarterly_wage": {PERIOD: average_wage},
+            "employer_headcount": {PERIOD: 10, "2027": 10},
+            "mn_paid_leave_employer_average_quarterly_wage": {
+                PERIOD: average_wage_2026,
+                "2027": average_wage_2027,
+            },
         }
-        for name, average_wage in (("at_limit", 27_746.63), ("above", 27_746.64))
+        for name, average_wage_2026, average_wage_2027 in (
+            ("at_limit", 27_746.63, 27_745.88),
+            ("above", 27_746.64, 27_745.89),
+        )
     }
     sim = Simulation(
         tax_benefit_system=CountryTaxBenefitSystem(reform=(reform,)),
         situation={
             "people": people,
             "households": {
-                "household": {"members": list(people), "state_code": {PERIOD: "MN"}}
+                "household": {
+                    "members": list(people),
+                    "state_code": {PERIOD: "MN", "2027": "MN"},
+                }
             },
             "tax_units": {"tax_unit": {"members": list(people)}},
             "spm_units": {"spm_unit": {"members": list(people)}},
@@ -705,6 +735,10 @@ def test_minnesota_small_employer_wage_limit_rounds_half_up():
     )
 
     assert sim.calculate("mn_paid_leave_small_employer", PERIOD).tolist() == [
+        True,
+        False,
+    ]
+    assert sim.calculate("mn_paid_leave_small_employer", "2027").tolist() == [
         True,
         False,
     ]
