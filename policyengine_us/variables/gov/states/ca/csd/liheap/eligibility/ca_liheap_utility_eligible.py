@@ -5,10 +5,10 @@ class ca_liheap_utility_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     definition_period = YEAR
-    label = "California LIHEAP utility heating eligibility"
+    label = "California LIHEAP utility heating or cooling eligibility"
     defined_for = StateCode.CA
     reference = (
-        # PDF pages 9,182-184,193,202-203,205,219,221,264-265,279,363
+        # PDF pages 9,55,182-184,193,202-203,205,219,221,264-265,279,363
         "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=9",
         # PDF pages 189,233-234
         "https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=189",
@@ -27,7 +27,16 @@ class ca_liheap_utility_eligible(Variable):
         )
         # The applicant names the utility account that takes the benefit, so a
         # home heated with another fuel qualifies on a gas or electric bill.
-        utility_account = utility_heat | (known_fuel & (utility_bills > 0))
+        # HEAP payments on electric bills count as cooling, so a home without
+        # heating qualifies on its electric bill when it pays for cooling.
+        cooling_only = (
+            (heating_type == types.NONE)
+            & spm_unit("has_cooling_expense", period)
+            & (spm_unit("pre_subsidy_electricity_expense", period) > 0)
+        )
+        utility_account = (
+            utility_heat | (known_fuel & (utility_bills > 0)) | cooling_only
+        )
         # A household receives one HEAP or WPO payment per program year.
         other_component = (
             add(
