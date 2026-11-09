@@ -318,13 +318,7 @@ def test_duplicate_ids_resolve_the_same_way_in_every_member_order():
 
     def run(tax_unit_order, home_order, shared_home):
         people = {
-            # The mother files; with her own marital unit she cannot be the
-            # grandparent's inferred spouse.
-            "mother": {
-                "person_id": {"2026": 1},
-                "age": {"2026": 35},
-                "is_tax_unit_head": {"2026": True},
-            },
+            "mother": {"person_id": {"2026": 1}, "age": {"2026": 35}},
             "grandparent": {"person_id": {"2026": 1}, "age": {"2026": 60}},
             "child": {
                 "person_id": {"2026": 2},

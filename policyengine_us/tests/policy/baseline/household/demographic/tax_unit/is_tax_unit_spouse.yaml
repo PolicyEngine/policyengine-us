@@ -225,6 +225,36 @@
     # The non-student limit is under 19, so a 19-year-old fails the age test.
     is_tax_unit_spouse: [false, true]
 
+- name: An 18-year-old the same age as the head stays the head's spouse.
+  period: 2025
+  input:
+    people:
+      adult_1:
+        age: 18
+        employment_income_before_lsr: 10_000
+      adult_2:
+        age: 18
+        employment_income_before_lsr: 8_000
+    tax_units:
+      tax_unit:
+        members: [adult_1, adult_2]
+    marital_units:
+      marital_unit_1:
+        members: [adult_1]
+      marital_unit_2:
+        members: [adult_2]
+    households:
+      household:
+        members: [adult_1, adult_2]
+        state_code: TX
+  output:
+    # A qualifying child must be younger than the taxpayer unless permanently
+    # and totally disabled (26 USC 152(c)(3)(A)). adult_2 is under 19 but not
+    # younger than the head, so they fail the age test and are paired with the
+    # head.
+    is_tax_unit_spouse: [false, true]
+    filing_status: JOINT
+
 - name: A 23-year-old full-time student in their own marital unit is a dependent.
   period: 2025
   input:

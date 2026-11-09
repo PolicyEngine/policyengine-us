@@ -248,8 +248,9 @@ def test_default_dataset_uses_its_supplied_tax_unit_roles():
     tax unit, the older of that couple heads instead. An adult outside the
     head's marital unit who meets the qualifying child age test is not the
     inferred spouse, so supplied marital units no longer pair an adult student
-    with a parent; when marital units are omitted, plain age order applies. The fallback still heads couples by the older partner
-    rather than the reference person and leaves lone minors with no head.
+    with a parent; when marital units are omitted, plain age order applies.
+    The fallback still heads couples by the older partner rather than the
+    reference person and leaves lone minors with no head.
     This checks the whole population, person by person, in the data year and
     in an extended year, since the loader carries the column forward rather
     than the formulas. Filing status is not checked against the build: the

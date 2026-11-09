@@ -166,7 +166,7 @@ and a separated member doesn't count toward a couple. When a situation omits
 marital units, Core puts everyone in one marital unit, so plain age order
 applies. A minor living without a parent is left with no head.
 
-This rule has three known limitations. Supply `is_tax_unit_head`,
+This rule has four known limitations. Supply `is_tax_unit_head`,
 `is_tax_unit_spouse` or `tax_unit_role_input` for these households:
 
 - When a tax unit holds a married couple and an older adult outside their
@@ -179,8 +179,15 @@ This rule has three known limitations. Supply `is_tax_unit_head`,
   files jointly. Under the law each would file their own return, or the adult
   could be a qualifying relative, but the pairing keeps the adult's income on
   the one return the model computes for the unit.
-- A disabled spouse living apart in their own marital unit, such as in a care
-  facility, becomes the head's dependent.
+- A permanently and totally disabled adult outside the head's marital unit
+  becomes the head's dependent, whatever their income. Examples are a spouse
+  living apart in a care facility, or a self-supporting sibling, whose income
+  then leaves the return.
+- When a separated adult outside a married couple's marital unit shares their
+  tax unit, the couple heads the unit but no spouse is inferred, since a unit
+  with a separated member infers none. The other member of the couple becomes
+  a dependent. Under the law a spouse can't be the other spouse's dependent,
+  and the couple could file jointly.
 
 The Populace build carries its constructor's filing status in a
 `filing_status_input` column. No variable has that name, so the column is

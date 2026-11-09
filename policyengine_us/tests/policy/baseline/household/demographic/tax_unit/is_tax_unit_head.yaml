@@ -224,3 +224,32 @@
     is_tax_unit_head: [true, false, false]
     is_tax_unit_spouse: [false, false, false]
     filing_status: SINGLE
+
+- name: With marital units omitted, two adults living with a separated older adult do not head the unit as a couple.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 78
+        is_separated: true
+        social_security_retirement: 15_000
+      adult_1:
+        age: 50
+        employment_income_before_lsr: 80_000
+      adult_2:
+        age: 48
+        employment_income_before_lsr: 40_000
+    tax_units:
+      tax_unit:
+        members: [parent, adult_1, adult_2]
+    households:
+      household:
+        members: [parent, adult_1, adult_2]
+        state_code: TX
+  output:
+    # With marital units omitted, Core puts all three adults in one marital
+    # unit. It isn't a two-person unit, so the two non-separated adults aren't
+    # a couple, and the oldest adult heads the unit. A unit with a separated
+    # member infers no spouse.
+    is_tax_unit_head: [true, false, false]
+    is_tax_unit_spouse: [false, false, false]
