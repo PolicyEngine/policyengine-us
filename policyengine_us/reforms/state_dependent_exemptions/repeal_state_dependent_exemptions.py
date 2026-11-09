@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
+from policyengine_us.variables.gov.states.ca.tax.income.exemptions.ca_exemptions import (
+    ca_personal_aged_blind_exemption_count,
+)
 
 
 def create_repeal_state_dependent_exemptions() -> Reform:
@@ -8,18 +11,30 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         entity = TaxUnit
         label = "Hawaii regular exemptions"
         unit = USD
-        reference = "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20"
+        reference = (
+            "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20",
+            # HRS 235-54(a): the exemption of an individual whom another
+            # taxpayer can claim "shall be zero", including the additional
+            # exemption for age 65 or over.
+            "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=45",
+        )
         definition_period = YEAR
         defined_for = StateCode.HI
 
         def formula(tax_unit, period, parameters):
-            exemptions_count = tax_unit("head_spouse_count", period)
+            # Repeal removes dependents, preserving the baseline filer count:
+            # a filer who can be claimed as a dependent has no exemption.
+            exemptions_count = tax_unit(
+                "head_spouse_count_not_dependent_elsewhere", period
+            )
             p = parameters(period).gov.states.hi.tax.income.exemptions
-            # Aged heads and spouses get an extra base exemption.
+            # Aged heads and spouses who cannot be claimed get an extra base
+            # exemption, as in the baseline.
             person = tax_unit.members
             head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+            claimed = person("claimable_as_dependent_on_another_return", period)
             aged = person("age", period) >= p.aged_threshold
-            aged_head_spouse_count = tax_unit.sum(aged & head_or_spouse)
+            aged_head_spouse_count = tax_unit.sum(aged & head_or_spouse & ~claimed)
             total_exemption_count_including_aged = (
                 exemptions_count + aged_head_spouse_count
             )
@@ -200,9 +215,14 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         )
 
         def formula(person, period, parameters):
-            head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+            # Repeal removes dependents, preserving the baseline filer gate:
+            # a filer who can be claimed as a dependent has no personal
+            # exemption allowable federally (Va. Code 58.1-322.03(2)(a);
+            # IRC 151(d)(2)).
+            filer = person("is_tax_unit_head_or_spouse", period)
+            claimed = person("claimable_as_dependent_on_another_return", period)
             amount = parameters(period).gov.states.va.tax.income.exemptions.personal
-            return amount * head_or_spouse
+            return amount * (filer & ~claimed)
 
     class wv_personal_exemption(Variable):
         value_type = float
@@ -239,17 +259,18 @@ def create_repeal_state_dependent_exemptions() -> Reform:
                 over_agi_threshold / p.phase_out.increment[filing_status]
             )
             exemption_reduction = increments * p.phase_out.amount
-            # Personal Exemptions
-            personal_exemption_count = p.personal_scale[filing_status]
-            personal_aged_blind_exemption_count = personal_exemption_count + tax_unit(
-                "aged_blind_count", period
+            # Personal, blind and senior exemptions, as in the baseline
+            # (none for a filer who can be claimed elsewhere)
+            personal_aged_blind_exemption_count = (
+                ca_personal_aged_blind_exemption_count(
+                    tax_unit, period, p, filing_status
+                )
             )
             personal_aged_blind_exemption = max_(
                 0,
                 personal_aged_blind_exemption_count * (p.amount - exemption_reduction),
             )
-            # Dependent exemptions
-            # total exemptions
+            # Dependent exemptions repealed
             return personal_aged_blind_exemption
 
     class ga_exemptions(Variable):

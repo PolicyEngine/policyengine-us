@@ -170,3 +170,32 @@
     mi_subtractions: 49_422.75
     # 110,000 - 49,422.75 - 11,600
     mi_taxable_income: 48_977.25
+
+- name: A separate filer who lived with their spouse has no section 22 amount to subtract.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+        cohabitating_spouses: true
+    households:
+      household:
+        members: [head]
+        state_code: MI
+  output:
+    # MCL 206.30(1)(f)(v) subtracts the section 22 amount eligible for the
+    # federal credit, which the MI-1040 instructions take from Schedule R
+    # line 19. A separate filer who lived with their spouse can't check
+    # Schedule R box 8 or 9 and has no line 19 amount (26 U.S.C. 22(e)(1)).
+    section_22_income: 0
+    # Born 1957, so the tier three standard deduction: 20,000 base for a
+    # separate filer less one 5,600 personal exemption = 14,400. No other
+    # subtraction applies to $3,000 of wages.
+    mi_standard_deduction: 14_400
+    # 0 + 14,400 = 14,400.
+    mi_subtractions: 14_400

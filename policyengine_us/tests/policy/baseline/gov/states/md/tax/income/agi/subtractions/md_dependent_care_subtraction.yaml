@@ -43,7 +43,9 @@
       person1:
         is_tax_unit_head: true
         age: 35
-        employment_income: 60_000
+        # employment_income includes the $10,500 of dependent care benefits;
+        # box 1 wages are $60,000 ($70,500 - $10,500).
+        employment_income: 70_500
         dependent_care_employer_benefits: 10_500
       person2:
         is_tax_unit_spouse: true

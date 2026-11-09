@@ -45,7 +45,7 @@
     tax_unit_size: 2
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     vt_renter_credit: 0
@@ -58,7 +58,7 @@
     tax_unit_size: 2
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     vt_renter_credit: 1_340
@@ -98,7 +98,7 @@
     tax_unit_size: 2
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     vt_renter_credit: 1_692
@@ -111,7 +111,7 @@
     tax_unit_size: 2
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     vt_renter_credit: 2_115
@@ -141,7 +141,7 @@
     tax_unit_size: 2
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     vt_renter_credit: 1_692
@@ -158,7 +158,7 @@
     tax_unit_size: 4
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # 10% x 12 x 1,477.91 = 1,773.49; the whole-dollar 1,478 gave 1,774.
@@ -172,7 +172,7 @@
     tax_unit_size: 3
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # 10% x 12 x 1,457.83 = 1,749.40; the whole-dollar 1,458 gave 1,750.
@@ -186,7 +186,7 @@
     tax_unit_size: 1
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # 10% x 12 x 1,057.75 = 1,269.30; the whole-dollar 1,058 gave 1,270.
@@ -200,7 +200,7 @@
     tax_unit_size: 3
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # 10% x 12 x 1,687.17 = 2,024.60; the whole-dollar 1,688 gave 2,026.
@@ -214,7 +214,7 @@
     tax_unit_size: 6
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # 10% x 12 x 1,828.75 = 2,194.50 exactly, which the department rounds up.
@@ -228,7 +228,7 @@
     tax_unit_size: 1
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # (49,340 - 31,090) / (49,340 - 22,790) x 1,269 = 872.29.
@@ -242,7 +242,7 @@
     tax_unit_size: 3
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # (63,410 - 39,980) / (63,410 - 29,280) x 2,025 = 1,390.15.
@@ -256,7 +256,7 @@
     tax_unit_size: 3
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # (42,350 - 30,740) / (42,350 - 25,640) x 1,749 = 1,215.19.
@@ -270,7 +270,7 @@
     tax_unit_size: 5
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # (47,990 - 37,560) / (47,990 - 32,660) x 1,773 = 1,206.29.
@@ -284,7 +284,7 @@
     tax_unit_size: 1
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # 10% x 12 x 1,103 = 1,323.60, which the department rounds to 1,324 before
@@ -303,7 +303,7 @@
     tax_unit_size: 1
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # (49,340 - 36,065) / (49,340 - 22,790) x 1,269 = 634.50.
@@ -317,7 +317,7 @@
     tax_unit_size: 1
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # (47,190 - 34,495) / (47,190 - 21,800) x 1,169 = 584.50.
@@ -331,7 +331,7 @@
     tax_unit_size: 1
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # 1,103 x 12 x the temporary 12.5% rate = 1,654.50.
@@ -347,7 +347,7 @@
     tax_unit_size: 1
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # 924 x (30,000 - 23,500) / (30,000 - 18,000) = 500.50.
@@ -366,7 +366,7 @@
     tax_unit_size: 7
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # Partial limit 88,990 = 1.3 x HUD FY2025 very low-income limit 68,450,
@@ -383,7 +383,7 @@
     tax_unit_size: 7
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # Above the booklet's 88,880 but below 88,990.
@@ -399,7 +399,7 @@
     tax_unit_size: 8
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # Partial limit 102,050 = 1.3 x HUD FY2024 limit 78,500 (PE had 102,850).
@@ -413,7 +413,7 @@
     tax_unit_size: 3
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # Partial limit 61,690 = 1.3 x HUD FY2024 limit 47,450 (PE had 61,960).
@@ -427,7 +427,7 @@
     tax_unit_size: 4
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # Full limit 31,200 = HUD FY2024 extremely low-income limit (PE had 30,000).
@@ -442,7 +442,7 @@
     tax_unit_size: 7
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # Partial limit 58,320 (PE had Lamoille's 56,250). Full limit 45,420.
@@ -458,7 +458,7 @@
     tax_unit_size: 7
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # Partial limit 56,250 (PE had Franklin's 58,320). Full limit 45,420.
@@ -474,7 +474,7 @@
     tax_unit_size: 2
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # Partial limit 31,550 = HUD FY2021 limit (PE had 31,350). Full limit 18,950.
@@ -490,7 +490,7 @@
     tax_unit_size: 5
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     # Full limit 31,050 = HUD FY2021 extremely low-income limit (PE had 31,040).

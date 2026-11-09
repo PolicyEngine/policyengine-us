@@ -9,7 +9,7 @@ class ma_employee_paid_leave_contribution(Variable):
         "Employee-side Massachusetts Paid Family and Medical Leave "
         "contribution. The employer remits the contribution and may deduct up "
         "to a capped share of the family and the medical contribution from "
-        "wages (M.G.L. c. 175M s. 6(c)-(d)); this is that permitted share "
+        "wages (M.G.L. c. 175M s. 6(c)-(e)); this is that permitted share "
         "times state_payroll_premium_deduction_share."
     )
     definition_period = YEAR

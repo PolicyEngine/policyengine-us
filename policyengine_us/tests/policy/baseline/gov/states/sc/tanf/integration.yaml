@@ -24,7 +24,7 @@
     sc_tanf: 435.28
     # tanf_fpg for size 3 (2025-01, uses 2024-10 FPG) = 2151.67/month
     # need_standard = 2151.67 * 0.5 = 1075.83
-    # benefit = 1075.83 * 0.4046 = 435.49
+    # benefit = 1075.83 * 0.4046 = 435.28
 
 - name: Case 2, single parent with earned income.
   absolute_error_margin: 0.1
@@ -115,7 +115,7 @@
       person1:
         age: 35
         employment_income_before_lsr: 0
-        taxable_social_security: 3_600
+        social_security_disability: 3_600
       person2:
         age: 8
         is_child_dependent: true
@@ -129,6 +129,7 @@
         state_code: SC
   output:
     sc_tanf: 223.20
+    # SSA benefits count at the gross amount (Section 7.7, page 116)
     # monthly unearned = 3,600/12 = 300
     # tanf_fpg for size 2 = 1703.33
     # need_standard = 1703.33 * 0.5 = 851.67
@@ -222,3 +223,313 @@
     sc_tanf: 0
     # Both members are undocumented, so no one qualifies as
     # citizen or legal immigrant -> ineligible
+
+- name: Case 9, 2020 unemployment compensation below the federal exclusion counts in full.
+  period: 2020-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        unemployment_compensation: 6_000
+      person2:
+        age: 8
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # 2020 federal exclusion: first 10,200 of UC is tax-exempt,
+    # so taxable UC = max(6,000 - 10,200, 0) = 0.
+    taxable_unemployment_compensation: [0, 0]
+    # Section 7.7 counts gross UC: 6,000 / 12 = 500 per month.
+    total_unemployment_compensation: [500, 0]
+    sc_tanf_gross_unearned_income: [500, 0]
+    sc_tanf_countable_income: 500
+    # tanf_fpg for size 2 (2020-01, uses 2019 FPG) = 16,910 / 12 = 1,409.17
+    # need_standard = 1,409.17 * 0.5 = 704.58
+    # 500 < 704.58 -> countable income eligible
+    sc_tanf_income_eligible: true
+    # excess = 704.58 - 500 = 204.58
+    # benefit = 204.58 * 0.3372 = 68.99
+    # (Counting taxable UC instead gave 704.58 * 0.3372 = 237.59.)
+    sc_tanf: 68.99
+
+- name: Case 10, 2020 unemployment compensation above the federal exclusion counts in full.
+  period: 2020-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        unemployment_compensation: 12_000
+      person2:
+        age: 8
+        is_child_dependent: true
+      person3:
+        age: 7
+        is_child_dependent: true
+      person4:
+        age: 6
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+  output:
+    # taxable UC = 12,000 - 10,200 = 1,800 per year = 150 per month.
+    taxable_unemployment_compensation: [150, 0, 0, 0]
+    # Gross UC counts: 12,000 / 12 = 1,000 per month.
+    total_unemployment_compensation: [1_000, 0, 0, 0]
+    sc_tanf_gross_unearned_income: [1_000, 0, 0, 0]
+    sc_tanf_countable_income: 1_000
+    # tanf_fpg for size 4 (2020-01, uses 2019 FPG) = 25,750 / 12 = 2,145.83
+    # need_standard = 2,145.83 * 0.5 = 1,072.92
+    # 1,000 < 1,072.92 -> countable income eligible
+    sc_tanf_income_eligible: true
+    # excess = 1,072.92 - 1,000 = 72.92
+    # benefit = 72.92 * 0.3372 = 24.59
+    # (Counting taxable UC instead gave (1,072.92 - 150) * 0.3372 = 311.21.)
+    sc_tanf: 24.59
+
+- name: Case 11, gross Social Security counts when none of it is federally taxable.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        social_security_disability: 6_000
+      person2:
+        age: 8
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Provisional income = 6,000 * 0.5 = 3,000, below the 25,000 base
+    # amount, so taxable Social Security = 0.
+    taxable_social_security: [0, 0]
+    # Section 7.7 counts the gross SSA benefit: 6,000 / 12 = 500 per month.
+    social_security: [500, 0]
+    sc_tanf_gross_unearned_income: [500, 0]
+    sc_tanf_countable_income: 500
+    # tanf_fpg for size 2 (2025-01) = 1,703.33
+    # need_standard = 1,703.33 * 0.5 = 851.67
+    # 500 < 851.67 -> countable income eligible
+    sc_tanf_income_eligible: true
+    # excess = 851.67 - 500 = 351.67
+    # benefit = 351.67 * 0.4046 = 142.28
+    # (Counting taxable Social Security instead gave 851.67 * 0.4046 = 344.58.)
+    sc_tanf: 142.28
+
+- name: Case 12, gross Social Security above the need standard makes the family ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        social_security_disability: 12_000
+      person2:
+        age: 8
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Provisional income = 12,000 * 0.5 = 6,000 < 25,000 -> taxable SS = 0.
+    taxable_social_security: [0, 0]
+    # Gross SSA benefit counts: 12,000 / 12 = 1,000 per month.
+    sc_tanf_countable_income: 1_000
+    # need_standard = 851.67; 1,000 >= 851.67 -> not income eligible
+    sc_tanf_income_eligible: false
+    # (Counting taxable Social Security instead paid 344.58.)
+    sc_tanf: 0
+
+- name: Case 13, gross Social Security and unemployment compensation both count once.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        social_security_disability: 3_600
+        unemployment_compensation: 2_400
+      person2:
+        age: 10
+        is_child_dependent: true
+      person3:
+        age: 8
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    # SS = 3,600 / 12 = 300 per month; taxable SS = 0.
+    # UC = 2,400 / 12 = 200 per month (fully taxable after 2020).
+    taxable_social_security: [0, 0, 0]
+    taxable_unemployment_compensation: [200, 0, 0]
+    # gross unearned = 300 + 200 = 500
+    sc_tanf_gross_unearned_income: [500, 0, 0]
+    sc_tanf_countable_income: 500
+    # tanf_fpg for size 3 (2025-01) = 2,151.67
+    # need_standard = 2,151.67 * 0.5 = 1,075.83
+    # excess = 1,075.83 - 500 = 575.83
+    # benefit = 575.83 * 0.4046 = 232.98
+    # (Counting taxable SS instead gave (1,075.83 - 200) * 0.4046 = 354.36.)
+    sc_tanf: 232.98
+
+- name: Case 14, child support, a child's Social Security and interest above the exclusion.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        child_support_received: 3_600
+        taxable_interest_income: 1_000
+      person2:
+        age: 9
+        is_child_dependent: true
+        social_security_survivors: 4_800
+      person3:
+        age: 6
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    sc_tanf_gross_income: 750
+    sc_tanf: 131.83
+    # SC DSS TANF Policy Manual (Volume 67), Section 7.7:
+    # child support paid directly = 3,600/12 = 300 (page 108)
+    # child's SSA benefits, gross = 4,800/12 = 400 (page 116)
+    # interest = (1,000 - 400 exclusion)/12 = 50 (page 113)
+    # gross income = 300 + 400 + 50 = 750
+    # tanf_fpg for size 3 = 2151.67; need standard = 1075.83
+    # gross income limit = 1075.83 * 1.85 = 1990.29; 750 passes
+    # benefit = (1075.83 - 750) * 0.4046 = 131.83
+
+- name: Case 15, an SSI child and the child's income are excluded from the benefit group.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 9
+        is_child_dependent: true
+        receives_ssi: true
+        taxable_private_pension_income: 3_600
+      person3:
+        age: 6
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    sc_tanf_benefit_group_size: 2
+    sc_tanf_gross_income: 0
+    sc_tanf_need_standard: 851.67
+    sc_tanf: 344.58
+    # SC DSS TANF Policy Manual (Volume 67), Section 3.6 (page 56) and
+    # Section 7.7 (page 117): exclude the SSI recipient, his/her income and
+    # resources. The benefit group is the parent and the other child.
+    # FPG for 2 = 1703.33; need standard = 851.67
+    # benefit = 851.67 * 0.4046 = 344.58
+
+- name: Case 16, when the only child receives SSI, the parent is the only benefit group member.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 9
+        is_child_dependent: true
+        receives_ssi: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_tanf_benefit_group_size: 1
+    sc_tanf: 253.89
+    # Section 3.6 (page 56): "If an SSI child is the only child in the home,
+    # include the parent(s) as the only BG member."
+    # FPG for 1 = 1255; need standard = 627.50
+    # benefit = 627.50 * 0.4046 = 253.89
+
+- name: Case 17, an SSI child's savings do not count against the resource limit.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        bank_account_assets: 800
+      person2:
+        age: 9
+        is_child_dependent: true
+        receives_ssi: true
+        bank_account_assets: 1_800
+      person3:
+        age: 6
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    sc_tanf_countable_resources: 800
+    sc_tanf: 344.58
+    # Sections 3.6 (page 56) and 7.7 (page 117) exclude the SSI child's
+    # resources: 2,600 - 1,800 = 800, within the $2,500 limit (page 91).
+    # Benefit group of 2: need standard 851.67; benefit = 851.67 * 0.4046

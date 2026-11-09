@@ -1,0 +1,12 @@
+description: Pennsylvania calculates regular heating payments for household sizes up to this number under the Low Income Home Energy Assistance Program.
+# The printed tables stop at size 11. Sizes 12 to 20 continue the additional
+# member amount, and larger households use this size.
+values:
+  2024-11-04: 20
+metadata:
+  unit: person
+  period: year
+  label: Pennsylvania LIHEAP maximum heating payment household size
+  reference:
+    - title: Pennsylvania LIHEAP Handbook 638.3, benefit calculation
+      href: http://services.dpw.state.pa.us/oimpolicymanuals/liheap/638_LIHEAP_Program_Benefits/638.3_Benefit_Calculation.htm

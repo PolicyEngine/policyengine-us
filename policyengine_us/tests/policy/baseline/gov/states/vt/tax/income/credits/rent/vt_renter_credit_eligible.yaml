@@ -1,0 +1,87 @@
+# Same household as "test 5" of vt_renter_credit.yaml, which gets $1,340.
+
+- name: A low-income Vermont renter is eligible and gets the credit.
+  period: 2022
+  input:
+    vt_renter_credit_income: 5_000
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    vt_renter_credit_eligible: true
+    vt_renter_credit: 1_340
+
+- name: 32 V.S.A. 6066(b)(1) gives a homeowner who pays no rent no renter credit.
+  period: 2022
+  input:
+    vt_renter_credit_income: 5_000
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    real_estate_taxes: 3_000
+    state_code: VT
+  output:
+    vt_renter_credit_eligible: false
+    vt_renter_credit: 0
+
+- name: A tenant whose subsidy covers all the rent paid no gross rent and gets no credit.
+  # 32 V.S.A. 6066(b)(1)(D) pays a share of gross rent paid, and 6061(7)(B)
+  # defines gross rent as the rent the claimant actually paid.
+  period: 2022
+  input:
+    vt_renter_credit_income: 5_000
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 6_000
+    pre_subsidy_rent: 6_000
+    state_code: VT
+  output:
+    rent: 0
+    vt_renter_credit_eligible: false
+    vt_renter_credit: 0
+
+- name: A married couple counts rent paid by either spouse.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      spouse:
+        age: 40
+        rent: 12_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        vt_renter_credit_income: 5_000
+        rent_is_shared_with_another_tax_unit: false
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+        housing_assistance: 0
+    households:
+      household:
+        members: [head, spouse]
+        county: ADDISON_COUNTY_VT
+        state_code: VT
+  output:
+    vt_renter_credit_eligible: true
+    vt_renter_credit: 1_340
+
+- name: A renter outside Vermont is not eligible.
+  period: 2022
+  input:
+    rent: 12_000
+    state_code: NH
+  output:
+    vt_renter_credit_eligible: false
+    vt_renter_credit: 0

@@ -344,3 +344,36 @@
         state_code: NY
   output:
     ny_exemptions: 0
+
+- name: Couple, one younger child, a spouse's self-employment loss reduces the federal credit - reform
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 10_000
+      person2:
+        age: 40
+        self_employment_income: -4_000
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    # Federal earned income (EIC Worksheet B, both spouses combined) is
+    # 10,000 + (-4,000) = 6,000. The one-child federal credit is 34% x 6,000 =
+    # 2,040, the same as eitc. S277C's 2025 match is 25%, so ny_eitc is
+    # 0.25 x 2,040 = 510 (no household credit at this income). Flooring each
+    # spouse at zero would give 34% x 10,000 = 3,400 and 850.
+    eitc: 2_040
+    younger_eitc: 2_040
+    ny_eitc: 510

@@ -243,3 +243,133 @@
         state_code: TX
   output:
     ctc_qualifying_child: [false, false, true]
+
+# IRC 24(h)(7)(A)(i): from 2025, no credit with respect to any qualifying child
+# unless the return includes the taxpayer's SSN (on a joint return, at least one
+# spouse's). The child is not counted, and gets the credit for other dependents
+# instead (IRC 24(h)(4)(C)). Issue #9403.
+- name: 2026 filer without an SSN has no CTC-qualifying child
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+        ssn_card_type: NONE
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child: [false, false]
+    ctc_qualifying_child_ignoring_filer_identification: [false, true]
+    ctc_qualifying_children: 0
+    ctc_child_individual_maximum: [0, 0]
+    ctc_adult_individual_maximum: [0, 500]
+
+- name: 2026 joint return where only one spouse has an SSN keeps the CTC-qualifying child
+  period: 2026
+  input:
+    people:
+      head:
+        age: 35
+        ssn_card_type: OTHER_NON_CITIZEN
+      spouse:
+        age: 35
+        ssn_card_type: CITIZEN
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child: [false, false, true]
+    ctc_qualifying_children: 1
+
+- name: 2024 filer without an SSN keeps the CTC-qualifying child
+  # The filer SSN rule starts in 2025; before then the filer needs only a TIN.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+        ssn_card_type: OTHER_NON_CITIZEN
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child: [false, true]
+    ctc_qualifying_children: 1
+
+- name: 2024 filer without any TIN has no CTC-qualifying child
+  # IRC 24(e)(2): no credit unless the taxpayer has an identification number.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+        ssn_card_type: NONE
+        has_tin: false
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child: [false, false]
+    ctc_qualifying_child_ignoring_filer_identification: [false, true]
+    ctc_qualifying_children: 0
+
+- name: 2025 filer with an ITIN gets the credit for other dependents and no Worksheet B
+  # 2025 Schedule 8812 instructions: Credit Limit Worksheet B applies only if
+  # "Line 4 of Schedule 8812 is more than zero".
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+        ssn_card_type: OTHER_NON_CITIZEN
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    ctc_qualifying_children: 0
+    ctc_adult_individual_maximum: [0, 500]
+    ctc_credit_limit_worksheet_b_applies: false

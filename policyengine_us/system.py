@@ -22,6 +22,9 @@ from policyengine_us.tools.parameters import (
     backdate_parameters,
 )
 from policyengine_us.reforms import create_structural_reforms_from_parameters
+from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
+    PRE_RESPONSE_INPUTS,
+)
 from policyengine_core.parameters.operations.homogenize_parameters import (
     homogenize_parameter_structures,
 )
@@ -35,7 +38,12 @@ from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
 from .tools.default_uprating import add_default_uprating
+from .tools.tob import TobCalculationMixin
 from .tools.period_branch import delete_input_values
+from .tools.social_security_inputs import (
+    install_social_security_input_compatibility,
+    migrate_social_security_inputs,
+)
 from .tools.section_911 import validate_section_911_batch_inputs
 from .tools.per_capita_uprating import (
     add_per_capita_parameters_for_parameter_uprating,
@@ -55,13 +63,15 @@ from policyengine_us.spm import (
     create_spm_provider,
 )
 
+install_social_security_input_compatibility()
+
 COUNTRY_DIR = Path(__file__).parent
 
 CURRENT_YEAR = 2024
 DEFAULT_START_DATE = str(CURRENT_YEAR) + "-01-01"
 
-# Certified Populace build (primary-source US microdata), pinned by build id.
-# Populace ships from a Hugging Face *dataset* repo, hence the `hf://datasets/`
+# Certified Microcosm build (primary-source US microdata), pinned by build id.
+# Microcosm ships from a Hugging Face *dataset* repo, hence the `hf://datasets/`
 # prefix handled in `_resolve_dataset_path`.
 DEFAULT_DATASET = "hf://datasets/policyengine/populace-us/populace_us_2024.h5@populace-us-2024-spm-20260909"
 # Content hash of the certified build the default URI must resolve to.
@@ -95,6 +105,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
     """
 
     variables_dir = COUNTRY_DIR / "variables"
+    _social_security_input_compatibility = True
     auto_carry_over_input_variables = True
     basic_inputs = [
         "state_name",
@@ -135,6 +146,19 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         # the two undefined.
         self.parameters = backdate_parameters(
             self.parameters, first_instant=f"{FIRST_MODELED_YEAR}-01-01"
+        )
+
+        # Preserve the processed current-law path before user reforms can
+        # remove/change the payroll cap. Owners' draw can keep this ceiling
+        # independently or explicitly select no ceiling.
+        draw_cap = self.parameters.gov.irs.payroll.social_security.cap.clone()
+        draw_cap.name = "gov.contrib.ssa.owners_draw.current_law_cap"
+        draw_cap.metadata.update(
+            label="Current-law OASDI cap preserved for owners' draw", economy=False
+        )
+        draw_cap.metadata.pop("uprating", None)
+        self.parameters.gov.contrib.ssa.owners_draw.add_child(
+            "current_law_cap", draw_cap
         )
 
         if reform:
@@ -189,6 +213,78 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 system = CountryTaxBenefitSystem()
 
 
+def _move_inputs_to_pre_response_variables(simulation):
+    """Store aggregate inputs on the pre-response variables they derive from."""
+    for aggregate, pre_response in PRE_RESPONSE_INPUTS.items():
+        holder = simulation.get_holder(aggregate)
+        for known_period in holder.get_known_periods():
+            array = holder.get_array(known_period)
+            simulation.set_input(pre_response, known_period, array)
+            delete_input_values(holder, known_period)
+
+
+def _sync_input_variables(simulation):
+    """List the variables that hold inputs after the moves and backfill.
+
+    Core records ``input_variables`` before the pre-response moves and the
+    ``state_code`` backfill run, so the recorded list still names the emptied
+    aggregates and ``state_code_str`` and omits the variables that now hold
+    their values. Branch-based variables such as ``marginal_tax_rate`` delete
+    every variable outside this list, so a stale list erases those inputs in
+    the branch: a wage-earning parent's TANF then counts no earnings.
+    """
+    moved = (
+        *PRE_RESPONSE_INPUTS,
+        *PRE_RESPONSE_INPUTS.values(),
+        "state_code_str",
+        "state_code",
+    )
+
+    def holds_input(variable):
+        return len(simulation.get_holder(variable).get_known_periods()) > 0
+
+    input_variables = [
+        variable
+        for variable in simulation.input_variables
+        if variable not in moved or holds_input(variable)
+    ]
+    simulation.input_variables = input_variables + [
+        variable
+        for variable in moved
+        if variable not in input_variables and holds_input(variable)
+    ]
+
+
+def _rebuild_baseline_branch(simulation):
+    """Branch a reformed simulation's baseline again, after the moves.
+
+    Core branches the baseline while it constructs a reformed simulation,
+    before the wrappers move inputs and backfill ``state_code``. The branch
+    therefore kept ``employment_income`` and ``weekly_hours_worked`` as
+    inputs, left ``employment_income_before_lsr`` and
+    ``weekly_hours_worked_before_lsr`` empty, and kept the stale
+    ``input_variables``. Its TANF counted no earnings, and the baseline
+    marginal tax rate that labor supply responses compare against erased
+    pre-response wages. Branching again from the simulation, as core's
+    ``subsample`` does, gives the baseline the same inputs as the reform.
+    """
+    baseline = simulation.branches.pop("baseline", None)
+    if baseline is None:
+        return
+    # A branch copies its parent's attributes, and a baseline whose own
+    # baseline is set would compute behavioral responses.
+    simulation.baseline = None
+    rebuilt = simulation.get_branch("baseline")
+    rebuilt.trace = simulation.trace
+    rebuilt.tracer = simulation.tracer
+    rebuilt.tax_benefit_system = baseline.tax_benefit_system
+    # Cloning bound holders to reform variables. Restoring policy must also
+    # restore those bindings and remove inputs that exist only in the reform.
+    rebuilt._rebind_holders()
+    rebuilt._isolate_parameter_tracing()
+    simulation.baseline = rebuilt
+
+
 def _backfill_state_code_from_str(simulation):
     """Backfill the ``state_code`` enum from a ``state_code_str`` input.
 
@@ -218,7 +314,7 @@ def _backfill_state_code_from_str(simulation):
         state_code_str.delete_arrays(known_period)
 
 
-class Simulation(SPMSimulationMixin, CoreSimulation):
+class Simulation(TobCalculationMixin, SPMSimulationMixin, CoreSimulation):
     """
     A simulation of the tax-benefit system for the United States,
     defined against the base simulation class in the -core package.
@@ -259,46 +355,12 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
         if reform is not None:
             self.apply_reform(reform)
 
-        # Labor supply responses
-
-        employment_income = self.get_holder("employment_income")
-        for known_period in employment_income.get_known_periods():
-            array = employment_income.get_array(known_period)
-            self.set_input("employment_income_before_lsr", known_period, array)
-            delete_input_values(employment_income, known_period)
-
-        self_employment_income = self.get_holder("self_employment_income")
-        for known_period in self_employment_income.get_known_periods():
-            array = self_employment_income.get_array(known_period)
-            self.set_input("self_employment_income_before_lsr", known_period, array)
-            delete_input_values(self_employment_income, known_period)
-
-        sstb_self_employment_income = self.get_holder("sstb_self_employment_income")
-        for known_period in sstb_self_employment_income.get_known_periods():
-            array = sstb_self_employment_income.get_array(known_period)
-            self.set_input(
-                "sstb_self_employment_income_before_lsr", known_period, array
-            )
-            delete_input_values(sstb_self_employment_income, known_period)
-
-        weekly_hours = self.get_holder("weekly_hours_worked")
-        for known_period in weekly_hours.get_known_periods():
-            array = weekly_hours.get_array(known_period)
-            self.set_input("weekly_hours_worked_before_lsr", known_period, array)
-            delete_input_values(weekly_hours, known_period)
-
-        # Capital gains responses
-
-        cg_holder = self.get_holder("long_term_capital_gains")
-        for known_period in cg_holder.get_known_periods():
-            array = cg_holder.get_array(known_period)
-            self.set_input(
-                "long_term_capital_gains_before_response", known_period, array
-            )
-            delete_input_values(cg_holder, known_period)
-
+        migrate_social_security_inputs(self)
+        _move_inputs_to_pre_response_variables(self)
         # Geography backfill: state_code_str-only input -> state_code enum.
         _backfill_state_code_from_str(self)
+        _sync_input_variables(self)
+        _rebuild_baseline_branch(self)
 
 
 def _download_or_explain(dataset_str, download):
@@ -323,7 +385,7 @@ def _download_or_explain(dataset_str, download):
 def _resolve_dataset_path(dataset_str):
     """Resolve a dataset string to a local file path, downloading if needed."""
     if dataset_str.startswith("hf://datasets/"):
-        # Hugging Face *dataset* repos (e.g. Populace). `download_huggingface_dataset`
+        # Hugging Face *dataset* repos (e.g. Microcosm). `download_huggingface_dataset`
         # assumes a model repo, so resolve dataset repos directly. URL form:
         # hf://datasets/<owner>/<repo>/<path/to/file>[@<revision>]
         from huggingface_hub import hf_hub_download
@@ -419,7 +481,7 @@ def _is_hdfstore_format(file_path):
         return False
 
 
-class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
+class Microsimulation(TobCalculationMixin, SPMSimulationMixin, CoreMicrosimulation):
     """
     A microsimulation of the tax-benefit system for the United States,
     defined against the base microsimulation class in the -core package.
@@ -464,7 +526,7 @@ class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
         if dataset is None:
             # Route the class default through the same interception below as an
             # explicit dataset, so an entity-level (HDFStore) default such as
-            # Populace is loaded via USSingleYearDataset rather than core's
+            # Microcosm is loaded via USSingleYearDataset rather than core's
             # variable-centric loader.
             dataset = self.default_dataset
             kwargs["dataset"] = dataset
@@ -519,67 +581,14 @@ class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
         if reform is not None:
             self.apply_reform(reform)
 
-        # Labor supply responses
-
-        employment_income = self.get_holder("employment_income")
-        for known_period in employment_income.get_known_periods():
-            array = employment_income.get_array(known_period)
-            self.set_input("employment_income_before_lsr", known_period, array)
-            delete_input_values(employment_income, known_period)
-
-        self_employment_income = self.get_holder("self_employment_income")
-        for known_period in self_employment_income.get_known_periods():
-            array = self_employment_income.get_array(known_period)
-            self.set_input("self_employment_income_before_lsr", known_period, array)
-            delete_input_values(self_employment_income, known_period)
-
-        sstb_self_employment_income = self.get_holder("sstb_self_employment_income")
-        for known_period in sstb_self_employment_income.get_known_periods():
-            array = sstb_self_employment_income.get_array(known_period)
-            self.set_input(
-                "sstb_self_employment_income_before_lsr", known_period, array
-            )
-            delete_input_values(sstb_self_employment_income, known_period)
-
-        weekly_hours = self.get_holder("weekly_hours_worked")
-        for known_period in weekly_hours.get_known_periods():
-            array = weekly_hours.get_array(known_period)
-            self.set_input("weekly_hours_worked_before_lsr", known_period, array)
-            delete_input_values(weekly_hours, known_period)
-
-        # Capital gains responses
-
-        cg_holder = self.get_holder("long_term_capital_gains")
-        for known_period in cg_holder.get_known_periods():
-            array = cg_holder.get_array(known_period)
-            self.set_input(
-                "long_term_capital_gains_before_response", known_period, array
-            )
-            delete_input_values(cg_holder, known_period)
-
+        migrate_social_security_inputs(self)
+        _move_inputs_to_pre_response_variables(self)
         # Geography backfill: state_code_str-only input -> state_code enum.
         # Datasets carry state_fips, so this only fires for situations that
         # explicitly supply state_code_str.
         _backfill_state_code_from_str(self)
-
-        self.input_variables = [
-            variable
-            for variable in self.input_variables
-            if variable
-            not in [
-                "employment_income",
-                "self_employment_income",
-                "sstb_self_employment_income",
-                "weekly_hours_worked",
-                "capital_gains",
-            ]
-        ] + [
-            "employment_income_before_lsr",
-            "self_employment_income_before_lsr",
-            "sstb_self_employment_income_before_lsr",
-            "weekly_hours_worked_before_lsr",
-            "long_term_capital_gains_before_response",
-        ]
+        _sync_input_variables(self)
+        _rebuild_baseline_branch(self)
 
 
 class IndividualSim(CoreIndividualSim):  # Deprecated
