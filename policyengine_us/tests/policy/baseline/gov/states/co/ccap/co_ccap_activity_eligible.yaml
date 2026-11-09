@@ -566,8 +566,8 @@
   output:
     co_ccap_activity_eligible: true
     co_ccap_eligible: true
-    # $1,000 a month less the $115.57 parent fee in court_supervision.yaml Case 5.
-    co_ccap_subsidy: 884.43
+    # $1,000 a month less the $128 parent fee in court_supervision.yaml Case 5.
+    co_ccap_subsidy: 872
 
 - name: Case 25, the same family with the same income from a pension receives nothing.
   period: 2026-01
