@@ -11,7 +11,8 @@ class hi_temporary_disability_insurance_taxable_wages(Variable):
         "cap multiplies the maximum weekly wage base by weeks worked, or by 52 "
         "when weeks worked went unreported. An even weekly wage reaches the "
         "largest amount the weekly cap allows, so this amount is an upper limit "
-        "for a worker with one employer."
+        "for a worker with one employer who passes the annual qualification "
+        "test."
     )
     definition_period = YEAR
     unit = USD

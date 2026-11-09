@@ -12,7 +12,9 @@ state:
    least the weekly sum, and the two match when wages are even.
 3. Properties across drawn batches of workers: bounds, monotonicity in wages,
    state masking, and aggregation to the tax unit.
-4. Net income. Removing the contribution raises household net income by exactly
+4. Qualification. Previous-year history can only add workers, and exactly the
+   workers whose history clears the weeks and hours minimums.
+5. Net income. Removing the contribution raises household net income by exactly
    the contribution.
 
 Intended differences from the published figures:
@@ -37,6 +39,7 @@ from policyengine_us import Simulation
 from policyengine_us.system import system as SYSTEM
 
 CONTRIBUTION = "hi_employee_temporary_disability_insurance_contribution"
+QUALIFIED = "hi_temporary_disability_insurance_qualified"
 TOLERANCE = 0.01  # dollars
 RATE = Decimal("0.005")  # HRS 392-43(a)
 FACTOR = Decimal("1.21")  # HRS 392-43(b)(2)
@@ -69,14 +72,13 @@ NOTICES = {
     2026: ("64471.82", "1500.21", "7.50"),
 }
 YEARS = sorted(NOTICES)
-# HRS 383-11(1)(A) and (4)(A). The model's elective deferral limit starts in 2015.
+# HRS 383-11(1)(A) and (4)(A).
 DEFERRALS = (
     "traditional_401k_contributions",
     "roth_401k_contributions",
     "traditional_403b_contributions",
     "roth_403b_contributions",
 )
-FIRST_DEFERRAL_YEAR = 2015
 GROUP_ENTITIES = (
     "tax_units",
     "spm_units",
@@ -106,6 +108,7 @@ def base_for(year):
 
 def simulate(year, workers, **overrides):
     period = str(year)
+    previous = str(year - 1)
     situation = {"people": {}, **{entity: {} for entity in GROUP_ENTITIES}}
     for i, worker in enumerate(workers):
         person = f"person_{i}"
@@ -113,6 +116,7 @@ def simulate(year, workers, **overrides):
             "age": {period: 40},
             "employment_income": {period: worker["wages"]},
             "pre_tax_health_insurance_premiums": {period: worker.get("premiums", 0)},
+            "military_basic_pay": {period: worker.get("military", 0)},
             "dependent_care_employer_benefits": {
                 period: worker.get("dependent_care", 0)
             },
@@ -124,8 +128,14 @@ def simulate(year, workers, **overrides):
                 }
                 for kind in DEFERRALS
             },
-            "weeks_worked": {period: worker.get("weeks", 0)},
-            "weekly_hours_worked_before_lsr": {period: worker.get("hours", 0)},
+            "weeks_worked": {
+                previous: worker.get("previous_weeks", 0),
+                period: worker.get("weeks", 0),
+            },
+            "weekly_hours_worked_before_lsr": {
+                previous: worker.get("previous_hours", 0),
+                period: worker.get("hours", 0),
+            },
             **{name: {period: value} for name, value in overrides.items()},
         }
         for entity in GROUP_ENTITIES:
@@ -163,6 +173,7 @@ workers = st.fixed_dictionaries(
             st.integers(-5_000, 200_000),
         ),
         "premiums": st.one_of(st.just(0), st.integers(0, 10_000)),
+        "military": st.one_of(st.just(0), st.integers(0, 10_000)),
         "deferral": st.one_of(st.just(0), st.integers(0, 10_000)),
         "deferral_kind": st.sampled_from(DEFERRALS),
         "dependent_care": st.one_of(st.just(0), st.integers(0, 5_000)),
@@ -187,14 +198,14 @@ def test_contribution_properties(year, batch, bump):
     ).calculate(CONTRIBUTION, period)
 
     in_hawaii = np.array([worker["state"] == "HI" for worker in batch])
-    counts_deferral = year >= FIRST_DEFERRAL_YEAR
     wages = np.array(
         [
             max(
                 0,
                 worker["wages"]
                 - worker["premiums"]
-                - (worker["deferral"] if counts_deferral else 0),
+                - worker["military"]
+                - worker["deferral"],
             )
             for worker in batch
         ],
@@ -217,6 +228,38 @@ def test_contribution_properties(year, batch, bump):
     assert sim.calculate("employee_state_payroll_tax", period)[
         in_hawaii
     ] == pytest.approx(contribution[in_hawaii], abs=TOLERANCE)
+
+
+@settings(**SETTINGS)
+@given(
+    year=st.sampled_from(YEARS),
+    batch=st.lists(
+        st.tuples(
+            workers,
+            st.sampled_from([0, 13, 14, 52]),
+            st.sampled_from([0, 19, 20, 40]),
+        ),
+        min_size=5,
+        max_size=30,
+    ),
+)
+def test_previous_year_history_only_adds_workers_who_clear_it(year, batch):
+    period = str(year)
+    alone = simulate(year, [worker for worker, _, _ in batch]).calculate(
+        QUALIFIED, period
+    )
+    with_history = simulate(
+        year,
+        [
+            {**worker, "previous_weeks": weeks, "previous_hours": hours}
+            for worker, weeks, hours in batch
+        ],
+    ).calculate(QUALIFIED, period)
+
+    in_hawaii = np.array([worker["state"] == "HI" for worker, _, _ in batch])
+    clears = np.array([weeks >= 14 and hours >= 20 for _, weeks, hours in batch])
+    assert (with_history[in_hawaii] == (alone | clears)[in_hawaii]).all()
+    assert not with_history[~in_hawaii].any()
 
 
 # At least 14 weeks of at least 30 dollars clears the $400 and 14-week test.

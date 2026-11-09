@@ -57,8 +57,8 @@ def test_first_modeled_year_is_the_backdating_floor():
     # The constant must match how far CountryTaxBenefitSystem backdates: a
     # parameter first dated after the floor is defined from it, not before.
     limit = SYSTEM.parameters.gov.irs.gross_income.retirement_contributions.limit
-    assert limit.children["401k"](f"{FIRST_MODELED_YEAR}-01-01") > 0
-    assert limit.children["401k"](f"{FIRST_MODELED_YEAR - 1}-12-31") is None
+    assert limit.children["ira"](f"{FIRST_MODELED_YEAR}-01-01") > 0
+    assert limit.children["ira"](f"{FIRST_MODELED_YEAR - 1}-12-31") is None
 
 
 @pytest.mark.parametrize("year", UNMODELED_LAG_YEARS)

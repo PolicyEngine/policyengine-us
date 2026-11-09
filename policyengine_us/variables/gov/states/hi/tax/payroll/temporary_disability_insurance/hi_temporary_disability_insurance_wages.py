@@ -15,14 +15,18 @@ class hi_temporary_disability_insurance_wages(Variable):
         "no dependent care payment, so dependent care benefits stay in. The "
         "federal payroll wage base differs because Congress added rules for "
         "elective deferrals, cafeteria plans and dependent care that Hawaii did "
-        "not enact. Before 2015 retirement deferrals stay in, because the "
-        "model's elective deferral limit starts in 2015."
+        "not enact. HRS 392-5(6) leaves service for the United States "
+        "government out of employment, so military basic pay comes out too. "
+        "The model's convention puts basic pay inside employment income, and "
+        "a service member's civilian wages stay in. The model identifies no "
+        "other federal employees, so their pay stays in."
     )
     definition_period = YEAR
     unit = USD
     defined_for = StateCode.HI
     reference = (
         "https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0392/HRS_0392-0003.htm",
+        "https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0392/HRS_0392-0005.htm",
         "https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0383/HRS_0383-0011.htm",
     )
 

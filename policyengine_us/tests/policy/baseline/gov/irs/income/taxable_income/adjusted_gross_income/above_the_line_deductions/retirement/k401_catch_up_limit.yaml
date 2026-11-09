@@ -125,3 +125,48 @@
     age: 64
   output:
     k401_catch_up_limit: 8_000
+
+# Earlier years come from the IRS cost-of-living table, 414(v)(2)(B)(i),
+# https://www.irs.gov/pub/irs-tege/cola-table.pdf.
+
+- name: Case 18, age 49 in 2004 receives no catch-up.
+  period: 2004
+  input:
+    age: 49
+  output:
+    k401_catch_up_limit: 0
+
+- name: Case 19, age 50 in 2004 receives 2004 standard limit.
+  period: 2004
+  input:
+    age: 50
+  output:
+    k401_catch_up_limit: 3_000
+
+- name: Case 20, age 50 in 2008 receives 2008 standard limit.
+  period: 2008
+  input:
+    age: 50
+  output:
+    k401_catch_up_limit: 5_000
+
+- name: Case 21, age 62 in 2009 receives 2009 standard limit.
+  period: 2009
+  input:
+    age: 62
+  output:
+    k401_catch_up_limit: 5_500
+
+- name: Case 22, age 50 in 2014 receives 2014 standard limit.
+  period: 2014
+  input:
+    age: 50
+  output:
+    k401_catch_up_limit: 5_500
+
+- name: Case 23, age 50 in 2017 receives 2017 standard limit.
+  period: 2017
+  input:
+    age: 50
+  output:
+    k401_catch_up_limit: 6_000

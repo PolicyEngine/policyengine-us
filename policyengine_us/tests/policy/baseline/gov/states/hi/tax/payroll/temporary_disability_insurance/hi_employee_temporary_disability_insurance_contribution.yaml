@@ -334,3 +334,227 @@
     hi_employee_temporary_disability_insurance_contribution: [390.05, 200.00]
     # 390.05 + 200.00 = 590.05.
     employee_state_payroll_tax: 590.05
+
+- name: Hawaii leaves a 2014 deferral out of the contribution.
+  period: 2014
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 30_000
+    traditional_401k_contributions: 4_000
+    state_code: HI
+  output:
+    # 0.5% * (30,000 - 4,000) = 130, under 52 * 940.05 = 48,882.60.
+    hi_employee_temporary_disability_insurance_contribution: 130
+
+- name: Hawaii leaves out only the deferral the 2009 limit allows.
+  period: 2009
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    employment_income: 50_000
+    traditional_401k_contributions_desired: 20_000
+    state_code: HI
+  output:
+    # 50,000 - 16,500 = 33,500, under 52 * 877.69 = 45,639.88.
+    hi_temporary_disability_insurance_wages: 33_500
+    # 0.5% * 33,500 = 167.50.
+    hi_employee_temporary_disability_insurance_contribution: 167.50
+
+- name: Hawaii leaves out a 2009 catch-up deferral.
+  period: 2009
+  absolute_error_margin: 0.01
+  input:
+    age: 55
+    employment_income: 50_000
+    traditional_401k_contributions_desired: 25_000
+    state_code: HI
+  output:
+    # 16,500 + 5,500 = 22,000 of deferrals, and 50,000 - 22,000 = 28,000.
+    hi_temporary_disability_insurance_wages: 28_000
+    # 0.5% * 28,000 = 140.
+    hi_employee_temporary_disability_insurance_contribution: 140
+
+- name: Hawaii charges no contribution on active-duty pay alone.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    military_basic_pay: 60_000
+    state_code: HI
+  output:
+    hi_temporary_disability_insurance_wages: 0
+    hi_employee_temporary_disability_insurance_contribution: 0
+
+- name: Hawaii charges a service member's civilian wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 70_000
+    military_basic_pay: 60_000
+    state_code: HI
+  output:
+    # 0.5% * (70,000 - 60,000) = 50.
+    hi_employee_temporary_disability_insurance_contribution: 50
+
+- name: Hawaii counts a short final year when the previous year passes.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income:
+          2025: 52_000
+          2026: 1_000
+        weeks_worked:
+          2025: 52
+          2026: 1
+        weekly_hours_worked_before_lsr:
+          2025: 40
+          2026: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_temporary_disability_insurance_qualified: true
+    # One week's 1,000 falls under the 1,500.21 cap: 0.5% * 1,000 = 5.
+    hi_employee_temporary_disability_insurance_contribution: 5
+
+- name: Hawaii counts final-year wages under 400 when the previous year passes.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income:
+          2025: 52_000
+          2026: 300
+        weeks_worked:
+          2025: 52
+          2026: 1
+        weekly_hours_worked_before_lsr:
+          2025: 40
+          2026: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_temporary_disability_insurance_qualified: true
+    # 0.5% * 300 = 1.50.
+    hi_employee_temporary_disability_insurance_contribution: 1.50
+
+- name: Hawaii passes a previous year at exactly 14 weeks and 20 hours.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income:
+          2025: 10_000
+          2026: 1_000
+        weeks_worked:
+          2025: 14
+          2026: 1
+        weekly_hours_worked_before_lsr:
+          2025: 20
+          2026: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_temporary_disability_insurance_qualified: true
+    hi_employee_temporary_disability_insurance_contribution: 5
+
+- name: Hawaii does not pass a previous year of 13 weeks.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income:
+          2025: 10_000
+          2026: 1_000
+        weeks_worked:
+          2025: 13
+          2026: 1
+        weekly_hours_worked_before_lsr:
+          2025: 40
+          2026: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_temporary_disability_insurance_qualified: false
+    hi_employee_temporary_disability_insurance_contribution: 0
+
+- name: Hawaii does not pass a previous year under 20 hours a week.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income:
+          2025: 10_000
+          2026: 1_000
+        weeks_worked:
+          2025: 52
+          2026: 1
+        weekly_hours_worked_before_lsr:
+          2025: 19
+          2026: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_temporary_disability_insurance_qualified: false
+    hi_employee_temporary_disability_insurance_contribution: 0
+
+- name: Hawaii does not read unreported previous-year hours as a pass.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income:
+          2025: 52_000
+          2026: 1_000
+        weeks_worked:
+          2025: 52
+          2026: 1
+        weekly_hours_worked_before_lsr:
+          2026: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_temporary_disability_insurance_qualified: false
+    hi_employee_temporary_disability_insurance_contribution: 0
+
+- name: Hawaii passes on the simulation year when the previous year fails.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income:
+          2025: 1_000
+          2026: 20_000
+        weeks_worked:
+          2025: 2
+          2026: 52
+        weekly_hours_worked_before_lsr:
+          2025: 40
+          2026: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_temporary_disability_insurance_qualified: true
+    # 0.5% * 20,000 = 100.
+    hi_employee_temporary_disability_insurance_contribution: 100
