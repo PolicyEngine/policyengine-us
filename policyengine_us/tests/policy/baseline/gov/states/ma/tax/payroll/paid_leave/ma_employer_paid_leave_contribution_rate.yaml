@@ -1,7 +1,9 @@
 # Massachusetts PFML employer share: 60% of the medical leave rate, owed by
 # employers with 25 or more covered individuals (employer headcount stands in
 # for covered individuals). Contributions began October 1, 2019, with a 0.62%
-# medical rate through 2021, 0.56% in 2022 and 0.52% in 2023.
+# medical rate through 2021, 0.56% in 2022 and 0.52% in 2023. From 2027 the
+# caps and the rates swap, and the employer share is 60% of the 0.70% family
+# rate.
 
 - name: Massachusetts PFML employer rate is zero in 2018, before contributions began.
   period: 2018
@@ -69,6 +71,16 @@
     # 60% * 0.52% = 0.312%.
     ma_employer_paid_leave_contribution_rate: 0.00312
 
+- name: Massachusetts PFML employer rate in 2027 is 60% of the 0.70% family rate.
+  period: 2027
+  absolute_error_margin: 0.0000001
+  input:
+    employer_headcount: 25
+    state_code: MA
+  output:
+    # 60% * 0.70% = 0.42%; the employer may deduct all of the 0.18% medical rate.
+    ma_employer_paid_leave_contribution_rate: 0.0042
+
 - name: Massachusetts employer-total PFML in 2019 applies the October-to-December share.
   period: 2019
   absolute_error_margin: 0.01
@@ -90,3 +102,16 @@
   output:
     # 0.336% * 1,000,000 = 3,360.
     employer_total_additional_state_payroll_tax: 3_360
+
+- name: Massachusetts employer-total PFML in 2019 adds the undeducted part of the October-to-December employee share.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    employer_headcount: 30
+    employer_state_payroll_premium_deduction_share: 0.5
+    employer_total_ma_paid_leave_taxable_wages: 1_000_000
+    state_code: MA
+  output:
+    # 0.093% * 1,000,000 = 930, plus half of the 0.0945% employee rate:
+    # 0.5 * 0.0945% * 1,000,000 = 472.50.
+    employer_total_additional_state_payroll_tax: 1_402.50
