@@ -5,7 +5,10 @@ values:
     - self_employment_income
     - sstb_self_employment_income
     - partnership_s_corp_income
-    - loss_limited_net_capital_gains_person
+    # Line 40: the filers' own capital gains and losses, with a net loss
+    # limited as on the federal return (26 USC 1211(b)). A dependent's
+    # gains and losses are on the dependent's own return.
+    - filer_loss_limited_net_capital_gains_person
     - rental_income
     # Line 41: rental real estates, royalties, partnerships, S corporations,
     # trusts, etc. (income or loss from federal Schedule E)

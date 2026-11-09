@@ -70,8 +70,8 @@ COUNTRY_DIR = Path(__file__).parent
 CURRENT_YEAR = 2024
 DEFAULT_START_DATE = str(CURRENT_YEAR) + "-01-01"
 
-# Certified Populace build (primary-source US microdata), pinned by build id.
-# Populace ships from a Hugging Face *dataset* repo, hence the `hf://datasets/`
+# Certified Microcosm build (primary-source US microdata), pinned by build id.
+# Microcosm ships from a Hugging Face *dataset* repo, hence the `hf://datasets/`
 # prefix handled in `_resolve_dataset_path`.
 DEFAULT_DATASET = "hf://datasets/policyengine/populace-us/populace_us_2024.h5@populace-us-2024-spm-20260909"
 # Content hash of the certified build the default URI must resolve to.
@@ -385,7 +385,7 @@ def _download_or_explain(dataset_str, download):
 def _resolve_dataset_path(dataset_str):
     """Resolve a dataset string to a local file path, downloading if needed."""
     if dataset_str.startswith("hf://datasets/"):
-        # Hugging Face *dataset* repos (e.g. Populace). `download_huggingface_dataset`
+        # Hugging Face *dataset* repos (e.g. Microcosm). `download_huggingface_dataset`
         # assumes a model repo, so resolve dataset repos directly. URL form:
         # hf://datasets/<owner>/<repo>/<path/to/file>[@<revision>]
         from huggingface_hub import hf_hub_download
@@ -526,7 +526,7 @@ class Microsimulation(TobCalculationMixin, SPMSimulationMixin, CoreMicrosimulati
         if dataset is None:
             # Route the class default through the same interception below as an
             # explicit dataset, so an entity-level (HDFStore) default such as
-            # Populace is loaded via USSingleYearDataset rather than core's
+            # Microcosm is loaded via USSingleYearDataset rather than core's
             # variable-centric loader.
             dataset = self.default_dataset
             kwargs["dataset"] = dataset

@@ -26,3 +26,59 @@
     state_code: WA
   output:
     ak_energy_relief: 0
+
+- name: Case 5, Alaska paid no energy relief in 2015.
+  period: 2015
+  input:
+    state_code: AK
+  output:
+    ak_energy_relief: 0
+
+- name: Case 6, Alaska paid no energy relief in 2016.
+  period: 2016
+  input:
+    state_code: AK
+  output:
+    ak_energy_relief: 0
+
+- name: Case 7, Alaska paid no energy relief in 2017.
+  period: 2017
+  input:
+    state_code: AK
+  output:
+    ak_energy_relief: 0
+
+- name: Case 8, Alaska paid no energy relief in 2018.
+  period: 2018
+  input:
+    state_code: AK
+  output:
+    ak_energy_relief: 0
+
+- name: Case 9, Alaska paid no energy relief in 2019.
+  period: 2019
+  input:
+    state_code: AK
+  output:
+    ak_energy_relief: 0
+
+- name: Case 10, Alaska paid no energy relief in 2020.
+  period: 2020
+  input:
+    state_code: AK
+  output:
+    ak_energy_relief: 0
+
+- name: Case 11, Alaska paid no energy relief in 2021.
+  period: 2021
+  input:
+    state_code: AK
+  output:
+    ak_energy_relief: 0
+
+- name: Case 12, Alaska has appropriated no energy relief for 2027.
+  period: 2027
+  input:
+    state_code: AK
+  output:
+    ak_energy_relief: 0
