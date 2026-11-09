@@ -11478,6 +11478,38 @@ candidates:
   note: An October 2026 ruling followed the worksheet; under the later statute-first rule the code includes the
     federal claim of right deduction in the credit base with the Schedule 1 components. The separate Wisconsin
     repayment credit that would trigger the 71.07(5)(a)6 exclusion is not modeled.
+- id: us-wi:homestead-age-disability-earned-income-routes
+  program: homestead-credit
+  years:
+    from: 2021
+    type: tax
+  question: Does a Wisconsin homestead claimant with no earned income qualify by age 62 or by disability alone, when
+    Wis. Stat. 71.54(1)(gm) read by itself denies such a claimant who is not disabled or is under 62?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. 71.54(1)(dm), (em), (gm)
+    url: https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/54
+  - kind: instructions
+    citation: 2025 Schedule H instructions, Step 1a (PDF p. 4)
+    url: https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleH-inst.pdf#page=4
+  readings:
+    statute: Read together, (dm), (em) and (gm) are alternatives, since (dm) makes (em) and (gm) exceptions to its age
+      bar. A claimant qualifies by being 62 or older, by being disabled or by having earned income.
+    other: (gm) read by itself denies a claimant with no earned income unless the claimant is both disabled and 62 or
+      older.
+  example: A 2021 claimant aged 62 who is not disabled and has no earned income qualifies under the whole-text reading
+    and Step 1a, and does not under (gm) read by itself.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wi/tax/income/credits/homestead/wi_homestead_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10104
+  state: open
+  note: PE-US follows the whole-text reading, which Schedule H Step 1a shares by listing age 62 or older, disability
+    and earned income as alternative qualifications. wi_homestead_eligible.yaml unit tests 4 (aged 62, no earnings)
+    and 6 (disabled spouse aged 60, no earnings) expect eligibility and would fail under (gm) read by itself. The
+    model's homestead parameters start in 2021.
 - id: us-wi:liheap-categorical-benefit-income
   program: liheap
   years:

@@ -8,10 +8,11 @@ class wi_homestead_eligible(Variable):
     definition_period = YEAR
     reference = (
         "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2021/0013_homestead_tax_credit_informational_paper_13.pdf#page=7",
-        # Schedule H instructions, Steps 1 and 2 and questions 1c-1d
-        # PDF pages 4, 10
+        # Schedule H instructions, Steps 1 and 2, definition 4 (earned income)
+        # and questions 1c-1d
+        # PDF pages 4, 7, 10
         "https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleH-inst.pdf#page=4",
-        "https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/53/2/c",
+        "https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/53/2",
         "https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/54",
         "https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/52/1g",
     )
@@ -23,10 +24,11 @@ class wi_homestead_eligible(Variable):
         filer = person("is_tax_unit_head_or_spouse", period)
         age = person("age", period)
         elderly = age >= p.min_elderly_age
-        # Wis. Stat. 71.53(2)(c), 71.54(1)(gm): the claimant must be 18 or older
-        # and must be 62 or older, disabled or have earned income; the
-        # Schedule H instructions add, for a married couple, "The spouse that
-        # meets this definition must be the claimant."
+        # Wis. Stat. 71.53(2)(c): the claimant must be 18 or older. Wis. Stat.
+        # 71.54(1)(dm), (em) and (gm), read together as Schedule H Step 1a
+        # reads them: the claimant must also be 62 or older, disabled or have
+        # earned income. For a married couple, "The spouse that meets this
+        # definition must be the claimant" (Schedule H instructions, p. 10).
         earnings = add(person, period, p.earnings_sources)
         disabled = person("is_disabled", period)
         qualifies = (age >= p.min_age) & (elderly | disabled | (earnings > 0))
