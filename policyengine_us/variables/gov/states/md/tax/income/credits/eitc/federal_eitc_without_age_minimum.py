@@ -28,12 +28,17 @@ class federal_eitc_without_age_minimum(Variable):
         max_age = parameters.gov.irs.credits.eitc.eligibility.age.max(period)
         is_filer_or_spouse = ~person("is_tax_unit_dependent", period)
         below_max_age = person("age", period) <= max_age
-        # § 10-704 waives only the minimum age: a childless filer must still be
-        # "otherwise eligible for the federal credit", and § 32(c)(1)(A)(ii)(III)
-        # bars a childless return on which the filer (or, if joint, either
-        # spouse) can be claimed as a dependent, unless the would-be claimant
-        # meets the filing exception (Publication 596), as in
-        # eitc_demographic_eligible.
+        # § 10-704(c)(3)(i) computes the credit of an individual without a
+        # qualifying child without "1. the minimum age requirement" or "2.
+        # the limitation under § 32(m)". This formula drops only the minimum
+        # age; filer_has_ssn below still applies § 32(m). The other § 32
+        # rules stay, so a childless filer must still be "otherwise eligible
+        # for the federal credit": § 32(c)(1)(A)(ii)(III) bars a childless
+        # return on which the filer (or, if joint, either spouse) can be
+        # claimed as a dependent, unless the would-be claimant meets the
+        # filing exception (Publication 596). This reads the same helper as
+        # eitc_demographic_eligible. Unlike that formula from 2021, has_child
+        # counts only children with a valid identification number.
         filer_is_dependent = tax_unit(
             "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
