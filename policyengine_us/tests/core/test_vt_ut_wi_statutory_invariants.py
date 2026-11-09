@@ -3,8 +3,8 @@
 1. Vermont student loan interest (32 V.S.A. 5811(21)(B)(vi), (29); IN-112
    line 16): from 2022, the state subtraction plus the federal deduction equals
    the filers' interest paid when AGI is within the limit, and the subtraction
-   is zero above the limit, in 2021, for every surviving spouse
-   (5811(29)(B) sets no limit for that status), and never negative.
+   is zero above the limit and for every surviving spouse (5811(29)(B) sets no
+   limit for that status), and never negative. The YAML cases pin 2021.
 2. Utah at-home parent credit (59-10-1005(2)): a second spouse who also
    qualifies as an at-home parent does not change the credit.
 3. Wisconsin homestead eligibility: the same under either head/spouse
@@ -100,7 +100,7 @@ def borrowers(draw):
 
 @SETTINGS
 @given(
-    st.sampled_from([2021, 2022, 2024, 2026]),
+    st.sampled_from([2022, 2024, 2026]),
     st.lists(borrowers(), min_size=8, max_size=20),
 )
 def test_vt_student_loan_subtraction_completes_the_federal_deduction(year, draws):
@@ -114,17 +114,11 @@ def test_vt_student_loan_subtraction_completes_the_federal_deduction(year, draws
     sub = _calc(sim, "vt_student_loan_interest_subtraction", year)
     agi = _calc(sim, "adjusted_gross_income", year)
     surviving = statuses == "SURVIVING_SPOUSE"
-    # 5811(29)(B): $200,000 if joint, $120,000 if single; no surviving spouse
-    # qualifies.
-    limit = np.where(
-        statuses == "JOINT", 200_000, np.where(surviving, -np.inf, 120_000)
-    )
     assert (sub >= 0).all()
+    # 5811(29)(B) sets no limit for a surviving spouse, who never qualifies.
     assert not sub[surviving].any()
-    if year < 2022:
-        assert not sub.any()
-        return
-    within = agi <= limit
+    # 5811(29)(B): $200,000 if joint, $120,000 if single.
+    within = (agi <= np.where(statuses == "JOINT", 200_000, 120_000)) & ~surviving
     np.testing.assert_allclose(sub[within] + federal[within], paid[within], atol=0.01)
     assert not sub[~within].any()
 
