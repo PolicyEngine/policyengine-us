@@ -7,7 +7,16 @@ class ma_tafdc_work_related_expense_deduction(Variable):
     entity = Person
     label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) work-related expense deduction"
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-270"
+    reference = (
+        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-270"  # (A)
+    )
     defined_for = StateCode.MA
 
-    adds = ["gov.states.ma.dta.tcap.deductions.work_related_expenses.amount"]
+    def formula(person, period, parameters):
+        # 106 CMR 704.270(A): "An employed applicant is entitled to a $200
+        # monthly work-related-expense deduction from gross wages." Only an
+        # employed member is entitled to it, and it comes out of that member's
+        # own gross wages, so it cannot exceed them.
+        earned_income = person("ma_tcap_gross_earned_income", period)
+        p = parameters(period).gov.states.ma.dta.tcap.deductions.work_related_expenses
+        return min_(earned_income, p.amount)
