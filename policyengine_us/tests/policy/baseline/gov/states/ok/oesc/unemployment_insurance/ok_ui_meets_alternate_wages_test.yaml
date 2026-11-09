@@ -64,10 +64,13 @@
         # Total $28,199 < $28,200 (2025 wage base) -> fails prong 2.
         ok_ui_meets_alternate_wages_test: false
 
-# --- Item 18(a): 2026 taxable wage base = $25,000; Test B step at that boundary.
+# --- Item 18(a): 2026 taxable wage base = $24,200, Senate Bill 911's 41.25% share of
+# the $58,765.95 average annual wage in OESC's 2026 notice; Test B step at that boundary.
+# OESC's notice lists $25,000, the earlier 42.5% share; PE-US follows the statute
+# (source conflict us-ok:ui-taxable-wage-base-2026).
 # Test A cannot rescue (total < 1.5 x HQW), isolating the Test B threshold. ---
 
-- name: Case 4, 2026 total wages exactly at $25,000 wage base - passes Test B.
+- name: Case 4, 2026 total wages exactly at $24,200 wage base - passes Test B.
   period: 2026
   input:
     people:
@@ -75,7 +78,7 @@
         age: 35
         ok_ui_high_quarter_taxable_wages: 20_000
         ok_ui_base_period_taxable_wages: 2_000
-        ok_ui_base_period_total_wages: 25_000
+        ok_ui_base_period_total_wages: 24_200
     households:
       household:
         members: [person1]
@@ -83,10 +86,29 @@
   output:
     people:
       person1:
-        # Taxable $2,000 > $0 AND total $25,000 >= $25,000 (2026 wage base) -> passes (>=).
+        # Taxable $2,000 > $0 AND total $24,200 >= $24,200 (2026 wage base) -> passes (>=).
         ok_ui_meets_alternate_wages_test: true
 
-- name: Case 5, 2026 total wages one dollar below $25,000 wage base - fails Test B.
+- name: Case 5, 2026 total wages one dollar below $24,200 wage base - fails Test B.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 20_000
+        ok_ui_base_period_taxable_wages: 2_000
+        ok_ui_base_period_total_wages: 24_199
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Total $24,199 < $24,200 (2026 wage base) -> fails prong 2.
+        ok_ui_meets_alternate_wages_test: false
+
+- name: Case 6, 2026 total wages of $24,999, below OESC's listed $25,000 but above the statutory $24,200 base - passes Test B.
   period: 2026
   input:
     people:
@@ -102,5 +124,5 @@
   output:
     people:
       person1:
-        # Total $24,999 < $25,000 (2026 wage base) -> fails prong 2.
-        ok_ui_meets_alternate_wages_test: false
+        # Total $24,999 >= $24,200 (2026 wage base under Senate Bill 911) -> passes prong 2.
+        ok_ui_meets_alternate_wages_test: true
