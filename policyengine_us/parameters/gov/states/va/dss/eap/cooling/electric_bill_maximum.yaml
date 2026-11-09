@@ -1,0 +1,24 @@
+description: Virginia limits cooling assistance electric bill payments to this amount per program year under the Energy Assistance Program.
+# The VDSS Home Office sets this maximum each year. Each value is dated to the
+# start of the federal fiscal year whose summer it covers. VDSS announced $600
+# for 2023. The $365 for 2025 comes from press reports attributed to VDSS; no
+# VDSS notice was found for 2024, 2025, 2026 or 2027, so $365 carries forward.
+values:
+  2022-10-01: 600
+  2024-10-01: 365
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Virginia EAP cooling assistance electric bill payment maximum
+  reference:
+    - title: "Virginia Energy Assistance Manual, Volume IX, Chapter J.6 Authorizations, J.7.g Payment of Electric Bill and J.8 Cooling Assistance Benefits #page 123,127-129"
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=123
+    - title: 22VAC40-680-63(C) Eligibility criteria; benefits
+      href: https://law.lis.virginia.gov/admincode/title22/agency40/chapter680/section63/
+    - title: VDSS news release, Cooling Assistance Application Period Underway (July 5, 2023), one-time $600 benefit for electric bills (Wayback Machine copy)
+      href: https://web.archive.org/web/2026/https://dss.virginia.gov/files/division/pa/news_releases/2023/Cooling_Assistance_2023_ENG.pdf#page=1
+    - title: Press report, WYDaily, Cooling assistance available, application period underway (July 20, 2025), VDSS one-time $365 benefit for electric bills
+      href: https://wydaily.com/latest/regional-national/2025/07/20/cooling-assistance-available-application-period-underway/
+    - title: Press report, WRIC on WAVY (July 17, 2025), VDSS one-time $365 benefit for electric bills
+      href: https://digital-release.wavy.com/?p=2780089

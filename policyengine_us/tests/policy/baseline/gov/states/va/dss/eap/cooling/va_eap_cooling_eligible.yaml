@@ -1,0 +1,312 @@
+# Virginia EAP cooling assistance electric bill payment eligibility (Complete
+# EAP Manual J.3, J.7.g; FY2026 plan section 3; 22VAC40-680-63): the Fuel
+# Assistance income and citizenship tests against the current-year guideline,
+# at least one member aged 60 or older, under 6 or disabled, a cooling cost
+# paid separately from rent, a positive electric bill, and not homeless. No
+# heating fuel is required, but heating_type must be reported: NONE and every
+# known fuel qualify, UNSPECIFIED does not. A member aged 60 or older has $50 a
+# month ($600 a year) deducted from income. 2026 one-person cooling limit
+# 23,940 (2026 guideline); 2026 one-person heating limit 23,472 (2025
+# guideline). The $150 a month ($1,800 a year) electric bill is illustrative.
+
+- name: Case 1, a retiree at the 2026 one-person cooling limit is eligible though over the heating limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 62
+        social_security_retirement: 24_540
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # 24,540 - 600 = 23,940 <= 23,940 cooling limit; > 23,472 heating limit.
+    va_eap_countable_income: 23_940
+    va_eap_cooling_income_limit: 23_940
+    va_eap_income_eligible: false
+    va_eap_cooling_eligible: true
+
+- name: Case 2, a retiree one dollar over the 2026 one-person cooling limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 62
+        social_security_retirement: 24_541
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # 24,541 - 600 = 23,941 > 23,940.
+    va_eap_cooling_eligible: false
+
+- name: Case 3, a working adult with no vulnerable member is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # 20,000 <= 23,940, but no member is 60 or older, under 6 or disabled.
+    va_eap_vulnerability_points: 0
+    va_eap_cooling_eligible: false
+
+- name: Case 4, a parent with a five-year-old child is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 30_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 30,000 <= 32,460 two-person cooling limit (2,705 x 12); child under 6.
+    va_eap_cooling_eligible: true
+
+- name: Case 5, the same parent once the child is six is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 30_000
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_eap_cooling_eligible: false
+
+- name: Case 6, an adult receiving Social Security disability is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        social_security_disability: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # Disabled under 22VAC40-680-10; 18,000 - 600 = 17,400 <= 23,940.
+    va_eap_disabled: true
+    va_eap_cooling_eligible: true
+
+- name: Case 7, a working disabled couple who both receive SSI is eligible above the two-person cooling limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 17_000
+        ssi: 701
+        is_ssi_disabled: true
+      person2:
+        age: 42
+        employment_income_before_lsr: 17_000
+        ssi: 701
+        is_ssi_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 34,000 + 1,402 - 2 x 600 = 34,202 > 32,460, but every member receives
+    # SSI (Manual B.6.a, applied to cooling by J.3.a).
+    va_eap_countable_income: 34_202
+    va_eap_cooling_eligible: true
+
+- name: Case 8, a household without a separate cooling cost is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 62
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: false
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_eap_cooling_eligible: false
+
+- name: Case 9, a household with no electric bill is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 62
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 0
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_eap_cooling_eligible: false
+
+- name: Case 10, a homeless household is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 62
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        is_homeless: true
+  output:
+    va_eap_cooling_eligible: false
+
+- name: Case 11, a household with no heating fuel is eligible for cooling only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 62
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_eap_eligible: false
+    va_eap_cooling_eligible: true
+
+- name: Case 12, an unspecified heating type is ineligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 62
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # heating_type is a required input; NONE qualifies (Case 11).
+    va_eap_eligible: false
+    va_eap_cooling_eligible: false
+    va_eap_cooling: 0
+
+- name: Case 13, a public housing tenant who pays the electric bill is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 62
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        is_in_public_housing: true
+  output:
+    # Living arrangement G on the cooling application.
+    va_eap_cooling_eligible: true

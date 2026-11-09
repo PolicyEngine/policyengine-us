@@ -1,0 +1,17 @@
+description: Virginia uses federal poverty guidelines from this many years before the cooling season for the cooling assistance income limit under the Energy Assistance Program.
+# Virginia adopts each year's new 150% limits in June. They apply first to that
+# June's cooling assistance and then to heating in the next federal fiscal
+# year, so cooling in the summer of year Y uses the year Y guideline while
+# heating in federal fiscal year Y uses the year Y - 1 guideline.
+values:
+  2025-06-01: 0
+
+metadata:
+  unit: year
+  period: year
+  label: Virginia EAP cooling assistance federal poverty guideline year lag
+  reference:
+    - title: LIHEAP Clearinghouse Virginia FY2026 benefit matrix, income limits note (the 150% limits "were used for Cooling Assistance in June of 2025")
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/VA_BenefitMatrix_2026.pdf#page=1
+    - title: WYDaily, State cooling assistance program helps residents with summer energy costs (June 15, 2026), 2026 limits of $1,995 a month for one person and $4,125 for four
+      href: https://wydaily.com/latest/2026/06/15/state-cooling-assistance-program-helps-residents-with-summer-energy-costs/
