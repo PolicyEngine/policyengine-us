@@ -33,7 +33,9 @@ Invariants:
    implies a $360.90 standard premium against Table V.E2's $360.60.
 2. Statutory rounding: in every projected year, the Part B premium and IRMAA
    amounts are multiples of 10 cents, the Part A premiums of $1 and the
-   deductible of $4.
+   deductible of $4. A deductible midway between two multiples of $4 goes to
+   the higher one (42 U.S.C. 1395e(b)(1)), shown on a small series because
+   no Trustees year lands on a midpoint.
 3. Agreement with the uprater: the Part B premium equals the Trustees series
    rounded to 10 cents in every year from 2021.
 4. Proportionality: each Part B IRMAA amount stays at its 42 U.S.C.
@@ -58,11 +60,14 @@ Invariants:
 7. Indexing (differential): the statutory CPI-U schedule reproduces CMS's
    published thresholds exactly for 2020-2024, where the model's CPI-U is
    the published not seasonally adjusted index, and within one $1,000 step
-   for 2025-2026, where it is seasonally adjusted.
+   for 2025-2026, where it is seasonally adjusted. A fall in CPI-U leaves
+   every amount unadjusted (the percentage "(if any)" in (5)(A) and
+   (C)(ii)), shown on a small falling CPI-U path.
 8. Precedence: a CMS amount added to the YAML for a year replaces the
    projection for that year only. Later IRMAA thresholds and Part D amounts
    are still computed from the statute rather than chained from it; later
-   Part A premiums grow from it.
+   Part A premiums grow from it. Each Part A premium is projected from its
+   own last published year.
 9. Extension: the new Trustees series grow at their last one-year rate past
    2035 and hold their 2100 value after 2100.
 """
@@ -80,6 +85,7 @@ from policyengine_us.parameters.uprating_extensions import (
     MEDICARE_IRMAA_APPLICABLE_PERCENTAGES,
     MEDICARE_IRMAA_TOP_FIRST_INDEXED_YEAR,
     extend_medicare_irmaa_thresholds,
+    extend_medicare_part_a_deductible,
     extend_medicare_part_a_premiums,
     extend_medicare_part_d_irmaa_amounts,
     get_cpi_u_average_for_12_months_ending_august,
@@ -376,6 +382,44 @@ def test_round_half_up_sends_ties_up():
     assert round_half_up(563.2, 1) == 563
 
 
+def _deductible_tree(series_values):
+    """The Part A deductible as loaded from YAML through the last announced
+    year, under a root whose Trustees deductible series is ``series_values``."""
+    values = {
+        v.instant_str: v.value
+        for v in MEDICARE.part_a.deductible.values_list
+        if v.instant_str <= f"{LAST_ANNOUNCED_YEAR}-12-31"
+    }
+    part_a = ParameterNode(
+        "gov.hhs.medicare.part_a", data={"deductible": {"values": values}}
+    )
+    cms = ParameterNode(
+        CMS, data={"medicare_part_a_deductible": {"values": series_values}}
+    )
+    root = SimpleNamespace(
+        gov=SimpleNamespace(
+            hhs=SimpleNamespace(medicare=SimpleNamespace(part_a=part_a))
+        ),
+        calibration=SimpleNamespace(gov=SimpleNamespace(hhs=SimpleNamespace(cms=cms))),
+    )
+    return root, part_a.deductible
+
+
+def test_projected_deductible_rounds_a_midpoint_up():
+    """42 U.S.C. 1395e(b)(1) sends an amount midway between two multiples of
+    $4 to the higher one. No Trustees year lands on a midpoint, so a small
+    series puts 2027 at $1,738, midway between $1,736 and $1,740, where
+    rounding half to even would give $1,736."""
+    root, deductible = _deductible_tree(
+        {"2026-01-01": 1_736, "2027-01-01": 1_738, "2028-01-01": 1_745}
+    )
+    extend_medicare_part_a_deductible(root, end_year=2028)
+    assert _at(deductible, LAST_ANNOUNCED_YEAR) == 1_736
+    assert _at(deductible, 2027) == 1_740
+    assert _at(deductible, 2028) == 1_744
+    assert _at(deductible, 2100) == 1_744
+
+
 # 5. Monotonicity.
 
 
@@ -534,6 +578,35 @@ def test_cpi_schedule_starts_in_2020():
         get_medicare_irmaa_unmarried_amounts(PARAMETERS, 2019)
 
 
+def test_amounts_do_not_fall_when_cpi_u_falls():
+    """42 U.S.C. 1395r(i)(5)(A) and (C)(ii) increase each amount by the
+    percentage (if any) by which average CPI-U exceeds its base-period
+    average, so a fall leaves it unadjusted. The published index has not
+    fallen below either base, so a small CPI-U path averages 300 for the 12
+    months ending August 2018, 270 for those ending August 2026 and 250 for
+    those ending August 2027."""
+    cpi = ParameterNode(
+        "gov.bls.cpi",
+        data={
+            "cpi_u": {
+                "values": {
+                    "2017-09-01": 300,
+                    "2018-09-01": 285,
+                    "2025-09-01": 270,
+                    "2026-09-01": 250,
+                }
+            }
+        },
+    )
+    root = SimpleNamespace(gov=SimpleNamespace(bls=SimpleNamespace(cpi=cpi)))
+    for year in (2027, 2028):
+        lower, top = get_medicare_irmaa_unmarried_amounts(root, year)
+        for adjusted, amount in zip(lower, (85_000, 107_000, 133_500, 160_000)):
+            # At most the rounding step up to the nearest $1,000.
+            assert amount <= adjusted < amount + 1_000
+        assert top == 500_000
+
+
 # 8. Precedence of published amounts.
 
 
@@ -610,10 +683,11 @@ def test_published_values_take_precedence_and_later_years_follow_the_statute():
                         )
 
 
-def _part_a_tree_with_2027_values():
+def _part_a_tree_with_2027_values(full_2027=611, reduced_2027=337):
     """The Part A premiums as loaded from YAML through the last announced
     year, plus a stand-in CMS announcement for 2027 that no projection
-    produces, under a root that shares the system's Trustees series."""
+    produces (None leaves that premium unannounced), under a root that shares
+    the system's Trustees series."""
     data = {}
     for name in ("full_premium", "reduced_premium"):
         parameter = getattr(MEDICARE.part_a, name)
@@ -623,8 +697,10 @@ def _part_a_tree_with_2027_values():
             if v.instant_str <= f"{LAST_ANNOUNCED_YEAR}-12-31"
         }
         data[name] = {"values": values}
-    data["full_premium"]["values"]["2027-01-01"] = 611
-    data["reduced_premium"]["values"]["2027-01-01"] = 337
+    if full_2027 is not None:
+        data["full_premium"]["values"]["2027-01-01"] = full_2027
+    if reduced_2027 is not None:
+        data["reduced_premium"]["values"]["2027-01-01"] = reduced_2027
     part_a = ParameterNode("gov.hhs.medicare.part_a", data=data)
     root = SimpleNamespace(
         gov=SimpleNamespace(
@@ -647,6 +723,24 @@ def test_published_part_a_premiums_take_precedence_and_later_years_grow_from_the
         assert _at(part_a.full_premium, year) == full
         assert _at(part_a.reduced_premium, year) == round_half_up(0.55 * full, 1)
     assert _at(part_a.full_premium, 2100) == _at(part_a.full_premium, 2030)
+
+
+def test_reduced_part_a_premium_is_projected_from_its_own_last_published_year():
+    """A year CMS published for only one of the two premiums keeps that
+    published value, and the other premium is projected for it."""
+    # The full premium is announced for 2027 and the reduced one is not.
+    root, part_a = _part_a_tree_with_2027_values(reduced_2027=None)
+    extend_medicare_part_a_premiums(root, end_year=2030)
+    assert _at(part_a.full_premium, 2027) == 611
+    # 0.55 * 611 = 336.05.
+    assert _at(part_a.reduced_premium, 2027) == 336
+    # The reduced premium is announced for 2027 and the full one is not.
+    root, part_a = _part_a_tree_with_2027_values(full_2027=None)
+    extend_medicare_part_a_premiums(root, end_year=2030)
+    assert _at(part_a.reduced_premium, 2027) == 337
+    for year in (2028, 2030):
+        full = _at(part_a.full_premium, year)
+        assert _at(part_a.reduced_premium, year) == round_half_up(0.55 * full, 1)
 
 
 # 9. Extension of the new series.

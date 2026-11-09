@@ -872,7 +872,8 @@ MEDICARE_PART_A_REDUCED_PREMIUM_SHARE = 0.55
 def round_half_up(value: float, interval: float) -> float:
     """Round ``value`` to the nearest multiple of ``interval``, sending an
     amount midway between two multiples to the higher one, as 42 U.S.C.
-    1395i-2(d)(2) does for the Part A premium."""
+    1395i-2(d)(2) does for the Part A premium and 1395e(b)(1) for the Part A
+    deductible."""
     step = Decimal(repr(interval))
     return float(
         (Decimal(repr(value)) / step).quantize(Decimal(1), rounding=ROUND_HALF_UP)
@@ -919,6 +920,34 @@ def extend_medicare_part_a_premiums(parameters: ParameterNode, end_year: int) ->
             start=instant(f"{end_year}-01-01"),
             value=parameter(f"{end_year}-01-01"),
         )
+
+
+def extend_medicare_part_a_deductible(parameters: ParameterNode, end_year: int) -> None:
+    """Project the Medicare Part A inpatient hospital deductible.
+
+    Each year after the last CMS-published one, the deductible is the last
+    published deductible grown with the Medicare Trustees' projected
+    deductible, rounded to the nearest multiple of $4. An amount midway
+    between two multiples goes to the higher one (42 U.S.C. 1395e(b)(1)),
+    which core's ``nearest`` uprating rounding would send to the even
+    multiple. CMS values encoded in the YAML take precedence for their own
+    years.
+    """
+    deductible = parameters.gov.hhs.medicare.part_a.deductible
+    series = parameters.calibration.gov.hhs.cms.medicare_part_a_deductible
+    last_year = max(int(value.instant_str[:4]) for value in deductible.values_list)
+    base_period = f"{last_year}-01-01"
+    scale = deductible(base_period) / series(base_period)
+    for year in range(last_year + 1, end_year + 1):
+        period = f"{year}-01-01"
+        deductible.update(
+            period=f"year:{period}:1",
+            value=round_half_up(scale * series(period), 4),
+        )
+    deductible.update(
+        start=instant(f"{end_year}-01-01"),
+        value=deductible(f"{end_year}-01-01"),
+    )
 
 
 # 42 U.S.C. 1395r(i)(3)(C)(i)(III): the dollar amounts of the applicable
@@ -1619,9 +1648,8 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
 
     # Medicare Part A standard premium and inpatient hospital deductible, and
     # Part D base beneficiary premium (January values, last Trustees
-    # projection year 2035). The Part A premiums and the Part D
-    # income-related adjustment amounts are computed from the first and third
-    # below; the deductible uses the second as its uprater.
+    # projection year 2035). The Part A premiums, the deductible and the Part
+    # D income-related adjustment amounts are computed from them below.
     for medicare_series in (
         parameters.calibration.gov.hhs.cms.medicare_part_a_premium_per_enrollee,
         parameters.calibration.gov.hhs.cms.medicare_part_a_deductible,
@@ -1639,6 +1667,11 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     # standard premium extended above, with the reduced premium 45 percent
     # below the full one (42 U.S.C. 1395i-2(d)).
     extend_medicare_part_a_premiums(parameters, end_year=END_YEAR)
+
+    # The Medicare Part A deductible follows the Trustees' projected
+    # deductible extended above, rounded to $4 with midpoints rounded up
+    # (42 U.S.C. 1395e(b)(1)).
+    extend_medicare_part_a_deductible(parameters, end_year=END_YEAR)
 
     # Medicare IRMAA income thresholds follow 42 U.S.C. 1395r(i)(5)'s CPI-U
     # schedule (12 months ending August), computed from the statutory
