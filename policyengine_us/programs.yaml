@@ -357,6 +357,54 @@ programs:
     verified_start_year: 2021
     notes: 8 pathways
 
+  - id: medicaid_ltss_financial_screen
+    name: Medicaid LTSS financial screen
+    full_name: Medicaid long-term services and supports financial-threshold screen
+    category: Healthcare
+    agency: HHS
+    status: partial
+    coverage: US
+    has_state_variation: true
+    variable: is_medicaid_ltss_financial_threshold_eligible
+    parameter_prefix: gov.hhs.medicaid.eligibility.long_term_care.financial
+    verified_years: "2026"
+    notes: >-
+      Opt-in screen of the financial thresholds for Medicaid long-term
+      services and supports: the special income limit, qualified income
+      trusts, Washington's medically needy route, resources, the community
+      spouse resource allowance, home equity, and the community spouse
+      maintenance needs allowance. Income exclusions and couple budgets are
+      derived from each person's gross receipts, deposit facts, and comprehensive
+      countable-resource inventory; asset classification remains caller-supplied.
+      The screen does not feed Medicaid eligibility, enrollment, or benefit
+      values, and states other than Texas, Delaware, and Washington are
+      unmodeled.
+    state_implementations:
+      - state: TX
+        status: partial
+        name: Texas Medicaid LTSS financial screen
+        full_name: Texas Medicaid long-term services and supports financial-threshold screen
+        variable: is_medicaid_ltss_financial_threshold_eligible
+        parameter_prefix: gov.hhs.medicaid.eligibility.long_term_care.financial.tx
+        verified_years: "2026"
+        notes: Institutional special income limit for individuals and couples; home and community-based waivers are unmodeled.
+      - state: DE
+        status: partial
+        name: Delaware Medicaid LTSS financial screen
+        full_name: Delaware Medicaid long-term services and supports financial-threshold screen
+        variable: is_medicaid_ltss_financial_threshold_eligible
+        parameter_prefix: gov.hhs.medicaid.eligibility.long_term_care.financial.de
+        verified_years: "2026"
+        notes: Nursing facility 250% special income limit for individuals and couples; the hospital standard and home and community-based waivers are unmodeled.
+      - state: WA
+        status: partial
+        name: Washington Medicaid LTSS financial screen
+        full_name: Washington Medicaid long-term services and supports financial-threshold screen
+        variable: is_medicaid_ltss_financial_threshold_eligible
+        parameter_prefix: gov.hhs.medicaid.eligibility.long_term_care.financial.wa
+        verified_years: "2026"
+        notes: Institutional and COPES, New Freedom, and Residential Support waiver applicants without a spouse in the assistance unit, through the special income level or medically needy route.
+
   - id: chip
     name: CHIP
     full_name: Children's Health Insurance Program
@@ -656,7 +704,7 @@ programs:
     agency: HHS
     status: partial
     coverage: US
-    notes: Every state and DC has a child care subsidy implementation; the program stays partial while New York's listed gaps remain
+    notes: Every state and DC has a child care subsidy implementation; the program stays partial while the New York, North Dakota and South Dakota entries list gaps. In every state, the model uses the SPM unit in place of the program's family unit. Every implementation that varies rates by location reads the household's county in place of the provider's, except Oregon's, which takes the provider's rate area as an input. Without a county or county FIPS input, the model places a household in its state's alphabetically first county. No implementation tracks when a child's 12-month eligibility period under 45 CFR 98.21(a) began, and none models waitlists when funds run out.
     state_implementations:
       - state: AK
         status: complete
@@ -827,7 +875,7 @@ programs:
         full_name: New York Child Care Assistance Program
         variable: ny_ccap
         parameter_prefix: gov.states.ny.ocfs.ccap
-        notes: Models New York income eligibility, market rates, and the family share, including the foster-care and child-protective-services categorical routes, the 18 NYCRR 415.1(b) age extensions for a child with special needs, and the statutory family-share exceptions. Excess periods for a sixth or seventh day of care and for each day of care at or above the daily maximum hours are priced at the applicable daily or part-day rate under 415.9(d). Household county proxies for provider county and unknown counties default to group 3, the lowest-rate group, which understates rates for the New York City and downstate groups that hold most of the state's children. The benefit requires childcare_hours_per_day and childcare_days_per_week as well as expenses, because the market rate is priced by duration of care; expenses alone yield no benefit. The pre-2022 hourly rate tier no longer exists - 18 NYCRR 415.9 and 24-OCFS-LCM-22 Attachment A define weekly, daily and part-day rates only. The SPM unit stands in for the 18 NYCRR 415.1(l) child care services unit, which draws cohabiting adults, 18-to-20-year-olds and child-only units differently. Not modeled - the mandatory non-traditional-hours and homelessness payment differentials required by 18 NYCRR 415.9(f)(2)-(3) and the discretionary accreditation differential, the special-needs substituted market rate under 415.9(h)(4), the separate school-age child care rate table, safety net assistance as public assistance for the family-share exception, preventive services as distinct from protective services, public assistance in countable income (omitted to avoid a circular dependency through the TANF dependent care deduction), the required-work-activity condition on the 415.2(a)(1) guarantee of care to public-assistance families (public assistance enrollment alone satisfies the reason-for-care test), a child under court supervision, the 12-month eligibility period, the child-only assistance unit exception to the family share, and waitlist rationing when funds are unavailable
+        notes: Models New York income eligibility, market rates, and the family share, including the foster-care and child-protective-services categorical routes, the 18 NYCRR 415.1(b) age extensions for special needs and court supervision, and the statutory family-share exceptions. The model prices excess periods for a sixth or seventh day of care, and for each day of care at or above the daily maximum hours, at the applicable daily or part-day rate under 24-OCFS-LCM-22. Without a county or county FIPS input, the model places a New York household in Albany County, in county group 2. That placement overstates rates for households in the 38 group 3 counties and understates them in New York City and the five group 1 counties. An UNKNOWN county falls to group 3, the lowest-rate group. The benefit requires childcare_hours_per_day and childcare_days_per_week as well as expenses, because OCFS sets market rates by duration of care; expenses alone yield no benefit. OCFS dropped hourly market rates on June 1, 2022 (22-OCFS-LCM-14); 18 NYCRR 415.9 and 24-OCFS-LCM-22 set weekly, daily and part-day rates only. Not modeled - the mandatory non-traditional-hours and homelessness payment differentials required by 18 NYCRR 415.9(f)(2)-(3) and the discretionary accreditation differential, the special-needs substituted market rate under 415.9(h)(4), safety net assistance as public assistance for the family-share exception, preventive services as distinct from protective services, public assistance in countable income (omitted to avoid a circular dependency through the TANF dependent care deduction), the required-work-activity condition on the 415.2(a)(1) guarantee of care to public-assistance families (public assistance enrollment alone satisfies the reason-for-care test), and the child-only assistance unit exception to the family share
       - state: OR
         status: complete
         name: Oregon ERDC
@@ -936,7 +984,7 @@ programs:
         full_name: South Dakota Child Care Assistance
         variable: sd_cca
         parameter_prefix: gov.states.sd.dss.cca
-        notes: Models the weekly region-based rate schedule effective 2026-08-03 with the billed-expense cap and co-payment, the income and asset tests, the citizen or lawful-permanent-resident child test, and the reason-for-care test. The benefit is zero before August 2026 because the earlier hourly county-based schedule is not implemented. Not modeled - the court-supervision eligibility pathway for a child
+        notes: Models the weekly region-based rate schedule effective 2026-08-03 with the billed-expense cap and co-payment, the income and asset tests, the citizen or lawful-permanent-resident child test, and the reason-for-care test. For a child under court supervision or incapable of self-care, the model applies South Dakota's age extension, which raises the age limit from under 13 to under 18, or under 19 while in school. The model pays no benefit before August 2026 because it lacks the earlier hourly county-based schedule.
       - state: UT
         status: complete
         name: Utah CCAP

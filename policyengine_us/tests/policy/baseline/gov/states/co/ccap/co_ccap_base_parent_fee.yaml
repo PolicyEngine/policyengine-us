@@ -1,39 +1,145 @@
-- name: 2023 gross income is less than the family poverty guideline.
-  period: 2023
+# 8 CCR 1403-1 3.124(P) and (Q), PDF pages 83-84 of ruleVersionId 12658.
+# Through July 2028, (P)(1) charges 1% of gross income up to the guideline, and
+# (P)(2) charges 1% of income plus 14% of income above it. From August 2028,
+# (Q) charges 1%, 3%, 5% and 7% on income in its bands. The fee comes in whole
+# dollars ((A)).
+- name: Case 1, income below the guideline pays 1% of income.
+  period: 2026-01
+  absolute_error_margin: 0.01
   input:
-    co_ccap_countable_income: 60_000
-    spm_unit_fpg: 120_000
-    state_code: CO
+    state_code:
+      2026: CO
+    co_ccap_countable_income: 1_500
+    co_ccap_fpg: 2_000
   output:
-    co_ccap_base_parent_fee: 
-      2023-01: 50
+    # 0.01 * 1,500 = 15
+    co_ccap_base_parent_fee: 15
 
-- name: 2023 gross income is more than the family poverty guideline.
-  period: 2023
+- name: Case 2, income at the guideline pays 1% of income.
+  period: 2026-01
+  absolute_error_margin: 0.01
   input:
-    co_ccap_countable_income: 80_000
-    spm_unit_fpg: 40_000
-    state_code: CO
+    state_code:
+      2026: CO
+    co_ccap_countable_income: 2_000
+    co_ccap_fpg: 2_000
   output:
-    co_ccap_base_parent_fee: 
-      2023-01: 500
+    # 0.01 * 2,000 = 20
+    co_ccap_base_parent_fee: 20
 
-- name: 2022 gross income is less than the family poverty guideline.
-  period: 2022
+- name: Case 3, income above the guideline pays 1% of all income plus 14% of the excess.
+  period: 2026-01
+  absolute_error_margin: 0.01
   input:
-    co_ccap_countable_income: 60_000
-    spm_unit_fpg: 120_000
-    state_code: CO
+    state_code:
+      2026: CO
+    co_ccap_countable_income: 3_000
+    co_ccap_fpg: 2_000
   output:
-    co_ccap_base_parent_fee: 
-      2022-12: 50
+    # 0.01 * 3,000 + 0.14 * (3,000 - 2,000) = 30 + 140 = 170
+    co_ccap_base_parent_fee: 170
 
-- name: 2022 gross income is more than the family poverty guideline.
-  period: 2022
+- name: Case 4, no income pays nothing.
+  period: 2026-01
   input:
-    co_ccap_countable_income: 80_000
-    spm_unit_fpg: 40_000
-    state_code: CO
+    state_code:
+      2026: CO
+    co_ccap_countable_income: 0
+    co_ccap_fpg: 2_000
   output:
-    co_ccap_base_parent_fee: 
-      2022-12: 500
+    co_ccap_base_parent_fee: 0
+
+- name: Case 5, a net loss counts as no income.
+  period: 2026-01
+  input:
+    state_code:
+      2026: CO
+    co_ccap_countable_income: -500
+    co_ccap_fpg: 2_000
+  output:
+    co_ccap_base_parent_fee: 0
+
+- name: Case 6, July 2028 still uses section 3.124(P).
+  period: 2028-07
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2028: CO
+    co_ccap_countable_income: 3_500
+    co_ccap_fpg: 2_000
+  output:
+    # 0.01 * 3,500 + 0.14 * 1,500 = 35 + 210 = 245
+    co_ccap_base_parent_fee: 245
+
+- name: Case 7, August 2028 uses the marginal rates of section 3.124(Q).
+  period: 2028-08
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2028: CO
+    co_ccap_countable_income: 3_500
+    co_ccap_fpg: 2_000
+  output:
+    # 1% of 2,000, 3% of 600 (to 130%), 5% of 600 (to 160%) and 7% of the
+    # last 300: 20 + 18 + 30 + 21 = 89
+    co_ccap_base_parent_fee: 89
+
+- name: Case 8, under section 3.124(Q), income between 100% and 130% of the guideline.
+  period: 2028-09
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2028: CO
+    co_ccap_countable_income: 2_400
+    co_ccap_fpg: 2_000
+  output:
+    # 0.01 * 2,000 + 0.03 * 400 = 20 + 12 = 32
+    co_ccap_base_parent_fee: 32
+
+- name: Case 9, under section 3.124(Q), income below the guideline.
+  period: 2028-10
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2028: CO
+    co_ccap_countable_income: 1_500
+    co_ccap_fpg: 2_000
+  output:
+    # 0.01 * 1,500 = 15
+    co_ccap_base_parent_fee: 15
+
+- name: Case 10, the cents drop.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: CO
+    co_ccap_countable_income: 3_333.33
+    co_ccap_fpg: 2_220.83
+  output:
+    # 0.01 * 3,333.33 + 0.14 * 1,112.50 = 33.33 + 155.75 = 189.08, so 189.
+    co_ccap_base_parent_fee: 189
+
+- name: Case 11, a fee just short of a whole dollar drops to the dollar below.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: CO
+    co_ccap_countable_income: 1_999.97
+    co_ccap_fpg: 2_220.83
+  output:
+    # 0.01 * 1,999.97 = 19.9997, so 19.
+    co_ccap_base_parent_fee: 19
+
+- name: Case 12, a fee of exactly a whole dollar keeps it.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: CO
+    co_ccap_countable_income: 1_765
+    co_ccap_fpg: 1_762.50
+  output:
+    # 0.01 * 1,765 + 0.14 * 2.50 = 17.65 + 0.35 = 18.
+    co_ccap_base_parent_fee: 18

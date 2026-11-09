@@ -2,7 +2,7 @@
 
 import math
 from decimal import ROUND_HALF_UP, Decimal
-from typing import Optional, Tuple
+from typing import Dict, Optional, Tuple
 
 from policyengine_us.model_api import *
 from policyengine_core.periods import Instant, instant
@@ -19,6 +19,67 @@ LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS = (
     "taxable_social_security",
     "irs_other_income",
     "above_the_line_deductions",
+)
+
+# Long-range annual growth rates from the 2026 Medicare Trustees Report
+# (transmitted 2026-06-09, sha256
+# ffa56b9137006872300b0346149eae1613d09a172b6ba118aad48e66dfc48fa8), as
+# {year: rate} knots for extend_parameter_values(long_range_growth=...). The
+# Trustees set the growth rates for years 11 through 25 of their projection
+# (2036-2050) by interpolating between the rate at the end of the short-range
+# period and the rate at the start of the last 50 years (file pages 24 and
+# 180), and the long-range rates then decline gradually from 2050 to 2100
+# (file pages 23 and 173). They publish only the 2050 and 2100 rates, so the
+# path between those two knots is linear here. That is an approximation: the
+# Trustees' own path is not a straight line, as their income-technology
+# elasticity declines at a slowing pace and their price elasticity follows a
+# non-linear path between 2050 and 2100 (file page 175).
+#
+# Per capita overall health spending grows at GDP plus 0.7 percent (4.3
+# percent) in 2050, declining gradually to GDP plus 0.4 percent (4.1 percent)
+# by 2100 (file page 173). The Trustees publish no long-range rate for
+# out-of-pocket spending or private insurance (Table V.B5, file page 200,
+# stops private health insurance in 2035), so this rate serves those series:
+# the factors model behind it holds insurance coverage unchanged (file page
+# 175), and the Trustees see only a small likelihood that one part of the
+# health sector grows indefinitely at significantly faster rates than the
+# others (file page 177). The Trustees extend CMS's national health
+# expenditure projections past 2033 by the same long-range methods (Table
+# V.B5, note 1, file page 200).
+HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH = {2050: 0.043, 2100: 0.041}
+
+# The Trustees' Medicare cost growth rates exclude the effects of the aging of
+# the population and of changes in the sex and time-to-death mix of
+# enrollees (file page 172, footnote 81). Spending per enrollee includes
+# them: Table II.D1 (file page 29) puts the beneficiary demographic mix at
+# -0.1 percent a year in 2051-2100 for each of Parts A, B and D.
+MEDICARE_LONG_RANGE_DEMOGRAPHIC_MIX = -0.001
+
+
+def with_medicare_demographic_mix(cost_growth: Dict[int, float]) -> Dict[int, float]:
+    """Medicare spending per enrollee growth: the Trustees' cost growth rate
+    (excluding demographic impacts) compounded with the long-range
+    demographic mix."""
+    return {
+        year: (1 + rate) * (1 + MEDICARE_LONG_RANGE_DEMOGRAPHIC_MIX) - 1
+        for year, rate in cost_growth.items()
+    }
+
+
+# Parts A, B and D combined: 3.8 percent in 2050, declining to 3.7 percent by
+# 2100 (file pages 23 and 180).
+MEDICARE_PER_ENROLLEE_LONG_RANGE_GROWTH = with_medicare_demographic_mix(
+    {2050: 0.038, 2100: 0.037}
+)
+# Part B: 3.8 percent in 2050, remaining at 3.8 percent by 2100 (file pages 23
+# and 180).
+MEDICARE_PART_B_PER_ENROLLEE_LONG_RANGE_GROWTH = with_medicare_demographic_mix(
+    {2050: 0.038, 2100: 0.038}
+)
+# Part D: 4.1 percent in 2050, declining to 3.9 percent by 2100 (file pages 23
+# and 179).
+MEDICARE_PART_D_PER_ENROLLEE_LONG_RANGE_GROWTH = with_medicare_demographic_mix(
+    {2050: 0.041, 2100: 0.039}
 )
 
 
@@ -629,9 +690,9 @@ def extend_medicaid_home_equity_limits(
 ) -> None:
     """Project the CPI-indexed Medicaid long-term care home equity limits.
 
-    Each year after the last CMS-published value, the agricultural home
-    equity limit becomes the prior year's limit increased by that year's
-    CPI-U percentage (see ``get_cms_cpi_u_percentage_increase``), rounded to
+    Each year after their last CMS-published values, the minimum and
+    agricultural home equity limits become their prior year's limit increased
+    by that year's CPI-U percentage (see ``get_cms_cpi_u_percentage_increase``), rounded to
     the nearest $1,000, effective January 1. Before P.L. 119-21 section 71108
     caps other homes at $1,000,000 beginning in 2028, the agricultural and
     non-agricultural limits are the same indexed maximum, so each year before
@@ -645,21 +706,24 @@ def extend_medicaid_home_equity_limits(
     home_equity = parameters.gov.hhs.medicaid.eligibility.long_term_care.home_equity
     cpi = parameters.gov.bls.cpi
     agricultural = home_equity.agricultural_limit
-    first_projected_year = 1 + max(
-        int(value.instant_str[:4]) for value in agricultural.values_list
-    )
-    for year in range(first_projected_year, end_year + 1):
-        agricultural.update(
-            period=f"year:{year}-01-01:1",
-            value=adjust_home_equity_limit_for_inflation(
-                agricultural(f"{year - 1}-01-01"),
-                get_cms_cpi_u_percentage_increase(cpi, year),
-            ),
+    percentages = {}
+    for parameter in (home_equity.minimum_limit, agricultural):
+        first_projected_year = 1 + max(
+            int(value.instant_str[:4]) for value in parameter.values_list
         )
-    agricultural.update(
-        start=instant(f"{end_year}-01-01"),
-        value=agricultural(f"{end_year}-01-01"),
-    )
+        for year in range(first_projected_year, end_year + 1):
+            if year not in percentages:
+                percentages[year] = get_cms_cpi_u_percentage_increase(cpi, year)
+            parameter.update(
+                period=f"year:{year}-01-01:1",
+                value=adjust_home_equity_limit_for_inflation(
+                    parameter(f"{year - 1}-01-01"), percentages[year]
+                ),
+            )
+        parameter.update(
+            start=instant(f"{end_year}-01-01"),
+            value=parameter(f"{end_year}-01-01"),
+        )
     non_agricultural = home_equity.limit
     encoded_years = {
         int(value.instant_str[:4]) for value in non_agricultural.values_list
@@ -672,6 +736,90 @@ def extend_medicaid_home_equity_limits(
                 period=f"year:{year}-01-01:1",
                 value=agricultural(f"{year}-01-01"),
             )
+
+
+def get_cms_spousal_impoverishment_multiplier(
+    parameters: ParameterNode, year: int
+) -> float:
+    """CMS's cumulative 42 USC 1396r-5(g) CPI-U adjustment multiplier.
+
+    The statutory CSRA and MMMNA bases are adjusted by CPI-U growth from
+    September 1988 to September before the eligibility year. CMS's annual
+    bulletins round this cumulative percentage to one decimal place before
+    applying it: the 2026 increase is 171.1%, giving a multiplier of 2.711.
+    This cumulative calculation avoids compounding rounded annual increases.
+
+    Published not-seasonally-adjusted Septembers take precedence. Beyond the
+    last publication, the model's projected CPI-U growth is applied to that
+    published NSA level. Normalizing the forecast at the last common month
+    avoids treating the SA/NSA level difference as future inflation.
+    """
+    cpi = parameters.gov.bls.cpi
+    indexing = parameters.gov.hhs.medicaid.eligibility.long_term_care.financial.federal.indexing
+    date = f"{year}-01-01"
+    base_year = int(indexing.base_year(date))
+    reference_month = int(indexing.reference_month(date))
+    rounding_interval = Decimal(str(indexing.percentage_rounding_interval(date)))
+    base_date = f"{base_year}-{reference_month:02d}-01"
+    current_date = f"{year - 1}-{reference_month:02d}-01"
+    september = cpi.cpi_u_nsa_september
+    published_dates = {value.instant_str for value in september.values_list}
+    base = Decimal(str(september(base_date)))
+    if current_date in published_dates:
+        current = Decimal(str(september(current_date)))
+    else:
+        anchor_date = max(date for date in published_dates if date < current_date)
+        anchor = Decimal(str(september(anchor_date)))
+        projected_current = Decimal(
+            str(get_projected_cpi_u_for_month(cpi.cpi_u, instant(current_date)))
+        )
+        projected_anchor = Decimal(
+            str(get_projected_cpi_u_for_month(cpi.cpi_u, instant(anchor_date)))
+        )
+        current = anchor * projected_current / projected_anchor
+    change = 100 * (current / base - 1)
+    rounded_change = (change / rounding_interval).quantize(
+        Decimal(1), rounding=ROUND_HALF_UP
+    ) * rounding_interval
+    return float(1 + max(rounded_change, 0) / 100)
+
+
+def extend_medicaid_spousal_impoverishment_standards(
+    parameters: ParameterNode, end_year: int
+) -> None:
+    """Project federal CSRA bounds and the MMMNA maximum under 1396r-5(g).
+
+    Each unpublished year's standards apply the cumulative CPI-U multiplier
+    to the statutory dollar bases, effective January 1. CMS-published values
+    encoded in YAML take precedence for their years. July's minimum MMMNA
+    follows the separate poverty-guideline schedule and is not changed here.
+
+    Like the other projections in this module, the values are fixed when the
+    parameter tree is built; later reforms can override individual years.
+    """
+    federal = parameters.gov.hhs.medicaid.eligibility.long_term_care.financial.federal
+    multipliers = {}
+    for parameter, statutory_base in (
+        (federal.csra.minimum, federal.csra.minimum_base),
+        (federal.csra.maximum, federal.csra.maximum_base),
+        (federal.mmmna.maximum, federal.mmmna.maximum_base),
+    ):
+        first_projected_year = 1 + max(
+            int(value.instant_str[:4]) for value in parameter.values_list
+        )
+        for year in range(first_projected_year, end_year + 1):
+            if year not in multipliers:
+                multipliers[year] = get_cms_spousal_impoverishment_multiplier(
+                    parameters, year
+                )
+            value = Decimal(str(statutory_base(f"{year}-01-01"))) * Decimal(
+                str(multipliers[year])
+            )
+            parameter.update(period=f"year:{year}-01-01:1", value=float(value))
+        parameter.update(
+            start=instant(f"{end_year}-01-01"),
+            value=parameter(f"{end_year}-01-01"),
+        )
 
 
 def extend_wa_millionaires_standard_deduction(
@@ -716,6 +864,38 @@ def extend_wa_millionaires_standard_deduction(
     )
 
 
+def long_range_growth_rate(
+    year: int,
+    last_projected_year: int,
+    short_range_growth: float,
+    long_range_growth: Dict[int, float],
+) -> float:
+    """Annual growth rate for a year after the last projected year, on a path
+    that glides from the short-range rate to long-range rates.
+
+    The knots are (last_projected_year, short_range_growth) and each
+    (year, rate) in long_range_growth. The Medicare Trustees interpolate
+    between their short-range and long-range rates; this path is linear
+    between adjacent knots, and holds the last knot's rate after it.
+    """
+    knots = sorted(long_range_growth.items())
+    if not knots or knots[0][0] <= last_projected_year:
+        raise ValueError("Long-range growth knots must follow the last projected year.")
+    if year <= last_projected_year:
+        raise ValueError(
+            "Long-range growth applies only after the last projected year."
+        )
+    previous_year, previous_rate = last_projected_year, short_range_growth
+    for knot_year, knot_rate in knots:
+        if year == knot_year:
+            return knot_rate
+        if year < knot_year:
+            share = (year - previous_year) / (knot_year - previous_year)
+            return previous_rate + share * (knot_rate - previous_rate)
+        previous_year, previous_rate = knot_year, knot_rate
+    return previous_rate
+
+
 def extend_parameter_values(
     parameter: Parameter,
     last_projected_year: int,
@@ -723,10 +903,14 @@ def extend_parameter_values(
     period_month: int = 1,
     period_day: int = 1,
     growth_years: Optional[Tuple[int, int]] = None,
+    long_range_growth: Optional[Dict[int, float]] = None,
 ) -> None:
     """
-    Extend a parameter's values from last_projected_year to end_year using
-    the growth rate from the last two years of projections.
+    Extend a parameter's values from last_projected_year to end_year. The
+    short-range rate is the growth between growth_years (by default the last
+    two projected years). It repeats in every year or, given
+    long_range_growth, glides through the knots. Years after end_year hold
+    its value.
 
     Args:
         parameter: The parameter to extend
@@ -738,8 +922,13 @@ def extend_parameter_values(
             rate between, instead of the last two projected years — used
             when the final actual embeds a one-off level shift that should
             not compound in the long-run extension.
+        long_range_growth: Optional {year: annual growth rate} knots. When
+            given, growth moves from the measured short-range rate, placed
+            at last_projected_year, through the knots (see
+            long_range_growth_rate) instead of repeating the short-range
+            rate in every year.
     """
-    # Calculate the growth rate from the last two years of projections
+    # Measure the short-range growth rate between growth_years
     date_format = f"-{period_month:02d}-{period_day:02d}"
     if growth_years is None:
         growth_years = (last_projected_year - 1, last_projected_year)
@@ -751,7 +940,15 @@ def extend_parameter_values(
     # Apply growth rate for years beyond projections
     for year in range(last_projected_year + 1, end_year + 1):
         previous_value = parameter(f"{year - 1}{date_format}")
-        new_value = previous_value * growth_rate
+        if long_range_growth is None:
+            new_value = previous_value * growth_rate
+        else:
+            new_value = previous_value * (
+                1
+                + long_range_growth_rate(
+                    year, last_projected_year, growth_rate - 1, long_range_growth
+                )
+            )
         parameter.update(period=f"year:{year}{date_format}:1", value=new_value)
 
     # Set the final value for periods after the last year
@@ -1087,12 +1284,13 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     # determination dates are available through the projection horizon.
     extend_wa_millionaires_standard_deduction(parameters, end_year=END_YEAR)
 
-    # ACA benchmark premium uprating (January values, last actual 2026).
-    # The published 2026 actual is 25.8% above 2025; keep long-run growth
-    # at the 2024-2025 trend so the one-off jump does not compound.
+    # ACA benchmark premium uprating (January values, last actual 2027).
+    # The published 2026 actual is 25.8% above 2025 and 2027 is a further
+    # 12.5%; keep long-run growth at the 2024-2025 trend so the jumps do not
+    # compound.
     extend_parameter_values(
         parameters.gov.aca.benchmark_premium_uprating,
-        last_projected_year=2026,
+        last_projected_year=2027,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
@@ -1101,36 +1299,44 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
 
     # CMS per-capita out-of-pocket medical spending (January values, last
     # projection year 2034). Health expense inputs use this as their uprater.
-    # Each year from 2035 to 2100 grows at CMS's 2033-2034 rate, and later
-    # years hold the 2100 value.
+    # Growth glides from CMS's 2033-2034 rate to the Medicare Trustees'
+    # long-range per capita health spending rates, and later years hold the
+    # 2100 value.
     extend_parameter_values(
         parameters.calibration.gov.hhs.cms.moop_per_capita,
         last_projected_year=2034,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
+        long_range_growth=HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH,
     )
 
     # CMS employer-sponsored insurance premium per enrollee (January values,
     # last projection year 2034). Employer and employee premium inputs use
-    # this as their uprater.
+    # this as their uprater. Growth glides from CMS's 2033-2034 rate to the
+    # Medicare Trustees' long-range per capita health spending rates, and
+    # later years hold the 2100 value.
     extend_parameter_values(
         parameters.calibration.gov.hhs.cms.esi_premium_per_enrollee,
         last_projected_year=2034,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
+        long_range_growth=HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH,
     )
 
     # CMS direct purchase insurance premium per enrollee (January values, last
     # projection year 2034). Premiums for plans bought directly use this as
-    # their uprater.
+    # their uprater. Like the ESI premium, growth glides from CMS's 2033-2034
+    # rate to the Medicare Trustees' long-range per capita health spending
+    # rates, and later years hold the 2100 value.
     extend_parameter_values(
         parameters.calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee,
         last_projected_year=2034,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
+        long_range_growth=HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH,
     )
 
     # Medicare Part B standard monthly premium (January values, last Trustees
@@ -1207,6 +1413,10 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
 
     # Medicaid long-term care home equity limits, CMS's rounded CPI-U method
     extend_medicaid_home_equity_limits(parameters, end_year=END_YEAR)
+
+    # Federal Medicaid CSRA bounds and MMMNA maximum use cumulative CPI-U
+    # since September 1988, rather than chaining annual rounded changes.
+    extend_medicaid_spousal_impoverishment_standards(parameters, end_year=END_YEAR)
 
     # The limits on a dependent's standard deduction follow 26 U.S.C.
     # 63(c)(4)'s chained CPI-U schedule, computed from the statutory 1987 and
