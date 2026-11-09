@@ -19,8 +19,8 @@ and checks _ny_qualified_loan_limit:
    order. The restatement places the acquisition limit on the homes in each
    reasonable way, in proportion to each home's other acquisition debt or
    loan by loan in every date order that the origination years allow, and
-   keeps the largest home equity debt. It finds the date orders by sorting
-   permutations, not by the model's two explicit orders.
+   keeps the largest home equity debt. It finds the date orders by checking
+   every permutation of the homes, not from the model's two explicit orders.
 2. Bounds: grandfathered debt <= New York limit <= total debt, and the New
    York limit is at least PE's federal limit for the same acquisition loans.
 3. Defaults: with no fair market value and no non-acquisition debt (the
