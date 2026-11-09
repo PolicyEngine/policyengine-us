@@ -547,12 +547,13 @@ candidates:
     $2,470 standard deduction, so the repayment gives no benefit.
   pe_us:
     follows: gap-fill
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/claim_of_right/ar_claim_of_right_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10203
-  state: unreviewed
-  note: 'The itemizer restriction is a legally unverified form inference; establish whether it is DFA''s intended
-    gap-fill. Code not yet on main: ar_claim_of_right_deduction.py.'
+  state: ruled
+  note: Ruled in October 2026 as an itemized deduction inside the 2% floor of section 26-51-437(b). Whether DFA intends
+    that placement remains unverified.
 - id: us-ar:claim-of-right-small-repayment-remedy
   program: income-tax
   years:
@@ -575,12 +576,13 @@ candidates:
     other: DFA2 describes amending the earlier return; DFA1 describes a deduction in the repayment year.
   pe_us:
     follows: not-modelled
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/claim_of_right/ar_claim_of_right_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10203
   state: ruled
-  note: 'The October 2026 ruling leaves small repayments unmodelled; verify whether the fiscal notes establish a
-    post-2013 remedy. Code not yet on main: ar_claim_of_right_deduction.py.'
+  note: The October 2026 ruling leaves small repayments unmodelled; verify whether the fiscal notes establish a post-2013
+    remedy.
 - id: us-ar:gambling-loss-deduction-before-2015
   program: income-tax
   years:
