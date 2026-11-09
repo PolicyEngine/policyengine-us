@@ -19,6 +19,8 @@ values:
     # (capped at MT earned income, (3)(n)(i)) and up to 50% of military survivor
     # benefits regardless of other income ((3)(n)(ii), Form WMRE); not yet modeled.
     - mt_interest_exemption_person
+    # MCA 15-30-2120(3)(b)(i); 2024 Form 2 Schedule I, Part I, line 11.
+    - us_govt_interest_person
     - mt_tuition_subtraction_person
     - mt_old_age_subtraction
     # 2021 Mont. Laws ch. 503 (SB 399) section 65 repealed 15-30-2110, MCA,
@@ -32,6 +34,8 @@ values:
     # tip and overtime exclusions, and passenger-vehicle loan interest)
     # flow through into MT taxable income via mt_federal_obbba_subtraction.
     - mt_interest_exemption_person
+    # MCA 15-30-2120(3)(b)(i); 2025 Form 2 Schedule I, Part I, line 9.
+    - us_govt_interest_person
     - mt_tuition_subtraction_person
     - mt_old_age_subtraction
     # TODO: Remove this subtraction starting in 2029 because the federal
@@ -52,9 +56,11 @@ metadata:
       href: https://web.archive.org/web/20220523051049/https://rules.mt.gov/gateway/Subchapterhome.asp?scn=42%2E15%2E2
     - title: Montana Code Annotated, TITLE 15, CHAPTER 30, Part 21, 15-30-2110(3)(g)
       href: https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0100/0150-0300-0210-0100.html
-    - title: 2025 Montana Form 2 Instructions
+    - title: "2025 Montana Form 2 Instructions #page 21,23-24"
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=21
     - title: "2021 Montana Session Laws, chapter 503 (SB 399), section 65 (repealer) and section 70 (effective dates) #page 68,70"
       href: https://archive.legmt.gov/content/Publications/sales/2021SessionLaws_V3_ERRATA-VERSION.pdf#page=68
-    - title: 2024 Montana Form 2 instructions, repealed deductions
+    - title: "2024 Montana Form 2 instructions, repealed deductions and Schedule I line 11 #page 5,25"
       href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=5
+    - title: MCA 15-30-2120(3)(b)(i), interest from obligations of the United States government
+      href: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0200/0150-0300-0210-0200.html

@@ -14,7 +14,9 @@
   output:
     mt_subtractions: 5_000
 
-- name: MT does not subtract US government bond interest (2024)
+- name: MT subtracts US government bond interest from federal taxable income (2024)
+  # MCA 15-30-2120(3)(b)(i) subtracts "interest from obligations of the United
+  # States government"; 2024 Form 2 Schedule I, Part I, line 11 (issue #9707).
   period: 2024
   input:
     people:
@@ -28,4 +30,21 @@
         members: [person1]
         state_code: MT
   output:
-    mt_subtractions: 0
+    mt_subtractions: 5_000
+
+- name: MT subtracts US government bond interest from federal taxable income (2025)
+  # MCA 15-30-2120(3)(b)(i); 2025 Form 2 Schedule I, Part I, line 9.
+  period: 2025
+  input:
+    people:
+      person1:
+        us_govt_interest_person: 5_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+    households:
+      household1:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_subtractions: 5_000
