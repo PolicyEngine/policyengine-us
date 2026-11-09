@@ -463,3 +463,20 @@
   output:
     # Only the 1,000 of market income can leave: 1,000 + 8,000 - 1,000.
     nd_renters_refund_income: 8_000
+
+- name: North Dakota's income tax reductions leave retired military benefits, capital gains and dividends in income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 45
+    state_code: ND
+    # N.D.C.C. 57-38-30.3(2)(d) and (r) reduce North Dakota taxable income by
+    # 40 percent of net long-term gains and qualified dividends and by retired
+    # military benefits. Item 10 of the Tax Commissioner's guideline lists
+    # military pensions and net gains as income.
+    military_retirement_income: 30_000
+    long_term_capital_gains: 5_000
+    qualified_dividend_income: 1_000
+  output:
+    # 30,000 + 5,000 + 1,000, with no state-law subtraction.
+    nd_renters_refund_income: 36_000

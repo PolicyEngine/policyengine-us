@@ -6741,10 +6741,67 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10697
   state: ruled
   note: The statute names the exclusion, so it governs over the general lists, as in
-    us-nd:renters-refund-insurance-proceeds. Social security counts in full by the statute's own exception. North
-    Dakota's income tax reductions (N.D.C.C. 57-38-30.3(2)), such as military pay, military retirement benefits and 40
-    percent of long-term capital gains and qualified dividends, lower taxable income; they do not exclude amounts from
-    income, and item 10 counts military pensions and net gains, so the refund counts them.
+    us-nd:renters-refund-insurance-proceeds. Social security counts in full by the statute's own exception. The
+    state-law half of the clause has its own entry, us-nd:renters-refund-state-income-tax-reductions.
+- id: us-nd:renters-refund-state-income-tax-reductions
+  program: renter-credit
+  years:
+    from: 2025
+    type: tax
+  question: Do the amounts North Dakota's income tax reductions subtract, such as military pay, retired military
+    benefits and 40 percent of net long-term capital gains and qualified dividends, count as "excluded from income by
+    federal or state law" for the renter's refund?
+  sources:
+  - kind: statute
+    citation: N.D.C.C. 57-02-08.1(5)(c)
+    url: https://ndlegis.gov/cencode/t57c02.pdf#page=16
+  - kind: statute
+    citation: N.D.C.C. 57-38-30.3(2)
+    url: https://ndlegis.gov/cencode/t57c38.pdf#page=33
+  - kind: statute
+    citation: House Bill 1174 (2019), enrolled, sections 1 and 3
+    url: https://ndlegis.gov/assembly/66-2019/regular/documents/19-0115-05000.pdf#page=1
+  - kind: statute
+    citation: House Bill 1053 (2019), enrolled
+    url: https://ndlegis.gov/assembly/66-2019/regular/documents/19-0357-02000.pdf#page=1
+  - kind: agency-practice
+    citation: Office of Tax Commissioner, fiscal note on House Bill 1174 (2019), on section 1
+    url: https://ndlegis.gov/files/resource/66-2019/library/hb1174.pdf#page=1
+  - kind: guidance
+    citation: Property Tax Credits for North Dakota Homeowners and Renters, item 10
+    url: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
+  - kind: form
+    citation: SFN 24777 (10-2025), line 7
+    url: https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf#page=1
+  readings:
+    statute: Income leaves out "any amount excluded from income by federal or state law with the exception of income
+      from social security benefits". N.D.C.C. 57-38-30.3(2) defines North Dakota taxable income as federal taxable
+      income "adjusted as follows", and most adjustments open "Reduced by". The list names military pay, retired
+      military personnel benefits and 40 percent of net long-term capital gains and qualified dividends, along with
+      plain deductions such as organ donation expenses. In the same chapter, 57-38-04 says certain compensation "must
+      be excluded from income". House Bill 1174 (2019) created the social security reduction in section 3 and added the
+      exception in section 1. In its fiscal note, the Tax Commissioner's office wrote that section 1 keeps the full
+      benefit in the homestead income test "even though they are excluded from income tax". House Bill 1053 (2019)
+      created the retired military reduction and added no exception for it.
+    other: Item 10 of the guideline, in the edition with content revised in July 2025, lists "Pensions, including
+      military pension and I.R.A." and "Net gains from the sale of property" as income. SFN 24777 line 7 asks for
+      capital gains.
+  example: A renter with $30,000 of retired military benefits and no other income has income of $30,000 if the benefits
+    count and $0 if the reduction excludes them.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10697
+  state: ruled
+  note: N.D.C.C. 57-02-08.1(5)(c) doesn't say whether these reductions exclude amounts from income, so PolicyEngine
+    follows the Tax Commissioner's reading and counts them. The Legislative Assembly wrote the reductions as adjustments
+    to taxable income. In its fiscal note, the Tax Commissioner's office tied the exception for social security to the
+    reduction House Bill 1174 created. The exception also keeps in income the part of benefits that IRC 86 leaves out
+    of gross income, so it has effect even if the reductions exclude nothing. N.D.C.C. 1-02-39 lets a court weigh
+    legislative history and administrative construction when a statute is ambiguous, and the Commissioner kept military
+    pensions and net gains in item 10 after both 2019 Acts.
 - id: us-nd:renters-refund-insurance-proceeds
   program: renter-credit
   years:
