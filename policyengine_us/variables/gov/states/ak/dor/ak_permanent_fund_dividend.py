@@ -6,9 +6,10 @@ class ak_permanent_fund_dividend(Variable):
     entity = Person
     label = "Alaska Permanent Fund Dividend"
     documentation = (
-        "Regular PFD calculated automatically for each Alaska resident who "
-        "passes ak_permanent_fund_dividend_eligible and takes up the dividend "
-        "(takes_up_ak_permanent_fund_dividend_if_eligible, true by default). "
+        "PolicyEngine calculates the regular PFD automatically for each Alaska "
+        "resident who passes ak_permanent_fund_dividend_eligible and takes up "
+        "the dividend (takes_up_ak_permanent_fund_dividend_if_eligible, true "
+        "by default). "
         "The model does not otherwise check an application, prior-year "
         "residence, or actual receipt. Supplying wages or other income does "
         "not disable this calculation. Supply this "

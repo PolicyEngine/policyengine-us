@@ -25,13 +25,14 @@ The regular dividend appears on [2022 Schedule 1, line
 43.23.005(a)(5)](https://www.akleg.gov/basis/statutes.asp#43.23.005): a citizen,
 an alien lawfully admitted for permanent residence, a refugee, or an asylee.
 
-*State v. Andrade*, 23 P.3d 58 (Alaska 2001), holds that the state phrase does
-not incorporate the federal definition: an alien must be legally present and able
-to form the intent to remain in Alaska. [15 AAC
-23.154(a)](https://www.akleg.gov/basis/aac.asp#15.23.154) applies that to a status
-under 8 U.S.C. 1101 to 1189 that lets the alien adopt the United States as their
-domicile. It names immigrants, nonimmigrants whose status requires no foreign
-residence, people on indefinite parole, and conditional permanent residents.
+In *State v. Andrade*, 23 P.3d 58 (Alaska 2001), the Alaska Supreme Court held
+that the state phrase does not incorporate the federal definition: an alien must
+be legally present and able to form the intent to remain in Alaska. In [15 AAC
+23.154(a)](https://www.akleg.gov/basis/aac.asp#15.23.154), the Department of
+Revenue applies that reading to a status under 8 U.S.C. 1101 to 1189 that lets
+the alien adopt the United States as their domicile. The regulation names
+immigrants, nonimmigrants whose status requires no foreign residence, people on
+indefinite parole, and conditional permanent residents.
 PolicyEngine has no status for the last three, so code them as
 `LEGAL_PERMANENT_RESIDENT`. Under 15 AAC 23.154(b) and (d), a status that requires
 a foreign residence fails, and a limited-stay nonimmigrant fails the residence
@@ -48,7 +49,8 @@ The other values of `immigration_status` stay out:
   25-3180-PFD](https://aws.state.ak.us/OAH/Decision/Display?rec=7350) denied a
   fixed-term parolee a 2025 dividend.
 - `TPS` (8 U.S.C. 1254a) and `DEPORTATION_WITHHELD` (8 U.S.C. 1231(b)(3)) fall
-  outside 8 U.S.C. 1101 to 1189, and `DACA` is not a status under those sections.
+  outside 8 U.S.C. 1101 to 1189, and a person coded `DACA` holds no status under
+  those sections.
   *Andrade*'s test alone might reach a TPS holder, but the court did not address
   TPS, and PolicyEngine follows the regulation's range.
 - `UNDOCUMENTED` does not meet *Andrade*'s legal presence requirement.
@@ -56,9 +58,9 @@ The other values of `immigration_status` stay out:
   may adopt the United States as their domicile.
 
 Alaska tests the status held during the qualifying year and on the application
-date (15 AAC 23.154(e)), and 15 AAC 23.154(c) starts an alien's qualifying year on
-January 1 after the person gains the status. PolicyEngine has no status history,
-so it reads the status for the dividend year.
+date (15 AAC 23.154(e)), and under 15 AAC 23.154(c) an alien's qualifying year
+starts on January 1 after the person gains the status. PolicyEngine has no status
+history, so it reads the status for the dividend year.
 
 `takes_up_ak_permanent_fund_dividend_if_eligible` covers the statute's other
 tests and anyone who does not apply. It defaults to true, so a household

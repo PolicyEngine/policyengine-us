@@ -6,12 +6,12 @@ class ak_energy_relief(Variable):
     entity = Person
     label = "Alaska One Time Energy Relief"
     documentation = (
-        "Energy relief calculated automatically for each Alaska resident who "
-        "passes ak_permanent_fund_dividend_eligible and takes up the dividend "
-        "(takes_up_ak_permanent_fund_dividend_if_eligible, true by default), "
-        "since Alaska pays it as part of the dividend. The model does not "
-        "otherwise check an application, prior-year residence, or actual "
-        "receipt. Supplying "
+        "PolicyEngine calculates energy relief automatically for each Alaska "
+        "resident who passes ak_permanent_fund_dividend_eligible and takes up "
+        "the dividend (takes_up_ak_permanent_fund_dividend_if_eligible, true "
+        "by default), since Alaska pays it as part of the dividend. The model "
+        "does not otherwise check an application, prior-year residence, or "
+        "actual receipt. Supplying "
         "other income does not disable the calculation. Override this "
         "person-level variable directly, which leaves "
         "ak_permanent_fund_dividend in place. To remove both Alaska payments "
