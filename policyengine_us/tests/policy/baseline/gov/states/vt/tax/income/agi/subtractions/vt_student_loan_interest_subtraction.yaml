@@ -37,9 +37,12 @@
         members: [filer]
         state_code: VT
   output:
-    # IN-112 line 16c: $4,000 - $2,500 = $1,500.
+    # IN-112 line 16c: $4,000 - $2,500 = $1,500. Federal AGI is
+    # $50,000 - $2,500 = $47,500, so Vermont AGI is $47,500 - $1,500 = $46,000.
     student_loan_interest_ald: 2_500
     vt_student_loan_interest_subtraction: 1_500
+    vt_subtractions: 1_500
+    vt_agi: 46_000
 
 - name: 2025 single filer with adjusted gross income above $120,000 gets no Vermont student loan interest subtraction
   period: 2025
@@ -358,3 +361,26 @@
     adjusted_gross_income: 120_000
     student_loan_interest_ald: 0
     vt_student_loan_interest_subtraction: 3_000
+
+- name: 2025 married filing separately filer above $120,000 of adjusted gross income gets no Vermont student loan interest subtraction
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 125_000
+        student_loan_interest: 3_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [head]
+        state_code: VT
+  output:
+    # 5811(29)(B)(i): $125,000 is above the $120,000 married filing
+    # separately limit, so 16c is $0.
+    adjusted_gross_income: 125_000
+    student_loan_interest_ald: 0
+    vt_student_loan_interest_subtraction: 0
