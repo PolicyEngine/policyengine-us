@@ -1,0 +1,111 @@
+# Georgia regular cooling benefit: the FY2025 and FY2026 matrices (step 2, COOLING BENEFIT)
+# pay $500 in Level I and $400 in Level II for every main heating fuel. Step 1 Level I
+# cutoffs are inclusive. Wages: full time at the $7.25 federal minimum wage,
+# 7.25 x 40 x 52 = 15_080; a Georgia cashier at the BLS OEWS May 2025 median, $29,070
+# (series OEUS130000000000041201113). The $1,800 electric bill does not change the
+# cooling amount.
+
+# FY2026: size two, income 15_080 is at or below the 17_770 Level I cutoff and the
+# 45_179 limit, so cooling pays 500. Electric heat also pays the Level I heating amount,
+# 400 + 100 = 500, as a separate benefit.
+- name: Case 1, a minimum wage parent receives the Level I cooling benefit beside the heating benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income_before_lsr: 15_080
+      person2:
+        age: 7
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ga_tanf: 0
+        heating_type: ELECTRICITY
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_liheap_household_size: 2
+    ga_liheap_income: 15_080
+    ga_liheap_income_limit: 45_179
+    ga_liheap_cooling_eligible: true
+    ga_liheap_cooling: 500
+    ga_liheap: 500
+
+# FY2026: a one-person cashier, 29_070, is above the 13_589 Level I cutoff and within the
+# 34_549 limit, so cooling pays the Level II amount, 400. The cooling column is one value
+# for every fuel, so gas heat and no heat both receive it.
+- name: Case 2, the Level II cooling benefit does not depend on the heating fuel.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [GA, GA]
+    age: [35, 35]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    ga_tanf: [0, 0]
+    employment_income_before_lsr: [29_070, 29_070]
+    heating_type: [NATURAL_GAS, NONE]
+    has_cooling_expense: [true, true]
+    pre_subsidy_electricity_expense: [1_800, 1_800]
+  output:
+    ga_liheap_income: [29_070, 29_070]
+    ga_liheap_cooling_eligible: [true, true]
+    ga_liheap_cooling: [400, 400]
+
+# Boundary: the FY2026 size-one Level I range is $0 - $13589 and Level II starts at
+# $13590. Income of 13_589 pays 500; 13_589.01 pays 400.
+- name: Case 3, the Level I cutoff is inclusive.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [GA, GA]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    has_cooling_expense: [true, true]
+    pre_subsidy_electricity_expense: [1_800, 1_800]
+    ga_liheap_income: [13_589, 13_589.01]
+  output:
+    ga_liheap_cooling: [500, 400]
+
+# FY2025: Case 1's family, 15_080, is at or below the FY2025 size-two Level I cutoff of
+# 16_993 and the 43_203 limit, so the FY2025 matrix pays 500.
+- name: Case 4, FY2025 Level I cooling benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income_before_lsr: 15_080
+      person2:
+        age: 7
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ga_tanf: 0
+        heating_type: ELECTRICITY
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_liheap_income: 15_080
+    ga_liheap_income_limit: 43_203
+    ga_liheap_cooling: 500
