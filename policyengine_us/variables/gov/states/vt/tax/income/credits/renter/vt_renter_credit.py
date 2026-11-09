@@ -13,7 +13,7 @@ class vt_renter_credit(Variable):
         # the formula used in this file is based on the excel sheet provided on the official Vermont government website
         "https://tax.vermont.gov/individuals/renter-credit/calculator-and-credit-amounts",  # link for the excel sheet
     )
-    defined_for = StateCode.VT
+    defined_for = "vt_renter_credit_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.vt.tax.income.credits.renter
