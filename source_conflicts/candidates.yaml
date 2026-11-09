@@ -1624,6 +1624,48 @@ candidates:
   note: 'PE-US follows the statute: the 2026 allowance is $1,153.31, from a $3,252.14 couple standard, twice the
     $1,626.07 individual rate (allowance/out_of_home_care.yaml), and the file''s comment lists the sources on each
     side. Verify the per-recipient calculation and document the inconsistent 2026 summary tables.'
+- id: us-co:ccap-parent-fee-income-share
+  program: child-care-assistance
+  years:
+    from: 2021
+    to: 2028
+    type: calendar
+  question: Above the poverty guideline, does Colorado's parent fee start from 1% of the household's income, as 8
+    CCR 1403-1 section 3.124(P)(2) says, or from 1% of the guideline, as one of CDEC's parent fee tools computes?
+  sources:
+  - kind: regulation
+    citation: 8 CCR 1403-1 section 3.124(P)(1) and (2) (ruleVersionId 12658)
+    url: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=83
+  - kind: calculator
+    citation: CDEC Above 100% FPG Parent Fee Tool (English), Parent Fee Tool sheet, cell I9
+    url: https://drive.google.com/file/d/1HtPiC2qxclzWfBa7LRo2Uohrg-RCBkyZ/view
+  - kind: calculator
+    citation: CDEC At 100% FPG Parent Fee Tool (English), Parent Fee Tool sheet, cell I9
+    url: https://drive.google.com/file/d/1EEc3z8Iwu_KRTlBtd2NssDDEx_FITqVq/view
+  readings:
+    statute: Section 3.124(P)(2) charges a household above the guideline "one percent (1%) of their income plus a
+      marginal rate increase of fourteen percent (14%)" on each dollar above the guideline. CDEC's Above 100% FPG
+      tool computes (E4*0.01+((E4-I8)*0.14))/12, 1% of annual income E4 plus 14% above the guideline I8.
+    other: CDEC's At 100% FPG tool computes (I8*0.01+((E4-I8)*0.14))/12 above the guideline, 1% of the guideline
+      rather than of income. CDEC tells households above the guideline to use
+      the other tool, so this branch serves no one the tool is for. PE-US used the same formula before PR 10721.
+  example: A family of three with $40,000 a year and two children in full-time care in January 2026, under the
+    $26,650 guideline in section 3.111(H)(2), pays (0.01 x $40,000 + 0.14 x $13,350) / 12 + $15 = $204.08, or $204,
+    under section 3.124(P)(2). The At 100% FPG tool's formula gives (0.01 x $26,650 + 0.14 x $13,350) / 12 + $15 =
+    $192.96, or $192.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/co/ccap/co_ccap_base_parent_fee.py
+    - policyengine_us/parameters/gov/states/co/ccap/parent_fee/income_rate.yaml
+    - policyengine_us/parameters/gov/states/co/ccap/parent_fee/marginal_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10721
+  state: ruled
+  note: PE-US follows section 3.124(P)(2) as written, 1% of all gross countable income plus 14% of income above the
+    guideline (income_rate.yaml, marginal_rate.yaml, co_ccap_base_parent_fee.py). The rule and CDEC's tool for
+    households above the guideline agree; only the At 100% FPG tool's branch for incomes above the guideline differs,
+    by 1% of the income above the guideline. Ask CDEC which formula counties apply.
 - id: us-co:claim-of-right-subtraction-practice
   program: income-tax
   years:
