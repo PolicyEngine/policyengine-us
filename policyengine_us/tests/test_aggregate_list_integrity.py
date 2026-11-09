@@ -326,6 +326,7 @@ HOUSEHOLD_TAX_TOTALS = {
     "local_occupational_tax",
     "household_refundable_tax_credits",
     "income_tax_refundable_credits_in_force",
+    "premium_tax_credit_in_force",
     "federal_income_tax_in_force",
     "household_refundable_state_tax_credits",
     "household_refundable_local_tax_credits",

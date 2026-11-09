@@ -131,7 +131,10 @@
         members: [person1, person2, person3]
         state_code: TX
   output:
-    marginal_tax_rate: [0.2965, 0.1965, 0]
+    # The $60,000 earner (411% FPL) also gets a 2024 premium tax credit under
+    # the enhanced schedule, which falls by 8.5% of each added dollar:
+    # 12% + 7.65% + 8.5% = 28.15%. At $90,000 the credit is zero.
+    marginal_tax_rate: [0.2965, 0.2815, 0]
     marginal_tax_rate_computed: [true, true, false]
     federal_marginal_tax_rate: [0.22, 0.12, 0]
     fica_marginal_tax_rate: [0.0765, 0.0765, 0]

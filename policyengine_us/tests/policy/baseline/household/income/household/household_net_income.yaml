@@ -184,3 +184,18 @@
   output:
     spm_unit_net_income: 500_000 + 1_000 + 200
     household_net_income: 500_000 + 1_000 + 200
+
+- name: Household net income counts the premium tax credit as a refundable tax credit.
+  period: 2026
+  input:
+    household_market_income: 30_000
+    household_benefits: 0
+    income_tax_refundable_credits_in_force: 0
+    household_refundable_state_tax_credits: 0
+    household_refundable_local_tax_credits: 0
+    assigned_aca_ptc: 4_000
+    household_tax_before_refundable_credits: 2_000
+    household_health_costs: 0
+  output:
+    household_tax: 2_000 - 4_000
+    household_net_income: 30_000 + 4_000 - 2_000
