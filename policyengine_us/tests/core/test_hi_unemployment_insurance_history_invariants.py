@@ -4,18 +4,21 @@ HRS 383-61(b) sets the taxable wage base at the average annual wage for the
 four quarters ending June 30 of the preceding year, rounded to the nearest
 hundred dollars. Subsections (c) and (d) set 1988, 1991 and 2008 to 2011
 otherwise, and subsections (d) and (f) keep the base at or above the federal
-unemployment tax base. HRS 392-43(b)(2) caps temporary disability insurance
-benefits from the same average annual wage, so the Department of Labor and
-Industrial Relations (DLIR) prints it, to the cent, in each year's TDI notice.
+unemployment tax base. HRS 392-43(b)(2) caps the weekly wages subject to
+temporary disability insurance (TDI) contributions at 1.21 times one
+fifty-second of the same average annual wage, and the Department of Labor and
+Industrial Relations (DLIR) prints that average, to the cent, in each year's
+TDI notice.
 
 The tables below copy DLIR's publications, not the parameters:
 
 - WAGE_BASE: the taxable wage bases in DLIR's December 2019 trust fund
   evaluation (Appendix B, 1970 to 2020) and on its tax rate schedule page
   (2020 to 2026);
-- RESERVE_RATIO and SCHEDULE: the evaluation's ratio of the current to the
-  adequate reserve fund and the rate schedule in effect, for the rate years
-  that the tests below use, with the schedule page's schedules from 2021;
+- RESERVE_RATIO: the evaluation's ratio of the current to the adequate
+  reserve fund for 1988, 2008 and 2009;
+- SCHEDULE: the rate schedule in effect, from the evaluation through 2020 and
+  from the schedule page from 2021;
 - AVERAGE_ANNUAL_WAGE: the average annual wage in DLIR's TDI notices for 2004
   to 2026.
 
@@ -38,7 +41,8 @@ The tests read only parameters, so they build no simulation:
    difference that source_conflicts/candidates.yaml records as
    us-hi:ui-taxable-wage-base-2010-rounding.
 5. Federal floor: the base never falls below the highest federal unemployment
-   tax base enacted by its year, and 1991 meets the $7,000 federal base.
+   tax base enacted by the end of its year, and 1991 meets the $7,000 federal
+   base.
 6. New employers: from 2015, the default rate equals the rate that HRS
    383-68 sets for a .0000 reserve ratio on the year's schedule, as HRS
    383-66(a)(2) assigns to new employers.
@@ -129,8 +133,8 @@ STATUTE_READING = {2010: 34_920}
 # before the rate year.
 RESERVE_RATIO = {1988: 2.08, 2008: 2.25, 2009: 1.77}
 
-# Rate schedule in effect: the evaluation's Appendix B through 2020, HRS
-# 383-68(c) for 2021 and 2022, and DLIR's schedule page from 2023.
+# Rate schedule in effect: the evaluation's Appendix B through 2020 and DLIR's
+# schedule page from 2021. HRS 383-68(c) also sets schedule D for 2021 and 2022.
 SCHEDULE = {
     2015: "D",
     2016: "C",
@@ -286,10 +290,11 @@ def _subsection_d_share(ratio):
 def _highest_federal_base_enacted(year):
     # 26 U.S.C. 3306(b)(1). Public Law 91-373 (August 10, 1970) raised the base
     # from $3,000 to $4,200, Public Law 94-566 (October 20, 1976) to $6,000,
-    # and Public Law 97-248 to $7,000 for remuneration paid after 1982.
+    # and Public Law 97-248 (September 3, 1982) to $7,000 for remuneration paid
+    # after 1982.
     if year < 1976:
         return 4_200
-    if year < 1983:
+    if year < 1982:
         return 6_000
     return FUTA.taxable_wage_base(f"{year}-01-01")
 

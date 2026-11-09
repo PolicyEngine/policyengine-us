@@ -3225,7 +3225,8 @@ candidates:
   state: ruled
   note: Subsection (b) defines the average annual wage as the rounded quotient, and subsection (c) applies 90% to that
     average without a rounding rule of its own, so the text settles the reading. 2011 has no gap, since 90% of $38,000
-    is $34,200 in both readings. PE-US's first modelled year is 2015, so the choice moves no modelled amount.
+    is $34,200 in both readings. 2010 precedes 2015, PE-US's FIRST_MODELED_YEAR, so the choice moves no amount in a
+    year PE-US models.
 - id: us-ia:alternate-tax-claimed-spouse
   program: income-tax
   years:
