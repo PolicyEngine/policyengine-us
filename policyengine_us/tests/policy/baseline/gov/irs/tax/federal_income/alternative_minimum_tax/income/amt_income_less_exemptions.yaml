@@ -44,7 +44,7 @@
   output:
     amt_income_less_exemptions: 1_000_000
 
-- name: Kiddie tax filer before 2018 uses regular taxable income and the child limitation
+- name: Kiddie tax filer before 2018 uses AMTI and the child limitation
   period: 2017
   input:
     amt_income: 200_000
@@ -55,8 +55,8 @@
   output:
     # amt_exemption = min(54,300 - 0.25 * (200,000 - 120,700), 10,000 + 7,500)
     #               = min(34,475, 17,500) = 17,500
-    # 190,000 - 17,500 = 172,500
-    amt_income_less_exemptions: 172_500
+    # 200,000 - 17,500 = 182,500
+    amt_income_less_exemptions: 182_500
 
 - name: 2025 single 18-year-old with no earnings uses AMTI and the full exemption
   period: 2025
@@ -70,7 +70,7 @@
     amt_kiddie_tax_applies: true
     amt_exemption: 88_100
     # 2025 Form 6251 line 6 = line 4 - line 5 = 200,000 - 88,100.
-    # The pre-2018 child treatment would give 190,000 - 9,550 = 180,450.
+    # Applying a child cap would give 200,000 - 9,550 = 190,450.
     amt_income_less_exemptions: 111_900
 
 - name: 2026 single 18-year-old with no earnings uses AMTI and the full exemption
@@ -95,6 +95,226 @@
     employment_income: 0
     filing_status: JOINT
   output:
-    amt_kiddie_tax_applies: true
+    amt_kiddie_tax_applies: false
     # 100,000 is below the 137,000 joint exemption.
     amt_income_less_exemptions: 0
+
+# IRC 55(b), 56(b)(1)(D), 59(j); 2017 Form 6251 lines 28-31:
+# https://www.irs.gov/pub/irs-prior/f6251--2017.pdf#page=1
+# Supply sourced 2017 upstream deductions because the model backdates its
+# 2018 standard-deduction parameter. The filer is not claimable elsewhere.
+# Standard deduction: https://www.irs.gov/pub/irs-drop/rp-16-55.pdf#page=15
+# Personal exemption: https://www.irs.gov/pub/irs-drop/rp-16-55.pdf#page=18
+- name: A child filer uses AMTI rather than regular taxable income before 2018
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    people:
+      head:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        taxable_interest_income: 50_000
+    tax_units:
+      unit:
+        members: [head]
+        filing_status: SINGLE
+        tax_unit_itemizes: false
+        adjusted_gross_income: 50_000
+        standard_deduction: 6_350
+        taxable_income_deductions: 6_350
+        exemptions: 4_050
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # Assume at least one living parent, as required by IRC 1(g)(2)(B).
+    # Earned income = 0; ordinary single exemption = 54,300.
+    # Section 59(j) limits ONLY the exemption: min(54,300, 0 + 7,500).
+    # No AMT deductions: AMTI = 50,000; base = 50,000 - 7,500 = 42,500.
+    # 26% * 42,500 = 11,050, irrespective of regular-tax deductions.
+    taxable_income: 39_600
+    amt_income: 50_000
+    amt_exemption: 7_500
+    amt_income_less_exemptions: 42_500
+    amt_base_tax: 11_050
+
+# Positive-base control distinguishes AMTI from regular taxable income;
+# a below-exemption child alone would not detect the wrong base.
+- name: A 2025 child filer uses AMTI with the full ordinary exemption
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        taxable_interest_income: 200_000
+    tax_units:
+      unit:
+        members: [head]
+        filing_status: SINGLE
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # 2025 single exemption 88,100; no child cap under IRC 55(d)(4)(A)(iii).
+    # AMTI 200,000 - 88,100 = 111,900; 26% * 111,900 = 29,094.
+    # Using regular taxable income would wrongly give 184,250 - 88,100.
+    taxable_income: 184_250
+    amt_income: 200_000
+    amt_exemption: 88_100
+    amt_income_less_exemptions: 111_900
+    amt_base_tax: 29_094
+
+# An itemizing 2017 child: 2017 Form 6251 line 1 (Form 1040 line 41) plus the
+# line 3 (taxes) and line 5 (miscellaneous) add-backs, then the 59(j) cap.
+# Upstream 2017 return amounts are supplied, as in the case above.
+- name: An itemizing child filer adds back taxes and miscellaneous deductions before 2018
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    people:
+      head:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        taxable_interest_income: 60_000
+    tax_units:
+      unit:
+        members: [head]
+        filing_status: SINGLE
+        tax_unit_itemizes: true
+        adjusted_gross_income: 60_000
+        # SALT 6,000 + misc 1,500 (2,700 less 2% * 60,000) + charity 1,000.
+        taxable_income_deductions: 8_500
+        salt_deduction: 6_000
+        misc_deduction: 1_500
+        exemptions: 4_050
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # Taxable income = 60,000 - 8,500 - 4,050 = 47,450.
+    # Line 1 = 47,450 + 4,050 = 51,500; AMTI = 51,500 + 6,000 + 1,500 = 59,000.
+    # Exemption = min(54,300, 0 + 7,500) = 7,500 (no phase-out below 120,700).
+    # Base = 59,000 - 7,500 = 51,500; 26% * 51,500 = 13,390.
+    # The old regular-taxable-income base was 47,450 - 7,500 = 39,950.
+    taxable_income: 47_450
+    amt_income: 59_000
+    amt_exemption: 7_500
+    amt_income_less_exemptions: 51_500
+    amt_base_tax: 13_390
+
+# Either side of the 59(j) cap: the cap equals the 54,300 single exemption
+# when earned income is 54,300 - 7,500 = 46,800.
+- name: A child's 59(j) cap binds just below the ordinary 2017 exemption
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    people:
+      head:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income: 46_000
+        taxable_interest_income: 30_000
+    tax_units:
+      unit:
+        members: [head]
+        filing_status: SINGLE
+        tax_unit_itemizes: false
+        adjusted_gross_income: 76_000
+        standard_deduction: 6_350
+        taxable_income_deductions: 6_350
+        exemptions: 4_050
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # Taxable income = 76,000 - 6,350 - 4,050 = 65,600; AMTI = 76,000.
+    # Exemption = min(54,300, 46,000 + 7,500) = 53,500.
+    # Base = 76,000 - 53,500 = 22,500; 26% * 22,500 = 5,850.
+    taxable_income: 65_600
+    amt_income: 76_000
+    amt_kiddie_tax_applies: true
+    amt_exemption: 53_500
+    amt_income_less_exemptions: 22_500
+    amt_base_tax: 5_850
+
+- name: A child's 59(j) cap does not bind just above the ordinary 2017 exemption
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    people:
+      head:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income: 47_000
+        taxable_interest_income: 30_000
+    tax_units:
+      unit:
+        members: [head]
+        filing_status: SINGLE
+        tax_unit_itemizes: false
+        adjusted_gross_income: 77_000
+        standard_deduction: 6_350
+        taxable_income_deductions: 6_350
+        exemptions: 4_050
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # Taxable income = 77,000 - 6,350 - 4,050 = 66,600; AMTI = 77,000.
+    # Exemption = min(54,300, 47,000 + 7,500 = 54,500) = 54,300.
+    # Base = 77,000 - 54,300 = 22,700; 26% * 22,700 = 5,902.
+    taxable_income: 66_600
+    amt_income: 77_000
+    amt_kiddie_tax_applies: true
+    amt_exemption: 54_300
+    amt_income_less_exemptions: 22_700
+    amt_base_tax: 5_902
+
+# The support test reaches the exemption: an 18-year-old whose earnings
+# exceed half of support gets the ordinary exemption, with no 59(j) cap.
+- name: An 18-year-old who fails the support test gets the ordinary 2017 exemption
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    people:
+      head:
+        age: 18
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income: 10_000
+        care_and_support_costs: 15_000
+    tax_units:
+      unit:
+        members: [head]
+        filing_status: SINGLE
+        amt_income: 60_000
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # 10,000 > 0.5 * 15,000 = 7,500, so IRC 1(g) does not apply.
+    # Exemption = 54,300 (no phase-out below 120,700); base = 5,700.
+    # Had the cap applied: min(54,300, 10,000 + 7,500) = 17,500.
+    amt_kiddie_tax_applies: false
+    amt_exemption: 54_300
+    amt_income_less_exemptions: 5_700

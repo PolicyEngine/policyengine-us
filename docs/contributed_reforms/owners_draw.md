@@ -117,7 +117,11 @@ on. These are the draw profits whose SECA the deduction includes. Draw
 profits beyond the OASDI room with HI off stay out of line 5. With
 `half_seca_deduction: false` the draw's SECA is not deductible, so line 5
 omits the draw and the limit follows the baseline formula. Disabled years
-use the baseline formula.
+use the baseline formula. The draw enters line 5 only: the plan business is
+chosen as in the baseline, from the Schedule C business, the farm, the
+partnership or the S corporation named by
+`self_employed_health_insurance_plan_business`, or the one with the largest
+line 13 when none is named.
 
 ## Benefit credit and active NIIT interaction
 
@@ -127,10 +131,13 @@ annual earnings to the existing `ss_aime` earnings-history helper and adds
 them before applying each year's wage-base cap. A supplied positive
 `ss_aime_input` retains its baseline precedence. This reform does not append
 an amount to final AIME or alter reported benefits. This bridge inherits
-main's AIME lookback and age rules and its separate
-`gov.ssa.social_security.wage_base` path, last authored for 2026; it does not
-synchronize that path with the current tax cap. Mini-PIA integration and a
-complete annual-history ledger remain separate future work.
+main's AIME lookback, age rules and separate
+`gov.ssa.social_security.wage_base` path. The processed current-law wage-indexed
+paths now extend through 2100; tax-cap and benefit-cap reforms remain separate
+policy choices. The opt-in [annual-history calculator](social_security_history.md)
+uses the same per-year owners' draw kernel, retains earnings through the year
+before claiming, and carries the adjusted draw into both conventional AIME
+and annual mini-PIAs. Its ledger also coordinates separate above-cap credit.
 
 `owners_draw_niit_exclusion` is the matching gross-profit exclusion for a
 S.770 active-business NIIT option. With OASDI only it is `draw_oasdi_base`

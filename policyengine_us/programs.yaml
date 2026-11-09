@@ -357,6 +357,54 @@ programs:
     verified_start_year: 2021
     notes: 8 pathways
 
+  - id: medicaid_ltss_financial_screen
+    name: Medicaid LTSS financial screen
+    full_name: Medicaid long-term services and supports financial-threshold screen
+    category: Healthcare
+    agency: HHS
+    status: partial
+    coverage: US
+    has_state_variation: true
+    variable: is_medicaid_ltss_financial_threshold_eligible
+    parameter_prefix: gov.hhs.medicaid.eligibility.long_term_care.financial
+    verified_years: "2026"
+    notes: >-
+      Opt-in screen of the financial thresholds for Medicaid long-term
+      services and supports: the special income limit, qualified income
+      trusts, Washington's medically needy route, resources, the community
+      spouse resource allowance, home equity, and the community spouse
+      maintenance needs allowance. Income exclusions and couple budgets are
+      derived from each person's gross receipts, deposit facts, and comprehensive
+      countable-resource inventory; asset classification remains caller-supplied.
+      The screen does not feed Medicaid eligibility, enrollment, or benefit
+      values, and states other than Texas, Delaware, and Washington are
+      unmodeled.
+    state_implementations:
+      - state: TX
+        status: partial
+        name: Texas Medicaid LTSS financial screen
+        full_name: Texas Medicaid long-term services and supports financial-threshold screen
+        variable: is_medicaid_ltss_financial_threshold_eligible
+        parameter_prefix: gov.hhs.medicaid.eligibility.long_term_care.financial.tx
+        verified_years: "2026"
+        notes: Institutional special income limit for individuals and couples; home and community-based waivers are unmodeled.
+      - state: DE
+        status: partial
+        name: Delaware Medicaid LTSS financial screen
+        full_name: Delaware Medicaid long-term services and supports financial-threshold screen
+        variable: is_medicaid_ltss_financial_threshold_eligible
+        parameter_prefix: gov.hhs.medicaid.eligibility.long_term_care.financial.de
+        verified_years: "2026"
+        notes: Nursing facility 250% special income limit for individuals and couples; the hospital standard and home and community-based waivers are unmodeled.
+      - state: WA
+        status: partial
+        name: Washington Medicaid LTSS financial screen
+        full_name: Washington Medicaid long-term services and supports financial-threshold screen
+        variable: is_medicaid_ltss_financial_threshold_eligible
+        parameter_prefix: gov.hhs.medicaid.eligibility.long_term_care.financial.wa
+        verified_years: "2026"
+        notes: Institutional and COPES, New Freedom, and Residential Support waiver applicants without a spouse in the assistance unit, through the special income level or medically needy route.
+
   - id: chip
     name: CHIP
     full_name: Children's Health Insurance Program
@@ -656,7 +704,7 @@ programs:
     agency: HHS
     status: partial
     coverage: US
-    notes: Every state and DC has a child care subsidy implementation; the program stays partial while New York's listed gaps remain
+    notes: Every state and DC has a child care subsidy implementation; the program stays partial while the New York, North Dakota and South Dakota entries list gaps. In every state, the model uses the SPM unit in place of the program's family unit. Every implementation that varies rates by location reads the household's county in place of the provider's, except Oregon's, which takes the provider's rate area as an input. Without a county or county FIPS input, the model places a household in its state's alphabetically first county. No implementation tracks when a child's 12-month eligibility period under 45 CFR 98.21(a) began, and none models waitlists when funds run out.
     state_implementations:
       - state: AK
         status: complete
@@ -827,7 +875,7 @@ programs:
         full_name: New York Child Care Assistance Program
         variable: ny_ccap
         parameter_prefix: gov.states.ny.ocfs.ccap
-        notes: Models New York income eligibility, market rates, and the family share, including the foster-care and child-protective-services categorical routes, the 18 NYCRR 415.1(b) age extensions for a child with special needs, and the statutory family-share exceptions. Excess periods for a sixth or seventh day of care and for each day of care at or above the daily maximum hours are priced at the applicable daily or part-day rate under 415.9(d). Household county proxies for provider county and unknown counties default to group 3, the lowest-rate group, which understates rates for the New York City and downstate groups that hold most of the state's children. The benefit requires childcare_hours_per_day and childcare_days_per_week as well as expenses, because the market rate is priced by duration of care; expenses alone yield no benefit. The pre-2022 hourly rate tier no longer exists - 18 NYCRR 415.9 and 24-OCFS-LCM-22 Attachment A define weekly, daily and part-day rates only. The SPM unit stands in for the 18 NYCRR 415.1(l) child care services unit, which draws cohabiting adults, 18-to-20-year-olds and child-only units differently. Not modeled - the mandatory non-traditional-hours and homelessness payment differentials required by 18 NYCRR 415.9(f)(2)-(3) and the discretionary accreditation differential, the special-needs substituted market rate under 415.9(h)(4), the separate school-age child care rate table, safety net assistance as public assistance for the family-share exception, preventive services as distinct from protective services, public assistance in countable income (omitted to avoid a circular dependency through the TANF dependent care deduction), the required-work-activity condition on the 415.2(a)(1) guarantee of care to public-assistance families (public assistance enrollment alone satisfies the reason-for-care test), a child under court supervision, the 12-month eligibility period, the child-only assistance unit exception to the family share, and waitlist rationing when funds are unavailable
+        notes: Models New York income eligibility, market rates, and the family share, including the foster-care and child-protective-services categorical routes, the 18 NYCRR 415.1(b) age extensions for special needs and court supervision, and the statutory family-share exceptions. The model prices excess periods for a sixth or seventh day of care, and for each day of care at or above the daily maximum hours, at the applicable daily or part-day rate under 24-OCFS-LCM-22. Without a county or county FIPS input, the model places a New York household in Albany County, in county group 2. That placement overstates rates for households in the 38 group 3 counties and understates them in New York City and the five group 1 counties. An UNKNOWN county falls to group 3, the lowest-rate group. The benefit requires childcare_hours_per_day and childcare_days_per_week as well as expenses, because OCFS sets market rates by duration of care; expenses alone yield no benefit. OCFS dropped hourly market rates on June 1, 2022 (22-OCFS-LCM-14); 18 NYCRR 415.9 and 24-OCFS-LCM-22 set weekly, daily and part-day rates only. Not modeled - the mandatory non-traditional-hours and homelessness payment differentials required by 18 NYCRR 415.9(f)(2)-(3) and the discretionary accreditation differential, the special-needs substituted market rate under 415.9(h)(4), safety net assistance as public assistance for the family-share exception, preventive services as distinct from protective services, public assistance in countable income (omitted to avoid a circular dependency through the TANF dependent care deduction), the required-work-activity condition on the 415.2(a)(1) guarantee of care to public-assistance families (public assistance enrollment alone satisfies the reason-for-care test), and the child-only assistance unit exception to the family share
       - state: OR
         status: complete
         name: Oregon ERDC
@@ -936,7 +984,7 @@ programs:
         full_name: South Dakota Child Care Assistance
         variable: sd_cca
         parameter_prefix: gov.states.sd.dss.cca
-        notes: Models the weekly region-based rate schedule effective 2026-08-03 with the billed-expense cap and co-payment, the income and asset tests, the citizen or lawful-permanent-resident child test, and the reason-for-care test. The benefit is zero before August 2026 because the earlier hourly county-based schedule is not implemented. Not modeled - the court-supervision eligibility pathway for a child
+        notes: Models the weekly region-based rate schedule effective 2026-08-03 with the billed-expense cap and co-payment, the income and asset tests, the citizen or lawful-permanent-resident child test, and the reason-for-care test. For a child under court supervision or incapable of self-care, the model applies South Dakota's age extension, which raises the age limit from under 13 to under 18, or under 19 while in school. The model pays no benefit before August 2026 because it lacks the earlier hourly county-based schedule.
       - state: UT
         status: complete
         name: Utah CCAP
@@ -987,7 +1035,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DC, DE, GA, HI, Riverside County, MA, FL, IL, IA, ID, IN, KS, KY, LA, MD, ME, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SC, SD, RI, TN, TX, UT, VA, VT, WA, WI, WV, WY
     state_implementations:
       - state: AL
         status: partial
@@ -1020,6 +1068,30 @@ programs:
         parameter_prefix: gov.states.az.des.liheap
         verified_years: "2026"
         notes: FY2026 Standard benefit covering heating and cooling bills from the point-based benefit matrix. Crisis assistance, water for evaporative cooling and weatherization are out of scope.
+      - state: CA
+        status: partial
+        name: California utility HEAP
+        full_name: California Home Energy Assistance Program utility heating component
+        variable: ca_liheap_utility_heating
+        parameter_prefix: gov.states.ca.csd.liheap
+        verified_years: "2026"
+        notes: FY2026 regular utility heating on gas and electric accounts, Madera propane and fuel-oil heating, and statewide wood heating from an approved delivery cost; other liquid-fuel service areas and vendor-service supplements are not modeled. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: CO
+        status: partial
+        name: Colorado LEAP
+        full_name: Colorado Low-income Energy Assistance Program
+        variable: co_leap
+        parameter_prefix: gov.states.co.cdhs.leap
+        verified_years: "2026"
+        notes: FY2026 regular heating assistance, including heat-in-rent costs, income contribution rates and the subsidized-housing deduction. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: CT
+        status: partial
+        name: Connecticut CEAP
+        full_name: Connecticut Energy Assistance Program
+        variable: ct_ceap
+        parameter_prefix: gov.states.ct.dss.ceap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 basic and rental heating assistance. The SNAP nominal benefit, crisis, weatherization and equipment assistance are out of scope.
       - state: GA
         status: partial
         name: Georgia LIHEAP
@@ -1028,6 +1100,13 @@ programs:
         parameter_prefix: gov.states.ga.dfcs.liheap
         verified_years: "2025-2026"
         notes: FY2025-FY2026 regular heating only, with the published fuel matrix and the bundled-utility rental payment. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: HI
+        status: partial
+        name: Hawaii LIHEAP subsidized dwelling benefit
+        full_name: Hawaii Low Income Home Energy Assistance Program subsidized dwelling benefit
+        variable: hi_liheap_subsidized_amount
+        parameter_prefix: gov.states.hi.dhs.liheap
+        notes: FY2026 eligibility, the subsidized-dwelling flat benefit and private-dwelling points; no private-dwelling dollar award because its statewide value per point was not located. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: OH
         status: partial
         name: Ohio HEAP
@@ -1065,6 +1144,14 @@ programs:
         full_name: DC Low Income Home Energy Assistance Program
         variable: dc_liheap_payment
         parameter_prefix: gov.states.dc.doee.liheap
+      - state: DE
+        status: partial
+        name: Delaware LIHEAP
+        full_name: Delaware Low Income Home Energy Assistance Program
+        variable: de_liheap
+        parameter_prefix: gov.states.de.dhss.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating matrix and the subsidized-housing flat award. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: MA
         status: complete
         name: Massachusetts LIHEAP
@@ -1244,6 +1331,14 @@ programs:
         parameter_prefix: gov.states.or.ohcs.liheap
         verified_years: "2025-2027"
         notes: PY2025-PY2027 regular heating only, with the two county regions, five fuel columns and the roomer half payment. Crisis, cooling, Fuel Payment, equipment and OEAP assistance are out of scope.
+      - state: SC
+        status: partial
+        name: South Carolina LIHEAP
+        full_name: South Carolina Low Income Home Energy Assistance Program
+        variable: sc_liheap
+        parameter_prefix: gov.states.sc.oeo.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating base amount with demographic, fuel, low-income and high-burden supplements. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: SD
         status: partial
         name: South Dakota LIEAP
@@ -1306,6 +1401,14 @@ programs:
         parameter_prefix: gov.states.wi.doa.wheap
         verified_years: "2026"
         notes: FFY2026 regular heating benefit from the HE+ formula with the published heat proxy table. The non-heating electric benefit, crisis and weatherization are out of scope.
+      - state: WV
+        status: partial
+        name: West Virginia LIEAP
+        full_name: West Virginia Low Income Energy Assistance Program
+        variable: wv_lieap
+        parameter_prefix: gov.states.wv.dhhr.lieap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular heating payments for households of one to twenty qualified members. Crisis, cooling, weatherization, equipment and the utility discount are out of scope.
       - state: WY
         status: partial
         name: Wyoming LIEAP
@@ -1314,6 +1417,13 @@ programs:
         parameter_prefix: gov.states.wy.dfs.lieap
         verified_years: "2026"
         notes: FY2026 regular heating from the published fuel cost standards. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: ID
+        status: partial
+        name: Idaho LIHEAP
+        full_name: Idaho Low Income Home Energy Assistance Program
+        variable: id_liheap
+        parameter_prefix: gov.states.id.dhw.liheap
+        notes: FY2026 regular heating; burden bands use the PY2007 heating-cost table, whose FY2026 currency is unconfirmed, so no year is verified. Crisis, cooling, weatherization and equipment assistance are out of scope.
 
   # --- SSA programs ---
   - id: ssi
@@ -1354,7 +1464,7 @@ programs:
         variable: ca_state_supplement
         parameter_prefix: gov.states.ca.cdss.state_supplement
         verified_years: "2025-2026"
-        notes: Payment standards verified for independent living, no cooking facilities, blind and disabled minor categories. Facility and household-of-another arrangements are not verified (issue 7892).
+        notes: Payment standards verified against POMS SI 01415.058, except household-of-another levels, children with a non-parent relative or guardian, and private medical facilities, which are not modeled (issue 7892).
       - state: CT
         status: complete
         name: Connecticut SSP
