@@ -9,21 +9,23 @@ class vt_student_loan_interest_subtraction(Variable):
     definition_period = YEAR
     reference = (
         "https://legislature.vermont.gov/statutes/section/32/151/05811",
-        # 2021, No. 138 (Adj. Sess.), §§ 5, 6, eff. Jan. 1, 2022 (the history
-        # note to § 5811)
+        # 2021, No. 138 (Adj. Sess.), §§ 5, 13(b)
+        # PDF pages 4-5, 15
         "https://legislature.vermont.gov/Documents/2022/Docs/ACTS/ACT138/ACT138%20As%20Enacted.pdf#page=4",
         # Schedule IN-112 lines 16a-16c, form and instructions
         # PDF pages 23, 33
-        "https://taxsim.nber.org/historical_state_tax_forms/VT/2025/Income-Booklet-2025.pdf#page=23",
+        "https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2025.pdf#page=23",
     )
     defined_for = StateCode.VT
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.vt.tax.income.agi.student_loan_interest
         # 32 V.S.A. 5811(21)(B)(vi) subtracts the interest a qualified resident
-        # taxpayer paid on a qualified education loan. Schedule IN-112 line 16
-        # subtracts the interest paid (16a) less the amount already deducted
-        # on federal Schedule 1 (16b), so interest is not deducted twice. The
+        # taxpayer paid on a qualified education loan, and (21)(B) subtracts
+        # its items "to the extent such income is included in federal adjusted
+        # gross income". Schedule IN-112 line 16 subtracts the interest paid
+        # (16a) less the amount already deducted on federal Schedule 1 (16b),
+        # so interest is not deducted twice. The
         # subtraction has no dependency test of its own: a filer who is
         # claimed elsewhere loses the federal deduction (IRC 221(c)), and
         # Vermont then subtracts the whole amount.
@@ -40,6 +42,7 @@ class vt_student_loan_interest_subtraction(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         income_eligible = agi <= p.income_limit[filing_status]
-        # The history note to § 5811 dates 2021, No. 138 (Adj. Sess.), §§ 5
-        # and 6 to Jan. 1, 2022; the subtraction applies from that date.
+        # 2021, No. 138 (Adj. Sess.), § 13(b) applies § 5, which added
+        # (21)(B)(vi) and (29), to taxable years beginning on and after
+        # Jan. 1, 2022.
         return p.in_effect * income_eligible * remaining_interest
