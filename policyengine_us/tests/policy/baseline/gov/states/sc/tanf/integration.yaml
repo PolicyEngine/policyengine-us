@@ -83,8 +83,8 @@
     # monthly earned = 24,000/12 = 2,000
     # tanf_fpg for size 2 = 1703.33
     # need_standard = floor(851.67) = 851
-    # gross_income_limit = floor(851 * 1.85 = 1574.35) = 1574
-    # 2,000 > 1,574 -> not eligible
+    # gross_income_limit = 851 * 1.85 = 1,574.35 (114-1150(A))
+    # 2,000 > 1,574.35 -> not eligible
 
 - name: Case 4, single pregnant person with no income.
   period: 2025-01
@@ -439,7 +439,7 @@
     # interest = (1,000 - 400 exclusion)/12 = 50 (page 113)
     # gross income = 300 + 400 + 50 = 750
     # tanf_fpg for size 3 = 2151.67; need standard = floor(1075.83) = 1075
-    # gross income limit = floor(1075 * 1.85 = 1988.75) = 1988; 750 passes
+    # gross income limit = 1075 * 1.85 = 1,988.75 (114-1150(A)); 750 passes
     # benefit = floor((1075 - 750) * 0.4046 = 131.50) = 131
 
 - name: Case 15, an SSI child and the child's income are excluded from the benefit group.

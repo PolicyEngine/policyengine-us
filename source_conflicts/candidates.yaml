@@ -9760,6 +9760,39 @@ candidates:
   note: The regulation governs. The model deducts each payer's support from that payer's earned income after the
     section 8.12 disregards, then unearned income, never below zero. Because 114-1140(L) covers any budget group
     member, a dependent child's support comes off the child's unearned income.
+- id: us-sc:tanf-gross-income-limit-cents
+  program: tanf
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Is South Carolina's TANF gross income limit 185 percent of the need standard with its cents, or that amount
+    with the cents dropped?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1150(A)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=217
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1140(A)(4)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=210
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 section 8.15
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=133
+  readings:
+    statute: No statute is supplied; 114-1150(A) says gross income "must not exceed 185 percent of the need standard by
+      family size", and 114-1140(A)(4) rounds down only "the standard of need or the payment amount".
+    other: The section 8.15 note says "To determine the Gross Income Limit, multiply the Need Standard by 1.85 and drop
+      the cents."
+  example: For two persons in 2026 the need standard is $881. Gross income of $1,629.50 a month passes the limit of
+    881 x 1.85 = $1,629.85 and fails the manual's $1,629.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/eligibility/sc_tanf_gross_income_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+  state: ruled
+  note: The regulation governs. Section 8.1 also says "Do not round at any step of the TANF calculation." The model
+    keeps rounding the need standard and the payment down to whole dollars under 114-1140(A)(4).
 - id: us-sc:tanf-need-standard-above-eight
   program: tanf
   years:

@@ -1,16 +1,18 @@
 """Property tests: South Carolina TANF dependent children's earnings, child
 support paid and whole-dollar amounts.
 
-SC DSS TANF Policy Manual, Volume 67:
+S.C. Code Regs. Chapter 114 and SC DSS TANF Policy Manual, Volume 67:
 
-- Section 7.5 (PDF page 105): "Earned income of a dependent child(ren) is
-  excluded" from eligibility and the benefit; Section 8.16 B (page 134).
-- Section 8.11 (page 131) and Section 8.16 D and F (page 134): child support
-  that benefit group members pay outside the home is deducted after the
-  Section 8.12 earned income disregards, from earned income first and then
-  from unearned income, never below zero.
-- S.C. Code Regs. 114-1140(A)(4) and the Section 8.15 table notes (page 133):
-  the need standard, gross income limit and payment drop their cents.
+- 114-1140(N)(1) and Section 7.5 (PDF page 105): "Earned income of a
+  dependent child(ren) is excluded" from eligibility and the benefit;
+  Section 8.16 B (page 134).
+- 114-1140(L), Section 8.11 (page 131) and Section 8.16 D and F (page 134):
+  child support that a benefit group member pays outside the home comes off
+  that member's own income, after the Section 8.12 earned income
+  disregards, and never takes it below zero.
+- 114-1140(A)(4) and the Section 8.15 table notes (page 133): the need
+  standard and the payment drop their cents. 114-1150(A) sets the gross
+  income limit at 185 percent of the need standard, cents included.
 
 For every generated South Carolina benefit group:
 
