@@ -40,6 +40,53 @@ class SchoolMealTier(Enum):
     PAID = "Paid"
 
 
+def school_meal_tier_from(spm_unit, period, parameters, categorical_eligibility):
+    """Return the tier for both meals, given whether the unit has
+    categorical eligibility for free meals.
+    """
+    fpg_ratio = spm_unit("school_meal_fpg_ratio", period)
+    fpg = spm_unit("spm_unit_fpg", period)
+    p = parameters(period).gov.usda.school_meals
+    p_income_limit = p.income.limit
+    state = spm_unit.household("state_code_str", period)
+    # The federal limits apply at USDA's published whole-dollar values.
+    federal_free_income_limit = whole_dollar_ratio_limit(
+        p_income_limit.FREE, fpg, fpg_ratio.dtype
+    )
+    reduced_income_limit = whole_dollar_ratio_limit(
+        p_income_limit.REDUCED, fpg, fpg_ratio.dtype
+    )
+    # Some states provide free meals above the federal free-meal income
+    # limit; the higher of the two limits applies. A state limit is the
+    # percentage of the poverty guideline its law sets, such as New
+    # Jersey's 224% under N.J.S.A. 18A:33-4(a), so compare it with the
+    # ratio exactly, not at a dollar amount rounded up from it (backlog
+    # id us-nj:school-meals-income-limit-rounding). Cast it to the
+    # ratio's float32 precision so a ratio exactly at a limit such as
+    # 2.24 passes; float32(2.24) is slightly above float64(2.24).
+    state_free_income_limit = p.state_free_income_limit[state].astype(fpg_ratio.dtype)
+    free_income_limit = max_(federal_free_income_limit, state_free_income_limit)
+    # States with universal free meal policies provide the free tier
+    # to all students regardless of household income.
+    state_universal = spm_unit("state_has_universal_free_school_meals", period)
+    # States that cover the reduced-price copay provide the free tier
+    # to students who qualify for reduced-price meals.
+    reduced_income_eligible = fpg_ratio <= reduced_income_limit
+    state_covers_reduced_copay = p.state_covers_reduced_price_copay[state].astype(bool)
+    return select(
+        [
+            (fpg_ratio <= free_income_limit)
+            # Categorical eligibility provides free school meals.
+            | categorical_eligibility
+            | state_universal
+            | (reduced_income_eligible & state_covers_reduced_copay),
+            reduced_income_eligible,
+        ],
+        [SchoolMealTier.FREE, SchoolMealTier.REDUCED],
+        default=SchoolMealTier.PAID,
+    )
+
+
 class school_meal_tier(Variable):
     value_type = Enum
     label = "School meal tier"
@@ -59,7 +106,10 @@ class school_meal_tier(Variable):
         "exactly. State policies that cover only one meal apply in "
         "school_meal_breakfast_tier and school_meal_lunch_tier. FREE "
         "describes no family charge; it does not change the student's "
-        "federal reimbursement category."
+        "federal reimbursement category. Categorical eligibility in any "
+        "month of the year gives the FREE tier; the meal values count the "
+        "months before it starts at "
+        "school_meal_tier_without_categorical_eligibility."
     )
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1758#b_1_A",
@@ -71,51 +121,9 @@ class school_meal_tier(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        fpg_ratio = spm_unit("school_meal_fpg_ratio", period)
-        fpg = spm_unit("spm_unit_fpg", period)
-        p = parameters(period).gov.usda.school_meals
-        p_income_limit = p.income.limit
-        state = spm_unit.household("state_code_str", period)
-        # The federal limits apply at USDA's published whole-dollar values.
-        federal_free_income_limit = whole_dollar_ratio_limit(
-            p_income_limit.FREE, fpg, fpg_ratio.dtype
-        )
-        reduced_income_limit = whole_dollar_ratio_limit(
-            p_income_limit.REDUCED, fpg, fpg_ratio.dtype
-        )
-        # Some states provide free meals above the federal free-meal income
-        # limit; the higher of the two limits applies. A state limit is the
-        # percentage of the poverty guideline its law sets, such as New
-        # Jersey's 224% under N.J.S.A. 18A:33-4(a), so compare it with the
-        # ratio exactly, not at a dollar amount rounded up from it (backlog
-        # id us-nj:school-meals-income-limit-rounding). Cast it to the
-        # ratio's float32 precision so a ratio exactly at a limit such as
-        # 2.24 passes; float32(2.24) is slightly above float64(2.24).
-        state_free_income_limit = p.state_free_income_limit[state].astype(
-            fpg_ratio.dtype
-        )
-        free_income_limit = max_(federal_free_income_limit, state_free_income_limit)
-        # Categorical eligibility provides free school meals.
         categorical_eligibility = spm_unit(
             "meets_school_meal_categorical_eligibility", period
         )
-        # States with universal free meal policies provide the free tier
-        # to all students regardless of household income.
-        state_universal = spm_unit("state_has_universal_free_school_meals", period)
-        # States that cover the reduced-price copay provide the free tier
-        # to students who qualify for reduced-price meals.
-        reduced_income_eligible = fpg_ratio <= reduced_income_limit
-        state_covers_reduced_copay = p.state_covers_reduced_price_copay[state].astype(
-            bool
-        )
-        return select(
-            [
-                (fpg_ratio <= free_income_limit)
-                | categorical_eligibility
-                | state_universal
-                | (reduced_income_eligible & state_covers_reduced_copay),
-                reduced_income_eligible,
-            ],
-            [SchoolMealTier.FREE, SchoolMealTier.REDUCED],
-            default=SchoolMealTier.PAID,
+        return school_meal_tier_from(
+            spm_unit, period, parameters, categorical_eligibility
         )

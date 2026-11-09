@@ -1,0 +1,24 @@
+# The tier without categorical eligibility follows income and state policy
+# alone, so categorical eligibility leaves it unchanged.
+- name: Categorical eligibility leaves the tier without it at the income tier.
+  period: 2025
+  input:
+    state_code: [GA, GA, GA]
+    meets_school_meal_categorical_eligibility: [true, true, true]
+    school_meal_fpg_ratio: [3, 1.6, 1]
+  output:
+    school_meal_tier: [FREE, FREE, FREE]
+    school_meal_tier_without_categorical_eligibility: [PAID, REDUCED, FREE]
+
+# North Carolina pays the reduced-price copay (G.S. 115C-264(a1)), and a
+# universal free meal state gives every student free meals, with or without
+# categorical eligibility.
+- name: State policies for both meals apply without categorical eligibility.
+  period: 2026
+  input:
+    state_code: [NC, GA]
+    meets_school_meal_categorical_eligibility: [true, true]
+    school_meal_fpg_ratio: [1.8, 4]
+    state_has_universal_free_school_meals: [false, true]
+  output:
+    school_meal_tier_without_categorical_eligibility: [FREE, FREE]

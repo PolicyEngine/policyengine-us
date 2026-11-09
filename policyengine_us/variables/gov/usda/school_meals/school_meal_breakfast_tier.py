@@ -4,6 +4,47 @@ from policyengine_us.variables.gov.usda.school_meals.school_meal_tier import (
 )
 
 
+def school_meal_breakfast_tier_from(spm_unit, period, parameters, tier):
+    """Return the breakfast tier, given the tier for both meals."""
+    universal_free_breakfast = spm_unit(
+        "state_has_universal_free_school_breakfast", period
+    )
+    state = spm_unit.household("state_code_str", period)
+    p = parameters(period).gov.usda.school_meals
+    state_covers_reduced_copay = p.state_covers_reduced_price_copay_breakfast_only[
+        state
+    ].astype(bool)
+    # Some states set a free-breakfast income limit above their limit for
+    # both meals (0 means none). Apply it only where it is set, so a
+    # school_meal_tier input still reaches breakfast unchanged elsewhere.
+    # Like the state limit in school_meal_tier, it is the percentage of
+    # the poverty guideline state law sets, such as New Jersey's 224%
+    # under N.J.S.A. 18A:33-14a(a)(3), compared with the ratio exactly,
+    # not at a dollar amount rounded up from it (backlog id
+    # us-nj:school-meals-income-limit-rounding). Cast it to the ratio's
+    # float32 precision, as school_meal_tier does, so a ratio exactly at
+    # the limit passes.
+    fpg_ratio = spm_unit("school_meal_fpg_ratio", period)
+    breakfast_income_limit = p.state_free_income_limit_breakfast_only[state].astype(
+        fpg_ratio.dtype
+    )
+    breakfast_income_eligible = (breakfast_income_limit > 0) & (
+        fpg_ratio <= breakfast_income_limit
+    )
+    reduced = tier == tier.possible_values.REDUCED
+    return select(
+        [
+            (tier == tier.possible_values.FREE)
+            | universal_free_breakfast
+            | (reduced & state_covers_reduced_copay)
+            | breakfast_income_eligible,
+            reduced,
+        ],
+        [SchoolMealTier.FREE, SchoolMealTier.REDUCED],
+        default=SchoolMealTier.PAID,
+    )
+
+
 class school_meal_breakfast_tier(Variable):
     value_type = Enum
     label = "School breakfast tier"
@@ -43,40 +84,4 @@ class school_meal_breakfast_tier(Variable):
         # The tier for both meals already includes state coverage of both
         # meals, so only breakfast-specific state policies apply here.
         tier = spm_unit("school_meal_tier", period)
-        universal_free_breakfast = spm_unit(
-            "state_has_universal_free_school_breakfast", period
-        )
-        state = spm_unit.household("state_code_str", period)
-        p = parameters(period).gov.usda.school_meals
-        state_covers_reduced_copay = p.state_covers_reduced_price_copay_breakfast_only[
-            state
-        ].astype(bool)
-        # Some states set a free-breakfast income limit above their limit for
-        # both meals (0 means none). Apply it only where it is set, so a
-        # school_meal_tier input still reaches breakfast unchanged elsewhere.
-        # Like the state limit in school_meal_tier, it is the percentage of
-        # the poverty guideline state law sets, such as New Jersey's 224%
-        # under N.J.S.A. 18A:33-14a(a)(3), compared with the ratio exactly,
-        # not at a dollar amount rounded up from it (backlog id
-        # us-nj:school-meals-income-limit-rounding). Cast it to the ratio's
-        # float32 precision, as school_meal_tier does, so a ratio exactly at
-        # the limit passes.
-        fpg_ratio = spm_unit("school_meal_fpg_ratio", period)
-        breakfast_income_limit = p.state_free_income_limit_breakfast_only[state].astype(
-            fpg_ratio.dtype
-        )
-        breakfast_income_eligible = (breakfast_income_limit > 0) & (
-            fpg_ratio <= breakfast_income_limit
-        )
-        reduced = tier == tier.possible_values.REDUCED
-        return select(
-            [
-                (tier == tier.possible_values.FREE)
-                | universal_free_breakfast
-                | (reduced & state_covers_reduced_copay)
-                | breakfast_income_eligible,
-                reduced,
-            ],
-            [SchoolMealTier.FREE, SchoolMealTier.REDUCED],
-            default=SchoolMealTier.PAID,
-        )
+        return school_meal_breakfast_tier_from(spm_unit, period, parameters, tier)
