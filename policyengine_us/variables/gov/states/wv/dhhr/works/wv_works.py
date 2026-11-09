@@ -7,7 +7,7 @@ class wv_works(Variable):
     label = "West Virginia WV Works benefit"
     unit = USD
     definition_period = MONTH
-    reference = "https://bfa.wv.gov/media/40005/download?inline#page=593"
+    reference = "https://web.archive.org/web/20261023203756/https://bfa.wv.gov/media/40005/download?inline#page=593"
     defined_for = "wv_works_eligible"
 
     def formula(spm_unit, period, parameters):
