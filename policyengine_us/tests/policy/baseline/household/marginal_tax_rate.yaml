@@ -103,15 +103,20 @@
   period: 2024
   input:
     people:
+      # Each has employer coverage, so no premium tax credit phases out
+      # with a raise.
       person1:
         age: 40
         employment_income: 90_000
+        has_esi: true
       person2:
         age: 35
         employment_income: 60_000
+        has_esi: true
       person3:
         age: 30
         employment_income: 30_000
+        has_esi: true
     tax_units:
       tax_unit1:
         members: [person1]
@@ -131,13 +136,32 @@
         members: [person1, person2, person3]
         state_code: TX
   output:
-    # The $60,000 earner (411% FPL) also gets a 2024 premium tax credit under
-    # the enhanced schedule, which falls by 8.5% of each added dollar:
-    # 12% + 7.65% + 8.5% = 28.15%. At $90,000 the credit is zero.
-    marginal_tax_rate: [0.2965, 0.2815, 0]
+    marginal_tax_rate: [0.2965, 0.1965, 0]
     marginal_tax_rate_computed: [true, true, false]
     federal_marginal_tax_rate: [0.22, 0.12, 0]
     fica_marginal_tax_rate: [0.0765, 0.0765, 0]
+
+- name: A marketplace enrollee's rate includes the premium tax credit's phase-out
+  # A single 35-year-old in Texas earning $60,000 in 2024: 411% of the 2023
+  # poverty guideline, where the enhanced schedule caps the benchmark plan at
+  # 8.5% of income, so the credit falls by 8.5 cents per added dollar.
+  # 12% bracket + 7.65% payroll tax + 8.5% = 28.15%.
+  absolute_error_margin: 0.0001
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    marginal_tax_rate: 0.2815
 
 # A single Ohio parent of children aged 4 and 8. The marginal tax rate must
 # equal the change in household net income between the two fresh simulations
