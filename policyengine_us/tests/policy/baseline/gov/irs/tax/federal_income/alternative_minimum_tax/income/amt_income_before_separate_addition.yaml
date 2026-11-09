@@ -91,3 +91,18 @@
     amt_income_before_separate_addition: 107_000
     amt_income: 107_000
 
+# irs_gross_income adds each person's refund floored at zero, so a negative
+# refund input never enters AGI, and AMTI must not take it back out.
+- name: A negative refund input is not in AGI and adds nothing to AMTI, 2025
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    tax_unit_itemizes: true
+    taxable_income: 100_000
+    salt_deduction: 8_000
+    salt_refund_income: -2_000
+    filing_status: SINGLE
+  output:
+    # 100,000 + 8,000 - max(0, -2,000)
+    amt_income_before_separate_addition: 108_000
+    amt_income: 108_000
