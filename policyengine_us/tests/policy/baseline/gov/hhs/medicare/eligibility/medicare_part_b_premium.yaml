@@ -10,6 +10,7 @@
     is_medicare_eligible: true
     msp_income_eligible: false
     msp_asset_eligible: false
+    ssi: 0  # Not an SSI recipient, so no state buy-in.
   output:
     medicare_part_b_premium: 2_220  # $185 * 12 months
 
@@ -25,6 +26,7 @@
     is_medicare_eligible: true
     msp_income_eligible: false
     msp_asset_eligible: false
+    ssi: 0  # Not an SSI recipient, so no state buy-in.
   output:
     medicare_part_b_premium: 4_440  # $370 * 12 months
 
@@ -40,6 +42,7 @@
     is_medicare_eligible: true
     msp_income_eligible: false
     msp_asset_eligible: false
+    ssi: 0  # Not an SSI recipient, so no state buy-in.
   output:
     medicare_part_b_premium: 7_546.8  # $628.90 * 12 months
 
@@ -55,6 +58,7 @@
     is_medicare_eligible: true
     msp_income_eligible: false
     msp_asset_eligible: false
+    ssi: 0  # Not an SSI recipient, so no state buy-in.
   output:
     medicare_part_b_premium: 3_108  # $259 * 12 months
 
@@ -70,6 +74,7 @@
     is_medicare_eligible: true
     msp_income_eligible: false
     msp_asset_eligible: false
+    ssi: 0  # Not an SSI recipient, so no state buy-in.
   output:
     medicare_part_b_premium: 2_220  # $185 * 12 months
 
@@ -85,6 +90,7 @@
     is_medicare_eligible: true
     msp_income_eligible: false
     msp_asset_eligible: false
+    ssi: 0  # Not an SSI recipient, so no state buy-in.
   output:
     medicare_part_b_premium: 7_546.8  # $628.90 * 12 months
 
@@ -127,6 +133,7 @@
     medicare_enrolled: true
     msp_income_eligible: false
     msp_asset_eligible: false
+    ssi: 0  # Not an SSI recipient, so no state buy-in.
   output:
     medicare_part_b_premium: 2_434.8
 
@@ -143,6 +150,7 @@
     medicare_enrolled: true
     msp_income_eligible: false
     msp_asset_eligible: false
+    ssi: 0  # Not an SSI recipient, so no state buy-in.
   output:
     medicare_part_b_premium: 3_409.2
 
@@ -159,6 +167,7 @@
     medicare_enrolled: true
     msp_income_eligible: false
     msp_asset_eligible: false
+    ssi: 0  # Not an SSI recipient, so no state buy-in.
   output:
     medicare_part_b_premium: 4_869.6
 
@@ -175,6 +184,7 @@
     medicare_enrolled: true
     msp_income_eligible: false
     msp_asset_eligible: false
+    ssi: 0  # Not an SSI recipient, so no state buy-in.
   output:
     medicare_part_b_premium: 7_790.4
 
@@ -191,5 +201,84 @@
     medicare_enrolled: true
     msp_income_eligible: false
     msp_asset_eligible: false
+    ssi: 0  # Not an SSI recipient, so no state buy-in.
   output:
     medicare_part_b_premium: 8_278.8
+
+- name: A Part A-only enrollee pays no Part B premium.
+  # $40,000 of interest is above the 135% FPL MSP limit, so with Part B
+  # this person would pay the $185 standard premium: $2,220 a year.
+  period: 2025
+  input:
+    age: 70
+    taxable_interest_income: 40_000
+    medicare_part_b_enrolled: false
+    state_code: TX
+  output:
+    medicare_enrolled: true
+    msp_part_b_premium_coverage: 0
+    gross_medicare_part_b_premium_if_enrolled: 0
+    medicare_part_b_premium: 0
+    medical_expense_health_insurance_premiums: 0
+
+- name: The same person enrolled in Part B pays the standard premium.
+  period: 2025
+  input:
+    age: 70
+    taxable_interest_income: 40_000
+    state_code: TX
+  output:
+    medicare_part_b_enrolled: true
+    msp_part_b_premium_coverage: 0
+    medicaid_part_b_buy_in_premium_coverage: 0
+    gross_medicare_part_b_premium_if_enrolled: 2_220
+    medicare_part_b_premium: 2_220
+    medical_expense_health_insurance_premiums: 2_220
+
+- name: A Part A-only enrollee's other premiums still count.
+  period: 2025
+  input:
+    age: 70
+    taxable_interest_income: 40_000
+    medicare_part_b_enrolled: false
+    health_insurance_premiums_without_medicare_part_b: 1_500
+    state_code: TX
+  output:
+    medicare_part_b_premium: 0
+    medical_expense_health_insurance_premiums: 1_500
+
+- name: The state buy-in pays the standard premium for an SSI recipient above the MSP limits.
+  # Reported SSI receipt in California, a Section 1634 state, gives Medicaid
+  # as an SSI recipient; $30,000 of interest is above 135% FPL, so no MSP.
+  period: 2025
+  input:
+    age: 70
+    taxable_interest_income: 30_000
+    receives_ssi: true
+    state_code: CA
+  output:
+    msp_part_b_premium_coverage: 0
+    medicaid_part_b_buy_in_premium_coverage: 2_220
+    medicare_part_b_premium: 0
+    medical_expense_health_insurance_premiums: 0
+
+- name: MSP and buy-in coverage of the same premium are not added twice.
+  period: 2025
+  input:
+    age: 70
+    gross_medicare_part_b_premium: 4_440
+    msp_part_b_premium_coverage: 2_220
+    medicaid_part_b_buy_in_premium_coverage: 2_220
+  output:
+    # The income-related amount above the standard premium stays:
+    # 4,440 - 2,220 = 2,220.
+    medicare_part_b_premium: 2_220
+
+- name: Coverage above the gross premium leaves no negative premium.
+  period: 2025
+  input:
+    age: 70
+    gross_medicare_part_b_premium: 2_220
+    msp_part_b_premium_coverage: 3_000
+  output:
+    medicare_part_b_premium: 0

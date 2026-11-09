@@ -71,7 +71,7 @@ def grid_simulation(repayment, tax_unit_inputs=None, schedule_m=ZEROS, wage_cut=
         tax_unit = {
             "members": [person],
             "claim_of_right_prior_year_tax_decrease": {YEAR: float(DECREASE[i])},
-            "il_schedule_m_subtractions": {YEAR: float(schedule_m[i])},
+            "il_other_subtractions": {YEAR: float(schedule_m[i])},
         }
         for name, value in (tax_unit_inputs or {}).items():
             tax_unit[name] = {YEAR: value}

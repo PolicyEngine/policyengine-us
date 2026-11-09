@@ -185,6 +185,834 @@
     is_medicaid_eligible: [false, false]
     is_chip_eligible_standard_pregnant_person: [true, false]
     # FCEP covers the unborn child, so it has no immigration test; both states
-    # offer it (Colorado since October 30, 2023).
+    # offer it (Colorado since January 1, 2025).
     is_chip_fcep_eligible_person: [true, true]
     is_chip_eligible_pregnant: [true, true]
+
+# The CHIP state plans have set these pregnancy bands since before 2018:
+# Colorado 260% (CO-13-0015), New Jersey 200% (NJ-13-0018) and Rhode Island
+# 253% (RI-13-023), each plus the 5 percentage point MAGI disregard.
+# Kentucky's 213% band takes effect July 1, 2022 (KY-21-0001), and this
+# YEAR-defined variable reads the January value, so Kentucky has no group in
+# 2022.
+- name: Case 9, pregnancy bands in Colorado, New Jersey and Rhode Island include the disregard, and Kentucky's July 2022 group does not apply in 2022 annual simulations.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.63
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.03
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.55
+      person4:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.1
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+      tax_unit4:
+        members: [person4]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+      spm_unit4:
+        members: [person4]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+      family3:
+        members: [person3]
+      family4:
+        members: [person4]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+      marital_unit4:
+        members: [person4]
+    households:
+      household1:
+        members: [person1]
+        state_code: CO
+      household2:
+        members: [person2]
+        state_code: NJ
+      household3:
+        members: [person3]
+        state_code: RI
+      household4:
+        members: [person4]
+        state_code: KY
+  output:
+    is_chip_eligible_standard_pregnant_person: [true, true, true, false]
+
+# 907 KAR 4:030 Section 2(1)(e)1 sets 213% plus a five percent cushion (218%).
+# The limit is inclusive, so income exactly at 218% FPL qualifies.
+- name: Case 10, Kentucky pregnancy group covers income up to and including 218% FPL in 2023.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.1
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.25
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.18
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+      family3:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household1:
+        members: [person1]
+        state_code: KY
+      household2:
+        members: [person2]
+        state_code: KY
+      household3:
+        members: [person3]
+        state_code: KY
+  output:
+    is_chip_eligible_standard_pregnant_person: [true, false, true]
+
+# West Virginia's group starts July 1, 2019, so the 2019 annual value is still
+# -inf. Colorado's 265% limit already applied in 2019.
+- name: Case 11, West Virginia's July 2019 pregnancy group does not apply in 2019 annual simulations, and Colorado excludes income above 265% FPL.
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.5
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household1:
+        members: [person1]
+        state_code: WV
+      household2:
+        members: [person2]
+        state_code: CO
+  output:
+    is_chip_eligible_standard_pregnant_person: [false, false]
+
+# West Virginia's 300% band took effect July 1, 2019 (WV-19-0006), so 2020 is
+# the first year the YEAR-defined variable reads it.
+- name: Case 12, West Virginia pregnancy group applies in 2020.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.5
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    is_chip_eligible_standard_pregnant_person: true
+
+# The limits are inclusive, so income exactly at 265% (Colorado), 205% (New
+# Jersey) and 258% (Rhode Island) qualifies.
+- name: Case 13, income exactly at the Colorado, New Jersey and Rhode Island pregnancy limits qualifies in 2022.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.65
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.05
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.58
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+      family3:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household1:
+        members: [person1]
+        state_code: CO
+      household2:
+        members: [person2]
+        state_code: NJ
+      household3:
+        members: [person3]
+        state_code: RI
+  output:
+    is_chip_eligible_standard_pregnant_person: [true, true, true]
+
+# West Virginia's band is 300% FPL (WV-19-0006 CS8) plus the 5 percentage point
+# disregard. 2026 household of 2 (FPG 21,640): 21,640 x 3.05 / 12 = 5,500.17
+# -> $5,501, so 305% qualifies and 306% ($5,518.20) does not.
+- name: Case 14, West Virginia pregnancy group covers income at 305% FPL in 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 3.05
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    is_chip_eligible_standard_pregnant_person: true
+
+- name: Case 15, West Virginia pregnancy group excludes income at 306% FPL in 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 3.06
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    is_chip_eligible_standard_pregnant_person: false
+
+# 2026 household of 2: 21,640 x 2.05 / 12 = 3,696.83 -> $3,697; 2.06 gives
+# $3,714.87.
+- name: Case 16, New Jersey pregnancy group excludes income at 206% FPL in 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.06
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    is_chip_eligible_standard_pregnant_person: false
+
+# 2026 household of 2: 21,640 x 2.58 / 12 = 4,652.60 -> $4,653; 2.59 gives
+# $4,670.63.
+- name: Case 17, Rhode Island pregnancy group excludes income at 259% FPL in 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.59
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    is_chip_eligible_standard_pregnant_person: false
+
+# 2026 household of 2: 21,640 x 2.18 / 12 = 3,931.27 -> $3,932; 2.19 gives
+# $3,949.30.
+- name: Case 18, Kentucky pregnancy group excludes income at 219% FPL in 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.19
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    is_chip_eligible_standard_pregnant_person: false
+
+# Kentucky's group starts July 1, 2022 (KY-21-0001), so 2021 has no group.
+- name: Case 19, Kentucky has no CHIP pregnancy group in 2021.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.1
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    is_chip_eligible_standard_pregnant_person: false
+
+# 2019 household of 2: 16,910 x 2.65 / 12 = 3,734.29 -> $3,735, so 265%
+# qualifies (the old 2.60 limit gave $3,664).
+- name: Case 20, Colorado pregnancy group covers income at 265% FPL in 2019.
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.65
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    is_chip_eligible_standard_pregnant_person: true
+
+# West Virginia's Medicaid pregnancy limit is 190% FPL (185% plus the 5
+# percentage point disregard), and its separate CHIP pregnancy band runs above
+# it to 305%. Both start July 1, 2019, so 2020 is the first annual year. 2020
+# household of 2 (FPG 17,240): 17,240 x 1.90 / 12 = 2,729.67 -> $2,730 a month
+# ($32,760 a year). At $2,730 a month the applicant stays in Medicaid; at
+# $2,731 a month ($32,772 a year) she moves to standard pregnancy CHIP.
+- name: Case 21, West Virginia pregnant applicant at the $2,730 Medicaid ceiling stays in Medicaid in 2020.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        employment_income: 32_760
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    medicaid_household_size: 2
+    is_pregnant_for_medicaid: true
+    medicaid_category: PREGNANT
+    is_medicaid_eligible: true
+    is_chip_eligible_standard_pregnant_person: false
+    chip_category: NONE
+
+- name: Case 22, West Virginia pregnant applicant $1 above the Medicaid ceiling moves to standard pregnancy CHIP in 2020.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        employment_income: 32_772
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    medicaid_household_size: 2
+    is_pregnant_for_medicaid: false
+    medicaid_category: NONE
+    is_medicaid_eligible: false
+    is_chip_eligible_standard_pregnant_person: true
+    chip_category: PREGNANT_STANDARD
+
+# Targeted low-income pregnant women stay eligible through the postpartum period
+# (42 USC 1397ll(d)(2)(A)). Colorado had not yet elected the 12-month extension
+# in 2021, so coverage ends at the model's 60-day postpartum limit. Income of
+# 230% FPL is above Colorado's Medicaid pregnancy limit and below its CHIP
+# pregnancy limit.
+- name: Case 23, Colorado standard pregnancy CHIP covers 60 days postpartum before the 12-month extension.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        under_60_days_postpartum: true
+        medicaid_income_level: 2.3
+      person2:
+        age: 30
+        is_pregnant: false
+        under_12_months_postpartum: true
+        medicaid_income_level: 2.3
+    households:
+      household1:
+        members: [person1]
+        state_code: CO
+      household2:
+        members: [person2]
+        state_code: CO
+  output:
+    is_chip_eligible_standard_pregnant_person: [true, false]
+
+# Virginia's FAMIS MOMS demonstration extends CHIP pregnancy coverage to 12
+# months postpartum along with Medicaid (section 1115 approval of November 18,
+# 2021, implemented July 1, 2022). Income of 180% FPL is above Virginia's
+# Medicaid pregnancy limit (148%) and below its CHIP limit (205%).
+- name: Case 24, Virginia standard pregnancy CHIP covers 12 months postpartum.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        under_60_days_postpartum: true
+        medicaid_income_level: 1.8
+      person2:
+        age: 30
+        is_pregnant: false
+        under_12_months_postpartum: true
+        medicaid_income_level: 1.8
+      person3:
+        age: 30
+        is_pregnant: false
+        medicaid_income_level: 1.8
+    households:
+      household1:
+        members: [person1]
+        state_code: VA
+      household2:
+        members: [person2]
+        state_code: VA
+      household3:
+        members: [person3]
+        state_code: VA
+  output:
+    is_chip_eligible_standard_pregnant_person: [true, true, false]
+
+# The unborn-child (FCEP) option gets no 12-month extension (SHO 21-007, pages
+# 2, 4 and 7), and its limited postpartum care is not modeled, so postpartum
+# coverage continues through the standard pathway alone.
+- name: Case 25, postpartum Colorado person keeps standard pregnancy CHIP but not FCEP.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        under_60_days_postpartum: true
+        medicaid_income_level: 2.3
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    is_chip_eligible_standard_pregnant_person: true
+    is_chip_fcep_eligible_person: false
+    chip_category: PREGNANT_STANDARD
+
+# Medicaid covers the postpartum period up to its own pregnancy limit, so CHIP
+# applies only above it. Virginia's Medicaid pregnancy limit is 148% FPL and
+# its adult limit 138%; its CHIP limit is 205%.
+- name: Case 26, Virginia postpartum person stays in Medicaid below its pregnancy limit and moves to CHIP above it.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        under_12_months_postpartum: true
+        medicaid_income_level: 1.4
+      person2:
+        age: 30
+        is_pregnant: false
+        under_12_months_postpartum: true
+        medicaid_income_level: 1.8
+    households:
+      household1:
+        members: [person1]
+        state_code: VA
+      household2:
+        members: [person2]
+        state_code: VA
+  output:
+    medicaid_category: [PREGNANT, NONE]
+    is_medicaid_eligible: [true, false]
+    is_chip_eligible_standard_pregnant_person: [false, true]
+
+# Missouri's 12-month extension took effect July 7, 2023 (CHIP SPA MO-23-0021).
+# The annual model reads January 1, so the extension starts in 2024.
+- name: Case 27, Missouri standard pregnancy CHIP does not yet cover 12 months postpartum in 2023.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        under_12_months_postpartum: true
+        medicaid_income_level: 2.3
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    is_chip_eligible_standard_pregnant_person: false
+
+# 210-RICR-30-00-1 § 1.6(A)(2)(b)(1)-(2) requires the absence of
+# third-party insurance for standard pregnancy CHIP in Rhode Island.
+# https://risos-apa-production-public.s3.amazonaws.com/EOHHS/REG_13314_20250728104245127.pdf#page=5
+# Supply Medicaid ineligibility here to exercise the CHIP insurance gate
+# independently; the Medicaid integration cases test the insured pathway.
+- name: Case 28, Rhode Island standard pregnancy CHIP excludes third-party coverage independently of Medicaid eligibility.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_esi: true
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_marketplace_health_coverage_at_interview: true
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_non_marketplace_direct_purchase_health_coverage_at_interview: true
+      person4:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        medicare_enrolled: true
+      person5:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_tricare_health_coverage_at_interview: true
+      person6:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_champva_health_coverage_at_interview: true
+      person7:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: RI
+  output:
+    is_chip_eligible_standard_pregnant_person: [false, false, false, false, false, false, true]
+
+# RI-22-0025 CS27 continues the separate CHIP program through the postpartum
+# period; the full Medicaid benefit scope does not create duplicate enrollment.
+# https://www.medicaid.gov/CHIP/Downloads/RI-22-0025.pdf#page=4
+# R.I. Gen. Laws § 42-12.3-3(g) preserves the entitlement "without regard to the
+# availability of federal financial participation".
+# https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm
+- name: Case 29, Rhode Island retains pregnancy CHIP despite later income, insurance, pregnancy or immigration changes.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        immigration_status: CITIZEN
+        has_esi: false
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        has_esi: true
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+      person3:
+        age: 30
+        is_pregnant: false
+        immigration_status: UNDOCUMENTED
+        has_esi: true
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+      person4:
+        age: 30
+        is_pregnant: true
+        immigration_status: UNDOCUMENTED
+        has_esi: false
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+      person5:
+        age: 30
+        is_pregnant: false
+        immigration_status: CITIZEN
+        has_esi: false
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2022-11-27"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: RI
+  output:
+    is_chip_eligible_standard_pregnant_person: [true, true, true, true, false]
+    medicaid_enrolled: [false, false, false, false, false]
+    chip_enrolled: [true, true, true, true, false]
+
+# 210-RICR-30-00-1 § 1.6(A)(2)(b)(1) and (c) place a new pregnancy in the
+# CHIP band in CHIP, and 42 U.S.C. 1397jj(b)(1)(C) bars CHIP only for people
+# eligible under Title XIX, which the state-funded continuation is not.
+# https://risos-apa-production-public.s3.amazonaws.com/EOHHS/REG_13314_20250728104245127.pdf#page=5
+# https://www.law.cornell.edu/uscode/text/42/1397jj#b_1_C
+- name: Case 30, a new Rhode Island pregnancy in the CHIP band moves a state-funded continuation to CHIP.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        is_pregnant: true
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        takes_up_chip_if_eligible: true
+      person2:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        is_pregnant: true
+        ri_pregnancy_coverage: FCEP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.0
+        takes_up_chip_if_eligible: true
+      person3:
+        age: 30
+        immigration_status: CITIZEN
+        is_pregnant: true
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        takes_up_chip_if_eligible: false
+      person4:
+        age: 30
+        immigration_status: CITIZEN
+        is_pregnant: true
+        ri_pregnancy_coverage: MEDICAID
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        takes_up_chip_if_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    is_medicaid_eligible: [false, false, true, true]
+    is_chip_eligible_standard_pregnant_person: [true, false, false, false]
+    is_chip_fcep_eligible_person: [true, true, false, false]
+    chip_enrolled: [true, true, false, false]
+
+# 210-RICR-30-00-1 § 1.6(A)(2)(a)(2) and (b)(1) pair the routes: Medicaid with
+# third-party insurance, CHIP without it. VA coverage, other means-tested
+# coverage and the aggregate other-coverage flag are not on Rhode Island's
+# third-party list, so these applicants stay in standard CHIP.
+# https://risos-apa-production-public.s3.amazonaws.com/EOHHS/REG_13314_20250728104245127.pdf#page=5
+- name: Case 31, Rhode Island pregnant applicants whose only coverage is outside the third-party list stay in standard CHIP.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_va_health_coverage_at_interview: true
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_other_means_tested_health_coverage_at_interview: true
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_health_coverage_other_than_chip: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    is_medicaid_eligible: [false, false, false]
+    is_chip_eligible_standard_pregnant_person: [true, true, true]

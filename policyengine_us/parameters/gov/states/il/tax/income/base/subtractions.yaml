@@ -6,10 +6,11 @@ values:
     - taxable_pension_income
     - taxable_retirement_distributions
     - taxable_roth_conversions
-    - il_schedule_m_subtractions
+    - military_retirement_income
     - il_claim_of_right_subtraction # Schedule M line 15
     - il_529_plan_subtraction
     - salt_refund_income
+    - il_other_subtractions
 metadata:
   unit: list
   period: year

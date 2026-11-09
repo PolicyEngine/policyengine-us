@@ -1,0 +1,31 @@
+- name: Case 1, default hi_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: HI
+    employment_income: 50_000
+  output:
+    hi_other_subtractions: 0
+    hi_subtractions: 0
+    hi_agi: 50_000
+
+- name: Case 2, hi_other_subtractions reduces HI AGI
+  period: 2024
+  input:
+    state_code: HI
+    employment_income: 50_000
+    hi_other_subtractions: 2_000
+  output:
+    hi_other_subtractions: 2_000
+    hi_subtractions: 2_000
+    hi_agi: 48_000
+
+- name: Case 3, hi_other_subtractions reduces HI AGI in 2025
+  period: 2025
+  input:
+    state_code: HI
+    employment_income: 50_000
+    hi_other_subtractions: 2_000
+  output:
+    hi_other_subtractions: 2_000
+    hi_subtractions: 2_000
+    hi_agi: 48_000

@@ -1,0 +1,23 @@
+description: Virginia sets the maximum monthly care rate outside Planning District Eight at this amount above the federal Supplemental Security Income benefit rate under the Auxiliary Grant program.
+values:
+  # Derived, not stated in law: 2,130 - 994 = 1,136 (2,103 - 967 and
+  # 2,079 - 943 also give 1,136). Tying the rate to the FBR passes through
+  # federal increases (Item 332 A.3; 20 CFR 416.2096); a reform that lowered
+  # the FBR would also lower this rate below the appropriated amount.
+  2026-01-01: 1_136
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Virginia Auxiliary Grant care rate offset above the SSI federal benefit rate
+  reference:
+    - title: 22VAC30-80-50
+      href: https://law.lis.virginia.gov/admincode/title22/agency30/chapter80/section50/
+    - title: Virginia Auxiliary Grant January 2026 rate letter
+      href: https://www.dss.virginia.gov/media/vdss/licensing/documents/assisted-living-facilities/additional-resources/ARC2026_ag_rate_letter.pdf
+    - title: Virginia 2025 Appropriation Act, Item 328 A
+      href: https://budget.lis.virginia.gov/item/2025/1/HB1600/Chapter/1/328/
+    - title: Virginia 2026 Appropriation Act, Item 332 A
+      href: https://budget.lis.virginia.gov/item/2026/2/HB30/Chapter/1/332/
+    - title: 20 CFR 416.2096
+      href: https://www.ecfr.gov/current/title-20/chapter-III/part-416/subpart-T/section-416.2096

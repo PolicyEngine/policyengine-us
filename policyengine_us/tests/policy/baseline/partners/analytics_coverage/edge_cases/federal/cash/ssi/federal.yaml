@@ -282,18 +282,20 @@
         is_ssi_aged: true
         msp: 0
         msp_eligible: false
-        # Despite $0 SSI, still Medicaid-eligible via TX's optional
-        # senior-or-disabled pathway: SSI-method countable income $11,928
-        # <= 75% of FPG (0.75 x $15,960 = $11,970), so the calibration-
-        # derived TX adult per-capita cost applies.
-        medicaid: 13_708.50
-        is_medicaid_eligible: true
+        # $0 SSI, so not an SSI recipient. Texas covers aged, blind and
+        # disabled people at home only if they receive SSI; its optional
+        # groups are institutional, waiver and buy-in groups (MEPD A-3000),
+        # with no 75% FPG group, so no Medicaid.
+        medicaid: 0
+        is_medicaid_eligible: false
         chip: 0
-        is_aca_ptc_eligible: false
+        # Without Medicaid, Medicare or an ESI offer, the PTC applies at
+        # 158% FPL: SLCSP $19,482.51 - 4.58% x $24,876 MAGI ($1,138.23).
+        is_aca_ptc_eligible: true
     tax_units:
       tax_unit:
-        aca_ptc: 0
-        premium_tax_credit: 0
+        aca_ptc: 18_344.29
+        premium_tax_credit: 18_344.29
 - name: ssi_unearned_income_reduction (federal)
   period: 2026
   absolute_error_margin: 0.1

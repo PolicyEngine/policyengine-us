@@ -1,0 +1,1015 @@
+# FY2027 HAP manual; supported income components only.
+# These tests do not assert final eligibility, heating points or an award.
+# Sources:
+# http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-1_countable_income.htm
+# http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-2_noncountable_(exempt)_income.htm
+# http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-4_income_from_self-employment.htm
+# http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-6_guidelines_for_computing_income.htm
+# https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+# Annual receipts approximate the application-month rules; computed benefits are supplied.
+
+# MS 3003-1 A.1 counts gross wages before deductions or garnishments.
+- name: "Case 1, gross wages receive no general earned-income deduction."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 12_000
+
+# MS 3003-4 A.7 defines gross less allowable costs; the supplied input is already net, so no second standard expense deduction applies.
+- name: "Case 2, supplied net self-employment is not reduced by another fifty percent."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        self_employment_income: 6_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 6_000
+
+# MS 3003-4 A.7 and supplied-net approximation: each source is floored at zero, so 12,000 + 0 = 12,000. Prior-period losses and disallowed expenses cannot be reconstructed.
+- name: "Case 3, a current net business loss does not offset other income."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 12_000
+        self_employment_income: -3_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 12_000
+
+# MS 3003-4 A.7 and D.2: 2,000 + 0 (the 600 SSTB loss is floored) + 800 + (600 + 400) = 3,800. Use canonical partnership and S-corporation components.
+- name: "Case 4, separate supplied business sources count once without another expense deduction."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        self_employment_income: 2_000
+        sstb_self_employment_income: -600
+        farm_operations_income: 800
+        partnership_income: 600
+        s_corp_income: 400
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 3_800
+
+# MS 3003-1 B.6.f; each rental stream is floored at zero: 10,000 + 0 + 600.
+- name: "Case 5, negative rental income does not offset positive farm rental income."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 10_000
+        rental_income: -300
+        farm_rent_income: 600
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 10_600
+
+# Each reported rental source is floored separately; no extra expense deduction from supplied net rent.
+- name: "Case 6, negative farm rental income does not reduce positive rental income."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        rental_income: 1_000
+        farm_rent_income: -300
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 1_000
+
+# Each source is floored at zero: 100 + 0 = 100.
+- name: "Case 7, a business loss larger than wages leaves the wages counted."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 100
+        self_employment_income: -1_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 100
+
+# MS 3003-6 E includes otherwise countable income of ineligible aliens without proration.
+- name: "Case 8, all members income counts in a mixed-status household."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 12_000
+      person2:
+        age: 40
+        immigration_status: "UNDOCUMENTED"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 24_000
+
+# 7 AAC 44.042(5) exempts wages of a full-time student under 18 who is not the head of household; is_full_time_student treats K-12 attendance as full time, and the 40-year-old parent is the tax-unit head: 24,000 + 0 = 24,000.
+- name: "Case 9, wages of a full-time elementary student who is not the head are excluded."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 24_000
+      person2:
+        age: 12
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        employment_income: 1_200
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 24_000
+
+# 7 AAC 44.042(5) covers any full-time student under 18, not only elementary or secondary students, and exempts only "wages". A 17-year-old full-time college student who is not the head has 12,000 of wages and 1,200 of National Guard drill pay (military basic pay) excluded, but the 2,000 of net business income counts: 24,000 + 0 + 0 + 2,000 = 26,000.
+- name: "Case 10, a full-time college student under 18 who is not the head has wages excluded and net business income counted."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 24_000
+      person2:
+        age: 17
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        is_tax_unit_dependent: true
+        is_full_time_college_student: true
+        is_in_k12_school: false
+        employment_income: 12_000
+        military_basic_pay: 1_200
+        self_employment_income: 2_000
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 26_000
+
+# 7 AAC 44.042(5) requires age under 18. This 18-year-old is a full-time high school student and not the head, so only age fails: 24,000 + 12,000 = 36,000.
+- name: "Case 11, full-time school attendance does not exclude wages at age eighteen."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 24_000
+      person2:
+        age: 18
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        employment_income: 12_000
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 36_000
+
+# 7 AAC 44.042(5) requires full-time student status. A 17-year-old who attends neither school nor college is not a full-time student: 24,000 + 12,000 = 36,000.
+- name: "Case 12, wages of a minor who is not a full-time student count."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 24_000
+      person2:
+        age: 17
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        employment_income: 12_000
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 36_000
+
+# 7 AAC 44.042(5) does not exempt a head of household. This 17-year-old high school student lives alone with no role supplied. A tax unit infers a head only among adults, so the student is not a tax-unit head, but with no adult in the SPM unit the student is treated as its head, so the wages of 12,000 count.
+- name: "Case 13, wages of a minor student living without an adult count."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 17
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        is_in_k12_school: true
+        employment_income: 12_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 12_000
+
+# MS 3003-1 B.2 and 3003-6 E: 24,000 + 2,400 + 600 + 1,200; the 7 AAC 44.042(5) student exemption covers wages only.
+- name: "Case 14, unearned income of a dependent child remains countable."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 24_000
+      person2:
+        age: 17
+        immigration_status: "CITIZEN"
+        ssi: 2_400
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        social_security: 600
+        pension_income: 1_200
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 28_200
+
+# MS 3003-1 B.2.c counts gross SSA including Medicare withholding. No general medical, childcare or support deduction applies.
+- name: "Case 15, gross Social Security is not reduced by reported medical or support expenses."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        social_security: 18_000
+        medicare_part_b_premiums_reported: 2_400
+        health_insurance_premiums: 1_200
+        other_medical_expenses: 900
+        child_support_expense: 600
+        alimony_expense: 300
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+        childcare_expenses: 1_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 18_000
+
+# MS 3003-1 B.2 and B.6.c list these ordinary unearned receipts, and 3000-2 names Railroad Retirement Act annuities; inputs represent distinct payments: 2,400 + 1,200 + 600 + 600 + 600.
+- name: "Case 16, retirement, railroad and regular disability or survivor receipts count."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        pension_income: 2_400
+        retirement_distributions: 1_200
+        disability_benefits: 600
+        survivor_benefits: 600
+        railroad_benefits: 600
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 5_400
+
+# MS 3003-1 B.2 and B.6.a,b,j: ordinary nonexempt cash receipts: 600 + 600 + 600 + 600 = 2,400.
+- name: "Case 17, ordinary compensation, veterans and strike receipts count."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        unemployment_compensation: 600
+        workers_compensation: 600
+        veterans_benefits: 600
+        strike_benefits: 600
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 2_400
+
+# MS 3003-1 B.6.h and B.6.n (bingo and lottery winnings); ordinary receipts have no NH-style $50 disregard. Generic dividends cannot identify exempt ANCSA payments: 120 + 240 + 120 + 600.
+- name: "Case 18, ordinary interest, dividends, estate payments and gambling winnings count in full."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        interest_income: 120
+        ordinary_dividend_income: 240
+        estate_income: 120
+        gambling_winnings: 600
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 1_080
+
+# MS 3003-1 B.6.h. Canonical ordinary dividends aggregate the two components; do not count the aggregate and components again.
+- name: "Case 19, canonical dividend components are counted once."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        qualified_dividend_income: 120
+        non_qualified_dividend_income: 240
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 360
+
+# MS 3003-1 B.6.v explicitly lists capital gains.
+- name: "Case 20, capital gains are countable."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        short_term_capital_gains: 1_000
+        long_term_capital_gains: 2_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 3_000
+
+# MS 3003-1 B.3 and B.6.e; reported support is treated as retained, with no $50 pass-through cap. 600 + 1,200 + 2,400 ATAP.
+- name: "Case 21, retained child support and alimony are countable."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        alimony_income: 600
+        child_support_received: 1_200
+      person2:
+        age: 4
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 2_400
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 4_200
+
+# MS 3003-1 B.1 and 3003-2 A.14; caretaker and children are included. Annual household ATAP of 2,400 counts once.
+- name: "Case 22, Alaska Temporary Assistance is counted once per household."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 6_000
+      person2:
+        age: 4
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        is_tax_unit_dependent: true
+      person3:
+        age: 2
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 2_400
+    households:
+      household1:
+        members: ["person1", "person2", "person3"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 8_400
+
+# MS 3003-1 B.1 and B.2: supplied annual APA 2,400 plus SSI 6,000. Existing ak_ssp is APA, not exempt Senior Benefits.
+- name: "Case 23, Adult Public Assistance and federal SSI are distinct countable receipts."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        immigration_status: "CITIZEN"
+        ssi: 6_000
+        ak_ssp: 2_400
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 8_400
+
+# MS 3003-2 A.24: 239.88 / 12 = 19.99 each month under the constant monthly receipt approximation.
+- name: "Case 24, regular cash gifts strictly below twenty dollars monthly are excluded."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        financial_assistance: 239.88
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 0
+
+# 7 AAC 44.042(16) exempts gifts that do not exceed $20 a month, and MS 3003-1 B.6.r counts only gifts over $20: 240 / 12 = 20 is excluded.
+- name: "Case 25, regular cash gifts of exactly twenty dollars monthly are excluded."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        financial_assistance: 240
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 0
+
+# MS 3003-1 B.6.r and 3003-2 A.24: 240.12 / 12 = 20.01; this is an exclusion threshold, not a $20 deduction.
+- name: "Case 26, regular cash gifts above twenty dollars monthly count in full."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        financial_assistance: 240.12
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 240.12
+
+# MS 3003-2 A.24: each person receives 15 per month, so the annual household sum of 360 remains exempt.
+- name: "Case 27, the gift exclusion is per person rather than per household."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        financial_assistance: 180
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        financial_assistance: 180
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 0
+
+# MS 3003-2 A.1,6,9,30 exclude the household member's PFD, Pell, SNAP and vendor housing benefit.
+- name: "Case 28, household PFD and vendor or education benefits are excluded."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 3_000
+        employment_income: 10_000
+        pell_grant: 2_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+        snap: 6_000
+        housing_assistance: 6_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 10_000
+
+# MS 3003-2 A.9 counts actual cash utility reimbursement; a HUD allowance alone does not show a cash payment.
+- name: "Case 29, a utility allowance is not automatically treated as a cash reimbursement."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+        hud_utility_allowance: 1_200
+  output:
+    ak_hap_countable_income: 10_000
+
+# All calculated SSI, APA and ATAP receipts are supplied as zero; no PFD or in-kind income is counted.
+- name: "Case 30, zero supplied receipts produce zero countable income."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 0
+
+# 7 AAC 44.042(5): a 16-year-old in high school is a full-time student (K-12
+# attendance is full time, by default from age), and the 40-year-old parent
+# is the inferred tax-unit head, so the student's 6,000 of wages are exempt:
+# 24,000 + 0 = 24,000.
+- name: "Case 31, wages of a 16-year-old full-time student who is not a tax-unit head are excluded."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 24_000
+      person2:
+        age: 16
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 6_000
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "AK"
+  output:
+    is_full_time_student: [false, true]
+    is_tax_unit_head: [true, false]
+    ak_hap_countable_income: 24_000
+
+# The same 16-year-old full-time student heads a separate tax unit (supplied
+# roles), so 7 AAC 44.042(5) does not exempt the wages: 24,000 + 6,000 =
+# 30,000. Only the head role differs from Case 31.
+- name: "Case 32, wages of the same 16-year-old full-time student count when the student heads a tax unit."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        tax_unit_role_input: "HEAD"
+        employment_income: 24_000
+      person2:
+        age: 16
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        tax_unit_role_input: "HEAD"
+        employment_income: 6_000
+    tax_units:
+      tax_unit1:
+        members: ["person1"]
+      tax_unit2:
+        members: ["person2"]
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "AK"
+  output:
+    is_full_time_student: [false, true]
+    is_tax_unit_head: [true, true]
+    ak_hap_countable_income: 30_000
+
+# 7 AAC 44.042(18) exempts State General Relief Assistance (7 AAC 38.030),
+# which general_assistance stands for, so the 1,200 is not counted: wages
+# 10,000 + 0 = 10,000.
+- name: "Case 33, general relief assistance is not countable income."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 10_000
+        general_assistance: 1_200
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 10_000

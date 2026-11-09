@@ -16,19 +16,21 @@ SURVIVING_SPOUSE:
   2022-01-01: 98_440
   2023-01-01: 101_492
   2024-01-01: 104_842
-  2025-01-01: 107_987
+  2025-01-01: 107_988
 JOINT:
   2021-01-01: 90_896
   2022-01-01: 98_440
   2023-01-01: 101_492
   2024-01-01: 104_842
-  2025-01-01: 107_987
+  # Apply RTC 17053.5(j)(4): 2 x $53,994 = $107,988,
+  # contrary to the FTB website's $107,987 joint limit.
+  2025-01-01: 107_988
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 90_896
   2022-01-01: 98_440
   2023-01-01: 101_492
   2024-01-01: 104_842
-  2025-01-01: 107_987
+  2025-01-01: 107_988
 
 metadata:
   period: year
@@ -42,6 +44,10 @@ metadata:
   reference:
   - title: Cal. Rev. & Tax. Code § 17053.5
     href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17053.5
+  - title: SB 1005, section 98, RTC 17053.5(j)(4)
+    href: https://www.leginfo.ca.gov/pub/15-16/bill/sen/sb_1001-1050/sb_1005_bill_20160701_chaptered.pdf#page=89
+  - title: FTB nonrefundable renter's credit website
+    href: https://www.ftb.ca.gov/file/personal/credits/nonrefundable-renters-credit.html
   - title: 2021 California Form 540 instructions
     href: https://www.ftb.ca.gov/forms/2021/2021-540-booklet.html
   - title: 2022 California Form 540 instructions
