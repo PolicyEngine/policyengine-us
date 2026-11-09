@@ -16,10 +16,14 @@ class medicaid_ltss_qit_adjusted_needs_based_income(Variable):
         "remaining unearned income. This preserves the general exclusion "
         "carve-out when deposited source classifications are incomplete. "
         "Washington has no qualified income trust exception under "
-        "42 USC 1396p(d)(4)(B)(iii), so deposits leave its needs-based "
+        "42 USC 1396p(d)(4)(B)(iii), and WAC 182-513-1340 lists no trust "
+        "deposit among its exclusions, so deposits leave its needs-based "
         "income unchanged."
     )
-    reference = "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=9"
+    reference = (
+        "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=9",
+        "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1340",
+    )
 
     def formula(person, period, parameters):
         gross_unearned = max_(person("medicaid_ltss_gross_unearned_income", period), 0)

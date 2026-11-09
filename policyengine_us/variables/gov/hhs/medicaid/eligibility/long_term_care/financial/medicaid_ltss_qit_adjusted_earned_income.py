@@ -21,13 +21,15 @@ class medicaid_ltss_qit_adjusted_earned_income(Variable):
         "retain their actual-deposit exclusion without that verification. "
         "Washington covers nursing facility services for the medically "
         "needy, so 42 USC 1396p(d)(4)(B)(iii) gives it no qualified income "
-        "trust exception and deposits leave its income unchanged."
+        "trust exception. WAC 182-513-1340 lists no trust deposit among "
+        "its exclusions, so deposits leave Washington income unchanged."
     )
     reference = (
         "https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/f-6800-qualified-income-trust",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=54",
         "https://www.law.cornell.edu/uscode/text/42/1396p#d_4_B",
         "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1395",
+        "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1340",
     )
 
     def formula(person, period, parameters):

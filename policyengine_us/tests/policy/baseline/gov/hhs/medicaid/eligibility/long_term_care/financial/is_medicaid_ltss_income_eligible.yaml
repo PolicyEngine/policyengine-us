@@ -1291,6 +1291,14 @@
         medicaid_ltss_qit_covered_unearned_income: 4000
         medicaid_ltss_qit_covered_unearned_income_deposited: 500
         medicaid_ltss_qit_subsequent_full_deposits_verified: true
+      delaware_unverified:
+        medicaid_ltss_reported_gross_unearned_income: 4000
+        medicaid_ltss_unearned_income_deposited_to_qit: 500
+        medicaid_ltss_qit_opening_year: 2026
+        medicaid_ltss_qit_opening_month: 7
+        medicaid_ltss_qit_covered_unearned_income: 4000
+        medicaid_ltss_qit_covered_unearned_income_deposited: 500
+        medicaid_ltss_qit_subsequent_full_deposits_verified: false
     marital_units:
       unverified:
         members: [unverified]
@@ -1306,6 +1314,8 @@
         members: [outside_texas]
       mixed_sources:
         members: [mixed_sources]
+      delaware_unverified:
+        members: [delaware_unverified]
     households:
       unverified:
         members: [unverified]
@@ -1335,10 +1345,14 @@
         members: [mixed_sources]
         state_code:
           '2026': TX
+      delaware_unverified:
+        members: [delaware_unverified]
+        state_code:
+          '2026': DE
   output:
-    medicaid_ltss_qit_adjusted_unearned_income: [4000, 3500, 4000, 3500, 3500, 4000, 1500]
-    tx_medicaid_ltss_qit_opening_month_exclusion_applies: [false, false, false, false, false, false, true]
-    tx_medicaid_ltss_qit_opening_month_deposit_invalid: [true, false, false, false, false, false, false]
+    medicaid_ltss_qit_adjusted_unearned_income: [4000, 3500, 4000, 3500, 3500, 4000, 1500, 3500]
+    tx_medicaid_ltss_qit_opening_month_exclusion_applies: [false, false, false, false, false, false, true, false]
+    tx_medicaid_ltss_qit_opening_month_deposit_invalid: [true, false, false, false, false, false, false, false]
 - name: Case 34, Texas QIT opening exclusion covers both identified sources with one partial source deposit.
   period: 2026-07
   input:
