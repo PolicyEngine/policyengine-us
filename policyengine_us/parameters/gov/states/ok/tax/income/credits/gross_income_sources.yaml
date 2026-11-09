@@ -16,6 +16,10 @@ values:
     - estate_income
     - dividend_income
     - pension_income
+    # OAC 710:50-15-96(c) and Form 538-S line 6: pensions and annuities, taxable
+    # or not, including military retired pay and survivor annuities, which
+    # pension_income leaves out.
+    - military_retirement_income
     - debt_relief
     - total_unemployment_compensation
     - workers_compensation
