@@ -244,6 +244,21 @@ def test_new_york_limits_are_the_statutory_amounts():
     second=(900_000.0, 2018, 0.0, 150_000.0),
     status=(2025, "JOINT"),
 )
+# The same homes with the second loan's year unknown: it counts as the most
+# recent, so the main home's loan goes first and the second home's room of
+# $50,000 binds.
+@example(
+    first=(900_000.0, 2017, 0.0, 540_000.0),
+    second=(900_000.0, 0, 0.0, 150_000.0),
+    status=(2025, "JOINT"),
+)
+# Loans from different years, where sharing the limit gives more home equity
+# debt than date order does.
+@example(
+    first=(900_000.0, 2017, 0.0, 3_000_000.0),
+    second=(900_000.0, 2018, 0.0, 120_000.0),
+    status=(2025, "JOINT"),
+)
 def test_new_york_qualified_loan_limit_properties(first, second, status):
     ny_limits, federal_limits = LIMITS[status]
     pair = [first, second]
