@@ -41,6 +41,8 @@ values:
     - miscellaneous_income
     # Listed separately on 1040 line 8g.
     - ak_permanent_fund_dividend
+    # Reported with the dividend on line 8g, except the 2022 payment.
+    - taxable_ak_energy_relief
     # Alimony from divorces executed before the TCJA cutoff (Schedule 1 line 2a).
     - taxable_alimony_income
     # Taxable state and local income tax refunds (Schedule 1 line 1 / IRC § 111).

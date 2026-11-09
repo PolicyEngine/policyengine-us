@@ -109,6 +109,7 @@ GROSS_INCOME_IN_RESOURCES = {
     "taxable_retirement_distributions": "retirement_distributions",
     "miscellaneous_income": "miscellaneous_income",
     "ak_permanent_fund_dividend": "ak_permanent_fund_dividend",
+    "taxable_ak_energy_relief": "ak_energy_relief",
     "taxable_alimony_income": "alimony_income",
     "military_retirement_income": "military_retirement_income",
 }
