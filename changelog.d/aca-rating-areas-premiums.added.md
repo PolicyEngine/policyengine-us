@@ -1,1 +1,0 @@
-Add 2027 ACA benchmark (second-lowest silver) and lowest bronze premiums for every rating area, from KFF's 2027 marketplace calculator, and KFF's 2027 national average benchmark premium ($703 a month for a 40-year-old).

@@ -1,3 +1,14 @@
+## [2.115.0] - 2026-11-09
+
+### Added
+
+- Add 2027 ACA benchmark (second-lowest silver) and lowest bronze premiums for every rating area, from KFF's 2027 marketplace calculator, and KFF's 2027 national average benchmark premium ($703 a month for a 40-year-old).
+
+### Fixed
+
+- Correct ACA rating areas for 118 counties to match CMS's state geographic rating areas. From 2026: Idaho's six county-based areas, Washington's nine areas, Orange County and four other California counties, Massachusetts, Alaska, Nebraska and South Dakota; earlier years keep the previous map. From 2014: 32 counties the map misspelled or lacked. Correct 21 rating areas' 2026 benchmark premiums, including Los Angeles County's, add premiums for the three areas that had none, and put lowest bronze premiums on the age-0 basis the model applies them on.
+
+
 ## [2.114.0] - 2026-11-09
 
 ### Added
