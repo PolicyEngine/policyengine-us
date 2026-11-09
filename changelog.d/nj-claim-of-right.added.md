@@ -1,0 +1,1 @@
+Offset New Jersey claim of right repayments against income of the same category in the year of repayment (N.J.S.A. 54A:5-2, TAM 2011-7), including in the pension exclusion's base and Worksheet D's earnings test.

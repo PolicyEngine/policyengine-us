@@ -6968,13 +6968,14 @@ candidates:
     guidance.
   pe_us:
     follows: gap-fill
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/nj/tax/income/adjusted_gross_income/claim_of_right/nj_claim_of_right_offset.py
+    - policyengine_us/variables/gov/states/nj/tax/income/adjusted_gross_income/claim_of_right/nj_claim_of_right_repayment_category.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10198
-  state: unreviewed
-  note: 'Retain as a disputable gap-fill; verify whether repayments are statutory losses and separate this issue
-    from unsupported spouse attribution. Code not yet on main: policyengine_us/variables/gov/states/nj/tax/income/adjusted_gross_income/claim_of_right/nj_claim_of_right_repayment_category.py,
-    gov/states/nj/tax/income/adjusted_gross_income/nj_claim_of_right_offset.yaml, nj_claim_of_right_offset, nj_claim_of_right_repayment_category.'
+  state: ruled
+  note: Ruled in November 2026 as a gap-fill under TAM 2011-7. Whether repayments count as statutory losses remains
+    unverified, and the sources leave spouse attribution open.
 - id: us-nj:eitc-married-separate-filer
   program: income-tax
   years:
