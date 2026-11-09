@@ -21,3 +21,45 @@
     ssi_couple_computation_applies: true
   output:
     co_oap_in_kind_support_and_maintenance: 150
+
+- name: An SSI recipient in another person's household is charged SSA's one-third reduction.
+  # 3.520.79(B)(6), 3.520.71(E): the matching ISM is what SSA counts, one-third
+  # of the $994 benefit rate (20 CFR 416.1131(a)), for a client who receives
+  # both food and shelter from the household. SSI pays 994 x 2 / 3 =
+  # 662.67, so the ISM is 994 / 3 = 331.33.
+  period: 2026-01
+  input:
+    age: 65
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+    state_code: CO
+  output:
+    co_oap_in_kind_support_and_maintenance: 331.33
+    # 3.533(A)(2)(c): less the $20 unearned income disregard.
+    co_oap_own_countable_income: 311.33
+
+- name: A spouse outside Colorado is charged the same matching ISM.
+  # co_oap_deemed_income reads this variable for a client's spouse, who may
+  # live elsewhere (3.534(C)).
+  period: 2026-01
+  input:
+    age: 65
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+    state_code: NV
+  output:
+    co_oap_in_kind_support_and_maintenance: 331.33
+
+- name: A client without SSI who receives shelter from others is counted Colorado's maximum.
+  # 3.520.79(C)(3): a client paying no shelter costs is counted the maximum
+  # ISM, $351 in 2026 (3.530(B)).
+  period: 2026-01
+  input:
+    age: 65
+    ssi: 0
+    ssi_receives_outside_shelter_support: true
+    state_code: CO
+  output:
+    co_oap_in_kind_support_and_maintenance: 351
