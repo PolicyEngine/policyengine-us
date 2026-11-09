@@ -8,7 +8,7 @@ society-wide impacts in pre-start years.
 
 import numpy as np
 
-from policyengine_us.tests.microsimulation.populace_fixture import (
+from policyengine_us.tests.microsimulation.microcosm_fixture import (
     default_population_sample,
 )
 

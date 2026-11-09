@@ -169,6 +169,7 @@ def create_end_child_poverty_act() -> Reform:
                 "ma_eaedc",  # Massachusetts.
                 "ak_energy_relief",
                 "nj_property_tax_relief",  # ANCHOR, Senior Freeze and Stay NJ.
+                "state_property_tax_refunds",  # Paid outside the income tax.
                 "ny_drive_clean_rebate",
                 "ecpa_child_benefit",
             ]

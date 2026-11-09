@@ -143,12 +143,12 @@ def _department_credit(amount, income, full, partial):
     return Fraction(amount) * Fraction(partial - income, partial - full)
 
 
-def _calculate(year, households):
+def _calculate(year, households, rent=12_000):
     """vt_renter_credit for single-person households given as
     (county, tax unit size, renter credit income)."""
     people, tax_units, spm_units, households_out = {}, {}, {}, {}
     for i, (county, size, income) in enumerate(households):
-        people[f"person_{i}"] = {"age": {year: 40}, "rent": {year: 0}}
+        people[f"person_{i}"] = {"age": {year: 40}, "rent": {year: rent}}
         tax_units[f"tax_unit_{i}"] = {
             "members": [f"person_{i}"],
             "tax_unit_size": {year: size},
@@ -261,3 +261,42 @@ def test_random_incomes_follow_department_formula(year, draws):
         households.append((county, size, income))
         expected.append(int(credit + Fraction(1, 2)))
     assert list(_calculate(year, households)) == expected
+
+
+UNITS = st.lists(
+    st.tuples(
+        st.sampled_from(COUNTIES),
+        st.integers(min_value=1, max_value=8),
+        st.floats(min_value=0, max_value=1.2),
+    ),
+    min_size=1,
+    max_size=40,
+)
+
+
+def _households(year, draws):
+    return [
+        (county, size, int(share * _limits(year, county, size)[1]))
+        for county, size, share in draws
+    ]
+
+
+@hypothesis.settings(max_examples=10, deadline=None)
+@hypothesis.given(year=st.sampled_from(list(YEARS)), draws=UNITS)
+def test_a_household_that_pays_no_rent_gets_no_credit(year, draws):
+    """32 V.S.A. 6066(b)(1) gives the credit to a claimant who rented."""
+    assert not _calculate(year, _households(year, draws), rent=0).any()
+
+
+@hypothesis.settings(max_examples=10, deadline=None)
+@hypothesis.given(
+    year=st.sampled_from(list(YEARS)),
+    draws=UNITS,
+    rent=st.integers(min_value=1, max_value=100_000),
+)
+def test_unsubsidized_credit_does_not_depend_on_rent_paid(year, draws, rent):
+    """The unsubsidized credit is a share of fair market rent, not rent paid."""
+    households = _households(year, draws)
+    assert list(_calculate(year, households, rent=rent)) == list(
+        _calculate(year, households)
+    )

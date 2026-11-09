@@ -1,6 +1,6 @@
 """Small storage backend for the Social Security input state machine.
 
-The country is intentionally never imported. Core's installed source bodies
+The country is intentionally never imported. Core's selected source bodies
 implement every write, builder, copy, replay, extraction and dump route below;
 the US module's complete function bodies implement the hooks. Entity and
 variable descriptors, dataset construction, and disk dump bytes are synthetic.
@@ -49,7 +49,6 @@ from contextvars import ContextVar
 from dataclasses import dataclass
 from enum import Enum
 from functools import lru_cache, wraps
-from importlib.metadata import distribution
 from pathlib import Path
 from unittest.mock import patch
 from weakref import WeakKeyDictionary, ref
@@ -179,7 +178,7 @@ class Backend:
     def _setup(self):
         cache_blacklist = self.cache_blacklist
         variables_to_drop = self.variables_to_drop
-        core = Path(distribution("policyengine-core").locate_file("policyengine_core"))
+        core = Path(core_simulation.__file__).resolve().parents[1]
         calculation_frames = core_simulation._calculation_frames
         formula_simulation = core_simulation._formula_simulation
         branch_clone = core_simulation._branch_clone
@@ -389,7 +388,7 @@ class Backend:
             def calculate(self, name, period):
                 # The country-free fixture has no tracer or concurrent
                 # formulas. Retain Core's public reader cache behavior while
-                # its installed _calculate body supplies the actual value.
+                # its selected _calculate body supplies the actual value.
                 period = as_period(period)
                 key = (name, period)
                 if key not in self._fast_cache:
@@ -397,7 +396,7 @@ class Backend:
                 return self._fast_cache[key]
 
             def _calculate(self, name, period):
-                raise AssertionError("Installed Core calculation body was not loaded")
+                raise AssertionError("Selected Core calculation body was not loaded")
 
             def check_macro_cache(self, *args):
                 return False
@@ -590,12 +589,12 @@ class Backend:
             variable.set_input = core_helpers["set_input_divide_by_period"]
         # Core 3.33.12 cleans overlapping raw seeds after a direct set_input;
         # 3.33.2 does this only in dispatch/divide helpers. Keep the reference
-        # model tied to the installed behavior rather than a version string.
+        # model tied to the selected behavior rather than a version string.
         self.cleans_raw_overlaps = "_drop_calculated_over_own_period" in core_helpers
         simulation_source = core / "simulations/simulation.py"
         # _latest_input_key calls _end_order, which uses Core's calendar
         # table even for yearly sources. Load that literal from the same
-        # installed module rather than maintaining a second calendar table.
+        # selected module rather than maintaining a second calendar table.
         day_offsets = next(
             node.value
             for node in source_tree(simulation_source).body
@@ -621,6 +620,10 @@ class Backend:
             "clone",
             "get_branch",
             "apply_reform",
+            # From Core 3.34.8 apply_reform rebinds holders to the reformed
+            # system, and each existing branch to its own, before replaying
+            # inputs.
+            "_bind_to_tax_benefit_system",
             "_invalidate_all_caches",
             "drop_computed_arrays",
             "extract_person",
@@ -635,6 +638,15 @@ class Backend:
             "_may_keep",
             "_input_set_meanwhile",
             "_drop_computed",
+        )
+        sim_methods += tuple(
+            name
+            for name in (
+                "_set_fallback_cache_status",
+                "_fallback_is_uncached",
+                "_uncached_fallback",
+            )
+            if hasattr(core_simulation.Simulation, name)
         )
         for name, method in execute(
             core / "simulations/simulation.py", sim_methods, namespace, "Simulation"

@@ -7,10 +7,10 @@ from policyengine_us.variables.gov.hhs.medicare.eligibility.medicare_irmaa_tax_y
     TAX_UNIT_ADDITIONS,
 )
 
-# Per-capita CBO AGI: the series that extends a single-year dataset's dollar
-# inputs to later years when they have no series of their own
-# (DEFAULT_MICRODATA_UPRATING, divided by population). Deflating by it runs
-# that projection backward.
+# Per-capita total AGI (IRS SOI for 2015-2018, CBO from 2019): the series that
+# extends a single-year dataset's dollar inputs to later years when they have
+# no series of their own (DEFAULT_MICRODATA_UPRATING, divided by population).
+# Deflating by it runs that projection backward.
 LOOKBACK_DEFLATOR = (
     "calibration.gov.cbo.income_by_source.adjusted_gross_income_per_capita"
 )
@@ -59,12 +59,12 @@ class medicare_irmaa_magi_two_years_prior(Variable):
         "gov.simulation.medicare_irmaa_uses_current_year_income but "
         "deflated. Provide this value, or inputs for the year two years "
         "prior, to hold it fixed. "
-        "CBO AGI has no values for 2016 to 2018 and is held at its 2015 "
-        "value, so the index drifts down through 2018 and then rises 31% "
-        "from 2017 to 2019 and 39% from 2018 to 2020: a household entered "
-        "for 2016, 2017 or 2018 alone gets slightly more than that year's "
-        "income, and one entered for 2019 or 2020 alone gets that year's "
-        "income times 0.765 or 0.721. "
+        "Total AGI in that index is IRS Statistics of Income actuals for "
+        "2015 to 2018 and CBO's series from 2019. The index begins in 2015 "
+        "and is held at its 2015 value before then, so a household entered "
+        "for 2016 alone gets that year's income times the index for 2015 "
+        "over the index for 2016, slightly more than that income because "
+        "per-capita AGI fell from 2015 to 2016. "
         "When inputs reach back to 2013 or 2014 and the year two years prior "
         "is one of those years, its income cannot be computed: only income "
         "provided for it counts, and the rest is zero."
