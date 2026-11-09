@@ -84,29 +84,21 @@ def create_wv_dependent_exemption() -> Reform:
             # Add separated dependent exemption.
             dependent_exemption_amount = tax_unit("wv_dependent_exemption", period)
 
-            # Section 11-21-16(d) gives each claimable filer $500 on returns
-            # without lawful dependent exemptions; a child who adds no
-            # exemption leaves it alone. Preserve existing allocation otherwise.
-            person = tax_unit.members
-            claimable_filers = tax_unit.sum(
-                person("is_tax_unit_head_or_spouse", period)
-                & person("claimable_as_dependent_on_another_return", period)
+            # Add the baseline's 11-21-16(d) $500 for each filer who can be
+            # claimed as a dependent, on a return whose dependents add no
+            # exemption.
+            claimable_filer_exemptions = tax_unit(
+                "wv_claimable_filer_exemptions_count", period
             )
-            filer_allowances = (
-                p_base.personal * own_exemptions
-                + p_base.base_personal * claimable_filers
+            amount = (
+                personal_amount
+                + dependent_exemption_amount
+                + p_base.base_personal * claimable_filer_exemptions
             )
+            # As in the baseline, a return with no exemption at all gets $500.
             exemptions = tax_unit("exemptions_count", period)
-            lawful_dependent_exemptions = exemptions - own_exemptions
-            childless_claimable = (lawful_dependent_exemptions == 0) & (
-                claimable_filers > 0
-            )
-            ordinary_amount = where(
-                exemptions == 0,
-                p_base.base_personal,
-                personal_amount + dependent_exemption_amount,
-            )
-            return where(childless_claimable, filer_allowances, ordinary_amount)
+            no_exemption = (exemptions + claimable_filer_exemptions) == 0
+            return where(no_exemption, p_base.base_personal, amount)
 
     class reform(Reform):
         def apply(self):

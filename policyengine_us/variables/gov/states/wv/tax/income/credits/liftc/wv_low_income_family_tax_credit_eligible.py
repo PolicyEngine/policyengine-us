@@ -15,10 +15,9 @@ class wv_low_income_family_tax_credit_eligible(Variable):
     defined_for = StateCode.WV
 
     def formula(tax_unit, period, parameters):
+        # W. Va. Code 11-21-22A(e) sets no minimum number of exemptions, and
+        # family size counts the 11-21-16(d) exemption of a filer who can be
+        # claimed as a dependent, so every return has a family size of one or
+        # more.
         alternative_minimum_tax = tax_unit("alternative_minimum_tax", period)
-        # Family size is the number of exemptions that may be legally claimed
-        # (W. Va. Code 11-21-22A), so a return with zero exemptions, such as a
-        # filer who can be claimed as a dependent, cannot claim the credit
-        # (IT-140 instructions).
-        has_exemption = tax_unit("exemptions_count", period) > 0
-        return (alternative_minimum_tax == 0) & has_exemption
+        return alternative_minimum_tax == 0

@@ -17,27 +17,15 @@ class wv_personal_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.wv.tax.income.exemptions
-        # Section 11-21-16(d) grants each claimable individual $500.
-        # Limit this correction to returns without lawful dependent
-        # exemptions: applying the single-exemption limit when dependents
-        # add exemptions requires attribution. A child who adds no exemption
-        # (IRC 152(b)(1)) leaves the per-filer amount alone.
-        person = tax_unit.members
-        claimable_filers = tax_unit.sum(
-            person("is_tax_unit_head_or_spouse", period)
-            & person("claimable_as_dependent_on_another_return", period)
-        )
-        own_exemptions = tax_unit("head_spouse_count_not_dependent_elsewhere", period)
-        filer_allowances = (
-            p.personal * own_exemptions + p.base_personal * claimable_filers
-        )
+        # $2,000 for each exemption on the return, plus the 11-21-16(d) $500
+        # for each filer who can be claimed as a dependent, on a return whose
+        # dependents add no exemption. Other returns keep the ordinary count.
         exemptions = tax_unit("exemptions_count", period)
-        lawful_dependent_exemptions = exemptions - own_exemptions
-        childless_claimable = (lawful_dependent_exemptions == 0) & (
-            claimable_filers > 0
+        claimable_filer_exemptions = tax_unit(
+            "wv_claimable_filer_exemptions_count", period
         )
-        # Preserve the existing dependent allocation pending resolution.
-        ordinary_amount = where(
-            exemptions == 0, p.base_personal, p.personal * exemptions
-        )
-        return where(childless_claimable, filer_allowances, ordinary_amount)
+        amount = p.personal * exemptions + p.base_personal * claimable_filer_exemptions
+        # IT-140 line 6 gives $500 to a return with no exemption at all, which
+        # an input of zero for tax_unit_size can produce.
+        no_exemption = (exemptions + claimable_filer_exemptions) == 0
+        return where(no_exemption, p.base_personal, amount)
