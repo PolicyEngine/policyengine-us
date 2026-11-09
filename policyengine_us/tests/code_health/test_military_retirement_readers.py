@@ -13,7 +13,8 @@ tax-side readers keep the raw input: parameter and variable files under
 
 Checked outside the tax side:
 - Parameter YAML: a block list entry `- military_retirement_pay` or a
-  flow-style list containing it, unless the same file also lists
+  flow-style list containing it, unless the same file, or the partner list
+  SPLIT_YAML_FILES names for it, also lists
   `military_retirement_pay_survivors`. Comments are ignored, so commented-out
   entries and comments that name the input do not count.
 - Python in the package (tests excluded): a string constant exactly equal to
@@ -43,6 +44,16 @@ ALLOWED_PYTHON_FILES = {
     # The total that benefit programs read.
     "variables/household/income/person/retirement/military_retirement_income.py": (
         "military_retirement_income adds the retiree pay and survivor annuities"
+    ),
+}
+
+# A list that names the raw input because a partner list in the same concept
+# holds the survivor annuities. Census money income sums 18 lists, and
+# Appendix A counts a retiree's pay under pension or retirement income and a
+# survivor's annuity under survivor benefits.
+SPLIT_YAML_FILES = {
+    "gov/household/census_money_income_sources/pension_or_retirement_income.yaml": (
+        "gov/household/census_money_income_sources/survivor_benefits.yaml"
     ),
 }
 
@@ -153,11 +164,16 @@ def test_detectors_flag_raw_readers_and_skip_everything_else():
 def test_benefit_source_lists_do_not_read_raw_military_retirement_pay():
     violations = []
     for path in sorted(PARAMETERS.rglob("*.yaml")):
-        if is_tax_side(path.relative_to(PARAMETERS)):
+        relative = path.relative_to(PARAMETERS)
+        if is_tax_side(relative):
             continue
         text = path.read_text(encoding="utf-8")
         if RAW not in text:
             continue
+        # The partner must itself list the annuities for this list to pass.
+        partner = SPLIT_YAML_FILES.get(relative.as_posix())
+        if partner is not None:
+            text += "\n" + (PARAMETERS / partner).read_text(encoding="utf-8")
         for line in raw_yaml_lines(text):
             violations.append(f"{path.relative_to(PACKAGE).as_posix()}:{line}")
     assert not violations, (
@@ -184,6 +200,19 @@ def test_benefit_python_does_not_read_raw_military_retirement_pay():
         "annuities count. If a reader truly needs the retiree's pay alone, "
         "add its file to ALLOWED_PYTHON_FILES with the reason. Raw reads:\n"
         + "\n".join(violations)
+    )
+
+
+def test_split_yaml_files_still_need_their_partner():
+    needless = [
+        relative
+        for relative in SPLIT_YAML_FILES
+        if not (PARAMETERS / relative).exists()
+        or not raw_yaml_lines((PARAMETERS / relative).read_text(encoding="utf-8"))
+    ]
+    assert not needless, (
+        "These SPLIT_YAML_FILES entries no longer list the raw input without "
+        "the survivor annuities; remove them:\n" + "\n".join(needless)
     )
 
 
