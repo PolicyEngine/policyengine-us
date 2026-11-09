@@ -10,9 +10,8 @@ class claim_of_right_relief_claimed(Variable):
         "income: the section 1341 credit (Schedule 3, line 13b), or the "
         "repayment deduction (Schedule A, line 16) on a return that itemizes. "
         "A return whose tax is computed with the deduction but that takes the "
-        "standard deduction claims neither. Some states allow their own "
-        "deduction or subtraction only when the federal return claims one of "
-        "the two."
+        "standard deduction claims neither. Illinois allows its subtraction "
+        "only when the federal return claims one of the two."
     )
     definition_period = YEAR
     reference = (

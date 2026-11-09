@@ -13,7 +13,10 @@ class oh_claim_of_right_deduction(Variable):
         "excluding the part that R.C. 5747.01(A)(12) does not allow. It applies "
         "to a repayment that section 1341 covers, whichever federal method "
         "applies and whether or not the federal return itemizes: the statute "
-        "requires that the deduction be allowable, not claimed."
+        "requires that the deduction be allowable, not claimed. A nonbusiness "
+        "repayment of $3,000 or less is not allowable: it falls outside "
+        "section 1341, so it stays a miscellaneous itemized deduction (section "
+        "67(b)(9)), which section 67(h) disallows from 2018."
     )
     definition_period = YEAR
     reference = (

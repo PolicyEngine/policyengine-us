@@ -180,7 +180,7 @@
     oh_joint_filing_credit_qualifying_income: [100_000, 400]
     oh_joint_filing_credit: 0
 
-- name: Case 9, a repayment of $3,000 is below the section 1341 threshold.
+- name: Case 9, a repayment of exactly $3,000 does not exceed the section 1341 threshold.
   period: 2025
   input:
     people:
