@@ -1,0 +1,16 @@
+# Source: ADECA PY 2026 Payment Assistance Chart effective May 15, 2026 (draft FY2027 plan, page 53),
+# built on the 2026 guidelines of $15,960 plus $5,680 per additional person.
+
+# 150% a month: size 1 = 15,960 x 1.5 / 12 = 1,995; size 2 = 21,640 x 1.5 / 12 = 2,705;
+# size 3 = 3,415; size 4 = 4,125; size 5 = 4,835; size 15 = 95,480 x 1.5 / 12 = 11,935.
+# Each printed monthly limit times 12.
+- name: Case 1, summer 2026 cooling limits follow the May 15, 2026 chart.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AL, AL, AL, AL, AL, AL]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    has_cooling_expense: [true, true, true, true, true, true]
+    al_liheap_household_size: [1, 2, 3, 4, 5, 15]
+  output:
+    al_liheap_cooling_income_limit: [23_940, 32_460, 40_980, 49_500, 58_020, 143_220]

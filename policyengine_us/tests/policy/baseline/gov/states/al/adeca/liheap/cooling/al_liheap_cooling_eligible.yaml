@@ -1,0 +1,73 @@
+# Source: ADECA FY2026 LIHEAP Policy Manual (pages 9, 16-17, 21), FY2026 plan sections 3.1-3.2,
+# and the PY 2026 Payment Assistance Chart effective May 15, 2026 (2026 guidelines).
+
+# One person: the cooling limit is 15,960 x 1.5 / 12 = $1,995 a month, or $23,940 a year.
+# $23,940 of wages is exactly $1,995 a month, so the limit is inclusive.
+- name: Case 1, income exactly at the cooling limit is eligible.
+  period: 2026
+  input:
+    state_code: AL
+    age: 40
+    employment_income_before_lsr: 23_940
+    heating_type: ELECTRICITY
+    has_cooling_expense: true
+  output:
+    al_liheap_cooling_income_limit: 23_940
+    al_liheap_cooling_eligible: true
+
+# $23,940.12 a year is $1,995.01 a month, one cent over the limit.
+- name: Case 2, one cent a month above the cooling limit is ineligible.
+  period: 2026
+  input:
+    state_code: AL
+    age: 40
+    employment_income_before_lsr: 23_940.12
+    heating_type: ELECTRICITY
+    has_cooling_expense: true
+  output:
+    al_liheap_cooling_eligible: false
+
+# $23,700 of wages is $1,975 a month: above the heating limit of 15,650 x 1.5 / 12 = $1,956
+# (2025 guidelines) but within the cooling limit of $1,995 (2026 guidelines).
+- name: Case 3, cooling uses the current year guidelines while heating uses the prior year.
+  period: 2026
+  input:
+    state_code: AL
+    age: 40
+    employment_income_before_lsr: 23_700
+    heating_type: NATURAL_GAS
+    gas_expense: 900
+    has_cooling_expense: true
+  output:
+    al_liheap_income_limit: 23_472
+    al_liheap_cooling_income_limit: 23_940
+    al_liheap_eligible: false
+    al_liheap_cooling_eligible: true
+
+# Part-time minimum wage: 20 hours x $7.25 x 52 weeks = $7,540 a year ($628.33 a month).
+# Regular Cooling has no heating-fuel requirement, so a home without heating and a gas-heated
+# home are both eligible.
+- name: Case 4, a home without heating and a gas-heated home are both cooling eligible.
+  period: 2026
+  input:
+    state_code: [AL, AL]
+    age: [45, 45]
+    employment_income_before_lsr: [7_540, 7_540]
+    heating_type: [NONE, NATURAL_GAS]
+    has_cooling_expense: [true, true]
+  output:
+    al_liheap_cooling_eligible: [true, true]
+
+# The same worker heats with gas and pays a $900 gas bill but has no cooling cost.
+- name: Case 5, a heating-eligible household without a cooling cost is not cooling eligible.
+  period: 2026
+  input:
+    state_code: AL
+    age: 45
+    employment_income_before_lsr: 7_540
+    heating_type: NATURAL_GAS
+    gas_expense: 900
+    has_cooling_expense: false
+  output:
+    al_liheap_eligible: true
+    al_liheap_cooling_eligible: false
