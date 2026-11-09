@@ -16,10 +16,11 @@ non-acquisition debt and a fair market value, around every cutoff and limit,
 and checks _ny_qualified_loan_limit:
 
 1. Differential: it equals an independent restatement in the statute's
-   order, which places the acquisition limit on each home by a separate loop.
-   The restatement shares the acquisition limit between homes the same way
-   (in proportion to each home's other acquisition debt), so it cannot catch
-   a wrong sharing rule.
+   order. The restatement places the acquisition limit on the homes in each
+   reasonable way, in proportion to each home's other acquisition debt or
+   loan by loan in every date order that the origination years allow, and
+   keeps the largest home equity debt. It finds the date orders by sorting
+   permutations, not by the model's two explicit orders.
 2. Bounds: grandfathered debt <= New York limit <= total debt, and the New
    York limit is at least PE's federal limit for the same acquisition loans.
 3. Defaults: with no fair market value and no non-acquisition debt (the
@@ -39,8 +40,9 @@ when federal law disallows nothing. The federal bound follows from the
 limits, not from a floor.
 
 For _ny_deductible_share: the share is at least the unrounded ratio and at
-least the ratio rounded half up to three places, at most one, and exceeds the
-unrounded ratio by no more than .0005.
+least the ratio rounded half up to three places, and at most one. It exceeds
+the unrounded ratio by no more than .0005 plus 5e-13, since the nine-place
+rounding treats a scaled ratio within 5e-10 of a half as a tie.
 
 The test reads the limits from the New York and federal parameters for
 every filing status in 2018, 2025 and 2026. The properties cannot pass
@@ -52,6 +54,7 @@ These are for-all properties of the helpers, which YAML cannot state. The
 policy outcomes are checked in ny_mortgage_interest_deduction.yaml.
 """
 
+import itertools
 import math
 from fractions import Fraction
 
@@ -146,6 +149,7 @@ def model_limit(pair, limits):
         _ny_qualified_loan_limit(
             grandfathered_debts,
             other_debts,
+            [np.array([year]) for _, year, _, _ in pair],
             [np.array([home[2]]) for home in pair],
             [np.array([home[3]]) for home in pair],
             *limits,
@@ -160,21 +164,53 @@ def statute(pair, limits):
     other = sum(balance for balance, year, _, _ in pair if not grandfathered(year))
     # (D)(ii): grandfathered debt reduces the $1,000,000 limit.
     other_allowed = min(other, max(0.0, acquisition_limit - old))
-    home_equity = 0.0
-    for balance, year, non_acquisition, fair_market_value in pair:
-        if grandfathered(year):
-            on_home, excess = balance, 0.0
-        else:
-            on_home = other_allowed * balance / other if other > 0 else 0.0
-            excess = balance - on_home
-        # (C)(i): no more than fair market value less acquisition debt. A
-        # value of 0 means unknown and sets no such limit.
-        room = (
-            max(0.0, fair_market_value - on_home) if fair_market_value > 0 else math.inf
-        )
-        home_equity += min(excess + non_acquisition, room)
-    # (C)(ii): the aggregate home equity limit.
-    return old + other_allowed + min(home_equity, home_equity_limit)
+
+    def home_equity(placed):
+        total = 0.0
+        for (balance, year, non_acquisition, fair_market_value), on_home in zip(
+            pair, placed
+        ):
+            if grandfathered(year):
+                on_home, excess = balance, 0.0
+            else:
+                excess = balance - on_home
+            # (C)(i): no more than fair market value less acquisition debt. A
+            # value of 0 means unknown and sets no such limit.
+            room = (
+                max(0.0, fair_market_value - on_home)
+                if fair_market_value > 0
+                else math.inf
+            )
+            total += min(excess + non_acquisition, room)
+        return total
+
+    # The allowance shared in proportion to each home's other debt.
+    placements = [
+        [
+            0.0
+            if grandfathered(year) or other == 0
+            else other_allowed * balance / other
+            for balance, year, _, _ in pair
+        ]
+    ]
+    # The allowance placed loan by loan, oldest first, so the most recent
+    # debt is the excess. Loans from the same year go in either order, and an
+    # unknown year (0) is the most recent.
+    dates = [year if year > 0 else math.inf for _, year, _, _ in pair]
+    for order in itertools.permutations(range(len(pair))):
+        if any(dates[a] > dates[b] for a, b in zip(order, order[1:])):
+            continue
+        remaining = other_allowed
+        placed = [0.0] * len(pair)
+        for index in order:
+            balance, year = pair[index][0], pair[index][1]
+            if not grandfathered(year):
+                placed[index] = min(balance, remaining)
+                remaining -= placed[index]
+        placements.append(placed)
+    # (C)(ii): the aggregate home equity limit, on the taxpayer's best placement.
+    best = max(home_equity(placed) for placed in placements)
+    return old + other_allowed + min(best, home_equity_limit)
 
 
 def federal_limit(pair, limits):
@@ -200,6 +236,14 @@ def test_new_york_limits_are_the_statutory_amounts():
 
 @settings(**SETTINGS)
 @given(first=homes, second=homes, status=st.sampled_from(sorted(LIMITS)))
+# Loans from the same year, where only the second home's loan going first
+# gives the full home equity debt: a fixed order fails the differential or
+# the swap.
+@example(
+    first=(900_000.0, 2018, 0.0, 540_000.0),
+    second=(900_000.0, 2018, 0.0, 150_000.0),
+    status=(2025, "JOINT"),
+)
 def test_new_york_qualified_loan_limit_properties(first, second, status):
     ny_limits, federal_limits = LIMITS[status]
     pair = [first, second]

@@ -7721,6 +7721,43 @@ candidates:
   state: ruled
   note: Both credits halve exactly, as the statute says; the tables round for the form. Section 606 authorizes
     nearest-dollar tables only for the real property tax credit.
+- id: us-ny:pre-tcja-home-equity-room-per-residence
+  program: income-tax
+  years:
+    from: 2018
+    type: tax
+  question: Under the pre-TCJA mortgage limits that New York keeps, does each home's value less its acquisition debt
+    cap the home equity debt on that home, or does the total of both homes' rooms cap the total home equity debt?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 163(h)(3)(C)(i) (2016 edition), which N.Y. Tax Law 615(a) keeps for New York from 2018
+    url: https://www.govinfo.gov/content/pkg/USCODE-2016-title26/html/USCODE-2016-title26-subtitleA-chap1-subchapB-partVI-sec163.htm
+  - kind: guidance
+    citation: 2017 Pub. 936, Home equity debt limit (p. 10) and the Table 1 line 7 instructions (p. 13)
+    url: https://www.irs.gov/pub/irs-prior/p936--2017.pdf#page=10
+  - kind: instructions
+    citation: 2025 Form IT-196 instructions, Limit on home mortgage interest, which point filers to the 2017 Pub. 936
+    url: https://www.tax.ny.gov/pdf/2025/inc/it196i_2025.pdf#page=2
+  readings:
+    statute: Home equity indebtedness is debt secured by a qualified residence "to the extent the aggregate amount of
+      such indebtedness does not exceed" that residence's fair market value less its acquisition indebtedness.
+    other: Pub. 936 caps "the total home equity debt on your main home and second home" at the smaller of $100,000
+      and the total of each home's value reduced (not below zero) by its acquisition and grandfathered debt.
+  example: 'A 2025 joint return has $30,000 of interest, a $400,000 loan from 2015 on a $2,000,000 main home, and $200,000
+    of non-acquisition debt on a $50,000 second home. Home by home, line 7 is $50,000 and $22,500 is deductible; with
+    the total room of $1,650,000, line 7 is $100,000 and $25,000 is deductible.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ny/tax/income/taxable_income/deductions/itemized/ny_mortgage_interest_deduction.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10596
+  state: ruled
+  note: 'PE-US applies the room home by home in _ny_qualified_loan_limit and _ny_home_equity_debt. Two cases in
+    ny_mortgage_interest_deduction.yaml pin it: "The second home''s value limits its own non-acquisition debt" and "The
+    main home''s value limits its own non-acquisition debt" give $22,500 home by home and $25,000 with Pub. 936''s total.
+    The readings differ only when one home''s home equity debt exceeds its own room while the other home has room to
+    spare. Ruled in November 2026 to follow the statute.'
 - id: us-ny:real-property-credit-claimable-spouse
   program: income-tax
   years:
