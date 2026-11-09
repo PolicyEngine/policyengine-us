@@ -10,14 +10,12 @@ class ut_personal_exemption_additional_dependent_eligible(Variable):
     reference = "https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1018.html"  # 59-10-1018 (1)(g)
 
     def formula(person, period, parameters):
-        is_dependent = person("is_tax_unit_dependent", period)
+        # 59-10-1018(1)(g) adds "an additional qualifying dependent in the
+        # year of a qualifying dependent's birth", so the newborn must be a
+        # qualifying dependent: one for whom the claimant is allowed an IRC 24
+        # credit, which a return on which a filer can be claimed as a
+        # dependent has none of (IRC 152(b)(1)) outside the filing exception.
+        qualifying_dependent = person("ut_qualifying_dependent", period)
         birth_year = person("birth_year", period)
         born_this_year = birth_year == period.start.year
-        # The additional dependent must also be a dependent of the return, and
-        # a return on which the filer (or, if joint, either spouse) can be
-        # claimed as a dependent has none (IRC 152(b)(1)), unless the would-be
-        # claimant meets the filing exception (Publication 501).
-        filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
-        )
-        return is_dependent & born_this_year & ~filer_is_dependent
+        return qualifying_dependent & born_this_year
