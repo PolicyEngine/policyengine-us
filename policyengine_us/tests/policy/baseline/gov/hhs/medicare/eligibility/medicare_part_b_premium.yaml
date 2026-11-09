@@ -223,6 +223,7 @@
     medicare_enrolled: true
     msp_income_eligible: false
     msp_asset_eligible: false
+    ssi: 0  # Not an SSI recipient, so no state buy-in.
   output:
     # ($209.50 standard + $209.50 adjustment) * 12 months
     medicare_part_b_premium: 5_028
@@ -240,6 +241,7 @@
     medicare_enrolled: true
     msp_income_eligible: false
     msp_asset_eligible: false
+    ssi: 0  # Not an SSI recipient, so no state buy-in.
   output:
     # The top tier starts at $500,000 less the $112,000 unmarried threshold,
     # $388,000 (CMS's 2026 figure was $391,000). The 85 percent tier's
@@ -260,6 +262,7 @@
     medicare_enrolled: true
     msp_income_eligible: false
     msp_asset_eligible: false
+    ssi: 0  # Not an SSI recipient, so no state buy-in.
   output:
     # Joint 65 percent tier: $418,001 to $500,000. Adjustment $324.60 *
     # 338.50 / 202.90 = $541.53, rounded to $541.50.
