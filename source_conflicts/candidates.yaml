@@ -2869,13 +2869,13 @@ candidates:
     follows: statute
     code:
     - policyengine_us/parameters/gov/states/hi/tax/income/additions/additions.yaml
+    - policyengine_us/variables/gov/states/hi/tax/income/claim_of_right/hi_claim_of_right_deduction.py
     - policyengine_us/variables/gov/states/hi/tax/income/hi_additions.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10200
   state: ruled
-  note: 'Ruled in October 2026 under the statute-first rule; N-364 first exists for 2025, so earlier claiming procedures
-    need separate verification. Code not yet on main: gov/states/hi/tax/income/claim_of_right/hi_claim_of_right.yaml,
-    hi_claim_of_right_deduction.'
+  note: Ruled in October 2026 under the statute-first rule; N-364 first exists for 2025, so earlier claiming procedures
+    need separate verification.
 - id: us-hi:joint-return-claimable-spouse-exemption
   program: income-tax
   years:
