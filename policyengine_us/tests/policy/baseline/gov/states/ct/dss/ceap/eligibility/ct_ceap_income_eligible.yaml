@@ -1,0 +1,16 @@
+# Income test before categorical receipt.
+# Sources:
+# - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=7
+# - https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+# The one-person limit is inclusive at 47,764. For 30 people the limit is 187,382
+# and the floor is 1.1 x 175,150 = 192,665, with a strict "below".
+- name: Case 1, the limit is inclusive and the federal floor is strict.
+  period: 2026
+  input:
+    state_code: [CT, CT, CT, CT, CT]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000]
+    ct_ceap_household_size: [1, 1, 30, 30, 30]
+    ct_ceap_countable_income: [47_764, 47_764.01, 187_382.01, 192_664.99, 192_665]
+  output:
+    ct_ceap_income_eligible: [true, false, true, true, false]

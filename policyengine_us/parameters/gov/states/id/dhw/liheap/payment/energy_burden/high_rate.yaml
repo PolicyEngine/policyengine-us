@@ -1,0 +1,13 @@
+description: Idaho places households in the high energy-burden group when estimated annual heating costs reach this share of annual income under the Low Income Home Energy Assistance Program.
+
+# Modeling convention: exactly 11% is high; the published chart omits that boundary.
+values:
+  2025-10-01: 0.11
+
+metadata:
+  unit: /1
+  period: year
+  label: Idaho LIHEAP high energy-burden rate
+  reference:
+    - title: Idaho PY26 LIHEAP Benefit Determination Chart PDF, PY23 LIHEAP Benefit Matrix Summary
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/ID_BenefitMatrix_Heating_2026.pdf#page=2
