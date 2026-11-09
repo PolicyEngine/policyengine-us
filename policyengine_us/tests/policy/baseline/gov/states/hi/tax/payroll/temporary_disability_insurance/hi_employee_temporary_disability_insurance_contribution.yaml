@@ -558,3 +558,41 @@
     hi_temporary_disability_insurance_qualified: true
     # 0.5% * 20,000 = 100.
     hi_employee_temporary_disability_insurance_contribution: 100
+
+- name: Hawaii scales the contribution by the employer's deduction share.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    employer_state_payroll_premium_deduction_share: 0.5
+    state_code: HI
+  output:
+    # HRS 392-43(a) lets the employer withhold up to 0.5% * 60,000 = 300 and
+    # leaves the amount to it. Withholding half gives 0.5 * 300 = 150.
+    hi_employee_temporary_disability_insurance_contribution: 150
+    hi_employee_state_payroll_tax: 150
+    employee_state_payroll_tax: 150
+
+- name: Hawaii charges nothing when the employer withholds nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 100_000
+    employer_state_payroll_premium_deduction_share: 0
+    state_code: HI
+  output:
+    # 52 * 1,500.21 = 78,010.92.
+    hi_temporary_disability_insurance_taxable_wages: 78_010.92
+    hi_employee_temporary_disability_insurance_contribution: 0
+    employee_state_payroll_tax: 0
+
+- name: Hawaii holds a deduction share above 1 at the 0.5% limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 100_000
+    employer_state_payroll_premium_deduction_share: 1.5
+    state_code: HI
+  output:
+    # The employer may withhold at most 0.5% * 78,010.92 = 390.05.
+    hi_employee_temporary_disability_insurance_contribution: 390.05

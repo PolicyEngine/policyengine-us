@@ -2199,7 +2199,7 @@ programs:
     variable: hi_employee_temporary_disability_insurance_contribution
     parameter_prefix: gov.states.hi.tax.payroll.temporary_disability_insurance
     verified_start_year: 2004
-    notes: Models the employee contribution at the HRS 392-43(a) limit; benefits and employer costs are out of scope.
+    notes: Models the employee contribution as the HRS 392-43(a) limit times the employer's deduction share, which defaults to 1; benefits and employer costs are out of scope.
 
   - id: il_fpp
     name: Illinois Family Planning Program

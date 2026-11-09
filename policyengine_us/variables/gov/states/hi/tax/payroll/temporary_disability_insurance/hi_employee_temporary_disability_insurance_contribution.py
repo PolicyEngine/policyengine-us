@@ -6,12 +6,14 @@ class hi_employee_temporary_disability_insurance_contribution(Variable):
     entity = Person
     label = "Hawaii employee temporary disability insurance contribution"
     documentation = (
-        "Employee-side Hawaii temporary disability insurance contribution at "
-        "the statutory limit. HRS 392-43(a) lets an employer withhold half the "
-        "cost of coverage, up to the employee rate times weekly wages, and "
-        "makes the employer pay the balance. Coverage cost varies by employer "
-        "and the model holds no premium data, so this assumes the employer "
-        "withholds the full rate limit."
+        "Employee-side Hawaii temporary disability insurance contribution. "
+        "HRS 392-43(a) authorizes the employer, without requiring it, to "
+        "withhold half the cost of coverage, up to the employee rate times "
+        "weekly wages, and makes the employer pay the balance. Coverage cost "
+        "varies by employer and the model holds no premium data, so it takes "
+        "the rate limit as the permitted amount; this is that amount times "
+        "state_payroll_premium_deduction_share. The employer's cost of "
+        "coverage is not modeled."
     )
     definition_period = YEAR
     unit = USD
@@ -25,4 +27,5 @@ class hi_employee_temporary_disability_insurance_contribution(Variable):
         taxable_wages = person(
             "hi_temporary_disability_insurance_taxable_wages", period
         )
-        return p.employee_rate * taxable_wages
+        permitted = p.employee_rate * taxable_wages
+        return permitted * person("state_payroll_premium_deduction_share", period)
