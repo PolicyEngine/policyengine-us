@@ -4,7 +4,7 @@ household_net_income and spm_unit_net_income are two views of one family's
 cash. Each total keeps its own list of what it adds, in two different files, and
 the lists drift: a cash program reaches one total and not the other.
 
-Six invariants hold for every input.
+Seven invariants hold for every input.
 
 1. The list difference is exactly the documented one. Every program that one
    total counts and the other does not appears below with its reason.
@@ -20,6 +20,10 @@ Six invariants hold for every input.
    means-tested benefits to lose.
 6. The head and spouse together hold a tax unit's whole Form 4797 amount, with
    its sign, and gross income holds its positive part.
+7. Every member of state_property_tax_credits moves both net incomes by the
+   same amount. A state income tax credit list or state_property_tax_refunds
+   carries each payment into both totals, and the bill reductions documented
+   below reach neither, since neither total subtracts property tax.
 
 Child care stays out of this file: household_state_benefits and the SPM treat
 subsidies differently on purpose, and #9405 and #10569 cover that difference.
@@ -38,9 +42,11 @@ from hypothesis import example, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us import Simulation
+from policyengine_us.system import system
 
 PACKAGE = Path(__file__).parent.parent
 HOUSEHOLD_LISTS = PACKAGE / "parameters/gov/household"
+STATE_LISTS = PACKAGE / "parameters/gov/states/household"
 # household_state_benefits starts in 2023.
 YEARS = range(2023, 2027)
 TOLERANCE = 0.02
@@ -145,7 +151,76 @@ CASH_PAYMENTS = [
     ("ma_eaedc", "spm_unit", "MA", 2026),
     ("nj_property_tax_relief", "tax_unit", "NJ", 2026),
     ("ny_drive_clean_rebate", "household", "NY", 2026),
+    # Property tax and rent refunds paid outside the income tax.
+    ("mn_homestead_credit_refund", "tax_unit", "MN", 2026),
+    ("mt_property_tax_rebate", "tax_unit", "MT", 2024),
+    ("nd_renters_refund", "tax_unit", "ND", 2026),
+    ("pa_property_tax_or_rent_rebate", "tax_unit", "PA", 2026),
+    ("ut_renters_credit", "tax_unit", "UT", 2026),
+    ("vt_renter_credit", "tax_unit", "VT", 2026),
 ]
+
+# Each income tax credit in state_property_tax_credits, and the list that
+# carries it into its state's income tax. Both net income totals subtract
+# state income tax, so both count these credits.
+PROPERTY_TAX_CREDITS_IN_INCOME_TAX = {
+    "az_property_tax_credit": "parameters/gov/states/az/tax/income/credits/"
+    "refundable.yaml",
+    "ct_property_tax_credit": "parameters/gov/states/ct/tax/income/credits/"
+    "non_refundable.yaml",
+    "dc_ptc": "parameters/gov/states/dc/tax/income/credits/refundable.yaml",
+    "il_property_tax_credit": "parameters/gov/states/il/tax/income/credits/"
+    "non_refundable.yaml",
+    "ma_senior_circuit_breaker": "parameters/gov/states/ma/tax/income/credits/"
+    "refundable.yaml",
+    "me_property_tax_fairness_credit": "parameters/gov/states/me/tax/income/"
+    "credits/refundable.yaml",
+    "mi_homestead_property_tax_credit": "parameters/gov/states/mi/tax/income/"
+    "credits/refundable.yaml",
+    "mn_renters_credit": "parameters/gov/states/mn/tax/income/credits/refundable.yaml",
+    "mo_property_tax_credit": "parameters/gov/states/mo/tax/income/credits/"
+    "refundable.yaml",
+    "mt_elderly_homeowner_or_renter_credit": "variables/gov/states/mt/tax/income/"
+    "tax_calculation/mt_refundable_credits.py",
+    "nj_property_tax_credit": "variables/gov/states/nj/tax/income/"
+    "nj_refundable_credits.py",
+    "nm_property_tax_rebate": "parameters/gov/states/nm/tax/income/credits/"
+    "refundable.yaml",
+    "ny_real_property_tax_credit": "parameters/gov/states/ny/tax/income/credits/"
+    "refundable.yaml",
+    "ok_ptc": "parameters/gov/states/ok/tax/income/credits/refundable.yaml",
+    "ri_property_tax_credit": "parameters/gov/states/ri/tax/income/credits/"
+    "refundable.yaml",
+    "wi_homestead_credit": "parameters/gov/states/wi/tax/income/credits/"
+    "refundable.yaml",
+    "wi_property_tax_credit": "parameters/gov/states/wi/tax/income/credits/"
+    "non_refundable.yaml",
+    "wv_homestead_excess_property_tax_credit": "parameters/gov/states/wv/tax/"
+    "income/credits/refundable.yaml",
+}
+
+# Members of state_property_tax_credits that lower the property tax bill
+# instead of paying cash. Neither net income total subtracts property tax, so
+# neither counts them.
+PROPERTY_TAX_BILL_REDUCTIONS = {
+    "dc_senior_disabled_property_tax_relief": "D.C. Code 47-863(b)(1): a "
+    "deduction in computing real property tax liability",
+    "in_blind_disabled_property_tax_credit": "IC 6-1.1-51.3-0.5: applied to "
+    "property tax liability",
+    "in_over_65_property_tax_credit": "IC 6-1.1-51.3-0.5: applied to property "
+    "tax liability",
+    "in_supplemental_homestead_credit": "IC 6-1.1-20.6-7.7(e): the county "
+    "auditor applies it to property tax liability",
+    "nd_primary_residence_credit": "N.D.C.C. 57-02-08.10(1): the county auditor "
+    "applies it on the property tax statement",
+    "ut_homeowners_credit": "Utah Code 59-2a-302(2)(b): the county applies it "
+    "against property taxes accrued",
+}
+
+# Members of state_property_tax_credits that add a cash part and a bill part.
+PROPERTY_TAX_CREDIT_PARTS = {
+    "ut_homeowner_renter_relief": ("ut_renters_credit", "ut_homeowners_credit"),
+}
 
 
 def block_for(list_name, year):
@@ -403,3 +478,126 @@ def test_net_incomes_reconcile_for_one_person(state, earnings):
         - value("spm_unit_energy_subsidy")
     )
     assert np.isclose(household_side, spm_side, atol=TOLERANCE)
+
+
+def list_in_force(path, year):
+    """The members of a year-keyed list parameter that apply in a year."""
+    raw = yaml.load(path.read_text(), Loader=yaml.BaseLoader)
+    blocks = sorted(
+        (date, members)
+        for date, members in raw["values"].items()
+        if isinstance(members, list)
+    )
+    started = [members for date, members in blocks if date <= f"{year}-01-01"]
+    return set(started[-1] if started else blocks[0][1])
+
+
+def property_tax_credit_items(year):
+    """state_property_tax_credits in a year, with each split credit's parts."""
+    items = set()
+    for name in list_in_force(STATE_LISTS / "state_property_tax_credits.yaml", year):
+        items.update(PROPERTY_TAX_CREDIT_PARTS.get(name, (name,)))
+    return items
+
+
+def property_tax_refunds(year):
+    return list_in_force(STATE_LISTS / "state_property_tax_refunds.yaml", year)
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_every_property_tax_credit_has_one_documented_route(year):
+    refunds = property_tax_refunds(year)
+    for name in sorted(property_tax_credit_items(year)):
+        routes = {
+            "state_property_tax_refunds": name in refunds,
+            "state income tax": name in PROPERTY_TAX_CREDITS_IN_INCOME_TAX,
+            "property tax bill": name in PROPERTY_TAX_BILL_REDUCTIONS,
+        }
+        assert sum(routes.values()) == 1, f"{year}: {name} routes {routes}"
+        if name in PROPERTY_TAX_CREDITS_IN_INCOME_TAX:
+            path = PACKAGE / PROPERTY_TAX_CREDITS_IN_INCOME_TAX[name]
+            if path.suffix == ".yaml":
+                assert name in list_in_force(path, year), f"{year}: {path}"
+            else:
+                assert f'"{name}"' in path.read_text(), path
+    outside = refunds - property_tax_credit_items(year)
+    assert outside == set(), f"{year}: refunds not in the credits list: {outside}"
+
+
+def list_change_years(path):
+    raw = yaml.load(path.read_text(), Loader=yaml.BaseLoader)
+    return {int(date[:4]) for date in raw["values"]}
+
+
+def test_refunds_stay_inside_the_credits_list_in_every_year():
+    """Checks each year either list changes, so it covers every pair in force.
+
+    PE-US copies each list's first block back to 2015, its first modeled
+    year, so the refund list starts with an empty block on the credits list's
+    first date.
+    """
+    years = list_change_years(
+        STATE_LISTS / "state_property_tax_refunds.yaml"
+    ) | list_change_years(STATE_LISTS / "state_property_tax_credits.yaml")
+    for year in sorted(years):
+        outside = property_tax_refunds(year) - property_tax_credit_items(year)
+        assert outside == set(), f"{year}: refunds not in the credits list: {outside}"
+
+
+def test_property_tax_credit_routes_have_no_stale_entries():
+    listed = set().union(*(property_tax_credit_items(year) for year in YEARS))
+    documented = set(PROPERTY_TAX_CREDITS_IN_INCOME_TAX) | set(
+        PROPERTY_TAX_BILL_REDUCTIONS
+    )
+    assert documented - listed == set()
+    for total, parts in PROPERTY_TAX_CREDIT_PARTS.items():
+        assert system.variables[total].adds == list(parts), total
+
+
+def one_household_per_credit(credits, amount, year):
+    """Two high earners per credit, in its state: one gets 0, the other amount."""
+    situations = [
+        one_person(
+            name[:2].upper(),
+            500_000,
+            year,
+            **{name: (system.variables[name].entity.key, value)},
+        )
+        for name in credits
+        for value in (0, amount)
+    ]
+    combined = {group: {} for group in situations[0]}
+    for index, situation in enumerate(situations):
+        for group, entities in situation.items():
+            for key, entity in entities.items():
+                entity = dict(entity)
+                if "members" in entity:
+                    entity["members"] = [f"{m}_{index}" for m in entity["members"]]
+                combined[group][f"{key}_{index}"] = entity
+    return combined
+
+
+@settings(max_examples=2, deadline=None)
+@given(amount=st.integers(min_value=100, max_value=5_000))
+@example(amount=500)
+def test_property_tax_credits_move_both_net_incomes_together(amount):
+    """A differential test over every credit in state_property_tax_credits.
+
+    At $500,000 of wages each earner owes enough state income tax to use a
+    non-refundable credit in full, so every credit but a bill reduction moves
+    both totals by the whole amount.
+    """
+    year = 2026
+    credits = sorted(property_tax_credit_items(year))
+    simulation = Simulation(situation=one_household_per_credit(credits, amount, year))
+
+    def change(name):
+        values = simulation.calculate(name, year).reshape(-1, 2)
+        return values[:, 1] - values[:, 0]
+
+    household = change("household_net_income")
+    spm = change("spm_unit_net_income")
+    for name, household_change, spm_change in zip(credits, household, spm):
+        expected = 0 if name in PROPERTY_TAX_BILL_REDUCTIONS else amount
+        assert household_change == pytest.approx(expected, abs=TOLERANCE), name
+        assert spm_change == pytest.approx(expected, abs=TOLERANCE), name
