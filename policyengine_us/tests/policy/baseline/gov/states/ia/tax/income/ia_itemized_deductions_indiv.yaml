@@ -21,3 +21,38 @@
         state_code: IA
   output:
     ia_itemized_deductions_indiv: [24_000, 6_000]
+
+- name: 2018 spouses filing separately on a combined return split the limited total
+  period: 2018
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ia_net_income: 300_000
+        real_estate_taxes: 8_000
+        deductible_mortgage_interest: 14_000
+        ia_withheld_income_tax: 15_000
+      person2:
+        is_tax_unit_spouse: true
+        ia_net_income: 100_000
+        ia_withheld_income_tax: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 400_000
+        charitable_deduction: 6_000
+        medical_expense_deduction: 4_000
+        state_sales_tax: 0
+        local_sales_tax: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # 2018 IA 104 line 21 with the $320,000 joint amount: 30,600 (see
+    # ia_itemized_deductions_reduction.yaml). 2018 IA Schedule A lines 29 to
+    # 33 split it by net income: 300,000 / 400,000 = 75.0%, so 22,950 and
+    # 7,650: https://revenue.iowa.gov/media/2298/download?inline=#page=1
+    ia_itemized_deductions_unit: 30_600
+    ia_itemized_deductions_indiv: [22_950, 7_650]

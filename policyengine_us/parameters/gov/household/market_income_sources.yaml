@@ -9,6 +9,10 @@ values:
   - farm_operations_income
   - farm_rent_income
   - capital_gains
+  # Capital gain distributions reported without Schedule D.
+  - non_sch_d_capital_gains
+  # Form 4797 other gains and losses.
+  - other_net_gain_person
   - interest_income
   - rental_income
   # Royalties included in rental income
@@ -16,6 +20,9 @@ values:
   - pension_income
   # Pension income includes annuities and endowment contracts
   - military_retirement_income
+  # Disability benefits from an employer plan, taxable or not.
+  - disability_benefits
+  # Discharged debt. person market_income, and so SPM resources, leave it out.
   - debt_relief
   # Income from estates and trusts (Schedule E Part III), including income
   # in respect of a decedent received through an estate or trust.

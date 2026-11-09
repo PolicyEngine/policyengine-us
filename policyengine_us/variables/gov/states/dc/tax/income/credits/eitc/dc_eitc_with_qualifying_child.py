@@ -29,9 +29,10 @@ class dc_eitc_with_qualifying_child(Variable):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         child_count = tax_unit.sum(person("is_eitc_qualifying_child", period) & has_tin)
         filer_has_tin = tax_unit.sum(is_head_or_spouse & ~has_tin) == 0
-        # The federal demographic test with these children counted: a unit
-        # with none in the count qualifies only through the childless age
-        # rules, as for the federal credit.
+        # The federal demographic test with these children counted. A unit
+        # with none in the count falls back on eitc_demographic_eligible,
+        # which from 2021 passes a filer who has any qualifying child
+        # (IRC 32(c)(1)(A)(i)) and otherwise applies the childless age rules.
         demographic_eligible = (child_count > 0) | tax_unit(
             "eitc_demographic_eligible", period
         )
