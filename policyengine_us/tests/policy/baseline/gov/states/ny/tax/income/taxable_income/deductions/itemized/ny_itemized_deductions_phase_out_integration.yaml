@@ -82,7 +82,7 @@
 
 - name: JOINT 2021 - the line 46 adjustment applies to line 45, after the line 40 limitation.
   period: 2021
-  absolute_error_margin: 0.5
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -121,14 +121,47 @@
     # more than 323,200, so Tax computation worksheet 2 applies. NY AGI is
     # $211,550 or more, so the tax is line 3: 0.0633 * 323,180.375 = 20,457.32.
     ny_taxable_income: 323_180.375
-    # The 0.5 margin covers only the supplemental tax: the model adds the
-    # rounded $1,056 recapture amount, so it returns about 0.22 more than the
-    # flat 6.33% of line 3. The itemized amounts above match to the cent.
+
+- name: JOINT 2021 - the line 46 adjustment applies to line 45, after the line 40 limitation, tax before credits.
+  period: 2021
+  # The model adds the rounded $1,056 recapture amount, so it returns about
+  # 0.22 more than the flat 6.33% of line 3.
+  absolute_error_margin: 0.5
+  input:
+    people:
+      head:
+        age: 40
+        taxable_interest_income: 360_200
+        deductible_mortgage_interest: 50_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        state_sales_tax: 0
+        local_sales_tax: 0
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    families:
+      family:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NY
+  output:
+    # IT-201 (2021): taxable income 360,200 - 37,019.625 = 323,180.375 is not
+    # more than 323,200, so Tax computation worksheet 2 applies. NY AGI is
+    # $211,550 or more, so the tax is line 3: 0.0633 * 323,180.375 = 20,457.32.
     ny_income_tax_before_credits: 20_457.32
 
 - name: JOINT 2021 - the line 46 adjustment base includes the college tuition deduction.
   period: 2021
-  absolute_error_margin: 0.5
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -172,7 +205,41 @@
     # more than 323,200, so Tax computation worksheet 2 applies. NY AGI is
     # $211,550 or more, so the tax is line 3: 0.0633 * 315,680.375 = 19,982.57.
     ny_taxable_income: 315_680.375
-    # The 0.5 margin covers only the supplemental tax: the model adds the
-    # rounded $1,056 recapture amount, so it returns about 0.22 more than the
-    # flat 6.33% of line 3. The itemized amounts above match to the cent.
+
+- name: JOINT 2021 - the line 46 adjustment base includes the college tuition deduction, tax before credits.
+  period: 2021
+  # The model adds the rounded $1,056 recapture amount, so it returns about
+  # 0.22 more than the flat 6.33% of line 3.
+  absolute_error_margin: 0.5
+  input:
+    people:
+      head:
+        age: 40
+        taxable_interest_income: 360_200
+        deductible_mortgage_interest: 50_000
+        qualified_tuition_expenses: 10_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        state_sales_tax: 0
+        local_sales_tax: 0
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    families:
+      family:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NY
+  output:
+    # IT-201 (2021): taxable income 360,200 - 44,519.625 = 315,680.375 is not
+    # more than 323,200, so Tax computation worksheet 2 applies. NY AGI is
+    # $211,550 or more, so the tax is line 3: 0.0633 * 315,680.375 = 19,982.57.
     ny_income_tax_before_credits: 19_982.57
