@@ -9344,6 +9344,37 @@ candidates:
   state: ruled
   note: The code already uses a strict comparison and the eligibility tests pin AGI equal to the threshold as
     ineligible. Verify the statute's and the worksheet's wording before registering.
+- id: us-ri:property-tax-relief-claimant-same-person
+  program: property-tax-relief
+  years:
+    from: 2025
+    type: tax
+  question: Must one household member be both aged 65 or older (or disabled) and not claimed as a dependent, or may
+    the age test and the dependency test fall on different spouses, as the RI-1040H question allows?
+  sources:
+  - kind: statute
+    citation: R.I. Gen. Laws § 44-33-3(1)
+    url: https://webserver.rilegislature.gov/Statutes/TITLE44/44-33/44-33-3.htm
+  - kind: form
+    citation: 2025 Form RI-1040H, page 1, question D
+    url: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-10/2025%201040H_VENDOR.pdf#page=1
+  readings:
+    statute: 'The claimant is a homeowner or renter "sixty-five (65) years of age or older, and/or disabled", and the
+      claimant "shall not mean or include any person claimed as a dependent by any taxpayer".'
+    other: 'Question D asks "Were you or your spouse 65 years of age or older and/or disabled", which a joint return
+      passes when only the claimed spouse is 65.'
+  example: '2025 joint return where only the claimed spouse is 65 and the other spouse is 40 and not disabled: $0 under
+    the statute versus $700 if question D governs.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ri/tax/income/credits/property_tax/ri_property_tax_credit_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10044
+  state: open
+  note: 'PE-US requires a filer who is both aged 65 or older or disabled and not claimed (ri_property_tax_credit_eligible.py).
+    Household members may choose the claimant between themselves, so either spouse may claim. Only the 2025 form was
+    read; earlier editions are not checked.'
 - id: us-ri:ssp-category-d-without-federal-ssi
   program: ssi-state-supplement
   years:
@@ -11214,10 +11245,41 @@ candidates:
   state: unreviewed
   note: 'Verify whether HUD extensions or the calculator''s caps properly fill the statutory silence. Code not yet
     on main: vt_renter_credit, gov.states.vt.tax.income.credits.renter.max_household_size.'
+- id: us-vt:renter-credit-income-limit-household-size
+  program: renter-credit
+  years:
+    from: 2021
+    to: 2025
+    type: tax
+  question: Are the renter credit's HUD income limits looked up by the number of resident family members, as the
+    department does, or by the number of personal exemptions that sizes the fair market rent?
+  sources:
+  - kind: statute
+    citation: 32 V.S.A. § 6061(19)-(20); § 6066(b)
+    url: https://legislature.vermont.gov/statutes/section/32/154/06061
+  - kind: guidance
+    citation: Vermont Department of Taxes, Renter Credit page
+    url: https://tax.vermont.gov/renter-credit
+  readings:
+    statute: The limits are HUD's extremely low-income and very low-income limits, which HUD sets by family size. The
+      statute does not say whose family size counts.
+    other: 'The department sizes the limits by "the number of family members who live with you". Another reading uses
+      the exemption count that sizes the fair market rent under 6066(b)(2).'
+  example: '2025 Chittenden joint return with one claimed spouse and $62,000 of income: $270 with resident-member limits
+    versus $0 with exemption-sized limits.'
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/vt/tax/income/credits/renter/vt_renter_credit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10044
+  state: open
+  note: 'PE-US looks up the income limits by tax_unit_size, capped at the tables'' eight people, and the fair market
+    rent by exemptions_count (vt_renter_credit.py). Axiom issue 1678 in rulespec-us pursues exemption-sized limits.'
 - id: us-vt:renter-credit-statewide-average-fmr
   program: renter-credit
   years:
-    from: 2022
+    from: 2021
     to: 2025
     type: tax
   question: Should the statewide fair-market-rent average use a plain HUD-area mean or the department tables' inferred
@@ -11232,7 +11294,9 @@ candidates:
   readings:
     statute: The statute calls for a statewide average without specifying weights or rounding.
     other: The published tables require inferred reconstructions rather than a plain mean of HUD areas.
-  example: '2022 sizes 4-8: PE $1,774 versus published $1,773; 2025 size 3: $2,026 versus $2,025.'
+  example: '2022 sizes 4-8: PE $1,774 versus published $1,773; 2025 size 3: $2,026 versus $2,025. Zero bedrooms: $883
+    either way in 2021, $919 versus $918 in 2022 and $1,172 versus $1,171 in 2024; a 14-county mean gives $1,273
+    versus $1,209 in 2025.'
   pe_us:
     follows: gap-fill
     code:
@@ -11240,11 +11304,14 @@ candidates:
     - policyengine_us/variables/gov/states/vt/tax/income/credits/renter/vt_renter_credit.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10130
+    - https://github.com/PolicyEngine/policyengine-us/pull/10044
   state: unreviewed
   note: 'PE-US fills the gap with the published tables: Franklin and Grand Isle use a reconstruction of the statewide
     average for each year that reproduces the department''s credit amounts, and the file''s comment says these are
     not department rules (fair_market_rent.yaml, read by vt_renter_credit.py). Document the inferred reconstruction
-    and distinguish averaging assumptions from official table values.'
+    and distinguish averaging assumptions from official table values. The zero-bedroom rows (2021-2025) follow
+    another convention: the unrounded mean of the 12 HUD rent areas in every year, 2021 included. No department
+    table exists for zero bedrooms, so nothing reproduces them; the parameter comment lists the alternatives.'
 - id: us-vt:renter-credit-zero-exemption-rent
   program: renter-credit
   years:
@@ -11269,12 +11336,15 @@ candidates:
   example: 'Claimable but unclaimed single Burlington renter, 2025: $1,656 versus $1,771.'
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/vt/tax/income/credits/renter/vt_renter_credit.py
+    - policyengine_us/parameters/gov/states/vt/tax/income/credits/renter/fair_market_rent.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10044
   state: ruled
   note: 'Ruled in October 2026 to follow the statute; verify the calculator editions and zero-exemption example.
-    Code not yet on main: vt_renter_credit.'
+    vt_renter_credit.py indexes the fair market rent by exemptions_count, and fair_market_rent.yaml carries the
+    zero-bedroom (efficiency) rows for 2021-2025.'
 - id: us-vt:snap-child-support-deduction
   program: snap
   years:
@@ -11411,6 +11481,36 @@ candidates:
   state: unreviewed
   note: 'PE-US follows the rounded standards as a disputable gap-fill; verify statutory rounding requirements and
     applicability of the undated precedent. Code not yet on main: medicaid_ltss_mmmna.'
+- id: us-wi:age-65-exemption-claimable-filer
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does a filer aged 65 or older who can be claimed as a dependent get Wisconsin's $250 additional exemption?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. § 71.05(23)(b)3
+    url: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/23
+  - kind: instructions
+    citation: 2025 Wisconsin Form 1 instructions, lines 10a and 10b, PDF pp. 15-16
+    url: https://www.revenue.wi.gov/TaxForms2025/2025-Form1-Inst.pdf#page=15
+  readings:
+    statute: 'Subdivision 3 allows $250 "if the taxpayer has reached the age of 65" and $250 for a spouse who has. Age
+      is its only condition.'
+    other: 'Line 10b allows the $250 only to filers who "are allowed the $700 exemption on line 10a", and line 10a gives
+      no exemption to a filer who can be claimed as a dependent.'
+  example: '2025 single filer aged 70 who can be claimed, with $34,000 of income and a $24,000 retirement exclusion: tax
+    of $185.50 with the $250 versus $194.25 without it.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wi/tax/income/exemptions/wi_additional_exemption.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10044
+  state: open
+  note: 'PE-US allows $250 for each filer aged 65 or older, as main did before this PR (wi_additional_exemption.py).
+    Only the 2025 instructions were read. The official statute site was unavailable, so the statute text came from a
+    LawServer copy. The $700 exemption is a separate item (us-wi:personal-exemption-claimable-filer).'
 - id: us-wi:claim-of-right-itemized-deduction-credit
   program: income-tax
   years:
@@ -11440,6 +11540,45 @@ candidates:
   note: An October 2026 ruling followed the worksheet; under the later statute-first rule the code includes the
     federal claim of right deduction in the credit base with the Schedule 1 components. The separate Wisconsin
     repayment credit that would trigger the 71.07(5)(a)6 exclusion is not modeled.
+- id: us-wi:dependent-standard-deduction-earned-income
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does Wisconsin's dependent standard deduction limit count earned income as IRC 911(d)(2) defines it, or as
+    the federal Standard Deduction Worksheet for Dependents measures it?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. § 71.05(22)(f)3m; 26 U.S.C. § 911(d)(2)
+    url: https://www.law.cornell.edu/uscode/text/26/911
+  - kind: instructions
+    citation: 2025 Wisconsin Form 1 instructions, Standard Deduction Worksheet for Dependents footnote, PDF p. 15
+    url: https://www.revenue.wi.gov/TaxForms2025/2025-Form1-Inst.pdf#page=15
+  - kind: instructions
+    citation: 2025 Form 1040 instructions, Standard Deduction Worksheet for Dependents footnote
+    url: https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=23
+  readings:
+    statute: 'Subdivision 3m uses "earned income, as defined in section 911 (d) (2)". That counts at most 30 percent of
+      net profits from a business in which capital is material, and subtracts no self-employment tax.'
+    other: 'The Wisconsin footnote lists "wages, salaries, tips, professional fees, and any other compensation received
+      for services you performed". The federal worksheet adds business and farm income, less the self-employment tax
+      deduction.'
+  example: '2025 claimable single filer with $10,000 of farm income: a $9,743.52 deduction under the federal worksheet
+    measure versus at most $3,450 if capital is material to the farm.'
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/wi/tax/income/wi_standard_deduction.py
+    - policyengine_us/variables/gov/states/wi/tax/income/wi_retirement_income_exclusion_tax.py
+    - policyengine_us/variables/gov/irs/income/taxable_income/deductions/standard_deduction/standard_deduction_worksheet_earned_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10044
+  state: open
+  note: 'Both Wisconsin deduction paths read the federal standard_deduction_worksheet_earned_income: wages after pretax
+    deductions, taxable disability wages, and business and farm income less the self-employment tax deduction.
+    Section 911(d)(2) also needs a reasonable allowance for the filer''s services, which the model has no input for.
+    The federal item us:dependent-deduction-worksheet-earned-income rests on section 63(c)(5) leaving earned income
+    undefined, which Wisconsin''s statute does not.'
 - id: us-wi:liheap-categorical-benefit-income
   program: liheap
   years:
@@ -11610,6 +11749,35 @@ candidates:
   note: 'PE-US follows the statute and state plan: Wisconsin elects the option, and the formula requires is_full_time_student,
     a proxy the comments say is broader than the federal option because it also captures full-time college students
     (student_option.yaml, is_parent_for_medicaid_nfc.py). Verify whether its wording reflects practice.'
+- id: us-wi:personal-exemption-claimable-filer
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does Wisconsin's $700 personal exemption turn on the filing requirement, as the statute says, or on whether
+    the filer can be claimed as a dependent, as line 10a says?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. § 71.05(23)(b)1
+    url: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/23
+  - kind: instructions
+    citation: 2025 Wisconsin Form 1 instructions, line 10a, PDF p. 15
+    url: https://www.revenue.wi.gov/TaxForms2025/2025-Form1-Inst.pdf#page=15
+  readings:
+    statute: 'Subdivision 1 allows $700 "if the taxpayer is required to file a return under s. 71.03 (2) (a) 1. or 2.",
+      with no condition on whether anyone can claim the taxpayer.'
+    other: 'Line 10a gives no exemption to a single filer who "can be claimed as a dependent on someone else''s return".'
+  example: 'A claimable single filer who must file under s. 71.03(2)(a)1.: a $700 exemption under the statute versus $0
+    under line 10a, which PE-US follows.'
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/wi/tax/income/exemptions/wi_base_exemption.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10044
+  state: open
+  note: 'PE-US prices the $700 at the federal exemptions_count, which gives a filer who can be claimed none
+    (wi_base_exemption.py). PR 10044 records this but does not change it. The statute text came from a LawServer copy.'
 - id: us-wi:shares-home-value-and-vehicle-asset-tests
   program: child-care-assistance
   years:
@@ -11674,6 +11842,72 @@ candidates:
   state: ruled
   note: Ruled in November 2026 as a gap-fill, because the statute does not address repayments and the instructions
     provide the modification. Statutory authority remains unidentified, and the study's citation remains unresolved.
+- id: us-wv:claimable-filer-exemption-with-dependents
+  program: income-tax
+  years:
+    from: 1987
+    type: tax
+  question: When a filer who can be claimed has dependents who add exemptions under the filing exception, does the
+    filer's 11-21-16(d) exemption replace the return's count, add $500 to it, or give way to the IT-140 count?
+  sources:
+  - kind: statute
+    citation: W. Va. Code §11-21-16(d)
+    url: https://code.wvlegislature.gov/11-21-16/
+  - kind: form
+    citation: 'IT-140 (2025), exemption boxes and line 6 instructions #page 3,26'
+    url: https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=3
+  readings:
+    statute: '"Notwithstanding any provisions in this section", the individual "shall be allowed a single West Virginia
+      exemption in the amount of $500". Read literally, that is the whole allowance; read per person, it adds to the
+      dependents'' exemptions.'
+    other: 'IT-140 counts box (c) dependents at $2,000 each and adds $500 only "If box e is zero".'
+  example: '2025 filing-exception single filer with one child: $2,000 on IT-140 (PE-US), $500 on the literal reading,
+    $2,500 per person. Joint return, one claimable spouse, two children: $6,000 (PE-US) versus $6,500 per person.'
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/wv/tax/income/exemptions/wv_claimable_filer_exemptions_count.py
+    - policyengine_us/variables/gov/states/wv/tax/income/exemptions/wv_personal_exemption.py
+    - policyengine_us/variables/gov/states/wv/tax/income/credits/liftc/wv_low_income_family_tax_credit_fpg.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10044
+  state: open
+  note: 'PE-US keeps the IT-140 count on these returns: wv_claimable_filer_exemptions_count is zero when dependents add
+    exemptions, so the exemption amount and the family tax credit''s family size count no 11-21-16(d) exemption. The
+    pinned cases are in wv_personal_exemption.yaml and wv_low_income_family_tax_credit_eligible.yaml.'
+- id: us-wv:family-tax-credit-claimable-filer-family-size
+  program: income-tax
+  years:
+    from: 2007
+    type: tax
+  question: Does the low-income family tax credit's family size count each claimable filer's 11-21-16(d) exemption,
+    and may a return the form treats as having zero exemptions claim the credit?
+  sources:
+  - kind: statute
+    citation: W. Va. Code §11-21-22a(b); §11-21-16(d)
+    url: https://code.wvlegislature.gov/11-21-22A/
+  - kind: instructions
+    citation: IT-140 (2025), Family Tax Credit schedule, PDF p. 13
+    url: https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=13
+  readings:
+    statute: 'Family size is "the total number of exemptions that may be legally claimed" on the return, leaving out
+      only the 16(c) surviving spouse exemption, and 16(d) calls the $500 "a single West Virginia exemption".'
+    other: 'The schedule says "Individuals who file their income tax return with zero exemptions cannot claim the
+      credit", and line 5 takes family size from boxes a, b and c, which leave out the $500 allowance.'
+  example: '2025, $16,000 of wages: single claimable filer $307.84 versus $0; joint with one claimable spouse $325.60
+    versus $260.48; joint with both claimable $370 versus $0.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wv/tax/income/credits/liftc/wv_low_income_family_tax_credit_fpg.py
+    - policyengine_us/variables/gov/states/wv/tax/income/credits/liftc/wv_low_income_family_tax_credit_eligible.py
+    - policyengine_us/variables/gov/states/wv/tax/income/exemptions/wv_claimable_filer_exemptions_count.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10044
+  state: open
+  note: 'PE-US counts exemptions_count plus wv_claimable_filer_exemptions_count, capped at eight, and sets no
+    zero-exemption bar. Main used tax_unit_size, which gave the same family size for these childless returns. Only the
+    2025 IT-140 was read; earlier editions are assumed to match.'
 - id: us-wv:liheap-income-limit-above-federal-ceiling
   program: liheap
   years:
@@ -11901,8 +12135,7 @@ candidates:
 - id: us-wv:zero-exemption-return-500-allowance
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 1987
     type: tax
   question: Is the $500 allowance for claimable filers applied per person under the statute or once per return under
     IT-140?
@@ -11914,17 +12147,27 @@ candidates:
     citation: IT-140 (2025), PDF p. 3
     url: https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=3
   readings:
-    statute: The individual wording supports a per-person allowance.
+    statute: '16(d) says "a resident individual" whose federal exemption amount is zero under IRC 151(d)(2) "shall be
+      allowed a single West Virginia exemption in the amount of $500", so each such individual gets one.'
     other: The form directs a single $500 allowance when the return's exemption count is zero.
   example: 'Joint return with one claimable spouse: $2,500 versus $2,000; both claimable: $1,000 versus $500.'
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wv/tax/income/exemptions/wv_claimable_filer_exemptions_count.py
+    - policyengine_us/variables/gov/states/wv/tax/income/exemptions/wv_personal_exemption.py
+    - policyengine_us/parameters/gov/states/wv/tax/income/exemptions/base_personal.yaml
+    - policyengine_us/reforms/states/wv/dependent_exemption/wv_dependent_exemption_reform.py
+    - policyengine_us/reforms/state_dependent_exemptions/repeal_state_dependent_exemptions.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10044
   state: ruled
-  note: 'The October 2026 statute-first ruling requires changing the form-based allowance if the per-person reading
-    is confirmed; obtain the exact statutory text. Code not yet on main: wv_personal_exemption.'
+  note: 'The October 2026 statute-first ruling applies, and the statutory text now read supports the per-person reading.
+    PE-US gives $500 to each claimable filer on a return whose dependents add no exemption, in the baseline and the
+    contributed reform (wv_claimable_filer_exemptions_count.py, wv_personal_exemption.py, base_personal.yaml,
+    wv_dependent_exemption_reform.py). The repeal reform gives it to every claimable filer, since it repeals the
+    dependent exemptions (repeal_state_dependent_exemptions.py). 16(d) applies to taxable years beginning after December
+    31, 1986. Returns whose dependents add exemptions are a separate item (us-wv:claimable-filer-exemption-with-dependents).'
 - id: us-wy:ccap-continuing-eligibility-employment-condition
   program: child-care-assistance
   years:
