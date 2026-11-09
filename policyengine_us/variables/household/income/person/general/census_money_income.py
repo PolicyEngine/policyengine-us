@@ -8,10 +8,13 @@ class census_money_income(Variable):
     unit = USD
     definition_period = YEAR
     documentation = (
-        "Money income as the Census Bureau defines it for its official income "
-        "statistics: the sum of the 18 sources in Current Population Reports "
-        "P60-200, Appendix A, before taxes. Each source is a list in "
-        "gov.household.census_money_income_sources. It leaves out capital "
+        "Money income as the Census Bureau reports it from the Current "
+        "Population Survey: the sum of the 18 sources in Current Population "
+        "Reports P60-200 (1998), Appendix A, which the survey's subject "
+        "definitions still list, before taxes. Each source is a list in "
+        "gov.household.census_money_income_sources. Retirement account "
+        "distributions count from age 58, as the survey has counted them "
+        "since its 2019 redesign. It leaves out capital "
         "gains, discharged debt, tax refunds and credits, lump-sum insurance "
         "payments, and noncash benefits such as SNAP, school meals, housing "
         "assistance, child care subsidies and health coverage. A benefit the "
@@ -23,11 +26,14 @@ class census_money_income(Variable):
         "and records SSI paid for a younger child in a parent's or guardian's "
         "SSI income. The model lacks three sources Appendix A lists: Black "
         "lung payments, military family allotments and foreign government "
-        "pensions."
+        "pensions. It has foster child payments only for Los Angeles County, "
+        "and no variable for interest earned inside retirement accounts, "
+        "which the survey has counted as interest since 2019."
     )
     reference = (
         # PDF pages 1-3
         "https://www2.census.gov/programs-surveys/cps/methodology/Appendix%20A%20P60-200%20income%20measurement%20definition.pdf#page=1",
+        "https://www.census.gov/programs-surveys/cps/technical-documentation/subject-definitions.html",
         "https://cps.ipums.org/cps-action/variables/SSIKID",
     )
 

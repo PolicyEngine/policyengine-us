@@ -1,10 +1,6 @@
 description: The Census Bureau counts these sources as public assistance, source 6 of 18 in money income.
 values:
-  2022-01-01:
-    - tanf
-    - general_assistance
-  # State programs join in 2023, when household_state_benefits begins.
-  2023-01-01:
+  0000-01-01:
     - tanf
     - general_assistance
     # Colorado Old Age Pension covers people 60 and older, a wider group

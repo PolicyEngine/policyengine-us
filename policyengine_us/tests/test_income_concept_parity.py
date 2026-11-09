@@ -7,17 +7,23 @@ household_benefits and market_income_sources, and lists kept in separate files
 drift: a program added to household_benefits reaches neither concept, or a
 source lands in two CBO categories and counts twice.
 
-Five invariants hold for every input.
+These tests check five invariants in each year from 2022, the first year of
+household_benefits. The first two read the lists. The last three hold each
+source as an input, because a program's own formula responds to income: a
+dollar of wages can change a benefit.
 
 1. Every source that any of these lists counts appears in each concept, or in
    that concept's documented exclusions below, with the reason.
-2. No source counts twice: no variable sits under two Census sources, the CBO
-   categories are disjoint, CBO adds nothing household market income already
-   holds, and neither concept counts a variable beside another that sums it.
+2. No source counts twice: no list repeats a variable, no variable sits under
+   two Census sources, the CBO categories are disjoint, CBO adds nothing
+   household market income already holds, and neither concept counts a variable
+   beside another that reaches it through `adds`.
 3. A dollar of a listed source adds a dollar to its concept. A person's Census
    money income gains the dollar, or an equal share of a dollar paid to a
    group, and the family and household totals gain the dollar. The CBO
    category that lists a source gains the dollar and the others do not.
+   Retirement account distributions count only from the age Census counts
+   them.
 4. A dollar of a source a concept leaves out moves that concept not at all.
 5. Family and household totals sum their members, census_money_income matches
    an independent allocation of each source, and Census household money income
@@ -29,7 +35,9 @@ source at once, with Hypothesis over amounts and household sizes.
 """
 
 import functools
+import itertools
 import re
+from collections import Counter
 from pathlib import Path
 
 import numpy as np
@@ -44,13 +52,11 @@ PACKAGE = Path(__file__).parent.parent
 HOUSEHOLD_LISTS = PACKAGE / "parameters/gov/household"
 CENSUS_LISTS = HOUSEHOLD_LISTS / "census_money_income_sources"
 MARKET_INCOME_SOURCES = HOUSEHOLD_LISTS / "market_income_sources.yaml"
-# household_benefits and the Census lists begin in 2022.
+# household_benefits begins in 2022.
 YEARS = range(2022, 2027)
-YEAR = 2026
 TOLERANCE = 0.05
 # Census household money income adds about 100 float32 terms, so the
-# reconciliation allows for their rounding. A misclassified program moves the
-# total by the whole benefit.
+# reconciliation allows for their rounding.
 RECONCILIATION_TOLERANCE = 1.0
 
 STATES = (
@@ -88,16 +94,22 @@ HEALTH = "health coverage, a noncash benefit"
 EMPLOYER = "an employer payment, not money the worker receives"
 DISCOUNT = "lowers a bill, not money received"
 REBATE = "lowers the price of a purchase, not money received"
+PROPERTY_TAX_RELIEF = (
+    "property tax relief, a tax refund for homeowners, which Appendix A leaves "
+    "out; this list treats renters' relief the same way"
+)
 CENSUS_EXCLUDED = {
     # Market income.
     "capital_gains": "capital gains",
     "non_sch_d_capital_gains": "capital gains",
     "other_net_gain_person": "gains on sales of business property (Form 4797)",
     "debt_relief": "discharged debt, not a receipt of money",
-    "illicit_income": "income from bribes and other illegal activity, which "
-    "no Appendix A source covers",
-    "miscellaneous_income": "irregular items of gross income (26 CFR 1.61-14); "
-    "other income covers payments people receive regularly",
+    "illicit_income": "income from bribes and other illegal activity, not a "
+    "regular payment under other income, and no other source covers it",
+    "miscellaneous_income": "no Appendix A source fits: the default data fills "
+    "it with Census other income on survey records and Form 4797 business "
+    "property gains and losses on tax records (microcosm#393), and the model "
+    "cannot separate the two",
     # CBO's employer-side and imputed components.
     "employer_sponsored_insurance_premiums": EMPLOYER,
     "employer_social_security_tax": EMPLOYER,
@@ -147,10 +159,8 @@ CENSUS_EXCLUDED = {
     "residential_efficiency_electrification_rebate": REBATE,
     "ny_drive_clean_rebate": REBATE,
     # Tax relief.
-    "nj_property_tax_relief": "property tax relief, which returns tax: "
-    "Appendix A leaves out tax refunds",
-    "co_denver_property_tax_relief": "property tax relief, which returns tax: "
-    "Appendix A leaves out tax refunds",
+    "nj_property_tax_relief": PROPERTY_TAX_RELIEF,
+    "co_denver_property_tax_relief": PROPERTY_TAX_RELIEF,
 }
 
 # CBO's measures (The Distribution of Household Income in 2021, Appendix D)
@@ -164,6 +174,8 @@ CBO_EXCLUDED = {
     "pfml_benefits": "state paid leave insurance: CBO's social insurance is "
     "Social Security, Medicare, unemployment insurance and workers' "
     "compensation",
+    "census_retirement_distributions": "Census's age-limited view of "
+    "retirement_distributions, which CBO's market income counts in full",
     "educational_assistance": "Pell Grants and other government aid beside "
     "private scholarships (IPUMS INCEDUC), which the model does not split: "
     "CBO's other income covers only nongovernmental sources, and its transfer "
@@ -230,11 +242,20 @@ CENSUS_COUNTED_AS = {
     ),
 }
 
-# Sources CBO counts through another listed variable that sums them.
+# Sources Census counts only in part, through the variable that applies the
+# limit: since its 2019 redesign the survey leaves retirement account
+# distributions to people under 58 out of total income.
+CENSUS_COUNTED_IN_PART = {
+    "retirement_distributions": "census_retirement_distributions",
+}
+
+# Sources CBO counts through the listed variable that sums them.
 CBO_COUNTED_AS = {
-    "medicaid_cost": "medicaid",
-    "military_retirement_pay": "military_retirement_income",
-    "military_retirement_pay_survivors": "military_retirement_income",
+    "medicaid": ("medicaid_cost",),
+    "military_retirement_income": (
+        "military_retirement_pay",
+        "military_retirement_pay_survivors",
+    ),
 }
 
 # Sources that can be losses.
@@ -249,11 +270,38 @@ LOSSES = {
 }
 
 
-def block(path, year):
-    """The members of a list parameter in effect during a year."""
+CBO_LIST_NAMES = (
+    "market_income_additions",
+    "market_income_subtractions",
+    "social_insurance_benefits",
+    "means_tested_transfers",
+    "federal_tax_subtractions",
+)
+BENEFIT_LIST_NAMES = (
+    "household_benefits",
+    "household_state_benefits",
+    "household_local_benefits",
+    "household_health_benefits",
+    "household_head_start_benefits",
+)
+
+
+def dated_blocks(path):
+    """A list parameter's (date, members) pairs, earliest first."""
     raw = yaml.load(path.read_text(), Loader=yaml.BaseLoader)
-    dated = sorted(item for item in raw["values"].items() if item[0] <= f"{year}-12-31")
-    return set(dated[-1][1]) if dated else set()
+    return sorted(raw["values"].items())
+
+
+def block(path, year):
+    """The members of a list parameter in effect during a year.
+
+    A year reads the block in effect on January 1, as the model does. The system
+    backdates each list's first block to 2015, so a list applies before its
+    first date too.
+    """
+    dated = dated_blocks(path)
+    started = [members for date, members in dated if date <= f"{year}-01-01"]
+    return set(started[-1] if started else dated[0][1])
 
 
 def census_lists(year):
@@ -268,14 +316,10 @@ def census_members(year):
 
 
 def cbo_lists(year):
-    names = (
-        "market_income_additions",
-        "market_income_subtractions",
-        "social_insurance_benefits",
-        "means_tested_transfers",
-        "federal_tax_subtractions",
-    )
-    return {name: block(HOUSEHOLD_LISTS / f"cbo_{name}.yaml", year) for name in names}
+    return {
+        name: block(HOUSEHOLD_LISTS / f"cbo_{name}.yaml", year)
+        for name in CBO_LIST_NAMES
+    }
 
 
 def cbo_categories(year):
@@ -348,6 +392,31 @@ def entity_of(name):
     return system.variables[name].entity.key
 
 
+@functools.cache
+def reachable(name, year):
+    """A variable and every variable it reaches through `adds`."""
+    from policyengine_us.system import system
+
+    # `adds` can also name a parameter, which is a leaf.
+    if name not in system.variables:
+        return frozenset({name})
+    parts = system.variables[name].adds or ()
+    if isinstance(parts, str):
+        node = functools.reduce(getattr, parts.split("."), system.parameters)
+        parts = node(f"{year}-01-01")
+    found = {name}
+    for part in parts:
+        found |= reachable(part, year)
+    return frozenset(found)
+
+
+def assert_none_sums_another(names, year):
+    reached = {name: reachable(name, year) for name in names}
+    for first, second in itertools.combinations(sorted(names), 2):
+        both = reached[first] & reached[second]
+        assert not both, f"{first} and {second} both count {sorted(both)}"
+
+
 def test_census_lists_follow_appendix_a():
     files = {path.stem for path in CENSUS_LISTS.glob("*.yaml")} - {"index"}
     assert files == set(CENSUS_SOURCES)
@@ -358,12 +427,15 @@ def test_census_lists_follow_appendix_a():
         assert f"source {number} of 18" in raw["description"], source
         titles = [reference["title"] for reference in raw["metadata"]["reference"]]
         assert any("P60-200, Appendix A" in title for title in titles), source
+        # The definition applies to every year, so no year reads an empty list.
+        assert min(raw["values"]) == "0000-01-01", source
 
 
 def test_concept_lists_name_defined_variables(variables):
     names = set(CENSUS_EXCLUDED) | set(CBO_EXCLUDED)
     names |= set(CENSUS_COUNTED_AS) | set().union(*CENSUS_COUNTED_AS.values())
-    names |= set(CBO_COUNTED_AS) | set(CBO_COUNTED_AS.values())
+    names |= set(CENSUS_COUNTED_IN_PART) | set(CENSUS_COUNTED_IN_PART.values())
+    names |= set(CBO_COUNTED_AS) | set().union(*CBO_COUNTED_AS.values())
     for year in YEARS:
         names |= census_members(year) | set().union(*cbo_lists(year).values())
     assert names - set(variables) == set()
@@ -371,11 +443,27 @@ def test_concept_lists_name_defined_variables(variables):
 
 def test_aliases_sum_exactly_their_parts(variables):
     # A part added to one of these variables later would otherwise reach
-    # neither concept.
-    for name, parts in CENSUS_COUNTED_AS.items():
+    # neither concept, or count where the concept leaves it out.
+    for name, parts in {**CENSUS_COUNTED_AS, **CBO_COUNTED_AS}.items():
         assert set(variables[name].adds) == set(parts), name
-    for name, alias in CBO_COUNTED_AS.items():
-        assert name in variables[alias].adds, f"{alias} does not add {name}"
+
+
+def test_no_list_names_a_source_twice():
+    # block() reads a list as a set, while a formula sums it as written.
+    paths = [
+        *(CENSUS_LISTS / f"{source}.yaml" for source in CENSUS_SOURCES),
+        *(HOUSEHOLD_LISTS / f"cbo_{name}.yaml" for name in CBO_LIST_NAMES),
+        *(HOUSEHOLD_LISTS / f"{name}.yaml" for name in BENEFIT_LIST_NAMES),
+        MARKET_INCOME_SOURCES,
+    ]
+    repeats = [
+        (path.stem, date, name)
+        for path in paths
+        for date, members in dated_blocks(path)
+        for name, count in Counter(members).items()
+        if count > 1
+    ]
+    assert repeats == []
 
 
 @pytest.mark.parametrize("year", YEARS)
@@ -385,8 +473,10 @@ def test_no_source_counts_twice(year):
         for name in members:
             assert name not in seen, f"{name} is under {seen[name]} and {source}"
             seen[name] = source
-    for name, parts in CENSUS_COUNTED_AS.items():
-        assert name not in seen, f"{name} counts beside {parts}, which it sums"
+    assert_none_sums_another(set(seen), year)
+    for name, partial in CENSUS_COUNTED_IN_PART.items():
+        assert name not in seen, f"{name} counts beside {partial}, its counted part"
+        assert partial in seen, f"{partial} no longer carries {name}"
 
     lists = cbo_lists(year)
     market = block(MARKET_INCOME_SOURCES, year)
@@ -400,9 +490,7 @@ def test_no_source_counts_twice(year):
         for second in totals[index + 1 :]:
             both = categories[first] & categories[second]
             assert both == set(), f"{sorted(both)} count in {first} and {second}"
-    counted = set().union(*categories.values())
-    for name, alias in CBO_COUNTED_AS.items():
-        assert name not in counted, f"{name} counts beside {alias}, which sums it"
+    assert_none_sums_another(set().union(*categories.values()), year)
 
     # household_market_income + household_benefits must not count a source
     # twice either, or the reconciliation below would not hold.
@@ -414,6 +502,9 @@ def test_census_classifies_every_source(year):
     counted = census_members(year)
     counted |= {
         name for name, parts in CENSUS_COUNTED_AS.items() if set(parts) <= counted
+    }
+    counted |= {
+        name for name, partial in CENSUS_COUNTED_IN_PART.items() if partial in counted
     }
     excluded = set(CENSUS_EXCLUDED)
     assert counted & excluded == set(), "listed and excluded"
@@ -429,7 +520,9 @@ def test_census_classifies_every_source(year):
 @pytest.mark.parametrize("year", YEARS)
 def test_cbo_classifies_every_source(year):
     counted = set().union(*cbo_categories(year).values())
-    counted |= {name for name, alias in CBO_COUNTED_AS.items() if alias in counted}
+    for alias, parts in CBO_COUNTED_AS.items():
+        if alias in counted:
+            counted |= set(parts)
     excluded = set(CBO_EXCLUDED)
     assert counted & excluded == set(), "listed and excluded"
     unclassified = universe(year) - counted - excluded
@@ -446,17 +539,19 @@ def test_exclusions_are_current():
     every_year = set().union(*(universe(year) for year in YEARS))
     assert set(CENSUS_EXCLUDED) - every_year == set(), "stale Census entries"
     assert set(CENSUS_COUNTED_AS) - every_year == set(), "stale Census aliases"
+    assert set(CENSUS_COUNTED_IN_PART) - every_year == set(), "stale Census parts"
     assert set(CBO_EXCLUDED) - every_year == set(), "stale CBO entries"
-    assert set(CBO_COUNTED_AS) - every_year == set(), "stale CBO aliases"
+    aliased = set(CBO_COUNTED_AS) | set().union(*CBO_COUNTED_AS.values())
+    assert aliased - every_year == set(), "stale CBO aliases"
 
 
-def paired_households(cases, size, earnings=0, year=YEAR):
+def paired_households(cases, size, year, earnings=0, ages=None):
     """A paid and an unpaid household for each (name, entity, state, amount).
 
-    Each household holds a 40-year-old head, who earns `earnings`, and
-    `size - 1` children, in one tax unit, SPM unit and family. A source the
-    situation names becomes an input for every household, zero where unset,
-    so no formula responds to another case's payment.
+    Each household holds a head, 40 years old unless `ages` gives one per case,
+    who earns `earnings`, and `size - 1` children, in one tax unit, SPM unit and
+    family. A source the situation names becomes an input for every household,
+    zero where unset, so no formula responds to another case's payment.
     """
     people = {}
     units = {
@@ -471,7 +566,8 @@ def paired_households(cases, size, earnings=0, year=YEAR):
             key = f"{side}_{index}"
             members = [f"{key}_{position}" for position in range(size)]
             for position, member in enumerate(members):
-                people[member] = {"age": {year: 40 if position == 0 else 10}}
+                head_age = 40 if ages is None else ages[index]
+                people[member] = {"age": {year: head_age if position == 0 else 10}}
                 units["marital_units"][member] = {"members": [member]}
             head = people[members[0]]
             head["employment_income"] = {year: earnings}
@@ -493,7 +589,7 @@ def paired_households(cases, size, earnings=0, year=YEAR):
     return Simulation(situation={"people": people, **units})
 
 
-def values_by_id(simulation, variable, year=YEAR):
+def values_by_id(simulation, variable, year):
     entity = simulation.tax_benefit_system.variables[variable].entity.key
     ids = simulation.populations[entity].ids
     return dict(zip(ids, simulation.calculate(variable, year).astype(float)))
@@ -511,35 +607,40 @@ def shares(entity, amount, size):
     return [amount / size] * size
 
 
-CENSUS_CASES = sorted(census_members(YEAR) | (set(CENSUS_EXCLUDED) & universe(YEAR)))
+def census_cases(year):
+    return sorted(census_members(year) | (set(CENSUS_EXCLUDED) & universe(year)))
 
 
-@settings(max_examples=5, deadline=None)
+CENSUS_CASE_COUNT = max(len(census_cases(year)) for year in YEARS)
+
+
+@pytest.mark.parametrize("year", YEARS)
+@settings(max_examples=2, deadline=None)
 @given(
     size=st.integers(min_value=1, max_value=3),
     amounts=st.lists(
         st.integers(min_value=1, max_value=100_000),
-        min_size=len(CENSUS_CASES),
-        max_size=len(CENSUS_CASES),
+        min_size=CENSUS_CASE_COUNT,
+        max_size=CENSUS_CASE_COUNT,
     ),
     losses=st.booleans(),
 )
 @example(
     size=3,
-    amounts=[1_000 + index for index in range(len(CENSUS_CASES))],
+    amounts=[1_000 + index for index in range(CENSUS_CASE_COUNT)],
     losses=True,
 )
-def test_census_money_income_moves_dollar_for_dollar(size, amounts, losses):
-    counted = census_members(YEAR)
+def test_census_money_income_moves_dollar_for_dollar(year, size, amounts, losses):
+    counted = census_members(year)
     cases = []
-    for name, amount in zip(CENSUS_CASES, amounts):
+    for name, amount in zip(census_cases(year), amounts):
         if losses and name in LOSSES:
             amount = -amount
         cases.append((name, entity_of(name), state_of(name), amount))
-    simulation = paired_households(cases, size)
-    person = values_by_id(simulation, "census_money_income")
-    family = values_by_id(simulation, "census_family_money_income")
-    household = values_by_id(simulation, "census_household_money_income")
+    simulation = paired_households(cases, size, year)
+    person = values_by_id(simulation, "census_money_income", year)
+    family = values_by_id(simulation, "census_family_money_income", year)
+    household = values_by_id(simulation, "census_household_money_income", year)
 
     failures = []
     for index, (name, entity, _, amount) in enumerate(cases):
@@ -553,33 +654,59 @@ def test_census_money_income_moves_dollar_for_dollar(size, amounts, losses):
     assert failures == []
 
 
-CBO_CASES = sorted(
-    set().union(*cbo_categories(YEAR).values()) | (set(CBO_EXCLUDED) & universe(YEAR))
-)
+@pytest.mark.parametrize("year", (2017, 2018, 2026))
+@settings(max_examples=3, deadline=None)
+@given(amount=st.integers(min_value=1, max_value=200_000))
+@example(amount=10_000)
+def test_census_counts_retirement_distributions_from_age_58(year, amount):
+    # The survey's 2019 redesign, which collects 2018 income, leaves
+    # distributions to people under 58 out of total income; the earlier rule
+    # has no age limit.
+    ages = list(range(15, 91))
+    cases = [("retirement_distributions", "person", "TX", amount)] * len(ages)
+    # Earnings this high rule out every means-tested response.
+    simulation = paired_households(cases, 1, year, earnings=100_000, ages=ages)
+    person = values_by_id(simulation, "census_money_income", year)
+    household = values_by_id(simulation, "census_household_money_income", year)
+    for index, age in enumerate(ages):
+        expected = amount if year < 2018 or age >= 58 else 0
+        assert change(person, index, 0) == pytest.approx(expected, abs=TOLERANCE), age
+        assert change(household, index) == pytest.approx(expected, abs=TOLERANCE), age
 
 
-@settings(max_examples=5, deadline=None)
+def cbo_cases(year):
+    return sorted(
+        set().union(*cbo_categories(year).values())
+        | (set(CBO_EXCLUDED) & universe(year))
+    )
+
+
+CBO_CASE_COUNT = max(len(cbo_cases(year)) for year in YEARS)
+
+
+@pytest.mark.parametrize("year", YEARS)
+@settings(max_examples=2, deadline=None)
 @given(
     size=st.integers(min_value=1, max_value=3),
     amounts=st.lists(
         st.integers(min_value=1, max_value=100_000),
-        min_size=len(CBO_CASES),
-        max_size=len(CBO_CASES),
+        min_size=CBO_CASE_COUNT,
+        max_size=CBO_CASE_COUNT,
     ),
 )
-@example(size=2, amounts=[1_000 + index for index in range(len(CBO_CASES))])
-def test_cbo_categories_move_dollar_for_dollar(size, amounts):
-    categories = cbo_categories(YEAR)
-    subtractions = cbo_lists(YEAR)["market_income_subtractions"]
+@example(size=2, amounts=[1_000 + index for index in range(CBO_CASE_COUNT)])
+def test_cbo_categories_move_dollar_for_dollar(year, size, amounts):
+    categories = cbo_categories(year)
+    subtractions = cbo_lists(year)["market_income_subtractions"]
     cases = [
         (name, entity_of(name), state_of(name), amount)
-        for name, amount in zip(CBO_CASES, amounts)
+        for name, amount in zip(cbo_cases(year), amounts)
     ]
-    simulation = paired_households(cases, size)
+    simulation = paired_households(cases, size, year)
     # Federal taxes respond to income, so the next test checks them alone.
     incomes = {key: value for key, value in categories.items() if key in CBO_INCOMES}
-    totals = {total: values_by_id(simulation, total) for total in incomes}
-    market = values_by_id(simulation, "household_market_income")
+    totals = {total: values_by_id(simulation, total, year) for total in incomes}
+    market = values_by_id(simulation, "household_market_income", year)
 
     failures = []
     for index, (name, _, _, amount) in enumerate(cases):
@@ -592,29 +719,38 @@ def test_cbo_categories_move_dollar_for_dollar(size, amounts):
     assert failures == []
 
 
-@settings(max_examples=3, deadline=None)
+@pytest.mark.parametrize("year", YEARS)
+@settings(max_examples=2, deadline=None)
 @given(amount=st.integers(min_value=1, max_value=20_000))
 @example(amount=4_321)
-def test_cbo_federal_taxes_subtract_each_refundable_credit(amount):
-    credits = sorted(cbo_categories(YEAR)["cbo_household_federal_taxes"])
+def test_cbo_federal_taxes_subtract_each_refundable_credit(year, amount):
+    credits = sorted(cbo_categories(year)["cbo_household_federal_taxes"])
     cases = [(name, entity_of(name), "TX", amount) for name in credits]
     # Earnings this high rule out every means-tested response.
-    simulation = paired_households(cases, size=2, earnings=500_000)
-    taxes = values_by_id(simulation, "cbo_household_federal_taxes")
+    simulation = paired_households(cases, 2, year, earnings=500_000)
+    taxes = values_by_id(simulation, "cbo_household_federal_taxes", year)
     for index, name in enumerate(credits):
         assert change(taxes, index) == pytest.approx(-amount, abs=TOLERANCE), name
 
 
-@pytest.mark.parametrize("name, alias", sorted(CBO_COUNTED_AS.items()))
-def test_cbo_counts_a_source_through_the_variable_that_sums_it(name, alias):
+@pytest.mark.parametrize(
+    "year, name, alias",
+    [
+        (year, name, alias)
+        for year in YEARS
+        for alias, parts in CBO_COUNTED_AS.items()
+        for name in parts
+    ],
+)
+def test_cbo_counts_a_source_through_the_variable_that_sums_it(year, name, alias):
     simulation = paired_households(
-        [(name, entity_of(name), "TX", 1_000)], size=1, earnings=500_000
+        [(name, entity_of(name), "TX", 1_000)], 1, year, earnings=500_000
     )
-    categories = cbo_categories(YEAR)
+    categories = cbo_categories(year)
     assert any(alias in categories[total] for total in CBO_INCOMES), alias
     for total in CBO_INCOMES:
         expected = 1_000 if alias in categories[total] else 0
-        assert change(values_by_id(simulation, total), 0) == pytest.approx(
+        assert change(values_by_id(simulation, total, year), 0) == pytest.approx(
             expected, abs=TOLERANCE
         ), total
 
@@ -638,29 +774,59 @@ def reference_census_money_income(simulation, year):
     return total
 
 
-@settings(max_examples=10, deadline=None)
+def members_by_group(names, assignment):
+    """Each group's members, keyed by the group number the assignment gives."""
+    groups = {}
+    for name, group in zip(names, assignment):
+        groups.setdefault(group, []).append(name)
+    return groups
+
+
+@pytest.mark.parametrize("year", YEARS)
+@settings(max_examples=2, deadline=None)
 @given(
-    family_of=st.lists(st.integers(min_value=0, max_value=2), min_size=1, max_size=5),
-    earnings=st.lists(st.integers(min_value=0, max_value=60_000), min_size=5),
-    veterans=st.lists(st.integers(min_value=0, max_value=20_000), min_size=5),
-    tanf=st.integers(min_value=0, max_value=10_000),
+    spm_unit_of=st.lists(st.integers(min_value=0, max_value=2), min_size=1, max_size=5),
+    tax_unit_of=st.lists(st.integers(min_value=0, max_value=2), min_size=5, max_size=5),
+    family_of=st.lists(st.integers(min_value=0, max_value=2), min_size=5, max_size=5),
+    earnings=st.lists(
+        st.integers(min_value=0, max_value=60_000), min_size=5, max_size=5
+    ),
+    veterans=st.lists(
+        st.integers(min_value=0, max_value=20_000), min_size=5, max_size=5
+    ),
+    tanf=st.lists(st.integers(min_value=0, max_value=10_000), min_size=3, max_size=3),
+    basic_income=st.lists(
+        st.integers(min_value=0, max_value=10_000), min_size=3, max_size=3
+    ),
+    infant_supplement=st.integers(min_value=0, max_value=10_000),
     state=st.sampled_from(STATES),
 )
 @example(
-    family_of=[0, 0, 1],
-    earnings=[20_000, 0, 9_000],
-    veterans=[0, 0, 3_000],
-    tanf=1_200,
+    spm_unit_of=[0, 0, 1, 1, 1],
+    tax_unit_of=[0, 1, 2, 2, 2],
+    family_of=[0, 0, 1, 1, 1],
+    earnings=[20_000, 0, 9_000, 0, 0],
+    veterans=[0, 0, 3_000, 0, 0],
+    tanf=[1_000, 900, 0],
+    basic_income=[100, 200, 300],
+    infant_supplement=1_000,
     state="CA",
 )
 def test_totals_sum_members_and_match_an_independent_allocation(
-    family_of, earnings, veterans, tanf, state
+    year,
+    spm_unit_of,
+    tax_unit_of,
+    family_of,
+    earnings,
+    veterans,
+    tanf,
+    basic_income,
+    infant_supplement,
+    state,
 ):
-    year = YEAR
-    names = [f"person_{index}" for index in range(len(family_of))]
-    families = {}
-    for name, family in zip(names, family_of):
-        families.setdefault(f"family_{family}", []).append(name)
+    # One household holds up to three SPM units, tax units and families, drawn
+    # separately, so a split by the wrong group fails.
+    names = [f"person_{index}" for index in range(len(spm_unit_of))]
     people = {
         name: {
             "age": {year: 25 + 10 * index},
@@ -673,15 +839,30 @@ def test_totals_sum_members_and_match_an_independent_allocation(
         situation={
             "people": people,
             "tax_units": {
-                key: {"members": members} for key, members in families.items()
+                f"tax_unit_{group}": {
+                    "members": members,
+                    "basic_income": {year: basic_income[group]},
+                }
+                for group, members in members_by_group(names, tax_unit_of).items()
             },
-            "spm_units": {"spm_unit": {"members": names, "tanf": {year: tanf}}},
+            "spm_units": {
+                f"spm_unit_{group}": {
+                    "members": members,
+                    "tanf": {year: tanf[group]},
+                }
+                for group, members in members_by_group(names, spm_unit_of).items()
+            },
             "families": {
-                key: {"members": members} for key, members in families.items()
+                f"family_{group}": {"members": members}
+                for group, members in members_by_group(names, family_of).items()
             },
             "marital_units": {name: {"members": [name]} for name in names},
             "households": {
-                "household": {"members": names, "state_name": {year: state}}
+                "household": {
+                    "members": names,
+                    "state_name": {year: state},
+                    "ca_la_infant_supplement": {year: infant_supplement},
+                }
             },
         }
     )
@@ -689,13 +870,19 @@ def test_totals_sum_members_and_match_an_independent_allocation(
     family = simulation.calculate("census_family_money_income", year).astype(float)
     household = simulation.calculate("census_household_money_income", year)
     assert household.sum() == pytest.approx(person.sum(), abs=TOLERANCE)
-    assert family.sum() == pytest.approx(person.sum(), abs=TOLERANCE)
+    members_family = simulation.populations["family"].members_entity_id
+    assert np.allclose(
+        family,
+        np.bincount(members_family, weights=person, minlength=family.size),
+        atol=TOLERANCE,
+    )
     assert np.allclose(
         person, reference_census_money_income(simulation, year), atol=TOLERANCE
     )
 
 
-@settings(max_examples=2, deadline=None)
+@pytest.mark.parametrize("year", YEARS)
+@settings(max_examples=1, deadline=None)
 @given(
     earnings=st.lists(
         st.integers(min_value=0, max_value=150_000),
@@ -705,27 +892,44 @@ def test_totals_sum_members_and_match_an_independent_allocation(
     children=st.integers(min_value=0, max_value=2),
 )
 @example(earnings=[15_000] * len(STATES), children=2)
-def test_census_money_income_reconciles_with_household_totals(earnings, children):
+def test_census_money_income_reconciles_with_household_totals(year, earnings, children):
     """A differential test of Census money income in every state at once.
 
     household_market_income and household_benefits sum their own lists. Take
     away the terms money income leaves out and add the sources only money
-    income counts, and the result is Census household money income.
+    income counts, and the result is Census household money income. The test
+    reads the same lists as the variables, so it checks how the variables add
+    them, not where a program belongs.
+
+    Each state has a working-age household with children, an aged person and a
+    disabled person, with rent, so that state cash and rent-tested programs pay.
     """
-    year = YEAR
     people, units = {}, {key: {} for key in ("tax_units", "spm_units", "families")}
     marital_units, households = {}, {}
-    for state, amount in zip(STATES, earnings):
-        members = [f"{state}_{index}" for index in range(children + 1)]
-        for index, member in enumerate(members):
-            people[member] = {"age": {year: 40 if index == 0 else 6 + index}}
+
+    def add_household(key, state, ages, income, **head_inputs):
+        members = [f"{key}_{index}" for index in range(len(ages))]
+        for member, age in zip(members, ages):
+            people[member] = {"age": {year: age}}
             marital_units[member] = {"members": [member]}
-        people[members[0]]["employment_income"] = {year: amount}
-        # Rent makes rent-tested programs, such as New Jersey's relief, pay.
-        people[members[0]]["pre_subsidy_rent"] = {year: 12_000}
-        for key in units:
-            units[key][state] = {"members": members}
-        households[state] = {"members": members, "state_name": {year: state}}
+        people[members[0]].update(
+            employment_income={year: income},
+            pre_subsidy_rent={year: 12_000},
+            **{name: {year: value} for name, value in head_inputs.items()},
+        )
+        for unit in units.values():
+            unit[key] = {"members": members}
+        households[key] = {"members": members, "state_name": {year: state}}
+
+    for state, amount in zip(STATES, earnings):
+        add_household(
+            f"{state}_working",
+            state,
+            [40] + [6 + child for child in range(children)],
+            amount,
+        )
+        add_household(f"{state}_aged", state, [70], 0)
+        add_household(f"{state}_disabled", state, [45], 0, is_disabled=True)
     simulation = Simulation(
         situation={
             "people": people,

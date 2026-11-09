@@ -3,10 +3,7 @@ description: The Census Bureau counts these sources as Supplemental Security Inc
 # people 65 or older, blind or disabled, so state supplements to SSI
 # count here alongside the federal payment.
 values:
-  2022-01-01:
-    - ssi
-  # State programs join in 2023, when household_state_benefits begins.
-  2023-01-01:
+  0000-01-01:
     - ssi
     # Alabama
     - al_ssp

@@ -1,0 +1,17 @@
+description: The Census Bureau counts a person's distributions from retirement accounts as money income from this age.
+values:
+  # Appendix A counts IRA, Keogh and 401(k) payments at any age.
+  0000-01-01: 0
+  # The survey's 2019 redesign collects 2018 income. It asks people under 58
+  # about withdrawals separately (DST_VAL1_YNG, DST_VAL2_YNG) and leaves
+  # those amounts out of total income (PTOTVAL).
+  2018-01-01: 58
+metadata:
+  unit: year
+  period: year
+  label: Census money income minimum age for retirement account distributions
+  reference:
+    - title: "Census Bureau, 2026 Current Population Survey Annual Social and Economic Supplement data dictionary, retirement distributions by age (DST_VAL1, DST_VAL1_YNG, DBTN_VAL) #page 57-58"
+      href: https://www2.census.gov/programs-surveys/cps/datasets/2026/march/asec2026_ddl_pub_full.pdf#page=57
+    - title: IPUMS CPS, INCRETIR (from 2019, only people 58 and older)
+      href: https://cps.ipums.org/cps-action/variables/INCRETIR

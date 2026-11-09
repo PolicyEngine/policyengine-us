@@ -13,38 +13,12 @@ values:
     - reduced_price_school_meals
     - spm_unit_energy_subsidy
     - general_assistance
-  # WIC and the Medicare Savings Programs join when household_benefits begins.
-  2022-01-01:
-    - medicaid
-    - chip
-    - snap
-    - housing_assistance
-    - ssi
-    - tanf
-    - free_school_meals
-    - reduced_price_school_meals
-    - spm_unit_energy_subsidy
-    - general_assistance
     # CBO names child nutrition programs without listing them. WIC is section
     # 17 of the Child Nutrition Act of 1966 (42 U.S.C. 1786, in the Child
     # Nutrition chapter of Title 42), so this list counts it there.
     - wic
     # Medicaid pays Medicare premiums and cost sharing for Medicare
     # Savings Program enrollees (42 U.S.C. 1396a(a)(10)(E)).
-    - msp_cost
-  # State programs join in 2023, when household_state_benefits begins.
-  2023-01-01:
-    - medicaid
-    - chip
-    - snap
-    - housing_assistance
-    - ssi
-    - tanf
-    - free_school_meals
-    - reduced_price_school_meals
-    - spm_unit_energy_subsidy
-    - general_assistance
-    - wic
     - msp_cost
     # State supplements to Supplemental Security Income.
     - al_ssp

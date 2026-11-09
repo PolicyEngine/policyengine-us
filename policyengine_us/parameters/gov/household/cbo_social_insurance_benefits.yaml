@@ -4,7 +4,7 @@ values:
     - social_security
     # CBO measures Medicare as the average cost to the government net of
     # offsetting receipts. medicare_cost subtracts the Part A and Part B
-    # premiums from the average cost per enrollee.
+    # premiums from the average cost per enrollee; Part D premiums stay in.
     - medicare_cost
     - total_unemployment_compensation
     - workers_compensation

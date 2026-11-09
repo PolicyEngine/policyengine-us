@@ -7,8 +7,10 @@
   input:
     state_code: TX
     age: 40
-    ssi: 0
-    tanf: 0
+    # 5. Supplemental Security Income, 6. public assistance.
+    ssi: 1_100
+    tanf: 700
+    general_assistance: 200
     # 1. Earnings: wages, nonfarm and farm self-employment.
     employment_income: 30_000
     self_employment_income: 4_000
@@ -45,9 +47,9 @@
     financial_assistance: 250
     gi_cash_assistance: 150
   output:
-    census_money_income: 57_800
-    census_family_money_income: 57_800
-    census_household_money_income: 57_800
+    census_money_income: 59_800
+    census_family_money_income: 59_800
+    census_household_money_income: 59_800
 
 - name: Receipts Appendix A does not count leave money income unchanged
   period: 2026
@@ -102,6 +104,71 @@
     census_money_income: [30_400, 1_600, 400]
     census_family_money_income: 32_400
     census_household_money_income: 32_400
+
+- name: Each group benefit splits among the members of the group that receives it
+  period: 2026
+  input:
+    people:
+      first:
+        age: 40
+        ssi: 0
+      second:
+        age: 38
+        ssi: 0
+      third:
+        age: 35
+        ssi: 0
+      fourth:
+        age: 12
+        ssi: 0
+      fifth:
+        age: 10
+        ssi: 0
+    tax_units:
+      first_tax_unit:
+        members: [first]
+        basic_income: 100
+      second_tax_unit:
+        members: [second]
+        basic_income: 200
+      third_tax_unit:
+        members: [third, fourth, fifth]
+        basic_income: 300
+    spm_units:
+      first_spm_unit:
+        members: [first, second]
+        tanf: 1_000
+      second_spm_unit:
+        members: [third, fourth, fifth]
+        tanf: 900
+    families:
+      first_family:
+        members: [first, second]
+      second_family:
+        members: [third, fourth, fifth]
+    marital_units:
+      first_marital_unit:
+        members: [first]
+      second_marital_unit:
+        members: [second]
+      third_marital_unit:
+        members: [third]
+      fourth_marital_unit:
+        members: [fourth]
+      fifth_marital_unit:
+        members: [fifth]
+    households:
+      household:
+        members: [first, second, third, fourth, fifth]
+        state_code: CA
+        # Other income, paid to the household.
+        ca_la_infant_supplement: 1_000
+  output:
+    # TANF: 1,000 over two and 900 over three. Basic income: 100, 200, and 300
+    # over three. Household payment: 1,000 over five.
+    census_money_income: [800, 900, 600, 600, 600]
+    census_family_money_income: [1_700, 1_800]
+    census_household_money_income: 3_500
 
 - name: Two unrelated roommates form two families in one household
   period: 2026
@@ -158,3 +225,48 @@
   output:
     census_money_income: 506_000
     census_household_money_income: 506_000
+
+# Since its 2019 redesign, which collects 2018 income, the Current Population
+# Survey leaves retirement account distributions to people under 58 out of
+# total income (data dictionary: DST_VAL1 for 58 and over, DST_VAL1_YNG under).
+- name: A retirement account distribution counts at age 58
+  period: 2026
+  input:
+    state_code: TX
+    age: 58
+    ssi: 0
+    tanf: 0
+    employment_income: 20_000
+    retirement_distributions: 5_000
+  output:
+    census_retirement_distributions: 5_000
+    census_money_income: 25_000
+    census_household_money_income: 25_000
+
+- name: A retirement account distribution does not count at age 57
+  period: 2026
+  input:
+    state_code: TX
+    age: 57
+    ssi: 0
+    tanf: 0
+    employment_income: 20_000
+    retirement_distributions: 5_000
+  output:
+    census_retirement_distributions: 0
+    census_money_income: 20_000
+    census_household_money_income: 20_000
+
+- name: Before the survey's redesign a distribution counts at any age
+  period: 2017
+  input:
+    state_code: TX
+    age: 40
+    ssi: 0
+    tanf: 0
+    employment_income: 20_000
+    retirement_distributions: 5_000
+  output:
+    census_retirement_distributions: 5_000
+    census_money_income: 25_000
+    census_household_money_income: 25_000

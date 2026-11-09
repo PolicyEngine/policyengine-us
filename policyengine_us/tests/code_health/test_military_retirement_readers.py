@@ -170,7 +170,9 @@ def test_benefit_source_lists_do_not_read_raw_military_retirement_pay():
         text = path.read_text(encoding="utf-8")
         if RAW not in text:
             continue
-        # The partner must itself list the annuities for this list to pass.
+        # The list passes while its partner's file names the annuities. This
+        # guard reads each file's text; test_income_concept_parity checks that
+        # every year counts them.
         partner = SPLIT_YAML_FILES.get(relative.as_posix())
         if partner is not None:
             text += "\n" + (PARAMETERS / partner).read_text(encoding="utf-8")

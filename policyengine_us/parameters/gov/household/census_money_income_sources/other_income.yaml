@@ -2,19 +2,10 @@ description: The Census Bureau counts these sources as other income, source 18 o
 # Appendix A's other income covers payments received regularly that no
 # other source covers, such as state foster child payments, military
 # family allotments and foreign government pensions. The model has no
-# variables for the last two.
+# variables for the last two, and of foster payments only the two Los
+# Angeles County payments below.
 values:
-  2022-01-01:
-    # Guaranteed income pilot payments.
-    - gi_cash_assistance
-    # Alaska's annual dividend and the energy relief paid with it.
-    - ak_permanent_fund_dividend
-    - ak_energy_relief
-    # Contributed cash payments that are zero unless a reform turns them on.
-    - basic_income
-    - trump_dividend
-  # State programs join in 2023, when household_state_benefits begins.
-  2023-01-01:
+  0000-01-01:
     # Guaranteed income pilot payments.
     - gi_cash_assistance
     # Alaska's annual dividend and the energy relief paid with it.
