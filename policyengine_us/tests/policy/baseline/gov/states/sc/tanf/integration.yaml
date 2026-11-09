@@ -1129,3 +1129,29 @@
     sc_tanf_countable_income: -500
     # floor(1,110 x 0.4046 = 449.11) = 449.
     sc_tanf: 449
+
+- name: Case 37, gross income above the whole-dollar limit but within its cents passes the gross test.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+        employment_income_before_lsr: 19_554
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: SC
+  output:
+    # 19,554 / 12 = 1,629.50 a month. 114-1150(A) sets the limit at
+    # 881 x 1.85 = 1,629.85, so the group passes. A limit with the cents
+    # dropped, 1,629, would fail it and pay nothing.
+    sc_tanf_gross_income: 1_629.5
+    sc_tanf_gross_income_eligible: true
+    # The 50% January disregard leaves 814.75, below the need standard of 881.
+    sc_tanf_countable_income: 814.75
+    # floor((881 - 814.75) x 0.4046 = 26.80) = 26.
+    sc_tanf: 26
