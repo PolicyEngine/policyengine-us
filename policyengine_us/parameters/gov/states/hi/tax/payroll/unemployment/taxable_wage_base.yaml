@@ -1,5 +1,68 @@
 description: Hawaii limits employer unemployment insurance contributions to this amount of each worker's annual wages.
 values:
+  # Section 383-61(b) sets the base at the average annual wage for the four
+  # quarters ending June 30 of the preceding year, rounded to the nearest
+  # hundred dollars. Subsections (c) and (d) set the years marked below. DLIR
+  # lists the bases from 1970 to 2020 in its December 2019 trust fund
+  # evaluation and the bases from 2020 on its tax rate schedule page.
+  1970-01-01: 5_500
+  1971-01-01: 6_000
+  1972-01-01: 6_300
+  1973-01-01: 6_500
+  1974-01-01: 6_800
+  1975-01-01: 7_300
+  1976-01-01: 7_800
+  1977-01-01: 9_300
+  1978-01-01: 9_800
+  1979-01-01: 10_400
+  1980-01-01: 11_200
+  1981-01-01: 12_200
+  1982-01-01: 13_100
+  1983-01-01: 13_800
+  1984-01-01: 14_600
+  1985-01-01: 15_100
+  1986-01-01: 15_600
+  1987-01-01: 16_500
+  # Section 383-61(d)(3) set 1988 at half the average annual wage, because the
+  # ratio of the current to the adequate reserve fund, 2.08, reached 1.2.
+  1988-01-01: 8_700
+  1989-01-01: 18_600
+  1990-01-01: 19_900
+  # Section 383-61(c) set 1991 at $7,000, the federal unemployment tax base.
+  1991-01-01: 7_000
+  1992-01-01: 22_700
+  1993-01-01: 23_900
+  1994-01-01: 25_000
+  1995-01-01: 25_500
+  1996-01-01: 25_800
+  1997-01-01: 26_000
+  1998-01-01: 26_400
+  1999-01-01: 27_000
+  2000-01-01: 27_500
+  2001-01-01: 28_400
+  2002-01-01: 29_300
+  2003-01-01: 30_200
+  2004-01-01: 31_000
+  2005-01-01: 32_300
+  2006-01-01: 34_000
+  2007-01-01: 35_300
+  # Section 383-61(c) set 2008 and 2009 at $13,000 while the trust fund held
+  # at least the adequate reserve. Act 110 of 2007 first set $13,000 for 2008
+  # to 2010, and Act 2 of 2010 gave 2010 the 90% rule below.
+  2008-01-01: 13_000
+  2009-01-01: 13_000
+  # Section 383-61(c) set 2010 and 2011 at 90% of the average annual wage
+  # (Act 2 of 2010, retroactive to January 1, 2010). Subsection (b) rounds the
+  # average to the nearest hundred dollars, so 2010 takes 90% of $38,800.
+  # DLIR's evaluation lists $34,900 for 2010, rounding the 90% figure too.
+  2010-01-01: 34_920
+  2011-01-01: 34_200
+  2012-01-01: 38_800
+  2013-01-01: 39_600
+  2014-01-01: 40_400
+  2015-01-01: 40_900
+  2016-01-01: 42_200
+  2017-01-01: 44_000
   2018-01-01: 45_900
   2019-01-01: 46_800
   2020-01-01: 48_100
@@ -15,7 +78,9 @@ metadata:
   unit: currency-USD
   label: Hawaii unemployment taxable wage base
   reference:
+    - title: Hawaii Revised Statutes Section 383-61, payment of contributions; wages not included
+      href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0383/HRS_0383-0061.htm
+    - title: "Hawaii Department of Labor and Industrial Relations, Annual Evaluation of the Unemployment Compensation Trust Fund, December 2019 (taxable wage bases, 1970 to 2020) #page 9,29"
+      href: https://labor.hawaii.gov/wp-content/uploads/2020/01/UI-Fund-Evaluation-2020.pdf#page=9
     - title: Hawaii Department of Labor and Industrial Relations, Tax Rate Schedule and Weekly Benefit Amount (new employer rate and taxable wage base, 2020 to 2026)
       href: https://labor.hawaii.gov/ui/tax-rate-schedule-and-weekly-benefit-amount/
-    - title: Hawaii Department of Labor and Industrial Relations, Annual Evaluation of the Unemployment Compensation Trust Fund, December 2019 (rate schedules and taxable wage bases for 2018 and 2019)
-      href: https://labor.hawaii.gov/wp-content/uploads/2020/01/UI-Fund-Evaluation-2020.pdf#page=5

@@ -1,7 +1,13 @@
 description: Hawaii assigns this unemployment insurance contribution rate to each new employer.
 values:
-  # These rates leave out the 0.01% employment and training assessment that
-  # Section 383-129 adds to contributions.
+  # New employers take the rate for a .0000 reserve ratio on the year's
+  # schedule (Section 383-66(a)(2)). DLIR's evaluation puts schedule D in
+  # effect for 2015 and C for 2016 to 2020, which Section 383-68 sets at 3.0%
+  # and 2.4% for that reserve ratio. These rates leave out the 0.01%
+  # employment and training assessment that Section 383-129 adds to
+  # contributions.
+  2015-01-01: 0.03
+  2016-01-01: 0.024
   2018-01-01: 0.024
   2021-01-01: 0.03
   2023-01-01: 0.04
@@ -15,7 +21,7 @@ metadata:
   reference:
     - title: Hawaii Department of Labor and Industrial Relations, Tax Rate Schedule and Weekly Benefit Amount (new employer rate and taxable wage base, 2020 to 2026)
       href: https://labor.hawaii.gov/ui/tax-rate-schedule-and-weekly-benefit-amount/
-    - title: Hawaii Department of Labor and Industrial Relations, Annual Evaluation of the Unemployment Compensation Trust Fund, December 2019 (rate schedules and taxable wage bases for 2018 and 2019)
+    - title: "Hawaii Department of Labor and Industrial Relations, Annual Evaluation of the Unemployment Compensation Trust Fund, December 2019 (contribution rate schedules and the schedule in effect, 2015 to 2020) #page 5,22,27"
       href: https://labor.hawaii.gov/wp-content/uploads/2020/01/UI-Fund-Evaluation-2020.pdf#page=5
     - title: Hawaii Revised Statutes Section 383-66(a)(2), contribution rate for new or newly covered employers
       href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0383/HRS_0383-0066.htm

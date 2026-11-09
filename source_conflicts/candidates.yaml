@@ -3187,6 +3187,46 @@ candidates:
     prs: []
   state: unreviewed
   note: PE-US follows state rules; verify their effective text throughout the historical periods.
+- id: us-hi:ui-taxable-wage-base-2010-rounding
+  program: unemployment-insurance
+  years:
+    from: 2010
+    to: 2010
+    type: calendar
+  question: Is Hawaii's 2010 unemployment insurance taxable wage base 90% of the average annual wage that HRS
+    383-61(b) rounds to the nearest hundred dollars, $34,920, or that figure rounded to the nearest hundred dollars
+    again, the $34,900 that DLIR lists?
+  sources:
+  - kind: statute
+    citation: HRS 383-61(b) and (c), as amended by Act 2, SLH 2010, section 3
+    url: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0383/HRS_0383-0061.htm
+  - kind: agency-practice
+    citation: Hawaii DLIR, Annual Evaluation of the Unemployment Compensation Trust Fund, December 2019, Appendix B,
+      Total and Taxable Wages
+    url: https://labor.hawaii.gov/wp-content/uploads/2020/01/UI-Fund-Evaluation-2020.pdf#page=29
+  - kind: guidance
+    citation: Hawaii DLIR Disability Compensation Division, 2010 maximum weekly wage base notice (average annual wage
+      of $38,750.59)
+    url: https://web.archive.org/web/20101215215838/http://hawaii.gov/labor/dcd/PDF/general/2010%20Wage%20Base.pdf
+  readings:
+    statute: Subsection (b) computes the average annual wage and rounds it to the nearest hundred dollars, $38,800 for
+      2010. Subsection (c) excludes wages above 90% of that average in 2010 and 2011 and rounds no further, which gives
+      $34,920.
+    other: DLIR lists a 2010 taxable wage base of $34,900, 90% of the average annual wage rounded to the nearest
+      hundred dollars, whether or not DLIR rounds the average first.
+  example: A worker paid $40,000 in 2010 has $34,920 of taxable wages under the statute's reading and $34,900 under
+    DLIR's, $20 apart, so each percentage point of contribution rate moves the employer's 2010 contribution by $0.20.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/hi/tax/payroll/unemployment/taxable_wage_base.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10770
+  state: ruled
+  note: Subsection (b) defines the average annual wage as the rounded quotient, and subsection (c) applies 90% to that
+    average without a rounding rule of its own, so the text settles the reading. 2011 has no gap, since 90% of $38,000
+    is $34,200 in both readings. 2010 precedes 2015, PE-US's FIRST_MODELED_YEAR, so the choice moves no amount in a
+    year PE-US models.
 - id: us-ia:alternate-tax-claimed-spouse
   program: income-tax
   years:
