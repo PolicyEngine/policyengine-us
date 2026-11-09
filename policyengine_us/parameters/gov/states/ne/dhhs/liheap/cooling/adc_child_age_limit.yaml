@@ -1,0 +1,12 @@
+description: Nebraska qualifies a household for cooling assistance when a member below this age receives Aid to Dependent Children under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01: 6
+metadata:
+  unit: year
+  period: year
+  label: Nebraska LIHEAP cooling Aid to Dependent Children child age limit
+  reference:
+    - title: 476 NAC 2-003(A) Cooling Assistance (a household member who "is a child under age 6 who receives Aid to Dependent Children")
+      href: https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%202%20(06-26-2022).pdf/1747#page=2
+    - title: Nebraska FY2026 LIHEAP State Plan, section 3.3
+      href: https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=11

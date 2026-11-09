@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
 
 class ne_liheap(Variable):
@@ -18,24 +17,7 @@ class ne_liheap(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ne.dhhs.liheap
-        gross = spm_unit("ne_liheap_gross_income", period)
-        earned = spm_unit("ne_liheap_earned_income", period)
-        income = max_(gross - earned * p.earned_income_disregard, 0)
-        size = spm_unit("ne_liheap_household_size", period)
-        state_group = spm_unit.household("state_group_str", period)
-        # The payment bands stop growing at six people; eligibility does not.
-        # The Guidance footnote states the size-6+ tier cutoffs in "gross
-        # countable income", while the same page bases every payment on
-        # "income after the disregard is applied" with no size exception; the
-        # disregard is applied at every size here.
-        payment_fpg = fpg(
-            clip(size, 1, p.payment_size_limit),
-            state_group,
-            period,
-            parameters,
-            year_lag=p.fpg_year_lag,
-        )
-        income_ratio = income / payment_fpg
+        income_ratio = spm_unit("ne_liheap_payment_fpg_ratio", period)
         fuel = spm_unit("heating_type", period)
         types = fuel.possible_values
         dwelling = spm_unit("ne_liheap_dwelling_type", period)

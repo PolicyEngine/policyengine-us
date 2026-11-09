@@ -1234,7 +1234,15 @@ programs:
         variable: ne_liheap
         parameter_prefix: gov.states.ne.dhhs.liheap
         verified_years: "2026"
-        notes: FY2026 regular heating only, with the single-family and multifamily schedules and the earned-income disregard. Crisis, cooling and weatherization assistance are out of scope.
+        notes: FY2026 regular heating, with the single-family and multifamily schedules and the earned-income disregard. Cooling is a separate entry; crisis and weatherization assistance are out of scope.
+      - state: NE
+        status: partial
+        name: Nebraska LIHEAP cooling
+        full_name: Nebraska Low Income Home Energy Assistance Program Cooling Assistance
+        variable: ne_liheap_cooling
+        parameter_prefix: gov.states.ne.dhhs.liheap
+        verified_years: "2026"
+        notes: FY2026 cooling payment by dwelling type for households with a member age 70 or older or a child under 6 receiving ADC; FY2027 carries the table forward. The medical-statement and prior-air-conditioner routes, crisis assistance and air conditioner purchase or repair are out of scope.
       - state: NH
         status: partial
         name: New Hampshire FAP
