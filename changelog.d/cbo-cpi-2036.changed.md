@@ -1,1 +1,0 @@
-- Add CBO's February 2026 calendar-2036 CPI-U and chained CPI-U points and keep their authored 2035 points instead of extrapolating over them, so single-year datasets extend through 2036 by default and IRS uprating projects through tax year 2036.

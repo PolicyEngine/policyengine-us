@@ -1,3 +1,11 @@
+## [2.2.2] - 2026-11-09
+
+### Changed
+
+- - Add CBO's February 2026 calendar-2036 CPI-U and chained CPI-U points and keep their authored 2035 points instead of extrapolating over them, so single-year datasets extend through 2036 by default and IRS uprating projects through tax year 2036.
+- - Require spm-calculator 1.1, whose canonical forecast covers 2022–2036, so SPM thresholds and SPM resources calculate for 2036.
+
+
 ## [2.2.1] - 2026-09-15
 
 ### Changed
