@@ -1,0 +1,183 @@
+# 35 ILCS 5/203(a)(2)(P) and 2025 Schedule M line 15: the deduction used to
+# compute the federal section 1341 credit, or the itemized deduction taken for
+# the repayment.
+
+- name: Case 1, the federal credit method subtracts the repayment.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: true
+    households:
+      household:
+        members: [head]
+        state_code: IL
+  output:
+    il_claim_of_right_subtraction: 10_000
+
+- name: Case 2, the federal deduction method on an itemized return subtracts the repayment.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: false
+        tax_unit_itemizes: true
+    households:
+      household:
+        members: [head]
+        state_code: IL
+  output:
+    claim_of_right_deduction: 10_000
+    il_claim_of_right_subtraction: 10_000
+
+- name: Case 3, the deduction method with the federal standard deduction subtracts nothing.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: false
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [head]
+        state_code: IL
+  output:
+    il_claim_of_right_subtraction: 0
+
+- name: Case 4, a repayment of $3,000 claims no section 1341 relief.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 3_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_itemizes: true
+    households:
+      household:
+        members: [head]
+        state_code: IL
+  output:
+    claim_of_right_section_1341_eligible: false
+    il_claim_of_right_subtraction: 0
+
+- name: Case 5, a joint return subtracts both spouses' repayments but not a dependent's.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 2_000
+      spouse:
+        age: 40
+        claim_of_right_repayment: 2_500
+      child:
+        age: 17
+        claim_of_right_repayment: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        claim_of_right_credit_applies: true
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: IL
+  output:
+    il_claim_of_right_subtraction: 4_500
+
+- name: Case 6, outside Illinois.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: true
+    households:
+      household:
+        members: [head]
+        state_code: IN
+  output:
+    il_claim_of_right_subtraction: 0
+
+# Wages $40,000, standard deduction, repays $10,000; the earlier year's federal
+# tax would fall by $2,200. Federal tax: $2,671.50 with the deduction (it loses
+# to the $15,750 standard deduction) or $2,671.50 - $2,200 = $471.50 with the
+# credit, so the credit applies. IL-1040: base income $40,000 - $10,000 =
+# $30,000; less the $2,850 exemption = $27,150; x 4.95% = $1,343.925.
+- name: Case 7, a standard-deduction filer whose federal tax uses the credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_prior_year_tax_decrease: 2_200
+    households:
+      household:
+        members: [head]
+        state_code: IL
+  output:
+    claim_of_right_credit_applies: true
+    claim_of_right_credit: 2_200
+    il_claim_of_right_subtraction: 10_000
+    il_base_income: 30_000
+    il_taxable_income: 27_150
+    il_income_tax_before_non_refundable_credits: 1_343.925
+
+# Wages $100,000, $20,000 of charity, repays $10,000; the earlier year's tax
+# would fall by only $400. The deduction is worth more than $400 to an
+# itemizer in the 22% bracket, so federal tax uses the deduction and the return
+# itemizes. IL-1040: base income $100,000 - $10,000 = $90,000; less $2,850 =
+# $87,150; x 4.95% = $4,313.925.
+- name: Case 8, an itemizer whose federal tax uses the deduction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+        charitable_cash_donations: 20_000
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_prior_year_tax_decrease: 400
+    households:
+      household:
+        members: [head]
+        state_code: IL
+  output:
+    claim_of_right_credit_applies: false
+    tax_unit_itemizes: true
+    claim_of_right_deduction: 10_000
+    il_claim_of_right_subtraction: 10_000
+    il_base_income: 90_000
+    il_taxable_income: 87_150
+    il_income_tax_before_non_refundable_credits: 4_313.925

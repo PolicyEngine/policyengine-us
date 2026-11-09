@@ -19,17 +19,26 @@ Two tests read the stored parameters without a simulation:
    begins a calendar quarter. The annual rates read only the four quarter
    starts, so this keeps them equal to the average of all twelve months.
 
-Hypothesis draws batches of workers, each with wages, a raise, a state and an
-employer headcount; a seeded population of 100 workers adds breadth. Each
-batch runs as one vectorized simulation covering SIMULATED_YEARS, which
-include each program's partial first year (Oregon 2018, Massachusetts 2019,
-Vermont 2024). For every worker and year:
+Hypothesis draws batches of workers, each with wages, a raise, a state, an
+employer headcount and a share of the permitted employee premium that the
+employer deducts (`employer_state_payroll_premium_deduction_share`, left at its
+default of 1 for some workers and drawn outside 0 to 1 for others); a seeded
+population of 100 workers adds breadth. Each batch runs as one vectorized
+simulation covering SIMULATED_YEARS, which include each program's partial
+first year (Oregon 2018, Massachusetts 2019, Vermont 2024). For every worker
+and year:
 
 3. Differential: each contribution equals the published rate, averaged over
    all twelve months where a rate starts mid-year, times the published
-   taxable wages, with New York's annual maximum.
+   taxable wages, with New York's annual maximum. Where the law caps the
+   employer's deduction and leaves the amount to the employer (Massachusetts
+   PFML, New York PFL and the Vermont Child Care Contribution), the worker
+   pays the deducted share, held between 0 and 1, of that permitted amount,
+   and the Massachusetts and Vermont employer pays the rest on top of its own
+   share.
 4. Bounds: each contribution lies between zero and its highest monthly rate
-   times positive wages, and wages at or below zero owe nothing.
+   (for an employer contribution, plus the highest employee rate it may
+   cover) times positive wages, and wages at or below zero owe nothing.
 5. Monotonicity: no contribution falls when wages rise.
 6. Agreement: the employer-total path equals the worker path for
    Massachusetts and Vermont when its taxable wages equal the worker's.
@@ -54,14 +63,16 @@ CT_RATE, CT_START = 0.005, (2021, 1)
 
 # Massachusetts PFML, Department of Family and Medical Leave: the family and
 # medical leave rates from each month. Contributions began October 1, 2019.
-# The employer may withhold all of the family rate and 40% of the medical rate;
-# an employer with 25 or more covered individuals pays the other 60%.
+# Through 2026 the employer may withhold all of the family rate and 40% of the
+# medical rate; an employer with 25 or more covered individuals pays the other
+# 60% of the medical rate.
 MA_SCHEDULE = (
     ((2019, 10), 0.0013, 0.0062),
     ((2022, 1), 0.0012, 0.0056),
     ((2023, 1), 0.0011, 0.0052),
     ((2024, 1), 0.0018, 0.0070),
 )
+MA_FAMILY_EMPLOYEE_SHARE = 1
 MA_MEDICAL_EMPLOYEE_SHARE = 0.4
 MA_EMPLOYER_THRESHOLD = 25
 MA_LAST_YEAR = 2026
@@ -161,10 +172,13 @@ def _published_monthly_rates(year):
             year, lambda ym: _from(CT_START, ym, CT_RATE)
         ),
         "ma_employee_paid_leave_contribution": [
-            family + MA_MEDICAL_EMPLOYEE_SHARE * medical for family, medical in ma
+            MA_FAMILY_EMPLOYEE_SHARE * family + MA_MEDICAL_EMPLOYEE_SHARE * medical
+            for family, medical in ma
         ],
         "ma_employer_paid_leave_contribution": [
-            (1 - MA_MEDICAL_EMPLOYEE_SHARE) * medical for _, medical in ma
+            (1 - MA_FAMILY_EMPLOYEE_SHARE) * family
+            + (1 - MA_MEDICAL_EMPLOYEE_SHARE) * medical
+            for family, medical in ma
         ],
         "nj_employee_temporary_disability_insurance_contribution": [tdi] * 12,
         "nj_employee_family_leave_insurance_contribution": [fli] * 12,
@@ -196,7 +210,31 @@ STATE_OF = {
 }
 
 
-def _expected(variable, year, wages, headcount):
+# Contributions the employer may deduct in part, and the employer contribution
+# that pays the part it does not deduct (none is modeled for New York PFL).
+DEDUCTED_IN_PART = (
+    "ma_employee_paid_leave_contribution",
+    "ny_employee_paid_family_leave_contribution",
+    "vt_employee_child_care_contribution",
+)
+COVERS_UNDEDUCTED = {
+    "ma_employer_paid_leave_contribution": "ma_employee_paid_leave_contribution",
+    "vt_employer_child_care_contribution": "vt_employee_child_care_contribution",
+}
+
+
+def _expected(variable, year, wages, headcount, share):
+    """The published amount, split by the share the employer deducts."""
+    amount = _permitted(variable, year, wages, headcount)
+    if variable in DEDUCTED_IN_PART:
+        return share * amount
+    if variable in COVERS_UNDEDUCTED:
+        employee = COVERS_UNDEDUCTED[variable]
+        return amount + (1 - share) * _permitted(employee, year, wages, headcount)
+    return amount
+
+
+def _permitted(variable, year, wages, headcount):
     """Published rate times published taxable wages, for workers in the state."""
     positive = np.maximum(wages, 0)
     rate = np.mean(_published_monthly_rates(year)[variable])
@@ -250,6 +288,7 @@ def test_stored_histories_match_published_tables_in_every_month():
         assert ma.family_rate(instant) == family
         assert ma.medical_rate(instant) == medical
         if (year, month) >= MA_SCHEDULE[0][0]:
+            assert ma.family_employee_share(instant) == MA_FAMILY_EMPLOYEE_SHARE
             assert ma.medical_employee_share(instant) == MA_MEDICAL_EMPLOYEE_SHARE
             assert ma.employer_headcount_threshold(instant) == MA_EMPLOYER_THRESHOLD
     for year, month, instant in _instants(2027):
@@ -269,6 +308,7 @@ def test_quarter_averaged_parameters_change_only_at_quarter_starts():
     averaged = [
         ma.family_rate,
         ma.medical_rate,
+        ma.family_employee_share,
         ma.medical_employee_share,
         ma.employer_headcount_threshold,
         getattr(P, "or").tax.payroll.statewide_transit.employee_rate,
@@ -288,12 +328,19 @@ wages = st.one_of(
     st.integers(-50_000, 0).map(float),
     st.integers(0, 400_000).map(float),
 )
+# None leaves the deduction share at its default of 1.
+shares = st.one_of(
+    st.none(),
+    st.sampled_from([0.0, 0.25, 0.5, 1.0, -0.5, 1.5]),
+    st.floats(-0.5, 1.5, allow_nan=False),
+)
 workers = st.fixed_dictionaries(
     {
         "wages": wages,
         "raise": st.integers(0, 100_000).map(float),
         "state": st.sampled_from(STATES),
         "headcount": st.integers(0, 60),
+        "share": shares,
     }
 )
 
@@ -308,6 +355,7 @@ def _seeded_workers(n=100):
             "raise": float(rng.integers(0, 100_001)),
             "state": str(rng.choice(STATES)),
             "headcount": int(rng.integers(0, 61)),
+            "share": None if rng.random() < 0.25 else float(rng.uniform(-0.5, 1.5)),
         }
         for _ in range(n)
     ]
@@ -337,6 +385,10 @@ def _situation(people):
             },
             "employer_total_vt_child_care_contribution_wages": every_year(positive),
         }
+        if person["share"] is not None:
+            situation["people"][f"person_{i}"][
+                "employer_state_payroll_premium_deduction_share"
+            ] = every_year(person["share"])
         situation["households"][f"household_{i}"] = {
             "members": [f"person_{i}"],
             "state_code": every_year(person["state"]),
@@ -349,6 +401,11 @@ def _check(batch):
     wages = np.array([person["wages"] for person in people])
     headcount = np.array([person["headcount"] for person in people])
     state = np.array([person["state"] for person in people])
+    share = np.clip(
+        [1.0 if person["share"] is None else person["share"] for person in people],
+        0,
+        1,
+    )
     positive = np.maximum(wages, 0)
     base, raised = np.arange(0, len(people), 2), np.arange(1, len(people), 2)
 
@@ -363,7 +420,7 @@ def _check(batch):
             in_state = state == STATE_OF[variable]
 
             # 3. Differential against the published tables.
-            expected = _expected(variable, year, wages, headcount)
+            expected = _expected(variable, year, wages, headcount, share)
             np.testing.assert_allclose(
                 amount[in_state],
                 expected[in_state],
@@ -374,6 +431,8 @@ def _check(batch):
 
             # 4. Bounds.
             top_rate = max(monthly[variable])
+            if variable in COVERS_UNDEDUCTED:
+                top_rate += max(monthly[COVERS_UNDEDUCTED[variable]])
             assert (amount >= 0).all(), (variable, year)
             assert (amount <= top_rate * positive + TOLERANCE).all(), (variable, year)
             np.testing.assert_array_equal(amount[wages <= 0], 0)

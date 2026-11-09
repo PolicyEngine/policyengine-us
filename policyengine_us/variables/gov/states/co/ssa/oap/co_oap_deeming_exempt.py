@@ -51,5 +51,5 @@ class co_oap_deeming_exempt(Variable):
         needs_medicaid = candidate & ~exempt
         if not needs_medicaid.any():
             return exempt
-        medicaid = person("co_oap_medicaid_enrolled", year)
+        medicaid = person("co_adult_financial_medicaid_enrolled", year)
         return exempt | (needs_medicaid & medicaid)
