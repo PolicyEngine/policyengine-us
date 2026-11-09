@@ -1,0 +1,266 @@
+# Delaware Summer Cooling Assistance Program electric benefit eligibility
+# (FY2026 plan sections 3.3-3.5; FY2027 plan sections 3.3-3.5; DHSS Utility
+# Assistance page; historical manual 303 and 416): LIHEAP eligible in the
+# program year (de_liheap_eligible, which requires heating responsibility), a
+# member aged 60 or older, a child five or under, or a disabled member, a
+# cooling cost paid separately from rent and a positive electric bill.
+# heating_type must be reported: UNSPECIFIED does not qualify. No amount is
+# modeled. The $125 a month ($1,500 a year) electric bill is illustrative.
+# FY2026 one-person LIHEAP limit 39,342 (60% of state median income).
+
+- name: Case 1, a retiree with gas heat and an electric bill is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Countable income at most 18,000 <= 39,342; gas heating bill; aged 67.
+    de_liheap_eligible: true
+    de_liheap_cooling_eligible: true
+
+- name: Case 2, a worker aged 63 with income over the LIHEAP limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 63
+        employment_income_before_lsr: 65_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # 65,000 less estimated withholding stays well above 39,342.
+    de_liheap_eligible: false
+    de_liheap_cooling_eligible: false
+
+- name: Case 3, a LIHEAP-eligible member aged 60 qualifies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 60
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        de_liheap_eligible: true
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_cooling_eligible: true
+
+- name: Case 4, a LIHEAP-eligible member aged 59 does not qualify.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 59
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        de_liheap_eligible: true
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_cooling_eligible: false
+
+- name: Case 5, a LIHEAP-eligible parent with a five-year-old child qualifies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 32
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        de_liheap_eligible: true
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_liheap_cooling_eligible: true
+
+- name: Case 6, a LIHEAP-eligible parent with a six-year-old child does not qualify.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 32
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        de_liheap_eligible: true
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_liheap_cooling_eligible: false
+
+- name: Case 7, a LIHEAP-eligible disabled adult qualifies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        de_liheap_eligible: true
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_cooling_eligible: true
+
+- name: Case 8, a household without a separate cooling cost does not qualify.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        de_liheap_eligible: true
+        has_cooling_expense: false
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_cooling_eligible: false
+
+- name: Case 9, a household with no electric bill does not qualify.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        de_liheap_eligible: true
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_cooling_eligible: false
+
+- name: Case 10, a retiree with no heating fuel is not LIHEAP eligible and does not qualify.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_eligible: false
+    de_liheap_cooling_eligible: false
+
+- name: Case 11, a retiree with heat in rent and an unspecified heating type does not qualify.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Unsubsidized heat in rent passes de_liheap_eligible with an unknown
+    # building fuel, but heating_type is a required input for cooling.
+    de_liheap_eligible: true
+    de_liheap_cooling_eligible: false
+
+- name: Case 12, the FY2027 rules keep a retiree with gas heat eligible.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 67
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_cooling_eligible: true
