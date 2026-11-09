@@ -1,1 +1,1 @@
-Remove the Minnesota Paid Leave `employee_rate` parameter. The model now derives the employee portion from `rate`, `employer_minimum_share` and the `small_employer` shares, so reforms that set it must set those instead.
+Remove the Minnesota Paid Leave `employee_rate` parameter. The model now derives the employee portion from `rate`, `employer_minimum_share` and the `small_employer` shares, so reforms that set `employee_rate` must set those instead.
