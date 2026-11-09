@@ -25,7 +25,7 @@
     pr_earned_income_credit: 0
 
 - name: Eligible person, 0 children with max credit
-  period: 2024
+  period: 2023
   input:
     people:
       person1: 
@@ -45,7 +45,7 @@
     pr_earned_income_credit: 1_656
   
 - name: Eligible person, 1 child and higher bracket
-  period: 2024
+  period: 2023
   input:
     people:
       person1: 
@@ -68,7 +68,7 @@
     pr_earned_income_credit: 2_483.004
 
 - name: Eligible person, 0 child and filing jointly
-  period: 2024
+  period: 2023
   input:
     people:
       person1: 
@@ -91,7 +91,7 @@
     pr_earned_income_credit: 1_656
 
 - name: Eligible person, 1 child, filing jointly, higher bracket
-  period: 2024
+  period: 2023
   input:
     people:
       person1: 
@@ -152,7 +152,7 @@
     pr_earned_income_credit: 0
 
 - name: Eligible HEAD_OF_HOUSEHOLD filer gets the individual phase-out threshold
-  period: 2024
+  period: 2023
   input:
     people:
       person1:
@@ -176,7 +176,7 @@
     pr_earned_income_credit: 1_656
 
 - name: Eligible SURVIVING_SPOUSE filer gets the joint phase-out threshold
-  period: 2024
+  period: 2023
   input:
     people:
       person1:
@@ -198,3 +198,70 @@
   # (joint threshold = 19_870), so the full max credit applies.
   output:
     pr_earned_income_credit: 1_656
+
+# Section 1052.01(i) indexes the credit "según ajustado por el Servicio de
+# Rentas Internas Federal"; Hacienda publishes the adjusted amounts in BI RI
+# 24-04 (2024) and BI RI 26-01 (2025).
+- name: 2024 three or more children, single, phase-out under the 2024 threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        pr_gross_income_person: 25_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        eitc_child_count: 3
+        pr_earned_income_credit_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: PR
+  output:
+    # 2024 maximum $7,563 less 34.21% of ($25,000 - $24,430) = $194.997.
+    pr_earned_income_credit: 7_368.003
+
+- name: 2025 three or more children, single, under the 2025 threshold
+  period: 2025
+  input:
+    people:
+      person1:
+        pr_gross_income_person: 25_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        eitc_child_count: 3
+        pr_earned_income_credit_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: PR
+  output:
+    # $25,000 is under the $25,110 threshold, so the $7,774 maximum applies
+    # (the 2023 schedule would give $7,173 - 34.21% x $1,820 = $6,550.378).
+    pr_earned_income_credit: 7_774
+
+- name: 2025 one child, joint, phase-out over the 2025 threshold
+  period: 2025
+  input:
+    people:
+      person1:
+        pr_gross_income_person: 30_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: JOINT
+        eitc_child_count: 1
+        pr_earned_income_credit_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: PR
+  output:
+    # $4,186 less 26.92% of ($30,000 - $26,310) = $993.348.
+    pr_earned_income_credit: 3_192.652

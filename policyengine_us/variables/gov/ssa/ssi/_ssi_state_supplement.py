@@ -4,8 +4,26 @@ from policyengine_us.variables.gov.ssa.ssi.eligibility.status.ssi_federal_living
 )
 
 
+def federal_supplement_payment(payment, parameters, period):
+    """Apply SSA's rounding and minimum payment to a federally paid supplement.
+
+    Federal administration discards digits beyond the third decimal place,
+    rounds up to cents, and pays at least one dollar for a positive amount.
+    Sources: POMS SI 02001.005 and SI 02001.010.
+    """
+    minimum = parameters(period).gov.ssa.ssi.state_supplement.minimum_payment
+    rounded = np.ceil(np.floor(payment * 1_000) / 10) / 100
+    return where(rounded > 0, max_(rounded, minimum), 0)
+
+
 def ssi_state_supplement(
-    person, period, parameters, individual_rate, couple_rate, federal_payment_rules=True
+    person,
+    period,
+    parameters,
+    individual_rate,
+    couple_rate,
+    federal_payment_rules=True,
+    joint=None,
 ):
     """Apply SSI-based supplement income, couple and spouse-deeming rules.
 
@@ -16,8 +34,10 @@ def ssi_state_supplement(
     administrators do not inherit the federal rounding or minimum payment.
     Sources: 20 CFR 416.2025; POMS SI 01320.430 D, SI 02005.030 G,
     SI 02001.005 and SI 02001.010. Callers apply state-specific eligibility.
+    Pass joint only where a state's couple test differs from SSI's.
     """
-    joint = person("ssi_couple_computation_applies", period)
+    if joint is None:
+        joint = person("ssi_couple_computation_applies", period)
     couple_total = person.marital_unit.sum(couple_rate / 2)
     standard = where(joint, couple_total / 2, individual_rate)
     countable = person("ssi_countable_income", period)
@@ -44,10 +64,5 @@ def ssi_state_supplement(
     eligible = person("is_ssi_eligible", period) & person(
         "takes_up_ssi_if_eligible", period.this_year
     )
-    # Federal administration discards digits beyond the third decimal place,
-    # rounds up to cents, and pays at least one dollar for a positive amount.
-    rounded = np.ceil(np.floor(payment * 1_000) / 10) / 100
-    federal_payment = where(
-        rounded > 0, max_(rounded, ssi.state_supplement.minimum_payment), 0
-    )
+    federal_payment = federal_supplement_payment(payment, parameters, period)
     return eligible * where(federal_payment_rules, federal_payment, payment)
