@@ -19,25 +19,15 @@ class md_poverty_line_credit_income_level(Variable):
         # § 10-709(a)(2): the poverty income standard "that corresponds to the
         # number of exemptions which the individual is allowed and claims
         # under § 10-211(b)(1)". That is the tax unit's size unless a filer
-        # can be claimed as a dependent, in which case only the filers who
-        # cannot be claimed count, with dependents only under the claimant
-        # filing exception (IRC 152(b)(1)).
-        # HHS lists guideline amounts from one person up, so no amount
-        # corresponds to zero exemptions: a filer with no allowed exemption
-        # has no applicable poverty income level. In its 2025 Resident
-        # Booklet, the Comptroller bars every filing status 6 filer from the
-        # credit. The model follows the booklet only when the return has no
-        # allowed exemption (see is_eligible_md_poverty_line_credit).
+        # can be claimed as a dependent. Then each filer still counts, under
+        # § 10-211(a)(1), but dependents count only under the claimant filing
+        # exception (IRC 152(b)(1)). Every filer has an exemption, so the
+        # count is at least one.
         filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
         exemptions = tax_unit("md_personal_exemptions_count", period)
         state_group = tax_unit.household("state_group_str", period)
-        dependent_filer_level = where(
-            exemptions > 0,
-            fpg(exemptions, state_group, period, parameters),
-            0,
-        )
         return where(
             filer_is_dependent,
-            dependent_filer_level,
+            fpg(exemptions, state_group, period, parameters),
             tax_unit("tax_unit_fpg", period),
         )

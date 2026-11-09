@@ -49,13 +49,10 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         defined_for = StateCode.MD
 
         def formula(tax_unit, period, parameters):
-            # Only the filers' own exemptions remain; a filer who can be
-            # claimed as a dependent has none (filing status 6).
+            # Get md_personal_exemption from tax_unit multiplied by tax_unit_size
             md_personal_exemption = tax_unit("md_personal_exemption", period)
-            own_exemptions = tax_unit(
-                "head_spouse_count_not_dependent_elsewhere", period
-            )
-            return md_personal_exemption * own_exemptions
+            tax_unit_size = tax_unit("head_spouse_count", period)
+            return md_personal_exemption * tax_unit_size
 
     class mi_personal_exemptions(Variable):
         value_type = float

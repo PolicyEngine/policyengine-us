@@ -359,10 +359,10 @@
         county_str: BALTIMORE_CITY_MD
   output:
     # Tax-General 10-709 imports IRC 32(c)(2): taxable wages, not gross pay.
-    # $16,000 - $2,000 = $14,000. The unclaimable spouse's one exemption gives
-    # a $15,650 level, and $14,000 is below it. With tax limits held above the
-    # credit: 5% x $14,000 = $700 state; Baltimore City's 3.2% x $14,000 =
-    # $448 local.
+    # $16,000 - $2,000 = $14,000. Each spouse's own exemption (Tax-General
+    # 10-211(a)(1)) gives a two-person $21,150 level, and $14,000 is below it.
+    # With tax limits held above the credit: 5% x $14,000 = $700 state;
+    # Baltimore City's 3.2% x $14,000 = $448 local.
     eitc_earned_income: 14_000
     is_eligible_md_poverty_line_credit: true
     md_poverty_line_credit_potential: 700

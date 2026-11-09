@@ -1,6 +1,6 @@
 
 
-- name: 2025 single filer who can be claimed as a dependent gets no personal exemptions
+- name: 2025 single filer who can be claimed as a dependent gets their own exemption but none for the child
   period: 2025
   input:
     people:
@@ -22,9 +22,10 @@
         members: [person_a, child]
         state_code: MD
   output:
-    # Filing status 6: "You do not get an exemption for yourself" (2025
-    # Resident Booklet, p.12); IRC 152(b)(1) leaves no dependents.
-    md_total_personal_exemptions: 0
+    # Tax-General 10-211(a)(1): an exemption for "the taxpayer", with no
+    # dependency condition since 2018 ch. 575; IRC 152(b)(1) leaves no
+    # dependents. 1 x $3,200. (The 2025 booklet's filing status 6 gives $0.)
+    md_total_personal_exemptions: 3_200
 
 - name: 2025 single filer who cannot be claimed gets personal exemptions for the filer and the child
   period: 2025
@@ -50,7 +51,7 @@
     # 2 exemptions x $3,200 (AGI under $100,000).
     md_total_personal_exemptions: 6400
 
-- name: 2025 joint return with one claimable spouse gets only the other spouse's exemption (the claimable spouse is the head)
+- name: 2025 joint return with one claimable spouse gets both spouses' exemptions but none for the child (the claimable spouse is the head)
   period: 2025
   input:
     people:
@@ -78,10 +79,11 @@
         state_code: MD
   output:
     # Separate Maryland returns: "Each spouse must claim their own personal
-    # exemption" and the spouses split the federal return's dependents (none).
-    md_total_personal_exemptions: 3200
+    # exemption" (10-211(a)(1) gives each one) and the spouses split the
+    # federal return's dependents (none). 2 x $3,200.
+    md_total_personal_exemptions: 6_400
 
-- name: 2025 joint return with one claimable spouse gets only the other spouse's exemption (the claimable spouse is the spouse)
+- name: 2025 joint return with one claimable spouse gets both spouses' exemptions but none for the child (the claimable spouse is the spouse)
   period: 2025
   input:
     people:
@@ -108,9 +110,9 @@
         members: [person_b, person_a, child]
         state_code: MD
   output:
-    md_total_personal_exemptions: 3200
+    md_total_personal_exemptions: 6_400
 
-- name: 2025 joint return with both spouses claimable gets no personal exemptions
+- name: 2025 joint return with both spouses claimable gets both spouses' exemptions but none for the child
   period: 2025
   input:
     people:
@@ -138,7 +140,8 @@
         members: [person_a, person_b, child]
         state_code: MD
   output:
-    md_total_personal_exemptions: 0
+    # 2 own exemptions x $3,200; no dependents (IRC 152(b)(1)).
+    md_total_personal_exemptions: 6_400
 
 - name: 2025 joint return with no claimable spouse gets exemptions for both spouses and the child
   period: 2025

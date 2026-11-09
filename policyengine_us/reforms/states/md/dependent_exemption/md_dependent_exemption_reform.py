@@ -122,15 +122,12 @@ def create_md_dependent_exemption() -> Reform:
 
         def formula(tax_unit, period, parameters):
             # Personal portion keeps the baseline per-person (AGI-stepped)
-            # amount; dependents are separated out. These are the filers' own
-            # exemptions (none for a filer who can be claimed as a dependent)
-            # plus over-age dependents.
+            # amount; dependents are separated out.
             per_person = tax_unit("md_personal_exemption", period)
-            own_exemptions = tax_unit(
-                "head_spouse_count_not_dependent_elsewhere", period
-            )
+            tax_unit_size = tax_unit("tax_unit_size", period)
+            dependents = tax_unit("tax_unit_dependents", period)
             older_dependents = tax_unit("md_older_dependents_count", period)
-            personal_count = own_exemptions + older_dependents
+            personal_count = tax_unit_size - dependents + older_dependents
             personal_amount = personal_count * per_person
 
             dependent_exemption_amount = tax_unit("md_dependent_exemption", period)

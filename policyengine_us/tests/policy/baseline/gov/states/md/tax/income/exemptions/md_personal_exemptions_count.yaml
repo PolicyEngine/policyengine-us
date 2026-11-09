@@ -1,6 +1,6 @@
 
 
-- name: 2025 single filer who can be claimed has no Maryland exemptions
+- name: 2025 single filer who can be claimed keeps their own exemption but no dependents
   period: 2025
   input:
     people:
@@ -22,11 +22,13 @@
         members: [person_a, child]
         state_code: MD
   output:
-    # Filing status 6: "You do not get an exemption for yourself"; IRC
-    # 152(b)(1) leaves no dependents.
-    md_personal_exemptions_count: 0
+    # Tax-General 10-211(a)(1) allows an exemption for "the taxpayer" with no
+    # dependency condition (2018 ch. 575); IRC 152(b)(1) leaves no
+    # dependents. The 2025 booklet's filing status 6 would give 0.
+    md_personal_exemptions_count: 1
+    md_total_personal_exemptions: 3_200
 
-- name: 2025 single filer whose claimant meets the filing exception has an exemption for the child only
+- name: 2025 single filer whose claimant meets the filing exception has exemptions for the filer and the child
   period: 2025
   input:
     people:
@@ -49,12 +51,12 @@
         members: [person_a, child]
         state_code: MD
   output:
-    # Still filing status 6 ("can be claimed"), so no own exemption; the
-    # filing exception keeps the dependent: 1 x $3,200.
-    md_personal_exemptions_count: 1
-    md_total_personal_exemptions: 3200
+    # 10-211(a)(1) gives the filer an exemption, and the filing exception
+    # keeps the dependent: 2 x $3,200.
+    md_personal_exemptions_count: 2
+    md_total_personal_exemptions: 6_400
 
-- name: 2025 joint return with one claimable spouse counts only the other spouse (the claimable spouse is the head)
+- name: 2025 joint return with one claimable spouse counts both spouses but no dependents (the claimable spouse is the head)
   period: 2025
   input:
     people:
@@ -81,11 +83,13 @@
         members: [person_a, person_b, child]
         state_code: MD
   output:
-    # Each spouse claims their own exemption on a separate Maryland
-    # return; the federal return has no dependents.
-    md_personal_exemptions_count: 1
+    # Each spouse has their own exemption under 10-211(a)(1), on a joint or
+    # a separate Maryland return; the federal return has no dependents.
+    # 2 x $3,200.
+    md_personal_exemptions_count: 2
+    md_total_personal_exemptions: 6_400
 
-- name: 2025 joint return with one claimable spouse counts only the other spouse (the claimable spouse is the spouse)
+- name: 2025 joint return with one claimable spouse counts both spouses but no dependents (the claimable spouse is the spouse)
   period: 2025
   input:
     people:
@@ -112,9 +116,10 @@
         members: [person_b, person_a, child]
         state_code: MD
   output:
-    md_personal_exemptions_count: 1
+    md_personal_exemptions_count: 2
+    md_total_personal_exemptions: 6_400
 
-- name: 2025 joint return whose claimable spouse's claimant meets the filing exception counts the other spouse and the child (the claimable spouse is the head)
+- name: 2025 joint return whose claimable spouse's claimant meets the filing exception counts both spouses and the child (the claimable spouse is the head)
   period: 2025
   input:
     people:
@@ -144,11 +149,11 @@
   output:
     # The would-be claimant meets the filing exception (Publication 501,
     # Dependent Taxpayer Test), so the return keeps its dependents.
-    # 1 own + 1 dependent = 2 x $3,200.
-    md_personal_exemptions_count: 2
-    md_total_personal_exemptions: 6400
+    # 2 own + 1 dependent = 3 x $3,200.
+    md_personal_exemptions_count: 3
+    md_total_personal_exemptions: 9_600
 
-- name: 2025 joint return whose claimable spouse's claimant meets the filing exception counts the other spouse and the child (the claimable spouse is the spouse)
+- name: 2025 joint return whose claimable spouse's claimant meets the filing exception counts both spouses and the child (the claimable spouse is the spouse)
   period: 2025
   input:
     people:
@@ -176,10 +181,10 @@
         members: [person_b, person_a, child]
         state_code: MD
   output:
-    md_personal_exemptions_count: 2
-    md_total_personal_exemptions: 6400
+    md_personal_exemptions_count: 3
+    md_total_personal_exemptions: 9_600
 
-- name: 2025 joint return with both spouses claimable has no Maryland exemptions
+- name: 2025 joint return with both spouses claimable counts both spouses but no dependents
   period: 2025
   input:
     people:
@@ -207,7 +212,9 @@
         members: [person_a, person_b, child]
         state_code: MD
   output:
-    md_personal_exemptions_count: 0
+    # 2 own exemptions; no dependents (IRC 152(b)(1)).
+    md_personal_exemptions_count: 2
+    md_total_personal_exemptions: 6_400
 
 - name: 2025 joint return with no claimable spouse counts every member
   period: 2025
@@ -237,3 +244,27 @@
   output:
     # 2 filers + 1 child.
     md_personal_exemptions_count: 3
+
+- name: 2022 single filer who can be claimed keeps their own exemption
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 19
+        employment_income: 4_000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a]
+        state_code: MD
+  output:
+    # 10-211(a)(1) as amended by 2018 ch. 575 applies from tax year 2018:
+    # 1 x $3,200 at AGI under $100,000.
+    md_personal_exemptions_count: 1
+    md_total_personal_exemptions: 3_200

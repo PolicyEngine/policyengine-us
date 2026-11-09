@@ -10,8 +10,8 @@ its food sales tax credit count each filer whom no one else may claim (IRC
 151(d)(2)). Iowa's low-income exemption, tax reduction and alternate tax turn on
 an actual claim and the claiming person's income, whose inputs default to no
 disqualification; Maryland's poverty line credit turns on an actual claim on
-another Maryland return, a separate input; Maryland's own exemption turns on
-claimability.
+another Maryland return, a separate input that defaults to the federal claim;
+every Maryland filer keeps their own exemption (Tax-General 10-211(a)(1)).
 
 For couples drawn by Hypothesis (claimable, claimed and filing-exception
 patterns) and a seeded population in these states:
@@ -24,8 +24,9 @@ patterns) and a seeded population in these states:
    offsets the other spouse's earnings, which is intended.
 3. Identities: with a filer claimable outside the filing exception there is no
    Louisiana dependent exemption, Maryland aged dependent exemption or child
-   tax credit, and no pro forma federal EITC without a child. With every
-   filer claimable and no exemption allowed: no poverty line credit.
+   tax credit, and no pro forma federal EITC without a child. Every filer
+   keeps a Maryland exemption, so Maryland's count covers both spouses and
+   the poverty line credit's poverty level is positive.
 4. Differential: wherever the federal EITC's eligibility holds, Maryland's
    pro forma federal EITC without the minimum age equals the federal credit
    before take-up and filing.
@@ -105,6 +106,23 @@ EXCEPTION_NEUTRAL = [
 ]
 
 
+# Both spouses claimable outside the filing exception, with no dependents:
+# the unit that had no Maryland exemption while the model denied a claimable
+# filer's own. Every Hypothesis batch includes it, so identity 3 always sees
+# it.
+EVERY_FILER_CLAIMABLE = {
+    "state": "MD",
+    "adults": [
+        {"age": 20, "employment_income": 4_000.0},
+        {"age": 21, "employment_income": 4_000.0},
+    ],
+    "dependents": [],
+    "claimed": (False, False),
+    "claimable": (True, True),
+    "exception": (False, False),
+}
+
+
 @st.composite
 def couples(draw):
     claimable = draw(st.sampled_from(CLAIM_PATTERNS))
@@ -127,23 +145,18 @@ def _identities(sim, year):
         )
         > 0
     )
-    every = _calc(sim, "every_filer_is_dependent_elsewhere", year) > 0
-    no_exemption = _calc(sim, "md_personal_exemptions_count", year) == 0
     childless = _calc(sim, "eitc_child_count", year) == 0
     for name in ["la_dependents_exemption", "md_aged_dependent_exemption", "md_ctc"]:
         assert not _calc(sim, name, year)[no_dependents].any(), name
     pro_forma = _calc(sim, "federal_eitc_without_age_minimum", year)
     assert not pro_forma[no_dependents & childless].any()
-    unallowed = every & no_exemption
-    for name in [
-        "is_eligible_md_poverty_line_credit",
-        "md_poverty_line_credit",
-        "md_local_poverty_line_credit",
-    ]:
-        assert not _calc(sim, name, year)[unallowed].any(), name
     # Each tax unit has its own household, in the same order.
     state = np.asarray(sim.calculate("state_code_str", year))
     md, la = state == "MD", state == "LA"
+    # Tax-General 10-211(a)(1): every filer keeps an exemption.
+    md_count = _calc(sim, "md_personal_exemptions_count", year)
+    assert (md_count[md] >= _calc(sim, "head_spouse_count", year)[md]).all()
+    assert (_calc(sim, "md_poverty_line_credit_income_level", year)[md] > 0).all()
     # 5. Unchanged when nobody can be claimed.
     nobody = ~claimable
     np.testing.assert_array_equal(
@@ -181,7 +194,7 @@ def _identities(sim, year):
 )
 @given(st.sampled_from(YEARS), st.lists(couples(), min_size=6, max_size=12))
 def test_ia_ks_ky_la_md_claimable_filer_rules_are_label_free(year, units):
-    check_swap(units, year, OUTPUTS, _identities)
+    check_swap(units + [EVERY_FILER_CLAIMABLE], year, OUTPUTS, _identities)
 
 
 @pytest.mark.parametrize("year", YEARS)
