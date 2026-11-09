@@ -1,1 +1,0 @@
-Add an ACA minimum premium reform (gov.contrib.aca.minimum_premium), following section 5(a)(1) of the January 2026 CARE Act draft bill: a tax unit with a member eligible for the premium tax credit pays at least a monthly minimum ($5 by default) toward its enrolled plan's premium.
