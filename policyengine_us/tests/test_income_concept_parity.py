@@ -161,6 +161,7 @@ CENSUS_EXCLUDED = {
     # Tax relief.
     "nj_property_tax_relief": PROPERTY_TAX_RELIEF,
     "co_denver_property_tax_relief": PROPERTY_TAX_RELIEF,
+    "state_property_tax_refunds": PROPERTY_TAX_RELIEF,
 }
 
 # CBO's measures (The Distribution of Household Income in 2021, Appendix D)
@@ -206,6 +207,7 @@ CBO_EXCLUDED = {
     "ca_la_infant_supplement": OUTSIDE_CBO,
     "co_denver_property_tax_relief": OUTSIDE_CBO,
     "nj_property_tax_relief": OUTSIDE_CBO,
+    "state_property_tax_refunds": OUTSIDE_CBO,
     "commodity_supplemental_food_program": OUTSIDE_CBO,
     "head_start": OUTSIDE_CBO,
     "early_head_start": OUTSIDE_CBO,
