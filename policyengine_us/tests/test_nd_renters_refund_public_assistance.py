@@ -4,12 +4,13 @@ N.D.C.C. 57-02-08.1(5)(c) (https://ndlegis.gov/cencode/t57c02.pdf#page=16)
 counts income "including any county, state, or federal public assistance
 benefits" and excludes "any amount excluded from income by federal or state
 law with the exception of income from social security benefits". No federal or
-North Dakota law excludes SSI, TANF or general assistance from income. 7 U.S.C. 2017(b) excludes SNAP from income "for any purpose under
-any Federal, State, or local laws", and 42 U.S.C. 8624(f)(1) excludes LIHEAP,
-including North Dakota's, "for any purpose under any Federal or State law".
-SSI and general assistance belong to a person; TANF belongs to an SPM unit,
-and add() gives each member of the unit an equal share, which counts in that
-member's tax unit.
+North Dakota law excludes SSI, TANF or general assistance from income.
+7 U.S.C. 2017(b) excludes SNAP from income "for any purpose under any Federal,
+State, or local laws", and 42 U.S.C. 8624(f)(1) excludes LIHEAP, including
+North Dakota's, "for any purpose under any Federal or State law". SSI and
+general assistance belong to a person; TANF belongs to an SPM unit, and add()
+gives each member of the unit an equal share, which counts in that member's
+tax unit.
 
 Four invariants hold for every input.
 

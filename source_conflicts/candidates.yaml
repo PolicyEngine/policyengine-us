@@ -7162,6 +7162,18 @@ candidates:
   - kind: guidance
     citation: Property Tax Credits for North Dakota Homeowners and Renters, item 11
     url: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
+  - kind: form
+    citation: SFN 24777 (10-2025), line 7
+    url: https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf#page=1
+  - kind: form
+    citation: SFN 24757 (10-2025), 2026 homestead credit application, list of income, p. 2
+    url: https://www.tax.nd.gov/sites/www/files/documents/property-tax/2026-homestead-credit-application.pdf#page=2
+  - kind: statute
+    citation: House Bill 1174 (2019), enrolled, sections 1 and 3
+    url: https://ndlegis.gov/assembly/66-2019/regular/documents/19-0115-05000.pdf#page=1
+  - kind: agency-practice
+    citation: Office of Tax Commissioner, fiscal note on House Bill 1174 (2019), on section 1
+    url: https://ndlegis.gov/files/resource/66-2019/library/hb1174.pdf#page=1
   readings:
     statute: Income includes "any county, state, or federal public assistance benefits" and leaves out "any amount
       excluded from income by federal or state law with the exception of income from social security benefits". No
@@ -7182,12 +7194,17 @@ candidates:
   state: ruled
   note: The statute names public assistance benefits as income, so it governs over item 11's general list, as in
     us-nd:renters-refund-insurance-proceeds. Reading "excluded from income by federal or state law" to take in the
-    general welfare exclusion would leave the clause that counts public assistance almost nothing to count, and the
-    particular inclusion controls the general exclusion (N.D.C.C. 1-02-07, 1-02-38(2)). The Tax Commissioner's own
-    forms count SSI, which the IRS also leaves out of gross income only under that doctrine. SFN 24777 line 7 asks for
+    general welfare exclusion would leave the clause that counts public assistance almost nothing to count. N.D.C.C.
+    1-02-07 and 1-02-38(2) call for a reading that gives both clauses effect. The inclusion counts public assistance,
+    and the exclusion removes what a statute or regulation excludes. The exception for social security says which
+    excluded amounts come back. The Legislative Assembly added it in House Bill 1174 (2019), the Act that created a
+    state income tax deduction for social security (section 3, now N.D.C.C. 57-38-30.3(2)(s)). In its fiscal note, the
+    Tax Commissioner's office wrote that section 1 of that Act keeps the full benefit in the homestead income test, so
+    the exception says nothing about benefits no statute excludes. The Tax Commissioner's own forms count SSI, which
+    the IRS also leaves out of gross income only under the general welfare exclusion. SFN 24777 line 7 asks for
     "S.S.I.", and the 2026 homestead credit application lists "SSI benefits" as income. The May 2013 edition of the
-    guideline counted TANF as income under item 10, and Engrossed House Bill 1147 (2015) shows the clause as existing
-    text; the June 2023 and July 2025 editions list TANF under item 11.
+    guideline counted TANF as income under item 10, and Engrossed House Bill 1147 (2015) shows the public assistance
+    words as existing text; the June 2023 and July 2025 editions list TANF under item 11.
 - id: us-nd:stillborn-subtraction-dependency-condition
   program: income-tax
   years:
