@@ -1,0 +1,66 @@
+# Missouri allows the self-employment tax as an itemized deduction only to the
+# extent the filer didn't deduct it in computing federal AGI (RSMo
+# 143.141(4)(c)). For 2017, filers include federal Form 1040 line 57 less
+# line 27 on Form MO-A Part 2 line 7 (MO-1040 instructions, page 42).
+- name: Half of the tax was deducted in federal AGI, so half is added
+  period: 2024
+  input:
+    self_employment_tax: 1_000
+    self_employment_tax_ald: 500
+    state_code: MO
+  output:
+    mo_self_employment_tax_addback: 500
+
+- name: Nothing deducted in federal AGI, so the addback equals the tax and no more
+  period: 2024
+  input:
+    self_employment_tax: 1_000
+    self_employment_tax_ald: 0
+    state_code: MO
+  output:
+    mo_self_employment_tax_addback: 1_000
+
+- name: Deduction above the tax leaves the addback at zero, not negative
+  period: 2024
+  input:
+    self_employment_tax: 1_000
+    self_employment_tax_ald: 1_200
+    state_code: MO
+  output:
+    mo_self_employment_tax_addback: 0
+
+- name: No self-employment tax
+  period: 2017
+  input:
+    self_employment_tax: 0
+    self_employment_tax_ald: 0
+    state_code: MO
+  output:
+    mo_self_employment_tax_addback: 0
+
+- name: Bounded between zero and the tax for several households at once
+  period: 2024
+  input:
+    people:
+      a: {self_employment_tax: 2_000}
+      b: {self_employment_tax: 2_000}
+      c: {self_employment_tax: 0}
+    tax_units:
+      ta: {members: [a], self_employment_tax_ald: 1_000}
+      tb: {members: [b], self_employment_tax_ald: 3_000}
+      tc: {members: [c], self_employment_tax_ald: 0}
+    households:
+      ha: {members: [a], state_code: MO}
+      hb: {members: [b], state_code: MO}
+      hc: {members: [c], state_code: MO}
+  output:
+    mo_self_employment_tax_addback: [1_000, 0, 0]
+
+- name: Outside Missouri the addback is zero
+  period: 2024
+  input:
+    self_employment_tax: 1_000
+    self_employment_tax_ald: 500
+    state_code: KS
+  output:
+    mo_self_employment_tax_addback: 0

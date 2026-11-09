@@ -27,6 +27,8 @@ and compare them:
 - a later year calculated on the same simulation equals a simulation of that
   year alone, and an itemizing branch of a simulation whose itemizing input
   changed after its tax was calculated does not reuse that tax;
+- the grid runs in 2025 and 2026, and in 2020, where the itemization choice
+  compares branches with different AGI;
 - relations between cases over a grid: tax never rises with the repayment
   (also across the $3,000 threshold) or with the prior-year decrease, and a
   repayment of $3,000 or less changes nothing (section 67(h), formerly 67(g)).
@@ -39,10 +41,11 @@ its payment is the prior-year increase when the credit method applies and zero
 otherwise.
 
 Last, one itemizing household per state: with the credit method fixed, the
-repayment leaves every state's income tax unchanged (section 1341(b)(3)),
-except that it lowers the tax of each state listed in
-STATES_WITH_RELIEF_UNDER_THE_CREDIT whose rule is in the model; with the
-deduction method fixed it leaves Arizona's, Kansas's and Wisconsin's unchanged.
+repayment reduces the federal tax deductible in Alabama, Missouri and Oregon, so
+their state taxes can rise; it lowers the tax of each state listed in
+STATES_WITH_RELIEF_UNDER_THE_CREDIT whose rule is in the model; and it leaves
+every other state's income tax unchanged (section 1341(b)(3)). With the
+deduction method fixed it leaves Arizona's and Kansas's taxes unchanged.
 """
 
 import gc
@@ -72,7 +75,11 @@ REPAYMENT, DECREASE, WAGE, CHARITABLE = (
 NC_INCREASE = 0.05 * REPAYMENT
 ZEROS = np.zeros_like(REPAYMENT)
 THRESHOLD = 3_000
-YEARS = [2025, 2026]
+# 2020 exercises the itemization choice between two branches with different
+# AGI (the 2020 above-the-line charitable deduction). It comes last so the
+# tests that use YEARS[0] and YEARS[1] keep 2025 and 2026.
+YEARS = [2025, 2026, 2020]
+ITEMIZATION_AGI_YEAR = 2020
 TOLERANCE = 0.01
 # The 50 states and the District of Columbia.
 STATES = [
@@ -81,14 +88,13 @@ STATES = [
     if state.name not in {"AA", "AE", "AP", "AS", "GU", "MP", "PR", "PW", "VI"}
 ]
 # States whose own rules leave out the federal claim of right repayment
-# deduction: A.R.S. 43-1021(9), K.S.A. 79-32,120(a) and Wisconsin Form 1
-# Schedule 1. California carries the federal deduction in Schedule CA column A.
-STATES_WITHOUT_THE_DEDUCTION = ["AZ", "KS", "WI"]
+# deduction: A.R.S. 43-1021(9) and K.S.A. 79-32,120(a).
+# California carries the federal deduction in Schedule CA column A.
+STATES_WITHOUT_THE_DEDUCTION = ["AZ", "KS"]
 # States whose own claim of right relief applies when federal tax is computed
 # with the section 1341 credit, and the variable that carries it. Under the
-# credit method these lower the household's state tax; every other state's
-# tax must not change. A listed state whose variable is not in the model yet
-# must not change either.
+# credit method these lower the household's state tax. A listed state whose
+# variable is not in the model yet must not change.
 STATES_WITH_RELIEF_UNDER_THE_CREDIT = {
     # Ark. Code 26-51-457: a deduction whichever federal method applies.
     "AR": "ar_claim_of_right_deduction",
@@ -107,7 +113,6 @@ STATES_WITH_RELIEF_UNDER_THE_CREDIT = {
     # IT-140 Schedule M, IRC 1341 Repayments.
     "WV": "wv_claim_of_right_subtraction",
 }
-
 BRANCHES = [
     "income_tax_if_claiming_claim_of_right_deduction",
     "income_tax_if_claiming_claim_of_right_credit",
@@ -228,14 +233,14 @@ def test_branches_match_independent_simulations(results, year):
     )
 
 
+@pytest.mark.parametrize("year", [YEARS[0], ITEMIZATION_AGI_YEAR])
 @pytest.mark.parametrize(
     "first", ["tax_liability_if_itemizing", "tax_liability_if_not_itemizing"] + BRANCHES
 )
-def test_results_do_not_depend_on_calculation_order(results, first):
+def test_results_do_not_depend_on_calculation_order(results, first, year):
     # A tax liability under one itemizing choice is calculated in a branch.
     # Asked for before the method is known, it must not leave a value behind
     # that a later method branch reuses.
-    year = YEARS[0]
     simulation = grid_simulation([year])
     simulation.calculate(first, year)
     for variable in VARIABLES:
@@ -367,8 +372,18 @@ def test_states_under_each_federal_method():
             if variable in variables
         ],
     )
+    federal_tax_deduction_states = np.isin(STATES, ["AL", "MO", "OR"])
+    unchanged = ~relief & ~federal_tax_deduction_states
     np.testing.assert_allclose(
-        with_credit[~relief], without_repayment[~relief], atol=TOLERANCE
+        with_credit[unchanged], without_repayment[unchanged], atol=TOLERANCE
+    )
+    assert np.all(
+        with_credit[federal_tax_deduction_states]
+        >= without_repayment[federal_tax_deduction_states] - TOLERANCE
+    )
+    assert np.any(
+        with_credit[federal_tax_deduction_states]
+        > without_repayment[federal_tax_deduction_states] + TOLERANCE
     )
     assert np.all(with_credit[relief] < without_repayment[relief] - 1), (
         "each listed state's own rule should lower its tax under the credit method"

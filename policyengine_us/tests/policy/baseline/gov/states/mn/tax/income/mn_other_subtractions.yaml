@@ -1,0 +1,14 @@
+- name: Case 1, default mn_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: MN
+  output:
+    mn_other_subtractions: 0.0
+
+- name: Case 2, mn_other_subtractions flows into mn_subtractions
+  period: 2024
+  input:
+    state_code: MN
+    mn_other_subtractions: 1_400
+  output:
+    mn_subtractions: 1_400

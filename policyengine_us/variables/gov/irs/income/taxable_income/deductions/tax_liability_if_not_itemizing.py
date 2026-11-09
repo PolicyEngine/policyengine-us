@@ -10,5 +10,5 @@ class tax_liability_if_not_itemizing(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        non_itemized_branch = get_itemization_branch(tax_unit, period, itemizes=False)
-        return non_itemized_branch.calculate("income_tax", period)
+        branch = get_itemization_branch(tax_unit, period, itemizes=False)
+        return branch.calculate("income_tax", period)

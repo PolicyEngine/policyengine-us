@@ -37,3 +37,103 @@
         is_chip_fcep_eligible_person: False
   output:
     is_chip_eligible_pregnant: False
+
+- name: Case 5, pregnant woman with employer coverage is not eligible for standard pregnancy CHIP.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2
+        has_esi: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NJ
+  output:
+    # New Jersey covers pregnant women up to 205% FPL through CHIP and has no
+    # FCEP option, but a targeted low-income pregnant woman must be uninsured
+    # (42 USC 1397ll(d)(2)(C)).
+    is_chip_eligible_standard_pregnant_person: false
+    is_chip_fcep_eligible_person: false
+    is_chip_eligible_pregnant: false
+
+- name: Case 6, an insured pregnant applicant in a state with both CHIP pregnancy options gets neither option.
+  period: 2025
+  input:
+    people:
+      # person1 has employer coverage; person2 is the uninsured control.
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.3
+        has_esi: true
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.3
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household1:
+        members: [person1]
+        state_code: CO
+      household2:
+        members: [person2]
+        state_code: CO
+  output:
+    # Colorado offers the standard and FCEP options up to 265% FPL; 230% FPL
+    # is above its 200% Medicaid pregnancy limit and within both CHIP limits.
+    is_chip_eligible_standard_pregnant_person: [false, true]
+    is_chip_fcep_eligible_person: [false, true]
+    is_chip_eligible_pregnant: [false, true]
+    chip_category: [NONE, PREGNANT_STANDARD]
+
+- name: Case 7, other coverage reported through the aggregate input excludes pregnant applicants from both CHIP pregnancy options.
+  period: 2026
+  input:
+    people:
+      # person1: New Jersey (standard option only); person2: Texas (FCEP only).
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2
+        has_health_coverage_other_than_chip: true
+      person2:
+        age: 30
+        is_pregnant: true
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.05
+        has_health_coverage_other_than_chip: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household1:
+        members: [person1]
+        state_code: NJ
+      household2:
+        members: [person2]
+        state_code: TX
+  output:
+    is_chip_eligible_standard_pregnant_person: [false, false]
+    is_chip_fcep_eligible_person: [false, false]
+    is_chip_eligible_pregnant: [false, false]
+    chip_category: [NONE, NONE]

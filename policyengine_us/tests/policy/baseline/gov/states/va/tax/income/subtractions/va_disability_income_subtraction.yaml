@@ -102,3 +102,23 @@
     # $15,000 + $ 20,000(max) and ignore the dependent
     va_disability_income_subtraction: 35_000
 
+
+- name: VA disability income subtraction is limited to the part included in federal AGI.
+  period: 2022
+  input:
+    people:
+      person1:
+        disability_benefits: 15_000
+        # Benefits from a policy the person paid for are not in federal AGI.
+        tax_exempt_disability_benefits: 9_000
+        is_tax_unit_head: 1
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # 15,000 - 9,000 = 6,000, under the 20,000 cap.
+    va_disability_income_subtraction: 6_000

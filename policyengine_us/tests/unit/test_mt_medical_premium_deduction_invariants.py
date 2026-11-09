@@ -55,8 +55,10 @@ independently. For every tax unit:
    Montana AGI is unchanged by those increases (asserted).
 5. Pre-tax premiums never change lines 2 or 3.
 6. Line 1 base: other expenses equal federal itemized medical expenses plus
-   the self-employed premiums those exclude, less the premiums. Line 1
-   therefore tracks the federal definition apart from the premiums.
+   the self-employed premiums those exclude, less the medical and eligible
+   long-term care premiums (a dependent's less the long-term care part of the
+   dependent's own deduction). Line 1 therefore tracks the federal
+   definition apart from the premiums.
 7. Differential (2021-2023): for single filers whose deduction is recorded
    per person, the joint and separate variants agree.
 8. From 2024 the joint deduction is the federal medical expense deduction and
@@ -301,6 +303,8 @@ def _situation(units, year, mode, unit_inputs=None):
 PERSON_VARIABLES = [
     "other_medical_expenses",
     "long_term_health_insurance_premiums",
+    "eligible_long_term_care_premiums",
+    "self_employed_health_insurance_ald_long_term_care_part",
     "medical_expense_health_insurance_premiums",
     "self_employed_health_insurance_ald_person",
     "mt_eligible_medical_insurance_premiums",
@@ -441,15 +445,20 @@ def _check(units, year, mode):
     )
 
     # 6. Line 1 base tracks the federal definition apart from the premiums.
-    # The generator never supplies the subtotal, so it holds no long-term care
-    # premiums.
-    assert (run["itemized_medical_expenses_long_term_care_premiums"] == 0).all()
+    # The computed subtotal holds the members' eligible long-term care
+    # premiums less the part the self-employed deduction took, and the
+    # applied exclusion restores that part. A dependent's own deduction
+    # took the dependent's long-term care part, which stays out.
+    eligible_long_term_care = (
+        run["eligible_long_term_care_premiums"]
+        - ~filer * run["self_employed_health_insurance_ald_long_term_care_part"]
+    )
     np.testing.assert_allclose(
         _unit_sum(run, other),
         run["itemized_medical_expenses"]
         + run["itemized_medical_expenses_applied_exclusion"]
         - _unit_sum(run, premium)
-        - run["itemized_medical_expenses_long_term_care_premiums"],
+        - _unit_sum(run, eligible_long_term_care),
         atol=TOLERANCE,
     )
 
@@ -543,11 +552,11 @@ def test_seeded_population(year, mode):
 def _check_net_subtotal(run, units, year, mode):
     """9. A net Schedule A subtotal gives the computed path's deduction.
 
-    Supply, for every return, the subtotal as Schedule A line 1 would hold it
-    (the computed subtotal plus the filers' long-term care premiums the
-    self-employed deduction did not take), the exclusion as all premiums that
-    deduction took (medical first), and the long-term care premiums still
-    inside. Montana's deduction must not change.
+    Supply, for every return, the computed path's own values: the subtotal,
+    which already holds the eligible long-term care premiums the
+    self-employed deduction did not take, the applied exclusion of all
+    premiums that deduction took, and the long-term care premiums still
+    inside the subtotal. Montana's deduction must not change.
     """
     filer = run["role"] != "dependent"
     return_deduction = np.maximum(run["self_employed_health_insurance_ald"], 0)
@@ -558,16 +567,18 @@ def _check_net_subtotal(run, units, year, mode):
     long_term_care_excluded = np.minimum(
         filer_long_term_care, return_deduction - medical_excluded
     )
-    inside = filer_long_term_care - long_term_care_excluded
     net = _run(
         units,
         year,
         mode,
         {
-            "itemized_medical_expenses": run["itemized_medical_expenses"] + inside,
-            "itemized_medical_expenses_applied_exclusion": medical_excluded
-            + long_term_care_excluded,
-            "itemized_medical_expenses_long_term_care_premiums": inside,
+            "itemized_medical_expenses": run["itemized_medical_expenses"],
+            "itemized_medical_expenses_applied_exclusion": run[
+                "itemized_medical_expenses_applied_exclusion"
+            ],
+            "itemized_medical_expenses_long_term_care_premiums": run[
+                "itemized_medical_expenses_long_term_care_premiums"
+            ],
         },
     )
     np.testing.assert_allclose(net["mt_agi_joint"], run["mt_agi_joint"], atol=TOLERANCE)
@@ -578,8 +589,8 @@ def _check_net_subtotal(run, units, year, mode):
     )
     # Non-vacuity: with supplied deductions, some exclusions cover long-term
     # care premiums on returns with dependents' premiums, where taking the
-    # exclusion from every member's premiums would differ. A derived
-    # deduction never exceeds the filers' own medical premiums.
+    # exclusion from every member's premiums would differ. The derived mode
+    # is left out here; the supplied modes reach these returns.
     if mode != "derived":
         dependent_premiums = _unit_sum(
             run, ~filer * run["medical_expense_health_insurance_premiums"]

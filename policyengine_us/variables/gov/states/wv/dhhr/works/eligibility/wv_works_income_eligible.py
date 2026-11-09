@@ -6,7 +6,7 @@ class wv_works_income_eligible(Variable):
     entity = SPMUnit
     label = "West Virginia WV Works income eligible"
     definition_period = MONTH
-    reference = "https://bfa.wv.gov/media/40005/download?inline#page=593"
+    reference = "https://web.archive.org/web/20261023203756/https://bfa.wv.gov/media/40005/download?inline#page=593"
     defined_for = StateCode.WV
 
     def formula(spm_unit, period, parameters):
