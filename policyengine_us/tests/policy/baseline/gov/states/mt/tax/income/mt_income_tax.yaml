@@ -206,3 +206,67 @@
     mt_income_tax_joint: 115.10
     mt_files_separately: true
     mt_income_tax: 71.40
+
+- name: The balancing share holds each column's miscellaneous deductions after the 2% floor fixed
+  # TY2017, the only year in which the code applies both the 2% floor on
+  # miscellaneous deductions (misc_floor_applies is true only in 2017) and
+  # the status 2a path (married_filing_separately_on_same_return_allowed
+  # starts in 2021, and its first value extends back). The model's 2017
+  # exemption (2,580), rate schedule and standard deduction are its 2021
+  # values, extended back the same way. The case pins the model's arithmetic.
+  # The balancing case above, with a floor-subject expense in each column.
+  #   Floor deductions: head 2,500 - 2% x 25,000 = 2,000; spouse 500 - 2% x
+  #   15,000 = 200; joint 3,000 - 2% x 40,000 = 2,200.
+  #   Medical floors: 1,875 and 1,125. Levels: head 25,000 - 2,580 - 2,000 +
+  #   1,875 = 22,295; spouse 15,000 - 2,580 - 200 + 1,125 = 13,345.
+  #   s = 0.5 + (22,295 - 13,345) / 50,000 = 0.679.
+  #   Head line 1a 16,975, medical 15,100, itemized 17,100;
+  #   25,000 - 2,580 - 17,100 = 5,320.
+  #   Spouse line 1a 8,025, medical 6,900, itemized 7,100;
+  #   15,000 - 2,580 - 7,100 = 5,320.
+  #   The child's 2,580 is halved: 4,030 each, taxed 31 + 930 x 2% = 49.60.
+  # Other candidates: equal split 130.45 + 8.45 = 138.90; all to the head
+  # 0 + 215.60; all to the spouse 640.40 + 0. Standard deductions (4,830
+  # and 3,000): 470.60 + 206.80 = 677.40.
+  # Joint: 40,000 - (22,000 + 2,200) - 3 x 2,580 = 8,060 taxable,
+  # tax 31 + 48 + 2,560 x 3% = 155.80.
+  # Without the floor deductions in the columns, s would be 0.715, itemized
+  # deductions 16,000 and 6,000, and the tax 2 x 71.60 = 143.20.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        mt_agi_indiv: 25_000
+        unreimbursed_business_employee_expenses: 2_500
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        mt_agi_indiv: 15_000
+        tax_preparation_fees: 500
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        other_medical_expenses: 25_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    mt_married_filing_separately_on_same_return_eligible: [true, true, true]
+    mt_misc_deductions_subject_to_floor_indiv: [2_000, 200, 0]
+    mt_non_medical_itemized_deductions_indiv: [2_000, 200, 0]
+    mt_dependent_medical_expense_head_share: 0.679
+    mt_medical_and_dental_expenses_indiv: [16_975, 8_025, 0]
+    mt_itemized_deductions_indiv: [17_100, 7_100, 0]
+    mt_tax_unit_itemizes: true
+    mt_income_tax_before_refundable_credits_indiv: [49.60, 49.60, 0]
+    mt_income_tax_joint: 155.80
+    mt_files_separately: true
+    mt_income_tax: 99.20
