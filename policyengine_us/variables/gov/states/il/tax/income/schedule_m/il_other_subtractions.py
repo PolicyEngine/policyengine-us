@@ -12,6 +12,7 @@ class il_other_subtractions(Variable):
         "Illinois subtractions from federal adjusted gross income reported on "
         "Schedule M not otherwise modeled, entered as a positive amount. "
         "Do not include line 13 (Bright Start, Bright Directions and College Illinois contributions), "
+        "line 15 (restoration of amounts held under a claim of right, which il_claim_of_right_subtraction computes), "
         "line 22 (U.S. obligations interest), or non-Illinois state and local income tax refunds "
         "on line 25, which PolicyEngine subtracts through salt_refund_income."
     )

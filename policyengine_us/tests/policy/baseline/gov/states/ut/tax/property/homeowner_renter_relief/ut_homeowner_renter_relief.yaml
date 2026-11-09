@@ -8,6 +8,8 @@
     state_code: UT
   output:
     ut_homeowner_renter_relief: 1_140
+    ut_renters_credit: 1_140
+    ut_homeowners_credit: 0
 
 - name: Case 2, renter credit capped by maximum amount.
   period: 2025
@@ -54,6 +56,8 @@
           2025: UT
   output:
     ut_homeowner_renter_relief: 429
+    ut_renters_credit: 0
+    ut_homeowners_credit: 429
 
 - name: Case 5, homeowner credit capped by property tax paid.
   period: 2025
@@ -115,6 +119,8 @@
           2025: UT
   output:
     ut_homeowner_renter_relief: 1_550
+    ut_renters_credit: 950
+    ut_homeowners_credit: 600
 
 - name: Case 8, ineligible claimant receives no relief.
   period: 2025
