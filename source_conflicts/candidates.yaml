@@ -4558,15 +4558,20 @@ candidates:
   sources:
   - kind: statute
     citation: Acts 2026 c. 101 §45
-    url: null
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2026/Chapter101
   - kind: statute
     citation: Acts 2026 c. 101 §43(a)
-    url: null
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2026/Chapter101
   - kind: agency-practice
     citation: DFML contribution rates page (updated 2026-10-01)
-    url: null
+    url: https://www.mass.gov/info-details/paid-family-and-medical-leave-employer-contribution-rates-and-calculator
+  - kind: guidance
+    citation: Department of Revenue working draft TIR on the fiscal 2026 mid-year supplemental appropriation bill,
+      section VI (2026-06-23)
+    url: https://www.mass.gov/technical-information-release/working-draft-tir-tax-provisions-in-the-fiscal-year-2026-final-mid-year-supplemental-appropriation-bill
   readings:
-    statute: Applying §45 literally swaps caps in 2026, producing a 0.772% employee maximum.
+    statute: Applying §45 literally swaps caps in 2026, producing a 0.772% employee maximum. The Department of
+      Revenue's working draft applies the new caps from 2026.
     other: Section 43(a) and DFML apply the swap in 2027, preserving the 0.46% employee and 0.42% employer shares.
   example: At $100,000 of 2026 wages, literal §45 gives a $772 employee contribution versus $460.
   pe_us:

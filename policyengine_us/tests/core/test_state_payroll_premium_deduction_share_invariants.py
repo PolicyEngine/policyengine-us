@@ -8,12 +8,12 @@ York PFL and DBL, which the employer is authorized but not required to
 collect; and Washington PFML, whose employee share the employer may deduct up
 to and may pay in any part.
 `employer_state_payroll_premium_deduction_share` says how much of the
-permitted employee share the employer deducts (default 1); the employer pays
-the rest. Hypothesis draws workers in those states, in states whose
-contributions are mandatory withholding, and in a state with neither, with any
-wages, employer size and share, and runs each worker three times in one
-simulation: with two drawn shares and with the input left at its default. For
-every worker, in 2026 and 2027:
+permitted employee share the employer deducts (default 1). Hypothesis draws
+workers in those states, in states whose contributions are mandatory
+withholding, and in a state with neither, with any wages, employer size and
+share, and runs each worker three times in one simulation: with two drawn
+shares and with the input left at its default. For every worker, in 2026 and
+2027:
 
 1. The employee amount of the optional programs is the clipped share times the
    amount at the default, so the default is the full permitted share and a
@@ -142,11 +142,28 @@ def by_copy(simulation, variable, year):
         # and New York's PFL maximum; Delaware also gets a 12-employee
         # employer (parental leave only). Shares lie strictly between 0 and 1
         # or above 1, so each program's properties compare positive amounts,
-        # small-employer rules and capped amounts.
+        # small-employer rules and capped amounts. Workers on each side of an
+        # employer-size threshold make property 5 compare the per-worker and
+        # employer-level paths at that threshold.
         lambda rows: (
             [(state, 60_000, 100, 0.5, 0.0) for state in OPTIONAL_STATES]
             + [(state, 250_000, 9, 0.3, 1.2) for state in OPTIONAL_STATES]
             + [("DE", 250_000, 12, 0.3, 1.2)]
+            + [
+                (state, 60_000, headcount, 0.5, 0.0)
+                for state, headcount in (
+                    ("CO", 10),
+                    ("DE", 10),
+                    ("DE", 24),
+                    ("DE", 25),
+                    ("MA", 24),
+                    ("MA", 25),
+                    ("ME", 14),
+                    ("ME", 15),
+                    ("WA", 49),
+                    ("WA", 50),
+                )
+            ]
             + rows
         )
     )
