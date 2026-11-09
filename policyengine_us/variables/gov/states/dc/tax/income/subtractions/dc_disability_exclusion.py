@@ -26,11 +26,17 @@ class dc_disability_exclusion(Variable):
         total_capped_payments = tax_unit.sum(capped_disability_payments)
 
         federal_agi = tax_unit("adjusted_gross_income", period)
-        # Line 6 takes Form D-40 line 10, the taxable title II and tier 1
-        # railroad retirement benefits (Form 1040 line 6b), which IRC 105(d)
-        # before the Social Security Amendments of 1983 left out of AGI.
-        section_86_benefits = tax_unit("tax_unit_taxable_section_86_benefits", period)
-        reduced_income = federal_agi - section_86_benefits - p.amount
+        # Line 6 takes Form D-40 line 10, "Taxable amount of social security
+        # and tier 1 railroad retirement".
+        taxable_benefits = add(
+            tax_unit,
+            period,
+            [
+                "tax_unit_taxable_social_security",
+                "tax_unit_taxable_railroad_social_security_equivalent_benefits",
+            ],
+        )
+        reduced_income = federal_agi - taxable_benefits - p.amount
         capped_reduced_income = max_(reduced_income, 0)
 
         return max_(total_capped_payments - capped_reduced_income, 0)

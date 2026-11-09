@@ -3,6 +3,13 @@ values:
   2025-01-01:
     - market_income
     - social_security
+    # "[S]ocial security, or other retirement benefits". IRC 86 is the federal
+    # exclusion that the statute's social security exception lifts, and IRC
+    # 86(d)(1)(B) treats tier 1 benefits as social security benefits. The
+    # exempt part of the rest of the annuity stays out as an amount excluded
+    # from income by federal law.
+    - railroad_social_security_equivalent_benefits
+    - taxable_railroad_pension_benefits
     - total_unemployment_compensation
     - general_assistance
 metadata:

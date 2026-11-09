@@ -7092,6 +7092,45 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10663
   state: ruled
   note: The statute's text settles the case, so it governs over the guideline's general list.
+- id: us-nd:renters-refund-railroad-benefits
+  program: renter-credit
+  years:
+    from: 2025
+    type: tax
+  question: Does Renter's Refund income count railroad retirement benefits that federal law leaves out of gross income or
+    bars states from taxing?
+  sources:
+  - kind: statute
+    citation: N.D.C.C. 57-02-08.1(5)(c)
+    url: https://ndlegis.gov/cencode/t57c02.pdf#page=16
+  - kind: statute
+    citation: 26 U.S.C. 86(d)(1)(B); 45 U.S.C. 231m(a)
+    url: https://www.law.cornell.edu/uscode/text/26/86#d_1_B
+  - kind: form
+    citation: 2025 Form SFN 24777, instructions for lines 4 to 9
+    url: https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf
+  - kind: guidance
+    citation: Property Tax Credits for North Dakota Homeowners and Renters, item 10
+    url: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
+  readings:
+    statute: Income includes "social security, or other retirement benefits" and excludes "any amount excluded from income
+      by federal or state law with the exception of income from social security benefits". The federal exclusion that
+      exception lifts comes from section 86, which treats tier 1 benefits as social security benefits, so tier 1 benefits
+      count in full, taxable tier 2 benefits count as other retirement benefits, and the part of tier 2 that section 72
+      excludes stays out.
+    other: Railroad retirement benefits are not social security benefits under the exception, and 45 U.S.C. 231m(a) and
+      North Dakota's subtraction take them out of income, so none of them count.
+  example: A renter with $4,000 of wages, $10,000 of tier 1 benefits, $3,000 of taxable tier 2 benefits and $2,000 of exempt
+    tier 2 benefits has income of $17,000 on the first reading and $4,000 on the second. PE-US follows the first.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/nd/tax/property/renters_refund/income_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10722
+  state: ruled
+  note: Ruled for the first reading (statute first). The form's instructions and the Tax Commissioner's guideline list
+    pensions, the guideline naming military pensions as well, without limiting them to pensions taxed by the state.
 - id: us-nd:stillborn-subtraction-dependency-condition
   program: income-tax
   years:
