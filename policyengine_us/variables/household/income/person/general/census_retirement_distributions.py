@@ -9,10 +9,11 @@ class census_retirement_distributions(Variable):
     definition_period = YEAR
     documentation = (
         "Distributions from retirement accounts that the Census Bureau counts "
-        "as money income. Since the Current Population Survey's 2019 redesign, "
-        "which collects 2018 income, the survey leaves distributions to people "
-        "under 58 out of total income. Census applies the test to age at the "
-        "survey date; this variable uses age in the income year."
+        "as money income. Since the redesigned processing system the Current "
+        "Population Survey introduced in 2019, which covers 2018 income, the "
+        "survey leaves distributions to people under 58 out of total income. "
+        "Census applies the test to age at the survey date; this variable uses "
+        "age in the income year."
     )
     reference = (
         # Pages 57 and 58 define the distribution amounts by age.

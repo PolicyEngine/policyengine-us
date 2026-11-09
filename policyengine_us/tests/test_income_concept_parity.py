@@ -104,12 +104,13 @@ CENSUS_EXCLUDED = {
     "non_sch_d_capital_gains": "capital gains",
     "other_net_gain_person": "gains on sales of business property (Form 4797)",
     "debt_relief": "discharged debt, not a receipt of money",
-    "illicit_income": "income from bribes and other illegal activity, not a "
-    "regular payment under other income, and no other source covers it",
-    "miscellaneous_income": "no Appendix A source fits: the default data fills "
-    "it with Census other income on survey records and Form 4797 business "
-    "property gains and losses on tax records (microcosm#393), and the model "
-    "cannot separate the two",
+    "illicit_income": "income from bribes and other illegal activity, which "
+    "neither Appendix A nor the survey's subject definitions mention (a "
+    "judgment call: other income could be read to take it)",
+    "miscellaneous_income": "the default data mixes Census other income "
+    "(source 18) on survey records with Form 4797 business property gains and "
+    "losses (left out, page A-3) on tax records (microcosm#393), and the model "
+    "cannot separate them",
     # CBO's employer-side and imputed components.
     "employer_sponsored_insurance_premiums": EMPLOYER,
     "employer_social_security_tax": EMPLOYER,
@@ -245,8 +246,9 @@ CENSUS_COUNTED_AS = {
 }
 
 # Sources Census counts only in part, through the variable that applies the
-# limit: since its 2019 redesign the survey leaves retirement account
-# distributions to people under 58 out of total income.
+# limit: since the redesigned processing system it introduced in 2019, which
+# covers 2018 income, the survey leaves retirement account distributions to
+# people under 58 out of total income.
 CENSUS_COUNTED_IN_PART = {
     "retirement_distributions": "census_retirement_distributions",
 }
@@ -661,9 +663,9 @@ def test_census_money_income_moves_dollar_for_dollar(year, size, amounts, losses
 @given(amount=st.integers(min_value=1, max_value=200_000))
 @example(amount=10_000)
 def test_census_counts_retirement_distributions_from_age_58(year, amount):
-    # The survey's 2019 redesign, which collects 2018 income, leaves
-    # distributions to people under 58 out of total income; the earlier rule
-    # has no age limit.
+    # The redesigned processing system the survey introduced in 2019, which
+    # covers 2018 income, leaves distributions to people under 58 out of total
+    # income; Appendix A has no age limit.
     ages = list(range(15, 91))
     cases = [("retirement_distributions", "person", "TX", amount)] * len(ages)
     # Earnings this high rule out every means-tested response.

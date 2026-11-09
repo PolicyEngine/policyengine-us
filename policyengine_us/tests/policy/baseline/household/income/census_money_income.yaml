@@ -226,9 +226,10 @@
     census_money_income: 506_000
     census_household_money_income: 506_000
 
-# Since its 2019 redesign, which collects 2018 income, the Current Population
-# Survey leaves retirement account distributions to people under 58 out of
-# total income (data dictionary: DST_VAL1 for 58 and over, DST_VAL1_YNG under).
+# Since the redesigned processing system the Current Population Survey
+# introduced in 2019, which covers 2018 income, the survey leaves retirement
+# account distributions to people under 58 out of total income (data
+# dictionary: DST_VAL1 for 58 and over, DST_VAL1_YNG under).
 - name: A retirement account distribution counts at age 58
   period: 2026
   input:
@@ -257,7 +258,7 @@
     census_money_income: 20_000
     census_household_money_income: 20_000
 
-- name: Before the survey's redesign a distribution counts at any age
+- name: For 2017 income, before the 2019 processing system, a distribution counts at any age
   period: 2017
   input:
     state_code: TX

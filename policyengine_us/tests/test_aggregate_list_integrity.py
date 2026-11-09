@@ -157,10 +157,14 @@ def test_members_are_state_gated(list_path, variables):
 
 
 # household_benefits and the income concept lists need no state gate, because
-# most of their members are national.
+# most of their members are national. Each CBO and Census list has one block
+# today, so for them the check guards the blocks added later.
 INCOME_CONCEPT_LISTS = [
     "gov/household/household_benefits.yaml",
-    "gov/household/cbo_means_tested_transfers.yaml",
+    *sorted(
+        str(path.relative_to(PARAMETERS))
+        for path in (PARAMETERS / "gov/household").glob("cbo_*.yaml")
+    ),
     *sorted(
         str(path.relative_to(PARAMETERS))
         for path in (PARAMETERS / "gov/household/census_money_income_sources").glob(
