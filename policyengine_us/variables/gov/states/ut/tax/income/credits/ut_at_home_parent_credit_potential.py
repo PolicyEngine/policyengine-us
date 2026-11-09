@@ -10,6 +10,9 @@ class ut_at_home_parent_credit_potential(Variable):
     defined_for = "ut_at_home_parent_credit_agi_eligible"
     reference = (
         "https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1005.html",
+        # Version effective 3/24/2022, superseded 5/6/2026
+        "https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1005_2022032420220324.pdf#page=1",
+        # Version effective 5/6/2026
         "https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1005_2026050620260506.pdf#page=1",
         "https://www.taxformfinder.org/forms/2021/2021-utah-tc-40-full-packet.pdf#page=23",
     )
