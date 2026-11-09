@@ -1,0 +1,14 @@
+- name: Fairness credit income counts railroad benefits to the extent federal AGI leaves them out.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    age: 70
+    state_code: ME
+    employment_income: 30_000
+    railroad_social_security_equivalent_benefits: 10_000
+    taxable_railroad_pension_benefits: 3_000
+    tax_exempt_railroad_pension_benefits: 2_000
+  output:
+    # Gross income: 30,000 + 7,900 taxable of the 10,000 + 3,000 = 40,900.
+    # Add 2,100 of tier 1 and 2,000 of tier 2 outside AGI.
+    me_sales_and_property_tax_fairness_credit_income: 45_000

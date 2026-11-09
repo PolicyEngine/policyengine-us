@@ -13,6 +13,11 @@ values:
     # additional homestead income sources:
     - tax_exempt_interest_income
     - tax_exempt_social_security
+    # Wis. Stat. 71.52(6): "the gross amount of any pension or annuity
+    # (including railroad retirement benefits ...)". Adjusted gross income
+    # holds the taxable part, so only the rest belongs here.
+    - tax_exempt_railroad_social_security_equivalent_benefits
+    - tax_exempt_railroad_pension_benefits
     - tax_exempt_pension_income
     - tax_exempt_unemployment_compensation
     # cash transfer income sources:

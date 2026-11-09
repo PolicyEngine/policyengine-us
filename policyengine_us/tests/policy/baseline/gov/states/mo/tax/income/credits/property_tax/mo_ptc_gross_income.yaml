@@ -26,3 +26,19 @@
         state_code: MO
   output:
     mo_ptc_gross_income: 29_000  # 29 = 13 + 9 + 4 + 3
+
+- name: Every railroad tier counts, on lines 2 and 4 of Form MO-PTS, after Missouri AGI removes its taxable part.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    age: 70
+    state_code: MO
+    employment_income: 30_000
+    railroad_social_security_equivalent_benefits: 10_000
+    taxable_railroad_pension_benefits: 3_000
+    tax_exempt_railroad_pension_benefits: 2_000
+  output:
+    # Federal AGI: 30,000 + 7,900 taxable of the 10,000 + 3,000 = 40,900.
+    # Missouri AGI subtracts 7,900 + 3,000 and leaves 30,000.
+    # Line 2: 10,000. Line 4: 3,000 + 2,000.
+    mo_ptc_gross_income: 45_000

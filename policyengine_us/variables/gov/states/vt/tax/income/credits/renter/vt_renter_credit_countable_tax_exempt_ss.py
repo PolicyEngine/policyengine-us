@@ -15,7 +15,15 @@ class vt_renter_credit_countable_tax_exempt_ss(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.vt.tax.income.credits.renter
-        return (
-            tax_unit("tax_exempt_social_security", period)
-            * p.countable_tax_exempt_ss_fraction
+        # Section 6061(18)(C) counts "Social Security benefits as defined
+        # under 26 U.S.C. § 86(d)", and 86(d)(1)(B) includes tier 1 railroad
+        # benefits.
+        excluded_benefits = add(
+            tax_unit,
+            period,
+            [
+                "tax_exempt_social_security",
+                "tax_exempt_railroad_social_security_equivalent_benefits",
+            ],
         )
+        return excluded_benefits * p.countable_tax_exempt_ss_fraction

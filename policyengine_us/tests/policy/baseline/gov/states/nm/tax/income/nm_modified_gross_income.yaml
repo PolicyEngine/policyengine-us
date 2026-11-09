@@ -110,3 +110,16 @@
   output:
     # § 7-2-2(L): "undiminished by losses". max(-5,000, 0) = 0, so 20,000.
     nm_modified_gross_income: 20_000
+
+- name: NM modified gross income counts every railroad tier, taxable or not.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code: NM
+    employment_income: 30_000
+    railroad_social_security_equivalent_benefits: 10_000
+    taxable_railroad_pension_benefits: 3_000
+    tax_exempt_railroad_pension_benefits: 2_000
+  output:
+    nm_modified_gross_income: 45_000

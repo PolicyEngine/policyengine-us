@@ -22,6 +22,13 @@ class mo_ptc_gross_income(Variable):
             "mo_adjusted_gross_income",  # line 1
             "tax_exempt_pension_income",  # line 3
             "tax_exempt_interest_income",  # line 3
+            # Section 135.010 counts "railroad retirement" benefits. Missouri
+            # AGI subtracts their taxable part, so every tier enters in full:
+            # line 2 takes "the amount of social security equivalent railroad
+            # retirement benefits" and line 4 takes the rest of the annuity.
+            "railroad_social_security_equivalent_benefits",  # line 2
+            "taxable_railroad_pension_benefits",  # line 4
+            "tax_exempt_railroad_pension_benefits",  # line 4
         ]
         core_income = tax_unit.sum(add(person, period, sources))
         # compute social security included in PTC gross income (line 2)
