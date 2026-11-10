@@ -319,9 +319,10 @@
 
 - name: Case 13, three-person Vermont household at 300% FPL gets a gap scaling with the larger MAGI.
   # A larger family reaches 300% FPL at a higher aca_magi, so the gap
-  # (income * 0.015) scales up accordingly. fed_pct at 300% FPL = 9.96% > 1.5%,
-  # income = 100_000 -> gap = 100_000 * 0.015 = 1_500. residual =
-  # 20_000 - 8_000 = 12_000 > gap, so VPA = 1_500 (gap binds). Eligibility holds
+  # (income * 0.015) scales up accordingly. 300% of the 2025 three-person FPG
+  # ($26,650) is 79_950; fed_pct at 300% FPL = 9.96% > 1.5%, so
+  # gap = 79_950 * 0.015 = 1_199.25. residual = 20_000 - 8_000 = 12_000 > gap,
+  # so VPA = 1_199.25 (gap binds). Eligibility holds
   # at the inclusive 300% ceiling for a multi-member unit, and only one member
   # need be APTC-eligible.
   period: 2026
@@ -340,7 +341,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        aca_magi: 100_000
+        aca_magi: 79_950
         aca_magi_fraction: 3.00
         slcsp: 20_000
         aca_ptc: 8_000
@@ -349,7 +350,7 @@
         members: [person1, person2, person3]
         state_code: VT
   output:
-    vt_premium_assistance: 1_500
+    vt_premium_assistance: 1_199.25
 
 # ---- Negative MAGI clamp (REQ-12) ----
 

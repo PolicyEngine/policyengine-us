@@ -1,10 +1,14 @@
 # Unit tests for Vermont Premium Assistance eligibility (REQ-1, REQ-2, REQ-3,
 # REQ-8). A tax unit is eligible when the program is in effect (2026+), at least
 # one member is federal-ACA-PTC-eligible (is_aca_ptc_eligible), and ACA MAGI is
-# at or below 300% of the federal poverty line (aca_magi_fraction <= 3.0).
-#   eligible = in_effect & any(is_aca_ptc_eligible) & (aca_magi_fraction <= 3.0)
-# aca_magi_fraction is injected directly so the 300% boundary is exact and each
-# expectation is hand-verifiable. There is no minimum-income floor.
+# at or below 300% of the federal poverty line (33 V.S.A. 1812(a)(1): "less
+# than or equal to 300 percent"), on the exact ratio of ACA MAGI to the
+# prior-year guideline, not the truncated aca_magi_fraction:
+#   eligible = in_effect & any(is_aca_ptc_eligible) & (aca_magi / FPG <= 3.0)
+# Supplied-income cases pin the prior-year guideline to $10,000 and set
+# aca_magi to the target ratio, so each expectation is hand-verifiable.
+# Income-derived cases use the actual 2025 one-person guideline, $15,650.
+# There is no minimum-income floor.
 
 - name: Case 1, 250% FPL APTC-eligible Vermont tax unit is eligible.
   # in_effect (2026) true; member APTC-eligible; 2.50 <= 3.0 -> eligible.
@@ -17,7 +21,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -36,7 +42,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.99
+        aca_magi: 29_900
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -55,7 +63,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 3.00
+        aca_magi: 30_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -74,7 +84,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 3.01
+        aca_magi: 30_100
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -93,7 +105,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -115,7 +129,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1, person2]
@@ -134,7 +150,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -153,7 +171,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2024: 10_000
     households:
       household:
         members: [person1]
@@ -172,7 +192,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2026: 10_000
     households:
       household:
         members: [person1]
@@ -181,7 +203,7 @@
     vt_premium_assistance_eligible: true
 
 - name: Case 10, 300.01% FPL just barely above the ceiling is ineligible.
-  # 3.0001 > 3.0 -> ineligible. Tightest just-above-ceiling case (REQ-2 boundary),
+  # 30_001 / 10_000 = 3.0001 > 3.0 -> ineligible. Tightest just-above-ceiling case (REQ-2 boundary),
   # complementing the inclusive 3.00 eligible case and the coarser 3.01 case.
   period: 2026
   input:
@@ -192,10 +214,89 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 3.0001
+        aca_magi: 30_001
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
         state_code: VT
   output:
     vt_premium_assistance_eligible: false
+
+- name: Case 11, $46,950 (exactly 300% of the 2025 guideline) is eligible.
+  # 3 x $15,650 = $46,950; aca_magi_fraction 3.00.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 46_950
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    aca_magi_fraction: 3.00
+    vt_premium_assistance_eligible: true
+
+- name: Case 12, $46,950.47 (300.003%) is ineligible though truncated to 3.00.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 46_950.47
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    aca_magi_fraction: 3.00
+    vt_premium_assistance_eligible: false
+
+- name: Case 13, $47,105.56 (300.994%) is ineligible though truncated to 3.00.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 47_105.56
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    aca_magi_fraction: 3.00
+    vt_premium_assistance_eligible: false
+
+- name: Case 14, $46,949 (299.994%) is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 46_949
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    aca_magi_fraction: 2.99
+    vt_premium_assistance_eligible: true
