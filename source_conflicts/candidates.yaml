@@ -8285,6 +8285,39 @@ candidates:
   note: 'PE-US follows the regulation: earnings are excluded only for a tax-unit dependent under the age limit who
     attends K-12 school, with tax dependency standing in for parental control (ok_liheap_countable_earned_income.py,
     income/student_earned_income_age_limit.yaml). Verify whether the broader plan checkbox reflects actual practice.'
+- id: us-ok:liheap-cooling-income-boundary
+  program: liheap
+  years:
+    from: 2025
+    to: 2027
+    type: federal-fiscal
+  question: Does net monthly income of exactly $700 receive Oklahoma's larger summer cooling payment, as Appendix
+    C-7-A's "$0 - $700" band says, although the state plan grants the larger benefit to incomes "under $700"?
+  sources:
+  - kind: regulation
+    citation: OAC 340:20-1-20(d) and OKDHS Appendix C-7-A, page 2 (Summer Cooling Program)
+    url: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7-a.pdf#page=2
+  - kind: plan
+    citation: FY2026 Oklahoma LIHEAP State Plan section 3.5, page 12 (repeated in the FY2027 plan, page 16)
+    url: https://liheapch.acf.gov/docs/2026/state-plans/OK_Plan_2026.pdf#page=12
+  readings:
+    statute: OAC 340:20-1-20(d) refers to Appendix C-7-A for the summer cooling benefit amounts. Page 2 of the
+      appendix pays the larger amount at net monthly income "$0 - $700" and the smaller amount at "$701 -
+      ineligible".
+    other: Plan section 3.5 says "The cooling program grants a larger benefit to households with net monthly incomes
+      under $700."
+  example: A one-person household with net monthly income of exactly $700 receives $500 under Appendix C-7-A and
+    $385 under the plan's wording.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ok/dhs/liheap/cooling/income_band.yaml
+    - policyengine_us/variables/gov/states/ok/dhs/liheap/cooling/ok_liheap_cooling.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10748
+  state: ruled
+  note: The band threshold of 701 follows the appendix that the regulation names, as the heating table's "$401 -
+    $700" band does; test Case 2 pins $700 at the larger amount and $701 at the smaller one.
 - id: us-ok:liheap-immigration-status-list
   program: liheap
   years:

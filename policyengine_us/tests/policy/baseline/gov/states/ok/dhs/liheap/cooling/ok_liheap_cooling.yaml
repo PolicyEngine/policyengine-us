@@ -98,6 +98,8 @@
     # Net 15,080 - 2,880 = 12,200 -> 1,017 a month: $701 - ineligible, size 2
     # or more
     ok_liheap_cooling: 425
+    # The national LIHEAP total is the cooling payment alone: 0 + 425.
+    liheap: 425
 
 - name: Case 5, a household without cooling costs receives no cooling payment.
   period: 2026

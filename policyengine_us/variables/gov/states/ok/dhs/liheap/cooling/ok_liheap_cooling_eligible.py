@@ -11,7 +11,8 @@ class ok_liheap_cooling_eligible(Variable):
     # gross income test heating uses, and responsibility for cooling costs.
     reference = (
         "https://prod-ok-administrativerules.tecuity.com/api/BlobStorageGetFile?storageContainer=TitleHtml&name=Title_340.html",
-        "https://oklahoma.gov/content/dam/ok/en/omma/content/rulemaking-process/rules/Register_Volume-42_Issue-20.pdf#page=588",
+        # PDF pages 574-576, 588-589
+        "https://oklahoma.gov/content/dam/ok/en/omma/content/rulemaking-process/rules/Register_Volume-42_Issue-20.pdf#page=574",
         # PDF pages 11-12
         "https://liheapch.acf.gov/docs/2026/state-plans/OK_Plan_2026.pdf#page=11",
     )
