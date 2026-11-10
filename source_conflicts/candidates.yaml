@@ -11386,6 +11386,44 @@ candidates:
   state: unreviewed
   note: PE-US follows Vermont's deduction; evidence concerns federal fiscal 2016-2017 and 2024 only, with intervening
     years unasserted.
+- id: us-vt:student-loan-interest-surviving-spouse-limit
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: Does a qualifying surviving spouse get Vermont's student loan interest subtraction, when 32 V.S.A. §
+    5811(29)(B) sets an income limit only for single, head of household, married filing separately and joint filers?
+  sources:
+  - kind: statute
+    citation: 32 V.S.A. § 5811(21)(B)(vi), (29)(B)
+    url: https://legislature.vermont.gov/statutes/section/32/151/05811
+  - kind: form
+    citation: 2025 Vermont Schedule IN-112, line 16c
+    url: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2025.pdf#page=23
+  - kind: statute
+    citation: 32 V.S.A. § 5822(a)
+    url: https://legislature.vermont.gov/statutes/section/32/151/05822
+  - kind: statute
+    citation: 2021, No. 138 (Adj. Sess.), §§ 5, 7 (32 V.S.A. §§ 5811(29), 5830e(a)(1))
+    url: https://legislature.vermont.gov/Documents/2022/Docs/ACTS/ACT138/ACT138%20As%20Enacted.pdf#page=5
+  readings:
+    statute: (29)(B) defines a qualified resident taxpayer by a $120,000 limit for single, head of household and
+      married filing separately filers and a $200,000 limit for joint filers. It names no amount for a qualifying
+      surviving spouse, so a surviving spouse doesn't meet the definition and gets no subtraction.
+    other: Line 16c applies $120,000 to "All other filers", a qualifying surviving spouse included.
+  example: A 2025 surviving spouse with $110,000 of federal AGI and $3,000 of student loan interest, none deducted
+    federally, subtracts $3,000 under line 16c and nothing under § 5811(29)(B).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/vt/tax/income/agi/student_loan_interest/income_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10104
+  state: ruled
+  note: PolicyEngine follows the statute. The chapter names surviving spouses where it includes them (§ 5811(21)(C)(i)
+    and (ii), § 5822(a)(1) and (3)), and (29)(B) does not. The act that added (29)(B) did the same two sections later,
+    when its § 7 renamed the qualifying widow or widower status "surviving spouse" in § 5830e(a)(1)'s list of
+    filing statuses. The Department's form gives them the $120,000 limit. Code not yet on main.
 - id: us-wa:liheap-minimum-benefit-cost-cap
   program: liheap
   years:
@@ -11526,6 +11564,38 @@ candidates:
   note: An October 2026 ruling followed the worksheet; under the later statute-first rule the code includes the
     federal claim of right deduction in the credit base with the Schedule 1 components. The separate Wisconsin
     repayment credit that would trigger the 71.07(5)(a)6 exclusion is not modeled.
+- id: us-wi:homestead-age-disability-earned-income-routes
+  program: homestead-credit
+  years:
+    from: 2021
+    type: tax
+  question: Does a Wisconsin homestead claimant with no earned income qualify by age 62 or by disability alone, when
+    Wis. Stat. 71.54(1)(gm) read by itself denies such a claimant who is not disabled or is under 62?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. 71.54(1)(dm), (em), (gm)
+    url: https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/54
+  - kind: instructions
+    citation: 2025 Schedule H instructions, Step 1a (PDF p. 4)
+    url: https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleH-inst.pdf#page=4
+  readings:
+    statute: Read together, (dm), (em) and (gm) are alternatives, since (dm) makes (em) and (gm) exceptions to its age
+      bar. A claimant qualifies by being 62 or older, by being disabled or by having earned income.
+    other: (gm) read by itself denies a claimant with no earned income unless the claimant is both disabled and 62 or
+      older.
+  example: A 2021 claimant aged 62 who is not disabled and has no earned income qualifies under the whole-text reading
+    and Step 1a, and does not under (gm) read by itself.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wi/tax/income/credits/homestead/wi_homestead_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10104
+  state: open
+  note: PE-US follows the whole-text reading, which Schedule H Step 1a shares by listing age 62 or older, disability
+    and earned income as alternative qualifications. wi_homestead_eligible.yaml unit tests 4 (aged 62, no earnings)
+    and 6 (disabled spouse aged 60, no earnings) expect eligibility and would fail under (gm) read by itself. The
+    model's homestead parameters start in 2021.
 - id: us-wi:liheap-categorical-benefit-income
   program: liheap
   years:
