@@ -75,3 +75,48 @@
     # person1: individual amount = $22
     # person2: ineligible = $0
     in_ssp_sapn: [22, 0]
+
+# Medicaid Policy Manual 5005.05.00: SAPN fills the $52 personal-needs allowance, capped at $22 per person. Each spouse has $30 SSI and no other budgeted income: $52 - $30 = $22 each. The third adult is not SAPN-eligible; that adult's $100 monthly income is outside the couple budget.
+# https://www.in.gov/fssa/ompp/files/Medicaid_PM_5000.pdf#page=2
+- name: Indiana combines only spouses budgeted income for SAPN
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        in_ssp_sapn_eligible: true
+        ssi: 30
+        ssi_countable_income:
+          2026: 0
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        in_ssp_sapn_eligible: true
+        ssi: 30
+        ssi_countable_income:
+          2026: 0
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+        in_ssp_sapn_eligible: false
+        ssi: 0
+        ssi_countable_income:
+          2026: 1_200
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: IN
+  output:
+    in_ssp_sapn: [22, 22, 0]

@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_resource_couple,
     _ssi_spouse_index,
 )
 
@@ -22,13 +23,15 @@ class is_ssi_spousal_resource_deeming_applies(Variable):
         # resources of the spouse' against the couple limit. Eligibility is
         # not known before the resource test, and 416.1205(b) tests an
         # eligible couple's combined resources against the same limit, so a
-        # spouse's resources count either way when the claim is not already
-        # joint. The spouse is identified as a parent's spouse is in parental
+        # spouse's resources count either way when the couple's are not
+        # already combined. The spouse is identified as a parent's spouse is in parental
         # deeming. 416.1167 retains an absent person's household membership:
         # enter a temporarily absent spouse in the household they remain in.
+        # A joint claim whose other member fails the citizenship condition
+        # is not an eligible couple (416.1801(c)), so it deems too.
         spouse = _ssi_spouse_index(person, period)
         return (
             person("is_ssi_aged_blind_disabled", period)
-            & ~person("ssi_claim_is_joint", period)
+            & ~_ssi_resource_couple(person, period)
             & (spouse >= 0)
         )
