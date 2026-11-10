@@ -1151,9 +1151,12 @@ def test_means_test_off_preserves_downstream_dependency_closure(
         for component in COMPONENTS:
             record[f"social_security_{component}"] = {2027: 6_000}
             record.pop(f"social_security_{component}_reported")
+    # Employer coverage keeps the worker off the premium tax credit, which
+    # household net income counts since main supplied these literals.
     record.update(
         employment_income={2027: 10_000},
         taxable_interest_income={2027: 20_000},
+        has_esi={2027: True},
     )
     situation = _situation({"worker": record})
     situation["households"]["worker"]["state_code"] = {2027: "NY"}

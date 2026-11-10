@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.parameters import FIRST_MODELED_YEAR
 
 
 class aca_magi_fraction(Variable):
@@ -24,5 +25,12 @@ class aca_magi_fraction(Variable):
 
     def formula(tax_unit, period, parameters):
         magi = max_(0, tax_unit("aca_magi", period))
-        fpg = tax_unit("tax_unit_fpg", period.last_year)
+        # The credit measures income against the guideline for the year before
+        # the coverage year. For coverage in the first modeled year, that year
+        # precedes the model, so the coverage year's guideline stands in and
+        # nothing is computed for an unmodeled year.
+        guideline_period = period.last_year
+        if guideline_period.start.year < FIRST_MODELED_YEAR:
+            guideline_period = period
+        fpg = tax_unit("tax_unit_fpg", guideline_period)
         return np.floor(100 * magi / fpg) / 100
