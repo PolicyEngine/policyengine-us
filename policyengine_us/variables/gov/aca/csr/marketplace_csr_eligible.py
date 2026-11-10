@@ -13,7 +13,11 @@ class marketplace_csr_eligible(Variable):
         receives_aca = tax_unit.sum(person("person_receives_aca", period)) > 0
         category = tax_unit("selected_marketplace_plan_category", period)
         silver_selected = category == category.possible_values.SILVER
-        magi_fraction = tax_unit("aca_magi_fraction", period)
+        # 45 CFR 155.305(g)(1)(i)(C): household income that "does not exceed
+        # 250 percent of the FPL". Test the exact ratio, not the truncated
+        # aca_magi_fraction, which maps 250.00%-250.99% to 2.50.
+        magi = max_(tax_unit("aca_magi", period), 0)
+        magi_fraction = magi / tax_unit("tax_unit_fpg", period.last_year)
         income_eligible = (
             magi_fraction <= parameters(period).gov.aca.csr.income_threshold.maximum
         )

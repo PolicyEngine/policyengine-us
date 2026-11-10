@@ -15,11 +15,21 @@ class marketplace_csr_category(Variable):
     entity = TaxUnit
     label = "Marketplace cost-sharing reduction category"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/cfr/text/45/155.305#g_2"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/42/18071#c_2",
+        "https://www.law.cornell.edu/cfr/text/45/155.305#g_2",
+    )
 
     def formula(tax_unit, period, parameters):
         eligible = tax_unit("marketplace_csr_eligible", period)
-        magi_fraction = tax_unit("aca_magi_fraction", period)
+        # 42 U.S.C. 18071(c)(2) and 45 CFR 155.305(g)(2) set each tier by
+        # household income "not more than" (the regulation: "less than or equal
+        # to") 150, 200 and 250 percent of the poverty line. Test the exact
+        # ratio, not the truncated aca_magi_fraction: truncation maps
+        # 150.00%-150.99% to 1.50, which would put incomes above 150% in the
+        # 94% tier.
+        magi = max_(tax_unit("aca_magi", period), 0)
+        magi_fraction = magi / tax_unit("tax_unit_fpg", period.last_year)
         p = parameters(period).gov.aca.csr.income_threshold
         return select(
             [
