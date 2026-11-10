@@ -32,3 +32,69 @@
     county_str: UNKNOWN_COUNTY_XX
   output:
     slcsp_rating_area_default: 1
+
+# From 2026, counties in aca_rating_area_corrections.csv take CMS's rating area
+# (state geographic rating area pages); earlier years keep aca_rating_areas.csv.
+# Counties whose key aca_rating_areas.csv misspells or lacks take theirs from 2014.
+- name: Orange County CA is in rating area 15 before 2026
+  period: 2025
+  input:
+    county_str: ORANGE_COUNTY_CA
+  output:
+    slcsp_rating_area_default: 15
+
+- name: Orange County CA is in rating area 18 from 2026
+  period: 2026
+  input:
+    county_str: ORANGE_COUNTY_CA
+  output:
+    slcsp_rating_area_default: 18
+
+- name: Dona Ana County NM is in rating area 3 before 2026 too
+  period: 2025
+  input:
+    county_str: DOÑA_ANA_COUNTY_NM
+  output:
+    slcsp_rating_area_default: 3  # aca_rating_areas.csv has it as DONA_ANA_NM
+
+- name: Dona Ana County NM is in rating area 3 from 2026
+  period: 2026
+  input:
+    county_str: DOÑA_ANA_COUNTY_NM
+  output:
+    slcsp_rating_area_default: 3
+
+- name: Ada County ID follows Idaho's six county-based areas from 2026
+  period: 2026
+  input:
+    county_str: ADA_COUNTY_ID
+  output:
+    slcsp_rating_area_default: 3
+
+- name: Ada County ID is in the earlier map's area 5 before 2026
+  period: 2025
+  input:
+    county_str: ADA_COUNTY_ID
+  output:
+    slcsp_rating_area_default: 5
+
+- name: Pierce County WA follows Washington's nine areas from 2026
+  period: 2026
+  input:
+    county_str: PIERCE_COUNTY_WA
+  output:
+    slcsp_rating_area_default: 5
+
+- name: Middlesex County MA takes the area holding most of its residents from 2026
+  period: 2026
+  input:
+    county_str: MIDDLESEX_COUNTY_MA
+  output:
+    slcsp_rating_area_default: 5
+
+- name: Travis County TX is unchanged in 2027
+  period: 2027
+  input:
+    county_str: TRAVIS_COUNTY_TX
+  output:
+    slcsp_rating_area_default: 3
