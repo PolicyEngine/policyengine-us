@@ -219,3 +219,33 @@
     # elderly $50,000 limit and restoring the $40-per-person credit.
     ok_gross_income: 38_565.84
     ok_stc: 80
+
+- name: OK STC - 2025 - military retired pay puts a couple, both 67, over the limit
+  period: 2025
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        military_retirement_pay: 45_000
+        social_security_retirement: 15_000
+      spouse:
+        age: 67
+        is_tax_unit_spouse: true
+        social_security_retirement: 15_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: OK
+  output:
+    # OAC 710:50-15-96(c) and Form 538-S line 6 count military retired pay,
+    # taxable or not. 45,000 + 30,000 Social Security = 75,000.
+    ok_gross_income: 75_000
+    # 75,000 is above the $50,000 limit for filers 65 or older. Without the
+    # military retired pay, gross income would be 30,000 and the credit
+    # 2 x 40 = 80.
+    ok_stc: 0
