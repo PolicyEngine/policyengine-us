@@ -40,6 +40,9 @@ from policyengine_us.variables.gov.ssa.ssi.ssi_amount_if_eligible import (
 )
 from policyengine_us.variables.gov.ssa.ssi.ssi_if_takes_up import ssi_if_takes_up
 from policyengine_us.variables.gov.ssa.ssi.uncapped_ssi import uncapped_ssi
+from policyengine_us.variables.gov.ssa.ssi.uncapped_ssi_without_spousal_deeming import (
+    uncapped_ssi_without_spousal_deeming,
+)
 
 YEARS = (2023, 2024, 2025)
 STATES = ("CA", "CO", "FL", "IN", "KY", "LA", "MO", "MT", "NY", "OK")
@@ -505,6 +508,8 @@ def test_couple_food_pmv_uses_payment_rate_and_splits_countable_income(month):
         "ssi_marital_earned_income": zero,
         "ssi_blind_or_disabled_working_student_exclusion": zero,
         "ssi_marital_unearned_income": zero,
+        "ssi_earned_income": zero,
+        "ssi_unearned_income": zero,
         "ssi_unearned_income_deemed_from_ineligible_parent": zero,
         "ssi_income_deemed_from_ineligible_spouse": zero,
         "is_ssi_aged_blind_disabled": np.ones(3, dtype=bool),
@@ -528,6 +533,10 @@ def test_couple_food_pmv_uses_payment_rate_and_splits_countable_income(month):
         ("ssi_in_kind_support_and_maintenance", ssi_in_kind_support_and_maintenance),
         ("ssi_countable_income", ssi_countable_income),
         ("ssi_amount_if_eligible", ssi_amount_if_eligible),
+        (
+            "uncapped_ssi_without_spousal_deeming",
+            uncapped_ssi_without_spousal_deeming,
+        ),
         ("uncapped_ssi", uncapped_ssi),
         ("ssi_if_takes_up", ssi_if_takes_up),
     )
@@ -548,6 +557,17 @@ def test_couple_food_pmv_uses_payment_rate_and_splits_countable_income(month):
     assert values["ssi_countable_income"][1] == pytest.approx(countable)
     assert values["ssi_amount_if_eligible"][1] == pytest.approx(1_415 / 2)
     assert values["ssi_if_takes_up"][1] == pytest.approx(1_415 / 2 - countable)
+    # Under deeming, 416.1163(e)(2) limits the payment to the individual rate
+    # less the claimant's own income, with the individual PMV of 943 / 3 + 20
+    # (POMS SI 01320.150 B.1.b): 943 - 943 / 3 = 628.666667 through November
+    # and 943 once October income excludes food. The deeming computation
+    # leaves 1,415 - 225.833333 through November and 1,415 in December, more
+    # than that limit in each month.
+    individual = 943 if month == 12 else 943 - 943 / 3
+    assert values["uncapped_ssi_without_spousal_deeming"][2] == pytest.approx(
+        individual
+    )
+    assert values["ssi_if_takes_up"][2] == pytest.approx(individual)
 
 
 def test_annual_countable_income_input_reaches_each_month():
