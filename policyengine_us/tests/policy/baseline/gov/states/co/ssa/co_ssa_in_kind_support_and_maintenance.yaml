@@ -408,3 +408,48 @@
         is_homeless: true
   output:
     co_ssa_in_kind_support_and_maintenance: 0
+
+- name: Case 20, the matching ISM follows SSA's January 2024 food ISM.
+  # The January 2024 payment counts November 2023 food (20 CFR 416.420(a))
+  # at the presumed maximum value, 943 / 3 + 20 = 334.33. SSA counts
+  # 334.33 - 20 = 314.33 and pays 943 - 314.33 = 628.67, and Colorado
+  # charges the matching 334.33 (3.520.79(B)(6)).
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person:
+        age:
+          2024: 70
+        ssi_receives_food_from_others:
+          2024: true
+    households:
+      household:
+        members: [person]
+        state_code:
+          2024: CO
+  output:
+    ssi: 628.67
+    co_ssa_in_kind_support_and_maintenance: 334.33
+
+- name: Case 21, the matching ISM follows SSA's December 2024 payment, which counts no food.
+  # The December 2024 payment counts October income, and SSA excludes food
+  # received from September 30, 2024 (89 FR 21199). SSA charges no ISM and
+  # pays 943 - 0 = 943, so Colorado charges no ISM either.
+  absolute_error_margin: 0.01
+  period: 2024-12
+  input:
+    people:
+      person:
+        age:
+          2024: 70
+        ssi_receives_food_from_others:
+          2024: true
+    households:
+      household:
+        members: [person]
+        state_code:
+          2024: CO
+  output:
+    ssi: 943
+    co_ssa_in_kind_support_and_maintenance: 0
