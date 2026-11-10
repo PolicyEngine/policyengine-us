@@ -68,6 +68,8 @@
     state_code: IL
     age: 70
     immigration_status: LEGAL_PERMANENT_RESIDENT
+    # Past the five-year bar, so federal Medicaid covers this LPR.
+    years_since_us_entry: 5
     social_security: 10_000
   output:
     il_hbi_eligible: false
