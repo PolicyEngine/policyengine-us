@@ -2,9 +2,11 @@ description: Virginia uses federal poverty guidelines from this many years befor
 # Virginia adopts each year's new 150% limits in June. They apply first to that
 # June's cooling assistance and then to heating in the next federal fiscal
 # year, so cooling in the summer of year Y uses the year Y guideline while
-# heating in federal fiscal year Y uses the year Y - 1 guideline.
+# heating in federal fiscal year Y uses the year Y - 1 guideline. The value is
+# dated at the start of FFY2025, whose June 2025 cooling the matrix note
+# describes.
 values:
-  2025-06-01: 0
+  2024-10-01: 0
 
 metadata:
   unit: year

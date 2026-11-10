@@ -1,8 +1,10 @@
 description: Virginia limits cooling assistance electric bill payments to this amount per program year under the Energy Assistance Program.
 # The VDSS Home Office sets this maximum each year. Each value is dated to the
 # start of the federal fiscal year whose summer it covers. VDSS announced $600
-# for 2023. The $365 for 2025 comes from press reports attributed to VDSS; no
-# VDSS notice was found for 2024, 2025, 2026 or 2027, so $365 carries forward.
+# for 2023; no amount was found for 2024, so 2024 carries the $600 forward. The
+# $365 for 2025 comes from press reports attributed to VDSS; no VDSS notice was
+# found for 2025, 2026 or 2027, so 2026 and 2027 carry the $365 forward. The
+# first value also backfills years before 2023, which are unverified.
 values:
   2022-10-01: 600
   2024-10-01: 365
