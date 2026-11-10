@@ -3,6 +3,8 @@ values:
   # Dual use: this ceiling is the base-program cutoff via <= (units at or below
   # 400% FPL qualify for base assistance) and simultaneously the Middle Income
   # Household floor via > (units above 400% FPL route to the MIH component).
+  # Both compare the exact ratio of ACA MAGI to the prior-year guideline, not the
+  # truncated aca_magi_fraction, so every income is in exactly one component.
   # PY2027 uses the same 400% ceiling per the FINAL PY2027 MAP Manual (HCA,
   # issued 2026-06-16), Table 1 (p.4) and the flat 8.5% cap at >=400% FPL (p.4).
   2026-01-01: 4
