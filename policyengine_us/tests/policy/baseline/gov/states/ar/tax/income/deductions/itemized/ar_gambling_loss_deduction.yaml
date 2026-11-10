@@ -1,5 +1,7 @@
 # DFA Subject 208 applied the same cap and 2% exemption before Act 155 of 2017
-# codified it from 2015, so the deduction is not limited to 2015 and later.
+# codified it from 2015, so the formula has no year gate. This case guards
+# against adding one; PolicyEngine computes Arkansas income tax only from 2015
+# (Arkansas parameters are backdated to 2015-01-01).
 - name: 2014 gambling losses are deductible only to the extent of winnings
   period: 2014
   input:
